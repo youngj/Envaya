@@ -1,0 +1,2669 @@
+2009-09-07  brettp
+
+	* bookmarks/start.php,
+	  profile/views/default/profile/javascript.php: Merging 1087-1088
+	  into 1.6.1.
+	* members/index.php: Merge in 1085 to 1.6.1.
+
+2009-09-06  brettp
+
+	* blog/actions/edit.php, bookmarks/start.php, groups/all.php,
+	  groups/start.php, groups/views/default/forms/forums/addtopic.php,
+	  groups/views/default/groups/css.php,
+	  groups/views/default/groups/grouplisting.php,
+	  messages/actions/delete.php, messages/actions/send.php,
+	  messages/languages/en.php, messages/manifest.xml,
+	  messages/start.php,
+	  messages/views/default/messages/forms/message.php,
+	  messages/views/default/messages/forms/reply.php,
+	  messages/views/default/messages/messages.php,
+	  messages/views/default/messages/view.php, pages/pagesTree.php,
+	  pages/views/default/pages/sidebar/sidebarthis.php,
+	  riverdashboard/index.php,
+	  riverdashboard/views/default/riverdashboard/sitemessage.php,
+	  twitterlogin/actions/return.php, twitterlogin/languages/en.php,
+	  twitterlogin/views/default/settings/twitterlogin/edit.php,
+	  twitterlogin/views/default/twitterlogin/css.php: Merging changes
+	  1052-1055, 1062-1063, 1066-1069, 1072-1073, 1075-1078.
+	* .: Tagging 1.6.1
+	* Tagging 1050 as 1.6.
+
+2009-08-20  brettp
+
+	* Moved files to file.
+
+2009-08-18  marcus
+
+	* Added group user import from CSV file.
+
+2009-08-06  dave
+
+	* moved the captcha plugin in here from the core
+	* cleaning out some old redundant plugins
+	* moving these plugins from core over here to make bug reporting
+	  and tracking easier.
+
+2009-08-04  brettp
+
+	* Rolled back embed plugin.
+
+2009-08-03  marcus
+
+	* More time and bigger dataset
+
+2009-08-01  dave
+
+	* make sure a title and message have been set and introduce a
+	  loader
+
+2009-07-31  marcus
+
+	* First draft util that lets an admin user message all users of a
+	  site.
+
+2009-07-17  dave
+
+	* removed roles as they are not ready for proper usage
+	* vanilla plugin removed, it is available on the community site
+	  http://community.elgg.org
+
+2009-07-08  dave
+
+	* removed old files
+	* files rolled back to last stable version
+
+2009-07-08  marcus
+
+	* Added group support for bookmarks plugin, version bump and some
+	  CSRF protection.
+
+2009-07-08  dave
+
+	* old files removed
+	* old plugins removed
+
+2009-07-07  marcus
+
+	* Defaulting group blog to true
+	* Added group blog support.
+
+2009-07-06  brettp
+
+	* Changed variable names for new multi file upload.
+	* Cleaning up some SVN merge confusion.
+	* Closes #183: Tiny saves content upon submit instead of using
+	  set_timeout() call. Updated blog to force a save.
+
+2009-07-06  marcus
+
+	* Upload link only displayed if user is logged in.
+
+2009-07-01  marcus
+
+	* Deprecating kses and removing it from core.
+
+2009-07-01  pete
+
+	* update to jquery 1.3.2 and jqueryUI 1.7.2 closes #941
+
+2009-06-30  marcus
+
+	* Strip tags from input
+
+2009-06-26  pete
+
+	* more twitter login user avatar fixes
+
+2009-06-25  pete
+
+	* temporary fixes to login with twitter css to force twitter user
+	  avatar to the correct size for each mod (needed right now as the
+	  twitter avatar doesn't pass through elgg's view system)
+	* tweak to input box size
+
+2009-06-24  pete
+
+	* interface updates/fixes for video and photos on group profiles
+
+2009-06-24  kevin
+
+	* Added comments to the discussion widget and view and fixed a bug
+	  that displayed the wrong number (and order) of items in the
+	  widget/view.
+
+2009-06-19  pete
+
+	* removed the video embed size argument, so the video displays at
+	  the original authored size, rather than stretched to fill content
+	  area.
+	* file, photo and video mods updated (video widget views fixed,
+	  elgg wait gif added to video upload, wait gifs removed, video
+	  single file view embeded video moved into correct location within
+	  markup)
+
+2009-06-17  marcus
+
+	* Adapted blog to use new entity view/annotations display
+	  architecture.
+	* Blog adapted to use elgg_view_entity() instead of calling view
+	  directly. Still needs to be adapted to use entity:annotate plugin
+	  hook.
+
+2009-06-15  dave
+
+	* small position tweak
+
+2009-06-12  kevin
+
+	* Vanilla forum integration plugin - initial commit
+	* First commit for video plugin
+
+2009-06-11  kevin
+
+	* Login with Facebook - initial commit.
+	* Fixed a variable typo.
+	* Login using Twitter
+
+2009-06-11  marcus
+
+	* Moved FTS plugin to public repo
+
+2009-06-11  kevin
+
+	* Added missing photorepo_widget_layout definition to CSS
+
+2009-06-10  kevin
+
+	* Avoids getting roles if no page owner is defined.
+	* Handles case where no page owner is defined.
+
+2009-06-08  kevin
+
+	* First commit for the roles plugin
+
+2009-06-04  marcus
+
+	* Fixes 196: Added translation hook for 'reply on'
+
+2009-05-29  kevin
+
+	* Folders are now turned off by default and the tools setting to
+	  turn them on is commented out for now.
+	* Folders are now turned off by default and the tools setting to
+	  turn them on is commented out for now.
+
+2009-05-29  dave
+
+	* display bug fixed
+
+2009-05-28  pete
+
+	* File and Photo mods tweaked to use default elgg wait/progress
+	  graphic, and added css rule to each so it can be overriden by a
+	  theme to use a diff. graphic
+
+2009-05-28  kevin
+
+	* Added a check so that the add link is not displayed to logged-out
+	  users.
+
+2009-05-08  marcus
+
+	* Appropriate title set for blog post
+
+2009-05-05  marcus
+
+	* Closes #878: Fixed typo as described, nice spot thanks!
+	* Fixed some missing translations
+	* Closes #962: Title now correctly internationalised
+	* Closes #1005: Members tab messages no longer hard coded.
+
+2009-05-01  kevin
+
+	* Added the progress bar graphics
+	* Removed gallery view and sidebar file cloud
+	* Removed the gallery link for individual photos
+	* Removed bogus $vars parameters to elgg_view_exists
+
+2009-04-29  dave
+
+	* a test upload
+
+2009-04-23  pete
+
+	* tidy-up/improve default openID login box and admin area
+
+2009-04-21  marcus
+
+	* Fixed unsafe usage of page_owner()
+
+2009-04-20  dave
+
+	* New files and photo plugin - these are not ready to use yet as
+	  more testing is required. Needs the latest from SVN to run.
+	* renamed the 'old' file plugin. You can still use this one, just
+	  change the name back to file.
+
+2009-04-17  marcus
+
+	* * Email domains now support blacklist.
+	  * If allowed list is blank then all domains are permitted (fits
+	  with explaination given in text)
+
+2009-04-16  marcus
+
+	* Reverted changes made last night
+
+2009-04-15  marcus
+
+	* Centralised mimetype function
+
+2009-04-09  pete
+
+	* media embed modal moved above all content
+
+2009-04-09  ben
+
+	* The embed/addcontentjs view always gets added last.
+
+2009-04-08  marcus
+
+	* Refs Elgg:#963: Autop changed to longtext on standard views
+
+2009-04-07  ben
+
+	* jQuery Form is no longer necessary in the embed plugin.
+
+2009-03-30  marcus
+
+	* Removed access control check for twitter service and improved
+	  push message.
+
+2009-03-28  dave
+
+	* openid icon added plus jquery to collapse the form
+
+2009-03-20  dave
+
+	* friendfeed layout tweaked
+
+2009-03-18  marcus
+
+	* Introducing first version CSV import.
+
+2009-03-17  marcus
+
+	* Added action gatekeeper
+
+2009-03-17  ben
+
+	* Correcting views/HTML differential
+	* Better description.
+	* Descriptive submenu item
+
+2009-03-17  marcus
+
+	* Added emaildomains plugin which lets administrators limit new
+	  users to a specific set of email domains
+
+2009-03-11  ben
+
+	* Corrected 'delete' link.
+	* Corrected syntax error in notify_user call.
+
+2009-03-10  pete
+
+	* background color change in blogs sidebar for consistency with
+	  other pages
+
+2009-03-09  ben
+
+	* Offset now properly persists in message actions.
+	* Delete link fix.
+	* Delete button works again
+
+2009-03-09  pete
+
+	* new buttons css added
+
+2009-03-09  ben
+
+	* Offset now also persists.
+
+2009-03-09  pete
+
+	* widget more link css added
+
+2009-03-09  ben
+
+	* Page redirect improvement.
+	* Minor fix.
+	* Messages now has delete/mark all read option
+
+2009-03-09  pete
+
+	* css file added and river icon rules moved to it (from elgg
+	  default css)
+
+2009-03-09  ben
+
+	* Pages 'more' link, files capitalisation correction
+
+2009-03-09  kevinjardine
+
+	* File now supports the new add_group_tool_option function.
+	* Pages now supports the new add_group_tool_option function.
+
+2009-03-09  ben
+
+	* Internationalising media embedding
+
+2009-03-09  marcus
+
+	* Bumped version numbers on bundled plugins
+
+2009-03-09  pete
+
+	* manifest file updated
+
+2009-03-09  ben
+
+	* Notification fix for messages.
+
+2009-03-08  pete
+
+	* interface bug preventing user avatar menu displaying fully in
+	  messages > read view fixed
+
+2009-03-06  ben
+
+	* Reinstated notifications.
+	* Fix for messages double-notify
+	* Media embed should now be UTF-8
+
+2009-03-06  dave
+
+	* missing lang string sorted
+
+2009-03-05  ben
+
+	* Custom index now displays real name
+
+2009-03-05  dave
+
+	* frontpage now checks for plugins first
+	* frontpage css tweaks
+
+2009-03-05  ben
+
+	* Howdy APIadmin, howdy GUIDtool.
+	* Corrected malformed manifest
+
+2009-03-05  kevinjardine
+
+	* Made sure that comments are displayed if comments are not
+	  explicitly turned off.
+
+2009-03-05  marcus
+
+	* Better translations
+
+2009-03-05  ben
+
+	* Fixed file icons
+	* Container issue
+
+2009-03-05  pete
+
+	* removal of more legacy styles
+	* legacy style removed
+
+2009-03-05  ben
+
+	* Fixed default icon issue with new elgg_view_exists parameter
+
+2009-03-05  dave
+
+	* bak file removed from default widgets
+
+2009-03-05  ben
+
+	* Zaudio now attempts to load last
+
+2009-03-05  pete
+
+	* spacing around zaudio player added
+	* position of login box when running walled garden and custom_index
+	  moved
+
+2009-03-04  pete
+
+	* A few small changes to make the layout consistent across all
+	  widgets. File widget 'more' link wrapped for consistency.
+
+2009-03-04  ben
+
+	* I'd like to reintroduce you all to blog post preview.
+	* TinyMCE needs to run towards the end.
+	* Correcting a double-notification issue
+	* File tag div error corrected
+
+2009-03-04  pete
+
+	* tweak to pagination div
+
+2009-03-04  ben
+
+	* Categories works again by default
+	* The category box doesn't display (once again) if there's nothing
+	  to show
+	* Fixed unclosed div issue
+	* Generic blog error
+	* Standard pagination classes
+	* Reinstated subclass
+
+2009-03-04  dave
+
+	* small lang tweak
+
+2009-03-04  ben
+
+	* Improved categories for blogs, and in general
+	* Categories now works if there's only one category
+	* Form elements and div don't appear if there are no categories
+
+2009-03-04  marcus
+
+	* Categories box no longer displayed if no categories have been
+	  defined.
+
+2009-03-04  ben
+
+	* The sent page now properly paginates
+	* Pagination and correct counter for messages
+	* Message counter no longer limits to 10
+	* Tag divs now show selectively
+	* Small fiv dix
+	* Removing hardcoded divs
+
+2009-03-04  dave
+
+	* Default widgets added
+
+2009-03-03  ben
+
+	* File downloads now come in chunks.
+	* Elgg_echo call for coppa:fail.
+	  
+	  We ought to rename all our action success language strings to
+	  action:win.
+
+2009-03-02  pete
+
+	* tiny addition - added a pipe to the external pages footer links
+
+2009-03-02  kevinjardine
+
+	* Changed group pages to default to enabled.
+	* Changed group files to default to enabled.
+	* Comments are now still allowed on blogs after updating to 1.5.
+
+2009-03-02  pete
+
+	* missing licence added
+
+2009-03-01  pete
+
+	* members:online removed from top of active members list
+	* members list pagination - reduced offset
+
+2009-03-01  dave
+
+	* gallery view for files link tweaked
+	* no files message moved to main area
+
+2009-03-01  pete
+
+	* bookmarks button style brought inline with other buttons
+
+2009-03-01  marcus
+
+	* Removed unnecessary language registration
+
+2009-03-01  pete
+
+	* input/longtext and remove editor link layout improved
+
+2009-02-28  pete
+
+	* old pages icon replaced with new default theme page icon
+	* clearfloat fixed on group profile, and custom index login box
+	  margin fixed
+	* welcome msg wrapped in p tag
+
+2009-02-28  dave
+
+	* messageboard manifest updated
+	* switched to name instead of username
+
+2009-02-28  pete
+
+	* incorrect file path to generic icon fixed
+
+2009-02-28  marcus
+
+	* Added elgg version to manifest pegged to current svn
+	* Adding manifest
+
+2009-02-28  pete
+
+	* messageboard layout fixed for IE7
+
+2009-02-27  ben
+
+	* Removed offending <?php in external pages
+	* Fixing weird include in custom_index
+
+2009-02-27  pete
+
+	* default theme changed
+
+2009-02-27  ben
+
+	* Tags and categories paragraphs now only display when there are
+	  actually tags or categories.
+	* Front page item string definition
+
+2009-02-27  pete
+
+	* default icon modified to use size variable
+
+2009-02-27  ben
+
+	* Default file icon is now replaceable.
+	* Fixed bookmarks menu issue.
+	* Notification improvements for messages.
+
+2009-02-27  pete
+
+	* bookmark sharing friends-picker, current friends highlight
+	  argument added
+
+2009-02-26  ben
+
+	* Category update for categories & category plugin. Still requires
+	  a better style.
+	* Object notifications no longer leave an item in the 'sent' box.
+
+2009-02-26  marcus
+
+	* Removed incorrect shouts:user page title.
+
+2009-02-25  pete
+
+	* external pages edit form formatted and notifications icon
+	  improved
+
+2009-02-25  ben
+
+	* Messages sentbox returns the correct view.
+	* Improved file icon
+
+2009-02-25  dave
+
+	* custom index tweak
+
+2009-02-25  ben
+
+	* Using output/longtext to display message bodies.
+
+2009-02-25  dave
+
+	* new frontpage right content tweaked
+
+2009-02-25  ben
+
+	* Let's use the output text view, shall we?
+	* Correct timestamp for blog draft saving.
+	* Further page handler fixes.
+	* Title fix.
+	* Page handler now returns true.
+	* Fixing default access bug.
+
+2009-02-25  pete
+
+	* login box markup tweaked for login-box consistency
+
+2009-02-25  dave
+
+	* tweak to the pages menu
+
+2009-02-25  ben
+
+	* Further message notifications fixes.
+	* Messages notifications fix
+
+2009-02-24  ben
+
+	* Fixes for messages notifications, inbox count.
+	* Fix for prev
+	* Messages now count properly.
+
+2009-02-24  pete
+
+	* icon and css updated for site notifications
+
+2009-02-24  ben
+
+	* Further notification control enhancements
+	* Changed notification type to 'web'
+	* Notification modification for messages
+
+2009-02-24  dave
+
+	* mistake corrected
+	* missing lang file
+
+2009-02-24  ben
+
+	* Notification method for site messages.
+	* The messages plugin now saves two copies of each message: one for
+	  the sender and one for the recipient. Both messages are private,
+	  ensuring that nobody else can see or export them.
+
+2009-02-24  dave
+
+	* member search wired up
+
+2009-02-24  ben
+
+	* Correcting typo.
+
+2009-02-24  pete
+
+	* messageboard:none text string formatted
+	* invite friends form formatted
+
+2009-02-24  ben
+
+	* Group gatekeeper on group pages.
+	* Group gatekeeper on group pages.
+	* Containers are now set as well as owners.
+
+2009-02-24  dave
+
+	* blog sidebar tweaked
+
+2009-02-24  kevinjardine
+
+	* Used new elgg_view_disable_simplecache function, if available.
+	* Turns off simplecache if it is enabled.
+
+2009-02-23  dave
+
+	* a small tweak to stop wsod
+
+2009-02-23  ben
+
+	* Moved the forward to pagesetup on the walled garden plugin.
+
+2009-02-23  pete
+
+	* interface updates
+
+2009-02-23  ben
+
+	* Minor update to walledgarden
+	* More robust walled garden.
+	* Updates to default access permissions so as not to harm people
+	  not running the very latest SVN Elgg.
+	* Plugins now take advantage of default access levels.
+
+2009-02-22  dave
+
+	* email hooked up for messageboard comments
+
+2009-02-21  dave
+
+	* main messageboard only available if logged in
+
+2009-02-20  pete
+
+	* wrapper class added
+	* toggle editor link styled
+	* styled categories on edit file, upload a file, edit blog, blog
+	  sidebar
+	* more files link wrapped
+
+2009-02-20  ben
+
+	* The group files submenu now behaves itself
+	* You can once again add pages to groups.
+	* The walled garden now allows certain pages to seep through the
+	  cracks. (Programmatically.)
+
+2009-02-20  dave
+
+	* file position moved for groups
+	* group messageboard removed
+	* readme added to walled garden
+
+2009-02-20  pete
+
+	* individual blog post view spacing issue sorted
+	* group areas cleanup
+
+2009-02-20  dave
+
+	* small tweak to custom index
+	* better instructions added to frontpage edit
+
+2009-02-20  marcus
+
+	* Added gatekeeper() call to the start of upload.php
+
+2009-02-19  ben
+
+	* Slight cache improvement on file start.php submenus
+
+2009-02-19  dave
+
+	* list members by most popular - based on the number of people who
+	  make them a friend
+	* the wire has been moved to core
+	* old activity and river moved here from core
+
+2009-02-19  pete
+
+	* css added
+
+2009-02-19  ben
+
+	* Repointed actions/ to action/ for the API test form.
+
+2009-02-19  pete
+
+	* settings panel wrapped in class
+
+2009-02-19  dave
+
+	* user confirm required before deleting a page
+
+2009-02-19  ben
+
+	* Added an archive title
+	* Further archive improvements to blog.
+
+2009-02-19  dave
+
+	* messages now display name rather than username in the dropdown
+	* tools link altered
+	* submenu added to edit welcome page
+	* blog layout tweaked
+
+2009-02-19  ben
+
+	* Introducing blog archives
+
+2009-02-19  dave
+
+	* pages lang file updated
+	* twitter widget default details improved
+
+2009-02-18  ben
+
+	* Readme file for categories
+	* Categories for files
+	* Category hooks added to pages
+
+2009-02-18  dave
+
+	* tweak to external pages
+
+2009-02-18  ben
+
+	* Introducing the categories plugin.
+	* Added categories to blog
+	* Categories hook in blog plugin
+
+2009-02-18  pete
+
+	* pages and members styled
+
+2009-02-18  dave
+
+	* walledgarden now checks to see if the custom index plugin has
+	  been activated
+	* tweaks made to the custom index plugin
+
+2009-02-17  ben
+
+	* Updated blog plugin with autosave and preview.
+
+2009-02-17  pete
+
+	* style applied
+
+2009-02-17  ben
+
+	* Sync improvement for TinyMCE.
+
+2009-02-17  dave
+
+	* tweaks to external pages
+	* simple members plugin
+	* status view tweaked
+
+2009-02-17  pete
+
+	* interface updated, markup tweaked etc
+
+2009-02-17  dave
+
+	* the wire status bug fixed
+
+2009-02-16  dave
+
+	* one more footer link tweak
+	* new class added to expages
+
+2009-02-16  pete
+
+	* interfacing
+
+2009-02-16  dave
+
+	* the wire now acts as status and can populate the profile
+
+2009-02-16  ben
+
+	* Added new file upload string
+
+2009-02-16  dave
+
+	* removed contact
+	* one option removed
+	* basic frontpage editing available now
+	* extra view removed
+	* a small tweak to external pages
+	* the beginnings of a simple external page creation tool
+
+2009-02-15  dave
+
+	* the walled garden now removes all content from the frontpage.
+	* message added to groups if no group pages exist
+	* if comments are not required, don't display the link
+	* lang tweaks for groups
+
+2009-02-14  pete
+
+	* tweak to custom index markup
+	* delete message button moved, class added, view markup tweaked
+
+2009-02-13  dave
+
+	* custom index tutorial added
+	* more wire tweaks to work with the new riverdash
+	* the wire activity committed
+	* new pages activity work
+	* messageboard new activity work
+	* new file activity work
+	* new activity work for bookmarks
+	* new blog river work
+
+2009-02-13  pete
+
+	* various loose-on-the-page text strings given classes
+
+2009-02-10  dave
+
+	* testing out remove editor option
+	* beginnings of a new blog layout - this is not ready for use yet!
+	* the wire and twitter plugins added
+
+2009-02-07  dave
+
+	* changed removing avatar drop down decision, it is back on
+	* dropdown menu removed from the friends widget. You can change
+	  this back by removing 'override' => 'true'
+	* new river views added to blogs
+	* new river view added to bookmarks
+	* river view tweaked for the status plugin
+	* river views added for pages
+
+2009-02-05  dave
+
+	* link hook added
+	* link hook added
+	* extra link hook added
+	* extra link hook added
+	* notification methods added
+	* notification methods added
+	* notification methods added
+	* notification methods added
+	* notification methods added
+
+2009-02-05  ben
+
+	* Added back 'add new page' links
+
+2009-02-04  ben
+
+	* Fixed captionless buttons issue. Kudos to SGr33n.
+	* Fixed hardcoded translation. Kudos to SGr33n.
+	* Improved title for pages. Fixes #173, kudos to jonkemp.
+	* Blog post page titles now contain the titles of the blog post.
+	  Fixes #172; kudos to jonkemp.
+	* Moved plugins over to using the ACCESS_* constants defined in
+	  core engine/lib/access.php.
+	* Introducing the embed media plugin.
+
+2009-02-02  ben
+
+	* Minor addition for embedding of content
+
+2009-01-28  pete
+
+	* file header updated
+
+2009-01-23  marcus
+
+	* Refs #706
+	* Removed unnecessary register translation calls
+	* Removed duplicate copy of thewire
+	* Fixes missing translations
+	* Fixes missing translations
+
+2009-01-15  marcus
+
+	* Added manifest to friends.
+	* Closes #657: Gatekeeper added to bookmarklet page
+
+2009-01-14  marcus
+
+	* Fixed hard coded translation
+	* Bookmark inbox link now pointing to page_owner
+	* Fixes missing translation in messageboard js
+	* New status messages limited to a text message friendly 140 chars
+
+2009-01-13  ben
+
+	* The file edit screen now sets page owner appropriately. Fixes
+	  #679
+
+2009-01-13  marcus
+
+	* Added direct link
+
+2009-01-11  dave
+
+	* removed a dodgy river view
+
+2009-01-01  dave
+
+	* group enable options added to files and pages
+
+2008-12-05  marcus
+
+	* Closes #596
+
+2008-11-24  marcus
+
+	* Fixed select statement
+
+2008-11-20  marcus
+
+	* Walledgarded forces view to 'default' therefore turning off RSS
+	  et al.
+	* Walledgarded forces view to 'default' therefore turning off RSS
+	  et al.
+
+2008-11-08  ben
+
+	* Fix for previous.
+	* User check for messages.
+
+2008-11-08  marcus
+
+	* 
+
+2008-11-03  dave
+
+	* tweaked the wire
+
+2008-10-31  dave
+
+	* the wire added
+
+2008-10-31  marcus
+
+	* Missing translations
+
+2008-10-29  ben
+
+	* Fix to previous TinyMCE fix.
+	* Removed embed media from the file plugin
+
+2008-10-29  pete
+
+	* images in blog posts given a default margin
+
+2008-10-29  ben
+
+	* TinyMCE JS should now just be loaded once per instance.
+
+2008-10-28  marcus
+
+	* Missing translations
+
+2008-10-27  marcus
+
+	* REMOVED LANGUAGE FILES FROM CORE.
+	  This is due to a stupid and frustrating legal reason.
+
+2008-10-24  ben
+
+	* Slight language tweak for invitefriends.
+	* Invite friends plugin. Requires latest Elgg code.
+
+2008-10-24  marcus
+
+	* Closes #466: Cheers for the translation :)
+
+2008-10-24  pete
+
+	* clearing div added after blog post to clear any floated images
+	  within post
+
+2008-10-24  dave
+
+	* small tweaks to the manifest files
+
+2008-10-23  pete
+
+	* media embed style / layout tweaks
+
+2008-10-22  ben
+
+	* Embed media updates.
+	* Better file embed code.
+
+2008-10-22  dave
+
+	* internal url issue sorted
+	* add media to textarea hooks
+
+2008-10-20  marcus
+
+	* Simple gravatar plugin
+
+2008-10-16  ben
+
+	* Fixed a canvas issue on edit files.
+
+2008-10-16  dave
+
+	* urls parsed in the messageboard now
+
+2008-10-16  marcus
+
+	* Defensively renamed variable to avoid possible namespace issues
+	* Russian language pack for the status plugin
+	* Russian language pack for the siteinfo plugin
+	* Russian language pack for the pingback plugin
+	* Russian language pack for the pages plugin
+	* Russian language pack for opensocial
+	* OpenID server russian language pack
+	* Russian language pack for the openid_client plugin
+	* Russian language pack for the opendd plugin
+	* Russian language pack for the messages plugin
+	* Russian language pack for the messageboard plugin
+	* Russian language pack for the Ldap_auth plugin
+	* Russian language pack for the Languages plugin
+	* Friends russian language pack
+	* Friendfeed language pack
+	* Russian language packs for Flickr
+	* Russian language pack for file
+	* Russian language pack for feeds
+	* Russian language pack for Coppa
+	* Russian language pack for bookmarks
+	* Russian language pack for blog
+
+2008-10-15  pete
+
+	* spelling mistake corrected
+
+2008-10-15  ben
+
+	* Adjusted COPPA text
+
+2008-10-14  pete
+
+	* Hard-coded ajax loader removed from messageboard, and modified to
+	  use ajax/loader view with css-based graphic.
+
+2008-10-13  marcus
+
+	* Chinese translations
+
+2008-10-13  pete
+
+	* Pages plugin updated to use new icon method
+	* removed redundant <p> tag
+
+2008-10-13  ben
+
+	* Additional fix for previous.
+	* The pages plugin now uses getIcon correctly
+
+2008-10-13  pete
+
+	* more changes to default messages to make theming possible
+
+2008-10-09  pete
+
+	* messageboard overflow fixed
+
+2008-10-08  marcus
+
+	* Thai language pack
+
+2008-10-08  ben
+
+	* OpenID emails now come from the standard site email address.
+	* Closed a serious security hole in the OpenID client.
+
+2008-10-08  pete
+
+	* feed css adjusted for FF icon and media inclusion
+
+2008-10-08  dave
+
+	* service icons and media added to friendfeed widget
+
+2008-10-08  pete
+
+	* updated timestamp size
+
+2008-10-07  ben
+
+	* FriendFeed plugin!
+
+2008-10-07  marcus
+
+	* Force removal of BOM - fscking eclipse!
+
+2008-10-07  ben
+
+	* A fix for the 'missing information' form
+
+2008-10-07  marcus
+
+	* Force removal of BOM - fscking eclipse!
+	* Force removal of BOM - fscking eclipse!
+	* Thai language pack
+	* Thai language pack
+	* Thai language pack
+	* Thai language pack
+	* Thai language pack
+	* Thai language pack
+	* Thai language pack
+	* Thai language pack
+	* Thai language pack
+	* Thai language pack
+	* Thai language pack
+	* Thai language pack
+	* Thai language pack
+	* Thai language pack
+	* Thai language pack
+	* Thai language pack
+	* Thai
+
+2008-10-06  marcus
+
+	* Refs #402 and #407
+	* Refs #402 and #407
+	* Refs #402 and #407
+	* Refs #402 and #407
+	* Refs #402 and #407
+	* Refs #402 and #407
+	* Refs #402 and #407
+
+2008-10-06  ben
+
+	* No need to have a gallery view in bookmarks.
+
+2008-10-04  dave
+
+	* pages widget added
+
+2008-10-03  marcus
+
+	* Localisations
+	* Minor localisation change
+
+2008-10-02  ben
+
+	* Added a high limit to the sidebar list.
+	* Theoretically improving TinyMCE to work better with code
+
+2008-10-01  ben
+
+	* Removed GUIDs from page titles.
+	* Fixed the tree navigation.
+	* Removing the 'pages home' link, which didn't need to be there on
+	  the edit screen.
+	* Slimmed-down side links for pages.
+
+2008-09-30  marcus
+
+	* Added first draft COPPA plugin
+
+2008-09-29  marcus
+
+	* 
+	* 
+	* 
+	* 
+	* 
+	* 
+	* 
+	* Handle disabled api
+	* Handle disabled api
+	* Handle disabled api
+
+2008-09-25  marcus
+
+	* API Test more or less working
+	* Fixes multiline status message bug
+
+2008-09-24  marcus
+
+	* Updated apitest bringing it up to speed with the "Elgg Way" tm
+	* Fixed trailing </a>
+
+2008-09-15  marcus
+
+	* Fixed missing internationalisation.
+
+2008-09-10  marcus
+
+	* Italian language patch.
+	* Italian language patch.
+	* Italian language patch.
+	* Italian language patch.
+	* Italian language patch.
+	* Italian language patch.
+	* Italian language patch.
+	* Italian language patch.
+	* Italian language patch.
+	* Italian language patch.
+	* Minor tweaks to language tool
+
+2008-09-09  marcus
+
+	* Beta italian to statuses
+	* Minor tweak
+	* Adding first draft of the language browser tool.
+
+2008-09-08  marcus
+
+	* Made pre-emptive change to bookmarklet
+	* French translations.
+	* Closes #34: Blog now using CSRF content protection forms.
+	  Changed to also use gatekeeper functions rather than ifloggedin()
+	  forward().
+	* Missing internationalisation + french translation.
+	* Disabling registration on walled garden
+
+2008-09-06  dave
+
+	* A simple RSS reader based on the google feeds API
+
+2008-08-22  ben
+
+	* Changed TinyMCE allowed styles
+
+2008-08-21  misja
+
+	* Cosmetical, removing whitespace
+	* Skip validation altogether, since LDAP will be a trusted source.
+
+2008-08-20  misja
+
+	* LDAP plugin, skip email validation
+	* LDAP tweaks, inlude request_email_validation() since it has been
+	  removed from register_user()
+
+2008-08-19  misja
+
+	* Cleaned up LDAP authentication, additional messages
+
+2008-08-19  dave
+
+	* manifest file added to flickr widget
+
+2008-08-18  ben
+
+	* Fixed a security issue in the messages plugin
+
+2008-08-18  dave
+
+	* simple flickr widget
+
+2008-08-18  ben
+
+	* Plugged the 'delete' button into messages
+	* Fix for pages navigation in IE
+	* Fixed minor pages and bookmarks issues
+
+2008-08-18  kevin
+
+	* Better page format
+	* Add proper admin form
+
+2008-08-18  dave
+
+	* ldap added to the public plugins repo
+
+2008-08-18  kevin
+
+	* Removed confirmation form
+
+2008-08-18  ben
+
+	* Added gatekeeper to message pages
+
+2008-08-18  kevin
+
+	* Proper configuration of social data route
+	* Proper configuration of social data route
+	* Proper configuration of social data route
+
+2008-08-18  ben
+
+	* File searches are now properly limited.
+
+2008-08-17  ben
+
+	* Reinstated the pages icon on the page history page
+	* Slight update to IE bookmark instructions.
+
+2008-08-17  dave
+
+	* IE instructions added to bookmarks
+
+2008-08-17  ben
+
+	* Fixed the pages sidebar JS in Internet Explorer.
+	* Submenu fix for files.
+
+2008-08-17  pete
+
+	* IE fix amended
+	* gallery rollover icon fixed for IE
+	* avatar menu fixes for blog pages
+	* avatar menu fix for messageboard in IE
+
+2008-08-17  kevin
+
+	* For some reason my last SVN update did not seem to take, so
+	  trying again.
+	* Removed some debugging code and corrected some views.
+
+2008-08-16  pete
+
+	* messages delete button ie6 fix
+	* group files widget fixed for ie6
+
+2008-08-16  dave
+
+	* manifest tweaks
+
+2008-08-15  kevin
+
+	* Return null instead of false in permissions function
+	* Fixed a typo.
+	* Made text compatible with standard login text.
+	* Improved the layout to make it compatible with the standard login
+	  box.
+	* Fixed a function name collision and permissions problem.
+
+2008-08-15  dave
+
+	* bookmark widget tweak
+	* messageboard bugs in IE fixed
+
+2008-08-15  pete
+
+	* file repro gallery widget view fixes
+	* file widget list view fixed for ie
+
+2008-08-15  dave
+
+	* access added to blogs
+	* messageboard bugs sorted and all strings put through elgg_echo
+
+2008-08-15  ben
+
+	* Reinstated filetype links.
+
+2008-08-15  pete
+
+	* friends status message fixed for ie6
+
+2008-08-15  ben
+
+	* Fixed icon size issue in the file plugin
+
+2008-08-15  pete
+
+	* fixed for ie
+	* blog - float cleared for ie6
+
+2008-08-15  ben
+
+	* Sending a message now returns you back to your inbox. Fixes #246
+
+2008-08-15  dave
+
+	* bookmarks widget repaired
+
+2008-08-15  marcus
+
+	* Refs #249
+
+2008-08-15  ben
+
+	* Fixed 'send' action in messages
+
+2008-08-14  ben
+
+	* Extra mime types for dealing with Excel & Powerpoint
+
+2008-08-14  pete
+
+	* friends status fixes for IE7
+	* friends status fixed for IE6
+
+2008-08-14  ben
+
+	* The message plugin no longer sends HTML emails.
+	* Grouped submenu links in pages
+
+2008-08-14  dave
+
+	* messageboard bug fixed
+
+2008-08-13  pete
+
+	* cleanup and rendering fixes to messageboard
+	* status box input fixed for pc browsers
+	* gallery link rollover
+
+2008-08-12  pete
+
+	* pages icon added
+
+2008-08-12  ben
+
+	* Added direct pages icon reference.
+	* Added more format-specific icons for files
+	* Revamped icon size for pages
+	* Converted bookmarks to use the friends picker
+
+2008-08-12  dave
+
+	* message inbox number tweaked
+
+2008-08-12  pete
+
+	* private messages interface issues fixed
+
+2008-08-12  ben
+
+	* Pages plugin provides a better link for logged out users.
+
+2008-08-12  dave
+
+	* pages tweak
+	* messages reply form tweaked
+	* pages group widget replaced
+	* messages tweak
+	* blog layout tweaked
+	* upload a file bug tweak.
+
+2008-08-11  pete
+
+	* updates to message and messageboard
+
+2008-08-11  dave
+
+	* messageboard layout tweaked
+	* messages delete tweaked
+
+2008-08-11  ben
+
+	* Added the owner_timestamp class to the listings view.
+	* Added search submenu items
+
+2008-08-11  dave
+
+	* removed plugins that are not going in the first release
+
+2008-08-10  dave
+
+	* metaweblog removed
+	* status put into two column layout
+
+2008-08-09  pete
+
+	* tinymce img align right/left fixed for ie6&7 on pages and blogs
+	* updated blog header
+	* blog avatar overlap in ie fixed
+	* pages and blog tags sorted
+
+2008-08-09  dave
+
+	* tag location moved
+	* messageboard widget is now only available for a users profile.
+	* pingserver plugin removed
+
+2008-08-08  misja
+
+	* Test commit
+
+2008-08-08  marcus
+
+	* Walled garden support, closes #203
+
+2008-08-08  ben
+
+	* Sanitising author line for accuracy
+	* Fixed an issue that effectively turned Elgg into a walled garden
+
+2008-08-08  pete
+
+	* updated to file gallery and fixed header issue for long titles
+
+2008-08-08  ben
+
+	* Improved the display of files in widgets and group profiles
+	* Removing some WSOD issues
+
+2008-08-08  pete
+
+	* pages sidebar updated
+
+2008-08-08  ben
+
+	* Friends widget now defualts to 8 users
+
+2008-08-08  dave
+
+	* plugin removed
+	* blog bug fixed
+	* removed shouts plugin and tweaked some language files
+
+2008-08-07  pete
+
+	* messageboard on groups styled
+
+2008-08-07  dave
+
+	* remove messages widget as it now lives in the topbar
+
+2008-08-07  ben
+
+	* Pages now work in groups
+	* Typo correction.
+	* Fixed navigational issues with pages, removed Javascript where
+	  it's not required
+	* Pages now only adds its metatags to the mix when absolutely
+	  necessary
+	* All standard plugins now know how to describe their entity
+	  subtypes
+	* Trying to view a nonexisting page no longer results in a wsod
+
+2008-08-07  pete
+
+	* messageboard and messages cleanup plus delete buttons added
+
+2008-08-07  dave
+
+	* group profile file view sorted
+
+2008-08-07  marcus
+
+	* Closes #205
+
+2008-08-07  dave
+
+	* Forum plugin removed
+
+2008-08-06  marcus
+
+	* Blog adds type to outgoing pings, placeholder for incoming pings.
+	* Pingback types extendable
+
+2008-08-06  ben
+
+	* Navigation on pages reliably works
+	* Fixed some further security issues with pages
+	* Fixed write permissions for pages
+
+2008-08-06  dave
+
+	* pages for groups tweaked
+
+2008-08-06  ben
+
+	* Further permissions check
+	* Better permissions checking for Elgg pages
+
+2008-08-06  dave
+
+	* file for groups lang tweak
+	* pages for group profile added
+	* group profile files view
+	* users are now sent to their pages index when they have no pages.
+	* messageboard for groups fixed
+
+2008-08-06  pete
+
+	* updated friends view
+
+2008-08-06  dave
+
+	* files bug fixed - when viewing all files, your nav links were
+	  broken
+
+2008-08-05  pete
+
+	* toolbar fixed for messages
+	* status superflous <p>'s removed
+	* numerous fixes to messageboard and status
+
+2008-08-05  marcus
+
+	* Refs #177
+
+2008-08-05  dave
+
+	* messages moved to the new layout
+
+2008-08-05  ben
+
+	* Fixed incorrect call to can_write_to_container in the file
+	  plugin.
+
+2008-08-05  dave
+
+	* only group members can post to the group messageboard
+	* tweaking the pages title when in groups
+	* topbar messages tweaked
+	* pages lang file altered
+	* pages submenu added
+	* group edit pages fixed
+
+2008-08-05  ben
+
+	* Files side menu displays correctly
+	* Uploading a file to a group now uploads to the correct place
+
+2008-08-05  dave
+
+	* tweaked messageboard to work with the new layout
+
+2008-08-04  dave
+
+	* tweaks to make files work with groups
+	* file search view tweaked
+	* files index tweak
+	* renaming one file
+
+2008-08-04  marcus
+
+	* Pingback support added.
+
+2008-08-04  dave
+
+	* full breadcrumbs added to pages
+	* small bug fixed in the breadcrumbs
+	* tweak applied to the add bookmark page
+	* changed sharing to bookmarks
+
+2008-08-04  ben
+
+	* Page ownership is preserved through containers in pages.
+
+2008-08-04  dave
+
+	* more pages tweaks
+	* breadcrumbs added to sub-page creation
+	* menu link added to pages history
+	* more pages tweaks
+	* pages welcome finished
+	* welcome action page added
+	* more additions to the pages plugin
+
+2008-08-03  dave
+
+	* a placeholder pages welcome
+	* new additions to the pages plugin
+	* blog reworked to fit with the new layout
+	* dropdown link added for pages
+
+2008-08-02  ben
+
+	* Hid a menu option for groups in blogs.
+	* Cleaned up file search, removed a menu item for groups.
+
+2008-08-01  ben
+
+	* Fixed river items for various widgets.
+	* Fixed the messageboard widget river item.
+	* Additional navigation options for pages
+	* Blog plugin now has correct submenus etc
+	* Access fix for files menu
+	* The file plugin now has proper contextual submenus.
+
+2008-08-01  pete
+
+	* new file type icons (list and gallery view)
+
+2008-08-01  ben
+
+	* Layout and page ownership improvements for the file plugin
+	* Altered layout for the pages plugin
+	* The file gallery size is now 153px
+
+2008-07-31  marcus
+
+	* Pingserver using getIcon()
+	* Pages using getIcon()
+
+2008-07-31  ben
+
+	* Further slimming down of the friends plugin
+	* Removed lots of functionality from the friends plugin.
+
+2008-07-30  ben
+
+	* Improved pages navigation
+	* Removing unnecessary JS
+	* Fixed nav tree, added delete button to pages
+
+2008-07-30  marcus
+
+	* Moved OpenDD out of the central repo.
+
+2008-07-29  marcus
+
+	* Added gatekeeper functions for security.
+
+2008-07-29  ben
+
+	* Updated pages.
+	* Major update to pages
+
+2008-07-29  marcus
+
+	* Added canEdit()
+	* Added delete
+	* To strings
+	* Fixing icon
+	* Speculative fix
+	* Added url
+
+2008-07-28  marcus
+
+	* Add first version of the update server.
+
+2008-07-27  dave
+
+	* text editor added to messages
+
+2008-07-25  marcus
+
+	* Installs...
+	* late night typo correction
+	* Handles subtype in either case
+	* Argh
+	* And on metadata
+	* override permissions check on siteping (for now let everyone
+	  access, since this is run on our own server)
+	* Profile bugfixes
+	* Added url to exposed list
+
+2008-07-25  dave
+
+	* shares tweaked for new Layout
+
+2008-07-25  marcus
+
+	* Not actually useful
+
+2008-07-25  dave
+
+	* friends adapted to the new layout
+
+2008-07-25  marcus
+
+	* Clears out old
+	  Uses UUID view where available
+
+2008-07-25  dave
+
+	* files amended for the new layout
+	* changed blog plugin to work with new layout
+
+2008-07-25  marcus
+
+	* installs counter added
+	* Basic statistics
+	* Support for updates
+
+2008-07-25  dave
+
+	* added the username to each plugin menu for the new tools dropdown
+
+2008-07-25  marcus
+
+	* Ping profile better supported
+	* 
+	* Save at end
+	* Copes with arrays
+
+2008-07-24  marcus
+
+	* Returning different value
+	* Using correct import
+	* Listening ping server
+
+2008-07-24  ben
+
+	* Updated friends plugin to handle the picker
+	* Altered friends plugin
+
+2008-07-24  marcus
+
+	* Ping_server renamed to pingserver
+	* Added incomplete ping server so I can have access from my laptop
+
+2008-07-23  dave
+
+	* tweaks to the messageboard, addition of messageboard view for
+	  groups
+
+2008-07-23  pete
+
+	* updated to use an accordian style interface
+
+2008-07-23  marcus
+
+	* Full group support. Citizens rejoice.
+	* Fixes title
+	* Group support for pages
+	* Fixes
+	* Linking titles on history
+
+2008-07-22  marcus
+
+	* Fixing most of ben's issues
+	* First draft of Pages
+
+2008-07-22  ben
+
+	* Added file menu to groups.
+	* Modified the file plugin to work with groups
+
+2008-07-22  dave
+
+	* message title missing bug fixed
+
+2008-07-22  marcus
+
+	* Fixes #12
+
+2008-07-22  misja
+
+	* User settings change
+	* Installation details
+	* Initial version of clickpass plugin
+
+2008-07-21  kevin
+
+	* minor changes
+	* Fixed some out of sync files
+
+2008-07-19  misja
+
+	* Remove debuging code
+	* Initial file upload support. Needs more work.
+
+2008-07-19  dave
+
+	* fixes for the messageboard
+
+2008-07-18  ben
+
+	* Updated the file plugin to work with groups.
+
+2008-07-18  dave
+
+	* forum lang tweak
+	* friend status link fixed
+	* more css tweaks on the tinymce editor
+	* css added to tinymce editor
+	* readme and manifest added to tinymce
+	* A simple mp3 player
+	* tweak to the html editor
+	* tweaks to the tinymce plugin
+	* tinymce plugin added; you will still need to configure tinymce
+	  the way you would like.
+
+2008-07-18  ben
+
+	* Removing extra paragraph tags across the board
+	* Removed paragraph tags around blog content
+	* Replaced nl2br with autop
+	* Added submenu items to friends
+
+2008-07-18  dave
+
+	* form link added
+	* more tweaks to friend collections; still need to allow edit
+	* collections added to friends plugin
+
+2008-07-18  misja
+
+	* Adjusted login procedure
+
+2008-07-17  misja
+
+	* Fix incorrect variable name
+	* Handle configuration settings and optional user creation
+
+2008-07-17  dave
+
+	* updated the discussion view.
+
+2008-07-17  misja
+
+	* Admin configuration view
+
+2008-07-17  dave
+
+	* reworked forums topics. Posts are now all annotations, this made
+	  it easier to count/display by last post etc
+
+2008-07-17  ben
+
+	* New menu item for your bookmarked items
+	* Shares -> bookmarks
+
+2008-07-16  ben
+
+	* Only admins can create new forums.
+	* Updated river items across all plugins that use them.
+	* Updated blog river items
+
+2008-07-16  misja
+
+	* Metaweblog plugin. Needs some testing, doesn't work smoothly with
+	  all clients yet.
+
+2008-07-15  ben
+
+	* The shares tabs now work.
+	* The shares friend list is more palatable.
+
+2008-07-14  dave
+
+	* tweaks to the blog plugin
+
+2008-07-14  pete
+
+	* msg's widget updated
+
+2008-07-11  dave
+
+	* lang change on shares
+
+2008-07-10  dave
+
+	* bug in share view sorted
+
+2008-07-10  pete
+
+	* feeds styles
+
+2008-07-10  dave
+
+	* new feeds plugin
+	* removing the submenu on some shares pages
+
+2008-07-10  pete
+
+	* file repro changes
+	* individual shares resource page cleaned
+
+2008-07-10  dave
+
+	* shares lang tweaked
+
+2008-07-10  pete
+
+	* committed for Dave - reordered individual shares
+	* file repro removed elements styles deleted
+	* bookmarklet page additions
+
+2008-07-10  ben
+
+	* Corrected some messages links
+
+2008-07-10  pete
+
+	* small layout change on to: field
+
+2008-07-10  ben
+
+	* Typecloud appears as a tabbed menu
+	* Messages can now be marked as unread by ordinary users
+
+2008-07-10  pete
+
+	* shares gallery and list view updtes
+
+2008-07-10  dave
+
+	* classes added to share list view
+	* language change for shares
+	* shares and messages menu options altered
+
+2008-07-10  ben
+
+	* Updated plugins to use register_error instead of system_message
+	  where required
+
+2008-07-09  dave
+
+	* new messages submenu
+
+2008-07-09  pete
+
+	* files selected class added
+	* topbar fixed for messages
+
+2008-07-09  dave
+
+	* forum post bug fixed
+
+2008-07-09  marcus
+
+	* Refs #129
+
+2008-07-09  dave
+
+	* new messages topbar feature
+
+2008-07-08  dave
+
+	* gallery view added to blogs
+	* new forum gallery views
+	* new shares gallery view
+	* titles added to all blog pages
+	* more file header tweaks
+	* more file header tweaks
+	* changed the header on both the world and friends files view
+
+2008-07-08  kevin
+
+	* Make it easier to run openid_server and openid_client at once
+	* Made plugin compatible with latest Elgg 1 code
+
+2008-07-08  ben
+
+	* Added notifications to messages
+
+2008-07-08  dave
+
+	* small tweaks made
+
+2008-07-08  ben
+
+	* Added notifications to the message board.
+
+2008-07-08  dave
+
+	* manifest file added
+	* site information plugin started
+	* messageboard input bug squashed
+
+2008-07-08  ben
+
+	* Language fix
+	* Fixed language file
+	* Some fixes for files
+
+2008-07-07  ben
+
+	* Introducing the "all" button to files
+
+2008-07-07  dave
+
+	* further tweaks to the file gallery view
+
+2008-07-07  pete
+
+	* files updated
+
+2008-07-07  dave
+
+	* changed the number of files displaying in the gallery view
+	* addition gallery link on full photo view
+
+2008-07-07  pete
+
+	* files view updated
+
+2008-07-07  dave
+
+	* tweak to file tags
+	* changes to the file gallery and list view.
+
+2008-07-07  kevin
+
+	* Gadgets now re-configure when edited and removed a hardcoded URL
+
+2008-07-07  pete
+
+	* updated file repository gallery view
+
+2008-07-07  misja
+
+	* Manifest update
+
+2008-07-06  dave
+
+	* cleaned up the feeds plugin
+	* added the feeds readme
+	* an early version of the feed reader.
+	* a few more forum search tweaks
+	* all forum search list views added
+	* small tweak to forum list view
+	* some tweaks to the forum list view.
+	* list view added to forum topics
+
+2008-07-04  dave
+
+	* messageboard bug fixed
+
+2008-07-04  ben
+
+	* Updated status widget
+
+2008-07-04  pete
+
+	* new icon sizes of repro files
+
+2008-07-04  kevin
+
+	* Getting entity owner didn't work - so reverting to page owner
+	* OpenSocial owner is now determined by the widget owner, not the
+	  page owner.
+	* isloggedin was missing brackets -> isloggedin()
+	* Viewer and owner are no longer hard coded
+
+2008-07-04  dave
+
+	* small url bug fix in shares widget.
+	* small url bug fix in the file widget.
+
+2008-07-04  pete
+
+	* friends widget fixed/updated
+
+2008-07-04  kevin
+
+	* Checkin new set of code
+
+2008-07-04  pete
+
+	* filerepro widget update
+
+2008-07-04  kevin
+
+	* Removed file/folder
+	* Added a folder remotely
+	* Created new OpenSocial code folder
+	* Removed file/folder
+
+2008-07-04  pete
+
+	* updated files widget views
+
+2008-07-04  dave
+
+	* beginnings of a friends plugin, this is to display a friends
+	  widget on your profile.
+
+2008-07-04  pete
+
+	* sharing widget update
+
+2008-07-04  dave
+
+	* file widget now includes language
+	* user can now choose gallery or list view on their file widget.
+	* further tweak to shares widget
+	* new shares widget for the dashboard
+	* add language to the new file widget
+	* a further tweak to the file widget.
+	* moved all plugins not being included in the first release, from
+	  the public svn.
+	* new file widget view.
+
+2008-07-03  ben
+
+	* River items for files
+	* River items for the sharing plugin
+
+2008-07-02  pete
+
+	* file view updated
+	* status cleanup and fixing
+	* generic comments updated and cleaned
+	* blog redone
+
+2008-07-01  ben
+
+	* Topic URLs
+	* Forum URLs. Todo: topic URLs.
+	* Language changes for the file plugin
+	* Fixed the apostrophe problem in statuses
+	* Minor fix to the file search script
+	* File thumbnails now actually work .....
+	* Additions to file repo.
+	* Added file repo gallery views
+
+2008-07-01  pete
+
+	* login area tidied up
+
+2008-07-01  ben
+
+	* Search changes for files
+	* Layout changes for files
+
+2008-07-01  dave
+
+	* messageboard history added
+
+2008-06-30  ben
+
+	* New PDF icon.
+
+2008-06-29  pete
+
+	* another icon for file repro
+	* icons for file repository
+
+2008-06-29  dave
+
+	* further status improvements
+	* new status input box when no message is available.
+	* changed to start using get_input on load page
+	* file hover-over and profile link added
+	* small tweak to header
+	* a new messages plugin
+	* deleting the old messages plugin
+	* tweaked the status view for use with friends list
+
+2008-06-28  pete
+
+	* friends view listings cleaned up
+
+2008-06-28  dave
+
+	* share and file widgets
+
+2008-06-28  pete
+
+	* update to flickr widget layout
+
+2008-06-28  dave
+
+	* fixed an annoying bug
+	* status bug squashed
+	* fixed a bug when viewing someone else's status
+	* small tweak to the status plugin
+
+2008-06-28  pete
+
+	* avatar menu in file repository fixed and general cleanup
+
+2008-06-28  dave
+
+	* new status plugin
+	* renamed the old simple status widget
+
+2008-06-28  pete
+
+	* avatar menu fixed on messages
+
+2008-06-27  pete
+
+	* avatar menu position fixed on message board
+
+2008-06-27  ben
+
+	* Now displays a default icon if no thumbnail was saved
+	* Fixed some blog issues
+	* Fixes for file and sharing URLs
+	* Individual files now have proper URLs
+	* Blog now uses friendly_title for post URLs
+	* Better comment count on blog
+	* Improved comment count on files
+	* Improved listings and added comments to sharing
+	* Files now incorporate comments
+	* Moved the blog plugin over to generic comments
+
+2008-06-27  dave
+
+	* fixed some documentation in messageboard
+
+2008-06-27  ben
+
+	* Small file repo fixes
+	* The file repository now uses the search listings view to list
+	  items
+
+2008-06-27  dave
+
+	* big message board bug squashed
+
+2008-06-27  ben
+
+	* Search listings on sharing
+	* Changed files search listing
+	* Revamped blog views
+
+2008-06-27  dave
+
+	* some widget river views added
+
+2008-06-26  kevin
+
+	* First check-in of working code
+	* Created folder remotely
+
+2008-06-26  ben
+
+	* friends', not friend's
+	* Introducing the sharing plugin
+	* Further file fixes
+	* Further additions to the file repository.
+
+2008-06-25  ben
+
+	* Improved file plugin.
+
+2008-06-25  pete
+
+	* code cleanup and stray tags removed
+	* shouts updated
+
+2008-06-25  dave
+
+	* friends shouts widget added
+
+2008-06-25  pete
+
+	* minor revision
+
+2008-06-25  dave
+
+	* new shouts widget 'all site shouts'
+	* river view added to shouts
+	* blog river view tweak
+	* river views added to the blog
+	* river views added to the forum; still need to get url handling
+	  working.
+	* sorted out a forum display bug
+
+2008-06-25  pete
+
+	* updated edit status box
+	* tweaked messageboard css
+	* messageboard updated submit form
+	* new messageboard interface
+
+2008-06-24  ben
+
+	* Filestore fixes so far.
+	* Filestore fixes so far.
+
+2008-06-23  pete
+
+	* updated status interface
+
+2008-06-23  dave
+
+	* new flickr profile widget
+
+2008-06-23  ben
+
+	* Style change for the status widget
+
+2008-06-23  pete
+
+	* removed line break
+
+2008-06-22  dave
+
+	* small tweak to the messageboard
+	* new messageboard plugin
+	* updated added to status widget
+
+2008-06-21  dave
+
+	* manifest document added to status
+	* a new profile status widget
+	* friendly dates added to shouts
+	* friendly dates added to blog and generic comments
+	* friendly dates added to forums
+
+2008-06-20  misja
+
+	* Adding manifest files
+
+2008-06-20  kevin
+
+	* Fixed incorrect language file term
+
+2008-06-20  ben
+
+	* Fixed blog URL issue and untranslated error on save.
+
+2008-06-20  misja
+
+	* Remove rdf, accidental commit
+
+2008-06-19  ben
+
+	* Shouts now uses the list_entity functions, so that it can also
+	  make use of automatic RSS feeds!
+	* Correcting blog comment delete link
+	* Added a hoverover link for the blog
+
+2008-06-19  pete
+
+	* updated blog layout
+
+2008-06-19  misja
+
+	* Create a session if necessary
+
+2008-06-18  ben
+
+	* Added pagination and a friends' view to the blog
+
+2008-06-18  dave
+
+	* forum bug fixed.
+	* addition to the readme file
+
+2008-06-17  pete
+
+	* changed avatar
+	* updated forum topics layout
+
+2008-06-17  dave
+
+	* bug fixed in goals
+	* widget bug fixed
+	* Icons now display on shouts
+	* new goals plugin - this is rough around the edges and will
+	  require more work before being usable.
+	* deleting the old goals plugin
+	* fixes to generic comments; still a little more to do on this.
+
+2008-06-17  pete
+
+	* new forum stuff
+
+2008-06-17  dave
+
+	* tweaks to generic comment - this is still a little rough.
+	* digg style thumbs up for any object
+	* bug fix in messages
+	* moved guid exporter, api test and exporttest to the plugins
+	  directory
+
+2008-06-16  pete
+
+	* forum interface cleanup
+
+2008-06-16  dave
+
+	* new shouts plugin - still some work needed but should work.
+	* small blog css tweak
+	* new blog layout plus a couple of small fixes
+
+2008-06-16  pete
+
+	* blog interface updated
+	* updated msg plugin views and css
+
+2008-06-16  dave
+
+	* parse urls added to forum posts
+	* shorturl tool deleted
+	* tweaked the post a reply on topics
+	* new sidebar of information added to topics
+
+2008-06-16  misja
+
+	* Updated to reflect latest PAM changes
+	* Initial LDAP plugin, todo is an admin interface.
+
+2008-06-16  dave
+
+	* put the blog plugin through the canvas area
+	* finally tweaks to the forum so that public forum can be read when
+	  not logged in.
+	* latest forum plugin
+	* deleted the forum plugin
+	* moved goals into plugins
+	* the new forum, still some small issues to work out.
+	* old forum deleted
+	* changed messages to go through the canvas area
+
+2008-06-13  dave
+
+	* new look forum. There is still a lot of work to do on this plugin
+	  so it is not yet ready for testing.
+	* deleting the old forum plugin
+	* sample profile widget for shouts
+
+2008-06-13  misja
+
+	* Test commit
+
+2008-06-12  dave
+
+	* new shouts plugin
+	* removing another old plugin
+	* deleting an old tasklist plugin
+	* removing an old meetup plugin
+
+2008-06-12  misja
+
+	* Adding missing files
+
+2008-05-14  kevin
+
+	* Feature complete version - major testing still required.
+
+2008-05-08  kevin
+
+	* add latest JanRain library plus fix to login code
+	* Commit a correction to random number source plus missing file
+	* First alpha (working) version. Many more bells and whistles to
+	  add!
+
+2008-05-02  dave
+
+	* counter added to main forum view
+	* small bug on owner and date created fixed
+	* first draft of the forum plugin uploaded; still very basic, but
+	  should work for y'all.
+
+2008-04-29  dave
+
+	* New Elgg ratings plugin committed as well as tweaks to generic
+	  comments
+	* Update to the meetup view
+	* changed the meetup plugin to work with the new calendar input
+	* New generic comments plugin with delete working correctly
+	* deleted the old generic comments plugin
+
+2008-04-28  dave
+
+	* Changed the meetup plugin to use generic comments.
+	* Generic Comments are now working - delete is still funky in its
+	  redirect but will sort that shortly.
+	* bug fix in the meet up plugin
+	* A new meet up plugin - still early days on this one but it is a
+	  start.
+
+2008-04-26  kevin
+
+	* Moved remotely
+	* Moved remotely
+	* Moved remotely
+	* Moved remotely
+	* Moved remotely
+	* Moved remotely
+	* Moved remotely
+	* Created folder remotely
+	* Current code - does not work yet!
+
+2008-04-26  dave
+
+	* New ShortUrl tool; this can be used anywhere thoughout the
+	  system.
+	* New shouts plugin complete with auto url creation and convert
+	  shout to tags.
+	* removed the old shouts plugin
+
+2008-04-21  dave
+
+	* A simple shouts plugin.
+
+2008-02-11  ben
+
+	* Initial directories
+

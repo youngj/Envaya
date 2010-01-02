@@ -1,0 +1,36 @@
+
+CONTRIBUTORS
+
+The core Elgg team:
+
+David Tosh <dave@elgg.com>
+http://twitter.com/davetosh
+
+Marcus Povey <marcus@elgg.com>
+http://marcuspovey.co.uk/
+http://twitter.com/mapkyca
+
+Brett Profitt <brett@elgg.com>
+http://twitter.com/brettprofitt
+
+Pete Harris <pete@elgg.com>
+
+
+CONTRIBUTING/ALUMNI DEVELOPERS
+
+Kevin Jardine <kevin@radagast.biz>
+http://radagast.biz/
+
+Milan Magudia <milan.magudia@thematiccapital.com>
+
+Ben Werdmuller <ben@elgg.com>
+http://benwerd.com/
+http://twitter.com/benwerd
+
+
+Thanks to the following developers for contributing patches and/or suggestions
+
+Diego Andrés Ramírez Aragón <diego@somosmas.org>
+Corporación Somos Más
+
+Cash Costello <cash.costello@gmail.com>
