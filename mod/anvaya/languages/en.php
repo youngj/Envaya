@@ -22,6 +22,22 @@
 			'org:location' => 'Location',
 
 			'item:group:organization' => "Organizations",
+
+			'org:new' => "Create Organization",
+			'org:edit' => "Edit Organization",
+			'org:delete' => 'Delete Organization',
+			'org:noaccess' => 'You cannot access this organization',
+			'org:icon' => 'Organization logo (leave blank to leave unchanged)',
+			
+			'org:access:private' => 'Closed - Users must be invited',
+			'org:access:public' => 'Open - Any user may join',
+			'org:cantedit' => 'You can not edit this organization',
+			'org:notitle' => 'Organizations must have a title',
+			'org:saved' => 'Organization saved',
+			
+			'org:deletewarning' => "Are you sure you want to delete this organization? There is no undo!",
+			'org:deleted' => 'Organization deleted',
+			'org:notdeleted' => 'Organization could not be deleted',
 	);
 
 	add_translation("en",$english);

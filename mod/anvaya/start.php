@@ -15,17 +15,25 @@ class Organization extends ElggGroup {
   // more customizations here
 }
 
-function pluginname_init() {
+function envaya_init() {
+    
+    global $CONFIG;
+
+    add_menu(elgg_echo('Organizations'), $CONFIG->wwwroot . "pg/org/browse/");
+    
 
 	org_fields_setup();
 
 	// Register a page handler, so we can have nice URLs
 	register_page_handler('org','org_page_handler');
-
+    
 	register_entity_type('group', 'organization');
    	// This operation only affects the db on the first call for this subtype
    	// If you change the class name, you'll have to hand-edit the db
    	add_subtype('group', 'organization', 'Organization');
+
+    // Register a URL handler
+    register_entity_url_handler('org_url','group','organization');
 
     // Extend system CSS with our own styles
     //extend_view('css','pluginname/css');
@@ -45,9 +53,38 @@ function org_page_handler($page)
 
 	if (isset($page[0]))
 	{
-		set_input('org_guid', $page[0]);
-		include(dirname(__FILE__) . "/orgprofile.php");
+	    switch($page[0])
+		{
+		    case "new":
+		        include($CONFIG->pluginspath . "anvaya/neworg.php");
+		    break;
+    		case "browse":
+    		    set_context('org');
+    			set_page_owner(0);
+    			include($CONFIG->pluginspath . "anvaya/browseorgs.php");
+    			//include($CONFIG->pluginspath . "anvaya/index.php");
+    		break;
+    		default:
+    		    set_input('org_guid', $page[0]);
+    		    include(dirname(__FILE__) . "/orgprofile.php");
+    		break;
+	    }
 	}
+}
+
+/**
+ * Populates the ->getUrl() method for org objects
+ *
+ * @param ElggEntity $entity File entity
+ * @return string File URL
+ */
+function org_url($entity) {
+	
+	global $CONFIG;
+	$title = friendly_title($entity->name);
+	
+	return $CONFIG->url . "pg/org/{$entity->guid}/$title/";
+	
 }
 
 function org_fields_setup()
@@ -75,7 +112,10 @@ function new_index() {
 }
 
 // register for the init, system event when our plugin start.php is loaded
-register_elgg_event_handler('init','system','pluginname_init');
+register_elgg_event_handler('init','system','envaya_init');
 
+global $CONFIG;
+register_action("editOrg",false,$CONFIG->pluginspath . "anvaya/actions/editOrg.php");
+register_action("deleteOrg",false,$CONFIG->pluginspath . "anvaya/actions/deleteOrg.php");
 
 ?>

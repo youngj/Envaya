@@ -1,0 +1,22 @@
+<?php
+	/**
+	 * Elgg envaya plugin
+	 * 
+	 * @package ElggGroups
+	 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
+	 * @author Curverider Ltd
+	 * @copyright Curverider Ltd 2008-2009
+	 * @link http://elgg.com/
+	 */
+
+	gatekeeper();
+
+	// Render the file upload page
+	$title = elgg_echo("org:new");
+	$area2 = elgg_view_title($title);
+	$area2 .= elgg_view("org/editOrg");
+	
+	$body = elgg_view_layout('two_column_left_sidebar', $area1, $area2);
+	
+	page_draw($title, $body);
+?>

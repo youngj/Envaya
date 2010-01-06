@@ -70,7 +70,7 @@
 
 ?>
 
-		<a href="<?php echo $vars['url']; ?>mod/groups/edit.php?group_guid=<?php echo $vars['entity']->getGUID(); ?>"><?php echo elgg_echo("edit"); ?></a>
+		<a href="<?php echo $vars['url']; ?>mod/anvaya/editOrg.php?group_guid=<?php echo $vars['entity']->getGUID(); ?>"><?php echo elgg_echo("edit"); ?></a>
 
 
 <?php
