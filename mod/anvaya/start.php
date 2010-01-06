@@ -26,7 +26,8 @@ function envaya_init() {
 
 	// Register a page handler, so we can have nice URLs
 	register_page_handler('org','org_page_handler');
-    
+    register_page_handler('login','login_page_handler');
+
 	register_entity_type('group', 'organization');
    	// This operation only affects the db on the first call for this subtype
    	// If you change the class name, you'll have to hand-edit the db
@@ -39,7 +40,7 @@ function envaya_init() {
     //extend_view('css','pluginname/css');
 
     // Replace the default index page
-    //register_plugin_hook('index','system','new_index');
+    register_plugin_hook('index','system','new_index');
 }
 
 /**
@@ -72,6 +73,11 @@ function org_page_handler($page)
 	}
 }
 
+function login_page_handler($page)
+{
+    include(dirname(__FILE__) . "/login.php");
+}
+
 /**
  * Populates the ->getUrl() method for org objects
  *
@@ -100,8 +106,6 @@ function org_fields_setup()
 		'location' => 'text',
 	);
 }
-
-
 
 function new_index() {
 

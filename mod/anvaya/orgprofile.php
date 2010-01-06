@@ -18,6 +18,9 @@
 	$group = get_entity($group_guid);
 	if ($group) {
 		set_page_owner($group_guid);
+                
+        //$group->setLatLong(-5.216667,39.733333);        
+        //$group->save();
 
 		$title = $group->name;
 

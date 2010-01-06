@@ -20,6 +20,7 @@
 			'org:members' => 'Members',
 			'org:owner' => "Owner",
 			'org:location' => 'Location',
+            'org:map' => 'Map',
 
 			'item:group:organization' => "Organizations",
 

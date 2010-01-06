@@ -55,7 +55,31 @@
 
 						echo "</p>";
 				    }
-				}
+				}               
+                
+                echo "<p><b>";
+                echo elgg_echo("org:map");
+                echo ": </b>";
+                ?>
+                              
+    <div id='map' style='width:300px;height:200px'></div>              
+    <script type="text/javascript" src="http://www.google.com/jsapi?key=<?php echo get_plugin_setting('google_api', 'googlegeocoder'); ?>"></script>
+    <script type="text/javascript">
+      google.load("maps", "2.x");
+
+      // Call this function when the page has been loaded
+      function initialize() {
+        var map = new google.maps.Map2(document.getElementById("map"));
+        map.addControl(new GSmallMapControl());
+        map.addControl(new GMapTypeControl());
+        map.setCenter(new google.maps.LatLng(<?php echo $vars['entity']->getLatitude() ?>,<?php echo $vars['entity']->getLongitude() ?>), 10);
+      }
+      google.setOnLoadCallback(initialize);
+    </script>
+                
+                <?php
+;
+                echo "</p>";
 		}
 	?>
 </div><!-- end of groups_info_column_left -->
