@@ -2,7 +2,7 @@
 
     /**
      * Elgg Groups css
-     * 
+     *
      * @package groups
      * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
      * @author Curverider Ltd <info@elgg.com>
@@ -11,6 +11,11 @@
      */
 
 ?>
+
+body, #layout_header
+{
+	background-color:#7faa89;
+}
 
 #content_area_group_title h2 {
     color:#0054A7;
@@ -36,12 +41,12 @@
 
 #groups_info_column_left .odd {
     background:#E9E9E9;
-    -webkit-border-radius: 5px; 
+    -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
 }
 #groups_info_column_left .even {
     background:#E9E9E9;
-    -webkit-border-radius: 5px; 
+    -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
 }
 #groups_info_column_left p {
@@ -63,7 +68,7 @@
     background: #e9e9e9;
     padding:5px;
     margin:10px 0 20px 0;
-    -webkit-border-radius: 5px; 
+    -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
 }
 #group_stats p {
@@ -71,7 +76,7 @@
 }
 #group_members {
     margin:10px;
-    -webkit-border-radius: 8px; 
+    -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     background: white;
 }
@@ -89,10 +94,10 @@
 
 }
 /* IE 6 fixes */
-* html #left_column { 
+* html #left_column {
     margin:0 0 0 5px;
 }
-* html #right_column { 
+* html #right_column {
     margin:0 5px 0 0;
 }
 
@@ -129,8 +134,8 @@
     padding:10px;
     margin:0 10px 0 10px;
     background:white;
-    -webkit-border-radius: 8px; 
-    -moz-border-radius: 8px;    
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
 }
 /* topics individual view page */
 #topic_posts {
@@ -143,15 +148,15 @@
     padding:10px;
     margin:30px 0 0 0;
     background:white;
-    -webkit-border-radius: 8px; 
-    -moz-border-radius: 8px; 
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
 }
 .topic_post {
     padding:10px;
     margin:0 0 5px 0;
     background:white;
-    -webkit-border-radius: 8px; 
-    -moz-border-radius: 8px;  
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
 }
 .topic_post .post_icon {
     float:left;
@@ -174,7 +179,7 @@
 #latest_discussion_widget {
     margin:0 0 20px 0;
     background:white;
-    -webkit-border-radius: 8px; 
+    -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
 }
 /* group files widget */
@@ -182,7 +187,7 @@
     margin:0 0 20px 0;
     padding: 0 0 5px 0;
     background:white;
-    -webkit-border-radius: 8px; 
+    -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
 }
 /* group pages widget */
@@ -190,7 +195,7 @@
     margin:0 0 20px 0;
     padding: 0 0 5px 0;
     background:white;
-    -webkit-border-radius: 8px; 
+    -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
 }
 #group_pages_widget .search_listing {
@@ -208,7 +213,7 @@
     margin:0 10px 5px 10px;
     background: #dedede;
     padding:5px;
-    -webkit-border-radius: 4px; 
+    -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
 }
 .forum_latest:hover {
@@ -232,7 +237,7 @@
     color:#666666;
 }
 .add_topic {
-    -webkit-border-radius: 8px; 
+    -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     background:white;
     margin:5px 10px;
@@ -245,7 +250,7 @@ a.add_topic_button {
     color: white;
     background:#4690d6;
     border:none;
-    -webkit-border-radius: 5px; 
+    -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     width: auto;
     height: auto;
@@ -308,8 +313,8 @@ span.timestamp {
     margin:0 10px 20px 10px;
     padding: 3px 5px 5px 5px;
     background:#bbdaf7;
-    -webkit-border-radius: 8px; 
-    -moz-border-radius: 8px;    
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
 }
 #groups_closed_membership p {
     margin:0;
@@ -361,7 +366,7 @@ span.timestamp {
 
 /* delete post */
 .delete_discussion {
-    
+
 }
 .delete_discussion a {
     display:block;
@@ -385,7 +390,7 @@ span.timestamp {
 #delete_group_option input[type="submit"] {
     background:#dedede;
     border-color:#dedede;
-    color:#333333; 
+    color:#333333;
     margin:0;
     float:right;
     clear:both;
