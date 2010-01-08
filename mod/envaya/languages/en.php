@@ -39,6 +39,9 @@
 			'org:deletewarning' => "Are you sure you want to delete this organization? There is no undo!",
 			'org:deleted' => 'Organization deleted',
 			'org:notdeleted' => 'Organization could not be deleted',
+			
+			'org:notfound' => "Organization not found",
+			'org:notfound:details' => "The requested organization either does not exist or you do not have access to it",
 	);
 
 	add_translation("en",$english);

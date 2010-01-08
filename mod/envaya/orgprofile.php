@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Full group profile
+	 * Full org profile
 	 *
 	 * @package ElggGroups
 	 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -9,46 +9,33 @@
 	 * @link http://elgg.com/
 	 */
 
-	$group_guid = get_input('org_guid');
-	set_context('groups');
+	$org_guid = get_input('org_guid');
+	set_context('org');
 
 	global $autofeed;
 	$autofeed = true;
 
-	$group = get_entity($group_guid);
-	if ($group) {
-		set_page_owner($group_guid);
+	$org = get_entity($org_guid);
+	if ($org) {
+		set_page_owner($org_guid);
                 
-        //$group->setLatLong(-5.216667,39.733333);        
-        //$group->save();
+        //$org->setLatLong(-5.216667,39.733333);        
+        //$org->save();
 
-		$title = $group->name;
+		$title = $org->name;
 
-		// Hide some items from closed groups when the user is not logged in.
+		// Hide some items from closed orgs when the user is not logged in.
 		$view_all = true;
 
 		$area2 = elgg_view_title($title);
-		$area2 .= elgg_view('org/org', array('entity' => $group, 'user' => $_SESSION['user'], 'full' => true));
-
-		if ($view_all) {
-			//group profile 'items' - these are not real widgets, just contents to display
-			$area2 .= elgg_view('groups/profileitems',array('entity' => $group));
-
-			//group members
-			$area3 = '';//elgg_view('groups/members',array('entity' => $group));
-		}
-		else
-		{
-			$area2 .= elgg_view('groups/closedmembership', array('entity' => $group, 'user' => $_SESSION['user'], 'full' => true));
-
-		}
+		$area2 .= elgg_view('org/org', array('entity' => $org, 'user' => $_SESSION['user'], 'full' => true));
 
 		$body = elgg_view_layout('two_column_left_sidebar', $area1, $area2, $area3);
 	} else {
-		$title = elgg_echo('groups:notfound');
+		$title = elgg_echo('org:notfound');
 
 		$area2 = elgg_view_title($title);
-		$area2 .= elgg_view('groups/contentwrapper',array('body' => elgg_echo('groups:notfound:details')));
+		$area2 .= elgg_view('org/contentwrapper',array('body' => elgg_echo('org:notfound:details')));
 
 		$body = elgg_view_layout('two_column_left_sidebar', "", $area2,"");
 	}

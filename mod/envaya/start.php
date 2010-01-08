@@ -6,6 +6,15 @@ class Organization extends ElggGroup {
   protected function initialise_attributes() {
     parent::initialise_attributes();
     $this->attributes['subtype'] = 'organization';
+    $this->attributes['approval'] = 0;
+    /*
+    TODO: implement or integrate Enum implementation and use it instead of constants.
+    approval values:
+    -1 -- Denied approval
+    0 -- Awaiting approval
+    1 -- Approved
+    2 -- Approved by super-admin
+    */
   }
 
   public function __construct($guid = null) {
