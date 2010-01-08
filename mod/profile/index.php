@@ -27,7 +27,7 @@
 			$body = elgg_view_entity($user,true);
 			$title = $user->name;
 
-			$body = elgg_view_layout('widgets',$body);
+			$body = elgg_view_layout('one_column',$body);
 			
 		} else {
 			

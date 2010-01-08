@@ -73,6 +73,9 @@ function org_page_handler($page)
     			set_page_owner(0);
                 include(dirname(__FILE__) . "/browseorgs.php");
     		    break;
+            case "search":
+                include(dirname(__FILE__) . "/search.php");
+                break;
             case "icon":
                 // The username should be the file we're getting
                 if (isset($page[1])) {

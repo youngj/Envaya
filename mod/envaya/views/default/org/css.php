@@ -17,6 +17,11 @@ body, #layout_header
 	background-color:#7faa89;
 }
 
+.padded
+{
+    margin:0px 10px;
+}
+
 #content_area_group_title h2 {
     color:#0054A7;
     font-size:1.35em;

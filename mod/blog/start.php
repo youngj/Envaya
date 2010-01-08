@@ -40,7 +40,7 @@
 				extend_view('css','blog/css');
 				
 			// Extend hover-over menu	
-				extend_view('profile/menu/links','blog/menu');
+				//extend_view('profile/menu/links','blog/menu');
 				
 			// Register a page handler, so we can have nice URLs
 				register_page_handler('blog','blog_page_handler');
@@ -83,16 +83,16 @@
 					if ((page_owner() == $_SESSION['guid'] || !page_owner()) && isloggedin()) {
 						add_submenu_item(elgg_echo('blog:your'),$CONFIG->wwwroot."pg/blog/" . $_SESSION['user']->username);
 						add_submenu_item(elgg_echo('blog:friends'),$CONFIG->wwwroot."pg/blog/" . $_SESSION['user']->username . "/friends/");
-						add_submenu_item(elgg_echo('blog:everyone'),$CONFIG->wwwroot."mod/blog/everyone.php");
+						//add_submenu_item(elgg_echo('blog:everyone'),$CONFIG->wwwroot."mod/blog/everyone.php");
 						
 					} else if (page_owner()) {
 						add_submenu_item(sprintf(elgg_echo('blog:user'),$page_owner->name),$CONFIG->wwwroot."pg/blog/" . $page_owner->username);
 						if ($page_owner instanceof ElggUser) { // Sorry groups, this isn't for you.
 							add_submenu_item(sprintf(elgg_echo('blog:user:friends'),$page_owner->name),$CONFIG->wwwroot."pg/blog/" . $page_owner->username . "/friends/");
 						}
-						add_submenu_item(elgg_echo('blog:everyone'),$CONFIG->wwwroot."mod/blog/everyone.php");
+						//add_submenu_item(elgg_echo('blog:everyone'),$CONFIG->wwwroot."mod/blog/everyone.php");
 					} else {
-						add_submenu_item(elgg_echo('blog:everyone'),$CONFIG->wwwroot."mod/blog/everyone.php");
+						//add_submenu_item(elgg_echo('blog:everyone'),$CONFIG->wwwroot."mod/blog/everyone.php");
 					}
 					
 					if (can_write_to_container(0, page_owner()))
