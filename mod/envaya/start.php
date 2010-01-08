@@ -16,11 +16,8 @@ class Organization extends ElggGroup {
 }
 
 function envaya_init() {
-    
-    global $CONFIG;
 
-    add_menu(elgg_echo('Organizations'), $CONFIG->wwwroot . "pg/org/browse/");
-    
+    global $CONFIG;
 
 	org_fields_setup();
 
@@ -37,10 +34,13 @@ function envaya_init() {
     register_entity_url_handler('org_url','group','organization');
 
     // Extend system CSS with our own styles
-    //extend_view('css','pluginname/css');
+    extend_view('css','org/css');
 
     // Replace the default index page
     register_plugin_hook('index','system','new_index');
+
+    register_plugin_hook('entity:icon:url', 'group', 'org_icon_hook');
+
 }
 
 /**
@@ -57,13 +57,12 @@ function org_page_handler($page)
 	    switch($page[0])
 		{
 		    case "new":
-		        include($CONFIG->pluginspath . "anvaya/neworg.php");
+                include(dirname(__FILE__) . "/neworg.php");
 		    break;
     		case "browse":
     		    set_context('org');
     			set_page_owner(0);
-    			include($CONFIG->pluginspath . "anvaya/browseorgs.php");
-    			//include($CONFIG->pluginspath . "anvaya/index.php");
+                include(dirname(__FILE__) . "/browseorgs.php");
     		break;
     		default:
     		    set_input('org_guid', $page[0]);
@@ -85,13 +84,55 @@ function login_page_handler($page)
  * @return string File URL
  */
 function org_url($entity) {
-	
+
 	global $CONFIG;
 	$title = friendly_title($entity->name);
-	
+
 	return $CONFIG->url . "pg/org/{$entity->guid}/$title/";
-	
+
 }
+
+/**
+ * This hooks into the getIcon API and provides nice user icons for users where possible.
+ *
+ * @param unknown_type $hook
+ * @param unknown_type $entity_type
+ * @param unknown_type $returnvalue
+ * @param unknown_type $params
+ * @return unknown
+ */
+function org_icon_hook($hook, $entity_type, $returnvalue, $params)
+{
+	global $CONFIG;
+
+	if ($params['entity'] instanceof Organization)
+	{
+		$entity = $params['entity'];
+		$type = $entity->type;
+		$viewtype = $params['viewtype'];
+		$size = $params['size'];
+
+		if ($icontime = $entity->icontime) {
+			$icontime = "{$icontime}";
+		} else {
+			$icontime = "default";
+		}
+
+		$filehandler = new ElggFile();
+		$filehandler->owner_guid = $entity->owner_guid;
+		$filehandler->setFilename("org/" . $entity->guid . $size . ".jpg");
+
+		if ($filehandler->exists())
+		{
+			return $CONFIG->url . "pg/groupicon/{$entity->guid}/$size/$icontime.jpg";
+		}
+		else
+		{
+			return $CONFIG->url . "mod/envaya/graphics/default$size.gif";
+		}
+	}
+}
+
 
 function org_fields_setup()
 {
@@ -118,8 +159,7 @@ function new_index() {
 // register for the init, system event when our plugin start.php is loaded
 register_elgg_event_handler('init','system','envaya_init');
 
-global $CONFIG;
-register_action("editOrg",false,$CONFIG->pluginspath . "anvaya/actions/editOrg.php");
-register_action("deleteOrg",false,$CONFIG->pluginspath . "anvaya/actions/deleteOrg.php");
+register_action("editOrg",false,dirname(__FILE__) . "/actions/editOrg.php");
+register_action("deleteOrg",false,dirname(__FILE__) . "/actions/deleteOrg.php");
 
 ?>

@@ -22,7 +22,7 @@
 
         <?php
 		    echo elgg_view(
-					"groups/icon", array(
+					"org/icon", array(
 												'entity' => $vars['entity'],
 												//'align' => "left",
 												'size' => $iconsize,
@@ -55,14 +55,14 @@
 
 						echo "</p>";
 				    }
-				}               
-                
+				}
+
                 echo "<p><b>";
                 echo elgg_echo("org:map");
                 echo ": </b>";
                 ?>
-                              
-    <div id='map' style='width:300px;height:200px'></div>              
+
+    <div id='map' style='width:300px;height:200px'></div>
     <script type="text/javascript" src="http://www.google.com/jsapi?key=<?php echo get_plugin_setting('google_api', 'googlegeocoder'); ?>"></script>
     <script type="text/javascript">
       google.load("maps", "2.x");
@@ -76,7 +76,7 @@
       }
       google.setOnLoadCallback(initialize);
     </script>
-                
+
                 <?php
 ;
                 echo "</p>";
@@ -94,7 +94,7 @@
 
 ?>
 
-		<a href="<?php echo $vars['url']; ?>mod/anvaya/editOrg.php?group_guid=<?php echo $vars['entity']->getGUID(); ?>"><?php echo elgg_echo("edit"); ?></a>
+		<a href="<?php echo $vars['url']; ?>mod/envaya/editOrg.php?group_guid=<?php echo $vars['entity']->getGUID(); ?>"><?php echo elgg_echo("edit"); ?></a>
 
 
 <?php
