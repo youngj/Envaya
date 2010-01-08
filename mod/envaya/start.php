@@ -58,16 +58,27 @@ function org_page_handler($page)
 		{
 		    case "new":
                 include(dirname(__FILE__) . "/neworg.php");
-		    break;
+		        break;
     		case "browse":
     		    set_context('org');
     			set_page_owner(0);
                 include(dirname(__FILE__) . "/browseorgs.php");
-    		break;
+    		    break;
+            case "icon":
+                // The username should be the file we're getting
+                if (isset($page[1])) {
+                    set_input('org_guid',$page[1]);
+                }
+                if (isset($page[2])) {
+                    set_input('size',$page[2]);
+                }
+                
+                include(dirname(__FILE__) . "/icon.php");                
+                break;               
     		default:
     		    set_input('org_guid', $page[0]);
     		    include(dirname(__FILE__) . "/orgprofile.php");
-    		break;
+        		break;
 	    }
 	}
 }
@@ -120,11 +131,11 @@ function org_icon_hook($hook, $entity_type, $returnvalue, $params)
 
 		$filehandler = new ElggFile();
 		$filehandler->owner_guid = $entity->owner_guid;
-		$filehandler->setFilename("org/" . $entity->guid . $size . ".jpg");
+		$filehandler->setFilename("envaya/" . $entity->guid . $size . ".jpg");
 
 		if ($filehandler->exists())
 		{
-			return $CONFIG->url . "pg/groupicon/{$entity->guid}/$size/$icontime.jpg";
+			return $CONFIG->url . "pg/org/icon/{$entity->guid}/$size/$icontime.jpg";
 		}
 		else
 		{
