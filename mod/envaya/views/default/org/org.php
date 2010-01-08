@@ -60,8 +60,11 @@
                 echo "<p><b>";
                 echo elgg_echo("org:map");
                 echo ": </b>";
+                $entityLat = $vars['entity']->getLatitude();
+                if (!empty($entityLat)) { 
                 ?>
-
+         
+            
     <div id='map' style='width:300px;height:200px'></div>
     <script type="text/javascript" src="http://www.google.com/jsapi?key=<?php echo get_plugin_setting('google_api', 'googlegeocoder'); ?>"></script>
     <script type="text/javascript">
@@ -78,7 +81,8 @@
     </script>
 
                 <?php
-;
+
+}
                 echo "</p>";
 		}
 	?>
