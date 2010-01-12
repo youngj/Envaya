@@ -132,7 +132,6 @@
 	
 	system_message(elgg_echo("org:saved"));
 	
-	// Forward to the user's profile
 	forward($org->getUrl());
 	exit;
 ?>

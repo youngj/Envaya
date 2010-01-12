@@ -55,7 +55,7 @@
             }
             else
             {
-                $body .= "<div class='padded'>No results found!</div>";
+                $body .= "<div class='padded'>" . elgg_echo("org:searchnoresults") . "</div>";
             }
             $body = elgg_view_layout('one_column',$body);
         }

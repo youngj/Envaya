@@ -93,6 +93,32 @@
 <?php
 
 	}
+	
+	if ($vars['entity'] && isadminloggedin() && !$vars['entity']->isApproved())
+	{
+?>
+    <div class="contentWrapper">
+    <div>
+    	<form action="<?php echo $vars['url'] . "action/approveOrg"; ?>" method="post">
+    	    <?php echo elgg_view('input/securitytoken'); ?>
+    		<?php
+    			$warning = elgg_echo("org:approveconfirm");
+    			?>
+    			<input type="hidden" name="org_guid" value="<?php echo $vars['entity']->getGUID(); ?>" />
+    			<input type="hidden" name="user_guid" value="<?php echo page_owner_entity()->guid; ?>" />
+    			<input type="submit" class="submit_button" name="approve" value="<?php echo elgg_echo('org:approve'); ?>" onclick="javascript:return confirm('<?php echo $warning; ?>')"/>
+    	</form>
+    </div><div class="clearfloat"></div>
+    
+<?php
+    }
+	
+	if($vars['msg'])
+	{
+	    system_message(elgg_echo($vars['msg']));
+	    echo "<br><b>" . $vars['msg'] . "</b>";
+    }
+	
 
 ?>
 

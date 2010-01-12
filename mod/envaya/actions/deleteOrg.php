@@ -1,6 +1,7 @@
 <?php
 	global $CONFIG;
-		
+	action_gatekeeper();
+	
 	$guid = (int)get_input('org_guid');
 	$entity = get_entity($guid);
 	

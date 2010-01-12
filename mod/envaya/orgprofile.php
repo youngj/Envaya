@@ -22,15 +22,44 @@
         //$org->setLatLong(-5.216667,39.733333);        
         //$org->save();
 
-		$title = $org->name;
+		$title = $org->name;	
 
-		// Hide some items from closed orgs when the user is not logged in.
-		$view_all = true;
+        $viewOrg = false;
+        
+        if($org->approval > 0)
+        {
+            //organization approved
+            $viewOrg = true;
+        }
+	    else if ($org->approval < 0)
+	    {
+	        //organization rejected
+	        $msg = elgg_echo('org:rejected');
+        }
+        else
+        {
+            //organization waiting for approval
+            if(isadminloggedin())
+            {
+                $viewOrg = true;
+            }
+            else if($org->getOwnerEntity() == get_loggedin_user())
+            {
+                $viewOrg = true;
+                $msg = elgg_echo('org:waitforapproval');
+            }
+            else
+            {
+                $msg = elgg_echo('org:waitingapproval');
+            }
+        }
+        
 
-		$area2 = elgg_view_title($title);
-		$area2 .= elgg_view('org/org', array('entity' => $org, 'user' => $_SESSION['user'], 'full' => true));
-
-		$body = elgg_view_layout('two_column_left_sidebar', $area1, $area2, $area3);
+        $area2 = elgg_view_title($title);
+        $area2 .= elgg_view('org/org', array('entity' => $org, 'user' => $_SESSION['user'], 'full' => $viewOrg, 'msg' => $msg));
+        
+	    $body = elgg_view_layout('two_column_left_sidebar', $area1, $area2, $area3);
+        
 	} else {
 		$title = elgg_echo('org:notfound');
 

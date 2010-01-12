@@ -6,7 +6,7 @@ class Organization extends ElggGroup {
   protected function initialise_attributes() {
     parent::initialise_attributes();
     $this->attributes['subtype'] = 'organization';
-    $this->attributes['approval'] = 0;
+    
     /*
     TODO: implement or integrate Enum implementation and use it instead of constants.
     approval values:
@@ -22,6 +22,29 @@ class Organization extends ElggGroup {
   }
 
   // more customizations here
+
+  public function isApproved()
+  {
+      return $this->approval > 0;
+  }
+  
+  public function userCanSee()
+  {
+      return ($this->isApproved() || isadminloggedin() || ($this->getOwnerEntity() == get_loggedin_user()));
+  }
+
+  public function approveOrg()
+  {
+      if (isadminloggedin())
+      { 
+          $this->set("approval", 2);
+          return true;
+      }
+      else
+      {
+          return false;
+      }
+  }
 }
 
 function envaya_init() {
@@ -184,7 +207,7 @@ register_elgg_event_handler('init','system','envaya_init');
 
 register_action("editOrg",false,dirname(__FILE__) . "/actions/editOrg.php");
 register_action("deleteOrg",false,dirname(__FILE__) . "/actions/deleteOrg.php");
+register_action("approveOrg",false,dirname(__FILE__) . "/actions/approveOrg.php");
 register_action("changeLanguage", true,dirname(__FILE__). "/actions/changeLanguage.php");
-
 
 ?>
