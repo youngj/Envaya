@@ -3,13 +3,17 @@
 
     $zoom = $vars['zoom'] ? $vars['zoom'] : 10;
     $width = $vars['width'] ? $vars['width'] : 600;
-    $height = $vars['height'] ? $vars['height'] : 400;
+    $height = $vars['height'] ? $vars['height'] : 400;    
+    $apiKey = get_plugin_setting('google_api', 'googlegeocoder');
+    $lat = $vars['lat'];
+    $long = $vars['long'];
+    
+    if (!$vars['static'])
+    {
 ?>
 
-
-
 <div id='map' style='width:<?php echo $width; ?>px;height:<?php echo $height; ?>px'></div>
-<script type="text/javascript" src="http://www.google.com/jsapi?key=<?php echo get_plugin_setting('google_api', 'googlegeocoder'); ?>"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi?key=<?php echo $apiKey ?>"></script>
 <script type="text/javascript">
   google.load("maps", "2.x");
 
@@ -26,7 +30,7 @@
     map.addControl(new GSmallMapControl());
     map.addControl(new GMapTypeControl());
     
-    var center = new google.maps.LatLng(<?php echo $vars['lat'] ?>,<?php echo $vars['long'] ?>);
+    var center = new google.maps.LatLng(<?php echo $lat; ?>,<?php echo $long; ?>);
     
     map.setCenter(center, <?php echo $zoom; ?>);
     
@@ -81,3 +85,12 @@
   }
   google.setOnLoadCallback(initialize);
 </script>
+
+<?php
+    } // not static
+    else
+    {
+        echo "<div><img width='$width' height='$height' src='http://maps.google.com/maps/api/staticmap?center=$lat,$long&zoom=$zoom&size={$width}x$height&maptype=roadmap&markers=$lat,$long&sensor=false&key=$apiKey' /></div>";
+    }
+    
+?>

@@ -69,7 +69,8 @@
                         'zoom' => 10,
                         'width' => 300,
                         'pin' => true,
-                        'height' => 200
+                        'height' => 200,
+                        'static' => true
                     ));                                  
                 }
                 echo "</p>";
