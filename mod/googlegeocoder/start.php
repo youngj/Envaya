@@ -35,9 +35,11 @@
 	   		$obj = json_decode($result);
 	   		
 	   		$obj = $obj->Placemark[0]->Point->coordinates;
-   		
-	   		return array('lat' => $obj[1], 'long' => $obj[0]);
-  
+            
+            if ($obj)
+            {   		
+	   		    return array('lat' => $obj[1], 'long' => $obj[0]);
+            }
 		}
 	}
 	
@@ -49,6 +51,7 @@
 	{
 		if ($object instanceof Locatable)
 		{
+        
 			$location = false;
 		
 			// See if object has a specific location

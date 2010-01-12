@@ -216,7 +216,7 @@
 		$query .= get_access_sql_suffix('e'); // Add access controls
 		
 		if (!$count) {
-			$query .= " order by n.calendar_start $order_by";
+			//$query .= " order by n.calendar_start $order_by";
 			if ($limit) $query .= " limit $offset, $limit"; // Add order and limit
 			$dt = get_data($query, "entity_row_to_elggstar");
 			return $dt;

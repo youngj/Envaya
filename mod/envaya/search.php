@@ -28,7 +28,24 @@
             $body.= "<div class='padded'><form method='GET' action='".$CONFIG->wwwroot."pg/org/search/'><input type='text' name='q' value='".$query."'><input type='submit' value='search'></form></div>";
             
             $body .= elgg_view_title($title); // elgg_view_title(sprintf(elgg_echo('searchtitle'),$tag));                        
-            $results = list_entities_from_metadata('', elgg_strtolower($query), 'group', 'organization', array(), 10, false, false);
+            
+            
+            $latlong = elgg_geocode_location($query);
+            
+            $results = '';
+            
+            if ($latlong) 
+            {     
+                $radius = 2.0;
+            
+                $nearby = get_entities_in_area($latlong['lat'], $latlong['long'], $radius, 'group', 'organization', 0, "", 10, 0, false, $site_guid = 0);
+            
+                $results .= elgg_view("org/map", array('lat' => $latlong['lat'], 'long' => $latlong['long'], 'pin' => 'true', 'nearby' => $nearby, 'zoom' => '8'));
+                
+                //$results .= list_entities_in_area($latlong['lat'], $latlong['long'], 1.5, 'group', 'organization',0,10,false, false);
+            }
+            
+            $results .= list_entities_from_metadata('', elgg_strtolower($query), 'group', 'organization', array(), 10, false, false);
             if ($results)
             {
                 $body .= $results;

@@ -67,6 +67,18 @@
 	//$group->pages_enable = get_input('pages_enable', 'yes');
 	//$group->forum_enable = get_input('forum_enable', 'yes');	
 
+    if ($org->location)
+    {
+        $latlong = elgg_geocode_location($org->location);
+    
+        if ($latlong)
+        {
+            //echo "lat=".$latlong['lat'];
+        
+            $org->setLatLong($latlong['lat'], $latlong['long']);
+        }            
+    }
+
 	$org->save();
 	
 	if (!$org->isMember($user))
