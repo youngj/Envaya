@@ -10,7 +10,6 @@
 	 */
 
 	$english = array(
-
 			'org:name' => 'Group name',
 			'org:username' => 'Group short name (displayed in URLs, alphanumeric characters only)',
 			'org:description' => 'Description',

@@ -25,7 +25,7 @@
         if (!empty($query)) {
             $body = "";
             
-            $body.= "<div class='padded'><form method='GET' action='".$CONFIG->wwwroot."pg/org/search/'><input type='text' name='q' value='".$query."'><input type='submit' value='search'></form></div>";
+            $body.= "<div class='padded'><form method='GET' action='".$CONFIG->wwwroot."pg/org/search/'><input type='text' name='q' value='".$query."'><input type='submit' value='".elgg_echo('search')."'></form></div>";
             
             $body .= elgg_view_title($title); // elgg_view_title(sprintf(elgg_echo('searchtitle'),$tag));                        
             
@@ -40,7 +40,10 @@
             
                 $nearby = get_entities_in_area($latlong['lat'], $latlong['long'], $radius, 'group', 'organization', 0, "", 10, 0, false, $site_guid = 0);
             
-                $results .= elgg_view("org/map", array('lat' => $latlong['lat'], 'long' => $latlong['long'], 'pin' => 'true', 'nearby' => $nearby, 'zoom' => '8'));
+                if ($nearby)
+                {            
+                    $results .= "<div class='padded'>".elgg_view("org/map", array('lat' => $latlong['lat'], 'long' => $latlong['long'], 'pin' => 'true', 'nearby' => $nearby, 'zoom' => '8'))."</div>";
+                }    
                 
                 //$results .= list_entities_in_area($latlong['lat'], $latlong['long'], 1.5, 'group', 'organization',0,10,false, false);
             }

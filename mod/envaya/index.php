@@ -8,18 +8,9 @@
 		'entities' => $users
     ));
     
-    $area .= "<form method='GET' action='".$CONFIG->wwwroot."pg/org/search/'><input type='text' name='q'><input type='submit' value='search'></form>";
+    $area .= "<form method='GET' action='".$CONFIG->wwwroot."pg/org/search/'><input type='text' name='q'><input type='submit' value='".elgg_echo('search')."'></form>";
     
-    //$area .= "<form method='GET' action='".$CONFIG-->wwwroot."pg/locationSearch/'>Latitude: <input type='text' name='lat'> Longitude: <input type='text' name='long'><input type='submit' value='search'></form>";
-    
-    if (isloggedin())
-    {
-        $area .= "<p><a href='".$CONFIG->wwwroot."action/logout'>Logout</a></p>";
-    }
-    else
-    {
-        $area .= "<p><a href='".$CONFIG->wwwroot."pg/login'>Login</a></p>";
-    }    
+    //$area .= "<form method='GET' action='".$CONFIG-->wwwroot."pg/locationSearch/'>Latitude: <input type='text' name='lat'> Longitude: <input type='text' name='long'><input type='submit' value='search'></form>";   
     
     $body = elgg_view_layout('one_column', "<div class='padded'>$area</div>","");    
     

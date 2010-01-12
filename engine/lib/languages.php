@@ -63,7 +63,41 @@
 			
 		return $language;
 	}
+    
+    function get_cookie_language()
+    {
+        global $CONFIG;
+        
+        $lang = $_COOKIE['lang'];
+        if (isset($CONFIG->translations[$lang]))
+        {
+            return $lang;
+        }
+    }    
 		
+    function get_accept_language()
+    {
+        global $CONFIG;
+        
+        $acceptLanguage = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+        if ($acceptLanguage)
+        {
+            $languages = explode(",", $acceptLanguage);
+            foreach ($languages as $language)
+            {
+                $langQ = explode(";", $language);
+                $lang = trim($langQ[0]);
+                $langLocale = explode("-", $lang);
+                $lang = $langLocale[0];
+
+                if (isset($CONFIG->translations[$lang]))
+                {
+                    return $lang;
+                }
+            }    
+        }
+    }
+        
 	/**
 	 * Gets the current language in use by the system or user.
 	 * 
@@ -74,17 +108,38 @@
 		function get_language() {
 			
 			global $CONFIG;
-		
+            
+            global $CURRENT_LANGUAGE;
+            if ($CURRENT_LANGUAGE)
+            {
+                return $CURRENT_LANGUAGE;
+            }
+                  
 			$user = get_loggedin_user();  
-			$language = false;
 	
 			if (($user) && ($user->language))
+            {
 				$language = $user->language;
+            }    
+            
+            if (!$language)
+            {
+                $language = get_cookie_language();
+            }    
+            
+            if (!$language)
+            {
+                $language = get_accept_language();
+            }
 
 			if ((!$language) && (isset($CONFIG->language)) && ($CONFIG->language))
+            {
 				$language = $CONFIG->language;
-				
-			if ($language) {
+            }
+				                
+			if ($language) 
+            {
+                $CURRENT_LANGUAGE = $language;
 				return $language;
 			}		
 			return false;
@@ -101,13 +156,12 @@
 		function elgg_echo($message_key, $language = "") {
 			
 			global $CONFIG;
-				
-			static $CURRENT_LANGUAGE;
-			if ((!$CURRENT_LANGUAGE) && (!$language)) 
-				$CURRENT_LANGUAGE = $language = get_language();
-			else 
-				$language = $CURRENT_LANGUAGE;
-
+            
+            if (!$language)
+            {
+			    $language = get_language();			    
+            }                
+                
 			if (isset($CONFIG->translations[$language][$message_key])) {
 				return $CONFIG->translations[$language][$message_key];
 			} else if (isset($CONFIG->translations["en"][$message_key])) {
@@ -125,20 +179,21 @@
 	 * @param bool $load_all If true all languages are loaded, if false only the current language + en are loaded
 	 */
 		function register_translations($path, $load_all = false) {
+                   
 			global $CONFIG;
-			
+            
 			// Make a note of this path just incase we need to register this language later
 			if(!isset($CONFIG->language_paths)) $CONFIG->language_paths = array();
 			$CONFIG->language_paths[$path] = true;
 			
 			// Get the current language based on site defaults and user preference
-			$current_language = get_current_language();
+			$current_language = get_current_language();           
 
 			if (isset($CONFIG->debug) && $CONFIG->debug == true) error_log("Translations loaded from : $path");
 		
 			if ($handle = opendir($path)) {
 				while ($language = readdir($handle)) {
-				
+                
 					if (
 						((in_array($language, array('en.php', $current_language . '.php'))) /*&& (!is_dir($path . $language))*/) ||
 						(($load_all) && (strpos($language, '.php')!==false)/* && (!is_dir($path . $language))*/) 

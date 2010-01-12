@@ -125,5 +125,6 @@
 	 
 	 // URL
 	    $CONFIG->url = "";
-			
+		
+    $CONFIG->translations['sw'] = array('sw' => 'Kiswahili');
 ?>

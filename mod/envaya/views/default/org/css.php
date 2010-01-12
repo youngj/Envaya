@@ -17,6 +17,16 @@ body, #layout_header
 	background-color:#7faa89;
 }
 
+#layout_header, #layout_header a
+{
+    color:white;
+}
+
+#elgg_topbar_container_search
+{
+    right:20px;
+}
+
 .padded
 {
     margin:0px 10px;

@@ -164,7 +164,7 @@ function org_fields_setup()
 	$CONFIG->org_fields = array(
 		'name' => 'text',
 		'description' => 'longtext',
-		'briefdescription' => 'text',
+		//'briefdescription' => 'text',
 		'interests' => 'tags',
 		'website' => 'url',
 		'location' => 'text',
@@ -184,5 +184,7 @@ register_elgg_event_handler('init','system','envaya_init');
 
 register_action("editOrg",false,dirname(__FILE__) . "/actions/editOrg.php");
 register_action("deleteOrg",false,dirname(__FILE__) . "/actions/deleteOrg.php");
+register_action("changeLanguage", true,dirname(__FILE__). "/actions/changeLanguage.php");
+
 
 ?>
