@@ -36,6 +36,10 @@
 <div id="groups_info_column_left"><!-- start of groups_info_column_left -->
     <?php
         if ($vars['full'] == true) {
+                if($vars['entity']->isVerified())
+                {
+                    echo "<h4>Envaya Verified!</h4>";
+                }
 
 		        foreach($vars['config']->org_fields as $shortname => $valtype) {
 			        if ($shortname != "name") {
@@ -94,9 +98,10 @@
 <?php
 
 	}
-	
-	if ($vars['entity'] && isadminloggedin() && !$vars['entity']->isApproved())
+	if($vars['entity'] && isadminloggedin())
 	{
+	    if (!$vars['entity']->isApproved())
+    	{
 ?>
     <div class="contentWrapper">
     <div>
@@ -112,8 +117,27 @@
     </div><div class="clearfloat"></div>
     
 <?php
-    }
-	
+        }
+        else if(!$vars['entity']->isVerified())
+        {
+            //TODO:  we should have more than a dialog box to confirm a verification process.  we'll need a real process for this
+?>
+    <div class="contentWrapper">
+    <div>
+    	<form action="<?php echo $vars['url'] . "action/verifyOrg"; ?>" method="post">
+    	    <?php echo elgg_view('input/securitytoken'); ?>
+    		<?php
+    			$warning = elgg_echo("org:verifyconfirm");
+    			?>
+    			<input type="hidden" name="org_guid" value="<?php echo $vars['entity']->getGUID(); ?>" />
+    			<input type="hidden" name="user_guid" value="<?php echo page_owner_entity()->guid; ?>" />
+    			<input type="submit" class="submit_button" name="approve" value="<?php echo elgg_echo('org:verify'); ?>" onclick="javascript:return confirm('<?php echo $warning; ?>')"/>
+    	</form>
+    </div><div class="clearfloat"></div>
+    
+<?php            
+        }
+	}
 	if($vars['msg'])
 	{
 	    system_message(elgg_echo($vars['msg']));

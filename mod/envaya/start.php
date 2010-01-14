@@ -14,6 +14,9 @@ class Organization extends ElggGroup {
     0 -- Awaiting approval
     1 -- Approved
     2 -- Approved by super-admin
+    3 -- Verified by partner organization
+    4 -- Verified by Envaya host country national
+    5 -- Verified by super-admin
     */
   }
 
@@ -26,6 +29,11 @@ class Organization extends ElggGroup {
   public function isApproved()
   {
       return $this->approval > 0;
+  }
+  
+  public function isVerified()
+  {
+      return $this->approval > 2;
   }
   
   public function userCanSee()
@@ -44,6 +52,19 @@ class Organization extends ElggGroup {
       {
           return false;
       }
+  }
+  
+  public function verifyOrg()
+  {
+      if (isadminloggedin())
+        { 
+            $this->set("approval", 5);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
   }
 }
 
@@ -208,6 +229,7 @@ register_elgg_event_handler('init','system','envaya_init');
 register_action("editOrg",false,dirname(__FILE__) . "/actions/editOrg.php");
 register_action("deleteOrg",false,dirname(__FILE__) . "/actions/deleteOrg.php");
 register_action("approveOrg",false,dirname(__FILE__) . "/actions/approveOrg.php");
+register_action("verifyOrg",false,dirname(__FILE__) . "/actions/verifyOrg.php");
 register_action("changeLanguage", true,dirname(__FILE__). "/actions/changeLanguage.php");
 
 ?>

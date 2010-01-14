@@ -54,6 +54,12 @@
 			
 			'org:searchnoresults' => "No results found!",
 			
+			'org:verify' => "Verify Organization",
+			'org:verifyconfirm' => "Are you sure you want to verify this organization is legitimate?",
+			'org:verified' => "Organization verified",
+			'org:notverified' => "Organization could not be verified",
+			
+			
 	);
 
 	add_translation("en",$english);
