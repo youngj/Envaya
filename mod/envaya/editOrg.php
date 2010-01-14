@@ -12,7 +12,7 @@
 	require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 	gatekeeper();
 
-	$group_guid = get_input('group_guid');
+	$group_guid = get_input('org_guid');
 	$group = get_entity($group_guid);
 	set_page_owner($group_guid);
 

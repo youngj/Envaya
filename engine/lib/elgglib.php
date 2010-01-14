@@ -853,6 +853,12 @@
 			
 		}
 		
+        
+        function endswith( $str, $sub ) 
+        {
+            return substr($str, strlen($str) - strlen($sub)) == $sub ;
+        }        
+        
 	/**
 	 * Adds an item to the submenu
 	 *
@@ -895,7 +901,7 @@
 				foreach($submenu_register as $groupname => $submenu_register_group) {
 					foreach($submenu_register_group as $key => $item) {
 						
-						if (substr_count($item->value, $_SERVER['REQUEST_URI'])) {
+						if (endswith($item->value, $_SERVER['REQUEST_URI'])) {
 							$comparevals[$key] = levenshtein($item->value, $_SERVER['REQUEST_URI']);
 							if ($comparevals[$key] < $maxcompareval) {
 								$maxcompareval = $comparevals[$key];
@@ -914,7 +920,7 @@
 					foreach($submenu_register_group as $key => $item) {
 	
 						if ($preselected === false) {
-							if (substr_count($item->value, $_SERVER['REQUEST_URI'])) {
+                            if (endswith($item->value, $_SERVER['REQUEST_URI'])) {
 								$preselected = $key;
 								$preselectedgroup = $groupname;
 								$selected = true;

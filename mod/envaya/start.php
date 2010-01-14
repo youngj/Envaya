@@ -76,7 +76,7 @@ function envaya_init() {
 
 	// Register a page handler, so we can have nice URLs
 	register_page_handler('org','org_page_handler');
-    register_page_handler('login','login_page_handler');
+    register_page_handler('login','login_page_handler');    
 
 	register_entity_type('group', 'organization');
    	// This operation only affects the db on the first call for this subtype
@@ -85,15 +85,31 @@ function envaya_init() {
 
     // Register a URL handler
     register_entity_url_handler('org_url','group','organization');
+    register_entity_url_handler('blogpost_url','object','blog');
 
     // Extend system CSS with our own styles
     extend_view('css','org/css');
 
     // Replace the default index page
-    register_plugin_hook('index','system','new_index');
-
+    register_plugin_hook('index','system','new_index');    
     register_plugin_hook('entity:icon:url', 'group', 'org_icon_hook');
+    
+    // Register an annotation handler for comments etc
+    register_plugin_hook('entity:annotate', 'object', 'blog_annotate_comments');
+    
+}
 
+function envaya_pagesetup()
+{
+    if (get_context() == "blog") 
+    {
+        $org = page_owner_entity();
+    
+        if (can_write_to_container(0, $org))
+        {
+            add_submenu_item(elgg_echo('blog:addpost'),$org->getUrl()."newpost/");
+        }
+    }    
 }
 
 /**
@@ -133,8 +149,48 @@ function org_page_handler($page)
                 break;               
     		default:
     		    set_input('org_guid', $page[0]);
-    		    include(dirname(__FILE__) . "/orgprofile.php");
-        		break;
+                
+                $org = get_entity($page[0]);
+                
+                add_submenu_item(elgg_echo("org:blog"), $org->getUrl() . "blog");                        
+                
+                if (isset($page[2]))
+                {
+                    switch ($page[2])
+                    {
+                        case "blog":   
+                            set_context("blog");
+                            include(dirname(__FILE__) . "/blog.php");
+                            break;
+                        case "newpost";
+                            include(dirname(__FILE__) . "/newPost.php"); 
+                            break;
+                        case "post":
+                            set_context("blog");
+                            set_input("blogpost", $page[3]);                           
+                            
+                            switch ($page[4])
+                            {
+                                case "edit":
+                                    include(dirname(__FILE__) . "/editPost.php");
+                                    break;
+                                default:    
+                                    include(dirname(__FILE__) . "/blogPost.php");
+                                    break;
+                            }
+                            break;
+                        case "edit":
+                            include(dirname(__FILE__) . "/editOrg.php");
+                            break;
+                        default:
+                            include(dirname(__FILE__) . "/orgprofile.php");                
+                    }
+                }
+                else
+                {
+                    include(dirname(__FILE__) . "/orgprofile.php");        		   
+                }   
+                break;
 	    }
 	}
 }
@@ -158,6 +214,25 @@ function org_url($entity) {
 	return $CONFIG->url . "pg/org/{$entity->guid}/$title/";
 
 }
+
+/**
+ * Populates the ->getUrl() method for blog objects
+ *
+ * @param ElggEntity $blogpost Blog post entity
+ * @return string Blog post URL
+ */
+function blogpost_url($blogpost) {
+
+    global $CONFIG;
+    $org = $blogpost->getContainerEntity();
+    
+    if ($org)
+    {
+        return $org->getUrl() . "post/" . $blogpost->getGUID();
+    }    
+
+}
+
 
 /**
  * This hooks into the getIcon API and provides nice user icons for users where possible.
@@ -223,13 +298,44 @@ function new_index() {
     return true;
 }
 
+/**
+ * Hook into the framework and provide comments on blog entities.
+ *
+ * @param unknown_type $hook
+ * @param unknown_type $entity_type
+ * @param unknown_type $returnvalue
+ * @param unknown_type $params
+ * @return unknown
+ */
+function blog_annotate_comments($hook, $entity_type, $returnvalue, $params)
+{
+    $entity = $params['entity'];
+    $full = $params['full'];
+
+    if (
+        ($entity instanceof ElggEntity) &&  // Is the right type 
+        ($entity->getSubtype() == 'blog') &&  // Is the right subtype
+        ($entity->comments_on!='Off') && // Comments are enabled
+        ($full) // This is the full view
+    )
+    {
+        // Display comments
+        return elgg_view_comments($entity);
+    }
+
+}
+
 // register for the init, system event when our plugin start.php is loaded
 register_elgg_event_handler('init','system','envaya_init');
+register_elgg_event_handler('pagesetup','system','envaya_pagesetup');
 
 register_action("editOrg",false,dirname(__FILE__) . "/actions/editOrg.php");
 register_action("deleteOrg",false,dirname(__FILE__) . "/actions/deleteOrg.php");
 register_action("approveOrg",false,dirname(__FILE__) . "/actions/approveOrg.php");
 register_action("verifyOrg",false,dirname(__FILE__) . "/actions/verifyOrg.php");
 register_action("changeLanguage", true,dirname(__FILE__). "/actions/changeLanguage.php");
+register_action("blog/add",false,dirname(__FILE__) . "/actions/addPost.php");
+register_action("blog/edit",false,dirname(__FILE__) . "/actions/editPost.php");
+register_action("blog/delete",false,dirname(__FILE__) . "/actions/deletePost.php");
 
 ?>

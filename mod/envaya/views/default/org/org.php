@@ -87,17 +87,7 @@
 	<p class="groups_info_edit_buttons">
 
 <?php
-	if ($vars['entity']->canEdit())
-	{
 
-?>
-
-		<a href="<?php echo $vars['url']; ?>mod/envaya/editOrg.php?group_guid=<?php echo $vars['entity']->getGUID(); ?>"><?php echo elgg_echo("edit"); ?></a>
-
-
-<?php
-
-	}
 	if($vars['entity'] && isadminloggedin())
 	{
 	    if (!$vars['entity']->isApproved())

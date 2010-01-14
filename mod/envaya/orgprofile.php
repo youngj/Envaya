@@ -13,18 +13,17 @@
 	set_context('org');
 
 	global $autofeed;
-	$autofeed = true;
+	$autofeed = false;
 
 	$org = get_entity($org_guid);
 	if ($org) {
-		set_page_owner($org_guid);
-                
-        //$org->setLatLong(-5.216667,39.733333);        
-        //$org->save();
-
+		set_page_owner($org_guid);                
+        
 		$title = $org->name;	
 
         $viewOrg = false;
+        
+        
         
         if($org->approval > 0)
         {
@@ -58,7 +57,12 @@
         $area2 = elgg_view_title($title);
         $area2 .= elgg_view('org/org', array('entity' => $org, 'user' => $_SESSION['user'], 'full' => $viewOrg, 'msg' => $msg));
         
-	    $body = elgg_view_layout('two_column_left_sidebar', $area1, $area2, $area3);
+        if ($org->canEdit())
+        {
+            add_submenu_item(elgg_echo("edit"), $org->getUrl()."edit");                        
+        }    
+        
+	    $body = elgg_view_layout('two_column_left_sidebar', '', $area2, "<div class='padded'>$area3</div>");
         
 	} else {
 		$title = elgg_echo('org:notfound');
