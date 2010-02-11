@@ -7,6 +7,15 @@ class Organization extends ElggGroup {
     parent::initialise_attributes();
     $this->attributes['subtype'] = 'organization';
     
+    //Notes:
+    // this->isVerifyingOrg
+    // verifiedBy... relationship
+    // when admin performs verification, he/she chooses from a dropdown of the Orgs he/she is an admin of.  Organization is then verified by this chosen super org
+    // entity_relationships
+    //addRelationship(...
+    
+    
+    
     /*
     TODO: implement or integrate Enum implementation and use it instead of constants.
     approval values:
