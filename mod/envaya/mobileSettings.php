@@ -1,28 +1,17 @@
 <?php
-	/**
-	 * Elgg Envaya plugin
-	 *
-	 * @package ElggGroups
-	 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
-	 * @author Curverider Ltd
-	 * @copyright Curverider Ltd 2008-2009
-	 * @link http://elgg.com/
-	 */
-
 	gatekeeper();
 
 	$group_guid = get_input('org_guid');
 	$group = get_entity($group_guid);
 	set_page_owner($group_guid);
 
-	$title = elgg_echo("org:edit");
-
+	$title = elgg_echo("org:mobilesettings");
 
 	$body = elgg_view_title($title);
 
 	if (($group) && ($group->canEdit()))
 	{
-		$body .= elgg_view("org/editOrg", array('entity' => $group));
+		$body .= elgg_view("org/mobileSettings", array('entity' => $group));
 
 	} else {
 		$body .= elgg_view('org/contentwrapper',array('body' => elgg_echo('org:noaccess')));

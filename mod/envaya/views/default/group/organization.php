@@ -6,12 +6,11 @@
 	 * @subpackage Core
 	 * @author Curverider Ltd
 	 * @link http://elgg.org/
-	 */
-	 
+	    
 	if ($vars['full']) {
 		echo elgg_view('export/entity', $vars);
 	} else if ($vars['entity'] && $vars['entity']->userCanSee())
-	{
+	{        
 		$icon = elgg_view(
 				'graphics/icon', array(
 				'entity' => $vars['entity'],
@@ -59,3 +58,4 @@
 	{
 	    echo " ";
     }
+     */

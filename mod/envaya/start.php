@@ -6,7 +6,7 @@ class Organization extends ElggGroup {
   protected function initialise_attributes() {
     parent::initialise_attributes();
     $this->attributes['subtype'] = 'organization';
-    
+
     //Notes:
     // this->isVerifyingOrg
     // verifiedBy... relationship
@@ -39,12 +39,32 @@ class Organization extends ElggGroup {
   {
       return $this->approval > 0;
   }
-  
+
   public function isVerified()
   {
       return $this->approval > 2;
   }
-  
+
+    public function generateEmailCode()
+    {
+        $code = '';
+        $characters = "0123456789abcdefghijklmnopqrstuvwxyz";
+        for ($p = 0; $p < 8; $p++)
+        {
+            $code .= $characters[mt_rand(0, strlen($characters) - 1)];
+        }
+        $this->email_code = $code;
+    }
+
+    public function getPostEmail()
+    {
+        if (!$this->email_code)
+        {
+            $this->generateEmailCode();
+        }
+        return "post+{$this->email_code}@envaya.org";
+    }
+
   public function userCanSee()
   {
       return ($this->isApproved() || isadminloggedin() || ($this->getOwnerEntity() == get_loggedin_user()));
@@ -53,7 +73,7 @@ class Organization extends ElggGroup {
   public function approveOrg()
   {
       if (isadminloggedin())
-      { 
+      {
           $this->set("approval", 2);
           return true;
       }
@@ -62,11 +82,11 @@ class Organization extends ElggGroup {
           return false;
       }
   }
-  
+
   public function verifyOrg()
   {
       if (isadminloggedin())
-        { 
+        {
             $this->set("approval", 5);
             return true;
         }
@@ -85,7 +105,7 @@ function envaya_init() {
 
 	// Register a page handler, so we can have nice URLs
 	register_page_handler('org','org_page_handler');
-    register_page_handler('login','login_page_handler');    
+    register_page_handler('login','login_page_handler');
 
 	register_entity_type('group', 'organization');
    	// This operation only affects the db on the first call for this subtype
@@ -100,25 +120,26 @@ function envaya_init() {
     extend_view('css','org/css');
 
     // Replace the default index page
-    register_plugin_hook('index','system','new_index');    
+    register_plugin_hook('index','system','new_index');
     register_plugin_hook('entity:icon:url', 'group', 'org_icon_hook');
-    
+
     // Register an annotation handler for comments etc
     register_plugin_hook('entity:annotate', 'object', 'blog_annotate_comments');
-    
+
 }
 
 function envaya_pagesetup()
 {
-    if (get_context() == "blog") 
+    if (get_context() == "blog" || get_context() == "org")
     {
         $org = page_owner_entity();
-    
-        if (can_write_to_container(0, $org))
+
+        if (!empty($org) && can_write_to_container(0, $org))
         {
+        	add_submenu_item(elgg_echo('org:mobilesettings'),$org->getUrl()."mobilesettings/");
             add_submenu_item(elgg_echo('blog:addpost'),$org->getUrl()."newpost/");
         }
-    }    
+    }
 }
 
 /**
@@ -137,8 +158,10 @@ function org_page_handler($page)
 		    case "new":
                 include(dirname(__FILE__) . "/neworg.php");
 		        break;
+            case "checkmail":
+                include(dirname(__FILE__) . "/checkmail.php");
+                break;                
     		case "browse":
-    		    set_context('org');
     			set_page_owner(0);
                 include(dirname(__FILE__) . "/browseorgs.php");
     		    break;
@@ -153,37 +176,41 @@ function org_page_handler($page)
                 if (isset($page[2])) {
                     set_input('size',$page[2]);
                 }
-                
-                include(dirname(__FILE__) . "/icon.php");                
-                break;               
+
+                include(dirname(__FILE__) . "/icon.php");
+                break;
     		default:
     		    set_input('org_guid', $page[0]);
-                
+    		    set_context("org");
+
                 $org = get_entity($page[0]);
-                
-                add_submenu_item(elgg_echo("org:blog"), $org->getUrl() . "blog");                        
-                
+
+                add_submenu_item(elgg_echo("org:blog"), $org->getUrl() . "blog");
+
                 if (isset($page[2]))
                 {
                     switch ($page[2])
                     {
-                        case "blog":   
+                        case "blog":
                             set_context("blog");
                             include(dirname(__FILE__) . "/blog.php");
                             break;
                         case "newpost";
-                            include(dirname(__FILE__) . "/newPost.php"); 
+                            include(dirname(__FILE__) . "/newPost.php");
                             break;
+                        case "mobilesettings":
+                        	include(dirname(__FILE__) . "/mobileSettings.php");
+                        	break;
                         case "post":
                             set_context("blog");
-                            set_input("blogpost", $page[3]);                           
-                            
+                            set_input("blogpost", $page[3]);
+
                             switch ($page[4])
                             {
                                 case "edit":
                                     include(dirname(__FILE__) . "/editPost.php");
                                     break;
-                                default:    
+                                default:
                                     include(dirname(__FILE__) . "/blogPost.php");
                                     break;
                             }
@@ -192,13 +219,13 @@ function org_page_handler($page)
                             include(dirname(__FILE__) . "/editOrg.php");
                             break;
                         default:
-                            include(dirname(__FILE__) . "/orgprofile.php");                
+                            include(dirname(__FILE__) . "/orgprofile.php");
                     }
                 }
                 else
                 {
-                    include(dirname(__FILE__) . "/orgprofile.php");        		   
-                }   
+                    include(dirname(__FILE__) . "/orgprofile.php");
+                }
                 break;
 	    }
 	}
@@ -234,11 +261,11 @@ function blogpost_url($blogpost) {
 
     global $CONFIG;
     $org = $blogpost->getContainerEntity();
-    
+
     if ($org)
     {
         return $org->getUrl() . "post/" . $blogpost->getGUID();
-    }    
+    }
 
 }
 
@@ -322,7 +349,7 @@ function blog_annotate_comments($hook, $entity_type, $returnvalue, $params)
     $full = $params['full'];
 
     if (
-        ($entity instanceof ElggEntity) &&  // Is the right type 
+        ($entity instanceof ElggEntity) &&  // Is the right type
         ($entity->getSubtype() == 'blog') &&  // Is the right subtype
         ($entity->comments_on!='Off') && // Comments are enabled
         ($full) // This is the full view
@@ -343,6 +370,7 @@ register_action("deleteOrg",false,dirname(__FILE__) . "/actions/deleteOrg.php");
 register_action("approveOrg",false,dirname(__FILE__) . "/actions/approveOrg.php");
 register_action("verifyOrg",false,dirname(__FILE__) . "/actions/verifyOrg.php");
 register_action("changeLanguage", true,dirname(__FILE__). "/actions/changeLanguage.php");
+register_action("changeEmail", true,dirname(__FILE__). "/actions/changeEmail.php");
 register_action("blog/add",false,dirname(__FILE__) . "/actions/addPost.php");
 register_action("blog/edit",false,dirname(__FILE__) . "/actions/editPost.php");
 register_action("blog/delete",false,dirname(__FILE__) . "/actions/deletePost.php");

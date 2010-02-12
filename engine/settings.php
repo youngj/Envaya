@@ -125,6 +125,10 @@
 	 
 	 // URL
 	    $CONFIG->url = "";
+        
+    $CONFIG->email_pass = "f03;aoeA";    
 		
     $CONFIG->translations['sw'] = array('sw' => 'Kiswahili');
+    
+    include_once(dirname(__FILE__) . "/localsettings.php");
 ?>
