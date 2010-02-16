@@ -18,6 +18,7 @@
 	$input = array();
 	foreach($CONFIG->org_fields as $shortname => $valuetype) {
 		$input[$shortname] = get_input($shortname);
+        
 		if ($valuetype == 'tags')
 			$input[$shortname] = string_to_tag_array($input[$shortname]);
 	}

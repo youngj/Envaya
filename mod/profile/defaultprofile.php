@@ -52,7 +52,7 @@
 
 	set_context('admin');
 
-
+    
 	page_draw(elgg_echo('profile:edit:default'),elgg_view_layout("two_column_left_sidebar", '', $title . $form . $listing));
 
 ?>

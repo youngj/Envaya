@@ -29,7 +29,7 @@
 			$rel = 'friend';
 		
 		if (!$banned) {
-			$info .= "<p><b><a href=\"" . $vars['entity']->getUrl() . "\" rel=\"$rel\">" . $vars['entity']->name . "</a></b></p>";
+			$info .= "<p><b><a href=\"" . $vars['entity']->getUrl() . "\" rel=\"$rel\">" . escape($vars['entity']->name) . "</a></b></p>";
 			//create a view that a status plugin could extend - in the default case, this is the wire
 	 		$info .= elgg_view("profile/status", array("entity" => $vars['entity']));
 
@@ -43,7 +43,7 @@
 			$info .= "<p><b><strike>";
 			if (isadminloggedin())
 				$info .= "<a href=\"" . $vars['entity']->getUrl() . "\">";
-			$info .= $vars['entity']->name;
+			$info .= escape($vars['entity']->name);
 			if (isadminloggedin())
 				$info .= "</a>";
 			$info .= "</strike></b></p>";

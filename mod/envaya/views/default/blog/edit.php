@@ -148,10 +148,6 @@ EOT;
                         $text_textarea
         </p>
         <p>
-            <label>$tag_label</label><br />
-                        $tag_input
-        </p>
-        <p>
             $entity_hidden
             <!-- $submit_input -->
         </p>

@@ -97,6 +97,79 @@ class Organization extends ElggGroup {
   }
 }
 
+class Translation extends ElggObject
+{
+    protected function initialise_attributes() 
+    {
+        parent::initialise_attributes();
+        $this->attributes['subtype'] = 'translation';
+    }    
+
+    public function getSource()
+    {
+        return "<a href='http://translate.google.com'>Google Translate</a>";
+    }
+    
+    public function getSubtype() 
+    {
+        return 'translation';            
+    }
+    
+
+    public function __construct($guid = null) 
+    {
+        parent::__construct($guid);
+    }      
+}
+
+function lookup_translation($text, $text_language)
+{
+    $disp_language = get_language();
+    if ($text_language == $disp_language)
+    {
+        return null;
+    }
+    
+    $key = $text_language . ":" . $disp_language . ":" . sha1($text);
+    
+    $translations = get_entities_from_metadata('key', $key, 'object', 'translation'); 
+    if (!empty($translations))
+    {        
+        return $translations[0];
+    }
+    
+    $ch = curl_init(); 
+    
+    $url = "ajax.googleapis.com/ajax/services/language/translate?v=1.0&langpair=$text_language%7C$disp_language&q=".urlencode($text);
+    
+    curl_setopt($ch, CURLOPT_URL, $url); 
+    curl_setopt($ch, CURLOPT_REFERER, "www.envaya.org");    
+    
+    // TODO referrer
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+    
+    $json = curl_exec($ch); 
+         
+    curl_close($ch);     
+    
+    $res = json_decode($json);
+          
+    $translated = $res->responseData->translatedText;
+            
+    $text = html_entity_decode($translated, ENT_QUOTES);
+    
+    $trans = new Translation();    
+    $trans->owner_guid = 0;
+    $trans->container_guid = 0;
+    $trans->access_id = 2; //public
+    $trans->save();
+    $trans->key = $key;
+    $trans->text = $text;
+    
+    return $trans;
+}
+
+
 function envaya_init() {
 
     global $CONFIG;
@@ -108,9 +181,14 @@ function envaya_init() {
     register_page_handler('login','login_page_handler');
 
 	register_entity_type('group', 'organization');
+    
+    register_entity_type('object', 'translation');
+    
    	// This operation only affects the db on the first call for this subtype
    	// If you change the class name, you'll have to hand-edit the db
    	add_subtype('group', 'organization', 'Organization');
+    
+    add_subtype('object', 'translation', 'Translation');
 
     // Register a URL handler
     register_entity_url_handler('org_url','group','organization');
@@ -247,7 +325,7 @@ function org_url($entity) {
 	global $CONFIG;
 	$title = friendly_title($entity->name);
 
-	return $CONFIG->url . "pg/org/{$entity->guid}/$title/";
+	return $CONFIG->url . "{$entity->guid}/$title/";
 
 }
 
@@ -319,6 +397,7 @@ function org_fields_setup()
 	$CONFIG->org_fields = array(
 		'name' => 'text',
 		'description' => 'longtext',
+        'language' => 'language',
 		//'briefdescription' => 'text',
 		'interests' => 'tags',
 		'website' => 'url',

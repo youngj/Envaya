@@ -25,7 +25,7 @@
 				. 'style: color,cursor,text-align,font-size,font-weight,font-style,border,margin,padding,float'
 		);
 		
-		register_plugin_hook('validate', 'input', 'htmlawed_filter_tags', 1);
+		//register_plugin_hook('validate', 'input', 'htmlawed_filter_tags', 1);
 	}
 	
 	/**

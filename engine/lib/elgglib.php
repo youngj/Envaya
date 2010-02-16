@@ -21,6 +21,11 @@
 	 * @param string $location URL to forward to browser to
 	 * @return nothing|false
 	 */
+     
+    function escape($val)
+    {
+        return htmlentities($val, ENT_QUOTES, 'UTF-8');
+    }    
 
 		function forward($location = "") {
 			global $CONFIG;

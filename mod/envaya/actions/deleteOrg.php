@@ -7,7 +7,7 @@
 	
 	if (($entity) && ($entity instanceof ElggGroup))
 	{
-		if ($entity->delete())
+		if ($entity->canEdit() && $entity->delete())
 			system_message(elgg_echo('org:deleted'));
 		else
 			register_error(elgg_echo('org:notdeleted'));

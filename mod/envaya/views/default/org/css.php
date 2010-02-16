@@ -604,7 +604,8 @@ span.timestamp {
     font-size: 100%;
 }
 
-
-
-
-
+.transSource
+{
+    color:#333;
+    font:11px Arial;
+}

@@ -57,7 +57,7 @@
     <div class="contentWrapper singleview">
     
     <div class="blog_post">
-        <h3><a href="<?php echo $url; ?>"><?php echo $vars['entity']->title; ?></a></h3>
+        <h3><a href="<?php echo $url; ?>"><?php echo escape($vars['entity']->title); ?></a></h3>
         <!-- display the user icon -->
         <div class="blog_post_icon">
             <?php
@@ -72,7 +72,7 @@
                     );
                 
                 ?>
-                <?php echo elgg_echo('by'); ?> <?php echo $owner->name; ?></a> &nbsp; 
+                <?php echo elgg_echo('by'); ?> <?php echo escape($owner->name); ?></a> &nbsp; 
                 <!-- display the comments link -->
                 <?php
                     if($comments_on && $vars['entity'] instanceof ElggObject){
@@ -103,9 +103,21 @@
 
             <!-- display the actual blog post -->
                 <?php
-            
-                            echo elgg_view('output/longtext',array('value' => $vars['entity']->description));
                 
+                    $desc = $vars['entity']->description;
+                
+                    $org = $vars['entity']->getContainerEntity();
+                
+                    $translation = lookup_translation($desc, $org->language);
+                
+                    if ($translation)
+                    {
+                        echo elgg_view_entity($translation);
+                    }
+                    else
+                    {
+                        echo elgg_view("output/longtext",array('value' => $desc));
+                    }                                            
                 ?>
             </div><div class="clearfloat"></div>            
             <!-- display edit options if it is the blog post owner -->

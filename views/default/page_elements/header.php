@@ -56,7 +56,7 @@ END;
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="ElggRelease" content="<?php echo $release; ?>" />
 	<meta name="ElggVersion" content="<?php echo $version; ?>" />
-	<title><?php echo $title; ?></title>
+	<title><?php echo escape($title); ?></title>
 
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>vendors/jquery/jquery-1.3.2.min.js"></script> 
 	<script type="text/javascript" src="<?php echo $vars['url']; ?>vendors/jquery/jquery-ui-1.7.2.custom.min.js"></script>

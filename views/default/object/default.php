@@ -30,7 +30,7 @@
 			$controls .= " (<a href=\"{$vars['url']}action/entities/delete?guid={$vars['entity']->guid}\">" . elgg_echo('delete') . "</a>)";
 		}
 		
-		$info = "<div><p><b><a href=\"" . $vars['entity']->getUrl() . "\">" . $title . "</a></b> $controls </p></div>";
+		$info = "<div><p><b><a href=\"" . $vars['entity']->getUrl() . "\">" . escape($title) . "</a></b> $controls </p></div>";
 		
 		if (get_input('search_viewtype') == "gallery") {
 			
@@ -41,7 +41,7 @@
 		$owner = $vars['entity']->getOwnerEntity();
 		$ownertxt = elgg_echo('unknown');
 		if ($owner)
-			$ownertxt = "<a href=\"" . $owner->getURL() . "\">" . $owner->name ."</a>";
+			$ownertxt = "<a href=\"" . $owner->getURL() . "\">" . escape($owner->name) ."</a>";
 		
 		$info .= "<div>".sprintf(elgg_echo("entity:default:strapline"),
 						friendly_time($vars['entity']->time_created),

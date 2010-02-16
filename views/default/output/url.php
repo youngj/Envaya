@@ -30,8 +30,10 @@
 			if (strpos($val, '?')>0) $sep = "&";
 			$val = "$val{$sep}__elgg_token=$token&__elgg_ts=$ts";
 		}
+        
+        $val = escape($val);
 	    
-	    echo "<a href=\"{$val}\" target=\"_blank\">". htmlentities($val, ENT_QUOTES, 'UTF-8'). "</a>";
+	    echo "<a href=\"{$val}\" target=\"_blank\">$val</a>";
     }
 
 ?>

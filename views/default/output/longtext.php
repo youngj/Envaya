@@ -17,5 +17,5 @@
 
 	global $CONFIG;
 
-    echo autop(parse_urls(filter_tags($vars['value'])));
+    echo autop(parse_urls(filter_tags(htmlentities($vars['value']))));
 ?>

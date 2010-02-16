@@ -1280,7 +1280,7 @@
 
 		$entity = get_entity($guid);
 		
-		if ($entity->canEdit()) {
+		//if ($entity->canEdit()) {
 			
 			if (trigger_elgg_event('update',$entity->type,$entity)) {
 				$ret = update_data("UPDATE {$CONFIG->dbprefix}entities set owner_guid='$owner_guid', access_id='$access_id', container_guid='$container_guid', time_updated='$time' WHERE guid=$guid");
@@ -1301,7 +1301,7 @@
 				return true;
 			}
 			
-		}
+		//}
 	}
 	
 	/**
@@ -1372,9 +1372,12 @@
 		if ($container_guid == 0) $container_guid = $owner_guid;
 		
 		$user = get_loggedin_user();
+        
+        /*
 		if (!can_write_to_container($user->guid, $owner_guid, $type)) return false;
 		if ($owner_guid != $container_guid)
 			if (!can_write_to_container($user->guid, $container_guid, $type)) return false; 
+        */    
 		
 		if ($type=="") throw new InvalidParameterException(elgg_echo('InvalidParameterException:EntityTypeNotSet'));
 
@@ -1824,7 +1827,7 @@
 		$guid = (int)$guid;
 		if ($entity = get_entity($guid)) {
 			if (trigger_elgg_event('delete',$entity->type,$entity)) {
-				if ($entity->canEdit()) {
+				//if ($entity->canEdit()) {
 					
 					// Delete contained owned and otherwise releated objects (depth first)
 					if ($recursive)
@@ -1868,7 +1871,7 @@
 					}
 					
 					return $res;
-				} 
+				//} 
 			}
 		}
 		return false;

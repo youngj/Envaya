@@ -233,7 +233,7 @@
 	/**
 	 * Return an array of installed translations as an associative array "two letter code" => "native language name".
 	 */
-		function get_installed_translations()
+		function get_installed_translations($show_completeness = false)
 		{
 			global $CONFIG;
 			
@@ -246,9 +246,12 @@
 			{
 				$installed[$k] = elgg_echo($k, $k);
 				
-				$completeness = get_language_completeness($k);
-				if ((isadminloggedin()) && ($completeness<100) && ($k!='en'))
-					$installed[$k] .= " (" . $completeness . "% " . elgg_echo('complete') . ")";
+                if ($show_completeness)
+                {                
+                    $completeness = get_language_completeness($k);
+                    if ((isadminloggedin()) && ($completeness<100) && ($k!='en'))
+                        $installed[$k] .= " (" . $completeness . "% " . elgg_echo('complete') . ")";
+                } 
 			}
 			
 			return $installed;

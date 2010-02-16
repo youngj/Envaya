@@ -4,7 +4,7 @@
 
     global $CONFIG;   
     
-    echo "<b>Welcome, " . get_loggedin_user()->name . "!</b><br>";
+    echo "<b>Welcome, " . escape(get_loggedin_user()->name) . "!</b><br>";
     
 
 	$users = get_entities("group","organization",0,10,false);

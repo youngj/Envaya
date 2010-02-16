@@ -22,7 +22,7 @@
 			if ($user->language)
 				$value = $user->language;
 			
-			echo elgg_view("input/pulldown", array('internalname' => 'language', 'value' => $value, 'options_values' => get_installed_translations()));
+			echo elgg_view("input/pulldown", array('internalname' => 'language', 'value' => $value, 'options_values' => get_installed_translations(true)));
 		
 		 ?> 
 

@@ -21,7 +21,9 @@
 			'org:location' => 'Location',
             'org:map' => 'Map',
             'org:blog' => 'News',
+            'org:language' => 'Language',
             'org:browse' => "Browse all Organizations",
+            'translation_by' => 'Translation by',
 
 			'item:group:organization' => "Organizations",
 

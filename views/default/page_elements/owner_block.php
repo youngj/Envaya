@@ -22,14 +22,14 @@
 			$icon = elgg_view("profile/icon",array('entity' => $owner, 'size' => 'tiny'));
 			if ($owner instanceof ElggUser || $owner instanceof ElggGroup) {
 				//$info = $owner->name;
-				$info = '<a href="' . $owner->getURL() . '">' . $owner->name . '</a>';
+				$info = '<a href="' . $owner->getURL() . '">' . escape($owner->name) . '</a>';
 			}
 			$display = "<div id=\"owner_block_icon\">" . $icon . "</div>";
 			$display .= "<div id=\"owner_block_content\">" . $info . "</div><div class=\"clearfloat ownerblockline\"></div>";
 			
 			if ($owner->briefdescription) {
 			    $desc = $owner->briefdescription;
-			    $display .= "<div id=\"owner_block_desc\">" . $desc . "</div>";
+			    $display .= "<div id=\"owner_block_desc\">" . escape($desc) . "</div>";
 		    }
 		    
 		    $contents .= $display;

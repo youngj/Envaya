@@ -40,9 +40,28 @@
                 {
                     echo "<h4>Envaya Verified!</h4>";
                 }
+                                
+                echo "<p>";
+
+                $desc = $vars['entity']->description;
+                
+                $translation = lookup_translation($desc, $vars['entity']->language);
+                
+                if ($translation)
+                {
+                    echo elgg_view_entity($translation);
+                }
+                else
+                {
+                    echo elgg_view("output/longtext",array('value' => $desc));
+                }    
+
+                echo "</p>";
+
 
 		        foreach($vars['config']->org_fields as $shortname => $valtype) {
-			        if ($shortname != "name") {
+			        if ($shortname != "name" && $shortname != 'description') 
+                    {
 				        $value = $vars['entity']->$shortname;
 
 					    if (!empty($value)) {
@@ -54,8 +73,10 @@
 						echo "<b>";
 						echo elgg_echo("org:{$shortname}");
 						echo ": </b>";
-
-						echo elgg_view("output/{$valtype}",array('value' => $vars['entity']->$shortname));
+    
+                        $val = $vars['entity']->$shortname;
+                        
+						echo elgg_view("output/{$valtype}",array('value' => $val));
 
 						echo "</p>";
 				    }

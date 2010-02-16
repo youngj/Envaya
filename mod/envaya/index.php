@@ -2,10 +2,10 @@
 <?php    
     global $CONFIG;   
 
-	$users = get_entities("group","organization",0,10,false);
+	$orgs = get_entities("group","organization",0,10,false);
 
 	$area = elgg_view('extensions/entity_list',array(
-		'entities' => $users
+		'entities' => $orgs
     ));
     
     $area .= "<form method='GET' action='".$CONFIG->wwwroot."pg/org/search/'><input type='text' name='q'><input type='submit' value='".elgg_echo('search')."'></form>";

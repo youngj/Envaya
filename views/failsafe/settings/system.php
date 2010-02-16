@@ -33,7 +33,7 @@
 			$form_body .= "</p>";
 		}
 		
-		$languages = get_installed_translations();
+		$languages = get_installed_translations(true);
 		$form_body .= "<p>" . elgg_echo('installation:language') . elgg_view("input/pulldown", array('internalname' => 'language', 'value' => $vars['config']->language, 'options_values' => $languages)) . "</p>";
 		
 		$form_body .= "<p>" . elgg_echo('installation:sitepermissions') . elgg_view('input/access', array('internalname' => 'default_access','value' => ACCESS_LOGGED_IN)) . "</p>";

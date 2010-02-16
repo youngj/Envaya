@@ -132,4 +132,6 @@ RewriteRule mt/mt-xmlrpc.cgi engine/handlers/xml-rpc_handler.php
 
 RewriteRule tag/(.+)/?$ engine/handlers/pagehandler.php?handler=search&page=$1
 
+RewriteRule ^(\d+/.*)$ engine/handlers/pagehandler.php?handler=org&page=$1
+
 </IfModule>

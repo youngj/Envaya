@@ -59,7 +59,7 @@
                     function (marker){
                         marker.openInfoWindowHtml([
                             '<h3><a href="<?php echo $org->getUrl(); ?>">',
-                            <?php echo json_encode($org->name); ?>,
+                            <?php echo json_encode(escape($org->name)); ?>,
                             '</a></h3><p>',
                             <?php
                                 $description = $org->description;
@@ -68,7 +68,7 @@
                                 {
                                     $description = substr($description, 0, 300) ."...";
                                 }
-                                echo json_encode($description);
+                                echo json_encode(escape($description));
 
                             ?>,
                             '</p>'
