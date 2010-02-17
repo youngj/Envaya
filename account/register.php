@@ -20,8 +20,10 @@
 		$invitecode = get_input('invitecode');
 		
 	// If we're not logged in, display the registration page
-		if (!isloggedin()) {
-			page_draw(elgg_echo('register'), elgg_view("account/forms/register", array('friend_guid' => $friend_guid, 'invitecode' => $invitecode)));
+		if (!isloggedin()) 
+        {
+            $body = elgg_view_layout('one_column', elgg_view_title(elgg_echo("register")), elgg_view("account/forms/register", array('friend_guid' => $friend_guid, 'invitecode' => $invitecode)));
+			page_draw(elgg_echo('register'), $body);
 	// Otherwise, forward to the index page
 		} else {
 			forward();

@@ -20,7 +20,7 @@
 
     $body .= "<p><a href=\"" . $CONFIG->wwwroot . "pg/org/new/" . "\">". elgg_echo('org:new') ."</a></p>";
 
-    page_draw(elgg_echo("org:browse"), elgg_view_layout('one_column', $body));
+    page_draw(elgg_echo("org:browse"), elgg_view_layout('one_column_padded', elgg_view_title(elgg_echo("org:browse")), $body));
      
     
 ?>

@@ -1,13 +1,9 @@
-<div id="dashboard_info">
-<p>
 <?php
 
     global $CONFIG;   
     
-    echo "<b>Welcome, " . escape(get_loggedin_user()->name) . "!</b><br>";
     
-
-	$users = get_entities("group","organization",0,10,false);
+	$users = get_entities("group","organization", get_loggedin_user()->guid);
 
 	$area = elgg_view('extensions/entity_list',array(
 		'entities' => $users
@@ -19,4 +15,3 @@
 
 ?>
 
-</div>

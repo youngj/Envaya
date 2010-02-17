@@ -23,8 +23,6 @@
 
         $viewOrg = false;
         
-        
-        
         if($org->approval > 0)
         {
             //organization approved
@@ -52,17 +50,15 @@
                 $msg = elgg_echo('org:waitingapproval');
             }
         }
-        
 
-        $area2 = elgg_view_title($title);
-        $area2 .= elgg_view('org/org', array('entity' => $org, 'user' => $_SESSION['user'], 'full' => $viewOrg, 'msg' => $msg));
-        
         if ($org->canEdit())
         {
-            add_submenu_item(elgg_echo("edit"), $org->getUrl()."edit");                        
-        }    
-        
-	    $body = elgg_view_layout('two_column_left_sidebar', '', $area2, "<div class='padded'>$area3</div>");
+            add_submenu_item(elgg_echo("edit"), $org->getUrl() . "edit");
+        }                    
+                
+        $area2 = elgg_view('org/org', array('entity' => $org, 'user' => $_SESSION['user'], 'full' => $viewOrg, 'msg' => $msg));        
+        $area1 = elgg_view('page_elements/title', array('title' => $title, 'subtitle' => $org->location));
+        $body = elgg_view_layout('one_column', $area1, $area2);
         
 	} else {
 		$title = elgg_echo('org:notfound');
@@ -70,7 +66,7 @@
 		$area2 = elgg_view_title($title);
 		$area2 .= elgg_view('org/contentwrapper',array('body' => elgg_echo('org:notfound:details')));
 
-		$body = elgg_view_layout('two_column_left_sidebar', "", $area2,"");
+        $body = elgg_view_layout('profile', $area2);
 	}
 
 	// Finally draw the page

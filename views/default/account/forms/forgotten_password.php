@@ -14,6 +14,4 @@
 	$form_body .= "<p>" . elgg_view('input/submit', array('value' => elgg_echo('request'))) . "</p>";
 
 ?>
-<div class="contentWrapper">
 	<?php echo elgg_view('input/form', array('action' => "{$vars['url']}action/user/requestnewpassword", 'body' => $form_body)); ?>
-</div>

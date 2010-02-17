@@ -39,7 +39,4 @@
 ?>
 
 	
-	<div id="register-box">
-	<h2><?php echo elgg_echo('register'); ?></h2>
 	<?php echo elgg_view('input/form', array('action' => "{$vars['url']}action/register", 'body' => $form_body)) ?>
-	</div>

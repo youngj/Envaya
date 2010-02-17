@@ -33,8 +33,6 @@
 
 				$body.= "<div class='padded'><form method='GET' action='".$CONFIG->wwwroot."pg/org/search/'><input type='text' name='q' value='".$query."'><input type='submit' value='".elgg_echo('search')."'></form></div>";
 
-				$body .= elgg_view_title($title); // elgg_view_title(sprintf(elgg_echo('searchtitle'),$tag));
-
 				$latlong = elgg_geocode_location($query);
         	}
 	    }
@@ -69,7 +67,7 @@
 			$body .= "<div class='padded'>" . elgg_echo("org:searchnoresults") . "</div>";
 		}
 
-		$body = elgg_view_layout('one_column',$body);
+		$body = elgg_view_layout('one_column',elgg_view_title($title), $body);
 
         page_draw($title,$body);
 ?>

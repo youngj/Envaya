@@ -15,27 +15,60 @@
 		$iconsize = "medium";
 	}
 
-?>
+    $org = $vars['entity'];
 
-<div id="groups_info_column_right"><!-- start of groups_info_column_right -->
-    <div id="groups_icon_wrapper"><!-- start of groups_icon_wrapper -->
 
-        <?php
-		    echo elgg_view(
-					"org/icon", array(
-												'entity' => $vars['entity'],
-												//'align' => "left",
-												'size' => $iconsize,
-											  )
-					);
-        ?>
+    if ($vars['full'] == true) 
+    {
+        $aboutContent = elgg_view("output/longtext",array('value' => $org->description));
+        
+        if ($org->website)
+        {
+            $aboutContent .= "<div class='org_website'>". elgg_echo('org:website') . ": " . elgg_view("output/url",array('value' => $org->website))."</div>";   
+        }        
 
-    </div><!-- end of groups_icon_wrapper -->
-</div><!-- end of groups_info_column_right -->
+        $title = elgg_echo("org:about");
+                
+        echo elgg_view_layout('section', $title, $aboutContent);
 
-<div id="groups_info_column_left"><!-- start of groups_info_column_left -->
-    <?php
-        if ($vars['full'] == true) {
+        /*
+        echo elgg_view_layout('section', elgg_echo("org:logo"), 
+            elgg_view("org/icon", array('entity' => $vars['entity'], 'size' => $iconsize))
+        );      
+        */
+        
+        $posts = list_user_objects($org->getGUID(),'blog',10,false);
+        
+        if (!$posts)
+        {
+            $posts = elgg_echo("org:noupdates");
+        }
+        else
+        {
+            $posts .= "<a class='float_right' href='".$org->getUrl()."blog'>View all updates</a>";
+        }
+                
+        echo elgg_view_layout('section', elgg_echo("org:updates"), $posts);
+        
+
+        $entityLat = $vars['entity']->getLatitude();
+        if (!empty($entityLat)) 
+        { 
+            echo elgg_view_layout('section', elgg_echo("org:map"), 
+                elgg_view("org/map", array(
+                    'lat' => $entityLat, 
+                    'long' => $vars['entity']->getLongitude(),
+                    'zoom' => 10,
+                    'pin' => true,
+                    'static' => true
+                ))
+            );        
+        }    
+    
+    }    
+
+
+    /*        
                 if($vars['entity']->isVerified())
                 {
                     echo "<h4>Envaya Verified!</h4>";
@@ -58,56 +91,7 @@
 
                 echo "</p>";
 
-
-		        foreach($vars['config']->org_fields as $shortname => $valtype) {
-			        if ($shortname != "name" && $shortname != 'description') 
-                    {
-				        $value = $vars['entity']->$shortname;
-
-					    if (!empty($value)) {
-					        //This function controls the alternating class
-                		    $even_odd = ( 'odd' != $even_odd ) ? 'odd' : 'even';
-					    }
-
-					    echo "<p class=\"{$even_odd}\">";
-						echo "<b>";
-						echo elgg_echo("org:{$shortname}");
-						echo ": </b>";
-    
-                        $val = $vars['entity']->$shortname;
-                        
-						echo elgg_view("output/{$valtype}",array('value' => $val));
-
-						echo "</p>";
-				    }
-				}
-
-                echo "<p><b>";
-                echo elgg_echo("org:map");
-                echo ": </b>";
-                $entityLat = $vars['entity']->getLatitude();
-                if (!empty($entityLat)) 
-                { 
-                    echo elgg_view("org/map", array(
-                        'lat' => $entityLat, 
-                        'long' => $vars['entity']->getLongitude(),
-                        'zoom' => 10,
-                        'width' => 300,
-                        'pin' => true,
-                        'height' => 200,
-                        'static' => true
-                    ));                                  
-                }
-                echo "</p>";
-		}
-	?>
-</div><!-- end of groups_info_column_left -->
-
-<div id="groups_info_wide">
-
-	<p class="groups_info_edit_buttons">
-
-<?php
+        */
 
 	if($vars['entity'] && isadminloggedin())
 	{
@@ -157,7 +141,3 @@
 	
 
 ?>
-
-	</p>
-</div>
-<div class="clearfloat"></div>

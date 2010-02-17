@@ -25,9 +25,11 @@
 	// wrap intro message in a div
 		$intro_message = elgg_view('dashboard/blurb');
 		
-	// Try and get the user from the username and set the page body accordingly
-		//$body = elgg_view_layout('widgets',"","",$intro_message);
-		$body = elgg_view_layout('',"","",$intro_message);
+	// Try and get the user from the username and set the page body accordingly		
+        $body = elgg_view_layout('one_column', 
+            elgg_view_title(sprintf(elgg_echo("welcome_user"), get_loggedin_user()->name)),
+            $intro_message
+        );
         
 		page_draw($title, $body);
 		

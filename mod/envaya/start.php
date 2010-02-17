@@ -263,8 +263,6 @@ function org_page_handler($page)
 
                 $org = get_entity($page[0]);
 
-                add_submenu_item(elgg_echo("org:blog"), $org->getUrl() . "blog");
-
                 if (isset($page[2]))
                 {
                     switch ($page[2])

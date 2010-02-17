@@ -10,6 +10,11 @@
 	 */
 
 	$english = array(
+            'welcome' => "Welcome to Envaya",
+            'welcome_user' => "Welcome, %s!",
+            'org:about' => 'About',
+            'org:updates' => 'Updates',
+            'org:logo' => 'Logo',
 			'org:name' => 'Group name',
 			'org:username' => 'Group short name (displayed in URLs, alphanumeric characters only)',
 			'org:description' => 'Description',

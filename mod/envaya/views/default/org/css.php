@@ -10,16 +10,163 @@
      * @link http://elgg.com/
      */
 
+    $graphicsDir = $vars['url'] . "mod/envaya/graphics";
 ?>
 
-body, #layout_header
+#topbar
 {
-	background-color:#7faa89;
+    height:50px;
+    background:#d9d9d9 url("<?php echo $graphicsDir; ?>/topgradient.gif") repeat-x left top;  
+}
+
+#topbar form
+{
+    display:inline;
+}
+
+#logo_container
+{
+    padding:3px;
+    float:left;
+}
+
+#topbar_container_left
+{
+    padding:15px;
+    float:left;
+}
+
+
+#topbar_container_left a, form
+{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#thin_column
+{
+    width:493px;
+    margin:0 auto;   
+}
+
+#sidebar_container
+{
+    position:absolute;
+    top:30px;
+    margin-left:493px;
+    width:120px;
+    height:50px;
+}
+
+#sidebar_container ul
+{
+    margin:0px;
+    padding:0px;
+}
+
+.blog_post
+{
+    margin-bottom:5px;
+}
+
+.float_right
+{
+    clear:both;
+    display:block;
+    float:right;
+}
+
+#heading
+{
+    height:50px;
+    padding:30px;
+    text-align:center;
+    text-transform:uppercase;
+    color:black;    
+    letter-spacing:1px;
+    font-family:"Gill Sans MT", sans-serif;
+}
+
+#heading h1
+{
+    font-size:22px;
+}
+
+
+#heading h2
+{
+    color:#222;
+    font-size:14px;
+}
+
+#content
+{
+    background-color:#fff;
+    position:relative;
+}
+
+#content_top
+{
+    height:24px;
+    background:#fff url("<?php echo $graphicsDir; ?>/contenttop.gif") no-repeat left top;  
+}
+
+#content_bottom
+{
+    height:24px;
+    background:#fff url("<?php echo $graphicsDir; ?>/contentbottom.gif") no-repeat left top;  
+}
+
+
+#content_mid
+{
+    background:#fff url("<?php echo $graphicsDir; ?>/contentgradient.gif") repeat-y left top;  
+    padding:0px 6px;
+}
+
+.section_header
+{
+    position:relative;
+    background:#e6e6e6 url("<?php echo $graphicsDir; ?>/sectionheader.gif") no-repeat left top;  
+    height:21px;
+    padding:10px 15px;
+    font-family:"Gill Sans MT", sans-serif;
+    text-transform:uppercase;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.section_content
+{
+    padding:5px 10px;
+}
+
+.org_website
+{
+    float:right;
+}
+
+
+.sidebar_link
+{
+    position:absolute;
+    left:490px;
+}
+
+body
+{
+	background-color:#e7e2d7;
 }
 
 #layout_header, #layout_header a
 {
     color:white;
+}
+
+#layout_canvas
+{
+    margin: 0 auto;
+    width:483px;
 }
 
 #elgg_topbar_container_search
