@@ -18,21 +18,10 @@
 		$iconsize = "medium";
 	}
 	
-	// wrap all profile info
-	echo "<div id=\"profile_info\">";
-
 ?>
-
-<table cellspacing="0">
-<tr>
-<td>
 
 <?php	
 	
-	// wrap the icon and links in a div
-	echo "<div id=\"profile_info_column_left\">";
-	
-	echo "<div id=\"profile_icon_wrapper\">";
 	// get the user's main profile picture
 	echo elgg_view(
 						"profile/icon", array(
@@ -44,35 +33,8 @@
 					);
 
 
-    echo "</div>";
-    echo "<div class=\"clearfloat\"></div>";
-     // display relevant links			
-    echo elgg_view("profile/profilelinks", array("entity" => $vars['entity']));
-       
-    // close profile_info_column_left
-    echo "</div>";
-
 ?>
-</td>
-<td>
-	
-	<div id="profile_info_column_middle" >
-			<?php
-	
-		if ($vars['entity']->canEdit()) {
-
-	?>
-		<p class="profile_info_edit_buttons">
-			<a href="<?php echo $vars['url']; ?>pg/profile/<?php echo $vars['entity']->username; ?>/edit/"><?php echo elgg_echo("profile:edit"); ?></a>
-		</p>
-	<?php
-
-		}
 		
-	?>
-	
-	
-	
 	<?php 
 	
 	// Simple XFN
@@ -80,10 +42,7 @@
 	if (page_owner() == $vars['entity']->guid)
 		$rel = 'me';
 	else if (check_entity_relationship(page_owner(), 'friend', $vars['entity']->guid))
-		$rel = 'friend';
-		
-	// display the users name
-	echo "<h2><a href=\"" . $vars['entity']->getUrl() . "\" rel=\"$rel\">" . escape($vars['entity']->name) . "</a></h2>";
+		$rel = 'friend';		
 
 	//insert a view that can be extended
 	echo elgg_view("profile/status", array("entity" => $vars['entity']));
@@ -127,14 +86,8 @@
 		}
 	
 	?>
-	</div><!-- /#profile_info_column_middle -->
 
-</td>
-</tr>
 <?php if (!get_plugin_setting('user_defined_fields', 'profile')) {?>
-<tr>
-<td colspan="2">
-	<div id="profile_info_column_right">	
 	<p class="profile_aboutme_title"><b><?php echo elgg_echo("profile:aboutme"); ?></b></p>
 	
 	<?php if ($vars['entity']->isBanned()) { ?>
@@ -153,17 +106,7 @@
 	
 	<?php } ?>
 	
-	</div><!-- /#profile_info_column_right -->
-
-</td>
-
-
-
-</tr>
 <?php } ?>
 
-</table>
 
 
-
-</div><!-- /#profile_info -->

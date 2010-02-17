@@ -16,13 +16,12 @@
 <div id="topbar">
 
 <div id='logo_container'>
-    <a href="<?php echo $vars['config']->wwwroot ?>">
+    <a href="<?php echo $vars['config']->wwwroot . ((isloggedin()) ? 'pg/dashboard' : '') ?>">
         <img src="<?php echo $vars['config']->wwwroot ?>mod/envaya/graphics/logo.gif" alt="Envaya" width="170" height="40">
     </a>
 </div>
 
 <div id="topbar_container_left">
-
 
     <a href="<?php echo $vars['config']->wwwroot . "pg/org/browse/" ?>" class='pagelinks'><?php echo elgg_echo('item:group:organization'); ?></a>
 
@@ -71,8 +70,8 @@
     ?>
 
 
-<form id="searchform" action="<?php echo $vars['url']; ?>pg/search/" method="get">
-    <input type="text" size="21" name="tag" value="<?php echo elgg_echo('search'); ?>" onclick="if (this.value=='<?php echo elgg_echo('search'); ?>') { this.value='' }" class="search_input" />
+<form id="searchform" action="<?php echo $vars['url']; ?>pg/org/search/" method="get">
+    <input type="text" size="21" name="q" value="<?php echo elgg_echo('search'); ?>" onclick="if (this.value=='<?php echo elgg_echo('search'); ?>') { this.value='' }" class="search_input" />
     <input type="submit" value="<?php echo elgg_echo('search:go'); ?>" class="search_submit_button" />
 </form>
 

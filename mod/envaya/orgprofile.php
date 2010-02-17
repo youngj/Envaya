@@ -50,15 +50,9 @@
                 $msg = elgg_echo('org:waitingapproval');
             }
         }
-
-        if ($org->canEdit())
-        {
-            add_submenu_item(elgg_echo("edit"), $org->getUrl() . "edit");
-        }                    
                 
-        $area2 = elgg_view('org/org', array('entity' => $org, 'user' => $_SESSION['user'], 'full' => $viewOrg, 'msg' => $msg));        
-        $area1 = elgg_view('page_elements/title', array('title' => $title, 'subtitle' => $org->location));
-        $body = elgg_view_layout('one_column', $area1, $area2);
+        $area2 = elgg_view('org/org', array('entity' => $org, 'user' => $_SESSION['user'], 'full' => $viewOrg, 'msg' => $msg));                
+        $body = elgg_view_layout('one_column', org_title($org, $org->location), $area2);
         
 	} else {
 		$title = elgg_echo('org:notfound');

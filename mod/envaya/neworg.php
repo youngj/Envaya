@@ -13,10 +13,8 @@
 
 	// Render the file upload page
 	$title = elgg_echo("org:new");
-	$area2 = elgg_view_title($title);
-	$area2 .= elgg_view("org/editOrg");
 	
-	$body = elgg_view_layout('two_column_left_sidebar', $area1, $area2);
+    $body = elgg_view_layout('one_column', elgg_view_title($title), elgg_view("org/editOrg"));
 	
 	page_draw($title, $body);
 ?>

@@ -290,7 +290,7 @@
             global $CONFIG;
             
             if ($user->isBanned()) return false; // User is banned, return false.
-            if (check_rate_limit_exceeded($user->guid)) return false; // Check rate limit
+            //if (check_rate_limit_exceeded($user->guid)) return false; // Check rate limit
           
             $_SESSION['user'] = $user;
             $_SESSION['guid'] = $user->getGUID();

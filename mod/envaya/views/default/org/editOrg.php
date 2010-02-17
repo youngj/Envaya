@@ -10,20 +10,10 @@
 	 */
 
 ?>
-<div class="contentWrapper">
 <form action="<?php echo $vars['url']; ?>action/editOrg" enctype="multipart/form-data" method="post">
 
 	<?php echo elgg_view('input/securitytoken'); ?>
 
-	<p>
-		<label><?php echo elgg_echo("org:icon"); ?><br />
-		<?php
-
-			echo elgg_view("input/file",array('internalname' => 'icon'));
-
-		?>
-		</label>
-	</p>
 <?php
 
 	//var_export($vars['profile']);
@@ -42,12 +32,22 @@
 		</label>
 	</p>
 
+
 <?php
 
 		}
 
 ?>
 
+    <p>
+        <label><?php echo elgg_echo("org:icon"); ?><br />
+        <?php
+
+            echo elgg_view("input/file",array('internalname' => 'icon'));
+
+        ?>
+        </label>
+    </p>
 	<p>
 		<?php
 			if ($vars['entity'])
@@ -61,25 +61,3 @@
 	</p>
 
 </form>
-</div>
-
-<div class="contentWrapper">
-<div id="delete_group_option">
-	<form action="<?php echo $vars['url'] . "action/deleteOrg"; ?>">
-	    <?php echo elgg_view('input/securitytoken'); ?>
-		<?php
-			if ($vars['entity'])
-			{
-				$warning = elgg_echo("org:deletewarning");
-			?>
-			<input type="hidden" name="user_guid" value="<?php echo page_owner_entity()->guid; ?>" />
-			<input type="hidden" name="org_guid" value="<?php echo $vars['entity']->getGUID(); ?>" />
-			<input type="submit" name="delete" value="<?php echo elgg_echo('org:delete'); ?>" onclick="javascript:return confirm('<?php echo $warning; ?>')"/><?php
-			}
-		?>
-	</form>
-</div><div class="clearfloat"></div>
-</div>
-
-
-

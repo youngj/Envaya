@@ -12,7 +12,11 @@
 	$english = array(
             'welcome' => "Welcome to Envaya",
             'welcome_user' => "Welcome, %s!",
+            'user_orgs' => "Your organizations",
+            'actions' => "Actions",
             'org:about' => 'About',
+            'org:view' => 'View profile',
+            'org:edit' => 'Edit profile',
             'org:updates' => 'Updates',
             'org:logo' => 'Logo',
 			'org:name' => 'Group name',
@@ -33,7 +37,6 @@
 			'item:group:organization' => "Organizations",
 
 			'org:new' => "Create Organization",
-			'org:edit' => "Edit Organization",
 			'org:delete' => 'Delete Organization',
 			'org:noaccess' => 'You cannot access this organization',
 			'org:icon' => 'Organization logo (leave blank to leave unchanged)',
@@ -84,8 +87,8 @@
             'blog:via' => "via blog",
             'blog:read' => "Read blog",
 
-            'blog:addpost' => "Write a blog post",
-            'blog:editpost' => "Edit blog post",
+            'blog:addpost' => "Add update",
+            'blog:editpost' => "Edit",
 
             'blog:text' => "Blog text",
 

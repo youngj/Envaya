@@ -17,18 +17,16 @@
 
 	$title = elgg_echo("org:edit");
 
-
-	$body = elgg_view_title($title);
-
 	if (($group) && ($group->canEdit()))
 	{
-		$body .= elgg_view("org/editOrg", array('entity' => $group));
-
-	} else {
-		$body .= elgg_view('org/contentwrapper',array('body' => elgg_echo('org:noaccess')));
+		$body = elgg_view("org/editOrg", array('entity' => $group));
+	} 
+    else 
+    {
+		$body = elgg_view('org/contentwrapper',array('body' => elgg_echo('org:noaccess')));
 	}
 
-	$body = elgg_view_layout('two_column_left_sidebar', '', $body);
+    $body = elgg_view_layout('one_column',  org_title($org, $title), $body);
 
 	page_draw($title, $body);
 ?>

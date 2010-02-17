@@ -22,6 +22,8 @@
     	if ($lat && $long)
     	{
 			$latlong = array('lat' => $lat, 'long' => $long);
+            
+            $title = sprintf(elgg_echo('browse_map'));
     	}
     	else
     	{

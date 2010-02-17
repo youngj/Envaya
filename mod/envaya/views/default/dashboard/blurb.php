@@ -2,16 +2,17 @@
 
     global $CONFIG;   
     
+	$orgs = get_entities("group","organization", get_loggedin_user()->guid);
     
-	$users = get_entities("group","organization", get_loggedin_user()->guid);
+    echo elgg_view_layout('section', elgg_echo("user_orgs"),
+        elgg_view('extensions/entity_list',array(
+            'entities' => $orgs
+        ))
+    );
 
-	$area = elgg_view('extensions/entity_list',array(
-		'entities' => $users
-    ));
-    
-    echo $area;
-    
-    echo "</p><br><br><p><a href=\"" . $CONFIG->wwwroot . "pg/org/new/" . "\">". elgg_echo('org:new') ."</a></p>";
+    echo elgg_view_layout('section', elgg_echo("actions"),
+        "<a href=\"" . $CONFIG->wwwroot . "pg/org/new/" . "\">". elgg_echo('org:new') ."</a>"
+    );
 
 ?>
 

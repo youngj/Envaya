@@ -94,14 +94,8 @@
 			
 			$profile_defaults = array (
 				'description' => 'longtext',
-				'briefdescription' => 'text',
-				'location' => 'tags',
-				'interests' => 'tags',
-				'skills' => 'tags',
 				'contactemail' => 'email',
 				'phone' => 'text',
-				'mobile' => 'text',
-				'website' => 'url',
 			);
 			
 			// TODO: Have an admin interface for this

@@ -214,10 +214,21 @@ function envaya_pagesetup()
 
         if (!empty($org) && can_write_to_container(0, $org))
         {
+            add_submenu_item(elgg_echo('org:view'),$org->getUrl());
+            add_submenu_item(elgg_echo("org:edit"), $org->getUrl() . "edit");
         	add_submenu_item(elgg_echo('org:mobilesettings'),$org->getUrl()."mobilesettings/");
             add_submenu_item(elgg_echo('blog:addpost'),$org->getUrl()."newpost/");
         }
+        else if (get_context() == 'blog')
+        {
+            add_submenu_item(elgg_echo('org:view'),$org->getUrl());
+        }
     }
+}
+
+function org_title($org, $subtitle)
+{
+    return elgg_view('page_elements/title', array('title' => $org->name, 'subtitle' => $subtitle));
 }
 
 /**
@@ -262,6 +273,8 @@ function org_page_handler($page)
     		    set_context("org");
 
                 $org = get_entity($page[0]);
+                
+                set_page_owner($page[0]);
 
                 if (isset($page[2]))
                 {

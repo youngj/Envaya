@@ -19,9 +19,9 @@
 			set_page_owner($_SESSION['guid']);
 		}
 
-	// Display main admin menu
-		page_draw(
-					elgg_echo("usersettings:user"),
-					elgg_view_layout("two_column_left_sidebar", '', elgg_view_title(elgg_echo('usersettings:user')) . elgg_view("usersettings/form"))
-				  );
+        $title = elgg_echo("usersettings:user");
+
+		page_draw($title,
+            elgg_view_layout("one_column", elgg_view_title($title), elgg_view("usersettings/form"))
+        );
 ?>

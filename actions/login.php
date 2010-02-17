@@ -62,7 +62,8 @@
         		// See if it exists and is disabled
 				$access_status = access_get_show_hidden_status();
 				access_show_hidden_entities(true);
-        		if (($user = get_user_by_username($username)) && !$user->validated) {
+                
+        		/* if (($user = get_user_by_username($username)) && !$user->validated) {
         			// give plugins a chance to respond
         			if (!trigger_plugin_hook('unvalidated_login_attempt','user',array('entity'=>$user))) {
         				// if plugins have not registered an action, the default action is to
@@ -70,9 +71,11 @@
         				// event will display an appropriate message
 						trigger_elgg_event('validate', 'user', $user);
         			}
-        		} else {
-        			 register_error(elgg_echo('loginerror'));
-        		}
+                    
+        		} */
+                register_error(elgg_echo('loginerror'));               
+                forward("pg/login");
+        		
         		access_show_hidden_entities($access_status);
         	} else {
             	register_error(elgg_echo('loginerror'));

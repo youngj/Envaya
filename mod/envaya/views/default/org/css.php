@@ -64,6 +64,12 @@
     padding:0px;
 }
 
+#sidebar_container li.selected a
+{
+    font-weight:bold;
+    color:black;
+}
+
 .blog_post
 {
     margin-bottom:5px;
@@ -152,6 +158,25 @@
     position:absolute;
     left:490px;
 }
+
+.good_messages, .bad_messages 
+{
+    background:#ccffcc;
+    color:#000000;
+    padding:3px;
+    width:483px;
+    margin:3px auto;
+    -webkit-border-radius: 4px; 
+    -moz-border-radius: 4px;
+    border:2px solid #00CC00;
+}
+
+.bad_messages
+{
+    border-color:#CC0000;
+    background:#ffcccc;
+}
+
 
 body
 {
