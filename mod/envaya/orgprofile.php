@@ -1,20 +1,11 @@
 <?php
-	/**
-	 * Full org profile
-	 *
-	 * @package ElggGroups
-	 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
-	 * @author Curverider Ltd
-	 * @copyright Curverider Ltd 2008-2009
-	 * @link http://elgg.com/
-	 */
 
 	$org_guid = get_input('org_guid');
 	set_context('org');
 
 	global $autofeed;
 	$autofeed = false;
-
+   
 	$org = get_entity($org_guid);
 	if ($org) {
 		set_page_owner($org_guid);                
@@ -23,46 +14,26 @@
 
         $viewOrg = false;
         
-        if($org->approval > 0)
+        if ($org->approval > 0)
         {
             //organization approved
-            $viewOrg = true;
         }
 	    else if ($org->approval < 0)
 	    {
-	        //organization rejected
-	        $msg = elgg_echo('org:rejected');
+            system_message(elgg_echo('org:rejected'));
         }
         else
         {
-            //organization waiting for approval
-            if(isadminloggedin())
-            {
-                $viewOrg = true;
-            }
-            else if($org->getOwnerEntity() == get_loggedin_user())
-            {
-                $viewOrg = true;
-                $msg = elgg_echo('org:waitforapproval');
-            }
-            else
-            {
-                $msg = elgg_echo('org:waitingapproval');
-            }
+            system_message(elgg_echo('org:waitingapproval'));            
         }
                 
-        $area2 = elgg_view('org/org', array('entity' => $org, 'user' => $_SESSION['user'], 'full' => $viewOrg, 'msg' => $msg));                
+        $area2 = elgg_view('org/org', array('entity' => $org, 'user' => $_SESSION['user'], 'full' => $org->userCanSee()));                
         $body = elgg_view_layout('one_column', org_title($org, $org->location), $area2);
         
 	} else {
 		$title = elgg_echo('org:notfound');
-
-		$area2 = elgg_view_title($title);
-		$area2 .= elgg_view('org/contentwrapper',array('body' => elgg_echo('org:notfound:details')));
-
-        $body = elgg_view_layout('profile', $area2);
+        $body = elgg_view_layout('one_column_padded', elgg_view_title($title), elgg_echo('org:notfound:details'));
 	}
 
-	// Finally draw the page
 	page_draw($title, $body);
 ?>

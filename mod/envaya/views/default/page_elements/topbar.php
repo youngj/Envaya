@@ -1,38 +1,17 @@
-<?php
-
-    /**
-     * Elgg top toolbar
-     * The standard elgg top toolbar
-     *
-     * @package Elgg
-     * @subpackage Core
-     * @author Curverider Ltd
-     * @link http://elgg.org/
-     *
-     */
-?>
-
-
 <div id="topbar">
-
-<div id='logo_container'>
-    <a href="<?php echo $vars['config']->wwwroot . ((isloggedin()) ? 'pg/dashboard' : '') ?>">
-        <img src="<?php echo $vars['config']->wwwroot ?>mod/envaya/graphics/logo.gif" alt="Envaya" width="170" height="40">
-    </a>
-</div>
+    <div id='logo_container'>
+        <a href="<?php echo $vars['config']->wwwroot . ((isloggedin()) ? 'pg/dashboard' : '') ?>">
+            <img src="<?php echo $vars['config']->wwwroot ?>mod/envaya/graphics/logo.gif" alt="Envaya" width="170" height="40">
+        </a>
+    </div>
 
 <div id="topbar_container_left">
-
-    <a href="<?php echo $vars['config']->wwwroot . "pg/org/browse/" ?>" class='pagelinks'><?php echo elgg_echo('item:group:organization'); ?></a>
 
 <?php
      if (isloggedin()) {
 ?>
 
-        <?php
-        //allow people to extend this top menu
-        echo elgg_view('elgg_topbar/extend', $vars);
-        ?>
+        <a href="<?php echo get_loggedin_user()->getURL() ?>" class='pagelinks'><?php echo elgg_echo('org:yours'); ?></a>
 
         <a href="<?php echo $vars['url']; ?>pg/settings/" class="usersettings"><?php echo elgg_echo('settings'); ?></a>
 

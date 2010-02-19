@@ -128,7 +128,12 @@
         
     $CONFIG->email_pass = "f03;aoeA";    
 		
+    $CONFIG->default_plugins = "envaya,diagnostics,logbrowser,profile,googlegeocoder";
+    $CONFIG->google_api_key = "ABQIAAAAHy69XWEjciJIVElz0OYMsRR3-IOatrPZ1tLat998tYHgwqPnkhTKyWcq8ytRPMx3RyxFjK0O7WSCHA";
+        
     $CONFIG->translations['sw'] = array('sw' => 'Kiswahili');
+
+    error_reporting(E_ERROR | E_PARSE);
     
     include_once(dirname(__FILE__) . "/localsettings.php");
 ?>

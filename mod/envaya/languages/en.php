@@ -11,16 +11,19 @@
 
 	$english = array(
             'welcome' => "Welcome to Envaya",
-            'welcome_user' => "Welcome, %s!",
-            'user_orgs' => "Your organizations",
-            'actions' => "Actions",
-            'org:about' => 'About',
+            'register_org' => "Register new organization",
+            'welcome_user' => "Welcome, %s!",            
+            'org:yours' => 'Profile',
+            'org:description' => 'About',
             'org:view' => 'View profile',
             'org:edit' => 'Edit profile',
             'org:updates' => 'Updates',
+            'org:mobilesettings' => "Mobile Settings",
+            'org:postemail' => 'Posting Email',
+            'org:changeemail' => 'Change',            
             'org:logo' => 'Logo',
-			'org:name' => 'Group name',
-			'org:username' => 'Group short name (displayed in URLs, alphanumeric characters only)',
+			'org:name' => 'Organization name',
+			'org:username' => 'Organization username (alphanumeric characters only)',
 			'org:description' => 'Description',
 			'org:briefdescription' => 'Brief description',
 			'org:interests' => 'Tags',
@@ -65,10 +68,6 @@
 			'org:shortnotapproved' => "Not yet approved",
 
 			'org:searchnoresults' => "No results found!",
-
-			'org:mobilesettings' => "Mobile Settings",
-			'org:postemail' => 'Posting Email',
-            'org:changeemail' => 'Change',
 
         /**
          * Menu items and titles

@@ -83,8 +83,7 @@
 }
 
 #heading
-{
-    height:50px;
+{    
     padding:30px;
     text-align:center;
     text-transform:uppercase;

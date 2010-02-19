@@ -8,7 +8,7 @@
 
     
 <div class="blog_post">    
-    <?php echo elgg_view("output/longtext", array('value' => $vars['entity']->description)); ?>
+    <?php echo view_translated($owner, $vars['entity']->description); ?>
       
     <?php
 

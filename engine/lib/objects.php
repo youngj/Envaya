@@ -173,12 +173,7 @@
 		 */
 		function getContainerEntity()
 		{
-			$result = get_entity($this->getContainer());
-			
-			if (($result) && ($result instanceof ElggGroup))
-				return $result;
-				
-			return false;
+			return get_entity($this->getContainer());						
 		}
 		
 		/**

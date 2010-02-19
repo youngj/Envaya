@@ -45,7 +45,7 @@
 		{
 			$radius = 2.0;
 
-			$nearby = get_entities_in_area($latlong['lat'], $latlong['long'], $radius, 'group', 'organization', 0, "", 10, 0, false, $site_guid = 0);
+			$nearby = get_entities_in_area($latlong['lat'], $latlong['long'], $radius, 'user', 'organization', 0, "", 10, 0, false, $site_guid = 0);
 
 			if ($nearby)
 			{
@@ -57,7 +57,7 @@
 
 		if (!empty($query))
 		{
-			$results .= list_entities_from_metadata('', elgg_strtolower($query), 'group', 'organization', array(), 10, false, false);
+			$results .= list_entities_from_metadata('', elgg_strtolower($query), 'user', 'organization', array(), 10, false, false);
 		}
 
 		if ($results)

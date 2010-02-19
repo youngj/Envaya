@@ -4,7 +4,7 @@
 
 ?>
 
-<form action="<?php echo $vars['url']; ?>action/changeEmail" enctype="multipart/form-data" method="post">
+<form action="<?php echo $vars['url']; ?>action/org/changeEmail" enctype="multipart/form-data" method="post">
     <?php echo elgg_view('input/securitytoken'); ?>
 	<label>
 		<?php echo elgg_echo("org:postemail"); ?>

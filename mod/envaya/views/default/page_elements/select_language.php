@@ -17,6 +17,7 @@ foreach ($CONFIG->translations as $k => $v)
 }    
 ?>            
 </select>
+
 <noscript><input type='submit' value='Go'></noscript>
 </form>
 

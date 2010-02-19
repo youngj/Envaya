@@ -244,7 +244,12 @@
 			if (!$owner)
 				$owner = get_loggedin_user();
 					
-			if ((!$owner) || (!$owner->username)) throw new InvalidParameterException(sprintf(elgg_echo('InvalidParameterException:MissingOwner'), $file->getFilename(), $file->guid));
+			if ((!$owner) || (!$owner->username)) 
+            {
+                return '';
+                
+                throw new InvalidParameterException(sprintf(elgg_echo('InvalidParameterException:MissingOwner'), $file->getFilename(), $file->guid));
+            }    
 			
 			return $this->dir_root . $this->make_file_matrix($owner->username) . $file->getFilename();
 		}

@@ -25,7 +25,8 @@
 	{ 
 		if (isset($params['location']))
 		{
-            $google_api = get_plugin_setting('google_api', 'googlegeocoder'); // ABQIAAAAHy69XWEjciJIVElz0OYMsRR3-IOatrPZ1tLat998tYHgwqPnkhTKyWcq8ytRPMx3RyxFjK0O7WSCHA
+            global $CONFIG;
+            $google_api = $CONFIG->google_api_key;
 		
 			// Desired address
 		   	$address = "http://maps.google.com/maps/geo?q=".urlencode($params['location'])."&output=json&key=" . $google_api;

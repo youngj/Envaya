@@ -1,33 +1,18 @@
 <?php
-	/**
-	 * Elgg groups plugin full profile view.
-	 *
-	 * @package ElggGroups
-	 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
-	 * @author Curverider
-	 * @copyright Curverider Ltd 2008-2009
-	 * @link http://elgg.com/
-	 */
 
-	if ($vars['full'] == true) {
-		$iconsize = "large";
-	} else {
-		$iconsize = "medium";
-	}
+    $org = $vars['entity'];  
 
-    $org = $vars['entity'];
-
-
-    if ($vars['full'] == true) 
+    if ($vars['full']) 
     {
-        $aboutContent = elgg_view("output/longtext",array('value' => $org->description));
+    
+        $aboutContent = view_translated($org, $org->description);
         
         if ($org->website)
         {
             $aboutContent .= "<div class='org_website'>". elgg_echo('org:website') . ": " . elgg_view("output/url",array('value' => $org->website))."</div>";   
         }        
 
-        $title = elgg_echo("org:about");
+        $title = elgg_echo("org:description");
                 
         echo elgg_view_layout('section', $title, $aboutContent);
 
@@ -45,7 +30,7 @@
         }
         else
         {
-            $posts .= "<a class='float_right' href='".$org->getUrl()."blog'>View all updates</a>";
+            $posts .= "<a class='float_right' href='".$org->getUrl()."/blog'>View all updates</a>";
         }
                 
         echo elgg_view_layout('section', elgg_echo("org:updates"), $posts);
@@ -100,7 +85,7 @@
 ?>
     <div class="contentWrapper">
     <div>
-    	<form action="<?php echo $vars['url'] . "action/approveOrg"; ?>" method="post">
+    	<form action="<?php echo $vars['url'] . "action/org/approve"; ?>" method="post">
     	    <?php echo elgg_view('input/securitytoken'); ?>
     		<?php
     			$warning = elgg_echo("org:approveconfirm");
@@ -119,7 +104,7 @@
 ?>
     <div class="contentWrapper">
     <div>
-    	<form action="<?php echo $vars['url'] . "action/verifyOrg"; ?>" method="post">
+    	<form action="<?php echo $vars['url'] . "action/org/verify"; ?>" method="post">
     	    <?php echo elgg_view('input/securitytoken'); ?>
     		<?php
     			$warning = elgg_echo("org:verifyconfirm");
@@ -133,11 +118,6 @@
 <?php            
         }
 	}
-	if($vars['msg'])
-	{
-	    system_message(elgg_echo($vars['msg']));
-	    echo "<br><b>" . $vars['msg'] . "</b>";
-    }
 	
 
 ?>
