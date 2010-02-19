@@ -5,6 +5,7 @@
 	$orgs = get_entities("group","organization",0,10,false);
 
     $area = "<div><a href='{$CONFIG->wwwroot}pg/org/new'>".elgg_echo("register_org")."</a></div>";
+    $area .= "<div><a href='{$CONFIG->wwwroot}pg/org/browse'>".elgg_echo("org:list_all")."</a></div>";
     
     $area .= "<form method='GET' action='".$CONFIG->wwwroot."pg/org/search/'><input type='text' name='q'><input type='submit' value='".elgg_echo('search')."'></form>";
     

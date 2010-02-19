@@ -843,7 +843,7 @@
 	 * @param string $order_by The order.
 	 * @param boolean $count Whether to return the count of results or just the results. 
 	 */
-	function search_for_user($criteria, $limit = 10, $offset = 0, $order_by = "", $count = false)
+	function search_for_user($criteria, $limit = 10, $offset = 0, $order_by = "", $count = false, $user_subtype = "")
 	{
 		global $CONFIG;
 		
@@ -852,6 +852,8 @@
 		$offset = (int)$offset;
 		$order_by = sanitise_string($order_by);
 		
+        $user_subtype_id = get_subtype_id('user', $user_subtype);
+        
 		$access = get_access_sql_suffix("e");
 		
 		if ($order_by == "") $order_by = "e.time_created desc";
@@ -865,6 +867,11 @@
 		// $query .= " match(u.name,u.username) against ('$criteria') ";
 		$query .= "(u.name like \"%{$criteria}%\" or u.username like \"%{$criteria}%\")";
 		$query .= " and $access";
+        
+        if ($user_subtype_id)
+        {
+            $query .= "AND e.subtype=$user_subtype_id";
+        }
 		
 		if (!$count) {
 			$query .= " order by $order_by limit $offset, $limit"; // Add order and limit
@@ -886,12 +893,12 @@
 	 * @param int $limit The number of entities to display on a page
 	 * @return string The list in a form suitable to display
 	 */
-	function list_user_search($tag, $limit = 10) {
+	function list_user_search($tag, $limit = 10, $user_subtype = '') {
 		
 		$offset = (int) get_input('offset');
 		$limit = (int) $limit;
-		$count = (int) search_for_user($tag, 10, 0, '', true);
-		$entities = search_for_user($tag, $limit, $offset);
+        $count = (int) search_for_user($tag, 10, 0, '', true, $user_subtype);
+		$entities = search_for_user($tag, $limit, $offset, '', false, $user_subtype);
 		
 		return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, false);
 		

@@ -21,7 +21,7 @@
         
         if ($blog->getSubtype() == "blog" && $blog->canEdit()) {
         
-            $redirectUrl = $blog->getContainerEntity()->getUrl() ."blog";
+            $redirectUrl = $blog->getContainerEntity()->getUrl() ."/blog";
     
         // Get owning user
                 $owner = get_entity($blog->getOwner());

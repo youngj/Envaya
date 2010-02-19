@@ -49,7 +49,7 @@
 
 			if ($nearby)
 			{
-				$results .= "<div class='padded'>".elgg_view("org/map", array('lat' => $latlong['lat'], 'long' => $latlong['long'], 'pin' => 'true', 'nearby' => $nearby, 'zoom' => '8'))."</div>";
+				$results .= "<div class='padded'>".elgg_view("org/map", array('lat' => $latlong['lat'], 'long' => $latlong['long'], 'pin' => 'true', 'nearby' => $nearby, 'height' => 400, 'zoom' => '8'))."</div>";
 			}
 
 			//$results .= list_entities_in_area($latlong['lat'], $latlong['long'], 1.5, 'group', 'organization',0,10,false, false);
@@ -57,7 +57,7 @@
 
 		if (!empty($query))
 		{
-			$results .= list_entities_from_metadata('', elgg_strtolower($query), 'user', 'organization', array(), 10, false, false);
+            $results .= list_user_search(elgg_strtolower($query), 10);
 		}
 
 		if ($results)

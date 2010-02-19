@@ -46,7 +46,7 @@
 		$prefix = "envaya/".$org->guid;
 		
 		$filehandler = new ElggFile();
-		$filehandler->owner_guid = $org->owner_guid;
+		$filehandler->owner_guid = $org->guid;
 		$filehandler->setFilename($prefix . ".jpg");
 		$filehandler->open("write");
 		$filehandler->write(get_uploaded_file('icon'));
@@ -59,7 +59,7 @@
 		if ($thumbtiny) {
 			
 			$thumb = new ElggFile();
-			$thumb->owner_guid = $group->owner_guid;
+			$thumb->owner_guid = $org->guid;
 			$thumb->setMimeType('image/jpeg');
 			
 			$thumb->setFilename($prefix."tiny.jpg");

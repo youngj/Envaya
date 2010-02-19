@@ -1,7 +1,6 @@
 <?php
 
     global $CONFIG;
-    require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 
     $group_guid = get_input('org_guid');
     $group = get_entity($group_guid);
@@ -13,7 +12,7 @@
     $success = false;
     
     $filehandler = new ElggFile();
-    $filehandler->owner_guid = $group->owner_guid;
+    $filehandler->owner_guid = $group->guid;
     $filehandler->setFilename("envaya/" . $group->guid . $size . ".jpg");
     
     $success = false;

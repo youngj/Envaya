@@ -103,7 +103,7 @@ function envaya_init() {
 
     // Replace the default index page
     register_plugin_hook('index','system','new_index');
-    register_plugin_hook('entity:icon:url', 'group', 'org_icon_hook');
+    register_plugin_hook('entity:icon:url', 'user', 'org_icon_hook');
 
     // Register an annotation handler for comments etc
     register_plugin_hook('entity:annotate', 'object', 'blog_annotate_comments');
@@ -203,6 +203,10 @@ function org_profile_page_handler($page)
             case "edit":
                 include(dirname(__FILE__) . "/editOrg.php");
                 return;
+            case "icon":
+                set_input('size', $page[2]);
+                include(dirname(__FILE__) . "/icon.php");
+                return;                
             default:
                 break;
         }
@@ -275,12 +279,12 @@ function org_icon_hook($hook, $entity_type, $returnvalue, $params)
 		}
 
 		$filehandler = new ElggFile();
-		$filehandler->owner_guid = $entity->owner_guid;
+		$filehandler->owner_guid = $entity->guid;
 		$filehandler->setFilename("envaya/" . $entity->guid . $size . ".jpg");
 
 		if ($filehandler->exists())
 		{
-			return $CONFIG->url . "pg/org/icon/{$entity->guid}/$size/$icontime.jpg";
+			return $CONFIG->url . "{$entity->username}/icon/$size/$icontime.jpg";
 		}
 		else
 		{
@@ -300,6 +304,7 @@ function org_fields_setup()
         'password' => 'password',
         'password2' => 'password',
         'email' => 'email',    
+        'language' => 'language',
     );
 
 	$CONFIG->org_profile_fields = array(

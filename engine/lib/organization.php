@@ -37,6 +37,16 @@ class Organization extends ElggUser {
         parent::__construct($guid);
     }
 
+    public function set($name, $value)
+    {
+        if ($name == 'name' || $name == 'username')
+        {
+            $this->setMetaData($name, $value);
+        }
+        
+        return parent::set($name, $value);
+    }
+
     public function isApproved()
     {
         return $this->approval > 0;

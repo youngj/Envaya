@@ -1,6 +1,7 @@
 <?php
 
 	$entities = $vars['entities'];
+    
 	foreach($entities as $entity) 
     {	           
 	    if($entity->userCanSee())
