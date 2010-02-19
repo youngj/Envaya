@@ -68,10 +68,13 @@
     {
         global $CONFIG;
         
-        $lang = $_COOKIE['lang'];
-        if (isset($CONFIG->translations[$lang]))
+        if (isset($_COOKIE['lang']))
         {
-            return $lang;
+            $lang = $_COOKIE['lang'];
+            if (isset($CONFIG->translations[$lang]))
+            {
+                return $lang;
+            }
         }
     }    
 		
@@ -108,6 +111,8 @@
 		function get_language() {
 			
 			global $CONFIG;
+            
+            $language = '';
             
             global $CURRENT_LANGUAGE;
             if ($CURRENT_LANGUAGE)
