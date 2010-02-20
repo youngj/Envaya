@@ -36,7 +36,7 @@
                         
         $emailCode = $matches[1];
         
-        $entities = get_entities_from_metadata('email_code', $emailCode, 'group', 'organization');
+        $entities = get_entities_from_metadata('email_code', $emailCode, 'user', 'organization');
         if (empty($entities))
         {
             echo "no matching organization";
@@ -77,11 +77,11 @@
         }
         $blog = new ElggObject();
         $blog->subtype = "blog";
-        $blog->owner_guid = $org->owner_guid;
+        $blog->owner_guid = $org->guid;
         $blog->container_guid = $org->guid;    
-        $blog->access_id = 2; //public              
-        $blog->title = $subject;
-        $blog->description = $textEmail;    
+        $blog->access_id = 2; 
+        $blog->title = '';
+        $blog->description = "$subject\n\n$textEmail";
         
         if (!$blog->save()) 
         {

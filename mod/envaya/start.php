@@ -4,7 +4,7 @@ function view_translated($org, $text)
 {        
     $differentLanguage = ($org->language != get_language());
 
-    if ($differentLanguage)
+    if ($differentLanguage && $text)
     {
         $translate = true || get_input("translate");
     
@@ -43,6 +43,9 @@ function lookup_translation($text, $text_language)
     
     $ch = curl_init(); 
     
+    $text = str_replace("\r","", $text);
+    $text = str_replace("\n", ",;", $text);
+    
     $url = "ajax.googleapis.com/ajax/services/language/translate?v=1.0&langpair=$text_language%7C$disp_language&q=".urlencode($text);
     
     curl_setopt($ch, CURLOPT_URL, $url); 
@@ -60,6 +63,8 @@ function lookup_translation($text, $text_language)
     $translated = $res->responseData->translatedText;
             
     $text = html_entity_decode($translated, ENT_QUOTES);
+    
+    $text = str_replace(",;", "\n", $text);
     
     $trans = new Translation();    
     $trans->owner_guid = 0;
@@ -177,7 +182,7 @@ function org_profile_page_handler($page)
     {
         switch ($page[1])
         {
-            case "blog":
+            case "news":
                 set_context("blog");
                 include(dirname(__FILE__) . "/blog.php");
                 return;
@@ -310,7 +315,8 @@ function org_fields_setup()
 	$CONFIG->org_profile_fields = array(
 		'description' => 'longtext',
 		'interests' => 'tags',
-		'website' => 'url',
+        'phone' => 'text',
+        'website' => 'url',        
 		'location' => 'text',
 	);
 }
@@ -376,8 +382,8 @@ register_action("org/approve",false,dirname(__FILE__) . "/actions/approveOrg.php
 register_action("org/verify",false,dirname(__FILE__) . "/actions/verifyOrg.php");
 register_action("org/changeEmail", true,dirname(__FILE__). "/actions/changeEmail.php");
 register_action("changeLanguage", true,dirname(__FILE__). "/actions/changeLanguage.php");
-register_action("blog/add",false,dirname(__FILE__) . "/actions/addPost.php");
-register_action("blog/edit",false,dirname(__FILE__) . "/actions/editPost.php");
-register_action("blog/delete",false,dirname(__FILE__) . "/actions/deletePost.php");
+register_action("news/add",false,dirname(__FILE__) . "/actions/addPost.php");
+register_action("news/edit",false,dirname(__FILE__) . "/actions/editPost.php");
+register_action("news/delete",false,dirname(__FILE__) . "/actions/deletePost.php");
 
 ?>

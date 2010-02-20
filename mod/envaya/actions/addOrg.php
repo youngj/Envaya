@@ -58,7 +58,7 @@
 
         system_message(sprintf(elgg_echo("registerok"),$CONFIG->sitename));
 
-        forward("pg/dashboard/"); 
+        forward($org->getURL() . "/edit"); 
     } 
     catch (RegistrationException $r) 
     {    

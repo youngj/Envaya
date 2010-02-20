@@ -2,12 +2,12 @@
 
     if (isset($vars['entity'])) 
     {
-        $action = "blog/edit";
+        $action = "news/edit";
         $body = $vars['entity']->description;
     } 
     else  
     {
-        $action = "blog/add";
+        $action = "news/add";
         $container = $vars['container_guid'] ? elgg_view('input/hidden', array('internalname' => 'container_guid', 'value' => $vars['container_guid'])) : "";
     }
 

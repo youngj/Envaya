@@ -30,7 +30,7 @@
         }
         else
         {
-            $posts .= "<a class='float_right' href='".$org->getUrl()."/blog'>View all updates</a>";
+            $posts .= "<a class='float_right' href='".$org->getUrl()."/news'>View all updates</a>";
         }
                 
         echo elgg_view_layout('section', elgg_echo("org:updates"), $posts);

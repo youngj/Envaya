@@ -36,7 +36,7 @@
             system_message(elgg_echo("blog:posted"));
             
         $page_owner = get_entity($blog->container_guid);
-        forward($page_owner->getUrl() . "/blog");
+        forward($page_owner->getUrl() . "/news");
     }
         
 ?>
