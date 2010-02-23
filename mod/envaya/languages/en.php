@@ -88,6 +88,13 @@
             'item:object:blog' => 'Status updates',
             'item:user:organization' => "Organizations",
             'item:object:translation' => "Translations",
+            
+            'org:saveMapEdit' => "Save Map",
+            'org:mapDropPin' => "Drop map pin",
+            'org:mapPinDragInstr' => "Drag and drop the red map pin to your organization's location",
+            'org:editmap' => "Edit Map",
+            'org:mapSaved' => "Map Saved!",
+            'org:mapSaveError' => "Error: could not save your map edits."
 
 	);
 

@@ -1,6 +1,7 @@
 
 <?php
 
+    $editPinMode = $vars['edit'];
     $zoom = $vars['zoom'] ? $vars['zoom'] : 10;
     $width = $vars['width'] ? $vars['width'] : 460;
     $height = $vars['height'] ? $vars['height'] : 280;
@@ -10,7 +11,19 @@
 
     if (!$vars['static'])
     {
+        if ($editPinMode && !$vars['pin'])
+        {
+?>          
+            <div id="dropPinBtn">
+            <a href="javascript:dropPin();"><?php echo elgg_echo("org:mapDropPin"); ?></a>
+            </div>
+<?php
+        }
 ?>
+
+<div id="pinDragInstr" style="display:none;">
+<?php echo elgg_echo("org:mapPinDragInstr"); ?>
+</div>
 
 <div id='map' style='width:<?php echo $width; ?>px;height:<?php echo $height; ?>px'></div>
 <script type="text/javascript" src="http://www.google.com/jsapi?key=<?php echo $apiKey ?>"></script>
@@ -24,20 +37,62 @@
     };
   }
 
+  function dropPin()
+  {
+    var $ll = map.getCenter();
+    if($ll)
+    {
+        placeMarker($ll);
+        document.getElementById("dropPinBtn").style.display = "none";
+    }
+  }
+  
+  function setSavedLL($ll)
+  {
+      document.getElementById("orgLat").value = $ll.lat();
+      document.getElementById("orgLng").value = $ll.lng();
+  }
+  
+  function placeMarker($ll)
+  {
+      <?php
+      if ($editPinMode) {
+      ?>
+          var marker = new GMarker($ll, {draggable: true});
+
+          GEvent.addListener(marker, "dragend", function(latlng) {
+            setSavedLL(latlng);
+            map.setCenter(latlng);
+            });
+      
+          map.addOverlay(marker);
+          setSavedLL($ll);
+          document.getElementById("pinDragInstr").style.display = "block";
+          document.getElementById("saveMapForm").style.display = "block";
+      <?php
+      }
+      else {
+      ?>
+        map.addOverlay(new GMarker($ll));
+      <?php
+      }
+      ?>
+  }
+  
   // Call this function when the page has been loaded
   function initialize() {
-    var map = new google.maps.Map2(document.getElementById("map"));
+    map = new google.maps.Map2(document.getElementById("map"));
     map.addControl(new GSmallMapControl());
     map.addControl(new GMapTypeControl());
 
     var center = new google.maps.LatLng(<?php echo $lat; ?>,<?php echo $long; ?>);
 
     map.setCenter(center, <?php echo $zoom; ?>);
-
+        
     <?php
         if ($vars['pin']) {
     ?>
-            map.addOverlay(new GMarker(center));
+            placeMarker(center);
     <?php
         }
     ?>
@@ -85,6 +140,21 @@
   }
   google.setOnLoadCallback(initialize);
 </script>
+
+<?php 
+    if ($editPinMode) {
+?>
+        <form id="saveMapForm" style="display:none;" action="<?php echo $vars['url']; ?>action/org/editMap" enctype="multipart/form-data" method="post">
+            <?php echo elgg_view('input/securitytoken'); ?>
+            <input type="hidden" name="org_guid" value="<?php echo $vars['org']->guid; ?>" />
+            <input type="hidden" id="orgLat" name="org_lat" value="" />
+            <input type="hidden" id="orgLng" name="org_lng" value="" />
+            <input type="submit" class="submit_button" value="<?php echo elgg_echo("org:saveMapEdit"); ?>" />
+        </form>
+
+<?php
+}
+?>
 
 <?php
     } // not static

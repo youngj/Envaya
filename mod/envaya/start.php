@@ -126,6 +126,7 @@ function envaya_pagesetup()
             add_submenu_item(elgg_echo('org:view'),$org->getUrl());
             add_submenu_item(elgg_echo("org:edit"), $org->getUrl() . "/edit");
         	add_submenu_item(elgg_echo('org:mobilesettings'),$org->getUrl()."/mobilesettings");
+        	add_submenu_item(elgg_echo('org:editmap'), $org->getUrl() . "/editmap");
             add_submenu_item(elgg_echo('blog:addpost'),$org->getUrl()."/newpost");
         }
         else if (get_context() == 'blog')
@@ -191,6 +192,9 @@ function org_profile_page_handler($page)
                 return;
             case "mobilesettings":
                 include(dirname(__FILE__) . "/mobileSettings.php");
+                return;
+            case "editmap":
+                include(dirname(__FILE__) . "/editMap.php");
                 return;
             case "post":
                 set_context("blog");
@@ -381,9 +385,12 @@ register_action("org/delete",false,dirname(__FILE__) . "/actions/deleteOrg.php")
 register_action("org/approve",false,dirname(__FILE__) . "/actions/approveOrg.php");
 register_action("org/verify",false,dirname(__FILE__) . "/actions/verifyOrg.php");
 register_action("org/changeEmail", true,dirname(__FILE__). "/actions/changeEmail.php");
+register_action("org/editMap",false,dirname(__FILE__) . "/actions/editMap.php");
 register_action("changeLanguage", true,dirname(__FILE__). "/actions/changeLanguage.php");
 register_action("news/add",false,dirname(__FILE__) . "/actions/addPost.php");
 register_action("news/edit",false,dirname(__FILE__) . "/actions/editPost.php");
 register_action("news/delete",false,dirname(__FILE__) . "/actions/deletePost.php");
+
+
 
 ?>
