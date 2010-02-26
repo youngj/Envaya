@@ -6,8 +6,10 @@
     $body = get_input('blogbody');
     $orgId = get_input('container_guid');
     $org = get_entity($orgId);
+    
+    $hasImage = (isset($_FILES['image'])) && (substr_count($_FILES['image']['type'],'image/'));
             
-    if (empty($body)) 
+    if (empty($body) && !$hasImage) 
     {
         register_error(elgg_echo("blog:blank"));
         forward($_SERVER['HTTP_REFERER']);
@@ -30,7 +32,7 @@
             forward_to_referrer();
         }
 
-        if ((isset($_FILES['image'])) && (substr_count($_FILES['image']['type'],'image/')))
+        if ($hasImage)
         {        
             $blog->setImage(get_uploaded_file('image'));        
         }

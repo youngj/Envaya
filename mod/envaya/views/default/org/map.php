@@ -121,9 +121,9 @@
                             <?php
                                 $description = $org->description;
 
-                                if ($description && strlen($description) > 300)
+                                if ($description && strlen($description) > 200)
                                 {
-                                    $description = substr($description, 0, 300) ."...";
+                                    $description = substr($description, 0, 200) ."...";
                                 }
                                 echo json_encode(escape($description));
 

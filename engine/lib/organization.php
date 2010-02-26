@@ -115,6 +115,19 @@ class Organization extends ElggUser {
             return false;
         }
     }
+        
+    function getBlogDates()
+    {
+        $subtypeId = get_subtype_id('object', 'blog');
+        global $CONFIG;
+    
+        $sql = "SELECT guid, time_created from {$CONFIG->dbprefix}entities 
+                WHERE type='object' AND subtype=$subtypeId 
+                AND container_guid={$this->guid} ORDER BY guid ASC";
+
+        return get_data($sql);               
+    }
+
 }
 
 class Translation extends ElggObject

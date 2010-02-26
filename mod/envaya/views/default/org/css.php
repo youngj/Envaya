@@ -825,3 +825,58 @@ span.timestamp {
     float:right;
     font-size:11px;
 }
+
+.blogNav
+{
+    text-align:center;
+    padding-bottom:10px;
+}
+
+#blogTimeline
+{
+    margin:0px 15px;
+    position:relative;
+    width:420px;
+    height:45px;
+}
+
+#blogTimelineLine
+{
+    position:absolute;
+    left:0px;
+    top:10px;
+    height:1px;
+    width:400px;
+    background-color:gray;
+}
+
+.timelineLink
+{
+    position:absolute;    
+}
+
+.timelineCur
+{
+    position:absolute;
+    height:20px;
+    top:0px;
+    width:2px;
+    background-color:gray;
+}
+
+.timelineMarker
+{
+    position:absolute;
+    height:20px;
+    top:0px;
+    width:1px;
+    background-color:gray;
+}
+
+.timelineLabel
+{
+    position:absolute;
+    top:21px;
+    width:70px;
+    text-align:center;
+}

@@ -43,6 +43,7 @@ function view_translated($obj, $field)
     return elgg_view("output/longtext",array('value' => $text));        
 }
 
+
 function get_translation_key($text, $src, $dest)
 {
     return $src . ":" . $dest . ":" . sha1(trim($text));
@@ -245,6 +246,14 @@ function org_profile_page_handler($page)
                     case "image":
                         set_input("size", $page[4]);
                         include(dirname(__FILE__) . "/postImage.php");
+                        return;
+                    case "next":
+                        set_input("delta", 1);
+                        include(dirname(__FILE__) . "/postRedirect.php");
+                        return;
+                    case "prev":    
+                        set_input("delta", -1);
+                        include(dirname(__FILE__) . "/postRedirect.php");
                         return;
                     default:
                         include(dirname(__FILE__) . "/blogPost.php");
