@@ -18,8 +18,7 @@
                         
         $parameters=array(
             'Data'=>$msg
-        );    
-        
+        );            
 
         if (!$mime->Decode($parameters, $decoded))
         {
@@ -52,7 +51,7 @@
             echo 'MIME message analyse error: '.$mime->error."\n";
             continue;
         }
-
+        
         $textEmail = '';
         if ($results['Type'] == 'text')
         {
@@ -70,24 +69,37 @@
             }    
         }
         
+        $textEmail = trim("$subject\n\n$textEmail");
+       
         if (empty($textEmail))
         {   
             echo "could not find text body of email";
             return false;
         }
-        $blog = new ElggObject();
-        $blog->subtype = "blog";
+        
+        $blog = new NewsUpdate();
         $blog->owner_guid = $org->guid;
         $blog->container_guid = $org->guid;    
-        $blog->access_id = 2; 
         $blog->title = '';
-        $blog->description = "$subject\n\n$textEmail";
+        $blog->content = $textEmail;
         
         if (!$blog->save()) 
         {
             echo "could not save blog post";
             return false;
         }
+        
+        if (isset($results["Attachments"]))
+        {
+            foreach ($results['Attachments'] as $attachment)
+            {
+                if ($attachment['Type'] == 'image')
+                {
+                    $blog->setImage($attachment['Data']);
+                    break; 
+                }
+            }
+        }                
         
         return true;    
     }
@@ -97,9 +109,11 @@
     if ($pop3->connect())
     {
         $pop3->login("post@envaya.org",$CONFIG->email_pass);
-        
+                
         for($i = 1; $i <= $pop3->numMsg(); $i++) 
-        {                    
+        {                
+            set_time_limit(60);
+        
             handle_message($pop3->getMsg($i));
 
             // $pop3->deleteMsg($i);

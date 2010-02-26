@@ -3,7 +3,7 @@
     if (isset($vars['entity'])) 
     {
         $action = "news/edit";
-        $body = $vars['entity']->description;
+        $body = $vars['entity']->content;
     } 
     else  
     {
@@ -26,13 +26,16 @@
       $entity_hidden = '';
     }
 
+    $image_input = elgg_view("input/file",array('internalname' => 'image'));
+    
 $form_body = <<<EOT
         <p class='longtext_editarea'>$text_textarea</p>
+        $image_input
         $entity_hidden
         $container
         $submit_input
 EOT;
 
-      echo elgg_view('input/form', array('action' => "{$vars['url']}action/$action", 'body' => $form_body, 'internalid' => 'blogPostForm'));
+      echo elgg_view('input/form', array('action' => "{$vars['url']}action/$action", 'enctype' => "multipart/form-data", 'body' => $form_body, 'internalid' => 'blogPostForm'));
 ?>
 

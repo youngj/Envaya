@@ -13,67 +13,68 @@
 	/**
 	 * Getting directories and moving the browser
 	 */
-
-	/**
-	 * Adds messages to the session so they'll be carried over, and forwards the browser.
-	 * Returns false if headers have already been sent and the browser cannot be moved.
-	 *
-	 * @param string $location URL to forward to browser to
-	 * @return nothing|false
-	 */
      
     function escape($val)
     {
         return htmlentities($val, ENT_QUOTES, 'UTF-8');
     }    
 
-		function forward($location = "") {
-			global $CONFIG;
-			if (!headers_sent()) {
-				 
-				 $current_page = current_page_url();
-				 if (strpos($current_page, $CONFIG->wwwroot . "action") ===false)
-				 
-				 $_SESSION['messages'] = system_messages();
-				 if ((substr_count($location, 'http://') == 0) && (substr_count($location, 'https://') == 0)) {
-				 	
-				 	$location = $CONFIG->url . $location;
-				 }
-				 
-				 
-				 header("Location: {$location}");
-				 exit;
-			}
-			return false;
-			
-		}
+    /**
+     * Adds messages to the session so they'll be carried over, and forwards the browser.
+     * Returns false if headers have already been sent and the browser cannot be moved.
+     *
+     * @param string $location URL to forward to browser to
+     * @return nothing|false
+     */
 
-		/**
-		 * Return the current page URL.
-		 */
-		function current_page_url()
-		{
-			global $CONFIG;
-			
-			$url = parse_url($CONFIG->wwwroot);
-		
-			$page = $url['scheme'] . "://";
-	
-			// user/pass
-			if ((isset($url['user'])) && ($url['user'])) $page .= $url['user'];
-			if ((isset($url['pass'])) && ($url['pass'])) $page .= ":".$url['pass'];
-			if (($url['user']) || $url['pass']) $page .="@";
-			
-			$page .= $url['host'];
-			
-			if ((isset($url['port'])) && ($url['port'])) $page .= ":" . $url['port'];
-			
-			$page = trim($page, "/"); //$page.="/";
-			
-			$page .= $_SERVER['REQUEST_URI'];
-			
-			return $page;
-		}
+    function forward($location = "") 
+    {
+	    global $CONFIG;
+	    if (!headers_sent()) 
+        {				 
+		    $current_page = current_page_url();
+		    if (strpos($current_page, $CONFIG->wwwroot . "action") === false)
+            {
+		        $_SESSION['messages'] = system_messages();
+            }
+                    
+			if ((substr_count($location, 'http://') == 0) && (substr_count($location, 'https://') == 0)) 
+            {
+			    $location = $CONFIG->url . $location;
+			}
+				 
+			header("Location: {$location}");
+			exit;
+        }
+        return false;
+	}
+
+    /**
+     * Return the current page URL.
+     */
+    function current_page_url()
+    {
+        global $CONFIG;
+
+        $url = parse_url($CONFIG->wwwroot);
+
+        $page = $url['scheme'] . "://";
+
+        // user/pass
+        if ((isset($url['user'])) && ($url['user'])) $page .= $url['user'];
+        if ((isset($url['pass'])) && ($url['pass'])) $page .= ":".$url['pass'];
+        if (($url['user']) || $url['pass']) $page .="@";
+
+        $page .= $url['host'];
+
+        if ((isset($url['port'])) && ($url['port'])) $page .= ":" . $url['port'];
+
+        $page = trim($page, "/"); //$page.="/";
+
+        $page .= $_SERVER['REQUEST_URI'];
+
+        return $page;
+    }
 		
 	/**
 	 * Templating and visual functionality

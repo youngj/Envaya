@@ -2,24 +2,20 @@
 
     global $CONFIG;
 
-    $group_guid = get_input('org_guid');
-    $group = get_entity($group_guid);
+    $blogPostId = get_input('blogpost');
+    $blogPost = get_entity($blogPostId);
     
     $size = strtolower(get_input('size'));
-    if (!in_array($size,array('large','medium','small','tiny','master','topbar')))
-        $size = "medium";
+    if (!in_array($size,array('large','small')))
+        $size = "small";    
     
-    $filehandler = $group->getIconFile($size);
+    $filehandler = $blogPost->getImageFile($size);
     
     $success = false;
     if ($filehandler->open("read")) {
         if ($contents = $filehandler->read($filehandler->size())) {
             $success = true;
         } 
-    }
-    
-    if (!$success) {
-        $contents = file_get_contents($CONFIG->pluginspath."envaya/graphics/default{$size}.gif");        
     }
     
     header("Content-type: image/jpeg");

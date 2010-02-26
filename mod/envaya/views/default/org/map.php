@@ -5,7 +5,9 @@
     $zoom = $vars['zoom'] ? $vars['zoom'] : 10;
     $width = $vars['width'] ? $vars['width'] : 460;
     $height = $vars['height'] ? $vars['height'] : 280;
-    $apiKey = get_plugin_setting('google_api', 'googlegeocoder');
+    
+    global $CONFIG;
+    $apiKey = $CONFIG->google_api_key;
     $lat = $vars['lat'];
     $long = $vars['long'];
 

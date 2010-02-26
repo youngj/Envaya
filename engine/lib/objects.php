@@ -164,8 +164,8 @@
 		function getContainer()
 		{
 			return $this->get('container_guid');
-		}
-		
+		}		       
+        
 		/**
 		 * As getContainer(), but returns the whole entity.
 		 *

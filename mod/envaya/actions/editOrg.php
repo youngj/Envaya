@@ -43,7 +43,7 @@
 	// Now see if we have a file icon
 	if ((isset($_FILES['icon'])) && (substr_count($_FILES['icon']['type'],'image/')))
 	{
-		$prefix = "envaya/".$org->guid;
+		$prefix = "icon";
 		
 		$filehandler = new ElggFile();
 		$filehandler->owner_guid = $org->guid;

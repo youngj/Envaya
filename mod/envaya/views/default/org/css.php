@@ -72,7 +72,8 @@
 
 .blog_post
 {
-    margin-bottom:5px;
+    clear:both;
+    padding-bottom:10px;
 }
 
 .float_right
@@ -779,4 +780,30 @@ span.timestamp {
 {
     color:#333;
     font:11px Arial;
+}
+
+.transContributeLink
+{
+    display:block;
+    float:right;
+}
+
+.smallBlogImageLink
+{
+    float:left;
+    margin-right:5px;
+    margin-bottom:10px;
+}
+
+.largeBlogImageLink
+{
+    margin-bottom:10px;
+    text-align:center;
+    display:block;
+}
+
+.blogEditControls
+{
+    float:right;
+    font-size:11px;
 }

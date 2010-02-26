@@ -3,9 +3,8 @@
     $org = $vars['entity'];  
 
     if ($vars['full']) 
-    {
-    
-        $aboutContent = view_translated($org, $org->description);
+    {            
+        $aboutContent = view_translated($org, 'description');
         
         if ($org->website)
         {
@@ -22,7 +21,7 @@
         );      
         */
         
-        $posts = list_user_objects($org->getGUID(),'blog',10,false);
+        $posts = list_user_objects($org->getGUID(),'blog',10,false, false, false);
         
         if (!$posts)
         {

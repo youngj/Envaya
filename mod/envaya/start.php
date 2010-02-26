@@ -1,20 +1,38 @@
 <?php
 
-function view_translated($org, $text)
+function view_translated($obj, $field)
 {        
-    $differentLanguage = ($org->language != get_language());
+    $md = get_metadata_byname($obj->guid, $field);        
+           
+    if (!$md || is_array($md)) 
+    {
+        return '' ;
+    }
 
-    if ($differentLanguage && $text)
+    $text = trim($md->value);
+    
+    if (!$text)
+    {
+        return '';
+    }
+    
+    $org = $obj->getRootContainerEntity();
+    if (!($org instanceof Organization))
+    {
+        return '';
+    }
+
+    $differentLanguage = ($org->language != get_language());    
+
+    if ($differentLanguage)
     {
         $translate = true || get_input("translate");
-    
+        
         if ($translate)
         {
             $translation = lookup_translation($text, $org->language);            
-            if ($translation)
-            {
-                return elgg_view_entity($translation);
-            }
+            
+            return elgg_view("translation/wrapper", array('translation' => $translation, 'metadata' => $md));
         }
         else
         {
@@ -25,16 +43,27 @@ function view_translated($org, $text)
     return elgg_view("output/longtext",array('value' => $text));        
 }
 
+function get_translation_key($text, $src, $dest)
+{
+    return $src . ":" . $dest . ":" . sha1(trim($text));
+}
+
 function lookup_translation($text, $text_language)
 {
-    $disp_language = get_language();
-    if ($text_language == $disp_language)
+    $text = trim($text);
+    if (!$text)
     {
         return null;
     }
     
-    $key = $text_language . ":" . $disp_language . ":" . sha1($text);
+    $disp_language = get_language();
+    if ($text_language == $disp_language)
+    {
+        return null;
+    }    
     
+    $key = get_translation_key($text, $text_language, $disp_language);
+        
     $translations = get_entities_from_metadata('key', $key, 'object', 'translation'); 
     if (!empty($translations))
     {        
@@ -59,8 +88,12 @@ function lookup_translation($text, $text_language)
     curl_close($ch);     
     
     $res = json_decode($json);
-          
+                
     $translated = $res->responseData->translatedText;
+    if (!$translated)
+    {
+        return null;
+    }
             
     $text = html_entity_decode($translated, ENT_QUOTES);
     
@@ -90,13 +123,13 @@ function envaya_init() {
     register_page_handler('login','login_page_handler');
 
 	register_entity_type('user', 'organization');
-    
+    register_entity_type('object', 'blog');
     register_entity_type('object', 'translation');
     
    	// This operation only affects the db on the first call for this subtype
    	// If you change the class name, you'll have to hand-edit the db
    	add_subtype('user', 'organization', 'Organization');
-    
+    add_subtype('object', 'blog', 'NewsUpdate');
     add_subtype('object', 'translation', 'Translation');
 
     // Register a URL handler
@@ -167,6 +200,10 @@ function org_page_handler($page)
             case "search":
                 include(dirname(__FILE__) . "/search.php");
                 return;
+            case "translate":
+                set_input("metadata_id", $page[1]);
+                include(dirname(__FILE__) . "/translate.php");
+                return;
 	    }
 	}
 }
@@ -205,6 +242,10 @@ function org_profile_page_handler($page)
                     case "edit":
                         include(dirname(__FILE__) . "/editPost.php");
                         return;
+                    case "image":
+                        set_input("size", $page[4]);
+                        include(dirname(__FILE__) . "/postImage.php");
+                        return;
                     default:
                         include(dirname(__FILE__) . "/blogPost.php");
                         return;
@@ -241,6 +282,11 @@ function org_url($entity) {
 	return $CONFIG->url . "{$entity->username}";
 }
 
+function forward_to_referrer()
+{
+    forward($_SERVER['HTTP_REFERER']);    
+}
+
 /**
  * Populates the ->getUrl() method for blog objects
  *
@@ -274,31 +320,22 @@ function org_icon_hook($hook, $entity_type, $returnvalue, $params)
 {
 	global $CONFIG;
 
-	if ($params['entity'] instanceof Organization)
+    $entity = $params['entity'];        
+
+	if ($entity instanceof Organization)
 	{
-		$entity = $params['entity'];
-		$type = $entity->type;
-		$viewtype = $params['viewtype'];
 		$size = $params['size'];
 
-		if ($icontime = $entity->icontime) {
-			$icontime = "{$icontime}";
-		} else {
-			$icontime = "default";
-		}
-
-		$filehandler = new ElggFile();
-		$filehandler->owner_guid = $entity->guid;
-		$filehandler->setFilename("envaya/" . $entity->guid . $size . ".jpg");
-
-		if ($filehandler->exists())
-		{
-			return $CONFIG->url . "{$entity->username}/icon/$size/$icontime.jpg";
-		}
-		else
-		{
-			return $CONFIG->url . "mod/envaya/graphics/default$size.gif";
-		}
+        $icontime = ($entity->icontime) ? $entity->icontime : "default";
+        $file = $entity->getIconFile();
+        if ($file->exists())
+        {
+            return $CONFIG->url . "{$entity->username}/icon/$size/$icontime.jpg";
+        }
+        else
+        {
+            return $CONFIG->url."mod/envaya/graphics/default{$size}.gif";
+        }
 	}
 }
 
@@ -387,6 +424,7 @@ register_action("org/verify",false,dirname(__FILE__) . "/actions/verifyOrg.php")
 register_action("org/changeEmail", true,dirname(__FILE__). "/actions/changeEmail.php");
 register_action("org/editMap",false,dirname(__FILE__) . "/actions/editMap.php");
 register_action("changeLanguage", true,dirname(__FILE__). "/actions/changeLanguage.php");
+register_action("translate", false,dirname(__FILE__). "/actions/translate.php");
 register_action("news/add",false,dirname(__FILE__) . "/actions/addPost.php");
 register_action("news/edit",false,dirname(__FILE__) . "/actions/editPost.php");
 register_action("news/delete",false,dirname(__FILE__) . "/actions/deletePost.php");

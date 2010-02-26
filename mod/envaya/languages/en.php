@@ -53,7 +53,7 @@
 
 			'org:notfound' => "Organization not found",
 			'org:notfound:details' => "The requested organization either does not exist or you do not have access to it",
-
+            'org:cantedit' => "You do not have access to edit this organization's profile.",
 
 			'org:rejected' => 'We are sorry. This organization was not approved by our administrators.',
 			'org:waitforapproval' => "This organization is not yet visible to the public. We will review your profile shortly.",
@@ -94,8 +94,16 @@
             'org:mapPinDragInstr' => "Drag and drop the red map pin to your organization's location",
             'org:editmap' => "Edit Map",
             'org:mapSaved' => "Map Saved!",
-            'org:mapSaveError' => "Error: could not save your map edits."
-
+            'org:mapSaveError' => "Error: could not save your map edits.",
+            
+            'trans:original_in' => "Original text in %s",
+            'trans:translate' => "Translate text",
+            'trans:inlang' => "Translation in %s",
+            'trans:contribute' => "Contribute translation",
+            'trans:empty' => "Translation was empty",
+            'trans:invalid_id' => "Invalid text identifier",
+            'trans:submit' => "Submit translation",
+            'trans:posted' => "Translation submitted succesfully.",
 	);
 
 	add_translation("en",$english);

@@ -1,39 +1,41 @@
 <?php
 
-    /**
-     * Elgg blog: add post action
-     * 
-     * @package ElggBlog
-     * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
-     * @author Curverider Ltd <info@elgg.com>
-     * @copyright Curverider Ltd 2008-2009
-     * @link http://elgg.org/
-     */
-
     gatekeeper();
     action_gatekeeper();
 
     $body = get_input('blogbody');
+    $orgId = get_input('container_guid');
+    $org = get_entity($orgId);
             
-    if (empty($body)) {
+    if (empty($body)) 
+    {
         register_error(elgg_echo("blog:blank"));
         forward($_SERVER['HTTP_REFERER']);
     } 
+    else if (!$org->canEdit())
+    {
+        register_error(elgg_echo("org:cantedit"));
+        forward_to_referrer();
+    }
     else 
     {            
-        $blog = new ElggObject();
-        $blog->subtype = "blog";
+        $blog = new NewsUpdate();
         $blog->owner_guid = $_SESSION['user']->getGUID();
-        $blog->container_guid = (int)get_input('container_guid');
-        $blog->access_id = 2;
-        $blog->description = $body;
+        $blog->container_guid = $orgId;
+        $blog->content = $body;
     
-        if (!$blog->save()) {
+        if (!$blog->save()) 
+        {
             register_error(elgg_echo("blog:error"));
-            forward($_SERVER['HTTP_REFERER']);
+            forward_to_referrer();
         }
 
-            system_message(elgg_echo("blog:posted"));
+        if ((isset($_FILES['image'])) && (substr_count($_FILES['image']['type'],'image/')))
+        {        
+            $blog->setImage(get_uploaded_file('image'));        
+        }
+
+        system_message(elgg_echo("blog:posted"));
             
         $page_owner = get_entity($blog->container_guid);
         forward($page_owner->getUrl() . "/news");

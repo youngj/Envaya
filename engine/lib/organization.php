@@ -67,6 +67,14 @@ class Organization extends ElggUser {
         }
         $this->email_code = $code;
     }
+    
+    public function getIconFile($size)
+    {
+        $filehandler = new ElggFile();
+        $filehandler->owner_guid = $this->guid;
+        $filehandler->setFilename("icon$size.jpg");
+        return $filehandler;
+    }   
 
     public function getPostEmail()
     {
@@ -116,11 +124,6 @@ class Translation extends ElggObject
         parent::initialise_attributes();
         $this->attributes['subtype'] = 'translation';
     }    
-
-    public function getSource()
-    {
-        return "<a href='http://translate.google.com'>Google Translate</a>";
-    }
     
     public function getSubtype() 
     {
@@ -132,4 +135,63 @@ class Translation extends ElggObject
     {
         parent::__construct($guid);
     }      
+}
+
+class NewsUpdate extends ElggObject
+{
+    protected function initialise_attributes() 
+    {
+        parent::initialise_attributes();
+        $this->attributes['subtype'] = 'blog';                
+    }
+    
+    public function __construct($guid = null) 
+    {
+        parent::__construct($guid);
+        $this->access_id = 2;
+    }
+    
+    public function getImageFile($size = '')
+    {
+        $filehandler = new ElggFile();
+        $filehandler->owner_guid = $this->container_guid;
+        $filehandler->setFilename("blog/{$this->guid}$size.jpg");
+        return $filehandler;       
+    }
+    
+    public function setImage($imageData)
+    {
+        $prefix = "blog/".$this->guid;
+
+        $filehandler = new ElggFile();
+        
+        $filehandler->owner_guid = $this->container_guid;
+        $filehandler->container_guid = $this->guid;
+        
+        $filehandler->setFilename($prefix . ".jpg");
+        $filehandler->open("write");
+        $filehandler->write($imageData);
+        $filehandler->close();
+
+        $thumbsmall = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),100,100, false);
+        $thumblarge = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),450,450, false);
+
+        if ($thumbsmall) 
+        {
+            $thumb = new ElggFile();
+            $thumb->owner_guid = $blog->container_guid;
+            $thumb->container_guid = $blog->guid;
+            $thumb->setMimeType('image/jpeg');
+
+            $thumb->setFilename($prefix."small.jpg");
+            $thumb->open("write");
+            $thumb->write($thumbsmall);
+            $thumb->close();
+
+            $thumb->setFilename($prefix."large.jpg");
+            $thumb->open("write");
+            $thumb->write($thumblarge);
+            $thumb->close();
+        }        
+    }
 }

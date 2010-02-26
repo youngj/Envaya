@@ -774,6 +774,27 @@
 		 */
 		public function getLocation() { return $this->get('location'); }
 		
+        function getRootContainerEntity()
+        {
+            if ($this->container_guid)
+            {
+                $containerEntity = $this->getContainerEntity();
+                if ($containerEntity == null || $containerEntity->guid == $this->guid)
+                {
+                    return $this;
+                }
+                else
+                {
+                    return $containerEntity->getRootContainerEntity();
+                }
+            }
+            else
+            {
+                return $this;
+            }
+        }    
+                
+        
 		// NOTABLE INTERFACE ///////////////////////////////////////////////////////////////
 		
 		/**
