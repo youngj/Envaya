@@ -21,7 +21,7 @@
         );      
         */
         
-        $posts = list_user_objects($org->getGUID(),'blog',10,false, false, false);
+        $posts = list_user_objects($org->getGUID(),'blog',5,false, false, false);
         
         if (!$posts)
         {

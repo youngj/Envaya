@@ -54,7 +54,7 @@
     position:absolute;
     top:30px;
     margin-left:493px;
-    width:120px;
+    width:150px;
     height:50px;
 }
 
@@ -85,17 +85,34 @@
 
 #heading
 {    
-    padding:30px;
-    text-align:center;
-    text-transform:uppercase;
+    padding:15px;
     color:black;    
     letter-spacing:1px;
     font-family:"Gill Sans MT", sans-serif;
 }
 
+#heading img
+{
+    float:left;
+    padding-right:10px;
+}
+
 #heading h1
 {
+    color:#222;
     font-size:22px;
+    padding-top:14px;
+}
+
+#heading h1.withicon
+{
+    padding-top:20px;
+}
+
+#heading h1.withouticon,
+#heading h2.withouticon
+{
+    text-align:center;
 }
 
 
@@ -107,7 +124,8 @@
 
 #content
 {
-    background-color:#fff;
+    clear:both;
+    padding-top:10px;
     position:relative;
 }
 
