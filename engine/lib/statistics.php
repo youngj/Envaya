@@ -24,7 +24,7 @@
 		$entity_stats = array();
 		$owner_guid = (int)$owner_guid;
 		
-		$query = "SELECT distinct e.type,s.subtype,e.subtype as subtype_id from {$CONFIG->dbprefix}entities e left join {$CONFIG->dbprefix}entity_subtypes s on e.subtype=s.id";
+		$query = "SELECT distinct e.type,e.subtype as subtype_id from {$CONFIG->dbprefix}entities e";
 		$owner_query = "";
 		if ($owner_guid) {
 			$query .= " where owner_guid=$owner_guid";
@@ -35,16 +35,19 @@
 		
 		$types = get_data($query);
 		foreach ($types as $type) {
+            
+            $subtype = get_subtype_from_id($type->subtype_id);
+
 			if (!is_array($entity_stats[$type->type])) 
 				$entity_stats[$type->type] = array(); // assume there are subtypes for now
 			
 			$query = "SELECT count(*) as count from {$CONFIG->dbprefix}entities where type='{$type->type}' $owner_query";
-			if ($type->subtype) $query.= " and subtype={$type->subtype_id}";
-                         
+            if ($subtype) $query.= " and subtype={$type->subtype_id}";
+                                    
 			$subtype_cnt = get_data_row($query);
 			
-			if ($type->subtype)
-				$entity_stats[$type->type][$type->subtype] = $subtype_cnt->count;
+			if ($subtype)
+                $entity_stats[$type->type][$subtype] = $subtype_cnt->count;
 			else
 				$entity_stats[$type->type]['__base__'] = $subtype_cnt->count;	
 		}

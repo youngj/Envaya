@@ -996,7 +996,7 @@
 			
 			// Notify target user
 			return notify_user($object->guid_two, $object->guid_one, sprintf(elgg_echo('friend:newfriend:subject'), $user_one->name), 
-				sprintf(elgg_echo("friend:newfriend:body"), $user_one->name, $CONFIG->site->url . "pg/profile/" . $user_one->username)
+				sprintf(elgg_echo("friend:newfriend:body"), $user_one->name, $CONFIG->url . "pg/profile/" . $user_one->username)
 			); 
 		}
 	}

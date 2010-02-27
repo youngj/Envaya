@@ -52,8 +52,6 @@
 		$form_body .= "<p class=\"admin_usage\">" . elgg_echo('installation:usage') . "<br />";
 		$on = elgg_echo('installation:usage:label');
 
-		if (isset($CONFIG->ping_home))
-			$on = ($vars['config']->ping_home!='disabled' ? elgg_echo('installation:usage:label') : "");
 		$form_body .= elgg_view("input/checkboxes", array('options' => array(elgg_echo('installation:usage:label')), 'internalname' => 'usage', 'value' => $on ));	
 		$form_body .= "</p>";
 		

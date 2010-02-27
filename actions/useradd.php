@@ -42,7 +42,7 @@
 			$new_user->created_by_guid = get_loggedin_userid();
 			
 			
-			notify_user($new_user->guid, $CONFIG->site->guid, elgg_echo('useradd:subject'), sprintf(elgg_echo('useradd:body'), $name, $CONFIG->site->name, $CONFIG->site->url, $username, $password));
+			notify_user($new_user->guid, $CONFIG->site_guid, elgg_echo('useradd:subject'), sprintf(elgg_echo('useradd:body'), $name, $CONFIG->sitename, $CONFIG->url, $username, $password));
 			
 			system_message(sprintf(elgg_echo("adduser:ok"),$CONFIG->sitename));
 		} else {

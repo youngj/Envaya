@@ -111,7 +111,6 @@ function lookup_translation($text, $text_language)
     return $trans;
 }
 
-
 function envaya_init() {
 
     global $CONFIG;
@@ -122,16 +121,10 @@ function envaya_init() {
     register_page_handler('orgprofile','org_profile_page_handler');
     register_page_handler('org','org_page_handler');
     register_page_handler('login','login_page_handler');
-
-	register_entity_type('user', 'organization');
+    
+    register_entity_type('user', 'organization');
     register_entity_type('object', 'blog');
     register_entity_type('object', 'translation');
-    
-   	// This operation only affects the db on the first call for this subtype
-   	// If you change the class name, you'll have to hand-edit the db
-   	add_subtype('user', 'organization', 'Organization');
-    add_subtype('object', 'blog', 'NewsUpdate');
-    add_subtype('object', 'translation', 'Translation');
 
     // Register a URL handler
     register_entity_url_handler('org_url','user','organization');

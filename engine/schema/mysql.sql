@@ -10,14 +10,6 @@
 -- *** The main tables ***
 --
 
--- Site configuration.
-CREATE TABLE `prefix_config` (
-  `name` varchar(32) NOT NULL,
-  `value` text NOT NULL,
-  `site_guid` int(11) NOT NULL,
-  PRIMARY KEY  (`name`,`site_guid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 -- Define entities. 
 CREATE TABLE `prefix_entities` (
 	`guid` bigint(20) unsigned  NOT NULL auto_increment,
@@ -44,19 +36,6 @@ CREATE TABLE `prefix_entities` (
 	KEY `access_id` (`access_id`),
 	KEY `time_created` (`time_created`),
 	KEY `time_updated` (`time_updated`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- Entity subtypes - lets you subtype one of the main objects (sites/objects/etc)
-CREATE TABLE `prefix_entity_subtypes` (
-	`id` int(11) NOT NULL auto_increment,
-	
-	`type` enum ('object', 'user', 'group', 'site') NOT NULL,
-	`subtype` varchar(50) NOT NULL,
-	
-	class varchar(50) NOT NULL default '',
-	
-	PRIMARY KEY (`id`),
-	UNIQUE KEY (`type`, `subtype`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Describe relationships between entities, can describe friendships but also site membership, depending on context
@@ -112,18 +91,6 @@ CREATE TABLE `prefix_objects_entity` (
   FULLTEXT KEY (`title`,`description`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- Extra information relating to "sites"
-CREATE TABLE `prefix_sites_entity` (
-  `guid` bigint(20) unsigned  NOT NULL,
-  
-  `name` text NOT NULL,
-  `description` text NOT NULL,
-  `url` varchar(255) NOT NULL, 
-   
-  PRIMARY KEY  (`guid`),
-  UNIQUE KEY (`url`),
-  FULLTEXT KEY (`name`,`description`, `url`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Extra information relating to "users"
 CREATE TABLE `prefix_users_entity` (

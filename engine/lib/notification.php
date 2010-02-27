@@ -233,24 +233,21 @@
 		// From
 		$site = get_entity($CONFIG->site_guid);
 		if ((isset($from->email)) && (!($from instanceof ElggUser))) // If there's an email address, use it - but only if its not from a user.
-			$from = $from->email;
-		else if (($site) && (isset($site->email))) // Has the current site got a from email address?
-			$from = $site->email;
-		else if (isset($from->url)) // If we have a url then try and use that.
-		{
-			$breakdown = parse_url($from->url);
-			$from = 'noreply@' . $breakdown['host']; // Handle anything with a url
-		}
-		else // If all else fails, use the domain of the site.
-			$from = 'noreply@' . get_site_domain($CONFIG->site_guid); 
+        {
+			$from = $from->email;		
+        }    
+        else 
+        {
+			$from = $CONFIG->siteemail;
+        }    
 	
 		if (is_callable('mb_internal_encoding')) {
 			mb_internal_encoding('UTF-8');
 		}
 		$site = get_entity($CONFIG->site_guid);
-		$sitename = $site->name;
+		$sitename = $CONFIG->sitename;
 		if (is_callable('mb_encode_mimeheader')) {
-			$sitename = mb_encode_mimeheader($site->name,"UTF-8", "B");
+            $sitename = mb_encode_mimeheader($CONFIG->sitename,"UTF-8", "B");
 		}
 		
 		$header_eol = "\r\n";

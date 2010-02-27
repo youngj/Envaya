@@ -153,13 +153,10 @@
 			
 			throw new InstallationException(elgg_echo('installation:error:configuration'));
 			
-		}
-		
-		// Autodetect some default configuration settings
-			set_default_config();
+		}		
 	
 		// Trigger events
-			trigger_elgg_event('boot', 'system');
+        trigger_elgg_event('boot', 'system');
 			
 		// Load plugins
 		

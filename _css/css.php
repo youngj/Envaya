@@ -10,7 +10,6 @@
 
 	 * @link http://elgg.org/
 	 */
-	
 		/*
 
 	    require_once(dirname(dirname(__FILE__)) . "/engine/start.php");
@@ -39,6 +38,7 @@
 		header("Pragma: public", true);
 		header("Cache-Control: public", true);
 	    // header("Content-Length: " . strlen($default_css));
+        
 		require_once(dirname(dirname(__FILE__)) . '/simplecache/view.php');
     
 ?>

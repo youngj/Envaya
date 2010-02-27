@@ -107,12 +107,6 @@
 				enable_plugin('htmlawed', $site->getGUID());
 			}
 				
-			// Now ping home
-			if ($usage)
-			{
-				ping_home($site);
-			}
-				
 			system_message(elgg_echo("installation:configuration:success"));
 			
 			header("Location: ../../account/register.php");

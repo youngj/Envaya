@@ -32,11 +32,11 @@
 			run_sql_script(dirname(__FILE__) . "/engine/schema/mysql.sql");
 			init_site_secret();
 			system_message(elgg_echo("installation:success"));
+            datalist_set('installed', 1);  
+            system_message(elgg_echo("installation:configuration:success"));
+            forward("account/register.php");
 		}
 		
-	/**
-	 * Load the front page
-	 */
-		page_draw(elgg_echo("installation:settings"), elgg_view_layout("one_column", elgg_view("settings/install")));
+    forward("index.php");
 
 ?>

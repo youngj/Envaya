@@ -222,54 +222,29 @@
 		 */
 		function load_plugins() {
 			
-			global $CONFIG;
-			
-			if (!empty($CONFIG->pluginspath)) {
+			global $CONFIG;				
+            $plugins = $CONFIG->enabled_plugins;
 				
-				// See if we have cached values for things
-				$cached_view_paths = elgg_filepath_cache_load();
-				if ($cached_view_paths) $CONFIG->views = unserialize($cached_view_paths);
-				
-				// temporary disable all plugins if there is a file called 'disabled' in the plugin dir
-				if (file_exists($CONFIG->pluginspath . "disabled"))
-					return;
-				
-				$plugins = get_plugin_list();
-				
-				if (sizeof($plugins))
-				{
-					foreach($plugins as $mod) {
-						if (is_plugin_enabled($mod)) {
-							if (file_exists($CONFIG->pluginspath . $mod)) {
-								if (!include($CONFIG->pluginspath . $mod . "/start.php"))
-									throw new PluginException(sprintf(elgg_echo('PluginException:MisconfiguredPlugin'), $mod));
-									
-								if (!$cached_view_paths)
-								{
-									if (is_dir($CONFIG->pluginspath . $mod . "/views")) {
-										if ($handle = opendir($CONFIG->pluginspath . $mod . "/views")) {
-											while ($viewtype = readdir($handle)) {
-												if (!in_array($viewtype,array('.','..','.svn','CVS')) && is_dir($CONFIG->pluginspath . $mod . "/views/" . $viewtype)) {
-													autoregister_views("",$CONFIG->pluginspath . $mod . "/views/" . $viewtype,$CONFIG->pluginspath . $mod . "/views/", $viewtype);
-												}
-											}
-										}
-									}
-								}
-								
-								if (is_dir($CONFIG->pluginspath . $mod . "/languages")) {
-									register_translations($CONFIG->pluginspath . $mod . "/languages/");
-								}
-							}
-						}
-					}
-				}
+            foreach($plugins as $mod) {
+                if (file_exists($CONFIG->pluginspath . $mod)) {
+                    if (!include($CONFIG->pluginspath . $mod . "/start.php"))
+                        throw new PluginException(sprintf(elgg_echo('PluginException:MisconfiguredPlugin'), $mod));
 
-				// Cache results
-				if (!$cached_view_paths)
-					elgg_filepath_cache_save(serialize($CONFIG->views));
-			}
-			
+                    if (is_dir($CONFIG->pluginspath . $mod . "/views")) {
+                        if ($handle = opendir($CONFIG->pluginspath . $mod . "/views")) {
+                            while ($viewtype = readdir($handle)) {
+                                if (!in_array($viewtype,array('.','..','.svn','CVS')) && is_dir($CONFIG->pluginspath . $mod . "/views/" . $viewtype)) {
+                                    autoregister_views("",$CONFIG->pluginspath . $mod . "/views/" . $viewtype,$CONFIG->pluginspath . $mod . "/views/", $viewtype);
+                                }
+                            }
+                        }
+                    }
+
+                    if (is_dir($CONFIG->pluginspath . $mod . "/languages")) {
+                        register_translations($CONFIG->pluginspath . $mod . "/languages/");
+                    }
+                }
+            }
 		}
 		
 		/**
@@ -680,27 +655,8 @@
 		 */
 		function is_plugin_enabled($plugin, $site_guid = 0)
 		{
-			global $CONFIG, $ENABLED_PLUGINS_CACHE;
-			
-			if (!file_exists($CONFIG->pluginspath . $plugin)) return false;
-			
-			$site_guid = (int) $site_guid;
-			if ($site_guid == 0)
-				$site_guid = $CONFIG->site_guid;
-				
-				
-			if (!$ENABLED_PLUGINS_CACHE) {
-				$site = get_entity($site_guid);
-				if (!($site instanceof ElggSite))
-					throw new InvalidClassException(sprintf(elgg_echo('InvalidClassException:NotValidElggStar'), $site_guid, "ElggSite"));
-			
-				$ENABLED_PLUGINS_CACHE = $site->enabled_plugins;
-			}
-				
-			foreach ($ENABLED_PLUGINS_CACHE as $e)
-				if ($e == $plugin) return true;
-				
-			return false;
+			global $CONFIG;            
+            return in_array($plugin, $CONFIG->enabled_plugins);
 		}
 		
 		/**

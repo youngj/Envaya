@@ -1141,26 +1141,15 @@
 	 */
 	function get_subtype_id($type, $subtype)
 	{
-		global $CONFIG, $SUBTYPE_CACHE;
-		
-		$type = sanitise_string($type);
-		$subtype = sanitise_string($subtype);
-	
-		if ($subtype=="") return $subtype;
-		
-		// Todo: cache here? Or is looping less efficient that going to the db each time?
-		
-		$result = get_data_row("SELECT * from {$CONFIG->dbprefix}entity_subtypes where type='$type' and subtype='$subtype'");
+        global $CONFIG;
+        foreach ($CONFIG->subtypes as $id => $info)
+        {   
+            if ($info[0] == $type && $info[1] == $subtype)
+            {
+                return $id;
+            }
+        }        
 
-		if ($result) {
-			
-			if (!$SUBTYPE_CACHE) 
-				$SUBTYPE_CACHE = array(); //select_default_memcache('subtype_cache');
-			
-			$SUBTYPE_CACHE[$result->id] = $result;
-			return $result->id;
-		}
-		
 		return 0;
 	}
 	
@@ -1173,25 +1162,12 @@
 	 */
 	function get_subtype_from_id($subtype_id)
 	{
-		global $CONFIG, $SUBTYPE_CACHE;
-		
-		$subtype_id = (int)$subtype_id;
-		
-		if (!$subtype_id) return false;
-		
-		if (isset($SUBTYPE_CACHE[$subtype_id]))
-			return $SUBTYPE_CACHE[$subtype_id]->subtype;
-		
-		$result = get_data_row("SELECT * from {$CONFIG->dbprefix}entity_subtypes where id=$subtype_id");
-		if ($result) {
-			
-			if (!$SUBTYPE_CACHE) 
-				$SUBTYPE_CACHE = array(); //select_default_memcache('subtype_cache');
-			
-			$SUBTYPE_CACHE[$subtype_id] = $result;
-			return $result->subtype;
-		}
-		
+        global $CONFIG;
+        if (isset($CONFIG->subtypes[$subtype_id]))
+        {
+            return $CONFIG->subtypes[$subtype_id][1];
+        }
+
 		return false;
 	}
 	
@@ -1204,22 +1180,14 @@
 	 */
 	function get_subtype_class($type, $subtype)
 	{
-		global $CONFIG, $SUBTYPE_CACHE;
-		
-		$type = sanitise_string($type);
-		$subtype = sanitise_string($subtype);
-		
-		// Todo: cache here? Or is looping less efficient that going to the db each time?
-		
-		$result = get_data_row("SELECT * from {$CONFIG->dbprefix}entity_subtypes where type='$type' and subtype='$subtype'");
-		if ($result) {
-			
-			if (!$SUBTYPE_CACHE) 
-				$SUBTYPE_CACHE = array(); //select_default_memcache('subtype_cache');
-			
-			$SUBTYPE_CACHE[$result->id] = $result;
-			return $result->class;
-		}
+        global $CONFIG;
+		foreach ($CONFIG->subtypes as $id => $info)
+        {
+            if ($info[0] == $type && $info[1] == $subtype)
+            {
+                return $info[2];
+            }
+        }
 		
 		return NULL;
 	}
@@ -1232,26 +1200,12 @@
 	 */
 	function get_subtype_class_from_id($subtype_id)
 	{
-		global $CONFIG, $SUBTYPE_CACHE;
-		
-		$subtype_id = (int)$subtype_id;
-		
-		if (!$subtype_id) return false;
-		
-		if (isset($SUBTYPE_CACHE[$subtype_id]))
-			return $SUBTYPE_CACHE[$subtype_id]->class;
-		
-		$result = get_data_row("SELECT * from {$CONFIG->dbprefix}entity_subtypes where id=$subtype_id");
-		if ($result) {
-			
-			if (!$SUBTYPE_CACHE) 
-				$SUBTYPE_CACHE = array(); //select_default_memcache('subtype_cache');
-			
-			$SUBTYPE_CACHE[$subtype_id] = $result;
-			return $result->class;
-		}
-		
-		return NULL;
+		global $CONFIG;        
+        if (isset($CONFIG->subtypes[$subtype_id]))
+        {
+            return $CONFIG->subtypes[$subtype_id][2];
+        }
+        return NULL;
 	}
 	
 	/**
@@ -1261,23 +1215,8 @@
 	 * @param string $subtype The subtype label
 	 * @param string $class Optional class handler (if you don't want it handled by the generic elgg handler for the type)
 	 */
-	function add_subtype($type, $subtype, $class = "")
+    function add_subtype($type, $subtype, $class = "")
 	{
-		global $CONFIG;
-		$type = sanitise_string($type);
-		$subtype = sanitise_string($subtype);
-		$class = sanitise_string($class);
-	
-		// Short circuit if no subtype is given
-		if ($subtype == "")
-			return 0;
-
-		$id = get_subtype_id($type, $subtype);
-	
-		if ($id==0)
-			return insert_data("insert into {$CONFIG->dbprefix}entity_subtypes (type, subtype, class) values ('$type','$subtype','$class')");
-		
-		return $id;
 	}
 	
 	/**
@@ -1383,7 +1322,7 @@
 		global $CONFIG;
 	
 		$type = sanitise_string($type);
-		$subtype = add_subtype($type, $subtype);
+        $subtype = get_subtype_id($type, $subtype);
 		$owner_guid = (int)$owner_guid; 
 		$access_id = (int)$access_id;
 		$time = time();
@@ -1484,8 +1423,6 @@
 					$new_entity = new ElggUser($row); break;
 				case 'group' : 
 					$new_entity = new ElggGroup($row); break;
-				case 'site' : 
-					$new_entity = new ElggSite($row); break;
 				default: throw new InstallationException(sprintf(elgg_echo('InstallationException:TypeNotSupported'), $row->type));
 			}
 			

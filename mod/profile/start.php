@@ -98,29 +98,6 @@
 				'phone' => 'text',
 			);
 			
-			// TODO: Have an admin interface for this
-			
-			$n = 0;
-			$loaded_defaults = array();
-			while ($translation = get_plugin_setting("admin_defined_profile_$n", 'profile'))
-			{
-				// Add a translation
-				add_translation(get_current_language(), array("profile:admin_defined_profile_$n" => $translation));
-				
-				// Detect type
-				$type = get_plugin_setting("admin_defined_profile_type_$n", 'profile');
-				if (!$type) $type = 'text';
-				
-				// Set array
-				$loaded_defaults["admin_defined_profile_$n"] = $type;
-				
-				$n++;
-			}
-			if (count($loaded_defaults)) {
-				$CONFIG->profile_using_custom = true;
-				$profile_defaults = $loaded_defaults;
-			}
-			
 			$CONFIG->profile = trigger_plugin_hook('profile:fields', 'profile', NULL, $profile_defaults);
 		}
 		
@@ -180,10 +157,6 @@
 		function profile_pagesetup()
 		{
 			global $CONFIG;
-			if (get_context() == 'admin' && isadminloggedin()) {
-				
-				add_submenu_item(elgg_echo('profile:edit:default'), $CONFIG->wwwroot . 'pg/defaultprofile/edit/');
-			}
 		
 			//add submenu options
 			if (get_context() == "profile") {

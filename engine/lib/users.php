@@ -949,12 +949,12 @@
 			set_private_setting($user_guid, 'passwd_conf_code', $code);
 			
 			// generate link
-			$link = $CONFIG->site->url . "action/user/passwordreset?u=$user_guid&c=$code";
+			$link = $CONFIG->url . "action/user/passwordreset?u=$user_guid&c=$code";
 			
 			// generate email
 			$email = sprintf(elgg_echo('email:resetreq:body'), $user->name, $_SERVER['REMOTE_ADDR'], $link);
 			
-			return notify_user($user->guid, $CONFIG->site->guid, elgg_echo('email:resetreq:subject'), $email, NULL, 'email');
+			return notify_user($user->guid, $CONFIG->site_guid, elgg_echo('email:resetreq:subject'), $email, NULL, 'email');
 
 		}
 		
@@ -1015,7 +1015,7 @@
 				
 				$email = sprintf(elgg_echo('email:resetpassword:body'), $user->name, $password);
 				
-				return notify_user($user->guid, $CONFIG->site->guid, elgg_echo('email:resetpassword:subject'), $email, NULL, 'email');
+				return notify_user($user->guid, $CONFIG->site_guid, elgg_echo('email:resetpassword:subject'), $email, NULL, 'email');
 			}
 		}
 		

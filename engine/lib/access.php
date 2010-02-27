@@ -22,6 +22,7 @@
 	 * @return string A list of access collections suitable for injection in an SQL call
 	 */
 		function get_access_list($user_id = 0, $site_id = 0, $flush = false) {
+            return "(2)";
 			
 			global $CONFIG, $init_finished, $SESSION;
 			static $access_list;
@@ -36,8 +37,8 @@
 			
 			if (isset($access_list[$user_id])) return $access_list[$user_id];
 			
-			$access_list[$user_id] = "(" . implode(",",get_access_array($user_id, $site_id, $flush)) . ")";
-			
+			$access_list[$user_id] = "(" . implode(",",get_access_array($user_id, $site_id, $flush)) . ")";			
+            
 			return $access_list[$user_id];
 			
 		}
@@ -212,7 +213,8 @@ END;
 		 * @param string $table_prefix Optional xxx. prefix for the access code.
 		 */
 		function get_access_sql_suffix($table_prefix = "",$owner=null)
-		{
+		{                    
+        
 			global $ENTITY_SHOW_HIDDEN_OVERRIDE, $CONFIG;  
 			
 			$sql = "";

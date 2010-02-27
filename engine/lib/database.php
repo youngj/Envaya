@@ -93,7 +93,7 @@
 	function db_profiling_shutdown_hook()
 	{
 		global $CONFIG, $DB_PROFILE, $dbcalls;
-		
+		        
 		if (isset($CONFIG->debug) && $CONFIG->debug)
 		{
 			error_log("***************** DB PROFILING ********************");
