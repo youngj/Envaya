@@ -559,8 +559,43 @@
 		 * @return string The URL
 		 */
 		public function getURL() {
-			if (!empty($this->url_override)) return $this->url_override;
-			return get_entity_url($this->getGUID()); 
+			if (!empty($this->url_override)) 
+                return $this->url_override;
+			
+            global $CONFIG;
+
+            $url = "";
+            $entity = $this;
+            
+            if (isset($CONFIG->entity_url_handler[$entity->getType()][$entity->getSubType()])) 
+            {
+                $function =  $CONFIG->entity_url_handler[$entity->getType()][$entity->getSubType()];
+                if (is_callable($function)) 
+                {
+                    $url = $function($entity);
+                }
+            } 
+            elseif (isset($CONFIG->entity_url_handler[$entity->getType()]['all'])) 
+            {
+                $function =  $CONFIG->entity_url_handler[$entity->getType()]['all'];
+                if (is_callable($function)) {
+                    $url = $function($entity);
+                }
+            } 
+            elseif (isset($CONFIG->entity_url_handler['all']['all'])) 
+            {
+                $function =  $CONFIG->entity_url_handler['all']['all'];
+                if (is_callable($function)) {
+                    $url = $function($entity);
+                }
+            }
+
+            if ($url == "") 
+            {
+                $url = $CONFIG->url . "pg/view/" . $entity_guid;
+            }
+            return $url;
+            
 		}
 		
 		/**
@@ -667,26 +702,32 @@
 			
 			if ($row)
 			{
-				// Create the array if necessary - all subclasses should test before creating
-				if (!is_array($this->attributes)) $this->attributes = array();
-				
-				// Now put these into the attributes array as core values
-				$objarray = (array) $row;
-				foreach($objarray as $key => $value) 
-					$this->attributes[$key] = $value;
-				
-				// Increment the portion counter
-				if (!$this->isFullyLoaded()) $this->attributes['tables_loaded'] ++;
-				
-				// Cache object handle
-				if ($this->attributes['guid']) cache_entity($this); 
-					
+                $this->loadFromEntityRow($row);
 				return true;
 			}
 			
 			return false;
 		}
 		
+        protected function loadFromEntityRow($row)
+        {
+            // Create the array if necessary - all subclasses should test before creating
+            if (!is_array($this->attributes)) $this->attributes = array();
+
+            // Now put these into the attributes array as core values
+            $objarray = (array) $row;
+            foreach($objarray as $key => $value) 
+                $this->attributes[$key] = $value;
+
+            // Increment the portion counter
+            if (!$this->isFullyLoaded()) $this->attributes['tables_loaded'] ++;
+
+            // Cache object handle
+            if ($this->attributes['guid']) cache_entity($this); 
+
+            return true;
+        }
+        
 		/**
 		 * Disable this entity.
 		 * 
@@ -1441,6 +1482,10 @@
 	 */
 	function get_entity($guid)
 	{
+        $cached_entity = retrieve_cached_entity($guid);
+        if ($cached_entity)
+            return $cached_entity;
+    
 		static $newentity_cache;
 		$new_entity = false;
 		if ((!$newentity_cache) && (is_memcache_available())) 
@@ -2141,46 +2186,6 @@
 		return $url;
 	}
 		
-	/**
-	 * Gets the URL for an entity, given a particular GUID
-	 *
-	 * @param int $entity_guid The GUID of the entity
-	 * @return string The URL of the entity
-	 */
-	function get_entity_url($entity_guid) {
-		
-		global $CONFIG;
-		if ($entity = get_entity($entity_guid)) {
-
-			$url = "";
-			
-			if (isset($CONFIG->entity_url_handler[$entity->getType()][$entity->getSubType()])) {
-				$function =  $CONFIG->entity_url_handler[$entity->getType()][$entity->getSubType()];
-				if (is_callable($function)) {
-					$url = $function($entity);
-				}
-			} elseif (isset($CONFIG->entity_url_handler[$entity->getType()]['all'])) {
-				$function =  $CONFIG->entity_url_handler[$entity->getType()]['all'];
-				if (is_callable($function)) {
-					$url = $function($entity);
-				}
-			} elseif (isset($CONFIG->entity_url_handler['all']['all'])) {
-				$function =  $CONFIG->entity_url_handler['all']['all'];
-				if (is_callable($function)) {
-					$url = $function($entity);
-				}
-			}
-
-			if ($url == "") {
-				$url = $CONFIG->url . "pg/view/" . $entity_guid;
-			}
-			return $url;
-			
-		}
-		return false;
-		
-	}
-	
 	/**
 	 * Sets the URL handler for a particular entity type and subtype
 	 *

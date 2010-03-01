@@ -36,7 +36,7 @@
 		) {
 			$new_user = get_entity($guid);
 			if (($guid) && ($admin))
-				$new_user->admin = 'yes';
+				$new_user->admin = true;
 			
 			$new_user->admin_created = true;
 			$new_user->created_by_guid = get_loggedin_userid();

@@ -46,7 +46,7 @@
 		<?php
 		
 			// The administration link is for admin or site admin users only
-			if ($vars['user']->admin || $vars['user']->siteadmin) { 
+			if ($vars['user']->admin) { 
 		
 		?>
 		

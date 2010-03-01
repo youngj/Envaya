@@ -23,6 +23,9 @@
             
             global $CONFIG;
             
+            if ($_SESSION['id'] > 0) {
+                set_last_action($_SESSION['id']);
+            }    
             
 	        $query = parse_url($_SERVER['REQUEST_URI']);
 			if (isset($query['query'])) {

@@ -49,6 +49,7 @@
 			$this->attributes['code'] = "";
 			$this->attributes['banned'] = "no";
 			$this->attributes['tables_split'] = 2;
+            $this->attributes['admin'] = 0;
 		}
 				
 		/**
@@ -65,9 +66,9 @@
 			if (!empty($guid))
 			{
 				// Is $guid is a DB row - either a entity row, or a user table row.
-				if ($guid instanceof stdClass) {					
-					// Load the rest
-					if (!$this->load($guid->guid))
+				if ($guid instanceof stdClass) 
+                {										
+                    if (!$this->loadFromEntityRow($guid))
 						throw new IOException(sprintf(elgg_echo('IOException:FailedToLoadGUID'), get_class(), $guid->guid)); 
 				}
 				
@@ -111,26 +112,35 @@
 		 */
 		protected function load($guid)
 		{			
-			// Test to see if we have the generic stuff
 			if (!parent::load($guid)) 
 				return false;
 
-			// Check the type
 			if ($this->attributes['type']!='user')
 				throw new InvalidClassException(sprintf(elgg_echo('InvalidClassException:NotValidElggStar'), $guid, get_class()));
 				
-			// Load missing data
-			$row = get_user_entity_as_row($guid);
-			if (($row) && (!$this->isFullyLoaded())) $this->attributes['tables_loaded'] ++;	// If $row isn't a cached copy then increment the counter		
-						
-			// Now put these into the attributes array as core values
-			$objarray = (array) $row;
-			foreach($objarray as $key => $value) 
-				$this->attributes[$key] = $value;
-			
-			return true;
+            return $this->loadFromUserEntityRow(get_user_entity_as_row($guid));
 		}
+        
+        protected function loadFromUserEntityRow($row)
+        {
+            if (($row) && (!$this->isFullyLoaded())) 
+                $this->attributes['tables_loaded'] ++; 
+                                    
+            $objarray = (array) $row;
+            foreach($objarray as $key => $value) 
+                $this->attributes[$key] = $value;
+            
+            return true;            
+        }
 		
+        protected function loadFromEntityRow($row)
+        {
+            $entityRow = (property_exists($row, 'type')) ? $row : get_entity_as_row($row->guid);
+            $userEntityRow = (property_exists($row, 'username')) ? $row : get_user_entity_as_row($row->guid);
+            
+            return parent::loadFromEntityRow($entityRow) && $this->loadFromUserEntityRow($userEntityRow);
+        }
+        
 		/**
 		 * Saves this user to the database.
 		 * @return true|false
@@ -779,7 +789,7 @@
 		if ( (isset($USERNAME_TO_GUID_MAP_CACHE[$username])) && (retrieve_cached_entity($USERNAME_TO_GUID_MAP_CACHE[$username])) )
 			return retrieve_cached_entity($USERNAME_TO_GUID_MAP_CACHE[$username]);
 		
-		$row = get_data_row("SELECT e.* from {$CONFIG->dbprefix}users_entity u join {$CONFIG->dbprefix}entities e on e.guid=u.guid where u.username='$username' and $access ");
+		$row = get_data_row("SELECT e.*, u.* from {$CONFIG->dbprefix}users_entity u join {$CONFIG->dbprefix}entities e on e.guid=u.guid where u.username='$username' and $access ");
 		if ($row) {
 			$USERNAME_TO_GUID_MAP_CACHE[$username] = $row->guid;
             return entity_row_to_elggstar($row);
@@ -806,7 +816,7 @@
 		if ( (isset($CODE_TO_GUID_MAP_CACHE[$code])) && (retrieve_cached_entity($CODE_TO_GUID_MAP_CACHE[$code])) )
 			return retrieve_cached_entity($CODE_TO_GUID_MAP_CACHE[$code]);
 		
-		$row = get_data_row("SELECT e.* from {$CONFIG->dbprefix}users_entity u join {$CONFIG->dbprefix}entities e on e.guid=u.guid where u.code='$code' and $access");
+		$row = get_data_row("SELECT e.*, u.* from {$CONFIG->dbprefix}users_entity u join {$CONFIG->dbprefix}entities e on e.guid=u.guid where u.code='$code' and $access");
 		if ($row) {
 			$CODE_TO_GUID_MAP_CACHE[$code] = $row->guid;
             return entity_row_to_elggstar($row);

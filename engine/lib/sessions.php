@@ -150,7 +150,7 @@
 			
 			$user = get_loggedin_user();
 			
-			if ((isloggedin()) && (($user->admin || $user->siteadmin)))
+			if (isloggedin() && $user->admin)
 				return true;
 				
 			return false;
@@ -384,7 +384,7 @@
 	 * @param unknown_type $object
 	 */
 		function session_init($event, $object_type, $object) {
-			
+			            
 			global $DB_PREFIX, $CONFIG;
 			
 			if (!is_db_installed()) return false;
@@ -451,9 +451,6 @@
 	                unset($_SESSION['code']);//$_SESSION['code'] = "";
 	            }
 	        }
-	        if ($_SESSION['id'] > 0) {
-	            set_last_action($_SESSION['id']);
-	        }
 	        
 	        register_action("login",true);
     		register_action("logout");
@@ -491,7 +488,7 @@
 		}
 		
 		/**
-		 * Used at the top of a page to mark it as logged in admin or siteadmin only.
+		 * Used at the top of a page to mark it as logged in admin only.
 		 *
 		 */
 		function admin_gatekeeper()
@@ -531,20 +528,10 @@
 			
 			$id = sanitise_string($id);
 			
-			try {		
-				$result = get_data_row("SELECT * from {$DB_PREFIX}users_sessions where session='$id'");			
-				
-				if ($result)
-					return (string)$result->data;
-					
-			} catch (DatabaseException $e) {
-				
-				// Fall back to file store in this case, since this likely means that the database hasn't been upgraded
-				global $sess_save_path;
+            $result = get_data_row("SELECT * from {$DB_PREFIX}users_sessions where session='$id'");			
 
-				$sess_file = "$sess_save_path/sess_$id";			
-				return (string) @file_get_contents($sess_file);
-			}
+            if ($result)
+                return (string)$result->data;
 				
 			return '';
 		}
@@ -559,24 +546,10 @@
 			$id = sanitise_string($id);			
 			$time = time();
 			
-			try {
-				$sess_data_sanitised = sanitise_string($sess_data);
+			$sess_data_sanitised = sanitise_string($sess_data);
 
-				if (insert_data("REPLACE INTO {$DB_PREFIX}users_sessions (session, ts, data) VALUES ('$id', '$time', '$sess_data_sanitised')")!==false)
-					return true;
-					
-			} catch (DatabaseException $e) {
-				// Fall back to file store in this case, since this likely means that the database hasn't been upgraded
-				global $sess_save_path;
-
-  				$sess_file = "$sess_save_path/sess_$id";
-  				if ($fp = @fopen($sess_file, "w")) {
-    				$return = fwrite($fp, $sess_data);
-    				fclose($fp);
-    				return $return;
-  				}
-  				
-			}
+            if (insert_data("REPLACE INTO {$DB_PREFIX}users_sessions (session, ts, data) VALUES ('$id', '$time', '$sess_data_sanitised')")!==false)
+                return true;
 			
 			return false;
 		}
@@ -590,17 +563,7 @@
 			
 			$id = sanitise_string($id);
 
-			try {		
-				return (bool)delete_data("DELETE from {$DB_PREFIX}users_sessions where session='$id'");
-			} catch (DatabaseException $e) {
-				// Fall back to file store in this case, since this likely means that the database hasn't been upgraded
-				global $sess_save_path;
-
-				$sess_file = "$sess_save_path/sess_$id";
-				return(@unlink($sess_file));
-			}
-			
-			return false;
+            return (bool)delete_data("DELETE from {$DB_PREFIX}users_sessions where session='$id'");
 		}
 		
 		/**
@@ -612,18 +575,7 @@
 			
 			$life = time()-$maxlifetime;
 
-			try {
-				return (bool)delete_data("DELETE from {$DB_PREFIX}users_sessions where ts<'$life'");
-			} catch (DatabaseException $e) {
-				// Fall back to file store in this case, since this likely means that the database hasn't been upgraded
-				global $sess_save_path;
-
-				foreach (glob("$sess_save_path/sess_*") as $filename) {
-					if (filemtime($filename) < $life) {
-						@unlink($filename);
-					}
-				}
-			}
+            return (bool)delete_data("DELETE from {$DB_PREFIX}users_sessions where ts<'$life'");
 			
 			return true;
 		}

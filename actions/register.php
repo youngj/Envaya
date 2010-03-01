@@ -46,7 +46,7 @@
 					if (($guid) && ($admin))
 					{
 						admin_gatekeeper(); // Only admins can make someone an admin
-						$new_user->admin = 'yes';
+						$new_user->admin = true;
 					}
 					
 					// Send user validation request on register only

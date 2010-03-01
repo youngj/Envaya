@@ -21,7 +21,7 @@
 	
 	if ( ($obj instanceof ElggUser) && ($obj->canEdit()))
 	{
-		$obj->admin = '';
+		$obj->admin = false;
 		if (!$obj->admin)
 			system_message(elgg_echo('admin:user:removeadmin:yes'));
 		else

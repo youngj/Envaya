@@ -256,7 +256,7 @@
         function get_data($query, $callback = "") {
             
             global $CONFIG, $DB_QUERY_CACHE;
-            
+                                               
         	// Is cached?
         	if ($DB_QUERY_CACHE) $cached_query = $DB_QUERY_CACHE[$query];
 			if ((isset($cached_query)) && ($cached_query)) {
@@ -306,6 +306,8 @@
         function get_data_row($query, $callback = "") {
             
             global $CONFIG, $DB_QUERY_CACHE;
+
+            //error_log(var_export(debug_backtrace(), true));           
             
         	// Is cached
        		if ($DB_QUERY_CACHE) $cached_query = $DB_QUERY_CACHE[$query];
