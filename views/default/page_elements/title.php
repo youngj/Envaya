@@ -1,36 +1,28 @@
 <?php
 
-	/**
-	 * Elgg title element
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-	 * @author Curverider Ltd
-	 * @link http://elgg.org/
-	 * 
-	 * @uses $vars['title'] The page title
-	 */
-
-	$page_owner = page_owner();
-	$page_owner_user = get_entity($page_owner);
-
-	$submenu = get_submenu(); // elgg_view('canvas_header/submenu');
-	if (!empty($submenu)) $submenu = "<ul>" . $submenu . "</ul>";
-	
-    $info = "<h2>" . escape($vars['title']) . "</h2>";
-
-    if($page_owner_user instanceOf ElggGroup) 
-    { 
-        $display = "<div id=\"content_area_group_title\">" . $info . "</div>";
-    } 
-    else
+    $icon = $vars['icon'];
+    $link = $vars['link'];   
+    
+    if ($icon)
     {
-        $display = "<div id=\"content_area_user_title\">" . $info . "</div>";
+        $img = "<img src='$icon' />";
+        if ($link)
+        {
+            $img = "<a href='$link'>$img</a>";
+        }
+        echo $img;
     }
+    
+    $hclass = ($icon) ? 'withicon' : 'withouticon';
 
-	//print to screen
-	echo $display;
+    $h1 = "<h1 class='$hclass'>".escape($vars['title'])."</h1>";
 
-
-
+    if ($link)
+    {
+        $h1 = "<a href='$link'>$h1</a>";
+    }
+    
+    echo $h1;      
+    
 ?>
+<h2 class='<?php echo $hclass ?>'><?php echo escape($vars['subtitle']) ?></h2>

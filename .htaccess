@@ -132,7 +132,7 @@ RewriteRule ^pg\/([A-Za-z0-9\_\-]+)$ engine/handlers/pagehandler.php?handler=$1 
 
 #RewriteRule tag/(.+)/?$ engine/handlers/pagehandler.php?handler=search&page=$1 [L]
 
-RewriteRule ^(account|mod|search|admin|dashboard|engine|services|_css)/ - [S=1]
+RewriteRule ^(account|mod|search|admin|dashboard|engine|services|_css|_graphics)/ - [S=1]
 
 RewriteRule ^([\d\w\-]+(/.*)?)$ engine/handlers/pagehandler.php?handler=orgprofile&page=$1 [L]
 

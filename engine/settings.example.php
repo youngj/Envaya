@@ -9,9 +9,9 @@
 	 * @todo Turn this into something we handle more automatically. 
 	 */
 
-		global $CONFIG;
-		if (!isset($CONFIG))
-			$CONFIG = new stdClass;
+    global $CONFIG;
+    if (!isset($CONFIG))
+        $CONFIG = new stdClass;
 
 	/*
 	 * Standard configuration

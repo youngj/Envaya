@@ -1,88 +1,31 @@
 <?php
-
     error_reporting(E_ERROR | E_PARSE);
 
-	/**
-	 * Elgg settings
-	 * 
-	 * Elgg manages most of its configuration from the admin panel. However, we need you to
-	 * include your database settings below.
-	 * 
-	 * @todo Turn this into something we handle more automatically. 
-	 */
+    global $CONFIG;
+    if (!isset($CONFIG))
+        $CONFIG = new stdClass;
 
-		global $CONFIG;
-		if (!isset($CONFIG))
-			$CONFIG = new stdClass;
+    $CONFIG->dbuser = 'newslink';
+    $CONFIG->dbpass = 'scarlett';
+    $CONFIG->dbname = 'elgg';
+    $CONFIG->dbhost = 'localhost';
+    $CONFIG->dbprefix = '';
 
 	/*
-	 * Standard configuration
-	 * 
-	 * You will use the same database connection for reads and writes.
-	 * This is the easiest configuration, and will suit 99.99% of setups. However, if you're
-	 * running a really popular site, you'll probably want to spread out your database connections
-	 * and implement database replication.  That's beyond the scope of this configuration file
-	 * to explain, but if you know you need it, skip past this section. 
-	 */
-		
-		// Database username
-			$CONFIG->dbuser = 'newslink';
-			
-		// Database password
-			$CONFIG->dbpass = 'scarlett';
 
-		// Database name
-			$CONFIG->dbname = 'elgg';
-			
-		// Database server
-		// (For most configurations, you can leave this as 'localhost')
-			$CONFIG->dbhost = 'localhost';
-			
-		// Database table prefix
-		// If you're sharing a database with other applications, you will want to use this
-		// to differentiate Elgg's tables.
-			$CONFIG->dbprefix = '';
-
-	/*
-	 * Multiple database connections
-	 * 
-	 * Here you can set up multiple connections for reads and writes. To do this, uncomment out
-	 * the lines below. 
-	 */
-			
-	/*
-
-		// Yes! We want to split reads and writes
-			$CONFIG->db->split = true;
+    // Yes! We want to split reads and writes
+    $CONFIG->db->split = true;
 	 
-		// READS
-		// Database username
-			$CONFIG->db['read']->dbuser = "";
-			
-		// Database password
-			$CONFIG->db['read']->dbpass = "";
+    // READS
+    $CONFIG->db['read']->dbuser = "";
+    $CONFIG->db['read']->dbpass = "";
+    $CONFIG->db['read']->dbname = "";
+    $CONFIG->db['read']->dbhost = "localhost";
 
-		// Database name
-			$CONFIG->db['read']->dbname = "";
-			
-		// Database server
-		// (For most configurations, you can leave this as 'localhost')
-			$CONFIG->db['read']->dbhost = "localhost";
-
-		// WRITES
-		// Database username
-			$CONFIG->db['write']->dbuser = "";
-			
-		// Database password
-			$CONFIG->db['write']->dbpass = "";
-
-		// Database name
-			$CONFIG->db['write']->dbname = "";
-			
-		// Database server
-		// (For most configurations, you can leave this as 'localhost')
-			$CONFIG->db['write']->dbhost = "localhost";
-
+    $CONFIG->db['write']->dbuser = "";
+    $CONFIG->db['write']->dbpass = "";
+    $CONFIG->db['write']->dbname = "";
+    $CONFIG->db['write']->dbhost = "localhost";
 
 	 */
 			
@@ -95,8 +38,7 @@
 	 * Note that the array keys must be numeric and consecutive, i.e., they start
 	 * at 0, the next one must be at 1, etc.
 	 */
-	 
-			
+	 			
 	/**
 	 * Memcache setup (optional)
 	 * This is where you may optionally set up memcache.
@@ -113,10 +55,6 @@
 	//	array('server1', 11211),
 	//	array('server2', 11211)
 	//);		
-	
-	/**
-	 * Some work-around flags.
-	 */
 	
 	// Try uncommenting the below if your notification emails are not being sent
 	// $CONFIG->broken_mta = true; 
@@ -143,7 +81,7 @@
     $CONFIG->sitename = "Envaya";
     $CONFIG->sitedescription = "";
     $CONFIG->siteemail = "youngj@envaya.org";
-    $CONFIG->enabled_plugins = array("envaya","diagnostics","logbrowser","profile","googlegeocoder");
+    $CONFIG->enabled_plugins = array("diagnostics","logbrowser","profile");
     
     $CONFIG->subtypes = array(
         1 => array("object", "file", "ElggFile"),

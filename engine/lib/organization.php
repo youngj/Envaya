@@ -208,3 +208,285 @@ class NewsUpdate extends ElggObject
         }        
     }
 }
+
+function view_translated($obj, $field)
+{        
+    $md = get_metadata_byname($obj->guid, $field);        
+           
+    if (!$md || is_array($md)) 
+    {
+        return '' ;
+    }
+
+    $text = trim($md->value);
+    
+    if (!$text)
+    {
+        return '';
+    }
+    
+    $org = $obj->getRootContainerEntity();
+    if (!($org instanceof Organization))
+    {
+        return '';
+    }
+
+    $differentLanguage = ($org->language != get_language());    
+
+    if ($differentLanguage)
+    {
+        $translate = true || get_input("translate");
+        
+        if ($translate)
+        {
+            $translation = lookup_translation($text, $org->language);            
+            
+            return elgg_view("translation/wrapper", array('translation' => $translation, 'metadata' => $md));
+        }
+        else
+        {
+            return elgg_view("output/longtext",array('value' => $text));
+        }
+    }   
+
+    return elgg_view("output/longtext",array('value' => $text));        
+}
+
+
+function get_translation_key($text, $src, $dest)
+{
+    return $src . ":" . $dest . ":" . sha1(trim($text));
+}
+
+function lookup_translation($text, $text_language)
+{
+    $text = trim($text);
+    if (!$text)
+    {
+        return null;
+    }
+    
+    $disp_language = get_language();
+    if ($text_language == $disp_language)
+    {
+        return null;
+    }    
+    
+    $key = get_translation_key($text, $text_language, $disp_language);
+        
+    $translations = get_entities_from_metadata('key', $key, 'object', 'translation'); 
+    if (!empty($translations))
+    {        
+        return $translations[0];
+    }
+    
+    $ch = curl_init(); 
+    
+    $text = str_replace("\r","", $text);
+    $text = str_replace("\n", ",;", $text);
+    
+    $url = "ajax.googleapis.com/ajax/services/language/translate?v=1.0&langpair=$text_language%7C$disp_language&q=".urlencode($text);
+    
+    curl_setopt($ch, CURLOPT_URL, $url); 
+    curl_setopt($ch, CURLOPT_REFERER, "www.envaya.org");    
+    
+    // TODO referrer
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+    
+    $json = curl_exec($ch); 
+         
+    curl_close($ch);     
+    
+    $res = json_decode($json);
+                
+    $translated = $res->responseData->translatedText;
+    if (!$translated)
+    {
+        return null;
+    }
+            
+    $text = html_entity_decode($translated, ENT_QUOTES);
+    
+    $text = str_replace(",;", "\n", $text);
+    
+    $trans = new Translation();    
+    $trans->owner_guid = 0;
+    $trans->container_guid = 0;
+    $trans->access_id = 2; //public
+    $trans->save();
+    $trans->key = $key;
+    $trans->text = $text;
+    
+    return $trans;
+}
+
+function envaya_init() {
+
+    global $CONFIG;
+
+    org_fields_setup();
+    
+    register_plugin_hook('geocode', 'location', 'googlegeocoder_geocode');
+    
+    register_entity_type('user', 'organization');
+    register_entity_type('object', 'blog');
+    register_entity_type('object', 'translation');
+    
+    register_entity_url_handler('org_url','user','organization');
+    register_entity_url_handler('blogpost_url','object','blog');
+
+    extend_view('css','org/css');
+
+    register_plugin_hook('entity:icon:url', 'user', 'org_icon_hook');
+    register_plugin_hook('entity:annotate', 'object', 'blog_annotate_comments');
+    
+    include_once("{$CONFIG->path}org/start.php");    
+}
+
+/**
+ * Mobworking.net geocoder
+ * 
+ * @author Marcus Povey <marcus@dushka.co.uk>
+ * @copyright Marcus Povey 2008-2009
+ */
+    
+/** 
+ * Google geocoder.
+ *
+ * Listen for an Elgg Geocode request and use google maps to geocode it.
+ */
+function googlegeocoder_geocode($hook, $entity_type, $returnvalue, $params)
+{ 
+    if (isset($params['location']))
+    {
+        global $CONFIG;
+        $google_api = $CONFIG->google_api_key;
+
+        // Desired address
+        $address = "http://maps.google.com/maps/geo?q=".urlencode($params['location'])."&output=json&key=" . $google_api;
+
+        // Retrieve the URL contents
+        $result = file_get_contents($address);
+        $obj = json_decode($result);
+
+        $obj = $obj->Placemark[0]->Point->coordinates;
+
+        if ($obj)
+        {           
+            return array('lat' => $obj[1], 'long' => $obj[0]);
+        }
+    }
+}
+
+function org_title($org, $subtitle)
+{
+    return elgg_view('page_elements/title', array(
+        'title' => $org->name, 
+        'subtitle' => $subtitle, 
+        'icon' => $org->getIcon('medium'),
+        'link' => $org->getURL()                   
+    ));
+}
+
+/**
+ * Populates the ->getUrl() method for org objects
+ *
+ * @param ElggEntity $entity File entity
+ * @return string File URL
+ */
+function org_url($entity) {
+
+    global $CONFIG;
+    return $CONFIG->url . "{$entity->username}";
+}
+
+function forward_to_referrer()
+{
+    forward($_SERVER['HTTP_REFERER']);    
+}
+
+function blogpost_url($blogpost) {
+
+    global $CONFIG;
+    
+    $org = $blogpost->getContainerEntity();
+    
+    if ($org)
+    {    
+        return $org->getUrl() . "/post/" . $blogpost->getGUID();
+    }
+}
+
+function org_icon_hook($hook, $entity_type, $returnvalue, $params)
+{
+    global $CONFIG;
+
+    $entity = $params['entity'];        
+
+    if ($entity instanceof Organization)
+    {
+        $size = $params['size'];
+
+        $icontime = ($entity->icontime) ? $entity->icontime : "default";
+        $file = $entity->getIconFile();
+        if ($file->exists())
+        {
+            return "{$CONFIG->url}{$entity->username}/icon/$size/$icontime.jpg";
+        }
+        else
+        {
+            return "{$CONFIG->url}_graphics/default{$size}.gif";
+        }
+    }
+}
+
+
+function org_fields_setup()
+{
+    global $CONFIG;
+
+    $CONFIG->org_fields = array(
+        'name' => 'text',        
+        'username' => 'text',        
+        'password' => 'password',
+        'password2' => 'password',
+        'email' => 'email',    
+        'language' => 'language',
+    );
+
+    $CONFIG->org_profile_fields = array(
+        'description' => 'longtext',
+        'interests' => 'tags',
+        'phone' => 'text',
+        'website' => 'url',        
+        'location' => 'text',
+    );
+}
+
+function blog_annotate_comments($hook, $entity_type, $returnvalue, $params)
+{
+    $entity = $params['entity'];
+    $full = $params['full'];
+
+    if (($entity instanceof NewsUpdate) && ($entity->comments_on!='Off') && ($full))
+    {
+        return elgg_view_comments($entity);
+    }
+}
+
+function preserve_input($name, $value)
+{    
+    $prevInput = $_SESSION['input'];
+    if ($prevInput)
+    {
+        if (isset($prevInput[$name]))
+        {
+            $val = $prevInput[$name];
+            unset($_SESSION['input'][$name]);
+            return $val;
+        }    
+    }
+    return $value;
+}
+
+register_elgg_event_handler('init','system','envaya_init');

@@ -1,16 +1,7 @@
 <?php
-	/**
-	 * Default entity delete action
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-	 * @author Curverider Ltd
-	 * @link http://elgg.org/
-	 */
-
-	require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 	
 	gatekeeper();
+    action_gatekeeper();
 	
 	$guid = get_input('guid');
 	
