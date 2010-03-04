@@ -17,7 +17,7 @@
 	
 	if (!isset($widgettypes)) $widgettypes = get_widget_types();
 	
-	if ($vars['entity'] instanceof ElggObject && $vars['entity']->getSubtype() == 'widget') {
+	if ($vars['entity'] instanceof ElggObject && $vars['entity']->getSubtype() == T_widget) {
 		$handler = $vars['entity']->handler;
 		$title = $widgettypes[$vars['entity']->handler]->name;
 		if (!$title)

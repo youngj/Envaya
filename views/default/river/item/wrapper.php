@@ -16,9 +16,9 @@
 
 	<div class="river_item">
 		<div class="river_<?php echo $vars['item']->type; ?>">
-			<div class="river_<?php echo $vars['item']->subtype; ?>">
+            <div class="river_<?php echo $vars['item']->getSubtypeName(); ?>">
 				<div class="river_<?php echo $vars['item']->action_type; ?>">				
-					<div class="river_<?php echo $vars['item']->type; ?>_<?php if($vars['item']->subtype) echo $vars['item']->subtype . "_"; ?><?php echo $vars['item']->action_type; ?>">
+					<div class="river_<?php echo $vars['item']->type; ?>_<?php if($vars['item']->subtype) echo $vars['item']->getSubtypeName() . "_"; ?><?php echo $vars['item']->action_type; ?>">
 					<p>
 						<?php
 		

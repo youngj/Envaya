@@ -228,7 +228,7 @@
 				
 				$entity = $params['entity'];
 				$type = $entity->type;
-				$subtype = get_subtype_from_id($entity->subtype);
+				$subtype = $entity->getSubtypeName();
 				$viewtype = $params['viewtype'];
 				$size = $params['size'];
 				$username = $entity->username;

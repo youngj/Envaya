@@ -41,7 +41,7 @@
 				if ($access_id === "") $access_id = $object->access_id;
 				
 				$type = $object->getType();
-				$subtype = $object->getSubtype();
+				$subtype = $object->getSubtypeName();
 				
 				$action_type = sanitise_string($action_type);
 				

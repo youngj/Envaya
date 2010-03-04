@@ -7,7 +7,7 @@
     $body = get_input('blogbody');
     $blog = get_entity($guid);    
     
-    if ($blog->getSubtype() != "blog" || !$blog->canEdit()) 
+    if ($blog->getSubtype() != T_blog || !$blog->canEdit()) 
     {
         register_error(elgg_echo("org:cantedit"));
         forward_to_referrer();
@@ -19,7 +19,7 @@
     }    
     else 
     {
-        $blog->access_id = 2;
+        $blog->access_id = ACCESS_PUBLIC;
         $blog->content = $body;
 
         if (!$blog->save()) 

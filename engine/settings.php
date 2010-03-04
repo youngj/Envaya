@@ -82,7 +82,7 @@
     $CONFIG->sitedescription = "";
     $CONFIG->siteemail = "youngj@envaya.org";
     $CONFIG->enabled_plugins = array("diagnostics","logbrowser","profile");
-    
+        
     $CONFIG->subtypes = array(
         1 => array("object", "file", "ElggFile"),
         2 => array("object", "plugin", "ElggPlugin"),
@@ -91,6 +91,10 @@
         5 => array('object', 'translation', 'Translation'),
         7 => array('object', 'blog', 'NewsUpdate'),        
     );
+    foreach ($CONFIG->subtypes as $val => $subtypeArr)
+    {
+        define('T_' . $subtypeArr[1], $val);
+    }
     
     include_once(dirname(__FILE__) . "/localsettings.php");
 ?>

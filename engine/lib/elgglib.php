@@ -629,7 +629,7 @@
 			}
 			if (!isset($entity_class)) return false;
 			
-			$subtype = $entity->getSubtype();
+			$subtype = $entity->getSubtypeName();
 			if (empty($subtype)) { $subtype = $entity_type; }
 
 			$contents = '';

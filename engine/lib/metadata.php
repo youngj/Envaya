@@ -884,7 +884,7 @@
 	 */
 	function metadata_update($event, $object_type, $object) {
 		if ($object instanceof ElggEntity) {
-			if (!is_metadata_independent($object->getType(), $object->getSubtype())) {
+			if (!is_metadata_independent($object->getType(), $object->getSubtypeName())) {
 				global $CONFIG;
 				$access_id = (int) $object->access_id;
 				$guid = (int) $object->getGUID();

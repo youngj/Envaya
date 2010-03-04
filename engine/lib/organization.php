@@ -8,7 +8,7 @@ class Organization extends ElggUser {
     protected function initialise_attributes() 
     {
         parent::initialise_attributes();
-        $this->attributes['subtype'] = 'organization';
+        $this->attributes['subtype'] = T_organization;
 
         //Notes:
         // this->isVerifyingOrg
@@ -135,15 +135,9 @@ class Translation extends ElggObject
     protected function initialise_attributes() 
     {
         parent::initialise_attributes();
-        $this->attributes['subtype'] = 'translation';
+        $this->attributes['subtype'] = T_translation;
     }    
     
-    public function getSubtype() 
-    {
-        return 'translation';            
-    }
-    
-
     public function __construct($guid = null) 
     {
         parent::__construct($guid);
@@ -155,13 +149,13 @@ class NewsUpdate extends ElggObject
     protected function initialise_attributes() 
     {
         parent::initialise_attributes();
-        $this->attributes['subtype'] = 'blog';                
+        $this->attributes['subtype'] = T_blog;
     }
     
     public function __construct($guid = null) 
     {
         parent::__construct($guid);
-        $this->access_id = 2;
+        $this->access_id = ACCESS_PUBLIC;
     }
     
     public function getImageFile($size = '')
@@ -312,7 +306,7 @@ function lookup_translation($text, $text_language)
     $trans = new Translation();    
     $trans->owner_guid = 0;
     $trans->container_guid = 0;
-    $trans->access_id = 2; //public
+    $trans->access_id = ACCESS_PUBLIC;
     $trans->save();
     $trans->key = $key;
     $trans->text = $text;

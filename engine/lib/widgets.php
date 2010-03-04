@@ -20,7 +20,7 @@
 		{
 			parent::initialise_attributes();
 			
-			$this->attributes['subtype'] = "widget";
+			$this->attributes['subtype'] = T_widget;
 		}
 
 		public function __construct($guid = null) {	parent::__construct($guid); }
@@ -112,7 +112,7 @@
 		function save_widget_location(ElggObject $widget, $order, $column) {
 			
 			if ($widget instanceof ElggObject) {
-				if ($widget->subtype == "widget") {
+				if ($widget->subtype == T_widget) {
 					
 					// If you can't move the widget, don't save a new location
 					if (!$widget->draggable)
@@ -356,7 +356,7 @@
 			
 			if ($widget = get_entity($widget_guid)) {
 				
-				$subtype = $widget->getSubtype();
+				$subtype = $widget->getSubtypeName();
 				
 				if ($subtype != "widget") return false;
 				$handler = $widget->handler;

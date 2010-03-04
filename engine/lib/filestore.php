@@ -398,7 +398,7 @@
 		{
 			parent::initialise_attributes();
 			
-			$this->attributes['subtype'] = "file";
+			$this->attributes['subtype'] = T_file;
 		}
 		
 		public function __construct($guid = null) 

@@ -37,7 +37,7 @@
 			{
 				parent::initialise_attributes();
 				
-				$this->attributes['subtype'] = "plugin";
+				$this->attributes['subtype'] = T_plugin;
 			}
 			
 			public function __construct($guid = null) 

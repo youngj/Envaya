@@ -383,7 +383,7 @@
 			
 			// Have we registered notifications for this type of entity?
 			$object_type = $object->getType(); if (empty($object_type)) $object_type = '__BLANK__';
-			$object_subtype = $object->getSubtype(); if (empty($object_subtype)) $object_subtype = '__BLANK__';
+			$object_subtype = $object->getSubtypeName(); if (empty($object_subtype)) $object_subtype = '__BLANK__';
 			if (isset($CONFIG->register_objects[$object_type][$object_subtype])) {
 
 				$descr = $CONFIG->register_objects[$object_type][$object_subtype];

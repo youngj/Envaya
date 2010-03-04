@@ -5,7 +5,7 @@
     $guid = (int) get_input('blogpost');
     $blog = get_entity($guid);
         
-    if ($blog->getSubtype() == "blog" && $blog->canEdit()) 
+    if ($blog->getSubtype() == T_blog && $blog->canEdit()) 
     {
         $redirectUrl = $blog->getContainerEntity()->getUrl() ."/news";
         $owner = get_entity($blog->getOwner());

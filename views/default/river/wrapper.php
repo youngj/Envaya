@@ -19,7 +19,7 @@
 	if ($statement->getObject() instanceof ElggEntity) {
 		
 		$obj = $statement->getObject();
-		$subtype = $obj->getSubtype();
+		$subtype = $obj->getSubtypeName();
 		if (empty($subtype)) $subtype = $obj->type;
 		if (empty($subtype)) $subtype = "general";
 	} else if (is_array($statement->getObject())) {

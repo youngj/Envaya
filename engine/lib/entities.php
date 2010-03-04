@@ -534,11 +534,16 @@
 		 * @return string The entity subtype
 		 */
 		public function getSubtype() {
-			if (!((int) $this->guid > 0)) return $this->get('subtype'); // If this object hasn't been saved, then return the subtype string.
-			
-			return get_subtype_from_id($this->get('subtype')); 
+			return $this->get('subtype');
 		}
 		
+        public function getSubtypeName() 
+        {        
+            return get_subtype_from_id($this->get('subtype'));
+        }
+
+        
+        
 		/**
 		 * Gets the UNIX epoch time that this entity was created
 		 *
@@ -567,9 +572,9 @@
             $url = "";
             $entity = $this;
             
-            if (isset($CONFIG->entity_url_handler[$entity->getType()][$entity->getSubType()])) 
+            if (isset($CONFIG->entity_url_handler[$entity->getType()][$entity->getSubTypeName()])) 
             {
-                $function =  $CONFIG->entity_url_handler[$entity->getType()][$entity->getSubType()];
+                $function = $CONFIG->entity_url_handler[$entity->getType()][$entity->getSubTypeName()];
                 if (is_callable($function)) 
                 {
                     $url = $function($entity);
@@ -667,8 +672,6 @@
 			{ 
 				$this->attributes['guid'] = create_entity($this->attributes['type'], $this->attributes['subtype'], $this->attributes['owner_guid'], $this->attributes['access_id'], $this->attributes['site_guid'], $this->attributes['container_guid']); // Create a new entity (nb: using attribute array directly 'cos set function does something special!)
 				if (!$this->attributes['guid']) throw new IOException(elgg_echo('IOException:BaseEntitySaveFailed')); 
-				
-                $this->attributes['subtype'] = get_subtype_id($this->attributes['type'], $this->attributes['subtype']);
                 
 				// Save any unsaved metadata TODO: How to capture extra information (access id etc)
 				if (sizeof($this->temp_metadata) > 0) {
@@ -1365,7 +1368,7 @@
 		global $CONFIG;
 	
 		$type = sanitise_string($type);
-        $subtype = get_subtype_id($type, $subtype);
+        
 		$owner_guid = (int)$owner_guid; 
 		$access_id = (int)$access_id;
 		$time = time();
@@ -2172,7 +2175,7 @@
 		if (!$url) {
 
 			$type = $entity->getType();
-			$subtype = $entity->getSubtype();
+			$subtype = $entity->getSubtypeName();
 			
 			if (!empty($subtype)) {
 				$overrideurl = elgg_view("icon/{$type}/{$subtype}/{$size}",array('entity' => $entity));
@@ -2231,7 +2234,7 @@
 		{
 			$entity = $params['entity'];
 			$type = $entity->type;
-			$subtype = get_subtype_from_id($entity->subtype);
+			$subtype = $entity->getSubtypeName();
 			$viewtype = $params['viewtype'];
 			$size = $params['size'];
 			
