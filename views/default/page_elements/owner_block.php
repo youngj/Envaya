@@ -45,11 +45,7 @@
 			} else {
 				$url .= "?view=rss";
 			}
-			//if (substr_count($url2,'?')) {
-			//	$url2 .= "&view=odd";
-			//} else {
-			//	$url2 .= "?view=opendd";
-			//}
+
 			$label = elgg_echo('feed:rss');
 			//$label2 = elgg_echo('feed:odd');
 			$contents .= <<<END
@@ -57,28 +53,7 @@
 	<div id="owner_block_rss_feed"><a href="{$url}" rel="nofollow">{$label}</a></div>
 			
 END;
-		}
-		
-		//the follow are for logged in users only
-		if(isloggedin()){
-		
-    		//is the bookmark plugin installed?
-    		if(is_plugin_enabled('bookmarks')){
-    
-    		  	$label3 = elgg_echo('bookmarks:this');
-    			$contents .= "<div id=\"owner_block_bookmark_this\"><a href=\"javascript:location.href='". $CONFIG->wwwroot . "mod/bookmarks/add.php?address='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title)\">{$label3}</a></div>";
-    
-    		}
-    
-    		//report this button
-    		if (is_plugin_enabled('reportedcontent'))
-    		{
-	    		$label4 = elgg_echo('reportedcontent:report');
-	    		$contents .= "<div id=\"owner_block_report_this\"><a href=\"javascript:location.href='". $CONFIG->wwwroot . "mod/reportedcontent/add.php?address='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title)\">{$label4}</a></div>";
-    		}
-
-	    }
-
+		}	
 		
 		$contents .= elgg_view('owner_block/extend');
 		
