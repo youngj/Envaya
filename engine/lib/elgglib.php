@@ -80,86 +80,86 @@
 	 * Templating and visual functionality
 	 */
 		
-		$CURRENT_SYSTEM_VIEWTYPE = "";
+    $CURRENT_SYSTEM_VIEWTYPE = "";
 		
-		/**
-		 * Override the view mode detection for the elgg view system.
-		 * 
-		 * This function will force any further views to be rendered using $viewtype. Remember to call elgg_set_viewtype() with
-		 * no parameters to reset.
-		 *
-		 * @param string $viewtype The view type, e.g. 'rss', or 'default'.
-		 * @return bool
-		 */
-		function elgg_set_viewtype($viewtype = "")
-		{
-			global $CURRENT_SYSTEM_VIEWTYPE;
-			
-			$CURRENT_SYSTEM_VIEWTYPE = $viewtype;
-			
-			return true;
-		}
+    /**
+     * Override the view mode detection for the elgg view system.
+     * 
+     * This function will force any further views to be rendered using $viewtype. Remember to call elgg_set_viewtype() with
+     * no parameters to reset.
+     *
+     * @param string $viewtype The view type, e.g. 'rss', or 'default'.
+     * @return bool
+     */
+    function elgg_set_viewtype($viewtype = "")
+    {
+        global $CURRENT_SYSTEM_VIEWTYPE;
+
+        $CURRENT_SYSTEM_VIEWTYPE = $viewtype;
+
+        return true;
+    }
 		
-		/**
-		 * Return the current view type used by the elgg view system.
-		 * 
-		 * By default, this function will return a value based on the default for your system or from the command line
-		 * view parameter. However, you may force a given view type by calling elgg_set_viewtype()
-		 *
-		 * @return string The view.
-		 */
-		function elgg_get_viewtype()
-		{
-			global $CURRENT_SYSTEM_VIEWTYPE, $CONFIG;
-			
-			$viewtype = NULL;
-			
-			if ($CURRENT_SYSTEM_VIEWTYPE != "")
-				return $CURRENT_SYSTEM_VIEWTYPE;
-				
-			if ((empty($_SESSION['view'])) || ( (trim($CONFIG->view!="")) && ($_SESSION['view']!=$CONFIG->view) )) {
-		        $_SESSION['view'] = "default";
-		        
-		        // If we have a config default view for this site then use that instead of 'default'
-		        if (/*(is_installed()) && */(!empty($CONFIG->view)) && (trim($CONFIG->view)!=""))
-		        	$_SESSION['view'] = $CONFIG->view;
-		    }
-				
-		    if (empty($viewtype) && is_callable('get_input'))
-		        $viewtype = get_input('view');
-		        
-		    if (empty($viewtype)) 
-		        $viewtype = $_SESSION['view'];
-		    
-		    return $viewtype;
-		}
+    /**
+     * Return the current view type used by the elgg view system.
+     * 
+     * By default, this function will return a value based on the default for your system or from the command line
+     * view parameter. However, you may force a given view type by calling elgg_set_viewtype()
+     *
+     * @return string The view.
+     */
+    function elgg_get_viewtype()
+    {
+        global $CURRENT_SYSTEM_VIEWTYPE, $CONFIG;
+
+        $viewtype = NULL;
+
+        if ($CURRENT_SYSTEM_VIEWTYPE != "")
+            return $CURRENT_SYSTEM_VIEWTYPE;
+
+        if ((empty($_SESSION['view'])) || ( (trim($CONFIG->view!="")) && ($_SESSION['view']!=$CONFIG->view) )) {
+            $_SESSION['view'] = "default";
+
+            // If we have a config default view for this site then use that instead of 'default'
+            if (/*(is_installed()) && */(!empty($CONFIG->view)) && (trim($CONFIG->view)!=""))
+                $_SESSION['view'] = $CONFIG->view;
+        }
+
+        if (empty($viewtype) && is_callable('get_input'))
+            $viewtype = get_input('view');
+
+        if (empty($viewtype)) 
+            $viewtype = $_SESSION['view'];
+
+        return $viewtype;
+    }
 		
-		/**
-		 * Return the location of a given view.
-		 *
-		 * @param string $view The view.
-		 * @param string $viewtype The viewtype
-		 */
-		function elgg_get_view_location($view, $viewtype = '')
-		{
-			global $CONFIG;
-		
-			if (empty($viewtype))
-				$viewtype = elgg_get_viewtype();
-			
-			if (!isset($CONFIG->views->locations[$viewtype][$view])) {
-	    		if (!isset($CONFIG->viewpath)) {
-					return dirname(dirname(dirname(__FILE__))) . "/views/";		    			
-	    		} else {
-	    			return $CONFIG->viewpath;
-	    		}
-	    	} else {
-	    		return $CONFIG->views->locations[$viewtype][$view];
-	    	}
-	    	
-	    	return false;
-		}
-		
+    /**
+     * Return the location of a given view.
+     *
+     * @param string $view The view.
+     * @param string $viewtype The viewtype
+     */
+    function elgg_get_view_location($view, $viewtype = '')
+    {
+        global $CONFIG;
+
+        if (empty($viewtype))
+            $viewtype = elgg_get_viewtype();
+
+        if (!isset($CONFIG->views->locations[$viewtype][$view])) {
+            if (!isset($CONFIG->viewpath)) {
+                return dirname(dirname(dirname(__FILE__))) . "/views/";		    			
+            } else {
+                return $CONFIG->viewpath;
+            }
+        } else {
+            return $CONFIG->views->locations[$viewtype][$view];
+        }
+
+        return false;
+    }
+
 	/**
 	 * Handles templating views
 	 *
@@ -897,7 +897,6 @@
 				$comparevals = array();
 				$maxcompareval = 999999;
 				
-				//asort($submenu_register);
 				ksort($submenu_register);
 				
 				foreach($submenu_register as $groupname => $submenu_register_group) {
@@ -1202,61 +1201,19 @@
 	 * @return array Array of full filenames
 	 */
 		function get_library_files($directory, $file_exceptions = array(), $file_list = array()) {
-			$extensions_allowed = array('.php'); 	
-			/*if (is_file($directory) && !in_array($directory,$file_exceptions)) {
-				$file_list[] = $directory;
-			} else */
-			if ($handle = opendir($directory)) {
-				while ($file = readdir($handle)) {
-					if (in_array(strrchr($file, '.'), $extensions_allowed) && !in_array($file,$file_exceptions)) {
+			
+			if ($handle = opendir($directory)) 
+            {
+				while ($file = readdir($handle)) 
+                {
+					if (strrchr($file, '.php') && !in_array($file,$file_exceptions)) 
+                    {
 						$file_list[] = $directory . "/" . $file;
-						//$file_list = get_library_files($directory . "/" . $file, $file_exceptions, $file_list);
 					}
 				}
 			}
 			
 			return $file_list;
-			
-		}
-		
-	/**
-	 * Ensures that the installation has all the correct files, that PHP is configured correctly, and so on.
-	 * Leaves appropriate messages in the error register if not.
-	 *
-	 * @return true|false True if everything is ok (or Elgg is fit enough to run); false if not.
-	 */
-		function sanitised() {
-			
-			$sanitised = true;
-			
-			if (!file_exists(dirname(dirname(__FILE__)) . "/settings.php")) {
-				// See if we are being asked to save the file
-				$save_vars = get_input('db_install_vars');
-				$result = "";
-				if ($save_vars)
-				{
-					$result = create_settings($save_vars, dirname(dirname(__FILE__)) . "/settings.example.php");
-					
-					if (file_put_contents(dirname(dirname(__FILE__)) . "/settings.php", $result))
-						$result = ""; // blank result to stop it being displayed in textarea
-					
-				}
-				
-				// Recheck to see if the file is still missing
-				if (!file_exists(dirname(dirname(__FILE__)) . "/settings.php")) {
-					register_error(elgg_view("messages/sanitisation/settings", array('settings.php' => $result)));
-					$sanitised = false;
-				}
-			}
-
-			if (!file_exists(dirname(dirname(dirname(__FILE__))) . "/.htaccess")) {
-				if (!@copy(dirname(dirname(dirname(__FILE__))) . "/htaccess_dist", dirname(dirname(dirname(__FILE__))) . "/.htaccess")) {
-					register_error(elgg_view("messages/sanitisation/htaccess", array('.htaccess' => file_get_contents(dirname(dirname(dirname(__FILE__))) . "/htaccess_dist"))));
-					$sanitised = false;
-				}
-			}
-				
-			return $sanitised;
 			
 		}
 		
@@ -1650,9 +1607,6 @@
 		function trigger_plugin_hook($hook, $entity_type, $params = null, $returnvalue = null) {
 			global $CONFIG;
 			
-			//if (!isset($CONFIG->hooks) || !isset($CONFIG->hooks[$hook]) || !isset($CONFIG->hooks[$hook][$entity_type]))
-			//	return $returnvalue;
-
 			if (!empty($CONFIG->hooks[$hook][$entity_type]) && is_array($CONFIG->hooks[$hook][$entity_type])) {
 				foreach($CONFIG->hooks[$hook][$entity_type] as $hookfunction) {
 					
@@ -1660,9 +1614,6 @@
 					if (!is_null($temp_return_value)) $returnvalue = $temp_return_value;
 				}
 			}
-			//else
-			//if (!isset($CONFIG->hooks['all'][$entity_type]))
-			//	return $returnvalue;
 			
 			if (!empty($CONFIG->hooks['all'][$entity_type]) && is_array($CONFIG->hooks['all'][$entity_type])) {
 				foreach($CONFIG->hooks['all'][$entity_type] as $hookfunction) {
@@ -1671,9 +1622,6 @@
 					if (!is_null($temp_return_value)) $returnvalue = $temp_return_value;
 				}
 			}
-			//else
-			//if (!isset($CONFIG->hooks[$hook]['all']))
-			//	return $returnvalue;
 			
 			if (!empty($CONFIG->hooks[$hook]['all']) && is_array($CONFIG->hooks[$hook]['all'])) {
 				foreach($CONFIG->hooks[$hook]['all'] as $hookfunction) {
@@ -1682,9 +1630,6 @@
 					if (!is_null($temp_return_value)) $returnvalue = $temp_return_value;
 				}
 			}
-			//else
-			//if (!isset($CONFIG->hooks['all']['all']))
-			//	return $returnvalue;
 			
 			if (!empty($CONFIG->hooks['all']['all']) && is_array($CONFIG->hooks['all']['all'])) {
 				foreach($CONFIG->hooks['all']['all'] as $hookfunction) {
@@ -1793,7 +1738,7 @@
 			if ($value) return $value;
 			
 			// [Marcus Povey 20090217 : Now retrieving all datalist values on first load as this saves about 9 queries per page]
-			$result = get_data("SELECT * from {$CONFIG->dbprefix}datalists");
+			$result = get_data("SELECT * from datalists");
 			if ($result)
 			{
 				foreach ($result as $row)
@@ -1809,7 +1754,7 @@
 			}
 			
 			
-			/*if ($row = get_data_row("SELECT value from {$CONFIG->dbprefix}datalists where name = '{$name}' limit 1")) {
+			/*if ($row = get_data_row("SELECT value from datalists where name = '{$name}' limit 1")) {
 				$DATALIST_CACHE[$name] = $row->value;
 				
 				// Cache it if memcache is available
@@ -1839,7 +1784,7 @@
 				$datalist_memcache = new ElggMemcache('datalist_memcache');
 			if ($datalist_memcache) $datalist_memcache->delete($name);
 			
-			insert_data_2("INSERT into {$CONFIG->dbprefix}datalists set name = ?, value = ? ON DUPLICATE KEY UPDATE value = ?",
+			insert_data_2("INSERT into datalists set name = ?, value = ? ON DUPLICATE KEY UPDATE value = ?",
                 array($name, $value, $value)
             );
 			
@@ -1874,153 +1819,7 @@
 			}
 		}
 
-		
-		
-	/**
-	 * Privilege elevation and gatekeeper code
-	 */
-
-	
-	/**
-	 * Gatekeeper function which ensures that a we are being executed from
-	 * a specified location.
-	 * 
-	 * To use, call this function with the function name (and optional file location) that it has to be called 
-	 * from, it will either return true or false.
-	 * 
-	 * e.g.
-	 * 
-	 * function my_secure_function()
-	 * {
-	 * 		if (!call_gatekeeper("my_call_function"))
-	 * 			return false;
-	 * 
-	 * 		... do secure stuff ...
-	 * }
-	 * 
-	 * function my_call_function()
-	 * {
-	 * 		// will work
-	 * 		my_secure_function();
-	 * }
-	 * 
-	 * function bad_function()
-	 * {
-	 * 		// Will not work
-	 * 		my_secure_function();
-	 * }
-	 * 
-	 * @param mixed $function The function that this function must have in its call stack, 
-	 * 		to test against a method pass an array containing a class and method name.
-	 * @param string $file Optional file that the function must reside in.
-	 */
-	function call_gatekeeper($function, $file = "")
-	{
-		// Sanity check
-		if (!$function)
-			return false;
-					
-		// Check against call stack to see if this is being called from the correct location
-		$callstack = debug_backtrace();		
-		$stack_element = false;
-		
-		foreach ($callstack as $call)
-		{
-			if (is_array($function))
-			{
-				if (
-					(strcmp($call['class'], $function[0]) == 0) &&
-					(strcmp($call['function'], $function[1]) == 0)
-				)
-					$stack_element = $call;
-			}
-			else
-			{
-				if (strcmp($call['function'], $function) == 0)
-					$stack_element = $call;
-			}
-		}
-
-		if (!$stack_element)
-			return false;
-
-			
-		// If file then check that this it is being called from this function
-		if ($file)
-		{
-			$mirror = null;
-			
-			if (is_array($function))
-				$mirror = new ReflectionMethod($function[0], $function[1]);
-			else
-				$mirror = new ReflectionFunction($function);
 				
-			if ((!$mirror) || (strcmp($file,$mirror->getFileName())!=0))
-				return false;
-		}
-	
-		
-		return true;
-	}
-	
-	/**
-	 * This function checks to see if it is being called at somepoint by a function defined somewhere 
-	 * on a given path (optionally including subdirectories).
-	 * 
-	 * This function is similar to call_gatekeeper() but returns true if it is being called by a method or function which has been defined on a given path or by a specified file.
-	 * 
-	 * @param string $path The full path and filename that this function must have in its call stack If a partial path is given and $include_subdirs is true, then the function will return true if called by any function in or below the specified path.
-	 * @param bool $include_subdirs Are subdirectories of the path ok, or must you specify an absolute path and filename.
-	 * @param bool $strict_mode If true then the calling method or function must be directly called by something on $path, if false the whole call stack is searched.
-	 */
-	function callpath_gatekeeper($path, $include_subdirs = true, $strict_mode = false)
-	{
-		global $CONFIG;
-		
-		$path = sanitise_string($path);
-		
-		if ($path)
-		{
-			$callstack = debug_backtrace();
-				
-			foreach ($callstack as $call)
-			{
-				$call['file'] = str_replace("\\","/",$call['file']);
-				
-				if ($include_subdirs)
-				{
-					if (strpos($call['file'], $path) === 0) {
-						
-						if ($strict_mode) {
-							$callstack[1]['file'] = str_replace("\\","/",$callstack[1]['file']);							
-							if ($callstack[1] === $call) { return true; }
-						}
-						else
-						{
-							return true;
-						}
-					}
-				}
-				else
-				{
-					if (strcmp($path, $call['file'])==0) {
-						if ($strict_mode) {
-							if ($callstack[1] === $call) return true;
-						} else
-							return true;
-					}
-				}
-				
-			}
-			return false;
-		}
-		
-		if ($CONFIG->debug)
-			system_message("Gatekeeper'd function called from {$callstack[1]['file']}:{$callstack[1]['line']}\n\nStack trace:\n\n" . print_r($callstack, true));
-		
-		return false;
-	}
-	
 	/**
 	 * Returns true or false depending on whether a PHP .ini setting is on or off
 	 *

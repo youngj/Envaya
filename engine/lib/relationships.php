@@ -243,7 +243,7 @@
 		
 		$id = (int)$id;
 		
-		return row_to_elggrelationship(get_data_row("SELECT * from {$CONFIG->dbprefix}entity_relationships where id=$id"));
+		return row_to_elggrelationship(get_data_row("SELECT * from entity_relationships where id=$id"));
 	}
 	
 	/**
@@ -257,7 +257,7 @@
 		
 		$id = (int)$id;
 		
-		$result = delete_data("delete from {$CONFIG->dbprefix}entity_relationships where id=$id");
+		$result = delete_data("delete from entity_relationships where id=$id");
 		
 		return $result;
 	}
@@ -284,7 +284,7 @@
 		if (check_entity_relationship($guid_one, $relationship, $guid_two))
 			return false;
 		
-		$result = insert_data("INSERT into {$CONFIG->dbprefix}entity_relationships (guid_one, relationship, guid_two) values ($guid_one, '$relationship', $guid_two)");
+		$result = insert_data("INSERT into entity_relationships (guid_one, relationship, guid_two) values ($guid_one, '$relationship', $guid_two)");
 		
 		if ($result!==false) {
 			$obj = get_relationship($result);
@@ -314,7 +314,7 @@
 		$relationship = sanitise_string($relationship);
 		$guid_two = (int)$guid_two;
 			
-		if ($row = get_data_row("SELECT * FROM {$CONFIG->dbprefix}entity_relationships WHERE guid_one=$guid_one AND relationship='$relationship' AND guid_two=$guid_two limit 1")) {
+		if ($row = get_data_row("SELECT * FROM entity_relationships WHERE guid_one=$guid_one AND relationship='$relationship' AND guid_two=$guid_two limit 1")) {
 			return $row;
 		}
 		return false;
@@ -339,7 +339,7 @@
 		if ($obj == false) return false;
 		
 		if (trigger_elgg_event('delete', $relationship, $obj)) {
-			return delete_data("DELETE from {$CONFIG->dbprefix}entity_relationships where guid_one=$guid_one and relationship='$relationship' and guid_two=$guid_two");
+			return delete_data("DELETE from entity_relationships where guid_one=$guid_one and relationship='$relationship' and guid_two=$guid_two");
 		} else {
 			return false;
 		}
@@ -370,9 +370,9 @@
 		if (!empty($type)) {
 			$type = sanitise_string($type);
 			if (!$inverse) {
-				$join = " join {$CONFIG->dbprefix}entities e on e.guid = er.guid_two ";
+				$join = " join entities e on e.guid = er.guid_two ";
 			} else {
-				$join = " join {$CONFIG->dbprefix}entities e on e.guid = er.guid_one ";
+				$join = " join entities e on e.guid = er.guid_one ";
 				$where .= " and ";
 			}
 			$where .= " and e.type = '{$type}' ";
@@ -381,10 +381,10 @@
 		}
 		
 		if (!$inverse) {
-			$sql = "DELETE er from {$CONFIG->dbprefix}entity_relationships as er {$join} where guid_one={$guid_one} {$where}";
+			$sql = "DELETE er from entity_relationships as er {$join} where guid_one={$guid_one} {$where}";
 			return delete_data($sql);
 		} else {
-			$sql = "DELETE er from {$CONFIG->dbprefix}entity_relationships as er {$join} where guid_two={$guid_one} {$where}";
+			$sql = "DELETE er from entity_relationships as er {$join} where guid_two={$guid_one} {$where}";
 			return delete_data($sql);
 		}
 		
@@ -401,7 +401,7 @@
 		
 		$guid = (int)$guid;
 		
-		$query = "SELECT * from {$CONFIG->dbprefix}entity_relationships where guid_one=$guid";
+		$query = "SELECT * from entity_relationships where guid_one=$guid";
 		
 		return get_data($query, "row_to_elggrelationship");
 	}
@@ -467,7 +467,7 @@
 		} else {
 			$query = "SELECT distinct e.* ";
 		}
-		$query .= " from {$CONFIG->dbprefix}entity_relationships r JOIN {$CONFIG->dbprefix}entities e on $joinon where ";
+		$query .= " from entity_relationships r JOIN entities e on $joinon where ";
 		foreach ($where as $w)
 			$query .= " $w and ";
 		$query .= get_access_sql_suffix("e"); // Add access controls
@@ -570,7 +570,7 @@
 			$query = "SELECT e.*, count(e.guid) as total ";
 		}
 		
-		$query .= " from {$CONFIG->dbprefix}entity_relationships r JOIN {$CONFIG->dbprefix}entities e on {$on} where ";
+		$query .= " from entity_relationships r JOIN entities e on {$on} where ";
 		
 		if (!empty($where))
 		foreach ($where as $w)
@@ -682,7 +682,7 @@
 			
 		$metajoin = "";
 		if (($meta_name!=="") || ($meta_value!=="")) {
-			$metajoin = " JOIN {$CONFIG->dbprefix}metadata m on e.guid=m.entity_guid";
+			$metajoin = " JOIN metadata m on e.guid=m.entity_guid";
 			
 			if ($meta_name!=="")
 				$where[] = "m.name_id='$meta_n'";
@@ -696,7 +696,7 @@
 			$query = "SELECT distinct e.*, count(e.guid) as total ";
 		}
 		
-		$query .= " from {$CONFIG->dbprefix}entity_relationships r JOIN {$CONFIG->dbprefix}entities e on {$on} {$metajoin} where ";
+		$query .= " from entity_relationships r JOIN entities e on {$on} {$metajoin} where ";
 		
 		if (!empty($where))
 		foreach ($where as $w)

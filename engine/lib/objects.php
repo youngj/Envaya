@@ -191,7 +191,7 @@
 			if ($CONFIG->debug)
 				error_log("** Sub part of GUID:$guid loaded from DB");
 		
-			return get_data_row("SELECT * from {$CONFIG->dbprefix}objects_entity where guid=$guid");
+			return get_data_row("SELECT * from objects_entity where guid=$guid");
 		//}
 	}
 	
@@ -216,8 +216,8 @@
 		if ($row)
 		{
 			// Core entities row exists and we have access to it
-			if ($exists = get_data_row("SELECT guid from {$CONFIG->dbprefix}objects_entity where guid = {$guid}")) {
-				$result = update_data("UPDATE {$CONFIG->dbprefix}objects_entity set title='$title', description='$description' where guid=$guid");
+			if ($exists = get_data_row("SELECT guid from objects_entity where guid = {$guid}")) {
+				$result = update_data("UPDATE objects_entity set title='$title', description='$description' where guid=$guid");
 				if ($result!=false)
 				{
 					// Update succeeded, continue
@@ -233,7 +233,7 @@
 			{
 				
 				// Update failed, attempt an insert.
-				$result = insert_data("INSERT into {$CONFIG->dbprefix}objects_entity (guid, title, description) values ($guid, '$title','$description')");
+				$result = insert_data("INSERT into objects_entity (guid, title, description) values ($guid, '$title','$description')");
 				if ($result!==false) {
 					$entity = get_entity($guid);
 					if (trigger_elgg_event('create',$entity->type,$entity)) {
@@ -296,7 +296,7 @@
 		} else {
 			$query = "SELECT e.* "; 
 		}
-		$query .= "from {$CONFIG->dbprefix}entities e join {$CONFIG->dbprefix}objects_entity o on e.guid=o.guid where match(o.title,o.description) against ('$criteria') and $access";
+		$query .= "from entities e join objects_entity o on e.guid=o.guid where match(o.title,o.description) against ('$criteria') and $access";
 		
 		if (!$count) {
 			$query .= " order by $order_by limit $offset, $limit"; // Add order and limit

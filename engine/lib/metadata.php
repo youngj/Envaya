@@ -154,7 +154,7 @@
 		$access = get_access_sql_suffix("e");
 		$md_access = get_access_sql_suffix("m");
 
-		return row_to_elggmetadata(get_data_row("SELECT m.*, n.string as name, v.string as value from {$CONFIG->dbprefix}metadata m JOIN {$CONFIG->dbprefix}entities e on e.guid = m.entity_guid JOIN {$CONFIG->dbprefix}metastrings v on m.value_id = v.id JOIN {$CONFIG->dbprefix}metastrings n on m.name_id = n.id where m.id=$id and $access and $md_access"));
+		return row_to_elggmetadata(get_data_row("SELECT m.*, n.string as name, v.string as value from metadata m JOIN entities e on e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where m.id=$id and $access and $md_access"));
 	}
 	
 	/**
@@ -172,7 +172,7 @@
 		$name = sanitise_string($name);
 		$value = sanitise_string($value);
 
-		$query = "SELECT * from {$CONFIG->dbprefix}metadata WHERE entity_guid = $entity_guid and name_id=" . add_metastring($name);
+		$query = "SELECT * from metadata WHERE entity_guid = $entity_guid and name_id=" . add_metastring($name);
 		if ($value!="")
 			$query .= " and value_id=" . add_metastring($value);
 		
@@ -215,7 +215,7 @@
 	
         $nameId = add_metastring($name);
     
-		$existing = get_data_row_2("SELECT * from {$CONFIG->dbprefix}metadata WHERE entity_guid = ? and name_id = ? limit 1",        
+		$existing = get_data_row_2("SELECT * from metadata WHERE entity_guid = ? and name_id = ? limit 1",        
             array($entity_guid, $nameId)
         );        
 
@@ -244,7 +244,7 @@
             if (!$nameId) 
                 return false;
 			
-			$id = insert_data_2("INSERT into {$CONFIG->dbprefix}metadata (entity_guid, name_id, value_id, value_type, owner_guid, time_created, access_id) VALUES (?,?,?,?,?,?,?)", 
+			$id = insert_data_2("INSERT into metadata (entity_guid, name_id, value_id, value_type, owner_guid, time_created, access_id) VALUES (?,?,?,?,?,?,?)", 
                 array($entity_guid, $nameId, $valueId, $value_type, $owner_guid, $time, $access_id)
             );
 			
@@ -323,7 +323,7 @@
 		if (!$name) return false;
 
 				// If ok then add it
-		$result = update_data("UPDATE {$CONFIG->dbprefix}metadata set value_id='$value', value_type='$value_type', access_id=$access_id, owner_guid=$owner_guid where id=$id and name_id='$name'");
+		$result = update_data("UPDATE metadata set value_id='$value', value_type='$value_type', access_id=$access_id, owner_guid=$owner_guid where id=$id and name_id='$name'");
 		if ($result!==false) {
 			$obj = get_metadata($id);
 			if (trigger_elgg_event('update', 'metadata', $obj)) {
@@ -374,7 +374,7 @@
 			if ($metabyname_memcache) $metabyname_memcache->delete("{$metadata->entity_guid}:{$metadata->name_id}");
 			
 			if (($metadata->canEdit()) && (trigger_elgg_event('delete', 'metadata', $metadata)))
-				return delete_data("DELETE from {$CONFIG->dbprefix}metadata where id=$id");
+				return delete_data("DELETE from metadata where id=$id");
 		}
 		
 		return false;
@@ -406,7 +406,7 @@
 		if ($metabyname_memcache) $meta = $metabyname_memcache->load("{$entity_guid}:{$meta_name}");
 		if ($meta) return $meta;	
 
-		$result = get_data("SELECT m.*, n.string as name, v.string as value from {$CONFIG->dbprefix}metadata m JOIN {$CONFIG->dbprefix}entities e ON e.guid = m.entity_guid JOIN {$CONFIG->dbprefix}metastrings v on m.value_id = v.id JOIN {$CONFIG->dbprefix}metastrings n on m.name_id = n.id where m.entity_guid=$entity_guid and m.name_id='$meta_name' and $access and $md_access", "row_to_elggmetadata");
+		$result = get_data("SELECT m.*, n.string as name, v.string as value from metadata m JOIN entities e ON e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where m.entity_guid=$entity_guid and m.name_id='$meta_name' and $access and $md_access", "row_to_elggmetadata");
 		if (!$result) 
 			return false;
 			
@@ -437,7 +437,7 @@
 		$access = get_access_sql_suffix("e");
 		$md_access = get_access_sql_suffix("m");
 		
-		return get_data("SELECT m.*, n.string as name, v.string as value from {$CONFIG->dbprefix}metadata m JOIN {$CONFIG->dbprefix}entities e ON e.guid = m.entity_guid JOIN {$CONFIG->dbprefix}metastrings v on m.value_id = v.id JOIN {$CONFIG->dbprefix}metastrings n on m.name_id = n.id where m.entity_guid=$entity_guid and $access and $md_access", "row_to_elggmetadata");
+		return get_data("SELECT m.*, n.string as name, v.string as value from metadata m JOIN entities e ON e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where m.entity_guid=$entity_guid and $access and $md_access", "row_to_elggmetadata");
 	}
 
 	/**
@@ -487,7 +487,7 @@
 		if ($site_guid > 0)
 			$where[] = "e.site_guid = {$site_guid}";
 		
-		$query = "SELECT m.*, n.string as name, v.string as value from {$CONFIG->dbprefix}entities e JOIN {$CONFIG->dbprefix}metadata m on e.guid = m.entity_guid JOIN {$CONFIG->dbprefix}metastrings v on m.value_id = v.id JOIN {$CONFIG->dbprefix}metastrings n on m.name_id = n.id where";
+		$query = "SELECT m.*, n.string as name, v.string as value from entities e JOIN metadata m on e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where";
 		foreach ($where as $w)
 			$query .= " $w and ";
 		$query .= get_access_sql_suffix("e"); // Add access controls
@@ -564,7 +564,7 @@
 			$query = "SELECT count(distinct e.guid) as total ";
 		}
 			
-		$query .= "from {$CONFIG->dbprefix}entities e JOIN {$CONFIG->dbprefix}metadata m on e.guid = m.entity_guid where";
+		$query .= "from entities e JOIN metadata m on e.guid = m.entity_guid where";
 		foreach ($where as $w)
 			$query .= " $w and ";
 		$query .= get_access_sql_suffix("e"); // Add access controls
@@ -638,7 +638,7 @@
 		foreach($meta_array as $meta_name => $meta_value) {
 			$meta_n = get_metastring_id($meta_name);
 			$meta_v = get_metastring_id($meta_value);
-			$join .= " JOIN {$CONFIG->dbprefix}metadata m{$mindex} on e.guid = m{$mindex}.entity_guid "; 
+			$join .= " JOIN metadata m{$mindex} on e.guid = m{$mindex}.entity_guid "; 
 			/*if ($meta_name!=="")
 				$where[] = "m{$mindex}.name_id='$meta_n'";
 			if ($meta_value!=="")
@@ -687,7 +687,7 @@
 			$query = "SELECT distinct e.* "; 
 		}
 			
-		$query .= " from {$CONFIG->dbprefix}entities e {$join} where";
+		$query .= " from entities e {$join} where";
 		foreach ($where as $w)
 			$query .= " $w and ";
 		$query .= get_access_sql_suffix("e"); // Add access controls
@@ -748,7 +748,7 @@
 		$entity_guid = (int)$entity_guid;
 		if ($entity = get_entity($entity_guid)) {
 			if ($entity->canEdit())
-				return delete_data("DELETE from {$CONFIG->dbprefix}metadata where entity_guid={$entity_guid}");
+				return delete_data("DELETE from metadata where entity_guid={$entity_guid}");
 		}
 		return false;
 	}
@@ -764,7 +764,7 @@
 		
 		$owner_guid = (int)$owner_guid;
 		
-		$metas = get_data("SELECT id from {$CONFIG->dbprefix}metadata WHERE owner_guid=$owner_guid");
+		$metas = get_data("SELECT id from metadata WHERE owner_guid=$owner_guid");
 		$deleted = 0;
 		
 		foreach ($metas as $id)
@@ -872,7 +872,7 @@
 				global $CONFIG;
 				$access_id = (int) $object->access_id;
 				$guid = (int) $object->getGUID();
-				update_data("update {$CONFIG->dbprefix}metadata set access_id = {$access_id} where entity_guid = {$guid}");
+				update_data("update metadata set access_id = {$access_id} where entity_guid = {$guid}");
 			}
 		}	
 		return true;	

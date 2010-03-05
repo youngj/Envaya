@@ -121,7 +121,7 @@ class Organization extends ElggUser {
         $subtypeId = get_subtype_id('object', 'blog');
         global $CONFIG;
     
-        $sql = "SELECT guid, time_created from {$CONFIG->dbprefix}entities 
+        $sql = "SELECT guid, time_created from entities 
                 WHERE type='object' AND subtype=$subtypeId 
                 AND container_guid={$this->guid} ORDER BY guid ASC";
 

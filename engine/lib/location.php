@@ -64,7 +64,7 @@
 		$location = sanitise_string($location);
 		
 		// Look for cached version
-		$cached_location = get_data_row("SELECT * from {$CONFIG->dbprefix}geocode_cache WHERE location='$location'");
+		$cached_location = get_data_row("SELECT * from geocode_cache WHERE location='$location'");
 		
 		if ($cached_location)
 			return array('lat' => $cached_location->lat, 'long' => $cached_location->long);
@@ -80,7 +80,7 @@
 			$long = (float)$return['long'];
 			
 			// Put into cache at the end of the page since we don't really care that much
-			execute_delayed_write_query("INSERT DELAYED INTO {$CONFIG->dbprefix}geocode_cache (location, lat, `long`) VALUES ('$location', '{$lat}', '{$long}') ON DUPLICATE KEY UPDATE lat='{$lat}', `long`='{$long}'");
+			execute_delayed_write_query("INSERT DELAYED INTO geocode_cache (location, lat, `long`) VALUES ('$location', '{$lat}', '{$long}') ON DUPLICATE KEY UPDATE lat='{$lat}', `long`='{$long}'");
 		}
 		
 		return $return;
@@ -183,13 +183,13 @@
 	
 		// Add the calendar stuff
 		$loc_join = "
-			JOIN {$CONFIG->dbprefix}metadata loc_start on e.guid=loc_start.entity_guid
-			JOIN {$CONFIG->dbprefix}metastrings loc_start_name on loc_start.name_id=loc_start_name.id
-			JOIN {$CONFIG->dbprefix}metastrings loc_start_value on loc_start.value_id=loc_start_value.id
+			JOIN metadata loc_start on e.guid=loc_start.entity_guid
+			JOIN metastrings loc_start_name on loc_start.name_id=loc_start_name.id
+			JOIN metastrings loc_start_value on loc_start.value_id=loc_start_value.id
 			
-			JOIN {$CONFIG->dbprefix}metadata loc_end on e.guid=loc_end.entity_guid
-			JOIN {$CONFIG->dbprefix}metastrings loc_end_name on loc_end.name_id=loc_end_name.id
-			JOIN {$CONFIG->dbprefix}metastrings loc_end_value on loc_end.value_id=loc_end_value.id
+			JOIN metadata loc_end on e.guid=loc_end.entity_guid
+			JOIN metastrings loc_end_name on loc_end.name_id=loc_end_name.id
+			JOIN metastrings loc_end_value on loc_end.value_id=loc_end_value.id
 		";	
 
 		$lat_min = $lat - $radius;
@@ -206,9 +206,9 @@
 		
 		
 		if (!$count) {
-			$query = "SELECT e.* from {$CONFIG->dbprefix}entities e $loc_join where ";
+			$query = "SELECT e.* from entities e $loc_join where ";
 		} else {
-			$query = "SELECT count(e.guid) as total from {$CONFIG->dbprefix}entities e $loc_join where ";
+			$query = "SELECT count(e.guid) as total from entities e $loc_join where ";
 		}
 		foreach ($where as $w)
 			$query .= " $w and ";

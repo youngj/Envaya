@@ -51,7 +51,7 @@
 		$cs = "";
 		if ($case_sensitive) $cs = " BINARY ";
 		
-		$row = get_data_row_2("SELECT * from {$CONFIG->dbprefix}metastrings where string=$cs? limit 1", array($string));
+		$row = get_data_row_2("SELECT * from metastrings where string=$cs? limit 1", array($string));
 		if ($row) 
         { 
 			$METASTRINGS_CACHE[$row->id] = $row->string; // Cache it
@@ -90,7 +90,7 @@
 			return $METASTRINGS_CACHE[$id];
 		}
 		
-		$row = get_data_row_2("SELECT * from {$CONFIG->dbprefix}metastrings where id=? limit 1", array($id));
+		$row = get_data_row_2("SELECT * from metastrings where id=? limit 1", array($id));
 		if ($row) {
 			$METASTRINGS_CACHE[$id] = $row->string; // Cache it
 			
@@ -120,7 +120,7 @@
 		if ($id) 
             return $id;
 		
-		$result = insert_data_2("INSERT into {$CONFIG->dbprefix}metastrings (string) values (?)", array($string));
+		$result = insert_data_2("INSERT into metastrings (string) values (?)", array($string));
 		if ($result) {
 			$METASTRINGS_CACHE[$result] = $string;
 			if (isset($METASTRINGS_DEADNAME_CACHE[$string])) 
@@ -143,12 +143,12 @@
 		{
 			$select_query = "
 			SELECT * 
-			from {$CONFIG->dbprefix}metastrings where 
+			from metastrings where 
 			( 
-				(id not in (select name_id from {$CONFIG->dbprefix}metadata)) AND 
-				(id not in (select value_id from {$CONFIG->dbprefix}metadata)) AND 
-				(id not in (select name_id from {$CONFIG->dbprefix}annotations)) AND 
-				(id not in (select value_id from {$CONFIG->dbprefix}annotations))   
+				(id not in (select name_id from metadata)) AND 
+				(id not in (select value_id from metadata)) AND 
+				(id not in (select name_id from annotations)) AND 
+				(id not in (select value_id from annotations))   
 			)";
 			
 			$dead = get_data($select_query);
@@ -164,12 +164,12 @@
 		
 		$query = "
 			DELETE 
-			from {$CONFIG->dbprefix}metastrings where 
+			from metastrings where 
 			( 
-				(id not in (select name_id from {$CONFIG->dbprefix}metadata)) AND 
-				(id not in (select value_id from {$CONFIG->dbprefix}metadata)) AND 
-				(id not in (select name_id from {$CONFIG->dbprefix}annotations)) AND 
-				(id not in (select value_id from {$CONFIG->dbprefix}annotations))   
+				(id not in (select name_id from metadata)) AND 
+				(id not in (select value_id from metadata)) AND 
+				(id not in (select name_id from annotations)) AND 
+				(id not in (select value_id from annotations))   
 			)";
 			
 		return delete_data($query);

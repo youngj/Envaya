@@ -308,7 +308,7 @@
         {
             $guid = $this->guid;
             return array_map('entity_row_to_elggstar', 
-                get_data_2("SELECT * from {$CONFIG->dbprefix}entities WHERE container_guid=? or owner_guid=? or site_guid=?", array($guid, $guid, $guid))
+                get_data_2("SELECT * from entities WHERE container_guid=? or owner_guid=? or site_guid=?", array($guid, $guid, $guid))
             );
         }
         
@@ -1125,7 +1125,7 @@
 		$entity = get_entity($guid);
 		
         if (trigger_elgg_event('update',$entity->type,$entity)) {
-            $ret = update_data_2("UPDATE {$CONFIG->dbprefix}entities set owner_guid=?, access_id=?, container_guid=?, time_updated=? WHERE guid=?", 
+            $ret = update_data_2("UPDATE entities set owner_guid=?, access_id=?, container_guid=?, time_updated=? WHERE guid=?", 
                 array($owner_guid,$access_id,$container_guid,$time,$guid)
             );
 
@@ -1201,7 +1201,7 @@
 		if ($type=="") 
             throw new InvalidParameterException(elgg_echo('InvalidParameterException:EntityTypeNotSet'));
 
-		return insert_data_2("INSERT into {$CONFIG->dbprefix}entities (type, subtype, owner_guid, site_guid, container_guid, access_id, time_created, time_updated) values (?,?,?,?,?,?,?,?)",
+		return insert_data_2("INSERT into entities (type, subtype, owner_guid, site_guid, container_guid, access_id, time_created, time_updated) values (?,?,?,?,?,?,?,?)",
             array($type, $subtype, (int)$owner_guid, (int)$site_guid, (int)$container_guid, (int)$access_id, $time, $time)
         ); 
 	}
@@ -1226,7 +1226,7 @@
 			
         $access = get_access_sql_suffix();
 		
-        return get_data_row_2("SELECT * from {$CONFIG->dbprefix}entities where guid=? and $access", array($guid));
+        return get_data_row_2("SELECT * from entities where guid=? and $access", array($guid));
 	}
 	
 	/**
@@ -1402,11 +1402,11 @@
 			
 		if (!$count) 
         {
-			$query = "SELECT * from {$CONFIG->dbprefix}entities where ";
+			$query = "SELECT * from entities where ";
 		} 
         else 
         {
-			$query = "SELECT count(guid) as total from {$CONFIG->dbprefix}entities where ";
+			$query = "SELECT count(guid) as total from entities where ";
 		}
 		
         foreach ($where as $w)
@@ -1518,7 +1518,7 @@
 						$__RECURSIVE_DELETE_TOKEN = null; 
 					}
 											
-					$res = update_data_2("UPDATE {$CONFIG->dbprefix}entities set enabled='no' where guid=?", array($guid));
+					$res = update_data_2("UPDATE entities set enabled='no' where guid=?", array($guid));
 					
 					return $res;
 				} 
@@ -1546,7 +1546,7 @@
 					
 					access_show_hidden_entities($access_status);
 				
-					$result = update_data_2("UPDATE {$CONFIG->dbprefix}entities set enabled='yes' where guid=?", array($guid));
+					$result = update_data_2("UPDATE entities set enabled='yes' where guid=?", array($guid));
 					$entity->clearMetaData('disable_reason');
 					
 					return $result;
@@ -1594,7 +1594,7 @@
                 $entity->clearAnnotations();
                 $entity->clearRelationships();
                 remove_all_private_settings($guid);
-                $res = delete_data_2("DELETE from {$CONFIG->dbprefix}entities where guid=?", array($guid));
+                $res = delete_data_2("DELETE from entities where guid=?", array($guid));
                 if ($res)
                 {
                     $sub_table = "";
@@ -1602,10 +1602,8 @@
                     // Where appropriate delete the sub table
                     switch ($entity->type)
                     {
-                        case 'object' : $sub_table = $CONFIG->dbprefix . 'objects_entity'; break;
-                        case 'user' :  $sub_table = $CONFIG->dbprefix . 'users_entity'; break;
-                        case 'group' :  $sub_table = $CONFIG->dbprefix . 'groups_entity'; break;
-                        case 'site' :  $sub_table = $CONFIG->dbprefix . 'sites_entity'; break;
+                        case 'object' : $sub_table = 'objects_entity'; break;
+                        case 'user' :  $sub_table = 'users_entity'; break;
                     }
 
                     if ($sub_table)
@@ -1951,7 +1949,7 @@
 		
 		global $CONFIG;
  		
-		if ($setting = get_data_row_2("SELECT value from {$CONFIG->dbprefix}private_settings where name = ? and entity_guid = ?",
+		if ($setting = get_data_row_2("SELECT value from private_settings where name = ? and entity_guid = ?",
             array($name, (int)$entity_guid)
         )) {
 			return $setting->value;
@@ -1970,7 +1968,7 @@
 		
 		$entity_guid = (int) $entity_guid;
 		
-        $result = get_data_2("SELECT * from {$CONFIG->dbprefix}private_settings where entity_guid = ?", array($entity_guid));
+        $result = get_data_2("SELECT * from private_settings where entity_guid = ?", array($entity_guid));
 		if ($result)
 		{
 			$return = array();
@@ -1995,7 +1993,7 @@
 		
 		global $CONFIG;
 		
-		$result = insert_data_2("INSERT into {$CONFIG->dbprefix}private_settings (entity_guid, name, value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE value = ?",
+		$result = insert_data_2("INSERT into private_settings (entity_guid, name, value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE value = ?",
             array((int)$entity_guid, $name, $value, $value)
         );
 		if ($result === 0) return true;
@@ -2014,7 +2012,7 @@
 	function remove_private_setting($entity_guid, $name) 
     {	
 		global $CONFIG;
-		return delete_data_2("DELETE from {$CONFIG->dbprefix}private_settings where name = ? and entity_guid = ?",
+		return delete_data_2("DELETE from private_settings where name = ? and entity_guid = ?",
             array($name, (int)$entity_guid));		
 	}
 	
@@ -2028,7 +2026,7 @@
 	function remove_all_private_settings($entity_guid) 
     {		
 		global $CONFIG;
-        return delete_data_2("DELETE from {$CONFIG->dbprefix}private_settings where entity_guid = ?", array((int)$entity_guid));
+        return delete_data_2("DELETE from private_settings where entity_guid = ?", array((int)$entity_guid));
 	}
 	
 	function recursive_delete_permissions_check($hook, $entity_type, $returnvalue, $params)
@@ -2056,7 +2054,7 @@
 		$tables = array ('sites_entity', 'objects_entity', 'groups_entity', 'users_entity');
 		
 		foreach ($tables as $table) {
-			delete_data_2("DELETE from {$CONFIG->dbprefix}{$table} where guid NOT IN (SELECT guid from {$CONFIG->dbprefix}entities)");
+			delete_data_2("DELETE from {$table} where guid NOT IN (SELECT guid from entities)");
 		}
 	}
 	

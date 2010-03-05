@@ -161,67 +161,11 @@
 		return $pee;
 	}
         
-	function input_init() {
-		
-		if (ini_get_bool('magic_quotes_gpc') ) {
-		    
-		    //do keys as well, cos array_map ignores them
-		    function stripslashes_arraykeys($array) {
-		        if (is_array($array)) {
-		            $array2 = array();
-		            foreach ($array as $key => $data) {
-		                if ($key != stripslashes($key)) {
-		                    $array2[stripslashes($key)] = $data;
-		                } else {
-		                    $array2[$key] = $data;
-		                }
-		            }
-		            return $array2;
-		        } else {
-		            return $array;
-		        }
-		    }
-		    
-		    function stripslashes_deep($value) {
-		        if (is_array($value)) {
-		            $value = stripslashes_arraykeys($value);
-		            $value = array_map('stripslashes_deep', $value);
-		        } else {
-		            $value = stripslashes($value);
-		        }
-		        return $value;
-		    }
-		    
-		    $_POST = stripslashes_arraykeys($_POST);
-		    $_GET = stripslashes_arraykeys($_GET);
-		    $_COOKIE = stripslashes_arraykeys($_COOKIE);
-		    $_REQUEST = stripslashes_arraykeys($_REQUEST);
-		    
-		    $_POST = array_map('stripslashes_deep', $_POST);
-		    $_GET = array_map('stripslashes_deep', $_GET);
-		    $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
-		    $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
-		    if (!empty($_SERVER['REQUEST_URI'])) {
-		        $_SERVER['REQUEST_URI'] = stripslashes($_SERVER['REQUEST_URI']);
-		    }
-		    if (!empty($_SERVER['QUERY_STRING'])) {
-		        $_SERVER['QUERY_STRING'] = stripslashes($_SERVER['QUERY_STRING']);
-		    }
-		    if (!empty($_SERVER['HTTP_REFERER'])) {
-		        $_SERVER['HTTP_REFERER'] = stripslashes($_SERVER['HTTP_REFERER']);
-		    }
-		    if (!empty($_SERVER['PATH_INFO'])) {
-		        $_SERVER['PATH_INFO'] = stripslashes($_SERVER['PATH_INFO']);
-		    }
-		    if (!empty($_SERVER['PHP_SELF'])) {
-		        $_SERVER['PHP_SELF'] = stripslashes($_SERVER['PHP_SELF']);
-		    }
-		    if (!empty($_SERVER['PATH_TRANSLATED'])) {
-		        $_SERVER['PATH_TRANSLATED'] = stripslashes($_SERVER['PATH_TRANSLATED']);
-		    }
-		    
-		}
-		
+	function input_init() {		
+		if (ini_get_bool('magic_quotes_gpc') ) 
+        {
+            throw new Exception("You need to set magic_quotes_gpc = Off in your php.ini file");
+        }        	
 	}
 	
 	register_elgg_event_handler('init','system','input_init');

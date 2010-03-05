@@ -384,7 +384,6 @@
             register_shutdown_function('session_write_close');
 			
 			// Use database for sessions
-			$DB_PREFIX = $CONFIG->dbprefix; // HACK to allow access to prefix after object distruction
 			if ((!isset($CONFIG->use_file_sessions)))
 				session_set_save_handler("__elgg_session_open", "__elgg_session_close", "__elgg_session_read", "__elgg_session_write", "__elgg_session_destroy", "__elgg_session_gc");
 				
@@ -518,9 +517,7 @@
 		 */
 		function __elgg_session_read($id)
 		{
-			global $DB_PREFIX;
-			
-            $result = get_data_row_2("SELECT * from {$DB_PREFIX}users_sessions where session=?", array($id));			
+            $result = get_data_row_2("SELECT * from users_sessions where session=?", array($id));			
 
             if ($result)
                 return (string)$result->data;
@@ -533,11 +530,7 @@
 		 */
 		function __elgg_session_write($id, $sess_data)
 		{
-			global $DB_PREFIX;
-
-            global $MYSQLI;
-
-            if (insert_data_2("REPLACE INTO {$DB_PREFIX}users_sessions (session, ts, data) VALUES (?,?,?)",
+            if (insert_data_2("REPLACE INTO users_sessions (session, ts, data) VALUES (?,?,?)",
                     array($id, time(), $sess_data))!==false)
             {
                 return true;
@@ -551,8 +544,7 @@
 		 */
 		function __elgg_session_destroy($id)
 		{
-			global $DB_PREFIX;
-            return (bool)delete_data_2("DELETE from {$DB_PREFIX}users_sessions where session=?", array($id));
+            return (bool)delete_data_2("DELETE from users_sessions where session=?", array($id));
 		}
 		
 		/**
@@ -560,11 +552,9 @@
 		 */
 		function __elgg_session_gc($maxlifetime)
 		{
-			global $DB_PREFIX;
-			
 			$life = time()-$maxlifetime;
 
-            return (bool)delete_data_2("DELETE from {$DB_PREFIX}users_sessions where ts<?", array($life));
+            return (bool)delete_data_2("DELETE from users_sessions where ts<?", array($life));
 			
 			return true;
 		}

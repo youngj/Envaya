@@ -59,9 +59,7 @@
         echo "Error in installation: could not load the cache library.";
         exit;
     }
-    
-    
-
+        
     // Use fallback view until sanitised
     $oldview = get_input('view');
     set_input('view', 'failsafe');
@@ -70,51 +68,38 @@
     set_error_handler('__elgg_php_error_handler');
     set_exception_handler('__elgg_php_exception_handler');
 		
-	/**
-	 * If there are basic issues with the way the installation is formed, don't bother trying
-	 * to load any more files
-	 */
-		
-    if ($sanitised = sanitised()) 
-    {			
-        if (!include_once(dirname(__FILE__) . "/settings.php"))  
-            throw new InstallationException("Elgg could not load the settings file.");
-				
-        if (!include_once(dirname(__FILE__) . "/lib/database.php"))
-		    throw new InstallationException("Elgg could not load the main Elgg database library.");
-				
-        if (!include_once(dirname(__FILE__) . "/lib/actions.php")) {
-            throw new InstallationException("Elgg could not load the Actions library");
-        }	
-	
-        $file_exceptions = array('.','..','.DS_Store','Thumbs.db','.svn','CVS','cvs',
-            'settings.php','settings.example.php','languages.php','exceptions.php','elgglib.php','access.php','database.php','actions.php','sessions.php'
-        );
-	
-        $files = get_library_files(dirname(__FILE__) . "/lib",$file_exceptions);
-        asort($files);
-			
-        global $CONFIG;
-	
-        foreach($files as $file) 
-        {
-		    if (isset($CONFIG->debug) && $CONFIG->debug) error_log("Loading $file..."); 
-		    if (!include_once($file))
-			    throw new InstallationException("Could not load {$file}");
-		}
-        
-    } 
-    else 
+   if (!include_once(dirname(__FILE__) . "/settings.php"))  
+        throw new InstallationException("Elgg could not load the settings file.");
+
+    if (!include_once(dirname(__FILE__) . "/lib/database.php"))
+        throw new InstallationException("Elgg could not load the main Elgg database library.");
+
+    if (!include_once(dirname(__FILE__) . "/lib/actions.php")) {
+        throw new InstallationException("Elgg could not load the Actions library");
+    }	
+
+    $file_exceptions = array('.','..','.DS_Store','Thumbs.db','.svn','CVS','cvs',
+        'settings.php','settings.example.php','languages.php','exceptions.php','elgglib.php','access.php','database.php','actions.php','sessions.php'
+    );
+
+    $files = get_library_files(dirname(__FILE__) . "/lib",$file_exceptions);
+    asort($files);
+
+    global $CONFIG;
+
+    foreach($files as $file) 
     {
-	    throw new InstallationException(elgg_echo('installation:error:configuration'));
-	}		
+        if (isset($CONFIG->debug) && $CONFIG->debug) error_log("Loading $file..."); 
+        if (!include_once($file))
+            throw new InstallationException("Could not load {$file}");
+    }
 	    
     trigger_elgg_event('boot', 'system');
 			
 	$installed = is_installed();
 	$db_installed = is_db_installed();
 			
-    if ($installed && $db_installed && $sanitised) 
+    if ($installed && $db_installed) 
     {
         load_plugins();
         trigger_elgg_event('plugins_boot', 'system');

@@ -326,7 +326,7 @@
 			
 			$guid = (int)$guid;
 		
-			return get_data_row("SELECT * from {$CONFIG->dbprefix}users_entity where guid=$guid");
+			return get_data_row("SELECT * from users_entity where guid=$guid");
 		//}
 	}
 	
@@ -357,8 +357,8 @@
 		{
 			// Exists and you have access to it
 
-			if ($exists = get_data_row("SELECT guid from {$CONFIG->dbprefix}users_entity where guid = {$guid}")) {
-				$result = update_data("UPDATE {$CONFIG->dbprefix}users_entity set name='$name', username='$username', password='$password', salt='$salt', email='$email', language='$language', code='$code', last_action = ". time() ." where guid = {$guid}");
+			if ($exists = get_data_row("SELECT guid from users_entity where guid = {$guid}")) {
+				$result = update_data("UPDATE users_entity set name='$name', username='$username', password='$password', salt='$salt', email='$email', language='$language', code='$code', last_action = ". time() ." where guid = {$guid}");
 				if ($result != false)
 				{
 					// Update succeeded, continue
@@ -373,7 +373,7 @@
 			else
 			{
 				// Update failed, attempt an insert.
-				$result = insert_data("INSERT into {$CONFIG->dbprefix}users_entity (guid, name, username, password, salt, email, language, code) values ($guid, '$name', '$username', '$password', '$salt', '$email', '$language', '$code')");
+				$result = insert_data("INSERT into users_entity (guid, name, username, password, salt, email, language, code) values ($guid, '$name', '$username', '$password', '$salt', '$email', '$language', '$code')");
 				if ($result!==false) {
 					$entity = get_entity($guid);
 					if (trigger_elgg_event('create',$entity->type,$entity)) {
@@ -402,7 +402,7 @@
 		if ($entity = get_entity($owner_guid)) {
 			if (trigger_elgg_event('disable',$entity->type,$entity)) {
 				if ($entity->canEdit()) {
-					$res = update_data("UPDATE {$CONFIG->dbprefix}entities set enabled='no' where owner_guid={$owner_guid} or container_guid = {$owner_guid}");
+					$res = update_data("UPDATE entities set enabled='no' where owner_guid={$owner_guid} or container_guid = {$owner_guid}");
 					return $res;
 				}
 			}
@@ -434,7 +434,7 @@
 					create_metadata($user_guid, 'ban_reason', $reason,'', 0, ACCESS_PUBLIC);
 				
 				// Set ban flag
-				return update_data("UPDATE {$CONFIG->dbprefix}users_entity set banned='yes' where guid=$user_guid");
+				return update_data("UPDATE users_entity set banned='yes' where guid=$user_guid");
 			}
 		}		
 
@@ -458,7 +458,7 @@
 		{
 			if (trigger_elgg_event('unban', 'user', $user)) {
 				create_metadata($user_guid, 'ban_reason', '','', 0, ACCESS_PUBLIC);
-				return update_data("UPDATE {$CONFIG->dbprefix}users_entity set banned='no' where guid=$user_guid");
+				return update_data("UPDATE users_entity set banned='no' where guid=$user_guid");
 			}
 		}
 		
@@ -725,7 +725,7 @@
 		if ( (isset($USERNAME_TO_GUID_MAP_CACHE[$username])) && (retrieve_cached_entity($USERNAME_TO_GUID_MAP_CACHE[$username])) )
 			return retrieve_cached_entity($USERNAME_TO_GUID_MAP_CACHE[$username]);
 		
-		$row = get_data_row_2("SELECT e.*, u.* from {$CONFIG->dbprefix}users_entity u join {$CONFIG->dbprefix}entities e on e.guid=u.guid where u.username=? and $access ", array($username));
+		$row = get_data_row_2("SELECT e.*, u.* from users_entity u join entities e on e.guid=u.guid where u.username=? and $access ", array($username));
 		if ($row) {
 			$USERNAME_TO_GUID_MAP_CACHE[$username] = $row->guid;
             return entity_row_to_elggstar($row);
@@ -750,7 +750,7 @@
 		if ( (isset($CODE_TO_GUID_MAP_CACHE[$code])) && (retrieve_cached_entity($CODE_TO_GUID_MAP_CACHE[$code])) )
 			return retrieve_cached_entity($CODE_TO_GUID_MAP_CACHE[$code]);
 		
-		$row = get_data_row_2("SELECT e.*, u.* from {$CONFIG->dbprefix}users_entity u join {$CONFIG->dbprefix}entities e on e.guid=u.guid where u.code=? and $access", array($code));
+		$row = get_data_row_2("SELECT e.*, u.* from users_entity u join entities e on e.guid=u.guid where u.code=? and $access", array($code));
 		if ($row) 
         {
 			$CODE_TO_GUID_MAP_CACHE[$code] = $row->guid;
@@ -772,7 +772,7 @@
 		
 		$access = get_access_sql_suffix('e');
 		
-		$query = "SELECT e.* from {$CONFIG->dbprefix}entities e join {$CONFIG->dbprefix}users_entity u on e.guid=u.guid where email=? and $access";
+		$query = "SELECT e.* from entities e join users_entity u on e.guid=u.guid where email=? and $access";
 		
         return array_map('entity_row_to_elggstar', get_data_2($query, array($email)));
 	}
@@ -811,7 +811,7 @@
 			$query = "SELECT e.* "; 
 		}
 		
-        $query .= "from {$CONFIG->dbprefix}entities e join {$CONFIG->dbprefix}users_entity u on e.guid=u.guid where ";
+        $query .= "from entities e join users_entity u on e.guid=u.guid where ";
 		// $query .= " match(u.name,u.username) against ('$criteria') ";
 		$query .= "(u.name like \"%{$criteria}%\" or u.username like \"%{$criteria}%\")";
 		$query .= " and $access";
@@ -875,7 +875,7 @@
 
 		$access = get_access_sql_suffix("e");
 		
-		$query = "SELECT distinct e.* from {$CONFIG->dbprefix}entities e join {$CONFIG->dbprefix}users_entity u on e.guid = u.guid where u.last_action >= ? and $access order by u.last_action desc limit {$offset},{$limit}";
+		$query = "SELECT distinct e.* from entities e join users_entity u on e.guid = u.guid where u.last_action >= ? and $access order by u.last_action desc limit {$offset},{$limit}";
 		
         return array_map('entity_row_to_elggstar', get_data_2($query, array($time)));
 	}
@@ -924,20 +924,17 @@
 	{
 		global $CONFIG;
 		
-		if (call_gatekeeper('execute_new_password_request', __FILE__))
-		{
-			$user = get_entity($user_guid);
-			
-			if ($user)
-			{
-				$salt = generate_random_cleartext_password(); // Reset the salt
-				$user->salt = $salt;
-				
-				$hash = generate_user_password($user, $password);
-				
-				return update_data("UPDATE {$CONFIG->dbprefix}users_entity set password='$hash', salt='$salt' where guid=$user_guid");
-			}
-		}
+        $user = get_entity($user_guid);
+
+        if ($user)
+        {
+            $salt = generate_random_cleartext_password(); // Reset the salt
+            $user->salt = $salt;
+
+            $hash = generate_user_password($user, $password);
+
+            return update_data("UPDATE users_entity set password='$hash', salt='$salt' where guid=$user_guid");
+        }
 		
 		return false;
 	}
@@ -1345,7 +1342,7 @@
 		global $CONFIG;
 		$time = time();
 		
-		execute_delayed_write_query("UPDATE {$CONFIG->dbprefix}users_entity set prev_last_action = last_action, last_action = {$time} where guid = {$user_guid}");
+		execute_delayed_write_query("UPDATE users_entity set prev_last_action = last_action, last_action = {$time} where guid = {$user_guid}");
 		
 	}
 	
@@ -1360,7 +1357,7 @@
 		global $CONFIG;
 		$time = time();
 		
-		execute_delayed_write_query("UPDATE {$CONFIG->dbprefix}users_entity set prev_last_login = last_login, last_login = {$time} where guid = {$user_guid}");
+		execute_delayed_write_query("UPDATE users_entity set prev_last_login = last_login, last_login = {$time} where guid = {$user_guid}");
 		
 	}
 	

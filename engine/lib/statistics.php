@@ -24,7 +24,7 @@
 		$entity_stats = array();
 		$owner_guid = (int)$owner_guid;
 		
-		$query = "SELECT distinct e.type,e.subtype as subtype_id from {$CONFIG->dbprefix}entities e";
+		$query = "SELECT distinct e.type,e.subtype as subtype_id from entities e";
 		$owner_query = "";
 		if ($owner_guid) {
 			$query .= " where owner_guid=$owner_guid";
@@ -41,7 +41,7 @@
 			if (!is_array($entity_stats[$type->type])) 
 				$entity_stats[$type->type] = array(); // assume there are subtypes for now
 			
-			$query = "SELECT count(*) as count from {$CONFIG->dbprefix}entities where type='{$type->type}' $owner_query";
+			$query = "SELECT count(*) as count from entities where type='{$type->type}' $owner_query";
             if ($subtype) $query.= " and subtype={$type->subtype_id}";
                                     
 			$subtype_cnt = get_data_row($query);
@@ -70,7 +70,7 @@
 		if (!$show_deactivated)
 			$access = "and " . get_access_sql_suffix();
 		
-		$result = get_data_row("SELECT count(*) as count from {$CONFIG->dbprefix}entities where type='user' $access");
+		$result = get_data_row("SELECT count(*) as count from entities where type='user' $access");
             
 		if ($result)
 			return $result->count;

@@ -143,7 +143,7 @@
 		$access = get_access_sql_suffix("a");
 		
 		return row_to_elggannotation(
-            get_data_row_2("SELECT a.*, n.string as name, v.string as value from {$CONFIG->dbprefix}annotations a JOIN {$CONFIG->dbprefix}metastrings n on a.name_id = n.id JOIN {$CONFIG->dbprefix}metastrings v on a.value_id = v.id where a.id=? and $access", array((int) $annotation_id)));            
+            get_data_row_2("SELECT a.*, n.string as name, v.string as value from annotations a JOIN metastrings n on a.name_id = n.id JOIN metastrings v on a.value_id = v.id where a.id=? and $access", array((int) $annotation_id)));            
 	}
 	
 	/**
@@ -187,7 +187,7 @@
 			system_log($entity, 'annotate');
 			
 			// If ok then add it
-			$result = insert_data("INSERT into {$CONFIG->dbprefix}annotations (entity_guid, name_id, value_id, value_type, owner_guid, time_created, access_id) VALUES ($entity_guid,'$name',$value,'$value_type', $owner_guid, $time, $access_id)");
+			$result = insert_data("INSERT into annotations (entity_guid, name_id, value_id, value_type, owner_guid, time_created, access_id) VALUES ($entity_guid,'$name',$value,'$value_type', $owner_guid, $time, $access_id)");
 			if ($result!==false) {
 				$obj = get_annotation($result);
 				if (trigger_elgg_event('create', 'annotation', $obj)) {
@@ -235,7 +235,7 @@
 		if (!$name) return false;
 		
 		// If ok then add it		
-		$result = update_data("UPDATE {$CONFIG->dbprefix}annotations set value_id='$value', value_type='$value_type', access_id=$access_id, owner_guid=$owner_guid where id=$annotation_id and name_id='$name' and $access");
+		$result = update_data("UPDATE annotations set value_id='$value', value_type='$value_type', access_id=$access_id, owner_guid=$owner_guid where id=$annotation_id and name_id='$name' and $access");
 		if ($result!==false) {
 			$obj = get_annotation($annotation_id);
 			if (trigger_elgg_event('update', 'annotation', $obj)) {
@@ -341,7 +341,7 @@
 		if ($timeupper)
 			$where[] = "a.time_created <= {$timeupper}";
 			
-		$query = "SELECT a.*, n.string as name, v.string as value from {$CONFIG->dbprefix}annotations a JOIN {$CONFIG->dbprefix}entities e on a.entity_guid = e.guid JOIN {$CONFIG->dbprefix}metastrings v on a.value_id=v.id JOIN {$CONFIG->dbprefix}metastrings n on a.name_id = n.id where ";
+		$query = "SELECT a.*, n.string as name, v.string as value from annotations a JOIN entities e on a.entity_guid = e.guid JOIN metastrings v on a.value_id=v.id JOIN metastrings n on a.name_id = n.id where ";
 		foreach ($where as $w)
 			$query .= " $w and ";
 		$query .= get_access_sql_suffix("a"); // Add access controls
@@ -440,11 +440,11 @@
 		} else {
 			$query = "SELECT e.*, max(a.time_created) as maxtime ";			
 		}
-		$query .= "from {$CONFIG->dbprefix}annotations a JOIN {$CONFIG->dbprefix}entities e on e.guid = a.entity_guid ";
+		$query .= "from annotations a JOIN entities e on e.guid = a.entity_guid ";
 		if ($value != "")
-			$query .= " JOIN {$CONFIG->dbprefix}metastrings v on a.value_id=v.id";
+			$query .= " JOIN metastrings v on a.value_id=v.id";
 		
-		if (($group_guid != 0) && ($entity_type=='object')) $query .= "JOIN {$CONFIG->dbprefix}objects_entity o on o.guid = e.guid";
+		if (($group_guid != 0) && ($entity_type=='object')) $query .= "JOIN objects_entity o on o.guid = e.guid";
 		$query .= " where";
 		    
 		foreach ($where as $w)
@@ -634,7 +634,7 @@
 		if ($sum != "count")
 			$where[] = "a.value_type='integer'"; // Limit on integer types
 		
-		$query = "SELECT $sum(ms.string) as sum from {$CONFIG->dbprefix}annotations a JOIN {$CONFIG->dbprefix}entities e on a.entity_guid = e.guid JOIN {$CONFIG->dbprefix}metastrings ms on a.value_id=ms.id WHERE ";
+		$query = "SELECT $sum(ms.string) as sum from annotations a JOIN entities e on a.entity_guid = e.guid JOIN metastrings ms on a.value_id=ms.id WHERE ";
 		foreach ($where as $w)
 			$query .= " $w and ";
 		$query .= get_access_sql_suffix("a"); // now add access
@@ -704,10 +704,10 @@
 		} else {
 			$query = "SELECT count(distinct e.guid) as num, $sum(ms.string) as sum ";
 		}
-		$query .= " from {$CONFIG->dbprefix}entities e JOIN {$CONFIG->dbprefix}annotations a on a.entity_guid = e.guid JOIN {$CONFIG->dbprefix}metastrings ms on a.value_id=ms.id ";
+		$query .= " from entities e JOIN annotations a on a.entity_guid = e.guid JOIN metastrings ms on a.value_id=ms.id ";
 		
 		if (!empty($mdname) && !empty($mdvalue)) {
-			$query .= " JOIN {$CONFIG->dbprefix}metadata m on m.entity_guid = e.guid "; 
+			$query .= " JOIN metadata m on m.entity_guid = e.guid "; 
 		}
 		
 		$query .= " WHERE ";
@@ -824,7 +824,7 @@
 		$annotation = get_annotation($id);
 		
 		if (trigger_elgg_event('delete', 'annotation', $annotation))
-			return delete_data("DELETE from {$CONFIG->dbprefix}annotations  where id=$id and $access");
+			return delete_data("DELETE from annotations  where id=$id and $access");
 			
 		return false;
 	}
@@ -852,7 +852,7 @@
 				if ($name != "")
 					$where[] = " name_id='$name'";
 				
-				$query = "DELETE from {$CONFIG->dbprefix}annotations where entity_guid=$guid "; 
+				$query = "DELETE from annotations where entity_guid=$guid "; 
 				foreach ($where as $w)
 					$query .= " and $w";
 				
@@ -873,7 +873,7 @@
 		
 		$owner_guid = (int)$owner_guid;
 		
-		$annotations = get_data("SELECT id from {$CONFIG->dbprefix}annotations WHERE owner_guid=$owner_guid");
+		$annotations = get_data("SELECT id from annotations WHERE owner_guid=$owner_guid");
 		$deleted = 0;
 		
 		if (!$annotations)

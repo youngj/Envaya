@@ -9,7 +9,6 @@
     $CONFIG->dbpass = 'scarlett';
     $CONFIG->dbname = 'elgg';
     $CONFIG->dbhost = 'localhost';
-    $CONFIG->dbprefix = '';
 
 	/*
 

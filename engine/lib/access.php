@@ -67,8 +67,8 @@
 			
 			if (empty($access_array[$user_id]) || $flush == true) {
 				
-				$query = "SELECT am.access_collection_id FROM {$CONFIG->dbprefix}access_collection_membership am ";
-				$query .= " LEFT JOIN {$CONFIG->dbprefix}access_collections ag ON ag.id = am.access_collection_id ";
+				$query = "SELECT am.access_collection_id FROM access_collection_membership am ";
+				$query .= " LEFT JOIN access_collections ag ON ag.id = am.access_collection_id ";
 				$query .= " WHERE am.user_guid = {$user_id} AND (ag.site_guid = {$site_id} OR ag.site_guid = 0)";
 				
 				$tmp_access_array = array(ACCESS_PUBLIC); 
@@ -83,7 +83,7 @@
 							
 					}
 						
-					$query = "SELECT ag.id FROM {$CONFIG->dbprefix}access_collections ag  ";
+					$query = "SELECT ag.id FROM access_collections ag  ";
 					$query .= " WHERE ag.owner_guid = {$user_id} AND (ag.site_guid = {$site_id} OR ag.site_guid = 0)";
 					
 					if ($collections = get_data($query)) {
@@ -194,8 +194,8 @@
 			}
 			
 			$sql = <<<END
-$not EXISTS (SELECT * FROM {$CONFIG->dbprefix}annotations a 
-INNER JOIN {$CONFIG->dbprefix}metastrings ms ON (a.name_id = ms.id)
+$not EXISTS (SELECT * FROM annotations a 
+INNER JOIN metastrings ms ON (a.name_id = ms.id)
 WHERE ms.string = '$annotation_name'
 AND a.entity_guid = $entity_guid
 AND a.owner_guid = $owner_guid)
@@ -237,7 +237,7 @@ END;
 				$sql = " (1 = 1) ";
 			} else if ($owner != -1) {				
 				$friends_bit = $table_prefix.'access_id = '.ACCESS_FRIENDS.' AND ';
-				$friends_bit .= "{$table_prefix}owner_guid IN (SELECT guid_one FROM {$CONFIG->dbprefix}entity_relationships WHERE relationship='friend' AND guid_two=$owner)";
+				$friends_bit .= "{$table_prefix}owner_guid IN (SELECT guid_one FROM entity_relationships WHERE relationship='friend' AND guid_two=$owner)";
 				$friends_bit = '('.$friends_bit.') OR ';
 				
 				if ((isset($CONFIG->user_block_and_filter_enabled)) && ($CONFIG->user_block_and_filter_enabled)) {
@@ -280,7 +280,7 @@ END;
 				$access_bit = get_access_sql_suffix("e",$user->getGUID());
 			}
 			
-			$query = "SELECT guid from {$CONFIG->dbprefix}entities e WHERE e.guid = ".$entity->getGUID();
+			$query = "SELECT guid from entities e WHERE e.guid = ".$entity->getGUID();
 			$query .= " AND ".$access_bit; // Add access controls
 			if (get_data($query)) {
 				return true;
@@ -310,7 +310,7 @@ END;
 			
 			if (empty($access_array[$user_id]) || $flush == true) {
 				
-				$query = "SELECT ag.* FROM {$CONFIG->dbprefix}access_collections ag ";
+				$query = "SELECT ag.* FROM access_collections ag ";
 				$query .= " WHERE (ag.site_guid = {$site_id} OR ag.site_guid = 0)";
 				$query .= " AND (ag.owner_guid = {$user_id})";
 				$query .= " AND ag.id >= 3";
@@ -352,7 +352,7 @@ END;
 			if (($site_id == 0) && (isset($CONFIG->site_guid))) $site_id = $CONFIG->site_guid;
 			$name = sanitise_string($name);
 			
-			return insert_data("insert into {$CONFIG->dbprefix}access_collections set name = '{$name}', owner_guid = {$owner_guid}, site_guid = {$site_id}");
+			return insert_data("insert into access_collections set name = '{$name}', owner_guid = {$owner_guid}, site_guid = {$site_id}");
 			
 		}
 		
@@ -372,13 +372,13 @@ END;
 			
 			if (array_key_exists($collection_id, $collections)) {
 			
-				delete_data("delete from {$CONFIG->dbprefix}access_collection_membership where access_collection_id = {$collection_id}");
+				delete_data("delete from access_collection_membership where access_collection_id = {$collection_id}");
 				
 				if (is_array($members) && sizeof($members) > 0) {
 					foreach($members as $member) {
 						$member = (int) $member;
 						if (get_user($member))
-							insert_data("insert into {$CONFIG->dbprefix}access_collection_membership set access_collection_id = {$collection_id}, user_guid = {$member}");
+							insert_data("insert into access_collection_membership set access_collection_id = {$collection_id}, user_guid = {$member}");
 					}
 					return true;
 				}
@@ -400,8 +400,8 @@ END;
 			$collections = get_write_access_array();
 			if (array_key_exists($collection_id, $collections)) {
 				global $CONFIG;
-				delete_data("delete from {$CONFIG->dbprefix}access_collection_membership where access_collection_id = {$collection_id}");
-				delete_data("delete from {$CONFIG->dbprefix}access_collections where id = {$collection_id}");
+				delete_data("delete from access_collection_membership where access_collection_id = {$collection_id}");
+				delete_data("delete from access_collections where id = {$collection_id}");
 				return true;
 			} else {
 				return false;
@@ -418,7 +418,7 @@ END;
 		function get_access_collection($collection_id) {
     		
     		global $CONFIG;
-            return get_data_row("SELECT * FROM {$CONFIG->dbprefix}access_collections WHERE id = ?", array((int)$collection_id));    		
+            return get_data_row("SELECT * FROM access_collections WHERE id = ?", array((int)$collection_id));    		
     		
 		}
 		
@@ -443,7 +443,7 @@ END;
 
 				global $CONFIG;
 				try {
-					insert_data("insert into {$CONFIG->dbprefix}access_collection_membership set access_collection_id = {$collection_id}, user_guid = {$user_guid}");
+					insert_data("insert into access_collection_membership set access_collection_id = {$collection_id}, user_guid = {$user_guid}");
 				} catch (DatabaseException $e) {}
 				return true;
 				
@@ -472,7 +472,7 @@ END;
 			if ((array_key_exists($collection_id, $collections) || $collection->owner_guid == 0) && $user = get_user($user_guid)) {
 				
 				global $CONFIG;
-				delete_data("delete from {$CONFIG->dbprefix}access_collection_membership where access_collection_id = {$collection_id} and user_guid = {$user_guid}");
+				delete_data("delete from access_collection_membership where access_collection_id = {$collection_id} and user_guid = {$user_guid}");
 				return true;
 				
 			}
@@ -493,7 +493,7 @@ END;
 			
 			global $CONFIG;
 			
-			$collections = get_data("SELECT * FROM {$CONFIG->dbprefix}access_collections WHERE owner_guid = {$owner_guid}");
+			$collections = get_data("SELECT * FROM access_collections WHERE owner_guid = {$owner_guid}");
 			
 			return $collections;
 			
@@ -513,10 +513,10 @@ END;
     		global $CONFIG;
 		
     		if (!$idonly) {
-		    	$query = "SELECT e.* FROM {$CONFIG->dbprefix}access_collection_membership m JOIN {$CONFIG->dbprefix}entities e ON e.guid = m.user_guid WHERE m.access_collection_id = {$collection}";	    
+		    	$query = "SELECT e.* FROM access_collection_membership m JOIN entities e ON e.guid = m.user_guid WHERE m.access_collection_id = {$collection}";	    
 				$collection_members = get_data($query, "entity_row_to_elggstar");
     		} else {
-    			$query = "SELECT e.guid FROM {$CONFIG->dbprefix}access_collection_membership m JOIN {$CONFIG->dbprefix}entities e ON e.guid = m.user_guid WHERE m.access_collection_id = {$collection}";
+    			$query = "SELECT e.guid FROM access_collection_membership m JOIN entities e ON e.guid = m.user_guid WHERE m.access_collection_id = {$collection}";
     			$collection_members = get_data($query);
     			foreach($collection_members as $key => $val)
     				$collection_members[$key] = $val->guid;
@@ -608,7 +608,7 @@ END;
 				$query = "SELECT count(distinct e.guid) as total ";
 			}
 				
-			$query .= "from {$CONFIG->dbprefix}entities e where";
+			$query .= "from entities e where";
 			foreach ($where as $w)
 				$query .= " $w and ";
 			$query .= get_access_sql_suffix("e"); // Add access controls

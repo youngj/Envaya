@@ -595,9 +595,11 @@
         		return $tables;
         	}
         	
-        	try{
-        		$result = get_data("show tables like '" . $CONFIG->dbprefix . "%'");
-        	} catch (DatabaseException $d)
+        	try
+            {
+        		$result = get_data("show tables");
+        	} 
+            catch (DatabaseException $d)
         	{
         		// Likely we can't handle an exception here, so just return false.
         		return false;
@@ -658,7 +660,6 @@
         		$sql_statements =  preg_split('/;[\n\r]+/', $script);
         		foreach($sql_statements as $statement) {
         			$statement = trim($statement);
-        			$statement = str_replace("prefix_",$CONFIG->dbprefix,$statement);
         			if (!empty($statement)) {
         				try {
         					$result = update_data($statement);
@@ -733,28 +734,7 @@
         	}
         	
         	return true;
-        }
-        
-        /**
-         * This function, called by validate_platform(), will check whether the installed version of
-         * MySQL meets the minimum required.
-         *
-         * TODO: If multiple dbs are supported check which db is supported and use the appropriate code to validate
-         * the appropriate version.
-         * 
-         * @return bool
-         */
-        function db_check_version()
-        {
-        	$version = mysql_get_server_info();
-        	
-        	$points = explode('.', $version);
-        	
-        	if ($points[0] < 5)
-        		return false;
-
-        	return true;
-        }
+        }        
         
     /**
      * Sanitise a string for database use, but with the option of escaping extra characters.

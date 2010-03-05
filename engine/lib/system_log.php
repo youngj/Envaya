@@ -118,7 +118,7 @@
 			
 		$select = "*";
 		if ($count) $select = "count(*) as count";
-		$query = "SELECT $select from {$CONFIG->dbprefix}system_log where 1 ";
+		$query = "SELECT $select from system_log where 1 ";
 		foreach ($where as $w)
 			$query .= " and $w";
 		
@@ -150,7 +150,7 @@
 		
 		$entry_id = (int)$entry_id;
 		
-		return get_data_row("SELECT * from {$CONFIG->dbprefix}system_log where id=$entry_id");
+		return get_data_row("SELECT * from system_log where id=$entry_id");
 	}
 	
 	/**
@@ -218,7 +218,7 @@
 			
 			// Create log if we haven't already created it
 			if (!isset($logcache[$time][$object_id][$event])) {
-				insert_data("INSERT DELAYED into {$CONFIG->dbprefix}system_log (object_id, object_class, object_type, object_subtype, event, performed_by_guid, owner_guid, access_id, enabled, time_created) VALUES ('$object_id','$object_class','$object_type', '$object_subtype', '$event',$performed_by, $owner_guid, $access_id, '$enabled', '$time')");
+				insert_data("INSERT DELAYED into system_log (object_id, object_class, object_type, object_subtype, event, performed_by_guid, owner_guid, access_id, enabled, time_created) VALUES ('$object_id','$object_class','$object_type', '$object_subtype', '$event',$performed_by, $owner_guid, $access_id, '$enabled', '$time')");
 					
 				$logcache[$time][$object_id][$event] = true;	
 			}
@@ -243,15 +243,15 @@
 		$ts = $now - $offset;
 	
 		// create table
-		if (!update_data("CREATE TABLE {$CONFIG->dbprefix}system_log_$now as SELECT * from {$CONFIG->dbprefix}system_log WHERE time_created<$ts"))
+		if (!update_data("CREATE TABLE system_log_$now as SELECT * from system_log WHERE time_created<$ts"))
 			return false;
 
 		// delete
-		if (delete_data("DELETE from {$CONFIG->dbprefix}system_log WHERE time_created<$ts")===false) // Don't delete on time since we are running in a concurrent environment
+		if (delete_data("DELETE from system_log WHERE time_created<$ts")===false) // Don't delete on time since we are running in a concurrent environment
 			return false;
 			
 		// alter table to engine
-		if (!update_data("ALTER TABLE {$CONFIG->dbprefix}system_log_$now engine=archive"))
+		if (!update_data("ALTER TABLE system_log_$now engine=archive"))
 			return false;
 	
 		return true;

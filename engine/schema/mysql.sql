@@ -11,7 +11,7 @@
 --
 
 -- Define entities. 
-CREATE TABLE `prefix_entities` (
+CREATE TABLE `entities` (
 	`guid` bigint(20) unsigned  NOT NULL auto_increment,
 	
 	`type` enum ('object', 'user', 'group', 'site') NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE `prefix_entities` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Describe relationships between entities, can describe friendships but also site membership, depending on context
-CREATE TABLE `prefix_entity_relationships` (
+CREATE TABLE `entity_relationships` (
   `id` int(11) NOT NULL auto_increment,
   
   `guid_one` bigint(20) unsigned  NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE `prefix_entity_relationships` (
 --
 
 -- Table structure for table `access_collections`
-CREATE TABLE `prefix_access_collections` (
+CREATE TABLE `access_collections` (
   `id` int(11) NOT NULL auto_increment,
   `name` text NOT NULL,
   `owner_guid` bigint(20) unsigned NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE `prefix_access_collections` (
 ) AUTO_INCREMENT=3  ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Access containers 
-CREATE TABLE `prefix_access_collection_membership` (
+CREATE TABLE `access_collection_membership` (
   `user_guid` int(11) NOT NULL,
   `access_collection_id` int(11) NOT NULL,
   PRIMARY KEY  (`user_guid`,`access_collection_id`)
@@ -81,7 +81,7 @@ CREATE TABLE `prefix_access_collection_membership` (
 --
 
 -- Extra information relating to "objects"
-CREATE TABLE `prefix_objects_entity` (
+CREATE TABLE `objects_entity` (
   `guid` bigint(20) unsigned  NOT NULL,
   
   `title` text NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE `prefix_objects_entity` (
 
 
 -- Extra information relating to "users"
-CREATE TABLE `prefix_users_entity` (
+CREATE TABLE `users_entity` (
   `guid` bigint(20) unsigned  NOT NULL,
   
   `name` text NOT NULL,
@@ -124,7 +124,7 @@ CREATE TABLE `prefix_users_entity` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Extra information relating to "groups"
-CREATE TABLE `prefix_groups_entity` (
+CREATE TABLE `groups_entity` (
   `guid` bigint(20) unsigned  NOT NULL,
   
   `name` text NOT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE `prefix_groups_entity` (
 --
 
 -- Table structure for annotations
-CREATE TABLE `prefix_annotations` (
+CREATE TABLE `annotations` (
 	`id` int(11) NOT NULL auto_increment,
 	
 	`entity_guid` bigint(20) unsigned  NOT NULL,
@@ -167,7 +167,7 @@ CREATE TABLE `prefix_annotations` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Table structure for metadata
-CREATE TABLE `prefix_metadata` (
+CREATE TABLE `metadata` (
 	`id` int(11) NOT NULL auto_increment,
 	
 	`entity_guid` bigint(20) unsigned  NOT NULL,
@@ -193,7 +193,7 @@ CREATE TABLE `prefix_metadata` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Meta strings table (avoids storing text strings more than once)
-CREATE TABLE `prefix_metastrings` (
+CREATE TABLE `metastrings` (
 	`id` int(11) NOT NULL auto_increment,
 	`string` TEXT NOT NULL,
 	
@@ -206,7 +206,7 @@ CREATE TABLE `prefix_metastrings` (
 --
 
 -- API Users
-CREATE TABLE `prefix_api_users` (
+CREATE TABLE `api_users` (
 	id     int(11)     auto_increment,
 	
 	site_guid bigint(20) unsigned,
@@ -220,7 +220,7 @@ CREATE TABLE `prefix_api_users` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- API Sessions
-CREATE TABLE `prefix_users_apisessions` (
+CREATE TABLE `users_apisessions` (
 	`id` int(11) NOT NULL auto_increment,
 	`user_guid` bigint(20) unsigned NOT NULL,
   	`site_guid` bigint(20) unsigned NOT NULL,
@@ -235,7 +235,7 @@ CREATE TABLE `prefix_users_apisessions` (
 ) ENGINE=MEMORY;
 
 -- HMAC Cache protecting against Replay attacks
-CREATE TABLE `prefix_hmac_cache` (
+CREATE TABLE `hmac_cache` (
 	`hmac` varchar(255) NOT NULL,
 	`ts` int(11) NOT NULL,
 
@@ -244,7 +244,7 @@ CREATE TABLE `prefix_hmac_cache` (
 ) ENGINE=MEMORY;
 
 -- Geocode engine cache
-CREATE TABLE `prefix_geocode_cache` (
+CREATE TABLE `geocode_cache` (
 	id     int(11)     auto_increment,
 	location varchar(128),
 	`lat`    varchar(20),
@@ -256,7 +256,7 @@ CREATE TABLE `prefix_geocode_cache` (
 ) ENGINE=MEMORY;
 
 -- PHP Session storage
-CREATE TABLE `prefix_users_sessions` (
+CREATE TABLE `users_sessions` (
 	`session` varchar(255) NOT NULL,
  	`ts` int(11) unsigned NOT NULL default '0',
 	`data` mediumblob,
@@ -266,14 +266,14 @@ CREATE TABLE `prefix_users_sessions` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Datalists for things like db version
-CREATE TABLE `prefix_datalists` (
+CREATE TABLE `datalists` (
   `name` varchar(32) NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Ultra-private system settings for entities
-CREATE TABLE `prefix_private_settings` (
+CREATE TABLE `private_settings` (
 	`id` INT NOT NULL auto_increment,
 	`entity_guid` INT NOT NULL ,
 	`name` varchar(128) NOT NULL ,
@@ -285,7 +285,7 @@ CREATE TABLE `prefix_private_settings` (
 ) ENGINE = MYISAM  DEFAULT CHARSET=utf8;
 
 -- System log
-CREATE TABLE `prefix_system_log` (
+CREATE TABLE `system_log` (
 	`id` int(11) NOT NULL auto_increment,
 	
 	`object_id` int(11) NOT NULL,
@@ -317,7 +317,7 @@ CREATE TABLE `prefix_system_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- River
- CREATE TABLE `prefix_river` (
+ CREATE TABLE `river` (
 	`id` INT NOT NULL AUTO_INCREMENT ,
 	`type` VARCHAR( 8 ) NOT NULL ,
 	`subtype` VARCHAR( 32 ) NOT NULL ,
