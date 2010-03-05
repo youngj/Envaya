@@ -121,27 +121,6 @@
 			// Now save specific stuff
 			return create_object_entity($this->get('guid'), $this->get('title'), $this->get('description'), $this->get('container_guid'));
 		}
-		
-		/**
-		 * Get sites that this object is a member of
-		 *
-		 * @param string $subtype Optionally, the subtype of result we want to limit to
-		 * @param int $limit The number of results to return
-		 * @param int $offset Any indexing offset
-		 */
-		function getSites($subtype="", $limit = 10, $offset = 0) {
-			return get_site_objects($this->getGUID(), $subtype, $limit, $offset);
-		}
-		
-		/**
-		 * Add this object to a particular site
-		 *
-		 * @param int $site_guid The guid of the site to add it to
-		 * @return true|false
-		 */
-		function addToSite($site_guid) {
-			return add_site_object($this->getGUID(), $site_guid); 
-		}
 
 		/**
 		 * Set the container for this object.
@@ -168,8 +147,6 @@
         
 		/**
 		 * As getContainer(), but returns the whole entity.
-		 *
-		 * @return mixed ElggGroup object or false.
 		 */
 		function getContainerEntity()
 		{
@@ -186,18 +163,6 @@
 		 */
 		//public function getCollections($subtype="", $limit = 10, $offset = 0) { get_object_collections($this->getGUID(), $subtype, $limit, $offset); }
 		
-		// EXPORTABLE INTERFACE ////////////////////////////////////////////////////////////
-		
-		/**
-		 * Return an array of fields which can be exported.
-		 */
-		public function getExportableValues()
-		{
-			return array_merge(parent::getExportableValues(), array(
-				'title',
-				'description',
-			));
-		}
 	}
 
 	/**
@@ -344,20 +309,5 @@
 		return false;
 	}
 
-	/**
-	 * Get the sites this object is part of
-	 *
-	 * @param int $object_guid The object's GUID
-	 * @param int $limit Number of results to return
-	 * @param int $offset Any indexing offset
-	 * @return false|array On success, an array of ElggSites
-	 */
-	function get_object_sites($object_guid, $limit = 10, $offset = 0) {
-		$object_guid = (int)$object_guid;
-		$limit = (int)$limit;
-		$offset = (int)$offset;
-		
-		return get_entities_from_relationship("member_of_site", $object_guid, false, "site", "", 0, "time_created desc", $limit, $offset);
-	}
 		
 ?>

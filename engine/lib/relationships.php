@@ -17,8 +17,6 @@
 	 * @subpackage Core
 	 */
 	class ElggRelationship implements 
-		Importable, 
-		Exportable,
 		Loggable,	// Can events related to this object class be logged
 		Iterator,	// Override foreach behaviour
 		ArrayAccess // Override for array access
@@ -115,86 +113,7 @@
 		{
 			return get_relationship_url($this->id);
 		}
-	
-		// EXPORTABLE INTERFACE ////////////////////////////////////////////////////////////
-		
-		/**
-		 * Return an array of fields which can be exported.
-		 */
-		public function getExportableValues()
-		{
-			return array(
-				'id',
-				'guid_one',
-				'relationship',
-				'guid_two' 
-			);
-		}
-		
-		/**
-		 * Export this relationship
-		 *
-		 * @return array
-		 */
-		public function export()
-		{		
-			$uuid = get_uuid_from_object($this);
-			$relationship = new ODDRelationship(
-				guid_to_uuid($this->guid_one),
-				$this->relationship,
-				guid_to_uuid($this->guid_two)
-			);
 			
-			$relationship->setAttribute('uuid', $uuid);
-			
-			return $relationship;
-		}
-		
-		// IMPORTABLE INTERFACE ////////////////////////////////////////////////////////////
-		
-		/**
-		 * Import a relationship
-		 *
-		 * @param array $data
-		 * @param int $version
-		 * @return ElggRelationship
-		 * @throws ImportException
-		 */
-		public function import(ODD $data)
-		{
-			if (!($element instanceof ODDRelationship))
-				throw new InvalidParameterException(elgg_echo('InvalidParameterException:UnexpectedODDClass')); 
-			
-			$uuid_one = $data->getAttribute('uuid1');
-			$uuid_two = $data->getAttribute('uuid2'); 	
-				
-			// See if this entity has already been imported, if so then we need to link to it
-			$entity1 = get_entity_from_uuid($uuid_one);
-			$entity2 = get_entity_from_uuid($uuid_two);
-			if (($entity1) && ($entity2))
-			{
-				// Set the item ID
-				$this->attributes['guid_one'] = $entity1->getGUID();
-				$this->attributes['guid_two'] = $entity2->getGUID();
-				
-				// Map verb to relationship
-				//$verb = $data->getAttribute('verb');
-				//$relationship = get_relationship_from_verb($verb);
-				$relationship = $data->getAttribute('type');
-				
-				if ($relationship)
-				{	
-					$this->attributes['relationship'] = $relationship;
-					// save
-					$result = $this->save(); 
-					if (!$result)
-						throw new ImportException(sprintf(elgg_echo('ImportException:ProblemSaving'), get_class()));
-					
-					return $this;
-				}
-			}
-		}
-		
 		// SYSTEM LOG INTERFACE ////////////////////////////////////////////////////////////
 		
 		/**
@@ -947,33 +866,6 @@
 		}
 	}
 	
-	/**
-	 *  Handler called by trigger_plugin_hook on the "export" event.
-	 */
-	function export_relationship_plugin_hook($hook, $entity_type, $returnvalue, $params)
-	{
-		global $CONFIG;
-		
-		// Sanity check values
-		if ((!is_array($params)) && (!isset($params['guid'])))
-			throw new InvalidParameterException(elgg_echo('InvalidParameterException:GUIDNotForExport'));
-			
-		if (!is_array($returnvalue))
-			throw new InvalidParameterException(elgg_echo('InvalidParameterException:NonArrayReturnValue'));
-			
-		$guid = (int)$params['guid'];
-		
-		$result = get_entity_relationships($guid);
-		
-		if ($result)
-		{
-			foreach ($result as $r)
-				$returnvalue[] = $r->export();
-		}
-		
-		return $returnvalue;
-	}
-
     /**
      * An event listener which will notify users based on certain events.
      *
@@ -1003,9 +895,6 @@
 	
 	/** Register the import hook */
 	register_plugin_hook("import", "all", "import_relationship_plugin_hook", 3);
-	
-	/** Register the hook, ensuring entities are serialised first */
-	register_plugin_hook("export", "all", "export_relationship_plugin_hook", 3);
 	
 	/** Register event to listen to some events **/
 	register_elgg_event_handler('create','friend','relationship_notification_hook');

@@ -81,7 +81,7 @@
     $CONFIG->sitename = "Envaya";
     $CONFIG->sitedescription = "";
     $CONFIG->siteemail = "youngj@envaya.org";
-    $CONFIG->enabled_plugins = array("diagnostics","logbrowser","profile");
+    $CONFIG->enabled_plugins = array("logbrowser","profile");
         
     $CONFIG->subtypes = array(
         1 => array("object", "file", "ElggFile"),

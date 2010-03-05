@@ -190,40 +190,6 @@
 		public function isBanned() { return $this->banned == 'yes'; }
 				
 		/**
-		 * Get sites that this user is a member of
-		 *
-		 * @param string $subtype Optionally, the subtype of result we want to limit to
-		 * @param int $limit The number of results to return
-		 * @param int $offset Any indexing offset
-		 */
-		function getSites($subtype="", $limit = 10, $offset = 0) {
-			// return get_site_users($this->getGUID(), $subtype, $limit, $offset);
-			return get_user_sites($this->getGUID(), $subtype, $limit, $offset);
-		}
-		
-		/**
-		 * Add this user to a particular site
-		 *
-		 * @param int $site_guid The guid of the site to add it to
-		 * @return true|false
-		 */
-		function addToSite($site_guid) {
-			// return add_site_user($this->getGUID(), $site_guid); 
-			return add_site_user($site_guid, $this->getGUID());
-		}
-		
-		/**
-		 * Remove this user from a particular site
-		 *
-		 * @param int $site_guid The guid of the site to remove it from
-		 * @return true|false
-		 */
-		function removeFromSite($site_guid) {
-			//return remove_site_user($this->getGUID(), $site_guid);
-			return remove_site_user($site_guid, $this->getGUID());
-		}
-		
-		/**
 		 * Adds a user to this user's friends list
 		 *
 		 * @param int $friend_guid The GUID of the user to add
@@ -331,20 +297,7 @@
 				
 			return $this->owner_guid;
 		}
-		
-		// EXPORTABLE INTERFACE ////////////////////////////////////////////////////////////
-		
-		/**
-		 * Return an array of fields which can be exported.
-		 */
-		public function getExportableValues()
-		{
-			return array_merge(parent::getExportableValues(), array(
-				'name',
-				'username',
-				'language',
-			));
-		}
+
 	}
 
 	/**
@@ -524,22 +477,6 @@
 		system_message(sprintf(elgg_echo('deprecatedfunction'), 'delete_user_entity'));
 		
 		return 1; // Always return that we have deleted one row in order to not break existing code.
-	}
-
-	/**
-	 * Get the sites this user is part of
-	 *
-	 * @param int $user_guid The user's GUID
-	 * @param int $limit Number of results to return
-	 * @param int $offset Any indexing offset
-	 * @return false|array On success, an array of ElggSites
-	 */
-	function get_user_sites($user_guid, $limit = 10, $offset = 0) {
-		$user_guid = (int)$user_guid;
-		$limit = (int)$limit;
-		$offset = (int)$offset;
-		
-		return get_entities_from_relationship("member_of_site", $user_guid, false, "site", "", 0, "time_created desc", $limit, $offset);
 	}
 	
 	/**

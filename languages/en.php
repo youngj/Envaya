@@ -131,8 +131,6 @@
 		 */
 			'exception:title' => "Welcome to Elgg.",
 
-			'InstallationException:CantCreateSite' => "Unable to create a default ElggSite with credentials Name:%s, Url: %s",
-
 			'actionundefined' => "The requested action (%s) was not defined in the system.",
 			'actionloggedout' => "Sorry, you cannot perform this action while logged out.",
 
@@ -154,10 +152,6 @@
 			'PluginException:MisconfiguredPlugin' => "%s is a misconfigured plugin.",
 
 			'InvalidParameterException:NonElggUser' => "Passing a non-ElggUser to an ElggUser constructor!",
-
-			'InvalidParameterException:NonElggSite' => "Passing a non-ElggSite to an ElggSite constructor!",
-
-			'InvalidParameterException:NonElggGroup' => "Passing a non-ElggGroup to an ElggGroup constructor!",
 
 			'IOException:UnableToSaveNew' => "Unable to save new %s",
 

@@ -70,9 +70,6 @@
 
 					trigger_elgg_event('profileiconupdate',$user->type,$user);
 
-					//add to river
-					add_to_river('river/user/default/profileiconupdate','update',$user->guid,$user->guid);
-
 				} else {
 					system_message(elgg_echo("profile:icon:notfound"));
 				}

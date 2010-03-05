@@ -171,9 +171,6 @@
         	if (isset($CONFIG->context) && !empty($CONFIG->context)) {
         		return $CONFIG->context;
         	}
-        	if ($context = get_plugin_name(true)) {
-        		return $context;
-        	}
         	return "main";
         	
         }

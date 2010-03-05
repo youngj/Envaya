@@ -950,10 +950,7 @@
 		
 		// see if a plugin has set a quota for this user
 		$file_quota = trigger_plugin_hook("$plugin:quotacheck",'user',array('container_guid'=>$container_guid));
-		if (!$file_quota) {
-			// no, see if there is a generic quota set
-			$file_quota = get_plugin_setting('quota', $plugin);
-		}
+
 		if ($file_quota) {
 			// convert to megabytes
 			$file_quota = $file_quota*1000*1024;
@@ -1060,9 +1057,7 @@
 					}
 				
 					// add to this user's file folders
-					file_add_to_folders($folder,$container_guid,$plugin);
-					
-					add_to_river("river/object/$plugin/create",'create',$_SESSION['user']->guid,$file->guid);
+					file_add_to_folders($folder,$container_guid,$plugin);					
 				} else {
 					break;
 				}

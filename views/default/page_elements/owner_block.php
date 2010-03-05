@@ -20,7 +20,7 @@
 		// if (!$owner && isloggedin()) $owner = $_SESSION['user'];
 		if ($owner instanceof ElggEntity) {
 			$icon = elgg_view("profile/icon",array('entity' => $owner, 'size' => 'tiny'));
-			if ($owner instanceof ElggUser || $owner instanceof ElggGroup) {
+			if ($owner instanceof ElggUser) {
 				//$info = $owner->name;
 				$info = '<a href="' . $owner->getURL() . '">' . escape($owner->name) . '</a>';
 			}

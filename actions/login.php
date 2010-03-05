@@ -58,21 +58,12 @@
         } else {
         	$error_msg = elgg_echo('loginerror');
         	// figure out why the login failed
-        	if (!empty($username) && !empty($password)) {
+        	if (!empty($username) && !empty($password)) 
+            {
         		// See if it exists and is disabled
 				$access_status = access_get_show_hidden_status();
 				access_show_hidden_entities(true);
                 
-        		/* if (($user = get_user_by_username($username)) && !$user->validated) {
-        			// give plugins a chance to respond
-        			if (!trigger_plugin_hook('unvalidated_login_attempt','user',array('entity'=>$user))) {
-        				// if plugins have not registered an action, the default action is to
-        				// trigger the validation event again and assume that the validation
-        				// event will display an appropriate message
-						trigger_elgg_event('validate', 'user', $user);
-        			}
-                    
-        		} */
                 register_error(elgg_echo('loginerror'));               
                 forward("pg/login");
         		

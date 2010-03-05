@@ -35,11 +35,6 @@
         exit;
     }
 
-    if (!include_once(dirname(__FILE__) . "/lib/export.php")) {		// Export library
-        echo "Error in installation: could not load the Export library.";
-        exit;
-    }
-
     if (!include_once(dirname(__FILE__) . "/lib/sessions.php")) {
         echo ("Error in installation: Elgg could not load the Sessions library");
         exit;

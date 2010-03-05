@@ -774,34 +774,8 @@
 		}
 		
 		return $deleted;
-	}
-	
-	/**
-	 * Handler called by trigger_plugin_hook on the "export" event.
-	 */
-	function export_metadata_plugin_hook($hook, $entity_type, $returnvalue, $params)
-	{
-		// Sanity check values
-		if ((!is_array($params)) && (!isset($params['guid'])))
-			throw new InvalidParameterException(elgg_echo('InvalidParameterException:GUIDNotForExport'));
-			
-		if (!is_array($returnvalue))
-			throw new InvalidParameterException(elgg_echo('InvalidParameterException:NonArrayReturnValue'));
-		
-		$guid = (int)$params['guid'];
-		$name = $params['name'];	
-		
-		$result = get_metadata_for_entity($guid); 
-				
-		if ($result)
-		{
-			foreach ($result as $r)
-				$returnvalue[] = $r->export();
-		}
-		
-		return $returnvalue;
-	}
-	
+	}	
+
 	/**
 	 * Takes in a comma-separated string and returns an array of tags which have been trimmed and set to lower case
 	 *
@@ -914,8 +888,6 @@
 		return register_extender_url_handler($function_name, 'metadata', $extender_name);
 	}
 		
-	/** Register the hook */
-	register_plugin_hook("export", "all", "export_metadata_plugin_hook", 2);
 	/** Call a function whenever an entity is updated **/
 	register_elgg_event_handler('update','all','metadata_update');
 	

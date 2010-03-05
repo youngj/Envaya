@@ -29,10 +29,7 @@
 	 * @subpackage Core
 	 */
 	abstract class ElggEntity implements 
-		Notable,    // Calendar interface
 		Locatable,  // Geocoding interface
-		Exportable, // Allow export of data
-		Importable, // Allow import of data
 		Loggable,	// Can events related to this object class be logged
 		Iterator,	// Override foreach behaviour
 		ArrayAccess // Override for array access
@@ -847,174 +844,7 @@
                 return $this;
             }
         }    
-                
-        
-		// NOTABLE INTERFACE ///////////////////////////////////////////////////////////////
-		
-		/**
-		 * Calendar functionality.
-		 * This function sets the time of an object on a calendar listing.
-		 *
-		 * @param int $hour If ommitted, now is assumed.
-		 * @param int $minute If ommitted, now is assumed.
-		 * @param int $second If ommitted, now is assumed.
-		 * @param int $day If ommitted, now is assumed.
-		 * @param int $month If ommitted, now is assumed.
-		 * @param int $year If ommitted, now is assumed.
-		 * @param int $duration Duration of event, remainder of the day is assumed.
-		 */
-		public function setCalendarTimeAndDuration($hour = NULL, $minute = NULL, $second = NULL, $day = NULL, $month = NULL, $year = NULL, $duration = NULL)
-		{
-			$start = mktime($hour, $minute, $second, $month, $day, $year);
-			$end = $start + abs($duration);
-			if (!$duration)
-				$end = get_day_end($day,$month,$year);
-			
-			$this->calendar_start = $start;	
-			$this->calendar_end = $end;
-				
-			return true;
-		}
-		
-		/**
-		 * Return the start timestamp.
-		 */
-		public function getCalendarStartTime() { return (int)$this->calendar_start; }
-		
-		/**
-		 * Return the end timestamp.
-		 */
-		public function getCalendarEndTime() { return (int)$this->calendar_end; }
-		
-		// EXPORTABLE INTERFACE ////////////////////////////////////////////////////////////
-		
-		/**
-		 * Return an array of fields which can be exported.
-		 */
-		public function getExportableValues()
-		{
-			return array(
-				'guid',
-				'type',
-				'subtype',
-				'time_created',
-				'container_guid',
-				'owner_guid', 
-			);
-		}
-		
-		/**
-		 * Export this class into an array of ODD Elements containing all necessary fields.
-		 * Override if you wish to return more information than can be found in $this->attributes (shouldn't happen) 
-		 */
-		public function export() 
-		{ 
-			$tmp = array();
-			
-			// Generate uuid
-			$uuid = guid_to_uuid($this->getGUID());
-			
-			// Create entity 
-			$odd = new ODDEntity(
-				$uuid,
-				$this->attributes['type'], 
-				get_subtype_from_id($this->attributes['subtype'])
-			);
-			
-			$tmp[] = $odd;
-			
-			$exportable_values = $this->getExportableValues();
-			
-			// Now add its attributes
-			foreach ($this->attributes as $k => $v)
-			{
-				$meta = NULL;
-				
-				if (in_array( $k, $exportable_values)) { 
-					switch ($k)
-					{
-						case 'guid' : 			// Dont use guid in OpenDD
-						case 'type' :			// Type and subtype already taken care of
-						case 'subtype' : 
-						break;
-						
-						case 'time_created' :	// Created = published
-							$odd->setAttribute('published', date("r", $v));
-						break;
-						
-						case 'site_guid' : // Container
-							$k = 'site_uuid';
-							$v = guid_to_uuid($v);
-							$meta = new ODDMetaData($uuid . "attr/$k/", $uuid, $k, $v);
-						break;
-						
-						case 'container_guid' : // Container
-							$k = 'container_uuid';
-							$v = guid_to_uuid($v);
-							$meta = new ODDMetaData($uuid . "attr/$k/", $uuid, $k, $v);
-						break;
-	
-						case 'owner_guid' :			// Convert owner guid to uuid, this will be stored in metadata
-							 $k = 'owner_uuid';
-							 $v = guid_to_uuid($v);
-							 $meta = new ODDMetaData($uuid . "attr/$k/", $uuid, $k, $v);
-						break; 	
-						
-						default : 
-							$meta = new ODDMetaData($uuid . "attr/$k/", $uuid, $k, $v);
-					}
-					
-					// set the time of any metadata created
-					if ($meta)
-					{
-						$meta->setAttribute('published', date("r",$this->time_created));
-						$tmp[] = $meta;
-					}
-				}
-			}
-			
-			// Now we do something a bit special.
-			/*
-			 * This provides a rendered view of the entity to foreign sites.
-			 */
-			
-			elgg_set_viewtype('default');
-			$view = elgg_view_entity($this, true);
-			elgg_set_viewtype();
-					
-			$tmp[] = new ODDMetaData($uuid . "volatile/renderedentity/", $uuid, 'renderedentity', $view , 'volatile');
-			
-			
-			return $tmp;
-		}
-		
-		// IMPORTABLE INTERFACE ////////////////////////////////////////////////////////////
-		
-		/**
-		 * Import data from an parsed xml data array.
-		 * 
-		 * @param array $data
-		 * @param int $version 
-		 */
-		public function import(ODD $data)
-		{
-			if (!($data instanceof ODDEntity))
-				throw new InvalidParameterException(elgg_echo('InvalidParameterException:UnexpectedODDClass')); 
-			
-			// Set type and subtype
-			$this->attributes['type'] = $data->getAttribute('class');
-			$this->attributes['subtype'] = $data->getAttribute('subclass');
-			
-			// Set owner
-			$this->attributes['owner_guid'] = get_loggedin_userid(); // Import as belonging to importer.
-			
-			// Set time
-			$this->attributes['time_created'] = strtotime($data->getAttribute('published'));
-			$this->attributes['time_updated'] = time();
-			
-			return true;
-		}
-		
+                        
 		// SYSTEM LOG INTERFACE ////////////////////////////////////////////////////////////
 		
 		/**
@@ -1299,9 +1129,6 @@
                 array($owner_guid,$access_id,$container_guid,$time,$guid)
             );
 
-            if ($entity instanceof ElggObject)
-                update_river_access_by_object($guid,$access_id);
-
             // If memcache is available then delete this entry from the cache
             static $newentity_cache;
             if ((!$newentity_cache) && (is_memcache_available())) 
@@ -1341,16 +1168,7 @@
 
 			// If the user can edit the container, they can also write to it
 			if ($container->canEdit($user_guid)) return true;
-		
-			// Basics, see if the user is a member of the group.
-			if ($user && $container instanceof ElggGroup) {
-				if (!$container->isMember($user)) {
-					return false;
-				} else {
-					return true;
-				}
-			}
-			
+					
 			// See if anyone else has anything to say
 			return trigger_plugin_hook('container_permissions_check',$entity_type,array('container' => $container, 'user' => $user), false);
 			
@@ -1452,9 +1270,8 @@
 					$new_entity = new ElggObject($row); break;
 				case 'user' : 
 					$new_entity = new ElggUser($row); break;
-				case 'group' : 
-					$new_entity = new ElggGroup($row); break;
-				default: throw new InstallationException(sprintf(elgg_echo('InstallationException:TypeNotSupported'), $row->type));
+				default: 
+                    throw new InstallationException(sprintf(elgg_echo('InstallationException:TypeNotSupported'), $row->type));
 			}
 			
 		}
@@ -1776,8 +1593,6 @@
                 $entity->clearMetadata();
                 $entity->clearAnnotations();
                 $entity->clearRelationships();
-                remove_from_river_by_subject($guid);
-                remove_from_river_by_object($guid);	
                 remove_all_private_settings($guid);
                 $res = delete_data_2("DELETE from {$CONFIG->dbprefix}entities where guid=?", array($guid));
                 if ($res)
@@ -1821,161 +1636,6 @@
 			delete_entity($entity->guid);
 		
 		return true;
-	}
-	
-	/**
-	 * A plugin hook to get certain volitile (generated on the fly) attributes about an entity in order to export them.
-	 *
-	 * @param unknown_type $hook
-	 * @param unknown_type $entity_type
-	 * @param unknown_type $returnvalue
-	 * @param unknown_type $params The parameters, passed 'guid' and 'varname'
-	 * @return unknown
-	 */
-	function volatile_data_export_plugin_hook($hook, $entity_type, $returnvalue, $params)
-	{
-		$guid = (int)$params['guid'];
-		$variable_name = sanitise_string($params['varname']);
-		
-		if (($hook == 'volatile') && ($entity_type == 'metadata'))
-		{
-			if (($guid) && ($variable_name))
-			{
-				switch ($variable_name)
-				{
-					case 'renderedentity' :
-						elgg_set_viewtype('default');
-						$view = elgg_view_entity(get_entity($guid));
-						elgg_set_viewtype();
-						
-						$tmp = new ElggMetadata();
-						$tmp->type = 'volatile';
-						$tmp->name = 'renderedentity';
-						$tmp->value = $view;
-						$tmp->entity_guid = $guid;
-						
-						return $tmp;
-				
-					break;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Handler called by trigger_plugin_hook on the "export" event.
-	 */
-	function export_entity_plugin_hook($hook, $entity_type, $returnvalue, $params)
-	{
-		// Sanity check values
-		if ((!is_array($params)) && (!isset($params['guid'])))
-			throw new InvalidParameterException(elgg_echo('InvalidParameterException:GUIDNotForExport'));
-			
-		if (!is_array($returnvalue))
-			throw new InvalidParameterException(elgg_echo('InvalidParameterException:NonArrayReturnValue'));
-			
-		$guid = (int)$params['guid'];
-		
-		// Get the entity
-		$entity = get_entity($guid);
-		if (!($entity instanceof ElggEntity))
-			throw new InvalidClassException(sprintf(elgg_echo('InvalidClassException:NotValidElggStar'), $guid, get_class()));
-		
-		$export = $entity->export();
-		
-		if (is_array($export))
-			foreach ($export as $e)
-				$returnvalue[] = $e;
-		else
-			$returnvalue[] = $export;
-		
-		return $returnvalue;
-	}
-	
-	/**
-	 * Utility function used by import_entity_plugin_hook() to process an ODDEntity into an unsaved ElggEntity.
-	 *
-	 * @param ODDEntity $element The OpenDD element
-	 * @return ElggEntity the unsaved entity which should be populated by items.
-	 */
-	function oddentity_to_elggentity(ODDEntity $element)
-	{
-		$class = $element->getAttribute('class');
-		$subclass = $element->getAttribute('subclass');
-		
-		// See if we already have imported this uuid
-		$tmp = get_entity_from_uuid($element->getAttribute('uuid'));
-		
-		if (!$tmp)
-		{
-			// Construct new class with owner from session
-			$classname = get_subtype_class($class, $subclass);
-			if ($classname!="")
-			{
-				if (class_exists($classname))
-				{
-					$tmp = new $classname();
-					
-					if (!($tmp instanceof ElggEntity))
-						throw new ClassException(sprintf(elgg_echo('ClassException:ClassnameNotClass', $classname, get_class())));
-				}
-				else
-					error_log(sprintf(elgg_echo('ClassNotFoundException:MissingClass'), $classname));	
-			}
-			else
-			{
-				switch ($class)
-				{
-					case 'object' : $tmp = new ElggObject($row); break;
-					case 'user' : $tmp = new ElggUser($row); break;
-					case 'group' : $tmp = new ElggGroup($row); break; 
-					case 'site' : $tmp = new ElggSite($row); break; 
-					default: throw new InstallationException(sprintf(elgg_echo('InstallationException:TypeNotSupported'), $class));
-				}
-			}
-		}
-		
-		if ($tmp)
-		{
-			if (!$tmp->import($element))
-				throw new ImportException(sprintf(elgg_echo('ImportException:ImportFailed'), $element->getAttribute('uuid')));
-			
-			return $tmp;
-		}
-		
-		return NULL;
-	}
-	
-	/**
-	 * Import an entity.
-	 * This function checks the passed XML doc (as array) to see if it is a user, if so it constructs a new 
-	 * elgg user and returns "true" to inform the importer that it's been handled.
-	 */
-	function import_entity_plugin_hook($hook, $entity_type, $returnvalue, $params)
-	{
-		$element = $params['element'];
-		
-		$tmp = NULL;
-		
-		if ($element instanceof ODDEntity)
-		{
-			$tmp = oddentity_to_elggentity($element);
-			
-			if ($tmp)
-			{
-				if (!$tmp->save()) // Make sure its saved
-					throw new ImportException(sprintf(elgg_echo('ImportException:ProblemSaving'), $element->getAttribute('uuid')));
-	
-				// Belts and braces
-				if (!$tmp->guid)
-					throw new ImportException(elgg_echo('ImportException:NoGUID')); 
-				
-				add_uuid_to_guid($tmp->guid, $element->getAttribute('uuid')); // We have saved, so now tag
-				
-				return $tmp;
-			}
-			
-		}
 	}
 	
 	/**
@@ -2415,15 +2075,6 @@
 		
 		register_plugin_hook('gc','system','entities_gc');
 	}
-	
-	/** Register the import hook */
-	register_plugin_hook("import", "all", "import_entity_plugin_hook", 0);
-	
-	/** Register the hook, ensuring entities are serialised first */
-	register_plugin_hook("export", "all", "export_entity_plugin_hook", 0);
-	
-	/** Hook to get certain named bits of volatile data about an entity */
-	register_plugin_hook('volatile', 'metadata', 'volatile_data_export_plugin_hook');
 	
 	/** Hook for rendering a default icon for entities */
 	register_plugin_hook('entity:icon:url', 'all', 'default_entity_icon_hook', 1000);

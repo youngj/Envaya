@@ -889,32 +889,6 @@
 	}
 	
 	/**
-	 * Handler called by trigger_plugin_hook on the "export" event.
-	 */
-	function export_annotation_plugin_hook($hook, $entity_type, $returnvalue, $params)
-	{
-		// Sanity check values
-		if ((!is_array($params)) && (!isset($params['guid'])))
-			throw new InvalidParameterException(elgg_echo('InvalidParameterException:GUIDNotForExport'));
-			
-		if (!is_array($returnvalue))
-			throw new InvalidParameterException(elgg_echo('InvalidParameterException:NonArrayReturnValue'));
-		
-		$guid = (int)$params['guid'];
-		$name = $params['name'];	
-		
-		$result = get_annotations($guid); 
-				
-		if ($result)
-		{
-			foreach ($result as $r)
-				$returnvalue[] = $r->export();
-		}
-		
-		return $returnvalue;
-	}
-	
-	/**
 	 * Get the URL for this item of metadata, by default this links to the export handler in the current view.
 	 *
 	 * @param int $id
@@ -940,6 +914,4 @@
 		return register_extender_url_handler($function_name, 'annotation', $extender_name);
 	}
 	
-	/** Register the hook */
-	register_plugin_hook("export", "all", "export_annotation_plugin_hook", 2);
 ?>

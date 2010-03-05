@@ -87,7 +87,6 @@
 	
 	?>
 
-<?php if (!get_plugin_setting('user_defined_fields', 'profile')) {?>
 	<p class="profile_aboutme_title"><b><?php echo elgg_echo("profile:aboutme"); ?></b></p>
 	
 	<?php if ($vars['entity']->isBanned()) { ?>
@@ -97,14 +96,6 @@
 		?>
 		</div><!-- /#profile_info_column_right -->
 	
-	<?php } else { ?>
-	
-		<?php 
-		echo elgg_view('output/longtext', array('value' => $vars['entity']->description));
-		//echo autop(filter_tags($vars['entity']->description)); 
-		?>
-	
-	<?php } ?>
 	
 <?php } ?>
 

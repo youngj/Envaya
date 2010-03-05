@@ -17,7 +17,6 @@
 	 * @subpackage Core
 	 */
 	abstract class ElggExtender implements 
-		Exportable,
 		Loggable,	// Can events related to this object class be logged
 		Iterator,	// Override foreach behaviour
 		ArrayAccess // Override for array access
@@ -119,38 +118,6 @@
 		 */
 		public abstract function getURL();
 		
-		// EXPORTABLE INTERFACE ////////////////////////////////////////////////////////////
-		
-		/**
-		 * Return an array of fields which can be exported.
-		 */
-		public function getExportableValues()
-		{
-			return array(
-				'id',
-				'entity_guid',
-				'name',
-				'value',
-				'value_type',
-				'owner_guid', 
-				'type',
-			);
-		}
-		
-		/**
-		 * Export this object
-		 *
-		 * @return array
-		 */
-		public function export()
-		{
-			$uuid = get_uuid_from_object($this);
-			
-			$meta = new ODDMetadata($uuid, guid_to_uuid($this->entity_guid), $this->attributes['name'], $this->attributes['value'], $this->attributes['type'], guid_to_uuid($this->owner_guid));
-			$meta->setAttribute('published', date("r", $this->time_created));
-			
-			return $meta;
-		}
 		
 		// SYSTEM LOG INTERFACE ////////////////////////////////////////////////////////////
 		

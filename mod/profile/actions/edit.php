@@ -67,9 +67,6 @@
 			// Notify of profile update
 			trigger_elgg_event('profileupdate',$user->type,$user);
 			
-			//add to river
-			add_to_river('river/user/default/profileupdate','update',$_SESSION['user']->guid,$_SESSION['user']->guid);
-			
 			system_message(elgg_echo("profile:saved"));
 			
 			// Forward to the user's profile

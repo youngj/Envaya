@@ -29,8 +29,6 @@
 			$errors = true;
 		}
 		if (!$errors){
-			// add to river
-	        add_to_river('friends/river/create','friend',$_SESSION['user']->guid,$friend_guid);
 			system_message(sprintf(elgg_echo("friends:add:successful"),$friend->name));
 		}
 		

@@ -611,8 +611,6 @@
 			$classes = array(
 								'ElggUser' => 'user',
 								'ElggObject' => 'object',
-								'ElggSite' => 'site',
-								'ElggGroup' => 'group'
 							);
 			
 			$entity_class = get_class($entity);
@@ -804,8 +802,6 @@
 			$classes = array(
 								'ElggUser' => 'user',
 								'ElggObject' => 'object',
-								'ElggSite' => 'site',
-								'ElggGroup' => 'group'
 							);
 			
 			$entity_class = get_class($entity);
@@ -1355,11 +1351,7 @@
 			global $CONFIG;
 			if (!isset($CONFIG->menucontexts)) {
 				$CONFIG->menucontexts = array();
-			}
-			
-			if (empty($context)) {
-				$context = get_plugin_name();
-			}
+			}			
 			$CONFIG->menucontexts[] = $context;
 			return add_to_register('menu',$menu_name,$menu_url, $menu_children);
 		}
