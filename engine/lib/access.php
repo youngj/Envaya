@@ -417,11 +417,8 @@ END;
 		 */
 		function get_access_collection($collection_id) {
     		
-    		$collection_id = (int) $collection_id;
     		global $CONFIG;
-    		$get_collection = get_data_row("SELECT * FROM {$CONFIG->dbprefix}access_collections WHERE id = {$collection_id}");
-    		
-    		return $get_collection;
+            return get_data_row("SELECT * FROM {$CONFIG->dbprefix}access_collections WHERE id = ?", array((int)$collection_id));    		
     		
 		}
 		

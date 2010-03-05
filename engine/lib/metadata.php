@@ -200,30 +200,34 @@
 	{
 		global $CONFIG;
 
-		$entity_guid = (int)$entity_guid;
-		//$name = sanitise_string(trim($name));
-		//$value = sanitise_string(trim($value));
-		$value_type = detect_extender_valuetype($value, sanitise_string(trim($value_type)));
+		$entity_guid = (int)$entity_guid;		
+        $value_type = detect_extender_valuetype($value, sanitise_string(trim($value_type)));
 		$time = time();		
 		$owner_guid = (int)$owner_guid;
 		$allow_multiple = (boolean)$allow_multiple;
 		
-		if ($owner_guid==0) $owner_guid = get_loggedin_userid();
+		if ($owner_guid==0) 
+            $owner_guid = get_loggedin_userid();
 		
 		$access_id = (int)$access_id;
 
 		$id = false;
 	
-		$existing = get_data_row("SELECT * from {$CONFIG->dbprefix}metadata WHERE entity_guid = $entity_guid and name_id=" . add_metastring($name) . " limit 1");
+        $nameId = add_metastring($name);
+    
+		$existing = get_data_row_2("SELECT * from {$CONFIG->dbprefix}metadata WHERE entity_guid = ? and name_id = ? limit 1",        
+            array($entity_guid, $nameId)
+        );        
+
 		if (($existing) && (!$allow_multiple) && (isset($value))) 
-		{ 
+		{             
 			$id = $existing->id;
 			$result = update_metadata($id, $name, $value, $value_type, $owner_guid, $access_id);
 			
 			if (!$result) return false;
 		}
 		else if (isset($value))
-		{
+		{        
 			// Support boolean types
 			if (is_bool($value)) {
 				if ($value)
@@ -233,16 +237,19 @@
 			}
 			
 			// Add the metastrings
-			$value = add_metastring($value);
-			if (!$value) return false;
+			$valueId = add_metastring($value);
+			if (!$valueId) 
+                return false;
 			
-			$name = add_metastring($name);
-			if (!$name) return false;
+            if (!$nameId) 
+                return false;
 			
-			// If ok then add it
-			$id = insert_data("INSERT into {$CONFIG->dbprefix}metadata (entity_guid, name_id, value_id, value_type, owner_guid, time_created, access_id) VALUES ($entity_guid, '$name','$value','$value_type', $owner_guid, $time, $access_id)");
+			$id = insert_data_2("INSERT into {$CONFIG->dbprefix}metadata (entity_guid, name_id, value_id, value_type, owner_guid, time_created, access_id) VALUES (?,?,?,?,?,?,?)", 
+                array($entity_guid, $nameId, $valueId, $value_type, $owner_guid, $time, $access_id)
+            );
 			
-			if ($id!==false) {
+			if ($id!==false) 
+            {
 				$obj = get_metadata($id);
 				if (trigger_elgg_event('create', 'metadata', $obj)) {
 					return true;
@@ -251,8 +258,11 @@
 				}
 			}
 			
-		} else if ($existing) {
-// TODO: Check... are you sure you meant to do this Ben? :)			
+		} 
+        else if ($existing) 
+        {
+            echo "three";
+        
 			$id = $existing->id;
 			delete_metadata($id);
 			

@@ -84,7 +84,7 @@
 			
 			$this->attributes['guid'] = "";
 			$this->attributes['type'] = "";
-			$this->attributes['subtype'] = "";
+			$this->attributes['subtype'] = 0;
 			
 			$this->attributes['owner_guid'] = get_loggedin_userid();
 			$this->attributes['container_guid'] = get_loggedin_userid();
@@ -307,6 +307,14 @@
 			}
 		}
 		
+        public function getSubEntities()
+        {
+            $guid = $this->guid;
+            return array_map('entity_row_to_elggstar', 
+                get_data_2("SELECT * from {$CONFIG->dbprefix}entities WHERE container_guid=? or owner_guid=? or site_guid=?", array($guid, $guid, $guid))
+            );
+        }
+        
 		/**
 		 * Remove all entities associated with this entity
 		 *
@@ -1286,28 +1294,26 @@
 
 		$entity = get_entity($guid);
 		
-		//if ($entity->canEdit()) {
-			
-			if (trigger_elgg_event('update',$entity->type,$entity)) {
-				$ret = update_data("UPDATE {$CONFIG->dbprefix}entities set owner_guid='$owner_guid', access_id='$access_id', container_guid='$container_guid', time_updated='$time' WHERE guid=$guid");
-				
-				if ($entity instanceof ElggObject)
-					update_river_access_by_object($guid,$access_id);
-				
-				// If memcache is available then delete this entry from the cache
-				static $newentity_cache;
-				if ((!$newentity_cache) && (is_memcache_available())) 
-					$newentity_cache = new ElggMemcache('new_entity_cache');
-				if ($newentity_cache) $new_entity = $newentity_cache->delete($guid);
-				
-				// Handle cases where there was no error BUT no rows were updated!
-				if ($ret===false)
-					return false;
-					
-				return true;
-			}
-			
-		//}
+        if (trigger_elgg_event('update',$entity->type,$entity)) {
+            $ret = update_data_2("UPDATE {$CONFIG->dbprefix}entities set owner_guid=?, access_id=?, container_guid=?, time_updated=? WHERE guid=?", 
+                array($owner_guid,$access_id,$container_guid,$time,$guid)
+            );
+
+            if ($entity instanceof ElggObject)
+                update_river_access_by_object($guid,$access_id);
+
+            // If memcache is available then delete this entry from the cache
+            static $newentity_cache;
+            if ((!$newentity_cache) && (is_memcache_available())) 
+                $newentity_cache = new ElggMemcache('new_entity_cache');
+            if ($newentity_cache) $new_entity = $newentity_cache->delete($guid);
+
+            // Handle cases where there was no error BUT no rows were updated!
+            if ($ret===false)
+                return false;
+
+            return true;
+        }
 	}
 	
 	/**
@@ -1366,28 +1372,20 @@
 	function create_entity($type, $subtype, $owner_guid, $access_id, $site_guid = 0, $container_guid = 0)
 	{
 		global $CONFIG;
-	
-		$type = sanitise_string($type);
-        
-		$owner_guid = (int)$owner_guid; 
-		$access_id = (int)$access_id;
-		$time = time();
-		if ($site_guid == 0)
+			
+        $time = time();
+		
+        if ($site_guid == 0)
 			$site_guid = $CONFIG->site_guid;
-		$site_guid = (int) $site_guid;
-		if ($container_guid == 0) $container_guid = $owner_guid;
 		
-		$user = get_loggedin_user();
-        
-        /*
-		if (!can_write_to_container($user->guid, $owner_guid, $type)) return false;
-		if ($owner_guid != $container_guid)
-			if (!can_write_to_container($user->guid, $container_guid, $type)) return false; 
-        */    
+        if ($container_guid == 0) $container_guid = $owner_guid;
 		
-		if ($type=="") throw new InvalidParameterException(elgg_echo('InvalidParameterException:EntityTypeNotSet'));
+		if ($type=="") 
+            throw new InvalidParameterException(elgg_echo('InvalidParameterException:EntityTypeNotSet'));
 
-		return insert_data("INSERT into {$CONFIG->dbprefix}entities (type, subtype, owner_guid, site_guid, container_guid, access_id, time_created, time_updated) values ('$type',$subtype, $owner_guid, $site_guid, $container_guid, $access_id, $time, $time)"); 
+		return insert_data_2("INSERT into {$CONFIG->dbprefix}entities (type, subtype, owner_guid, site_guid, container_guid, access_id, time_created, time_updated) values (?,?,?,?,?,?,?,?)",
+            array($type, $subtype, (int)$owner_guid, (int)$site_guid, (int)$container_guid, (int)$access_id, $time, $time)
+        ); 
 	}
 	
 	/**
@@ -1405,25 +1403,12 @@
 		
 		$guid = (int) $guid;
 		
-		/*$row = retrieve_cached_entity_row($guid);
-		if ($row)
-		{
-			// We have already cached this object, so retrieve its value from the cache
-			if (isset($CONFIG->debug) && $CONFIG->debug)
-				error_log("** Retrieving GUID:$guid from cache");
-
-			return $row;
-		}
-		else
-		{*/	
-			// Object not cached, load it.
-			if (isset($CONFIG->debug) && $CONFIG->debug == true)
-				error_log("** GUID:$guid loaded from DB");
+        if (isset($CONFIG->debug) && $CONFIG->debug == true)
+            error_log("** GUID:$guid loaded from DB");
 			
-			$access = get_access_sql_suffix();
+        $access = get_access_sql_suffix();
 		
-			return get_data_row("SELECT * from {$CONFIG->dbprefix}entities where guid=$guid and $access");
-		//}
+        return get_data_row_2("SELECT * from {$CONFIG->dbprefix}entities where guid=? and $access", array($guid));
 	}
 	
 	/**
@@ -1523,100 +1508,116 @@
 		
 		if ($subtype === false || $subtype === null || $subtype === 0)
 			return false;
-		
-		if ($order_by == "") $order_by = "time_created desc";
-		$order_by = sanitise_string($order_by);
-		$limit = (int)$limit;
-		$offset = (int)$offset;
-		$site_guid = (int) $site_guid;
-		$timelower = (int) $timelower;
-		$timeupper = (int) $timeupper;
-		if ($site_guid == 0)
-			$site_guid = $CONFIG->site_guid;
-				
+		            
 		$where = array();
+        $args = array();
 		
-		if (is_array($subtype)) {
+		if (is_array($subtype)) 
+        {
 			$tempwhere = "";
 			if (sizeof($subtype))
-			foreach($subtype as $typekey => $subtypearray) {
-				foreach($subtypearray as $subtypeval) {
-					$typekey = sanitise_string($typekey);
-					if (!empty($subtypeval)) {
+			foreach($subtype as $typekey => $subtypearray) 
+            {
+				foreach($subtypearray as $subtypeval) 
+                {
+					if (!empty($subtypeval)) 
+                    {
 						if (!$subtypeval = (int) get_subtype_id($typekey, $subtypeval))
 							return false;
-					} else {
+					} 
+                    else 
+                    {
 						// @todo: Setting subtype to 0 when $subtype = '' returns entities with
 						// no subtype.  This is different to the non-array behavior
 						// but may be required in some cases.
 						$subtypeval = 0;
 					}
-					if (!empty($tempwhere)) $tempwhere .= " or ";
-					$tempwhere .= "(type = '{$typekey}' and subtype = {$subtypeval})";
+					
+                    if (!empty($tempwhere)) 
+                        $tempwhere .= " or ";
+					
+                    $tempwhere .= "(type = ? and subtype = ?)";
+                    $args[] = $typekey;
+                    $args[] = $subtypeval;
 				}
 			}
 			if (!empty($tempwhere)) $where[] = "({$tempwhere})";
 			
-		} else {
-		
-			$type = sanitise_string($type);
-			if ($subtype !== "" AND !$subtype = get_subtype_id($type, $subtype))
-				return false;
-			
+		} 
+        else 
+        {	        
 			if ($type != "")
-				$where[] = "type='$type'";
-			if ($subtype!=="")
-				$where[] = "subtype=$subtype";
+            {
+				$where[] = "type=?";
+                $args[] = $type;
+            }    
+            
+            $subtypeId = get_subtype_id($type, $subtype);
+            if ($subtypeId)
+            {
+				$where[] = "subtype=?";
+                $args[] = $subtypeId;
+            }    
 		}
 
-		if ($owner_guid != "") {
-			if (!is_array($owner_guid)) {
-				$owner_array = array($owner_guid);
-				$owner_guid = (int) $owner_guid;
-			//	$where[] = "owner_guid = '$owner_guid'";
-			} else if (sizeof($owner_guid) > 0) {
-				$owner_array = array_map('sanitise_int', $owner_guid);
-				// Cast every element to the owner_guid array to int
-			//	$owner_guid = array_map("sanitise_int", $owner_guid);
-			//	$owner_guid = implode(",",$owner_guid);
-			//	$where[] = "owner_guid in ({$owner_guid})";
-			}
-			if (is_null($container_guid)) {
-				$container_guid = $owner_array;
-			}
+		if ($owner_guid) 
+        {
+			$where[] = "owner_guid = ?";
+            $args[] = (int)$owner_guid;
 		}
-		if ($site_guid > 0)
-			$where[] = "site_guid = {$site_guid}";
+        
+		if (!is_null($container_guid)) 
+        {
+            $where[] = "container_guid = ?";
+            $args[] = (int)$container_guid;
+		}
 
-		if (!is_null($container_guid)) {
-			if (is_array($container_guid)) {
-				foreach($container_guid as $key => $val) $container_guid[$key] = (int) $val;
-				$where[] = "container_guid in (" . implode(",",$container_guid) . ")";
-			} else {
-				$container_guid = (int) $container_guid;
-				$where[] = "container_guid = {$container_guid}";
-			}
-		}
 		if ($timelower)
-			$where[] = "time_created >= {$timelower}";
+        {
+			$where[] = "time_created >= ?";
+            $args[] = (int)$timelower;
+        }    
 		if ($timeupper)
-			$where[] = "time_created <= {$timeupper}";
+        {
+			$where[] = "time_created <= ?";
+            $args[] = (int)$timeupper;
+        }    
 			
-		if (!$count) {
+		if (!$count) 
+        {
 			$query = "SELECT * from {$CONFIG->dbprefix}entities where ";
-		} else {
+		} 
+        else 
+        {
 			$query = "SELECT count(guid) as total from {$CONFIG->dbprefix}entities where ";
 		}
-		foreach ($where as $w)
+		
+        foreach ($where as $w)
 			$query .= " $w and ";
-		$query .= get_access_sql_suffix(); // Add access controls
-		if (!$count) {
+            
+		$query .= get_access_sql_suffix(); 
+		
+        if (!$count) 
+        {
+            if ($order_by == "") 
+            {
+                $order_by = "time_created desc";        
+            }    
+            $order_by = sanitise_string($order_by);       
 			$query .= " order by $order_by";
-			if ($limit) $query .= " limit $offset, $limit"; // Add order and limit
-			$dt = get_data($query, "entity_row_to_elggstar");
-			return $dt;
-		} else {
-			$total = get_data_row($query);
+
+            $limit = (int)$limit;
+            $offset = (int)$offset;
+
+			if ($limit) 
+            {            
+                $query .= " limit $offset, $limit"; 
+            }    
+			return array_map('entity_row_to_elggstar', get_data_2($query, $args));
+		} 
+        else 
+        {
+			$total = get_data_row_2($query, $args);
 			return $total->total;
 		}
 	}
@@ -1662,87 +1663,7 @@
 		$entities = get_objects_in_group($container_guid, $subtype, $owner_guid, 0, "", $limit, $offset);
 
 		return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview);
-	}
-	
-	/**
-	 * Returns a list of months containing content specified by the parameters
-	 *
-	 * @param string $type The type of entity
-	 * @param string $subtype The subtype of entity
-	 * @param int $container_guid The container GUID that the entinties belong to
-	 * @param int $site_guid The site GUID
-	 * @return array|false Either an array of timestamps, or false on failure
-	 */
-	function get_entity_dates($type = '', $subtype = '', $container_guid = 0, $site_guid = 0) {
-		
-		global $CONFIG;
-		
-		$site_guid = (int) $site_guid;
-		if ($site_guid == 0)
-			$site_guid = $CONFIG->site_guid;
-				
-		$where = array();
-		
-		if ($type != "") {
-			$type = sanitise_string($type);
-			$where[] = "type='$type'";
-		}
-		
-		if (is_array($subtype)) {			
-			$tempwhere = "";
-			if (sizeof($subtype))
-			foreach($subtype as $typekey => $subtypearray) {
-				foreach($subtypearray as $subtypeval) {
-					$typekey = sanitise_string($typekey);
-					if (!empty($subtypeval)) {
-						if (!$subtypeval = (int) get_subtype_id($typekey, $subtypeval))
-							return false;
-					} else {
-						$subtypeval = 0;
-					}
-					if (!empty($tempwhere)) $tempwhere .= " or ";
-					$tempwhere .= "(type = '{$typekey}' and subtype = {$subtypeval})";
-				}								
-			}
-			if (!empty($tempwhere)) $where[] = "({$tempwhere})";
-			
-		} else {
-			if ($subtype AND !$subtype = get_subtype_id($type, $subtype)) {
-				return false;
-			} else {
-				$where[] = "subtype=$subtype";
-			}
-		}
-		
-		if ($container_guid !== 0) {
-			if (is_array($container_guid)) {
-				foreach($container_guid as $key => $val) $container_guid[$key] = (int) $val;
-				$where[] = "container_guid in (" . implode(",",$container_guid) . ")";
-			} else {
-				$container_guid = (int) $container_guid;
-				$where[] = "container_guid = {$container_guid}";
-			}
-		}
-		
-		if ($site_guid > 0)
-			$where[] = "site_guid = {$site_guid}";
-		
-		$where[] = get_access_sql_suffix();
-			
-		$sql = "SELECT DISTINCT EXTRACT(YEAR_MONTH FROM FROM_UNIXTIME(time_created)) AS yearmonth FROM {$CONFIG->dbprefix}entities where ";
-		foreach ($where as $w) 
-			$sql .= " $w and ";
-		$sql .= "1=1";
-		if ($result = get_data($sql)) {
-			$endresult = array();
-			foreach($result as $res) {
-				$endresult[] = $res->yearmonth;
-			}
-			return $endresult;
-		}
-		return false;
-		
-	}
+	}	
 	
 	/**
 	 * Disable an entity but not delete it.
@@ -1770,7 +1691,8 @@
 						static $__RECURSIVE_DELETE_TOKEN;
 						$__RECURSIVE_DELETE_TOKEN = md5(get_loggedin_userid()); // Make it slightly harder to guess
 						
-						$sub_entities = get_data("SELECT * from {$CONFIG->dbprefix}entities WHERE container_guid=$guid or owner_guid=$guid or site_guid=$guid", 'entity_row_to_elggstar');
+                        $sub_entities = $entity->getSubEntities();
+                            
 						if ($sub_entities) {
 							foreach ($sub_entities as $e)
 								$e->disable($reason);
@@ -1779,7 +1701,7 @@
 						$__RECURSIVE_DELETE_TOKEN = null; 
 					}
 											
-					$res = update_data("UPDATE {$CONFIG->dbprefix}entities set enabled='no' where guid={$guid}");
+					$res = update_data_2("UPDATE {$CONFIG->dbprefix}entities set enabled='no' where guid=?", array($guid));
 					
 					return $res;
 				} 
@@ -1797,8 +1719,6 @@
 	{
 		global $CONFIG;
 		
-		$guid = (int)$guid;
-		
 		// Override access only visible entities
 		$access_status = access_get_show_hidden_status();
 		access_show_hidden_entities(true);
@@ -1809,7 +1729,7 @@
 					
 					access_show_hidden_entities($access_status);
 				
-					$result = update_data("UPDATE {$CONFIG->dbprefix}entities set enabled='yes' where guid={$guid}");
+					$result = update_data_2("UPDATE {$CONFIG->dbprefix}entities set enabled='yes' where guid=?", array($guid));
 					$entity->clearMetaData('disable_reason');
 					
 					return $result;
@@ -1835,51 +1755,49 @@
 		$guid = (int)$guid;
 		if ($entity = get_entity($guid)) {
 			if (trigger_elgg_event('delete',$entity->type,$entity)) {
-				//if ($entity->canEdit()) {
 					
-					// Delete contained owned and otherwise releated objects (depth first)
-					if ($recursive)
-					{
-						// Temporary token overriding access controls TODO: Do this better.
-						static $__RECURSIVE_DELETE_TOKEN;
-						$__RECURSIVE_DELETE_TOKEN = md5(get_loggedin_userid()); // Make it slightly harder to guess
-						
-						$sub_entities = get_data("SELECT * from {$CONFIG->dbprefix}entities WHERE container_guid=$guid or owner_guid=$guid or site_guid=$guid", 'entity_row_to_elggstar');
-						if ($sub_entities) {
-							foreach ($sub_entities as $e)
-								$e->delete();
-						}
-							
-						$__RECURSIVE_DELETE_TOKEN = null; 
-					}
-					
-					// Now delete the entity itself
-					$entity->clearMetadata();
-					$entity->clearAnnotations();
-					$entity->clearRelationships();
-					remove_from_river_by_subject($guid);
-					remove_from_river_by_object($guid);	
-					remove_all_private_settings($guid);
-					$res = delete_data("DELETE from {$CONFIG->dbprefix}entities where guid={$guid}");
-					if ($res)
-					{
-						$sub_table = "";
-						
-						// Where appropriate delete the sub table
-						switch ($entity->type)
-						{
-							case 'object' : $sub_table = $CONFIG->dbprefix . 'objects_entity'; break;
-							case 'user' :  $sub_table = $CONFIG->dbprefix . 'users_entity'; break;
-							case 'group' :  $sub_table = $CONFIG->dbprefix . 'groups_entity'; break;
-							case 'site' :  $sub_table = $CONFIG->dbprefix . 'sites_entity'; break;
-						}
-						
-						if ($sub_table)
-							delete_data("DELETE from $sub_table where guid={$guid}");
-					}
-					
-					return $res;
-				//} 
+                // Delete contained owned and otherwise releated objects (depth first)
+                if ($recursive)
+                {
+                    // Temporary token overriding access controls TODO: Do this better.
+                    static $__RECURSIVE_DELETE_TOKEN;
+                    $__RECURSIVE_DELETE_TOKEN = md5(get_loggedin_userid()); // Make it slightly harder to guess
+
+                    $sub_entities = $entity->getSubEntities();
+                    if ($sub_entities) {
+                        foreach ($sub_entities as $e)
+                            $e->delete();
+                    }
+
+                    $__RECURSIVE_DELETE_TOKEN = null; 
+                }
+
+                // Now delete the entity itself
+                $entity->clearMetadata();
+                $entity->clearAnnotations();
+                $entity->clearRelationships();
+                remove_from_river_by_subject($guid);
+                remove_from_river_by_object($guid);	
+                remove_all_private_settings($guid);
+                $res = delete_data_2("DELETE from {$CONFIG->dbprefix}entities where guid=?", array($guid));
+                if ($res)
+                {
+                    $sub_table = "";
+
+                    // Where appropriate delete the sub table
+                    switch ($entity->type)
+                    {
+                        case 'object' : $sub_table = $CONFIG->dbprefix . 'objects_entity'; break;
+                        case 'user' :  $sub_table = $CONFIG->dbprefix . 'users_entity'; break;
+                        case 'group' :  $sub_table = $CONFIG->dbprefix . 'groups_entity'; break;
+                        case 'site' :  $sub_table = $CONFIG->dbprefix . 'sites_entity'; break;
+                    }
+
+                    if ($sub_table)
+                        delete_data_2("DELETE from $sub_table where guid=?", array($guid));
+                }
+
+                return $res;
 			}
 		}
 		return false;
@@ -2363,256 +2281,6 @@
 	}
 	
 	/**
-	 * Get entities based on their private data, in a similar way to metadata.
-	 *
-	 * @param string $name The name of the setting
-	 * @param string $value The value of the setting
-	 * @param string $type The type of entity (eg "user", "object" etc)
-	 * @param string $subtype The arbitrary subtype of the entity
-	 * @param int $owner_guid The GUID of the owning user
-	 * @param string $order_by The field to order by; by default, time_created desc
-	 * @param int $limit The number of entities to return; 10 by default
-	 * @param int $offset The indexing offset, 0 by default
-	 * @param boolean $count Set to true to get a count rather than the entities themselves (limits and offsets don't apply in this context). Defaults to false.
-	 * @param int $site_guid The site to get entities for. Leave as 0 (default) for the current site; -1 for all sites.
-	 * @param int|array $container_guid The container or containers to get entities from (default: all containers).
-	 * @return array A list of entities. 
-	 */
-	function get_entities_from_private_setting($name = "", $value = "", $type = "", $subtype = "", $owner_guid = 0, $order_by = "", $limit = 10, $offset = 0, $count = false, $site_guid = 0, $container_guid = null)
-	{
-		global $CONFIG;
-		
-		if ($subtype === false || $subtype === null || $subtype === 0)
-			return false;
-					
-		$name = sanitise_string($name);
-		$value = sanitise_string($value);
-			
-		if ($order_by == "") $order_by = "e.time_created desc";
-		$order_by = sanitise_string($order_by);
-		$limit = (int)$limit;
-		$offset = (int)$offset;
-		$site_guid = (int) $site_guid;
-		if ($site_guid == 0)
-			$site_guid = $CONFIG->site_guid;
-				
-		$where = array();
-		
-		if (is_array($type)) {			
-			$tempwhere = "";
-			if (sizeof($type))
-			foreach($type as $typekey => $subtypearray) {
-				foreach($subtypearray as $subtypeval) {
-					$typekey = sanitise_string($typekey);
-					if (!empty($subtypeval)) {
-						if (!$subtypeval = (int) get_subtype_id($typekey, $subtypeval)) {
-							return false;
-						}
-					} else {
-						$subtypeval = 0;
-					}
-					if (!empty($tempwhere)) $tempwhere .= " or ";
-					$tempwhere .= "(e.type = '{$typekey}' and e.subtype = {$subtypeval})";
-				}								
-			}
-			if (!empty($tempwhere)) $where[] = "({$tempwhere})";
-			
-		} else {
-		
-			$type = sanitise_string($type);
-			if ($subtype AND !$subtype = get_subtype_id($type, $subtype)) {
-				return false;
-			}
-			
-			if ($type != "")
-				$where[] = "e.type='$type'";
-			if ($subtype!=="")
-				$where[] = "e.subtype=$subtype";
-				
-		}
-				
-		if ($owner_guid != "") {
-			if (!is_array($owner_guid)) {
-				$owner_array = array($owner_guid);
-				$owner_guid = (int) $owner_guid;
-			//	$where[] = "owner_guid = '$owner_guid'";
-			} else if (sizeof($owner_guid) > 0) {
-				$owner_array = array_map('sanitise_int', $owner_guid);
-				// Cast every element to the owner_guid array to int
-			//	$owner_guid = array_map("sanitise_int", $owner_guid);
-			//	$owner_guid = implode(",",$owner_guid);
-			//	$where[] = "owner_guid in ({$owner_guid})";
-			}
-			if (is_null($container_guid)) {
-				$container_guid = $owner_array;
-			}
-		}
-		if ($site_guid > 0)
-			$where[] = "e.site_guid = {$site_guid}";
-			
-		if (!is_null($container_guid)) {
-			if (is_array($container_guid)) {
-				foreach($container_guid as $key => $val) $container_guid[$key] = (int) $val;
-				$where[] = "e.container_guid in (" . implode(",",$container_guid) . ")";
-			} else {
-				$container_guid = (int) $container_guid;
-				$where[] = "e.container_guid = {$container_guid}";
-			}
-		}
-			
-		if ($name!="")
-			$where[] = "s.name = '$name'";
-		if ($value!="")
-			$where[] = "s.value='$value'";	
-		
-		if (!$count) {
-			$query = "SELECT distinct e.* from {$CONFIG->dbprefix}entities e JOIN {$CONFIG->dbprefix}private_settings s ON e.guid=s.entity_guid where ";
-		} else {
-			$query = "SELECT count(distinct e.guid) as total from {$CONFIG->dbprefix}entities e JOIN {$CONFIG->dbprefix}private_settings s ON e.guid=s.entity_guid where ";
-		}
-		foreach ($where as $w)
-			$query .= " $w and ";
-		$query .= get_access_sql_suffix('e'); // Add access controls
-		if (!$count) {
-			$query .= " order by $order_by";
-			if ($limit) $query .= " limit $offset, $limit"; // Add order and limit
-				
-			$dt = get_data($query, "entity_row_to_elggstar");
-			return $dt;
-		} else {
-			$total = get_data_row($query);
-			return $total->total;
-		}
-	}
-	
-	/**
-	 * Get entities based on their private data by multiple keys, in a similar way to metadata.
-	 *
-	 * @param string $name The name of the setting
-	 * @param string $value The value of the setting
-	 * @param string|array $type The type of entity (eg "user", "object" etc) or array(type1 => array('subtype1', ...'subtypeN'), ...)
-	 * @param string $subtype The arbitrary subtype of the entity
-	 * @param int $owner_guid The GUID of the owning user
-	 * @param string $order_by The field to order by; by default, time_created desc
-	 * @param int $limit The number of entities to return; 10 by default
-	 * @param int $offset The indexing offset, 0 by default
-	 * @param boolean $count Set to true to get a count rather than the entities themselves (limits and offsets don't apply in this context). Defaults to false.
-	 * @param int $site_guid The site to get entities for. Leave as 0 (default) for the current site; -1 for all sites.
-	 * @param int|array $container_guid The container or containers to get entities from (default: all containers).
-	 * @return array A list of entities. 
-	 */
-	function get_entities_from_private_setting_multi(array $name, $type = "", $subtype = "", $owner_guid = 0, $order_by = "", $limit = 10, $offset = 0, $count = false, $site_guid = 0, $container_guid = null)
-	{
-		global $CONFIG;
-		
-		if ($subtype === false || $subtype === null || $subtype === 0)
-			return false;
-			
-		if ($order_by == "") $order_by = "e.time_created desc";
-		$order_by = sanitise_string($order_by);
-		$limit = (int)$limit;
-		$offset = (int)$offset;
-		$site_guid = (int) $site_guid;
-		if ($site_guid == 0)
-			$site_guid = $CONFIG->site_guid;
-				
-		$where = array();
-		
-		if (is_array($type)) {
-			$tempwhere = "";
-			if (sizeof($type))
-			foreach($type as $typekey => $subtypearray) {
-				foreach($subtypearray as $subtypeval) {
-					$typekey = sanitise_string($typekey);
-					if (!empty($subtypeval)) {
-						if (!$subtypeval = (int) get_subtype_id($typekey, $subtypeval)) {
-							return false;
-						}
-					} else {
-						$subtypeval = 0;
-					}
-					if (!empty($tempwhere)) $tempwhere .= " or ";
-					$tempwhere .= "(e.type = '{$typekey}' and e.subtype = {$subtypeval})";
-				}
-			}
-			if (!empty($tempwhere)) $where[] = "({$tempwhere})";
-			
-		} else {
-			$type = sanitise_string($type);
-			if ($subtype AND !$subtype = get_subtype_id($type, $subtype))
-				return false;
-			
-			if ($type != "")
-				$where[] = "e.type='$type'";
-			if ($subtype!=="")
-				$where[] = "e.subtype=$subtype";
-				
-		}
-				
-		if ($owner_guid != "") {
-			if (!is_array($owner_guid)) {
-				$owner_array = array($owner_guid);
-				$owner_guid = (int) $owner_guid;
-			//	$where[] = "owner_guid = '$owner_guid'";
-			} else if (sizeof($owner_guid) > 0) {
-				$owner_array = array_map('sanitise_int', $owner_guid);
-				// Cast every element to the owner_guid array to int
-			//	$owner_guid = array_map("sanitise_int", $owner_guid);
-			//	$owner_guid = implode(",",$owner_guid);
-			//	$where[] = "owner_guid in ({$owner_guid})";
-			}
-			if (is_null($container_guid)) {
-				$container_guid = $owner_array;
-			}
-		}
-		if ($site_guid > 0)
-			$where[] = "e.site_guid = {$site_guid}";
-			
-		if (!is_null($container_guid)) {
-			if (is_array($container_guid)) {
-				foreach($container_guid as $key => $val) $container_guid[$key] = (int) $val;
-				$where[] = "e.container_guid in (" . implode(",",$container_guid) . ")";
-			} else {
-				$container_guid = (int) $container_guid;
-				$where[] = "e.container_guid = {$container_guid}";
-			}
-		}
-			
-		if ($name)
-		{
-			$s_join = "";
-			$i = 1;
-			foreach ($name as $k => $n)
-			{
-				$k = sanitise_string($k);
-				$s_join .= " JOIN {$CONFIG->dbprefix}private_settings s$i ON e.guid=s$i.entity_guid";
-				$where[] = "s$i.name = '$k'";
-				$where[] = "s$i.value = '$n'";
-				$i++;
-			}
-		}
-			
-		if (!$count) {
-			$query = "SELECT distinct e.* from {$CONFIG->dbprefix}entities e $s_join where ";
-		} else {
-			$query = "SELECT count(distinct e.guid) as total from {$CONFIG->dbprefix}entities e $s_join where ";
-		}
-		foreach ($where as $w)
-			$query .= " $w and ";
-		$query .= get_access_sql_suffix('e'); // Add access controls
-		if (!$count) {
-			$query .= " order by $order_by";
-			if ($limit) $query .= " limit $offset, $limit"; // Add order and limit
-			
-			$dt = get_data($query, "entity_row_to_elggstar");
-			return $dt;
-		} else {
-			$total = get_data_row($query);
-			return $total->total;
-		}
-	}
-	
-	/**
 	 * Gets a private setting for an entity.
 	 *
 	 * @param int $entity_guid The entity GUID
@@ -2622,10 +2290,10 @@
 	function get_private_setting($entity_guid, $name) {
 		
 		global $CONFIG;
-		$entity_guid = (int) $entity_guid;
-		$name = sanitise_string($name);
  		
-		if ($setting = get_data_row("SELECT value from {$CONFIG->dbprefix}private_settings where name = '{$name}' and entity_guid = {$entity_guid}")) {
+		if ($setting = get_data_row_2("SELECT value from {$CONFIG->dbprefix}private_settings where name = ? and entity_guid = ?",
+            array($name, (int)$entity_guid)
+        )) {
 			return $setting->value;
 		}
 		return false;
@@ -2642,7 +2310,7 @@
 		
 		$entity_guid = (int) $entity_guid;
 		
-		$result = get_data("SELECT * from {$CONFIG->dbprefix}private_settings where entity_guid = {$entity_guid}");
+        $result = get_data_2("SELECT * from {$CONFIG->dbprefix}private_settings where entity_guid = ?", array($entity_guid));
 		if ($result)
 		{
 			$return = array();
@@ -2666,11 +2334,10 @@
 	function set_private_setting($entity_guid, $name, $value) {
 		
 		global $CONFIG;
-		$entity_guid = (int) $entity_guid;
-		$name = sanitise_string($name);
-		$value = sanitise_string($value);
 		
-		$result = insert_data("INSERT into {$CONFIG->dbprefix}private_settings (entity_guid, name, value) VALUES ($entity_guid, '{$name}', '{$value}') ON DUPLICATE KEY UPDATE value='$value'");
+		$result = insert_data_2("INSERT into {$CONFIG->dbprefix}private_settings (entity_guid, name, value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE value = ?",
+            array((int)$entity_guid, $name, $value, $value)
+        );
 		if ($result === 0) return true;
 		return $result;
 		
@@ -2684,13 +2351,11 @@
 	 * @return true|false depending on success
 	 * 
 	 */
-	function remove_private_setting($entity_guid, $name) {
-		
+	function remove_private_setting($entity_guid, $name) 
+    {	
 		global $CONFIG;
-		$entity_guid = (int) $entity_guid;
-		$name = sanitise_string($name); 
-		return delete_data("DELETE from {$CONFIG->dbprefix}private_settings where name = '{$name}' and entity_guid = {$entity_guid}");
-		
+		return delete_data_2("DELETE from {$CONFIG->dbprefix}private_settings where name = ? and entity_guid = ?",
+            array($name, (int)$entity_guid));		
 	}
 	
 	/**
@@ -2700,11 +2365,10 @@
 	 * @return true|false depending on success
 	 * 
 	 */
-	function remove_all_private_settings($entity_guid) {
-		
+	function remove_all_private_settings($entity_guid) 
+    {		
 		global $CONFIG;
-		$entity_guid = (int) $entity_guid;
-		return delete_data("DELETE from {$CONFIG->dbprefix}private_settings where entity_guid = {$entity_guid}");
+        return delete_data_2("DELETE from {$CONFIG->dbprefix}private_settings where entity_guid = ?", array((int)$entity_guid));
 	}
 	
 	function recursive_delete_permissions_check($hook, $entity_type, $returnvalue, $params)
@@ -2732,7 +2396,7 @@
 		$tables = array ('sites_entity', 'objects_entity', 'groups_entity', 'users_entity');
 		
 		foreach ($tables as $table) {
-			delete_data("DELETE from {$CONFIG->dbprefix}{$table} where guid NOT IN (SELECT guid from {$CONFIG->dbprefix}entities)");
+			delete_data_2("DELETE from {$CONFIG->dbprefix}{$table} where guid NOT IN (SELECT guid from {$CONFIG->dbprefix}entities)");
 		}
 	}
 	

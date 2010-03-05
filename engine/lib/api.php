@@ -224,10 +224,8 @@
 		public function load($key, $offset = 0, $limit = null)
 		{
 			global $CONFIG;
-			
-			$key = sanitise_string($key);
-			
-			$row = get_data_row("SELECT * from {$CONFIG->dbprefix}hmac_cache where hmac='$key'");
+						
+			$row = get_data_row_2("SELECT * from {$CONFIG->dbprefix}hmac_cache where hmac=?", array($key));
 			if ($row)
 				return $row->hmac;
 			
@@ -366,15 +364,12 @@
 	function validate_user_token($site, $token)
 	{
 		global $CONFIG;
-		
-		$site = (int)$site;
-		$token = sanitise_string($token);
-		
+				
+        $site = (int)$site;     
+        
 		if (!$site) throw new ConfigurationException(elgg_echo('ConfigurationException:NoSiteID'));
-		
-		$time = time();
-		
-		$user = get_data_row("SELECT * from {$CONFIG->dbprefix}users_apisessions where token='$token' and site_guid=$site and $time < expires");
+        
+        $user = get_data_row_2("SELECT * from {$CONFIG->dbprefix}users_apisessions where token=? and site_guid=? and expires > ?", array($token, $site, time()));
 		if ($user)
 			return $user->user_guid;
 		
@@ -713,10 +708,7 @@
 	{
 		global $CONFIG;
 		
-		$api_key = sanitise_string($api_key);
-		$site_guid = (int)$site_guid;
-		
-		return get_data_row("SELECT * from {$CONFIG->dbprefix}api_users where api_key='$api_key' and site_guid=$site_guid and active=1");	
+		return get_data_row_2("SELECT * from {$CONFIG->dbprefix}api_users where api_key=? and site_guid=? and active=1", array($api_key, (int)$site_guid));	
 	}
 	
 	/**

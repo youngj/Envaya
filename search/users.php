@@ -13,7 +13,7 @@
 	 */
 
 	// Load Elgg engine
-		require_once(dirname(dirname(__FILE__)) . "/engine/start.php");
+		//require_once(dirname(dirname(__FILE__)) . "/engine/start.php");
 		
 	// Set context
 		set_context('search');

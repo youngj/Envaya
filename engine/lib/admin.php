@@ -133,7 +133,7 @@
 		if (($subject) && ($message))
 		{
 			$admin_message = new ElggObject();
-			$admin_message->subtype = 'admin_message';
+			$admin_message->subtype = T_admin_message;
 			$admin_message->access_id = ACCESS_PUBLIC;
 			$admin_message->title = $subject;
 			$admin_message->description = $message;

@@ -1841,17 +1841,15 @@
 			
 			global $CONFIG, $DATALIST_CACHE;
 			
-			$name = sanitise_string($name);
-			$value = sanitise_string($value);
-			
 			// If memcache is available then invalidate the cached copy
 			static $datalist_memcache;
 			if ((!$datalist_memcache) && (is_memcache_available()))
 				$datalist_memcache = new ElggMemcache('datalist_memcache');
 			if ($datalist_memcache) $datalist_memcache->delete($name);
 			
-			//delete_data("delete from {$CONFIG->dbprefix}datalists where name = '{$name}'");
-			insert_data("INSERT into {$CONFIG->dbprefix}datalists set name = '{$name}', value = '{$value}' ON DUPLICATE KEY UPDATE value='{$value}'");
+			insert_data_2("INSERT into {$CONFIG->dbprefix}datalists set name = ?, value = ? ON DUPLICATE KEY UPDATE value = ?",
+                array($name, $value, $value)
+            );
 			
 			$DATALIST_CACHE[$name] = $value;
 			

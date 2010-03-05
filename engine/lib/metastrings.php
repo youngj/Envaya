@@ -26,10 +26,9 @@
 	{
 		global $CONFIG, $METASTRINGS_CACHE, $METASTRINGS_DEADNAME_CACHE;
 		
-		$string = sanitise_string($string);
 		$result = array_search($string, $METASTRINGS_CACHE);
-		if ($result!==false) {
-			
+		if ($result!==false) 
+        {			
 			if (isset($CONFIG->debug) && $CONFIG->debug)
 				error_log("** Returning id for string:$string from cache.");
 			
@@ -52,8 +51,9 @@
 		$cs = "";
 		if ($case_sensitive) $cs = " BINARY ";
 		
-		$row = get_data_row("SELECT * from {$CONFIG->dbprefix}metastrings where string=$cs'$string' limit 1");
-		if ($row) { 
+		$row = get_data_row_2("SELECT * from {$CONFIG->dbprefix}metastrings where string=$cs? limit 1", array($string));
+		if ($row) 
+        { 
 			$METASTRINGS_CACHE[$row->id] = $row->string; // Cache it
 			
 			// Attempt to memcache it if memcache is available
@@ -90,7 +90,7 @@
 			return $METASTRINGS_CACHE[$id];
 		}
 		
-		$row = get_data_row("SELECT * from {$CONFIG->dbprefix}metastrings where id='$id' limit 1");
+		$row = get_data_row_2("SELECT * from {$CONFIG->dbprefix}metastrings where id=? limit 1", array($id));
 		if ($row) {
 			$METASTRINGS_CACHE[$id] = $row->string; // Cache it
 			
@@ -116,15 +116,15 @@
 	{
 		global $CONFIG, $METASTRINGS_CACHE, $METASTRINGS_DEADNAME_CACHE;
 		
-		$sanstring = sanitise_string($string);
-		
 		$id = get_metastring_id($string, $case_sensitive);
-		if ($id) return $id;
+		if ($id) 
+            return $id;
 		
-		$result = insert_data("INSERT into {$CONFIG->dbprefix}metastrings (string) values ('$sanstring')");
+		$result = insert_data_2("INSERT into {$CONFIG->dbprefix}metastrings (string) values (?)", array($string));
 		if ($result) {
 			$METASTRINGS_CACHE[$result] = $string;
-			if (isset($METASTRINGS_DEADNAME_CACHE[$string])) unset($METASTRINGS_DEADNAME_CACHE[$string]);
+			if (isset($METASTRINGS_DEADNAME_CACHE[$string])) 
+                unset($METASTRINGS_DEADNAME_CACHE[$string]);
 		}
 			
 		return $result;

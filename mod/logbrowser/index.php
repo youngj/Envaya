@@ -49,7 +49,7 @@
 	foreach ($log as $l)
 	{
 		$tmp = new ElggObject();
-		$tmp->subtype = 'logwrapper';
+		$tmp->subtype = T_logwrapper;
 		$tmp->entry = $l;
 		$log_entries[] = $tmp;
 	}

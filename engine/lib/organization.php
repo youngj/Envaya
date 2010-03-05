@@ -1,6 +1,6 @@
 <?php 
 
-require_once("users.php");
+require_once(dirname(__FILE__)."/users.php");
 
 // Class source
 class Organization extends ElggUser {

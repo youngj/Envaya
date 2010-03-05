@@ -73,19 +73,25 @@
 	 *
 	 */
 		
-		function setup_db_connections() {
+    function setup_db_connections() {
+    
+        global $CONFIG, $dblink;
+        global $MYSQLI;
+        
+        $MYSQLI = new mysqli($CONFIG->dbhost, $CONFIG->dbuser, $CONFIG->dbpass, $CONFIG->dbname); 
+
+        // TODO: remove old version
+			            
+        // Get configuration and globalise database link        
+
+        if (!empty($CONFIG->db->split)) {
+            establish_db_link('read');
+            establish_db_link('write');
+        } else {
+            establish_db_link('readwrite');
+        }
 			
-			// Get configuration and globalise database link
-				global $CONFIG, $dblink;
-				
-				if (!empty($CONFIG->db->split)) {
-					establish_db_link('read');
-					establish_db_link('write');
-				} else {
-					establish_db_link('readwrite');
-				}
-			
-		}
+    }
 		
 	/**
 	 * Shutdown hook to display profiling information about db (debug mode)
@@ -164,6 +170,16 @@
 			}
 		}
 		
+        function get_mysqli_link($dblinktype)
+        {
+            global $MYSQLI;
+            if (!isset($MYSQLI))
+            {
+                setup_db_connections();
+            }
+            return $MYSQLI;
+        }
+        
 		/**
 		 * Explain a given query, useful for debug.
 		 */
@@ -344,6 +360,152 @@
        				
             return false;
         }
+
+       
+    function get_data_row_2($query, $args) 
+    {
+        $mysqli = get_mysqli_link('read');        
+            
+        if ($stmt = stmt_execute($mysqli, $query, $args)) 
+        {
+            $out = &stmt_bind_assoc($stmt);
+
+            $res = ($stmt->fetch()) ? make_obj_from_array($out) : false;
+
+            $stmt->close();        
+        
+            return $res;
+        }
+            
+        return false;
+    }
+           
+    function get_data_2($query, $args) 
+    {    
+        $mysqli = get_mysqli_link('read');        
+            
+        if ($stmt = stmt_execute($mysqli, $query, $args)) 
+        {
+            $out = &stmt_bind_assoc($stmt);
+
+            $res = array();
+            
+            while ($stmt->fetch())
+            {
+                $res[] = make_obj_from_array($out);
+            }
+
+            $stmt->close();        
+        
+            return $res;
+        }
+            
+        return false;
+    }
+
+    function insert_data_2($query, $args) 
+    {            
+        $mysqli = get_mysqli_link('write');
+        
+        if ($stmt = stmt_execute($mysqli, $query, $args)) 
+        {
+            return $mysqli->insert_id;
+        }
+        return false;
+    }
+    
+    function update_data_2($query, $args) 
+    {
+        $mysqli = get_mysqli_link('write');
+
+        if ($stmt = stmt_execute($mysqli, $query, $args)) 
+        {
+            return true;
+        }
+        return false;
+    }    
+    
+    function delete_data_2($query, $args) 
+    {
+        $mysqli = get_mysqli_link('write');
+
+        if ($stmt = stmt_execute($mysqli, $query, $args)) 
+        {
+            return $mysqli->affected_rows;
+        }
+        return false;
+    }    
+
+    function make_obj_from_array($obj)
+    {
+        $res = new stdClass();
+        foreach ($obj as $k => $v)
+        {
+            $res->$k = $v;
+        }   
+        return $res;
+    }    
+
+    function &stmt_bind_assoc(&$stmt) 
+    {
+        $data = $stmt->result_metadata();
+
+        $out = array();
+        $params = array();
+
+        $params[0] = $stmt;    
+        $count = 1;
+
+        while($field = mysqli_fetch_field($data)) 
+        {
+            $params[$count] = &$out[$field->name];
+            $count++;
+        }    
+        call_user_func_array(mysqli_stmt_bind_result, $params);
+        return $out;
+    }
+
+    function stmt_execute($mysqli, $sql, $params)
+    {
+        $stmt = $mysqli->prepare($sql);  
+
+        if (!$stmt)
+        {
+            return false;
+        }
+        
+        if ($params)
+        {
+            $bindParams = array($stmt, '');
+            $len = sizeof($params);
+
+            for ($i = 0; $i < $len; $i++)
+            {
+                $bindParams[] = &$params[$i];
+
+                if (is_float($param))
+                {
+                    $p = "d";    
+                }
+                else if (is_int($param) || is_bool($param))
+                {
+                    $p = "i";
+                }
+                else
+                {
+                    $p = "s";
+                }
+
+                $bindParams[1] .= $p;
+            }
+
+            call_user_func_array(mysqli_stmt_bind_param, $bindParams);
+        }    
+
+        $stmt->execute();
+
+        return $stmt;
+    }    
         
     /**
      * Use this function to insert database data; returns id or false
@@ -369,7 +531,7 @@
                 
 			return false;
         }
-        
+                
     /**
      * Update database data
      * 

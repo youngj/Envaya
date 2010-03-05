@@ -782,14 +782,13 @@
 	{
 		global $CONFIG, $USERNAME_TO_GUID_MAP_CACHE;
 		
-		$username = sanitise_string($username);
 		$access = get_access_sql_suffix('e');
         
 		// Caching
 		if ( (isset($USERNAME_TO_GUID_MAP_CACHE[$username])) && (retrieve_cached_entity($USERNAME_TO_GUID_MAP_CACHE[$username])) )
 			return retrieve_cached_entity($USERNAME_TO_GUID_MAP_CACHE[$username]);
 		
-		$row = get_data_row("SELECT e.*, u.* from {$CONFIG->dbprefix}users_entity u join {$CONFIG->dbprefix}entities e on e.guid=u.guid where u.username='$username' and $access ");
+		$row = get_data_row_2("SELECT e.*, u.* from {$CONFIG->dbprefix}users_entity u join {$CONFIG->dbprefix}entities e on e.guid=u.guid where u.username=? and $access ", array($username));
 		if ($row) {
 			$USERNAME_TO_GUID_MAP_CACHE[$username] = $row->guid;
             return entity_row_to_elggstar($row);
@@ -808,16 +807,15 @@
 	{
 		global $CONFIG, $CODE_TO_GUID_MAP_CACHE;
 		
-		$code = sanitise_string($code);
-		
 		$access = get_access_sql_suffix('e');
 		
 		// Caching
 		if ( (isset($CODE_TO_GUID_MAP_CACHE[$code])) && (retrieve_cached_entity($CODE_TO_GUID_MAP_CACHE[$code])) )
 			return retrieve_cached_entity($CODE_TO_GUID_MAP_CACHE[$code]);
 		
-		$row = get_data_row("SELECT e.*, u.* from {$CONFIG->dbprefix}users_entity u join {$CONFIG->dbprefix}entities e on e.guid=u.guid where u.code='$code' and $access");
-		if ($row) {
+		$row = get_data_row_2("SELECT e.*, u.* from {$CONFIG->dbprefix}users_entity u join {$CONFIG->dbprefix}entities e on e.guid=u.guid where u.code=? and $access", array($code));
+		if ($row) 
+        {
 			$CODE_TO_GUID_MAP_CACHE[$code] = $row->guid;
             return entity_row_to_elggstar($row);
 		} 
@@ -835,13 +833,11 @@
 	{
 		global $CONFIG;
 		
-		$email = sanitise_string($email);
-		
 		$access = get_access_sql_suffix('e');
 		
-		$query = "SELECT e.* from {$CONFIG->dbprefix}entities e join {$CONFIG->dbprefix}users_entity u on e.guid=u.guid where email='$email' and $access";
+		$query = "SELECT e.* from {$CONFIG->dbprefix}entities e join {$CONFIG->dbprefix}users_entity u on e.guid=u.guid where email=? and $access";
 		
-		return get_data($query, 'entity_row_to_elggstar');
+        return array_map('entity_row_to_elggstar', get_data_2($query, array($email)));
 	}
 	
 	/**
@@ -866,14 +862,19 @@
         
 		$access = get_access_sql_suffix("e");
 		
-		if ($order_by == "") $order_by = "e.time_created desc";
+		if ($order_by == "") 
+            $order_by = "e.time_created desc";
 		
-		if ($count) {
+		if ($count) 
+        {
 			$query = "SELECT count(e.guid) as total ";
-		} else {
+		} 
+        else 
+        {
 			$query = "SELECT e.* "; 
 		}
-		$query .= "from {$CONFIG->dbprefix}entities e join {$CONFIG->dbprefix}users_entity u on e.guid=u.guid where ";
+		
+        $query .= "from {$CONFIG->dbprefix}entities e join {$CONFIG->dbprefix}users_entity u on e.guid=u.guid where ";
 		// $query .= " match(u.name,u.username) against ('$criteria') ";
 		$query .= "(u.name like \"%{$criteria}%\" or u.username like \"%{$criteria}%\")";
 		$query .= " and $access";
@@ -883,10 +884,13 @@
             $query .= "AND e.subtype=$user_subtype_id";
         }
 		
-		if (!$count) {
+		if (!$count) 
+        {
 			$query .= " order by $order_by limit $offset, $limit"; // Add order and limit
 			return get_data($query, "entity_row_to_elggstar");
-		} else {
+		} 
+        else 
+        {
 			if ($count = get_data_row($query)) {
 				return $count->total;
 			}
@@ -934,9 +938,9 @@
 
 		$access = get_access_sql_suffix("e");
 		
-		$query = "SELECT distinct e.* from {$CONFIG->dbprefix}entities e join {$CONFIG->dbprefix}users_entity u on e.guid = u.guid where u.last_action >= {$time} and $access order by u.last_action desc limit {$offset},{$limit}";
+		$query = "SELECT distinct e.* from {$CONFIG->dbprefix}entities e join {$CONFIG->dbprefix}users_entity u on e.guid = u.guid where u.last_action >= ? and $access order by u.last_action desc limit {$offset},{$limit}";
 		
-		return get_data($query, "entity_row_to_elggstar");
+        return array_map('entity_row_to_elggstar', get_data_2($query, array($time)));
 	}
 	
 	/**

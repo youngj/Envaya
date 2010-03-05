@@ -90,6 +90,8 @@
         4 => array('user', 'organization', "Organization"),
         5 => array('object', 'translation', 'Translation'),
         7 => array('object', 'blog', 'NewsUpdate'),        
+        8 => array('object', 'logwrapper', 'ElggObject'),
+        9 => array('object', 'admin_message', 'ElggObject'),
     );
     foreach ($CONFIG->subtypes as $val => $subtypeArr)
     {
