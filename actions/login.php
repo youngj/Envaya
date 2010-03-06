@@ -40,26 +40,19 @@
             }
             else
             {
-            	if (
-            		(isadminloggedin()) &&
-            		(!datalist_get('first_admin_login'))
-            	) 
-            	{
-            		system_message(elgg_echo('firstadminlogininstructions'));
-            		
-            		datalist_set('first_admin_login', time());
-            		
-            		forward('pg/admin/plugins');
-            	} else if (get_input('returntoreferer')) {
+                if (get_input('returntoreferer')) 
+                {
             		forward($_SERVER['HTTP_REFERER']);
-            	} else
+            	} 
+                else
+                {
             		forward("pg/dashboard/");
+                }    
             }
         } else {
         	$error_msg = elgg_echo('loginerror');
         	// figure out why the login failed
-        	if (!empty($username) && !empty($password)) 
-            {
+        	if (!empty($username) && !empty($password)) {
         		// See if it exists and is disabled
 				$access_status = access_get_show_hidden_status();
 				access_show_hidden_entities(true);

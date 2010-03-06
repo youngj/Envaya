@@ -58,7 +58,7 @@
 		 * @param string $name
 		 * @return mixed
 		 */
-		protected function __get($name) {
+		public function __get($name) {
 			if (isset($this->attributes[$name])) 
 				return $this->attributes[$name];
 	
@@ -72,7 +72,7 @@
 		 * @param mixed $value
 		 * @return mixed
 		 */
-		protected function __set($name, $value) {
+        public function __set($name, $value) {
 			$this->attributes[$name] = $value;
 			return true;
 		}
@@ -440,8 +440,6 @@
 		if ($site_guid == 0)
 			$site_guid = $CONFIG->site_guid;
 		
-		//$access = get_access_list();
-		
 		$where = array();
 		
 		if ($relationship!="")
@@ -543,8 +541,6 @@
 		$site_guid = (int) $site_guid;
 		if ($site_guid == 0)
 			$site_guid = $CONFIG->site_guid;
-		
-		//$access = get_access_list();
 		
 		$where = array();
 		
@@ -656,8 +652,6 @@
 			
 		$meta_n = get_metastring_id($meta_name);
 		$meta_v = get_metastring_id($meta_value);
-		
-		//$access = get_access_list();
 		
 		$where = array();
 		

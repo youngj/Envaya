@@ -39,19 +39,43 @@
 		{
 			parent::initialise_attributes();
 			
-			$this->attributes['type'] = "user";
-			$this->attributes['name'] = "";
-			$this->attributes['username'] = "";
-			$this->attributes['password'] = "";
-			$this->attributes['salt'] = "";
-			$this->attributes['email'] = "";
-			$this->attributes['language'] = "";
-			$this->attributes['code'] = "";
-			$this->attributes['banned'] = "no";
-			$this->attributes['tables_split'] = 2;
-            $this->attributes['admin'] = 0;
-		}
+            $this->attributes['type'] = "user";
+            $this->attributes['tables_split'] = 2;
+            
+            $this->initializeUserAttributes(array(
+                'name' => '',
+                'username' => '',
+                'password' => '',
+                'salt' => '',
+                'email' => '',
+                'language' => '',
+                'code' => '',
+                'banned' => 'no',
+                'admin' => 0
+            ));    
+        }    
+        
+        protected function initializeUserAttributes($arr)
+        {
+            $userAttributes = array();
+            foreach ($arr as $name => $default)
+            {
+                $userAttributes[] = $name;
+                $this->attributes[$name] = $default;
+            }            
+            $this->attributes['user_attribute_names'] = $userAttributes;
+        }
 				
+        protected function getUserAttributes()
+        {
+            $userAttributes = array();
+            foreach ($this->attributes['user_attribute_names'] as $name)
+            {
+                $userAttributes[$name] = $this->attributes[$name];
+            }
+            return $userAttributes;
+        }
+                
 		/**
 		 * Construct a new user entity, optionally from a given id value.
 		 *
@@ -147,12 +171,41 @@
 		 */
 		public function save()
 		{
-			// Save generic stuff
 			if (!parent::save())
 				return false;
-		
-			// Now save specific stuff
-			return create_user_entity($this->get('guid'), $this->get('name'), $this->get('username'), $this->get('password'), $this->get('salt'), $this->get('email'), $this->get('language'), $this->get('code'));
+
+            $guid = $this->guid;
+            if (get_data_row_2("SELECT guid from users_entity where guid = ?", array($guid)))
+            {
+                $args = array();
+                $set = array();
+                foreach ($this->getUserAttributes() as $name => $value)
+                {
+                    $set[] = "$name = ?";
+                    $args[] = $value;
+                }
+                $set[] = "last_action = ?";
+                $args[] = time();
+                
+                $args[] = $guid;
+            
+                return update_data_2("UPDATE users_entity set ".implode(',', $set)." where guid = ?", $args);
+            }
+            else
+            {
+                $columns = array('guid');
+                $questions = array('?');
+                $args = array($guid);
+                
+                foreach ($this->getUserAttributes() as $name => $value)
+                {
+                    $columns[] = $name;
+                    $questions[] = '?';
+                    $args[] = $value;
+                }
+                           
+                return insert_data_2("INSERT into users_entity (".implode(',', $columns).") values (".implode(',', $questions).")", $args);
+            }
 		}
 		
 		/**
@@ -309,86 +362,13 @@
 	{
 		global $CONFIG;
 		
-		/*$row = retrieve_cached_entity_row($guid);
-		if ($row)
-		{
-			// We have already cached this object, so retrieve its value from the cache
-			if (isset($CONFIG->debug) && $CONFIG->debug == true)
-				error_log("** Retrieving sub part of GUID:$guid from cache");
-				
-			return $row;
-		}
-		else
-		{*/
-			// Object not cached, load it.
-			if (isset($CONFIG->debug) && $CONFIG->debug == true)
-				error_log("** Sub part of GUID:$guid loaded from DB");
+        if (isset($CONFIG->debug) && $CONFIG->debug == true)
+            error_log("** Sub part of GUID:$guid loaded from DB");
 			
-			$guid = (int)$guid;
-		
-			return get_data_row("SELECT * from users_entity where guid=$guid");
-		//}
-	}
-	
-	/**
-	 * Create or update the extras table for a given user.
-	 * Call create_entity first.
-	 * 
-	 * @param int $guid
-	 * @param string $name
-	 * @param string $description
-	 * @param string $url
-	 */
-	function create_user_entity($guid, $name, $username, $password, $salt, $email, $language, $code)
-	{
-		global $CONFIG;
-		
-		$guid = (int)$guid;	
-		$name = sanitise_string($name);	
-		$username = sanitise_string($username);		
-		$password = sanitise_string($password);
-		$salt = sanitise_string($salt);
-		$email = sanitise_string($email);
-		$language = sanitise_string($language);
-		$code = sanitise_string($code);
-		
-		$row = get_entity_as_row($guid);
-		if ($row)
-		{
-			// Exists and you have access to it
+        return get_data_row_2("SELECT * from users_entity where guid=?", array((int)$guid));
 
-			if ($exists = get_data_row("SELECT guid from users_entity where guid = {$guid}")) {
-				$result = update_data("UPDATE users_entity set name='$name', username='$username', password='$password', salt='$salt', email='$email', language='$language', code='$code', last_action = ". time() ." where guid = {$guid}");
-				if ($result != false)
-				{
-					// Update succeeded, continue
-					$entity = get_entity($guid);
-					if (trigger_elgg_event('update',$entity->type,$entity)) {
-						return $guid;
-					} else {
-						$entity->delete();
-					}
-				}
-			}
-			else
-			{
-				// Update failed, attempt an insert.
-				$result = insert_data("INSERT into users_entity (guid, name, username, password, salt, email, language, code) values ($guid, '$name', '$username', '$password', '$salt', '$email', '$language', '$code')");
-				if ($result!==false) {
-					$entity = get_entity($guid);
-					if (trigger_elgg_event('create',$entity->type,$entity)) {
-						return $guid;
-					} else {
-						$entity->delete(); //delete_entity($guid);
-					}
-				}
-			}
-					
-		}
-		
-		return false;
 	}
-	
+		
 	/**
 	 * Disables all of a user's entities
 	 *

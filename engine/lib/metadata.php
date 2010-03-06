@@ -21,7 +21,8 @@
 	 */
 	class ElggMetadata extends ElggExtender
 	{
-			
+        protected $dirty = false;   
+            
 		/**
 		 * Construct a new site object, optionally from a given id value or row.
 		 *
@@ -74,10 +75,10 @@
 		 *
 		 * @return true|false Depending on permissions
 		 */
-		function canEdit() {
+		function canEdit($user_guid = 0) {
 			
 			if ($entity = get_entity($this->get('entity_guid'))) {
-				return $entity->canEditMetadata($this);
+				return $entity->canEditMetadata($this, $user_guid);
 			}
 			return false;
 			
@@ -150,11 +151,13 @@
 	{
 		global $CONFIG;
 
-		$id = (int)$id;
 		$access = get_access_sql_suffix("e");
 		$md_access = get_access_sql_suffix("m");
 
-		return row_to_elggmetadata(get_data_row("SELECT m.*, n.string as name, v.string as value from metadata m JOIN entities e on e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where m.id=$id and $access and $md_access"));
+		return row_to_elggmetadata(
+            get_data_row_2("SELECT m.*, n.string as name, v.string as value from metadata m JOIN entities e on e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where m.id=? and $access and $md_access", 
+            array((int)$id)
+        ));
 	}
 	
 	/**
@@ -209,17 +212,17 @@
 		if ($owner_guid==0) 
             $owner_guid = get_loggedin_userid();
 		
-		$access_id = (int)$access_id;
-
 		$id = false;
 	
         $nameId = add_metastring($name);
+        if (!$nameId) 
+            return false;                
     
 		$existing = get_data_row_2("SELECT * from metadata WHERE entity_guid = ? and name_id = ? limit 1",        
             array($entity_guid, $nameId)
         );        
 
-		if (($existing) && (!$allow_multiple) && (isset($value))) 
+		if (($existing) && (isset($value))) 
 		{             
 			$id = $existing->id;
 			$result = update_metadata($id, $name, $value, $value_type, $owner_guid, $access_id);
@@ -230,42 +233,21 @@
 		{        
 			// Support boolean types
 			if (is_bool($value)) {
-				if ($value)
-					$value = 1;
-				else
-					$value = 0;
+                $value = ($value) ? 1 : 0;
 			}
 			
-			// Add the metastrings
 			$valueId = add_metastring($value);
 			if (!$valueId) 
-                return false;
-			
-            if (!$nameId) 
-                return false;
+                return false;			
 			
 			$id = insert_data_2("INSERT into metadata (entity_guid, name_id, value_id, value_type, owner_guid, time_created, access_id) VALUES (?,?,?,?,?,?,?)", 
                 array($entity_guid, $nameId, $valueId, $value_type, $owner_guid, $time, $access_id)
-            );
-			
-			if ($id!==false) 
-            {
-				$obj = get_metadata($id);
-				if (trigger_elgg_event('create', 'metadata', $obj)) {
-					return true;
-				} else {
-					delete_metadata($id);
-				}
-			}
-			
+            );			
 		} 
         else if ($existing) 
         {
-            echo "three";
-        
 			$id = $existing->id;
-			delete_metadata($id);
-			
+			delete_metadata($id);			
 		}
 		
 		return $id;
@@ -283,58 +265,32 @@
 	 */
 	function update_metadata($id, $name, $value, $value_type, $owner_guid, $access_id)
 	{
-		global $CONFIG;
-
-		$id = (int)$id;
-
-		if (!$md = get_metadata($id)) return false;	
-		if (!$md->canEdit()) return false;
-
-		// If memcached then we invalidate the cache for this entry
-		static $metabyname_memcache;
-		if ((!$metabyname_memcache) && (is_memcache_available()))
-			$metabyname_memcache = new ElggMemcache('metabyname_memcache');
-		if ($metabyname_memcache) $metabyname_memcache->delete("{$md->entity_guid}:{$md->name_id}");
-		
-		//$name = sanitise_string(trim($name));
-		//$value = sanitise_string(trim($value));
 		$value_type = detect_extender_valuetype($value, sanitise_string(trim($value_type)));
 		
 		$owner_guid = (int)$owner_guid;
-		if ($owner_guid==0) $owner_guid = get_loggedin_userid();
-		
-		$access_id = (int)$access_id;
-		
-		$access = get_access_sql_suffix();
+		if ($owner_guid==0) 
+            $owner_guid = get_loggedin_userid();
 		
 		// Support boolean types (as integers)
-		if (is_bool($value)) {
-			if ($value)
-				$value = 1;
-			else
-				$value = 0;
+		if (is_bool($value))
+        {
+			$value = ($value) ? 1 : 0;
 		}
 		
 		// Add the metastring
-		$value = add_metastring($value);
-		if (!$value) return false;
+		$valueId = add_metastring($value);
+        if (!$valueId) 
+            return false;
 		
-		$name = add_metastring($name);
-		if (!$name) return false;
+		$nameId = add_metastring($name);
+        if (!$nameId) 
+            return false;
 
-				// If ok then add it
-		$result = update_data("UPDATE metadata set value_id='$value', value_type='$value_type', access_id=$access_id, owner_guid=$owner_guid where id=$id and name_id='$name'");
-		if ($result!==false) {
-			$obj = get_metadata($id);
-			if (trigger_elgg_event('update', 'metadata', $obj)) {
-				return true;
-			} else {
-				delete_metadata($id);
-			}
-		}
-			
-		return $result;
-	}
+		return update_data_2("UPDATE metadata set value_id=?, value_type=?, access_id=?, owner_guid=? where id=? and name_id=?",
+            array($valueId, $value_type, $access_id, $owner-guid, $id, $nameId)
+        );
+
+	}   
 	
 	/**
 	 * This function creates metadata from an associative array of "key => value" pairs.
@@ -361,67 +317,29 @@
 	 */
 	function delete_metadata($id)
 	{
-		global $CONFIG;
-
-		$id = (int)$id;
-		$metadata = get_metadata($id);
-		
-		if ($metadata) {
-			// Tidy up if memcache is enabled.
-			static $metabyname_memcache;
-			if ((!$metabyname_memcache) && (is_memcache_available()))
-				$metabyname_memcache = new ElggMemcache('metabyname_memcache');
-			if ($metabyname_memcache) $metabyname_memcache->delete("{$metadata->entity_guid}:{$metadata->name_id}");
-			
-			if (($metadata->canEdit()) && (trigger_elgg_event('delete', 'metadata', $metadata)))
-				return delete_data("DELETE from metadata where id=$id");
-		}
-		
-		return false;
+		return delete_data_2("DELETE from metadata where id=?", array((int)$id));
 	}
 	
 	/**
 	 * Return the metadata values that match your query.
 	 * 
 	 * @param string $meta_name
-	 * @return mixed either a value, an array of ElggMetadata or false.
+	 * @return mixed ElggMetadata or false.
 	 */
 	function get_metadata_byname($entity_guid,  $meta_name)
 	{
-		global $CONFIG;
-	
-		$meta_name = get_metastring_id($meta_name);
+		$nameId = get_metastring_id($meta_name);
 		
-		if (empty($meta_name)) return false;
+        if (empty($nameId)) 
+            return false;
 		
-		$entity_guid = (int)$entity_guid;
 		$access = get_access_sql_suffix("e");
 		$md_access = get_access_sql_suffix("m");
-		
-		// If memcache is available then cache this (cache only by name for now since this is the most common query)
-		$meta = null;
-		static $metabyname_memcache;
-		if ((!$metabyname_memcache) && (is_memcache_available()))
-			$metabyname_memcache = new ElggMemcache('metabyname_memcache');
-		if ($metabyname_memcache) $meta = $metabyname_memcache->load("{$entity_guid}:{$meta_name}");
-		if ($meta) return $meta;	
 
-		$result = get_data("SELECT m.*, n.string as name, v.string as value from metadata m JOIN entities e ON e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where m.entity_guid=$entity_guid and m.name_id='$meta_name' and $access and $md_access", "row_to_elggmetadata");
-		if (!$result) 
-			return false;
-			
-		// Cache if memcache available
-		if ($metabyname_memcache)
-		{ 
-			if (count($result) == 1) $r = $result[0]; else $r = $result;
-			$metabyname_memcache->setDefaultExpiry(3600); // This is a bit of a hack - we shorten the expiry on object metadata so that it'll be gone in an hour. This means that deletions and more importantly updates will filter through eventually.
-			$metabyname_memcache->save("{$entity_guid}:{$meta_name}", $r);
-			
-		}
-		if (count($result) == 1)
-			return $result[0];
-			
-		return $result;
+        return row_to_elggmetadata(get_data_row_2(
+            "SELECT m.*, n.string as name, v.string as value from metadata m JOIN entities e ON e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where m.entity_guid=? and m.name_id=? and $access and $md_access LIMIT 1",
+            array((int)$entity_guid, $nameId)
+        ));
 	}
 	
 	/**
@@ -433,11 +351,13 @@
 	{
 		global $CONFIG;
 	
-		$entity_guid = (int)$entity_guid;
 		$access = get_access_sql_suffix("e");
 		$md_access = get_access_sql_suffix("m");
 		
-		return get_data("SELECT m.*, n.string as name, v.string as value from metadata m JOIN entities e ON e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where m.entity_guid=$entity_guid and $access and $md_access", "row_to_elggmetadata");
+        return array_map('row_to_elggmetadata', get_data_2(
+            "SELECT m.*, n.string as name, v.string as value from metadata m JOIN entities e ON e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where m.entity_guid=? and $access and $md_access",             
+            array((int)$entity_guid)
+        ));
 	}
 
 	/**
@@ -538,8 +458,6 @@
 		}
 		if ($site_guid == 0)
 			$site_guid = $CONFIG->site_guid;
-			
-		//$access = get_access_list();
 			
 		$where = array();
 		
@@ -666,8 +584,6 @@
 		if ($site_guid == 0)
 			$site_guid = $CONFIG->site_guid;
 			
-		//$access = get_access_list();
-		
 		if ($entity_type!="")
 			$where[] = "e.type = '{$entity_type}'";
 		if ($entity_subtype)

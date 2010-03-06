@@ -236,9 +236,7 @@
 				$widget->container_guid = $user_guid;
 				if (isset($access_id)) {
 					$widget->access_id = $access_id;
-				} else {
-					$widget->access_id = get_default_access();
-				}
+				} 
 
 				if (!$widget->save())
 					return false;

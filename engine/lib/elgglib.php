@@ -1738,7 +1738,7 @@
 			if ($value) return $value;
 			
 			// [Marcus Povey 20090217 : Now retrieving all datalist values on first load as this saves about 9 queries per page]
-			$result = get_data("SELECT * from datalists");
+			$result = get_data_2("SELECT * from datalists");
 			if ($result)
 			{
 				foreach ($result as $row)
@@ -1752,17 +1752,7 @@
 				if (isset($DATALIST_CACHE[$name]))
 					return $DATALIST_CACHE[$name];
 			}
-			
-			
-			/*if ($row = get_data_row("SELECT value from datalists where name = '{$name}' limit 1")) {
-				$DATALIST_CACHE[$name] = $row->value;
-				
-				// Cache it if memcache is available
-				if ($datalist_memcache) $datalist_memcache->save($name, $row->value);
-				
-				return $row->value;
-			}*/
-			
+						
 			return false;
 			
 		}

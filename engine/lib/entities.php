@@ -51,11 +51,8 @@
 		 * Icon override, overrides the value of getIcon().
 		 */
 		protected $icon_override;
-		
-		/**
-		 * Temporary cache for metadata, permitting meta data access before a guid has obtained.
-		 */
-		protected $temp_metadata;
+				
+        protected $metadata_cache;
 				
 		/**
 		 * Temporary cache for annotations, permitting meta data access before a guid has obtained.
@@ -76,7 +73,7 @@
 
 			// Create attributes array if not already created
 			if (!is_array($this->attributes)) $this->attributes = array();
-			if (!is_array($this->temp_metadata)) $this->temp_metadata = array();
+            if (!is_array($this->metadata_cache)) $this->metadata_cache = array();
 			if (!is_array($this->temp_annotations)) $this->temp_annotations = array();
 			
 			$this->attributes['guid'] = "";
@@ -173,22 +170,43 @@
 		 */
 		public function getMetaData($name)
 		{
-			if ((int) ($this->guid) > 0) {
-				$md = get_metadata_byname($this->getGUID(), $name);
-			} else {
-				if (isset($this->temp_metadata[$name]))
-					return $this->temp_metadata[$name];
-			}
-
-			if ($md && !is_array($md)) {
+            $md = $this->getMetaDataObject($name);
+            
+			if ($md) 
+            {
 				return $md->value;
-			} else if ($md && is_array($md)) {
-				return metadata_array_to_values($md);
-			}
-				
+			} 				
 			return null;
 		}
 		
+        protected function getMetaDataObject($name)
+        {
+            if (isset($this->metadata_cache[$name]))
+            {
+                return $this->metadata_cache[$name];        
+            }    
+            
+            $md = null;
+            
+            if ((int) ($this->guid) > 0) 
+            {
+                $md = get_metadata_byname($this->getGUID(), $name);                
+            } 
+            
+            if (!$md)
+            {
+                $md = new ElggMetadata();
+                $md->entity_guid = $this->guid;
+                $md->name = $name;
+                $md->value = null;
+                $md->owner_guid = $this->owner_guid;
+                $md->access_id = $this->access_id;                
+            }   
+
+            $this->metadata_cache[$name] = $md;
+            return $md;
+        }
+        
 		/**
 		 * Class member get overloading
 		 *
@@ -222,9 +240,13 @@
 		function __unset($name)
 		{
 			if (array_key_exists($name, $this->attributes))
+            {
 				$this->attributes[$name] = "";
+            }    
 			else
-				$this->clearMetaData($name);
+            {
+				$this->setMetaData($name, null);
+            }    
 		}
 		
 		/**
@@ -237,59 +259,11 @@
 		 * @return bool
 		 */
 		public function setMetaData($name, $value, $value_type = "", $multiple = false)
-		{
-			if (is_array($value))
-			{
-				unset($this->temp_metadata[$name]);
-				remove_metadata($this->getGUID(), $name);
-				foreach ($value as $v) {
-					if ((int) $this->guid > 0) {
-						$multiple = true;
-						if (!create_metadata($this->getGUID(), $name, $v, $value_type, $this->getOwner(), $this->getAccessID(), $multiple)) return false;
-					} else {
-						if (($multiple) && (isset($this->temp_metadata[$name])))
-						{
-							if (!is_array($this->temp_metadata[$name]))
-							{
-								$tmp = $this->temp_metadata[$name];
-								$this->temp_metadata[$name] = array();
-								$this->temp_metadata[$name][] = $tmp;
-							}
-							
-							$this->temp_metadata[$name][] = $value;
-						}
-						else
-							$this->temp_metadata[$name] = $value;
-					}
-				}
-					
-				return true;
-			}
-			else
-			{
-				unset($this->temp_metadata[$name]);
-				if ((int) $this->guid > 0) {
-					return create_metadata($this->getGUID(), $name, $value, $value_type, $this->getOwner(), $this->getAccessID(), $multiple);
-				} else {
-					//$this->temp_metadata[$name] = $value;
-					
-					if (($multiple) && (isset($this->temp_metadata[$name])))
-					{
-						if (!is_array($this->temp_metadata[$name]))
-						{
-							$tmp = $this->temp_metadata[$name];
-							$this->temp_metadata[$name] = array();
-							$this->temp_metadata[$name][] = $tmp;
-						}
-						
-						$this->temp_metadata[$name][] = $value;
-					}
-					else
-						$this->temp_metadata[$name] = $value;
-							
-					return true;
-				}
-			}
+		{        
+            $md = $this->getMetaDataObject($name);            
+            $md->value = $value;
+            $md->dirty = true;
+            return true;
 		}
 		
 		/**
@@ -666,7 +640,7 @@
 			{ 
 				cache_entity($this);
 
-				return update_entity(
+				$res = update_entity(
 					$this->get('guid'),
 					$this->get('owner_guid'),
 					$this->get('access_id'),
@@ -676,29 +650,33 @@
 			else
 			{ 
 				$this->attributes['guid'] = create_entity($this->attributes['type'], $this->attributes['subtype'], $this->attributes['owner_guid'], $this->attributes['access_id'], $this->attributes['site_guid'], $this->attributes['container_guid']); // Create a new entity (nb: using attribute array directly 'cos set function does something special!)
-				if (!$this->attributes['guid']) throw new IOException(elgg_echo('IOException:BaseEntitySaveFailed')); 
+				if (!$this->attributes['guid']) throw new IOException(elgg_echo('IOException:BaseEntitySaveFailed'));                
                 
-				// Save any unsaved metadata TODO: How to capture extra information (access id etc)
-				if (sizeof($this->temp_metadata) > 0) {
-					foreach($this->temp_metadata as $name => $value) {
-						$this->$name = $value;
-						unset($this->temp_metadata[$name]);
-					}
-				}
-				
-				// Save any unsaved annotations metadata. TODO: How to capture extra information (access id etc)
-				if (sizeof($this->temp_annotations) > 0) {
-					foreach($this->temp_annotations as $name => $value) {
-						$this->annotate($name, $value);
-						unset($this->temp_annotations[$name]);
-					}
-				}
-				
-				// Cache object handle
-				if ($this->attributes['guid']) cache_entity($this); 
-				
-				return $this->attributes['guid'];
+                // Save any unsaved annotations metadata. TODO: How to capture extra information (access id etc)
+                if (sizeof($this->temp_annotations) > 0) {
+                    foreach($this->temp_annotations as $name => $value) {
+                        $this->annotate($name, $value);
+                        unset($this->temp_annotations[$name]);
+                    }
+                }
+                
+                // Cache object handle
+                if ($this->attributes['guid']) cache_entity($this); 
+                
+                $res = $this->attributes['guid'];            
+                
 			}
+            
+            foreach($this->metadata_cache as $name => $md) 
+            {
+                if ($md->dirty)
+                {
+                    $md->entity_guid = $this->guid;
+                    $md->save();
+                }
+            }   
+            
+            return $res;
 		}
 		
 		/**
@@ -1534,11 +1512,7 @@
 	 */
 	function enable_entity($guid)
 	{
-		global $CONFIG;
-		
-		// Override access only visible entities
-		$access_status = access_get_show_hidden_status();
-		access_show_hidden_entities(true);
+		global $CONFIG;		
 		
 		if ($entity = get_entity($guid)) {
 			if (trigger_elgg_event('enable',$entity->type,$entity)) {
@@ -1554,7 +1528,6 @@
 			}
 		}
 		
-		access_show_hidden_entities($access_status);
 		return false;
 	}
 	

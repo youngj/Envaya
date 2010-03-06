@@ -33,9 +33,9 @@
         $trans->owner_guid = get_loggedin_userid();        
         $trans->container_guid = 0;
         $trans->access_id = ACCESS_PUBLIC;
-        $trans->save();
         $trans->key = $key;
         $trans->text = $translation;
+        $trans->save();
 
         system_message(elgg_echo("trans:posted"));
                 

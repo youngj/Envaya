@@ -362,7 +362,7 @@
         }
 
        
-    function get_data_row_2($query, $args) 
+    function get_data_row_2($query, $args = false) 
     {
         $mysqli = get_mysqli_link('read');        
             
@@ -380,7 +380,7 @@
         return false;
     }
            
-    function get_data_2($query, $args) 
+    function get_data_2($query, $args = false) 
     {    
         $mysqli = get_mysqli_link('read');        
             
@@ -403,7 +403,7 @@
         return false;
     }
 
-    function insert_data_2($query, $args) 
+    function insert_data_2($query, $args = false) 
     {            
         $mysqli = get_mysqli_link('write');
         
@@ -414,7 +414,7 @@
         return false;
     }
     
-    function update_data_2($query, $args) 
+    function update_data_2($query, $args = false) 
     {
         $mysqli = get_mysqli_link('write');
 
@@ -425,7 +425,7 @@
         return false;
     }    
     
-    function delete_data_2($query, $args) 
+    function delete_data_2($query, $args = false) 
     {
         $mysqli = get_mysqli_link('write');
 
@@ -461,7 +461,7 @@
             $params[$count] = &$out[$field->name];
             $count++;
         }    
-        call_user_func_array(mysqli_stmt_bind_result, $params);
+        call_user_func_array('mysqli_stmt_bind_result', $params);
         return $out;
     }
 
@@ -481,8 +481,10 @@
 
             for ($i = 0; $i < $len; $i++)
             {
+                
                 $bindParams[] = &$params[$i];
 
+                $param = $params[$i];
                 if (is_float($param))
                 {
                     $p = "d";    
@@ -499,8 +501,11 @@
                 $bindParams[1] .= $p;
             }
 
-            call_user_func_array(mysqli_stmt_bind_param, $bindParams);
+            call_user_func_array('mysqli_stmt_bind_param', $bindParams);
         }    
+
+        global $DB_PROFILE;
+        $DB_PROFILE[] = $sql;
 
         $stmt->execute();
 
