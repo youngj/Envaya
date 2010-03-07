@@ -111,6 +111,8 @@ CREATE TABLE `users_entity` (
   `prev_last_login` int(11) NOT NULL default '0',
   
    `admin` tinyint(4) default '0',
+   `latitude` float null,
+   `longitude` float null,
   
   PRIMARY KEY  (`guid`),
   UNIQUE KEY (`username`),

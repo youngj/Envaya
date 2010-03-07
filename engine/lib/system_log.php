@@ -75,66 +75,80 @@
 	{
 		global $CONFIG;
 		
-		$by_user_orig = $by_user;
-		if (is_array($by_user) && sizeof($by_user) > 0) {
-			foreach($by_user as $key => $val) {
-				$by_user[$key] = (int) $val;
-			}
-		} else {
-			$by_user = (int)$by_user;
-		}
-		$event = sanitise_string($event);
-		$class = sanitise_string($class);
-		$type = sanitise_string($type);
-		$subtype = sanitise_string($subtype);
-		$limit = (int)$limit;
-		$offset = (int)$offset;
-		
 		$where = array();
+        $args = array();
 		
-		if ($by_user_orig!=="")
+		if ($by_user)
 		{
-			if (is_int($by_user)) {
-				$where[] = "performed_by_guid=$by_user";
-			} else if (is_array($by_user)) {
-				$where [] = "performed_by_guid in (". implode(",",$by_user) .")";
-			} 
+            $where[] = "performed_by_guid=?";
+            $args[] = $by_user;
 		}
-		if ($event != "")
-			$where[] = "event='$event'";
+		if ($event)
+        {
+			$where[] = "event=?";
+            $args[] = $event;
+        }    
+
 		if ($class!=="")
-			$where[] = "object_class='$class'";
+        {
+			$where[] = "object_class=?";
+            $args = $class;
+        }    
+        
 		if ($type != "")
-			$where[] = "object_type='$type'";
+        {
+			$where[] = "object_type=?";
+            $args[] = $type;
+        }    
 		if ($subtype!=="")
-			$where[] = "object_subtype='$subtype'";
-			
+        {
+			$where[] = "object_subtype=?";
+            $args[] = $subtype;
+        }    			
 		if ($timebefore)
-			$where[] = "time_created < " . ((int) $timebefore);
+        {
+			$where[] = "time_created < ?";
+            $args[] = $timebefore;
+        }    
 		if ($timeafter)
-			$where[] = "time_created > " . ((int) $timeafter);
+        {
+			$where[] = "time_created > ?";
+            $args[] = $timeafter;
+        }
 		if ($object_id)
-			$where[] = "object_id = " . ((int) $object_id); 
+        {
+			$where[] = "object_id = ?"; 
+            $args[] = ((int) $object_id);
+        }    
 			
 		$select = "*";
-		if ($count) $select = "count(*) as count";
+		if ($count) 
+        {
+            $select = "count(*) as count";
+        }    
+
 		$query = "SELECT $select from system_log where 1 ";
+        
 		foreach ($where as $w)
 			$query .= " and $w";
 		
 		if (!$count)
-		{
-			$query .= " order by time_created desc";
-			$query .= " limit $offset, $limit"; // Add order and limit
+		{        
+			$query .= " order by time_created desc";            
+            $query .= " limit ?, ?"; 
+            $args[] = (int)$offset;
+            $args[] = (int)$limit;            
 		}
 	
 		if ($count)
 		{
-			if ($numrows = get_data_row($query))
+			if ($numrows = get_data_row_2($query, $args))
 				return $numrows->count;
 		}
 		else
-			return get_data($query);
+        {
+			return get_data_2($query, $args);
+        }    
 			
 		return false;
 	}
@@ -150,7 +164,7 @@
 		
 		$entry_id = (int)$entry_id;
 		
-		return get_data_row("SELECT * from system_log where id=$entry_id");
+        return get_data_row_2("SELECT * from system_log where id=?", array($entry_id));
 	}
 	
 	/**
@@ -189,16 +203,15 @@
 		static $logcache;
 
 		if ($object instanceof Loggable)
-		{
-			
-			if (!is_array($logcache)) $logcache = array();
+		{			
+			if (!is_array($logcache)) 
+                $logcache = array();
 			
 			// Has loggable interface, extract the necessary information and store
 			$object_id = (int)$object->getSystemLogID();
 			$object_class = $object->getClassName();
 			$object_type = $object->getType();
 			$object_subtype = $object->getSubtype();
-			$event = sanitise_string($event);
 			$time = time();
 			$performed_by = (int)$_SESSION['guid'];
 			
@@ -206,6 +219,7 @@
 				$access_id = $object->access_id;
 			else
 				$access_id = ACCESS_PUBLIC;
+
 			if (isset($object->enabled))
 				$enabled = $object->enabled;
 			else
@@ -216,9 +230,15 @@
 			else
 				$owner_guid = 0;
 			
-			// Create log if we haven't already created it
-			if (!isset($logcache[$time][$object_id][$event])) {
-				insert_data("INSERT DELAYED into system_log (object_id, object_class, object_type, object_subtype, event, performed_by_guid, owner_guid, access_id, enabled, time_created) VALUES ('$object_id','$object_class','$object_type', '$object_subtype', '$event',$performed_by, $owner_guid, $access_id, '$enabled', '$time')");
+			if (!isset($logcache[$time][$object_id][$event])) 
+            {
+				insert_data_2("INSERT DELAYED into system_log (
+                    object_id, object_class, object_type, object_subtype, event, 
+                    performed_by_guid, owner_guid, access_id, enabled, time_created) 
+                    VALUES (?,?,?,?,?,?,?,?,?,?)",
+                    array($object_id,$object_class,$object_type,$object_subtype,$event,
+                        $performed_by,$owner_guid,$access_id,$enabled,$time)
+                );
 					
 				$logcache[$time][$object_id][$event] = true;	
 			}
@@ -243,15 +263,15 @@
 		$ts = $now - $offset;
 	
 		// create table
-		if (!update_data("CREATE TABLE system_log_$now as SELECT * from system_log WHERE time_created<$ts"))
+		if (!update_data_2("CREATE TABLE system_log_$now as SELECT * from system_log WHERE time_created<?", array($ts)))
 			return false;
 
 		// delete
-		if (delete_data("DELETE from system_log WHERE time_created<$ts")===false) // Don't delete on time since we are running in a concurrent environment
+		if (delete_data_2("DELETE from system_log WHERE time_created<?", array($ts))===false) 
 			return false;
 			
 		// alter table to engine
-		if (!update_data("ALTER TABLE system_log_$now engine=archive"))
+		if (!update_data_2("ALTER TABLE system_log_$now engine=archive"))
 			return false;
 	
 		return true;

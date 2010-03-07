@@ -27,22 +27,22 @@
 	 * @subpackage Core
 	 */
 	class ElggUser extends ElggEntity
-		implements Friendable
+		implements Friendable, Locatable
 	{
 		/**
 		 * Initialise the attributes array. 
 		 * This is vital to distinguish between metadata and base parameters.
 		 * 
 		 * Place your base parameters here.
-		 */
+		 */       
+         
 		protected function initialise_attributes()
 		{
 			parent::initialise_attributes();
 			
             $this->attributes['type'] = "user";
-            $this->attributes['tables_split'] = 2;
             
-            $this->initializeUserAttributes(array(
+            $this->initializeTableAttributes('users_entity', array(
                 'name' => '',
                 'username' => '',
                 'password' => '',
@@ -51,30 +51,11 @@
                 'language' => '',
                 'code' => '',
                 'banned' => 'no',
-                'admin' => 0
+                'admin' => 0,
+                'latitude' => null,
+                'longitude' => null,
             ));    
         }    
-        
-        protected function initializeUserAttributes($arr)
-        {
-            $userAttributes = array();
-            foreach ($arr as $name => $default)
-            {
-                $userAttributes[] = $name;
-                $this->attributes[$name] = $default;
-            }            
-            $this->attributes['user_attribute_names'] = $userAttributes;
-        }
-				
-        protected function getUserAttributes()
-        {
-            $userAttributes = array();
-            foreach ($this->attributes['user_attribute_names'] as $name)
-            {
-                $userAttributes[$name] = $this->attributes[$name];
-            }
-            return $userAttributes;
-        }
                 
 		/**
 		 * Construct a new user entity, optionally from a given id value.
@@ -88,41 +69,36 @@
 			$this->initialise_attributes();
 			
 			if (!empty($guid))
-			{
-				// Is $guid is a DB row - either a entity row, or a user table row.
-				if ($guid instanceof stdClass) 
-                {										
-                    if (!$this->loadFromEntityRow($guid))
+			{				
+                if ($guid instanceof stdClass) // either a entity row, or a user table row.
+                {						
+                    $row = $guid;
+                    
+                    $entityRow = (property_exists($row, 'type')) ? $row : get_entity_as_row($row->guid);
+                    $userEntityRow = (property_exists($row, 'username')) ? $row : get_user_entity_as_row($row->guid);
+                            
+                    if (!$this->loadFromTableRow($entityRow) || !$this->loadFromTableRow($userEntityRow))
 						throw new IOException(sprintf(elgg_echo('IOException:FailedToLoadGUID'), get_class(), $guid->guid)); 
 				}
-				
-				// See if this is a username
-				else if (is_string($guid))
-				{					
-					$guid = get_user_by_username($guid);
-					foreach ($guid->attributes as $key => $value)
-					 	$this->attributes[$key] = $value;
-					 	
-				}
-				
-				// Is $guid is an ElggUser? Use a copy constructor
 				else if ($guid instanceof ElggUser)
 				{					
-					 foreach ($guid->attributes as $key => $value)
-					 	$this->attributes[$key] = $value;
-				}
-				
-				// Is this is an ElggEntity but not an ElggUser = ERROR!
+                    // copy constructor
+				    foreach ($guid->attributes as $key => $value)
+				        $this->attributes[$key] = $value;
+				}								
 				else if ($guid instanceof ElggEntity)
+                {
 					throw new InvalidParameterException(elgg_echo('InvalidParameterException:NonElggUser'));
-										
-				// We assume if we have got this far, $guid is an int
-				else if (is_numeric($guid)) {					
-					if (!$this->load($guid)) IOException(sprintf(elgg_echo('IOException:FailedToLoadGUID'), get_class(), $guid));
 				}
-				
+				else if (is_numeric($guid)) 
+                {					
+					if (!$this->load($guid)) 
+                        throw new IOException(sprintf(elgg_echo('IOException:FailedToLoadGUID'), get_class(), $guid));
+				}		
 				else
+                {
 					throw new InvalidParameterException(elgg_echo('InvalidParameterException:UnrecognisedValue'));
+                }
 			}
 		}
 		
@@ -139,32 +115,12 @@
 			if (!parent::load($guid)) 
 				return false;
 
-			if ($this->attributes['type']!='user')
+			if ($this->attributes['type'] != 'user')
 				throw new InvalidClassException(sprintf(elgg_echo('InvalidClassException:NotValidElggStar'), $guid, get_class()));
 				
-            return $this->loadFromUserEntityRow(get_user_entity_as_row($guid));
+            return $this->loadFromTableRow(get_user_entity_as_row($guid));
 		}
-        
-        protected function loadFromUserEntityRow($row)
-        {
-            if (($row) && (!$this->isFullyLoaded())) 
-                $this->attributes['tables_loaded'] ++; 
-                                    
-            $objarray = (array) $row;
-            foreach($objarray as $key => $value) 
-                $this->attributes[$key] = $value;
-            
-            return true;            
-        }
-		
-        protected function loadFromEntityRow($row)
-        {
-            $entityRow = (property_exists($row, 'type')) ? $row : get_entity_as_row($row->guid);
-            $userEntityRow = (property_exists($row, 'username')) ? $row : get_user_entity_as_row($row->guid);
-            
-            return parent::loadFromEntityRow($entityRow) && $this->loadFromUserEntityRow($userEntityRow);
-        }
-        
+        		        
 		/**
 		 * Saves this user to the database.
 		 * @return true|false
@@ -174,38 +130,7 @@
 			if (!parent::save())
 				return false;
 
-            $guid = $this->guid;
-            if (get_data_row_2("SELECT guid from users_entity where guid = ?", array($guid)))
-            {
-                $args = array();
-                $set = array();
-                foreach ($this->getUserAttributes() as $name => $value)
-                {
-                    $set[] = "$name = ?";
-                    $args[] = $value;
-                }
-                $set[] = "last_action = ?";
-                $args[] = time();
-                
-                $args[] = $guid;
-            
-                return update_data_2("UPDATE users_entity set ".implode(',', $set)." where guid = ?", $args);
-            }
-            else
-            {
-                $columns = array('guid');
-                $questions = array('?');
-                $args = array($guid);
-                
-                foreach ($this->getUserAttributes() as $name => $value)
-                {
-                    $columns[] = $name;
-                    $questions[] = '?';
-                    $args[] = $value;
-                }
-                           
-                return insert_data_2("INSERT into users_entity (".implode(',', $columns).") values (".implode(',', $questions).")", $args);
-            }
+            return $this->saveTableAttributes('users_entity');    
 		}
 		
 		/**
@@ -330,16 +255,6 @@
 		}
 
 		/**
-		 * Get the collections associated with a user.
-		 *
-		 * @param string $subtype Optionally, the subtype of result we want to limit to
-		 * @param int $limit The number of results to return
-		 * @param int $offset Any indexing offset
-		 * @return unknown
-		 */
-		public function getCollections($subtype="", $limit = 10, $offset = 0) { return get_user_collections($this->getGUID(), $subtype, $limit, $offset); }
-		
-		/**
 		 * If a user's owner is blank, return its own GUID as the owner
 		 *
 		 * @return int User GUID
@@ -351,6 +266,31 @@
 			return $this->owner_guid;
 		}
 
+        public function setLocation($location)
+        {
+            $this->location = $location;            
+            return true;
+        }
+        
+        /**
+         * Set latitude and longitude tags for a given entity.
+         *
+         * @param float $lat
+         * @param float $long
+         */
+        public function setLatLong($lat, $long)
+        {
+            $this->attributes['latitude'] = $lat;
+            $this->attributes['longitude'] = $long;
+            
+            return true;
+        }
+        
+        public function getLatitude() { return $this->attributes['latitude']; }
+        public function getLongitude() { return $this->attributes['longitude']; }
+        
+        public function getLocation() { return $this->get('location'); }
+
 	}
 
 	/**
@@ -359,14 +299,8 @@
 	 * @param int $guid
 	 */
 	function get_user_entity_as_row($guid)
-	{
-		global $CONFIG;
-		
-        if (isset($CONFIG->debug) && $CONFIG->debug == true)
-            error_log("** Sub part of GUID:$guid loaded from DB");
-			
+	{		
         return get_data_row_2("SELECT * from users_entity where guid=?", array((int)$guid));
-
 	}
 		
 	/**
@@ -375,20 +309,19 @@
 	 * @param int $owner_guid The owner GUID
 	 * @return true|false Depending on success
 	 */
-	function disable_user_entities($owner_guid) {
-
-		global $CONFIG;
-		$owner_guid = (int) $owner_guid;
-		if ($entity = get_entity($owner_guid)) {
-			if (trigger_elgg_event('disable',$entity->type,$entity)) {
-				if ($entity->canEdit()) {
-					$res = update_data("UPDATE entities set enabled='no' where owner_guid={$owner_guid} or container_guid = {$owner_guid}");
-					return $res;
+	function disable_user_entities($owner_guid) 
+    {
+		if ($entity = get_entity($owner_guid)) 
+        {
+			if (trigger_elgg_event('disable',$entity->type,$entity)) 
+            {
+				if ($entity->canEdit()) 
+                {
+					return update_data_2("UPDATE entities set enabled='no' where owner_guid = ? or container_guid = ?", array($owner_guid, $owner_guid));
 				}
 			}
 		}
-		return false;
-		
+		return false;		
 	}
 	
 	/**
@@ -399,22 +332,18 @@
 	 */
 	function ban_user($user_guid, $reason = "")
 	{
-		global $CONFIG;
-		
-		$user_guid = (int)$user_guid;
-		$reason = sanitise_string($reason);
-		
 		$user = get_entity($user_guid);
 		
 		if (($user) && ($user->canEdit()) && ($user instanceof ElggUser))
 		{
-			if (trigger_elgg_event('ban', 'user', $user)) {
-				// Add reason
+			if (trigger_elgg_event('ban', 'user', $user)) 
+            {
 				if ($reason)
+                {
 					create_metadata($user_guid, 'ban_reason', $reason,'', 0, ACCESS_PUBLIC);
+                }    
 				
-				// Set ban flag
-				return update_data("UPDATE users_entity set banned='yes' where guid=$user_guid");
+				return update_data_2("UPDATE users_entity set banned='yes' where guid=?", array($user_guid));
 			}
 		}		
 
@@ -428,37 +357,21 @@
 	 */
 	function unban_user($user_guid)
 	{
-		global $CONFIG;
-		
-		$user_guid = (int)$user_guid;
-		
 		$user = get_entity($user_guid);
 		
 		if (($user) && ($user->canEdit()) && ($user instanceof ElggUser))
 		{
-			if (trigger_elgg_event('unban', 'user', $user)) {
+			if (trigger_elgg_event('unban', 'user', $user)) 
+            {
 				create_metadata($user_guid, 'ban_reason', '','', 0, ACCESS_PUBLIC);
-				return update_data("UPDATE users_entity set banned='no' where guid=$user_guid");
+                
+				return update_data_2("UPDATE users_entity set banned='no' where guid=?", array($user_guid));
 			}
 		}
 		
 		return false;
 	}
-	
-	/**
-	 * THIS FUNCTION IS DEPRECATED.
-	 * 
-	 * Delete a user's extra data. 
-	 * 
-	 * @param int $guid
-	 */
-	function delete_user_entity($guid)
-	{
-		system_message(sprintf(elgg_echo('deprecatedfunction'), 'delete_user_entity'));
-		
-		return 1; // Always return that we have deleted one row in order to not break existing code.
-	}
-	
+
 	/**
 	 * Adds a user to another user's friends list.
 	 *
@@ -484,8 +397,6 @@
 	 * @return true|false Depending on success
 	 */
 	function user_remove_friend($user_guid, $friend_guid) {
-		global $CONFIG;
-		
 		$user_guid = (int) $user_guid; 
 		$friend_guid = (int) $friend_guid;
 		
@@ -651,23 +562,6 @@
 	}
 	
 	/**
-	 * Get user objects by an array of metadata
-	 *
-	 * @param int $user_guid The GUID of the owning user
-	 * @param string $subtype Optionally, the subtype of objects
-	 * @paran array $metadata An array of metadata
-	 * @param int $limit The number of results to return (default 10)
-	 * @param int $offset Indexing offset, if any
-	 * @return false|array An array of ElggObjects or false, depending on success
-	 * @return unknown
-	 */
-	function get_user_objects_by_metadata($user_guid, $subtype = "", $metadata = array(), $limit = 0, $offset = 0) {
-		
-		return get_entities_from_metadata_multi($metadata,"object",$subtype,$user_guid,$limit,$offset);
-		
-	}
-	
-	/**
 	 * Get a user object from a GUID.
 	 * 
 	 * This function returns an ElggUser from a given GUID.
@@ -697,7 +591,7 @@
 	 */
 	function get_user_by_username($username)
 	{
-		global $CONFIG, $USERNAME_TO_GUID_MAP_CACHE;
+		global $USERNAME_TO_GUID_MAP_CACHE;
 		
 		$access = get_access_sql_suffix('e');
         
@@ -748,13 +642,12 @@
 	 */
 	function get_user_by_email($email)
 	{
-		global $CONFIG;
-		
 		$access = get_access_sql_suffix('e');
 		
-		$query = "SELECT e.* from entities e join users_entity u on e.guid=u.guid where email=? and $access";
-		
-        return array_map('entity_row_to_elggstar', get_data_2($query, array($email)));
+        return array_map('entity_row_to_elggstar', get_data_2(
+            "SELECT e.* from entities e join users_entity u on e.guid=u.guid where email=? and $access", 
+            array($email)
+        ));
 	}
 	
 	/**
@@ -768,11 +661,6 @@
 	 */
 	function search_for_user($criteria, $limit = 10, $offset = 0, $order_by = "", $count = false, $user_subtype = "")
 	{
-		global $CONFIG;
-		
-		$criteria = sanitise_string($criteria);
-		$limit = (int)$limit;
-		$offset = (int)$offset;
 		$order_by = sanitise_string($order_by);
 		
         $user_subtype_id = get_subtype_id('user', $user_subtype);
@@ -782,33 +670,38 @@
 		if ($order_by == "") 
             $order_by = "e.time_created desc";
 		
+        $args = array();
+        
 		if ($count) 
         {
 			$query = "SELECT count(e.guid) as total ";
 		} 
         else 
         {
-			$query = "SELECT e.* "; 
+			$query = "SELECT e.*, u.* "; 
 		}
 		
-        $query .= "from entities e join users_entity u on e.guid=u.guid where ";
-		// $query .= " match(u.name,u.username) against ('$criteria') ";
-		$query .= "(u.name like \"%{$criteria}%\" or u.username like \"%{$criteria}%\")";
-		$query .= " and $access";
+        $query .= "FROM entities e JOIN users_entity u ON e.guid=u.guid WHERE INSTR(username, ?) > 0 OR INSTR(name, ?) > 0 and $access";        
+        $args[] = $criteria;        
+        $args[] = $criteria;
         
         if ($user_subtype_id)
         {
-            $query .= "AND e.subtype=$user_subtype_id";
+            $query .= "AND e.subtype=?";
+            $args[] = $user_subtype_id;
         }
 		
 		if (!$count) 
         {
-			$query .= " order by $order_by limit $offset, $limit"; // Add order and limit
-			return get_data($query, "entity_row_to_elggstar");
+            $args[] = (int)$offset;
+            $args[] = (int)$limit;            
+        
+            return array_map('entity_row_to_elggstar', get_data_2("$query order by $order_by limit ?, ?", $args));
 		} 
         else 
         {
-			if ($count = get_data_row($query)) {
+			if ($count = get_data_row_2($query, $args)) 
+            {
 				return $count->total;
 			}
 		}
@@ -909,11 +802,12 @@
         if ($user)
         {
             $salt = generate_random_cleartext_password(); // Reset the salt
+            
             $user->salt = $salt;
-
+            
             $hash = generate_user_password($user, $password);
-
-            return update_data("UPDATE users_entity set password='$hash', salt='$salt' where guid=$user_guid");
+            
+            return update_data_2("UPDATE users_entity set password=?, salt=? where guid=?", array($hash, $salt, $user_guid));
         }
 		
 		return false;
@@ -1316,14 +1210,9 @@
 	 *
 	 * @param int $user_guid The user GUID
 	 */
-	function set_last_action($user_guid) {
-		
-		$user_guid = (int) $user_guid;
-		global $CONFIG;
-		$time = time();
-		
-		execute_delayed_write_query("UPDATE users_entity set prev_last_action = last_action, last_action = {$time} where guid = {$user_guid}");
-		
+	function set_last_action($user_guid) 
+    {	
+		execute_delayed_write_query("UPDATE users_entity set prev_last_action = last_action, last_action = ? where guid = ?", array(time(), $user_guid));		
 	}
 	
 	/**
@@ -1331,14 +1220,9 @@
 	 *
 	 * @param int $user_guid The user GUID
 	 */
-	function set_last_login($user_guid) {
-		
-		$user_guid = (int) $user_guid;
-		global $CONFIG;
-		$time = time();
-		
-		execute_delayed_write_query("UPDATE users_entity set prev_last_login = last_login, last_login = {$time} where guid = {$user_guid}");
-		
+	function set_last_login($user_guid) 
+    {	
+		execute_delayed_write_query("UPDATE users_entity set prev_last_login = last_login, last_login = ? where guid = ?", array(time(), $user_guid));		
 	}
 	
 	/**
@@ -1481,6 +1365,77 @@
 		}
 		
 	}
+    
+    function get_users_in_area($lat, $long, $radius, $subtype = "", $order_by = "", $limit = 10, $offset = 0, $count = false)
+    {
+        $lat = (real)$lat;
+        $long = (real)$long;
+        $radius = (real)$radius;
+
+        $order_by = sanitise_string($order_by);
+                    
+        $where = array();
+        $args = array();
+        
+        get_entity_conditions($where, $args, array(
+            'type' => 'user', 
+            'subtype' => $subtype
+        ), 'e');
+            
+        $where[] = "latitude >= ?";
+        $args[] = $lat - $radius;
+        
+        $where[] = "latitude <= ?";
+        $args[] = $lat + $radius;
+        
+        $where[] = "longitude >= ?";
+        $args[] = $long - $radius;
+        
+        $where[] = "longitude <= ?";
+        $args[] = $long + $radius;
+            
+        $from = "FROM entities e INNER JOIN users_entity u ON u.guid = e.guid";                
+        if (!$count) 
+        {
+            $query = "SELECT e.*, u.* $from WHERE ";
+        } 
+        else 
+        {
+            $query = "SELECT count(e.guid) as total $from WHERE ";
+        }
+        foreach ($where as $w)
+        {
+            $query .= " $w and ";
+        }                
+        $query .= get_access_sql_suffix('e'); // Add access controls
+        
+        if (!$count) 
+        {        
+            if ($limit) 
+            {
+                $query .= " limit ?, ?"; 
+                $args[] = (int)$offset;
+                $args[] = (int)$limit;
+            }    
+            
+            return array_map('entity_row_to_elggstar', get_data_2($query, $args));
+        } 
+        else 
+        {
+            $total = get_data_row_2($query, $args);
+            return $total->total;
+        }   
+    }
+
+    function list_users_in_area($lat, $long, $radius, $subtype = "", $limit = 10, $fullview = true, $viewtypetoggle = false, $navigation = true) 
+    {        
+        $offset = (int) get_input('offset');
+        $count = get_users_in_area($lat, $long, $radius, $subtype, "", $limit, $offset, true);
+        $entities = get_users_in_area($lat, $long, $radius, $subtype, "", $limit, $offset);
+
+        return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, $viewtypetoggle, $navigation);
+    }
+    
 	
 	function users_settings_save() {
 		

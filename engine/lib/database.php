@@ -121,14 +121,20 @@
 	{
 		global $DB_DELAYED_QUERIES, $CONFIG;
 		
-		foreach ($DB_DELAYED_QUERIES as $query_details) {
-			$result = execute_query($query_details['q'], $query_details['l']); // use one of our db functions so it is included in profiling.
+		foreach ($DB_DELAYED_QUERIES as $query_details) 
+        {            
+            $stmt = stmt_execute($query_details['l'], $query_details['q'], $query_details['a']);
 			
-			try {
+			try 
+            {
 				if ( (isset($query_details['h'])) && (is_callable($query_details['h'])))
-					$query_details['h']($result);
-			} catch (Exception $e) { // Suppress all errors since these can't be delt with here
-				if (isset($CONFIG->debug) && $CONFIG->debug) error_log($e);
+					$query_details['h']($stmt);
+			} 
+            catch (Exception $e) 
+            { 
+                // Suppress all errors since these can't be dealt with here
+				if (isset($CONFIG->debug) && $CONFIG->debug) 
+                    error_log($e);
 			}
 		}
 	}
@@ -228,7 +234,7 @@
 		 * @param resource $dblink The database link to use
 		 * @param string $handler The handler
 		 */
-		function execute_delayed_query($query, $dblink, $handler = "")
+		function execute_delayed_query($query, $args = false, $dblink, $handler = "")
 		{
 			global $DB_DELAYED_QUERIES;
 			
@@ -238,6 +244,7 @@
 			// Construct delayed query
 			$delayed_query = array();
 			$delayed_query['q'] = $query;
+            $delayed_query['a'] = $args;
 			$delayed_query['l'] = $dblink;
 			$delayed_query['h'] = $handler;
 			
@@ -252,7 +259,7 @@
 		 * @param string $query The query to execute
 		 * @param string $handler The handler if you care about the result.
 		 */
-		function execute_delayed_write_query($query, $handler = "") { return execute_delayed_query($query, get_db_link('write'), $handler); }
+		function execute_delayed_write_query($query, $args = false, $handler = "") { return execute_delayed_query($query, $args, get_mysqli_link('write'), $handler); }
 		
 		/**
 		 * Read wrapper for execute_delayed_query()
@@ -260,7 +267,7 @@
 		 * @param string $query The query to execute
 		 * @param string $handler The handler if you care about the result.
 		 */
-		function execute_delayed_read_query($query, $handler = "") { return execute_delayed_query($query, get_db_link('read'), $handler); }
+		function execute_delayed_read_query($query, $args = false, $handler = "") { return execute_delayed_query($query, $args, get_mysqli_link('read'), $handler); }
 		
 	/**
      * Use this function to get data from the database
@@ -586,57 +593,6 @@
 			return false;      
         }
     
- 
-	/**
-	 * Get the tables currently installed in the Elgg database
-	 *
-	 * @return array List of tables
-	 */
-        function get_db_tables() {
-        	global $CONFIG;
-        	static $tables, $count;
-        	
-        	if (isset($tables)) {
-        		return $tables;
-        	}
-        	
-        	try
-            {
-        		$result = get_data("show tables");
-        	} 
-            catch (DatabaseException $d)
-        	{
-        		// Likely we can't handle an exception here, so just return false.
-        		return false;
-        	}
-        	        	 	
-        	$tables = array();
-        	
-        	if (is_array($result) && !empty($result)) {
-        		foreach($result as $row) {
-        			$row = (array) $row;
-        			if (is_array($row) && !empty($row))
-	        			foreach($row as $element) {
-	        				$tables[] = $element;
-	        			}
-        		}
-        	}
-        	else
-        		return false;
-        	
-        	return $tables;
-        }
-        
-    /**
-     * Run an optimize query on a mysql tables. Useful for executing after major data changes. 
-     *
-     */
-    	function optimize_table($table)
-    	{
-    		$table = sanitise_string($table);
-    		return update_data("optimize table $table");
-    	}
-        
 	/**
 	 * Get the last database error for a particular database link
 	 *

@@ -89,7 +89,11 @@
 
     foreach($files as $file) 
     {
-        if (isset($CONFIG->debug) && $CONFIG->debug) error_log("Loading $file..."); 
+        /*
+        if (isset($CONFIG->debug) && $CONFIG->debug) 
+            error_log("Loading $file..."); 
+        */
+        
         if (!include_once($file))
             throw new InstallationException("Could not load {$file}");
     }

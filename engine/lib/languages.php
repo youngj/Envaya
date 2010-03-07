@@ -119,19 +119,22 @@
             {
                 return $CURRENT_LANGUAGE;
             }
-                  
-			$user = get_loggedin_user();  
-	
-			if (($user) && ($user->language))
-            {
-				$language = $user->language;
-            }    
-            
+
             if (!$language)
             {
                 $language = get_cookie_language();
             }    
-            
+                 
+            if (!$language)
+            {
+                $user = get_loggedin_user();  
+
+                if (($user) && ($user->language))
+                {
+                    $language = $user->language;
+                }    
+            }    
+                        
             if (!$language)
             {
                 $language = get_accept_language();

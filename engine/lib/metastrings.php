@@ -27,41 +27,21 @@
 		global $CONFIG, $METASTRINGS_CACHE, $METASTRINGS_DEADNAME_CACHE;
 		
 		$result = array_search($string, $METASTRINGS_CACHE);
-		if ($result!==false) 
+		if ($result !== false) 
         {			
-			if (isset($CONFIG->debug) && $CONFIG->debug)
-				error_log("** Returning id for string:$string from cache.");
-			
 			return $result;
 		}
 			
 		// See if we have previously looked for this and found nothing
 		if (in_array($string, $METASTRINGS_DEADNAME_CACHE))
 			return false;
-		
-		// Experimental memcache
-		$msfc = null;
-		static $metastrings_memcache;
-		if ((!$metastrings_memcache) && (is_memcache_available()))
-			$metastrings_memcache = new ElggMemcache('metastrings_memcache');
-		if ($metastrings_memcache) $msfc = $metastrings_memcache->load($string);
-		if ($msfc) return $msfc;
-			
-		// Case sensitive
-		$cs = "";
-		if ($case_sensitive) $cs = " BINARY ";
+
+        $cs = ($case_sensitive) ? " BINARY " :"";
 		
 		$row = get_data_row_2("SELECT * from metastrings where string=$cs? limit 1", array($string));
 		if ($row) 
         { 
-			$METASTRINGS_CACHE[$row->id] = $row->string; // Cache it
-			
-			// Attempt to memcache it if memcache is available
-			if ($metastrings_memcache) $metastrings_memcache->save($row->string, $row->id);
-			
-			if (isset($CONFIG->debug) && $CONFIG->debug)
-				error_log("** Cacheing string '{$row->string}'");
-				
+			$METASTRINGS_CACHE[$row->id] = $row->string; 
 			return $row->id;
 		}
 		else
@@ -82,26 +62,19 @@
 		
 		$id = (int) $id;
 		
-		if (isset($METASTRINGS_CACHE[$id])) {
-			
-			if ($CONFIG->debug)
-				error_log("** Returning string for id:$id from cache.");
-			
+		if (isset($METASTRINGS_CACHE[$id])) 
+        {			
 			return $METASTRINGS_CACHE[$id];
 		}
 		
 		$row = get_data_row_2("SELECT * from metastrings where id=? limit 1", array($id));
-		if ($row) {
-			$METASTRINGS_CACHE[$id] = $row->string; // Cache it
-			
-			if ($CONFIG->debug)
-				error_log("** Cacheing string '{$row->string}'");
-			
+		if ($row) 
+        {
+			$METASTRINGS_CACHE[$id] = $row->string; 		
 			return $row->string;
 		}
 			
-		return false;
-		
+		return false;	
 	}
 
 	/**
@@ -136,43 +109,15 @@
 	 */
 	function delete_orphaned_metastrings()
 	{
-		global $CONFIG;
-		
-		// If memcache is enabled then we need to flush it of deleted values
-		if (is_memcache_available())
-		{
-			$select_query = "
-			SELECT * 
-			from metastrings where 
-			( 
-				(id not in (select name_id from metadata)) AND 
-				(id not in (select value_id from metadata)) AND 
-				(id not in (select name_id from annotations)) AND 
-				(id not in (select value_id from annotations))   
-			)";
-			
-			$dead = get_data($select_query);
-			if ($dead)
-			{
-				static $metastrings_memcache;
-				if (!$metastrings_memcache)
-					$metastrings_memcache = new ElggMemcache('metastrings_memcache');
-				foreach ($dead as $d)
-					$metastrings_memcache->delete($d->string);
-			}
-		}
-		
-		$query = "
-			DELETE 
-			from metastrings where 
-			( 
-				(id not in (select name_id from metadata)) AND 
-				(id not in (select value_id from metadata)) AND 
-				(id not in (select name_id from annotations)) AND 
-				(id not in (select value_id from annotations))   
-			)";
-			
-		return delete_data($query);
+        return delete_data_2("
+            DELETE 
+            from metastrings where 
+            ( 
+                (id not in (select name_id from metadata)) AND 
+                (id not in (select value_id from metadata)) AND 
+                (id not in (select name_id from annotations)) AND 
+                (id not in (select value_id from annotations))   
+            )");
 	}
 	
 ?>

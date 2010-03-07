@@ -168,24 +168,18 @@
 	 * @param string $value The optional value of the item (useful for removing a single item in a multiple set)
 	 * @return true|false Depending on success
 	 */
-	function remove_metadata($entity_guid, $name, $value = "") {
-		
-		global $CONFIG;
-		$entity_guid = (int) $entity_guid;
-		$name = sanitise_string($name);
-		$value = sanitise_string($value);
-
-		$query = "SELECT * from metadata WHERE entity_guid = $entity_guid and name_id=" . add_metastring($name);
+	function remove_metadata($entity_guid, $name, $value = "") 
+    {	
+		$query = "DELETE from metadata WHERE entity_guid = ? and name_id = ?";        
+        $args = array($entity_guid, add_metastring($name));
+        
 		if ($value!="")
-			$query .= " and value_id=" . add_metastring($value);
+        {
+			$query .= " and value_id = ?";
+            $args[] = add_metastring($value);
+        }    
 		
-		if ($existing = get_data($query)) {
-			foreach($existing as $ex)
-				delete_metadata($ex->id);
-			return true;
-		}
-		return false;
-		
+		return delete_data_2($query, $args);		
 	}
 	
 	/**
@@ -361,63 +355,6 @@
 	}
 
 	/**
-	 * Get the metadata where the entities they are referring to match a given criteria.
-	 * 
-	 * @param mixed $meta_name 
-	 * @param mixed $meta_value
-	 * @param string $entity_type The type of entity to look for, eg 'site' or 'object'
-	 * @param string $entity_subtype The subtype of the entity.
-	 * @param int $limit 
-	 * @param int $offset
-	 * @param string $order_by Optional ordering.
-	 * @param int $site_guid The site to get entities for. Leave as 0 (default) for the current site; -1 for all sites.
-	 */
-	function find_metadata($meta_name = "", $meta_value = "", $entity_type = "", $entity_subtype = "", $limit = 10, $offset = 0, $order_by = "", $site_guid = 0)
-	{
-		global $CONFIG;
-		
-		$meta_n = get_metastring_id($meta_name);
-		$meta_v = get_metastring_id($meta_value);
-		
-		$entity_type = sanitise_string($entity_type);
-		$entity_subtype = get_subtype_id($entity_type, $entity_subtype);
-		$limit = (int)$limit;
-		$offset = (int)$offset;
-		if ($order_by == "") $order_by = "e.time_created desc";
-		$order_by = sanitise_string($order_by);
-		$site_guid = (int) $site_guid;
-		if ($site_guid == 0)
-			$site_guid = $CONFIG->site_guid;
-			
-			
-		$where = array();
-		
-		if ($entity_type!="")
-			$where[] = "e.type='$entity_type'";
-		if ($entity_subtype)
-			$where[] = "e.subtype=$entity_subtype";
-		if ($meta_name!="") {
-			if (!$meta_v) return false; // The value is set, but we didn't get a value... so something went wrong.
-			$where[] = "m.name_id='$meta_n'";
-		}
-		if ($meta_value!="") {
-			if (!$meta_v) return false; // The value is set, but we didn't get a value... so something went wrong.
-			$where[] = "m.value_id='$meta_v'";
-		}
-		if ($site_guid > 0)
-			$where[] = "e.site_guid = {$site_guid}";
-		
-		$query = "SELECT m.*, n.string as name, v.string as value from entities e JOIN metadata m on e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where";
-		foreach ($where as $w)
-			$query .= " $w and ";
-		$query .= get_access_sql_suffix("e"); // Add access controls
-		$query .= ' and ' . get_access_sql_suffix("m"); // Add access controls
-		$query .= " order by $order_by limit $offset, $limit"; // Add order and limit
-
-		return get_data($query, "row_to_elggmetadata");
-	}
-	
-	/**
 	 * Return a list of entities based on the given search criteria.
 	 * 
 	 * @param mixed $meta_name 
@@ -433,66 +370,66 @@
 	 * @return int|array A list of entities, or a count if $count is set to true
 	 */
 	function get_entities_from_metadata($meta_name, $meta_value = "", $entity_type = "", $entity_subtype = "", $owner_guid = 0, $limit = 10, $offset = 0, $order_by = "", $site_guid = 0, $count = false)
-	{
-		global $CONFIG;
-		
-		$meta_n = get_metastring_id($meta_name);
-		$meta_v = get_metastring_id($meta_value);
-			
-		$entity_type = sanitise_string($entity_type);
-		$entity_subtype = get_subtype_id($entity_type, $entity_subtype);
-		$limit = (int)$limit;
-		$offset = (int)$offset;
-		if ($order_by == "") 
-			$order_by = "e.time_created desc";
-		else
-			$order_by = "e.time_created, {$order_by}";
-		$order_by = sanitise_string($order_by);
-		$site_guid = (int) $site_guid;
-		if ((is_array($owner_guid) && (count($owner_guid)))) {
-			foreach($owner_guid as $key => $guid) {
-				$owner_guid[$key] = (int) $guid;
-			}
-		} else {
-			$owner_guid = (int) $owner_guid;
-		}
-		if ($site_guid == 0)
-			$site_guid = $CONFIG->site_guid;
-			
+	{						
 		$where = array();
+        $args = array();
+        
+        get_entity_conditions($where, $args, array(
+            'type' => $entity_type,
+            'subtype' => $entity_subype,
+            'owner_guid' => $owner_guid
+        ), 'e');
 		
-		if ($entity_type!=="")
-			$where[] = "e.type='$entity_type'";
-		if ($entity_subtype)
-			$where[] = "e.subtype=$entity_subtype";
 		if ($meta_name!=="")
-			$where[] = "m.name_id='$meta_n'";
+        {
+			$where[] = "m.name_id=?";
+            $args[] = get_metastring_id($meta_name);
+        }    
+
 		if ($meta_value!=="")
-			$where[] = "m.value_id='$meta_v'";
-		if ($site_guid > 0)
-			$where[] = "e.site_guid = {$site_guid}";
-		if (is_array($owner_guid)) {
-			$where[] = "e.container_guid in (".implode(",",$owner_guid).")";
-		} else if ($owner_guid > 0)
-			$where[] = "e.container_guid = {$owner_guid}";
-		
-		if (!$count) {
+        {
+			$where[] = "m.value_id=?";
+            $args[] = get_metastring_id($meta_value);
+        }    
+
+		if (!$count) 
+        {
 			$query = "SELECT distinct e.* "; 
-		} else {
+		} 
+        else 
+        {
 			$query = "SELECT count(distinct e.guid) as total ";
 		}
 			
 		$query .= "from entities e JOIN metadata m on e.guid = m.entity_guid where";
 		foreach ($where as $w)
-			$query .= " $w and ";
-		$query .= get_access_sql_suffix("e"); // Add access controls
-		$query .= ' and ' . get_access_sql_suffix("m"); // Add access controls
+        {
+			$query .= " $w and ";            
+        }    
+		$query .= get_access_sql_suffix("e") . ' and ' . get_access_sql_suffix("m"); 
 		
-		if (!$count) {
-			$query .= " order by $order_by limit $offset, $limit"; // Add order and limit
-			return get_data($query, "entity_row_to_elggstar");
-		} else {
-			if ($row = get_data_row($query))
+		if (!$count) 
+        {            
+            $order_by = sanitise_string($order_by);
+            if ($order_by == "") 
+                $order_by = "e.time_created desc";
+            else
+                $order_by = "e.time_created, {$order_by}";
+            
+			$query .= " order by $order_by";
+
+            if ($limit) 
+            {
+                $query .= " limit ?, ?"; 
+                $args[] = (int)$offset;
+                $args[] = (int)$limit;
+            }    
+            
+            return array_map('entity_row_to_elggstar', get_data_2($query, $args));
+		} 
+        else 
+        {
+			if ($row = get_data_row_2($query, $args))
 				return $row->total;
 		}
 		return false;
@@ -526,170 +463,18 @@
 	}
 
 	/**
-	 * Returns a list of entities based on the given search criteria.
-	 *
-	 * @param array $meta_array Array of 'name' => 'value' pairs
-	 * @param string $entity_type The type of entity to look for, eg 'site' or 'object'
-	 * @param string $entity_subtype The subtype of the entity.
-	 * @param int $limit 
-	 * @param int $offset
-	 * @param string $order_by Optional ordering.
-	 * @param int $site_guid The site to get entities for. Leave as 0 (default) for the current site; -1 for all sites.
-	 * @param true|false $count If set to true, returns the total number of entities rather than a list. (Default: false)
-	 * @param string $meta_array_operator Operator used for joining the metadata array together
-	 * @return int|array List of ElggEntities, or the total number if count is set to false
-	 */
-	function get_entities_from_metadata_multi($meta_array, $entity_type = "", $entity_subtype = "", $owner_guid = 0, $limit = 10, $offset = 0, $order_by = "", $site_guid = 0, $count = false, $meta_array_operator = 'and')
-	{
-		global $CONFIG;
-		
-		if (!is_array($meta_array) || sizeof($meta_array) == 0) {
-			return false;
-		}
-		
-		$where = array();
-		
-		$mindex = 1;
-		$join = "";
-		$metawhere = array();
-		$meta_array_operator = sanitise_string($meta_array_operator);
-		foreach($meta_array as $meta_name => $meta_value) {
-			$meta_n = get_metastring_id($meta_name);
-			$meta_v = get_metastring_id($meta_value);
-			$join .= " JOIN metadata m{$mindex} on e.guid = m{$mindex}.entity_guid "; 
-			/*if ($meta_name!=="")
-				$where[] = "m{$mindex}.name_id='$meta_n'";
-			if ($meta_value!=="")
-				$where[] = "m{$mindex}.value_id='$meta_v'";*/
-			$metawhere[] = "(m{$mindex}.name_id='$meta_n' AND m{$mindex}.value_id='$meta_v')";
-			$mindex++;
-		}
-		$where[] = "(".implode($meta_array_operator, $metawhere).")";
-			
-		$entity_type = sanitise_string($entity_type);
-		$entity_subtype = get_subtype_id($entity_type, $entity_subtype);
-		$limit = (int)$limit;
-		$offset = (int)$offset;
-		if ($order_by == "") $order_by = "e.time_created desc";
-		$order_by = sanitise_string($order_by);
-		if ((is_array($owner_guid) && (count($owner_guid)))) {
-			foreach($owner_guid as $key => $guid) {
-				$owner_guid[$key] = (int) $guid;
-			}
-		} else {
-			$owner_guid = (int) $owner_guid;
-		}
-		
-		$site_guid = (int) $site_guid;
-		if ($site_guid == 0)
-			$site_guid = $CONFIG->site_guid;
-			
-		if ($entity_type!="")
-			$where[] = "e.type = '{$entity_type}'";
-		if ($entity_subtype)
-			$where[] = "e.subtype = {$entity_subtype}";
-		if ($site_guid > 0)
-			$where[] = "e.site_guid = {$site_guid}";
-		if (is_array($owner_guid)) {
-			$where[] = "e.container_guid in (".implode(",",$owner_guid).")";
-		} else if ($owner_guid > 0)
-			$where[] = "e.container_guid = {$owner_guid}";
-		//if ($owner_guid > 0)
-		//	$where[] = "e.container_guid = {$owner_guid}";
-		
-		if ($count) {
-			$query = "SELECT count(distinct e.guid) as total ";
-		} else {
-			$query = "SELECT distinct e.* "; 
-		}
-			
-		$query .= " from entities e {$join} where";
-		foreach ($where as $w)
-			$query .= " $w and ";
-		$query .= get_access_sql_suffix("e"); // Add access controls
-	
-		$mindex = 1;
-		foreach($meta_array as $meta_name => $meta_value) {
-			$query .= ' and ' . get_access_sql_suffix("m{$mindex}"); // Add access controls
-			$mindex++;
-		}
-		
-		if (!$count) {
-			$query .= " order by $order_by limit $offset, $limit"; // Add order and limit
-			return get_data($query, "entity_row_to_elggstar");
-		} else {
-			if ($count = get_data_row($query)) {
-				return $count->total;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Returns a viewable list of entities based on the given search criteria.
-	 *
-	 * @see elgg_view_entity_list
-	 * 
-	 * @param array $meta_array Array of 'name' => 'value' pairs
-	 * @param string $entity_type The type of entity to look for, eg 'site' or 'object'
-	 * @param string $entity_subtype The subtype of the entity.
-	 * @param int $limit 
-	 * @param int $offset
-	 * @param string $order_by Optional ordering.
-	 * @param true|false $fullview Whether or not to display the full view (default: true)
-	 * @param true|false $viewtypetoggle Whether or not to allow users to toggle to the gallery view. Default: true
-	 * @param true|false $pagination Display pagination? Default: true
-	 * @return string List of ElggEntities suitable for display
-	 */
-	function list_entities_from_metadata_multi($meta_array, $entity_type = "", $entity_subtype = "", $owner_guid = 0, $limit = 10, $fullview = true, $viewtypetoggle = true, $pagination = true) {
-		
-		$offset = (int) get_input('offset');
-		$limit = (int) $limit;
-		$count = get_entities_from_metadata_multi($meta_array, $entity_type, $entity_subtype, $owner_guid, $limit, $offset, "", $site_guid, true);
-		$entities = get_entities_from_metadata_multi($meta_array, $entity_type, $entity_subtype, $owner_guid, $limit, $offset, "", $site_guid, false);
-	
-		return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, $viewtypetoggle, $pagination);
-		
-	}
-	
-	/**
 	 * Clear all the metadata for a given entity, assuming you have access to that metadata.
 	 * 
 	 * @param int $guid
 	 */
 	function clear_metadata($entity_guid)
 	{
-		global $CONFIG;
-		
-		$entity_guid = (int)$entity_guid;
-		if ($entity = get_entity($entity_guid)) {
-			if ($entity->canEdit())
-				return delete_data("DELETE from metadata where entity_guid={$entity_guid}");
-		}
-		return false;
+        return delete_data_2("DELETE from metadata where entity_guid=?", array($entity_guid));
 	}
 	
-	/**
-	 * Clear all annotations belonging to a given owner_guid
-	 *
-	 * @param int $owner_guid The owner
-	 */
 	function clear_metadata_by_owner($owner_guid)
 	{
-		global $CONFIG;
-		
-		$owner_guid = (int)$owner_guid;
-		
-		$metas = get_data("SELECT id from metadata WHERE owner_guid=$owner_guid");
-		$deleted = 0;
-		
-		foreach ($metas as $id)
-		{
-			if (delete_metadata($id->id)) // Is this the best way?
-				$deleted++;
-		}
-		
-		return $deleted;
+        return delete_data_2("DELETE from metadata WHERE owner_guid=?", array($owner_guid));
 	}	
 
 	/**
@@ -712,26 +497,6 @@
 	}
 	
 	/**
-	 * Takes a metadata array (which has all kinds of properties) and turns it into a simple array of strings 
-	 *
-	 * @param array $array Metadata array
-	 * @return array Array of strings
-	 */
-	function metadata_array_to_values($array) {
-		
-		$valuearray = array();
-		
-		if (is_array($array)) {
-			foreach($array as $element) {
-				$valuearray[] = $element->value;
-			}
-		}
-		
-		return $valuearray;
-		
-	}
-	
-	/**
 	 * Get the URL for this item of metadata, by default this links to the export handler in the current view.
 	 *
 	 * @param int $id
@@ -747,54 +512,6 @@
 	}
 	
 	/**
-	 * Mark entities with a particular type and subtype as having access permissions
-	 * that can be changed independently from their parent entity
-	 *
-	 * @param string $type The type - object, user, etc
-	 * @param string $subtype The subtype; all subtypes by default
-	 */
-	function register_metadata_as_independent($type, $subtype = '*') {
-		global $CONFIG;
-		if (!isset($CONFIG->independents)) $CONFIG->independents = array();
-		$CONFIG->independents[$type][$subtype] = true;
-	}
-	
-	/**
-	 * Determines whether entities of a given type and subtype should not change
-	 * their metadata in line with their parent entity 
-	 *
-	 * @param string $type The type - object, user, etc
-	 * @param string $subtype The entity subtype
-	 * @return true|false
-	 */
-	function is_metadata_independent($type, $subtype) {
-		global $CONFIG;
-		if (empty($CONFIG->independents)) return false;
-		if (!empty($CONFIG->independents[$type][$subtype])
-			|| !empty($CONFIG->independents[$type]['*'])) return true;
-		return false;
-	}
-	
-	/**
-	 * When an entity is updated, resets the access ID on all of its child metadata
-	 *
-	 * @param string $event The name of the event
-	 * @param string $object_type The type of object
-	 * @param ElggEntity $object The entity itself
-	 */
-	function metadata_update($event, $object_type, $object) {
-		if ($object instanceof ElggEntity) {
-			if (!is_metadata_independent($object->getType(), $object->getSubtypeName())) {
-				global $CONFIG;
-				$access_id = (int) $object->access_id;
-				$guid = (int) $object->getGUID();
-				update_data("update metadata set access_id = {$access_id} where entity_guid = {$guid}");
-			}
-		}	
-		return true;	
-	}
-	
-	/**
 	 * Register a metadata url handler.
 	 *
 	 * @param string $function_name The function.
@@ -804,7 +521,5 @@
 		return register_extender_url_handler($function_name, 'metadata', $extender_name);
 	}
 		
-	/** Call a function whenever an entity is updated **/
-	register_elgg_event_handler('update','all','metadata_update');
 	
 ?>

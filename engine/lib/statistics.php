@@ -18,34 +18,44 @@
 	 * @return array
 	 */
 	function get_entity_statistics($owner_guid = 0)
-	{
-		global $CONFIG;
-		
+	{		
 		$entity_stats = array();
-		$owner_guid = (int)$owner_guid;
 		
-		$query = "SELECT distinct e.type,e.subtype as subtype_id from entities e";
-		$owner_query = "";
-		if ($owner_guid) {
-			$query .= " where owner_guid=$owner_guid";
-			$owner_query = "and owner_guid=$owner_guid ";
+		$query = "SELECT distinct e.type,e.subtype as subtype_id from entities e";		
+        $args = array();
+		if ($owner_guid) 
+        {
+			$query .= " where owner_guid=?";
+            $args[] = $owner_guid;
 		}
 		
-		// Get a list of major types
-		
-		$types = get_data($query);
-		foreach ($types as $type) {
-            
+		$types = get_data_2($query, $args);
+		foreach ($types as $type) 
+        {                                    
             $subtype = get_subtype_from_id($type->subtype_id);
-
-			if (!is_array($entity_stats[$type->type])) 
-				$entity_stats[$type->type] = array(); // assume there are subtypes for now
+            
+            $args = array();
 			
-			$query = "SELECT count(*) as count from entities where type='{$type->type}' $owner_query";
-            if ($subtype) $query.= " and subtype={$type->subtype_id}";
+			$query = "SELECT count(*) as count from entities where type = ? ";
+            $args[] = $type->type;
+            
+            if ($owner_guid)
+            {
+                $query .= " and owner_guid=? ";
+                $args[] = $owner_guid;
+            }    
+            
+            if ($subtype)
+            {
+                $query .= " and subtype = ?";
+                $args[] = $type->subtype_id;
+            }
                                     
-			$subtype_cnt = get_data_row($query);
+			$subtype_cnt = get_data_row_2($query, $args);
 			
+            if (!is_array($entity_stats[$type->type])) 
+                $entity_stats[$type->type] = array();            
+            
 			if ($subtype)
                 $entity_stats[$type->type][$subtype] = $subtype_cnt->count;
 			else
@@ -70,7 +80,7 @@
 		if (!$show_deactivated)
 			$access = "and " . get_access_sql_suffix();
 		
-		$result = get_data_row("SELECT count(*) as count from entities where type='user' $access");
+		$result = get_data_row_2("SELECT count(*) as count from entities where type='user' $access");
             
 		if ($result)
 			return $result->count;

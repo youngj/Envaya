@@ -66,6 +66,7 @@ class Organization extends ElggUser {
             $code .= $characters[mt_rand(0, strlen($characters) - 1)];
         }
         $this->email_code = $code;
+        $this->saveMetaData();
     }
     
     public function getIconFile($size)
@@ -118,14 +119,8 @@ class Organization extends ElggUser {
         
     function getBlogDates()
     {
-        $subtypeId = get_subtype_id('object', 'blog');
-        global $CONFIG;
-    
-        $sql = "SELECT guid, time_created from entities 
-                WHERE type='object' AND subtype=$subtypeId 
-                AND container_guid={$this->guid} ORDER BY guid ASC";
-
-        return get_data($sql);               
+        $sql = "SELECT guid, time_created from entities WHERE type='object' AND subtype=? AND container_guid=? ORDER BY guid ASC";
+        return get_data_2($sql, array(T_blog, $this->guid));               
     }
 
 }

@@ -29,7 +29,6 @@
 	 * @subpackage Core
 	 */
 	abstract class ElggEntity implements 
-		Locatable,  // Geocoding interface
 		Loggable,	// Can events related to this object class be logged
 		Iterator,	// Override foreach behaviour
 		ArrayAccess // Override for array access
@@ -54,6 +53,8 @@
 				
         protected $metadata_cache;
 				
+        protected $table_attribute_names;                
+                
 		/**
 		 * Temporary cache for annotations, permitting meta data access before a guid has obtained.
 		 */
@@ -87,23 +88,71 @@
 			$this->attributes['access_id'] = ACCESS_PRIVATE;
 			$this->attributes['time_created'] = "";
 			$this->attributes['time_updated'] = "";
-			$this->attributes['enabled'] = "yes";
-			
-			// There now follows a bit of a hack
-			/* Problem: To speed things up, some objects are split over several tables, this means that it requires
-			 * n number of database reads to fully populate an entity. This causes problems for caching and create events
-			 * since it is not possible to tell whether a subclassed entity is complete.
-			 * Solution: We have two counters, one 'tables_split' which tells whatever is interested how many tables 
-			 * are going to need to be searched in order to fully populate this object, and 'tables_loaded' which is how
-			 * many have been loaded thus far.
-			 * If the two are the same then this object is complete.
-			 * 
-			 * Use: isFullyLoaded() to check
-			 */
-			$this->attributes['tables_split'] = 1;
-			$this->attributes['tables_loaded'] = 0;
+			$this->attributes['enabled'] = "yes";		
 		}
 				
+        
+        protected function initializeTableAttributes($tableName, $arr)
+        {
+            $tableAttributes = array();
+            foreach ($arr as $name => $default)
+            {
+                $tableAttributes[] = $name;
+                $this->attributes[$name] = $default;
+            }            
+            
+            if (!is_array($this->table_attribute_names))
+            {
+                $this->table_attribute_names = array();
+            }
+            
+            $this->table_attribute_names[$tableName] = $tableAttributes;
+        }
+                
+        protected function getTableAttributes($tableName)
+        {
+            $tableAttributes = array();
+            foreach ($this->table_attribute_names[$tableName] as $name)
+            {
+                $tableAttributes[$name] = $this->attributes[$name];
+            }
+            return $tableAttributes;
+        }                
+
+        public function saveTableAttributes($tableName)
+        {
+            $guid = $this->guid;
+            if (get_data_row_2("SELECT guid from $tableName where guid = ?", array($guid)))
+            {
+                $args = array();
+                $set = array();
+                foreach ($this->getTableAttributes($tableName) as $name => $value)
+                {
+                    $set[] = "$name = ?";
+                    $args[] = $value;
+                }
+                
+                $args[] = $guid;
+            
+                return update_data_2("UPDATE $tableName set ".implode(',', $set)." where guid = ?", $args);
+            }
+            else
+            {
+                $columns = array('guid');
+                $questions = array('?');
+                $args = array($guid);
+                
+                foreach ($this->getTableAttributes($tableName) as $name => $value)
+                {
+                    $columns[] = $name;
+                    $questions[] = '?';
+                    $args[] = $value;
+                }
+                                     
+                return update_data_2("INSERT into $tableName (".implode(',', $columns).") values (".implode(',', $questions).")", $args);                
+            }        
+        }        
+                
 		/**
 		 * Return the value of a given key.
 		 * If $name is a key field (as defined in $this->attributes) that value is returned, otherwise it will
@@ -622,14 +671,7 @@
 			
 			return true;
 		}
-		
-		/**
-		 * Tests to see whether the object has been fully loaded.
-		 * 
-		 * @return bool
-		 */
-		public function isFullyLoaded() { return ! ($this->attributes['tables_loaded'] < $this->attributes['tables_split']); }
-		
+				
 		/**
 		 * Save generic attributes to the entities table.
 		 */
@@ -667,18 +709,25 @@
                 
 			}
             
+            $this->saveMetaData();
+
+            return $res;
+		}
+		
+        function saveMetaData()
+        {
             foreach($this->metadata_cache as $name => $md) 
             {
                 if ($md->dirty)
                 {
                     $md->entity_guid = $this->guid;
                     $md->save();
+                    $md->dirty = false;
                 }
             }   
-            
-            return $res;
-		}
-		
+                    
+        }
+        
 		/**
 		 * Load the basic entity information and populate base attributes array.
 		 * 
@@ -690,31 +739,25 @@
 			
 			if ($row)
 			{
-                $this->loadFromEntityRow($row);
+                $this->loadFromTableRow($row);
 				return true;
 			}
 			
 			return false;
 		}
 		
-        protected function loadFromEntityRow($row)
+        protected function loadFromTableRow($row)
         {
-            // Create the array if necessary - all subclasses should test before creating
-            if (!is_array($this->attributes)) $this->attributes = array();
-
-            // Now put these into the attributes array as core values
             $objarray = (array) $row;
+            
             foreach($objarray as $key => $value) 
                 $this->attributes[$key] = $value;
-
-            // Increment the portion counter
-            if (!$this->isFullyLoaded()) $this->attributes['tables_loaded'] ++;
-
-            // Cache object handle
-            if ($this->attributes['guid']) cache_entity($this); 
-
+            
+            if ($this->attributes['guid'])
+                cache_entity($this); 
+                        
             return true;
-        }
+        }        
         
 		/**
 		 * Disable this entity.
@@ -754,54 +797,7 @@
 		public function delete() 
 		{ 
 			return delete_entity($this->get('guid'));
-		}
-		
-		// LOCATABLE INTERFACE /////////////////////////////////////////////////////////////
-		
-		/** Interface to set the location */
-		public function setLocation($location)
-		{
-			$location = sanitise_string($location);
-			
-			$this->location = $location;
-			
-			return true;
-		}
-		
-		/**
-		 * Set latitude and longitude tags for a given entity.
-		 *
-		 * @param float $lat
-		 * @param float $long
-		 */
-		public function setLatLong($lat, $long)
-		{
-			$lat = sanitise_string($lat);
-			$long = sanitise_string($long);
-			
-			$this->set('geo:lat', $lat);
-			$this->set('geo:long', $long);
-			
-			return true;
-		}
-		
-		/**
-		 * Get the contents of the ->geo:lat field.
-		 *
-		 */
-		public function getLatitude() { return $this->get('geo:lat'); }
-		
-		/**
-		 * Get the contents of the ->geo:lat field.
-		 *
-		 */
-		public function getLongitude() { return $this->get('geo:long'); }
-		
-		/**
-		 * Get the ->location metadata. 
-		 *
-		 */
-		public function getLocation() { return $this->get('location'); }
+		}			
 		
         function getRootContainerEntity()
         {
@@ -966,7 +962,7 @@
 		$guid = (int)$guid;
 			
 		if (isset($ENTITY_CACHE[$guid])) 
-			if ($ENTITY_CACHE[$guid]->isFullyLoaded()) return $ENTITY_CACHE[$guid];
+			return $ENTITY_CACHE[$guid];
 				
 		return false;
 	}
@@ -1219,13 +1215,6 @@
 			return $row;
 			
 		$new_entity = false;
-			
-		// Create a memcache cache if we can
-		static $newentity_cache;
-		if ((!$newentity_cache) && (is_memcache_available())) 
-			$newentity_cache = new ElggMemcache('new_entity_cache');
-		if ($newentity_cache) $new_entity = $newentity_cache->load($row->guid);
-		if ($new_entity) return $new_entity;
 
 		$classname = get_subtype_class_from_id($row->subtype);
 		if ($classname!="")
@@ -1254,9 +1243,6 @@
 			
 		}
 		
-		// Cache entity if we have a cache available
-		if (($newentity_cache) && ($new_entity)) $newentity_cache->save($new_entity->guid, $new_entity);
-		
 		return $new_entity;
 	}
 	
@@ -1281,6 +1267,92 @@
 		return entity_row_to_elggstar(get_entity_as_row($guid));
 	}
 	
+    function get_entity_conditions(&$where, &$args, $params, $tableName='')
+    {
+        if ($tableName)
+            $tableName .= ".";    
+    
+        $subtype = $params['subtype'];
+        $type = $params['type'];
+    
+        if (is_array($subtype)) 
+        {
+            $tempwhere = "";
+            
+            foreach($subtype as $typekey => $subtypearray) 
+            {
+                foreach($subtypearray as $subtypeval) 
+                {
+                    if (!empty($subtypeval)) 
+                    {
+                        if (!$subtypeval = (int) get_subtype_id($typekey, $subtypeval))
+                            return false;
+                    } 
+                    else 
+                    {
+                        // @todo: Setting subtype to 0 when $subtype = '' returns entities with
+                        // no subtype.  This is different to the non-array behavior
+                        // but may be required in some cases.
+                        $subtypeval = 0;
+                    }
+
+                    if (!empty($tempwhere)) 
+                        $tempwhere .= " or ";
+
+                    $tempwhere .= "({$tableName}type = ? and {$tableName}subtype = ?)";
+                    $args[] = $typekey;
+                    $args[] = $subtypeval;
+                }
+            }
+            if (!empty($tempwhere)) 
+                $where[] = "({$tempwhere})";
+
+        } 
+        else 
+        {           
+            if ($type != "")
+            {
+                $where[] = "{$tableName}type=?";
+                $args[] = $type;
+            }    
+
+            $subtypeId = get_subtype_id($type, $subtype);
+            if ($subtypeId)
+            {
+                $where[] = "{$tableName}subtype=?";
+                $args[] = $subtypeId;
+            }    
+        }
+
+        $owner_guid = $params['owner_guid'];
+        if ($owner_guid) 
+        {
+            $where[] = "{$tableName}owner_guid = ?";
+            $args[] = (int)$owner_guid;
+        }
+
+        $container_guid = $params['container_guid'];
+        if ($container_guid) 
+        {
+            $where[] = "{$tableName}container_guid = ?";
+            $args[] = (int)$container_guid;
+        }
+
+        $timelower = $params['time_lower'];
+        if ($timelower)
+        {
+            $where[] = "{$tableName}time_created >= ?";
+            $args[] = (int)$timelower;
+        }    
+        
+        $timeupper = $params['time_upper'];
+        if ($timeupper)
+        {
+            $where[] = "{$tableName}time_created <= ?";
+            $args[] = (int)$timeupper;
+        }    
+    }    
+    
 	/**
 	 * Return entities matching a given query, or the number thereof
 	 * 
@@ -1307,77 +1379,14 @@
 		$where = array();
         $args = array();
 		
-		if (is_array($subtype)) 
-        {
-			$tempwhere = "";
-			if (sizeof($subtype))
-			foreach($subtype as $typekey => $subtypearray) 
-            {
-				foreach($subtypearray as $subtypeval) 
-                {
-					if (!empty($subtypeval)) 
-                    {
-						if (!$subtypeval = (int) get_subtype_id($typekey, $subtypeval))
-							return false;
-					} 
-                    else 
-                    {
-						// @todo: Setting subtype to 0 when $subtype = '' returns entities with
-						// no subtype.  This is different to the non-array behavior
-						// but may be required in some cases.
-						$subtypeval = 0;
-					}
-					
-                    if (!empty($tempwhere)) 
-                        $tempwhere .= " or ";
-					
-                    $tempwhere .= "(type = ? and subtype = ?)";
-                    $args[] = $typekey;
-                    $args[] = $subtypeval;
-				}
-			}
-			if (!empty($tempwhere)) $where[] = "({$tempwhere})";
-			
-		} 
-        else 
-        {	        
-			if ($type != "")
-            {
-				$where[] = "type=?";
-                $args[] = $type;
-            }    
-            
-            $subtypeId = get_subtype_id($type, $subtype);
-            if ($subtypeId)
-            {
-				$where[] = "subtype=?";
-                $args[] = $subtypeId;
-            }    
-		}
-
-		if ($owner_guid) 
-        {
-			$where[] = "owner_guid = ?";
-            $args[] = (int)$owner_guid;
-		}
-        
-		if (!is_null($container_guid)) 
-        {
-            $where[] = "container_guid = ?";
-            $args[] = (int)$container_guid;
-		}
-
-		if ($timelower)
-        {
-			$where[] = "time_created >= ?";
-            $args[] = (int)$timelower;
-        }    
-		if ($timeupper)
-        {
-			$where[] = "time_created <= ?";
-            $args[] = (int)$timeupper;
-        }    
-			
+        get_entity_conditions($where, $args, array(
+            'type' => $type, 
+            'subtype' => $subtype, 
+            'owner_guid' => $owner_guid, 
+            'container_guid' => $container_guid, 
+            'time_lower' => $time_lower, 
+            'time_upper' => $time_upper));
+        			
 		if (!$count) 
         {
 			$query = "SELECT * from entities where ";
@@ -1401,12 +1410,11 @@
             $order_by = sanitise_string($order_by);       
 			$query .= " order by $order_by";
 
-            $limit = (int)$limit;
-            $offset = (int)$offset;
-
 			if ($limit) 
             {            
-                $query .= " limit $offset, $limit"; 
+                $args[] = (int)$offset;
+                $args[] = (int)$limit;                
+                $query .= " limit ?, ?"; 
             }    
 			return array_map('entity_row_to_elggstar', get_data_2($query, $args));
 		} 

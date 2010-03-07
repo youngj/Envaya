@@ -9,6 +9,7 @@
     $password2 = get_input('password2');
     $email = trim(get_input('email'));
     $name = trim(get_input('name'));
+    $language = get_input('language');
         
     try 
     {
@@ -48,6 +49,7 @@
         $org->password = generate_user_password($org, $password); 
         $org->owner_guid = 0; 
         $org->container_guid = 0;                 
+        $org->language = $language;
         
         $org->save();        
 

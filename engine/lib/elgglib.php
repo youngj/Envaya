@@ -1737,7 +1737,6 @@
 			if ($datalist_memcache) $value = $datalist_memcache->load($name);
 			if ($value) return $value;
 			
-			// [Marcus Povey 20090217 : Now retrieving all datalist values on first load as this saves about 9 queries per page]
 			$result = get_data_2("SELECT * from datalists");
 			if ($result)
 			{
