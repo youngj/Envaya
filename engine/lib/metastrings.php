@@ -114,9 +114,8 @@
             from metastrings where 
             ( 
                 (id not in (select name_id from metadata)) AND 
-                (id not in (select value_id from metadata)) AND 
-                (id not in (select name_id from annotations)) AND 
-                (id not in (select value_id from annotations))   
+                (id not in (select value_id from metadata)) 
+
             )");
 	}
 	

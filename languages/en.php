@@ -772,7 +772,6 @@ To remove a widget drag it back to the <b>Widget gallery</b>.",
 
 			'by' => 'by',
 
-			'annotations' => "Annotations",
 			'relationships' => "Relationships",
 			'metadata' => "Metadata",
 
@@ -974,8 +973,6 @@ If you requested this click on the link below, otherwise ignore this email.
 		 */
 
 			'comments:count' => "%s comments",
-
-			'riveraction:annotation:generic_comment' => '%s commented on %s',
 
 			'generic_comments:add' => "Add a comment",
 			'generic_comments:text' => "Comment",

@@ -101,22 +101,20 @@
     trigger_elgg_event('boot', 'system');
 			
 	$installed = is_installed();
-	$db_installed = is_db_installed();
 			
-    if ($installed && $db_installed) 
+    if ($installed) 
     {
         load_plugins();
         trigger_elgg_event('plugins_boot', 'system');
     }
     
-    if ((!$installed || !$db_installed) && !substr_count($_SERVER["PHP_SELF"],"install.php") && !substr_count($_SERVER["PHP_SELF"],"css.php") && !substr_count($_SERVER["PHP_SELF"],"action_handler.php")) 
+    if (!$installed && !substr_count($_SERVER["PHP_SELF"],"install.php") && !substr_count($_SERVER["PHP_SELF"],"css.php") && !substr_count($_SERVER["PHP_SELF"],"action_handler.php")) 
     {
 	    header("Location: install.php");
 	    exit;
 	}
 			
-	if (!substr_count($_SERVER["PHP_SELF"],"install.php") && !substr_count($_SERVER["PHP_SELF"],"setup.php")
-        && !(defined('upgrading') && upgrading == 'upgrading')) 
+	if (!substr_count($_SERVER["PHP_SELF"],"install.php") && !substr_count($_SERVER["PHP_SELF"],"setup.php")) 
     {
         trigger_elgg_event('init', 'system');
     }

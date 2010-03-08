@@ -127,9 +127,6 @@
 	 */
 	function send_admin_message($subject, $message)
 	{
-		$subject = sanitise_string($subject);
-		$message = sanitise_string($message);
-		
 		if (($subject) && ($message))
 		{
 			$admin_message = new ElggObject();

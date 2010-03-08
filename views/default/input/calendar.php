@@ -27,7 +27,7 @@
 END;
         $calendarjs = 1;
     }
-    $strippedname = sanitise_string($vars['internalname']);
+    $strippedname = $vars['internalname'];
     $js = "cal" . $strippedname;
 
     if ($vars['value'] > 86400) {

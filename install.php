@@ -11,31 +11,21 @@
 	 * @link http://elgg.org/
 	 */
 
-	/**
-	 * Start the Elgg engine
-	 */
-		require_once(dirname(__FILE__) . "/engine/start.php");
-		global $CONFIG;
-		
-		elgg_set_viewtype('failsafe');
-	/**
-	 * If we're installed, go back to the homepage
-	 */
-		if ((is_installed() && is_db_installed() && datalist_get('installed')))
-			forward("index.php");
-		
-	/**
-	 * Install the database
-	 */
-		if (!is_db_installed()) {
-			run_sql_script(dirname(__FILE__) . "/engine/schema/mysql.sql");
-			init_site_secret();
-			system_message(elgg_echo("installation:success"));
-            datalist_set('installed', 1);  
-            system_message(elgg_echo("installation:configuration:success"));
-            forward("account/register.php");
-		}
-		
-    forward("index.php");
+    require_once(dirname(__FILE__) . "/engine/start.php");
+   		
+	elgg_set_viewtype('failsafe');
+	if (is_installed())
+    {
+	    forward("index.php");
+    }    
+	else
+    {
+        run_sql_script(dirname(__FILE__) . "/engine/schema/mysql.sql");
+        init_site_secret();
+        system_message(elgg_echo("installation:success"));
+        datalist_set('installed', 1);  
+        system_message(elgg_echo("installation:configuration:success"));
+        forward("account/register.php");
+    }    
 
 ?>

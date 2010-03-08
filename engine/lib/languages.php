@@ -275,8 +275,6 @@
 			// Ensure that all possible translations are loaded
 			reload_all_translations();
 			
-			$language = sanitise_string($language);
-			
 			$en = count($CONFIG->translations['en']);
 			
 			$missing = get_missing_language_keys($language);

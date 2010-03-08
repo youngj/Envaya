@@ -20,11 +20,9 @@
 	$message = elgg_view('output/longtext', array('value' => $vars['object']->getMessage()));
 	
 	$body = <<< END
-	<p class="messages-exception">
 		<span title="$class">
 			<b>$message</b>
 		</span>
-	</p>
 END;
 
 	if ($CONFIG->debug)
@@ -40,5 +38,5 @@ END;
 	
 	$title = $class;
 	
-	echo elgg_view_layout("one_column", elgg_view_title($title) . $body);
+	echo elgg_view_layout("one_column_padded", elgg_view_title($title), $body);
 ?>

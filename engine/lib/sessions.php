@@ -378,9 +378,10 @@
 		function session_init($event, $object_type, $object) {
 			            
 			global $DB_PREFIX, $CONFIG;
+            
+            if (!is_installed())
+                return false;            
 			
-			if (!is_db_installed()) return false;
-                        
             register_shutdown_function('session_write_close');
 			
 			// Use database for sessions

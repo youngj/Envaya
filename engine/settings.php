@@ -9,35 +9,7 @@
     $CONFIG->dbpass = 'scarlett';
     $CONFIG->dbname = 'elgg';
     $CONFIG->dbhost = 'localhost';
-
-	/*
-
-    // Yes! We want to split reads and writes
-    $CONFIG->db->split = true;
-	 
-    // READS
-    $CONFIG->db['read']->dbuser = "";
-    $CONFIG->db['read']->dbpass = "";
-    $CONFIG->db['read']->dbname = "";
-    $CONFIG->db['read']->dbhost = "localhost";
-
-    $CONFIG->db['write']->dbuser = "";
-    $CONFIG->db['write']->dbpass = "";
-    $CONFIG->db['write']->dbname = "";
-    $CONFIG->db['write']->dbhost = "localhost";
-
-	 */
 			
-	/*
-	 * For extra connections for both reads and writes, you can turn both
-	 * $CONFIG->db['read'] and $CONFIG->db['write'] into an array, eg:
-	 * 
-	 * 	$CONFIG->db['read'][0]->dbhost = "localhost";
-	 * 
-	 * Note that the array keys must be numeric and consecutive, i.e., they start
-	 * at 0, the next one must be at 1, etc.
-	 */
-	 			
 	/**
 	 * Memcache setup (optional)
 	 * This is where you may optionally set up memcache.

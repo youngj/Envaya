@@ -90,7 +90,8 @@
 			}
 
 			$this->id = add_entity_relationship($this->guid_one, $this->relationship, $this->guid_two);
-			if (!$this->id) throw new IOException(sprintf(elgg_new('IOException:UnableToSaveNew'), get_class()));
+			if (!$this->id) 
+                throw new IOException(sprintf(elgg_new('IOException:UnableToSaveNew'), get_class()));
 
 			return $this->id;
 			
@@ -239,11 +240,7 @@
 	 */
 	function get_relationship($id)
 	{
-		global $CONFIG;
-		
-		$id = (int)$id;
-		
-		return row_to_elggrelationship(get_data_row("SELECT * from entity_relationships where id=$id"));
+		return row_to_elggrelationship(get_data_row_2("SELECT * from entity_relationships where id=?", array($id)));
 	}
 	
 	/**
@@ -253,13 +250,7 @@
 	 */
 	function delete_relationship($id)
 	{
-		global $CONFIG;
-		
-		$id = (int)$id;
-		
-		$result = delete_data("delete from entity_relationships where id=$id");
-		
-		return $result;
+		return delete_data_2("delete from entity_relationships where id=?", array($id));
 	}
 	
 	/**
@@ -274,23 +265,22 @@
 	 */
 	function add_entity_relationship($guid_one, $relationship, $guid_two)
 	{
-		global $CONFIG;
-		
-		$guid_one = (int)$guid_one;
-		$relationship = sanitise_string($relationship);
-		$guid_two = (int)$guid_two;
-			
-		// Check for duplicates
 		if (check_entity_relationship($guid_one, $relationship, $guid_two))
 			return false;
 		
-		$result = insert_data("INSERT into entity_relationships (guid_one, relationship, guid_two) values ($guid_one, '$relationship', $guid_two)");
+		$result = insert_data_2("INSERT into entity_relationships (guid_one, relationship, guid_two) values (?,?,?)",
+            array($guid_one, $relationship, $guid_two)
+        );
 		
-		if ($result!==false) {
+		if ($result!==false) 
+        {
 			$obj = get_relationship($result);
-			if (trigger_elgg_event('create', $relationship, $obj)) {
+			if (trigger_elgg_event('create', $relationship, $obj)) 
+            {
 				return true;
-			} else {
+			} 
+            else 
+            {
 				delete_relationship($result);
 			}
 		}
@@ -307,14 +297,10 @@
 	 * @return object|false Depending on success
 	 */
 	function check_entity_relationship($guid_one, $relationship, $guid_two)
-	{
-		global $CONFIG;
-		
-		$guid_one = (int)$guid_one;
-		$relationship = sanitise_string($relationship);
-		$guid_two = (int)$guid_two;
-			
-		if ($row = get_data_row("SELECT * FROM entity_relationships WHERE guid_one=$guid_one AND relationship='$relationship' AND guid_two=$guid_two limit 1")) {
+	{	
+		if ($row = get_data_row_2("SELECT * FROM entity_relationships WHERE guid_one=? AND relationship=? AND guid_two=? limit 1",
+            array($guid_one, $relationship, $guid_two)
+        )) {
 			return $row;
 		}
 		return false;
@@ -329,18 +315,18 @@
 	 */
 	function remove_entity_relationship($guid_one, $relationship, $guid_two)
 	{
-		global $CONFIG;
-		
-		$guid_one = (int)$guid_one;
-		$relationship = sanitise_string($relationship);
-		$guid_two = (int)$guid_two;
-		
 		$obj = check_entity_relationship($guid_one, $relationship, $guid_two);
-		if ($obj == false) return false;
+		if ($obj == false) 
+            return false;
 		
-		if (trigger_elgg_event('delete', $relationship, $obj)) {
-			return delete_data("DELETE from entity_relationships where guid_one=$guid_one and relationship='$relationship' and guid_two=$guid_two");
-		} else {
+		if (trigger_elgg_event('delete', $relationship, $obj)) 
+        {
+			return delete_data_2("DELETE from entity_relationships where guid_one=? and relationship=? and guid_two=?",
+                array($guid_one, $relationship, $guid_two)
+            );
+		} 
+        else 
+        {
 			return false;
 		}
 	}
@@ -354,40 +340,26 @@
 	 * @param string $type The type of entity to limit this relationship delete to (defaults to all)
 	 * @return true|false Depending on success
 	 */
-	function remove_entity_relationships($guid_one, $relationship = "", $inverse = false, $type = '') {
+	function remove_entity_relationships($guid_one, $relationship = "", $inverse = false) 
+    {	
+        $args = array();
+        if (!$inverse) 
+        {
+            $sql = "DELETE er from entity_relationships as er where guid_one=?";            
+        } 
+        else 
+        {
+            $sql = "DELETE er from entity_relationships as er where guid_two=?";            
+        }   
+        $args[] = $guid_one;
 		
-		global $CONFIG;
-		
-		$guid_one = (int) $guid_one;
-		
-		if (!empty($relationship)) {
-			$relationship = sanitise_string($relationship);
-			$where = "and er.relationship='$relationship'";
-		} else {
-			$where = "";
-		}
-		
-		if (!empty($type)) {
-			$type = sanitise_string($type);
-			if (!$inverse) {
-				$join = " join entities e on e.guid = er.guid_two ";
-			} else {
-				$join = " join entities e on e.guid = er.guid_one ";
-				$where .= " and ";
-			}
-			$where .= " and e.type = '{$type}' ";
-		} else {
-			$join = "";
-		}
-		
-		if (!$inverse) {
-			$sql = "DELETE er from entity_relationships as er {$join} where guid_one={$guid_one} {$where}";
-			return delete_data($sql);
-		} else {
-			$sql = "DELETE er from entity_relationships as er {$join} where guid_two={$guid_one} {$where}";
-			return delete_data($sql);
-		}
-		
+		if (!empty($relationship)) 
+        {			
+			$where = " and er.relationship=?";
+            $args[] = $relationship;
+		} 
+        
+		return delete_data_2($sql, $args);		
 	}
 
 	/**
@@ -397,13 +369,8 @@
 	 */
 	function get_entity_relationships($guid)
 	{
-		global $CONFIG;
-		
-		$guid = (int)$guid;
-		
-		$query = "SELECT * from entity_relationships where guid_one=$guid";
-		
-		return get_data($query, "row_to_elggrelationship");
+        return array_map('row_to_elggrelationship', 
+            get_data_2("SELECT * from entity_relationships where guid_one=?", array($guid)));
 	}
 	
 	/**
@@ -423,57 +390,72 @@
 	 * @return array|int|false An array of entities, or the number of entities, or false on failure
 	 */
 	function get_entities_from_relationship($relationship, $relationship_guid, $inverse_relationship = false, $type = "", $subtype = "", $owner_guid = 0, $order_by = "", $limit = 10, $offset = 0, $count = false, $site_guid = 0)
-	{
-		global $CONFIG;
-		
-		$relationship = sanitise_string($relationship);
-		$relationship_guid = (int)$relationship_guid;
-		$inverse_relationship = (bool)$inverse_relationship;
-		$type = sanitise_string($type);
-		$subtype = get_subtype_id($type, $subtype);
-		$owner_guid = (int)$owner_guid;
-		if ($order_by == "") $order_by = "time_created desc";
-		$order_by = sanitise_string($order_by);
-		$limit = (int)$limit;
-		$offset = (int)$offset;
-		$site_guid = (int) $site_guid;
-		if ($site_guid == 0)
-			$site_guid = $CONFIG->site_guid;
-		
+	{		
 		$where = array();
+        $args = array();
 		
-		if ($relationship!="")
-			$where[] = "r.relationship='$relationship'";
+		if ($relationship)
+        {
+			$where[] = "r.relationship=?";
+            $args[] = $relationship;
+        }    
 		if ($relationship_guid)
-			$where[] = ($inverse_relationship ? "r.guid_two='$relationship_guid'" : "r.guid_one='$relationship_guid'");
-		if ($type != "")
-			$where[] = "e.type='$type'";
-		if ($subtype)
-			$where[] = "e.subtype=$subtype";
-		if ($owner_guid != "")
-			$where[] = "e.container_guid='$owner_guid'";
-		if ($site_guid > 0)
-			$where[] = "e.site_guid = {$site_guid}";
+        {
+			$where[] = ($inverse_relationship ? "r.guid_two=?" : "r.guid_one=?");
+            $args = $relationship_guid;
+        }    
+		if ($type)
+        {
+			$where[] = "e.type=?";
+            $args = $type;
+        }    
+        
+        $subtypeId = get_subtype_id($type, $subtype);
+		if ($subtypeId)
+        {
+			$where[] = "e.subtype=?";
+            $args[] = $subtypeId;
+        }    
+		if ($owner_guid)
+        {
+			$where[] = "e.owner_guid=?";
+            $args[] = $owner_guid;
+        }    
 		
-		// Select what we're joining based on the options
-		$joinon = "e.guid = r.guid_one";
-		if (!$inverse_relationship)
-			$joinon = "e.guid = r.guid_two";	
+        $joinon = ($inverse_relationship) ? "e.guid = r.guid_one" : "e.guid = r.guid_two";
 			
-		if ($count) {
+		if ($count) 
+        {
 			$query = "SELECT count(distinct e.guid) as total ";
-		} else {
+		} 
+        else 
+        {
 			$query = "SELECT distinct e.* ";
-		}
+		}        
 		$query .= " from entity_relationships r JOIN entities e on $joinon where ";
+        
 		foreach ($where as $w)
+        {
 			$query .= " $w and ";
+        }    
 		$query .= get_access_sql_suffix("e"); // Add access controls
-		if (!$count) {
-			$query .= " order by $order_by limit $offset, $limit"; // Add order and limit
-			return get_data($query, "entity_row_to_elggstar");
-		} else {
-			if ($count = get_data_row($query)) {
+
+		if (!$count) 
+        {
+            if ($order_by == "") 
+                $order_by = "time_created desc";
+            $order_by = sanitize_order_by($order_by);
+               
+			$query .= " order by $order_by limit ?, ?";
+            $args[] = $offset;
+            $args[] = $limit;
+			
+            return array_map('entity_row_to_elggstar', get_data_2($query, $args));
+		} 
+        else 
+        {
+			if ($count = get_data_row_2($query, $args)) 
+            {
 				return $count->total;
 			}
 		}
@@ -509,209 +491,6 @@
 		
 	}
 
-	/**
-	 * Gets the number of entities by a the number of entities related to them in a particular way.
-	 * This is a good way to get out the users with the most friends, or the groups with the most members.
-	 *
-	 * @param string $relationship The relationship eg "friends_of"
-	 * @param bool $inverse_relationship Reverse the normal function of the query to instead say "give me all entities for whome $relationship_guid is a $relationship of" (default: true)
-	 * @param string $type The type of entity (default: all)
-	 * @param string $subtype The entity subtype (default: all)
-	 * @param int $owner_guid The owner of the entities (default: none)
-	 * @param int $limit
-	 * @param int $offset
-	 * @param boolean $count Set to true if you want to count the number of entities instead (default false)
-	 * @param int $site_guid The site to get entities for. Leave as 0 (default) for the current site; -1 for all sites.
-	 * @return array|int|false An array of entities, or the number of entities, or false on failure
-	 */
-	
-	function get_entities_by_relationship_count($relationship, $inverse_relationship = true, $type = "", $subtype = "", $owner_guid = 0, $limit = 10, $offset = 0, $count = false, $site_guid = 0) {
-		
-		global $CONFIG;
-		
-		$relationship = sanitise_string($relationship);
-		$inverse_relationship = (bool)$inverse_relationship;
-		$type = sanitise_string($type);
-		if ($subtype AND !$subtype = get_subtype_id($type, $subtype))
-			return false;
-		$owner_guid = (int)$owner_guid;
-		$order_by = sanitise_string($order_by);
-		$limit = (int)$limit;
-		$offset = (int)$offset;
-		$site_guid = (int) $site_guid;
-		if ($site_guid == 0)
-			$site_guid = $CONFIG->site_guid;
-		
-		$where = array();
-		
-		if ($relationship!="")
-			$where[] = "r.relationship='$relationship'";
-		if ($inverse_relationship) {
-			$on = 'e.guid = r.guid_two';
-		} else {
-			$on = 'e.guid = r.guid_one';
-		}
-		if ($type != "")
-			$where[] = "e.type='$type'";
-		if ($subtype)
-			$where[] = "e.subtype=$subtype";
-		if ($owner_guid != "")
-			$where[] = "e.container_guid='$owner_guid'";
-		if ($site_guid > 0)
-			$where[] = "e.site_guid = {$site_guid}";
-		
-		if ($count) {
-			$query = "SELECT count(distinct e.guid) as total ";
-		} else {
-			$query = "SELECT e.*, count(e.guid) as total ";
-		}
-		
-		$query .= " from entity_relationships r JOIN entities e on {$on} where ";
-		
-		if (!empty($where))
-		foreach ($where as $w)
-			$query .= " $w and ";
-		$query .= get_access_sql_suffix("e"); // Add access controls
-		
-		if (!$count) {
-			$query .= " group by e.guid ";
-			$query .= " order by total desc limit {$offset}, {$limit}"; // Add order and limit
-			return get_data($query, "entity_row_to_elggstar");
-		} else {
-			if ($count = get_data_row($query)) {
-				return $count->total;
-			}
-		}
-		
-		return false;
-			
-	}
-	
-	/**
-	 * Displays a human-readable list of entities
-	 * 
-	 * @param string $relationship The relationship eg "friends_of"
-	 * @param bool $inverse_relationship Reverse the normal function of the query to instead say "give me all entities for whome $relationship_guid is a $relationship of" (default: true)
-	 * @param string $type The type of entity (eg 'object')
-	 * @param string $subtype The entity subtype
-	 * @param int $owner_guid The owner (default: all)
-	 * @param int $limit The number of entities to display on a page
-	 * @param true|false $fullview Whether or not to display the full view (default: true)
-	 * @param true|false $viewtypetoggle Whether or not to allow gallery view 
-	 * @param true|false $pagination Whether to display pagination (default: true)
-	 * @return string The viewable list of entities
-	 */
-	
-	function list_entities_by_relationship_count($relationship, $inverse_relationship = true, $type = "", $subtype = "", $owner_guid = 0, $limit = 10, $fullview = true, $viewtypetoggle = false, $pagination = true) {
-		
-		$limit = (int) $limit;
-		$offset = (int) get_input('offset');
-		$count = get_entities_by_relationship_count($relationship,$inverse_relationship,$type,$subtype,$owner_guid,0,0,true);
-		$entities = get_entities_by_relationship_count($relationship,$inverse_relationship,$type,$subtype,$owner_guid,$limit,$offset);
-
-		return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, $viewtypetoggle, $pagination);
-		
-	}
-	
-	/**
-	 * Gets the number of entities by a the number of entities related to them in a particular way also constrained by
-	 * metadata
-	 *
-	 * @param string $relationship The relationship eg "friends_of"
-	 * @param int $relationship_guid The guid of the entity to use query
-	 * @param bool $inverse_relationship Reverse the normal function of the query to instead say "give me all entities for whome $relationship_guid is a $relationship of" (default: true)
-	 * @param String $meta_name The metadata name
-	 * @param String $meta_value The metadata value
-	 * @param string $type The type of entity (default: all)
-	 * @param string $subtype The entity subtype (default: all)
-	 * @param int $owner_guid The owner of the entities (default: none)
-	 * @param int $limit
-	 * @param int $offset
-	 * @param boolean $count Set to true if you want to count the number of entities instead (default false)
-	 * @param int $site_guid The site to get entities for. Leave as 0 (default) for the current site; -1 for all sites.
-	 * @return array|int|false An array of entities, or the number of entities, or false on failure
-	 */
-	function get_entities_from_relationships_and_meta($relationship, $relationship_guid, $inverse_relationship = false, $meta_name = "", $meta_value = "", $type = "", $subtype = "", $owner_guid = 0, $limit = 10, $offset = 0, $count = false, $site_guid = 0)
-	{
-		
-		global $CONFIG;
-		
-		$relationship = sanitise_string($relationship);
-		$inverse_relationship = (bool)$inverse_relationship;
-		$relationship_guid = (int)$relationship_guid;
-		$type = sanitise_string($type);
-		if ($subtype AND !$subtype = get_subtype_id($type, $subtype))
-			return false;
-		$owner_guid = (int)$owner_guid;
-		$order_by = sanitise_string($order_by);
-		$limit = (int)$limit;
-		$offset = (int)$offset;
-		$site_guid = (int) $site_guid;
-		if ($site_guid == 0)
-			$site_guid = $CONFIG->site_guid;
-			
-		$meta_n = get_metastring_id($meta_name);
-		$meta_v = get_metastring_id($meta_value);
-		
-		$where = array();
-		
-		if ($relationship!="")
-			$where[] = "r.relationship='$relationship'";
-			
-		$on = "e.guid = r.guid_one";
-		if (!$inverse_relationship)
-			$on = "e.guid = r.guid_two";
-			
-		if ($type != "")
-			$where[] = "e.type='$type'";
-		if ($subtype)
-			$where[] = "e.subtype=$subtype";
-		if ($owner_guid != "")
-			$where[] = "e.container_guid='$owner_guid'";
-		if ($site_guid > 0)
-			$where[] = "e.site_guid = {$site_guid}";
-		if ($relationship_guid)
-			$where[] = ($inverse_relationship ? "r.guid_two='$relationship_guid'" : "r.guid_one='$relationship_guid'");
-		
-			
-		$metajoin = "";
-		if (($meta_name!=="") || ($meta_value!=="")) {
-			$metajoin = " JOIN metadata m on e.guid=m.entity_guid";
-			
-			if ($meta_name!=="")
-				$where[] = "m.name_id='$meta_n'";
-			if ($meta_value!=="")
-				$where[] = "m.value_id='$meta_v'";
-		}
-			
-		if ($count) {
-			$query = "SELECT count(distinct e.guid) as total ";
-		} else {
-			$query = "SELECT distinct e.*, count(e.guid) as total ";
-		}
-		
-		$query .= " from entity_relationships r JOIN entities e on {$on} {$metajoin} where ";
-		
-		if (!empty($where))
-		foreach ($where as $w)
-			$query .= " $w and ";
-		$query .= get_access_sql_suffix("e"); // Add access controls
-		if (($meta_name!=="") || ($meta_value!=="")) $query .= ' and ' . get_access_sql_suffix("m"); // Add access controls
-		
-		if (!$count) {
-			$query .= " group by e.guid ";
-			$query .= " order by total desc limit {$offset}, {$limit}"; // Add order and limit
-			
-			return get_data($query, "entity_row_to_elggstar");
-		} else {
-			if ($count = get_data_row($query)) {
-				return $count->total;
-			}
-		}
-		
-		return false;
-	}
-	
 	/**
 	 * Sets the URL handler for a particular relationship type
 	 *
@@ -779,87 +558,6 @@
 		return false;
 	}
 	
-	/**** HELPER FUNCTIONS FOR RELATIONSHIPS OF TYPE 'ATTACHED' ****/
-	
-	 /**
-     * Function to determine if the object trying to attach to other, has already done so
-     * @param int $guid_one This is the target object
-     * @param int $guid_two This is the object trying to attach to $guid_one
-     * @return true | false
-     **/
-     
-     function already_attached($guid_one, $guid_two){
-    
-         if($attached = check_entity_relationship($guid_one, "attached", $guid_two)){
-             return true;
-         }else{
-             return false;
-         }
-     }
-     
-     /**
-     * Function to get all objects attached to a particular object
-     * @param int $guid
-     * @param string $type - the type of object to return e.g. 'file', 'friend_of' etc
-     * @return an array of objects
-    **/
-         
-        function get_attachments($guid, $type=""){
-            
-            $attached = get_entities_from_relationship("attached", $guid, $inverse_relationship = false, $type, $subtype = "", $owner_guid = 0, $order_by = "time_created desc", $limit = 10, $offset = 0, $count = false, $site_guid = 0);
-            return $attached;
-           
-        }
-        
-     /**
-     * Function to remove a particular attachment between two objects
-     * @param int $guid_one This is the target object
-     * @param int $guid_two This is the object to remove from $guid_one
-     * @return a view 
-    **/
-         
-        function remove_attachment($guid_one, $guid_two){
-            
-            if(already_attached($guid_one, $guid_two))
-                remove_entity_relationship($guid_one, "attached", $guid_two);
-           
-        }
-        
-        
-     
-     /**
-     * Function to start the process of attaching one object to another
-     * @param int $guid_one This is the target object
-     * @param int $guid_two This is the object trying to attach to $guid_one
-     * @return a view 
-    **/
-         
-        function make_attachment($guid_one, $guid_two){
-            
-            if(!(already_attached($guid_one, $guid_two)))
-                if(add_entity_relationship($guid_one, "attached", $guid_two))
-                    return true;
-           
-        }
-	
-	/**
-	 *  Handler called by trigger_plugin_hook on the "import" event.
-	 */
-	function import_relationship_plugin_hook($hook, $entity_type, $returnvalue, $params)
-	{
-		$element = $params['element'];
-		
-		$tmp = NULL;
-		
-		if ($element instanceof ODDRelationship)
-		{
-			$tmp = new ElggRelationship();
-			$tmp->import($element);
-			
-			return $tmp;
-		}
-	}
-	
     /**
      * An event listener which will notify users based on certain events.
      *
@@ -886,10 +584,7 @@
 			); 
 		}
 	}
-	
-	/** Register the import hook */
-	register_plugin_hook("import", "all", "import_relationship_plugin_hook", 3);
-	
+		
 	/** Register event to listen to some events **/
 	register_elgg_event_handler('create','friend','relationship_notification_hook');
 ?>

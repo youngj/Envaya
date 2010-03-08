@@ -198,7 +198,7 @@
 		global $CONFIG;
 
 		$entity_guid = (int)$entity_guid;		
-        $value_type = detect_extender_valuetype($value, sanitise_string(trim($value_type)));
+        $value_type = detect_extender_valuetype($value, trim($value_type));
 		$time = time();		
 		$owner_guid = (int)$owner_guid;
 		$allow_multiple = (boolean)$allow_multiple;
@@ -259,7 +259,7 @@
 	 */
 	function update_metadata($id, $name, $value, $value_type, $owner_guid, $access_id)
 	{
-		$value_type = detect_extender_valuetype($value, sanitise_string(trim($value_type)));
+		$value_type = detect_extender_valuetype($value, trim($value_type));
 		
 		$owner_guid = (int)$owner_guid;
 		if ($owner_guid==0) 
@@ -410,7 +410,7 @@
 		
 		if (!$count) 
         {            
-            $order_by = sanitise_string($order_by);
+            $order_by = sanitize_order_by($order_by);
             if ($order_by == "") 
                 $order_by = "e.time_created desc";
             else

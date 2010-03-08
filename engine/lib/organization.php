@@ -327,7 +327,6 @@ function envaya_init() {
     extend_view('css','org/css');
 
     register_plugin_hook('entity:icon:url', 'user', 'org_icon_hook');
-    register_plugin_hook('entity:annotate', 'object', 'blog_annotate_comments');
     
     include_once("{$CONFIG->path}org/start.php");    
 }
@@ -450,17 +449,6 @@ function org_fields_setup()
         'website' => 'url',        
         'location' => 'text',
     );
-}
-
-function blog_annotate_comments($hook, $entity_type, $returnvalue, $params)
-{
-    $entity = $params['entity'];
-    $full = $params['full'];
-
-    if (($entity instanceof NewsUpdate) && ($entity->comments_on!='Off') && ($full))
-    {
-        return elgg_view_comments($entity);
-    }
 }
 
 function preserve_input($name, $value)

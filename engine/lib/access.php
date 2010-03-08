@@ -33,7 +33,9 @@
         global $ENTITY_SHOW_HIDDEN_OVERRIDE;  
 
         if ($table_prefix)
-            $table_prefix = sanitise_string($table_prefix) . ".";
+        {
+            $table_prefix = $table_prefix . ".";
+        }    
 
         $sql = " (1 = 1) ";
 

@@ -73,7 +73,6 @@
 		if (!is_array($to))
 			$to = array((int)$to);
 		$from = (int)$from;
-		//$subject = sanitise_string($subject);
 			
 		// Get notification methods
 		if (($methods_override) && (!is_array($methods_override)))
@@ -176,10 +175,9 @@
 	 */
 	function set_user_notification_setting($user_guid, $method, $value)
 	{
-		$user_guid = (int)$user_guid;
-		$method = sanitise_string($method);
-			
+		$user_guid = (int)$user_guid;			
 		$user = get_entity($user_guid);
+        
 		if (!$user) $user = get_loggedin_user();
 		
 		if (($user) && ($user instanceof ElggUser))

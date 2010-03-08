@@ -54,11 +54,6 @@
         protected $metadata_cache;
 				
         protected $table_attribute_names;                
-                
-		/**
-		 * Temporary cache for annotations, permitting meta data access before a guid has obtained.
-		 */
-		protected $temp_annotations;
 		
 		/**
 		 * Initialise the attributes array. 
@@ -75,7 +70,6 @@
 			// Create attributes array if not already created
 			if (!is_array($this->attributes)) $this->attributes = array();
             if (!is_array($this->metadata_cache)) $this->metadata_cache = array();
-			if (!is_array($this->temp_annotations)) $this->temp_annotations = array();
 			
 			$this->attributes['guid'] = "";
 			$this->attributes['type'] = "";
@@ -370,103 +364,6 @@
 		}
 		
 		/**
-		 * Adds an annotation to an entity. By default, the type is detected automatically; however, 
-		 * it can also be set. Note that by default, annotations are private.
-		 * 
-		 * @param string $name
-		 * @param mixed $value
-		 * @param int $access_id
-		 * @param int $owner_id
-		 * @param string $vartype
-		 */
-		function annotate($name, $value, $access_id = ACCESS_PRIVATE, $owner_id = 0, $vartype = "") 
-		{ 
-			if ((int) $this->guid > 0) {
-				return create_annotation($this->getGUID(), $name, $value, $vartype, $owner_id, $access_id);
-			} else {
-				$this->temp_annotations[$name] = $value;
-			}
-			return true;
-		}
-		
-		/**
-		 * Get the annotations for an entity.
-		 *
-		 * @param string $name
-		 * @param int $limit
-		 * @param int $offset
-		 * @param string $order
-		 */
-		function getAnnotations($name, $limit = 50, $offset = 0, $order="asc") 
-		{ 
-			if ((int) ($this->guid) > 0) {
-				return get_annotations($this->getGUID(), "", "", $name, "", 0, $limit, $offset, $order);
-			} else {
-				return $this->temp_annotations[$name];
-			}
-		}
-		
-		/**
-		 * Remove all annotations or all annotations for this entity.
-		 *
-		 * @param string $name
-		 */
-		function clearAnnotations($name = "")
-		{
-			return clear_annotations($this->getGUID(), $name);
-		}
-		
-		/**
-		 * Return the annotations for the entity.
-		 *
-		 * @param string $name The type of annotation.
-		 */
-		function countAnnotations($name = "") 
-		{ 
-			return count_annotations($this->getGUID(), "","",$name);
-		}
-
-		/**
-		 * Get the average of an integer type annotation.
-		 *
-		 * @param string $name
-		 */
-		function getAnnotationsAvg($name) 
-		{
-			return get_annotations_avg($this->getGUID(), "","",$name);
-		}
-		
-		/**
-		 * Get the sum of integer type annotations of a given name.
-		 *
-		 * @param string $name
-		 */
-		function getAnnotationsSum($name) 
-		{
-			return get_annotations_sum($this->getGUID(), "","",$name);
-		}
-		
-		/**
-		 * Get the minimum of integer type annotations of given name.
-		 *
-		 * @param string $name
-		 */
-		function getAnnotationsMin($name)
-		{
-			return get_annotations_min($this->getGUID(), "","",$name);
-		}
-		
-		/**
-		 * Get the maximum of integer type annotations of a given name.
-		 *
-		 * @param string $name
-		 */
-		function getAnnotationsMax($name)
-		{
-			return get_annotations_max($this->getGUID(), "","",$name);
-		}
-		
-		/**
 		 * Gets an array of entities from a specific relationship type
 		 *
 		 * @param string $relationship Relationship type (eg "friends")
@@ -663,10 +560,9 @@
 		 */
 		public function setIcon($url, $size = 'medium')
 		{
-			$url = sanitise_string($url);
-			$size = sanitise_string($size);
-			
-			if (!$this->icon_override) $this->icon_override = array();
+			if (!$this->icon_override) 
+                $this->icon_override = array();
+                
 			$this->icon_override[$size] = $url;
 			
 			return true;
@@ -693,14 +589,6 @@
 			{ 
 				$this->attributes['guid'] = create_entity($this->attributes['type'], $this->attributes['subtype'], $this->attributes['owner_guid'], $this->attributes['access_id'], $this->attributes['site_guid'], $this->attributes['container_guid']); // Create a new entity (nb: using attribute array directly 'cos set function does something special!)
 				if (!$this->attributes['guid']) throw new IOException(elgg_echo('IOException:BaseEntitySaveFailed'));                
-                
-                // Save any unsaved annotations metadata. TODO: How to capture extra information (access id etc)
-                if (sizeof($this->temp_annotations) > 0) {
-                    foreach($this->temp_annotations as $name => $value) {
-                        $this->annotate($name, $value);
-                        unset($this->temp_annotations[$name]);
-                    }
-                }
                 
                 // Cache object handle
                 if ($this->attributes['guid']) cache_entity($this); 
@@ -1192,12 +1080,7 @@
 		global $CONFIG;
 		
 		if (!$guid) return false;
-		
-		$guid = (int) $guid;
-		
-        if (isset($CONFIG->debug) && $CONFIG->debug == true)
-            error_log("** GUID:$guid loaded from DB");
-			
+					
         $access = get_access_sql_suffix();
 		
         return get_data_row_2("SELECT * from entities where guid=? and $access", array($guid));
@@ -1256,14 +1139,7 @@
         $cached_entity = retrieve_cached_entity($guid);
         if ($cached_entity)
             return $cached_entity;
-    
-		static $newentity_cache;
-		$new_entity = false;
-		if ((!$newentity_cache) && (is_memcache_available())) 
-			$newentity_cache = new ElggMemcache('new_entity_cache');
-		if ($newentity_cache) $new_entity = $newentity_cache->load($guid);
-		if ($new_entity) return $new_entity;
-		
+   
 		return entity_row_to_elggstar(get_entity_as_row($guid));
 	}
 	
@@ -1407,7 +1283,7 @@
             {
                 $order_by = "time_created desc";        
             }    
-            $order_by = sanitise_string($order_by);       
+            $order_by = sanitize_order_by($order_by);       
 			$query .= " order by $order_by";
 
 			if ($limit) 
@@ -1478,30 +1354,23 @@
 	{
 		global $CONFIG;
 		
-		$guid = (int)$guid;
-		$reason = sanitise_string($reason);
-		
-		if ($entity = get_entity($guid)) {		
-			if (trigger_elgg_event('disable',$entity->type,$entity)) {	
-				if ($entity->canEdit()) {
-					
+		if ($entity = get_entity($guid)) 
+        {		
+			if (trigger_elgg_event('disable',$entity->type,$entity)) 
+            {	
+				if ($entity->canEdit()) 
+                {				
 					if ($reason)
 						create_metadata($guid, 'disable_reason', $reason,'', 0, ACCESS_PUBLIC);
 
 					if ($recursive)
 					{
-						// Temporary token overriding access controls TODO: Do this better.
-						static $__RECURSIVE_DELETE_TOKEN;
-						$__RECURSIVE_DELETE_TOKEN = md5(get_loggedin_userid()); // Make it slightly harder to guess
-						
                         $sub_entities = $entity->getSubEntities();
                             
 						if ($sub_entities) {
 							foreach ($sub_entities as $e)
 								$e->disable($reason);
-						}
-							
-						$__RECURSIVE_DELETE_TOKEN = null; 
+						}							
 					}
 											
 					$res = update_data_2("UPDATE entities set enabled='no' where guid=?", array($guid));
@@ -1557,22 +1426,15 @@
                 // Delete contained owned and otherwise releated objects (depth first)
                 if ($recursive)
                 {
-                    // Temporary token overriding access controls TODO: Do this better.
-                    static $__RECURSIVE_DELETE_TOKEN;
-                    $__RECURSIVE_DELETE_TOKEN = md5(get_loggedin_userid()); // Make it slightly harder to guess
-
                     $sub_entities = $entity->getSubEntities();
                     if ($sub_entities) {
                         foreach ($sub_entities as $e)
                             $e->delete();
                     }
-
-                    $__RECURSIVE_DELETE_TOKEN = null; 
                 }
 
                 // Now delete the entity itself
                 $entity->clearMetadata();
-                $entity->clearAnnotations();
                 $entity->clearRelationships();
                 remove_all_private_settings($guid);
                 $res = delete_data_2("DELETE from entities where guid=?", array($guid));
@@ -1704,7 +1566,6 @@
 	{
 		global $CONFIG;
 		
-		$size = sanitise_string($size);
 		switch (strtolower($size))
 		{
 			case 'master': $size = 'master'; break;
@@ -2009,18 +1870,7 @@
 		global $CONFIG;
         return delete_data_2("DELETE from private_settings where entity_guid = ?", array((int)$entity_guid));
 	}
-	
-	function recursive_delete_permissions_check($hook, $entity_type, $returnvalue, $params)
-	{
-		static $__RECURSIVE_DELETE_TOKEN;
 		
-		$entity = $params['entity'];
-		
-		if ((isloggedin()) && ($__RECURSIVE_DELETE_TOKEN) && (strcmp($__RECURSIVE_DELETE_TOKEN, md5(get_loggedin_userid()))))
-			return true;
-		
-	}
-	
 	/**
 	 * Garbage collect stub and fragments from any broken delete/create calls
 	 *
@@ -2045,13 +1895,7 @@
 	 */
 	function entities_init() 
 	{
-		register_page_handler('view','entities_page_handler');
-		
-		// Allow a permission override for recursive entity deletion
-		// TODO: Can this be done better?
-		register_plugin_hook('permissions_check','all','recursive_delete_permissions_check');
-		register_plugin_hook('permissions_check:metadata','all','recursive_delete_permissions_check');
-		
+		register_page_handler('view','entities_page_handler');				
 		register_plugin_hook('gc','system','entities_gc');
 	}
 	

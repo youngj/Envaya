@@ -45,6 +45,7 @@ CREATE TABLE `entity_relationships` (
   `guid_one` bigint(20) unsigned  NOT NULL,
   `relationship` varchar(50) NOT NULL,
   `guid_two` bigint(20) unsigned  NOT NULL,
+  
   PRIMARY KEY  (`id`),
   UNIQUE KEY (`guid_one`,`relationship`,`guid_two`),
   KEY `relationship` (`relationship`),

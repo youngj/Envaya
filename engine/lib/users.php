@@ -141,7 +141,6 @@
 		public function delete()
 		{
 			// Delete owned data
-			clear_annotations_by_owner($this->guid);
 			clear_metadata_by_owner($this->guid);
 			
 			// Delete entity
@@ -595,7 +594,6 @@
 		
 		$access = get_access_sql_suffix('e');
         
-		// Caching
 		if ( (isset($USERNAME_TO_GUID_MAP_CACHE[$username])) && (retrieve_cached_entity($USERNAME_TO_GUID_MAP_CACHE[$username])) )
 			return retrieve_cached_entity($USERNAME_TO_GUID_MAP_CACHE[$username]);
 		
@@ -661,12 +659,12 @@
 	 */
 	function search_for_user($criteria, $limit = 10, $offset = 0, $order_by = "", $count = false, $user_subtype = "")
 	{
-		$order_by = sanitise_string($order_by);
 		
         $user_subtype_id = get_subtype_id('user', $user_subtype);
         
 		$access = get_access_sql_suffix("e");
 		
+        $order_by = sanitize_order_by($order_by);
 		if ($order_by == "") 
             $order_by = "e.time_created desc";
 		
@@ -696,7 +694,7 @@
             $args[] = (int)$offset;
             $args[] = (int)$limit;            
         
-            return array_map('entity_row_to_elggstar', get_data_2("$query order by $order_by limit ?, ?", $args));
+            return array_map('entity_row_to_elggstar', get_data_2("$query order by limit ?, ?", $args));
 		} 
         else 
         {
@@ -1366,13 +1364,11 @@
 		
 	}
     
-    function get_users_in_area($lat, $long, $radius, $subtype = "", $order_by = "", $limit = 10, $offset = 0, $count = false)
+    function get_users_in_area($lat, $long, $radius, $subtype = "", $limit = 10, $offset = 0, $count = false)
     {
         $lat = (real)$lat;
         $long = (real)$long;
         $radius = (real)$radius;
-
-        $order_by = sanitise_string($order_by);
                     
         $where = array();
         $args = array();
@@ -1430,8 +1426,8 @@
     function list_users_in_area($lat, $long, $radius, $subtype = "", $limit = 10, $fullview = true, $viewtypetoggle = false, $navigation = true) 
     {        
         $offset = (int) get_input('offset');
-        $count = get_users_in_area($lat, $long, $radius, $subtype, "", $limit, $offset, true);
-        $entities = get_users_in_area($lat, $long, $radius, $subtype, "", $limit, $offset);
+        $count = get_users_in_area($lat, $long, $radius, $subtype, $limit, $offset, true);
+        $entities = get_users_in_area($lat, $long, $radius, $subtype, $limit, $offset);
 
         return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, $viewtypetoggle, $navigation);
     }

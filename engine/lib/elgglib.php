@@ -207,14 +207,16 @@
 		    	$vars['config'] = $CONFIG;
 		    	
 			$vars['url'] = $CONFIG->url;
-		    	
+                
 		// Load page owner variables into $vars
 		    if (is_callable('page_owner')) {
 		        $vars['page_owner'] = page_owner();
 		    } else {
 		    	$vars['page_owner'] = -1;
 		    }
-		    if (($vars['page_owner'] != -1) && (is_installed())) {
+            
+		    if (($vars['page_owner'] != -1) && (is_installed())) 
+            {
 		        if (!isset($usercache[$vars['page_owner']])) {
 		    	       $vars['page_owner_user'] = get_entity($vars['page_owner']);
 		    	       $usercache[$vars['page_owner']] = $vars['page_owner_user'];
@@ -232,8 +234,7 @@
 		    	if (is_callable($template_handler))
 		    		return $template_handler($view, $vars);
 		    }
-		
-		
+
 		// Get the current viewtype
 			if (empty($viewtype))
 				$viewtype = elgg_get_viewtype(); 
@@ -643,56 +644,9 @@
 																'full' => $full
 																), $bypass, $debug);
 			}
-			if ($full) // Marcus Povey 20090616 : Speculative and low impact approach for fixing #964
-			{
-				$annotations = elgg_view_entity_annotations($entity, $full);
-								
-				if ($annotations)
-					$contents .= $annotations;
-			}
 			return $contents;
 		}
 
-	/**
-	 * When given an annotation, views it intelligently.
-	 * 
-	 * This function expects annotation views to be of the form annotation/name, where name
-	 * is the type of annotation. 
-	 *
-	 * @param ElggAnnotation $annotation The annotation to display
-	 * @param boolean $full Determines whether or not to display the full version of an object, or a smaller version for use in aggregators etc
-	 * @param boolean $bypass If set to true, elgg_view will bypass any specified alternative template handler; by default, it will hand off to this if requested (see set_template_handler)
-	 * @param boolean $debug If set to true, the viewer will complain if it can't find a view
-	 * @return string HTML (etc) to display
-	 */
-		function elgg_view_annotation(ElggAnnotation $annotation, $bypass = true, $debug = false) {
-			
-			global $autofeed;
-			$autofeed = true;
-			
-			$view = $annotation->view;
-			if (is_string($view)) {
-				return elgg_view($view,array('annotation' => $annotation), $bypass, $debug);
-			}
-			
-			$name = $annotation->name;
-			$intname = (int) $name;
-			if ("{$intname}" == "{$name}") {
-				$name = get_metastring($intname);
-			}
-			if (empty($name)) { return ""; }
-			
-			if (elgg_view_exists("annotation/{$name}")) {
-				return elgg_view("annotation/{$name}",array(
-																	'annotation' => $annotation,
-																	), $bypass, $debug);
-			} else {
-				return elgg_view("annotation/default",array(
-																'annotation' => $annotation,
-																), $bypass, $debug);
-			}
-		}
-				
 	
 	/**
 	 * Returns a view of a list of entities, plus navigation. It is intended that this function
@@ -738,82 +692,6 @@
 				
 			return $html;
 			
-		}
-
-	/**
-	 * Returns a view of a list of annotations, plus navigation. It is intended that this function
-	 * be called from other wrapper functions.
-	 * 
-	 * @param array $annotations List of annotations
-	 * @param int $count The total number of annotations across all pages
-	 * @param int $offset The current indexing offset
-	 * @param int $limit The number of annotations to display per page
-	 * @return string The list of annotations
-	 */
-		
-		function elgg_view_annotation_list($annotations, $count, $offset, $limit) {
-			
-			$count = (int) $count;
-			$offset = (int) $offset;
-			$limit = (int) $limit;
-			
-			$html = "";
-			
-			$nav = elgg_view('navigation/pagination',array(
-			
-												'baseurl' => $_SERVER['REQUEST_URI'],
-												'offset' => $offset,
-												'count' => $count,
-												'limit' => $limit,
-												'word' => 'annoff',
-												'nonefound' => false,
-			
-														));
-			
-			$html .= $nav;
-
-			if (is_array($annotations) && sizeof($annotations) > 0) {
-				foreach($annotations as $annotation) {
-					$html .= elgg_view_annotation($annotation, "", false);
-				}
-			}
-			
-			if ($count)
-				$html .= $nav;
-				
-			return $html;
-			
-		}
-		
-	/**
-	 * Display a selective rendered list of annotations for a given entity. 
-	 * 
-	 * The list is produced as the result of the entity:annotate plugin hook and is designed to provide a 
-	 * more generic framework to allow plugins to extend the generic display of entities with their own annotation 
-	 * renderings.
-	 * 
-	 * This is called automatically by the framework.
-	 *
-	 * @param ElggEntity $entity
-	 * @param bool $full
-	 */
-		function elgg_view_entity_annotations(ElggEntity $entity, $full = true)
-		{
-			$classes = array(
-								'ElggUser' => 'user',
-								'ElggObject' => 'object',
-							);
-			
-			$entity_class = get_class($entity);
-			
-			$annotations = trigger_plugin_hook('entity:annotate', $classes[$entity_class], 
-				array(
-					'entity' => $entity,
-					'full' => $full,
-				)
-			);
-			
-			return $annotations;
 		}
 		
 	/**
@@ -958,47 +836,7 @@
 			return $submenu_total;
 			
 		}
-		
-		
-	/**
-	 * Automatically views comments and a comment form relating to the given entity
-	 *
-	 * @param ElggEntity $entity The entity to comment on
-	 * @return string|false The HTML (etc) for the comments, or false on failure
-	 */
-		function elgg_view_comments($entity){
-
-			if (!($entity instanceof ElggEntity)) return false;
-            
-			if ($comments = trigger_plugin_hook('comments',$entity->getType(),array('entity' => $entity),false)) {
-
-				return $comments;
-
-			} else {
-	            $comments = list_annotations($entity->getGUID(),'generic_comment');
-	            
-	            //display the comment form
-	            $comments .= elgg_view('comments/forms/edit',array('entity' => $entity));
-	            
-	            return $comments;
-			}
-           
-        }
-
-	/**
-	 * Count the number of comments attached to an entity
-	 *
-	 * @param ElggEntity $entity
-	 * @return int Number of comments
-	 */
-        function elgg_count_comments($entity) {
-        	
-        	if ($commentno = trigger_plugin_hook('comments:count',$entity->getType(),array('entity' => $entity),false)) {
-        		return $commentno;
-        	} else 
-        	return count_annotations($entity->getGUID(), "", "", "generic_comment");
-        }
-        
+				
 	/**
 	 * Wrapper function to display search listings.
 	 *
@@ -1697,10 +1535,8 @@
 		
 		function __elgg_php_exception_handler($exception) {
 
-			error_log("*** FATAL EXCEPTION *** : " . $exception);
-			
-			ob_end_clean(); // Wipe any existing output buffer
-			
+			error_log("*** FATAL EXCEPTION *** : " . $exception);			
+			ob_end_clean(); // Wipe any existing output buffer			
 			$body = elgg_view("messages/exceptions/exception",array('object' => $exception));
 			page_draw(elgg_echo('exception:title'), $body);
 			
@@ -1721,31 +1557,16 @@
 		function datalist_get($name) {
 			
 			global $CONFIG, $DATALIST_CACHE;
-			
-			// We need this, because sometimes datalists are received before the database is created
-			if (!is_db_installed()) return false;
-			
-			$name = sanitise_string($name);
+						
 			if (isset($DATALIST_CACHE[$name]))
 				return $DATALIST_CACHE[$name];
-				
-			// If memcache enabled then cache value in memcache
-			$value = null;
-			static $datalist_memcache;
-			if ((!$datalist_memcache) && (is_memcache_available()))
-				$datalist_memcache = new ElggMemcache('datalist_memcache');
-			if ($datalist_memcache) $value = $datalist_memcache->load($name);
-			if ($value) return $value;
-			
+                
 			$result = get_data_2("SELECT * from datalists");
 			if ($result)
 			{
 				foreach ($result as $row)
 				{
-					$DATALIST_CACHE[$row->name] = $row->value;
-				
-					// Cache it if memcache is available
-					if ($datalist_memcache) $datalist_memcache->save($row->name, $row->value);
+					$DATALIST_CACHE[$row->name] = $row->value;				
 				}
 				
 				if (isset($DATALIST_CACHE[$name]))
@@ -1766,12 +1587,6 @@
 		function datalist_set($name, $value) {
 			
 			global $CONFIG, $DATALIST_CACHE;
-			
-			// If memcache is available then invalidate the cached copy
-			static $datalist_memcache;
-			if ((!$datalist_memcache) && (is_memcache_available()))
-				$datalist_memcache = new ElggMemcache('datalist_memcache');
-			if ($datalist_memcache) $datalist_memcache->delete($name);
 			
 			insert_data_2("INSERT into datalists set name = ?, value = ? ON DUPLICATE KEY UPDATE value = ?",
                 array($name, $value, $value)
