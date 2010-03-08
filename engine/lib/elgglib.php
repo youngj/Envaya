@@ -1561,7 +1561,7 @@
 			if (isset($DATALIST_CACHE[$name]))
 				return $DATALIST_CACHE[$name];
                 
-			$result = get_data_2("SELECT * from datalists");
+			$result = get_data("SELECT * from datalists");
 			if ($result)
 			{
 				foreach ($result as $row)
@@ -1588,7 +1588,7 @@
 			
 			global $CONFIG, $DATALIST_CACHE;
 			
-			insert_data_2("INSERT into datalists set name = ?, value = ? ON DUPLICATE KEY UPDATE value = ?",
+			insert_data("INSERT into datalists set name = ?, value = ? ON DUPLICATE KEY UPDATE value = ?",
                 array($name, $value, $value)
             );
 			

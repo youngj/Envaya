@@ -299,7 +299,7 @@
 	 */
 	function get_user_entity_as_row($guid)
 	{		
-        return get_data_row_2("SELECT * from users_entity where guid=?", array((int)$guid));
+        return get_data_row("SELECT * from users_entity where guid=?", array((int)$guid));
 	}
 		
 	/**
@@ -316,7 +316,7 @@
             {
 				if ($entity->canEdit()) 
                 {
-					return update_data_2("UPDATE entities set enabled='no' where owner_guid = ? or container_guid = ?", array($owner_guid, $owner_guid));
+					return update_data("UPDATE entities set enabled='no' where owner_guid = ? or container_guid = ?", array($owner_guid, $owner_guid));
 				}
 			}
 		}
@@ -342,7 +342,7 @@
 					create_metadata($user_guid, 'ban_reason', $reason,'', 0, ACCESS_PUBLIC);
                 }    
 				
-				return update_data_2("UPDATE users_entity set banned='yes' where guid=?", array($user_guid));
+				return update_data("UPDATE users_entity set banned='yes' where guid=?", array($user_guid));
 			}
 		}		
 
@@ -364,7 +364,7 @@
             {
 				create_metadata($user_guid, 'ban_reason', '','', 0, ACCESS_PUBLIC);
                 
-				return update_data_2("UPDATE users_entity set banned='no' where guid=?", array($user_guid));
+				return update_data("UPDATE users_entity set banned='no' where guid=?", array($user_guid));
 			}
 		}
 		
@@ -597,7 +597,7 @@
 		if ( (isset($USERNAME_TO_GUID_MAP_CACHE[$username])) && (retrieve_cached_entity($USERNAME_TO_GUID_MAP_CACHE[$username])) )
 			return retrieve_cached_entity($USERNAME_TO_GUID_MAP_CACHE[$username]);
 		
-		$row = get_data_row_2("SELECT e.*, u.* from users_entity u join entities e on e.guid=u.guid where u.username=? and $access ", array($username));
+		$row = get_data_row("SELECT e.*, u.* from users_entity u join entities e on e.guid=u.guid where u.username=? and $access ", array($username));
 		if ($row) {
 			$USERNAME_TO_GUID_MAP_CACHE[$username] = $row->guid;
             return entity_row_to_elggstar($row);
@@ -622,7 +622,7 @@
 		if ( (isset($CODE_TO_GUID_MAP_CACHE[$code])) && (retrieve_cached_entity($CODE_TO_GUID_MAP_CACHE[$code])) )
 			return retrieve_cached_entity($CODE_TO_GUID_MAP_CACHE[$code]);
 		
-		$row = get_data_row_2("SELECT e.*, u.* from users_entity u join entities e on e.guid=u.guid where u.code=? and $access", array($code));
+		$row = get_data_row("SELECT e.*, u.* from users_entity u join entities e on e.guid=u.guid where u.code=? and $access", array($code));
 		if ($row) 
         {
 			$CODE_TO_GUID_MAP_CACHE[$code] = $row->guid;
@@ -642,7 +642,7 @@
 	{
 		$access = get_access_sql_suffix('e');
 		
-        return array_map('entity_row_to_elggstar', get_data_2(
+        return array_map('entity_row_to_elggstar', get_data(
             "SELECT e.* from entities e join users_entity u on e.guid=u.guid where email=? and $access", 
             array($email)
         ));
@@ -694,11 +694,11 @@
             $args[] = (int)$offset;
             $args[] = (int)$limit;            
         
-            return array_map('entity_row_to_elggstar', get_data_2("$query order by limit ?, ?", $args));
+            return array_map('entity_row_to_elggstar', get_data("$query order by limit ?, ?", $args));
 		} 
         else 
         {
-			if ($count = get_data_row_2($query, $args)) 
+			if ($count = get_data_row($query, $args)) 
             {
 				return $count->total;
 			}
@@ -748,7 +748,7 @@
 		
 		$query = "SELECT distinct e.* from entities e join users_entity u on e.guid = u.guid where u.last_action >= ? and $access order by u.last_action desc limit {$offset},{$limit}";
 		
-        return array_map('entity_row_to_elggstar', get_data_2($query, array($time)));
+        return array_map('entity_row_to_elggstar', get_data($query, array($time)));
 	}
 	
 	/**
@@ -805,7 +805,7 @@
             
             $hash = generate_user_password($user, $password);
             
-            return update_data_2("UPDATE users_entity set password=?, salt=? where guid=?", array($hash, $salt, $user_guid));
+            return update_data("UPDATE users_entity set password=?, salt=? where guid=?", array($hash, $salt, $user_guid));
         }
 		
 		return false;
@@ -1414,11 +1414,11 @@
                 $args[] = (int)$limit;
             }    
             
-            return array_map('entity_row_to_elggstar', get_data_2($query, $args));
+            return array_map('entity_row_to_elggstar', get_data($query, $args));
         } 
         else 
         {
-            $total = get_data_row_2($query, $args);
+            $total = get_data_row($query, $args);
             return $total->total;
         }   
     }

@@ -155,7 +155,7 @@
 		$md_access = get_access_sql_suffix("m");
 
 		return row_to_elggmetadata(
-            get_data_row_2("SELECT m.*, n.string as name, v.string as value from metadata m JOIN entities e on e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where m.id=? and $access and $md_access", 
+            get_data_row("SELECT m.*, n.string as name, v.string as value from metadata m JOIN entities e on e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where m.id=? and $access and $md_access", 
             array((int)$id)
         ));
 	}
@@ -179,7 +179,7 @@
             $args[] = add_metastring($value);
         }    
 		
-		return delete_data_2($query, $args);		
+		return delete_data($query, $args);		
 	}
 	
 	/**
@@ -212,7 +212,7 @@
         if (!$nameId) 
             return false;                
     
-		$existing = get_data_row_2("SELECT * from metadata WHERE entity_guid = ? and name_id = ? limit 1",        
+		$existing = get_data_row("SELECT * from metadata WHERE entity_guid = ? and name_id = ? limit 1",        
             array($entity_guid, $nameId)
         );        
 
@@ -234,7 +234,7 @@
 			if (!$valueId) 
                 return false;			
 			
-			$id = insert_data_2("INSERT into metadata (entity_guid, name_id, value_id, value_type, owner_guid, time_created, access_id) VALUES (?,?,?,?,?,?,?)", 
+			$id = insert_data("INSERT into metadata (entity_guid, name_id, value_id, value_type, owner_guid, time_created, access_id) VALUES (?,?,?,?,?,?,?)", 
                 array($entity_guid, $nameId, $valueId, $value_type, $owner_guid, $time, $access_id)
             );			
 		} 
@@ -280,7 +280,7 @@
         if (!$nameId) 
             return false;
 
-		return update_data_2("UPDATE metadata set value_id=?, value_type=?, access_id=?, owner_guid=? where id=? and name_id=?",
+		return update_data("UPDATE metadata set value_id=?, value_type=?, access_id=?, owner_guid=? where id=? and name_id=?",
             array($valueId, $value_type, $access_id, $owner-guid, $id, $nameId)
         );
 
@@ -311,7 +311,7 @@
 	 */
 	function delete_metadata($id)
 	{
-		return delete_data_2("DELETE from metadata where id=?", array((int)$id));
+		return delete_data("DELETE from metadata where id=?", array((int)$id));
 	}
 	
 	/**
@@ -330,7 +330,7 @@
 		$access = get_access_sql_suffix("e");
 		$md_access = get_access_sql_suffix("m");
 
-        return row_to_elggmetadata(get_data_row_2(
+        return row_to_elggmetadata(get_data_row(
             "SELECT m.*, n.string as name, v.string as value from metadata m JOIN entities e ON e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where m.entity_guid=? and m.name_id=? and $access and $md_access LIMIT 1",
             array((int)$entity_guid, $nameId)
         ));
@@ -348,7 +348,7 @@
 		$access = get_access_sql_suffix("e");
 		$md_access = get_access_sql_suffix("m");
 		
-        return array_map('row_to_elggmetadata', get_data_2(
+        return array_map('row_to_elggmetadata', get_data(
             "SELECT m.*, n.string as name, v.string as value from metadata m JOIN entities e ON e.guid = m.entity_guid JOIN metastrings v on m.value_id = v.id JOIN metastrings n on m.name_id = n.id where m.entity_guid=? and $access and $md_access",             
             array((int)$entity_guid)
         ));
@@ -425,11 +425,11 @@
                 $args[] = (int)$limit;
             }    
             
-            return array_map('entity_row_to_elggstar', get_data_2($query, $args));
+            return array_map('entity_row_to_elggstar', get_data($query, $args));
 		} 
         else 
         {
-			if ($row = get_data_row_2($query, $args))
+			if ($row = get_data_row($query, $args))
 				return $row->total;
 		}
 		return false;
@@ -469,12 +469,12 @@
 	 */
 	function clear_metadata($entity_guid)
 	{
-        return delete_data_2("DELETE from metadata where entity_guid=?", array($entity_guid));
+        return delete_data("DELETE from metadata where entity_guid=?", array($entity_guid));
 	}
 	
 	function clear_metadata_by_owner($owner_guid)
 	{
-        return delete_data_2("DELETE from metadata WHERE owner_guid=?", array($owner_guid));
+        return delete_data("DELETE from metadata WHERE owner_guid=?", array($owner_guid));
 	}	
 
 	/**

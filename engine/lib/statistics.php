@@ -29,7 +29,7 @@
             $args[] = $owner_guid;
 		}
 		
-		$types = get_data_2($query, $args);
+		$types = get_data($query, $args);
 		foreach ($types as $type) 
         {                                    
             $subtype = get_subtype_from_id($type->subtype_id);
@@ -51,7 +51,7 @@
                 $args[] = $type->subtype_id;
             }
                                     
-			$subtype_cnt = get_data_row_2($query, $args);
+			$subtype_cnt = get_data_row($query, $args);
 			
             if (!is_array($entity_stats[$type->type])) 
                 $entity_stats[$type->type] = array();            
@@ -80,7 +80,7 @@
 		if (!$show_deactivated)
 			$access = "and " . get_access_sql_suffix();
 		
-		$result = get_data_row_2("SELECT count(*) as count from entities where type='user' $access");
+		$result = get_data_row("SELECT count(*) as count from entities where type='user' $access");
             
 		if ($result)
 			return $result->count;

@@ -153,7 +153,7 @@
 	 */
 	function get_object_entity_as_row($guid)
 	{
-		return get_data_row_2("SELECT * from objects_entity where guid=?", array($guid));		
+		return get_data_row("SELECT * from objects_entity where guid=?", array($guid));		
 	}
 		
 ?>

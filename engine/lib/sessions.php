@@ -518,7 +518,7 @@
 		 */
 		function __elgg_session_read($id)
 		{
-            $result = get_data_row_2("SELECT * from users_sessions where session=?", array($id));			
+            $result = get_data_row("SELECT * from users_sessions where session=?", array($id));			
 
             if ($result)
                 return (string)$result->data;
@@ -531,7 +531,7 @@
 		 */
 		function __elgg_session_write($id, $sess_data)
 		{
-            if (insert_data_2("REPLACE INTO users_sessions (session, ts, data) VALUES (?,?,?)",
+            if (insert_data("REPLACE INTO users_sessions (session, ts, data) VALUES (?,?,?)",
                     array($id, time(), $sess_data))!==false)
             {
                 return true;
@@ -545,7 +545,7 @@
 		 */
 		function __elgg_session_destroy($id)
 		{
-            return (bool)delete_data_2("DELETE from users_sessions where session=?", array($id));
+            return (bool)delete_data("DELETE from users_sessions where session=?", array($id));
 		}
 		
 		/**
@@ -555,7 +555,7 @@
 		{
 			$life = time()-$maxlifetime;
 
-            return (bool)delete_data_2("DELETE from users_sessions where ts<?", array($life));
+            return (bool)delete_data("DELETE from users_sessions where ts<?", array($life));
 			
 			return true;
 		}

@@ -38,7 +38,7 @@
 
         $cs = ($case_sensitive) ? " BINARY " :"";
 		
-		$row = get_data_row_2("SELECT * from metastrings where string=$cs? limit 1", array($string));
+		$row = get_data_row("SELECT * from metastrings where string=$cs? limit 1", array($string));
 		if ($row) 
         { 
 			$METASTRINGS_CACHE[$row->id] = $row->string; 
@@ -67,7 +67,7 @@
 			return $METASTRINGS_CACHE[$id];
 		}
 		
-		$row = get_data_row_2("SELECT * from metastrings where id=? limit 1", array($id));
+		$row = get_data_row("SELECT * from metastrings where id=? limit 1", array($id));
 		if ($row) 
         {
 			$METASTRINGS_CACHE[$id] = $row->string; 		
@@ -93,7 +93,7 @@
 		if ($id) 
             return $id;
 		
-		$result = insert_data_2("INSERT into metastrings (string) values (?)", array($string));
+		$result = insert_data("INSERT into metastrings (string) values (?)", array($string));
 		if ($result) {
 			$METASTRINGS_CACHE[$result] = $string;
 			if (isset($METASTRINGS_DEADNAME_CACHE[$string])) 
@@ -109,7 +109,7 @@
 	 */
 	function delete_orphaned_metastrings()
 	{
-        return delete_data_2("
+        return delete_data("
             DELETE 
             from metastrings where 
             ( 

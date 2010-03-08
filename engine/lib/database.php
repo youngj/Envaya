@@ -135,7 +135,7 @@
      */
     function execute_delayed_read_query($query, $args = false, $handler = "") { return execute_delayed_query($query, $args, get_db_link('read'), $handler); }
 		       
-    function get_data_row_2($query, $args = false) 
+    function get_data_row($query, $args = false) 
     {
         $mysqli = get_db_link('read');        
                     
@@ -153,7 +153,7 @@
         return false;
     }
            
-    function get_data_2($query, $args = false) 
+    function get_data($query, $args = false) 
     {    
         $mysqli = get_db_link('read');        
             
@@ -176,7 +176,7 @@
         return false;
     }
 
-    function insert_data_2($query, $args = false) 
+    function insert_data($query, $args = false) 
     {            
         $mysqli = get_db_link('write');
         
@@ -187,7 +187,7 @@
         return false;
     }
     
-    function update_data_2($query, $args = false) 
+    function update_data($query, $args = false) 
     {
         $mysqli = get_db_link('write');
 
@@ -198,7 +198,7 @@
         return false;
     }    
     
-    function delete_data_2($query, $args = false) 
+    function delete_data($query, $args = false) 
     {
         $mysqli = get_db_link('write');
 
@@ -305,7 +305,7 @@
                 $statement = trim($statement);
                 if (!empty($statement)) {
                     try {
-                        $result = update_data_2($statement);
+                        $result = update_data($statement);
                     } catch (DatabaseException $e) {
                         $errors[] = $e->getMessage();
                     }

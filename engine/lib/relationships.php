@@ -240,7 +240,7 @@
 	 */
 	function get_relationship($id)
 	{
-		return row_to_elggrelationship(get_data_row_2("SELECT * from entity_relationships where id=?", array($id)));
+		return row_to_elggrelationship(get_data_row("SELECT * from entity_relationships where id=?", array($id)));
 	}
 	
 	/**
@@ -250,7 +250,7 @@
 	 */
 	function delete_relationship($id)
 	{
-		return delete_data_2("delete from entity_relationships where id=?", array($id));
+		return delete_data("delete from entity_relationships where id=?", array($id));
 	}
 	
 	/**
@@ -268,7 +268,7 @@
 		if (check_entity_relationship($guid_one, $relationship, $guid_two))
 			return false;
 		
-		$result = insert_data_2("INSERT into entity_relationships (guid_one, relationship, guid_two) values (?,?,?)",
+		$result = insert_data("INSERT into entity_relationships (guid_one, relationship, guid_two) values (?,?,?)",
             array($guid_one, $relationship, $guid_two)
         );
 		
@@ -298,7 +298,7 @@
 	 */
 	function check_entity_relationship($guid_one, $relationship, $guid_two)
 	{	
-		if ($row = get_data_row_2("SELECT * FROM entity_relationships WHERE guid_one=? AND relationship=? AND guid_two=? limit 1",
+		if ($row = get_data_row("SELECT * FROM entity_relationships WHERE guid_one=? AND relationship=? AND guid_two=? limit 1",
             array($guid_one, $relationship, $guid_two)
         )) {
 			return $row;
@@ -321,7 +321,7 @@
 		
 		if (trigger_elgg_event('delete', $relationship, $obj)) 
         {
-			return delete_data_2("DELETE from entity_relationships where guid_one=? and relationship=? and guid_two=?",
+			return delete_data("DELETE from entity_relationships where guid_one=? and relationship=? and guid_two=?",
                 array($guid_one, $relationship, $guid_two)
             );
 		} 
@@ -359,7 +359,7 @@
             $args[] = $relationship;
 		} 
         
-		return delete_data_2($sql, $args);		
+		return delete_data($sql, $args);		
 	}
 
 	/**
@@ -370,7 +370,7 @@
 	function get_entity_relationships($guid)
 	{
         return array_map('row_to_elggrelationship', 
-            get_data_2("SELECT * from entity_relationships where guid_one=?", array($guid)));
+            get_data("SELECT * from entity_relationships where guid_one=?", array($guid)));
 	}
 	
 	/**
@@ -450,11 +450,11 @@
             $args[] = $offset;
             $args[] = $limit;
 			
-            return array_map('entity_row_to_elggstar', get_data_2($query, $args));
+            return array_map('entity_row_to_elggstar', get_data($query, $args));
 		} 
         else 
         {
-			if ($count = get_data_row_2($query, $args)) 
+			if ($count = get_data_row($query, $args)) 
             {
 				return $count->total;
 			}

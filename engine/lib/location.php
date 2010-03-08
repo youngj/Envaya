@@ -61,7 +61,7 @@
 		if (is_array($location))
 			$location = implode(', ', $location);
 		
-		$cached_location = get_data_row_2("SELECT * from geocode_cache WHERE location=?", array($location));		
+		$cached_location = get_data_row("SELECT * from geocode_cache WHERE location=?", array($location));		
 		if ($cached_location)
 			return array('lat' => $cached_location->lat, 'long' => $cached_location->long);
 		

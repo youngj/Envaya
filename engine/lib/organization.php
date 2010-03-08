@@ -120,7 +120,7 @@ class Organization extends ElggUser {
     function getBlogDates()
     {
         $sql = "SELECT guid, time_created from entities WHERE type='object' AND subtype=? AND container_guid=? ORDER BY guid ASC";
-        return get_data_2($sql, array(T_blog, $this->guid));               
+        return get_data($sql, array(T_blog, $this->guid));               
     }
 
 }

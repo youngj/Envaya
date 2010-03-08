@@ -116,7 +116,7 @@
         public function saveTableAttributes($tableName)
         {
             $guid = $this->guid;
-            if (get_data_row_2("SELECT guid from $tableName where guid = ?", array($guid)))
+            if (get_data_row("SELECT guid from $tableName where guid = ?", array($guid)))
             {
                 $args = array();
                 $set = array();
@@ -128,7 +128,7 @@
                 
                 $args[] = $guid;
             
-                return update_data_2("UPDATE $tableName set ".implode(',', $set)." where guid = ?", $args);
+                return update_data("UPDATE $tableName set ".implode(',', $set)." where guid = ?", $args);
             }
             else
             {
@@ -143,7 +143,7 @@
                     $args[] = $value;
                 }
                                      
-                return update_data_2("INSERT into $tableName (".implode(',', $columns).") values (".implode(',', $questions).")", $args);                
+                return update_data("INSERT into $tableName (".implode(',', $columns).") values (".implode(',', $questions).")", $args);                
             }        
         }        
                 
@@ -325,7 +325,7 @@
         {
             $guid = $this->guid;
             return array_map('entity_row_to_elggstar', 
-                get_data_2("SELECT * from entities WHERE container_guid=? or owner_guid=? or site_guid=?", array($guid, $guid, $guid))
+                get_data("SELECT * from entities WHERE container_guid=? or owner_guid=? or site_guid=?", array($guid, $guid, $guid))
             );
         }
         
@@ -987,7 +987,7 @@
 		$entity = get_entity($guid);
 		
         if (trigger_elgg_event('update',$entity->type,$entity)) {
-            $ret = update_data_2("UPDATE entities set owner_guid=?, access_id=?, container_guid=?, time_updated=? WHERE guid=?", 
+            $ret = update_data("UPDATE entities set owner_guid=?, access_id=?, container_guid=?, time_updated=? WHERE guid=?", 
                 array($owner_guid,$access_id,$container_guid,$time,$guid)
             );
 
@@ -1063,7 +1063,7 @@
 		if ($type=="") 
             throw new InvalidParameterException(elgg_echo('InvalidParameterException:EntityTypeNotSet'));
 
-		return insert_data_2("INSERT into entities (type, subtype, owner_guid, site_guid, container_guid, access_id, time_created, time_updated) values (?,?,?,?,?,?,?,?)",
+		return insert_data("INSERT into entities (type, subtype, owner_guid, site_guid, container_guid, access_id, time_created, time_updated) values (?,?,?,?,?,?,?,?)",
             array($type, $subtype, (int)$owner_guid, (int)$site_guid, (int)$container_guid, (int)$access_id, $time, $time)
         ); 
 	}
@@ -1083,7 +1083,7 @@
 					
         $access = get_access_sql_suffix();
 		
-        return get_data_row_2("SELECT * from entities where guid=? and $access", array($guid));
+        return get_data_row("SELECT * from entities where guid=? and $access", array($guid));
 	}
 	
 	/**
@@ -1292,11 +1292,11 @@
                 $args[] = (int)$limit;                
                 $query .= " limit ?, ?"; 
             }    
-			return array_map('entity_row_to_elggstar', get_data_2($query, $args));
+			return array_map('entity_row_to_elggstar', get_data($query, $args));
 		} 
         else 
         {
-			$total = get_data_row_2($query, $args);
+			$total = get_data_row($query, $args);
 			return $total->total;
 		}
 	}
@@ -1373,7 +1373,7 @@
 						}							
 					}
 											
-					$res = update_data_2("UPDATE entities set enabled='no' where guid=?", array($guid));
+					$res = update_data("UPDATE entities set enabled='no' where guid=?", array($guid));
 					
 					return $res;
 				} 
@@ -1397,7 +1397,7 @@
 					
 					access_show_hidden_entities($access_status);
 				
-					$result = update_data_2("UPDATE entities set enabled='yes' where guid=?", array($guid));
+					$result = update_data("UPDATE entities set enabled='yes' where guid=?", array($guid));
 					$entity->clearMetaData('disable_reason');
 					
 					return $result;
@@ -1437,7 +1437,7 @@
                 $entity->clearMetadata();
                 $entity->clearRelationships();
                 remove_all_private_settings($guid);
-                $res = delete_data_2("DELETE from entities where guid=?", array($guid));
+                $res = delete_data("DELETE from entities where guid=?", array($guid));
                 if ($res)
                 {
                     $sub_table = "";
@@ -1450,7 +1450,7 @@
                     }
 
                     if ($sub_table)
-                        delete_data_2("DELETE from $sub_table where guid=?", array($guid));
+                        delete_data("DELETE from $sub_table where guid=?", array($guid));
                 }
 
                 return $res;
@@ -1791,7 +1791,7 @@
 		
 		global $CONFIG;
  		
-		if ($setting = get_data_row_2("SELECT value from private_settings where name = ? and entity_guid = ?",
+		if ($setting = get_data_row("SELECT value from private_settings where name = ? and entity_guid = ?",
             array($name, (int)$entity_guid)
         )) {
 			return $setting->value;
@@ -1810,7 +1810,7 @@
 		
 		$entity_guid = (int) $entity_guid;
 		
-        $result = get_data_2("SELECT * from private_settings where entity_guid = ?", array($entity_guid));
+        $result = get_data("SELECT * from private_settings where entity_guid = ?", array($entity_guid));
 		if ($result)
 		{
 			$return = array();
@@ -1835,7 +1835,7 @@
 		
 		global $CONFIG;
 		
-		$result = insert_data_2("INSERT into private_settings (entity_guid, name, value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE value = ?",
+		$result = insert_data("INSERT into private_settings (entity_guid, name, value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE value = ?",
             array((int)$entity_guid, $name, $value, $value)
         );
 		if ($result === 0) return true;
@@ -1854,7 +1854,7 @@
 	function remove_private_setting($entity_guid, $name) 
     {	
 		global $CONFIG;
-		return delete_data_2("DELETE from private_settings where name = ? and entity_guid = ?",
+		return delete_data("DELETE from private_settings where name = ? and entity_guid = ?",
             array($name, (int)$entity_guid));		
 	}
 	
@@ -1868,7 +1868,7 @@
 	function remove_all_private_settings($entity_guid) 
     {		
 		global $CONFIG;
-        return delete_data_2("DELETE from private_settings where entity_guid = ?", array((int)$entity_guid));
+        return delete_data("DELETE from private_settings where entity_guid = ?", array((int)$entity_guid));
 	}
 		
 	/**
@@ -1885,7 +1885,7 @@
 		$tables = array ('sites_entity', 'objects_entity', 'groups_entity', 'users_entity');
 		
 		foreach ($tables as $table) {
-			delete_data_2("DELETE from {$table} where guid NOT IN (SELECT guid from entities)");
+			delete_data("DELETE from {$table} where guid NOT IN (SELECT guid from entities)");
 		}
 	}
 	

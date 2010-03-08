@@ -142,12 +142,12 @@
 	
 		if ($count)
 		{
-			if ($numrows = get_data_row_2($query, $args))
+			if ($numrows = get_data_row($query, $args))
 				return $numrows->count;
 		}
 		else
         {
-			return get_data_2($query, $args);
+			return get_data($query, $args);
         }    
 			
 		return false;
@@ -164,7 +164,7 @@
 		
 		$entry_id = (int)$entry_id;
 		
-        return get_data_row_2("SELECT * from system_log where id=?", array($entry_id));
+        return get_data_row("SELECT * from system_log where id=?", array($entry_id));
 	}
 	
 	/**
@@ -232,7 +232,7 @@
 			
 			if (!isset($logcache[$time][$object_id][$event])) 
             {
-				insert_data_2("INSERT DELAYED into system_log (
+				insert_data("INSERT DELAYED into system_log (
                     object_id, object_class, object_type, object_subtype, event, 
                     performed_by_guid, owner_guid, access_id, enabled, time_created) 
                     VALUES (?,?,?,?,?,?,?,?,?,?)",
@@ -263,15 +263,15 @@
 		$ts = $now - $offset;
 	
 		// create table
-		if (!update_data_2("CREATE TABLE system_log_$now as SELECT * from system_log WHERE time_created<?", array($ts)))
+		if (!update_data("CREATE TABLE system_log_$now as SELECT * from system_log WHERE time_created<?", array($ts)))
 			return false;
 
 		// delete
-		if (delete_data_2("DELETE from system_log WHERE time_created<?", array($ts))===false) 
+		if (delete_data("DELETE from system_log WHERE time_created<?", array($ts))===false) 
 			return false;
 			
 		// alter table to engine
-		if (!update_data_2("ALTER TABLE system_log_$now engine=archive"))
+		if (!update_data("ALTER TABLE system_log_$now engine=archive"))
 			return false;
 	
 		return true;
