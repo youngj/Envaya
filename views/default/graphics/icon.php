@@ -10,9 +10,7 @@
 
 	$entity = $vars['entity'];
 	
-	// Get size
-	if (!in_array($vars['size'],array('small','medium','large','tiny','master','topbar')))
-		$vars['size'] = "medium";
+	$vars['size'] = sanitize_image_size($vars['size']);
 			
 	// Get any align and js
 	if (!empty($vars['align'])) {

@@ -54,6 +54,11 @@
     $CONFIG->siteemail = "youngj@envaya.org";
     $CONFIG->enabled_plugins = array("logbrowser","profile");
         
+    $CONFIG->types = array(
+        'object' => 'ElggObject',
+        'user' => 'ElggUser'
+    );
+        
     $CONFIG->subtypes = array(
         1 => array("object", "file", "ElggFile"),
         2 => array("object", "plugin", "ElggPlugin"),

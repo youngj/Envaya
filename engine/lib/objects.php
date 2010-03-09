@@ -112,6 +112,17 @@
 			
             return $this->saveTableAttributes('objects_entity');    
 		}
+        
+        public function delete()
+        {
+            if (parent::delete())
+            {
+                delete_data("DELETE from objects_entity where guid=?", array($this->guid));
+                return true;
+            }
+            return false;
+        }
+                
 
 		/**
 		 * Set the container for this object.
@@ -155,5 +166,12 @@
 	{
 		return get_data_row("SELECT * from objects_entity where guid=?", array($guid));		
 	}
+
+    function get_objects_by_condition($where, $args, $order_by, $limit, $offset, $count)
+    {
+        $where[] = "type='object'";
+        return get_entities_by_condition('objects_entity', $where, $args, $order_by, $limit, $offset, $count);
+    }
+
 		
 ?>

@@ -18,11 +18,8 @@
 		$user = page_owner_entity(); // page_owner_entity();
 		$username = $user->username;
 		
-	// Get the size
-		$size = strtolower(get_input('size'));
-		if (!in_array($size,array('large','medium','small','tiny','master','topbar')))
-			$size = "medium";
-		
+		$size = sanitize_image_size(get_input('size'));
+
 	// Try and get the icon
 	
 		$filehandler = new ElggFile();

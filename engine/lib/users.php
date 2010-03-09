@@ -29,6 +29,7 @@
 	class ElggUser extends ElggEntity
 		implements Friendable, Locatable
 	{
+    
 		/**
 		 * Initialise the attributes array. 
 		 * This is vital to distinguish between metadata and base parameters.
@@ -52,11 +53,13 @@
                 'code' => '',
                 'banned' => 'no',
                 'admin' => 0,
+                'approval' => 0,
                 'latitude' => null,
                 'longitude' => null,
+                'email_code' => null,
             ));    
         }    
-                
+                                
 		/**
 		 * Construct a new user entity, optionally from a given id value.
 		 *
@@ -140,11 +143,14 @@
 		 */
 		public function delete()
 		{
-			// Delete owned data
 			clear_metadata_by_owner($this->guid);
 			
-			// Delete entity
-			return parent::delete();
+			if (parent::delete())
+            {
+                delete_data("DELETE from users_entity where guid=?", array($this->guid));
+                return true;
+            }
+            return false;
 		}
 		
 		/**
@@ -152,12 +158,38 @@
 		 *
 		 * @param string $reason Optional reason
 		 */
-		public function ban($reason = "") { return ban_user($this->guid, $reason); }
+		public function ban($reason = "") 
+        { 
+            if ($this->canEdit())
+            {
+                if (trigger_elgg_event('ban', 'user', $this)) 
+                {
+                    $this->ban_reason = $reason;
+                    $this->banned = 'yes';
+                    $this->save();
+                    return true;
+                }       
+            }
+            return false;
+        }
 		
 		/**
 		 * Unban this user.
 		 */
-		public function unban()	{ return unban_user($this->guid); }
+		public function unban()	
+        { 
+            if ($this->canEdit())
+            {
+                if (trigger_elgg_event('unban', 'user', $this)) 
+                {
+                    $this->ban_reason = '';
+                    $this->banned = 'yes';
+                    $this->save();
+                    return true;
+                }       
+            }        
+            return false;        
+        }
 		
 		/**
 		 * Is this user banned or not?
@@ -288,8 +320,120 @@
         public function getLatitude() { return $this->attributes['latitude']; }
         public function getLongitude() { return $this->attributes['longitude']; }
         
-        public function getLocation() { return $this->get('location'); }
+        public function getLocation() { return $this->get('location'); }                
 
+        function getNewsUpdates($limit = 10, $offset = 0, $count = false)
+        {
+            $where = array();
+            $args = array();
+            
+            $where[] = "subtype=?";
+            $args[] = T_blog;
+        
+            $where[] = "container_guid=?";
+            $args[] = $this->guid;
+        
+            return get_objects_by_condition($where, $args, "time_created desc", $limit, $offset, $count);
+        }
+        
+        function listNewsUpdates($limit = 10, $pagination = true) 
+        {        
+            $offset = (int) get_input('offset');
+
+            $count = $this->getNewsUpdates($limit, $offset, true);
+            $entities = $this->getNewsUpdates($limit, $offset);
+
+            return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
+        }
+        
+        public function userCanSee()
+        {
+            return ($this->isApproved() || isadminloggedin() || ($this->guid == get_loggedin_userid()));
+        }
+
+        public function isApproved()
+        {
+            return $this->approval > 0;
+        }
+
+        public function approve()
+        {
+            $this->approval = 2;
+        }
+
+        static function getUsersInArea($latLongArr, $limit = 10, $offset = 0, $count = false)
+        {
+            $where = array();
+            $args = array();
+            
+            $where[] = "latitude >= ?";
+            $args[] = $latLongArr[0];
+
+            $where[] = "latitude <= ?";
+            $args[] = $latLongArr[2];
+
+            $where[] = "longitude >= ?";
+            $args[] = $latLongArr[1];
+
+            $where[] = "longitude <= ?";
+            $args[] = $latLongArr[3];
+
+            return static::getUsersByCondition($where, $args, '', $limit, $offset, $count);
+        }
+        
+        static function getUserByEmailCode($emailCode)
+        {
+            return static::getUserByCondition(
+                array('email_code = ?'),
+                array($emailCode)
+            );                    
+        }
+        
+        static function getUserByCondition($where, $args)
+        {
+            $users = static::getUsersByCondition($where, $args, '', 1, 0, false);
+            if (!empty($users))
+            {
+                return $users[0];
+            }
+            return null;
+        }
+        
+        static function getAllUsers($order_by = '', $limit = 10, $offset = 0, $count = false)
+        {
+            return static::getUsersByCondition(array(), array(), $order_by, $limit, $offset, $count);
+        }
+        
+        static function listAllUsers($limit = 10, $pagination = true) 
+        {        
+            $offset = (int) get_input('offset');
+
+            $count = static::getAllUsers($limit, $offset, true);
+            $entities = static::getAllUsers($limit, $offset);
+
+            return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
+        }
+                
+        
+        static function getUsersByCondition($where, $args, $order_by = '', $limit = 10, $offset = 0, $count = false)
+        {
+            $where[] = "type='user'";
+            
+            $subtypeId = static::$subtype_id;
+            if ($subtypeId)
+            {
+                $where[] = "subtype=?";
+                $args[] = $subtypeId;
+            }
+            
+            if (!isadminloggedin())
+            {
+                $where[] = "(approval > 0 || e.guid = ?)";
+                $args[] = get_loggedin_userid();                
+            }
+
+            return get_entities_by_condition('users_entity', $where, $args, $order_by, $limit, $offset, $count);        
+        }
 	}
 
 	/**
@@ -300,76 +444,7 @@
 	function get_user_entity_as_row($guid)
 	{		
         return get_data_row("SELECT * from users_entity where guid=?", array((int)$guid));
-	}
-		
-	/**
-	 * Disables all of a user's entities
-	 *
-	 * @param int $owner_guid The owner GUID
-	 * @return true|false Depending on success
-	 */
-	function disable_user_entities($owner_guid) 
-    {
-		if ($entity = get_entity($owner_guid)) 
-        {
-			if (trigger_elgg_event('disable',$entity->type,$entity)) 
-            {
-				if ($entity->canEdit()) 
-                {
-					return update_data("UPDATE entities set enabled='no' where owner_guid = ? or container_guid = ?", array($owner_guid, $owner_guid));
-				}
-			}
-		}
-		return false;		
-	}
-	
-	/**
-	 * Ban a user
-	 *
-	 * @param int $user_guid The user guid
-	 * @param string $reason A reason
-	 */
-	function ban_user($user_guid, $reason = "")
-	{
-		$user = get_entity($user_guid);
-		
-		if (($user) && ($user->canEdit()) && ($user instanceof ElggUser))
-		{
-			if (trigger_elgg_event('ban', 'user', $user)) 
-            {
-				if ($reason)
-                {
-					create_metadata($user_guid, 'ban_reason', $reason,'', 0, ACCESS_PUBLIC);
-                }    
-				
-				return update_data("UPDATE users_entity set banned='yes' where guid=?", array($user_guid));
-			}
-		}		
-
-		return false;
-	}
-	
-	/**
-	 * Unban a user.
-	 *
-	 * @param int $user_guid Unban a user.
-	 */
-	function unban_user($user_guid)
-	{
-		$user = get_entity($user_guid);
-		
-		if (($user) && ($user->canEdit()) && ($user instanceof ElggUser))
-		{
-			if (trigger_elgg_event('unban', 'user', $user)) 
-            {
-				create_metadata($user_guid, 'ban_reason', '','', 0, ACCESS_PUBLIC);
-                
-				return update_data("UPDATE users_entity set banned='no' where guid=?", array($user_guid));
-			}
-		}
-		
-		return false;
-	}
+	}		
 
 	/**
 	 * Adds a user to another user's friends list.
@@ -658,16 +733,11 @@
 	 * @param boolean $count Whether to return the count of results or just the results. 
 	 */
 	function search_for_user($criteria, $limit = 10, $offset = 0, $order_by = "", $count = false, $user_subtype = "")
-	{
-		
+	{		
         $user_subtype_id = get_subtype_id('user', $user_subtype);
         
 		$access = get_access_sql_suffix("e");
-		
-        $order_by = sanitize_order_by($order_by);
-		if ($order_by == "") 
-            $order_by = "e.time_created desc";
-		
+				
         $args = array();
         
 		if ($count) 
@@ -679,7 +749,7 @@
 			$query = "SELECT e.*, u.* "; 
 		}
 		
-        $query .= "FROM entities e JOIN users_entity u ON e.guid=u.guid WHERE INSTR(username, ?) > 0 OR INSTR(name, ?) > 0 and $access";        
+        $query .= "FROM entities e JOIN users_entity u ON e.guid=u.guid WHERE (INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0) and $access";        
         $args[] = $criteria;        
         $args[] = $criteria;
         
@@ -693,8 +763,12 @@
         {
             $args[] = (int)$offset;
             $args[] = (int)$limit;            
+
+            $order_by = sanitize_order_by($order_by);
+            if ($order_by == "") 
+                $order_by = "e.time_created desc";
         
-            return array_map('entity_row_to_elggstar', get_data("$query order by limit ?, ?", $args));
+            return array_map('entity_row_to_elggstar', get_data("$query order by $order_by limit ?, ?", $args));
 		} 
         else 
         {
@@ -997,7 +1071,8 @@
 	 */
 	function validate_password($password)
 	{
-		if (strlen($password)<6) throw new RegistrationException(elgg_echo('registration:passwordtooshort'));
+		if (strlen($password)<6) 
+            throw new RegistrationException(elgg_echo('registration:passwordtooshort'));
 			
 		$result = true;
 		return trigger_plugin_hook('registeruser:validate:password', 'all', array('password' => $password), $result);
@@ -1012,9 +1087,9 @@
 	 */
 	function validate_email_address($address)
 	{
-		if (!is_email_address($address)) throw new RegistrationException(elgg_echo('registration:notemail'));
-		
-		// Got here, so lets try a hook (defaulting to ok)
+		if (!is_email_address($address)) 
+            throw new RegistrationException(elgg_echo('registration:notemail'));
+				
 		$result = true;
 		return trigger_plugin_hook('registeruser:validate:email', 'all', array('email' => $address), $result);
 	}
@@ -1133,7 +1208,8 @@
 	 * Adds collection submenu items 
 	 *
 	 */
-	function collections_submenu_items() {
+	function collections_submenu_items() 
+    {
 		global $CONFIG;
 		$user = get_loggedin_user();
 		add_submenu_item(elgg_echo('friends:collections'), $CONFIG->wwwroot . "pg/collections/" . $user->username);
@@ -1257,18 +1333,16 @@
 	 * Sets up user-related menu items
 	 *
 	 */
-	function users_pagesetup() {
-		
-		// Load config
-			global $CONFIG;
-			
-		//add submenu options
-			if (get_context() == "friends" || 
-				get_context() == "friendsof" || 
-				get_context() == "collections") {
-				add_submenu_item(elgg_echo('friends'),$CONFIG->wwwroot."pg/friends/" . page_owner_entity()->username);
-				add_submenu_item(elgg_echo('friends:of'),$CONFIG->wwwroot."pg/friendsof/" . page_owner_entity()->username);
-			}
+	function users_pagesetup() 
+    {		
+        global $CONFIG;			
+
+        if (get_context() == "friends" || 
+            get_context() == "friendsof" || 
+            get_context() == "collections") {
+            add_submenu_item(elgg_echo('friends'),$CONFIG->wwwroot."pg/friends/" . page_owner_entity()->username);
+            add_submenu_item(elgg_echo('friends:of'),$CONFIG->wwwroot."pg/friendsof/" . page_owner_entity()->username);
+        }
 		
 	}
 	
@@ -1278,14 +1352,12 @@
 	 */
 	function users_init() {
 		
-		// Load config
-			global $CONFIG;
-		
-		// Set up menu for logged in users
-			if (isloggedin()) {
-				$user = get_loggedin_user();
-				add_menu(elgg_echo('friends'), $CONFIG->wwwroot . "pg/friends/" . $user->username);
-			}
+		global $CONFIG;
+				
+        if (isloggedin()) {
+            $user = get_loggedin_user();
+            add_menu(elgg_echo('friends'), $CONFIG->wwwroot . "pg/friends/" . $user->username);
+        }
 		
 		register_page_handler('friends','friends_page_handler');
 		register_page_handler('friendsof','friends_of_page_handler');
@@ -1360,78 +1432,8 @@
 			$return .= elgg_view('user/search/finishblurb',array('count' => $countusers, 'threshold' => $threshold, 'tag' => $tag));
 			return $return;
 			
-		}
-		
-	}
-    
-    function get_users_in_area($lat, $long, $radius, $subtype = "", $limit = 10, $offset = 0, $count = false)
-    {
-        $lat = (real)$lat;
-        $long = (real)$long;
-        $radius = (real)$radius;
-                    
-        $where = array();
-        $args = array();
-        
-        get_entity_conditions($where, $args, array(
-            'type' => 'user', 
-            'subtype' => $subtype
-        ), 'e');
-            
-        $where[] = "latitude >= ?";
-        $args[] = $lat - $radius;
-        
-        $where[] = "latitude <= ?";
-        $args[] = $lat + $radius;
-        
-        $where[] = "longitude >= ?";
-        $args[] = $long - $radius;
-        
-        $where[] = "longitude <= ?";
-        $args[] = $long + $radius;
-            
-        $from = "FROM entities e INNER JOIN users_entity u ON u.guid = e.guid";                
-        if (!$count) 
-        {
-            $query = "SELECT e.*, u.* $from WHERE ";
-        } 
-        else 
-        {
-            $query = "SELECT count(e.guid) as total $from WHERE ";
-        }
-        foreach ($where as $w)
-        {
-            $query .= " $w and ";
-        }                
-        $query .= get_access_sql_suffix('e'); // Add access controls
-        
-        if (!$count) 
-        {        
-            if ($limit) 
-            {
-                $query .= " limit ?, ?"; 
-                $args[] = (int)$offset;
-                $args[] = (int)$limit;
-            }    
-            
-            return array_map('entity_row_to_elggstar', get_data($query, $args));
-        } 
-        else 
-        {
-            $total = get_data_row($query, $args);
-            return $total->total;
-        }   
-    }
-
-    function list_users_in_area($lat, $long, $radius, $subtype = "", $limit = 10, $fullview = true, $viewtypetoggle = false, $navigation = true) 
-    {        
-        $offset = (int) get_input('offset');
-        $count = get_users_in_area($lat, $long, $radius, $subtype, $limit, $offset, true);
-        $entities = get_users_in_area($lat, $long, $radius, $subtype, $limit, $offset);
-
-        return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, $viewtypetoggle, $navigation);
-    }
-    
+		}		
+	}   
 	
 	function users_settings_save() {
 		

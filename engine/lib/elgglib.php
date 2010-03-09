@@ -19,6 +19,16 @@
         return htmlentities($val, ENT_QUOTES, 'UTF-8');
     }    
 
+    function sanitize_image_size($size)
+    {
+        $size = strtolower($size);
+        if (!in_array($size, array('large','medium','small','tiny','master','topbar')))
+        {
+            return "medium";
+        }
+        return $size;
+    }    
+
     /**
      * Adds messages to the session so they'll be carried over, and forwards the browser.
      * Returns false if headers have already been sent and the browser cannot be moved.

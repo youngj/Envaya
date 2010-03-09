@@ -491,29 +491,16 @@
 			return $return;
 			
 		}
-		
-		/**
-		 * Run some things once.
-		 *
-		 */
-		function widget_run_once()
-		{
-			// Register a class
-			add_subtype("object", "widget", "ElggWidget");	
-		}
 
 	/**
 	 * Function to initialise widgets functionality on Elgg init
 	 *
 	 */
-		function widgets_init() {
-			
+		function widgets_init() 
+        {			
 			register_action('widgets/reorder');
 			register_action('widgets/save');
-			register_action('widgets/add');
-			
-			// Now run this stuff, but only once
-			run_function_once("widget_run_once");
+			register_action('widgets/add');			
 		}
 		
 	// Register event

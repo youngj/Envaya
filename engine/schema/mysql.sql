@@ -110,6 +110,8 @@ CREATE TABLE `users_entity` (
   `prev_last_action` int(11) NOT NULL default '0',
   `last_login` int(11) NOT NULL default '0',
   `prev_last_login` int(11) NOT NULL default '0',
+  `email_code` varchar(24) default NULL,
+  `approval` int(11) NOT NULL default '0',
   
    `admin` tinyint(4) default '0',
    `latitude` float null,
@@ -117,6 +119,7 @@ CREATE TABLE `users_entity` (
   
   PRIMARY KEY  (`guid`),
   UNIQUE KEY (`username`),
+  UNIQUE KEY (`email_code`),
   KEY `password` (`password`),
   KEY `email` (`email`(50)),
   KEY `code` (`code`),

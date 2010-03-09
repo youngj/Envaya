@@ -12,10 +12,7 @@
 	 */
 
 	/// Cache objects in order to minimise database access.
-	$ENTITY_CACHE = NULL;
-	
-	/// Cache subtype searches
-	$SUBTYPE_CACHE = NULL;
+	$ENTITY_CACHE = array();
 	
 	/// Require the locatable interface TODO: Move this into start.php?
 	require_once('location.php');
@@ -53,7 +50,9 @@
 				
         protected $metadata_cache;
 				
-        protected $table_attribute_names;                
+        protected $table_attribute_names;    
+        
+        static $subtype_id = 0;
 		
 		/**
 		 * Initialise the attributes array. 
@@ -64,12 +63,12 @@
 		 * @return void
 		 */
 		protected function initialise_attributes()
-		{
-			initialise_entity_cache();
+		{			
+			if (!is_array($this->attributes)) 
+                $this->attributes = array();
 
-			// Create attributes array if not already created
-			if (!is_array($this->attributes)) $this->attributes = array();
-            if (!is_array($this->metadata_cache)) $this->metadata_cache = array();
+            if (!is_array($this->metadata_cache)) 
+                $this->metadata_cache = array();
 			
 			$this->attributes['guid'] = "";
 			$this->attributes['type'] = "";
@@ -83,8 +82,7 @@
 			$this->attributes['time_created'] = "";
 			$this->attributes['time_updated'] = "";
 			$this->attributes['enabled'] = "yes";		
-		}
-				
+		}				
         
         protected function initializeTableAttributes($tableName, $arr)
         {
@@ -101,8 +99,8 @@
             }
             
             $this->table_attribute_names[$tableName] = $tableAttributes;
-        }
-                
+        }               
+        
         protected function getTableAttributes($tableName)
         {
             $tableAttributes = array();
@@ -403,8 +401,18 @@
 		 * @param int $user_guid The user GUID, optionally (defaults to the currently logged in user)
 		 * @return true|false
 		 */
-		function canEditMetadata($metadata = null, $user_guid = 0) {
-			return can_edit_entity_metadata($this->getGUID(), $user_guid, $metadata);
+		function canEditMetadata($metadata = null, $user_guid = 0) {            
+            
+            $return = null;
+        
+            if ($metadata->owner_guid == 0) 
+                $return = true;
+            if (is_null($return))
+                $return = can_edit_entity($this->guid, $user_guid);
+            
+            $user = get_entity($user_guid);
+            return trigger_plugin_hook('permissions_check:metadata',$this->type,
+                array('entity' => $this, 'user' => $user, 'metadata' => $metadata), $return);
 		}
 		
 		/**
@@ -547,8 +555,38 @@
 		 */
 		public function getIcon($size = 'medium')
 		{
-			if (isset($this->icon_override[$size])) return $this->icon_override[$size];
-			return get_entity_icon_url($this, $size);
+			if (isset($this->icon_override[$size])) 
+                return $this->icon_override[$size];
+
+            global $CONFIG;
+
+            $size = sanitize_image_size($size);            
+
+            $url = false;
+
+            $viewtype = elgg_get_viewtype(); 
+
+            // Step one, see if anyone knows how to render this in the current view
+            $url = trigger_plugin_hook('entity:icon:url', $this->getType(), array('entity' => $this, 'viewtype' => $viewtype, 'size' => $size), $url);
+
+            // Fail, so use default
+            if (!$url) 
+            {
+                $type = $this->getType();
+                $subtype = $this->getSubtypeName();
+
+                if (!empty($subtype)) {
+                    $overrideurl = elgg_view("icon/{$type}/{$subtype}/{$size}",array('entity' => $this));
+                    if (!empty($overrideurl)) return $overrideurl;
+                }
+
+                $overrideurl = elgg_view("icon/{$type}/default/{$size}",array('entity' => $this));
+                if (!empty($overrideurl)) return $overrideurl;
+
+                $url = $CONFIG->url . "_graphics/icons/default/$size.png";
+            }
+
+            return $url;            
 		}
 		
 		/**
@@ -655,7 +693,30 @@
 		 */
 		public function disable($reason = "", $recursive = true)
 		{
-			return disable_entity($this->get('guid'), $reason, $recursive);
+            if (trigger_elgg_event('disable',$this->type,$this)) 
+            {   
+                if ($this->canEdit()) 
+                {               
+                    if ($reason)
+                    {
+                        create_metadata($this->guid, 'disable_reason', $reason,'', 0, ACCESS_PUBLIC);
+                    }    
+
+                    if ($recursive)
+                    {
+                        $sub_entities = $this->getSubEntities();
+
+                        if ($sub_entities) 
+                        {
+                            foreach ($sub_entities as $e)
+                                $e->disable($reason);
+                        }                           
+                    }
+
+                    return update_data("UPDATE entities set enabled='no' where guid=?", array($this->guid));
+                } 
+            }
+            return false;
 		}
 		
 		/**
@@ -663,7 +724,15 @@
 		 */
 		public function enable()
 		{
-			return enable_entity($this->get('guid'));
+            if (trigger_elgg_event('enable',$this->type,$this)) 
+            {
+                if ($this->canEdit()) 
+                {                    
+                    $result = update_data("UPDATE entities set enabled='yes' where guid=?", array($this->guid));
+                    $this->clearMetaData('disable_reason');                    
+                    return $result;
+                }
+            }
 		}
 		
 		/**
@@ -684,8 +753,24 @@
 		 */
 		public function delete() 
 		{ 
-			return delete_entity($this->get('guid'));
-		}			
+            if (trigger_elgg_event('delete',$this->type,$this)) 
+            {
+                $sub_entities = $this->getSubEntities();
+                if ($sub_entities) 
+                {
+                    foreach ($sub_entities as $e)
+                        $e->delete();
+                }
+
+                $this->clearMetadata();
+                $this->clearRelationships();
+                
+                delete_data("DELETE from private_settings where entity_guid = ?", array($this->guid));                
+                
+                return delete_data("DELETE from entities where guid=?", array($this->guid));
+            }			
+            return false;
+        }    
 		
         function getRootContainerEntity()
         {
@@ -799,18 +884,7 @@
    			return array_key_exists($offset, $this->attributes);
  		} 
 	}
-
-	/**
-	 * Initialise the entity cache.
-	 */
-	function initialise_entity_cache()
-	{
-		global $ENTITY_CACHE;
-		
-		if (!$ENTITY_CACHE)
-			$ENTITY_CACHE = array(); //select_default_memcache('entity_cache'); // TODO: Replace with memcache?
-	}
-	
+    
 	/**
 	 * Invalidate this class' entry in the cache.
 	 * 
@@ -915,28 +989,7 @@
         }
 
 		return false;
-	}
-	
-	/**
-	 * This function tests to see if a subtype has a registered class handler.
-	 * 
-	 * @param string $type The type
-	 * @param string $subtype The subtype
-	 * @return a class name or null
-	 */
-	function get_subtype_class($type, $subtype)
-	{
-        global $CONFIG;
-		foreach ($CONFIG->subtypes as $id => $info)
-        {
-            if ($info[0] == $type && $info[1] == $subtype)
-            {
-                return $info[2];
-            }
-        }
-		
-		return NULL;
-	}
+	}	
 	
 	/**
 	 * This function tests to see if a subtype has a registered class handler by its id.
@@ -944,25 +997,19 @@
 	 * @param int $subtype_id The subtype
 	 * @return a class name or null
 	 */
-	function get_subtype_class_from_id($subtype_id)
+	function get_subtype_class($type, $subtype_id)
 	{
 		global $CONFIG;        
         if (isset($CONFIG->subtypes[$subtype_id]))
         {
             return $CONFIG->subtypes[$subtype_id][2];
         }
+        
+        if (isset($CONFIG->types[$type]))
+        {
+            return $CONFIG->types[$type];
+        }
         return NULL;
-	}
-	
-	/**
-	 * This function will register a new subtype, returning its ID as required.
-	 * 
-	 * @param string $type The type you're subtyping
-	 * @param string $subtype The subtype label
-	 * @param string $class Optional class handler (if you don't want it handled by the generic elgg handler for the type)
-	 */
-    function add_subtype($type, $subtype, $class = "")
-	{
 	}
 	
 	/**
@@ -1097,36 +1144,16 @@
 		if ((!isset($row->guid)) || (!isset($row->subtype)))
 			return $row;
 			
-		$new_entity = false;
-
-		$classname = get_subtype_class_from_id($row->subtype);
-		if ($classname!="")
-		{
-			if (class_exists($classname))
-			{
-				$new_entity = new $classname($row);
-				
-				if (!($new_entity instanceof ElggEntity))
-					throw new ClassException(sprintf(elgg_echo('ClassException:ClassnameNotClass'), $classname, 'ElggEntity'));
-			}
-			else
-				error_log(sprintf(elgg_echo('ClassNotFoundException:MissingClass'), $classname));
-		}
-		else
-		{
-			switch ($row->type)
-			{
-				case 'object' : 
-					$new_entity = new ElggObject($row); break;
-				case 'user' : 
-					$new_entity = new ElggUser($row); break;
-				default: 
-                    throw new InstallationException(sprintf(elgg_echo('InstallationException:TypeNotSupported'), $row->type));
-			}
-			
-		}
+		$classname = get_subtype_class($row->type, $row->subtype);
 		
-		return $new_entity;
+        if ($classname && class_exists($classname))
+        {
+		    return new $classname($row);				
+		}
+        else
+        {
+            throw new ClassException(sprintf(elgg_echo('ClassException:ClassnameNotClass'), $classname, 'ElggEntity'));
+        }       
 	}
 	
 	/**
@@ -1342,143 +1369,8 @@
 		$entities = get_objects_in_group($container_guid, $subtype, $owner_guid, 0, "", $limit, $offset);
 
 		return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview);
-	}	
-	
-	/**
-	 * Disable an entity but not delete it.
-	 *
-	 * @param int $guid The guid
-	 * @param string $reason Optional reason
-	 */
-	function disable_entity($guid, $reason = "", $recursive = true)
-	{
-		global $CONFIG;
+	}			
 		
-		if ($entity = get_entity($guid)) 
-        {		
-			if (trigger_elgg_event('disable',$entity->type,$entity)) 
-            {	
-				if ($entity->canEdit()) 
-                {				
-					if ($reason)
-						create_metadata($guid, 'disable_reason', $reason,'', 0, ACCESS_PUBLIC);
-
-					if ($recursive)
-					{
-                        $sub_entities = $entity->getSubEntities();
-                            
-						if ($sub_entities) {
-							foreach ($sub_entities as $e)
-								$e->disable($reason);
-						}							
-					}
-											
-					$res = update_data("UPDATE entities set enabled='no' where guid=?", array($guid));
-					
-					return $res;
-				} 
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Enable an entity again.
-	 *
-	 * @param int $guid
-	 */
-	function enable_entity($guid)
-	{
-		global $CONFIG;		
-		
-		if ($entity = get_entity($guid)) {
-			if (trigger_elgg_event('enable',$entity->type,$entity)) {
-				if ($entity->canEdit()) {
-					
-					access_show_hidden_entities($access_status);
-				
-					$result = update_data("UPDATE entities set enabled='yes' where guid=?", array($guid));
-					$entity->clearMetaData('disable_reason');
-					
-					return $result;
-				}
-			}
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * Delete a given entity.
-	 * 
-	 * @param int $guid
-	 * @param bool $recursive If true (default) then all entities which are owned or contained by $guid will also be deleted.
-	 * 						   Note: this bypasses ownership of sub items.
-	 */
-	function delete_entity($guid, $recursive = true)
-	{
-		global $CONFIG;
-		
-		$guid = (int)$guid;
-		if ($entity = get_entity($guid)) {
-			if (trigger_elgg_event('delete',$entity->type,$entity)) {
-					
-                // Delete contained owned and otherwise releated objects (depth first)
-                if ($recursive)
-                {
-                    $sub_entities = $entity->getSubEntities();
-                    if ($sub_entities) {
-                        foreach ($sub_entities as $e)
-                            $e->delete();
-                    }
-                }
-
-                // Now delete the entity itself
-                $entity->clearMetadata();
-                $entity->clearRelationships();
-                remove_all_private_settings($guid);
-                $res = delete_data("DELETE from entities where guid=?", array($guid));
-                if ($res)
-                {
-                    $sub_table = "";
-
-                    // Where appropriate delete the sub table
-                    switch ($entity->type)
-                    {
-                        case 'object' : $sub_table = 'objects_entity'; break;
-                        case 'user' :  $sub_table = 'users_entity'; break;
-                    }
-
-                    if ($sub_table)
-                        delete_data("DELETE from $sub_table where guid=?", array($guid));
-                }
-
-                return $res;
-			}
-		}
-		return false;
-		
-	}
-	
-	/**
-	 * Delete multiple entities that match a given query.
-	 * This function itterates through and calls delete_entity on each one, this is somewhat inefficient but lets 
-	 * the 'delete' even be called for each entity.
-	 * 
-	 * @param string $type The type of entity (eg "user", "object" etc)
-	 * @param string $subtype The arbitrary subtype of the entity
-	 * @param int $owner_guid The GUID of the owning user
-	 */
-	function delete_entities($type = "", $subtype = "", $owner_guid = 0)
-	{
-		$entities = get_entities($type, $subtype, $owner_guid, "time_created desc", 0);
-		
-		foreach ($entities as $entity)
-			delete_entity($entity->guid);
-		
-		return true;
-	}
-	
 	/**
 	 * Determines whether or not the specified user can edit the specified entity.
 	 * 
@@ -1521,94 +1413,7 @@
 		}
 		
 	}
-	
-	/**
-	 * Determines whether or not the specified user can edit metadata on the specified entity.
-	 * 
-	 * This is extendible by registering a plugin hook taking in the parameters 'entity' and 'user',
-	 * which are the entity and user entities respectively
-	 * 
-	 * @see register_plugin_hook 
-	 *
-	 * @param int $entity_guid The GUID of the entity
-	 * @param int $user_guid The GUID of the user
-	 * @param ElggMetadata $metadata The metadata to specifically check (if any; default null)
-	 * @return true|false Whether the specified user can edit the specified entity.
-	 */
-	function can_edit_entity_metadata($entity_guid, $user_guid = 0, $metadata = null) {
-		
-		if ($entity = get_entity($entity_guid)) {
 			
-			$return = null;
-		
-			if ($metadata->owner_guid == 0) $return = true;
-			if (is_null($return))
-				$return = can_edit_entity($entity_guid, $user_guid);
-			
-			$user = get_entity($user_guid);
-			$return = trigger_plugin_hook('permissions_check:metadata',$entity->type,array('entity' => $entity, 'user' => $user, 'metadata' => $metadata),$return);
-			return $return;
-
-		} else {
-			return false;
-		}
-		
-	}
-	
-		
-	/**
-	 * Get the icon for an entity
-	 *
-	 * @param ElggEntity $entity The entity (passed an entity rather than a guid to handle non-created entities)
-	 * @param string $size
-	 */
-	function get_entity_icon_url(ElggEntity $entity, $size = 'medium')
-	{
-		global $CONFIG;
-		
-		switch (strtolower($size))
-		{
-			case 'master': $size = 'master'; break;
-			 
-			case 'large' : $size = 'large'; break;
-			
-			case 'topbar' : $size = 'topbar'; break;
-			
-			case 'tiny' : $size = 'tiny'; break;
-			
-			case 'small' : $size = 'small'; break;
-			
-			case 'medium' :
-			default: $size = 'medium';
-		}
-		
-		$url = false;
-		
-		$viewtype = elgg_get_viewtype(); 
-		
-		// Step one, see if anyone knows how to render this in the current view
-		$url = trigger_plugin_hook('entity:icon:url', $entity->getType(), array('entity' => $entity, 'viewtype' => $viewtype, 'size' => $size), $url);
-		
-		// Fail, so use default
-		if (!$url) {
-
-			$type = $entity->getType();
-			$subtype = $entity->getSubtypeName();
-			
-			if (!empty($subtype)) {
-				$overrideurl = elgg_view("icon/{$type}/{$subtype}/{$size}",array('entity' => $entity));
-				if (!empty($overrideurl)) return $overrideurl;
-			}
-
-			$overrideurl = elgg_view("icon/{$type}/default/{$size}",array('entity' => $entity));
-			if (!empty($overrideurl)) return $overrideurl;
-			
-			$url = $CONFIG->url . "_graphics/icons/default/$size.png";
-		}
-	
-		return $url;
-	}
-		
 	/**
 	 * Sets the URL handler for a particular entity type and subtype
 	 *
@@ -1738,7 +1543,8 @@
 	 *
 	 * @param array $page Page elements from pain page handler
 	 */
-	function entities_page_handler($page) {
+	function entities_page_handler($page) 
+    {
 		if (isset($page[0])) {
 			global $CONFIG;
 			set_input('guid',$page[0]);
@@ -1857,46 +1663,52 @@
 		return delete_data("DELETE from private_settings where name = ? and entity_guid = ?",
             array($name, (int)$entity_guid));		
 	}
-	
-	/**
-	 * Deletes all private settings for an entity.
-	 *
-	 * @param int $entity_guid The Entity GUID
-	 * @return true|false depending on success
-	 * 
-	 */
-	function remove_all_private_settings($entity_guid) 
-    {		
-		global $CONFIG;
-        return delete_data("DELETE from private_settings where entity_guid = ?", array((int)$entity_guid));
-	}
-		
-	/**
-	 * Garbage collect stub and fragments from any broken delete/create calls
-	 *
-	 * @param unknown_type $hook
-	 * @param unknown_type $user
-	 * @param unknown_type $returnvalue
-	 * @param unknown_type $tag
-	 */
-	function entities_gc($hook, $user, $returnvalue, $tag) {
-		global $CONFIG;
-		
-		$tables = array ('sites_entity', 'objects_entity', 'groups_entity', 'users_entity');
-		
-		foreach ($tables as $table) {
-			delete_data("DELETE from {$table} where guid NOT IN (SELECT guid from entities)");
-		}
-	}
-	
-	/**
-	 * Entities init function; establishes the page handler
-	 *
-	 */
+    
+    function get_entities_by_condition($subTable, $where, $args, $order_by, $limit, $offset, $count)
+    {
+        $fromWhere = "FROM entities e INNER JOIN $subTable u ON u.guid = e.guid WHERE ";                
+                
+        if (!$count) 
+        {
+            $query = "SELECT e.*, u.* $fromWhere";
+        } 
+        else 
+        {
+            $query = "SELECT count(e.guid) as total $fromWhere";
+        }
+        
+        foreach ($where as $w)
+        {
+            $query .= " $w and ";
+        }                
+        $query .= get_access_sql_suffix('e'); 
+
+        if (!$count) 
+        {        
+            if ($order_by)
+            {
+                $query .= "order by ".sanitize_order_by($order_by);
+            }
+        
+            if ($limit) 
+            {
+                $query .= " limit ?, ?"; 
+                $args[] = (int)$offset;
+                $args[] = (int)$limit;
+            }    
+
+            return array_map('entity_row_to_elggstar', get_data($query, $args));
+        } 
+        else 
+        {
+            $total = get_data_row($query, $args);
+            return $total->total;
+        }       
+    }    
+    
 	function entities_init() 
 	{
-		register_page_handler('view','entities_page_handler');				
-		register_plugin_hook('gc','system','entities_gc');
+		register_page_handler('view','entities_page_handler');
 	}
 	
 	/** Hook for rendering a default icon for entities */

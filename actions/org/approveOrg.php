@@ -7,15 +7,9 @@
 	
 	if (($entity) && ($entity instanceof Organization))
 	{
-		if ($entity->approveOrg())
-		{
-			$entity->save();
-			system_message(elgg_echo('org:approved'));
-		}
-		else
-        {
-			register_error(elgg_echo('org:notapproved'));
-        }    
+        $entity->approve();
+        $entity->save();    
+	    system_message(elgg_echo('org:approved'));	
 	}
 	else
     {

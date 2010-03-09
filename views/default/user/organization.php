@@ -8,11 +8,7 @@
 	 * @link http://elgg.org/
      */
 	    
-    if (!$vars['entity']->userCanSee())
-    {
-        echo " ";
-    }
-    else if ($vars['full']) 
+    if ($vars['full']) 
     {
 		echo elgg_view('export/entity', $vars);
 	} 

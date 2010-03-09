@@ -1316,15 +1316,6 @@
 		
 		return true;
 	}
-
-	/**
-	 * Run once and only once.
-	 */
-	function filestore_run_once()
-	{
-		// Register a class
-		add_subtype("object", "file", "ElggFile");	
-	}
 	
 	/** 
 	 * Initialise the file modules. 
@@ -1336,9 +1327,6 @@
 		
 		// Now register a default filestore
 		set_default_filestore(new ElggDiskFilestore($CONFIG->dataroot));
-		
-		// Now run this stuff, but only once
-		run_function_once("filestore_run_once");
 	}
 	
 	// Register a startup event

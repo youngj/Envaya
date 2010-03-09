@@ -16,21 +16,9 @@ class Organization extends ElggUser {
         // when admin performs verification, he/she chooses from a dropdown of the Orgs he/she is an admin of.  Organization is then verified by this chosen super org
         // entity_relationships
         //addRelationship(...
-
-
-
-        /*
-        TODO: implement or integrate Enum implementation and use it instead of constants.
-        approval values:
-        -1 -- Denied approval
-        0 -- Awaiting approval
-        1 -- Approved
-        2 -- Approved by super-admin
-        3 -- Verified by partner organization
-        4 -- Verified by Envaya host country national
-        5 -- Verified by super-admin
-        */
     }
+
+    static $subtype_id = T_organization;
 
     public function __construct($guid = null) 
     {
@@ -47,16 +35,6 @@ class Organization extends ElggUser {
         return parent::set($name, $value);
     }
 
-    public function isApproved()
-    {
-        return $this->approval > 0;
-    }
-
-    public function isVerified()
-    {
-        return $this->approval > 2;
-    }
-
     public function generateEmailCode()
     {
         $code = '';
@@ -66,9 +44,9 @@ class Organization extends ElggUser {
             $code .= $characters[mt_rand(0, strlen($characters) - 1)];
         }
         $this->email_code = $code;
-        $this->saveMetaData();
+        $this->save();
     }
-    
+        
     public function getIconFile($size)
     {
         $filehandler = new ElggFile();
@@ -86,47 +64,17 @@ class Organization extends ElggUser {
         return "post+{$this->email_code}@envaya.org";
     }
 
-    public function userCanSee()
-    {
-        return ($this->isApproved() || isadminloggedin() || ($this->guid == get_loggedin_userid()));
-    }
-
-    public function approveOrg()
-    {
-        if (isadminloggedin())
-        {
-            $this->set("approval", 2);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public function verifyOrg()
-    {
-        if (isadminloggedin())
-        {
-            $this->set("approval", 5);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-        
     function getBlogDates()
     {
         $sql = "SELECT guid, time_created from entities WHERE type='object' AND subtype=? AND container_guid=? ORDER BY guid ASC";
         return get_data($sql, array(T_blog, $this->guid));               
-    }
-
+    }    
 }
 
 class Translation extends ElggObject
 {
+    static $subtype_id = T_translation;
+
     protected function initialise_attributes() 
     {
         parent::initialise_attributes();
@@ -141,6 +89,8 @@ class Translation extends ElggObject
 
 class NewsUpdate extends ElggObject
 {
+    static $subtype_id = T_blog;
+
     protected function initialise_attributes() 
     {
         parent::initialise_attributes();
