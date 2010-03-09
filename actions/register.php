@@ -49,22 +49,8 @@
 						$new_user->admin = true;
 					}
 					
-					// Send user validation request on register only
-					global $registering_admin;
-					if (!$registering_admin)
-						request_user_validation($guid);
-                        
-                    set_user_validation_status($guid, true);    
-					
                     login($new_user, false);
                     
-                    /*
-					if (!$new_user->admin)
-						$new_user->disable('new_user', false);	// Now disable if not an admin
-						// Don't do a recursive disable.  Any entities owned by the user at this point
-						// are products of plugins that                        
-                    */    
-					
 					system_message(sprintf(elgg_echo("registerok"),$CONFIG->sitename));
 					
                     forward("pg/dashboard/"); // Forward on success, assume everything else is an error...

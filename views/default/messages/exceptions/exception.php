@@ -27,7 +27,7 @@ END;
 
 	if ($CONFIG->debug)
 	{
-		$details = elgg_view('output/longtext', array('value' => htmlentities(print_r($vars['object'], true), ENT_QUOTES, 'UTF-8')));
+		$details = elgg_view('output/longtext', array('value' => print_r($vars['object'], true)));
 		$body .= <<< END
 		<hr />
 		<p class="messages-exception-detail">

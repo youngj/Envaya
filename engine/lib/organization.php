@@ -20,21 +20,6 @@ class Organization extends ElggUser {
 
     static $subtype_id = T_organization;
 
-    public function __construct($guid = null) 
-    {
-        parent::__construct($guid);
-    }
-
-    public function set($name, $value)
-    {
-        if ($name == 'name' || $name == 'username')
-        {
-            $this->setMetaData($name, $value);
-        }
-        
-        return parent::set($name, $value);
-    }
-
     public function generateEmailCode()
     {
         $code = '';
@@ -62,47 +47,50 @@ class Organization extends ElggUser {
             $this->generateEmailCode();
         }
         return "post+{$this->email_code}@envaya.org";
-    }
-
-    function getBlogDates()
-    {
-        $sql = "SELECT guid, time_created from entities WHERE type='object' AND subtype=? AND container_guid=? ORDER BY guid ASC";
-        return get_data($sql, array(T_blog, $this->guid));               
-    }    
+    } 
 }
 
 class Translation extends ElggObject
 {
     static $subtype_id = T_translation;
-
-    protected function initialise_attributes() 
-    {
-        parent::initialise_attributes();
-        $this->attributes['subtype'] = T_translation;
-    }    
+    static $table_name = 'translations';
+    static $table_attributes = array(
+        'hash' => '',
+        'property' => '',
+        'lang' => '',
+        'value' => ''
+    );
     
-    public function __construct($guid = null) 
+    public function save()
     {
-        parent::__construct($guid);
-    }      
+        $this->hash = $this->calculateHash();
+        return parent::save();
+    }
+    
+    public function getOriginalText()
+    {
+        $obj = $this->getContainerEntity();
+        $property = $this->property;
+        return trim($obj->$property);
+    }
+    
+    public function calculateHash()
+    {
+        return $this->getRootContainerEntity()->language . ":" . sha1($this->getOriginalText());        
+    }
 }
 
 class NewsUpdate extends ElggObject
 {
     static $subtype_id = T_blog;
-
-    protected function initialise_attributes() 
-    {
-        parent::initialise_attributes();
-        $this->attributes['subtype'] = T_blog;
-    }
+    static $table_name = 'news_updates';
+    static $table_attributes = array(
+        'content' => '',
+        'data_types' => 0,
+    );        
     
-    public function __construct($guid = null) 
-    {
-        parent::__construct($guid);
-        $this->access_id = ACCESS_PUBLIC;
-    }
-    
+    static $IMAGE = 2;
+        
     public function getImageFile($size = '')
     {
         $filehandler = new ElggFile();
@@ -111,76 +99,88 @@ class NewsUpdate extends ElggObject
         return $filehandler;       
     }
     
+    public function hasImage()
+    {
+        return ($this->data_types & static::$IMAGE) != 0;
+    }   
+
     public function setImage($imageData)
     {
-        $prefix = "blog/".$this->guid;
-
-        $filehandler = new ElggFile();
-        
-        $filehandler->owner_guid = $this->container_guid;
-        $filehandler->container_guid = $this->guid;
-        
-        $filehandler->setFilename($prefix . ".jpg");
-        $filehandler->open("write");
-        $filehandler->write($imageData);
-        $filehandler->close();
-
-        $thumbsmall = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),100,100, false);
-        $thumblarge = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),450,450, false);
-
-        if ($thumbsmall) 
+        if (!$imageData)
         {
-            $thumb = new ElggFile();
-            $thumb->owner_guid = $blog->container_guid;
-            $thumb->container_guid = $blog->guid;
-            $thumb->setMimeType('image/jpeg');
+            $this->data_types &= ~static::$IMAGE;     
+        }
+        else
+        {
+            $this->data_types |= static::$IMAGE; 
 
-            $thumb->setFilename($prefix."small.jpg");
-            $thumb->open("write");
-            $thumb->write($thumbsmall);
-            $thumb->close();
+            $prefix = "blog/".$this->guid;
 
-            $thumb->setFilename($prefix."large.jpg");
-            $thumb->open("write");
-            $thumb->write($thumblarge);
-            $thumb->close();
-        }        
+            $filehandler = new ElggFile();
+
+            $filehandler->owner_guid = $this->container_guid;
+            $filehandler->container_guid = $this->guid;
+
+            $filehandler->setFilename($prefix . ".jpg");
+            $filehandler->open("write");
+            $filehandler->write($imageData);
+            $filehandler->close();
+
+            $thumbsmall = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),100,100, false);
+            $thumblarge = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),450,450, false);
+
+            if ($thumbsmall) 
+            {
+                $thumb = new ElggFile();
+                $thumb->owner_guid = $blog->container_guid;
+                $thumb->container_guid = $blog->guid;
+                $thumb->setMimeType('image/jpeg');
+
+                $thumb->setFilename($prefix."small.jpg");
+                $thumb->open("write");
+                $thumb->write($thumbsmall);
+                $thumb->close();
+
+                $thumb->setFilename($prefix."large.jpg");
+                $thumb->open("write");
+                $thumb->write($thumblarge);
+                $thumb->close();
+            }        
+        }   
+        $this->save();
     }
 }
 
 function view_translated($obj, $field)
 {        
-    $md = get_metadata_byname($obj->guid, $field);        
-           
-    if (!$md || is_array($md)) 
-    {
-        return '' ;
-    }
-
-    $text = trim($md->value);
-    
+    $text = trim($obj->$field);
     if (!$text)
     {
         return '';
-    }
-    
+    }   
+
     $org = $obj->getRootContainerEntity();
     if (!($org instanceof Organization))
     {
         return '';
     }
+    
+    $origLang = $org->language;
+    $viewLang = get_language();
 
-    $differentLanguage = ($org->language != get_language());    
-
-    if ($differentLanguage)
+    if ($origLang != $viewLang)
     {
         $translate = true || get_input("translate");
         
         if ($translate)
-        {
-            $translation = lookup_translation($text, $org->language);            
+        {            
+            $translation = lookup_translation($obj, $field, $origLang, $viewLang);            
             
-            return elgg_view("translation/wrapper", array('translation' => $translation, 'metadata' => $md));
+            return elgg_view("translation/wrapper", array(
+                'translation' => $translation, 
+                'entity' => $obj, 
+                'property' => $field, 
+            ));
         }
         else
         {
@@ -192,44 +192,81 @@ function view_translated($obj, $field)
 }
 
 
-function get_translation_key($text, $src, $dest)
+function lookup_translation($obj, $prop, $origLang, $viewLang)
 {
-    return $src . ":" . $dest . ":" . sha1(trim($text));
+    $where = array();
+    $args = array();
+
+    $where[] = "subtype=?";
+    $args[] = T_translation;
+
+    $where[] = "property=?";
+    $args[] = $prop;
+
+    $where[] = "lang=?";
+    $args[] = $viewLang;
+
+    $where[] = "container_guid=?";
+    $args[] = $obj->guid;
+
+    $entities = get_entities_by_condition('translations', $where, $args, '', 1);                   
+    
+    if (!empty($entities)) 
+    {        
+        $trans = $entities[0];
+        if ($trans->calculateHash() != $trans->hash && !$trans->owner_guid)
+        {            
+            $text = get_auto_translation($obj->$prop, $origLang, $viewLang);
+
+            if ($text != null)
+            {
+                $trans->value = $text;
+                $trans->save();
+            }
+        }
+        return $trans;
+    }
+    else
+    {   
+        $text = get_auto_translation($obj->$prop, $origLang, $viewLang);
+        
+        if ($text != null)
+        {
+            $trans = new Translation();    
+            $trans->owner_guid = 0;
+            $trans->container_guid = $obj->guid;
+            $trans->property = $prop;
+            $trans->lang = $viewLang;
+            $trans->value = $text;            
+            $trans->save();
+            return $trans;
+        }    
+        return null;
+    }
 }
 
-function lookup_translation($text, $text_language)
+function get_auto_translation($text, $origLang, $viewLang)
 {
+    if ($origLang == $viewLang)
+    {
+        return null;
+    }    
+
     $text = trim($text);
     if (!$text)
     {
         return null;
     }
-    
-    $disp_language = get_language();
-    if ($text_language == $disp_language)
-    {
-        return null;
-    }    
-    
-    $key = get_translation_key($text, $text_language, $disp_language);
-        
-    $translations = get_entities_from_metadata('key', $key, 'object', 'translation'); 
-    if (!empty($translations))
-    {        
-        return $translations[0];
-    }
-    
+           
     $ch = curl_init(); 
     
     $text = str_replace("\r","", $text);
     $text = str_replace("\n", ",;", $text);
     
-    $url = "ajax.googleapis.com/ajax/services/language/translate?v=1.0&langpair=$text_language%7C$disp_language&q=".urlencode($text);
+    $url = "ajax.googleapis.com/ajax/services/language/translate?v=1.0&langpair=$origLang%7C$viewLang&q=".urlencode($text);
     
     curl_setopt($ch, CURLOPT_URL, $url); 
-    curl_setopt($ch, CURLOPT_REFERER, "www.envaya.org");    
-    
-    // TODO referrer
+    curl_setopt($ch, CURLOPT_REFERER, "www.envaya.org");     
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
     
     $json = curl_exec($ch); 
@@ -246,17 +283,7 @@ function lookup_translation($text, $text_language)
             
     $text = html_entity_decode($translated, ENT_QUOTES);
     
-    $text = str_replace(",;", "\n", $text);
-    
-    $trans = new Translation();    
-    $trans->owner_guid = 0;
-    $trans->container_guid = 0;
-    $trans->access_id = ACCESS_PUBLIC;
-    $trans->save();
-    $trans->key = $key;
-    $trans->text = $text;
-    
-    return $trans;
+    return str_replace(",;", "\n", $text);   
 }
 
 function envaya_init() {

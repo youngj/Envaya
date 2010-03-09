@@ -20,7 +20,7 @@
 	$user = get_user_by_username($username);
 	if ($user)
 	{
-		if ($user->validated) {
+		if (true) {
 			if (send_new_password_request($user->guid))
 				system_message(elgg_echo('user:password:resetreq:success'));
 			else

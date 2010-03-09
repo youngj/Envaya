@@ -3,45 +3,39 @@
     gatekeeper();
     action_gatekeeper();
 
-    $translation = get_input('translation');
-    $metaDataId = get_input('metadata_id');
-    $metaData = get_metadata($metaDataId);
-    $orgId = get_input('org_id');
-    $org = get_entity($orgId);
-        
-    if (!$metaData || !$org) 
-    {
-        register_error(elgg_echo("trans:invalid_id"));
-        forward_to_referrer();
-    }
-    else if (!isadminloggedin())
+    $text = get_input('translation');
+    $guid = get_input('entity_guid');
+    $property = get_input('property');  
+    $entity = get_entity($guid);
+    
+    if (!isadminloggedin() || !$entity)
     {
         register_error(elgg_echo("org:cantedit"));
         forward_to_referrer();
     }    
-    else if (empty($translation)) 
+    else if (empty($text)) 
     {
         register_error(elgg_echo("trans:empty"));
         forward_to_referrer();
     }    
     else 
     {    
-        $origText = get_metastring($metaData->value_id);
-        $key = get_translation_key($origText, $org->language, get_language());
-    
-        $trans = new Translation();    
-        $trans->owner_guid = get_loggedin_userid();        
-        $trans->container_guid = 0;
-        $trans->access_id = ACCESS_PUBLIC;
-        $trans->key = $key;
-        $trans->text = $translation;
+        $lang = get_language();
+        $trans = lookup_translation($entity, $property, $org->language, $lang);    
+        if (!$trans)
+        {   
+            $trans = new Translation();    
+            $trans->container_guid = $entity->guid;
+            $trans->property = $property;
+            $trans->lang = $lang;
+        }            
+        $trans->owner_guid = get_loggedin_userid();
+        $trans->value = $text;            
         $trans->save();
-
+        
         system_message(elgg_echo("trans:posted"));
-                
-        $metaEntity = get_entity($metaData->entity_guid);
-                
-        forward($metaEntity->getUrl());                    
+        
+        forward($entity->getUrl());                    
     }
    
 ?>

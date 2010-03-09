@@ -1,26 +1,14 @@
 <?php
 
-global $CONFIG;
-
 $translation = $vars['translation'];
-$md = $vars['metadata'];
+$obj = $vars['entity'];
+$prop = $vars['property'];
 
-echo "<div class='transSource'>";
-
-if ($translation)
-{
-    echo elgg_view_entity($translation);
-}
-
-echo ": ";
+$text = ($translation) ? $translation->value : $obj->$prop;
 
 if (isadminloggedin())
 {
-    echo "<a class='transContributeLink' href='{$CONFIG->url}pg/org/translate/{$md->id}'>".elgg_echo("trans:contribute")."</a>";
+    echo "<a class='transContributeLink' href='{$CONFIG->url}pg/org/translate/{$obj->guid}/".escape($prop)."'>".elgg_echo("trans:contribute")."</a>";
 }
-
-echo "</div>";
-
-$text = ($translation) ? $translation->text : $md->value;
 
 echo elgg_view("output/longtext",array('value' => $text));

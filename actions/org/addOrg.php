@@ -55,9 +55,6 @@
 
         $guid = $org->guid;
 
-        set_user_validation_status($guid, true);    
-
-
         login($org, false);
 
         system_message(sprintf(elgg_echo("registerok"),$CONFIG->sitename));

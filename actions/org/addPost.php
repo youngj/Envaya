@@ -20,7 +20,7 @@
         forward_to_referrer();
     }
     else 
-    {            
+    {   
         $blog = new NewsUpdate();
         $blog->owner_guid = $_SESSION['user']->getGUID();
         $blog->container_guid = $orgId;

@@ -880,3 +880,4 @@ span.timestamp {
     width:70px;
     text-align:center;
 }
+

@@ -58,53 +58,14 @@
                 'longitude' => null,
                 'email_code' => null,
             ));    
-        }    
-                                
-		/**
-		 * Construct a new user entity, optionally from a given id value.
-		 *
-		 * @param mixed $guid If an int, load that GUID. 
-		 * 	If a db row then will attempt to load the rest of the data.
-		 * @throws Exception if there was a problem creating the user. 
-		 */
-		function __construct($guid = null) 
-		{			
-			$this->initialise_attributes();
-			
-			if (!empty($guid))
-			{				
-                if ($guid instanceof stdClass) // either a entity row, or a user table row.
-                {						
-                    $row = $guid;
-                    
-                    $entityRow = (property_exists($row, 'type')) ? $row : get_entity_as_row($row->guid);
-                    $userEntityRow = (property_exists($row, 'username')) ? $row : get_user_entity_as_row($row->guid);
-                            
-                    if (!$this->loadFromTableRow($entityRow) || !$this->loadFromTableRow($userEntityRow))
-						throw new IOException(sprintf(elgg_echo('IOException:FailedToLoadGUID'), get_class(), $guid->guid)); 
-				}
-				else if ($guid instanceof ElggUser)
-				{					
-                    // copy constructor
-				    foreach ($guid->attributes as $key => $value)
-				        $this->attributes[$key] = $value;
-				}								
-				else if ($guid instanceof ElggEntity)
-                {
-					throw new InvalidParameterException(elgg_echo('InvalidParameterException:NonElggUser'));
-				}
-				else if (is_numeric($guid)) 
-                {					
-					if (!$this->load($guid)) 
-                        throw new IOException(sprintf(elgg_echo('IOException:FailedToLoadGUID'), get_class(), $guid));
-				}		
-				else
-                {
-					throw new InvalidParameterException(elgg_echo('InvalidParameterException:UnrecognisedValue'));
-                }
-			}
-		}
+        }                                   
 		
+        protected function loadFromPartialTableRow($row)
+        {
+            $userEntityRow = (property_exists($row, 'username')) ? $row : $this->selectTableAttributes('users_entity', $row->guid);
+            return parent::loadFromPartialTableRow($row) && $this->loadFromTableRow($userEntityRow);        
+        }
+        
 		/**
 		 * Override the load function.
 		 * This function will ensure that all data is loaded (were possible), so
@@ -115,13 +76,7 @@
 		 */
 		protected function load($guid)
 		{			
-			if (!parent::load($guid)) 
-				return false;
-
-			if ($this->attributes['type'] != 'user')
-				throw new InvalidClassException(sprintf(elgg_echo('InvalidClassException:NotValidElggStar'), $guid, get_class()));
-				
-            return $this->loadFromTableRow(get_user_entity_as_row($guid));
+			return parent::load($guid) && $this->loadFromTableRow(get_user_entity_as_row($guid));
 		}
         		        
 		/**
@@ -130,10 +85,7 @@
 		 */
 		public function save()
 		{
-			if (!parent::save())
-				return false;
-
-            return $this->saveTableAttributes('users_entity');    
+			return parent::save() && $this->saveTableAttributes('users_entity');    
 		}
 		
 		/**
@@ -143,14 +95,8 @@
 		 */
 		public function delete()
 		{
-			clear_metadata_by_owner($this->guid);
-			
-			if (parent::delete())
-            {
-                delete_data("DELETE from users_entity where guid=?", array($this->guid));
-                return true;
-            }
-            return false;
+			clear_metadata_by_owner($this->guid);			
+            return parent::delete() && $this->deleteTableAttributes('users_entity');
 		}
 		
 		/**
@@ -333,7 +279,7 @@
             $where[] = "container_guid=?";
             $args[] = $this->guid;
         
-            return get_objects_by_condition($where, $args, "time_created desc", $limit, $offset, $count);
+            return NewsUpdate::getObjectsByCondition($where, $args, "time_created desc", $limit, $offset, $count);
         }
         
         function listNewsUpdates($limit = 10, $pagination = true) 
@@ -345,6 +291,12 @@
 
             return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
         }
+        
+        function getBlogDates()
+        {
+            $sql = "SELECT guid, time_created from entities WHERE type='object' AND subtype=? AND container_guid=? ORDER BY guid ASC";
+            return get_data($sql, array(T_blog, $this->guid));               
+        }           
         
         public function userCanSee()
         {
@@ -435,16 +387,6 @@
             return get_entities_by_condition('users_entity', $where, $args, $order_by, $limit, $offset, $count);        
         }
 	}
-
-	/**
-	 * Return the user specific details of a user by a row.
-	 * 
-	 * @param int $guid
-	 */
-	function get_user_entity_as_row($guid)
-	{		
-        return get_data_row("SELECT * from users_entity where guid=?", array((int)$guid));
-	}		
 
 	/**
 	 * Adds a user to another user's friends list.
@@ -915,65 +857,7 @@
 		
 		return false;
 	}
-	
-	/**
-	 * Set the validation status for a user.
-	 *
-	 * @param bool $status Validated (true) or false
-	 * @param string $method Optional method to say how a user was validated
-	 * @return bool
-	 */
-	function set_user_validation_status($user_guid, $status, $method = '')
-	{
-		if (!$status) $method = '';
-		
-		if ($status)
-		{
-			if (
-				(create_metadata($user_guid, 'validated', $status,'', 0, ACCESS_PUBLIC)) &&
-				(create_metadata($user_guid, 'validated_method', $method,'', 0, ACCESS_PUBLIC))
-			)
-				return true;
-		}
-		else
-		{
-			$validated = get_metadata_byname($user_guid,  'validated');
-			$validated_method = get_metadata_byname($user_guid,  'validated_method');
-			
-			if (
-				($validated) &&
-				($validated_method) &&
-				(delete_metadata($validated->id)) &&
-				(delete_metadata($validated_method->id))
-			)
-				return true;
-		}
-			
-		return false;
-	}
-	
-	/**
-	 * Trigger an event requesting that a user guid be validated somehow - either by email address or some other way.
-	 *
-	 * This event invalidates any existing values and returns
-	 * 
-	 * @param unknown_type $user_guid
-	 */
-	function request_user_validation($user_guid)
-	{
-		$user = get_entity($user_guid);
-
-		if (($user) && ($user instanceof ElggUser))
-		{
-			// invalidate any existing validations
-			set_user_validation_status($user_guid, false);
-			
-			// request validation
-			trigger_elgg_event('validate', 'user', $user);
-			
-		}
-	}
-	
+    
 	/**
 	 * Validates an email address.
 	 *
@@ -1300,36 +1184,6 @@
 	}
 	
 	/**
-	 * A permissions plugin hook that grants access to users if they are newly created - allows
-	 * for email activation.
-	 * 
-	 * TODO: Do this in a better way!
-	 *
-	 * @param unknown_type $hook
-	 * @param unknown_type $entity_type
-	 * @param unknown_type $returnvalue
-	 * @param unknown_type $params
-	 */
-	function new_user_enable_permissions_check($hook, $entity_type, $returnvalue, $params)
-	{
-		$entity = $params['entity'];
-		$user = $params['user'];
-		if (($entity) && ($entity instanceof ElggUser))
-		{
-			if (
-				(($entity->disable_reason == 'new_user') || (
-					// if this isn't set at all they're a "new user"
-					!$entity->validated
-				))
-				&& (!isloggedin()))
-				return true;
-			
-		}
-		
-		return $returnvalue;
-	}
-	
-	/**
 	 * Sets up user-related menu items
 	 *
 	 */
@@ -1403,10 +1257,6 @@
 		register_plugin_hook('usersettings:save','user','users_settings_save');
 		register_plugin_hook('search','all','search_list_users_by_name');
 		
-		
-		// Handle a special case for newly created users when the user is not logged in
-		// TODO: handle this better!
-		register_plugin_hook('permissions_check','all','new_user_enable_permissions_check');
 	}
 	
 	/**

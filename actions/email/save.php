@@ -34,7 +34,6 @@
 					$user->email = $email;
 					if ($user->save())
 					{
-						request_user_validation($user->getGUID());
 						system_message(elgg_echo('email:save:success'));
 					}
 					else

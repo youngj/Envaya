@@ -54,6 +54,42 @@
         
         static $subtype_id = 0;
 		
+        function __construct($guid = null) 
+        {           
+            $this->initialise_attributes();
+            
+            if (!empty($guid))
+            {               
+                if ($guid instanceof stdClass) // either a entity row, or a user table row.
+                {                       
+                    if (!$this->loadFromPartialTableRow($guid))
+                    {
+                        throw new IOException(sprintf(elgg_echo('IOException:FailedToLoadGUID'), get_class(), $guid->guid)); 
+                    }                        
+                }
+                else if ($guid instanceof ElggEntity)
+                {                   
+                    foreach ($guid->attributes as $key => $value)
+                        $this->attributes[$key] = $value;
+                }
+                else if (is_numeric($guid)) 
+                {                   
+                    if (!$this->load($guid)) 
+                        throw new IOException(sprintf(elgg_echo('IOException:FailedToLoadGUID'), get_class(), $guid));
+                }       
+                else
+                {
+                    throw new InvalidParameterException(elgg_echo('InvalidParameterException:UnrecognisedValue'));
+                }
+            }
+        }        
+        
+        protected function loadFromPartialTableRow($row)
+        {
+            $entityRow = (property_exists($row, 'type')) ? $row : get_entity_as_row($row->guid);
+            return $this->loadFromTableRow($entityRow);
+        }    
+        
 		/**
 		 * Initialise the attributes array. 
 		 * This is vital to distinguish between metadata and base parameters.
@@ -144,7 +180,18 @@
                 return update_data("INSERT into $tableName (".implode(',', $columns).") values (".implode(',', $questions).")", $args);                
             }        
         }        
-                
+              
+        public function deleteTableAttributes($tableName)
+        {
+            delete_data("DELETE from $tableName where guid=?", array($this->guid));
+            return true;
+        }
+        
+        public function selectTableAttributes($tableName, $guid)
+        {
+            return get_data_row("SELECT * from $tableName where guid=?", array($guid));
+        }        
+              
 		/**
 		 * Return the value of a given key.
 		 * If $name is a key field (as defined in $this->attributes) that value is returned, otherwise it will
@@ -179,7 +226,7 @@
 		 * set the appropriate item of metadata.
 		 * 
 		 * Note: It is important that your class populates $this->attributes with keys for all base attributes, anything
-		 * not in their gets set as METADATA.
+		 * not in there gets set as METADATA.
 		 * 
 		 * Q: Why are we not using __set overload here?
 		 * A: Because overload operators cause problems during subclassing, so we put the code here and
@@ -199,7 +246,9 @@
 				$this->attributes[$name] = $value;
 			}
 			else 
+            {
 				return $this->setMetaData($name, $value);
+            }    
 		
 			return true;
 		}
@@ -614,25 +663,36 @@
 			$guid = (int) $this->guid;
 			if ($guid > 0)
 			{ 
-				cache_entity($this);
-
-				$res = update_entity(
-					$this->get('guid'),
-					$this->get('owner_guid'),
-					$this->get('access_id'),
-					$this->get('container_guid')
-				);
+                if (trigger_elgg_event('update',$this->type,$this)) 
+                {
+                    $res = update_data("UPDATE entities set owner_guid=?, access_id=?, container_guid=?, time_updated=? WHERE guid=?", 
+                        array($this->owner_guid,$this->access_id,$this->container_guid,time(),$guid)
+                    );
+                    cache_entity($this);
+                }
 			}
 			else
 			{ 
-				$this->attributes['guid'] = create_entity($this->attributes['type'], $this->attributes['subtype'], $this->attributes['owner_guid'], $this->attributes['access_id'], $this->attributes['site_guid'], $this->attributes['container_guid']); // Create a new entity (nb: using attribute array directly 'cos set function does something special!)
-				if (!$this->attributes['guid']) throw new IOException(elgg_echo('IOException:BaseEntitySaveFailed'));                
+                $time = time();
+                        
+                if ($this->container_guid == 0) 
+                    $this->container_guid = $this->owner_guid;
+                        
+                if ($this->type == "") 
+                    throw new InvalidParameterException(elgg_echo('InvalidParameterException:EntityTypeNotSet'));
                 
-                // Cache object handle
-                if ($this->attributes['guid']) cache_entity($this); 
+                $this->attributes['guid'] = insert_data("INSERT into entities (type, subtype, owner_guid, site_guid, container_guid, access_id, time_created, time_updated) values (?,?,?,?,?,?,?,?)",
+                    array($this->type, $this->subtype, $this->owner_guid, $this->site_guid, 
+                        $this->container_guid, $this->access_id, $time, $time)
+                ); 
                 
-                $res = $this->attributes['guid'];            
+				if (!$this->guid) 
+                    throw new IOException(elgg_echo('IOException:BaseEntitySaveFailed'));                
                 
+                if ($this->guid) 
+                    cache_entity($this); 
+                
+                $res = true;
 			}
             
             $this->saveMetaData();
@@ -674,14 +734,19 @@
 		
         protected function loadFromTableRow($row)
         {
+            $typeBefore = $this->attributes['type'];
+            
             $objarray = (array) $row;
             
             foreach($objarray as $key => $value) 
                 $this->attributes[$key] = $value;
             
+            if ($this->attributes['type'] != $typeBefore)
+                throw new InvalidClassException(sprintf(elgg_echo('InvalidClassException:NotValidElggStar'), $guid, get_class()));
+            
             if ($this->attributes['guid'])
                 cache_entity($this); 
-                        
+                                    
             return true;
         }        
         
@@ -771,6 +836,37 @@
             }			
             return false;
         }    
+        
+        /**
+         * Set the container for this object.
+         *
+         * @param int $container_guid The ID of the container.
+         * @return bool
+         */
+        function setContainer($container_guid)
+        {
+            $container_guid = (int)$container_guid;
+            
+            return $this->set('container_guid', $container_guid);
+        }
+        
+        /**
+         * Return the container GUID of this object.
+         *
+         * @return int
+         */
+        function getContainer()
+        {
+            return $this->get('container_guid');
+        }              
+        
+        /**
+         * As getContainer(), but returns the whole entity.
+         */
+        function getContainerEntity()
+        {
+            return get_entity($this->getContainer());                       
+        }        
 		
         function getRootContainerEntity()
         {
@@ -1011,47 +1107,7 @@
         }
         return NULL;
 	}
-	
-	/**
-	 * Update an existing entity.
-	 *
-	 * @param int $guid
-	 * @param int $owner_guid
-	 * @param int $access_id
-	 * @param int $container_guid
-	 */
-	function update_entity($guid, $owner_guid, $access_id, $container_guid = null)
-	{
-		global $CONFIG, $ENTITY_CACHE;
 		
-		$guid = (int)$guid;
-		$owner_guid = (int)$owner_guid;
-		$access_id = (int)$access_id;
-		$container_guid = (int) $container_guid;
-		if (is_null($container_guid)) $container_guid = $owner_guid;
-		$time = time();
-
-		$entity = get_entity($guid);
-		
-        if (trigger_elgg_event('update',$entity->type,$entity)) {
-            $ret = update_data("UPDATE entities set owner_guid=?, access_id=?, container_guid=?, time_updated=? WHERE guid=?", 
-                array($owner_guid,$access_id,$container_guid,$time,$guid)
-            );
-
-            // If memcache is available then delete this entry from the cache
-            static $newentity_cache;
-            if ((!$newentity_cache) && (is_memcache_available())) 
-                $newentity_cache = new ElggMemcache('new_entity_cache');
-            if ($newentity_cache) $new_entity = $newentity_cache->delete($guid);
-
-            // Handle cases where there was no error BUT no rows were updated!
-            if ($ret===false)
-                return false;
-
-            return true;
-        }
-	}
-	
 	/**
 	 * Determine whether a given user is able to write to a given container.
 	 *
@@ -1084,35 +1140,6 @@
 		}
 		
 		return false;
-	}
-	
-	/**
-	 * Create a new entity of a given type.
-	 * 
-	 * @param string $type The type of the entity (site, user, object).
-	 * @param string $subtype The subtype of the entity.
-	 * @param int $owner_guid The GUID of the object's owner.
-	 * @param int $access_id The access control group to create the entity with.
-	 * @param int $site_guid The site to add this entity to. Leave as 0 (default) for the current site.
-	 * @return mixed The new entity's GUID, or false on failure
-	 */
-	function create_entity($type, $subtype, $owner_guid, $access_id, $site_guid = 0, $container_guid = 0)
-	{
-		global $CONFIG;
-			
-        $time = time();
-		
-        if ($site_guid == 0)
-			$site_guid = $CONFIG->site_guid;
-		
-        if ($container_guid == 0) $container_guid = $owner_guid;
-		
-		if ($type=="") 
-            throw new InvalidParameterException(elgg_echo('InvalidParameterException:EntityTypeNotSet'));
-
-		return insert_data("INSERT into entities (type, subtype, owner_guid, site_guid, container_guid, access_id, time_created, time_updated) values (?,?,?,?,?,?,?,?)",
-            array($type, $subtype, (int)$owner_guid, (int)$site_guid, (int)$container_guid, (int)$access_id, $time, $time)
-        ); 
 	}
 	
 	/**
@@ -1664,7 +1691,7 @@
             array($name, (int)$entity_guid));		
 	}
     
-    function get_entities_by_condition($subTable, $where, $args, $order_by, $limit, $offset, $count)
+    function get_entities_by_condition($subTable, $where, $args, $order_by, $limit, $offset = 0, $count = false)
     {
         $fromWhere = "FROM entities e INNER JOIN $subTable u ON u.guid = e.guid WHERE ";                
                 

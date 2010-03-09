@@ -113,14 +113,11 @@ for (var i = 0; i < blogDates.length; i++)
   
 <div class="blog_post">    
     <?php 
-        
-        $imageSize = ($full) ? 'large' : 'small';
-        $imageFile = $entity->getImageFile($imageSize);
-        
-        $imgLink = ($full) ? $nextUrl : $url;
-        
-        if ($imageFile->exists())
+
+        if ($entity->hasImage())
         {
+            $imageSize = ($full) ? 'large' : 'small';        
+            $imgLink = ($full) ? $nextUrl : $url;
             echo "<a class='{$imageSize}BlogImageLink' href='$imgLink'><img src='$url/image/$imageSize?{$entity->time_updated}' /></a>";            
         }
         
@@ -136,6 +133,7 @@ for (var i = 0; i < blogDates.length; i++)
                 echo elgg_view("output/confirmlink", array(
                     'href' => $vars['url'] . "action/news/delete?blogpost=" . $entity->getGUID(),
                     'text' => elgg_echo('delete'),
+                    'is_action' => true,
                     'confirm' => elgg_echo('deleteconfirm'),
                 ));
             ?>

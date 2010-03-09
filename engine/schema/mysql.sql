@@ -93,6 +93,27 @@ CREATE TABLE `objects_entity` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+CREATE TABLE `translations` (
+  `guid` bigint(20) unsigned  NOT NULL,
+  
+  `hash` varchar(64) NOT NULL,
+  `property` varchar(32) NOT NULL,
+  `lang` varchar(4) NOT NULL,
+  `value` text NOT NULL,
+  
+  PRIMARY KEY  (`guid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `news_updates` (
+  `guid` bigint(20) unsigned  NOT NULL,
+  
+  `content` text NOT NULL,
+  `data_types` int NOT NULL,
+  
+  PRIMARY KEY  (`guid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 -- Extra information relating to "users"
 CREATE TABLE `users_entity` (
   `guid` bigint(20) unsigned  NOT NULL,
