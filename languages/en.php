@@ -1,9 +1,24 @@
 <?php
 
 	$english = array(
-    
-            'welcome' => "Welcome to Envaya",
-            'register_org' => "Register new organization",
+        'home:heading' => 'Envaya is a network of community-based organizations in Tanzania who share news about their projects on the Internet.',
+        'home:welcome' => "Welcome to Envaya",
+        'home:for_organizations' => 'For organizations:',
+        'home:for_everyone' => 'For everyone:',
+        'home:sign_up' => 'Sign up now',
+        'home:sign_in' => 'Login',
+        'home:browse_orgs' => 'Browse organizations',
+        'home:about_us' => 'About us',
+        'home:find_org' => 'Find an organization',
+        
+        'browse:title' => 'Browse organization map',
+        'browse:instructions' => "Each icon on the map is a community-based organization. Hover over an icon to see its name, and click to view its profile.",
+        
+        'search:title' => "Find an organization",
+        'search:title_with_query' => "Search: %s",
+        'search:submit' => 'Search',
+        'search:instructions' => "Enter the name or location of the organization you're looking for.",
+        
             'welcome_user' => "Welcome, %s!",            
             'browse_map' => 'Browse map',
             'update_status' => 'Update status',

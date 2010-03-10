@@ -1,6 +1,4 @@
 <?php
-
-    action_gatekeeper();
     
     $newLanguage = get_input('newLang');
     

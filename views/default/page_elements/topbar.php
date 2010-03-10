@@ -1,11 +1,12 @@
 <div id="topbar">
-    <div id='logo_container'>
-        <a href="<?php echo $vars['config']->wwwroot . ((isloggedin()) ? 'pg/dashboard' : '') ?>">
-            <img src="<?php echo $vars['config']->wwwroot ?>_graphics/logo.gif" alt="Envaya" width="170" height="40">
-        </a>
-    </div>
-
-<div id="topbar_container_left">
+<table id='topbarTable'>
+<tr>
+<td id='logoContainer'>    
+    <a href="<?php echo $vars['config']->wwwroot . ((isloggedin()) ? 'pg/dashboard' : '') ?>">
+        <img src="<?php echo $vars['config']->wwwroot ?>_graphics/logo.gif" alt="Envaya" width="170" height="40">
+    </a>
+</td>
+<td id='topbarLinks'>
 
 <?php
      if (isloggedin()) {
@@ -44,18 +45,17 @@
         }        
     ?>
 
+
+</td>
+<td style='text-align:right'>
+
     <?php    
         echo elgg_view("page_elements/select_language"); 
     ?>
 
-
-<form id="searchform" action="<?php echo $vars['url']; ?>pg/org/search/" method="get">
-    <input type="text" size="21" name="q" value="<?php echo elgg_echo('search'); ?>" onclick="if (this.value=='<?php echo elgg_echo('search'); ?>') { this.value='' }" class="search_input" />
-    <input type="submit" value="<?php echo elgg_echo('search:go'); ?>" class="search_submit_button" />
-</form>
-
-
-</div>
+</td>
+</tr>
+</table>
 
 </div>
 

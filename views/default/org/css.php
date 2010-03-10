@@ -15,8 +15,25 @@
 
 #topbar
 {
+    width:100%;
     height:50px;
     background:#d9d9d9 url("<?php echo $graphicsDir; ?>/topgradient.gif") repeat-x left top;  
+}
+
+#topbarTable
+{
+    width:100%;
+}
+
+#topbarTable td
+{
+    padding:15px;
+}
+
+#topbarTable td#logoContainer
+{
+    padding:3px;
+    width:180px;
 }
 
 #topbar form
@@ -24,20 +41,7 @@
     display:inline;
 }
 
-#logo_container
-{
-    padding:3px;
-    float:left;
-}
-
-#topbar_container_left
-{
-    padding:15px;
-    float:left;
-}
-
-
-#topbar_container_left a, form
+#topbarLinks a, form
 {
     padding-left: 10px;
     padding-right: 10px;
@@ -881,3 +885,36 @@ span.timestamp {
     text-align:center;
 }
 
+.homeLanguages
+{
+    text-align: center;
+}
+
+.homeHeading
+{
+    padding:10px;    
+    font:16px Arial;
+}
+
+.homeSection
+{
+    padding:5px;
+    clear:both;
+}
+
+.homeSectionIcon
+{
+    float:left;
+    margin-right:10px;
+    border:1px solid #666699;
+}
+
+.homeSubheading
+{
+    font:bold 15px Arial;
+}
+
+.instructions
+{
+    padding:5px 0px;
+}

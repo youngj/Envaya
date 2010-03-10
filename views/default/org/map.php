@@ -2,9 +2,11 @@
 <?php
 
     $editPinMode = $vars['edit'];
-    $zoom = $vars['zoom'] ? $vars['zoom'] : 10;
-    $width = $vars['width'] ? $vars['width'] : 460;
-    $height = $vars['height'] ? $vars['height'] : 280;
+    $zoom = $vars['zoom'] ?: 10;
+    $width = $vars['width'] ?: 460;
+    $height = $vars['height'] ?: 280;    
+    $mapType = $vars['mapType'] ?: "G_NORMAL_MAP";
+    $nearby = $vars['nearby'] ?: false;
     
     global $CONFIG;
     $apiKey = $CONFIG->google_api_key;
@@ -28,6 +30,7 @@
 </div>
 
 <div id='map' style='width:<?php echo $width; ?>px;height:<?php echo $height; ?>px'></div>
+<div id='mapOverlay' style='position:absolute;padding:5px;background:white;left:0px;top:0px;display:none'></div>
 <script type="text/javascript" src="http://www.google.com/jsapi?key=<?php echo $apiKey ?>"></script>
 <script type="text/javascript">
   google.load("maps", "2.x");
@@ -38,6 +41,14 @@
         return fn(obj);
     };
   }
+
+    function removeChildren($elem)
+    {
+        while ($elem.firstChild)
+        {
+            $elem.removeChild($elem.firstChild);
+        }
+    }
 
   function dropPin()
   {
@@ -79,14 +90,93 @@
       <?php
       }
       ?>
-  }
+  }  
+  
+    var $displayedOrgs = {};
+  
+    function showIcon($org)
+    {    
+        if ($displayedOrgs[$org.guid])        
+        {
+            return;
+        }
+        $displayedOrgs[$org.guid] = 1;
+    
+        var icon = new GIcon(G_DEFAULT_ICON);
+        icon.image = $org.icon;
+        icon.iconSize = new GSize(20,20);
+        icon.iconAnchor = new GPoint(10, 10);
+        var markerOptions = { icon:icon };
+
+        var point = new GLatLng($org.latitude, $org.longitude);
+        var marker = new GMarker(point, markerOptions);
+
+        GEvent.addListener(marker, 'mouseover', bind(marker,
+            function (marker)
+            {                            
+                var latLng = marker.getLatLng();
+                var pixel = map.fromLatLngToDivPixel(latLng);
+                                
+                var mapOverlay = document.getElementById('mapOverlay');
+                removeChildren(mapOverlay);
+                mapOverlay.appendChild(document.createTextNode($org.name));           
+                
+                var mapElem = document.getElementById('map');
+                mapOverlay.style.left = (mapElem.offsetLeft + pixel.x + 10) + "px";
+                mapOverlay.style.top = (mapElem.offsetTop + pixel.y + 10) + "px";
+                mapOverlay.style.display = 'block';
+            }
+        ));
+        
+        GEvent.addListener(marker, 'mouseout', bind(marker,
+            function (marker)
+            {
+                var mapOverlay = document.getElementById('mapOverlay');
+                removeChildren(mapOverlay);
+                mapOverlay.style.display = 'none';
+            }
+        ));        
+        
+        GEvent.addListener(marker, 'click', bind(marker,
+            function (marker)
+            {
+                window.location.href = $org.url;
+            }        
+        ));        
+
+        map.addOverlay(marker);
+    }    
+
+    function searchAreaCallback($data)
+    {
+        for (var $i = 0; $i < $data.length; $i++)
+        {
+            showIcon($data[$i]);
+        }
+    }
+
+    function fetchOrgs()
+    {
+        var $script = document.createElement('script');
+
+        var $bounds = map.getBounds();
+
+        var $sw = $bounds.getSouthWest();
+        var $ne = $bounds.getNorthEast();
+
+        $script.src = "<?php echo $CONFIG->wwwroot ?>pg/org/searchArea?latMin="+$sw.lat()+"&latMax="+$ne.lat()+"&longMin="+$sw.lng()+"&longMax="+$ne.lng();            
+        $script.charset = 'utf-8';
+        document.body.appendChild($script);
+    }    
+  
   
   // Call this function when the page has been loaded
   function initialize() {
     map = new google.maps.Map2(document.getElementById("map"));
     map.addControl(new GSmallMapControl());
     map.addControl(new GMapTypeControl());
-
+    map.setMapType(<?php echo $mapType; ?>);
+    
     var center = new google.maps.LatLng(<?php echo $lat; ?>,<?php echo $long; ?>);
 
     map.setCenter(center, <?php echo $zoom; ?>);
@@ -100,42 +190,18 @@
     ?>
 
     <?php
-        if ($vars['nearby']) {
-            foreach($vars['nearby'] as $org) {
-    ?>
-                    var icon = new GIcon(G_DEFAULT_ICON);
-                    icon.image = "<?php echo $org->getIcon('tiny'); ?>"
-                    icon.iconSize = new GSize(20,20);
-                    icon.iconAnchor = new GPoint(10, 10);
-                    var markerOptions = { icon:icon };
-
-                var point = new GLatLng(<?php echo $org->getLatitude(); ?>, <?php echo $org->getLongitude(); ?>);
-                var marker = new GMarker(point, markerOptions);
-
-                GEvent.addListener(marker, 'click', bind(marker,
-                    function (marker){
-                        marker.openInfoWindowHtml([
-                            '<h3><a href="<?php echo $org->getUrl(); ?>">',
-                            <?php echo json_encode(escape($org->name)); ?>,
-                            '</a></h3><p>',
-                            <?php
-                                $description = $org->description;
-
-                                if ($description && strlen($description) > 200)
-                                {
-                                    $description = substr($description, 0, 200) ."...";
-                                }
-                                echo json_encode(escape($description));
-
-                            ?>,
-                            '</p>'
-                        ].join(""), {maxWidth:350});
-                    }
-                ));
-
-                map.addOverlay(marker);
-    <?php
+        if ($nearby) {
+    ?>       
+        fetchOrgs(); 
+        
+        GEvent.addListener(map, 'moveend', 
+            function (marker)
+            {                            
+                fetchOrgs();
             }
+        );        
+        
+    <?php    
         }
     ?>
 

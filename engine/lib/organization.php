@@ -48,6 +48,7 @@ class Organization extends ElggUser {
         }
         return "post+{$this->email_code}@envaya.org";
     } 
+       
 }
 
 class Translation extends ElggObject
@@ -77,7 +78,7 @@ class Translation extends ElggObject
     public function calculateHash()
     {
         return $this->getRootContainerEntity()->language . ":" . sha1($this->getOriginalText());        
-    }
+    }    
 }
 
 class NewsUpdate extends ElggObject

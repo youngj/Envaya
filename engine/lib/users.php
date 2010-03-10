@@ -332,7 +332,7 @@
 
             return static::getUsersByCondition($where, $args, '', $limit, $offset, $count);
         }
-        
+                
         static function getUserByEmailCode($emailCode)
         {
             return static::getUserByCondition(
@@ -350,6 +350,24 @@
             }
             return null;
         }
+        
+        static function searchForUser($criteria, $limit = 10, $offset = 0, $count = false)
+        {
+            $where = array("(INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0)");
+            $args = array($criteria, $criteria);
+
+            return static::getUsersByCondition($where, $args, '', $limit, $offset, $count);
+        }
+        
+        static function listUserSearch($criteria, $limit = 10, $pagination = true) 
+        {        
+            $offset = (int) get_input('offset');
+
+            $count = static::searchForUser($criteria, $limit, $offset, true);
+            $entities = static::searchForUser($criteria, $limit, $offset);
+
+            return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
+        }        
         
         static function getAllUsers($order_by = '', $limit = 10, $offset = 0, $count = false)
         {
@@ -386,6 +404,20 @@
 
             return get_entities_by_condition('users_entity', $where, $args, $order_by, $limit, $offset, $count);        
         }
+        
+
+        public function jsProperties()
+        {
+            return array(
+                'guid' => $this->guid,
+                'username' => $this->username,
+                'name' => $this->name,
+                'latitude' => $this->latitude,
+                'longitude' => $this->longitude,
+                'icon' => $this->getIcon('tiny'),
+                'url' => $this->getUrl()
+            );  
+        }        
 	}
 
 	/**
