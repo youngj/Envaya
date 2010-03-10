@@ -1,23 +1,30 @@
 <?php
 
 	$english = array(
-        'home:heading' => 'Envaya is a network of community-based organizations in Tanzania who share news about their projects on the Internet.',
-        'home:welcome' => "Welcome to Envaya",
+        'home:title' => "Welcome to Envaya",
+        'home:heading' => 'Envaya is a network of community-based organizations in Tanzania who share news about their projects on the Internet.',        
         'home:for_organizations' => 'For organizations:',
         'home:for_everyone' => 'For everyone:',
         'home:sign_up' => 'Sign up now',
         'home:sign_in' => 'Login',
-        'home:browse_orgs' => 'Browse organizations',
-        'home:about_us' => 'About us',
+        'home:why' => 'Why use Envaya?',
+        'home:browse_orgs' => 'Browse organizations',        
         'home:find_org' => 'Find an organization',
+        'home:about_us' => 'About us',
         
-        'browse:title' => 'Browse organization map',
-        'browse:instructions' => "Each icon on the map is a community-based organization. Hover over an icon to see its name, and click to view its profile.",
+        'browse:title' => 'Browse organizations',
+        'browse:instructions' => "Each icon on the map below is a community-based organization. Hover over an icon to see its name, and click to view its profile.",
+        'browse:map' => 'Map',
+        'browse:list' => 'List',
         
         'search:title' => "Find an organization",
         'search:title_with_query' => "Search: %s",
         'search:submit' => 'Search',
         'search:instructions' => "Enter the name or location of the organization you're looking for.",
+        
+        'why:title' => 'Why use Envaya?',
+        
+        'about:title' => 'About us',
         
             'welcome_user' => "Welcome, %s!",            
             'browse_map' => 'Browse map',
