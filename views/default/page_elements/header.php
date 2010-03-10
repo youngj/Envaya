@@ -55,6 +55,7 @@ END;
 
     <!-- include the default css file -->
     <link rel="stylesheet" href="<?php echo $vars['url']; ?>_css/css.css?lastcache=<?php echo $vars['config']->lastcache; ?>&viewtype=<?php echo $vars['view']; ?>" type="text/css" />
+    <base href='<?php echo $vars['url'] ?>' />
     
     <?php 
         echo $feedref;

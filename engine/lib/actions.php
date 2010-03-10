@@ -19,7 +19,7 @@
    	 * @param string $forwarder Optionally, the location to forward to
    	 */
     
-        function action($action, $forwarder = "") {
+        function action($action, $forwarder = "pg/home") {
             
             global $CONFIG;
             

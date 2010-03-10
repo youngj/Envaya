@@ -35,10 +35,14 @@ function org_page_handler($page)
 
 function page_page_handler($page)
 {
-    global $CONFIG;
-
     $pageName = $page[0];
     set_input('page_name', $pageName);
+    include(dirname(__FILE__) . "/page.php");
+}
+
+function home_page_handler($page)
+{
+    set_input('page_name','home');
     include(dirname(__FILE__) . "/page.php");
 }
 
@@ -131,14 +135,14 @@ function envaya_pagesetup()
 
 function new_index() 
 {
-    set_input('page_name', 'home');
-    include(dirname(__FILE__) . "/page.php");
+    include(dirname(__FILE__) . "/splash.php");
     return true;
 }
 
 register_page_handler('orgprofile','org_profile_page_handler');
 register_page_handler('org','org_page_handler');
 register_page_handler('page','page_page_handler');
+register_page_handler('home','home_page_handler');
 register_page_handler('login','login_page_handler');
 register_elgg_event_handler('pagesetup','system','envaya_pagesetup');
 register_plugin_hook('index','system','new_index');

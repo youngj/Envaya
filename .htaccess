@@ -107,7 +107,7 @@ RewriteEngine on
 # containing the path from your site root to elgg's root. e.g. If your site is
 # http://example.com/ and Elgg is in http://example.com/sites/elgg/, you might need 
 #
-RewriteBase /elgg/
+RewriteBase /
 #
 # here, only without the # in front.
 #

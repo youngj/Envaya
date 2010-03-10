@@ -8,9 +8,10 @@
         }
         else 
         {
-            echo "<a href='{$CONFIG->wwwroot}action/changeLanguage?newLang=$lang'>".elgg_echo($lang, $lang)."</a>";
+            echo "<a href='action/changeLanguage?newLang=$lang'>".elgg_echo($lang, $lang)."</a>";
         }
     }
+    
     ?>
 
 <div class='homeLanguages'>
@@ -61,12 +62,4 @@
 </div>   
 
 </table>   
-    <?php
-    
-    
-
-    $area = "<div><a href='{$CONFIG->wwwroot}pg/org/new'>".elgg_echo("register_org")."</a></div>";
-    $area .= "<div><a href='{$CONFIG->wwwroot}pg/org/browse'>".elgg_echo("org:list_all")."</a></div>";
-    
-    $area .= "<form method='GET' action='".$CONFIG->wwwroot."pg/org/search/'><input type='text' name='q'><input type='submit' value='".elgg_echo('search')."'></form>";
     

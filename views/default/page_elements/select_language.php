@@ -1,6 +1,6 @@
 
 
-<form method="POST" action="<?php echo $vars['url']; ?>action/changeLanguage">
+<form method="POST" action="action/changeLanguage">
 
 <?php 
     echo elgg_view('input/securitytoken'); 

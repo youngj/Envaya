@@ -13,8 +13,9 @@
         {        
             $lat = get_input('lat');
             $long = get_input('long');
+            $zoom = get_input('zoom');
 
-            $area = elgg_view("org/browseMap", array('lat' => $lat, 'long' => $long));
+            $area = elgg_view("org/browseMap", array('lat' => $lat, 'long' => $long, 'zoom' => $zoom));
         }    
                
         

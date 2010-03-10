@@ -2,8 +2,8 @@
 <table id='topbarTable'>
 <tr>
 <td id='logoContainer'>    
-    <a href="<?php echo $vars['config']->wwwroot . ((isloggedin()) ? 'pg/dashboard' : '') ?>">
-        <img src="<?php echo $vars['config']->wwwroot ?>_graphics/logo.gif" alt="Envaya" width="170" height="40">
+    <a href="<?php echo ((isloggedin()) ? 'pg/dashboard' : 'pg/home') ?>">
+        <img src="_graphics/logo.gif" alt="Envaya" width="170" height="40">
     </a>
 </td>
 <td id='topbarLinks'>
@@ -14,7 +14,7 @@
 
         <a href="<?php echo get_loggedin_user()->getURL() ?>" class='pagelinks'><?php echo elgg_echo('org:yours'); ?></a>
 
-        <a href="<?php echo $vars['url']; ?>pg/settings/" class="usersettings"><?php echo elgg_echo('settings'); ?></a>
+        <a href="pg/settings/" class="usersettings"><?php echo elgg_echo('settings'); ?></a>
 
         <?php
 
@@ -23,7 +23,7 @@
 
         ?>
 
-            <a href="<?php echo $vars['url']; ?>pg/admin/" class="usersettings"><?php echo elgg_echo("admin"); ?></a>
+            <a href="pg/admin/" class="usersettings"><?php echo elgg_echo("admin"); ?></a>
 
         <?php
 
@@ -37,11 +37,11 @@
     <?php    
         if (isloggedin())
         {
-            echo "<a href='".$CONFIG->wwwroot."action/logout'>".elgg_echo("logout")."</a>";
+            echo "<a href='action/logout'>".elgg_echo("logout")."</a>";
         }
         else
         {
-            echo "<a href='".$CONFIG->wwwroot."pg/login'>".elgg_echo("login")."</a>";
+            echo "<a href='pg/login'>".elgg_echo("login")."</a>";
         }        
     ?>
 

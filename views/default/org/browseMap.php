@@ -3,8 +3,9 @@
 <?php     
     $lat = $vars['lat'] ?: -6.6;
     $long = $vars['long'] ?: 36;
+    $zoom = $vars['zoom'] ?: 5;
         
-    echo elgg_view("org/map", array('lat' => $lat, 'long' => $long,  'height' => 350, 'zoom' => 5, 'nearby' => true));
+    echo elgg_view("org/map", array('lat' => $lat, 'long' => $long,  'height' => 350, 'zoom' => $zoom, 'nearby' => true));
 ?>    
 
     
