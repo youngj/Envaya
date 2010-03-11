@@ -66,7 +66,7 @@
         $_SESSION['input'] = $_POST;
         
         register_error($r->getMessage());
-        forward("pg/org/new"); 
+        forward("org/new"); 
     }
     
 ?>    

@@ -31,6 +31,7 @@
         $body = elgg_view_layout('one_column', org_title($org, $org->location), $area2);
         
 	} else {
+        forward("");
 		$title = elgg_echo('org:notfound');
         $body = elgg_view_layout('one_column_padded', elgg_view_title($title), elgg_echo('org:notfound:details'));
 	}

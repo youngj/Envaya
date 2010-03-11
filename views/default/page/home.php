@@ -28,13 +28,13 @@
 <div class='homeSubheading'><?php echo elgg_echo("home:for_organizations") ?></a></div>
 
 <div class='homeSection'>
-    <a class='homeSectionIcon' href='pg/org/new'><img src='_graphics/icons/default/small.png' /></a>
-    <a href='pg/org/new'><?php echo elgg_echo("home:sign_up") ?></a>    
+    <a class='homeSectionIcon' href='org/new'><img src='_graphics/icons/default/small.png' /></a>
+    <a href='org/new'><?php echo elgg_echo("home:sign_up") ?></a>    
 </div>   
 
 <div class='homeSection'>
-    <a class='homeSectionIcon' href='pg/page/why'><img src='_graphics/icons/default/small.png' /></a>
-    <a href='pg/page/why'><?php echo elgg_echo("home:why") ?></a>    
+    <a class='homeSectionIcon' href='page/why'><img src='_graphics/icons/default/small.png' /></a>
+    <a href='page/why'><?php echo elgg_echo("home:why") ?></a>    
 </div>   
 
 <div class='homeSection'>
@@ -47,18 +47,18 @@
 <div class='homeSubheading'><?php echo elgg_echo("home:for_everyone") ?></div>
 
 <div class='homeSection'>
-    <a class='homeSectionIcon' href='pg/org/browse'><img src='_graphics/globe.gif' /></a>
-    <a href='pg/org/browse'><?php echo elgg_echo("home:browse_orgs") ?></a>
+    <a class='homeSectionIcon' href='org/browse'><img src='_graphics/globe.gif' /></a>
+    <a href='org/browse'><?php echo elgg_echo("home:browse_orgs") ?></a>
 </div>
 
 <div class='homeSection'>
-    <a class='homeSectionIcon' href='pg/org/search'><img src='_graphics/search.gif' /></a>
-    <a href='pg/org/search'><?php echo elgg_echo("home:find_org") ?></a>
+    <a class='homeSectionIcon' href='org/search'><img src='_graphics/search.gif' /></a>
+    <a href='org/search'><?php echo elgg_echo("home:find_org") ?></a>
 </div>
 
 <div class='homeSection'>
-    <a class='homeSectionIcon' href='pg/page/about'><img src='_graphics/icons/default/small.png' /></a>
-    <a href='pg/about'><?php echo elgg_echo("home:about_us") ?></a>
+    <a class='homeSectionIcon' href='page/about'><img src='_graphics/icons/default/small.png' /></a>
+    <a href='page/about'><?php echo elgg_echo("home:about_us") ?></a>
 </div>   
 
 </table>   

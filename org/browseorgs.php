@@ -1,7 +1,7 @@
 <?php
                       
-        add_submenu_item(elgg_echo('browse:map'), $CONFIG->wwwroot. "pg/org/browse");
-        add_submenu_item(elgg_echo('browse:list'), $CONFIG->wwwroot. "pg/org/browse?list=1");                      
+        add_submenu_item(elgg_echo('browse:map'), $CONFIG->wwwroot. "org/browse");
+        add_submenu_item(elgg_echo('browse:list'), $CONFIG->wwwroot. "org/browse?list=1");                      
                       
         $title = elgg_echo("browse:title");
         

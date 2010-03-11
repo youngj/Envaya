@@ -3,7 +3,7 @@
     <?php echo elgg_echo('search:instructions'); ?>
 </div>    
 
-<form method='GET' action='pg/org/search/'>
+<form method='GET' action='org/search/'>
     <input type='text' name='q' value='<?php echo escape($query); ?>'>
     <input type='submit' value='<?php echo elgg_echo('search:submit') ?>'>
 </form>

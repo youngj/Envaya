@@ -127,12 +127,15 @@ RewriteRule ^_css\/css\.css$ _css/css.php [L]
 RewriteRule ^pg\/([A-Za-z0-9\_\-]+)\/(.*)$ engine/handlers/pagehandler.php?handler=$1&page=$2 [L]
 RewriteRule ^pg\/([A-Za-z0-9\_\-]+)$ engine/handlers/pagehandler.php?handler=$1 [L]
 
+RewriteRule ^page\/(.*)$ engine/handlers/pagehandler.php?handler=page&page=$1 [L]
+RewriteRule ^org\/(.*)$ engine/handlers/pagehandler.php?handler=org&page=$1 [L]
+
 #RewriteRule xml-rpc.php engine/handlers/xml-rpc_handler.php [L]
 #RewriteRule mt/mt-xmlrpc.cgi engine/handlers/xml-rpc_handler.php [L]
 
 #RewriteRule tag/(.+)/?$ engine/handlers/pagehandler.php?handler=search&page=$1 [L]
 
-RewriteRule ^(account|mod|search|admin|dashboard|engine|services|_css|_graphics)/ - [S=1]
+RewriteRule ^(account|mod|search|admin|dashboard|engine|_css|_graphics)/ - [S=1]
 
 RewriteRule ^([\d\w\-]+(/.*)?)$ engine/handlers/pagehandler.php?handler=orgprofile&page=$1 [L]
 

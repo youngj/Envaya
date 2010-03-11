@@ -164,7 +164,7 @@
         var $sw = $bounds.getSouthWest();
         var $ne = $bounds.getNorthEast();
 
-        $script.src = "pg/org/searchArea?latMin="+$sw.lat()+"&latMax="+$ne.lat()+"&longMin="+$sw.lng()+"&longMax="+$ne.lng();            
+        $script.src = "org/searchArea?latMin="+$sw.lat()+"&latMax="+$ne.lat()+"&longMin="+$sw.lng()+"&longMax="+$ne.lng();            
         $script.charset = 'utf-8';
         document.body.appendChild($script);
     }    
@@ -229,7 +229,7 @@
     else
     {
         echo "<div>";
-		echo "<a href='pg/org/browse/?lat=$lat&long=$long&zoom=10'>";
+		echo "<a href='org/browse/?lat=$lat&long=$long&zoom=10'>";
         echo "<img width='$width' height='$height' src='http://maps.google.com/maps/api/staticmap?center=$lat,$long&zoom=$zoom&size={$width}x$height&maptype=roadmap&markers=$lat,$long&sensor=false&key=$apiKey' />";
 		echo "</a>";
         echo "</div>";
