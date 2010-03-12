@@ -13,7 +13,7 @@
         ?>    
         </div>
         <div id='content_top'></div>
-        <div id='content_mid'>
+        <div id='content_mid'>       
             <?php echo $vars['area2']; ?>
             &nbsp;    
             <div style='clear:both'></div>

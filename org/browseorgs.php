@@ -3,7 +3,7 @@
         add_submenu_item(elgg_echo('browse:map'), $CONFIG->wwwroot. "org/browse");
         add_submenu_item(elgg_echo('browse:list'), $CONFIG->wwwroot. "org/browse?list=1");                      
                       
-        $title = elgg_echo("browse:title");
+        $title = elgg_echo("browse:title");       
         
         if (get_input("list"))
         {

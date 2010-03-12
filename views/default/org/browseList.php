@@ -1,4 +1,4 @@
 
 <?php
-echo Organization::listAllUsers($limit = 10);   
+echo Organization::listAll($limit = 10);   
 ?>

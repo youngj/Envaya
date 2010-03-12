@@ -18,15 +18,16 @@
     foreach($CONFIG->org_profile_fields as $shortname => $valuetype) 
     {
         $input[$shortname] = get_input($shortname);
-        
-        if ($valuetype == 'tags')
-            $input[$shortname] = string_to_tag_array($input[$shortname]);
     }        
         
     foreach($input as $shortname => $value) {
         $org->$shortname = $value;
     }
-	
+
+    $sectors = get_input_array('sector');
+
+    $org->setSectors($sectors);
+    
     if ($org->location)
     {
         $latlong = elgg_geocode_location($org->location);

@@ -4,14 +4,25 @@
 
     if ($vars['full']) 
     {            
-        $aboutContent = view_translated($org, 'description');
+        $aboutContent = view_translated($org, 'mission');
         
-        if ($org->website)
-        {
-            $aboutContent .= "<div class='org_website'>". elgg_echo('org:website') . ": " . elgg_view("output/url",array('value' => $org->website))."</div>";   
-        }        
+        $sectors = $org->getSectors();
+        
+        if (!empty($sectors))
+        {        
+            $sectorOptions = Organization::getSectorOptions();
+            $sectorNames = array();
 
-        $title = elgg_echo("org:description");
+            foreach ($sectors as $sector)
+            {
+                $sectorNames[] = "<a href='org/search?sector=$sector'>".escape($sectorOptions[$sector])."</a>";
+            }
+
+            $sectorText = elgg_echo("org:sectors") . ": " . implode(', ', $sectorNames);               
+            $aboutContent .= "<div class='org_website'>$sectorText</div>";
+        }    
+                        
+        $title = elgg_echo("org:mission");
                 
         echo elgg_view_layout('section', $title, $aboutContent);
         
@@ -26,13 +37,14 @@
             $posts .= "<a class='float_right' href='".$org->getUrl()."/news'>View all updates</a>";
         }
                 
-        echo elgg_view_layout('section', elgg_echo("org:updates"), $posts);
-        
+        echo elgg_view_layout('section', elgg_echo("org:updates"), $posts);        
 
         $entityLat = $vars['entity']->getLatitude();
         if (!empty($entityLat)) 
         { 
-            echo elgg_view_layout('section', elgg_echo("org:map"), 
+                        
+            echo elgg_view_layout('section', elgg_echo("org:map"),                 
+                
                 elgg_view("org/map", array(
                     'lat' => $entityLat, 
                     'long' => $vars['entity']->getLongitude(),
@@ -41,6 +53,20 @@
                     'static' => true
                 ))
             );        
+        }    
+
+        $contactContent = '';
+        if ($org->email_public != 'no')
+        {
+            $contactContent .= "<div class='org_website'>". elgg_echo('org:email') . ": " . elgg_view("output/email",array('value' => $org->email))."</div>";   
+        }        
+        if ($org->website)
+        {
+            $contactContent .= "<div class='org_website'>". elgg_echo('org:website') . ": " . elgg_view("output/url",array('value' => $org->website))."</div>";   
+        }        
+        if ($contactContent)
+        {
+            echo elgg_view_layout('section', elgg_echo("org:contact"), $contactContent);    
         }    
     
     }    

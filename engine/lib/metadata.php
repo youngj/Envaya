@@ -96,7 +96,8 @@
 			else
 			{ 
 				$this->id = create_metadata($this->entity_guid, $this->name, $this->value, $this->value_type, $this->owner_guid, $this->access_id);
-				if (!$this->id) throw new IOException(sprintf(elgg_new('IOException:UnableToSaveNew'), get_class()));
+				if (!$this->id) 
+                    throw new IOException(sprintf(elgg_echo('IOException:UnableToSaveNew'), get_class()));
 				return $this->id;
 			}
 			

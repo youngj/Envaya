@@ -133,10 +133,12 @@ CREATE TABLE `users_entity` (
   `prev_last_login` int(11) NOT NULL default '0',
   `email_code` varchar(24) default NULL,
   `approval` int(11) NOT NULL default '0',
+  `setup_state` int(11) NOT NULL default '0',
+  `country` varchar(4) NULL,
   
-   `admin` tinyint(4) default '0',
-   `latitude` float null,
-   `longitude` float null,
+  `admin` tinyint(4) default '0',
+  `latitude` float null,
+  `longitude` float null,
   
   PRIMARY KEY  (`guid`),
   UNIQUE KEY (`username`),
@@ -148,6 +150,18 @@ CREATE TABLE `users_entity` (
   KEY `last_login` (`last_login`),
   FULLTEXT KEY `name` (`name`),
   FULLTEXT KEY (`name`,`username`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `org_sectors` (
+  `id` int(11) NOT NULL auto_increment,
+  
+  `container_guid` bigint(20) unsigned NOT NULL,
+  `sector_id` int NOT NULL,
+  
+  PRIMARY KEY  (`id`),
+  KEY `container_guid` (`container_guid`),
+  KEY `sector_id` (`sector_id`),
+  
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Extra information relating to "groups"

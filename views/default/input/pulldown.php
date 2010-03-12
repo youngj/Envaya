@@ -22,29 +22,42 @@
 
 	$class = $vars['class'];
 	if (!$class) $class = "input-pulldown";
+    
+    $vars['value'] = preserve_input($vars['internalname'], $vars['value']); 
 
 ?>
 
 
 <select name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> <?php echo $vars['js']; ?> <?php if ($vars['disabled']) echo ' disabled="yes" '; ?> class="<?php echo $class; ?>">
 <?php
-	if ($vars['options_values'])
+	if ($vars['empty_option'])
+    {
+        echo "<option value=''>".escape($vars['empty_option'])."</option>";
+    }
+    
+    if ($vars['options_values'])
 	{
-		foreach($vars['options_values'] as $value => $option) {
-	        if ($value != $vars['value']) {
-	            echo "<option value=\"".htmlentities($value, ENT_QUOTES, 'UTF-8')."\">". htmlentities($option, ENT_QUOTES, 'UTF-8') ."</option>";
+		foreach($vars['options_values'] as $value => $option) 
+        {
+	        if ($value != $vars['value']) 
+            {
+                echo "<option value=\"".escape($value)."\">". escape($option) ."</option>";
 	        } else {
-	            echo "<option value=\"".htmlentities($value, ENT_QUOTES, 'UTF-8')."\" selected=\"selected\">". htmlentities($option, ENT_QUOTES, 'UTF-8') ."</option>";
+                echo "<option value=\"".escape($value)."\" selected=\"selected\">".escape($option)."</option>";
 	        }
 	    }
 	}
 	else
 	{
 	    foreach($vars['options'] as $option) {
-	        if ($option != $vars['value']) {
-	            echo "<option>". htmlentities($option, ENT_QUOTES, 'UTF-8') ."</option>";
-	        } else {
-	            echo "<option selected=\"selected\">". htmlentities($option, ENT_QUOTES, 'UTF-8') ."</option>";
+        
+	        if ($option != $vars['value']) 
+            {
+                echo "<option>".escape($option)."</option>";
+	        } 
+            else 
+            {
+                echo "<option selected=\"selected\">".escape($option)."</option>";
 	        }
 	    }
 	}

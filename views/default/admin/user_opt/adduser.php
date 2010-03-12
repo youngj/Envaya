@@ -10,8 +10,23 @@
 	 */
 ?>
 
+<script type='text/javascript'>
+function toggle($id)
+{
+    var elem = document.getElementById($id);
+    if (elem.style.display == 'block')
+    {
+        elem.style.display = 'none';
+    }
+    else
+    {
+        elem.style.display = 'block';
+    }
+}
+</script>
+
 <div class="admin_adduser_link">
-	<a href="#" onclick="$('#add_user_showhide').toggle()"><?php echo elgg_echo('admin:user:adduser:label'); ?></a>
+    <a href="javascript:toggle('add_user_showhide')"><?php echo elgg_echo('admin:user:adduser:label'); ?></a>
 </div>
 <div id="add_user_showhide" style="display:none" >
 <?php echo elgg_view('account/forms/useradd', array('show_admin'=>true)); ?>

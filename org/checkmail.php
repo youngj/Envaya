@@ -34,7 +34,7 @@
                         
         $emailCode = $matches[1];
         
-        $org = ElggUser::getUserByEmailCode($emailCode);
+        $org = ElggUser::getByEmailCode($emailCode);
         if (!$org)
         {
             echo "no matching organization";

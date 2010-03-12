@@ -20,21 +20,19 @@
 	
 	$class = $vars['class'];
 	if (!$class) $class = "input-radio";
+    
+    $vars['value'] = preserve_input($vars['internalname'], $vars['value']); 
 
-    foreach($vars['options'] as $label => $option) {
+    foreach($vars['options'] as $option => $label) {
         if (strtolower($option) != strtolower($vars['value'])) {
             $selected = "";
         } else {
             $selected = "checked = \"checked\"";
         }
-        $labelint = (int) $label;
-        if ("{$label}" == "{$labelint}") {
-        	$label = $option;
-        }
-        
+
         if (isset($vars['internalid'])) $id = "id=\"{$vars['internalid']}\""; 
         if ($vars['disabled']) $disabled = ' disabled="yes" '; 
-        echo "<label><input type=\"radio\" $disabled {$vars['js']} name=\"{$vars['internalname']}\" $id value=\"".htmlentities($option, ENT_QUOTES, 'UTF-8')."\" {$selected} class=\"$class\" />{$label}</label><br />";
+        echo "<label class='optionLabel'><input type=\"radio\" $disabled {$vars['js']} name=\"{$vars['internalname']}\" $id value=\"".htmlentities($option, ENT_QUOTES, 'UTF-8')."\" {$selected} class=\"$class\" />{$label}</label><br />";
     }
 
 ?> 

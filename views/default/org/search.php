@@ -1,15 +1,27 @@
+<?php
+    $query = $vars['query'];
+    $sector = $vars['sector'];
 
+?>
 <div class='instructions'>
     <?php echo elgg_echo('search:instructions'); ?>
 </div>    
 
-<form method='GET' action='org/search/'>
-    <input type='text' name='q' value='<?php echo escape($query); ?>'>
+<form method='GET' class='searchForm' action='org/search/'>    
+    <input class='searchField' type='text' name='q' value='<?php echo escape($query); ?>'>
+    <?php echo elgg_view('input/pulldown', array('internalname' => 'sector',
+        'options_values' => Organization::getSectorOptions(), 
+        'empty_option' => elgg_echo('sector:empty_option'),
+        'value' => $vars['sector'])) 
+    ?>
+    <br />
+    
     <input type='submit' value='<?php echo elgg_echo('search:submit') ?>'>
+    
+    
 </form>
 
-<?php
-    $query = $vars['query'];
+<?php   
 
     $latlong = null;
 
@@ -22,26 +34,25 @@
 
     if ($latlong)
     {
-        $radius = 2.0;
-
-        $nearby = Organization::getUsersInArea(
+        $nearby = Organization::filterByArea(
             array(
                 $latlong['lat'] - 1.0, 
                 $latlong['long'] - 1.0, 
                 $latlong['lat'] + 1.0, 
                 $latlong['long'] + 1.0
             ),    
+            $sector,
             $limit=1);
 
         if ($nearby)
         {
-            $results .= "<div class='padded'>".elgg_view("org/map", array('lat' => $latlong['lat'], 'long' => $latlong['long'], 'pin' => 'true', 'nearby' => true, 'height' => 300, 'width' => 440, 'zoom' => '8'))."</div>";
+            $results .= "<div class='padded'>".elgg_view("org/map", array('lat' => $latlong['lat'], 'long' => $latlong['long'], 'sector' => $sector, 'pin' => 'true', 'nearby' => true, 'height' => 300, 'width' => 440, 'zoom' => '8'))."</div>";
         }
     }
 
-    if (!empty($query))
-    {
-        $results .= Organization::listUserSearch(elgg_strtolower($query), $limit = 10);
+    if (!empty($query) || $sector)
+    {        
+        $results .= Organization::listSearch($query, $sector, $limit = 10);
         
         if ($results)
         {

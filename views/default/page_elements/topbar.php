@@ -9,7 +9,7 @@
 <td id='topbarLinks'>
 
 <?php
-     if (isloggedin()) {
+     if (isloggedin() && get_loggedin_user()->isSetupComplete()) {
 ?>
 
         <a href="<?php echo get_loggedin_user()->getURL() ?>" class='pagelinks'><?php echo elgg_echo('org:yours'); ?></a>

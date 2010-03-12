@@ -1691,9 +1691,9 @@
             array($name, (int)$entity_guid));		
 	}
     
-    function get_entities_by_condition($subTable, $where, $args, $order_by, $limit, $offset = 0, $count = false)
+    function get_entities_by_condition($subTable, $where, $args, $order_by, $limit, $offset = 0, $count = false, $join = '')
     {
-        $fromWhere = "FROM entities e INNER JOIN $subTable u ON u.guid = e.guid WHERE ";                
+        $fromWhere = "FROM entities e INNER JOIN $subTable u ON u.guid = e.guid $join WHERE ";                
                 
         if (!$count) 
         {
@@ -1714,7 +1714,7 @@
         {        
             if ($order_by)
             {
-                $query .= "order by ".sanitize_order_by($order_by);
+                $query .= " order by ".sanitize_order_by($order_by);
             }
         
             if ($limit) 

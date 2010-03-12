@@ -7,8 +7,9 @@
     $latMax = get_input('latMax');
     $longMin = get_input('longMin');
     $longMax = get_input('longMax');
+    $sector = get_input('sector');
                 
-    $orgs = Organization::getUsersInArea(array($latMin, $longMin, $latMax, $longMax), $limit = 100);
+    $orgs = Organization::filterByArea(array($latMin, $longMin, $latMax, $longMax), $sector, $limit = 100);
     
     $res = array();
     foreach ($orgs as $org)

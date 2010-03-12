@@ -29,6 +29,14 @@
         return $size;
     }    
 
+    function yes_no_options()
+    {
+        return array(
+            'yes' => elgg_echo('option:yes'),
+            'no' => elgg_echo('option:no'),
+        );
+    }
+
     /**
      * Adds messages to the session so they'll be carried over, and forwards the browser.
      * Returns false if headers have already been sent and the browser cannot be moved.

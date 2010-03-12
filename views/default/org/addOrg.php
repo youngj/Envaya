@@ -11,7 +11,7 @@
             <?php echo elgg_echo("org:{$shortname}") ?><br />
             <?php echo elgg_view("input/{$valtype}",array(
                 'internalname' => $shortname,
-                'value' => preserve_input($shortname, $vars['entity']->$shortname),
+                'value' => $vars['entity']->$shortname,
                 )); 
             ?>
         </label>

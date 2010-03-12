@@ -48,7 +48,94 @@ class Organization extends ElggUser {
         }
         return "post+{$this->email_code}@envaya.org";
     } 
+    
+    public function getLocationText()
+    {
+        $res = '';
+        
+        if ($this->city)
+        {
+            $res .= "{$this->city}, ";
+        }
+        if ($this->region)
+        {
+            $res .= "{$this->region}, ";
+        }
+        $res .= elgg_echo("country:{$this->country}");
+        
+        return $res;
+    }
        
+    protected $sectors;   
+    protected $sectors_dirty = false;
+       
+    static function getSectorOptions()
+    {
+        return array(
+            1 => elgg_echo('sector:agriculture'),
+            2 => elgg_echo('sector:communications'),
+            3 => elgg_echo('sector:conflict_res'),
+            4 => elgg_echo('sector:cooperative'),
+            5 => elgg_echo('sector:culture'),
+            6 => elgg_echo('sector:education'),
+            7 => elgg_echo('sector:environment'),
+            8 => elgg_echo('sector:health'),
+            9 => elgg_echo('sector:hiv_aids'),
+            13 => elgg_echo('sector:human_rights'),
+            14 => elgg_echo('sector:labor_rights'),
+            15 => elgg_echo('sector:microenterprise'),
+            16 => elgg_echo('sector:natural_resources'),
+            17 => elgg_echo('sector:prof_training'),
+            18 => elgg_echo('sector:rural_dev'),
+            19 => elgg_echo('sector:sci_tech'),
+            20 => elgg_echo('sector:substance_abuse'),
+            21 => elgg_echo('sector:tourism'),
+            22 => elgg_echo('sector:trade'),
+            23 => elgg_echo('sector:women'),
+            99 => elgg_echo('sector:other'),
+        );
+    }
+          
+    static function filterBySector($sector)
+    {
+        
+    }
+       
+    public function getSectors()
+    {
+        if (!isset($this->sectors))
+        {
+            $sectorRows = get_data("select * from org_sectors where container_guid = ?", array($this->guid));
+            $sectors = array();
+            foreach ($sectorRows as $row)
+            {
+                $sectors[] = $row->sector_id;   
+            }        
+            $this->sectors = $sectors;
+        }
+        return $this->sectors;
+    }
+    
+    public function setSectors($arr)
+    {
+        $this->sectors = $arr;
+        $this->sectors_dirty = true;
+    }
+       
+    public function save()    
+    {
+        if ($this->sectors_dirty)
+        {
+            delete_data("delete from org_sectors where container_guid = ?", array($this->guid));                                    
+            foreach ($this->sectors as $sector)
+            {
+                insert_data("insert into org_sectors (container_guid, sector_id) VALUES (?,?)", array($this->guid, $sector));
+            }    
+            $this->sectors_dirty = false;
+        }
+            
+        return parent::save();
+    }       
 }
 
 class Translation extends ElggObject
@@ -422,7 +509,6 @@ function org_fields_setup()
 
     $CONFIG->org_profile_fields = array(
         'description' => 'longtext',
-        'interests' => 'tags',
         'phone' => 'text',
         'website' => 'url',        
         'location' => 'text',
@@ -442,6 +528,45 @@ function preserve_input($name, $value)
         }    
     }
     return $value;
+}
+
+function regions_in_country($country)
+{
+    if ($country == 'tz'  || true)
+    {
+        return array(
+            'Arusha',
+            'Dar es Salaam',
+            'Dodoma',
+            'Iringa',
+            'Kagera',
+            'Kigoma',
+            'Kilimanjaro',
+            'Lindi',
+            'Manyara',
+            'Mara',
+            'Mbeya',
+            'Morogoro',
+            'Mtwara',
+            'Mwanza',
+            'Pemba North',
+            'Pemba South',
+            'Pwani',
+            'Rukwa',
+            'Ruvuma',
+            'Shinyanga',
+            'Singida',
+            'Tabora',
+            'Tanga',
+            'Zanzibar Central/South',
+            'Zanzibar North',
+            'Zanzibar West',
+        );
+    }
+    else
+    {
+        return array();
+    }
 }
 
 register_elgg_event_handler('init','system','envaya_init');

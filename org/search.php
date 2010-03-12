@@ -1,9 +1,8 @@
 <?php
     set_context('search');
 
-    $query = stripslashes(get_input('q'));
-        
-        
+    $query = get_input('q');
+                
     if ($query)
     {
         $title = sprintf(elgg_echo('search:title_with_query'),$query);
@@ -12,7 +11,7 @@
     {
         $title = elgg_echo('search:title');
     }
-    $content = elgg_view('org/search', array('query' => $query));
+    $content = elgg_view('org/search', array('query' => $query, 'sector' => get_input('sector')));
 
     $body = elgg_view_layout('one_column_padded',elgg_view_title($title), $content);
 

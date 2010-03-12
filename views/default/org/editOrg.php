@@ -1,13 +1,13 @@
-<?php
-?>
 <form action="<?php echo $vars['url']; ?>action/org/edit" enctype="multipart/form-data" method="post">
+
+<?php
+    $org = $vars['entity'];
+?>
 
 <?php echo elgg_view('input/securitytoken'); ?>
 
 <?php
-
     foreach($vars['config']->org_profile_fields as $shortname => $valtype) {
-
 ?>
 	<p>
 		<label>
@@ -21,8 +21,15 @@
 	</p>
 
 <?php
-		}
+    }
 ?>
+
+<p>
+    <label><?php echo elgg_echo("org:sector"); ?><br /></label>
+    <?php
+        echo elgg_view("input/checkboxes",array('internalname' => 'sector', 'options' => Organization::getSectorOptions(), 'value' => $org->getSectors()));
+    ?>
+</p>
 
 <p>
     <label><?php echo elgg_echo("org:icon"); ?><br />

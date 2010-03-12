@@ -137,7 +137,7 @@
 		       
     function get_data_row($query, $args = false) 
     {
-        $mysqli = get_db_link('read');        
+        $mysqli = get_db_link('read');                                      
                     
         if ($stmt = stmt_execute($mysqli, $query, $args)) 
         {

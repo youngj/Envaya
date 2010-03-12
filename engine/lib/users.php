@@ -57,8 +57,14 @@
                 'latitude' => null,
                 'longitude' => null,
                 'email_code' => null,
+                'setup_state' => 5,
             ));    
-        }                                   
+        }         
+        
+        public function isSetupComplete()
+        {
+            return !$this->subtype || $this->setup_state >= 5;
+        }
 		
         protected function loadFromPartialTableRow($row)
         {
@@ -313,7 +319,7 @@
             $this->approval = 2;
         }
 
-        static function getUsersInArea($latLongArr, $limit = 10, $offset = 0, $count = false)
+        static function filterByArea($latLongArr, $sector, $limit = 10, $offset = 0, $count = false)
         {
             $where = array();
             $args = array();
@@ -330,62 +336,77 @@
             $where[] = "longitude <= ?";
             $args[] = $latLongArr[3];
 
-            return static::getUsersByCondition($where, $args, '', $limit, $offset, $count);
+            $join = '';
+            if ($sector)
+            {
+                $join = "INNER JOIN org_sectors s ON s.container_guid = e.guid";
+                $where[] = "s.sector_id=?";
+                $args[] = $sector;
+            }
+
+            return static::filterByCondition($where, $args, '', $limit, $offset, $count, $join);
         }
                 
-        static function getUserByEmailCode($emailCode)
+        static function getByEmailCode($emailCode)
         {
-            return static::getUserByCondition(
+            return static::getByCondition(
                 array('email_code = ?'),
                 array($emailCode)
             );                    
         }
         
-        static function getUserByCondition($where, $args)
+        static function search($name, $sector, $limit = 10, $offset = 0, $count = false)
         {
-            $users = static::getUsersByCondition($where, $args, '', 1, 0, false);
+            $where = array("(INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0)");
+            $args = array($name, $name);
+            
+            $join = '';
+            if ($sector)
+            {
+                $join = "INNER JOIN org_sectors s ON s.container_guid = e.guid";
+                $where[] = "s.sector_id=?";
+                $args[] = $sector;
+            }
+
+            return static::filterByCondition($where, $args, '', $limit, $offset, $count, $join);
+        }
+        
+        static function listSearch($name, $sector, $limit = 10, $pagination = true) 
+        {        
+            $offset = (int) get_input('offset');
+
+            $count = static::search($name, $sector, $limit, $offset, true);
+            $entities = static::search($name, $sector, $limit, $offset);
+
+            return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
+        }        
+        
+        static function all($order_by = '', $limit = 10, $offset = 0, $count = false)
+        {
+            return static::filterByCondition(array(), array(), $order_by, $limit, $offset, $count);
+        }
+        
+        static function listAll($limit = 10, $pagination = true) 
+        {        
+            $offset = (int) get_input('offset');
+
+            $count = static::all($limit, $offset, true);
+            $entities = static::all($limit, $offset);
+
+            return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
+        }
+                        
+        static function getByCondition($where, $args)
+        {
+            $users = static::filterByCondition($where, $args, '', 1, 0, false);
             if (!empty($users))
             {
                 return $users[0];
             }
             return null;
-        }
-        
-        static function searchForUser($criteria, $limit = 10, $offset = 0, $count = false)
-        {
-            $where = array("(INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0)");
-            $args = array($criteria, $criteria);
-
-            return static::getUsersByCondition($where, $args, '', $limit, $offset, $count);
-        }
-        
-        static function listUserSearch($criteria, $limit = 10, $pagination = true) 
-        {        
-            $offset = (int) get_input('offset');
-
-            $count = static::searchForUser($criteria, $limit, $offset, true);
-            $entities = static::searchForUser($criteria, $limit, $offset);
-
-            return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
         }        
         
-        static function getAllUsers($order_by = '', $limit = 10, $offset = 0, $count = false)
-        {
-            return static::getUsersByCondition(array(), array(), $order_by, $limit, $offset, $count);
-        }
-        
-        static function listAllUsers($limit = 10, $pagination = true) 
-        {        
-            $offset = (int) get_input('offset');
-
-            $count = static::getAllUsers($limit, $offset, true);
-            $entities = static::getAllUsers($limit, $offset);
-
-            return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
-        }
-                
-        
-        static function getUsersByCondition($where, $args, $order_by = '', $limit = 10, $offset = 0, $count = false)
+        static function filterByCondition($where, $args, $order_by = '', $limit = 10, $offset = 0, $count = false, $join = '')
         {
             $where[] = "type='user'";
             
@@ -402,7 +423,7 @@
                 $args[] = get_loggedin_userid();                
             }
 
-            return get_entities_by_condition('users_entity', $where, $args, $order_by, $limit, $offset, $count);        
+            return get_entities_by_condition('users_entity', $where, $args, $order_by, $limit, $offset, $count, $join);        
         }
         
 

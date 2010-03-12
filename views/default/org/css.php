@@ -918,3 +918,56 @@ span.timestamp {
 {
     padding:5px 0px;
 }
+
+.searchForm select
+{
+    font-size:11px;
+}
+
+.searchField
+{
+    width:220px;
+}
+
+.optionLabel
+{
+    font-weight:normal;
+    font-size:100%;
+}
+
+.help
+{
+    color:#666;
+    font-style:italic;
+}
+
+.progressTabs
+{
+    padding:5px;
+}
+
+.progressTabs li
+{
+    float:left;
+    padding:7px;
+    color:#666;
+    background-color:#ddd;
+    border:1px solid #ddd;
+}
+
+.progressTabs li.active
+{
+    border:1px solid #666;
+    background-color:#eee;
+}
+
+.input
+{
+    padding:8px 0px;
+}
+
+.websiteUrl
+{
+    color:green;
+    white-space:nowrap;
+}

@@ -104,9 +104,12 @@
 						// Extract method details from list
 						$details = $NOTIFICATION_HANDLERS[$method];
 						$handler = $details->handler;
-					
+                        
 						if ((!$NOTIFICATION_HANDLERS[$method]) || (!$handler))
+                        {
 							error_log(sprintf(elgg_echo('NotificationException:NoHandlerFound'), $method));
+                            continue;
+                        }    
 		
 						if ($CONFIG->debug)
 							error_log("Sending message to $guid using $method");					

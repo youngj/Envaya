@@ -108,14 +108,14 @@ img {
 	border: none;
 }
 ul {
-	margin: 5px 0px 15px;
+	margin: 0px 0px 15px;
 	padding-left: 20px;
 }
 ul li {
 	margin: 0px;
 }
 ol {
-	margin: 5px 0px 15px;
+	margin: 0px 0px 15px;
 	padding-left: 20px;
 }
 ul li {

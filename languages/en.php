@@ -2,7 +2,7 @@
 
 	$english = array(
         'home:title' => "Welcome to Envaya",
-        'home:heading' => 'Envaya is a network of community-based organizations in Tanzania who share news about their projects on the Internet.',        
+        'home:heading' => 'Envaya is a network of civil society organizations in Tanzania who share news about their projects on the Internet.',        
         'home:for_organizations' => 'For organizations:',
         'home:for_everyone' => 'For everyone:',
         'home:sign_up' => 'Sign up now',
@@ -24,6 +24,122 @@
         
         'why:title' => 'Why use Envaya?',
         
+        'sector:agriculture' => 'Agriculture and livestock',
+        'sector:communications' => 'Communications',
+        'sector:conflict_res' => 'Conflict resolution',
+        'sector:cooperative' => 'Cooperative',
+        'sector:culture' => 'Cultural heritage',                 
+        'sector:education' => 'Education',                        
+        'sector:environment' => 'Environment',                    
+        'sector:health' => 'Health',
+        'sector:hiv_aids' => 'HIV/AIDS',
+        'sector:human_rights' => 'Human rights',
+        'sector:labor_rights' => 'Labor rights',
+        'sector:microenterprise' => 'Microcredit/microenterprise',
+        'sector:natural_resources' => 'Natural resource management',
+        'sector:prof_training' => 'Professional/vocational training',                   
+        'sector:rural_dev' => 'Rural development',                       
+        'sector:sci_tech' => 'Science and technology',                       
+        'sector:substance_abuse' => 'Substance abuse',                 
+        'sector:tourism' => 'Tourism',                         
+        'sector:trade' => 'Trade',
+        'sector:women' => 'Women',
+        'sector:other' => 'Other',
+                                         
+        'sector:empty_option' => 'All sectors',
+
+        'register:step1' => '1. Qualification',                                       
+        'register:step2' => '2. Create account',
+        'register:step3' => '3. Set up homepage',
+                                       
+        'register:title' => 'Register for Envaya',
+        
+        'qualify:welcome' => "Welcome to Envaya! In just a few minutes, your organization will have a website of its own, for free, where you can share news about your projects and let everyone know about your work.",
+        'qualify:instructions' => "First, we need to check whether your organization qualifies to use Envaya. Envaya will verify these qualifications before making your website accessible to the public.",
+        
+        'qualify:org_type' => 'What type of organization are you?',
+        
+        'qualify:org_type:non_profit' => 'Non-profit civil society organization',
+        'qualify:org_type:for_profit' => 'Business',
+        'qualify:org_type:other' => 'Other',        
+
+        'qualify:org_info' => 'Carefully read the following statements and check the ones that apply to your organization:',
+        'qualify:org_info:citizen' => 'It is run by local citizens of the country selected above.',
+        'qualify:org_info:local' => 'It mostly operates in one local community.',        
+        'qualify:org_info:funder' => 'It primarily distributes funding to other organizations.',        
+
+        'qualify:registration_number' => "Enter your organization's official registration number:",
+        'qualify:registration_number:help' => 'While not required, the registration number will help Envaya expedite the verification process for your organization.',        
+
+        'qualify:country' => 'What country does your organization operate in?',
+
+        'country:tz' => 'Tanzania',                
+        'country:other' => 'Other',
+
+        'qualify:next' => 'Click the button below to continue.',        
+        'qualify:next:button' => 'Next step',
+        
+        'qualify:wrong_country' => "Sorry, in Envaya's pilot program, only organizations in Tanzania can register. We hope to support other countries in future years.",        
+        'qualify:wrong_org_type' => "Sorry, Envaya is only intended for non-profit civil society organizations at this time.",                
+        'qualify:not_registered' => "Sorry, Envaya is only available for officially registered organizations. After your organization has been approved by the government, you can return to Envaya to set up your website.",        
+        'qualify:no_funders' => "Sorry, the current version of Envaya is not intended for organizations that primarily fund other organizations. However, we hope to support these organizations in the future.",        
+        'qualify:not_citizen' => "Sorry, the current version of Envaya is only intended to provide websites for citizen-run organizations.",        
+        'qualify:missing' => "Your qualification information was not found. Please complete the qualification form again.",
+        'qualify:ok' => "Congratulations! Your organization appears to qualify for a website on Envaya.",
+        
+        'create:instructions' => "Now, enter a few pieces of information to create your account on Envaya. This account will let you log in and update your organization's website.",
+        
+        'create:org_name' => "Enter the full name of your organization:",
+        'create:org_name:help' => "This will be the title of your website.",
+        
+        'create:username' => "Choose a username for Envaya:",
+        'create:username:help' => "Your web address will be:",        
+        'create:username:help2' => "Your username must be at least 4 characters, and can contain letters (a-z), digits (0-9), dashes (-), and underscores (_).",        
+        'create:username:placeholder' => 'username',
+        
+        'create:password' => "Choose a password for your account:",
+        'create:password:help' => "Together with your username, this will let you log in to edit your website. Remember this password and keep it secure.",
+        
+        'create:password2' => "Enter the password again to confirm:",
+        
+        'create:email' => "Enter your organization's email address:",
+        'create:email:help' => "If you ever forget your password, you can reset it by email.",
+                
+        'create:next' => 'Click the button below to create your account.',        
+        'create:next:button' => 'Create account',
+        
+        'create:bad_email' => 'The email address you provided does not appear to be valid.',
+        'create:bad_username' => 'The username you provided is not valid. Please choose another.',
+        'create:bad_password' => 'The password you provided is not valid. Please choose another.',
+        'create:no_name' => "Please enter your organization's name.",
+        'create:username_exists' => 'Somebody else has already registered that username. Please choose another.',
+        'create:passwords_differ' => 'The two passwords you entered did not match. Please try entering them again.',
+        'create:ok' => 'Congratulations! Your account was created successfully.',
+        
+        'create:notloggedin' => 'You must be logged in to view this page.',
+        
+        'setup:instructions' => "Now we will ask a few questions about your organization so that we can create a homepage for you. (You will be able to add more content later.)",
+        'setup:mission' => "What is your main mission statement?",
+        'setup:mission:help' => "This will appear at the top of your homepage.",
+
+        'setup:language' => "What language will you use for the written content on your website (such as the mission statement above)?",
+        'setup:language:help' => "Envaya will allow people who cannot read that language to view a translated version in their own language.",
+
+        'setup:public_email' => "Do you want your email address, %s, publicly displayed on your homepage?",
+        
+        'setup:location' => "Where is your organization located?",
+        'setup:city' => 'City or Town:',
+        'setup:region' => 'Region:',
+        'setup:region:blank' => 'Select your region',
+        'setup:sector' => "Check all the sectors that apply for your organization:",
+        'setup:sector:other_specify' => "If 'Other', specify:",        
+        
+        'setup:next' => "Click the button below to view your homepage!",        
+        'setup:next:help' => "Envaya will automatically choose a default design which you can customize later.",
+        'setup:next:button' => "Let's see it!",        
+        
+        'setup:ok' => "Your homepage was created successfully.",        
+                
         'about:title' => 'About us',
         
             'welcome_user' => "Welcome, %s!",            
@@ -48,12 +164,15 @@
             'org:name' => 'Organization name',
             'org:username' => 'Organization username (alphanumeric characters only)',
             'org:description' => 'Description',
-            'org:briefdescription' => 'Brief description',
-            'org:interests' => 'Tags',            
+            'org:briefdescription' => 'Brief description',            
+            'org:sector' => 'Sector',
             'org:website' => 'Website',
             'org:members' => 'Members',
             'org:owner' => "Owner",
+            'org:mission' => 'Mission',
             'org:location' => 'Location',
+            'org:contact' => 'Contact Information',
+            'org:sectors' => 'Sectors',
             'org:map' => 'Map',
             'org:blog' => 'News',
             'org:language' => 'Language',

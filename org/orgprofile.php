@@ -28,7 +28,7 @@
         }
                 
         $area2 = elgg_view('org/org', array('entity' => $org, 'user' => $_SESSION['user'], 'full' => $org->userCanSee()));                
-        $body = elgg_view_layout('one_column', org_title($org, $org->location), $area2);
+        $body = elgg_view_layout('one_column', org_title($org, $org->getLocationText()), $area2);
         
 	} else {
         forward("");

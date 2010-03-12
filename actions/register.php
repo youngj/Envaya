@@ -27,8 +27,7 @@
 		
 		$admin = get_input('admin');
 		if (is_array($admin)) $admin = $admin[0];
-		
-		
+        		
 		if (!$CONFIG->disable_registration)
 		{
 	// For now, just try and register the user
@@ -46,7 +45,8 @@
 					if (($guid) && ($admin))
 					{
 						admin_gatekeeper(); // Only admins can make someone an admin
-						$new_user->admin = true;
+						$new_user->admin = 1;
+                        $new_user->save();
 					}
 					
                     login($new_user, false);

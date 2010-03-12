@@ -149,6 +149,9 @@ register_plugin_hook('index','system','new_index');
 
 global $CONFIG;
 
+register_action("org/register1",false,  "{$CONFIG->path}actions/org/register1.php");
+register_action("org/register2",false,  "{$CONFIG->path}actions/org/register2.php");
+register_action("org/register3",false,  "{$CONFIG->path}actions/org/register3.php");
 register_action("org/add",false,        "{$CONFIG->path}actions/org/addOrg.php");
 register_action("org/edit",false,       "{$CONFIG->path}actions/org/editOrg.php");
 register_action("org/delete",false,     "{$CONFIG->path}actions/org/deleteOrg.php");

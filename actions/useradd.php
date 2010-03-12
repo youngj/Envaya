@@ -24,7 +24,7 @@
 	
 	$admin = get_input('admin');
 	if (is_array($admin)) $admin = $admin[0];
-	
+    
 	// For now, just try and register the user
 	try {
 		if (
@@ -35,21 +35,25 @@
 			($guid = register_user($username, $password, $name, $email, true))
 		) {
 			$new_user = get_entity($guid);
-			if (($guid) && ($admin))
+			if (($guid) && ($admin != null))
+            {
 				$new_user->admin = true;
+            }    
 			
 			$new_user->admin_created = true;
 			$new_user->created_by_guid = get_loggedin_userid();
-			
+			$new_user->save();
 			
 			notify_user($new_user->guid, $CONFIG->site_guid, elgg_echo('useradd:subject'), sprintf(elgg_echo('useradd:body'), $name, $CONFIG->sitename, $CONFIG->url, $username, $password));
 			
 			system_message(sprintf(elgg_echo("adduser:ok"),$CONFIG->sitename));
 		} else {
 			register_error(elgg_echo("adduser:bad"));
+            $_SESSION['input'] = $_POST;
 		}
 	} catch (RegistrationException $r) {
 		register_error($r->getMessage());
+        $_SESSION['input'] = $_POST;
 	}
 
 	forward($_SERVER['HTTP_REFERER']);

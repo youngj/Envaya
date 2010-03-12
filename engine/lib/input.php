@@ -50,6 +50,23 @@
 		return $default;
 
 	}
+    
+    function get_input_array($variable)
+    {
+        $res = get_input($variable);
+        if (is_array($res))
+        {
+            return $res;
+        }
+        else if ($res != null)
+        {
+            return array($res);
+        }
+        else
+        {
+            return array();
+        }
+    }
 	
 	/**
 	 * Sets an input value that may later be retrieved by get_input

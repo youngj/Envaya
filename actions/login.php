@@ -44,6 +44,10 @@
                 {
             		forward($_SERVER['HTTP_REFERER']);
             	} 
+                else if (!$user->isSetupComplete())
+                {
+                    forward("org/new?step={$user->setup_state}");
+                }
                 else
                 {
             		forward("pg/dashboard/");

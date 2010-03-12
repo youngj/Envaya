@@ -164,7 +164,7 @@
         var $sw = $bounds.getSouthWest();
         var $ne = $bounds.getNorthEast();
 
-        $script.src = "org/searchArea?latMin="+$sw.lat()+"&latMax="+$ne.lat()+"&longMin="+$sw.lng()+"&longMax="+$ne.lng();            
+        $script.src = "org/searchArea?latMin="+$sw.lat()+"&latMax="+$ne.lat()+"&longMin="+$sw.lng()+"&longMax="+$ne.lng()+"&sector=<?php echo (int)$vars['sector'] ?>";            
         $script.charset = 'utf-8';
         document.body.appendChild($script);
     }    

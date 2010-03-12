@@ -128,7 +128,7 @@
             $oldview = $CONFIG->view;
     }
     
-    if ($installed && $db_installed) 
+    if ($installed) 
     {
         $lastupdate = datalist_get('simplecache_lastupdate');
         $lastcached = datalist_get('simplecache_'.$oldview);
