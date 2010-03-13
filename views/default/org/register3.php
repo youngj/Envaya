@@ -38,15 +38,6 @@
 </div>
 
 <div class='input'>
-<label><?php echo escape(sprintf(elgg_echo('setup:public_email'), $org->email)) ?></label><br />
-<?php echo elgg_view('input/radio', array(
-    'internalname' => 'email_public',
-    'options' => yes_no_options(),
-    'value' => ($org->email_public != 'no') ? 'yes' : 'no',
-)) ?>    
-</div>
-
-<div class='input'>
     <label><?php echo elgg_echo("setup:sector"); ?><br /></label>
     <?php
         echo elgg_view("input/checkboxes",array(

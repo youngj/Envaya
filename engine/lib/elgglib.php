@@ -777,78 +777,60 @@
 			
 		}
 		
+        function get_submenu_group($groupname, $itemTemplate = 'canvas_header/submenu_template', $groupTemplate = 'canvas_header/submenu_group')
+        {
+            global $CONFIG;
+            if (!isset($CONFIG->submenu)) 
+            {               
+                return '';    
+            }
+
+            $submenu_register = $CONFIG->submenu;
+            if (!isset($submenu_register[$groupname]))
+            {
+                return '';
+            }
+
+            $submenu = '';
+            $submenu_register_group = $CONFIG->submenu[$groupname];
+
+            foreach($submenu_register_group as $key => $item) 
+            {
+                $selected = endswith($item->value, $_SERVER['REQUEST_URI']);
+
+                $submenu .= elgg_view($itemTemplate,
+                    array(
+                            'href' => $item->value, 
+                            'label' => $item->name,
+                            'onclick' => $item->onclick,
+                            'selected' => $selected,
+                        ));
+            }        
+            
+            return elgg_view($groupTemplate, array(
+                'submenu' => $submenu,
+                'group_name' => $groupname                                          
+            ));
+        }
+        
 	/**
 	 * Gets a formatted list of submenu items
 	 *
 	 * @return string List of items
 	 */
-		function get_submenu() {
-			
+		function get_submenu() 
+        {			
 			$submenu_total = "";
 			global $CONFIG;
 			
-			if (isset($CONFIG->submenu) && $submenu_register = $CONFIG->submenu) {
-				
-				$preselected = false;
-				$comparevals = array();
-				$maxcompareval = 999999;
-				
+			if (isset($CONFIG->submenu) && $submenu_register = $CONFIG->submenu) 
+            {				
 				ksort($submenu_register);
-				
-				foreach($submenu_register as $groupname => $submenu_register_group) {
-					foreach($submenu_register_group as $key => $item) {
-						
-						if (endswith($item->value, $_SERVER['REQUEST_URI'])) {
-							$comparevals[$key] = levenshtein($item->value, $_SERVER['REQUEST_URI']);
-							if ($comparevals[$key] < $maxcompareval) {
-								$maxcompareval = $comparevals[$key];
-								$preselected = $key;
-								$preselectedgroup = $groupname;
-							}
-						}
-						
-					}
-				}
-				
-				foreach($submenu_register as $groupname => $submenu_register_group) {
-				
-					$submenu = "";
-					
-					foreach($submenu_register_group as $key => $item) {
-	
-						if ($preselected === false) {
-                            if (endswith($item->value, $_SERVER['REQUEST_URI'])) {
-								$preselected = $key;
-								$preselectedgroup = $groupname;
-								$selected = true;
-							} else {
-								$selected = false;
-							}
-						} else {
-							if ($key == $preselected && $groupname == $preselectedgroup) {
-								$selected = true;
-							} else {
-								$selected = false;
-							}
-						}
-						
-						$submenu .= elgg_view('canvas_header/submenu_template',
-										array(
-												'href' => $item->value, 
-												'label' => $item->name,
-												'onclick' => $item->onclick,
-												'selected' => $selected,
-											));
-						
-					}
-					
-					$submenu_total .= elgg_view('canvas_header/submenu_group', array(
-												'submenu' => $submenu,
-												'group_name' => $groupname
-											));
-					
-				}
-				
+
+				foreach($submenu_register as $groupname => $submenu_register_group) 
+                {				
+                    $submenu_total .= get_submenu_group($groupname);                  					
+				}				
 			}
 			
 			return $submenu_total;

@@ -2,8 +2,7 @@
 <?php
   
     $entity = $vars['entity'];
-    $url = $entity->getURL();
-    $canedit = $entity->canEdit();
+    $url = $entity->getURL();    
     $full = $vars['full'];
     
     $nextUrl = $url . "/next";
@@ -122,24 +121,6 @@ for (var i = 0; i < blogDates.length; i++)
         }
         
         echo view_translated($entity, 'content'); 
-
-        if ($canedit) {
-
-        ?>
-            <div class="blogEditControls">
-            <a href="<?php echo $url; ?>/edit"><?php echo elgg_echo("edit"); ?></a>  &nbsp; 
-            <?php
-
-                echo elgg_view("output/confirmlink", array(
-                    'href' => $vars['url'] . "action/news/delete?blogpost=" . $entity->getGUID(),
-                    'text' => elgg_echo('delete'),
-                    'is_action' => true,
-                    'confirm' => elgg_echo('deleteconfirm'),
-                ));
-            ?>
-            </div>
-        <?php
-        }
 
     ?>      
       

@@ -13,10 +13,7 @@
     
         $username = trim(get_input('username'));
         
-        if (!validate_username($username)) 
-        {
-            throw new RegistrationException(elgg_echo('create:bad_username'));
-        }            
+        validate_username($username);
     
         access_show_hidden_entities(true);
         
@@ -34,17 +31,11 @@
             throw new RegistrationException(elgg_echo('create:passwords_differ'));
         }
         
-        if (!validate_password($password)) 
-        {    
-            throw new RegistrationException(elgg_echo('create:bad_password'));
-        }                   
+        validate_password($password);
         
         $email = trim(get_input('email'));
         
-        if (!validate_email_address($email)) 
-        {
-            throw new RegistrationException(elgg_echo('create:bad_email'));
-        }    
+        validate_email_address($email);
                     
         $org = new Organization();
         $org->username = $username;

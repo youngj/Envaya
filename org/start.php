@@ -107,8 +107,25 @@ function org_profile_page_handler($page)
             default:
                 break;
         }
-    }
+        
+        if ($page[1])
+        {
+            $widget = $org->getWidgetByName($page[1]);
+            if ($page[2] == 'edit')
+            {
+                set_context("widget");
+                include(dirname(__FILE__) . "/editwidget.php");                    
+                return;
+            }
+            else if ($widget->guid)
+            {            
+                include(dirname(__FILE__) . "/orgprofile.php");
+                return;
+            }
+        }
+    }    
     
+    $widget = null;
     include(dirname(__FILE__) . "/orgprofile.php");
 }
 
@@ -123,12 +140,24 @@ function envaya_pagesetup()
     {
         $org = page_owner_entity();        
 
-        if (!empty($org) && can_write_to_container(0, $org->guid))
+        if (!empty($org))
         {
-            add_submenu_item(elgg_echo("org:edit"), $org->getUrl() . "/edit");
-            add_submenu_item(elgg_echo('org:mobilesettings'),$org->getUrl()."/mobilesettings");
-            add_submenu_item(elgg_echo('org:editmap'), $org->getUrl() . "/editmap");
-            add_submenu_item(elgg_echo('blog:addpost'),$org->getUrl()."/newpost");
+            $widgets = $org->getActiveWidgets();
+            foreach ($widgets as $widget)
+            {
+                if ($widget->widget_name != 'home')
+                {
+                    add_submenu_item(elgg_echo("widget:{$widget->widget_name}"), $widget->getURL());
+                }    
+            }     
+            
+            /*
+            if (can_write_to_container(0, $org->guid))
+            {                        
+                //add_submenu_item(elgg_echo('org:mobilesettings'),$org->getUrl()."/mobilesettings");                
+                add_submenu_item(elgg_echo('blog:addpost'),$org->getUrl()."/newpost");
+            }    
+            */
         }
     }
 }
@@ -152,7 +181,7 @@ global $CONFIG;
 register_action("org/register1",false,  "{$CONFIG->path}actions/org/register1.php");
 register_action("org/register2",false,  "{$CONFIG->path}actions/org/register2.php");
 register_action("org/register3",false,  "{$CONFIG->path}actions/org/register3.php");
-register_action("org/add",false,        "{$CONFIG->path}actions/org/addOrg.php");
+register_action("org/saveWidget",false, "{$CONFIG->path}actions/org/saveWidget.php");
 register_action("org/edit",false,       "{$CONFIG->path}actions/org/editOrg.php");
 register_action("org/delete",false,     "{$CONFIG->path}actions/org/deleteOrg.php");
 register_action("org/approve",false,    "{$CONFIG->path}actions/org/approveOrg.php");

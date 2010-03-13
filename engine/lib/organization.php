@@ -2,6 +2,8 @@
 
 require_once(dirname(__FILE__)."/users.php");
 
+define('SECTOR_OTHER', 99);
+
 // Class source
 class Organization extends ElggUser {
 
@@ -92,7 +94,7 @@ class Organization extends ElggUser {
             21 => elgg_echo('sector:tourism'),
             22 => elgg_echo('sector:trade'),
             23 => elgg_echo('sector:women'),
-            99 => elgg_echo('sector:other'),
+            SECTOR_OTHER => elgg_echo('sector:other'),
         );
     }
           
@@ -135,7 +137,70 @@ class Organization extends ElggUser {
         }
             
         return parent::save();
-    }       
+    }    
+    
+    public function getWidgetByName($name)
+    {
+        $where = array();
+        $args = array();
+        
+        $where[] = "container_guid=?";
+        $args[] = $this->guid;
+        
+        $where[] = "widget_name=?";
+        $args[] = $name;
+    
+        $widget = Widget::getByCondition($where, $args);
+        
+        if (!$widget)
+        {
+            $widget = new Widget();
+            $widget->container_guid = $this->guid;
+            $widget->widget_name = $name;
+        }
+        return $widget;
+    }
+    
+    public function getActiveWidgets()
+    {
+        $where = array();
+        $args = array();
+        
+        $where[] = "container_guid=?";
+        $args[] = $this->guid;        
+        
+        return Widget::filterByCondition($where, $args);
+    }
+    
+    public function getAvailableWidgets()
+    {
+        $allNames = array('home', 'map', 'history', 'contact', 'team');
+    
+        $activeWidgets = $this->getActiveWidgets();
+        
+        $activeWidgetsMap = array();
+        foreach ($activeWidgets as $widget)
+        {
+            $activeWidgetsMap[$widget->widget_name] = $widget;
+        }
+        
+        $availableWidgets = array();
+        foreach ($allNames as $name)
+        {
+            if (isset($activeWidgetsMap[$name]))
+            {
+                $widget = $activeWidgetsMap[$name];
+            }
+            else
+            {
+                $widget = new Widget();
+                $widget->container_guid = $this->guid;
+                $widget->widget_name = $name;                
+            }
+            $availableWidgets[] = $widget;
+        }
+        return $availableWidgets;
+    }
 }
 
 class Translation extends ElggObject
@@ -166,6 +231,81 @@ class Translation extends ElggObject
     {
         return $this->getRootContainerEntity()->language . ":" . sha1($this->getOriginalText());        
     }    
+}
+
+class Widget extends ElggObject
+{
+    static $subtype_id = T_widget;
+    static $table_name = 'widgets';
+    static $table_attributes = array(
+        'widget_name' => 0,
+        'content' => '',
+        'data_types' => 0,
+    );        
+    
+    function renderView()
+    {
+        return elgg_view("widgets/{$this->widget_name}_view", array('widget' => $this));
+    }
+    
+    function renderEdit()
+    {
+        return elgg_view("widgets/{$this->widget_name}_edit", array('widget' => $this));
+    } 
+    
+    function getURL()
+    {
+        $org = $this->getContainerEntity();
+        return "{$org->getUrl()}/{$this->widget_name}";
+    }
+    
+    function saveInput()
+    {
+        $fn = "save_widget_{$this->widget_name}";
+        if (!is_callable($fn))
+        {
+            $fn = "save_widget";
+        }
+        $fn($this);
+    }    
+}
+
+function save_widget($widget)
+{
+    $widget->content = get_input('content');
+    $widget->save();
+}
+
+function save_widget_home($widget)
+{
+    $widget->content = get_input('content');
+    $org = $widget->getContainerEntity();    
+    $org->setSectors(get_input_array('sector'));
+    $org->sector_other = get_input('sector_other');
+    $org->save();
+    $widget->save();
+}
+
+function save_widget_map($widget)
+{
+    $org = $widget->getContainerEntity();
+    $org->latitude = get_input('org_lat');
+    $org->longitude = get_input('org_lng');    
+    $org->save();
+    
+    $widget->zoom = get_input('map_zoom');    
+    $widget->save();
+}
+
+function save_widget_contact($widget)
+{
+    $org = $widget->getContainerEntity();
+    $widget->public_email = get_input('public_email');
+    $org->phone_number = get_input('phone_number');    
+    $org->contact_name = get_input('contact_name');    
+    $org->contact_title = get_input('contact_title');    
+    $org->save();
+    $widget->save();
 }
 
 class NewsUpdate extends ElggObject

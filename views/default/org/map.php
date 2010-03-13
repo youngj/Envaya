@@ -64,6 +64,7 @@
   {
       document.getElementById("orgLat").value = $ll.lat();
       document.getElementById("orgLng").value = $ll.lng();
+      document.getElementById("mapZoom").value= map.getZoom();
   }
   
   function placeMarker($ll)
@@ -76,12 +77,11 @@
           GEvent.addListener(marker, "dragend", function(latlng) {
             setSavedLL(latlng);
             map.setCenter(latlng);
-            });
+        });
       
           map.addOverlay(marker);
           setSavedLL($ll);
           document.getElementById("pinDragInstr").style.display = "block";
-          document.getElementById("saveMapForm").style.display = "block";
       <?php
       }
       else {
@@ -212,14 +212,9 @@
 <?php 
     if ($editPinMode) {
 ?>
-        <form id="saveMapForm" style="display:none;" action="<?php echo $vars['url']; ?>action/org/editMap" enctype="multipart/form-data" method="post">
-            <?php echo elgg_view('input/securitytoken'); ?>
-            <input type="hidden" name="org_guid" value="<?php echo $vars['org']->guid; ?>" />
-            <input type="hidden" id="orgLat" name="org_lat" value="" />
-            <input type="hidden" id="orgLng" name="org_lng" value="" />
-            <input type="submit" class="submit_button" value="<?php echo elgg_echo("org:saveMapEdit"); ?>" />
-        </form>
-
+    <input type="hidden" id="orgLat" name="org_lat" value="" />
+    <input type="hidden" id="orgLng" name="org_lng" value="" />
+    <input type="hidden" id="mapZoom" name="map_zoom" value="" />
 <?php
 }
 ?>

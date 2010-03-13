@@ -48,7 +48,17 @@
             return parent::delete() && $this->deleteTableAttributes(static::$table_name);
         }
         
-        static function getObjectsByCondition($where, $args, $order_by, $limit, $offset, $count)
+        static function getByCondition($where, $args)
+        {
+            $objs = static::filterByCondition($where, $args, '', 1, 0, false);
+            if (!empty($objs))
+            {
+                return $objs[0];
+            }
+            return null;
+        }                      
+        
+        static function filterByCondition($where, $args, $order_by, $limit, $offset, $count)
         {
             $where[] = "type='object'";
 

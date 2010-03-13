@@ -5,7 +5,7 @@
 
     <div id='content'>
         <?php            
-            $submenu = get_submenu(); 
+            $submenu = get_submenu_group('a'); 
             if (!empty($submenu))
             {
                 echo "<div id='sidebar_container'>$submenu</div>";

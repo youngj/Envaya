@@ -114,6 +114,16 @@ CREATE TABLE `news_updates` (
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `widgets` (
+  `guid` bigint(20) unsigned  NOT NULL,
+  
+  `widget_name` varchar(32) NOT NULL,
+  `content` text NOT NULL,
+  `data_types` int NOT NULL,
+  
+  PRIMARY KEY  (`guid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 -- Extra information relating to "users"
 CREATE TABLE `users_entity` (
   `guid` bigint(20) unsigned  NOT NULL,

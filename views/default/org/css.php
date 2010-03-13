@@ -41,7 +41,7 @@
     display:inline;
 }
 
-#topbarLinks a, form
+.topbarLinks a, form
 {
     padding-left: 10px;
     padding-right: 10px;
@@ -155,6 +155,7 @@
 .section_header
 {
     position:relative;
+    clear:both;
     background:#e6e6e6 url("<?php echo $graphicsDir; ?>/sectionheader.gif") no-repeat left top;  
     height:21px;
     padding:10px 15px;
@@ -970,4 +971,9 @@ span.timestamp {
 {
     color:green;
     white-space:nowrap;
+}
+
+.widget_disabled
+{
+    color:gray;
 }

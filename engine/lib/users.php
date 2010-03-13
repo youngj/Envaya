@@ -285,7 +285,7 @@
             $where[] = "container_guid=?";
             $args[] = $this->guid;
         
-            return NewsUpdate::getObjectsByCondition($where, $args, "time_created desc", $limit, $offset, $count);
+            return NewsUpdate::filterByCondition($where, $args, "time_created desc", $limit, $offset, $count);
         }
         
         function listNewsUpdates($limit = 10, $pagination = true) 
@@ -965,39 +965,39 @@
 	function validate_username($username)
 	{
 		global $CONFIG;
-		
-		// Basic, check length
-		if (!isset($CONFIG->minusername)) {
-			$CONFIG->minusername = 4;
-		}
-		
-		if (strlen($username) < $CONFIG->minusername)
+				
+		if (strlen($username) < 3)
+        {
 			throw new RegistrationException(elgg_echo('registration:usernametooshort'));
+        }    
 		
-		// Blacklist for bad characters (partially nicked from mediawiki)
-		
-		$blacklist = '/[' .
-			'\x{0080}-\x{009f}' . # iso-8859-1 control chars
-			'\x{00a0}' .          # non-breaking space
-			'\x{2000}-\x{200f}' . # various whitespace
-			'\x{2028}-\x{202f}' . # breaks and control chars
-			'\x{3000}' .          # ideographic space
-			'\x{e000}-\x{f8ff}' . # private use
-			']/u';
-		
-		if (
-			preg_match($blacklist, $username) 
-		)
+		if (preg_match('/[^a-zA-Z0-9\-\_]/', $username))
+        {
 			throw new RegistrationException(elgg_echo('registration:invalidchars'));
-			
-		// Belts and braces TODO: Tidy into main unicode
-		$blacklist2 = '/\\"\'*& ?#%^(){}[]~?<>;|¬`@-+=';
-		for ($n=0; $n < strlen($blacklist2); $n++)
-			if (strpos($username, $blacklist2[$n])!==false)
-				throw new RegistrationException(elgg_echo('registration:invalidchars'));
-		 
-		$result = true;
-		return trigger_plugin_hook('registeruser:validate:username', 'all', array('username' => $username), $result);
+        }
+        
+        $lower = strtolower($username);
+        
+        $badUsernames = array(
+            'pg', 
+            'org', 
+            'page',
+            'action',
+            'account',
+            'envaya',
+            'mod',
+            'search',
+            'admin',
+            'dashboard',
+            'engine'
+        );    
+        
+        if (in_array($lower, $badUsernames) || $username[0] == "_")
+        {
+            throw new RegistrationException(elgg_echo('registration:usernamenotvalid'));
+        }
+        
+        return true;
 	}
 	
 	/**
@@ -1011,8 +1011,7 @@
 		if (strlen($password)<6) 
             throw new RegistrationException(elgg_echo('registration:passwordtooshort'));
 			
-		$result = true;
-		return trigger_plugin_hook('registeruser:validate:password', 'all', array('password' => $password), $result);
+		return true;
 	}
 	
 	/**
@@ -1027,8 +1026,7 @@
 		if (!is_email_address($address)) 
             throw new RegistrationException(elgg_echo('registration:notemail'));
 				
-		$result = true;
-		return trigger_plugin_hook('registeruser:validate:email', 'all', array('email' => $address), $result);
+		return true;
 	}
 	
 	/**

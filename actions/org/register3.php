@@ -6,9 +6,13 @@
     try 
     {
         $org = get_loggedin_user();
-        $org->mission = get_input('mission');
+        
+        $homeWidget = $org->getWidgetByName('home');
+        $homeWidget->content = get_input('mission');
+        $homeWidget->save();        
+        
         $org->language = get_input('content_language');
-        $org->email_public = get_input('email_public');
+                
         $org->setSectors(get_input_array('sector'));
         $org->city = get_input('city');
         $org->region = get_input('region');
@@ -19,6 +23,9 @@
         if ($latlong)
         {
             $org->setLatLong($latlong['lat'], $latlong['long']);
+            
+            $mapWidget = $org->getWidgetByName('map');
+            $mapWidget->save();
         }            
         
         $org->setup_state = 5;

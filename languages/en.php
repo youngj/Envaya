@@ -13,7 +13,7 @@
         'home:about_us' => 'About us',
         
         'browse:title' => 'Browse organizations',
-        'browse:instructions' => "Each icon on the map below is a community-based organization. Hover over an icon to see its name, and click to view its profile.",
+        'browse:instructions' => "Each icon on the map below is an organization using Envaya. Hover over an icon to see its name, and click to view its profile.",
         'browse:map' => 'Map',
         'browse:list' => 'List',
         
@@ -108,9 +108,6 @@
         'create:next' => 'Click the button below to create your account.',        
         'create:next:button' => 'Create account',
         
-        'create:bad_email' => 'The email address you provided does not appear to be valid.',
-        'create:bad_username' => 'The username you provided is not valid. Please choose another.',
-        'create:bad_password' => 'The password you provided is not valid. Please choose another.',
         'create:no_name' => "Please enter your organization's name.",
         'create:username_exists' => 'Somebody else has already registered that username. Please choose another.',
         'create:passwords_differ' => 'The two passwords you entered did not match. Please try entering them again.',
@@ -125,8 +122,6 @@
         'setup:language' => "What language will you use for the written content on your website (such as the mission statement above)?",
         'setup:language:help' => "Envaya will allow people who cannot read that language to view a translated version in their own language.",
 
-        'setup:public_email' => "Do you want your email address, %s, publicly displayed on your homepage?",
-        
         'setup:location' => "Where is your organization located?",
         'setup:city' => 'City or Town:',
         'setup:region' => 'Region:',
@@ -140,7 +135,40 @@
         
         'setup:ok' => "Your homepage was created successfully.",        
                 
+        'item:object:widget' => "Widgets",                
+        
+        'widget:home' => "Home Page",
+        'widget:map' => "Map",
+        'widget:history' => "History",
+        
+        'widget:contact' => "Contact Info",
+        
+        'widget:contact:instructions' => "This page lets your website visitors contact you directly. Note that if you don't want certain information to be publicly available on the Internet, just leave that field blank.",
+        
+        'widget:contact:public_email' => "Do you want your email address, %s, publicly displayed on this page?",
+        'widget:contact:email' => "Email address:",
+        
+        'widget:contact:phone_number:edit' => "What phone number should people use to contact you?",
+        'widget:contact:phone_number' => "Phone number:",
+
+        'widget:contact:name:edit' => "Who is the primary contact person in your organization?",
+        'widget:contact:name' => "Contact name:",
+
+        'widget:contact:title:edit' => "What is that person's job title?",
+        'widget:contact:title' => "Contact title:",
+        
+        'widget:team' => "Team",
+        
+        'widget:edit' => "Edit Page",
+        'widget:edittitle' => "Edit %s",        
+        'widget:save' => "Save changes",
+        'widgets:save:success' => "Page saved successfully.",
+        
+        'widgets:edit' => 'Edit Pages',        
+                
         'about:title' => 'About us',
+        
+        'org:yours' => 'Your Site',
         
             'welcome_user' => "Welcome, %s!",            
             'browse_map' => 'Browse map',
@@ -148,7 +176,7 @@
             'actions' => 'Actions',
             'org:list_all' => "List all organizations",
             'org:phone' => 'Phone number',
-            'org:yours' => 'Profile',
+            
             'org:noupdates' => "This organization has not yet written any news updates.",
             'org:password' => 'Password',
             'org:password2' => 'Password (again)',
@@ -156,7 +184,7 @@
             'org:description' => 'About',
             'org:view' => 'View profile',
             'org:edit' => 'Edit profile',
-            'org:updates' => 'Updates',
+            'org:updates' => 'News',
             'org:mobilesettings' => "Mobile settings",
             'org:postemail' => 'Posting Email',
             'org:changeemail' => 'Change',            
@@ -210,7 +238,7 @@
             'org:searchnoresults' => "No results found!",
             
             'blog:addpost' => "Add update",
-            'blog:editpost' => "Edit",
+            'blog:editpost' => "Edit Post",
 
             'blog:strapline' => "%s",
 
@@ -234,7 +262,7 @@
             
             'org:saveMapEdit' => "Save Map",
             'org:mapDropPin' => "Drop map pin",
-            'org:mapPinDragInstr' => "Drag and drop the red map pin to your organization's location",
+            'org:mapPinDragInstr' => "Drag and drop the red map pin below to your organization's location.",
             'org:editmap' => "Edit Map",
             'org:mapSaved' => "Map Saved!",
             'org:mapSaveError' => "Error: could not save your map edits.",
@@ -426,54 +454,7 @@
 			'password' => "Password",
 			'passwordagain' => "Password (again for verification)",
 			'admin_option' => "Make this user an admin?",
-
-		/**
-		 * Access
-		 */
-
-			'PRIVATE' => "Private",
-			'LOGGED_IN' => "Logged in users",
-			'PUBLIC' => "Public",
-			'access:friends:label' => "Friends",
-			'access' => "Access",
-
-		/**
-		 * Dashboard and widgets
-		 */
-
-			'dashboard' => "Dashboard",
-            'dashboard:configure' => "Edit page",
-			'dashboard:nowidgets' => "Your dashboard is your gateway into the site. Click 'Edit page' to add widgets to keep track of content and your life within the system.",
-
-			'widgets:add' => 'Add widgets to your page',
-			'widgets:add:description' => "Choose the features you want to add to your page by dragging them from the <b>Widget gallery</b> on the right, to any of the three widget areas below, and position them where you would like them to appear.
-
-To remove a widget drag it back to the <b>Widget gallery</b>.",
-			'widgets:position:fixed' => '(Fixed position on page)',
-
-			'widgets' => "Widgets",
-			'widget' => "Widget",
-			'item:object:widget' => "Widgets",
-			'layout:customise' => "Customise layout",
-			'widgets:gallery' => "Widget gallery",
-			'widgets:leftcolumn' => "Left widgets",
-			'widgets:fixed' => "Fixed position",
-			'widgets:middlecolumn' => "Middle widgets",
-			'widgets:rightcolumn' => "Right widgets",
-			'widgets:profilebox' => "Profile box",
-			'widgets:panel:save:success' => "Your widgets were successfully saved.",
-			'widgets:panel:save:failure' => "There was a problem saving your widgets. Please try again.",
-			'widgets:save:success' => "The widget was successfully saved.",
-			'widgets:save:failure' => "We could not save your widget. Please try again.",
-			'widgets:handlernotfound' => 'This widget is either broken or has been disabled by the site administrator.',
-
-		/**
-		 * Groups
-		 */
-
-			'group' => "Group",
-			'item:group' => "Groups",
-
+			
 		/**
 		 * Profile
 		 */
@@ -695,13 +676,13 @@ To remove a widget drag it back to the <b>Widget gallery</b>.",
 
 			'registration:notemail' => 'The email address you provided does not appear to be a valid email address.',
 			'registration:userexists' => 'That username already exists',
-			'registration:usernametooshort' => 'Your username must be a minimum of 4 characters long.',
+			'registration:usernametooshort' => 'Your username must be a minimum of 3 characters long.',
 			'registration:passwordtooshort' => 'The password must be a minimum of 6 characters long.',
 			'registration:dupeemail' => 'This email address has already been registered.',
 			'registration:invalidchars' => 'Sorry, your username contains invalid characters.',
-			'registration:emailnotvalid' => 'Sorry, the email address you entered is invalid on this system',
-			'registration:passwordnotvalid' => 'Sorry, the password you entered is invalid on this system',
-			'registration:usernamenotvalid' => 'Sorry, the username you entered is invalid on this system',
+			'registration:emailnotvalid' => 'Sorry, the email address you entered appears to be invalid.',
+			'registration:passwordnotvalid' => 'Sorry, the password you entered is invalid. Please choose another.',
+			'registration:usernamenotvalid' => 'Sorry, the username you entered is invalid. Please choose another.',
 
 			'adduser' => "Add User",
 			'adduser:ok' => "You have successfully added a new user.",

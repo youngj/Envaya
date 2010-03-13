@@ -6,7 +6,7 @@
         <img src="_graphics/logo.gif" alt="Envaya" width="170" height="40">
     </a>
 </td>
-<td id='topbarLinks'>
+<td class='topbarLinks'>
 
 <?php
      if (isloggedin() && get_loggedin_user()->isSetupComplete()) {
@@ -14,7 +14,6 @@
 
         <a href="<?php echo get_loggedin_user()->getURL() ?>" class='pagelinks'><?php echo elgg_echo('org:yours'); ?></a>
 
-        <a href="pg/settings/" class="usersettings"><?php echo elgg_echo('settings'); ?></a>
 
         <?php
 
@@ -28,15 +27,28 @@
         <?php
 
                 }
+        
+        echo get_submenu_group('b', 'canvas_header/topbar_submenu', 'canvas_header/topbar_submenu_group');
 
         ?>
+
 
 <?php
     }
 ?>
+
+
+</td>
+<td class='topbarLinks' style='text-align:right'>
+
     <?php    
         if (isloggedin())
         {
+            if (get_loggedin_user()->isSetupComplete())
+            {
+                echo '<a href="pg/settings/" class="usersettings">'.elgg_echo('settings').'</a>';
+            }
+        
             echo "<a href='action/logout'>".elgg_echo("logout")."</a>";
         }
         else
@@ -44,12 +56,9 @@
             echo "<a href='pg/login'>".elgg_echo("login")."</a>";
         }        
     ?>
-
-
-</td>
-<td style='text-align:right'>
-
-    <?php    
+    
+    <?php            
+    
         echo elgg_view("page_elements/select_language"); 
     ?>
 

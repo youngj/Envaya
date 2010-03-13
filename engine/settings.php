@@ -62,7 +62,7 @@
     $CONFIG->subtypes = array(
         1 => array("object", "file", "ElggFile"),
         2 => array("object", "plugin", "ElggPlugin"),
-        3 => array("object", "widget", "ElggWidget"),
+        3 => array("object", "widget", "Widget"),
         4 => array('user', 'organization', "Organization"),
         5 => array('object', 'translation', 'Translation'),
         7 => array('object', 'blog', 'NewsUpdate'),        

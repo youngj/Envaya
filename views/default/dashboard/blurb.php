@@ -17,7 +17,16 @@
         echo elgg_view('input/form', 
             array('action' => "{$vars['url']}action/news/add", 'body' => $form_body, 'internalid' => 'blogPostForm'));
             
-        echo elgg_view_layout('section', elgg_echo("actions"), "<a href='".$user->getURL()."'>".elgg_echo("org:edit")."</a>");    
+        $widgets = $user->getAvailableWidgets();
+            
+        $widgetList = array();
+        foreach ($widgets as $widget)
+        {
+            $class = (!$widget->guid) ? 'class="widget_disabled"' : ''; // TODO: & enabled
+            $widgetList[] .= "<a $class href='{$widget->getURL()}/edit'>".elgg_echo("widget:{$widget->widget_name}")."</a>";
+        }
+            
+        echo elgg_view_layout('section', elgg_echo("widgets:edit"), implode('<br>', $widgetList));    
     }
     else
     {

@@ -26,9 +26,21 @@
         {
             system_message(elgg_echo('org:waitingapproval'));            
         }
-                
-        $area2 = elgg_view('org/org', array('entity' => $org, 'user' => $_SESSION['user'], 'full' => $org->userCanSee()));                
-        $body = elgg_view_layout('one_column', org_title($org, $org->getLocationText()), $area2);
+        
+        if (!$widget)
+        {
+            $widget = $org->getWidgetByName('home');
+            $subtitle = $org->getLocationText();
+        }
+        else
+        {
+            $subtitle = elgg_echo("widget:{$widget->widget_name}");
+        }
+
+        add_submenu_item(elgg_echo("widget:edit"), "{$widget->getUrl()}/edit", 'b');                
+
+        $body = elgg_view_layout('one_column', org_title($org, $subtitle), $widget->renderView());
+
         
 	} else {
         forward("");
