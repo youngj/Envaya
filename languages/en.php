@@ -274,6 +274,8 @@
             'blog:view_all' => "View all news updates",
             'blog:addpost' => "Add news update",
             'blog:editpost' => "Edit News",
+            'blog:delete' => "Delete update",
+            'blog:delete:success' => "News update deleted successfully.",
             'blog:canceledit' => "View News",
             'blog:more' => "More...",
             
@@ -315,6 +317,19 @@
             'trans:invalid_id' => "Invalid text identifier",
             'trans:submit' => "Submit translation",
             'trans:posted' => "Translation submitted succesfully.",
+
+            "trans:partial_trans_from_to" => 'Portions of this page have been translated from %s to %s.',
+            "trans:view_rest_automatic" => 'Translate rest using Google Translate',
+            "trans:trans_from_to" => 'This page has been translated from %s to %s.',
+            "trans:view_original_in" => 'View original in %s',
+            "trans:partial_automatic_trans_from_to" => 'Parts of this page have been automatically translated using Google Translate.',
+            "trans:automatic_trans_from_to" => "This page been automatically translated from %s to %s by Google Translate.", 
+            "trans:original_in" => "This page is displayed in its original language, %s.",
+            "trans:view_in" => "View in %s",
+            "trans:view_automatic_in" => "View in %s using Google Translate.",
+            'trans:stale_trans_from_to' => "This page has been translated from %s, but the %s version is out of date.",
+            'trans:view_stale_automatic' => "View using Google Translate.",
+
     
 
 		/**

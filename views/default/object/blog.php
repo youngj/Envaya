@@ -122,7 +122,10 @@ for (var i = 0; i < blogDates.length; i++)
         
         echo view_translated($entity, 'content'); 
 
-        echo "<a href='{$entity->getURL()}'>".elgg_echo('blog:more')."</a>";
+        if (!$full)
+        {
+            echo "<a href='{$entity->getURL()}'>".elgg_echo('blog:more')."</a>";
+        }    
 
     ?>      
       

@@ -42,8 +42,22 @@
 
 
 <?php echo elgg_view('input/submit', array('internalname' => 'submit', 'value' => elgg_echo('publish'))); ?>
+
+<?php 
+if ($blog)
+{
+    echo elgg_view('input/submit', array(
+            'internalname' => "delete", 
+            'internalid' => 'widget_delete', 
+            'js' => "onclick='return confirm(".json_encode(elgg_echo('question:areyousure')).")'",
+            'value' => elgg_echo('blog:delete')
+        )); 
+}        
+?>
+
 <?php
     $form_body = ob_get_clean();
+
 
     echo elgg_view('input/form', array('action' => "{$vars['url']}action/$action", 'enctype' => "multipart/form-data", 'body' => $form_body, 'internalid' => 'blogPostForm'));
 ?>

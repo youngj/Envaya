@@ -809,6 +809,7 @@ span.timestamp {
 {
     display:block;
     float:right;
+    font-size:9px;
 }
 
 .smallBlogImageLink
@@ -1059,4 +1060,18 @@ span.timestamp {
 {
     display:block;
     color:#000066;
+}
+
+#translate_bar
+{
+    padding: 5px 2px 5px 36px;
+    height:32px;
+    background:#fdfdfd url(<?php echo $graphicsDir; ?>/world.gif) no-repeat 5px 8px;
+    border-bottom:1px solid #ccc;
+    margin-bottom:2px;
+    font-size:11px;
+}
+#translate_bar a
+{
+    white-space:nowrap;
 }

@@ -7,16 +7,25 @@
     $body = get_input('blogbody');
     $blog = get_entity($guid);    
     
+    $hasImage = isset($_FILES['image']) && $_FILES['image']['size'];
+    
     if ($blog->getSubtype() != T_blog || !$blog->canEdit()) 
     {
         register_error(elgg_echo("org:cantedit"));
         forward_to_referrer();
     }
-    else if (empty($body)) 
+    else if (empty($body) && !$hasImage && !$blog->hasImage()) 
     {
-        register_error(elgg_echo("org:cantedit"));
+        register_error(elgg_echo("blog:blank"));
         forward_to_referrer();
     }    
+    else if (get_input('delete'))
+    {
+        $org = $blog->getContainerEntity();
+        $blog->disable('', $recursive=false);     
+        system_message(elgg_echo('blog:delete:success'));            
+        forward($org->getURL()."/news");
+    }        
     else 
     {
         $blog->access_id = ACCESS_PUBLIC;
@@ -28,7 +37,7 @@
             forward();
         }
         
-        if (isset($_FILES['image']) && $_FILES['image']['size'])
+        if ($hasImage)
         {   
             if (substr_count($_FILES['image']['type'],'image/'))
             {

@@ -237,6 +237,11 @@ class Translation extends ElggObject
     {
         return $this->getRootContainerEntity()->language . ":" . sha1($this->getOriginalText());        
     }    
+    
+    public function isStale()
+    {
+        return $this->calculateHash() != $this->hash;
+    }
 }
 
 class Widget extends ElggObject
@@ -295,7 +300,7 @@ class Widget extends ElggObject
     
     public function hasImage()
     {
-        return ($this->data_types & DataTypes::$Image) != 0;
+        return ($this->data_types & DataType::Image) != 0;
     }   
     
     public function getImageURL($size = 'large')
@@ -307,11 +312,11 @@ class Widget extends ElggObject
     {
         if (!$imageData)
         {
-            $this->data_types &= ~DataTypes::$Image;     
+            $this->data_types &= ~DataType::Image;     
         }
         else
         {
-            $this->data_types |= DataTypes::$Image; 
+            $this->data_types |= DataType::Image; 
 
             $prefix = "widget/{$this->guid}";
 
@@ -418,9 +423,9 @@ function save_widget_contact($widget)
     $widget->save();
 }
 
-class DataTypes
+class DataType
 {
-    static $Image = 2;
+    const Image = 2;
 }
 
 class NewsUpdate extends ElggObject
@@ -447,18 +452,18 @@ class NewsUpdate extends ElggObject
     
     public function hasImage()
     {
-        return ($this->data_types & DataTypes::$Image) != 0;
+        return ($this->data_types & DataType::Image) != 0;
     }   
 
     public function setImage($imageData)
     {
         if (!$imageData)
         {
-            $this->data_types &= ~DataTypes::$Image;     
+            $this->data_types &= ~DataType::Image;     
         }
         else
         {        
-            $this->data_types |= DataTypes::$Image; 
+            $this->data_types |= DataType::Image; 
 
             $prefix = "blog/".$this->guid;
 
@@ -497,6 +502,13 @@ class NewsUpdate extends ElggObject
     }
 }
 
+class TranslateMode
+{
+    const None = 1;
+    const ManualOnly = 2;
+    const All = 3;    
+}
+
 function view_translated($obj, $field)
 {        
     $text = trim($obj->$field);
@@ -516,29 +528,45 @@ function view_translated($obj, $field)
 
     if ($origLang != $viewLang)
     {
-        $translate = true || get_input("translate");
+        global $CONFIG;
         
-        if ($translate)
-        {            
-            $translation = lookup_translation($obj, $field, $origLang, $viewLang);            
+        if (!isset($CONFIG->translations_available))
+        {
+            $CONFIG->translations_available = array('origlang' => $origLang);
+        }
+
+        $translateMode = get_translate_mode();
+        $translation = lookup_translation($obj, $field, $origLang, $viewLang, $translateMode);            
+        
+        if ($translation && $translation->owner_guid)
+        {
+            $CONFIG->translations_available[TranslateMode::ManualOnly] = true;            
             
-            return elgg_view("translation/wrapper", array(
-                'translation' => $translation, 
-                'entity' => $obj, 
-                'property' => $field, 
-            ));
+            if ($translation->isStale())
+            {
+                $CONFIG->translations_available['stale'] = true;
+            }
+            
+            $viewTranslation = ($translateMode > TranslateMode::None);
         }
         else
         {
-            return elgg_view("output/longtext",array('value' => $text));
+            $CONFIG->translations_available[TranslateMode::All] = true;
+            $viewTranslation = ($translateMode == TranslateMode::All);
         }
+
+        return elgg_view("translation/wrapper", array(
+            'translation' => $viewTranslation ? $translation : null, 
+            'entity' => $obj, 
+            'property' => $field, 
+        ));
     }   
 
     return elgg_view("output/longtext",array('value' => $text));        
 }
 
 
-function lookup_translation($obj, $prop, $origLang, $viewLang)
+function lookup_translation($obj, $prop, $origLang, $viewLang, $translateMode = TranslateMode::ManualOnly)
 {
     $where = array();
     $args = array();
@@ -555,24 +583,41 @@ function lookup_translation($obj, $prop, $origLang, $viewLang)
     $where[] = "container_guid=?";
     $args[] = $obj->guid;
 
-    $entities = get_entities_by_condition('translations', $where, $args, '', 1);                   
+    $entities = get_entities_by_condition('translations', $where, $args, '', 1);          
+    
+    $doAutoTranslate = ($translateMode == TranslateMode::All);
     
     if (!empty($entities)) 
     {        
         $trans = $entities[0];
-        if ($trans->calculateHash() != $trans->hash && !$trans->owner_guid)
-        {            
+        
+        if ($doAutoTranslate && $trans->isStale())
+        {
             $text = get_auto_translation($obj->$prop, $origLang, $viewLang);
-
             if ($text != null)
             {
-                $trans->value = $text;
-                $trans->save();
-            }
-        }
+                if (!$trans->owner_guid) // previous version was from google
+                {            
+                    $trans->value = $text;
+                    $trans->save();
+                }
+                else // previous version was from human
+                {
+                    // TODO : cache this
+                    $fakeTrans = new Translation();    
+                    $fakeTrans->owner_guid = 0;
+                    $fakeTrans->container_guid = $obj->guid;
+                    $fakeTrans->property = $prop;
+                    $fakeTrans->lang = $viewLang;
+                    $fakeTrans->value = $text;                               
+                    return $fakeTrans;
+                }        
+            }    
+        }    
+        
         return $trans;
     }
-    else
+    else if ($doAutoTranslate)
     {   
         $text = get_auto_translation($obj->$prop, $origLang, $viewLang);
         
@@ -589,6 +634,7 @@ function lookup_translation($obj, $prop, $origLang, $viewLang)
         }    
         return null;
     }
+    return null;
 }
 
 function get_auto_translation($text, $origLang, $viewLang)
@@ -836,6 +882,42 @@ function get_static_map_url($lat, $long, $zoom, $width, $height)
     global $CONFIG;
     $apiKey = $CONFIG->google_api_key;
     return "http://maps.google.com/maps/api/staticmap?center=$lat,$long&zoom=$zoom&size={$width}x$height&maptype=roadmap&markers=$lat,$long&sensor=false&key=$apiKey";
+}
+
+function get_translate_mode()
+{
+    return ((int)get_input("trans")) ?: TranslateMode::ManualOnly;
+}
+
+function get_original_language()
+{
+    global $CONFIG;
+    if (isset($CONFIG->translations_available))
+    {
+        return $CONFIG->translations_available['origlang'];
+    }
+    
+    return '';
+}
+
+function page_has_stale_translation()
+{
+    global $CONFIG;
+    return (isset($CONFIG->translations_available) && isset($CONFIG->translations_available['stale']));    
+}
+
+function page_is_translatable($mode=null)
+{
+    global $CONFIG;
+    
+    if (isset($CONFIG->translations_available))
+    {
+        if ($mode == null || isset($CONFIG->translations_available[$mode]))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 register_elgg_event_handler('init','system','envaya_init');
