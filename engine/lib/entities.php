@@ -760,26 +760,23 @@
 		{
             if (trigger_elgg_event('disable',$this->type,$this)) 
             {   
-                if ($this->canEdit()) 
-                {               
-                    if ($reason)
+                if ($reason)
+                {
+                    create_metadata($this->guid, 'disable_reason', $reason,'', 0, ACCESS_PUBLIC);
+                }    
+
+                if ($recursive)
+                {
+                    $sub_entities = $this->getSubEntities();
+
+                    if ($sub_entities) 
                     {
-                        create_metadata($this->guid, 'disable_reason', $reason,'', 0, ACCESS_PUBLIC);
-                    }    
+                        foreach ($sub_entities as $e)
+                            $e->disable($reason);
+                    }                           
+                }
 
-                    if ($recursive)
-                    {
-                        $sub_entities = $this->getSubEntities();
-
-                        if ($sub_entities) 
-                        {
-                            foreach ($sub_entities as $e)
-                                $e->disable($reason);
-                        }                           
-                    }
-
-                    return update_data("UPDATE entities set enabled='no' where guid=?", array($this->guid));
-                } 
+                return update_data("UPDATE entities set enabled='no' where guid=?", array($this->guid));
             }
             return false;
 		}
@@ -791,12 +788,9 @@
 		{
             if (trigger_elgg_event('enable',$this->type,$this)) 
             {
-                if ($this->canEdit()) 
-                {                    
-                    $result = update_data("UPDATE entities set enabled='yes' where guid=?", array($this->guid));
-                    $this->clearMetaData('disable_reason');                    
-                    return $result;
-                }
+                $result = update_data("UPDATE entities set enabled='yes' where guid=?", array($this->guid));
+                $this->clearMetaData('disable_reason');                    
+                return $result;
             }
 		}
 		

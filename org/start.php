@@ -111,13 +111,22 @@ function org_profile_page_handler($page)
         if ($page[1])
         {
             $widget = $org->getWidgetByName($page[1]);
-            if ($page[2] == 'edit')
+            if (isset($page[2]))
             {
-                set_context("widget");
-                include(dirname(__FILE__) . "/editwidget.php");                    
-                return;
+                switch ($page[2])
+                {
+                    case 'edit':
+                        set_context("widget");
+                        include(dirname(__FILE__) . "/editwidget.php");                    
+                        return;
+                    case 'image':    
+                        set_input('size', $page[3]);
+                        include(dirname(__FILE__) . "/widgetImage.php");                    
+                        return;
+                }       
             }
-            else if ($widget->guid)
+            
+            if ($widget->guid)
             {            
                 include(dirname(__FILE__) . "/orgprofile.php");
                 return;
@@ -143,12 +152,16 @@ function envaya_pagesetup()
         if (!empty($org))
         {
             $widgets = $org->getActiveWidgets();
+            
+            add_submenu_item(elgg_echo("org:home"), $org->getURL());
+            add_submenu_item(elgg_echo("org:news"), $org->getURL()."/news");
+            
             foreach ($widgets as $widget)
             {
                 if ($widget->widget_name != 'home')
                 {
                     add_submenu_item(elgg_echo("widget:{$widget->widget_name}"), $widget->getURL());
-                }    
+                }                    
             }     
             
             /*

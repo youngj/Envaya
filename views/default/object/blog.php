@@ -117,10 +117,12 @@ for (var i = 0; i < blogDates.length; i++)
         {
             $imageSize = ($full) ? 'large' : 'small';        
             $imgLink = ($full) ? $nextUrl : $url;
-            echo "<a class='{$imageSize}BlogImageLink' href='$imgLink'><img src='$url/image/$imageSize?{$entity->time_updated}' /></a>";            
+            echo "<a class='{$imageSize}BlogImageLink' href='$imgLink'><img src='{$entity->getImageURL($imageSize)}' /></a>";            
         }
         
         echo view_translated($entity, 'content'); 
+
+        echo "<a href='{$entity->getURL()}'>".elgg_echo('blog:more')."</a>";
 
     ?>      
       

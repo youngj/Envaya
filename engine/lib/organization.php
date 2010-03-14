@@ -150,7 +150,12 @@ class Organization extends ElggUser {
         $where[] = "widget_name=?";
         $args[] = $name;
     
+        $showHidden = access_get_show_hidden_status();
+        access_show_hidden_entities(true);
+    
         $widget = Widget::getByCondition($where, $args);
+        
+        $showHidden = access_show_hidden_entities($showHidden);
         
         if (!$widget)
         {
@@ -174,7 +179,7 @@ class Organization extends ElggUser {
     
     public function getAvailableWidgets()
     {
-        $allNames = array('home', 'map', 'history', 'contact', 'team');
+        $allNames = array('home', 'map', 'history', 'contact', 'team', 'programs', 'achievements', 'challenges');
     
         $activeWidgets = $this->getActiveWidgets();
         
@@ -245,12 +250,22 @@ class Widget extends ElggObject
     
     function renderView()
     {
-        return elgg_view("widgets/{$this->widget_name}_view", array('widget' => $this));
+        $res = elgg_view("widgets/{$this->widget_name}_view", array('widget' => $this));
+        if ($res)
+        {
+            return $res;
+        }    
+        return elgg_view("widgets/generic_view", array('widget' => $this));    
     }
     
     function renderEdit()
     {
-        return elgg_view("widgets/{$this->widget_name}_edit", array('widget' => $this));
+        $res = elgg_view("widgets/{$this->widget_name}_edit", array('widget' => $this));
+        if ($res)
+        {
+            return $res;
+        }    
+        return elgg_view("widgets/generic_edit", array('widget' => $this));
     } 
     
     function getURL()
@@ -268,12 +283,101 @@ class Widget extends ElggObject
         }
         $fn($this);
     }    
+
+    public function getImageFile($size = '')
+    {
+        $filehandler = new ElggFile();
+        $filehandler->owner_guid = $this->container_guid;
+        $filehandler->setFilename("widget/{$this->guid}$size.jpg");
+        return $filehandler;       
+    }
+    
+    public function hasImage()
+    {
+        return ($this->data_types & DataTypes::$Image) != 0;
+    }   
+    
+    public function getImageURL($size = 'large')
+    {
+        return "{$this->getUrl()}/image/{$size}?{$this->time_updated}";
+    }
+
+    public function setImage($imageData)
+    {
+        if (!$imageData)
+        {
+            $this->data_types &= ~DataTypes::$Image;     
+        }
+        else
+        {
+            $this->data_types |= DataTypes::$Image; 
+
+            $prefix = "widget/{$this->guid}";
+
+            $file = new ElggFile();
+            $file->owner_guid = $this->container_guid;
+            $file->container_guid = $this->guid;
+
+            $file->setFilename("{$prefix}.jpg");
+            $file->open("write");
+            $file->write($imageData);
+            $file->close();
+
+            $originalFileName = $file->getFilenameOnFilestore();
+
+            $thumbsmall = get_resized_image_from_existing_file($originalFileName,100,150, false);
+            if ($thumbsmall) 
+            {
+                $file->setFilename("{$prefix}small.jpg");
+                $file->open("write");
+                $file->write($thumbsmall);
+                $file->close();
+            }            
+
+            $thumbmed = get_resized_image_from_existing_file($originalFileName,200,300, false);
+            if ($thumbmed) 
+            {
+                $file->setFilename("{$prefix}medium.jpg");
+                $file->open("write");
+                $file->write($thumbmed);
+                $file->close();
+            }
+            
+            $thumblarge = get_resized_image_from_existing_file($originalFileName,450,450, false);
+            if ($thumblarge) 
+            {
+                $file->setFilename("{$prefix}large.jpg");
+                $file->open("write");
+                $file->write($thumblarge);
+                $file->close();
+            }
+            
+        }   
+        $this->save();
+    }    
 }
 
 function save_widget($widget)
 {
     $widget->content = get_input('content');
+    $widget->image_position = get_input('image_position');
     $widget->save();
+    
+    if (isset($_FILES['image']) && $_FILES['image']['size'])
+    {            
+        if (substr_count($_FILES['image']['type'],'image/'))
+        {    
+            $widget->setImage(get_uploaded_file('image'));        
+        }
+        else
+        {
+            register_error(elgg_echo('upload:invalid_image'));
+        }
+    }    
+    else if (get_input('deleteimage'))
+    {
+        $widget->setImage(null);
+    }
 }
 
 function save_widget_home($widget)
@@ -308,6 +412,11 @@ function save_widget_contact($widget)
     $widget->save();
 }
 
+class DataTypes
+{
+    static $Image = 2;
+}
+
 class NewsUpdate extends ElggObject
 {
     static $subtype_id = T_blog;
@@ -317,8 +426,6 @@ class NewsUpdate extends ElggObject
         'data_types' => 0,
     );        
     
-    static $IMAGE = 2;
-        
     public function getImageFile($size = '')
     {
         $filehandler = new ElggFile();
@@ -327,20 +434,25 @@ class NewsUpdate extends ElggObject
         return $filehandler;       
     }
     
+    public function getImageURL($size = '')
+    {
+        return "{$this->getURL()}/image/$size?{$this->time_updated}";
+    }    
+    
     public function hasImage()
     {
-        return ($this->data_types & static::$IMAGE) != 0;
+        return ($this->data_types & DataTypes::$Image) != 0;
     }   
 
     public function setImage($imageData)
     {
         if (!$imageData)
         {
-            $this->data_types &= ~static::$IMAGE;     
+            $this->data_types &= ~DataTypes::$Image;     
         }
         else
-        {
-            $this->data_types |= static::$IMAGE; 
+        {        
+            $this->data_types |= DataTypes::$Image; 
 
             $prefix = "blog/".$this->guid;
 

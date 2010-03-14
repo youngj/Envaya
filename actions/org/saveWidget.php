@@ -8,10 +8,29 @@
     if ($org && $org->canEdit())
     {
         $name = get_input('widget_name');
-        $widget = $org->getWidgetByName($name);
-        $widget->saveInput();
-        system_message(elgg_echo('widgets:save:success'));
-        forward($widget->getURL());
+        $widget = $org->getWidgetByName($name);        
+
+        if (get_input('delete'))
+        {
+            $widget->disable('', $recursive=false);     
+            
+            system_message(elgg_echo('widget:delete:success'));            
+            forward($org->getURL());
+        }
+        else
+        {        
+            $widget->saveInput();
+            
+            if (!$widget->isEnabled())
+            {
+                $widget->enable();
+            }            
+            
+            system_message(elgg_echo('widget:save:success'));
+            forward($widget->getURL());
+        }
+                
+        
     }
     register_error(elgg_echo("org:cantedit"));      
     forward();

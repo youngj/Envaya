@@ -2,7 +2,17 @@
 
 gatekeeper();
 
-$title = sprintf(elgg_echo("widget:edittitle"), elgg_echo("widget:{$widget->widget_name}"));
+$widgetTitle = elgg_echo("widget:{$widget->widget_name}");
+
+if ($widget->guid && $widget->isEnabled())
+{
+    $title = sprintf(elgg_echo("widget:edittitle"), $widgetTitle);
+}
+else
+{
+    $title = sprintf(elgg_echo("widget:edittitle:new"), $widgetTitle);
+}
+
 if ($org->canEdit())
 {
     $body = elgg_view_layout('one_column', 

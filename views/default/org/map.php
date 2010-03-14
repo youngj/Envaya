@@ -64,7 +64,12 @@
   {
       document.getElementById("orgLat").value = $ll.lat();
       document.getElementById("orgLng").value = $ll.lng();
-      document.getElementById("mapZoom").value= map.getZoom();
+      setSavedMapState();
+  }
+  
+  function setSavedMapState()
+  {
+      document.getElementById("mapZoom").value = map.getZoom();
   }
   
   function placeMarker($ll)
@@ -75,9 +80,13 @@
           var marker = new GMarker($ll, {draggable: true});
 
           GEvent.addListener(marker, "dragend", function(latlng) {
-            setSavedLL(latlng);
-            map.setCenter(latlng);
-        });
+                setSavedLL(latlng);
+                map.setCenter(latlng);
+            });
+            
+          GEvent.addListener(map, "zoomend", function() {
+                setSavedMapState();
+            });            
       
           map.addOverlay(marker);
           setSavedLL($ll);

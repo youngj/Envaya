@@ -140,6 +140,9 @@
         'widget:home' => "Home Page",
         'widget:map' => "Map",
         'widget:history' => "History",
+        'widget:programs' => "Programs",
+        'widget:achievements' => "Achievements",
+        'widget:challenges' => "Challenges",
         
         'widget:contact' => "Contact Info",
         
@@ -161,10 +164,37 @@
         
         'widget:edit' => "Edit Page",
         'widget:edittitle' => "Edit %s",        
+        'widget:edittitle:new' => "Add Page: %s",        
         'widget:save' => "Save changes",
-        'widgets:save:success' => "Page saved successfully.",
+        'widget:save:new' => "Create page",
+                
+        'widget:image:label' => "Image to display on this page:",
+        'widget:image:position' => "Where on your page do you want the image?",
+                
+        'widget:content:label' => "Write the text for your page below:",
+                
+        'widget:save:success' => "Page saved successfully.",
+        
+        'widget:delete' => "Remove page",
+        
+        'widget:delete:success' => "Page removed successfully.",
+        
+        'widget:delete:confirm' => "Are you sure you want to remove this page from your site?",        
         
         'widgets:edit' => 'Edit Pages',        
+                
+        'image:current' => "Current image:",
+        'image:new' => "New image:",                
+        'image:blank' => "Leave this blank to keep the current image.",
+        'image:optional' => "Leave blank if you don't want an image.",
+        'image:delete' => "Remove image?",                      
+                
+        'position:left' => 'Left',        
+        'position:top' => 'Top',
+        'position:right' => 'Right',
+        'position:bottom' => 'Bottom',
+                
+        'upload:invalid_image' => "The uploaded file did not appear to be a valid image.",                
                 
         'about:title' => 'About us',
         
@@ -172,7 +202,7 @@
         
             'welcome_user' => "Welcome, %s!",            
             'browse_map' => 'Browse map',
-            'update_status' => 'Update status',
+            'update_status' => 'Add news update',
             'actions' => 'Actions',
             'org:list_all' => "List all organizations",
             'org:phone' => 'Phone number',
@@ -182,9 +212,11 @@
             'org:password2' => 'Password (again)',
             'org:email' => 'Email address',
             'org:description' => 'About',
+            'org:home' => 'Home',
+            'org:news' => 'News',
+            'org:news:latest' => 'Latest News',
             'org:view' => 'View profile',
             'org:edit' => 'Edit profile',
-            'org:updates' => 'News',
             'org:mobilesettings' => "Mobile settings",
             'org:postemail' => 'Posting Email',
             'org:changeemail' => 'Change',            
@@ -237,19 +269,24 @@
 
             'org:searchnoresults' => "No results found!",
             
-            'blog:addpost' => "Add update",
-            'blog:editpost' => "Edit Post",
+            'blog:view_all' => "View all news updates",
+            'blog:addpost' => "Add news update",
+            'blog:editpost' => "Edit News",
+            'blog:more' => "More...",
+            
+            'blog:content:label' => "Write the text for your news update below:",
+            'blog:image:label' => "Image to display with this news update:",
 
             'blog:strapline' => "%s",
 
-            'blog:posted' => "Your status update was successfully posted.",
-            'blog:deleted' => "Your status update was successfully deleted.",
+            'blog:posted' => "Your news update was successfully posted.",
+            'blog:deleted' => "Your news update was successfully deleted.",
 
             'blog:error' => 'Something went wrong. Please try again.',
-            'blog:save:failure' => "Your status update could not be saved. Please try again.",
-            'blog:blank' => "Your status update was empty.",
-            'blog:notfound' => "Sorry; we could not find the specified status update.",
-            'blog:notdeleted' => "Sorry; we could not delete this status update.",
+            'blog:save:failure' => "Your news update could not be saved. Please try again.",
+            'blog:blank' => "Your news update was empty.",
+            'blog:notfound' => "Sorry; we could not find the specified news update.",
+            'blog:notdeleted' => "Sorry; we could not delete this news update.",
 
             'org:verify' => "Verify Organization",
             'org:verifyconfirm' => "Are you sure you want to verify this organization is legitimate?",

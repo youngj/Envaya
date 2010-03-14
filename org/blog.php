@@ -6,7 +6,7 @@
 
     $area2 = $org->listNewsUpdates(10, true);
 
-    $title = elgg_echo('org:updates');
+    $title = elgg_echo('org:news');
 
     $body = elgg_view_layout("one_column_padded", org_title($org, $title), $area2);
 

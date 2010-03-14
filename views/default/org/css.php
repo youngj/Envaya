@@ -977,3 +977,44 @@ span.timestamp {
 {
     color:gray;
 }
+
+#widget_delete
+{
+    float:right;
+    background-color:#990000;
+    border-color:#660000;
+}
+
+#widget_delete:hover
+{
+    background-color:#aa0000;
+}
+
+.optionLabelInline
+{
+    padding-right:10px;
+}
+
+.widget_image_top
+{
+    display:block;
+    margin:0px auto 6px auto;
+}
+
+.widget_image_bottom
+{
+    display:block;
+    margin:6px auto 0px auto;
+}
+
+.widget_image_left
+{
+    float:left;
+    margin:0px 6px 6px 0px;
+}
+
+.widget_image_right
+{
+    float:right;
+    margin:0px 0px 6px 6px;
+}

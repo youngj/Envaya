@@ -14,7 +14,7 @@
             
         $area2 = elgg_view_entity($blogpost, true);
 
-        $title = elgg_echo('org:updates');
+        $title = elgg_echo('org:news');
 
         $body = elgg_view_layout("one_column_padded", org_title($page_owner, $title), $area2);            
     } 

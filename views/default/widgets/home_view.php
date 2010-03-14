@@ -16,10 +16,10 @@
     }
     else
     {
-        $posts .= "<a class='float_right' href='".$org->getUrl()."/news'>View all updates</a>";
+        $posts .= "<a class='float_right' href='".$org->getUrl()."/news'>".elgg_echo('blog:view_all')."</a>";
     }
 
-    echo elgg_view_layout('section', elgg_echo("org:updates"), $posts);        
+    echo elgg_view_layout('section', elgg_echo("org:news:latest"), $posts);        
 
     $sectors = $org->getSectors();
 

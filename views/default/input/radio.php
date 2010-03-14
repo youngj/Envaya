@@ -22,6 +22,9 @@
 	if (!$class) $class = "input-radio";
     
     $vars['value'] = preserve_input($vars['internalname'], $vars['value']); 
+    
+    $br = $vars['inline'] ? '' : '<br />';
+    $class = $vars['inline'] ? ' optionLabelInline' : '';
 
     foreach($vars['options'] as $option => $label) {
         if (strtolower($option) != strtolower($vars['value'])) {
@@ -32,7 +35,7 @@
 
         if (isset($vars['internalid'])) $id = "id=\"{$vars['internalid']}\""; 
         if ($vars['disabled']) $disabled = ' disabled="yes" '; 
-        echo "<label class='optionLabel'><input type=\"radio\" $disabled {$vars['js']} name=\"{$vars['internalname']}\" $id value=\"".htmlentities($option, ENT_QUOTES, 'UTF-8')."\" {$selected} class=\"$class\" />{$label}</label><br />";
+        echo "<label class='optionLabel$class'><input type=\"radio\" $disabled {$vars['js']} name=\"{$vars['internalname']}\" $id value=\"".htmlentities($option, ENT_QUOTES, 'UTF-8')."\" {$selected} class=\"$class\" />{$label}</label>$br";
     }
 
 ?> 

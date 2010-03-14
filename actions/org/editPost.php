@@ -28,9 +28,20 @@
             forward();
         }
         
-        if ((isset($_FILES['image'])) && (substr_count($_FILES['image']['type'],'image/')))
-        {        
-            $blog->setImage(get_uploaded_file('image'));        
+        if (isset($_FILES['image']) && $_FILES['image']['size'])
+        {   
+            if (substr_count($_FILES['image']['type'],'image/'))
+            {
+                $blog->setImage(get_uploaded_file('image'));        
+            }   
+            else
+            {
+                register_error(elgg_echo('upload:invalid_image'));
+            }
+        }        
+        else if (get_input('deleteimage'))
+        {
+            $blog->setImage(null);
         }        
 
         system_message(elgg_echo("blog:posted"));
