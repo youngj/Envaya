@@ -3,6 +3,7 @@
     
     $deletename = $vars['deletename'];
     $deleteid = $vars['deleteid'];
+    $removable = isset($vars['removable']) ? $vars['removable'] : ($current != null);
     
     $imageInput = elgg_view("input/file", array(
         'internalname' => $vars['internalname'],
@@ -23,6 +24,7 @@
                     <?php echo $imageInput ?>
                         <div class='help'><?php echo elgg_echo('image:blank') ?></div>
             </div>                                    
+        <?php if ($removable) { ?>
             <div style='padding-top:10px'>
             <?php echo elgg_view('input/checkboxes', 
             array('internalname' => $deletename,
@@ -31,7 +33,7 @@
                 'js' => $vars['js']
             )) ?>
             </div>
-
+        <?php } ?>    
         </td>
     </tr>
     </table>    

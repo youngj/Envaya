@@ -7,7 +7,7 @@
     $body = get_input('blogbody');
     $blog = get_entity($guid);    
     
-    $hasImage = isset($_FILES['image']) && $_FILES['image']['size'];
+    $hasImage = has_uploaded_file('image');
     
     if ($blog->getSubtype() != T_blog || !$blog->canEdit()) 
     {
@@ -39,7 +39,7 @@
         
         if ($hasImage)
         {   
-            if (substr_count($_FILES['image']['type'],'image/'))
+            if (is_image_upload('image'))
             {
                 $blog->setImage(get_uploaded_file('image'));        
             }   
@@ -53,7 +53,7 @@
             $blog->setImage(null);
         }        
 
-        system_message(elgg_echo("blog:posted"));
+        system_message(elgg_echo("blog:updated"));
         forward($blog->getUrl());                    
     }
    

@@ -726,6 +726,17 @@
 		return false;
 		
 	}
+    
+    function has_uploaded_file($input_name)
+    {
+        return isset($_FILES[$input_name]) && $_FILES[$input_name]['size'];
+    }
+    
+    function is_image_upload($input_name)
+    {
+        return substr_count($_FILES[$input_name]['type'],'image/');
+    }
+    
 	
 	/**
 	 * Gets the jpeg contents of the resized version of an uploaded image 

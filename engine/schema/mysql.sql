@@ -146,6 +146,7 @@ CREATE TABLE `users_entity` (
   `setup_state` int(11) NOT NULL default '0',
   `country` varchar(4) NULL,
   
+  `custom_icon` tinyint(4) default '0',
   `admin` tinyint(4) default '0',
   `latitude` float null,
   `longitude` float null,

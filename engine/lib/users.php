@@ -58,6 +58,7 @@
                 'longitude' => null,
                 'email_code' => null,
                 'setup_state' => 5,
+                'custom_icon' => 0,
             ));    
         }         
         

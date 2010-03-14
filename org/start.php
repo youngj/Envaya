@@ -172,6 +172,12 @@ function new_index()
     return true;
 }
 
+function org_settings_save() 
+{
+    global $CONFIG;
+    @include($CONFIG->path . "actions/org/saveSettings.php");
+}
+
 register_page_handler('orgprofile','org_profile_page_handler');
 register_page_handler('org','org_page_handler');
 register_page_handler('page','page_page_handler');
@@ -180,23 +186,22 @@ register_page_handler('login','login_page_handler');
 register_elgg_event_handler('pagesetup','system','envaya_pagesetup');
 register_plugin_hook('index','system','new_index');
 
+extend_elgg_settings_page('org/settings', 'usersettings/user', 1);
+register_plugin_hook('usersettings:save','user','org_settings_save');
+
 global $CONFIG;
 
 register_action("org/register1",false,  "{$CONFIG->path}actions/org/register1.php");
 register_action("org/register2",false,  "{$CONFIG->path}actions/org/register2.php");
 register_action("org/register3",false,  "{$CONFIG->path}actions/org/register3.php");
 register_action("org/saveWidget",false, "{$CONFIG->path}actions/org/saveWidget.php");
-register_action("org/edit",false,       "{$CONFIG->path}actions/org/editOrg.php");
-register_action("org/delete",false,     "{$CONFIG->path}actions/org/deleteOrg.php");
 register_action("org/approve",false,    "{$CONFIG->path}actions/org/approveOrg.php");
 register_action("org/verify",false,     "{$CONFIG->path}actions/org/verifyOrg.php");
 register_action("org/changeEmail",false,"{$CONFIG->path}actions/org/changeEmail.php");
-register_action("org/editMap",false,    "{$CONFIG->path}actions/org/editMap.php");
 register_action("changeLanguage", true, "{$CONFIG->path}actions/org/changeLanguage.php");
 register_action("translate", false,     "{$CONFIG->path}actions/org/translate.php");
 register_action("news/add",false,       "{$CONFIG->path}actions/org/addPost.php");
 register_action("news/edit",false,      "{$CONFIG->path}actions/org/editPost.php");
-register_action("news/delete",false,    "{$CONFIG->path}actions/org/deletePost.php");
 register_action("entities/delete",false,"{$CONFIG->path}actions/entities/delete.php");
 
 

@@ -41,7 +41,27 @@ class Organization extends ElggUser {
         $filehandler->setFilename("icon$size.jpg");
         return $filehandler;
     }   
-
+    
+    public function getIcon($size = 'medium')
+    {
+        global $CONFIG;
+    
+        $size = $params['size'];
+        
+        if ($this->custom_icon)
+        {
+            return "{$CONFIG->url}{$this->username}/icon/$size/{$this->time_updated}.jpg";
+        }
+        else if ($this->latitude || $this->longitude)
+        {
+            return get_static_map_url($this->latitude, $this->longitude, 6, 100, 100);
+        }            
+        else
+        {
+            return "{$CONFIG->url}_graphics/default{$size}.gif";
+        }    
+    }
+    
     public function getPostEmail()
     {
         if (!$this->email_code)
@@ -374,9 +394,9 @@ function save_widget($widget)
     $widget->image_position = get_input('image_position');
     $widget->save();
     
-    if (isset($_FILES['image']) && $_FILES['image']['size'])
+    if (has_uploaded_file('image'))
     {            
-        if (substr_count($_FILES['image']['type'],'image/'))
+        if (is_image_upload('image'))
         {    
             $widget->setImage(get_uploaded_file('image'));        
         }
@@ -681,8 +701,6 @@ function get_auto_translation($text, $origLang, $viewLang)
 function envaya_init() {
 
     global $CONFIG;
-
-    org_fields_setup();
     
     register_plugin_hook('geocode', 'location', 'googlegeocoder_geocode');
     
@@ -695,8 +713,6 @@ function envaya_init() {
 
     extend_view('css','org/css');
 
-    register_plugin_hook('entity:icon:url', 'user', 'org_icon_hook');
-    
     include_once("{$CONFIG->path}org/start.php");    
 }
 
@@ -772,55 +788,6 @@ function blogpost_url($blogpost) {
     {    
         return $org->getUrl() . "/post/" . $blogpost->getGUID();
     }
-}
-
-function org_icon_hook($hook, $entity_type, $returnvalue, $params)
-{
-    global $CONFIG;
-
-    $entity = $params['entity'];        
-
-    if ($entity instanceof Organization)
-    {
-        $size = $params['size'];
-
-        $icontime = ($entity->icontime) ? $entity->icontime : "default";
-        $file = $entity->getIconFile();
-        if ($file->exists())
-        {
-            return "{$CONFIG->url}{$entity->username}/icon/$size/$icontime.jpg";
-        }
-        else if ($entity->latitude || $entity->longitude)
-        {
-            return get_static_map_url($entity->latitude, $entity->longitude, 6, 100, 100);
-        }            
-        else
-        {
-            return "{$CONFIG->url}_graphics/default{$size}.gif";
-        }
-    }
-}
-
-
-function org_fields_setup()
-{
-    global $CONFIG;
-
-    $CONFIG->org_fields = array(
-        'name' => 'text',        
-        'username' => 'text',        
-        'password' => 'password',
-        'password2' => 'password',
-        'email' => 'email',    
-        'language' => 'language',
-    );
-
-    $CONFIG->org_profile_fields = array(
-        'description' => 'longtext',
-        'phone' => 'text',
-        'website' => 'url',        
-        'location' => 'text',
-    );
 }
 
 function preserve_input($name, $value)

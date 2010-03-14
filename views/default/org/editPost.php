@@ -41,7 +41,7 @@
 ?>    
 
 
-<?php echo elgg_view('input/submit', array('internalname' => 'submit', 'value' => elgg_echo('publish'))); ?>
+<?php echo elgg_view('input/submit', array('internalname' => 'submit', 'value' => elgg_echo($blog ? 'blog:save' : 'blog:publish'))); ?>
 
 <?php 
 if ($blog)

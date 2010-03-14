@@ -243,7 +243,9 @@
             'org:new' => "Create Organization",
             'org:delete' => 'Delete Organization',
             'org:noaccess' => 'You cannot access this organization',
-            'org:icon' => 'Organization logo (leave blank to leave unchanged)',
+            'org:icon' => 'Organization logo',
+            'org:icon:saved' => 'Logo saved successfully.',
+            'org:icon:reset' => 'Logo removed successfully.',
 
             'org:access:private' => 'Closed - Users must be invited',
             'org:access:public' => 'Open - Any user may join',
@@ -279,12 +281,16 @@
             'blog:canceledit' => "View News",
             'blog:more' => "More...",
             
+            'blog:save' => "Save changes",
+            'blog:publish' => "Publish",
+            
             'blog:content:label' => "Write the text for your news update below:",
             'blog:image:label' => "Image to display with this news update:",
 
             'blog:strapline' => "%s",
 
             'blog:posted' => "Your news update was successfully posted.",
+            'blog:updated' => "Your news update was successfully updated.",
             'blog:deleted' => "Your news update was successfully deleted.",
 
             'blog:error' => 'Something went wrong. Please try again.',
