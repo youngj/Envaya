@@ -234,7 +234,8 @@
     {
         echo "<div>";
 		echo "<a href='org/browse/?lat=$lat&long=$long&zoom=10'>";
-        echo "<img width='$width' height='$height' src='http://maps.google.com/maps/api/staticmap?center=$lat,$long&zoom=$zoom&size={$width}x$height&maptype=roadmap&markers=$lat,$long&sensor=false&key=$apiKey' />";
+        
+        echo "<img width='$width' height='$height' src='".get_static_map_url($lat, $long, $zoom, $width, $height)."' />";
 		echo "</a>";
         echo "</div>";
     }

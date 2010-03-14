@@ -260,11 +260,12 @@
             'org:cantedit' => "You do not have access to edit this organization's profile.",
 
             'org:rejected' => 'We are sorry. This organization was not approved by our administrators.',
-            'org:waitforapproval' => "This organization is not yet visible to the public. We will review your profile shortly.",
             'org:waitingapproval' => "This organization is awaiting review and is not yet visible to the public.",
             'org:approve' => "Approve Organization",
-            'org:approveconfirm' => "Are you sure you want to approve this organization?",
-            'org:approved' => "Organization approved",
+            'org:unapprove' => "Remove Approval",
+            'org:reject' => "Reject Organization",
+            'org:unreject' => "Remove Rejection",
+            'org:approval_changed' => "Organization approval changed",
             'org:notapproved' => "Organization could not be approved",
             'org:shortnotapproved' => "Not yet approved",
 

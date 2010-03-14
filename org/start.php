@@ -142,14 +142,14 @@ function envaya_pagesetup()
 
         if (!empty($org))
         {
-            $widgets = $org->getActiveWidgets();
+            $widgets = $org->getAvailableWidgets();
             
             add_submenu_item(elgg_echo("org:home"), $org->getURL());
             add_submenu_item(elgg_echo("org:news"), $org->getURL()."/news");
             
             foreach ($widgets as $widget)
             {
-                if ($widget->widget_name != 'home')
+                if ($widget->isActive() && $widget->widget_name != 'home')
                 {
                     add_submenu_item(elgg_echo("widget:{$widget->widget_name}"), $widget->getURL());
                 }                    

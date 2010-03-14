@@ -314,11 +314,6 @@
             return $this->approval > 0;
         }
 
-        public function approve()
-        {
-            $this->approval = 2;
-        }
-
         static function filterByArea($latLongArr, $sector, $limit = 10, $offset = 0, $count = false)
         {
             $where = array();

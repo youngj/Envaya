@@ -51,7 +51,7 @@ class Organization extends ElggUser {
         return "post+{$this->email_code}@envaya.org";
     } 
     
-    public function getLocationText()
+    public function getLocationText($includeRegion = true)
     {
         $res = '';
         
@@ -59,7 +59,7 @@ class Organization extends ElggUser {
         {
             $res .= "{$this->city}, ";
         }
-        if ($this->region)
+        if ($this->region && $includeRegion)
         {
             $res .= "{$this->region}, ";
         }
@@ -102,6 +102,7 @@ class Organization extends ElggUser {
     {
         
     }
+    
        
     public function getSectors()
     {
@@ -354,7 +355,12 @@ class Widget extends ElggObject
             
         }   
         $this->save();
-    }    
+    } 
+    
+    public function isActive()
+    {
+        return $this->guid && $this->isEnabled();
+    }
 }
 
 function save_widget($widget)
@@ -738,6 +744,10 @@ function org_icon_hook($hook, $entity_type, $returnvalue, $params)
         {
             return "{$CONFIG->url}{$entity->username}/icon/$size/$icontime.jpg";
         }
+        else if ($entity->latitude || $entity->longitude)
+        {
+            return get_static_map_url($entity->latitude, $entity->longitude, 6, 100, 100);
+        }            
         else
         {
             return "{$CONFIG->url}_graphics/default{$size}.gif";
@@ -819,6 +829,13 @@ function regions_in_country($country)
     {
         return array();
     }
+}
+
+function get_static_map_url($lat, $long, $zoom, $width, $height)
+{
+    global $CONFIG;
+    $apiKey = $CONFIG->google_api_key;
+    return "http://maps.google.com/maps/api/staticmap?center=$lat,$long&zoom=$zoom&size={$width}x$height&maptype=roadmap&markers=$lat,$long&sensor=false&key=$apiKey";
 }
 
 register_elgg_event_handler('init','system','envaya_init');

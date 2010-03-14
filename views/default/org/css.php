@@ -1044,3 +1044,19 @@ span.timestamp {
 {
     background:#fff url("<?php echo $graphicsDir; ?>/editgradient.gif") repeat-y left top;  
 }
+
+.adminBox
+{
+    position:absolute;
+    top:55px;
+    right:2px;
+    border:1px solid red;
+    background:#ffcccc;
+    padding:5px;
+}
+
+.adminBox a
+{
+    display:block;
+    color:#000066;
+}
