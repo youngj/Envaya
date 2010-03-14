@@ -163,6 +163,7 @@
         'widget:team' => "Team",
         
         'widget:edit' => "Edit Page",
+        'widget:canceledit' => "View Page",
         'widget:edittitle' => "Edit %s",        
         'widget:edittitle:new' => "Add Page: %s",        
         'widget:save' => "Save changes",
@@ -272,6 +273,7 @@
             'blog:view_all' => "View all news updates",
             'blog:addpost' => "Add news update",
             'blog:editpost' => "Edit News",
+            'blog:canceledit' => "View News",
             'blog:more' => "More...",
             
             'blog:content:label' => "Write the text for your news update below:",

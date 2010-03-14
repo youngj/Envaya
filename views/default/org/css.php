@@ -1018,3 +1018,29 @@ span.timestamp {
     float:right;
     margin:0px 0px 6px 6px;
 }
+
+.editor
+{
+    background-color:#4c4c4c;
+}
+
+.editor #heading h1
+{
+    color:#e6e6e6;
+}
+
+.editor #content_mid
+{
+    background:#fff url("<?php echo $graphicsDir; ?>/editgradient.gif") repeat-y left top;  
+}
+
+.editor #content_top
+{
+    height:9px;
+    background:#fff url("<?php echo $graphicsDir; ?>/edittop.gif") no-repeat left top;  
+}
+
+.editor #content_bottom
+{
+    background:#fff url("<?php echo $graphicsDir; ?>/editgradient.gif") repeat-y left top;  
+}

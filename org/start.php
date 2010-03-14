@@ -63,14 +63,8 @@ function org_profile_page_handler($page)
                 set_context("blog");
                 include(dirname(__FILE__) . "/blog.php");
                 return;
-            case "newpost";
-                include(dirname(__FILE__) . "/newPost.php");
-                return;
             case "mobilesettings":
                 include(dirname(__FILE__) . "/mobileSettings.php");
-                return;
-            case "editmap":
-                include(dirname(__FILE__) . "/editMap.php");
                 return;
             case "post":
                 set_context("blog");
@@ -97,9 +91,6 @@ function org_profile_page_handler($page)
                         include(dirname(__FILE__) . "/blogPost.php");
                         return;
                 }
-            case "edit":
-                include(dirname(__FILE__) . "/editOrg.php");
-                return;
             case "icon":
                 set_input('size', $page[2]);
                 include(dirname(__FILE__) . "/icon.php");
@@ -116,7 +107,7 @@ function org_profile_page_handler($page)
                 switch ($page[2])
                 {
                     case 'edit':
-                        set_context("widget");
+                        set_context("editor");
                         include(dirname(__FILE__) . "/editwidget.php");                    
                         return;
                     case 'image':    

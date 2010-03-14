@@ -17,16 +17,6 @@
 
     // Set the content type
     header("Content-type: text/html; charset=UTF-8");
-
-    // Set title
-        if (empty($vars['title'])) {
-            $title = $vars['config']->sitename;
-        } else if (empty($vars['config']->sitename)) {
-            $title = $vars['title'];
-        } else {
-            $title = $vars['config']->sitename . ": " . $vars['title'];
-        }
-
 ?>
 
 <?php echo elgg_view('page_elements/header', $vars); ?>

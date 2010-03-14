@@ -20,6 +20,8 @@
 		}
 
         $title = elgg_echo("usersettings:user");
+        
+        set_context('editor');
 
 		page_draw($title,
             elgg_view_layout("one_column", elgg_view_title($title), elgg_view("usersettings/form"))

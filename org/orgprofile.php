@@ -7,10 +7,12 @@
 	$autofeed = false;
    
 	$org = get_entity($org_guid);
-	if ($org) {
-		set_page_owner($org_guid);                
-        
-		$title = $org->name;	
+	if ($org) 
+    {
+        global $CONFIG;
+        $CONFIG->sitename = $org->name;        
+    
+		set_page_owner($org_guid);                        
 
         $viewOrg = false;
         
@@ -31,12 +33,14 @@
         {
             $widget = $org->getWidgetByName('home');
             $subtitle = $org->getLocationText();
+            $title = '';    
         }
         else
         {
             $subtitle = elgg_echo("widget:{$widget->widget_name}");
+            $title = $subtitle;    
         }
-
+        
         add_submenu_item(elgg_echo("widget:edit"), "{$widget->getUrl()}/edit", 'b');                
 
         $body = elgg_view_layout('one_column', org_title($org, $subtitle), $widget->renderView());

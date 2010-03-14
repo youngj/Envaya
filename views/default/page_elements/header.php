@@ -63,4 +63,4 @@ END;
     ?>
 </head>
 
-<body>
+<body class='<?php echo get_context() ?>'>
