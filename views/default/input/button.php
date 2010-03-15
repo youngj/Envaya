@@ -31,7 +31,7 @@
 		default: $type = 'submit';
 	}
 	
-	$value = htmlentities($vars['value'], ENT_QUOTES, 'UTF-8');
+	$value = escape($vars['value']);
 	if (isset($vars['internalname'])) $name = $vars['internalname'];
 	if (isset($vars['src'])) $src = "src=\"{$vars['src']}\"";
 	if (strpos($src,$CONFIG->wwwroot)===false) $src = ""; // blank src if trying to access an offsite image.

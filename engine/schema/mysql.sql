@@ -171,7 +171,7 @@ CREATE TABLE `org_sectors` (
   
   PRIMARY KEY  (`id`),
   KEY `container_guid` (`container_guid`),
-  KEY `sector_id` (`sector_id`),
+  KEY `sector_id` (`sector_id`)
   
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

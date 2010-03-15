@@ -6,7 +6,7 @@
     
     if ($user instanceof Organization)
     {
-        echo elgg_view("org/editPost", array('container_guid' => $user->guid));
+        echo "<div class='padded'>".elgg_view("org/editPost", array('container_guid' => $user->guid))."</div>";
                
         $widgets = $user->getAvailableWidgets();
             

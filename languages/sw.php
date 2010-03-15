@@ -2,7 +2,7 @@
 
     $swahili = array(
         'home:title' => "Karibu katika Envaya",
-        'home:heading' => 'Envaya ni mtandao wa mashirika ya jumuiya ya kiraia Tanzania vigawavyo habari kuhusu miradi yao katika Internet.',        
+        'home:heading' => 'Envaya ni mtandao wa mashirika ya jumuiya ya kiraia Tanzania vigawavyo habari kuhusu miradi vyao katika intaneti.',        
         'home:for_organizations' => 'Kwa mashirika:',
         'home:for_everyone' => 'Kwa wote:',
         'home:sign_up' => 'Jiunga sasa',
@@ -11,6 +11,11 @@
         'home:browse_orgs' => 'Tazama mashirika yote',        
         'home:find_org' => 'Tafuta shirika',
         'home:about_us' => 'Kuhusu sisi',    
+    
+        'browse' => 'Tazama',
+        'search' => 'Tafuta',
+        'language' => "Lugha",
+        'language:choose' => "Chagua Lugha",    
     
         'browse:title' => 'Tazama mashirika yote',
         'browse:instructions' => "Kila pointi nyekundu katika ramani ya chini ni shirika litumialo Envaya. Elea juu ya pointi kuona jina lake, na ibongeze kutazama ukurasa wake mkuu.",

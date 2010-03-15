@@ -24,6 +24,6 @@
         set_context('editor');
 
 		page_draw($title,
-            elgg_view_layout("one_column", elgg_view_title($title), elgg_view("usersettings/form"))
+            elgg_view_layout("one_column_padded", elgg_view_title($title), elgg_view("usersettings/form"))
         );
 ?>

@@ -5,8 +5,8 @@
 #topbar
 {
     width:100%;
-    height:50px;
-    background:#d9d9d9 url("<?php echo $graphicsDir; ?>/topgradient.gif") repeat-x left top;  
+    height:48px;
+    background:#333 url("<?php echo $graphicsDir; ?>/topgradient.gif") repeat-x left top;  
 }
 
 #topbarTable
@@ -16,13 +16,8 @@
 
 #topbarTable td
 {
-    padding:15px;
-}
-
-#topbarTable td#logoContainer
-{
-    padding:3px;
-    width:180px;
+    padding-top:1px;
+    padding-bottom:1px;
 }
 
 #topbar form
@@ -30,10 +25,134 @@
     display:inline;
 }
 
-.topbarLinks a, form
+.topbarLinks a
 {
+    display:block;
+    float:left;
+    padding:14px 24px 10px 24px;
+    border-left:1px solid #5d5d5d;
+    border-right:1px solid #2f2f2f;
+    height:22px;
+    color:#e6e6e6;
+}
+
+.topbarLinks a#logoContainer
+{
+    padding:8px 30px 8px 20px;
+    border-left:0px;
+}
+
+.topbarLinks form
+{    
     padding-left: 10px;
     padding-right: 10px;
+}
+
+#loginButton, #loggedinArea
+{    
+    width:238px;
+    height:46px;
+    display:block;
+    float:right;
+}
+
+#loginButton
+{
+    background:#4d4d4d url(<?php echo $graphicsDir; ?>/loginbutton.gif) no-repeat left top;
+}
+
+#loggedinArea
+{
+    background:#1d5153 url(<?php echo $graphicsDir; ?>/loggedinarea.gif) no-repeat left top;
+}    
+
+a#loginButton:hover 
+{
+    text-decoration:none;
+}
+
+a#loginButton:hover .loginContent span
+{
+    text-decoration:underline;
+}    
+
+#loginButton img
+{
+    margin-right:10px;
+    vertical-align:-4px;
+}
+
+#loginButton .loginContent
+{
+    display:block;    
+    padding-top:12px;
+    text-align:center;
+    color:#e6e6e6;
+    font-weight:bold;
+}
+
+.loggedInAreaContent
+{
+    display:block;    
+    padding-top:12px;
+    text-align:center;
+    color:#e6e6e6;
+    font-weight:bold;
+}
+
+.loggedInAreaContent a
+{
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.loggedInAreaContent a:hover
+{
+    border-bottom:1px solid black;
+}
+
+.dropdown
+{
+    position:absolute;
+    left:100px;
+    top:100px;
+    width:180px;
+    background-color:#2b2b2b;
+    border:1px solid #b8b8b8;
+    padding-bottom:8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    display:none;
+}
+
+.dropdown_title
+{
+    padding:6px;
+    font-weight:bold;
+    border-bottom:1px solid #545454;
+    color:#e6e6e6;
+}
+
+.dropdown_item
+{
+    display:block;
+    color:black;
+}
+
+.dropdown_item_selected
+{
+    font-weight:bold;
+}
+
+a.dropdown_item:hover
+{
+    color:black;    
+}
+
+.dropdown_content
+{   
+    background-color:#e6e6e6;
+    padding:3px;
 }
 
 #thin_column

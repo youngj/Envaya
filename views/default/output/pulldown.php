@@ -15,5 +15,5 @@
 	 * 
 	 */
 
-    echo htmlentities($vars['value'], ENT_QUOTES, 'UTF-8'); //$vars['value'];
+    echo escape($vars['value']);
 ?>

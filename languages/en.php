@@ -12,6 +12,10 @@
         'home:find_org' => 'Find an organization',
         'home:about_us' => 'About us',
         
+        'browse' => 'Browse',
+        'language' => "Language",
+        'language:choose' => "Select a Language",
+        
         'browse:title' => 'Browse organizations',
         'browse:instructions' => "Each icon on the map below is an organization using Envaya. Hover over an icon to see its name, and click to view its home page.",
         'browse:map' => 'Map',

@@ -61,6 +61,33 @@ END;
         echo $feedref;
         echo elgg_view('metatags',$vars); 
     ?>
+    
+<script type='text/javascript'>
+function addEvent(elem, type, fn) 
+{
+    if (elem.addEventListener) 
+    {
+        elem.addEventListener(type, fn, false);
+    } 
+    else 
+    {
+        elem.attachEvent('on' + type, fn);
+    }    
+}    
+
+function removeEvent(elem, type, fn)    
+{
+    if (elem.removeEventListener) 
+    {
+        elem.removeEventListener(type, fn, false);
+    } 
+    else 
+    {
+        elem.detachEvent('on'+type, fn);
+    }        
+}    
+</script>
+    
 </head>
 
 <body class='<?php echo get_context() ?>'>
