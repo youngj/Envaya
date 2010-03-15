@@ -87,7 +87,7 @@ class Organization extends ElggUser
        
     static function getSectorOptions()
     {
-        return array(
+        $sectors = array(
             1 => elgg_echo('sector:agriculture'),
             2 => elgg_echo('sector:communications'),
             3 => elgg_echo('sector:conflict_res'),
@@ -108,8 +108,13 @@ class Organization extends ElggUser
             21 => elgg_echo('sector:tourism'),
             22 => elgg_echo('sector:trade'),
             23 => elgg_echo('sector:women'),
-            SECTOR_OTHER => elgg_echo('sector:other'),
         );
+        
+        asort($sectors);
+        
+        $sectors[SECTOR_OTHER] = elgg_echo('sector:other');
+        
+        return $sectors;        
     }
     
     public function getSectors()

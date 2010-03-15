@@ -21,7 +21,8 @@
         'search:title_with_query' => "Search: %s",
         'search:submit' => 'Search',
         'search:instructions' => "Enter the name or location of the organization you're looking for.",
-        
+        'search:noresults' => "No results found!",
+                            
         'why:title' => 'Why use Envaya?',
         
         'sector:agriculture' => 'Agriculture and livestock',
@@ -47,6 +48,85 @@
         'sector:other' => 'Other',
                                          
         'sector:empty_option' => 'All sectors',
+        
+        'login' => "Log in",
+        'loginok' => "You have been logged in.",
+        'loginerror' => "Incorrect username or password. Make sure they are correct and try again.",
+
+        'logout' => "Log out",
+
+        'name' => "Display name",
+        'email' => "Email address",
+        'username' => "Username",
+        'password' => "Password",
+        'passwordagain' => "Password (again for verification)",
+        'admin_option' => "Make this user an admin?",
+        'user:persistent' => 'Remember me',
+        'user:password:lost' => 'Neno la siri limesahauliwa',
+
+        'org:yours' => 'Your Site',
+        'org:home' => 'Home',
+        'org:news' => 'News',
+        'org:news:latest' => 'Latest News',
+        'org:noupdates' => "This organization has not yet written any news updates.",        
+        'org:mission' => 'Mission',
+        'org:sectors' => 'Sectors',      
+
+        'blog:view_all' => "View all news updates",
+        'blog:editpost' => "Edit News",
+        'blog:canceledit' => "View News",
+        'blog:addpost' => "Add news update",
+        'blog:delete' => "Delete update",
+        'blog:delete:success' => "News update deleted successfully.",
+        'blog:more' => "More...",
+
+        'widget:home' => "Home Page",
+        'widget:map' => "Map",
+        'widget:history' => "History",
+        'widget:programs' => "Programs",
+        'widget:achievements' => "Achievements",
+        'widget:challenges' => "Challenges",
+                
+        'widget:contact' => "Contact Info",
+        
+        'widget:contact:instructions' => "This page lets your website visitors contact you directly. Note that if you don't want certain information to be publicly available on the Internet, just leave that field blank.",
+        
+        'widget:contact:public_email' => "Do you want your email address, %s, publicly displayed on this page?",
+        'widget:contact:email' => "Email address:",
+        
+        'widget:contact:phone_number:edit' => "What phone number should people use to contact you?",
+        'widget:contact:phone_number' => "Phone number:",
+
+        'widget:contact:name:edit' => "Who is the primary contact person in your organization?",
+        'widget:contact:name' => "Contact name:",
+
+        'widget:contact:title:edit' => "What is that person's job title?",
+        'widget:contact:title' => "Contact title:",
+        
+        'widget:team' => "Team",
+        
+        'widget:edit' => "Edit Page",
+        'widget:canceledit' => "View Page",
+        'widget:edittitle' => "Edit %s",        
+        'widget:edittitle:new' => "Add Page: %s",        
+        'widget:save' => "Save changes",
+        'widget:save:new' => "Create page",
+                
+        'widget:image:label' => "Image to display on this page:",
+        'widget:image:position' => "Where on your page do you want the image?",
+                
+        'widget:content:label' => "Write the text for your page below:",
+                
+        'widget:save:success' => "Page saved successfully.",
+        
+        'widget:delete' => "Remove page",
+        
+        'widget:delete:success' => "Page removed successfully.",
+        
+        'widget:delete:confirm' => "Are you sure you want to remove this page from your site?",        
+        
+        'widgets:edit' => 'Edit Pages',        
+                
 
         'register:step1' => '1. Qualification',                                       
         'register:step2' => '2. Create account',
@@ -134,55 +214,6 @@
         
         'setup:ok' => "Your homepage was created successfully.",        
                 
-        'item:object:widget' => "Widgets",                
-        
-        'widget:home' => "Home Page",
-        'widget:map' => "Map",
-        'widget:history' => "History",
-        'widget:programs' => "Programs",
-        'widget:achievements' => "Achievements",
-        'widget:challenges' => "Challenges",
-        
-        'widget:contact' => "Contact Info",
-        
-        'widget:contact:instructions' => "This page lets your website visitors contact you directly. Note that if you don't want certain information to be publicly available on the Internet, just leave that field blank.",
-        
-        'widget:contact:public_email' => "Do you want your email address, %s, publicly displayed on this page?",
-        'widget:contact:email' => "Email address:",
-        
-        'widget:contact:phone_number:edit' => "What phone number should people use to contact you?",
-        'widget:contact:phone_number' => "Phone number:",
-
-        'widget:contact:name:edit' => "Who is the primary contact person in your organization?",
-        'widget:contact:name' => "Contact name:",
-
-        'widget:contact:title:edit' => "What is that person's job title?",
-        'widget:contact:title' => "Contact title:",
-        
-        'widget:team' => "Team",
-        
-        'widget:edit' => "Edit Page",
-        'widget:canceledit' => "View Page",
-        'widget:edittitle' => "Edit %s",        
-        'widget:edittitle:new' => "Add Page: %s",        
-        'widget:save' => "Save changes",
-        'widget:save:new' => "Create page",
-                
-        'widget:image:label' => "Image to display on this page:",
-        'widget:image:position' => "Where on your page do you want the image?",
-                
-        'widget:content:label' => "Write the text for your page below:",
-                
-        'widget:save:success' => "Page saved successfully.",
-        
-        'widget:delete' => "Remove page",
-        
-        'widget:delete:success' => "Page removed successfully.",
-        
-        'widget:delete:confirm' => "Are you sure you want to remove this page from your site?",        
-        
-        'widgets:edit' => 'Edit Pages',        
-                
         'image:current' => "Current image:",
         'image:new' => "New image:",                
         'image:blank' => "Leave this blank to keep the current image.",
@@ -198,18 +229,11 @@
                 
         'about:title' => 'About us',
         
-        'welcome_user' => "Welcome, %s!",            
-        
-        'org:yours' => 'Your Site',
-        'org:home' => 'Home',
-        'org:news' => 'News',
-        'org:news:latest' => 'Latest News',
-        'org:noupdates' => "This organization has not yet written any news updates.",        
+        'welcome_user' => "Welcome, %s!",                     
+
         'org:mobilesettings' => "Mobile settings",
         'org:postemail' => 'Posting Email',
         'org:changeemail' => 'Change',                        
-        'org:mission' => 'Mission',
-        'org:sectors' => 'Sectors',        
 
         'org:noaccess' => 'You cannot access this organization',
         'org:icon' => 'Organization logo',
@@ -232,16 +256,6 @@
         'org:notapproved' => "Organization could not be approved",
         'org:shortnotapproved' => "Not yet approved",
 
-        'org:searchnoresults' => "No results found!",
-            
-        'blog:view_all' => "View all news updates",
-        'blog:addpost' => "Add news update",
-        'blog:editpost' => "Edit News",
-        'blog:delete' => "Delete update",
-        'blog:delete:success' => "News update deleted successfully.",
-        'blog:canceledit' => "View News",
-        'blog:more' => "More...",
-
         'blog:save' => "Save changes",
         'blog:publish' => "Publish",
 
@@ -262,10 +276,6 @@
 
         'org:verified' => "Organization verified",
         'org:notverified' => "Organization could not be verified",
-
-        'item:object:blog' => 'News updates',
-        'item:user:organization' => "Organizations",
-        'item:object:translation' => "Translations",
             
         'map:drop_pin' => "Drop map pin",
         'map:drag_pin' => "Drag and drop the red map pin below to your organization's location.",
@@ -291,14 +301,6 @@
         "trans:view_automatic_in" => "View in %s using Google Translate.",
         'trans:stale_trans_from_to' => "This page has been translated from %s, but the %s version is out of date.",
         'trans:view_stale_automatic' => "View using Google Translate.",
-
-        'login' => "Log in",
-        'loginok' => "You have been logged in.",
-        'loginerror' => "We couldn't log you in. This may be because you haven't validated your account yet, the details you supplied were incorrect, or you have made too many incorrect login attempts. Make sure your details are correct and please try again.",
-
-        'logout' => "Log out",
-        'logoutok' => "You have been logged out.",
-        'logouterror' => "We couldn't log you out. Please try again.",
 
         'exception:title' => "Welcome to Elgg.",
 
@@ -367,19 +369,10 @@
 
         'pageownerunavailable' => 'Warning: The page owner %d is not accessible!',
 
-        'name' => "Display name",
-        'email' => "Email address",
-        'username' => "Username",
-        'password' => "Password",
-        'passwordagain' => "Password (again for verification)",
-        'admin_option' => "Make this user an admin?",
-
         'profile' => "Profile",
         'profile:edit:default' => 'Replace profile fields',
         'profile:preview' => 'Preview',
         'user' => "User",
-
-        'item:user' => "Users",
 
         'profile:yours' => "Your profile",
         'profile:user' => "%s's profile",
@@ -480,8 +473,6 @@
         'adduser:ok' => "You have successfully added a new user.",
         'adduser:bad' => "The new user could not be created.",
 
-        'item:object:reported_content' => "Reported items",
-
         'user:set:name' => "Account name settings",
         'user:name:label' => "Your name",
         'user:name:success' => "Successfully changed your name on the system.",
@@ -501,14 +492,11 @@
         'user:language:fail' => "Your language settings could not be saved.",
 
         'user:username:notfound' => 'Username %s not found.',
-
-        'user:password:lost' => 'Lost password',
+        
         'user:password:resetreq:success' => 'Successfully requested a new password, email sent',
         'user:password:resetreq:fail' => 'Could not request a new password.',
 
         'user:password:text' => 'To generate a new password, enter your username below. We will send the address of a unique verification page to you via email click on the link in the body of the message and a new password will be sent to you.',
-
-        'user:persistent' => 'Remember me',
 
         'admin:configuration:success' => "Your settings have been saved.",
         'admin:configuration:fail' => "Your settings could not be saved.",
@@ -920,6 +908,14 @@ You cannot reply to this email.",
         "za" => "Zuang",
         "zh" => "Chinese",
         "zu" => "Zulu",
+        
+        'item:object:widget' => "Pages",                       
+        'item:object:blog' => 'News updates',
+        'item:user:organization' => "Organizations",
+        'item:object:translation' => "Translations",
+        'item:user' => "Users",
+
+
 	);
 
 	add_translation("en",$english);

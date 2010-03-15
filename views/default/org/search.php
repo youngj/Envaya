@@ -60,7 +60,7 @@
         }
         else
         {
-            echo "<div class='padded'>" . elgg_echo("org:searchnoresults") . "</div>";
+            echo "<div class='padded'>" . elgg_echo("search:noresults") . "</div>";
         }
 
     }
