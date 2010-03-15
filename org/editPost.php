@@ -13,7 +13,7 @@
     
         $org = $post->getContainerEntity();
         $area1 = elgg_view("org/editPost", array('entity' => $post));
-        $body = elgg_view_layout("one_column", elgg_view_title($title), $area1);        
+        $body = elgg_view_layout("one_column_padded", elgg_view_title($title), $area1);        
     }
     else 
     {

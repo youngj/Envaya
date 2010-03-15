@@ -6,7 +6,7 @@
 {
     width:100%;
     height:48px;
-    background:#333 url("<?php echo $graphicsDir; ?>/topgradient.gif") repeat-x left top;  
+    background:#333 url("<?php echo $graphicsDir; ?>/topgradient.gif?v2") repeat-x left top;  
 }
 
 #topbarTable
@@ -214,6 +214,8 @@ a.dropdown_item:hover
     color:#222;
     font-size:22px;
     padding-top:14px;
+    padding-bottom:0px;
+    margin:0px;
 }
 
 #heading h1.withicon
@@ -231,6 +233,8 @@ a.dropdown_item:hover
 {
     color:#222;
     font-size:14px;
+    padding:0px;
+    margin:0px;
 }
 
 #content
