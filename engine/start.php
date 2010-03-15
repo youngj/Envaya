@@ -99,9 +99,9 @@
     }
 	    
     trigger_elgg_event('boot', 'system');
-			
-	$installed = is_installed();
-			
+
+    $installed = is_installed();			            
+
     if ($installed) 
     {
         load_plugins();
@@ -112,13 +112,13 @@
     {
 	    header("Location: install.php");
 	    exit;
-	}
-			
-	if (!substr_count($_SERVER["PHP_SELF"],"install.php") && !substr_count($_SERVER["PHP_SELF"],"setup.php")) 
+	}			            
+            
+    if (!substr_count($_SERVER["PHP_SELF"],"install.php") && !substr_count($_SERVER["PHP_SELF"],"setup.php")) 
     {
         trigger_elgg_event('init', 'system');
     }
-			
+            
     set_input('view', $oldview);
     if (empty($oldview)) 
     {
@@ -127,19 +127,10 @@
         else
             $oldview = $CONFIG->view;
     }
-    
-    if ($installed) 
+        
+    if ($installed && $CONFIG->simplecache_enabled && datalist_get('simplecache_version') != $CONFIG->simplecache_version) 
     {
-        $lastupdate = datalist_get('simplecache_lastupdate');
-        $lastcached = datalist_get('simplecache_'.$oldview);
-        if ($lastupdate == 0 || $lastcached < $lastupdate) 
-        {
-            elgg_view_regenerate_simplecache();
-            $lastcached = time();
-            datalist_set('simplecache_lastupdate',$lastcached);
-            datalist_set('simplecache_'.$oldview,$lastcached);
-        }
-        $CONFIG->lastcache = $lastcached;
-    }    
+        elgg_view_regenerate_simplecache();
+    }
     
 ?>

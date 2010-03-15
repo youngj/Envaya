@@ -2,7 +2,7 @@
 
 $trans = $vars['entity'];
 
-$by = elgg_echo("translation_by");
+$by = elgg_echo("trans:by");
 
 echo "$by ";
 

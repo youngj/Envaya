@@ -1,6 +1,8 @@
 <?php
 
     $swahili = array(
+    
+    /*
         'welcome' => "Karibu katika Envaya",
         'register_org' => "Ongeza chama kipya",
         'welcome_user' => "Karibu, %s!",
@@ -55,6 +57,7 @@
         'user:password:lost' => 'Sikumbuki neno ya siri',
         'register' => 'Jiunga',
         'complete' => 'kizima',
+    */    
     );
 
     add_translation("sw",$swahili);

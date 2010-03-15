@@ -54,7 +54,7 @@ END;
     <title><?php echo escape($title); ?></title>
 
     <!-- include the default css file -->
-    <link rel="stylesheet" href="<?php echo $vars['url']; ?>_css/css.css?lastcache=<?php echo $vars['config']->lastcache; ?>&viewtype=<?php echo $vars['view']; ?>" type="text/css" />
+    <link rel="stylesheet" href="<?php echo $vars['url']; ?>_css/css.css?v=<?php echo $vars['config']->simplecache_version; ?>&viewtype=<?php echo $vars['view']; ?>" type="text/css" />
     <base href='<?php echo $vars['url'] ?>' />
     
     <?php 

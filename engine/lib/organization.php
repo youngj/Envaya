@@ -5,19 +5,13 @@ require_once(dirname(__FILE__)."/users.php");
 define('SECTOR_OTHER', 99);
 
 // Class source
-class Organization extends ElggUser {
+class Organization extends ElggUser 
+{
 
     protected function initialise_attributes() 
     {
         parent::initialise_attributes();
         $this->attributes['subtype'] = T_organization;
-
-        //Notes:
-        // this->isVerifyingOrg
-        // verifiedBy... relationship
-        // when admin performs verification, he/she chooses from a dropdown of the Orgs he/she is an admin of.  Organization is then verified by this chosen super org
-        // entity_relationships
-        //addRelationship(...
     }
 
     static $subtype_id = T_organization;
@@ -117,13 +111,7 @@ class Organization extends ElggUser {
             SECTOR_OTHER => elgg_echo('sector:other'),
         );
     }
-          
-    static function filterBySector($sector)
-    {
-        
-    }
     
-       
     public function getSectors()
     {
         if (!isset($this->sectors))
@@ -227,6 +215,66 @@ class Organization extends ElggUser {
         }
         return $availableWidgets;
     }
+
+    static function search($name, $sector, $limit = 10, $offset = 0, $count = false)
+    {
+        $where = array();
+        $args = array();
+        if ($name)
+        {
+            $where[] = "(INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0)";
+            $args[] = $name;
+            $args[] = $name;
+        }    
+
+        $join = '';
+        if ($sector)
+        {
+            $join = "INNER JOIN org_sectors s ON s.container_guid = e.guid";
+            $where[] = "s.sector_id=?";
+            $args[] = $sector;
+        }
+
+        return static::filterByCondition($where, $args, '', $limit, $offset, $count, $join);
+    }
+
+    static function listSearch($name, $sector, $limit = 10, $pagination = true) 
+    {        
+        $offset = (int) get_input('offset');
+
+        $count = static::search($name, $sector, $limit, $offset, true);
+        $entities = static::search($name, $sector, $limit, $offset);
+
+        return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
+    }        
+    
+    static function filterByArea($latLongArr, $sector, $limit = 10, $offset = 0, $count = false)
+    {
+        $where = array();
+        $args = array();
+
+        $where[] = "latitude >= ?";
+        $args[] = $latLongArr[0];
+
+        $where[] = "latitude <= ?";
+        $args[] = $latLongArr[2];
+
+        $where[] = "longitude >= ?";
+        $args[] = $latLongArr[1];
+
+        $where[] = "longitude <= ?";
+        $args[] = $latLongArr[3];
+
+        $join = '';
+        if ($sector)
+        {
+            $join = "INNER JOIN org_sectors s ON s.container_guid = e.guid";
+            $where[] = "s.sector_id=?";
+            $args[] = $sector;
+        }
+
+        return static::filterByCondition($where, $args, '', $limit, $offset, $count, $join);
+    }    
 }
 
 class Translation extends ElggObject

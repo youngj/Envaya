@@ -1,6 +1,6 @@
 <?php
     define('externalpage',true);
-
+    
     global $viewinput;
     $viewinput['view'] = 'css';
     $viewinput['viewtype'] = $_GET['viewtype'];

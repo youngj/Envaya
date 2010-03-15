@@ -12,4 +12,8 @@
     // (For most configurations, you can leave this as 'localhost')
     $CONFIG->dbhost = 'localhost';
     
+    $CONFIG->simplecache_enabled = 1;
+    $CONFIG->wwwroot = "http://envaya.org/";
+    $CONFIG->url = $CONFIG->wwwroot;
+    
 ?>

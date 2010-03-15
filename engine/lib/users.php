@@ -314,34 +314,6 @@
         {
             return $this->approval > 0;
         }
-
-        static function filterByArea($latLongArr, $sector, $limit = 10, $offset = 0, $count = false)
-        {
-            $where = array();
-            $args = array();
-            
-            $where[] = "latitude >= ?";
-            $args[] = $latLongArr[0];
-
-            $where[] = "latitude <= ?";
-            $args[] = $latLongArr[2];
-
-            $where[] = "longitude >= ?";
-            $args[] = $latLongArr[1];
-
-            $where[] = "longitude <= ?";
-            $args[] = $latLongArr[3];
-
-            $join = '';
-            if ($sector)
-            {
-                $join = "INNER JOIN org_sectors s ON s.container_guid = e.guid";
-                $where[] = "s.sector_id=?";
-                $args[] = $sector;
-            }
-
-            return static::filterByCondition($where, $args, '', $limit, $offset, $count, $join);
-        }
                 
         static function getByEmailCode($emailCode)
         {
@@ -350,33 +322,7 @@
                 array($emailCode)
             );                    
         }
-        
-        static function search($name, $sector, $limit = 10, $offset = 0, $count = false)
-        {
-            $where = array("(INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0)");
-            $args = array($name, $name);
-            
-            $join = '';
-            if ($sector)
-            {
-                $join = "INNER JOIN org_sectors s ON s.container_guid = e.guid";
-                $where[] = "s.sector_id=?";
-                $args[] = $sector;
-            }
-
-            return static::filterByCondition($where, $args, '', $limit, $offset, $count, $join);
-        }
-        
-        static function listSearch($name, $sector, $limit = 10, $pagination = true) 
-        {        
-            $offset = (int) get_input('offset');
-
-            $count = static::search($name, $sector, $limit, $offset, true);
-            $entities = static::search($name, $sector, $limit, $offset);
-
-            return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
-        }        
-        
+                
         static function all($order_by = '', $limit = 10, $offset = 0, $count = false)
         {
             return static::filterByCondition(array(), array(), $order_by, $limit, $offset, $count);

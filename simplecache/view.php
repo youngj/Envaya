@@ -25,7 +25,8 @@
     $simplecache_enabled = $CONFIG->simplecache_enabled;
     $dataroot = $CONFIG->dataroot;
                 
-    if ($simplecache_enabled || $override) {
+    if ($simplecache_enabled || $override) 
+    {
         $filename = $dataroot . 'views_simplecache/' . md5($viewtype . $view);
         if (file_exists($filename)) {
             $contents = file_get_contents($filename);

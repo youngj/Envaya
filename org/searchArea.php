@@ -16,7 +16,5 @@
     {
         $res[] = $org->jsProperties();
     }
-    
-    echo "searchAreaCallback(";
+        
     echo json_encode($res);
-    echo ");";

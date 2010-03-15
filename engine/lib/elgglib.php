@@ -386,73 +386,35 @@
 	 * @see elgg_view_register_simplecache
 	 *
 	 */
-		function elgg_view_regenerate_simplecache() {
+		function elgg_view_regenerate_simplecache() 
+        {
 			
 			global $CONFIG;
 			
-			if (isset($CONFIG->views->simplecache)) {
-				
-				if (!file_exists($CONFIG->dataroot . 'views_simplecache')) {
+			if (isset($CONFIG->views->simplecache)) 
+            {				
+				if (!file_exists($CONFIG->dataroot . 'views_simplecache')) 
+                {
 					@mkdir($CONFIG->dataroot . 'views_simplecache');
 				}
 				
-				if (!empty($CONFIG->views->simplecache) && is_array($CONFIG->views->simplecache)) {
-					foreach($CONFIG->views->simplecache as $view) {
+				if (!empty($CONFIG->views->simplecache) && is_array($CONFIG->views->simplecache)) 
+                {
+					foreach($CONFIG->views->simplecache as $view) 
+                    {
 						$viewcontents = elgg_view($view);
 						$viewname = md5(elgg_get_viewtype() . $view);
-						if ($handle = fopen($CONFIG->dataroot . 'views_simplecache/' . $viewname, 'w')) {
+						if ($handle = fopen($CONFIG->dataroot . 'views_simplecache/' . $viewname, 'w')) 
+                        {
 							fwrite($handle, $viewcontents);
 							fclose($handle);
 						}
 					}
 				}
 				
-				datalist_set('simplecache_lastupdate',0);
-				
-			}
-			
-		}
-		
-	/**
-	 * Enables the simple cache.
-	 * 
-	 * @see elgg_view_register_simplecache
-	 *
-	 */
-		
-		function elgg_view_enable_simplecache() {
-			global $CONFIG;
-			if(!$CONFIG->simplecache_enabled) {
-				datalist_set('simplecache_enabled',1);
-				$CONFIG->simplecache_enabled = 1;
-				elgg_view_regenerate_simplecache();
-			}
-		}
-		
-	/**
-	 * Disables the simple cache.
-	 * 
-	 * @see elgg_view_register_simplecache
-	 *
-	 */
-		
-		function elgg_view_disable_simplecache() {
-			global $CONFIG;
-			if ($CONFIG->simplecache_enabled) {
-				datalist_set('simplecache_enabled',0);
-				$CONFIG->simplecache_enabled = 0;
-					
-				// purge simple cache
-				if ($handle = opendir($CONFIG->dataroot.'views_simplecache')) {	
-				    while (false !== ($file = readdir($handle))) {
-				    	if ($file != "." && $file != "..") {
-				        	unlink($CONFIG->dataroot.'views_simplecache/'.$file);
-				    	}
-				    }	
-	    			closedir($handle);
-				}
-			}
-		}
+				datalist_set('simplecache_version', $CONFIG->simplecache_version);				
+			}			
+		}	
 		
 		/**
 		 * This is a factory function which produces an ElggCache object suitable for caching file load paths.
