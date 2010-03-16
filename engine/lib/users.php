@@ -301,7 +301,7 @@
         
         function getBlogDates()
         {
-            $sql = "SELECT guid, time_created from entities WHERE type='object' AND subtype=? AND container_guid=? ORDER BY guid ASC";
+            $sql = "SELECT guid, time_created from entities WHERE type='object' AND enabled='yes' AND subtype=? AND container_guid=? ORDER BY guid ASC";
             return get_data($sql, array(T_blog, $this->guid));               
         }           
         

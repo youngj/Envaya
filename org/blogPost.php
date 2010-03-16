@@ -17,13 +17,12 @@
         $title = elgg_echo('org:news');
 
         $body = elgg_view_layout("one_column_padded", org_title($page_owner, $title), $area2);            
+        
+        page_draw($title,$body);
     } 
     else 
     {
-        $body = elgg_view("blog/notfound");
-        $title = elgg_echo("blog:notfound");
+        not_found();        
     }
-        
-    page_draw($title,$body);
         
 ?>

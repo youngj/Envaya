@@ -21,7 +21,7 @@
 </div>
 <?php echo elgg_view('input/longtext', array(
     'internalname' => 'mission',
-    'value' => $org->mission
+    'value' => $org->getWidgetByName('home')->content
 )) ?>    
 </div>
 
@@ -64,7 +64,7 @@
 <div>
 <?php echo elgg_echo('setup:region') ?> <?php echo elgg_view('input/pulldown', array(
     'internalname' => 'region',
-    'options' => regions_in_country($org->country),
+    'options_values' => regions_in_country($org->country),
     'empty_option' => elgg_echo('setup:region:blank'),
     'value' => $org->region
 )) ?>    

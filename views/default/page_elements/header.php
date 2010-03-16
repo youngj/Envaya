@@ -86,6 +86,52 @@ function removeEvent(elem, type, fn)
         elem.detachEvent('on'+type, fn);
     }        
 }    
+
+var _jsonCache = {};
+
+function fetchJson(url, fn)
+{
+    if (_jsonCache[url])
+    {
+        setTimeout(function() {
+            fn(_jsonCache[url]);
+        }, 1);    
+        return null;
+    }
+    else
+    {
+        var xhr = (window.ActiveXObject && !window.XMLHttpRequest) ? new ActiveXObject("Msxml2.XMLHTTP") : new XMLHttpRequest();
+        xhr.onreadystatechange = function() 
+        {
+            if(xhr.readyState == 4 && xhr.status == 200)
+            {            
+                var $data;
+                eval("$data = " + xhr.responseText);    
+                _jsonCache[url] = $data;
+                fn($data);
+            }
+        };
+        xhr.open("GET", url, true);
+        xhr.send(null);
+        return xhr;
+    }
+}
+
+function bind(obj, fn)
+{
+    return function() {
+        return fn(obj);
+    };
+}
+  
+function removeChildren(elem)
+{
+    while (elem.firstChild)
+    {
+        elem.removeChild(elem.firstChild);
+    }
+}
+
 </script>
     
 </head>

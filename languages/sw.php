@@ -2,22 +2,22 @@
 
     $swahili = array(
         'home:title' => "Karibu katika Envaya",
-        'home:heading' => 'Envaya ni mtandao wa mashirika ya jumuiya ya kiraia Tanzania vigawavyo habari kuhusu miradi vyao katika intaneti.',        
+        'home:heading' => 'Envaya ni mtandao wa mashirika ya jumuiya ya kiraia Tanzania vigawavyo habari kuhusu miradi yao katika intaneti.',        
         'home:for_organizations' => 'Kwa mashirika:',
         'home:for_everyone' => 'Kwa wote:',
         'home:sign_up' => 'Jiunga sasa',
         'home:sign_in' => 'Fungua',
         'home:why' => 'Kwa nini nitumie Envaya?',
-        'home:browse_orgs' => 'Tazama mashirika yote',        
+        'home:browse_orgs' => 'Peleleza mashirika',        
         'home:find_org' => 'Tafuta shirika',
         'home:about_us' => 'Kuhusu sisi',    
     
-        'browse' => 'Tazama',
         'search' => 'Tafuta',
         'language' => "Lugha",
         'language:choose' => "Chagua Lugha",    
-    
-        'browse:title' => 'Tazama mashirika yote',
+
+        'browse' => 'Peleleza',    
+        'browse:title' => 'Peleleza mashirika yote',
         'browse:instructions' => "Kila pointi nyekundu katika ramani ya chini ni shirika litumialo Envaya. Elea juu ya pointi kuona jina lake, na ibongeze kutazama ukurasa wake mkuu.",
         'browse:map' => 'Ramani',
         'browse:list' => 'Orodha',   
@@ -39,8 +39,8 @@
         'sector:environment' => 'Mazingira',                    
         'sector:health' => 'Afya',
         'sector:hiv_aids' => 'UKIMWI',
-        'sector:human_rights' => 'Haki ya binadamu',
-        'sector:labor_rights' => 'Haki ya kazi',
+        'sector:human_rights' => 'Haki za binadamu',
+        'sector:labor_rights' => 'Haki za kazi',
         'sector:microenterprise' => 'Mikromkopo/Mikrobiashara',
         'sector:natural_resources' => 'Natural resource management',
         'sector:prof_training' => 'Ufundishaji ya kazi',                   
@@ -53,6 +53,13 @@
         'sector:other' => 'Nyingine',    
     
         'sector:empty_option' => 'Sekta zote',
+        
+        'tz:pemba_n' => 'Pemba Kaskazini',
+        'tz:pemba_s' => 'Pemba Kusini',
+        'tz:pwani' => 'Pwani',
+        'tz:zanzibar_cs' => 'Unguja Kusini',
+        'tz:zanzibar_n' => 'Unguja Kaskazini',
+        'tz:zanzibar_w' => 'Unguja Mjini Magharibi',             
 
         'login' => "Fungua",
         'loginok' => "Umefunguliwa.",

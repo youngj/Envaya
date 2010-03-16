@@ -53,12 +53,12 @@
                 (isadminloggedin() ? elgg_view("org/admin_box", array('entity' => $org)) : '')
         );
 
-        
-	} else {
-        forward("");
-		$title = elgg_echo('org:notfound');
-        $body = elgg_view_layout('one_column_padded', elgg_view_title($title), elgg_echo('org:notfound:details'));
-	}
 
-	page_draw($title, $body);
+        page_draw($title, $body);        
+	} 
+    else 
+    {    
+        forward("");
+		not_found();
+	}
 ?>

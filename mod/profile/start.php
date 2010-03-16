@@ -268,7 +268,4 @@
 		register_action("profile/editdefault/reset",false,$CONFIG->pluginspath . "profile/actions/resetdefaultprofile.php", true);
 		
 
-	// Define widgets for use in this context
-		use_widgets('profile');
-
 ?>

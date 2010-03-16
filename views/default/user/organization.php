@@ -27,14 +27,6 @@
 		if (!$title) $title = get_class($vars['entity']);
 			
 		$controls = "";
-		if ($vars['entity']->canEdit())
-		{
-            $controls .= "(".elgg_view('output/confirmlink', array(
-                'text' => elgg_echo('delete'), 
-                'is_action' => true,
-                'href' => "{$vars['url']}action/entities/delete?guid={$vars['entity']->guid}"
-            )).")";        
-		}
 		
 		$info = "<div><p><b><a href=\"" . $vars['entity']->getUrl() . "\">" . escape($title) . "</a>" . (!$vars['entity']->isApproved() ? (" (" . elgg_echo('org:shortnotapproved') .") ") : "") . "</b> $controls </p></div>";
 		

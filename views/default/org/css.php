@@ -348,59 +348,110 @@ body
     display:block;
 }
 
-.blogNav
-{
-    text-align:center;
-    padding-bottom:10px;
-}
-
 #blogTimeline
 {
     margin:0px 15px;
     position:relative;
     width:420px;
-    height:45px;
+    height:50px;
+}
+
+#blogTimelineLeft, #blogTimelineRight, #blogTimelineLine
+{
+    position:absolute;    
+    top:7px;
+    height:26px;
+}
+
+#blogTimelineLeft
+{
+    left:0px;   
+    width:13px;
+    background:url(<?php echo $graphicsDir ?>/timeline.gif) no-repeat left -26px;
+}
+
+#blogTimelineRight
+{
+    left:413px;   
+    width:13px;
+    background:url(<?php echo $graphicsDir ?>/timeline.gif) no-repeat left -52px;
 }
 
 #blogTimelineLine
 {
-    position:absolute;
-    left:0px;
-    top:10px;
-    height:1px;
+    left:13px;
     width:400px;
-    background-color:gray;
-}
-
-.timelineLink
-{
-    position:absolute;    
-}
-
-.timelineCur
-{
-    position:absolute;
-    height:20px;
-    top:0px;
-    width:2px;
-    background-color:gray;
+    background:url(<?php echo $graphicsDir ?>/timeline.gif) repeat-x left top;
 }
 
 .timelineMarker
 {
     position:absolute;
-    height:20px;
-    top:0px;
+    height:4px;
+    top:27px;
     width:1px;
-    background-color:gray;
+    background-color:#333;
+}
+
+.timelineLink
+{
+    position:absolute;    
+    top:13px;
+    width:5px;
+    height:14px;
+    display:block;
+    background-color:#333;
+}
+
+.timelineCur
+{
+    position:absolute;
+    height:17px;
+    top:-3px;
+    width:13px;
+    background:url(<?php echo $graphicsDir; ?>/timeline.gif) no-repeat left -87px;
 }
 
 .timelineLabel
 {
     position:absolute;
-    top:21px;
+    top:30px;
     width:70px;
     text-align:center;
+    font-size:10px;
+}
+
+#hoverPost
+{
+    position:absolute;
+    top:27px;
+}
+
+#hoverPost img
+{
+    display:block;
+    margin:0 auto;
+}
+
+#blogNavPrev, #blogNavNext
+{
+    position:absolute;
+    display:block;
+    height:19px;
+    width:22px;
+    top:9px;
+}
+
+#blogNavPrev
+{
+    left:-20px;
+    background: url(<?php echo $graphicsDir ?>/arrows_sm.gif) no-repeat left top;
+}
+
+#blogNavNext
+{
+    left:425px;
+    background: url(<?php echo $graphicsDir ?>/arrows_sm.gif) no-repeat right top;
 }
 
 .homeLanguages

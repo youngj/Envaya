@@ -50,6 +50,11 @@ function home_page_handler($page)
 function org_profile_page_handler($page)
 {                
     $org = get_user_by_username($page[0]);                
+    if (!$org)
+    {
+        include(dirname(__FILE__) . "/orgprofile.php");        
+        return;
+    }
 
     set_input('org_guid', $org->guid);
     set_page_owner($org->guid);
@@ -75,6 +80,9 @@ function org_profile_page_handler($page)
                     case "edit":
                         include(dirname(__FILE__) . "/editPost.php");
                         return;
+                    case "preview":
+                        include(dirname(__FILE__) . "/postPreview.php");
+                        return;                        
                     case "image":
                         set_input("size", $page[4]);
                         include(dirname(__FILE__) . "/postImage.php");
@@ -120,6 +128,11 @@ function org_profile_page_handler($page)
             if ($widget->guid)
             {            
                 include(dirname(__FILE__) . "/orgprofile.php");
+                return;
+            }
+            else
+            {
+                not_found();
                 return;
             }
         }

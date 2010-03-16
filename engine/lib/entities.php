@@ -1718,6 +1718,8 @@
                 $args[] = (int)$limit;
             }    
             
+            //echo $query;
+            
             return array_map('entity_row_to_elggstar', get_data($query, $args));
         } 
         else 

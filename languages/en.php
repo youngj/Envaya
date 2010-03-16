@@ -8,15 +8,17 @@
         'home:sign_up' => 'Sign up now',
         'home:sign_in' => 'Login',
         'home:why' => 'Why use Envaya?',
-        'home:browse_orgs' => 'Browse organizations',        
+        'home:browse_orgs' => 'Explore organizations',        
         'home:find_org' => 'Find an organization',
         'home:about_us' => 'About us',
         
-        'browse' => 'Browse',
+        'loading' => "Loading...",
+        
         'language' => "Language",
         'language:choose' => "Select a Language",
-        
-        'browse:title' => 'Browse organizations',
+
+        'browse' => 'Explore',        
+        'browse:title' => 'Explore organizations',
         'browse:instructions' => "Each icon on the map below is an organization using Envaya. Hover over an icon to see its name, and click to view its home page.",
         'browse:map' => 'Map',
         'browse:list' => 'List',
@@ -52,6 +54,33 @@
         'sector:other' => 'Other',
                                          
         'sector:empty_option' => 'All sectors',
+        
+        'tz:arusha' => 'Arusha',
+        'tz:dar' => 'Dar es Salaam',
+        'tz:dodoma' => 'Dodoma',
+        'tz:iringa' => 'Iringa',
+        'tz:kagera' => 'Kagera',
+        'tz:kigoma' => 'Kigoma',
+        'tz:kilimanjaro' => 'Kilimanjaro',
+        'tz:lindi' => 'Lindi',
+        'tz:manyara' => 'Manyara',
+        'tz:mara' => 'Mara',
+        'tz:mbeya' => 'Mbeya',
+        'tz:morogoro' => 'Morogoro',
+        'tz:mtwara' => 'Mtwara',
+        'tz:mwanza' => 'Mwanza',
+        'tz:pemba_n' => 'Pemba North',
+        'tz:pemba_s' => 'Pemba South',
+        'tz:pwani' => 'Coast',
+        'tz:rukwa' => 'Rukwa',
+        'tz:ruvuma' => 'Ruvuma',
+        'tz:shinyanga' => 'Shinyanga',
+        'tz:singida' => 'Singida',
+        'tz:tabora' => 'Tabora',
+        'tz:tanga' => 'Tanga',
+        'tz:zanzibar_cs' => 'Zanzibar Central/South',
+        'tz:zanzibar_n' => 'Zanzibar North',
+        'tz:zanzibar_w' => 'Zanzibar West',        
         
         'login' => "Log in",
         'loginok' => "You have been logged in.",
@@ -235,6 +264,9 @@
         
         'welcome_user' => "Welcome, %s!",                     
 
+        'page:notfound' => "Page not found",
+        'page:notfound:details' => "The requested page either does not exist or you do not have access to it.",
+
         'org:mobilesettings' => "Mobile settings",
         'org:postemail' => 'Posting Email',
         'org:changeemail' => 'Change',                        
@@ -245,9 +277,7 @@
         'org:icon:reset' => 'Logo removed successfully.',
 
         'org:saved' => 'Organization saved',
-
-        'org:notfound' => "Organization not found",
-        'org:notfound:details' => "The requested organization either does not exist or you do not have access to it",
+        
         'org:cantedit' => "You do not have access to edit this organization's web site.",
 
         'org:rejected' => 'We are sorry. This organization was not approved by our administrators.',
@@ -255,6 +285,7 @@
         'org:approve' => "Approve Organization",
         'org:unapprove' => "Remove Approval",
         'org:reject' => "Reject Organization",
+        'org:delete' => "Delete Organization",
         'org:unreject' => "Remove Rejection",
         'org:approval_changed' => "Organization approval changed",
         'org:notapproved' => "Organization could not be approved",

@@ -51,21 +51,6 @@ function setMapSector($sector)
 <script type="text/javascript">
 google.load("maps", "2.x");
 
-function bind(obj, fn)
-{
-    return function() {
-        return fn(obj);
-    };
-}
-  
-function removeChildren($elem)
-{
-    while ($elem.firstChild)
-    {
-        $elem.removeChild($elem.firstChild);
-    }
-}
-
 function dropPin()
 {
     var $ll = map.getCenter();
@@ -198,29 +183,8 @@ function fetchOrgs()
     {
         fetchOrgXHR.abort();
         fetchOrgXHR = null;
-    }
-    
-    if (nearbyOrgsCache[$src])
-    {
-        showOrgs(nearbyOrgsCache[$src]);
-    }
-    else
-    {    
-        var xhr = (window.ActiveXObject && !window.XMLHttpRequest) ? new ActiveXObject("Msxml2.XMLHTTP") : new XMLHttpRequest();        
-        fetchOrgXHR = xhr;
-        xhr.onreadystatechange = function() 
-        {
-            if(xhr.readyState == 4 && xhr.status == 200)
-            {            
-                var $data;
-                eval("$data = "+xhr.responseText);    
-                nearbyOrgsCache[$src] = $data;
-                showOrgs($data);
-            }
-        };
-        xhr.open("GET", $src, true);
-        xhr.send(null);
     }    
+    fetchOrgXHR = fetchJson($src, showOrgs);
 }    
    
 function initialize() 

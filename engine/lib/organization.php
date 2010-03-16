@@ -4,10 +4,8 @@ require_once(dirname(__FILE__)."/users.php");
 
 define('SECTOR_OTHER', 99);
 
-// Class source
 class Organization extends ElggUser 
 {
-
     protected function initialise_attributes() 
     {
         parent::initialise_attributes();
@@ -35,6 +33,12 @@ class Organization extends ElggUser
         $filehandler->setFilename("icon$size.jpg");
         return $filehandler;
     }   
+    
+    public function getURL()
+    {
+        global $CONFIG;
+        return $CONFIG->url . "{$this->username}";
+    }
     
     public function getIcon($size = 'medium')
     {
@@ -75,7 +79,7 @@ class Organization extends ElggUser
         }
         if ($this->region && $includeRegion)
         {
-            $res .= "{$this->region}, ";
+            $res .= elgg_echo($this->region). ", ";            
         }
         $res .= elgg_echo("country:{$this->country}");
         
@@ -282,220 +286,6 @@ class Organization extends ElggUser
     }    
 }
 
-class Translation extends ElggObject
-{
-    static $subtype_id = T_translation;
-    static $table_name = 'translations';
-    static $table_attributes = array(
-        'hash' => '',
-        'property' => '',
-        'lang' => '',
-        'value' => ''
-    );
-    
-    public function save()
-    {
-        $this->hash = $this->calculateHash();
-        return parent::save();
-    }
-    
-    public function getOriginalText()
-    {
-        $obj = $this->getContainerEntity();
-        $property = $this->property;
-        return trim($obj->$property);
-    }
-    
-    public function calculateHash()
-    {
-        return $this->getRootContainerEntity()->language . ":" . sha1($this->getOriginalText());        
-    }    
-    
-    public function isStale()
-    {
-        return $this->calculateHash() != $this->hash;
-    }
-}
-
-class Widget extends ElggObject
-{
-    static $subtype_id = T_widget;
-    static $table_name = 'widgets';
-    static $table_attributes = array(
-        'widget_name' => 0,
-        'content' => '',
-        'data_types' => 0,
-    );        
-    
-    function renderView()
-    {
-        $res = elgg_view("widgets/{$this->widget_name}_view", array('widget' => $this));
-        if ($res)
-        {
-            return $res;
-        }    
-        return elgg_view("widgets/generic_view", array('widget' => $this));    
-    }
-    
-    function renderEdit()
-    {
-        $res = elgg_view("widgets/{$this->widget_name}_edit", array('widget' => $this));
-        if ($res)
-        {
-            return $res;
-        }    
-        return elgg_view("widgets/generic_edit", array('widget' => $this));
-    } 
-    
-    function getURL()
-    {
-        $org = $this->getContainerEntity();
-        return "{$org->getUrl()}/{$this->widget_name}";
-    }
-    
-    function saveInput()
-    {
-        $fn = "save_widget_{$this->widget_name}";
-        if (!is_callable($fn))
-        {
-            $fn = "save_widget";
-        }
-        $fn($this);
-    }    
-
-    public function getImageFile($size = '')
-    {
-        $filehandler = new ElggFile();
-        $filehandler->owner_guid = $this->container_guid;
-        $filehandler->setFilename("widget/{$this->guid}$size.jpg");
-        return $filehandler;       
-    }
-    
-    public function hasImage()
-    {
-        return ($this->data_types & DataType::Image) != 0;
-    }   
-    
-    public function getImageURL($size = 'large')
-    {
-        return "{$this->getUrl()}/image/{$size}?{$this->time_updated}";
-    }
-
-    public function setImage($imageData)
-    {
-        if (!$imageData)
-        {
-            $this->data_types &= ~DataType::Image;     
-        }
-        else
-        {
-            $this->data_types |= DataType::Image; 
-
-            $prefix = "widget/{$this->guid}";
-
-            $file = new ElggFile();
-            $file->owner_guid = $this->container_guid;
-            $file->container_guid = $this->guid;
-
-            $file->setFilename("{$prefix}.jpg");
-            $file->open("write");
-            $file->write($imageData);
-            $file->close();
-
-            $originalFileName = $file->getFilenameOnFilestore();
-
-            $thumbsmall = get_resized_image_from_existing_file($originalFileName,100,150, false);
-            if ($thumbsmall) 
-            {
-                $file->setFilename("{$prefix}small.jpg");
-                $file->open("write");
-                $file->write($thumbsmall);
-                $file->close();
-            }            
-
-            $thumbmed = get_resized_image_from_existing_file($originalFileName,200,300, false);
-            if ($thumbmed) 
-            {
-                $file->setFilename("{$prefix}medium.jpg");
-                $file->open("write");
-                $file->write($thumbmed);
-                $file->close();
-            }
-            
-            $thumblarge = get_resized_image_from_existing_file($originalFileName,450,450, false);
-            if ($thumblarge) 
-            {
-                $file->setFilename("{$prefix}large.jpg");
-                $file->open("write");
-                $file->write($thumblarge);
-                $file->close();
-            }
-            
-        }   
-        $this->save();
-    } 
-    
-    public function isActive()
-    {
-        return $this->guid && $this->isEnabled();
-    }
-}
-
-function save_widget($widget)
-{
-    $widget->content = get_input('content');
-    $widget->image_position = get_input('image_position');
-    $widget->save();
-    
-    if (has_uploaded_file('image'))
-    {            
-        if (is_image_upload('image'))
-        {    
-            $widget->setImage(get_uploaded_file('image'));        
-        }
-        else
-        {
-            register_error(elgg_echo('upload:invalid_image'));
-        }
-    }    
-    else if (get_input('deleteimage'))
-    {
-        $widget->setImage(null);
-    }
-}
-
-function save_widget_home($widget)
-{
-    $widget->content = get_input('content');
-    $org = $widget->getContainerEntity();    
-    $org->setSectors(get_input_array('sector'));
-    $org->sector_other = get_input('sector_other');
-    $org->save();
-    $widget->save();
-}
-
-function save_widget_map($widget)
-{
-    $org = $widget->getContainerEntity();
-    $org->latitude = get_input('org_lat');
-    $org->longitude = get_input('org_lng');    
-    $org->save();
-    
-    $widget->zoom = get_input('map_zoom');    
-    $widget->save();
-}
-
-function save_widget_contact($widget)
-{
-    $org = $widget->getContainerEntity();
-    $widget->public_email = get_input('public_email');
-    $org->phone_number = get_input('phone_number');    
-    $org->contact_name = get_input('contact_name');    
-    $org->contact_title = get_input('contact_title');    
-    $org->save();
-    $widget->save();
-}
-
 class DataType
 {
     const Image = 2;
@@ -518,15 +308,47 @@ class NewsUpdate extends ElggObject
         return $filehandler;       
     }
     
+
+    public function getURL()
+    {
+        $org = $this->getContainerEntity();
+        if ($org)
+        {    
+            return $org->getUrl() . "/post/" . $this->getGUID();
+        }
+        return '';
+    }        
+    
     public function getImageURL($size = '')
     {
-        return "{$this->getURL()}/image/$size?{$this->time_updated}";
+        return $this->hasImage() ? "{$this->getURL()}/image/$size?{$this->time_updated}" : "";
     }    
     
     public function hasImage()
     {
         return ($this->data_types & DataType::Image) != 0;
     }   
+    
+    public function getSnippetHTML()
+    {
+        $content = $this->content;
+        if ($content)
+        {
+            // todo: multi-byte support
+            if (strlen($content) > 100)
+            {
+                $content = substr($content, 0, 100) . "...";
+            }                
+            
+            return elgg_view('output/text', array('value' => $content));
+        }
+        return '';
+    }
+
+    public function getDateText()
+    {
+        return friendly_time($this->time_created); 
+    }
 
     public function setImage($imageData)
     {
@@ -575,212 +397,12 @@ class NewsUpdate extends ElggObject
     }
 }
 
-class TranslateMode
-{
-    const None = 1;
-    const ManualOnly = 2;
-    const All = 3;    
-}
-
-function view_translated($obj, $field)
-{        
-    $text = trim($obj->$field);
-    if (!$text)
-    {
-        return '';
-    }   
-
-    $org = $obj->getRootContainerEntity();
-    if (!($org instanceof Organization))
-    {
-        return '';
-    }
-    
-    $origLang = $org->language;
-    $viewLang = get_language();
-
-    if ($origLang != $viewLang)
-    {
-        global $CONFIG;
-        
-        if (!isset($CONFIG->translations_available))
-        {
-            $CONFIG->translations_available = array('origlang' => $origLang);
-        }
-
-        $translateMode = get_translate_mode();
-        $translation = lookup_translation($obj, $field, $origLang, $viewLang, $translateMode);            
-        
-        if ($translation && $translation->owner_guid)
-        {
-            $CONFIG->translations_available[TranslateMode::ManualOnly] = true;            
-            
-            if ($translation->isStale())
-            {
-                $CONFIG->translations_available['stale'] = true;
-            }
-            
-            $viewTranslation = ($translateMode > TranslateMode::None);
-        }
-        else
-        {
-            $CONFIG->translations_available[TranslateMode::All] = true;
-            $viewTranslation = ($translateMode == TranslateMode::All);
-        }
-
-        return elgg_view("translation/wrapper", array(
-            'translation' => $viewTranslation ? $translation : null, 
-            'entity' => $obj, 
-            'property' => $field, 
-        ));
-    }   
-
-    return elgg_view("output/longtext",array('value' => $text));        
-}
-
-
-function lookup_translation($obj, $prop, $origLang, $viewLang, $translateMode = TranslateMode::ManualOnly)
-{
-    $where = array();
-    $args = array();
-
-    $where[] = "subtype=?";
-    $args[] = T_translation;
-
-    $where[] = "property=?";
-    $args[] = $prop;
-
-    $where[] = "lang=?";
-    $args[] = $viewLang;
-
-    $where[] = "container_guid=?";
-    $args[] = $obj->guid;
-
-    $entities = get_entities_by_condition('translations', $where, $args, '', 1);          
-    
-    $doAutoTranslate = ($translateMode == TranslateMode::All);
-    
-    if (!empty($entities)) 
-    {        
-        $trans = $entities[0];
-        
-        if ($doAutoTranslate && $trans->isStale())
-        {
-            $text = get_auto_translation($obj->$prop, $origLang, $viewLang);
-            if ($text != null)
-            {
-                if (!$trans->owner_guid) // previous version was from google
-                {            
-                    $trans->value = $text;
-                    $trans->save();
-                }
-                else // previous version was from human
-                {
-                    // TODO : cache this
-                    $fakeTrans = new Translation();    
-                    $fakeTrans->owner_guid = 0;
-                    $fakeTrans->container_guid = $obj->guid;
-                    $fakeTrans->property = $prop;
-                    $fakeTrans->lang = $viewLang;
-                    $fakeTrans->value = $text;                               
-                    return $fakeTrans;
-                }        
-            }    
-        }    
-        
-        return $trans;
-    }
-    else if ($doAutoTranslate)
-    {   
-        $text = get_auto_translation($obj->$prop, $origLang, $viewLang);
-        
-        if ($text != null)
-        {
-            $trans = new Translation();    
-            $trans->owner_guid = 0;
-            $trans->container_guid = $obj->guid;
-            $trans->property = $prop;
-            $trans->lang = $viewLang;
-            $trans->value = $text;            
-            $trans->save();
-            return $trans;
-        }    
-        return null;
-    }
-    return null;
-}
-
-function get_auto_translation($text, $origLang, $viewLang)
-{
-    if ($origLang == $viewLang)
-    {
-        return null;
-    }    
-
-    $text = trim($text);
-    if (!$text)
-    {
-        return null;
-    }
-           
-    $ch = curl_init(); 
-    
-    $text = str_replace("\r","", $text);
-    $text = str_replace("\n", ",;", $text);
-    
-    $url = "ajax.googleapis.com/ajax/services/language/translate?v=1.0&langpair=$origLang%7C$viewLang&q=".urlencode($text);
-    
-    curl_setopt($ch, CURLOPT_URL, $url); 
-    curl_setopt($ch, CURLOPT_REFERER, "www.envaya.org");     
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-    
-    $json = curl_exec($ch); 
-         
-    curl_close($ch);     
-    
-    $res = json_decode($json);
-                
-    $translated = $res->responseData->translatedText;
-    if (!$translated)
-    {
-        return null;
-    }
-            
-    $text = html_entity_decode($translated, ENT_QUOTES);
-    
-    return str_replace(",;", "\n", $text);   
-}
-
-function envaya_init() {
-
-    global $CONFIG;
-    
-    register_plugin_hook('geocode', 'location', 'googlegeocoder_geocode');
-    
-    register_entity_type('user', 'organization');
-    register_entity_type('object', 'blog');
-    register_entity_type('object', 'translation');
-    
-    register_entity_url_handler('org_url','user','organization');
-    register_entity_url_handler('blogpost_url','object','blog');
-
-    extend_view('css','org/css');
-
-    include_once("{$CONFIG->path}org/start.php");    
-}
-
 /**
  * Mobworking.net geocoder
  * 
  * @author Marcus Povey <marcus@dushka.co.uk>
  * @copyright Marcus Povey 2008-2009
- */
-    
-/** 
- * Google geocoder.
- *
- * Listen for an Elgg Geocode request and use google maps to geocode it.
- */
+ */  
 function googlegeocoder_geocode($hook, $entity_type, $returnvalue, $params)
 { 
     if (isset($params['location']))
@@ -814,87 +436,51 @@ function org_title($org, $subtitle)
     ));
 }
 
-/**
- * Populates the ->getUrl() method for org objects
- *
- * @param ElggEntity $entity File entity
- * @return string File URL
- */
-function org_url($entity) {
-
-    global $CONFIG;
-    return $CONFIG->url . "{$entity->username}";
-}
-
-function forward_to_referrer()
-{
-    forward($_SERVER['HTTP_REFERER']);    
-}
-
-function blogpost_url($blogpost) {
-
-    global $CONFIG;
-    
-    $org = $blogpost->getContainerEntity();
-    
-    if ($org)
-    {    
-        return $org->getUrl() . "/post/" . $blogpost->getGUID();
-    }
-}
-
-function preserve_input($name, $value)
-{    
-    $prevInput = $_SESSION['input'];
-    if ($prevInput)
-    {
-        if (isset($prevInput[$name]))
-        {
-            $val = $prevInput[$name];
-            unset($_SESSION['input'][$name]);
-            return $val;
-        }    
-    }
-    return $value;
-}
-
 function regions_in_country($country)
 {
     if ($country == 'tz'  || true)
     {
-        return array(
-            'Arusha',
-            'Dar es Salaam',
-            'Dodoma',
-            'Iringa',
-            'Kagera',
-            'Kigoma',
-            'Kilimanjaro',
-            'Lindi',
-            'Manyara',
-            'Mara',
-            'Mbeya',
-            'Morogoro',
-            'Mtwara',
-            'Mwanza',
-            'Pemba North',
-            'Pemba South',
-            'Pwani',
-            'Rukwa',
-            'Ruvuma',
-            'Shinyanga',
-            'Singida',
-            'Tabora',
-            'Tanga',
-            'Zanzibar Central/South',
-            'Zanzibar North',
-            'Zanzibar West',
-        );
+        $ids = array(
+            'tz:arusha',
+            'tz:dar',
+            'tz:dodoma',
+            'tz:iringa',
+            'tz:kagera',
+            'tz:kigoma',
+            'tz:kilimanjaro',
+            'tz:lindi',
+            'tz:manyara',
+            'tz:mara',
+            'tz:mbeya',
+            'tz:morogoro',
+            'tz:mtwara',
+            'tz:mwanza',
+            'tz:pemba_n',
+            'tz:pemba_s',
+            'tz:pwani',
+            'tz:rukwa',
+            'tz:ruvuma',
+            'tz:shinyanga',
+            'tz:singida',
+            'tz:tabora',
+            'tz:tanga',
+            'tz:zanzibar_cs',
+            'tz:zanzibar_n',
+            'tz:zanzibar_w',
+        );        
     }
     else
     {
-        return array();
+        $ids = array();
     }
+    
+    $res = array();
+    foreach ($ids as $id)
+    {
+        $res[$id] = elgg_echo($id);
+    }    
+    asort($res);
+    return $res;
 }
 
 function get_static_map_url($lat, $long, $zoom, $width, $height)
@@ -904,40 +490,19 @@ function get_static_map_url($lat, $long, $zoom, $width, $height)
     return "http://maps.google.com/maps/api/staticmap?center=$lat,$long&zoom=$zoom&size={$width}x$height&maptype=roadmap&markers=$lat,$long&sensor=false&key=$apiKey";
 }
 
-function get_translate_mode()
-{
-    return ((int)get_input("trans")) ?: TranslateMode::ManualOnly;
-}
-
-function get_original_language()
-{
-    global $CONFIG;
-    if (isset($CONFIG->translations_available))
-    {
-        return $CONFIG->translations_available['origlang'];
-    }
-    
-    return '';
-}
-
-function page_has_stale_translation()
-{
-    global $CONFIG;
-    return (isset($CONFIG->translations_available) && isset($CONFIG->translations_available['stale']));    
-}
-
-function page_is_translatable($mode=null)
+function envaya_init() 
 {
     global $CONFIG;
     
-    if (isset($CONFIG->translations_available))
-    {
-        if ($mode == null || isset($CONFIG->translations_available[$mode]))
-        {
-            return true;
-        }
-    }
-    return false;
+    register_plugin_hook('geocode', 'location', 'googlegeocoder_geocode');
+    
+    register_entity_type('user', 'organization');
+    register_entity_type('object', 'blog');
+    register_entity_type('object', 'translation');
+    
+    extend_view('css','org/css');
+
+    include_once("{$CONFIG->path}org/start.php");    
 }
 
 register_elgg_event_handler('init','system','envaya_init');

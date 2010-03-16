@@ -19,6 +19,35 @@
         return htmlentities($val, ENT_QUOTES, 'UTF-8');
     }    
 
+    function forward_to_referrer()
+    {
+        forward($_SERVER['HTTP_REFERER']);    
+    }
+
+    function not_found()
+    {
+        $title = elgg_echo('page:notfound');
+        $body = elgg_view_layout('one_column_padded', elgg_view_title($title), elgg_echo('page:notfound:details'));
+        header("HTTP/1.1 404 Not Found");
+        page_draw($title, $body);
+        exit;
+    }
+
+    function preserve_input($name, $value)
+    {    
+        $prevInput = $_SESSION['input'];
+        if ($prevInput)
+        {
+            if (isset($prevInput[$name]))
+            {
+                $val = $prevInput[$name];
+                unset($_SESSION['input'][$name]);
+                return $val;
+            }    
+        }
+        return $value;
+    }
+
     function sanitize_image_size($size)
     {
         $size = strtolower($size);
