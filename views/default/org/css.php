@@ -5,7 +5,7 @@
 #topbar
 {
     width:100%;
-    height:48px;
+    /* height:48px; */
     background:#333 url("<?php echo $graphicsDir; ?>/topgradient.gif?v2") repeat-x left top;  
 }
 
@@ -29,7 +29,7 @@
 {
     display:block;
     float:left;
-    padding:14px 24px 10px 24px;
+    padding:14px 20px 10px 20px;
     border-left:1px solid #5d5d5d;
     border-right:1px solid #2f2f2f;
     height:22px;
@@ -38,7 +38,7 @@
 
 .topbarLinks a#logoContainer
 {
-    padding:8px 30px 8px 20px;
+    padding:8px 22px 16px 15px;
     border-left:0px;
 }
 
@@ -50,7 +50,7 @@
 
 #loginButton, #loggedinArea
 {    
-    width:238px;
+    width:166px;
     height:46px;
     display:block;
     float:right;
@@ -58,12 +58,12 @@
 
 #loginButton
 {
-    background:#4d4d4d url(<?php echo $graphicsDir; ?>/loginbutton.gif) no-repeat left top;
+    background:#4d4d4d url(<?php echo $graphicsDir; ?>/loginbutton_sm.gif) no-repeat left top;
 }
 
 #loggedinArea
 {
-    background:#1d5153 url(<?php echo $graphicsDir; ?>/loggedinarea.gif) no-repeat left top;
+    background:#1d5153 url(<?php echo $graphicsDir; ?>/loggedinarea_sm.gif) no-repeat left top;
 }    
 
 a#loginButton:hover 
@@ -102,8 +102,8 @@ a#loginButton:hover .loginContent span
 
 .loggedInAreaContent a
 {
-    margin-left:10px;
-    margin-right:10px;
+    margin-left:5px;
+    margin-right:5px;
 }
 
 .loggedInAreaContent a:hover
@@ -180,12 +180,6 @@ a.dropdown_item:hover
 {
     font-weight:bold;
     color:black;
-}
-
-.blog_post
-{
-    clear:both;
-    padding-bottom:10px;
 }
 
 .float_right
@@ -314,17 +308,25 @@ body
     margin:0px 10px;
 }
 
+.blog_post
+{
+    clear:both;
+    margin-bottom:10px;
+}
+
 .blog_post p 
 {
     margin: 0 0 5px 0;
 }
 
-.blog_post .strapline 
+.blog_date
 {
-    margin: 0 0 0 35px;
-    padding:0;
     color: #aaa;
-    line-height:1em;
+}
+
+.blog_more
+{    
+    float:right;
 }
 
 .transContributeLink
@@ -337,8 +339,18 @@ body
 .smallBlogImageLink
 {
     float:left;
-    margin-right:5px;
-    margin-bottom:10px;
+    margin-right:4px;
+    margin-bottom:4px;    
+}
+
+.smallBlogImageLink
+{
+    border: 1px solid transparent;
+}    
+
+a.smallBlogImageLink:hover
+{
+    border: 1px solid #7391a9;
 }
 
 .largeBlogImageLink

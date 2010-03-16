@@ -1,3 +1,4 @@
+<div class='padded'>
 <?php
 
     $widget = $vars['widget'];
@@ -23,3 +24,4 @@
     ));
     
 ?>
+</div>

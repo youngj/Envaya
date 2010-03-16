@@ -329,15 +329,15 @@ class NewsUpdate extends ElggObject
         return ($this->data_types & DataType::Image) != 0;
     }   
     
-    public function getSnippetHTML()
+    public function getSnippetHTML($maxLength = 100)
     {
         $content = $this->content;
         if ($content)
         {
             // todo: multi-byte support
-            if (strlen($content) > 100)
+            if (strlen($content) > $maxLength)
             {
-                $content = substr($content, 0, 100) . "...";
+                $content = substr($content, 0, $maxLength) . "...";
             }                
             
             return elgg_view('output/text', array('value' => $content));

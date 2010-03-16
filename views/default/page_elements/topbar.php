@@ -56,7 +56,7 @@ function closeChangeLanguage()
 ?>
 
 <?php if (get_context() != "login") { ?>
-<td width='238'>
+<td width='166'>
 
     <?php            
     

@@ -178,15 +178,13 @@ for (var i = 0; i < blogDates.length; i++)
         }
         
         echo view_translated($entity, 'content'); 
+        
+        echo "<span class='blog_date'>{$entity->getDateText()}</span> ";
 
         if (!$full)
         {
-            echo "<a href='{$entity->getURL()}'>".elgg_echo('blog:more')."</a>";
-        }    
-
-    ?>      
-      
-    <p class="strapline">
-        <?php echo $entity->getDateText(); ?>
-    </p>
+            echo "<a class='blog_more' href='{$entity->getURL()}'>".elgg_echo('blog:more')."</a>";
+        }           
+    ?>              
+    <div style='clear:both'></div>
 </div>

@@ -37,7 +37,7 @@
         
         $sectorText = implode(', ', $sectorNames);               
 
-        if (in_array(SECTOR_OTHER, $sectors))
+        if (in_array(SECTOR_OTHER, $sectors) && $org->sector_other)
         {
             $sectorText .= " (".escape($org->sector_other).")";
         }
