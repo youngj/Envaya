@@ -25,6 +25,6 @@
     }
     
 	$title = elgg_echo("register:title");	
-    $body = elgg_view_layout('one_column_padded', elgg_view_title($title), elgg_view("org/register$step"));	
+    $body = elgg_view_layout('one_column', elgg_view_title($title), elgg_view("org/register$step"));	
 	page_draw($title, $body);
 ?>

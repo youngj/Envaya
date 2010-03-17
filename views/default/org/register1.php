@@ -7,7 +7,6 @@
 <div class='instructions'>
     <?php echo elgg_echo('qualify:instructions') ?>
 </div>
-</div>
 
 <form action='action/org/register1' method='POST'>
 
@@ -71,3 +70,4 @@
 
 </form>
 
+</div>

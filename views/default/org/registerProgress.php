@@ -1,17 +1,18 @@
 <?php 
     $current = $vars['current'];
 ?>    
-<ul class='progressTabs'>
+<table class='tabs'>
+<tr>
 <?php
     $steps = array(1,2,3);
     foreach ($steps as $step)
     {
         ?>
-        <li class='<?php echo (($current == $step) ? 'active' : '') ?>'>
-            <?php echo elgg_echo("register:step".$step) ?>
-        </li>
+        <td class='tab <?php echo (($current == $step) ? 'active' : '') ?>'>
+            <span><?php echo elgg_echo("register:step".$step) ?></span>
+        </td>
         <?php
     }   
     ?>
-</ul>
-<div style='clear:both;height:10px;'></div>
+</tr>    
+</table>

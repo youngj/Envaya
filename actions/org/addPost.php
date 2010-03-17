@@ -12,7 +12,7 @@
     if (empty($body) && !$hasImage) 
     {
         register_error(elgg_echo("blog:blank"));
-        forward($_SERVER['HTTP_REFERER']);
+        forward_to_referrer();
     } 
     else if (!$org->canEdit())
     {

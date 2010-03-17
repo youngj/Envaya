@@ -1,17 +1,7 @@
-
 <?php
     $blog = $vars['entity'];    
 
-    if ($blog) 
-    {
-        $action = "news/edit";
-        $body = $vars['entity']->content;
-    } 
-    else  
-    {
-        $action = "news/add";
-        $body = '';
-    }
+    $body = $vars['entity']->content;
 
     ob_start();                
 ?>
@@ -30,35 +20,17 @@
 </div>
 
 <?php
-    if (isset($vars['entity'])) 
-    {
-        echo elgg_view('input/hidden', array('internalname' => 'blogpost', 'value' => $vars['entity']->getGUID()));
-    } 
-    else
-    {
-        echo elgg_view('input/hidden', array('internalname' => 'container_guid', 'value' => $vars['container_guid']));
-    }
-?>    
-
-
-<?php echo elgg_view('input/submit', array('internalname' => 'submit', 'value' => elgg_echo($blog ? 'blog:save' : 'blog:publish'))); ?>
-
-<?php 
-if ($blog)
-{
+    echo elgg_view('input/hidden', array('internalname' => 'blogpost', 'value' => $vars['entity']->getGUID()));
+    echo elgg_view('input/submit', array('internalname' => 'submit', 'value' => elgg_echo('blog:save'))); 
     echo elgg_view('input/submit', array(
             'internalname' => "delete", 
             'internalid' => 'widget_delete', 
             'js' => "onclick='return confirm(".json_encode(elgg_echo('question:areyousure')).")'",
             'value' => elgg_echo('blog:delete')
         )); 
-}        
 ?>
 
 <?php
     $form_body = ob_get_clean();
-
-
-    echo elgg_view('input/form', array('action' => "{$vars['url']}action/$action", 'enctype' => "multipart/form-data", 'body' => $form_body, 'internalid' => 'blogPostForm'));
+    echo elgg_view('input/form', array('action' => "action/news/edit", 'enctype' => "multipart/form-data", 'body' => $form_body));
 ?>
-

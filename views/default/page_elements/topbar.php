@@ -48,11 +48,9 @@ function closeChangeLanguage()
           
     
 <?php
-
     echo "<a href='org/browse'>".elgg_echo('browse')."</a>";
     echo "<a href='org/search'>".elgg_echo('search')."</a>";
     echo "<a href='javascript:void(0)' id='languageButton' onclick='openChangeLanguage()'>".elgg_echo('language')."</a>";
-    echo get_submenu_group('b', 'canvas_header/topbar_submenu', 'canvas_header/topbar_submenu_group'); 
 ?>
 
 <?php if (get_context() != "login") { ?>
@@ -61,18 +59,22 @@ function closeChangeLanguage()
     <?php            
     
         if (isloggedin())
-        {
-            
+        {            
             echo "<div id='loggedinArea'><span class='loggedInAreaContent'>";
             
-            if (get_loggedin_user()->isSetupComplete())
+            $user = get_loggedin_user();
+            
+            if ($user->isSetupComplete())
             {
-                $url = get_loggedin_user()->getURL();
-                echo "<a href='$url'><img src='_graphics/self.gif' height='25' width='26' /></a>";
+                echo "<a href='{$user->getURL()}'><img src='_graphics/home.gif?v2' height='24' width='25' /></a>";
+                
+                if ($user instanceof Organization)
+                {
+                    echo "<a href='pg/dashboard'><img src='_graphics/pencil.gif' height='23' width='22' /></a>";
+                }    
                 
                 echo "<a href='pg/settings/' id='usersettings'><img src='_graphics/settings.gif' height='25' width='25' /></a>";                
-            }
-            
+            }            
 
             // The administration link is for admin or site admin users only
             if ($vars['user']->admin) 
@@ -82,12 +84,21 @@ function closeChangeLanguage()
             
             echo "<a href='action/logout'><img src='_graphics/logout.gif' height='25' width='22' /></a>";
             
-            echo "</div></div>";
+            echo "</span>";
+
+            $submenuB = get_submenu_group('b', 'canvas_header/topbar_submenu', 'canvas_header/topbar_submenu_group'); 
+            if ($submenuB)
+            {
+                echo "<div id='edit_submenu'>$submenuB</div>";
+            }     
+            
+            echo "</div>";
         }
         else
         {
             echo "<a id='loginButton' href='pg/login'><span class='loginContent'><img src='_graphics/lock.gif' height='20' width='20' /><span>".elgg_echo("login")."</span></span></a>";
-        }        
+        }   
+           
     ?>    
     
 </td>

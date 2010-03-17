@@ -8,7 +8,6 @@
 <div id='instructions'>
     <?php echo elgg_echo('setup:instructions') ?>
 </div>
-</div>
 
 <form action='action/org/register3' method='POST'>
 
@@ -83,3 +82,5 @@
 </div>
 
 </form>
+
+</div>

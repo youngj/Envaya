@@ -1,4 +1,9 @@
-<?php echo $vars['area3']; ?>
+<?php 
+
+echo $vars['area3']; 
+
+?>
+
 <div id="thin_column">
     <div id='heading'>
       <?php echo $vars['area1'] ?>  

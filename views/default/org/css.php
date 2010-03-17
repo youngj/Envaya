@@ -6,7 +6,7 @@
 {
     width:100%;
     /* height:48px; */
-    background:#333 url("<?php echo $graphicsDir; ?>/topgradient.gif?v2") repeat-x left top;  
+    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient.gif?v5") repeat-x left top;  
 }
 
 #topbarTable
@@ -36,6 +36,11 @@
     color:#e6e6e6;
 }
 
+.topbarLinks a:hover
+{
+    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient.gif?v5") repeat-x left -49px;  
+}
+
 .topbarLinks a#logoContainer
 {
     padding:8px 22px 16px 15px;
@@ -51,9 +56,12 @@
 #loginButton, #loggedinArea
 {    
     width:166px;
-    height:46px;
     display:block;
-    float:right;
+}
+
+#loginButton
+{
+    height:47px;
 }
 
 #loginButton
@@ -61,9 +69,14 @@
     background:#4d4d4d url(<?php echo $graphicsDir; ?>/loginbutton_sm.gif) no-repeat left top;
 }
 
+a#loginButton:hover
+{
+    background-position:left -46px;
+}
+
 #loggedinArea
 {
-    background:#1d5153 url(<?php echo $graphicsDir; ?>/loggedinarea_sm.gif) no-repeat left top;
+    background:#1d5153 url(<?php echo $graphicsDir; ?>/loggedinarea_sm.gif?v2) no-repeat left top;
 }    
 
 a#loginButton:hover 
@@ -94,7 +107,8 @@ a#loginButton:hover .loginContent span
 .loggedInAreaContent
 {
     display:block;    
-    padding-top:12px;
+    height:29px;
+    padding:12px 0px 6px 0px;
     text-align:center;
     color:#e6e6e6;
     font-weight:bold;
@@ -181,6 +195,19 @@ a.dropdown_item:hover
     font-weight:bold;
     color:black;
 }
+
+#edit_submenu
+{
+    text-align:center;
+    padding:3px 10px;
+}
+
+#edit_submenu a
+{   
+    color:white;
+    font-weight:bold;
+}
+
 
 .float_right
 {
@@ -522,25 +549,34 @@ a.smallBlogImageLink:hover
     font-style:italic;
 }
 
-.progressTabs
+.tabs
 {
-    padding:5px;
+    width:100%;
+    margin-bottom:10px;
 }
 
-.progressTabs li
+.tab
 {
-    float:left;
-    padding:7px;
-    color:#666;
-    background-color:#ddd;
-    border:1px solid #ddd;
+    height:35px;
+    background:url(<?php echo $graphicsDir ?>/tabs.gif) repeat-x left -35px;
+    text-align:center;
+    border-left:1px solid #ccc;
+    border-right:1px solid #bbb;
 }
 
-.progressTabs li.active
+.tab span
 {
-    border:1px solid #666;
-    background-color:#eee;
+    display:block;
+    padding:8px;
+    color:#333;
 }
+
+.tabs .active
+{
+    background:url(<?php echo $graphicsDir ?>/tabs.gif) repeat-x left top;
+    font-weight:bold;
+}
+
 
 .input
 {
@@ -653,4 +689,45 @@ a.smallBlogImageLink:hover
 #translate_bar a
 {
     white-space:nowrap;
+}
+
+.addUpdateButton
+{
+    float:right;
+    margin:4px 0px !important;
+}
+
+#attachImage
+{
+    padding:4px;
+    margin-top:2px;
+    border:1px solid #ccc;
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+    width:320px;
+}
+
+#attachControls
+{
+    padding:4px;
+}
+
+#attachImage input
+{
+    margin:3px;
+}
+
+.attachImageClose
+{
+    float:right;
+    margin-left:8px;
+    display:block;
+    height:14px;
+    width:14px;
+    background:url(<?php echo $graphicsDir ?>/icon_customise_remove.png) no-repeat left top;
+}
+
+a.attachImageClose:hover
+{
+    background-position:left -16px;
 }

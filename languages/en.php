@@ -12,6 +12,11 @@
         'home:find_org' => 'Find an organization',
         'home:about_us' => 'About us',
         
+        'dashboard:add_update' => 'Write news update',
+        'dashboard:edit_widgets' => 'Edit pages',
+        'dashboard:attach_image' => "Attach image",
+        'dashboard:select_image' => "Select an image you would like to include with this news update:",
+        
         'loading' => "Loading...",
         
         'language' => "Language",
@@ -107,7 +112,7 @@
 
         'blog:view_all' => "View all news updates",
         'blog:editpost' => "Edit News",
-        'blog:canceledit' => "View News",
+        'blog:canceledit' => "Cancel Edit",
         'blog:addpost' => "Add news update",
         'blog:delete' => "Delete update",
         'blog:delete:success' => "News update deleted successfully.",
@@ -139,7 +144,7 @@
         'widget:team' => "Team",
         
         'widget:edit' => "Edit Page",
-        'widget:canceledit' => "View Page",
+        'widget:canceledit' => "Cancel Edit",
         'widget:edittitle' => "Edit %s",        
         'widget:edittitle:new' => "Add Page: %s",        
         'widget:save' => "Save changes",
@@ -158,9 +163,6 @@
         
         'widget:delete:confirm' => "Are you sure you want to remove this page from your site?",        
         
-        'widgets:edit' => 'Edit Pages',        
-                
-
         'register:step1' => '1. Qualification',                                       
         'register:step2' => '2. Create account',
         'register:step3' => '3. Set up homepage',
