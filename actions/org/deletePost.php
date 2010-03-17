@@ -7,17 +7,10 @@
         
     if ($blog->getSubtype() == T_blog && $blog->canEdit()) 
     {
-        $redirectUrl = $blog->getContainerEntity()->getUrl() ."/news";
-        $owner = get_entity($blog->getOwner());
-        $rowsaffected = $blog->delete();
-        if ($rowsaffected > 0) 
-        {
-            system_message(elgg_echo("blog:deleted"));
-        } 
-        else 
-        {
-            register_error(elgg_echo("blog:notdeleted"));
-        }
+        $redirectUrl = $blog->getContainerEntity()->getUrl() ."/news/edit";
+        $owner = get_entity($blog->getOwner());        
+        $blog->delete();        
+        system_message(elgg_echo("blog:deleted"));        
         forward($redirectUrl);
     }       
 ?>

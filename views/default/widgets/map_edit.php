@@ -9,7 +9,30 @@
     
     $zoom = ($lat || $long) ? 11 : 1;    
    
-    $content = elgg_view("org/map", array(
+    ob_start();
+   
+?>
+
+<div class='input'>
+<label><?php echo elgg_echo('setup:location') ?></label>
+<div>
+<?php echo elgg_echo('setup:city') ?> <?php echo elgg_view('input/text', array(
+    'internalname' => 'city',
+    'js' => 'style="width:200px"',
+    'value' => $org->city
+)) ?>    
+</div>
+<div>
+<?php echo elgg_echo('setup:region') ?> <?php echo elgg_view('input/pulldown', array(
+    'internalname' => 'region',
+    'options_values' => regions_in_country($org->country),
+    'empty_option' => elgg_echo('setup:region:blank'),
+    'value' => $org->region
+)) ?>    
+<br />
+<br />
+<?php
+    echo elgg_view("org/map", array(
         'lat' => $lat, 
         'long' => $long,
         'zoom' => $zoom,
@@ -17,6 +40,13 @@
         'org' => $group,
         'edit' => true
     ));   
+?>    
+
+
+</div>
+<?php    
+    
+    $content = ob_get_clean();
    
     echo elgg_view("widgets/edit_form", array(
         'widget' => $widget,

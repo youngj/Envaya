@@ -33,23 +33,10 @@
 		 * @param string $name
 		 * @return mixed
 		 */
-		protected function get($name) {
-			if (isset($this->attributes[$name])) {
-				
-				// Sanitise value if necessary
-				if ($name=='value')
-				{
-					switch ($this->attributes['value_type'])
-					{
-						case 'integer' :  return (int)$this->attributes['value'];
-						//case 'tag' :
-						//case 'file' :
-						case 'text' : return ($this->attributes['value']);
-							
-						default : throw new InstallationException(sprintf(elgg_echo('InstallationException:TypeNotSupported'), $this->attributes['value_type']));
-					}
-				}
-				
+		protected function get($name) 
+        {
+			if (isset($this->attributes[$name])) 
+            {
 				return $this->attributes[$name];
 			}
 			return null;
@@ -63,8 +50,8 @@
 		 * @param string $value_type
 		 * @return boolean
 		 */
-		protected function set($name, $value, $value_type = "") {
-
+		protected function set($name, $value, $value_type = "") 
+        {
 			$this->attributes[$name] = $value;
 			if ($name == 'value')
 				$this->attributes['value_type'] = detect_extender_valuetype($value, $value_type);
@@ -232,6 +219,7 @@
 			return $value_type;
 			
 		// This is crude
+        if (is_array($value)) return 'json';
 		if (is_int($value)) return 'integer';
 		if (is_numeric($value)) return 'text'; // Catch floating point values which are not integer
 		

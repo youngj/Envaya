@@ -7,9 +7,8 @@
     echo elgg_view_layout('section', elgg_echo("org:mission"), $content);        
     
     $org = $vars['widget']->getContainerEntity();
-        
-    $posts = $org->listNewsUpdates(5, false);
-
+    
+    $posts = $org->listNewsUpdates(3, false); // make this configurable?    
     if (!$posts)
     {
         $posts = elgg_echo("org:noupdates");
@@ -17,7 +16,7 @@
     else
     {
         $posts .= "<a class='float_right' href='".$org->getUrl()."/news'>".elgg_echo('blog:view_all')."</a>";
-    }
+    }    
 
     echo elgg_view_layout('section', elgg_echo("org:news:latest"), $posts);        
 
@@ -44,5 +43,15 @@
         
         echo elgg_view_layout('section', elgg_echo("org:sectors"), $sectorText);        
     }   
+    
+    foreach ($widget->included as $includedWidget)
+    {
+        $included = $org->getWidgetByName($includedWidget);        
+        if ($included->isActive())
+        {
+            echo "<div class='section_header' style='margin-bottom:3px'>".elgg_echo("widget:{$included->widget_name}")."</div>";
+            echo $included->renderView();        
+        }    
+    }
 
 ?>

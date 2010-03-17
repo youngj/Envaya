@@ -153,7 +153,7 @@
 	        	// Validate token
 	        	if (strcmp($token, $generated_token)==0)
 	        	{
-	        		$hour = 60*60;
+	        		$hour = 60*60*24;
 	        		$now = time();
 	        		
 	        		// Validate time to ensure its not crazy

@@ -29,6 +29,39 @@ ob_start();
     'js' => 'style="width:200px"'
 )) ?>    
 </div>
+
+
+<div class='input'>
+    <label><?php echo elgg_echo("widget:home:included"); ?><br /></label>
+    <?php
+        
+        function widget_options($org)
+        {
+            $options = array();
+            $widgets = $org->getActiveWidgets();
+            
+            $badWidgets = array('home', 'news');
+            
+            foreach ($widgets as $widget)
+            {
+                $widgetName = $widget->widget_name;
+                if (!in_array($widgetName, $badWidgets))
+                {
+                    $options[$widgetName] = elgg_echo("widget:$widgetName");
+                }
+            }
+            return $options;
+        }
+    
+        echo elgg_view("input/checkboxes",array(
+            'internalname' => 'included', 
+            'options' => widget_options($org),
+            'value' => $widget->included
+        ));
+    ?>
+</div>
+
+
 <?php
     $content = ob_get_clean();
    

@@ -13,7 +13,7 @@
         'zoom' => $zoom,
         'pin' => true,
         'static' => true
-    ));
-
+    ));        
+    echo "<div style='text-align:center;font-style:italic'>".escape($org->getLocationText())."</div>";
 ?>
 </div>

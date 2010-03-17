@@ -778,7 +778,6 @@
 		{
 			// generate code
 			$code = generate_random_cleartext_password();
-			//create_metadata($user_guid, 'conf_code', $code,'', 0, ACCESS_PRIVATE);
 			set_private_setting($user_guid, 'passwd_conf_code', $code);
 			
 			// generate link

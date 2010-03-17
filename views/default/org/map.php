@@ -25,9 +25,9 @@
         }
 ?>
 
-<div id="pinDragInstr" style="display:none;">
+<label id="pinDragInstr" style="display:none;">
 <?php echo elgg_echo("map:drag_pin"); ?>
-</div>
+</label>
 
 <div id='map' style='width:<?php echo $width; ?>px;height:<?php echo $height; ?>px'></div>
 <div id='mapOverlay' style='position:absolute;padding:5px;background:white;left:0px;top:0px;display:none'></div>

@@ -64,10 +64,6 @@ function org_profile_page_handler($page)
     {
         switch ($page[1])
         {
-            case "news":
-                set_context("blog");
-                include(dirname(__FILE__) . "/blog.php");
-                return;
             case "mobilesettings":
                 include(dirname(__FILE__) . "/mobileSettings.php");
                 return;
@@ -149,7 +145,7 @@ function login_page_handler($page)
 
 function envaya_pagesetup()
 {
-    if (get_context() == "blog" || get_context() == "org")
+    if (get_context() == "org")
     {
         $org = page_owner_entity();        
 
@@ -158,7 +154,6 @@ function envaya_pagesetup()
             $widgets = $org->getAvailableWidgets();
             
             add_submenu_item(elgg_echo("org:home"), $org->getURL());
-            add_submenu_item(elgg_echo("org:news"), $org->getURL()."/news");
             
             foreach ($widgets as $widget)
             {
@@ -215,6 +210,7 @@ register_action("changeLanguage", true, "{$CONFIG->path}actions/org/changeLangua
 register_action("translate", false,     "{$CONFIG->path}actions/org/translate.php");
 register_action("news/add",false,       "{$CONFIG->path}actions/org/addPost.php");
 register_action("news/edit",false,      "{$CONFIG->path}actions/org/editPost.php");
+register_action("news/delete",false,    "{$CONFIG->path}actions/org/deletePost.php");
 register_action("entities/delete",false,"{$CONFIG->path}actions/entities/delete.php");
 
 

@@ -17,6 +17,9 @@
         'dashboard:attach_image' => "Attach image",
         'dashboard:select_image' => "Select an image you would like to include with this news update:",
         
+        'topbar:your_home' => "Your home page",
+        'topbar:edit_site' => "Edit site",
+        
         'loading' => "Loading...",
         
         'language' => "Language",
@@ -88,7 +91,6 @@
         'tz:zanzibar_w' => 'Zanzibar West',        
         
         'login' => "Log in",
-        'loginok' => "You have been logged in.",
         'loginerror' => "Incorrect username or password. Make sure they are correct and try again.",
 
         'logout' => "Log out",
@@ -111,19 +113,26 @@
         'org:sectors' => 'Sectors',      
 
         'blog:view_all' => "View all news updates",
-        'blog:editpost' => "Edit News",
+        'blog:editpost' => "Edit News Update",
         'blog:canceledit' => "Cancel Edit",
         'blog:addpost' => "Add news update",
         'blog:delete' => "Delete update",
         'blog:delete:success' => "News update deleted successfully.",
-        'blog:more' => "More...",
+        'blog:list' => "List",
+        'blog:timeline' => "Timeline",
 
         'widget:home' => "Home Page",
-        'widget:map' => "Map",
+        
+        'widget:home:included' => "What sections do you want to include on your home page?",
+        
+        'widget:map' => "Location",        
         'widget:history' => "History",
         'widget:programs' => "Programs",
         'widget:achievements' => "Achievements",
         'widget:challenges' => "Challenges",
+
+        'widget:news' => "News",                
+        'widget:news:manage_updates' => "Manage News Updates",
                 
         'widget:contact' => "Contact Info",
         
@@ -607,6 +616,7 @@
         'cancel' => "Cancel",
         'saving' => "Saving ...",
         'update' => "Update",
+        'view' => "View",
         'edit' => "Edit",
         'delete' => "Delete",
         'accept' => "Accept",

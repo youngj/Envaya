@@ -62,7 +62,6 @@
         'tz:zanzibar_w' => 'Unguja Mjini Magharibi',             
 
         'login' => "Fungua",
-        'loginok' => "Umefunguliwa.",
         'loginerror' => "Jina la mtumiaji au neno ya siri ilikuwa kosefu. Hakikisha kuwa yale ni sahihi, na tafadhali ujaribu tena.",
 
         'logout' => "Ondoka",
@@ -92,7 +91,7 @@
         'blog:more' => "Zaidi...",
 
         'widget:home' => "Ukurasa mkuu",
-        'widget:map' => "Ramani",
+        'widget:map' => "Sehemu",
         'widget:history' => "Historia",
         'widget:programs' => "Miradi",
         'widget:achievements' => "Mafaniko",

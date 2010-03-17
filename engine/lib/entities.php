@@ -348,7 +348,7 @@
 		 * @param bool $multiple
 		 * @return bool
 		 */
-		public function setMetaData($name, $value, $value_type = "", $multiple = false)
+		public function setMetaData($name, $value)
 		{        
             $md = $this->getMetaDataObject($name);            
             $md->value = $value;
@@ -762,7 +762,8 @@
             {   
                 if ($reason)
                 {
-                    create_metadata($this->guid, 'disable_reason', $reason,'', 0, ACCESS_PUBLIC);
+                    $this->disable_reason = $reason;
+                    $this->saveMetaData();
                 }    
 
                 if ($recursive)

@@ -32,18 +32,33 @@
 		{
 			$this->attributes = array();
 			
-			if (!empty($id)) {
-				
+			if (!empty($id)) 
+            {			
 				if ($id instanceof stdClass)
 					$metadata = $id; // Create from db row
 				else
 					$metadata = get_metadata($id);	
 				
-				if ($metadata) {
+				if ($metadata) 
+                {
 					$objarray = (array) $metadata;
-					foreach($objarray as $key => $value) {
+					foreach($objarray as $key => $value) 
+                    {
 						$this->attributes[$key] = $value;
 					}
+                    
+                    $value = $metadata->value;
+                    $valueType = $metadata->value_type;
+
+                    if ($valueType == 'json')
+                    {
+                        $this->attributes['value'] = json_decode($value);
+                    }    
+                    else if ($value_type == 'integer')
+                    {
+                        $this->attributes['value'] = (int)$value;
+                    }
+                    
 					$this->attributes['type'] = "metadata";
 				}
 			}
@@ -90,17 +105,51 @@
 		 * @return int the metadata object id
 		 */
 		function save()
-		{
+		{                    
+            $name = $this->name;
+            $value = $this->value;
+            
+            $valueType = detect_extender_valuetype($value);
+            
+            if (is_bool($value))
+            {
+                $value = ($value) ? 1 : 0;
+            }
+
+            if ($valueType == 'json')
+            {
+                $value = json_encode($value);
+            }
+            
+            //echo "<br>save $name=$value $valueType";
+            
+            $valueId = add_metastring($value);
+            if (!$valueId) 
+                return false;
+
+            $nameId = add_metastring($name);
+            if (!$nameId) 
+                return false;
+                
+            //echo " $nameId=$valueId";                
+                        
 			if ($this->id > 0)
-				return update_metadata($this->id, $this->name, $this->value, $this->value_type, $this->owner_guid, $this->access_id);
+            {              
+                return update_data("UPDATE metadata set value_id=?, value_type=? where id=? and name_id=?",
+                    array($valueId, $valueType, $this->id, $nameId)
+                );
+            }
 			else
 			{ 
-				$this->id = create_metadata($this->entity_guid, $this->name, $this->value, $this->value_type, $this->owner_guid, $this->access_id);
-				if (!$this->id) 
-                    throw new IOException(sprintf(elgg_echo('IOException:UnableToSaveNew'), get_class()));
-				return $this->id;
-			}
-			
+                $this->id = insert_data("INSERT into metadata (entity_guid, name_id, value_id, value_type, owner_guid, time_created, access_id) VALUES (?,?,?,?,?,?,?)", 
+                    array($this->entity_guid, $nameId, $valueId, $valueType, $this->owner_guid, time(), $this->access_id)
+                );          
+                if (!$this->id)         
+                {
+                    throw new IOException(sprintf(elgg_echo('IOException:UnableToSaveNew'), get_class()));                
+                }    
+                return $this->id;
+            } 			
 		}
 		
 		/**
@@ -108,7 +157,7 @@
 		 */
 		function delete() 
 		{ 
-			return delete_metadata($this->id); 
+            return delete_data("DELETE from metadata where id=?", array($this->id));
 		}
 		
 		/**
@@ -182,139 +231,7 @@
 		
 		return delete_data($query, $args);		
 	}
-	
-	/**
-	 * Create a new metadata object, or update an existing one.
-	 *
-	 * @param int $entity_guid
-	 * @param string $name
-	 * @param string $value
-	 * @param string $value_type
-	 * @param int $owner_guid
-	 * @param int $access_id
-	 * @param bool $allow_multiple
-	 */
-	function create_metadata($entity_guid, $name, $value, $value_type, $owner_guid, $access_id = ACCESS_PRIVATE, $allow_multiple = false)
-	{
-		global $CONFIG;
-
-		$entity_guid = (int)$entity_guid;		
-        $value_type = detect_extender_valuetype($value, trim($value_type));
-		$time = time();		
-		$owner_guid = (int)$owner_guid;
-		$allow_multiple = (boolean)$allow_multiple;
 		
-		if ($owner_guid==0) 
-            $owner_guid = get_loggedin_userid();
-		
-		$id = false;
-	
-        $nameId = add_metastring($name);
-        if (!$nameId) 
-            return false;                
-    
-		$existing = get_data_row("SELECT * from metadata WHERE entity_guid = ? and name_id = ? limit 1",        
-            array($entity_guid, $nameId)
-        );        
-
-		if (($existing) && (isset($value))) 
-		{             
-			$id = $existing->id;
-			$result = update_metadata($id, $name, $value, $value_type, $owner_guid, $access_id);
-			
-			if (!$result) return false;
-		}
-		else if (isset($value))
-		{        
-			// Support boolean types
-			if (is_bool($value)) {
-                $value = ($value) ? 1 : 0;
-			}
-			
-			$valueId = add_metastring($value);
-			if (!$valueId) 
-                return false;			
-			
-			$id = insert_data("INSERT into metadata (entity_guid, name_id, value_id, value_type, owner_guid, time_created, access_id) VALUES (?,?,?,?,?,?,?)", 
-                array($entity_guid, $nameId, $valueId, $value_type, $owner_guid, $time, $access_id)
-            );			
-		} 
-        else if ($existing) 
-        {
-			$id = $existing->id;
-			delete_metadata($id);			
-		}
-		
-		return $id;
-	}
-	
-	/**
-	 * Update an item of metadata.
-	 *
-	 * @param int $id
-	 * @param string $name
-	 * @param string $value
-	 * @param string $value_type
-	 * @param int $owner_guid
-	 * @param int $access_id
-	 */
-	function update_metadata($id, $name, $value, $value_type, $owner_guid, $access_id)
-	{
-		$value_type = detect_extender_valuetype($value, trim($value_type));
-		
-		$owner_guid = (int)$owner_guid;
-		if ($owner_guid==0) 
-            $owner_guid = get_loggedin_userid();
-		
-		// Support boolean types (as integers)
-		if (is_bool($value))
-        {
-			$value = ($value) ? 1 : 0;
-		}
-		
-		// Add the metastring
-		$valueId = add_metastring($value);
-        if (!$valueId) 
-            return false;
-		
-		$nameId = add_metastring($name);
-        if (!$nameId) 
-            return false;
-
-		return update_data("UPDATE metadata set value_id=?, value_type=?, access_id=?, owner_guid=? where id=? and name_id=?",
-            array($valueId, $value_type, $access_id, $owner-guid, $id, $nameId)
-        );
-
-	}   
-	
-	/**
-	 * This function creates metadata from an associative array of "key => value" pairs.
-	 * 
-	 * @param int $entity_guid
-	 * @param string $name_and_values
-	 * @param string $value_type
-	 * @param int $owner_guid
-	 * @param int $access_id
-	 * @param bool $allow_multiple
-	 */
-	function create_metadata_from_array($entity_guid, array $name_and_values, $value_type, $owner_guid, $access_id = ACCESS_PRIVATE, $allow_multiple = false)
-	{
-		foreach ($name_and_values as $k => $v)
-			if (!create_metadata($entity_guid, $k, $v, $value_type, $owner_guid, $access_id, $allow_multiple)) return false;
-		
-		return true;
-	}
-	
-	/**
-	 * Delete an item of metadata, where the current user has access.
-	 * 
-	 * @param $id int The item of metadata to delete.
-	 */
-	function delete_metadata($id)
-	{
-		return delete_data("DELETE from metadata where id=?", array((int)$id));
-	}
-	
 	/**
 	 * Return the metadata values that match your query.
 	 * 

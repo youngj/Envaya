@@ -200,7 +200,7 @@ CREATE TABLE `annotations` (
 	
 	`name_id` int(11) NOT NULL,
 	`value_id` int(11) NOT NULL,
-	`value_type` enum ('integer','text') NOT NULL,
+	`value_type` enum ('integer','text','json') NOT NULL,
 	
 	`owner_guid` bigint(20) unsigned NOT NULL,
 	`access_id` int(11) NOT NULL,
@@ -226,7 +226,7 @@ CREATE TABLE `metadata` (
 	
 	`name_id` int(11) NOT NULL,
 	`value_id` int(11) NOT NULL,
-	`value_type` enum ('integer','text') NOT NULL,
+    `value_type` enum ('integer','text','json') NOT NULL,
 
 	`owner_guid` bigint(20) unsigned NOT NULL,
 	`access_id` int(11) NOT NULL,

@@ -731,3 +731,20 @@ a.attachImageClose:hover
 {
     background-position:left -16px;
 }
+
+.blogView
+{
+    float:right;
+}
+
+.gridTable 
+{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.gridTable td
+{
+    border:1px solid #ccc;
+    padding:3px;
+}

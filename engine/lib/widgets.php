@@ -36,6 +36,11 @@ class Widget extends ElggObject
         return "{$org->getUrl()}/{$this->widget_name}";
     }
     
+    function getEditURL()
+    {
+        return "{$this->getURL()}/edit";
+    }
+    
     function saveInput()
     {
         $fn = "save_widget_{$this->widget_name}";
@@ -150,6 +155,7 @@ function save_widget($widget)
 function save_widget_home($widget)
 {
     $widget->content = get_input('content');
+    $widget->included = get_input_array('included');
     $org = $widget->getContainerEntity();    
     $org->setSectors(get_input_array('sector'));
     $org->sector_other = get_input('sector_other');
@@ -162,7 +168,12 @@ function save_widget_map($widget)
     $org = $widget->getContainerEntity();
     $org->latitude = get_input('org_lat');
     $org->longitude = get_input('org_lng');    
+    
+    $org->region = get_input('region');
+    $org->city = get_input('city');
+    
     $org->save();
+    
     
     $widget->zoom = get_input('map_zoom');    
     $widget->save();

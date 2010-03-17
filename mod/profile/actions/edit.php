@@ -50,17 +50,8 @@
 						// this should never be executed since the access level should always be set
 						$access_id = ACCESS_PRIVATE;
 					}
-					if (is_array($value)) {
-						$i = 0;
-						foreach($value as $interval) {
-							$i++;
-							if ($i == 1) { $multiple = false; } else { $multiple = true; }
-							create_metadata($user->guid, $shortname, $interval, 'text', $user->guid, $access_id, $multiple);
-						}
-					} else {
-						create_metadata($user->guid, $shortname, $value, 'text', $user->guid, $access_id);
-					}
-					
+                    
+                    $user->setMetaData($shortname, $value);					
 				}
 			$user->save();
 

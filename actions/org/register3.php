@@ -9,7 +9,6 @@
         
         $homeWidget = $org->getWidgetByName('home');
         $homeWidget->content = get_input('mission');
-        $homeWidget->save();        
         
         $org->language = get_input('content_language');
                 
@@ -26,7 +25,14 @@
             
             $mapWidget = $org->getWidgetByName('map');
             $mapWidget->save();
+            
+            $homeWidget->included = array('map');
         }            
+        
+        $homeWidget->save();        
+        
+        $newsWidget = $org->getWidgetByName('news');
+        $newsWidget->save();
         
         $org->setup_state = 5;
         $org->save();        
