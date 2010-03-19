@@ -161,10 +161,12 @@ function showOrgs($data)
         }
     }
 
-    for (var $i = 0; $i < $data.length; $i++)
+    var orgs = $data;
+
+    for (var $i = 0; $i < orgs.length; $i++)
     {            
-        showIcon($data[$i]);
-    }
+        showIcon(orgs[$i]);
+    }        
 }
 
 var nearbyOrgsCache = {};
@@ -178,6 +180,10 @@ function fetchOrgs()
     var $ne = $bounds.getNorthEast();
 
     var $src = "/org/searchArea?latMin="+$sw.lat()+"&latMax="+$ne.lat()+"&longMin="+$sw.lng()+"&longMax="+$ne.lng()+"&sector=" + sector;
+    if (window.displayUpdates)
+    {
+        $src = $src + "&updates=1";
+    }
 
     if (fetchOrgXHR)
     {
@@ -186,7 +192,7 @@ function fetchOrgs()
     }    
     fetchOrgXHR = fetchJson($src, showOrgs);
 }    
-   
+ 
 function initialize() 
 {
     map = new google.maps.Map2(document.getElementById("map"));

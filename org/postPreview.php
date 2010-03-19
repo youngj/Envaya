@@ -5,12 +5,7 @@
     {                  
         header('Content-type; text/javascript');
     
-        echo json_encode(array(
-            'guid' => $post->guid,
-            'dateText' => $post->getDateText(),
-            'imageURL' => $post->getImageURL('small'),
-            'snippetHTML' => $post->getSnippetHTML()
-        ));    
+        echo json_encode($post->jsProperties());    
     } 
     else 
     {

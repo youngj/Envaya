@@ -150,6 +150,7 @@ CREATE TABLE `users_entity` (
   `admin` tinyint(4) default '0',
   `latitude` float null,
   `longitude` float null,
+  `region` varchar(32) default NULL,
   
   PRIMARY KEY  (`guid`),
   UNIQUE KEY (`username`),

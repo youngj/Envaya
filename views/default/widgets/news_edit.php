@@ -25,6 +25,7 @@
             'limit' => $limit,
         ));
 
+        $escUrl = urlencode($_SERVER['REQUEST_URI']);
         echo "<table class='gridTable'>";    
         foreach ($updates as $update)
         {        
@@ -32,7 +33,8 @@
             echo "<td>{$update->getSnippetHTML()}</td>";
             echo "<td><span class='blog_date'>{$update->getDateText()}</span></td>";
             echo "<td><a href='{$update->getURL()}'>".elgg_echo("view")."</a></td>";
-            echo "<td><a href='{$update->getURL()}/edit'>".elgg_echo("edit")."</a></td>";
+            
+            echo "<td><a href='{$update->getURL()}/edit?from=$escUrl'>".elgg_echo("edit")."</a></td>";
             echo "<td>".elgg_view('output/confirmlink', array(
                 'is_action' => true,
                 'href' => "action/news/delete?blogpost={$update->guid}",

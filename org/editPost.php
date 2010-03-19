@@ -9,7 +9,9 @@
     
     if ($post && $post->canEdit()) 
     {                   
-        add_submenu_item(elgg_echo("blog:canceledit"), $post->getUrl(), 'b');                
+        $cancelUrl = get_input('from') ?: $post->getUrl();
+
+        add_submenu_item(elgg_echo("blog:canceledit"), $cancelUrl, 'b');                
     
         $org = $post->getContainerEntity();
         $area1 = elgg_view("org/editPost", array('entity' => $post));

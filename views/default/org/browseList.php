@@ -1,13 +1,16 @@
-
+<div class='padded'>
 <script type='text/javascript'>
 function sectorChanged()
 {
     setTimeout(function() {
         var sectorList = document.getElementById('sectorList');
+        
+        var regionList = document.getElementById('regionList');
 
-        var val = sectorList.options[sectorList.selectedIndex].value;
+        var sector = sectorList.options[sectorList.selectedIndex].value;
+        var region = regionList.options[regionList.selectedIndex].value;
 
-        window.location.href = "org/browse?list=1&sector=" + val;
+        window.location.href = "org/browse?list=1&sector=" + sector + "&region=" + region;
     }, 1);    
 }
 </script>
@@ -24,7 +27,28 @@ echo elgg_view('input/pulldown', array(
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"        
 ));
 
+$region = get_input('region');
+
+echo elgg_view('input/pulldown', array(
+    'internalname' => 'region',
+    'internalid' => 'regionList',    
+    'options_values' => regions_in_country('tz'),
+    'empty_option' => elgg_echo('region:empty_option'),
+    'value' => $region,
+    'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"        
+));
+
 echo "<br /><br />";
 
-echo Organization::listSearch($name=null, $sector, $limit = 10);   
+$res = Organization::listSearch($name=null, $sector, $region, $limit = 10);   
+if ($res)
+{
+    echo $res;
+}
+else
+{
+    echo elgg_echo("search:noresults");
+}
+
 ?>
+</div>

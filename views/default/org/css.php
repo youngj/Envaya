@@ -348,15 +348,26 @@ body
 }
 
 .blog_post_wrapper
-{
-    
+{    
     border-bottom:1px solid #ddd;
     padding:8px;
 }
 
-.blog_post p 
+.feed_org_icon
 {
-    margin: 0;
+    float:left;
+    width:50px;
+}
+
+.feed_org_icon img
+{
+    width:40px;
+}
+
+.feed_content
+{
+    float:left;
+    width:410px;
 }
 
 .blog_date

@@ -24,11 +24,16 @@ function org_page_handler($page)
             case "searchArea":
                 include(dirname(__FILE__) . "/searchArea.php");
                 return;
+            case "feed":    
+                include(dirname(__FILE__) . "/feed.php");
+                return;
             case "translate":
                 set_input("guid", $page[1]);
                 set_input("property", $page[2]);
                 include(dirname(__FILE__) . "/translate.php");
                 return;
+            default:
+                not_found();
         }
     }
 }
@@ -161,14 +166,6 @@ function envaya_pagesetup()
                     add_submenu_item(elgg_echo("widget:{$widget->widget_name}"), $widget->getURL());
                 }                    
             }     
-            
-            /*
-            if (can_write_to_container(0, $org->guid))
-            {                        
-                //add_submenu_item(elgg_echo('org:mobilesettings'),$org->getUrl()."/mobilesettings");                
-                add_submenu_item(elgg_echo('blog:addpost'),$org->getUrl()."/newpost");
-            }    
-            */
         }
     }
 }

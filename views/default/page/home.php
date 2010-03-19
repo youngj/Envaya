@@ -57,9 +57,14 @@
 </div>
 
 <div class='homeSection'>
-    <a class='homeSectionIcon' href='page/about'><img src='_graphics/icons/default/small.png' /></a>
-    <a href='page/about'><?php echo elgg_echo("home:about_us") ?></a>
-</div>   
+    <a class='homeSectionIcon' href='org/feed'><img src='_graphics/icons/default/small.png' /></a>
+    <a href='org/feed'><?php echo elgg_echo("home:feed") ?></a>
+</div>
 
+</td>
+</tr>
 </table>   
     
+<div style='text-align:center;margin-top:10px'>    
+    <a href='page/about'><?php echo elgg_echo("home:about_us") ?></a>
+</div>   

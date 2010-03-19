@@ -11,6 +11,9 @@
         'home:browse_orgs' => 'Explore organizations',        
         'home:find_org' => 'Find an organization',
         'home:about_us' => 'About us',
+        'home:feed' => 'Latest news updates',
+        
+        'feed:title' => "Latest news updates",
         
         'dashboard:add_update' => 'Write news update',
         'dashboard:edit_widgets' => 'Edit pages',
@@ -89,6 +92,8 @@
         'tz:zanzibar_cs' => 'Zanzibar Central/South',
         'tz:zanzibar_n' => 'Zanzibar North',
         'tz:zanzibar_w' => 'Zanzibar West',        
+        
+        'region:empty_option' => 'All regions',
         
         'login' => "Log in",
         'loginerror' => "Incorrect username or password. Make sure they are correct and try again.",
@@ -215,7 +220,7 @@
         
         'create:username' => "Choose a username for Envaya:",
         'create:username:help' => "Your web address will be:",        
-        'create:username:help2' => "Your username must be at least 4 characters, and can contain letters (a-z), digits (0-9), dashes (-), and underscores (_).",        
+        'create:username:help2' => "Your username must be at least 3 characters, and can contain letters (a-z), digits (0-9), dashes (-), and underscores (_).",        
         'create:username:placeholder' => 'username',
         
         'create:password' => "Choose a password for your account:",

@@ -27,7 +27,9 @@
 
     if (!empty($query)) 
     {
-        $latlong = elgg_geocode_location($query);
+        $geoQuery = "$query Tanzania";
+        
+        $latlong = elgg_geocode_location($geoQuery);
     }
 
     $results = '';
@@ -46,13 +48,13 @@
 
         if ($nearby)
         {
-            $results .= "<div class='padded'>".elgg_view("org/map", array('lat' => $latlong['lat'], 'long' => $latlong['long'], 'sector' => $sector, 'pin' => 'true', 'nearby' => true, 'height' => 300, 'width' => 440, 'zoom' => '8'))."</div>";
+            $results .= "<div class='padded'>".elgg_view("org/map", array('lat' => $latlong['lat'], 'long' => $latlong['long'], 'sector' => $sector, 'nearby' => true, 'height' => 300, 'width' => 440, 'zoom' => '8'))."</div>";
         }
     }
 
     if (!empty($query) || $sector)
     {        
-        $results .= Organization::listSearch($query, $sector, $limit = 10);
+        $results .= Organization::listSearch($query, $sector, $region=null, $limit = 10);
         
         if ($results)
         {

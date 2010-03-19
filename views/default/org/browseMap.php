@@ -1,15 +1,16 @@
-
+<div class='padded'>
 <script type='text/javascript'>
 function sectorChanged()
 {
     setTimeout(function() {
         var sectorList = document.getElementById('sectorList');
 
-        var val = sectorList.options[sectorList.selectedIndex].value;
-
+        var val = sectorList.options[sectorList.selectedIndex].value;        
+        
         setMapSector(val);
     }, 1);    
 }
+
 </script>
 <?php echo elgg_view('input/pulldown', array(
     'internalname' => 'sector',
@@ -30,5 +31,5 @@ function sectorChanged()
         
     echo elgg_view("org/map", array('lat' => $lat, 'long' => $long,  'height' => 350, 'zoom' => $zoom, 'sector' => $sector, 'nearby' => true));
 ?>    
-
+</div>
     

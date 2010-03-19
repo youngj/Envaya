@@ -19,7 +19,7 @@
         }    
                
         
-        $body = elgg_view_layout('one_column_padded', elgg_view_title($title), $area);    
+        $body = elgg_view_layout('one_column', elgg_view_title($title), $area);    
         
         page_draw($title, $body);
 

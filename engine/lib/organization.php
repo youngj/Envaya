@@ -14,6 +14,23 @@ class Organization extends ElggUser
 
     static $subtype_id = T_organization;
 
+    public function canView()
+    {
+        return $this->approval > 0 || $this->canEdit();
+    }
+    
+    public function showCantViewMessage()    
+    {
+        if ($this->approval == 0)
+        {
+            system_message(elgg_echo('org:waitingapproval'));
+        }
+        else if ($this->approval < 0)
+        {
+            system_message(elgg_echo('org:rejected'));
+        }    
+    }
+
     public function generateEmailCode()
     {
         $code = '';
@@ -44,8 +61,6 @@ class Organization extends ElggUser
     {
         global $CONFIG;
     
-        $size = $params['size'];
-        
         if ($this->custom_icon)
         {
             return "{$CONFIG->url}{$this->username}/icon/$size/{$this->time_updated}.jpg";
@@ -225,7 +240,7 @@ class Organization extends ElggUser
         return $availableWidgets;
     }
 
-    static function search($name, $sector, $limit = 10, $offset = 0, $count = false)
+    static function search($name, $sector, $region, $limit = 10, $offset = 0, $count = false)
     {
         $where = array();
         $args = array();
@@ -243,16 +258,22 @@ class Organization extends ElggUser
             $where[] = "s.sector_id=?";
             $args[] = $sector;
         }
+        
+        if ($region)
+        {
+            $where[] = "region=?";
+            $args[] = $region;
+        }
 
         return static::filterByCondition($where, $args, '', $limit, $offset, $count, $join);
     }
 
-    static function listSearch($name, $sector, $limit = 10, $pagination = true) 
+    static function listSearch($name, $sector, $region, $limit = 10, $pagination = true) 
     {        
         $offset = (int) get_input('offset');
 
-        $count = static::search($name, $sector, $limit, $offset, true);
-        $entities = static::search($name, $sector, $limit, $offset);
+        $count = static::search($name, $sector, $region, $limit, $offset, true);
+        $entities = static::search($name, $sector, $region, $limit, $offset);
 
         return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
     }        
@@ -308,6 +329,16 @@ class NewsUpdate extends ElggObject
         return $filehandler;       
     }
     
+    public function jsProperties()
+    {
+        return array(
+            'guid' => $this->guid,
+            'container_guid' => $this->container_guid,
+            'dateText' => $this->getDateText(),
+            'imageURL' => $this->getImageURL('small'),
+            'snippetHTML' => $this->getSnippetHTML()
+        );
+    }    
 
     public function getURL()
     {
@@ -349,7 +380,7 @@ class NewsUpdate extends ElggObject
     {
         return friendly_time($this->time_created); 
     }
-
+    
     public function setImage($imageData)
     {
         if (!$imageData)
@@ -394,6 +425,35 @@ class NewsUpdate extends ElggObject
             }        
         }   
         $this->save();
+    }
+    
+    public static function all($limit = 10, $offset = 0)
+    {
+        return static::filterByCondition(array(), array(), 'time_created desc', $limit, $offset);
+    }
+    
+    public static function filterByOrganizations($orgs, $limit = 10, $offset = 0)
+    {
+        if (empty($orgs))
+        {
+            return array();
+        }
+        else
+        {
+            $where = array();
+            $args = array();
+            $in = array();
+            
+            foreach ($orgs as $org)
+            {
+                $in[] = "?";
+                $args[] = $org->guid;
+            }
+            
+            $where[] = "container_guid IN (".implode(",", $in).")";
+
+            return static::filterByCondition($where, $args, 'time_created desc', $limit, $offset);
+        }    
     }
 }
 

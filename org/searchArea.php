@@ -9,12 +9,14 @@
     $longMax = get_input('longMax');
     $sector = get_input('sector');
                 
-    $orgs = Organization::filterByArea(array($latMin, $longMin, $latMax, $longMax), $sector, $limit = 100);
+    $orgs = Organization::filterByArea(array($latMin, $longMin, $latMax, $longMax), $sector, $limit = 100);       
     
-    $res = array();
+    $orgJs = array();
     foreach ($orgs as $org)
     {
-        $res[] = $org->jsProperties();
+        $orgJs[] = $org->jsProperties();
     }
-        
-    echo json_encode($res);
+
+    
+    echo json_encode($orgJs);
+     
