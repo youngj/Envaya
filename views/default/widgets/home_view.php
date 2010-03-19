@@ -8,18 +8,20 @@
     
     $org = $vars['widget']->getContainerEntity();
     
+    echo "<div class='section_header'>".elgg_echo("org:news:latest")."</div>";
+
+    
     $posts = $org->listNewsUpdates(3, false); // make this configurable?    
-    if (!$posts)
+    
+    if (empty($posts))
     {
-        $posts = elgg_echo("org:noupdates");
+        echo "<div class='padded'>".elgg_echo("org:noupdates")."</div>";
     }
     else
     {
-        $posts .= "<a class='float_right' href='".$org->getUrl()."/news'>".elgg_echo('blog:view_all')."</a>";
+        echo $posts;
+        echo "<div style='padding:5px'><a class='float_right' href='".$org->getUrl()."/news'>".elgg_echo('blog:view_all')."</a><div style='clear:both'></div></div>";
     }    
-
-    echo elgg_view_layout('section', elgg_echo("org:news:latest"), $posts);        
-
     $sectors = $org->getSectors();
 
     if (!empty($sectors))

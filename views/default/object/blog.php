@@ -6,8 +6,13 @@
     
     $nextUrl = $url . "/next";
     $prevUrl = $url . "/prev";        
+    
+    if (!$full)
+    {
+        echo "<div class='blog_post_wrapper'>";
+    }
 ?>
-  
+   
 <div class="blog_post">    
     <?php 
 
@@ -20,7 +25,14 @@
         
         echo view_translated($entity, 'content'); 
         
-        echo "<span class='blog_date'>{$entity->getDateText()}</span>";
+        echo "<div class='blog_date'>{$entity->getDateText()}</div>";
     ?>              
     <div style='clear:both'></div>
 </div>
+
+<?php 
+
+    if (!$full)
+    {
+        echo "</div>";
+    }

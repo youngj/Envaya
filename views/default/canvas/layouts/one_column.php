@@ -9,15 +9,14 @@ echo $vars['area3'];
       <?php echo $vars['area1'] ?>  
     </div>
 
+    <?php            
+        $submenu = get_submenu_group('a', 'canvas_header/topbar_submenu', 'canvas_header/topbar_submenu_group'); 
+        if (!empty($submenu))
+        {
+            echo "<div id='site_menu'>$submenu</div>";
+        }    
+    ?>    
     <div id='content'>
-        <?php            
-            $submenu = get_submenu_group('a'); 
-            if (!empty($submenu))
-            {
-                echo "<div id='sidebar_container'>$submenu</div>";
-            }    
-        ?>    
-        </div>
         <div id='content_top'></div>
         <div id='content_mid'>       
             <?php echo elgg_view('translation/control_bar'); ?>

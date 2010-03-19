@@ -128,13 +128,11 @@
         'widget:map' => "Location",        
         'widget:history' => "History",
         'widget:programs' => "Programs",
-        'widget:achievements' => "Achievements",
-        'widget:challenges' => "Challenges",
 
         'widget:news' => "News",                
         'widget:news:manage_updates' => "Manage News Updates",
                 
-        'widget:contact' => "Contact Info",
+        'widget:contact' => "Contact",
         
         'widget:contact:instructions' => "This page lets your website visitors contact you directly. Note that if you don't want certain information to be publicly available on the Internet, just leave that field blank.",
         
@@ -188,7 +186,7 @@
         'qualify:org_type:other' => 'Other',        
 
         'qualify:org_info' => 'Carefully read the following statements and check the ones that apply to your organization:',
-        'qualify:org_info:citizen' => 'It is run by local citizens of the country selected above.',
+        'qualify:org_info:citizen' => 'It is run by Tanzanians.',
         'qualify:org_info:local' => 'It mostly operates in one local community.',        
         'qualify:org_info:funder' => 'It primarily distributes funding to other organizations.',        
 

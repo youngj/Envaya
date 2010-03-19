@@ -141,7 +141,17 @@
         ), $text);
     }
 	
-	function autop($pee, $br = 1) {
+    function autop($p, $br = 1) 
+    {    
+        $p = str_replace(array("\r\n", "\r"), "\n", $p); // cross-platform newlines
+        $p = preg_replace("/\n\n+/", "\n\n", $p); // take care of duplicates
+        $p = trim($p);
+        $p = preg_replace("/\n/", "<br />", $p);
+        return $p;
+    }
+    
+	function autop_old($pee, $br = 1) 
+    {    
 		$pee = $pee . "\n"; // just to make things a little easier, pad the end
 		$pee = preg_replace('|<br />\s*<br />|', "\n\n", $pee);
 		// Space things out a little

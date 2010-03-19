@@ -68,7 +68,6 @@ function org_profile_page_handler($page)
                 include(dirname(__FILE__) . "/mobileSettings.php");
                 return;
             case "post":
-                set_context("blog");
                 set_input("blogpost", $page[2]);
 
                 switch ($page[3])

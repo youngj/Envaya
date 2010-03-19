@@ -94,8 +94,6 @@
         'widget:map' => "Sehemu",
         'widget:history' => "Historia",
         'widget:programs' => "Miradi",
-        'widget:achievements' => "Mafaniko",
-        'widget:challenges' => "Mapinzano",        
     
     /*
         'welcome' => "Karibu katika Envaya",

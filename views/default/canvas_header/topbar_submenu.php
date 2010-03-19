@@ -6,4 +6,4 @@
         $selected = "";
     }
 ?>
-<a <?php echo $selected; ?> href="<?php echo $vars['href']; ?>"><?php echo $vars['label']; ?></a>
+<a <?php echo $selected; ?> href="<?php echo $vars['href']; ?>"><?php echo $vars['label']; ?></a> 

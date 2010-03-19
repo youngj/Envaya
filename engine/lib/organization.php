@@ -197,7 +197,7 @@ class Organization extends ElggUser
     
     public function getAvailableWidgets()
     {
-        $allNames = array('home', 'news', 'map', 'history', 'team', 'programs', 'achievements', 'challenges', 'contact');
+        $allNames = array('home', 'news', 'map', 'history', 'team', 'programs', 'contact');
     
         $activeWidgets = $this->getActiveWidgets();
         

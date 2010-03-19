@@ -6,7 +6,14 @@
 {
     width:100%;
     /* height:48px; */
-    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient.gif?v5") repeat-x left top;  
+    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient.gif?v5") repeat-x left -1px;  
+}
+
+#topRight
+{
+    position:absolute;
+    right:0px;
+    top:0px;
 }
 
 #topbarTable
@@ -32,13 +39,14 @@
     padding:14px 20px 10px 20px;
     border-left:1px solid #5d5d5d;
     border-right:1px solid #2f2f2f;
-    height:22px;
+    height:23px;
     color:#e6e6e6;
 }
 
 .topbarLinks a:hover
 {
     background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient.gif?v5") repeat-x left -49px;  
+    text-decoration:none;
 }
 
 .topbarLinks a#logoContainer
@@ -76,7 +84,7 @@ a#loginButton:hover
 
 #loggedinArea
 {
-    background:#1d5153 url(<?php echo $graphicsDir; ?>/loggedinarea_sm.gif?v2) no-repeat left top;
+    background:url(<?php echo $graphicsDir; ?>/loggedinarea_rounded.gif?v2) no-repeat left top;
 }    
 
 a#loginButton:hover 
@@ -107,8 +115,8 @@ a#loginButton:hover .loginContent span
 .loggedInAreaContent
 {
     display:block;    
-    height:29px;
-    padding:12px 0px 6px 0px;
+    height:30px;
+    padding:10px 0px 6px 0px;
     text-align:center;
     color:#e6e6e6;
     font-weight:bold;
@@ -128,6 +136,7 @@ a#loginButton:hover .loginContent span
 .dropdown
 {
     position:absolute;
+    z-index:10;
     left:100px;
     top:100px;
     width:180px;
@@ -175,22 +184,20 @@ a.dropdown_item:hover
     margin:0 auto;   
 }
 
-#sidebar_container
+#site_menu
 {
-    position:absolute;
-    top:30px;
-    margin-left:493px;
-    width:150px;
-    height:50px;
+    clear:both;
+    padding-top:8px;
+    text-align:center;
 }
 
-#sidebar_container ul
+#site_menu a
 {
-    margin:0px;
-    padding:0px;
+    margin:0px 3px;
+    white-space:nowrap;
 }
 
-#sidebar_container li.selected a
+#site_menu a.selected
 {
     font-weight:bold;
     color:black;
@@ -199,6 +206,7 @@ a.dropdown_item:hover
 #edit_submenu
 {
     text-align:center;
+    height:20px;
     padding:3px 10px;
 }
 
@@ -261,7 +269,6 @@ a.dropdown_item:hover
 #content
 {
     clear:both;
-    padding-top:10px;
     position:relative;
 }
 
@@ -332,23 +339,30 @@ body
 
 .padded
 {
-    margin:0px 10px;
+    padding:5px 10px;
 }
 
 .blog_post
 {
     clear:both;
-    margin-bottom:10px;
+}
+
+.blog_post_wrapper
+{
+    
+    border-bottom:1px solid #ddd;
+    padding:8px;
 }
 
 .blog_post p 
 {
-    margin: 0 0 5px 0;
+    margin: 0;
 }
 
 .blog_date
 {
     color: #aaa;
+    font-size:11px;
 }
 
 .blog_more
@@ -389,7 +403,7 @@ a.smallBlogImageLink:hover
 
 #blogTimeline
 {
-    margin:0px 15px;
+    margin:5px 15px;
     position:relative;
     width:420px;
     height:50px;
@@ -664,7 +678,7 @@ a.smallBlogImageLink:hover
 .adminBox
 {
     position:absolute;
-    top:55px;
+    top:75px;
     right:2px;
     border:1px solid red;
     background:#ffcccc;
@@ -683,7 +697,6 @@ a.smallBlogImageLink:hover
     height:32px;
     background:#fdfdfd url(<?php echo $graphicsDir; ?>/world.gif) no-repeat 5px 8px;
     border-bottom:1px solid #ccc;
-    margin-bottom:2px;
     font-size:11px;
 }
 #translate_bar a
@@ -735,6 +748,7 @@ a.attachImageClose:hover
 .blogView
 {
     float:right;
+    margin-right:10px;
 }
 
 .gridTable 

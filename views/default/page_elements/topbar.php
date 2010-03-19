@@ -39,22 +39,21 @@ function closeChangeLanguage()
 }
 </script>
 <div id="topbar">
-<table id='topbarTable'>
-<tr>
+<table class='topbarTable'>
 <td class='topbarLinks'>
     <a id='logoContainer' href="<?php echo ((isloggedin()) ? 'pg/dashboard' : 'pg/home') ?>">
         <img src="_graphics/logo.gif" alt="Envaya" width="145" height="30">
     </a>
-          
-    
-<?php
-    echo "<a href='org/browse'>".elgg_echo('browse')."</a>";
-    echo "<a href='org/search'>".elgg_echo('search')."</a>";
-    echo "<a href='javascript:void(0)' id='languageButton' onclick='openChangeLanguage()'>".elgg_echo('language')."</a>";
-?>
+    <a href='org/browse'><?php echo elgg_echo('browse') ?></a>
+    <a href='org/search'><?php echo elgg_echo('search') ?></a>
+    <a href='javascript:void(0)' id='languageButton' onclick='openChangeLanguage()'><?php echo elgg_echo('language') ?></a>
+</td>    
+<td width='166'>&nbsp;</td>
+</tr>
+</table>
 
 <?php if (get_context() != "login") { ?>
-<td width='166'>
+<div id='topRight'>
 
     <?php            
     
@@ -101,10 +100,9 @@ function closeChangeLanguage()
            
     ?>    
     
-</td>
+</div>
+
 <?php } ?>
-</tr>
-</table>
 
 </div>
 
