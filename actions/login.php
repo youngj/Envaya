@@ -30,8 +30,8 @@
         
     // Set the system_message as appropriate
         
-        if ($result) 
-        {
+        if ($result) {
+            system_message(sprintf(elgg_echo('loginok'), $user->name));
             if ($_SESSION['last_forward_from'])
             {
             	$forward_url = $_SESSION['last_forward_from'];

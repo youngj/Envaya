@@ -33,18 +33,23 @@
             add_submenu_item(elgg_echo("widget:edit"), "{$widget->getUrl()}/edit", 'b');                
         }    
         
+        $org->showCantViewMessage();
+        
         if ($viewOrg)
         {
-            $body = elgg_view_layout('one_column', org_title($org, $subtitle), $viewOrg ? $widget->renderView() : '', 
-                    (isadminloggedin() ? elgg_view("org/admin_box", array('entity' => $org)) : '')
-            );
+            $area3 = isadminloggedin() ? elgg_view("org/admin_box", array('entity' => $org)) : '';
+        
+            if ($org->canEdit() && $org->approval == 0)
+            {
+                $area3 .= elgg_view("org/setupNextStep");
+            }
+        
+            $body = elgg_view_layout('one_column', org_title($org, $subtitle), $viewOrg ? $widget->renderView() : '', $area3);
         }
         else
-        {
-            $org->showCantViewMessage();
+        {            
             $body = '';
         }
-
 
         page_draw($title, $body);        
 	} 

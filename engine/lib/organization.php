@@ -24,6 +24,8 @@ class Organization extends ElggUser
         if ($this->approval == 0)
         {
             system_message(elgg_echo('org:waitingapproval'));
+            
+            
         }
         else if ($this->approval < 0)
         {

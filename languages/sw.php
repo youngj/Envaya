@@ -98,7 +98,6 @@
     /*
         'welcome' => "Karibu katika Envaya",
         'register_org' => "Ongeza chama kipya",
-        'welcome_user' => "Karibu, %s!",
         'browse_map' => 'Ramani ya vyama',
         'actions' => 'Vitendo',
         'org:yours' => 'Umbo',

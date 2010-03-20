@@ -13,12 +13,23 @@
         'home:about_us' => 'About us',
         'home:feed' => 'Latest news updates',
         
+        'loginok' => "Welcome, %s!",
+        
         'feed:title' => "Latest news updates",
         
+        'help:title' => "Getting Started",
+        
+        'dashboard' => "Edit Site",        
         'dashboard:add_update' => 'Write news update',
         'dashboard:edit_widgets' => 'Edit pages',
         'dashboard:attach_image' => "Attach image",
         'dashboard:select_image' => "Select an image you would like to include with this news update:",
+        'dashboard:view_home' => "View your home page",
+        'dashboard:settings' => "Change account settings",
+        'dashboard:links' => "Links",
+        'dashboard:help' => "Getting Started",        
+        
+        'setup:next_step_message' => "Learn how to use your Envaya website.",        
         
         'topbar:your_home' => "Your home page",
         'topbar:edit_site' => "Edit site",
@@ -276,8 +287,6 @@
                 
         'about:title' => 'About us',
         
-        'welcome_user' => "Welcome, %s!",                     
-
         'page:notfound' => "Page not found",
         'page:notfound:details' => "The requested page either does not exist or you do not have access to it.",
 

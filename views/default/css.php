@@ -37,9 +37,6 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 :focus {
 	outline: 0;
 }
-ol, ul {
-	list-style: none;
-}
 em, i {
 	font-style:italic;
 }

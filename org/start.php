@@ -11,6 +11,9 @@ function org_page_handler($page)
             case "new":
                 include(dirname(__FILE__) . "/neworg.php");
                 return;
+            case "help":
+                include(dirname(__FILE__) . "/help.php");
+                return;                
             case "checkmail":
                 include(dirname(__FILE__) . "/checkmail.php");
                 return;
@@ -71,7 +74,7 @@ function org_profile_page_handler($page)
         {
             case "mobilesettings":
                 include(dirname(__FILE__) . "/mobileSettings.php");
-                return;
+                return;                
             case "post":
                 set_input("blogpost", $page[2]);
 

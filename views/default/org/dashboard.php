@@ -11,8 +11,33 @@
     
     foreach ($widgets as $widget)
     {
-        $class = (!$widget->guid) ? 'class="widget_disabled"' : ''; // TODO: & enabled
+        $class = (!$widget->guid) ? 'class="widget_disabled"' : ''; 
         $widgetList[] .= "<a $class href='{$widget->getEditURL()}?from=pg/dashboard'>".elgg_echo("widget:{$widget->widget_name}")."</a>";
     }
 
     echo elgg_view_layout('section', elgg_echo("dashboard:edit_widgets"), implode('<br>', $widgetList));    
+    
+    ob_start();
+?>
+<div class='dashboard_links'>    
+    <div>
+        <a class='dashboard_img_link' href='org/help'><img src='_graphics/help.gif' /></a>
+        <a class='dashboard_text_link' href='org/help'><?php echo elgg_echo('dashboard:help') ?></a>
+    </div>        
+    <div>
+        <a class='dashboard_img_link' href='<?php echo $org->getURL() ?>'><img src='_graphics/home.gif?v2' /></a>
+        <a class='dashboard_text_link' href='<?php echo $org->getURL() ?>'><?php echo elgg_echo('dashboard:view_home') ?></a>
+    </div>    
+    <div>
+        <a class='dashboard_img_link' href='pg/settings'><img src='_graphics/settings.gif' /></a>
+        <a class='dashboard_text_link' href='pg/settings'><?php echo elgg_echo('dashboard:settings') ?></a>
+    </div>    
+    <div>
+        <a class='dashboard_img_link' href='action/logout'><img src='_graphics/logout.gif' /></a>
+        <a class='dashboard_text_link' href='action/logout'><?php echo elgg_echo('logout') ?></a>
+    </div>    
+</div>    
+<?php
+    $links = ob_get_clean();
+    
+    echo elgg_view_layout('section', elgg_echo("dashboard:links"), $links);    

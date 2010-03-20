@@ -46,7 +46,7 @@ function closeChangeLanguage()
     </a>
     <a href='org/browse'><?php echo elgg_echo('browse') ?></a>
     <a href='org/search'><?php echo elgg_echo('search') ?></a>
-    <a href='javascript:void(0)' id='languageButton' onclick='openChangeLanguage()'><?php echo elgg_echo('language') ?></a>
+    <a href='javascript:void(0)' id='languageButton' onclick='openChangeLanguage()'><?php echo elgg_echo('language') ?></a>    
 </td>    
 <td width='166'>&nbsp;</td>
 </tr>
@@ -69,7 +69,7 @@ function closeChangeLanguage()
                 
                 if ($user instanceof Organization)
                 {
-                    echo "<a href='pg/dashboard' title=\"".elgg_echo('topbar:edit_site')."\"><img src='_graphics/pencil.gif' height='23' width='22' /></a>";
+                    echo "<a href='pg/dashboard' title=\"".elgg_echo('topbar:edit_site')."\"><img src='_graphics/pencil.gif?v2' height='23' width='22' /></a>";
                 }    
                 
                 echo "<a href='pg/settings/' title=\"".elgg_echo('settings')."\" id='usersettings'><img src='_graphics/settings.gif' height='25' width='25' /></a>";                

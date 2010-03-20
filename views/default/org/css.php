@@ -242,7 +242,7 @@ a.dropdown_item:hover
 {
     color:#222;
     font-size:22px;
-    padding-top:14px;
+    padding-top:5px;
     padding-bottom:0px;
     margin:0px;
 }
@@ -251,6 +251,7 @@ a.dropdown_item:hover
 {
     padding-top:20px;
 }
+
 
 #heading h1.withouticon,
 #heading h2.withouticon
@@ -322,8 +323,13 @@ a.dropdown_item:hover
     width:483px;
     margin:3px auto;
     -webkit-border-radius: 4px; 
-    -moz-border-radius: 4px;
+    -moz-border-radius: 4px;    
     border:2px solid #00CC00;
+}
+
+.good_messages p, .bad_messages p
+{
+    margin:4px;   
 }
 
 .bad_messages
@@ -772,4 +778,34 @@ a.attachImageClose:hover
 {
     border:1px solid #ccc;
     padding:3px;
+}
+
+.dashboard_img_link
+{
+    width:27px;
+    height:26px;
+    text-align:center;
+    float:left;
+    clear:left;    
+    margin-right:5px;
+    background:url(<?php echo $graphicsDir; ?>/loggedinarea_rounded.gif?v2) no-repeat -20px -20px;
+}
+
+.icon_with_bg
+{
+    padding:4px;
+    vertical-align:middle;
+    background:url(<?php echo $graphicsDir; ?>/loggedinarea_rounded.gif?v2) no-repeat -20px -20px;
+}
+
+.dashboard_text_link
+{
+    display:block;
+    padding-top:3px
+}
+
+.dashboard_links div
+{
+    clear:both;
+    padding-top:2px;
 }
