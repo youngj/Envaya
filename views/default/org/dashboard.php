@@ -15,10 +15,15 @@
         $widgetList[] .= "<a $class href='{$widget->getEditURL()}?from=pg/dashboard'>".elgg_echo("widget:{$widget->widget_name}")."</a>";
     }
 
-    echo elgg_view_layout('section', elgg_echo("dashboard:edit_widgets"), implode('<br>', $widgetList));    
+    $widgets = "<div id='edit_pages_menu'>".implode(' ', $widgetList)."</div>";
+
+    echo elgg_view_layout('section', elgg_echo("dashboard:edit_widgets"), $widgets);    
     
     ob_start();
 ?>
+<table style='width:100%'>
+<tr>
+<td>
 <div class='dashboard_links'>    
     <div>
         <a class='dashboard_img_link' href='org/help'><img src='_graphics/help.gif' /></a>
@@ -37,6 +42,25 @@
         <a class='dashboard_text_link' href='action/logout'><?php echo elgg_echo('logout') ?></a>
     </div>    
 </div>    
+</td>
+<td>
+<div class='dashboard_links'>
+    <div>
+        <a class='dashboard_img_link_r' href='org/browse'><img src='_graphics/globe.gif' /></a>
+        <a class='dashboard_text_link' href='org/browse'><?php echo elgg_echo("home:browse_orgs") ?></a>
+    </div>
+    <div>
+        <a class='dashboard_img_link_r' href='org/search'><img src='_graphics/search.gif' /></a>
+        <a class='dashboard_text_link' href='org/search'><?php echo elgg_echo("home:find_org") ?></a>
+    </div>
+    <div>
+        <a class='dashboard_img_link_r' href='org/feed'><img src='_graphics/icons/default/small.png' /></a>
+        <a class='dashboard_text_link' href='org/feed'><?php echo elgg_echo("home:feed") ?></a>
+    </div>
+</div>
+</td>
+</tr>
+</table>
 <?php
     $links = ob_get_clean();
     

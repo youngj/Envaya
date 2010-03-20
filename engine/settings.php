@@ -41,7 +41,7 @@
     $CONFIG->dataroot = dirname($CONFIG->path). "/elgg-data/";
     
     $CONFIG->simplecache_enabled = 0;
-    $CONFIG->simplecache_version = 9;
+    $CONFIG->simplecache_version = 10;
     
     $CONFIG->viewpath_cache_enabled = 0;
     $CONFIG->wwwroot = "http://localhost/";

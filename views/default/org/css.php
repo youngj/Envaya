@@ -191,7 +191,12 @@ a.dropdown_item:hover
     text-align:center;
 }
 
-#site_menu a
+#edit_pages_menu
+{
+   text-align:center;
+}
+
+#site_menu a, #edit_pages_menu a
 {
     margin:0px 3px;
     white-space:nowrap;
@@ -789,6 +794,20 @@ a.attachImageClose:hover
     clear:left;    
     margin-right:5px;
     background:url(<?php echo $graphicsDir; ?>/loggedinarea_rounded.gif?v2) no-repeat -20px -20px;
+}
+
+.dashboard_img_link_r
+{
+    width:31px;
+    height:31px;
+    float:left;
+    clear:left;    
+    margin-right:5px;
+}
+.dashboard_img_link_r img
+{
+    width:30px;
+    height:30px;
 }
 
 .icon_with_bg
