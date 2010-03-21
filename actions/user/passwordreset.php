@@ -19,7 +19,7 @@
 	else
 		register_error(elgg_echo('user:password:fail'));
 		
-	forward();
+	forward("pg/login");
 	exit;
 	
 ?>

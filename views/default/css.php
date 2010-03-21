@@ -402,6 +402,10 @@ input[type="submit"] {
 	-webkit-border-radius: 8px; 
 	-moz-border-radius: 8px;
 }
+#persistent_login 
+{
+}
+
 #persistent_login label {
 	font-size:1.0em;
 	font-weight: normal;

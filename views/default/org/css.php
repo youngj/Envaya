@@ -6,7 +6,7 @@
 {
     width:100%;
     /* height:48px; */
-    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient.gif?v5") repeat-x left -1px;  
+    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient.gif?v5") repeat-x left -1px;
 }
 
 #topRight
@@ -16,15 +16,10 @@
     top:0px;
 }
 
-#topbarTable
+.topbarTable
 {
-    width:100%;
-}
-
-#topbarTable td
-{
-    padding-top:1px;
-    padding-bottom:1px;
+    width:100%;    
+    border-collapse:collapse;
 }
 
 #topbar form
@@ -587,8 +582,9 @@ a.smallBlogImageLink:hover
 
 .tabs
 {
-    width:100%;
+    width:100%;    
     margin-bottom:10px;
+    border-collapse:collapse;
 }
 
 .tab
@@ -827,4 +823,9 @@ a.attachImageClose:hover
 {
     clear:both;
     padding-top:2px;
+}
+
+.input-checkboxes, .input-radio
+{
+    border:0px;
 }

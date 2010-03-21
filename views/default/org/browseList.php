@@ -10,7 +10,7 @@ function sectorChanged()
         var sector = sectorList.options[sectorList.selectedIndex].value;
         var region = regionList.options[regionList.selectedIndex].value;
 
-        window.location.href = "org/browse?list=1&sector=" + sector + "&region=" + region;
+        window.location.href = "/org/browse?list=1&sector=" + sector + "&region=" + region;
     }, 1);    
 }
 </script>

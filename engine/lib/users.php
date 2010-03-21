@@ -785,7 +785,7 @@
 			$link = $CONFIG->url . "action/user/passwordreset?u=$user_guid&c=$code";
 			
 			// generate email
-			$email = sprintf(elgg_echo('email:resetreq:body'), $user->name, $_SERVER['REMOTE_ADDR'], $link);
+			$email = sprintf(elgg_echo('email:resetreq:body'), $user->name, $link);
 			
 			return notify_user($user->guid, $CONFIG->site_guid, elgg_echo('email:resetreq:subject'), $email, NULL, 'email');
 

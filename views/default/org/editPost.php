@@ -21,13 +21,14 @@
 
 <?php
     echo elgg_view('input/hidden', array('internalname' => 'blogpost', 'value' => $vars['entity']->getGUID()));
-    echo elgg_view('input/submit', array('internalname' => 'submit', 'value' => elgg_echo('blog:save'))); 
     echo elgg_view('input/submit', array(
             'internalname' => "delete", 
             'internalid' => 'widget_delete', 
             'js' => "onclick='return confirm(".json_encode(elgg_echo('question:areyousure')).")'",
             'value' => elgg_echo('blog:delete')
         )); 
+
+    echo elgg_view('input/submit', array('internalname' => 'submit', 'value' => elgg_echo('blog:save'))); 
 ?>
 
 <?php

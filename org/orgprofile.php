@@ -1,5 +1,10 @@
 <?php
 
+    if (get_input('login'))
+    {
+        gatekeeper();
+    }
+
 	$org_guid = get_input('org_guid');
 	set_context('org');
 

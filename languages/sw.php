@@ -12,6 +12,8 @@
         'home:find_org' => 'Tafuta shirika',
         'home:about_us' => 'Kuhusu sisi',    
     
+        'user:password:lost' => 'Neno la siri limesahauliwa',
+    
         'search' => 'Tafuta',
         'language' => "Lugha",
         'language:choose' => "Chagua Lugha",    
@@ -98,6 +100,7 @@
     /*
         'welcome' => "Karibu katika Envaya",
         'register_org' => "Ongeza chama kipya",
+        'welcome_user' => "Karibu, %s!",
         'browse_map' => 'Ramani ya vyama',
         'actions' => 'Vitendo',
         'org:yours' => 'Umbo',

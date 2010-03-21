@@ -185,12 +185,24 @@ function org_settings_save()
     @include($CONFIG->path . "actions/org/saveSettings.php");
 }
 
+function notify_new_org($event, $objectType, $org)
+{    
+    if (!$org->isApproved())
+    {
+        send_admin_mail("New organization registered: {$org->name}", 
+"To view their website and approve or reject it, visit
+{$org->getURL()}?login=1
+");
+    }
+}
+
 register_page_handler('orgprofile','org_profile_page_handler');
 register_page_handler('org','org_page_handler');
 register_page_handler('page','page_page_handler');
 register_page_handler('home','home_page_handler');
 register_page_handler('login','login_page_handler');
 register_elgg_event_handler('pagesetup','system','envaya_pagesetup');
+register_elgg_event_handler('register', 'organization', 'notify_new_org');
 register_plugin_hook('index','system','new_index');
 
 extend_elgg_settings_page('org/settings', 'usersettings/user', 1);

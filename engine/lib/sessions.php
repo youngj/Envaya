@@ -477,7 +477,7 @@
 		function gatekeeper() {
 			if (!isloggedin()) {
 				$_SESSION['last_forward_from'] = current_page_url();
-				forward();
+				forward("pg/login");
 			}
 		}
 		

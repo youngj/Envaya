@@ -7,7 +7,7 @@
 	
 	if (($entity) && ($entity instanceof Organization))
 	{
-        $entity->approval = (int)get_input('approval');
+        $entity->approval = (int)get_input('approval');        
         $entity->save();    
 	    system_message(elgg_echo('org:approval_changed'));	
 	}

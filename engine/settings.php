@@ -30,6 +30,11 @@
 	// Try uncommenting the below if your notification emails are not being sent
 	// $CONFIG->broken_mta = true; 
 			
+    $CONFIG->queue_host = "localhost";
+    $CONFIG->queue_port = 22133;
+            
+    $CONFIG->admin_email = "nobody@envaya.org";
+    $CONFIG->email_from = "web@envaya.org";
     $CONFIG->email_pass = "f03;aoeA";    		
     $CONFIG->google_api_key = "ABQIAAAAHy69XWEjciJIVElz0OYMsRR3-IOatrPZ1tLat998tYHgwqPnkhTKyWcq8ytRPMx3RyxFjK0O7WSCHA";
         
@@ -41,7 +46,7 @@
     $CONFIG->dataroot = dirname($CONFIG->path). "/elgg-data/";
     
     $CONFIG->simplecache_enabled = 0;
-    $CONFIG->simplecache_version = 10;
+    $CONFIG->simplecache_version = 12;
     
     $CONFIG->viewpath_cache_enabled = 0;
     $CONFIG->wwwroot = "http://localhost/";

@@ -13,12 +13,12 @@
 	 
 	global $CONFIG;
 	
-	$form_body = "<p class=\"loginbox\"><label>" . elgg_echo('username') . "<br />" . elgg_view('input/text', array('internalname' => 'username', 'class' => 'login-textarea')) . "</label>";
+	$form_body = "<label>" . elgg_echo('username') . "<br />" . elgg_view('input/text', array('internalname' => 'username', 'class' => 'login-textarea')) . "</label>";
 	$form_body .= "<br />";
 	$form_body .= "<label>" . elgg_echo('password') . "<br />" . elgg_view('input/password', array('internalname' => 'password', 'class' => 'login-textarea')) . "</label><br />";
-	$form_body .= elgg_view('input/submit', array('value' => elgg_echo('login'))) . " <div id=\"persistent_login\"><label><input type=\"checkbox\" name=\"persistent\" value=\"true\" />".elgg_echo('user:persistent')."</label></div></p>";
-	$form_body .= "<p class=\"loginbox\">";	
-	$form_body .= "<a href=\"{$vars['url']}account/forgotten_password.php\">" . elgg_echo('user:password:lost') . "</a></p>";  
+    $form_body .= " <div id=\"persistent_login\"><label><input type=\"checkbox\" class='input-checkboxes' name=\"persistent\" value=\"true\" />".elgg_echo('user:persistent')."</label></div>";
+	$form_body .= elgg_view('input/submit', array('value' => elgg_echo('login')));
+	$form_body .= "<div><a href=\"{$vars['url']}account/forgotten_password.php\">" . elgg_echo('user:password:lost') . "</a></div>";  
 	
 	//<input name=\"username\" type=\"text\" class="general-textarea" /></label>
 	

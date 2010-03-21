@@ -117,8 +117,8 @@
         'password' => "Password",
         'passwordagain' => "Password (again for verification)",
         'admin_option' => "Make this user an admin?",
-        'user:persistent' => 'Remember me',
-        'user:password:lost' => 'Neno la siri limesahauliwa',
+        'user:persistent' => 'Stay logged in',
+        'user:password:lost' => 'Forgot password',
 
         'org:yours' => 'Your Site',
         'org:home' => 'Home',
@@ -539,7 +539,7 @@
         'user:set:password' => "Account password",
         'user:password:label' => "Your new password",
         'user:password2:label' => "Your new password again",
-        'user:password:success' => "Password changed",
+        'user:password:success' => "Your password has been changed. Check your email for your new password, and enter it below.",
         'user:password:fail' => "Could not change your password on the system.",
         'user:password:fail:notsame' => "The two passwords are not the same!",
         'user:password:fail:tooshort' => "Password is too short!",
@@ -551,10 +551,10 @@
 
         'user:username:notfound' => 'Username %s not found.',
         
-        'user:password:resetreq:success' => 'Successfully requested a new password, email sent',
+        'user:password:resetreq:success' => 'Successfully requested a new password. Check your email for a message from Envaya and click on the link inside.',
         'user:password:resetreq:fail' => 'Could not request a new password.',
 
-        'user:password:text' => 'To generate a new password, enter your username below. We will send the address of a unique verification page to you via email click on the link in the body of the message and a new password will be sent to you.',
+        'user:password:text' => 'To generate a new password, enter your username below. We will send the address of a unique verification page to you via email. Click on the link in the body of the message and a new password will be sent to you.',
 
         'admin:configuration:success' => "Your settings have been saved.",
         'admin:configuration:fail' => "Your settings could not be saved.",
@@ -764,15 +764,14 @@ Alternatively, you can enter your database settings below and we will try and do
 Your password has been reset to: %s",
 
 
-        'email:resetreq:subject' => "Request for new password.",
+        'email:resetreq:subject' => "Request for new password",
         'email:resetreq:body' => "Hi %s,
 
-Somebody (from the IP address %s) has requested a new password for their account.
+Somebody has requested a new password for your account.
 
-If you requested this click on the link below, otherwise ignore this email.
+If you requested this, click on the link below to change your password:
 
-%s
-",
+%s",
 
         'default_access:settings' => "Your default access level",
         'default_access:label' => "Default access",

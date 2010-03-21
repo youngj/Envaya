@@ -18,7 +18,7 @@ function sectorChanged()
     var regionList = document.getElementById('regionList');
     var sector = sectorList.options[sectorList.selectedIndex].value;
     var region = regionList.options[regionList.selectedIndex].value;
-    window.location.href = "org/feed?sector=" + sector + "&region=" + region;
+    window.location.href = "/org/feed?sector=" + sector + "&region=" + region;
 }
 </script>
 

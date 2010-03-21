@@ -38,6 +38,8 @@
         $org->save();        
                        
         system_message(elgg_echo("setup:ok"));
+        
+        trigger_elgg_event('register', 'organization', $org);
 
         forward($org->getUrl());
     } 

@@ -15,5 +15,5 @@
     $CONFIG->simplecache_enabled = 1;
     $CONFIG->wwwroot = "http://envaya.org/";
     $CONFIG->url = $CONFIG->wwwroot;
+    $CONFIG->admin_email = "admin@envaya.org";
     
-?>

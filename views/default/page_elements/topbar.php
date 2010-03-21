@@ -65,14 +65,14 @@ function closeChangeLanguage()
             
             if ($user->isSetupComplete())
             {
-                echo "<a href='{$user->getURL()}' title=\"".elgg_echo('topbar:your_home')."\"><img src='_graphics/home.gif?v2' height='24' width='25' /></a>";
+                echo "<a href='{$user->getURL()}' title=\"".elgg_echo('topbar:your_home')."\"><img src='_graphics/home.gif?v2' /></a>";
                 
                 if ($user instanceof Organization)
                 {
-                    echo "<a href='pg/dashboard' title=\"".elgg_echo('topbar:edit_site')."\"><img src='_graphics/pencil.gif?v2' height='23' width='22' /></a>";
+                    echo "<a href='pg/dashboard' title=\"".elgg_echo('topbar:edit_site')."\"><img src='_graphics/pencil.gif?v2' /></a>";
                 }    
                 
-                echo "<a href='pg/settings/' title=\"".elgg_echo('settings')."\" id='usersettings'><img src='_graphics/settings.gif' height='25' width='25' /></a>";                
+                echo "<a href='pg/settings/' title=\"".elgg_echo('settings')."\" id='usersettings'><img src='_graphics/settings.gif' /></a>";                
             }            
 
             // The administration link is for admin or site admin users only
@@ -81,7 +81,7 @@ function closeChangeLanguage()
                 echo "<a href='pg/admin/'><img src='_graphics/admin.gif' height='25' width='24' /></a>";                
             }                    
             
-            echo "<a href='action/logout' title=\"".elgg_echo('logout')."\"><img src='_graphics/logout.gif' height='25' width='22' /></a>";
+            echo "<a href='action/logout' title=\"".elgg_echo('logout')."\"><img src='_graphics/logout.gif' /></a>";
             
             echo "</span>";
 

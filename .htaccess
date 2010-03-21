@@ -52,8 +52,7 @@ DirectoryIndex index.php
 	php_value post_max_size 8388608
 	# upload size limit to 5Mb	
 	php_value upload_max_filesize 5242880
-	# hide errors, enable only if debug enabled
-	php_value display_errors 0
+	# hide errors, enable only if debug enabled	
 </IfModule>
 
 # Turn on mod_gzip if available
@@ -140,5 +139,4 @@ RewriteRule ^(account|mod|search|admin|dashboard|engine|_css|_graphics)/ - [S=1]
 RewriteRule ^([\d\w\-]+(/.*)?)$ engine/handlers/pagehandler.php?handler=orgprofile&page=$1 [L]
 
 </IfModule>
-
 php_value display_errors 1

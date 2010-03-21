@@ -193,6 +193,8 @@ function fetchOrgs()
     fetchOrgXHR = fetchJson($src, showOrgs);
 }    
  
+var map = null; 
+ 
 function initialize() 
 {
     map = new google.maps.Map2(document.getElementById("map"));

@@ -12,14 +12,22 @@
         $step = 1;
     }
     
-    if ($step == 3 && !isloggedin())
+    $loggedInUser = get_loggedin_user();
+    
+    if ($loggedInUser && !($loggedInUser instanceof Organization))
+    {
+        logout();
+        forward("org/new");
+    }
+    
+    if ($step == 3 && !$loggedInUser)
     {
         register_error(elgg_echo("create:notloggedin"));
         $step = 1;
         forward('pg/login');
-    }
+    }          
     
-    if (isloggedin() && $step < 3)
+    if ($loggedInUser  && $step < 3)
     {
         $step = 3;
     }

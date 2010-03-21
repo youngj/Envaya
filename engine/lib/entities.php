@@ -28,7 +28,8 @@
 	abstract class ElggEntity implements 
 		Loggable,	// Can events related to this object class be logged
 		Iterator,	// Override foreach behaviour
-		ArrayAccess // Override for array access
+		ArrayAccess, // Override for array access
+        Serializable
 	{
 		/** 
 		 * The main attributes of an entity.
@@ -84,11 +85,30 @@
             }
         }        
         
+        public function serialize()
+        {
+            return serialize($this->guid);
+        }
+        
+        public function unserialize($data) 
+        {
+            $guid = unserialize($data);            
+            $entity = get_entity($guid);
+
+            foreach ($entity->attributes as $key => $value)
+                $this->attributes[$key] = $value;
+        }        
+                
         protected function loadFromPartialTableRow($row)
         {
             $entityRow = (property_exists($row, 'type')) ? $row : get_entity_as_row($row->guid);
             return $this->loadFromTableRow($entityRow);
         }    
+        
+        public function __sleep()
+        {
+            return array('guid');
+        }
         
 		/**
 		 * Initialise the attributes array. 

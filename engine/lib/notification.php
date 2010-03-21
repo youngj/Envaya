@@ -213,72 +213,82 @@
 	 * @return bool
 	 */
 	function email_notify_handler(ElggEntity $from, ElggUser $to, $subject, $message, array $params = NULL)
-	{
-		global $CONFIG;
-		
-		if (!$from)
-			throw new NotificationException(sprintf(elgg_echo('NotificationException:MissingParameter'), 'from'));
-			 
+	{			 
 		if (!$to)
 			throw new NotificationException(sprintf(elgg_echo('NotificationException:MissingParameter'), 'to'));
 		
-		if ($to->email=="")
+		if (!$to->email)
 			throw new NotificationException(sprintf(elgg_echo('NotificationException:NoEmailAddress'), $to->guid));			
-
-		// Sanitise subject
-		$subject = preg_replace("/(\r\n|\r|\n)/", " ", $subject); // Strip line endings
 			
-		// To 
-		$to = $to->email;
-		
-		// From
-		$site = get_entity($CONFIG->site_guid);
-		if ((isset($from->email)) && (!($from instanceof ElggUser))) // If there's an email address, use it - but only if its not from a user.
-        {
-			$from = $from->email;		
-        }    
-        else 
-        {
-			$from = $CONFIG->siteemail;
-        }    
-	
-		if (is_callable('mb_internal_encoding')) {
-			mb_internal_encoding('UTF-8');
-		}
-		$site = get_entity($CONFIG->site_guid);
-		$sitename = $CONFIG->sitename;
-		if (is_callable('mb_encode_mimeheader')) {
-            $sitename = mb_encode_mimeheader($CONFIG->sitename,"UTF-8", "B");
-		}
-		
-		$header_eol = "\r\n";
-		if ( 
-			(isset($CONFIG->broken_mta)) &&
-			($CONFIG->broken_mta)
-		)
-			$header_eol = "\n"; // Allow non-RFC 2822 mail headers to support some broken MTAs
-		
-		$from_email = "\"$sitename\" <$from>";
-		if (strtolower(substr(PHP_OS, 0 , 3)) == 'win')
-			$from_email = "$from"; // Windows is somewhat broken, so we use a different format from header
-			
-		$headers = "From: $from_email{$header_eol}"
-			. "Content-Type: text/plain; charset=UTF-8; format=flowed{$header_eol}"
-    		. "MIME-Version: 1.0{$header_eol}"
-    		. "Content-Transfer-Encoding: 8bit{$header_eol}";
-
-    	if (is_callable('mb_encode_mimeheader')) {
-			$subject = mb_encode_mimeheader($subject,"UTF-8", "B");
-    	}	
-    	
-		// Format message
-		$message = html_entity_decode($message, ENT_COMPAT, 'UTF-8'); // Decode any html entities
-    	$message = strip_tags($message); // Strip tags from message
-    	$message = preg_replace("/(\r\n|\r)/", "\n", $message); // Convert to unix line endings in body
-    	$message = preg_replace("/^From/", ">From", $message); // Change lines starting with From to >From  	
-    		
-		return mail($to, $subject, wordwrap($message), $headers);
+        $toName = mb_encode_mimeheader($to->name, "UTF-8", "B");                
+        $headers = array('To' => "\"$toName\" <{$to->email}>");
+        
+        return send_mail($to->email, $subject, $message, $headers);
 	}
+
+    function send_mail($to, $subject, $message, $headers = null)
+    {
+        global $CONFIG;
+
+        if (!$headers)
+        {
+            $headers = array();
+        }
+
+        if (!isset($headers['From']))
+        {
+            $headers['From'] = "\"{$CONFIG->sitename}\" <{$CONFIG->email_from}>";
+        }
+        if (!isset($headers['To']))
+        {
+            $headers['To'] = $to;
+        }
+        
+        $subject = preg_replace("/(\r\n|\r|\n)/", " ", $subject); // Strip line endings     
+        
+        $headers['Subject'] = mb_encode_mimeheader($subject,"UTF-8", "B");                    
+        $headers["Content-Type"] = "text/plain; charset=UTF-8; format=flowed";
+        $headers["MIME-Version"] = "1.0";
+        $headers["Content-Transfer-Encoding"] = "8bit";
+        
+        $message = wordwrap(preg_replace("/(\r\n|\r)/", "\n", $message)); // Convert to unix line endings in body
+        
+        return queue_function_call('_send_mail_now', array($to, $headers, $message));
+    }
+
+    function _send_mail_now($to, $headers, $message)
+    {
+        $mailer = get_smtp_mailer();
+        echo $mailer->send($to, $headers, $message);                        
+        return true;
+    }
+
+    function send_admin_mail($subject, $message)
+    {
+        global $CONFIG;
+        return send_mail($CONFIG->admin_email, $subject, $message);
+    }
+
+    function get_smtp_mailer()
+    {
+        static $mailer;
+        
+        if (!isset($mailer))
+        {
+            global $CONFIG;
+            require_once("{$CONFIG->path}engine/lib/Net/SMTP.php");
+            require_once("{$CONFIG->path}engine/lib/Net/RFC822.php");
+            require_once("{$CONFIG->path}engine/lib/Net/Mail.php");
+        
+            $mailer = new Mail_smtp(array(
+                'host' => 'localhost', 
+                'port' => 25, 
+                'username' => 'web@envaya.org', 
+                'auth' => true,
+                'password' => $CONFIG->email_pass));
+        }        
+        return $mailer;
+    }
 
 	/**
 	 * Correctly initialise notifications and register the email handler.
@@ -286,28 +296,17 @@
 	 */
 	function notification_init()
 	{
+        mb_internal_encoding('UTF-8');              
+        
 		// Register a notification handler for the default email method
 		register_notification_handler("email", "email_notify_handler");
-		
+		        
 		// Add settings view to user settings & register action
-		extend_elgg_settings_page('notifications/settings/usersettings', 'usersettings/user');
+		//extend_elgg_settings_page('notifications/settings/usersettings', 'usersettings/user');
 		
-		register_plugin_hook('usersettings:save','user','notification_user_settings_save');
+		//register_plugin_hook('usersettings:save','user','notification_user_settings_save');
 		
-		//register_action("notifications/settings/usersettings/save");
-		
-		
-		// Register some APIs
-		expose_function('user.notification.get', 'get_user_notification_settings', array(
-			'user_guid' => array ('type' => 'int')
-		), elgg_echo('user.notification.get'));
-		
-		expose_function('user.notification.set', 'set_user_notification_settings', array(
-			'user_guid' => array ('type' => 'int'),
-			'method' => array ('type' => 'string'),
-			'value' => array ('type' => 'bool')
-		), elgg_echo('user.notification.set'));
-		
+		//register_action("notifications/settings/usersettings/save");				
 	}
 	
 	function notification_user_settings_save() {
@@ -422,7 +421,7 @@
 	}
 
 	// Register a startup event
-	//register_elgg_event_handler('init','system','notification_init',0);
+	register_elgg_event_handler('init','system','notification_init',0);
 	//register_elgg_event_handler('create','object','object_notifications');
 
 ?>
