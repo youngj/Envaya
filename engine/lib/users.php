@@ -360,7 +360,7 @@
                 $args[] = $subtypeId;
             }
             
-            if (!isadminloggedin())
+            if (!isadminloggedin() && !access_get_show_hidden_status())
             {
                 $where[] = "(approval > 0 || e.guid = ?)";
                 $args[] = get_loggedin_userid();                

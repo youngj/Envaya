@@ -411,8 +411,8 @@ class NewsUpdate extends ElggObject
             if ($thumbsmall) 
             {
                 $thumb = new ElggFile();
-                $thumb->owner_guid = $blog->container_guid;
-                $thumb->container_guid = $blog->guid;
+                $thumb->owner_guid = $this->container_guid;
+                $thumb->container_guid = $this->guid;
                 $thumb->setMimeType('image/jpeg');
 
                 $thumb->setFilename($prefix."small.jpg");
@@ -425,6 +425,10 @@ class NewsUpdate extends ElggObject
                 $thumb->write($thumblarge);
                 $thumb->close();
             }        
+            else
+            {
+                throw new DataFormatException('error saving thumbnail');
+            }
         }   
         $this->save();
     }

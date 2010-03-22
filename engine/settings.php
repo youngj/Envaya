@@ -34,6 +34,7 @@
     $CONFIG->queue_port = 22133;
             
     $CONFIG->admin_email = "nobody@envaya.org";
+    $CONFIG->post_email = "postdev@envaya.org";
     $CONFIG->email_from = "web@envaya.org";
     $CONFIG->email_pass = "f03;aoeA";    		
     $CONFIG->google_api_key = "ABQIAAAAHy69XWEjciJIVElz0OYMsRR3-IOatrPZ1tLat998tYHgwqPnkhTKyWcq8ytRPMx3RyxFjK0O7WSCHA";

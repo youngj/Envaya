@@ -281,7 +281,7 @@
 		protected function make_directory_root($dirroot)
 		{
 			if (!file_exists($dirroot))
-			if (!@mkdir($dirroot, 0700, true)) 
+			if (!@mkdir($dirroot, 0777, true)) 
 				throw new IOException(sprintf(elgg_echo('IOException:CouldNotMake'), $dirroot));
 				
 			return true;

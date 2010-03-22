@@ -82,7 +82,7 @@
             'no' => elgg_echo('option:no'),
         );
     }
-
+    
     /**
      * Adds messages to the session so they'll be carried over, and forwards the browser.
      * Returns false if headers have already been sent and the browser cannot be moved.
@@ -1052,7 +1052,7 @@
             {
 				while ($file = readdir($handle)) 
                 {
-					if (strrchr($file, '.php') && !in_array($file,$file_exceptions)) 
+					if (endswith($file, '.php') && !in_array($file,$file_exceptions)) 
                     {
 						$file_list[] = $directory . "/" . $file;
 					}

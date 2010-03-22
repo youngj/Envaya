@@ -1,9 +1,6 @@
 <?php
 
-if (@$_SERVER['REQUEST_URI'])
-{
-    die("This process must be run on the command line.");
-}
+require_once("scripts/cmdline.php");
 
 require_once("engine/start.php");
 
