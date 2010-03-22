@@ -41,12 +41,14 @@
 .topbarLinks a:hover
 {
     background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient.gif?v5") repeat-x left -49px;  
+    color:#e6e6e6;
     text-decoration:none;
 }
 
 .topbarLinks a#logoContainer
 {
     padding:8px 22px 16px 15px;
+    overflow:hidden;
     border-left:0px;
 }
 
@@ -270,7 +272,6 @@ a.dropdown_item:hover
 #content
 {
     clear:both;
-    position:relative;
 }
 
 #content_top
@@ -293,7 +294,6 @@ a.dropdown_item:hover
 
 .section_header
 {
-    position:relative;
     clear:both;
     background:#e6e6e6 url("<?php echo $graphicsDir; ?>/sectionheader.gif") no-repeat left top;  
     height:21px;
@@ -399,12 +399,9 @@ body
     float:left;
     margin-right:4px;
     margin-bottom:4px;    
-}
+    border: 1px solid #f0f0f0;
 
-.smallBlogImageLink
-{
-    border: 1px solid transparent;
-}    
+}
 
 a.smallBlogImageLink:hover
 {
@@ -420,9 +417,9 @@ a.smallBlogImageLink:hover
 
 #blogTimeline
 {
-    margin:5px 15px;
+    margin:5px 0px 5px 0px;
     position:relative;
-    width:420px;
+    width:460px;
     height:50px;
 }
 
@@ -435,21 +432,21 @@ a.smallBlogImageLink:hover
 
 #blogTimelineLeft
 {
-    left:0px;   
+    left:18px;   
     width:13px;
     background:url(<?php echo $graphicsDir ?>/timeline.gif) no-repeat left -26px;
 }
 
 #blogTimelineRight
 {
-    left:413px;   
+    left:431px;   
     width:13px;
     background:url(<?php echo $graphicsDir ?>/timeline.gif) no-repeat left -52px;
 }
 
 #blogTimelineLine
 {
-    left:13px;
+    left:31px;
     width:400px;
     background:url(<?php echo $graphicsDir ?>/timeline.gif) repeat-x left top;
 }
@@ -460,6 +457,7 @@ a.smallBlogImageLink:hover
     height:4px;
     top:27px;
     width:1px;
+    overflow:hidden;
     background-color:#333;
 }
 
@@ -470,6 +468,7 @@ a.smallBlogImageLink:hover
     width:5px;
     height:14px;
     display:block;
+    overflow:hidden;
     background-color:#333;
 }
 
@@ -514,13 +513,13 @@ a.smallBlogImageLink:hover
 
 #blogNavPrev
 {
-    left:-20px;
+    left:0px;
     background: url(<?php echo $graphicsDir ?>/arrows_sm.gif) no-repeat left top;
 }
 
 #blogNavNext
 {
-    left:425px;
+    left:440px;
     background: url(<?php echo $graphicsDir ?>/arrows_sm.gif) no-repeat right top;
 }
 
@@ -679,13 +678,14 @@ a.smallBlogImageLink:hover
 
 .editor #content_mid
 {
-    background:#fff url("<?php echo $graphicsDir; ?>/editgradient.gif") repeat-y left top;  
+    background:url("<?php echo $graphicsDir; ?>/editgradient.gif") repeat-y left top;  
 }
 
 .editor #content_top
 {
-    height:9px;
-    background:#fff url("<?php echo $graphicsDir; ?>/edittop.gif") no-repeat left top;  
+    height:9px;    
+    overflow:hidden;
+    background:url("<?php echo $graphicsDir; ?>/edittop.gif") no-repeat left top;  
 }
 
 .editor #content_bottom

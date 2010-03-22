@@ -330,7 +330,7 @@ input[type="submit"] {
 .input-tags,
 .input-url,
 .input-textarea {
-	width:98%;
+	width:448px;
 }
 
 .input-textarea {

@@ -9,17 +9,18 @@
             'js' => "style='height:100px'",            
         )
     );
+
+    echo elgg_view('input/submit', 
+        array('internalname' => 'submit', 
+            'class' => "submit_button addUpdateButton",
+            'value' => elgg_echo('blog:publish'))); 
+
     
     echo elgg_view('input/hidden', array(
         'internalname' => 'container_guid', 
         'value' => $org->guid
     ));
-        
-    echo elgg_view('input/submit', 
-        array('internalname' => 'submit', 
-            'class' => "submit_button addUpdateButton",
-            'value' => elgg_echo('blog:publish'))); 
-            
+                    
     ?>
 <script type='text/javascript'>
 

@@ -25,7 +25,7 @@ if (sizeof($blogDates) > 1)
 <div id='blogTimelineLeft'></div>
 <div id='blogTimelineLine'></div>
 <div id='blogTimelineRight'></div>
-<div id='hoverPost' class='dropdown' style='display:none'>
+<div id='hoverPost' class='dropdown'>
     <div id='hoverTitle' class='dropdown_title'></div>
     <div id='hoverContent' class='dropdown_content'></div>
 </div>
@@ -49,7 +49,7 @@ var width = 400;
 function getPosForTime(time, elemWidth)
 {
     var posFraction = (time - firstTime) / timeSpan;
-    return (width * posFraction - elemWidth/2 + 13) + "px";
+    return (width * posFraction - elemWidth/2 + 31) + "px";
 }
 
 var labels = {};
@@ -122,6 +122,14 @@ function showPreview(post)
     hoverContent.appendChild(div);
 }
 
+/* keeps the timeline from jumping on mouseover in ie */
+/*@cc_on
+setTimeout(function(){
+    hoverPost.style.display = 'block';
+    hoverPost.style.display = 'none';    
+}, 1);
+@*/
+
 function addTimelineLink(blogDate)
 {    
     var link = document.createElement('a');
@@ -132,6 +140,7 @@ function addTimelineLink(blogDate)
     timeline.appendChild(link);
         
     addEvent(link, 'mouseover', function() {    
+
         if (previewId != blogDate.guid)
         {
             if (previewXHR)
@@ -144,9 +153,10 @@ function addTimelineLink(blogDate)
         
         hoverPost.style.left = link.offsetLeft + "px";
         removeChildren(hoverTitle);
+        
         hoverTitle.appendChild(document.createTextNode(<?php echo json_encode(elgg_echo('loading')) ?>));
         removeChildren(hoverContent);
-        hoverPost.style.display = 'block';        
+        hoverPost.style.display = 'block';                
     });
     addEvent(link, 'mouseout', function() {
         hoverPost.style.display = 'none';
