@@ -7,6 +7,32 @@
  
     echo elgg_view_layout('section', elgg_echo("dashboard:add_update"), $form);    
     
+    ob_start();
+?>
+<p>
+When you don't have easy access to a web browser, you can also add news updates in other ways:
+<ul>
+<li><strong>Email</strong>: Send an email to <strong><? echo $org->getPostEmail() ?></strong> 
+with your news update in the subject or body, and any photos as attachments. 
+
+<?php
+    echo elgg_view('output/confirmlink', array(
+        'text' => elgg_echo('widget:news:change_email'), 
+        'is_action' => true,
+        'href' => "action/org/changeEmail?org_guid={$org->guid}"
+    ));            
+?>            
+
+</li>
+<li><strong>SMS</strong>: Coming soon!</li>
+</ul>
+</ul>
+</p>
+<?php    
+    $settings = ob_get_clean(); 
+    
+    echo elgg_view_layout('section', elgg_echo("widget:news:mobile_settings"), $settings);    
+    
     $offset = (int) get_input('offset');
     $limit = 10;
 

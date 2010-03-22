@@ -147,6 +147,9 @@
 
         'widget:news' => "News",                
         'widget:news:manage_updates' => "Manage News Updates",
+        'widget:news:mobile_settings' => "Mobile Settings",
+        'widget:news:change_email' => "Generate new email address",
+        'widget:news:postemailchanged' => "Successfully generated new email address.",
                 
         'widget:contact' => "Contact",
         

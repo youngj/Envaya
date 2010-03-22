@@ -94,6 +94,7 @@
 
         'widget:home' => "Ukurasa mkuu",
         'widget:map' => "Sehemu",
+        'widget:news' => "Habari",
         'widget:history' => "Historia",
         'widget:programs' => "Miradi",
     

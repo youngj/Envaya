@@ -16,5 +16,6 @@
 	
     $org->generateEmailCode();    	
     
-	forward($org->getUrl() . "/mobilesettings");
+    system_message(elgg_echo('widget:news:postemailchanged'));
+	forward_to_referrer();
 ?>

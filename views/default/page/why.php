@@ -8,7 +8,7 @@ With Envaya, your civil society organization can have its own website, for free,
 <strong>Free</strong>: Hiring someone to build and host a website for your organization can be expensive. Envaya is free.
 </p>
 <p>
-<strong>Convenient</strong>: You can add new news and photos to your website by sending messages from your mobile phone. (Coming soon)
+<strong>Convenient</strong>: You can add new news and photos to your website by sending an SMS message from your mobile phone (coming soon). You can also use email.
 </p>
 <p>
 <strong>Visible</strong>: Envaya links your website into its network so that people can easily find you when they are looking for civil society organizations like yours.

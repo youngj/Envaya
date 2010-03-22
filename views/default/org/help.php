@@ -130,6 +130,16 @@ on Envaya, you can read it and get ideas for your own organization!
 </a>
 </p>
 
+<p>
+If you don't have a web browser available, you can also add news updates in other ways:
+</p>
+
+<ul>
+<li><strong>Email</strong>: Simply send an email to <strong><? echo $org->getPostEmail() ?></strong> 
+with your news update in the subject or body. If you have a photo to show, just add it as an attachment.</li>
+<li><strong>SMS</strong>: Coming soon, you will be able to send news updates from your phone!</li>
+</ul>
+
 <h3 id='connecting'>Connecting with Other Organizations</h3>
 
 <p>
