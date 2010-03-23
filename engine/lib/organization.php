@@ -44,38 +44,12 @@ class Organization extends ElggUser
         $this->email_code = $code;
         $this->save();
     }
-        
-    public function getIconFile($size)
-    {
-        $filehandler = new ElggFile();
-        $filehandler->owner_guid = $this->guid;
-        $filehandler->setFilename("icon$size.jpg");
-        return $filehandler;
-    }   
-    
+            
     public function getURL()
     {
         global $CONFIG;
         return $CONFIG->url . "{$this->username}";
-    }
-    
-    public function getIcon($size = 'medium')
-    {
-        global $CONFIG;
-    
-        if ($this->custom_icon)
-        {
-            return "{$CONFIG->url}{$this->username}/icon/$size/{$this->time_updated}.jpg";
-        }
-        else if ($this->latitude || $this->longitude)
-        {
-            return get_static_map_url($this->latitude, $this->longitude, 6, 100, 100);
-        }            
-        else
-        {
-            return "{$CONFIG->url}_graphics/default{$size}.gif";
-        }    
-    }
+    }    
     
     public function getPostEmail()
     {
@@ -325,10 +299,10 @@ class NewsUpdate extends ElggObject
     
     public function getImageFile($size = '')
     {
-        $filehandler = new ElggFile();
-        $filehandler->owner_guid = $this->container_guid;
-        $filehandler->setFilename("blog/{$this->guid}$size.jpg");
-        return $filehandler;       
+        $file = new ElggFile();
+        $file->owner_guid = $this->container_guid;
+        $file->setFilename("news/{$this->guid}$size.jpg");
+        return $file;       
     }
     
     public function jsProperties()
@@ -354,7 +328,7 @@ class NewsUpdate extends ElggObject
     
     public function getImageURL($size = '')
     {
-        return $this->hasImage() ? "{$this->getURL()}/image/$size?{$this->time_updated}" : "";
+        return $this->hasImage() ? ($this->getImageFile($size)->getURL()."?{$this->time_updated}") : "";
     }    
     
     public function hasImage()
@@ -383,52 +357,23 @@ class NewsUpdate extends ElggObject
         return friendly_time($this->time_created); 
     }
     
-    public function setImage($imageData)
+    public function setImage($imageFilePath)
     {
-        if (!$imageData)
+        if (!$imageFilePath)
         {
             $this->data_types &= ~DataType::Image;     
         }
         else
         {        
-            $this->data_types |= DataType::Image; 
-
-            $prefix = "blog/".$this->guid;
-
-            $filehandler = new ElggFile();
-
-            $filehandler->owner_guid = $this->container_guid;
-            $filehandler->container_guid = $this->guid;
-
-            $filehandler->setFilename($prefix . ".jpg");
-            $filehandler->open("write");
-            $filehandler->write($imageData);
-            $filehandler->close();
-
-            $thumbsmall = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),100,100, false);
-            $thumblarge = get_resized_image_from_existing_file($filehandler->getFilenameOnFilestore(),450,450, false);
-
-            if ($thumbsmall) 
+            if ($this->getImageFile('small')->uploadFile(resize_image_file($imageFilePath,100,100))
+               && $this->getImageFile('large')->uploadFile(resize_image_file($imageFilePath,450,450)))
             {
-                $thumb = new ElggFile();
-                $thumb->owner_guid = $this->container_guid;
-                $thumb->container_guid = $this->guid;
-                $thumb->setMimeType('image/jpeg');
-
-                $thumb->setFilename($prefix."small.jpg");
-                $thumb->open("write");
-                $thumb->write($thumbsmall);
-                $thumb->close();
-
-                $thumb->setFilename($prefix."large.jpg");
-                $thumb->open("write");
-                $thumb->write($thumblarge);
-                $thumb->close();
-            }        
-            else
-            {
-                throw new DataFormatException('error saving thumbnail');
+                $this->data_types |= DataType::Image;  
             }
+            else            
+            {
+                throw new DataFormatException("error saving image");
+            }            
         }   
         $this->save();
     }

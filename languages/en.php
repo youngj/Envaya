@@ -142,6 +142,8 @@
         'widget:home:included' => "What sections do you want to include on your home page?",
         
         'widget:map' => "Location",        
+        'widget:map:see_nearby' => "See nearby organizations",        
+        
         'widget:history' => "History",
         'widget:programs' => "Programs",
 

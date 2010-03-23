@@ -86,10 +86,6 @@ function org_profile_page_handler($page)
                     case "preview":
                         include(dirname(__FILE__) . "/postPreview.php");
                         return;                        
-                    case "image":
-                        set_input("size", $page[4]);
-                        include(dirname(__FILE__) . "/postImage.php");
-                        return;
                     case "next":
                         set_input("delta", 1);
                         include(dirname(__FILE__) . "/postRedirect.php");
@@ -120,10 +116,6 @@ function org_profile_page_handler($page)
                     case 'edit':
                         set_context("editor");
                         include(dirname(__FILE__) . "/editwidget.php");                    
-                        return;
-                    case 'image':    
-                        set_input('size', $page[3]);
-                        include(dirname(__FILE__) . "/widgetImage.php");                    
                         return;
                 }       
             }

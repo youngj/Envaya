@@ -19,6 +19,11 @@
         return htmlentities($val, ENT_QUOTES, 'UTF-8');
     }    
 
+    function isPearError($res)
+    {
+        return @PEAR::isError($res);
+    }
+
     function forward_to_referrer()
     {
         forward($_SERVER['HTTP_REFERER']);    
@@ -56,23 +61,6 @@
             return "medium";
         }
         return $size;
-    }    
-
-    function output_image($filehandler)
-    {    
-        $success = false;
-        if ($filehandler->open("read")) {
-            if ($contents = $filehandler->read($filehandler->size())) {
-                $success = true;
-            } 
-        }
-
-        header("Content-type: image/jpeg");
-        header('Expires: ' . date('r',time() + 864000));
-        header("Pragma: public");
-        header("Cache-Control: public");
-        header("Content-Length: " . strlen($contents));
-        echo $contents;    
     }    
 
     function yes_no_options()

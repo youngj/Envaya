@@ -53,10 +53,10 @@ class Widget extends ElggObject
 
     public function getImageFile($size = '')
     {
-        $filehandler = new ElggFile();
-        $filehandler->owner_guid = $this->container_guid;
-        $filehandler->setFilename("widget/{$this->guid}$size.jpg");
-        return $filehandler;       
+        $file = new ElggFile();
+        $file->owner_guid = $this->container_guid;
+        $file->setFilename("widget/{$this->guid}$size.jpg");
+        return $file;       
     }
     
     public function hasImage()
@@ -66,59 +66,27 @@ class Widget extends ElggObject
     
     public function getImageURL($size = 'large')
     {
-        return "{$this->getUrl()}/image/{$size}?{$this->time_updated}";
+        return $this->hasImage() ? ($this->getImageFile($size)->getURL()."?{$this->time_updated}") : "";
     }
 
-    public function setImage($imageData)
+    public function setImage($imageFilePath)
     {
-        if (!$imageData)
+        if (!$imageFilePath)
         {
             $this->data_types &= ~DataType::Image;     
         }
         else
         {
-            $this->data_types |= DataType::Image; 
-
-            $prefix = "widget/{$this->guid}";
-
-            $file = new ElggFile();
-            $file->owner_guid = $this->container_guid;
-            $file->container_guid = $this->guid;
-
-            $file->setFilename("{$prefix}.jpg");
-            $file->open("write");
-            $file->write($imageData);
-            $file->close();
-
-            $originalFileName = $file->getFilenameOnFilestore();
-
-            $thumbsmall = get_resized_image_from_existing_file($originalFileName,100,150, false);
-            if ($thumbsmall) 
+            if ($this->getImageFile('small')->uploadFile(resize_image_file($imageFilePath,100,150))
+               && $this->getImageFile('medium')->uploadFile(resize_image_file($imageFilePath,200,300))
+               && $this->getImageFile('large')->uploadFile(resize_image_file($imageFilePath,450,450)))
             {
-                $file->setFilename("{$prefix}small.jpg");
-                $file->open("write");
-                $file->write($thumbsmall);
-                $file->close();
-            }            
-
-            $thumbmed = get_resized_image_from_existing_file($originalFileName,200,300, false);
-            if ($thumbmed) 
-            {
-                $file->setFilename("{$prefix}medium.jpg");
-                $file->open("write");
-                $file->write($thumbmed);
-                $file->close();
+                $this->data_types |= DataType::Image;  
             }
-            
-            $thumblarge = get_resized_image_from_existing_file($originalFileName,450,450, false);
-            if ($thumblarge) 
+            else            
             {
-                $file->setFilename("{$prefix}large.jpg");
-                $file->open("write");
-                $file->write($thumblarge);
-                $file->close();
-            }
-            
+                throw new DataFormatException("error saving image");
+            }                        
         }   
         $this->save();
     } 
@@ -139,7 +107,7 @@ function save_widget($widget)
     {            
         if (is_image_upload('image'))
         {    
-            $widget->setImage(get_uploaded_file('image'));        
+            $widget->setImage(get_uploaded_filename('image'));        
         }
         else
         {

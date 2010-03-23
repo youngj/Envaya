@@ -6,14 +6,23 @@
     
     $zoom = $widget->zoom ?: 10;
     
-    $entityLat = $org->getLatitude();
+    $lat = $org->getLatitude();
+    $long = $org->getLongitude();
     echo elgg_view("org/map", array(
-        'lat' => $entityLat, 
-        'long' => $org->getLongitude(),
+        'lat' => $lat, 
+        'long' => $long,
         'zoom' => $zoom,
         'pin' => true,
         'static' => true
     ));        
-    echo "<div style='text-align:center;font-style:italic'>".escape($org->getLocationText())."</div>";
+    echo "<div style='text-align:center'>";    
+    echo "<em>";
+    echo escape($org->getLocationText());
+    echo "</em>";
+    echo "<br />";    
+    echo "<a href='org/browse/?lat=$lat&long=$long&zoom=10'>";
+    echo elgg_echo('widget:map:see_nearby');
+    echo "</a>";
+    echo "</div>";
 ?>
 </div>

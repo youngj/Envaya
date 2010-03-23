@@ -41,7 +41,7 @@
         {   
             if (is_image_upload('image'))
             {
-                $blog->setImage(get_uploaded_file('image'));        
+                $blog->setImage(get_uploaded_filename('image'));        
             }   
             else
             {

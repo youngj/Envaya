@@ -38,16 +38,21 @@
     $CONFIG->email_from = "web@envaya.org";
     $CONFIG->email_pass = "f03;aoeA";    		
     $CONFIG->google_api_key = "ABQIAAAAHy69XWEjciJIVElz0OYMsRR3-IOatrPZ1tLat998tYHgwqPnkhTKyWcq8ytRPMx3RyxFjK0O7WSCHA";
+    
+    $CONFIG->s3_key = 'AKIAJAJKJDBD2RSGAILQ';
+    $CONFIG->s3_private = 'E9s2sGLEKqJyCG6WE4PbE/JMBOuLcZ4DJ2v1hyH4';
+    $CONFIG->s3_bucket = 'envaya_dev';
         
     $CONFIG->translations['sw'] = array('sw' => 'Kiswahili');
 
     $CONFIG->path = dirname(dirname(__FILE__)) . "/";   
     $CONFIG->viewpath = $CONFIG->path . "views/";   
     $CONFIG->pluginspath = $CONFIG->path . "mod/";    
+    
     $CONFIG->dataroot = dirname($CONFIG->path). "/elgg-data/";
     
     $CONFIG->simplecache_enabled = 0;
-    $CONFIG->simplecache_version = 14;
+    $CONFIG->simplecache_version = 15;
     
     $CONFIG->viewpath_cache_enabled = 0;
     $CONFIG->wwwroot = "http://localhost/";

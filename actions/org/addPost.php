@@ -34,7 +34,7 @@
 
         if ($hasImage)
         {        
-            $blog->setImage(get_uploaded_file('image'));        
+            $blog->setImage(get_uploaded_filename('image'));        
         }
 
         system_message(elgg_echo("blog:posted"));

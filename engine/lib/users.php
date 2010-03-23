@@ -107,6 +107,55 @@
             return parent::delete() && $this->deleteTableAttributes('users_entity');
 		}
 		
+        public function getIconFile($size = '')
+        {
+            $file = new ElggFile();
+            $file->owner_guid = $this->guid;
+            $file->setFilename("icon$size.jpg");
+            return $file;        
+        }
+        
+        public function getIcon($size = 'medium')
+        {
+            global $CONFIG;
+
+            if ($this->custom_icon)
+            {
+                return $this->getIconFile($size)->getURL()."?{$this->time_updated}";
+            }
+            else if ($this->latitude || $this->longitude)
+            {
+                return get_static_map_url($this->latitude, $this->longitude, 6, 100, 100);
+            }            
+            else
+            {
+                return "{$CONFIG->url}_graphics/default{$size}.gif";
+            }    
+        }        
+        
+        public function setIcon($imageFilePath)
+        {
+            if (!$imageFilePath)
+            {
+                $this->custom_icon = false;
+            }
+            else
+            {
+                if ($this->getIconFile('tiny')->uploadFile(resize_image_file($imageFilePath,25, 25, true))
+                    && $this->getIconFile('small')->uploadFile(resize_image_file($imageFilePath,40, 40, true))
+                    && $this->getIconFile('medium')->uploadFile(resize_image_file($imageFilePath,100,100, true))
+                    && $this->getIconFile('large')->uploadFile(resize_image_file($imageFilePath,200,200, true)))
+                {
+                    $this->custom_icon = true;                
+                }
+                else
+                {
+                    throw new DataFormatException("error saving image");
+                }
+            }
+            $this->save();
+        }
+        
 		/**
 		 * Ban this user.
 		 *
