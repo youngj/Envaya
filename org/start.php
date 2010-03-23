@@ -14,9 +14,6 @@ function org_page_handler($page)
             case "help":
                 include(dirname(__FILE__) . "/help.php");
                 return;                
-            case "checkmail":
-                include(dirname(__FILE__) . "/checkmail.php");
-                return;
             case "browse":
                 set_page_owner(0);
                 include(dirname(__FILE__) . "/browseorgs.php");

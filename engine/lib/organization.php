@@ -57,7 +57,9 @@ class Organization extends ElggUser
         {
             $this->generateEmailCode();
         }
-        return "post+{$this->email_code}@envaya.org";
+        global $CONFIG;
+        $postEmailParts = explode('@', $CONFIG->post_email, 2);
+        return "{$postEmailParts[0]}+{$this->email_code}@{$postEmailParts[1]}";
     } 
     
     public function getLocationText($includeRegion = true)

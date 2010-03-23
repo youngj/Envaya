@@ -95,7 +95,12 @@
             {
                 if ($attachment['Type'] == 'image')
                 {
-                    $blog->setImage($attachment['Data']);
+                    $tempFileName = tempnam(sys_get_temp_dir(), 'img');
+                    $fh = fopen($tempFileName, 'wb');
+                    fwrite($fh, $attachment['Data']);
+                    fclose($fh);
+                    $blog->setImage($tempFileName);
+                    print_msg($tempFileName);
                     break; 
                 }
             }

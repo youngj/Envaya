@@ -12,7 +12,7 @@
 <p>
 When you don't have easy access to a web browser, you can also add news updates in other ways:
 <ul>
-<li><strong>Email</strong>: Send an email to <strong><? echo $org->getPostEmail() ?></strong> 
+<li><strong>Email</strong>: Send an email to <strong><?php echo $org->getPostEmail() ?></strong> 
 with your news update in the subject or body, and any photos as attachments. 
 
 <?php

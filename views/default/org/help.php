@@ -135,7 +135,7 @@ If you don't have a web browser available, you can also add news updates in othe
 </p>
 
 <ul>
-<li><strong>Email</strong>: Simply send an email to <strong><? echo $org->getPostEmail() ?></strong> 
+<li><strong>Email</strong>: Simply send an email to <strong><?php echo $org->getPostEmail() ?></strong> 
 with your news update in the subject or body. If you have a photo to show, just add it as an attachment.</li>
 <li><strong>SMS</strong>: Coming soon, you will be able to send news updates from your phone!</li>
 </ul>
