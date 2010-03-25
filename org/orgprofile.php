@@ -42,7 +42,7 @@
         
         if ($viewOrg)
         {
-            $area3 = isadminloggedin() ? elgg_view("org/admin_box", array('entity' => $org)) : '';
+            $area3 = isadminloggedin() ? elgg_view("org/admin_box", array('entity' => $org)) : ($org->canCommunicateWith() ? elgg_view("org/comm_box", array('entity' => $org)): '');
         
             if ($org->canEdit() && $org->approval == 0)
             {

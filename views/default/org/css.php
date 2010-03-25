@@ -709,6 +709,22 @@ a.smallBlogImageLink:hover
     color:#000066;
 }
 
+.commBox
+{
+    text-align: center;
+    top: 75px;
+    left: 2px;
+    border: 1px solid green;
+    background:gray;
+    padding:5px;
+}
+
+.commBox a
+{
+    font-weight: bold;
+    color:blue;
+}
+
 #translate_bar
 {
     padding: 5px 2px 5px 36px;

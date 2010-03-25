@@ -136,7 +136,15 @@
         'blog:delete:success' => "News update deleted successfully.",
         'blog:list' => "List",
         'blog:timeline' => "Timeline",
-
+        
+        'org:partner' => "Request Partnership",
+        'org:partnerRequestedMustApprove' => "Click here to approve of a partnership with this organization",
+        'org:waitingPartnerApprove' => "Partnership pending",
+        'org:partnershipExists' => "You are partners with this organization",
+        'org:partnershipCreated' => "Partnership Approved",
+        'org:partnerRequestEmailed' => "A partnership request has been sent to this organization",
+        'org:noPartnerships' => "This organization has no partnerships",
+        
         'widget:home' => "Home Page",
         
         'widget:home:included' => "What sections do you want to include on your home page?",
@@ -190,6 +198,8 @@
         'widget:delete:success' => "Page removed successfully.",
         
         'widget:delete:confirm' => "Are you sure you want to remove this page from your site?",        
+        
+        'widget:partnerships' => 'Partnerships',
         
         'register:step1' => '1. Qualification',                                       
         'register:step2' => '2. Create account',
@@ -767,7 +777,9 @@ Alternatively, you can enter your database settings below and we will try and do
         'email:resetpassword:body' => "Hi %s,
 
 Your password has been reset to: %s",
-
+        
+        'email:requestPartnership:subject' => "%s wants to partner with %s",
+        'email:requestPartnership:body' => "To approve partnership, go to this link: %s",
 
         'email:resetreq:subject' => "Request for new password",
         'email:resetreq:body' => "Hi %s,

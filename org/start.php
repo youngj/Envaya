@@ -206,6 +206,8 @@ register_action("org/saveWidget",false, "{$CONFIG->path}actions/org/saveWidget.p
 register_action("org/approve",false,    "{$CONFIG->path}actions/org/approveOrg.php");
 register_action("org/verify",false,     "{$CONFIG->path}actions/org/verifyOrg.php");
 register_action("org/changeEmail",false,"{$CONFIG->path}actions/org/changeEmail.php");
+register_action("org/requestPartner",false,"{$CONFIG->path}actions/org/requestPartner.php");
+register_action("org/createPartner",false,"{$CONFIG->path}actions/org/createPartner.php");
 register_action("changeLanguage", true, "{$CONFIG->path}actions/org/changeLanguage.php");
 register_action("translate", false,     "{$CONFIG->path}actions/org/translate.php");
 register_action("news/add",false,       "{$CONFIG->path}actions/org/addPost.php");

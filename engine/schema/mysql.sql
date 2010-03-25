@@ -124,6 +124,27 @@ CREATE TABLE `widgets` (
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `partnerships` (
+    `guid` bigint(20) unsigned  NOT NULL,
+    
+    `description` text,
+    `date_formed`text,
+    
+    PRIMARY KEY (`guid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `partnership_members` (
+    `id` int(11) NOT NULL auto_increment,
+    
+    `org_guid` bigint(20) unsigned NOT NULL,
+    `partnership_id` bigint(20) unsigned NOT NULL,
+    `approved` TINYINT(1),
+    
+    PRIMARY KEY  (`id`),
+    KEY `org_guid` (`org_guid`),
+    KEY `partnership_id` (`partnership_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 -- Extra information relating to "users"
 CREATE TABLE `users_entity` (
   `guid` bigint(20) unsigned  NOT NULL,
