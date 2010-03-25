@@ -25,7 +25,7 @@
 
 	// Generate a security header
 	$security_header = "";
-	if ($vars['disable_security']!=true)
+	if (@$vars['disable_security']!=true)
 	{
 		$security_header = elgg_view('input/securitytoken');
 	}

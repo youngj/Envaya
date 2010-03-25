@@ -22,7 +22,7 @@
 		
 		if($get_collection){
     		
-    		if($get_collection->owner_guid == $_SESSION['user']->getGUID()){
+    		if($get_collection->owner_guid == get_loggedin_userid()){
 		    
 	            $delete_collection = delete_access_collection($collection_id);
 	        
@@ -47,6 +47,6 @@
 	    }
 	    
 	     // Forward to the collections page
-		 forward("pg/collections/" . $_SESSION['user']->username);
+		 forward("pg/collections/" . get_loggedin_user()->username);
 		
 ?>

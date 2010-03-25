@@ -27,6 +27,15 @@
                 $org->setIcon(get_uploaded_filename('icon'));
             }    
         }
+        
+        $theme = get_input('theme');
+        
+        if ($theme != $org->theme)
+        {
+            system_message(elgg_echo("org:theme:changed"));
+            $org->theme = $theme;
+            $org->save();
+        }    
     }    
 	
 ?>

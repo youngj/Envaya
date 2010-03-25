@@ -166,6 +166,7 @@ CREATE TABLE `users_entity` (
   `approval` int(11) NOT NULL default '0',
   `setup_state` int(11) NOT NULL default '0',
   `country` varchar(4) NULL,
+  `city` varchar(128) NULL,
   
   `custom_icon` tinyint(4) default '0',
   `admin` tinyint(4) default '0',
@@ -214,66 +215,25 @@ CREATE TABLE `groups_entity` (
 -- *** Annotations and tags ***
 --
 
--- Table structure for annotations
-CREATE TABLE `annotations` (
-	`id` int(11) NOT NULL auto_increment,
-	
-	`entity_guid` bigint(20) unsigned  NOT NULL,
-	
-	`name_id` int(11) NOT NULL,
-	`value_id` int(11) NOT NULL,
-	`value_type` enum ('integer','text','json') NOT NULL,
-	
-	`owner_guid` bigint(20) unsigned NOT NULL,
-	`access_id` int(11) NOT NULL,
-	
-	`time_created` int(11) NOT NULL,
-
-	`enabled` enum ('yes', 'no') NOT NULL default 'yes',
-	
-	PRIMARY KEY (`id`),
-	KEY `entity_guid` (`entity_guid`),
-	KEY `name_id` (`name_id`),
-	KEY `value_id` (`value_id`),
-	KEY `owner_guid` (`owner_guid`),
-	KEY `access_id` (`access_id`)
-
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- Table structure for metadata
 CREATE TABLE `metadata` (
-	`id` int(11) NOT NULL auto_increment,
-	
-	`entity_guid` bigint(20) unsigned  NOT NULL,
-	
-	`name_id` int(11) NOT NULL,
-	`value_id` int(11) NOT NULL,
+    `id` INT NOT NULL auto_increment,
+    `entity_guid` bigint(20) unsigned  NOT NULL,
+    `name` varchar(64) NOT NULL ,
+    `value` TEXT NOT NULL ,
     `value_type` enum ('integer','text','json') NOT NULL,
+    PRIMARY KEY ( `id` ) ,
+    UNIQUE KEY ( `entity_guid` , `name` ),
+    KEY `name` (`name`),
+    KEY `value` (`value` (50))
+) ENGINE = MYISAM  DEFAULT CHARSET=utf8;
 
-	`owner_guid` bigint(20) unsigned NOT NULL,
-	`access_id` int(11) NOT NULL,
-	
-	`time_created` int(11) NOT NULL,
 
-	`enabled` enum ('yes', 'no') NOT NULL default 'yes',
-	
-	PRIMARY KEY (`id`),
-	KEY `entity_guid` (`entity_guid`),
-	KEY `name_id` (`name_id`),
-	KEY `value_id` (`value_id`),
-	KEY `owner_guid` (`owner_guid`),
-	KEY `access_id` (`access_id`)
-
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- Meta strings table (avoids storing text strings more than once)
-CREATE TABLE `metastrings` (
-	`id` int(11) NOT NULL auto_increment,
-	`string` TEXT NOT NULL,
-	
-	PRIMARY KEY (`id`),
-	KEY `string` (`string`(50))
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+CREATE TABLE `cache` (
+    `key` varchar(255) not null,
+    `value` TEXT default null,
+    `expires` int not null
+    PRIMARY KEY ( `key` )
+) ENGINE = MYISAM  DEFAULT CHARSET=utf8;
 
 --
 -- *** Misc ***
@@ -357,6 +317,7 @@ CREATE TABLE `private_settings` (
 	KEY `name` (`name`),
 	KEY `value` (`value` (50))
 ) ENGINE = MYISAM  DEFAULT CHARSET=utf8;
+
 
 -- System log
 CREATE TABLE `system_log` (

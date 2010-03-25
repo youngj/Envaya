@@ -23,7 +23,7 @@
 	// Get the user
 		try{
 			if ($friend instanceof ElggUser)
-				$_SESSION['user']->removeFriend($friend_guid);
+				get_loggedin_user()->removeFriend($friend_guid);
 			else
 			{
 				register_error(sprintf(elgg_echo("friends:remove:failure"),$friend->name));
@@ -37,6 +37,6 @@
 			system_message(sprintf(elgg_echo("friends:remove:successful"),$friend->name));			
 		
 	// Forward to the user friends page
-		forward("pg/friends/" . $_SESSION['user']->username . "/");
+		forward("pg/friends/" . get_loggedin_user()->username . "/");
 		
 ?>

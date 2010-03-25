@@ -18,13 +18,13 @@
 	 * 
 	 */
 	
-	$class = $vars['class'];
+	$class = @$vars['class'];
 	if (!$class) $class = "input-radio";
     
-    $vars['value'] = preserve_input($vars['internalname'], $vars['value']); 
+    $vars['value'] = preserve_input($vars['internalname'], @$vars['value']); 
     
-    $br = $vars['inline'] ? '' : '<br />';
-    $labelClass = $vars['inline'] ? ' optionLabelInline' : '';
+    $br = @$vars['inline'] ? '' : '<br />';
+    $labelClass = @$vars['inline'] ? ' optionLabelInline' : '';
 
     foreach($vars['options'] as $option => $label) {
         if (strtolower($option) != strtolower($vars['value'])) {
@@ -33,8 +33,8 @@
             $selected = "checked = \"checked\"";
         }
 
-        if (isset($vars['internalid'])) $id = "id=\"{$vars['internalid']}\""; 
-        if ($vars['disabled']) $disabled = ' disabled="yes" '; 
+        $id = (isset($vars['internalid'])) ? "id=\"{$vars['internalid']}\"" : ''; 
+        $disabled = (@$vars['disabled']) ? ' disabled="yes" ' : '';
         echo "<label class='optionLabel$labelClass'><input type=\"radio\" $disabled {$vars['js']} name=\"{$vars['internalname']}\" $id value=\"".escape($option)."\" {$selected} class=\"$class\" />{$label}</label>$br";
     }
 

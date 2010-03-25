@@ -33,7 +33,7 @@
 		if ($user = page_owner()) {
 			$user = page_owner_entity();			
 		} else {
-			$user = $_SESSION['user'];
+			$user = get_loggedin_user();
 			set_page_owner($user->getGUID());
 		}
 		if ($user->canEdit()) {

@@ -45,7 +45,7 @@
     } 
     catch (RegistrationException $r) 
     {    
-        $_SESSION['input'] = $_POST;
+        Session::set('input', $_POST);
         
         register_error($r->getMessage());
         forward_to_referrer();

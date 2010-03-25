@@ -17,7 +17,7 @@
 	// You need to be logged in for this one
 		gatekeeper();
 	    
-		$area2 = elgg_view_access_collections($_SESSION['user']->getGUID());
+		$area2 = elgg_view_access_collections(get_loggedin_userid());
 		
 	// Format page
 		$body = elgg_view_layout('two_column_left_sidebar', '', elgg_view_title(elgg_echo('friends:collections')) . $area2);

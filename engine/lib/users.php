@@ -12,11 +12,7 @@
 	 * @link http://elgg.org/
 	 */
 
-	/// Map a username to a cached GUID
-	$USERNAME_TO_GUID_MAP_CACHE = array();
-	
-	/// Map a user code to a cached GUID
-	$CODE_TO_GUID_MAP_CACHE = array();
+    $CODE_TO_GUID_MAP_CACHE = array();
 
 	/**
 	 * ElggUser
@@ -56,7 +52,9 @@
                 'approval' => 0,
                 'latitude' => null,
                 'longitude' => null,
+                'city' => '',
                 'region' => '',
+                'country' => '',
                 'email_code' => null,
                 'setup_state' => 5,
                 'custom_icon' => 0,
@@ -652,46 +650,23 @@
 	 */
 	function get_user_by_username($username)
 	{
-		global $USERNAME_TO_GUID_MAP_CACHE;
-		
-		$access = get_access_sql_suffix('e');
-        
-		if ( (isset($USERNAME_TO_GUID_MAP_CACHE[$username])) && (retrieve_cached_entity($USERNAME_TO_GUID_MAP_CACHE[$username])) )
-			return retrieve_cached_entity($USERNAME_TO_GUID_MAP_CACHE[$username]);
-		
-		$row = get_data_row("SELECT e.*, u.* from users_entity u join entities e on e.guid=u.guid where u.username=? and $access ", array($username));
-		if ($row) {
-			$USERNAME_TO_GUID_MAP_CACHE[$username] = $row->guid;
-            return entity_row_to_elggstar($row);
-		} 
-		
-		return false;
-	}
-	
-	/**
-	 * Get user by session code
-	 *
-	 * @param string $code The session code
-	 * @return ElggUser|false Depending on success
-	 */
-	function get_user_by_code($code)
-	{
-		global $CONFIG, $CODE_TO_GUID_MAP_CACHE;
-		
-		$access = get_access_sql_suffix('e');
-		
-		// Caching
-		if ( (isset($CODE_TO_GUID_MAP_CACHE[$code])) && (retrieve_cached_entity($CODE_TO_GUID_MAP_CACHE[$code])) )
-			return retrieve_cached_entity($CODE_TO_GUID_MAP_CACHE[$code]);
-		
-		$row = get_data_row("SELECT e.*, u.* from users_entity u join entities e on e.guid=u.guid where u.code=? and $access", array($code));
-		if ($row) 
+        $cache = get_cache();
+        $cacheKey = make_cache_key("guid_for_username", $username);
+    
+        $guid = $cache->get($cacheKey);     
+        if (!$guid)
         {
-			$CODE_TO_GUID_MAP_CACHE[$code] = $row->guid;
-            return entity_row_to_elggstar($row);
-		} 
-		
-		return false;
+            $guidRow = get_data_row("SELECT guid from users_entity where username=?", array($username));
+            if (!$guidRow)
+            {
+                return null;
+            }
+
+            $guid = $guidRow->guid;            
+            $cache->set($cacheKey, $guid);
+        }    
+        
+        return get_entity($guid);		
 	}
 	
 	/**
@@ -1131,74 +1106,6 @@
 	}
 	
 	/**
-	 * Adds collection submenu items 
-	 *
-	 */
-	function collections_submenu_items() 
-    {
-		global $CONFIG;
-		$user = get_loggedin_user();
-		add_submenu_item(elgg_echo('friends:collections'), $CONFIG->wwwroot . "pg/collections/" . $user->username);
-		add_submenu_item(elgg_echo('friends:collections:add'),$CONFIG->wwwroot."pg/collections/add");
-	}
-	
-	/**
-	 * Page handler for friends
-	 *
-	 */
-	function friends_page_handler($page_elements) {
-		
-		if (isset($page_elements[0]) && $user = get_user_by_username($page_elements[0])) {
-			set_page_owner($user->getGUID());
-		}
-		if ($_SESSION['guid'] == page_owner()) {
-			collections_submenu_items();
-		}
-		require_once(dirname(dirname(dirname(__FILE__))) . "/friends/index.php");
-		
-	}
-	
-	/**
-	 * Page handler for friends of
-	 *
-	 */
-	function friends_of_page_handler($page_elements) {
-		
-		if (isset($page_elements[0]) && $user = get_user_by_username($page_elements[0])) {
-			set_page_owner($user->getGUID());
-		}
-		if ($_SESSION['guid'] == page_owner()) {
-			collections_submenu_items();
-		}
-		require_once(dirname(dirname(dirname(__FILE__))) . "/friends/of.php");
-		
-	}
-	
-	/**
-	 * Page handler for friends of
-	 *
-	 */
-	function collections_page_handler($page_elements) {
-		
-		if (isset($page_elements[0])) {
-			if ($page_elements[0] == "add") {
-				set_page_owner($_SESSION['guid']);
-				collections_submenu_items();
-				require_once(dirname(dirname(dirname(__FILE__))) . "/friends/add.php"); 
-			} else {
-				if ($user = get_user_by_username($page_elements[0])) {
-					set_page_owner($user->getGUID());
-					if ($_SESSION['guid'] == page_owner()) {
-						collections_submenu_items();
-					}
-					require_once(dirname(dirname(dirname(__FILE__))) . "/friends/collections.php");
-				}
-			}
-		}
-		
-	}
-	
-	/**
 	 * Page handler for dashboard
 	 */
 	function dashboard_page_handler($page_elements) {
@@ -1250,14 +1157,6 @@
 		
 		global $CONFIG;
 				
-        if (isloggedin()) {
-            $user = get_loggedin_user();
-            add_menu(elgg_echo('friends'), $CONFIG->wwwroot . "pg/friends/" . $user->username);
-        }
-		
-		register_page_handler('friends','friends_page_handler');
-		register_page_handler('friendsof','friends_of_page_handler');
-		register_page_handler('collections','collections_page_handler');
 		register_page_handler('dashboard','dashboard_page_handler');
 		register_action("register",true);
    		register_action("useradd",true);

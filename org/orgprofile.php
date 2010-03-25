@@ -12,12 +12,13 @@
 	$autofeed = false;
    
 	$org = get_entity($org_guid);
-	if ($org) 
+	if ($org && ($org instanceof Organization)) 
     {
         global $CONFIG;
         $CONFIG->sitename = $org->name;        
     
-		set_page_owner($org_guid);                        
+		set_page_owner($org_guid);
+        set_theme($org->theme);
 
         $viewOrg = $org->canView();
                 
@@ -26,6 +27,10 @@
             $widget = $org->getWidgetByName('home');
             $subtitle = $org->getLocationText(false);
             $title = '';    
+        }
+        else if (!$widget->isActive())
+        {
+            not_found();
         }
         else
         {
@@ -44,7 +49,7 @@
         {
             $area3 = isadminloggedin() ? elgg_view("org/admin_box", array('entity' => $org)) : ($org->canCommunicateWith() ? elgg_view("org/comm_box", array('entity' => $org)): '');
         
-            if ($org->canEdit() && $org->approval == 0)
+            if ($org->guid == get_loggedin_userid() && $org->approval == 0)
             {
                 $area3 .= elgg_view("org/setupNextStep");
             }

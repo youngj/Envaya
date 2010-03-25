@@ -49,11 +49,12 @@
 			system_message(sprintf(elgg_echo("adduser:ok"),$CONFIG->sitename));
 		} else {
 			register_error(elgg_echo("adduser:bad"));
-            $_SESSION['input'] = $_POST;
+            Session::set('input', $_POST);
 		}
-	} catch (RegistrationException $r) {
+	} catch (RegistrationException $r) 
+    {
 		register_error($r->getMessage());
-        $_SESSION['input'] = $_POST;
+        Session::set('input', $_POST);
 	}
 
 	forward($_SERVER['HTTP_REFERER']);

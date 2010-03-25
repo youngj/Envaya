@@ -9,7 +9,7 @@
 	 */
 
 	$admin_option = false;
-	if (($_SESSION['user']->admin) && ($vars['show_admin'])) 
+	if ((get_loggedin_user()->admin) && ($vars['show_admin'])) 
 		$admin_option = true;
 		
 	$form_body = "<p><label>" . elgg_echo('name') . "<br />" . elgg_view('input/text' , array('internalname' => 'name')) . "</label></p>";

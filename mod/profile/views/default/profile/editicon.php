@@ -15,7 +15,7 @@
 
 	$currentuser = page_owner_entity();
     if (!$currentuser)
-    	$currentuser=$_SESSION['user'];
+    	$currentuser=get_loggedin_user();
 ?>
 <!-- grab the required js for icon cropping -->
 <div class="contentWrapper">

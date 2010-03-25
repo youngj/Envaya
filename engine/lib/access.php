@@ -54,7 +54,7 @@
         }   
         else
         {
-            return $entity->enabled = 'yes';
+            return $entity->enabled == 'yes';
         }		
     }
 		

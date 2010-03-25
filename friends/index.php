@@ -13,8 +13,8 @@
 
 		if (!$owner = page_owner_entity()) {
 			gatekeeper();
-			set_page_owner($_SESSION['user']->getGUID());
-			$owner = $_SESSION['user'];
+			set_page_owner(get_loggedin_userid());
+			$owner = get_loggedin_user();
 		}
 		
 		$area1 = elgg_view_title(elgg_echo('friends'));

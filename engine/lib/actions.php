@@ -23,8 +23,10 @@
             
             global $CONFIG;
             
-            if ($_SESSION['id'] > 0) {
-                set_last_action($_SESSION['id']);
+            $userId = get_loggedin_userid();
+            if ($userId) 
+            {
+                set_last_action($userId);
             }    
             
 	        $query = parse_url($_SERVER['REQUEST_URI']);
@@ -55,8 +57,8 @@
             		(isadminloggedin()) ||
             		(!$CONFIG->actions[$action]['admin'])
             	) {
-	                if ($CONFIG->actions[$action]['public'] || $_SESSION['id'] != -1) {
-	                	
+	                if ($CONFIG->actions[$action]['public'] || $userId) 
+                    {	                
 	                	// Trigger action event TODO: This is only called before the primary action is called. We need to rethink actions for 1.5
 	                	$event_result = true;
 	                	$event_result = trigger_plugin_hook('action', $action, null, $event_result);
@@ -143,7 +145,7 @@
         {
         	$token = get_input('__elgg_token');
         	$ts = get_input('__elgg_ts');
-        	$session_id = session_id();
+        	$session_id = Session::id();
         	
         	if (($token) && ($ts) && ($session_id))
         	{
@@ -216,7 +218,7 @@
         	$ua = $_SERVER['HTTP_USER_AGENT'];
         	
         	// Session token
-        	$st = $_SESSION['__elgg_session'];
+        	$st = Session::get('__elgg_session');
         	
         	if (($site_secret) && ($session_id))
         		return md5($site_secret.$timestamp.$session_id.$ua.$st);

@@ -23,7 +23,7 @@
 		
 	// Get the user
 		try {
-			if (!$_SESSION['user']->addFriend($friend_guid)) $errors = true;
+			if (!get_loggedin_user()->addFriend($friend_guid)) $errors = true;
 		} catch (Exception $e) {
 			register_error(sprintf(elgg_echo("friends:add:failure"),$friend->name));
 			$errors = true;
@@ -33,6 +33,6 @@
 		}
 		
 	// Forward to the user friends page
-		forward("pg/friends/" . $_SESSION['user']->username . "/");
+		forward("pg/friends/" . get_loggedin_user()->username . "/");
 		
 ?>

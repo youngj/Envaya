@@ -8,10 +8,10 @@
 	 * @link http://elgg.org/
 	 */
 
-	$user = $_SESSION['user'];
+	$user = get_loggedin_user();
 	
 	$logged_in = 0;
-	$log = get_system_log($_SESSION['user']->guid, "login", "", 'user', '', 1);
+	$log = get_system_log(get_loggedin_userid(), "login", "", 'user', '', 1);
 	
 	if ($log)
 		$logged_in=$log[0]->time_created;

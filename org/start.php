@@ -75,7 +75,7 @@ function org_profile_page_handler($page)
             case "post":
                 set_input("blogpost", $page[2]);
 
-                switch ($page[3])
+                switch (@$page[3])
                 {
                     case "edit":
                         include(dirname(__FILE__) . "/editPost.php");
@@ -199,8 +199,8 @@ register_plugin_hook('usersettings:save','user','org_settings_save');
 
 global $CONFIG;
 
-register_action("org/register1",false,  "{$CONFIG->path}actions/org/register1.php");
-register_action("org/register2",false,  "{$CONFIG->path}actions/org/register2.php");
+register_action("org/register1",true,  "{$CONFIG->path}actions/org/register1.php");
+register_action("org/register2",true,  "{$CONFIG->path}actions/org/register2.php");
 register_action("org/register3",false,  "{$CONFIG->path}actions/org/register3.php");
 register_action("org/saveWidget",false, "{$CONFIG->path}actions/org/saveWidget.php");
 register_action("org/approve",false,    "{$CONFIG->path}actions/org/approveOrg.php");

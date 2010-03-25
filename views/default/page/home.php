@@ -1,25 +1,3 @@
-<?php
-    global $CONFIG;
-    function language_link($lang)
-    {
-        if ($lang == get_language())
-        {
-            return "<b>" . elgg_echo($lang, $lang) . "</b>";
-        }
-        else 
-        {
-            echo "<a href='action/changeLanguage?newLang=$lang'>".elgg_echo($lang, $lang)."</a>";
-        }
-    }
-    
-    ?>
-
-<div class='homeLanguages'>
-    <?php echo language_link('en'); ?>
-    &middot;
-    <?php echo language_link('sw'); ?>   
-</div>
-
 <div class='homeHeading'><?php echo elgg_echo("home:heading") ?></div>
 
 <table width='100%'>
@@ -58,7 +36,7 @@
 
 <div class='homeSection'>
     <a class='homeSectionIcon' href='org/feed'><img src='_graphics/icons/default/small.png' /></a>
-    <a href='org/feed'><?php echo elgg_echo("home:feed") ?></a>
+    <a href='org/feed'><?php echo elgg_echo("feed:title") ?></a>
 </div>
 
 </td>

@@ -22,4 +22,21 @@
 
     </p>
 
+    <h3><?php echo elgg_echo('org:theme'); ?></h3>
+    <p>
+    
+    <?php
+        
+        $curTheme = $user->theme;        
+        
+        foreach (get_themes() as $theme)
+        {
+            $selected = ($theme == $curTheme) ? "checked='checked'" : '';
+            $label = elgg_echo("theme:$theme");
+            echo "<label class='optionLabel'><input type='radio' name='theme' value='".escape($theme)."' {$selected} class='input-radio' />{$label}</label><br />";
+        }
+    ?>
+
+    </p>
+
 <?php } ?>

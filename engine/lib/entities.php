@@ -27,8 +27,6 @@
 	 */
 	abstract class ElggEntity implements 
 		Loggable,	// Can events related to this object class be logged
-		Iterator,	// Override foreach behaviour
-		ArrayAccess, // Override for array access
         Serializable
 	{
 		/** 
@@ -87,28 +85,20 @@
         
         public function serialize()
         {
-            return serialize($this->guid);
+            return serialize($this->attributes);
         }
         
         public function unserialize($data) 
         {
-            $guid = unserialize($data);            
-            $entity = get_entity($guid);
-
-            foreach ($entity->attributes as $key => $value)
-                $this->attributes[$key] = $value;
-        }        
+            $this->initialise_attributes();
+            $this->attributes = unserialize($data);
+        }
                 
         protected function loadFromPartialTableRow($row)
         {
             $entityRow = (property_exists($row, 'type')) ? $row : get_entity_as_row($row->guid);
             return $this->loadFromTableRow($entityRow);
-        }    
-        
-        public function __sleep()
-        {
-            return array('guid');
-        }
+        }            
         
 		/**
 		 * Initialise the attributes array. 
@@ -130,8 +120,8 @@
 			$this->attributes['type'] = "";
 			$this->attributes['subtype'] = 0;
 			
-			$this->attributes['owner_guid'] = get_loggedin_userid();
-			$this->attributes['container_guid'] = get_loggedin_userid();
+			$this->attributes['owner_guid'] = 0;
+			$this->attributes['container_guid'] = 0;
 			
 			$this->attributes['site_guid'] = 0;
 			$this->attributes['access_id'] = ACCESS_PRIVATE;
@@ -226,8 +216,8 @@
 		 */
 		public function get($name)
 		{
-			// See if its in our base attribute
-			if (isset($this->attributes[$name])) {
+			if (array_key_exists($name, $this->attributes)) 
+            {
 				return $this->attributes[$name];
 			}
 			
@@ -273,11 +263,6 @@
 			return true;
 		}
 			
-		/**
-		 * Get a given piece of metadata.
-		 * 
-		 * @param string $name
-		 */
 		public function getMetaData($name)
 		{
             $md = $this->getMetaDataObject($name);
@@ -359,15 +344,6 @@
             }    
 		}
 		
-		/**
-		 * Set a piece of metadata.
-		 * 
-		 * @param string $name
-		 * @param mixed $value
-		 * @param string $value_type
-		 * @param bool $multiple
-		 * @return bool
-		 */
 		public function setMetaData($name, $value)
 		{        
             $md = $this->getMetaDataObject($name);            
@@ -376,9 +352,6 @@
             return true;
 		}
 		
-		/**
-		 * Clear metadata.
-		 */
 		public function clearMetaData($name = "")
 		{
 			if (empty($name)) {
@@ -461,27 +434,6 @@
 		 */
 		function canEdit($user_guid = 0) {
 			return can_edit_entity($this->getGUID(),$user_guid);
-		}
-		
-		/**
-		 * Determines whether or not the specified user (by default the current one) can edit metadata on the entity 
-		 *
-		 * @param ElggMetadata $metadata The piece of metadata to specifically check
-		 * @param int $user_guid The user GUID, optionally (defaults to the currently logged in user)
-		 * @return true|false
-		 */
-		function canEditMetadata($metadata = null, $user_guid = 0) {            
-            
-            $return = null;
-        
-            if ($metadata->owner_guid == 0) 
-                $return = true;
-            if (is_null($return))
-                $return = can_edit_entity($this->guid, $user_guid);
-            
-            $user = get_entity($user_guid);
-            return trigger_plugin_hook('permissions_check:metadata',$this->type,
-                array('entity' => $this, 'user' => $user, 'metadata' => $metadata), $return);
 		}
 		
 		/**
@@ -656,24 +608,7 @@
             }
 
             return $url;            
-		}
-		
-		/**
-		 * Set an icon override for an icon and size.
-		 *
-		 * @param string $url The url of the icon.
-		 * @param string $size The size its for.
-		 * @return bool
-		 */
-		public function setIcon($url, $size = 'medium')
-		{
-			if (!$this->icon_override) 
-                $this->icon_override = array();
-                
-			$this->icon_override[$size] = $url;
-			
-			return true;
-		}
+		}		
 				
 		/**
 		 * Save generic attributes to the entities table.
@@ -685,8 +620,8 @@
 			{ 
                 if (trigger_elgg_event('update',$this->type,$this)) 
                 {
-                    $res = update_data("UPDATE entities set owner_guid=?, access_id=?, container_guid=?, time_updated=? WHERE guid=?", 
-                        array($this->owner_guid,$this->access_id,$this->container_guid,time(),$guid)
+                    $res = update_data("UPDATE entities set owner_guid=?, access_id=?, container_guid=?, enabled=?, time_updated=? WHERE guid=?", 
+                        array($this->owner_guid,$this->access_id,$this->container_guid,$this->enabled,time(),$guid)
                     );
                     cache_entity($this);
                 }
@@ -701,9 +636,9 @@
                 if ($this->type == "") 
                     throw new InvalidParameterException(elgg_echo('InvalidParameterException:EntityTypeNotSet'));
                 
-                $this->attributes['guid'] = insert_data("INSERT into entities (type, subtype, owner_guid, site_guid, container_guid, access_id, time_created, time_updated) values (?,?,?,?,?,?,?,?)",
+                $this->attributes['guid'] = insert_data("INSERT into entities (type, subtype, owner_guid, site_guid, container_guid, enabled, access_id, time_created, time_updated) values (?,?,?,?,?,?,?,?,?)",
                     array($this->type, $this->subtype, $this->owner_guid, $this->site_guid, 
-                        $this->container_guid, $this->access_id, $time, $time)
+                        $this->container_guid, $this->enabled, $this->access_id, $time, $time)
                 ); 
                 
 				if (!$this->guid) 
@@ -759,14 +694,14 @@
             $objarray = (array) $row;
             
             foreach($objarray as $key => $value) 
-                $this->attributes[$key] = $value;
+                $this->attributes[$key] = $value;            
             
             if ($this->attributes['type'] != $typeBefore)
                 throw new InvalidClassException(sprintf(elgg_echo('InvalidClassException:NotValidElggStar'), $guid, get_class()));
-            
-            if ($this->attributes['guid'])
-                cache_entity($this); 
-                                    
+
+            global $ENTITY_CACHE;       
+            $ENTITY_CACHE[$this->guid] = $this;
+
             return true;
         }        
         
@@ -776,30 +711,9 @@
 		 * @param string $reason Optional reason
 		 * @param bool $recursive Recursively disable all contained entities?
 		 */
-		public function disable($reason = "", $recursive = true)
+		public function disable()
 		{
-            if (trigger_elgg_event('disable',$this->type,$this)) 
-            {   
-                if ($reason)
-                {
-                    $this->disable_reason = $reason;
-                    $this->saveMetaData();
-                }    
-
-                if ($recursive)
-                {
-                    $sub_entities = $this->getSubEntities();
-
-                    if ($sub_entities) 
-                    {
-                        foreach ($sub_entities as $e)
-                            $e->disable($reason);
-                    }                           
-                }
-
-                return update_data("UPDATE entities set enabled='no' where guid=?", array($this->guid));
-            }
-            return false;
+            $this->enabled = 'no';                
 		}
 		
 		/**
@@ -807,12 +721,7 @@
 		 */
 		public function enable()
 		{
-            if (trigger_elgg_event('enable',$this->type,$this)) 
-            {
-                $result = update_data("UPDATE entities set enabled='yes' where guid=?", array($this->guid));
-                $this->clearMetaData('disable_reason');                    
-                return $result;
-            }
+            $this->enabled = 'yes';                
 		}
 		
 		/**
@@ -822,10 +731,7 @@
 		 */
 		public function isEnabled()
 		{
-			if ($this->enabled == 'yes')
-				return true;
-				
-			return false;
+			return ($this->enabled == 'yes');
 		}
 		
 		/**
@@ -929,71 +835,6 @@
 		 * Return the GUID of the owner of this object.
 		 */
 		public function getObjectOwnerGUID() { return $this->owner_guid; }
-
-		// ITERATOR INTERFACE //////////////////////////////////////////////////////////////
-		/*
-		 * This lets an entity's attributes be displayed using foreach as a normal array.
-		 * Example: http://www.sitepoint.com/print/php5-standard-library
-		 */
-		
-		private $valid = FALSE; 
-		
-   		function rewind() 
-   		{ 
-   			$this->valid = (FALSE !== reset($this->attributes));  
-   		}
-   
-   		function current() 
-   		{ 
-   			return current($this->attributes); 
-   		}
-		
-   		function key() 
-   		{ 
-   			return key($this->attributes); 
-   		}
-		
-   		function next() 
-   		{
-   			$this->valid = (FALSE !== next($this->attributes));  
-   		}
-   		
-   		function valid() 
-   		{ 
-   			return $this->valid;  
-   		}
-	
-   		// ARRAY ACCESS INTERFACE //////////////////////////////////////////////////////////
-		/*
-		 * This lets an entity's attributes be accessed like an associative array.
-		 * Example: http://www.sitepoint.com/print/php5-standard-library
-		 */
-
-		function offsetSet($key, $value)
-		{
-   			if ( array_key_exists($key, $this->attributes) ) {
-     			$this->attributes[$key] = $value;
-   			}
- 		} 
- 		
- 		function offsetGet($key) 
- 		{
-   			if ( array_key_exists($key, $this->attributes) ) {
-     			return $this->attributes[$key];
-   			}
- 		} 
- 		
- 		function offsetUnset($key) 
- 		{
-   			if ( array_key_exists($key, $this->attributes) ) {
-     			$this->attributes[$key] = ""; // Full unsetting is dangerious for our objects
-   			}
- 		} 
- 		
- 		function offsetExists($offset) 
- 		{
-   			return array_key_exists($offset, $this->attributes);
- 		} 
 	}
     
 	/**
@@ -1003,25 +844,24 @@
 	 */
 	function invalidate_cache_for_entity($guid)
 	{
-		global $ENTITY_CACHE;
-		
-		$guid = (int)$guid;
-			
+		global $ENTITY_CACHE;		
+		$guid = (int)$guid;			
 		unset($ENTITY_CACHE[$guid]);
-		//$ENTITY_CACHE->delete($guid);		
 	}
 	
-	/**
-	 * Cache an entity.
-	 * 
-	 * @param ElggEntity $entity Entity to cache
-	 */
 	function cache_entity(ElggEntity $entity)
 	{
 		global $ENTITY_CACHE;
 		
-		$ENTITY_CACHE[$entity->guid] = $entity;
+        $guid = $entity->guid;
+		$ENTITY_CACHE[$guid] = $entity;
+        get_cache()->set(entity_cache_key($guid), $entity);
 	}
+    
+    function entity_cache_key($guid)
+    {
+        return make_cache_key("entity", $guid);
+    }
 	
 	/**
 	 * Retrieve a entity from the cache.
@@ -1029,37 +869,25 @@
 	 * @param int $guid The guid
 	 */
 	function retrieve_cached_entity($guid)
-	{
-		global $ENTITY_CACHE;
+	{		        
+        global $ENTITY_CACHE;
 		
 		$guid = (int)$guid;
 			
-		if (isset($ENTITY_CACHE[$guid])) 
-			return $ENTITY_CACHE[$guid];
-				
-		return false;
-	}
-	
-	/**
-	 * As retrieve_cached_entity, but returns the result as a stdClass (compatible with load functions that
-	 * expect a database row.)
-	 * 
-	 * @param int $guid The guid
-	 */
-	function retrieve_cached_entity_row($guid)
-	{
-		$obj = retrieve_cached_entity($guid);
-		if ($obj)
-		{
-			$tmp = new stdClass;
-			
-			foreach ($obj as $k => $v)
-				$tmp->$k = $v;
-				
-			return $tmp;
-		}
-
-		return false;
+        if (isset($ENTITY_CACHE[$guid]))
+        {		            
+            return $ENTITY_CACHE[$guid];
+        }
+        else
+        {
+            $entity = get_cache()->get(entity_cache_key($guid));
+            if ($entity)
+            {            
+                $ENTITY_CACHE[$guid] = $entity;
+                return $entity;
+            }
+        }
+        return null;
 	}
 	
 	/**
@@ -1160,19 +988,16 @@
 	/**
 	 * Retrieve the entity details for a specific GUID, returning it as a stdClass db row.
 	 * 
-	 * You will only get an object if a) it exists, b) you have access to it.
-	 *
-	 * @param int $guid The GUID of the object to extract
+     * @param int $guid The GUID of the object to extract
 	 */
 	function get_entity_as_row($guid)
 	{
 		global $CONFIG;
 		
-		if (!$guid) return false;
-					
-        $access = get_access_sql_suffix();
+		if (!$guid) 
+            return false;
 		
-        return get_data_row("SELECT * from entities where guid=? and $access", array($guid));
+        return get_data_row("SELECT * from entities where guid=?", array($guid));
 	}
 	
 	/**
@@ -1205,11 +1030,23 @@
 	 */
 	function get_entity($guid)
 	{
-        $cached_entity = retrieve_cached_entity($guid);
-        if ($cached_entity)
-            return $cached_entity;
-   
-		return entity_row_to_elggstar(get_entity_as_row($guid));
+        $entity = retrieve_cached_entity($guid);
+        if (!$entity)
+        {
+        	$entity = entity_row_to_elggstar(get_entity_as_row($guid));
+        
+            if ($entity)
+            {
+                cache_entity($entity);
+            }
+        }   
+        
+        if ($entity && !has_access_to_entity($entity))
+        {
+            return null;
+        }
+        
+        return $entity;
 	}
 	
     function get_entity_conditions(&$where, &$args, $params, $tableName='')
@@ -1760,5 +1597,3 @@
 	
 	/** Register init system event **/
 	register_elgg_event_handler('init','system','entities_init');
-	
-?>

@@ -49,7 +49,7 @@
         $org->language = get_language();
         $org->setup_state = 3; 
         
-        $prevInfo = $_SESSION['registration'];
+        $prevInfo = Session::get('registration');        
 
         //$org->registration_number = $prevInfo['registration_number'];
         $org->country = $prevInfo['country'];
@@ -61,13 +61,15 @@
 
         login($org, false);
 
+        Session::set('registration', null);
+
         system_message(sprintf(elgg_echo("create:ok"),$CONFIG->sitename));
 
         forward("org/new?step=3");
     } 
     catch (RegistrationException $r) 
     {    
-        $_SESSION['input'] = $_POST;
+        Session::set('input', $_POST);
         
         register_error($r->getMessage());
         forward_to_referrer();

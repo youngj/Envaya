@@ -11,6 +11,7 @@
         }
     
         $org = $post->getContainerEntity();
+        set_theme($org->theme);
         
         $title = elgg_echo('org:news');
         

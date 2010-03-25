@@ -1,21 +1,21 @@
 
 <?php
 
-    $editPinMode = $vars['edit'];
-    $zoom = ((int)$vars['zoom']) ?: 10;
-    $width = $vars['width'] ?: 460;
-    $height = $vars['height'] ?: 280;    
-    $mapType = $vars['mapType'] ?: "G_NORMAL_MAP";
-    $nearby = $vars['nearby'] ?: false;
+    $editPinMode = @$vars['edit'];
+    $zoom = ((int)@$vars['zoom']) ?: 10;
+    $width = @$vars['width'] ?: 460;
+    $height = @$vars['height'] ?: 280;    
+    $mapType = @$vars['mapType'] ?: "G_NORMAL_MAP";
+    $nearby = @$vars['nearby'] ?: false;
     
     global $CONFIG;
     $apiKey = $CONFIG->google_api_key;
     $lat = (float)$vars['lat'];
     $long = (float)$vars['long'];
 
-    if (!$vars['static'])
+    if (!@$vars['static'])
     {
-        if ($editPinMode && !$vars['pin'])
+        if ($editPinMode && !@$vars['pin'])
         {
 ?>          
             <div id="dropPinBtn">
@@ -206,7 +206,7 @@ function initialize()
 
     map.setCenter(center, <?php echo $zoom; ?>);
 
-    <?php if ($vars['pin']) { ?>
+    <?php if (@$vars['pin']) { ?>
 
     placeMarker(center);
     

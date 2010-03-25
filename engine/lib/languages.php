@@ -82,7 +82,7 @@
     {
         global $CONFIG;
         
-        $acceptLanguage = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+        $acceptLanguage = @$_SERVER['HTTP_ACCEPT_LANGUAGE'];
         if ($acceptLanguage)
         {
             $languages = explode(",", $acceptLanguage);
@@ -109,7 +109,6 @@
 	 * @return string The language code (eg "en")
 	 */
 		function get_language() {
-			
 			global $CONFIG;
             
             $language = '';
@@ -124,17 +123,7 @@
             {
                 $language = get_cookie_language();
             }    
-                 
-            if (!$language)
-            {
-                $user = get_loggedin_user();  
-
-                if (($user) && ($user->language))
-                {
-                    $language = $user->language;
-                }    
-            }    
-                        
+                   
             if (!$language)
             {
                 $language = get_accept_language();
@@ -144,7 +133,7 @@
             {
 				$language = $CONFIG->language;
             }
-				                
+			
 			if ($language) 
             {
                 $CURRENT_LANGUAGE = $language;
@@ -196,17 +185,19 @@
 			
 			// Get the current language based on site defaults and user preference
 			$current_language = get_current_language();           
-
-			if (isset($CONFIG->debug) && $CONFIG->debug == true) error_log("Translations loaded from : $path");
+            
+			//if (isset($CONFIG->debug) && $CONFIG->debug == true) error_log("Translations loaded from : $path");
 		
 			if ($handle = opendir($path)) {
 				while ($language = readdir($handle)) {
                 
 					if (
-						((in_array($language, array('en.php', $current_language . '.php'))) /*&& (!is_dir($path . $language))*/) ||
-						(($load_all) && (strpos($language, '.php')!==false)/* && (!is_dir($path . $language))*/) 
+						((in_array($language, array('en.php', $current_language . '.php')))) ||
+						(($load_all) && (strpos($language, '.php')!==false)) 
 					)
+                    {
 						include_once($path . $language);
+                    }    
 					
 				}
 			}

@@ -372,7 +372,7 @@
 		if ($object instanceof ElggEntity) {
 			
 			// Get config data
-			global $CONFIG, $SESSION, $NOTIFICATION_HANDLERS;
+			global $CONFIG, $NOTIFICATION_HANDLERS;
 			
 			$hookresult = trigger_plugin_hook('object:notifications',$object_type,array(
 										'event' => $event,
@@ -399,7 +399,7 @@
 							if ($user instanceof ElggUser) {
 								
 								if (!$user->isBanned())
-								if (($user->guid != $SESSION['user']->guid) && has_access_to_entity($object,$user)
+								if (($user->guid != get_loggedin_user()->guid) && has_access_to_entity($object,$user)
 									&& $object->access_id != ACCESS_PRIVATE) { 
 		
 												$methodstring = trigger_plugin_hook('notify:entity:message',$object->getType(),array(

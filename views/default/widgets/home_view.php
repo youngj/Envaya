@@ -9,9 +9,8 @@
     $org = $vars['widget']->getContainerEntity();
     
     echo "<div class='section_header'>".elgg_echo("org:news:latest")."</div>";
-
-    
-    $posts = $org->listNewsUpdates(3, false); // make this configurable?    
+        
+    $posts = $org->getNewsUpdates(3); // make this configurable?    
     
     if (empty($posts))
     {
@@ -19,7 +18,10 @@
     }
     else
     {
-        echo $posts;
+        foreach ($posts as $post)
+        {
+            echo elgg_view_entity($post);
+        }
         echo "<div style='padding:5px'><a class='float_right' href='".$org->getUrl()."/news'>".elgg_echo('blog:view_all')."</a><div style='clear:both'></div></div>";
     }    
     $sectors = $org->getSectors();
@@ -46,14 +48,19 @@
         echo elgg_view_layout('section', elgg_echo("org:sectors"), $sectorText);        
     }   
     
-    foreach ($widget->included as $includedWidget)
+    $includedWidgets = $widget->included;
+    
+    if (is_array($includedWidgets))
     {
-        $included = $org->getWidgetByName($includedWidget);        
-        if ($included->isActive())
+        foreach ($includedWidgets as $includedWidget)
         {
-            echo "<div class='section_header' style='margin-bottom:3px'>".elgg_echo("widget:{$included->widget_name}")."</div>";
-            echo $included->renderView();        
-        }    
-    }
+            $included = $org->getWidgetByName($includedWidget);        
+            if ($included->isActive())
+            {
+                echo "<div class='section_header' style='margin-bottom:3px'>".elgg_echo("widget:{$included->widget_name}")."</div>";
+                echo $included->renderView();        
+            }    
+        }
+    }    
 
 ?>

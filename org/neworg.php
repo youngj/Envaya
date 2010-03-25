@@ -6,7 +6,7 @@
         $step = 1;
     }
     
-    if ($step == 2 && !$_SESSION['registration'])
+    if ($step == 2 && !Session::get('registration'))
     {
         register_error(elgg_echo("qualify:missing"));
         $step = 1;

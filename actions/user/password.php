@@ -19,7 +19,7 @@
 	$user = "";
 	
 	if (!$user_id)
-		$user = $_SESSION['user'];
+		$user = get_loggedin_user();
 	else
 		$user = get_entity($user_id);
 		

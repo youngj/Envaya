@@ -22,7 +22,8 @@
     else if (get_input('delete'))
     {
         $org = $blog->getContainerEntity();
-        $blog->disable('', $recursive=false);     
+        $blog->disable();     
+        $blog->save();     
         system_message(elgg_echo('blog:delete:success'));            
         forward($org->getURL()."/news");
     }        

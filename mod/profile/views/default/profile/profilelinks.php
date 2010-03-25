@@ -26,7 +26,7 @@
 	if ((!$banned) || (isadminloggedin()))
 	{
 	    //check to see if the user is looking at their own profile
-	    if ($_SESSION['user']->guid == page_owner()){
+	    if (get_loggedin_userid() == page_owner()){
 	
 	        echo "<div id=\"profile_menu_wrapper\">"; //start the wrapper div
 		    echo elgg_view("profile/menu/actions",$vars);//grab action links such as make friend

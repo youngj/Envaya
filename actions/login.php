@@ -11,9 +11,6 @@
 	 * @link http://elgg.org/
 	 */
 	 
-	// Safety first
-		action_gatekeeper();
-
     // Get username and password
     
         $username = get_input('username');
@@ -32,10 +29,11 @@
         
         if ($result) {
             system_message(sprintf(elgg_echo('loginok'), $user->name));
-            if ($_SESSION['last_forward_from'])
+            
+            $forward_url = Session::get('last_forward_from');
+            if ($forward_url)
             {
-            	$forward_url = $_SESSION['last_forward_from'];
-            	$_SESSION['last_forward_from'] = "";
+            	Session::set('last_forward_from', null);
             	forward($forward_url);
             }
             else

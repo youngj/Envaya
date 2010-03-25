@@ -27,11 +27,11 @@
             throw new RegistrationException(elgg_echo("qualify:no_funders"));
         }
         
-        $_SESSION['registration'] = array(
+        Session::set('registration', array(
             //'registration_number' => get_input('registration_number'),
             'country' => get_input('country'),
             'local' => in_array('local', $orgInfo)
-        );    
+        ));    
         
         system_message(elgg_echo("qualify:ok"));
         forward("org/new?step=2");
@@ -40,6 +40,6 @@
     catch (RegistrationException $r)
     {
         register_error($r->getMessage());
-        $_SESSION['input'] = $_POST;
+        Session::set('input', $_POST);
         forward_to_referrer();
     }

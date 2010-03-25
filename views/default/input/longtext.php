@@ -17,11 +17,10 @@
 	 * 
 	 */
 
-	$class = $vars['class'];
-	if (!$class) $class = "input-textarea";
+	$class = @$vars['class'] ?: "input-textarea";
     
-    $value = preserve_input($vars['internalname'], $vars['value']); 
+    $value = preserve_input($vars['internalname'], @$vars['value']); 
 	
 ?>
 
-<textarea class="<?php echo $class; ?>" name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> <?php if ($vars['disabled']) echo ' disabled="yes" '; ?> <?php echo $vars['js']; ?>><?php echo escape($value); ?></textarea> 
+<textarea class="<?php echo $class; ?>" name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> <?php echo @$vars['js']; ?>><?php echo escape($value); ?></textarea> 

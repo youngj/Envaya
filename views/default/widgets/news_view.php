@@ -21,7 +21,7 @@
     
     if (!$count)
     {
-        echo elgg_echo("org:noupdates");
+        echo "<div class='padded'>".elgg_echo("org:noupdates")."</div>";
     }
 
 ?>

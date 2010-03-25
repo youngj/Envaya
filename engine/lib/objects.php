@@ -58,7 +58,7 @@
             return null;
         }                      
         
-        static function filterByCondition($where, $args, $order_by, $limit, $offset, $count)
+        static function filterByCondition($where, $args, $order_by = '', $limit = 10, $offset = 0, $count = false)
         {
             $where[] = "type='object'";
 

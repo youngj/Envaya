@@ -27,7 +27,7 @@
 <div class='dashboard_links'>    
     <div>
         <a class='dashboard_img_link' href='org/help'><img src='_graphics/help.gif' /></a>
-        <a class='dashboard_text_link' href='org/help'><?php echo elgg_echo('dashboard:help') ?></a>
+        <a class='dashboard_text_link' href='org/help'><?php echo elgg_echo('help:title') ?></a>
     </div>        
     <div>
         <a class='dashboard_img_link' href='<?php echo $org->getURL() ?>'><img src='_graphics/home.gif?v2' /></a>
@@ -55,7 +55,7 @@
     </div>
     <div>
         <a class='dashboard_img_link_r' href='org/feed'><img src='_graphics/icons/default/small.png' /></a>
-        <a class='dashboard_text_link' href='org/feed'><?php echo elgg_echo("home:feed") ?></a>
+        <a class='dashboard_text_link' href='org/feed'><?php echo elgg_echo("feed:title") ?></a>
     </div>
 </div>
 </td>

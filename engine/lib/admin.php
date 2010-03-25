@@ -57,12 +57,7 @@
 		
 		// Page handler
 		register_page_handler('admin','admin_settings_page_handler');
-		
-		if (isadminloggedin()) {
-			global $is_admin;
-			$is_admin = true;
-		}
-		
+				
 	}
 	
 	function admin_pagesetup() {

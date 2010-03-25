@@ -15,7 +15,7 @@
 	$result = false;
 	foreach ($method as $k => $v)
 	{
-		$result = set_user_notification_setting($_SESSION['user']->guid, $k, ($v == 'yes') ? true : false);
+		$result = set_user_notification_setting(get_loggedin_userid(), $k, ($v == 'yes') ? true : false);
 		
 		if (!$result)
 		{

@@ -19,7 +19,7 @@
     }
     else 
     {
-        $body = elgg_view('org/contentwrapper',array('body' => elgg_echo('org:noaccess')));
+        not_found();
     }
     
     page_draw($title,$body);      

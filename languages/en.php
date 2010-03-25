@@ -11,10 +11,8 @@
         'home:browse_orgs' => 'Explore organizations',        
         'home:find_org' => 'Find an organization',
         'home:about_us' => 'About us',
-        'home:feed' => 'Latest news updates',
         
-        'loginok' => "Welcome, %s!",
-        
+        'feed' => "News",
         'feed:title' => "Latest news updates",
         
         'help:title' => "Getting Started",
@@ -26,8 +24,7 @@
         'dashboard:select_image' => "Select an image you would like to include with this news update:",
         'dashboard:view_home' => "View your home page",
         'dashboard:settings' => "Change account settings",
-        'dashboard:links' => "Links",
-        'dashboard:help' => "Getting Started",        
+        'dashboard:links' => "Links",        
         
         'setup:next_step_message' => "Learn how to use your Envaya website.",        
         
@@ -108,7 +105,7 @@
         
         'login' => "Log in",
         'loginerror' => "Incorrect username or password. Make sure they are correct and try again.",
-
+        'loginok' => "Welcome, %s!",       
         'logout' => "Log out",
 
         'name' => "Display name",

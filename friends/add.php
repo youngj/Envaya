@@ -17,7 +17,7 @@
 	// You need to be logged in for this one
 		gatekeeper();
 		
-	    $area2 = elgg_view('friends/forms/edit', array('friends' => get_user_friends($_SESSION['user']->getGUID(),"",9999)));
+	    $area2 = elgg_view('friends/forms/edit', array('friends' => get_user_friends(get_loggedin_userid(),"",9999)));
 		
 	// Format page
 		$body = elgg_view_layout('two_column_left_sidebar','', elgg_view_title(elgg_echo('friends:collections:add')) . $area2);

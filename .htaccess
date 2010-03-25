@@ -121,7 +121,7 @@ RewriteRule ^export\/([A-Za-z]+)\/([0-9]+)$ services/export/handler.php?view=$1&
 RewriteRule ^export\/([A-Za-z]+)\/([0-9]+)\/$ services/export/handler.php?view=$1&guid=$2 [L]
 RewriteRule ^export\/([A-Za-z]+)\/([0-9]+)\/([A-Za-z]+)\/([A-Za-z0-9\_]+)\/$ services/export/handler.php?view=$1&guid=$2&type=$3&idname=$4 [L]
 
-RewriteRule ^_css\/css\.css$ _css/css.php [L]
+RewriteRule ^_css\/([\w]+)\.css$ _css/css.php?name=$1 [L]
 
 RewriteRule ^pg\/([A-Za-z0-9\_\-]+)\/(.*)$ engine/handlers/pagehandler.php?handler=$1&page=$2 [L]
 RewriteRule ^pg\/([A-Za-z0-9\_\-]+)$ engine/handlers/pagehandler.php?handler=$1 [L]

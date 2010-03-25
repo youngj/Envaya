@@ -21,7 +21,7 @@
 
     function isPearError($res)
     {
-        return @PEAR::isError($res);
+        return is_a($res, 'PEAR_Error');
     }
 
     function forward_to_referrer()
@@ -40,13 +40,14 @@
 
     function preserve_input($name, $value)
     {    
-        $prevInput = $_SESSION['input'];
+        $prevInput = Session::get('input');
         if ($prevInput)
         {
             if (isset($prevInput[$name]))
             {
                 $val = $prevInput[$name];
-                unset($_SESSION['input'][$name]);
+                unset($prevInput[$name]);
+                Session::set('input', $prevInput);
                 return $val;
             }    
         }
@@ -85,16 +86,14 @@
 	    if (!headers_sent()) 
         {				 
 		    $current_page = current_page_url();
-		    if (strpos($current_page, $CONFIG->wwwroot . "action") === false)
-            {
-		        $_SESSION['messages'] = system_messages();
-            }
                     
 			if ((substr_count($location, 'http://') == 0) && (substr_count($location, 'https://') == 0)) 
             {
 			    $location = $CONFIG->url . $location;
 			}
 				 
+            save_system_messages();
+                 
 			header("Location: {$location}");
 			exit;
         }
@@ -115,7 +114,7 @@
         // user/pass
         if ((isset($url['user'])) && ($url['user'])) $page .= $url['user'];
         if ((isset($url['pass'])) && ($url['pass'])) $page .= ":".$url['pass'];
-        if (($url['user']) || $url['pass']) $page .="@";
+        if (@$url['user'] || @$url['pass']) $page .="@";
 
         $page .= $url['host'];
 
@@ -162,28 +161,9 @@
      */
     function elgg_get_viewtype()
     {
-        global $CURRENT_SYSTEM_VIEWTYPE, $CONFIG;
-
-        $viewtype = NULL;
-
-        if ($CURRENT_SYSTEM_VIEWTYPE != "")
-            return $CURRENT_SYSTEM_VIEWTYPE;
-
-        if ((empty($_SESSION['view'])) || ( (trim($CONFIG->view!="")) && ($_SESSION['view']!=$CONFIG->view) )) {
-            $_SESSION['view'] = "default";
-
-            // If we have a config default view for this site then use that instead of 'default'
-            if (/*(is_installed()) && */(!empty($CONFIG->view)) && (trim($CONFIG->view)!=""))
-                $_SESSION['view'] = $CONFIG->view;
-        }
-
-        if (empty($viewtype) && is_callable('get_input'))
-            $viewtype = get_input('view');
-
-        if (empty($viewtype)) 
-            $viewtype = $_SESSION['view'];
-
-        return $viewtype;
+        global $CURRENT_SYSTEM_VIEWTYPE;
+        
+        return $CURRENT_SYSTEM_VIEWTYPE ?: get_input('view') ?: 'default';
     }
 		
     /**
@@ -230,37 +210,37 @@
 		    static $usercache;
 
 		    // basic checking for bad paths
-		    if (strpos($view, '..') !== false) {
+		    if (strpos($view, '..') !== false) 
+            {
 		        return false;
-                    }
+            }
 		    
 		    $view_orig = $view;
 		    
-		// Trigger the pagesetup event
-			if (!isset($CONFIG->pagesetupdone)) {
+			if (!isset($CONFIG->pagesetupdone)) 
+            {
 				trigger_elgg_event('pagesetup','system');
 				$CONFIG->pagesetupdone = true;
 			}
 		    
-		    if (!is_array($usercache)) {
+		    if (!is_array($usercache)) 
+            {
 		        $usercache = array();
 		    }
 		
-		    if (empty($vars)) {
+		    if (empty($vars)) 
+            {
 		        $vars = array();
 		    }
 		
-		// Load session and configuration variables into $vars
-		    if (isset($_SESSION) /*&& is_array($_SESSION)*/ ) { // $_SESSION will always be an array if it is set
-		        $vars += $_SESSION; //= array_merge($vars, $_SESSION);
-		    }
-		    $vars['config'] = array();
+            $vars['user'] = get_loggedin_user();
+		    
+            $vars['config'] = array();
 			if (!empty($CONFIG))
 		    	$vars['config'] = $CONFIG;
 		    	
 			$vars['url'] = $CONFIG->url;
                 
-		// Load page owner variables into $vars
 		    if (is_callable('page_owner')) {
 		        $vars['page_owner'] = page_owner();
 		    } else {
@@ -276,62 +256,61 @@
 		            $vars['page_owner_user'] = $usercache[$vars['page_owner']];
 		        }
 		    }
-		    if (!isset($vars['js'])) {
+		    if (!isset($vars['js'])) 
+            {
 		    	$vars['js'] = "";
 		    }
 		    
-		// If it's been requested, pass off to a template handler instead
-		    if ($bypass == false && isset($CONFIG->template_handler) && !empty($CONFIG->template_handler)) {
+		    if ($bypass == false && isset($CONFIG->template_handler) && !empty($CONFIG->template_handler)) 
+            {
 		    	$template_handler = $CONFIG->template_handler;
 		    	if (is_callable($template_handler))
 		    		return $template_handler($view, $vars);
 		    }
 
-		// Get the current viewtype
 			if (empty($viewtype))
 				$viewtype = elgg_get_viewtype(); 
 		
-		// Set up any extensions to the requested view
-		    if (isset($CONFIG->views->extensions[$view])) {
+		    if (isset($CONFIG->views->extensions[$view])) 
+            {
 		    	$viewlist = $CONFIG->views->extensions[$view];
-		    } else {
+		    } 
+            else 
+            {
 		    	$viewlist = array(500 => $view);
 		    }	    
-		// Start the output buffer, find the requested view file, and execute it
+		
 		    ob_start();
 		    
-		    foreach($viewlist as $priority => $view) {
-		    	
+		    foreach($viewlist as $priority => $view) 
+            {		    
 		    	$view_location = elgg_get_view_location($view, $viewtype);
 		    			    	
-			    if (file_exists($view_location . "{$viewtype}/{$view}.php") && !include($view_location . "{$viewtype}/{$view}.php")) {
+			    if (file_exists($view_location . "{$viewtype}/{$view}.php") && !include($view_location . "{$viewtype}/{$view}.php")) 
+                {
 			        $success = false;
 			        
-			        if ($viewtype != "default") {
-			            if (include($view_location . "default/{$view}.php")) {
+			        if ($viewtype != "default") 
+                    {
+			            if (include($view_location . "default/{$view}.php")) 
+                        {
 			                $success = true;
 			            }
 			        }
-			        if (!$success && isset($CONFIG->debug) && $CONFIG->debug == true) {
+			        if (!$success && isset($CONFIG->debug) && $CONFIG->debug == true) 
+                    {
 			            error_log(" [This view ({$view}) does not exist] ");
 			        }
-			    } else if (isset($CONFIG->debug) && $CONFIG->debug == true && !file_exists($view_location . "{$viewtype}/{$view}.php")) {
-		    	
+			    } 
+                else if (isset($CONFIG->debug) && $CONFIG->debug == true && !file_exists($view_location . "{$viewtype}/{$view}.php")) 
+                {		    	
 			    	error_log($view_location . "{$viewtype}/{$view}.php");
 			    	error_log(" [This view ({$view}) does not exist] ");
 			    }
 		    
 		    }
 
-		// Save the output buffer into the $content variable
-			$content = ob_get_clean();
-			
-		// Plugin hook
-			$content = trigger_plugin_hook('display', 'view', array('view' => $view_orig, 'vars' => $vars), $content);
-		
-		// Return $content
-		    return $content;
-		
+			return ob_get_clean();								
 		}
 		
 	/**
@@ -341,34 +320,33 @@
 	 * @param string $viewtype If set, forces the viewtype
 	 * @return true|false Depending on success
 	 */
-		function elgg_view_exists($view, $viewtype = '') {
-			
-				global $CONFIG;
-			
-			// Detect view type
-				if (empty($viewtype))
-			    	$viewtype = elgg_get_viewtype();
-			    
-				if (!isset($CONFIG->views->locations[$viewtype][$view])) {
-		    		if (!isset($CONFIG->viewpath)) {
-						$location = dirname(dirname(dirname(__FILE__))) . "/views/";		    			
-		    		} else {
-		    			$location = $CONFIG->viewpath;
-		    		}
-		    	} else {
-		    		$location = $CONFIG->views->locations[$viewtype][$view];
-		    	}
-		    	
-		    	if (file_exists($location . "{$viewtype}/{$view}.php")) {
-		    		return true;
-		    	}
-		    	
-		    	// If we got here then check whether this exists as an extension
-		    		// Note that this currently does not recursively check whether the extended view exists also
-		    	if (isset($CONFIG->views->extensions[$view]))
-		    		return true;
-		    	
-		    	return false;
+		function elgg_view_exists($view, $viewtype = '') 
+        {
+            global $CONFIG;
+
+            if (empty($viewtype))
+                $viewtype = elgg_get_viewtype();
+
+            if (!isset($CONFIG->views->locations[$viewtype][$view])) {
+                if (!isset($CONFIG->viewpath)) {
+                    $location = dirname(dirname(dirname(__FILE__))) . "/views/";		    			
+                } else {
+                    $location = $CONFIG->viewpath;
+                }
+            } else {
+                $location = $CONFIG->views->locations[$viewtype][$view];
+            }
+
+            if (file_exists($location . "{$viewtype}/{$view}.php")) {
+                return true;
+            }
+
+            // If we got here then check whether this exists as an extension
+                // Note that this currently does not recursively check whether the extended view exists also
+            if (isset($CONFIG->views->extensions[$view]))
+                return true;
+
+            return false;
 			
 		}
 		
@@ -432,170 +410,7 @@
 				datalist_set('simplecache_version', $CONFIG->simplecache_version);				
 			}			
 		}	
-		
-		/**
-		 * This is a factory function which produces an ElggCache object suitable for caching file load paths.
-		 *
-		 * TODO: Can this be done in a cleaner way?
-		 * TODO: Swap to memcache etc?
-		 */
-		function elgg_get_filepath_cache()
-		{
-			global $CONFIG;
-			static $FILE_PATH_CACHE;
-			if (!$FILE_PATH_CACHE) $FILE_PATH_CACHE = new ElggFileCache($CONFIG->dataroot);
 			
-			return $FILE_PATH_CACHE;
-		}
-		
-		/**
-		 * Function which resets the file path cache.
-		 *
-		 */
-		function elgg_filepath_cache_reset()
-		{
-			$cache = elgg_get_filepath_cache();
-			return $cache->delete('view_paths');
-		}
-		
-		/**
-		 * Saves a filepath cache.
-		 *
-		 * @param mixed $data
-		 */
-		function elgg_filepath_cache_save($data)
-		{
-			global $CONFIG;
-			
-			if ($CONFIG->viewpath_cache_enabled) {
-				$cache = elgg_get_filepath_cache();
-				return $cache->save('view_paths', $data);
-			}
-			
-			return false;
-		}
-		
-		/**
-		 * Retrieve the contents of the filepath cache.
-		 *
-		 */
-		function elgg_filepath_cache_load()
-		{
-			global $CONFIG;
-			
-			if ($CONFIG->viewpath_cache_enabled) {
-				$cache = elgg_get_filepath_cache();
-				$cached_view_paths = $cache->load('view_paths'); 
-				
-				if ($cached_view_paths)
-					return $cached_view_paths;
-			}
-				
-			return NULL;
-		}
-		
-		/**
-		 * Enable the filepath cache.
-		 *
-		 */
-		function elgg_enable_filepath_cache()
-		{
-			global $CONFIG;
-			
-			datalist_set('viewpath_cache_enabled',1);
-			$CONFIG->viewpath_cache_enabled = 1;
-			elgg_filepath_cache_reset();
-		
-		}
-		
-		/**
-		 * Disable filepath cache.
-		 *
-		 */
-		function elgg_disable_filepath_cache()
-		{
-			global $CONFIG;
-			
-			datalist_set('viewpath_cache_enabled',0);
-			$CONFIG->viewpath_cache_enabled = 0;
-			elgg_filepath_cache_reset();
-			
-		}
-		
-		/**
-		 * Internal function for retrieving views used by elgg_view_tree
-		 *
-		 * @param unknown_type $dir
-		 * @param unknown_type $base
-		 * @return unknown
-		 */
-		function get_views($dir, $base) {
-				
-			$return = array();
-			if (file_exists($dir) && is_dir($dir)) {
-				if ($handle = opendir($dir)) {
-					while ($view = readdir($handle)) {
-						if (!in_array($view, array('.','..','.svn','CVS'))) {
-							if (is_dir($dir . '/' . $view)) {
-								if ($val = get_views($dir . '/' . $view, $base . '/' . $view)) {
-									$return = array_merge($return, $val);
-								}
-							} else {
-								$view = str_replace('.php','',$view);
-								$return[] = $base . '/' . $view;
-							}
-						}
-					}
-				}
-			}
-			return $return;
-		}
-
-	/**
-	 * When given a partial view root (eg 'js' or 'page_elements'), returns an array of views underneath it
-	 *
-	 * @param string $view_root The root view
-	 * @param string $viewtype Optionally specify a view type other than the current one.
-	 * @return array A list of view names underneath that root view
-	 */
-		function elgg_view_tree($view_root, $viewtype = "") {
-			
-				global $CONFIG;
-				static $treecache;
-			
-			// Get viewtype
-				if (!$viewtype)
-					$viewtype = elgg_get_viewtype();
-				
-			// Has the treecache been initialised?
-				if (!isset($treecache)) $treecache = array();			
-			// A little light internal caching
-				if (!empty($treecache[$view_root])) return $treecache[$view_root];
-			
-			// Examine $CONFIG->views->locations
-				if (isset($CONFIG->views->locations[$viewtype])) {
-					foreach($CONFIG->views->locations[$viewtype] as $view => $path) {
-						$pos = strpos($view,$view_root);
-						if ($pos === 0) {
-							$treecache[$view_root][] = $view; 
-						}
-					}
-				}
-	
-			// Now examine core
-				$location = $CONFIG->viewpath;
-				$viewtype = elgg_get_viewtype();
-				$root = $location . $viewtype . '/' . $view_root;
-			
-				if (file_exists($root) && is_dir($root)) {				
-					$val = get_views($root, $view_root);				
-					if (!is_array($treecache[$view_root])) $treecache[$view_root] = array();				
-					$treecache[$view_root] = array_merge($treecache[$view_root], $val);
-				}
-
-				return $treecache[$view_root];
-		}
-	
 	/**
 	 * When given an entity, views it intelligently.
 	 * 
@@ -618,15 +433,10 @@
 			// No point continuing if entity is null.
 			if (!$entity) return ''; 
 			
-			$view = $entity->view;
-			if (is_string($view)) {
-				return elgg_view($view,array('entity' => $entity), $bypass, $debug);
-			}
-			
 			$classes = array(
-								'ElggUser' => 'user',
-								'ElggObject' => 'object',
-							);
+                'ElggUser' => 'user',
+                'ElggObject' => 'object',
+            );
 			
 			$entity_class = get_class($entity);
 			
@@ -691,21 +501,17 @@
 			
 			$context = get_context();
 			
-			$html = elgg_view('search/entity_list',array(
-													'entities' => $entities,
-													'count' => $count,
-													'offset' => $offset,
-													'limit' => $limit,
-													'baseurl' => $_SERVER['REQUEST_URI'],
-													'fullview' => $fullview,
-													'context' => $context, 
-													'viewtypetoggle' => $viewtypetoggle,
-													'viewtype' => get_input('search_viewtype','list'), 
-													'pagination' => $pagination
-												  ));
-				
-			return $html;
-			
+			return elgg_view('search/entity_list',array(
+                'entities' => $entities,
+                'count' => $count,
+                'offset' => $offset,
+                'limit' => $limit,
+                'baseurl' => $_SERVER['REQUEST_URI'],
+                'fullview' => $fullview,
+                'context' => $context, 
+                'viewtypetoggle' => $viewtypetoggle,													
+                'pagination' => $pagination
+              ));
 		}
 		
 	/**
@@ -1169,57 +975,61 @@
 	 * @return true|false|array Either the array of messages, or a response regarding whether the message addition was successful
 	 */
 		
-		function system_messages($message = "", $register = "messages", $count = false) {
-			
-			if (!isset($_SESSION['msg'])) {
-				$_SESSION['msg'] = array();
-			}
-			if (!isset($_SESSION['msg'][$register]) && !empty($register)) {
-				$_SESSION['msg'][$register] = array();
-			}
-			if (!$count) {
-				if (!empty($message) && is_array($message)) {
-					$_SESSION['msg'][$register] = array_merge($_SESSION['msg'][$register], $message);
-					var_export($_SESSION['msg']); exit;
-					return true;
-				} else if (!empty($message) && is_string($message)) {
-					$_SESSION['msg'][$register][] = $message;
-					return true;
-				} else if (is_null($message)) {
-					if ($register != "") {
-						$returnarray = $_SESSION['msg'][$register];
-						$_SESSION['msg'][$register] = array();
-					} else {
-						$returnarray = $_SESSION['msg'];
-						$_SESSION['msg'] = array();
-					}
-					return $returnarray;
-				}
-			} else {
-				if (!empty($register)) {
-					return sizeof($_SESSION['msg'][$register]);
-				} else {
-					$count = 0;
-					foreach($_SESSION['msg'] as $register => $submessages) {
-						$count += sizeof($submessages);
-					}
-					return $count;
-				}
-			}
-			return false;
-			
-		}
-		
-	/**
-	 * Counts the number of messages, either globally or in a particular register
-	 *
-	 * @param string $register Optionally, the register
-	 * @return integer The number of messages
-	 */
-		function count_messages($register = "") {
-			return system_messages(null,$register,true);
-		}
-		
+    function system_messages($message = "", $register = "messages") 
+    {
+        static $allMessages;
+
+        if (!isset($allMessages))
+        {
+            $messages = Session::get('messages');            
+            if ($messages)
+            {
+                $allMessages = $messages;
+                Session::set('messages', null);
+            }
+            else
+            {
+                $allMessages = array();
+            }    
+        }
+
+        if (!isset($allMessages[$register]) && !$register) 
+        {
+            $allMessages[$register] = array();
+        }
+
+        if (!empty($message)) 
+        {
+            $allMessages[$register][] = $message;            
+            return true;
+        } 
+        else
+        {
+            if ($register) 
+            {
+                $res = $allMessages[$register];
+                unset($allMessages[$register]);
+                return $res;
+            } 
+            else 
+            {
+                $res = $allMessages;
+                unset($allMessages);
+                return $res;
+            }
+        }
+    }
+
+    function save_system_messages()
+    {    
+        $messages = system_messages('', '');
+        if ($messages)
+        {            
+            Session::set('messages', $messages);
+        } 
+    }
+     
+
 	/**
 	 * An alias for system_messages($message) to handle standard user information messages
 	 *
@@ -1506,16 +1316,18 @@
 
 				case E_WARNING :
 				case E_USER_WARNING : 
-						error_log("WARNING: " . $error);
-						// register_error("WARNING: " . $error);
+                        if (error_reporting() != 0)
+                        {
+						    error_log("WARNING: " . $error);
+                        }    						
 					break;
 
 				default:
 					global $CONFIG;
-					if (isset($CONFIG->debug)) {
+					if (isset($CONFIG->debug) && error_reporting() != 0) 
+                    {
 						error_log("DEBUG: " . $error); 
 					}
-					// register_error("DEBUG: " . $error);
 			}
 			
 			return true;
@@ -1542,35 +1354,44 @@
 	 * Data lists
 	 */
 		
-	$DATALIST_CACHE = array();
-		
+	$DATALIST_CACHE = null;
+	        
 	/**
 	 * Get the value of a particular piece of data in the datalist
 	 *
 	 * @param string $name The name of the datalist
 	 * @return string|false Depending on success
 	 */	
-		function datalist_get($name) {
-			
-			global $CONFIG, $DATALIST_CACHE;
+		function datalist_get($name) 
+        {		
+            //var_dump(debug_backtrace());
+        
+			global $DATALIST_CACHE;
 						
-			if (isset($DATALIST_CACHE[$name]))
-				return $DATALIST_CACHE[$name];
+            if (!is_array($DATALIST_CACHE))
+            {
+                $cache = get_cache();
                 
-			$result = get_data("SELECT * from datalists");
-			if ($result)
-			{
-				foreach ($result as $row)
-				{
-					$DATALIST_CACHE[$row->name] = $row->value;				
-				}
-				
-				if (isset($DATALIST_CACHE[$name]))
-					return $DATALIST_CACHE[$name];
-			}
+                $DATALIST_CACHE = $cache->get('datalist');
+                
+                if (!is_array($DATALIST_CACHE))
+                {
+                    $DATALIST_CACHE = array();
+                    
+                    $result = get_data("SELECT * from datalists");
+                    if ($result)
+                    {
+                        foreach ($result as $row)
+                        {
+                            $DATALIST_CACHE[$row->name] = $row->value;				
+                        }
+                    }
+                    
+                    $cache->set('datalist', $DATALIST_CACHE);
+                }
+            }
 						
-			return false;
-			
+            return @$DATALIST_CACHE[$name];               			
 		}
 		
 	/**
@@ -1580,18 +1401,19 @@
 	 * @param string $value The new value
 	 * @return true
 	 */
-		function datalist_set($name, $value) {
-			
-			global $CONFIG, $DATALIST_CACHE;
+		function datalist_set($name, $value) 
+        {		
+			global $DATALIST_CACHE;
 			
 			insert_data("INSERT into datalists set name = ?, value = ? ON DUPLICATE KEY UPDATE value = ?",
                 array($name, $value, $value)
             );
 			
 			$DATALIST_CACHE[$name] = $value;
+            
+            get_cache()->set('datalist', $DATALIST_CACHE);
 			
-			return true;
-			
+			return true;			
 		}
 
 	/**
@@ -1869,9 +1691,12 @@
 		global $CONFIG, $START_MICROTIME;
 		
 		trigger_elgg_event('shutdown', 'system');
-		
+		        
 		if ($CONFIG->debug)
-			error_log("Page {$_SERVER['REQUEST_URI']} generated in ".(float)(microtime(true)-$START_MICROTIME)." seconds"); 
+        {
+            $uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+			error_log("Page {$uri} generated in ".(float)(microtime(true)-$START_MICROTIME)." seconds"); 
+        }    
 	}
 	
 	function elgg_init() {
@@ -1893,9 +1718,6 @@
 		register_action('comments/add');
 		register_action('comments/delete');
 		
-		elgg_view_register_simplecache('css');
-		elgg_view_register_simplecache('js/friendsPickerv1');
-		elgg_view_register_simplecache('js/initialise_elgg');
 	}
 		
 	/**

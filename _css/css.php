@@ -2,7 +2,7 @@
     define('externalpage',true);
     
     global $viewinput;
-    $viewinput['view'] = 'css';
+    $viewinput['view'] = 'css/' . (@$_GET['name'] ?: 'default');
     $viewinput['viewtype'] = $_GET['viewtype'];
 
     header("Content-type: text/css", true);

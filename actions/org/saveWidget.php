@@ -12,19 +12,20 @@
 
         if (get_input('delete'))
         {
-            $widget->disable('', $recursive=false);     
+            $widget->disable();     
+            $widget->save();
             
             system_message(elgg_echo('widget:delete:success'));            
             forward($org->getURL());
         }
         else
         {        
-            $widget->saveInput();
-            
             if (!$widget->isEnabled())
             {
                 $widget->enable();
             }            
+
+            $widget->saveInput();
             
             system_message(elgg_echo('widget:save:success'));
             forward($widget->getURL());

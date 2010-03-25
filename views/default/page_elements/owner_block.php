@@ -17,7 +17,7 @@
 
 	// Is there a page owner?
 		$owner = page_owner_entity();
-		// if (!$owner && isloggedin()) $owner = $_SESSION['user'];
+		// if (!$owner && isloggedin()) $owner = get_loggedin_user();
 		if ($owner instanceof ElggEntity) {
 			$icon = elgg_view("profile/icon",array('entity' => $owner, 'size' => 'tiny'));
 			if ($owner instanceof ElggUser) {

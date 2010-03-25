@@ -13,7 +13,7 @@
 	 */
 
 	if (isloggedin()) {
-		if ($_SESSION['user']->getGUID() != $vars['entity']->getGUID()) {
+		if (get_loggedin_userid() != $vars['entity']->getGUID()) {
 			
 			$ts = time();
 			$token = generate_action_token($ts);

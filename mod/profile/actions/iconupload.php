@@ -15,13 +15,14 @@
 
 	$user = page_owner_entity();
 	if (!$user)
-		$user = $_SESSION['user'];
+		$user = get_loggedin_user();
 
 	// If we were given a correct icon
 		if (isloggedin() && $user && $user->canEdit() && has_uploaded_file('profileicon'))
         {
             $user->setIcon(get_uploaded_filename('profileicon'));
-
+
+
             system_message(elgg_echo("profile:icon:uploaded"));
 
             trigger_elgg_event('profileiconupdate',$user->type,$user);

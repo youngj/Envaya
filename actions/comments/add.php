@@ -24,16 +24,16 @@
 	        // If posting the comment was successful, say so
 				if ($entity->annotate('generic_comment',$comment_text,$entity->access_id, $_SESSION['guid'])) {
 					
-					if ($entity->owner_guid != $_SESSION['user']->getGUID())
-					notify_user($entity->owner_guid, $_SESSION['user']->getGUID(), elgg_echo('generic_comment:email:subject'), 
+					if ($entity->owner_guid != get_loggedin_userid())
+					notify_user($entity->owner_guid, get_loggedin_userid(), elgg_echo('generic_comment:email:subject'), 
 						sprintf(
 									elgg_echo('generic_comment:email:body'),
 									$entity->title,
-									$_SESSION['user']->name,
+									get_loggedin_user()->name,
 									$comment_text,
 									$entity->getURL(),
-									$_SESSION['user']->name,
-									$_SESSION['user']->getURL()
+									get_loggedin_user()->name,
+									get_loggedin_user()->getURL()
 								)
 					); 
 					

@@ -19,8 +19,7 @@
 
 	global $CONFIG;
 	
-	if (isset($vars['class'])) $class = $vars['class'];
-	if (!$class) $class = "submit_button";
+	$class = (isset($vars['class'])) ? $vars['class'] : "submit_button";
 
 	if (isset($vars['type'])) { $type = strtolower($vars['type']); } else { $type = 'submit'; }
 	switch ($type)
@@ -31,9 +30,8 @@
 		default: $type = 'submit';
 	}
 	
-	$value = escape($vars['value']);
-	if (isset($vars['internalname'])) $name = $vars['internalname'];
-	if (isset($vars['src'])) $src = "src=\"{$vars['src']}\"";
-	if (strpos($src,$CONFIG->wwwroot)===false) $src = ""; // blank src if trying to access an offsite image.
+	$value = escape(@$vars['value']);
+    $name = @$vars['internalname'];        
+    $src = (isset($vars['src'])) ? "src=\"{$vars['src']}\"" : '';
 ?>
-<input name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> type="<?php echo $type; ?>" class="<?php echo $class; ?>" <?php echo $vars['js']; ?> value="<?php echo $value; ?>" <?php echo $src; ?> />
+<input name="<?php echo $name; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> type="<?php echo $type; ?>" class="<?php echo $class; ?>" <?php echo $vars['js']; ?> value="<?php echo $value; ?>" <?php echo $src; ?> />

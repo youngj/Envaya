@@ -77,7 +77,12 @@ class Organization extends ElggUser
         }
         if ($this->region && $includeRegion)
         {
-            $res .= elgg_echo($this->region). ", ";            
+            $regionText = elgg_echo($this->region);
+            
+            if ($regionText != $this->city)
+            {        
+                $res .= "$regionText, ";            
+            }
         }
         $res .= elgg_echo("country:{$this->country}");
         
@@ -295,7 +300,6 @@ class Partnership extends ElggObject
     static $subtype_id = T_partnership;
     static $table_name = 'partnerships';
     static $table_attributes = array(
-
         'description' => '',
         'date_formed' => ''
     );
@@ -487,7 +491,7 @@ function googlegeocoder_geocode($hook, $entity_type, $returnvalue, $params)
         $result = file_get_contents($address);
         $obj = json_decode($result);
 
-        $obj = $obj->Placemark[0]->Point->coordinates;
+        $obj = @$obj->Placemark[0]->Point->coordinates;
 
         if ($obj)
         {           
@@ -560,9 +564,35 @@ function get_static_map_url($lat, $long, $zoom, $width, $height)
     return "http://maps.google.com/maps/api/staticmap?center=$lat,$long&zoom=$zoom&size={$width}x$height&maptype=roadmap&markers=$lat,$long&sensor=false&key=$apiKey";
 }
 
+$THEME = null;
+
+function get_theme()
+{
+    global $THEME;
+    return $THEME;
+}
+
+function set_theme($theme)
+{
+    global $THEME;
+    $THEME = $theme;
+}
+
+function get_themes()
+{
+    return array('default','green','red');
+}
+
 function envaya_init() 
 {
     global $CONFIG;
+    
+    $themes = get_themes();
+    
+    foreach ($themes as $theme)
+    {
+        elgg_view_register_simplecache("css/$theme");
+    }
     
     register_plugin_hook('geocode', 'location', 'googlegeocoder_geocode');
     
@@ -571,8 +601,6 @@ function envaya_init()
     register_entity_type('object', 'translation');
     register_entity_type('object', 'partnership');
     
-    extend_view('css','org/css');
-
     include_once("{$CONFIG->path}org/start.php");    
 }
 

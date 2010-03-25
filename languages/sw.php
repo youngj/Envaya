@@ -10,9 +10,21 @@
         'home:why' => 'Kwa nini nitumie Envaya?',
         'home:browse_orgs' => 'Peleleza mashirika',        
         'home:find_org' => 'Tafuta shirika',
-        'home:about_us' => 'Kuhusu sisi',    
+        'home:about_us' => 'Kuhusu sisi',   
+
+        'feed' => 'Habari',
+        'feed:title' => "Habari mpya zaidi",
     
-        'user:password:lost' => 'Neno la siri limesahauliwa',
+        'help:title' => "Msaada kuanza",       
+    
+        'dashboard' => "Hariri Tovuti",        
+        'dashboard:add_update' => 'Andika habari',
+        'dashboard:edit_widgets' => 'Hariri kurasa',
+        'dashboard:attach_image' => "Fungia picha",
+        'dashboard:select_image' => "Chagua picha unayopenda an image you would like to include with this news update:",
+        'dashboard:view_home' => "View your home page",
+        'dashboard:settings' => "Change account settings",
+        'dashboard:links' => "Links",    
     
         'search' => 'Tafuta',
         'language' => "Lugha",
@@ -64,6 +76,7 @@
         'tz:zanzibar_w' => 'Unguja Mjini Magharibi',             
 
         'login' => "Fungua",
+        'loginok' => "Karibu, %s!",
         'loginerror' => "Jina la mtumiaji au neno ya siri ilikuwa kosefu. Hakikisha kuwa yale ni sahihi, na tafadhali ujaribu tena.",
 
         'logout' => "Ondoka",
@@ -75,6 +88,7 @@
         'passwordagain' => "Neno la siri (tena)",
         'admin_option' => "Mtumiaji huyu awe msimamizi?",        
         'user:persistent' => 'Nikumbuke',
+        'user:password:lost' => 'Neno la siri limesahauliwa',   
 
         'org:yours' => 'Your Site',
         'org:home' => 'Mkuu',

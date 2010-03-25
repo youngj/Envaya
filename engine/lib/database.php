@@ -35,7 +35,7 @@
 	 */
 	function db_profiling_shutdown_hook()
 	{
-		global $CONFIG, $DB_PROFILE, $dbcalls;
+		global $CONFIG, $DB_PROFILE;
 		        
 		if (isset($CONFIG->debug) && $CONFIG->debug)
 		{
@@ -46,7 +46,6 @@
 			foreach ($DB_PROFILE as $k => $v) 
 				error_log("$v times: '$k' ");
 			
-			error_log("DB Queries for this page: $dbcalls");
 			error_log("***************************************************");
 		}
 	}
@@ -85,8 +84,8 @@
 	 */
     function init_db($event, $object_type, $object = null) 
     {
-        register_shutdown_function('db_delayedexecution_shutdown_hook');
-        register_shutdown_function('db_profiling_shutdown_hook');			
+        register_elgg_event_handler('shutdown', 'system', 'db_delayedexecution_shutdown_hook', 1);
+        register_elgg_event_handler('shutdown', 'system', 'db_profiling_shutdown_hook', 999);
         return true;
     }
 

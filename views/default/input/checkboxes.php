@@ -18,10 +18,10 @@
 	 * 
 	 */
 
-	$class = $vars['class'];
+	$class = @$vars['class'];
 	if (!$class) $class = "input-checkboxes";
 
-    $vars['value'] = preserve_input($vars['internalname'], $vars['value']); 
+    $vars['value'] = preserve_input($vars['internalname'], @$vars['value']); 
 
     $valIsArray = is_array($vars['value']);
     
@@ -48,12 +48,9 @@
         
         $selected = ($isSelected) ? "checked = \"checked\"" : "";
                         
-        if (isset($vars['internalid'])) 
-            $id = "id=\"{$vars['internalid']}\""; 
+        $id = (isset($vars['internalid'])) ? "id=\"{$vars['internalid']}\"" : ''; 
         
-        $disabled = "";
-        if ($vars['disabled']) 
-            $disabled = ' disabled="yes" '; 
+        $disabled = (@$vars['disabled']) ? ' disabled="yes" ' : ''; 
         
         echo "<label class='optionLabel'><input type=\"checkbox\" $id $disabled {$vars['js']} name=\"{$vars['internalname']}[]\" value=\"".escape($option)."\" {$selected} class=\"$class\" />{$label}</label><br />";
     }

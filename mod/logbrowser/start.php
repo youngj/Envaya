@@ -18,9 +18,6 @@
 		// Register a page handler, so we can have nice URLs
 		register_page_handler('logbrowser','logbrowser_page_handler');
 		
-		// Extend CSS
-		extend_view('css','logbrowser/css');
-		
 		// Extend context menu with admin logbrowsre link
 			if (isadminloggedin())
 			{

@@ -15,6 +15,12 @@
 	global $START_MICROTIME; 
 	$START_MICROTIME = microtime(true);
     
+    if (!include_once(dirname(__FILE__) . "/settings.php"))  
+    {
+        throw new InstallationException("Elgg could not load the settings file.");
+    }    
+    
+    
     if (!include_once(dirname(__FILE__) . "/lib/exceptions.php")) {		// Exceptions 
         echo "Error in installation: could not load the Exceptions library.";
         exit;
@@ -55,7 +61,7 @@
         exit;
     }
 
-    if (!include_once(dirname(__FILE__) . "/lib/cache.php")) {		// Installation library
+    if (!include_once(dirname(__FILE__) . "/lib/cache.php")) {		
         echo "Error in installation: could not load the cache library.";
         exit;
     }
@@ -68,9 +74,6 @@
     set_error_handler('__elgg_php_error_handler');
     set_exception_handler('__elgg_php_exception_handler');
 		
-   if (!include_once(dirname(__FILE__) . "/settings.php"))  
-        throw new InstallationException("Elgg could not load the settings file.");
-
     if (!include_once(dirname(__FILE__) . "/lib/database.php"))
         throw new InstallationException("Elgg could not load the main Elgg database library.");
 

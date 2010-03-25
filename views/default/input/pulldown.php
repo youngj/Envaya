@@ -19,16 +19,13 @@
 	 * 								 the value displayed on the button. Replaces $vars['options'] when defined. 
 	 */
 
-
-	$class = $vars['class'];
-	if (!$class) $class = "input-pulldown";
+    $class = @$vars['class'] ?: "input-pulldown";
     
-    $vars['value'] = preserve_input($vars['internalname'], $vars['value']); 
-
+    $vars['value'] = preserve_input(@$vars['internalname'], @$vars['value']); 
 ?>
 
 
-<select name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> <?php echo $vars['js']; ?> <?php if ($vars['disabled']) echo ' disabled="yes" '; ?> class="<?php echo $class; ?>">
+<select name="<?php echo @$vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> <?php echo $vars['js']; ?> <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> class="<?php echo $class; ?>">
 <?php
 	if ($vars['empty_option'])
     {

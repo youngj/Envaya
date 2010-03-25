@@ -258,7 +258,7 @@
 	</td>
     <td rowspan="2" align="left" valign="top" height="100%">
 		<?php 
-		if($_SESSION['user']->guid == page_owner()){
+		if(get_loggedin_userid() == page_owner()){
 		?>
 		<!-- customise page button -->
 		<a href="javascript:void(0);" class="toggle_customise_edit_panel"><?php echo(elgg_echo('dashboard:configure')); ?></a>

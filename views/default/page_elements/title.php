@@ -1,7 +1,7 @@
 <?php
 
-    $icon = $vars['icon'];
-    $link = $vars['link'];   
+    $icon = @$vars['icon'];
+    $link = @$vars['link']; 
     
     if ($icon)
     {
@@ -25,4 +25,4 @@
     echo $h1;      
     
 ?>
-<h2 class='<?php echo $hclass ?>'><?php echo escape($vars['subtitle']) ?></h2>
+<h2 class='<?php echo $hclass ?>'><?php echo escape(@$vars['subtitle']) ?></h2>

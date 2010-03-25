@@ -1,43 +1,3 @@
-<div id='languages' class='dropdown' style='display:none'>
-    <div class='dropdown_title'><?php echo elgg_echo("language:choose"); ?></div>
-    <div class='dropdown_content'>
-        <?php 
-            $translations = get_installed_translations();
-            $curLang = get_language();
-            foreach ($translations as $lang => $name)
-            {
-                $class = ($curLang == $lang) ? " dropdown_item_selected" : "";
-                echo "<a class='dropdown_item{$class}' href='action/changeLanguage?newLang={$lang}'>$name</a>";
-            }
-        ?>    
-    </div>
-</div>
-<script type='text/javascript'>
-function openChangeLanguage()
-{
-    var languages = document.getElementById('languages');
-    
-    if (languages.style.display == 'none')
-    {
-        var languageButton = document.getElementById('languageButton');
-        languages.style.left = languageButton.offsetLeft + "px";
-        languages.style.top = (languageButton.offsetTop + 50) + "px";
-        languages.style.display = 'block';
-
-        setTimeout(function() {
-            addEvent(document.body, 'click', closeChangeLanguage);
-        }, 1);    
-    }    
-}
-function closeChangeLanguage()
-{
-    setTimeout(function() {
-        var languages = document.getElementById('languages');
-        languages.style.display = 'none';    
-        removeEvent(document.body, 'click', closeChangeLanguage);
-    }, 1);    
-}
-</script>
 <div id="topbar">
 <table class='topbarTable'>
 <td class='topbarLinks'>
@@ -46,7 +6,7 @@ function closeChangeLanguage()
     </a>
     <a href='org/browse'><?php echo elgg_echo('browse') ?></a>
     <a href='org/search'><?php echo elgg_echo('search') ?></a>
-    <a href='javascript:void(0)' id='languageButton' onclick='openChangeLanguage()'><?php echo elgg_echo('language') ?></a>    
+    <a href='org/feed'><?php echo elgg_echo('feed') ?></a>    
 </td>    
 <td width='166'>&nbsp;</td>
 </tr>

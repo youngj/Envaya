@@ -22,7 +22,7 @@
     else 
     {   
         $blog = new NewsUpdate();
-        $blog->owner_guid = $_SESSION['user']->getGUID();
+        $blog->owner_guid = get_loggedin_userid();
         $blog->container_guid = $orgId;
         $blog->content = $body;
     
