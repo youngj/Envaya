@@ -31,8 +31,7 @@ echo @$vars['area3'];
 
 <div class='language'>        
     <?php 
-        echo elgg_echo("language").": ";
-        
+
         function language_link($lang)
         {
             $name = escape(elgg_echo($lang, $lang));

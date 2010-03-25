@@ -231,7 +231,7 @@ CREATE TABLE `metadata` (
 CREATE TABLE `cache` (
     `key` varchar(255) not null,
     `value` TEXT default null,
-    `expires` int not null
+    `expires` int not null,
     PRIMARY KEY ( `key` )
 ) ENGINE = MYISAM  DEFAULT CHARSET=utf8;
 

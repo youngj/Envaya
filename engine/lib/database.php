@@ -306,7 +306,7 @@
                     try {
                         $result = update_data($statement);
                     } catch (DatabaseException $e) {
-                        $errors[] = $e->getMessage();
+                        $errors[] = "$statement: $e->getMessage()";
                     }
                 }
             }
