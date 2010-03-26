@@ -1,3 +1,13 @@
+<?php
+
+    $org = $vars['entity'];
+    $loggedInOrg = get_loggedin_user();
+
+    if ($loggedInOrg instanceof Organization)
+    {
+
+?>
+
 <table class='commBox'>
 <tr>
 <td class='commBoxLeft'>
@@ -5,10 +15,6 @@
 </td>
 <td class='commBoxMain'>
 <?php 
-
-    $org = $vars['entity'];
-    $loggedInOrg = get_loggedin_user();
-
     $partnership = $loggedInOrg->getPartnership($org);
 
     if (!$partnership->isSelfApproved() && !$partnership->isPartnerApproved())
@@ -30,9 +36,9 @@
     else if (!$partnership->isPartnerApproved())
     {
         echo elgg_echo('partner:pending');
-        
+
         echo "&nbsp;";
-        
+
         echo elgg_view('output/confirmlink', array(
             'text' => "(".elgg_echo('partner:re_request').")",
             'is_action' => true,
@@ -49,3 +55,6 @@
 &nbsp;
 </td>
 </table>
+<?php 
+}
+?>
