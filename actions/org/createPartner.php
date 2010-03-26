@@ -2,22 +2,19 @@
     gatekeeper();
 	action_gatekeeper();
 	
-	$requestedGuid = (int)get_input('requestedOrg_guid');
-	$requestingGuid = (int)get_input('requestingOrg_guid');
-
-	$entity = get_entity($requestingGuid);
-	
-
-    $pInfo = Partnership::getPartnership($requestedGuid,$requestingGuid);
+    $user = get_loggedin_user();
+    $partner_guid = (int)get_input("partner_guid");
     
-    Partnership::approvePartnershipMember($org_guid=$requestedGuid, $partnership_id=$pInfo->partnership_id);
+    $partner = get_entity($partner_guid);
     
-    $partWidget = $entity->getWidgetByName('partnerships');
-    $partWidget->save();
+    $partnership = $partner->getPartnership($user);
+    $partnership->setPartnerApproved(true);
+    $partnership->save();
     
-    $partWidget = get_entity($requestedGuid)->getWidgetByName('partnerships');
-    $partWidget->save();
+    $partnership2 = $user->getPartnership($partner);
+    $partnership2->setSelfApproved(true);
+    $partnership2->save();
     
-    system_message(elgg_echo("org:partnershipCreated"));  
-	forward($entity->getUrl());
-?>
+    system_message(elgg_echo("partner:created"));  
+    
+	forward($partner->getUrl());

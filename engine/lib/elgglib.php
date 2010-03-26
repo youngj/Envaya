@@ -84,7 +84,7 @@
     {
 	    global $CONFIG;
 	    if (!headers_sent()) 
-        {				 
+        {		  
 		    $current_page = current_page_url();
                     
 			if ((substr_count($location, 'http://') == 0) && (substr_count($location, 'https://') == 0)) 
@@ -763,16 +763,16 @@
 	 * @param unknown_type $body
 	 * @return unknown
 	 */
-		function page_draw($title, $body, $sidebar = "") {
-
+        function page_draw($title, $body, $preBody = "") 
+        {
 			// Draw the page
 			$output = elgg_view('pageshells/pageshell', array(
-												'title' => $title,
-												'body' => $body,
-												'sidebar' => $sidebar,
-												'sysmessages' => system_messages(null,"")
-											  )
-										);
+                    'title' => $title,
+                    'body' => $body,
+                    'preBody' => $preBody,
+                    'sysmessages' => system_messages(null,"")
+                  )
+            );
 			$split_output = str_split($output, 1024);
 
     		foreach($split_output as $chunk)
@@ -1023,10 +1023,11 @@
     function save_system_messages()
     {    
         $messages = system_messages('', '');
+                        
         if ($messages)
         {            
             Session::set('messages', $messages);
-        } 
+        }         
     }
      
 

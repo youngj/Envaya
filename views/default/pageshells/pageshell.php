@@ -22,6 +22,8 @@
 <?php echo elgg_view('page_elements/header', $vars); ?>
 <?php echo elgg_view('page_elements/topbar', $vars); ?>
 
+<?php echo $vars['preBody']; ?>
+
 <?php echo elgg_view('messages/list', array('object' => $vars['sysmessages'])); ?>
 
 <?php echo $vars['body']; ?>

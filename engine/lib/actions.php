@@ -53,6 +53,7 @@
             }
             
             if (isset($CONFIG->actions[$action])) {
+            
             	if (
             		(isadminloggedin()) ||
             		(!$CONFIG->actions[$action]['admin'])
@@ -146,7 +147,7 @@
         	$token = get_input('__elgg_token');
         	$ts = get_input('__elgg_ts');
         	$session_id = Session::id();
-        	
+            
         	if (($token) && ($ts) && ($session_id))
         	{
 	        	// generate token, check with input and forward if invalid
@@ -177,10 +178,14 @@
 	        			register_error(elgg_echo('actiongatekeeper:timeerror'));
 	        	}
 	        	else if ($visibleerrors)
+                {                    
 	        		register_error(elgg_echo('actiongatekeeper:tokeninvalid'));
+                }    
         	}
         	else if ($visibleerrors)
+            {
         		register_error(elgg_echo('actiongatekeeper:missingfields'));
+            }    
         		
         	return false;
         }

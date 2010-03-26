@@ -46,22 +46,33 @@
         $org->showCantViewMessage();
         
         if ($viewOrg)
-        {
-            $area3 = isadminloggedin() ? elgg_view("org/admin_box", array('entity' => $org)) : ($org->canCommunicateWith() ? elgg_view("org/comm_box", array('entity' => $org)): '');
-        
-            if ($org->guid == get_loggedin_userid() && $org->approval == 0)
-            {
-                $area3 .= elgg_view("org/setupNextStep");
-            }
-        
-            $body = elgg_view_layout('one_column', org_title($org, $subtitle), $viewOrg ? $widget->renderView() : '', $area3);
+        {        
+            $body = elgg_view_layout('one_column', org_title($org, $subtitle), $viewOrg ? $widget->renderView() : '');
         }
         else
         {            
             $body = '';
         }
+        
+        $preBody = '';
+        
+        if (isadminloggedin())
+        {
+            $preBody .= elgg_view("org/admin_box", array('entity' => $org));
+        }
+        
+        if ($org->canCommunicateWith())
+        {
+            $preBody .= elgg_view("org/comm_box", array('entity' => $org));
+        }
+                
+        if ($org->guid == get_loggedin_userid() && $org->approval == 0)
+        {
+            $preBody .= elgg_view("org/setupNextStep");
+        }
 
-        page_draw($title, $body);        
+
+        page_draw($title, $body, $preBody);        
 	} 
     else 
     {    

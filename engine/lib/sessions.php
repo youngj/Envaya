@@ -388,7 +388,7 @@ function __elgg_session_read($id)
     $cacheKey = session_cache_key($id);
     $sessionData = get_cache()->get($cacheKey);
     
-    if ($sessionData === null)
+    if ($sessionData == null)
     {
         $result = get_data_row("SELECT * from users_sessions where session=?", array($id));			
         $sessionData = ($result) ? $result->data : '';

@@ -13,7 +13,7 @@
 
 	require_once(dirname(dirname(__FILE__)) . "/engine/start.php");
 	global $CONFIG;
-	
+	    
 	action_gatekeeper();
 
 	// Get variables
@@ -26,8 +26,9 @@
 		$invitecode = get_input('invitecode');
 		
 		$admin = get_input('admin');
-		if (is_array($admin)) $admin = $admin[0];
-        		
+		if (is_array($admin)) 
+            $admin = $admin[0];
+                
 		if (!$CONFIG->disable_registration)
 		{
 	// For now, just try and register the user

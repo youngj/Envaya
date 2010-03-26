@@ -134,13 +134,15 @@
         'blog:list' => "List",
         'blog:timeline' => "Timeline",
         
-        'org:partner' => "Request Partnership",
-        'org:partnerRequestedMustApprove' => "Click here to approve of a partnership with this organization",
-        'org:waitingPartnerApprove' => "Partnership pending",
-        'org:partnershipExists' => "You are partners with this organization",
-        'org:partnershipCreated' => "Partnership Approved",
-        'org:partnerRequestEmailed' => "A partnership request has been sent to this organization",
-        'org:noPartnerships' => "This organization has no partnerships",
+        'partner:request' => "Request Partnership",
+        'partner:re_request' => "Resend request",
+        'partner:request_sent' => "A partnership request has been sent to this organization",        
+        'partner:approve' => "Approve Partnership",
+        'partner:pending' => "Partnership request pending",
+        'partner:exists' => "You are partners with this organization",
+        'partner:created' => "Partnership Approved",        
+        
+        'partner:none' => "This organization has no partnerships",
         
         'widget:home' => "Home Page",
         

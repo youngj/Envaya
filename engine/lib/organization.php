@@ -293,57 +293,81 @@ class Organization extends ElggUser
 
         return static::filterByCondition($where, $args, '', $limit, $offset, $count, $join);
     }    
+    
+    function getPartnerships($limit = 10, $offset = 0, $count = false)
+    {   
+        $where = array("container_guid = ?");
+        $args = $this->guid;
+    
+        return Partnership::filterByCondition($where, $args, '', $limit, $offset, $count);
+    }    
+    
+    function getPartnership($partnerOrg)
+    {
+        $partnership = Partnership::getByCondition(array("container_guid = ? AND partner_guid = ?"), 
+            array($this->guid, $partnerOrg->guid)
+        );
+        if (!$partnership)
+        {
+            $partnership = new Partnership();
+            $partnership->container_guid = $this->guid;
+            $partnership->partner_guid = $partnerOrg->guid;
+        }
+        return $partnership;
+    }
 }
 
 class Partnership extends ElggObject
 {
     static $subtype_id = T_partnership;
     static $table_name = 'partnerships';
+    
     static $table_attributes = array(
         'description' => '',
-        'date_formed' => ''
+        'partner_guid' => 0,
+        'date_formed' => '',
+        'approval' => 0,
     );
-            
-    public function addPartnershipMember($org_guid, $approved = 0)
-    {  
-        insert_data('INSERT INTO partnership_members (org_guid, partnership_id, approved) VALUES (?,?,?)', array($org_guid, $this->guid, $approved));
-    }
     
-    static function getPartnerships($org_guid)
+    function isSelfApproved()
     {
-        $results = get_data("SELECT p2.partnership_id as partnership_id, p2.org_guid as org_guid, ps.description as description, ps.date_formed as date_formed FROM partnership_members p1 INNER JOIN partnership_members p2 ON p1.partnership_id = p2.partnership_id INNER JOIN partnerships ps ON p1.partnership_id = ps.guid WHERE p1.org_guid = ? AND p1.approved = 1 AND p2.approved = 1 AND p1.org_guid != p2.org_guid", array($org_guid));
-        
-        return $results;
-    }
-        
-    static function getPartnership($guid1, $guid2)
-    {   
-        $query = "SELECT p1.approved as p1Approved, p2.approved as p2Approved, p1.partnership_id as partnership_id FROM partnership_members p1 INNER JOIN partnership_members p2 ON p1.partnership_id = p2.partnership_id WHERE p1.org_guid = ? AND p2.org_guid = ?";
-        
-        $args = array();
-        $args[] = $guid1;
-        $args[] = $guid2;
-        
-        $results = get_data($query, $args);
-        
-        return $results[0];
+        return ($this->approval & 1) != 0;
     }
     
-    static function generatePartnerApproveUrl($requestedOrg_guid, $requestingOrg_guid)
+    function setSelfApproved($approved)
+    {
+        if ($approved)
+        {
+            $this->approval = $this->approval | 1;
+        }
+        else
+        {
+            $this->approval = $this->approval & ~1;
+        }
+    }
+
+    function isPartnerApproved()
+    {
+        return ($this->approval & 2) != 0;
+    }
+
+    function setPartnerApproved($approved)
+    {
+        if ($approved)
+        {
+            $this->approval = $this->approval | 2;
+        }
+        else
+        {
+            $this->approval = $this->approval & ~2;
+        }
+    }
+
+    function getApproveUrl()
     {
         global $CONFIG;
-        
-        $ts = time();
-    	$token = generate_action_token($ts);
-        $url = "{$CONFIG->url}action/org/createPartner?requestedOrg_guid={$requestedOrg_guid}&requestingOrg_guid={$requestingOrg_guid}&__elgg_token={$token}&__elgg_ts={$ts}";
-        
-        return $url;
-    }
-    
-    static function approvePartnershipMember($org_guid, $partnership_id)
-    {
-         return update_data("UPDATE partnership_members set approved=1 where org_guid=? AND partnership_id=?", array($org_guid, $partnership_id));
-    }
+        return "{$CONFIG->url}action/org/createPartner?partner_guid={$this->container_guid}";
+    }    
 }
 
 class DataType

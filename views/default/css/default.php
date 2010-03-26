@@ -1638,10 +1638,9 @@ a.attachImageClose:hover
 .commBox
 {
     text-align: center;
-    height:26px;
-    padding:5px;
-    background:url(<?php echo $graphicsDir ?>/commBox.gif) repeat-x left -56px;   
+    height:36px;
     color:white;
+    width:100%;
 }
 
 .commBox a
@@ -1650,3 +1649,21 @@ a.attachImageClose:hover
     color:white;
 }
 
+.commBoxLeft
+{
+    background:url(<?php echo $graphicsDir ?>/commBox.gif) no-repeat right -10px;   
+    width:45%;
+}
+
+.commBoxMain
+{
+    background:url(<?php echo $graphicsDir ?>/commBox.gif) repeat-x left -56px;   
+    white-space:nowrap;
+    padding:5px;    
+}
+
+.commBoxRight
+{
+    background:url(<?php echo $graphicsDir ?>/commBox.gif) no-repeat left -102px;   
+    width:45%;
+}
