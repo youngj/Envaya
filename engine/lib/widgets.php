@@ -157,3 +157,16 @@ function save_widget_contact($widget)
     $org->save();
     $widget->save();
 }
+
+function save_widget_partnerships($widget)
+{
+    $org = $widget->getContainerEntity();
+    $partnerships = $org->getPartnerships();
+    
+    foreach($partnerships as $p)
+    {
+        $p->description = get_input("partnershipDesc{$p->guid}");
+        $p->save();
+    }
+    $widget->save();
+}

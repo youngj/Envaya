@@ -2,22 +2,17 @@
     $widget = $vars['widget'];
     $org = $widget->getContainerEntity();
 
-    $partnerships = Partnership::getPartnerships($org->guid);
+    $offset = (int) get_input('offset');
+    $limit = 10;
+
+    $count = $org->getPartnerships($limit, $offset, true);
+    $entities = $org->getPartnerships($limit, $offset);
     
-    if(!$partnerships)
+    echo elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination = true);
+        
+    if (!$count)
     {
-        echo elgg_echo("org:noPartnerships");
-    }
-    else
-    {
-        foreach($partnerships as $p)
-        {
-            $partnerOrgEntity = get_entity($p->org_guid);
-            echo "<img style='float:left;' src='" . $partnerOrgEntity->getIcon('tiny') . "' />";
-            echo "<a href='{$partnerOrgEntity->getUrl()}'>{$partnerOrgEntity->name}</a>";
-            echo "<div style='clear:both;' />{$p->description}";
-            echo "<br><br>";            
-        }
+        echo "<div class='padded'>".elgg_echo("partner:none")."</div>";
     }
 ?>
 

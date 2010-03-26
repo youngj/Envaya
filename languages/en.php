@@ -28,6 +28,8 @@
         
         'setup:next_step_message' => "Learn how to use your Envaya website.",        
         
+        'setup:partnershipDescription' => "Describe your partnership with this organization:",
+        
         'topbar:your_home' => "Your home page",
         'topbar:edit_site' => "Edit site",
         

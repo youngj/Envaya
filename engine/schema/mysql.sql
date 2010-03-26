@@ -130,7 +130,6 @@ CREATE TABLE `partnerships` (
     `approval` smallint not null default 0,
     `description` text,
     `date_formed` text,
-    
     PRIMARY KEY (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

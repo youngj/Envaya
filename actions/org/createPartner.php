@@ -15,6 +15,12 @@
     $partnership2->setSelfApproved(true);
     $partnership2->save();
     
+    $partWidget = $user->getWidgetByName('partnerships');
+    $partWidget->save();
+    
+    $partWidget = $partner->getWidgetByName('partnerships');
+    $partWidget->save();
+    
     system_message(elgg_echo("partner:created"));  
     
 	forward($partner->getUrl());

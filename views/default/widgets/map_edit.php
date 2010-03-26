@@ -22,6 +22,7 @@
     'value' => $org->city
 )) ?>    
 </div>
+</div>
 <div>
 <?php echo elgg_echo('setup:region') ?> <?php echo elgg_view('input/pulldown', array(
     'internalname' => 'region',

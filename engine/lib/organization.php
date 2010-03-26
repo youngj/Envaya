@@ -297,7 +297,7 @@ class Organization extends ElggUser
     function getPartnerships($limit = 10, $offset = 0, $count = false)
     {   
         $where = array("container_guid = ?");
-        $args = $this->guid;
+        $args = array($this->guid);
     
         return Partnership::filterByCondition($where, $args, '', $limit, $offset, $count);
     }    
@@ -328,6 +328,11 @@ class Partnership extends ElggObject
         'date_formed' => '',
         'approval' => 0,
     );
+    
+    function getPartner()
+    {
+        return get_entity($this->partner_guid);
+    }
     
     function isSelfApproved()
     {
