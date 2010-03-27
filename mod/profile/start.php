@@ -58,7 +58,6 @@
 				register_page_handler('iconjs','profile_iconjs_handler');
 				
 			// Add Javascript reference to the page header
-				extend_view('js/initialise_elgg','profile/javascript');
 				if (get_context() == "profile")
 				    extend_view('canvas_header/submenu','profile/submenu');
 

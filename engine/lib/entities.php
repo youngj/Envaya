@@ -367,29 +367,7 @@
             return array_map('entity_row_to_elggstar', 
                 get_data("SELECT * from entities WHERE container_guid=? or owner_guid=? or site_guid=?", array($guid, $guid, $guid))
             );
-        }
-        
-		/**
-		 * Remove all entities associated with this entity
-		 *
-		 * @return true
-		 */
-		public function clearRelationships() {
-			remove_entity_relationships($this->getGUID());
-			remove_entity_relationships($this->getGUID(),"",true);
-			return true;
-		}
-		
-		/**
-		 * Add a relationship.
-		 *
-		 * @param int $guid Relationship to link to.
-		 * @param string $relationship The type of relationship.
-		 */
-		public function addRelationship($guid, $relationship)
-		{
-			return add_entity_relationship($this->getGUID(), $relationship, $guid);
-		}
+        }        
 		
 		function setPrivateSetting($name, $value) {
 			return set_private_setting($this->getGUID(), $name, $value);
@@ -402,30 +380,7 @@
 		function removePrivateSetting($name) {
 			return remove_private_setting($this->getGUID(), $name);
 		}
-		
-		/**
-		 * Gets an array of entities from a specific relationship type
-		 *
-		 * @param string $relationship Relationship type (eg "friends")
-		 * @param true|false $inverse Is this an inverse relationship?
-		 * @param int $limit Number of elements to return
-		 * @param int $offset Indexing offset
-		 * @return array|false An array of entities or false on failure
-		 */		
-		function getEntitiesFromRelationship($relationship, $inverse = false, $limit = 50, $offset = 0) {
-			return get_entities_from_relationship($relationship,$this->getGUID(),$inverse,"","","","time_created desc",$limit,$offset);			
-		}
-		
-		/**
-		 * Gets the number of of entities from a specific relationship type
-		 *
-		 * @param string $relationship Relationship type (eg "friends")
-		 * @return int|false The number of entities or false on failure
-		 */		
-		function countEntitiesFromRelationship($relationship) {
-			return get_entities_from_relationship($relationship,$this->getGUID(),false,"","","","time_created desc",null,null,true);			
-		}
-		
+	
 		/**
 		 * Determines whether or not the specified user (by default the current one) can edit the entity 
 		 *
@@ -749,7 +704,6 @@
                 }
 
                 $this->clearMetadata();
-                $this->clearRelationships();
                 
                 delete_data("DELETE from private_settings where entity_guid = ?", array($this->guid));                
                 

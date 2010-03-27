@@ -81,4 +81,3 @@
 	register_elgg_event_handler('init','system','usersettings_init');
 	register_elgg_event_handler('pagesetup','system','usersettings_pagesetup');
 	
-?>

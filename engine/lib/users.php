@@ -23,7 +23,7 @@
 	 * @subpackage Core
 	 */
 	class ElggUser extends ElggEntity
-		implements Friendable, Locatable
+        implements Locatable
 	{
     
 		/**
@@ -200,65 +200,6 @@
 		public function isBanned() { return $this->banned == 'yes'; }
 				
 		/**
-		 * Adds a user to this user's friends list
-		 *
-		 * @param int $friend_guid The GUID of the user to add
-		 * @return true|false Depending on success
-		 */
-		function addFriend($friend_guid) { return user_add_friend($this->getGUID(), $friend_guid); }
-		
-		/**
-		 * Removes a user from this user's friends list
-		 *
-		 * @param int $friend_guid The GUID of the user to remove
-		 * @return true|false Depending on success
-		 */
-		function removeFriend($friend_guid) { return user_remove_friend($this->getGUID(), $friend_guid); }
-		
-		/**
-		 * Determines whether or not this user is a friend of the currently logged in user
-		 *
-		 * @return true|false
-		 */
-		function isFriend() { return user_is_friend(get_loggedin_userid(), $this->getGUID()); }
-		
-		/**
-		 * Determines whether this user is friends with another user
-		 *
-		 * @param int $user_guid The GUID of the user to check is on this user's friends list
-		 * @return true|false
-		 */
-		function isFriendsWith($user_guid) { return user_is_friend($this->getGUID(), $user_guid); }
-		
-		/**
-		 * Determines whether or not this user is on another user's friends list
-		 *
-		 * @param int $user_guid The GUID of the user to check against
-		 * @return true|false
-		 */
-		function isFriendOf($user_guid) { return user_is_friend($user_guid, $this->getGUID()); }
-		
-		/**
-		 * Retrieves a list of this user's friends
-		 *
-		 * @param string $subtype Optionally, the subtype of user to filter to (leave blank for all)
-		 * @param int $limit The number of users to retrieve
-		 * @param int $offset Indexing offset, if any
-		 * @return array|false Array of ElggUsers, or false, depending on success
-		 */
-		function getFriends($subtype = "", $limit = 10, $offset = 0) { return get_user_friends($this->getGUID(), $subtype, $limit, $offset); }
-		
-		/**
-		 * Retrieves a list of people who have made this user a friend
-		 *
-		 * @param string $subtype Optionally, the subtype of user to filter to (leave blank for all)
-		 * @param int $limit The number of users to retrieve
-		 * @param int $offset Indexing offset, if any
-		 * @return array|false Array of ElggUsers, or false, depending on success
-		 */
-		function getFriendsOf($subtype = "", $limit = 10, $offset = 0) { return get_user_friends_of($this->getGUID(), $subtype, $limit, $offset); }
-		
-		/**
 		 * Get an array of ElggObjects owned by this user.
 		 *
 		 * @param string $subtype The subtype of the objects, if any
@@ -267,15 +208,6 @@
 		 */
 		public function getObjects($subtype="", $limit = 10, $offset = 0) { return get_user_objects($this->getGUID(), $subtype, $limit, $offset); }
 
-		/**
-		 * Get an array of ElggObjects owned by this user's friends.
-		 *
-		 * @param string $subtype The subtype of the objects, if any
-		 * @param int $limit Number of results to return
-		 * @param int $offset Any indexing offset
-		 */
-		public function getFriendsObjects($subtype = "", $limit = 10, $offset = 0) { return get_user_friends_objects($this->getGUID(), $subtype, $limit, $offset); }
-		
 		/**
 		 * Counts the number of ElggObjects owned by this user
 		 *
@@ -432,80 +364,6 @@
 	}
 
 	/**
-	 * Adds a user to another user's friends list.
-	 *
-	 * @param int $user_guid The GUID of the friending user
-	 * @param int $friend_guid The GUID of the user to friend
-	 * @return true|false Depending on success
-	 */
-	function user_add_friend($user_guid, $friend_guid) {
-		$user_guid = (int) $user_guid; 
-		$friend_guid = (int) $friend_guid;
-		if ($user_guid == $friend_guid) return false;
-		if (!$friend = get_entity($friend_guid)) return false;
-		if (!$user = get_entity($user_guid)) return false;
-		if ( (!($user instanceof ElggUser)) || (!($friend instanceof ElggUser)) ) return false;
-		return add_entity_relationship($user_guid, "friend", $friend_guid);
-	}
-	
-	/**
-	 * Removes a user from another user's friends list.
-	 *
-	 * @param int $user_guid The GUID of the friending user
-	 * @param int $friend_guid The GUID of the user on the friends list
-	 * @return true|false Depending on success
-	 */
-	function user_remove_friend($user_guid, $friend_guid) {
-		$user_guid = (int) $user_guid; 
-		$friend_guid = (int) $friend_guid;
-		
-		// perform cleanup for access lists.
-		$collections = get_user_access_collections($user_guid);
-		foreach ($collections as $collection) {
-			remove_user_from_access_collection($friend_guid, $collection->id);
-		}
-		
-		return remove_entity_relationship($user_guid, "friend", $friend_guid);
-	}
-	
-	/**
-	 * Determines whether or not a user is another user's friend.
-	 *
-	 * @param int $user_guid The GUID of the user
-	 * @param int $friend_guid The GUID of the friend
-	 * @return true|false
-	 */
-	function user_is_friend($user_guid, $friend_guid) {
-		return check_entity_relationship($user_guid, "friend", $friend_guid);
-	}
-
-	/**
-	 * Obtains a given user's friends
-	 *
-	 * @param int $user_guid The user's GUID
-	 * @param string $subtype The subtype of users, if any
-	 * @param int $limit Number of results to return (default 10)
-	 * @param int $offset Indexing offset, if any
-	 * @return false|array Either an array of ElggUsers or false, depending on success
-	 */
-	function get_user_friends($user_guid, $subtype = "", $limit = 10, $offset = 0) {
-		return get_entities_from_relationship("friend",$user_guid,false,"user",$subtype,0,"time_created desc",$limit,$offset);
-	}
-	
-	/**
-	 * Obtains the people who have made a given user a friend
-	 *
-	 * @param int $user_guid The user's GUID
-	 * @param string $subtype The subtype of users, if any
-	 * @param int $limit Number of results to return (default 10)
-	 * @param int $offset Indexing offset, if any
-	 * @return false|array Either an array of ElggUsers or false, depending on success
-	 */
-	function get_user_friends_of($user_guid, $subtype = "", $limit = 10, $offset = 0) {
-		return get_entities_from_relationship("friend",$user_guid,true,"user",$subtype,0,"time_created desc",$limit,$offset);
-	}
-
-	/**
 	 * Obtains a list of objects owned by a user
 	 *
 	 * @param int $user_guid The GUID of the owning user
@@ -557,68 +415,7 @@
 		
 		return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, $viewtypetoggle, $pagination);
 		
-	}
-	
-	/**
-	 * Obtains a list of objects owned by a user's friends
-	 *
-	 * @param int $user_guid The GUID of the user to get the friends of
-	 * @param string $subtype Optionally, the subtype of objects
-	 * @param int $limit The number of results to return (default 10)
-	 * @param int $offset Indexing offset, if any
-	 * @return false|array An array of ElggObjects or false, depending on success
-	 */
-	function get_user_friends_objects($user_guid, $subtype = "", $limit = 10, $offset = 0) {
-		if ($friends = get_user_friends($user_guid, $subtype, 999999, 0)) {
-			$friendguids = array();
-			foreach($friends as $friend) {
-				$friendguids[] = $friend->getGUID();
-			}
-			return get_entities('object',$subtype,$friendguids, "time_created desc", $limit, $offset, false, 0, $friendguids);
-		}
-		return false;
-	}
-	
-	/**
-	 * Counts the number of objects owned by a user's friends
-	 *
-	 * @param int $user_guid The GUID of the user to get the friends of
-	 * @param string $subtype Optionally, the subtype of objects
-	 * @return int The number of objects
-	 */
-	function count_user_friends_objects($user_guid, $subtype = "") {
-		if ($friends = get_user_friends($user_guid, $subtype, 999999, 0)) {
-			$friendguids = array();
-			foreach($friends as $friend) {
-				$friendguids[] = $friend->getGUID();
-			}
-			return get_entities('object',$subtype,$friendguids, "time_created desc", $limit, $offset, true, 0, $friendguids);
-		}
-		return 0;
-	}
-
-	/**
-	 * Displays a list of a user's friends' objects of a particular subtype, with navigation.
-	 *
-	 * @see elgg_view_entity_list
-	 * 
-	 * @param int $user_guid The GUID of the user
-	 * @param string $subtype The object subtype
-	 * @param int $limit The number of entities to display on a page
-	 * @param true|false $fullview Whether or not to display the full view (default: true)
-	 * @param true|false $viewtypetoggle Whether or not to allow you to flip to gallery mode (default: true)
-	 * @return string The list in a form suitable to display
-	 */
-	function list_user_friends_objects($user_guid, $subtype = "", $limit = 10, $fullview = true, $viewtypetoggle = true, $pagination = true) {
-		
-		$offset = (int) get_input('offset');
-		$limit = (int) $limit;
-		$count = (int) count_user_friends_objects($user_guid, $subtype);
-		$entities = get_user_friends_objects($user_guid, $subtype, $limit, $offset);
-		
-		return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, $viewtypetoggle, $pagination);
-		
-	}
+	}	
 	
 	/**
 	 * Get a user object from a GUID.
@@ -1067,16 +864,6 @@
 			$user->container_guid = 0; // Users aren't contained by anyone, even if they are admin created.
 			$user->save();
 			
-		// If $friend_guid has been set, make mutual friends
-			if ($friend_guid) {
-				if ($friend_user = get_user($friend_guid)) {
-					if ($invitecode == generate_invite_code($friend_user->username)) {
-						$user->addFriend($friend_guid);
-						$friend_user->addFriend($user->guid);
-					}
-				}
-			}
-			
 			global $registering_admin;
 			if (!$admin) {
 				$user->admin = true;
@@ -1133,23 +920,6 @@
 	}
 	
 	/**
-	 * Sets up user-related menu items
-	 *
-	 */
-	function users_pagesetup() 
-    {		
-        global $CONFIG;			
-
-        if (get_context() == "friends" || 
-            get_context() == "friendsof" || 
-            get_context() == "collections") {
-            add_submenu_item(elgg_echo('friends'),$CONFIG->wwwroot."pg/friends/" . page_owner_entity()->username);
-            add_submenu_item(elgg_echo('friends:of'),$CONFIG->wwwroot."pg/friendsof/" . page_owner_entity()->username);
-        }
-		
-	}
-	
-	/**
 	 * Users initialisation function, which establishes the page handler
 	 *
 	 */
@@ -1160,12 +930,6 @@
 		register_page_handler('dashboard','dashboard_page_handler');
 		register_action("register",true);
    		register_action("useradd",true);
-		register_action("friends/add");
-   		register_action("friends/remove");
-		register_action('friends/addcollection');
-		register_action('friends/deletecollection');
-        register_action('friends/editcollection');
-        register_action("user/spotlight");
 
 		register_action("usersettings/save");
 		
@@ -1239,7 +1003,6 @@
 	
 	//register actions *************************************************************
    
-   		register_elgg_event_handler('init','system','users_init',0);
-   		register_elgg_event_handler('pagesetup','system','users_pagesetup',0);
+    register_elgg_event_handler('init','system','users_init',0);
 	
 ?>

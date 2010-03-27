@@ -331,13 +331,6 @@ function get_session_fingerprint()
  */
 function session_init($event, $object_type, $object) 
 {			            
-    global $DB_PREFIX, $CONFIG;
-
-    if (!is_installed())
-        return false;            
-
-    $code = null;
-
     register_action("login",true);
     register_action("logout");
 
