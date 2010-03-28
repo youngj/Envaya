@@ -44,5 +44,5 @@
 </table>   
     
 <div style='text-align:center;margin-top:10px'>    
-    <a href='page/about'><?php echo elgg_echo("home:about_us") ?></a>
+    <a href='page/about'><?php echo elgg_echo("about:title") ?></a>
 </div>   

@@ -134,8 +134,10 @@ RewriteRule ^org\/(.*)$ engine/handlers/pagehandler.php?handler=org&page=$1 [L]
 
 #RewriteRule tag/(.+)/?$ engine/handlers/pagehandler.php?handler=search&page=$1 [L]
 
-RewriteRule ^(account|mod|search|admin|dashboard|engine|_css|_graphics)/ - [S=1]
+# directories that are accessible without url rewriting
+RewriteRule ^(account|mod|search|admin|engine|_css|_graphics)/ - [S=1]
 
+# everything else is interpreted as an org username
 RewriteRule ^([\d\w\-]+(/.*)?)$ engine/handlers/pagehandler.php?handler=orgprofile&page=$1 [L]
 
 </IfModule>

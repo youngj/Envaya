@@ -264,7 +264,7 @@ function get_language_completeness($language)
     // Ensure that all possible translations are loaded
     reload_all_translations();
 
-    $en = count($CONFIG->translations['en']);
+    $en = count($CONFIG->translations['en']) - count($CONFIG->en_admin);
 
     $missing = get_missing_language_keys($language);
     if ($missing) $missing = count($missing); else $missing = 0;
@@ -276,7 +276,7 @@ function get_language_completeness($language)
 }
 
 /**
-* Return the translation keys missing from a given language, or those that are identical to the english version.
+* Return the translation keys missing from a given language
 */
 function get_missing_language_keys($language)
 {
@@ -289,8 +289,7 @@ function get_missing_language_keys($language)
 
     foreach ($CONFIG->translations['en'] as $k => $v)
     {
-        if ((!isset($CONFIG->translations[$language][$k])) 
-        || ($CONFIG->translations[$language][$k] == $CONFIG->translations['en'][$k])) 
+        if (!isset($CONFIG->translations[$language][$k]) && !isset($CONFIG->en_admin[$k])) 
             $missing[] = $k;
     }
 

@@ -69,9 +69,6 @@ function org_profile_page_handler($page)
     {
         switch ($page[1])
         {
-            case "mobilesettings":
-                include(dirname(__FILE__) . "/mobileSettings.php");
-                return;                
             case "post":
                 set_input("blogpost", $page[2]);
 
@@ -95,10 +92,6 @@ function org_profile_page_handler($page)
                         include(dirname(__FILE__) . "/blogPost.php");
                         return;
                 }
-            case "icon":
-                set_input('size', $page[2]);
-                include(dirname(__FILE__) . "/icon.php");
-                return;                
             default:
                 break;
         }

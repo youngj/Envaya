@@ -33,7 +33,7 @@
             echo "<a href='{$partnerOrgEntity->getUrl()}'>{$partnerOrgEntity->name}</a>";
             echo "<div style='clear:both;' />";
             
-            echo elgg_echo('setup:partnershipDescription');
+            echo elgg_echo('widget:partnerships:description');
             echo "<div class='input'>";
             
             echo elgg_view('input/longtext', array(

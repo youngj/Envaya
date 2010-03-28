@@ -157,7 +157,7 @@ function get_metadata_byname($entity_guid, $name)
 function get_metadata_for_entity($entity_guid)
 {
     return array_map('row_to_elggmetadata', get_data(
-        "SELECT *, from metadata where entity_guid=?", array($entity_guid)
+        "SELECT * from metadata where entity_guid=?", array($entity_guid)
     ));
 }
 

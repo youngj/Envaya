@@ -10,7 +10,6 @@
         'home:why' => 'Why use Envaya?',
         'home:browse_orgs' => 'Explore organizations',        
         'home:find_org' => 'Find an organization',
-        'home:about_us' => 'About us',
         
         'feed' => "News",
         'feed:title' => "Latest news updates",
@@ -25,11 +24,7 @@
         'dashboard:view_home' => "View your home page",
         'dashboard:settings' => "Change account settings",
         'dashboard:links' => "Links",        
-        
-        'setup:next_step_message' => "Learn how to use your Envaya website.",        
-        
-        'setup:partnershipDescription' => "Describe your partnership with this organization:",
-        
+                
         'topbar:your_home' => "Your home page",
         'topbar:edit_site' => "Edit site",
         
@@ -44,6 +39,7 @@
         'browse:map' => 'Map',
         'browse:list' => 'List',
         
+        'search' => "Search",        
         'search:title' => "Find an organization",
         'search:title_with_query' => "Search: %s",
         'search:submit' => 'Search',
@@ -75,34 +71,7 @@
         'sector:other' => 'Other',
                                          
         'sector:empty_option' => 'All sectors',
-        
-        'tz:arusha' => 'Arusha',
-        'tz:dar' => 'Dar es Salaam',
-        'tz:dodoma' => 'Dodoma',
-        'tz:iringa' => 'Iringa',
-        'tz:kagera' => 'Kagera',
-        'tz:kigoma' => 'Kigoma',
-        'tz:kilimanjaro' => 'Kilimanjaro',
-        'tz:lindi' => 'Lindi',
-        'tz:manyara' => 'Manyara',
-        'tz:mara' => 'Mara',
-        'tz:mbeya' => 'Mbeya',
-        'tz:morogoro' => 'Morogoro',
-        'tz:mtwara' => 'Mtwara',
-        'tz:mwanza' => 'Mwanza',
-        'tz:pemba_n' => 'Pemba North',
-        'tz:pemba_s' => 'Pemba South',
-        'tz:pwani' => 'Coast',
-        'tz:rukwa' => 'Rukwa',
-        'tz:ruvuma' => 'Ruvuma',
-        'tz:shinyanga' => 'Shinyanga',
-        'tz:singida' => 'Singida',
-        'tz:tabora' => 'Tabora',
-        'tz:tanga' => 'Tanga',
-        'tz:zanzibar_cs' => 'Zanzibar Central/South',
-        'tz:zanzibar_n' => 'Zanzibar North',
-        'tz:zanzibar_w' => 'Zanzibar West',        
-        
+                
         'region:empty_option' => 'All regions',
         
         'login' => "Log in",
@@ -114,8 +83,7 @@
         'email' => "Email address",
         'username' => "Username",
         'password' => "Password",
-        'passwordagain' => "Password (again for verification)",
-        'admin_option' => "Make this user an admin?",
+        'passwordagain' => "Password (again)",
         'user:persistent' => 'Stay logged in',
         'user:password:lost' => 'Forgot password',
 
@@ -138,23 +106,21 @@
         
         'partner:request' => "Request Partnership",
         'partner:re_request' => "Resend request",
-        'partner:request_sent' => "A partnership request has been sent to this organization",        
+        'partner:request_sent' => "A partnership request has been sent to this organization.",        
         'partner:approve' => "Approve Partnership",
         'partner:pending' => "Partnership request pending",
         'partner:exists' => "You are partners with this organization",
-        'partner:created' => "Partnership Approved",        
+        'partner:created' => "Partnership Approved",                
+        'partner:none' => "This organization has no partnerships.",
         
-        'partner:none' => "This organization has no partnerships",
-        
-        'widget:home' => "Home Page",
-        
+        'widget:home' => "Home Page",        
         'widget:home:included' => "What sections do you want to include on your home page?",
         
         'widget:map' => "Location",        
         'widget:map:see_nearby' => "See nearby organizations",        
         
-        'widget:history' => "History",
-        'widget:programs' => "Programs",
+        'widget:history' => "History",        
+        'widget:programs' => "Projects",
 
         'widget:news' => "News",                
         'widget:news:manage_updates' => "Manage News Updates",
@@ -163,18 +129,13 @@
         'widget:news:postemailchanged' => "Successfully generated new email address.",
                 
         'widget:contact' => "Contact",
-        
-        'widget:contact:instructions' => "This page lets your website visitors contact you directly. Note that if you don't want certain information to be publicly available on the Internet, just leave that field blank.",
-        
+        'widget:contact:instructions' => "This page lets your website visitors contact you directly. Note that if you don't want certain information to be publicly available on the Internet, just leave that field blank.",        
         'widget:contact:public_email' => "Do you want your email address, %s, publicly displayed on this page?",
-        'widget:contact:email' => "Email address:",
-        
+        'widget:contact:email' => "Email address:",        
         'widget:contact:phone_number:edit' => "What phone number should people use to contact you?",
         'widget:contact:phone_number' => "Phone number:",
-
         'widget:contact:name:edit' => "Who is the primary contact person in your organization?",
         'widget:contact:name' => "Contact name:",
-
         'widget:contact:title:edit' => "What is that person's job title?",
         'widget:contact:title' => "Contact title:",
         
@@ -185,22 +146,17 @@
         'widget:edittitle' => "Edit %s",        
         'widget:edittitle:new' => "Add Page: %s",        
         'widget:save' => "Save changes",
-        'widget:save:new' => "Create page",
-                
+        'widget:save:new' => "Create page",                
         'widget:image:label' => "Image to display on this page:",
-        'widget:image:position' => "Where on your page do you want the image?",
-                
-        'widget:content:label' => "Write the text for your page below:",
-                
-        'widget:save:success' => "Page saved successfully.",
-        
-        'widget:delete' => "Remove page",
-        
-        'widget:delete:success' => "Page removed successfully.",
-        
+        'widget:image:position' => "Where on your page do you want the image?",                
+        'widget:content:label' => "Write the text for your page below:",                
+        'widget:save:success' => "Page saved successfully.",        
+        'widget:delete' => "Remove page",        
+        'widget:delete:success' => "Page removed successfully.",        
         'widget:delete:confirm' => "Are you sure you want to remove this page from your site?",        
         
         'widget:partnerships' => 'Partnerships',
+        'widget:partnerships:description' => "Describe your partnership with this organization:",
         
         'register:step1' => '1. Qualification',                                       
         'register:step2' => '2. Create account',
@@ -209,69 +165,51 @@
         'register:title' => 'Register for Envaya',
         
         'qualify:welcome' => "Welcome to Envaya! In just a few minutes, your organization will have a website of its own, for free, where you can share news about your projects and let everyone know about your work.",
-        'qualify:instructions' => "First, we need to check whether your organization qualifies to use Envaya. Envaya will verify these qualifications before making your website accessible to the public.",
-        
-        'qualify:org_type' => 'What type of organization are you?',
-        
+        'qualify:instructions' => "First, we need to check whether your organization qualifies to use Envaya. Envaya will verify these qualifications before making your website accessible to the public.",        
+        'qualify:org_type' => 'What type of organization are you?',        
         'qualify:org_type:non_profit' => 'Non-profit civil society organization',
         'qualify:org_type:for_profit' => 'Business',
         'qualify:org_type:other' => 'Other',        
-
-        'qualify:org_info' => 'Carefully read the following statements and check the ones that apply to your organization:',
-        'qualify:org_info:citizen' => 'It is run by Tanzanians.',
+        'qualify:org_info' => 'Check the statements below that apply to your organization:',
+        'qualify:org_info:citizen' => 'It is led by Tanzanians.',
         'qualify:org_info:local' => 'It mostly operates in one local community.',        
         'qualify:org_info:funder' => 'It primarily distributes funding to other organizations.',        
-
-        'qualify:registration_number' => "Enter your organization's official registration number:",
-        'qualify:registration_number:help' => 'While not required, the registration number will help Envaya expedite the verification process for your organization.',        
-
         'qualify:country' => 'What country does your organization operate in?',
-
-        'country:tz' => 'Tanzania',                
-        'country:other' => 'Other',
-
         'qualify:next' => 'Click the button below to continue.',        
-        'qualify:next:button' => 'Next step',
-        
+        'qualify:next:button' => 'Next step',        
         'qualify:wrong_country' => "Sorry, in Envaya's pilot program, only organizations in Tanzania can register. We hope to support other countries in future years.",        
         'qualify:wrong_org_type' => "Sorry, Envaya is only intended for non-profit civil society organizations at this time.",                
         'qualify:no_funders' => "Sorry, the current version of Envaya is not intended for organizations that primarily fund other organizations. However, we hope to support these organizations in the future.",        
-        'qualify:not_citizen' => "Sorry, the current version of Envaya is only intended to provide websites for citizen-run organizations.",        
+        'qualify:not_citizen' => "Sorry, the current version of Envaya is only intended to provide websites for organizations run by citizens of Tanzania.",        
         'qualify:missing' => "Your qualification information was not found. Please complete the qualification form again.",
         'qualify:ok' => "Congratulations! Your organization appears to qualify for a website on Envaya.",
+
+        'country:tz' => 'Tanzania',                
+        'country:other' => 'Other',
         
-        'create:instructions' => "Now, enter a few pieces of information to create your account on Envaya. This account will let you log in and update your organization's website.",
-        
+        'create:instructions' => "Now, enter a few pieces of information to create your account on Envaya. This account will let you log in and update your organization's website.",        
         'create:org_name' => "Enter the full name of your organization:",
         'create:org_name:help' => "This will be the title of your website.",
-        
         'create:username' => "Choose a username for Envaya:",
         'create:username:help' => "Your web address will be:",        
         'create:username:help2' => "Your username must be at least 3 characters, and can contain letters (a-z), digits (0-9), dashes (-), and underscores (_).",        
-        'create:username:placeholder' => 'username',
-        
+        'create:username:placeholder' => 'username',       
         'create:password' => "Choose a password for your account:",
-        'create:password:help' => "Together with your username, this will let you log in to edit your website. Remember this password and keep it secure.",
-        
-        'create:password2' => "Enter the password again to confirm:",
-        
+        'create:password:help' => "Together with your username, this will let you log in to edit your website. Remember this password and keep it secure.",        
+        'create:password2' => "Enter the password again to confirm:",        
         'create:email' => "Enter your organization's email address:",
-        'create:email:help' => "If you ever forget your password, you can reset it by email.",
-                
+        'create:email:help' => "If you ever forget your password, you can reset it by email.",                
         'create:next' => 'Click the button below to create your account.',        
-        'create:next:button' => 'Create account',
-        
+        'create:next:button' => 'Create account',        
         'create:no_name' => "Please enter your organization's name.",
         'create:username_exists' => 'Somebody else has already registered that username. Please choose another.',
         'create:passwords_differ' => 'The two passwords you entered did not match. Please try entering them again.',
-        'create:ok' => 'Congratulations! Your account was created successfully.',
-        
+        'create:ok' => 'Congratulations! Your account was created successfully.',        
         'create:notloggedin' => 'You must be logged in to view this page.',
         
         'setup:instructions' => "Now we will ask a few questions about your organization so that we can create a homepage for you. (You will be able to add more content later.)",
-        'setup:mission' => "What is your main mission statement?",
+        'setup:mission' => "What is the mission of your organization?",
         'setup:mission:help' => "This will appear at the top of your homepage.",
-
         'setup:language' => "What language will you use for the written content on your website (such as the mission statement above)?",
         'setup:language:help' => "Envaya will allow people who cannot read that language to view a translated version in their own language.",
 
@@ -280,25 +218,28 @@
         'setup:region' => 'Region:',
         'setup:region:blank' => 'Select your region',
         'setup:sector' => "Check all the sectors that apply for your organization:",
-        'setup:sector:other_specify' => "If 'Other', specify:",        
-        
+        'setup:sector:other_specify' => "If 'Other', specify:",                
         'setup:next' => "Click the button below to view your homepage!",        
         'setup:next:help' => "Envaya will automatically choose a default design which you can customize later.",
-        'setup:next:button' => "Let's see it!",        
-        
+        'setup:next:button' => "Let's see it!",                
+        'setup:next_step_message' => "Learn how to use your Envaya website.",                        
         'setup:ok' => "Your homepage was created successfully.",        
-                
-        'image:current' => "Current image:",
-        'image:new' => "New image:",                
-        'image:blank' => "Leave this blank to keep the current image.",
-        'image:optional' => "Leave blank if you don't want an image.",
-        'image:delete' => "Remove image?",                      
+
+        'approval:rejected' => 'We are sorry. This organization was not approved by our administrators.',
+        'approval:waiting' => "This organization is awaiting review and is not yet visible to the public.",
+        'approval:notapproved' => "Not yet approved",
                 
         'position:left' => 'Left',        
         'position:top' => 'Top',
         'position:right' => 'Right',
         'position:bottom' => 'Bottom',
                 
+        'image:current' => "Current image:",
+        'image:new' => "New image:",                
+        'image:blank' => "Leave this blank to keep the current image.",
+        'image:optional' => "Leave blank if you don't want an image.",
+        'image:delete' => "Remove image?",                      
+                                
         'upload:invalid_image' => "The uploaded file did not appear to be a valid image.",                
                 
         'about:title' => 'About us',
@@ -306,29 +247,11 @@
         'page:notfound' => "Page not found",
         'page:notfound:details' => "The requested page either does not exist or you do not have access to it.",
 
-        'org:mobilesettings' => "Mobile settings",
-        'org:postemail' => 'Posting Email',
-        'org:changeemail' => 'Change',                        
-
-        'org:noaccess' => 'You cannot access this organization',
         'org:icon' => 'Organization logo',
         'org:icon:saved' => 'Logo saved successfully.',
         'org:icon:reset' => 'Logo removed successfully.',
 
-        'org:saved' => 'Organization saved',
-        
         'org:cantedit' => "You do not have access to edit this organization's web site.",
-
-        'org:rejected' => 'We are sorry. This organization was not approved by our administrators.',
-        'org:waitingapproval' => "This organization is awaiting review and is not yet visible to the public.",
-        'org:approve' => "Approve Organization",
-        'org:unapprove' => "Remove Approval",
-        'org:reject' => "Reject Organization",
-        'org:delete' => "Delete Organization",
-        'org:unreject' => "Remove Rejection",
-        'org:approval_changed' => "Organization approval changed",
-        'org:notapproved' => "Organization could not be approved",
-        'org:shortnotapproved' => "Not yet approved",
 
         'blog:save' => "Save changes",
         'blog:publish' => "Publish",
@@ -382,64 +305,6 @@
         'actionloggedout' => "Sorry, you cannot perform this action while logged out.",
 
         'notfound' => "The requested resource could not be found, or you do not have access to it.",
-
-        'SecurityException:Codeblock' => "Denied access to execute privileged code block",
-        'DatabaseException:WrongCredentials' => "Elgg couldn't connect to the database using the given credentials.",
-        'DatabaseException:NoConnect' => "Elgg couldn't select the database '%s', please check that the database is created and you have access to it.",
-        'SecurityException:FunctionDenied' => "Access to privileged function '%s' is denied.",
-        'DatabaseException:DBSetupIssues' => "There were a number of issues: ",
-        'DatabaseException:ScriptNotFound' => "Elgg couldn't find the requested database script at %s.",
-
-        'IOException:FailedToLoadGUID' => "Failed to load new %s from GUID:%d",
-        'InvalidParameterException:NonElggObject' => "Passing a non-ElggObject to an ElggObject constructor!",
-        'InvalidParameterException:UnrecognisedValue' => "Unrecognised value passed to constuctor.",
-
-        'InvalidClassException:NotValidElggStar' => "GUID:%d is not a valid %s",
-
-        'PluginException:MisconfiguredPlugin' => "%s is a misconfigured plugin.",
-
-        'InvalidParameterException:NonElggUser' => "Passing a non-ElggUser to an ElggUser constructor!",
-
-        'IOException:UnableToSaveNew' => "Unable to save new %s",
-
-        'ConfigurationException:NoCachePath' => "Cache path set to nothing!",
-        'IOException:NotDirectory' => "%s is not a directory.",
-
-        'IOException:BaseEntitySaveFailed' => "Unable to save new object's base entity information!",
-        'InvalidParameterException:EntityTypeNotSet' => "Entity type must be set.",
-
-        'ClassException:ClassnameNotClass' => "%s is not a %s.",
-        'InstallationException:TypeNotSupported' => "Type %s is not supported. This indicates an error in your installation, most likely caused by an incomplete upgrade.",
-
-        'InvalidParameterException:UnrecognisedFileMode' => "Unrecognised file mode '%s'",
-        'InvalidParameterException:MissingOwner' => "File %s (%d) is missing an owner!",
-        'IOException:CouldNotMake' => "Could not make %s",
-        'IOException:MissingFileName' => "You must specify a name before opening a file.",
-        'ClassNotFoundException:NotFoundNotSavedWithFile' => "Filestore not found or class not saved with file!",
-        'NotificationException:NoHandlerFound' => "No handler found for '%s' or it was not callable.",
-        'NotificationException:NoEmailAddress' => "Could not get the email address for GUID:%d",
-        'NotificationException:MissingParameter' => "Missing a required parameter, '%s'",
-
-        'DatabaseException:UnspecifiedQueryType' => "Unrecognised or unspecified query type.",
-
-        'InvalidParameterException:NoEntityFound' => "No entity found, it either doesn't exist or you don't have access to it.",
-
-        'SecurityException:APIAccessDenied' => "Sorry, API access has been disabled by the administrator.",
-        'SecurityException:NoAuthMethods' => "No authentication methods were found that could authenticate this API request.",
-        'APIException:ApiResultUnknown' => "API Result is of an unknown type, this should never happen.",
-
-        'NotImplementedException:XMLRPCMethodNotImplemented' => "XML-RPC method call '%s' not implemented.",
-        'InvalidParameterException:UnexpectedReturnFormat' => "Call to method '%s' returned an unexpected result.",
-        'CallException:NotRPCCall' => "Call does not appear to be a valid XML-RPC call",
-
-        'CronException:unknownperiod' => '%s is not a recognised period.',
-
-        'SecurityException:deletedisablecurrentsite' => 'You can not delete or disable the site you are currently viewing!',
-
-        'memcache:notinstalled' => 'PHP memcache module not installed, you must install php5-memcache',
-        'memcache:noservers' => 'No memcache servers defined, please populate the $CONFIG->memcache_servers variable',
-        'memcache:versiontoolow' => 'Memcache needs at least version %s to run, you are running %s',
-        'memcache:noaddserver' => 'Multiple server support disabled, you may need to upgrade your PECL memcache library',
 
         'pageownerunavailable' => 'Warning: The page owner %d is not accessible!',
 
@@ -496,14 +361,6 @@
         'notifications:usersettings:save:ok' => "Your notification settings were successfully saved.",
         'notifications:usersettings:save:fail' => "There was a problem saving your notification settings.",
 
-        'user.notification.get' => 'Return the notification settings for a given user.',
-        'user.notification.set' => 'Set the notification settings for a given user.',
-
-        'search' => "Search",
-        'searchtitle' => "Search: %s",
-        'users:searchtitle' => "Searching for users: %s",
-        'groups:searchtitle' => "Searching for groups: %s",
-        'advancedsearchtitle' => "%s with results matching %s",
         'notfound' => "No results found.",
         'next' => "Next",
         'previous' => "Previous",
@@ -517,8 +374,6 @@
         'user:search:startblurb' => "Users matching '%s':",
         'user:search:finishblurb' => "To view more, click here.",
 
-        'group:search:startblurb' => "Groups matching '%s':",
-        'group:search:finishblurb' => "To view more, click here.",
         'search:go' => 'Go',
 
         'account' => "Account",
@@ -542,10 +397,6 @@
         'registration:emailnotvalid' => 'Sorry, the email address you entered appears to be invalid.',
         'registration:passwordnotvalid' => 'Sorry, the password you entered is invalid. Please choose another.',
         'registration:usernamenotvalid' => 'Sorry, the username you entered is invalid. Please choose another.',
-
-        'adduser' => "Add User",
-        'adduser:ok' => "You have successfully added a new user.",
-        'adduser:bad' => "The new user could not be created.",
 
         'user:set:name' => "Account name settings",
         'user:name:label' => "Your name",
@@ -571,50 +422,6 @@
         'user:password:resetreq:fail' => 'Could not request a new password.',
 
         'user:password:text' => 'To generate a new password, enter your username below. We will send the address of a unique verification page to you via email. Click on the link in the body of the message and a new password will be sent to you.',
-
-        'admin:configuration:success' => "Your settings have been saved.",
-        'admin:configuration:fail' => "Your settings could not be saved.",
-
-        'admin' => "Administration",
-        'admin:description' => "The admin panel allows you to control all aspects of the system, from user management to how plugins behave. Choose an option below to get started.",
-
-        'admin:user' => "User Administration",
-        'admin:user:description' => "This admin panel allows you to control user settings for your site. Choose an option below to get started.",
-        'admin:user:adduser:label' => "Click here to add a new user...",
-        'admin:user:opt:linktext' => "Configure users...",
-        'admin:user:opt:description' => "Configure users and account information. ",
-
-        'admin:statistics' => "Statistics",
-        'admin:statistics:description' => "This is an overview of statistics on your site. If you need more detailed statistics, a professional administration feature is available.",
-        'admin:statistics:opt:description' => "View statistical information about users and objects on your site.",
-        'admin:statistics:opt:linktext' => "View statistics...",
-        'admin:statistics:label:basic' => "Basic site statistics",
-        'admin:statistics:label:numentities' => "Entities on site",
-        'admin:statistics:label:numusers' => "Number of users",
-        'admin:statistics:label:numonline' => "Number of users online",
-        'admin:statistics:label:onlineusers' => "Users online now",
-        'admin:statistics:label:version' => "Elgg version",
-        'admin:statistics:label:version:release' => "Release",
-        'admin:statistics:label:version:version' => "Version",
-
-        'admin:user:label:search' => "Find users:",
-        'admin:user:label:seachbutton' => "Search",
-
-        'admin:user:ban:no' => "Can not ban user",
-        'admin:user:ban:yes' => "User banned.",
-        'admin:user:unban:no' => "Can not unban user",
-        'admin:user:unban:yes' => "User un-banned.",
-        'admin:user:delete:no' => "Can not delete user",
-        'admin:user:delete:yes' => "User deleted",
-
-        'admin:user:resetpassword:yes' => "Password reset, user notified.",
-        'admin:user:resetpassword:no' => "Password could not be reset.",
-
-        'admin:user:makeadmin:yes' => "User is now an admin.",
-        'admin:user:makeadmin:no' => "We could not make this user an admin.",
-
-        'admin:user:removeadmin:yes' => "User is no longer an admin.",
-        'admin:user:removeadmin:no' => "We could not remove administrator privileges from this user.",
 
         'usersettings:description' => "The user settings panel allows you to control all your personal settings, from user management to how plugins behave. Choose an option below to get started.",
 
@@ -682,8 +489,6 @@
         'active' => 'Active',
         'total' => 'Total',
 
-        'learnmore' => "Click here to learn more.",
-
         'content' => "content",
         'content:latest' => 'Latest activity',
         'content:latest:blurb' => 'Alternatively, click here to view the latest content from across the site.',
@@ -698,7 +503,6 @@
         'title' => "Title",
         'description' => "Description",
         'tags' => "Tags",
-        'spotlight' => "Spotlight",
         'all' => "All",
 
         'by' => 'by',
@@ -795,42 +599,7 @@ If you requested this, click on the link below to change your password:
         'user:default_access:success' => "Your new default access level was saved.",
         'user:default_access:failure' => "Your new default access level could not be saved.",
 
-        'xmlrpc:noinputdata'	=>	"Input data missing",
-
-        'comments:count' => "%s comments",
-
-        'generic_comments:add' => "Add a comment",
-        'generic_comments:text' => "Comment",
-        'generic_comment:posted' => "Your comment was successfully posted.",
-        'generic_comment:deleted' => "Your comment was successfully deleted.",
-        'generic_comment:blank' => "Sorry; you need to actually put something in your comment before we can save it.",
-        'generic_comment:notfound' => "Sorry; we could not find the specified item.",
-        'generic_comment:notdeleted' => "Sorry; we could not delete this comment.",
-        'generic_comment:failure' => "An unexpected error occurred when adding your comment. Please try again.",
-
-        'generic_comment:email:subject' => 'You have a new comment!',
-        'generic_comment:email:body' => "You have a new comment on your item \"%s\" from %s. It reads:
-
-
-%s
-
-
-To reply or view the original item, click here:
-
-	%s
-
-To view %s's profile, click here:
-
-	%s
-
-You cannot reply to this email.",
-
-
         'entity:default:strapline' => 'Created %s by %s',
-        'entity:default:missingsupport:popup' => 'This entity cannot be displayed correctly. This may be because it requires support provided by a plugin that is no longer installed.',
-
-        'entity:delete:success' => 'Entity %s has been deleted',
-        'entity:delete:fail' => 'Entity %s could not be deleted',
 
 		/**
 		 * Action gatekeeper
@@ -840,159 +609,37 @@ You cannot reply to this email.",
         'actiongatekeeper:timeerror' => 'The page you were using has expired. Please refresh and try again.',
         'actiongatekeeper:pluginprevents' => 'A extension has prevented this form from being submitted.',
 
-        "aa" => "Afar",
-        "ab" => "Abkhazian",
-        "af" => "Afrikaans",
-        "am" => "Amharic",
-        "ar" => "Arabic",
-        "as" => "Assamese",
-        "ay" => "Aymara",
-        "az" => "Azerbaijani",
-        "ba" => "Bashkir",
-        "be" => "Byelorussian",
-        "bg" => "Bulgarian",
-        "bh" => "Bihari",
-        "bi" => "Bislama",
-        "bn" => "Bengali; Bangla",
-        "bo" => "Tibetan",
-        "br" => "Breton",
-        "ca" => "Catalan",
-        "co" => "Corsican",
-        "cs" => "Czech",
-        "cy" => "Welsh",
-        "da" => "Danish",
-        "de" => "German",
-        "dz" => "Bhutani",
-        "el" => "Greek",
         "en" => "English",
-        "eo" => "Esperanto",
-        "es" => "Spanish",
-        "et" => "Estonian",
-        "eu" => "Basque",
-        "fa" => "Persian",
-        "fi" => "Finnish",
-        "fj" => "Fiji",
-        "fo" => "Faeroese",
-        "fr" => "French",
-        "fy" => "Frisian",
-        "ga" => "Irish",
-        "gd" => "Scots / Gaelic",
-        "gl" => "Galician",
-        "gn" => "Guarani",
-        "gu" => "Gujarati",
-        "he" => "Hebrew",
-        "ha" => "Hausa",
-        "hi" => "Hindi",
-        "hr" => "Croatian",
-        "hu" => "Hungarian",
-        "hy" => "Armenian",
-        "ia" => "Interlingua",
-        "id" => "Indonesian",
-        "ie" => "Interlingue",
-        "ik" => "Inupiak",
-        //"in" => "Indonesian",
-        "is" => "Icelandic",
-        "it" => "Italian",
-        "iu" => "Inuktitut",
-        "iw" => "Hebrew (obsolete)",
-        "ja" => "Japanese",
-        "ji" => "Yiddish (obsolete)",
-        "jw" => "Javanese",
-        "ka" => "Georgian",
-        "kk" => "Kazakh",
-        "kl" => "Greenlandic",
-        "km" => "Cambodian",
-        "kn" => "Kannada",
-        "ko" => "Korean",
-        "ks" => "Kashmiri",
-        "ku" => "Kurdish",
-        "ky" => "Kirghiz",
-        "la" => "Latin",
-        "ln" => "Lingala",
-        "lo" => "Laothian",
-        "lt" => "Lithuanian",
-        "lv" => "Latvian/Lettish",
-        "mg" => "Malagasy",
-        "mi" => "Maori",
-        "mk" => "Macedonian",
-        "ml" => "Malayalam",
-        "mn" => "Mongolian",
-        "mo" => "Moldavian",
-        "mr" => "Marathi",
-        "ms" => "Malay",
-        "mt" => "Maltese",
-        "my" => "Burmese",
-        "na" => "Nauru",
-        "ne" => "Nepali",
-        "nl" => "Dutch",
-        "no" => "Norwegian",
-        "oc" => "Occitan",
-        "om" => "(Afan) Oromo",
-        "or" => "Oriya",
-        "pa" => "Punjabi",
-        "pl" => "Polish",
-        "ps" => "Pashto / Pushto",
-        "pt" => "Portuguese",
-        "qu" => "Quechua",
-        "rm" => "Rhaeto-Romance",
-        "rn" => "Kirundi",
-        "ro" => "Romanian",
-        "ru" => "Russian",
-        "rw" => "Kinyarwanda",
-        "sa" => "Sanskrit",
-        "sd" => "Sindhi",
-        "sg" => "Sangro",
-        "sh" => "Serbo-Croatian",
-        "si" => "Singhalese",
-        "sk" => "Slovak",
-        "sl" => "Slovenian",
-        "sm" => "Samoan",
-        "sn" => "Shona",
-        "so" => "Somali",
-        "sq" => "Albanian",
-        "sr" => "Serbian",
-        "ss" => "Siswati",
-        "st" => "Sesotho",
-        "su" => "Sundanese",
-        "sv" => "Swedish",
-        "sw" => "Swahili",
-        "ta" => "Tamil",
-        "te" => "Tegulu",
-        "tg" => "Tajik",
-        "th" => "Thai",
-        "ti" => "Tigrinya",
-        "tk" => "Turkmen",
-        "tl" => "Tagalog",
-        "tn" => "Setswana",
-        "to" => "Tonga",
-        "tr" => "Turkish",
-        "ts" => "Tsonga",
-        "tt" => "Tatar",
-        "tw" => "Twi",
-        "ug" => "Uigur",
-        "uk" => "Ukrainian",
-        "ur" => "Urdu",
-        "uz" => "Uzbek",
-        "vi" => "Vietnamese",
-        "vo" => "Volapuk",
-        "wo" => "Wolof",
-        "xh" => "Xhosa",
-        //"y" => "Yiddish",
-        "yi" => "Yiddish",
-        "yo" => "Yoruba",
-        "za" => "Zuang",
-        "zh" => "Chinese",
-        "zu" => "Zulu",
+        "sw" => "Swahili",        
         
-        'item:object:widget' => "Pages",                       
-        'item:object:blog' => 'News updates',
-        'item:user:organization' => "Organizations",
-        'item:object:translation' => "Translations",
-        'item:user' => "Users",
-
-
+        'tz:arusha' => 'Arusha',
+        'tz:dar' => 'Dar es Salaam',
+        'tz:dodoma' => 'Dodoma',
+        'tz:iringa' => 'Iringa',
+        'tz:kagera' => 'Kagera',
+        'tz:kigoma' => 'Kigoma',
+        'tz:kilimanjaro' => 'Kilimanjaro',
+        'tz:lindi' => 'Lindi',
+        'tz:manyara' => 'Manyara',
+        'tz:mara' => 'Mara',
+        'tz:mbeya' => 'Mbeya',
+        'tz:morogoro' => 'Morogoro',
+        'tz:mtwara' => 'Mtwara',
+        'tz:mwanza' => 'Mwanza',
+        'tz:pemba_n' => 'Pemba North',
+        'tz:pemba_s' => 'Pemba South',
+        'tz:pwani' => 'Coast',
+        'tz:rukwa' => 'Rukwa',
+        'tz:ruvuma' => 'Ruvuma',
+        'tz:shinyanga' => 'Shinyanga',
+        'tz:singida' => 'Singida',
+        'tz:tabora' => 'Tabora',
+        'tz:tanga' => 'Tanga',
+        'tz:zanzibar_cs' => 'Zanzibar Central/South',
+        'tz:zanzibar_n' => 'Zanzibar North',
+        'tz:zanzibar_w' => 'Zanzibar West',        
 	);
 
 	add_translation("en",$english);
 
-?>
+    include(dirname(__FILE__)."/en_admin.php");

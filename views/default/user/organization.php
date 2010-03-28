@@ -22,7 +22,7 @@
 
     $controls = "";
 
-    $info = "<div><p><b><a href=\"" . $vars['entity']->getUrl() . "\">" . escape($title) . "</a>" . (!$vars['entity']->isApproved() ? (" (" . elgg_echo('org:shortnotapproved') .") ") : "") . "</b> $controls </p></div>";
+    $info = "<div><p><b><a href=\"" . $vars['entity']->getUrl() . "\">" . escape($title) . "</a>" . (!$vars['entity']->isApproved() ? (" (" . elgg_echo('approval:notapproved') .") ") : "") . "</b> $controls </p></div>";
 
     if (get_input('search_viewtype') == "gallery") {
 

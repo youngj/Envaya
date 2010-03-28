@@ -28,13 +28,13 @@ class Organization extends ElggUser
     {
         if ($this->approval == 0)
         {
-            system_message(elgg_echo('org:waitingapproval'));
+            system_message(elgg_echo('approval:waiting'));
             
             
         }
         else if ($this->approval < 0)
         {
-            system_message(elgg_echo('org:rejected'));
+            system_message(elgg_echo('approval:rejected'));
         }    
     }
 
@@ -622,6 +622,8 @@ function envaya_init()
     {
         elgg_view_register_simplecache("css/$theme");
     }
+    
+    elgg_view_register_simplecache("css/admin");
     
     register_plugin_hook('geocode', 'location', 'googlegeocoder_geocode');
     

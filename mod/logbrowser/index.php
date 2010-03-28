@@ -59,6 +59,8 @@
 	set_context('search');
 	$result = elgg_view_entity_list($log_entries, $count, $offset, $limit, false, false);
 	set_context('admin');
+    
+    set_theme('admin');
 		
 // Display main admin menu
 	page_draw(elgg_echo('logbrowser'),elgg_view_layout("two_column_left_sidebar", '', $title . $form . $result));

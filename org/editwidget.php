@@ -24,7 +24,8 @@ if ($org->canEdit())
 }
 else 
 {
-    $body = elgg_view('org/contentwrapper',array('body' => elgg_echo('org:noaccess')));
+    register_error(elgg_echo("org:cantedit"));
+    forward_to_referrer();
 }
 
 page_draw($title, $body);

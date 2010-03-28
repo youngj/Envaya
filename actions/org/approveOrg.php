@@ -9,11 +9,11 @@
 	{
         $entity->approval = (int)get_input('approval');        
         $entity->save();    
-	    system_message(elgg_echo('org:approval_changed'));	
+	    system_message(elgg_echo('approval:changed'));	
 	}
 	else
     {
-		register_error(elgg_echo('org:notapproved'));
+		register_error(elgg_echo('approval:notapproved'));
     }    
 		
 	forward($entity->getUrl());
