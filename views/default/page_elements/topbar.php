@@ -1,3 +1,9 @@
+<?php
+
+if (get_input('__topbar') !== '0') {
+
+?>
+
 <div id="topbar">
 <table class='topbarTable'>
 <td class='topbarLinks'>
@@ -67,3 +73,9 @@
 </div>
 
 <div class="clearfloat"></div>
+
+<?php
+
+}
+
+?>

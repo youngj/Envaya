@@ -18,7 +18,7 @@
         $CONFIG->sitename = $org->name;        
     
 		set_page_owner($org_guid);
-        set_theme($org->theme);
+        set_theme(get_input("__theme") ?: $org->theme);
 
         $viewOrg = $org->canView();
                 

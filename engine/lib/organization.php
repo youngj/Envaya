@@ -67,6 +67,11 @@ class Organization extends ElggUser
         return "{$postEmailParts[0]}+{$this->email_code}@{$postEmailParts[1]}";
     } 
     
+    public function getCountryText()
+    {
+        return elgg_echo("country:{$this->country}");
+    }
+    
     public function getLocationText($includeRegion = true)
     {
         $res = '';
@@ -84,7 +89,7 @@ class Organization extends ElggUser
                 $res .= "$regionText, ";            
             }
         }
-        $res .= elgg_echo("country:{$this->country}");
+        $res .= $this->getCountryText();
         
         return $res;
     }
@@ -296,7 +301,7 @@ class Organization extends ElggUser
     
     function getPartnerships($limit = 10, $offset = 0, $count = false)
     {   
-        $where = array("container_guid = ?");
+        $where = array("container_guid = ? AND approval >= 3");
         $args = array($this->guid);
     
         return Partnership::filterByCondition($where, $args, '', $limit, $offset, $count);
@@ -370,8 +375,7 @@ class Partnership extends ElggObject
 
     function getApproveUrl()
     {
-        global $CONFIG;
-        return "{$CONFIG->url}action/org/createPartner?partner_guid={$this->container_guid}";
+        return "{$this->getPartner()->getURL()}/confirm?partner_guid={$this->container_guid}";
     }    
 }
 

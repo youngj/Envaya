@@ -5,6 +5,22 @@
     if ($user && $user instanceof Organization) 
     {
 ?>
+
+    <h3>    
+        <?php echo elgg_echo('theme') ?>
+    </h3>
+    <p>
+    <?php 
+        echo elgg_echo('theme:current');
+        echo " ";
+        echo escape(elgg_echo("theme:{$user->theme}"));
+    ?>    
+    <strong><a href='<?php echo $user->getURL() ?>/theme?from=pg/settings/user/<?php echo $user->username ?>'><?php echo elgg_echo('theme:edit') ?></a></strong>
+    </p>
+    <p>
+    
+    </p>
+
     <h3><?php echo elgg_echo('org:icon'); ?></h3>
     <p>
     
@@ -22,21 +38,6 @@
 
     </p>
 
-    <h3><?php echo elgg_echo('org:theme'); ?></h3>
-    <p>
-    
-    <?php
-        
-        $curTheme = $user->theme;        
-        
-        foreach (get_themes() as $theme)
-        {
-            $selected = ($theme == $curTheme) ? "checked='checked'" : '';
-            $label = elgg_echo("theme:$theme");
-            echo "<label class='optionLabel'><input type='radio' name='theme' value='".escape($theme)."' {$selected} class='input-radio' />{$label}</label><br />";
-        }
-    ?>
 
-    </p>
 
 <?php } ?>

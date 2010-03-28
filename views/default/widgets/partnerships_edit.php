@@ -26,24 +26,27 @@
         
         foreach($entities as $p)
         {
-            $partnerOrgEntity = $p->getPartner();
-            $pDescription = $p->description;
+            $partner = $p->getPartner();
+            ?>            
             
-            echo "<img style='float:left;' src='" . $partnerOrgEntity->getIcon('tiny') . "' />";
-            echo "<a href='{$partnerOrgEntity->getUrl()}'>{$partnerOrgEntity->name}</a>";
-            echo "<div style='clear:both;' />";
-            
-            echo elgg_echo('widget:partnerships:description');
-            echo "<div class='input'>";
-            
-            echo elgg_view('input/longtext', array(
+<div class="partnership_view">    
+    <a class='feed_org_icon' href='<?php echo $partner->getURL() ?>'><img src='<?php echo $partner->getIcon('small') ?>' /></a>
+    
+    <div class='feed_content'>
+        <a class='feed_org_name' href='<?php echo $partner->getUrl() ?>'><?php echo escape($partner->name); ?></a><br />
+        <label><?php echo elgg_echo('widget:partnerships:description'); ?></label>
+
+        <?php echo elgg_view('input/longtext', array(
                 'internalname' => "partnershipDesc{$p->guid}",
                 'js' => 'style="width:350px;height:150px;"',
-                'value' => $pDescription
-            ));
-            
-            echo "</div>";
-            echo "<br><br>";
+                'value' => $p->description
+            )); ?>
+    
+    </div>
+    <div style='clear:both;'></div>        
+</div>
+           
+            <?php
         }
     }
     $content = ob_get_clean();

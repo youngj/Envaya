@@ -13,7 +13,6 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     margin: 0;
     padding: 0;
     border: 0;
-    outline: 0;
     font-weight: inherit;
     font-style: inherit;
     font-size: 100%;
@@ -21,15 +20,12 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     vertical-align: baseline;
 }
 
-:focus {
-    outline: 0;
-}
 em, i {
     font-style:italic;
 }
 
 table {
-    border-collapse: separate;
+    border-collapse: collapse;
     border-spacing: 0;
 }
 caption, th, td {
@@ -63,8 +59,6 @@ body
 a {
     color: #4690d6;
     text-decoration: none;
-    -moz-outline-style: none;
-    outline: none;
 }
 a:visited {
     
@@ -449,7 +443,6 @@ h3.settings {
 .topbarTable
 {
     width:100%;    
-    border-collapse:collapse;
 }
 
 #topbar form
@@ -1007,7 +1000,6 @@ a.smallBlogImageLink:hover
 {
     width:100%;    
     margin-bottom:10px;
-    border-collapse:collapse;
 }
 
 .tab
@@ -1196,7 +1188,6 @@ a.attachImageClose:hover
 .gridTable 
 {
     width:100%;
-    border-collapse:collapse;
 }
 
 .gridTable td
@@ -1291,4 +1282,14 @@ a.attachImageClose:hover
 {
     background:url(<?php echo $graphicsDir ?>/commBox.gif) no-repeat left -102px;   
     width:45%;
+}
+
+.partnership_view
+{
+    padding-bottom:10px;    
+}
+
+.partnership_view .feed_org_name
+{
+    font-weight:bold;
 }

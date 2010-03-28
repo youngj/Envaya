@@ -1,3 +1,4 @@
+<div class='padded'>
 <?php 
     $widget = $vars['widget'];
     $org = $widget->getContainerEntity();
@@ -15,4 +16,4 @@
         echo "<div class='padded'>".elgg_echo("partner:none")."</div>";
     }
 ?>
-
+</div>

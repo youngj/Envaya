@@ -58,7 +58,7 @@
     'internalname' => 'city',
     'js' => 'style="width:200px"',
     'value' => $org->city
-)) ?>    
+)) ?>, <?php echo escape($org->getCountryText()); ?>
 </div>
 <div>
 <?php echo elgg_echo('setup:region') ?> <?php echo elgg_view('input/pulldown', array(

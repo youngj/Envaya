@@ -105,13 +105,17 @@
         'blog:timeline' => "Timeline",
         
         'partner:request' => "Request Partnership",
+        'partner:invalid' => "Partner invalid",
         'partner:re_request' => "Resend request",
         'partner:request_sent' => "A partnership request has been sent to this organization.",        
         'partner:approve' => "Approve Partnership",
         'partner:pending' => "Partnership request pending",
         'partner:exists' => "You are partners with this organization",
-        'partner:created' => "Partnership Approved",                
+        'partner:created' => "Partnership confirmed. If you want to add a description of this partnership, click the Edit Page button.",                
         'partner:none' => "This organization has no partnerships.",
+        'partner:confirm' => "Confirm Partnership",
+        'partner:confirm:instructions' => "To add this organization to your Partnerships page, click the button below.",
+        'partner:confirm:button' => "Confirm partnership",
         
         'widget:home' => "Home Page",        
         'widget:home:included' => "What sections do you want to include on your home page?",
@@ -252,6 +256,15 @@
         'org:icon:reset' => 'Logo removed successfully.',
 
         'org:cantedit' => "You do not have access to edit this organization's web site.",
+
+        'theme' => "Website theme",
+        'theme:current' => "Current theme:",
+        'theme:edit' => "Edit theme",
+        'theme:changed' => "Theme changed.",        
+        
+        'theme:default' => "Default theme",
+        'theme:green' => "Green theme",
+        'theme:red' => "Red theme",
 
         'blog:save' => "Save changes",
         'blog:publish' => "Publish",
@@ -582,8 +595,13 @@ Alternatively, you can enter your database settings below and we will try and do
 
 Your password has been reset to: %s",
         
-        'email:requestPartnership:subject' => "%s wants to partner with %s",
-        'email:requestPartnership:body' => "To approve partnership, go to this link: %s",
+        'email:requestPartnership:subject' => "%s wants to add %s as a partner",
+        'email:requestPartnership:body' => "To approve this partnership, click on the link below and log into your Envaya account:
+%s",
+
+        'email:partnershipConfirmed:subject' => "%s confirmed its partnership with %s",
+        'email:partnershipConfirmed:body' => "To see your partnerships page, click on the link below:
+%s",
 
         'email:resetreq:subject' => "Request for new password",
         'email:resetreq:body' => "Hi %s,

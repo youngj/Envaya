@@ -575,8 +575,11 @@
 			{ 
                 if (trigger_elgg_event('update',$this->type,$this)) 
                 {
+                    $time = time();
+                    $this->time_updated = $time;
+                
                     $res = update_data("UPDATE entities set owner_guid=?, access_id=?, container_guid=?, enabled=?, time_updated=? WHERE guid=?", 
-                        array($this->owner_guid,$this->access_id,$this->container_guid,$this->enabled,time(),$guid)
+                        array($this->owner_guid,$this->access_id,$this->container_guid,$this->enabled,$this->time_updated,$guid)
                     );
                     cache_entity($this);
                 }
@@ -591,11 +594,14 @@
                 if ($this->type == "") 
                     throw new InvalidParameterException(elgg_echo('InvalidParameterException:EntityTypeNotSet'));
                 
+                $this->time_created = $time;
+                $this->time_updated = $time;
+                
                 $this->attributes['guid'] = insert_data("INSERT into entities (type, subtype, owner_guid, site_guid, container_guid, enabled, access_id, time_created, time_updated) values (?,?,?,?,?,?,?,?,?)",
                     array($this->type, $this->subtype, $this->owner_guid, $this->site_guid, 
-                        $this->container_guid, $this->enabled, $this->access_id, $time, $time)
+                        $this->container_guid, $this->enabled, $this->access_id, $this->time_created, $this->time_updated)
                 ); 
-                
+                                
 				if (!$this->guid) 
                     throw new IOException(elgg_echo('IOException:BaseEntitySaveFailed'));                
                 

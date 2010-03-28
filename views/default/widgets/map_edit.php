@@ -20,7 +20,7 @@
     'internalname' => 'city',
     'js' => 'style="width:200px"',
     'value' => $org->city
-)) ?>    
+)) ?>, <?php echo escape($org->getCountryText()); ?>   
 </div>
 </div>
 <div>
