@@ -662,7 +662,6 @@
         'more' => 'More',
         'comments' => 'Comments',
         'import' => 'Import',
-        'export' => 'Export',
 
         'up' => 'Up',
         'down' => 'Down',

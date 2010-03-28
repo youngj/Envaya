@@ -191,38 +191,6 @@ blockquote p {
     -moz-border-radius: 8px;
 }
 
-#two_column_left_sidebar_maincontent_boxes {
-    margin:0 0px 20px 20px;
-    padding:0 0 5px 0;
-    width:718px;
-    background: #dedede;
-    -webkit-border-radius: 8px; 
-    -moz-border-radius: 8px;
-    float:left;
-}
-#two_column_left_sidebar_boxes {
-    width:210px;
-    margin:0px 0 20px 0px;
-    min-height:360px;
-    float:left;
-    padding:0;
-}
-#two_column_left_sidebar_boxes .sidebarBox {
-    margin:0px 0 22px 0;
-    background: #dedede;
-    padding:4px 10px 10px 10px;
-    -webkit-border-radius: 8px; 
-    -moz-border-radius: 8px;
-    border-bottom:1px solid #cccccc;
-    border-right:1px solid #cccccc;
-}
-#two_column_left_sidebar_boxes .sidebarBox h3 {
-    padding:0 0 5px 0;
-    font-size:1.25em;
-    line-height:1.2em;
-    color:#0054A7;
-}
-
 .contentWrapper {
     background:white;
     -webkit-border-radius: 8px; 
@@ -1106,12 +1074,6 @@ a.dropdown_item:hover
 .section_content
 {
     padding:5px 10px;
-}
-
-.sidebar_link
-{
-    position:absolute;
-    left:490px;
 }
 
 .good_messages, .bad_messages 
