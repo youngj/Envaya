@@ -21,7 +21,7 @@
 	$class = @$vars['class'];
 	if (!$class) $class = "input-text";
     
-    $value = preserve_input($vars['internalname'], @$vars['value']);	
+    $value = restore_input($vars['internalname'], @$vars['value']); 
 ?>
 
 <input type="text" <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> <?php echo @$vars['js']; ?> name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> value="<?php echo escape($value); ?>" class="<?php echo $class ?>"/> 

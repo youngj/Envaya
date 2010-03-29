@@ -1275,7 +1275,7 @@ a.attachImageClose:hover
 {
     background:url(<?php echo $graphicsDir ?>/commBox.gif) repeat-x left -56px;   
     white-space:nowrap;
-    padding:5px;    
+    padding:5px 15px;    
 }
 
 .commBoxRight
@@ -1292,4 +1292,24 @@ a.attachImageClose:hover
 .partnership_view .feed_org_name
 {
     font-weight:bold;
+}
+
+.messageTable
+{
+    width:100%;
+}
+
+.messageTable td, .messageTable th
+{
+    padding:3px;
+}
+
+.messageTable th
+{
+    text-align:right;
+}
+
+.messageTable .input-text, .messageTable .input-textarea
+{
+    width:350px;
 }

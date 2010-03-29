@@ -21,7 +21,7 @@
 
     $class = @$vars['class'] ?: "input-pulldown";
     
-    $vars['value'] = preserve_input(@$vars['internalname'], @$vars['value']); 
+    $vars['value'] = restore_input(@$vars['internalname'], @$vars['value']); 
 ?>
 
 

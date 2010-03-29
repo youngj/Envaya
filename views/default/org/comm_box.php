@@ -51,6 +51,9 @@
     }     
 ?>
 </td>
+<td class='commBoxMain' style='border-left:1px solid gray'>
+<a href='<?php echo $org->getURL() ?>/compose'><?php echo elgg_echo('message:link'); ?></a>
+</td>
 <td class='commBoxRight'>
 &nbsp;
 </td>

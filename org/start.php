@@ -75,6 +75,9 @@ function org_profile_page_handler($page)
             case "confirm":
                 include(dirname(__FILE__) . "/confirmPartner.php");
                 return;        
+            case "compose":
+                include(dirname(__FILE__) . "/composeMessage.php");
+                return;
             case "post":
                 set_input("blogpost", $page[2]);
 
@@ -206,8 +209,9 @@ register_action("org/approve",false,    "{$CONFIG->path}actions/org/approveOrg.p
 register_action("org/verify",false,     "{$CONFIG->path}actions/org/verifyOrg.php");
 register_action("org/changeEmail",false,"{$CONFIG->path}actions/org/changeEmail.php");
 register_action("org/requestPartner",false,"{$CONFIG->path}actions/org/requestPartner.php");
-register_action("org/createPartner",true,"{$CONFIG->path}actions/org/createPartner.php");
-register_action("org/theme",true,       "{$CONFIG->path}actions/org/theme.php");
+register_action("org/createPartner",false,"{$CONFIG->path}actions/org/createPartner.php");
+register_action("org/sendMessage",false,"{$CONFIG->path}actions/org/sendMessage.php");
+register_action("org/theme",false,       "{$CONFIG->path}actions/org/theme.php");
 register_action("changeLanguage", true, "{$CONFIG->path}actions/org/changeLanguage.php");
 register_action("translate", false,     "{$CONFIG->path}actions/org/translate.php");
 register_action("news/add",false,       "{$CONFIG->path}actions/org/addPost.php");

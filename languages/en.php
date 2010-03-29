@@ -117,6 +117,19 @@
         'partner:confirm:instructions' => "To add this organization to your Partnerships page, click the button below.",
         'partner:confirm:button' => "Confirm partnership",
         
+        'message:link' => "Send a Message",
+        'message:title' => "Compose Message",
+        'message:cancel' => "Cancel Message",
+        'message:from' => "From:",
+        'message:to' => "To:",
+        'message:subject' => "Subject:",
+        'message:message' => "Message:",
+        'message:send' => "Send Message",
+        'message:sent' => "Message sent.",
+        'message:message_missing' => "Your message was blank.",
+        'message:subject_missing' => "The subject of your message was blank.",
+        'message:invalid_recipient' => "Bad recipient.",
+        
         'widget:home' => "Home Page",        
         'widget:home:included' => "What sections do you want to include on your home page?",
         

@@ -69,10 +69,7 @@
     } 
     catch (RegistrationException $r) 
     {    
-        Session::set('input', $_POST);
-        
-        register_error($r->getMessage());
-        forward_to_referrer();
+        action_error($r->getMessage());
     }
     
 ?>    

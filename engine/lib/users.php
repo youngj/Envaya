@@ -72,6 +72,12 @@
             return parent::loadFromPartialTableRow($row) && $this->loadFromTableRow($userEntityRow);        
         }
         
+        public function getNameForEmail()
+        {
+            $name = mb_encode_mimeheader($this->name, "UTF-8", "B");                
+            return "\"$name\" <{$this->email}>";
+        }
+        
 		/**
 		 * Override the load function.
 		 * This function will ensure that all data is loaded (were possible), so

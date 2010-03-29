@@ -21,7 +21,7 @@
 	$class = @$vars['class'];
 	if (!$class) $class = "input-checkboxes";
 
-    $vars['value'] = preserve_input($vars['internalname'], @$vars['value']); 
+    $vars['value'] = restore_input($vars['internalname'], @$vars['value']); 
 
     $valIsArray = is_array($vars['value']);
     

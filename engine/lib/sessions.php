@@ -44,6 +44,11 @@ class Session
         
     }
     
+    static function saveInput()
+    {
+        static::set('input', $_POST);
+    }
+    
     static function start()
     {
         session_set_save_handler("__elgg_session_open", "__elgg_session_close", "__elgg_session_read", "__elgg_session_write", "__elgg_session_destroy", "__elgg_session_gc");

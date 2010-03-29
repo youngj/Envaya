@@ -38,7 +38,7 @@
         exit;
     }
 
-    function preserve_input($name, $value)
+    function restore_input($name, $value)
     {    
         $prevInput = Session::get('input');
         if ($prevInput)

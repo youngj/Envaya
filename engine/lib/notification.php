@@ -114,18 +114,13 @@
 						if ($CONFIG->debug)
 							error_log("Sending message to $guid using $method");					
 							
-						// Trigger handler and retrieve result.
-						try {
-							$result[$guid][$method] = $handler(
-								$from ? get_entity($from) : NULL, 	// From entity
-								get_entity($guid), 					// To entity
-								$subject,							// The subject
-								$message, 			// Message
-								$params								// Params
-							);
-						} catch (Exception $e) {
-							error_log($e->getMessage());
-						}
+                        $result[$guid][$method] = $handler(
+                            $from ? get_entity($from) : NULL, 	// From entity
+                            get_entity($guid), 					// To entity
+                            $subject,							// The subject
+                            $message, 			// Message
+                            $params								// Params
+                        );
 						
 					}
 				}
@@ -220,8 +215,7 @@
 		if (!$to->email)
 			throw new NotificationException(sprintf(elgg_echo('NotificationException:NoEmailAddress'), $to->guid));			
 			
-        $toName = mb_encode_mimeheader($to->name, "UTF-8", "B");                
-        $headers = array('To' => "\"$toName\" <{$to->email}>");
+        $headers = array('To' => $to->getNameForEmail());
         
         return send_mail($to->email, $subject, $message, $headers);
 	}

@@ -206,6 +206,13 @@
         	exit;
         }
         
+        function action_error($msg)
+        {
+            register_error($msg);
+            Session::saveInput();
+            forward_to_referrer();
+        }
+        
         /**
          * Generate a token for the current user suitable for being placed in a hidden field in action forms.
          * 

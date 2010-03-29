@@ -19,7 +19,7 @@
 
 	$class = @$vars['class'] ?: "input-textarea";
     
-    $value = preserve_input($vars['internalname'], @$vars['value']); 
+    $value = restore_input($vars['internalname'], @$vars['value']); 
 	
 ?>
 
