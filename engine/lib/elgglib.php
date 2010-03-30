@@ -593,7 +593,7 @@
 	 * @param string $link The URL of the submenu item
 	 * @param boolean $onclick Used to provide a JS popup to confirm delete
 	 */
-		function add_submenu_item($label, $link, $group = 'a', $onclick = false) {
+		function add_submenu_item($label, $link, $group = 'topnav', $onclick = false) {
 			
 			global $CONFIG;
 			if (!isset($CONFIG->submenu)) $CONFIG->submenu = array();
@@ -620,14 +620,14 @@
                 return '';
             }
 
-            $submenu = '';
+            $submenu = array();
             $submenu_register_group = $CONFIG->submenu[$groupname];
 
             foreach($submenu_register_group as $key => $item) 
             {
                 $selected = endswith($item->value, $_SERVER['REQUEST_URI']);
-
-                $submenu .= elgg_view($itemTemplate,
+                
+                $submenu[] = elgg_view($itemTemplate,
                     array(
                             'href' => $item->value, 
                             'label' => $item->name,
@@ -829,13 +829,29 @@
 				if ($diff > 1)
 					return sprintf(elgg_echo("friendlytime:hours"),$diff);
 				return sprintf(elgg_echo("friendlytime:hours:singular"),$diff);
-			} else {
+			} else if ($diff < 604800) {
 				$diff = round($diff / 86400);
 				if ($diff == 0) $diff = 1;
 				if ($diff > 1)
 					return sprintf(elgg_echo("friendlytime:days"),$diff);
 				return sprintf(elgg_echo("friendlytime:days:singular"),$diff);
-			}
+			} else {
+                $date = getdate($time);
+                $now = getdate();
+                
+                $month = elgg_echo("date:month:{$date['mon']}");
+                $dateText = sprintf(elgg_echo("date:withmonth"), $month, $date['mday']);
+                
+                if ($now['year'] != $date['year'])
+                {
+                    return sprintf(elgg_echo("date:withyear"), $dateText, $date['year']);
+                }
+                else
+                {
+                    return $dateText;
+                }
+            }
+            
 			
 		}
 

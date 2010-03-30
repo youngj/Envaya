@@ -21,8 +21,8 @@
         'dashboard:edit_widgets' => 'Hariri kurasa',
         'dashboard:attach_image' => "Fungia picha",
         'dashboard:select_image' => "Chagua picha unayopenda kuwa na ndani ya habari hii:",
-        'dashboard:view_home' => "View your home page",
-        'dashboard:settings' => "Change account settings",
+        'dashboard:view_home' => "Tazama ukurasa wako mkuu",
+        'dashboard:settings' => "Badili mipangilio ya akaunti",
         'dashboard:links' => "Links",    
     
         'topbar:your_home' => "Ukurasa wako mkuu",
@@ -90,6 +90,7 @@
         'org:yours' => 'Tovuti Yako',
         'org:home' => 'Mkuu',
         'org:news' => 'Habari',
+        'org:news:edit' => 'Hariri habari',
         'org:news:latest' => 'Habari Mpya',
         'org:noupdates' => "Shirika hili hajaandika habari yo yote.",        
         'org:mission' => 'Lengo',
@@ -97,10 +98,11 @@
         'org:location' => "Sehemu",
         'org:see_nearby' => "Tazama mashirika ambayo yapo karibu",        
         
-
+        'page:dirty' => "Ukurasa huu una mabadiliko yasiyohifadhi, yatayopotea kama ukiendelea.",
+        
         'blog:view_all' => "Tazama habari zote",
         'blog:editpost' => "Hariri Habari",
-        'blog:canceledit' => "Tazama Habari",
+        'blog:canceledit' => "Batili Kuhariri",
         'blog:addpost' => "Ongeza habari",
         'blog:delete' => "Futa habari",
         'blog:delete:success' => "Habari ilifutwa.",        
@@ -108,6 +110,7 @@
         'blog:timeline' => "Ratiba",
 
         'partner:request' => "Omba ubia",
+        'partner:invalid' => "Ubia batili",
         'partner:re_request' => "Peleka ombi tena",
         'partner:request_sent' => "Ombi la ubia limepelekwa kwa shirika hili.",        
         'partner:approve' => "Kubali Ubia",
@@ -115,12 +118,35 @@
         'partner:exists' => "Wewe ni wabia na shirika hili",
         'partner:created' => "Ubia limekubaliwa",                
         'partner:none' => "Shirika hili halina ubia yo yote.",
+        'partner:confirm' => "Thibitisha Ubia",
+        'partner:confirm:instructions' => "Ku ongeza shirika hili katika ukurasa wako wa Ubia, bongeza kitufe chini.",
+        'partner:confirm:button' => "Thibitisha ubia",
+        'partner:current' => "Ubia wa sasa",
+        'partner:find_new' => "Tafuta ubia mpya",        
+
+        'message:link' => "Peleka Ujumbe",
+        'message:title' => "Tunga Ujumbe",
+        'message:cancel' => "Futa Ujumbe",
+        'message:from' => "Kutoka:",
+        'message:to' => "Kwa:",
+        'message:subject' => "Mada:",
+        'message:message' => "Ujumbe:",
+        'message:send' => "Peleka Ujumbe",
+        'message:sent' => "Ujumbe umepelekwa.",
+        'message:message_missing' => "Ujumbe wako ulikuwa wazi.",
+        'message:subject_missing' => "Mada ya ujumbe wako ulikuwa wazi.",
+        'message:invalid_recipient' => "Mpokeaji mbaya.",
 
         'widget:home' => "Ukurasa mkuu",
         'widget:home:included' => "Sehemu gani unataka kuwa na katika ukurasa wako mkuu?",
 
         'widget:history' => "Historia",
+        'widget:history:label' => "Historia ya shirika yako:",
+        'widget:history:help' => "Kwa mfano, jinsi ya lilianzwa na mafanikio yake makuu.",
+        
         'widget:projects' => "Miradi",
+        'widget:projects:label' => "Miradi ya shirika yako:",
+        'widget:projects:help' => "Andika kuhusu kazi na shughuli shirika yako linazozifanya.",
         
         'widget:news' => "Habari",
         'widget:news:manage_updates' => "Hariri habari",
@@ -134,15 +160,34 @@
         'widget:contact:email' => "Barua pepe:",        
         'widget:contact:phone_number:edit' => "Namba ya simu watu watumiayo kuwasiliana nawe ni gani?",
         'widget:contact:phone_number' => "Namba ya simu:",
-        'widget:contact:name:edit' => "(Who is the primary contact person in your organization?)",
-        'widget:contact:name' => "(Contact name:)",
-        'widget:contact:title:edit' => "(What is that person's job title?)",
-        'widget:contact:title' => "(Contact title:)",
+        'widget:contact:name:edit' => "Jina la mwasilianaji mkuu wa shirika lako ni nini?",
+        'widget:contact:name' => "Jina la mwasilianaji",
+        'widget:contact:title:edit' => "Jina la kazi la mtu yule ni nini?",
+        'widget:contact:title' => "Jina la kazi la mwasilianaji:",
+        'widget:contact:street_address:edit' => "Anwani yako ya barabara ni nini?",
+        'widget:contact:street_address:help' => "Kama huna anwani na namba, elekeza.",
+        'widget:contact:street_address' => "Anwani ya barabara:",        
+        'widget:contact:mailing_address:edit' => "Anwani yako ya barua ni nini?",
+        'widget:contact:mailing_address' => "Anwani ya barua:",        
 
         'widget:team' => "Timu",
+        'widget:team:add' => "Ongeza mwenzio mpya",
+        'widget:team:list' => "Mwenzio wa sasa",
+        'widget:team:name' => "Jina:",
+        'widget:team:description' => "Elezo:",
+        'widget:team:photo' => "Picha (sio lazima):",
+        'widget:team:add:button' => "Hifadhi mwenzio",
+        'widget:team:edit' => "Hariri mwenzio",
+        'widget:team:save_success' => "Mwenzio amehifadhiwa.",
+        'widget:team:add_success' => "Mwenzio ameongezwa.",
+        'widget:team:delete_success' => "Mwendio amefutwa.",
+        'widget:team:empty' => "Shirika hili halijaongeza wenzio wo wote.",        
+        
+        'move:up' => "Hamisha juu",
+        'move:down' => "Hamisha chini",        
         
         'widget:edit' => "Hariri Ukurasa",
-        'widget:canceledit' => "Futa Kuhariri",
+        'widget:canceledit' => "Batili Kuhariri",
         'widget:edittitle' => "Hariri %s",
         'widget:edittitle:new' => "Ongeza Ukurasa: %s",
         'widget:save' => "Hifadhi mabadiliko",
@@ -239,76 +284,186 @@
         'image:delete' => "Futa picha?",                              
         
         'upload:invalid_image' => "Faili iliyopeleka haionekani kuwa picha halili.",                
+
+        'contact:link' => "Wasiliana",    
+        'contact:title' => 'Wasiliana nasi',        
         
+        'about:link' => "Kuhusu",                
         'about:title' => 'Kuhusu sisi',
         
         'page:notfound' => "Ukurasa hauonekani",
         'page:notfound:details' => "Ukurasa unaoomba ama hauwepo ama huna ruhusa kuuona.",
         
+        'org:icon' => 'Nembo ya shirika',
+        'org:icon:saved' => 'Nembo imehifadhiwa.',
+        'org:icon:reset' => 'Nembo imefutwa.',
+        
+        'org:cantedit' => "Huna ruhusa kuhariri tovuti ya shirika hili.",
+
+        'theme' => "Wazo wa tovuti",
+        'theme:current' => "Wazo wa sasa:",
+        'theme:edit' => "Hariri wazo",
+        'theme:changed' => "Wazo imebadiliwa.",      
+        
+        'theme:default' => "Wazo wa kawaida",
+
+        'blog:save' => "Save changes",        
+
+        'blog:content:label' => "Andika maandiko kwa habari yako chini:",
+        'blog:image:label' => "Picha kuonyesha na habari hii:",
+
+        'blog:posted' => "Habari yako imebandikwa.",
+        'blog:updated' => "Habari yako imehifadhiwa.",
+        'blog:deleted' => "Habari yako imefutwa.",
+        'blog:blank' => "Habari yako ilikuwa tupu.",
+
+        'map:drop_pin' => "Ongeza pointi kwa ramani",
+        'map:drag_pin' => "Vuta na anguka pointi nyekundu chini kwa sehemu ya shirika lako.",
+        
+        'trans:by' => 'Tafsiri kwa',
+        'trans:original_in' => "Maandiko ya asili kwa %s",
+        'trans:translate' => "Tafsiri maandiko",
+        'trans:inlang' => "Tafsiri kwa %s",
+        'trans:contribute' => "Andikia tafsiri",
+        'trans:empty' => "Tafsiri ilikuwa tupu",
+        'trans:invalid_id' => "Jina baya ya maandiko",
+        'trans:submit' => "Hifadhi tafsiri",
+        'trans:posted' => "Tafsiri imehifadhiwa.",
+
+        "trans:partial_trans_from_to" => 'Maeneo ya ukurasa huu ametafsiriwa toka %s kwa %s.',
+        "trans:view_rest_automatic" => 'Tafsiri baki na Google Translate',
+        "trans:trans_from_to" => 'Ukurasa huu ametafsiriwa toka %s kwa %s.',
+        "trans:view_original_in" => 'Ona asili kwa %s',
+        "trans:partial_automatic_trans_from_to" => 'Maeneo ya ukurasa huu ametafsiriwa kwa kujiendesha na Google Translate.',
+        "trans:automatic_trans_from_to" => "Ukurasa huu ametafsiriwa kwa kujiendesha toka %s kwa %s na Google Translate.", 
+        "trans:original_in" => "Ukurasa huu ameonyeshwa katika lugha yake ya asili, %s.",
+        "trans:view_in" => "Ona kwa %s",
+        "trans:view_automatic_in" => "Ona kwa %s na Google Translate.",
+        'trans:stale_trans_from_to' => "Ukurasa huu ametafsiriwa toka %s, lakini tamko ya %s ni mzee.",
+        'trans:view_stale_automatic' => "Ona na Google Translate.",
+
+        'exception:title' => "Kosa",
+        
+        'actionloggedout' => "Samahani, huwezi kufanya hatua hii wakati ambapo umeondoka.",
+
+        'next' => "Baada",
+        'previous' => "Kabla",
+
+        'settings' => "Mipangilio",
+
+        'register' => "Andikisha",
+        'registerok' => "Umeandikisha kwa %s.",
+        'registerbad' => "Maandikisho yako alishindwa.",
+        'registerdisabled' => "Maandikisho yamesimamishwa kwa msimamizi ya mfumo.",
+
+        'registration:notemail' => 'Barua pepe ambayo umetupa haionekani kuwa sahihi.',
+        'registration:userexists' => 'Jina lile la mtumiaji limetumiwa tayari.',
+        'registration:usernametooshort' => 'Lazima jina lako la mtumiaji liwe angalau harufi 3.',
+        'registration:passwordtooshort' => 'Lazima neno la siri liwe angalau harufi 6.',
+        'registration:dupeemail' => 'Anwani hii ya barua pepe imetumiwa tayari.',
+        'registration:invalidchars' => 'Samahani, jina lako la mtumiaji lina harufi mbaya.',
+        'registration:usernamenotvalid' => 'Samahani, jina lako la mtumiaji ni baya. Tafadhali uchague jingine.',
+
+        'user:set:name' => "Mipangilio ya Jina",
+        'user:name:label' => "Jina",
+        'user:name:success' => "Tumebadili jina lako.",
+
+        'user:set:password' => "Neno la siri la akaunti",
+        'user:password:label' => "Neno lako jipya la siri",
+        'user:password2:label' => "Neno lako jipya la siri (tena)",
+        'user:password:success' => "Neno lako jipya la siri limepelekwa kwa anwani yako ya barua pepe. Soma email yako kwa neno lako jipya la siri, na iingize chini.",        
+        'user:password:fail' => "Tuwezi kulibadili neno lako la siri.",
+        'user:password:fail:notsame' => "Maneno mawili ya siri si sawa!",
+        'user:password:fail:tooshort' => "Neno lako la siri ni fupi mno!",
+
+        'user:set:language' => "Mipangilio ya lugha",
+        'user:language:label' => "Lugha yako",
+        'user:language:success' => "Lugha yako amehifadhiwa.",
+        'user:language:fail' => "Mipangilio yako ya lugha hayawezi kuhifadhiwa.",
+
+        'user:username:notfound' => 'Jina la mtumiaji %s halionekani.',
+        
+        'user:password:resetreq:success' => 'Umeomba neno jipya la siri. Soma email yako kwa ujumbe toka Envaya, na bongeza kiungo ndani.',
+        'user:password:resetreq:fail' => 'Hatuwezi kuomba neno jipya la siri.',
+
+        'user:password:text' => 'Kufanya neno jipya la siri, ingiza jina lako la mtumiaji chini. Tutakupelekia anwani ya ukurasa ya kuthibitisha kwa email. Bongeza kiungo ndani ya ujumbe na neno jipya la siri litakupelekiwa.',
+
+        'usersettings:user' => "Mipangilio yako",
+
+        'friendlytime:justnow' => "sekundi chache zilizopita",
+        'friendlytime:minutes' => "dakika %s zilizopita",
+        'friendlytime:minutes:singular' => "dakika moja iliyopita",
+        'friendlytime:hours' => "saa %s zilizopita",
+        'friendlytime:hours:singular' => "saa moja iliyopita",
+        'friendlytime:days' => "siku %s zilizopita",
+        'friendlytime:days:singular' => "jana",
+
+        'date:withmonth' => '%2$s %1$s',
+        'date:withyear' => '%s, %s',
+
+        'date:month:1' => 'Januari',
+        'date:month:2' => 'Februari',
+        'date:month:3' => 'Machi',
+        'date:month:4' => 'Aprili',
+        'date:month:5' => 'Mei',
+        'date:month:6' => 'Juni',
+        'date:month:7' => 'Julai',
+        'date:month:8' => 'Agosti',
+        'date:month:9' => 'Septemba',
+        'date:month:10' => 'Oktoba',
+        'date:month:11' => 'Novemba',
+        'date:month:12' => 'Desemba',
+
+        'option:yes' => "Ndiyo",
+        'option:no' => "Siyo",
+        
+        'question:areyousure' => 'Una hakika?',
+        
+        'save' => "Hifadhi",
+        'publish' => "Chapisha",
+        'cancel' => "Batili",
+        'update' => "Badili",
+        'view' => "Tazama",
+        'edit' => "Hariri",
+        'delete' => "Futa",
+
+        'actiongatekeeper:timeerror' => 'Samahani, ukurasa ulioutumia umekufa. Tafadhali burudisha na jaribu tena.',
+
+        'email:settings' => "Mipangilio ya barua pepe",
+        'email:address:label' => "Barua pepe yako",
+
+        'email:save:success' => "Anwani mpya ya barua pepe imehifadhiwa.",
+        'email:save:fail' => "Anwani yako ya barua pepe haikuweza kuhifadhiwa.",
+
+        'email:resetpassword:subject' => "Neno la siri limepanga upya!",
+        'email:resetpassword:body' => "Hujambo %s,
+
+Neno lako la siri limepanga upya kwa: %s",
+        
+        'email:requestPartnership:subject' => "%s inataka kuongeza %s kama ubia",
+        'email:requestPartnership:body' => "Kuthibitisha ubia huu, bongeza kiungo chini na fungua katika akaunti yako ya Envaya:
+%s",
+
+        'email:partnershipConfirmed:subject' => "%s imethibitisha ubia wake na %s",
+        'email:partnershipConfirmed:body' => "Kuona ukurasa wako wa Ubia, bongeza kiungo chini:
+%s",
+
+        'email:resetreq:subject' => "Ombi kwa neno jipya la siri",
+        'email:resetreq:body' => "Hujambo %s,
+
+Mtu fulani ameomba neno jipya la siri kwa akaunti yako.
+
+Kama uliliomba, bongeza kiungo chini kubadili neno lako la siri:
+
+%s",
+
+        'en' => 'Kiingereza',
 
         'tz:pemba_n' => 'Pemba Kaskazini',
-        'tz:pemba_s' => 'Pemba Kusini',
-        'tz:pwani' => 'Pwani',
+        'tz:pemba_s' => 'Pemba Kusini',        
         'tz:zanzibar_cs' => 'Unguja Kusini',
         'tz:zanzibar_n' => 'Unguja Kaskazini',
-        'tz:zanzibar_w' => 'Unguja Mjini Magharibi',
-    
-    /*
-        'welcome' => "Karibu katika Envaya",
-        'register_org' => "Ongeza chama kipya",
-        'welcome_user' => "Karibu, %s!",
-        'browse_map' => 'Ramani ya vyama',
-        'actions' => 'Vitendo',
-        'org:yours' => 'Umbo',
-        'org:list_all' => "Orodha ya vyama vyote",
-        'org:noupdates' => "Chama hiki hakijaandika habari yo yote.",
-        'org:view' => 'Tazama umbo',
-        'org:edit' => 'Hariri umbo',        
-        'org:updates' => 'Habari',
-        'org:mobilesettings' => 'Mipangilio ya simu',
-        'translation_by' => 'Tafsiri kwa',        
-        'org:name' => 'Jina la chama',
-        'org:username' => 'Jina la mtumiaji la chama',
-        'org:password' => 'Neno la siri',
-        'org:password2' => "Neno la siri (tena)",
-        'org:language' => 'Lugha',
-        'org:email' => "Barua pepe (email)",
-        'org:description' => 'Elezo',
-        'org:interests' => 'Aina',
-        'org:map' => 'Ramani',
-        'org:website' => 'Tovuti',
-        'org:location' => 'Sehemu',
-        'org:blog' => 'Habari',
-        'org:new' => "Ongeza Chama",
-        'item:group:organization' => 'Vyama',
-        'edit' => 'Hariri',
-        'search' => 'Tafuta',
-        'login' => 'Fungua',
-        'logout' => 'Ondoka',
-        'email' => 'Email',
-        'settings' => 'Mipangilio',
-        'admin' => 'Uendeshaji',
-        'name' => 'Jina',
-        'username' => 'Jina la mtumiaji',
-        'password' => 'Neno la siri',
-        'passwordagain' => "Neno la siri (tena)",
-        'searchtitle' => 'Utafutaji: %s',
-        'user:name:label' => 'Jina lako',
-        'user:set:password' => "Neno la siri",
-        'user:password:label' => "Neno la siri mpya",
-        'user:password2:label' => "Neno la siri mpya (tena)",
-        'email:settings' => "Email",
-		'email:address:label' => "Email yako",
-
-        'user:language:label' => 'Lugha yako',
-        'usersettings:user' => 'Mipangilio yako',
-        'usersettings:user:opt:linktext' => 'Badili mipangilio yako',
-        'user:persistent' => 'Unikumbuke',
-        'user:set:language' => "Mipangilio ya lugha",
-        'user:password:lost' => 'Sikumbuki neno ya siri',
-        'register' => 'Jiunga',
-        'complete' => 'kizima',
-    */    
+        'tz:zanzibar_w' => 'Unguja Mjini Magharibi',      
     );
 
     add_translation("sw",$swahili);

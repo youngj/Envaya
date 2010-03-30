@@ -40,7 +40,7 @@
         
         if ($org->canEdit())
         {
-            add_submenu_item(elgg_echo("widget:edit"), "{$widget->getUrl()}/edit", 'b');                
+            add_submenu_item(elgg_echo("widget:edit"), "{$widget->getUrl()}/edit", 'edit');
         }    
         
         $org->showCantViewMessage();

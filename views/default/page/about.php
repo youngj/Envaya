@@ -11,6 +11,3 @@ The Envaya website is developed by a small team of software engineers and intern
 from the United States and Canada. We believe people everywhere should have the tools they need to achieve their 
 own goals.
 </p>
-<p>
-Contact us: <a href='mailto:info@envaya.org'>info@envaya.org</a>
-</p>

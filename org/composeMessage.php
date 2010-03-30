@@ -9,7 +9,7 @@
     
     if ($org && get_loggedin_user()->isApproved()) 
     {             
-        add_submenu_item(elgg_echo("message:cancel"), $org->getURL(), 'b');                
+        add_submenu_item(elgg_echo("message:cancel"), $org->getURL(), 'edit');                
     
         $title = elgg_echo("message:title");
         $area1 = elgg_view("org/composeMessage", array('entity' => $org));

@@ -17,7 +17,7 @@ if ($org->canEdit())
 {
     $cancelUrl = get_input('from') ?: $widget->getUrl();
 
-    add_submenu_item(elgg_echo("widget:canceledit"), $cancelUrl, 'b');                
+    add_submenu_item(elgg_echo("widget:canceledit"), $cancelUrl, 'edit');
 
     $body = elgg_view_layout('one_column', 
         elgg_view_title($title), $widget->renderEdit());    

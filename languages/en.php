@@ -286,7 +286,11 @@
         'image:delete' => "Remove image?",                      
                                 
         'upload:invalid_image' => "The uploaded file did not appear to be a valid image.",                
-                
+        
+        'contact:link' => "Contact",    
+        'contact:title' => 'Contact us',
+        
+        'about:link' => "About",        
         'about:title' => 'About us',
         
         'page:notfound' => "Page not found",
@@ -308,27 +312,16 @@
         'theme:red' => "Red theme",
 
         'blog:save' => "Save changes",
-        'blog:publish' => "Publish",
 
         'blog:content:label' => "Write the text for your news update below:",
         'blog:image:label' => "Image to display with this news update:",
 
-        'blog:strapline' => "%s",
-
         'blog:posted' => "Your news update was successfully posted.",
         'blog:updated' => "Your news update was successfully updated.",
         'blog:deleted' => "Your news update was successfully deleted.",
-
-        'blog:error' => 'Something went wrong. Please try again.',
-        'blog:save:failure' => "Your news update could not be saved. Please try again.",
         'blog:blank' => "Your news update was empty.",
-        'blog:notfound' => "Sorry; we could not find the specified news update.",
-        'blog:notdeleted' => "Sorry; we could not delete this news update.",
 
-        'org:verified' => "Organization verified",
-        'org:notverified' => "Organization could not be verified",
-            
-        'map:drop_pin' => "Drop map pin",
+        'map:drop_pin' => "Add pin to map",
         'map:drag_pin' => "Drag and drop the red map pin below to your organization's location.",
 
         'trans:by' => 'Translation by',
@@ -353,94 +346,19 @@
         'trans:stale_trans_from_to' => "This page has been translated from %s, but the %s version is out of date.",
         'trans:view_stale_automatic' => "View using Google Translate.",
 
-        'exception:title' => "Welcome to Elgg.",
+        'exception:title' => "Error",
 
-        'actionundefined' => "The requested action (%s) was not defined in the system.",
         'actionloggedout' => "Sorry, you cannot perform this action while logged out.",
 
-        'notfound' => "The requested resource could not be found, or you do not have access to it.",
-
-        'pageownerunavailable' => 'Warning: The page owner %d is not accessible!',
-
-        'profile' => "Profile",
-        'profile:edit:default' => 'Replace profile fields',
-        'profile:preview' => 'Preview',
-        'user' => "User",
-
-        'profile:yours' => "Your profile",
-        'profile:user' => "%s's profile",
-
-        'profile:edit' => "Edit profile",
-        'profile:profilepictureinstructions' => "The profile picture is the image that's displayed on your profile page. <br /> You can change it as often as you'd like. (File formats accepted: GIF, JPG or PNG)",
-        'profile:icon' => "Profile picture",
-        'profile:createicon' => "Create your avatar",
-        'profile:currentavatar' => "Current avatar",
-        'profile:createicon:header' => "Profile picture",
-        'profile:profilepicturecroppingtool' => "Profile picture cropping tool",
-        'profile:createicon:instructions' => "Click and drag a square below to match how you want your picture cropped.  A preview of your cropped picture will appear in the box on the right.  When you are happy with the preview, click 'Create your avatar'. This cropped image will be used throughout the site as your avatar. ",
-
-        'profile:editdetails' => "Edit details",
-        'profile:editicon' => "Edit profile icon",
-
-        'profile:aboutme' => "About me",
-        'profile:description' => "About me",
-        'profile:briefdescription' => "Brief description",
-        'profile:location' => "Location",
-        'profile:skills' => "Skills",
-        'profile:interests' => "Interests",
-        'profile:contactemail' => "Contact email",
-        'profile:phone' => "Telephone",
-        'profile:mobile' => "Mobile phone",
-        'profile:website' => "Website",
-
-        'profile:banned' => 'This user account has been suspended.',
-        'profile:deleteduser' => 'Deleted user',
-
-        'profile:label' => "Profile label",
-        'profile:type' => "Profile type",
-
-        'profile:saved' => "Your profile was successfully saved.",
-        'profile:icon:uploaded' => "Your profile picture was successfully uploaded.",
-
-        'profile:noaccess' => "You do not have permission to edit this profile.",
-        'profile:notfound' => "Sorry; we could not find the specified profile.",
-        'profile:cantedit' => "Sorry; you do not have permission to edit this profile.",
-        'profile:icon:notfound' => "Sorry; there was a problem uploading your profile picture.",
-
-        'feed:rss' => 'Subscribe to feed',
-
-        'notifications:usersettings' => "Notification settings",
-        'notifications:methods' => "Please specify which methods you want to permit.",
-
-        'notifications:usersettings:save:ok' => "Your notification settings were successfully saved.",
-        'notifications:usersettings:save:fail' => "There was a problem saving your notification settings.",
-
-        'notfound' => "No results found.",
         'next' => "Next",
         'previous' => "Previous",
 
-        'viewtype:change' => "Change listing type",
-        'viewtype:list' => "List view",
-        'viewtype:gallery' => "Gallery",
-
-        'tag:search:startblurb' => "Items with tags matching '%s':",
-
-        'user:search:startblurb' => "Users matching '%s':",
-        'user:search:finishblurb' => "To view more, click here.",
-
-        'search:go' => 'Go',
-
-        'account' => "Account",
         'settings' => "Settings",
-        'tools' => "Tools",
-        'tools:yours' => "Your tools",
 
         'register' => "Register",
         'registerok' => "You have successfully registered for %s.",
         'registerbad' => "Your registration was unsuccessful. The username may already exist, your passwords might not match, or your username or password may be too short.",
         'registerdisabled' => "Registration has been disabled by the system administrator",
-
-        'firstadminlogininstructions' => 'Your new Elgg site has been successfully installed and your administrator account created. You can now configure your site further by enabling various installed plugin tools.',
 
         'registration:notemail' => 'The email address you provided does not appear to be a valid email address.',
         'registration:userexists' => 'That username already exists',
@@ -448,20 +366,17 @@
         'registration:passwordtooshort' => 'The password must be a minimum of 6 characters long.',
         'registration:dupeemail' => 'This email address has already been registered.',
         'registration:invalidchars' => 'Sorry, your username contains invalid characters.',
-        'registration:emailnotvalid' => 'Sorry, the email address you entered appears to be invalid.',
-        'registration:passwordnotvalid' => 'Sorry, the password you entered is invalid. Please choose another.',
         'registration:usernamenotvalid' => 'Sorry, the username you entered is invalid. Please choose another.',
 
         'user:set:name' => "Account name settings",
         'user:name:label' => "Your name",
         'user:name:success' => "Successfully changed your name on the system.",
-        'user:name:fail' => "Could not change your name on the system.",
 
         'user:set:password' => "Account password",
         'user:password:label' => "Your new password",
         'user:password2:label' => "Your new password again",
-        'user:password:success' => "Your password has been changed. Check your email for your new password, and enter it below.",
-        'user:password:fail' => "Could not change your password on the system.",
+        'user:password:success' => "Your new password has been emailed to you. Check your email for your new password, and enter it below.",
+        'user:password:fail' => "Could not change your password.",
         'user:password:fail:notsame' => "The two passwords are not the same!",
         'user:password:fail:tooshort' => "Password is too short!",
 
@@ -475,96 +390,47 @@
         'user:password:resetreq:success' => 'Successfully requested a new password. Check your email for a message from Envaya and click on the link inside.',
         'user:password:resetreq:fail' => 'Could not request a new password.',
 
-        'user:password:text' => 'To generate a new password, enter your username below. We will send the address of a unique verification page to you via email. Click on the link in the body of the message and a new password will be sent to you.',
-
-        'usersettings:description' => "The user settings panel allows you to control all your personal settings, from user management to how plugins behave. Choose an option below to get started.",
-
-        'usersettings:statistics' => "Your statistics",
-        'usersettings:statistics:opt:description' => "View statistical information about users and objects on your site.",
-        'usersettings:statistics:opt:linktext' => "Account statistics",
+        'user:password:text' => 'To generate a new password, enter your username below. We will send the address of a verification page to you via email. Click on the link in the message and a new password will be sent to you.',
 
         'usersettings:user' => "Your settings",
-        'usersettings:user:opt:description' => "This allows you to control user settings.",
-        'usersettings:user:opt:linktext' => "Change your settings",
 
-        'usersettings:plugins' => "Tools",
-        'usersettings:plugins:opt:description' => "Configure settings (if any) for your active tools.",
-        'usersettings:plugins:opt:linktext' => "Configure your tools",
+        'friendlytime:justnow' => "just now",
+        'friendlytime:minutes' => "%s minutes ago",
+        'friendlytime:minutes:singular' => "a minute ago",
+        'friendlytime:hours' => "%s hours ago",
+        'friendlytime:hours:singular' => "an hour ago",
+        'friendlytime:days' => "%s days ago",
+        'friendlytime:days:singular' => "yesterday",
+        
+        'date:withmonth' => '%s %s',
+        'date:withyear' => '%s, %s',
 
-        'usersettings:plugins:description' => "This panel allows you to control and configure the personal settings for the tools installed by your system administrator.",
-        'usersettings:statistics:label:numentities' => "Your entities",
+        'date:month:1' => 'January',
+        'date:month:2' => 'February',
+        'date:month:3' => 'March',
+        'date:month:4' => 'April',
+        'date:month:5' => 'May',
+        'date:month:6' => 'June',
+        'date:month:7' => 'July',
+        'date:month:8' => 'August',
+        'date:month:9' => 'September',
+        'date:month:10' => 'October',
+        'date:month:11' => 'November',
+        'date:month:12' => 'December',        
 
-        'usersettings:statistics:yourdetails' => "Your details",
-        'usersettings:statistics:label:name' => "Full name",
-        'usersettings:statistics:label:email' => "Email",
-        'usersettings:statistics:label:membersince' => "Member since",
-        'usersettings:statistics:label:lastlogin' => "Last logged in",
+        'option:yes' => "Yes",
+        'option:no' => "No",
+        
+        'question:areyousure' => 'Are you sure?',
 
         'save' => "Save",
         'publish' => "Publish",
         'cancel' => "Cancel",
-        'saving' => "Saving ...",
         'update' => "Update",
         'view' => "View",
         'edit' => "Edit",
         'delete' => "Delete",
-        'accept' => "Accept",
-        'load' => "Load",
-        'upload' => "Upload",
-        'ban' => "Ban",
-        'unban' => "Unban",
-        'enable' => "Enable",
-        'disable' => "Disable",
-        'request' => "Request",
-        'complete' => "Complete",
-        'open' => 'Open',
-        'close' => 'Close',
-        'reply' => "Reply",
-        'more' => 'More',
-        'comments' => 'Comments',
-        'import' => 'Import',
 
-        'up' => 'Up',
-        'down' => 'Down',
-        'top' => 'Top',
-        'bottom' => 'Bottom',
-
-        'invite' => "Invite",
-
-        'resetpassword' => "Reset password",
-        'makeadmin' => "Make admin",
-        'removeadmin' => "Remove admin",
-
-        'option:yes' => "Yes",
-        'option:no' => "No",
-
-        'unknown' => 'Unknown',
-
-        'active' => 'Active',
-        'total' => 'Total',
-
-        'content' => "content",
-        'content:latest' => 'Latest activity',
-        'content:latest:blurb' => 'Alternatively, click here to view the latest content from across the site.',
-
-        'link:text' => 'view link',
-
-        'enableall' => 'Enable All',
-        'disableall' => 'Disable All',
-
-        'question:areyousure' => 'Are you sure?',
-
-        'title' => "Title",
-        'description' => "Description",
-        'tags' => "Tags",
-        'all' => "All",
-
-        'by' => 'by',
-
-        'relationships' => "Relationships",
-        'metadata' => "Metadata",
-
-        'deleteconfirm' => "Are you sure you want to delete this item?",
         'fileexists' => "A file has already been uploaded. To replace it, select it below:",
 
         'useradd:subject' => 'User account created',
@@ -583,52 +449,10 @@ And log in with these user credentials:
 Once you have logged in, we highly recommend that you change your password.
 ',
 
-        'friendlytime:justnow' => "just now",
-        'friendlytime:minutes' => "%s minutes ago",
-        'friendlytime:minutes:singular' => "a minute ago",
-        'friendlytime:hours' => "%s hours ago",
-        'friendlytime:hours:singular' => "an hour ago",
-        'friendlytime:days' => "%s days ago",
-        'friendlytime:days:singular' => "yesterday",
-
-        'date:month:01' => 'January %s',
-        'date:month:02' => 'February %s',
-        'date:month:03' => 'March %s',
-        'date:month:04' => 'April %s',
-        'date:month:05' => 'May %s',
-        'date:month:06' => 'June %s',
-        'date:month:07' => 'July %s',
-        'date:month:08' => 'August %s',
-        'date:month:09' => 'September %s',
-        'date:month:10' => 'October %s',
-        'date:month:11' => 'November %s',
-        'date:month:12' => 'December %s',
-
-        'installation:error:htaccess' => "Elgg requires a file called .htaccess to be set in the root directory of its installation. We tried to create it for you, but Elgg doesn't have permission to write to that directory.
-
-Creating this is easy. Copy the contents of the textbox below into a text editor and save it as .htaccess
-
-",
-			'installation:error:settings' => "Elgg couldn't find its settings file. Most of Elgg's settings will be handled for you, but we need you to supply your database details. To do this:
-
-1. Rename engine/settings.example.php to settings.php in your Elgg installation.
-
-2. Open it with a text editor and enter your MySQL database details. If you don't know these, ask your system administrator or technical support for help.
-
-Alternatively, you can enter your database settings below and we will try and do this for you...",
-
-        'installation' => "Installation",
-        'installation:success' => "Elgg's database was installed successfully.",
-        'installation:configuration:success' => "Your initial configuration settings have been saved. Now register your initial user; this will be your first system administrator.",
-
-        'welcome' => "Welcome",
-        'welcome:user' => 'Welcome %s',
-        'welcome_message' => "Welcome to this Elgg installation.",
-
         'email:settings' => "Email settings",
         'email:address:label' => "Your email address",
 
-        'email:save:success' => "New email address saved, verification requested.",
+        'email:save:success' => "New email address saved.",
         'email:save:fail' => "Your new email address could not be saved.",
 
         'email:resetpassword:subject' => "Password reset!",
@@ -641,7 +465,7 @@ Your password has been reset to: %s",
 %s",
 
         'email:partnershipConfirmed:subject' => "%s confirmed its partnership with %s",
-        'email:partnershipConfirmed:body' => "To see your partnerships page, click on the link below:
+        'email:partnershipConfirmed:body' => "To see your Partnerships page, click on the link below:
 %s",
 
         'email:resetreq:subject' => "Request for new password",
@@ -653,20 +477,7 @@ If you requested this, click on the link below to change your password:
 
 %s",
 
-        'default_access:settings' => "Your default access level",
-        'default_access:label' => "Default access",
-        'user:default_access:success' => "Your new default access level was saved.",
-        'user:default_access:failure' => "Your new default access level could not be saved.",
-
-        'entity:default:strapline' => 'Created %s by %s',
-
-		/**
-		 * Action gatekeeper
-		 */
-        'actiongatekeeper:missingfields' => 'Form is missing __token or __ts fields',
-        'actiongatekeeper:tokeninvalid' => "We encountered an error (token mismatch). This probably means that the page you were using expired. Please try again.",
         'actiongatekeeper:timeerror' => 'The page you were using has expired. Please refresh and try again.',
-        'actiongatekeeper:pluginprevents' => 'A extension has prevented this form from being submitted.',
 
         "en" => "English",
         "sw" => "Swahili",        
@@ -687,7 +498,7 @@ If you requested this, click on the link below to change your password:
         'tz:mwanza' => 'Mwanza',
         'tz:pemba_n' => 'Pemba North',
         'tz:pemba_s' => 'Pemba South',
-        'tz:pwani' => 'Coast',
+        'tz:pwani' => 'Pwani',
         'tz:rukwa' => 'Rukwa',
         'tz:ruvuma' => 'Ruvuma',
         'tz:shinyanga' => 'Shinyanga',

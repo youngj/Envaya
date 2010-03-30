@@ -830,15 +830,10 @@
 			// See if it exists and is disabled
 			$access_status = access_get_show_hidden_status();
 			access_show_hidden_entities(true);
-				
-			// Validate email address
-			if (!validate_email_address($email)) throw new RegistrationException(elgg_echo('registration:emailnotvalid'));
-			
-			// Validate password
-			if (!validate_password($password)) throw new RegistrationException(elgg_echo('registration:passwordnotvalid'));
-			
-			// Validate the username
-			if (!validate_username($username)) throw new RegistrationException(elgg_echo('registration:usernamenotvalid'));
+							
+			validate_email_address($email);			
+			validate_password($password);			
+			validate_username($username);
 				
 		// Check to see if $username exists already
 			if ($user = get_user_by_username($username)) {

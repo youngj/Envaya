@@ -31,12 +31,7 @@
     {
         $blog->access_id = ACCESS_PUBLIC;
         $blog->content = $body;
-
-        if (!$blog->save()) 
-        {
-            register_error(elgg_echo("blog:error"));
-            forward();
-        }
+        $blog->save();
         
         if ($hasImage)
         {   

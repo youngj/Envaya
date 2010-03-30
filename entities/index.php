@@ -52,7 +52,7 @@
 	// Otherwise?
 		} else {
 			
-			$body = elgg_echo('notfound');
+            $body = elgg_echo('search:noresults');
 			
 		}
 		

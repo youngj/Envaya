@@ -36,17 +36,8 @@
 
     $owner = $vars['entity']->getOwnerEntity();
     $ownertxt = elgg_echo('unknown');
-    if ($owner)
-        $ownertxt = "<a href=\"" . $owner->getURL() . "\">" . escape($owner->name) ."</a>";
 
-    $info .= "<div>".sprintf(elgg_echo("entity:default:strapline"),
-                    friendly_time($vars['entity']->time_created),
-                    $ownertxt
-    );
-
-    $info .= "</div>";
-
-    $info = "<span title=\"" . elgg_echo('entity:default:missingsupport:popup') . "\">$info</span>";
-    $icon = "<span title=\"" . elgg_echo('entity:default:missingsupport:popup') . "\">$icon</span>";
+    $info = "<span>$info</span>";
+    $icon = "<span>$icon</span>";
 
     echo elgg_view_listing($icon, $info);

@@ -1,6 +1,6 @@
 <?php
     $pageName = get_input('page_name');       
-    
+       
     if (preg_match('/[^\w]/', $pageName))
     {
         not_found();        

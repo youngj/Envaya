@@ -298,6 +298,129 @@ You cannot reply to this email.",
         'entity:delete:success' => 'Entity %s has been deleted',
         'entity:delete:fail' => 'Entity %s could not be deleted',
 
+        'logbrowser' => 'Log browser',
+        'logbrowser:browse' => 'Browse system log',
+        'logbrowser:search' => 'Refine results',
+        'logbrowser:user' => 'Username to search by',
+        'logbrowser:starttime' => 'Beginning time (for example "last monday", "1 hour ago")',
+        'logbrowser:endtime' => 'End time',
+
+        'logbrowser:explore' => 'Explore log',
+        
+        'actionundefined' => "The requested action (%s) was not defined in the system.",
+        'pageownerunavailable' => 'Warning: The page owner %d is not accessible!',
+
+        'profile' => "Profile",
+        'profile:edit:default' => 'Replace profile fields',
+        'profile:preview' => 'Preview',
+
+        'profile:yours' => "Your profile",
+        'profile:user' => "%s's profile",
+
+        'profile:edit' => "Edit profile",
+        'profile:profilepictureinstructions' => "The profile picture is the image that's displayed on your profile page. <br /> You can change it as often as you'd like. (File formats accepted: GIF, JPG or PNG)",
+        'profile:icon' => "Profile picture",
+        'profile:createicon' => "Create your avatar",
+        'profile:currentavatar' => "Current avatar",
+        'profile:createicon:header' => "Profile picture",
+        'profile:profilepicturecroppingtool' => "Profile picture cropping tool",
+        'profile:createicon:instructions' => "Click and drag a square below to match how you want your picture cropped.  A preview of your cropped picture will appear in the box on the right.  When you are happy with the preview, click 'Create your avatar'. This cropped image will be used throughout the site as your avatar. ",
+
+        'profile:editdetails' => "Edit details",
+        'profile:editicon' => "Edit profile icon",
+
+        'profile:aboutme' => "About me",
+        'profile:description' => "About me",
+        'profile:briefdescription' => "Brief description",
+        'profile:location' => "Location",
+        'profile:skills' => "Skills",
+        'profile:interests' => "Interests",
+        'profile:contactemail' => "Contact email",
+        'profile:phone' => "Telephone",
+        'profile:mobile' => "Mobile phone",
+        'profile:website' => "Website",
+
+        'profile:banned' => 'This user account has been suspended.',
+        'profile:deleteduser' => 'Deleted user',
+
+        'profile:label' => "Profile label",
+        'profile:type' => "Profile type",
+
+        'profile:saved' => "Your profile was successfully saved.",
+        'profile:icon:uploaded' => "Your profile picture was successfully uploaded.",
+
+        'profile:noaccess' => "You do not have permission to edit this profile.",
+        'profile:notfound' => "Sorry; we could not find the specified profile.",
+        'profile:cantedit' => "Sorry; you do not have permission to edit this profile.",
+        'profile:icon:notfound' => "Sorry; there was a problem uploading your profile picture.",        
+        
+        'user' => "User",
+        'feed:rss' => 'Subscribe to feed',
+
+        'notifications:usersettings' => "Notification settings",
+        'notifications:methods' => "Please specify which methods you want to permit.",
+
+        'notifications:usersettings:save:ok' => "Your notification settings were successfully saved.",
+        'notifications:usersettings:save:fail' => "There was a problem saving your notification settings.",        
+        
+        'viewtype:change' => "Change listing type",
+        'viewtype:list' => "List view",
+        'viewtype:gallery' => "Gallery",
+
+        'tag:search:startblurb' => "Items with tags matching '%s':",
+
+        'user:search:startblurb' => "Users matching '%s':",
+        'user:search:finishblurb' => "To view more, click here.",
+        
+        'firstadminlogininstructions' => 'Your new Elgg site has been successfully installed and your administrator account created. You can now configure your site further by enabling various installed plugin tools.',        
+
+        'invite' => "Invite",
+
+        'resetpassword' => "Reset password",
+        'makeadmin' => "Make admin",
+        'removeadmin' => "Remove admin",
+
+        'unknown' => 'Unknown',
+
+        'active' => 'Active',
+        'total' => 'Total',
+
+        'content' => "content",
+        'content:latest' => 'Latest activity',
+
+        'installation:error:htaccess' => "Elgg requires a file called .htaccess to be set in the root directory of its installation. We tried to create it for you, but Elgg doesn't have permission to write to that directory.
+
+Creating this is easy. Copy the contents of the textbox below into a text editor and save it as .htaccess
+
+",
+            'installation:error:settings' => "Elgg couldn't find its settings file. Most of Elgg's settings will be handled for you, but we need you to supply your database details. To do this:
+
+1. Rename engine/settings.example.php to settings.php in your Elgg installation.
+
+2. Open it with a text editor and enter your MySQL database details. If you don't know these, ask your system administrator or technical support for help.
+
+Alternatively, you can enter your database settings below and we will try and do this for you...",
+
+        'installation' => "Installation",
+        'installation:success' => "Elgg's database was installed successfully.",
+        'installation:configuration:success' => "Your initial configuration settings have been saved. Now register your initial user; this will be your first system administrator.",
+
+        'accept' => "Accept",
+        'load' => "Load",
+        'upload' => "Upload",
+        'ban' => "Ban",
+        'unban' => "Unban",
+        'enable' => "Enable",
+        'disable' => "Disable",
+        'request' => "Request",
+        'complete' => "Complete",
+        'open' => 'Open',
+        'close' => 'Close',
+        'reply' => "Reply",
+        'more' => 'More',
+        'comments' => 'Comments',  
+        
+        'actiongatekeeper:missingfields' => 'Form is missing __token or __ts fields',
     );  
     
     global $CONFIG;

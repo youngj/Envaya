@@ -24,13 +24,8 @@
         $blog = new NewsUpdate();
         $blog->owner_guid = get_loggedin_userid();
         $blog->container_guid = $orgId;
-        $blog->content = $body;
-    
-        if (!$blog->save()) 
-        {
-            register_error(elgg_echo("blog:error"));
-            forward_to_referrer();
-        }
+        $blog->content = $body;    
+        $blog->save();
 
         if ($hasImage)
         {        

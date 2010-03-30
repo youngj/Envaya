@@ -27,14 +27,12 @@
 		if (strcmp($name, $user->name)!=0)
 		{
 			$user->name = $name;
-			if ($user->save())
-				system_message(elgg_echo('user:name:success'));
-			else
-				register_error(elgg_echo('user:name:fail'));
+			$user->save();
+			system_message(elgg_echo('user:name:success'));			
 		}
 	}
 	else
-		register_error(elgg_echo('user:name:fail'));
+		register_error(elgg_echo('org:cantedit'));
 	
 	//forward($_SERVER['HTTP_REFERER']);
 	//exit;

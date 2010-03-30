@@ -4,6 +4,8 @@ function org_page_handler($page)
 {
     global $CONFIG;
 
+    add_generic_footer();
+
     if (isset($page[0]))
     {
         switch($page[0])
@@ -41,6 +43,7 @@ function org_page_handler($page)
 function page_page_handler($page)
 {
     $pageName = $page[0];
+    add_generic_footer();
     set_input('page_name', $pageName);
     include(dirname(__FILE__) . "/page.php");
 }
@@ -48,6 +51,7 @@ function page_page_handler($page)
 function home_page_handler($page)
 {
     set_input('page_name','home');
+    add_generic_footer();
     include(dirname(__FILE__) . "/page.php");
 }
 
@@ -198,6 +202,12 @@ function notify_new_org($event, $objectType, $org)
     }
 }
 
+function add_generic_footer()
+{
+    add_submenu_item(elgg_echo('about:link'), "/page/about", 'footer');
+    add_submenu_item(elgg_echo('contact:link'), "/page/contact", 'footer');
+}
+
 register_page_handler('orgprofile','org_profile_page_handler');
 register_page_handler('org','org_page_handler');
 register_page_handler('page','page_page_handler');
@@ -217,7 +227,6 @@ register_action("org/register2",true,  "{$CONFIG->path}actions/org/register2.php
 register_action("org/register3",false,  "{$CONFIG->path}actions/org/register3.php");
 register_action("org/saveWidget",false, "{$CONFIG->path}actions/org/saveWidget.php");
 register_action("org/approve",false,    "{$CONFIG->path}actions/org/approveOrg.php");
-register_action("org/verify",false,     "{$CONFIG->path}actions/org/verifyOrg.php");
 register_action("org/changeEmail",false,"{$CONFIG->path}actions/org/changeEmail.php");
 register_action("org/requestPartner",false,"{$CONFIG->path}actions/org/requestPartner.php");
 register_action("org/createPartner",false,"{$CONFIG->path}actions/org/createPartner.php");

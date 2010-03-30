@@ -7,7 +7,7 @@
 	}
 	if (isset($vars['submenu'])) {
 		
-		$submenu = "<ul>" . $vars['submenu'] . "</ul>";
+		$submenu = "<ul>" . implode('', $vars['submenu']) . "</ul>";
 		echo "<div class=\"submenu_group\"><div class=\"submenu_group_{$groupname}\">{$submenu}</div></div>";
 		
 	}

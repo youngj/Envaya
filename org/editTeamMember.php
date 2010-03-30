@@ -14,7 +14,7 @@
     
         $cancelUrl = get_input('from') ?: $teamWidget->getEditURL();
 
-        add_submenu_item(elgg_echo("widget:canceledit"), $cancelUrl, 'b');                
+        add_submenu_item(elgg_echo("widget:canceledit"), $cancelUrl, 'edit');                
     
         $area1 = elgg_view("org/editTeamMember", array('entity' => $member));
         $body = elgg_view_layout("one_column_padded", elgg_view_title($title), $area1);        

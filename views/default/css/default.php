@@ -622,7 +622,7 @@ a.dropdown_item:hover
     white-space:nowrap;
 }
 
-#site_menu a.selected
+a.selected
 {
     font-weight:bold;
     color:black;
@@ -1245,10 +1245,14 @@ a.attachImageClose:hover
     border:0px;
 }
 
-.language
+.language, .footerLinks
 {
-    text-align:center;
-    padding:8px 10px;
+    padding:0px 10px 15px 10px;
+}
+
+.footerLinks
+{
+    float:right;
 }
 
 .commBox

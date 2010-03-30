@@ -25,19 +25,13 @@
 	if ($user) 
 	{
 		if (strcmp($email,$user->email)!=0)
-		{
-	
+		{	
 			if (!get_user_by_email($email))
-			{
-			
-				if ($user->email != $email) {
+			{			
+				if ($user->email != $email) 
+                {
 					$user->email = $email;
-					if ($user->save())
-					{
-						system_message(elgg_echo('email:save:success'));
-					}
-					else
-						register_error(elgg_echo('email:save:fail'));
+					$user->save();
 				}
 			}
 			else

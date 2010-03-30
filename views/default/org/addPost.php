@@ -15,7 +15,7 @@
         array('internalname' => 'submit', 
             'class' => "submit_button addUpdateButton",
             'trackDirty' => true,
-            'value' => elgg_echo('blog:publish'))); 
+            'value' => elgg_echo('publish'))); 
 
     
     echo elgg_view('input/hidden', array(

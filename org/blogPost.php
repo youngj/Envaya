@@ -7,7 +7,7 @@
         $canedit = $post->canEdit();
         if ($canedit) 
         {
-            add_submenu_item(elgg_echo("widget:edit"), "{$post->getUrl()}/edit", 'b');                    
+            add_submenu_item(elgg_echo("widget:edit"), "{$post->getUrl()}/edit", 'edit');                    
         }
     
         $org = $post->getContainerEntity();

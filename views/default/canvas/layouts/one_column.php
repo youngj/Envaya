@@ -10,7 +10,7 @@ echo @$vars['area3'];
     </div>
 
     <?php            
-        $submenu = get_submenu_group('a', 'canvas_header/topbar_submenu', 'canvas_header/topbar_submenu_group'); 
+        $submenu = get_submenu_group('topnav', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group'); 
         if (!empty($submenu))
         {
             echo "<div id='site_menu'>$submenu</div>";
@@ -28,6 +28,10 @@ echo @$vars['area3'];
 
         <div id='content_bottom'></div>        
     </div>
+
+<?php
+    echo get_submenu_group('footer', 'canvas_header/link_submenu', 'canvas_header/footer_submenu_group'); 
+?>
 
 <div class='language'>        
     <?php 
@@ -54,6 +58,6 @@ echo @$vars['area3'];
         }
         echo implode(' &middot; ', $links);
     ?>    
-</div>    
+</div>
 </div>
 

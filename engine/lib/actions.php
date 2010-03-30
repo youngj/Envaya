@@ -162,24 +162,14 @@
 	        		// Validate time to ensure its not crazy
 	        		if (($ts>$now-$hour) && ($ts<$now+$hour))
 	        		{
-	        			$returnval = true; // We have already got this far, so unless anything else says something to the contry we assume we're ok
-	        			
-	        			$returnval = trigger_plugin_hook('action_gatekeeper:permissions:check', 'all', array(
-	        				'token' => $token,
-	        				'time' => $ts
-	        			), $returnval);
-	        			
-	        			if ($returnval)
-	        				return true;
-	        			else if ($visibleerrors)
-	        				register_error(elgg_echo('actiongatekeeper:pluginprevents'));
+	        			return true; 	        			
 	        		}
 	        		else if ($visibleerrors)
 	        			register_error(elgg_echo('actiongatekeeper:timeerror'));
 	        	}
 	        	else if ($visibleerrors)
                 {                    
-	        		register_error(elgg_echo('actiongatekeeper:tokeninvalid'));
+                    register_error(elgg_echo('actiongatekeeper:timeerror'));
                 }    
         	}
         	else if ($visibleerrors)
