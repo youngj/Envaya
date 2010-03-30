@@ -140,6 +140,28 @@ function removeChildren(elem)
     }
 }
 
+
+window.dirty = false;
+function setDirty($dirty)
+{
+    if ($dirty)
+    {    
+        if (!window.onbeforeunload)
+        {
+            window.onbeforeunload = function() {
+                return <?php echo json_encode(elgg_echo("page:dirty")) ?>;
+            };
+        }    
+    }    
+    else
+    {        
+        window.onbeforeunload = null;
+    }
+    window.dirty = $dirty;
+    
+    return true;
+}
+
 </script>
     
 </head>

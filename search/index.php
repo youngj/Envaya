@@ -17,6 +17,7 @@
 		
 	// Set context
 		set_context('search');
+        set_theme('admin');
 		
 	// Get input
 		$tag = stripslashes(get_input('tag'));
@@ -32,23 +33,7 @@
 			$owner_guid_array = explode(",",$owner_guid);
 		} else {
 			$owner_guid_array = $owner_guid;
-		}
-		
-	// Set up submenus
-		if ($object_types = get_registered_entity_types()) {
-			
-			foreach($object_types as $object_type => $subtype_array) {
-				if (is_array($subtype_array) && sizeof($subtype_array))
-					foreach($subtype_array as $object_subtype) {
-						$label = 'item:' . $object_type;
-						if (!empty($object_subtype)) $label .= ':' . $object_subtype;
-						global $CONFIG;
-						add_submenu_item(elgg_echo($label), $CONFIG->wwwroot . "pg/search/?tag=". urlencode($tag) ."&subtype=" . $object_subtype . "&object=". urlencode($object_type) ."&tagtype=" . urlencode($md_type) . "&owner_guid=" . urlencode($owner_guid));
-					}
-			}
-			add_submenu_item(elgg_echo('all'), $CONFIG->wwwroot . "pg/search/?tag=". urlencode($tag) ."&owner_guid=" . urlencode($owner_guid));
-			
-		}
+		}	
 		
 		if (empty($objecttype) && empty($subtype)) {
 			$title = sprintf(elgg_echo('searchtitle'),$tag); 

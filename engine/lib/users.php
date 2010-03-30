@@ -962,9 +962,6 @@
 		
 		//register_action("user/language");
 		
-		// Register the user type
-		register_entity_type('user','');
-		
 		register_plugin_hook('usersettings:save','user','users_settings_save');
 		register_plugin_hook('search','all','search_list_users_by_name');
 		

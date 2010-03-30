@@ -21,12 +21,7 @@
     
         if ($latlong)
         {
-            $org->setLatLong($latlong['lat'], $latlong['long']);
-            
-            $mapWidget = $org->getWidgetByName('map');
-            $mapWidget->save();
-            
-            $homeWidget->included = array('map');
+            $org->setLatLong($latlong['lat'], $latlong['long']);            
         }            
         
         $homeWidget->save();        

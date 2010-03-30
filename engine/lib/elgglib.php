@@ -72,6 +72,33 @@
         );
     }
     
+    function get_guid_index(&$entity_list, $guid)
+    {
+        for ($i = 0; $i < sizeof($entity_list); $i++)
+        {
+            if ($entity_list[$i]->guid == $guid)
+            {
+                return $i;
+            }
+        }
+        return -1;
+    }
+    
+    function array_move_item(&$list, $index, $delta)
+    {
+        $item = $list[$index];
+        $newIndex = $index + $delta;
+        
+        if ($index != -1 && $newIndex >= 0 && $newIndex < sizeof($list))
+        {
+            array_splice($list, $index, 1);            
+            array_splice($list, $newIndex, 0, array($item));
+                        
+            return true; 
+        }
+        return false;
+    }
+
     /**
      * Adds messages to the session so they'll be carried over, and forwards the browser.
      * Returns false if headers have already been sent and the browser cannot be moved.

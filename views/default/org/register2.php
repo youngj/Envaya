@@ -11,7 +11,7 @@
 
 <div class='input'>
 <label><?php echo elgg_echo('create:org_name') ?></label><br />
-<?php echo elgg_view('input/text', array('internalname' => 'org_name')) ?>    
+<?php echo elgg_view('input/text', array('internalname' => 'org_name', 'trackDirty' => true)) ?>    
 <div class='help'><?php echo elgg_echo('create:org_name:help') ?></div>
 </div>
 
@@ -70,7 +70,8 @@ function updateUrl()
 <label><?php echo elgg_echo('create:next') ?></label>
 <br />
 <?php echo elgg_view('input/submit',array(
-    'value' => elgg_echo('create:next:button')
+    'value' => elgg_echo('create:next:button'),
+    'trackDirty' => true
 ));
 ?>
 </div>

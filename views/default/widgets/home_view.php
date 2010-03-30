@@ -48,19 +48,28 @@
         echo elgg_view_layout('section', elgg_echo("org:sectors"), $sectorText);        
     }   
     
-    $includedWidgets = $widget->included;
+    ob_start();
+        $zoom = $widget->zoom ?: 10;
+        
+        $lat = $org->getLatitude();
+        $long = $org->getLongitude();
+        echo elgg_view("org/map", array(
+            'lat' => $lat, 
+            'long' => $long,
+            'zoom' => $zoom,
+            'pin' => true,
+            'static' => true
+        ));        
+        echo "<div style='text-align:center'>";    
+        echo "<em>";
+        echo escape($org->getLocationText());
+        echo "</em>";
+        echo "<br />";    
+        echo "<a href='org/browse/?lat=$lat&long=$long&zoom=10'>";
+        echo elgg_echo('org:see_nearby');
+        echo "</a>";
+        echo "</div>";
+    $map = ob_get_clean();    
+    echo elgg_view_layout('section', elgg_echo("org:location"), $map);        
     
-    if (is_array($includedWidgets))
-    {
-        foreach ($includedWidgets as $includedWidget)
-        {
-            $included = $org->getWidgetByName($includedWidget);        
-            if ($included->isActive())
-            {
-                echo "<div class='section_header' style='margin-bottom:3px'>".elgg_echo("widget:{$included->widget_name}")."</div>";
-                echo $included->renderView();        
-            }    
-        }
-    }    
-
 ?>

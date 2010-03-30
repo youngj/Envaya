@@ -20,6 +20,7 @@
 </div>
 <?php echo elgg_view('input/longtext', array(
     'internalname' => 'mission',
+    'trackDirty' => true,
     'value' => $org->getWidgetByName('home')->content
 )) ?>    
 </div>
@@ -76,7 +77,8 @@
 <div class='help'><?php echo elgg_echo('setup:next:help') ?></div>
 <br />
 <?php echo elgg_view('input/submit',array(
-    'value' => elgg_echo('setup:next:button')
+    'value' => elgg_echo('setup:next:button'),
+    'trackDirty' => true
 ));
 ?>
 </div>

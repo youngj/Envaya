@@ -21,7 +21,9 @@
 	$class = @$vars['class'];
 	if (!$class) $class = "input-text";
     
+    $setDirty = (@$vars['trackDirty']) ? " onchange='setDirty(true)'" : "";
+    
     $value = restore_input($vars['internalname'], @$vars['value']); 
 ?>
 
-<input type="text" <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> <?php echo @$vars['js']; ?> name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> value="<?php echo escape($value); ?>" class="<?php echo $class ?>"/> 
+<input type="text" <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> <?php echo @$vars['js'], $setDirty; ?> name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> value="<?php echo escape($value); ?>" class="<?php echo $class ?>"/> 

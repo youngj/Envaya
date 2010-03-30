@@ -1312,71 +1312,7 @@
 				return $CONFIG->url . $url;
 		}
 	}
-	
-	/**
-	 * Registers and entity type and subtype to return in search and other places.
-	 * A description in the elgg_echo languages file of the form item:type:subtype
-	 * is also expected.
-	 *
-	 * @param string $type The type of entity (object, site, user, group)
-	 * @param string $subtype The subtype to register (may be blank)
-	 * @return true|false Depending on success
-	 */
-	function register_entity_type($type, $subtype) {
 		
-		global $CONFIG;
-		
-		$type = strtolower($type);
-		if (!in_array($type,array('object','site','group','user'))) return false;
-		
-		if (!isset($CONFIG->registered_entities)) $CONFIG->registered_entities = array();
-		$CONFIG->registered_entities[$type][] = $subtype;
-		
-		return true;
-		
-	}
-	
-	/**
-	 * Returns registered entity types and subtypes
-	 * 
-	 * @see register_entity_type
-	 *
-	 * @param string $type The type of entity (object, site, user, group) or blank for all
-	 * @return array|false Depending on whether entities have been registered
-	 */
-	function get_registered_entity_types($type = '') {
-		
-		global $CONFIG;
-		
-		if (!isset($CONFIG->registered_entities)) return false;
-		if (!empty($type)) $type = strtolower($type);
-		if (!empty($type) && empty($CONFIG->registered_entities[$type])) return false;
-		
-		if (empty($type))
-			return $CONFIG->registered_entities;
-			
-		return $CONFIG->registered_entities[$type];
-		
-	}
-	
-	/**
-	 * Determines whether or not the specified entity type and subtype have been registered in the system
-	 *
-	 * @param string $type The type of entity (object, site, user, group)
-	 * @param string $subtype The subtype (may be blank)
-	 * @return true|false Depending on whether or not the type has been registered
-	 */
-	function is_registered_entity_type($type, $subtype) {
-		
-		global $CONFIG;
-		
-		if (!isset($CONFIG->registered_entities)) return false;
-		$type = strtolower($type);
-		if (empty($CONFIG->registered_entities[$type])) return false;
-		if (in_array($subtype, $CONFIG->registered_entities[$type])) return true;
-		
-	}
-	
 	/**
 	 * Page handler for generic entities view system
 	 *
@@ -1390,41 +1326,7 @@
 			@include($CONFIG->path . "entities/index.php");
 		}
 	}
-	
-	/**
-	 * Returns a viewable list of entities based on the registered types
-	 *
-	 * @see elgg_view_entity_list
-	 * 
-	 * @param string $type The type of entity (eg "user", "object" etc)
-	 * @param string $subtype The arbitrary subtype of the entity
-	 * @param int $owner_guid The GUID of the owning user
-	 * @param int $limit The number of entities to display per page (default: 10)
-	 * @param true|false $fullview Whether or not to display the full view (default: true)
-	 * @param true|false $viewtypetoggle Whether or not to allow gallery view 
-	 * @return string A viewable list of entities
-	 */
-	function list_registered_entities($owner_guid = 0, $limit = 10, $fullview = true, $viewtypetoggle = false, $allowedtypes = true) {
 		
-		$typearray = array();
-		
-		if ($object_types = get_registered_entity_types()) {
-			foreach($object_types as $object_type => $subtype_array) {
-				if (is_array($subtype_array) && sizeof($subtype_array) && (in_array($object_type,$allowedtypes) || $allowedtypes === true))
-					foreach($subtype_array as $object_subtype) {
-						$typearray[$object_type][] = $object_subtype;
-					}
-			}
-		}
-		
-		$offset = (int) get_input('offset');
-		$count = get_entities('', $typearray, $owner_guid, "", $limit, $offset, true); 
-		$entities = get_entities('', $typearray,$owner_guid, "", $limit, $offset); 
-
-		return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, $viewtypetoggle);
-		
-	}
-	
 	/**
 	 * Gets a private setting for an entity.
 	 *

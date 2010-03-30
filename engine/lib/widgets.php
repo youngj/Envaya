@@ -10,6 +10,11 @@ class Widget extends ElggObject
         'data_types' => 0,
     );        
     
+    static function getAvailableNames()
+    {
+        return array('home', 'news', 'projects', 'history', 'team', 'contact', 'partnerships');
+    }
+    
     function renderView()
     {
         $res = elgg_view("widgets/{$this->widget_name}_view", array('widget' => $this));
@@ -122,27 +127,20 @@ function save_widget($widget)
 
 function save_widget_home($widget)
 {
-    $widget->content = get_input('content');
-    $widget->included = get_input_array('included');
     $org = $widget->getContainerEntity();    
     $org->setSectors(get_input_array('sector'));
     $org->sector_other = get_input('sector_other');
-    $org->save();
-    $widget->save();
-}
-
-function save_widget_map($widget)
-{
-    $org = $widget->getContainerEntity();
+    
     $org->latitude = get_input('org_lat');
     $org->longitude = get_input('org_lng');    
     
     $org->region = get_input('region');
-    $org->city = get_input('city');
+    $org->city = get_input('city');    
     
     $org->save();
-    
-    
+
+    $widget->content = get_input('content');
+    $widget->included = get_input_array('included');    
     $widget->zoom = get_input('map_zoom');    
     $widget->save();
 }
@@ -154,6 +152,8 @@ function save_widget_contact($widget)
     $org->phone_number = get_input('phone_number');    
     $org->contact_name = get_input('contact_name');    
     $org->contact_title = get_input('contact_title');    
+    $org->street_address = get_input('street_address');
+    $org->mailing_address = get_input('mailing_address');
     $org->save();
     $widget->save();
 }

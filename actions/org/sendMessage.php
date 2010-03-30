@@ -7,7 +7,7 @@
         
     $recipient = get_entity($recipient_guid);
 
-    if (!$recipient)
+    if (!$recipient || !$user->isApproved())
     {
         register_error(elgg_echo("message:invalid_recipient"));   
         forward();

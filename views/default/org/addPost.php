@@ -6,6 +6,7 @@
     echo elgg_view('input/longtext', 
         array(
             'internalname' => 'blogbody', 
+            'trackDirty' => true,
             'js' => "style='height:100px'",            
         )
     );
@@ -13,6 +14,7 @@
     echo elgg_view('input/submit', 
         array('internalname' => 'submit', 
             'class' => "submit_button addUpdateButton",
+            'trackDirty' => true,
             'value' => elgg_echo('blog:publish'))); 
 
     
@@ -26,6 +28,10 @@
 
 function showAttachImage($show)
 {
+    $dirty = window.dirty;
+    setDirty(false);
+    setTimeout(function() { setDirty($dirty) }, 5);
+
     var attachImage = document.getElementById('attachImage');
     var attachControls = document.getElementById('attachControls');
     

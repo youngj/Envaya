@@ -205,7 +205,7 @@ class Organization extends ElggUser
     
     public function getAvailableWidgets()
     {
-        $allNames = array('home', 'news', 'map', 'history', 'team', 'programs', 'contact', 'partnerships');
+        $allNames = Widget::getAvailableNames();
     
         $activeWidgets = $this->getActiveWidgets();
         
@@ -307,6 +307,14 @@ class Organization extends ElggUser
         return Partnership::filterByCondition($where, $args, '', $limit, $offset, $count);
     }    
     
+    function getTeamMembers($limit = 30, $offset = 0, $count = false)
+    {
+        $where = array("container_guid = ?");
+        $args = array($this->guid);
+    
+        return TeamMember::filterByCondition($where, $args, 'list_order asc', $limit, $offset, $count);    
+    }
+    
     function getPartnership($partnerOrg)
     {
         $partnership = Partnership::getByCondition(array("container_guid = ? AND partner_guid = ?"), 
@@ -322,186 +330,9 @@ class Organization extends ElggUser
     }
 }
 
-class Partnership extends ElggObject
-{
-    static $subtype_id = T_partnership;
-    static $table_name = 'partnerships';
-    
-    static $table_attributes = array(
-        'description' => '',
-        'partner_guid' => 0,
-        'date_formed' => '',
-        'approval' => 0,
-    );
-    
-    function getPartner()
-    {
-        return get_entity($this->partner_guid);
-    }
-    
-    function isSelfApproved()
-    {
-        return ($this->approval & 1) != 0;
-    }
-    
-    function setSelfApproved($approved)
-    {
-        if ($approved)
-        {
-            $this->approval = $this->approval | 1;
-        }
-        else
-        {
-            $this->approval = $this->approval & ~1;
-        }
-    }
-
-    function isPartnerApproved()
-    {
-        return ($this->approval & 2) != 0;
-    }
-
-    function setPartnerApproved($approved)
-    {
-        if ($approved)
-        {
-            $this->approval = $this->approval | 2;
-        }
-        else
-        {
-            $this->approval = $this->approval & ~2;
-        }
-    }
-
-    function getApproveUrl()
-    {
-        return "{$this->getPartner()->getURL()}/confirm?partner_guid={$this->container_guid}";
-    }    
-}
-
 class DataType
 {
     const Image = 2;
-}
-
-class NewsUpdate extends ElggObject
-{
-    static $subtype_id = T_blog;
-    static $table_name = 'news_updates';
-    static $table_attributes = array(
-        'content' => '',
-        'data_types' => 0,
-    );        
-    
-    public function getImageFile($size = '')
-    {
-        $file = new ElggFile();
-        $file->owner_guid = $this->container_guid;
-        $file->setFilename("news/{$this->guid}$size.jpg");
-        return $file;       
-    }
-    
-    public function jsProperties()
-    {
-        return array(
-            'guid' => $this->guid,
-            'container_guid' => $this->container_guid,
-            'dateText' => $this->getDateText(),
-            'imageURL' => $this->getImageURL('small'),
-            'snippetHTML' => $this->getSnippetHTML()
-        );
-    }    
-
-    public function getURL()
-    {
-        $org = $this->getContainerEntity();
-        if ($org)
-        {    
-            return $org->getUrl() . "/post/" . $this->getGUID();
-        }
-        return '';
-    }        
-    
-    public function getImageURL($size = '')
-    {
-        return $this->hasImage() ? ($this->getImageFile($size)->getURL()."?{$this->time_updated}") : "";
-    }    
-    
-    public function hasImage()
-    {
-        return ($this->data_types & DataType::Image) != 0;
-    }   
-    
-    public function getSnippetHTML($maxLength = 100)
-    {
-        $content = $this->content;
-        if ($content)
-        {
-            // todo: multi-byte support
-            if (strlen($content) > $maxLength)
-            {
-                $content = substr($content, 0, $maxLength) . "...";
-            }                
-            
-            return elgg_view('output/text', array('value' => $content));
-        }
-        return '';
-    }
-
-    public function getDateText()
-    {
-        return friendly_time($this->time_created); 
-    }
-    
-    public function setImage($imageFilePath)
-    {
-        if (!$imageFilePath)
-        {
-            $this->data_types &= ~DataType::Image;     
-        }
-        else
-        {        
-            if ($this->getImageFile('small')->uploadFile(resize_image_file($imageFilePath,100,100))
-               && $this->getImageFile('large')->uploadFile(resize_image_file($imageFilePath,450,450)))
-            {
-                $this->data_types |= DataType::Image;  
-            }
-            else            
-            {
-                throw new DataFormatException("error saving image");
-            }            
-        }   
-        $this->save();
-    }
-    
-    public static function all($limit = 10, $offset = 0)
-    {
-        return static::filterByCondition(array(), array(), 'time_created desc', $limit, $offset);
-    }
-    
-    public static function filterByOrganizations($orgs, $limit = 10, $offset = 0)
-    {
-        if (empty($orgs))
-        {
-            return array();
-        }
-        else
-        {
-            $where = array();
-            $args = array();
-            $in = array();
-            
-            foreach ($orgs as $org)
-            {
-                $in[] = "?";
-                $args[] = $org->guid;
-            }
-            
-            $where[] = "container_guid IN (".implode(",", $in).")";
-
-            return static::filterByCondition($where, $args, 'time_created desc', $limit, $offset);
-        }    
-    }
 }
 
 /**
@@ -630,11 +461,6 @@ function envaya_init()
     elgg_view_register_simplecache("css/admin");
     
     register_plugin_hook('geocode', 'location', 'googlegeocoder_geocode');
-    
-    register_entity_type('user', 'organization');
-    register_entity_type('object', 'blog');
-    register_entity_type('object', 'translation');
-    register_entity_type('object', 'partnership');
     
     include_once("{$CONFIG->path}org/start.php");    
 }

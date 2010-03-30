@@ -93,7 +93,10 @@
         'org:news:latest' => 'Habari Mpya',
         'org:noupdates' => "Shirika hili hajaandika habari yo yote.",        
         'org:mission' => 'Lengo',
-        'org:sectors' => 'Sekta',
+        'org:sectors' => 'Sekta',        
+        'org:location' => "Sehemu",
+        'org:see_nearby' => "Tazama mashirika ambayo yapo karibu",        
+        
 
         'blog:view_all' => "Tazama habari zote",
         'blog:editpost' => "Hariri Habari",
@@ -115,12 +118,9 @@
 
         'widget:home' => "Ukurasa mkuu",
         'widget:home:included' => "Sehemu gani unataka kuwa na katika ukurasa wako mkuu?",
-        
-        'widget:map' => "Sehemu",
-        'widget:map:see_nearby' => "Tazama mashirika ambayo yapo karibu",        
 
         'widget:history' => "Historia",
-        'widget:programs' => "Miradi",
+        'widget:projects' => "Miradi",
         
         'widget:news' => "Habari",
         'widget:news:manage_updates' => "Hariri habari",

@@ -7,7 +7,7 @@
         
     set_context('editor');
     
-    if ($org) 
+    if ($org && get_loggedin_user()->isApproved()) 
     {             
         add_submenu_item(elgg_echo("message:cancel"), $org->getURL(), 'b');                
     

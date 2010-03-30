@@ -1,8 +1,32 @@
-<div class='padded'>
 <?php
     $widget = $vars['widget'];
     $org = $widget->getContainerEntity();
-    
+
+?>
+
+<div class='section_header'><?php echo elgg_echo('partner:find_new'); ?></div>
+<div class='section_content'>
+<?php if ($org->isApproved()) { ?>
+<p>
+To add an organization as a partner, first visit their Envaya website, and then click <strong>Request Partnership</strong>
+at the top. The other organization will need to confirm the partnership first before it shows up on your page.
+</p>
+
+<p>
+<strong><a href='org/search'>Search for an organization</a></strong> &middot;
+<strong><a href='org/browse?zoom=10&lat=<?php echo escape($org->latitude) ?>&long=<?php echo escape($org->longitude) ?>'>Browse nearby organizations</a></strong>
+</p>
+<?php } else { ?>
+<p>
+You can't add new partnerships right now because your organization has not been approved by Envaya's administrators. 
+Return here after your organization has been approved to add partnerships.
+</p>
+<?php } ?>
+</div>
+
+<div class='section_header'><?php echo elgg_echo('partner:current'); ?></div>
+<div class='section_content'>
+<?php
     $offset = (int) get_input('offset');
     $limit = 10;
 
@@ -39,6 +63,7 @@
         <?php echo elgg_view('input/longtext', array(
                 'internalname' => "partnershipDesc{$p->guid}",
                 'js' => 'style="width:350px;height:150px;"',
+                'trackDirty' => true,
                 'value' => $p->description
             )); ?>
     

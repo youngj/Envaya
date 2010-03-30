@@ -7,7 +7,7 @@ By signing up for Envaya, your organization has a basic website with a home page
 But don't stop now, because your website can be much better.
 </p>
 <p>
-For example, you can add other pages on topics such as your organization's history, programs, and team. You can also write news
+For example, you can add other pages on topics such as your organization's history, projects, and team. You can also write news
 updates and show photos from your projects. 
 </p>
 <p>
@@ -21,6 +21,7 @@ This page will help you learn how your Envaya website works, and how to make it 
     <li><a href='org/help#settings'>Account Settings</a></li>
     <li><a href='org/help#home'>Home Page</a></li>
     <li><a href='org/help#news'>News Updates</a></li>
+    <li><a href='org/help#other'>Other Pages</a></li>
     <li><a href='org/help#connecting'>Connecting with Other Organizations</a></li>
 </ul>
 
@@ -91,6 +92,7 @@ at the top right will take you to your account settings.
 <ul>
     <li>Change your password</li>
     <li>Update your email address</li>
+    <li>Choose a theme (background and colors) for your website</li>
     <li>Upload a logo to display at the top of each page of your website</li>
 </ul>
 
@@ -104,13 +106,13 @@ When you are logged in to Envaya, the
 at the top right will always take you to your home page.
 </p>
 
-<p>By default, the home page shows:
+<p>The home page shows:
 </p>
 
 <ul>
     <li>Your mission statement</li>
     <li>Your three latest news updates</li>
-    <li>The relevant sectors where your organization operates</li>
+    <li>The sectors where your organization operates</li>
     <li>A map of your location.</li>
 </ul>
 
@@ -124,8 +126,8 @@ We encourage you to post news updates often!
 
 <p>
 News updates are a great way to let other organizations know what you're doing. On the 
-<strong><a href='org/feed'>Latest news updates</a></strong> page, you can read news from other organizations that are 
-doing things you're interested in. If an organization hundreds of miles away has a successful project and writes about it
+<strong><a href='org/feed'>Latest news updates</a></strong> page, you can read news from other organizations that 
+you're interested in. If an organization hundreds of miles away has a successful project and writes about it
 on Envaya, you can read it and get ideas for your own organization!
 </a>
 </p>
@@ -135,18 +137,66 @@ If you don't have a web browser available, you can also add news updates in othe
 </p>
 
 <ul>
-<li><strong>Email</strong>: Simply send an email to <strong><?php echo $org->getPostEmail() ?></strong> 
+<li><strong>Email</strong>: Send an email to <strong><?php echo $org->getPostEmail() ?></strong> 
 with your news update in the subject or body. If you have a photo to show, just add it as an attachment.</li>
-<li><strong>SMS</strong>: Coming soon, you will be able to send news updates from your phone!</li>
+<li><strong>SMS</strong>: Coming soon, you will be able to add news updates by sending text messages from your phone!</li>
+</ul>
+
+<h3 id='other'>Other Pages</h3>
+
+<p>
+On the <a href='pg/dashboard'>Edit Site</a> page, you can also add several other pages to your site, where you can write about:
+</p>
+<ul>
+<li><strong><a href='<?php echo $org->getURL() ?>/projects/edit?from=org/help%23other'>Projects</a></strong>: 
+    The work and activities that your organization is doing.
+</li>
+<li><strong><a href='<?php echo $org->getURL() ?>/history/edit?from=org/help%23other'>History</a></strong>: 
+    How your organization was started and its major achievements up to now.
+</li>
+<li><strong><a href='<?php echo $org->getURL() ?>/team/edit?from=org/help%23other'>Team</a></strong>: 
+    The people who keep your organization running.
+</li>
+<li><strong><a href='<?php echo $org->getURL() ?>/contact/edit?from=org/help%23other'>Contact</a></strong>: 
+    Allow other people to get in touch with your organization.
+</li>
 </ul>
 
 <h3 id='connecting'>Connecting with Other Organizations</h3>
 
 <p>
 A major benefit of having your website on Envaya is that the network of sites makes it easy for you to find other organizations, 
-and for other organizations to find you!
+and for other organizations to find you! 
+</p>
+
+<h4>Partnerships</h4>
+
+<p>
+Your website can have a 
+<strong><a href='<?php echo $org->getURL() ?>/partnerships/edit?from=org/help%23other'>Partnerships</a></strong>
+page listing all of the other organizations you have a partnership with. For each partner, the page will have a 
+link to their website. You can also write a paragraph describing how you work together.
 </p>
 
 <p>
-Write more about the partners page.
+For instructions on how to add a new partnership, edit the
+<strong><a href='<?php echo $org->getURL() ?>/partnerships/edit?from=org/help%23other'>Partnerships</a></strong> page.
 </p>
+
+<p>
+In order for an organization to be listed on the Partnerships page, that organization also needs to have an Envaya website. 
+If you are working with another organization that is not using Envaya yet, invite them to join!
+</p>
+
+<h4>Messages</h4>
+<p>
+Envaya makes it easy to communicate with other organizations that are also using Envaya. When you are logged in to Envaya,
+just visit another organization's website, and click the link at the top to <strong>Send a Message</strong>. 
+</p>
+
+<?php if (!$org->isApproved()) { ?>
+<p>
+<em>Note: Since your organization has not yet been approved by Envaya's administrators, 
+Partnerships and Messages are currently disabled.</em>
+</p>
+<?php } ?>

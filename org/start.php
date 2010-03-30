@@ -78,6 +78,17 @@ function org_profile_page_handler($page)
             case "compose":
                 include(dirname(__FILE__) . "/composeMessage.php");
                 return;
+            case "teammember":
+                set_input("member_guid", @$page[2]);
+                switch (@$page[3])
+                {
+                    case "edit":
+                        include(dirname(__FILE__)."/editTeamMember.php");
+                        return;
+                    default:
+                        break;
+                }   
+                break;
             case "post":
                 set_input("blogpost", $page[2]);
 
@@ -211,6 +222,10 @@ register_action("org/changeEmail",false,"{$CONFIG->path}actions/org/changeEmail.
 register_action("org/requestPartner",false,"{$CONFIG->path}actions/org/requestPartner.php");
 register_action("org/createPartner",false,"{$CONFIG->path}actions/org/createPartner.php");
 register_action("org/sendMessage",false,"{$CONFIG->path}actions/org/sendMessage.php");
+register_action("org/addTeamMember",false,"{$CONFIG->path}actions/org/addTeamMember.php");
+register_action("org/saveTeamMember",false,"{$CONFIG->path}actions/org/saveTeamMember.php");
+register_action("org/moveTeamMember",false,"{$CONFIG->path}actions/org/moveTeamMember.php");
+register_action("org/deleteTeamMember",false,"{$CONFIG->path}actions/org/deleteTeamMember.php");
 register_action("org/theme",false,       "{$CONFIG->path}actions/org/theme.php");
 register_action("changeLanguage", true, "{$CONFIG->path}actions/org/changeLanguage.php");
 register_action("translate", false,     "{$CONFIG->path}actions/org/translate.php");

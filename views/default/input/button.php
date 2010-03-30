@@ -33,5 +33,7 @@
 	$value = escape(@$vars['value']);
     $name = @$vars['internalname'];        
     $src = (isset($vars['src'])) ? "src=\"{$vars['src']}\"" : '';
+    
+    $setDirty = (@$vars['trackDirty']) ? " onclick='setDirty(false)'" : "";
 ?>
-<input name="<?php echo $name; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> type="<?php echo $type; ?>" class="<?php echo $class; ?>" <?php echo $vars['js']; ?> value="<?php echo $value; ?>" <?php echo $src; ?> />
+<input name="<?php echo $name; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> type="<?php echo $type; ?>" class="<?php echo $class; ?>" <?php echo $vars['js'], $setDirty; ?> value="<?php echo $value; ?>" <?php echo $src; ?> />

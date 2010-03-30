@@ -133,6 +133,14 @@ CREATE TABLE `partnerships` (
     PRIMARY KEY (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `team_members` (
+    `guid` bigint(20) unsigned NOT NULL,
+    `name` text,
+    `description` text,
+    `data_types` smallint not null default 0,
+    `list_order` int not null default 0,
+    PRIMARY KEY (`guid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- Extra information relating to "users"
 CREATE TABLE `users_entity` (

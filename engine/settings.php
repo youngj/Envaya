@@ -69,7 +69,8 @@
         7 => array('object', 'blog', 'NewsUpdate'),        
         8 => array('object', 'logwrapper', 'ElggObject'),
         9 => array('object', 'admin_message', 'ElggObject'),
-        10 => array('object', 'partnership', 'Partnership')
+        10 => array('object', 'partnership', 'Partnership'),
+        11 => array('object', 'team_member', 'TeamMember')
     );
     foreach ($CONFIG->subtypes as $val => $subtypeArr)
     {

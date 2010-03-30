@@ -7,7 +7,7 @@
 ?>
 <div class='input'>
     <label><?php echo elgg_echo('blog:content:label') ?></label>
-    <?php echo elgg_view('input/longtext', array('internalname' => 'blogbody', 'value' => $body)) ?>
+    <?php echo elgg_view('input/longtext', array('internalname' => 'blogbody', 'trackDirty' => true, 'value' => $body)) ?>
 </div>
 
 <div class='input'>
@@ -24,11 +24,11 @@
     echo elgg_view('input/submit', array(
             'internalname' => "delete", 
             'internalid' => 'widget_delete', 
-            'js' => "onclick='return confirm(".json_encode(elgg_echo('question:areyousure')).")'",
+            'js' => "onclick='return confirm(".json_encode(elgg_echo('question:areyousure')).") && setDirty(false)'",
             'value' => elgg_echo('blog:delete')
         )); 
 
-    echo elgg_view('input/submit', array('internalname' => 'submit', 'value' => elgg_echo('blog:save'))); 
+    echo elgg_view('input/submit', array('internalname' => 'submit', 'trackDirty' => true, 'value' => elgg_echo('blog:save'))); 
 ?>
 
 <?php

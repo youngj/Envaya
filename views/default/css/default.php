@@ -1313,3 +1313,30 @@ a.attachImageClose:hover
 {
     width:350px;
 }
+
+.contactTable td, .contactTable th
+{
+    padding:3px;
+}
+
+.contactTable th
+{
+    font-weight:bold;
+    text-align:right;
+}
+
+.team_member_view
+{
+    padding-bottom:10px;    
+}
+
+.team_member_img
+{
+    float:right;
+    margin-left:6px;
+}
+
+.team_member_name
+{
+    font-weight:bold;
+}

@@ -19,8 +19,10 @@
 
 	$class = @$vars['class'] ?: "input-textarea";
     
+    $setDirty = (@$vars['trackDirty']) ? " onchange='setDirty(true)'" : "";
+
     $value = restore_input($vars['internalname'], @$vars['value']); 
 	
 ?>
 
-<textarea class="<?php echo $class; ?>" name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> <?php echo @$vars['js']; ?>><?php echo escape($value); ?></textarea> 
+<textarea class="<?php echo $class; ?>" name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> <?php echo @$vars['js'], $setDirty; ?>><?php echo escape($value); ?></textarea> 

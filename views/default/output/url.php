@@ -32,8 +32,10 @@
 		}
         
         $val = escape($val);
+        
+        $text = @$vars['text'] ?: $val;
 	    
-	    echo "<a href=\"{$val}\" target=\"_blank\">$val</a>";
+	    echo "<a href=\"{$val}\" target=\"_blank\">$text</a>";
     }
 
 ?>
