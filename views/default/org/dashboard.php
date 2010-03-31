@@ -47,11 +47,11 @@
 <div class='dashboard_links'>
     <div>
         <a class='dashboard_img_link_r' href='org/browse'><img src='_graphics/globe.gif' /></a>
-        <a class='dashboard_text_link' href='org/browse'><?php echo elgg_echo("home:browse_orgs") ?></a>
+        <a class='dashboard_text_link' href='org/browse'><?php echo elgg_echo("browse:title") ?></a>
     </div>
     <div>
         <a class='dashboard_img_link_r' href='org/search'><img src='_graphics/search.gif' /></a>
-        <a class='dashboard_text_link' href='org/search'><?php echo elgg_echo("home:find_org") ?></a>
+        <a class='dashboard_text_link' href='org/search'><?php echo elgg_echo("search:title") ?></a>
     </div>
     <div>
         <a class='dashboard_img_link_r' href='org/feed'><img src='_graphics/icons/default/small.png' /></a>

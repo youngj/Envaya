@@ -44,7 +44,7 @@
         array('internalname' => 'submit', 
             'class' => "submit_button addUpdateButton",
             'trackDirty' => true,
-            'value' => elgg_echo('widget:save'))); 
+            'value' => elgg_echo('savechanges'))); 
 
 ?>
 

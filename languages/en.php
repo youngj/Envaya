@@ -6,15 +6,75 @@
         'home:for_organizations' => 'For organizations:',
         'home:for_everyone' => 'For everyone:',
         'home:sign_up' => 'Sign up now',
-        'home:sign_in' => 'Login',
-        'home:why' => 'Why use Envaya?',
-        'home:browse_orgs' => 'Explore organizations',        
-        'home:find_org' => 'Find an organization',
+        
+        'why:title' => 'Why use Envaya?',        
+        'why:summary' => "With Envaya, your civil society organization can have its own website, for free, where you can share news about your projects with other organizations and people around the world.",
+        'why:easy' => 'Easy',
+        'why:easy:summary' => "To make a website on Envaya, you don't need any special computer training or equipment. In about five minutes, you can set up a basic home page yourself.",
+        'why:free' => "Free",
+        'why:free:summary' => "Hiring someone to build and host a website for your organization can be expensive. Envaya is free.",
+        'why:convenient' => "Convenient",
+        'why:convenient:summary' => "You can add new news and photos to your website by sending an SMS message from your mobile phone (coming soon). You can also use email.",
+        'why:visible' => "Visible",
+        'why:visible:summary' => "Envaya links your website into its network so that people can easily find you when they are looking for civil society organizations like yours.",
+        'why:translated' => "Translated",
+        'why:translated:summary' => "Envaya is translated in Kiswahili and English, so you can use whichever language you prefer. When somebody visits your site who can't read your language, Envaya will translate your content into their language.",
+   
+        'about:link' => "About",        
+        'about:title' => 'About us',   
+        'about:mission' => "Envaya is dedicated to creating software to empower community-based organizations around the world that are focused on the environment, poverty relief, health, education, and community well-being.",
+        'about:tanzania_pilot' => "In March, 2010, Envaya started its pilot in Tanzania, in a partnership with Journalists Environment and HIV/AIDS Network (JEAN-media), a Tanzanian civil society organization whose mission is to use media to promote and raise public awareness for CBOs.",
+        'about:team' => "The Envaya website is developed by a small team of software engineers and international development volunteers from the United States and Canada. We believe people everywhere should have the tools they need to achieve their own goals.",
         
         'feed' => "News",
         'feed:title' => "Latest news updates",
         
         'help:title' => "Getting Started",
+        'help:summary1' => "By signing up for Envaya, your organization has a basic website with a home page. Great! But don't stop now, because your website can be much better.",
+        'help:summary2' => "For example, you can add other pages on topics such as your organization's history, projects, and team. You can also write news updates and show photos from your projects.",
+        'help:summary3' => "This page will help you learn how your Envaya website works, and how to make it great.",
+        'help:contents' => "Contents",
+        'help:viewing' => "Viewing your website",
+        'help:viewing:url' => "The web address for your website's home page is:",
+        'help:viewing:hidden' => "Currently, only you can see your website. Before it is available to the public, Envaya needs to approve your organization.  After your organization is approved, anyone with an Internet connection will be able to see your website.",
+        'help:viewing:approved' => "Your website has already been approved by Envaya, so anyone with an Internet connection can see your website. ",
+        'help:editing' => "Editing your website",
+        'help:editing:onlyyou' => "Although anyone will be able to see your website, only you can edit it.",
+        'help:editing:credentials' => "From any web browser, you can use your Envaya username %s and password to log in to edit your website. You can share this username and password with other people in your organization who you trust to edit your website.",
+        'help:editing:editsite' => "The main place to edit your website is the %s page. Here you can write a news update and edit any of the pages on your site. When you are logged in, you can always get to this page by clicking the %s icon at the top right.",
+        'help:editing:background' => "By looking at any page's background color, you can tell whether a page is public or if it is only available when you are logged in. All pages with a <strong>dark gray background</strong>, such as this one, are only available when you are logged in.",
+        'help:editing:logout' => "If you are using a public computer, remember to click the %s icon to log out when you are done editing.",
+        'help:settings' => "Account Settings",
+        'help:settings:icon' => "When you are logged in to Envaya, the %s icon at the top right will take you to your account settings.",
+        'help:settings:youcan' => "On this page, you can:",
+        'help:settings:password' => "Change your password",
+        'help:settings:email' => "Update your email address",
+        'help:settings:theme' => "Choose a theme (background and colors) for your website",
+        'help:settings:logo' => "Upload a logo to display at the top of each page of your website",
+        'help:home:icon' => "The home page is the most important page of your website. When you are logged in to Envaya, the %s icon at the top right will always take you to your home page.",
+        'help:home:shows' => "The home page shows:",
+        'help:home:mission' => "Your mission statement",
+        'help:home:news' => "Your three latest news updates",
+        'help:home:sectors' => "The sectors where your organization operates",
+        'help:home:location' => "A map of your location.",
+        'help:news' => "News Updates",
+        'help:news:about' => "Your website's %s page shows all of the news updates that your organization has written. News updates also let you show photos from your projects. We encourage you to post news updates often!",
+        'help:news:feed' => "News updates are a great way to let other organizations know what you're doing. On the %s page, you can read news from other organizations that you're interested in. If an organization hundreds of miles away has a successful project and writes about it on Envaya, you can read it and get ideas for your own organization!",
+        'help:news:mobile' => "If you don't have a web browser available, you can also add news updates in other ways:",
+        'help:other' => "Other Pages",
+        'help:other:summary' => "On the %s page, you can also add several other pages to your site, where you can write about:",
+        'help:other:projects' => "The work and activities that your organization is doing.",
+        'help:other:history' => "How your organization was started and its major achievements up to now.",
+        'help:other:team' => "The people who keep your organization running.",
+        'help:other:contact' => "Allow other people to get in touch with your organization.",
+        'help:connecting' => "Connecting with Other Organizations",
+        'help:connecting:summary' => "A major benefit of having your website on Envaya is that the network of sites makes it easy for you to find other organizations, and for other organizations to find you!",
+        'help:connecting:partnerships' => "Your website can have a %s page listing all of the other organizations you have a partnership with. For each partner, the page will have a link to their website. You can also write a paragraph describing how you work together.",
+        'help:connecting:partnerships:instructions' => "For instructions on how to add a new partnership, edit the %s page.",
+        'help:connecting:partnerships:invite' => "In order for an organization to be listed on the Partnerships page, that organization also needs to have an Envaya website. If you are working with another organization that is not using Envaya yet, invite them to join!",
+        'help:connecting:messages' => "Messages",
+        'help:connecting:messages:instructions' => "Envaya makes it easy to communicate with other organizations that are also using Envaya. When you are logged in to Envaya, just visit another organization's website, and click the link at the top to %s.",
+        'help:connecting:disabled' => "Note: Since your organization has not yet been approved by Envaya's administrators, Partnerships and Messages are currently disabled.",
         
         'dashboard' => "Edit Site",        
         'dashboard:add_update' => 'Write news update',
@@ -36,8 +96,10 @@
         'browse' => 'Explore',        
         'browse:title' => 'Explore organizations',
         'browse:instructions' => "Each icon on the map below is an organization using Envaya. Hover over an icon to see its name, and click to view its home page.",
+
         'browse:map' => 'Map',
-        'browse:list' => 'List',
+        
+        'list' => 'List',
         
         'search' => "Search",        
         'search:title' => "Find an organization",
@@ -45,9 +107,7 @@
         'search:submit' => 'Search',
         'search:instructions' => "Enter the name or location of the organization you're looking for.",
         'search:noresults' => "No results found!",
-                            
-        'why:title' => 'Why use Envaya?',
-        
+                                    
         'sector:agriculture' => 'Agriculture and livestock',
         'sector:communications' => 'Communications',
         'sector:conflict_res' => 'Conflict resolution',
@@ -89,10 +149,6 @@
 
         'org:yours' => 'Your Site',
         'org:home' => 'Home',
-        'org:news' => 'News',
-        'org:news:latest' => 'Latest News',
-        'org:news:edit' => 'Edit news updates',
-        'org:noupdates' => "This organization has not yet written any news updates.",        
         'org:mission' => 'Mission',
         'org:sectors' => 'Sectors',      
         'org:location' => 'Location',      
@@ -102,11 +158,10 @@
 
         'blog:view_all' => "View all news updates",
         'blog:editpost' => "Edit News Update",
-        'blog:canceledit' => "Cancel Edit",
         'blog:addpost' => "Add news update",
         'blog:delete' => "Delete update",
         'blog:delete:success' => "News update deleted successfully.",
-        'blog:list' => "List",
+                
         'blog:timeline' => "Timeline",
         
         'partner:request' => "Request Partnership",
@@ -123,7 +178,11 @@
         'partner:confirm:button' => "Confirm partnership",
         'partner:current' => "Current Partnerships",
         'partner:find_new' => "Find New Partnerships",
-        
+        'partner:instructions' => "To add an organization as a partner, first visit their Envaya website, and then click %s at the top. The other organization will need to confirm the partnership first before it shows up on your page.",
+        'partner:search' => "Search for an organization",
+        'partner:browse' => "Browse nearby organizations",
+        'partner:wait' => "You can't add new partnerships right now because your organization has not been approved by Envaya's administrators. Return here after your organization has been approved to add partnerships.",
+
         'message:link' => "Send a Message",
         'message:title' => "Compose Message",
         'message:cancel' => "Cancel Message",
@@ -149,10 +208,18 @@
         'widget:projects:help' => "Write about the work and activities that your organization does.",
 
         'widget:news' => "News",                
+        'widget:news:latest' => 'Latest News',
+        'widget:news:empty' => "This organization has not yet written any news updates.",        
+        'widget:news:edit' => 'Edit news updates',        
         'widget:news:manage_updates' => "Manage News Updates",
         'widget:news:mobile_settings' => "Mobile Settings",
         'widget:news:change_email' => "Generate new email address",
         'widget:news:postemailchanged' => "Successfully generated new email address.",
+        'widget:news:mobile_summary' => "When you don't have easy access to a web browser, you can also add news updates in other ways:",
+        'widget:news:email' => "Email",
+        'widget:news:email:summary' => "Send an email to %s with your news update in the subject or body, and any photos as attachments.",
+        'widget:news:sms' => "SMS",
+        'widget:news:sms:summary' => "Coming soon, you will be able to add news updates by sending text messages from your phone!",
                 
         'widget:contact' => "Contact",
         'widget:contact:instructions' => "This page lets your website visitors contact you directly. Note that if you don't want certain information to be publicly available on the Internet, just leave that field blank.",        
@@ -185,12 +252,13 @@
         
         'move:up' => "Move up",
         'move:down' => "Move down",
+
+        'canceledit' => "Cancel Edit",
+        'savechanges' => "Save changes",
         
-        'widget:edit' => "Edit Page",
-        'widget:canceledit' => "Cancel Edit",
+        'widget:edit' => "Edit Page",        
         'widget:edittitle' => "Edit %s",        
-        'widget:edittitle:new' => "Add Page: %s",        
-        'widget:save' => "Save changes",
+        'widget:edittitle:new' => "Add Page: %s",                
         'widget:save:new' => "Create page",                
         'widget:image:label' => "Image to display on this page:",
         'widget:image:position' => "Where on your page do you want the image?",                
@@ -289,10 +357,7 @@
         
         'contact:link' => "Contact",    
         'contact:title' => 'Contact us',
-        
-        'about:link' => "About",        
-        'about:title' => 'About us',
-        
+                
         'page:notfound' => "Page not found",
         'page:notfound:details' => "The requested page either does not exist or you do not have access to it.",
 
@@ -310,8 +375,6 @@
         'theme:default' => "Default theme",
         'theme:green' => "Green theme",
         'theme:red' => "Red theme",
-
-        'blog:save' => "Save changes",
 
         'blog:content:label' => "Write the text for your news update below:",
         'blog:image:label' => "Image to display with this news update:",

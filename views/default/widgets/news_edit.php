@@ -9,11 +9,11 @@
     
     ob_start();
 ?>
-<p>
-When you don't have easy access to a web browser, you can also add news updates in other ways:
+<p><?php echo elgg_echo('widget:news:mobile_summary') ?></p>
+
 <ul>
-<li><strong>Email</strong>: Send an email to <strong><?php echo $org->getPostEmail() ?></strong> 
-with your news update in the subject or body, and any photos as attachments. 
+<li><strong><?php echo elgg_echo('widget:news:email') ?></strong>: 
+<?php echo sprintf(elgg_echo('widget:news:email:summary'), "<strong>{$org->getPostEmail()}</strong>") ?>
 
 <?php
     echo elgg_view('output/confirmlink', array(
@@ -22,12 +22,11 @@ with your news update in the subject or body, and any photos as attachments.
         'href' => "action/org/changeEmail?org_guid={$org->guid}"
     ));            
 ?>            
-
 </li>
-<li><strong>SMS</strong>: Coming soon!</li>
+<li><strong><?php echo elgg_echo('widget:news:sms') ?></strong>: 
+<?php echo elgg_echo('widget:news:sms:summary') ?></li>
 </ul>
-</ul>
-</p>
+
 <?php    
     $settings = ob_get_clean(); 
     
@@ -72,7 +71,7 @@ with your news update in the subject or body, and any photos as attachments.
     }
     else
     {
-        echo elgg_echo("org:noupdates");
+        echo elgg_echo("widget:news:empty");
     }
     
     

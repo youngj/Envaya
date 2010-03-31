@@ -8,18 +8,16 @@
 <div class='section_content'>
 <?php if ($org->isApproved()) { ?>
 <p>
-To add an organization as a partner, first visit their Envaya website, and then click <strong>Request Partnership</strong>
-at the top. The other organization will need to confirm the partnership first before it shows up on your page.
+<?php echo sprintf(elgg_echo('partner:instructions'), "<strong>".elgg_echo('partner:request')."</strong>"); ?>
 </p>
 
 <p>
-<strong><a href='org/search'>Search for an organization</a></strong> &middot;
-<strong><a href='org/browse?zoom=10&lat=<?php echo escape($org->latitude) ?>&long=<?php echo escape($org->longitude) ?>'>Browse nearby organizations</a></strong>
+<strong><a href='org/search'><?php echo elgg_echo('partner:search') ?></a></strong> &middot;
+<strong><a href='org/browse?zoom=10&lat=<?php echo escape($org->latitude) ?>&long=<?php echo escape($org->longitude) ?>'><?php echo elgg_echo('partner:browse') ?></a></strong>
 </p>
 <?php } else { ?>
 <p>
-You can't add new partnerships right now because your organization has not been approved by Envaya's administrators. 
-Return here after your organization has been approved to add partnerships.
+<?php echo elgg_echo('partner:wait') ?>
 </p>
 <?php } ?>
 </div>

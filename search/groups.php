@@ -24,7 +24,7 @@
 		if (!empty($tag)) {
 			$title = sprintf(elgg_echo('groups:searchtitle'),$tag);
 			$body = "";
-			$body .= elgg_view_title($title); // elgg_view_title(sprintf(elgg_echo('searchtitle'),$tag));
+            $body .= elgg_view_title($title); // elgg_view_title(sprintf(elgg_echo('search:title_with_query'),$tag));
 			$body .= elgg_view('group/search/startblurb',array('tag' => $tag));
 			$body .= list_group_search($tag);
 			//$body = elgg_view_layout('two_column_left_sidebar','',$body);

@@ -11,7 +11,7 @@
     {                   
         $cancelUrl = get_input('from') ?: $post->getUrl();
 
-        add_submenu_item(elgg_echo("blog:canceledit"), $cancelUrl, 'edit');                
+        add_submenu_item(elgg_echo("canceledit"), $cancelUrl, 'edit');                
     
         $org = $post->getContainerEntity();
         $area1 = elgg_view("org/editPost", array('entity' => $post));

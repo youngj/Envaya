@@ -11,7 +11,7 @@
 
 <?php if (!empty($entities)) { ?>
 <div class='blogView'>
-    <strong><?php echo elgg_echo('blog:list') ?></strong> | <a href='<?php echo $entities[0]->getURL() ?>'><?php echo elgg_echo('blog:timeline') ?></a>
+    <strong><?php echo elgg_echo('list') ?></strong> | <a href='<?php echo $entities[0]->getURL() ?>'><?php echo elgg_echo('blog:timeline') ?></a>
 </div>
 <div style='clear:both'></div>
 <?php } ?>
@@ -21,7 +21,7 @@
     
     if (!$count)
     {
-        echo "<div class='padded'>".elgg_echo("org:noupdates")."</div>";
+        echo "<div class='padded'>".elgg_echo("widget:news:empty")."</div>";
     }
 
 ?>

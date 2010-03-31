@@ -1,7 +1,7 @@
 <?php
     $widget = $vars['widget'];
     
-    $saveText = ($widget->guid && $widget->isEnabled()) ? elgg_echo('widget:save') : elgg_echo('widget:save:new');
+    $saveText = ($widget->guid && $widget->isEnabled()) ? elgg_echo('savechanges') : elgg_echo('widget:save:new');
 
     $form_body = "<div class='padded'>" . 
         elgg_view('input/hidden', array('internalname' => 'org_guid', 'value' => $widget->getContainerEntity()->guid)) . 

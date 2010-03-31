@@ -10,7 +10,7 @@
     {                   
         $cancelUrl = get_input('from') ?: $org->getUrl();
 
-        add_submenu_item(elgg_echo("widget:canceledit"), $cancelUrl, 'edit');                
+        add_submenu_item(elgg_echo("canceledit"), $cancelUrl, 'edit');                
     
         $title = elgg_echo("theme:edit");
         $area1 = elgg_view("org/theme", array('entity' => $org));

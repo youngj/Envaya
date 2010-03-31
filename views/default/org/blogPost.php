@@ -7,7 +7,7 @@
 ?>
 
 <div class='blogView'>
-    <a href='<?php echo $org->getURL() ?>/news'><?php echo elgg_echo('blog:list') ?></a> | <strong><?php echo elgg_echo('blog:timeline') ?></strong>
+    <a href='<?php echo $org->getURL() ?>/news'><?php echo elgg_echo('list') ?></a> | <strong><?php echo elgg_echo('blog:timeline') ?></strong>
 </div>
 <div style='clear:both'></div>
 <div class='padded'>

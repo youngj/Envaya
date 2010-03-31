@@ -28,7 +28,7 @@
             'value' => elgg_echo('blog:delete')
         )); 
 
-    echo elgg_view('input/submit', array('internalname' => 'submit', 'trackDirty' => true, 'value' => elgg_echo('blog:save'))); 
+    echo elgg_view('input/submit', array('internalname' => 'submit', 'trackDirty' => true, 'value' => elgg_echo('savechanges'))); 
 ?>
 
 <?php

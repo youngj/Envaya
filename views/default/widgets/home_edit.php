@@ -15,12 +15,12 @@
 </div>    
 </div>
 
-<div class='section_header'><?php echo elgg_echo("org:news:latest"); ?></div>
+<div class='section_header'><?php echo elgg_echo("widget:news:latest"); ?></div>
 <div class='section_content'>
     <strong><a href="<?php 
         $escUrl = urlencode($_SERVER['REQUEST_URI']);
         echo "{$org->getURL()}/news/edit?from=$escUrl";        
-    ?>"><?php echo elgg_echo('org:news:edit'); ?></a></strong>
+    ?>"><?php echo elgg_echo('widget:news:edit'); ?></a></strong>
 </div>
 
 

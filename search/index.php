@@ -36,7 +36,7 @@
 		}	
 		
 		if (empty($objecttype) && empty($subtype)) {
-			$title = sprintf(elgg_echo('searchtitle'),$tag); 
+            $title = sprintf(elgg_echo('search:title_with_query'),$tag); 
 		} else {
 			if (empty($objecttype)) $objecttype = 'object';
 			$itemtitle = 'item:' . $objecttype;
@@ -47,7 +47,7 @@
 		
 		if (!empty($tag)) {
 			$body = "";
-			$body .= elgg_view_title($title); // elgg_view_title(sprintf(elgg_echo('searchtitle'),$tag));
+            $body .= elgg_view_title($title); // elgg_view_title(sprintf(elgg_echo('search:title_with_query'),$tag));
 			$body .= trigger_plugin_hook('search','',$tag,"");
 			$body .= elgg_view('search/startblurb',array('tag' => $tag));
 			$body .= list_entities_from_metadata($md_type, elgg_strtolower($tag), $objecttype, $subtype, $owner_guid_array, 10, false, false);

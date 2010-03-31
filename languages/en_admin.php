@@ -285,7 +285,6 @@ You cannot reply to this email.",
         "zh" => "Chinese",
         "zu" => "Zulu",
 
-        'searchtitle' => "Search: %s",
         'users:searchtitle' => "Searching for users: %s",
         'groups:searchtitle' => "Searching for groups: %s",
         'advancedsearchtitle' => "%s with results matching %s",        

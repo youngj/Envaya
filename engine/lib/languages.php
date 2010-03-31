@@ -266,10 +266,8 @@ function get_language_completeness($language)
 
     $en = count($CONFIG->translations['en']) - count($CONFIG->en_admin);
 
-    $missing = get_missing_language_keys($language);
-    if ($missing) $missing = count($missing); else $missing = 0;
+    $missing = count(get_missing_language_keys($language));
 
-    //$lang = count($CONFIG->translations[$language]);
     $lang = $en - $missing;
 
     return round(($lang / $en) * 100, 2);
@@ -293,10 +291,7 @@ function get_missing_language_keys($language)
             $missing[] = $k;
     }
 
-    if (count($missing))
-        return $missing;
-
-    return false;
+    return $missing;
 }
 
 register_translations(dirname(dirname(dirname(__FILE__))) . "/languages/");

@@ -8,13 +8,13 @@
     
     $org = $vars['widget']->getContainerEntity();
     
-    echo "<div class='section_header'>".elgg_echo("org:news:latest")."</div>";
+    echo "<div class='section_header'>".elgg_echo("widget:news:latest")."</div>";
         
     $posts = $org->getNewsUpdates(3); // make this configurable?    
     
     if (empty($posts))
     {
-        echo "<div class='padded'>".elgg_echo("org:noupdates")."</div>";
+        echo "<div class='padded'>".elgg_echo("widget:news:empty")."</div>";
     }
     else
     {

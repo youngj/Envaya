@@ -12,12 +12,12 @@
 
 <div class='homeSection'>
     <a class='homeSectionIcon' href='page/why'><img src='_graphics/icons/default/small.png' /></a>
-    <a href='page/why'><?php echo elgg_echo("home:why") ?></a>    
+    <a href='page/why'><?php echo elgg_echo("why:title") ?></a>    
 </div>   
 
 <div class='homeSection'>
     <a class='homeSectionIcon' href='pg/login'><img src='_graphics/icons/default/small.png' /></a>
-    <a href='pg/login'><?php echo elgg_echo("home:sign_in") ?></a>    
+    <a href='pg/login'><?php echo elgg_echo("login") ?></a>    
 </div>   
 
 </td>
@@ -26,12 +26,12 @@
 
 <div class='homeSection'>
     <a class='homeSectionIcon' href='org/browse'><img src='_graphics/globe.gif' /></a>
-    <a href='org/browse'><?php echo elgg_echo("home:browse_orgs") ?></a>
+    <a href='org/browse'><?php echo elgg_echo("browse:title") ?></a>
 </div>
 
 <div class='homeSection'>
     <a class='homeSectionIcon' href='org/search'><img src='_graphics/search.gif' /></a>
-    <a href='org/search'><?php echo elgg_echo("home:find_org") ?></a>
+    <a href='org/search'><?php echo elgg_echo("search:title") ?></a>
 </div>
 
 <div class='homeSection'>
