@@ -1057,7 +1057,7 @@
             else 
             {
                 $res = $allMessages;
-                unset($allMessages);
+                $allMessages = null;                
                 return $res;
             }
         }

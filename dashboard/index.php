@@ -18,7 +18,8 @@
 		gatekeeper();
 		
 	// Set context and title
-		set_context('editor');
+		set_theme('editor');
+        set_context('editor');
 		set_page_owner(get_loggedin_userid());
 		$title = elgg_echo('dashboard');
 		

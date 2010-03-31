@@ -598,9 +598,9 @@ a.dropdown_item:hover
     padding:3px;
 }
 
-#thin_column
+.thin_column
 {
-    width:493px;
+    width:500px;
     margin:0 auto;   
 }
 
@@ -641,7 +641,6 @@ a.selected
     font-weight:bold;
 }
 
-
 .float_right
 {
     clear:both;
@@ -651,7 +650,7 @@ a.selected
 
 #heading
 {    
-    padding:15px;
+    padding:10px;
     color:black;    
     letter-spacing:1px;
     font-family:"Gill Sans MT", sans-serif;
@@ -660,7 +659,8 @@ a.selected
 #heading img
 {
     float:left;
-    padding-right:10px;
+    margin-right:15px;
+    margin-bottom:10px;
 }
 
 #heading h1
@@ -697,39 +697,21 @@ a.selected
     clear:both;
 }
 
-#content_top
-{
-    height:24px;
-    background:#fff url("<?php echo $graphicsDir; ?>/contenttop.gif") no-repeat left top;  
-}
-
-#content_bottom
-{
-    height:24px;
-    background:#fff url("<?php echo $graphicsDir; ?>/contentbottom.gif") no-repeat left top;  
-}
-
-#content_mid
-{
-    background:#fff url("<?php echo $graphicsDir; ?>/contentgradient.gif") repeat-y left top;  
-    padding:0px 6px;
-}
-
 .section_header
 {
     clear:both;
-    background:#e6e6e6 url("<?php echo $graphicsDir; ?>/sectionheader.gif") no-repeat left top;  
-    height:21px;
     padding:10px 15px;
-    font-family:"Gill Sans MT", sans-serif;
-    text-transform:uppercase;
     font-weight:bold;
     font-size:14px;
 }
 
 .section_content
 {
-    padding:5px 10px;
+}
+
+.message_container
+{
+    padding:4px;
 }
 
 .good_messages, .bad_messages 
@@ -738,7 +720,7 @@ a.selected
     color:#000000;
     padding:3px;
     width:483px;
-    margin:3px auto;
+    margin:0 auto;
     -webkit-border-radius: 4px; 
     -moz-border-radius: 4px;    
     border:2px solid #00CC00;
@@ -762,7 +744,7 @@ body
 
 .padded
 {
-    padding:5px 10px;
+    padding:8px 10px;
 }
 
 .blog_post
@@ -790,7 +772,7 @@ body
 .feed_content
 {
     float:left;
-    width:410px;
+    width:400px;
 }
 
 .blog_date
@@ -951,24 +933,6 @@ a.smallBlogImageLink:hover
     font:16px Arial;
 }
 
-.homeSection
-{
-    padding:5px;
-    clear:both;
-}
-
-.homeSectionIcon
-{
-    float:left;
-    margin-right:10px;
-    border:1px solid #666699;
-}
-
-.homeSubheading
-{
-    font:bold 15px Arial;
-}
-
 .instructions
 {
     padding:5px 0px;
@@ -999,28 +963,26 @@ a.smallBlogImageLink:hover
 .tabs
 {
     width:100%;    
-    margin-bottom:10px;
+    margin-bottom:5px;
+    margin-top:-20px;
 }
 
 .tab
 {
-    height:35px;
-    background:url(<?php echo $graphicsDir ?>/tabs.gif) repeat-x left -35px;
+    height:42px;
+    background:#ccc url(<?php echo $graphicsDir ?>/tabs.gif?v2) repeat-x left top;
     text-align:center;
-    border-left:1px solid #ccc;
-    border-right:1px solid #bbb;
 }
 
 .tab span
 {
     display:block;
     padding:8px;
-    color:#333;
+    color:black;
 }
 
 .tabs .active
 {
-    background:url(<?php echo $graphicsDir ?>/tabs.gif) repeat-x left top;
     font-weight:bold;
 }
 
@@ -1080,33 +1042,6 @@ a.smallBlogImageLink:hover
 {
     float:right;
     margin:0px 0px 6px 6px;
-}
-
-.editor
-{
-    background-color:#4c4c4c;
-}
-
-.editor #heading h1
-{
-    color:#e6e6e6;
-}
-
-.editor #content_mid
-{
-    background:url("<?php echo $graphicsDir; ?>/editgradient.gif") repeat-y left top;  
-}
-
-.editor #content_top
-{
-    height:9px;    
-    overflow:hidden;
-    background:url("<?php echo $graphicsDir; ?>/edittop.gif") no-repeat left top;  
-}
-
-.editor #content_bottom
-{
-    background:#fff url("<?php echo $graphicsDir; ?>/editgradient.gif") repeat-y left top;  
 }
 
 .adminBox
@@ -1182,6 +1117,7 @@ a.attachImageClose:hover
 .blogView
 {
     float:right;
+    padding-top:5px;
     margin-right:10px;
 }
 
@@ -1194,50 +1130,6 @@ a.attachImageClose:hover
 {
     border:1px solid #ccc;
     padding:3px;
-}
-
-.dashboard_img_link
-{
-    width:27px;
-    height:26px;
-    text-align:center;
-    float:left;
-    clear:left;    
-    margin-right:5px;
-    background:url(<?php echo $graphicsDir; ?>/loggedinarea_rounded.gif?v2) no-repeat -20px -20px;
-}
-
-.dashboard_img_link_r
-{
-    width:31px;
-    height:31px;
-    float:left;
-    clear:left;    
-    margin-right:5px;
-}
-.dashboard_img_link_r img
-{
-    width:30px;
-    height:30px;
-}
-
-.icon_with_bg
-{
-    padding:4px;
-    vertical-align:middle;
-    background:url(<?php echo $graphicsDir; ?>/loggedinarea_rounded.gif?v2) no-repeat -20px -20px;
-}
-
-.dashboard_text_link
-{
-    display:block;
-    padding-top:3px
-}
-
-.dashboard_links div
-{
-    clear:both;
-    padding-top:2px;
 }
 
 .input-checkboxes, .input-radio
@@ -1380,3 +1272,22 @@ a.attachImageClose:hover
     color:#666666;
     font-size: 90%;
 }
+
+
+.icon_link
+{
+    display:block;
+    height:30px;
+    padding-top:3px;
+    padding-left:36px;
+    background:url(<?php echo $graphicsDir; ?>/editoricons.gif) no-repeat left top;
+}
+
+.icon_explore   { background-position:left 0px; }
+.icon_help      { background-position:left -40px; }
+.icon_home      { background-position:left -80px; }
+.icon_logout    { background-position:left -120px; }
+.icon_search    { background-position:left -160px; }
+.icon_feed      { background-position:left -200px; }
+.icon_settings  { background-position:left -240px; }
+.icon_signup    { background-position:left -280px; }

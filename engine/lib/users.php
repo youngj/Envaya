@@ -939,24 +939,10 @@
 		
 		// User name change
 		extend_elgg_settings_page('user/settings/name', 'usersettings/user', 1);
-		//register_action("user/name");
-		
-		// User password change
 		extend_elgg_settings_page('user/settings/password', 'usersettings/user', 1);
-		//register_action("user/password");
-		
-		// Add email settings
 		extend_elgg_settings_page('user/settings/email', 'usersettings/user', 1);
-		//register_action("email/save");
-		
-		// Add language settings
 		extend_elgg_settings_page('user/settings/language', 'usersettings/user', 1);
-		
-		// Add default access settings
-		extend_elgg_settings_page('user/settings/default_access', 'usersettings/user', 1);
-		
-		//register_action("user/language");
-		
+						
 		register_plugin_hook('usersettings:save','user','users_settings_save');
 		register_plugin_hook('search','all','search_list_users_by_name');
 		

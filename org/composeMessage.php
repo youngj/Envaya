@@ -1,12 +1,11 @@
 <?php
     gatekeeper();
+    set_theme('editor');
     set_context('editor');
     
     $org_guid = get_input('org_guid');
     $org = get_entity($org_guid);
         
-    set_context('editor');
-    
     if ($org && get_loggedin_user()->isApproved()) 
     {             
         add_submenu_item(elgg_echo("message:cancel"), $org->getURL(), 'edit');                

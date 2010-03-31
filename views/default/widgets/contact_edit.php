@@ -1,4 +1,4 @@
-<div class='padded'>
+<div class='section_content padded'>
 <div class='instructions'>
 <?php echo elgg_echo('widget:contact:instructions') ?></label>
 </div>

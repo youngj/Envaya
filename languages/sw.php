@@ -3,8 +3,8 @@
     $swahili = array(
         'home:title' => "Karibu katika Envaya",
         'home:heading' => 'Envaya ni mtandao wa mashirika ya jumuiya ya kiraia Tanzania vigawavyo habari kuhusu miradi yao katika intaneti.',        
-        'home:for_organizations' => 'Kwa mashirika:',
-        'home:for_everyone' => 'Kwa wote:',
+        'home:for_organizations' => 'Kwa mashirika',
+        'home:for_everyone' => 'Kwa wote',
         'home:sign_up' => 'Jiunga sasa',
         
         'why:title' => 'Kwa nini nitumie Envaya?',
@@ -488,7 +488,6 @@
 
         'actiongatekeeper:timeerror' => 'Samahani, ukurasa ulioutumia umekufa. Tafadhali burudisha na jaribu tena.',
 
-        'email:settings' => "Mipangilio ya barua pepe",
         'email:address:label' => "Barua pepe yako",
 
         'email:save:success' => "Anwani mpya ya barua pepe imehifadhiwa.",

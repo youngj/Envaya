@@ -5,6 +5,7 @@
     $post = get_entity($postid);
     $title = elgg_echo('blog:editpost');
     
+    set_theme('editor');
     set_context('editor');
     
     if ($post && $post->canEdit()) 

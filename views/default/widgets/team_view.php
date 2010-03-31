@@ -1,4 +1,4 @@
-<div class='padded'>
+<div class='section_content padded'>
 <?php
     $widget = $vars['widget'];
     $org = $widget->getContainerEntity();

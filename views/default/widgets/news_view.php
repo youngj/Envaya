@@ -1,3 +1,4 @@
+<div class='section_content'>
 <?php 
     $widget = $vars['widget'];
     $org = $widget->getContainerEntity();
@@ -25,3 +26,4 @@
     }
 
 ?>
+</div>

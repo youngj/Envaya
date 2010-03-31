@@ -3,9 +3,11 @@
 	$english = array(
         'home:title' => "Welcome to Envaya",
         'home:heading' => 'Envaya is a network of civil society organizations in Tanzania who share news about their projects on the Internet.',        
-        'home:for_organizations' => 'For organizations:',
-        'home:for_everyone' => 'For everyone:',
+        'home:for_organizations' => 'For organizations',
+        'home:for_everyone' => 'For everyone',
         'home:sign_up' => 'Sign up now',
+        
+        'user:settings' => "Account settings",
         
         'why:title' => 'Why use Envaya?',        
         'why:summary' => "With Envaya, your civil society organization can have its own website, for free, where you can share news about your projects with other organizations and people around the world.",
@@ -373,8 +375,9 @@
         'theme:changed' => "Theme changed.",        
         
         'theme:default' => "Default theme",
-        'theme:green' => "Green theme",
-        'theme:red' => "Red theme",
+        'theme:green' => "Theme 2",
+        'theme:red' => "Theme 3",
+        'theme:simple' => "Theme 1",
 
         'blog:content:label' => "Write the text for your news update below:",
         'blog:image:label' => "Image to display with this news update:",
@@ -432,19 +435,18 @@
         'registration:usernamenotvalid' => 'Sorry, the username you entered is invalid. Please choose another.',
 
         'user:set:name' => "Account name settings",
-        'user:name:label' => "Your name",
+        'user:name:label' => "Name",
         'user:name:success' => "Successfully changed your name on the system.",
 
-        'user:set:password' => "Account password",
-        'user:password:label' => "Your new password",
-        'user:password2:label' => "Your new password again",
+        'user:password:help' => "Leave blank to keep your current password.",
+        'user:password:label' => "New password",
+        'user:password2:label' => "New password again",
         'user:password:success' => "Your new password has been emailed to you. Check your email for your new password, and enter it below.",
         'user:password:fail' => "Could not change your password.",
         'user:password:fail:notsame' => "The two passwords are not the same!",
         'user:password:fail:tooshort' => "Password is too short!",
 
-        'user:set:language' => "Language settings",
-        'user:language:label' => "Your language",
+        'user:language:label' => "Language",
         'user:language:success' => "Your language settings have been updated.",
         'user:language:fail' => "Your language settings could not be saved.",
 
@@ -512,8 +514,7 @@ And log in with these user credentials:
 Once you have logged in, we highly recommend that you change your password.
 ',
 
-        'email:settings' => "Email settings",
-        'email:address:label' => "Your email address",
+        'email:address:label' => "Email address",
 
         'email:save:success' => "New email address saved.",
         'email:save:fail' => "Your new email address could not be saved.",

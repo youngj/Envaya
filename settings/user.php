@@ -21,9 +21,12 @@
 
         $title = elgg_echo("usersettings:user");
         
+        set_theme('editor');
         set_context('editor');
+        
+        $user = get_loggedin_user();
 
 		page_draw($title,
-            elgg_view_layout("one_column_padded", elgg_view_title($title), elgg_view("usersettings/form"))
+            elgg_view_layout("one_column", elgg_view_title($title), elgg_view("usersettings/form"))
         );
 ?>

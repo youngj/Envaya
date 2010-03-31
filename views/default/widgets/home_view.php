@@ -12,6 +12,8 @@
         
     $posts = $org->getNewsUpdates(3); // make this configurable?    
     
+    echo "<div class='section_content'>";
+    
     if (empty($posts))
     {
         echo "<div class='padded'>".elgg_echo("widget:news:empty")."</div>";
@@ -24,6 +26,9 @@
         }
         echo "<div style='padding:5px'><a class='float_right' href='".$org->getUrl()."/news'>".elgg_echo('blog:view_all')."</a><div style='clear:both'></div></div>";
     }    
+    
+    echo "</div>";
+    
     $sectors = $org->getSectors();
 
     if (!empty($sectors))

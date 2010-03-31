@@ -57,15 +57,10 @@ END;
     
     <base href='<?php echo $vars['url'] ?>' />
 
-    <link rel="stylesheet" href="_css/default.css?v=<?php echo $cacheVersion; ?>" type="text/css" />    
-    
     <?php 
         $theme = get_theme();
         
-        if ($theme && $theme != 'default')
-        {
-            echo  '<link rel="stylesheet" href="_css/'.$theme.'.css?v='.$cacheVersion.'" type="text/css" />';
-        }
+        echo  '<link rel="stylesheet" href="_css/'.$theme.'.css?v='.$cacheVersion.'" type="text/css" />';
     
         echo $feedref;
     ?>
@@ -166,4 +161,4 @@ function setDirty($dirty)
     
 </head>
 
-<body class='<?php echo get_context() ?>'>
+<body>

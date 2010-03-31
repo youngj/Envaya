@@ -5,7 +5,7 @@
 ?>
 
 <div class='section_header'><?php echo elgg_echo('partner:find_new'); ?></div>
-<div class='section_content'>
+<div class='section_content padded'>
 <?php if ($org->isApproved()) { ?>
 <p>
 <?php echo sprintf(elgg_echo('partner:instructions'), "<strong>".elgg_echo('partner:request')."</strong>"); ?>
@@ -23,7 +23,7 @@
 </div>
 
 <div class='section_header'><?php echo elgg_echo('partner:current'); ?></div>
-<div class='section_content'>
+<div class='section_content padded'>
 <?php
     $offset = (int) get_input('offset');
     $limit = 10;

@@ -5,7 +5,7 @@
 ?>
 
 <div class='section_header'><?php echo elgg_echo('widget:team:add'); ?></div>
-<div class='section_content'>
+<div class='section_content padded'>
 
 <form action='action/org/addTeamMember' enctype='multipart/form-data' method='POST'>
 
@@ -53,7 +53,7 @@
 </div>
 
 <div class='section_header'><?php echo elgg_echo('widget:team:list'); ?></div>
-<div class='section_content'>
+<div class='section_content padded'>
 <?php
     $teamMembers = $org->getTeamMembers();
     

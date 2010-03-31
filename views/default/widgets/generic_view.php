@@ -1,4 +1,4 @@
-<div class='padded'>
+<div class='padded section_content'>
 <?php
     $widget = $vars['widget'];
     

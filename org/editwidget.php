@@ -1,6 +1,8 @@
 <?php
 
 gatekeeper();
+set_theme('editor');
+set_context('editor');
 
 $widgetTitle = elgg_echo("widget:{$widget->widget_name}");
 

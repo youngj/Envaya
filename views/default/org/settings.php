@@ -6,23 +6,51 @@
     {
 ?>
 
-    <h3>    
+    <div class='section_header'>    
         <?php echo elgg_echo('theme') ?>
-    </h3>
-    <p>
-    <?php 
-        echo elgg_echo('theme:current');
-        echo " ";
-        echo escape(elgg_echo("theme:{$user->theme}"));
-    ?>    
-    <strong><a href='<?php echo $user->getURL() ?>/theme?from=pg/settings/user/<?php echo $user->username ?>'><?php echo elgg_echo('theme:edit') ?></a></strong>
-    </p>
-    <p>
-    
-    </p>
+    </div>
+    <div class='section_content'>
 
-    <h3><?php echo elgg_echo('org:icon'); ?></h3>
-    <p>
+<script type='text/javascript'>
+
+function previewTheme($theme)
+{
+    var iframe = document.getElementById('previewFrame');
+    iframe.src = <?php echo json_encode($user->getURL()) ?> + "?__topbar=0&__theme=" + $theme;
+}
+
+</script>
+
+<div class='padded'>
+<div class='input'>
+<?php
+    $curTheme = $user->theme;        
+
+    foreach (get_themes() as $theme)
+    {
+        $selected = ($theme == $curTheme) ? "checked='checked'" : '';
+        $label = elgg_echo("theme:$theme");
+        echo "<label class='optionLabel'><input type='radio' onclick='previewTheme(\"".escape($theme)."\")' name='theme' value='".escape($theme)."' {$selected} class='input-radio' />{$label}</label><br />";
+    }
+?>
+
+<label><?php echo elgg_echo('preview'); ?>:</label>
+</div>
+
+<div style='position:relative;width:500px;height:300px'>    
+    <iframe width='458' height='298' style='position:absolute;left:0px;top:0px;border:1px solid black' scrolling='no' id='previewFrame' src="<?php echo $user->getURL() ?>?__topbar=0"></iframe>
+    <div style='position:absolute;background-color:white;width:460px;height:300px;left:0px;top:0px;opacity:0.01;filter:alpha(opacity=1)'></div>
+</div>    
+
+<?php echo elgg_view('input/submit', array('value' => elgg_echo('savechanges'), 'trackDirty' => true)); ?>
+
+</div>
+
+&nbsp;
+    </div>
+
+    <div class='section_header'><?php echo elgg_echo('org:icon'); ?></div>
+    <div class='section_content padded'>
     
         <?php
         
@@ -35,9 +63,9 @@
                 )) 
         
          ?> 
+         
+<?php echo elgg_view('input/submit', array('value' => elgg_echo('savechanges'), 'trackDirty' => true)); ?>         
 
-    </p>
-
-
+    </div>
 
 <?php } ?>

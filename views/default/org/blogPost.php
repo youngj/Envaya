@@ -1,3 +1,4 @@
+<div class='section_content'>
 <?php
   
     $entity = $vars['entity'];
@@ -178,4 +179,5 @@ for (var i = 0; i < blogDates.length; i++)
 echo elgg_view_entity($entity, true);
 ?>
 
+</div>
 </div>

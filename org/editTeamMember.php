@@ -4,6 +4,7 @@
     $member_guid = (int) get_input('member_guid');
     $member = get_entity($member_guid);
     
+    set_theme('editor');
     set_context('editor');
     
     if ($member && $member->canEdit()) 

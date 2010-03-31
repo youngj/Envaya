@@ -433,7 +433,7 @@ $THEME = null;
 function get_theme()
 {
     global $THEME;
-    return $THEME;
+    return $THEME ?: 'simple';
 }
 
 function set_theme($theme)
@@ -444,7 +444,7 @@ function set_theme($theme)
 
 function get_themes()
 {
-    return array('default','green','red');
+    return array('simple','green','red');
 }
 
 function envaya_init() 
@@ -459,6 +459,7 @@ function envaya_init()
     }
     
     elgg_view_register_simplecache("css/admin");
+    elgg_view_register_simplecache("css/editor");
     
     register_plugin_hook('geocode', 'location', 'googlegeocoder_geocode');
     

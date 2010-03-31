@@ -6,7 +6,7 @@
 ?>
 
 <div class='section_header'><?php echo elgg_echo("org:mission"); ?></div>
-<div class='section_content'>
+<div class='section_content padded'>
 <div class='input'>
     <label><?php echo elgg_echo('setup:mission') ?></label>
     <?php echo elgg_view("input/longtext", array('internalname' => 'content', 
@@ -16,7 +16,7 @@
 </div>
 
 <div class='section_header'><?php echo elgg_echo("widget:news:latest"); ?></div>
-<div class='section_content'>
+<div class='section_content padded'>
     <strong><a href="<?php 
         $escUrl = urlencode($_SERVER['REQUEST_URI']);
         echo "{$org->getURL()}/news/edit?from=$escUrl";        
@@ -25,7 +25,7 @@
 
 
 <div class='section_header'><?php echo elgg_echo("org:sectors"); ?></div>
-<div class='section_content'>
+<div class='section_content padded'>
 <div class='input'>
     <label><?php echo elgg_echo("setup:sector"); ?><br /></label>
     <?php
@@ -43,7 +43,7 @@
 </div>
 
 <div class='section_header'><?php echo elgg_echo("org:location"); ?></div>
-<div class='section_content'>
+<div class='section_content padded'>
     
 <label><?php echo elgg_echo('setup:location') ?></label>
 <div>

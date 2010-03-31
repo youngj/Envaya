@@ -1,3 +1,8 @@
+<?php
+    include(dirname(__FILE__)."/default.php");
+?>
+
+
 /* canvas layout: 2 column left sidebar */
 #two_column_left_sidebar {
     width:210px;

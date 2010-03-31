@@ -16,6 +16,7 @@ if ($lang != 'en')
 
     echo "\n";
 
+    echo sizeof($CONFIG->translations[$lang])." keys present\n";
     echo sizeof($missingKeys)." keys missing (".get_language_completeness($lang)."%)\n";
 
     foreach ($CONFIG->translations[$lang] as $k => $v)

@@ -1,5 +1,6 @@
 <?php
     gatekeeper();
+    set_theme('editor');
     set_context('editor');
     
     $title = elgg_echo("help:title");       

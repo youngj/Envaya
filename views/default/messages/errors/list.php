@@ -18,6 +18,7 @@
 
 ?>
 
+    <div class="message_container">
     <div class="bad_messages">
 <?php
         
@@ -28,7 +29,7 @@
 ?>
 
     </div>
-    
+    </div>
 <?php
 
     }

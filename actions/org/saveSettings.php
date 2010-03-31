@@ -9,6 +9,15 @@
 
     if ($org && $org instanceof Organization && $org->canEdit())
     {
+        $theme = get_input('theme');
+
+        if ($theme != $org->theme)
+        {
+            system_message(elgg_echo("theme:changed"));
+            $org->theme = $theme;
+            $org->save();
+        }    
+        
         if (get_input('deleteicon'))
         {
             $org->custom_icon = false;
@@ -26,7 +35,7 @@
             {   
                 $org->setIcon(get_uploaded_filename('icon'));
             }    
-        }        
+        }               
     }    
 	
 ?>

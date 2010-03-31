@@ -12,7 +12,7 @@ class Widget extends ElggObject
     
     static function getAvailableNames()
     {
-        return array('home', 'news', 'projects', 'history', 'team', 'contact', 'partnerships');
+        return array('home', 'news', 'projects', 'history', 'team', 'partnerships', 'contact');
     }
     
     function renderView()

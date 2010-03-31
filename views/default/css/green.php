@@ -1,8 +1,103 @@
 <?php
-    $graphicsDir = $vars['url'] . "_graphics";
+    include(dirname(__FILE__)."/default.php");
+
+    $graphicsDir = $vars['url'] . "_graphics/green";
 ?>
 
 body
 {
-    color:#339933;
+    background-color:white;
+}
+
+.heading_container
+{
+    background-color:#f2f5f6;
+}
+
+.content_container
+{
+    background:#fff url("<?php echo $graphicsDir; ?>/section_content.gif") repeat-x left top;          
+}   
+
+.content_container .thin_column
+{
+    background:#e5e5e5 url("<?php echo $graphicsDir; ?>/thin_column.gif") repeat-x left top;
+    padding-bottom:1px;
+}
+
+.section_header
+{
+    border-top:1px solid #c4bfb5;
+    background:#e6e6e6 url("<?php echo $graphicsDir; ?>/section_header.gif") no-repeat left -5px;  
+    height:21px;
+    font-family:"Gill Sans MT", sans-serif;
+    text-transform:uppercase;
+}
+
+.section_content
+{
+    background:#fff url("<?php echo $graphicsDir; ?>/section_content.gif") repeat-x left -15px;          
+}
+
+.thin_column #content
+{
+    margin-left:9px;
+    margin-right:9px;
+    margin-bottom:10px;
+    border-left:1px solid #dbdbdb;
+    border-right:1px solid #dbdbdb;
+    background-color:#ffffff;
+}
+
+#no_site_menu
+{
+    height:8px;
+}
+
+
+#site_menu
+{
+    padding-left:8px;
+}
+
+#site_menu a
+{
+    color:#686464;    
+    display:block;
+    float:left;
+    line-height: 34px;
+    height:34px;
+    padding-left:3px;        
+    margin:0px 1px 8px 0px;
+    text-decoration:none;
+}
+
+#site_menu a.selected,
+#site_menu a:hover
+{
+    color:black;
+    background:#d5d0c8 url(<?php echo $graphicsDir; ?>/button.gif) no-repeat left top;
+}
+
+#site_menu a span
+{
+    padding:0 6px 0 3px;
+    height:34px;
+}
+
+#site_menu a.selected span,
+#site_menu a:hover span
+{
+    background:#d5d0c8 url(<?php echo $graphicsDir; ?>/button.gif) no-repeat right top;
+    display:block;
+/*    {% if BROWSER_IS.ie6 %}
+    cursor:pointer; 
+    width:10px;
+    white-space:nowrap;
+    {% endif %} */
+}
+
+.language
+{
+    padding-top:5px;
 }

@@ -43,16 +43,22 @@ function org_page_handler($page)
 function page_page_handler($page)
 {
     $pageName = $page[0];
-    add_generic_footer();
-    set_input('page_name', $pageName);
-    include(dirname(__FILE__) . "/page.php");
+    if ($pageName == 'home')
+    {
+        home_page_handler($page);
+    }
+    else
+    {    
+        add_generic_footer();
+        set_input('page_name', $pageName);
+        include(dirname(__FILE__) . "/page.php");
+    }
 }
 
 function home_page_handler($page)
 {
-    set_input('page_name','home');
     add_generic_footer();
-    include(dirname(__FILE__) . "/page.php");
+    include(dirname(__FILE__) . "/home.php");
 }
 
 
@@ -128,7 +134,6 @@ function org_profile_page_handler($page)
                 switch ($page[2])
                 {
                     case 'edit':
-                        set_context("editor");
                         include(dirname(__FILE__) . "/editwidget.php");                    
                         return;
                 }       

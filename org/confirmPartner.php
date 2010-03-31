@@ -1,12 +1,12 @@
 <?php
     gatekeeper();
-    set_context('editor');
     
     $org_guid = get_input('org_guid');
     $org = get_entity($org_guid);
     $partner_guid = get_input('partner_guid');
     $partner = get_entity($partner_guid);
         
+    set_theme('editor');
     set_context('editor');
     
     if ($org && $partner) 
