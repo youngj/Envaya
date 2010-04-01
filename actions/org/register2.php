@@ -47,6 +47,7 @@
         $org->owner_guid = 0; 
         $org->container_guid = 0;                 
         $org->language = get_language();
+        $org->theme = "green";
         $org->setup_state = 3; 
         
         $prevInfo = Session::get('registration');        

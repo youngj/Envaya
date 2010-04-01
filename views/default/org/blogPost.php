@@ -79,7 +79,7 @@ function makeLabelForDate(date)
             label.className = 'timelineLabel';
             label.style.left = getPosForTime(dateTime, 70);
             
-            var text = date.getMonth() + "/" + date.getDate();
+            var text = (date.getMonth() + 1) + "/" + date.getDate();
             
             if (date.getFullYear() != new Date().getFullYear())
             {
