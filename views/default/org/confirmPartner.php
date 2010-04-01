@@ -3,7 +3,7 @@
     $partner = $vars['partner'];
     
 ?>
-<div class='padded'>
+<div class='section_content padded'>
 <form action='action/org/createPartner' method='POST'>
 <?php echo elgg_view('input/securitytoken') ?>
 <div class="partnership_view">    

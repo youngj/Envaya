@@ -10,9 +10,7 @@
 
 	require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
 	global $CONFIG;
-	
-	action_gatekeeper();
-	
+
 	$username = get_input('username');
 	
 	$access_status = access_get_show_hidden_status();

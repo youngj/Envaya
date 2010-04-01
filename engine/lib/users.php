@@ -300,7 +300,15 @@
         {
             return $this->approval > 0;
         }
-                
+           
+        public function setPassword($password)
+        {
+            $salt = generate_random_cleartext_password(); // Reset the salt
+
+            $this->salt = $salt;
+            $this->password = generate_user_password($this, $password);
+        }
+           
         static function getByEmailCode($emailCode)
         {
             return static::getByCondition(
@@ -620,35 +628,7 @@
 		
 		return false;
 	}
-	
-	/**
-	 * Low level function to reset a given user's password. 
-	 * 
-	 * This can only be called from execute_new_password_request().
-	 * 
-	 * @param int $user_guid The user.
-	 * @param string $password password text (which will then be converted into a hash and stored)
-	 */
-	function force_user_password_reset($user_guid, $password)
-	{
-		global $CONFIG;
 		
-        $user = get_entity($user_guid);
-
-        if ($user)
-        {
-            $salt = generate_random_cleartext_password(); // Reset the salt
-            
-            $user->salt = $salt;
-            
-            $hash = generate_user_password($user, $password);
-            
-            return update_data("UPDATE users_entity set password=?, salt=? where guid=?", array($hash, $salt, $user_guid));
-        }
-		
-		return false;
-	}
-	
 	/**
 	 * Validate and execute a password reset for a user.
 	 *
@@ -666,15 +646,14 @@
 		{
 			$password = generate_random_cleartext_password();
 			
-			if (force_user_password_reset($user_guid, $password))
-			{
-				//remove_metadata($user_guid, 'conf_code');
-				remove_private_setting($user_guid, 'passwd_conf_code');
-				
-				$email = sprintf(elgg_echo('email:resetpassword:body',$user->language), $user->name, $password);
-				
-				return notify_user($user->guid, $CONFIG->site_guid, elgg_echo('email:resetpassword:subject',$user->language), $email, NULL, 'email');
-			}
+            $user->setPassword($password);
+            $user->save();
+            
+            remove_private_setting($user_guid, 'passwd_conf_code');
+
+            $email = sprintf(elgg_echo('email:resetpassword:body',$user->language), $user->name, $password);
+
+            return notify_user($user->guid, $CONFIG->site_guid, elgg_echo('email:resetpassword:subject',$user->language), $email, NULL, 'email');
 		}
 		
 		return false;
@@ -934,8 +913,8 @@
 
 		register_action("usersettings/save");
 		
-		register_action("user/passwordreset");
-		register_action("user/requestnewpassword");
+		register_action("user/passwordreset", true);
+		register_action("user/requestnewpassword", true);
 		
 		// User name change
 		extend_elgg_settings_page('user/settings/name', 'usersettings/user', 1);
