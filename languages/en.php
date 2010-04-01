@@ -84,7 +84,7 @@
         'dashboard:attach_image' => "Attach image",
         'dashboard:select_image' => "Select an image you would like to include with this news update:",
         'dashboard:view_home' => "View your home page",
-        'dashboard:settings' => "Change account settings",
+        'dashboard:settings' => "Change site settings",
         'dashboard:links' => "Links",        
                 
         'topbar:your_home' => "Your home page",
