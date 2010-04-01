@@ -41,13 +41,12 @@ body
 
 .thin_column #content
 {
-    margin-left:9px;
-    margin-right:9px;
-    margin-bottom:10px;
+    margin:0px auto 10px auto;
+    width:478px;
     border-left:1px solid #dbdbdb;
     border-right:1px solid #dbdbdb;
-    background-color:#ffffff;
 }
+
 
 #no_site_menu
 {
@@ -83,6 +82,7 @@ body
 {
     padding:0 6px 0 3px;
     height:34px;
+    cursor:pointer;
 }
 
 #site_menu a.selected span,

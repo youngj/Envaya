@@ -38,6 +38,11 @@ body
     padding:0px 2px;
 }
 
+#content_mid .padded
+{
+    padding-top:0px;
+}
+
 #heading
 {
     font-size:16px;

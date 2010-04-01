@@ -250,6 +250,7 @@
         'widget:team:save_success' => "Team member saved.",
         'widget:team:add_success' => "Team member added.",
         'widget:team:delete_success' => "Team member deleted.",
+        'widget:team:move_success' => "Team member moved.",
         'widget:team:empty' => "This organization has not yet added any team members.",
         
         'move:up' => "Move up",
@@ -495,6 +496,7 @@
         'view' => "View",
         'edit' => "Edit",
         'delete' => "Delete",
+        'preview' => "Preview",
 
         'fileexists' => "A file has already been uploaded. To replace it, select it below:",
 

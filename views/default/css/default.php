@@ -1116,7 +1116,7 @@ a.attachImageClose:hover
 
 .blogView
 {
-    float:right;
+    float:right; 
     padding-top:5px;
     margin-right:10px;
 }
@@ -1229,7 +1229,7 @@ a.attachImageClose:hover
 .team_member_img
 {
     float:right;
-    margin-left:6px;
+    padding-left:6px;
 }
 
 .team_member_name

@@ -9,19 +9,18 @@
     <div class='section_header'>    
         <?php echo elgg_echo('theme') ?>
     </div>
-    <div class='section_content'>
+    <div class='section_content padded'>
 
 <script type='text/javascript'>
 
 function previewTheme($theme)
 {
     var iframe = document.getElementById('previewFrame');
-    iframe.src = <?php echo json_encode($user->getURL()) ?> + "?__topbar=0&__theme=" + $theme;
+    iframe.src = <?php echo json_encode($user->getURL()) ?> + "?__topbar=0&__readonly=1&__theme=" + $theme;
 }
 
 </script>
 
-<div class='padded'>
 <div class='input'>
 <?php
     $curTheme = $user->theme;        
@@ -37,14 +36,9 @@ function previewTheme($theme)
 <label><?php echo elgg_echo('preview'); ?>:</label>
 </div>
 
-<div style='position:relative;width:500px;height:300px'>    
-    <iframe width='458' height='298' style='position:absolute;left:0px;top:0px;border:1px solid black' scrolling='no' id='previewFrame' src="<?php echo $user->getURL() ?>?__topbar=0"></iframe>
-    <div style='position:absolute;background-color:white;width:460px;height:300px;left:0px;top:0px;opacity:0.01;filter:alpha(opacity=1)'></div>
-</div>    
+<iframe width='458' height='298' style='border:1px solid black' scrolling='no' id='previewFrame' src="<?php echo $user->getURL() ?>?__topbar=0&__readonly=1"></iframe>
 
 <?php echo elgg_view('input/submit', array('value' => elgg_echo('savechanges'), 'trackDirty' => true)); ?>
-
-</div>
 
 &nbsp;
     </div>

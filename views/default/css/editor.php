@@ -16,18 +16,19 @@ body
 
 .thin_column
 {
-    width:480px;
+    width:500px;
 }
 
 .content_container .thin_column
 {
     background-color:#191919;
     border:2px solid #a8a8a8;
-    padding:10px;
 }
 
-#content
+#content_mid
 {
+    margin:10px auto 10px auto;
+    width:480px;
     background-color:white;
 }
 

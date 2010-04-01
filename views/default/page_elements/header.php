@@ -65,6 +65,13 @@ END;
         echo $feedref;
     ?>
     
+    <!--[if IE 6]>
+    <style type='text/css'>
+    .green #site_menu a { width:10px; }
+    </style>
+    <![endif]-->
+
+    
 <script type='text/javascript'>
 function addEvent(elem, type, fn) 
 {
@@ -161,4 +168,8 @@ function setDirty($dirty)
     
 </head>
 
-<body>
+<body class='<?php echo get_theme(); ?>'>
+
+<?php if (get_input("__readonly") == "1") { ?>
+<div style='position:absolute;background-color:white;width:500px;height:500px;left:0px;top:0px;opacity:0.01;z-index:100;filter:alpha(opacity=1);z-index:100'></div>
+<?php } ?>
