@@ -446,7 +446,7 @@
         'user:password:fail:notsame' => "The two passwords are not the same!",
         'user:password:fail:tooshort' => "Password is too short!",
 
-        'user:language:label' => "Language",
+        'user:language:label' => "Site language",
         'user:language:success' => "Your language settings have been updated.",
         'user:language:fail' => "Your language settings could not be saved.",
 

@@ -28,7 +28,10 @@
 		{
 			$user->language = $language;
 			if ($user->save())
+			{
+			    change_viewer_language($user->language);
 				system_message(elgg_echo('user:language:success'));
+			}
 			else
 				register_error(elgg_echo('user:language:fail'));
 		}

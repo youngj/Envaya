@@ -437,7 +437,7 @@
         'user:password:fail:tooshort' => "Neno lako la siri ni fupi mno!",
 
         'user:set:language' => "Mipangilio ya lugha",
-        'user:language:label' => "Lugha yako",
+        'user:language:label' => "Lugha ya tovuti yako",
         'user:language:success' => "Lugha yako amehifadhiwa.",
         'user:language:fail' => "Mipangilio yako ya lugha hayawezi kuhifadhiwa.",
 

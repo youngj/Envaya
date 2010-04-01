@@ -294,5 +294,10 @@ function get_missing_language_keys($language)
     return $missing;
 }
 
+function change_viewer_language($newLanguage)
+{
+    setcookie("lang", $newLanguage, time() + 60 * 60 * 24 * 365 * 15, '/');
+}
+
 register_translations(dirname(dirname(dirname(__FILE__))) . "/languages/");
 		

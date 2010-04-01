@@ -612,9 +612,9 @@
 			$link = $CONFIG->url . "action/user/passwordreset?u=$user_guid&c=$code";
 			
 			// generate email
-			$email = sprintf(elgg_echo('email:resetreq:body'), $user->name, $link);
+			$email = sprintf(elgg_echo('email:resetreq:body',$user->language), $user->name, $link);
 			
-			return notify_user($user->guid, $CONFIG->site_guid, elgg_echo('email:resetreq:subject'), $email, NULL, 'email');
+			return notify_user($user->guid, $CONFIG->site_guid, elgg_echo('email:resetreq:subject',$user->language), $email, NULL, 'email');
 
 		}
 		
@@ -671,9 +671,9 @@
 				//remove_metadata($user_guid, 'conf_code');
 				remove_private_setting($user_guid, 'passwd_conf_code');
 				
-				$email = sprintf(elgg_echo('email:resetpassword:body'), $user->name, $password);
+				$email = sprintf(elgg_echo('email:resetpassword:body',$user->language), $user->name, $password);
 				
-				return notify_user($user->guid, $CONFIG->site_guid, elgg_echo('email:resetpassword:subject'), $email, NULL, 'email');
+				return notify_user($user->guid, $CONFIG->site_guid, elgg_echo('email:resetpassword:subject',$user->language), $email, NULL, 'email');
 			}
 		}
 		

@@ -25,8 +25,8 @@
         $partnership2->save();
 
         notify_user($partner_guid, $CONFIG->site_guid, 
-            sprintf(elgg_echo('email:requestPartnership:subject'), $loggedInOrg->name, $partner->name), 
-            sprintf(elgg_echo('email:requestPartnership:body'), $partnership->getApproveUrl()),
+            sprintf(elgg_echo('email:requestPartnership:subject',$partner->language), $loggedInOrg->name, $partner->name), 
+            sprintf(elgg_echo('email:requestPartnership:body',$partner->language), $partnership->getApproveUrl()),
             NULL, 'email');
 
         system_message(elgg_echo("partner:request_sent"));  

@@ -32,8 +32,8 @@
         system_message(elgg_echo("partner:created"));  
         
         notify_user($partner_guid, null,
-            sprintf(elgg_echo('email:partnershipConfirmed:subject'), $user->name, $partner->name), 
-            sprintf(elgg_echo('email:partnershipConfirmed:body'), $partWidget2->getURL()), 
+            sprintf(elgg_echo('email:partnershipConfirmed:subject',$partner->language), $user->name, $partner->name), 
+            sprintf(elgg_echo('email:partnershipConfirmed:body',$partner->language), $partWidget2->getURL()), 
             NULL, 'email');
 
         forward($partWidget->getURL());
