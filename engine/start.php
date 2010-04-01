@@ -100,6 +100,8 @@
         if (!include_once($file))
             throw new InstallationException("Could not load {$file}");
     }
+    
+    //error_log("includes finished in ".(microtime(true) - $START_MICROTIME)." seconds");
 	    
     trigger_elgg_event('boot', 'system');
 
@@ -136,4 +138,5 @@
         elgg_view_regenerate_simplecache();
     }
     
+    //error_log("start.php finished in ".(microtime(true) - $START_MICROTIME)." seconds");
 ?>

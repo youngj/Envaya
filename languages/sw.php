@@ -1,6 +1,5 @@
 <?php
-
-    $swahili = array(
+    add_translation("sw",array(
         'home:title' => "Karibu Envaya",
         'home:heading' => 'Envaya ni mtandao wa mashirika ya jumuiya ya kiraia Tanzania vigawavyo habari kuhusu miradi yao katika intaneti.',        
         'home:for_organizations' => 'Kwa mashirika',
@@ -526,7 +525,5 @@ Kama uliliomba, bongeza kiungo chini kubadili neno lako la siri:
         'tz:zanzibar_cs' => 'Unguja Kusini',
         'tz:zanzibar_n' => 'Unguja Kaskazini',
         'tz:zanzibar_w' => 'Unguja Mjini Magharibi',      
-    );
-
-    add_translation("sw",$swahili);
+    ));
 ?>

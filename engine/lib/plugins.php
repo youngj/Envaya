@@ -29,37 +29,15 @@
 		 * @package Elgg
 		 * @subpackage Core
 		 */
-		function load_plugins() {
-			
+		function load_plugins() 
+        {		
 			global $CONFIG;
             $plugins = $CONFIG->enabled_plugins;
 				
             foreach($plugins as $mod) 
             {
-                if (file_exists($CONFIG->pluginspath . $mod)) 
-                {
-                    if (!include($CONFIG->pluginspath . $mod . "/start.php"))
-                        throw new PluginException(sprintf(elgg_echo('PluginException:MisconfiguredPlugin'), $mod));
-
-                    if (is_dir($CONFIG->pluginspath . $mod . "/views")) 
-                    {
-                        if ($handle = opendir($CONFIG->pluginspath . $mod . "/views")) 
-                        {
-                            while ($viewtype = readdir($handle)) 
-                            {
-                                if (!in_array($viewtype,array('.','..','.svn','CVS')) && is_dir($CONFIG->pluginspath . $mod . "/views/" . $viewtype)) 
-                                {
-                                    autoregister_views("",$CONFIG->pluginspath . $mod . "/views/" . $viewtype,$CONFIG->pluginspath . $mod . "/views/", $viewtype);
-                                }
-                            }
-                        }
-                    }
-
-                    if (is_dir($CONFIG->pluginspath . $mod . "/languages")) 
-                    {
-                        register_translations($CONFIG->pluginspath . $mod . "/languages/");
-                    }
-                }
+                if (!include($CONFIG->pluginspath . $mod . "/start.php"))
+                    throw new PluginException(sprintf(elgg_echo('PluginException:MisconfiguredPlugin'), $mod));
             }
 		}		
 

@@ -25,27 +25,20 @@
 * @return true|false Depending on success
 */
 
-function add_translation($country_code, $language_array) {
-
+function add_translation($country_code, $language_array) 
+{
     global $CONFIG;
     if (!isset($CONFIG->translations))
         $CONFIG->translations = array();
-
-    $country_code = strtolower($country_code);
-    $country_code = trim($country_code);
-    if (is_array($language_array) && sizeof($language_array) > 0 && $country_code != "") {
-
-        if (!isset($CONFIG->translations[$country_code])) {
-            $CONFIG->translations[$country_code] = $language_array;
-        } else {
-            $CONFIG->translations[$country_code] = $language_array + $CONFIG->translations[$country_code];
-        }
-
-        return true;
-
+    
+    if (!isset($CONFIG->translations[$country_code])) 
+    {
+        $CONFIG->translations[$country_code] = $language_array;
+    } 
+    else 
+    {
+        $CONFIG->translations[$country_code] = $language_array + $CONFIG->translations[$country_code];
     }
-    return false;
-
 }
 
 /**
@@ -167,36 +160,18 @@ function elgg_echo($message_key, $language = "") {
 
 }
 
-/**
-* When given a full path, finds translation files and loads them
-*
-* @param string $path Full path
-* @param bool $load_all If true all languages are loaded, if false only the current language + en are loaded
-*/
-function register_translations($path, $load_all = false) {
+function load_all_translations() 
+{
+    $path = dirname(dirname(dirname(__FILE__))) . "/languages/";
 
-    global $CONFIG;
-
-    // Make a note of this path just incase we need to register this language later
-    if(!isset($CONFIG->language_paths)) $CONFIG->language_paths = array();
-    $CONFIG->language_paths[$path] = true;
-
-    // Get the current language based on site defaults and user preference
-    $current_language = get_current_language();           
-
-    //if (isset($CONFIG->debug) && $CONFIG->debug == true) error_log("Translations loaded from : $path");
-
-    if ($handle = opendir($path)) {
-        while ($language = readdir($handle)) {
-
-            if (
-                ((in_array($language, array('en.php', $current_language . '.php')))) ||
-                (($load_all) && (strpos($language, '.php')!==false)) 
-            )
+    if ($handle = opendir($path)) 
+    {
+        while ($language = readdir($handle)) 
+        {
+            if (endswith($language, '.php')) 
             {
                 include_once($path . $language);
             }    
-
         }
     }
     else
@@ -204,27 +179,16 @@ function register_translations($path, $load_all = false) {
 
 }
 
-/** 
- * Reload all translations from all registered paths.
- * 
- * This is only called by functions which need to know all possible translations, namely the
- * statistic gathering ones.
- * 
- * TODO: Better on demand loading based on language_paths array
- * 
- * @return bool
- */
-function reload_all_translations() 
-{
-    global $CONFIG;
+function load_translation($lang) 
+{    
+    $path = dirname(dirname(dirname(__FILE__))) . "/languages/";
 
-    static $LANG_RELOAD_ALL_RUN;
-    if ($LANG_RELOAD_ALL_RUN) return null;
-
-    foreach ($CONFIG->language_paths as $path => $dummy)
-        register_translations($path, true);
-
-    $LANG_RELOAD_ALL_RUN = true;
+    include_once("$path$lang.php");
+    
+    if ($lang != 'en')
+    {
+        include_once("{$path}en.php");
+    }    
 }
 
 /**
@@ -233,9 +197,6 @@ function reload_all_translations()
 function get_installed_translations($show_completeness = false)
 {
     global $CONFIG;
-
-    // Ensure that all possible translations are loaded
-    reload_all_translations();
 
     $installed = array();
 
@@ -261,8 +222,7 @@ function get_language_completeness($language)
 {
     global $CONFIG;
 
-    // Ensure that all possible translations are loaded
-    reload_all_translations();
+    load_translation($language);
 
     $en = count($CONFIG->translations['en']) - count($CONFIG->en_admin);
 
@@ -280,8 +240,7 @@ function get_missing_language_keys($language)
 {
     global $CONFIG;
 
-    // Ensure that all possible translations are loaded
-    reload_all_translations();
+    load_translation($language);
 
     $missing = array();
 
@@ -299,5 +258,7 @@ function change_viewer_language($newLanguage)
     setcookie("lang", $newLanguage, time() + 60 * 60 * 24 * 365 * 15, '/');
 }
 
-register_translations(dirname(dirname(dirname(__FILE__))) . "/languages/");
-		
+//$a = microtime(true);
+load_translation(get_current_language());	
+//$b = (microtime(true) - $a);
+//error_log("translations loaded in $b seconds");

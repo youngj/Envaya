@@ -202,21 +202,7 @@
     function elgg_get_view_location($view, $viewtype = '')
     {
         global $CONFIG;
-
-        if (empty($viewtype))
-            $viewtype = elgg_get_viewtype();
-
-        if (!isset($CONFIG->views->locations[$viewtype][$view])) {
-            if (!isset($CONFIG->viewpath)) {
-                return dirname(dirname(dirname(__FILE__))) . "/views/";		    			
-            } else {
-                return $CONFIG->viewpath;
-            }
-        } else {
-            return $CONFIG->views->locations[$viewtype][$view];
-        }
-
-        return false;
+        return dirname(dirname(dirname(__FILE__))) . "/views/";		    			
     }
 
 	/**
@@ -724,65 +710,7 @@
 			ksort($CONFIG->views->extensions[$view]);
 			
 		}
-		
-	/**
-	 * Set an alternative base location for a view (as opposed to the default of $CONFIG->viewpath)
-	 *
-	 * @param string $view The name of the view
-	 * @param string $location The base location path
-	 */
-		function set_view_location($view, $location, $viewtype = '') {
-			
-			global $CONFIG;
-			
-			if (empty($viewtype))
-				$viewtype = 'default';
-			
-			if (!isset($CONFIG->views)) {
-				$CONFIG->views = new stdClass;
-			}
-			if (!isset($CONFIG->views->locations)) {
-				$CONFIG->views->locations = array($viewtype => array(
-																	$view => $location
-																));
-			} else if (!isset($CONFIG->views->locations[$viewtype])) {
-				$CONFIG->views->locations[$viewtype] = array(
-																	$view => $location
-																);
-			} else {
-				$CONFIG->views->locations[$viewtype][$view] = $location;
-			}
-			
-		}
-		
-	/**
-	 * Auto-registers views from a particular starting location
-	 *
-	 * @param string $view_base The base of the view name
-	 * @param string $folder The folder to begin looking in
-	 * @param string $base_location_path The base views directory to use with set_view_location
-	 * @param string $viewtype The type of view we're looking at (default, rss, etc)
-	 */		
-		function autoregister_views($view_base, $folder, $base_location_path, $viewtype) {
-			
-			if (!isset($i)) $i = 0;
-			if ($handle = opendir($folder)) {
-				while ($view = readdir($handle)) {
-					if (!in_array($view,array('.','..','.svn','CVS')) && !is_dir($folder . "/" . $view)) {
-						if ((substr_count($view,".php") > 0) || (substr_count($view,".png") > 0)) {
-							if (!empty($view_base)) { $view_base_new = $view_base . "/"; } else { $view_base_new = ""; }
-							set_view_location($view_base_new . str_replace(".php","",$view), $base_location_path, $viewtype);
-						}
-					} else if (!in_array($view,array('.','..','.svn','CVS')) && is_dir($folder . "/" . $view)) {
-						if (!empty($view_base)) { $view_base_new = $view_base . "/"; } else { $view_base_new = ""; }
-						autoregister_views($view_base_new . $view, $folder . "/" . $view, $base_location_path, $viewtype);
-					}
-				}
-			}
-			
-			
-		}
-		
+				
 	/**
 	 * Returns a representation of a full 'page' (which might be an HTML page, RSS file, etc, depending on the current view)
 	 *
@@ -854,22 +782,7 @@
             
 			
 		}
-
-	/**
-	 * When given a title, returns a version suitable for inclusion in a URL
-	 *
-	 * @param string $title The title
-	 * @return string The optimised title
-	 */
-		function friendly_title($title) {
-			$title = trim($title);
-			$title = strtolower($title);
-			$title = preg_replace("/[^\w ]/","",$title); 
-			$title = str_replace(" ","-",$title);
-			$title = str_replace("--","-",$title);
-			return $title;
-		}
-
+        
 	/**
 	 * Library loading and handling
 	 */
@@ -899,115 +812,7 @@
 			return $file_list;
 			
 		}
-		
-	/**
-	 * Registers
-	 */
-		
-	/**
-	 * Adds an array with a name to a given generic array register.
-	 * For example, these are used for menus.
-	 *
-	 * @param string $register_name The name of the top-level register
-	 * @param string $subregister_name The name of the subregister
-	 * @param mixed $subregister_value The value of the subregister
-	 * @param array $children_array Optionally, an array of children
-	 * @return true|false Depending on success
-	 */
-		function add_to_register($register_name, $subregister_name, $subregister_value, $children_array = array()) {
-			
-			global $CONFIG;
-			
-			if (empty($register_name) || empty($subregister_name))
-				return false;
-			
-			if (!isset($CONFIG->registers))
-				$CONFIG->registers = array();
 				
-			if (!isset($CONFIG->registers[$register_name]))
-				$CONFIG->registers[$register_name]  = array();
-			
-			$subregister = new stdClass;
-			$subregister->name = $subregister_name;
-			$subregister->value = $subregister_value;
-				
-			if (is_array($children_array)) {	
-				$subregister->children = $children_array;
-			}
-			
-			$CONFIG->registers[$register_name][$subregister_name] = $subregister;
-			return true;
-				
-		}
-		
-	/**
-	 * Returns a register object
-	 *
-	 * @param string $register_name The name of the register
-	 * @param mixed $register_value The value of the register
-	 * @param array $children_array Optionally, an array of children
-	 * @return false|stdClass Depending on success
-	 */
-		function make_register_object($register_name, $register_value, $children_array = array()) {
-			
-			if (empty($register_name) || empty($register_value))
-				return false;
-			
-			$register = new stdClass;
-			$register->name = $register_name;
-			$register->value = $register_value;
-			$register->children = $children_array;
-			
-			return $register;
-			
-		}
-		
-	/**
-	 * If it exists, returns a particular register as an array
-	 *
-	 * @param string $register_name The name of the register
-	 * @return array|false Depending on success
-	 */
-		function get_register($register_name) {
-			
-			global $CONFIG;
-			
-			if (isset($CONFIG->registers[$register_name]))
-				return $CONFIG->registers[$register_name];
-			
-			return false;
-				
-		}
-		
-	/**
-	 * Adds an item to the menu register
-	 *
-	 * @param string $menu_name The name of the top-level menu
-	 * @param string $menu_url The URL of the page
-	 * @param array $menu_children Optionally, an array of submenu items
-	 * @return true|false Depending on success
-	 */
-		function add_menu($menu_name, $menu_url, $menu_children = array(), $context = "") {
-			global $CONFIG;
-			if (!isset($CONFIG->menucontexts)) {
-				$CONFIG->menucontexts = array();
-			}			
-			$CONFIG->menucontexts[] = $context;
-			return add_to_register('menu',$menu_name,$menu_url, $menu_children);
-		}
-		
-	/**
-	 * Returns a menu item for use in the children section of add_menu()
-	 *
-	 * @param string $menu_name The name of the menu item
-	 * @param string $menu_url Its URL
-	 * @return stdClass|false Depending on success
-	 */
-		function menu_item($menu_name, $menu_url) {
-			return make_register_object($menu_name, $menu_url);
-		}
-		
-		
 	/**
 	 * Message register handling
 	 * If no parameter is given, the function returns the array of messages so far and empties it.
@@ -1459,32 +1264,6 @@
 			
 			return true;			
 		}
-
-	/**
-	 * Runs a function once - not per page load, but per installation.
-	 * If you like, you can also set the threshold for the function execution - i.e.,
-	 * if the function was executed before or on $timelastupdatedcheck, this
-	 * function will run it again.
-	 *
-	 * @param string $functionname The name of the function you want to run.
-	 * @param int $timelastupdatedcheck Optionally, the UNIX epoch timestamp of the execution threshold
-	 * @return true|false Depending on success.
-	 */
-		function run_function_once($functionname, $timelastupdatedcheck = 0) {
-			if ($lastupdated = datalist_get($functionname)) {
-				$lastupdated = (int) $lastupdated;
-			} else {
-				$lastupdated = 0;
-			}
-			if (is_callable($functionname) && $lastupdated <= $timelastupdatedcheck) {
-				$functionname();
-				datalist_set($functionname,time());
-				return true;
-			} else {
-				return false;
-			}
-		}
-
 				
 	/**
 	 * Returns true or false depending on whether a PHP .ini setting is on or off
@@ -1658,17 +1437,10 @@
         }    
 	}
 	
-	function elgg_init() {
-
-		// Menu
-			global $CONFIG;
-			//add_menu(elgg_echo('content:latest'), $CONFIG->wwwroot . 'dashboard/latest.php');
-		// Page handler for JS
-			register_page_handler('js','js_page_handler');
-            
-		// Register an event triggered at system shutdown	
-			register_shutdown_function('__elgg_shutdown_hook');
-
+	function elgg_init() 
+    {
+        register_page_handler('js','js_page_handler');
+        register_shutdown_function('__elgg_shutdown_hook');
 	}
 	
 	function elgg_boot() {

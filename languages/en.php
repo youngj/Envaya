@@ -1,6 +1,6 @@
 <?php
 
-	$english = array(
+	add_translation('en', array(
         'home:title' => "Welcome to Envaya",
         'home:heading' => 'Envaya is a network of civil society organizations in Tanzania who share news about their projects on the Internet.',        
         'home:for_organizations' => 'For organizations',
@@ -575,8 +575,6 @@ If you requested this, click on the link below to change your password:
         'tz:zanzibar_cs' => 'Zanzibar Central/South',
         'tz:zanzibar_n' => 'Zanzibar North',
         'tz:zanzibar_w' => 'Zanzibar West',        
-	);
-
-	add_translation("en",$english);
+	));
 
     include(dirname(__FILE__)."/en_admin.php");
