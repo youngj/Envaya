@@ -514,7 +514,7 @@ a#loginButton:hover
 
 a#loginButton:hover .loginContent span
 {
-    text-decoration:underline;
+    text-decoration:none;
 }    
 
 #loginButton img
