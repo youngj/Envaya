@@ -35,7 +35,7 @@ if (get_input('__topbar') !== '0') {
                 
                 if ($user instanceof Organization)
                 {
-                    echo "<a href='pg/dashboard' title=\"".elgg_echo('topbar:edit_site')."\"><img src='_graphics/pencil.gif?v2' /></a>";
+                    echo "<a href='pg/dashboard' title=\"".elgg_echo('topbar:edit_site')."\"><img src='_graphics/pencil.gif?v3' /></a>";
                 }    
                 
                 echo "<a href='pg/settings/' title=\"".elgg_echo('settings')."\" id='usersettings'><img src='_graphics/settings.gif' /></a>";                

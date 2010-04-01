@@ -59,7 +59,7 @@
 <p>
 <?php echo sprintf(elgg_echo('help:editing:editsite'), 
     "<strong><a href='pg/dashboard'>".elgg_echo('dashboard')."</a></strong>",
-    "<a href='pg/dashboard' target='_blank'><img class='icon_with_bg' src='_graphics/pencil.gif?v2' /></a>") ?>
+    "<a href='pg/dashboard' target='_blank'><img class='icon_with_bg' src='_graphics/pencil.gif?v3' /></a>") ?>
 </p>
 
 <p>
