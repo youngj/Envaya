@@ -7,6 +7,8 @@
         'home:for_everyone' => 'Kwa wote',
         'home:sign_up' => 'Jiunga sasa',
         
+        'user:settings' => "Mipangilio ya akaunti",
+        
         'why:title' => 'Kwa nini nitumie Envaya?',
         'why:summary' => "Na Envaya, shirika lako la jumuiya la kiraia linaweza kuwa na tovuti lake lenyewe, la bure, ambapo unaweza kugawa habari kuhusu miradi yako na mashirika mengine na watu duniani.",
         'why:easy' => 'Rahisi',
@@ -244,7 +246,8 @@
         'widget:team:edit' => "Hariri mwenzio",
         'widget:team:save_success' => "Mwenzio amehifadhiwa.",
         'widget:team:add_success' => "Mwenzio ameongezwa.",
-        'widget:team:delete_success' => "Mwendio amefutwa.",
+        'widget:team:delete_success' => "Mwenzio amefutwa.",
+        'widget:team:move_success' => "Mwenzio amehamishwa.",
         'widget:team:empty' => "Shirika hili halijaongeza wenzio wo wote.",        
         
         'move:up' => "Hamisha juu",
@@ -428,16 +431,16 @@
         'user:name:label' => "Jina",
         'user:name:success' => "Tumebadili jina lako.",
 
-        'user:set:password' => "Neno la siri la akaunti",
-        'user:password:label' => "Neno lako jipya la siri",
-        'user:password2:label' => "Neno lako jipya la siri (tena)",
-        'user:password:success' => "Neno lako jipya la siri limepelekwa kwa anwani yako ya email. Soma email yako kwa neno lako jipya la siri, na iingize chini.",        
+        'user:password:help' => "Acha wazi kuendelea na neno lako la siri la sasa.",
+        'user:password:label' => "Neno jipya la siri",
+        'user:password2:label' => "Neno jipya la siri (tena)",
+        'user:password:success' => "Neno lako la siri limebadiliwa.",
+        'user:password:reset' => "Neno lako jipya la siri limepelekwa kwa anwani yako ya email. Soma email yako kwa neno lako jipya la siri, na iingize chini.",        
         'user:password:fail' => "Tuwezi kulibadili neno lako la siri.",
         'user:password:fail:notsame' => "Maneno mawili ya siri si sawa!",
         'user:password:fail:tooshort' => "Neno lako la siri ni fupi mno!",
 
-        'user:set:language' => "Mipangilio ya lugha",
-        'user:language:label' => "Lugha ya tovuti yako",
+        'user:language:label' => "Lugha ya tovuti",
         'user:language:success' => "Lugha yako amehifadhiwa.",
         'user:language:fail' => "Mipangilio yako ya lugha hayawezi kuhifadhiwa.",
 
@@ -485,11 +488,11 @@
         'view' => "Tazama",
         'edit' => "Hariri",
         'delete' => "Futa",
+        'preview' => "Onyesho la awali",
 
         'actiongatekeeper:timeerror' => 'Samahani, ukurasa ulioutumia umekufa. Tafadhali burudisha na jaribu tena.',
 
-        'email:settings' => "Mipangilio ya email",
-        'email:address:label' => "Email yako",
+        'email:address:label' => "Email",
 
         'email:save:success' => "Anwani mpya ya email imehifadhiwa.",
         'email:save:fail' => "Anwani yako ya email haikuweza kuhifadhiwa.",

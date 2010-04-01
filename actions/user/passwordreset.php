@@ -15,7 +15,7 @@
 	$code = get_input('c');
 	
 	if (execute_new_password_request($user_guid, $code))
-		system_message(elgg_echo('user:password:success'));
+		system_message(elgg_echo('user:password:reset'));
 	else
 		register_error(elgg_echo('user:password:fail'));
 		
