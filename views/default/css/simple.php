@@ -49,6 +49,14 @@ body
     padding:20px 10px;
 }
 
+.homeMainHeading
+{
+    font-size: 15.5px;
+    color: #666;
+    font-family: arial;
+    letter-spacing: 0.5px;
+}
+
 .home_heading
 {
     height:19px;
