@@ -1,20 +1,20 @@
 <?php
     add_translation("sw",array(
         'home:title' => "Karibu Envaya",
-        'home:heading' => 'Envaya ni mtandao wa mashirika ya jumuiya ya kiraia Tanzania vigawavyo habari kuhusu miradi yao katika intaneti.',        
+        'home:heading' => 'Envaya ni mtandao wa mashirika ya jumuiya ya kiraia Tanzania ugawao habari kuhusu miradi yao katika intaneti.',        
         'home:for_organizations' => 'Kwa mashirika',
         'home:for_everyone' => 'Kwa wote',
         'home:sign_up' => 'Jiunga sasa',
         
         'user:settings' => "Mipangilio ya akaunti",
         
-        'why:title' => 'Kwa nini nitumie Envaya?',
+        'why:title' => 'Kwa nini utumie Envaya?',
         'why:summary' => "Na Envaya, shirika lako la jumuiya la kiraia linaweza kuwa na tovuti lake lenyewe, la bure, ambapo unaweza kugawa habari kuhusu miradi yako na mashirika mengine na watu duniani.",
-        'why:easy' => 'Rahisi',
+        'why:easy' => 'Ni Rahisi',
         'why:easy:summary' => "Kujenga tovuti yako na Envaya, huhitaji mafunzo sana wa kompyuta au kifaa chochote. Muda wa dakika tano, unaweza kuumba ukurasa mkuu wa msingi wenyewe.",
-        'why:free' => "Bure",
+        'why:free' => "Ni Bure",
         'why:free:summary' => "Kuajiri mtu fulani kujenga na kuendesha tovuti kwa shirika lako ni ghali. Envaya ni bure kabisa.",
-        'why:convenient' => "Kufaa",
+        'why:convenient' => "Inafaa",
         'why:convenient:summary' => "Unaweza kuweka habari na picha mpya katika tovuti yako kwa kupeleka ujumbe mfupi (SMS) kutoka simu yako (kuja karibu). Unaweza pia kutumia email.",
         'why:visible' => "Kuonekana wazi",
         'why:visible:summary' => "Envaya inaunga tovuti yako katika mtandao wake ili watu waweze kukuona kwa rahisi wakati watafutapo kwa mashirika ya jumuiya ya kiraia kama lako.",
@@ -96,7 +96,7 @@
     
         'browse' => 'Peleleza',    
         'browse:title' => 'Peleleza mashirika',
-        'browse:instructions' => "Kila pointi nyekundu katika ramani ya chini ni shirika litumialo Envaya. Elea juu ya pointi kuona jina lake, na ibongeze kutazama ukurasa wake mkuu.",
+        'browse:instructions' => "Kila pointi nyekundu katika ramani ya chini ni shirika litumialo Envaya. Elea juu ya pointi kuona jina la shirika, na bonyeza ili kutazama ukurasa wake mkuu.",
         'browse:map' => 'Ramani',
         'list' => 'Orodha',   
 
