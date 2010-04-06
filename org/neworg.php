@@ -33,6 +33,7 @@
     }
     
 	$title = elgg_echo("register:title");	
-    $body = elgg_view_layout('one_column', elgg_view_title($title), elgg_view("org/register$step"));	
+    $heading = elgg_view('page/simpleheading', array('org_only' => true, 'title' => $title));
+    $body = elgg_view_layout('one_column', $heading, elgg_view("org/register$step"));	
 	page_draw($title, $body);
 ?>

@@ -25,13 +25,18 @@
 <tr>
 <td>
     <a class='icon_link icon_help' href='org/help'><?php echo elgg_echo('help:title') ?></a>
+    <div class='icon_separator'></div>
     <a class='icon_link icon_home' href='<?php echo $org->getURL() ?>'><?php echo elgg_echo('dashboard:view_home') ?></a>
+    <div class='icon_separator'></div>
     <a class='icon_link icon_settings' href='pg/settings'><?php echo elgg_echo('dashboard:settings') ?></a>
+    <div class='icon_separator'></div>
     <a class='icon_link icon_logout' href='action/logout'><?php echo elgg_echo('logout') ?></a>
 </td>
 <td>
     <a class='icon_link icon_explore' href='org/browse'><?php echo elgg_echo("browse:title") ?></a>
+    <div class='icon_separator'></div>
     <a class='icon_link icon_search' href='org/search'><?php echo elgg_echo("search:title") ?></a>
+    <div class='icon_separator'></div>
     <a class='icon_link icon_feed' href='org/feed'><?php echo elgg_echo("feed:title") ?></a>
 </td>
 </tr>

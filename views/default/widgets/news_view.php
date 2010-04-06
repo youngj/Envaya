@@ -11,7 +11,7 @@
 ?>
 
 <?php if (!empty($entities)) { ?>
-<div class='blogView'>
+<div class='view_toggle'>
     <strong><?php echo elgg_echo('list') ?></strong> | <a href='<?php echo $entities[0]->getURL() ?>'><?php echo elgg_echo('blog:timeline') ?></a>
 </div>
 <div style='clear:both'></div>

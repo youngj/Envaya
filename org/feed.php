@@ -4,7 +4,8 @@
 
     $area = elgg_view("org/feed");
 
-    $body = elgg_view_layout('one_column', elgg_view_title($title), $area);    
+    $heading = elgg_view('page/simpleheading', array('title' => $title));
+    $body = elgg_view_layout('one_column', $heading, $area);    
 
     page_draw($title, $body);
 

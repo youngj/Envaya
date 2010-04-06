@@ -66,3 +66,32 @@ body
     color:white;
 }
 
+.icon_link
+{
+    color:#333;
+    padding-left:39px;
+    padding-top:10px;
+    background:url(<?php echo $graphicsDir; ?>/editoricons.gif) no-repeat left top;
+}
+
+a.icon_link:hover
+{    
+    color:#333;
+}
+
+.icon_separator
+{
+    height:0px;
+    border-top:1px solid #fff;
+    border-bottom:1px solid #a3a19e;
+    margin:0px 15px 0px 35px;
+}
+
+.icon_explore   { background-position:left 7px; }
+.icon_help      { background-position:left -33px; }
+.icon_home      { background-position:left -73px; }
+.icon_logout    { background-position:left -113px; }
+.icon_search    { background-position:left -153px; }
+.icon_feed      { background-position:left -193px; }
+.icon_settings  { background-position:left -233px; }
+.icon_signup    { background-position:left -273px; }

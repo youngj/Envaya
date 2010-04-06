@@ -1,13 +1,11 @@
 <?php
-                      
-        add_submenu_item(elgg_echo('browse:map'), $CONFIG->wwwroot. "org/browse");
-        add_submenu_item(elgg_echo('list'), $CONFIG->wwwroot. "org/browse?list=1");                      
-                      
+                                            
         $title = elgg_echo("browse:title");       
+        $sector = get_input('sector');
         
         if (get_input("list"))
         {
-            $area = elgg_view("org/browseList", array('lat' => $lat, 'long' => $long));
+            $area = elgg_view("org/browseList", array('lat' => $lat, 'long' => $long, 'sector' => $sector));
         }
         else
         {        
@@ -15,11 +13,11 @@
             $long = get_input('long');
             $zoom = get_input('zoom');
 
-            $area = elgg_view("org/browseMap", array('lat' => $lat, 'long' => $long, 'zoom' => $zoom));
+            $area = elgg_view("org/browseMap", array('lat' => $lat, 'long' => $long, 'zoom' => $zoom, 'sector' => $sector));
         }    
-               
-        
-        $body = elgg_view_layout('one_column', elgg_view_title($title), $area);    
+                       
+        $heading = elgg_view('page/simpleheading', array('title' => $title));
+        $body = elgg_view_layout('one_column', $heading, $area);    
         
         page_draw($title, $body);
 

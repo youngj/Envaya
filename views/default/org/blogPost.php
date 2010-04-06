@@ -7,7 +7,7 @@
     $blogDates = $org->getBlogDates();    
 ?>
 
-<div class='blogView'>
+<div class='view_toggle'>
     <a href='<?php echo $org->getURL() ?>/news'><?php echo elgg_echo('list') ?></a> | <strong><?php echo elgg_echo('blog:timeline') ?></strong>
 </div>
 <div style='clear:both'></div>

@@ -287,7 +287,7 @@
         'qualify:org_type:for_profit' => 'Business',
         'qualify:org_type:other' => 'Other',        
         'qualify:org_info' => 'Check the statements below that apply to your organization:',
-        'qualify:org_info:citizen' => 'It is led by Tanzanians.',
+        'qualify:org_info:citizen' => 'It is a Tanzanian organization.',
         'qualify:org_info:local' => 'It mostly operates in one local community.',        
         'qualify:org_info:funder' => 'It primarily distributes funding to other organizations.',        
         'qualify:country' => 'What country does your organization operate in?',

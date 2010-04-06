@@ -14,8 +14,12 @@
         }
         else
         {
-            $title = elgg_echo("$pageName:title");
-            $body = elgg_view_layout('one_column_padded', elgg_view_title($title), $area);        
+            $title = elgg_echo("$pageName:title");            
+            $heading = elgg_view('page/simpleheading', array(
+                'org_only' => (in_array($pageName, array('why'))), 
+                'title' => $title
+            ));
+            $body = elgg_view_layout('one_column_padded', $heading, $area);        
             page_draw($title, $body);
         }    
     }    

@@ -1,3 +1,9 @@
+<?php 
+
+$sector = @$vars['sector'];
+
+?>
+
 <div class='padded'>
 <script type='text/javascript'>
 function sectorChanged()
@@ -14,9 +20,14 @@ function sectorChanged()
     }, 1);    
 }
 </script>
-<?php 
 
-$sector = get_input('sector');
+
+<div class='view_toggle'>
+    <a href='org/browse?sector=<?php echo escape($sector); ?>'><?php echo elgg_echo('browse:map') ?></a> &middot;
+    <strong><?php echo elgg_echo('list') ?></strong>
+</div>
+
+<?php 
 
 echo elgg_view('input/pulldown', array(
     'internalname' => 'sector',
@@ -26,6 +37,8 @@ echo elgg_view('input/pulldown', array(
     'value' => $sector,
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"        
 ));
+
+echo "<div style='height:5px'></div>";
 
 $region = get_input('region');
 

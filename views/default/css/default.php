@@ -964,7 +964,7 @@ a.smallBlogImageLink:hover
 {
     width:100%;    
     margin-bottom:5px;
-    margin-top:-20px;
+    margin-top:-17px;
 }
 
 .tab
@@ -1064,7 +1064,7 @@ a.smallBlogImageLink:hover
 {
     padding: 5px 2px 5px 36px;
     height:32px;
-    background:#fdfdfd url(<?php echo $graphicsDir; ?>/world.gif) no-repeat 5px 8px;
+    background:#fff url(<?php echo $graphicsDir; ?>/world.gif) no-repeat 5px 8px;
     border-bottom:1px solid #ccc;
     font-size:11px;
 }
@@ -1114,7 +1114,7 @@ a.attachImageClose:hover
     background-position:left -16px;
 }
 
-.blogView
+.view_toggle
 {
     float:right; 
     padding-top:5px;
@@ -1273,21 +1273,10 @@ a.attachImageClose:hover
     font-size: 90%;
 }
 
-
 .icon_link
 {
     display:block;
     height:30px;
     padding-top:3px;
     padding-left:36px;
-    background:url(<?php echo $graphicsDir; ?>/editoricons.gif) no-repeat left top;
 }
-
-.icon_explore   { background-position:left 0px; }
-.icon_help      { background-position:left -40px; }
-.icon_home      { background-position:left -80px; }
-.icon_logout    { background-position:left -120px; }
-.icon_search    { background-position:left -160px; }
-.icon_feed      { background-position:left -200px; }
-.icon_settings  { background-position:left -240px; }
-.icon_signup    { background-position:left -280px; }

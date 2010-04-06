@@ -1,7 +1,7 @@
 <?php
     add_translation("sw",array(
         'home:title' => "Karibu Envaya",
-        'home:heading' => 'Envaya ni mtandao wa mashirika ya jumuiya ya kiraia Tanzania ugawao habari kuhusu miradi yao katika intaneti.',        
+        'home:heading' => 'Envaya ni mtandao wa mashirika ya jumuiya ya kiraia Tanzania yagawayo habari kuhusu miradi yao katika intaneti.',        
         'home:for_organizations' => 'Kwa mashirika',
         'home:for_everyone' => 'Kwa wote',
         'home:sign_up' => 'Jiunga sasa',
@@ -111,7 +111,7 @@
         'sector:communications' => 'Mawasiliano',
         'sector:conflict_res' => 'Kukomesha mgongano',
         'sector:cooperative' => 'Chama cha ushirika',
-        'sector:culture' => 'Desturi',
+        'sector:culture' => 'Utamaduni',
         'sector:education' => 'Elimu',
         'sector:environment' => 'Mazingira',
         'sector:health' => 'Afya',
@@ -252,7 +252,7 @@
         'move:up' => "Hamisha juu",
         'move:down' => "Hamisha chini",        
 
-        'canceledit' => "Batili Kuhariri",
+        'canceledit' => "Ghairi Kuhariri",
         'savechanges' => "Hifadhi mabadiliko",
         
         'widget:edit' => "Hariri Ukurasa",
@@ -283,7 +283,7 @@
         'qualify:org_type:for_profit' => 'Biashara',
         'qualify:org_type:other' => 'Nyingine',
         'qualify:org_info' => 'Chagua sentensi chini kukubali na shirika lako:',
-        'qualify:org_info:citizen' => 'Linaongoza kwa Watanzania.',
+        'qualify:org_info:citizen' => 'Ni shirika la kitanzania.',
         'qualify:org_info:local' => 'Linafanya kazi hasa katika jumuiya moja ya mahali.',        
         'qualify:org_info:funder' => 'Inagawa pesa hasa kwa mashirika mengine.',                
         'qualify:country' => 'Shirika yako anafanya kazi nchini gani?',
@@ -482,7 +482,7 @@
         
         'save' => "Hifadhi",
         'publish' => "Chapisha",
-        'cancel' => "Batili",
+        'cancel' => "Ghairi",
         'update' => "Badili",
         'view' => "Tazama",
         'edit' => "Hariri",

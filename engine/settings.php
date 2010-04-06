@@ -21,7 +21,7 @@
     $CONFIG->email_from = "web@envaya.org";
     $CONFIG->email_pass = "f03;aoeA";    		
     $CONFIG->google_api_key = "ABQIAAAAHy69XWEjciJIVElz0OYMsRR3-IOatrPZ1tLat998tYHgwqPnkhTKyWcq8ytRPMx3RyxFjK0O7WSCHA";
-    $CONFIG->analytics_enabled = 1;
+    $CONFIG->analytics_enabled = 0;
     
     $CONFIG->s3_key = 'AKIAJAJKJDBD2RSGAILQ';
     $CONFIG->s3_private = 'E9s2sGLEKqJyCG6WE4PbE/JMBOuLcZ4DJ2v1hyH4';
