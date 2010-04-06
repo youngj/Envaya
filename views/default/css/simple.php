@@ -27,6 +27,7 @@ body
     font-size:20px;
     font-weight:bold;
     padding-top:8px;
+    color:#333;
 }
 
 .simple_heading
@@ -62,6 +63,7 @@ body
 {
     height:17px;
     background:#fff url("<?php echo $graphicsDir; ?>/plate.gif") no-repeat -485px -8px;  
+    
 }
 
 .home #content_top
@@ -166,3 +168,13 @@ a.icon_search:hover     { background-position:left -360px; }
 .icon_feed              { background-position:left -400px; }
 a.icon_feed:hover       { background-position:left -440px; }
 
+.footer_container
+{
+    font-size:12px;
+    color:#333;
+}
+
+.footer_container a
+{
+    color:#555;
+}
