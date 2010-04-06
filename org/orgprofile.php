@@ -6,7 +6,7 @@
     }
 
 	$org_guid = get_input('org_guid');
-	set_context('org');
+    set_context('orgprofile');
 
 	global $autofeed;
 	$autofeed = false;

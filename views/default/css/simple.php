@@ -30,11 +30,6 @@ body
     color:#333;
 }
 
-.simple_heading
-{
-    margin-top:30px;
-}
-
 #site_menu
 {
     font-size:14px;
@@ -62,8 +57,7 @@ body
 #content_top
 {
     height:17px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif") no-repeat -485px -8px;  
-    
+    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif") no-repeat -485px -8px;      
 }
 
 .home #content_top
@@ -95,7 +89,13 @@ body
 {
     font-size:16px;
     padding:10px 0px 0px 0px;
+    margin-top:35px;
 }
+
+.orgprofile #heading, .home #heading
+{
+    margin-top:0px;
+}    
 
 .home #heading
 {    
@@ -178,3 +178,33 @@ a.icon_feed:hover       { background-position:left -440px; }
 {
     color:#555;
 }
+
+.tabs
+{
+    width:100%;    
+    margin-bottom:5px;
+    margin-top:-10px;
+    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif") no-repeat -487px -16px;  
+}
+
+.tab
+{
+    height:36px;
+    text-align:center;
+    border-left:1px solid #ddd;
+    border-right:1px solid #ddd;
+    border-bottom:1px solid #ddd;
+}
+
+.tab span
+{
+    display:block;
+    padding:5px 5px;
+    color:black;
+}
+
+.tabs .active
+{
+    font-weight:bold;
+}
+

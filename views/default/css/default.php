@@ -960,35 +960,6 @@ a.smallBlogImageLink:hover
     font-style:italic;
 }
 
-.tabs
-{
-    width:100%;    
-    margin-bottom:5px;
-    margin-top:-10px;
-}
-
-.tab
-{
-    height:36px;
-    text-align:center;
-    border-left:1px solid #ddd;
-    border-right:1px solid #ddd;
-    border-bottom:1px solid #ddd;
-}
-
-.tab span
-{
-    display:block;
-    padding:5px 5px;
-    color:black;
-}
-
-.tabs .active
-{
-    font-weight:bold;
-}
-
-
 .input
 {
     padding:8px 0px;

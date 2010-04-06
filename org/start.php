@@ -73,7 +73,7 @@ function org_profile_page_handler($page)
 
     set_input('org_guid', $org->guid);
     set_page_owner($org->guid);
-    set_context("org");
+    set_context('orgprofile');
 
     if (isset($page[1]))
     {
@@ -163,7 +163,7 @@ function login_page_handler($page)
 
 function envaya_pagesetup()
 {
-    if (get_context() == "org")
+    if (get_context() == 'orgprofile')
     {
         $org = page_owner_entity();        
 
