@@ -85,6 +85,7 @@ a.icon_link:hover
     border-top:1px solid #fff;
     border-bottom:1px solid #a3a19e;
     margin:0px 15px 0px 35px;
+    overflow:hidden;
 }
 
 .icon_explore   { background-position:left 7px; }
