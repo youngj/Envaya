@@ -964,20 +964,22 @@ a.smallBlogImageLink:hover
 {
     width:100%;    
     margin-bottom:5px;
-    margin-top:-17px;
+    margin-top:-10px;
 }
 
 .tab
 {
-    height:42px;
-    background:#ccc url(<?php echo $graphicsDir ?>/tabs.gif?v2) repeat-x left top;
+    height:36px;
     text-align:center;
+    border-left:1px solid #ddd;
+    border-right:1px solid #ddd;
+    border-bottom:1px solid #ddd;
 }
 
 .tab span
 {
     display:block;
-    padding:8px;
+    padding:5px 5px;
     color:black;
 }
 
