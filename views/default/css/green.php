@@ -28,10 +28,10 @@ body
 .section_header
 {
     border-top:1px solid #c4bfb5;
+    border-bottom:1px solid #c4bfb5;
     background:#e6e6e6 url("<?php echo $graphicsDir; ?>/section_header.gif") no-repeat left -5px;  
     height:21px;
-    font-family:"Gill Sans MT", sans-serif;
-    text-transform:uppercase;
+    font-family:Verdana, sans-serif;
 }
 
 .section_content
@@ -90,11 +90,6 @@ body
 {
     background:#d5d0c8 url(<?php echo $graphicsDir; ?>/button.gif) no-repeat right top;
     display:block;
-/*    {% if BROWSER_IS.ie6 %}
-    cursor:pointer; 
-    width:10px;
-    white-space:nowrap;
-    {% endif %} */
 }
 
 .language

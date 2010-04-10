@@ -5,13 +5,7 @@
     {
         $step = 1;
     }
-    
-    if ($step == 2 && !Session::get('registration'))
-    {
-        register_error(elgg_echo("qualify:missing"));
-        $step = 1;
-    }
-    
+        
     $loggedInUser = get_loggedin_user();
     
     if ($loggedInUser && !($loggedInUser instanceof Organization))
@@ -32,8 +26,13 @@
         $step = 3;
     }
     
-	$title = elgg_echo("register:title");	
-    $heading = elgg_view('page/simpleheading', array('org_only' => true, 'title' => $title));
-    $body = elgg_view_layout('one_column', $heading, elgg_view("org/register$step"));	
+    if ($step == 2 && !Session::get('registration'))
+    {
+        register_error(elgg_echo("qualify:missing"));
+        $step = 1;
+    }    
+    
+	$title = elgg_echo("register:title");	   
+    $body = elgg_view_layout('one_column', elgg_view_title($title, array('org_only' => true)), elgg_view("org/register$step"));  
 	page_draw($title, $body);
 ?>

@@ -298,9 +298,7 @@
 		// Add settings view to user settings & register action
 		//extend_elgg_settings_page('notifications/settings/usersettings', 'usersettings/user');
 		
-		//register_plugin_hook('usersettings:save','user','notification_user_settings_save');
-		
-		//register_action("notifications/settings/usersettings/save");				
+		//register_plugin_hook('usersettings:save','user','notification_user_settings_save');		
 	}
 	
 	function notification_user_settings_save() {

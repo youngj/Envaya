@@ -35,7 +35,6 @@
 	 *
 	 */
     function install_init() {
-        register_action("systemsettings/install",true);			
     }
 
     register_elgg_event_handler("boot","system","install_init");

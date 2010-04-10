@@ -39,7 +39,7 @@
     $CONFIG->dataroot = dirname($CONFIG->path). "/elgg-data/";
     
     $CONFIG->simplecache_enabled = 0;
-    $CONFIG->simplecache_version = 20;
+    $CONFIG->simplecache_version = 21;
     
     $CONFIG->viewpath_cache_enabled = 0;
     $CONFIG->wwwroot = "http://localhost/";
@@ -66,6 +66,7 @@
         3 => array("object", "widget", "Widget"),
         4 => array('user', 'organization', "Organization"),
         5 => array('object', 'translation', 'Translation'),
+        6 => array('object', 'interface_translation', 'InterfaceTranslation'),
         7 => array('object', 'blog', 'NewsUpdate'),        
         8 => array('object', 'logwrapper', 'ElggObject'),
         9 => array('object', 'admin_message', 'ElggObject'),

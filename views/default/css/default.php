@@ -20,6 +20,11 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     vertical-align: baseline;
 }
 
+th
+{
+font-weight:bold;
+}
+
 em, i {
     font-style:italic;
 }
@@ -28,9 +33,9 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
-caption, th, td {
+caption, th, td 
+{
     text-align: left;
-    font-weight: normal;
     vertical-align: top;
 }
 blockquote:before, blockquote:after,
@@ -255,11 +260,17 @@ input[type="submit"] {
 .input-url,
 .input-textarea {
     width:448px;
+    margin-top:4px;
 }
 
 .input-textarea {
     height: 200px;
+    margin-top:4px;
 }
+
+.input-file {
+    margin-top:4px;
+} 
 
 #persistent_login label {
     font-size:1.0em;
@@ -604,6 +615,12 @@ a.dropdown_item:hover
     margin:0 auto;   
 }
 
+.wide_column
+{
+    background-color:#f8f8f8;
+    padding:10px;
+}
+
 #site_menu
 {
     clear:both;
@@ -652,8 +669,7 @@ a.selected
 {    
     padding:10px;
     color:black;    
-    letter-spacing:1px;
-    font-family:"Gill Sans MT", sans-serif;
+    font-family:Verdana, sans-serif;
 }
 
 #heading img
@@ -663,7 +679,7 @@ a.selected
     margin-bottom:10px;
 }
 
-#heading h1
+#heading h1, #heading h2
 {
     color:#222;
     font-size:22px;
@@ -672,24 +688,38 @@ a.selected
     margin:0px;
 }
 
-#heading h1.withicon
-{
-    padding-top:20px;
-}
-
-
-#heading h1.withouticon,
-#heading h2.withouticon
+#heading h1,
+#heading h2,
+#heading h3
 {
     text-align:center;
 }
 
-#heading h2
+
+#heading h2.withicon
+{
+    padding-top:20px;
+    text-align:left;
+}
+
+#heading h3
 {
     color:#222;
     font-size:14px;
     padding:0px;
     margin:0px;
+}
+
+#heading h3.withicon
+{
+    text-align:left;
+    padding-top:5px;
+}
+
+.messages-exception-detail
+{
+    font-size:12px;
+    font-family:Courier,mono-space;
 }
 
 #content
@@ -797,8 +827,10 @@ body
 {
     float:left;
     margin-right:4px;
-    margin-bottom:4px;    
-    border: 1px solid #f0f0f0;
+    margin-bottom:4px; 
+    padding:3px;
+    background-color:white;
+    border: 1px solid #ccc;
 
 }
 
@@ -1190,7 +1222,6 @@ a.attachImageClose:hover
 
 .contactTable th
 {
-    font-weight:bold;
     text-align:right;
 }
 
@@ -1252,4 +1283,24 @@ a.attachImageClose:hover
     height:30px;
     padding-top:3px;
     padding-left:36px;
+}
+
+.gridTable th
+{
+    text-align:center;
+}
+
+.gridTable td
+{
+    border:1px solid #ccc;
+}
+
+.edited, .edited label
+{
+    color:#cc6600;
+}
+
+.reviewed
+{
+    color:#00aa00;
 }

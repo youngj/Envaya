@@ -5,6 +5,7 @@
         'item:object:partnership' => 'Partnerships',
         'item:user:organization' => "Organizations",
         'item:object:translation' => "Translations",
+        'item:object:team_member' => "Team members",
         'item:user' => "Users",
 
         'admin_option' => "Make this user an admin?",

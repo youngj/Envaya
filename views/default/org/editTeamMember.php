@@ -6,6 +6,7 @@
 
 <?php echo elgg_view('input/securitytoken'); ?>
 
+<div class='input'>
 <label><?php echo elgg_echo('widget:team:name'); ?></label>
 <?php
     echo elgg_view('input/text', 
@@ -16,7 +17,9 @@
         )
     );
 ?>
+</div>
 
+<div class='input'>
 <label><?php echo elgg_echo('widget:team:description'); ?></label>
 <?php
     echo elgg_view('input/longtext', 
@@ -28,12 +31,15 @@
         )
     );
 ?>    
+</div>
 
+<div class='input'>
 <label><?php echo elgg_echo('widget:team:photo'); ?></label><br />
 <?php echo elgg_view('input/image', array('internalname' => 'image',
         'current' => ($member && $member->hasImage() ? $member->getImageUrl('small') : null),
         'deletename' => 'deleteimage',
 )) ?>    
+</div>
 
 <?php
     echo elgg_view('input/hidden', 

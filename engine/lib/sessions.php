@@ -336,9 +336,6 @@ function get_session_fingerprint()
  */
 function session_init($event, $object_type, $object) 
 {			            
-    register_action("login",true);
-    register_action("logout");
-
     register_pam_handler('pam_auth_userpass');
 
     return true;	        

@@ -45,17 +45,6 @@
 		extend_elgg_admin_page('admin/main_opt/user', 'admin/main'); 
 		extend_elgg_admin_page('admin/main_opt/plugins', 'admin/main', 999); // Always last
 
-		register_action('admin/user/ban', false, "", true);
-		register_action('admin/user/unban', false, "", true);
-		register_action('admin/user/delete', false, "", true);
-		register_action('admin/user/resetpassword', false, "", true);
-		register_action('admin/user/makeadmin', false, "", true);
-		register_action('admin/user/removeadmin', false, "", true);
-		
-		// Register some actions
-		register_action('admin/site/update_basic', false, "", true); // Register basic site admin action
-		
-		// Page handler
 		register_page_handler('admin','admin_settings_page_handler');
 				
 	}

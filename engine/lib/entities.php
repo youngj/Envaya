@@ -166,7 +166,7 @@
                 $set = array();
                 foreach ($this->getTableAttributes($tableName) as $name => $value)
                 {
-                    $set[] = "$name = ?";
+                    $set[] = "`$name` = ?";
                     $args[] = $value;
                 }
                 
@@ -182,7 +182,7 @@
                 
                 foreach ($this->getTableAttributes($tableName) as $name => $value)
                 {
-                    $columns[] = $name;
+                    $columns[] = "`$name`";
                     $questions[] = '?';
                     $args[] = $value;
                 }
@@ -820,7 +820,7 @@
     
     function entity_cache_key($guid)
     {
-        return make_cache_key("entity", $guid);
+        return make_cache_key("entity1", $guid);
     }
 	
 	/**

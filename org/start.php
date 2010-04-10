@@ -225,28 +225,4 @@ register_plugin_hook('index','system','new_index');
 extend_elgg_settings_page('org/settings', 'usersettings/user', 1);
 register_plugin_hook('usersettings:save','user','org_settings_save');
 
-global $CONFIG;
 
-register_action("org/register1",true,  "{$CONFIG->path}actions/org/register1.php");
-register_action("org/register2",true,  "{$CONFIG->path}actions/org/register2.php");
-register_action("org/register3",false,  "{$CONFIG->path}actions/org/register3.php");
-register_action("org/saveWidget",false, "{$CONFIG->path}actions/org/saveWidget.php");
-register_action("org/approve",false,    "{$CONFIG->path}actions/org/approveOrg.php");
-register_action("org/changeEmail",false,"{$CONFIG->path}actions/org/changeEmail.php");
-register_action("org/requestPartner",false,"{$CONFIG->path}actions/org/requestPartner.php");
-register_action("org/createPartner",false,"{$CONFIG->path}actions/org/createPartner.php");
-register_action("org/sendMessage",false,"{$CONFIG->path}actions/org/sendMessage.php");
-register_action("org/addTeamMember",false,"{$CONFIG->path}actions/org/addTeamMember.php");
-register_action("org/saveTeamMember",false,"{$CONFIG->path}actions/org/saveTeamMember.php");
-register_action("org/moveTeamMember",false,"{$CONFIG->path}actions/org/moveTeamMember.php");
-register_action("org/deleteTeamMember",false,"{$CONFIG->path}actions/org/deleteTeamMember.php");
-register_action("org/theme",false,       "{$CONFIG->path}actions/org/theme.php");
-register_action("changeLanguage", true, "{$CONFIG->path}actions/org/changeLanguage.php");
-register_action("translate", false,     "{$CONFIG->path}actions/org/translate.php");
-register_action("news/add",false,       "{$CONFIG->path}actions/org/addPost.php");
-register_action("news/edit",false,      "{$CONFIG->path}actions/org/editPost.php");
-register_action("news/delete",false,    "{$CONFIG->path}actions/org/deletePost.php");
-register_action("entities/delete",false,"{$CONFIG->path}actions/entities/delete.php");
-
-
-?>

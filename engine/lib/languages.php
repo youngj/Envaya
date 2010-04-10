@@ -253,6 +253,45 @@ function get_missing_language_keys($language)
     return $missing;
 }
 
+function get_language_link($lang)
+{
+    $name = escape(elgg_echo($lang, $lang));
+
+    if (get_language() == $lang)
+    {
+        return "<strong>$name</strong>";
+    }
+    else
+    {
+        return "<a href='action/changeLanguage?newLang={$lang}'>$name</a>";
+    }            
+}
+
+function get_language_links()
+{
+    $links = array();
+    global $CONFIG;
+    foreach ($CONFIG->translations as $lang => $v)
+    {
+        $links[] = get_language_link($lang);    
+    }
+    echo implode(' &middot; ', $links);
+}
+
+function get_translatable_language_keys()
+{
+    global $CONFIG;
+    $keys = array();
+
+    foreach ($CONFIG->translations['en'] as $k => $v)
+    {
+        if (!isset($CONFIG->en_admin[$k])) 
+            $keys[] = $k;
+    }
+
+    return $keys;
+}
+
 function change_viewer_language($newLanguage)
 {
     setcookie("lang", $newLanguage, time() + 60 * 60 * 24 * 365 * 15, '/');

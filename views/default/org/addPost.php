@@ -66,7 +66,7 @@ function showAttachImage($show)
     $formBody = ob_get_clean();
     
     echo elgg_view('input/form', array(
-        'action' => "action/news/add", 
+        'action' => "action/org/addPost", 
         'enctype' => "multipart/form-data", 
         'body' => $formBody, 
     ));

@@ -26,7 +26,7 @@
 {
     background:#e6e6e6 url("<?php echo $graphicsDir; ?>/sectionheader.gif") no-repeat left top;  
     height:21px;
-    font-family:"Gill Sans MT", sans-serif;
+    font-family:Verdana, sans-serif;
     text-transform:uppercase;
 }
 

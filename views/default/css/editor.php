@@ -35,11 +35,11 @@ body
 .section_header
 {
     border-top:1px solid #c4bfb5;
+    border-bottom:1px solid #c4bfb5;
     text-align:center;
     background:#e6e6e6 url("<?php echo $graphicsDir; ?>/green/section_header.gif") repeat-x left -5px;  
     height:21px;
-    font-family:"Gill Sans MT", sans-serif;
-    text-transform:uppercase;
+    font-family:Verdana, sans-serif;    
 }
 
 .section_content

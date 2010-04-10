@@ -52,66 +52,55 @@
                 $forwarder = substr($forwarder,1);
             }
             
-            if (isset($CONFIG->actions[$action])) {
-            
-            	if (
-            		(isadminloggedin()) ||
-            		(!$CONFIG->actions[$action]['admin'])
-            	) {
-	                if ($CONFIG->actions[$action]['public'] || $userId) 
-                    {	                
-	                	// Trigger action event TODO: This is only called before the primary action is called. We need to rethink actions for 1.5
-	                	$event_result = true;
-	                	$event_result = trigger_plugin_hook('action', $action, null, $event_result);
-	                	
-	                	// Include action
-	                	if ($event_result) // Event_result being false doesn't produce an error - since i assume this will be handled in the hook itself. TODO make this better!
-	                	{
-			                if (include($CONFIG->actions[$action]['file'])) 
-                            {
-			                } 
-                            else 
-                            {
-			                    register_error(sprintf(elgg_echo('actionundefined'),$action));
-			                }
-	                	}
-	                } else {
-	                    register_error(elgg_echo('actionloggedout'));
-	                }
-            	}
-            } else {
-            	register_error(sprintf(elgg_echo('actionundefined'),$action));
+            if (isset($CONFIG->actions[$action]))
+            {
+                $file = $CONFIG->actions[$action]['file'];
+            }
+            else
+            {
+                $file = get_default_action_path($action);
             }
             
+            if (include($file))
+            {   
+                // ok
+            } 
+            else 
+            {
+                register_error(sprintf(elgg_echo('actionundefined'),$action));
+            }
             
             forward($CONFIG->url . $forwarder);
             
+        }
+        
+        function get_default_action_path($action)
+        {
+            global $CONFIG;
+            return $CONFIG->path . "actions/" . $action . ".php";        
         }
     
 	/**
 	 * Registers a particular action in memory
 	 *
 	 * @param string $action The name of the action (eg "register", "account/settings/save")
-	 * @param boolean $public Can this action be accessed by people not logged into the system?
 	 * @param string $filename Optionally, the filename where this action is located
-	 * @param boolean $admin_only Whether this action is only available to admin users.
 	 */
         
-        function register_action($action, $public = false, $filename = "", $admin_only = false) {
+        function register_action($action, $filename = "") 
+        {
             global $CONFIG;            
             
             if (!isset($CONFIG->actions)) {
                 $CONFIG->actions = array();
             }
             
-            if (empty($filename)) {
-            	$path = ""; 
-            	if (isset($CONFIG->path)) $path = $CONFIG->path;
-            	
-                $filename = $path . "actions/" . $action . ".php";
+            if (empty($filename)) 
+            {
+            	$filename = get_default_action_path($action);
             }
             
-            $CONFIG->actions[$action] = array('file' => $filename, 'public' => $public, 'admin' => $admin_only);
+            $CONFIG->actions[$action] = array('file' => $filename);
             return true;
         }
 
@@ -124,7 +113,6 @@
 	 */
         
         function actions_init($event, $object_type, $object) {
-        	register_action("error");
         	return true;
         }
         

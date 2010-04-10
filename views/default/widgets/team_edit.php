@@ -11,6 +11,7 @@
 
 <?php echo elgg_view('input/securitytoken'); ?>
 
+<div class='input'>
 <label><?php echo elgg_echo('widget:team:name'); ?></label>
 <?php
     echo elgg_view('input/text', 
@@ -20,7 +21,9 @@
         )
     );
 ?>
+</div>
 
+<div class='input'>
 <label><?php echo elgg_echo('widget:team:description'); ?></label>
 <?php
     echo elgg_view('input/longtext', 
@@ -31,9 +34,12 @@
         )
     );
 ?>    
+</div>
 
+<div class='input'>
 <label><?php echo elgg_echo('widget:team:photo'); ?></label><br />
 <?php echo elgg_view('input/file', array('internalname' => 'image')) ?>    
+</div>
 
 <?php
     echo elgg_view('input/hidden', 
@@ -42,7 +48,7 @@
 
     echo elgg_view('input/submit', 
         array('internalname' => 'submit', 
-            'class' => "submit_button addUpdateButton",
+            'class' => "submit_button",
             'trackDirty' => true,
             'value' => elgg_echo('widget:team:add:button'))); 
 

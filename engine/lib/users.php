@@ -909,15 +909,7 @@
 		global $CONFIG;
 				
 		register_page_handler('dashboard','dashboard_page_handler');
-		register_action("register",true);
-   		register_action("useradd",true);
 
-		register_action("usersettings/save");
-		
-		register_action("user/passwordreset", true);
-		register_action("user/requestnewpassword", true);
-		
-		// User name change
 		extend_elgg_settings_page('user/settings/name', 'usersettings/user', 1);
 		extend_elgg_settings_page('user/settings/password', 'usersettings/user', 1);
 		extend_elgg_settings_page('user/settings/email', 'usersettings/user', 1);

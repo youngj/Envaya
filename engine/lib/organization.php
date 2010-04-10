@@ -366,7 +366,7 @@ function googlegeocoder_geocode($hook, $entity_type, $returnvalue, $params)
 
 function org_title($org, $subtitle)
 {
-    return elgg_view('page_elements/title', array(
+    return elgg_view('org/orgtitle', array(
         'title' => $org->name, 
         'subtitle' => $subtitle, 
         'icon' => $org->getIcon('medium'),

@@ -32,7 +32,7 @@
     function not_found()
     {
         $title = elgg_echo('page:notfound');
-        $body = elgg_view_layout('one_column_padded', elgg_view_title($title), elgg_echo('page:notfound:details'));
+        $body = elgg_view_layout('one_column_padded', elgg_view_title($title), elgg_echo('page:notfound:details')."<br/><br/><br/>");
         header("HTTP/1.1 404 Not Found");
         page_draw($title, $body);
         exit;
@@ -558,12 +558,10 @@
 	 * @param string $submenu Should a submenu be displayed? (default false, use not recommended)
 	 * @return string The HTML (etc)
 	 */
-		function elgg_view_title($title, $submenu = false) {
-			
-			$title = elgg_view('page_elements/title', array('title' => $title, 'submenu' => $submenu));
-			
-			return $title;
-			
+		function elgg_view_title($title, $args = null) 
+        {		
+			$title = elgg_view('page_elements/title', array('title' => $title, 'args' => $args));			
+			return $title;			
 		}
 		
         
@@ -1444,11 +1442,6 @@
 	}
 	
 	function elgg_boot() {
-
-		// Actions
-		register_action('comments/add');
-		register_action('comments/delete');
-		
 	}
 		
 	/**

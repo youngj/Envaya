@@ -104,6 +104,18 @@ CREATE TABLE `translations` (
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `interface_translations` (
+  `guid` bigint(20) unsigned  NOT NULL,
+  
+  `lang` varchar(4) NOT NULL,
+  `key` varchar(64) NOT NULL,
+  `value` text NOT NULL,
+  `approval` int NOT NULL default 0,
+  
+  PRIMARY KEY  (`guid`),
+  KEY `key` (`key`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `news_updates` (
   `guid` bigint(20) unsigned  NOT NULL,

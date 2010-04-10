@@ -33,5 +33,5 @@
 
 <?php
     $form_body = ob_get_clean();
-    echo elgg_view('input/form', array('action' => "action/news/edit", 'enctype' => "multipart/form-data", 'body' => $form_body));
+    echo elgg_view('input/form', array('action' => "action/org/editPost", 'enctype' => "multipart/form-data", 'body' => $form_body));
 ?>

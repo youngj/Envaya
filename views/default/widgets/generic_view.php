@@ -22,4 +22,5 @@
         echo $img;
     }
 ?>
+<div style='clear:both'></div>
 </div>

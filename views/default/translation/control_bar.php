@@ -60,7 +60,7 @@ if (page_is_translatable())
     }
     else  // viewing original
     {
-        echo sprintf(elgg_echo("trans:original_in"), $origLangName);    
+        echo sprintf(elgg_echo("trans:page_original_in"), $origLangName);    
     
         if (page_is_translatable(TranslateMode::ManualOnly))
         {

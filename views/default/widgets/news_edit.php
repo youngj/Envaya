@@ -62,7 +62,7 @@
             echo "<td><a href='{$update->getURL()}/edit?from=$escUrl'>".elgg_echo("edit")."</a></td>";
             echo "<td>".elgg_view('output/confirmlink', array(
                 'is_action' => true,
-                'href' => "action/news/delete?blogpost={$update->guid}",
+                'href' => "action/org/deletePost?blogpost={$update->guid}",
                 'text' => elgg_echo('delete')
             ))."</td>";
             echo "</tr>";

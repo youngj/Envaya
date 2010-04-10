@@ -19,16 +19,23 @@ body
     width:485px;
 }
 
-.simple_heading, #site_menu
+#site_menu,
+#heading h1
 {
     background:#fff url("<?php echo $graphicsDir; ?>/headings.gif") repeat-x left bottom;          
-    height:37px;
+    height:36px;
     text-align:center;
-    font-size:20px;
+    font-size:18px;
     font-weight:bold;
-    padding-top:8px;
+    padding-top:9px;
     color:#333;
 }
+
+#heading h1.org_only_heading
+{
+    background-position:left top;
+}
+
 
 #site_menu
 {
@@ -47,11 +54,6 @@ body
 #site_menu a
 {
     color:#333;
-}
-
-.org_only_heading
-{
-    background-position:left top;
 }
 
 #content_top
@@ -99,10 +101,9 @@ body
 
 .home #heading
 {    
-    font-size: 15.5px;
+    font-size: 15px;
     color: #666;
-    font-family: arial;
-    letter-spacing: 0.5px;
+    font-family: Verdana, sans-serif;
     padding:20px 10px;
 }
 

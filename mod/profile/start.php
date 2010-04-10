@@ -211,12 +211,12 @@
 		
 	// Register actions
 		global $CONFIG;
-		register_action("profile/edit",false,$CONFIG->pluginspath . "profile/actions/edit.php");
-		register_action("profile/iconupload",false,$CONFIG->pluginspath . "profile/actions/iconupload.php");
-		register_action("profile/cropicon",false,$CONFIG->pluginspath . "profile/actions/cropicon.php");
-		register_action("profile/editdefault",false,$CONFIG->pluginspath . "profile/actions/editdefault.php", true);
-		register_action("profile/editdefault/delete",false,$CONFIG->pluginspath . "profile/actions/deletedefaultprofileitem.php", true);
-		register_action("profile/editdefault/reset",false,$CONFIG->pluginspath . "profile/actions/resetdefaultprofile.php", true);
+		register_action("profile/edit",$CONFIG->pluginspath . "profile/actions/edit.php");
+		register_action("profile/iconupload",$CONFIG->pluginspath . "profile/actions/iconupload.php");
+		register_action("profile/cropicon",$CONFIG->pluginspath . "profile/actions/cropicon.php");
+		register_action("profile/editdefault",$CONFIG->pluginspath . "profile/actions/editdefault.php", true);
+		register_action("profile/editdefault/delete",$CONFIG->pluginspath . "profile/actions/deletedefaultprofileitem.php", true);
+		register_action("profile/editdefault/reset",$CONFIG->pluginspath . "profile/actions/resetdefaultprofile.php", true);
 		
 
 ?>
