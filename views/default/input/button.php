@@ -36,4 +36,4 @@
     
     $setDirty = (@$vars['trackDirty']) ? " onclick='setDirty(false)'" : "";
 ?>
-<input name="<?php echo $name; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> type="<?php echo $type; ?>" class="<?php echo $class; ?>" <?php echo $vars['js'], $setDirty; ?> value="<?php echo $value; ?>" <?php echo $src; ?> />
+<button name="<?php echo $name; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> type="<?php echo $type; ?>" class="<?php echo $class; ?>" <?php echo $vars['js'], $setDirty; ?> value='1' <?php echo $src; ?> ><div><span><?php echo $value; ?></span></div></button>

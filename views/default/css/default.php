@@ -204,24 +204,103 @@ textarea:focus, input[type="text"]:focus {
     background: #e4ecf5;
     color:#333333;
 }
-.submit_button {
+
+.submit_button 
+{
     font: 12px/100% Arial, Helvetica, sans-serif;
     font-weight: bold;
     color: #ffffff;
-    background:#4690d6;
-    border: 1px solid #4690d6;
-    -webkit-border-radius: 4px; 
-    -moz-border-radius: 4px;
+    background:transparent; /* url(<?php echo $graphicsDir ?>/buttons.gif) left top; */
+    border:0px;
+    padding:0px;
     width: auto;
-    height: 25px;
-    padding: 2px 6px 2px 6px;
-    margin:10px 0 10px 0;
+    margin:10px 0px;
     cursor: pointer;
 }
+
+.submit_button div
+{
+    background: url(<?php echo $graphicsDir ?>/buttons.gif) left -32px;
+    display:block;
+    height:32px;
+    margin:0px;
+    padding-left:9px;
+}
+
+.submit_button span
+{
+    background:url(<?php echo $graphicsDir ?>/buttons.gif) right -32px;
+    display:block;
+    height:24px;
+    margin-right:-3px;
+    padding-top:8px;
+    padding-right:9px;
+    white-space:nowrap;
+}
+
+button.submit_button:hover div
+{
+    background-position:left top;
+}
+
+button.submit_button:hover span
+{
+    background-position:right top;
+}
+
+button.submit_button:active div
+{
+    background-position:left -64px;
+}
+
+button.submit_button:active span
+{
+    background-position:right -64px;
+}
+
+#widget_delete
+{
+    float:right;
+}
+
+#widget_delete div
+{
+    background-position:left -96px;
+}
+
+#widget_delete span
+{
+    background-position:right -96px;
+}
+
+button#widget_delete:hover div
+{
+    background-position:left -160px;
+}
+
+button#widget_delete:hover span
+{
+    background-position:right -160px;
+}
+
+button#widget_delete:active div
+{
+    background-position:left -128px;
+}
+
+button#widget_delete:active span
+{
+    background-position:right -128px;
+}
+
+
+/* 
 .submit_button:hover, input[type="submit"]:hover {
     background: #0054a7;
     border-color: #0054a7;
 }
+
+*/ 
 
 input[type="submit"] {
     font: 12px/100% Arial, Helvetica, sans-serif;
@@ -1001,23 +1080,6 @@ a.smallBlogImageLink:hover
 {
     color:green;
     white-space:nowrap;
-}
-
-.widget_disabled
-{
-    color:gray;
-}
-
-#widget_delete
-{
-    float:right;
-    background-color:#990000;
-    border-color:#660000;
-}
-
-#widget_delete:hover
-{
-    background-color:#aa0000;
 }
 
 .optionLabelInline

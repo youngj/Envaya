@@ -171,7 +171,7 @@ function envaya_pagesetup()
         {
             $widgets = $org->getAvailableWidgets();
             
-            add_submenu_item(elgg_echo("org:home"), $org->getURL());
+            add_submenu_item(elgg_echo("widget:home"), $org->getURL());
             
             foreach ($widgets as $widget)
             {

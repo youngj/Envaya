@@ -194,7 +194,7 @@
         'message:subject_missing' => "Mada ya ujumbe wako ulikuwa wazi.",
         'message:invalid_recipient' => "Mpokeaji mbaya.",
 
-        'widget:home' => "Ukurasa mkuu",
+        'widget:home' => "Mkuu",
         'widget:home:included' => "Sehemu gani unataka kuwa na katika ukurasa wako mkuu?",
 
         'widget:history' => "Historia",

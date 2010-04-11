@@ -59,13 +59,13 @@ body
 #content_top
 {
     height:17px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif") no-repeat -485px -8px;      
+    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") no-repeat -485px -8px;      
 }
 
 .home #content_top
 {
     height:28px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif") no-repeat left 0px;  
+    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") no-repeat left 0px;  
 }
 
 
@@ -73,12 +73,12 @@ body
 {
     height:35px;
     margin-top:-10px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif") no-repeat right bottom;  
+    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") no-repeat right bottom;  
 }
 
 #content_mid
 {
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif") repeat-y -970px top;      
+    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") repeat-y -970px top;      
     padding:0px 2px;
 }
 
@@ -185,7 +185,7 @@ a.icon_feed:hover       { background-position:left -440px; }
     width:100%;    
     margin-bottom:5px;
     margin-top:-10px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif") no-repeat -487px -16px;  
+    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") no-repeat -487px -16px;  
 }
 
 .tab

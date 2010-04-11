@@ -198,7 +198,7 @@
         'message:subject_missing' => "The subject of your message was blank.",
         'message:invalid_recipient' => "Bad recipient.",
         
-        'widget:home' => "Home Page",        
+        'widget:home' => "Home",        
         'widget:home:included' => "What sections do you want to include on your home page?",
         
         'widget:history' => "History", 

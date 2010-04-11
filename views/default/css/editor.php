@@ -96,3 +96,41 @@ a.icon_link:hover
 .icon_feed      { background-position:left -193px; }
 .icon_settings  { background-position:left -233px; }
 .icon_signup    { background-position:left -273px; }
+
+
+
+#edit_pages_menu a
+{
+    color:#333;    
+    display:block;
+    float:left;
+    line-height: 34px;
+    height:34px;
+    padding-left:3px;        
+    margin:0px 1px 8px 0px;
+    text-decoration:none;
+}
+
+#edit_pages_menu a.widget_disabled
+{
+    color:#999;
+}
+
+#edit_pages_menu  a:hover
+{
+    color:black;
+    background:#d5d0c8 url(<?php echo $graphicsDir; ?>/green/button.gif) no-repeat left top;
+}
+
+#edit_pages_menu a span
+{
+    padding:0 6px 0 3px;
+    height:34px;
+    cursor:pointer;
+}
+
+#edit_pages_menu a:hover span
+{
+    background:#d5d0c8 url(<?php echo $graphicsDir; ?>/green/button.gif) no-repeat right top;
+    display:block;
+}

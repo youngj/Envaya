@@ -3,11 +3,10 @@
     
     $saveText = ($widget->guid && $widget->isEnabled()) ? elgg_echo('savechanges') : elgg_echo('widget:save:new');
 
-    $form_body = "<div class='padded'>" . 
+    $form_body = 
         elgg_view('input/hidden', array('internalname' => 'org_guid', 'value' => $widget->getContainerEntity()->guid)) . 
-        elgg_view('input/hidden', array('internalname' => 'widget_name', 'value' => $widget->widget_name)) . 
-        elgg_view('input/submit', array('internalname' => "submit", 'trackDirty' => true, 'value' => $saveText)) ;
-    
+        elgg_view('input/hidden', array('internalname' => 'widget_name', 'value' => $widget->widget_name));
+        
     if ($widget->guid && $widget->isEnabled() && $widget->widget_name != 'home')
     {    
         $form_body .= elgg_view('input/submit', array(
@@ -18,8 +17,8 @@
         ));
     }    
         
-    $form_body .= "</div>";
-
+    $form_body .= elgg_view('input/submit', array('internalname' => "submit", 'trackDirty' => true, 'value' => $saveText)) ;
+            
     echo elgg_view('input/form', array(
         'body' => $vars['body'] . $form_body, 
         'action' => "action/org/saveWidget",
