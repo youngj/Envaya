@@ -212,7 +212,7 @@ textarea:focus, input[type="text"]:focus {
     color: #ffffff;
     background:transparent; /* url(<?php echo $graphicsDir ?>/buttons.gif) left top; */
     border:0px;
-    padding:0px;
+    padding:5px;
     width: auto;
     margin:10px 0px;
     cursor: pointer;

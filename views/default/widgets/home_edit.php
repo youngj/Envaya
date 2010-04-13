@@ -5,6 +5,8 @@
     ob_start();
 ?>
 
+<?php echo elgg_view('org/editIcon'); ?></div>
+
 <div class='section_header'><?php echo elgg_echo("org:mission"); ?></div>
 <div class='section_content padded'>
 <div class='input'>
