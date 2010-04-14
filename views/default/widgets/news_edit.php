@@ -52,9 +52,24 @@
 
         $escUrl = urlencode($_SERVER['REQUEST_URI']);
         echo "<table class='gridTable'>";    
+        
+        $count = 0;
+
+?>
+<tr class='header_row'>
+    <th colspan='3'><?php echo elgg_echo("widget:news:item"); ?></th>    
+    <th><div class='header_icons edit_icon'></div></th>
+    <th><div class='header_icons delete_icon'></div></th>
+</tr>
+
+<?php     
+        
         foreach ($updates as $update)
         {        
-            echo "<tr>";
+            $count += 1;
+            $rowClass = (($count % 2) != 0) ? 'odd' : 'even';
+                                
+            echo "<tr class='$rowClass'>";
             echo "<td>{$update->getSnippetHTML()}</td>";
             echo "<td><span class='blog_date'>{$update->getDateText()}</span></td>";
             echo "<td><a href='{$update->getURL()}'>".elgg_echo("view")."</a></td>";
@@ -73,7 +88,7 @@
     {
         echo elgg_echo("widget:news:empty");
     }
-    
+        
     
     $content = ob_get_clean();
     

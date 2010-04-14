@@ -70,10 +70,24 @@
         
         $count = sizeof($teamMembers);
         $i = 0;
+
+?>
+<tr class='header_row'>
+    <th><?php echo elgg_echo("widget:team:member"); ?></th>
+    <?php if ($count > 1) { ?>
+        <th><div class='header_icons up_icon'></div></th>
+        <th><div class='header_icons down_icon'></div></th>
+    <?php } ?>
+    <th><div class='header_icons edit_icon'></div></th>
+    <th><div class='header_icons delete_icon'></div></th>
+</tr>
+<?php        
         
         foreach ($teamMembers as $teamMember)
         {        
-            echo "<tr>";
+            $rowClass = (($i % 2) != 0) ? 'odd' : 'even';
+        
+            echo "<tr class='$rowClass'>";
             echo "<td>".escape($teamMember->name)."</td>";                        
 
             if ($count > 1)
@@ -120,5 +134,13 @@
     {
         echo elgg_echo("widget:team:empty");
     }
+
+
+    echo elgg_view("widgets/edit_form", array(
+        'widget' => $widget,
+        'noSave' => true,
+        'body' => ''
+    ));
 ?>    
+
 </div>

@@ -1,8 +1,8 @@
 <?php
     $widget = $vars['widget'];
     
-    $saveText = ($widget->guid && $widget->isEnabled()) ? elgg_echo('savechanges') : elgg_echo('widget:save:new');
-
+    $noSave = @$vars['noSave'];
+    
     $form_body = 
         elgg_view('input/hidden', array('internalname' => 'org_guid', 'value' => $widget->getContainerEntity()->guid)) . 
         elgg_view('input/hidden', array('internalname' => 'widget_name', 'value' => $widget->widget_name));
@@ -16,8 +16,18 @@
             'value' => elgg_echo('widget:delete')
         ));
     }    
-        
-    $form_body .= elgg_view('input/submit', array('internalname' => "submit", 'trackDirty' => true, 'value' => $saveText)) ;
+
+    if (!$noSave)
+    {   
+        $saveText = $widget->isActive() ? elgg_echo('savechanges') : elgg_echo('widget:save:new');        
+        $form_body .= elgg_view('input/submit', array('internalname' => "submit", 'trackDirty' => true, 'value' => $saveText)) ;
+    }
+    else
+    {
+        $saveText = $widget->isActive() ? elgg_echo('widget:view') : elgg_echo('widget:save:new');
+        $form_body .= elgg_view('input/submit', array('internalname' => "submit", 'value' => $saveText)) ;
+    }
+    
             
     echo elgg_view('input/form', array(
         'body' => $vars['body'] . $form_body, 

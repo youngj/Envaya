@@ -366,7 +366,7 @@
 
         'theme' => "Wazo wa tovuti",
         'theme:current' => "Wazo wa sasa:",
-        'theme:edit' => "Hariri wazo",
+        'theme:edit' => "Hariri wazo ya tovuti",
         'theme:changed' => "Wazo imebadiliwa.",      
         
         'theme:default' => "Wazo wa kawaida",

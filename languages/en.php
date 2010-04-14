@@ -198,6 +198,8 @@
         'message:subject_missing' => "The subject of your message was blank.",
         'message:invalid_recipient' => "Bad recipient.",
         
+        'widget:view' => "View page",
+        
         'widget:home' => "Home",        
         'widget:home:included' => "What sections do you want to include on your home page?",
         
@@ -210,6 +212,7 @@
         'widget:projects:help' => "Write about the work and activities that your organization does.",
 
         'widget:news' => "News",                
+        'widget:news:item' => "News update",                
         'widget:news:latest' => 'Latest News',
         'widget:news:empty' => "This organization has not yet written any news updates.",        
         'widget:news:edit' => 'Edit news updates',        
@@ -239,7 +242,8 @@
         'widget:contact:mailing_address:edit' => "What is your mailing address?",
         'widget:contact:mailing_address' => "Mailing address:",        
         
-        'widget:team' => "Team",
+        'widget:team' => "Team",        
+        'widget:team:member' => "Team member",
         'widget:team:add' => "Add new team member",
         'widget:team:list' => "Current team members",
         'widget:team:name' => "Name:",
@@ -372,7 +376,7 @@
 
         'theme' => "Website theme",
         'theme:current' => "Current theme:",
-        'theme:edit' => "Edit theme",
+        'theme:edit' => "Edit website theme",
         'theme:changed' => "Theme changed.",        
         
         'theme:default' => "Default theme",
@@ -506,7 +510,7 @@
         'cancel' => "Cancel",
         'update' => "Update",
         'view' => "View",
-        'edit' => "Edit",
+        'edit' => "Edit",      
         'delete' => "Delete",
         'preview' => "Preview",
 

@@ -34,6 +34,7 @@
             ));            
         }    
 
+        echo "<a href='pg/settings/user/{$org->username}/'>".elgg_echo('help:settings')."</a>";
                 
         ?>
 </div>        

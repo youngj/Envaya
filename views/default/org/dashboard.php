@@ -30,7 +30,7 @@
     <div class='icon_separator'></div>
     <a class='icon_link icon_settings' href='pg/settings'><?php echo elgg_echo('dashboard:settings') ?></a>
     <div class='icon_separator'></div>
-    <a class='icon_link icon_home' href='<?php echo $org->getURL() . "/theme" ?>'><?php echo elgg_echo('theme:edit') ?></a>
+    <a class='icon_link icon_theme' href='<?php echo $org->getURL() . "/theme" ?>'><?php echo elgg_echo('theme:edit') ?></a>
 </td>
 <td>
     <a class='icon_link icon_explore' href='org/browse'><?php echo elgg_echo("browse:title") ?></a>

@@ -1193,10 +1193,47 @@ a.attachImageClose:hover
     width:100%;
 }
 
+.gridTable .header_row
+{
+    background:#444;
+    color:#ddd;    
+}
+
+.header_icons
+{
+    height:30px;
+    width:36px;
+    margin:0 auto;
+    background:url(<?php echo $graphicsDir ?>/move_edit_delete.gif) no-repeat left top;    
+}
+
+.down_icon { background-position:left -40px; }
+.edit_icon { background-position:left -80px; }
+.delete_icon { background-position:left -120px; }
+.up_icon { background-position:left -160px; }
+
+.gridTable .even td
+{
+    background-color:#e8e8e8;
+}
+
+.gridTable .odd td
+{
+    background-color:#f3f3f3;
+}
+
 .gridTable td
 {
     border:1px solid #ccc;
     padding:3px;
+}
+
+.gridTable th
+{
+    padding:3px;
+    border:1px solid #666;
+    text-align:center;
+    vertical-align:middle;
 }
 
 .input-checkboxes, .input-radio

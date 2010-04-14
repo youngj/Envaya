@@ -71,7 +71,7 @@ body
     color:#333;
     padding-left:39px;
     padding-top:10px;
-    background:url(<?php echo $graphicsDir; ?>/editoricons.gif) no-repeat left top;
+    background:url(<?php echo $graphicsDir; ?>/editoricons.gif?v3) no-repeat left top;
 }
 
 a.icon_link:hover
@@ -95,7 +95,7 @@ a.icon_link:hover
 .icon_search    { background-position:left -153px; }
 .icon_feed      { background-position:left -193px; }
 .icon_settings  { background-position:left -233px; }
-.icon_signup    { background-position:left -273px; }
+.icon_theme     { background-position:left -273px; }
 
 
 
@@ -107,7 +107,7 @@ a.icon_link:hover
     line-height: 34px;
     height:34px;
     padding-left:3px;        
-    margin:0px 1px 8px 0px;
+    margin:0px 1px 2px 0px;
     text-decoration:none;
 }
 
