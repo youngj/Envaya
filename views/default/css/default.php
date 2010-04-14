@@ -825,14 +825,14 @@ a.selected
 
 .good_messages, .bad_messages 
 {
-    background:#ccffcc;
+    background:#b9e9ff;
     color:#000000;
     padding:3px;
     width:483px;
     margin:0 auto;
     -webkit-border-radius: 4px; 
     -moz-border-radius: 4px;    
-    border:2px solid #00CC00;
+    border:2px solid #1caeec;
 }
 
 .good_messages p, .bad_messages p
@@ -1159,6 +1159,16 @@ a.smallBlogImageLink:hover
 #attachControls
 {
     padding:4px;
+}
+
+#attachControls img
+{
+    vertical-align:middle;
+}
+
+#attachControls a
+{
+    color:#333;
 }
 
 #attachImage input

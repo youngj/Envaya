@@ -38,7 +38,15 @@ class Widget extends ElggObject
     function getURL()
     {
         $org = $this->getContainerEntity();
-        return "{$org->getUrl()}/{$this->widget_name}";
+        
+        if ($this->widget_name == 'home')
+        {
+            return $org->getURL();
+        }
+        else
+        {
+            return "{$org->getURL()}/{$this->widget_name}";
+        }    
     }
     
     function getEditURL()
