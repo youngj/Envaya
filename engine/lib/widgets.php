@@ -51,7 +51,8 @@ class Widget extends ElggObject
     
     function getEditURL()
     {
-        return "{$this->getURL()}/edit";
+        $org = $this->getContainerEntity();
+        return "{$org->getURL()}/{$this->widget_name}/edit";
     }
     
     function saveInput()

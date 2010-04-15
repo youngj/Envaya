@@ -17,10 +17,12 @@
         }
     }
     
+    $prevInput = restore_input($vars['internalname'], '');
+    
     echo elgg_view('input/hidden', array(
         'internalname' => $vars['internalname'], 
         'internalid' => 'imageUpload', 
-        'value' => ''
+        'value' => $prevInput
     )); 
 ?>
 
@@ -30,6 +32,7 @@
 <script type="text/javascript">
 
     image_uploader({     
+        session_id: <?php echo json_encode(session_id()); ?>,
         thumbnail_size: <?php echo json_encode(@$vars['thumbnail_size'] ?: 'small') ?>,
         max_width: <?php echo $maxWidth ?>,
         max_height: <?php echo $maxHeight ?>,

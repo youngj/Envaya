@@ -40,7 +40,7 @@
                 
         if ($org->canEdit())
         {
-            add_submenu_item(elgg_echo("widget:edit"), "{$widget->getUrl()}/edit", 'edit');
+            add_submenu_item(elgg_echo("widget:edit"), $widget->getEditURL(), 'edit');
         }    
 
         if (get_input("__topbar") != "0")

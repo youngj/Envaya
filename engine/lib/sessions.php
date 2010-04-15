@@ -54,28 +54,15 @@ class Session
         session_set_save_handler("__elgg_session_open", "__elgg_session_close", "__elgg_session_read", "__elgg_session_write", "__elgg_session_destroy", "__elgg_session_gc");
     
         session_name(static::$cookieName);
+        
         session_start();
         static::$started = true;    
         
         register_elgg_event_handler('shutdown', 'system', 'session_write_close', 10);
 
-        $fingerprint = @$_SESSION['__elgg_fingerprint'];
-        if ($fingerprint)
-        {
-            if ($fingerprint != get_session_fingerprint())
-            {
-                session_destroy();
-                session_start();
-            }
-        }
-        else
-        {
-            static::set('__elgg_fingerprint', get_session_fingerprint());            
-        }
-
         if (!isset($_SESSION['__elgg_session'])) 
         {
-            static::set('__elgg_session', md5(microtime().rand()));
+            static::set('__elgg_session', md5(microtime().rand()));            
         }    
         
         $guid = @$_SESSION['guid'];
@@ -344,7 +331,7 @@ function session_init($event, $object_type, $object)
 function gatekeeper() 
 {
     if (!isloggedin()) 
-    {
+    {    
         Session::set('last_forward_from', current_page_url());
         forward("pg/login");
     }

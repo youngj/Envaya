@@ -358,7 +358,7 @@
         'upload:image:error' => "Kosa kutengeneza picha: ",
         'upload:image:processing' => "Ikitengeneza picha...",
         'upload:image:uploading' => "Ikihifadhi picha...",
-        'upload:image:complete' => "Picha imeshahifadhiwa. Ikionyesha...",
+        'upload:image:complete' => "Picha imehifadhiwa. Ikionyesha...",
         'upload:image:error' => "Kosa uploading picha: ",                 
 
         'contact:link' => "Wasiliana",    

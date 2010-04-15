@@ -10,6 +10,7 @@
     if (empty($name)) 
     {
         register_error(elgg_echo("widget:team:name:missing"));
+        Session::saveInput();
         forward_to_referrer();
     } 
     else if (!$org || !$org->canEdit())

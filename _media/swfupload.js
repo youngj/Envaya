@@ -1148,6 +1148,38 @@ function image_uploader($vars)
         document.getElementById($vars.progress_id).innerHTML = $html; 
     }    
     
+
+    function show_preview_image(serverData)
+    {
+        var $data;
+        
+        eval("$data = " + serverData);        
+
+        var img = document.createElement('img');
+        img.src = $data[$vars.thumbnail_size].url;
+        img.style.display = 'none';
+
+        var loadingMessage = document.createElement('span');
+        loadingMessage.appendChild(document.createTextNode($vars.loading_preview_message));
+
+        var progress = document.getElementById($vars.progress_id);
+
+        addEvent(img, 'load', function() {
+            img.style.display = 'inline';
+            progress.removeChild(loadingMessage);
+        });                
+
+        removeChildren(progress);
+        progress.appendChild(loadingMessage);
+        progress.appendChild(img);                       
+    }    
+    
+    var prevValue = document.getElementById($vars.result_id).value;
+    if (prevValue)
+    {
+        show_preview_image(prevValue);
+    }
+    
     function add_fallback_iframe($swfupload)
     {
         var $placeholder = document.getElementById($vars.placeholder_id);
@@ -1167,7 +1199,7 @@ function image_uploader($vars)
         // Backend Settings
         upload_url: "/action/uploadTemp",
         file_post_name : "file",
-        post_params: { "sizes": $vars.sizes },  
+        post_params: { "sizes": $vars.sizes, "session_id": $vars.session_id },  
 
         // File Upload Settings
         file_types : "*.jpg;*.gif;*.png",
@@ -1200,14 +1232,17 @@ function image_uploader($vars)
                 set_upload_progress($vars.processing_message);
 
                 var file = this.getFile(0);
-                if (file.size > 100000 || file.type != ".jpg")
+                if (file)
                 {
-                    this.startResizedUpload(file.ID, $vars.max_width, $vars.max_height, SWFUpload.RESIZE_ENCODING.JPEG, 75);
-                }
-                else
-                {
-                    this.startUpload(file.ID);
-                }
+                    if (file.size > 100000 || file.type != ".jpg")
+                    {
+                        this.startResizedUpload(file.ID, $vars.max_width, $vars.max_height, SWFUpload.RESIZE_ENCODING.JPEG, 75);
+                    }
+                    else
+                    {
+                        this.startUpload(file.ID);
+                    }
+                }    
             }
         },
         
@@ -1223,29 +1258,9 @@ function image_uploader($vars)
         
         upload_success_handler: function(file, serverData) 
         {
-            var $data;
             document.getElementById($vars.result_id).value = serverData;
             
-            eval("$data = " + serverData);        
-            
-            var img = document.createElement('img');
-            img.src = $data[$vars.thumbnail_size].url;
-            img.style.display = 'none';
-            
-            var loadingMessage = document.createElement('span');
-            loadingMessage.appendChild(document.createTextNode($vars.loading_preview_message));
-            
-            var progress = document.getElementById($vars.progress_id);
-            
-            addEvent(img, 'load', function() {
-                img.style.display = 'inline';
-                progress.removeChild(loadingMessage);
-            });                
-            
-            removeChildren(progress);
-            progress.appendChild(loadingMessage);
-            progress.appendChild(img);            
-            
+            show_preview_image(serverData);            
         },
 
         // Button Settings        
