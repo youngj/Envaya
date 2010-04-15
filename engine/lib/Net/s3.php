@@ -143,10 +143,14 @@
             return $this->curlInfo['http_code'] == '204';
         }
  
-        public function copyObject($bucket_name, $s3_path, $dest_bucket_name, $dest_s3_path)
+        public function copyObject($bucket_name, $s3_path, $dest_bucket_name, $dest_s3_path, $web_accessible = false)
         {
             $request = array('verb' => 'PUT', 'resource' => "/$dest_bucket_name/$dest_s3_path");
             $headers = array('x-amz-copy-source' => "/$bucket_name/$s3_path");
+            
+            if($web_accessible === true)
+                $headers['x-amz-acl'] = 'public-read';            
+            
             $result = $this->sendRequest($request, $headers);
  
             if($this->curlInfo['http_code'] != '200')

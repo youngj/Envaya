@@ -35,25 +35,11 @@ class TeamMember extends ElggObject
         return ($this->data_types & DataType::Image) != 0;
     }   
 
-    public function setImage($imageFilePath)
+    static function getImageSizes()
     {
-        if (!$imageFilePath)
-        {
-            $this->data_types &= ~DataType::Image;     
-        }
-        else
-        {        
-            if ($this->getImageFile('small')->uploadFile(resize_image_file($imageFilePath,150,150))
-               && $this->getImageFile('large')->uploadFile(resize_image_file($imageFilePath,450,450)))
-            {
-                $this->data_types |= DataType::Image;  
-            }
-            else            
-            {
-                throw new DataFormatException("error saving image");
-            }            
-        }   
-        $this->save();
-    }
-    
+        return array(
+            'small' => '150x150',
+            'large' => '450x450',
+        );
+    }    
 }

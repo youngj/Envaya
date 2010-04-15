@@ -194,6 +194,8 @@
         'message:subject_missing' => "Mada ya ujumbe wako ulikuwa wazi.",
         'message:invalid_recipient' => "Mpokeaji mbaya.",
 
+        'widget:view' => "Ona ukurasa",
+
         'widget:home' => "Mkuu",
         'widget:home:included' => "Sehemu gani unataka kuwa na katika ukurasa wako mkuu?",
 
@@ -206,6 +208,7 @@
         'widget:projects:help' => "Andika kuhusu kazi na shughuli shirika yako linazozifanya.",
         
         'widget:news' => "Habari",
+        'widget:news:item' => "Habari",                
         'widget:news:edit' => 'Hariri habari',
         'widget:news:latest' => 'Habari Mpya',        
         'widget:news:empty' => "Shirika hili hajaandika habari yo yote.",        
@@ -236,6 +239,7 @@
         'widget:contact:mailing_address' => "Anwani ya barua:",        
 
         'widget:team' => "Timu",
+        'widget:team:member' => "Mwenzio",
         'widget:team:add' => "Ongeza mwenzio mpya",
         'widget:team:list' => "Mwenzio wa sasa",
         'widget:team:name' => "Jina:",
@@ -350,7 +354,12 @@
         'image:optional' => "Iache wazi kama hutaki picha.",
         'image:delete' => "Futa picha?",                              
         
-        'upload:invalid_image' => "Faili iliyopeleka haionekani kuwa picha halili.",                
+        'upload:browse' => 'Peleleza',
+        'upload:image:error' => "Kosa kutengeneza picha: ",
+        'upload:image:processing' => "Ikitengeneza picha...",
+        'upload:image:uploading' => "Ikihifadhi picha...",
+        'upload:image:complete' => "Picha imeshahifadhiwa. Ikionyesha...",
+        'upload:image:error' => "Kosa uploading picha: ",                 
 
         'contact:link' => "Wasiliana",    
         'contact:title' => 'Wasiliana nasi',        

@@ -48,6 +48,29 @@
             return parent::delete() && $this->deleteTableAttributes(static::$table_name);
         }
         
+        public function setImages($imageFiles)
+        {
+            if (!$imageFiles)
+            {
+                $this->data_types &= ~DataType::Image;     
+            }
+            else
+            {   
+                foreach ($imageFiles as $size => $srcFile)
+                {
+                    $srcFile = $imageFiles[$size];                    
+
+                    $destFile = $this->getImageFile($size);
+
+                    $srcFile->copyTo($destFile);
+                    $srcFile->delete();
+                }
+
+                $this->data_types |= DataType::Image;     
+            }   
+            $this->save();
+        }        
+        
         static function getByCondition($where, $args)
         {
             $objs = static::filterByCondition($where, $args, '', 1, 0, false);

@@ -50,15 +50,20 @@ function showAttachImage($show)
     }
 }
 </script>
+
+
 <div id='attachControls'>
     <a href='javascript:void(0)' onclick='showAttachImage(true)'><img src='_graphics/attach_image.gif' /></a>
     <a href='javascript:void(0)' onclick='showAttachImage(true)'><?php echo elgg_echo('dashboard:attach_image') ?></a>    
 </div>    
 <div id='attachImage' style='display:none'>
     <a class='attachImageClose' href='javascript:void(0)' onclick='showAttachImage(false)'></a>    
-    <div class='help'><?php echo elgg_echo('dashboard:select_image') ?>        
-    </div>
-    <?php echo elgg_view('input/file', array('internalid' => 'imageUpload', 'internalname' => 'image')) ?>    
+    <span class='help'><?php echo elgg_echo('dashboard:select_image') ?></span>    
+           
+    <?php echo elgg_view('input/swfupload_image', array(
+        'internalname' => 'image',
+        'sizes' => NewsUpdate::getImageSizes()
+    )) ?>
     
 </div>
 
@@ -67,6 +72,7 @@ function showAttachImage($show)
     $formBody = ob_get_clean();
     
     echo elgg_view('input/form', array(
+        'internalid' => 'addPostForm',
         'action' => "action/org/addPost", 
         'enctype' => "multipart/form-data", 
         'body' => $formBody, 

@@ -82,28 +82,15 @@ class Widget extends ElggObject
         return $this->hasImage() ? ($this->getImageFile($size)->getURL()."?{$this->time_updated}") : "";
     }
 
-    public function setImage($imageFilePath)
+    static function getImageSizes()
     {
-        if (!$imageFilePath)
-        {
-            $this->data_types &= ~DataType::Image;     
-        }
-        else
-        {
-            if ($this->getImageFile('small')->uploadFile(resize_image_file($imageFilePath,100,150))
-               && $this->getImageFile('medium')->uploadFile(resize_image_file($imageFilePath,200,300))
-               && $this->getImageFile('large')->uploadFile(resize_image_file($imageFilePath,450,450)))
-            {
-                $this->data_types |= DataType::Image;  
-            }
-            else            
-            {
-                throw new DataFormatException("error saving image");
-            }                        
-        }   
-        $this->save();
-    } 
-    
+        return array(
+            'small' => '100x150',
+            'medium' => '200x300',
+            'large' => '450x450',
+        );
+    }   
+
     public function isActive()
     {
         return $this->guid && $this->isEnabled();
@@ -116,21 +103,16 @@ function save_widget($widget)
     $widget->image_position = get_input('image_position');
     $widget->save();
     
-    if (has_uploaded_file('image'))
-    {            
-        if (is_image_upload('image'))
-        {    
-            $widget->setImage(get_uploaded_filename('image'));        
-        }
-        else
-        {
-            register_error(elgg_echo('upload:invalid_image'));
-        }
-    }    
-    else if (get_input('deleteimage'))
+    $imageFiles = get_uploaded_files('image');
+
+    if (get_input('deleteimage'))
     {
-        $widget->setImage(null);
-    }
+        $widget->setImages(null);
+    }    
+    else if ($imageFiles)
+    {            
+        $widget->setImages($imageFiles);        
+    }    
 }
 
 function save_widget_home($widget)
@@ -158,23 +140,16 @@ function save_widget_home($widget)
 
 function save_icon_settings($org)
 {
+    $iconFiles = get_uploaded_files('icon');
+
     if (get_input('deleteicon'))
     {
-        $org->custom_icon = false;
-        $org->save();
-        
+        $org->setIcon(null);       
         system_message(elgg_echo("org:icon:reset"));
     }
-    if (has_uploaded_file('icon'))
+    else if ($iconFiles)
     {
-        if (!is_image_upload('icon'))
-        {                
-            register_error(elgg_echo('upload:invalid_image'));
-        }
-        else
-        {   
-            $org->setIcon(get_uploaded_filename('icon'));
-        }    
+        $org->setIcon($iconFiles);
     }   
 }
 

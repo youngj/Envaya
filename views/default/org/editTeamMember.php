@@ -35,7 +35,9 @@
 
 <div class='input'>
 <label><?php echo elgg_echo('widget:team:photo'); ?></label><br />
-<?php echo elgg_view('input/image', array('internalname' => 'image',
+<?php echo elgg_view('input/image', array(
+        'internalname' => 'image',
+        'sizes' => TeamMember::getImageSizes(),    
         'current' => ($member && $member->hasImage() ? $member->getImageUrl('small') : null),
         'deletename' => 'deleteimage',
 )) ?>    

@@ -835,6 +835,19 @@ a.selected
     border:2px solid #1caeec;
 }
 
+.swfupload
+{
+    vertical-align:middle;
+}
+
+.uploadIframe
+{
+    display:block;
+    width:270px;
+    height:30px;
+    border:0px;
+}
+
 .good_messages p, .bad_messages p
 {
     margin:4px;   

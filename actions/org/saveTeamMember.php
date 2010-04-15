@@ -18,21 +18,15 @@
         $member->name = get_input('name');
         $member->description = get_input('description');
         
-        if (has_uploaded_file('image'))
-        {   
-            if (is_image_upload('image'))
-            {
-                $member->setImage(get_uploaded_filename('image'));        
-            }   
-            else
-            {
-                register_error(elgg_echo('upload:invalid_image'));
-            }
-        }        
-        else if (get_input('deleteimage'))
+        $imageFiles = get_uploaded_files('image');        
+        if (get_input('deleteimage'))
         {
-            $member->setImage(null);
+            $member->setImages(null);
         }                
+        else if ($imageFiles)
+        {   
+            $member->setImages($imageFiles);        
+        }        
         $member->save();
         
         system_message(elgg_echo('widget:team:save_success'));

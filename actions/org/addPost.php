@@ -7,9 +7,9 @@
     $orgId = get_input('container_guid');
     $org = get_entity($orgId);
     
-    $hasImage = (isset($_FILES['image'])) && (substr_count($_FILES['image']['type'],'image/'));
+    $imageFiles = get_uploaded_files('image');
             
-    if (empty($body) && !$hasImage) 
+    if (empty($body) && !$imageFiles) 
     {
         register_error(elgg_echo("blog:blank"));
         forward_to_referrer();
@@ -26,16 +26,11 @@
         $blog->container_guid = $orgId;
         $blog->content = $body;    
         $blog->save();
-
-        if ($hasImage)
-        {        
-            $blog->setImage(get_uploaded_filename('image'));        
-        }
+        
+        $blog->setImages($imageFiles);        
 
         system_message(elgg_echo("blog:posted"));
             
         $page_owner = get_entity($blog->container_guid);
         forward($page_owner->getUrl() . "/news");
-    }
-        
-?>
+    }       

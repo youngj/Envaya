@@ -359,9 +359,14 @@
         'image:blank' => "Leave this blank to keep the current image.",
         'image:optional' => "Leave blank if you don't want an image.",
         'image:delete' => "Remove image?",                      
-                                
-        'upload:invalid_image' => "The uploaded file did not appear to be a valid image.",                
-        
+         
+        'upload:browse' => 'Browse',
+        'upload:image:error' => "Error processing image: ",
+        'upload:image:processing' => "Processing image...",
+        'upload:image:uploading' => "Uploading image...",
+        'upload:image:complete' => "Upload complete. Previewing...",
+        'upload:image:error' => "Error uploading image: ",         
+                 
         'contact:link' => "Contact",    
         'contact:title' => 'Contact us',
                 

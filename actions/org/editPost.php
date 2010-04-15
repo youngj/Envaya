@@ -7,14 +7,14 @@
     $body = get_input('blogbody');
     $blog = get_entity($guid);    
     
-    $hasImage = has_uploaded_file('image');
+    $imageFiles = get_uploaded_files('image');    
     
     if ($blog->getSubtype() != T_blog || !$blog->canEdit()) 
     {
         register_error(elgg_echo("org:cantedit"));
         forward_to_referrer();
     }
-    else if (empty($body) && !$hasImage && !$blog->hasImage()) 
+    else if (empty($body) && !$imageFiles && !$blog->hasImage()) 
     {
         register_error(elgg_echo("blog:blank"));
         forward_to_referrer();
@@ -33,20 +33,13 @@
         $blog->content = $body;
         $blog->save();
         
-        if ($hasImage)
-        {   
-            if (is_image_upload('image'))
-            {
-                $blog->setImage(get_uploaded_filename('image'));        
-            }   
-            else
-            {
-                register_error(elgg_echo('upload:invalid_image'));
-            }
-        }        
-        else if (get_input('deleteimage'))
+        if (get_input('deleteimage'))
         {
-            $blog->setImage(null);
+            $blog->setImages(null);
+        }        
+        else if ($imageFiles)
+        {   
+            $blog->setImages($imageFiles);        
         }        
 
         system_message(elgg_echo("blog:updated"));

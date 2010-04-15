@@ -5,11 +5,19 @@
     $deleteid = $vars['deleteid'];
     $removable = isset($vars['removable']) ? $vars['removable'] : ($current != null);
     
+    /*
     $imageInput = elgg_view("input/file", array(
         'internalname' => $vars['internalname'],
         'internalid' => $vars['internalid'],
         'js' => $vars['js']
     )); 
+    */
+    
+    $imageInput = elgg_view('input/swfupload_image', array(
+        'internalname' => $vars['internalname'],
+        'thumbnail_size' => $vars['thumbnail_size'],
+        'sizes' => $vars['sizes']
+    ));      
 ?>
 
 <?php if ($current) { ?>
@@ -22,7 +30,7 @@
             <div>
                 <?php echo elgg_echo('image:new') ?>
                     <?php echo $imageInput ?>
-                        <div class='help'><?php echo elgg_echo('image:blank') ?></div>
+                        <!-- <div class='help'><?php echo elgg_echo('image:blank') ?></div> -->
             </div>                                    
         <?php if ($removable) { ?>
             <div style='padding-top:10px'>

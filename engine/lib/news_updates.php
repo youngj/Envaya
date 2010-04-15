@@ -69,25 +69,12 @@ class NewsUpdate extends ElggObject
         return friendly_time($this->time_created); 
     }
     
-    public function setImage($imageFilePath)
+    static function getImageSizes()
     {
-        if (!$imageFilePath)
-        {
-            $this->data_types &= ~DataType::Image;     
-        }
-        else
-        {        
-            if ($this->getImageFile('small')->uploadFile(resize_image_file($imageFilePath,100,100))
-               && $this->getImageFile('large')->uploadFile(resize_image_file($imageFilePath,450,450)))
-            {
-                $this->data_types |= DataType::Image;  
-            }
-            else            
-            {
-                throw new DataFormatException("error saving image");
-            }            
-        }   
-        $this->save();
+        return array(
+            'small' => '100x100',
+            'large' => '450x450',
+        );
     }
     
     public static function all($limit = 10, $offset = 0)

@@ -37,7 +37,16 @@
 		public function delete()
 		{
             global $CONFIG;            
-            return get_s3()->deleteObject($CONFIG->s3_bucket, $this->getPath()) && parent::delete();
+            $res = get_s3()->deleteObject($CONFIG->s3_bucket, $this->getPath());
+            
+            if ($res && $this->guid)
+            {
+                return parent::delete();
+            }
+            else
+            {
+                return $res;
+            }
 		}
 			
 		public function size()
@@ -57,6 +66,13 @@
             return get_s3()->uploadFile($CONFIG->s3_bucket, $this->getPath(), $filePath, true);
         }
         
+        public function copyTo($destFile)
+        {
+            global $CONFIG;
+            $res = get_s3()->copyObject($CONFIG->s3_bucket, $this->getPath(), $CONFIG->s3_bucket, $destFile->getPath(), true);            
+            return $res;
+        }
+        
 		public function exists()
 		{
             global $CONFIG;
@@ -64,6 +80,27 @@
             return ($info) ? true : false;
 		}		
 	}
+    
+    function get_uploaded_files($input_name)
+    {
+        $filedata = json_decode($_POST[$input_name]);
+               
+        if (!$filedata)
+        {
+            return null;
+        }
+        
+        $res = array();
+        foreach ($filedata as $size => $value)
+        {
+            $file = new ElggFile();
+            $file->owner_guid = get_loggedin_userid();
+            $file->setFilename($value->filename);
+        
+            $res[$size] = $file;
+        }
+        return $res;
+    }
 
 	function get_uploaded_filename($input_name) 
     {       

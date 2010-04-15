@@ -7,8 +7,6 @@
     $org = get_entity($orgId);
     $name = get_input('name');
     
-    $hasImage = (isset($_FILES['image'])) && (substr_count($_FILES['image']['type'],'image/'));
-            
     if (empty($name)) 
     {
         register_error(elgg_echo("widget:team:name:missing"));
@@ -33,12 +31,9 @@
             $teamMember->list_order = $team[sizeof($team)-1]->list_order + 1;
         }
         
-        $teamMember->save();
-    
-        if ($hasImage)
-        {        
-            $teamMember->setImage(get_uploaded_filename('image'));        
-        }
+        $teamMember->save();    
+        
+        $teamMember->setImages(get_uploaded_files('image'));        
 
         system_message(elgg_echo("widget:team:add_success"));
             

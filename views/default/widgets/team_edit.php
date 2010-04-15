@@ -38,7 +38,12 @@
 
 <div class='input'>
 <label><?php echo elgg_echo('widget:team:photo'); ?></label><br />
-<?php echo elgg_view('input/file', array('internalname' => 'image')) ?>    
+
+<?php echo elgg_view('input/swfupload_image', array(
+    'internalname' => 'image',
+    'sizes' => TeamMember::getImageSizes()
+)) ?>
+
 </div>
 
 <?php

@@ -15,6 +15,7 @@
 <?php echo elgg_view('input/image', array(
         'current' => ($blog && $blog->hasImage() ? $blog->getImageUrl('small') : null),
         'internalname' => 'image',
+        'sizes' => NewsUpdate::getImageSizes(),
         'deletename' => 'deleteimage',
     )) ?>    
 </div>

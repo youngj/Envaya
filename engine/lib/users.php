@@ -138,25 +138,35 @@
             }    
         }        
         
-        public function setIcon($imageFilePath)
+        static function getIconSizes()
         {
-            if (!$imageFilePath)
+            return array(
+                'tiny' => '37x25',
+                'small' => '60x40',
+                'medium' => '150x100',
+                'large' => '300x200',
+            );
+        }   
+        
+        public function setIcon($imageFiles)
+        {
+            if (!$imageFiles)
             {
                 $this->custom_icon = false;
             }
             else
             {
-                if ($this->getIconFile('tiny')->uploadFile(resize_image_file($imageFilePath,25, 25, true))
-                    && $this->getIconFile('small')->uploadFile(resize_image_file($imageFilePath,40, 40, true))
-                    && $this->getIconFile('medium')->uploadFile(resize_image_file($imageFilePath,100,100, true))
-                    && $this->getIconFile('large')->uploadFile(resize_image_file($imageFilePath,200,200, true)))
+                foreach ($imageFiles as $size => $srcFile)
                 {
-                    $this->custom_icon = true;                
+                    $srcFile = $imageFiles[$size];                    
+
+                    $destFile = $this->getIconFile($size);
+
+                    $srcFile->copyTo($destFile);
+                    $srcFile->delete();
                 }
-                else
-                {
-                    throw new DataFormatException("error saving image");
-                }
+
+                $this->custom_icon = true;                
             }
             $this->save();
         }
