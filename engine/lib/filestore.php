@@ -171,6 +171,13 @@
                 'image/gif' => 'gif'
             );
 			
+            if ($imgsizearray['mime'] == 'image/jpeg' && $width == $newwidth && $height == $newheight)
+            {
+                // avoid re-encoding file if it's already the correct size and file type
+            
+                return $input_name;
+            }
+            
 			// If it's a file we can manipulate ...
 			if (array_key_exists($imgsizearray['mime'],$accepted_formats)) {
 

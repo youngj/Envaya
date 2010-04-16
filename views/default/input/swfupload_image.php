@@ -30,9 +30,9 @@
 <div id='imageUploadProgress'></div>
 <script type='text/javascript' src='_media/swfupload.js'></script>
 <script type="text/javascript">
-
     image_uploader({     
         session_id: <?php echo json_encode(session_id()); ?>,
+        trackDirty: <?php echo (@$vars['trackDirty'] ? 'true' : 'false'); ?>,
         thumbnail_size: <?php echo json_encode(@$vars['thumbnail_size'] ?: 'small') ?>,
         max_width: <?php echo $maxWidth ?>,
         max_height: <?php echo $maxHeight ?>,

@@ -62,6 +62,7 @@ function showAttachImage($show)
            
     <?php echo elgg_view('input/swfupload_image', array(
         'internalname' => 'image',
+        'trackDirty' => true,
         'sizes' => NewsUpdate::getImageSizes()
     )) ?>
     

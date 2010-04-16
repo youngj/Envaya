@@ -78,6 +78,7 @@
             echo "<td>".elgg_view('output/confirmlink', array(
                 'is_action' => true,
                 'href' => "action/org/deletePost?blogpost={$update->guid}",
+                'confirm' => elgg_echo('blog:delete:confirm'),
                 'text' => elgg_echo('delete')
             ))."</td>";
             echo "</tr>";

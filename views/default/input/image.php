@@ -15,6 +15,7 @@
     
     $imageInput = elgg_view('input/swfupload_image', array(
         'internalname' => $vars['internalname'],
+        'trackDirty' => @$vars['trackDirty'],
         'thumbnail_size' => $vars['thumbnail_size'],
         'sizes' => $vars['sizes']
     ));      

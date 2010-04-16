@@ -1153,25 +1153,34 @@ function image_uploader($vars)
     {
         var $data;
         
-        eval("$data = " + serverData);        
+        eval("$data = " + serverData);    
+        
+        if (!$data)
+        {
+            set_upload_progress($vars.upload_error_message + " -1");
+        }
+        else
+        {
+            var progress = document.getElementById($vars.progress_id);
 
-        var img = document.createElement('img');
-        img.src = $data[$vars.thumbnail_size].url;
-        img.style.display = 'none';
+            var loadingMessage = document.createElement('span');
+            loadingMessage.appendChild(document.createTextNode($vars.loading_preview_message));
 
-        var loadingMessage = document.createElement('span');
-        loadingMessage.appendChild(document.createTextNode($vars.loading_preview_message));
+            removeChildren(progress);
+            progress.appendChild(loadingMessage);
+        
+            var img = document.createElement('img');
 
-        var progress = document.getElementById($vars.progress_id);
-
-        addEvent(img, 'load', function() {
-            img.style.display = 'inline';
-            progress.removeChild(loadingMessage);
-        });                
-
-        removeChildren(progress);
-        progress.appendChild(loadingMessage);
-        progress.appendChild(img);                       
+            img.style.display = 'none';
+            
+            addEvent(img, 'load', function() {
+                img.style.display = 'inline';
+                progress.removeChild(loadingMessage);
+            });                
+            
+            img.src = $data[$vars.thumbnail_size].url;
+            progress.appendChild(img);                               
+        }    
     }    
     
     var prevValue = document.getElementById($vars.result_id).value;
@@ -1229,11 +1238,12 @@ function image_uploader($vars)
         {
             if (numFilesQueued > 0) 
             {
-                set_upload_progress($vars.processing_message);
+                var file = this.getFile(0);    
 
-                var file = this.getFile(0);
                 if (file)
                 {
+                    set_upload_progress($vars.processing_message);
+                
                     if (file.size > 100000 || file.type != ".jpg")
                     {
                         this.startResizedUpload(file.ID, $vars.max_width, $vars.max_height, SWFUpload.RESIZE_ENCODING.JPEG, 75);
@@ -1242,7 +1252,11 @@ function image_uploader($vars)
                     {
                         this.startUpload(file.ID);
                     }
-                }    
+                }   
+                else
+                {
+                    set_upload_progress($vars.queue_error_message + "-2");                
+                }
             }
         },
         
@@ -1259,7 +1273,10 @@ function image_uploader($vars)
         upload_success_handler: function(file, serverData) 
         {
             document.getElementById($vars.result_id).value = serverData;
-            
+            if ($vars.trackDirty)
+            {
+                setDirty(true);
+            }
             show_preview_image(serverData);            
         },
 

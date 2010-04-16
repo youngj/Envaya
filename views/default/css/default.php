@@ -210,7 +210,7 @@ textarea:focus, input[type="text"]:focus {
     font: 12px/100% Arial, Helvetica, sans-serif;
     font-weight: bold;
     color: #ffffff;
-    background:transparent; /* url(<?php echo $graphicsDir ?>/buttons.gif) left top; */
+    background:transparent; 
     border:0px;
     padding:5px;
     width: auto;
@@ -220,7 +220,7 @@ textarea:focus, input[type="text"]:focus {
 
 .submit_button div
 {
-    background: url(<?php echo $graphicsDir ?>/buttons.gif) left -32px;
+    background: url(<?php echo $graphicsDir ?>/buttons.gif?v2) left -32px; 
     display:block;
     height:32px;
     margin:0px;
@@ -229,10 +229,9 @@ textarea:focus, input[type="text"]:focus {
 
 .submit_button span
 {
-    background:url(<?php echo $graphicsDir ?>/buttons.gif) right -32px;
+    background: url(<?php echo $graphicsDir ?>/buttons.gif?v2) right -32px; 
     display:block;
     height:24px;
-    margin-right:-3px;
     padding-top:8px;
     padding-right:9px;
     white-space:nowrap;
@@ -1142,14 +1141,20 @@ a.smallBlogImageLink:hover
 
 #translate_bar
 {
-    padding: 5px 2px 5px 36px;
-    height:32px;
-    background:#fff url(<?php echo $graphicsDir; ?>/world.gif) no-repeat 5px 8px;
-    border-bottom:1px solid #ccc;
-    font-size:11px;
+    padding: 6px 2px 0px 51px;
+    margin-bottom:2px;
+    height:44px;
+    background:#948f87 url(<?php echo $graphicsDir; ?>/world.gif) no-repeat 5px 5px;
+    color:white;
+    border:1px solid #fff;
+    -webkit-border-radius: 4px; 
+    -moz-border-radius: 4px; 
+    font-size:12px;
 }
 #translate_bar a
 {
+    color:white;
+    font-weight:bold;
     white-space:nowrap;
 }
 

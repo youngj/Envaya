@@ -159,6 +159,7 @@
         'blog:editpost' => "Hariri Habari",
         'blog:addpost' => "Ongeza habari",
         'blog:delete' => "Futa habari",
+        'blog:delete:confirm' => "Una hakika kuwa unataka kufuta habari hii?",
         'blog:delete:success' => "Habari ilifutwa.",        
         'blog:timeline' => "Ratiba",
 
@@ -243,6 +244,7 @@
         'widget:team:add' => "Ongeza mwenzio mpya",
         'widget:team:list' => "Mwenzio wa sasa",
         'widget:team:name' => "Jina:",
+        'widget:team:name:missing' => "Jina la mwenzio ni wazi.",
         'widget:team:description' => "Elezo:",
         'widget:team:photo' => "Picha (sio lazima):",
         'widget:team:add:button' => "Hifadhi mwenzio",
@@ -269,7 +271,7 @@
         'widget:save:success' => "Ukurasa umehifadhiwa.",        
         'widget:delete' => "Futa ukurasa",
         'widget:delete:success' => "Ukurasa umefutwa.",        
-        'widget:delete:confirm' => "Una hakika kwamba unataka kufuta ukurasa huu kutoka tovuti yako?",
+        'widget:delete:confirm' => "Una hakika kuwa unataka kufuta ukurasa huu kutoka tovuti yako?",
         
         'widget:partnerships' => 'Ubia',
         'widget:partnerships:description' => "Eleza ubia wako na shirika hili:",

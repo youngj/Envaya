@@ -24,6 +24,7 @@ function togglePosition()
         'current' => ($widget->hasImage() ? $widget->getImageUrl('small') : null),
         'js' => "onchange='javascript:togglePosition()'",
         'internalname' => 'image',
+        'trackDirty' => true,
         'sizes' => Widget::getImageSizes(),
         'internalid' => 'imageUpload',
         'deletename' => 'deleteimage',

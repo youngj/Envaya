@@ -8,6 +8,7 @@
     echo elgg_view("input/image", 
         array(
             'current' => $user->getIcon('medium'),
+            'trackDirty' => true,
             'sizes' => ElggUser::getIconSizes(),
             'removable' => $user->custom_icon,
             'thumbnail_size' => 'medium',

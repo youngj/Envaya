@@ -9,10 +9,11 @@
         
     if ($widget->guid && $widget->isEnabled() && $widget->widget_name != 'home')
     {    
-        $form_body .= elgg_view('input/submit', array(
+        $form_body .= elgg_view('input/alt_submit', array(
             'internalname' => "delete", 
-            'internalid' => 'widget_delete', 
-            'js' => "onclick='return confirm(".json_encode(elgg_echo('widget:delete:confirm')).")'",
+            'trackDirty' => true,
+            'confirmMessage' => elgg_echo('widget:delete:confirm'),
+            'internalid' => 'widget_delete',
             'value' => elgg_echo('widget:delete')
         ));
     }    

@@ -162,6 +162,7 @@
         'blog:editpost' => "Edit News Update",
         'blog:addpost' => "Add news update",
         'blog:delete' => "Delete update",
+        'blog:delete:confirm' => "Are you sure you want to delete this news update?",
         'blog:delete:success' => "News update deleted successfully.",
                 
         'blog:timeline' => "Timeline",
@@ -247,7 +248,7 @@
         'widget:team:add' => "Add new team member",
         'widget:team:list' => "Current team members",
         'widget:team:name' => "Name:",                
-        'widget:team:name:missing' => "Missing name of team member",
+        'widget:team:name:missing' => "Missing name of team member.",
         'widget:team:description' => "Description:",
         'widget:team:photo' => "Photo (optional):",
         'widget:team:add:button' => "Save team member",

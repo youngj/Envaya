@@ -15,6 +15,7 @@
 <?php echo elgg_view('input/image', array(
         'current' => ($blog && $blog->hasImage() ? $blog->getImageUrl('small') : null),
         'internalname' => 'image',
+        'trackDirty' => true,
         'sizes' => NewsUpdate::getImageSizes(),
         'deletename' => 'deleteimage',
     )) ?>    
@@ -22,10 +23,11 @@
 
 <?php
     echo elgg_view('input/hidden', array('internalname' => 'blogpost', 'value' => $vars['entity']->getGUID()));
-    echo elgg_view('input/submit', array(
+    echo elgg_view('input/alt_submit', array(
             'internalname' => "delete", 
             'internalid' => 'widget_delete', 
-            'js' => "onclick='return confirm(".json_encode(elgg_echo('question:areyousure')).") && setDirty(false)'",
+            'trackDirty' => true,
+            'confirmMessage' => elgg_echo('blog:delete:confirm'),            
             'value' => elgg_echo('blog:delete')
         )); 
 

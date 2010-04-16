@@ -7,6 +7,7 @@ $sizes = json_decode(get_input('sizes'));
 $res = array();
 
 $filename = get_uploaded_filename('file');
+$success = true;
 
 foreach($sizes as $sizeName => $size)
 {
@@ -16,6 +17,10 @@ foreach($sizes as $sizeName => $size)
     $sizeArray = explode("x", $size);
    
     $resizedImage = resize_image_file($filename, $sizeArray[0], $sizeArray[1]); 
+    if (!$resizedImage)
+    {
+        $success = false;
+    }
 
     $tempFilename = "temp/".mt_rand().".jpg";
 
@@ -28,7 +33,14 @@ foreach($sizes as $sizeName => $size)
     );
 }
 
-$json = json_encode($res);
+if ($success)
+{
+    $json = json_encode($res);
+}
+else
+{
+    $json = 'null';
+}
 
 if (get_input('iframe'))
 {    
@@ -36,7 +48,7 @@ if (get_input('iframe'))
     forward("upload.php?swfupload=".urlencode(get_input('swfupload'))."&sizes=".urlencode(get_input('sizes')));
 }
 else
-{
+{    
     header("Content-Type: text/javascript");
     echo $json;
 }    
