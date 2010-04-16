@@ -104,7 +104,7 @@ function save_widget($widget)
     $widget->image_position = get_input('image_position');
     $widget->save();
     
-    $imageFiles = get_uploaded_files('image');
+    $imageFiles = get_uploaded_files($_POST['image']);
 
     if (get_input('deleteimage'))
     {
@@ -141,7 +141,7 @@ function save_widget_home($widget)
 
 function save_icon_settings($org)
 {
-    $iconFiles = get_uploaded_files('icon');
+    $iconFiles = get_uploaded_files($_POST['icon']);
 
     if (get_input('deleteicon'))
     {

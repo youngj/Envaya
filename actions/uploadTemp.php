@@ -4,43 +4,9 @@ gatekeeper();
 
 $sizes = json_decode(get_input('sizes'));
 
-$res = array();
-
 $filename = get_uploaded_filename('file');
-$success = true;
 
-foreach($sizes as $sizeName => $size)
-{
-    $file = new ElggFile();
-    $file->owner_guid = get_loggedin_userid();
-   
-    $sizeArray = explode("x", $size);
-   
-    $resizedImage = resize_image_file($filename, $sizeArray[0], $sizeArray[1]); 
-    if (!$resizedImage)
-    {
-        $success = false;
-    }
-
-    $tempFilename = "temp/".mt_rand().".jpg";
-
-    $file->setFilename($tempFilename);
-    $file->uploadFile($resizedImage);
-    
-    $res[$sizeName] = array(
-        'filename' => $tempFilename,
-        'url' => $file->getURL(),
-    );
-}
-
-if ($success)
-{
-    $json = json_encode($res);
-}
-else
-{
-    $json = 'null';
-}
+$json = upload_temp_images($filename, $sizes);
 
 if (get_input('iframe'))
 {    

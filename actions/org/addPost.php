@@ -7,7 +7,7 @@
     $orgId = get_input('container_guid');
     $org = get_entity($orgId);
     
-    $imageFiles = get_uploaded_files('image');
+    $imageFiles = get_uploaded_files($_POST['image']);
             
     if (empty($body) && !$imageFiles) 
     {

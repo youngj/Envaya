@@ -35,7 +35,7 @@
     
     if(!$count)
     {
-        echo elgg_echo("partner:none");
+        echo "<div>".elgg_echo("partner:none")."</div>";
     }
     else
     {

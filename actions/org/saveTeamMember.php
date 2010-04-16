@@ -18,7 +18,7 @@
         $member->name = get_input('name');
         $member->description = get_input('description');
         
-        $imageFiles = get_uploaded_files('image');        
+        $imageFiles = get_uploaded_files($_POST['image']);        
         if (get_input('deleteimage'))
         {
             $member->setImages(null);

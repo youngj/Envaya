@@ -99,7 +99,11 @@
                     $fh = fopen($tempFileName, 'wb');
                     fwrite($fh, $attachment['Data']);
                     fclose($fh);
-                    $blog->setImage($tempFileName);
+                    
+                    $json = upload_temp_images($tempFileName, NewsUpdate::getImageSizes());
+                    $imageFiles = get_uploaded_files($json);
+                    
+                    $blog->setImages($imageFiles);
                     print_msg($tempFileName);
                     break; 
                 }

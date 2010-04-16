@@ -6,6 +6,15 @@
         'home:for_everyone' => 'Kwa wote',
         'home:sign_up' => 'Jiunga sasa',
         
+        'feedback:title' => "Tutumie maoni ya Envaya",
+        'feedback:instructions' => "Tuambie unavyofikiria kuhusu Envaya! Kitu kimevunjika? Tuongeze kitu kipya? Tutumie maoni yako kwa kutimiza umbo ya chini.",
+        'feedback:name' => "Jina lako (sio lazima)",
+        'feedback:email' => "Email yako (sio lazima)",        
+        'feedback:message' => "Ujumbe wako",
+        'feedback:send' => "Peleka ujumbe",
+        'feedback:empty' => "Ujumbe wako ulikuwa wazi.",
+        'feedback:sent' => "Ujumbe ulipelekwa. Asante kwa maoni yako!",        
+        
         'user:settings' => "Mipangilio ya akaunti",
         
         'why:title' => 'Kwa nini utumie Envaya?',

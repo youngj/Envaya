@@ -7,6 +7,15 @@
         'home:for_everyone' => 'For everyone',
         'home:sign_up' => 'Sign up now',
         
+        'feedback:title' => "Send us feedback",
+        'feedback:instructions' => "Let us know what you think about Envaya! Is something broken? Should we add something new? Send us your feedback by filling out the form below.",
+        'feedback:name' => "Your name (optional)",
+        'feedback:email' => "Your email (optional)",        
+        'feedback:message' => "Your message",
+        'feedback:send' => "Send message",
+        'feedback:empty' => "Your message was empty.",
+        'feedback:sent' => "Message sent. Thanks for your feedback!",
+        
         'user:settings' => "Account settings",
         
         'why:title' => 'Why use Envaya?',        

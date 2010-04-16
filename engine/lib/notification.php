@@ -257,10 +257,10 @@
         return true;
     }
 
-    function send_admin_mail($subject, $message)
+    function send_admin_mail($subject, $message, $headers  = null)
     {
         global $CONFIG;
-        return send_mail($CONFIG->admin_email, $subject, $message);
+        return send_mail($CONFIG->admin_email, $subject, $message, $headers);
     }
 
     function get_smtp_mailer()

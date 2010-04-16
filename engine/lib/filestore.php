@@ -81,27 +81,6 @@
 		}		
 	}
     
-    function get_uploaded_files($input_name)
-    {
-        $filedata = json_decode($_POST[$input_name]);
-               
-        if (!$filedata)
-        {
-            return null;
-        }
-        
-        $res = array();
-        foreach ($filedata as $size => $value)
-        {
-            $file = new ElggFile();
-            $file->owner_guid = get_loggedin_userid();
-            $file->setFilename($value->filename);
-        
-            $res[$size] = $file;
-        }
-        return $res;
-    }
-
 	function get_uploaded_filename($input_name) 
     {       
 		if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == 0) 
@@ -120,6 +99,59 @@
     {
         return substr_count($_FILES[$input_name]['type'],'image/');
     }
+    
+    function upload_temp_images($filename, $sizes)
+    {
+        $res = array();
+
+        foreach($sizes as $sizeName => $size)
+        {
+            $file = new ElggFile();
+            $file->owner_guid = get_loggedin_userid();
+
+            $sizeArray = explode("x", $size);
+
+            $resizedImage = resize_image_file($filename, $sizeArray[0], $sizeArray[1]); 
+            if ($resizedImage)
+            {
+                $tempFilename = "temp/".mt_rand().".jpg";
+
+                $file->setFilename($tempFilename);
+                $file->uploadFile($resizedImage);
+
+                $res[$sizeName] = array(
+                    'filename' => $tempFilename,
+                    'url' => $file->getURL(),
+                );
+            }    
+            else
+            {
+                return json_encode(null);
+            }
+        }
+        return json_encode($res);
+    }    
+    
+    function get_uploaded_files($json)
+    {
+        $filedata = json_decode($json);
+               
+        if (!$filedata)
+        {
+            return null;
+        }
+        
+        $res = array();
+        foreach ($filedata as $size => $value)
+        {
+            $file = new ElggFile();
+            $file->owner_guid = get_loggedin_userid();
+            $file->setFilename($value->filename);
+        
+            $res[$size] = $file;
+        }
+        return $res;
+    }    
     
 	/**
 	 * Gets the jpeg contents of the resized version of an already uploaded image 

@@ -7,7 +7,7 @@
     $body = get_input('blogbody');
     $blog = get_entity($guid);    
     
-    $imageFiles = get_uploaded_files('image');    
+    $imageFiles = get_uploaded_files($_POST['image']);    
     
     if ($blog->getSubtype() != T_blog || !$blog->canEdit()) 
     {

@@ -34,7 +34,7 @@
         
         $teamMember->save();    
         
-        $teamMember->setImages(get_uploaded_files('image'));        
+        $teamMember->setImages(get_uploaded_files($_POST['image']));        
 
         system_message(elgg_echo("widget:team:add_success"));
             

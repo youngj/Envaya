@@ -787,7 +787,7 @@
 				
 		return true;
 	}
-	
+    
 	/**
 	 * Registers a user, returning false if the username already exists
 	 *
