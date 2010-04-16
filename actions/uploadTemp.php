@@ -17,4 +17,5 @@ else
 {    
     header("Content-Type: text/javascript");
     echo $json;
+    exit();
 }    
