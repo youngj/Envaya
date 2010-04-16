@@ -173,6 +173,7 @@ SWFUpload.prototype.initSettings = function (userSettings) {
 
 	// Flash Settings
 	this.ensureDefault("flash_url", "swfupload.swf");
+    this.ensureDefault("jpegencoder_url", "jpegencoder.swf");
 	this.ensureDefault("flash9_url", "swfupload_fp9.swf");
 	this.ensureDefault("prevent_swf_caching", true);
 	
@@ -330,6 +331,7 @@ SWFUpload.prototype.getFlashVars = function () {
 	// Build the parameter string
 	return ["movieName=", encodeURIComponent(this.movieName),
 			"&amp;uploadURL=", encodeURIComponent(this.settings.upload_url),
+            "&amp;jpegEncoderURL=", encodeURIComponent(this.settings.jpegencoder_url),
 			"&amp;useQueryString=", encodeURIComponent(this.settings.use_query_string),
 			"&amp;requeueOnError=", encodeURIComponent(this.settings.requeue_on_error),
 			"&amp;httpSuccess=", encodeURIComponent(httpSuccessString),
@@ -1294,6 +1296,7 @@ function image_uploader($vars)
 
         // Flash Settings
         flash_url : "/_media/swfupload.swf",
+        jpegencoder_url: "/_media/jpegencoder.swf",
         prevent_swf_caching: false,
         // flash9_url : "/swfupload/swfupload_FP9.swf",
 
