@@ -257,7 +257,7 @@ function showOrgs($data)
     var $bounds = map.getBounds();   
     var $proj = map.getCurrentMapType().getProjection();
     var $zoom = map.getZoom();
-    var $bucketSize = 14; // pixels
+    var $bucketSize = 16; // pixels
                   
     var $buckets = {};
                

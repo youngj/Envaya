@@ -24,7 +24,7 @@ class NewsUpdate extends ElggObject
             'container_guid' => $this->container_guid,
             'dateText' => $this->getDateText(),
             'imageURL' => $this->getImageURL('small'),
-            'snippetHTML' => $this->getSnippetHTML()
+            'snippetHTML' => elgg_view('output/text', array('value' => $this->getSnippet()))
         );
     }    
 
@@ -48,7 +48,7 @@ class NewsUpdate extends ElggObject
         return ($this->data_types & DataType::Image) != 0;
     }   
     
-    public function getSnippetHTML($maxLength = 100)
+    public function getSnippet($maxLength = 100)
     {
         $content = $this->content;
         if ($content)
@@ -67,7 +67,7 @@ class NewsUpdate extends ElggObject
                 $content = $shortStr . "...";
             }                
             
-            return elgg_view('output/text', array('value' => $content));
+            return $content;
         }
         return '';
     }

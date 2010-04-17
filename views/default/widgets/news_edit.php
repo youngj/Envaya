@@ -70,7 +70,7 @@
             $rowClass = (($count % 2) != 0) ? 'odd' : 'even';
                                 
             echo "<tr class='$rowClass'>";
-            echo "<td>{$update->getSnippetHTML()}</td>";
+            echo "<td>". elgg_view('output/text', array('value' => $update->getSnippet()))."</td>";
             echo "<td><span class='blog_date'>{$update->getDateText()}</span></td>";
             echo "<td><a href='{$update->getURL()}'>".elgg_echo("view")."</a></td>";
             
