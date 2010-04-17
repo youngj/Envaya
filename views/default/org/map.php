@@ -30,7 +30,7 @@
 </label>
 
 <div id='map' style='width:<?php echo $width; ?>px;height:<?php echo $height; ?>px'></div>
-<div id='mapOverlay' style='position:absolute;padding:5px;background:white;left:0px;top:0px;display:none'></div>
+<div id='infoOverlay'></div>
 
 <script type='text/javascript'>
 
@@ -97,76 +97,210 @@ function placeMarker($ll)
     map.addOverlay(new GMarker($ll));
     
     <?php } ?>
-}  
-  
-var $displayedOrgs = {};
-  
-function showIcon($org)
-{    
-    if ($displayedOrgs[$org.guid])        
+}     
+
+var info = document.getElementById('info');
+
+var displayedBuckets = {};
+
+OrgBucket = function($center, $orgs) 
+{
+    this.center = $center;    
+    this.orgs = $orgs || [];
+};
+
+var infoOverlay = document.getElementById('infoOverlay');
+var expandedBucket = null;
+
+function closeExpandedBucket()
+{
+    infoOverlay.style.display = 'none';
+    expandedBucket = null;
+}
+
+OrgBucket.prototype = new function() { 
+    this.initialize = function(map) 
     {
-        $displayedOrgs[$org.guid].show();
-        return;
+        this._map = map;
+        var $pane = map.getPane(G_MAP_MARKER_PANE);
+        
+        var $div = this._div = document.createElement('div');
+        $div.className = 'mapMarker';
+
+        var $img = document.createElement('img');
+        
+        var $self = this;
+        addEvent($div, 'click', function() {
+            $self._clicked();            
+        });
+        
+        if (this.orgs.length > 1)
+        {
+            $img.src = "/_graphics/placemark_n.gif";        
+            
+            var $span = document.createElement('span');
+            $span.className = "mapMarkerCount";
+            $span.innerHTML = "" + this.orgs.length;
+            $div.appendChild($span);
+        }
+        else
+        {
+            $img.src = "/_graphics/placemark.gif";        
+        }    
+
+        $div.appendChild($img);
+        
+        this._setPosition();
+
+        $pane.appendChild($div);
+    };
+    
+    this._makeOrgLink = function($org)
+    {
+        var $link = document.createElement('a');
+        $link.href = $org.url;
+        $link.className = 'mapOrgLink';
+        $link.appendChild(document.createTextNode($org.name));
+        return $link;    
+    }
+    
+    this._clicked = function()
+    {   
+        if (expandedBucket != this)
+        {
+            expandedBucket = this;
+            
+            removeChildren(infoOverlay);    
+            
+            for (var $i = 0; $i < this.orgs.length; $i++)
+            {                    
+                infoOverlay.appendChild(this._makeOrgLink(this.orgs[$i]));
+            }
+
+            this._setInfoPosition();
+            infoOverlay.style.display = 'block';        
+        }
+    };
+    
+    this._setInfoPosition = function()
+    {    
+        var $point = this._map.fromLatLngToContainerPixel(this.center);
+        
+        var $mapElem = document.getElementById('map');
+
+        infoOverlay.style.left = ($mapElem.offsetLeft + $point.x + 13) + "px";
+        infoOverlay.style.top = ($mapElem.offsetTop + $point.y - 12) + "px";        
+    };
+    
+    this._setPosition = function()
+    {        
+        var $point = this._map.fromLatLngToDivPixel(this.center);
+        this._div.style.left = ($point.x - 12) + "px";
+        this._div.style.top = ($point.y - 12) + "px";
+    };
+
+    this.addOrg = function($org)
+    {
+        this.orgs.push($org);
     }
 
-    var point = new GLatLng($org.latitude, $org.longitude);
-    var marker = new GMarker(point);
+    this.show = function()
+    {
+        this._div.style.display = 'block';
+    };
+
+    this.hide = function()
+    {
+        this._div.style.display = 'none';
+    };
+
+    this.remove = function() 
+    {
+        this._div.parentNode.removeChild(this._div);
+    };
+
+    this.copy = function() 
+    {
+        return new BucketMarker(this.center, this.orgs);
+    };
+
+    this.redraw = function($force) 
+    {
+        if ($force)
+        {
+            this._setPosition();            
+        }
+               
+        if (expandedBucket == this)
+        {
+            this._setInfoPosition();
+        }            
+    };
     
-    $displayedOrgs[$org.guid] = marker;
-
-    GEvent.addListener(marker, 'mouseover', bind(marker,
-        function (marker)
-        {                            
-            var latLng = marker.getLatLng();
-
-            var pixel = map.fromLatLngToContainerPixel(latLng);
-
-            var mapOverlay = document.getElementById('mapOverlay');
-            removeChildren(mapOverlay);
-            mapOverlay.appendChild(document.createTextNode($org.name));           
-
-            var mapElem = document.getElementById('map');
-            mapOverlay.style.left = (mapElem.offsetLeft + pixel.x + 10) + "px";
-            mapOverlay.style.top = (mapElem.offsetTop + pixel.y - 10) + "px";
-            mapOverlay.style.display = 'block';
-        }
-    ));
-
-    GEvent.addListener(marker, 'mouseout', bind(marker,
-        function (marker)
-        {
-            var mapOverlay = document.getElementById('mapOverlay');
-            removeChildren(mapOverlay);
-            mapOverlay.style.display = 'none';
-        }
-    ));        
-
-    GEvent.addListener(marker, 'click', bind(marker,
-        function (marker)
-        {
-            window.location.href = $org.url;
-        }        
-    ));        
-
-    map.addOverlay(marker);
-}
+    this.getKml = function(callback) {
+    
+    };
+};    
 
 function showOrgs($data)
 {
-    for (var guid in $displayedOrgs)
+    for (var $bucketKey in displayedBuckets)
     {
-        if ($displayedOrgs.hasOwnProperty(guid))
+        if (displayedBuckets.hasOwnProperty($bucketKey))
         {
-            $displayedOrgs[guid].hide();
+            displayedBuckets[$bucketKey].hide();
         }
     }
 
-    var orgs = $data;
+    var $orgs = $data;
+    
+    var $bounds = map.getBounds();   
+    var $proj = map.getCurrentMapType().getProjection();
+    var $zoom = map.getZoom();
+    var $bucketSize = 14; // pixels
+                  
+    var $buckets = {};
+               
+    for (var $i = 0; $i < $orgs.length; $i++)
+    {           
+        var $org = $orgs[$i];
+        var $latlng = new GLatLng($org.latitude, $org.longitude);
 
-    for (var $i = 0; $i < orgs.length; $i++)
-    {            
-        showIcon(orgs[$i]);
+        var $pixel = $proj.fromLatLngToPixel($latlng, $zoom);
+
+        var $bucketPixel = new GPoint(
+            Math.floor($pixel.x / $bucketSize) * $bucketSize + $bucketSize / 2,
+            Math.floor($pixel.y / $bucketSize) * $bucketSize + $bucketSize / 2
+        );        
+        
+        var $bucketKey = $bucketPixel.x + "," + $bucketPixel.y + "," + $zoom;
+        
+        if (!$buckets[$bucketKey])
+        {            
+            $buckets[$bucketKey] = new OrgBucket($proj.fromPixelToLatLng($bucketPixel, $zoom));
+        }
+
+        $buckets[$bucketKey].addOrg($org);
     }        
+    
+    for (var $bucketKey in $buckets)
+    {
+        if ($buckets.hasOwnProperty($bucketKey))
+        {
+            var $bucket = $buckets[$bucketKey];
+
+            var $displayedBucket = displayedBuckets[$bucketKey];
+            if ($displayedBucket)
+            {
+                $displayedBucket.show();
+            }
+            else
+            {
+                map.addOverlay($bucket);                
+                displayedBuckets[$bucketKey] = $bucket;
+            }        
+        }    
+    }
 }
 
 var nearbyOrgsCache = {};
@@ -216,9 +350,14 @@ function initialize()
     
     fetchOrgs(); 
 
+    GEvent.addListener(map, 'click',  function(overlay) {
+        closeExpandedBucket();
+    });
+
     GEvent.addListener(map, 'moveend', 
         function (marker)
-        {                            
+        {
+            closeExpandedBucket();
             fetchOrgs();
         }
     );        

@@ -106,7 +106,7 @@
 
         'browse' => 'Explore',        
         'browse:title' => 'Explore organizations',
-        'browse:instructions' => "Each icon on the map below is an organization using Envaya. Hover over an icon to see its name, and click to view its home page.",
+        'browse:instructions' => "Each red dot on the map below is an organization using Envaya. Click a dot to see its name, and click its name to view its home page.",
 
         'browse:map' => 'Map',
         
@@ -173,6 +173,7 @@
         'blog:delete' => "Delete update",
         'blog:delete:confirm' => "Are you sure you want to delete this news update?",
         'blog:delete:success' => "News update deleted successfully.",
+        'blog:more' => "Read more",                
                 
         'blog:timeline' => "Timeline",
         

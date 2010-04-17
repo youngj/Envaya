@@ -37,7 +37,7 @@ function sectorChanged()
 ))    
 ?>
 
-<div class='instructions'><?php echo elgg_echo("browse:instructions") ?></div>
+<div class='instructions' style='clear:both'><?php echo elgg_echo("browse:instructions") ?></div>
 <?php     
     $lat = $vars['lat'] ?: -6.6;
     $long = $vars['long'] ?: 36;

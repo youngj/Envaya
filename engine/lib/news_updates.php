@@ -56,7 +56,15 @@ class NewsUpdate extends ElggObject
             // todo: multi-byte support
             if (strlen($content) > $maxLength)
             {
-                $content = substr($content, 0, $maxLength) . "...";
+                $shortStr = substr($content, 0, $maxLength);
+                
+                $lastSpace = strrpos($shortStr, ' ');                
+                if ($lastSpace && $lastSpace > $maxLength / 2) 
+                {
+                    $shortStr= substr($shortStr, 0, $lastSpace);
+                }
+                
+                $content = $shortStr . "...";
             }                
             
             return elgg_view('output/text', array('value' => $content));

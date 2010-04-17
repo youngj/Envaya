@@ -64,9 +64,10 @@ foreach ($updates as $update)
 <div class="feed_post">    
     <?php 
         $orgIcon = $org->getIcon('small');
+        $orgUrl = $org->getURL();
         $url = $update->getURL();
         
-        echo "<a class='feed_org_icon' href='$url'><img src='{$orgIcon}'/></a>";
+        echo "<a class='feed_org_icon' href='$orgUrl'><img src='{$orgIcon}'/></a>";
                 
         echo "<div class='feed_content'>";
         
@@ -75,9 +76,16 @@ foreach ($updates as $update)
             echo "<a class='smallBlogImageLink' style='float:right' href='$url'><img src='{$update->getImageURL('small')}' /></a>";            
         }               
         
-        echo "<a class='feed_org_name' href='$url'>".escape($org->name)."</a>: ";
-
-        echo elgg_view('output/longtext', array('value' => $update->content)); 
+        echo "<a class='feed_org_name' href='$orgUrl'>".escape($org->name)."</a>: ";
+       
+        $maxLength = 500; 
+       
+        echo elgg_view('output/longtext', array('value' => $update->getSnippetHTML($maxLength))); 
+        
+        if (strlen($update->content) > $maxLength)
+        {                  
+            echo " <a class='feed_more' href='$url'>".elgg_echo('blog:more')."</a>";
+        }    
         
         echo "<div class='blog_date'>{$update->getDateText()}</div>";
         echo "</div>";

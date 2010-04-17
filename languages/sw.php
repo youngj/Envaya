@@ -105,7 +105,7 @@
     
         'browse' => 'Peleleza',    
         'browse:title' => 'Peleleza mashirika',
-        'browse:instructions' => "Kila pointi nyekundu katika ramani ya chini ni shirika litumialo Envaya. Elea juu ya pointi kuona jina la shirika, na bonyeza ili kutazama ukurasa wake mkuu.",
+        'browse:instructions' => "Kila pointi nyekundu katika ramani ya chini ni shirika litumialo Envaya. Bonyeza pointi kuona jina lake, na bonyeza jina lake kutazama ukurasa wake mkuu.",
         'browse:map' => 'Ramani',
         'list' => 'Orodha',   
 

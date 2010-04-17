@@ -896,6 +896,11 @@ body
     width:400px;
 }
 
+.feed_more
+{
+    font-size:10px;
+}
+
 .blog_date
 {
     color: #aaa;
@@ -1430,4 +1435,40 @@ a.attachImageClose:hover
 .reviewed
 {
     color:#00aa00;
+}
+
+.mapMarker
+{
+    position:absolute;
+    cursor:pointer;
+}
+
+.mapMarkerCount
+{
+    position:absolute;
+    left:0px;
+    top:2px;
+    width:22px;
+    font-weight:bold;
+    text-align:center;    
+}
+
+#infoOverlay
+{
+    position:absolute;
+    padding:5px;
+    background:white;
+    border:1px solid #ccc;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    left:0px;
+    top:0px;
+    display:none;
+}
+
+.mapOrgLink
+{
+    font-weight:bold;
+    display:block;
+    white-space:nowrap;
 }
