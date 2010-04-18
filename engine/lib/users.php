@@ -730,9 +730,9 @@
 			throw new RegistrationException(elgg_echo('registration:usernametooshort'));
         }    
 		
-		if (preg_match('/[^a-zA-Z0-9\-\_]/', $username))
+		if (preg_match('/[^a-zA-Z0-9\-\_]/', $username, $matches))
         {
-			throw new RegistrationException(elgg_echo('registration:invalidchars'));
+			throw new RegistrationException(sprintf(elgg_echo('registration:invalidchars'), $username, $matches[0]));
         }
         
         $lower = strtolower($username);
@@ -753,7 +753,7 @@
         
         if (in_array($lower, $badUsernames) || $username[0] == "_")
         {
-            throw new RegistrationException(elgg_echo('registration:usernamenotvalid'));
+            throw new RegistrationException(sprintf(elgg_echo('registration:usernamenotvalid'), $username));
         }
         
         return true;

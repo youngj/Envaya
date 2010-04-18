@@ -464,8 +464,8 @@
         'registration:usernametooshort' => 'Your username must be a minimum of 3 characters long.',
         'registration:passwordtooshort' => 'The password must be a minimum of 6 characters long.',
         'registration:dupeemail' => 'This email address has already been registered.',
-        'registration:invalidchars' => 'Sorry, your username contains invalid characters.',
-        'registration:usernamenotvalid' => 'Sorry, the username you entered is invalid. Please choose another.',
+        'registration:invalidchars' => 'Sorry, the username "%s" is invalid because it contains the character "%s". Please choose a username using only the following characters: a-z 0-9 - _',
+        'registration:usernamenotvalid' => 'Sorry, the username "%s" is invalid. Please choose another.',
 
         'user:set:name' => "Account name settings",
         'user:name:label' => "Name",
