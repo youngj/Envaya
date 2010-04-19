@@ -2,6 +2,10 @@
 
 include(dirname(__FILE__)."/engine/start.php");
 
+if (get_input('exception'))
+{
+    throw new Exception("test exception!");
+}
 
 $lang = 'sw';
 

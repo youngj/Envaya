@@ -220,7 +220,7 @@
         return send_mail($to->email, $subject, $message, $headers);
 	}
 
-    function send_mail($to, $subject, $message, $headers = null)
+    function send_mail($to, $subject, $message, $headers = null, $immediate = false)
     {
         global $CONFIG;
 
@@ -247,7 +247,14 @@
         
         $message = wordwrap(preg_replace("/(\r\n|\r)/", "\n", $message)); // Convert to unix line endings in body
         
-        return queue_function_call('_send_mail_now', array($to, $headers, $message));
+        if ($immediate)
+        {
+            return _send_mail_now($to, $headers, $message);
+        }
+        else
+        {
+            return queue_function_call('_send_mail_now', array($to, $headers, $message));
+        }    
     }
 
     function _send_mail_now($to, $headers, $message)
@@ -257,10 +264,10 @@
         return true;
     }
 
-    function send_admin_mail($subject, $message, $headers  = null)
+    function send_admin_mail($subject, $message, $headers  = null, $immediate = false)
     {
         global $CONFIG;
-        return send_mail($CONFIG->admin_email, $subject, $message, $headers);
+        return send_mail($CONFIG->admin_email, $subject, $message, $headers, $immediate);
     }
 
     function get_smtp_mailer()

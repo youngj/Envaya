@@ -1194,7 +1194,36 @@
 			ob_end_clean(); // Wipe any existing output buffer			
 			$body = elgg_view("messages/exceptions/exception",array('object' => $exception));
 			page_draw(elgg_echo('exception:title'), $body);
-			
+                                    
+                        
+            global $CONFIG;            
+            if ($CONFIG->error_emails_enabled)
+            {
+                $lastErrorEmailTimeFile = "{$CONFIG->dataroot}last_error_time";
+                $lastErrorEmailTime = (int)file_get_contents($lastErrorEmailTimeFile);
+                $curTime = time();
+
+                if ($curTime - $lastErrorEmailTime > 60)
+                {
+                    file_put_contents($lastErrorEmailTimeFile, "$curTime", LOCK_EX);
+                
+                    $class = get_class($exception);                
+                    $ex = print_r($exception, true);
+                    $server = print_r($_SERVER, true);
+
+                    send_admin_mail("$class: {$_SERVER['REQUEST_URI']}", "
+Exception:
+==========
+$ex            
+
+
+
+_SERVER:
+=======
+$server                
+                ", null, true);
+                }    
+            }    
 		}
 		
 	/**

@@ -19,3 +19,4 @@
     $CONFIG->post_email = "post@envaya.org";
     $CONFIG->s3_bucket = 'envaya_data';
     $CONFIG->analytics_enabled = 1;
+    $CONFIG->error_emails_enabled = 1;
