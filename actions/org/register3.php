@@ -29,6 +29,10 @@
         $newsWidget = $org->getWidgetByName('news');
         $newsWidget->save();
         
+        $contactWidget = $org->getWidgetByName('contact');
+        $contactWidget->public_email = "yes";
+        $contactWidget->save();
+        
         $org->setup_state = 5;
         $org->save();        
                        
