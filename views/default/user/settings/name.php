@@ -14,7 +14,6 @@
 	
 	if ($user) {
 ?>
-	<div class='section_header'><?php echo elgg_echo('user:settings'); ?></div>
     <div class='section_content padded'>
 	<div class='input'>
 		<label><?php echo elgg_echo('user:name:label'); ?>:</label><br />

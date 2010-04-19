@@ -11,7 +11,10 @@
         {
             system_message(elgg_echo("theme:changed"));
             $org->theme = $theme;
-            $org->save();
-            forward($org->getURL());
+            $org->save();            
         }    
+        
+        save_icon_settings($org);
     }
+    
+    forward($org->getURL());

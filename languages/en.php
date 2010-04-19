@@ -58,10 +58,13 @@
         'help:settings' => "Account Settings",
         'help:settings:icon' => "When you are logged in to Envaya, the %s icon at the top right will take you to your account settings.",
         'help:settings:youcan' => "On this page, you can:",
+        'help:settings:name' => "Change the name of your organization that appears at the top of your site",
         'help:settings:password' => "Change your password",
         'help:settings:email' => "Update your email address",
-        'help:settings:theme' => "Choose a theme (background and colors) for your website",
-        'help:settings:logo' => "Upload a logo to display at the top of each page of your website",
+        'help:design' => "Customizing your website design",
+        'help:design:intro' => "From the %s page, you can click %s to customize the appearance of all of the pages on your site. In particular, you can:",
+        'help:design:logo' => "Upload a logo to display at the top of each page",
+        'help:design:theme' => "Choose a theme (background and colors) for your website.",        
         'help:home:icon' => "The home page is the most important page of your website. When you are logged in to Envaya, the %s icon at the top right will always take you to your home page.",
         'help:home:shows' => "The home page shows:",
         'help:home:mission' => "Your mission statement",
@@ -93,7 +96,7 @@
         'dashboard:attach_image' => "Attach image",
         'dashboard:select_image' => "Select an image you would like to include with this news update:",
         'dashboard:view_home' => "View your home page",
-        'dashboard:settings' => "Change site settings",
+        'dashboard:settings' => "Change account settings",
         'dashboard:links' => "Links",        
                 
         'topbar:your_home' => "Your home page",
@@ -385,15 +388,20 @@
         'page:notfound' => "Page not found",
         'page:notfound:details' => "The requested page either does not exist or you do not have access to it.",
 
-        'org:icon' => 'Organization logo',
+        'org:icon' => 'Organization logo',        
         'org:icon:saved' => 'Logo saved successfully.',
         'org:icon:reset' => 'Logo removed successfully.',
+        'org:name:edit' => 'Edit name',
+        'org:icon:edit' => 'Edit logo',
+        'org:header' => 'Website header',
 
         'org:cantedit' => "You do not have access to edit this organization's web site.",
 
+        'design' => "Website design",
+        'design:edit' => "Edit website design",
+
         'theme' => "Website theme",
-        'theme:current' => "Current theme:",
-        'theme:edit' => "Edit website theme",
+        'theme:current' => "Current theme:",        
         'theme:changed' => "Theme changed.",        
         
         'theme:default' => "Default theme",

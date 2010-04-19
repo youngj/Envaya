@@ -59,8 +59,11 @@
         'help:settings:youcan' => "Katika ukurasa huu, unaweza:",
         'help:settings:password' => "Kubadili neno lako la siri",
         'help:settings:email' => "Kubadili anwani yako ya email",
-        'help:settings:theme' => "Chagua wazo (yaani rangi) kwa tovuti yako",
-        'help:settings:logo' => "Hifadhi nembo mkuu kuonyesha juu ya kila ukurasa katika tovuti yako",
+        'help:settings:name' => "Kuhariri jina la shirika lako lionekanalo juu ya tovuti yako",
+        'help:design' => "Kuchagua usanii wako wa tovuti",
+        'help:design:intro' => "Kutoka ukurasa wa %s, unaweza bonyeza %s kuchagua sura ya kurasa zote kwenye tovuti yako. Unaweza hasa:",
+        'help:design:theme' => "Chagua wazo (yaani rangi) kwa tovuti yako",
+        'help:design:logo' => "Hifadhi nembo mkuu kuonyesha juu ya kila ukurasa katika tovuti yako",
         'help:home:icon' => "Ukurasa mkuu ni ukurasa muhimu katika tovuti yako kushinda zote. Wakati ambapo umefungua katika Envaya, mchoro %s katika juu kulia utakupeleka sikuzote katika ukurasa wako mkuu.",
         'help:home:shows' => "Ukurasa mkuu huonyesha:",
         'help:home:mission' => "Maelezo yako ya lengo",
@@ -92,7 +95,7 @@
         'dashboard:attach_image' => "Fungia picha",
         'dashboard:select_image' => "Chagua picha unayopenda kuwa na ndani ya habari hii:",
         'dashboard:view_home' => "Tazama ukurasa wako mkuu",
-        'dashboard:settings' => "Badili mipangilio ya tovuti",
+        'dashboard:settings' => "Badili mipangilio ya akaunti",
         'dashboard:links' => "Viungo",    
     
         'topbar:your_home' => "Ukurasa wako mkuu",
@@ -170,6 +173,7 @@
         'blog:delete' => "Futa habari",
         'blog:delete:confirm' => "Una hakika kuwa unataka kufuta habari hii?",
         'blog:delete:success' => "Habari ilifutwa.",        
+        'blog:more' => "Soma zaidi",                
         'blog:timeline' => "Ratiba",
 
         'partner:request' => "Omba ubia",
@@ -381,12 +385,18 @@
         'org:icon' => 'Nembo ya shirika',
         'org:icon:saved' => 'Nembo imehifadhiwa.',
         'org:icon:reset' => 'Nembo imefutwa.',
+        'org:name:edit' => 'Hariri jina',
+        'org:icon:edit' => 'Hariri nembo',
+        'org:header' => 'Kichwa ya tovuti',
+        
         
         'org:cantedit' => "Huna ruhusa kuhariri tovuti ya shirika hili.",
 
+        'design' => "Usanii wa tovuti",
+        'design:edit' => "Hariri usanii wa tovuti",
+
         'theme' => "Wazo wa tovuti",
-        'theme:current' => "Wazo wa sasa:",
-        'theme:edit' => "Hariri wazo ya tovuti",
+        'theme:current' => "Wazo wa sasa:",        
         'theme:changed' => "Wazo imebadiliwa.",      
         
         'theme:default' => "Wazo wa kawaida",

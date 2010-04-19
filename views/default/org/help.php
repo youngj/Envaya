@@ -16,8 +16,9 @@
 <ul style='font-weight:bold'>
     <li><a href='org/help#viewing'><?php echo elgg_echo('help:viewing') ?></a></li>    
     <li><a href='org/help#editing'><?php echo elgg_echo('help:editing') ?></a></li>
+    <li><a href='org/help#design'><?php echo elgg_echo('help:design') ?></a></li>
     <li><a href='org/help#settings'><?php echo elgg_echo('help:settings') ?></a></li>
-    <li><a href='org/help#home'><?php echo elgg_echo('widget:home') ?></a></li>
+    <li><a href='org/help#home'><?php echo elgg_echo('widget:home') ?></a></li>    
     <li><a href='org/help#news'><?php echo elgg_echo('help:news') ?></a></li>
     <li><a href='org/help#other'><?php echo elgg_echo('help:other') ?></a></li>
     <li><a href='org/help#connecting'><?php echo elgg_echo('help:connecting') ?></a></li>
@@ -70,6 +71,20 @@
 <?php echo sprintf(elgg_echo('help:editing:logout'), "<img class='icon_with_bg' src='_graphics/logout.gif?v2' />") ?>
 </p>
 
+
+<h3 id='design'><?php echo elgg_echo('help:design') ?></h3>
+
+<p>
+<?php echo sprintf(elgg_echo('help:design:intro'),
+    "<strong><a href='pg/dashboard'>".elgg_echo('dashboard')."</a></strong>",
+    "<strong><a href='{$org->getURL()}/theme'>".elgg_echo('design:edit')."</a></strong>")
+    ?>
+</p>
+<ul>
+    <li><?php echo elgg_echo('help:design:logo') ?></li>
+    <li><?php echo elgg_echo('help:design:theme') ?></li>    
+</ul>
+
 <h3 id='settings'><?php echo elgg_echo('help:settings') ?></h3>
 
 <p>
@@ -82,17 +97,16 @@
 </p>
 
 <ul>
+    <li><?php echo elgg_echo('help:settings:name') ?></li>
     <li><?php echo elgg_echo('help:settings:password') ?></li>
     <li><?php echo elgg_echo('help:settings:email') ?></li>
-    <li><?php echo elgg_echo('help:settings:theme') ?></li>
-    <li><?php echo elgg_echo('help:settings:logo') ?></li>
 </ul>
 
 <h3 id='home'><?php echo elgg_echo('widget:home') ?></h3>
 
 <p>
 <?php echo sprintf(elgg_echo('help:home:icon'), 
-    "<a href='<?php echo $org->getURL() ?>' target='_blank'><img class='icon_with_bg' src='_graphics/home.gif?v2' /></a>") ?>
+    "<a href='{$org->getURL()}' target='_blank'><img class='icon_with_bg' src='_graphics/home.gif?v2' /></a>") ?>
 </p>
 
 <p>

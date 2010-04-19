@@ -3,6 +3,7 @@
     $user = page_owner_entity();
 ?>
 
+<div class='section_header'><?php echo elgg_echo("theme"); ?></div>
 <div class='section_content padded'>
 
 <script type='text/javascript'>

@@ -1,11 +1,22 @@
 <?php
     $widget = $vars['widget'];
     $org = $widget->getContainerEntity();
+    $escUrl = urlencode($_SERVER['REQUEST_URI']);
     
     ob_start();
 ?>
 
-<?php echo elgg_view('org/editIcon'); ?></div>
+<div class='section_header'><?php echo elgg_echo("org:header"); ?></div>
+<div class='section_content padded'>
+    <img style='float:left;margin-right:8px' src='<?php echo $org->getIcon('small') ?>' />    
+    <strong><?php echo escape($org->name) ?></strong>    
+    <br /> 
+    <strong>
+        <a href="<?php echo "pg/settings/user/{$org->username}" ?>"><?php echo elgg_echo('org:name:edit'); ?></a> 
+            &middot;
+        <a href="<?php echo "{$org->getURL()}/theme?from=$escUrl" ?>"><?php echo elgg_echo('org:icon:edit'); ?></a>
+    </strong>    
+</div>
 
 <div class='section_header'><?php echo elgg_echo("org:mission"); ?></div>
 <div class='section_content padded'>
@@ -19,10 +30,7 @@
 
 <div class='section_header'><?php echo elgg_echo("widget:news:latest"); ?></div>
 <div class='section_content padded'>
-    <strong><a href="<?php 
-        $escUrl = urlencode($_SERVER['REQUEST_URI']);
-        echo "{$org->getURL()}/news/edit?from=$escUrl";        
-    ?>"><?php echo elgg_echo('widget:news:edit'); ?></a></strong>
+    <strong><a href="<?php echo "{$org->getURL()}/news/edit?from=$escUrl";?>"><?php echo elgg_echo('widget:news:edit'); ?></a></strong>
 </div>
 
 

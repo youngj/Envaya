@@ -133,9 +133,7 @@ function save_widget_home($widget)
     $widget->content = get_input('content');
     $widget->included = get_input_array('included');    
     $widget->zoom = get_input('map_zoom');    
-    $widget->save();
-    
-    save_icon_settings($org);
+    $widget->save();    
 
 }
 
