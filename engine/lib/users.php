@@ -633,7 +633,8 @@
 			// generate email
 			$email = sprintf(elgg_echo('email:resetreq:body',$user->language), $user->name, $link);
 			
-			return notify_user($user->guid, $CONFIG->site_guid, elgg_echo('email:resetreq:subject',$user->language), $email, NULL, 'email');
+			return notify_user($user->guid, $CONFIG->site_guid, 
+                elgg_echo('email:resetreq:subject',$user->language), $email, NULL, 'email');
 
 		}
 		

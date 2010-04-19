@@ -7,8 +7,28 @@
 	
 	if (($entity) && ($entity instanceof Organization))
 	{
+        $approvedBefore = $entity->isApproved();         
+        
         $entity->approval = (int)get_input('approval');        
+        
+        $approvedAfter = $entity->isApproved();
+              
         $entity->save();    
+        
+        if (!$approvedBefore && $approvedAfter)
+        {
+            notify_user($entity->guid, $CONFIG->site_guid, 
+                elgg_echo('email:orgapproved:subject', $entity->language), 
+                sprintf(elgg_echo('email:orgapproved:body', $entity->language), 
+                    $entity->name, 
+                    $entity->getURL(), 
+                    "{$CONFIG->url}pg/login", 
+                    elgg_echo('help:title', $entity->language),
+                    "{$CONFIG->url}org/help"
+                ),
+                NULL, 'email');
+        }
+        
 	    system_message(elgg_echo('approval:changed'));	
 	}
 	else

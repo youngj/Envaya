@@ -30,7 +30,9 @@
 		{
 			system_message(elgg_echo('admin:user:resetpassword:yes',$obj->language));
 			
-			notify_user($obj->guid, $CONFIG->site_guid, elgg_echo('email:resetpassword:subject'), sprintf(elgg_echo('email:resetpassword:body',$obj->language), $obj->username, $password), NULL, 'email');
+			notify_user($obj->guid, $CONFIG->site_guid, 
+                elgg_echo('email:resetpassword:subject', $obj->language), 
+                sprintf(elgg_echo('email:resetpassword:body',$obj->language), $obj->username, $password), NULL, 'email');
 		} else
 			register_error(elgg_echo('admin:user:resetpassword:no'));
 	}

@@ -149,6 +149,10 @@ function elgg_echo($message_key, $language = "") {
     {
         $language = get_language();			    
     }                
+    else 
+    {
+        load_translation($language);
+    }
 
     if (isset($CONFIG->translations[$language][$message_key])) {
         return $CONFIG->translations[$language][$message_key];

@@ -39,7 +39,7 @@
         'feed' => 'Habari',
         'feed:title' => "Habari mpya zaidi",
     
-        'help:title' => "Msaada kuanza",       
+        'help:title' => "Msaada Kuanza",       
         'help:summary1' => "Kwa kuandikisha katika Envaya, shirika lako lina tovuti ya msingi na ukurasa mkuu. Njema! Lakini usisimame sasa, kwa sababu tovuti yako inaweza kuwa bora sana.",
         'help:summary2' => "Kwa mfano, unaweza kuongeza kurasa nyingine kuhusu mada kama historia, miradi, na timu za shirika lako. Unaweza pia kuandika habari na kuonyesha picha kutoka miradi yako.",
         'help:summary3' => "Ukurasa huu utakusaidia kujifunza jinsi ya tovuti yako ya Envaya inafanya, na jinsi ya unaweza kuifanya bora.",
@@ -443,7 +443,7 @@
         'registration:usernametooshort' => 'Lazima jina lako la mtumiaji liwe angalau tarakimu 3.',
         'registration:passwordtooshort' => 'Lazima neno la siri liwe angalau tarakimu 6.',
         'registration:dupeemail' => 'Anwani hii ya email imeshatumiwa.',
-        'registration:invalidchars' => 'Samahani, jina la mtumiaji "%s" haliruhusiwi kwa sababu lina tarakimu "%s". Tafadali uchague jina la mtumiaji litumialo tarakimu zifuatazo tu: a-z 0-9 - _',
+        'registration:invalidchars' => 'Samahani, jina la mtumiaji "%s" haliruhusiwi kwa sababu lina tarakimu "%s". Tafadhali uchague jina la mtumiaji litumialo tarakimu zifuatazo tu: a-z 0-9 - _',
         'registration:usernamenotvalid' => 'Samahani, jina la mtumiaji "%s" haliruhusiwi. Tafadhali uchague jingine.',
 
         'user:set:name' => "Mipangilio ya Jina",
@@ -520,6 +520,22 @@
         'email:resetpassword:body' => "Hujambo %s,
 
 Neno lako la siri limepanga upya kwa: %s",
+        
+        'email:orgapproved:subject' => 'Tovuti yako imekubaliwa',
+        'email:orgapproved:body' => "Hujambo %s,
+
+Hongera! Tovuti yako imekubalikwa kwa Envaya na inaonekana sasa:
+%s
+
+Sasa, endelea kujenga tovuti yako kwa kuchagua mchoro, kuongeza habari na picha, na kuongeza kurasa nyingine kuhusu historia, miradi na timu za shirika lako, na kadhalika.
+
+Kufanya hivyo, fungua kuhariri tovuti yako hapa:
+%s
+
+Kusoma maagizo kuhusu kuanza kutumia Envaya, na kujifunza vitu unavyofanya na tovuti yako mpya, tembelea ukurasa wetu wa %s hapa:
+%s
+
+Asante kwa kutumia Envaya!",        
         
         'email:requestPartnership:subject' => "%s inataka kuongeza %s kama ubia",
         'email:requestPartnership:body' => "Kuthibitisha ubia huu, bongeza kiungo chini na fungua katika akaunti yako ya Envaya:

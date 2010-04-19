@@ -559,6 +559,24 @@ Once you have logged in, we highly recommend that you change your password.
 
 Your password has been reset to: %s",
         
+        'email:orgapproved:subject' => 'Your website has been approved',
+        'email:orgapproved:body' => "Hi %s,
+
+Congratulations! Your website has been approved by Envaya and it's now online:
+%s
+
+Now, continue building your website by choosing a design, adding news and photos, and adding other pages about your organization's history, projects, team, and other topics. 
+
+To do this, log in to edit your website here:
+%s
+
+For instructions on how to get started using Envaya, and to learn what you can do with your new website, visit our %s page here:
+%s
+
+Thanks for using Envaya!",
+        
+        
+        
         'email:requestPartnership:subject' => "%s wants to add %s as a partner",
         'email:requestPartnership:body' => "To approve this partnership, click on the link below and log into your Envaya account:
 %s",
