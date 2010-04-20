@@ -82,6 +82,9 @@ function org_profile_page_handler($page)
             case "theme":
                 include(dirname(__FILE__) . "/theme.php");
                 return;
+            case "username":
+                include(dirname(__FILE__) . "/changeUsername.php");
+                return;                
             case "confirm":
                 include(dirname(__FILE__) . "/confirmPartner.php");
                 return;        

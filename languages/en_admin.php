@@ -7,6 +7,11 @@
         'item:object:translation' => "Translations",
         'item:object:team_member' => "Team members",
         'item:user' => "Users",
+        
+        'username:changed' => "Username changed",
+        'username:current' => "Current username",
+        'username:new' => "New username",
+        'username:title' => "Change username",
 
         'admin_option' => "Make this user an admin?",
         

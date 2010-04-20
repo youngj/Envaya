@@ -22,7 +22,7 @@
                 sprintf(elgg_echo('email:orgapproved:body', $entity->language), 
                     $entity->name, 
                     $entity->getURL(), 
-                    "{$CONFIG->url}pg/login", 
+                    "{$CONFIG->url}pg/dashboard", 
                     elgg_echo('help:title', $entity->language),
                     "{$CONFIG->url}org/help"
                 ),

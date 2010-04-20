@@ -1,4 +1,6 @@
-<?php
+<?php   
+
+    action_gatekeeper();    
 
     $user_id = get_input('guid');    
     $org = get_entity($user_id);
