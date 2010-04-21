@@ -34,6 +34,8 @@
         'about:link' => "About",        
         'about:title' => 'About us',   
         'about:mission' => "Envaya is dedicated to creating software to empower community-based organizations around the world that are focused on the environment, poverty relief, health, education, and community well-being.",
+        'about:nonprofit' => "Envaya is a 501(c)(3) nonprofit project that is fiscally sponsored and legally organized in the United States under the %s.",
+        'about:tci' => "Trust for Conservation Innovation",
         'about:tanzania_pilot' => "In March, 2010, Envaya started its pilot in Tanzania, in a partnership with Journalists Environment and HIV/AIDS Network (JEAN-media), a Tanzanian civil society organization whose mission is to use media to promote and raise public awareness for CBOs.",
         'about:team' => "The Envaya website is developed by a small team of software engineers and international development volunteers from the United States and Canada. We believe people everywhere should have the tools they need to achieve their own goals.",
         

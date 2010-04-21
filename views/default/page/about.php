@@ -7,3 +7,6 @@
 <p>
 <?php echo elgg_echo('about:team') ?>
 </p>
+<p>
+<?php echo sprintf(elgg_echo('about:nonprofit'), "<a href='http://www.trustforconservationinnovation.org/'>".elgg_echo('about:tci')."</a>") ?>
+</p>

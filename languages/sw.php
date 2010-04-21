@@ -534,7 +534,7 @@ Neno lako la siri limepanga upya kwa: %s",
         'email:orgapproved:subject' => 'Tovuti yako imekubaliwa',
         'email:orgapproved:body' => "Hujambo %s,
 
-Hongera! Tovuti yako imekubalikwa kwa Envaya na inaonekana sasa:
+Hongera! Tovuti yako imekubaliwa kwa Envaya na inaonekana sasa:
 %s
 
 Sasa, endelea kujenga tovuti yako kwa kuchagua mchoro, kuongeza habari na picha, na kuongeza kurasa nyingine kuhusu historia, miradi na timu za shirika lako, na kadhalika.
