@@ -77,7 +77,7 @@
 <p>
 <?php echo sprintf(elgg_echo('help:design:intro'),
     "<strong><a href='pg/dashboard'>".elgg_echo('dashboard')."</a></strong>",
-    "<strong><a href='{$org->getURL()}/theme'>".elgg_echo('design:edit')."</a></strong>")
+    "<strong><a href='{$org->getURL()}/design'>".elgg_echo('design:edit')."</a></strong>")
     ?>
 </p>
 <ul>

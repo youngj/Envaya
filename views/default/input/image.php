@@ -30,8 +30,7 @@
         <td> 
             <div>
                 <?php echo elgg_echo('image:new') ?>
-                    <?php echo $imageInput ?>
-                        <!-- <div class='help'><?php echo elgg_echo('image:blank') ?></div> -->
+                <?php echo $imageInput ?>                        
             </div>                                    
         <?php if ($removable) { ?>
             <div style='padding-top:10px'>

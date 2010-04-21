@@ -95,7 +95,7 @@ a.icon_link:hover
 .icon_search    { background-position:left -153px; }
 .icon_feed      { background-position:left -193px; }
 .icon_settings  { background-position:left -233px; }
-.icon_theme     { background-position:left -273px; }
+.icon_design    { background-position:left -273px; }
 
 
 

@@ -14,7 +14,7 @@
     <strong>
         <a href="<?php echo "pg/settings/user/{$org->username}" ?>"><?php echo elgg_echo('org:name:edit'); ?></a> 
             &middot;
-        <a href="<?php echo "{$org->getURL()}/theme?from=$escUrl" ?>"><?php echo elgg_echo('org:icon:edit'); ?></a>
+        <a href="<?php echo "{$org->getURL()}/design?from=$escUrl" ?>"><?php echo elgg_echo('icon:edit'); ?></a>
     </strong>    
 </div>
 

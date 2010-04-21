@@ -1,35 +1,73 @@
-<html><body style="background:repeat-x url('_graphics/splashBG.png');">
-<table width='100%' style="margin-top:50px;">
-<tr>
-    <td style="text-align:center">
-        <img src='_graphics/envaya.gif' alt='Envaya' />
-    </td>
-</tr>    
-</table>
+<html>
+<head>
+<title>Envaya</title>
+<style type='text/css'>
+
+body 
+{
+    background:repeat-x url('_graphics/splashBG.png');
+    font:12px Tahoma, sans-serif;
+}    
+
+td
+{
+    text-align:center;
+    vertical-align:top;
+    padding:20px;
+}
+
+a
+{
+    text-decoration:none;
+    color:#444;
+    font-size:17px;
+}
+
+a:hover
+{
+    text-decoration:underline;
+}
+
+a img
+{
+    border:none;
+}
+
+</style>
+</head>
+<body>
+
+<div style='text-align:center;padding-top:50px'>
+    <img src='_graphics/envaya.gif' alt='Envaya' />
+</div>    
         
-<table width='100%' style="margin-top:35px;font-style='tahoma;'">
-    <tr><td width="50%" align='right' valign='top' style="padding-right:35px;">
-<a style="text-decoration:none;" href="/page/home"><img style="border:none;" alt='Tanzania' src='_graphics/splashTZ.png' /></a>
-<br />
-<div style='font:17px tahoma;color:#444;margin-right:35px;margin-top:10px;'>
-Envaya Tanzania
-</div>
-</td>
+<table style="width:100%;margin-top:35px;">
+    <tr>
+        <td width="50%">
+            <div style='float:right'>
+                <a href="/page/home"><img alt='Tanzania' src='_graphics/splashTZ.png' /></a>
+                <div style='padding:5px'>
+                    <a href="/page/home">Envaya Tanzania</a>
+                </div>           
+            </div>
+        </td>
+        <td width="50%">
+            <div style='float:left'>
+                <img alt='International' src='_graphics/splashGlobe.png' />
 
-<td align='left' valign='top' width="50%" style="padding-left:25px;">
-<img alt='International' src='_graphics/splashGlobe.png' />
-<br />
-<div style='font:17px tahoma;color:#666;margin-left:20px;margin-top:14px;'>
-Envaya International
-</div>
-<br />
-<div style='font:12px tahoma;color:#777;margin-left:55px;margin-top:-10px;'>
-(Coming soon)
-</div>
-</td></tr>
+                <div style='padding:5px;font-size:17px;color:#666'>
+                    Envaya International
+                </div>
 
+                <div style='font-size:12px;color:#777'>
+                    (Coming soon)
+                </div>
+            </div>    
+        </td>
+    </tr>
 </table>
 
 <?php echo elgg_view('page_elements/footer'); ?>
 
-</body></html>
+</body>
+</html>

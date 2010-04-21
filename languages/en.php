@@ -390,11 +390,13 @@
         'page:notfound' => "Page not found",
         'page:notfound:details' => "The requested page either does not exist or you do not have access to it.",
 
-        'org:icon' => 'Organization logo',        
-        'org:icon:saved' => 'Logo saved successfully.',
-        'org:icon:reset' => 'Logo removed successfully.',
-        'org:name:edit' => 'Edit name',
-        'org:icon:edit' => 'Edit logo',
+        'icon' => 'Organization logo',        
+        'icon:saved' => 'Logo saved successfully.',
+        'icon:reset' => 'Logo removed successfully.',
+        'icon:edit' => 'Edit logo',
+        'icon:description' => "The logo is a small image that appears next to your organization's name in many places in Envaya, such as search results.",
+        
+        'org:name:edit' => 'Edit name',        
         'org:header' => 'Website header',
 
         'org:cantedit' => "You do not have access to edit this organization's web site.",

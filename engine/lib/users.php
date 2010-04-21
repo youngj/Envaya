@@ -59,6 +59,7 @@
                 'email_code' => null,
                 'setup_state' => 5,
                 'custom_icon' => 0,
+                'custom_header' => 0,
             ));    
         }         
         
@@ -171,7 +172,55 @@
             $this->save();
         }
         
-		/**
+        public function getHeaderFile($size = '')
+        {
+            $file = new ElggFile();
+            $file->owner_guid = $this->guid;
+            $file->setFilename("header$size.jpg");
+            return $file;        
+        }
+        
+        public function getHeaderURL($size = 'large')
+        {
+            if ($this->custom_header)
+            {
+                return $this->getHeaderFile($size)->getURL()."?{$this->time_updated}";
+            }
+            return '';
+        }    
+        
+        public function setHeader($imageFiles)
+        {
+            if (!$imageFiles)
+            {
+                $this->custom_header = false;
+            }
+            else
+            {
+                foreach ($imageFiles as $size => $srcFile)
+                {
+                    $srcFile = $imageFiles[$size];                    
+
+                    $destFile = $this->getHeaderFile($size);
+
+                    $srcFile->copyTo($destFile);
+                    $srcFile->delete();
+                }
+
+                $this->custom_header = true;                
+            }
+            $this->save();
+        }        
+                
+        static function getHeaderSizes()
+        {
+            return array(
+                'small' => '100x100',
+                'large' => '700x150',
+            );
+        }                           
+        
+        /**
 		 * Ban this user.
 		 *
 		 * @param string $reason Optional reason

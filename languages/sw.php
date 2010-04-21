@@ -382,13 +382,13 @@
         'page:notfound' => "Ukurasa hauonekani",
         'page:notfound:details' => "Ukurasa unaoomba ama hauwepo ama huna ruhusa kuuona.",
         
-        'org:icon' => 'Nembo ya shirika',
-        'org:icon:saved' => 'Nembo imehifadhiwa.',
-        'org:icon:reset' => 'Nembo imefutwa.',
-        'org:name:edit' => 'Hariri jina',
-        'org:icon:edit' => 'Hariri nembo',
+        'icon' => 'Nembo ya shirika',
+        'icon:saved' => 'Nembo imehifadhiwa.',
+        'icon:reset' => 'Nembo imefutwa.',
+        'icon:edit' => 'Hariri nembo',
+
+        'org:name:edit' => 'Hariri jina',        
         'org:header' => 'Kichwa ya tovuti',
-        
         
         'org:cantedit' => "Huna ruhusa kuhariri tovuti ya shirika hili.",
 

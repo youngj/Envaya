@@ -137,21 +137,6 @@ function save_widget_home($widget)
 
 }
 
-function save_icon_settings($org)
-{
-    $iconFiles = get_uploaded_files($_POST['icon']);
-
-    if (get_input('deleteicon'))
-    {
-        $org->setIcon(null);       
-        system_message(elgg_echo("org:icon:reset"));
-    }
-    else if ($iconFiles)
-    {
-        $org->setIcon($iconFiles);
-    }   
-}
-
 function save_widget_contact($widget)
 {
     $org = $widget->getContainerEntity();

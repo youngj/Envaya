@@ -1,7 +1,16 @@
 
 <?php 
-    // TODO : only works 1 per page due to internalid, swfupload.js include
-    
+    global $SWFUPLOAD_INCLUDE_COUNT;
+    if (!isset($SWFUPLOAD_INCLUDE_COUNT))
+    {
+        $SWFUPLOAD_INCLUDE_COUNT = 0;
+        echo "<script type='text/javascript' src='_media/swfupload.js'></script>";
+    }    
+    else
+    {
+        $SWFUPLOAD_INCLUDE_COUNT++;
+    }
+        
     $sizes = $vars['sizes']; 
     
     $maxWidth = -1;
@@ -21,14 +30,13 @@
     
     echo elgg_view('input/hidden', array(
         'internalname' => $vars['internalname'], 
-        'internalid' => 'imageUpload', 
+        'internalid' => "imageUpload$SWFUPLOAD_INCLUDE_COUNT", 
         'value' => $prevInput
     )); 
 ?>
 
-<span id='imageUploadContainer'></span>
-<div id='imageUploadProgress'></div>
-<script type='text/javascript' src='_media/swfupload.js'></script>
+<span id='imageUploadContainer<?php echo $SWFUPLOAD_INCLUDE_COUNT ?>'></span>
+<div id='imageUploadProgress<?php echo $SWFUPLOAD_INCLUDE_COUNT ?>'></div>
 <script type="text/javascript">
     image_uploader({     
         session_id: <?php echo json_encode(session_id()); ?>,
@@ -36,15 +44,15 @@
         thumbnail_size: <?php echo json_encode(@$vars['thumbnail_size'] ?: 'small') ?>,
         max_width: <?php echo $maxWidth ?>,
         max_height: <?php echo $maxHeight ?>,
-        progress_id: 'imageUploadProgress',
-        placeholder_id: 'imageUploadContainer',        
+        progress_id: 'imageUploadProgress<?php echo $SWFUPLOAD_INCLUDE_COUNT ?>',
+        placeholder_id: 'imageUploadContainer<?php echo $SWFUPLOAD_INCLUDE_COUNT ?>',        
+        result_id: 'imageUpload<?php echo $SWFUPLOAD_INCLUDE_COUNT ?>',        
         button_message: <?php echo json_encode(elgg_echo('upload:browse')) ?>,
         queue_error_message: <?php echo json_encode(elgg_echo('upload:image:error')) ?>,
         processing_message: <?php echo json_encode(elgg_echo('upload:image:processing')) ?>,
         upload_progress_message: <?php echo json_encode(elgg_echo('upload:image:uploading')) ?>,
         loading_preview_message: <?php echo json_encode(elgg_echo('upload:image:complete')) ?>,
-        upload_error_message: <?php echo json_encode(elgg_echo('upload:image:error')) ?>,
-        result_id: 'imageUpload',        
+        upload_error_message: <?php echo json_encode(elgg_echo('upload:image:error')) ?>,        
         sizes: <?php echo json_encode(json_encode($sizes)) ?>
     });
 </script>    

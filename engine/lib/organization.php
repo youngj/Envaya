@@ -364,11 +364,12 @@ function googlegeocoder_geocode($hook, $entity_type, $returnvalue, $params)
     }
 }
 
-function org_title($org, $subtitle)
+function org_header($org, $subtitle)
 {
     return elgg_view('org/orgtitle', array(
         'title' => $org->name, 
         'subtitle' => $subtitle, 
+        'customHeader' => $org->custom_header ? $org->getHeaderURL('large') : null,
         'icon' => $org->getIcon('medium'),
         'link' => $org->getURL()                   
     ));

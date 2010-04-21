@@ -23,7 +23,7 @@
         else
         {        
             $area2 = elgg_view("org/blogPost", array('entity'=> $post));        
-            $body = elgg_view_layout("one_column", org_title($org, $title), $area2);            
+            $body = elgg_view_layout("one_column", org_header($org, $title), $area2);            
         }    
         
         page_draw($title,$body);

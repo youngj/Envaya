@@ -67,7 +67,7 @@
         
         if ($viewOrg)
         {        
-            $body = elgg_view_layout('one_column', org_title($org, $subtitle), ($viewOrg ? $widget->renderView() : ''), $preBody);
+            $body = elgg_view_layout('one_column', org_header($org, $subtitle), ($viewOrg ? $widget->renderView() : ''), $preBody);
         }
         else
         {            

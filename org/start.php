@@ -79,8 +79,8 @@ function org_profile_page_handler($page)
     {
         switch ($page[1])
         {
-            case "theme":
-                include(dirname(__FILE__) . "/theme.php");
+            case "design":
+                include(dirname(__FILE__) . "/design.php");
                 return;
             case "username":
                 include(dirname(__FILE__) . "/changeUsername.php");
