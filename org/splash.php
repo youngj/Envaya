@@ -45,7 +45,7 @@ a img
     <tr>
         <td width="50%">
             <div style='float:right'>
-                <a href="/page/home"><img alt='Tanzania' src='_graphics/splashTZ.png' /></a>
+                <a href="/page/home"><img alt='Tanzania' src='_graphics/splashTZ.gif' /></a>
                 <div style='padding:5px'>
                     <a href="/page/home">Envaya Tanzania</a>
                 </div>           
@@ -53,7 +53,7 @@ a img
         </td>
         <td width="50%">
             <div style='float:left'>
-                <img alt='International' src='_graphics/splashGlobe.png' />
+                <img alt='International' src='_graphics/splashGlobe.gif' />
 
                 <div style='padding:5px;font-size:17px;color:#666'>
                     Envaya International
