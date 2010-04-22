@@ -27,21 +27,23 @@ function getSelectedRadio($name)
 }    
 
 function customHeaderChanged()
-{
-    var $customDiv = document.getElementById('custom_header');
-    var $defaultDiv = document.getElementById('default_header');
-    var $value = getSelectedRadio('custom_header');
-    
-    if ($value == '1')
-    {
-        $customDiv.style.display = 'block';
-        $defaultDiv.style.display = 'none';
-    }
-    else
-    {
-        $customDiv.style.display = 'none';
-        $defaultDiv.style.display = 'block';
-    }
+{  
+    setTimeout(function() {
+        var $customDiv = document.getElementById('custom_header_container');
+        var $defaultDiv = document.getElementById('default_header_container');
+        var $value = getSelectedRadio('custom_header');
+
+        if ($value == '1')
+        {
+            $customDiv.style.display = 'block';
+            $defaultDiv.style.display = 'none';
+        }
+        else
+        {
+            $customDiv.style.display = 'none';
+            $defaultDiv.style.display = 'block';
+        }
+    }, 1);    
 }
 </script>
 
@@ -49,21 +51,22 @@ function customHeaderChanged()
     echo elgg_view('input/radio', array(
         'internalname' => 'custom_header',
         'value' => $user->custom_header ? '1' : '0',
-        'js' => "onchange='customHeaderChanged()'",
+        'js' => "onchange='customHeaderChanged()' onclick='customHeaderChanged()'",
         'options' => array(
             '0' => elgg_echo('header:default'),
             '1' => elgg_echo('header:custom'),
         )
     ));
 ?>
-<div id='default_header' <?php echo $user->custom_header ? "style='display:none'" : "" ?> >
+
+<div id='default_header_container' <?php echo $user->custom_header ? "style='display:none'" : "" ?> >
     <div class='header_preview'>
         <?php echo elgg_view('org/default_header', array('org' => $user, 'subtitle' => elgg_echo('header:subtitle'))) ?>
     </div>   
     <div class='help'><?php echo sprintf(elgg_echo('header:changelogo'), elgg_echo('icon')) ?></div>
 </div>
 
-<div id='custom_header' <?php echo !$user->custom_header ? "style='display:none'" : "" ?>>
+<div id='custom_header_container' <?php echo !$user->custom_header ? "style='display:none'" : "" ?>>
     
     <?php 
         if ($user->custom_header)
@@ -114,10 +117,10 @@ echo elgg_view('input/submit',array(
 
 <div class='section_header' id='icon'><?php echo elgg_echo('icon'); ?></div>
 <div class='section_content padded'>
-
 <div class='help' style='padding-bottom:5px'>
 <?php echo elgg_echo('icon:description') ?>
 </div>
+
 
 <?php
 

@@ -33,7 +33,7 @@ body
     border:1px solid #ccc;
 }
 
-.imageUploadProgress
+#custom_header_container .imageUploadProgress
 {
     overflow:auto;
     width:460px;    

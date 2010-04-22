@@ -239,6 +239,11 @@ function get_translate_mode()
     return ((int)get_input("trans")) ?: TranslateMode::ManualOnly;
 }
 
+function set_translate_mode($trans)
+{
+    set_input('trans', $trans);
+}
+
 function get_original_language()
 {
     global $CONFIG;
