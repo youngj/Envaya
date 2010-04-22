@@ -59,7 +59,7 @@
                 'email_code' => null,
                 'setup_state' => 5,
                 'custom_icon' => 0,
-                'custom_header' => 0,
+                'custom_header' => null,
             ));    
         }         
         
@@ -109,7 +109,6 @@
 		 */
 		public function delete()
 		{
-			clear_metadata_by_owner($this->guid);			
             return parent::delete() && $this->deleteTableAttributes('users_entity');
 		}
 		
@@ -159,7 +158,7 @@
             {
                 foreach ($imageFiles as $size => $srcFile)
                 {
-                    $srcFile = $imageFiles[$size];                    
+                    $srcFile = $imageFiles[$size]['file'];                    
 
                     $destFile = $this->getIconFile($size);
 
@@ -193,13 +192,14 @@
         {
             if (!$imageFiles)
             {
-                $this->custom_header = false;
+                $this->custom_header = null;
             }
             else
             {
                 foreach ($imageFiles as $size => $srcFile)
                 {
-                    $srcFile = $imageFiles[$size];                    
+                    //var_dump($imageFiles);
+                    $srcFile = $imageFiles[$size]['file'];                    
 
                     $destFile = $this->getHeaderFile($size);
 
@@ -207,15 +207,22 @@
                     $srcFile->delete();
                 }
 
-                $this->custom_header = true;                
+                $this->custom_header = json_encode(array(
+                    'width' => $imageFiles['large']['width'],
+                    'height' => $imageFiles['large']['height']
+                ));    
             }
             $this->save();
-        }        
+        }     
+        
+        public function getHeader()
+        {
+            return json_decode($this->custom_header, true);
+        }
                 
         static function getHeaderSizes()
         {
             return array(
-                'small' => '100x100',
                 'large' => '700x150',
             );
         }                           

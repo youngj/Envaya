@@ -364,16 +364,23 @@ function googlegeocoder_geocode($hook, $entity_type, $returnvalue, $params)
     }
 }
 
-function org_header($org, $subtitle)
+function org_view_body($org, $subtitle, $area2, $area3 = '')
 {
-    return elgg_view('org/orgtitle', array(
-        'title' => $org->name, 
-        'subtitle' => $subtitle, 
-        'customHeader' => $org->custom_header ? $org->getHeaderURL('large') : null,
-        'icon' => $org->getIcon('medium'),
-        'link' => $org->getURL()                   
-    ));
-}
+    if ($org->custom_header)
+    {
+        $header = elgg_view('org/custom_header', array(
+            'org' => $org
+        ));                    
+    }
+    else
+    {
+        $header = elgg_view('org/default_header', array(
+            'org' => $org,
+            'subtitle' => $subtitle, 
+        ));    
+    }    
+    return elgg_view_layout("one_column_custom_header", $header, $area2, $area3);
+}    
 
 function regions_in_country($country)
 {

@@ -386,9 +386,20 @@
         'icon:saved' => 'Nembo imehifadhiwa.',
         'icon:reset' => 'Nembo imefutwa.',
         'icon:edit' => 'Hariri nembo',
+        'icon:description' => "Nembo ni picha ndogo inayoonekana kando ya jina la shirika lako katika sehemu nyingi Envaya, kama matokeo ya kutafuta.",
+
+        'header' => 'Kichwa ya tovuti',
+        'header:default' => "Kichwa cha kawaida (nembo, jina, jina la ukurasa)",
+        'header:custom' => "Picha ya kichwa ya kupima",
+        'header:changelogo' => "Angalia: Kubadilisha nembo ya kushoto, tumia sehemu ya '%s' ya chini.",
+        'header:chooseimage' => "Chagua picha kutumia kama kichwa chako cha tovuti:",
+        'header:constraints' => "Lazima picha ya kichwa iwe muundo wa JPG, GIF, au PNG. Ukubwa wa upeo ni pixeli 700 za upana na pixeli 150 za urefu.",
+        'header:subtitle' => "Jina la Ukurasa",
+        'header:edit' => "Hariri kichwa",
+        'header:saved' => "Picha ya kichwa imebadilishwa.",
+        'header:reset' => "Kichwa kimepangwa upya.",        
 
         'org:name:edit' => 'Hariri jina',        
-        'org:header' => 'Kichwa ya tovuti',
         
         'org:cantedit' => "Huna ruhusa kuhariri tovuti ya shirika hili.",
 

@@ -6,15 +6,22 @@
     ob_start();
 ?>
 
-<div class='section_header'><?php echo elgg_echo("org:header"); ?></div>
+<div class='section_header'><?php echo elgg_echo("header"); ?></div>
 <div class='section_content padded'>
-    <img style='float:left;margin-right:8px' src='<?php echo $org->getIcon('small') ?>' />    
-    <strong><?php echo escape($org->name) ?></strong>    
-    <br /> 
+    <div class='header_preview'>
+        <?php 
+            if ($org->custom_header)
+            {
+                echo elgg_view('org/custom_header', array('org' => $org));
+            }
+            else
+            {
+                echo elgg_view('org/default_header', array('org' => $org, 'subtitle' => elgg_echo('header:subtitle')));
+            }    
+        ?>
+    </div>    
     <strong>
-        <a href="<?php echo "pg/settings/user/{$org->username}" ?>"><?php echo elgg_echo('org:name:edit'); ?></a> 
-            &middot;
-        <a href="<?php echo "{$org->getURL()}/design?from=$escUrl" ?>"><?php echo elgg_echo('icon:edit'); ?></a>
+        <a href="<?php echo "{$org->getURL()}/design?from=$escUrl" ?>"><?php echo elgg_echo('header:edit'); ?></a>
     </strong>    
 </div>
 

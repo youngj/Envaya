@@ -29,7 +29,7 @@ class ElggMetadata
 
                 if ($valueType == 'json')
                 {
-                    $this->attributes['value'] = json_decode($value);
+                    $this->attributes['value'] = json_decode($value, true);
                 }    
                 else if ($valueType == 'integer')
                 {
@@ -278,11 +278,6 @@ function clear_metadata($entity_guid)
 {
     return delete_data("DELETE from metadata where entity_guid=?", array($entity_guid));
 }
-
-function clear_metadata_by_owner($owner_guid)
-{
-    return delete_data("DELETE from metadata WHERE owner_guid=?", array($owner_guid));
-}	
 
 function string_to_tag_array($string) 
 {

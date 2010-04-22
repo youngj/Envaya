@@ -396,8 +396,18 @@
         'icon:edit' => 'Edit logo',
         'icon:description' => "The logo is a small image that appears next to your organization's name in many places in Envaya, such as search results.",
         
+        'header' => "Website header",
+        'header:default' => "Standard header (logo, name, page title)",
+        'header:custom' => "Custom header image",
+        'header:changelogo' => "Note: To change the logo on the left, use the '%s' section below.",
+        'header:chooseimage' => "Choose an image to use as your website header:",
+        'header:constraints' => "The header image must be in JPG, GIF, or PNG format. The maximum size is 700 pixels wide by 150 pixels high.",
+        'header:subtitle' => "Page Title",
+        'header:edit' => "Edit header",
+        'header:saved' => "Header image changed.",
+        'header:reset' => "Header reset.",
+        
         'org:name:edit' => 'Edit name',        
-        'org:header' => 'Website header',
 
         'org:cantedit' => "You do not have access to edit this organization's web site.",
 

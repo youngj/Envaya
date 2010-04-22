@@ -273,7 +273,7 @@ function showOrgs($data)
             Math.floor($pixel.y / $bucketSize) * $bucketSize + $bucketSize / 2
         );        
         
-        var $bucketKey = $bucketPixel.x + "," + $bucketPixel.y + "," + $zoom;
+        var $bucketKey = $bucketPixel.x + "," + $bucketPixel.y + "," + $zoom + "," + sector;
         
         if (!$buckets[$bucketKey])
         {            

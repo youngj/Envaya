@@ -31,10 +31,15 @@
         
         $headerFiles = get_uploaded_files($_POST['header']);
         
-        if (get_input('deleteheader'))
+        $customHeader = (int)get_input('custom_header');
+        
+        if (!$customHeader)
         {
-            $org->setHeader(null);       
-            system_message(elgg_echo("header:reset"));
+            if ($org->custom_header)
+            {
+                $org->setHeader(null);       
+                system_message(elgg_echo("header:reset"));
+            }    
         }
         else if ($headerFiles)
         {

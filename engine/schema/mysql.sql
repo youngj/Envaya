@@ -178,7 +178,7 @@ CREATE TABLE `users_entity` (
   `city` varchar(128) NULL,
   
   `custom_icon` tinyint(4) default '0',
-  `custom_header` tinyint(4) default '0',
+  `custom_header` text default NULL,
   `admin` tinyint(4) default '0',
   `latitude` float null,
   `longitude` float null,

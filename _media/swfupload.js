@@ -1246,7 +1246,7 @@ function image_uploader($vars)
                 {
                     set_upload_progress($vars.processing_message);
                 
-                    if (file.size > 100000 || file.type != ".jpg")
+                    if (file.size > 100000)
                     {
                         this.startResizedUpload(file.ID, $vars.max_width, $vars.max_height, SWFUpload.RESIZE_ENCODING.JPEG, 75);
                     }

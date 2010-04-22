@@ -1,6 +1,6 @@
 <?php
 	
-	gatekeeper();
+	admin_gatekeeper();
     action_gatekeeper();
 	
 	$guid = get_input('guid');
@@ -17,5 +17,5 @@
 	else
 		register_error(sprintf(elgg_echo('entity:delete:fail'), $guid));
 		
-	forward($_SERVER['HTTP_REFERER']);
+	forward('page/home');
 ?>

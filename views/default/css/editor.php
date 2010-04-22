@@ -25,6 +25,28 @@ body
     border:2px solid #a8a8a8;
 }
 
+.header_preview
+{
+    overflow:auto;
+    width:460px;    
+    margin:5px 0px;
+    border:1px solid #ccc;
+}
+
+.imageUploadProgress
+{
+    overflow:auto;
+    width:460px;    
+}
+
+.header_preview .thin_column
+{
+    background-color:white;
+    border:0px;    
+    
+}
+
+
 #content_mid
 {
     margin:10px auto 10px auto;

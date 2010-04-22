@@ -36,7 +36,7 @@
 ?>
 
 <span id='imageUploadContainer<?php echo $SWFUPLOAD_INCLUDE_COUNT ?>'></span>
-<div id='imageUploadProgress<?php echo $SWFUPLOAD_INCLUDE_COUNT ?>'></div>
+<div id='imageUploadProgress<?php echo $SWFUPLOAD_INCLUDE_COUNT ?>' class='imageUploadProgress'></div>
 <script type="text/javascript">
     image_uploader({     
         session_id: <?php echo json_encode(session_id()); ?>,

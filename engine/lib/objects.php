@@ -58,7 +58,7 @@
             {   
                 foreach ($imageFiles as $size => $srcFile)
                 {
-                    $srcFile = $imageFiles[$size];                    
+                    $srcFile = $imageFiles[$size]['file'];                    
 
                     $destFile = $this->getImageFile($size);
 

@@ -60,10 +60,17 @@
 			return -1;
 		}
         
-        public function uploadFile($filePath)
+        public function uploadFile($filePath, $mime = null)
         {
             global $CONFIG;
-            return get_s3()->uploadFile($CONFIG->s3_bucket, $this->getPath(), $filePath, true);
+            
+            $headers = array();
+            if ($mime)
+            {
+                $headers['Content-Type'] = $mime;
+            }
+            
+            return get_s3()->uploadFile($CONFIG->s3_bucket, $this->getPath(), $filePath, true, $headers);
         }
         
         public function copyTo($destFile)
@@ -113,14 +120,17 @@
 
             $resizedImage = resize_image_file($filename, $sizeArray[0], $sizeArray[1]); 
             if ($resizedImage)
-            {
+            {                        
                 $tempFilename = "temp/".mt_rand().".jpg";
 
                 $file->setFilename($tempFilename);
-                $file->uploadFile($resizedImage);
+                $file->uploadFile($resizedImage['filename'], $resizedImage['mime']);
 
                 $res[$sizeName] = array(
                     'filename' => $tempFilename,
+                    'mime' => $resizedImage['mime'],
+                    'width' => $resizedImage['width'],
+                    'height' => $resizedImage['height'],
                     'url' => $file->getURL(),
                 );
             }    
@@ -134,65 +144,67 @@
     
     function get_uploaded_files($json)
     {
-        $filedata = json_decode($json);
+        $filedata = json_decode($json, true);
                
         if (!$filedata)
         {
             return null;
         }
-        
-        $res = array();
+                
         foreach ($filedata as $size => $value)
-        {
+        {                    
             $file = new ElggFile();
+                                    
             $file->owner_guid = get_loggedin_userid();
-            $file->setFilename($value->filename);
+            $file->setFilename($value['filename']);
         
-            $res[$size] = $file;
+            $filedata[$size]['file'] = $file;            
         }
-        return $res;
+        return $filedata;
     }    
     
 	/**
-	 * Gets the jpeg contents of the resized version of an already uploaded image 
+	 * Gets the resized version of an already uploaded image 
 	 * (Returns false if the uploaded file was not an image)
 	 *
-	 * @param string $input_name The name of the file input field on the submission form
+     * @param string $imageFileName Filename of the original image 
 	 * @param int $maxwidth The maximum width of the resized image
 	 * @param int $maxheight The maximum height of the resized image
 	 * @param true|false $square If set to true, will take the smallest of maxwidth and maxheight and use it to set the dimensions on all size; the image will be cropped.
-	 * @return false|mixed The contents of the resized image, or false on failure
+	 * @return false|mixed array with keys 'filename','width','height','mime' or false on failure
 	 */
-    function resize_image_file($input_name, $maxwidth, $maxheight, $square = false, $x1 = 0, $y1 = 0, $x2 = 0, $y2 = 0) 
-    {
-		
-		// Get the size information from the image
-		if ($imgsizearray = getimagesize($input_name))
+    function resize_image_file($imageFileName, $maxwidth, $maxheight, $square = false, $x1 = 0, $y1 = 0, $x2 = 0, $y2 = 0) 
+    {		
+        if ($imgsizearray = getimagesize($imageFileName))
         {		
-			// Get width and height
 			$width = $imgsizearray[0];
 			$height = $imgsizearray[1];
+            $mime = $imgsizearray['mime'];
 			$newwidth = $width;
 			$newheight = $height;
 			
-			// Square the image dimensions if we're wanting a square image
-			if ($square) {
-				if ($width < $height) {
+			if ($square) 
+            {
+				if ($width < $height) 
+                {
 					$height = $width;
-				} else {
+				} 
+                else 
+                {
 					$width = $height;
 				}
 				
 				$newwidth = $width;
-				$newheight = $height;
-				
+				$newheight = $height;		
 			}
 			
-			if ($width > $maxwidth) {
+			if ($width > $maxwidth) 
+            {
 				$newheight = floor($height * ($maxwidth / $width));
 				$newwidth = $maxwidth;
 			}
-			if ($newheight > $maxheight) {
+			if ($newheight > $maxheight) 
+            {
 				$newwidth = floor($newwidth * ($maxheight / $newheight));
 				$newheight = $maxheight; 
 			}
@@ -203,20 +215,26 @@
                 'image/gif' => 'gif'
             );
 			
-            if ($imgsizearray['mime'] == 'image/jpeg' && $width == $newwidth && $height == $newheight)
+            if ($width == $newwidth && $height == $newheight)
             {
-                // avoid re-encoding file if it's already the correct size and file type
-            
-                return $input_name;
+                // avoid re-encoding file if it's already the correct size            
+                return array(
+                    'filename' => $imageFileName,
+                    'width' => $width,
+                    'height' => $height,
+                    'mime' => $mime
+                );    
             }
             
 			// If it's a file we can manipulate ...
-			if (array_key_exists($imgsizearray['mime'],$accepted_formats)) {
-
-				$function = "imagecreatefrom" . $accepted_formats[$imgsizearray['mime']];
+			if (array_key_exists($mime,$accepted_formats)) 
+            {
+                $ext = $accepted_formats[$mime];
+            
+				$function = "imagecreatefrom$ext";
 				$newimage = imagecreatetruecolor($newwidth,$newheight);
 				
-				if (is_callable($function) && $oldimage = $function($input_name)) {
+                if (is_callable($function) && $oldimage = $function($imageFileName)) {
  				
 					// Crop the image if we need a square
 					if ($square) {
@@ -248,9 +266,28 @@
 					
                     $tempFileName = tempnam(sys_get_temp_dir(), 'img');
                     
-                    if (imagejpeg($newimage, $tempFileName, 90))
+                    /* make output image same type as input */
+                    switch ($ext)
                     {
-                        return $tempFileName;
+                        case 'gif':
+                            $res = imagegif($newimage, $tempFileName);
+                            break;
+                        case 'png':
+                            $res = imagepng($newimage, $tempFileName);
+                            break;
+                        default:
+                            $res = imagejpeg($newimage, $tempFileName, 90);
+                            break;
+                    }    
+                                                                      
+                    if ($res)
+                    {
+                        return array(
+                            'filename' => $tempFileName,
+                            'width' => $newwidth,
+                            'height' => $newheight,
+                            'mime' => $mime
+                        );
                     }										
 				}
 				
