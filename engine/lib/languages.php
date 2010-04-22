@@ -298,7 +298,8 @@ function get_translatable_language_keys()
 
 function change_viewer_language($newLanguage)
 {
-    setcookie("lang", $newLanguage, time() + 60 * 60 * 24 * 365 * 15, '/');
+    global $CONFIG;
+    setcookie("lang", $newLanguage, time() + 60 * 60 * 24 * 365 * 15, '/', $CONFIG->cookie_domain);
 }
 
 //$a = microtime(true);
