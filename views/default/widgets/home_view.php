@@ -2,7 +2,7 @@
 
     $widget = $vars['widget'];
     
-    $content = view_translated($widget, 'content');
+    $content = elgg_view('output/longtext', array('value' => translate_field($widget, 'content'))); 
     
     echo elgg_view_layout('section', elgg_echo("org:mission"), $content);        
     

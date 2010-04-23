@@ -19,7 +19,7 @@ function togglePosition()
 </script>
 
 <div class='input'>
-    <label><?php echo elgg_echo('widget:image:label') ?></label><br />        
+    <label><img src='_graphics/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo elgg_echo('widget:image:label') ?></label><br />        
     <?php echo elgg_view('input/image', array(
         'current' => ($widget->hasImage() ? $widget->getImageUrl('small') : null),
         'js' => "onchange='javascript:togglePosition()'",

@@ -53,7 +53,7 @@ function showAttachImage($show)
 
 
 <div id='attachControls'>
-    <a href='javascript:void(0)' onclick='showAttachImage(true)'><img src='_graphics/attach_image.gif' /></a>
+    <a href='javascript:void(0)' onclick='showAttachImage(true)'><img src='_graphics/attach_image.gif?v2' /></a>
     <a href='javascript:void(0)' onclick='showAttachImage(true)'><?php echo elgg_echo('dashboard:attach_image') ?></a>    
 </div>    
 <div id='attachImage' style='display:none'>

@@ -11,7 +11,7 @@
 </div>
 
 <div class='input'>
-<label><?php echo elgg_echo('blog:image:label') ?></label><br />
+<label><img src='_graphics/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo elgg_echo('blog:image:label') ?></label><br />
 <?php echo elgg_view('input/image', array(
         'current' => ($blog && $blog->hasImage() ? $blog->getImageUrl('small') : null),
         'internalname' => 'image',

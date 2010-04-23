@@ -83,24 +83,7 @@
 			
 		include($path);
 	}
-	
-
-	/**
-	 * Admin permissions system
-	 *
-	 * @return true|null True if the current user is an admin.
-	 */
-	function admin_permissions($hook, $type, $returnval, $params) {
 		
-		if (is_array($params) && !empty($params['user']) && $params['user'] instanceof ElggUser) {
-			$admin = $params['user']->admin;
-			if ($admin) {
-				return true;
-			}
-		}
-		
-	}
-	
 	/**
 	 * Write a persistent message to the administrator's notification window.
 	 * 
@@ -150,7 +133,6 @@
 	register_elgg_event_handler('pagesetup','system','admin_pagesetup');
 	
 	// Register a plugin hook for permissions
-	register_plugin_hook('permissions_check','all','admin_permissions');
 	register_plugin_hook('container_permissions_check','all','admin_permissions');
 	
 ?>

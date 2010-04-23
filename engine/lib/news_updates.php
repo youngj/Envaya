@@ -50,26 +50,7 @@ class NewsUpdate extends ElggObject
     
     public function getSnippet($maxLength = 100)
     {
-        $content = $this->content;
-        if ($content)
-        {
-            // todo: multi-byte support
-            if (strlen($content) > $maxLength)
-            {
-                $shortStr = substr($content, 0, $maxLength);
-                
-                $lastSpace = strrpos($shortStr, ' ');                
-                if ($lastSpace && $lastSpace > $maxLength / 2) 
-                {
-                    $shortStr= substr($shortStr, 0, $lastSpace);
-                }
-                
-                $content = $shortStr . "...";
-            }                
-            
-            return $content;
-        }
-        return '';
+        return get_snippet($this->content, $maxLength);
     }
 
     public function getDateText()

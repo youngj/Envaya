@@ -8,7 +8,7 @@
     $property = get_input('property');  
     $entity = get_entity($guid);
     
-    if (!isadminloggedin() || !$entity)
+    if (!$entity->canEdit())
     {
         register_error(elgg_echo("org:cantedit"));
         forward_to_referrer();
@@ -35,7 +35,6 @@
         
         system_message(elgg_echo("trans:posted"));
         
-        forward($entity->getUrl());                    
-    }
-   
+        forward(get_input('from') ?: $entity->getUrl());
+    }   
 ?>

@@ -1204,6 +1204,8 @@ function image_uploader($vars)
         $iframe.src = "upload.php?sizes=" + escape($vars.sizes) + "&swfupload=" + $swfupload.movieName;
         $iframe.className = 'uploadIframe';
         $placeholder.appendChild($iframe);
+        
+        set_upload_progress($vars.recommend_flash_message);
     }
 
     $swfupload = new SWFUpload({

@@ -14,8 +14,12 @@
             echo $img;
         }
     }    
+    else if (!$widget->content)
+    {
+        echo sprintf(elgg_echo('widget:empty'), escape(elgg_echo("widget:{$widget->widget_name}")));
+    }
     
-    echo view_translated($widget, 'content');
+    echo elgg_view('output/longtext', array('value' => translate_field($widget, 'content'))); 
     
     if ($widget->hasImage() && $imagePos == 'bottom')
     {

@@ -19,6 +19,29 @@
         return htmlentities($val, ENT_QUOTES, 'UTF-8');
     }    
 
+    function get_snippet($content, $maxLength = 100)
+    {
+        if ($content)
+        {
+            // todo: multi-byte support
+            if (strlen($content) > $maxLength)
+            {
+                $shortStr = substr($content, 0, $maxLength);
+                
+                $lastSpace = strrpos($shortStr, ' ');                
+                if ($lastSpace && $lastSpace > $maxLength / 2) 
+                {
+                    $shortStr= substr($shortStr, 0, $lastSpace);
+                }
+                
+                $content = $shortStr . "...";
+            }                
+            
+            return $content;
+        }
+        return '';    
+    }
+
     function isPearError($res)
     {
         return is_a($res, 'PEAR_Error');

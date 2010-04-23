@@ -4,7 +4,7 @@
     if (!isset($SWFUPLOAD_INCLUDE_COUNT))
     {
         $SWFUPLOAD_INCLUDE_COUNT = 0;
-        echo "<script type='text/javascript' src='_media/swfupload.js'></script>";
+        echo "<script type='text/javascript' src='_media/swfupload.js?v2'></script>";
     }    
     else
     {
@@ -53,6 +53,10 @@
         upload_progress_message: <?php echo json_encode(elgg_echo('upload:image:uploading')) ?>,
         loading_preview_message: <?php echo json_encode(elgg_echo('upload:image:complete')) ?>,
         upload_error_message: <?php echo json_encode(elgg_echo('upload:image:error')) ?>,        
+        recommend_flash_message: <?php echo json_encode("<div class='help' style='font-size:10px'>".
+            sprintf(elgg_echo('upload:image:recommend_flash'),
+                    "<a href='http://www.adobe.com/go/getflash' target='_blank'>Adobe Flash 10</a>")
+            ."</div>") ?>,
         sizes: <?php echo json_encode(json_encode($sizes)) ?>
     });
 </script>    

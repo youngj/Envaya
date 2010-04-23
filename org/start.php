@@ -30,8 +30,6 @@ function org_page_handler($page)
                 include(dirname(__FILE__) . "/feed.php");
                 return;
             case "translate":
-                set_input("guid", $page[1]);
-                set_input("property", $page[2]);
                 include(dirname(__FILE__) . "/translate.php");
                 return;
             default:
@@ -213,7 +211,8 @@ function notify_new_org($event, $objectType, $org)
 function add_generic_footer()
 {
     add_submenu_item(elgg_echo('about:link'), "/page/about", 'footer');
-    add_submenu_item(elgg_echo('contact:link'), "/page/contact", 'footer');
+    add_submenu_item(elgg_echo('contact:link'), "/page/contact", 'footer');    
+    add_submenu_item(elgg_echo('donate:link'), "/page/donate", 'footer'); 
 }
 
 register_page_handler('orgprofile','org_profile_page_handler');

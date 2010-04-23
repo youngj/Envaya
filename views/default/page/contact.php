@@ -1,11 +1,5 @@
 <p>
-Email: <a href='mailto:info@envaya.org'>info@envaya.org</a>
-</p>
-<h3>
-<?php echo elgg_echo('feedback:title') ?>
-</h3>
-<p>
-<?php echo elgg_echo('feedback:instructions') ?>
+<?php echo sprintf(elgg_echo('feedback:instructions'), "<a href='mailto:info@envaya.org'>info@envaya.org</a>") ?>
 </p>
 <form method="POST" action='action/sendFeedback'>
 <div class='input'>

@@ -25,13 +25,19 @@
                 $widget->enable();
             }            
 
-            $widget->saveInput();
+            try
+            {
+                $widget->saveInput();
             
-            system_message(elgg_echo('widget:save:success'));
-            forward($widget->getURL());
+                system_message(elgg_echo('widget:save:success'));
+                forward($widget->getURL());
+            }
+            catch (InvalidParameterException $ex)
+            {
+                action_error($ex->getMessage());
+            }                       
         }
-                
-        
+                        
     }
     register_error(elgg_echo("org:cantedit"));      
     forward();

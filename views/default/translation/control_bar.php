@@ -43,7 +43,7 @@ if (page_is_translatable())
             echo sprintf(elgg_echo("trans:trans_from_to"), $origLangName, $userLangName);    
         }
         
-        $links[] = trans_link(TranslateMode::None, sprintf(elgg_echo("trans:view_original_in"), $origLangName));        
+        $links[] = trans_link(TranslateMode::None, sprintf(elgg_echo("trans:view_original_in"), $origLangName));                
     }
     else if ($transMode == TranslateMode::All) // viewing automatic translation
     {        
@@ -71,9 +71,27 @@ if (page_is_translatable())
             $links[] = trans_link(TranslateMode::All, sprintf(elgg_echo("trans:view_automatic_in"), $userLangName));
         }
     }
-    
+
+    if (isadminloggedin())
+    {
+        $properties = page_translatable_properties();
+
+        if (sizeof($properties))
+        {
+            $urlProps = array();
+            foreach ($properties as $objProp)
+            {
+                $urlProps[] = "prop[]={$objProp[0]}.{$objProp[1]}";
+            }
+
+            $escUrl = urlencode($_SERVER['REQUEST_URI']);
+            $links[] = "<a href='pg/org/translate?from=$escUrl&".implode("&", $urlProps)."'>".elgg_echo("trans:contribute")."</a>";                
+        }                
+    }    
+        
     echo " ".implode(' &middot; ', $links);   
 ?>
+<div style='clear:both'></div>
 </div>
 <?php
 }

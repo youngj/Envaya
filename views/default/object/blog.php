@@ -23,7 +23,7 @@
             echo "<a class='{$imageSize}BlogImageLink' href='$imgLink'><img src='{$entity->getImageURL($imageSize)}' /></a>";            
         }
         
-        echo view_translated($entity, 'content'); 
+        echo elgg_view('output/longtext', array('value' => translate_field($entity, 'content'))); 
         
         echo "<div class='blog_date'>{$entity->getDateText()}</div>";
     ?>              

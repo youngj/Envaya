@@ -12,7 +12,7 @@
     <div class='team_member_content'>
         <div class='team_member_name'><?php echo escape($entity->name); ?></div>    
         <?php 
-            echo view_translated($entity, 'description');            
+            echo elgg_view('output/longtext', array('value' => translate_field($entity, 'description'))); 
         ?>
     </div>
 <div style='clear:both;'></div>        

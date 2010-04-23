@@ -13,7 +13,7 @@
         
     if (!$count)
     {
-        echo "<div class='padded'>".elgg_echo("partner:none")."</div>";
+        echo elgg_echo("partner:none");
     }
 ?>
 </div>

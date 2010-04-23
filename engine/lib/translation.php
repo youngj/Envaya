@@ -65,7 +65,7 @@ class TranslateMode
     const All = 3;    
 }
 
-function view_translated($obj, $field)
+function translate_field($obj, $field)
 {        
     $text = trim($obj->$field);
     if (!$text)
@@ -88,11 +88,16 @@ function view_translated($obj, $field)
         
         if (!isset($CONFIG->translations_available))
         {
-            $CONFIG->translations_available = array('origlang' => $origLang);
+            $CONFIG->translations_available = array('origlang' => $origLang, 'properties' => array());
         }
 
         $translateMode = get_translate_mode();
         $translation = lookup_translation($obj, $field, $origLang, $viewLang, $translateMode);            
+        
+        if ($obj->canEdit())
+        {
+            $CONFIG->translations_available['translatable_props'][] = array($obj->guid, $field);
+        }    
         
         if ($translation && $translation->owner_guid)
         {
@@ -111,16 +116,18 @@ function view_translated($obj, $field)
             $viewTranslation = ($translateMode == TranslateMode::All);
         }
 
-        return elgg_view("translation/wrapper", array(
-            'translation' => $viewTranslation ? $translation : null, 
-            'entity' => $obj, 
-            'property' => $field, 
-        ));
+        if ($viewTranslation && $translation)
+        {
+            return $translation->value;
+        }
+        else
+        {
+            return $obj->$field;
+        }
     }   
 
-    return elgg_view("output/longtext",array('value' => $text));        
+    return $text;
 }
-
 
 function lookup_translation($obj, $prop, $origLang, $viewLang, $translateMode = TranslateMode::ManualOnly)
 {
@@ -255,6 +262,17 @@ function get_original_language()
     return '';
 }
 
+
+function page_translatable_properties()
+{
+    global $CONFIG;
+    if (isset($CONFIG->translations_available))
+    {
+        return $CONFIG->translations_available['translatable_props'];
+    }    
+    return array();
+}
+
 function page_has_stale_translation()
 {
     global $CONFIG;
@@ -264,6 +282,12 @@ function page_has_stale_translation()
 function page_is_translatable($mode=null)
 {
     global $CONFIG;
+    global $PAGE_TRANSLATABLE;
+    
+    if (isset($PAGE_TRANSLATABLE) && !$PAGE_TRANSLATABLE)
+    {
+        return false;
+    }
     
     if (isset($CONFIG->translations_available))
     {
@@ -273,4 +297,10 @@ function page_is_translatable($mode=null)
         }
     }
     return false;
+}
+
+function page_set_translatable($translatable)
+{
+    global $PAGE_TRANSLATABLE;
+    $PAGE_TRANSLATABLE = $translatable;
 }

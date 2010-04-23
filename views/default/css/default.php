@@ -1146,9 +1146,9 @@ a.smallBlogImageLink:hover
 
 #translate_bar
 {
-    padding: 6px 2px 0px 51px;
+    padding: 6px 2px 8px 51px;
     margin-bottom:2px;
-    height:44px;
+    overflow:visible;
     background:#948f87 url(<?php echo $graphicsDir; ?>/world.gif) no-repeat 5px 5px;
     color:white;
     border:1px solid #fff;

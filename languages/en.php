@@ -7,8 +7,18 @@
         'home:for_everyone' => 'For everyone',
         'home:sign_up' => 'Sign up now',
         
-        'feedback:title' => "Send us feedback",
-        'feedback:instructions' => "Let us know what you think about Envaya! Is something broken? Should we add something new? Send us your feedback by filling out the form below.",
+        'donate:title' => "Donate to Envaya",
+        'donate:link' => 'Donate',
+        'donate:info' => "As a non-profit project of the Trust for Conservation Innovation, Envaya is supported by institutional grants as well as donations from everyday people around the world.",
+        'donate:goals' => "Envaya is currently raising money for several goals, including:",
+        'donate:goal1' => "Setting up a SMS shortcode that will allow organizations to post news and photos from their mobile phones.",
+        'donate:goal2' => "Signing up more organizations from around Tanzania and responding to their feedback.",
+        'donate:goal3' => "Adding fundraising resources for community-based organizations and creating reporting tools to increase transparency for development funds.",
+        'donate:goal4' => "Expanding to other regions of the world.",
+        'donate:call' => "Help Envaya achieve these goals by donating online now!",        
+        'donate:now' => "Donate now!",        
+        
+        'feedback:instructions' => "Let us know what you think about Envaya! Is something broken? Should we add something new? Feel free to email us at %s, or send us your feedback by filling out the form below.",
         'feedback:name' => "Your name (optional)",
         'feedback:email' => "Your email (optional)",        
         'feedback:message' => "Your message",
@@ -34,8 +44,8 @@
         'about:link' => "About",        
         'about:title' => 'About us',   
         'about:mission' => "Envaya is dedicated to creating software to empower community-based organizations around the world that are focused on the environment, poverty relief, health, education, and community well-being.",
-        'about:nonprofit' => "Envaya is a 501(c)(3) nonprofit project that is fiscally sponsored and legally organized in the United States under the %s.",
-        'about:tci' => "Trust for Conservation Innovation",
+        'about:nonprofit' => "Envaya is a 501(c)(3) non-profit project that is fiscally sponsored and legally organized in the United States under the %s.",
+        'about:tci' => "Trust for Conservation Innovation",        
         'about:tanzania_pilot' => "In March, 2010, Envaya started its pilot in Tanzania, in a partnership with Journalists Environment and HIV/AIDS Network (JEAN-media), a Tanzanian civil society organization whose mission is to use media to promote and raise public awareness for CBOs.",
         'about:team' => "The Envaya website is developed by a small team of software engineers and international development volunteers from the United States and Canada. We believe people everywhere should have the tools they need to achieve their own goals.",
         
@@ -215,6 +225,7 @@
         'message:invalid_recipient' => "Bad recipient.",
         
         'widget:view' => "View page",
+        'widget:empty' => "This organization has not yet written its %s page.",
         
         'widget:home' => "Home",        
         'widget:home:included' => "What sections do you want to include on your home page?",
@@ -347,6 +358,7 @@
         'setup:instructions' => "Now we will ask a few questions about your organization so that we can create a homepage for you. (You will be able to add more content later.)",
         'setup:mission' => "What is the mission of your organization?",
         'setup:mission:help' => "This will appear at the top of your homepage.",
+        'setup:mission:blank' => "Please enter the mission of your organization.",
         'setup:language' => "What language will you use for the written content on your website (such as the mission statement above)?",
         'setup:language:help' => "Envaya will allow people who cannot read that language to view a translated version in their own language.",
 
@@ -354,7 +366,9 @@
         'setup:city' => 'City or Town:',
         'setup:region' => 'Region:',
         'setup:region:blank' => 'Select your region',
-        'setup:sector' => "Check all the sectors that apply for your organization:",
+        'setup:sector' => "Check at most five sectors that apply for your organization:",
+        'setup:sector:blank' => "Please select at least one sector that applies for your organization.",
+        'setup:sector:toomany' => "Too many sectors selected for your organization. Please select at most 5 sectors.",
         'setup:sector:other_specify' => "If 'Other', specify:",                
         'setup:next' => "Click the button below to view your homepage!",        
         'setup:next:help' => "Envaya will automatically choose a default design which you can customize later.",
@@ -383,6 +397,7 @@
         'upload:image:uploading' => "Uploading image...",
         'upload:image:complete' => "Upload complete. Previewing...",
         'upload:image:error' => "Error uploading image: ",         
+        'upload:image:recommend_flash' => "Note: To add photos faster, install %s.",
                  
         'contact:link' => "Contact",    
         'contact:title' => 'Contact us',
@@ -453,7 +468,7 @@
         'trans:empty' => "Translation was empty",
         'trans:invalid_id' => "Invalid text identifier",
         'trans:submit' => "Submit translation",
-        'trans:posted' => "Translation submitted succesfully.",
+        'trans:posted' => "Translation submitted successfully.",
 
         "trans:partial_trans_from_to" => 'Portions of this page have been translated from %s to %s.',
         "trans:view_rest_automatic" => 'Translate rest using Google Translate',
@@ -463,9 +478,9 @@
         "trans:automatic_trans_from_to" => "This page been automatically translated from %s to %s by Google Translate.", 
         "trans:page_original_in" => "This page is displayed in its original language, %s.",
         "trans:view_in" => "View in %s",
-        "trans:view_automatic_in" => "View in %s using Google Translate.",
+        "trans:view_automatic_in" => "View in %s using Google Translate",
         'trans:stale_trans_from_to' => "This page has been translated from %s, but the %s version is out of date.",
-        'trans:view_stale_automatic' => "View using Google Translate.",
+        'trans:view_stale_automatic' => "View using Google Translate",
 
         'exception:title' => "Error",
 

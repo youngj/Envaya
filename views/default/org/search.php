@@ -16,8 +16,12 @@
     ?>
     <br />
     
-    <input type='submit' value='<?php echo elgg_echo('search:submit') ?>'>
-    
+    <?php 
+        echo elgg_view('input/submit', array(
+            'internalname' => 'submit',
+            'value' => elgg_echo('search:submit') 
+        ));
+    ?>    
     
 </form>
 

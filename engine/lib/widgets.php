@@ -119,7 +119,24 @@ function save_widget($widget)
 function save_widget_home($widget)
 {
     $org = $widget->getContainerEntity();    
-    $org->setSectors(get_input_array('sector'));
+    
+    $mission = get_input('content');
+    if (!$mission)
+    {
+        throw new InvalidParameterException(elgg_echo("setup:mission:blank"));
+    }
+
+    $sectors = get_input_array('sector');
+    if (sizeof($sectors) == 0)
+    {
+        throw new InvalidParameterException(elgg_echo("setup:sector:blank"));
+    }
+    else if (sizeof($sectors) > 5)
+    {
+        throw new InvalidParameterException(elgg_echo("setup:sector:toomany"));
+    }    
+    
+    $org->setSectors($sectors);
     $org->sector_other = get_input('sector_other');
     
     $org->latitude = get_input('org_lat');
@@ -130,7 +147,7 @@ function save_widget_home($widget)
     
     $org->save();
 
-    $widget->content = get_input('content');
+    $widget->content = $mission;
     $widget->included = get_input_array('included');    
     $widget->zoom = get_input('map_zoom');    
     $widget->save();    

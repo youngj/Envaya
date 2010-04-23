@@ -7,12 +7,28 @@
     {
         $org = get_loggedin_user();
         
+        $mission = get_input('mission');
+        if (!$mission)
+        {
+            throw new RegistrationException(elgg_echo("setup:mission:blank"));
+        }
+        
+        $sectors = get_input_array('sector');
+        if (sizeof($sectors) == 0)
+        {
+            throw new RegistrationException(elgg_echo("setup:sector:blank"));
+        }
+        else if (sizeof($sectors) > 5)
+        {
+            throw new RegistrationException(elgg_echo("setup:sector:toomany"));
+        }
+        
         $homeWidget = $org->getWidgetByName('home');
-        $homeWidget->content = get_input('mission');
+        $homeWidget->content = $mission;
         
         $org->language = get_input('content_language');
                 
-        $org->setSectors(get_input_array('sector'));
+        $org->setSectors($sectors);
         $org->city = get_input('city');
         $org->region = get_input('region');
         $org->sector_other = get_input('sector_other');
@@ -26,8 +42,12 @@
         
         $homeWidget->save();        
         
-        $newsWidget = $org->getWidgetByName('news');
-        $newsWidget->save();
+        /* auto-create empty pages */
+        $org->getWidgetByName('news')->save();
+        $org->getWidgetByName('team')->save();
+        $org->getWidgetByName('projects')->save();
+        $org->getWidgetByName('history')->save();
+        $org->getWidgetByName('partnerships')->save();
         
         $contactWidget = $org->getWidgetByName('contact');
         $contactWidget->public_email = "yes";

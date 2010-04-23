@@ -1,6 +1,11 @@
 <html>
 <head>
+<?php 
+    global $CONFIG; 
+?>
 <title>Envaya</title>
+<base href='<?php echo $CONFIG->url ?>' />
+
 <style type='text/css'>
 
 body 

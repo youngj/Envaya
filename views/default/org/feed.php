@@ -80,7 +80,9 @@ foreach ($updates as $update)
        
         $maxLength = 500; 
        
-        echo elgg_view('output/longtext', array('value' => $update->getSnippet($maxLength))); 
+        echo elgg_view('output/longtext', 
+            array('value' => get_snippet(translate_field($update,'content'), $maxLength))
+        ); 
         
         if (strlen($update->content) > $maxLength)
         {                  
