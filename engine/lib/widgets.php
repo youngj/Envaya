@@ -8,12 +8,18 @@ class Widget extends ElggObject
         'widget_name' => 0,
         'content' => '',
         'data_types' => 0,
+        'language' => '',
     );        
     
     static function getAvailableNames()
     {
         return array('home', 'news', 'projects', 'history', 'team', 'partnerships', 'contact');
     }
+    
+    public function getTitle()
+    {
+        return elgg_echo("widget:{$this->widget_name}");
+    }    
     
     function renderView()
     {

@@ -473,8 +473,25 @@
         {        
             return get_subtype_from_id($this->get('subtype'));
         }
-
         
+        public function getTitle()
+        {
+            return elgg_echo("item:{$this->type}:{$this->getSubtypeName()}");
+        }
+
+        public function getLanguage()
+        {
+            $language = @$this->attributes['language'];
+            if ($language)
+            {
+                return $language;
+            }    
+            $container = $this->getContainerEntity();
+            if ($container)
+            {
+                return $container->getLanguage();
+            }
+        }        
         
 		/**
 		 * Gets the UNIX epoch time that this entity was created

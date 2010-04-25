@@ -7,6 +7,7 @@ class NewsUpdate extends ElggObject
     static $table_attributes = array(
         'content' => '',
         'data_types' => 0,
+        'language' => '',
     );        
     
     public function getImageFile($size = '')
@@ -16,6 +17,11 @@ class NewsUpdate extends ElggObject
         $file->setFilename("news/{$this->guid}$size.jpg");
         return $file;       
     }
+    
+    public function getTitle()
+    {
+        return elgg_echo("widget:news:item");
+    }        
     
     public function jsProperties()
     {

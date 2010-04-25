@@ -209,7 +209,8 @@
         'partner:instructions' => "To add an organization as a partner, first visit their Envaya website, and then click %s at the top. The other organization will need to confirm the partnership first before it shows up on your page.",
         'partner:search' => "Search for an organization",
         'partner:browse' => "Browse nearby organizations",
-        'partner:wait' => "You can't add new partnerships right now because your organization has not been approved by Envaya's administrators. Return here after your organization has been approved to add partnerships.",
+        'partner:wait' => "Return here after your organization has been approved to add partnerships.",
+        'partner:needapproval' => "You can't add new partnerships right now because your organization has not yet been approved by Envaya's administrators.",
 
         'message:link' => "Send a Message",
         'message:title' => "Compose Message",
@@ -223,6 +224,7 @@
         'message:message_missing' => "Your message was blank.",
         'message:subject_missing' => "The subject of your message was blank.",
         'message:invalid_recipient' => "Bad recipient.",
+        'message:needapproval' => "You can't send messages right now because your organization has not yet been approved by Envaya's administrators.",
         
         'widget:view' => "View page",
         'widget:empty' => "This organization has not yet written its %s page.",

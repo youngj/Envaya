@@ -9,6 +9,11 @@
 
     $loggedInOrg = get_loggedin_user();
     
+    if (!$loggedInOrg->isApproved())
+    {
+        action_error(elgg_echo('partner:needapproval'));
+    }
+    
     if (!$partner || $partner_guid == $loggedInOrg->guid)
     {
         register_error(elgg_echo("partner:invalid"));   

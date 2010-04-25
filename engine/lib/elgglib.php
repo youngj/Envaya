@@ -135,8 +135,11 @@
 	    global $CONFIG;
 	    if (!headers_sent()) 
         {		  
-		    $current_page = current_page_url();
-                    
+            if ($location && $location[0] == '/')
+            {
+                $location = substr($location, 1);
+            }
+        
 			if ((substr_count($location, 'http://') == 0) && (substr_count($location, 'https://') == 0)) 
             {
 			    $location = $CONFIG->url . $location;
@@ -630,9 +633,11 @@
             $submenu = array();
             $submenu_register_group = $CONFIG->submenu[$groupname];
 
+            $parsedUrl = parse_url($_SERVER['REQUEST_URI']);            
+
             foreach($submenu_register_group as $key => $item) 
             {
-                $selected = endswith($item->value, $_SERVER['REQUEST_URI']);
+                $selected = endswith($item->value, $parsedUrl['path']);
                 
                 $submenu[] = elgg_view($itemTemplate,
                     array(

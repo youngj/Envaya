@@ -1290,6 +1290,7 @@ a.attachImageClose:hover
     height:36px;
     color:white;
     width:100%;
+    margin-bottom:3px;
 }
 
 .commBox a

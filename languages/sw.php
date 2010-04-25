@@ -11,7 +11,6 @@
         'donate:info' => "Kama mradi bila faida wa Trust for Conservation Innovation, Envaya inategemea na hiba ya pesa ya taasisi na msaada kutoka watu duniani.",
         'donate:now' => "Toa msaada sasa!",           
         
-        'feedback:title' => "Tutumie maoni ya Envaya",
         'feedback:instructions' => "Tuambie unavyofikiria kuhusu Envaya! Kitu kimevunjika? Tuongeze kitu kipya? Tutumie email katika %s, au tutumie maoni yako kwa kutimiza umbo ya chini.",
         'feedback:name' => "Jina lako (sio lazima)",
         'feedback:email' => "Email yako (sio lazima)",        
@@ -199,7 +198,8 @@
         'partner:instructions' => "Kuongeza shirika kama ubia, kwanza zuru tovuti yake ya Envaya, halafu bonyeza %s juu. Shirika jingine litahitaji kuthibitisha ubia kwanza kabla ya litaonekana katika ukurasa wako.",
         'partner:search' => "Tafuta shirika",
         'partner:browse' => "Pelekeza mashirika yanayokuwepo karibu",
-        'partner:wait' => "Huwezi kuongeza ubia mpya sasa kwa sababu shirika lako halimekubaliwa kwa wasimamizi wa Envaya. Rejea hapa baada ya shirika lako limekubaliwa kuongeza ubia.",        
+        'partner:wait' => "Rejea hapa baada ya shirika lako limekubaliwa kuongeza ubia.",        
+        'partner:needapproval' => "Huwezi kuongeza ubia mpya sasa kwa sababu shirika lako halimekubaliwa kwa wasimamizi wa Envaya.",        
 
         'message:link' => "Peleka Ujumbe",
         'message:title' => "Tunga Ujumbe",
@@ -213,6 +213,7 @@
         'message:message_missing' => "Ujumbe wako ulikuwa wazi.",
         'message:subject_missing' => "Mada ya ujumbe wako ulikuwa wazi.",
         'message:invalid_recipient' => "Mpokeaji mbaya.",
+        'message:needapproval' => "Huwezi kupeleka ujumbe sasa kwa sababu shirika lako halimekubaliwa kwa wasimamizi wa Envaya.",        
 
         'widget:view' => "Ona ukurasa",
         'widget:empty' => "Shirika hili halijaandika ukurasa wako wa %s.",

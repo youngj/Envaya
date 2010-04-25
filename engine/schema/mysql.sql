@@ -122,6 +122,7 @@ CREATE TABLE `news_updates` (
   
   `content` text NOT NULL,
   `data_types` int NOT NULL,
+  `language` varchar(4) default null,
   
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -132,6 +133,7 @@ CREATE TABLE `widgets` (
   `widget_name` varchar(32) NOT NULL,
   `content` text NOT NULL,
   `data_types` int NOT NULL,
+  `language` varchar(4) default null,
   
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

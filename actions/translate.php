@@ -20,18 +20,29 @@
     }    
     else 
     {    
-        $lang = get_language();
-        $trans = lookup_translation($entity, $property, $org->language, $lang);    
-        if (!$trans)
-        {   
-            $trans = new Translation();    
-            $trans->container_guid = $entity->guid;
-            $trans->property = $property;
-            $trans->lang = $lang;
-        }            
-        $trans->owner_guid = get_loggedin_userid();
-        $trans->value = $text;            
-        $trans->save();
+        $origLang = $entity->getLanguage();
+        
+        $actualOrigLang = get_input('language');
+        if ($actualOrigLang != $origLang)
+        {
+            $entity->language = $actualOrigLang;
+            $entity->save();
+        }
+        if ($actualOrigLang != $lang)
+        {    
+            $lang = get_language();
+            $trans = lookup_translation($entity, $property, $actualOrigLang, $lang);    
+            if (!$trans)
+            {   
+                $trans = new Translation();    
+                $trans->container_guid = $entity->guid;
+                $trans->property = $property;
+                $trans->lang = $lang;
+            }            
+            $trans->owner_guid = get_loggedin_userid();
+            $trans->value = $text;            
+            $trans->save();
+        }    
         
         system_message(elgg_echo("trans:posted"));
         

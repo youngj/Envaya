@@ -3,7 +3,7 @@
     $org = $vars['entity'];
     $loggedInOrg = get_loggedin_user();
 
-    if ($loggedInOrg instanceof Organization && $loggedInOrg->isApproved())
+    if ($loggedInOrg instanceof Organization)
     {
 
 ?>

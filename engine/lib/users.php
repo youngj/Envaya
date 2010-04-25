@@ -80,6 +80,11 @@
             return "\"$name\" <{$this->email}>";
         }
         
+        public function getTitle()
+        {
+            return $this->name;
+        }        
+        
 		/**
 		 * Override the load function.
 		 * This function will ensure that all data is loaded (were possible), so

@@ -1,20 +1,21 @@
+<div class='input'>
 <?php
 
 $trans = $vars['entity'];
 
-$by = elgg_echo("trans:by");
+$entity = $trans->getContainerEntity();
 
-echo "$by ";
+$prop = $trans->property;
 
-if ($trans->owner_guid == 0)
-{
-    echo "<a href='http://translate.google.com'>Google Translate</a>";
-}
-else
-{
-    $owner = $trans->getOwnerEntity();
-    $url = $owner->getURL();
-    echo "<a href='$url'>".escape($owner->name)."</a>";
-}
+$org = $trans->getRootContainerEntity();
+
+$escUrl = urlencode($_SERVER['REQUEST_URI']);
+
+echo "<a style='float:right' href='org/translate?from=$escUrl&prop[]={$entity->guid}.{$prop}'>".elgg_echo('trans:contribute')."</a>";
+echo "<a href='{$org->getURL()}'>".escape($org->name)."</a> : ";
+echo "<a href='{$entity->getURL()}'>".escape($entity->getTitle())."</a>";
+
+echo "<div>".get_snippet($entity->$prop)."</div>";
 
 ?>
+</div>

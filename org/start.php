@@ -32,6 +32,9 @@ function org_page_handler($page)
             case "translate":
                 include(dirname(__FILE__) . "/translate.php");
                 return;
+            case "translateQueue":
+                include(dirname(__FILE__) . "/translateQueue.php");
+                return;
             default:
                 not_found();
         }

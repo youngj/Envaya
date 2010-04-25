@@ -26,12 +26,17 @@ class Translation extends ElggObject
     
     public function calculateHash()
     {
-        return $this->getRootContainerEntity()->language . ":" . sha1($this->getOriginalText());        
+        return $this->getContainerEntity()->getLanguage() . ":" . sha1($this->getOriginalText());        
     }    
     
     public function isStale()
     {
         return $this->calculateHash() != $this->hash;
+    }
+    
+    public static function filterByLanguageAndOwner($lang, $owner_guid, $limit = 10, $offset = 0, $count = false)
+    {
+        return static::filterByCondition(array('lang = ?', 'owner_guid = ?'), array($lang, $owner_guid), 'time_created asc', $limit, $offset, $count);
     }
 }
 
@@ -79,7 +84,7 @@ function translate_field($obj, $field)
         return '';
     }
     
-    $origLang = $org->language;
+    $origLang = $obj->getLanguage();
     $viewLang = get_language();
 
     if ($origLang != $viewLang)

@@ -6,7 +6,12 @@
     $org_guid = get_input('org_guid');
     $org = get_entity($org_guid);
         
-    if ($org && get_loggedin_user()->isApproved()) 
+    if (!get_loggedin_user()->isApproved())
+    {
+        register_error(elgg_echo('message:needapproval'));
+        forward_to_referrer();
+    }
+    else if ($org) 
     {             
         add_submenu_item(elgg_echo("message:cancel"), $org->getURL(), 'edit');                
     

@@ -17,6 +17,9 @@
 </p>
 <?php } else { ?>
 <p>
+<?php echo elgg_echo('partner:needapproval') ?>
+</p>
+<p>
 <?php echo elgg_echo('partner:wait') ?>
 </p>
 <?php } ?>

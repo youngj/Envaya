@@ -1,11 +1,11 @@
 <?php
 
-$body = elgg_view("blog/notfound");
-
 $props = get_input_array("prop");
 $from = get_input('from');
 
 $area2 = array();
+
+set_theme('editor');
 
 foreach ($props as $propStr)
 {

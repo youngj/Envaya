@@ -81,7 +81,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
         $this->s->mouseOver("//div[@class='good_messages']");   
         
-        $this->s->type("//input[@name='mission']", "testing the website");
+        $this->s->type("//textarea[@name='mission']", "testing the website");
         $this->s->check("//input[@name='sector[]' and @value='3']");
         $this->s->check("//input[@name='sector[]' and @value='99']");
         $this->s->type("//input[@name='sector_other']", "another sector");
@@ -97,6 +97,8 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->s->mouseOver("//h2[text()='testorg']");
         $this->s->mouseOver("//h3[text()='Wete, Tanzania']");
         $this->s->mouseOver("//a[contains(@href,'org/browse?list=1&sector=3') and text()='Conflict resolution']");
+        
+        sleep(4);
     }
 }
 
