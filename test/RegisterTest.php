@@ -86,7 +86,8 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->s->check("//input[@name='sector[]' and @value='99']");
         $this->s->type("//input[@name='sector_other']", "another sector");
         $this->s->type("//input[@name='city']", "Wete");        
-        $this->s->select("//select[@name='region']", "Pemba North");        
+        $this->s->select("//select[@name='region']", "Pemba North");                
+        $this->s->click("//input[@name='theme' and @value='brick']");        
         
         $this->submitForm();
 
