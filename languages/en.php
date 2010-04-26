@@ -441,6 +441,8 @@
         'theme:craft4' => "Wood and Fabric",
         'theme:craft1' => "Fabric Pattern",
         'theme:cotton2' => "Cotton",
+        'theme:wovengrass' => "Woven Grass",
+        'theme:beads' => "Beads",
         'theme:red' => "Chrome",
 
         'blog:content:label' => "Write the text for your news update below:",

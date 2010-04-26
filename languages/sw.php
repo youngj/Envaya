@@ -429,6 +429,8 @@
         'theme:craft4' => "Mbao na Kitambaa",
         'theme:craft1' => "Sampuli ya Kitambaa",
         'theme:cotton2' => "Pamba",
+        'theme:wovengrass' => "Majani yafumwayo",
+        'theme:beads' => "Shanga",
         'theme:red' => "Kromu",        
 
         'blog:content:label' => "Andika maandiko kwa habari yako chini:",

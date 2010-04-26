@@ -452,7 +452,7 @@ function set_theme($theme)
 
 function get_themes()
 {
-    return array('green','brick','craft4','craft1','cotton2','red');
+    return array('green','brick','craft4','craft1','cotton2','wovengrass','beads','red');
 }
 
 function envaya_init() 
