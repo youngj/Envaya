@@ -49,14 +49,27 @@
         $org->language = get_language();
         $org->theme = "green";
         $org->setup_state = 3; 
-        
+                        
         $prevInfo = Session::get('registration');        
 
         //$org->registration_number = $prevInfo['registration_number'];
         $org->country = $prevInfo['country'];
-        $org->local = $prevInfo['local'];        
+        $org->local = $prevInfo['local']; 
         
-        $org->save();        
+        $org->setLatLong(-6.140555,35.551758);            
+        
+        $org->save();       
+        
+        /* auto-create empty pages */
+        $org->getWidgetByName('news')->save();
+        $org->getWidgetByName('team')->save();
+        $org->getWidgetByName('projects')->save();
+        $org->getWidgetByName('history')->save();
+        $org->getWidgetByName('partnerships')->save();
+        
+        $contactWidget = $org->getWidgetByName('contact');
+        $contactWidget->public_email = "yes";
+        $contactWidget->save();        
 
         $guid = $org->guid;
 

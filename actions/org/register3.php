@@ -32,6 +32,8 @@
         $org->city = get_input('city');
         $org->region = get_input('region');
         $org->sector_other = get_input('sector_other');
+        
+        $org->theme = get_input('theme');
 
         $latlong = elgg_geocode_location($org->getLocationText());
     
@@ -41,18 +43,7 @@
         }            
         
         $homeWidget->save();        
-        
-        /* auto-create empty pages */
-        $org->getWidgetByName('news')->save();
-        $org->getWidgetByName('team')->save();
-        $org->getWidgetByName('projects')->save();
-        $org->getWidgetByName('history')->save();
-        $org->getWidgetByName('partnerships')->save();
-        
-        $contactWidget = $org->getWidgetByName('contact');
-        $contactWidget->public_email = "yes";
-        $contactWidget->save();
-        
+                
         $org->setup_state = 5;
         $org->save();        
                        

@@ -26,7 +26,11 @@ $curTranslation = lookup_translation($entity, $property, $entity->getLanguage(),
 
 $curText = ($curTranslation) ? $curTranslation->value : $text;
 
-$transIn = sprintf(elgg_echo("trans:inlang"), $langStr);
+$transIn = sprintf(elgg_echo("trans:inlang"), elgg_view('input/language', array(
+        'internalname' => 'newLang',
+        'value' => $lang
+    )) 
+);
 
 echo "<h3>$transIn: </h3>";
 echo elgg_view("input/longtext", array('internalname' => 'translation', 'value' => $curText)).
@@ -37,4 +41,4 @@ echo elgg_view("input/longtext", array('internalname' => 'translation', 'value' 
 
 $formBody = ob_get_clean();
 
-echo elgg_view('input/form', array('action' => "{$vars['url']}action/translate", 'body' => $formBody));
+echo elgg_view('input/form', array('action' => "{$vars['url']}action/translation/translate", 'body' => $formBody));

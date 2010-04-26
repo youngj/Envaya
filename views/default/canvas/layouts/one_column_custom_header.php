@@ -12,7 +12,7 @@
         $submenu = get_submenu_group('topnav', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group'); 
         if (!empty($submenu))
         {
-            echo "<div id='site_menu'>$submenu</div>";
+            echo "<div id='site_menu'>$submenu<div style='clear:both'></div></div>";
         }    
         else
         {
@@ -24,12 +24,9 @@
         <div id='content_top'></div>
         <div id='content_mid'>       
             <?php echo elgg_view('translation/control_bar'); ?>
-            <?php echo $vars['area2']; ?>
-            &nbsp;    
+            <?php echo $vars['area2']; ?>            
             <div style='clear:both'></div>        
-        </div>
-        
-
+        </div>        
         <div id='content_bottom'></div>        
     </div>
 </div>

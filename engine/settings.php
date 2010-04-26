@@ -40,7 +40,7 @@
     $CONFIG->dataroot = dirname($CONFIG->path). "/elgg-data/";
     
     $CONFIG->simplecache_enabled = 0;
-    $CONFIG->simplecache_version = 30;
+    $CONFIG->simplecache_version = 31;
     
     $CONFIG->cookie_domain = null;
     $CONFIG->viewpath_cache_enabled = 0;

@@ -82,11 +82,6 @@ body
     padding:0px 2px;
 }
 
-#content_mid .padded
-{
-    padding-top:0px;
-}
-
 #heading
 {
     font-size:16px;
@@ -110,17 +105,11 @@ body
 .home_heading, .section_header
 {
     height:19px;
-    width:203px;
+    width:213px;
     padding:13px 0px;
     text-align:center;
     font:bold 16px Arial;
-    background:url("<?php echo $graphicsDir; ?>/home_headings.gif") no-repeat left top;      
-}
-
-.home_section a
-{
-    color:#555;
-    margin:8px 5px 8px 5px;
+    background:url("<?php echo $graphicsDir; ?>/home_headings.gif?v2") no-repeat left top;      
 }
 
 .section_header
@@ -130,10 +119,21 @@ body
 
 .home_section
 {
-    background:url("<?php echo $graphicsDir; ?>/home_plate.gif?v2") no-repeat left 28px;      
-    width:203px;
+    background:url("<?php echo $graphicsDir; ?>/home_plate.gif?v4") no-repeat left 31px;
+    width:214px;
     margin:0 auto;
-    height:185px;    
+    height:190px;
+}
+
+.home_content
+{
+    padding:9px 12px;
+}
+
+.home_content a
+{
+    color:#555;
+    margin:5px 0px;
 }
 
 .heading_green

@@ -440,7 +440,7 @@
         'trans:original_in' => "Maandiko ya asili kwa %s",
         'trans:translate' => "Tafsiri maandiko",
         'trans:inlang' => "Tafsiri kwa %s",
-        'trans:contribute' => "Andikia tafsiri",
+        'trans:contribute' => "Andika tafsiri",
         'trans:empty' => "Tafsiri ilikuwa tupu",
         'trans:invalid_id' => "Jina baya ya maandiko",
         'trans:submit' => "Hifadhi tafsiri",

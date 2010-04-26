@@ -4,5 +4,5 @@
     
     change_viewer_language($newLanguage);
     
-    forward_to_referrer();
+    forward_to_referrer();    
 ?>

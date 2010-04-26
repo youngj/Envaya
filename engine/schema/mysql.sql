@@ -141,8 +141,9 @@ CREATE TABLE `widgets` (
 CREATE TABLE `partnerships` (
     `guid` bigint(20) unsigned NOT NULL,
     `partner_guid` bigint(20) unsigned NOT NULL,
-    `approval` smallint not null default 0,
+    `approval` smallint not null default 0,    
     `description` text,
+    `language` varchar(4) default null,
     `date_formed` text,
     PRIMARY KEY (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -153,6 +154,7 @@ CREATE TABLE `team_members` (
     `description` text,
     `data_types` smallint not null default 0,
     `list_order` int not null default 0,
+    `language` varchar(4) default null,
     PRIMARY KEY (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

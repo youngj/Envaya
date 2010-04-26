@@ -9,7 +9,7 @@
     
     if (!$full)
     {
-        echo "<div class='blog_post_wrapper'>";
+        echo "<div class='blog_post_wrapper padded'>";
     }
 ?>
    

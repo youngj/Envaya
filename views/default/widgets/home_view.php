@@ -24,7 +24,7 @@
         {
             echo elgg_view_entity($post);
         }
-        echo "<div style='padding:5px'><a class='float_right' href='".$org->getUrl()."/news'>".elgg_echo('blog:view_all')."</a><div style='clear:both'></div></div>";
+        echo "<div class='padded'><a class='float_right' href='".$org->getUrl()."/news'>".elgg_echo('blog:view_all')."</a><div style='clear:both'></div></div>";
     }    
     
     echo "</div>";

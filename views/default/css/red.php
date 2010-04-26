@@ -27,10 +27,14 @@
     background:#e6e6e6 url("<?php echo $graphicsDir; ?>/sectionheader.gif") no-repeat left top;  
     height:21px;
     font-family:Verdana, sans-serif;
-    text-transform:uppercase;
 }
 
 .thin_column
 {
     width:493px;
+}
+
+#translate_bar
+{
+    margin-bottom:0px;
 }

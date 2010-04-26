@@ -10,6 +10,7 @@ class Partnership extends ElggObject
         'partner_guid' => 0,
         'date_formed' => '',
         'approval' => 0,
+        'language' => '',
     );
     
     function getPartner()

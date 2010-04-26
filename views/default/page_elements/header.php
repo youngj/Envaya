@@ -67,9 +67,7 @@ END;
     
     <!--[if IE 6]>
     <style type='text/css'>
-    <?php if (get_theme() == "green") { ?>
     #site_menu a, 
-    <?php } ?>
     #edit_pages_menu a { width:10px; }
     </style>
     <![endif]-->

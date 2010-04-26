@@ -876,7 +876,6 @@ body
 .blog_post_wrapper
 {    
     border-bottom:1px solid #ddd;
-    padding:8px;
 }
 
 .feed_org_icon
@@ -1146,8 +1145,8 @@ a.smallBlogImageLink:hover
 
 #translate_bar
 {
+    margin:0px 1px 3px 1px;
     padding: 6px 2px 8px 51px;
-    margin-bottom:2px;
     overflow:visible;
     background:#948f87 url(<?php echo $graphicsDir; ?>/world.gif) no-repeat 5px 5px;
     color:white;

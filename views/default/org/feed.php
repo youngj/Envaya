@@ -60,7 +60,7 @@ foreach ($updates as $update)
     $org = $update->getContainerEntity();
 ?>
 
-<div class='blog_post_wrapper'>
+<div class='blog_post_wrapper padded'>
 <div class="feed_post">    
     <?php 
         $orgIcon = $org->getIcon('small');

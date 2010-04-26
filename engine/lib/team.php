@@ -9,7 +9,8 @@ class TeamMember extends ElggObject
         'name' => '',
         'description' => '',
         'data_types' => 0,
-        'list_order' => 0
+        'list_order' => 0,
+        'language' => '',
     );        
 
     public function getImageFile($size = '')

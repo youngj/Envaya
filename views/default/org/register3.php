@@ -73,8 +73,19 @@
 </div>
 
 <div class='input'>
+<label><?php echo elgg_echo('setup:theme') ?></label>
+<div class='help'><?php echo elgg_echo('setup:theme:help') ?></div>
+</div>
+
+<?php echo elgg_view('input/theme', array(
+    'internalname' => 'theme',
+    'value' => $org->theme ?: 'green',
+    'previewUrl' => $org->getURL()
+)); ?>
+
+
+<div class='input'>
 <label><?php echo elgg_echo('setup:next') ?></label>
-<div class='help'><?php echo elgg_echo('setup:next:help') ?></div>
 <br />
 <?php echo elgg_view('input/submit',array(
     'value' => elgg_echo('setup:next:button'),

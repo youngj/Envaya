@@ -299,7 +299,14 @@ function get_translatable_language_keys()
 function change_viewer_language($newLanguage)
 {
     global $CONFIG;
-    setcookie("lang", $newLanguage, time() + 60 * 60 * 24 * 365 * 15, '/', $CONFIG->cookie_domain);
+    
+    $expireTime = time() + 60 * 60 * 24 * 365 * 15;
+    
+    if ($CONFIG->cookie_domain)
+    {
+        setcookie("lang", $newLanguage, $expireTime, '/', $CONFIG->cookie_domain);
+    }    
+    setcookie("lang", $newLanguage, $expireTime, '/');
 }
 
 //$a = microtime(true);
