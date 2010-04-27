@@ -52,9 +52,29 @@ include_once(dirname(__FILE__)."/engine/start.php");
         var file = document.getElementById('file');
         
         if (file.value)
-        {        
-            swfupload.uploadProgress();        
-            form.submit();
+        {   
+            var len = file.value.length;
+            var position = eval(len - 4);
+            var fileType = file.value.toLowerCase().substr(position, len);
+
+            if(fileType == ".jpg" || fileType == ".png" || fileType == ".gif") 
+            {
+                swfupload.uploadProgress();        
+                form.submit();
+            }
+            else
+            {
+                if (fileType == ".doc")
+                {
+                    var msg = "<?php echo elgg_echo('upload:image:isdoc'); ?>";
+                }
+                {
+                    var msg = "<?php echo elgg_echo('upload:image:isbad'); ?>";
+                }
+                alert(msg);
+                file.value = '';
+            }
+
         }
     }
     </script>

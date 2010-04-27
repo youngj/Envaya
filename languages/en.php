@@ -406,6 +406,9 @@
         'upload:image:complete' => "Upload complete. Previewing...",
         'upload:image:error' => "Error uploading image: ",         
         'upload:image:recommend_flash' => "Note: To add photos faster, install %s.",
+        
+        'upload:image:isdoc' => "Error: You are trying to upload a Microsoft Word document.  Envaya only supports image formats.  Please save the image from your document as a .jpg, .png, and .gif file.",         
+        'upload:image:isbad' => "Error: You are trying to upload an invalid file. Envaya only supports .jpg, .png, and .gif image formats.",         
                  
         'contact:link' => "Contact",    
         'contact:title' => 'Contact us',

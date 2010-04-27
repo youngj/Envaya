@@ -389,6 +389,9 @@
         'upload:image:complete' => "Picha imehifadhiwa. Ikionyesha...",
         'upload:image:error' => "Kosa uploading picha: ",                 
         'upload:image:recommend_flash' => "Angalia: Kuongeza picha kwa haraka zaidi, weka %s.",
+        
+        'upload:image:isdoc' => "Shida: Unajaribu kuweka faili ya Microsoft Word.  Envaya imefanya kazi na picha tu.  Tafadhali hifadhi picha kutoka document na tumia muundo .jpg au .png au .gif",
+        'upload:image:isbad' => "Shida: Unajaribu kuweka faili mbaya. Envaya imefanya kazi na picha tu na muundo .jpg au .png au .gif",
 
         'contact:link' => "Wasiliana",    
         'contact:title' => 'Wasiliana nasi',        
