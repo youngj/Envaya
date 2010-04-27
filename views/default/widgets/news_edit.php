@@ -5,8 +5,8 @@
     
     $form = elgg_view('org/addPost', array('org' => $org));
  
-    echo elgg_view_layout('section', elgg_echo("dashboard:add_update"), $form);    
-    
+    echo elgg_view_layout('section', elgg_echo("dashboard:add_update"), $form);      
+  
     ob_start();
 ?>
 <p><?php echo elgg_echo('widget:news:mobile_summary') ?></p>

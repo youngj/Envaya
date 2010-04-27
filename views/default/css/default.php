@@ -1472,3 +1472,38 @@ a.attachImageClose:hover
     display:block;
     white-space:nowrap;
 }
+
+.photoPreviewContainer
+{
+    padding:5px;
+}
+
+.photoPreview
+{
+    display:block;
+    float:left;
+    width:120px;
+}
+
+.photoCaptionInput
+{
+    display:block;
+    float:left;
+    width:280px;
+    height:70px;
+}
+
+.photoDelete
+{
+    display:block;
+    float:left;
+    margin-left:5px;
+    width:29px;
+    height:29px;
+    background:url("<?php echo $graphicsDir ?>/delete.gif?v2") no-repeat left -30px;
+}
+
+a.photoDelete:hover
+{
+    background-position:left top;
+}

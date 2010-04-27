@@ -93,7 +93,7 @@ body
     color:#333;
     padding-left:39px;
     padding-top:10px;
-    background:url(<?php echo $graphicsDir; ?>/editoricons.gif?v3) no-repeat left top;
+    background:url(<?php echo $graphicsDir; ?>/editoricons.gif?v4) no-repeat left top;
 }
 
 a.icon_link:hover
@@ -118,6 +118,7 @@ a.icon_link:hover
 .icon_feed      { background-position:left -193px; }
 .icon_settings  { background-position:left -233px; }
 .icon_design    { background-position:left -273px; }
+.icon_photos    { background-position:left -313px; }
 
 
 

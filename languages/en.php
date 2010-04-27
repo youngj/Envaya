@@ -26,6 +26,10 @@
         'feedback:empty' => "Your message was empty.",
         'feedback:sent' => "Message sent. Thanks for your feedback!",
         
+        'addphotos:title' => "Add photos",
+        'addphotos:label' => "Choose the photos you want to add:",
+        'addphotos:more' => "Add More Photos",
+        
         'user:settings' => "Account settings",
         
         'why:title' => 'Why use Envaya?',        
@@ -241,6 +245,7 @@
         'widget:projects:help' => "Write about the work and activities that your organization does.",
 
         'widget:news' => "News",                
+        'widget:news:photos' => "Photos",
         'widget:news:item' => "News update",                
         'widget:news:latest' => 'Latest News',
         'widget:news:empty' => "This organization has not yet written any news updates.",        

@@ -47,6 +47,8 @@ function showAttachImage($show)
         
         var imageUpload = document.getElementById('imageUpload');
         imageUpload.value = '';
+        
+        document.getElementById('imageUploadProgress').innerHTML = '';
     }
 }
 </script>
@@ -63,6 +65,8 @@ function showAttachImage($show)
     <?php echo elgg_view('input/swfupload_image', array(
         'internalname' => 'image',
         'trackDirty' => true,
+        'internalid' => 'imageUpload',
+        'progressid' => 'imageUploadProgress',
         'sizes' => NewsUpdate::getImageSizes()
     )) ?>
     

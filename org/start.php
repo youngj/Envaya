@@ -92,6 +92,9 @@ function org_profile_page_handler($page)
             case "compose":
                 include(dirname(__FILE__) . "/composeMessage.php");
                 return;
+            case "addphotos":
+                include(dirname(__FILE__) . "/addPhotos.php");
+                return;
             case "teammember":
                 set_input("member_guid", @$page[2]);
                 switch (@$page[3])

@@ -26,7 +26,9 @@
 <td>
     <a class='icon_link icon_home' href='<?php echo $org->getURL() ?>'><?php echo elgg_echo('dashboard:view_home') ?></a>
     <div class='icon_separator'></div>
-    <a class='icon_link icon_design' href='<?php echo $org->getURL() . "/design" ?>'><?php echo elgg_echo('design:edit') ?></a>    
+    <a class='icon_link icon_photos' href='<?php echo $org->getURL() . "/addphotos" ?>?from=pg/dashboard'><?php echo elgg_echo('addphotos:title') ?></a>    
+    <div class='icon_separator'></div>   
+    <a class='icon_link icon_design' href='<?php echo $org->getURL() . "/design" ?>?from=pg/dashboard'><?php echo elgg_echo('design:edit') ?></a>    
     <div class='icon_separator'></div>
     <a class='icon_link icon_settings' href='pg/settings'><?php echo elgg_echo('dashboard:settings') ?></a>
     <div class='icon_separator'></div>

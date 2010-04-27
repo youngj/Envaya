@@ -1135,166 +1135,87 @@ swfobject.addDomLoadEvent(function () {
 	}
 });
 
-/****
-    
+/**
     Envaya-specific usage below:
-
-**/
+ **/
  
-function image_uploader($vars)
+var ImageUploader = makeClass();
+
+ImageUploader.prototype.init = function($vars)
 {
-    var $swfupload;
-
-    function set_upload_progress($html)
-    {
-        document.getElementById($vars.progress_id).innerHTML = $html; 
-    }    
+    this.options = $vars;    
     
+    this.swfupload = new SWFUpload(this.getSWFUploadOptions());        
+};
 
-    function show_preview_image(serverData)
-    {
-        var $data;
-        
-        eval("$data = " + serverData);    
-        
-        if (!$data)
-        {
-            set_upload_progress($vars.upload_error_message + " -1");
-        }
-        else
-        {
-            var progress = document.getElementById($vars.progress_id);
+ImageUploader.prototype.getSWFUploadOptions = function()
+{
+    var $self = this;
 
-            var loadingMessage = document.createElement('span');
-            loadingMessage.appendChild(document.createTextNode($vars.loading_preview_message));
-
-            removeChildren(progress);
-            progress.appendChild(loadingMessage);
-        
-            var img = document.createElement('img');
-
-            img.style.display = 'none';
-            
-            addEvent(img, 'load', function() {
-                img.style.display = 'inline';
-                progress.removeChild(loadingMessage);
-            });                
-            
-            img.src = $data[$vars.thumbnail_size].url;
-            progress.appendChild(img);                               
-        }    
-    }    
-    
-    var prevValue = document.getElementById($vars.result_id).value;
-    if (prevValue)
-    {
-        show_preview_image(prevValue);
-    }
-    
-    function add_fallback_iframe($swfupload)
-    {
-        var $placeholder = document.getElementById($vars.placeholder_id);
-        removeChildren($placeholder);
-        
-        var $iframe = document.createElement('iframe');
-        $iframe.border = 0;
-        $iframe.frameBorder = 0;
-        $iframe.scrolling = 'no';
-        $iframe.id = 'uploadIframe' + Math.floor(Math.random() * 1000000);        
-        $iframe.src = "upload.php?sizes=" + escape($vars.sizes) + "&swfupload=" + $swfupload.movieName;
-        $iframe.className = 'uploadIframe';
-        $placeholder.appendChild($iframe);
-        
-        set_upload_progress($vars.recommend_flash_message);
-    }
-
-    $swfupload = new SWFUpload({
-        // Backend Settings
+    return {
         upload_url: "/action/uploadTemp",
-        file_post_name : "file",
-        post_params: { "sizes": $vars.sizes, "session_id": $vars.session_id },  
+        file_post_name: "file",
+        post_params: { 
+            "sizes": this.options.sizes, 
+            "session_id": this.options.session_id 
+        },  
 
-        // File Upload Settings
         file_types : "*.jpg;*.gif;*.png",
         file_types_description : "Images",
         file_upload_limit : 0,
 
-        swfupload_preload_handler : function()
+        swfupload_preload_handler: function()
         {
-            if (!this.support.imageResize) 
+            $self.swfupload = this;
+        
+            if (!$self.swfupload.support.imageResize) 
             {
-                add_fallback_iframe(this);
+                $self.addFallbackIframe();
                 return false;
-            }
+            }    
+            return true;
         },
         
         swfupload_load_failed_handler: function()
         {
-            add_fallback_iframe(this);
+            $self.addFallbackIframe();
         },
         
-        file_queue_error_handler : function(file, errorCode, message)
+        file_queue_error_handler: function(file, errorCode, message)
         {
-            set_upload_progress($vars.queue_error_message + errorCode);
+            $self.setProgress($self.options.queue_error_message + errorCode);
         },
         
-        file_dialog_complete_handler : function(numFilesSelected, numFilesQueued) 
+        file_dialog_complete_handler: function(numFilesSelected, numFilesQueued) 
         {
-            if (numFilesQueued > 0) 
-            {
-                var file = this.getFile(0);    
-
-                if (file)
-                {
-                    set_upload_progress($vars.processing_message);
-                
-                    if (file.size > 100000)
-                    {
-                        this.startResizedUpload(file.ID, $vars.max_width, $vars.max_height, SWFUpload.RESIZE_ENCODING.JPEG, 75);
-                    }
-                    else
-                    {
-                        this.startUpload(file.ID);
-                    }
-                }   
-                else
-                {
-                    set_upload_progress($vars.queue_error_message + "-2");                
-                }
-            }
-        },
+            $self.fileDialogCompleteHandler(numFilesSelected, numFilesQueued);
+        },        
         
         upload_progress_handler: function() 
         {
-            set_upload_progress($vars.upload_progress_message);
+            $self.uploadProgressHandler();
         },
         
         upload_error_handler: function(file, errorCode, message) 
         { 
-            set_upload_progress($vars.upload_error_message + errorCode);            
+            $self.setProgress(this.options.upload_error_message + errorCode);            
         },
         
         upload_success_handler: function(file, serverData) 
-        {
-            document.getElementById($vars.result_id).value = serverData;
-            if ($vars.trackDirty)
-            {
-                setDirty(true);
-            }
-            show_preview_image(serverData);            
+        {    
+            $self.uploadSuccessHandler(file, serverData);
         },
 
         // Button Settings        
-        button_placeholder_id : $vars.placeholder_id,
+        button_placeholder_id : this.options.placeholder_id,
         button_width: 100,
         button_height: 18,
-        button_text : '<span class="button">'+$vars.button_message+'</span>',
+        button_text : '<span class="button">'+this.options.button_message+'</span>',
         button_text_style : '.button { font-weight: bold; font-size: 12px; font-family:Helvetica, Arial, sans-serif; color: #0000cc; }',
         button_text_top_padding: 0,
         button_text_left_padding: 0,
         button_window_mode: SWFUpload.WINDOW_MODE.TRANSPARENT,
         button_cursor: SWFUpload.CURSOR.HAND,
-        button_action: SWFUpload.BUTTON_ACTION.SELECT_FILE,
 
         // Flash Settings
         flash_url : "/_media/swfupload.swf",
@@ -1305,10 +1226,140 @@ function image_uploader($vars)
         custom_settings : {},
 
         debug: false
-    });
+    }
+};
+
+ImageUploader.prototype.fileDialogCompleteHandler = function(numFilesSelected, numFilesQueued)
+{
+    if (numFilesQueued > 0) 
+    {
+        var $file = this.swfupload.getQueueFile(0);    
+
+        if ($file)
+        {                
+            this.startUpload($file);
+        }   
+        else
+        {
+            this.setProgress(this.options.queue_error_message + "-2");                
+        }
+    }
+};    
     
-    return $swfupload;
-}
+ImageUploader.prototype.setProgress = function($html)
+{
+    document.getElementById(this.options.progress_id).innerHTML = $html; 
+};
+
+ImageUploader.prototype.uploadProgressHandler = function()
+{
+    this.setProgress(this.options.upload_progress_message);
+};
     
-  
-       
+ImageUploader.prototype.startUpload = function($file)
+{
+    this.setProgress(this.options.processing_message);
+
+    if ($file.size > 100000)
+    {
+        this.swfupload.startResizedUpload($file.ID, this.options.max_width, this.options.max_height, SWFUpload.RESIZE_ENCODING.JPEG, 75);
+    }
+    else
+    {
+        this.swfupload.startUpload($file.ID);
+    }
+};
+        
+ImageUploader.prototype.uploadSuccessHandler = function($file, $serverData)
+{
+    if (this.options.trackDirty)
+    {
+        setDirty(true);
+    }
+    this.showPreviewImage($serverData);            
+}; 
+               
+ImageUploader.prototype.showPreviewImage = function($serverData) 
+{
+    var $data;
+
+    eval("$data = " + $serverData);    
+
+    if (!$data)
+    {
+        this.setProgress(this.options.upload_error_message + " -1");
+        return false;
+    }
+    else
+    {
+        this.showParsedPreviewImage($data, $serverData);
+        return true;
+    }    
+};
+
+ImageUploader.prototype.showParsedPreviewImage = function($data, $serverData) {};
+    
+ImageUploader.prototype.addFallbackIframe = function($swfupload)
+{
+    this.iframe_mode = true;
+
+    var $placeholder = document.getElementById(this.options.placeholder_id);
+    removeChildren($placeholder);
+
+    var $iframe = document.createElement('iframe');
+    $iframe.border = 0;
+    $iframe.frameBorder = 0;
+    $iframe.scrolling = 'no';
+    $iframe.id = 'uploadIframe' + Math.floor(Math.random() * 1000000);        
+    $iframe.src = "upload.php?sizes=" + escape(this.options.sizes) + "&swfupload=" + this.swfupload.movieName;
+    $iframe.className = 'uploadIframe';
+    $placeholder.appendChild($iframe);
+
+    this.setProgress(this.options.recommend_flash_message);
+};
+
+var SingleImageUploader = makeClass(ImageUploader);
+
+SingleImageUploader.prototype.init = function($vars)
+{    
+    ImageUploader.prototype.init.call(this, $vars);
+
+    var prevValue = document.getElementById($vars.result_id).value;
+    if (prevValue)
+    {
+        this.showPreviewImage(prevValue);
+    }    
+};
+
+SingleImageUploader.prototype.getSWFUploadOptions = function()
+{
+    var $options = ImageUploader.prototype.getSWFUploadOptions.call(this);
+    $options.button_action = SWFUpload.BUTTON_ACTION.SELECT_FILE;
+    return $options;
+};
+
+SingleImageUploader.prototype.showParsedPreviewImage = function($data, $serverData)
+{            
+    document.getElementById(this.options.result_id).value = $serverData;
+
+    var progress = document.getElementById(this.options.progress_id);
+
+    var loadingMessage = document.createElement('span');
+    loadingMessage.appendChild(document.createTextNode(this.options.loading_preview_message));
+
+    removeChildren(progress);
+    progress.appendChild(loadingMessage);
+
+    var img = document.createElement('img');
+
+    img.style.display = 'none';
+
+    addEvent(img, 'load', function() {
+        img.style.display = 'inline';
+        progress.removeChild(loadingMessage);
+    });                
+
+    img.src = $data[this.options.thumbnail_size].url;
+    progress.appendChild(img);              
+};
+

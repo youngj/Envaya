@@ -4,7 +4,7 @@
     if (!isset($SWFUPLOAD_INCLUDE_COUNT))
     {
         $SWFUPLOAD_INCLUDE_COUNT = 0;
-        echo "<script type='text/javascript' src='_media/swfupload.js?v2'></script>";
+        echo "<script type='text/javascript' src='_media/swfupload.js?v3'></script>";
     }    
     else
     {
@@ -28,36 +28,30 @@
     
     $prevInput = restore_input($vars['internalname'], '');
     
+    $resultId = @$vars['internalid'] ?: "imageUpload$SWFUPLOAD_INCLUDE_COUNT";
+    $progressId = @$vars['progressid'] ?: "imageUploadProgress$SWFUPLOAD_INCLUDE_COUNT";
+    
     echo elgg_view('input/hidden', array(
         'internalname' => $vars['internalname'], 
-        'internalid' => "imageUpload$SWFUPLOAD_INCLUDE_COUNT", 
+        'internalid' => $resultId, 
         'value' => $prevInput
     )); 
 ?>
 
 <span id='imageUploadContainer<?php echo $SWFUPLOAD_INCLUDE_COUNT ?>'></span>
-<div id='imageUploadProgress<?php echo $SWFUPLOAD_INCLUDE_COUNT ?>' class='imageUploadProgress'></div>
-<script type="text/javascript">
-    image_uploader({     
-        session_id: <?php echo json_encode(session_id()); ?>,
-        trackDirty: <?php echo (@$vars['trackDirty'] ? 'true' : 'false'); ?>,
-        thumbnail_size: <?php echo json_encode(@$vars['thumbnail_size'] ?: 'small') ?>,
-        max_width: <?php echo $maxWidth ?>,
-        max_height: <?php echo $maxHeight ?>,
-        progress_id: 'imageUploadProgress<?php echo $SWFUPLOAD_INCLUDE_COUNT ?>',
-        placeholder_id: 'imageUploadContainer<?php echo $SWFUPLOAD_INCLUDE_COUNT ?>',        
-        result_id: 'imageUpload<?php echo $SWFUPLOAD_INCLUDE_COUNT ?>',        
-        button_message: <?php echo json_encode(elgg_echo('upload:browse')) ?>,
-        queue_error_message: <?php echo json_encode(elgg_echo('upload:image:error')) ?>,
-        processing_message: <?php echo json_encode(elgg_echo('upload:image:processing')) ?>,
-        upload_progress_message: <?php echo json_encode(elgg_echo('upload:image:uploading')) ?>,
-        loading_preview_message: <?php echo json_encode(elgg_echo('upload:image:complete')) ?>,
-        upload_error_message: <?php echo json_encode(elgg_echo('upload:image:error')) ?>,        
-        recommend_flash_message: <?php echo json_encode("<div class='help' style='font-size:10px'>".
-            sprintf(elgg_echo('upload:image:recommend_flash'),
-                    "<a href='http://www.adobe.com/go/getflash' target='_blank'>Adobe Flash 10</a>")
-            ."</div>") ?>,
-        sizes: <?php echo json_encode(json_encode($sizes)) ?>
-    });
+<div id='<?php echo $progressId ?>' class='imageUploadProgress'></div>
+<script type="text/javascript">    
+    new SingleImageUploader(<?php echo elgg_view('input/swfupload_args', array(
+        'args' => array(
+            'trackDirty' => (@$vars['trackDirty'] ? true : false),
+            'thumbnail_size' => @$vars['thumbnail_size'] ?: 'small',
+            'max_width' => $maxWidth,
+            'max_height' => $maxHeight,
+            'progress_id' => $progressId,
+            'placeholder_id' => "imageUploadContainer$SWFUPLOAD_INCLUDE_COUNT",
+            'result_id' => $resultId,
+            'sizes' => json_encode($sizes)
+        )    
+    )) ?>);
 </script>    
     
