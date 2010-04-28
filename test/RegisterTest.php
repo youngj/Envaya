@@ -114,7 +114,8 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     }
 
     public function test()
-    {
+    {        
+        $this->_testContactForm();
         $this->_testRegister();
         $this->_testResetPassword();
         $this->_testSettings();        
@@ -126,6 +127,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->_testMakePublic();
         $this->_testPartnership();
         $this->_testMessages();
+        $this->_testDeleteOrg();
     }
     
     private function _testResetPassword()
@@ -192,7 +194,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->submitForm();        
         $this->mouseOver("//div[@class='bad_messages']");        
 
-        $this->username = "test".time();
+        $this->username = "selenium".time();
 
         $this->type("//input[@name='username']", $this->username);
         $this->submitForm();
@@ -411,7 +413,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         
         $this->s->mouseOver("//div[@class='good_messages']");
         
-        $this->username2 = "test".time();
+        $this->username2 = "selenium".time();
         
         $this->type("//input[@name='org_name']", "Test Org Partner");
         $this->type("//input[@name='username']", $this->username2);
@@ -502,6 +504,63 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->assertContains("Test Message",$email);
         $this->assertContains('To: "Test Org Partner" <adunar+foo@gmail.com>', $email);
         $this->assertContains('Reply-To: "New Name" <adunar@gmail.com>', $email);
+    }
+    
+    private function _testContactForm()
+    {
+        $this->open("/page/contact");
+        $this->type("//textarea[@name='message']", "contact message");
+        $this->type("//input[@name='name']", "contact name");
+        $this->type("//input[@name='email']", "adunar+bar@gmail.com");
+        $this->submitForm();
+        $this->mouseOver("//div[@class='good_messages']");
+        
+        $email = $this->getLastEmail("User feedback");
+
+        $this->assertContains("contact message",$email);
+        $this->assertContains('contact name', $email);
+        $this->assertContains('adunar+bar@gmail.com', $email);        
+    }
+    
+    private function _testDeleteOrg()
+    {
+        $this->open("/pg/admin/user/");
+        $this->type("//input[@name='username']",'testadmin');        
+        $this->type("//input[@name='password']",'testtest');
+        $this->submitForm();
+        
+        $this->clickAndWait("//a[contains(@href,'selenium')]");
+        
+        while (true)
+        {              
+            try
+            {
+                $this->clickAndWait("//a[contains(@href,'approval=0')]");
+                $this->s->getConfirmation();
+            }
+            catch (Testing_Selenium_Exception $ex) {}
+            
+            try
+            {
+                $this->clickAndWait("//a[contains(@href,'approval=-1')]");
+                $this->s->getConfirmation();
+            }
+            catch (Testing_Selenium_Exception $ex) {}
+            
+            $this->clickAndWait("//a[contains(@href,'delete')]");
+            $this->s->getConfirmation();
+            
+            $this->mouseOver("//div[@class='good_messages']");
+            try
+            {
+                $this->clickAndWait("//a[contains(@href,'selenium')]");
+            }
+            catch (Testing_Selenium_Exception $ex)
+            {
+                break;
+            }
+        }            
+        $this->clickAndWait("//a[contains(@href,'action/logout')]");
     }
 }
 

@@ -17,5 +17,5 @@
 	else
 		register_error(sprintf(elgg_echo('entity:delete:fail'), $guid));
 		
-	forward('page/home');
+    forward('pg/admin/user');
 ?>
