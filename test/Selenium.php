@@ -2691,6 +2691,12 @@ class Testing_Selenium
 
         stream_set_blocking($handle, false);
         $response = stream_get_contents($handle);
+        
+        if (strpos($response, "ERROR") === 0)
+        {
+            throw new Testing_Selenium_Exception($response);
+        }        
+        
         fclose($handle);
 
         return $response;

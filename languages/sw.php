@@ -19,6 +19,11 @@
         'feedback:empty' => "Ujumbe wako ulikuwa wazi.",
         'feedback:sent' => "Ujumbe ulipelekwa. Asante kwa maoni yako!",        
         
+        'addphotos:title' => "Ongeza picha",
+        'addphotos:label' => "Chagua picha ambazo unataka kuziongeza:",
+        'addphotos:more' => "Ongeza Picha Zaidi",
+        
+        
         'user:settings' => "Mipangilio ya akaunti",
         
         'why:title' => 'Kwa nini utumie Envaya?',
