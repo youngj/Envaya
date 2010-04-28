@@ -8,6 +8,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 {
     private $s;
     private $username;
+    private $username2;
 
     public function setUp()
     {
@@ -96,6 +97,22 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         }    
     }
 
+    public function getLinkFromEmail($email)
+    {
+        if (!preg_match('/http:[^\\s]+/', $email, $matches))
+        {
+            throw new Exception("couldn't find link in email $email");
+        }        
+        return $matches[0];
+    }
+
+    public function setUrl($url)
+    {
+        // for some reason open() loads the action twice?
+        $this->s->getEval("window.location.href='$url';");
+        $this->s->waitForPageToLoad(10000);
+    }
+
     public function test()
     {
         $this->_testRegister();
@@ -107,6 +124,8 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->_testEditContact();
         $this->_testEditHome();        
         $this->_testMakePublic();
+        $this->_testPartnership();
+        $this->_testMessages();
     }
     
     private function _testResetPassword()
@@ -118,16 +137,10 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->submitForm();
         
         $email = $this->getLastEmail("Request for new password");
-        
-        if (!preg_match('/[^\\s]+\/action\/[^\\s]+/', $email, $matches))
-        {
-            throw new Exception("couldn't find reset link in email $email");
-        }
-        $url = $matches[0];
+                
+        $url = $this->getLinkFromEmail($email);
 
-        // for some reason open() loads the action twice?
-        $this->s->getEval("window.location.href='$url';");
-        $this->s->waitForPageToLoad(10000);
+        $this->setUrl($url);
         
         $this->mouseOver("//div[@class='good_messages']");
         
@@ -341,7 +354,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->mouseOver("//div[@class='good_messages']");
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");        
     }
-    
+        
     private function _testMakePublic()
     {
         $this->clickAndWait("//a[contains(@href,'action/logout')]");
@@ -381,7 +394,114 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->clickAndWait("//a[contains(@href,'org/feed')]");
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");        
     }
+    
+    private function _testPartnership()
+    {
+        //$this->clickAndWait("//a[contains(@href,'action/logout')]");
+        $this->clickAndWait("//a[contains(@href,'pg/home')]");        
+        $this->clickAndWait("//a[contains(@href,'org/new')]");        
+
+        /* qualification */
+        $this->click("//input[@name='org_type' and @value='np']");
+        $this->click("//input[@name='country' and @value='tz']");        
+        $this->check("//input[@name='org_info[]' and @value='citizen']");
+        $this->submitForm();        
+        
+        /* create account */
+        
+        $this->s->mouseOver("//div[@class='good_messages']");
+        
+        $this->username2 = "test".time();
+        
+        $this->type("//input[@name='org_name']", "Test Org Partner");
+        $this->type("//input[@name='username']", $this->username2);
+        $this->type("//input[@name='password']", "password");
+        $this->type("//input[@name='password2']", "password");        
+        $this->type("//input[@name='email']", "adunar+foo@gmail.com");
+        $this->submitForm();        
+        
+        /* set up homepage */
+
+        $this->mouseOver("//div[@class='good_messages']");   
+        
+        $this->type("//textarea[@name='mission']", "being a partner");
+        $this->check("//input[@name='sector[]' and @value='4']");
+        $this->check("//input[@name='sector[]' and @value='99']");       
+        $this->type("//input[@name='city']", "Konde");        
+        $this->select("//select[@name='region']", "Pemba North");                
+        $this->click("//input[@name='theme' and @value='wovengrass']");        
+        
+        $this->submitForm();
+
+        /* home page */        
+        
+        $this->mouseOver("//div[@class='good_messages']");
+        
+        $this->clickAndWait("//a[contains(@href,'action/logout')]");
+        
+        $email = $this->getLastEmail("New organization registered");
+        $url = $this->getLinkFromEmail($email);
+        $this->setUrl($url);
+        
+        $this->type("//input[@name='username']",'testadmin');        
+        $this->type("//input[@name='password']",'testtest');
+        $this->submitForm();
+        $this->mouseOver("//div[@class='good_messages']");
+        $this->open("/{$this->username2}");
+        $this->clickAndWait("//a[contains(@href, 'approval=2')]");
+        $this->s->getConfirmation();
+        $this->mouseOver("//div[@class='good_messages']");        
+        
+        $this->clickAndWait("//a[contains(@href,'action/logout')]");
+        $this->clickAndWait("//a[contains(@href,'pg/login')]");
+        $this->type("//input[@name='username']","{$this->username2}");        
+        $this->type("//input[@name='password']",'password');
+        $this->submitForm();
+        
+        $this->mouseOver("//div[@class='good_messages']");
+        
+        $this->open("/{$this->username}");
+        $this->click("//a[contains(@href,'requestPartner')]");
+        $this->s->getConfirmation();
+        
+        $email = $this->getLastEmail("wants to add");
+        
+        $url = $this->getLinkFromEmail($email);
+        
+        $this->clickAndWait("//a[contains(@href,'action/logout')]");
+        
+        $this->setUrl($url);
+        
+        $this->type("//input[@name='username']","{$this->username}");        
+        $this->type("//input[@name='password']",'password2');
+        $this->submitForm();
+        
+        $this->mouseOver("//div[@class='good_messages']");
+        $this->submitForm();
+        $this->mouseOver("//div[@class='good_messages']");
+        $this->mouseOver("//a[@class='feed_org_name' and contains(@href,'/{$this->username2}')]");
+        $this->clickAndWait("//a[contains(@href,'partnerships/edit')]");
+        $this->type("//textarea", 'We work together on stuff');
+        $this->clickAndWait("//button[@name='submit']");
+        $this->mouseOver("//span[contains(text(),'We work together on stuff')]");
+        $this->clickAndWait("//a[@class='feed_org_name' and contains(@href,'/{$this->username2}')]");
+        $this->clickAndWait("//a[contains(@href,'/partnerships')]");
+        $this->mouseOver("//a[@class='feed_org_name' and contains(@href,'/{$this->username}')]");
+    }
+    
+    private function _testMessages()
+    {
+        $this->open("/{$this->username2}");
+        $this->clickAndWait("//a[contains(@href,'/compose')]");
+        $this->type("//input[@name='subject']","Test Subject");
+        $this->type("//textarea[@name='message']", "Test Message");
+        $this->submitForm();
+        $this->mouseOver("//div[@class='good_messages']");
+        $email = $this->getLastEmail("Test Subject");
+        
+        $this->assertContains("Test Message",$email);
+        $this->assertContains('To: "Test Org Partner" <adunar+foo@gmail.com>', $email);
+        $this->assertContains('Reply-To: "New Name" <adunar@gmail.com>', $email);
+    }
 }
 
-
-?>

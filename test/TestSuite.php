@@ -29,7 +29,7 @@ function main()
     
     $mockMailFile = dirname(__FILE__)."/mail.out";
     
-    unlink($mockMailFile);
+    @unlink($mockMailFile);
     
     putenv("MOCK_MAIL_FILE=$mockMailFile");
 
