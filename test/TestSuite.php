@@ -26,6 +26,12 @@ function main()
        1 => STDOUT, //array("file", "runserver.out", 'w'),
        2 => STDERR
     );
+    
+    $mockMailFile = dirname(__FILE__)."/mail.out";
+    
+    unlink($mockMailFile);
+    
+    putenv("MOCK_MAIL_FILE=$mockMailFile");
 
     $queue = proc_open('php runserver.php', $descriptorspec, $pipes2, dirname(dirname(__FILE__)));
 

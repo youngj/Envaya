@@ -269,6 +269,21 @@
         global $CONFIG;
         return send_mail($CONFIG->admin_email, $subject, $message, $headers, $immediate);
     }
+        
+    function mock_send_mail($mail, $recipients, $headers, $body)
+    {
+        global $CONFIG;        
+        $file = fopen(getenv("MOCK_MAIL_FILE"), 'a');
+        fwrite($file, "========\n");
+        foreach ($headers as $k => $v)
+        {
+            fwrite($file, "$k: $v\n");
+        }
+        fwrite($file, "\n");
+        fwrite($file, "$body\n\n");
+        fwrite($file, "--------\n");
+        fclose($file);
+    }
 
     function get_smtp_mailer()
     {
@@ -281,12 +296,23 @@
             require_once("{$CONFIG->path}engine/lib/Net/RFC822.php");
             require_once("{$CONFIG->path}engine/lib/Net/Mail.php");
         
-            $mailer = new Mail_smtp(array(
-                'host' => 'localhost', 
-                'port' => 25, 
-                'username' => 'web@envaya.org', 
-                'auth' => true,
-                'password' => $CONFIG->email_pass));
+            if (getenv("MOCK_MAIL_FILE"))
+            {
+                require_once("{$CONFIG->path}engine/lib/Net/mock.php");
+                
+                $mailer = new Mail_mock(array(
+                    'postSendCallback' => 'mock_send_mail', 
+                ));
+            }
+            else
+            {        
+                $mailer = new Mail_smtp(array(
+                    'host' => 'localhost', 
+                    'port' => 25, 
+                    'username' => 'web@envaya.org', 
+                    'auth' => true,
+                    'password' => $CONFIG->email_pass));
+            }        
         }        
         return $mailer;
     }

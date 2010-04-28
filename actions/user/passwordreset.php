@@ -7,12 +7,13 @@
 	 * @author Curverider Ltd
 	 * @link http://elgg.org/
 	 */
-
-	require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
+	
 	global $CONFIG;
 	
 	$user_guid = get_input('u');
 	$code = get_input('c');
+    
+    access_show_hidden_entities(true);
 	
 	if (execute_new_password_request($user_guid, $code))
 		system_message(elgg_echo('user:password:reset'));

@@ -711,10 +711,11 @@
 	function execute_new_password_request($user_guid, $conf_code)
 	{
 		global $CONFIG;
-		
+		        
 		$user_guid = (int)$user_guid;
-		
-		$user = get_entity($user_guid);
+        		
+		$user = get_entity($user_guid);        
+                
 		if (($user) && (get_private_setting($user_guid, 'passwd_conf_code') == $conf_code))
 		{
 			$password = generate_random_cleartext_password();
@@ -726,7 +727,8 @@
 
             $email = sprintf(elgg_echo('email:resetpassword:body',$user->language), $user->name, $password);
 
-            return notify_user($user->guid, $CONFIG->site_guid, elgg_echo('email:resetpassword:subject',$user->language), $email, NULL, 'email');
+            notify_user($user->guid, $CONFIG->site_guid, elgg_echo('email:resetpassword:subject',$user->language), $email, NULL, 'email');
+            return true;
 		}
 		
 		return false;

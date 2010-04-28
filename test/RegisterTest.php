@@ -74,9 +74,32 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->s->waitForPageToLoad(10000);    
     }
 
+    public function getLastEmail($match = null)
+    {
+        $time = time();
+        
+        while (true)
+        {
+            $contents = file_get_contents(dirname(__FILE__)."/mail.out");
+
+            $marker = strrpos($contents, "========");
+           
+            $email = substr($contents, $marker);
+            
+            if ($email && strpos($email, '--------') && ($match == null || strpos($email, $match) !== false))
+            {
+                return $email;
+            }
+            
+            if (time() - $time > 7)
+                throw new Exception("couldn't find matching email");
+        }    
+    }
+
     public function test()
     {
         $this->_testRegister();
+        $this->_testResetPassword();
         $this->_testSettings();        
         $this->_testTranslate();
         $this->_testPost();
@@ -84,6 +107,43 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->_testEditContact();
         $this->_testEditHome();        
         $this->_testMakePublic();
+    }
+    
+    private function _testResetPassword()
+    {
+        $this->clickAndWait("//a[contains(@href,'action/logout')]");
+        $this->clickAndWait("//a[contains(@href,'pg/login')]");
+        $this->clickAndWait("//a[contains(@href,'account/forgotten_password')]");
+        $this->type("//input[@name='username']", $this->username);
+        $this->submitForm();
+        
+        $email = $this->getLastEmail("Request for new password");
+        
+        if (!preg_match('/[^\\s]+\/action\/[^\\s]+/', $email, $matches))
+        {
+            throw new Exception("couldn't find reset link in email $email");
+        }
+        $url = $matches[0];
+
+        // for some reason open() loads the action twice?
+        $this->s->getEval("window.location.href='$url';");
+        $this->s->waitForPageToLoad(10000);
+        
+        $this->mouseOver("//div[@class='good_messages']");
+        
+        $email = $this->getLastEmail("Password reset");
+        if (!preg_match('/reset to: (\\w+)/', $email, $matches))
+        {
+            throw new Exception("couldn't find password in email $email");
+        }        
+        $password = $matches[1];
+        
+        $this->type("//input[@name='username']", $this->username);
+        $this->type("//input[@name='password']", $password);
+        $this->submitForm();
+        
+        $this->mouseOver("//div[@class='good_messages']");
+        $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
     }
     
     private function _testRegister()
