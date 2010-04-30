@@ -20,9 +20,12 @@
         global $DB_LINK, $CONFIG;
         if (!isset($DB_LINK))
         {
-            $DB_LINK = new mysqli($CONFIG->dbhost, $CONFIG->dbuser, $CONFIG->dbpass, $CONFIG->dbname); 
-            
-            if ($DB_LINK->connect_error)
+            try
+            {
+                $DB_LINK = new PDO("mysql:host={$CONFIG->dbhost};dbname={$CONFIG->dbname}", $CONFIG->dbuser, $CONFIG->dbpass); 
+                $DB_LINK->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
+            }
+            catch (PDOException $ex)    
             {
                 throw new DatabaseException(elgg_echo("DatabaseException:NoConnect"));
             }    
@@ -99,7 +102,7 @@
      * @param resource $dblink The database link to use
      * @param string $handler The handler
      */
-    function execute_delayed_query($query, $args = false, $dblink, $handler = "")
+    function execute_delayed_query($query, $args = array(), $dblink, $handler = "")
     {
         global $DB_DELAYED_QUERIES;
 
@@ -124,7 +127,7 @@
      * @param string $query The query to execute
      * @param string $handler The handler if you care about the result.
      */
-    function execute_delayed_write_query($query, $args = false, $handler = "") { return execute_delayed_query($query, $args, get_db_link('write'), $handler); }
+    function execute_delayed_write_query($query, $args = array(), $handler = "") { return execute_delayed_query($query, $args, get_db_link('write'), $handler); }
 
     /**
      * Read wrapper for execute_delayed_query()
@@ -132,42 +135,40 @@
      * @param string $query The query to execute
      * @param string $handler The handler if you care about the result.
      */
-    function execute_delayed_read_query($query, $args = false, $handler = "") { return execute_delayed_query($query, $args, get_db_link('read'), $handler); }
+    function execute_delayed_read_query($query, $args = array(), $handler = "") { return execute_delayed_query($query, $args, get_db_link('read'), $handler); }
 		       
-    function get_data_row($query, $args = false) 
+    function get_data_row($query, $args = array()) 
     {
-        $mysqli = get_db_link('read');                                      
+        $db = get_db_link('read');                                      
                     
-        if ($stmt = stmt_execute($mysqli, $query, $args)) 
+        $res = false;
+
+        if ($stmt = stmt_execute($db, $query, $args)) 
         {
-            $out = &stmt_bind_assoc($stmt);
-
-            $res = ($stmt->fetch()) ? make_obj_from_array($out) : false;
-
-            $stmt->close();        
-        
-            return $res;
-        }
+            if ($row = $stmt->fetch()) 
+            {
+                $res = make_obj_from_array($row);
+            }
+            $stmt->closeCursor();
+        }                    
             
-        return false;
+        return $res;
     }
            
-    function get_data($query, $args = false) 
+    function get_data($query, $args = array()) 
     {    
-        $mysqli = get_db_link('read');        
-            
-        if ($stmt = stmt_execute($mysqli, $query, $args)) 
+        $db = get_db_link('read');        
+        
+        if ($stmt = stmt_execute($db, $query, $args)) 
         {
-            $out = &stmt_bind_assoc($stmt);
-
             $res = array();
             
-            while ($stmt->fetch())
+            while ($row = $stmt->fetch())
             {
-                $res[] = make_obj_from_array($out);
+                $res[] = make_obj_from_array($row);
             }
 
-            $stmt->close();        
+            $stmt->closeCursor();        
         
             return $res;
         }
@@ -175,37 +176,51 @@
         return false;
     }
 
-    function insert_data($query, $args = false) 
+    function insert_data($query, $args = array()) 
     {            
-        $mysqli = get_db_link('write');
-        
-        if ($stmt = stmt_execute($mysqli, $query, $args)) 
+        $db = get_db_link('write');
+
+        if (stmt_execute($db, $query, $args)) 
         {
-            return $mysqli->insert_id;
+            return $db->lastInsertId();
         }
         return false;
     }
     
-    function update_data($query, $args = false) 
+    function update_data($query, $args = array()) 
     {
-        $mysqli = get_db_link('write');
-
-        if ($stmt = stmt_execute($mysqli, $query, $args)) 
+        $db = get_db_link('write');
+        
+        if (stmt_execute($db, $query, $args)) 
         {
             return true;
         }
         return false;
-    }    
+    }        
     
-    function delete_data($query, $args = false) 
+    function delete_data($query, $args = array()) 
     {
-        $mysqli = get_db_link('write');
+        $db = get_db_link('write');
 
-        if ($stmt = stmt_execute($mysqli, $query, $args)) 
+        if ($stmt = stmt_execute($db, $query, $args)) 
         {
-            return $mysqli->affected_rows;
+            return $stmt->rowCount();
         }
         return false;
+    }   
+    
+    function stmt_execute($db, $query, $args)
+    {
+        global $DB_PROFILE;
+        $DB_PROFILE[] = $query; 
+        
+        $stmt = $db->prepare($query);
+        
+        if ($stmt->execute($args))
+        {
+            return $stmt;
+        }
+        return null;
     }    
 
     function make_obj_from_array($obj)
@@ -216,72 +231,6 @@
             $res->$k = $v;
         }   
         return $res;
-    }    
-
-    function &stmt_bind_assoc(&$stmt) 
-    {
-        $data = $stmt->result_metadata();
-
-        $out = array();
-        $params = array();
-
-        $params[0] = $stmt;    
-        $count = 1;
-
-        while($field = mysqli_fetch_field($data)) 
-        {
-            $params[$count] = &$out[$field->name];
-            $count++;
-        }    
-        call_user_func_array('mysqli_stmt_bind_result', $params);
-        return $out;
-    }
-
-    function stmt_execute($mysqli, $sql, $params)
-    {
-        $stmt = $mysqli->prepare($sql);  
-
-        if (!$stmt)
-        {
-            throw new DatabaseException(elgg_echo("DatabaseException:InvalidQuery"));
-        }
-        
-        if ($params)
-        {
-            $bindParams = array($stmt, '');
-            $len = sizeof($params);
-
-            for ($i = 0; $i < $len; $i++)
-            {
-                
-                $bindParams[] = &$params[$i];
-
-                $param = $params[$i];
-                if (is_float($param))
-                {
-                    $p = "d";    
-                }
-                else if (is_int($param) || is_bool($param))
-                {
-                    $p = "i";
-                }
-                else
-                {
-                    $p = "s";
-                }
-
-                $bindParams[1] .= $p;
-            }
-
-            call_user_func_array('mysqli_stmt_bind_param', $bindParams);
-        }    
-
-        global $DB_PROFILE;
-        $DB_PROFILE[] = $sql;
-
-        $stmt->execute();
-
-        return $stmt;
     }    
 
 	/**

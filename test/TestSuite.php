@@ -9,6 +9,11 @@ require_once 'RegisterTest.php';
 
 function main()
 {
+    global $BROWSER;
+    
+    $opts = getopt('',array("browser:"));
+    $BROWSER = $opts['browser'] ?: '*firefox';
+
     $suite = new PHPUnit_Framework_TestSuite('Envaya');
 
     $suite->addTestSuite('RegisterTest');

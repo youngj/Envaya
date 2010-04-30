@@ -172,11 +172,23 @@ OrgBucket.prototype = new function() {
             
             removeChildren(infoOverlay);    
             
+            this.orgs.sort(function(a,b) {
+                if (a.name < b.name)
+                {
+                    return -1;
+                }
+                else if (a.name > b.name)
+                {
+                    return 1;
+                }
+                return 0;
+            });
+            
             for (var $i = 0; $i < this.orgs.length; $i++)
             {                    
                 infoOverlay.appendChild(this._makeOrgLink(this.orgs[$i]));
             }
-
+            
             this._setInfoPosition();
             infoOverlay.style.display = 'block';        
         }

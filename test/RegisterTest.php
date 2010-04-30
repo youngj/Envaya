@@ -12,7 +12,9 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->s = new Testing_Selenium("*firefox", "http://localhost");
+        global $BROWSER;
+    
+        $this->s = new Testing_Selenium($BROWSER, "http://localhost");
         $this->s->start();
         $this->s->windowMaximize();
     }

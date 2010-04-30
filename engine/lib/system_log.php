@@ -135,10 +135,8 @@
 		if (!$count)
 		{        
 			$query .= " order by time_created desc";            
-            $query .= " limit ?, ?"; 
-            $args[] = (int)$offset;
-            $args[] = (int)$limit;            
-		}
+            $query .= " limit ".((int)$offset).", ".((int)$limit);                
+        }
 	
 		if ($count)
 		{

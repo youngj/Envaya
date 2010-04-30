@@ -443,7 +443,6 @@
                 'name' => $this->name,
                 'latitude' => $this->latitude,
                 'longitude' => $this->longitude,
-                'icon' => $this->getIcon('tiny'),
                 'url' => $this->getUrl()
             );  
         }        
@@ -606,14 +605,12 @@
 		
 		if (!$count) 
         {
-            $args[] = (int)$offset;
-            $args[] = (int)$limit;            
-
             $order_by = sanitize_order_by($order_by);
             if ($order_by == "") 
                 $order_by = "e.time_created desc";
         
-            return array_map('entity_row_to_elggstar', get_data("$query order by $order_by limit ?, ?", $args));
+            return array_map('entity_row_to_elggstar', 
+                get_data("$query order by $order_by limit ".((int)$offset).", ".((int)$limit), $args));
 		} 
         else 
         {

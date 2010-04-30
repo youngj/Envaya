@@ -1194,9 +1194,7 @@
 
 			if ($limit) 
             {            
-                $args[] = (int)$offset;
-                $args[] = (int)$limit;                
-                $query .= " limit ?, ?"; 
+                $query .= " limit ".((int)$offset).", ".((int)$limit);                
             }    
 			return array_map('entity_row_to_elggstar', get_data($query, $args));
 		} 
@@ -1430,9 +1428,7 @@
         
             if ($limit) 
             {
-                $query .= " limit ?, ?"; 
-                $args[] = (int)$offset;
-                $args[] = (int)$limit;
+                $query .= " limit ".((int)$offset).", ".((int)$limit);                
             }    
             
             //echo $query;

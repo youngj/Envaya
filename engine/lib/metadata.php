@@ -227,9 +227,7 @@ function get_entities_from_metadata($meta_name, $meta_value = "", $entity_type =
 
         if ($limit) 
         {
-            $query .= " limit ?, ?"; 
-            $args[] = (int)$offset;
-            $args[] = (int)$limit;
+            $query .= " limit ".((int)$offset).", ".((int)$limit);                
         }    
 
         return array_map('entity_row_to_elggstar', get_data($query, $args));

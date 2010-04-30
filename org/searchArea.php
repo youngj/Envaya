@@ -12,11 +12,11 @@
     $orgs = Organization::filterByArea(array($latMin, $longMin, $latMax, $longMax), $sector, $limit = 100);       
     
     $orgJs = array();
+    
     foreach ($orgs as $org)
     {
         $orgJs[] = $org->jsProperties();
     }
-
     
     echo json_encode($orgJs);
      
