@@ -8,7 +8,7 @@ if (get_input('__topbar') !== '0') {
 <table class='topbarTable'>
 <td class='topbarLinks'>
     <a id='logoContainer' href="<?php echo ((isloggedin()) ? 'pg/dashboard' : 'pg/home') ?>">
-        <img src="_graphics/logo.gif?v4" alt="Envaya" width="145" height="30">
+        <img src="_graphics/logo.gif?v5" alt="Envaya" width="145" height="30">
     </a>
     <a href='org/browse'><?php echo elgg_echo('browse') ?></a>
     <a href='org/search'><?php echo elgg_echo('search') ?></a>
