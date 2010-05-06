@@ -17,7 +17,15 @@ class NewsUpdate extends ElggObject
     		$this->language = guess_language($this->content);
     	}
 
-		parent::save();
+    	$isNew = (!$this->guid);
+
+		$res = parent::save();
+
+		if ($res && $isNew)
+		{
+			post_feed_items($this->getContainerEntity(), 'news', $this);
+		}
+		return $res;
     }
 
     public function getImageFile($size = '')

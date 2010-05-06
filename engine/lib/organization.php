@@ -1,12 +1,12 @@
-<?php 
+<?php
 
 require_once(dirname(__FILE__)."/users.php");
 
 define('SECTOR_OTHER', 99);
 
-class Organization extends ElggUser 
+class Organization extends ElggUser
 {
-    protected function initialise_attributes() 
+    protected function initialise_attributes()
     {
         parent::initialise_attributes();
         $this->attributes['subtype'] = T_organization;
@@ -14,17 +14,40 @@ class Organization extends ElggUser
 
     static $subtype_id = T_organization;
 
+	public function getFeedNames()
+	{
+		$feedNames = parent::getFeedNames();
+
+		if ($this->region)
+		{
+			$feedNames[] = get_feed_name(array("region" => $this->region));
+		}
+
+		foreach ($this->getSectors() as $sector)
+		{
+			$feedNames[] = get_feed_name(array('sector' => $sector));
+
+			if ($this->region)
+			{
+				$feedNames[] = get_feed_name(array('region' => $this->region, 'sector' => $sector));
+			}
+		}
+
+		return $feedNames;
+
+	}
+
     public function canView()
     {
         return $this->approval > 0 || $this->canEdit();
     }
-    
+
     public function canCommunicateWith()
     {
         return $this->canView() && isloggedin() && get_loggedin_userid() != $this->guid;
     }
-    
-    public function showCantViewMessage()    
+
+    public function showCantViewMessage()
     {
         if ($this->approval == 0)
         {
@@ -33,7 +56,7 @@ class Organization extends ElggUser
         else if ($this->approval < 0)
         {
             system_message(elgg_echo('approval:rejected'));
-        }    
+        }
     }
 
     public function generateEmailCode()
@@ -47,13 +70,13 @@ class Organization extends ElggUser
         $this->email_code = $code;
         $this->save();
     }
-            
+
     public function getURL()
     {
         global $CONFIG;
         return $CONFIG->url . "{$this->username}";
-    }    
-    
+    }
+
     public function getPostEmail()
     {
         if (!$this->email_code)
@@ -63,17 +86,17 @@ class Organization extends ElggUser
         global $CONFIG;
         $postEmailParts = explode('@', $CONFIG->post_email, 2);
         return "{$postEmailParts[0]}+{$this->email_code}@{$postEmailParts[1]}";
-    } 
-    
+    }
+
     public function getCountryText()
     {
         return elgg_echo("country:{$this->country}");
     }
-    
+
     public function getLocationText($includeRegion = true)
     {
         $res = '';
-        
+
         if ($this->city)
         {
             $res .= "{$this->city}, ";
@@ -81,20 +104,20 @@ class Organization extends ElggUser
         if ($this->region && $includeRegion)
         {
             $regionText = elgg_echo($this->region);
-            
+
             if ($regionText != $this->city)
-            {        
-                $res .= "$regionText, ";            
+            {
+                $res .= "$regionText, ";
             }
         }
         $res .= $this->getCountryText();
-        
+
         return $res;
     }
-       
-    protected $sectors;   
+
+    protected $sectors;
     protected $sectors_dirty = false;
-       
+
     static function getSectorOptions()
     {
         $sectors = array(
@@ -119,14 +142,14 @@ class Organization extends ElggUser
             22 => elgg_echo('sector:trade'),
             23 => elgg_echo('sector:women'),
         );
-        
+
         asort($sectors);
-        
+
         $sectors[SECTOR_OTHER] = elgg_echo('sector:other');
-        
-        return $sectors;        
+
+        return $sectors;
     }
-    
+
     public function getSectors()
     {
         if (!isset($this->sectors))
@@ -135,52 +158,52 @@ class Organization extends ElggUser
             $sectors = array();
             foreach ($sectorRows as $row)
             {
-                $sectors[] = $row->sector_id;   
-            }        
+                $sectors[] = $row->sector_id;
+            }
             $this->sectors = $sectors;
         }
         return $this->sectors;
     }
-    
+
     public function setSectors($arr)
     {
         $this->sectors = $arr;
         $this->sectors_dirty = true;
     }
-       
-    public function save()    
+
+    public function save()
     {
         if ($this->sectors_dirty)
         {
-            delete_data("delete from org_sectors where container_guid = ?", array($this->guid));                                    
+            delete_data("delete from org_sectors where container_guid = ?", array($this->guid));
             foreach ($this->sectors as $sector)
             {
                 insert_data("insert into org_sectors (container_guid, sector_id) VALUES (?,?)", array($this->guid, $sector));
-            }    
+            }
             $this->sectors_dirty = false;
         }
-            
+
         return parent::save();
-    }    
-    
+    }
+
     public function getWidgetByName($name)
     {
         $where = array();
         $args = array();
-        
+
         $where[] = "container_guid=?";
         $args[] = $this->guid;
-        
+
         $where[] = "widget_name=?";
         $args[] = $name;
-    
+
         $showHidden = access_get_show_hidden_status();
         access_show_hidden_entities(true);
-    
+
         $widget = Widget::getByCondition($where, $args);
-        
+
         $showHidden = access_show_hidden_entities($showHidden);
-        
+
         if (!$widget)
         {
             $widget = new Widget();
@@ -189,30 +212,30 @@ class Organization extends ElggUser
         }
         return $widget;
     }
-    
+
     public function getActiveWidgets()
     {
         $where = array();
         $args = array();
-        
+
         $where[] = "container_guid=?";
-        $args[] = $this->guid;        
-        
+        $args[] = $this->guid;
+
         return Widget::filterByCondition($where, $args);
     }
-    
+
     public function getAvailableWidgets()
     {
         $allNames = Widget::getAvailableNames();
-    
+
         $activeWidgets = $this->getActiveWidgets();
-        
+
         $activeWidgetsMap = array();
         foreach ($activeWidgets as $widget)
         {
             $activeWidgetsMap[$widget->widget_name] = $widget;
         }
-        
+
         $availableWidgets = array();
         foreach ($allNames as $name)
         {
@@ -224,7 +247,7 @@ class Organization extends ElggUser
             {
                 $widget = new Widget();
                 $widget->container_guid = $this->guid;
-                $widget->widget_name = $name;                
+                $widget->widget_name = $name;
             }
             $availableWidgets[] = $widget;
         }
@@ -240,7 +263,7 @@ class Organization extends ElggUser
             $where[] = "(INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0)";
             $args[] = $name;
             $args[] = $name;
-        }    
+        }
 
         $join = '';
         if ($sector)
@@ -249,7 +272,7 @@ class Organization extends ElggUser
             $where[] = "s.sector_id=?";
             $args[] = $sector;
         }
-        
+
         if ($region)
         {
             $where[] = "region=?";
@@ -259,16 +282,16 @@ class Organization extends ElggUser
         return static::filterByCondition($where, $args, '', $limit, $offset, $count, $join);
     }
 
-    static function listSearch($name, $sector, $region, $limit = 10, $pagination = true) 
-    {        
+    static function listSearch($name, $sector, $region, $limit = 10, $pagination = true)
+    {
         $offset = (int) get_input('offset');
 
         $count = static::search($name, $sector, $region, $limit, $offset, true);
         $entities = static::search($name, $sector, $region, $limit, $offset);
 
         return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
-    }        
-    
+    }
+
     static function filterByArea($latLongArr, $sector, $limit = 10, $offset = 0, $count = false)
     {
         $where = array();
@@ -295,27 +318,27 @@ class Organization extends ElggUser
         }
 
         return static::filterByCondition($where, $args, '', $limit, $offset, $count, $join);
-    }    
-    
+    }
+
     function getPartnerships($limit = 10, $offset = 0, $count = false)
-    {   
+    {
         $where = array("container_guid = ? AND approval >= 3");
         $args = array($this->guid);
-    
+
         return Partnership::filterByCondition($where, $args, '', $limit, $offset, $count);
-    }    
-    
+    }
+
     function getTeamMembers($limit = 30, $offset = 0, $count = false)
     {
         $where = array("container_guid = ?");
         $args = array($this->guid);
-    
-        return TeamMember::filterByCondition($where, $args, 'list_order asc', $limit, $offset, $count);    
+
+        return TeamMember::filterByCondition($where, $args, 'list_order asc', $limit, $offset, $count);
     }
-    
+
     function getPartnership($partnerOrg)
     {
-        $partnership = Partnership::getByCondition(array("container_guid = ? AND partner_guid = ?"), 
+        $partnership = Partnership::getByCondition(array("container_guid = ? AND partner_guid = ?"),
             array($this->guid, $partnerOrg->guid)
         );
         if (!$partnership)
@@ -335,12 +358,12 @@ class DataType
 
 /**
  * Mobworking.net geocoder
- * 
+ *
  * @author Marcus Povey <marcus@dushka.co.uk>
  * @copyright Marcus Povey 2008-2009
- */  
+ */
 function googlegeocoder_geocode($hook, $entity_type, $returnvalue, $params)
-{ 
+{
     if (isset($params['location']))
     {
         global $CONFIG;
@@ -356,7 +379,7 @@ function googlegeocoder_geocode($hook, $entity_type, $returnvalue, $params)
         $obj = @$obj->Placemark[0]->Point->coordinates;
 
         if ($obj)
-        {           
+        {
             return array('lat' => $obj[1], 'long' => $obj[0]);
         }
     }
@@ -368,17 +391,17 @@ function org_view_body($org, $subtitle, $area2, $area3 = '')
     {
         $header = elgg_view('org/custom_header', array(
             'org' => $org
-        ));                    
+        ));
     }
     else
     {
         $header = elgg_view('org/default_header', array(
             'org' => $org,
-            'subtitle' => $subtitle, 
-        ));    
-    }    
+            'subtitle' => $subtitle,
+        ));
+    }
     return elgg_view_layout("one_column_custom_header", $header, $area2, $area3);
-}    
+}
 
 function regions_in_country($country)
 {
@@ -411,18 +434,18 @@ function regions_in_country($country)
             'tz:zanzibar_cs',
             'tz:zanzibar_n',
             'tz:zanzibar_w',
-        );        
+        );
     }
     else
     {
         $ids = array();
     }
-    
+
     $res = array();
     foreach ($ids as $id)
     {
         $res[$id] = elgg_echo($id);
-    }    
+    }
     asort($res);
     return $res;
 }
@@ -453,24 +476,24 @@ function get_themes()
     return array('green','brick','craft4','craft1','cotton2','wovengrass','beads','red');
 }
 
-function envaya_init() 
+function envaya_init()
 {
     global $CONFIG;
-    
+
     $themes = get_themes();
-    
+
     foreach ($themes as $theme)
     {
         elgg_view_register_simplecache("css/$theme");
     }
-    
+
     elgg_view_register_simplecache("css/admin");
     elgg_view_register_simplecache("css/simple");
     elgg_view_register_simplecache("css/editor");
-    
+
     register_plugin_hook('geocode', 'location', 'googlegeocoder_geocode');
-    
-    include_once("{$CONFIG->path}org/start.php");    
+
+    include_once("{$CONFIG->path}org/start.php");
 }
 
 register_elgg_event_handler('init','system','envaya_init');

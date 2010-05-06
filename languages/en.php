@@ -2,11 +2,11 @@
 
 	add_translation('en', array(
         'home:title' => "Welcome to Envaya",
-        'home:heading' => 'Envaya is a network of civil society organizations in Tanzania who share news about their projects on the Internet.',        
+        'home:heading' => 'Envaya is a network of civil society organizations in Tanzania who share news about their projects on the Internet.',
         'home:for_organizations' => 'For organizations',
         'home:for_everyone' => 'For everyone',
         'home:sign_up' => 'Sign up now',
-        
+
         'donate:title' => "Donate to Envaya",
         'donate:link' => 'Donate',
         'donate:info' => "As a non-profit project of the Trust for Conservation Innovation, Envaya is supported by institutional grants as well as donations from everyday people around the world.",
@@ -15,24 +15,24 @@
         'donate:goal2' => "Signing up more organizations from around Tanzania and responding to their feedback.",
         'donate:goal3' => "Adding fundraising resources for community-based organizations and creating reporting tools to increase transparency for development funds.",
         'donate:goal4' => "Expanding to other regions of the world.",
-        'donate:call' => "Help Envaya achieve these goals by donating online now!",        
-        'donate:now' => "Donate now!",        
-        
+        'donate:call' => "Help Envaya achieve these goals by donating online now!",
+        'donate:now' => "Donate now!",
+
         'feedback:instructions' => "Let us know what you think about Envaya! Is something broken? Should we add something new? Feel free to email us at %s, or send us your feedback by filling out the form below.",
         'feedback:name' => "Your name (optional)",
-        'feedback:email' => "Your email (optional)",        
+        'feedback:email' => "Your email (optional)",
         'feedback:message' => "Your message",
         'feedback:send' => "Send message",
         'feedback:empty' => "Your message was empty.",
         'feedback:sent' => "Message sent. Thanks for your feedback!",
-        
+
         'addphotos:title' => "Add photos",
         'addphotos:label' => "Choose the photos you want to add:",
         'addphotos:more' => "Add More Photos",
-        
+
         'user:settings' => "Account settings",
-        
-        'why:title' => 'Why use Envaya?',        
+
+        'why:title' => 'Why use Envaya?',
         'why:summary' => "With Envaya, your civil society organization can have its own website, for free, where you can share news about your projects with other organizations and people around the world.",
         'why:easy' => 'Easy',
         'why:easy:summary' => "To make a website on Envaya, you don't need any special computer training or equipment. In about five minutes, you can set up a basic home page yourself.",
@@ -44,18 +44,22 @@
         'why:visible:summary' => "Envaya links your website into its network so that people can easily find you when they are looking for civil society organizations like yours.",
         'why:translated' => "Translated",
         'why:translated:summary' => "Envaya is translated in Kiswahili and English, so you can use whichever language you prefer. When somebody visits your site who can't read your language, Envaya will translate your content into their language.",
-   
-        'about:link' => "About",        
-        'about:title' => 'About us',   
+
+        'about:link' => "About",
+        'about:title' => 'About us',
         'about:mission' => "Envaya is dedicated to creating software to empower community-based organizations around the world that are focused on the environment, poverty relief, health, education, and community well-being.",
         'about:nonprofit' => "Envaya is a 501(c)(3) non-profit project that is fiscally sponsored and legally organized in the United States under the %s.",
-        'about:tci' => "Trust for Conservation Innovation",        
+        'about:tci' => "Trust for Conservation Innovation",
         'about:tanzania_pilot' => "In March, 2010, Envaya started its pilot in Tanzania, in a partnership with Journalists Environment and HIV/AIDS Network (JEAN-media), a Tanzanian civil society organization whose mission is to use media to promote and raise public awareness for CBOs.",
         'about:team' => "The Envaya website is developed by a small team of software engineers and international development volunteers from the United States and Canada. We believe people everywhere should have the tools they need to achieve their own goals.",
-        
+
         'feed' => "News",
         'feed:title' => "Latest news updates",
-        
+        'feed:registered' => "%s joined Envaya.",
+        'feed:new_widget' => "%s created a %s page:",
+        'feed:partnership' => "%s has a partnership with %s.",
+        'feed:more' => "Read more",
+
         'help:title' => "Getting Started",
         'help:summary1' => "By signing up for Envaya, your organization has a basic website with a home page. Great! But don't stop now, because your website can be much better.",
         'help:summary2' => "For example, you can add other pages on topics such as your organization's history, projects, and team. You can also write news updates and show photos from your projects.",
@@ -80,7 +84,7 @@
         'help:design' => "Customizing your website design",
         'help:design:intro' => "From the %s page, you can click %s to customize the appearance of all of the pages on your site. In particular, you can:",
         'help:design:logo' => "Upload a logo to display at the top of each page",
-        'help:design:theme' => "Choose a theme (background and colors) for your website.",        
+        'help:design:theme' => "Choose a theme (background and colors) for your website.",
         'help:home:icon' => "The home page is the most important page of your website. When you are logged in to Envaya, the %s icon at the top right will always take you to your home page.",
         'help:home:shows' => "The home page shows:",
         'help:home:mission' => "Your mission statement",
@@ -105,68 +109,68 @@
         'help:connecting:messages' => "Messages",
         'help:connecting:messages:instructions' => "Envaya makes it easy to communicate with other organizations that are also using Envaya. When you are logged in to Envaya, just visit another organization's website, and click the link at the top to %s.",
         'help:connecting:disabled' => "Note: Since your organization has not yet been approved by Envaya's administrators, Partnerships and Messages are currently disabled.",
-        
-        'dashboard' => "Edit Site",        
+
+        'dashboard' => "Edit Site",
         'dashboard:add_update' => 'Write News Update',
         'dashboard:edit_widgets' => 'Edit Pages',
         'dashboard:attach_image' => "Attach image",
         'dashboard:select_image' => "Select an image you would like to include with this news update:",
         'dashboard:view_home' => "View your home page",
         'dashboard:settings' => "Change account settings",
-        'dashboard:links' => "Links",        
-                
+        'dashboard:links' => "Links",
+
         'topbar:your_home' => "Your home page",
         'topbar:edit_site' => "Edit site",
-        
+
         'loading' => "Loading...",
-        
+
         'language' => "Language",
         'language:choose' => "Select a Language",
 
-        'browse' => 'Explore',        
+        'browse' => 'Explore',
         'browse:title' => 'Explore organizations',
         'browse:instructions' => "Each red dot on the map below is an organization using Envaya. Click a dot to see its name, and click its name to view its home page.",
 
         'browse:map' => 'Map',
-        
+
         'list' => 'List',
-        
-        'search' => "Search",        
+
+        'search' => "Search",
         'search:title' => "Find an organization",
         'search:title_with_query' => "Search: %s",
         'search:submit' => 'Search',
         'search:instructions' => "Enter the name or location of the organization you're looking for.",
         'search:noresults' => "No results found!",
-                                    
+
         'sector:agriculture' => 'Agriculture and livestock',
         'sector:communications' => 'Communications',
         'sector:conflict_res' => 'Conflict resolution',
         'sector:cooperative' => 'Cooperative',
-        'sector:culture' => 'Cultural heritage',                 
-        'sector:education' => 'Education',                        
-        'sector:environment' => 'Environment',                    
+        'sector:culture' => 'Cultural heritage',
+        'sector:education' => 'Education',
+        'sector:environment' => 'Environment',
         'sector:health' => 'Health',
         'sector:hiv_aids' => 'HIV/AIDS',
         'sector:human_rights' => 'Human rights',
         'sector:labor_rights' => 'Labor rights',
         'sector:microenterprise' => 'Microcredit/microenterprise',
         'sector:natural_resources' => 'Natural resource management',
-        'sector:prof_training' => 'Professional/vocational training',                   
-        'sector:rural_dev' => 'Rural development',                       
-        'sector:sci_tech' => 'Science and technology',                       
-        'sector:substance_abuse' => 'Substance abuse',                 
-        'sector:tourism' => 'Tourism',                         
+        'sector:prof_training' => 'Professional/vocational training',
+        'sector:rural_dev' => 'Rural development',
+        'sector:sci_tech' => 'Science and technology',
+        'sector:substance_abuse' => 'Substance abuse',
+        'sector:tourism' => 'Tourism',
         'sector:trade' => 'Trade',
         'sector:women' => 'Women',
         'sector:other' => 'Other',
-                                         
+
         'sector:empty_option' => 'All sectors',
-                
+
         'region:empty_option' => 'All regions',
-        
+
         'login' => "Log in",
         'loginerror' => "Incorrect username or password. Make sure they are correct and try again.",
-        'loginok' => "Welcome, %s!",       
+        'loginok' => "Welcome, %s!",
         'logout' => "Log out",
 
         'name' => "Display name",
@@ -180,10 +184,10 @@
         'org:yours' => 'Your Site',
         'org:home' => 'Home',
         'org:mission' => 'Mission',
-        'org:sectors' => 'Sectors',      
-        'org:location' => 'Location',      
-        'org:see_nearby' => 'See nearby organizations',      
-        
+        'org:sectors' => 'Sectors',
+        'org:location' => 'Location',
+        'org:see_nearby' => 'See nearby organizations',
+
         'page:dirty' => "The current page has unsaved changes, which will be lost if you continue.",
 
         'blog:view_all' => "View all news updates",
@@ -192,18 +196,17 @@
         'blog:delete' => "Delete update",
         'blog:delete:confirm' => "Are you sure you want to delete this news update?",
         'blog:delete:success' => "News update deleted successfully.",
-        'blog:more' => "Read more",                
-                
+
         'blog:timeline' => "Timeline",
-        
+
         'partner:request' => "Request Partnership",
         'partner:invalid' => "Partner invalid",
         'partner:re_request' => "Resend request",
-        'partner:request_sent' => "A partnership request has been sent to this organization.",        
+        'partner:request_sent' => "A partnership request has been sent to this organization.",
         'partner:approve' => "Approve Partnership",
         'partner:pending' => "Partnership request pending",
         'partner:exists' => "You are partners with this organization",
-        'partner:created' => "Partnership confirmed. If you want to add a description of this partnership, click the Edit Page button.",                
+        'partner:created' => "Partnership confirmed. If you want to add a description of this partnership, click the Edit Page button.",
         'partner:none' => "This organization has no partnerships.",
         'partner:confirm' => "Confirm Partnership",
         'partner:confirm:instructions' => "To add this organization to your Partnerships page, click the button below.",
@@ -229,27 +232,27 @@
         'message:subject_missing' => "The subject of your message was blank.",
         'message:invalid_recipient' => "Bad recipient.",
         'message:needapproval' => "You can't send messages right now because your organization has not yet been approved by Envaya's administrators.",
-        
+
         'widget:view' => "View page",
         'widget:empty' => "This organization has not yet written its %s page.",
-        
-        'widget:home' => "Home",        
+
+        'widget:home' => "Home",
         'widget:home:included' => "What sections do you want to include on your home page?",
-        
-        'widget:history' => "History", 
+
+        'widget:history' => "History",
         'widget:history:label' => "Your organization's history:",
         'widget:history:help' => "For example, how it was started and its major achievements.",
-        
+
         'widget:projects' => "Projects",
         'widget:projects:label' => "Your organization's projects:",
         'widget:projects:help' => "Write about the work and activities that your organization does.",
 
-        'widget:news' => "News",                
+        'widget:news' => "News",
         'widget:news:photos' => "Photos",
-        'widget:news:item' => "News update",                
+        'widget:news:item' => "News update",
         'widget:news:latest' => 'Latest News',
-        'widget:news:empty' => "This organization has not yet written any news updates.",        
-        'widget:news:edit' => 'Edit news updates',        
+        'widget:news:empty' => "This organization has not yet written any news updates.",
+        'widget:news:edit' => 'Edit news updates',
         'widget:news:manage_updates' => "Manage News Updates",
         'widget:news:mobile_settings' => "Mobile Settings",
         'widget:news:change_email' => "Generate new email address",
@@ -259,11 +262,11 @@
         'widget:news:email:summary' => "Send an email to %s with your news update in the subject or body, and any photos as attachments.",
         'widget:news:sms' => "SMS",
         'widget:news:sms:summary' => "Coming soon, you will be able to add news updates by sending text messages from your phone!",
-                
+
         'widget:contact' => "Contact",
-        'widget:contact:instructions' => "This page lets your website visitors contact you directly. Note that if you don't want certain information to be publicly available on the Internet, just leave that field blank.",        
+        'widget:contact:instructions' => "This page lets your website visitors contact you directly. Note that if you don't want certain information to be publicly available on the Internet, just leave that field blank.",
         'widget:contact:public_email' => "Do you want your email address, %s, publicly displayed on this page?",
-        'widget:contact:email' => "Email address:",        
+        'widget:contact:email' => "Email address:",
         'widget:contact:phone_number:edit' => "What phone number should people use to contact you?",
         'widget:contact:phone_number' => "Phone number:",
         'widget:contact:name:edit' => "Who is the primary contact person in your organization?",
@@ -272,15 +275,15 @@
         'widget:contact:title' => "Contact title:",
         'widget:contact:street_address:edit' => "What is your street address?",
         'widget:contact:street_address:help' => "If you don't have a numbered address, provide directions.",
-        'widget:contact:street_address' => "Street address:",        
+        'widget:contact:street_address' => "Street address:",
         'widget:contact:mailing_address:edit' => "What is your mailing address?",
-        'widget:contact:mailing_address' => "Mailing address:",        
-        
-        'widget:team' => "Team",        
+        'widget:contact:mailing_address' => "Mailing address:",
+
+        'widget:team' => "Team",
         'widget:team:member' => "Team member",
         'widget:team:add' => "Add new team member",
         'widget:team:list' => "Current team members",
-        'widget:team:name' => "Name:",                
+        'widget:team:name' => "Name:",
         'widget:team:name:missing' => "Missing name of team member.",
         'widget:team:description' => "Description:",
         'widget:team:photo' => "Photo (optional):",
@@ -291,77 +294,77 @@
         'widget:team:delete_success' => "Team member deleted.",
         'widget:team:move_success' => "Team member moved.",
         'widget:team:empty' => "This organization has not yet added any team members.",
-        
+
         'move:up' => "Move up",
         'move:down' => "Move down",
 
         'canceledit' => "Cancel Edit",
         'savechanges' => "Save changes",
-        
-        'widget:edit' => "Edit Page",        
-        'widget:edittitle' => "Edit %s",        
-        'widget:edittitle:new' => "Add Page: %s",                
-        'widget:save:new' => "Create page",                
+
+        'widget:edit' => "Edit Page",
+        'widget:edittitle' => "Edit %s",
+        'widget:edittitle:new' => "Add Page: %s",
+        'widget:save:new' => "Create page",
         'widget:image:label' => "Image to display on this page:",
-        'widget:image:position' => "Where on your page do you want the image?",                
-        'widget:content:label' => "Write the text for your page below:",                
-        'widget:save:success' => "Page saved successfully.",        
-        'widget:delete' => "Remove page",        
-        'widget:delete:success' => "Page removed successfully.",        
-        'widget:delete:confirm' => "Are you sure you want to remove this page from your site?",        
-        
+        'widget:image:position' => "Where on your page do you want the image?",
+        'widget:content:label' => "Write the text for your page below:",
+        'widget:save:success' => "Page saved successfully.",
+        'widget:delete' => "Remove page",
+        'widget:delete:success' => "Page removed successfully.",
+        'widget:delete:confirm' => "Are you sure you want to remove this page from your site?",
+
         'widget:partnerships' => 'Partnerships',
         'widget:partnerships:description' => "Describe your partnership with this organization:",
-        
-        'register:step1' => '1. Qualification',                                       
+
+        'register:step1' => '1. Qualification',
         'register:step2' => '2. Create account',
         'register:step3' => '3. Set up homepage',
-                                       
+
         'register:title' => 'Register for Envaya',
-        
+
         'qualify:welcome' => "Welcome to Envaya! In just a few minutes, your organization will have a website of its own, for free, where you can share news about your projects and let everyone know about your work.",
-        'qualify:instructions' => "First, we need to check whether your organization qualifies to use Envaya. Envaya will verify these qualifications before making your website accessible to the public.",        
-        'qualify:org_type' => 'What type of organization are you?',        
+        'qualify:instructions' => "First, we need to check whether your organization qualifies to use Envaya. Envaya will verify these qualifications before making your website accessible to the public.",
+        'qualify:org_type' => 'What type of organization are you?',
         'qualify:org_type:non_profit' => 'Non-profit civil society organization',
         'qualify:org_type:for_profit' => 'Business',
-        'qualify:org_type:other' => 'Other',        
+        'qualify:org_type:other' => 'Other',
         'qualify:org_info' => 'Check the statements below that apply to your organization:',
         'qualify:org_info:citizen' => 'It is a Tanzanian organization.',
-        'qualify:org_info:local' => 'It mostly operates in one local community.',        
-        'qualify:org_info:funder' => 'It primarily distributes funding to other organizations.',        
+        'qualify:org_info:local' => 'It mostly operates in one local community.',
+        'qualify:org_info:funder' => 'It primarily distributes funding to other organizations.',
         'qualify:country' => 'What country does your organization operate in?',
-        'qualify:next' => 'Click the button below to continue.',        
-        'qualify:next:button' => 'Next step',        
-        'qualify:wrong_country' => "Sorry, in Envaya's pilot program, only organizations in Tanzania can register. We hope to support other countries in future years.",        
-        'qualify:wrong_org_type' => "Sorry, Envaya is only intended for non-profit civil society organizations at this time.",                
-        'qualify:no_funders' => "Sorry, the current version of Envaya is not intended for organizations that primarily fund other organizations. However, we hope to support these organizations in the future.",        
-        'qualify:not_citizen' => "Sorry, the current version of Envaya is only intended to provide websites for Tanzanian organizations.",        
+        'qualify:next' => 'Click the button below to continue.',
+        'qualify:next:button' => 'Next step',
+        'qualify:wrong_country' => "Sorry, in Envaya's pilot program, only organizations in Tanzania can register. We hope to support other countries in future years.",
+        'qualify:wrong_org_type' => "Sorry, Envaya is only intended for non-profit civil society organizations at this time.",
+        'qualify:no_funders' => "Sorry, the current version of Envaya is not intended for organizations that primarily fund other organizations. However, we hope to support these organizations in the future.",
+        'qualify:not_citizen' => "Sorry, the current version of Envaya is only intended to provide websites for Tanzanian organizations.",
         'qualify:missing' => "Your qualification information was not found. Please complete the qualification form again.",
         'qualify:ok' => "Congratulations! Your organization appears to qualify for a website on Envaya.",
 
-        'country:tz' => 'Tanzania',                
+        'country:tz' => 'Tanzania',
         'country:other' => 'Other',
-        
-        'create:instructions' => "Now, enter a few pieces of information to create your account on Envaya. This account will let you log in and update your organization's website.",        
+
+        'create:instructions' => "Now, enter a few pieces of information to create your account on Envaya. This account will let you log in and update your organization's website.",
         'create:org_name' => "Enter the full name of your organization:",
         'create:org_name:help' => "This will be the title of your website.",
         'create:username' => "Choose a username for Envaya:",
-        'create:username:help' => "Your web address will be:",        
-        'create:username:help2' => "Your username must be at least 3 characters, and can contain letters (a-z), digits (0-9), dashes (-), and underscores (_).",        
-        'create:username:placeholder' => 'username',       
+        'create:username:help' => "Your web address will be:",
+        'create:username:help2' => "Your username must be at least 3 characters, and can contain letters (a-z), digits (0-9), dashes (-), and underscores (_).",
+        'create:username:placeholder' => 'username',
         'create:password' => "Choose a password for your account:",
-        'create:password:help' => "Together with your username, this will let you log in to edit your website. Remember this password and keep it secure.",        
-        'create:password2' => "Enter the password again to confirm:",        
+        'create:password:help' => "Together with your username, this will let you log in to edit your website. Remember this password and keep it secure.",
+        'create:password2' => "Enter the password again to confirm:",
         'create:email' => "Enter your organization's email address:",
-        'create:email:help' => "If you ever forget your password, you can reset it by email.",                
-        'create:next' => 'Click the button below to create your account.',        
-        'create:next:button' => 'Create account',        
+        'create:email:help' => "If you ever forget your password, you can reset it by email.",
+        'create:next' => 'Click the button below to create your account.',
+        'create:next:button' => 'Create account',
         'create:no_name' => "Please enter your organization's name.",
         'create:username_exists' => 'Somebody else has already registered that username. Please choose another.',
         'create:passwords_differ' => 'The two passwords you entered did not match. Please try entering them again.',
-        'create:ok' => 'Congratulations! Your account was created successfully.',        
+        'create:ok' => 'Congratulations! Your account was created successfully.',
         'create:notloggedin' => 'You must be logged in to view this page.',
-        
+
         'setup:instructions' => "Now we will ask a few questions about your organization so that we can create a homepage for you. (You will be able to add more content later.)",
         'setup:mission' => "What is the mission of your organization?",
         'setup:mission:help' => "This will appear at the top of your homepage.",
@@ -376,52 +379,52 @@
         'setup:sector' => "Check at most five sectors that apply for your organization:",
         'setup:sector:blank' => "Please select at least one sector that applies for your organization.",
         'setup:sector:toomany' => "Too many sectors selected for your organization. Please select at most 5 sectors.",
-        'setup:sector:other_specify' => "If 'Other', specify:",                
+        'setup:sector:other_specify' => "If 'Other', specify:",
         'setup:theme' => "Choose a theme for your web site:",
         'setup:theme:help' => "Later you can customize the design of your website by adding your organization's logo at the top of each page.",
-        'setup:next' => "Click the button below to view your homepage!",        
-        'setup:next:button' => "Let's see it!",                
-        'setup:next_step_message' => "Learn how to use your Envaya website.",                        
-        'setup:ok' => "Your homepage was created successfully.",        
+        'setup:next' => "Click the button below to view your homepage!",
+        'setup:next:button' => "Let's see it!",
+        'setup:next_step_message' => "Learn how to use your Envaya website.",
+        'setup:ok' => "Your homepage was created successfully.",
 
         'approval:rejected' => 'We are sorry. This organization was not approved by our administrators.',
         'approval:waiting' => "This organization is awaiting review and is not yet visible to the public.",
         'approval:notapproved' => "Not yet approved",
-                
-        'position:left' => 'Left',        
+
+        'position:left' => 'Left',
         'position:top' => 'Top',
         'position:right' => 'Right',
         'position:bottom' => 'Bottom',
-                
+
         'image:current' => "Current image:",
-        'image:new' => "New image:",                
+        'image:new' => "New image:",
         'image:blank' => "Leave this blank to keep the current image.",
         'image:optional' => "Leave blank if you don't want an image.",
-        'image:delete' => "Remove image?",                      
-         
+        'image:delete' => "Remove image?",
+
         'upload:browse' => 'Browse',
         'upload:image:error' => "Error processing image: ",
         'upload:image:processing' => "Processing image...",
         'upload:image:uploading' => "Uploading image...",
         'upload:image:complete' => "Upload complete. Previewing...",
-        'upload:image:error' => "Error uploading image: ",         
+        'upload:image:error' => "Error uploading image: ",
         'upload:image:recommend_flash' => "Note: To add photos faster, install %s.",
-        
-        'upload:image:isdoc' => "Error: You are trying to upload a Microsoft Word document.  Envaya only supports image formats.  Please save the image from your document as a .jpg, .png, and .gif file.",         
-        'upload:image:isbad' => "Error: You are trying to upload an invalid file. Envaya only supports .jpg, .png, and .gif image formats.",         
-                 
-        'contact:link' => "Contact",    
+
+        'upload:image:isdoc' => "Error: You are trying to upload a Microsoft Word document.  Envaya only supports image formats.  Please save the image from your document as a .jpg, .png, and .gif file.",
+        'upload:image:isbad' => "Error: You are trying to upload an invalid file. Envaya only supports .jpg, .png, and .gif image formats.",
+
+        'contact:link' => "Contact",
         'contact:title' => 'Contact us',
-                
+
         'page:notfound' => "Page not found",
         'page:notfound:details' => "The requested page either does not exist or you do not have access to it.",
 
-        'icon' => 'Organization logo',        
+        'icon' => 'Organization logo',
         'icon:saved' => 'Logo saved successfully.',
         'icon:reset' => 'Logo removed successfully.',
         'icon:edit' => 'Edit logo',
         'icon:description' => "The logo is a small image that appears next to your organization's name in many places in Envaya, such as search results.",
-        
+
         'header' => "Website header",
         'header:default' => "Standard header (logo, name, page title)",
         'header:custom' => "Custom header image",
@@ -432,8 +435,8 @@
         'header:edit' => "Edit header",
         'header:saved' => "Header image changed.",
         'header:reset' => "Header reset.",
-        
-        'org:name:edit' => 'Edit name',        
+
+        'org:name:edit' => 'Edit name',
 
         'org:cantedit' => "You do not have access to edit this organization's web site.",
 
@@ -441,9 +444,9 @@
         'design:edit' => "Edit website design",
 
         'theme' => "Website theme",
-        'theme:current' => "Current theme:",        
-        'theme:changed' => "Theme changed.",        
-        
+        'theme:current' => "Current theme:",
+        'theme:changed' => "Theme changed.",
+
         'theme:green' => "Light blue",
         'theme:brick' => "Bricks",
         'theme:craft4' => "Wood and Fabric",
@@ -490,7 +493,7 @@
         "trans:trans_from_to" => 'This page has been translated from %s to %s.',
         "trans:view_original_in" => 'View original in %s',
         "trans:partial_automatic_trans_from_to" => 'Parts of this page have been automatically translated using Google Translate.',
-        "trans:automatic_trans_from_to" => "This page been automatically translated from %s to %s by Google Translate.", 
+        "trans:automatic_trans_from_to" => "This page been automatically translated from %s to %s by Google Translate.",
         "trans:page_original_in" => "This page is displayed in its original language, %s.",
         "trans:view_in" => "View in %s",
         "trans:view_automatic_in" => "View in %s using Google Translate",
@@ -537,7 +540,7 @@
         'user:language:fail' => "Your language settings could not be saved.",
 
         'user:username:notfound' => 'Username %s not found.',
-        
+
         'user:password:resetreq:success' => 'Successfully requested a new password. Check your email for a message from Envaya and click on the link inside.',
         'user:password:resetreq:fail' => 'Could not request a new password.',
 
@@ -552,7 +555,7 @@
         'friendlytime:hours:singular' => "an hour ago",
         'friendlytime:days' => "%s days ago",
         'friendlytime:days:singular' => "yesterday",
-        
+
         'date:withmonth' => '%s %s',
         'date:withyear' => '%s, %s',
 
@@ -567,11 +570,11 @@
         'date:month:9' => 'September',
         'date:month:10' => 'October',
         'date:month:11' => 'November',
-        'date:month:12' => 'December',        
+        'date:month:12' => 'December',
 
         'option:yes' => "Yes",
         'option:no' => "No",
-        
+
         'question:areyousure' => 'Are you sure?',
 
         'save' => "Save",
@@ -579,7 +582,7 @@
         'cancel' => "Cancel",
         'update' => "Update",
         'view' => "View",
-        'edit' => "Edit",      
+        'edit' => "Edit",
         'delete' => "Delete",
         'preview' => "Preview",
 
@@ -610,14 +613,14 @@ Once you have logged in, we highly recommend that you change your password.
         'email:resetpassword:body' => "Hi %s,
 
 Your password has been reset to: %s",
-        
+
         'email:orgapproved:subject' => 'Your website has been approved',
         'email:orgapproved:body' => "Hi %s,
 
 Congratulations! Your website has been approved by Envaya and it's now online:
 %s
 
-Now, continue building your website by choosing a design, adding news and photos, and adding other pages about your organization's history, projects, team, and other topics. 
+Now, continue building your website by choosing a design, adding news and photos, and adding other pages about your organization's history, projects, team, and other topics.
 
 To do this, log in to edit your website here:
 %s
@@ -626,9 +629,9 @@ For instructions on how to get started using Envaya, and to learn what you can d
 %s
 
 Thanks for using Envaya!",
-        
-        
-        
+
+
+
         'email:requestPartnership:subject' => "%s wants to add %s as a partner",
         'email:requestPartnership:body' => "To approve this partnership, click on the link below and log into your Envaya account:
 %s",
@@ -649,8 +652,8 @@ If you requested this, click on the link below to change your password:
         'actiongatekeeper:timeerror' => 'The page you were using has expired. Please refresh and try again.',
 
         "en" => "English",
-        "sw" => "Swahili",        
-        
+        "sw" => "Swahili",
+
         'tz:arusha' => 'Arusha',
         'tz:dar' => 'Dar es Salaam',
         'tz:dodoma' => 'Dodoma',
@@ -676,7 +679,7 @@ If you requested this, click on the link below to change your password:
         'tz:tanga' => 'Tanga',
         'tz:zanzibar_cs' => 'Zanzibar Central/South',
         'tz:zanzibar_n' => 'Zanzibar North',
-        'tz:zanzibar_w' => 'Zanzibar West',        
+        'tz:zanzibar_w' => 'Zanzibar West',
 	));
 
     include(dirname(__FILE__)."/en_admin.php");

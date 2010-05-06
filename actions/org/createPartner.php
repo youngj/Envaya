@@ -1,18 +1,18 @@
 <?php
     gatekeeper();
     action_gatekeeper();
-	
+
     $user = get_loggedin_user();
     $partner_guid = (int)get_input("partner_guid");
-        
+
     $partner = get_entity($partner_guid);
 
     if (!$partner || $partner_guid == $user->guid)
     {
-        register_error(elgg_echo("partner:invalid"));   
+        register_error(elgg_echo("partner:invalid"));
         forward();
     }
-    else 
+    else
     {
 
         $partnership = $partner->getPartnership($user);
@@ -29,11 +29,13 @@
         $partWidget2 = $partner->getWidgetByName('partnerships');
         $partWidget2->save();
 
-        system_message(elgg_echo("partner:created"));  
-        
+        system_message(elgg_echo("partner:created"));
+
+        post_feed_items($user, 'partnership', $partner);
+
         notify_user($partner_guid, null,
-            sprintf(elgg_echo('email:partnershipConfirmed:subject',$partner->language), $user->name, $partner->name), 
-            sprintf(elgg_echo('email:partnershipConfirmed:body',$partner->language), $partWidget2->getURL()), 
+            sprintf(elgg_echo('email:partnershipConfirmed:subject',$partner->language), $user->name, $partner->name),
+            sprintf(elgg_echo('email:partnershipConfirmed:body',$partner->language), $partWidget2->getURL()),
             NULL, 'email');
 
         forward($partWidget->getURL());

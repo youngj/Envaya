@@ -15,7 +15,7 @@ function org_page_handler($page)
                 return;
             case "help":
                 include(dirname(__FILE__) . "/help.php");
-                return;                
+                return;
             case "browse":
                 set_page_owner(0);
                 include(dirname(__FILE__) . "/browseorgs.php");
@@ -26,7 +26,7 @@ function org_page_handler($page)
             case "searchArea":
                 include(dirname(__FILE__) . "/searchArea.php");
                 return;
-            case "feed":    
+            case "feed":
                 include(dirname(__FILE__) . "/feed.php");
                 return;
             case "translate":
@@ -49,7 +49,7 @@ function page_page_handler($page)
         home_page_handler($page);
     }
     else
-    {    
+    {
         add_generic_footer();
         set_input('page_name', $pageName);
         include(dirname(__FILE__) . "/page.php");
@@ -64,11 +64,11 @@ function home_page_handler($page)
 
 
 function org_profile_page_handler($page)
-{                
-    $org = get_user_by_username($page[0]);                
+{
+    $org = get_user_by_username($page[0]);
     if (!$org)
     {
-        include(dirname(__FILE__) . "/orgprofile.php");        
+        include(dirname(__FILE__) . "/orgprofile.php");
         return;
     }
 
@@ -85,10 +85,10 @@ function org_profile_page_handler($page)
                 return;
             case "username":
                 include(dirname(__FILE__) . "/changeUsername.php");
-                return;                
+                return;
             case "confirm":
                 include(dirname(__FILE__) . "/confirmPartner.php");
-                return;        
+                return;
             case "compose":
                 include(dirname(__FILE__) . "/composeMessage.php");
                 return;
@@ -104,7 +104,7 @@ function org_profile_page_handler($page)
                         return;
                     default:
                         break;
-                }   
+                }
                 break;
             case "post":
                 set_input("blogpost", $page[2]);
@@ -116,12 +116,12 @@ function org_profile_page_handler($page)
                         return;
                     case "preview":
                         include(dirname(__FILE__) . "/postPreview.php");
-                        return;                        
+                        return;
                     case "next":
                         set_input("delta", 1);
                         include(dirname(__FILE__) . "/postRedirect.php");
                         return;
-                    case "prev":    
+                    case "prev":
                         set_input("delta", -1);
                         include(dirname(__FILE__) . "/postRedirect.php");
                         return;
@@ -132,7 +132,7 @@ function org_profile_page_handler($page)
             default:
                 break;
         }
-        
+
         if ($page[1])
         {
             $widget = $org->getWidgetByName($page[1]);
@@ -141,13 +141,13 @@ function org_profile_page_handler($page)
                 switch ($page[2])
                 {
                     case 'edit':
-                        include(dirname(__FILE__) . "/editwidget.php");                    
+                        include(dirname(__FILE__) . "/editwidget.php");
                         return;
-                }       
+                }
             }
-            
+
             if ($widget->guid)
-            {            
+            {
                 include(dirname(__FILE__) . "/orgprofile.php");
                 return;
             }
@@ -157,8 +157,8 @@ function org_profile_page_handler($page)
                 return;
             }
         }
-    }    
-    
+    }
+
     $widget = null;
     include(dirname(__FILE__) . "/orgprofile.php");
 }
@@ -172,42 +172,44 @@ function envaya_pagesetup()
 {
     if (get_context() == 'orgprofile')
     {
-        $org = page_owner_entity();        
+        $org = page_owner_entity();
 
         if (!empty($org))
         {
             $widgets = $org->getAvailableWidgets();
-            
+
             add_submenu_item(elgg_echo("widget:home"), $org->getURL());
-            
+
             foreach ($widgets as $widget)
             {
                 if ($widget->isActive() && $widget->widget_name != 'home')
                 {
                     add_submenu_item(elgg_echo("widget:{$widget->widget_name}"), $widget->getURL());
-                }                    
-            }     
+                }
+            }
         }
     }
 }
 
-function new_index() 
+function new_index()
 {
     include(dirname(__FILE__) . "/splash.php");
     return true;
 }
 
-function org_settings_save() 
+function org_settings_save()
 {
     global $CONFIG;
     @include($CONFIG->path . "actions/org/saveSettings.php");
 }
 
 function notify_new_org($event, $objectType, $org)
-{    
+{
     if (!$org->isApproved())
     {
-        send_admin_mail("New organization registered: {$org->name}", 
+    	post_feed_items($org, 'register', $org);
+
+        send_admin_mail("New organization registered: {$org->name}",
 "To view their website and approve or reject it, visit
 {$org->getURL()}?login=1
 ");
@@ -217,8 +219,8 @@ function notify_new_org($event, $objectType, $org)
 function add_generic_footer()
 {
     add_submenu_item(elgg_echo('about:link'), "/page/about", 'footer');
-    add_submenu_item(elgg_echo('contact:link'), "/page/contact", 'footer');    
-    add_submenu_item(elgg_echo('donate:link'), "/page/donate", 'footer'); 
+    add_submenu_item(elgg_echo('contact:link'), "/page/contact", 'footer');
+    add_submenu_item(elgg_echo('donate:link'), "/page/donate", 'footer');
 }
 
 register_page_handler('orgprofile','org_profile_page_handler');

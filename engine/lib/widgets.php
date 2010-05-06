@@ -106,6 +106,8 @@ class Widget extends ElggObject
 
 function save_widget($widget)
 {
+	$prevContent = $widget->content;
+
     $widget->content = get_input('content');
 
 	if (!$widget->language)
@@ -126,6 +128,11 @@ function save_widget($widget)
     {
         $widget->setImages($imageFiles);
     }
+
+	if (!$prevContent && $widget->content)
+	{
+	    post_feed_items($widget->getContainerEntity(), 'new_widget', $widget);
+	}
 }
 
 function save_widget_home($widget)

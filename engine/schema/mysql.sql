@@ -385,3 +385,17 @@ CREATE TABLE `system_log` (
 	KEY `object_guid` (`object_guid`),
 	KEY `posted` (`posted`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8; 
+
+CREATE TABLE `feed_items` (
+	`id` INT NOT NULL AUTO_INCREMENT ,		
+	`feed_name` varchar(128) NOT NULL,
+	`action_name` varchar(32) NOT NULL,
+	`subject_guid` bigint(20) NOT NULL,
+	`user_guid` bigint(20) NOT NULL,
+	`time_posted` int NOT NULL,
+	`args` TEXT default NULL,
+	PRIMARY KEY ( `id` ),
+	KEY `feed_key` (`feed_name`, `time_posted`),
+	KEY `user_guid` (`user_guid`),
+	KEY `subject_guid` (`subject_guid`)
+) ENGINE = MYISAM DEFAULT CHARSET=utf8; 	

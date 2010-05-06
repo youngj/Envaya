@@ -1,31 +1,31 @@
 <?php
     add_translation("sw",array(
         'home:title' => "Karibu Envaya",
-        'home:heading' => 'Envaya ni mtandao wa mashirika ya jumuiya ya kiraia Tanzania yagawayo habari kuhusu miradi yao katika intaneti.',        
+        'home:heading' => 'Envaya ni mtandao wa mashirika ya jumuiya ya kiraia Tanzania yagawayo habari kuhusu miradi yao katika intaneti.',
         'home:for_organizations' => 'Kwa mashirika',
         'home:for_everyone' => 'Kwa wote',
         'home:sign_up' => 'Jiunga sasa',
-        
+
         'donate:title' => "Toa msaada kwa Envaya",
         'donate:link' => 'Toa',
         'donate:info' => "Kama mradi bila faida wa Trust for Conservation Innovation, Envaya inategemea na hiba ya pesa ya taasisi na msaada kutoka watu duniani.",
-        'donate:now' => "Toa msaada sasa!",           
-        
+        'donate:now' => "Toa msaada sasa!",
+
         'feedback:instructions' => "Tuambie unavyofikiria kuhusu Envaya! Kitu kimevunjika? Tuongeze kitu kipya? Tutumie email katika %s, au tutumie maoni yako kwa kutimiza umbo ya chini.",
         'feedback:name' => "Jina lako (sio lazima)",
-        'feedback:email' => "Email yako (sio lazima)",        
+        'feedback:email' => "Email yako (sio lazima)",
         'feedback:message' => "Ujumbe wako",
         'feedback:send' => "Peleka ujumbe",
         'feedback:empty' => "Ujumbe wako ulikuwa wazi.",
-        'feedback:sent' => "Ujumbe ulipelekwa. Asante kwa maoni yako!",        
-        
+        'feedback:sent' => "Ujumbe ulipelekwa. Asante kwa maoni yako!",
+
         'addphotos:title' => "Ongeza picha",
         'addphotos:label' => "Chagua picha ambazo unataka kuziongeza:",
         'addphotos:more' => "Ongeza Picha Zaidi",
-        
-        
+
+
         'user:settings' => "Mipangilio ya akaunti",
-        
+
         'why:title' => 'Kwa nini utumie Envaya?',
         'why:summary' => "Na Envaya, shirika lako la jumuiya la kiraia linaweza kuwa na tovuti lake lenyewe, la bure, ambapo unaweza kugawa habari kuhusu miradi yako na mashirika mengine na watu duniani.",
         'why:easy' => 'Ni Rahisi',
@@ -37,9 +37,9 @@
         'why:visible' => "Inaonekana wazi",
         'why:visible:summary' => "Envaya inaunga tovuti yako katika mtandao wake ili watu waweze kukuona kwa rahisi wakati watafutapo kwa mashirika ya jumuiya ya kiraia kama lako.",
         'why:translated' => "Imetafsiriwa",
-        'why:translated:summary' => "Envaya inatafsiriwa kwa Kiswahili na Kiingereza, ili uweze kutumia lugha yo yote unayoipenda. Wakati mtu fulani anapozuru tovuti yako asiyesoma lugha yako, Envaya itatafsiri maandiko yako kwa lugha yake.",        
+        'why:translated:summary' => "Envaya inatafsiriwa kwa Kiswahili na Kiingereza, ili uweze kutumia lugha yo yote unayoipenda. Wakati mtu fulani anapozuru tovuti yako asiyesoma lugha yako, Envaya itatafsiri maandiko yako kwa lugha yake.",
 
-        'about:link' => "Kuhusu",                
+        'about:link' => "Kuhusu",
         'about:title' => 'Kuhusu sisi',
         'about:mission' => "Envaya inawekwa kuumba programu ya kompyuta kuwezesha mashirika ya jumuiya ya kiraia duniani ambayo yanaweka fokasi katika mazingira, msaada wa umaskini, afya, elimu, na hali njema ya jumuiya.",
         'about:tanzania_pilot' => "Machi, 2010, Envaya alianzisha mtihani wake Tanzania, katika ubia na Journalists Environment and HIV/AIDS Network (Mtandao wa Waandishi wa Habari, Mazingira na UKIMWI, au JEAN-media), shirika kitanzania la jumuiya la kiraia, ambalo lina lengo kutumia njia za mawasilano ku tangaza na kuongezeka ufahamu wa umma kwa mashirika ya jumuiya ya kiraia.",
@@ -48,8 +48,9 @@
 
         'feed' => 'Habari',
         'feed:title' => "Habari mpya zaidi",
-    
-        'help:title' => "Msaada Kuanza",       
+		'feed:more' => "Soma zaidi",
+
+        'help:title' => "Msaada Kuanza",
         'help:summary1' => "Kwa kuandikisha katika Envaya, shirika lako lina tovuti ya msingi na ukurasa mkuu. Njema! Lakini usisimame sasa, kwa sababu tovuti yako inaweza kuwa bora sana.",
         'help:summary2' => "Kwa mfano, unaweza kuongeza kurasa nyingine kuhusu mada kama historia, miradi, na timu za shirika lako. Unaweza pia kuandika habari na kuonyesha picha kutoka miradi yako.",
         'help:summary3' => "Ukurasa huu utakusaidia kujifunza jinsi ya tovuti yako ya Envaya inafanya, na jinsi ya unaweza kuifanya bora.",
@@ -97,38 +98,38 @@
         'help:connecting:partnerships:invite' => "Ili shirika kuwa katika orodha ya ukurasa wa Ubia, shirika lile pia linahitaji kuwa na tovuti ya Envaya. Kama ukifanya kazi na shirika jingine lisilotumia Envaya bado, likaribishe kujiunga!",
         'help:connecting:messages' => "Ujumbe",
         'help:connecting:messages:instructions' => "Envaya inasababisha iwe rahisi kuwasiliana na mashirika mengine yanayotumia Envaya pia. Wakati ambapo umefungua katika Envaya, zuru tovuti ya shirika jingine tu, na bonyeza kiungo juu cha %s kuomba ubia.",
-        'help:connecting:disabled' => "Angalia: Kwa sababu shirika lako halijakubaliwa kwa wasimamizi wa Envaya, Ubia na Ujumbe hazifanya kazi sasa.",        
-    
-        'dashboard' => "Hariri Tovuti",        
+        'help:connecting:disabled' => "Angalia: Kwa sababu shirika lako halijakubaliwa kwa wasimamizi wa Envaya, Ubia na Ujumbe hazifanya kazi sasa.",
+
+        'dashboard' => "Hariri Tovuti",
         'dashboard:add_update' => 'Andika habari',
         'dashboard:edit_widgets' => 'Hariri kurasa',
         'dashboard:attach_image' => "Fungia picha",
         'dashboard:select_image' => "Chagua picha unayopenda kuwa na ndani ya habari hii:",
         'dashboard:view_home' => "Tazama ukurasa wako mkuu",
         'dashboard:settings' => "Badili mipangilio ya akaunti",
-        'dashboard:links' => "Viungo",    
-    
+        'dashboard:links' => "Viungo",
+
         'topbar:your_home' => "Ukurasa wako mkuu",
-        'topbar:edit_site' => "Hariri tovuti",    
-        
+        'topbar:edit_site' => "Hariri tovuti",
+
         'loading' => "Ikipakia...",
-    
+
         'language' => "Lugha",
-        'language:choose' => "Chagua Lugha",    
-    
-        'browse' => 'Peleleza',    
+        'language:choose' => "Chagua Lugha",
+
+        'browse' => 'Peleleza',
         'browse:title' => 'Peleleza mashirika',
         'browse:instructions' => "Kila pointi nyekundu katika ramani ya chini ni shirika litumialo Envaya. Bonyeza pointi kuona jina lake, na bonyeza jina lake kutazama ukurasa wake mkuu.",
         'browse:map' => 'Ramani',
-        'list' => 'Orodha',   
+        'list' => 'Orodha',
 
-        'search' => 'Tafuta',    
+        'search' => 'Tafuta',
         'search:title' => "Tafuta shirika",
         'search:title_with_query' => "Tafuta: %s",
         'search:submit' => 'Tafuta',
         'search:instructions' => "Chapa jina au sehemu ya shirika unalotafuta.",
         'search:noresults' => "Shirika lolote halionekani!",
-               
+
         'sector:agriculture' => 'Kilimo na mifugo',
         'sector:communications' => 'Mawasiliano',
         'sector:conflict_res' => 'Kukomesha mgongano',
@@ -150,61 +151,60 @@
         'sector:trade' => 'Biashara',
         'sector:women' => 'Wanawake',
         'sector:other' => 'Nyingine',
-    
+
         'sector:empty_option' => 'Sekta zote',
-        
+
         'region:empty_option' => 'Sehemu zote',
-        
+
         'login' => "Fungua",
         'loginerror' => "Jina la mtumiaji au neno ya siri ilikuwa kosefu. Hakikisha kuwa yale ni sahihi, na tafadhali ujaribu tena.",
         'loginok' => "Karibu, %s!",
         'logout' => "Ondoka",
-        
+
         'name' => "Jina",
         'email' => "Email",
         'username' => "Jina la mtumiaji",
         'password' => "Neno la siri",
-        'passwordagain' => "Neno la siri (tena)",        
+        'passwordagain' => "Neno la siri (tena)",
         'user:persistent' => 'Nikumbuke',
-        'user:password:lost' => 'Neno la siri limesahauliwa',   
+        'user:password:lost' => 'Neno la siri limesahauliwa',
 
         'org:yours' => 'Tovuti Yako',
         'org:home' => 'Mkuu',
         'org:mission' => 'Lengo',
-        'org:sectors' => 'Sekta',        
+        'org:sectors' => 'Sekta',
         'org:location' => "Sehemu",
-        'org:see_nearby' => "Tazama mashirika ambayo yapo karibu",        
-        
+        'org:see_nearby' => "Tazama mashirika ambayo yapo karibu",
+
         'page:dirty' => "Ukurasa huu una mabadiliko yasiyohifadhi, yatayopotea kama ukiendelea.",
-        
+
         'blog:view_all' => "Tazama habari zote",
         'blog:editpost' => "Hariri Habari",
         'blog:addpost' => "Ongeza habari",
         'blog:delete' => "Futa habari",
         'blog:delete:confirm' => "Una hakika kuwa unataka kufuta habari hii?",
-        'blog:delete:success' => "Habari ilifutwa.",        
-        'blog:more' => "Soma zaidi",                
+        'blog:delete:success' => "Habari ilifutwa.",
         'blog:timeline' => "Ratiba",
 
         'partner:request' => "Omba ubia",
         'partner:invalid' => "Ubia batili",
         'partner:re_request' => "Peleka ombi tena",
-        'partner:request_sent' => "Ombi la ubia limepelekwa kwa shirika hili.",        
+        'partner:request_sent' => "Ombi la ubia limepelekwa kwa shirika hili.",
         'partner:approve' => "Kubali Ubia",
         'partner:pending' => "Ombi la ubia linangoja uamuzi",
         'partner:exists' => "Wewe ni wabia na shirika hili",
-        'partner:created' => "Ubia limekubaliwa",                
+        'partner:created' => "Ubia limekubaliwa",
         'partner:none' => "Shirika hili halina ubia yo yote.",
         'partner:confirm' => "Thibitisha Ubia",
         'partner:confirm:instructions' => "Ku ongeza shirika hili katika ukurasa wako wa Ubia, bonyeza kitufe chini.",
         'partner:confirm:button' => "Thibitisha ubia",
         'partner:current' => "Ubia wa sasa",
-        'partner:find_new' => "Tafuta ubia mpya",        
+        'partner:find_new' => "Tafuta ubia mpya",
         'partner:instructions' => "Kuongeza shirika kama ubia, kwanza zuru tovuti yake ya Envaya, halafu bonyeza %s juu. Shirika jingine litahitaji kuthibitisha ubia kwanza kabla ya litaonekana katika ukurasa wako.",
         'partner:search' => "Tafuta shirika",
         'partner:browse' => "Pelekeza mashirika yanayokuwepo karibu",
-        'partner:wait' => "Rejea hapa baada ya shirika lako limekubaliwa kuongeza ubia.",        
-        'partner:needapproval' => "Huwezi kuongeza ubia mpya sasa kwa sababu shirika lako halimekubaliwa kwa wasimamizi wa Envaya.",        
+        'partner:wait' => "Rejea hapa baada ya shirika lako limekubaliwa kuongeza ubia.",
+        'partner:needapproval' => "Huwezi kuongeza ubia mpya sasa kwa sababu shirika lako halimekubaliwa kwa wasimamizi wa Envaya.",
 
         'message:link' => "Peleka Ujumbe",
         'message:title' => "Tunga Ujumbe",
@@ -218,7 +218,7 @@
         'message:message_missing' => "Ujumbe wako ulikuwa wazi.",
         'message:subject_missing' => "Mada ya ujumbe wako ulikuwa wazi.",
         'message:invalid_recipient' => "Mpokeaji mbaya.",
-        'message:needapproval' => "Huwezi kupeleka ujumbe sasa kwa sababu shirika lako halimekubaliwa kwa wasimamizi wa Envaya.",        
+        'message:needapproval' => "Huwezi kupeleka ujumbe sasa kwa sababu shirika lako halimekubaliwa kwa wasimamizi wa Envaya.",
 
         'widget:view' => "Ona ukurasa",
         'widget:empty' => "Shirika hili halijaandika ukurasa wako wa %s.",
@@ -229,16 +229,16 @@
         'widget:history' => "Historia",
         'widget:history:label' => "Historia ya shirika yako:",
         'widget:history:help' => "Kwa mfano, jinsi ya lilianzwa na mafanikio yake makuu.",
-        
+
         'widget:projects' => "Miradi",
         'widget:projects:label' => "Miradi ya shirika yako:",
         'widget:projects:help' => "Andika kuhusu kazi na shughuli shirika yako linazozifanya.",
-        
+
         'widget:news' => "Habari",
-        'widget:news:item' => "Habari",                
+        'widget:news:item' => "Habari",
         'widget:news:edit' => 'Hariri habari',
-        'widget:news:latest' => 'Habari Mpya',        
-        'widget:news:empty' => "Shirika hili hajaandika habari yo yote.",        
+        'widget:news:latest' => 'Habari Mpya',
+        'widget:news:empty' => "Shirika hili hajaandika habari yo yote.",
         'widget:news:manage_updates' => "Hariri habari",
         'widget:news:mobile_settings' => "Mipangilio ya Kwenda",
         'widget:news:change_email' => "Zalisha anwani mpya ya email",
@@ -247,12 +247,12 @@
         'widget:news:email' => "Email",
         'widget:news:email:summary' => "Peleka email kwa %s na habari yako katika mada au mwili, na picha yo yote kama kiambatisho.",
         'widget:news:sms' => "Ujumbe mfupi",
-        'widget:news:sms:summary' => "Kuja karibu, utaweza kuongeza habari kwa kupeleka ujumbe mfupi (SMS) kutoka simu yako!",        
-        
+        'widget:news:sms:summary' => "Kuja karibu, utaweza kuongeza habari kwa kupeleka ujumbe mfupi (SMS) kutoka simu yako!",
+
         'widget:contact' => "Mawasiliano",
         'widget:contact:instructions' => "Ukurasa huu anaruhusu wageni wako ya tovuti kuwasiliana nawe wazi. Kama ukitaka data fulani kutokuwa katika intaneti hadharani, uache data ile wazi.",
         'widget:contact:public_email' => "Unataka anwani yako ya email, %s, kuonyeshwa hadharani katika ukurasa huu?",
-        'widget:contact:email' => "Email:",        
+        'widget:contact:email' => "Email:",
         'widget:contact:phone_number:edit' => "Namba ya simu watu watumiayo kuwasiliana nawe ni gani?",
         'widget:contact:phone_number' => "Namba ya simu:",
         'widget:contact:name:edit' => "Jina la mwasilianaji mkuu wa shirika lako ni nini?",
@@ -261,9 +261,9 @@
         'widget:contact:title' => "Jina la kazi la mwasilianaji:",
         'widget:contact:street_address:edit' => "Anwani yako ya barabara ni nini?",
         'widget:contact:street_address:help' => "Kama huna anwani na namba, elekeza.",
-        'widget:contact:street_address' => "Anwani ya barabara:",        
+        'widget:contact:street_address' => "Anwani ya barabara:",
         'widget:contact:mailing_address:edit' => "Anwani yako ya barua ni nini?",
-        'widget:contact:mailing_address' => "Anwani ya barua:",        
+        'widget:contact:mailing_address' => "Anwani ya barua:",
 
         'widget:team' => "Timu",
         'widget:team:member' => "Mwenzio",
@@ -279,14 +279,14 @@
         'widget:team:add_success' => "Mwenzio ameongezwa.",
         'widget:team:delete_success' => "Mwenzio amefutwa.",
         'widget:team:move_success' => "Mwenzio amehamishwa.",
-        'widget:team:empty' => "Shirika hili halijaongeza wenzio wo wote.",        
-        
+        'widget:team:empty' => "Shirika hili halijaongeza wenzio wo wote.",
+
         'move:up' => "Hamisha juu",
-        'move:down' => "Hamisha chini",        
+        'move:down' => "Hamisha chini",
 
         'canceledit' => "Ghairi Kuhariri",
         'savechanges' => "Hifadhi mabadiliko",
-        
+
         'widget:edit' => "Hariri Ukurasa",
         'widget:edittitle' => "Hariri %s",
         'widget:edittitle:new' => "Ongeza Ukurasa: %s",
@@ -294,20 +294,20 @@
         'widget:image:label' => "Picha kuonyesha ukurasani humu:",
         'widget:image:position' => "Unataka picha kuwepo wapi ukurasani?",
         'widget:content:label' => "Andika maandiko kwa ukurasa wako chini:",
-        'widget:save:success' => "Ukurasa umehifadhiwa.",        
+        'widget:save:success' => "Ukurasa umehifadhiwa.",
         'widget:delete' => "Futa ukurasa",
-        'widget:delete:success' => "Ukurasa umefutwa.",        
+        'widget:delete:success' => "Ukurasa umefutwa.",
         'widget:delete:confirm' => "Una hakika kuwa unataka kufuta ukurasa huu kutoka tovuti yako?",
-        
+
         'widget:partnerships' => 'Ubia',
         'widget:partnerships:description' => "Eleza ubia wako na shirika hili:",
-        
-        'register:step1' => '1. Ustahiki',                                       
+
+        'register:step1' => '1. Ustahiki',
         'register:step2' => '2. Umba akaunti',
         'register:step3' => '3. Fanya ukurasa mkuu',
-        
+
         'register:title' => 'Andikisha kwa Envaya',
-        
+
         'qualify:welcome' => "Karibu katika Envaya! Baada ya dakika chache tu, shirika lako litakuwa na tovuti, unapoweza kugawa habari kuhusu miradi yako na kuwaambia kila mtu kuhusu kazi yako.",
         'qualify:instructions' => "Kwanza, tunahitaji kuhakikisha shirika lako linastahiki kutumia Envaya. Envaya itathibitisha mastahiki haya kabla ya kuchapisha tovuti yako hadharani.",
         'qualify:org_type' => 'Wewe ni aina gani ya shirika?',
@@ -316,45 +316,45 @@
         'qualify:org_type:other' => 'Nyingine',
         'qualify:org_info' => 'Chagua sentensi chini kukubali na shirika lako:',
         'qualify:org_info:citizen' => 'Ni shirika kitanzania.',
-        'qualify:org_info:local' => 'Linafanya kazi hasa katika jumuiya moja ya mahali.',        
-        'qualify:org_info:funder' => 'Inagawa pesa hasa kwa mashirika mengine.',                
+        'qualify:org_info:local' => 'Linafanya kazi hasa katika jumuiya moja ya mahali.',
+        'qualify:org_info:funder' => 'Inagawa pesa hasa kwa mashirika mengine.',
         'qualify:country' => 'Shirika lako linafanya kazi nchini gani?',
         'qualify:next' => 'Bonyeza kitufe ya chini kuendelea.',
         'qualify:next:button' => 'Hatua ifuatayo',
-        'qualify:wrong_country' => "Samahani, katika mradi wa jaribio wa Envaya, mashirika kutoka Tanzania tu anaweza kuandikisha. Tunatumaini kutegemeza nchi nyingine katika miaka ijayo.",        
+        'qualify:wrong_country' => "Samahani, katika mradi wa jaribio wa Envaya, mashirika kutoka Tanzania tu anaweza kuandikisha. Tunatumaini kutegemeza nchi nyingine katika miaka ijayo.",
         'qualify:wrong_org_type' => "Samahani, sasa Envaya inakusudiwa kwa mashirika ya jumuiya ya kiraia tu.",
         'qualify:no_funders' => "Samahani, sasa Envaya haikusudiwi kwa mashirika yanayogawa pesa kwa mashirika mengine. Hata hivyo, tunatumaini kutegemeza mashirika haya wakati ijayo.",
         'qualify:not_citizen' => "Samahani, sasa Envaya inakusudiwa kwa mashirika yanayoongoza na raia ya Tanzania.",
         'qualify:missing' => "Taarifa ya ustahiki imepotea. Tafadhali umalize fomu ya ustahiki tena.",
         'qualify:ok' => "Hongera! Shirika lako linaonekana kustahiki kwa tovuti katika Envaya.",
-               
+
         'country:other' => 'Nyingine',
-               
+
         'create:instructions' => "Sasa, uingize data chache kuumba akaunti yako katika Envaya. Akaunti hii inakuruhusu kufungua na kuhariri tovuti ya shirika lako.",
         'create:org_name' => "Ingiza jina la shirika lako:",
         'create:org_name:help' => "Hilo litakuwa jina la tovuti yako.",
         'create:username' => "Chagua jina la mtumiaji kwa Envaya:",
         'create:username:help' => "Anwani yako ya intaneti itakuwa:",
-        'create:username:help2' => "Lazima jina lako la mtumiaji liwe angalau tarakimu 3, na linaweza kuwa na tarakimu zifuatazo tu: a-z 0-9 - _",        
-        'create:username:placeholder' => 'jina',       
+        'create:username:help2' => "Lazima jina lako la mtumiaji liwe angalau tarakimu 3, na linaweza kuwa na tarakimu zifuatazo tu: a-z 0-9 - _",
+        'create:username:placeholder' => 'jina',
         'create:password' => "Chagua neno la siri kwa akaunti yako:",
         'create:password:help' => "Pamoja na jina lako la mtumiaji, litakuruhusu kufungua kuhariri tovuti yako. Kumbuka neno hili la siri na ulilinde.",
-        'create:password2' => "Ingiza neno la siri tena kuthibitisha:",        
+        'create:password2' => "Ingiza neno la siri tena kuthibitisha:",
         'create:email' => "Ingiza anwani ya email ya shirika lako:",
         'create:email:help' => "Kama ukisahau neno lako la siri, unaweza kulipanga upya kwa email.",
-        'create:next' => 'Bonyeza kitufe ya chini kuumba akaunti yako.',        
-        'create:next:button' => 'Umba akaunti',        
+        'create:next' => 'Bonyeza kitufe ya chini kuumba akaunti yako.',
+        'create:next:button' => 'Umba akaunti',
         'create:no_name' => "Tafadhali ingize jina ya shirika lako.",
         'create:username_exists' => 'Mtu wengine ameandikisha jina lile la mtumiaji. Tafadhali uchague lingine.',
         'create:passwords_differ' => 'Maneno mawili ya siri uliyoingiza hakuwi sawa. Tafadhali jaribu kuyaingiza tena.',
-        'create:ok' => 'Hongera! Akaunti yako imeumbwa.',        
+        'create:ok' => 'Hongera! Akaunti yako imeumbwa.',
         'create:notloggedin' => 'Lazima umefungua kuona ukurasa huu.',
-        
+
         'setup:instructions' => "Sasa tunauliza maswali machache kuhusu shirika lako ili tuweze kuumba ukurasa mkuu kwa wewe. (Utaweza kuongeza vitu zaidi baadaye.)",
         'setup:mission' => "Lengo la shirika lako ni nini?",
         'setup:mission:help' => "Hili litaonyeshwa juu ya ukurasa wako mkuu.",
         'setup:mission:blank' => "Tafadhali ingiza lengo la shirika lako.",
-        
+
         'setup:language' => "Lugha gani utatumia kuandika maandiko katika tovuti yako (kwa mfano, lengo ya juu)?",
         'setup:language:help' => "Envaya itaruhusu watu ambao hawawezi kusoma lugha ile kusoma ukurasa uliotafsiriwa kwa lugha yao.",
         'setup:location' => "Shirika lako liko wapi?",
@@ -364,46 +364,46 @@
         'setup:sector' => "Bonyeza hadi sekta tano kukubali na shirika lako:",
         'setup:sector:blank' => "Tafadhali chagua angalau sekta moja kukubali na shirka lako.",
         'setup:sector:toomany' => "Secta mno zimechaguliwa kwa shirika lako. Tafadhali chagua hadi sekta 5 tu.",
-        'setup:sector:other_specify' => "Kama 'Nyngine', taja:",                
+        'setup:sector:other_specify' => "Kama 'Nyngine', taja:",
         'setup:theme' => "Chagua wazo ya tovuti yako:",
-        'setup:theme:help' => "Baadaye unaweza kubadilika usanii wa tovuti yako kwa kuongeza nembo ya shirika lako juu ya kila ukurasa.",        
+        'setup:theme:help' => "Baadaye unaweza kubadilika usanii wa tovuti yako kwa kuongeza nembo ya shirika lako juu ya kila ukurasa.",
         'setup:next' => "Bonyeza kitufe ya chini kuona ukurasa wako mkuu!",
-        'setup:next:button' => "Tuuone!",    
-        'setup:next_step_message' => "Jifunze jinsi ya kutumia tovuti yako ya Envaya.",       
-        'setup:ok' => "Ukurasa wako mkuu umeumbwa.",                
+        'setup:next:button' => "Tuuone!",
+        'setup:next_step_message' => "Jifunze jinsi ya kutumia tovuti yako ya Envaya.",
+        'setup:ok' => "Ukurasa wako mkuu umeumbwa.",
 
         'approval:rejected' => 'Tunasikitika. Shirika hili halikukubaliwa na wasimamizi wetu.',
         'approval:waiting' => "Shirika hili inangoja ukaguzi na halijaonekana hadharani.",
         'approval:notapproved' => "Halijakubaliwa",
 
-        'position:left' => 'Kushoto',        
+        'position:left' => 'Kushoto',
         'position:top' => 'Juu',
         'position:right' => 'Kulia',
         'position:bottom' => 'Chini',
-        
+
         'image:current' => "Picha ya sasa:",
-        'image:new' => "Picha mpya:",                
+        'image:new' => "Picha mpya:",
         'image:blank' => "Iache wazi kuweka picha ya sasa.",
         'image:optional' => "Iache wazi kama hutaki picha.",
-        'image:delete' => "Futa picha?",                              
-        
+        'image:delete' => "Futa picha?",
+
         'upload:browse' => 'Peleleza',
         'upload:image:error' => "Kosa kutengeneza picha: ",
         'upload:image:processing' => "Ikitengeneza picha...",
         'upload:image:uploading' => "Ikihifadhi picha...",
         'upload:image:complete' => "Picha imehifadhiwa. Ikionyesha...",
-        'upload:image:error' => "Kosa uploading picha: ",                 
+        'upload:image:error' => "Kosa uploading picha: ",
         'upload:image:recommend_flash' => "Angalia: Kuongeza picha kwa haraka zaidi, weka %s.",
-        
+
         'upload:image:isdoc' => "Shida: Unajaribu kuweka faili ya Microsoft Word.  Envaya imefanya kazi na picha tu.  Tafadhali hifadhi picha kutoka document na tumia muundo .jpg au .png au .gif",
         'upload:image:isbad' => "Shida: Unajaribu kuweka faili mbaya. Envaya imefanya kazi na picha tu na muundo .jpg au .png au .gif",
 
-        'contact:link' => "Wasiliana",    
-        'contact:title' => 'Wasiliana nasi',        
-                
+        'contact:link' => "Wasiliana",
+        'contact:title' => 'Wasiliana nasi',
+
         'page:notfound' => "Ukurasa hauonekani",
         'page:notfound:details' => "Ukurasa unaoomba ama hauwepo ama huna ruhusa kuuona.",
-        
+
         'icon' => 'Nembo ya shirika',
         'icon:saved' => 'Nembo imehifadhiwa.',
         'icon:reset' => 'Nembo imefutwa.',
@@ -419,19 +419,19 @@
         'header:subtitle' => "Jina la Ukurasa",
         'header:edit' => "Hariri kichwa",
         'header:saved' => "Picha ya kichwa imebadilishwa.",
-        'header:reset' => "Kichwa kimepangwa upya.",        
+        'header:reset' => "Kichwa kimepangwa upya.",
 
-        'org:name:edit' => 'Hariri jina',        
-        
+        'org:name:edit' => 'Hariri jina',
+
         'org:cantedit' => "Huna ruhusa kuhariri tovuti ya shirika hili.",
 
         'design' => "Usanii wa tovuti",
         'design:edit' => "Hariri usanii wa tovuti",
 
         'theme' => "Wazo wa tovuti",
-        'theme:current' => "Wazo wa sasa:",        
-        'theme:changed' => "Wazo imebadiliwa.",      
-        
+        'theme:current' => "Wazo wa sasa:",
+        'theme:changed' => "Wazo imebadiliwa.",
+
         'theme:green' => "Kibluu",
         'theme:brick' => "Matofali",
         'theme:craft4' => "Mbao na Kitambaa",
@@ -439,7 +439,7 @@
         'theme:cotton2' => "Pamba",
         'theme:wovengrass' => "Majani yafumwayo",
         'theme:beads' => "Shanga",
-        'theme:red' => "Kromu",        
+        'theme:red' => "Kromu",
 
         'blog:content:label' => "Andika maandiko kwa habari yako chini:",
         'blog:image:label' => "Picha kuonyesha na habari hii:",
@@ -451,7 +451,7 @@
 
         'map:drop_pin' => "Ongeza pointi kwa ramani",
         'map:drag_pin' => "Vuta na anguka pointi nyekundu chini kwa sehemu ya shirika lako.",
-        
+
         'trans:by' => 'Tafsiri kwa',
         'trans:original_in' => "Maandiko ya asili kwa %s",
         'trans:translate' => "Tafsiri maandiko",
@@ -467,7 +467,7 @@
         "trans:trans_from_to" => 'Ukurasa huu ametafsiriwa toka %s kwa %s.',
         "trans:view_original_in" => 'Ona asili kwa %s',
         "trans:partial_automatic_trans_from_to" => 'Maeneo ya ukurasa huu ametafsiriwa kwa kujiendesha na Google Translate.',
-        "trans:automatic_trans_from_to" => "Ukurasa huu ametafsiriwa kwa kujiendesha toka %s kwa %s na Google Translate.", 
+        "trans:automatic_trans_from_to" => "Ukurasa huu ametafsiriwa kwa kujiendesha toka %s kwa %s na Google Translate.",
         "trans:page_original_in" => "Ukurasa huu ameonyeshwa katika lugha yake ya asili, %s.",
         "trans:view_in" => "Ona kwa %s",
         "trans:view_automatic_in" => "Ona kwa %s na Google Translate",
@@ -475,7 +475,7 @@
         'trans:view_stale_automatic' => "Ona na Google Translate",
 
         'exception:title' => "Kosa",
-        
+
         'actionloggedout' => "Samahani, huwezi kufanya hatua hii wakati ambapo umeondoka.",
 
         'next' => "Baada",
@@ -504,7 +504,7 @@
         'user:password:label' => "Neno jipya la siri",
         'user:password2:label' => "Neno jipya la siri (tena)",
         'user:password:success' => "Neno lako la siri limebadiliwa.",
-        'user:password:reset' => "Neno lako jipya la siri limepelekwa kwa anwani yako ya email. Soma email yako kwa neno lako jipya la siri, na iingize chini.",        
+        'user:password:reset' => "Neno lako jipya la siri limepelekwa kwa anwani yako ya email. Soma email yako kwa neno lako jipya la siri, na iingize chini.",
         'user:password:fail' => "Tuwezi kulibadili neno lako la siri.",
         'user:password:fail:notsame' => "Maneno mawili ya siri si sawa!",
         'user:password:fail:tooshort' => "Neno lako la siri ni fupi mno!",
@@ -514,7 +514,7 @@
         'user:language:fail' => "Mipangilio yako ya lugha hayawezi kuhifadhiwa.",
 
         'user:username:notfound' => 'Jina la mtumiaji %s halionekani.',
-        
+
         'user:password:resetreq:success' => 'Umeomba neno jipya la siri. Soma email yako kwa ujumbe toka Envaya, na bonyeza kiungo ndani.',
         'user:password:resetreq:fail' => 'Hatuwezi kuomba neno jipya la siri.',
 
@@ -547,9 +547,9 @@
 
         'option:yes' => "Ndiyo",
         'option:no' => "Siyo",
-        
+
         'question:areyousure' => 'Una hakika?',
-        
+
         'save' => "Hifadhi",
         'publish' => "Chapisha",
         'cancel' => "Ghairi",
@@ -570,7 +570,7 @@
         'email:resetpassword:body' => "Hujambo %s,
 
 Neno lako la siri limepanga upya kwa: %s",
-        
+
         'email:orgapproved:subject' => 'Tovuti yako imekubaliwa',
         'email:orgapproved:body' => "Hujambo %s,
 
@@ -585,8 +585,8 @@ Kufanya hivyo, fungua kuhariri tovuti yako hapa:
 Kusoma maagizo kuhusu kuanza kutumia Envaya, na kujifunza vitu unavyofanya na tovuti yako mpya, tembelea ukurasa wetu wa %s hapa:
 %s
 
-Asante kwa kutumia Envaya!",        
-        
+Asante kwa kutumia Envaya!",
+
         'email:requestPartnership:subject' => "%s inataka kuongeza %s kama ubia",
         'email:requestPartnership:body' => "Kuthibitisha ubia huu, bonyeza kiungo chini na fungua katika akaunti yako ya Envaya:
 %s",
@@ -607,9 +607,9 @@ Kama uliliomba, bonyeza kiungo chini kubadili neno lako la siri:
         'en' => 'Kiingereza',
 
         'tz:pemba_n' => 'Pemba Kaskazini',
-        'tz:pemba_s' => 'Pemba Kusini',        
+        'tz:pemba_s' => 'Pemba Kusini',
         'tz:zanzibar_cs' => 'Unguja Kusini',
         'tz:zanzibar_n' => 'Unguja Kaskazini',
-        'tz:zanzibar_w' => 'Unguja Mjini Magharibi',      
+        'tz:zanzibar_w' => 'Unguja Mjini Magharibi',
     ));
 ?>
