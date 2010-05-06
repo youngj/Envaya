@@ -2,41 +2,21 @@
 
 function org_page_handler($page)
 {
-    global $CONFIG;
-
     add_generic_footer();
 
     if (isset($page[0]))
     {
         switch($page[0])
         {
-            case "new":
-                include(__DIR__ . "/neworg.php");
-                return;
-            case "help":
-                include(__DIR__ . "/help.php");
-                return;
-            case "browse":
-                set_page_owner(0);
-                include(__DIR__ . "/browseorgs.php");
-                return;
-            case "search":
-                include(__DIR__ . "/search.php");
-                return;
-            case "searchArea":
-                include(__DIR__ . "/searchArea.php");
-                return;
-            case "feed":
-                include(__DIR__ . "/feed.php");
-                return;
-            case "translate":
-                include(__DIR__ . "/translate.php");
-                return;
-            case "translateQueue":
-                include(__DIR__ . "/translateQueue.php");
-                return;
-            default:
-                not_found();
+            case "new":				return include(__DIR__."/neworg.php");
+            case "help":			return include(__DIR__."/help.php");
+            case "browse":  		return include(__DIR__."/browseorgs.php");
+            case "search": 			return include(__DIR__."/search.php");
+            case "searchArea":		return include(__DIR__."/searchArea.php");
+            case "feed":			return include(__DIR__."/feed.php");
+            case "translate":		return include(__DIR__."/translate.php");
+            case "translateQueue": 	return include(__DIR__."/translateQueue.php");
+            default:				not_found();
         }
     }
 }
@@ -52,14 +32,14 @@ function page_page_handler($page)
     {
         add_generic_footer();
         set_input('page_name', $pageName);
-        include(__DIR__ . "/page.php");
+        include(__DIR__."/page.php");
     }
 }
 
 function home_page_handler($page)
 {
     add_generic_footer();
-    include(__DIR__ . "/home.php");
+    include(__DIR__."/home.php");
 }
 
 
@@ -68,8 +48,7 @@ function org_profile_page_handler($page)
     $org = get_user_by_username($page[0]);
     if (!$org)
     {
-        include(__DIR__ . "/orgprofile.php");
-        return;
+        return include(__DIR__."/orgprofile.php");
     }
 
     set_input('org_guid', $org->guid);
@@ -80,30 +59,17 @@ function org_profile_page_handler($page)
     {
         switch ($page[1])
         {
-            case "design":
-                include(__DIR__ . "/design.php");
-                return;
-            case "username":
-                include(__DIR__ . "/changeUsername.php");
-                return;
-            case "confirm":
-                include(__DIR__ . "/confirmPartner.php");
-                return;
-            case "compose":
-                include(__DIR__ . "/composeMessage.php");
-                return;
-            case "addphotos":
-                include(__DIR__ . "/addPhotos.php");
-                return;
+            case "design": 		return include(__DIR__."/design.php");
+            case "username":	return include(__DIR__."/changeUsername.php");
+            case "confirm":		return include(__DIR__."/confirmPartner.php");
+            case "compose":		return include(__DIR__."/composeMessage.php");
+            case "addphotos":	return include(__DIR__."/addPhotos.php");
             case "teammember":
                 set_input("member_guid", @$page[2]);
                 switch (@$page[3])
                 {
-                    case "edit":
-                        include(__DIR__."/editTeamMember.php");
-                        return;
-                    default:
-                        break;
+                    case "edit": return include(__DIR__."/editTeamMember.php");
+                    default: break;
                 }
                 break;
             case "post":
@@ -111,23 +77,15 @@ function org_profile_page_handler($page)
 
                 switch (@$page[3])
                 {
-                    case "edit":
-                        include(__DIR__ . "/editPost.php");
-                        return;
-                    case "preview":
-                        include(__DIR__ . "/postPreview.php");
-                        return;
+                    case "edit":	return include(__DIR__."/editPost.php");
+                    case "preview":	return include(__DIR__."/postPreview.php");
                     case "next":
                         set_input("delta", 1);
-                        include(__DIR__ . "/postRedirect.php");
-                        return;
+                        return include(__DIR__."/postRedirect.php");
                     case "prev":
                         set_input("delta", -1);
-                        include(__DIR__ . "/postRedirect.php");
-                        return;
-                    default:
-                        include(__DIR__ . "/blogPost.php");
-                        return;
+                        return include(__DIR__."/postRedirect.php");
+                    default:		return include(__DIR__."/blogPost.php");
                 }
             default:
                 break;
@@ -140,32 +98,28 @@ function org_profile_page_handler($page)
             {
                 switch ($page[2])
                 {
-                    case 'edit':
-                        include(__DIR__ . "/editwidget.php");
-                        return;
+                    case 'edit': return include(__DIR__."/editwidget.php");
                 }
             }
 
             if ($widget->guid)
             {
-                include(__DIR__ . "/orgprofile.php");
-                return;
+                return include(__DIR__."/orgprofile.php");
             }
             else
             {
-                not_found();
-                return;
+                return not_found();
             }
         }
     }
 
     $widget = null;
-    include(__DIR__ . "/orgprofile.php");
+    include(__DIR__."/orgprofile.php");
 }
 
 function login_page_handler($page)
 {
-    include(__DIR__ . "/login.php");
+    include(__DIR__."/login.php");
 }
 
 function envaya_pagesetup()
@@ -193,7 +147,7 @@ function envaya_pagesetup()
 
 function new_index()
 {
-    include(__DIR__ . "/splash.php");
+    include(__DIR__."/splash.php");
     return true;
 }
 
