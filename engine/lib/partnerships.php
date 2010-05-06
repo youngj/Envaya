@@ -4,7 +4,7 @@ class Partnership extends ElggObject
 {
     static $subtype_id = T_partnership;
     static $table_name = 'partnerships';
-    
+
     static $table_attributes = array(
         'description' => '',
         'partner_guid' => 0,
@@ -12,17 +12,27 @@ class Partnership extends ElggObject
         'approval' => 0,
         'language' => '',
     );
-    
+
+    public function save()
+    {
+    	if (!$this->language)
+    	{
+    		$this->language = guess_language($this->description);
+    	}
+
+		parent::save();
+    }
+
     function getPartner()
     {
         return get_entity($this->partner_guid);
     }
-    
+
     function isSelfApproved()
     {
         return ($this->approval & 1) != 0;
     }
-    
+
     function setSelfApproved($approved)
     {
         if ($approved)
@@ -55,5 +65,5 @@ class Partnership extends ElggObject
     function getApproveUrl()
     {
         return "{$this->getPartner()->getURL()}/confirm?partner_guid={$this->container_guid}";
-    }    
+    }
 }

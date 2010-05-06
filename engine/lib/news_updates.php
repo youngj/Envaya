@@ -8,21 +8,31 @@ class NewsUpdate extends ElggObject
         'content' => '',
         'data_types' => 0,
         'language' => '',
-    );        
-    
+    );
+
+    public function save()
+    {
+    	if (!$this->language)
+    	{
+    		$this->language = guess_language($this->content);
+    	}
+
+		parent::save();
+    }
+
     public function getImageFile($size = '')
     {
         $file = new ElggFile();
         $file->owner_guid = $this->container_guid;
         $file->setFilename("news/{$this->guid}$size.jpg");
-        return $file;       
+        return $file;
     }
-    
+
     public function getTitle()
     {
         return elgg_echo("widget:news:item");
-    }        
-    
+    }
+
     public function jsProperties()
     {
         return array(
@@ -32,28 +42,28 @@ class NewsUpdate extends ElggObject
             'imageURL' => $this->getImageURL('small'),
             'snippetHTML' => elgg_view('output/text', array('value' => $this->getSnippet()))
         );
-    }    
+    }
 
     public function getURL()
     {
         $org = $this->getContainerEntity();
         if ($org)
-        {    
+        {
             return $org->getUrl() . "/post/" . $this->getGUID();
         }
         return '';
-    }        
-    
+    }
+
     public function getImageURL($size = '')
     {
         return $this->hasImage() ? ($this->getImageFile($size)->getURL()."?{$this->time_updated}") : "";
-    }    
-    
+    }
+
     public function hasImage()
     {
         return ($this->data_types & DataType::Image) != 0;
-    }   
-    
+    }
+
     public function getSnippet($maxLength = 100)
     {
         return get_snippet($this->content, $maxLength);
@@ -61,9 +71,9 @@ class NewsUpdate extends ElggObject
 
     public function getDateText()
     {
-        return friendly_time($this->time_created); 
+        return friendly_time($this->time_created);
     }
-    
+
     static function getImageSizes()
     {
         return array(
@@ -71,12 +81,12 @@ class NewsUpdate extends ElggObject
             'large' => '450x450',
         );
     }
-    
+
     public static function all($limit = 10, $offset = 0)
     {
         return static::filterByCondition(array(), array(), 'time_created desc', $limit, $offset);
     }
-    
+
     public static function filterByOrganizations($orgs, $limit = 10, $offset = 0)
     {
         if (empty($orgs))
@@ -88,16 +98,16 @@ class NewsUpdate extends ElggObject
             $where = array();
             $args = array();
             $in = array();
-            
+
             foreach ($orgs as $org)
             {
                 $in[] = "?";
                 $args[] = $org->guid;
             }
-            
+
             $where[] = "container_guid IN (".implode(",", $in).")";
 
             return static::filterByCondition($where, $args, 'time_created desc', $limit, $offset);
-        }    
+        }
     }
 }
