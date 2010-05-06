@@ -2,7 +2,7 @@
 
 require_once("scripts/cmdline.php");
 
-$kestrel = run_task("java -jar kestrel-1.2.jar -f kestrel.conf", dirname(__FILE__)."/vendors/kestrel_dev");
+$kestrel = run_task("java -jar kestrel-1.2.jar -f kestrel.conf", __DIR__."/vendors/kestrel_dev");
 
 sleep(3);
 

@@ -32,13 +32,13 @@ function main()
        2 => STDERR
     );
 
-    $mockMailFile = dirname(__FILE__)."/mail.out";
+    $mockMailFile = __DIR__."/mail.out";
 
     @unlink($mockMailFile);
 
     putenv("MOCK_MAIL_FILE=$mockMailFile");
 
-    $queue = proc_open('php runserver.php', $descriptorspec, $pipes2, dirname(dirname(__FILE__)));
+    $queue = proc_open('php runserver.php', $descriptorspec, $pipes2, dirname(__DIR__));
 
     sleep(2);
 

@@ -3,7 +3,7 @@
 	/**
 	 * Generic search viewer
 	 * Given a GUID, this page will try and display any entity
-	 * 
+	 *
 	 * @package Elgg
 	 * @subpackage Core
 
@@ -13,14 +13,14 @@
 	 */
 
 	// Load Elgg engine
-		require_once(dirname(dirname(__FILE__)) . "/engine/start.php");
-		
+		require_once(dirname(__DIR__) . "/engine/start.php");
+
 	// Set context
 		set_context('search');
-		
+
 	// Get input
 		$tag = stripslashes(get_input('tag'));
-		
+
 		if (!empty($tag)) {
 			$title = sprintf(elgg_echo('groups:searchtitle'),$tag);
 			$body = "";
@@ -33,7 +33,7 @@
 			$body .= elgg_view_title($title);
 			$body .= list_entities('groups');
 		}
-		
+
 		$body = elgg_view_layout('two_column_left_sidebar','',$body);
 		page_draw($title,$body);
 

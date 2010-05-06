@@ -15,33 +15,33 @@
     $CONFIG->cache_backend = "MemcacheCache";
     //$CONFIG->cache_backend = "DatabaseCache";
     $CONFIG->memcache_servers = array('localhost');
-            
+
     $CONFIG->admin_email = "nobody@envaya.org";
     $CONFIG->post_email = "postdev@envaya.org";
     $CONFIG->email_from = "web@envaya.org";
-    $CONFIG->email_pass = "f03;aoeA";    		
+    $CONFIG->email_pass = "f03;aoeA";
     $CONFIG->google_api_key = "ABQIAAAAHy69XWEjciJIVElz0OYMsRR3-IOatrPZ1tLat998tYHgwqPnkhTKyWcq8ytRPMx3RyxFjK0O7WSCHA";
     $CONFIG->analytics_enabled = 0;
     $CONFIG->error_emails_enabled = 0;
-    
+
     $CONFIG->s3_key = 'AKIAJAJKJDBD2RSGAILQ';
     $CONFIG->s3_private = 'E9s2sGLEKqJyCG6WE4PbE/JMBOuLcZ4DJ2v1hyH4';
     $CONFIG->s3_bucket = 'envaya_dev';
-        
+
     $CONFIG->translations = array(
         'en' => array('en' => 'English'),
         'sw' => array('sw' => 'Kiswahili'),
     );
 
-    $CONFIG->path = dirname(dirname(__FILE__)) . "/";   
-    $CONFIG->viewpath = $CONFIG->path . "views/";   
-    $CONFIG->pluginspath = $CONFIG->path . "mod/";    
-    
+    $CONFIG->path = dirname(__DIR__) . "/";
+    $CONFIG->viewpath = $CONFIG->path . "views/";
+    $CONFIG->pluginspath = $CONFIG->path . "mod/";
+
     $CONFIG->dataroot = dirname($CONFIG->path). "/elgg-data/";
-    
+
     $CONFIG->simplecache_enabled = 0;
-    $CONFIG->simplecache_version = 37;
-    
+    $CONFIG->simplecache_version = 38;
+
     $CONFIG->cookie_domain = null;
     $CONFIG->viewpath_cache_enabled = 0;
     $CONFIG->wwwroot = "http://localhost/";
@@ -56,12 +56,12 @@
     $CONFIG->sitedescription = "";
     $CONFIG->siteemail = "youngj@envaya.org";
     $CONFIG->enabled_plugins = array("logbrowser","profile");
-        
+
     $CONFIG->types = array(
         'object' => 'ElggObject',
         'user' => 'ElggUser'
     );
-        
+
     $CONFIG->subtypes = array(
         1 => array("object", "file", "ElggFile"),
         2 => array("object", "plugin", "ElggPlugin"),
@@ -69,7 +69,7 @@
         4 => array('user', 'organization', "Organization"),
         5 => array('object', 'translation', 'Translation'),
         6 => array('object', 'interface_translation', 'InterfaceTranslation'),
-        7 => array('object', 'blog', 'NewsUpdate'),        
+        7 => array('object', 'blog', 'NewsUpdate'),
         8 => array('object', 'logwrapper', 'ElggObject'),
         9 => array('object', 'admin_message', 'ElggObject'),
         10 => array('object', 'partnership', 'Partnership'),
@@ -79,6 +79,6 @@
     {
         define('T_' . $subtypeArr[1], $val);
     }
-    
-    include_once(dirname(__FILE__) . "/localsettings.php");
+
+    include_once(__DIR__ . "/localsettings.php");
 ?>

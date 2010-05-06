@@ -3,7 +3,7 @@
 /**
 * Elgg language module
 * Functions to manage language and translations.
-* 
+*
 * @package Elgg
 * @subpackage Core
 
@@ -14,9 +14,9 @@
 
 /**
 * Add a translation.
-* 
+*
 * Translations are arrays in the Zend Translation array format, eg:
-* 
+*
 *	$english = array('message1' => 'message1', 'message2' => 'message2');
 *  $german = array('message1' => 'Nachricht1','message2' => 'Nachricht2');
 *
@@ -25,17 +25,17 @@
 * @return true|false Depending on success
 */
 
-function add_translation($country_code, $language_array) 
+function add_translation($country_code, $language_array)
 {
     global $CONFIG;
     if (!isset($CONFIG->translations))
         $CONFIG->translations = array();
-    
-    if (!isset($CONFIG->translations[$country_code])) 
+
+    if (!isset($CONFIG->translations[$country_code]))
     {
         $CONFIG->translations[$country_code] = $language_array;
-    } 
-    else 
+    }
+    else
     {
         $CONFIG->translations[$country_code] = $language_array + $CONFIG->translations[$country_code];
     }
@@ -69,7 +69,7 @@ function get_cookie_language()
             return $lang;
         }
     }
-}    
+}
 
 function get_accept_language()
 {
@@ -90,7 +90,7 @@ function get_accept_language()
             {
                 return $lang;
             }
-        }    
+        }
     }
 }
 
@@ -98,7 +98,7 @@ function get_accept_language()
 * Gets the current language in use by the system or user.
 * @return string The language code (eg "en")
 */
-function get_language() 
+function get_language()
 {
     global $CONFIG;
 
@@ -113,7 +113,7 @@ function get_language()
     if (!$language)
     {
         $language = get_cookie_language();
-    }    
+    }
 
     if (!$language)
     {
@@ -125,17 +125,17 @@ function get_language()
         $language = $CONFIG->language;
     }
 
-    if ($language) 
+    if ($language)
     {
         $CURRENT_LANGUAGE = $language;
         return $language;
-    }		
+    }
     return false;
 
 }
 
 /**
-* Given a message shortcode, returns an appropriately translated full-text string 
+* Given a message shortcode, returns an appropriately translated full-text string
 *
 * @param string $message_key The short message code
 * @param string $language Optionally, the standard language code (defaults to the site default, then English)
@@ -147,9 +147,9 @@ function elgg_echo($message_key, $language = "") {
 
     if (!$language)
     {
-        $language = get_language();			    
-    }                
-    else 
+        $language = get_language();
+    }
+    else
     {
         load_translation($language);
     }
@@ -164,18 +164,18 @@ function elgg_echo($message_key, $language = "") {
 
 }
 
-function load_all_translations() 
+function load_all_translations()
 {
-    $path = dirname(dirname(dirname(__FILE__))) . "/languages/";
+    $path = dirname(dirname(__DIR__)) . "/languages/";
 
-    if ($handle = opendir($path)) 
+    if ($handle = opendir($path))
     {
-        while ($language = readdir($handle)) 
+        while ($language = readdir($handle))
         {
-            if (endswith($language, '.php')) 
+            if (endswith($language, '.php'))
             {
                 include_once($path . $language);
-            }    
+            }
         }
     }
     else
@@ -183,16 +183,16 @@ function load_all_translations()
 
 }
 
-function load_translation($lang) 
-{    
-    $path = dirname(dirname(dirname(__FILE__))) . "/languages/";
+function load_translation($lang)
+{
+    $path = dirname(dirname(__DIR__)) . "/languages/";
 
     include_once("$path$lang.php");
-    
+
     if ($lang != 'en')
     {
         include_once("{$path}en.php");
-    }    
+    }
 }
 
 /**
@@ -209,11 +209,11 @@ function get_installed_translations($show_completeness = false)
         $installed[$k] = elgg_echo($k, $k);
 
         if ($show_completeness)
-        {                
+        {
             $completeness = get_language_completeness($k);
             if ((isadminloggedin()) && ($completeness<100) && ($k!='en'))
                 $installed[$k] .= " (" . $completeness . "% " . elgg_echo('complete') . ")";
-        } 
+        }
     }
 
     return $installed;
@@ -250,7 +250,7 @@ function get_missing_language_keys($language)
 
     foreach ($CONFIG->translations['en'] as $k => $v)
     {
-        if (!isset($CONFIG->translations[$language][$k]) && !isset($CONFIG->en_admin[$k])) 
+        if (!isset($CONFIG->translations[$language][$k]) && !isset($CONFIG->en_admin[$k]))
             $missing[] = $k;
     }
 
@@ -268,7 +268,7 @@ function get_language_link($lang)
     else
     {
         return "<a href='action/changeLanguage?newLang={$lang}'>$name</a>";
-    }            
+    }
 }
 
 function get_language_links()
@@ -277,7 +277,7 @@ function get_language_links()
     global $CONFIG;
     foreach ($CONFIG->translations as $lang => $v)
     {
-        $links[] = get_language_link($lang);    
+        $links[] = get_language_link($lang);
     }
     echo implode(' &middot; ', $links);
 }
@@ -289,7 +289,7 @@ function get_translatable_language_keys()
 
     foreach ($CONFIG->translations['en'] as $k => $v)
     {
-        if (!isset($CONFIG->en_admin[$k])) 
+        if (!isset($CONFIG->en_admin[$k]))
             $keys[] = $k;
     }
 
@@ -299,17 +299,17 @@ function get_translatable_language_keys()
 function change_viewer_language($newLanguage)
 {
     global $CONFIG;
-    
+
     $expireTime = time() + 60 * 60 * 24 * 365 * 15;
-    
+
     if ($CONFIG->cookie_domain)
     {
         setcookie("lang", $newLanguage, $expireTime, '/', $CONFIG->cookie_domain);
-    }    
+    }
     setcookie("lang", $newLanguage, $expireTime, '/');
 }
 
 //$a = microtime(true);
-load_translation(get_current_language());	
+load_translation(get_current_language());
 //$b = (microtime(true) - $a);
 //error_log("translations loaded in $b seconds");

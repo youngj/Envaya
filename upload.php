@@ -1,6 +1,6 @@
 <?php
 
-include_once(dirname(__FILE__)."/engine/start.php");
+include_once(__DIR__."/engine/start.php");
 
 ?>
 
@@ -13,53 +13,53 @@ include_once(dirname(__FILE__)."/engine/start.php");
 
     echo elgg_view('input/file', array(
         'internalname' => 'file',
-        'internalid' => 'file',        
+        'internalid' => 'file',
         'js' => "onchange='fileChanged()'"
-    )); 
+    ));
 
     echo elgg_view('input/hidden', array(
         'internalname' => 'sizes',
         'value' => get_input('sizes')
-    )); 
+    ));
 
     echo elgg_view('input/hidden', array(
         'internalname' => 'swfupload',
         'internalid' => 'swfupload',
         'value' => get_input('swfupload')
-    )); 
+    ));
 
 
     ?>
 
     <script type='text/javascript'>
     var swfupload = window.parent.SWFUpload.instances[document.getElementById('swfupload').value];
-    
+
     <?php
         $lastUpload = Session::get('lastUpload');
-        if ($lastUpload) 
+        if ($lastUpload)
         {
             Session::set('lastUpload', null);
-            
+
     ?>
             swfupload.uploadSuccess(null, <?php echo json_encode($lastUpload) ?>);
-    <?php 
-        } 
+    <?php
+        }
     ?>
-    
+
     function fileChanged()
-    {        
-        var form = document.getElementById('form');              
+    {
+        var form = document.getElementById('form');
         var file = document.getElementById('file');
-        
+
         if (file.value)
-        {   
+        {
             var len = file.value.length;
             var position = eval(len - 4);
             var fileType = file.value.toLowerCase().substr(position, len);
 
-            if(fileType == ".jpg" || fileType == ".png" || fileType == ".gif") 
+            if(fileType == ".jpg" || fileType == ".png" || fileType == ".gif")
             {
-                swfupload.uploadProgress();        
+                swfupload.uploadProgress();
                 form.submit();
             }
             else
@@ -78,8 +78,8 @@ include_once(dirname(__FILE__)."/engine/start.php");
         }
     }
     </script>
-    
-    
-</form>    
+
+
+</form>
 </body>
 </html>

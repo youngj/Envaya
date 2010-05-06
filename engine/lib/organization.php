@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__)."/users.php");
+require_once(__DIR__."/users.php");
 
 define('SECTOR_OTHER', 99);
 

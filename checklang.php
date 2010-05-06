@@ -29,7 +29,7 @@ if ($lang != 'en')
         {
             echo "same as english: $k\n";
         }
-    }    
+    }
 }
 else
 {
@@ -42,7 +42,7 @@ else
         $files = scandir($dir);
 
         foreach ($files as $file)
-        {    
+        {
             $path = "$dir/$file";
 
             if (endswith($path, ".php"))
@@ -55,7 +55,7 @@ else
                     {
                         $seenKeys[$langKey] = true;
                     }
-                }                
+                }
             }
             else if ($file != "." && $file != ".." && $file != ".svn" && is_dir($path))
             {
@@ -63,7 +63,7 @@ else
             }
         }
     }
-    checkDir(dirname(__FILE__));
+    checkDir(__DIR__);
 
     foreach ($seenKeys as $seenKey => $seen)
     {
@@ -86,18 +86,18 @@ foreach ($CONFIG->translations[$lang] as $k => $v)
     {
         array_push($valueCount[$v], $k);
     }
-}  
-    
-    
-    
-echo "\n";    
-    
+}
+
+
+
+echo "\n";
+
 $duplicates = 0;
 foreach ($valueCount as $v => $arr)
 {
     $count = sizeof($arr);
     if ($count > 1)
-    {        
+    {
         echo "$count duplicate: $v\n";
         echo "    ".implode(', ',$arr)."\n";
         $duplicates += ($count - 1);

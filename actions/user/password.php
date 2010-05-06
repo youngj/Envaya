@@ -1,28 +1,28 @@
 <?php
 	/**
 	 * Action for changing a user's password
-	 * 
+	 *
 	 * @package Elgg
 	 * @subpackage Core
 	 * @author Curverider Ltd
 	 * @link http://elgg.org/
 	 */
 
-	require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
+	require_once(dirname(dirname(__DIR__)) . "/engine/start.php");
 	global $CONFIG;
 
 	gatekeeper();
-	
+
 	$password = get_input('password');
 	$password2 = get_input('password2');
 	$user_id = get_input('guid');
 	$user = "";
-	
+
 	if (!$user_id)
 		$user = get_loggedin_user();
 	else
 		$user = get_entity($user_id);
-		
+
 	if (($user) && ($password!=""))
 	{
 		if (strlen($password)>=4)
@@ -40,7 +40,7 @@
 		else
 			register_error(elgg_echo('user:password:fail:tooshort'));
 	}
-	
+
 	//forward($_SERVER['HTTP_REFERER']);
 	//exit;
 ?>

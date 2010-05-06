@@ -1,7 +1,7 @@
 <?php
-    include(dirname(__FILE__)."/org.php");
-    include(dirname(__FILE__)."/content_margin.php");
-    include(dirname(__FILE__)."/beige_content.php");
+    include(__DIR__."/org.php");
+    include(__DIR__."/content_margin.php");
+    include(__DIR__."/beige_content.php");
     $graphicsDir = $vars['url'] . "_graphics/cotton";
 ?>
 
@@ -18,11 +18,11 @@ body { color:#fff; background:#d0b66b url("<?php echo $graphicsDir; ?>/cotton-bg
     -moz-border-radius: 8px;
     -webkit-border-radius: 8px;
 }
-#translate_bar 
-{ 
-    color:#000; 
-    background-color:#c6b186; 
-    border-color:#e3d2a7; 
+#translate_bar
+{
+    color:#000;
+    background-color:#c6b186;
+    border-color:#e3d2a7;
     background-image:url("<?php echo $vars['url'] ?>_graphics/world_black.gif");
 }
 #translate_bar a { color:#000; }

@@ -32,7 +32,7 @@ foreach ($orgs as $org)
 $widgets = Widget::filterByCondition(array("widget_name='history' or widget_name='projects'"), array(), 'time_created desc', $limit = 100);
 foreach ($widgets as $widget)
 {
-	if (get_feed_count('new_widget', $widget) == 0)
+	if (get_feed_count('new_widget', $widget) == 0 && $widget->content)
 	{
 		post_feed_items($widget->getContainerEntity(), 'new_widget', $widget, null, $widget->time_updated);
 	}

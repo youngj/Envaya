@@ -3,7 +3,7 @@
 	/**
 	 * Elgg administration statistics index
 	 * This is a special page that displays a number of statistics
-	 * 
+	 *
 	 * @package Elgg
 	 * @subpackage Core
 	 * @author Curverider Ltd
@@ -11,14 +11,14 @@
 	 */
 
 	// Get the Elgg framework
-		require_once(dirname(dirname(__FILE__)) . "/engine/start.php");
+		require_once(dirname(__DIR__) . "/engine/start.php");
 
 	// Make sure only valid admin users can see this
 		admin_gatekeeper();
-        
+
         set_theme('admin');
-	
+
 	// Display main admin menu
 		page_draw(elgg_echo("admin:statistics"),elgg_view_layout("two_column_left_sidebar",'',elgg_view_title(elgg_echo('admin:statistics')) . elgg_view("admin/statistics")));
-		
+
 ?>

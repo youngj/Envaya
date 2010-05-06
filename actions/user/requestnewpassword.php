@@ -1,18 +1,18 @@
 <?php
 	/**
 	 * Action to request a new password.
-	 * 
+	 *
 	 * @package Elgg
 	 * @subpackage Core
 	 * @author Curverider Ltd
 	 * @link http://elgg.org/
 	 */
 
-	require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
+	require_once(dirname(dirname(__DIR__)) . "/engine/start.php");
 	global $CONFIG;
 
 	$username = get_input('username');
-	
+
 	$access_status = access_get_show_hidden_status();
 	access_show_hidden_entities(true);
 	$user = get_user_by_username($username);
@@ -32,7 +32,7 @@
 	}
 	else
 		register_error(sprintf(elgg_echo('user:username:notfound'), $username));
-		
+
 	access_show_hidden_entities($access_status);
 	forward();
 	exit;

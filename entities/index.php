@@ -3,7 +3,7 @@
 	/**
 	 * Generic entity viewer
 	 * Given a GUID, this page will try and display any entity
-	 * 
+	 *
 	 * @package Elgg
 	 * @subpackage Core
 
@@ -13,7 +13,7 @@
 	 */
 
 	// Load Elgg engine
-		require_once(dirname(dirname(__FILE__)) . "/engine/start.php");
+		require_once(dirname(__DIR__) . "/engine/start.php");
 
 	// Get the GUID of the entity we want to view
 		$guid = (int) get_input('guid');
@@ -23,10 +23,10 @@
 		} else {
 			$shell = true;
 		}
-		
+
 		$context = get_input('context');
 		if ($context) set_context($context);
-		
+
 	// Get the entity, if possible
 		if ($entity = get_entity($guid)) {
 
@@ -35,7 +35,7 @@
 			} else {
 				set_page_owner($entity->owner_guid);
 			}
-			
+
 	// Set the body to be the full view of the entity, and the title to be its title
 			if ($entity instanceof ElggObject) {
 				$title = $entity->title;
@@ -48,14 +48,14 @@
 			} else {
 				$body = $area2;
 			}
-			
+
 	// Otherwise?
 		} else {
-			
+
             $body = elgg_echo('search:noresults');
-			
+
 		}
-		
+
 	// Display the page
 		if ($shell) {
 			page_draw($title, $body);

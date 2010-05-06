@@ -1,5 +1,5 @@
 <?php
-    include(dirname(__FILE__)."/default.php");
+    include(__DIR__."/default.php");
 
     $graphicsDir = $vars['url'] . "_graphics";
 ?>
@@ -28,7 +28,7 @@ body
 .header_preview
 {
     overflow:auto;
-    width:460px;    
+    width:460px;
     margin:5px 0px;
     border:1px solid #ccc;
 }
@@ -36,14 +36,14 @@ body
 #custom_header_container .imageUploadProgress
 {
     overflow:auto;
-    width:460px;    
+    width:460px;
 }
 
 .header_preview .thin_column
 {
     background-color:white;
-    border:0px;    
-    
+    border:0px;
+
 }
 
 
@@ -59,14 +59,14 @@ body
     border-top:1px solid #c4bfb5;
     border-bottom:1px solid #c4bfb5;
     text-align:center;
-    background:#e6e6e6 url("<?php echo $graphicsDir; ?>/green/section_header.gif") repeat-x left -5px;  
+    background:#e6e6e6 url("<?php echo $graphicsDir; ?>/green/section_header.gif") repeat-x left -5px;
     height:21px;
-    font-family:Verdana, sans-serif;    
+    font-family:Verdana, sans-serif;
 }
 
 .section_content
 {
-    background:#fff url("<?php echo $graphicsDir; ?>/green/section_content.gif") repeat-x left -15px;          
+    background:#fff url("<?php echo $graphicsDir; ?>/green/section_content.gif") repeat-x left -15px;
 }
 
 .icon_with_bg
@@ -97,7 +97,7 @@ body
 }
 
 a.icon_link:hover
-{    
+{
     color:#333;
 }
 
@@ -124,12 +124,12 @@ a.icon_link:hover
 
 #edit_pages_menu a
 {
-    color:#333;    
+    color:#333;
     display:block;
     float:left;
     line-height: 34px;
     height:34px;
-    padding-left:3px;        
+    padding-left:3px;
     margin:0px 1px 2px 0px;
     text-decoration:none;
 }

@@ -10,5 +10,5 @@
     header("Pragma: public", true);
     header("Cache-Control: public", true);
 
-    require_once(dirname(dirname(__FILE__)) . '/simplecache/view.php');
+    require_once(dirname(__DIR__) . '/simplecache/view.php');
 ?>

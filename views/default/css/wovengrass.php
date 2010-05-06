@@ -1,12 +1,12 @@
 <?php
-    include(dirname(__FILE__)."/org.php");
-    include(dirname(__FILE__)."/content_margin.php");
+    include(__DIR__."/org.php");
+    include(__DIR__."/content_margin.php");
     $graphicsDir = $vars['url'] . "_graphics/wovengrass";
 ?>
 
 body { color:#000; background:#d5b24a url("<?php echo $graphicsDir; ?>/woven-grass.jpg") repeat left -60px; }
 .heading_container { background:#fff; }
-.content_container .thin_column, 
+.content_container .thin_column,
 .footer_container .thin_column { background:#f0e3a7 url("<?php echo $graphicsDir; ?>/woven-grass-2-textbg.jpg") repeat -30px -60px; }
 #heading h2 { color:#666; }
 #heading h3 { color:#a07d28; }
@@ -22,6 +22,6 @@ body { color:#000; background:#d5b24a url("<?php echo $graphicsDir; ?>/woven-gra
 .section_header { color:#fff; background:#ad9e61 url("<?php echo $graphicsDir; ?>/section_header.gif") repeat-x left top;  }
 .section_content
 {
-    background:#fdffe9 url("<?php echo $graphicsDir; ?>/section_content.gif") repeat-x left top;  
+    background:#fdffe9 url("<?php echo $graphicsDir; ?>/section_content.gif") repeat-x left top;
     color:#333;
 }

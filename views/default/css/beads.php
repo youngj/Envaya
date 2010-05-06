@@ -1,6 +1,6 @@
 <?php
-    include(dirname(__FILE__)."/org.php");
-    include(dirname(__FILE__)."/content_margin.php");
+    include(__DIR__."/org.php");
+    include(__DIR__."/content_margin.php");
     $graphicsDir = $vars['url'] . "_graphics/beads";
 ?>
 

@@ -1,5 +1,5 @@
 <?php
-    include(dirname(__FILE__)."/default.php");
+    include(__DIR__."/default.php");
 
     $graphicsDir = $vars['url'] . "_graphics/green";
 ?>
@@ -34,12 +34,12 @@
 
 #site_menu a
 {
-    color:#686464;    
+    color:#686464;
     display:block;
     float:left;
     line-height: 34px;
     height:34px;
-    padding-left:3px;        
+    padding-left:3px;
     margin:0px 1px 8px 0px;
     text-decoration:none;
 }

@@ -1,17 +1,17 @@
 <?php
-    include(dirname(__FILE__)."/default.php");
+    include(__DIR__."/default.php");
 
     $graphicsDir = $vars['url'] . "_graphics/simple";
 ?>
 
 body
-{   
+{
     background:#fff;
 }
 
 .content_container
 {
-    background:#fff url("<?php echo $graphicsDir; ?>/bg_gradient.gif") repeat-x left 42px;          
+    background:#fff url("<?php echo $graphicsDir; ?>/bg_gradient.gif") repeat-x left 42px;
 }
 
 .thin_column
@@ -22,7 +22,7 @@ body
 #site_menu,
 #heading h1
 {
-    background:#fff url("<?php echo $graphicsDir; ?>/headings.gif") repeat-x left bottom;          
+    background:#fff url("<?php echo $graphicsDir; ?>/headings.gif") repeat-x left bottom;
     height:36px;
     text-align:center;
     font-size:18px;
@@ -59,13 +59,13 @@ body
 #content_top
 {
     height:17px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") no-repeat -485px -8px;      
+    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") no-repeat -485px -8px;
 }
 
 .home #content_top
 {
     height:28px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") no-repeat left 0px;  
+    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") no-repeat left 0px;
 }
 
 
@@ -73,12 +73,12 @@ body
 {
     height:35px;
     margin-top:-10px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") no-repeat right bottom;  
+    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") no-repeat right bottom;
 }
 
 #content_mid
 {
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") repeat-y -970px top;      
+    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") repeat-y -970px top;
     padding:0px 2px;
 }
 
@@ -92,10 +92,10 @@ body
 .orgprofile #heading, .home #heading
 {
     margin-top:0px;
-}    
+}
 
 .home #heading
-{    
+{
     font-size: 15px;
     color: #666;
     font-family: Verdana, sans-serif;
@@ -109,12 +109,12 @@ body
     padding:13px 0px;
     text-align:center;
     font:bold 16px Arial;
-    background:url("<?php echo $graphicsDir; ?>/home_headings.gif?v2") no-repeat left top;      
+    background:url("<?php echo $graphicsDir; ?>/home_headings.gif?v2") no-repeat left top;
 }
 
 .section_header
 {
-    margin:0px auto 4px auto;    
+    margin:0px auto 4px auto;
 }
 
 .home_section
@@ -138,7 +138,7 @@ body
 
 .heading_green
 {
-    background-position:left bottom;      
+    background-position:left bottom;
 }
 
 .icon_link
@@ -182,10 +182,10 @@ a.icon_feed:hover       { background-position:left -440px; }
 
 .tabs
 {
-    width:100%;    
+    width:100%;
     margin-bottom:5px;
     margin-top:-10px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") no-repeat -487px -16px;  
+    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v2") no-repeat -487px -16px;
 }
 
 .tab

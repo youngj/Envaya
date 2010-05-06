@@ -1,5 +1,5 @@
 <?php
-    include(dirname(__FILE__)."/default.php");
+    include(__DIR__."/default.php");
 ?>
 
 
@@ -11,7 +11,7 @@
     float:left;
     background: #dedede;
     padding:0px;
-    -webkit-border-radius: 8px; 
+    -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-bottom:1px solid #cccccc;
     border-right:1px solid #cccccc;
@@ -24,7 +24,7 @@
     float:left;
     background: #dedede;
     padding:0 0 5px 0;
-    -webkit-border-radius: 8px; 
+    -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
 }
 
@@ -102,7 +102,7 @@
     padding:4px 6px 4px 10px;
     font-weight: bold;
     line-height: 1.1em;
-    -webkit-border-radius: 10px; 
+    -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
 }
 #owner_block_submenu ul li a:hover {
@@ -148,7 +148,7 @@
 }
 
 .admin_users_online .profile_status {
-    -webkit-border-radius: 4px; 
+    -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     background:#bbdaf7;
     line-height:1.2em;
@@ -166,7 +166,7 @@
     margin:0 0 5px 0;
     padding:5px;
     border:2px solid #cccccc;
-    -webkit-border-radius: 5px; 
+    -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
 }
 
@@ -208,7 +208,7 @@
 #logbrowserSearchform {
     padding: 10px;
     background-color: #dedede;
-    -webkit-border-radius: 8px; 
+    -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
 }
 
@@ -217,7 +217,7 @@
     font-size: 80%;
     background:white;
     margin:0 10px 5px 10px;
-    -webkit-border-radius: 4px; 
+    -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border:1px solid white;
 }
@@ -234,7 +234,7 @@
 }
 
 .log_entry_item {
-    
+
 }
 
 .log_entry_action {

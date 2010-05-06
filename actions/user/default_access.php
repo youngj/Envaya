@@ -1,29 +1,29 @@
 <?php
 	/**
 	 * Action for changing a user's default access level
-	 * 
+	 *
 	 * @package Elgg
 	 * @subpackage Core
 	 * @author Curverider Ltd
 	 * @link http://elgg.org/
 	 */
 
-	require_once(dirname(dirname(dirname(__FILE__))) . "/engine/start.php");
+	require_once(dirname(dirname(__DIR__)) . "/engine/start.php");
 	global $CONFIG;
-	
+
 	if ($CONFIG->allow_user_default_access) {
 
 		gatekeeper();
-		
+
 		$default_access = get_input('default_access');
 		$user_id = get_input('guid');
 		$user = "";
-		
+
 		if (!$user_id)
 			$user = get_loggedin_user();
 		else
 			$user = get_entity($user_id);
-			
+
 		if ($user)
 		{
 			$current_default_access = $user->getPrivateSetting('elgg_default_access');
@@ -38,7 +38,7 @@
 		else
 			register_error(elgg_echo('user:default_access:fail'));
 	}
-	
+
 	//forward($_SERVER['HTTP_REFERER']);
 	//exit;
 ?>

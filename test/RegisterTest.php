@@ -81,7 +81,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     {
         $time = time();
 
-        $mailFile = dirname(__FILE__)."/mail.out";
+        $mailFile = __DIR__."/mail.out";
 
         while (true)
         {

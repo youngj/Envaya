@@ -681,4 +681,4 @@ If you requested this, click on the link below to change your password:
         'tz:zanzibar_w' => 'Zanzibar West',
 	));
 
-    include(dirname(__FILE__)."/en_admin.php");
+    include(__DIR__."/en_admin.php");
