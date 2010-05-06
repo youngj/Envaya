@@ -48,6 +48,9 @@
 
         'feed' => 'Habari',
         'feed:title' => "Habari mpya zaidi",
+        'feed:registered' => "%s iliandikisha kwa Envaya.",
+        'feed:new_widget' => "%s iliumba ukurasa wa %s:",
+        'feed:partnership' => "%s ina ubia na %s.",
 		'feed:more' => "Soma zaidi",
 
         'help:title' => "Msaada Kuanza",

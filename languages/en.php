@@ -248,7 +248,6 @@
         'widget:projects:help' => "Write about the work and activities that your organization does.",
 
         'widget:news' => "News",
-        'widget:news:photos' => "Photos",
         'widget:news:item' => "News update",
         'widget:news:latest' => 'Latest News',
         'widget:news:empty' => "This organization has not yet written any news updates.",
