@@ -14,7 +14,7 @@
 &nbsp;
 </td>
 <td class='commBoxMain'>
-<?php 
+<?php
     $partnership = $loggedInOrg->getPartnership($org);
 
     if (!$partnership->isSelfApproved() && !$partnership->isPartnerApproved())
@@ -29,7 +29,6 @@
     {
         echo elgg_view('output/confirmlink', array(
             'text' => elgg_echo('partner:approve'),
-            'is_action' => true,
             'href' => $org->getPartnership($loggedInOrg)->getApproveUrl()
         ));
     }
@@ -43,12 +42,12 @@
             'text' => "(".elgg_echo('partner:re_request').")",
             'is_action' => true,
             'href' => "action/org/requestPartner?partner_guid={$org->guid}"
-        ));        
+        ));
     }
     else
     {
         echo elgg_echo('partner:exists');
-    }     
+    }
 ?>
 </td>
 <td class='commBoxMain' style='border-left:1px solid gray'>
@@ -58,6 +57,6 @@
 &nbsp;
 </td>
 </table>
-<?php 
+<?php
 }
 ?>

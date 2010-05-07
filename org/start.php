@@ -60,6 +60,8 @@ function org_profile_page_handler($page)
         switch ($page[1])
         {
             case "design": 		return include(__DIR__."/design.php");
+            case "help":		return include(__DIR__."/help.php");
+            case "dashboard": 	return include(__DIR__."/dashboard.php");
             case "username":	return include(__DIR__."/changeUsername.php");
             case "confirm":		return include(__DIR__."/confirmPartner.php");
             case "compose":		return include(__DIR__."/composeMessage.php");

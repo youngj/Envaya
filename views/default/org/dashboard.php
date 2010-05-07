@@ -2,23 +2,23 @@
     $org = $vars['org'];
 
     $form = elgg_view('org/addPost', array('org' => $org));
- 
-    echo elgg_view_layout('section', elgg_echo("dashboard:add_update"), $form);    
+
+    echo elgg_view_layout('section', elgg_echo("dashboard:add_update"), $form);
 
     $widgets = $org->getAvailableWidgets();
 
     $widgetList = array();
-    
+
     foreach ($widgets as $widget)
     {
-        $class = (!$widget->guid) ? 'class="widget_disabled"' : ''; 
+        $class = (!$widget->guid) ? 'class="widget_disabled"' : '';
         $widgetList[] .= "<a $class href='{$widget->getEditURL()}?from=pg/dashboard'><span>".elgg_echo("widget:{$widget->widget_name}")."</span></a>";
     }
 
     $widgets = "<div id='edit_pages_menu'>".implode(' ', $widgetList)."</div>";
 
-    echo elgg_view_layout('section', elgg_echo("dashboard:edit_widgets"), $widgets);    
-    
+    echo elgg_view_layout('section', elgg_echo("dashboard:edit_widgets"), $widgets);
+
     ob_start();
 ?>
 <table style='width:100%'>
@@ -26,13 +26,13 @@
 <td>
     <a class='icon_link icon_home' href='<?php echo $org->getURL() ?>'><?php echo elgg_echo('dashboard:view_home') ?></a>
     <div class='icon_separator'></div>
-    <a class='icon_link icon_photos' href='<?php echo $org->getURL() . "/addphotos" ?>?from=pg/dashboard'><?php echo elgg_echo('addphotos:title') ?></a>    
-    <div class='icon_separator'></div>   
-    <a class='icon_link icon_design' href='<?php echo $org->getURL() . "/design" ?>?from=pg/dashboard'><?php echo elgg_echo('design:edit') ?></a>    
+    <a class='icon_link icon_photos' href='<?php echo $org->getURL() . "/addphotos" ?>?from=pg/dashboard'><?php echo elgg_echo('addphotos:title') ?></a>
     <div class='icon_separator'></div>
-    <a class='icon_link icon_settings' href='pg/settings'><?php echo elgg_echo('dashboard:settings') ?></a>
+    <a class='icon_link icon_design' href='<?php echo $org->getURL() . "/design" ?>?from=pg/dashboard'><?php echo elgg_echo('design:edit') ?></a>
     <div class='icon_separator'></div>
-    <a class='icon_link icon_help' href='org/help'><?php echo elgg_echo('help:title') ?></a>    
+    <a class='icon_link icon_settings' href='pg/settings/user/<?php echo $org->username ?>'><?php echo elgg_echo('dashboard:settings') ?></a>
+    <div class='icon_separator'></div>
+    <a class='icon_link icon_help' href='<?php echo $org->getURL() ?>/help'><?php echo elgg_echo('help:title') ?></a>
 </td>
 <td>
     <a class='icon_link icon_explore' href='org/browse'><?php echo elgg_echo("browse:title") ?></a>
@@ -47,5 +47,5 @@
 </table>
 <?php
     $links = ob_get_clean();
-    
-    echo elgg_view_layout('section', elgg_echo("dashboard:links"), $links);    
+
+    echo elgg_view_layout('section', elgg_echo("dashboard:links"), $links);

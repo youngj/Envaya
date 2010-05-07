@@ -2,7 +2,7 @@
 
 class Session
 {
-    private static $started = false;  
+    private static $started = false;
     private static $dirty = false;
     private static $cookieName = 'envaya';
 
@@ -11,7 +11,7 @@ class Session
         if (static::$started)
         {
             return @$_SESSION[$key];
-        }    
+        }
         else if (@$_COOKIE[static::$cookieName])
         {
             static::start();
@@ -22,13 +22,13 @@ class Session
             return null;
         }
     }
-    
+
     static function destroy()
     {
         session_destroy();
         setcookie(static::$cookieName, "", 0,"/");
     }
-    
+
     static function id()
     {
         if (static::$started)
@@ -41,33 +41,33 @@ class Session
             return session_id();
         }
         return null;
-        
+
     }
-    
+
     static function saveInput()
     {
         static::set('input', $_POST);
     }
-    
+
     static function start()
     {
         session_set_save_handler("__elgg_session_open", "__elgg_session_close", "__elgg_session_read", "__elgg_session_write", "__elgg_session_destroy", "__elgg_session_gc");
-    
+
         session_name(static::$cookieName);
-        
+
         session_start();
-        static::$started = true;    
-        
+        static::$started = true;
+
         register_elgg_event_handler('shutdown', 'system', 'session_write_close', 10);
 
-        if (!isset($_SESSION['__elgg_session'])) 
+        if (!isset($_SESSION['__elgg_session']))
         {
-            static::set('__elgg_session', md5(microtime().rand()));            
-        }    
-        
+            static::set('__elgg_session', md5(microtime().rand()));
+        }
+
         $guid = @$_SESSION['guid'];
-        if ($guid) 
-        {        
+        if ($guid)
+        {
             $user = get_user($guid);
             if (!$user || $user->isBanned())
             {
@@ -75,12 +75,12 @@ class Session
             }
         }
     }
-    
+
     static function isDirty()
     {
         return static::$dirty;
     }
-    
+
     static function set($key, $value)
     {
         if (!static::$started)
@@ -96,11 +96,11 @@ class Session
             $_SESSION[$key] = $value;
         }
         static::$dirty = true;
-    }    
+    }
 }
 
 function get_loggedin_user()
-{			
+{
     $guid = Session::get('guid');
     if ($guid)
     {
@@ -119,10 +119,10 @@ function get_loggedin_userid()
     return 0;
 }
 
-function isloggedin() 
-{ 						
-    if (!is_installed()) 
-        return false; 
+function isloggedin()
+{
+    if (!is_installed())
+        return false;
 
     $user = get_loggedin_user();
 
@@ -131,8 +131,8 @@ function isloggedin()
 
 function isadminloggedin()
 {
-    if (!is_installed()) 
-        return false; 
+    if (!is_installed())
+        return false;
 
     $user = get_loggedin_user();
     return ($user && $user->admin);
@@ -146,13 +146,13 @@ function isadminloggedin()
  * @param string $username The username, optionally (for standard logins)
  * @param string $password The password, optionally (for standard logins)
  * @return ElggUser|false The authenticated user object, or false on failure.
- */		
-function authenticate($username, $password) 
-{            
+ */
+function authenticate($username, $password)
+{
     if (pam_authenticate(array('username' => $username, 'password' => $password)))
     {
         return get_user_by_username($username);
-    }    
+    }
 
     return false;
 
@@ -169,17 +169,17 @@ function pam_auth_userpass($credentials = NULL)
 {
     if (is_array($credentials) && ($credentials['username']) && ($credentials['password']))
     {
-        if ($user = get_user_by_username($credentials['username'])) 
-        {                 
-            if ($user->isBanned()) 
+        if ($user = get_user_by_username($credentials['username']))
+        {
+            if ($user->isBanned())
             {
                 return false;
             }
 
-            if ($user->password == generate_user_password($user, $credentials['password'])) 
+            if ($user->password == generate_user_password($user, $credentials['password']))
             {
                 return true;
-            }    
+            }
 
             log_login_failure($user->guid);
         }
@@ -213,7 +213,7 @@ function reset_login_failure_count($user_guid)
         $fails = (int)$user->getPrivateSetting("login_failures");
 
         if ($fails) {
-            for ($n=1; $n <= $fails; $n++) 
+            for ($n=1; $n <= $fails; $n++)
                 $user->removePrivateSetting("login_failure_$n");
 
             $user->removePrivateSetting("login_failures");
@@ -252,45 +252,45 @@ function check_rate_limit_exceeded($user_guid)
 /**
  * Logs in a specified ElggUser. For standard registration, use in conjunction
  * with authenticate.
- * 
+ *
  * @see authenticate
  * @param ElggUser $user A valid Elgg user object
  * @param boolean $persistent Should this be a persistent login?
  * @return true|false Whether login was successful
  */
-function login(ElggUser $user, $persistent = false) 
+function login(ElggUser $user, $persistent = false)
 {
-    if ($user->isBanned()) 
-        return false; 
+    if ($user->isBanned())
+        return false;
 
     /*
     if (check_rate_limit_exceeded($user->guid))
-        return false; 
-    */       
+        return false;
+    */
 
     Session::set('guid', $user->getGUID());
-    
+
     if ($persistent)
     {
         session_set_cookie_params(60 * 60 * 24 * 60);
     }
-    
+
     // Users privilege has been elevated, so change the session id (help prevent session hijacking)
-    session_regenerate_id(true); 
+    session_regenerate_id(true);
 
     set_last_login($user->guid);
-    reset_login_failure_count($user->guid); 
+    reset_login_failure_count($user->guid);
 
-    return true;				
+    return true;
 }
 
 
-function logout() 
+function logout()
 {
     $curUser = get_loggedin_user();
-    if ($curUser) 
+    if ($curUser)
     {
-        if (!trigger_elgg_event('logout','user',$curUser)) 
+        if (!trigger_elgg_event('logout','user',$curUser))
             return false;
     }
 
@@ -310,40 +310,44 @@ function get_session_fingerprint()
 
 /**
  * Initialises the system session and potentially logs the user in
- * 
+ *
  * This function looks for:
- * 
+ *
  * 1. $_SESSION['guid'] - if not present, we're logged out, and this is set to 0
- * 2. The cookie 'elggperm' - if present, checks it for an authentication token, validates it, and potentially logs the user in 
+ * 2. The cookie 'elggperm' - if present, checks it for an authentication token, validates it, and potentially logs the user in
  *
  * @uses $_SESSION
  * @param unknown_type $event
  * @param unknown_type $object_type
  * @param unknown_type $object
  */
-function session_init($event, $object_type, $object) 
-{			            
+function session_init($event, $object_type, $object)
+{
     register_pam_handler('pam_auth_userpass');
 
-    return true;	        
+    return true;
 }
 
-function gatekeeper() 
+function force_login()
 {
-    if (!isloggedin()) 
-    {    
-        Session::set('last_forward_from', current_page_url());
-        forward("pg/login");
+	Session::set('last_forward_from', current_page_url());
+	forward("pg/login");
+}
+
+function gatekeeper()
+{
+    if (!isloggedin())
+    {
+    	force_login();
     }
 }
 
 function admin_gatekeeper()
 {
     gatekeeper();
-    if (!isadminloggedin()) 
+    if (!isadminloggedin())
     {
-        Session::set('last_forward_from', current_page_url());
-        forward("pg/login");
+        force_login();
     }
 }
 
@@ -369,14 +373,14 @@ function __elgg_session_read($id)
 {
     $cacheKey = session_cache_key($id);
     $sessionData = get_cache()->get($cacheKey);
-    
+
     if ($sessionData == null)
     {
-        $result = get_data_row("SELECT * from users_sessions where session=?", array($id));			
+        $result = get_data_row("SELECT * from users_sessions where session=?", array($id));
         $sessionData = ($result) ? $result->data : '';
         get_cache()->set($cacheKey, $sessionData);
-    }    
-    
+    }
+
     return $sessionData;
 }
 
@@ -388,7 +392,7 @@ function __elgg_session_write($id, $sess_data)
 
         return (insert_data("REPLACE INTO users_sessions (session, ts, data) VALUES (?,?,?)",
                 array($id, time(), $sess_data))!==false);
-    }    
+    }
 }
 
 function __elgg_session_destroy($id)

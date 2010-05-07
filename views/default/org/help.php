@@ -1,5 +1,5 @@
 <?php
-    $org = get_loggedin_user();
+    $org = $vars['org'];
 ?>
 
 <p>
@@ -14,11 +14,11 @@
 
 <h3><?php echo elgg_echo('help:contents') ?></h3>
 <ul style='font-weight:bold'>
-    <li><a href='org/help#viewing'><?php echo elgg_echo('help:viewing') ?></a></li>    
+    <li><a href='org/help#viewing'><?php echo elgg_echo('help:viewing') ?></a></li>
     <li><a href='org/help#editing'><?php echo elgg_echo('help:editing') ?></a></li>
     <li><a href='org/help#design'><?php echo elgg_echo('help:design') ?></a></li>
     <li><a href='org/help#settings'><?php echo elgg_echo('help:settings') ?></a></li>
-    <li><a href='org/help#home'><?php echo elgg_echo('widget:home') ?></a></li>    
+    <li><a href='org/help#home'><?php echo elgg_echo('widget:home') ?></a></li>
     <li><a href='org/help#news'><?php echo elgg_echo('help:news') ?></a></li>
     <li><a href='org/help#other'><?php echo elgg_echo('help:other') ?></a></li>
     <li><a href='org/help#connecting'><?php echo elgg_echo('help:connecting') ?></a></li>
@@ -29,7 +29,7 @@
 <p>
 <?php echo elgg_echo('help:viewing:url') ?>
  <br /><strong><a href='<?php echo $org->getURL() ?>'><?php echo $org->getURL() ?></a></strong>
-</p> 
+</p>
 
 <?php if (!$org->isApproved()) { ?>
 
@@ -58,7 +58,7 @@
 </p>
 
 <p>
-<?php echo sprintf(elgg_echo('help:editing:editsite'), 
+<?php echo sprintf(elgg_echo('help:editing:editsite'),
     "<strong><a href='pg/dashboard'>".elgg_echo('dashboard')."</a></strong>",
     "<a href='pg/dashboard' target='_blank'><img class='icon_with_bg' src='_graphics/pencil.gif?v3' /></a>") ?>
 </p>
@@ -82,13 +82,13 @@
 </p>
 <ul>
     <li><?php echo elgg_echo('help:design:logo') ?></li>
-    <li><?php echo elgg_echo('help:design:theme') ?></li>    
+    <li><?php echo elgg_echo('help:design:theme') ?></li>
 </ul>
 
 <h3 id='settings'><?php echo elgg_echo('help:settings') ?></h3>
 
 <p>
-<?php echo sprintf(elgg_echo('help:settings:icon'), 
+<?php echo sprintf(elgg_echo('help:settings:icon'),
     "<a href='pg/settings' target='_blank'><img class='icon_with_bg' src='_graphics/settings.gif' /></a>") ?>
 </p>
 
@@ -105,7 +105,7 @@
 <h3 id='home'><?php echo elgg_echo('widget:home') ?></h3>
 
 <p>
-<?php echo sprintf(elgg_echo('help:home:icon'), 
+<?php echo sprintf(elgg_echo('help:home:icon'),
     "<a href='{$org->getURL()}' target='_blank'><img class='icon_with_bg' src='_graphics/home.gif?v2' /></a>") ?>
 </p>
 
@@ -123,12 +123,12 @@
 <h3 id='news'><?php echo elgg_echo('help:news') ?></h3>
 
 <p>
-<?php echo sprintf(elgg_echo('help:news:about'), 
+<?php echo sprintf(elgg_echo('help:news:about'),
     "<strong><a href='{$org->getURL()}/news'>".elgg_echo('widget:news')."</a></strong>") ?>
 </p>
 
 <p>
-<?php echo sprintf(elgg_echo('help:news:feed'), 
+<?php echo sprintf(elgg_echo('help:news:feed'),
     "<strong><a href='org/feed'>".elgg_echo('feed:title')."</a></strong>") ?>
 </p>
 
@@ -137,10 +137,10 @@
 </p>
 
 <ul>
-<li><strong><?php echo elgg_echo('widget:news:email') ?></strong>: 
+<li><strong><?php echo elgg_echo('widget:news:email') ?></strong>:
 <?php echo sprintf(elgg_echo('widget:news:email:summary'), "<strong>{$org->getPostEmail()}</strong>") ?>
 </li>
-<li><strong><?php echo elgg_echo('widget:news:sms') ?></strong>: 
+<li><strong><?php echo elgg_echo('widget:news:sms') ?></strong>:
 <?php echo elgg_echo('widget:news:sms:summary') ?></li>
 </ul>
 
@@ -150,16 +150,16 @@
 <?php echo sprintf(elgg_echo('help:other:summary'), "<a href='pg/dashboard'>".elgg_echo('dashboard')."</a>") ?>
 </p>
 <ul>
-<li><strong><a href='<?php echo $org->getURL() ?>/projects/edit?from=org/help%23other'><?php echo elgg_echo('widget:projects') ?></a></strong>: 
-    <?php echo elgg_echo('help:other:projects') ?>   
+<li><strong><a href='<?php echo $org->getURL() ?>/projects/edit?from=org/help%23other'><?php echo elgg_echo('widget:projects') ?></a></strong>:
+    <?php echo elgg_echo('help:other:projects') ?>
 </li>
-<li><strong><a href='<?php echo $org->getURL() ?>/history/edit?from=org/help%23other'><?php echo elgg_echo('widget:history') ?></a></strong>: 
+<li><strong><a href='<?php echo $org->getURL() ?>/history/edit?from=org/help%23other'><?php echo elgg_echo('widget:history') ?></a></strong>:
     <?php echo elgg_echo('help:other:history') ?>
 </li>
-<li><strong><a href='<?php echo $org->getURL() ?>/team/edit?from=org/help%23other'><?php echo elgg_echo('widget:team') ?></a></strong>: 
+<li><strong><a href='<?php echo $org->getURL() ?>/team/edit?from=org/help%23other'><?php echo elgg_echo('widget:team') ?></a></strong>:
     <?php echo elgg_echo('help:other:team') ?>
 </li>
-<li><strong><a href='<?php echo $org->getURL() ?>/contact/edit?from=org/help%23other'><?php echo elgg_echo('widget:contact') ?></a></strong>: 
+<li><strong><a href='<?php echo $org->getURL() ?>/contact/edit?from=org/help%23other'><?php echo elgg_echo('widget:contact') ?></a></strong>:
     <?php echo elgg_echo('help:other:contact') ?>
 </li>
 </ul>
@@ -173,12 +173,12 @@
 <h4><?php echo elgg_echo('widget:partnerships') ?></h4>
 
 <p>
-<?php echo sprintf(elgg_echo('help:connecting:partnerships'), 
+<?php echo sprintf(elgg_echo('help:connecting:partnerships'),
     "<strong><a href='{$org->getURL()}/partnerships/edit?from=org/help%23other'>".elgg_echo('widget:partnerships')."</a></strong>") ?>
 </p>
 
 <p>
-<?php echo sprintf(elgg_echo('help:connecting:partnerships:instructions'), 
+<?php echo sprintf(elgg_echo('help:connecting:partnerships:instructions'),
     "<strong><a href='{$org->getURL()}/partnerships/edit?from=org/help%23other'>".elgg_echo('widget:partnerships')."</a></strong>") ?>
 </p>
 

@@ -111,6 +111,7 @@
         'help:connecting:disabled' => "Note: Since your organization has not yet been approved by Envaya's administrators, Partnerships and Messages are currently disabled.",
 
         'dashboard' => "Edit Site",
+        'dashboard:other_user' => "Edit %s",
         'dashboard:add_update' => 'Write News Update',
         'dashboard:edit_widgets' => 'Edit Pages',
         'dashboard:attach_image' => "Attach image",
