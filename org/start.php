@@ -149,7 +149,7 @@ function envaya_pagesetup()
 
 function new_index()
 {
-    include(__DIR__."/splash.php");
+    home_page_handler(null);
     return true;
 }
 

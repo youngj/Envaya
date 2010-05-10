@@ -809,7 +809,6 @@
             'page',
             'action',
             'account',
-            'envaya',
             'mod',
             'search',
             'admin',

@@ -1,7 +1,7 @@
 <?php
 
 	add_translation('en', array(
-        'home:title' => "Welcome to Envaya",
+        'home:title' => "A network of civil society organizations in Tanzania",
         'home:heading' => 'Envaya is a network of civil society organizations in Tanzania who share news about their projects on the Internet.',
         'home:for_organizations' => 'For organizations',
         'home:for_everyone' => 'For everyone',
@@ -197,7 +197,7 @@
         'blog:delete' => "Delete update",
         'blog:delete:confirm' => "Are you sure you want to delete this news update?",
         'blog:delete:success' => "News update deleted successfully.",
-
+        'blog:more' => "Read more",
         'blog:timeline' => "Timeline",
 
         'partner:request' => "Request Partnership",

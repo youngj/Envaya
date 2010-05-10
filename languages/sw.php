@@ -1,6 +1,6 @@
 <?php
     add_translation("sw",array(
-        'home:title' => "Karibu Envaya",
+        'home:title' => "Mtandao wa mashirika ya jumuiya ya kiraia Tanzania",
         'home:heading' => 'Envaya ni mtandao wa mashirika ya jumuiya ya kiraia Tanzania yagawayo habari kuhusu miradi yao katika intaneti.',
         'home:for_organizations' => 'Kwa mashirika',
         'home:for_everyone' => 'Kwa wote',
