@@ -174,8 +174,6 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     {
         $this->open("/");
 
-        $this->clickAndWait("//a[contains(@href,'page/home')]");
-
         $this->clickAndWait("//a[contains(@href,'org/new')]");
 
         /* qualification */

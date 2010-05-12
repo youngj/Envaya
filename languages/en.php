@@ -343,6 +343,7 @@
         'qualify:ok' => "Congratulations! Your organization appears to qualify for a website on Envaya.",
 
         'country:tz' => 'Tanzania',
+        'country:us' => 'USA',
         'country:other' => 'Other',
 
         'create:instructions' => "Now, enter a few pieces of information to create your account on Envaya. This account will let you log in and update your organization's website.",

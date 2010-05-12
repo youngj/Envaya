@@ -91,7 +91,7 @@
         'help:other' => "Kurasa nyingine",
         'help:other:summary' => "Katika ukurasa wa %s, unaweza pia kuongeza kurasa nyingine kadhaa katika tovuti yako, unapoweza kuandika kuhusu:",
         'help:other:projects' => "Kazi na shughuli linazozifanya shirika lako.",
-        'help:other:history' => "Jinsi ya shirika lako ameanzwa na mafanikio yake makuu mpaka sasa.",
+        'help:other:history' => "Jinsi ya shirika lako limeanzwa na mafanikio yake makuu mpaka sasa.",
         'help:other:team' => "Watu ambao wanaendesha shirika lako.",
         'help:other:contact' => "Ruhusu watu wengine kuwasiliana na shirika lako.",
         'help:connecting' => "Wasiliana na mashirika mengine",

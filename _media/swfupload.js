@@ -1208,8 +1208,8 @@ ImageUploader.prototype.getSWFUploadOptions = function()
 
         // Button Settings        
         button_placeholder_id : this.options.placeholder_id,
-        button_width: 100,
-        button_height: 18,
+        button_width: 150,
+        button_height: 24,
         button_text : '<span class="button">'+this.options.button_message+'</span>',
         button_text_style : '.button { font-weight: bold; font-size: 12px; font-family:Helvetica, Arial, sans-serif; color: #0000cc; }',
         button_text_top_padding: 0,
