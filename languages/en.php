@@ -59,6 +59,11 @@
         'feed:new_widget' => "%s created a %s page:",
         'feed:partnership' => "%s has a partnership with %s.",
         'feed:more' => "Read more",
+        'feed:org' => "News from related organizations",
+        'feed:org:about' => "This page shows the latest news from all organizations on Envaya that work in the same sectors as you, and all organizations you've added to your %s page.",
+        'feed:org:included' => "See related organizations",
+        'feed:feature' => "Feature",
+        'feed:unfeature' => "Unfeature",
 
         'help:title' => "Help",
         'help:summary1' => "By signing up for Envaya, your organization has a basic website with a home page. Great! But don't stop now, because your website can be much better.",

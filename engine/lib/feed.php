@@ -69,25 +69,28 @@ class FeedItem
 
     public function save()
     {
-        if ($this->id > 0)
-        {
-			return insert_data("UPDATE feed_items set feed_name=?, action_name=?, subject_guid=?, user_guid=?, args=?, time_posted=? WHERE id = ?",
-                array($this->feed_name, $this->action_name, $this->subject_guid, $this->user_guid, $this->attributes['args'], $this->time_posted, $this->id)
-            );
-        }
-        else
-        {
-            return insert_data("INSERT into feed_items (feed_name, action_name, subject_guid, user_guid, args, time_posted) VALUES (?,?,?,?,?,?)",
-                array($this->feed_name, $this->action_name, $this->subject_guid, $this->user_guid, $this->attributes['args'], $this->time_posted)
-            );
-        }
+    	save_db_row('feed_items', 'id', $this->attributes['id'], array(
+			'feed_name' => $this->feed_name,
+			'action_name' => $this->action_name,
+			'subject_guid' => $this->subject_guid,
+			'user_guid' => $this->user_guid,
+			'args' => $this->attributes['args'],
+			'time_posted' => $this->time_posted,
+			//'featured' => $this->featured,
+    	));
     }
 
-
-	static function filterByFeedName($feedName, $limit = 10, $offset = 0, $count = false)
+	static function filterByFeedNames($feedNames, $limit = 10, $offset = 0, $count = false)
 	{
-		$where = array("feed_name = ?");
-		$args = array($feedName);
+		$numNames = sizeof($feedNames);
+
+		if ($numNames == 0)
+		{
+			return $count ? 0 : array();
+		}
+
+		$where = array("feed_name in (".implode(',', array_fill(0, $numNames, '?')).")");
+		$args = $feedNames;
 
 		if (!isadminloggedin() && !access_get_show_hidden_status())
 		{
@@ -96,6 +99,10 @@ class FeedItem
 		}
 
 		$from = "FROM feed_items f INNER JOIN users_entity u ON u.guid = f.user_guid WHERE ".implode(" AND ", $where);
+		if ($numNames > 1)
+		{
+			$from .= " GROUP BY action_name, subject_guid, time_posted";
+		}
 
 		if ($count)
 		{
@@ -103,11 +110,17 @@ class FeedItem
 		}
 		else
 		{
+			$sql = "SELECT f.* $from ORDER BY time_posted DESC LIMIT ".((int)$offset).", ".((int)$limit);
+
 			return array_map('feed_row_to_feed_item',
-				get_data("SELECT f.* $from ORDER BY time_posted DESC LIMIT ".((int)$offset).", ".((int)$limit), $args)
+				get_data($sql, $args)
 			);
 		}
+	}
 
+	static function filterByFeedName($feedName, $limit = 10, $offset = 0, $count = false)
+	{
+		return static::filterByFeedNames(array($feedName), $limit, $offset, $count);
 	}
 }
 

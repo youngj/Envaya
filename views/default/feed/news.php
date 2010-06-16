@@ -15,7 +15,7 @@
 
 	echo "<a class='feed_org_name' href='$orgUrl'>".escape($org->name)."</a>: ";
 
-	$maxLength = 500;
+	$maxLength = 300;
 
 	$content = translate_field($update,'content');
 

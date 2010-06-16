@@ -33,7 +33,7 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
-caption, th, td 
+caption, th, td
 {
     text-align: left;
     vertical-align: top;
@@ -45,14 +45,14 @@ q:before, q:after {
 blockquote, q {
     quotes: "" "";
 }
-.clearfloat { 
+.clearfloat {
     clear:both;
     height:0;
     font-size: 1px;
     line-height: 0px;
 }
 
-body 
+body
 {
     text-align:left;
     margin:0 auto;
@@ -66,7 +66,7 @@ a {
     text-decoration: none;
 }
 a:visited {
-    
+
 }
 a:hover {
     color: #0054a7;
@@ -124,14 +124,14 @@ pre, code {
     font-size:12px;
     background:#EBF5FF;
     overflow:auto;
-    
+
     overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
     white-space: pre-wrap; /* css-3 */
     white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
     white-space: -pre-wrap; /* Opera 4-6 */
     white-space: -o-pre-wrap; /* Opera 7 */
     word-wrap: break-word; /* Internet Explorer 5.5+ */
-    
+
 }
 code {
     padding:2px 3px;
@@ -147,7 +147,7 @@ blockquote {
     line-height:1.3em;
     background:#EBF5FF;
     border:none !important;
-    -webkit-border-radius: 5px; 
+    -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
 }
 blockquote p {
@@ -161,13 +161,13 @@ blockquote p {
     min-height: 360px;
     background: #dedede;
     padding:0 0 10px 0;
-    -webkit-border-radius: 8px; 
+    -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
 }
 
 .contentWrapper {
     background:white;
-    -webkit-border-radius: 8px; 
+    -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     padding:10px;
     margin:0 10px 10px 10px;
@@ -188,7 +188,7 @@ input {
     padding: 5px;
     border: 1px solid #cccccc;
     color:#666666;
-    -webkit-border-radius: 5px; 
+    -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
 }
 textarea {
@@ -196,7 +196,7 @@ textarea {
     border: solid 1px #cccccc;
     padding: 5px;
     color:#666666;
-    -webkit-border-radius: 5px; 
+    -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
 }
 textarea:focus, input[type="text"]:focus {
@@ -205,12 +205,12 @@ textarea:focus, input[type="text"]:focus {
     color:#333333;
 }
 
-.submit_button 
+.submit_button
 {
     font: 12px/100% Arial, Helvetica, sans-serif;
     font-weight: bold;
     color: #ffffff;
-    background:transparent; 
+    background:transparent;
     border:0px;
     padding:5px;
     width: auto;
@@ -220,7 +220,7 @@ textarea:focus, input[type="text"]:focus {
 
 .submit_button div
 {
-    background: url(<?php echo $graphicsDir ?>/buttons.gif?v2) left -32px; 
+    background: url(<?php echo $graphicsDir ?>/buttons.gif?v2) left -32px;
     display:block;
     height:32px;
     margin:0px;
@@ -229,7 +229,7 @@ textarea:focus, input[type="text"]:focus {
 
 .submit_button span
 {
-    background: url(<?php echo $graphicsDir ?>/buttons.gif?v2) right -32px; 
+    background: url(<?php echo $graphicsDir ?>/buttons.gif?v2) right -32px;
     display:block;
     height:24px;
     padding-top:8px;
@@ -293,13 +293,13 @@ button#widget_delete:active span
 }
 
 
-/* 
+/*
 .submit_button:hover, input[type="submit"]:hover {
     background: #0054a7;
     border-color: #0054a7;
 }
 
-*/ 
+*/
 
 input[type="submit"] {
     font: 12px/100% Arial, Helvetica, sans-serif;
@@ -307,7 +307,7 @@ input[type="submit"] {
     color: #ffffff;
     background:#4690d6;
     border: 1px solid #4690d6;
-    -webkit-border-radius: 4px; 
+    -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     width: auto;
     height: 25px;
@@ -321,7 +321,7 @@ input[type="submit"] {
     color: #999999;
     background:#dddddd;
     border: 1px solid #999999;
-    -webkit-border-radius: 4px; 
+    -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     width: auto;
     height: 25px;
@@ -348,7 +348,7 @@ input[type="submit"] {
 
 .input-file {
     margin-top:4px;
-} 
+}
 
 #persistent_login label {
     font-size:1.0em;
@@ -359,7 +359,7 @@ input[type="submit"] {
     PAGINATION
 *************************************** */
 .pagination {
-    -webkit-border-radius: 8px; 
+    -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     background:white;
     margin:5px 10px 5px 10px;
@@ -377,7 +377,7 @@ input[type="submit"] {
     margin:0 6px 0 0;
     padding:0px 4px;
     cursor: pointer;
-    -webkit-border-radius: 4px; 
+    -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
 }
 .pagination .pagination_number:hover {
@@ -396,7 +396,7 @@ input[type="submit"] {
     font-weight: normal;
     margin:0 6px 0 0;
     padding:0px 4px;
-    -webkit-border-radius: 4px; 
+    -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
 }
 .pagination .pagination_previous,
@@ -411,7 +411,7 @@ input[type="submit"] {
     margin:0 6px 0 0;
     padding:0px 4px;
     cursor: pointer;
-    -webkit-border-radius: 4px; 
+    -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
 }
 .pagination .pagination_previous:hover,
@@ -432,7 +432,7 @@ input[type="submit"] {
     margin:0 6px 0 0;
     padding:0px 4px;
     cursor: pointer;
-    -webkit-border-radius: 4px; 
+    -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
 }
 
@@ -441,26 +441,26 @@ input[type="submit"] {
     MISC.
 *************************************** */
 
-/* profile picture upload n crop page */    
+/* profile picture upload n crop page */
 #profile_picture_form {
     height:145px;
-}   
+}
 #current_user_avatar {
     float:left;
     width:160px;
     height:130px;
     border-right:1px solid #cccccc;
     margin:0 20px 0 0;
-}   
+}
 #profile_picture_croppingtool {
     border-top: 1px solid #cccccc;
     margin:20px 0 0 0;
     padding:10px 0 0 0;
-}   
+}
 #profile_picture_croppingtool #user_avatar {
     float: left;
     margin-right: 20px;
-}   
+}
 #profile_picture_croppingtool #applycropping {
 
 }
@@ -470,7 +470,7 @@ input[type="submit"] {
     overflow: hidden;
     width: 100px;
     height: 100px;
-}   
+}
 
 
 /* ***************************************
@@ -483,7 +483,7 @@ input[type="submit"] {
 #add-box,
 #search-box,
 #logbrowser_search_area {
-    -webkit-border-radius: 8px; 
+    -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     background:white;
     margin:0 10px 10px 10px;
@@ -501,8 +501,8 @@ input[type="submit"] {
     line-height:1em;
     margin:0 0 10px 0;
     padding:5px;
-    -webkit-border-radius: 4px; 
-    -moz-border-radius: 4px;    
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
 }
 h3.settings {
     background:#e4e4e4;
@@ -511,7 +511,7 @@ h3.settings {
     line-height:1em;
     margin:10px 0 4px 0;
     padding:5px;
-    -webkit-border-radius: 4px; 
+    -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
 }
 
@@ -531,7 +531,7 @@ h3.settings {
 
 .topbarTable
 {
-    width:100%;    
+    width:100%;
 }
 
 #topbar form
@@ -552,7 +552,7 @@ h3.settings {
 
 .topbarLinks a:hover
 {
-    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient.gif?v5") repeat-x left -49px;  
+    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient.gif?v5") repeat-x left -49px;
     color:#e6e6e6;
     text-decoration:none;
 }
@@ -565,13 +565,13 @@ h3.settings {
 }
 
 .topbarLinks form
-{    
+{
     padding-left: 10px;
     padding-right: 10px;
 }
 
 #loginButton, #loggedinArea
-{    
+{
     width:166px;
     display:block;
 }
@@ -594,9 +594,9 @@ a#loginButton:hover
 #loggedinArea
 {
     background:url(<?php echo $graphicsDir; ?>/loggedinarea_rounded.gif?v2) no-repeat left top;
-}    
+}
 
-a#loginButton:hover 
+a#loginButton:hover
 {
     text-decoration:none;
 }
@@ -604,7 +604,7 @@ a#loginButton:hover
 a#loginButton:hover .loginContent span
 {
     text-decoration:none;
-}    
+}
 
 #loginButton img
 {
@@ -614,7 +614,7 @@ a#loginButton:hover .loginContent span
 
 #loginButton .loginContent
 {
-    display:block;    
+    display:block;
     padding-top:12px;
     text-align:center;
     color:#e6e6e6;
@@ -623,7 +623,7 @@ a#loginButton:hover .loginContent span
 
 .loggedInAreaContent
 {
-    display:block;    
+    display:block;
     height:30px;
     padding:10px 0px 6px 0px;
     text-align:center;
@@ -678,11 +678,11 @@ a#loginButton:hover .loginContent span
 
 a.dropdown_item:hover
 {
-    color:black;    
+    color:black;
 }
 
 .dropdown_content
-{   
+{
     background-color:#e6e6e6;
     padding:3px;
 }
@@ -690,7 +690,7 @@ a.dropdown_item:hover
 .thin_column
 {
     width:500px;
-    margin:0 auto;   
+    margin:0 auto;
 }
 
 .wide_column
@@ -731,7 +731,7 @@ a.selected
 }
 
 #edit_submenu a
-{   
+{
     color:white;
     font-weight:bold;
 }
@@ -744,9 +744,9 @@ a.selected
 }
 
 #heading
-{    
+{
     padding:10px;
-    color:black;    
+    color:black;
     font-family:Verdana, sans-serif;
 }
 
@@ -822,15 +822,15 @@ a.selected
     padding:4px;
 }
 
-.good_messages, .bad_messages 
+.good_messages, .bad_messages
 {
     background:#b9e9ff;
     color:#000000;
     padding:3px;
     width:483px;
     margin:0 auto;
-    -webkit-border-radius: 4px; 
-    -moz-border-radius: 4px;    
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
     border:2px solid #1caeec;
 }
 
@@ -849,7 +849,7 @@ a.selected
 
 .good_messages p, .bad_messages p
 {
-    margin:4px;   
+    margin:4px;
 }
 
 .bad_messages
@@ -874,7 +874,7 @@ body
 }
 
 .blog_post_wrapper
-{    
+{
     border-bottom:1px solid #ddd;
 }
 
@@ -907,7 +907,7 @@ body
 }
 
 .blog_more
-{    
+{
     float:right;
 }
 
@@ -922,7 +922,7 @@ body
 {
     float:left;
     margin-right:4px;
-    margin-bottom:4px; 
+    margin-bottom:4px;
     padding:3px;
     background-color:white;
     border: 1px solid #ccc;
@@ -951,21 +951,21 @@ a.smallBlogImageLink:hover
 
 #blogTimelineLeft, #blogTimelineRight, #blogTimelineLine
 {
-    position:absolute;    
+    position:absolute;
     top:7px;
     height:26px;
 }
 
 #blogTimelineLeft
 {
-    left:18px;   
+    left:18px;
     width:13px;
     background:url(<?php echo $graphicsDir ?>/timeline.gif) no-repeat left -26px;
 }
 
 #blogTimelineRight
 {
-    left:431px;   
+    left:431px;
     width:13px;
     background:url(<?php echo $graphicsDir ?>/timeline.gif) no-repeat left -52px;
 }
@@ -989,7 +989,7 @@ a.smallBlogImageLink:hover
 
 .timelineLink
 {
-    position:absolute;    
+    position:absolute;
     top:13px;
     width:5px;
     height:14px;
@@ -1056,7 +1056,7 @@ a.smallBlogImageLink:hover
 
 .homeHeading
 {
-    padding:5px 10px 10px 10px;    
+    padding:5px 10px 10px 10px;
     font:16px Arial;
 }
 
@@ -1127,6 +1127,15 @@ a.smallBlogImageLink:hover
     margin:0px 0px 6px 6px;
 }
 
+.adminFeed
+{
+	float:right;
+    border:1px solid red;
+    background:#ffcccc;
+    padding:5px;
+
+}
+
 .adminBox
 {
     position:absolute;
@@ -1151,8 +1160,8 @@ a.smallBlogImageLink:hover
     background:#948f87 url(<?php echo $graphicsDir; ?>/world.gif) no-repeat 5px 5px;
     color:white;
     border:1px solid #fff;
-    -webkit-border-radius: 4px; 
-    -moz-border-radius: 4px; 
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
     font-size:12px;
 }
 #translate_bar a
@@ -1215,12 +1224,12 @@ a.attachImageClose:hover
 
 .view_toggle
 {
-    float:right; 
+    float:right;
     padding-top:5px;
     margin-right:10px;
 }
 
-.gridTable 
+.gridTable
 {
     width:100%;
 }
@@ -1228,7 +1237,7 @@ a.attachImageClose:hover
 .gridTable .header_row
 {
     background:#444;
-    color:#ddd;    
+    color:#ddd;
 }
 
 .header_icons
@@ -1236,7 +1245,7 @@ a.attachImageClose:hover
     height:30px;
     width:36px;
     margin:0 auto;
-    background:url(<?php echo $graphicsDir ?>/move_edit_delete.gif) no-repeat left top;    
+    background:url(<?php echo $graphicsDir ?>/move_edit_delete.gif) no-repeat left top;
 }
 
 .down_icon { background-position:left -40px; }
@@ -1300,26 +1309,26 @@ a.attachImageClose:hover
 
 .commBoxLeft
 {
-    background:url(<?php echo $graphicsDir ?>/commBox.gif) no-repeat right -10px;   
+    background:url(<?php echo $graphicsDir ?>/commBox.gif) no-repeat right -10px;
     width:45%;
 }
 
 .commBoxMain
 {
-    background:url(<?php echo $graphicsDir ?>/commBox.gif) repeat-x left -56px;   
+    background:url(<?php echo $graphicsDir ?>/commBox.gif) repeat-x left -56px;
     white-space:nowrap;
-    padding:5px 15px;    
+    padding:5px 15px;
 }
 
 .commBoxRight
 {
-    background:url(<?php echo $graphicsDir ?>/commBox.gif) no-repeat left -102px;   
+    background:url(<?php echo $graphicsDir ?>/commBox.gif) no-repeat left -102px;
     width:45%;
 }
 
 .partnership_view
 {
-    padding-bottom:10px;    
+    padding-bottom:10px;
 }
 
 .partnership_view .feed_org_name
@@ -1359,7 +1368,7 @@ a.attachImageClose:hover
 
 .team_member_view
 {
-    padding-bottom:10px;    
+    padding-bottom:10px;
 }
 
 .team_member_img
@@ -1375,7 +1384,7 @@ a.attachImageClose:hover
 
 .search_listing {
     display: block;
-    -webkit-border-radius: 8px; 
+    -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     background:white;
     margin:0 10px 5px 10px;
@@ -1450,7 +1459,7 @@ a.attachImageClose:hover
     top:2px;
     width:22px;
     font-weight:bold;
-    text-align:center;    
+    text-align:center;
 }
 
 #infoOverlay
@@ -1506,4 +1515,9 @@ a.attachImageClose:hover
 a.photoDelete:hover
 {
     background-position:left top;
+}
+
+.admin_tools
+{
+	float
 }

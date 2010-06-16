@@ -14,7 +14,7 @@
 	);
 	echo "</div>";
 
-	$maxLength = 500;
+	$maxLength = 300;
 
 	$content = translate_field($widget,'content');
 

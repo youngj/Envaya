@@ -65,7 +65,10 @@
 
         public function getFeedNames()
         {
-			return array(get_feed_name(array()));
+			return array(
+				get_feed_name(array()), // global feed
+				get_feed_name(array('user' => $this->guid))
+			);
         }
 
         public function isSetupComplete()

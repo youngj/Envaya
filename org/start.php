@@ -61,6 +61,8 @@ function org_profile_page_handler($page)
         {
             case "design": 		return include(__DIR__."/design.php");
             case "help":		return include(__DIR__."/help.php");
+            case "feed":		return include(__DIR__."/orgfeed.php");
+            case "related":		return include(__DIR__."/related.php");
             case "dashboard": 	return include(__DIR__."/dashboard.php");
             case "username":	return include(__DIR__."/changeUsername.php");
             case "confirm":		return include(__DIR__."/confirmPartner.php");

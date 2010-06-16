@@ -394,6 +394,7 @@ CREATE TABLE `feed_items` (
 	`user_guid` bigint(20) NOT NULL,
 	`time_posted` int NOT NULL,
 	`args` TEXT default NULL,
+	`featured` tinyint(4) default 0,
 	PRIMARY KEY ( `id` ),
 	KEY `feed_key` (`feed_name`, `time_posted`),
 	KEY `user_guid` (`user_guid`),

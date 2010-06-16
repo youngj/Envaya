@@ -5,7 +5,7 @@ add_translation("sw",array(
 	"home:for_organizations" => "Kwa mashirika",
 	"home:for_everyone" => "Kwa wote",
 	"home:sign_up" => "Jiunge sasa",
-	"donate:title" => "Toa msaada kwa Envaya",
+	"donate:title" => "Changia kwa Envaya",
 	"donate:link" => "Changia",
 	"donate:info" => "Kama mradi bila faida wa Trust for Conservation Innovation, Envaya inategemea na hiba ya pesa ya taasisi na msaada kutoka watu duniani.",
 	"donate:now" => "Toa msaada sasa!",
