@@ -60,7 +60,7 @@
         'feed:partnership' => "%s has a partnership with %s.",
         'feed:more' => "Read more",
 
-        'help:title' => "Getting Started",
+        'help:title' => "Help",
         'help:summary1' => "By signing up for Envaya, your organization has a basic website with a home page. Great! But don't stop now, because your website can be much better.",
         'help:summary2' => "For example, you can add other pages on topics such as your organization's history, projects, and team. You can also write news updates and show photos from your projects.",
         'help:summary3' => "This page will help you learn how your Envaya website works, and how to make it great.",
@@ -238,7 +238,6 @@
         'widget:empty' => "This organization has not yet written its %s page.",
 
         'widget:home' => "Home",
-        'widget:home:included' => "What sections do you want to include on your home page?",
 
         'widget:history' => "History",
         'widget:history:label' => "Your organization's history:",
