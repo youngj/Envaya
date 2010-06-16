@@ -58,7 +58,7 @@ class InterfaceTranslation extends ElggObject
 
     static function filterByLang($lang)
     {
-        return static::filterByCondition(array('lang = ?'), array($lang));
+        return static::filterByCondition(array('lang = ?'), array($lang), '', 10000);
     }
 }
 
