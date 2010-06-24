@@ -18,10 +18,11 @@ foreach ($keys as $key)
     $newValue = @$newTrans[$key] ?: $CONFIG->translations[$lang][$key];
     if ($newValue)
     {
-        echo json_encode($key);    
+        echo "\t";
+        var_export($key);
         echo " => ";
-        echo json_encode($newValue);
+        var_export($newValue);
         echo ",\n";
-    }    
+    }
 }
 echo ");";

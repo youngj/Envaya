@@ -374,11 +374,11 @@
         'setup:mission' => "What is the mission of your organization?",
         'setup:mission:help' => "This will appear at the top of your homepage.",
         'setup:mission:blank' => "Please enter the mission of your organization.",
-        'setup:language' => "What language will you use for the written content on your website (such as the mission statement above)?",
+        'setup:language' => "What language will you use for the written content on your website?",
         'setup:language:help' => "Envaya will allow people who cannot read that language to view a translated version in their own language.",
 
         'setup:location' => "Where is your organization located?",
-        'setup:city' => 'City or Town:',
+        'setup:city' => 'City:',
         'setup:region' => 'Region:',
         'setup:region:blank' => 'Select your region',
         'setup:sector' => "Check at most five sectors that apply for your organization:",
