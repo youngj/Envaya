@@ -1,6 +1,7 @@
 <p>
 <strong><?php echo elgg_echo('donate:info') ?></strong>
 </p>
+<img src='_graphics/envaya_phone.JPG' style='float:right;padding-left:5px' />
 <p>
 <?php echo elgg_echo('donate:goals') ?>
 </p>
@@ -15,11 +16,4 @@
 <?php echo elgg_echo('donate:call') ?>
 </p>
 
-
-<form action='http://www.trustforconservationinnovation.org/donate.php' method='POST'>
-
-<input type="hidden" value="Envaya" name="project"/>
-
-<?php echo elgg_view('input/submit', array('internalname' => 'submit', value => elgg_echo('donate:now'))) ?>
-
-</form>
+<?php echo elgg_view('org/donate_button') ?>
