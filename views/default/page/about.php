@@ -2,14 +2,14 @@
 <strong><?php echo elgg_echo('about:mission') ?></strong>
 </p>
 <p>
-<img src='_graphics/cfp_planting.jpg' style='float:right' />
+<img src='_graphics/cfp_planting.jpg' class='widget_image_right' />
 <?php echo elgg_echo('about:background') ?>
 </p>
 <p>
 <?php echo elgg_echo('about:need') ?>
 </p>
 <p>
-<img src='_graphics/dar_conference_smiling.jpg' style='float:right' />
+<img src='_graphics/dar_conference_smiling.jpg' class='widget_image_right' />
 <?php echo sprintf(elgg_echo('about:envaya'), "<a href='page/why'>".elgg_echo('about:tailored').'</a>') ?>
 </p>
 <p>
