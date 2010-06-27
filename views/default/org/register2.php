@@ -11,7 +11,7 @@
 
 <div class='input'>
 <label><?php echo elgg_echo('create:org_name') ?></label><br />
-<?php echo elgg_view('input/text', array('internalname' => 'org_name', 'trackDirty' => true)) ?>    
+<?php echo elgg_view('input/text', array('internalname' => 'org_name', 'trackDirty' => true)) ?>
 <div class='help'><?php echo elgg_echo('create:org_name:help') ?></div>
 </div>
 
@@ -25,7 +25,7 @@ function updateUrl()
         var urlUsername = document.getElementById('urlUsername');
         urlUsername.removeChild(urlUsername.firstChild);
         urlUsername.appendChild(document.createTextNode(username));
-    }, 1);    
+    }, 1);
 }
 </script>
 
@@ -35,7 +35,7 @@ function updateUrl()
     'internalname' => 'username',
     'internalid' => 'username',
     'js' => 'onkeyup="javascript:updateUrl()" onchange="javascript:updateUrl()"'
-)) ?>    
+)) ?>
 <div class='help'><?php echo elgg_echo('create:username:help') ?>
     <span class='websiteUrl'>http://envaya.org/<span id='urlUsername' style='font-weight:bold'><?php echo elgg_echo('create:username:placeholder') ?></span></span>
 </div>
@@ -46,22 +46,23 @@ function updateUrl()
 <label><?php echo elgg_echo('create:password') ?></label><br />
 <?php echo elgg_view('input/password', array(
     'internalname' => 'password'
-)) ?>    
+)) ?>
 <div class='help'><?php echo elgg_echo('create:password:help') ?></div>
+<div class='help' style='padding-top:5px'><?php echo elgg_echo('create:password:length') ?></div>
 </div>
 
 <div class='input'>
 <label><?php echo elgg_echo('create:password2') ?></label><br />
 <?php echo elgg_view('input/password', array(
     'internalname' => 'password2'
-)) ?>    
+)) ?>
 </div>
 
 <div class='input'>
 <label><?php echo elgg_echo('create:email') ?></label><br />
 <?php echo elgg_view('input/email', array(
     'internalname' => 'email'
-)) ?>    
+)) ?>
 <div class='help'><?php echo elgg_echo('create:email:help') ?></div>
 </div>
 

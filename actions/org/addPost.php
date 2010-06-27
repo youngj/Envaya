@@ -21,16 +21,22 @@
     }
     else
     {
-        $blog = new NewsUpdate();
-        $blog->owner_guid = get_loggedin_userid();
-        $blog->container_guid = $orgId;
-        $blog->content = $body;
-        $blog->save();
+    	$uuid = get_input('uuid');
 
-        $blog->setImages($imageFiles);
+    	$duplicates = get_entities_from_metadata('uuid', $uuid, 'object', T_news_update, $orgId);
+    	if (!sizeof($duplicates))
+    	{
+			$blog = new NewsUpdate();
+			$blog->owner_guid = get_loggedin_userid();
+			$blog->container_guid = $orgId;
+			$blog->content = $body;
+			$blog->uuid = $uuid;
+			$blog->save();
 
-        system_message(elgg_echo("blog:posted"));
+			$blog->setImages($imageFiles);
 
-        $page_owner = get_entity($blog->container_guid);
-        forward($page_owner->getUrl() . "/news");
+			system_message(elgg_echo("blog:posted"));
+		}
+
+        forward($org->getUrl() . "/news");
     }

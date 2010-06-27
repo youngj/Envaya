@@ -2,27 +2,32 @@
     $org = $vars['org'];
 
     ob_start();
-    
-    echo elgg_view('input/longtext', 
+
+    echo elgg_view('input/longtext',
         array(
-            'internalname' => 'blogbody', 
+            'internalname' => 'blogbody',
             'trackDirty' => true,
-            'js' => "style='height:100px'",            
+            'js' => "style='height:100px'",
         )
     );
 
-    echo elgg_view('input/submit', 
-        array('internalname' => 'submit', 
+    echo elgg_view('input/submit',
+        array('internalname' => 'submit',
             'class' => "submit_button addUpdateButton",
             'trackDirty' => true,
-            'value' => elgg_echo('publish'))); 
+            'value' => elgg_echo('publish')));
 
-    
+
     echo elgg_view('input/hidden', array(
-        'internalname' => 'container_guid', 
+        'internalname' => 'container_guid',
         'value' => $org->guid
     ));
-                    
+
+    echo elgg_view('input/hidden', array(
+        'internalname' => 'uuid',
+        'value' => com_create_guid()
+    ));
+
     ?>
 <script type='text/javascript'>
 
@@ -34,7 +39,7 @@ function showAttachImage($show)
 
     var attachImage = document.getElementById('attachImage');
     var attachControls = document.getElementById('attachControls');
-    
+
     if ($show)
     {
         attachImage.style.display = 'block';
@@ -44,10 +49,10 @@ function showAttachImage($show)
     {
         attachImage.style.display = 'none';
         attachControls.style.display = 'block';
-        
+
         var imageUpload = document.getElementById('imageUpload');
         imageUpload.value = '';
-        
+
         document.getElementById('imageUploadProgress').innerHTML = '';
     }
 }
@@ -56,12 +61,12 @@ function showAttachImage($show)
 
 <div id='attachControls'>
     <a href='javascript:void(0)' onclick='showAttachImage(true)'><img src='_graphics/attach_image.gif?v2' /></a>
-    <a href='javascript:void(0)' onclick='showAttachImage(true)'><?php echo elgg_echo('dashboard:attach_image') ?></a>    
-</div>    
+    <a href='javascript:void(0)' onclick='showAttachImage(true)'><?php echo elgg_echo('dashboard:attach_image') ?></a>
+</div>
 <div id='attachImage' style='display:none'>
-    <a class='attachImageClose' href='javascript:void(0)' onclick='showAttachImage(false)'></a>    
-    <span class='help'><?php echo elgg_echo('dashboard:select_image') ?></span>    
-           
+    <a class='attachImageClose' href='javascript:void(0)' onclick='showAttachImage(false)'></a>
+    <span class='help'><?php echo elgg_echo('dashboard:select_image') ?></span>
+
     <?php echo elgg_view('input/swfupload_image', array(
         'internalname' => 'image',
         'trackDirty' => true,
@@ -69,16 +74,16 @@ function showAttachImage($show)
         'progressid' => 'imageUploadProgress',
         'sizes' => NewsUpdate::getImageSizes()
     )) ?>
-    
+
 </div>
 
     <?php
-    
+
     $formBody = ob_get_clean();
-    
+
     echo elgg_view('input/form', array(
         'internalid' => 'addPostForm',
-        'action' => "action/org/addPost", 
-        'enctype' => "multipart/form-data", 
-        'body' => $formBody, 
+        'action' => "action/org/addPost",
+        'enctype' => "multipart/form-data",
+        'body' => $formBody,
     ));

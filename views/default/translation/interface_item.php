@@ -28,13 +28,13 @@ echo "<label>".sprintf(elgg_echo("trans:previous_in"), escape(elgg_echo($lang)))
 echo "<div>".elgg_view('output/longtext', array('value' => elgg_echo($key, $lang)))."</div>";
 echo "</div>";
 
-}    
+}
 
 echo "<div class='input'>";
 echo "<label>".sprintf(elgg_echo("trans:inlang"), escape(elgg_echo($lang))).":</label>";
 
-if (strlen($enText) > 50)
-{   
+if (strlen($enText) > 50 || strpos($enText, "\n") !== FALSE)
+{
    $input = "input/longtext";
    $js = "style='height:".(30+floor(strlen($enText)/50)*25)."px'";
 }
@@ -44,12 +44,19 @@ else
     $js = '';
 }
 
-echo elgg_view($input, array('internalname' => 'value', 'value' => $trans ? $trans->value : elgg_echo($key, $lang), 'js'=>$js));
+global $CONFIG;
+$value = $trans ? $trans->value : $CONFIG->translations[$lang][$key];
+if (!$value)
+{
+	$value = get_auto_translation($enText, 'en', $lang);
+}
+
+echo elgg_view($input, array('internalname' => 'value', 'value' => $value, 'js'=>$js));
 
 echo elgg_view('input/submit', array('value' => elgg_echo('save')));
 
 echo "<a style='float:right;padding:10px' href='".escape($from)."'>".elgg_echo('cancel')."</a>";
 
 echo "</div>";
-    
-echo "</form>";  
+
+echo "</form>";

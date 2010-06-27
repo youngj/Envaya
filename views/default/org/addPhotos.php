@@ -15,7 +15,7 @@
 var MultiImageUploader = makeClass(ImageUploader);
 
 MultiImageUploader.prototype.init = function($vars)
-{    
+{
     ImageUploader.prototype.init.call(this, $vars);
     this.imageCount = 0;
 };
@@ -25,7 +25,7 @@ MultiImageUploader.prototype.showParsedPreviewImage = function($data, $serverDat
     this.imageCount++;
 
     this.setProgress("");
-                
+
     var previews = document.getElementById(this.options.previews_id);
 
     var container = document.createElement('div');
@@ -35,7 +35,7 @@ MultiImageUploader.prototype.showParsedPreviewImage = function($data, $serverDat
     imageContainer.className = 'photoPreview';
     container.appendChild(imageContainer);
 
-    var loadingMessage = document.createElement('span');        
+    var loadingMessage = document.createElement('span');
     loadingMessage.appendChild(document.createTextNode(this.options.loading_preview_message));
 
     imageContainer.appendChild(loadingMessage);
@@ -47,24 +47,24 @@ MultiImageUploader.prototype.showParsedPreviewImage = function($data, $serverDat
     addEvent(img, 'load', function() {
         img.style.display = 'inline';
         imageContainer.removeChild(loadingMessage);
-    });                
+    });
 
     img.src = $data[this.options.thumbnail_size].url;
-    imageContainer.appendChild(img);      
+    imageContainer.appendChild(img);
 
-    var caption = document.createElement('textarea');        
-    caption.name = 'imageCaption' + this.imageCount;        
+    var caption = document.createElement('textarea');
+    caption.name = 'imageCaption' + this.imageCount;
     caption.className = 'photoCaptionInput';
     container.appendChild(caption);
 
-    var deleteButton = document.createElement('a');        
+    var deleteButton = document.createElement('a');
     deleteButton.className = 'photoDelete';
-    deleteButton.href = "javascript:void(0)";        
+    deleteButton.href = "javascript:void(0)";
 
     addEvent(deleteButton, 'click', function() {
         $dirty = window.dirty;
         setDirty(false);
-        setTimeout(function() { setDirty($dirty) }, 5);        
+        setTimeout(function() { setDirty($dirty) }, 5);
 
         previews.removeChild(container);
     });
@@ -81,14 +81,14 @@ MultiImageUploader.prototype.showParsedPreviewImage = function($data, $serverDat
     imageData.type = 'hidden';
     imageData.name = 'imageData' + this.imageCount;
     imageData.value = $serverData;
-    container.appendChild(imageData);                      
+    container.appendChild(imageData);
 
     var clear = document.createElement('div');
     clear.style.clear = 'both';
-    container.appendChild(clear);               
+    container.appendChild(clear);
 
     previews.appendChild(container);
-        
+
     if (!this.iframe_mode)
     {
         this.swfupload.setButtonText('<span class="button">'+this.options.button_more_message+'</span>');
@@ -97,17 +97,17 @@ MultiImageUploader.prototype.showParsedPreviewImage = function($data, $serverDat
 
         if ($file)
         {
-            this.startUpload($file);        
-        }        
-    }    
+            this.startUpload($file);
+        }
+    }
 
     var submit = document.getElementById('submit');
-    submit.style.display = 'block';          
+    submit.style.display = 'block';
 };
 
 MultiImageUploader.prototype.uploadProgressHandler = function()
 {
-    document.getElementById('uploadLabel').style.display = 'none';    
+    document.getElementById('uploadLabel').style.display = 'none';
     ImageUploader.prototype.uploadProgressHandler.call(this);
 };
 
@@ -122,12 +122,21 @@ new MultiImageUploader(<?php echo elgg_view('input/swfupload_args', array(
         'previews_id' => 'previews',
         'button_more_message' => elgg_echo('addphotos:more'),
         'sizes' => json_encode(NewsUpdate::getImageSizes())
-    )    
+    )
 )) ?>);
 
 </script>
 <div class='input'>
-<?php echo elgg_view('input/hidden', array('internalname' => 'org_guid', 'value' => $vars['entity']->guid)) ?>
+<?php
+	echo elgg_view('input/hidden', array('internalname' => 'org_guid', 'value' => $vars['entity']->guid));
+
+	echo elgg_view('input/hidden', array(
+		'internalname' => 'uuid',
+		'value' => com_create_guid()
+	));
+
+?>
+
 <div id='submit' style='display:none'>
 <?php echo elgg_view('input/submit', array('value' => elgg_echo('publish'), 'trackDirty' => true)) ?>
 </div>

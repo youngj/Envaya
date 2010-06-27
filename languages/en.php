@@ -346,7 +346,6 @@
         'qualify:org_type:other' => 'Other',
         'qualify:org_info' => 'Check the statements below that apply to your organization:',
         'qualify:org_info:citizen' => 'It is a Tanzanian organization.',
-        'qualify:org_info:local' => 'It mostly operates in one local community.',
         'qualify:org_info:funder' => 'It primarily distributes funding to other organizations.',
         'qualify:country' => 'What country does your organization operate in?',
         'qualify:next' => 'Click the button below to continue.',
@@ -371,6 +370,7 @@
         'create:username:placeholder' => 'username',
         'create:password' => "Choose a password for your account:",
         'create:password:help' => "Together with your username, this will let you log in to edit your website. Remember this password and keep it secure.",
+        'create:password:length' => "Your password must be at least 6 characters long.",
         'create:password2' => "Enter the password again to confirm:",
         'create:email' => "Enter your organization's email address:",
         'create:email:help' => "If you ever forget your password, you can reset it by email.",
@@ -379,6 +379,7 @@
         'create:no_name' => "Please enter your organization's name.",
         'create:username_exists' => 'Somebody else has already registered that username. Please choose another.',
         'create:passwords_differ' => 'The two passwords you entered did not match. Please try entering them again.',
+        'create:password_too_easy' => 'Your password is too easy to guess. Please choose a different password.',
         'create:ok' => 'Congratulations! Your account was created successfully.',
         'create:notloggedin' => 'You must be logged in to view this page.',
 

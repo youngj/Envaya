@@ -186,7 +186,6 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->submitForm();
         $this->mouseOver("//div[@class='bad_messages']");
         $this->click("//input[@name='country' and @value='tz']");
-        $this->check("//input[@name='org_info[]' and @value='citizen']");
         $this->submitForm();
 
         /* create account */
@@ -216,7 +215,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->submitForm();
 
         /* set up homepage */
-
+		sleep(10);
         $this->mouseOver("//div[@class='good_messages']");
 
         $this->type("//textarea[@name='mission']", "testing the website");
@@ -413,7 +412,6 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         /* qualification */
         $this->click("//input[@name='org_type' and @value='np']");
         $this->click("//input[@name='country' and @value='tz']");
-        $this->check("//input[@name='org_info[]' and @value='citizen']");
         $this->submitForm();
 
         /* create account */
