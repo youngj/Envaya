@@ -25,7 +25,7 @@
 
     echo elgg_view('input/hidden', array(
         'internalname' => 'uuid',
-        'value' => com_create_guid()
+        'value' => uniqid("",true)
     ));
 
     ?>

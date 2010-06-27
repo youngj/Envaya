@@ -132,7 +132,7 @@ new MultiImageUploader(<?php echo elgg_view('input/swfupload_args', array(
 
 	echo elgg_view('input/hidden', array(
 		'internalname' => 'uuid',
-		'value' => com_create_guid()
+		'value' => uniqid("",true)
 	));
 
 ?>
