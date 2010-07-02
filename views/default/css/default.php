@@ -1129,7 +1129,7 @@ a.smallBlogImageLink:hover
 
 .adminFeed
 {
-	float:right;
+    float:right;
     border:1px solid red;
     background:#ffcccc;
     padding:5px;
@@ -1517,7 +1517,52 @@ a.photoDelete:hover
     background-position:left top;
 }
 
-.admin_tools
+.modalShadow
 {
-	float
+    position:absolute;
+    z-index:100;
+    background-color:gray;
+    opacity:0.5;
+    filter:alpha(opacity=50);
+    width:100%;
+    height:100%;
+    left:0px;
+    top:0px;
 }
+
+.modalBox
+{
+    position:absolute;
+    z-index:101;
+    border:5px solid #3E5A77;
+    background-color:white;
+    width:400px;
+    left:200px;
+    top:200px;
+}
+
+
+.modalHeading
+{
+    background-color:#B9C7D2;
+    color:#021324;
+    font:bold 16px arial,sans-serif;
+    padding:10px 15px;
+}
+
+.modalBody
+{
+    padding:10px 15px;
+}
+
+.linkUrl, .linkText
+{
+    padding-bottom:10px;
+}
+
+.linkUrl input, .linkText input
+{
+    width:350px;
+    display:block;
+}
+

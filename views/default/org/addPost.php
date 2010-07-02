@@ -6,8 +6,9 @@
     echo elgg_view('input/longtext',
         array(
             'internalname' => 'blogbody',
+            'internalid' => 'post_plain',
             'trackDirty' => true,
-            'js' => "style='height:100px'",
+            'js' => "style='height:112px'",
         )
     );
 
@@ -29,6 +30,7 @@
     ));
 
     ?>
+
 <script type='text/javascript'>
 
 function showAttachImage($show)

@@ -106,14 +106,15 @@ class Widget extends ElggObject
 
 function save_widget($widget)
 {
-	$prevContent = $widget->content;
+    $prevContent = $widget->content;
 
-    $widget->content = get_input('content');
+    $widget->content = sanitize_html(get_input('content'));
+    $widget->data_types |= DataType::HTML;
 
-	if (!$widget->language)
-	{
-		$widget->language = guess_language($widget->content);
-	}
+    if (!$widget->language)
+    {
+        $widget->language = guess_language($widget->content);
+    }
 
     $widget->image_position = get_input('image_position');
     $widget->save();
@@ -129,10 +130,10 @@ function save_widget($widget)
         $widget->setImages($imageFiles);
     }
 
-	if (!$prevContent && $widget->content)
-	{
-	    post_feed_items($widget->getContainerEntity(), 'new_widget', $widget);
-	}
+    if (!$prevContent && $widget->content)
+    {
+        post_feed_items($widget->getContainerEntity(), 'new_widget', $widget);
+    }
 }
 
 function save_widget_home($widget)
@@ -168,10 +169,10 @@ function save_widget_home($widget)
 
     $widget->content = $mission;
 
-	if (!$widget->language)
-	{
-		$widget->language = guess_language($mission);
-	}
+    if (!$widget->language)
+    {
+        $widget->language = guess_language($mission);
+    }
 
     $widget->included = get_input_array('included');
     $widget->zoom = get_input('map_zoom');

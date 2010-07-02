@@ -14,28 +14,28 @@ class Organization extends ElggUser
 
     static $subtype_id = T_organization;
 
-	public function getFeedNames()
-	{
-		$feedNames = parent::getFeedNames();
+    public function getFeedNames()
+    {
+        $feedNames = parent::getFeedNames();
 
-		if ($this->region)
-		{
-			$feedNames[] = get_feed_name(array("region" => $this->region));
-		}
+        if ($this->region)
+        {
+            $feedNames[] = get_feed_name(array("region" => $this->region));
+        }
 
-		foreach ($this->getSectors() as $sector)
-		{
-			$feedNames[] = get_feed_name(array('sector' => $sector));
+        foreach ($this->getSectors() as $sector)
+        {
+            $feedNames[] = get_feed_name(array('sector' => $sector));
 
-			if ($this->region)
-			{
-				$feedNames[] = get_feed_name(array('region' => $this->region, 'sector' => $sector));
-			}
-		}
+            if ($this->region)
+            {
+                $feedNames[] = get_feed_name(array('region' => $this->region, 'sector' => $sector));
+            }
+        }
 
-		return $feedNames;
+        return $feedNames;
 
-	}
+    }
 
     public function canView()
     {
@@ -354,6 +354,7 @@ class Organization extends ElggUser
 class DataType
 {
     const Image = 2;
+    const HTML = 4;
 }
 
 /**

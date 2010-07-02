@@ -1,6 +1,6 @@
 <?php
 
-	add_translation('en', array(
+    add_translation('en', array(
         'home:title' => "A network of civil society organizations in Tanzania",
         'home:heading' => 'Envaya is a network of civil society organizations in Tanzania who share news about their projects on the Internet.',
         'home:for_organizations' => 'For organizations',
@@ -68,7 +68,7 @@
         'feed' => "News",
         'feed:title' => "Latest news updates",
         'feed:registered' => "%s joined Envaya.",
-        'feed:new_widget' => "%s created a %s page:",
+        'feed:new_widget' => "%s created a %s page.",
         'feed:partnership' => "%s has a partnership with %s.",
         'feed:more' => "Read more",
         'feed:org' => "News from related organizations",
@@ -597,6 +597,7 @@
 
         'save' => "Save",
         'publish' => "Publish",
+        'ok' => "OK",
         'cancel' => "Cancel",
         'update' => "Update",
         'view' => "View",
@@ -612,12 +613,12 @@
 
 A user account has been created for you at %s. To log in, visit:
 
-	%s
+    %s
 
 And log in with these user credentials:
 
-	Username: %s
-	Password: %s
+    Username: %s
+    Password: %s
 
 Once you have logged in, we highly recommend that you change your password.
 ',
@@ -698,6 +699,31 @@ If you requested this, click on the link below to change your password:
         'tz:zanzibar_cs' => 'Zanzibar Central/South',
         'tz:zanzibar_n' => 'Zanzibar North',
         'tz:zanzibar_w' => 'Zanzibar West',
-	));
+
+        'wysiwyg:block' => "Format",
+        'wysiwyg:paragraph' => "Normal",
+        'wysiwyg:pre' => "Preformatted",
+        'wysiwyg:h1' => "Heading 1",
+        'wysiwyg:h2' => "Heading 2",
+        'wysiwyg:h3' => "Heading 3",
+        'wysiwyg:blockquote' => "Blockquote",
+        'wysiwyg:bold_desc' => "Bold (Ctrl+B)",
+        'wysiwyg:italic_desc' => "Italic (Ctrl+I)",
+        'wysiwyg:underline_desc' => "Underline (Ctrl+U)",
+        'wysiwyg:bullist_desc' => "Unordered list",
+        'wysiwyg:numlist_desc' => "Ordered list",
+        'wysiwyg:outdent_desc' => "Outdent",
+        'wysiwyg:indent_desc' => "Indent",
+        'wysiwyg:link_desc' => "Insert/edit link",
+        'wysiwyg:link_url' => "URL of web page:",
+        'wysiwyg:link_url_help' => "First, find the page on the web you want to link to. Then, copy the web address from the box in your browser's address bar.",
+        'wysiwyg:link_url_test' => 'Test this Link',
+        'wysiwyg:link_text' => "Text to display:",
+        'wysiwyg:link_url_empty' => "Please enter a URL.",
+        'wysiwyg:image_desc' => "Insert/edit image",
+        'wysiwyg:blockquote_desc' => "Blockquote",
+        'wysiwyg:ok' => "OK",
+        'wysiwyg:cancel' => "Cancel",
+    ));
 
     include(__DIR__."/en_admin.php");

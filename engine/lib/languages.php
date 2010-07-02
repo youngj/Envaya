@@ -17,7 +17,7 @@
 *
 * Translations are arrays in the Zend Translation array format, eg:
 *
-*	$english = array('message1' => 'message1', 'message2' => 'message2');
+*   $english = array('message1' => 'message1', 'message2' => 'message2');
 *  $german = array('message1' => 'Nachricht1','message2' => 'Nachricht2');
 *
 * @param string $country_code Standard country code (eg 'en', 'nl', 'es')
@@ -295,6 +295,21 @@ function get_translatable_language_keys()
 
     return $keys;
 }
+
+function get_language_keys_by_prefix($prefix)
+{
+    $keys = array();
+    global $CONFIG;
+    foreach ($CONFIG->translations['en'] as $k => $v)
+    {
+        if (strpos($k, $prefix) === 0)
+        {
+            $keys[] = $k;
+        }
+    }
+    return $keys;
+}
+
 
 function change_viewer_language($newLanguage)
 {
