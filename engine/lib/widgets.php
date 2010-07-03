@@ -108,8 +108,8 @@ function save_widget($widget)
 {
     $prevContent = $widget->content;
 
-    $widget->content = sanitize_html(get_input('content'));
-    $widget->data_types |= DataType::HTML;
+    $widget->content = get_input('content'); //sanitize_html(get_input('content'));
+    //$widget->data_types |= DataType::HTML;
 
     if (!$widget->language)
     {

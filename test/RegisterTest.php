@@ -85,24 +85,24 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
         while (true)
         {
-			if (file_exists($mailFile))
-			{
-				$contents = file_get_contents($mailFile);
+            if (file_exists($mailFile))
+            {
+                $contents = file_get_contents($mailFile);
 
-				$marker = strrpos($contents, "========");
+                $marker = strrpos($contents, "========");
 
-				$email = substr($contents, $marker);
+                $email = substr($contents, $marker);
 
-				if ($email && strpos($email, '--------') && ($match == null || strpos($email, $match) !== false))
-				{
-					return $email;
-				}
-			}
+                if ($email && strpos($email, '--------') && ($match == null || strpos($email, $match) !== false))
+                {
+                    return $email;
+                }
+            }
 
             if (time() - $time > 7)
                 throw new Exception("couldn't find matching email");
 
-			sleep(0.25);
+            sleep(0.25);
         }
     }
 
@@ -215,7 +215,6 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->submitForm();
 
         /* set up homepage */
-		sleep(10);
         $this->mouseOver("//div[@class='good_messages']");
 
         $this->type("//textarea[@name='mission']", "testing the website");

@@ -14,3 +14,25 @@
     );
     echo "</div>";
 
+    $maxLength = 300;
+
+    $content = translate_field($widget,'content');
+
+    echo "<div>";
+
+    if ($widget->data_types & DataType::HTML)
+    {
+        echo $content;
+    }
+    else
+    {
+        echo elgg_view('output/longtext',
+            array('value' => get_snippet($content, $maxLength))
+        );
+    }
+
+    if (strlen($content) > $maxLength)
+    {
+        echo " <a class='feed_more' href='$widgetUrl'>".elgg_echo('feed:more')."</a>";
+    }
+    echo "</div>";
