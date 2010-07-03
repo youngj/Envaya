@@ -1475,10 +1475,17 @@ a.attachImageClose:hover
     display:none;
 }
 
+#loadingOverlay
+{
+    position:absolute;
+    padding:5px;
+    background:white;
+    border:1px solid #ccc;
+    display:none;
+}
+
 .mapOrgLink
 {
-    font-weight:bold;
-    display:block;
     white-space:nowrap;
 }
 
@@ -1564,5 +1571,11 @@ a.photoDelete:hover
 {
     width:350px;
     display:block;
+}
+
+.mapBucketControls
+{
+    font-weight:bold;
+    width:350px;
 }
 

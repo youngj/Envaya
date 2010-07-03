@@ -31,6 +31,7 @@
 
 <div id='map' style='width:<?php echo $width; ?>px;height:<?php echo $height; ?>px'></div>
 <div id='infoOverlay'></div>
+<div id='loadingOverlay'><?php echo elgg_echo('loading') ?></div>
 
 <script type='text/javascript'>
 
@@ -110,6 +111,7 @@ OrgBucket = function($center, $orgs)
 };
 
 var infoOverlay = document.getElementById('infoOverlay');
+var loadingOverlay = document.getElementById('loadingOverlay');
 var expandedBucket = null;
 
 function closeExpandedBucket()
@@ -160,9 +162,36 @@ OrgBucket.prototype = new function() {
         var $link = document.createElement('a');
         $link.href = $org.url;
         $link.className = 'mapOrgLink';
+        $link.title = $org.name;
+
         $link.appendChild(document.createTextNode($org.name));
         return $link;
-    }
+    };
+
+    this._makeBucketControls = function()
+    {
+
+        var $div = document.createElement('div');
+        $div.className = 'mapBucketControls';
+
+        var $curZoom = this._map.getZoom();
+        var $maxZoom = this._map.getCurrentMapType().getMaximumResolution();
+
+        if ($curZoom < $maxZoom && this.orgs.length > 1)
+        {
+            var $a = document.createElement('a');
+            $a.href = 'javascript:void(0)';
+            var $self = this;
+
+            addEvent($a, 'click', function() {
+                $self._map.setCenter($self.center, Math.min($curZoom + 3, $maxZoom));
+            });
+            $a.appendChild(document.createTextNode(<?php echo json_encode(elgg_echo('zoom_in')) ?>));
+            $div.appendChild($a);
+        }
+
+        return $div;
+    };
 
     this._clicked = function()
     {
@@ -184,13 +213,36 @@ OrgBucket.prototype = new function() {
                 return 0;
             });
 
+
+            var $orgDiv = document.createElement('div');
+            var $orgInnerDiv = document.createElement('div');
+            $orgDiv.appendChild($orgInnerDiv);
+
             for (var $i = 0; $i < this.orgs.length; $i++)
             {
-                infoOverlay.appendChild(this._makeOrgLink(this.orgs[$i]));
+                $orgInnerDiv.appendChild(this._makeOrgLink(this.orgs[$i]));
+                $orgInnerDiv.appendChild(document.createElement('br'));
             }
+
+            infoOverlay.appendChild($orgDiv);
 
             this._setInfoPosition();
             infoOverlay.style.display = 'block';
+
+            if (this.orgs.length > 8)
+            {
+                infoOverlay.appendChild(this._makeBucketControls());
+
+                $orgDiv.style.overflow = 'auto';
+                $orgDiv.style.height = '145px';
+                $orgDiv.style.width = '400px';
+
+                $orgInnerDiv.style.overflow = 'hidden';
+                $orgInnerDiv.style.textOverflow = 'ellipsis';
+                $orgInnerDiv.style.whiteSpace = 'nowrap';
+
+                $orgInnerDiv.style.width = '380px';
+            }
         }
     };
 
@@ -269,7 +321,7 @@ function showOrgs($data)
     var $bounds = map.getBounds();
     var $proj = map.getCurrentMapType().getProjection();
     var $zoom = map.getZoom();
-    var $bucketSize = 18; // pixels
+    var $bucketSize = 20; // pixels
 
     var $buckets = {};
 
@@ -313,6 +365,8 @@ function showOrgs($data)
             }
         }
     }
+
+    loadingOverlay.style.display = 'none';
 }
 
 var nearbyOrgsCache = {};
@@ -320,6 +374,12 @@ var fetchOrgXHR = null;
 
 function fetchOrgs()
 {
+    var $mapElem = document.getElementById('map');
+
+    loadingOverlay.style.display = 'block';
+    loadingOverlay.style.left = ($mapElem.offsetLeft + $mapElem.offsetWidth - loadingOverlay.offsetWidth - 10) + "px";
+    loadingOverlay.style.top = ($mapElem.offsetTop + 30) + "px";
+
     var $bounds = map.getBounds();
 
     var $sw = $bounds.getSouthWest();
@@ -395,10 +455,10 @@ google.setOnLoadCallback(initialize);
     else
     {
         echo "<div>";
-		echo "<a href='org/browse/?lat=$lat&long=$long&zoom=10'>";
+        echo "<a href='org/browse/?lat=$lat&long=$long&zoom=10'>";
 
         echo "<img width='$width' height='$height' src='".get_static_map_url($lat, $long, $zoom, $width, $height)."' />";
-		echo "</a>";
+        echo "</a>";
         echo "</div>";
     }
 

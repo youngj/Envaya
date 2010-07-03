@@ -724,6 +724,8 @@ If you requested this, click on the link below to change your password:
         'wysiwyg:blockquote_desc' => "Blockquote",
         'wysiwyg:ok' => "OK",
         'wysiwyg:cancel' => "Cancel",
+
+        'zoom_in' => "Zoom in",
     ));
 
     include(__DIR__."/en_admin.php");
