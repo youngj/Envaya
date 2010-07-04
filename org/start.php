@@ -8,15 +8,15 @@ function org_page_handler($page)
     {
         switch($page[0])
         {
-            case "new":				return include(__DIR__."/neworg.php");
-            case "help":			return include(__DIR__."/help.php");
-            case "browse":  		return include(__DIR__."/browseorgs.php");
-            case "search": 			return include(__DIR__."/search.php");
-            case "searchArea":		return include(__DIR__."/searchArea.php");
-            case "feed":			return include(__DIR__."/feed.php");
-            case "translate":		return include(__DIR__."/translate.php");
-            case "translateQueue": 	return include(__DIR__."/translateQueue.php");
-            default:				not_found();
+            case "new":             return include(__DIR__."/neworg.php");
+            case "help":            return include(__DIR__."/help.php");
+            case "browse":          return include(__DIR__."/browseorgs.php");
+            case "search":          return include(__DIR__."/search.php");
+            case "searchArea":      return include(__DIR__."/searchArea.php");
+            case "feed":            return include(__DIR__."/feed.php");
+            case "translate":       return include(__DIR__."/translate.php");
+            case "translateQueue":  return include(__DIR__."/translateQueue.php");
+            default:                not_found();
         }
     }
 }
@@ -59,15 +59,15 @@ function org_profile_page_handler($page)
     {
         switch ($page[1])
         {
-            case "design": 		return include(__DIR__."/design.php");
-            case "help":		return include(__DIR__."/help.php");
-            case "feed":		return include(__DIR__."/orgfeed.php");
-            case "related":		return include(__DIR__."/related.php");
-            case "dashboard": 	return include(__DIR__."/dashboard.php");
-            case "username":	return include(__DIR__."/changeUsername.php");
-            case "confirm":		return include(__DIR__."/confirmPartner.php");
-            case "compose":		return include(__DIR__."/composeMessage.php");
-            case "addphotos":	return include(__DIR__."/addPhotos.php");
+            case "design":      return include(__DIR__."/design.php");
+            case "help":        return include(__DIR__."/help.php");
+            case "feed":        return include(__DIR__."/orgfeed.php");
+            case "related":     return include(__DIR__."/related.php");
+            case "dashboard":   return include(__DIR__."/dashboard.php");
+            case "username":    return include(__DIR__."/changeUsername.php");
+            case "confirm":     return include(__DIR__."/confirmPartner.php");
+            case "compose":     return include(__DIR__."/composeMessage.php");
+            case "addphotos":   return include(__DIR__."/addPhotos.php");
             case "teammember":
                 set_input("member_guid", @$page[2]);
                 switch (@$page[3])
@@ -81,15 +81,15 @@ function org_profile_page_handler($page)
 
                 switch (@$page[3])
                 {
-                    case "edit":	return include(__DIR__."/editPost.php");
-                    case "preview":	return include(__DIR__."/postPreview.php");
+                    case "edit":    return include(__DIR__."/editPost.php");
+                    case "preview": return include(__DIR__."/postPreview.php");
                     case "next":
                         set_input("delta", 1);
                         return include(__DIR__."/postRedirect.php");
                     case "prev":
                         set_input("delta", -1);
                         return include(__DIR__."/postRedirect.php");
-                    default:		return include(__DIR__."/blogPost.php");
+                    default:        return include(__DIR__."/blogPost.php");
                 }
             default:
                 break;
@@ -155,17 +155,11 @@ function new_index()
     return true;
 }
 
-function org_settings_save()
-{
-    global $CONFIG;
-    @include($CONFIG->path . "actions/org/saveSettings.php");
-}
-
 function notify_new_org($event, $objectType, $org)
 {
     if (!$org->isApproved())
     {
-    	post_feed_items($org, 'register', $org);
+        post_feed_items($org, 'register', $org);
 
         send_admin_mail("New organization registered: {$org->name}",
 "To view their website and approve or reject it, visit
@@ -191,6 +185,3 @@ register_elgg_event_handler('register', 'organization', 'notify_new_org');
 register_plugin_hook('index','system','new_index');
 
 extend_elgg_settings_page('org/settings', 'usersettings/user', 1);
-register_plugin_hook('usersettings:save','user','org_settings_save');
-
-

@@ -279,7 +279,7 @@ class Organization extends ElggUser
             $args[] = $region;
         }
 
-        return static::filterByCondition($where, $args, '', $limit, $offset, $count, $join);
+        return static::filterByCondition($where, $args, 'u.name', $limit, $offset, $count, $join);
     }
 
     static function listSearch($name, $sector, $region, $limit = 10, $pagination = true)

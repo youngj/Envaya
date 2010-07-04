@@ -564,6 +564,8 @@
 
         'user:password:text' => 'To generate a new password, enter your username below. We will send the address of a verification page to you via email. Click on the link in the message and a new password will be sent to you.',
 
+        'user:email:success' => "Your email address has been updated.",
+
         'usersettings:user' => "Your settings",
 
         'friendlytime:justnow' => "just now",

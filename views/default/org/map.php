@@ -202,11 +202,15 @@ OrgBucket.prototype = new function() {
             removeChildren(infoOverlay);
 
             this.orgs.sort(function(a,b) {
-                if (a.name < b.name)
+
+                a._lcName = a._lcName || a.name.toLowerCase();
+                b._lcName = b._lcName || b.name.toLowerCase();
+
+                if (a._lcName < b._lcName)
                 {
                     return -1;
                 }
-                else if (a.name > b.name)
+                else if (a._lcName > b._lcName)
                 {
                     return 1;
                 }
@@ -306,6 +310,8 @@ OrgBucket.prototype = new function() {
     };
 };
 
+var bucketSize = 20; // pixels
+
 function showOrgs($data)
 {
     for (var $bucketKey in displayedBuckets)
@@ -321,7 +327,6 @@ function showOrgs($data)
     var $bounds = map.getBounds();
     var $proj = map.getCurrentMapType().getProjection();
     var $zoom = map.getZoom();
-    var $bucketSize = 20; // pixels
 
     var $buckets = {};
 
@@ -333,8 +338,8 @@ function showOrgs($data)
         var $pixel = $proj.fromLatLngToPixel($latlng, $zoom);
 
         var $bucketPixel = new GPoint(
-            Math.floor($pixel.x / $bucketSize) * $bucketSize + $bucketSize / 2,
-            Math.floor($pixel.y / $bucketSize) * $bucketSize + $bucketSize / 2
+            Math.floor($pixel.x / bucketSize) * bucketSize + bucketSize / 2,
+            Math.floor($pixel.y / bucketSize) * bucketSize + bucketSize / 2
         );
 
         var $bucketKey = $bucketPixel.x + "," + $bucketPixel.y + "," + $zoom + "," + sector;
@@ -371,25 +376,41 @@ function showOrgs($data)
 
 var nearbyOrgsCache = {};
 var fetchOrgXHR = null;
+var lastFetchedBounds = null;
 
 function fetchOrgs()
 {
+    var $bounds = map.getBounds();
+
+    var $sw = $bounds.getSouthWest();
+    var $ne = $bounds.getNorthEast();
+
+    // avoid loading orgs if map was dragged very small amount
+    if (lastFetchedBounds)
+    {
+        var $oldSwPix = map.fromLatLngToContainerPixel(lastFetchedBounds.sw);
+        var $oldNePix = map.fromLatLngToContainerPixel(lastFetchedBounds.ne);
+        var $swPix = map.fromLatLngToContainerPixel($sw);
+        var $nePix = map.fromLatLngToContainerPixel($ne);
+
+        if (Math.abs($swPix.x - $oldSwPix.x) < bucketSize &&
+            Math.abs($swPix.y - $oldSwPix.y) < bucketSize &&
+            Math.abs($nePix.x - $oldNePix.x) < bucketSize &&
+            Math.abs($nePix.y - $oldNePix.y) < bucketSize)
+        {
+            return;
+        }
+    }
+
     var $mapElem = document.getElementById('map');
 
     loadingOverlay.style.display = 'block';
     loadingOverlay.style.left = ($mapElem.offsetLeft + $mapElem.offsetWidth - loadingOverlay.offsetWidth - 10) + "px";
     loadingOverlay.style.top = ($mapElem.offsetTop + 30) + "px";
 
-    var $bounds = map.getBounds();
-
-    var $sw = $bounds.getSouthWest();
-    var $ne = $bounds.getNorthEast();
+    lastFetchedBounds = {sw:$sw,ne:$ne};
 
     var $src = "/org/searchArea?latMin="+$sw.lat()+"&latMax="+$ne.lat()+"&longMin="+$sw.lng()+"&longMax="+$ne.lng()+"&sector=" + sector;
-    if (window.displayUpdates)
-    {
-        $src = $src + "&updates=1";
-    }
 
     if (fetchOrgXHR)
     {

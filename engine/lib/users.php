@@ -1,41 +1,41 @@
 <?php
 
-	/**
-	 * Elgg users
-	 * Functions to manage multiple or single users in an Elgg install
-	 *
-	 * @package Elgg
-	 * @subpackage Core
+    /**
+     * Elgg users
+     * Functions to manage multiple or single users in an Elgg install
+     *
+     * @package Elgg
+     * @subpackage Core
 
-	 * @author Curverider Ltd
+     * @author Curverider Ltd
 
-	 * @link http://elgg.org/
-	 */
+     * @link http://elgg.org/
+     */
 
     $CODE_TO_GUID_MAP_CACHE = array();
 
-	/**
-	 * ElggUser
-	 *
-	 * Representation of a "user" in the system.
-	 *
-	 * @package Elgg
-	 * @subpackage Core
-	 */
-	class ElggUser extends ElggEntity
+    /**
+     * ElggUser
+     *
+     * Representation of a "user" in the system.
+     *
+     * @package Elgg
+     * @subpackage Core
+     */
+    class ElggUser extends ElggEntity
         implements Locatable
-	{
+    {
 
-		/**
-		 * Initialise the attributes array.
-		 * This is vital to distinguish between metadata and base parameters.
-		 *
-		 * Place your base parameters here.
-		 */
+        /**
+         * Initialise the attributes array.
+         * This is vital to distinguish between metadata and base parameters.
+         *
+         * Place your base parameters here.
+         */
 
-		protected function initialise_attributes()
-		{
-			parent::initialise_attributes();
+        protected function initialise_attributes()
+        {
+            parent::initialise_attributes();
 
             $this->attributes['type'] = "user";
 
@@ -65,10 +65,10 @@
 
         public function getFeedNames()
         {
-			return array(
-				get_feed_name(array()), // global feed
-				get_feed_name(array('user' => $this->guid))
-			);
+            return array(
+                get_feed_name(array()), // global feed
+                get_feed_name(array('user' => $this->guid))
+            );
         }
 
         public function isSetupComplete()
@@ -93,37 +93,37 @@
             return $this->name;
         }
 
-		/**
-		 * Override the load function.
-		 * This function will ensure that all data is loaded (were possible), so
-		 * if only part of the ElggUser is loaded, it'll load the rest.
-		 *
-		 * @param int $guid
-		 * @return true|false
-		 */
-		protected function load($guid)
-		{
-			return parent::load($guid) && $this->loadFromTableRow(get_user_entity_as_row($guid));
-		}
+        /**
+         * Override the load function.
+         * This function will ensure that all data is loaded (were possible), so
+         * if only part of the ElggUser is loaded, it'll load the rest.
+         *
+         * @param int $guid
+         * @return true|false
+         */
+        protected function load($guid)
+        {
+            return parent::load($guid) && $this->loadFromTableRow(get_user_entity_as_row($guid));
+        }
 
-		/**
-		 * Saves this user to the database.
-		 * @return true|false
-		 */
-		public function save()
-		{
-			return parent::save() && $this->saveTableAttributes('users_entity');
-		}
+        /**
+         * Saves this user to the database.
+         * @return true|false
+         */
+        public function save()
+        {
+            return parent::save() && $this->saveTableAttributes('users_entity');
+        }
 
-		/**
-		 * User specific override of the entity delete method.
-		 *
-		 * @return bool
-		 */
-		public function delete()
-		{
+        /**
+         * User specific override of the entity delete method.
+         *
+         * @return bool
+         */
+        public function delete()
+        {
             return parent::delete() && $this->deleteTableAttributes('users_entity');
-		}
+        }
 
         public function getIconFile($size = '')
         {
@@ -241,11 +241,11 @@
         }
 
         /**
-		 * Ban this user.
-		 *
-		 * @param string $reason Optional reason
-		 */
-		public function ban($reason = "")
+         * Ban this user.
+         *
+         * @param string $reason Optional reason
+         */
+        public function ban($reason = "")
         {
             if ($this->canEdit())
             {
@@ -260,10 +260,10 @@
             return false;
         }
 
-		/**
-		 * Unban this user.
-		 */
-		public function unban()
+        /**
+         * Unban this user.
+         */
+        public function unban()
         {
             if ($this->canEdit())
             {
@@ -278,43 +278,43 @@
             return false;
         }
 
-		/**
-		 * Is this user banned or not?
-		 *
-		 * @return bool
-		 */
-		public function isBanned() { return $this->banned == 'yes'; }
+        /**
+         * Is this user banned or not?
+         *
+         * @return bool
+         */
+        public function isBanned() { return $this->banned == 'yes'; }
 
-		/**
-		 * Get an array of ElggObjects owned by this user.
-		 *
-		 * @param string $subtype The subtype of the objects, if any
-		 * @param int $limit Number of results to return
-		 * @param int $offset Any indexing offset
-		 */
-		public function getObjects($subtype="", $limit = 10, $offset = 0) { return get_user_objects($this->getGUID(), $subtype, $limit, $offset); }
+        /**
+         * Get an array of ElggObjects owned by this user.
+         *
+         * @param string $subtype The subtype of the objects, if any
+         * @param int $limit Number of results to return
+         * @param int $offset Any indexing offset
+         */
+        public function getObjects($subtype="", $limit = 10, $offset = 0) { return get_user_objects($this->getGUID(), $subtype, $limit, $offset); }
 
-		/**
-		 * Counts the number of ElggObjects owned by this user
-		 *
-		 * @param string $subtype The subtypes of the objects, if any
-		 * @return int The number of ElggObjects
-		 */
-		public function countObjects($subtype = "") {
-			return count_user_objects($this->getGUID(), $subtype);
-		}
+        /**
+         * Counts the number of ElggObjects owned by this user
+         *
+         * @param string $subtype The subtypes of the objects, if any
+         * @return int The number of ElggObjects
+         */
+        public function countObjects($subtype = "") {
+            return count_user_objects($this->getGUID(), $subtype);
+        }
 
-		/**
-		 * If a user's owner is blank, return its own GUID as the owner
-		 *
-		 * @return int User GUID
-		 */
-		function getOwner() {
-			if ($this->owner_guid == 0)
-				return $this->getGUID();
+        /**
+         * If a user's owner is blank, return its own GUID as the owner
+         *
+         * @return int User GUID
+         */
+        function getOwner() {
+            if ($this->owner_guid == 0)
+                return $this->getGUID();
 
-			return $this->owner_guid;
-		}
+            return $this->owner_guid;
+        }
 
         public function setLocation($location)
         {
@@ -454,92 +454,92 @@
                 'url' => $this->getUrl()
             );
         }
-	}
+    }
 
-	/**
-	 * Obtains a list of objects owned by a user
-	 *
-	 * @param int $user_guid The GUID of the owning user
-	 * @param string $subtype Optionally, the subtype of objects
-	 * @param int $limit The number of results to return (default 10)
-	 * @param int $offset Indexing offset, if any
-	 * @param int $timelower The earliest time the entity can have been created. Default: all
-	 * @param int $timeupper The latest time the entity can have been created. Default: all
-	 * @return false|array An array of ElggObjects or false, depending on success
-	 */
-	function get_user_objects($user_guid, $subtype = "", $limit = 10, $offset = 0, $timelower = 0, $timeupper = 0) {
-		$ntt = get_entities('object',$subtype, $user_guid, "time_created desc", $limit, $offset,false,0,$user_guid,$timelower, $timeupper);
-		return $ntt;
-	}
+    /**
+     * Obtains a list of objects owned by a user
+     *
+     * @param int $user_guid The GUID of the owning user
+     * @param string $subtype Optionally, the subtype of objects
+     * @param int $limit The number of results to return (default 10)
+     * @param int $offset Indexing offset, if any
+     * @param int $timelower The earliest time the entity can have been created. Default: all
+     * @param int $timeupper The latest time the entity can have been created. Default: all
+     * @return false|array An array of ElggObjects or false, depending on success
+     */
+    function get_user_objects($user_guid, $subtype = "", $limit = 10, $offset = 0, $timelower = 0, $timeupper = 0) {
+        $ntt = get_entities('object',$subtype, $user_guid, "time_created desc", $limit, $offset,false,0,$user_guid,$timelower, $timeupper);
+        return $ntt;
+    }
 
-	/**
-	 * Counts the objects (optionally of a particular subtype) owned by a user
-	 *
-	 * @param int $user_guid The GUID of the owning user
-	 * @param string $subtype Optionally, the subtype of objects
-	 * @param int $timelower The earliest time the entity can have been created. Default: all
-	 * @param int $timeupper The latest time the entity can have been created. Default: all
-	 * @return int The number of objects the user owns (of this subtype)
-	 */
-	function count_user_objects($user_guid, $subtype = "", $timelower, $timeupper) {
-		$total = get_entities('object', $subtype, $user_guid, "time_created desc", null, null, true, 0, $user_guid,$timelower,$timeupper);
-		return $total;
-	}
+    /**
+     * Counts the objects (optionally of a particular subtype) owned by a user
+     *
+     * @param int $user_guid The GUID of the owning user
+     * @param string $subtype Optionally, the subtype of objects
+     * @param int $timelower The earliest time the entity can have been created. Default: all
+     * @param int $timeupper The latest time the entity can have been created. Default: all
+     * @return int The number of objects the user owns (of this subtype)
+     */
+    function count_user_objects($user_guid, $subtype = "", $timelower, $timeupper) {
+        $total = get_entities('object', $subtype, $user_guid, "time_created desc", null, null, true, 0, $user_guid,$timelower,$timeupper);
+        return $total;
+    }
 
-	/**
-	 * Displays a list of user objects of a particular subtype, with navigation.
-	 *
-	 * @see elgg_view_entity_list
-	 *
-	 * @param int $user_guid The GUID of the user
-	 * @param string $subtype The object subtype
-	 * @param int $limit The number of entities to display on a page
-	 * @param true|false $fullview Whether or not to display the full view (default: true)
-	 * @param int $timelower The earliest time the entity can have been created. Default: all
-	 * @param int $timeupper The latest time the entity can have been created. Default: all
-	 * @return string The list in a form suitable to display
-	 */
-	function list_user_objects($user_guid, $subtype = "", $limit = 10, $fullview = true, $viewtypetoggle = true, $pagination = true, $timelower = 0, $timeupper = 0) {
+    /**
+     * Displays a list of user objects of a particular subtype, with navigation.
+     *
+     * @see elgg_view_entity_list
+     *
+     * @param int $user_guid The GUID of the user
+     * @param string $subtype The object subtype
+     * @param int $limit The number of entities to display on a page
+     * @param true|false $fullview Whether or not to display the full view (default: true)
+     * @param int $timelower The earliest time the entity can have been created. Default: all
+     * @param int $timeupper The latest time the entity can have been created. Default: all
+     * @return string The list in a form suitable to display
+     */
+    function list_user_objects($user_guid, $subtype = "", $limit = 10, $fullview = true, $viewtypetoggle = true, $pagination = true, $timelower = 0, $timeupper = 0) {
 
-		$offset = (int) get_input('offset');
-		$limit = (int) $limit;
-		$count = (int) count_user_objects($user_guid, $subtype,$timelower,$timeupper);
-		$entities = get_user_objects($user_guid, $subtype, $limit, $offset, $timelower, $timeupper);
+        $offset = (int) get_input('offset');
+        $limit = (int) $limit;
+        $count = (int) count_user_objects($user_guid, $subtype,$timelower,$timeupper);
+        $entities = get_user_objects($user_guid, $subtype, $limit, $offset, $timelower, $timeupper);
 
-		return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, $viewtypetoggle, $pagination);
+        return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, $viewtypetoggle, $pagination);
 
-	}
+    }
 
-	/**
-	 * Get a user object from a GUID.
-	 *
-	 * This function returns an ElggUser from a given GUID.
-	 * @param int $guid The GUID
-	 * @return ElggUser|false
-	 */
-	function get_user($guid)
-	{
-		if (!empty($guid)) // Fixes "Exception thrown without stack frame" when db_select fails
-			$result = get_entity($guid);
+    /**
+     * Get a user object from a GUID.
+     *
+     * This function returns an ElggUser from a given GUID.
+     * @param int $guid The GUID
+     * @return ElggUser|false
+     */
+    function get_user($guid)
+    {
+        if (!empty($guid)) // Fixes "Exception thrown without stack frame" when db_select fails
+            $result = get_entity($guid);
 
-		if ((!empty($result)) && (!($result instanceof ElggUser)))
-			//throw new InvalidClassException(sprintf(elgg_echo('InvalidClassException:NotValidElggStar'), $guid, 'ElggUser'));
-			return false;
+        if ((!empty($result)) && (!($result instanceof ElggUser)))
+            //throw new InvalidClassException(sprintf(elgg_echo('InvalidClassException:NotValidElggStar'), $guid, 'ElggUser'));
+            return false;
 
-		if (!empty($result))
-			return $result;
+        if (!empty($result))
+            return $result;
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Get user by username
-	 *
-	 * @param string $username The user's username
-	 * @return ElggUser|false Depending on success
-	 */
-	function get_user_by_username($username)
-	{
+    /**
+     * Get user by username
+     *
+     * @param string $username The user's username
+     * @return ElggUser|false Depending on success
+     */
+    function get_user_by_username($username)
+    {
         $cache = get_cache();
         $cacheKey = make_cache_key("guid_for_username", $username);
 
@@ -557,49 +557,49 @@
         }
 
         return get_entity($guid);
-	}
+    }
 
-	/**
-	 * Get an array of users from their
-	 *
-	 * @param string $email Email address.
-	 * @return Array of users
-	 */
-	function get_user_by_email($email)
-	{
-		$access = get_access_sql_suffix('e');
+    /**
+     * Get an array of users from their
+     *
+     * @param string $email Email address.
+     * @return Array of users
+     */
+    function get_user_by_email($email)
+    {
+        $access = get_access_sql_suffix('e');
 
         return array_map('entity_row_to_elggstar', get_data(
             "SELECT e.* from entities e join users_entity u on e.guid=u.guid where email=? and $access",
             array($email)
         ));
-	}
+    }
 
-	/**
-	 * Searches for a user based on a complete or partial name or username.
-	 *
-	 * @param string $criteria The partial or full name or username.
-	 * @param int $limit Limit of the search.
-	 * @param int $offset Offset.
-	 * @param string $order_by The order.
-	 * @param boolean $count Whether to return the count of results or just the results.
-	 */
-	function search_for_user($criteria, $limit = 10, $offset = 0, $order_by = "", $count = false, $user_subtype = "")
-	{
+    /**
+     * Searches for a user based on a complete or partial name or username.
+     *
+     * @param string $criteria The partial or full name or username.
+     * @param int $limit Limit of the search.
+     * @param int $offset Offset.
+     * @param string $order_by The order.
+     * @param boolean $count Whether to return the count of results or just the results.
+     */
+    function search_for_user($criteria, $limit = 10, $offset = 0, $order_by = "", $count = false, $user_subtype = "")
+    {
         $user_subtype_id = get_subtype_id('user', $user_subtype);
 
-		$access = get_access_sql_suffix("e");
+        $access = get_access_sql_suffix("e");
 
         $args = array();
 
-		if ($count)
+        if ($count)
         {
-			$query = "SELECT count(e.guid) as total ";
-		}
+            $query = "SELECT count(e.guid) as total ";
+        }
         else
         {
-			$query = "SELECT e.*, u.* ";
-		}
+            $query = "SELECT e.*, u.* ";
+        }
 
         $query .= "FROM entities e JOIN users_entity u ON e.guid=u.guid WHERE (INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0) and $access";
         $args[] = $criteria;
@@ -611,7 +611,7 @@
             $args[] = $user_subtype_id;
         }
 
-		if (!$count)
+        if (!$count)
         {
             $order_by = sanitize_order_by($order_by);
             if ($order_by == "")
@@ -619,111 +619,111 @@
 
             return array_map('entity_row_to_elggstar',
                 get_data("$query order by $order_by limit ".((int)$offset).", ".((int)$limit), $args));
-		}
+        }
         else
         {
-			if ($count = get_data_row($query, $args))
+            if ($count = get_data_row($query, $args))
             {
-				return $count->total;
-			}
-		}
-		return false;
-	}
+                return $count->total;
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * Displays a list of user objects that have been searched for.
-	 *
-	 * @see elgg_view_entity_list
-	 *
-	 * @param string $tag Search criteria
-	 * @param int $limit The number of entities to display on a page
-	 * @return string The list in a form suitable to display
-	 */
-	function list_user_search($tag, $limit = 10, $user_subtype = '') {
+    /**
+     * Displays a list of user objects that have been searched for.
+     *
+     * @see elgg_view_entity_list
+     *
+     * @param string $tag Search criteria
+     * @param int $limit The number of entities to display on a page
+     * @return string The list in a form suitable to display
+     */
+    function list_user_search($tag, $limit = 10, $user_subtype = '') {
 
-		$offset = (int) get_input('offset');
-		$limit = (int) $limit;
+        $offset = (int) get_input('offset');
+        $limit = (int) $limit;
         $count = (int) search_for_user($tag, 10, 0, '', true, $user_subtype);
-		$entities = search_for_user($tag, $limit, $offset, '', false, $user_subtype);
+        $entities = search_for_user($tag, $limit, $offset, '', false, $user_subtype);
 
-		return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, false);
+        return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, false);
 
-	}
+    }
 
-	/**
-	 * A function that returns a maximum of $limit users who have done something within the last
-	 * $seconds seconds.
-	 *
-	 * @param int $seconds Number of seconds (default 600 = 10min)
-	 * @param int $limit Limit, default 10.
-	 * @param int $offset Offset, defualt 0.
-	 */
-	function find_active_users($seconds = 600, $limit = 10, $offset = 0)
-	{
-		global $CONFIG;
+    /**
+     * A function that returns a maximum of $limit users who have done something within the last
+     * $seconds seconds.
+     *
+     * @param int $seconds Number of seconds (default 600 = 10min)
+     * @param int $limit Limit, default 10.
+     * @param int $offset Offset, defualt 0.
+     */
+    function find_active_users($seconds = 600, $limit = 10, $offset = 0)
+    {
+        global $CONFIG;
 
-		$seconds = (int)$seconds;
-		$limit = (int)$limit;
-		$offset = (int)$offset;
+        $seconds = (int)$seconds;
+        $limit = (int)$limit;
+        $offset = (int)$offset;
 
-		$time = time() - $seconds;
+        $time = time() - $seconds;
 
-		$access = get_access_sql_suffix("e");
+        $access = get_access_sql_suffix("e");
 
-		$query = "SELECT distinct e.* from entities e join users_entity u on e.guid = u.guid where u.last_action >= ? and $access order by u.last_action desc limit {$offset},{$limit}";
+        $query = "SELECT distinct e.* from entities e join users_entity u on e.guid = u.guid where u.last_action >= ? and $access order by u.last_action desc limit {$offset},{$limit}";
 
         return array_map('entity_row_to_elggstar', get_data($query, array($time)));
-	}
+    }
 
-	/**
-	 * Generate and send a password request email to a given user's registered email address.
-	 *
-	 * @param int $user_guid
-	 */
-	function send_new_password_request($user_guid)
-	{
-		global $CONFIG;
+    /**
+     * Generate and send a password request email to a given user's registered email address.
+     *
+     * @param int $user_guid
+     */
+    function send_new_password_request($user_guid)
+    {
+        global $CONFIG;
 
-		$user_guid = (int)$user_guid;
+        $user_guid = (int)$user_guid;
 
-		$user = get_entity($user_guid);
-		if ($user)
-		{
-			// generate code
-			$code = generate_random_cleartext_password();
-			set_private_setting($user_guid, 'passwd_conf_code', $code);
+        $user = get_entity($user_guid);
+        if ($user)
+        {
+            // generate code
+            $code = generate_random_cleartext_password();
+            set_private_setting($user_guid, 'passwd_conf_code', $code);
 
-			// generate link
-			$link = $CONFIG->url . "action/user/passwordreset?u=$user_guid&c=$code";
+            // generate link
+            $link = $CONFIG->url . "action/user/passwordreset?u=$user_guid&c=$code";
 
-			// generate email
-			$email = sprintf(elgg_echo('email:resetreq:body',$user->language), $user->name, $link);
+            // generate email
+            $email = sprintf(elgg_echo('email:resetreq:body',$user->language), $user->name, $link);
 
-			return notify_user($user->guid, $CONFIG->site_guid,
+            return notify_user($user->guid, $CONFIG->site_guid,
                 elgg_echo('email:resetreq:subject',$user->language), $email, NULL, 'email');
 
-		}
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Validate and execute a password reset for a user.
-	 *
-	 * @param int $user_guid The user id
-	 * @param string $conf_code Confirmation code as sent in the request email.
-	 */
-	function execute_new_password_request($user_guid, $conf_code)
-	{
-		global $CONFIG;
+    /**
+     * Validate and execute a password reset for a user.
+     *
+     * @param int $user_guid The user id
+     * @param string $conf_code Confirmation code as sent in the request email.
+     */
+    function execute_new_password_request($user_guid, $conf_code)
+    {
+        global $CONFIG;
 
-		$user_guid = (int)$user_guid;
+        $user_guid = (int)$user_guid;
 
-		$user = get_entity($user_guid);
+        $user = get_entity($user_guid);
 
-		if (($user) && (get_private_setting($user_guid, 'passwd_conf_code') == $conf_code))
-		{
-			$password = generate_random_cleartext_password();
+        if (($user) && (get_private_setting($user_guid, 'passwd_conf_code') == $conf_code))
+        {
+            $password = generate_random_cleartext_password();
 
             $user->setPassword($password);
             $user->save();
@@ -734,74 +734,74 @@
 
             notify_user($user->guid, $CONFIG->site_guid, elgg_echo('email:resetpassword:subject',$user->language), $email, NULL, 'email');
             return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Validates an email address.
-	 *
-	 * @param string $address Email address.
-	 * @return bool
-	 */
-	function is_email_address($address)
-	{
-		// TODO: Make this better!
-
-		if (strpos($address, '@')=== false)
-			return false;
-
-		if (strpos($address, '.')=== false)
-			return false;
-
-		return true;
-	}
-
-	/**
-	 * Simple function that will generate a random clear text password suitable for feeding into generate_user_password().
-	 *
-	 * @see generate_user_password
-	 * @return string
-	 */
-	function generate_random_cleartext_password()
-	{
-		return substr(md5(microtime() . rand()), 0, 8);
-	}
-
-	/**
-	 * Generate a password for a user, currently uses MD5.
-	 *
-	 * Later may introduce salting etc.
-	 *
-	 * @param ElggUser $user The user this is being generated for.
-	 * @param string $password Password in clear text
-	 */
-	function generate_user_password(ElggUser $user, $password)
-	{
-		return md5($password . $user->salt);
-	}
-
-	/**
-	 * Simple function which ensures that a username contains only valid characters.
-	 *
-	 * This should only permit chars that are valid on the file system as well.
-	 *
-	 * @param string $username
-	 * @throws RegistrationException on invalid
-	 */
-	function validate_username($username)
-	{
-		global $CONFIG;
-
-		if (strlen($username) < 3)
-        {
-			throw new RegistrationException(elgg_echo('registration:usernametooshort'));
         }
 
-		if (preg_match('/[^a-zA-Z0-9\-\_]/', $username, $matches))
+        return false;
+    }
+
+    /**
+     * Validates an email address.
+     *
+     * @param string $address Email address.
+     * @return bool
+     */
+    function is_email_address($address)
+    {
+        // TODO: Make this better!
+
+        if (strpos($address, '@')=== false)
+            return false;
+
+        if (strpos($address, '.')=== false)
+            return false;
+
+        return true;
+    }
+
+    /**
+     * Simple function that will generate a random clear text password suitable for feeding into generate_user_password().
+     *
+     * @see generate_user_password
+     * @return string
+     */
+    function generate_random_cleartext_password()
+    {
+        return substr(md5(microtime() . rand()), 0, 8);
+    }
+
+    /**
+     * Generate a password for a user, currently uses MD5.
+     *
+     * Later may introduce salting etc.
+     *
+     * @param ElggUser $user The user this is being generated for.
+     * @param string $password Password in clear text
+     */
+    function generate_user_password(ElggUser $user, $password)
+    {
+        return md5($password . $user->salt);
+    }
+
+    /**
+     * Simple function which ensures that a username contains only valid characters.
+     *
+     * This should only permit chars that are valid on the file system as well.
+     *
+     * @param string $username
+     * @throws RegistrationException on invalid
+     */
+    function validate_username($username)
+    {
+        global $CONFIG;
+
+        if (strlen($username) < 3)
         {
-			throw new RegistrationException(sprintf(elgg_echo('registration:invalidchars'), $username, $matches[0]));
+            throw new RegistrationException(elgg_echo('registration:usernametooshort'));
+        }
+
+        if (preg_match('/[^a-zA-Z0-9\-\_]/', $username, $matches))
+        {
+            throw new RegistrationException(sprintf(elgg_echo('registration:invalidchars'), $username, $matches[0]));
         }
 
         $lower = strtolower($username);
@@ -825,217 +825,205 @@
         }
 
         return true;
-	}
+    }
 
-	/**
-	 * Simple validation of a password.
-	 *
-	 * @param string $password
-	 * @throws RegistrationException on invalid
-	 */
-	function validate_password($password)
-	{
-		if (strlen($password)<6)
+    /**
+     * Simple validation of a password.
+     *
+     * @param string $password
+     * @throws RegistrationException on invalid
+     */
+    function validate_password($password)
+    {
+        if (strlen($password)<6)
             throw new RegistrationException(elgg_echo('registration:passwordtooshort'));
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Simple validation of a email.
-	 *
-	 * @param string $address
-	 * @throws RegistrationException on invalid
-	 * @return bool
-	 */
-	function validate_email_address($address)
-	{
-		if (!is_email_address($address))
+    /**
+     * Simple validation of a email.
+     *
+     * @param string $address
+     * @throws RegistrationException on invalid
+     * @return bool
+     */
+    function validate_email_address($address)
+    {
+        if (!is_email_address($address))
             throw new RegistrationException(elgg_echo('registration:notemail'));
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Registers a user, returning false if the username already exists
-	 *
-	 * @param string $username The username of the new user
-	 * @param string $password The password
-	 * @param string $name The user's display name
-	 * @param string $email Their email address
-	 * @param bool $allow_multiple_emails Allow the same email address to be registered multiple times?
-	 * @param int $friend_guid Optionally, GUID of a user this user will friend once fully registered
-	 * @return int|false The new user's GUID; false on failure
-	 */
-	function register_user($username, $password, $name, $email, $allow_multiple_emails = false, $friend_guid = 0, $invitecode = '') {
+    /**
+     * Registers a user, returning false if the username already exists
+     *
+     * @param string $username The username of the new user
+     * @param string $password The password
+     * @param string $name The user's display name
+     * @param string $email Their email address
+     * @param bool $allow_multiple_emails Allow the same email address to be registered multiple times?
+     * @param int $friend_guid Optionally, GUID of a user this user will friend once fully registered
+     * @return int|false The new user's GUID; false on failure
+     */
+    function register_user($username, $password, $name, $email, $allow_multiple_emails = false, $friend_guid = 0, $invitecode = '') {
 
-		// Load the configuration
-			global $CONFIG;
+        // Load the configuration
+            global $CONFIG;
 
-			$username = trim($username);
-			$password = trim($password);
-			$name = trim($name);
-			$email = trim($email);
+            $username = trim($username);
+            $password = trim($password);
+            $name = trim($name);
+            $email = trim($email);
 
-		// A little sanity checking
-			if (empty($username)
-				|| empty($password)
-				|| empty($name)
-				|| empty($email)) {
-					return false;
-				}
+        // A little sanity checking
+            if (empty($username)
+                || empty($password)
+                || empty($name)
+                || empty($email)) {
+                    return false;
+                }
 
-			// See if it exists and is disabled
-			$access_status = access_get_show_hidden_status();
-			access_show_hidden_entities(true);
+            // See if it exists and is disabled
+            $access_status = access_get_show_hidden_status();
+            access_show_hidden_entities(true);
 
-			validate_email_address($email);
-			validate_password($password);
-			validate_username($username);
+            validate_email_address($email);
+            validate_password($password);
+            validate_username($username);
 
-		// Check to see if $username exists already
-			if ($user = get_user_by_username($username)) {
-				//return false;
-				throw new RegistrationException(elgg_echo('registration:userexists'));
-			}
+        // Check to see if $username exists already
+            if ($user = get_user_by_username($username)) {
+                //return false;
+                throw new RegistrationException(elgg_echo('registration:userexists'));
+            }
 
-		// If we're not allowed multiple emails then see if this address has been used before
-			if ((!$allow_multiple_emails) && (get_user_by_email($email)))
-			{
-				throw new RegistrationException(elgg_echo('registration:dupeemail'));
-			}
+        // If we're not allowed multiple emails then see if this address has been used before
+            if ((!$allow_multiple_emails) && (get_user_by_email($email)))
+            {
+                throw new RegistrationException(elgg_echo('registration:dupeemail'));
+            }
 
-			access_show_hidden_entities($access_status);
+            access_show_hidden_entities($access_status);
 
-		// Check to see if we've registered the first admin yet.
-		// If not, this is the first admin user!
-			$admin = datalist_get('admin_registered');
+        // Check to see if we've registered the first admin yet.
+        // If not, this is the first admin user!
+            $admin = datalist_get('admin_registered');
 
-		// Otherwise ...
-			$user = new ElggUser();
-			$user->username = $username;
-			$user->email = $email;
-			$user->name = $name;
-			$user->access_id = ACCESS_PUBLIC;
-			$user->salt = generate_random_cleartext_password(); // Note salt generated before password!
-			$user->password = generate_user_password($user, $password);
-			$user->owner_guid = 0; // Users aren't owned by anyone, even if they are admin created.
-			$user->container_guid = 0; // Users aren't contained by anyone, even if they are admin created.
-			$user->save();
+        // Otherwise ...
+            $user = new ElggUser();
+            $user->username = $username;
+            $user->email = $email;
+            $user->name = $name;
+            $user->access_id = ACCESS_PUBLIC;
+            $user->salt = generate_random_cleartext_password(); // Note salt generated before password!
+            $user->password = generate_user_password($user, $password);
+            $user->owner_guid = 0; // Users aren't owned by anyone, even if they are admin created.
+            $user->container_guid = 0; // Users aren't contained by anyone, even if they are admin created.
+            $user->save();
 
-			global $registering_admin;
-			if (!$admin) {
-				$user->admin = true;
-				datalist_set('admin_registered',1);
-				$registering_admin = true;
-			} else {
-				$registering_admin = false;
-			}
+            global $registering_admin;
+            if (!$admin) {
+                $user->admin = true;
+                datalist_set('admin_registered',1);
+                $registering_admin = true;
+            } else {
+                $registering_admin = false;
+            }
 
-			// Turn on email notifications by default
-			set_user_notification_setting($user->getGUID(), 'email', true);
+            // Turn on email notifications by default
+            set_user_notification_setting($user->getGUID(), 'email', true);
 
-			return $user->getGUID();
-	}
+            return $user->getGUID();
+    }
 
-	/**
-	 * Generates a unique invite code for a user
-	 *
-	 * @param string $username The username of the user sending the invitation
-	 * @return string Invite code
-	 */
-	function generate_invite_code($username) {
+    /**
+     * Generates a unique invite code for a user
+     *
+     * @param string $username The username of the user sending the invitation
+     * @return string Invite code
+     */
+    function generate_invite_code($username) {
 
-		$secret = datalist_get('__site_secret__');
-		return md5($username . $secret);
+        $secret = datalist_get('__site_secret__');
+        return md5($username . $secret);
 
-	}
+    }
 
-	/**
-	 * Page handler for dashboard
-	 */
-	function dashboard_page_handler($page_elements) {
-		@require_once(dirname(dirname(__DIR__)) . "/dashboard/index.php");
-	}
+    /**
+     * Page handler for dashboard
+     */
+    function dashboard_page_handler($page_elements) {
+        @require_once(dirname(dirname(__DIR__)) . "/dashboard/index.php");
+    }
 
-	/**
-	 * Sets the last action time of the given user to right now.
-	 *
-	 * @param int $user_guid The user GUID
-	 */
-	function set_last_action($user_guid)
+    /**
+     * Sets the last action time of the given user to right now.
+     *
+     * @param int $user_guid The user GUID
+     */
+    function set_last_action($user_guid)
     {
-		execute_delayed_write_query("UPDATE users_entity set prev_last_action = last_action, last_action = ? where guid = ?", array(time(), $user_guid));
-	}
+        execute_delayed_write_query("UPDATE users_entity set prev_last_action = last_action, last_action = ? where guid = ?", array(time(), $user_guid));
+    }
 
-	/**
-	 * Sets the last logon time of the given user to right now.
-	 *
-	 * @param int $user_guid The user GUID
-	 */
-	function set_last_login($user_guid)
+    /**
+     * Sets the last logon time of the given user to right now.
+     *
+     * @param int $user_guid The user GUID
+     */
+    function set_last_login($user_guid)
     {
-		execute_delayed_write_query("UPDATE users_entity set prev_last_login = last_login, last_login = ? where guid = ?", array(time(), $user_guid));
-	}
+        execute_delayed_write_query("UPDATE users_entity set prev_last_login = last_login, last_login = ? where guid = ?", array(time(), $user_guid));
+    }
 
-	/**
-	 * Users initialisation function, which establishes the page handler
-	 *
-	 */
-	function users_init() {
+    /**
+     * Users initialisation function, which establishes the page handler
+     *
+     */
+    function users_init() {
 
-		global $CONFIG;
+        global $CONFIG;
 
-		register_page_handler('dashboard','dashboard_page_handler');
+        register_page_handler('dashboard','dashboard_page_handler');
 
-		extend_elgg_settings_page('user/settings/name', 'usersettings/user', 1);
-		extend_elgg_settings_page('user/settings/password', 'usersettings/user', 1);
-		extend_elgg_settings_page('user/settings/email', 'usersettings/user', 1);
-		extend_elgg_settings_page('user/settings/language', 'usersettings/user', 1);
+        extend_elgg_settings_page('user/settings/name', 'usersettings/user', 1);
+        extend_elgg_settings_page('user/settings/password', 'usersettings/user', 1);
+        extend_elgg_settings_page('user/settings/email', 'usersettings/user', 1);
+        extend_elgg_settings_page('user/settings/language', 'usersettings/user', 1);
 
-		register_plugin_hook('usersettings:save','user','users_settings_save');
-		register_plugin_hook('search','all','search_list_users_by_name');
+        register_plugin_hook('search','all','search_list_users_by_name');
 
-	}
+    }
 
-	/**
-	 * Returns a formatted list of users suitable for injecting into search.
-	 *
-	 */
-	function search_list_users_by_name($hook, $user, $returnvalue, $tag) {
+    /**
+     * Returns a formatted list of users suitable for injecting into search.
+     *
+     */
+    function search_list_users_by_name($hook, $user, $returnvalue, $tag) {
 
-		// Change this to set the number of users that display on the search page
-		$threshold = 4;
+        // Change this to set the number of users that display on the search page
+        $threshold = 4;
 
-		$object = get_input('object');
+        $object = get_input('object');
 
-		if (!get_input('offset') && (empty($object) || $object == 'user'))
-		if ($users = search_for_user($tag,$threshold)) {
+        if (!get_input('offset') && (empty($object) || $object == 'user'))
+        if ($users = search_for_user($tag,$threshold)) {
 
-			$countusers = search_for_user($tag,0,0,"",true);
+            $countusers = search_for_user($tag,0,0,"",true);
 
-			$return = elgg_view('user/search/startblurb',array('count' => $countusers, 'tag' => $tag));
-			foreach($users as $user) {
-				$return .= elgg_view_entity($user);
-			}
-			$return .= elgg_view('user/search/finishblurb',array('count' => $countusers, 'threshold' => $threshold, 'tag' => $tag));
-			return $return;
+            $return = elgg_view('user/search/startblurb',array('count' => $countusers, 'tag' => $tag));
+            foreach($users as $user) {
+                $return .= elgg_view_entity($user);
+            }
+            $return .= elgg_view('user/search/finishblurb',array('count' => $countusers, 'threshold' => $threshold, 'tag' => $tag));
+            return $return;
 
-		}
-	}
+        }
+    }
 
-	function users_settings_save() {
-
-		global $CONFIG;
-		@include($CONFIG->path . "actions/user/name.php");
-		@include($CONFIG->path . "actions/user/password.php");
-		@include($CONFIG->path . "actions/email/save.php");
-		@include($CONFIG->path . "actions/user/language.php");
-		@include($CONFIG->path . "actions/user/default_access.php");
-
-	}
-
-	//register actions *************************************************************
+    //register actions *************************************************************
 
     register_elgg_event_handler('init','system','users_init',0);
 
