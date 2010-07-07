@@ -21,6 +21,7 @@ role :db,  "www.envaya.org", :primary => true # This is where Rails migrations w
 namespace :deploy do
     task :finalize_update, :except => { :no_release => true } do
         run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
+        run "cp #{shared_path}/cached-copy/.htaccess #{latest_release}/"
         run "cp #{shared_path}/localsettings.php #{latest_release}/engine/localsettings.php"
     end
 end

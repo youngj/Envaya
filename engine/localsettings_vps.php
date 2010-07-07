@@ -11,7 +11,7 @@
     // Database server
     // (For most configurations, you can leave this as 'localhost')
     $CONFIG->dbhost = 'localhost';
-    
+
     $CONFIG->simplecache_enabled = 1;
     $CONFIG->wwwroot = "http://envaya.org/";
     $CONFIG->url = $CONFIG->wwwroot;
@@ -21,3 +21,4 @@
     $CONFIG->analytics_enabled = 1;
     $CONFIG->error_emails_enabled = 1;
     $CONFIG->cookie_domain = ".envaya.org";
+    $CONFIG->dataroot = "/var/elgg-data/";
