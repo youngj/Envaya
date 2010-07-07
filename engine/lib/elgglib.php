@@ -17,8 +17,9 @@
     function sanitize_html($html)
     {
         require_once(dirname(dirname(__DIR__)).'/vendors/htmlpurifier/library/HTMLPurifier.auto.php');
+        global $CONFIG;
 
-        $purifier = new HTMLPurifier();
+        $purifier = new HTMLPurifier(array('Cache.SerializerPath' => $CONFIG->dataroot));
         return $purifier->purify( $html );
     }
 
