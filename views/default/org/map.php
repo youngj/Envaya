@@ -39,6 +39,7 @@ var sector = <?php echo (int)$vars['sector'] ?>;
 
 function setMapSector($sector)
 {
+    lastFetchedBounds = null;
     sector = $sector;
     if (window.map)
     {
