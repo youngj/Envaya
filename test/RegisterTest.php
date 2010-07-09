@@ -268,13 +268,13 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
     private function _testTranslate()
     {
-        $this->clickAndWait("//a[contains(@href,'action/changeLanguage?newLang=sw')]");
+        $this->clickAndWait("//a[contains(@href,'lang=sw')]");
         $this->mouseOver("//div[@class='section_header' and contains(text(),'Lengo')]");
         $this->mouseOver("//div[contains(@class, 'section_content') and contains(text(),'website')]");
         $this->clickAndWait("//a[contains(@href,'trans=3')]");
         $this->mustNotExist("//div[contains(@class, 'section_content') and contains(text(),'website')]");
         $this->mouseOver("//div[contains(@class, 'section_content') and contains(text(),'tovuti')]");
-        $this->clickAndWait("//a[contains(@href,'action/changeLanguage?newLang=en')]");
+        $this->clickAndWait("//a[contains(@href,'lang=en')]");
         $this->mouseOver("//div[contains(@class, 'section_content') and contains(text(),'website')]");
     }
 

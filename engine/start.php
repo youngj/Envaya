@@ -1,19 +1,19 @@
 <?php
 
-	/**
-	 * Elgg engine bootstrapper
-	 * Loads the various elements of the Elgg engine
-	 *
-	 * @package Elgg
-	 * @subpackage Core
+    /**
+     * Elgg engine bootstrapper
+     * Loads the various elements of the Elgg engine
+     *
+     * @package Elgg
+     * @subpackage Core
 
-	 * @author Curverider Ltd
+     * @author Curverider Ltd
 
-	 * @link http://elgg.org/
-	 */
+     * @link http://elgg.org/
+     */
 
-	global $START_MICROTIME;
-	$START_MICROTIME = microtime(true);
+    global $START_MICROTIME;
+    $START_MICROTIME = microtime(true);
 
     if (!include_once(__DIR__."/settings.php"))
     {
@@ -21,22 +21,22 @@
     }
 
 
-    if (!include_once(__DIR__."/lib/exceptions.php")) {		// Exceptions
+    if (!include_once(__DIR__."/lib/exceptions.php")) {     // Exceptions
         echo "Error in installation: could not load the Exceptions library.";
         exit;
     }
 
-    if (!include_once(__DIR__."/lib/elgglib.php")) {		// Main Elgg library
+    if (!include_once(__DIR__."/lib/elgglib.php")) {        // Main Elgg library
         echo "Elgg could not load its main library.";
         exit;
     }
 
-    if (!include_once(__DIR__ . "/lib/access.php")) {		// Access library
+    if (!include_once(__DIR__ . "/lib/access.php")) {       // Access library
         echo "Error in installation: could not load the Access library.";
         exit;
     }
 
-    if (!include_once(__DIR__ . "/lib/system_log.php")) {		// Logging library
+    if (!include_once(__DIR__ . "/lib/system_log.php")) {       // Logging library
         echo "Error in installation: could not load the System Log library.";
         exit;
     }
@@ -46,17 +46,17 @@
         exit;
     }
 
-    if (!include_once(__DIR__ . "/lib/languages.php")) {		// Languages library
-        echo "Error in installation: could not load the languages library.";
-        exit;
-    }
-
-    if (!include_once(__DIR__ . "/lib/input.php")) {		// Input library
+    if (!include_once(__DIR__ . "/lib/input.php")) {        // Input library
         echo "Error in installation: could not load the input library.";
         exit;
     }
 
-    if (!include_once(__DIR__ . "/lib/install.php")) {		// Installation library
+    if (!include_once(__DIR__ . "/lib/languages.php")) {        // Languages library
+        echo "Error in installation: could not load the languages library.";
+        exit;
+    }
+
+    if (!include_once(__DIR__ . "/lib/install.php")) {      // Installation library
         echo "Error in installation: could not load the installation library.";
         exit;
     }
@@ -70,7 +70,7 @@
     $oldview = get_input('view');
     set_input('view', 'failsafe');
 
-	// Register the error handler
+    // Register the error handler
     set_error_handler('__elgg_php_error_handler');
     set_exception_handler('__elgg_php_exception_handler');
 
@@ -115,9 +115,9 @@
 
     if (!$installed && !substr_count($_SERVER["PHP_SELF"],"install.php") && !substr_count($_SERVER["PHP_SELF"],"css.php") && !substr_count($_SERVER["PHP_SELF"],"action_handler.php"))
     {
-	    header("Location: install.php");
-	    exit;
-	}
+        header("Location: install.php");
+        exit;
+    }
 
     if (!substr_count($_SERVER["PHP_SELF"],"install.php") && !substr_count($_SERVER["PHP_SELF"],"setup.php"))
     {
@@ -127,8 +127,8 @@
     set_input('view', $oldview);
     if (empty($oldview))
     {
-	    if (empty($CONFIG->view))
-	        $oldview = 'default';
+        if (empty($CONFIG->view))
+            $oldview = 'default';
         else
             $oldview = $CONFIG->view;
     }

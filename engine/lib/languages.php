@@ -112,6 +112,11 @@ function get_language()
 
     if (!$language)
     {
+        $language = @$_GET['lang'];
+    }
+
+    if (!$language)
+    {
         $language = get_cookie_language();
     }
 
@@ -267,7 +272,9 @@ function get_language_link($lang)
     }
     else
     {
-        return "<a href='action/changeLanguage?newLang={$lang}'>$name</a>";
+        $url = url_with_param($_SERVER['REQUEST_URI'], 'lang', $lang);
+
+        return "<a href='".escape($url)."'>$name</a>";
     }
 }
 
@@ -324,7 +331,9 @@ function change_viewer_language($newLanguage)
     setcookie("lang", $newLanguage, $expireTime, '/');
 }
 
-//$a = microtime(true);
+restore_query_params();
+if (@$_GET['lang'])
+{
+    change_viewer_language($_GET['lang']);
+}
 load_translation(get_current_language());
-//$b = (microtime(true) - $a);
-//error_log("translations loaded in $b seconds");

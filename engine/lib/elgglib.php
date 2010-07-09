@@ -24,6 +24,23 @@
         return $url['path']."?".http_build_query($query);
     }
 
+    function restore_query_params()
+    {
+        $query = substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '?')+1);
+        if (isset($query))
+        {
+            parse_str($query, $query_arr);
+            if (is_array($query_arr))
+            {
+                foreach($query_arr as $name => $val)
+                {
+                    $_GET[$name] = $val;
+                    set_input($name, $val);
+                }
+            }
+        }
+    }
+
     function sanitize_html($html)
     {
         require_once(dirname(dirname(__DIR__)).'/vendors/htmlpurifier/library/HTMLPurifier.auto.php');
