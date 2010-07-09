@@ -564,6 +564,7 @@
 
         'user:password:resetreq:success' => 'Successfully requested a new password. Check your email for a message from Envaya and click on the link inside.',
         'user:password:resetreq:fail' => 'Could not request a new password.',
+        'user:password:resetreq:no_email' => 'This account does not have an email address, so the password cannot be reset. Please fill out the form below with your contact information, and a representative of Envaya will try to contact you to verify that you should have access to this account.',
 
         'user:password:text' => 'To generate a new password, enter your username below. We will send the address of a verification page to you via email. Click on the link in the message and a new password will be sent to you.',
 

@@ -22,3 +22,4 @@
     $CONFIG->error_emails_enabled = 1;
     $CONFIG->cookie_domain = ".envaya.org";
     $CONFIG->dataroot = "/var/elgg-data/";
+    $CONFIG->debug = false;

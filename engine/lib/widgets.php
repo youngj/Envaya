@@ -184,7 +184,7 @@ function save_widget_contact($widget)
 {
     $org = $widget->getContainerEntity();
 
-    $email = get_input('email');
+    $email = trim(get_input('email'));
 
     validate_email_address($email);
 

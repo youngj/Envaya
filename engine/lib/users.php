@@ -689,7 +689,7 @@
         $user_guid = (int)$user_guid;
 
         $user = get_entity($user_guid);
-        if ($user)
+        if ($user && $user->email)
         {
             // generate code
             $code = generate_random_cleartext_password();
@@ -749,15 +749,7 @@
      */
     function is_email_address($address)
     {
-        // TODO: Make this better!
-
-        if (strpos($address, '@')=== false)
-            return false;
-
-        if (strpos($address, '.')=== false)
-            return false;
-
-        return true;
+        return preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+\.[A-Z]{2,4}$/i', $address, $matches);
     }
 
     /**

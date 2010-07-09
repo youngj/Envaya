@@ -76,9 +76,18 @@
         }
 
         // email
-        $email = get_input('email');
+        $email = trim(get_input('email'));
         if ($email != $user->email)
         {
+            try
+            {
+                validate_email_address($email);
+            }
+            catch (RegistrationException $ex)
+            {
+                action_error($ex->getMessage());
+            }
+
             $user->email = $email;
             system_message(elgg_echo('user:email:success'));
         }
