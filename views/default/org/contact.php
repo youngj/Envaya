@@ -1,11 +1,12 @@
 
 <?php
 
-    $baseurl = "org/contact";
+    $sort = sanitize_order_by(get_input('sort'));
+    $baseurl = "org/contact?sort=$sort";
     $offset = (int)get_input('offset');
 
     $limit = 15;
-    $orgs = Organization::all('name', $limit, $offset);
+    $orgs = Organization::all($sort, $limit, $offset);
     $count = Organization::all('', 0, 0, true);
 
     echo elgg_view('navigation/pagination',array(
@@ -20,8 +21,8 @@
 
 <table class='gridTable'>
 <tr>
-    <th><?php echo elgg_echo('name') ?></th>
-    <th><?php echo elgg_echo('email') ?></th>
+    <th><a href='org/contact?sort=name'><?php echo elgg_echo('name') ?></a></th>
+    <th><a href='org/contact?sort=email'><?php echo elgg_echo('email') ?></a></th>
     <th><?php echo elgg_echo('phone') ?></th>
     <th><?php echo elgg_echo('last_update') ?></th>
     <th><?php echo elgg_echo('stats') ?></th>
