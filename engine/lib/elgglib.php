@@ -14,6 +14,16 @@
      * Getting directories and moving the browser
      */
 
+    function url_with_param($url, $param, $value)
+    {
+        // TODO: preserve rest of query
+        $url = parse_url($url);
+        parse_str($url['query'],$query);
+        $query[$param] = $value;
+
+        return $url['path']."?".http_build_query($query);
+    }
+
     function sanitize_html($html)
     {
         require_once(dirname(dirname(__DIR__)).'/vendors/htmlpurifier/library/HTMLPurifier.auto.php');

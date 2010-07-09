@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $sector = @$vars['sector'];
 
@@ -11,13 +11,13 @@ function sectorChanged()
     setTimeout(function() {
         var sectorList = document.getElementById('sectorList');
 
-        var val = sectorList.options[sectorList.selectedIndex].value;        
-        
+        var val = sectorList.options[sectorList.selectedIndex].value;
+
         var browseLink = document.getElementById('browseLink');
         browseLink.href = "org/browse?list=1&sector=" + val;
-        
+
         setMapSector(val);
-    }, 1);    
+    }, 1);
 }
 
 </script>
@@ -30,21 +30,20 @@ function sectorChanged()
 <?php echo elgg_view('input/pulldown', array(
     'internalname' => 'sector',
     'internalid' => 'sectorList',
-    'options_values' => Organization::getSectorOptions(), 
+    'options_values' => Organization::getSectorOptions(),
     'empty_option' => elgg_echo('sector:empty_option'),
     'value' => $sector,
-    'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"        
-))    
+    'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"
+))
 ?>
 
 <div class='instructions' style='clear:both'><?php echo elgg_echo("browse:instructions") ?></div>
-<?php     
+<?php
     $lat = $vars['lat'] ?: -6.6;
     $long = $vars['long'] ?: 36;
     $zoom = $vars['zoom'] ?: 5;
     $sector = @$vars['sector'] ?: 0;
-        
+
     echo elgg_view("org/map", array('lat' => $lat, 'long' => $long,  'height' => 350, 'zoom' => $zoom, 'sector' => $sector, 'nearby' => true));
-?>    
+?>
 </div>
-    

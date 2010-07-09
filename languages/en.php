@@ -72,8 +72,7 @@
         'feed:partnership' => "%s has a partnership with %s.",
         'feed:more' => "Read more",
         'feed:org' => "News from related organizations",
-        'feed:org:about' => "This page shows the latest news from all organizations on Envaya that work in the same sectors as you, and all organizations you've added to your %s page.",
-        'feed:org:included' => "See related organizations",
+        'feed:org:about' => "This page shows the latest news from all organizations on Envaya that work in the same sectors as %s, and all organizations on its %s page.",
         'feed:feature' => "Feature",
         'feed:unfeature' => "Unfeature",
 
@@ -214,7 +213,6 @@
         'blog:delete' => "Delete update",
         'blog:delete:confirm' => "Are you sure you want to delete this news update?",
         'blog:delete:success' => "News update deleted successfully.",
-        'blog:more' => "Read more",
         'blog:timeline' => "Timeline",
 
         'partner:request' => "Request Partnership",
@@ -280,10 +278,9 @@
         'widget:news:sms:summary' => "Coming soon, you will be able to add news updates by sending text messages from your phone!",
 
         'widget:contact' => "Contact",
-        'widget:contact:instructions' => "This page lets your website visitors contact you directly. Note that if you don't want certain information to be publicly available on the Internet, just leave that field blank.",
-        'widget:contact:public_email' => "Do you want your email address, %s, publicly displayed on this page?",
         'widget:contact:email' => "Email address:",
-        'widget:contact:phone_number:edit' => "What phone number should people use to contact you?",
+        'widget:contact:email:edit' => "What is your email address?",
+        'widget:contact:phone_number:edit' => "What is your phone number?",
         'widget:contact:phone_number' => "Phone number:",
         'widget:contact:name:edit' => "Who is the primary contact person in your organization?",
         'widget:contact:name' => "Contact name:",
@@ -373,7 +370,13 @@
         'create:password:length' => "Your password must be at least 6 characters long.",
         'create:password2' => "Enter the password again to confirm:",
         'create:email' => "Enter your organization's email address:",
-        'create:email:help' => "If you ever forget your password, you can reset it by email.",
+        'create:email:help' => "If your organization doesn't have an email address, use the email address of someone in your organization.",
+        'create:email:help_2' => "If no one in your organization has an email address, leave this blank.",
+
+        'create:phone' => "Enter your organization's phone number:",
+        'create:phone:help' => "Enter your mobile phone number if you have one.",
+        'create:phone:help_2' => "If you have multiple phone numbers, separate them with a comma.",
+
         'create:next' => 'Click the button below to create your account.',
         'create:next:button' => 'Create account',
         'create:no_name' => "Please enter your organization's name.",
@@ -566,6 +569,22 @@
 
         'user:email:success' => "Your email address has been updated.",
 
+        'user:phone:label' => "Phone number",
+        'user:phone:success' => "Your phone number has been updated.",
+
+        'user:notification:label' => "Notification Settings",
+        'user:notification:freq' => "Send Envaya Updates",
+        'user:notification:success' => "Your notification settings have been changed.",
+        'user:notification:desc' => "Envaya Updates keep you informed about what organizations similar to yours have been doing on Envaya. This page lets you change how often Envaya will send you emails at %s.",
+        'user:notification:invalid' => "Unable to access email notification settings. If you copied a link from your email, please ensure that the URL is exactly the same as it was in the email you received.",
+
+        'freq:never' => "Never",
+        'freq:2weeks' => "Once every 2 weeks",
+        'freq:month' => "Once a month",
+        'freq:2months' => "Once every 2 months",
+
+
+
         'usersettings:user' => "Your settings",
 
         'friendlytime:justnow' => "just now",
@@ -669,6 +688,23 @@ Somebody has requested a new password for your account.
 If you requested this, click on the link below to change your password:
 
 %s",
+        'email:updates:subject' => 'Latest updates on Envaya',
+        'email:updates:body' => "Hi %s,
+
+Greetings from Envaya!
+%s
+Here's what some related organizations have been up to lately:
+%s
+Want to see more news about other organizations you're interested in?
+Visit %s !
+
+To change your settings for receiving email, or to unsubscribe, go here:
+%s
+
+Thanks!
+the Envaya team",
+        'email:updates:old' => "It's been a while since you last visited Envaya to share the latest news about %s. So that other people can see what you're doing, remember to update your website regularly! To update your website, log in here:
+%s",
 
         'actiongatekeeper:timeerror' => 'The page you were using has expired. Please refresh and try again.',
 
@@ -728,6 +764,7 @@ If you requested this, click on the link below to change your password:
         'wysiwyg:cancel' => "Cancel",
 
         'zoom_in' => "Zoom in",
+        'show_website' => "Show on website",
     ));
 
     include(__DIR__."/en_admin.php");

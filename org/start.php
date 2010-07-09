@@ -16,6 +16,9 @@ function org_page_handler($page)
             case "feed":            return include(__DIR__."/feed.php");
             case "translate":       return include(__DIR__."/translate.php");
             case "translateQueue":  return include(__DIR__."/translateQueue.php");
+            case "emailSettings":   return include(__DIR__."/emailSettings.php");
+            case "sendEmail":       return include(__DIR__."/sendEmail.php");
+            case "contact":         return include(__DIR__."/contact.php");
             default:                not_found();
         }
     }
@@ -128,6 +131,11 @@ function login_page_handler($page)
 
 function envaya_pagesetup()
 {
+    if (get_input('login'))
+    {
+        gatekeeper();
+    }
+
     if (get_context() == 'orgprofile')
     {
         $org = page_owner_entity();
@@ -184,4 +192,3 @@ register_elgg_event_handler('pagesetup','system','envaya_pagesetup');
 register_elgg_event_handler('register', 'organization', 'notify_new_org');
 register_plugin_hook('index','system','new_index');
 
-extend_elgg_settings_page('org/settings', 'usersettings/user', 1);

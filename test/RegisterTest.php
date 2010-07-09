@@ -249,7 +249,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->clickAndWait("//a[contains(@href,'contact')]");
         $this->mouseOver("//a[@href='mailto:adunar@gmail.com']");
         $this->clickAndWait("//a[contains(@href,'contact/edit')]");
-        $this->click("//input[@name='public_email' and @value='no']");
+        $this->s->uncheck("//input[@name='public_email[]']");
         $this->type("//input[@name='phone_number']", "1234567");
         $this->type("//input[@name='contact_name']", "Test Person");
 
@@ -376,14 +376,11 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->mouseOver("//div[@class='good_messages']");
         $this->mustNotExist("//h2");
 
-        $this->clickAndWait("//a[contains(@href,'pg/login')]");
+        $this->clickAndWait("//a[contains(@href,'?login=1')]");
         $this->type("//input[@name='username']",'testadmin');
         $this->type("//input[@name='password']",'testtest');
         $this->submitForm();
 
-        $this->clickAndWait("//a[contains(@href,'pg/admin')]");
-        $this->clickAndWait("//a[contains(@href,'pg/admin/user')]");
-        $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
         $this->clickAndWait("//a[contains(@href, 'approval=2')]");
         $this->s->getConfirmation();
         $this->mouseOver("//div[@class='good_messages']");

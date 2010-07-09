@@ -189,6 +189,9 @@ CREATE TABLE `users_entity` (
   `region` varchar(32) default NULL,
   `theme` varchar(32) default NULL,
   
+  `notify_days` int default 14,
+  `last_notify_time` int default null,
+  
   PRIMARY KEY  (`guid`),
   UNIQUE KEY (`username`),
   UNIQUE KEY (`email_code`),

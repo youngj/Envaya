@@ -60,6 +60,8 @@
                 'setup_state' => 5,
                 'custom_icon' => 0,
                 'custom_header' => null,
+                'notify_days' => 14,
+                'last_notify_time' => null
             ));
         }
 
@@ -565,7 +567,7 @@
      * @param string $email Email address.
      * @return Array of users
      */
-    function get_user_by_email($email)
+    function get_users_by_email($email)
     {
         $access = get_access_sql_suffix('e');
 
@@ -850,7 +852,7 @@
      */
     function validate_email_address($address)
     {
-        if (!is_email_address($address))
+        if ($address !== "" && !is_email_address($address))
             throw new RegistrationException(elgg_echo('registration:notemail'));
 
         return true;
@@ -900,7 +902,7 @@
             }
 
         // If we're not allowed multiple emails then see if this address has been used before
-            if ((!$allow_multiple_emails) && (get_user_by_email($email)))
+            if ((!$allow_multiple_emails) && (sizeof(get_users_by_email($email)) > 0))
             {
                 throw new RegistrationException(elgg_echo('registration:dupeemail'));
             }
@@ -988,7 +990,6 @@
 
         register_page_handler('dashboard','dashboard_page_handler');
 
-        extend_elgg_settings_page('user/settings/name', 'usersettings/user', 1);
         extend_elgg_settings_page('user/settings/password', 'usersettings/user', 1);
         extend_elgg_settings_page('user/settings/email', 'usersettings/user', 1);
         extend_elgg_settings_page('user/settings/language', 'usersettings/user', 1);

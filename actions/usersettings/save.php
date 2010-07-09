@@ -32,7 +32,6 @@
             if (strcmp($name, $user->name)!=0)
             {
                 $user->name = $name;
-                $user->save();
                 system_message(elgg_echo('user:name:success'));
             }
         }
@@ -59,7 +58,6 @@
             {
                 $user->salt = generate_random_cleartext_password(); // Reset the salt
                 $user->password = generate_user_password($user, $password);
-                $user->save();
                 system_message(elgg_echo('user:password:success'));
             }
             else
@@ -73,7 +71,6 @@
         if ($language && $language != $user->language)
         {
             $user->language = $language;
-            $user->save();
             change_viewer_language($user->language);
             system_message(elgg_echo('user:language:success'));
         }
@@ -83,11 +80,28 @@
         if ($email != $user->email)
         {
             $user->email = $email;
-            $user->save();
             system_message(elgg_echo('user:email:success'));
         }
 
-        forward($user->getURL());
+        $phone = get_input('phone');
+        if ($phone != $user->phone_number)
+        {
+            $user->phone_number = $phone;
+            system_message(elgg_echo('user:phone:success'));
+        }
+
+        if ($user instanceof Organization)
+        {
+            $notify_days = get_input('notify_days');
+            if ($notify_days != $user->notify_days)
+            {
+                $user->notify_days = $notify_days;
+                system_message(elgg_echo('user:notification:success'));
+            }
+        }
+
+        $user->save();
+        forward(get_input('from') ?: $user->getURL());
     }
 
 ?>

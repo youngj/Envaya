@@ -35,10 +35,10 @@
         $lusername = strtolower($username);
         $lname = strtolower($name);
 
-		if (strpos($lname, $lpassword) !== FALSE || strpos($lusername, $lpassword) !== FALSE)
-		{
-			throw new RegistrationException(elgg_echo('create:password_too_easy'));
-		}
+        if (strpos($lname, $lpassword) !== FALSE || strpos($lusername, $lpassword) !== FALSE)
+        {
+            throw new RegistrationException(elgg_echo('create:password_too_easy'));
+        }
 
         validate_password($password);
 
@@ -48,6 +48,7 @@
 
         $org = new Organization();
         $org->username = $username;
+        $org->phone_number = get_input('phone');
         $org->email = $email;
         $org->name = $name;
         $org->access_id = ACCESS_PUBLIC;
@@ -77,7 +78,10 @@
         $org->getWidgetByName('partnerships')->save();
 
         $contactWidget = $org->getWidgetByName('contact');
-        $contactWidget->public_email = "yes";
+        if (email)
+        {
+            $contactWidget->public_email = "yes";
+        }
         $contactWidget->save();
 
         $guid = $org->guid;

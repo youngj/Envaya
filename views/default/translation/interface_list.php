@@ -9,12 +9,12 @@ $keys = get_translatable_language_keys();
 if ($query)
 {
     $lq = strtolower($query);
-    
+
     $filteredKeys = array();
     foreach ($keys as $key)
     {
-        if (strpos($key, $lq) !== false 
-            || strpos(strtolower(elgg_echo($key, 'en')), $lq) !== false 
+        if (strpos($key, $lq) !== false
+            || strpos(strtolower(elgg_echo($key, 'en')), $lq) !== false
             || strpos(strtolower(elgg_echo($key, $lang)), $lq) !== false)
         {
             $filteredKeys[] = $key;
@@ -28,17 +28,17 @@ $edited = get_input('edited');
 if ($edited)
 {
     $filteredKeys = array();
-    
+
     $editedKeys = array();
     foreach (InterfaceTranslation::filterByLang($lang) as $itrans)
     {
-    
+
         if ($itrans->value != @$CONFIG->translations[$lang][$itrans->key])
         {
             $editedKeys[$itrans->key] = true;
-        }    
+        }
     }
-    
+
     foreach ($keys as $key)
     {
         if (@$editedKeys[$key])
@@ -46,7 +46,7 @@ if ($edited)
             $filteredKeys[] = $key;
         }
     }
-    
+
     $keys = $filteredKeys;
 }
 
@@ -81,7 +81,7 @@ if ($query)
 }
 echo "</h3>";
 
-if (empty($keys)) 
+if (empty($keys))
 {
     echo elgg_echo("search:noresults");
 }
@@ -101,27 +101,27 @@ else
     echo "<th>".escape(elgg_echo('en'))."</th>";
     echo "<th>".escape(elgg_echo($lang))."</th>";
 
-    for ($i = $offset; $i <= $offset + $limit && $i >= 0 && $i < $count; $i++)
+    for ($i = $offset; $i < $offset + $limit && $i >= 0 && $i < $count; $i++)
     {
-        $key = $keys[$i];       
+        $key = $keys[$i];
 
         $enText = elgg_echo($key, 'en');
 
         echo "<tr>";
-        echo "<td>".escape($key)."</td>";    
-        echo "<td>".elgg_view('output/longtext', array('value' => $enText))."</td>";    
-        
+        echo "<td>".escape($key)."</td>";
+        echo "<td>".elgg_view('output/longtext', array('value' => $enText))."</td>";
+
         $trans = @$CONFIG->translations[$lang][$key];
-        
+
         $it = InterfaceTranslation::getByKeyAndLang($key, $lang);
-       
+
         if ($it)
         {
             $val = elgg_view('output/longtext', array('value' => $it->value));
             if ($trans != $it->value)
-            {               
+            {
                 $res = "<div class='edited'>$val</div>";
-            }    
+            }
             else
             {
                 $res = "<div class='reviewed'>$val</div>";
@@ -135,10 +135,10 @@ else
         {
             $res = "<em>".elgg_echo("trans:none")."</em>";
         }
-        
-        echo "<td>$res</td>";    
+
+        echo "<td>$res</td>";
         echo "<td><a href='translate.php?key=$key&from=$from'>".elgg_echo('edit')."</a></td>";
-        
+
         echo "</tr>";
     }
 
@@ -150,7 +150,7 @@ else
         'count' => $count,
         'limit' => $limit
     ));
-    
+
     if (isadminloggedin())
     {
         echo "<br /><br /><a href='translate.php?export=1'>".elgg_echo('trans:export')."</a>";

@@ -36,7 +36,7 @@ function updateUrl()
     'internalid' => 'username',
     'js' => 'onkeyup="javascript:updateUrl()" onchange="javascript:updateUrl()"'
 )) ?>
-<div class='help'><?php echo elgg_echo('create:username:help') ?>
+<div class='help' style='font-weight:bold'><?php echo elgg_echo('create:username:help') ?>
     <span class='websiteUrl'>http://envaya.org/<span id='urlUsername' style='font-weight:bold'><?php echo elgg_echo('create:username:placeholder') ?></span></span>
 </div>
 <div style='padding-top:5px' class='help'><?php echo elgg_echo('create:username:help2') ?></div>
@@ -64,6 +64,18 @@ function updateUrl()
     'internalname' => 'email'
 )) ?>
 <div class='help'><?php echo elgg_echo('create:email:help') ?></div>
+<div class='help'><?php echo elgg_echo('create:email:help_2') ?></div>
+</div>
+
+
+<div class='input'>
+<label><?php echo elgg_echo('create:phone') ?></label><br />
+<?php echo elgg_view('input/text', array(
+    'internalname' => 'phone',
+    'js' => "style='width:200px'"
+)) ?>
+<div class='help'><?php echo elgg_echo('create:phone:help') ?></div>
+<div class='help'><?php echo elgg_echo('create:phone:help_2') ?></div>
 </div>
 
 

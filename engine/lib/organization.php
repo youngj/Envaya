@@ -37,6 +37,31 @@ class Organization extends ElggUser
 
     }
 
+    public function getRelatedFeedNames()
+    {
+        $feedNames = array();
+        $sectors = $this->getSectors();
+
+        foreach ($sectors as $sector)
+        {
+            $feedNames[] = get_feed_name(array('sector' => $sector));
+        }
+
+        /*
+        if ($org->region)
+        {
+            $feedNames[] = get_feed_name(array('region' => $this->region));
+        }
+        */
+
+        foreach ($this->getPartnerships($limit = 25) as $partnership)
+        {
+            $feedNames[] = get_feed_name(array('user' => $partnerhip->partner_guid));
+        }
+
+        return $feedNames;
+    }
+
     public function canView()
     {
         return $this->approval > 0 || $this->canEdit();
@@ -475,6 +500,17 @@ function set_theme($theme)
 function get_themes()
 {
     return array('green','brick','craft4','craft1','cotton2','wovengrass','beads','red');
+}
+
+
+function get_notification_frequencies()
+{
+    return array(
+        14 => elgg_echo('freq:2weeks'),
+        30 => elgg_echo('freq:month'),
+        60 => elgg_echo('freq:2months'),
+        0 => elgg_echo('freq:never')
+    );
 }
 
 function envaya_init()

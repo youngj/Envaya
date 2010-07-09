@@ -1,4 +1,4 @@
-<?php 
+<?php
 if (page_is_translatable())
 {
 ?>
@@ -8,60 +8,58 @@ if (page_is_translatable())
     $origLang = get_original_language();
     $origLangName = escape(elgg_echo($origLang));
     $userLangName = escape(elgg_echo(get_language()));
-    
+
     function trans_link($mode, $text)
     {
-        $url = parse_url($_SERVER['REQUEST_URI']);
-        // TODO: preserve rest of query
-        
-        return "<a href='".escape($url['path'])."?trans=$mode'>$text</a>";
+        $url = url_with_param($_SERVER['REQUEST_URI'],'trans',$mode);
+        return "<a href='".escape($url)."'>$text</a>";
     }
-    
+
     if ($transMode == TranslateMode::ManualOnly && !page_is_translatable(TranslateMode::ManualOnly))
     {
         $transMode = TranslateMode::None;
     }
-            
+
     $links = array();
-    
+
     if ($transMode == TranslateMode::ManualOnly) // viewing manual translation
-    {   
+    {
         if (page_has_stale_translation())
         {
-            echo sprintf(elgg_echo("trans:stale_trans_from_to"), $origLangName, $userLangName);    
-            
+            echo sprintf(elgg_echo("trans:stale_trans_from_to"), $origLangName, $userLangName);
+
             $links[] = trans_link(TranslateMode::All, elgg_echo("trans:view_stale_automatic"));
         }
         else if (page_is_translatable(TranslateMode::All))
         {
-            echo sprintf(elgg_echo("trans:partial_trans_from_to"), $origLangName, $userLangName);    
-            
+            echo sprintf(elgg_echo("trans:partial_trans_from_to"), $origLangName, $userLangName);
+
             $links[] = trans_link(TranslateMode::All, elgg_echo("trans:view_rest_automatic"));
         }
         else
         {
-            echo sprintf(elgg_echo("trans:trans_from_to"), $origLangName, $userLangName);    
+            echo sprintf(elgg_echo("trans:trans_from_to"), $origLangName, $userLangName);
         }
-        
-        $links[] = trans_link(TranslateMode::None, sprintf(elgg_echo("trans:view_original_in"), $origLangName));                
+
+        $links[] = trans_link(TranslateMode::None, sprintf(elgg_echo("trans:view_original_in"), $origLangName));
     }
     else if ($transMode == TranslateMode::All) // viewing automatic translation
-    {        
+    {
         if (page_is_translatable(TranslateMode::ManualOnly))
         {
-            echo sprintf(elgg_echo("trans:partial_automatic_trans_from_to"), $origLangName, $userLangName);    
+            echo sprintf(elgg_echo("trans:partial_automatic_trans_from_to"), $origLangName, $userLangName);
         }
         else
         {
-            echo sprintf(elgg_echo("trans:automatic_trans_from_to"), $origLangName, $userLangName);    
+            echo sprintf(elgg_echo("trans:automatic_trans_from_to"), $origLangName, $userLangName);
         }
-        
+
         $links[] = trans_link(TranslateMode::None, sprintf(elgg_echo("trans:view_original_in"), $origLangName));
     }
     else  // viewing original
     {
-        echo sprintf(elgg_echo("trans:page_original_in"), $origLangName);    
-    
+        echo sprintf(elgg_echo("trans:page_original_in"), $origLangName);
+
         if (page_is_translatable(TranslateMode::ManualOnly))
         {
             $links[] = trans_link(TranslateMode::ManualOnly, sprintf(elgg_echo("trans:view_in"), $userLangName));
@@ -85,11 +83,11 @@ if (page_is_translatable())
             }
 
             $escUrl = urlencode($_SERVER['REQUEST_URI']);
-            $links[] = "<a href='pg/org/translate?from=$escUrl&".implode("&", $urlProps)."'>".elgg_echo("trans:contribute")."</a>";                
-        }                
-    }    
-        
-    echo " ".implode(' &middot; ', $links);   
+            $links[] = "<a href='pg/org/translate?from=$escUrl&".implode("&", $urlProps)."'>".elgg_echo("trans:contribute")."</a>";
+        }
+    }
+
+    echo " ".implode(' &middot; ', $links);
 ?>
 <div style='clear:both'></div>
 </div>
