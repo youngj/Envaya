@@ -1,30 +1,34 @@
 <?php
 
-	$item = $vars['item'];
+    $item = $vars['item'];
+    $mode = $vars['mode'];
     $org = $item->getUserEntity();
-	$orgUrl = $org->getURL();
+    $orgUrl = $org->getURL();
 
-	$update = $item->getSubjectEntity();
-	$url = $update->getURL();
+    $update = $item->getSubjectEntity();
+    $url = $update->getURL();
 
 
-	if ($update->hasImage())
-	{
-		echo "<a class='smallBlogImageLink' style='float:right' href='$url'><img src='{$update->getImageURL('small')}' /></a>";
-	}
+    if ($update->hasImage())
+    {
+        echo "<a class='smallBlogImageLink' style='float:right' href='$url'><img src='{$update->getImageURL('small')}' /></a>";
+    }
 
-	echo "<a class='feed_org_name' href='$orgUrl'>".escape($org->name)."</a>: ";
+    if ($mode != 'self')
+    {
+        echo "<a class='feed_org_name' href='$orgUrl'>".escape($org->name)."</a>: ";
+    }
 
-	$maxLength = 300;
+    $maxLength = 300;
 
-	$content = translate_field($update,'content');
+    $content = translate_field($update,'content');
 
-	echo elgg_view('output/longtext',
-		array('value' => get_snippet($content, $maxLength))
-	);
+    echo elgg_view('output/longtext',
+        array('value' => get_snippet($content, $maxLength))
+    );
 
-	if (strlen($content) > $maxLength)
-	{
-		echo " <a class='feed_more' href='$url'>".elgg_echo('feed:more')."</a>";
-	}
+    if (strlen($content) > $maxLength)
+    {
+        echo " <a class='feed_more' href='$url'>".elgg_echo('feed:more')."</a>";
+    }
 

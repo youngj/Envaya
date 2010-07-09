@@ -47,9 +47,9 @@ class FeedItem
         return true;
     }
 
-    public function renderView()
+    public function renderView($mode = '')
     {
-        return elgg_view("feed/{$this->action_name}", array('item' => $this));
+        return elgg_view("feed/{$this->action_name}", array('item' => $this, 'mode' => $mode));
     }
 
     public function getSubjectEntity()

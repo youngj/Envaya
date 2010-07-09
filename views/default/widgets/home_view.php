@@ -10,20 +10,16 @@
 
     echo "<div class='section_header'>".elgg_echo("widget:news:latest")."</div>";
 
-    $posts = $org->getNewsUpdates(3); // make this configurable?
+    $feedName = get_feed_name(array('user' => $org->guid));
+
+    $items = FeedItem::filterByFeedName($feedName, $limit = 6);
 
     echo "<div class='section_content'>";
 
-    if (empty($posts))
+    echo elgg_view('feed/self_list', array('items' => $items));
+
+    if (sizeof($org->getNewsUpdates(1)))
     {
-        echo "<div class='padded'>".elgg_echo("widget:news:empty")."</div>";
-    }
-    else
-    {
-        foreach ($posts as $post)
-        {
-            echo elgg_view_entity($post);
-        }
         echo "<div class='padded'><a class='float_right' href='".$org->getUrl()."/news'>".elgg_echo('blog:view_all')."</a><div style='clear:both'></div></div>";
     }
 
@@ -34,7 +30,7 @@
     if (!empty($sectors))
     {
         echo elgg_view_layout('section', elgg_echo("org:sectors"),
-        	elgg_view("org/sectors", array('sectors' => $sectors, 'sector_other' => $org->sector_other))
+            elgg_view("org/sectors", array('sectors' => $sectors, 'sector_other' => $org->sector_other))
         );
     }
 

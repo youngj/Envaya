@@ -66,7 +66,7 @@
         'about:donate' => "Help support Envaya by donating online today!",
 
         'feed' => "News",
-        'feed:title' => "Latest news updates",
+        'feed:title' => "Latest updates",
         'feed:registered' => "%s joined Envaya.",
         'feed:new_widget' => "%s created a %s page.",
         'feed:partnership' => "%s has a partnership with %s.",
@@ -264,7 +264,7 @@
 
         'widget:news' => "News",
         'widget:news:item' => "News update",
-        'widget:news:latest' => 'Latest News',
+        'widget:news:latest' => 'Latest Updates',
         'widget:news:empty' => "This organization has not yet written any news updates.",
         'widget:news:edit' => 'Edit news updates',
         'widget:news:manage_updates' => "Manage News Updates",
