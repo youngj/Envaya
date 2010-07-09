@@ -1,51 +1,51 @@
 <?php
-	/**
-	 * Elgg entities.
-	 * Functions to manage all elgg entities (sites, collections, objects and users).
-	 *
-	 * @package Elgg
-	 * @subpackage Core
+    /**
+     * Elgg entities.
+     * Functions to manage all elgg entities (sites, collections, objects and users).
+     *
+     * @package Elgg
+     * @subpackage Core
 
-	 * @author Curverider Ltd <info@elgg.com>
+     * @author Curverider Ltd <info@elgg.com>
 
-	 * @link http://elgg.org/
-	 */
+     * @link http://elgg.org/
+     */
 
-	/// Cache objects in order to minimise database access.
-	$ENTITY_CACHE = array();
+    /// Cache objects in order to minimise database access.
+    $ENTITY_CACHE = array();
 
-	/// Require the locatable interface TODO: Move this into start.php?
-	require_once('location.php');
+    /// Require the locatable interface TODO: Move this into start.php?
+    require_once('location.php');
 
-	/**
-	 * ElggEntity The elgg entity superclass
-	 * This class holds methods for accessing the main entities table.
-	 *
-	 * @author Curverider Ltd <info@elgg.com>
-	 * @package Elgg
-	 * @subpackage Core
-	 */
-	abstract class ElggEntity implements
-		Loggable,	// Can events related to this object class be logged
+    /**
+     * ElggEntity The elgg entity superclass
+     * This class holds methods for accessing the main entities table.
+     *
+     * @author Curverider Ltd <info@elgg.com>
+     * @package Elgg
+     * @subpackage Core
+     */
+    abstract class ElggEntity implements
+        Loggable,   // Can events related to this object class be logged
         Serializable
-	{
-		/**
-		 * The main attributes of an entity.
-		 * Blank entries for all database fields should be created by the constructor.
-		 * Subclasses should add to this in their constructors.
-		 * Any field not appearing in this will be viewed as a
-		 */
-		protected $attributes;
+    {
+        /**
+         * The main attributes of an entity.
+         * Blank entries for all database fields should be created by the constructor.
+         * Subclasses should add to this in their constructors.
+         * Any field not appearing in this will be viewed as a
+         */
+        protected $attributes;
 
-		/**
-		 * If set, overrides the value of getURL()
-		 */
-		protected $url_override;
+        /**
+         * If set, overrides the value of getURL()
+         */
+        protected $url_override;
 
-		/**
-		 * Icon override, overrides the value of getIcon().
-		 */
-		protected $icon_override;
+        /**
+         * Icon override, overrides the value of getIcon().
+         */
+        protected $icon_override;
 
         protected $metadata_cache;
 
@@ -100,35 +100,35 @@
             return $this->loadFromTableRow($entityRow);
         }
 
-		/**
-		 * Initialise the attributes array.
-		 * This is vital to distinguish between metadata and base parameters.
-		 *
-		 * Place your base parameters here.
-		 *
-		 * @return void
-		 */
-		protected function initialise_attributes()
-		{
-			if (!is_array($this->attributes))
+        /**
+         * Initialise the attributes array.
+         * This is vital to distinguish between metadata and base parameters.
+         *
+         * Place your base parameters here.
+         *
+         * @return void
+         */
+        protected function initialise_attributes()
+        {
+            if (!is_array($this->attributes))
                 $this->attributes = array();
 
             if (!is_array($this->metadata_cache))
                 $this->metadata_cache = array();
 
-			$this->attributes['guid'] = "";
-			$this->attributes['type'] = "";
-			$this->attributes['subtype'] = 0;
+            $this->attributes['guid'] = "";
+            $this->attributes['type'] = "";
+            $this->attributes['subtype'] = 0;
 
-			$this->attributes['owner_guid'] = 0;
-			$this->attributes['container_guid'] = 0;
+            $this->attributes['owner_guid'] = 0;
+            $this->attributes['container_guid'] = 0;
 
-			$this->attributes['site_guid'] = 0;
-			$this->attributes['access_id'] = ACCESS_PRIVATE;
-			$this->attributes['time_created'] = "";
-			$this->attributes['time_updated'] = "";
-			$this->attributes['enabled'] = "yes";
-		}
+            $this->attributes['site_guid'] = 0;
+            $this->attributes['access_id'] = ACCESS_PRIVATE;
+            $this->attributes['time_created'] = "";
+            $this->attributes['time_updated'] = "";
+            $this->attributes['enabled'] = "yes";
+        }
 
         protected function initializeTableAttributes($tableName, $arr)
         {
@@ -202,77 +202,77 @@
             return get_data_row("SELECT * from $tableName where guid=?", array($guid));
         }
 
-		/**
-		 * Return the value of a given key.
-		 * If $name is a key field (as defined in $this->attributes) that value is returned, otherwise it will
-		 * then look to see if the value is in this object's metadata.
-		 *
-		 * Q: Why are we not using __get overload here?
-		 * A: Because overload operators cause problems during subclassing, so we put the code here and
-		 * create overloads in subclasses.
-		 *
-		 * @param string $name
-		 * @return mixed Returns the value of a given value, or null.
-		 */
-		public function get($name)
-		{
-			if (array_key_exists($name, $this->attributes))
+        /**
+         * Return the value of a given key.
+         * If $name is a key field (as defined in $this->attributes) that value is returned, otherwise it will
+         * then look to see if the value is in this object's metadata.
+         *
+         * Q: Why are we not using __get overload here?
+         * A: Because overload operators cause problems during subclassing, so we put the code here and
+         * create overloads in subclasses.
+         *
+         * @param string $name
+         * @return mixed Returns the value of a given value, or null.
+         */
+        public function get($name)
+        {
+            if (array_key_exists($name, $this->attributes))
             {
-				return $this->attributes[$name];
-			}
-
-			// No, so see if its in the meta data for this entity
-			$meta = $this->getMetaData($name);
-			if ($meta)
-				return $meta;
-
-			// Can't find it, so return null
-			return null;
-		}
-
-		/**
-		 * Set the value of a given key, replacing it if necessary.
-		 * If $name is a base attribute (as defined in $this->attributes) that value is set, otherwise it will
-		 * set the appropriate item of metadata.
-		 *
-		 * Note: It is important that your class populates $this->attributes with keys for all base attributes, anything
-		 * not in there gets set as METADATA.
-		 *
-		 * Q: Why are we not using __set overload here?
-		 * A: Because overload operators cause problems during subclassing, so we put the code here and
-		 * create overloads in subclasses.
-		 *
-		 * @param string $name
-		 * @param mixed $value
-		 */
-		public function set($name, $value)
-		{
-			if (array_key_exists($name, $this->attributes))
-			{
-				// Check that we're not trying to change the guid!
-				if ((array_key_exists('guid', $this->attributes)) && ($name=='guid'))
-					return false;
-
-				$this->attributes[$name] = $value;
-			}
-			else
-            {
-				return $this->setMetaData($name, $value);
+                return $this->attributes[$name];
             }
 
-			return true;
-		}
+            // No, so see if its in the meta data for this entity
+            $meta = $this->getMetaData($name);
+            if ($meta)
+                return $meta;
 
-		public function getMetaData($name)
-		{
+            // Can't find it, so return null
+            return null;
+        }
+
+        /**
+         * Set the value of a given key, replacing it if necessary.
+         * If $name is a base attribute (as defined in $this->attributes) that value is set, otherwise it will
+         * set the appropriate item of metadata.
+         *
+         * Note: It is important that your class populates $this->attributes with keys for all base attributes, anything
+         * not in there gets set as METADATA.
+         *
+         * Q: Why are we not using __set overload here?
+         * A: Because overload operators cause problems during subclassing, so we put the code here and
+         * create overloads in subclasses.
+         *
+         * @param string $name
+         * @param mixed $value
+         */
+        public function set($name, $value)
+        {
+            if (array_key_exists($name, $this->attributes))
+            {
+                // Check that we're not trying to change the guid!
+                if ((array_key_exists('guid', $this->attributes)) && ($name=='guid'))
+                    return false;
+
+                $this->attributes[$name] = $value;
+            }
+            else
+            {
+                return $this->setMetaData($name, $value);
+            }
+
+            return true;
+        }
+
+        public function getMetaData($name)
+        {
             $md = $this->getMetaDataObject($name);
 
-			if ($md)
+            if ($md)
             {
-				return $md->value;
-			}
-			return null;
-		}
+                return $md->value;
+            }
+            return null;
+        }
 
         protected function getMetaDataObject($name)
         {
@@ -302,64 +302,64 @@
             return $md;
         }
 
-		/**
-		 * Class member get overloading
-		 *
-		 * @param string $name
-		 * @return mixed
-		 */
-		function __get($name) { return $this->get($name); }
+        /**
+         * Class member get overloading
+         *
+         * @param string $name
+         * @return mixed
+         */
+        function __get($name) { return $this->get($name); }
 
-		/**
-		 * Class member set overloading
-		 *
-		 * @param string $name
-		 * @param mixed $value
-		 * @return mixed
-		 */
-		function __set($name, $value) { return $this->set($name, $value); }
+        /**
+         * Class member set overloading
+         *
+         * @param string $name
+         * @param mixed $value
+         * @return mixed
+         */
+        function __set($name, $value) { return $this->set($name, $value); }
 
-		/**
-		 * Supporting isset.
-		 *
-		 * @param string $name The name of the attribute or metadata.
-		 * @return bool
-		 */
-		function __isset($name) { if ($this->$name!="") return true; else return false; }
+        /**
+         * Supporting isset.
+         *
+         * @param string $name The name of the attribute or metadata.
+         * @return bool
+         */
+        function __isset($name) { if ($this->$name!="") return true; else return false; }
 
-		/**
-		 * Supporting unsetting of magic attributes.
-		 *
-		 * @param string $name The name of the attribute or metadata.
-		 */
-		function __unset($name)
-		{
-			if (array_key_exists($name, $this->attributes))
+        /**
+         * Supporting unsetting of magic attributes.
+         *
+         * @param string $name The name of the attribute or metadata.
+         */
+        function __unset($name)
+        {
+            if (array_key_exists($name, $this->attributes))
             {
-				$this->attributes[$name] = "";
+                $this->attributes[$name] = "";
             }
-			else
+            else
             {
-				$this->setMetaData($name, null);
+                $this->setMetaData($name, null);
             }
-		}
+        }
 
-		public function setMetaData($name, $value)
-		{
+        public function setMetaData($name, $value)
+        {
             $md = $this->getMetaDataObject($name);
             $md->value = $value;
             $md->dirty = true;
             return true;
-		}
+        }
 
-		public function clearMetaData($name = "")
-		{
-			if (empty($name)) {
-				return clear_metadata($this->getGUID());
-			} else {
-				return remove_metadata($this->getGUID(),$name);
-			}
-		}
+        public function clearMetaData($name = "")
+        {
+            if (empty($name)) {
+                return clear_metadata($this->getGUID());
+            } else {
+                return remove_metadata($this->getGUID(),$name);
+            }
+        }
 
         public function getSubEntities()
         {
@@ -369,25 +369,25 @@
             );
         }
 
-		function setPrivateSetting($name, $value) {
-			return set_private_setting($this->getGUID(), $name, $value);
-		}
+        function setPrivateSetting($name, $value) {
+            return set_private_setting($this->getGUID(), $name, $value);
+        }
 
-		function getPrivateSetting($name) {
-			return get_private_setting($this->getGUID(), $name);
-		}
+        function getPrivateSetting($name) {
+            return get_private_setting($this->getGUID(), $name);
+        }
 
-		function removePrivateSetting($name) {
-			return remove_private_setting($this->getGUID(), $name);
-		}
+        function removePrivateSetting($name) {
+            return remove_private_setting($this->getGUID(), $name);
+        }
 
-		/**
-		 * Determines whether or not the specified user (by default the current one) can edit the entity
-		 *
-		 * @param int $user_guid The user GUID, optionally (defaults to the currently logged in user)
-		 * @return true|false
-		 */
-		function canEdit($user_guid = 0)
+        /**
+         * Determines whether or not the specified user (by default the current one) can edit the entity
+         *
+         * @param int $user_guid The user GUID, optionally (defaults to the currently logged in user)
+         * @return true|false
+         */
+        function canEdit($user_guid = 0)
         {
             $user_guid = (int)$user_guid;
             $user = get_entity($user_guid);
@@ -412,62 +412,62 @@
                     return true;
             }
             return false;
-		}
+        }
 
-		/**
-		 * Returns whether the given user (or current user) has the ability to write to this group.
-		 *
-		 * @param int $user_guid The user.
-		 * @return bool
-		 */
-		public function canWriteToContainer($user_guid = 0)
-		{
-			return can_write_to_container($user_guid, $this->getGUID());
-		}
+        /**
+         * Returns whether the given user (or current user) has the ability to write to this group.
+         *
+         * @param int $user_guid The user.
+         * @return bool
+         */
+        public function canWriteToContainer($user_guid = 0)
+        {
+            return can_write_to_container($user_guid, $this->getGUID());
+        }
 
-		/**
-		 * Obtain this entity's access ID
-		 *
-		 * @return int The access ID
-		 */
-		public function getAccessID() { return $this->get('access_id'); }
+        /**
+         * Obtain this entity's access ID
+         *
+         * @return int The access ID
+         */
+        public function getAccessID() { return $this->get('access_id'); }
 
-		/**
-		 * Obtain this entity's GUID
-		 *
-		 * @return int GUID
-		 */
-		public function getGUID() { return $this->get('guid'); }
+        /**
+         * Obtain this entity's GUID
+         *
+         * @return int GUID
+         */
+        public function getGUID() { return $this->get('guid'); }
 
-		/**
-		 * Get the owner of this entity
-		 *
-		 * @return int The owner GUID
-		 */
-		public function getOwner() { return $this->get('owner_guid'); }
+        /**
+         * Get the owner of this entity
+         *
+         * @return int The owner GUID
+         */
+        public function getOwner() { return $this->get('owner_guid'); }
 
-		/**
-		 * Returns the actual entity of the user who owns this entity, if any
-		 *
-		 * @return ElggEntity The owning user
-		 */
-		public function getOwnerEntity() { return get_entity($this->get('owner_guid')); }
+        /**
+         * Returns the actual entity of the user who owns this entity, if any
+         *
+         * @return ElggEntity The owning user
+         */
+        public function getOwnerEntity() { return get_entity($this->get('owner_guid')); }
 
-		/**
-		 * Gets the type of entity this is
-		 *
-		 * @return string Entity type
-		 */
-		public function getType() { return $this->get('type'); }
+        /**
+         * Gets the type of entity this is
+         *
+         * @return string Entity type
+         */
+        public function getType() { return $this->get('type'); }
 
-		/**
-		 * Returns the subtype of this entity
-		 *
-		 * @return string The entity subtype
-		 */
-		public function getSubtype() {
-			return $this->get('subtype');
-		}
+        /**
+         * Returns the subtype of this entity
+         *
+         * @return string The entity subtype
+         */
+        public function getSubtype() {
+            return $this->get('subtype');
+        }
 
         public function getSubtypeName()
         {
@@ -493,27 +493,27 @@
             }
         }
 
-		/**
-		 * Gets the UNIX epoch time that this entity was created
-		 *
-		 * @return int UNIX epoch time
-		 */
-		public function getTimeCreated() { return $this->get('time_created'); }
+        /**
+         * Gets the UNIX epoch time that this entity was created
+         *
+         * @return int UNIX epoch time
+         */
+        public function getTimeCreated() { return $this->get('time_created'); }
 
-		/**
-		 * Gets the UNIX epoch time that this entity was last updated
-		 *
-		 * @return int UNIX epoch time
-		 */
-		public function getTimeUpdated() { return $this->get('time_updated'); }
+        /**
+         * Gets the UNIX epoch time that this entity was last updated
+         *
+         * @return int UNIX epoch time
+         */
+        public function getTimeUpdated() { return $this->get('time_updated'); }
 
-		/**
-		 * Gets the display URL for this entity
-		 *
-		 * @return string The URL
-		 */
-		public function getURL() {
-			if (!empty($this->url_override))
+        /**
+         * Gets the display URL for this entity
+         *
+         * @return string The URL
+         */
+        public function getURL() {
+            if (!empty($this->url_override))
                 return $this->url_override;
 
             global $CONFIG;
@@ -550,28 +550,28 @@
             }
             return $url;
 
-		}
+        }
 
-		/**
-		 * Overrides the URL returned by getURL
-		 *
-		 * @param string $url The new item URL
-		 * @return string The URL
-		 */
-		public function setURL($url) {
-			$this->url_override = $url;
-			return $url;
-		}
+        /**
+         * Overrides the URL returned by getURL
+         *
+         * @param string $url The new item URL
+         * @return string The URL
+         */
+        public function setURL($url) {
+            $this->url_override = $url;
+            return $url;
+        }
 
-		/**
-		 * Return a url for the entity's icon, trying multiple alternatives.
-		 *
-		 * @param string $size Either 'large','medium','small' or 'tiny'
-		 * @return string The url or false if no url could be worked out.
-		 */
-		public function getIcon($size = 'medium')
-		{
-			if (isset($this->icon_override[$size]))
+        /**
+         * Return a url for the entity's icon, trying multiple alternatives.
+         *
+         * @param string $size Either 'large','medium','small' or 'tiny'
+         * @return string The url or false if no url could be worked out.
+         */
+        public function getIcon($size = 'medium')
+        {
+            if (isset($this->icon_override[$size]))
                 return $this->icon_override[$size];
 
             global $CONFIG;
@@ -603,16 +603,16 @@
             }
 
             return $url;
-		}
+        }
 
-		/**
-		 * Save generic attributes to the entities table.
-		 */
-		public function save()
-		{
-			$guid = (int) $this->guid;
-			if ($guid > 0)
-			{
+        /**
+         * Save generic attributes to the entities table.
+         */
+        public function save()
+        {
+            $guid = (int) $this->guid;
+            if ($guid > 0)
+            {
                 if (trigger_elgg_event('update',$this->type,$this))
                 {
                     $time = time();
@@ -623,9 +623,9 @@
                     );
                     cache_entity($this);
                 }
-			}
-			else
-			{
+            }
+            else
+            {
                 $time = time();
 
                 if ($this->container_guid == 0)
@@ -642,19 +642,19 @@
                         $this->container_guid, $this->enabled, $this->access_id, $this->time_created, $this->time_updated)
                 );
 
-				if (!$this->guid)
+                if (!$this->guid)
                     throw new IOException(elgg_echo('IOException:BaseEntitySaveFailed'));
 
                 if ($this->guid)
                     cache_entity($this);
 
                 $res = true;
-			}
+            }
 
             $this->saveMetaData();
 
             return $res;
-		}
+        }
 
         function saveMetaData()
         {
@@ -670,23 +670,23 @@
 
         }
 
-		/**
-		 * Load the basic entity information and populate base attributes array.
-		 *
-		 * @param int $guid
-		 */
-		protected function load($guid)
-		{
-			$row = get_entity_as_row($guid);
+        /**
+         * Load the basic entity information and populate base attributes array.
+         *
+         * @param int $guid
+         */
+        protected function load($guid)
+        {
+            $row = get_entity_as_row($guid);
 
-			if ($row)
-			{
+            if ($row)
+            {
                 $this->loadFromTableRow($row);
-				return true;
-			}
+                return true;
+            }
 
-			return false;
-		}
+            return false;
+        }
 
         protected function loadFromTableRow($row)
         {
@@ -706,40 +706,40 @@
             return true;
         }
 
-		/**
-		 * Disable this entity.
-		 *
-		 * @param string $reason Optional reason
-		 * @param bool $recursive Recursively disable all contained entities?
-		 */
-		public function disable()
-		{
+        /**
+         * Disable this entity.
+         *
+         * @param string $reason Optional reason
+         * @param bool $recursive Recursively disable all contained entities?
+         */
+        public function disable()
+        {
             $this->enabled = 'no';
-		}
+        }
 
-		/**
-		 * Re-enable this entity.
-		 */
-		public function enable()
-		{
+        /**
+         * Re-enable this entity.
+         */
+        public function enable()
+        {
             $this->enabled = 'yes';
-		}
+        }
 
-		/**
-		 * Is this entity enabled?
-		 *
-		 * @return boolean
-		 */
-		public function isEnabled()
-		{
-			return ($this->enabled == 'yes');
-		}
+        /**
+         * Is this entity enabled?
+         *
+         * @return boolean
+         */
+        public function isEnabled()
+        {
+            return ($this->enabled == 'yes');
+        }
 
-		/**
-		 * Delete this entity.
-		 */
-		public function delete()
-		{
+        /**
+         * Delete this entity.
+         */
+        public function delete()
+        {
             if (trigger_elgg_event('delete',$this->type,$this))
             {
                 $sub_entities = $this->getSubEntities();
@@ -813,71 +813,71 @@
             }
         }
 
-		// SYSTEM LOG INTERFACE ////////////////////////////////////////////////////////////
+        // SYSTEM LOG INTERFACE ////////////////////////////////////////////////////////////
 
-		/**
-		 * Return an identification for the object for storage in the system log.
-		 * This id must be an integer.
-		 *
-		 * @return int
-		 */
-		public function getSystemLogID() { return $this->getGUID();	}
+        /**
+         * Return an identification for the object for storage in the system log.
+         * This id must be an integer.
+         *
+         * @return int
+         */
+        public function getSystemLogID() { return $this->getGUID(); }
 
-		/**
-		 * Return the class name of the object.
-		 */
-		public function getClassName() { return get_class($this); }
+        /**
+         * Return the class name of the object.
+         */
+        public function getClassName() { return get_class($this); }
 
-		/**
-		 * For a given ID, return the object associated with it.
-		 * This is used by the river functionality primarily.
-		 * This is useful for checking access permissions etc on objects.
-		 */
-		public function getObjectFromID($id) { return get_entity($id); }
+        /**
+         * For a given ID, return the object associated with it.
+         * This is used by the river functionality primarily.
+         * This is useful for checking access permissions etc on objects.
+         */
+        public function getObjectFromID($id) { return get_entity($id); }
 
-		/**
-		 * Return the GUID of the owner of this object.
-		 */
-		public function getObjectOwnerGUID() { return $this->owner_guid; }
-	}
+        /**
+         * Return the GUID of the owner of this object.
+         */
+        public function getObjectOwnerGUID() { return $this->owner_guid; }
+    }
 
-	/**
-	 * Invalidate this class' entry in the cache.
-	 *
-	 * @param int $guid The guid
-	 */
-	function invalidate_cache_for_entity($guid)
-	{
-		global $ENTITY_CACHE;
-		$guid = (int)$guid;
-		unset($ENTITY_CACHE[$guid]);
-		get_cache()->delete(entity_cache_key($guid));
-	}
+    /**
+     * Invalidate this class' entry in the cache.
+     *
+     * @param int $guid The guid
+     */
+    function invalidate_cache_for_entity($guid)
+    {
+        global $ENTITY_CACHE;
+        $guid = (int)$guid;
+        unset($ENTITY_CACHE[$guid]);
+        get_cache()->delete(entity_cache_key($guid));
+    }
 
-	function cache_entity(ElggEntity $entity)
-	{
-		global $ENTITY_CACHE;
+    function cache_entity(ElggEntity $entity)
+    {
+        global $ENTITY_CACHE;
 
         $guid = $entity->guid;
-		$ENTITY_CACHE[$guid] = $entity;
+        $ENTITY_CACHE[$guid] = $entity;
         get_cache()->set(entity_cache_key($guid), $entity);
-	}
+    }
 
     function entity_cache_key($guid)
     {
-        return make_cache_key("entity2", $guid);
+        return make_cache_key("entity3", $guid);
     }
 
-	/**
-	 * Retrieve a entity from the cache.
-	 *
-	 * @param int $guid The guid
-	 */
-	function retrieve_cached_entity($guid)
-	{
+    /**
+     * Retrieve a entity from the cache.
+     *
+     * @param int $guid The guid
+     */
+    function retrieve_cached_entity($guid)
+    {
         global $ENTITY_CACHE;
 
-		$guid = (int)$guid;
+        $guid = (int)$guid;
 
         if (isset($ENTITY_CACHE[$guid]))
         {
@@ -893,18 +893,18 @@
             }
         }
         return null;
-	}
+    }
 
-	/**
-	 * Return the integer ID for a given subtype, or false.
-	 *
-	 * TODO: Move to a nicer place?
-	 *
-	 * @param string $type
-	 * @param string $subtype
-	 */
-	function get_subtype_id($type, $subtype)
-	{
+    /**
+     * Return the integer ID for a given subtype, or false.
+     *
+     * TODO: Move to a nicer place?
+     *
+     * @param string $type
+     * @param string $subtype
+     */
+    function get_subtype_id($type, $subtype)
+    {
         global $CONFIG;
         foreach ($CONFIG->subtypes as $id => $info)
         {
@@ -914,36 +914,36 @@
             }
         }
 
-		return 0;
-	}
+        return 0;
+    }
 
-	/**
-	 * For a given subtype ID, return its identifier text.
-	 *
-	 * TODO: Move to a nicer place?
-	 *
-	 * @param int $subtype_id
-	 */
-	function get_subtype_from_id($subtype_id)
-	{
+    /**
+     * For a given subtype ID, return its identifier text.
+     *
+     * TODO: Move to a nicer place?
+     *
+     * @param int $subtype_id
+     */
+    function get_subtype_from_id($subtype_id)
+    {
         global $CONFIG;
         if (isset($CONFIG->subtypes[$subtype_id]))
         {
             return $CONFIG->subtypes[$subtype_id][1];
         }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * This function tests to see if a subtype has a registered class handler by its id.
-	 *
-	 * @param int $subtype_id The subtype
-	 * @return a class name or null
-	 */
-	function get_subtype_class($type, $subtype_id)
-	{
-		global $CONFIG;
+    /**
+     * This function tests to see if a subtype has a registered class handler by its id.
+     *
+     * @param int $subtype_id The subtype
+     * @return a class name or null
+     */
+    function get_subtype_class($type, $subtype_id)
+    {
+        global $CONFIG;
         if (isset($CONFIG->subtypes[$subtype_id]))
         {
             return $CONFIG->subtypes[$subtype_id][2];
@@ -954,91 +954,91 @@
             return $CONFIG->types[$type];
         }
         return NULL;
-	}
+    }
 
-	/**
-	 * Determine whether a given user is able to write to a given container.
-	 *
-	 * @param int $user_guid The user guid, or 0 for get_loggedin_userid()
-	 * @param int $container_guid The container, or 0 for the current page owner.
-	 */
-	function can_write_to_container($user_guid = 0, $container_guid = 0, $entity_type = 'all')
-	{
-		global $CONFIG;
+    /**
+     * Determine whether a given user is able to write to a given container.
+     *
+     * @param int $user_guid The user guid, or 0 for get_loggedin_userid()
+     * @param int $container_guid The container, or 0 for the current page owner.
+     */
+    function can_write_to_container($user_guid = 0, $container_guid = 0, $entity_type = 'all')
+    {
+        global $CONFIG;
 
-		$user_guid = (int)$user_guid;
-		$user = get_entity($user_guid);
-		if (!$user) $user = get_loggedin_user();
+        $user_guid = (int)$user_guid;
+        $user = get_entity($user_guid);
+        if (!$user) $user = get_loggedin_user();
 
-		$container_guid = (int)$container_guid;
-		if (!$container_guid) $container_guid = page_owner();
-		if (!$container_guid) return true;
+        $container_guid = (int)$container_guid;
+        if (!$container_guid) $container_guid = page_owner();
+        if (!$container_guid) return true;
 
-		$container = get_entity($container_guid);
+        $container = get_entity($container_guid);
 
-		if ($container)
-		{
+        if ($container)
+        {
 
-			// If the user can edit the container, they can also write to it
-			if ($container->canEdit($user_guid)) return true;
+            // If the user can edit the container, they can also write to it
+            if ($container->canEdit($user_guid)) return true;
 
-			// See if anyone else has anything to say
-			return trigger_plugin_hook('container_permissions_check',$entity_type,array('container' => $container, 'user' => $user), false);
+            // See if anyone else has anything to say
+            return trigger_plugin_hook('container_permissions_check',$entity_type,array('container' => $container, 'user' => $user), false);
 
-		}
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Retrieve the entity details for a specific GUID, returning it as a stdClass db row.
-	 *
+    /**
+     * Retrieve the entity details for a specific GUID, returning it as a stdClass db row.
+     *
      * @param int $guid The GUID of the object to extract
-	 */
-	function get_entity_as_row($guid)
-	{
-		global $CONFIG;
+     */
+    function get_entity_as_row($guid)
+    {
+        global $CONFIG;
 
-		if (!$guid)
+        if (!$guid)
             return false;
 
         return get_data_row("SELECT * from entities where guid=?", array($guid));
-	}
+    }
 
-	/**
-	 * Create an Elgg* object from a given entity row.
-	 */
-	function entity_row_to_elggstar($row)
-	{
-		if (!($row instanceof stdClass))
-			return $row;
+    /**
+     * Create an Elgg* object from a given entity row.
+     */
+    function entity_row_to_elggstar($row)
+    {
+        if (!($row instanceof stdClass))
+            return $row;
 
-		if ((!isset($row->guid)) || (!isset($row->subtype)))
-			return $row;
+        if ((!isset($row->guid)) || (!isset($row->subtype)))
+            return $row;
 
-		$classname = get_subtype_class($row->type, $row->subtype);
+        $classname = get_subtype_class($row->type, $row->subtype);
 
         if ($classname && class_exists($classname))
         {
-		    return new $classname($row);
-		}
+            return new $classname($row);
+        }
         else
         {
             throw new ClassException(sprintf(elgg_echo('ClassException:ClassnameNotClass'), $classname, 'ElggEntity'));
         }
-	}
+    }
 
-	/**
-	 * Return the entity for a given guid as the correct object.
-	 * @param int $guid The GUID of the entity
-	 * @return a child of ElggEntity appropriate for the type.
-	 */
-	function get_entity($guid)
-	{
+    /**
+     * Return the entity for a given guid as the correct object.
+     * @param int $guid The GUID of the entity
+     * @return a child of ElggEntity appropriate for the type.
+     */
+    function get_entity($guid)
+    {
         $entity = retrieve_cached_entity($guid);
         if (!$entity)
         {
-        	$entity = entity_row_to_elggstar(get_entity_as_row($guid));
+            $entity = entity_row_to_elggstar(get_entity_as_row($guid));
 
             if ($entity)
             {
@@ -1052,7 +1052,7 @@
         }
 
         return $entity;
-	}
+    }
 
     function get_entity_conditions(&$where, &$args, $params, $tableName='')
     {
@@ -1140,30 +1140,30 @@
         }
     }
 
-	/**
-	 * Return entities matching a given query, or the number thereof
-	 *
-	 * @param string $type The type of entity (eg "user", "object" etc)
-	 * @param string|array $subtype The arbitrary subtype of the entity or array(type1 => array('subtype1', ...'subtypeN'), ...)
-	 * @param int $owner_guid The GUID of the owning user
-	 * @param string $order_by The field to order by; by default, time_created desc
-	 * @param int $limit The number of entities to return; 10 by default
-	 * @param int $offset The indexing offset, 0 by default
-	 * @param boolean $count Set to true to get a count rather than the entities themselves (limits and offsets don't apply in this context). Defaults to false.
-	 * @param int $site_guid The site to get entities for. Leave as 0 (default) for the current site; -1 for all sites.
-	 * @param int|array $container_guid The container or containers to get entities from (default: all containers).
-	 * @param int $timelower The earliest time the entity can have been created. Default: all
-	 * @param int $timeupper The latest time the entity can have been created. Default: all
-	 * @return array A list of entities.
-	 */
-	function get_entities($type = "", $subtype = "", $owner_guid = 0, $order_by = "", $limit = 10, $offset = 0, $count = false, $site_guid = 0, $container_guid = null, $timelower = 0, $timeupper = 0)
-	{
-		global $CONFIG;
+    /**
+     * Return entities matching a given query, or the number thereof
+     *
+     * @param string $type The type of entity (eg "user", "object" etc)
+     * @param string|array $subtype The arbitrary subtype of the entity or array(type1 => array('subtype1', ...'subtypeN'), ...)
+     * @param int $owner_guid The GUID of the owning user
+     * @param string $order_by The field to order by; by default, time_created desc
+     * @param int $limit The number of entities to return; 10 by default
+     * @param int $offset The indexing offset, 0 by default
+     * @param boolean $count Set to true to get a count rather than the entities themselves (limits and offsets don't apply in this context). Defaults to false.
+     * @param int $site_guid The site to get entities for. Leave as 0 (default) for the current site; -1 for all sites.
+     * @param int|array $container_guid The container or containers to get entities from (default: all containers).
+     * @param int $timelower The earliest time the entity can have been created. Default: all
+     * @param int $timeupper The latest time the entity can have been created. Default: all
+     * @return array A list of entities.
+     */
+    function get_entities($type = "", $subtype = "", $owner_guid = 0, $order_by = "", $limit = 10, $offset = 0, $count = false, $site_guid = 0, $container_guid = null, $timelower = 0, $timeupper = 0)
+    {
+        global $CONFIG;
 
-		if ($subtype === false || $subtype === null || $subtype === 0)
-			return false;
+        if ($subtype === false || $subtype === null || $subtype === 0)
+            return false;
 
-		$where = array();
+        $where = array();
         $args = array();
 
         get_entity_conditions($where, $args, array(
@@ -1174,19 +1174,19 @@
             'time_lower' => $time_lower,
             'time_upper' => $time_upper));
 
-		if (!$count)
+        if (!$count)
         {
-			$query = "SELECT * from entities where ";
-		}
+            $query = "SELECT * from entities where ";
+        }
         else
         {
-			$query = "SELECT count(guid) as total from entities where ";
-		}
+            $query = "SELECT count(guid) as total from entities where ";
+        }
 
         foreach ($where as $w)
-			$query .= " $w and ";
+            $query .= " $w and ";
 
-		$query .= get_access_sql_suffix();
+        $query .= get_access_sql_suffix();
 
         if (!$count)
         {
@@ -1195,215 +1195,215 @@
                 $order_by = "time_created desc";
             }
             $order_by = sanitize_order_by($order_by);
-			$query .= " order by $order_by";
+            $query .= " order by $order_by";
 
-			if ($limit)
+            if ($limit)
             {
                 $query .= " limit ".((int)$offset).", ".((int)$limit);
             }
-			return array_map('entity_row_to_elggstar', get_data($query, $args));
-		}
+            return array_map('entity_row_to_elggstar', get_data($query, $args));
+        }
         else
         {
-			$total = get_data_row($query, $args);
-			return $total->total;
-		}
-	}
+            $total = get_data_row($query, $args);
+            return $total->total;
+        }
+    }
 
-	/**
-	 * Returns a viewable list of entities
-	 *
-	 * @see elgg_view_entity_list
-	 *
-	 * @param string $type The type of entity (eg "user", "object" etc)
-	 * @param string $subtype The arbitrary subtype of the entity
-	 * @param int $owner_guid The GUID of the owning user
-	 * @param int $limit The number of entities to display per page (default: 10)
-	 * @param true|false $fullview Whether or not to display the full view (default: true)
-	 * @param true|false $viewtypetoggle Whether or not to allow gallery view
-	 * @param true|false $pagination Display pagination? Default: true
-	 * @return string A viewable list of entities
-	 */
-	function list_entities($type= "", $subtype = "", $owner_guid = 0, $limit = 10, $fullview = true, $viewtypetoggle = false, $pagination = true) {
+    /**
+     * Returns a viewable list of entities
+     *
+     * @see elgg_view_entity_list
+     *
+     * @param string $type The type of entity (eg "user", "object" etc)
+     * @param string $subtype The arbitrary subtype of the entity
+     * @param int $owner_guid The GUID of the owning user
+     * @param int $limit The number of entities to display per page (default: 10)
+     * @param true|false $fullview Whether or not to display the full view (default: true)
+     * @param true|false $viewtypetoggle Whether or not to allow gallery view
+     * @param true|false $pagination Display pagination? Default: true
+     * @return string A viewable list of entities
+     */
+    function list_entities($type= "", $subtype = "", $owner_guid = 0, $limit = 10, $fullview = true, $viewtypetoggle = false, $pagination = true) {
 
-		$offset = (int) get_input('offset');
-		$count = get_entities($type, $subtype, $owner_guid, "", $limit, $offset, true);
-		$entities = get_entities($type, $subtype, $owner_guid, "", $limit, $offset);
+        $offset = (int) get_input('offset');
+        $count = get_entities($type, $subtype, $owner_guid, "", $limit, $offset, true);
+        $entities = get_entities($type, $subtype, $owner_guid, "", $limit, $offset);
 
-		return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, $viewtypetoggle, $pagination);
+        return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, $viewtypetoggle, $pagination);
 
-	}
+    }
 
-	/**
-	 * Returns a viewable list of entities contained in a number of groups.
-	 *
-	 * @param string $subtype The arbitrary subtype of the entity
-	 * @param int $owner_guid The GUID of the owning user
-	 * @param int $container_guid The GUID of the containing group
-	 * @param int $limit The number of entities to display per page (default: 10)
-	 * @param true|false $fullview Whether or not to display the full view (default: true)
-	 * @return string A viewable list of entities
-	 */
-	function list_entities_groups($subtype = "", $owner_guid = 0, $container_guid = 0, $limit = 10, $fullview = true)
-	{
-		$offset = (int) get_input('offset');
-		$count = get_objects_in_group($container_guid, $subtype, $owner_guid, 0, "", $limit, $offset, true);
-		$entities = get_objects_in_group($container_guid, $subtype, $owner_guid, 0, "", $limit, $offset);
-
-		return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview);
-	}
-
-	/**
-	 * Sets the URL handler for a particular entity type and subtype
-	 *
-	 * @param string $function_name The function to register
-	 * @param string $entity_type The entity type
-	 * @param string $entity_subtype The entity subtype
-	 * @return true|false Depending on success
-	 */
-	function register_entity_url_handler($function_name, $entity_type = "all", $entity_subtype = "all") {
-		global $CONFIG;
-
-		if (!is_callable($function_name)) return false;
-
-		if (!isset($CONFIG->entity_url_handler)) {
-			$CONFIG->entity_url_handler = array();
-		}
-		if (!isset($CONFIG->entity_url_handler[$entity_type])) {
-			$CONFIG->entity_url_handler[$entity_type] = array();
-		}
-		$CONFIG->entity_url_handler[$entity_type][$entity_subtype] = $function_name;
-
-		return true;
-
-	}
-
-	/**
-	 * Default Icon URL handler for entities.
-	 * This will attempt to find a default entity for the current view and return a url. This is registered at
-	 * a low priority so that other handlers will pick it up first.
-	 *
-	 * @param unknown_type $hook
-	 * @param unknown_type $entity_type
-	 * @param unknown_type $returnvalue
-	 * @param unknown_type $params
-	 */
-	function default_entity_icon_hook($hook, $entity_type, $returnvalue, $params)
-	{
-		global $CONFIG;
-
-		if ((!$returnvalue) && ($hook == 'entity:icon:url'))
-		{
-			$entity = $params['entity'];
-			$type = $entity->type;
-			$subtype = $entity->getSubtypeName();
-			$viewtype = $params['viewtype'];
-			$size = $params['size'];
-
-			$url = "views/$viewtype/graphics/icons/$type/$subtype/$size.png";
-
-			if (!@file_exists($CONFIG->path . $url))
-				$url = "views/$viewtype/graphics/icons/$type/default/$size.png";
-
-			if(!@file_exists($CONFIG->path . $url))
-				$url = "views/$viewtype/graphics/icons/default/$size.png";
-
-			if (@file_exists($CONFIG->path . $url))
-				return $CONFIG->url . $url;
-		}
-	}
-
-	/**
-	 * Page handler for generic entities view system
-	 *
-	 * @param array $page Page elements from pain page handler
-	 */
-	function entities_page_handler($page)
+    /**
+     * Returns a viewable list of entities contained in a number of groups.
+     *
+     * @param string $subtype The arbitrary subtype of the entity
+     * @param int $owner_guid The GUID of the owning user
+     * @param int $container_guid The GUID of the containing group
+     * @param int $limit The number of entities to display per page (default: 10)
+     * @param true|false $fullview Whether or not to display the full view (default: true)
+     * @return string A viewable list of entities
+     */
+    function list_entities_groups($subtype = "", $owner_guid = 0, $container_guid = 0, $limit = 10, $fullview = true)
     {
-		if (isset($page[0])) {
-			global $CONFIG;
-			set_input('guid',$page[0]);
-			@include($CONFIG->path . "entities/index.php");
-		}
-	}
+        $offset = (int) get_input('offset');
+        $count = get_objects_in_group($container_guid, $subtype, $owner_guid, 0, "", $limit, $offset, true);
+        $entities = get_objects_in_group($container_guid, $subtype, $owner_guid, 0, "", $limit, $offset);
 
-	/**
-	 * Gets a private setting for an entity.
-	 *
-	 * @param int $entity_guid The entity GUID
-	 * @param string $name The name of the setting
-	 * @return mixed The setting value, or false on failure
-	 */
-	function get_private_setting($entity_guid, $name) {
+        return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview);
+    }
 
-		global $CONFIG;
+    /**
+     * Sets the URL handler for a particular entity type and subtype
+     *
+     * @param string $function_name The function to register
+     * @param string $entity_type The entity type
+     * @param string $entity_subtype The entity subtype
+     * @return true|false Depending on success
+     */
+    function register_entity_url_handler($function_name, $entity_type = "all", $entity_subtype = "all") {
+        global $CONFIG;
 
-		if ($setting = get_data_row("SELECT value from private_settings where name = ? and entity_guid = ?",
+        if (!is_callable($function_name)) return false;
+
+        if (!isset($CONFIG->entity_url_handler)) {
+            $CONFIG->entity_url_handler = array();
+        }
+        if (!isset($CONFIG->entity_url_handler[$entity_type])) {
+            $CONFIG->entity_url_handler[$entity_type] = array();
+        }
+        $CONFIG->entity_url_handler[$entity_type][$entity_subtype] = $function_name;
+
+        return true;
+
+    }
+
+    /**
+     * Default Icon URL handler for entities.
+     * This will attempt to find a default entity for the current view and return a url. This is registered at
+     * a low priority so that other handlers will pick it up first.
+     *
+     * @param unknown_type $hook
+     * @param unknown_type $entity_type
+     * @param unknown_type $returnvalue
+     * @param unknown_type $params
+     */
+    function default_entity_icon_hook($hook, $entity_type, $returnvalue, $params)
+    {
+        global $CONFIG;
+
+        if ((!$returnvalue) && ($hook == 'entity:icon:url'))
+        {
+            $entity = $params['entity'];
+            $type = $entity->type;
+            $subtype = $entity->getSubtypeName();
+            $viewtype = $params['viewtype'];
+            $size = $params['size'];
+
+            $url = "views/$viewtype/graphics/icons/$type/$subtype/$size.png";
+
+            if (!@file_exists($CONFIG->path . $url))
+                $url = "views/$viewtype/graphics/icons/$type/default/$size.png";
+
+            if(!@file_exists($CONFIG->path . $url))
+                $url = "views/$viewtype/graphics/icons/default/$size.png";
+
+            if (@file_exists($CONFIG->path . $url))
+                return $CONFIG->url . $url;
+        }
+    }
+
+    /**
+     * Page handler for generic entities view system
+     *
+     * @param array $page Page elements from pain page handler
+     */
+    function entities_page_handler($page)
+    {
+        if (isset($page[0])) {
+            global $CONFIG;
+            set_input('guid',$page[0]);
+            @include($CONFIG->path . "entities/index.php");
+        }
+    }
+
+    /**
+     * Gets a private setting for an entity.
+     *
+     * @param int $entity_guid The entity GUID
+     * @param string $name The name of the setting
+     * @return mixed The setting value, or false on failure
+     */
+    function get_private_setting($entity_guid, $name) {
+
+        global $CONFIG;
+
+        if ($setting = get_data_row("SELECT value from private_settings where name = ? and entity_guid = ?",
             array($name, (int)$entity_guid)
         )) {
-			return $setting->value;
-		}
-		return false;
+            return $setting->value;
+        }
+        return false;
 
-	}
+    }
 
-	/**
-	 * Return an array of all private settings for a given
-	 *
-	 * @param int $entity_guid The entity GUID
-	 */
-	function get_all_private_settings($entity_guid) {
-		global $CONFIG;
+    /**
+     * Return an array of all private settings for a given
+     *
+     * @param int $entity_guid The entity GUID
+     */
+    function get_all_private_settings($entity_guid) {
+        global $CONFIG;
 
-		$entity_guid = (int) $entity_guid;
+        $entity_guid = (int) $entity_guid;
 
         $result = get_data("SELECT * from private_settings where entity_guid = ?", array($entity_guid));
-		if ($result)
-		{
-			$return = array();
-			foreach ($result as $r)
-				$return[$r->name] = $r->value;
+        if ($result)
+        {
+            $return = array();
+            foreach ($result as $r)
+                $return[$r->name] = $r->value;
 
-			return $return;
-		}
+            return $return;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Sets a private setting for an entity.
-	 *
-	 * @param int $entity_guid The entity GUID
-	 * @param string $name The name of the setting
-	 * @param string $value The value of the setting
-	 * @return mixed The setting ID, or false on failure
-	 */
-	function set_private_setting($entity_guid, $name, $value) {
+    /**
+     * Sets a private setting for an entity.
+     *
+     * @param int $entity_guid The entity GUID
+     * @param string $name The name of the setting
+     * @param string $value The value of the setting
+     * @return mixed The setting ID, or false on failure
+     */
+    function set_private_setting($entity_guid, $name, $value) {
 
-		global $CONFIG;
+        global $CONFIG;
 
-		$result = insert_data("INSERT into private_settings (entity_guid, name, value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE value = ?",
+        $result = insert_data("INSERT into private_settings (entity_guid, name, value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE value = ?",
             array((int)$entity_guid, $name, $value, $value)
         );
-		if ($result === 0) return true;
-		return $result;
+        if ($result === 0) return true;
+        return $result;
 
-	}
+    }
 
-	/**
-	 * Deletes a private setting for an entity.
-	 *
-	 * @param int $entity_guid The Entity GUID
-	 * @param string $name The name of the setting
-	 * @return true|false depending on success
-	 *
-	 */
-	function remove_private_setting($entity_guid, $name)
+    /**
+     * Deletes a private setting for an entity.
+     *
+     * @param int $entity_guid The Entity GUID
+     * @param string $name The name of the setting
+     * @return true|false depending on success
+     *
+     */
+    function remove_private_setting($entity_guid, $name)
     {
-		global $CONFIG;
-		return delete_data("DELETE from private_settings where name = ? and entity_guid = ?",
+        global $CONFIG;
+        return delete_data("DELETE from private_settings where name = ? and entity_guid = ?",
             array($name, (int)$entity_guid));
-	}
+    }
 
     function get_entities_by_condition($subTable, $where, $args, $order_by, $limit, $offset = 0, $count = false, $join = '')
     {
@@ -1447,13 +1447,13 @@
         }
     }
 
-	function entities_init()
-	{
-		register_page_handler('view','entities_page_handler');
-	}
+    function entities_init()
+    {
+        register_page_handler('view','entities_page_handler');
+    }
 
-	/** Hook for rendering a default icon for entities */
-	register_plugin_hook('entity:icon:url', 'all', 'default_entity_icon_hook', 1000);
+    /** Hook for rendering a default icon for entities */
+    register_plugin_hook('entity:icon:url', 'all', 'default_entity_icon_hook', 1000);
 
-	/** Register init system event **/
-	register_elgg_event_handler('init','system','entities_init');
+    /** Register init system event **/
+    register_elgg_event_handler('init','system','entities_init');
