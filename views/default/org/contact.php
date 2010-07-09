@@ -1,7 +1,7 @@
 
 <?php
 
-    $sort = sanitize_order_by(get_input('sort'));
+    $sort = sanitize_order_by(get_input('sort') ?: 'name');
     $baseurl = "org/contact?sort=$sort";
     $offset = (int)get_input('offset');
 
@@ -23,9 +23,9 @@
 <tr>
     <th><a href='org/contact?sort=name'><?php echo elgg_echo('name') ?></a></th>
     <th><a href='org/contact?sort=email'><?php echo elgg_echo('email') ?></a></th>
-    <th><?php echo elgg_echo('phone') ?></th>
+    <th><?php echo elgg_echo('user:phone:label') ?></th>
     <th><?php echo elgg_echo('last_update') ?></th>
-    <th><?php echo elgg_echo('stats') ?></th>
+    <th><?php echo elgg_echo('num_posts') ?></th>
 </tr>
 <?php
     $escUrl = urlencode($_SERVER['REQUEST_URI']);
