@@ -12,11 +12,6 @@ class NewsUpdate extends ElggObject
 
     public function save()
     {
-        if (!$this->language)
-        {
-            $this->language = guess_language($this->content);
-        }
-
         $isNew = (!$this->guid);
 
         $res = parent::save();
@@ -26,20 +21,6 @@ class NewsUpdate extends ElggObject
             post_feed_items($this->getContainerEntity(), 'news', $this);
         }
         return $res;
-    }
-
-    function renderContent()
-    {
-        $content = translate_field($this, 'content');
-
-        if ($this->hasDataType(DataType::HTML))
-        {
-            return $content; // html content should be sanitized when it is input!
-        }
-        else
-        {
-            return elgg_view('output/longtext', array('value' => $content));
-        }
     }
 
     public function getImageFile($size = '')
@@ -61,8 +42,8 @@ class NewsUpdate extends ElggObject
             'guid' => $this->guid,
             'container_guid' => $this->container_guid,
             'dateText' => $this->getDateText(),
-            'imageURL' => $this->getImageURL('small'),
-            'snippetHTML' => elgg_view('output/text', array('value' => $this->getSnippet()))
+            'imageURL' => $this->thumbnail_url,
+            'snippetHTML' => $this->getSnippet()
         );
     }
 
@@ -74,11 +55,6 @@ class NewsUpdate extends ElggObject
             return $org->getUrl() . "/post/" . $this->getGUID();
         }
         return '';
-    }
-
-    public function getImageURL($size = '')
-    {
-        return $this->hasImage() ? ($this->getImageFile($size)->getURL()."?{$this->time_updated}") : "";
     }
 
     public function hasImage()

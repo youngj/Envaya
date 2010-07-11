@@ -890,12 +890,13 @@ a.selected
 .feed_content
 {
     float:left;
-    width:<?php echo $contentWidth - 100 ?>px;
+    width:<?php echo $contentWidth - 95 ?>px;
 }
 
 .feed_more
 {
     font-size:10px;
+    white-space:nowrap;
 }
 
 .blog_date
@@ -914,22 +915,6 @@ a.selected
     display:block;
     float:right;
     font-size:9px;
-}
-
-.smallBlogImageLink
-{
-    float:left;
-    margin-right:4px;
-    margin-bottom:4px;
-    padding:3px;
-    background-color:white;
-    border: 1px solid #ccc;
-
-}
-
-a.smallBlogImageLink:hover
-{
-    border: 1px solid #7391a9;
 }
 
 .largeBlogImageLink
@@ -1613,4 +1598,27 @@ a.photoDelete:hover
 .modalImageFrameLoading
 {
     height:49px;
+}
+
+.feed_snippet
+{
+    color:#666;
+    font-size:11px;
+    padding-left:0px;
+    padding-bottom:5px;
+}
+
+.feed_image_link
+{
+    float:right;
+    margin-left:4px;
+    margin-bottom:4px;
+    padding:3px;
+    background-color:white;
+    border: 1px solid #ccc;
+}
+
+a.feed_image_link:hover
+{
+    border: 1px solid #7391a9;
 }

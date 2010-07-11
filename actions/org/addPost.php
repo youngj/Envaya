@@ -29,8 +29,7 @@
             $blog = new NewsUpdate();
             $blog->owner_guid = get_loggedin_userid();
             $blog->container_guid = $orgId;
-            $blog->content = sanitize_html($body);
-            $blog->setDataType(DataType::HTML, true);
+            $blog->setContent($body, true);
             $blog->uuid = $uuid;
             $blog->save();
 

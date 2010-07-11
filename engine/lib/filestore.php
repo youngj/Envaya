@@ -146,6 +146,25 @@
         return substr_count($_FILES[$input_name]['type'],'image/');
     }
 
+    function get_thumbnail_src($html)
+    {
+        if (preg_match('/src="http:\/\/(\w+)\.s3\.amazonaws\.com\/(\d+)\/([\w\.]+)\//', $html, $matches))
+        {
+            $ownerGuid = $matches[2];
+            $groupName = $matches[3];
+
+            $files = ElggFile::filterByCondition(
+                array('owner_guid = ?', 'group_name = ?','size = ?'),
+                array($ownerGuid, $groupName, 'small')
+            );
+            if (sizeof($files) > 0)
+            {
+                return $files[0]->getURL();
+            }
+        }
+        return null;
+    }
+
     function get_file_from_url($url)
     {
         if (preg_match('/\/(\d+)\/([\w\.]+)\/([^\/]+)$/', $url, $matches))

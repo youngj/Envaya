@@ -41,12 +41,19 @@
         }
     }
 
-    function sanitize_html($html)
+
+    function sanitize_html($html, $options = null)
     {
         require_once(dirname(dirname(__DIR__)).'/vendors/htmlpurifier/library/HTMLPurifier.auto.php');
         global $CONFIG;
 
-        $purifier = new HTMLPurifier(array('Cache.SerializerPath' => $CONFIG->dataroot));
+        if (!$options)
+        {
+            $options = array();
+        }
+        $options['Cache.SerializerPath'] = $CONFIG->dataroot;
+
+        $purifier = new HTMLPurifier($options);
         return $purifier->purify( $html );
     }
 
@@ -59,18 +66,31 @@
     {
         if ($content)
         {
+            $content = preg_replace('/<img[^>]+>/i', '', $content);
+            $content = preg_replace('/<\/(p|h1|h2|h3)>/i', '</$1> <br />', $content);
+
+            $tooLong = strlen($content) > $maxLength;
             // todo: multi-byte support
-            if (strlen($content) > $maxLength)
+            if ($tooLong)
             {
                 $shortStr = substr($content, 0, $maxLength);
 
                 $lastSpace = strrpos($shortStr, ' ');
                 if ($lastSpace && $lastSpace > $maxLength / 2)
                 {
-                    $shortStr= substr($shortStr, 0, $lastSpace);
+                    $shortStr = substr($shortStr, 0, $lastSpace);
                 }
 
-                $content = $shortStr . "...";
+                $content = $shortStr;
+            }
+            $content = sanitize_html($content, array('HTML.AllowedElements' => 'a,em,strong,br','AutoFormat.RemoveEmpty' => true));
+            $content = preg_replace('/(<br \/>\s*)+/', ' &ndash; ', $content);
+            $content = preg_replace('/&ndash;\s*$/', '', $content);
+            $content = preg_replace('/^\s*&ndash;/', '', $content);
+
+            if ($tooLong)
+            {
+                $content = $content."...";
             }
 
             return $content;

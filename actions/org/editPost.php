@@ -30,8 +30,7 @@
     else
     {
         $blog->access_id = ACCESS_PUBLIC;
-        $blog->content = sanitize_html($body);
-        $blog->setDataType(DataType::HTML, true);
+        $blog->setContent($body, true);
         $blog->save();
 
         if (get_input('deleteimage'))

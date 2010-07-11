@@ -24,8 +24,7 @@
         }
 
         $homeWidget = $org->getWidgetByName('home');
-        $homeWidget->content = $mission;
-        $homeWidget->language = guess_language($mission);
+        $homeWidget->setContent($mission, false);
 
         $org->language = get_input('content_language');
 

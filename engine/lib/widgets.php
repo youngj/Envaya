@@ -41,20 +41,6 @@ class Widget extends ElggObject
         return elgg_view("widgets/generic_edit", array('widget' => $this));
     }
 
-    function renderContent()
-    {
-        $content = translate_field($this, 'content');
-
-        if ($this->hasDataType(DataType::HTML))
-        {
-            return $content; // html content should be sanitized when it is input!
-        }
-        else
-        {
-            return elgg_view('output/longtext', array('value' => $content));
-        }
-    }
-
     function getURL()
     {
         $org = $this->getContainerEntity();
@@ -122,27 +108,8 @@ function save_widget($widget)
 {
     $prevContent = $widget->content;
 
-    $widget->content = sanitize_html(get_input('content'));
-    $widget->setDataType(DataType::HTML, true);
-
-    if (!$widget->language)
-    {
-        $widget->language = guess_language($widget->content);
-    }
-
-    $widget->image_position = get_input('image_position');
+    $widget->setContent(get_input('content'), true);
     $widget->save();
-
-    $imageFiles = get_uploaded_files($_POST['image']);
-
-    if (get_input('deleteimage'))
-    {
-        $widget->setImages(null);
-    }
-    else if ($imageFiles)
-    {
-        $widget->setImages($imageFiles);
-    }
 
     if (!$prevContent && $widget->content)
     {
@@ -154,7 +121,7 @@ function save_widget_home($widget)
 {
     $org = $widget->getContainerEntity();
 
-    $mission = sanitize_html(get_input('content'));
+    $mission = get_input('content');
     if (!$mission)
     {
         throw new InvalidParameterException(elgg_echo("setup:mission:blank"));
@@ -181,13 +148,7 @@ function save_widget_home($widget)
 
     $org->save();
 
-    $widget->content = $mission;
-    $widget->setDataType(DataType::HTML, true);
-
-    if (!$widget->language)
-    {
-        $widget->language = guess_language($mission);
-    }
+    $widget->setContent($mission, true);
 
     $widget->included = get_input_array('included');
     $widget->zoom = get_input('map_zoom');

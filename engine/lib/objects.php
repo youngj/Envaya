@@ -71,6 +71,48 @@
             $this->save();
         }
 
+        public function setContent($content, $isHTML)
+        {
+            if ($isHTML)
+            {
+                $content = sanitize_html($content);
+            }
+
+            $this->content = $content;
+            $this->setDataType(DataType::HTML, $isHTML);
+
+            if ($isHTML)
+            {
+                $thumbnailUrl = get_thumbnail_src($content);
+
+                if ($thumbnailUrl != null)
+                {
+                    $this->setDataType(DataType::Image, $thumbnailUrl != null);
+                    $this->thumbnail_url = $thumbnailUrl;
+                }
+            }
+
+            if (!$this->language)
+            {
+                $this->language = guess_language($this->content);
+            }
+
+        }
+
+        public function renderContent()
+        {
+            $content = translate_field($this, 'content');
+
+            if ($this->hasDataType(DataType::HTML))
+            {
+                return $content; // html content should be sanitized when it is input!
+            }
+            else
+            {
+                return elgg_view('output/longtext', array('value' => $content));
+            }
+        }
+
         public function hasDataType($dataType)
         {
             return ($this->data_types & $dataType) != 0;

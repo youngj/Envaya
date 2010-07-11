@@ -68,6 +68,7 @@
         'feed' => "News",
         'feed:title' => "Latest updates",
         'feed:registered' => "%s joined Envaya.",
+        'feed:news' => "%s added a %s.",
         'feed:new_widget' => "%s created a %s page.",
         'feed:partnership' => "%s has a partnership with %s.",
         'feed:more' => "Read more",

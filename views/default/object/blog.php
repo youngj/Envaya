@@ -15,16 +15,7 @@
 
 <div class="blog_post">
     <?php
-
-        if ($entity->hasImage())
-        {
-            $imageSize = ($full) ? 'large' : 'small';
-            $imgLink = ($full) ? $nextUrl : $url;
-            echo "<a class='{$imageSize}BlogImageLink' href='$imgLink'><img src='{$entity->getImageURL($imageSize)}' /></a>";
-        }
-
         echo $entity->renderContent();
-
         echo "<div class='blog_date'>{$entity->getDateText()}</div>";
     ?>
     <div style='clear:both'></div>

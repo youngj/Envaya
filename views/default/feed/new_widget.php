@@ -8,6 +8,15 @@
     $widget = $item->getSubjectEntity();
     $widgetUrl = $widget->getURL();
 
+    if ($widget->hasImage())
+    {
+        echo "<a class='feed_image_link' href='$widgetUrl'><img src='{$widget->thumbnail_url}' /></a>";
+    }
+    else
+    {
+        echo "NO!";
+    }
+
     echo "<div style='padding-bottom:5px'>";
     echo sprintf(elgg_echo('feed:new_widget'),
         $mode == 'self' ? escape($org->name) : "<a class='feed_org_name' href='$orgUrl'>".escape($org->name)."</a>",
@@ -17,20 +26,10 @@
 
     $maxLength = 300;
 
-    $content = translate_field($widget,'content');
+    $content = $widget->renderContent();
 
-    echo "<div>";
-
-    if ($widget->data_types & DataType::HTML)
-    {
-        echo $content;
-    }
-    else
-    {
-        echo elgg_view('output/longtext',
-            array('value' => get_snippet($content, $maxLength))
-        );
-    }
+    echo "<div class='feed_snippet'>";
+    echo get_snippet($content, $maxLength);
 
     if (strlen($content) > $maxLength)
     {
