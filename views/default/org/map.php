@@ -29,7 +29,7 @@
 <?php echo elgg_echo("map:drag_pin"); ?>
 </label>
 
-<div id='map' style='width:<?php echo $width; ?>px;height:<?php echo $height; ?>px'></div>
+<div id='map' style='margin:0 auto;width:<?php echo $width; ?>px;height:<?php echo $height; ?>px'></div>
 <div id='infoOverlay'></div>
 <div id='loadingOverlay'><?php echo elgg_echo('loading') ?></div>
 
@@ -479,7 +479,7 @@ google.setOnLoadCallback(initialize);
         echo "<div>";
         echo "<a href='org/browse/?lat=$lat&long=$long&zoom=10'>";
 
-        echo "<img width='$width' height='$height' src='".get_static_map_url($lat, $long, $zoom, $width, $height)."' />";
+        echo "<img style='display:block;margin:0 auto;width='$width' height='$height' src='".get_static_map_url($lat, $long, $zoom, $width, $height)."' />";
         echo "</a>";
         echo "</div>";
     }

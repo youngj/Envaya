@@ -1,6 +1,6 @@
 <?php echo elgg_view("org/registerProgress", array('current' => 3   )) ?>
 
-<?php 
+<?php
     $org = get_loggedin_user();
 ?>
 
@@ -22,7 +22,7 @@
     'internalname' => 'mission',
     'trackDirty' => true,
     'value' => $org->getWidgetByName('home')->content
-)) ?>    
+)) ?>
 </div>
 
 
@@ -31,7 +31,7 @@
 <?php echo elgg_view('input/language', array(
     'internalname' => 'content_language',
     'value' => $org->language
-)) ?> 
+)) ?>
 <div class='help'>
 <?php echo elgg_echo('setup:language:help') ?>
 </div>
@@ -41,14 +41,14 @@
     <label><?php echo elgg_echo("setup:sector"); ?><br /></label>
     <?php
         echo elgg_view("input/checkboxes",array(
-            'internalname' => 'sector', 
-            'options' => Organization::getSectorOptions(), 
+            'internalname' => 'sector',
+            'options' => Organization::getSectorOptions(),
             'value' => $org->getSectors()));
     ?>
     <?php echo elgg_echo('setup:sector:other_specify') ?> <?php echo elgg_view('input/text', array(
     'internalname' => 'sector_other',
     'js' => 'style="width:200px"'
-)) ?>    
+)) ?>
 </div>
 
 
@@ -67,7 +67,7 @@
     'options_values' => regions_in_country($org->country),
     'empty_option' => elgg_echo('setup:region:blank'),
     'value' => $org->region
-)) ?>    
+)) ?>
 </div>
 
 </div>

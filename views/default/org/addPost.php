@@ -3,12 +3,11 @@
 
     ob_start();
 
-    echo elgg_view('input/longtext',
+    echo elgg_view('input/tinymce',
         array(
             'internalname' => 'blogbody',
-            'internalid' => 'post_plain',
-            'trackDirty' => true,
-            'js' => "style='height:112px'",
+            'internalid' => 'post_rich',
+            'trackDirty' => true
         )
     );
 
@@ -30,7 +29,7 @@
     ));
 
     ?>
-
+<!--
 <script type='text/javascript'>
 
 function showAttachImage($show)
@@ -60,11 +59,11 @@ function showAttachImage($show)
 }
 </script>
 
-
 <div id='attachControls'>
     <a href='javascript:void(0)' onclick='showAttachImage(true)'><img src='_graphics/attach_image.gif?v2' /></a>
     <a href='javascript:void(0)' onclick='showAttachImage(true)'><?php echo elgg_echo('dashboard:attach_image') ?></a>
 </div>
+
 <div id='attachImage' style='display:none'>
     <a class='attachImageClose' href='javascript:void(0)' onclick='showAttachImage(false)'></a>
     <span class='help'><?php echo elgg_echo('dashboard:select_image') ?></span>
@@ -78,6 +77,7 @@ function showAttachImage($show)
     )) ?>
 
 </div>
+-->
 
     <?php
 

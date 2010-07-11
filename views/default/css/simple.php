@@ -1,4 +1,5 @@
 <?php
+    $contentWidth = 500;
     include(__DIR__."/default.php");
 
     $graphicsDir = $vars['url'] . "_graphics/simple";
@@ -16,7 +17,7 @@ body
 
 .thin_column
 {
-    width:485px;
+    width:<?php echo $contentWidth - 15 ?>px;
 }
 
 #site_menu,

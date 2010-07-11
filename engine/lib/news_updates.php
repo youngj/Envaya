@@ -12,20 +12,34 @@ class NewsUpdate extends ElggObject
 
     public function save()
     {
-    	if (!$this->language)
-    	{
-    		$this->language = guess_language($this->content);
-    	}
+        if (!$this->language)
+        {
+            $this->language = guess_language($this->content);
+        }
 
-    	$isNew = (!$this->guid);
+        $isNew = (!$this->guid);
 
-		$res = parent::save();
+        $res = parent::save();
 
-		if ($res && $isNew)
-		{
-			post_feed_items($this->getContainerEntity(), 'news', $this);
-		}
-		return $res;
+        if ($res && $isNew)
+        {
+            post_feed_items($this->getContainerEntity(), 'news', $this);
+        }
+        return $res;
+    }
+
+    function renderContent()
+    {
+        $content = translate_field($this, 'content');
+
+        if ($this->hasDataType(DataType::HTML))
+        {
+            return $content; // html content should be sanitized when it is input!
+        }
+        else
+        {
+            return elgg_view('output/longtext', array('value' => $content));
+        }
     }
 
     public function getImageFile($size = '')

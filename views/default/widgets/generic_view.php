@@ -19,16 +19,7 @@
         echo sprintf(elgg_echo('widget:empty'), escape(elgg_echo("widget:{$widget->widget_name}")));
     }
 
-    $content = translate_field($widget, 'content');
-
-    if ($widget->data_types & DataType::HTML)
-    {
-        echo $content;
-    }
-    else
-    {
-        echo elgg_view('output/longtext', array('value' => $content));
-    }
+    echo $widget->renderContent();
 
     if ($widget->hasImage() && $imagePos == 'bottom')
     {

@@ -16,7 +16,7 @@ body
 
 .thin_column
 {
-    width:500px;
+    width:<?php echo $contentWidth ?>px;
 }
 
 .content_container .thin_column
@@ -28,7 +28,7 @@ body
 .header_preview
 {
     overflow:auto;
-    width:460px;
+    width:<?php echo $contentWidth - 40 ?>px;
     margin:5px 0px;
     border:1px solid #ccc;
 }
@@ -50,7 +50,7 @@ body
 #content_mid
 {
     margin:10px auto 10px auto;
-    width:480px;
+    width:<?php echo $contentWidth - 20 ?>px;
     background-color:white;
 }
 

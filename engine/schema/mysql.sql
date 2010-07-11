@@ -93,6 +93,22 @@ CREATE TABLE `objects_entity` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+
+CREATE TABLE `files_entity` (
+  `guid` bigint(20) unsigned  NOT NULL,
+  
+  `group_name` varchar(32) NOT NULL,
+  `filename` varchar(64) NOT NULL,
+  `width` int NULL,
+  `height` int NULL,
+  `size` varchar(32) NULL,
+  `mime` varchar(32) NULL,
+
+  PRIMARY KEY  (`guid`),
+  KEY `group_name` (`group_name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
 CREATE TABLE `translations` (
   `guid` bigint(20) unsigned  NOT NULL,
   

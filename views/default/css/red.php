@@ -1,8 +1,14 @@
 <?php
+    $contentWidth = 500;
     include(__DIR__."/default.php");
 
     $graphicsDir = $vars['url'] . "_graphics";
 ?>
+
+body
+{
+    background-color:#e7e2d7;
+}
 
 #content_top
 {
@@ -31,7 +37,7 @@
 
 .thin_column
 {
-    width:493px;
+    width:<?php echo $contentWidth - 7 ?>px;
 }
 
 #translate_bar

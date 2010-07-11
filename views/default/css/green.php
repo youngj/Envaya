@@ -17,7 +17,7 @@ body { background-color:white; }
 {
     border-top:1px solid #c4bfb5;
     border-bottom:1px solid #c4bfb5;
-    background:#e6e6e6 url("<?php echo $graphicsDir; ?>/section_header.gif") no-repeat left -5px;
+    background:#e6e6e6 url("<?php echo $graphicsDir; ?>/section_header.gif") repeat-x left -5px;
     height:21px;
 }
 

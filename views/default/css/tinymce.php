@@ -1,0 +1,11 @@
+<?php
+    include(__DIR__."/default.php");
+?>
+body
+{
+    padding:5px;
+}
+.last-paragraph
+{
+    margin-bottom:15px;
+}

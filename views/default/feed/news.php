@@ -19,6 +19,7 @@
         echo "<a class='feed_org_name' href='$orgUrl'>".escape($org->name)."</a>: ";
     }
 
+    /*
     $maxLength = 300;
 
     $content = translate_field($update,'content');
@@ -31,4 +32,6 @@
     {
         echo " <a class='feed_more' href='$url'>".elgg_echo('feed:more')."</a>";
     }
+    */
 
+    echo $update->renderContent();

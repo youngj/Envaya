@@ -21,6 +21,9 @@
         echo "<div>";
         echo "<em>".elgg_echo('org:mission')."</em>: ";
 
+        echo $home->renderContent();
+
+        /*
         echo elgg_view('output/longtext',
             array('value' => get_snippet($content, $maxLength))
         );
@@ -29,6 +32,7 @@
         {
             echo " <a class='feed_more' href='$orgUrl'>".elgg_echo('feed:more')."</a>";
         }
+        */
         echo "</div>";
 
         echo "<div>";

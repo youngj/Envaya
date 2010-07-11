@@ -1,5 +1,9 @@
 <?php
     $graphicsDir = $vars['url'] . "_graphics";
+    if (!isset($contentWidth))
+    {
+        $contentWidth = 600;
+    }
 ?>
 
 html, body, div, span, applet, object, iframe,
@@ -57,7 +61,6 @@ body
     text-align:left;
     margin:0 auto;
     padding:0;
-    background: #dedede;
     font: 80%/1.4  "Lucida Grande", Verdana, sans-serif;
     color: #333333;
 }
@@ -337,7 +340,7 @@ input[type="submit"] {
 .input-tags,
 .input-url,
 .input-textarea {
-    width:448px;
+    width:<?php echo $contentWidth - 52 ?>px;
     margin-top:4px;
 }
 
@@ -689,7 +692,7 @@ a.dropdown_item:hover
 
 .thin_column
 {
-    width:500px;
+    width:<?php echo $contentWidth ?>px;
     margin:0 auto;
 }
 
@@ -827,7 +830,7 @@ a.selected
     background:#b9e9ff;
     color:#000000;
     padding:3px;
-    width:483px;
+    width:<?php echo $contentWidth - 17 ?>px;
     margin:0 auto;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -856,11 +859,6 @@ a.selected
 {
     border-color:#CC0000;
     background:#ffcccc;
-}
-
-body
-{
-    background-color:#e7e2d7;
 }
 
 .padded
@@ -892,7 +890,7 @@ body
 .feed_content
 {
     float:left;
-    width:400px;
+    width:<?php echo $contentWidth - 100 ?>px;
 }
 
 .feed_more
@@ -941,11 +939,15 @@ a.smallBlogImageLink:hover
     display:block;
 }
 
+<?php
+    $timelineWidth = $contentWidth - 160;
+?>
+
 #blogTimeline
 {
-    margin:5px 0px 5px 0px;
+    margin:0px 0px 5px 0px;
     position:relative;
-    width:460px;
+    width:<?php echo $timelineWidth ?>px;
     height:50px;
 }
 
@@ -965,7 +967,7 @@ a.smallBlogImageLink:hover
 
 #blogTimelineRight
 {
-    left:431px;
+    left:<?php echo $timelineWidth - 29 ?>px;
     width:13px;
     background:url(<?php echo $graphicsDir ?>/timeline.gif) no-repeat left -52px;
 }
@@ -973,7 +975,7 @@ a.smallBlogImageLink:hover
 #blogTimelineLine
 {
     left:31px;
-    width:400px;
+    width:<?php echo $timelineWidth - 60 ?>px;
     background:url(<?php echo $graphicsDir ?>/timeline.gif) repeat-x left top;
 }
 
@@ -1045,7 +1047,7 @@ a.smallBlogImageLink:hover
 
 #blogNavNext
 {
-    left:440px;
+    left:<?php echo $timelineWidth - 20 ?>px;
     background: url(<?php echo $graphicsDir ?>/arrows_sm.gif) no-repeat right top;
 }
 
@@ -1524,6 +1526,35 @@ a.photoDelete:hover
     background-position:left top;
 }
 
+.mapBucketControls
+{
+    font-weight:bold;
+    width:350px;
+}
+
+.last-paragraph
+{
+    margin-bottom:0;
+}
+
+.image_left
+{
+    float:left;
+    margin-right:8px;
+    margin-bottom:8px;
+}
+.image_right
+{
+    float:right;
+    margin-left:8px;
+    margin-bottom:8px;
+}
+.image_center
+{
+    display:block;
+    margin:0 auto;
+}
+
 .modalShadow
 {
     position:absolute;
@@ -1573,9 +1604,13 @@ a.photoDelete:hover
     display:block;
 }
 
-.mapBucketControls
+.modalImageFrame
 {
-    font-weight:bold;
-    width:350px;
+    width:370px;
+    height:1px;
 }
 
+.modalImageFrameLoading
+{
+    height:49px;
+}

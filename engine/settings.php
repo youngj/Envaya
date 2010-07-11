@@ -26,7 +26,7 @@
 
     $CONFIG->s3_key = 'AKIAJAJKJDBD2RSGAILQ';
     $CONFIG->s3_private = 'E9s2sGLEKqJyCG6WE4PbE/JMBOuLcZ4DJ2v1hyH4';
-    $CONFIG->s3_bucket = 'envaya_dev';
+    $CONFIG->s3_bucket = 'envayadev';
 
     $CONFIG->translations = array(
         'en' => array('en' => 'English'),
@@ -40,7 +40,7 @@
     $CONFIG->dataroot = dirname($CONFIG->path). "/elgg-data/";
 
     $CONFIG->simplecache_enabled = 0;
-    $CONFIG->simplecache_version = 41;
+    $CONFIG->simplecache_version = 42;
 
     $CONFIG->cookie_domain = null;
     $CONFIG->viewpath_cache_enabled = 0;

@@ -2,9 +2,7 @@
 
     $widget = $vars['widget'];
 
-    $content = elgg_view('output/longtext', array('value' => translate_field($widget, 'content')));
-
-    echo elgg_view_layout('section', elgg_echo("org:mission"), $content);
+    echo elgg_view_layout('section', elgg_echo("org:mission"), $widget->renderContent());
 
     $org = $vars['widget']->getContainerEntity();
 

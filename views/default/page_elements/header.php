@@ -3,18 +3,18 @@
     /**
      * Elgg pageshell
      * The standard HTML header that displays across the site
-     * 
+     *
      * @package Elgg
      * @subpackage Core
      * @author Curverider Ltd
      * @link http://elgg.org/
-     * 
+     *
      * @uses $vars['config'] The site configuration settings, imported
      * @uses $vars['title'] The page title
      * @uses $vars['body'] The main content of the page
      * @uses $vars['messages'] A 2d array of various message registers, passed from system_messages()
      */
-     
+
      // Set title
         if (empty($vars['title'])) {
             $title = $vars['config']->sitename;
@@ -23,7 +23,7 @@
         } else {
             $title = $vars['config']->sitename . ": " . $vars['title'];
         }
-        
+
         global $autofeed;
         if (isset($autofeed) && $autofeed == true) {
             $url = $url2 = full_url();
@@ -38,15 +38,15 @@
                 $url2 .= "?view=opendd";
             }
             $feedref = <<<END
-            
+
     <link rel="alternate" type="application/rss+xml" title="RSS" href="{$url}" />
     <link rel="alternate" type="application/odd+xml" title="OpenDD" href="{$url2}" />
-            
+
 END;
         } else {
             $feedref = "";
         }
-        
+
         $cacheVersion = $vars['config']->simplecache_version;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -54,25 +54,25 @@ END;
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title><?php echo escape($title); ?></title>
-    
+
     <base href='<?php echo $vars['url'] ?>' />
 
-    <?php 
+    <?php
         $theme = get_theme();
-        
+
         echo  '<link rel="stylesheet" href="_css/'.$theme.'.css?v='.$cacheVersion.'" type="text/css" />';
-    
+
         echo $feedref;
     ?>
-    
+
     <!--[if IE 6]>
     <style type='text/css'>
-    #site_menu a, 
+    #site_menu a,
     #edit_pages_menu a { width:10px; }
     </style>
     <![endif]-->
 
-    
+
 <script type='text/javascript'>
 
 function Class() {}
@@ -82,33 +82,33 @@ function makeClass($base)
     var $class = function() { this.init.apply(this, arguments); };
     var $proto = function() {};
     $proto.prototype = $base.prototype;
-    $class.prototype = new $proto;    
+    $class.prototype = new $proto;
     return $class;
 }
 
-function addEvent(elem, type, fn) 
+function addEvent(elem, type, fn)
 {
-    if (elem.addEventListener) 
+    if (elem.addEventListener)
     {
         elem.addEventListener(type, fn, false);
-    } 
-    else 
+    }
+    else
     {
         elem.attachEvent('on' + type, fn);
-    }    
-}    
+    }
+}
 
-function removeEvent(elem, type, fn)    
+function removeEvent(elem, type, fn)
 {
-    if (elem.removeEventListener) 
+    if (elem.removeEventListener)
     {
         elem.removeEventListener(type, fn, false);
-    } 
-    else 
+    }
+    else
     {
         elem.detachEvent('on'+type, fn);
-    }        
-}    
+    }
+}
 
 var _jsonCache = {};
 
@@ -118,18 +118,18 @@ function fetchJson(url, fn)
     {
         setTimeout(function() {
             fn(_jsonCache[url]);
-        }, 1);    
+        }, 1);
         return null;
     }
     else
     {
         var xhr = (window.ActiveXObject && !window.XMLHttpRequest) ? new ActiveXObject("Msxml2.XMLHTTP") : new XMLHttpRequest();
-        xhr.onreadystatechange = function() 
+        xhr.onreadystatechange = function()
         {
             if(xhr.readyState == 4 && xhr.status == 200)
-            {            
+            {
                 var $data;
-                eval("$data = " + xhr.responseText);    
+                eval("$data = " + xhr.responseText);
                 _jsonCache[url] = $data;
                 fn($data);
             }
@@ -146,7 +146,7 @@ function bind(obj, fn)
         return fn(obj);
     };
 }
-  
+
 function removeChildren(elem)
 {
     while (elem.firstChild)
@@ -159,26 +159,33 @@ function removeChildren(elem)
 window.dirty = false;
 function setDirty($dirty)
 {
-    if ($dirty)
-    {    
+    if ($dirty && !window.submitted)
+    {
         if (!window.onbeforeunload)
         {
             window.onbeforeunload = function() {
                 return <?php echo json_encode(elgg_echo("page:dirty")) ?>;
             };
-        }    
-    }    
+        }
+    }
     else
-    {        
+    {
         window.onbeforeunload = null;
     }
     window.dirty = $dirty;
-    
+
+    return true;
+}
+
+function setSubmitted()
+{
+    setDirty(false);
+    window.submitted = true;
     return true;
 }
 
 </script>
-    
+
 </head>
 
 <body class='<?php echo get_context(); ?>'>

@@ -171,14 +171,11 @@
             }
             else
             {
-                foreach ($imageFiles as $size => $srcFile)
+                foreach ($imageFiles as $size => $filedata)
                 {
-                    $srcFile = $imageFiles[$size]['file'];
-
+                    $srcFile = $filedata['file'];
                     $destFile = $this->getIconFile($size);
-
                     $srcFile->copyTo($destFile);
-                    $srcFile->delete();
                 }
 
                 $this->custom_icon = true;
@@ -211,15 +208,11 @@
             }
             else
             {
-                foreach ($imageFiles as $size => $srcFile)
+                foreach ($imageFiles as $size => $filedata)
                 {
-                    //var_dump($imageFiles);
-                    $srcFile = $imageFiles[$size]['file'];
-
+                    $srcFile = $filedata['file'];
                     $destFile = $this->getHeaderFile($size);
-
                     $srcFile->copyTo($destFile);
-                    $srcFile->delete();
                 }
 
                 $this->custom_header = json_encode(array(

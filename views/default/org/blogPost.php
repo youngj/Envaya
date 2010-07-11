@@ -1,25 +1,24 @@
 <div class='section_content'>
 <?php
-  
+
     $entity = $vars['entity'];
-    $url = $entity->getURL();        
+    $url = $entity->getURL();
     $org = $entity->getRootContainerEntity();
-    $blogDates = $org->getBlogDates();    
+    $blogDates = $org->getBlogDates();
 ?>
 
 <div class='view_toggle'>
     <a href='<?php echo $org->getURL() ?>/news'><?php echo elgg_echo('list') ?></a> | <strong><?php echo elgg_echo('blog:timeline') ?></strong>
 </div>
-<div style='clear:both'></div>
 <div class='padded'>
 
-<?php 
+<?php
 
-if (sizeof($blogDates) > 1) 
-{ 
+if (sizeof($blogDates) > 1)
+{
 
-?>    
-        
+?>
+
 <div id='blogTimeline'>
 <a id='blogNavPrev' href='<?php echo "$url/prev"; ?>'></a>
 <a id='blogNavNext' href='<?php echo "$url/next"; ?>'></a>
@@ -33,7 +32,6 @@ if (sizeof($blogDates) > 1)
 </div>
 
 <script type='text/javascript'>
-            
 var blogDates = <?php echo json_encode($blogDates) ?>;
 
 var timeline = document.getElementById('blogTimeline');
@@ -45,8 +43,7 @@ var now = new Date();
 var timeSpan = lastTime - firstTime;
 var orgUrl = <?php echo json_encode($org->getURL()) ?>;
 
-var width = 400;
-
+var width = 380;
 function getPosForTime(time, elemWidth)
 {
     var posFraction = (time - firstTime) / timeSpan;
@@ -60,12 +57,12 @@ function makeLabelForDate(date)
     date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
     var dateTime = date.getTime() / 1000;
-    
+
     if (labels[dateTime])
     {
         return;
     }
-    
+
     labels[dateTime] = 1;
 
     if (dateTime <= lastTime && dateTime >= firstTime)
@@ -78,23 +75,23 @@ function makeLabelForDate(date)
         var label = document.createElement('div');
             label.className = 'timelineLabel';
             label.style.left = getPosForTime(dateTime, 70);
-            
+
             var text = (date.getMonth() + 1) + "/" + date.getDate();
-            
+
             if (date.getFullYear() != new Date().getFullYear())
             {
                 text = date.getFullYear() % 100 + "/" . text;
-            }    
-            
+            }
+
             label.appendChild(document.createTextNode(text));
             timeline.appendChild(label);
-    }    
-}    
+    }
+}
 
 makeLabelForDate(new Date((firstTime + 86400) * 1000));
 makeLabelForDate(new Date(lastTime * 1000));
 
-var cur = document.createElement('div');    
+var cur = document.createElement('div');
     cur.className = 'timelineCur';
     cur.style.left = getPosForTime(<?php echo json_encode($entity->time_created) ?>, 13);
     timeline.appendChild(cur);
@@ -110,15 +107,15 @@ function showPreview(post)
 {
     removeChildren(hoverTitle);
     hoverTitle.appendChild(document.createTextNode(post.dateText));
-    
+
     if (post.imageURL)
     {
         var img = document.createElement('img');
         img.src = post.imageURL;
         hoverContent.appendChild(img);
     }
-    
-    var div = document.createElement('div');    
+
+    var div = document.createElement('div');
     div.innerHTML = post.snippetHTML;
     hoverContent.appendChild(div);
 }
@@ -127,37 +124,37 @@ function showPreview(post)
 /*@cc_on
 setTimeout(function(){
     hoverPost.style.display = 'block';
-    hoverPost.style.display = 'none';    
+    hoverPost.style.display = 'none';
 }, 1);
 @*/
 
 function addTimelineLink(blogDate)
-{    
+{
     var link = document.createElement('a');
     link.href = orgUrl + "/post/" + blogDate.guid;
     link.className = 'timelineLink';
-    link.style.left = getPosForTime(blogDate.time_created, 4);   
-        
+    link.style.left = getPosForTime(blogDate.time_created, 4);
+
     timeline.appendChild(link);
-        
-    addEvent(link, 'mouseover', function() {    
+
+    addEvent(link, 'mouseover', function() {
 
         if (previewId != blogDate.guid)
         {
             if (previewXHR)
             {
-                previewXHR.abort();                
+                previewXHR.abort();
                 previewXHR = null;
             }
             previewXHR = fetchJson(orgUrl + "/post/" + blogDate.guid + "/preview", showPreview);
         }
-        
+
         hoverPost.style.left = link.offsetLeft + "px";
         removeChildren(hoverTitle);
-        
+
         hoverTitle.appendChild(document.createTextNode(<?php echo json_encode(elgg_echo('loading')) ?>));
         removeChildren(hoverContent);
-        hoverPost.style.display = 'block';                
+        hoverPost.style.display = 'block';
     });
     addEvent(link, 'mouseout', function() {
         hoverPost.style.display = 'none';
@@ -169,11 +166,10 @@ for (var i = 0; i < blogDates.length; i++)
     addTimelineLink(blogDates[i]);
 }
 
-
 </script>
 
 
-<?php  
+<?php
 }
 
 echo elgg_view_entity($entity, true);

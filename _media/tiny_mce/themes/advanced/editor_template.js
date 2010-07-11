@@ -163,7 +163,7 @@
             t.settings = s = extend({
                 theme_advanced_path : true,
                 theme_advanced_toolbar_location : 'top',
-                theme_advanced_buttons1 : "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link,|,formatselect", // "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect",
+                theme_advanced_buttons1 : "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link,image,|,formatselect", // "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect",
                 theme_advanced_buttons2 : '', //"bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code",
                 theme_advanced_buttons3 : '', //"hr,removeformat,visualaid,|,sub,sup,|,charmap",
                 theme_advanced_blockformats : "p,pre,h1,h2,h3",
@@ -1219,23 +1219,52 @@
         },
 
         _mceImage : function(ui, val) {
-            var ed = this.editor;
+                
+            var ed = this.editor;   
+            
+            var e = ed.selection.getNode();
+            var imageNode = (e && e.nodeName == 'IMG') ? e : null;
+            var src = imageNode ? e.src : '';
+            var pos = '';
+            if (imageNode)
+            {
+                var match = /image_(\w+)/.exec(imageNode.className);
+                if (match)
+                {
+                    pos = match[1];
+                }
+            }            
+            
+            var iframeName = 'modalImageFrame_'+Math.ceil(Math.random()*1000000);
+            
+            var range = ed.selection.getRng();            
+            
+            var iframe = elem('iframe',
+                 {
+                    src:'org/selectImage?r='+Math.random()+"&src="+escape(src)+"&pos="+escape(pos)+"&frameId="+iframeName,
+                    scrolling:'no',
+                    frameBorder:'0',
+                    border:'0',
+                    className:'modalImageFrame',
+                    name:iframeName,
+                    id:iframeName
+                 }                  
+             );
 
-            var imageBox = createModalBox('Edit Image',
+            var imageBox = createModalBox(                
+                ed.getLang(imageNode ? 'advanced.image_edit' : 'advanced.image_insert'),
                      elem('div',
                          {className:'modalBody'},
-                         elem('div',
-                             {className:'linkText'},
-                             'Image: '                             
-                         ),
+                         elem('div', {id: iframeName + "_loading", className:'modalImageFrameLoading'}, ed.getLang('advanced.loading')),
+                         iframe,
                          elem('div',
                              {className:'linkButtons'},
-                             elem('input', {type:'button', value:'OK',
+                             elem('input', {type:'button', value:ed.getLang('advanced.ok'),
                                  click: function() {
                                     saveChanges(); 
                                  }
                              }),
-                             elem('input', {type:'button', value:'Cancel',
+                             elem('input', {type:'button', value:ed.getLang('advanced.cancel'),
                                  click: function() { cancel(); }
                              })
                          )    
@@ -1245,15 +1274,50 @@
 
             function saveChanges()
             {
+                ed.selection.setRng(range);
+            
+                var iframeWindow = window.frames[iframeName];
+                
+                var selectedImage = iframeWindow.getSelectedImage();
+                
+                if (selectedImage)
+                {
+                    var pos = iframeWindow.getSelectedPosition();
+                                                           
+                    var imgArgs = {
+                        src: selectedImage.url,
+                        width: selectedImage.width,
+                        height: selectedImage.height,
+                        'class': 'image_' + pos
+                    };
+                
+                    if (!imageNode)
+                    {
+                        ed.execCommand('mceInsertContent', false, '<img id="__mce_tmp" />', {skip_undo : 1});
+                        ed.dom.setAttribs('__mce_tmp', imgArgs);
+                        ed.dom.setAttrib('__mce_tmp', 'id', '');
+                        ed.undoManager.add();                
+                    }
+                    else
+                    {
+                        ed.dom.setAttribs(imageNode, imgArgs);
+                        ed.execCommand('mceRepaint');
+                    }                    
+                }
+            
                 imageBox.parentNode.removeChild(imageBox); 
-            }                        
-                          
+            }
+                                      
             function cancel()
             {
                 imageBox.parentNode.removeChild(imageBox); 
             }
             
             document.body.appendChild(imageBox);        
+
+            setTimeout(function() {
+                iframe.focus();
+            }, 1);
 
             /*
             // Internal image object like a flash placeholder
@@ -1276,17 +1340,27 @@
 
             var content = ed.selection.getContent({format: 'text'});
             
-            var e = ed.dom.getParent(ed.selection.getNode(), 'A');
+            var selectedNode = ed.selection.getNode();
+            
+            var e = ed.dom.getParent(selectedNode, 'A');
+            var imageLink = selectedNode && selectedNode.nodeName == 'IMG';
             
             var range = ed.selection.getRng();
             
             var textField = elem('input', {type:'text', value:(e ? (e.innerText || e.textContent || '') : content)});
+            
+            var textDiv = imageLink ? elem('div') : elem('div',
+                {className:'linkText'},
+                elem('h3', ed.getLang('advanced.link_text')),
+                textField
+            );
+            
             var urlField = elem('input', {
                 type:'text',       
                 value:(e ? e.href : '')
             });
             var linkBox = createModalBox(
-                ed.getLang('advanced.link_desc'),
+                ed.getLang(e ? 'advanced.link_edit' : 'advanced.link_insert'),
                     elem('div',
                         {className:'modalBody'},
                         elem('div',
@@ -1316,11 +1390,7 @@
                                 )
                             )
                         ), 
-                        elem('div',
-                            {className:'linkText'},
-                            elem('h3', ed.getLang('advanced.link_text')),
-                            textField
-                        ),                        
+                        textDiv,
                         elem('div',
                             {className:'linkButtons'},
                             elem('input', {type:'submit', value:ed.getLang('advanced.ok'),
@@ -1339,7 +1409,7 @@
             
             function saveChanges()
             {
-                ed.selection.setRng(range);                                                                        
+                ed.selection.setRng(range);
 
                 var url = urlField.value;
 
@@ -1366,9 +1436,14 @@
 
                     if (e)
                     {
-                        e.href = url;                                        
-                        removeChildren(e);
-                        e.appendChild(ed.getDoc().createTextNode(textField.value || url));
+                        e.href = url;  
+                        e.setAttribute('_mce_href', url);
+                        
+                        if (!imageLink)
+                        {
+                            removeChildren(e);
+                            e.appendChild(ed.getDoc().createTextNode(textField.value || url));
+                        }    
                     }    
                 }    
                 else if (e)

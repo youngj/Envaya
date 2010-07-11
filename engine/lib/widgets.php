@@ -41,6 +41,20 @@ class Widget extends ElggObject
         return elgg_view("widgets/generic_edit", array('widget' => $this));
     }
 
+    function renderContent()
+    {
+        $content = translate_field($this, 'content');
+
+        if ($this->hasDataType(DataType::HTML))
+        {
+            return $content; // html content should be sanitized when it is input!
+        }
+        else
+        {
+            return elgg_view('output/longtext', array('value' => $content));
+        }
+    }
+
     function getURL()
     {
         $org = $this->getContainerEntity();
@@ -92,9 +106,9 @@ class Widget extends ElggObject
     static function getImageSizes()
     {
         return array(
-            'small' => '100x150',
-            'medium' => '200x300',
-            'large' => '450x450',
+            'small' => '150x150',
+            'medium' => '260x260',
+            'large' => '520x520',
         );
     }
 
@@ -108,8 +122,8 @@ function save_widget($widget)
 {
     $prevContent = $widget->content;
 
-    $widget->content = get_input('content'); //sanitize_html(get_input('content'));
-    //$widget->data_types |= DataType::HTML;
+    $widget->content = sanitize_html(get_input('content'));
+    $widget->setDataType(DataType::HTML, true);
 
     if (!$widget->language)
     {
@@ -140,7 +154,7 @@ function save_widget_home($widget)
 {
     $org = $widget->getContainerEntity();
 
-    $mission = get_input('content');
+    $mission = sanitize_html(get_input('content'));
     if (!$mission)
     {
         throw new InvalidParameterException(elgg_echo("setup:mission:blank"));
@@ -168,6 +182,7 @@ function save_widget_home($widget)
     $org->save();
 
     $widget->content = $mission;
+    $widget->setDataType(DataType::HTML, true);
 
     if (!$widget->language)
     {
