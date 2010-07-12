@@ -1,6 +1,8 @@
 <?php
 
     $org_guid = get_input('org_guid');
+    // $widget passed from start.php
+
     set_context('orgprofile');
 
     global $autofeed;
@@ -25,7 +27,7 @@
         }
         else if (!$widget->isActive())
         {
-            not_found();
+            org_page_not_found($org);
         }
         else
         {

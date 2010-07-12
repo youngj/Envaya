@@ -8,7 +8,8 @@ class Translation extends ElggObject
         'hash' => '',
         'property' => '',
         'lang' => '',
-        'value' => ''
+        'value' => '',
+        'html' => 0
     );
 
     public function save()
@@ -70,7 +71,7 @@ class TranslateMode
     const All = 3;
 }
 
-function translate_field($obj, $field)
+function translate_field($obj, $field, $isHTML = false)
 {
     $text = trim($obj->$field);
     if (!$text)
@@ -97,11 +98,11 @@ function translate_field($obj, $field)
         }
 
         $translateMode = get_translate_mode();
-        $translation = lookup_translation($obj, $field, $origLang, $viewLang, $translateMode);
+        $translation = lookup_translation($obj, $field, $origLang, $viewLang, $translateMode, $isHTML);
 
         if ($obj->canEdit())
         {
-            $CONFIG->translations_available['translatable_props'][] = array($obj->guid, $field);
+            $CONFIG->translations_available['translatable_props'][] = array($obj->guid, $field, $isHTML ? 1 : 0);
         }
 
         if ($translation && $translation->owner_guid)
@@ -134,7 +135,7 @@ function translate_field($obj, $field)
     return $text;
 }
 
-function lookup_translation($obj, $prop, $origLang, $viewLang, $translateMode = TranslateMode::ManualOnly)
+function lookup_translation($obj, $prop, $origLang, $viewLang, $translateMode = TranslateMode::ManualOnly, $isHTML = false)
 {
     $where = array();
     $args = array();
@@ -150,6 +151,9 @@ function lookup_translation($obj, $prop, $origLang, $viewLang, $translateMode = 
 
     $where[] = "container_guid=?";
     $args[] = $obj->guid;
+
+    $where[] = "html=?";
+    $args[] = $isHTML ? 1 : 0;
 
     $entities = get_entities_by_condition('translations', $where, $args, '', 1);
 
@@ -178,6 +182,7 @@ function lookup_translation($obj, $prop, $origLang, $viewLang, $translateMode = 
                     $fakeTrans->property = $prop;
                     $fakeTrans->lang = $viewLang;
                     $fakeTrans->value = $text;
+                    $fakeTrans->html = $isHTML;
                     return $fakeTrans;
                 }
             }
@@ -197,6 +202,7 @@ function lookup_translation($obj, $prop, $origLang, $viewLang, $translateMode = 
             $trans->property = $prop;
             $trans->lang = $viewLang;
             $trans->value = $text;
+            $trans->html = $isHTML;
             $trans->save();
             return $trans;
         }
@@ -250,14 +256,14 @@ function get_auto_translation($text, $origLang, $viewLang)
 
 function guess_language($text)
 {
-	if (!$text)
-	{
-		return null;
-	}
+    if (!$text)
+    {
+        return null;
+    }
 
-	$ch = curl_init();
+    $ch = curl_init();
 
-	$url = "ajax.googleapis.com/ajax/services/language/detect?v=1.0&q=".urlencode(get_snippet($text, 500));
+    $url = "ajax.googleapis.com/ajax/services/language/detect?v=1.0&q=".urlencode(get_snippet($text, 500));
 
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_REFERER, "www.envaya.org");
@@ -269,9 +275,9 @@ function guess_language($text)
 
     $res = json_decode($json);
 
-	$lang = $res->responseData->language;
+    $lang = $res->responseData->language;
 
-	global $CONFIG;
+    global $CONFIG;
 
     if (!$lang || !isset($CONFIG->translations[$lang]))
     {

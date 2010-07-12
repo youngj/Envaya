@@ -12,13 +12,18 @@ foreach ($props as $propStr)
     $guidProp = explode('.', $propStr);
     $guid = $guidProp[0];
     $prop = $guidProp[1];
+    $isHTML = (int)$guidProp[2];
 
     $entity = get_entity($guid);
 
     if ($entity && $entity->canEdit() && $entity->get($prop))
     {
         $area2[] = elgg_view("translation/translate",
-            array('entity' => $entity, 'property' => $prop, 'from' => $from));
+            array(
+                'entity' => $entity,
+                'property' => $prop,
+                'isHTML' => $isHTML,
+                'from' => $from));
     }
 }
 

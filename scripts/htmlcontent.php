@@ -3,11 +3,13 @@
     require_once("scripts/cmdline.php");
     require_once("engine/start.php");
 
+    access_show_hidden_entities(true);
+
     $newsUpdates = NewsUpdate::filterByCondition(
         array('data_types = ?'),
         array(DataType::Image),
         '',
-        20
+        100
     );
 
     $s3 = get_s3();
@@ -48,7 +50,7 @@
 
         echo " converting to html\n";
 
-        $htmlContent = $newsUpdate->renderContent();
+        $htmlContent = elgg_view('output/longtext', array('value' => $newsUpdate->content));
         $class = $htmlContent ? "" : " class='last-paragraph'";
         $htmlContent = "<p$class><img class='image_center' src=\"{$large->getURL()}\" /></p>{$htmlContent}";
 
@@ -85,7 +87,7 @@
 
         echo " converting to html\n";
 
-        $htmlContent = $widget->renderContent();
+        $htmlContent = elgg_view('output/longtext', array('value' => $widget->content));
 
         $imagePos = $widget->image_position;
 
@@ -106,4 +108,57 @@
 
         $widget->setContent($htmlContent, true);
         $widget->save();
+    }
+
+
+    $newsUpdates = NewsUpdate::filterByCondition(
+        array('data_types = 0', "content <> ''"),
+        array(),
+        '',
+        100
+    );
+
+    foreach ($newsUpdates as $newsUpdate)
+    {
+        echo "{$newsUpdate->getURL()}:\n";
+        echo " converting to html\n";
+        $htmlContent = elgg_view('output/longtext', array('value' => $newsUpdate->content));
+        $newsUpdate->setContent($htmlContent, true);
+        $newsUpdate->save();
+    }
+
+    $widgets = Widget::filterByCondition(
+        array('data_types = 0', "content <> ''", "(widget_name = 'history' or widget_name = 'projects' or widget_name = 'home')"),
+        array(),
+        '',
+        200
+    );
+
+    foreach ($widgets as $widget)
+    {
+        echo "{$widget->getURL()}:\n";
+        echo " converting to html\n";
+        $htmlContent = elgg_view('output/longtext', array('value' => $widget->content));
+        $widget->setContent($htmlContent, true);
+        $widget->save();
+    }
+
+    $translations = Translation::filterByCondition(
+        array('html=0', "property='content'"),
+        array(),
+        '',
+        100
+    );
+
+    foreach ($translations as $translation)
+    {
+        //echo "$translation->container_guid\n";
+        $container = $translation->getContainerEntity();
+        if ($container)
+        {
+            echo "{$translation->getContainerEntity()->getURL()}\n";
+            $translation->value = elgg_view('output/longtext', array('value' => $translation->value));
+            $translation->html = 1;
+            $translation->save();
+        }
     }

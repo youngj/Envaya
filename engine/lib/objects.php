@@ -77,9 +77,13 @@
             {
                 $content = sanitize_html($content);
             }
+            else
+            {
+                $content = elgg_view('output/longtext', array('value' => $content));
+            }
 
             $this->content = $content;
-            $this->setDataType(DataType::HTML, $isHTML);
+            $this->setDataType(DataType::HTML, true);
 
             if ($isHTML)
             {
@@ -96,14 +100,15 @@
             {
                 $this->language = guess_language($this->content);
             }
-
         }
 
         public function renderContent()
         {
-            $content = translate_field($this, 'content');
+            $isHTML = $this->hasDataType(DataType::HTML);
 
-            if ($this->hasDataType(DataType::HTML))
+            $content = translate_field($this, 'content', $isHTML);
+
+            if ($isHTML)
             {
                 return $content; // html content should be sanitized when it is input!
             }

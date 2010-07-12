@@ -79,7 +79,7 @@ if (page_is_translatable())
             $urlProps = array();
             foreach ($properties as $objProp)
             {
-                $urlProps[] = "prop[]={$objProp[0]}.{$objProp[1]}";
+                $urlProps[] = "prop[]={$objProp[0]}.{$objProp[1]}.{$objProp[2]}";
             }
 
             $escUrl = urlencode($_SERVER['REQUEST_URI']);

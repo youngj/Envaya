@@ -116,6 +116,7 @@ CREATE TABLE `translations` (
   `property` varchar(32) NOT NULL,
   `lang` varchar(4) NOT NULL,
   `value` text NOT NULL,
+  `html` tinyint not null default 0,
   
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

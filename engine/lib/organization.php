@@ -411,6 +411,18 @@ function googlegeocoder_geocode($hook, $entity_type, $returnvalue, $params)
     }
 }
 
+
+function org_page_not_found($org)
+{
+    set_context('orgprofile');
+    set_theme($org->theme ?: 'green');
+    $title = elgg_echo('page:notfound');
+    $body = org_view_body($org, $title, "<div class='section_content padded'>".elgg_echo('page:notfound:details')."</div>");
+    header("HTTP/1.1 404 Not Found");
+    page_draw($title, $body);
+    exit;
+}
+
 function org_view_body($org, $subtitle, $area2, $area3 = '')
 {
     if ($org->custom_header)

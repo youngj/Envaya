@@ -16,11 +16,8 @@
     {
         $maxLength = 500;
 
-        $content = translate_field($home,'content');
-
         echo "<div class='feed_snippet'>";
         echo "<em>".elgg_echo('org:mission')."</em>: ";
-
 
         $content = $home->renderContent();
         $snippet = get_snippet($content, $maxLength);

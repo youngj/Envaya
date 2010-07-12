@@ -52,6 +52,7 @@
             $options = array();
         }
         $options['Cache.SerializerPath'] = $CONFIG->dataroot;
+        $options['AutoFormat.Linkify'] = true;
 
         $purifier = new HTMLPurifier($options);
         return $purifier->purify( $html );

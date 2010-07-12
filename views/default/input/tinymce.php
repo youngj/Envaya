@@ -2,9 +2,11 @@
     $value = $vars['value'];
     $valueIsHTML = isset($vars['valueIsHTML']) ? $vars['valueIsHTML'] : true;
     $internalname = $vars['internalname'];
+    $widthCSS = @$vars['width'] ? "width:{$vars['width']}px;" : '';
+    $heightCSS = @$vars['height'] ? "height:{$vars['height']}px;" : '';
 
     global $TINYMCE_INCLUDE_COUNT;
-    if (!isset($SWFUPLOAD_INCLUDE_COUNT))
+    if (!isset($TINYMCE_INCLUDE_COUNT))
     {
         $TINYMCE_INCLUDE_COUNT = 0;
     }
@@ -31,7 +33,7 @@
         'internalname' => $internalname,
         'internalid' => "content_html$TINYMCE_INCLUDE_COUNT",
         'trackDirty' => true,
-        'js' => "style='display:none'",
+        'js' => "style='display:none;{$widthCSS}{$heightCSS}'",
         'value' => $valueIsHTML ? $value : elgg_view('output/longtext', array('value' => $value))));
 ?>
 

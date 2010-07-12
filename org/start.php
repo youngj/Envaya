@@ -93,7 +93,8 @@ function org_profile_page_handler($page)
                     case "prev":
                         set_input("delta", -1);
                         return include(__DIR__."/postRedirect.php");
-                    default:        return include(__DIR__."/blogPost.php");
+                    default:
+                        return include(__DIR__."/blogPost.php");
                 }
             default:
                 break;
@@ -116,7 +117,7 @@ function org_profile_page_handler($page)
             }
             else
             {
-                return not_found();
+                return org_page_not_found($org);
             }
         }
     }
