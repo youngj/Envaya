@@ -899,10 +899,15 @@ a.selected
     white-space:nowrap;
 }
 
-.blog_date
+.blog_date, .blog_date a
 {
     color: #aaa;
     font-size:11px;
+}
+
+.blog_date a:hover
+{
+    text-decoration:underline;
 }
 
 .blog_more
@@ -925,7 +930,7 @@ a.selected
 }
 
 <?php
-    $timelineWidth = $contentWidth - 160;
+    $timelineWidth = $contentWidth - 60;
 ?>
 
 #blogTimeline

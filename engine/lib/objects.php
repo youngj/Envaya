@@ -130,6 +130,11 @@
             }
         }
 
+        static function all($limit = 10, $offset = 0)
+        {
+            return static::filterByCondition(array(), array(), 'time_created desc', $limit, $offset);
+        }
+
         static function getByCondition($where, $args)
         {
             $objs = static::filterByCondition($where, $args, '', 1, 0, false);

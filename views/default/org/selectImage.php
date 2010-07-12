@@ -110,7 +110,17 @@
             var iframe = parentDoc.getElementById(<?php echo json_encode($frameId); ?>);
             if (iframe)
             {
-                var height = (images && images.small ? (parseInt(images.small.height) + 80) : 50);
+                var height = 50;
+                if (images && images.small)
+                {
+                    var imageHeight = parseInt(images.small.height);
+                    if (isNaN(imageHeight))
+                    {
+                        imageHeight = 150;
+                    }
+                    height = imageHeight + 80;
+                }
+
                 iframe.style.height = height+"px";
 
                 var loading = parentDoc.getElementById(<?php echo json_encode($frameId."_loading"); ?>);

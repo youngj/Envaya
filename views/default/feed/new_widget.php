@@ -12,10 +12,6 @@
     {
         echo "<a class='feed_image_link' href='$widgetUrl'><img src='{$widget->thumbnail_url}' /></a>";
     }
-    else
-    {
-        echo "NO!";
-    }
 
     echo "<div style='padding-bottom:5px'>";
     echo sprintf(elgg_echo('feed:new_widget'),

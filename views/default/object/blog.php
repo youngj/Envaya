@@ -16,7 +16,17 @@
 <div class="blog_post">
     <?php
         echo $entity->renderContent();
-        echo "<div class='blog_date'>{$entity->getDateText()}</div>";
+
+        echo "<div class='blog_date'>";
+        if (!$full)
+        {
+            echo "<a href='{$entity->getURL()}'>{$entity->getDateText()}</a>";
+        }
+        else
+        {
+            echo $entity->getDateText();
+        }
+        echo "</div>";
     ?>
     <div style='clear:both'></div>
 </div>

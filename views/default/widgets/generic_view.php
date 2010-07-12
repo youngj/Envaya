@@ -2,29 +2,15 @@
 <?php
     $widget = $vars['widget'];
 
-    if ($widget->hasImage())
-    {
-        $imagePos = $widget->image_position;
-        $imageSize = ($imagePos == 'left' || $imagePos == 'right') ? 'medium' : 'large';
-
-        $img = "<img class='widget_image_".escape($imagePos)."' src='{$widget->getImageUrl($imageSize)}' />";
-
-        if ($imagePos != 'bottom')
-        {
-            echo $img;
-        }
-    }
-    else if (!$widget->content)
+    if (!$widget->content)
     {
         echo sprintf(elgg_echo('widget:empty'), escape(elgg_echo("widget:{$widget->widget_name}")));
     }
-
-    echo $widget->renderContent();
-
-    if ($widget->hasImage() && $imagePos == 'bottom')
+    else
     {
-        echo $img;
+        echo $widget->renderContent();
     }
+
 ?>
 <div style='clear:both'></div>
 </div>

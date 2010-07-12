@@ -10,6 +10,7 @@
 <div class='view_toggle'>
     <a href='<?php echo $org->getURL() ?>/news'><?php echo elgg_echo('list') ?></a> | <strong><?php echo elgg_echo('blog:timeline') ?></strong>
 </div>
+<div style='clear:both'></div>
 <div class='padded'>
 
 <?php
@@ -43,7 +44,7 @@ var now = new Date();
 var timeSpan = lastTime - firstTime;
 var orgUrl = <?php echo json_encode($org->getURL()) ?>;
 
-var width = 380;
+var width = 480;
 function getPosForTime(time, elemWidth)
 {
     var posFraction = (time - firstTime) / timeSpan;

@@ -80,11 +80,6 @@ class NewsUpdate extends ElggObject
         );
     }
 
-    public static function all($limit = 10, $offset = 0)
-    {
-        return static::filterByCondition(array(), array(), 'time_created desc', $limit, $offset);
-    }
-
     public static function filterByOrganizations($orgs, $limit = 10, $offset = 0)
     {
         if (empty($orgs))
