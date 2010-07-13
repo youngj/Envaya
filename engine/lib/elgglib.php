@@ -67,34 +67,42 @@
     {
         if ($content)
         {
-            $content = preg_replace('/<img[^>]+>/i', '', $content);
-            $content = preg_replace('/<\/(p|h1|h2|h3)>/i', '</$1> <br />', $content);
-
-            $tooLong = strlen($content) > $maxLength;
-            // todo: multi-byte support
-            if ($tooLong)
+            $cacheKey = "snippet_".md5($content)."_$maxLength";
+            $cache = get_cache();
+            $snippet = $cache->get($cacheKey);
+            if (!$snippet)
             {
-                $shortStr = substr($content, 0, $maxLength);
+                $content = preg_replace('/<img[^>]+>/i', '', $content);
+                $content = preg_replace('/<\/(p|h1|h2|h3)>/i', '</$1> <br />', $content);
 
-                $lastSpace = strrpos($shortStr, ' ');
-                if ($lastSpace && $lastSpace > $maxLength / 2)
+                $tooLong = strlen($content) > $maxLength;
+                // todo: multi-byte support
+                if ($tooLong)
                 {
-                    $shortStr = substr($shortStr, 0, $lastSpace);
+                    $shortStr = substr($content, 0, $maxLength);
+
+                    $lastSpace = strrpos($shortStr, ' ');
+                    if ($lastSpace && $lastSpace > $maxLength / 2)
+                    {
+                        $shortStr = substr($shortStr, 0, $lastSpace);
+                    }
+
+                    $content = $shortStr;
                 }
+                $content = sanitize_html($content, array('HTML.AllowedElements' => 'a,em,strong,br','AutoFormat.RemoveEmpty' => true));
+                $content = preg_replace('/(<br \/>\s*)+/', ' &ndash; ', $content);
+                $content = preg_replace('/&ndash;\s*$/', '', $content);
+                $content = preg_replace('/^\s*&ndash;/', '', $content);
 
-                $content = $shortStr;
+                if ($tooLong)
+                {
+                    $content = $content."...";
+                }
+                $snippet = $content;
+                $cache->set($cacheKey, $snippet);
             }
-            $content = sanitize_html($content, array('HTML.AllowedElements' => 'a,em,strong,br','AutoFormat.RemoveEmpty' => true));
-            $content = preg_replace('/(<br \/>\s*)+/', ' &ndash; ', $content);
-            $content = preg_replace('/&ndash;\s*$/', '', $content);
-            $content = preg_replace('/^\s*&ndash;/', '', $content);
 
-            if ($tooLong)
-            {
-                $content = $content."...";
-            }
-
-            return $content;
+            return $snippet;
         }
         return '';
     }

@@ -10,6 +10,12 @@
     foreach ($s3->getBucketContents('envaya_data') as $key => $keyInfo)
     {
         //var_dump($keyInfo);
-        $s3->copyObject('envaya_data', $key, 'envayadev', $key, true);
-        echo "$key\n";
+        if (strpos($key,'temp') == false)
+        {
+            $s3->copyObject('envaya_data', $key, 'envayadata', $key, true);
+            echo "$key\n";
+        }
+        else
+        {
+        }
     }

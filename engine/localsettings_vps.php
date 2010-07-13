@@ -17,7 +17,7 @@
     $CONFIG->url = $CONFIG->wwwroot;
     $CONFIG->admin_email = "admin@envaya.org";
     $CONFIG->post_email = "post@envaya.org";
-    $CONFIG->s3_bucket = 'envaya_data';
+    $CONFIG->s3_bucket = 'envayadata';
     $CONFIG->analytics_enabled = 1;
     $CONFIG->error_emails_enabled = 1;
     $CONFIG->cookie_domain = ".envaya.org";
