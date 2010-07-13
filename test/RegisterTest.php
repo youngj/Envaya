@@ -77,33 +77,35 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->s->waitForPageToLoad(10000);
     }
 
+    public function typeInFrame($selector, $value)
+    {
+        retry(array($this->s, 'selectFrame'), array($selector));
+        $this->s->type("//body", $value);
+        $this->s->selectFrame("relative=top");
+    }
+
     public function getLastEmail($match = null)
     {
-        $time = time();
+        return retry(array($this, '_getLastEmail'), array($match));
+    }
 
+    public function _getLastEmail($match)
+    {
         $mailFile = __DIR__."/mail.out";
-
-        while (true)
+        if (file_exists($mailFile))
         {
-            if (file_exists($mailFile))
+            $contents = file_get_contents($mailFile);
+
+            $marker = strrpos($contents, "========");
+
+            $email = substr($contents, $marker);
+
+            if ($email && strpos($email, '--------') && ($match == null || strpos($email, $match) !== false))
             {
-                $contents = file_get_contents($mailFile);
-
-                $marker = strrpos($contents, "========");
-
-                $email = substr($contents, $marker);
-
-                if ($email && strpos($email, '--------') && ($match == null || strpos($email, $match) !== false))
-                {
-                    return $email;
-                }
+                return $email;
             }
-
-            if (time() - $time > 7)
-                throw new Exception("couldn't find matching email");
-
-            sleep(0.25);
         }
+        throw new Exception("couldn't find matching email");
     }
 
     public function getLinkFromEmail($email)
@@ -223,7 +225,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->type("//input[@name='sector_other']", "another sector");
         $this->type("//input[@name='city']", "Wete");
         $this->select("//select[@name='region']", "Pemba North");
-        $this->click("//input[@name='theme' and @value='brick']");
+        $this->select("//select[@name='theme']", 'Bricks');
 
         $this->submitForm();
 
@@ -239,9 +241,9 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     private function _testPost()
     {
         $this->clickAndWait("//a[contains(@href,'pg/dashboard')]");
-        $this->type("//textarea[@name='blogbody']", "this is a test post");
+        $this->typeInFrame("//iframe", "this is a test post");
         $this->submitForm();
-        $this->mouseOver("//div[@class='blog_post' and contains(text(), 'this is a test post')]");
+        $this->mouseOver("//div[@class='blog_post']//p[contains(text(), 'this is a test post')]");
     }
 
     private function _testEditContact()
@@ -281,9 +283,9 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     private function _testEditHome()
     {
         $this->clickAndWait("//a[contains(@href,'home/edit')]");
-        $this->type("//textarea[@name='content']", "new mission!");
+        $this->typeInFrame("//iframe", "new mission!");
         $this->clickAndWait("//button[@name='submit']");
-        $this->mouseOver("//div[contains(@class, 'section_content') and contains(text(),'new mission!')]");
+        $this->mouseOver("//div[contains(@class, 'section_content')]//p[contains(text(),'new mission!')]");
         $this->mouseOver("//div[@id='site_menu']//a[@class='selected']");
     }
 
@@ -294,9 +296,9 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->clickAndWait("//a[contains(@href,'home/edit')]");
         $this->clickAndWait("//div[@id='edit_submenu']//a");
         $this->clickAndWait("//a[contains(@href,'projects/edit')]");
-        $this->type("//textarea[@name='content']", "we test stuff");
+        $this->typeInFrame("//iframe", "we test stuff");
         $this->clickAndWait("//button[@name='submit']");
-        $this->mouseOver("//div[contains(@class,'section_content') and contains(text(), 'we test stuff')]");
+        $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'we test stuff')]");
         $this->clickAndWait("//a[contains(@href,'pg/dashboard')]");
         $this->clickAndWait("//a[contains(@href,'team/edit')]");
 
@@ -432,7 +434,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->check("//input[@name='sector[]' and @value='99']");
         $this->type("//input[@name='city']", "Konde");
         $this->select("//select[@name='region']", "Pemba North");
-        $this->click("//input[@name='theme' and @value='wovengrass']");
+        $this->select("//select[@name='theme']","Woven Grass");
 
         $this->submitForm();
 
@@ -565,3 +567,25 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     }
 }
 
+function retry($fn, $args, $timeout = 15)
+{
+    $time = time();
+    while (true)
+    {
+        try
+        {
+            return call_user_func_array($fn, $args);
+        }
+        catch (Exception $ex)
+        {
+        }
+
+        if (time() - $time > $timeout)
+        {
+            break;
+        }
+
+        sleep(0.25);
+    }
+    return call_user_func_array($fn, $args);
+}

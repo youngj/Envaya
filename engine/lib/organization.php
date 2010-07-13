@@ -538,6 +538,8 @@ function envaya_init()
 
     elgg_view_register_simplecache("css/admin");
     elgg_view_register_simplecache("css/simple");
+    elgg_view_register_simplecache("css/tinymce");
+    elgg_view_register_simplecache("css/tinymce_ui");
     elgg_view_register_simplecache("css/editor");
 
     register_plugin_hook('geocode', 'location', 'googlegeocoder_geocode');

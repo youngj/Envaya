@@ -33,10 +33,12 @@
             $blog->uuid = $uuid;
             $blog->save();
 
-            $blog->setImages($imageFiles);
-
             system_message(elgg_echo("blog:posted"));
         }
+        else
+        {
+            $blog = $duplicates[0];
+        }
 
-        forward($org->getUrl() . "/news");
+        forward($blog->getURL());
     }

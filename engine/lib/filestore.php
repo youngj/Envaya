@@ -157,6 +157,7 @@
                 array('owner_guid = ?', 'group_name = ?','size = ?'),
                 array($ownerGuid, $groupName, 'small')
             );
+
             if (sizeof($files) > 0)
             {
                 return $files[0]->getURL();

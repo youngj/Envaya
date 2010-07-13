@@ -29,7 +29,7 @@
     ));
 
     ?>
-<!--
+
 <script type='text/javascript'>
 
 function showAttachImage($show)
@@ -38,46 +38,21 @@ function showAttachImage($show)
     setDirty(false);
     setTimeout(function() { setDirty($dirty) }, 5);
 
-    var attachImage = document.getElementById('attachImage');
-    var attachControls = document.getElementById('attachControls');
-
-    if ($show)
+    if (!window.tinyMCE)
     {
-        attachImage.style.display = 'block';
-        attachControls.style.display = 'none';
+        return;
     }
-    else
-    {
-        attachImage.style.display = 'none';
-        attachControls.style.display = 'block';
 
-        var imageUpload = document.getElementById('imageUpload');
-        imageUpload.value = '';
-
-        document.getElementById('imageUploadProgress').innerHTML = '';
-    }
+    setTimeout(function() {
+        tinyMCE.activeEditor.execCommand("mceImage");
+    }, 1);
 }
 </script>
 
 <div id='attachControls'>
-    <a href='javascript:void(0)' onclick='showAttachImage(true)'><img src='_graphics/attach_image.gif?v2' /></a>
-    <a href='javascript:void(0)' onclick='showAttachImage(true)'><?php echo elgg_echo('dashboard:attach_image') ?></a>
+    <a href='javascript:void(0)' onclick='showAttachImage()'><img src='_graphics/attach_image.gif?v2' /></a>
+    <a href='javascript:void(0)' onclick='showAttachImage()'><?php echo elgg_echo('dashboard:attach_image') ?></a>
 </div>
-
-<div id='attachImage' style='display:none'>
-    <a class='attachImageClose' href='javascript:void(0)' onclick='showAttachImage(false)'></a>
-    <span class='help'><?php echo elgg_echo('dashboard:select_image') ?></span>
-
-    <?php echo elgg_view('input/swfupload_image', array(
-        'internalname' => 'image',
-        'trackDirty' => true,
-        'internalid' => 'imageUpload',
-        'progressid' => 'imageUploadProgress',
-        'sizes' => NewsUpdate::getImageSizes()
-    )) ?>
-
-</div>
--->
 
     <?php
 

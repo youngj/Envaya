@@ -5,6 +5,7 @@
     $widthCSS = @$vars['width'] ? "width:{$vars['width']}px;" : '';
     $heightCSS = @$vars['height'] ? "height:{$vars['height']}px;" : '';
 
+    global $CONFIG;
     global $TINYMCE_INCLUDE_COUNT;
     if (!isset($TINYMCE_INCLUDE_COUNT))
     {
@@ -23,7 +24,7 @@
         <script type='text/javascript'>
             var script = document.createElement('script');
             script.type = 'text/javascript';
-            script.src = '_media/tiny_mce/tiny_mce.js?v16';
+            script.src = '_media/tiny_mce/tiny_mce.js?v<?php echo $CONFIG->simplecache_version ?>';
             document.getElementsByTagName("head").item(0).appendChild(script);
         </script>
         <?php
@@ -106,13 +107,18 @@
                         setDirty(true);
                     }
                 });
+
             },
-            content_css: "/_css/tinymce.css?v2",
+            content_css: "/_css/tinymce.css?v<?php echo $CONFIG->simplecache_version ?>",
+            editor_css: '/_css/tinymce_ui.css?v<?php echo $CONFIG->simplecache_version ?>',
             mode : "exact",
             language: '',
             relative_urls : false,
             elements: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
-            theme : "advanced"
+            <?php if ($TINYMCE_INCLUDE_COUNT == 0) { ?>
+            auto_focus: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
+            <?php } ?>
+            theme : "-advanced"
         });
 
     }

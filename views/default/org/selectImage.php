@@ -9,7 +9,7 @@
     }
     else
     {
-        $defaultSizeName = 'medium';
+        $defaultSizeName = 'large';
     }
 
     echo elgg_view('input/hidden', array(
@@ -95,11 +95,28 @@
 
         var imageSizeContainer = document.getElementById('imageSizeContainer');
         var radios = imageSizeContainer.getElementsByTagName('input');
+
+        var lastVisible = null;
+        var hiddenChecked = false;
         for (var i = 0; i < radios.length; i++)
         {
             var radio = radios[i];
-            radio.parentNode.style.display = ($images[radio.value]) ? 'inline' : 'none';
+            var visible = $images[radio.value];
+            if (visible)
+            {
+                lastVisible = i;
+            }
+            else if (radio.checked)
+            {
+                hiddenChecked = true;
+            }
+            radio.parentNode.style.display = visible ? 'inline' : 'none';
         }
+        if (hiddenChecked && lastVisible)
+        {
+            radios[lastVisible].checked = radios[lastVisible].defaultChecked = true;
+        }
+
         resizeFrame();
     };
 

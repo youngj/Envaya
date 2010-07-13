@@ -473,8 +473,7 @@
         'theme:beads' => "Beads",
         'theme:red' => "Chrome",
 
-        'blog:content:label' => "Write the text for your news update below:",
-        'blog:image:label' => "Image to display with this news update:",
+        'blog:content:label' => "Write your news update below:",
 
         'blog:posted' => "Your news update was successfully posted.",
         'blog:updated' => "Your news update was successfully updated.",

@@ -321,16 +321,17 @@ input[type="submit"] {
 .cancel_button {
     font: 12px/100% Arial, Helvetica, sans-serif;
     font-weight: bold;
-    color: #999999;
+    color: #666;
     background:#dddddd;
     border: 1px solid #999999;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     width: auto;
-    height: 25px;
-    padding: 2px 6px 2px 6px;
-    margin:10px 0 10px 10px;
+    padding: 7px 6px 7px 6px;
+    margin:20px 0 10px 10px;
     cursor: pointer;
+    float:right;
+
 }
 .cancel_button:hover {
     background: #cccccc;
@@ -1543,6 +1544,7 @@ a.photoDelete:hover
 {
     display:block;
     margin:0 auto;
+    text-align:center;
 }
 
 .modalShadow
@@ -1627,3 +1629,4 @@ a.feed_image_link:hover
 {
     border: 1px solid #7391a9;
 }
+

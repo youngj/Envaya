@@ -6,7 +6,6 @@
     ob_start();
 ?>
 <div class='input'>
-    <label><?php echo elgg_echo('blog:content:label') ?></label>
     <?php echo elgg_view('input/tinymce', array(
         'internalname' => 'blogbody',
         'trackDirty' => true,

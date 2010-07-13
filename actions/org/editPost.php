@@ -33,15 +33,6 @@
         $blog->setContent($body, true);
         $blog->save();
 
-        if (get_input('deleteimage'))
-        {
-            $blog->setImages(null);
-        }
-        else if ($imageFiles)
-        {
-            $blog->setImages($imageFiles);
-        }
-
         system_message(elgg_echo("blog:updated"));
         forward($blog->getUrl());
     }

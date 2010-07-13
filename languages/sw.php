@@ -408,7 +408,7 @@ add_translation("sw",array(
     'theme:wovengrass' => 'Majani yafumwayo',
     'theme:beads' => 'Shanga',
     'theme:red' => 'Kromu',
-    'blog:content:label' => 'Andika maandiko kwa habari yako chini:',
+    'blog:content:label' => 'Andika habari yako chini:',
     'blog:image:label' => 'Picha kuonyesha na habari hii:',
     'blog:posted' => 'Habari yako imebandikwa.',
     'blog:updated' => 'Habari yako imehifadhiwa.',
