@@ -18,7 +18,7 @@
     {
         // TODO: preserve rest of query
         $url = parse_url($url);
-        parse_str($url['query'],$query);
+        parse_str(@$url['query'],$query);
         $query[$param] = $value;
 
         return $url['path']."?".http_build_query($query);
@@ -323,6 +323,7 @@
 
             if (!isset($CONFIG->pagesetupdone))
             {
+                error_log("elgg_view calling pagesetup");
                 trigger_elgg_event('pagesetup','system');
                 $CONFIG->pagesetupdone = true;
             }

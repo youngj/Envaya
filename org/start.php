@@ -134,6 +134,8 @@ function login_page_handler($page)
 
 function envaya_pagesetup()
 {
+    error_log("envaya_pagesetup");
+
     if (get_input('login'))
     {
         gatekeeper();
@@ -141,10 +143,12 @@ function envaya_pagesetup()
 
     if (get_context() == 'orgprofile')
     {
+        error_log("envaya_pagesetup 1");
         $org = page_owner_entity();
 
         if (!empty($org))
         {
+            error_log("envaya_pagesetup 2");
             $widgets = $org->getAvailableWidgets();
 
             add_submenu_item(elgg_echo("widget:home"), $org->getURL());
