@@ -42,6 +42,9 @@
     $CONFIG->simplecache_enabled = 0;
     $CONFIG->simplecache_version = 48;
 
+    $CONFIG->smtp_host = "smtp.com";
+    $CONFIG->smtp_port = 2525;
+
     $CONFIG->cookie_domain = null;
     $CONFIG->viewpath_cache_enabled = 0;
     $CONFIG->wwwroot = "http://localhost/";

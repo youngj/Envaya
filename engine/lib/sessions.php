@@ -163,7 +163,7 @@ function authenticate($username, $password)
  * it against a known user.
  *
  * @param array $credentials Associated array of credentials passed to pam_authenticate. This function expects
- * 		'username' and 'password' (cleartext).
+ *      'username' and 'password' (cleartext).
  */
 function pam_auth_userpass($credentials = NULL)
 {
@@ -330,15 +330,23 @@ function session_init($event, $object_type, $object)
 
 function force_login()
 {
-	Session::set('last_forward_from', current_page_url());
-	forward("pg/login");
+    Session::set('last_forward_from', current_page_url());
+    $username = get_input('username');
+    if ($username)
+    {
+        forward("pg/login?username=".urlencode($username));
+    }
+    else
+    {
+        forward("pg/login");
+    }
 }
 
 function gatekeeper()
 {
     if (!isloggedin())
     {
-    	force_login();
+        force_login();
     }
 }
 

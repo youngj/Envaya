@@ -20,6 +20,7 @@ function org_page_handler($page)
             case "sendEmail":       return include(__DIR__."/sendEmail.php");
             case "contact":         return include(__DIR__."/contact.php");
             case "selectImage":     return include(__DIR__."/selectImage.php");
+            case "viewEmail":       return include(__DIR__."/viewEmail.php");
             default:                not_found();
         }
     }

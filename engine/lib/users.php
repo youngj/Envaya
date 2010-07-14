@@ -350,6 +350,12 @@
             return NewsUpdate::filterByCondition($where, $args, "time_created desc", $limit, $offset, $count);
         }
 
+        function getFeedItems($limit = 10)
+        {
+            $feedName = get_feed_name(array('user' => $this->guid));
+            return FeedItem::filterByFeedName($feedName, $limit);
+        }
+
         function listNewsUpdates($limit = 10, $pagination = true)
         {
             $offset = (int) get_input('offset');

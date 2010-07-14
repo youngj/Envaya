@@ -556,6 +556,24 @@ Mtu fulani ameomba neno jipya la siri kwa akaunti yako.
 Kama uliliomba, bonyeza kiungo chini kubadili neno lako la siri:
 
 %s',
+
+    'email:reminder:subject' => 'Panga upya tovuti yako katika Envaya!',
+    'email:salutation' => "Hujambo %s,",
+    'email:greetings' => "Envaya tunakusalimia tena!",
+    'email:closing' => "Asante,",
+    'email:from' => "Timu ya Envaya",
+    'email:about' => "Email hii imetumiwa %s kwa sababu %s imeumba tovuti katika Envaya.",
+    'email:change' => "Kuhariri marudio ya email kutoka Envaya, au kusimamisha email hizi, nenda %s.",
+    'email:here' => "hapa",
+    'email:clickhere' => "bonyeza hapa",
+    'email:envaya' => "Envaya ni mradi wa Trust for Conservation Innovation.",
+    'email:reminder:while' => "Imekuwa siku nyingi tangu tovuti yako katika Envaya imepangwa upya.",
+    'email:reminder:addnews' => "Ongeza habari na picha kwenye tovuti yako kuwaambia watu umechokifanya!  Kupanga upya tovuti yako, %s tu na ingiza neno lako la siri kufungua.",
+    'email:reminder:formatting' => "Vile vile, tumesikiliza mawazo yenu kuhusu njia kuboresha Envaya. Kwa mfano, sasa unaweza kuongeza picha nyingi na muundo (kama <span style='font-weight:bold'>hii</span> or <em>hii</em>) kwenye kurasa za tovuti yako. Jaribu sasa kwa kuhariri %s wako!",
+    'email:reminder:projectspage' => "Ukurasa wa Miradi",
+    'email:reminder:feedback' => "Kama una mawazo yoyote kuhusu jinsi ya kuboresha Envaya, tuambie! Pia, kama una maswali yoyote, tungependa kusaidia. Unaweza kututumia email kwenye %s.",
+
+
     'actiongatekeeper:timeerror' => 'Samahani, ukurasa ulioutumia umekufa. Tafadhali burudisha na jaribu tena.',
     'en' => 'Kiingereza',
     'sw' => 'Kiswahili',

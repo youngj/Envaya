@@ -13,15 +13,43 @@
 
     global $CONFIG;
 
-    $form_body = "<label>" . elgg_echo('username') . "<br />" .
-        elgg_view('input/text', array('internalname' => 'username', 'value' => $vars['username'], 'class' => 'login-textarea')) . "</label>";
-    $form_body .= "<br />";
-    $form_body .= "<label>" . elgg_echo('password') . "<br />" . elgg_view('input/password', array('internalname' => 'password', 'class' => 'login-textarea')) . "</label><br />";
-    $form_body .= " <div id=\"persistent_login\"><label><input type=\"checkbox\" class='input-checkboxes' name=\"persistent\" value=\"true\" />".elgg_echo('user:persistent')."</label></div>";
-    $form_body .= elgg_view('input/submit', array('value' => elgg_echo('login')));
-    $form_body .= "<div><a href=\"{$vars['url']}account/forgotten_password.php\">" . elgg_echo('user:password:lost') . "</a></div>";
+    ob_start();
+    ?>
 
-    //<input name=\"username\" type=\"text\" class="general-textarea" /></label>
+
+    <label>
+        <?php echo elgg_echo('username') ?><br />
+        <?php echo elgg_view('input/text', array(
+            'internalname' => 'username',
+            'internalid' => 'username',
+            'value' => $vars['username'], 'class' => 'login-textarea')); ?>
+    </label>
+    <br />
+    <label>
+        <?php echo elgg_echo('password') ?><br />
+        <?php echo elgg_view('input/password', array(
+            'internalname' => 'password',
+            'internalid' => 'password',
+            'class' => 'login-textarea')) ?>
+    </label>
+    <br />
+    <div id="persistent_login"><label><input type="checkbox" class='input-checkboxes' name="persistent" value="true" />
+        <?php echo elgg_echo('user:persistent') ?>
+    </label></div>
+    <?php echo elgg_view('input/submit', array('value' => elgg_echo('login'))); ?>
+    <div>
+        <a href="<?php echo $vars['url'] ?>account/forgotten_password.php">
+        <?php echo elgg_echo('user:password:lost') ?>
+        </a>
+    </div>
+
+    <script type='text/javascript'>
+        setTimeout(function() {
+            document.getElementById('<?php echo $vars['username'] ? 'password' : 'username' ?>').focus();
+        }, 10);
+    </script>
+    <?php
+    $form_body = ob_get_clean();
 
     $login_url = $vars['url'];
     if ((isset($CONFIG->https_login)) && ($CONFIG->https_login))

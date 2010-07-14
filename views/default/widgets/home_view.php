@@ -8,9 +8,7 @@
 
     echo "<div class='section_header'>".elgg_echo("widget:news:latest")."</div>";
 
-    $feedName = get_feed_name(array('user' => $org->guid));
-
-    $items = FeedItem::filterByFeedName($feedName, $limit = 6);
+    $items = $org->getFeedItems(6);
 
     echo "<div class='section_content'>";
 

@@ -246,7 +246,11 @@
         $subject = preg_replace("/(\r\n|\r|\n)/", " ", $subject); // Strip line endings
 
         $headers['Subject'] = mb_encode_mimeheader($subject,"UTF-8", "B");
-        $headers["Content-Type"] = "text/plain; charset=UTF-8; format=flowed";
+
+        if (!isset($headers['Content-Type']))
+        {
+            $headers["Content-Type"] = "text/plain; charset=UTF-8; format=flowed";
+        }
         $headers["MIME-Version"] = "1.0";
         $headers["Content-Transfer-Encoding"] = "8bit";
 
@@ -312,8 +316,8 @@
             else
             {
                 $mailer = new Mail_smtp(array(
-                    'host' => 'localhost',
-                    'port' => 25,
+                    'host' => $CONFIG->smtp_host,
+                    'port' => $CONFIG->smtp_port,
                     'username' => 'web@envaya.org',
                     'auth' => true,
                     'password' => $CONFIG->email_pass));

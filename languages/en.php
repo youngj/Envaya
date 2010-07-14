@@ -684,23 +684,22 @@ Somebody has requested a new password for your account.
 If you requested this, click on the link below to change your password:
 
 %s",
-        'email:updates:subject' => 'Latest updates on Envaya',
-        'email:updates:body' => "Hi %s,
-
-Greetings from Envaya!
-%s
-Here's what some related organizations have been up to lately:
-%s
-Want to see more news about other organizations you're interested in?
-Visit %s !
-
-To change your settings for receiving email, or to unsubscribe, go here:
-%s
-
-Thanks!
-the Envaya team",
-        'email:updates:old' => "It's been a while since you last visited Envaya to share the latest news about %s. So that other people can see what you're doing, remember to update your website regularly! To update your website, log in here:
-%s",
+        'email:reminder:subject' => 'Update your website on Envaya!',
+        'email:salutation' => "Hi %s,",
+        'email:greetings' => "Greetings from Envaya!",
+        'email:closing' => "Thanks,",
+        'email:from' => "the Envaya team",
+        'email:about' => "This email was sent to %s because %s created a website on Envaya.",
+        'email:change' => "To change how often you receive email from Envaya, or to unsubscribe, go %s.",
+        'email:here' => "here",
+        'email:clickhere' => "click here",
+        'email:envaya' => "Envaya is a project of the Trust for Conservation Innovation.",
+        'email:mailing_address' => "2355 Polk St. #405 San Francisco, CA 94109",
+        'email:reminder:while' => "It's been a while since your website on Envaya has been updated.",
+        'email:reminder:addnews' => "Add some news and photos to your website to tell everyone what you've been doing!  To update your website, just %s and enter your password to log in.",
+        'email:reminder:formatting' => "Also, we have been listening to your ideas about how to make Envaya better. For instance, now you can add multiple photos and formatting (like <span style='font-weight:bold'>bold text</span>) to your web pages. Try it out now by editing your %s!",
+        'email:reminder:projectspage' => "Projects page",
+        'email:reminder:feedback' => "If you have any ideas on how to improve Envaya, let us know! And if you have any questions, we'd love to help. Feel free to email us at %s.",
 
         'actiongatekeeper:timeerror' => 'The page you were using has expired. Please refresh and try again.',
 
