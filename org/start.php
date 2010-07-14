@@ -134,32 +134,23 @@ function login_page_handler($page)
 
 function envaya_pagesetup()
 {
-    error_log("envaya_pagesetup");
-
     if (get_input('login'))
     {
         gatekeeper();
     }
+}
 
-    if (get_context() == 'orgprofile')
+function add_org_menu($org)
+{
+    $widgets = $org->getAvailableWidgets();
+
+    add_submenu_item(elgg_echo("widget:home"), $org->getURL());
+
+    foreach ($widgets as $widget)
     {
-        error_log("envaya_pagesetup 1");
-        $org = page_owner_entity();
-
-        if (!empty($org))
+        if ($widget->isActive() && $widget->widget_name != 'home')
         {
-            error_log("envaya_pagesetup 2");
-            $widgets = $org->getAvailableWidgets();
-
-            add_submenu_item(elgg_echo("widget:home"), $org->getURL());
-
-            foreach ($widgets as $widget)
-            {
-                if ($widget->isActive() && $widget->widget_name != 'home')
-                {
-                    add_submenu_item(elgg_echo("widget:{$widget->widget_name}"), $widget->getURL());
-                }
-            }
+            add_submenu_item(elgg_echo("widget:{$widget->widget_name}"), $widget->getURL());
         }
     }
 }

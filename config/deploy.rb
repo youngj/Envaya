@@ -24,4 +24,9 @@ namespace :deploy do
         run "cp #{shared_path}/cached-copy/.htaccess #{latest_release}/"
         run "cp #{shared_path}/localsettings.php #{latest_release}/engine/localsettings.php"
     end
+    
+    task :restart, :roles => :app, :except => { :no_release => true } do        
+        run "/etc/init.d/phpCron restart"
+        run "/etc/init.d/queueRunner restart"
+    end    
 end

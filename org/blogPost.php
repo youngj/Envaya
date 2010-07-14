@@ -12,6 +12,7 @@
 
         $org = $post->getContainerEntity();
         set_theme($org->theme);
+        add_org_menu($org);
 
         $title = elgg_echo('widget:news');
 

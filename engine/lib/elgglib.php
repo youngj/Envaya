@@ -323,7 +323,6 @@
 
             if (!isset($CONFIG->pagesetupdone))
             {
-                error_log("elgg_view calling pagesetup");
                 trigger_elgg_event('pagesetup','system');
                 $CONFIG->pagesetupdone = true;
             }

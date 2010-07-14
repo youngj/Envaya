@@ -3,7 +3,6 @@
     $org_guid = get_input('org_guid');
     // $widget passed from start.php
 
-    error_log("set_context orgprofile");
     set_context('orgprofile');
 
     global $autofeed;
@@ -15,9 +14,9 @@
         global $CONFIG;
         $CONFIG->sitename = $org->name;
 
-        error_log("set_page_owner $org_guid");
         set_page_owner($org_guid);
         set_theme(get_input("__theme") ?: $org->theme ?: 'green');
+        add_org_menu($org);
 
         $viewOrg = $org->canView();
 
