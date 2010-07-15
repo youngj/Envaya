@@ -1,4 +1,6 @@
 
+default_run_options[:pty] = true
+
 set :application, "envaya"
 set :repository,  "http://anvaya.unfuddle.com/svn/anvaya_anvaya"
 set :deploy_to, "/var/envaya"
@@ -28,5 +30,5 @@ namespace :deploy do
     task :restart, :roles => :app, :except => { :no_release => true } do        
         run "/etc/init.d/phpCron restart"
         run "/etc/init.d/queueRunner restart"
-    end    
+    end
 end
