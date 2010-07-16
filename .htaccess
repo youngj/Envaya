@@ -115,6 +115,9 @@ RewriteBase /
 #
 #RewriteBase /
 
+#RewriteRule ^(\w+\.php|_media|_graphics) - [L]
+#RewriteRule .* index.php/$0 [L]
+
 RewriteRule ^action\/([A-Za-z0-9\_\-\/]+)$ engine/handlers/action_handler.php?action=$1 [L]
 
 RewriteRule ^export\/([A-Za-z]+)\/([0-9]+)$ services/export/handler.php?view=$1&guid=$2 [L]
@@ -130,11 +133,6 @@ RewriteRule ^pg\/([A-Za-z0-9\_\-]+)$ engine/handlers/pagehandler.php?handler=$1 
 
 RewriteRule ^page\/(.*)$ engine/handlers/pagehandler.php?handler=page&page=$1 [L]
 RewriteRule ^org\/(.*)$ engine/handlers/pagehandler.php?handler=org&page=$1 [L]
-
-#RewriteRule xml-rpc.php engine/handlers/xml-rpc_handler.php [L]
-#RewriteRule mt/mt-xmlrpc.cgi engine/handlers/xml-rpc_handler.php [L]
-
-#RewriteRule tag/(.+)/?$ engine/handlers/pagehandler.php?handler=search&page=$1 [L]
 
 # directories that are accessible without url rewriting
 RewriteRule ^(account|mod|search|admin|engine|_css|_graphics|_media)/ - [S=1]

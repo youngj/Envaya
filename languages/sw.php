@@ -558,8 +558,8 @@ Kama uliliomba, bonyeza kiungo chini kubadili neno lako la siri:
 %s',
 
     'email:reminder:subject' => 'Panga upya tovuti yako katika Envaya!',
-    'email:salutation' => "Hujambo %s,",
-    'email:greetings' => "Envaya tunakusalimia tena!",
+    'email:salutation' => "Habari za sahizi %s,",
+    'email:greetings' => "Salam kutoka Envaya!",
     'email:closing' => "Asante,",
     'email:from' => "Timu ya Envaya",
     'email:about' => "Email hii imetumiwa %s kwa sababu %s imeumba tovuti katika Envaya.",
@@ -567,11 +567,11 @@ Kama uliliomba, bonyeza kiungo chini kubadili neno lako la siri:
     'email:here' => "hapa",
     'email:clickhere' => "bonyeza hapa",
     'email:envaya' => "Envaya ni mradi wa Trust for Conservation Innovation.",
-    'email:reminder:while' => "Imekuwa siku nyingi tangu tovuti yako katika Envaya imepangwa upya.",
-    'email:reminder:addnews' => "Ongeza habari na picha kwenye tovuti yako kuwaambia watu umechokifanya!  Kupanga upya tovuti yako, %s tu na ingiza neno lako la siri kufungua.",
-    'email:reminder:formatting' => "Vile vile, tumesikiliza mawazo yenu kuhusu njia kuboresha Envaya. Kwa mfano, sasa unaweza kuongeza picha nyingi na muundo (kama <span style='font-weight:bold'>hii</span> or <em>hii</em>) kwenye kurasa za tovuti yako. Jaribu sasa kwa kuhariri %s wako!",
+    'email:reminder:while' => "Siku nyingi zimepita tangu tovuti yako katika Envaya imepangwa upya.",
+    'email:reminder:addnews' => "Tafadhali jitahidi kuongeza habari na picha kwenye tovuti yako, ili kuwafahamisha watu kuhusu shughuli zako mbali mbali!  Kupanga upya tovuti yako, %s tu na ingiza neno lako la siri kufungua.",
+    'email:reminder:formatting' => "Vile vile, tumezingatia maoni yenu kuhusu njia kuboresha Envaya. Kwa mfano, sasa unaweza kuongeza picha nyingi na muundo (kama <span style='font-weight:bold'>hii</span> or <em>hii</em>) kwenye kurasa za tovuti yako. Jaribu sasa kwa kuhariri %s kwenye tovuti yako ya Envaya!",
     'email:reminder:projectspage' => "Ukurasa wa Miradi",
-    'email:reminder:feedback' => "Kama una mawazo yoyote kuhusu jinsi ya kuboresha Envaya, tuambie! Pia, kama una maswali yoyote, tungependa kusaidia. Unaweza kututumia email kwenye %s.",
+    'email:reminder:feedback' => "Kama kuna mawazo yoyote kuhusu jinsi ya kuboresha Envaya, tunaomba mtufahamishe! Pia, kama kuna maswali yoyote, wasiliana nasi kupitia email ya %s.",
 
 
     'actiongatekeeper:timeerror' => 'Samahani, ukurasa ulioutumia umekufa. Tafadhali burudisha na jaribu tena.',
