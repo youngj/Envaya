@@ -11,6 +11,37 @@
      */
 
     /**
+     * Provides auto-loading support of Kohana classes, as well as transparent
+     * extension of classes that have a _Core suffix.
+     *
+     * Class names are converted to file names by making the class name
+     * lowercase and converting underscores to slashes:
+     *
+     *     // Loads classes/my/class/name.php
+     *     Kohana::auto_load('My_Class_Name');
+     *
+     * @param   string   class name
+     * @return  boolean
+     */
+    function auto_load($class)
+    {
+        // Transform the class name into a path
+        $file = str_replace('_', '/', strtolower($class));
+
+        global $CONFIG;
+
+        $path = $CONFIG->path."engine/$file.php";
+
+        if (is_file($path))
+        {
+            require $path;
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
+    /**
      * Getting directories and moving the browser
      */
 
@@ -122,7 +153,7 @@
         $title = elgg_echo('page:notfound');
         $body = elgg_view_layout('one_column_padded', elgg_view_title($title), elgg_echo('page:notfound:details')."<br/><br/><br/>");
         header("HTTP/1.1 404 Not Found");
-        page_draw($title, $body);
+        echo page_draw($title, $body);
         exit;
     }
 
@@ -811,18 +842,13 @@
      */
         function page_draw($title, $body, $preBody = "")
         {
-            // Draw the page
-            $output = elgg_view('pageshells/pageshell', array(
+            return elgg_view('pageshells/pageshell', array(
                     'title' => $title,
                     'body' => $body,
                     'preBody' => $preBody,
                     'sysmessages' => system_messages(null,"")
                   )
             );
-            $split_output = str_split($output, 1024);
-
-            foreach($split_output as $chunk)
-                echo $chunk;
         }
 
     /**
@@ -1286,7 +1312,7 @@
             error_log("*** FATAL EXCEPTION *** : " . $exception);
             ob_end_clean(); // Wipe any existing output buffer
             $body = elgg_view("messages/exceptions/exception",array('object' => $exception));
-            page_draw(elgg_echo('exception:title'), $body);
+            echo page_draw(elgg_echo('exception:title'), $body);
 
 
             global $CONFIG;
@@ -1521,24 +1547,6 @@ $server
         return false;
     }
 
-    function js_page_handler($page) {
-
-        if (is_array($page) && sizeof($page)) {
-            $js = str_replace('.js','',$page[0]);
-            $return = elgg_view('js/' . $js);
-
-            header('Content-type: text/javascript');
-            header('Expires: ' . date('r',time() + 864000));
-            header("Pragma: public");
-            header("Cache-Control: public");
-            header("Content-Length: " . strlen($return));
-
-            echo $return;
-            exit;
-        }
-
-    }
-
     /**
      * This function is a shutdown hook registered on startup which does nothing more than trigger a
      * shutdown event when the script is shutting down, but before database connections have been dropped etc.
@@ -1559,11 +1567,7 @@ $server
 
     function elgg_init()
     {
-        register_page_handler('js','js_page_handler');
         register_shutdown_function('__elgg_shutdown_hook');
-    }
-
-    function elgg_boot() {
     }
 
     /**
@@ -1576,6 +1580,5 @@ $server
         define('ACCESS_FRIENDS',-2);
 
     register_elgg_event_handler('init','system','elgg_init');
-    register_elgg_event_handler('boot','system','elgg_boot',1000);
 
 ?>

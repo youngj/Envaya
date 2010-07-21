@@ -1,43 +1,36 @@
 <?php
+    define('externalpage',true);
 
-	/**
-	 * Elgg index page for web-based applications
-	 *
-	 * @package Elgg
-	 * @subpackage Core
+    require_once(__DIR__."/engine/start.php");
 
-	 * @author Curverider Ltd
+    spl_autoload_register('auto_load');
 
-	 * @link http://elgg.org/
-	 */
+    if (get_input('login'))
+    {
+        gatekeeper();
+    }
 
-	/**
-	 * Start the Elgg engine
-	 */
-		define('externalpage',true);
-		require_once(__DIR__."/engine/start.php");
+    Route::set('page', 'page/<name>')->defaults(array('controller' => 'page','action' => 'view',));
 
+    Route::set('default', '(<controller>(/<action>(/<id>)))',
+        array('controller' => '(pg|home|org|admin)?')
+    )->defaults(array(
+            'controller' => 'home',
+            'action'     => 'index',
+    ));
 
-		if (!trigger_plugin_hook('index','system',null,false)) {
+    Route::set('post', '<username>/post/<id>(/<action>)')->defaults(array(
+        'controller' => 'post',
+        'action'     => 'index',
+    ));
 
-			/**
-		      * Check to see if user is logged in, if not display login form
-		      **/
+    Route::set('profile', '(<username>(/<widgetname>(/<action>)))')->defaults(array(
+        'controller' => 'profile',
+        'action'     => 'index',
+        'widgetname' => 'home',
+    ));
 
-				if (isloggedin()) forward('pg/dashboard/');
-
-	        //Load the front page
-	        	global $CONFIG;
-	        	$title = elgg_view_title(elgg_echo('content:latest'));
-	        	set_context('search');
-		        set_context('main');
-		        global $autofeed;
-		        $autofeed = false;
-		        $content = elgg_view_layout('two_column_left_sidebar', '', $title, elgg_view("account/forms/login"));
-		        page_draw(null, $content);
-
-		}
-
-
-
-?>
+    echo Request::instance()
+        ->execute()
+        ->send_headers()
+        ->response;

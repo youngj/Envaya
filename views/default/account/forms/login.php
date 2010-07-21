@@ -38,7 +38,7 @@
     </label></div>
     <?php echo elgg_view('input/submit', array('value' => elgg_echo('login'))); ?>
     <div>
-        <a href="<?php echo $vars['url'] ?>account/forgotten_password.php">
+        <a href="<?php echo $vars['url'] ?>pg/forgot_password">
         <?php echo elgg_echo('user:password:lost') ?>
         </a>
     </div>
@@ -57,5 +57,5 @@
 ?>
 
         <?php
-            echo elgg_view('input/form', array('body' => $form_body, 'action' => "{$login_url}action/login"));
+            echo elgg_view('input/form', array('body' => $form_body, 'action' => "{$login_url}pg/submit_login"));
         ?>

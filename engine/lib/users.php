@@ -127,6 +127,12 @@
             return parent::delete() && $this->deleteTableAttributes('users_entity');
         }
 
+        public function getURL()
+        {
+            global $CONFIG;
+            return $CONFIG->url . "{$this->username}";
+        }
+
         public function getIconFile($size = '')
         {
             $file = new ElggFile();
@@ -979,8 +985,6 @@
 
         global $CONFIG;
 
-        register_page_handler('dashboard','dashboard_page_handler');
-
         extend_elgg_settings_page('user/settings/password', 'usersettings/user', 1);
         extend_elgg_settings_page('user/settings/email', 'usersettings/user', 1);
         extend_elgg_settings_page('user/settings/language', 'usersettings/user', 1);
@@ -1009,7 +1013,6 @@
             foreach($users as $user) {
                 $return .= elgg_view_entity($user);
             }
-            $return .= elgg_view('user/search/finishblurb',array('count' => $countusers, 'threshold' => $threshold, 'tag' => $tag));
             return $return;
 
         }

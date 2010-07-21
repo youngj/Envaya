@@ -96,12 +96,6 @@ class Organization extends ElggUser
         $this->save();
     }
 
-    public function getURL()
-    {
-        global $CONFIG;
-        return $CONFIG->url . "{$this->username}";
-    }
-
     public function getPostEmail()
     {
         if (!$this->email_code)
@@ -419,7 +413,7 @@ function org_page_not_found($org)
     $title = elgg_echo('page:notfound');
     $body = org_view_body($org, $title, "<div class='section_content padded'>".elgg_echo('page:notfound:details')."</div>");
     header("HTTP/1.1 404 Not Found");
-    page_draw($title, $body);
+    echo page_draw($title, $body);
     exit;
 }
 
@@ -525,6 +519,41 @@ function get_notification_frequencies()
     );
 }
 
+function add_org_menu($org)
+{
+    $widgets = $org->getAvailableWidgets();
+
+    add_submenu_item(elgg_echo("widget:home"), $org->getURL());
+
+    foreach ($widgets as $widget)
+    {
+        if ($widget->isActive() && $widget->widget_name != 'home')
+        {
+            add_submenu_item(elgg_echo("widget:{$widget->widget_name}"), $widget->getURL());
+        }
+    }
+}
+
+function notify_new_org($event, $objectType, $org)
+{
+    if (!$org->isApproved())
+    {
+        post_feed_items($org, 'register', $org);
+
+        send_admin_mail("New organization registered: {$org->name}",
+"To view their website and approve or reject it, visit
+{$org->getURL()}?login=1
+");
+    }
+}
+
+function add_generic_footer()
+{
+    add_submenu_item(elgg_echo('about:link'), "/page/about", 'footer');
+    add_submenu_item(elgg_echo('contact:link'), "/page/contact", 'footer');
+    add_submenu_item(elgg_echo('donate:link'), "/page/donate", 'footer');
+}
+
 function envaya_init()
 {
     global $CONFIG;
@@ -544,7 +573,7 @@ function envaya_init()
 
     register_plugin_hook('geocode', 'location', 'googlegeocoder_geocode');
 
-    include_once("{$CONFIG->path}org/start.php");
 }
 
+register_elgg_event_handler('register', 'organization', 'notify_new_org');
 register_elgg_event_handler('init','system','envaya_init');

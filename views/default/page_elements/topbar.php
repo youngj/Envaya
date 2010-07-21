@@ -7,7 +7,7 @@ if (get_input('__topbar') !== '0') {
 <div id="topbar">
 <table class='topbarTable'>
 <td class='topbarLinks'>
-    <a id='logoContainer' href="<?php echo ((isloggedin()) ? 'pg/dashboard' : 'pg/home') ?>">
+    <a id='logoContainer' href="<?php echo ((isloggedin()) ? 'pg/dashboard' : 'home') ?>">
         <img src="_graphics/logo.gif?v5" alt="Envaya" width="145" height="30">
     </a>
     <a href='org/browse'><?php echo elgg_echo('browse') ?></a>
@@ -38,7 +38,7 @@ if (get_input('__topbar') !== '0') {
                     echo "<a href='pg/dashboard' title=\"".elgg_echo('topbar:edit_site')."\"><img src='_graphics/pencil.gif?v3' /></a>";
                 }
 
-                echo "<a href='pg/settings/' title=\"".elgg_echo('settings')."\" id='usersettings'><img src='_graphics/settings.gif' /></a>";
+                echo "<a href='{$user->getURL()}/settings' title=\"".elgg_echo('settings')."\" id='usersettings'><img src='_graphics/settings.gif' /></a>";
             }
 
             // The administration link is for admin or site admin users only

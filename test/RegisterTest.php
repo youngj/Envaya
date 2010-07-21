@@ -404,7 +404,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     private function _testPartnership()
     {
         //$this->clickAndWait("//a[contains(@href,'action/logout')]");
-        $this->clickAndWait("//a[contains(@href,'pg/home')]");
+        $this->clickAndWait("//a[contains(@href,'home')]");
         $this->clickAndWait("//a[contains(@href,'org/new')]");
 
         /* qualification */

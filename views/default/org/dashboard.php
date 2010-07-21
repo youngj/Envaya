@@ -32,7 +32,7 @@
     -->
     <a class='icon_link icon_design' href='<?php echo $org->getURL() . "/design" ?>?from=pg/dashboard'><?php echo elgg_echo('design:edit') ?></a>
     <div class='icon_separator'></div>
-    <a class='icon_link icon_settings' href='pg/settings/user/<?php echo $org->username ?>'><?php echo elgg_echo('dashboard:settings') ?></a>
+    <a class='icon_link icon_settings' href='<?php echo $org->username ?>/settings'><?php echo elgg_echo('dashboard:settings') ?></a>
     <div class='icon_separator'></div>
     <a class='icon_link icon_help' href='<?php echo $org->getURL() ?>/help'><?php echo elgg_echo('help:title') ?></a>
 </td>

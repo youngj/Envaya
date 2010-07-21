@@ -37,4 +37,4 @@
         register_error(elgg_echo('email:reminder:none'));
     }
 
-    forward(get_input('from') ?: "/org/contact");
+    forward(get_input('from') ?: "/admin/contact");

@@ -113,32 +113,34 @@ RewriteBase /
 # If you're not running Elgg in a subdirectory on your site, but still getting lots
 # of 404 errors beyond the front page, you could instead try:
 #
-#RewriteBase /
-
-#RewriteRule ^(\w+\.php|_media|_graphics) - [L]
-#RewriteRule .* index.php/$0 [L]
-
-RewriteRule ^action\/([A-Za-z0-9\_\-\/]+)$ engine/handlers/action_handler.php?action=$1 [L]
-
-RewriteRule ^export\/([A-Za-z]+)\/([0-9]+)$ services/export/handler.php?view=$1&guid=$2 [L]
-RewriteRule ^export\/([A-Za-z]+)\/([0-9]+)\/$ services/export/handler.php?view=$1&guid=$2 [L]
-RewriteRule ^export\/([A-Za-z]+)\/([0-9]+)\/([A-Za-z]+)\/([A-Za-z0-9\_]+)\/$ services/export/handler.php?view=$1&guid=$2&type=$3&idname=$4 [L]
+RewriteBase /
 
 RewriteRule ^_css\/([\w]+)\.css$ _css/css.php?name=$1 [L]
-
 RewriteRule ^_media\/tiny_mce\/tiny_mce.js$ _media/tiny_mce/tiny_mce_gzip.php [L]
+RewriteRule ^(\w+\.php|_media|_graphics|_css) - [L]
+RewriteRule .* index.php/$0 [L]
 
-RewriteRule ^pg\/([A-Za-z0-9\_\-]+)\/(.*)$ engine/handlers/pagehandler.php?handler=$1&page=$2 [L]
-RewriteRule ^pg\/([A-Za-z0-9\_\-]+)$ engine/handlers/pagehandler.php?handler=$1 [L]
+#RewriteRule ^action\/([A-Za-z0-9\_\-\/]+)$ engine/handlers/action_handler.php?action=$1 [L]
 
-RewriteRule ^page\/(.*)$ engine/handlers/pagehandler.php?handler=page&page=$1 [L]
-RewriteRule ^org\/(.*)$ engine/handlers/pagehandler.php?handler=org&page=$1 [L]
-
+#RewriteRule ^export\/([A-Za-z]+)\/([0-9]+)$ services/export/handler.php?view=$1&guid=$2 [L]
+#RewriteRule ^export\/([A-Za-z]+)\/([0-9]+)\/$ services/export/handler.php?view=$1&guid=$2 [L]
+#RewriteRule ^export\/([A-Za-z]+)\/([0-9]+)\/([A-Za-z]+)\/([A-Za-z0-9\_]+)\/$ services/export/handler.php?view=$1&guid=$2&type=$3&idname=$4 [L]
+#
+#RewriteRule ^_css\/([\w]+)\.css$ _css/css.php?name=$1 [L]
+#
+#RewriteRule ^_media\/tiny_mce\/tiny_mce.js$ _media/tiny_mce/tiny_mce_gzip.php [L]
+#
+#RewriteRule ^pg\/([A-Za-z0-9\_\-]+)\/(.*)$ engine/handlers/pagehandler.php?handler=$1&page=$2 [L]
+#RewriteRule ^pg\/([A-Za-z0-9\_\-]+)$ engine/handlers/pagehandler.php?handler=$1 [L]
+#
+#RewriteRule ^page\/(.*)$ engine/handlers/pagehandler.php?handler=page&page=$1 [L]
+#RewriteRule ^org\/(.*)$ engine/handlers/pagehandler.php?handler=org&page=$1 [L]
+#
 # directories that are accessible without url rewriting
-RewriteRule ^(account|mod|search|admin|engine|_css|_graphics|_media)/ - [S=1]
+#RewriteRule ^(account|mod|search|admin|engine|_css|_graphics|_media)/ - [S=1]
 
 # everything else is interpreted as an org username
-RewriteRule ^([\d\w\-]+(/.*)?)$ engine/handlers/pagehandler.php?handler=orgprofile&page=$1 [L]
+#RewriteRule ^([\d\w\-]+(/.*)?)$ engine/handlers/pagehandler.php?handler=orgprofile&page=$1 [L]
 
 </IfModule>
 php_value display_errors 1

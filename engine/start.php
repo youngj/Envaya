@@ -107,12 +107,6 @@
 
     $installed = is_installed();
 
-    if ($installed)
-    {
-        load_plugins();
-        trigger_elgg_event('plugins_boot', 'system');
-    }
-
     if (!$installed && !substr_count($_SERVER["PHP_SELF"],"install.php") && !substr_count($_SERVER["PHP_SELF"],"css.php") && !substr_count($_SERVER["PHP_SELF"],"action_handler.php"))
     {
         header("Location: install.php");

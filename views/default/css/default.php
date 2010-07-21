@@ -484,14 +484,11 @@ input[type="submit"] {
 .admin_users_online,
 .usersettings_statistics,
 .admin_adduser_link,
-#add-box,
-#search-box,
 #logbrowser_search_area {
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     background:white;
-    margin:0 10px 10px 10px;
-    padding:10px;
+    padding:10px 0px;
 }
 
 .usersettings_statistics h3,

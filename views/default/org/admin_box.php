@@ -34,8 +34,8 @@
             ));
         }
 
-		echo "<a href='{$org->username}/dashboard'>".elgg_echo('dashboard')."</a>";
-        echo "<a href='pg/settings/user/{$org->username}/'>".elgg_echo('help:settings')."</a>";
+        echo "<a href='{$org->username}/dashboard'>".elgg_echo('dashboard')."</a>";
+        echo "<a href='{$org->username}/settings'>".elgg_echo('help:settings')."</a>";
         echo "<a href='{$org->username}/username'>".elgg_echo('username:title')."</a>";
 
         ?>

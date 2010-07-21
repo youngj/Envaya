@@ -58,7 +58,7 @@
     $CONFIG->sitename = "Envaya";
     $CONFIG->sitedescription = "";
     $CONFIG->siteemail = "youngj@envaya.org";
-    $CONFIG->enabled_plugins = array("logbrowser","profile");
+    $CONFIG->enabled_plugins = array();
 
     $CONFIG->types = array(
         'object' => 'ElggObject',

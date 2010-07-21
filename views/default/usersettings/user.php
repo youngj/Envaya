@@ -1,6 +1,6 @@
 <?php
 
-    $user = page_owner_entity();
+    $user = $vars['user'];
 
     if ($user) {
 ?>

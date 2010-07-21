@@ -10,84 +10,18 @@
      * @link http://elgg.org/
      */
 
-    // Action setting and run *************************************************
-
-    /**
-     * Loads an action script, if it exists, then forwards elsewhere
-     *
-     * @param string $action The requested action
-     * @param string $forwarder Optionally, the location to forward to
-     */
-
-        function action($action, $forwarder = "pg/home") {
-
-            global $CONFIG;
-
-            $userId = get_loggedin_userid();
-            if ($userId)
-            {
-                set_last_action($userId);
-            }
-
-            $forwarder = str_replace($CONFIG->url, "", $forwarder);
-            $forwarder = str_replace("http://", "", $forwarder);
-            $forwarder = str_replace("@", "", $forwarder);
-
-            if (substr($forwarder,0,1) == "/") {
-                $forwarder = substr($forwarder,1);
-            }
-
-            if (isset($CONFIG->actions[$action]))
-            {
-                $file = $CONFIG->actions[$action]['file'];
-            }
-            else
-            {
-                $file = get_default_action_path($action);
-            }
-
-            if (include($file))
-            {
-                // ok
-            }
-            else
-            {
-                register_error(sprintf(elgg_echo('actionundefined'),$action));
-            }
-
-            forward($CONFIG->url . $forwarder);
-
-        }
-
-        function get_default_action_path($action)
+    function record_user_action()
+    {
+        $userId = get_loggedin_userid();
+        if ($userId)
         {
-            global $CONFIG;
-            return $CONFIG->path . "actions/" . $action . ".php";
+            set_last_action($userId);
         }
+    }
 
-    /**
-     * Registers a particular action in memory
-     *
-     * @param string $action The name of the action (eg "register", "account/settings/save")
-     * @param string $filename Optionally, the filename where this action is located
-     */
-
-        function register_action($action, $filename = "")
-        {
-            global $CONFIG;
-
-            if (!isset($CONFIG->actions)) {
-                $CONFIG->actions = array();
-            }
-
-            if (empty($filename))
-            {
-                $filename = get_default_action_path($action);
-            }
-
-            $CONFIG->actions[$action] = array('file' => $filename);
-            return true;
-        }
+    function register_action($action, $filename = "")
+    {
+    }
 
     /**
      * Actions to perform on initialisation

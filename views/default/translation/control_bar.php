@@ -83,7 +83,7 @@ if (page_is_translatable())
             }
 
             $escUrl = urlencode($_SERVER['REQUEST_URI']);
-            $links[] = "<a href='pg/org/translate?from=$escUrl&".implode("&", $urlProps)."'>".elgg_echo("trans:contribute")."</a>";
+            $links[] = "<a href='org/translate?from=$escUrl&".implode("&", $urlProps)."'>".elgg_echo("trans:contribute")."</a>";
         }
     }
 

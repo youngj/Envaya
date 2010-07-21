@@ -157,3 +157,32 @@ a.icon_link:hover
     background:#d5d0c8 url(<?php echo $graphicsDir; ?>/green/button.gif) no-repeat right top;
     display:block;
 }
+
+.log_entry {
+    width: 560px;
+    font-size: 80%;
+    background:white;
+    margin:0 10px 5px 10px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border:1px solid white;
+}
+.log_entry td {
+}
+
+.log_entry_user {
+    width: 120px;
+}
+
+.log_entry_time {
+    width: 210px;
+    padding:2px;
+}
+
+.log_entry_item {
+
+}
+
+.log_entry_action {
+    width: 75px;
+}

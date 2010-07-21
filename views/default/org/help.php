@@ -89,7 +89,7 @@
 
 <p>
 <?php echo sprintf(elgg_echo('help:settings:icon'),
-    "<a href='pg/settings' target='_blank'><img class='icon_with_bg' src='_graphics/settings.gif' /></a>") ?>
+    "<a href='{$org->getURL()}/settings' target='_blank'><img class='icon_with_bg' src='_graphics/settings.gif' /></a>") ?>
 </p>
 
 <p>

@@ -1314,20 +1314,6 @@
     }
 
     /**
-     * Page handler for generic entities view system
-     *
-     * @param array $page Page elements from pain page handler
-     */
-    function entities_page_handler($page)
-    {
-        if (isset($page[0])) {
-            global $CONFIG;
-            set_input('guid',$page[0]);
-            @include($CONFIG->path . "entities/index.php");
-        }
-    }
-
-    /**
      * Gets a private setting for an entity.
      *
      * @param int $entity_guid The entity GUID
@@ -1447,13 +1433,6 @@
         }
     }
 
-    function entities_init()
-    {
-        register_page_handler('view','entities_page_handler');
-    }
-
     /** Hook for rendering a default icon for entities */
     register_plugin_hook('entity:icon:url', 'all', 'default_entity_icon_hook', 1000);
 
-    /** Register init system event **/
-    register_elgg_event_handler('init','system','entities_init');
