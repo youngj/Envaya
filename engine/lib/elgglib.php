@@ -226,7 +226,7 @@
      * @return nothing|false
      */
 
-    function forward($location = "page/home")
+    function forward($location = "/")
     {
         global $CONFIG;
         if (!headers_sent())

@@ -701,7 +701,7 @@
             set_private_setting($user_guid, 'passwd_conf_code', $code);
 
             // generate link
-            $link = $CONFIG->url . "action/user/passwordreset?u=$user_guid&c=$code";
+            $link = $CONFIG->url . "pg/password_reset?u=$user_guid&c=$code";
 
             // generate email
             $email = sprintf(elgg_echo('email:resetreq:body',$user->language), $user->name, $link);

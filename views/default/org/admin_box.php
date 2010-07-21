@@ -30,7 +30,7 @@
             echo elgg_view('output/confirmlink', array(
                 'text' => elgg_echo('approval:delete'),
                 'is_action' => true,
-                'href' => "action/entities/delete?guid={$org->guid}"
+                'href' => "action/delete_entity?guid={$org->guid}"
             ));
         }
 

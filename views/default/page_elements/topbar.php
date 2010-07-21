@@ -47,7 +47,7 @@ if (get_input('__topbar') !== '0') {
                 echo "<a href='pg/dashboard'><img src='_graphics/admin.gif' height='25' width='24' /></a>";
             }
 
-            echo "<a href='action/logout' title=\"".elgg_echo('logout')."\"><img src='_graphics/logout.gif' /></a>";
+            echo "<a href='pg/logout' title=\"".elgg_echo('logout')."\"><img src='_graphics/logout.gif' /></a>";
 
             echo "</span>";
 

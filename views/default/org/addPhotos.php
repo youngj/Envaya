@@ -9,7 +9,7 @@
 <label id='uploadLabel'><img src='_graphics/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo elgg_echo('addphotos:label') ?></label><br />
 <div id='uploadContainer'></div>
 
-<script type='text/javascript' src='_media/swfupload.js?v3'></script>
+<script type='text/javascript' src='_media/swfupload.js?v6'></script>
 <script type='text/javascript'>
 
 var MultiImageUploader = makeClass(ImageUploader);
@@ -128,12 +128,12 @@ new MultiImageUploader(<?php echo elgg_view('input/swfupload_args', array(
 </script>
 <div class='input'>
 <?php
-	echo elgg_view('input/hidden', array('internalname' => 'org_guid', 'value' => $vars['entity']->guid));
+    echo elgg_view('input/hidden', array('internalname' => 'org_guid', 'value' => $vars['entity']->guid));
 
-	echo elgg_view('input/hidden', array(
-		'internalname' => 'uuid',
-		'value' => uniqid("",true)
-	));
+    echo elgg_view('input/hidden', array(
+        'internalname' => 'uuid',
+        'value' => uniqid("",true)
+    ));
 
 ?>
 

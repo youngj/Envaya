@@ -966,6 +966,7 @@ class Request {
             {
                 // Reflection will throw exceptions for missing classes or actions
                 $this->status = 404;
+                not_found();
             }
             else
             {

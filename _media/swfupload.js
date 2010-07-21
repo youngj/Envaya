@@ -1153,7 +1153,7 @@ ImageUploader.prototype.getSWFUploadOptions = function()
     var $self = this;
 
     return {
-        upload_url: "/action/uploadTemp",
+        upload_url: "/pg/upload",
         file_post_name: "file",
         post_params: { 
             "sizes": this.options.sizes, 
@@ -1198,7 +1198,7 @@ ImageUploader.prototype.getSWFUploadOptions = function()
         
         upload_error_handler: function(file, errorCode, message) 
         { 
-            $self.setProgress(this.options.upload_error_message + errorCode);            
+            $self.setProgress($self.options.upload_error_message + errorCode);            
         },
         
         upload_success_handler: function(file, serverData) 
@@ -1218,8 +1218,8 @@ ImageUploader.prototype.getSWFUploadOptions = function()
         button_cursor: SWFUpload.CURSOR.HAND,
 
         // Flash Settings
-        flash_url : "/_media/swfupload.swf",
-        jpegencoder_url: "/_media/jpegencoder.swf",
+        flash_url : "/_media/swfupload.swf?v10",
+        jpegencoder_url: "/_media/jpegencoder.swf?v10",
         prevent_swf_caching: false,
         // flash9_url : "/swfupload/swfupload_FP9.swf",
 

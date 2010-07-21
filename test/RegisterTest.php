@@ -143,7 +143,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
     private function _testResetPassword()
     {
-        $this->clickAndWait("//a[contains(@href,'action/logout')]");
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->clickAndWait("//a[contains(@href,'pg/login')]");
         $this->clickAndWait("//a[contains(@href,'account/forgotten_password')]");
         $this->type("//input[@name='username']", $this->username);
@@ -351,7 +351,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->mouseOver("//div[@class='good_messages']");
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
         $this->mouseOver("//h2[text()='New Name']");
-        $this->clickAndWait("//a[contains(@href,'action/logout')]");
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->clickAndWait("//a[contains(@href,'pg/login')]");
         $this->type("//input[@name='username']",$this->username);
         $this->type("//input[@name='password']",'password');
@@ -366,7 +366,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
     private function _testMakePublic()
     {
-        $this->clickAndWait("//a[contains(@href,'action/logout')]");
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->clickAndWait("//a[contains(@href,'org/feed')]");
         $this->mustNotExist("//a[contains(@href, '/{$this->username}')]");
         $this->clickAndWait("//a[contains(@href,'org/search')]");
@@ -387,7 +387,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->s->getConfirmation();
         $this->mouseOver("//div[@class='good_messages']");
 
-        $this->clickAndWait("//a[contains(@href,'action/logout')]");
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
 
         $this->clickAndWait("//a[contains(@href,'org/search')]");
         $this->type("//input[@name='q']", $this->username);
@@ -403,7 +403,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
     private function _testPartnership()
     {
-        //$this->clickAndWait("//a[contains(@href,'action/logout')]");
+        //$this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->clickAndWait("//a[contains(@href,'home')]");
         $this->clickAndWait("//a[contains(@href,'org/new')]");
 
@@ -442,7 +442,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
         $this->mouseOver("//div[@class='good_messages']");
 
-        $this->clickAndWait("//a[contains(@href,'action/logout')]");
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
 
         $email = $this->getLastEmail("New organization registered");
         $url = $this->getLinkFromEmail($email);
@@ -457,7 +457,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->s->getConfirmation();
         $this->mouseOver("//div[@class='good_messages']");
 
-        $this->clickAndWait("//a[contains(@href,'action/logout')]");
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->clickAndWait("//a[contains(@href,'pg/login')]");
         $this->type("//input[@name='username']","{$this->username2}");
         $this->type("//input[@name='password']",'password');
@@ -473,7 +473,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
         $url = $this->getLinkFromEmail($email);
 
-        $this->clickAndWait("//a[contains(@href,'action/logout')]");
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
 
         $this->setUrl($url);
 
@@ -563,7 +563,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
                 break;
             }
         }
-        $this->clickAndWait("//a[contains(@href,'action/logout')]");
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
     }
 }
 

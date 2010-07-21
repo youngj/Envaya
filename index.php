@@ -10,10 +10,13 @@
         gatekeeper();
     }
 
-    Route::set('page', 'page/<name>')->defaults(array('controller' => 'page','action' => 'view',));
+    Route::set('page', 'page/<name>')->defaults(array(
+        'controller' => 'page',
+        'action' => 'view',
+    ));
 
     Route::set('default', '(<controller>(/<action>(/<id>)))',
-        array('controller' => '(pg|home|org|admin)?')
+        array('controller' => '(pg|home|org|admin|action)?')
     )->defaults(array(
             'controller' => 'home',
             'action'     => 'index',

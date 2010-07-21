@@ -43,7 +43,7 @@
     <div class='icon_separator'></div>
     <a class='icon_link icon_feed' href='org/feed'><?php echo elgg_echo("feed:title") ?></a>
     <div class='icon_separator'></div>
-    <a class='icon_link icon_logout' href='action/logout'><?php echo elgg_echo('logout') ?></a>
+    <a class='icon_link icon_logout' href='pg/logout'><?php echo elgg_echo('logout') ?></a>
 </td>
 </tr>
 </table>

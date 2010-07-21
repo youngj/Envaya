@@ -80,6 +80,12 @@ class Controller_Pg extends Controller {
         }
     }
 
+    function action_logout()
+    {
+        logout();
+        forward();
+    }
+
     function action_dashboard()
     {
         gatekeeper();
@@ -115,6 +121,55 @@ class Controller_Pg extends Controller {
         }
     }
 
+    function action_request_new_password()
+    {
+        $username = get_input('username');
+
+        $access_status = access_get_show_hidden_status();
+        access_show_hidden_entities(true);
+        $user = get_user_by_username($username);
+        if ($user)
+        {
+            if (!$user->email)
+            {
+                register_error(elgg_echo('user:password:resetreq:no_email'));
+                forward("page/contact");
+            }
+            if (send_new_password_request($user->guid))
+            {
+                system_message(elgg_echo('user:password:resetreq:success'));
+            }
+            else
+            {
+                register_error(elgg_echo('user:password:resetreq:fail'));
+            }
+        }
+        else
+            register_error(sprintf(elgg_echo('user:username:notfound'), $username));
+
+        access_show_hidden_entities($access_status);
+        forward();
+    }
+
+    function action_password_reset()
+    {
+        global $CONFIG;
+
+        $user_guid = get_input('u');
+        $code = get_input('c');
+
+        access_show_hidden_entities(true);
+
+        if (execute_new_password_request($user_guid, $code))
+            system_message(elgg_echo('user:password:reset'));
+        else
+            register_error(elgg_echo('user:password:fail'));
+
+        forward("pg/login");
+        exit;
+    }
+
+
     function action_register()
     {
         $friend_guid = (int) get_input('friend_guid',0);
@@ -129,5 +184,52 @@ class Controller_Pg extends Controller {
         {
             forward();
         }
+    }
+
+    function action_upload()
+    {
+        gatekeeper();
+
+        $sizes = json_decode(get_input('sizes'));
+
+        $filename = get_uploaded_filename('file');
+
+        $json = upload_temp_images($filename, $sizes);
+
+        if (get_input('iframe'))
+        {
+            Session::set('lastUpload', $json);
+            forward("upload.php?swfupload=".urlencode(get_input('swfupload'))."&sizes=".urlencode(get_input('sizes')));
+        }
+        else
+        {
+            header("Content-Type: text/javascript");
+            echo $json;
+            exit();
+        }
+    }
+
+    function action_send_feedback()
+    {
+        $message = get_input('message');
+
+        if (!$message)
+        {
+            action_error(elgg_echo('feedback:empty'));
+        }
+
+        $from = get_input('name');
+        $email = get_input('email');
+
+        $headers = array();
+
+        if ($email && is_email_address($email))
+        {
+            $headers['Reply-To'] = mb_encode_mimeheader($email, "UTF-8", "B");
+        }
+
+        send_admin_mail("User feedback", "From: $from\n\nEmail: $email\n\n$message", $headers);
+        system_message(elgg_echo('feedback:sent'));
+        forward("page/contact");
     }
 }

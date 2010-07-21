@@ -6,7 +6,7 @@ include_once(__DIR__."/engine/start.php");
 
 <html>
 
-<form id='form' method='POST' enctype='multipart/form-data' action='action/uploadTemp?iframe=1'>
+<form id='form' method='POST' enctype='multipart/form-data' action='pg/upload?iframe=1'>
     <body style='padding:0px;margin:0px'>
 
     <?php

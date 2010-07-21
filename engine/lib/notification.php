@@ -336,19 +336,8 @@
 
         // Register a notification handler for the default email method
         register_notification_handler("email", "email_notify_handler");
-
-        // Add settings view to user settings & register action
-        //extend_elgg_settings_page('notifications/settings/usersettings', 'usersettings/user');
-
-        //register_plugin_hook('usersettings:save','user','notification_user_settings_save');
     }
 
-    function notification_user_settings_save() {
-
-        global $CONFIG;
-        @include($CONFIG->path . "actions/notifications/settings/usersettings/save.php");
-
-    }
 
     /**
      * Register an entity type and subtype to be eligible for notifications

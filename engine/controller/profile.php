@@ -58,6 +58,10 @@ class Controller_Profile extends Controller
                     return $this->view_widget($widget);
             }
         }
+        else if ($widgetName == 'home')
+        {
+            return $this->edit_settings();
+        }
         else
         {
             not_found();

@@ -9,7 +9,7 @@
                 setTimeout(function() {
                     var script = document.createElement('script');
                     script.type = 'text/javascript';
-                    script.src = '_media/swfupload.js?v3';
+                    script.src = '_media/swfupload.js?v6';
                     document.getElementsByTagName("head").item(0).appendChild(script);
                 }, 1);
             </script>

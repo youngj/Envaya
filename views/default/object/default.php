@@ -1,12 +1,12 @@
 <?php
-	/**
-	 * ElggEntity default view.
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-	 * @author Curverider Ltd
-	 * @link http://elgg.org/
-	 */
+    /**
+     * ElggEntity default view.
+     *
+     * @package Elgg
+     * @subpackage Core
+     * @author Curverider Ltd
+     * @link http://elgg.org/
+     */
 
     $icon = elgg_view(
             'graphics/icon', array(
@@ -23,7 +23,7 @@
     $controls = "";
     if ($vars['entity']->canEdit())
     {
-        $controls .= " (<a href=\"{$vars['url']}action/entities/delete?guid={$vars['entity']->guid}\">" . elgg_echo('delete') . "</a>)";
+        $controls .= " (<a href=\"{$vars['url']}action/delete_entity?guid={$vars['entity']->guid}\">" . elgg_echo('delete') . "</a>)";
     }
 
     $info = "<div><p><b><a href=\"" . $vars['entity']->getUrl() . "\">" . escape($title) . "</a></b> $controls </p></div>";
@@ -32,7 +32,7 @@
 
         $icon = "";
 
-    } 
+    }
 
     $owner = $vars['entity']->getOwnerEntity();
     $ownertxt = elgg_echo('unknown');
