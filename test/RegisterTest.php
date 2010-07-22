@@ -145,7 +145,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     {
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->clickAndWait("//a[contains(@href,'pg/login')]");
-        $this->clickAndWait("//a[contains(@href,'account/forgotten_password')]");
+        $this->clickAndWait("//a[contains(@href,'pg/forgot_password')]");
         $this->type("//input[@name='username']", $this->username);
         $this->submitForm();
 
@@ -249,6 +249,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     private function _testEditContact()
     {
         $this->clickAndWait("//a[contains(@href,'contact')]");
+        sleep(10);
         $this->mouseOver("//a[@href='mailto:adunar@gmail.com']");
         $this->clickAndWait("//a[contains(@href,'contact/edit')]");
         $this->s->uncheck("//input[@name='public_email[]']");
@@ -299,47 +300,11 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->typeInFrame("//iframe", "we test stuff");
         $this->clickAndWait("//button[@name='submit']");
         $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'we test stuff')]");
-        $this->clickAndWait("//a[contains(@href,'pg/dashboard')]");
-        $this->clickAndWait("//a[contains(@href,'team/edit')]");
-
-        $this->type("//input[@name='name']", "Person 1");
-        $this->type("//textarea[@name='description']", "Description 1");
-        $this->clickAndWait("//button[@name='submit']");
-
-        $this->type("//input[@name='name']", "Person 2");
-        $this->type("//textarea[@name='description']", "Description 2");
-        $this->clickAndWait("//button[@name='submit']");
-
-        $this->type("//input[@name='name']", "Person 3");
-        $this->type("//textarea[@name='description']", "Description 3");
-        $this->clickAndWait("//button[@name='submit']");
-
-        $this->clickAndWait("//a[contains(@href,'teammember/')]");
-        $this->mouseOver("//input[@name='name' and @value='Person 1']");
-        $this->type("//input[@name='name']", "Person 0");
-        $this->type("//textarea[@name='description']", "Description 0");
-        $this->submitForm();
-        $this->mouseOver("//div[@class='good_messages']");
-        $this->clickAndWait("//div[@id='edit_submenu']//a");
-
-        $this->mouseOver("//div[@class='team_member_name' and contains(text(),'Person 0')]");
-        $this->mouseOver("//div[@class='team_member_name' and contains(text(),'Person 2')]");
-        $this->mustNotExist("//div[@class='team_member_name' and contains(text(),'Person 1')]");
-
-        $this->clickAndWait("//a[contains(@href,'team/edit')]");
-        $this->clickAndWait("//a[contains(@href,'moveTeamMember')]");
-        $this->clickAndWait("//a[contains(@href,'deleteTeamMember')]");
-        $this->s->getConfirmation();
-        $this->clickAndWait("//div[@id='edit_submenu']//a");
-
-        $this->mouseOver("//div[@class='team_member_name' and contains(text(),'Person 0')]");
-        $this->mouseOver("//div[@class='team_member_name' and contains(text(),'Person 3')]");
-        $this->mustNotExist("//div[@class='team_member_name' and contains(text(),'Person 2')]");
     }
 
     private function _testSettings()
     {
-        $this->clickAndWait("//a[contains(@href,'pg/settings')]");
+        $this->clickAndWait("//a[contains(@href,'/settings')]");
         $this->type("//input[@name='name']", "New Name");
         $this->type("//input[@name='password']", "password2");
         $this->type("//input[@name='password2']", "password3");
@@ -466,7 +431,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->mouseOver("//div[@class='good_messages']");
 
         $this->open("/{$this->username}");
-        $this->click("//a[contains(@href,'requestPartner')]");
+        $this->click("//a[contains(@href,'request_partner')]");
         $this->s->getConfirmation();
 
         $email = $this->getLastEmail("wants to add");
@@ -527,7 +492,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
     private function _testDeleteOrg()
     {
-        $this->open("/pg/admin/user/");
+        $this->open("/admin/user");
         $this->type("//input[@name='username']",'testadmin');
         $this->type("//input[@name='password']",'testtest');
         $this->submitForm();

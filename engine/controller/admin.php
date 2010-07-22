@@ -320,6 +320,6 @@ class Controller_Admin extends Controller
         else
             register_error(sprintf(elgg_echo('entity:delete:fail'), $guid));
 
-        forward('pg/admin/user');
+        forward('admin/user');
     }
 }
