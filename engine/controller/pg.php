@@ -88,7 +88,7 @@ class Controller_Pg extends Controller {
 
     function action_dashboard()
     {
-        gatekeeper();
+        $this->require_login();
 
         set_theme('editor');
         set_context('editor');
@@ -219,7 +219,7 @@ class Controller_Pg extends Controller {
 
     function action_upload()
     {
-        gatekeeper();
+        $this->require_login();
 
         $sizes = json_decode(get_input('sizes'));
 

@@ -26,7 +26,7 @@
     if ($vars['is_action'])
     {
         $ts = time();
-        $token = generate_action_token($ts);
+        $token = generate_security_token($ts);
 
         $sep = "?";
         if (strpos($link, '?')>0) $sep = "&";

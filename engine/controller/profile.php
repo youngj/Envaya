@@ -52,7 +52,7 @@ class Controller_Profile extends Controller
 
     function action_save()
     {
-        action_gatekeeper();
+        $this->validate_security_token();
 
         if (!$this->user->canEdit())
         {
@@ -137,7 +137,7 @@ class Controller_Profile extends Controller
 
     function require_editor()
     {
-        gatekeeper();
+        $this->require_login();
 
         $user = $this->user;
 
@@ -356,8 +356,7 @@ class Controller_Profile extends Controller
     {
         $this->require_editor();
         $this->require_org();
-
-        admin_gatekeeper();
+        $this->require_admin();
 
         $title = elgg_echo('username:title');
         $area1 = elgg_view('org/changeUsername', array('org' => $this->org));
@@ -421,7 +420,7 @@ class Controller_Profile extends Controller
 
     function index_compose()
     {
-        gatekeeper();
+        $this->require_login();
         $this->use_editor_layout();
         $this->require_org();
 
@@ -544,7 +543,7 @@ class Controller_Profile extends Controller
     function index_confirm_partner()
     {
         $this->require_org();
-        gatekeeper();
+        $this->require_login();
 
         $partner = $this->org;
 
@@ -576,8 +575,8 @@ class Controller_Profile extends Controller
     function index_request_partner()
     {
         $this->require_org();
-        gatekeeper();
-        action_gatekeeper();
+        $this->require_login();
+        $this->validate_security_token();
 
         global $CONFIG;
 
@@ -619,8 +618,8 @@ class Controller_Profile extends Controller
     function index_create_partner()
     {
         $this->require_org();
-        gatekeeper();
-        action_gatekeeper();
+        $this->require_login();
+        $this->validate_security_token();
 
         $user = get_loggedin_user();
 
@@ -663,8 +662,8 @@ class Controller_Profile extends Controller
     function index_send_message()
     {
         $this->require_org();
-        gatekeeper();
-        action_gatekeeper();
+        $this->require_login();
+        $this->validate_security_token();
 
         $user = get_loggedin_user();
 

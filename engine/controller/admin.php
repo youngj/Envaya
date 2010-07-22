@@ -4,7 +4,7 @@ class Controller_Admin extends Controller
 {
     function before()
     {
-        admin_gatekeeper();
+        $this->require_admin();
         set_context('editor');
         set_theme('editor');
 
@@ -54,7 +54,7 @@ class Controller_Admin extends Controller
 
     function action_send_email()
     {
-        action_gatekeeper();
+        $this->validate_security_token();
 
         /*
         $orgs = Organization::filterByCondition(
@@ -218,7 +218,7 @@ class Controller_Admin extends Controller
 
     function action_add_user()
     {
-        action_gatekeeper();
+        $this->validate_security_token();
 
         global $CONFIG;
 
@@ -262,7 +262,7 @@ class Controller_Admin extends Controller
 
     function action_approve()
     {
-        action_gatekeeper();
+        $this->validate_security_token();
 
         $guid = (int)get_input('org_guid');
         $entity = get_entity($guid);
@@ -304,7 +304,7 @@ class Controller_Admin extends Controller
 
     function action_delete_entity()
     {
-        action_gatekeeper();
+        $this->validate_security_token();
 
         $guid = get_input('guid');
 

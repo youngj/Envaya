@@ -78,7 +78,7 @@ class Controller_Post extends Controller_Profile
     function action_save()
     {
         $this->require_editor();
-        action_gatekeeper();
+        $this->validate_security_token();
         $post = $this->post;
         $org = $this->org;
 
@@ -110,7 +110,7 @@ class Controller_Post extends Controller_Profile
     function action_new()
     {
         $this->require_editor();
-        action_gatekeeper();
+        $this->validate_security_token();
 
         $body = get_input('blogbody');
         $org = $this->org;

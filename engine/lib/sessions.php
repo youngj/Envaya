@@ -305,23 +305,6 @@ function force_login()
     }
 }
 
-function gatekeeper()
-{
-    if (!isloggedin())
-    {
-        force_login();
-    }
-}
-
-function admin_gatekeeper()
-{
-    gatekeeper();
-    if (!isadminloggedin())
-    {
-        force_login();
-    }
-}
-
 function __elgg_session_open($save_path, $session_name)
 {
     global $sess_save_path;

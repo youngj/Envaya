@@ -1,9 +1,9 @@
 <?php
     require_once(__DIR__."/engine/start.php");
 
-    if (get_input('login'))
+    if (get_input('login') && !isloggedin())
     {
-        gatekeeper();
+        force_login();
     }
 
     // work around flash uploader cookie bug

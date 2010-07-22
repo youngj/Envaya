@@ -140,7 +140,7 @@ class Controller_Org extends Controller
 
     function action_register2()
     {
-        action_gatekeeper();
+        $this->validate_security_token();
 
         try
         {
@@ -242,8 +242,8 @@ class Controller_Org extends Controller
 
     function action_register3()
     {
-        gatekeeper();
-        action_gatekeeper();
+        $this->require_login();
+        $this->validate_security_token();
 
         try
         {
@@ -381,7 +381,7 @@ class Controller_Org extends Controller
 
     function action_translate()
     {
-        admin_gatekeeper();
+        $this->require_admin();
         set_theme('editor');
 
         $props = get_input_array("prop");
@@ -418,8 +418,8 @@ class Controller_Org extends Controller
 
     function action_save_translation()
     {
-        gatekeeper();
-        action_gatekeeper();
+        $this->require_login();
+        $this->validate_security_token();
 
         $text = get_input('translation');
         $guid = get_input('entity_guid');
@@ -473,7 +473,7 @@ class Controller_Org extends Controller
 
     function action_translate_interface()
     {
-        gatekeeper();
+        $this->require_login();
 
         if (get_input('exception'))
         {
@@ -507,8 +507,8 @@ class Controller_Org extends Controller
 
     function action_save_interface_item()
     {
-        gatekeeper();
-        action_gatekeeper();
+        $this->require_login();
+        $this->validate_security_token();
 
         $key = get_input('key');
         $value = get_input('value');

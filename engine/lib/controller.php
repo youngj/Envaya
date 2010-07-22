@@ -45,6 +45,35 @@ abstract class Controller {
         $this->request->response = page_draw($title, $body, $preBody);
     }
 
+    public function validate_security_token()
+    {
+        try
+        {
+            validate_security_token();
+        }
+        catch (SecurityException $ex)
+        {
+            forward();
+            exit;
+        }
+    }
+
+    public function require_login()
+    {
+        if (!isloggedin())
+        {
+            force_login();
+        }
+    }
+
+    public function require_admin()
+    {
+        if (!isadminloggedin())
+        {
+            force_login();
+        }
+    }
+
     /**
      * Automatically executed before the controller action. Can be used to set
      * class properties, do authorization checks, and execute other custom code.

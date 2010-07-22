@@ -24,7 +24,7 @@
      *
      * @return unknown
      */
-    function validate_action_token($visibleerrors = true)
+    function validate_security_token()
     {
         $token = get_input('__elgg_token');
         $ts = get_input('__elgg_ts');
@@ -33,7 +33,7 @@
         if (($token) && ($ts) && ($session_id))
         {
             // generate token, check with input and forward if invalid
-            $generated_token = generate_action_token($ts);
+            $generated_token = generate_security_token($ts);
 
             // Validate token
             if (strcmp($token, $generated_token)==0)
@@ -44,38 +44,22 @@
                 // Validate time to ensure its not crazy
                 if (($ts>$now-$hour) && ($ts<$now+$hour))
                 {
-                    return true;
+                    return;
                 }
-                else if ($visibleerrors)
-                    register_error(elgg_echo('actiongatekeeper:timeerror'));
+                else
+                {
+                    throw new SecurityException(elgg_echo('actiongatekeeper:timeerror'));
+                }
             }
-            else if ($visibleerrors)
+            else
             {
-                register_error(elgg_echo('actiongatekeeper:timeerror'));
+                throw new SecurityException(elgg_echo('actiongatekeeper:timeerror'));
             }
         }
-        else if ($visibleerrors)
+        else
         {
-            register_error(elgg_echo('actiongatekeeper:missingfields'));
+            throw new SecurityException(elgg_echo('actiongatekeeper:missingfields'));
         }
-
-        return false;
-    }
-
-    /**
-     * Action gatekeeper.
-     * This function verifies form input for security features (like a generated token), and forwards
-     * the page if they are invalid.
-     *
-     * Place at the head of actions.
-     */
-    function action_gatekeeper()
-    {
-        if (validate_action_token())
-            return true;
-
-        forward();
-        exit;
     }
 
     function action_error($msg)
@@ -90,7 +74,7 @@
      *
      * @param int $timestamp Unix timestamp
      */
-    function generate_action_token($timestamp)
+    function generate_security_token($timestamp)
     {
         // Get input values
         $site_secret = get_site_secret();
