@@ -7,7 +7,7 @@
 	}
 	
 	if (isset($vars['onclick']) && $vars['onclick'] == true) {
-		$onclick = "onclick=\"javascript:return confirm('". elgg_echo('deleteconfirm') . "')\"";
+		$onclick = "onclick=\"javascript:return confirm('". __('deleteconfirm') . "')\"";
 	} else {
 		$onclick = "";
 	}

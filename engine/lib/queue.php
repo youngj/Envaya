@@ -10,7 +10,7 @@ function queue_connect()
         $kestrel = new Memcache;
         if (!$kestrel->connect($CONFIG->queue_host, $CONFIG->queue_port))
         {
-            throw new IOException(elgg_echo("IOException:QueueConnectFailed"));
+            throw new IOException(__("IOException:QueueConnectFailed"));
         }
     }
     return $kestrel;
@@ -23,7 +23,7 @@ function queue_function_call($fn, $args)
 
     if (!$kestrel->set('call', serialize(array('fn' => $fn, 'args' => $args))))
     {
-        throw new IOException(elgg_echo("IOException:QueueAppendFailed")); 
+        throw new IOException(__("IOException:QueueAppendFailed")); 
     }
     return true;
 }

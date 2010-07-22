@@ -6,7 +6,7 @@
 <div id='previews'></div>
 <div id='progressContainer' style='padding-bottom:5px'></div>
 
-<label id='uploadLabel'><img src='_graphics/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo elgg_echo('addphotos:label') ?></label><br />
+<label id='uploadLabel'><img src='_graphics/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo __('addphotos:label') ?></label><br />
 <div id='uploadContainer'></div>
 
 <script type='text/javascript' src='_media/swfupload.js?v6'></script>
@@ -120,7 +120,7 @@ new MultiImageUploader(<?php echo elgg_view('input/swfupload_args', array(
         'progress_id' => 'progressContainer',
         'placeholder_id' => 'uploadContainer',
         'previews_id' => 'previews',
-        'button_more_message' => elgg_echo('addphotos:more'),
+        'button_more_message' => __('addphotos:more'),
         'sizes' => json_encode(NewsUpdate::getImageSizes())
     )
 )) ?>);
@@ -138,7 +138,7 @@ new MultiImageUploader(<?php echo elgg_view('input/swfupload_args', array(
 ?>
 
 <div id='submit' style='display:none'>
-<?php echo elgg_view('input/submit', array('value' => elgg_echo('publish'), 'trackDirty' => true)) ?>
+<?php echo elgg_view('input/submit', array('value' => __('publish'), 'trackDirty' => true)) ?>
 </div>
 </div>
 </div>

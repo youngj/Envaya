@@ -21,14 +21,14 @@
 
 <table class='gridTable'>
 <tr>
-    <th><a href='admin/contact?sort=name'><?php echo elgg_echo('name') ?></a></th>
-    <th><a href='admin/contact?sort=email'><?php echo elgg_echo('email') ?></a></th>
-    <th><?php echo elgg_echo('user:phone:label') ?></th>
-    <th><a href='admin/contact?sort=time_created'><?php echo elgg_echo('created') ?></a></th>
-    <th><?php echo elgg_echo('last_update') ?></th>
-    <th><?php echo elgg_echo('posts') ?></th>
-    <th><?php echo elgg_echo('lang') ?></th>
-    <th><a href='admin/contact?sort=last_notify_time'><?php echo elgg_echo('last_notify') ?></a></th>
+    <th><a href='admin/contact?sort=name'><?php echo __('name') ?></a></th>
+    <th><a href='admin/contact?sort=email'><?php echo __('email') ?></a></th>
+    <th><?php echo __('user:phone:label') ?></th>
+    <th><a href='admin/contact?sort=time_created'><?php echo __('created') ?></a></th>
+    <th><?php echo __('last_update') ?></th>
+    <th><?php echo __('posts') ?></th>
+    <th><?php echo __('lang') ?></th>
+    <th><a href='admin/contact?sort=last_notify_time'><?php echo __('last_notify') ?></a></th>
 </tr>
 <?php
     $escUrl = urlencode($_SERVER['REQUEST_URI']);

@@ -61,7 +61,7 @@
 
             // sanity check
             if ((isset($xml->name)) && (strcasecmp($xml->name, "methodCall")!=0))
-                throw new CallException(elgg_echo('CallException:NotRPCCall'));
+                throw new CallException(__('CallException:NotRPCCall'));
 
             // method name
             $this->methodname = $xml->children[0]->content;
@@ -499,14 +499,14 @@
             $result  = $handler($parameters);
 
             if (!($result instanceof XMLRPCResponse))
-                throw new InvalidParameterException(sprintf(elgg_echo('InvalidParameterException:UnexpectedReturnFormat'), $parameters->getMethodName()));
+                throw new InvalidParameterException(sprintf(__('InvalidParameterException:UnexpectedReturnFormat'), $parameters->getMethodName()));
 
             // Result in right format, return it.
             return $result;
         }
 
         // if no handler then throw exception
-        throw new NotImplementedException(sprintf(elgg_echo('NotImplementedException:XMLRPCMethodNotImplemented'), $parameters->getMethodName()));
+        throw new NotImplementedException(sprintf(__('NotImplementedException:XMLRPCMethodNotImplemented'), $parameters->getMethodName()));
     }
 
     // Error handler functions ////////////////////////////////////////////////////////////////

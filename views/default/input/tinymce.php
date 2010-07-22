@@ -16,7 +16,7 @@
         $TINYMCE_INCLUDE_COUNT++;
     }
 
-    echo "<div class='input-textarea' style='padding-bottom:15px' id='tinymce_loading$TINYMCE_INCLUDE_COUNT'>".elgg_echo("Loading...")."</div>";
+    echo "<div class='input-textarea' style='padding-bottom:15px' id='tinymce_loading$TINYMCE_INCLUDE_COUNT'>".__("Loading...")."</div>";
 
     if (!$TINYMCE_INCLUDE_COUNT)
     {
@@ -59,7 +59,7 @@
 
             foreach (get_language_keys_by_prefix($prefix) as $key)
             {
-                $res[substr($key, $lenPrefix)] = elgg_echo($key);
+                $res[substr($key, $lenPrefix)] = __($key);
             }
 
             echo json_encode($res);

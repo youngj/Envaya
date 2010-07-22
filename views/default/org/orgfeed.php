@@ -7,9 +7,9 @@
     echo "<div class='padded'>";
 
     echo sprintf(
-        elgg_echo('feed:org:about'),
+        __('feed:org:about'),
             "<a href='{$org->getURL()}'>".escape($org->name)."</a>",
-            "<a href='{$org->getURL()}/partnerships/edit'>".elgg_echo('widget:partnerships')."</a>"
+            "<a href='{$org->getURL()}/partnerships/edit'>".__('widget:partnerships')."</a>"
     );
 
     echo "</div>";

@@ -33,7 +33,7 @@
 
 			$location = $vars['entity']->location;
 			if (!empty($location)) {
-				$info .= "<p class=\"owner_timestamp\">" . elgg_echo("profile:location") . ": " . elgg_view("output/tags",array('value' => $vars['entity']->location)) . "</p>";
+				$info .= "<p class=\"owner_timestamp\">" . __("profile:location") . ": " . elgg_view("output/tags",array('value' => $vars['entity']->location)) . "</p>";
 			}
 		}
 		else
@@ -46,7 +46,7 @@
 				$info .= "</a>";
 			$info .= "</strike></b></p>";
 		
-			//$info .= "<p class=\"owner_timestamp\">" . elgg_echo('profile:banned') . "</p>";
+			//$info .= "<p class=\"owner_timestamp\">" . __('profile:banned') . "</p>";
 			
 		}
 		

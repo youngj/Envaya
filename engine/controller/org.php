@@ -9,7 +9,7 @@ class Controller_Org extends Controller
 
     function action_browse()
     {
-        $title = elgg_echo("browse:title");
+        $title = __("browse:title");
         $sector = get_input('sector');
 
         if (get_input("list"))
@@ -38,22 +38,22 @@ class Controller_Org extends Controller
 
         if ($query)
         {
-            $title = sprintf(elgg_echo('search:title_with_query'),$query);
+            $title = sprintf(__('search:title_with_query'),$query);
         }
         else
         {
-            $title = elgg_echo('search:title');
+            $title = __('search:title');
         }
         $content = elgg_view('org/search', array('query' => $query, 'sector' => get_input('sector')));
 
-        $body = elgg_view_layout('one_column_padded', elgg_view_title(elgg_echo('search:title')), $content);
+        $body = elgg_view_layout('one_column_padded', elgg_view_title(__('search:title')), $content);
 
         $this->page_draw($title,$body);
     }
 
     function action_feed()
     {
-        $title = elgg_echo("feed:title");
+        $title = __("feed:title");
 
         $area = elgg_view("org/feed");
 
@@ -83,7 +83,7 @@ class Controller_Org extends Controller
 
         if ($step == 3 && !$loggedInUser)
         {
-            register_error(elgg_echo("create:notloggedin"));
+            register_error(__("create:notloggedin"));
             $step = 1;
             forward('pg/login');
         }
@@ -95,11 +95,11 @@ class Controller_Org extends Controller
 
         if ($step == 2 && !Session::get('registration'))
         {
-            register_error(elgg_echo("qualify:missing"));
+            register_error(__("qualify:missing"));
             $step = 1;
         }
 
-        $title = elgg_echo("register:title");
+        $title = __("register:title");
         $body = elgg_view_layout('one_column', elgg_view_title($title, array('org_only' => true)), elgg_view("org/register$step"));
         $this->page_draw($title, $body);
     }
@@ -114,13 +114,13 @@ class Controller_Org extends Controller
 
             if (!in_array($country, $approvedCountries))
             {
-                throw new RegistrationException(elgg_echo("qualify:wrong_country"));
+                throw new RegistrationException(__("qualify:wrong_country"));
             }
 
             $orgType = get_input('org_type');
             if ($orgType != 'np')
             {
-                throw new RegistrationException(elgg_echo("qualify:wrong_org_type"));
+                throw new RegistrationException(__("qualify:wrong_org_type"));
             }
 
             Session::set('registration', array(
@@ -128,7 +128,7 @@ class Controller_Org extends Controller
                 'country' => get_input('country'),
             ));
 
-            system_message(elgg_echo("qualify:ok"));
+            system_message(__("qualify:ok"));
             forward("org/new?step=2");
 
         }
@@ -148,7 +148,7 @@ class Controller_Org extends Controller
 
             if (!$name)
             {
-                throw new RegistrationException(elgg_echo('create:no_name'));
+                throw new RegistrationException(__('create:no_name'));
             }
 
             $username = trim(get_input('username'));
@@ -159,7 +159,7 @@ class Controller_Org extends Controller
 
             if (get_user_by_username($username))
             {
-                throw new RegistrationException(elgg_echo('create:username_exists'));
+                throw new RegistrationException(__('create:username_exists'));
             }
 
 
@@ -168,7 +168,7 @@ class Controller_Org extends Controller
 
             if (strcmp($password, $password2) != 0)
             {
-                throw new RegistrationException(elgg_echo('create:passwords_differ'));
+                throw new RegistrationException(__('create:passwords_differ'));
             }
 
             $lpassword = strtolower($password);
@@ -177,7 +177,7 @@ class Controller_Org extends Controller
 
             if (strpos($lname, $lpassword) !== FALSE || strpos($lusername, $lpassword) !== FALSE)
             {
-                throw new RegistrationException(elgg_echo('create:password_too_easy'));
+                throw new RegistrationException(__('create:password_too_easy'));
             }
 
             validate_password($password);
@@ -230,7 +230,7 @@ class Controller_Org extends Controller
 
             Session::set('registration', null);
 
-            system_message(sprintf(elgg_echo("create:ok"),$CONFIG->sitename));
+            system_message(sprintf(__("create:ok"),$CONFIG->sitename));
 
             forward("org/new?step=3");
         }
@@ -252,17 +252,17 @@ class Controller_Org extends Controller
             $mission = get_input('mission');
             if (!$mission)
             {
-                throw new RegistrationException(elgg_echo("setup:mission:blank"));
+                throw new RegistrationException(__("setup:mission:blank"));
             }
 
             $sectors = get_input_array('sector');
             if (sizeof($sectors) == 0)
             {
-                throw new RegistrationException(elgg_echo("setup:sector:blank"));
+                throw new RegistrationException(__("setup:sector:blank"));
             }
             else if (sizeof($sectors) > 5)
             {
-                throw new RegistrationException(elgg_echo("setup:sector:toomany"));
+                throw new RegistrationException(__("setup:sector:toomany"));
             }
 
             $homeWidget = $org->getWidgetByName('home');
@@ -289,7 +289,7 @@ class Controller_Org extends Controller
             $org->setup_state = 5;
             $org->save();
 
-            system_message(elgg_echo("setup:ok"));
+            system_message(__("setup:ok"));
 
             trigger_elgg_event('register', 'organization', $org);
 
@@ -330,7 +330,7 @@ class Controller_Org extends Controller
         $code = get_input('c');
         $users = get_users_by_email($email);
 
-        $title = elgg_echo("user:notification:label");
+        $title = __("user:notification:label");
 
         if ($email && $code == get_email_fingerprint($email) && sizeof($users) > 0)
         {
@@ -338,7 +338,7 @@ class Controller_Org extends Controller
         }
         else
         {
-            $area1 = elgg_echo("user:notification:invalid");
+            $area1 = __("user:notification:invalid");
         }
         $body = elgg_view_layout("one_column_padded", elgg_view_title($title), $area1);
 
@@ -357,7 +357,7 @@ class Controller_Org extends Controller
             $user->notify_days = $notify_days;
             $user->save();
 
-            system_message(elgg_echo('user:notification:success'));
+            system_message(__('user:notification:success'));
         }
 
         forward("/");
@@ -409,7 +409,7 @@ class Controller_Org extends Controller
             }
         }
 
-        $title = elgg_echo("trans:translate");
+        $title = __("trans:translate");
 
         $body = elgg_view_layout("one_column_wide", elgg_view_title($title), implode("<hr><br>", $area2));
 
@@ -429,12 +429,12 @@ class Controller_Org extends Controller
 
         if (!$entity->canEdit())
         {
-            register_error(elgg_echo("org:cantedit"));
+            register_error(__("org:cantedit"));
             forward_to_referrer();
         }
         else if (empty($text))
         {
-            register_error(elgg_echo("trans:empty"));
+            register_error(__("trans:empty"));
             forward_to_referrer();
         }
         else
@@ -465,7 +465,7 @@ class Controller_Org extends Controller
                 $trans->save();
             }
 
-            system_message(elgg_echo("trans:posted"));
+            system_message(__("trans:posted"));
 
             forward(get_input('from') ?: $entity->getUrl());
         }
@@ -488,7 +488,7 @@ class Controller_Org extends Controller
 
         if ($key)
         {
-            $title = elgg_echo("trans:item_title");
+            $title = __("trans:item_title");
             $body = elgg_view_layout("one_column_padded", elgg_view_title($title), elgg_view("translation/interface_item", array('lang' => $lang, 'key' => $key)));
             $this->page_draw($title, $body);
         }
@@ -499,7 +499,7 @@ class Controller_Org extends Controller
         }
         else
         {
-            $title = elgg_echo("trans:list_title");
+            $title = __("trans:list_title");
             $body = elgg_view_layout("one_column_wide", elgg_view_title($title), elgg_view("translation/interface_list", array('lang' => $lang)));
             $this->page_draw($title, $body);
         }
@@ -528,7 +528,7 @@ class Controller_Org extends Controller
         $trans->value = $value;
         $trans->save();
 
-        system_message(elgg_echo("trans:posted"));
+        system_message(__("trans:posted"));
 
         forward(get_input('from'));
     }

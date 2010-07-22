@@ -23,21 +23,21 @@ function sectorChanged()
 </script>
 
 <div class='view_toggle'>
-    <strong><?php echo elgg_echo('browse:map') ?></strong> &middot;
-    <a id='browseLink' href='org/browse?list=1&sector=<?php echo escape($sector) ?>'><?php echo elgg_echo('list') ?></a>
+    <strong><?php echo __('browse:map') ?></strong> &middot;
+    <a id='browseLink' href='org/browse?list=1&sector=<?php echo escape($sector) ?>'><?php echo __('list') ?></a>
 </div>
 
 <?php echo elgg_view('input/pulldown', array(
     'internalname' => 'sector',
     'internalid' => 'sectorList',
     'options_values' => Organization::getSectorOptions(),
-    'empty_option' => elgg_echo('sector:empty_option'),
+    'empty_option' => __('sector:empty_option'),
     'value' => $sector,
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"
 ))
 ?>
 
-<div class='instructions' style='clear:both'><?php echo elgg_echo("browse:instructions") ?></div>
+<div class='instructions' style='clear:both'><?php echo __("browse:instructions") ?></div>
 <?php
     $lat = $vars['lat'] ?: -6.6;
     $long = $vars['long'] ?: 36;

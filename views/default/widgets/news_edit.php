@@ -5,33 +5,33 @@
 
     $form = elgg_view('org/addPost', array('org' => $org));
 
-    echo elgg_view_layout('section', elgg_echo("dashboard:add_update"), $form);
+    echo elgg_view_layout('section', __("dashboard:add_update"), $form);
 
     //ob_start();
 ?>
 <!--
-<p><?php echo elgg_echo('widget:news:mobile_summary') ?></p>
+<p><?php echo __('widget:news:mobile_summary') ?></p>
 
 <ul>
-<li><strong><?php echo elgg_echo('widget:news:email') ?></strong>:
-<?php echo sprintf(elgg_echo('widget:news:email:summary'), "<strong>{$org->getPostEmail()}</strong>") ?>
+<li><strong><?php echo __('widget:news:email') ?></strong>:
+<?php echo sprintf(__('widget:news:email:summary'), "<strong>{$org->getPostEmail()}</strong>") ?>
 
 <?php
     echo elgg_view('output/confirmlink', array(
-        'text' => elgg_echo('widget:news:change_email'),
+        'text' => __('widget:news:change_email'),
         'is_action' => true,
         'href' => "action/org/changeEmail?org_guid={$org->guid}"
     ));
 ?>
 </li>
-<li><strong><?php echo elgg_echo('widget:news:sms') ?></strong>:
-<?php echo elgg_echo('widget:news:sms:summary') ?></li>
+<li><strong><?php echo __('widget:news:sms') ?></strong>:
+<?php echo __('widget:news:sms:summary') ?></li>
 </ul>
 -->
 <?php
     //$settings = ob_get_clean();
 
-    //echo elgg_view_layout('section', elgg_echo("widget:news:mobile_settings"), $settings);
+    //echo elgg_view_layout('section', __("widget:news:mobile_settings"), $settings);
 
     $offset = (int) get_input('offset');
     $limit = 10;
@@ -58,7 +58,7 @@
 
 ?>
 <tr class='header_row'>
-    <th colspan='3'><?php echo elgg_echo("widget:news:item"); ?></th>
+    <th colspan='3'><?php echo __("widget:news:item"); ?></th>
     <th><div class='header_icons edit_icon'></div></th>
     <th><div class='header_icons delete_icon'></div></th>
 </tr>
@@ -73,14 +73,14 @@
             echo "<tr class='$rowClass'>";
             echo "<td>". elgg_view('output/text', array('value' => $update->getSnippet()))."</td>";
             echo "<td><span class='blog_date'>{$update->getDateText()}</span></td>";
-            echo "<td><a href='{$update->getURL()}'>".elgg_echo("view")."</a></td>";
+            echo "<td><a href='{$update->getURL()}'>".__("view")."</a></td>";
 
-            echo "<td><a href='{$update->getURL()}/edit?from=$escUrl'>".elgg_echo("edit")."</a></td>";
+            echo "<td><a href='{$update->getURL()}/edit?from=$escUrl'>".__("edit")."</a></td>";
             echo "<td>".elgg_view('output/confirmlink', array(
                 'is_action' => true,
                 'href' => "{$update->getURL()}/save?delete=1",
-                'confirm' => elgg_echo('blog:delete:confirm'),
-                'text' => elgg_echo('delete')
+                'confirm' => __('blog:delete:confirm'),
+                'text' => __('delete')
             ))."</td>";
             echo "</tr>";
         }
@@ -88,11 +88,11 @@
     }
     else
     {
-        echo elgg_echo("widget:news:empty");
+        echo __("widget:news:empty");
     }
 
 
     $content = ob_get_clean();
 
-    echo elgg_view_layout('section', elgg_echo("widget:news:manage_updates"), $content);
+    echo elgg_view_layout('section', __("widget:news:manage_updates"), $content);
 ?>

@@ -10,14 +10,14 @@
 ?>
 <div id="search-box">
     <form action="admin/search" method="get">
-    <b><?php echo elgg_echo('admin:user:label:search'); ?></b>
+    <b><?php echo __('admin:user:label:search'); ?></b>
     <?php
 
         echo elgg_view('input/text',array('internalname' => 'tag'));
 
     ?>
     <input type="hidden" name="object" value="user" />
-    <input type="submit" name="<?php echo elgg_echo('admin:user:label:seachbutton'); ?>"
-        value="<?php echo elgg_echo('admin:user:label:seachbutton'); ?>" />
+    <input type="submit" name="<?php echo __('admin:user:label:seachbutton'); ?>"
+        value="<?php echo __('admin:user:label:seachbutton'); ?>" />
     </form>
 </div>

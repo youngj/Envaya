@@ -24,25 +24,25 @@
 
 		$form = "";
 		
-		$form .= "<p>" . elgg_echo('logbrowser:user');
+		$form .= "<p>" . __('logbrowser:user');
 		$form .= elgg_view('input/text',array(
 														'internalname' => 'search_username',
 														'value' => $userval 
 													)) . "</p>";
 		
-		$form .= "<p>" . elgg_echo('logbrowser:starttime');
+		$form .= "<p>" . __('logbrowser:starttime');
 		$form .= elgg_view('input/text',array(
 														'internalname' => 'timelower',
 														'value' => $lowerval 
 													)) . "</p>";
 
-		$form .= "<p>" . elgg_echo('logbrowser:endtime');
+		$form .= "<p>" . __('logbrowser:endtime');
 		$form .= elgg_view('input/text',array(
 														'internalname' => 'timeupper',
 														'value' => $upperval
 													))  . "</p>";
 		$form .= elgg_view('input/submit',array(
-														'value' => elgg_echo('search')
+														'value' => __('search')
 													));
 													
 		$wrappedform = elgg_view('input/form',array(
@@ -61,6 +61,6 @@
 
 		<div id="logbrowserSearchform" <?php echo $hidden; ?>><?php echo $wrappedform; ?></div>
 		<p>
-			<a href="#" onclick="$('#logbrowserSearchform').toggle()"><?php echo elgg_echo('logbrowser:search'); ?></a>
+			<a href="#" onclick="$('#logbrowserSearchform').toggle()"><?php echo __('logbrowser:search'); ?></a>
 		</p>
 	</div>

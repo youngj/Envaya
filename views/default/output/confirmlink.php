@@ -19,7 +19,7 @@
 
     $confirm = $vars['confirm'];
     if (!$confirm)
-        $confirm = elgg_echo('question:areyousure');
+        $confirm = __('question:areyousure');
 
     $link = $vars['href'];
 

@@ -7,7 +7,7 @@
 <form action='org/emailSettings_save' method='POST'>
 
 <div class='instructions'>
-<?php echo sprintf(elgg_echo('user:notification:desc'), "<em>".escape($email)."</em>"); ?>
+<?php echo sprintf(__('user:notification:desc'), "<em>".escape($email)."</em>"); ?>
 </div>
 
 <div class='input'>
@@ -25,7 +25,7 @@
 
 ?>
 
-    <div class='help'><?php echo elgg_echo('user:notification:freq'); ?>:
+    <div class='help'><?php echo __('user:notification:freq'); ?>:
     <?php
 
         echo elgg_view("input/pulldown", array('internalname' => 'notify_days', 'value' => $users[0]->notify_days, 'options_values' =>
@@ -39,7 +39,7 @@
 <?php
 
 echo elgg_view('input/submit',array(
-    'value' => elgg_echo('savechanges')
+    'value' => __('savechanges')
 ));
 ?>
 

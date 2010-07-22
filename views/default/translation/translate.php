@@ -13,7 +13,7 @@ $height = 300;
 ob_start();
 
 echo "<table class='gridView' style='width:1100px;margin:0 auto'><tr><td  style='width:50%;padding-right:10px'>";
-echo "<h3>".sprintf(elgg_echo("trans:original_in"),
+echo "<h3>".sprintf(__("trans:original_in"),
      elgg_view('input/language', array(
         'internalname' => 'language',
         'value' => $entity->getLanguage()
@@ -34,13 +34,13 @@ else
 echo "</td><td style='width:50%'>";
 
 $lang = get_language();
-$langStr = elgg_echo($lang, $lang);
+$langStr = __($lang, $lang);
 
 $curTranslation = lookup_translation($entity, $property, $entity->getLanguage(), $lang, TranslateMode::All, $isHTML);
 
 $curText = ($curTranslation) ? $curTranslation->value : $text;
 
-$transIn = sprintf(elgg_echo("trans:inlang"), elgg_view('input/language', array(
+$transIn = sprintf(__("trans:inlang"), elgg_view('input/language', array(
         'internalname' => 'newLang',
         'value' => $lang
     ))
@@ -65,7 +65,7 @@ echo "<br>".
     elgg_view("input/hidden", array('internalname' => 'property', 'value' => $property)).
     elgg_view("input/hidden", array('internalname' => 'html', 'value' => $isHTML)).
     elgg_view("input/hidden", array('internalname' => 'from', 'value' => $vars['from'])).
-    elgg_view('input/submit', array('internalname' => 'submit', 'trackDirty' => true, 'value' => elgg_echo('trans:submit')));
+    elgg_view('input/submit', array('internalname' => 'submit', 'trackDirty' => true, 'value' => __('trans:submit')));
 
 echo "</td></tr></table>";
 

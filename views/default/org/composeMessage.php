@@ -13,7 +13,7 @@
 <table class='messageTable'>
 <tr>
 <th>
-<?php echo elgg_echo("message:from"); ?>
+<?php echo __("message:from"); ?>
 </th>
 <td>
 <strong><?php echo escape($user->name); ?></strong> &lt;<?php echo escape($user->email); ?>&gt;
@@ -21,7 +21,7 @@
 </tr>
 <tr>
 <th>
-<?php echo elgg_echo("message:to"); ?>
+<?php echo __("message:to"); ?>
 </th>
 <td>
 <strong><?php echo escape($org->name); ?></strong> &lt;<?php echo escape($org->email); ?>&gt;
@@ -29,7 +29,7 @@
 </tr>
 <tr>
 <th>
-<?php echo elgg_echo("message:subject"); ?>
+<?php echo __("message:subject"); ?>
 </th>
 <td>
 <?php echo elgg_view('input/text', array('internalname' => 'subject')); ?>
@@ -37,7 +37,7 @@
 </tr>
 <tr>
 <th>
-<?php echo elgg_echo("message:message"); ?>
+<?php echo __("message:message"); ?>
 </th>
 <td>
 <?php echo elgg_view('input/longtext', array('internalname' => 'message')); ?>
@@ -52,7 +52,7 @@
 echo elgg_view('input/hidden', array('internalname' => 'recipient_guid', 'value' => $org->guid));
 
 echo elgg_view('input/submit',array(
-    'value' => elgg_echo('message:send')
+    'value' => __('message:send')
 ));
 ?>
 

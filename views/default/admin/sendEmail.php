@@ -7,7 +7,7 @@
 <div class='padded'>
 <?php echo elgg_view('input/securitytoken'); ?>
 
-Subject: <?php echo elgg_echo('email:reminder:subject', $org->language) ?>
+Subject: <?php echo __('email:reminder:subject', $org->language) ?>
 </div>
 <iframe src='admin/view_email?username=<?php echo $org->username ?>' width='580' height='400'></iframe>
 
@@ -25,7 +25,7 @@ echo elgg_view('input/hidden',array(
 
 
 echo elgg_view('input/submit',array(
-    'value' => elgg_echo('message:send')
+    'value' => __('message:send')
 ));
 ?>
 

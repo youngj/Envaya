@@ -65,7 +65,7 @@
 	<p class="<?php echo $even_odd; ?>">
 		<b><?php
 
-			echo elgg_echo("profile:{$shortname}");
+			echo __("profile:{$shortname}");
 		
 		?>: </b>
 		<?php
@@ -85,12 +85,12 @@
 	
 	?>
 
-	<p class="profile_aboutme_title"><b><?php echo elgg_echo("profile:aboutme"); ?></b></p>
+	<p class="profile_aboutme_title"><b><?php echo __("profile:aboutme"); ?></b></p>
 	
 	<?php if ($vars['entity']->isBanned()) { ?>
 		<div id="profile_banned">	
 		<?php 
-		    echo elgg_echo('profile:banned'); 
+		    echo __('profile:banned'); 
 		?>
 		</div><!-- /#profile_info_column_right -->
 	

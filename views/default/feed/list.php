@@ -3,7 +3,7 @@
 
 if (empty($feedItems))
 {
-    echo "<div class='padded'>".elgg_echo("search:noresults")."</div>";
+    echo "<div class='padded'>".__("search:noresults")."</div>";
 }
 
 $isAdmin = isadminloggedin();

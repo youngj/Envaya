@@ -60,10 +60,10 @@
             {
                 if (fileType == ".doc")
                 {
-                    var msg = "<?php echo elgg_echo('upload:image:isdoc'); ?>";
+                    var msg = "<?php echo __('upload:image:isdoc'); ?>";
                 }
                 {
-                    var msg = "<?php echo elgg_echo('upload:image:isbad'); ?>";
+                    var msg = "<?php echo __('upload:image:isbad'); ?>";
                 }
                 alert(msg);
                 file.value = '';

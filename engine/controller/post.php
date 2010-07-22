@@ -39,10 +39,10 @@ class Controller_Post extends Controller_Profile
 
         if ($post->canEdit())
         {
-            add_submenu_item(elgg_echo("widget:edit"), "{$post->getUrl()}/edit", 'edit');
+            add_submenu_item(__("widget:edit"), "{$post->getUrl()}/edit", 'edit');
         }
 
-        $title = elgg_echo('widget:news');
+        $title = __('widget:news');
 
         if (!$org->canView())
         {
@@ -62,11 +62,11 @@ class Controller_Post extends Controller_Profile
         $this->require_editor();
         $post = $this->post;
 
-        $title = elgg_echo('blog:editpost');
+        $title = __('blog:editpost');
 
         $cancelUrl = get_input('from') ?: $post->getUrl();
 
-        add_submenu_item(elgg_echo("canceledit"), $cancelUrl, 'edit');
+        add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
         $org = $post->getContainerEntity();
         $area1 = elgg_view("org/editPost", array('entity' => $post));
@@ -89,12 +89,12 @@ class Controller_Post extends Controller_Profile
             $org = $post->getContainerEntity();
             $post->disable();
             $post->save();
-            system_message(elgg_echo('blog:delete:success'));
+            system_message(__('blog:delete:success'));
             forward($org->getURL()."/news");
         }
         else if (empty($body))
         {
-            register_error(elgg_echo("blog:blank"));
+            register_error(__("blog:blank"));
             forward_to_referrer();
         }
         else
@@ -102,7 +102,7 @@ class Controller_Post extends Controller_Profile
             $post->setContent($body, true);
             $post->save();
 
-            system_message(elgg_echo("blog:updated"));
+            system_message(__("blog:updated"));
             forward($post->getUrl());
         }
     }
@@ -117,7 +117,7 @@ class Controller_Post extends Controller_Profile
 
         if (empty($body))
         {
-            register_error(elgg_echo("blog:blank"));
+            register_error(__("blog:blank"));
             forward_to_referrer();
         }
         else
@@ -134,7 +134,7 @@ class Controller_Post extends Controller_Profile
                 $post->uuid = $uuid;
                 $post->save();
 
-                system_message(elgg_echo("blog:posted"));
+                system_message(__("blog:posted"));
             }
             else
             {

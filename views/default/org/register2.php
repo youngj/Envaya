@@ -2,7 +2,7 @@
 
 <div class='padded'>
 <div id='instructions'>
-    <?php echo elgg_echo('create:instructions') ?>
+    <?php echo __('create:instructions') ?>
 </div>
 
 <form action='org/register2' method='POST'>
@@ -10,9 +10,9 @@
 <?php echo elgg_view('input/securitytoken'); ?>
 
 <div class='input'>
-<label><?php echo elgg_echo('create:org_name') ?></label><br />
+<label><?php echo __('create:org_name') ?></label><br />
 <?php echo elgg_view('input/text', array('internalname' => 'org_name', 'trackDirty' => true)) ?>
-<div class='help'><?php echo elgg_echo('create:org_name:help') ?></div>
+<div class='help'><?php echo __('create:org_name:help') ?></div>
 </div>
 
 <script type='text/javascript'>
@@ -30,60 +30,60 @@ function updateUrl()
 </script>
 
 <div class='input'>
-<label><?php echo elgg_echo('create:username') ?></label><br />
+<label><?php echo __('create:username') ?></label><br />
 <?php echo elgg_view('input/text', array(
     'internalname' => 'username',
     'internalid' => 'username',
     'js' => 'onkeyup="javascript:updateUrl()" onchange="javascript:updateUrl()"'
 )) ?>
-<div class='help' style='font-weight:bold'><?php echo elgg_echo('create:username:help') ?>
-    <span class='websiteUrl'>http://envaya.org/<span id='urlUsername' style='font-weight:bold'><?php echo elgg_echo('create:username:placeholder') ?></span></span>
+<div class='help' style='font-weight:bold'><?php echo __('create:username:help') ?>
+    <span class='websiteUrl'>http://envaya.org/<span id='urlUsername' style='font-weight:bold'><?php echo __('create:username:placeholder') ?></span></span>
 </div>
-<div style='padding-top:5px' class='help'><?php echo elgg_echo('create:username:help2') ?></div>
+<div style='padding-top:5px' class='help'><?php echo __('create:username:help2') ?></div>
 </div>
 
 <div class='input'>
-<label><?php echo elgg_echo('create:password') ?></label><br />
+<label><?php echo __('create:password') ?></label><br />
 <?php echo elgg_view('input/password', array(
     'internalname' => 'password'
 )) ?>
-<div class='help'><?php echo elgg_echo('create:password:help') ?></div>
-<div class='help' style='padding-top:5px'><?php echo elgg_echo('create:password:length') ?></div>
+<div class='help'><?php echo __('create:password:help') ?></div>
+<div class='help' style='padding-top:5px'><?php echo __('create:password:length') ?></div>
 </div>
 
 <div class='input'>
-<label><?php echo elgg_echo('create:password2') ?></label><br />
+<label><?php echo __('create:password2') ?></label><br />
 <?php echo elgg_view('input/password', array(
     'internalname' => 'password2'
 )) ?>
 </div>
 
 <div class='input'>
-<label><?php echo elgg_echo('create:email') ?></label><br />
+<label><?php echo __('create:email') ?></label><br />
 <?php echo elgg_view('input/email', array(
     'internalname' => 'email'
 )) ?>
-<div class='help'><?php echo elgg_echo('create:email:help') ?></div>
-<div class='help'><?php echo elgg_echo('create:email:help_2') ?></div>
+<div class='help'><?php echo __('create:email:help') ?></div>
+<div class='help'><?php echo __('create:email:help_2') ?></div>
 </div>
 
 
 <div class='input'>
-<label><?php echo elgg_echo('create:phone') ?></label><br />
+<label><?php echo __('create:phone') ?></label><br />
 <?php echo elgg_view('input/text', array(
     'internalname' => 'phone',
     'js' => "style='width:200px'"
 )) ?>
-<div class='help'><?php echo elgg_echo('create:phone:help') ?></div>
-<div class='help'><?php echo elgg_echo('create:phone:help_2') ?></div>
+<div class='help'><?php echo __('create:phone:help') ?></div>
+<div class='help'><?php echo __('create:phone:help_2') ?></div>
 </div>
 
 
 <div class='input'>
-<label><?php echo elgg_echo('create:next') ?></label>
+<label><?php echo __('create:next') ?></label>
 <br />
 <?php echo elgg_view('input/submit',array(
-    'value' => elgg_echo('create:next:button'),
+    'value' => __('create:next:button'),
     'trackDirty' => true
 ));
 ?>

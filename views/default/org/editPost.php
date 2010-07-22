@@ -19,11 +19,11 @@
             'internalname' => "delete",
             'internalid' => 'widget_delete',
             'trackDirty' => true,
-            'confirmMessage' => elgg_echo('blog:delete:confirm'),
-            'value' => elgg_echo('blog:delete')
+            'confirmMessage' => __('blog:delete:confirm'),
+            'value' => __('blog:delete')
         ));
 
-    echo elgg_view('input/submit', array('internalname' => 'submit', 'trackDirty' => true, 'value' => elgg_echo('savechanges')));
+    echo elgg_view('input/submit', array('internalname' => 'submit', 'trackDirty' => true, 'value' => __('savechanges')));
 ?>
 
 <?php

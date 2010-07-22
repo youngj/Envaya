@@ -1,5 +1,5 @@
 <?php
 
-echo escape(elgg_echo($vars['value'], $vars['value']));
+echo escape(__($vars['value'], $vars['value']));
 
 ?>

@@ -10,20 +10,20 @@
         $form_body .= elgg_view('input/alt_submit', array(
             'internalname' => "delete",
             'trackDirty' => true,
-            'confirmMessage' => elgg_echo('widget:delete:confirm'),
+            'confirmMessage' => __('widget:delete:confirm'),
             'internalid' => 'widget_delete',
-            'value' => elgg_echo('widget:delete')
+            'value' => __('widget:delete')
         ));
     }
 
     if (!$noSave)
     {
-        $saveText = $widget->isActive() ? elgg_echo('savechanges') : elgg_echo('widget:save:new');
+        $saveText = $widget->isActive() ? __('savechanges') : __('widget:save:new');
         $form_body .= elgg_view('input/submit', array('internalname' => "submit", 'trackDirty' => true, 'value' => $saveText)) ;
     }
     else
     {
-        $saveText = $widget->isActive() ? elgg_echo('widget:view') : elgg_echo('widget:save:new');
+        $saveText = $widget->isActive() ? __('widget:view') : __('widget:save:new');
         $form_body .= elgg_view('input/submit', array('internalname' => "submit", 'value' => $saveText)) ;
     }
 

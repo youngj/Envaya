@@ -12,7 +12,7 @@
 	 */
 
 	// Description of what's going on 
-		echo "<p>" . elgg_view('output/longtext', array('value' => elgg_echo("admin:description"))) . "</p>";
+		echo "<p>" . elgg_view('output/longtext', array('value' => __("admin:description"))) . "</p>";
 		
 	
 		

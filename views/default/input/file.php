@@ -17,7 +17,7 @@
 	 */
 
     if (!empty($vars['value'])) {
-        echo elgg_echo('fileexists') . "<br />";
+        echo __('fileexists') . "<br />";
     }
 
     $class = $vars['class'];

@@ -56,7 +56,7 @@ class Controller_Profile extends Controller
 
         if (!$this->user->canEdit())
         {
-            action_error(elgg_echo('org:cantedit'));
+            action_error(__('org:cantedit'));
         }
 
         $widgetName = $this->request->param('widgetname');
@@ -96,20 +96,20 @@ class Controller_Profile extends Controller
         {
             $widget = $org->getWidgetByName($widgetName);
 
-            $widgetTitle = elgg_echo("widget:{$widget->widget_name}");
+            $widgetTitle = __("widget:{$widget->widget_name}");
 
             if ($widget->guid && $widget->isEnabled())
             {
-                $title = sprintf(elgg_echo("widget:edittitle"), $widgetTitle);
+                $title = sprintf(__("widget:edittitle"), $widgetTitle);
             }
             else
             {
-                $title = sprintf(elgg_echo("widget:edittitle:new"), $widgetTitle);
+                $title = sprintf(__("widget:edittitle:new"), $widgetTitle);
             }
 
             $cancelUrl = get_input('from') ?: $widget->getUrl();
 
-            add_submenu_item(elgg_echo("canceledit"), $cancelUrl, 'edit');
+            add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
             $body = elgg_view_layout('one_column',
                 elgg_view_title($title), $widget->renderEdit());
@@ -172,9 +172,9 @@ class Controller_Profile extends Controller
 
         $cancelUrl = get_input('from') ?: $org->getUrl();
 
-        add_submenu_item(elgg_echo("canceledit"), $cancelUrl, 'edit');
+        add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
-        $title = elgg_echo("design:edit");
+        $title = __("design:edit");
         $area1 = elgg_view("org/design", array('entity' => $org));
         $body = elgg_view_layout("one_column", elgg_view_title($title), $area1);
 
@@ -190,7 +190,7 @@ class Controller_Profile extends Controller
 
         if ($theme != $org->theme)
         {
-            system_message(elgg_echo("theme:changed"));
+            system_message(__("theme:changed"));
             $org->theme = $theme;
             $org->save();
         }
@@ -200,12 +200,12 @@ class Controller_Profile extends Controller
         if (get_input('deleteicon'))
         {
             $org->setIcon(null);
-            system_message(elgg_echo("icon:reset"));
+            system_message(__("icon:reset"));
         }
         else if ($iconFiles)
         {
             $org->setIcon($iconFiles);
-            system_message(elgg_echo("icon:saved"));
+            system_message(__("icon:saved"));
         }
 
         $headerFiles = get_uploaded_files($_POST['header']);
@@ -217,13 +217,13 @@ class Controller_Profile extends Controller
             if ($org->custom_header)
             {
                 $org->setHeader(null);
-                system_message(elgg_echo("header:reset"));
+                system_message(__("header:reset"));
             }
         }
         else if ($headerFiles)
         {
             $org->setHeader($headerFiles);
-            system_message(elgg_echo("header:saved"));
+            system_message(__("header:saved"));
         }
     }
 
@@ -246,13 +246,13 @@ class Controller_Profile extends Controller
         }
         else
         {
-            $subtitle = elgg_echo("widget:{$widget->widget_name}");
+            $subtitle = __("widget:{$widget->widget_name}");
             $title = $subtitle;
         }
 
         if ($org->canEdit())
         {
-            add_submenu_item(elgg_echo("widget:edit"), $widget->getEditURL(), 'edit');
+            add_submenu_item(__("widget:edit"), $widget->getEditURL(), 'edit');
         }
 
         if (get_input("__topbar") != "0")
@@ -296,7 +296,7 @@ class Controller_Profile extends Controller
             $widget->disable();
             $widget->save();
 
-            system_message(elgg_echo('widget:delete:success'));
+            system_message(__('widget:delete:success'));
 
             forward($this->user->getURL());
         }
@@ -310,7 +310,7 @@ class Controller_Profile extends Controller
             try
             {
                 $widget->saveInput();
-                system_message(elgg_echo('widget:save:success'));
+                system_message(__('widget:save:success'));
                 forward($widget->getURL());
             }
             catch (Exception $ex)
@@ -325,7 +325,7 @@ class Controller_Profile extends Controller
         $this->require_editor();
         $this->require_org();
 
-        $title = elgg_echo("help:title");
+        $title = __("help:title");
         $area = elgg_view("org/help", array('org' => $this->org));
         $body = elgg_view_layout('one_column_padded', elgg_view_title($title), $area);
         $this->page_draw($title, $body);
@@ -339,11 +339,11 @@ class Controller_Profile extends Controller
         $org = $this->org;
         if ($org->guid == get_loggedin_userid())
         {
-            $title = elgg_echo("dashboard");
+            $title = __("dashboard");
         }
         else
         {
-            $title = sprintf(elgg_echo("dashboard:other_user"), $org->name);
+            $title = sprintf(__("dashboard:other_user"), $org->name);
         }
 
         $area1 = elgg_view("org/dashboard", array('org' => $org));
@@ -358,7 +358,7 @@ class Controller_Profile extends Controller
         $this->require_org();
         $this->require_admin();
 
-        $title = elgg_echo('username:title');
+        $title = __('username:title');
         $area1 = elgg_view('org/changeUsername', array('org' => $this->org));
         $body = elgg_view_layout("one_column", elgg_view_title($title), $area1);
 
@@ -388,7 +388,7 @@ class Controller_Profile extends Controller
 
             if (get_user_by_username($username))
             {
-                register_error(elgg_echo('registration:userexists'));
+                register_error(__('registration:userexists'));
                 forward_to_referrer();
             }
 
@@ -397,7 +397,7 @@ class Controller_Profile extends Controller
 
             get_cache()->delete(get_cache_key_for_username($oldUsername));
 
-            system_message(elgg_echo('username:changed'));
+            system_message(__('username:changed'));
         }
         forward($org->getURL());
     }
@@ -407,7 +407,7 @@ class Controller_Profile extends Controller
         $this->require_editor();
         $this->require_org();
 
-        $title = elgg_echo("feed:org");
+        $title = __("feed:org");
 
         page_set_translatable(false);
 
@@ -428,13 +428,13 @@ class Controller_Profile extends Controller
 
         if (!get_loggedin_user()->isApproved())
         {
-            register_error(elgg_echo('message:needapproval'));
+            register_error(__('message:needapproval'));
             forward_to_referrer();
         }
 
-        add_submenu_item(elgg_echo("message:cancel"), $org->getURL(), 'edit');
+        add_submenu_item(__("message:cancel"), $org->getURL(), 'edit');
 
-        $title = elgg_echo("message:title");
+        $title = __("message:title");
         $area1 = elgg_view("org/composeMessage", array('entity' => $org));
         $body = elgg_view_layout("one_column", elgg_view_title($title), $area1);
         $this->page_draw($title,$body);
@@ -444,7 +444,7 @@ class Controller_Profile extends Controller
     {
         $this->require_editor();
 
-        $title = elgg_echo("usersettings:user");
+        $title = __("usersettings:user");
 
         $body = elgg_view_layout("one_column", elgg_view_title($title),
             elgg_view("usersettings/form", array('entity' => $this->user)));
@@ -463,12 +463,12 @@ class Controller_Profile extends Controller
             if (strcmp($name, $user->name)!=0)
             {
                 $user->name = $name;
-                system_message(elgg_echo('user:name:success'));
+                system_message(__('user:name:success'));
             }
         }
         else
         {
-            action_error(elgg_echo('create:no_name'));
+            action_error(__('create:no_name'));
         }
 
         $password = get_input('password');
@@ -488,11 +488,11 @@ class Controller_Profile extends Controller
             {
                 $user->salt = generate_random_cleartext_password(); // Reset the salt
                 $user->password = generate_user_password($user, $password);
-                system_message(elgg_echo('user:password:success'));
+                system_message(__('user:password:success'));
             }
             else
             {
-                action_error(elgg_echo('user:password:fail:notsame'));
+                action_error(__('user:password:fail:notsame'));
             }
         }
 
@@ -501,7 +501,7 @@ class Controller_Profile extends Controller
         {
             $user->language = $language;
             change_viewer_language($user->language);
-            system_message(elgg_echo('user:language:success'));
+            system_message(__('user:language:success'));
         }
 
         $email = trim(get_input('email'));
@@ -517,14 +517,14 @@ class Controller_Profile extends Controller
             }
 
             $user->email = $email;
-            system_message(elgg_echo('user:email:success'));
+            system_message(__('user:email:success'));
         }
 
         $phone = get_input('phone');
         if ($phone != $user->phone_number)
         {
             $user->phone_number = $phone;
-            system_message(elgg_echo('user:phone:success'));
+            system_message(__('user:phone:success'));
         }
 
         if ($user instanceof Organization)
@@ -533,7 +533,7 @@ class Controller_Profile extends Controller
             if ($notify_days != $user->notify_days)
             {
                 $user->notify_days = $notify_days;
-                system_message(elgg_echo('user:notification:success'));
+                system_message(__('user:notification:success'));
             }
         }
 
@@ -561,7 +561,7 @@ class Controller_Profile extends Controller
                 not_found();
             }
 
-            $title = elgg_echo("partner:confirm");
+            $title = __("partner:confirm");
             $area1 = elgg_view("org/confirmPartner", array('entity' => $org, 'partner' => $partner));
             $body = elgg_view_layout("one_column", elgg_view_title($title), $area1);
             $this->page_draw($title,$body);
@@ -586,12 +586,12 @@ class Controller_Profile extends Controller
 
         if (!$loggedInOrg->isApproved())
         {
-            action_error(elgg_echo('partner:needapproval'));
+            action_error(__('partner:needapproval'));
         }
 
         if (!$partner || $partner_guid == $loggedInOrg->guid)
         {
-            register_error(elgg_echo("partner:invalid"));
+            register_error(__("partner:invalid"));
             forward();
         }
         else
@@ -605,11 +605,11 @@ class Controller_Profile extends Controller
             $partnership2->save();
 
             notify_user($partner->guid, $CONFIG->site_guid,
-                sprintf(elgg_echo('email:requestPartnership:subject',$partner->language), $loggedInOrg->name, $partner->name),
-                sprintf(elgg_echo('email:requestPartnership:body',$partner->language), $partnership->getApproveUrl()),
+                sprintf(__('email:requestPartnership:subject',$partner->language), $loggedInOrg->name, $partner->name),
+                sprintf(__('email:requestPartnership:body',$partner->language), $partnership->getApproveUrl()),
                 NULL, 'email');
 
-            system_message(elgg_echo("partner:request_sent"));
+            system_message(__("partner:request_sent"));
 
             forward($partner->getUrl());
         }
@@ -627,7 +627,7 @@ class Controller_Profile extends Controller
 
         if (!$partner || $partner_guid == $user->guid)
         {
-            register_error(elgg_echo("partner:invalid"));
+            register_error(__("partner:invalid"));
             forward();
         }
         else
@@ -646,13 +646,13 @@ class Controller_Profile extends Controller
             $partWidget2 = $partner->getWidgetByName('partnerships');
             $partWidget2->save();
 
-            system_message(elgg_echo("partner:created"));
+            system_message(__("partner:created"));
 
             post_feed_items($user, 'partnership', $partner);
 
             notify_user($partner->guid, null,
-                sprintf(elgg_echo('email:partnershipConfirmed:subject',$partner->language), $user->name, $partner->name),
-                sprintf(elgg_echo('email:partnershipConfirmed:body',$partner->language), $partWidget2->getURL()),
+                sprintf(__('email:partnershipConfirmed:subject',$partner->language), $user->name, $partner->name),
+                sprintf(__('email:partnershipConfirmed:body',$partner->language), $partWidget2->getURL()),
                 NULL, 'email');
 
             forward($partWidget->getURL());
@@ -671,7 +671,7 @@ class Controller_Profile extends Controller
 
         if (!$recipient || !$user->isApproved())
         {
-            register_error(elgg_echo("message:invalid_recipient"));
+            register_error(__("message:invalid_recipient"));
             forward();
         }
         else
@@ -679,13 +679,13 @@ class Controller_Profile extends Controller
             $subject = get_input('subject');
             if (!$subject)
             {
-                action_error(elgg_echo("message:subject_missing"));
+                action_error(__("message:subject_missing"));
             }
 
             $message = get_input('message');
             if (!$message)
             {
-                action_error(elgg_echo("message:message_missing"));
+                action_error(__("message:message_missing"));
             }
 
             $headers = array(
@@ -697,7 +697,7 @@ class Controller_Profile extends Controller
 
             send_mail($recipient->email, $subject, $message, $headers);
 
-            system_message(elgg_echo("message:sent"));
+            system_message(__("message:sent"));
 
             forward($recipient->getURL());
         }

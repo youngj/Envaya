@@ -66,7 +66,7 @@
             $prevurl .= "?{$word}=" . $prevoffset;
         }
 
-        echo "<a href=\"{$prevurl}\" class=\"pagination_previous\">&laquo; ". elgg_echo("previous") ."</a> ";
+        echo "<a href=\"{$prevurl}\" class=\"pagination_previous\">&laquo; ". __("previous") ."</a> ";
 
     }
 
@@ -135,7 +135,7 @@
             $nexturl .= "?{$word}=" . $nextoffset;
         }
 
-        echo " <a href=\"{$nexturl}\" class=\"pagination_next\">" . elgg_echo("next") . " &raquo;</a>";
+        echo " <a href=\"{$nexturl}\" class=\"pagination_next\">" . __("next") . " &raquo;</a>";
 
     }
 

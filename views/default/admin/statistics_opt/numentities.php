@@ -16,7 +16,7 @@
 	$even_odd = "";
 ?>
 <div class="admin_statistics">
-    <h3><?php echo elgg_echo('admin:statistics:label:numentities'); ?></h3>
+    <h3><?php echo __('admin:statistics:label:numentities'); ?></h3>
     <table>
         <?php
             foreach ($entity_stats as $k => $entry)
@@ -29,15 +29,15 @@
                 	$even_odd = ( 'odd' != $even_odd ) ? 'odd' : 'even';
 
                     if ($a == "__base__") {
-                    	$a = elgg_echo("item:{$k}");
+                    	$a = __("item:{$k}");
                     	if (empty($a)) 
                         	$a = $k;
                     }
                     else {
                     		if (empty($a))
-                    			$a = elgg_echo("item:{$k}");
+                    			$a = __("item:{$k}");
                     		else
-                				$a = elgg_echo("item:{$k}:{$a}");
+                				$a = __("item:{$k}:{$a}");
                     		if (empty($a)) {
 								$a = "$k $a";
                     		}

@@ -15,7 +15,7 @@
         array('internalname' => 'submit',
             'class' => "submit_button addUpdateButton",
             'trackDirty' => true,
-            'value' => elgg_echo('publish')));
+            'value' => __('publish')));
 
     echo elgg_view('input/hidden', array(
         'internalname' => 'uuid',
@@ -45,7 +45,7 @@ function showAttachImage($show)
 
 <div id='attachControls'>
     <a href='javascript:void(0)' onclick='showAttachImage()'><img src='_graphics/attach_image.gif?v2' /></a>
-    <a href='javascript:void(0)' onclick='showAttachImage()'><?php echo elgg_echo('dashboard:attach_image') ?></a>
+    <a href='javascript:void(0)' onclick='showAttachImage()'><?php echo __('dashboard:attach_image') ?></a>
 </div>
 
     <?php

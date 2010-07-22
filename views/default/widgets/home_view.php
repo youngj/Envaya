@@ -2,11 +2,11 @@
 
     $widget = $vars['widget'];
 
-    echo elgg_view_layout('section', elgg_echo("org:mission"), $widget->renderContent());
+    echo elgg_view_layout('section', __("org:mission"), $widget->renderContent());
 
     $org = $vars['widget']->getContainerEntity();
 
-    echo "<div class='section_header'>".elgg_echo("widget:news:latest")."</div>";
+    echo "<div class='section_header'>".__("widget:news:latest")."</div>";
 
     $items = $org->getFeedItems(6);
 
@@ -20,7 +20,7 @@
 
     if (!empty($sectors))
     {
-        echo elgg_view_layout('section', elgg_echo("org:sectors"),
+        echo elgg_view_layout('section', __("org:sectors"),
             elgg_view("org/sectors", array('sectors' => $sectors, 'sector_other' => $org->sector_other))
         );
     }
@@ -43,10 +43,10 @@
         echo "</em>";
         echo "<br />";
         echo "<a href='org/browse/?lat=$lat&long=$long&zoom=10'>";
-        echo elgg_echo('org:see_nearby');
+        echo __('org:see_nearby');
         echo "</a>";
         echo "</div>";
     $map = ob_get_clean();
-    echo elgg_view_layout('section', elgg_echo("org:location"), $map);
+    echo elgg_view_layout('section', __("org:location"), $map);
 
 ?>

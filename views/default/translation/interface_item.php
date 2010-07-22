@@ -14,24 +14,24 @@ echo elgg_view('input/securitytoken');
 echo elgg_view('input/hidden', array('internalname' => 'from', 'value' => $from));
 echo elgg_view('input/hidden', array('internalname' => 'key', 'value' => $key));
 
-$enText = elgg_echo($key, 'en');
+$enText = __($key, 'en');
 
 echo "<div class='input'>";
-echo "<label>".sprintf(elgg_echo("trans:original_in"), escape(elgg_echo('en'))).":</label>";
+echo "<label>".sprintf(__("trans:original_in"), escape(__('en'))).":</label>";
 echo "<div>".elgg_view('output/longtext', array('value' => $enText))."</div>";
 echo "</div>";
 
 if ($trans)
 {
 echo "<div class='input'>";
-echo "<label>".sprintf(elgg_echo("trans:previous_in"), escape(elgg_echo($lang))).":</label>";
-echo "<div>".elgg_view('output/longtext', array('value' => elgg_echo($key, $lang)))."</div>";
+echo "<label>".sprintf(__("trans:previous_in"), escape(__($lang))).":</label>";
+echo "<div>".elgg_view('output/longtext', array('value' => __($key, $lang)))."</div>";
 echo "</div>";
 
 }
 
 echo "<div class='input'>";
-echo "<label>".sprintf(elgg_echo("trans:inlang"), escape(elgg_echo($lang))).":</label>";
+echo "<label>".sprintf(__("trans:inlang"), escape(__($lang))).":</label>";
 
 if (strlen($enText) > 50 || strpos($enText, "\n") !== FALSE)
 {
@@ -53,9 +53,9 @@ if (!$value)
 
 echo elgg_view($input, array('internalname' => 'value', 'value' => $value, 'js'=>$js));
 
-echo elgg_view('input/submit', array('value' => elgg_echo('save')));
+echo elgg_view('input/submit', array('value' => __('save')));
 
-echo "<a style='float:right;padding:10px' href='".escape($from)."'>".elgg_echo('cancel')."</a>";
+echo "<a style='float:right;padding:10px' href='".escape($from)."'>".__('cancel')."</a>";
 
 echo "</div>";
 

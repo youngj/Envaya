@@ -10,7 +10,7 @@
      */
 
     // Description of what's going on
-        echo "<span class=\"contentIntro\">" . elgg_view('output/longtext', array('value' => elgg_echo("admin:user:description"))) . "</span>";
+        echo "<span class=\"contentIntro\">" . elgg_view('output/longtext', array('value' => __("admin:user:description"))) . "</span>";
 
         echo elgg_view("admin/user_opt/adduser");
 

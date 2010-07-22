@@ -21,15 +21,15 @@
 	
 ?>
 <div class="admin_statistics">
-    <h3><?php echo elgg_echo('admin:statistics:label:basic'); ?></h3>
+    <h3><?php echo __('admin:statistics:label:basic'); ?></h3>
     <table>
     	<tr class="odd">
-            <td class="column_one"><b><?php echo elgg_echo('admin:statistics:label:version'); ?> :</b></td>
-            <td><?php echo elgg_echo('admin:statistics:label:version:release'); ?> - <?php echo $release; ?>, <?php echo elgg_echo('admin:statistics:label:version:version'); ?> - <?php echo $version; ?></td>
+            <td class="column_one"><b><?php echo __('admin:statistics:label:version'); ?> :</b></td>
+            <td><?php echo __('admin:statistics:label:version:release'); ?> - <?php echo $release; ?>, <?php echo __('admin:statistics:label:version:version'); ?> - <?php echo $version; ?></td>
         </tr>
         <tr class="even">
-            <td class="column_one"><b><?php echo elgg_echo('admin:statistics:label:numusers'); ?> :</b></td>
-            <td><?php echo $users_stats; ?> <?php echo elgg_echo('active'); ?> / <?php echo $total_users; ?> <?php echo elgg_echo('total') ?></td>
+            <td class="column_one"><b><?php echo __('admin:statistics:label:numusers'); ?> :</b></td>
+            <td><?php echo $users_stats; ?> <?php echo __('active'); ?> / <?php echo $total_users; ?> <?php echo __('total') ?></td>
         </tr>
 
     </table> 

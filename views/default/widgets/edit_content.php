@@ -4,10 +4,10 @@
 ?>
 
 <div class='input'>
-    <label><?php echo elgg_echo("widget:{$widget->widget_name}:label") ?></label>
+    <label><?php echo __("widget:{$widget->widget_name}:label") ?></label>
     <?php
         $helpCode = "widget:{$widget->widget_name}:help";
-        $help = elgg_echo($helpCode);
+        $help = __($helpCode);
         if ($help != $helpCode)
         {
             echo "<div class='help'>$help</div>";

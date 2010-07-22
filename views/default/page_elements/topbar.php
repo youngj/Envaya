@@ -10,9 +10,9 @@ if (get_input('__topbar') !== '0') {
     <a id='logoContainer' href="<?php echo ((isloggedin()) ? 'pg/dashboard' : 'home') ?>">
         <img src="_graphics/logo.gif?v5" alt="Envaya" width="145" height="30">
     </a>
-    <a href='org/browse'><?php echo elgg_echo('browse') ?></a>
-    <a href='org/search'><?php echo elgg_echo('search') ?></a>
-    <a href='org/feed'><?php echo elgg_echo('feed') ?></a>
+    <a href='org/browse'><?php echo __('browse') ?></a>
+    <a href='org/search'><?php echo __('search') ?></a>
+    <a href='org/feed'><?php echo __('feed') ?></a>
 </td>
 <td width='166'>&nbsp;</td>
 </tr>
@@ -31,14 +31,14 @@ if (get_input('__topbar') !== '0') {
 
             if ($user->isSetupComplete())
             {
-                echo "<a href='{$user->getURL()}' title=\"".elgg_echo('topbar:your_home')."\"><img src='_graphics/home.gif?v2' /></a>";
+                echo "<a href='{$user->getURL()}' title=\"".__('topbar:your_home')."\"><img src='_graphics/home.gif?v2' /></a>";
 
                 if ($user instanceof Organization)
                 {
-                    echo "<a href='pg/dashboard' title=\"".elgg_echo('topbar:edit_site')."\"><img src='_graphics/pencil.gif?v3' /></a>";
+                    echo "<a href='pg/dashboard' title=\"".__('topbar:edit_site')."\"><img src='_graphics/pencil.gif?v3' /></a>";
                 }
 
-                echo "<a href='{$user->getURL()}/settings' title=\"".elgg_echo('settings')."\" id='usersettings'><img src='_graphics/settings.gif' /></a>";
+                echo "<a href='{$user->getURL()}/settings' title=\"".__('settings')."\" id='usersettings'><img src='_graphics/settings.gif' /></a>";
             }
 
             // The administration link is for admin or site admin users only
@@ -47,7 +47,7 @@ if (get_input('__topbar') !== '0') {
                 echo "<a href='pg/dashboard'><img src='_graphics/admin.gif' height='25' width='24' /></a>";
             }
 
-            echo "<a href='pg/logout' title=\"".elgg_echo('logout')."\"><img src='_graphics/logout.gif' /></a>";
+            echo "<a href='pg/logout' title=\"".__('logout')."\"><img src='_graphics/logout.gif' /></a>";
 
             echo "</span>";
 
@@ -63,7 +63,7 @@ if (get_input('__topbar') !== '0') {
         {
             $loginUrl = (get_context() == 'orgprofile') ? url_with_param($_SERVER['REQUEST_URI'], 'login',1) : 'pg/login';
 
-            echo "<a id='loginButton' href='".escape($loginUrl)."'><span class='loginContent'><img src='_graphics/lock.gif' height='20' width='20' /><span>".elgg_echo("login")."</span></span></a>";
+            echo "<a id='loginButton' href='".escape($loginUrl)."'><span class='loginContent'><img src='_graphics/lock.gif' height='20' width='20' /><span>".__("login")."</span></span></a>";
         }
 
     ?>

@@ -76,11 +76,11 @@ class Organization extends ElggUser
     {
         if ($this->approval == 0)
         {
-            system_message(elgg_echo('approval:waiting'));
+            system_message(__('approval:waiting'));
         }
         else if ($this->approval < 0)
         {
-            system_message(elgg_echo('approval:rejected'));
+            system_message(__('approval:rejected'));
         }
     }
 
@@ -109,7 +109,7 @@ class Organization extends ElggUser
 
     public function getCountryText()
     {
-        return elgg_echo("country:{$this->country}");
+        return __("country:{$this->country}");
     }
 
     public function getLocationText($includeRegion = true)
@@ -122,7 +122,7 @@ class Organization extends ElggUser
         }
         if ($this->region && $includeRegion)
         {
-            $regionText = elgg_echo($this->region);
+            $regionText = __($this->region);
 
             if ($regionText != $this->city)
             {
@@ -140,31 +140,31 @@ class Organization extends ElggUser
     static function getSectorOptions()
     {
         $sectors = array(
-            1 => elgg_echo('sector:agriculture'),
-            2 => elgg_echo('sector:communications'),
-            3 => elgg_echo('sector:conflict_res'),
-            4 => elgg_echo('sector:cooperative'),
-            5 => elgg_echo('sector:culture'),
-            6 => elgg_echo('sector:education'),
-            7 => elgg_echo('sector:environment'),
-            8 => elgg_echo('sector:health'),
-            9 => elgg_echo('sector:hiv_aids'),
-            13 => elgg_echo('sector:human_rights'),
-            14 => elgg_echo('sector:labor_rights'),
-            15 => elgg_echo('sector:microenterprise'),
-            16 => elgg_echo('sector:natural_resources'),
-            17 => elgg_echo('sector:prof_training'),
-            18 => elgg_echo('sector:rural_dev'),
-            19 => elgg_echo('sector:sci_tech'),
-            20 => elgg_echo('sector:substance_abuse'),
-            21 => elgg_echo('sector:tourism'),
-            22 => elgg_echo('sector:trade'),
-            23 => elgg_echo('sector:women'),
+            1 => __('sector:agriculture'),
+            2 => __('sector:communications'),
+            3 => __('sector:conflict_res'),
+            4 => __('sector:cooperative'),
+            5 => __('sector:culture'),
+            6 => __('sector:education'),
+            7 => __('sector:environment'),
+            8 => __('sector:health'),
+            9 => __('sector:hiv_aids'),
+            13 => __('sector:human_rights'),
+            14 => __('sector:labor_rights'),
+            15 => __('sector:microenterprise'),
+            16 => __('sector:natural_resources'),
+            17 => __('sector:prof_training'),
+            18 => __('sector:rural_dev'),
+            19 => __('sector:sci_tech'),
+            20 => __('sector:substance_abuse'),
+            21 => __('sector:tourism'),
+            22 => __('sector:trade'),
+            23 => __('sector:women'),
         );
 
         asort($sectors);
 
-        $sectors[SECTOR_OTHER] = elgg_echo('sector:other');
+        $sectors[SECTOR_OTHER] = __('sector:other');
 
         return $sectors;
     }
@@ -410,8 +410,8 @@ function org_page_not_found($org)
 {
     set_context('orgprofile');
     set_theme($org->theme ?: 'green');
-    $title = elgg_echo('page:notfound');
-    $body = org_view_body($org, $title, "<div class='section_content padded'>".elgg_echo('page:notfound:details')."</div>");
+    $title = __('page:notfound');
+    $body = org_view_body($org, $title, "<div class='section_content padded'>".__('page:notfound:details')."</div>");
     header("HTTP/1.1 404 Not Found");
     echo page_draw($title, $body);
     exit;
@@ -476,7 +476,7 @@ function regions_in_country($country)
     $res = array();
     foreach ($ids as $id)
     {
-        $res[$id] = elgg_echo($id);
+        $res[$id] = __($id);
     }
     asort($res);
     return $res;
@@ -512,10 +512,10 @@ function get_themes()
 function get_notification_frequencies()
 {
     return array(
-        14 => elgg_echo('freq:2weeks'),
-        30 => elgg_echo('freq:month'),
-        60 => elgg_echo('freq:2months'),
-        0 => elgg_echo('freq:never')
+        14 => __('freq:2weeks'),
+        30 => __('freq:month'),
+        60 => __('freq:2months'),
+        0 => __('freq:never')
     );
 }
 
@@ -523,13 +523,13 @@ function add_org_menu($org)
 {
     $widgets = $org->getAvailableWidgets();
 
-    add_submenu_item(elgg_echo("widget:home"), $org->getURL());
+    add_submenu_item(__("widget:home"), $org->getURL());
 
     foreach ($widgets as $widget)
     {
         if ($widget->isActive() && $widget->widget_name != 'home')
         {
-            add_submenu_item(elgg_echo("widget:{$widget->widget_name}"), $widget->getURL());
+            add_submenu_item(__("widget:{$widget->widget_name}"), $widget->getURL());
         }
     }
 }
@@ -549,9 +549,9 @@ function notify_new_org($event, $objectType, $org)
 
 function add_generic_footer()
 {
-    add_submenu_item(elgg_echo('about:link'), "/page/about", 'footer');
-    add_submenu_item(elgg_echo('contact:link'), "/page/contact", 'footer');
-    add_submenu_item(elgg_echo('donate:link'), "/page/donate", 'footer');
+    add_submenu_item(__('about:link'), "/page/about", 'footer');
+    add_submenu_item(__('contact:link'), "/page/contact", 'footer');
+    add_submenu_item(__('donate:link'), "/page/donate", 'footer');
 }
 
 function envaya_init()

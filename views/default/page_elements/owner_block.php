@@ -46,8 +46,8 @@
 				$url .= "?view=rss";
 			}
 
-			$label = elgg_echo('feed:rss');
-			//$label2 = elgg_echo('feed:odd');
+			$label = __('feed:rss');
+			//$label2 = __('feed:odd');
 			$contents .= <<<END
 
 	<div id="owner_block_rss_feed"><a href="{$url}" rel="nofollow">{$label}</a></div>

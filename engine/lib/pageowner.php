@@ -70,7 +70,7 @@
             	if (!$owner_entity) {
             		
             		// Log an error
-            		error_log(sprintf(elgg_echo('pageownerunavailable'), $returnval));
+            		error_log(sprintf(__('pageownerunavailable'), $returnval));
             		
             		// Forward
             		forward(); 

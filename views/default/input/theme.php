@@ -28,20 +28,20 @@ function themeChanged($theme)
 
     foreach (get_themes() as $theme)
     {
-        $themeOptions[$theme] = elgg_echo("theme:$theme");
+        $themeOptions[$theme] = __("theme:$theme");
     }
 
      echo elgg_view('input/pulldown', array(
         'internalname' => $name,
         'internalid' => 'themeList',
         'options_values' => $themeOptions,
-        //'empty_option' => elgg_echo('sector:empty_option'),
+        //'empty_option' => __('sector:empty_option'),
         'value' => $curTheme,
         'js' => "onchange='themeChanged()' onkeypress='themeChanged()'"
     ));
 ?>
 
-<div class='help'><?php echo elgg_echo('preview'); ?>:</div>
+<div class='help'><?php echo __('preview'); ?>:</div>
 <div style='width:100%;height:258px;overflow:hidden;border:1px solid black'>
 <iframe width='800' height='258' scrolling='no' id='previewFrame' src="<?php echo $previewUrl ?>?__theme=<?php echo escape($curTheme) ?>&__topbar=0&__readonly=1"></iframe>
 </div>

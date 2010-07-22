@@ -11,7 +11,7 @@ $org = $trans->getRootContainerEntity();
 
 $escUrl = urlencode($_SERVER['REQUEST_URI']);
 
-echo "<a style='float:right' href='org/translate?from=$escUrl&prop[]={$entity->guid}.{$prop}'>".elgg_echo('trans:contribute')."</a>";
+echo "<a style='float:right' href='org/translate?from=$escUrl&prop[]={$entity->guid}.{$prop}'>".__('trans:contribute')."</a>";
 echo "<a href='{$org->getURL()}'>".escape($org->name)."</a> : ";
 echo "<a href='{$entity->getURL()}'>".escape($entity->getTitle())."</a>";
 

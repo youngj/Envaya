@@ -146,7 +146,7 @@ function get_language()
 * @param string $language Optionally, the standard language code (defaults to the site default, then English)
 * @return string Either the translated string, or the original English string, or an empty string
 */
-function elgg_echo($message_key, $language = "") {
+function __($message_key, $language = "") {
 
     global $CONFIG;
 
@@ -211,13 +211,13 @@ function get_installed_translations($show_completeness = false)
 
     foreach ($CONFIG->translations as $k => $v)
     {
-        $installed[$k] = elgg_echo($k, $k);
+        $installed[$k] = __($k, $k);
 
         if ($show_completeness)
         {
             $completeness = get_language_completeness($k);
             if ((isadminloggedin()) && ($completeness<100) && ($k!='en'))
-                $installed[$k] .= " (" . $completeness . "% " . elgg_echo('complete') . ")";
+                $installed[$k] .= " (" . $completeness . "% " . __('complete') . ")";
         }
     }
 
@@ -264,7 +264,7 @@ function get_missing_language_keys($language)
 
 function get_language_link($lang)
 {
-    $name = escape(elgg_echo($lang, $lang));
+    $name = escape(__($lang, $lang));
 
     if (get_language() == $lang)
     {

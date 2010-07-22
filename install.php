@@ -22,9 +22,9 @@
     {
         run_sql_script(__DIR__ . "/engine/schema/mysql.sql");
         init_site_secret();
-        system_message(elgg_echo("installation:success"));
+        system_message(__("installation:success"));
         datalist_set('installed', 1);
-        system_message(elgg_echo("installation:configuration:success"));
+        system_message(__("installation:configuration:success"));
         forward("pg/register");
     }
 

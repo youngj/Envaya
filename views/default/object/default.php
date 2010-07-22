@@ -23,7 +23,7 @@
     $controls = "";
     if ($vars['entity']->canEdit())
     {
-        $controls .= " (<a href=\"admin/delete_entity?guid={$vars['entity']->guid}\">" . elgg_echo('delete') . "</a>)";
+        $controls .= " (<a href=\"admin/delete_entity?guid={$vars['entity']->guid}\">" . __('delete') . "</a>)";
     }
 
     $info = "<div><p><b><a href=\"" . $vars['entity']->getUrl() . "\">" . escape($title) . "</a></b> $controls </p></div>";
@@ -35,7 +35,7 @@
     }
 
     $owner = $vars['entity']->getOwnerEntity();
-    $ownertxt = elgg_echo('unknown');
+    $ownertxt = __('unknown');
 
     $info = "<span>$info</span>";
     $icon = "<span>$icon</span>";

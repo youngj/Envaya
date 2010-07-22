@@ -8,7 +8,7 @@ class Controller_Pg extends Controller {
 
         $username = get_input('username');
 
-        $title = elgg_echo("login");
+        $title = __("login");
         $body = elgg_view_layout('one_column_padded',
             elgg_view_title($title, array('org_only' => true)),
             elgg_view("account/forms/login", array('username' => $username)));
@@ -35,7 +35,7 @@ class Controller_Pg extends Controller {
 
         if ($result)
         {
-            system_message(sprintf(elgg_echo('loginok'), $user->name));
+            system_message(sprintf(__('loginok'), $user->name));
 
             $forward_url = Session::get('last_forward_from');
             if ($forward_url)
@@ -63,19 +63,19 @@ class Controller_Pg extends Controller {
         {
             Session::saveInput();
 
-            $error_msg = elgg_echo('loginerror');
+            $error_msg = __('loginerror');
             // figure out why the login failed
             if (!empty($username) && !empty($password)) {
                 // See if it exists and is disabled
                 $access_status = access_get_show_hidden_status();
                 access_show_hidden_entities(true);
 
-                register_error(elgg_echo('loginerror'));
+                register_error(__('loginerror'));
                 forward("pg/login");
 
                 access_show_hidden_entities($access_status);
             } else {
-                register_error(elgg_echo('loginerror'));
+                register_error(__('loginerror'));
             }
         }
     }
@@ -94,12 +94,12 @@ class Controller_Pg extends Controller {
         set_context('editor');
         set_page_owner(get_loggedin_userid());
 
-        $title = elgg_echo('dashboard');
+        $title = __('dashboard');
 
         $intro_message = elgg_view('dashboard/blurb');
 
         $body = elgg_view_layout('one_column',
-            elgg_view_title(elgg_echo("dashboard")),
+            elgg_view_title(__("dashboard")),
             $intro_message
         );
 
@@ -112,8 +112,8 @@ class Controller_Pg extends Controller {
         {
             $body = elgg_view("account/forms/forgotten_password");
 
-            $this->page_draw(elgg_echo('user:password:lost'), elgg_view_layout("one_column_padded",
-                elgg_view_title(elgg_echo('user:password:lost'), array('org_only' => true)), $body));
+            $this->page_draw(__('user:password:lost'), elgg_view_layout("one_column_padded",
+                elgg_view_title(__('user:password:lost'), array('org_only' => true)), $body));
         }
         else
         {
@@ -132,20 +132,20 @@ class Controller_Pg extends Controller {
         {
             if (!$user->email)
             {
-                register_error(elgg_echo('user:password:resetreq:no_email'));
+                register_error(__('user:password:resetreq:no_email'));
                 forward("page/contact");
             }
             if (send_new_password_request($user->guid))
             {
-                system_message(elgg_echo('user:password:resetreq:success'));
+                system_message(__('user:password:resetreq:success'));
             }
             else
             {
-                register_error(elgg_echo('user:password:resetreq:fail'));
+                register_error(__('user:password:resetreq:fail'));
             }
         }
         else
-            register_error(sprintf(elgg_echo('user:username:notfound'), $username));
+            register_error(sprintf(__('user:username:notfound'), $username));
 
         access_show_hidden_entities($access_status);
         forward();
@@ -161,9 +161,9 @@ class Controller_Pg extends Controller {
         access_show_hidden_entities(true);
 
         if (execute_new_password_request($user_guid, $code))
-            system_message(elgg_echo('user:password:reset'));
+            system_message(__('user:password:reset'));
         else
-            register_error(elgg_echo('user:password:fail'));
+            register_error(__('user:password:fail'));
 
         forward("pg/login");
         exit;
@@ -177,8 +177,8 @@ class Controller_Pg extends Controller {
 
         if (!isloggedin())
         {
-            $body = elgg_view_layout('one_column_padded', elgg_view_title(elgg_echo("register")), elgg_view("account/forms/register", array('friend_guid' => $friend_guid, 'invitecode' => $invitecode)));
-            $this->page_draw(elgg_echo('register'), $body);
+            $body = elgg_view_layout('one_column_padded', elgg_view_title(__("register")), elgg_view("account/forms/register", array('friend_guid' => $friend_guid, 'invitecode' => $invitecode)));
+            $this->page_draw(__('register'), $body);
         }
         else
         {
@@ -196,14 +196,14 @@ class Controller_Pg extends Controller {
 
         if ($password != $password2)
         {
-            action_error(elgg_echo('create:passwords_differ'));
+            action_error(__('create:passwords_differ'));
         }
 
         try
         {
             $new_user = register_user($username, $password, $name, $email);
             login($new_user, false);
-            system_message(elgg_echo("registerok"));
+            system_message(__("registerok"));
             forward("pg/dashboard/");
         }
         catch (RegistrationException $r)
@@ -246,7 +246,7 @@ class Controller_Pg extends Controller {
 
         if (!$message)
         {
-            action_error(elgg_echo('feedback:empty'));
+            action_error(__('feedback:empty'));
         }
 
         $from = get_input('name');
@@ -260,7 +260,7 @@ class Controller_Pg extends Controller {
         }
 
         send_admin_mail("User feedback", "From: $from\n\nEmail: $email\n\n$message", $headers);
-        system_message(elgg_echo('feedback:sent'));
+        system_message(__('feedback:sent'));
         forward("page/contact");
     }
 }

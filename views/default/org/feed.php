@@ -23,7 +23,7 @@ echo elgg_view('input/pulldown', array(
     'internalname' => 'sector',
     'internalid' => 'sectorList',
     'options_values' => Organization::getSectorOptions(),
-    'empty_option' => elgg_echo('sector:empty_option'),
+    'empty_option' => __('sector:empty_option'),
     'value' => $sector,
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"
 ));
@@ -32,7 +32,7 @@ echo elgg_view('input/pulldown', array(
     'internalname' => 'region',
     'internalid' => 'regionList',
     'options_values' => regions_in_country('tz'),
-    'empty_option' => elgg_echo('region:empty_option'),
+    'empty_option' => __('region:empty_option'),
     'value' => $region,
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"
 ));

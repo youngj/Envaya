@@ -45,7 +45,7 @@ return el;}
 window.dirty=false;function setDirty($dirty)
 {if($dirty&&!window.submitted)
 {if(!window.onbeforeunload)
-{window.onbeforeunload=function(){return<?php echo json_encode(elgg_echo("page:dirty"))?>;};}}
+{window.onbeforeunload=function(){return<?php echo json_encode(__("page:dirty"))?>;};}}
 else
 {window.onbeforeunload=null;}
 window.dirty=$dirty;return true;}

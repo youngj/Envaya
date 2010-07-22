@@ -43,7 +43,7 @@
 			</td>
 			<td class="log_entry_action">
 				<div class="log_entry_action_<?php echo $entry->event; ?>">
-					<?php echo elgg_echo($entry->event); ?>
+					<?php echo __($entry->event); ?>
 				</div>
 			</td>
 		</tr>

@@ -15,12 +15,12 @@
     <div style='clear:both;'></div>
 
 </div>
-<label><?php echo elgg_echo('partner:confirm:instructions') ?></label>
+<label><?php echo __('partner:confirm:instructions') ?></label>
 <div>
 <?php
 
 echo elgg_view('input/submit',array(
-    'value' => elgg_echo('partner:confirm:button')
+    'value' => __('partner:confirm:button')
 ));
 
 ?>

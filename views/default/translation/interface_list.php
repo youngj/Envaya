@@ -14,8 +14,8 @@ if ($query)
     foreach ($keys as $key)
     {
         if (strpos($key, $lq) !== false
-            || strpos(strtolower(elgg_echo($key, 'en')), $lq) !== false
-            || strpos(strtolower(elgg_echo($key, $lang)), $lq) !== false)
+            || strpos(strtolower(__($key, 'en')), $lq) !== false
+            || strpos(strtolower(__($key, $lang)), $lq) !== false)
         {
             $filteredKeys[] = $key;
         }
@@ -59,14 +59,14 @@ $from = urlencode("$baseurl&offset=$offset");
 
 echo "<form method='GET' action='org/translate_interface'>";
 
-echo "<label>".elgg_echo("trans:filter")."</label><br />";
+echo "<label>".__("trans:filter")."</label><br />";
 
 echo elgg_view('input/text', array('internalname' => 'q', 'value' => $query));
-echo elgg_view('input/submit', array('value' => elgg_echo("search")));
+echo elgg_view('input/submit', array('value' => __("search")));
 echo "<div class='edited'>";
 echo elgg_view('input/checkboxes', array(
     'internalname' => 'edited',
-    'options' => array('1' => elgg_echo('trans:edited_only')),
+    'options' => array('1' => __('trans:edited_only')),
     'value' => $edited ? '1' : null
 ));
 echo "</div>";
@@ -77,13 +77,13 @@ echo "<br />";
 echo "<h3>";
 if ($query)
 {
-    echo sprintf(elgg_echo("trans:search"), escape($query));
+    echo sprintf(__("trans:search"), escape($query));
 }
 echo "</h3>";
 
 if (empty($keys))
 {
-    echo elgg_echo("search:noresults");
+    echo __("search:noresults");
 }
 else
 {
@@ -97,15 +97,15 @@ else
     echo "<table class='gridTable'>";
 
     echo "<tr>";
-    echo "<th>".elgg_echo('trans:key')."</th>";
-    echo "<th>".escape(elgg_echo('en'))."</th>";
-    echo "<th>".escape(elgg_echo($lang))."</th>";
+    echo "<th>".__('trans:key')."</th>";
+    echo "<th>".escape(__('en'))."</th>";
+    echo "<th>".escape(__($lang))."</th>";
 
     for ($i = $offset; $i < $offset + $limit && $i >= 0 && $i < $count; $i++)
     {
         $key = $keys[$i];
 
-        $enText = elgg_echo($key, 'en');
+        $enText = __($key, 'en');
 
         echo "<tr>";
         echo "<td>".escape($key)."</td>";
@@ -133,11 +133,11 @@ else
         }
         else
         {
-            $res = "<em>".elgg_echo("trans:none")."</em>";
+            $res = "<em>".__("trans:none")."</em>";
         }
 
         echo "<td>$res</td>";
-        echo "<td><a href='org/translate_interface?key=$key&from=$from'>".elgg_echo('edit')."</a></td>";
+        echo "<td><a href='org/translate_interface?key=$key&from=$from'>".__('edit')."</a></td>";
 
         echo "</tr>";
     }
@@ -153,6 +153,6 @@ else
 
     if (isadminloggedin())
     {
-        echo "<br /><br /><a href='org/translate_interface?export=1'>".elgg_echo('trans:export')."</a>";
+        echo "<br /><br /><a href='org/translate_interface?export=1'>".__('trans:export')."</a>";
     }
 }

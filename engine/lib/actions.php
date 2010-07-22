@@ -48,17 +48,17 @@
                 }
                 else
                 {
-                    throw new SecurityException(elgg_echo('actiongatekeeper:timeerror'));
+                    throw new SecurityException(__('actiongatekeeper:timeerror'));
                 }
             }
             else
             {
-                throw new SecurityException(elgg_echo('actiongatekeeper:timeerror'));
+                throw new SecurityException(__('actiongatekeeper:timeerror'));
             }
         }
         else
         {
-            throw new SecurityException(elgg_echo('actiongatekeeper:missingfields'));
+            throw new SecurityException(__('actiongatekeeper:missingfields'));
         }
     }
 

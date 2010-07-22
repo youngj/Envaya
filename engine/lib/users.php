@@ -524,7 +524,7 @@
             $result = get_entity($guid);
 
         if ((!empty($result)) && (!($result instanceof ElggUser)))
-            //throw new InvalidClassException(sprintf(elgg_echo('InvalidClassException:NotValidElggStar'), $guid, 'ElggUser'));
+            //throw new InvalidClassException(sprintf(__('InvalidClassException:NotValidElggStar'), $guid, 'ElggUser'));
             return false;
 
         if (!empty($result))
@@ -703,10 +703,10 @@
             $link = $CONFIG->url . "pg/password_reset?u=$user_guid&c=$code";
 
             // generate email
-            $email = sprintf(elgg_echo('email:resetreq:body',$user->language), $user->name, $link);
+            $email = sprintf(__('email:resetreq:body',$user->language), $user->name, $link);
 
             return notify_user($user->guid, $CONFIG->site_guid,
-                elgg_echo('email:resetreq:subject',$user->language), $email, NULL, 'email');
+                __('email:resetreq:subject',$user->language), $email, NULL, 'email');
 
         }
 
@@ -736,9 +736,9 @@
 
             remove_private_setting($user_guid, 'passwd_conf_code');
 
-            $email = sprintf(elgg_echo('email:resetpassword:body',$user->language), $user->name, $password);
+            $email = sprintf(__('email:resetpassword:body',$user->language), $user->name, $password);
 
-            notify_user($user->guid, $CONFIG->site_guid, elgg_echo('email:resetpassword:subject',$user->language), $email, NULL, 'email');
+            notify_user($user->guid, $CONFIG->site_guid, __('email:resetpassword:subject',$user->language), $email, NULL, 'email');
             return true;
         }
 
@@ -794,12 +794,12 @@
 
         if (strlen($username) < 3)
         {
-            throw new RegistrationException(elgg_echo('registration:usernametooshort'));
+            throw new RegistrationException(__('registration:usernametooshort'));
         }
 
         if (preg_match('/[^a-zA-Z0-9\-\_]/', $username, $matches))
         {
-            throw new RegistrationException(sprintf(elgg_echo('registration:invalidchars'), $username, $matches[0]));
+            throw new RegistrationException(sprintf(__('registration:invalidchars'), $username, $matches[0]));
         }
 
         $lower = strtolower($username);
@@ -819,7 +819,7 @@
 
         if (in_array($lower, $badUsernames) || $username[0] == "_")
         {
-            throw new RegistrationException(sprintf(elgg_echo('registration:usernamenotvalid'), $username));
+            throw new RegistrationException(sprintf(__('registration:usernamenotvalid'), $username));
         }
 
         return true;
@@ -834,7 +834,7 @@
     function validate_password($password)
     {
         if (strlen($password)<6)
-            throw new RegistrationException(elgg_echo('registration:passwordtooshort'));
+            throw new RegistrationException(__('registration:passwordtooshort'));
 
         return true;
     }
@@ -849,7 +849,7 @@
     function validate_email_address($address)
     {
         if ($address !== "" && !is_email_address($address))
-            throw new RegistrationException(elgg_echo('registration:notemail'));
+            throw new RegistrationException(__('registration:notemail'));
 
         return true;
     }
@@ -880,7 +880,7 @@
                 || empty($password)
                 || empty($name)
                 || empty($email)) {
-                    throw new RegistrationException(elgg_echo('registerbad'));
+                    throw new RegistrationException(__('registerbad'));
                 }
 
             // See if it exists and is disabled
@@ -893,13 +893,13 @@
 
         // Check to see if $username exists already
             if ($user = get_user_by_username($username)) {
-                throw new RegistrationException(elgg_echo('registration:userexists'));
+                throw new RegistrationException(__('registration:userexists'));
             }
 
         // If we're not allowed multiple emails then see if this address has been used before
             if ((!$allow_multiple_emails) && (sizeof(get_users_by_email($email)) > 0))
             {
-                throw new RegistrationException(elgg_echo('registration:dupeemail'));
+                throw new RegistrationException(__('registration:dupeemail'));
             }
 
             access_show_hidden_entities($access_status);

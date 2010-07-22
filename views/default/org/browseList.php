@@ -23,8 +23,8 @@ function sectorChanged()
 
 
 <div class='view_toggle'>
-    <a href='org/browse?sector=<?php echo escape($sector); ?>'><?php echo elgg_echo('browse:map') ?></a> &middot;
-    <strong><?php echo elgg_echo('list') ?></strong>
+    <a href='org/browse?sector=<?php echo escape($sector); ?>'><?php echo __('browse:map') ?></a> &middot;
+    <strong><?php echo __('list') ?></strong>
 </div>
 
 <?php 
@@ -33,7 +33,7 @@ echo elgg_view('input/pulldown', array(
     'internalname' => 'sector',
     'internalid' => 'sectorList',
     'options_values' => Organization::getSectorOptions(), 
-    'empty_option' => elgg_echo('sector:empty_option'),
+    'empty_option' => __('sector:empty_option'),
     'value' => $sector,
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"        
 ));
@@ -46,7 +46,7 @@ echo elgg_view('input/pulldown', array(
     'internalname' => 'region',
     'internalid' => 'regionList',    
     'options_values' => regions_in_country('tz'),
-    'empty_option' => elgg_echo('region:empty_option'),
+    'empty_option' => __('region:empty_option'),
     'value' => $region,
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"        
 ));
@@ -60,7 +60,7 @@ if ($res)
 }
 else
 {
-    echo elgg_echo("search:noresults");
+    echo __("search:noresults");
 }
 
 ?>

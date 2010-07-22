@@ -27,34 +27,34 @@
 <td bgcolor="#FFFFFF" valign="top" style="font-size:13px;color:#000000;line-height:150%;font-family:trebuchet ms;">
 
 <p>
-<?php echo sprintf(elgg_echo('email:salutation', $lang), escape($org->name)) ?>
+<?php echo sprintf(__('email:salutation', $lang), escape($org->name)) ?>
 <br />
 <br />
-<?php echo elgg_echo('email:greetings',$lang) ?>
+<?php echo __('email:greetings',$lang) ?>
 <br />
 <br />
-<?php echo elgg_echo('email:reminder:while',$lang). " " ?>
-<?php echo sprintf(elgg_echo('email:reminder:addnews',$lang),
-    "<a target='_blank' href='{$CONFIG->url}pg/login?username={$org->username}'>".elgg_echo('email:clickhere',$lang)."</a>"
+<?php echo __('email:reminder:while',$lang). " " ?>
+<?php echo sprintf(__('email:reminder:addnews',$lang),
+    "<a target='_blank' href='{$CONFIG->url}pg/login?username={$org->username}'>".__('email:clickhere',$lang)."</a>"
 );
 ?>
 <br />
 <br />
-<?php echo sprintf(elgg_echo('email:reminder:formatting',$lang),
-    "<a target='_blank' href='{$org->getURL()}/projects/edit?username={$org->username}'>".elgg_echo('email:reminder:projectspage',$lang)."</a>"
+<?php echo sprintf(__('email:reminder:formatting',$lang),
+    "<a target='_blank' href='{$org->getURL()}/projects/edit?username={$org->username}'>".__('email:reminder:projectspage',$lang)."</a>"
 );
 ?>
 <br />
 <br />
-<?php echo sprintf(elgg_echo('email:reminder:feedback',$lang),
+<?php echo sprintf(__('email:reminder:feedback',$lang),
     "<a href='mailto:{$CONFIG->admin_email}'>{$CONFIG->admin_email}</a>"
 );
 ?>
 <br />
 <br />
-<?php echo elgg_echo('email:closing',$lang) ?>
+<?php echo __('email:closing',$lang) ?>
 <br />
-<?php echo elgg_echo('email:from',$lang) ?>
+<?php echo __('email:from',$lang) ?>
 </p>
 
 </td>
@@ -65,7 +65,7 @@
 <span style="font-size:10px;color:#996600;line-height:100%;font-family:verdana;">
 
 <?php echo sprintf(
-    elgg_echo('email:about',$lang),
+    __('email:about',$lang),
     escape($org->email),
     escape($org->name)
 ); ?>
@@ -73,16 +73,16 @@
 <br />
 <br />
 <?php echo sprintf(
-    elgg_echo('email:change',$lang),
+    __('email:change',$lang),
     "<a target='_blank' href='{$CONFIG->url}org/emailSettings?e=".urlencode($org->email)."&c=".get_email_fingerprint($org->email)."'>".
-    elgg_echo('email:here',$lang)."</a>"
+    __('email:here',$lang)."</a>"
 );
 ?>
 <br />
 <br />
-<?php echo elgg_echo('email:envaya',$lang); ?>
+<?php echo __('email:envaya',$lang); ?>
 <br />
-<?php echo elgg_echo('email:mailing_address',$lang); ?>
+<?php echo __('email:mailing_address',$lang); ?>
 <br />
 </span>
 </td>

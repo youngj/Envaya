@@ -26,7 +26,7 @@ function toggle($id)
 </script>
 
 <div class="admin_adduser_link">
-    <a href="javascript:toggle('add_user_showhide')"><?php echo elgg_echo('admin:user:adduser:label'); ?></a>
+    <a href="javascript:toggle('add_user_showhide')"><?php echo __('admin:user:adduser:label'); ?></a>
 </div>
 <div id="add_user_showhide" style="display:none" >
 <?php echo elgg_view('account/forms/useradd', array('show_admin'=>true)); ?>

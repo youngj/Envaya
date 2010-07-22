@@ -20,7 +20,7 @@ class Controller_Page extends Controller
             }
             else
             {
-                $title = elgg_echo("$pageName:title");
+                $title = __("$pageName:title");
                 $args = array('org_only' => (in_array($pageName, array('why'))));
 
                 $body = elgg_view_layout('one_column_padded', elgg_view_title($title, $args), $area);

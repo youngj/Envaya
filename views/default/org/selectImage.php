@@ -27,7 +27,7 @@
 <table>
 <tr>
 <td>
-    <label><?php echo elgg_echo('size'); ?>:</label>
+    <label><?php echo __('size'); ?>:</label>
 </td>
 <td>
 <div id='imageSizeContainer'>
@@ -35,7 +35,7 @@
         $options = array();
         foreach (Widget::getImageSizes() as $sizeName => $size)
         {
-            $options[$sizeName] = elgg_echo("size:$sizeName");
+            $options[$sizeName] = __("size:$sizeName");
         }
 
         echo elgg_view('input/radio', array(
@@ -50,7 +50,7 @@
 </tr>
 <tr>
 <td>
-    <label><?php echo elgg_echo('position'); ?>:</label>
+    <label><?php echo __('position'); ?>:</label>
 </td>
 <td>
     <div id='imagePositionContainer'>
@@ -60,9 +60,9 @@
             'value' => $position ?: 'center',
             'inline' => true,
             'options' => array(
-                'left' => elgg_echo('position:left'),
-                'center' => elgg_echo('position:center'),
-                'right' => elgg_echo('position:right'),
+                'left' => __('position:left'),
+                'center' => __('position:center'),
+                'right' => __('position:right'),
             )
         ));
     ?>

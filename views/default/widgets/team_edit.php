@@ -11,7 +11,7 @@ echo elgg_view("widgets/edit_content", array('widget' => $widget));
 ?>
 <div id='addTeamMember' class='modalBody' style='display:none'>
 <div class='input'>
-<label><?php echo elgg_echo('widget:team:name'); ?></label>
+<label><?php echo __('widget:team:name'); ?></label>
 <?php
     echo elgg_view('input/text',
         array(
@@ -25,7 +25,7 @@ echo elgg_view("widgets/edit_content", array('widget' => $widget));
 </div>
 
 <div class='input'>
-<label><?php echo elgg_echo('widget:team:description'); ?></label>
+<label><?php echo __('widget:team:description'); ?></label>
 <?php
     echo elgg_view('input/longtext',
         array(
@@ -40,7 +40,7 @@ echo elgg_view("widgets/edit_content", array('widget' => $widget));
 
 
 <div class='input'>
-<label><?php echo elgg_echo('widget:team:photo'); ?></label><br />
+<label><?php echo __('widget:team:photo'); ?></label><br />
 
 <?php echo elgg_view('input/swfupload_image', array(
     'internalname' => 'image',
@@ -73,7 +73,7 @@ function openAddTeamMember()
 
         if (!name)
         {
-            alert(<?php echo json_encode(elgg_echo('widget:team:name:missing')); ?>);
+            alert(<?php echo json_encode(__('widget:team:name:missing')); ?>);
             nameInput.focus();
             return;
         }
@@ -121,7 +121,7 @@ function openAddTeamMember()
 
     if (!modalBox)
     {
-        modalBox = tinyMCE.activeEditor.createModalBox(<?php echo json_encode(elgg_echo('widget:team:add')) ?>, addTeamMember, saveChanges, cancel);
+        modalBox = tinyMCE.activeEditor.createModalBox(<?php echo json_encode(__('widget:team:add')) ?>, addTeamMember, saveChanges, cancel);
         document.body.appendChild(modalBox);
         addTeamMember.style.display = 'block';
     }
@@ -138,7 +138,7 @@ function openAddTeamMember()
 </script>
 
 <a href='javascript:void(0)' onclick='openAddTeamMember()' style='font-weight:bold'>
-<?php echo elgg_echo('widget:team:add') ?>
+<?php echo __('widget:team:add') ?>
 </a>
 
 

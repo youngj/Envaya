@@ -18,7 +18,7 @@ class Widget extends ElggObject
 
     public function getTitle()
     {
-        return elgg_echo("widget:{$this->widget_name}");
+        return __("widget:{$this->widget_name}");
     }
 
     function renderView()
@@ -124,17 +124,17 @@ function save_widget_home($widget)
     $mission = get_input('content');
     if (!$mission)
     {
-        throw new InvalidParameterException(elgg_echo("setup:mission:blank"));
+        throw new InvalidParameterException(__("setup:mission:blank"));
     }
 
     $sectors = get_input_array('sector');
     if (sizeof($sectors) == 0)
     {
-        throw new InvalidParameterException(elgg_echo("setup:sector:blank"));
+        throw new InvalidParameterException(__("setup:sector:blank"));
     }
     else if (sizeof($sectors) > 5)
     {
-        throw new InvalidParameterException(elgg_echo("setup:sector:toomany"));
+        throw new InvalidParameterException(__("setup:sector:toomany"));
     }
 
     $org->setSectors($sectors);

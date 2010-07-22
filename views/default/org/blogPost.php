@@ -8,7 +8,7 @@
 ?>
 
 <div class='view_toggle'>
-    <a href='<?php echo $org->getURL() ?>/news'><?php echo elgg_echo('list') ?></a> | <strong><?php echo elgg_echo('blog:timeline') ?></strong>
+    <a href='<?php echo $org->getURL() ?>/news'><?php echo __('list') ?></a> | <strong><?php echo __('blog:timeline') ?></strong>
 </div>
 <div style='clear:both'></div>
 <div class='padded'>
@@ -153,7 +153,7 @@ function addTimelineLink(blogDate)
         hoverPost.style.left = link.offsetLeft + "px";
         removeChildren(hoverTitle);
 
-        hoverTitle.appendChild(document.createTextNode(<?php echo json_encode(elgg_echo('loading')) ?>));
+        hoverTitle.appendChild(document.createTextNode(<?php echo json_encode(__('loading')) ?>));
         removeChildren(hoverContent);
         hoverPost.style.display = 'block';
     });

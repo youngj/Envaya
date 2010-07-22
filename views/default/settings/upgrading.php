@@ -4,7 +4,7 @@
 
 <html>
 	<head>
-		<title><?php echo elgg_echo('upgrading'); ?></title>
+		<title><?php echo __('upgrading'); ?></title>
 		<meta http-equiv="refresh" content="1;url=<?php echo $vars['url']; ?>upgrade.php?upgrade=upgrade"/>
 	</head>
 	<body bgcolor="white">

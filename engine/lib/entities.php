@@ -53,7 +53,7 @@
                 {
                     if (!$this->loadFromPartialTableRow($guid))
                     {
-                        throw new IOException(sprintf(elgg_echo('IOException:FailedToLoadGUID'), get_class(), $guid->guid));
+                        throw new IOException(sprintf(__('IOException:FailedToLoadGUID'), get_class(), $guid->guid));
                     }
                 }
                 else if ($guid instanceof ElggEntity)
@@ -64,11 +64,11 @@
                 else if (is_numeric($guid))
                 {
                     if (!$this->load($guid))
-                        throw new IOException(sprintf(elgg_echo('IOException:FailedToLoadGUID'), get_class(), $guid));
+                        throw new IOException(sprintf(__('IOException:FailedToLoadGUID'), get_class(), $guid));
                 }
                 else
                 {
-                    throw new InvalidParameterException(elgg_echo('InvalidParameterException:UnrecognisedValue'));
+                    throw new InvalidParameterException(__('InvalidParameterException:UnrecognisedValue'));
                 }
             }
         }
@@ -455,7 +455,7 @@
 
         public function getTitle()
         {
-            return elgg_echo("item:{$this->type}:{$this->getSubtypeName()}");
+            return __("item:{$this->type}:{$this->getSubtypeName()}");
         }
 
         public function getLanguage()
@@ -534,7 +534,7 @@
                     $this->container_guid = $this->owner_guid;
 
                 if ($this->type == "")
-                    throw new InvalidParameterException(elgg_echo('InvalidParameterException:EntityTypeNotSet'));
+                    throw new InvalidParameterException(__('InvalidParameterException:EntityTypeNotSet'));
 
                 $this->time_created = $time;
                 $this->time_updated = $time;
@@ -545,7 +545,7 @@
                 );
 
                 if (!$this->guid)
-                    throw new IOException(elgg_echo('IOException:BaseEntitySaveFailed'));
+                    throw new IOException(__('IOException:BaseEntitySaveFailed'));
 
                 if ($this->guid)
                     cache_entity($this);
@@ -600,7 +600,7 @@
                 $this->attributes[$key] = $value;
 
             if ($this->attributes['type'] != $typeBefore)
-                throw new InvalidClassException(sprintf(elgg_echo('InvalidClassException:NotValidElggStar'), $guid, get_class()));
+                throw new InvalidClassException(sprintf(__('InvalidClassException:NotValidElggStar'), $guid, get_class()));
 
             global $ENTITY_CACHE;
             $ENTITY_CACHE[$this->guid] = $this;
@@ -892,7 +892,7 @@
         }
         else
         {
-            throw new ClassException(sprintf(elgg_echo('ClassException:ClassnameNotClass'), $classname, 'ElggEntity'));
+            throw new ClassException(sprintf(__('ClassException:ClassnameNotClass'), $classname, 'ElggEntity'));
         }
     }
 

@@ -9,7 +9,7 @@
     {
         ?>
         <td class='tab <?php echo (($current == $step) ? 'active' : '') ?>'>
-            <span><?php echo elgg_echo("register:step".$step) ?></span>
+            <span><?php echo __("register:step".$step) ?></span>
         </td>
         <?php
     }   

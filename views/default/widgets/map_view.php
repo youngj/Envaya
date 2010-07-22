@@ -21,7 +21,7 @@
     echo "</em>";
     echo "<br />";    
     echo "<a href='org/browse/?lat=$lat&long=$long&zoom=10'>";
-    echo elgg_echo('widget:map:see_nearby');
+    echo __('widget:map:see_nearby');
     echo "</a>";
     echo "</div>";
 ?>

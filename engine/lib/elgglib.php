@@ -132,8 +132,8 @@
 
     function not_found()
     {
-        $title = elgg_echo('page:notfound');
-        $body = elgg_view_layout('one_column_padded', elgg_view_title($title), elgg_echo('page:notfound:details')."<br/><br/><br/>");
+        $title = __('page:notfound');
+        $body = elgg_view_layout('one_column_padded', elgg_view_title($title), __('page:notfound:details')."<br/><br/><br/>");
         header("HTTP/1.1 404 Not Found");
         echo page_draw($title, $body);
         exit;
@@ -168,8 +168,8 @@
     function yes_no_options()
     {
         return array(
-            'yes' => elgg_echo('option:yes'),
-            'no' => elgg_echo('option:no'),
+            'yes' => __('option:yes'),
+            'no' => __('option:no'),
         );
     }
 
@@ -692,35 +692,35 @@
 
             $diff = time() - ((int) $time);
             if ($diff < 60) {
-                return elgg_echo("friendlytime:justnow");
+                return __("friendlytime:justnow");
             } else if ($diff < 3600) {
                 $diff = round($diff / 60);
                 if ($diff == 0) $diff = 1;
                 if ($diff > 1)
-                    return sprintf(elgg_echo("friendlytime:minutes"),$diff);
-                return sprintf(elgg_echo("friendlytime:minutes:singular"),$diff);
+                    return sprintf(__("friendlytime:minutes"),$diff);
+                return sprintf(__("friendlytime:minutes:singular"),$diff);
             } else if ($diff < 86400) {
                 $diff = round($diff / 3600);
                 if ($diff == 0) $diff = 1;
                 if ($diff > 1)
-                    return sprintf(elgg_echo("friendlytime:hours"),$diff);
-                return sprintf(elgg_echo("friendlytime:hours:singular"),$diff);
+                    return sprintf(__("friendlytime:hours"),$diff);
+                return sprintf(__("friendlytime:hours:singular"),$diff);
             } else if ($diff < 604800) {
                 $diff = round($diff / 86400);
                 if ($diff == 0) $diff = 1;
                 if ($diff > 1)
-                    return sprintf(elgg_echo("friendlytime:days"),$diff);
-                return sprintf(elgg_echo("friendlytime:days:singular"),$diff);
+                    return sprintf(__("friendlytime:days"),$diff);
+                return sprintf(__("friendlytime:days:singular"),$diff);
             } else {
                 $date = getdate($time);
                 $now = getdate();
 
-                $month = elgg_echo("date:month:{$date['mon']}");
-                $dateText = sprintf(elgg_echo("date:withmonth"), $month, $date['mday']);
+                $month = __("date:month:{$date['mon']}");
+                $dateText = sprintf(__("date:withmonth"), $month, $date['mday']);
 
                 if ($now['year'] != $date['year'])
                 {
-                    return sprintf(elgg_echo("date:withyear"), $dateText, $date['year']);
+                    return sprintf(__("date:withyear"), $dateText, $date['year']);
                 }
                 else
                 {
@@ -1142,7 +1142,7 @@
             error_log("*** FATAL EXCEPTION *** : " . $exception);
             ob_end_clean(); // Wipe any existing output buffer
             $body = elgg_view("messages/exceptions/exception",array('object' => $exception));
-            echo page_draw(elgg_echo('exception:title'), $body);
+            echo page_draw(__('exception:title'), $body);
 
 
             global $CONFIG;

@@ -112,7 +112,7 @@
 
                         if ((!$NOTIFICATION_HANDLERS[$method]) || (!$handler))
                         {
-                            error_log(sprintf(elgg_echo('NotificationException:NoHandlerFound'), $method));
+                            error_log(sprintf(__('NotificationException:NoHandlerFound'), $method));
                             continue;
                         }
 
@@ -215,10 +215,10 @@
     function email_notify_handler(ElggEntity $from, ElggUser $to, $subject, $message, array $params = NULL)
     {
         if (!$to)
-            throw new NotificationException(sprintf(elgg_echo('NotificationException:MissingParameter'), 'to'));
+            throw new NotificationException(sprintf(__('NotificationException:MissingParameter'), 'to'));
 
         if (!$to->email)
-            throw new NotificationException(sprintf(elgg_echo('NotificationException:NoEmailAddress'), $to->guid));
+            throw new NotificationException(sprintf(__('NotificationException:NoEmailAddress'), $to->guid));
 
         $headers = array('To' => $to->getNameForEmail());
 

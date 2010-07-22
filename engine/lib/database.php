@@ -27,7 +27,7 @@
             }
             catch (PDOException $ex)
             {
-                throw new DatabaseException(elgg_echo("DatabaseException:NoConnect"));
+                throw new DatabaseException(__("DatabaseException:NoConnect"));
             }
         }
         return $DB_LINK;
@@ -248,7 +248,7 @@
 
         if (!$stmt->execute($args))
         {
-            throw new DatabaseException(elgg_echo("DatabaseException:ExecuteFailed"));
+            throw new DatabaseException(__("DatabaseException:ExecuteFailed"));
         }
         return $stmt;
     }
@@ -293,11 +293,11 @@
                 $errortxt = "";
                 foreach($errors as $error)
                     $errortxt .= " {$error};";
-                throw new DatabaseException(elgg_echo('DatabaseException:DBSetupIssues') . $errortxt);
+                throw new DatabaseException(__('DatabaseException:DBSetupIssues') . $errortxt);
             }
 
         } else {
-            throw new DatabaseException(sprintf(elgg_echo('DatabaseException:ScriptNotFound'), $scriptlocation));
+            throw new DatabaseException(sprintf(__('DatabaseException:ScriptNotFound'), $scriptlocation));
         }
 
     }
@@ -306,7 +306,7 @@
     {
         if (preg_match('/[^\\w\\s\\,\\`\\.]/', $order_by))
         {
-            throw new DatabaseException(sprintf(elgg_echo('DatabaseException:UnspecifiedQueryType'), $scriptlocation));
+            throw new DatabaseException(sprintf(__('DatabaseException:UnspecifiedQueryType'), $scriptlocation));
         }
         return $order_by;
     }

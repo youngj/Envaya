@@ -4,28 +4,28 @@
 
 ?>
 
-<div class='section_header'><?php echo elgg_echo('partner:find_new'); ?></div>
+<div class='section_header'><?php echo __('partner:find_new'); ?></div>
 <div class='section_content padded'>
 <?php if ($org->isApproved()) { ?>
 <p>
-<?php echo sprintf(elgg_echo('partner:instructions'), "<strong>".elgg_echo('partner:request')."</strong>"); ?>
+<?php echo sprintf(__('partner:instructions'), "<strong>".__('partner:request')."</strong>"); ?>
 </p>
 
 <p>
-<strong><a href='org/search'><?php echo elgg_echo('partner:search') ?></a></strong> &middot;
-<strong><a href='org/browse?zoom=10&lat=<?php echo escape($org->latitude) ?>&long=<?php echo escape($org->longitude) ?>'><?php echo elgg_echo('partner:browse') ?></a></strong>
+<strong><a href='org/search'><?php echo __('partner:search') ?></a></strong> &middot;
+<strong><a href='org/browse?zoom=10&lat=<?php echo escape($org->latitude) ?>&long=<?php echo escape($org->longitude) ?>'><?php echo __('partner:browse') ?></a></strong>
 </p>
 <?php } else { ?>
 <p>
-<?php echo elgg_echo('partner:needapproval') ?>
+<?php echo __('partner:needapproval') ?>
 </p>
 <p>
-<?php echo elgg_echo('partner:wait') ?>
+<?php echo __('partner:wait') ?>
 </p>
 <?php } ?>
 </div>
 
-<div class='section_header'><?php echo elgg_echo('partner:current'); ?></div>
+<div class='section_header'><?php echo __('partner:current'); ?></div>
 <div class='section_content padded'>
 <?php
     $offset = (int) get_input('offset');
@@ -38,7 +38,7 @@
     
     if(!$count)
     {
-        echo "<div>".elgg_echo("partner:none")."</div>";
+        echo "<div>".__("partner:none")."</div>";
     }
     else
     {
@@ -59,7 +59,7 @@
     
     <div class='feed_content'>
         <a class='feed_org_name' href='<?php echo $partner->getUrl() ?>'><?php echo escape($partner->name); ?></a><br />
-        <label><?php echo elgg_echo('widget:partnerships:description'); ?></label>
+        <label><?php echo __('widget:partnerships:description'); ?></label>
 
         <?php echo elgg_view('input/longtext', array(
                 'internalname' => "partnershipDesc{$p->guid}",

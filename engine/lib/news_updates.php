@@ -33,7 +33,7 @@ class NewsUpdate extends ElggObject
 
     public function getTitle()
     {
-        return elgg_echo("widget:news:item");
+        return __("widget:news:item");
     }
 
     public function jsProperties()

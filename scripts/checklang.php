@@ -49,7 +49,7 @@ else
             {
                 //echo "$path\n";
                 $contents = file_get_contents($path);
-                if (preg_match_all('/elgg_echo\(["\\\']([\w\:]+)["\\\']\)/', $contents, $langKeys))
+                if (preg_match_all('/__\(["\\\']([\w\:]+)["\\\']\)/', $contents, $langKeys))
                 {
                     foreach ($langKeys[1] as $langKey)
                     {

@@ -19,19 +19,19 @@
         {
 ?>
             <div id="dropPinBtn">
-            <a href="javascript:dropPin();"><?php echo elgg_echo("map:drop_pin"); ?></a>
+            <a href="javascript:dropPin();"><?php echo __("map:drop_pin"); ?></a>
             </div>
 <?php
         }
 ?>
 
 <label id="pinDragInstr" style="display:none;">
-<?php echo elgg_echo("map:drag_pin"); ?>
+<?php echo __("map:drag_pin"); ?>
 </label>
 
 <div id='map' style='margin:0 auto;width:<?php echo $width; ?>px;height:<?php echo $height; ?>px'></div>
 <div id='infoOverlay'></div>
-<div id='loadingOverlay'><?php echo elgg_echo('loading') ?></div>
+<div id='loadingOverlay'><?php echo __('loading') ?></div>
 
 <script type='text/javascript'>
 
@@ -187,7 +187,7 @@ OrgBucket.prototype = new function() {
             addEvent($a, 'click', function() {
                 $self._map.setCenter($self.center, Math.min($curZoom + 3, $maxZoom));
             });
-            $a.appendChild(document.createTextNode(<?php echo json_encode(elgg_echo('zoom_in')) ?>));
+            $a.appendChild(document.createTextNode(<?php echo json_encode(__('zoom_in')) ?>));
             $div.appendChild($a);
         }
 

@@ -14,9 +14,9 @@
     }
 
     echo "<div style='padding-bottom:5px'>";
-    echo sprintf(elgg_echo('feed:news'),
+    echo sprintf(__('feed:news'),
         $mode == 'self' ? escape($org->name) : "<a class='feed_org_name' href='$orgUrl'>".escape($org->name)."</a>",
-        "<a href='$url'>".escape(elgg_echo('widget:news:item'))."</a>"
+        "<a href='$url'>".escape(__('widget:news:item'))."</a>"
     );
     echo "</div>";
 
@@ -29,6 +29,6 @@
 
     if (strlen($content) > $maxLength)
     {
-        echo " <a class='feed_more' href='$url'>".elgg_echo('feed:more')."</a>";
+        echo " <a class='feed_more' href='$url'>".__('feed:more')."</a>";
     }
     echo "</div>";

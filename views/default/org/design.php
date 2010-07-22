@@ -6,7 +6,7 @@
 
 <?php echo elgg_view('input/securitytoken'); ?>
 
-<div class='section_header'><?php echo elgg_echo('header'); ?></div>
+<div class='section_header'><?php echo __('header'); ?></div>
 <div class='section_content padded'>
 
 <script type='text/javascript'>
@@ -52,17 +52,17 @@ function customHeaderChanged()
         'value' => $user->custom_header ? '1' : '0',
         'js' => "onchange='customHeaderChanged()' onclick='customHeaderChanged()'",
         'options' => array(
-            '0' => elgg_echo('header:default'),
-            '1' => elgg_echo('header:custom'),
+            '0' => __('header:default'),
+            '1' => __('header:custom'),
         )
     ));
 ?>
 
 <div id='default_header_container' <?php echo $user->custom_header ? "style='display:none'" : "" ?> >
     <div class='header_preview'>
-        <?php echo elgg_view('org/default_header', array('org' => $user, 'subtitle' => elgg_echo('header:subtitle'))) ?>
+        <?php echo elgg_view('org/default_header', array('org' => $user, 'subtitle' => __('header:subtitle'))) ?>
     </div>
-    <div class='help'><?php echo sprintf(elgg_echo('header:changelogo'), elgg_echo('icon')) ?></div>
+    <div class='help'><?php echo sprintf(__('header:changelogo'), __('icon')) ?></div>
 </div>
 
 <div id='custom_header_container' <?php echo !$user->custom_header ? "style='display:none'" : "" ?>>
@@ -70,7 +70,7 @@ function customHeaderChanged()
     <?php
         if ($user->custom_header)
         {
-            echo "<div style='margin-top:10px'>".elgg_echo('image:current')."</div>";
+            echo "<div style='margin-top:10px'>".__('image:current')."</div>";
             echo "<div class='header_preview'>".elgg_view('org/custom_header', array('org' => $user))."</div>";
         }
     ?>
@@ -79,11 +79,11 @@ function customHeaderChanged()
             <?php
                 if ($user->custom_header)
                 {
-                    echo elgg_echo('image:new');
+                    echo __('image:new');
                 }
                 else
                 {
-                    echo elgg_echo('header:chooseimage');
+                    echo __('header:chooseimage');
                 }
             ?>
         <br />
@@ -98,7 +98,7 @@ function customHeaderChanged()
         ))
     ?>
     <div class='help'>
-    <?php echo elgg_echo('header:constraints') ?>
+    <?php echo __('header:constraints') ?>
     </div>
     </div>
 </div>
@@ -106,7 +106,7 @@ function customHeaderChanged()
 
 <?php
 echo elgg_view('input/submit',array(
-    'value' => elgg_echo('savechanges'),
+    'value' => __('savechanges'),
     'trackDirty' => true,
 ));
 
@@ -114,10 +114,10 @@ echo elgg_view('input/submit',array(
 
 </div>
 
-<div class='section_header' id='icon'><?php echo elgg_echo('icon'); ?></div>
+<div class='section_header' id='icon'><?php echo __('icon'); ?></div>
 <div class='section_content padded'>
 <div class='help' style='padding-bottom:5px'>
-<?php echo elgg_echo('icon:description') ?>
+<?php echo __('icon:description') ?>
 </div>
 
 
@@ -138,14 +138,14 @@ echo elgg_view("input/image",
 
 <?php
 echo elgg_view('input/submit',array(
-    'value' => elgg_echo('savechanges'),
+    'value' => __('savechanges'),
     'trackDirty' => true,
 ));
 
 ?>
 
 </div>
-<div class='section_header'><?php echo elgg_echo("theme"); ?></div>
+<div class='section_header'><?php echo __("theme"); ?></div>
 <div class='section_content padded'>
 
 <?php echo elgg_view('input/theme', array(
@@ -158,7 +158,7 @@ echo elgg_view('input/submit',array(
 echo elgg_view('input/hidden', array('internalname' => 'guid', 'value' => $user->guid));
 
 echo elgg_view('input/submit',array(
-    'value' => elgg_echo('savechanges'),
+    'value' => __('savechanges'),
     'trackDirty' => true,
 ));
 ?>

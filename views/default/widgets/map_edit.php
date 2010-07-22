@@ -14,9 +14,9 @@
 ?>
 
 <div class='input'>
-<label><?php echo elgg_echo('setup:location') ?></label>
+<label><?php echo __('setup:location') ?></label>
 <div>
-<?php echo elgg_echo('setup:city') ?> <?php echo elgg_view('input/text', array(
+<?php echo __('setup:city') ?> <?php echo elgg_view('input/text', array(
     'internalname' => 'city',
     'js' => 'style="width:200px"',
     'value' => $org->city
@@ -24,10 +24,10 @@
 </div>
 </div>
 <div>
-<?php echo elgg_echo('setup:region') ?> <?php echo elgg_view('input/pulldown', array(
+<?php echo __('setup:region') ?> <?php echo elgg_view('input/pulldown', array(
     'internalname' => 'region',
     'options_values' => regions_in_country($org->country),
-    'empty_option' => elgg_echo('setup:region:blank'),
+    'empty_option' => __('setup:region:blank'),
     'value' => $org->region
 )) ?>    
 <br />

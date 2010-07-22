@@ -4,7 +4,7 @@
 
     if (!$widget->content)
     {
-        echo sprintf(elgg_echo('widget:empty'), escape(elgg_echo("widget:{$widget->widget_name}")));
+        echo sprintf(__('widget:empty'), escape(__("widget:{$widget->widget_name}")));
     }
     else
     {
