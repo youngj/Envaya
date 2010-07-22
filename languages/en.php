@@ -520,7 +520,7 @@
         'settings' => "Settings",
 
         'register' => "Register",
-        'registerok' => "You have successfully registered for %s.",
+        'registerok' => "You have successfully registered for Envaya.",
         'registerbad' => "Your registration was unsuccessful. The username may already exist, your passwords might not match, or your username or password may be too short.",
         'registerdisabled' => "Registration has been disabled by the system administrator",
 

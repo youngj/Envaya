@@ -419,34 +419,6 @@ class Controller_Profile extends Controller
         $this->page_draw($title, $body);
     }
 
-    function index_confirm()
-    {
-        $this->require_editor();
-        $this->require_org();
-
-        $partner_guid = get_input('partner_guid');
-        $partner = get_entity($partner_guid);
-        $org = $this->org;
-
-        if ($partner)
-        {
-            $partnership = $org->getPartnership($partner);
-            if ($partnership->isSelfApproved() || !$partnership->isPartnerApproved())
-            {
-                not_found();
-            }
-
-            $title = elgg_echo("partner:confirm");
-            $area1 = elgg_view("org/confirmPartner", array('entity' => $org, 'partner' => $partner));
-            $body = elgg_view_layout("one_column", elgg_view_title($title), $area1);
-            $this->page_draw($title,$body);
-        }
-        else
-        {
-            not_found();
-        }
-    }
-
     function index_compose()
     {
         gatekeeper();
@@ -476,7 +448,7 @@ class Controller_Profile extends Controller
         $title = elgg_echo("usersettings:user");
 
         $body = elgg_view_layout("one_column", elgg_view_title($title),
-            elgg_view("usersettings/form", array('user' => $this->user)));
+            elgg_view("usersettings/form", array('entity' => $this->user)));
 
         return $this->page_draw($title, $body);
     }
@@ -567,5 +539,168 @@ class Controller_Profile extends Controller
         }
 
         $user->save();
+    }
+
+    function index_confirm_partner()
+    {
+        $this->require_org();
+        gatekeeper();
+
+        $partner = $this->org;
+
+        $org = get_loggedin_user();
+        if (!$org instanceof Organization)
+        {
+            not_found();
+        }
+
+        if ($partner)
+        {
+            $partnership = $org->getPartnership($partner);
+            if ($partnership->isSelfApproved() || !$partnership->isPartnerApproved())
+            {
+                not_found();
+            }
+
+            $title = elgg_echo("partner:confirm");
+            $area1 = elgg_view("org/confirmPartner", array('entity' => $org, 'partner' => $partner));
+            $body = elgg_view_layout("one_column", elgg_view_title($title), $area1);
+            $this->page_draw($title,$body);
+        }
+        else
+        {
+            not_found();
+        }
+    }
+
+    function index_request_partner()
+    {
+        $this->require_org();
+        gatekeeper();
+        action_gatekeeper();
+
+        global $CONFIG;
+
+        $partner = $this->org;
+
+        $loggedInOrg = get_loggedin_user();
+
+        if (!$loggedInOrg->isApproved())
+        {
+            action_error(elgg_echo('partner:needapproval'));
+        }
+
+        if (!$partner || $partner_guid == $loggedInOrg->guid)
+        {
+            register_error(elgg_echo("partner:invalid"));
+            forward();
+        }
+        else
+        {
+            $partnership = $loggedInOrg->getPartnership($partner);
+            $partnership->setSelfApproved(true);
+            $partnership->save();
+
+            $partnership2 = $partner->getPartnership($loggedInOrg);
+            $partnership2->setPartnerApproved(true);
+            $partnership2->save();
+
+            notify_user($partner->guid, $CONFIG->site_guid,
+                sprintf(elgg_echo('email:requestPartnership:subject',$partner->language), $loggedInOrg->name, $partner->name),
+                sprintf(elgg_echo('email:requestPartnership:body',$partner->language), $partnership->getApproveUrl()),
+                NULL, 'email');
+
+            system_message(elgg_echo("partner:request_sent"));
+
+            forward($partner->getUrl());
+        }
+    }
+
+    function index_create_partner()
+    {
+        $this->require_org();
+        gatekeeper();
+        action_gatekeeper();
+
+        $user = get_loggedin_user();
+
+        $partner = $this->org;
+
+        if (!$partner || $partner_guid == $user->guid)
+        {
+            register_error(elgg_echo("partner:invalid"));
+            forward();
+        }
+        else
+        {
+            $partnership = $partner->getPartnership($user);
+            $partnership->setPartnerApproved(true);
+            $partnership->save();
+
+            $partnership2 = $user->getPartnership($partner);
+            $partnership2->setSelfApproved(true);
+            $partnership2->save();
+
+            $partWidget = $user->getWidgetByName('partnerships');
+            $partWidget->save();
+
+            $partWidget2 = $partner->getWidgetByName('partnerships');
+            $partWidget2->save();
+
+            system_message(elgg_echo("partner:created"));
+
+            post_feed_items($user, 'partnership', $partner);
+
+            notify_user($partner->guid, null,
+                sprintf(elgg_echo('email:partnershipConfirmed:subject',$partner->language), $user->name, $partner->name),
+                sprintf(elgg_echo('email:partnershipConfirmed:body',$partner->language), $partWidget2->getURL()),
+                NULL, 'email');
+
+            forward($partWidget->getURL());
+        }
+    }
+
+    function index_send_message()
+    {
+        $this->require_org();
+        gatekeeper();
+        action_gatekeeper();
+
+        $user = get_loggedin_user();
+
+        $recipient = $this->org;
+
+        if (!$recipient || !$user->isApproved())
+        {
+            register_error(elgg_echo("message:invalid_recipient"));
+            forward();
+        }
+        else
+        {
+            $subject = get_input('subject');
+            if (!$subject)
+            {
+                action_error(elgg_echo("message:subject_missing"));
+            }
+
+            $message = get_input('message');
+            if (!$message)
+            {
+                action_error(elgg_echo("message:message_missing"));
+            }
+
+            $headers = array(
+                'To' => $recipient->getNameForEmail(),
+                'From' => $user->getNameForEmail(),
+                'Reply-To' => $user->getNameForEmail(),
+                'Bcc' => $user->getNameForEmail(),
+            );
+
+            send_mail($recipient->email, $subject, $message, $headers);
+
+            system_message(elgg_echo("message:sent"));
+
+            forward($recipient->getURL());
+        }
     }
 }

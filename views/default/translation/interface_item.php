@@ -7,7 +7,7 @@ $from = get_input('from');
 
 $trans = InterfaceTranslation::getByKeyAndLang($key, $lang);
 
-echo "<form method='POST' action='action/translation/interface_item'>";
+echo "<form method='POST' action='org/save_interface_item'>";
 
 echo elgg_view('input/securitytoken');
 
@@ -48,7 +48,7 @@ global $CONFIG;
 $value = $trans ? $trans->value : $CONFIG->translations[$lang][$key];
 if (!$value)
 {
-	$value = get_auto_translation($enText, 'en', $lang);
+    $value = get_auto_translation($enText, 'en', $lang);
 }
 
 echo elgg_view($input, array('internalname' => 'value', 'value' => $value, 'js'=>$js));

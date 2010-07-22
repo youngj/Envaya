@@ -51,13 +51,13 @@ if ($edited)
 }
 
 $limit = 10;
-$baseurl = "translate.php?q=".urlencode($query)."&edited=".($edited ? 1 : 0);
+$baseurl = "org/translate_interface?q=".urlencode($query)."&edited=".($edited ? 1 : 0);
 $offset = (int)get_input('offset');
 $count = sizeof($keys);
 
 $from = urlencode("$baseurl&offset=$offset");
 
-echo "<form method='GET' action='translate.php'>";
+echo "<form method='GET' action='org/translate_interface'>";
 
 echo "<label>".elgg_echo("trans:filter")."</label><br />";
 
@@ -137,7 +137,7 @@ else
         }
 
         echo "<td>$res</td>";
-        echo "<td><a href='translate.php?key=$key&from=$from'>".elgg_echo('edit')."</a></td>";
+        echo "<td><a href='org/translate_interface?key=$key&from=$from'>".elgg_echo('edit')."</a></td>";
 
         echo "</tr>";
     }
@@ -153,6 +153,6 @@ else
 
     if (isadminloggedin())
     {
-        echo "<br /><br /><a href='translate.php?export=1'>".elgg_echo('trans:export')."</a>";
+        echo "<br /><br /><a href='org/translate_interface?export=1'>".elgg_echo('trans:export')."</a>";
     }
 }

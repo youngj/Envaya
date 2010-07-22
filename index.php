@@ -1,8 +1,6 @@
 <?php
-    define('externalpage',true);
-
     require_once(__DIR__."/engine/start.php");
-
+
     if (get_input('login'))
     {
         gatekeeper();

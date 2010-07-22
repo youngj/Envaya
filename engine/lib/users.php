@@ -880,7 +880,7 @@
                 || empty($password)
                 || empty($name)
                 || empty($email)) {
-                    return false;
+                    throw new RegistrationException(elgg_echo('registerbad'));
                 }
 
             // See if it exists and is disabled
@@ -893,7 +893,6 @@
 
         // Check to see if $username exists already
             if ($user = get_user_by_username($username)) {
-                //return false;
                 throw new RegistrationException(elgg_echo('registration:userexists'));
             }
 
@@ -933,7 +932,7 @@
             // Turn on email notifications by default
             set_user_notification_setting($user->getGUID(), 'email', true);
 
-            return $user->getGUID();
+            return $user;
     }
 
     /**
@@ -1012,5 +1011,3 @@
     }
 
     register_elgg_event_handler('init','system','users_init',0);
-
-?>

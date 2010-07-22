@@ -442,7 +442,7 @@ add_translation("sw",array(
     'previous' => 'Iliyotangulia',
     'settings' => 'Mipangilio',
     'register' => 'Jiandikishe',
-    'registerok' => 'Umejiandikisha kwenye %s.',
+    'registerok' => 'Umejiandikisha kwenye Envaya.',
     'registerbad' => 'Maandikisho yako yalishindikana.',
     'registerdisabled' => 'Maandikisho yamesimamishwa kwa msimamizi wa mfumo.',
     'registration:notemail' => 'Email ambayo umetupa haionekani kuwa sahihi.',

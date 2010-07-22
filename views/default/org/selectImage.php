@@ -19,7 +19,7 @@
     ));
 
 ?>
-<script type='text/javascript' src='_media/swfupload.js?v7'></script>
+<script type='text/javascript' src='_media/swfupload.js?v8'></script>
 <span id='imageUploadContainer'></span>
 <div id='imageUploadProgress' class='imageUploadProgress'></div>
 

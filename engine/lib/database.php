@@ -1,19 +1,19 @@
 <?php
 
-	/**
-	 * Elgg database
-	 * Contains database connection and transfer functionality
-	 *
-	 * @package Elgg
-	 * @subpackage Core
+    /**
+     * Elgg database
+     * Contains database connection and transfer functionality
+     *
+     * @package Elgg
+     * @subpackage Core
 
-	 * @author Curverider Ltd
+     * @author Curverider Ltd
 
-	 * @link http://elgg.org/
-	 */
+     * @link http://elgg.org/
+     */
 
-	$DB_PROFILE = array();
-	$DB_DELAYED_QUERIES = array();
+    $DB_PROFILE = array();
+    $DB_DELAYED_QUERIES = array();
 
     function get_db_link($dblinktype)
     {
@@ -33,58 +33,58 @@
         return $DB_LINK;
     }
 
-	/**
-	 * Shutdown hook to display profiling information about db (debug mode)
-	 */
-	function db_profiling_shutdown_hook()
-	{
-		global $CONFIG, $DB_PROFILE;
+    /**
+     * Shutdown hook to display profiling information about db (debug mode)
+     */
+    function db_profiling_shutdown_hook()
+    {
+        global $CONFIG, $DB_PROFILE;
 
-		if (isset($CONFIG->debug) && $CONFIG->debug)
-		{
-			error_log("***************** DB PROFILING ********************");
+        if (isset($CONFIG->debug) && $CONFIG->debug)
+        {
+            error_log("***************** DB PROFILING ********************");
 
-			$DB_PROFILE = array_count_values($DB_PROFILE);
+            $DB_PROFILE = array_count_values($DB_PROFILE);
 
-			foreach ($DB_PROFILE as $k => $v)
-				error_log("$v times: '$k' ");
+            foreach ($DB_PROFILE as $k => $v)
+                error_log("$v times: '$k' ");
 
-			error_log("***************************************************");
-		}
-	}
+            error_log("***************************************************");
+        }
+    }
 
-	/**
-	 * Execute any delayed queries.
-	 */
-	function db_delayedexecution_shutdown_hook()
-	{
-		global $DB_DELAYED_QUERIES, $CONFIG;
+    /**
+     * Execute any delayed queries.
+     */
+    function db_delayedexecution_shutdown_hook()
+    {
+        global $DB_DELAYED_QUERIES, $CONFIG;
 
-		foreach ($DB_DELAYED_QUERIES as $query_details)
+        foreach ($DB_DELAYED_QUERIES as $query_details)
         {
             $stmt = stmt_execute($query_details['l'], $query_details['q'], $query_details['a']);
 
-			try
+            try
             {
-				if ( (isset($query_details['h'])) && (is_callable($query_details['h'])))
-					$query_details['h']($stmt);
-			}
+                if ( (isset($query_details['h'])) && (is_callable($query_details['h'])))
+                    $query_details['h']($stmt);
+            }
             catch (Exception $e)
             {
                 // Suppress all errors since these can't be dealt with here
-				if (isset($CONFIG->debug) && $CONFIG->debug)
+                if (isset($CONFIG->debug) && $CONFIG->debug)
                     error_log($e);
-			}
-		}
-	}
+            }
+        }
+    }
 
-	/**
-	 * Alias to setup_db_connections, for use in the event handler
-	 *
-	 * @param string $event The event type
-	 * @param string $object_type The object type
-	 * @param mixed $object Used for nothing in this context
-	 */
+    /**
+     * Alias to setup_db_connections, for use in the event handler
+     *
+     * @param string $event The event type
+     * @param string $object_type The object type
+     * @param mixed $object Used for nothing in this context
+     */
     function init_db($event, $object_type, $object = null)
     {
         register_elgg_event_handler('shutdown', 'system', 'db_delayedexecution_shutdown_hook', 1);
@@ -176,35 +176,35 @@
         return false;
     }
 
-	function save_db_row($tableName, $pkColumn, &$pkValue, $values)
-	{
-		$columns = array();
-		$args = array();
+    function save_db_row($tableName, $pkColumn, &$pkValue, $values)
+    {
+        $columns = array();
+        $args = array();
 
-		if ($pkValue)
-		{
-			foreach ($values as $column => $value)
-			{
-				$columns[] = "`$column` = ?";
-				$args[] = $value;
-			}
-			$args[] = $pkValue;
+        if ($pkValue)
+        {
+            foreach ($values as $column => $value)
+            {
+                $columns[] = "`$column` = ?";
+                $args[] = $value;
+            }
+            $args[] = $pkValue;
 
-			insert_data("UPDATE $tableName SET ".implode(',', $columns)." WHERE $pkColumn = ?", $args);
-		}
-		else
-		{
-			foreach ($values as $column => $value)
-			{
-				$columns[] = "`$column`";
-				$args[] = $value;
-			}
+            insert_data("UPDATE $tableName SET ".implode(',', $columns)." WHERE $pkColumn = ?", $args);
+        }
+        else
+        {
+            foreach ($values as $column => $value)
+            {
+                $columns[] = "`$column`";
+                $args[] = $value;
+            }
 
-			$pkValue = insert_data("INSERT into $tableName (".implode(',', $columns).") VALUES (".implode(',',array_fill(0, sizeof($columns), '?')).")",
-				$args
-			);
-		}
-	}
+            $pkValue = insert_data("INSERT into $tableName (".implode(',', $columns).") VALUES (".implode(',',array_fill(0, sizeof($columns), '?')).")",
+                $args
+            );
+        }
+    }
 
     function insert_data($query, $args = array())
     {
@@ -248,9 +248,9 @@
 
         if (!$stmt->execute($args))
         {
-        	throw new DatabaseException(elgg_echo("DatabaseException:ExecuteFailed"));
+            throw new DatabaseException(elgg_echo("DatabaseException:ExecuteFailed"));
         }
-    	return $stmt;
+        return $stmt;
     }
 
     function make_obj_from_array($obj)
@@ -263,12 +263,12 @@
         return $res;
     }
 
-	/**
-	 * Runs a full database script from disk
-	 *
-	 * @uses $CONFIG
-	 * @param string $scriptlocation The full path to the script
-	 */
+    /**
+     * Runs a full database script from disk
+     *
+     * @uses $CONFIG
+     * @param string $scriptlocation The full path to the script
+     */
     function run_sql_script($scriptlocation) {
 
         if ($script = file_get_contents($scriptlocation)) {
@@ -312,5 +312,3 @@
     }
 
     register_elgg_event_handler('boot','system','init_db',0);
-
-?>

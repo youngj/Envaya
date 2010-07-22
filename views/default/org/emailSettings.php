@@ -4,7 +4,7 @@
     $code = get_email_fingerprint($email);
 
 ?>
-<form action='action/org/emailSettings' method='POST'>
+<form action='org/emailSettings_save' method='POST'>
 
 <div class='instructions'>
 <?php echo sprintf(elgg_echo('user:notification:desc'), "<em>".escape($email)."</em>"); ?>

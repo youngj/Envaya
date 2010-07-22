@@ -71,4 +71,4 @@ echo "</td></tr></table>";
 
 $formBody = ob_get_clean();
 
-echo elgg_view('input/form', array('action' => "{$vars['url']}action/translation/translate", 'body' => $formBody));
+echo elgg_view('input/form', array('action' => "org/save_translation", 'body' => $formBody));

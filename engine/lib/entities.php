@@ -405,17 +405,6 @@
         }
 
         /**
-         * Returns whether the given user (or current user) has the ability to write to this group.
-         *
-         * @param int $user_guid The user.
-         * @return bool
-         */
-        public function canWriteToContainer($user_guid = 0)
-        {
-            return can_write_to_container($user_guid, $this->getGUID());
-        }
-
-        /**
          * Obtain this entity's access ID
          *
          * @return int The access ID
@@ -867,40 +856,6 @@
             return $CONFIG->types[$type];
         }
         return NULL;
-    }
-
-    /**
-     * Determine whether a given user is able to write to a given container.
-     *
-     * @param int $user_guid The user guid, or 0 for get_loggedin_userid()
-     * @param int $container_guid The container, or 0 for the current page owner.
-     */
-    function can_write_to_container($user_guid = 0, $container_guid = 0, $entity_type = 'all')
-    {
-        global $CONFIG;
-
-        $user_guid = (int)$user_guid;
-        $user = get_entity($user_guid);
-        if (!$user) $user = get_loggedin_user();
-
-        $container_guid = (int)$container_guid;
-        if (!$container_guid) $container_guid = page_owner();
-        if (!$container_guid) return true;
-
-        $container = get_entity($container_guid);
-
-        if ($container)
-        {
-
-            // If the user can edit the container, they can also write to it
-            if ($container->canEdit($user_guid)) return true;
-
-            // See if anyone else has anything to say
-            return trigger_plugin_hook('container_permissions_check',$entity_type,array('container' => $container, 'user' => $user), false);
-
-        }
-
-        return false;
     }
 
     /**

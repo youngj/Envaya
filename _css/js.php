@@ -1,6 +1,4 @@
 <?php
-    define('externalpage',true);
-
     global $viewinput;
     $viewinput['view'] = 'js/' . $_GET['js'];
     $viewinput['viewtype'] = $_GET['viewtype'];

@@ -186,6 +186,37 @@ class Controller_Pg extends Controller {
         }
     }
 
+    function action_submit_registration()
+    {
+        $username = get_input('username');
+        $password = get_input('password');
+        $password2 = get_input('password2');
+        $email = get_input('email');
+        $name = get_input('name');
+
+        if ($password != $password2)
+        {
+            action_error(elgg_echo('create:passwords_differ'));
+        }
+
+        try
+        {
+            $new_user = register_user($username, $password, $name, $email);
+            login($new_user, false);
+            system_message(elgg_echo("registerok"));
+            forward("pg/dashboard/");
+        }
+        catch (RegistrationException $r)
+        {
+            action_error($r->getMessage());
+        }
+    }
+
+    function action_upload_frame()
+    {
+        $this->request->response = elgg_view('upload_frame');
+    }
+
     function action_upload()
     {
         gatekeeper();
@@ -199,7 +230,7 @@ class Controller_Pg extends Controller {
         if (get_input('iframe'))
         {
             Session::set('lastUpload', $json);
-            forward("upload.php?swfupload=".urlencode(get_input('swfupload'))."&sizes=".urlencode(get_input('sizes')));
+            forward("pg/upload_frame?swfupload=".urlencode(get_input('swfupload'))."&sizes=".urlencode(get_input('sizes')));
         }
         else
         {

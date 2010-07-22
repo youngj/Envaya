@@ -345,6 +345,24 @@ class Controller_Org extends Controller
         $this->page_draw($title, $body);
     }
 
+    function action_emailSettings_save()
+    {
+        $email = get_input('email');
+        $code = get_input('code');
+        $notify_days = get_input('notify_days');
+        $users = get_users_by_email($email);
+
+        foreach ($users as $user)
+        {
+            $user->notify_days = $notify_days;
+            $user->save();
+
+            system_message(elgg_echo('user:notification:success'));
+        }
+
+        forward("/");
+    }
+
     function action_selectImage()
     {
         set_input("__topbar",0);
@@ -396,5 +414,122 @@ class Controller_Org extends Controller
         $body = elgg_view_layout("one_column_wide", elgg_view_title($title), implode("<hr><br>", $area2));
 
         $this->page_draw($title,$body);
+    }
+
+    function action_save_translation()
+    {
+        gatekeeper();
+        action_gatekeeper();
+
+        $text = get_input('translation');
+        $guid = get_input('entity_guid');
+        $isHTML = (int)get_input('html');
+        $property = get_input('property');
+        $entity = get_entity($guid);
+
+        if (!$entity->canEdit())
+        {
+            register_error(elgg_echo("org:cantedit"));
+            forward_to_referrer();
+        }
+        else if (empty($text))
+        {
+            register_error(elgg_echo("trans:empty"));
+            forward_to_referrer();
+        }
+        else
+        {
+            $origLang = $entity->getLanguage();
+
+            $actualOrigLang = get_input('language');
+            $newLang = get_input('newLang');
+
+            if ($actualOrigLang != $origLang)
+            {
+                $entity->language = $actualOrigLang;
+                $entity->save();
+            }
+            if ($actualOrigLang != $newLang)
+            {
+                $trans = lookup_translation($entity, $property, $actualOrigLang, $newLang, TranslateMode::ManualOnly, $isHTML);
+                if (!$trans)
+                {
+                    $trans = new Translation();
+                    $trans->container_guid = $entity->guid;
+                    $trans->property = $property;
+                    $trans->lang = $newLang;
+                }
+                $trans->html = $isHTML;
+                $trans->owner_guid = get_loggedin_userid();
+                $trans->value = $text;
+                $trans->save();
+            }
+
+            system_message(elgg_echo("trans:posted"));
+
+            forward(get_input('from') ?: $entity->getUrl());
+        }
+    }
+
+    function action_translate_interface()
+    {
+        gatekeeper();
+
+        if (get_input('exception'))
+        {
+            throw new Exception("test exception!");
+        }
+
+        $lang = 'sw';
+
+        load_translation($lang);
+
+        $key = get_input('key');
+
+        if ($key)
+        {
+            $title = elgg_echo("trans:item_title");
+            $body = elgg_view_layout("one_column_padded", elgg_view_title($title), elgg_view("translation/interface_item", array('lang' => $lang, 'key' => $key)));
+            $this->page_draw($title, $body);
+        }
+        else if (get_input('export'))
+        {
+            header("Content-type: text/plain");
+            echo elgg_view("translation/interface_export", array('lang' => $lang));
+        }
+        else
+        {
+            $title = elgg_echo("trans:list_title");
+            $body = elgg_view_layout("one_column_wide", elgg_view_title($title), elgg_view("translation/interface_list", array('lang' => $lang)));
+            $this->page_draw($title, $body);
+        }
+    }
+
+    function action_save_interface_item()
+    {
+        gatekeeper();
+        action_gatekeeper();
+
+        $key = get_input('key');
+        $value = get_input('value');
+        $lang = 'sw';
+
+        $trans = InterfaceTranslation::getByKeyAndLang($key, $lang);
+
+        if (!$trans)
+        {
+            $trans = new InterfaceTranslation();
+            $trans->key = $key;
+            $trans->lang = $lang;
+        }
+
+        $trans->approval = 0;
+        $trans->owner_guid = get_loggedin_userid();
+        $trans->value = $value;
+        $trans->save();
+
+        system_message(elgg_echo("trans:posted"));
+
+        forward(get_input('from'));
     }
 }

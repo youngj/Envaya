@@ -1410,5 +1410,3 @@ $server
         define('ACCESS_FRIENDS',-2);
 
     register_elgg_event_handler('init','system','elgg_init');
-
-?>

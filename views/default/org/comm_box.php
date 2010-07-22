@@ -22,7 +22,7 @@
         echo elgg_view('output/confirmlink', array(
             'text' => elgg_echo('partner:request'),
             'is_action' => true,
-            'href' => "action/org/requestPartner?partner_guid={$org->guid}"
+            'href' => "{$org->getURL()}/request_partner"
         ));
     }
     else if (!$partnership->isSelfApproved())
@@ -41,7 +41,7 @@
         echo elgg_view('output/confirmlink', array(
             'text' => "(".elgg_echo('partner:re_request').")",
             'is_action' => true,
-            'href' => "action/org/requestPartner?partner_guid={$org->guid}"
+            'href' => "{$org->getURL()}/request_partner"
         ));
     }
     else

@@ -1316,7 +1316,7 @@ ImageUploader.prototype.addFallbackIframe = function($swfupload)
     $iframe.frameBorder = 0;
     $iframe.scrolling = 'no';
     $iframe.id = 'uploadIframe' + Math.floor(Math.random() * 1000000);        
-    $iframe.src = "upload.php?sizes=" + escape(this.options.sizes) + "&swfupload=" + this.swfupload.movieName;
+    $iframe.src = "pg/upload_frame?sizes=" + escape(this.options.sizes) + "&swfupload=" + this.swfupload.movieName;
     $iframe.className = 'uploadIframe';
     $placeholder.appendChild($iframe);
 

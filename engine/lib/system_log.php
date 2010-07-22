@@ -311,5 +311,3 @@
 
     /** Register a default system log handler */
     register_elgg_event_handler('log','systemlog','system_log_default_logger', 999);
-
-?>

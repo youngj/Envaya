@@ -2,11 +2,11 @@
 
     $org = $vars['entity'];
     $user = $vars['user'];
-    
+
 ?>
 
 <div class='padded'>
-<form action='action/org/sendMessage' method='POST'>
+<form action='<?php echo $org->getURL() ?>/send_message' method='POST'>
 
 <?php echo elgg_view('input/securitytoken'); ?>
 
@@ -21,7 +21,7 @@
 </tr>
 <tr>
 <th>
-<?php echo elgg_echo("message:to"); ?>  
+<?php echo elgg_echo("message:to"); ?>
 </th>
 <td>
 <strong><?php echo escape($org->name); ?></strong> &lt;<?php echo escape($org->email); ?>&gt;
@@ -48,7 +48,7 @@
 
 </table>
 
-<?php 
+<?php
 echo elgg_view('input/hidden', array('internalname' => 'recipient_guid', 'value' => $org->guid));
 
 echo elgg_view('input/submit',array(

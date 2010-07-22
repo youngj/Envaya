@@ -15,12 +15,12 @@ class Partnership extends ElggObject
 
     public function save()
     {
-    	if (!$this->language)
-    	{
-    		$this->language = guess_language($this->description);
-    	}
+        if (!$this->language)
+        {
+            $this->language = guess_language($this->description);
+        }
 
-		parent::save();
+        parent::save();
     }
 
     function getPartner()
@@ -64,6 +64,6 @@ class Partnership extends ElggObject
 
     function getApproveUrl()
     {
-        return "{$this->getPartner()->getURL()}/confirm?partner_guid={$this->container_guid}";
+        return "{$this->getContainerEntity()->getURL()}/confirm_partner";
     }
 }
