@@ -8,7 +8,7 @@
     <?php echo elgg_echo('qualify:instructions') ?>
 </div>
 
-<form action='action/org/register1' method='POST'>
+<form action='org/register1' method='POST'>
 
 <div class='input'>
 <label><?php echo elgg_echo('qualify:org_type') ?></label><br />

@@ -5,7 +5,7 @@
     <?php echo elgg_echo('create:instructions') ?>
 </div>
 
-<form action='action/org/register2' method='POST'>
+<form action='org/register2' method='POST'>
 
 <?php echo elgg_view('input/securitytoken'); ?>
 

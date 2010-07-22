@@ -331,7 +331,6 @@ function change_viewer_language($newLanguage)
     setcookie("lang", $newLanguage, $expireTime, '/');
 }
 
-restore_query_params();
 if (@$_GET['lang'])
 {
     change_viewer_language($_GET['lang']);

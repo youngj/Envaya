@@ -17,12 +17,6 @@
             'trackDirty' => true,
             'value' => elgg_echo('publish')));
 
-
-    echo elgg_view('input/hidden', array(
-        'internalname' => 'container_guid',
-        'value' => $org->guid
-    ));
-
     echo elgg_view('input/hidden', array(
         'internalname' => 'uuid',
         'value' => uniqid("",true)
@@ -60,7 +54,7 @@ function showAttachImage($show)
 
     echo elgg_view('input/form', array(
         'internalid' => 'addPostForm',
-        'action' => "action/org/addPost",
+        'action' => "{$org->getURL()}/post/new",
         'enctype' => "multipart/form-data",
         'body' => $formBody,
     ));

@@ -3,8 +3,17 @@
     require_once("scripts/cmdline.php");
     require_once("vendors/jsmin.php");
 
-    $src = file_get_contents('_media/tiny_mce/themes/advanced/editor_template_src.js');
-    echo strlen($src)." ";
-    $compressed = JSMin::minify($src);
-    file_put_contents('_media/tiny_mce/themes/advanced/editor_template.js', $compressed);
-    echo strlen($compressed);
+    function minify($srcFile, $destFile)
+    {
+        $src = file_get_contents($srcFile);
+
+        $compressed = JSMin::minify($src);
+        file_put_contents($destFile, $compressed);
+
+        echo strlen($src)." ".strlen($compressed)." $destFile\n";
+    }
+
+    minify('_media/tiny_mce/themes/advanced/editor_template_src.js',
+            '_media/tiny_mce/themes/advanced/editor_template.js');
+
+    minify('views/default/js/header_src.php', 'views/default/js/header.php');

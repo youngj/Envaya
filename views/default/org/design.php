@@ -1,9 +1,8 @@
 <?php
-    global $CONFIG;
     $user = $vars['entity'];
 ?>
 
-<form action='action/org/design' method='POST'>
+<form action='<?php echo $user->getURL() ?>/design/save' method='POST'>
 
 <?php echo elgg_view('input/securitytoken'); ?>
 
@@ -24,10 +23,10 @@ function getSelectedRadio($name)
         }
     }
     return $null;
-}    
+}
 
 function customHeaderChanged()
-{  
+{
     setTimeout(function() {
         var $customDiv = document.getElementById('custom_header_container');
         var $defaultDiv = document.getElementById('default_header_container');
@@ -43,7 +42,7 @@ function customHeaderChanged()
             $customDiv.style.display = 'none';
             $defaultDiv.style.display = 'block';
         }
-    }, 1);    
+    }, 1);
 }
 </script>
 
@@ -62,22 +61,22 @@ function customHeaderChanged()
 <div id='default_header_container' <?php echo $user->custom_header ? "style='display:none'" : "" ?> >
     <div class='header_preview'>
         <?php echo elgg_view('org/default_header', array('org' => $user, 'subtitle' => elgg_echo('header:subtitle'))) ?>
-    </div>   
+    </div>
     <div class='help'><?php echo sprintf(elgg_echo('header:changelogo'), elgg_echo('icon')) ?></div>
 </div>
 
 <div id='custom_header_container' <?php echo !$user->custom_header ? "style='display:none'" : "" ?>>
-    
-    <?php 
+
+    <?php
         if ($user->custom_header)
         {
             echo "<div style='margin-top:10px'>".elgg_echo('image:current')."</div>";
             echo "<div class='header_preview'>".elgg_view('org/custom_header', array('org' => $user))."</div>";
-        }    
+        }
     ?>
 
     <div class='input'>
-            <?php 
+            <?php
                 if ($user->custom_header)
                 {
                     echo elgg_echo('image:new');
@@ -85,19 +84,19 @@ function customHeaderChanged()
                 else
                 {
                     echo elgg_echo('header:chooseimage');
-                }    
-            ?>    
+                }
+            ?>
         <br />
-    <?php 
+    <?php
 
-    echo elgg_view("input/swfupload_image", 
+    echo elgg_view("input/swfupload_image",
         array(
             'trackDirty' => true,
             'sizes' => ElggUser::getHeaderSizes(),
             'thumbnail_size' => 'large',
-            'internalname' => 'header',                    
-        )) 
-    ?> 
+            'internalname' => 'header',
+        ))
+    ?>
     <div class='help'>
     <?php echo elgg_echo('header:constraints') ?>
     </div>
@@ -112,7 +111,7 @@ echo elgg_view('input/submit',array(
 ));
 
 ?>
-   
+
 </div>
 
 <div class='section_header' id='icon'><?php echo elgg_echo('icon'); ?></div>
@@ -124,18 +123,18 @@ echo elgg_view('input/submit',array(
 
 <?php
 
-echo elgg_view("input/image", 
+echo elgg_view("input/image",
     array(
         'current' => $user->getIcon('medium'),
         'trackDirty' => true,
         'sizes' => ElggUser::getIconSizes(),
         'removable' => $user->custom_icon,
         'thumbnail_size' => 'medium',
-        'internalname' => 'icon',                    
+        'internalname' => 'icon',
         'deletename' => 'deleteicon',
-    )) 
+    ))
 
-?> 
+?>
 
 <?php
 echo elgg_view('input/submit',array(
@@ -155,7 +154,7 @@ echo elgg_view('input/submit',array(
     'previewUrl' => $user->getURL()
 )); ?>
 
-<?php 
+<?php
 echo elgg_view('input/hidden', array('internalname' => 'guid', 'value' => $user->guid));
 
 echo elgg_view('input/submit',array(

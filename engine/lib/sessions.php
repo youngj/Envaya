@@ -149,36 +149,18 @@ function isadminloggedin()
  */
 function authenticate($username, $password)
 {
-    if (pam_authenticate(array('username' => $username, 'password' => $password)))
+    if ($username && $password)
     {
-        return get_user_by_username($username);
-    }
-
-    return false;
-
-}
-
-/**
- * Hook into the PAM system which accepts a username and password and attempts to authenticate
- * it against a known user.
- *
- * @param array $credentials Associated array of credentials passed to pam_authenticate. This function expects
- *      'username' and 'password' (cleartext).
- */
-function pam_auth_userpass($credentials = NULL)
-{
-    if (is_array($credentials) && ($credentials['username']) && ($credentials['password']))
-    {
-        if ($user = get_user_by_username($credentials['username']))
+        if ($user = get_user_by_username($username))
         {
             if ($user->isBanned())
             {
                 return false;
             }
 
-            if ($user->password == generate_user_password($user, $credentials['password']))
+            if ($user->password == generate_user_password($user, $password))
             {
-                return true;
+                return $user;
             }
 
             log_login_failure($user->guid);
@@ -186,6 +168,7 @@ function pam_auth_userpass($credentials = NULL)
     }
 
     return false;
+
 }
 
 function log_login_failure($user_guid)
@@ -308,26 +291,6 @@ function get_session_fingerprint()
     return md5($userAgent . get_site_secret());
 }
 
-/**
- * Initialises the system session and potentially logs the user in
- *
- * This function looks for:
- *
- * 1. $_SESSION['guid'] - if not present, we're logged out, and this is set to 0
- * 2. The cookie 'elggperm' - if present, checks it for an authentication token, validates it, and potentially logs the user in
- *
- * @uses $_SESSION
- * @param unknown_type $event
- * @param unknown_type $object_type
- * @param unknown_type $object
- */
-function session_init($event, $object_type, $object)
-{
-    register_pam_handler('pam_auth_userpass');
-
-    return true;
-}
-
 function force_login()
 {
     Session::set('last_forward_from', current_page_url());
@@ -418,5 +381,3 @@ function __elgg_session_gc($maxlifetime)
 
     return true;
 }
-
-register_elgg_event_handler("boot","system","session_init",20);

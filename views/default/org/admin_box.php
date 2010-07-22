@@ -8,12 +8,12 @@
             echo elgg_view('output/confirmlink', array(
                 'text' => elgg_echo('approval:approve'),
                 'is_action' => true,
-                'href' => "action/org/approve?org_guid={$org->guid}&approval=2"
+                'href' => "admin/approve?org_guid={$org->guid}&approval=2"
             ));
             echo elgg_view('output/confirmlink', array(
                 'text' => elgg_echo('approval:reject'),
                 'is_action' => true,
-                'href' => "action/org/approve?org_guid={$org->guid}&approval=-1"
+                'href' => "admin/approve?org_guid={$org->guid}&approval=-1"
             ));
         }
         else
@@ -21,7 +21,7 @@
             echo elgg_view('output/confirmlink', array(
                 'text' => elgg_echo($org->approval > 0 ? 'approval:unapprove' : 'approval:unreject'),
                 'is_action' => true,
-                'href' => "action/org/approve?org_guid={$org->guid}&approval=0"
+                'href' => "admin/approve?org_guid={$org->guid}&approval=0"
             ));
         }
 
@@ -30,7 +30,7 @@
             echo elgg_view('output/confirmlink', array(
                 'text' => elgg_echo('approval:delete'),
                 'is_action' => true,
-                'href' => "action/delete_entity?guid={$org->guid}"
+                'href' => "admin/delete_entity?guid={$org->guid}"
             ));
         }
 

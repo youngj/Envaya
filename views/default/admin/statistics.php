@@ -1,15 +1,15 @@
 <?php
-	/**
-	 * Elgg statistics screen
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
+    /**
+     * Elgg statistics screen
+     *
+     * @package Elgg
+     * @subpackage Core
 
-	 * @author Curverider Ltd
+     * @author Curverider Ltd
 
-	 * @link http://elgg.org/
-	 */
+     * @link http://elgg.org/
+     */
 
-	global $CONFIG;
-	         
-?>
+    echo elgg_view("admin/statistics_opt/basic");
+    echo elgg_view("admin/statistics_opt/numentities");
+    echo elgg_view("admin/statistics_opt/online");

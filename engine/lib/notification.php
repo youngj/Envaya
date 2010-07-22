@@ -338,27 +338,4 @@
         register_notification_handler("email", "email_notify_handler");
     }
 
-
-    /**
-     * Register an entity type and subtype to be eligible for notifications
-     *
-     * @param string $entity_type The type of entity
-     * @param string $object_subtype Its subtype
-     * @param string $english_name It's English notification string (eg "New blog post")
-     */
-    function register_notification_object($entity_type, $object_subtype, $english_name) {
-        global $CONFIG;
-
-        if ($entity_type == '') $entity_type = '__BLANK__';
-        if ($object_subtype == '') $object_subtype = '__BLANK__';
-
-        if (!isset($CONFIG->register_objects)) {
-            $CONFIG->register_objects = array();
-        }
-        if (!isset($CONFIG->register_objects[$entity_type])) {
-            $CONFIG->register_objects[$entity_type] = array();
-        }
-        $CONFIG->register_objects[$entity_type][$object_subtype] = $english_name;
-    }
-
     register_elgg_event_handler('init','system','notification_init',0);

@@ -9,7 +9,7 @@
                 setTimeout(function() {
                     var script = document.createElement('script');
                     script.type = 'text/javascript';
-                    script.src = '_media/swfupload.js?v6';
+                    script.src = '_media/swfupload.js?v7';
                     document.getElementsByTagName("head").item(0).appendChild(script);
                 }, 1);
             </script>
@@ -60,7 +60,7 @@
 
         clearInterval(checkSWFUploadInterval);
 
-        new SingleImageUploader(<?php echo elgg_view('input/swfupload_args', array(
+        var uploader = new SingleImageUploader(<?php echo elgg_view('input/swfupload_args', array(
             'args' => array(
                 'trackDirty' => (@$vars['trackDirty'] ? true : false),
                 'thumbnail_size' => @$vars['thumbnail_size'] ?: 'small',
@@ -72,6 +72,10 @@
                 'sizes' => json_encode($sizes)
             )
         )) ?>);
+
+        <?php if (@$vars['jsname']) { ?>
+        window[<?php echo json_encode($vars['jsname']) ?>] = uploader;
+        <?php } ?>
     }
 
     var checkSWFUploadInterval = setInterval(tryInitSWFUpload, 250);

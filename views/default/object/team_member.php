@@ -1,19 +1,16 @@
 <?php
-  
+
     $entity = $vars['entity'];
-    $url = $entity->getURL();    
 
 ?>
-   
-<div class="team_member_view">       
-    <?php if ($entity->hasImage()) { ?>    
-    <div class='team_member_img'><img src='<?php echo $entity->getImageURL('small') ?>' /></div>
-    <?php } ?>
-    <div class='team_member_content'>
-        <div class='team_member_name'><?php echo escape($entity->name); ?></div>    
-        <?php 
-            echo elgg_view('output/longtext', array('value' => translate_field($entity, 'description'))); 
-        ?>
-    </div>
-<div style='clear:both;'></div>        
-</div>
+
+<?php if ($entity->hasImage()) { ?>
+    <img src='<?php echo $entity->getImageURL('small') ?>' class='image_right' />
+<?php } ?>
+    <h3><?php echo escape($entity->name); ?></h3>
+<p>
+<?php
+    echo elgg_view('output/longtext', array('value' => $entity->description));
+?>
+</p>
+<div style='clear:both;'></div>

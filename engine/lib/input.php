@@ -170,13 +170,4 @@
         return $pee;
     }
 
-    function input_init() {
-        if (ini_get_bool('magic_quotes_gpc'))
-        {
-            throw new Exception("You need to set magic_quotes_gpc = Off in your php.ini file");
-        }
-    }
-
-    register_elgg_event_handler('init','system','input_init');
-
 ?>

@@ -2,14 +2,14 @@
     $org = $vars['org'];
 ?>
 
-<form action='action/org/sendEmail' method='POST'>
+<form action='admin/send_email' method='POST'>
 
 <div class='padded'>
 <?php echo elgg_view('input/securitytoken'); ?>
 
 Subject: <?php echo elgg_echo('email:reminder:subject', $org->language) ?>
 </div>
-<iframe src='admin/viewEmail?username=<?php echo $org->username ?>' width='580' height='400'></iframe>
+<iframe src='admin/view_email?username=<?php echo $org->username ?>' width='580' height='400'></iframe>
 
 <?php
 

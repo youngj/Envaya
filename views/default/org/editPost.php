@@ -15,7 +15,6 @@
 
 
 <?php
-    echo elgg_view('input/hidden', array('internalname' => 'blogpost', 'value' => $vars['entity']->getGUID()));
     echo elgg_view('input/alt_submit', array(
             'internalname' => "delete",
             'internalid' => 'widget_delete',
@@ -29,5 +28,5 @@
 
 <?php
     $form_body = ob_get_clean();
-    echo elgg_view('input/form', array('action' => "action/org/editPost", 'enctype' => "multipart/form-data", 'body' => $form_body));
+    echo elgg_view('input/form', array('action' => "{$vars['entity']->getURL()}/save", 'enctype' => "multipart/form-data", 'body' => $form_body));
 ?>

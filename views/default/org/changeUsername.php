@@ -2,7 +2,7 @@
     $org = $vars['org'];
 ?>
 <div class='section_content padded'>
-<form action='action/org/changeUsername' method='POST'>
+<form action='<?php echo $org->getURL() ?>/username/save' method='POST'>
 
 <?php echo elgg_view('input/securitytoken') ?>
 <div class='input'>
@@ -19,8 +19,6 @@
 <?php echo elgg_view('input/text', array('value' => $org->username, 'internalname' => 'username')) ?>
 </div>
 
-<?php echo elgg_view('input/hidden', 
-    array('internalname' => 'guid', 'value' => $org->guid)) ?>
 <?php echo elgg_view('input/submit', array('value' => elgg_echo('save'))) ?>
 
 </form>

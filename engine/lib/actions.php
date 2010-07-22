@@ -19,140 +19,118 @@
         }
     }
 
-    function register_action($action, $filename = "")
-    {
-    }
-
     /**
-     * Actions to perform on initialisation
+     * Validate an action token, returning true if valid and false if not
      *
-     * @param string $event Events API required parameters
-     * @param string $object_type Events API required parameters
-     * @param string $object Events API required parameters
+     * @return unknown
      */
+    function validate_action_token($visibleerrors = true)
+    {
+        $token = get_input('__elgg_token');
+        $ts = get_input('__elgg_ts');
+        $session_id = Session::id();
 
-        function actions_init($event, $object_type, $object) {
-            return true;
-        }
-
-        /**
-         * Validate an action token, returning true if valid and false if not
-         *
-         * @return unknown
-         */
-        function validate_action_token($visibleerrors = true)
+        if (($token) && ($ts) && ($session_id))
         {
-            $token = get_input('__elgg_token');
-            $ts = get_input('__elgg_ts');
-            $session_id = Session::id();
+            // generate token, check with input and forward if invalid
+            $generated_token = generate_action_token($ts);
 
-            if (($token) && ($ts) && ($session_id))
+            // Validate token
+            if (strcmp($token, $generated_token)==0)
             {
-                // generate token, check with input and forward if invalid
-                $generated_token = generate_action_token($ts);
+                $hour = 60*60*24;
+                $now = time();
 
-                // Validate token
-                if (strcmp($token, $generated_token)==0)
+                // Validate time to ensure its not crazy
+                if (($ts>$now-$hour) && ($ts<$now+$hour))
                 {
-                    $hour = 60*60*24;
-                    $now = time();
-
-                    // Validate time to ensure its not crazy
-                    if (($ts>$now-$hour) && ($ts<$now+$hour))
-                    {
-                        return true;
-                    }
-                    else if ($visibleerrors)
-                        register_error(elgg_echo('actiongatekeeper:timeerror'));
+                    return true;
                 }
                 else if ($visibleerrors)
-                {
                     register_error(elgg_echo('actiongatekeeper:timeerror'));
-                }
             }
             else if ($visibleerrors)
             {
-                register_error(elgg_echo('actiongatekeeper:missingfields'));
+                register_error(elgg_echo('actiongatekeeper:timeerror'));
             }
-
-            return false;
+        }
+        else if ($visibleerrors)
+        {
+            register_error(elgg_echo('actiongatekeeper:missingfields'));
         }
 
-        /**
-         * Action gatekeeper.
-         * This function verifies form input for security features (like a generated token), and forwards
-         * the page if they are invalid.
-         *
-         * Place at the head of actions.
-         */
-        function action_gatekeeper()
-        {
-            if (validate_action_token())
-                return true;
+        return false;
+    }
 
-            forward();
-            exit;
-        }
+    /**
+     * Action gatekeeper.
+     * This function verifies form input for security features (like a generated token), and forwards
+     * the page if they are invalid.
+     *
+     * Place at the head of actions.
+     */
+    function action_gatekeeper()
+    {
+        if (validate_action_token())
+            return true;
 
-        function action_error($msg)
-        {
-            register_error($msg);
-            Session::saveInput();
-            forward_to_referrer();
-        }
+        forward();
+        exit;
+    }
 
-        /**
-         * Generate a token for the current user suitable for being placed in a hidden field in action forms.
-         *
-         * @param int $timestamp Unix timestamp
-         */
-        function generate_action_token($timestamp)
-        {
-            // Get input values
-            $site_secret = get_site_secret();
+    function action_error($msg)
+    {
+        register_error($msg);
+        Session::saveInput();
+        forward_to_referrer();
+    }
 
-            // Current session id
-            $session_id = session_id();
+    /**
+     * Generate a token for the current user suitable for being placed in a hidden field in action forms.
+     *
+     * @param int $timestamp Unix timestamp
+     */
+    function generate_action_token($timestamp)
+    {
+        // Get input values
+        $site_secret = get_site_secret();
 
-            // Get user agent
-            $ua = $_SERVER['HTTP_USER_AGENT'];
+        // Current session id
+        $session_id = session_id();
 
-            // Session token
-            $st = Session::get('__elgg_session');
+        // Get user agent
+        $ua = $_SERVER['HTTP_USER_AGENT'];
 
-            if (($site_secret) && ($session_id))
-                return md5($site_secret.$timestamp.$session_id.$ua.$st);
+        // Session token
+        $st = Session::get('__elgg_session');
 
-            return false;
-        }
+        if (($site_secret) && ($session_id))
+            return md5($site_secret.$timestamp.$session_id.$ua.$st);
 
-        /**
-         * Initialise the site secret.
-         *
-         */
-        function init_site_secret()
-        {
-            $secret = md5(rand().microtime());
-            if (datalist_set('__site_secret__', $secret))
-                return $secret;
+        return false;
+    }
 
-            return false;
-        }
-
-        /**
-         * Retrieve the site secret.
-         *
-         */
-        function get_site_secret()
-        {
-            $secret = datalist_get('__site_secret__');
-            if (!$secret) $secret = init_site_secret();
-
+    /**
+     * Initialise the site secret.
+     *
+     */
+    function init_site_secret()
+    {
+        $secret = md5(rand().microtime());
+        if (datalist_set('__site_secret__', $secret))
             return $secret;
-        }
 
-    // Register some actions ***************************************************
+        return false;
+    }
 
-        register_elgg_event_handler("init","system","actions_init");
+    /**
+     * Retrieve the site secret.
+     *
+     */
+    function get_site_secret()
+    {
+        $secret = datalist_get('__site_secret__');
+        if (!$secret) $secret = init_site_secret();
 
-?>
+        return $secret;
+    }

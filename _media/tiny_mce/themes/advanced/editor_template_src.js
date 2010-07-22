@@ -14,59 +14,11 @@
     // Tell it to load theme specific language pack(s)
     //tinymce.ThemeManager.requireLangPack('advanced');
 
-    function elem(/* args */)
-    {
-        var elemType = arguments[0];
-
-        var el = document.createElement(elemType);
-        el._isElem = 1;
-
-        for (var i = 1; i < arguments.length; i++)
-        {
-            var arg = arguments[i];
-            switch (typeof(arg))
-            {
-                case 'string':
-                    el.appendChild(document.createTextNode(arg));
-                    break;
-                case 'object':
-                    if (arg != null)
-                    {
-                        if (arg._isElem)
-                        {
-                            el.appendChild(arg);
-                        }
-                        else
-                        {
-                            for (var key in arg)
-                            {
-                                if (arg.hasOwnProperty(key))
-                                {
-                                    var val = arg[key];
-
-                                    if (typeof(val) == 'function')
-                                    {
-                                        addEvent(el, key, val);
-                                    }
-                                    else
-                                    {
-                                        el[key] = arg[key];
-                                        //el.setAttribute(key, arg[key]);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-            }
-        }
-
-        return el;
-    }
-
     function createModalBox(title, content, saveChanges, cancel)
     {
-        var $box = elem('div',
+        var ed = this;
+                
+        var $box = createElem('div',
                 {
                     className:'modalBox',
                     keypress: function(e) {
@@ -82,16 +34,28 @@
                         }
                     }   
                 },                    
-                elem('div', 
+                createElem('div', 
                     {
                         className:'modalHeading'
                     },
                     title
                 ),
-                content
+                content,
+                createElem('div',
+                    {className:'modalButtons'},
+                    createElem('input', {type:'submit', value:ed.getLang('advanced.ok'),
+                        click: function() {
+                           saveChanges(); 
+                        }
+                    }),
+                    ' ',
+                    createElem('input', {type:'submit', value:ed.getLang('advanced.cancel'),
+                        click: function() { cancel(); }
+                    })
+                )                    
         );
         
-        var $shadow = elem('div', { className: 'modalShadow' });        
+        var $shadow = createElem('div', { className: 'modalShadow' });        
     
         var width = document.body.offsetWidth || window.innerWidth;
         $box.style.left = (width / 2 - 200) + 'px';
@@ -103,9 +67,10 @@
         
         $shadow.style.height = height + 'px';
     
-        return elem('div', $shadow, $box);
-                       
+        return createElem('div', $shadow, $box);                      
     }              
+
+    tinymce.Editor.prototype.createModalBox = createModalBox;
 
     tinymce.create('tinymce.themes.AdvancedTheme', {
         sizes : [8, 10, 12, 14, 18, 24, 36],
@@ -1236,7 +1201,7 @@
             
             var range = ed.selection.getRng();            
             
-            var iframe = elem('iframe',
+            var iframe = createElem('iframe',
                  {
                     src:'org/selectImage?r='+Math.random()+"&src="+escape(src)+"&pos="+escape(pos)+"&frameId="+iframeName,
                     scrolling:'no',
@@ -1248,24 +1213,12 @@
                  }                  
              );
 
-            var imageBox = createModalBox(                
+            var imageBox = ed.createModalBox(                
                 ed.getLang(imageNode ? 'advanced.image_edit' : 'advanced.image_insert'),
-                     elem('div',
+                     createElem('div',
                          {className:'modalBody'},
-                         elem('div', {id: iframeName + "_loading", className:'modalImageFrameLoading'}, ed.getLang('advanced.loading')),
-                         iframe,
-                         elem('div',
-                            {className:'linkButtons'},
-                            elem('input', {type:'submit', value:ed.getLang('advanced.ok'),
-                                click: function() {
-                                   saveChanges(); 
-                                }
-                            }),
-                            ' ',
-                            elem('input', {type:'submit', value:ed.getLang('advanced.cancel'),
-                                click: function() { cancel(); }
-                            })
-                        )    
+                         createElem('div', {id: iframeName + "_loading", className:'modalImageFrameLoading'}, ed.getLang('advanced.loading')),
+                         iframe
                      ),
                      saveChanges, cancel
              );       
@@ -1303,14 +1256,14 @@
                     }                    
                 }
             
-                imageBox.parentNode.removeChild(imageBox); 
-            }
-                                      
-            function cancel()
-            {
-                imageBox.parentNode.removeChild(imageBox); 
+                removeElem(imageBox); 
             }
             
+            function cancel()
+            {
+                removeElem(imageBox); 
+            }
+                                                              
             document.body.appendChild(imageBox);        
 
             setTimeout(function() {
@@ -1345,31 +1298,31 @@
             
             var range = ed.selection.getRng();
             
-            var textField = elem('input', {type:'text', value:(e ? (e.innerText || e.textContent || '') : content)});
+            var textField = createElem('input', {type:'text', value:(e ? (e.innerText || e.textContent || '') : content)});
             
-            var textDiv = imageLink ? elem('div') : elem('div',
+            var textDiv = imageLink ? createElem('div') : createElem('div',
                 {className:'linkText'},
-                elem('h3', ed.getLang('advanced.link_text')),
+                createElem('h3', ed.getLang('advanced.link_text')),
                 textField
             );
             
-            var urlField = elem('input', {
+            var urlField = createElem('input', {
                 type:'text',       
                 value:(e ? e.href : '')
             });
-            var linkBox = createModalBox(
+            var linkBox = ed.createModalBox(
                 ed.getLang(e ? 'advanced.link_edit' : 'advanced.link_insert'),
-                    elem('div',
+                    createElem('div',
                         {className:'modalBody'},
-                        elem('div',
+                        createElem('div',
                             {className:'linkUrl'},
-                                elem('h3', ed.getLang('advanced.link_url')),
+                                createElem('h3', ed.getLang('advanced.link_url')),
                             urlField,
-                            elem('div', {className:'help'}, 
+                            createElem('div', {className:'help'}, 
                                 ed.getLang('advanced.link_url_help')
                             ),
-                            elem('div',
-                                elem('a', 
+                            createElem('div',
+                                createElem('a', 
                                     { 
                                         href:'javascript:void(0)',
                                         click: function() {
@@ -1388,19 +1341,7 @@
                                 )
                             )
                         ), 
-                        textDiv,
-                        elem('div',
-                            {className:'linkButtons'},
-                            elem('input', {type:'submit', value:ed.getLang('advanced.ok'),
-                                click: function() {
-                                   saveChanges(); 
-                                }
-                            }),
-                            ' ',
-                            elem('input', {type:'submit', value:ed.getLang('advanced.cancel'),
-                                click: function() { cancel(); }
-                            })
-                        )    
+                        textDiv
                     ),
                     saveChanges, cancel
             );       
@@ -1449,28 +1390,16 @@
                     ed.selection.select(e);
                     ed.getDoc().execCommand("unlink", false, null);
                 }
-                linkBox.parentNode.removeChild(linkBox); 
-            }                        
-                          
+                removeElem(linkBox); 
+            }          
+            
             function cancel()
             {
-                linkBox.parentNode.removeChild(linkBox); 
+                removeElem(linkBox); 
             }
                           
             document.body.appendChild(linkBox);        
             setTimeout(function() { urlField.focus(); }, 1);
-            /*
-
-            ed.windowManager.open({
-                url : tinymce.baseURL + '/themes/advanced/link.htm',
-                width : 310 + parseInt(ed.getLang('advanced.link_delta_width', 0)),
-                height : 200 + parseInt(ed.getLang('advanced.link_delta_height', 0)),
-                inline : true
-            }, {
-                theme_url : this.url
-            });
-
-            */
         },
 
         _mceNewDocument : function() {

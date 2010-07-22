@@ -1255,7 +1255,7 @@ ImageUploader.prototype.uploadProgressHandler = function()
 {
     this.setProgress(this.options.upload_progress_message);
 };
-    
+
 ImageUploader.prototype.startUpload = function($file)
 {
     this.setProgress(this.options.processing_message);
@@ -1336,6 +1336,25 @@ SingleImageUploader.prototype.init = function($vars)
     }    
 };
 
+SingleImageUploader.prototype.reset = function()
+{
+    this.setProgress('');
+    document.getElementById(this.options.result_id).value = '';
+};
+
+SingleImageUploader.prototype.getCurrentImage = function()
+{
+    var imageJson = document.getElementById(this.options.result_id).value;
+
+    if (imageJson)
+    {
+        var image;
+        eval("image = " + imageJson);
+        return image;
+    }
+    return null;
+};
+    
 SingleImageUploader.prototype.getSWFUploadOptions = function()
 {
     var $options = ImageUploader.prototype.getSWFUploadOptions.call(this);

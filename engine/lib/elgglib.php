@@ -55,24 +55,6 @@
         return $url['path']."?".http_build_query($query);
     }
 
-    function restore_query_params()
-    {
-        $query = substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '?')+1);
-        if (isset($query))
-        {
-            parse_str($query, $query_arr);
-            if (is_array($query_arr))
-            {
-                foreach($query_arr as $name => $val)
-                {
-                    $_GET[$name] = $val;
-                    set_input($name, $val);
-                }
-            }
-        }
-    }
-
-
     function sanitize_html($html, $options = null)
     {
         require_once(dirname(dirname(__DIR__)).'/vendors/htmlpurifier/library/HTMLPurifier.auto.php');
@@ -316,51 +298,22 @@
     }
 
     /**
-     * Return the location of a given view.
-     *
-     * @param string $view The view.
-     * @param string $viewtype The viewtype
-     */
-    function elgg_get_view_location($view, $viewtype = '')
-    {
-        global $CONFIG;
-        return dirname(dirname(__DIR__)) . "/views/";
-    }
-
-    /**
      * Handles templating views
      *
      * @see set_template_handler
      *
      * @param string $view The name and location of the view to use
      * @param array $vars Any variables that the view requires, passed as an array
-     * @param boolean $bypass If set to true, elgg_view will bypass any specified alternative template handler; by default, it will hand off to this if requested (see set_template_handler)
-     * @param boolean $debug If set to true, the viewer will complain if it can't find a view
-     * @param string $viewtype If set, forces the viewtype for the elgg_view call to be this value (default: standard detection)
      * @return string The HTML content
      */
-        function elgg_view($view, $vars = "", $bypass = false, $debug = false, $viewtype = '') {
-
+        function elgg_view($view, $vars = null)
+        {
             global $CONFIG;
-            static $usercache;
 
             // basic checking for bad paths
             if (strpos($view, '..') !== false)
             {
                 return false;
-            }
-
-            $view_orig = $view;
-
-            if (!isset($CONFIG->pagesetupdone))
-            {
-                trigger_elgg_event('pagesetup','system');
-                $CONFIG->pagesetupdone = true;
-            }
-
-            if (!is_array($usercache))
-            {
-                $usercache = array();
             }
 
             if (empty($vars))
@@ -369,83 +322,30 @@
             }
 
             $vars['user'] = get_loggedin_user();
-
-            $vars['config'] = array();
-            if (!empty($CONFIG))
-                $vars['config'] = $CONFIG;
-
+            $vars['config'] = $CONFIG;
             $vars['url'] = $CONFIG->url;
-
-            if (is_callable('page_owner')) {
-                $vars['page_owner'] = page_owner();
-            } else {
-                $vars['page_owner'] = -1;
-            }
-
-            if (($vars['page_owner'] != -1) && (is_installed()))
-            {
-                if (!isset($usercache[$vars['page_owner']])) {
-                       $vars['page_owner_user'] = get_entity($vars['page_owner']);
-                       $usercache[$vars['page_owner']] = $vars['page_owner_user'];
-                } else {
-                    $vars['page_owner_user'] = $usercache[$vars['page_owner']];
-                }
-            }
-            if (!isset($vars['js']))
-            {
-                $vars['js'] = "";
-            }
-
-            if ($bypass == false && isset($CONFIG->template_handler) && !empty($CONFIG->template_handler))
-            {
-                $template_handler = $CONFIG->template_handler;
-                if (is_callable($template_handler))
-                    return $template_handler($view, $vars);
-            }
-
-            if (empty($viewtype))
-                $viewtype = elgg_get_viewtype();
-
-            if (isset($CONFIG->views->extensions[$view]))
-            {
-                $viewlist = $CONFIG->views->extensions[$view];
-            }
-            else
-            {
-                $viewlist = array(500 => $view);
-            }
+            $viewtype = elgg_get_viewtype();
+            $viewDir = dirname(dirname(__DIR__)) . "/views/";
+            $viewFile = $viewDir . "{$viewtype}/{$view}.php";
+            $exists = file_exists($viewFile);
 
             ob_start();
 
-            foreach($viewlist as $priority => $view)
+            if ($exists && include_view($viewFile, $vars))
             {
-                $view_location = elgg_get_view_location($view, $viewtype);
-
-                if (file_exists($view_location . "{$viewtype}/{$view}.php") && !include($view_location . "{$viewtype}/{$view}.php"))
-                {
-                    $success = false;
-
-                    if ($viewtype != "default")
-                    {
-                        if (include($view_location . "default/{$view}.php"))
-                        {
-                            $success = true;
-                        }
-                    }
-                    if (!$success && isset($CONFIG->debug) && $CONFIG->debug == true)
-                    {
-                        error_log(" [This view ({$view}) does not exist] ");
-                    }
-                }
-                else if (isset($CONFIG->debug) && $CONFIG->debug == true && !file_exists($view_location . "{$viewtype}/{$view}.php"))
-                {
-                    error_log($view_location . "{$viewtype}/{$view}.php");
-                    error_log(" [This view ({$view}) does not exist] ");
-                }
-
+                // success
+            }
+            else if (@$CONFIG->debug)
+            {
+                error_log(" [This view ({$view}) could not be included] ");
             }
 
             return ob_get_clean();
+        }
+
+        function include_view($viewFile, $vars)
+        {
+            include $viewFile;
         }
 
     /**
@@ -457,31 +357,10 @@
      */
         function elgg_view_exists($view, $viewtype = '')
         {
-            global $CONFIG;
-
             if (empty($viewtype))
                 $viewtype = elgg_get_viewtype();
 
-            if (!isset($CONFIG->views->locations[$viewtype][$view])) {
-                if (!isset($CONFIG->viewpath)) {
-                    $location = dirname(dirname(__DIR__)) . "/views/";
-                } else {
-                    $location = $CONFIG->viewpath;
-                }
-            } else {
-                $location = $CONFIG->views->locations[$viewtype][$view];
-            }
-
-            if (file_exists($location . "{$viewtype}/{$view}.php")) {
-                return true;
-            }
-
-            // If we got here then check whether this exists as an extension
-                // Note that this currently does not recursively check whether the extended view exists also
-            if (isset($CONFIG->views->extensions[$view]))
-                return true;
-
-            return false;
+            return file_exists(dirname(dirname(__DIR__)) . "/views/{$viewtype}/{$view}.php");
 
         }
 
@@ -786,54 +665,6 @@
         }
 
     /**
-     * Sets an alternative function to handle templates, which will be passed to by elgg_view.
-     * This function must take the $view and $vars parameters from elgg_view:
-     *
-     *      function my_template_function(string $view, array $vars = array())
-     *
-     * @see elgg_view
-     *
-     * @param string $function_name The name of the function to pass to.
-     * @return true|false
-     */
-        function set_template_handler($function_name) {
-            global $CONFIG;
-            if (!empty($function_name) && is_callable($function_name)) {
-                $CONFIG->template_handler = $function_name;
-                return true;
-            }
-            return false;
-        }
-
-    /**
-     * Extends a view by adding other views to be displayed at the same time.
-     *
-     * @param string $view The view to add to.
-     * @param string $view_name The name of the view to extend
-     * @param int $priority The priority, from 0 to 1000, to add at (lowest numbers will be displayed first)
-     */
-        function extend_view($view, $view_name, $priority = 501, $viewtype = '') {
-
-            global $CONFIG;
-
-            if (!isset($CONFIG->views)) {
-                $CONFIG->views = new stdClass;
-            }
-            if (!isset($CONFIG->views->extensions)) {
-                $CONFIG->views->extensions = array();
-            }
-            if (!isset($CONFIG->views->extensions[$view])) {
-                $CONFIG->views->extensions[$view][500] = "{$view}";
-            }
-            while(isset($CONFIG->views->extensions[$view][$priority])) {
-                $priority++;
-            }
-            $CONFIG->views->extensions[$view][$priority] = "{$view_name}";
-            ksort($CONFIG->views->extensions[$view]);
-
-        }
-
-    /**
      * Returns a representation of a full 'page' (which might be an HTML page, RSS file, etc, depending on the current view)
      *
      * @param unknown_type $title
@@ -906,7 +737,6 @@
 
     /**
      * Recursive function designed to load library files on start
-     * (NB: this does not include plugins.)
      *
      * @param string $directory Full path to the directory to start with
      * @param string $file_exceptions A list of filenames (with no paths) you don't ever want to include

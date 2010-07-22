@@ -3,11 +3,15 @@
 
     require_once(__DIR__."/engine/start.php");
 
-    spl_autoload_register('auto_load');
-
     if (get_input('login'))
     {
         gatekeeper();
+    }
+
+    // work around flash uploader cookie bug
+    if (@$_POST['session_id'])
+    {
+        $_COOKIE['envaya'] = $_POST['session_id'];
     }
 
     Route::set('page', 'page/<name>')->defaults(array(

@@ -24,77 +24,98 @@ class Controller_Profile extends Controller
         }
     }
 
-    function require_org()
-    {
-        if (!$this->org)
-        {
-            not_found();
-        }
-    }
-
     function action_index()
     {
         $widgetName = $this->request->param('widgetname');
 
-        switch ($widgetName)
+        if ($this->org && in_array($widgetName, Widget::getAvailableNames()))
         {
-            case "settings":    return $this->edit_settings();
-            default:            break;
+            $widget = $this->org->getWidgetByName($widgetName);
+            return $this->index_widget($widget);
         }
 
-        if ($this->org)
+        if (!$this->org && $widgetName == 'home')
         {
-            switch ($widgetName)
-            {
-                case "design":      return $this->edit_design();
-                case "help":        return $this->view_help();
-                case "feed":        return $this->view_feed();
-                case "dashboard":   return $this->view_dashboard();
-                case "confirm":     return $this->confirm_partner();
-                case "compose":     return $this->compose_message();
-                case "username":    return $this->change_username();
-                default:
-                    $widget = $this->org->getWidgetByName($widgetName);
-                    return $this->view_widget($widget);
-            }
+            $widgetName = 'settings';
         }
-        else if ($widgetName == 'home')
+
+        $methodName = "index_$widgetName";
+        if (method_exists($this,$methodName))
         {
-            return $this->edit_settings();
+            return $this->$methodName();
         }
         else
         {
             not_found();
         }
+    }
+
+    function action_save()
+    {
+        action_gatekeeper();
+
+        if (!$this->user->canEdit())
+        {
+            action_error(elgg_echo('org:cantedit'));
+        }
+
+        $widgetName = $this->request->param('widgetname');
+
+        if ($this->org && in_array($widgetName, Widget::getAvailableNames()))
+        {
+            $widget = $this->org->getWidgetByName($widgetName);
+            $this->save_widget($widget);
+        }
+
+        $methodName = "save_$widgetName";
+        if (method_exists($this,$methodName))
+        {
+            $this->$methodName();
+        }
+        else
+        {
+            not_found();
+        }
+
+        forward(get_input('from') ?: $this->user->getURL());
     }
 
     function action_edit()
     {
         $this->require_editor();
+        $this->require_org();
 
         $org = $this->org;
         $widgetName = $this->request->param('widgetname');
-        $widget = $org->getWidgetByName($widgetName);
 
-        $widgetTitle = elgg_echo("widget:{$widget->widget_name}");
-
-        if ($widget->guid && $widget->isEnabled())
+        if (!in_array($widgetName, Widget::getAvailableNames()))
         {
-            $title = sprintf(elgg_echo("widget:edittitle"), $widgetTitle);
+            not_found();
         }
         else
         {
-            $title = sprintf(elgg_echo("widget:edittitle:new"), $widgetTitle);
+            $widget = $org->getWidgetByName($widgetName);
+
+            $widgetTitle = elgg_echo("widget:{$widget->widget_name}");
+
+            if ($widget->guid && $widget->isEnabled())
+            {
+                $title = sprintf(elgg_echo("widget:edittitle"), $widgetTitle);
+            }
+            else
+            {
+                $title = sprintf(elgg_echo("widget:edittitle:new"), $widgetTitle);
+            }
+
+            $cancelUrl = get_input('from') ?: $widget->getUrl();
+
+            add_submenu_item(elgg_echo("canceledit"), $cancelUrl, 'edit');
+
+            $body = elgg_view_layout('one_column',
+                elgg_view_title($title), $widget->renderEdit());
+
+            $this->page_draw($title, $body);
         }
-
-        $cancelUrl = get_input('from') ?: $widget->getUrl();
-
-        add_submenu_item(elgg_echo("canceledit"), $cancelUrl, 'edit');
-
-        $body = elgg_view_layout('one_column',
-            elgg_view_title($title), $widget->renderEdit());
-
-        $this->page_draw($title, $body);
     }
 
     function use_public_layout()
@@ -136,7 +157,15 @@ class Controller_Profile extends Controller
         }
     }
 
-    function edit_design()
+    function require_org()
+    {
+        if (!$this->org)
+        {
+            not_found();
+        }
+    }
+
+    function index_design()
     {
         $this->require_editor();
         $org = $this->org;
@@ -152,7 +181,53 @@ class Controller_Profile extends Controller
         $this->page_draw($title,$body);
     }
 
-    function view_widget($widget)
+    function save_design()
+    {
+        $this->require_org();
+        $org = $this->org;
+
+        $theme = get_input('theme');
+
+        if ($theme != $org->theme)
+        {
+            system_message(elgg_echo("theme:changed"));
+            $org->theme = $theme;
+            $org->save();
+        }
+
+        $iconFiles = get_uploaded_files($_POST['icon']);
+
+        if (get_input('deleteicon'))
+        {
+            $org->setIcon(null);
+            system_message(elgg_echo("icon:reset"));
+        }
+        else if ($iconFiles)
+        {
+            $org->setIcon($iconFiles);
+            system_message(elgg_echo("icon:saved"));
+        }
+
+        $headerFiles = get_uploaded_files($_POST['header']);
+
+        $customHeader = (int)get_input('custom_header');
+
+        if (!$customHeader)
+        {
+            if ($org->custom_header)
+            {
+                $org->setHeader(null);
+                system_message(elgg_echo("header:reset"));
+            }
+        }
+        else if ($headerFiles)
+        {
+            $org->setHeader($headerFiles);
+            system_message(elgg_echo("header:saved"));
+        }
+    }
+
+    function index_widget($widget)
     {
         $org = $this->org;
 
@@ -160,14 +235,14 @@ class Controller_Profile extends Controller
 
         $viewOrg = $org->canView();
 
-        if (!$widget || !$widget->isActive())
-        {
-            org_page_not_found($org);
-        }
-        else if ($widget->widget_name == 'home')
+        if ($widget && $widget->widget_name == 'home')
         {
             $subtitle = $org->getLocationText(false);
             $title = '';
+        }
+        else if (!$widget || !$widget->isActive())
+        {
+            org_page_not_found($org);
         }
         else
         {
@@ -214,9 +289,41 @@ class Controller_Profile extends Controller
         $this->page_draw($title, $body);
     }
 
-    function view_help()
+    function save_widget($widget)
+    {
+        if (get_input('delete'))
+        {
+            $widget->disable();
+            $widget->save();
+
+            system_message(elgg_echo('widget:delete:success'));
+
+            forward($this->user->getURL());
+        }
+        else
+        {
+            if (!$widget->isEnabled())
+            {
+                $widget->enable();
+            }
+
+            try
+            {
+                $widget->saveInput();
+                system_message(elgg_echo('widget:save:success'));
+                forward($widget->getURL());
+            }
+            catch (Exception $ex)
+            {
+                action_error($ex->getMessage());
+            }
+        }
+    }
+
+    function index_help()
     {
         $this->require_editor();
+        $this->require_org();
 
         $title = elgg_echo("help:title");
         $area = elgg_view("org/help", array('org' => $this->org));
@@ -224,9 +331,10 @@ class Controller_Profile extends Controller
         $this->page_draw($title, $body);
     }
 
-    function view_dashboard()
+    function index_dashboard()
     {
         $this->require_editor();
+        $this->require_org();
 
         $org = $this->org;
         if ($org->guid == get_loggedin_userid())
@@ -244,9 +352,11 @@ class Controller_Profile extends Controller
         $this->page_draw($title,$body);
     }
 
-    function change_username()
+    function index_username()
     {
         $this->require_editor();
+        $this->require_org();
+
         admin_gatekeeper();
 
         $title = elgg_echo('username:title');
@@ -256,9 +366,48 @@ class Controller_Profile extends Controller
         $this->page_draw($title,$body);
     }
 
-    function view_feed()
+    function save_username()
+    {
+        $this->require_org();
+        $org = $this->org;
+
+        $username = get_input('username');
+
+        $oldUsername = $org->username;
+
+        if ($username && $username != $oldUsername)
+        {
+            try
+            {
+                validate_username($username);
+            }
+            catch (RegistrationException $ex)
+            {
+                register_error($ex->getMessage());
+                forward_to_referrer();
+            }
+
+            if (get_user_by_username($username))
+            {
+                register_error(elgg_echo('registration:userexists'));
+                forward_to_referrer();
+            }
+
+            $org->username = $username;
+            $org->save();
+
+            get_cache()->delete(get_cache_key_for_username($oldUsername));
+
+            system_message(elgg_echo('username:changed'));
+        }
+        forward($org->getURL());
+    }
+
+    function index_feed()
     {
         $this->require_editor();
+        $this->require_org();
+
         $title = elgg_echo("feed:org");
 
         page_set_translatable(false);
@@ -270,9 +419,10 @@ class Controller_Profile extends Controller
         $this->page_draw($title, $body);
     }
 
-    function confirm_partner()
+    function index_confirm()
     {
         $this->require_editor();
+        $this->require_org();
 
         $partner_guid = get_input('partner_guid');
         $partner = get_entity($partner_guid);
@@ -297,10 +447,12 @@ class Controller_Profile extends Controller
         }
     }
 
-    function compose_message()
+    function index_compose()
     {
         gatekeeper();
         $this->use_editor_layout();
+        $this->require_org();
+
         $org = $this->org;
 
         if (!get_loggedin_user()->isApproved())
@@ -317,7 +469,7 @@ class Controller_Profile extends Controller
         $this->page_draw($title,$body);
     }
 
-    function edit_settings()
+    function index_settings()
     {
         $this->require_editor();
 
@@ -327,5 +479,93 @@ class Controller_Profile extends Controller
             elgg_view("usersettings/form", array('user' => $this->user)));
 
         return $this->page_draw($title, $body);
+    }
+
+    function save_settings()
+    {
+        $user = $this->user;
+
+        $name = get_input('name');
+
+        if ($name)
+        {
+            if (strcmp($name, $user->name)!=0)
+            {
+                $user->name = $name;
+                system_message(elgg_echo('user:name:success'));
+            }
+        }
+        else
+        {
+            action_error(elgg_echo('create:no_name'));
+        }
+
+        $password = get_input('password');
+        $password2 = get_input('password2');
+        if ($password!="")
+        {
+            try
+            {
+                validate_password($password);
+            }
+            catch (RegistrationException $ex)
+            {
+                action_error($ex->getMessage());
+            }
+
+            if ($password == $password2)
+            {
+                $user->salt = generate_random_cleartext_password(); // Reset the salt
+                $user->password = generate_user_password($user, $password);
+                system_message(elgg_echo('user:password:success'));
+            }
+            else
+            {
+                action_error(elgg_echo('user:password:fail:notsame'));
+            }
+        }
+
+        $language = get_input('language');
+        if ($language && $language != $user->language)
+        {
+            $user->language = $language;
+            change_viewer_language($user->language);
+            system_message(elgg_echo('user:language:success'));
+        }
+
+        $email = trim(get_input('email'));
+        if ($email != $user->email)
+        {
+            try
+            {
+                validate_email_address($email);
+            }
+            catch (RegistrationException $ex)
+            {
+                action_error($ex->getMessage());
+            }
+
+            $user->email = $email;
+            system_message(elgg_echo('user:email:success'));
+        }
+
+        $phone = get_input('phone');
+        if ($phone != $user->phone_number)
+        {
+            $user->phone_number = $phone;
+            system_message(elgg_echo('user:phone:success'));
+        }
+
+        if ($user instanceof Organization)
+        {
+            $notify_days = get_input('notify_days');
+            if ($notify_days != $user->notify_days)
+            {
+                $user->notify_days = $notify_days;
+                system_message(elgg_echo('user:notification:success'));
+            }
+        }
+
+        $user->save();
     }
 }

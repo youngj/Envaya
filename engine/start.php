@@ -132,5 +132,7 @@
         elgg_view_regenerate_simplecache();
     }
 
+    spl_autoload_register('auto_load');
+
     //error_log("start.php finished in ".(microtime(true) - $START_MICROTIME)." seconds");
 ?>

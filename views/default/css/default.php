@@ -363,16 +363,12 @@ input[type="submit"] {
     PAGINATION
 *************************************** */
 .pagination {
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    background:white;
     margin:5px 10px 5px 10px;
     padding:5px;
 }
 .pagination .pagination_number {
     display:block;
     float:left;
-    background:#ffffff;
     border:1px solid #4690d6;
     text-align: center;
     color:#4690d6;
@@ -1528,12 +1524,14 @@ a.photoDelete:hover
 .image_left
 {
     float:left;
+    clear:left;
     margin-right:8px;
     margin-bottom:8px;
 }
 .image_right
 {
     float:right;
+    clear:right;
     margin-left:8px;
     margin-bottom:8px;
 }
@@ -1568,6 +1566,10 @@ a.photoDelete:hover
     top:200px;
 }
 
+.modalButtons
+{
+    padding:0px 15px 8px 15px;
+}
 
 .modalHeading
 {
@@ -1579,7 +1581,7 @@ a.photoDelete:hover
 
 .modalBody
 {
-    padding:10px 15px;
+    padding:8px 15px 0px 15px;
 }
 
 .linkUrl, .linkText

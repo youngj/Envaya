@@ -19,7 +19,7 @@ class Controller_Admin extends Controller
     }
 
 
-    function action_sendEmail()
+    function action_confirm_email()
     {
         $title = elgg_echo('email:send');
         $org = get_user_by_username(get_input('username'));
@@ -38,7 +38,7 @@ class Controller_Admin extends Controller
         }
     }
 
-    function action_viewEmail()
+    function action_view_email()
     {
         $user = get_user_by_username(get_input('username') ?: 'envaya');
 
@@ -50,6 +50,48 @@ class Controller_Admin extends Controller
         {
             not_found();
         }
+    }
+
+    function action_send_email()
+    {
+        action_gatekeeper();
+
+        /*
+        $orgs = Organization::filterByCondition(
+            array("approval > 0 AND notify_days > 0 AND ((last_notify_time IS NULL) OR (last_notify_time + notify_days * 86400 < ?)) AND email <> ''"),
+            array($time), '', 1);
+        */
+
+        global $CONFIG;
+
+        $org = get_entity(get_input('org_guid'));
+
+        if ($org && $org->email && $org->notify_days > 0 && $org->approval > 0
+            && (!$org->last_notify_time || $org->last_notify_time + $org->notify_days * 86400 < time())
+            )
+        {
+            $subject = elgg_echo('email:reminder:subject', $org->language);
+
+            $body = elgg_view('emails/reminder', array('org' => $org));
+
+            $headers = array(
+                'To' => $org->getNameForEmail(),
+                'Content-Type' => 'text/html'
+            );
+
+            send_mail($org->email, $subject, $body, $headers);
+
+            $org->last_notify_time = time();
+            $org->save();
+
+            system_message(elgg_echo('email:reminder:sent'));
+        }
+        else
+        {
+            register_error(elgg_echo('email:reminder:none'));
+        }
+
+        forward(get_input('from') ?: "/admin/contact");
     }
 
     function action_translateQueue()
@@ -220,5 +262,68 @@ class Controller_Admin extends Controller
         }
 
         forward_to_referrer();
+    }
+
+    function action_approve()
+    {
+        action_gatekeeper();
+
+        $guid = (int)get_input('org_guid');
+        $entity = get_entity($guid);
+
+        if (($entity) && ($entity instanceof Organization))
+        {
+            $approvedBefore = $entity->isApproved();
+
+            $entity->approval = (int)get_input('approval');
+
+            $approvedAfter = $entity->isApproved();
+
+            $entity->save();
+
+            if (!$approvedBefore && $approvedAfter)
+            {
+                notify_user($entity->guid, $CONFIG->site_guid,
+                    elgg_echo('email:orgapproved:subject', $entity->language),
+                    sprintf(elgg_echo('email:orgapproved:body', $entity->language),
+                        $entity->name,
+                        $entity->getURL(),
+                        "{$CONFIG->url}pg/dashboard",
+                        elgg_echo('help:title', $entity->language),
+                        "{$CONFIG->url}org/help"
+                    ),
+                    NULL, 'email');
+            }
+
+            system_message(elgg_echo('approval:changed'));
+        }
+        else
+        {
+            register_error(elgg_echo('approval:notapproved'));
+        }
+
+        forward($entity->getUrl());
+
+    }
+
+    function action_delete_entity()
+    {
+        action_gatekeeper();
+
+        $guid = get_input('guid');
+
+        $entity = get_entity($guid);
+
+        if (($entity) && ($entity->canEdit()))
+        {
+            if ($entity->delete())
+                system_message(sprintf(elgg_echo('entity:delete:success'), $guid));
+            else
+                register_error(sprintf(elgg_echo('entity:delete:fail'), $guid));
+        }
+        else
+            register_error(sprintf(elgg_echo('entity:delete:fail'), $guid));
+
+        forward('pg/admin/user');
     }
 }

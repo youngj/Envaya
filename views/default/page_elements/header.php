@@ -48,8 +48,7 @@ END;
         }
 
         $cacheVersion = $vars['config']->simplecache_version;
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -74,116 +73,7 @@ END;
 
 
 <script type='text/javascript'>
-
-function Class() {}
-function makeClass($base)
-{
-    $base = $base || Class;
-    var $class = function() { this.init.apply(this, arguments); };
-    var $proto = function() {};
-    $proto.prototype = $base.prototype;
-    $class.prototype = new $proto;
-    return $class;
-}
-
-function addEvent(elem, type, fn)
-{
-    if (elem.addEventListener)
-    {
-        elem.addEventListener(type, fn, false);
-    }
-    else
-    {
-        elem.attachEvent('on' + type, fn);
-    }
-}
-
-function removeEvent(elem, type, fn)
-{
-    if (elem.removeEventListener)
-    {
-        elem.removeEventListener(type, fn, false);
-    }
-    else
-    {
-        elem.detachEvent('on'+type, fn);
-    }
-}
-
-var _jsonCache = {};
-
-function fetchJson(url, fn)
-{
-    if (_jsonCache[url])
-    {
-        setTimeout(function() {
-            fn(_jsonCache[url]);
-        }, 1);
-        return null;
-    }
-    else
-    {
-        var xhr = (window.ActiveXObject && !window.XMLHttpRequest) ? new ActiveXObject("Msxml2.XMLHTTP") : new XMLHttpRequest();
-        xhr.onreadystatechange = function()
-        {
-            if(xhr.readyState == 4 && xhr.status == 200)
-            {
-                var $data;
-                eval("$data = " + xhr.responseText);
-                _jsonCache[url] = $data;
-                fn($data);
-            }
-        };
-        xhr.open("GET", url, true);
-        xhr.send(null);
-        return xhr;
-    }
-}
-
-function bind(obj, fn)
-{
-    return function() {
-        return fn(obj);
-    };
-}
-
-function removeChildren(elem)
-{
-    while (elem.firstChild)
-    {
-        elem.removeChild(elem.firstChild);
-    }
-}
-
-
-window.dirty = false;
-function setDirty($dirty)
-{
-    if ($dirty && !window.submitted)
-    {
-        if (!window.onbeforeunload)
-        {
-            window.onbeforeunload = function() {
-                return <?php echo json_encode(elgg_echo("page:dirty")) ?>;
-            };
-        }
-    }
-    else
-    {
-        window.onbeforeunload = null;
-    }
-    window.dirty = $dirty;
-
-    return true;
-}
-
-function setSubmitted()
-{
-    setDirty(false);
-    window.submitted = true;
-    return true;
-}
-
+<?php echo elgg_view('js/header'); ?>
 </script>
 
 </head>

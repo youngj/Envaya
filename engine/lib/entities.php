@@ -37,16 +37,6 @@
          */
         protected $attributes;
 
-        /**
-         * If set, overrides the value of getURL()
-         */
-        protected $url_override;
-
-        /**
-         * Icon override, overrides the value of getIcon().
-         */
-        protected $icon_override;
-
         protected $metadata_cache;
 
         protected $table_attribute_names;
@@ -513,54 +503,7 @@
          * @return string The URL
          */
         public function getURL() {
-            if (!empty($this->url_override))
-                return $this->url_override;
-
-            global $CONFIG;
-
-            $url = "";
-            $entity = $this;
-
-            if (isset($CONFIG->entity_url_handler[$entity->getType()][$entity->getSubTypeName()]))
-            {
-                $function = $CONFIG->entity_url_handler[$entity->getType()][$entity->getSubTypeName()];
-                if (is_callable($function))
-                {
-                    $url = $function($entity);
-                }
-            }
-            elseif (isset($CONFIG->entity_url_handler[$entity->getType()]['all']))
-            {
-                $function =  $CONFIG->entity_url_handler[$entity->getType()]['all'];
-                if (is_callable($function)) {
-                    $url = $function($entity);
-                }
-            }
-            elseif (isset($CONFIG->entity_url_handler['all']['all']))
-            {
-                $function =  $CONFIG->entity_url_handler['all']['all'];
-                if (is_callable($function)) {
-                    $url = $function($entity);
-                }
-            }
-
-            if ($url == "")
-            {
-                $url = $CONFIG->url . "pg/view/" . $entity_guid;
-            }
-            return $url;
-
-        }
-
-        /**
-         * Overrides the URL returned by getURL
-         *
-         * @param string $url The new item URL
-         * @return string The URL
-         */
-        public function setURL($url) {
-            $this->url_override = $url;
-            return $url;
+            return null;
         }
 
         /**
@@ -571,38 +514,8 @@
          */
         public function getIcon($size = 'medium')
         {
-            if (isset($this->icon_override[$size]))
-                return $this->icon_override[$size];
-
             global $CONFIG;
-
-            $size = sanitize_image_size($size);
-
-            $url = false;
-
-            $viewtype = elgg_get_viewtype();
-
-            // Step one, see if anyone knows how to render this in the current view
-            $url = trigger_plugin_hook('entity:icon:url', $this->getType(), array('entity' => $this, 'viewtype' => $viewtype, 'size' => $size), $url);
-
-            // Fail, so use default
-            if (!$url)
-            {
-                $type = $this->getType();
-                $subtype = $this->getSubtypeName();
-
-                if (!empty($subtype)) {
-                    $overrideurl = elgg_view("icon/{$type}/{$subtype}/{$size}",array('entity' => $this));
-                    if (!empty($overrideurl)) return $overrideurl;
-                }
-
-                $overrideurl = elgg_view("icon/{$type}/default/{$size}",array('entity' => $this));
-                if (!empty($overrideurl)) return $overrideurl;
-
-                $url = $CONFIG->url . "_graphics/icons/default/$size.png";
-            }
-
-            return $url;
+            return "{$CONFIG->url}_graphics/default{$size}.gif";
         }
 
         /**
@@ -1235,85 +1148,6 @@
     }
 
     /**
-     * Returns a viewable list of entities contained in a number of groups.
-     *
-     * @param string $subtype The arbitrary subtype of the entity
-     * @param int $owner_guid The GUID of the owning user
-     * @param int $container_guid The GUID of the containing group
-     * @param int $limit The number of entities to display per page (default: 10)
-     * @param true|false $fullview Whether or not to display the full view (default: true)
-     * @return string A viewable list of entities
-     */
-    function list_entities_groups($subtype = "", $owner_guid = 0, $container_guid = 0, $limit = 10, $fullview = true)
-    {
-        $offset = (int) get_input('offset');
-        $count = get_objects_in_group($container_guid, $subtype, $owner_guid, 0, "", $limit, $offset, true);
-        $entities = get_objects_in_group($container_guid, $subtype, $owner_guid, 0, "", $limit, $offset);
-
-        return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview);
-    }
-
-    /**
-     * Sets the URL handler for a particular entity type and subtype
-     *
-     * @param string $function_name The function to register
-     * @param string $entity_type The entity type
-     * @param string $entity_subtype The entity subtype
-     * @return true|false Depending on success
-     */
-    function register_entity_url_handler($function_name, $entity_type = "all", $entity_subtype = "all") {
-        global $CONFIG;
-
-        if (!is_callable($function_name)) return false;
-
-        if (!isset($CONFIG->entity_url_handler)) {
-            $CONFIG->entity_url_handler = array();
-        }
-        if (!isset($CONFIG->entity_url_handler[$entity_type])) {
-            $CONFIG->entity_url_handler[$entity_type] = array();
-        }
-        $CONFIG->entity_url_handler[$entity_type][$entity_subtype] = $function_name;
-
-        return true;
-
-    }
-
-    /**
-     * Default Icon URL handler for entities.
-     * This will attempt to find a default entity for the current view and return a url. This is registered at
-     * a low priority so that other handlers will pick it up first.
-     *
-     * @param unknown_type $hook
-     * @param unknown_type $entity_type
-     * @param unknown_type $returnvalue
-     * @param unknown_type $params
-     */
-    function default_entity_icon_hook($hook, $entity_type, $returnvalue, $params)
-    {
-        global $CONFIG;
-
-        if ((!$returnvalue) && ($hook == 'entity:icon:url'))
-        {
-            $entity = $params['entity'];
-            $type = $entity->type;
-            $subtype = $entity->getSubtypeName();
-            $viewtype = $params['viewtype'];
-            $size = $params['size'];
-
-            $url = "views/$viewtype/graphics/icons/$type/$subtype/$size.png";
-
-            if (!@file_exists($CONFIG->path . $url))
-                $url = "views/$viewtype/graphics/icons/$type/default/$size.png";
-
-            if(!@file_exists($CONFIG->path . $url))
-                $url = "views/$viewtype/graphics/icons/default/$size.png";
-
-            if (@file_exists($CONFIG->path . $url))
-                return $CONFIG->url . $url;
-        }
-    }
-
-    /**
      * Gets a private setting for an entity.
      *
      * @param int $entity_guid The entity GUID
@@ -1432,7 +1266,3 @@
             return $total->total;
         }
     }
-
-    /** Hook for rendering a default icon for entities */
-    register_plugin_hook('entity:icon:url', 'all', 'default_entity_icon_hook', 1000);
-

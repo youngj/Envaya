@@ -250,13 +250,10 @@
         {
             if ($this->canEdit())
             {
-                if (trigger_elgg_event('ban', 'user', $this))
-                {
-                    $this->ban_reason = $reason;
-                    $this->banned = 'yes';
-                    $this->save();
-                    return true;
-                }
+                $this->ban_reason = $reason;
+                $this->banned = 'yes';
+                $this->save();
+                return true;
             }
             return false;
         }
@@ -268,13 +265,10 @@
         {
             if ($this->canEdit())
             {
-                if (trigger_elgg_event('unban', 'user', $this))
-                {
-                    $this->ban_reason = '';
-                    $this->banned = 'yes';
-                    $this->save();
-                    return true;
-                }
+                $this->ban_reason = '';
+                $this->banned = 'yes';
+                $this->save();
+                return true;
             }
             return false;
         }
@@ -539,6 +533,11 @@
         return false;
     }
 
+    function get_cache_key_for_username($username)
+    {
+        return make_cache_key("guid_for_username", $username);
+    }
+
     /**
      * Get user by username
      *
@@ -548,7 +547,7 @@
     function get_user_by_username($username)
     {
         $cache = get_cache();
-        $cacheKey = make_cache_key("guid_for_username", $username);
+        $cacheKey = get_cache_key_for_username($username);
 
         $guid = $cache->get($cacheKey);
         if (!$guid)
@@ -983,12 +982,6 @@
      */
     function users_init() {
 
-        global $CONFIG;
-
-        extend_elgg_settings_page('user/settings/password', 'usersettings/user', 1);
-        extend_elgg_settings_page('user/settings/email', 'usersettings/user', 1);
-        extend_elgg_settings_page('user/settings/language', 'usersettings/user', 1);
-
         register_plugin_hook('search','all','search_list_users_by_name');
 
     }
@@ -1017,8 +1010,6 @@
 
         }
     }
-
-    //register actions *************************************************************
 
     register_elgg_event_handler('init','system','users_init',0);
 

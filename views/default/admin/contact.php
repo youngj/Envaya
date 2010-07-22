@@ -55,7 +55,7 @@
     <td><?php echo $org->last_notify_time ? friendly_time($org->last_notify_time) : ''; ?></td>
     <td style='padding:0px;background-color:#068488;white-space:nowrap'>
         <?php echo "<a href='{$org->username}/settings?from=$escUrl'><img src='_graphics/settings.gif'></a>" ?>
-        <a href='admin/sendEmail?username=<?php echo $org->username ?>&from=<?php echo $escUrl ?>'><img src='_graphics/message.gif' style='vertical-align:5px'></a>
+        <a href='admin/confirm_email?username=<?php echo $org->username ?>&from=<?php echo $escUrl ?>'><img src='_graphics/message.gif' style='vertical-align:5px'></a>
     </td>
 </tr>
 <?php } ?>

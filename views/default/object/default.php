@@ -23,7 +23,7 @@
     $controls = "";
     if ($vars['entity']->canEdit())
     {
-        $controls .= " (<a href=\"{$vars['url']}action/delete_entity?guid={$vars['entity']->guid}\">" . elgg_echo('delete') . "</a>)";
+        $controls .= " (<a href=\"admin/delete_entity?guid={$vars['entity']->guid}\">" . elgg_echo('delete') . "</a>)";
     }
 
     $info = "<div><p><b><a href=\"" . $vars['entity']->getUrl() . "\">" . escape($title) . "</a></b> $controls </p></div>";

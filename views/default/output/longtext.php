@@ -15,7 +15,5 @@
      *
      */
 
-    global $CONFIG;
-
     echo autop(parse_urls(escape($vars['value'])));
 ?>

@@ -9,7 +9,7 @@
     <?php echo elgg_echo('setup:instructions') ?>
 </div>
 
-<form action='action/org/register3' method='POST'>
+<form action='org/register3' method='POST'>
 
 <?php echo elgg_view('input/securitytoken'); ?>
 

@@ -9,16 +9,23 @@ class Controller_Post extends Controller_Profile
         parent::before();
 
         $postId = $this->request->param('id');
-        $post = get_entity($postId);
 
+        if ($postId == 'new')
+        {
+            $this->request->action = 'new';
+            return;
+        }
+
+        $post = get_entity($postId);
         $org = $this->org;
-        if ($post && $post->container_guid == $org->guid)
+        if ($post && $post->container_guid == $org->guid && $post->getSubtype() == T_blog)
         {
             $this->post = $post;
             return;
         }
         else
         {
+            $this->use_public_layout();
             org_page_not_found($org);
         }
     }
@@ -66,6 +73,76 @@ class Controller_Post extends Controller_Profile
         $body = elgg_view_layout("one_column_padded", elgg_view_title($title), $area1);
 
         $this->page_draw($title,$body);
+    }
+
+    function action_save()
+    {
+        $this->require_editor();
+        action_gatekeeper();
+        $post = $this->post;
+        $org = $this->org;
+
+        $body = get_input('blogbody');
+
+        if (get_input('delete'))
+        {
+            $org = $post->getContainerEntity();
+            $post->disable();
+            $post->save();
+            system_message(elgg_echo('blog:delete:success'));
+            forward($org->getURL()."/news");
+        }
+        else if (empty($body))
+        {
+            register_error(elgg_echo("blog:blank"));
+            forward_to_referrer();
+        }
+        else
+        {
+            $post->setContent($body, true);
+            $post->save();
+
+            system_message(elgg_echo("blog:updated"));
+            forward($post->getUrl());
+        }
+    }
+
+    function action_new()
+    {
+        $this->require_editor();
+        action_gatekeeper();
+
+        $body = get_input('blogbody');
+        $org = $this->org;
+
+        if (empty($body))
+        {
+            register_error(elgg_echo("blog:blank"));
+            forward_to_referrer();
+        }
+        else
+        {
+            $uuid = get_input('uuid');
+
+            $duplicates = get_entities_from_metadata('uuid', $uuid, 'object', T_news_update, $org->guid);
+            if (!sizeof($duplicates))
+            {
+                $post = new NewsUpdate();
+                $post->owner_guid = get_loggedin_userid();
+                $post->container_guid = $org->guid;
+                $post->setContent($body, true);
+                $post->uuid = $uuid;
+                $post->save();
+
+                system_message(elgg_echo("blog:posted"));
+            }
+            else
+            {
+                $post = $duplicates[0];
+            }
+
+            forward($post->getURL());
+        }
     }
 
     function action_preview()
