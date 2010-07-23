@@ -34,6 +34,6 @@
 	$value = escape($vars['value']);
 	$name = $vars['internalname'];
 	$src = $vars['src'];
-	if (strpos($src,$CONFIG->wwwroot)===false) $src = ""; // blank src if trying to access an offsite image.
+	if (strpos($src,$CONFIG->url)===false) $src = ""; // blank src if trying to access an offsite image.
 ?>
 <input type="<?php echo $type; ?>" class="<?php echo $type; ?>_button" <?php echo $vars['js']; ?> value="<?php echo $value; ?>" src="<?php echo $src; ?>" class="<?php echo $class; ?>" />

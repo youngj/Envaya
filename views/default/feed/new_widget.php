@@ -6,7 +6,7 @@
     $orgUrl = $org->getURL();
 
     $widget = $item->getSubjectEntity();
-    $widgetUrl = $widget->getURL();
+    $widgetUrl = rewrite_to_current_domain($widget->getURL());
 
     if ($widget->hasImage())
     {

@@ -17,8 +17,8 @@
      * Class names are converted to file names by making the class name
      * lowercase and converting underscores to slashes:
      *
-     *     // Loads classes/my/class/name.php
-     *     Kohana::auto_load('My_Class_Name');
+     *     // Loads engine/my/class/name.php
+     *     auto_load('My_Class_Name');
      *
      * @param   string   class name
      * @return  boolean
@@ -41,18 +41,15 @@
         return FALSE;
     }
 
-    /**
-     * Getting directories and moving the browser
-     */
-
     function url_with_param($url, $param, $value)
     {
-        // TODO: preserve rest of query
         $url = parse_url($url);
         parse_str(@$url['query'],$query);
         $query[$param] = $value;
-
-        return $url['path']."?".http_build_query($query);
+        
+        $prefix = @$url['scheme'] ? $url['scheme']."://".$url['host'] : '';
+        
+        return $prefix.$url['path']."?".http_build_query($query);
     }
 
     function sanitize_html($html, $options = null)
@@ -230,34 +227,7 @@
         }
         return false;
     }
-
-    /**
-     * Return the current page URL.
-     */
-    function current_page_url()
-    {
-        global $CONFIG;
-
-        $url = parse_url($CONFIG->wwwroot);
-
-        $page = $url['scheme'] . "://";
-
-        // user/pass
-        if ((isset($url['user'])) && ($url['user'])) $page .= $url['user'];
-        if ((isset($url['pass'])) && ($url['pass'])) $page .= ":".$url['pass'];
-        if (@$url['user'] || @$url['pass']) $page .="@";
-
-        $page .= $url['host'];
-
-        if ((isset($url['port'])) && ($url['port'])) $page .= ":" . $url['port'];
-
-        $page = trim($page, "/"); //$page.="/";
-
-        $page .= $_SERVER['REQUEST_URI'];
-
-        return $page;
-    }
-
+   
     /**
      * Templating and visual functionality
      */
@@ -421,7 +391,7 @@
                     }
                 }
 
-                datalist_set('simplecache_version', $CONFIG->simplecache_version);
+                datalist_set('simplecache_version', $CONFIG->cache_version);
             }
         }
 
@@ -440,9 +410,6 @@
      * @return string HTML (etc) to display
      */
         function elgg_view_entity(ElggEntity $entity, $full = false, $bypass = true, $debug = false) {
-
-            global $autofeed;
-            $autofeed = true;
 
             // No point continuing if entity is null.
             if (!$entity) return '';
@@ -569,6 +536,11 @@
         function endswith( $str, $sub )
         {
             return substr($str, strlen($str) - strlen($sub)) == $sub ;
+        }
+        
+        function rewrite_to_current_domain($url)
+        {
+            return Request::instance()->rewrite_to_current_domain($url);
         }
 
     /**

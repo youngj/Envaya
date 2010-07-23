@@ -6,7 +6,7 @@
     $subtitle = @$vars['subtitle'];
         
     $icon = $org->getIcon('medium');
-    $link = $org->getURL();
+    $link = rewrite_to_current_domain($org->getURL());
     
     $escTitle = escape($org->name);
     

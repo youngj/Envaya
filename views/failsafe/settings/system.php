@@ -23,7 +23,7 @@
         }
 
         $form_body = "";
-        foreach(array('sitename','sitedescription', 'siteemail', 'wwwroot','path','dataroot', 'view') as $field) {
+        foreach(array('sitename','sitedescription', 'siteemail', 'url','path','dataroot', 'view') as $field) {
             $form_body .= "<p>";
             $form_body .= __('installation:' . $field) . "<br />";
             $warning = __('installation:warning:' . $field);

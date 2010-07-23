@@ -11,7 +11,7 @@ if (page_is_translatable())
 
     function trans_link($mode, $text)
     {
-        $url = url_with_param($_SERVER['REQUEST_URI'],'trans',$mode);
+        $url = url_with_param(Request::instance()->full_original_url(),'trans',$mode);
         return "<a href='".escape($url)."'>$text</a>";
     }
 

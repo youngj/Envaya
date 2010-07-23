@@ -767,7 +767,7 @@
 
     function entity_cache_key($guid)
     {
-        return make_cache_key("entity3", $guid);
+        return make_cache_key("entity", $guid);
     }
 
     /**

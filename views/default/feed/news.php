@@ -6,7 +6,7 @@
     $orgUrl = $org->getURL();
 
     $update = $item->getSubjectEntity();
-    $url = $update->getURL();
+    $url = rewrite_to_current_domain($update->getURL());
 
     if ($update->hasImage())
     {

@@ -1,10 +1,5 @@
 <?php
     require_once(__DIR__."/engine/start.php");
-
-    if (get_input('login') && !isloggedin())
-    {
-        force_login();
-    }
 
     // work around flash uploader cookie bug
     if (@$_POST['session_id'])
@@ -35,6 +30,11 @@
         'widgetname' => 'home',
     ));
 
+    if (get_input('login') && !isloggedin())
+    {
+        force_login();
+    }
+   
     echo Request::instance()
         ->execute()
         ->send_headers()

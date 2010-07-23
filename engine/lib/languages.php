@@ -272,7 +272,7 @@ function get_language_link($lang)
     }
     else
     {
-        $url = url_with_param($_SERVER['REQUEST_URI'], 'lang', $lang);
+        $url = url_with_param(Request::instance()->full_original_url(), 'lang', $lang);
 
         return "<a href='".escape($url)."'>$name</a>";
     }

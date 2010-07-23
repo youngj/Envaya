@@ -74,7 +74,8 @@ function make_cache_key()
 {
     $args = func_get_args();
 
-    $key = implode(":", $args);
+	global $CONFIG;
+    $key = implode(":", $args) . ":{$CONFIG->cache_version}";
 
     if (strlen($key) > 250)
         $key = md5($key);

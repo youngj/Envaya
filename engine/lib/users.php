@@ -61,7 +61,7 @@
                 'custom_icon' => 0,
                 'custom_header' => null,
                 'notify_days' => 14,
-                'last_notify_time' => null
+                'last_notify_time' => null,
             ));
         }
 
@@ -535,6 +535,7 @@
 
     function get_cache_key_for_username($username)
     {
+		global $CONFIG;
         return make_cache_key("guid_for_username", $username);
     }
 
@@ -756,6 +757,34 @@
         return preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+\.[A-Z]{2,4}$/i', $address, $matches);
     }
 
+	
+	function get_username_for_host($host)
+	{
+		$cacheKey = make_cache_key('username_for_host', $host);
+        $cache = get_cache();
+        $cachedUsername = $cache->get($cacheKey);
+        
+        if ($cachedUsername !== null)
+        {
+            return $cachedUsername;
+        }
+        else
+        {
+            $row = get_data_row('SELECT * FROM org_domain_names WHERE domain_name = ?', array($host));
+            if ($row)
+            {
+                $user = get_entity($row->guid);
+                if ($user)
+                {
+                    $cache->set($cacheKey, $user->username);
+                    return $user->username;
+                }
+            }
+            $cache->set($cacheKey, '');
+            return '';
+        }
+	}	
+	
     /**
      * Simple function that will generate a random clear text password suitable for feeding into generate_user_password().
      *
@@ -865,74 +894,72 @@
      * @param int $friend_guid Optionally, GUID of a user this user will friend once fully registered
      * @return int|false The new user's GUID; false on failure
      */
-    function register_user($username, $password, $name, $email, $allow_multiple_emails = false, $friend_guid = 0, $invitecode = '') {
-
+    function register_user($username, $password, $name, $email, $allow_multiple_emails = false, $friend_guid = 0, $invitecode = '') 
+    {
         // Load the configuration
-            global $CONFIG;
+        global $CONFIG;
 
-            $username = trim($username);
-            $password = trim($password);
-            $name = trim($name);
-            $email = trim($email);
+        $username = trim($username);
+        $password = trim($password);
+        $name = trim($name);
+        $email = trim($email);
 
         // A little sanity checking
-            if (empty($username)
-                || empty($password)
-                || empty($name)
-                || empty($email)) {
-                    throw new RegistrationException(__('registerbad'));
-                }
+        if (empty($username) || empty($password) || empty($name) || empty($email)) 
+        {
+            throw new RegistrationException(__('registerbad'));
+        }				
+        
+        // See if it exists and is disabled
+        $access_status = access_get_show_hidden_status();
+        access_show_hidden_entities(true);
 
-            // See if it exists and is disabled
-            $access_status = access_get_show_hidden_status();
-            access_show_hidden_entities(true);
-
-            validate_email_address($email);
-            validate_password($password);
-            validate_username($username);
+        validate_email_address($email);
+        validate_password($password);
+        validate_username($username);
 
         // Check to see if $username exists already
-            if ($user = get_user_by_username($username)) {
-                throw new RegistrationException(__('registration:userexists'));
-            }
+        if ($user = get_user_by_username($username)) {
+            throw new RegistrationException(__('registration:userexists'));
+        }
 
         // If we're not allowed multiple emails then see if this address has been used before
-            if ((!$allow_multiple_emails) && (sizeof(get_users_by_email($email)) > 0))
-            {
-                throw new RegistrationException(__('registration:dupeemail'));
-            }
+        if ((!$allow_multiple_emails) && (sizeof(get_users_by_email($email)) > 0))
+        {
+            throw new RegistrationException(__('registration:dupeemail'));
+        }
 
-            access_show_hidden_entities($access_status);
+        access_show_hidden_entities($access_status);
 
         // Check to see if we've registered the first admin yet.
         // If not, this is the first admin user!
-            $admin = datalist_get('admin_registered');
+        $admin = datalist_get('admin_registered');
 
         // Otherwise ...
-            $user = new ElggUser();
-            $user->username = $username;
-            $user->email = $email;
-            $user->name = $name;
-            $user->access_id = ACCESS_PUBLIC;
-            $user->salt = generate_random_cleartext_password(); // Note salt generated before password!
-            $user->password = generate_user_password($user, $password);
-            $user->owner_guid = 0; // Users aren't owned by anyone, even if they are admin created.
-            $user->container_guid = 0; // Users aren't contained by anyone, even if they are admin created.
-            $user->save();
+        $user = new ElggUser();
+        $user->username = $username;
+        $user->email = $email;
+        $user->name = $name;
+        $user->access_id = ACCESS_PUBLIC;
+        $user->salt = generate_random_cleartext_password(); // Note salt generated before password!
+        $user->password = generate_user_password($user, $password);
+        $user->owner_guid = 0; // Users aren't owned by anyone, even if they are admin created.
+        $user->container_guid = 0; // Users aren't contained by anyone, even if they are admin created.
+        $user->save();
 
-            global $registering_admin;
-            if (!$admin) {
-                $user->admin = true;
-                datalist_set('admin_registered',1);
-                $registering_admin = true;
-            } else {
-                $registering_admin = false;
-            }
+        global $registering_admin;
+        if (!$admin) {
+            $user->admin = true;
+            datalist_set('admin_registered',1);
+            $registering_admin = true;
+        } else {
+            $registering_admin = false;
+        }
 
-            // Turn on email notifications by default
-            set_user_notification_setting($user->getGUID(), 'email', true);
+        // Turn on email notifications by default
+        set_user_notification_setting($user->getGUID(), 'email', true);
 
-            return $user;
+        return $user;
     }
 
     /**

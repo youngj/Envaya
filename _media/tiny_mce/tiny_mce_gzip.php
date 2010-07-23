@@ -33,7 +33,7 @@
 
     if ($diskCache)
     {
-        $cacheKey = md5("$suffix{$CONFIG->simplecache_version}");
+        $cacheKey = md5("$suffix{$CONFIG->cache_version}");
 
         if ($compress)
             $cacheFile = $cachePath . "/tiny_mce_" . $cacheKey . ".gz";

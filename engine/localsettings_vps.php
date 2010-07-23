@@ -13,8 +13,8 @@
     $CONFIG->dbhost = 'localhost';
 
     $CONFIG->simplecache_enabled = 1;
-    $CONFIG->wwwroot = "http://envaya.org/";
-    $CONFIG->url = $CONFIG->wwwroot;
+    $CONFIG->domain = "envaya.org";
+    
     $CONFIG->admin_email = "admin@envaya.org";
     $CONFIG->post_email = "post@envaya.org";
     $CONFIG->s3_bucket = 'envayadata';

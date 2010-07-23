@@ -61,7 +61,7 @@ if (get_input('__topbar') !== '0') {
         }
         else
         {
-            $loginUrl = (get_context() == 'orgprofile') ? url_with_param($_SERVER['REQUEST_URI'], 'login',1) : 'pg/login';
+            $loginUrl = (get_context() == 'orgprofile') ? url_with_param(Request::instance()->full_rewritten_url(), 'login',1) : 'pg/login';
 
             echo "<a id='loginButton' href='".escape($loginUrl)."'><span class='loginContent'><img src='_graphics/lock.gif' height='20' width='20' /><span>".__("login")."</span></span></a>";
         }

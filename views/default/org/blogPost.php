@@ -2,13 +2,13 @@
 <?php
 
     $entity = $vars['entity'];
-    $url = $entity->getURL();
+    $url = rewrite_to_current_domain($entity->getURL());
     $org = $entity->getRootContainerEntity();
     $blogDates = $org->getBlogDates();
 ?>
 
 <div class='view_toggle'>
-    <a href='<?php echo $org->getURL() ?>/news'><?php echo __('list') ?></a> | <strong><?php echo __('blog:timeline') ?></strong>
+    <a href='<?php echo rewrite_to_current_domain($org->getURL().'/news') ?>'><?php echo __('list') ?></a> | <strong><?php echo __('blog:timeline') ?></strong>
 </div>
 <div style='clear:both'></div>
 <div class='padded'>

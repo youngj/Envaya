@@ -34,27 +34,7 @@
 		    
 		    $contents .= $display;
 		}
-		
-	// Are there feeds to display?
-		global $autofeed;
-		
-		if (isset($autofeed) && $autofeed == true) {
-			$url = $url2 = full_url();
-			if (substr_count($url,'?')) {
-				$url .= "&view=rss";
-			} else {
-				$url .= "?view=rss";
-			}
-
-			$label = __('feed:rss');
-			//$label2 = __('feed:odd');
-			$contents .= <<<END
-
-	<div id="owner_block_rss_feed"><a href="{$url}" rel="nofollow">{$label}</a></div>
-			
-END;
-		}	
-		
+				
 		$contents .= elgg_view('owner_block/extend');
 		
 	// Have we been asked to inject any content? If so, display it

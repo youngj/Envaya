@@ -111,6 +111,8 @@ class Request {
      */
     public static $current;
 
+    private static $custom_domain_username;
+    
     /**
      * Main request singleton instance. If no URI is provided, the URI will
      * be automatically detected using PATH_INFO, REQUEST_URI, or PHP_SELF.
@@ -189,6 +191,12 @@ class Request {
 
             // Remove all dot-paths from the URI, they are not valid
             $uri = preg_replace('#\.[\s./]*/#', '', $uri);
+			
+			$username = Request::$custom_domain_username = get_username_for_host($_SERVER['HTTP_HOST']);
+			if ($username)
+			{
+				$uri = "$username$uri";
+			}
 
             // Create the instance singleton
             Request::$instance = Request::$current = new Request($uri);
@@ -198,8 +206,8 @@ class Request {
         }
 
         return Request::$instance;
-    }
-
+    }    
+    
     /**
      * Return the currently executing request. This is changed to the current
      * request when [Request::execute] is called and restored when the request
@@ -721,172 +729,6 @@ class Request {
         exit;
     }
 
-    /**
-     * Send file download as the response. All execution will be halted when
-     * this method is called! Use TRUE for the filename to send the current
-     * response as the file content. The third parameter allows the following
-     * options to be set:
-     *
-     * Type      | Option    | Description                        | Default Value
-     * ----------|-----------|------------------------------------|--------------
-     * `boolean` | inline    | Display inline instead of download | `FALSE`
-     * `string`  | mime_type | Manual mime type                   | Automatic
-     * `boolean` | delete    | Delete the file after sending      | `FALSE`
-     *
-     * Download a file that already exists:
-     *
-     *     $request->send_file('media/packages/kohana.zip');
-     *
-     * Download generated content as a file:
-     *
-     *     $request->response = $content;
-     *     $request->send_file(TRUE, $filename);
-     *
-     * [!!] No further processing can be done after this method is called!
-     *
-     * @param   string   filename with path, or TRUE for the current response
-     * @param   string   downloaded file name
-     * @param   array    additional options
-     * @return  void
-     * @throws  Kohana_Exception
-     * @uses    File::mime_by_ext
-     * @uses    File::mime
-     * @uses    Request::send_headers
-     */
-    public function send_file($filename, $download = NULL, array $options = NULL)
-    {
-        if ( ! empty($options['mime_type']))
-        {
-            // The mime-type has been manually set
-            $mime = $options['mime_type'];
-        }
-
-        if ($filename === TRUE)
-        {
-            if (empty($download))
-            {
-                throw new Kohana_Exception('Download name must be provided for streaming files');
-            }
-
-            // Temporary files will automatically be deleted
-            $options['delete'] = FALSE;
-
-            if ( ! isset($mime))
-            {
-                // Guess the mime using the file extension
-                $mime = File::mime_by_ext(strtolower(pathinfo($download, PATHINFO_EXTENSION)));
-            }
-
-            // Get the content size
-            $size = strlen($this->response);
-
-            // Create a temporary file to hold the current response
-            $file = tmpfile();
-
-            // Write the current response into the file
-            fwrite($file, $this->response);
-
-            // Prepare the file for reading
-            fseek($file, 0);
-        }
-        else
-        {
-            // Get the complete file path
-            $filename = realpath($filename);
-
-            if (empty($download))
-            {
-                // Use the file name as the download file name
-                $download = pathinfo($filename, PATHINFO_BASENAME);
-            }
-
-            // Get the file size
-            $size = filesize($filename);
-
-            if ( ! isset($mime))
-            {
-                // Get the mime type
-                $mime = File::mime($filename);
-            }
-
-            // Open the file for reading
-            $file = fopen($filename, 'rb');
-        }
-
-        // Inline or download?
-        $disposition = empty($options['inline']) ? 'attachment' : 'inline';
-
-        // Set the headers for a download
-        $this->headers['Content-Disposition'] = $disposition.'; filename="'.$download.'"';
-        $this->headers['Content-Type']        = $mime;
-        $this->headers['Content-Length']      = $size;
-
-        if ( ! empty($options['resumable']))
-        {
-            // @todo: ranged download processing
-        }
-
-        // Send all headers now
-        $this->send_headers();
-
-        while (ob_get_level())
-        {
-            // Flush all output buffers
-            ob_end_flush();
-        }
-
-        // Manually stop execution
-        ignore_user_abort(TRUE);
-
-        // Keep the script running forever
-        set_time_limit(0);
-
-        // Send data in 16kb blocks
-        $block = 1024 * 16;
-
-        while ( ! feof($file))
-        {
-            if (connection_aborted())
-                break;
-
-            // Output a block of the file
-            echo fread($file, $block);
-
-            // Send the data now
-            flush();
-        }
-
-        // Close the file
-        fclose($file);
-
-        if ( ! empty($options['delete']))
-        {
-            try
-            {
-                // Attempt to remove the file
-                unlink($filename);
-            }
-            catch (Exception $e)
-            {
-                // Create a text version of the exception
-                $error = Kohana::exception_text($e);
-
-                if (is_object(Kohana::$log))
-                {
-                    // Add this exception to the log
-                    Kohana::$log->add(Kohana::ERROR, $error);
-
-                    // Make sure the logs are written
-                    Kohana::$log->write();
-                }
-
-                // Do NOT display the exception, it will corrupt the output!
-            }
-        }
-
-        // Stop execution
-        exit;
-    }
 
     /**
      * Processes the request, executing the controller action that handles this
@@ -956,12 +798,6 @@ class Request {
             // Restore the previous request
             Request::$current = $previous;
 
-            if (isset($benchmark))
-            {
-                // Delete the benchmark, it is invalid
-                Profiler::delete($benchmark);
-            }
-
             if ($e instanceof ReflectionException)
             {
                 // Reflection will throw exceptions for missing classes or actions
@@ -980,12 +816,6 @@ class Request {
 
         // Restore the previous request
         Request::$current = $previous;
-
-        if (isset($benchmark))
-        {
-            // Stop the benchmark
-            Profiler::stop($benchmark);
-        }
 
         return $this;
     }
@@ -1013,7 +843,41 @@ class Request {
         // Generate a unique hash for the response
         return '"'.sha1($this->response).'"';
     }
+    
+    public function rewrite_to_current_domain($url)
+    {
+        $username = Request::$custom_domain_username;
+        if ($username)
+        {        
+            global $CONFIG;
+            $sitePrefix = $CONFIG->url . $username;
+            if (strpos($url, $sitePrefix) === 0)
+            {
+                $path = substr($url, strlen($sitePrefix));
+                if (empty($path))
+                {
+                    $path = '/';
+                }
+                return "http://{$_SERVER['HTTP_HOST']}".$path;
+            }
+        }
+        return $url;
+    }
 
+    public function full_original_url()
+    {
+        $protocol = @$_SERVER['HTTPS'] ? "https://" : "http://";
+        return "$protocol{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+    }
+    
+    public function full_rewritten_url()
+    {        
+        global $CONFIG;
+        $protocol = @$_SERVER['HTTPS'] ? "https://" : "http://";
+        $uri = Request::instance()->uri;
+        $queryString = ($_SERVER['QUERY_STRING']) ? "?{$_SERVER['QUERY_STRING']}" : '';
+        return "$protocol{$CONFIG->domain}/$uri$queryString";
+    }
 
     /**
      * Checks the browser cache to see the response needs to be returned.

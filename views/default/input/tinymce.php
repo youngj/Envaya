@@ -24,7 +24,7 @@
         <script type='text/javascript'>
             var script = document.createElement('script');
             script.type = 'text/javascript';
-            script.src = '_media/tiny_mce/tiny_mce.js?v<?php echo $CONFIG->simplecache_version ?>';
+            script.src = '_media/tiny_mce/tiny_mce.js?v<?php echo $CONFIG->cache_version ?>';
             document.getElementsByTagName("head").item(0).appendChild(script);
         </script>
         <?php
@@ -109,8 +109,8 @@
                 });
 
             },
-            content_css: "/_css/tinymce.css?v<?php echo $CONFIG->simplecache_version ?>",
-            editor_css: '/_css/tinymce_ui.css?v<?php echo $CONFIG->simplecache_version ?>',
+            content_css: "/_css/tinymce.css?v<?php echo $CONFIG->cache_version ?>",
+            editor_css: '/_css/tinymce_ui.css?v<?php echo $CONFIG->cache_version ?>',
             mode : "exact",
             language: '',
             relative_urls : false,

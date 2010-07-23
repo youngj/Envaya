@@ -221,6 +221,13 @@ CREATE TABLE `users_entity` (
   FULLTEXT KEY (`name`,`username`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `org_domain_names` (
+	`guid` bigint(20) unsigned  NOT NULL,
+	`domain_name` varchar(128) NOT NULL,
+	KEY (`guid`),
+	UNIQUE KEY (`domain_name`)
+);
+
 CREATE TABLE `org_sectors` (
   `id` int(11) NOT NULL auto_increment,
   

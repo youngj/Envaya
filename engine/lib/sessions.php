@@ -293,7 +293,7 @@ function get_session_fingerprint()
 
 function force_login()
 {
-    Session::set('last_forward_from', current_page_url());
+    Session::set('last_forward_from', Request::instance()->full_rewritten_url());
     $username = get_input('username');
     if ($username)
     {

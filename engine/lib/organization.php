@@ -523,13 +523,13 @@ function add_org_menu($org)
 {
     $widgets = $org->getAvailableWidgets();
 
-    add_submenu_item(__("widget:home"), $org->getURL());
+    add_submenu_item(__("widget:home"), rewrite_to_current_domain($org->getURL()));
 
     foreach ($widgets as $widget)
     {
         if ($widget->isActive() && $widget->widget_name != 'home')
         {
-            add_submenu_item(__("widget:{$widget->widget_name}"), $widget->getURL());
+            add_submenu_item(__("widget:{$widget->widget_name}"), rewrite_to_current_domain($widget->getURL()));
         }
     }
 }

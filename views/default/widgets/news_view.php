@@ -12,7 +12,7 @@
 
 <?php if (!empty($entities)) { ?>
 <div class='view_toggle'>
-    <strong><?php echo __('list') ?></strong> | <a href='<?php echo $entities[0]->getURL() ?>'><?php echo __('blog:timeline') ?></a>
+    <strong><?php echo __('list') ?></strong> | <a href='<?php echo rewrite_to_current_domain($entities[0]->getURL()) ?>'><?php echo __('blog:timeline') ?></a>
 </div>
 <div style='clear:both'></div>
 <?php } ?>

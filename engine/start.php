@@ -127,7 +127,7 @@
             $oldview = $CONFIG->view;
     }
 
-    if ($installed && $CONFIG->simplecache_enabled && datalist_get('simplecache_version') != $CONFIG->simplecache_version)
+    if ($installed && $CONFIG->simplecache_enabled && datalist_get('simplecache_version') != $CONFIG->cache_version)
     {
         elgg_view_regenerate_simplecache();
     }
