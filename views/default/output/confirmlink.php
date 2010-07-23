@@ -17,7 +17,7 @@
      *
      */
 
-    $confirm = $vars['confirm'];
+    $confirm = @$vars['confirm'];
     if (!$confirm)
         $confirm = __('question:areyousure');
 

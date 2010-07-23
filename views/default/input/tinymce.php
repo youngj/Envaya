@@ -1,5 +1,5 @@
 <?php
-    $value = $vars['value'];
+    $value = @$vars['value'];
     $valueIsHTML = isset($vars['valueIsHTML']) ? $vars['valueIsHTML'] : true;
     $internalname = $vars['internalname'];
     $widthCSS = @$vars['width'] ? "width:{$vars['width']}px;" : '';

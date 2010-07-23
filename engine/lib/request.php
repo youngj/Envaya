@@ -112,7 +112,7 @@ class Request {
     public static $current;
 
     private static $custom_domain_username;
-    
+
     /**
      * Main request singleton instance. If no URI is provided, the URI will
      * be automatically detected using PATH_INFO, REQUEST_URI, or PHP_SELF.
@@ -191,12 +191,12 @@ class Request {
 
             // Remove all dot-paths from the URI, they are not valid
             $uri = preg_replace('#\.[\s./]*/#', '', $uri);
-			
-			$username = Request::$custom_domain_username = get_username_for_host($_SERVER['HTTP_HOST']);
-			if ($username)
-			{
-				$uri = "$username$uri";
-			}
+
+            $username = Request::$custom_domain_username = get_username_for_host($_SERVER['HTTP_HOST']);
+            if ($username)
+            {
+                $uri = "$username$uri";
+            }
 
             // Create the instance singleton
             Request::$instance = Request::$current = new Request($uri);
@@ -206,8 +206,8 @@ class Request {
         }
 
         return Request::$instance;
-    }    
-    
+    }
+
     /**
      * Return the currently executing request. This is changed to the current
      * request when [Request::execute] is called and restored when the request
@@ -561,8 +561,6 @@ class Request {
 
         // No matching route for this URI
         $this->status = 404;
-
-        not_found();
     }
 
     /**
@@ -752,6 +750,11 @@ class Request {
      */
     public function execute()
     {
+        if ($this->status == 404)
+        {
+            not_found();
+        }
+
         // Create the class prefix
         $prefix = 'controller_';
 
@@ -843,12 +846,12 @@ class Request {
         // Generate a unique hash for the response
         return '"'.sha1($this->response).'"';
     }
-    
+
     public function rewrite_to_current_domain($url)
     {
         $username = Request::$custom_domain_username;
         if ($username)
-        {        
+        {
             global $CONFIG;
             $sitePrefix = $CONFIG->url . $username;
             if (strpos($url, $sitePrefix) === 0)
@@ -869,9 +872,9 @@ class Request {
         $protocol = @$_SERVER['HTTPS'] ? "https://" : "http://";
         return "$protocol{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
     }
-    
+
     public function full_rewritten_url()
-    {        
+    {
         global $CONFIG;
         $protocol = @$_SERVER['HTTPS'] ? "https://" : "http://";
         $uri = Request::instance()->uri;

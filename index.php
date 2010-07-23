@@ -34,7 +34,7 @@
     {
         force_login();
     }
-   
+
     echo Request::instance()
         ->execute()
         ->send_headers()

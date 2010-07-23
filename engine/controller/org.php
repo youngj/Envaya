@@ -218,7 +218,7 @@ class Controller_Org extends Controller
             $org->getWidgetByName('partnerships')->save();
 
             $contactWidget = $org->getWidgetByName('contact');
-            if (email)
+            if ($email)
             {
                 $contactWidget->public_email = "yes";
             }
@@ -230,7 +230,7 @@ class Controller_Org extends Controller
 
             Session::set('registration', null);
 
-            system_message(sprintf(__("create:ok"),$CONFIG->sitename));
+            system_message(__("create:ok"));
 
             forward("org/new?step=3");
         }

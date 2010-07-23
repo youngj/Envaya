@@ -249,7 +249,6 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     private function _testEditContact()
     {
         $this->clickAndWait("//a[contains(@href,'contact')]");
-        sleep(10);
         $this->mouseOver("//a[@href='mailto:adunar@gmail.com']");
         $this->clickAndWait("//a[contains(@href,'contact/edit')]");
         $this->s->uncheck("//input[@name='public_email[]']");

@@ -255,11 +255,11 @@ class Controller_Profile extends Controller
             add_submenu_item(__("widget:edit"), $widget->getEditURL(), 'edit');
         }
 
+        $preBody = '';
+
         if (get_input("__topbar") != "0")
         {
             $org->showCantViewMessage();
-
-            $preBody = '';
 
             if (isadminloggedin())
             {
