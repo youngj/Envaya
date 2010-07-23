@@ -21,12 +21,7 @@
     if (!$TINYMCE_INCLUDE_COUNT)
     {
         ?>
-        <script type='text/javascript'>
-            var script = document.createElement('script');
-            script.type = 'text/javascript';
-            script.src = '_media/tiny_mce/tiny_mce.js?v<?php echo $CONFIG->cache_version ?>';
-            document.getElementsByTagName("head").item(0).appendChild(script);
-        </script>
+        <script type='text/javascript' src='_media/tiny_mce/tiny_mce.js?v<?php echo $CONFIG->cache_version ?>'></script>
         <?php
     }
 
@@ -42,88 +37,75 @@
 
 (function() {
 
-    function tryInitTinyMCE()
-    {
-        if (!window.tinyMCE)
+    tinyMCE.addI18n('en.advanced', <?php
+        $prefix = 'tinymce:';
+        $lenPrefix = strlen($prefix);
+
+        $res = array();
+
+        foreach (get_language_keys_by_prefix($prefix) as $key)
         {
-            return;
+            $res[substr($key, $lenPrefix)] = __($key);
         }
 
-        clearInterval(checkTinyMCEInterval);
+        echo json_encode($res);
+    ?>);
 
-        tinyMCE.addI18n('en.advanced', <?php
-            $prefix = 'tinymce:';
-            $lenPrefix = strlen($prefix);
+    var loading = document.getElementById('tinymce_loading<?php echo $TINYMCE_INCLUDE_COUNT ?>');
+    loading.style.display = 'none';
 
-            $res = array();
+    var textarea = document.getElementById('content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>');
+    textarea.style.display = 'block';
 
-            foreach (get_language_keys_by_prefix($prefix) as $key)
-            {
-                $res[substr($key, $lenPrefix)] = __($key);
-            }
+    tinyMCE.init({
+        setup : function(ed) {
 
-            echo json_encode($res);
-        ?>);
+            ed.onBeforeGetContent.add(function(ed, o) {
+                var body = ed.getBody();
+                var paragraphs = body.getElementsByTagName('p');
+                for (var i = 0; i < paragraphs.length - 1; i++)
+                {
+                    paragraphs[i].className = '';
+                }
+                if (paragraphs.length > 0)
+                {
+                    paragraphs[i].className = 'last-paragraph';
+                }
+            });
 
-        tinyMCE.init({
-            setup : function(ed) {
-
-                var loading = document.getElementById('tinymce_loading<?php echo $TINYMCE_INCLUDE_COUNT ?>');
-                loading.style.display = 'none';
-
-                var textarea = document.getElementById('content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>');
-                textarea.style.display = 'block';
-
-                ed.onBeforeGetContent.add(function(ed, o) {
-                    var body = ed.getBody();
-                    var paragraphs = body.getElementsByTagName('p');
-                    for (var i = 0; i < paragraphs.length - 1; i++)
+            ed.onDblClick.add(function(ed, e) {
+                if (e.target)
+                {
+                    if (e.target.nodeName == 'IMG')
                     {
-                        paragraphs[i].className = '';
+                        ed.execCommand('mceImage');
                     }
-                    if (paragraphs.length > 0)
+                    else if (e.target.nodeName == 'A')
                     {
-                        paragraphs[i].className = 'last-paragraph';
+                        ed.execCommand('mceLink');
                     }
-                });
+                }
+            });
 
-                ed.onDblClick.add(function(ed, e) {
-                    if (e.target)
-                    {
-                        if (e.target.nodeName == 'IMG')
-                        {
-                            ed.execCommand('mceImage');
-                        }
-                        else if (e.target.nodeName == 'A')
-                        {
-                            ed.execCommand('mceLink');
-                        }
-                    }
-                });
+            ed.onChange.add(function(ed, l) {
+                if (ed.isDirty())
+                {
+                    setDirty(true);
+                }
+            });
 
-                ed.onChange.add(function(ed, l) {
-                    if (ed.isDirty())
-                    {
-                        setDirty(true);
-                    }
-                });
-
-            },
-            content_css: "/_css/tinymce.css?v<?php echo $CONFIG->cache_version ?>",
-            editor_css: '/_css/tinymce_ui.css?v<?php echo $CONFIG->cache_version ?>',
-            mode : "exact",
-            language: '',
-            relative_urls : false,
-            elements: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
-            <?php if ($TINYMCE_INCLUDE_COUNT == 0) { ?>
-            auto_focus: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
-            <?php } ?>
-            theme : "-advanced"
-        });
-
-    }
-
-    var checkTinyMCEInterval = setInterval(tryInitTinyMCE, 250);
+        },
+        content_css: "/_css/tinymce.css?v<?php echo $CONFIG->cache_version ?>",
+        editor_css: '/_css/tinymce_ui.css?v<?php echo $CONFIG->cache_version ?>',
+        mode : "exact",
+        language: '',
+        relative_urls : false,
+        elements: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
+        <?php if ($TINYMCE_INCLUDE_COUNT == 0) { ?>
+        auto_focus: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
+        <?php } ?>
+        theme : "-advanced"
+    });
 
 })();
 </script>

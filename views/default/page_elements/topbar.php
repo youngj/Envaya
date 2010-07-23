@@ -6,6 +6,7 @@ if (get_input('__topbar') !== '0') {
 
 <div id="topbar">
 <table class='topbarTable'>
+<tr>
 <td class='topbarLinks'>
     <a id='logoContainer' href="<?php echo ((isloggedin()) ? 'pg/dashboard' : 'home') ?>">
         <img src="_graphics/logo.gif?v5" alt="Envaya" width="145" height="30">
