@@ -38,7 +38,6 @@
 
         echo  '<link rel="stylesheet" href="_css/'.$theme.'.css?v='.$cacheVersion.'" type="text/css" />';
 
-        echo $feedref;
     ?>
 
     <!--[if IE 6]>

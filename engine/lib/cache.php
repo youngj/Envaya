@@ -17,23 +17,28 @@ class NullCache extends Cache
 class MemcacheCache extends Cache
 {
     protected $memcache;
-    
+
     public function __construct()
     {
         $memcache = new Memcache;
-        
+
         global $CONFIG;
         foreach ($CONFIG->memcache_servers as $server)
         {
             $memcache->addServer($server, 11211);
-        }         
-        
+        }
+
         $this->memcache = $memcache;
     }
 
     public function get($key)
     {
-        return $this->memcache->get($key);
+        $res = $this->memcache->get($key);
+        if ($res === false)
+        {
+            return null; // be consistent with other cache backends
+        }
+        return $res;
     }
     public function set($key, $value, $timeout = 0)
     {
@@ -42,7 +47,7 @@ class MemcacheCache extends Cache
     public function delete($key)
     {
         return $this->memcache->delete($key);
-    }    
+    }
 }
 
 class DatabaseCache extends Cache
@@ -50,9 +55,9 @@ class DatabaseCache extends Cache
     public function get($key)
     {
         $row = get_data_row("select * from `cache` where `key` = ? AND expires > ?", array($key, time()));
-        
+
         if ($row)
-        {                        
+        {
             return unserialize($row->value);
         }
         return null;
@@ -61,7 +66,7 @@ class DatabaseCache extends Cache
     {
         $expires = time() + $timeout;
         $v = serialize($value);
-        
+
         return insert_data("INSERT into `cache` (`key`,value,expires) VALUES (?,?,?) ON DUPLICATE KEY UPDATE value=?, expires=?", array($key, $v, $expires, $v, $expires));
     }
     public function delete($key)
@@ -74,7 +79,7 @@ function make_cache_key()
 {
     $args = func_get_args();
 
-	global $CONFIG;
+    global $CONFIG;
     $key = implode(":", $args) . ":{$CONFIG->cache_version}";
 
     if (strlen($key) > 250)
@@ -86,7 +91,7 @@ function make_cache_key()
 function get_cache()
 {
     static $cache;
-    
+
     if (!isset($cache))
     {
         global $CONFIG;

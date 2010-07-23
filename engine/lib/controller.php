@@ -40,7 +40,7 @@ abstract class Controller {
         $this->request = $request;
     }
 
-    public function page_draw($title, $body, $preBody)
+    public function page_draw($title, $body, $preBody = '')
     {
         $this->request->response = page_draw($title, $body, $preBody);
     }

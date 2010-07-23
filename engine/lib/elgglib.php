@@ -46,9 +46,9 @@
         $url = parse_url($url);
         parse_str(@$url['query'],$query);
         $query[$param] = $value;
-        
+
         $prefix = @$url['scheme'] ? $url['scheme']."://".$url['host'] : '';
-        
+
         return $prefix.$url['path']."?".http_build_query($query);
     }
 
@@ -227,7 +227,7 @@
         }
         return false;
     }
-   
+
     /**
      * Templating and visual functionality
      */
@@ -278,6 +278,7 @@
      */
         function elgg_view($view, $vars = null)
         {
+
             global $CONFIG;
 
             // basic checking for bad paths
@@ -297,6 +298,7 @@
             $viewtype = elgg_get_viewtype();
             $viewDir = dirname(dirname(__DIR__)) . "/views/";
             $viewFile = $viewDir . "{$viewtype}/{$view}.php";
+
             $exists = file_exists($viewFile);
 
             ob_start();
@@ -315,7 +317,7 @@
 
         function include_view($viewFile, $vars)
         {
-            include $viewFile;
+            return include $viewFile;
         }
 
     /**
@@ -537,7 +539,7 @@
         {
             return substr($str, strlen($str) - strlen($sub)) == $sub ;
         }
-        
+
         function rewrite_to_current_domain($url)
         {
             return Request::instance()->rewrite_to_current_domain($url);

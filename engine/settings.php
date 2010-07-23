@@ -40,14 +40,14 @@
     $CONFIG->dataroot = dirname($CONFIG->path). "/elgg-data/";
 
     $CONFIG->simplecache_enabled = 0;
-    $CONFIG->cache_version = 57;
+    $CONFIG->cache_version = 60;
 
     $CONFIG->smtp_host = "smtp.com";
     $CONFIG->smtp_port = 2525;
 
     $CONFIG->cookie_domain = null;
     $CONFIG->viewpath_cache_enabled = 0;
-    $CONFIG->domain = "localhost";    
+    $CONFIG->domain = "localhost";
     $CONFIG->view = "default";
     $CONFIG->language = "en";
     $CONFIG->default_access = "1";
@@ -83,6 +83,6 @@
     }
 
     include_once(__DIR__ . "/localsettings.php");
-    
+
     $CONFIG->url = "http://{$CONFIG->domain}/";
 ?>
