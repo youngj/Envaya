@@ -17,7 +17,6 @@
 
     ?>
     <input type="hidden" name="object" value="user" />
-    <input type="submit" name="<?php echo __('admin:user:label:seachbutton'); ?>"
-        value="<?php echo __('admin:user:label:seachbutton'); ?>" />
+    <input type="submit" name="search" value="<?php echo __('search:submit'); ?>" />
     </form>
 </div>

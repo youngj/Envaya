@@ -63,16 +63,25 @@ else
             }
         }
     }
-    checkDir(__DIR__);
+    checkDir(dirname(__DIR__));
 
     foreach ($seenKeys as $seenKey => $seen)
     {
         if (!isset($CONFIG->translations['en'][$seenKey]))
         {
-            echo "missing: $seenKey\n";
+            echo "missing translation: $seenKey\n";
         }
     }
 
+    /*
+    foreach ($CONFIG->translations['en'] as $key => $text)
+    {
+        if (!isset($seenKeys[$key]))
+        {
+            echo "maybe unused: $key\n";
+        }
+    }
+    */
 }
 
 $valueCount = array();

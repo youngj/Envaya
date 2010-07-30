@@ -10,10 +10,6 @@
 	 * @link http://elgg.org/
 	 */
 
-		if ($vars['full']) {
-			echo elgg_view("profile/userdetails",$vars);
-		} else {
-            echo elgg_view("profile/listing",$vars);
-		}
+    echo elgg_view("profile/listing",$vars);
 	
 ?>

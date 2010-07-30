@@ -10,18 +10,9 @@
         'home:whatwedo' => 'What We Do',
         'home:description' => "Envaya makes it easy for grassroots civil society organizations to create their own websites, where they can write about their projects and share resources and ideas with other organizations and people around the world.",
 
-        'donate:title' => "Donate to Envaya",
-        'donate:link' => 'Donate',
-        'donate:info' => "As a non-profit project of the Trust for Conservation Innovation, Envaya is supported by institutional grants as well as donations from everyday people around the world.",
-        'donate:goals' => "Envaya is currently raising money for several goals, including:",
-        'donate:goal1' => "Setting up a SMS shortcode to allow organizations to post news and photos from their mobile phones.",
-        'donate:goal2' => "Signing up more organizations from around Tanzania and responding to their feedback.",
-        'donate:goal3' => "Adding fundraising resources for community-based organizations and creating reporting tools to increase transparency for development funds.",
-        'donate:goal4' => "Expanding to other regions of the world.",
-        'donate:call' => "Help Envaya achieve these goals by making a tax-deductible donation online now!",
+        'donate:link' => 'Donate',        
         'donate:now' => "Donate now!",
 
-        'feedback:instructions' => "Let us know what you think about Envaya! Is something broken? Should we add something new? Feel free to email us at %s, or send us your feedback by filling out the form below.",
         'feedback:name' => "Your name (optional)",
         'feedback:email' => "Your email (optional)",
         'feedback:message' => "Your message",
@@ -51,22 +42,7 @@
         'why:collaborative:summary' => "Envaya lets you see what other organizations are up to. If an organization hundreds of kilometers away has a successful project and writes about it on Envaya, you can read it and get ideas for your own organization.",
         'why:example' => 'Example of a website on Envaya',
 
-        'about:link' => "About",
-        'about:title' => 'About us',
-        'about:mission' => "Envaya develops and deploys software that empowers civil society organizations around the world to create their own websites and better communicate with one another.",
-
-
-        'about:background' => "There are countless community-based organizations and other civil society organizations (CSOs) around the world, doing good works in their local communities such as conducting HIV/AIDS education programs, planting trees to fight deforestation, or running youth centers. However, most have no web presence and therefore have a limited ability to raise funds and collaborate with other organizations.",
-        'about:need' => "As information technology spreads in developing countries, more and more civil society organizations want their own websites, but existing free site development tools are too complicated for many people to use, and hiring someone to build a website is too expensive.",
-        'about:envaya' => "To fill this void, Envaya has developed envaya.org, an easy-to-use web site builder %s of civil society organizations. CSOs can easily create and update their own web sites on envaya.org, giving them a voice online where they can write about their projects and connect with other organizations.",
-        'about:tailored' => 'tailored for the needs',
-        'about:nonprofit' => "Envaya is a 501(c)(3) non-profit project that is fiscally sponsored and legally organized in the United States under the %s.",
-        'about:tci' => "Trust for Conservation Innovation",
-        'about:tanzania_pilot' => "In May, 2010, Envaya started its pilot program in Tanzania, where it has been enthusiastically received. Currently, Envaya is working to develop better knowledge sharing, fundraising, and project reporting tools, and soon plans to enable CSOs to update their websites using their cell phones. In the near future, we plan to expand to other countries in East Africa and elsewhere around the world.",
-        'about:jeanmedia' => 'Journalists Environment and HIV/AIDS Network',
-        'about:team' => "It is led by a %s of software engineers and international development volunteers from the United States, Canada, and Tanzania.",
-        'about:small_team' => "small team",
-        'about:donate' => "Help support Envaya by donating online today!",
+        'about:link' => "About",        
 
         'feed' => "Updates",
         'feed:title' => "Latest updates",
@@ -203,7 +179,6 @@
         'user:password:lost' => 'Forgot password',
 
         'org:yours' => 'Your Site',
-        'org:home' => 'Home',
         'org:mission' => 'Mission',
         'org:sectors' => 'Sectors',
         'org:location' => 'Location',
@@ -256,7 +231,6 @@
         'widget:view' => "View page",
         'widget:empty' => "This organization has not yet written its %s page.",
 
-        'widget:title:edit' => 'Page title',
         'widget:new' => "New Page",
         
         'widget:home' => "Home",
@@ -301,8 +275,7 @@
 
         'widget:team' => "Team",
         'widget:team:label' => "Your organization's team:",
-        'widget:team:help' => "Write about the people who lead your organization.",
-        'widget:team:member' => "Team member",
+        'widget:team:help' => "Write about the people who lead your organization.",        
         'widget:team:add' => "Add Team Member",
         'widget:team:name' => "Name:",
         'widget:team:name:missing' => "Missing name of team member.",
@@ -739,7 +712,6 @@ If you requested this, click on the link below to change your password:
         'tinymce:h1' => "Heading 1",
         'tinymce:h2' => "Heading 2",
         'tinymce:h3' => "Heading 3",
-        'tinymce:blockquote' => "Blockquote",
         'tinymce:bold_desc' => "Bold (Ctrl+B)",
         'tinymce:italic_desc' => "Italic (Ctrl+I)",
         'tinymce:underline_desc' => "Underline (Ctrl+U)",
@@ -761,6 +733,8 @@ If you requested this, click on the link below to change your password:
         'tinymce:blockquote_desc' => "Blockquote",
         'tinymce:ok' => "OK",
         'tinymce:cancel' => "Cancel",
+        'tinymce:code_desc' => "Edit HTML Code",
+        'tinymce:code_wordwrap' => "Wordwrap",
         'tinymce:loading' => "Loading...",
 
         'size' => "Size",

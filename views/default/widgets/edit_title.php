@@ -5,7 +5,7 @@
     {
 ?>
 <div class='input'>
-    <label><?php echo __("widget:title:edit") ?></label>
+    <label><?php echo __("widget:title") ?></label>
     <?php echo elgg_view("input/text", array(
         'internalname' => 'title',
         'trackDirty' => true,        

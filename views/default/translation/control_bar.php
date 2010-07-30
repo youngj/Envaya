@@ -76,6 +76,7 @@ if (page_is_translatable())
 
         if (sizeof($properties))
         {
+        
             $urlProps = array();
             foreach ($properties as $objProp)
             {

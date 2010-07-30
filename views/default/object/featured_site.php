@@ -31,7 +31,15 @@ echo $entity->renderContent(); ?>
         {
             echo escape(__('featured:active'));
         }    
-        ?>
+        
+        if (get_language() != $entity->getLanguage())
+        {
+            $escUrl = urlencode($_SERVER['REQUEST_URI']);                   
+            echo " <a href='org/translate?from=$escUrl&prop[]={$entity->guid}.content.1'>".__("trans:contribute")."</a>";
+        }
+        
+        ?>              
+        
         <a href='admin/edit_featured?guid=<?php echo $entity->guid ?>'><?php echo escape(__('edit')) ?></a>
         <?php
         echo elgg_view('output/confirmlink', array(

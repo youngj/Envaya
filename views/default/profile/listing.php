@@ -31,10 +31,6 @@
 			//create a view that a status plugin could extend - in the default case, this is the wire
 	 		$info .= elgg_view("profile/status", array("entity" => $vars['entity']));
 
-			$location = $vars['entity']->location;
-			if (!empty($location)) {
-				$info .= "<p class=\"owner_timestamp\">" . __("profile:location") . ": " . elgg_view("output/tags",array('value' => $vars['entity']->location)) . "</p>";
-			}
 		}
 		else
 		{
@@ -45,8 +41,6 @@
 			if (isadminloggedin())
 				$info .= "</a>";
 			$info .= "</strike></b></p>";
-		
-			//$info .= "<p class=\"owner_timestamp\">" . __('profile:banned') . "</p>";
 			
 		}
 		
