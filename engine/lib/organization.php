@@ -84,6 +84,16 @@ class Organization extends ElggUser
         }
     }
 
+    public function getAvailableThemes()
+    {
+        $themes = get_themes();
+        if ($this->username == 'envaya')
+        {
+            $themes[] = 'sidebar';
+        }        
+        return $themes;
+    }
+    
     public function generateEmailCode()
     {
         $code = '';
@@ -232,7 +242,7 @@ class Organization extends ElggUser
         return $widget;
     }
 
-    public function getActiveWidgets()
+    private function getSavedWidgets()
     {
         $where = array();
         $args = array();
@@ -242,37 +252,32 @@ class Organization extends ElggUser
 
         return Widget::filterByCondition($where, $args);
     }
-
+    
     public function getAvailableWidgets()
-    {
-        $allNames = Widget::getAvailableNames();
-
-        $activeWidgets = $this->getActiveWidgets();
-
-        $activeWidgetsMap = array();
-        foreach ($activeWidgets as $widget)
-        {
-            $activeWidgetsMap[$widget->widget_name] = $widget;
-        }
-
+    {        
+        $savedWidgetsMap = array();
         $availableWidgets = array();
-        foreach ($allNames as $name)
+        
+        foreach ($this->getSavedWidgets() as $widget)
         {
-            if (isset($activeWidgetsMap[$name]))
-            {
-                $widget = $activeWidgetsMap[$name];
-            }
-            else
+            $savedWidgetsMap[$widget->widget_name] = $widget;
+            $availableWidgets[] = $widget;
+        }        
+
+        foreach (Widget::getDefaultNames() as $name)
+        {
+            if (!isset($savedWidgetsMap[$name]))
             {
                 $widget = new Widget();
                 $widget->container_guid = $this->guid;
                 $widget->widget_name = $name;
-            }
-            $availableWidgets[] = $widget;
-        }
+                $availableWidgets[] = $widget;
+            }            
+        }        
+        usort($availableWidgets, 'widget_sort');
         return $availableWidgets;
     }
-
+    
     static function search($name, $sector, $region, $limit = 10, $offset = 0, $count = false)
     {
         $where = array();
@@ -432,7 +437,14 @@ function org_view_body($org, $subtitle, $area2, $area3 = '')
             'subtitle' => $subtitle,
         ));
     }
-    return elgg_view_layout("one_column_custom_header", $header, $area2, $area3);
+
+    $layout = "one_column_custom_header";
+    if (get_theme() == 'sidebar')
+    {
+        $layout= 'two_column_left_sidebar';
+    }
+    
+    return elgg_view_layout($layout, $header, $area2, $area3);
 }
 
 function regions_in_country($country)
@@ -521,37 +533,20 @@ function get_notification_frequencies()
 
 function add_org_menu($org)
 {
-    $widgets = $org->getAvailableWidgets();
-
-    add_submenu_item(__("widget:home"), rewrite_to_current_domain($org->getURL()));
-
-    foreach ($widgets as $widget)
+    foreach ($org->getAvailableWidgets() as $widget)
     {
-        if ($widget->isActive() && $widget->widget_name != 'home')
+        if ($widget->isActive())
         {
-            add_submenu_item(__("widget:{$widget->widget_name}"), rewrite_to_current_domain($widget->getURL()));
+            add_submenu_item($widget->getTitle(), rewrite_to_current_domain($widget->getURL()));
         }
-    }
-}
-
-function notify_new_org($event, $objectType, $org)
-{
-    if (!$org->isApproved())
-    {
-        post_feed_items($org, 'register', $org);
-
-        send_admin_mail("New organization registered: {$org->name}",
-"To view their website and approve or reject it, visit
-{$org->getURL()}?login=1
-");
     }
 }
 
 function add_generic_footer()
 {
-    add_submenu_item(__('about:link'), "/page/about", 'footer');
-    add_submenu_item(__('contact:link'), "/page/contact", 'footer');
-    add_submenu_item(__('donate:link'), "/page/donate", 'footer');
+    add_submenu_item(__('about:link'), "/envaya/about", 'footer');
+    add_submenu_item(__('contact:link'), "/envaya/contact", 'footer');
+    add_submenu_item(__('donate:link'), "/envaya/donate", 'footer');
 }
 
 function envaya_init()
@@ -565,6 +560,7 @@ function envaya_init()
         elgg_view_register_simplecache("css/$theme");
     }
 
+    elgg_view_register_simplecache("css/sidebar");
     elgg_view_register_simplecache("css/admin");
     elgg_view_register_simplecache("css/simple");
     elgg_view_register_simplecache("css/tinymce");
@@ -575,5 +571,4 @@ function envaya_init()
 
 }
 
-register_elgg_event_handler('register', 'organization', 'notify_new_org');
 register_elgg_event_handler('init','system','envaya_init');

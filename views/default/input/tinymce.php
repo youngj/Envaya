@@ -98,6 +98,7 @@
         content_css: "/_css/tinymce.css?v<?php echo $CONFIG->cache_version ?>",
         editor_css: '/_css/tinymce_ui.css?v<?php echo $CONFIG->cache_version ?>',
         mode : "exact",
+        theme_advanced_buttons1 : "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link,image,|,formatselect<?php echo (@$vars['allowCustomHTML']) ? ",|,code" : '' ?>",
         language: '',
         relative_urls : false,
         elements: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",

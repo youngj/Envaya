@@ -1,32 +1,26 @@
-<?php
-
-	/**
-	 * Elgg 2 column left sidebar canvas layout
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-	 * @author Curverider Ltd
-	 * @link http://elgg.org/
-	 */
-
+<?php 
+    ob_start();
 ?>
-<!-- left sidebar -->
-<div id="two_column_left_sidebar">
+<div id='content_wrapper'>
+<table class='left_sidebar_table'>
+    <tr>
+    <td id='left_sidebar'>
+    <?php            
+        echo get_submenu_group('topnav', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group'); 
+    ?>    
+    </td>
+    <td id='right_content'>
+        <?php echo elgg_view('translation/control_bar'); ?>
+        <?php echo $vars['area2']; ?>            
+        <div style='clear:both'></div>        
+    </td>
+    </tr>
+</table>
+</div>
+<div id='content_bottom'>
+</div>
 
-    <?php
-
-    	echo elgg_view('page_elements/owner_block',array('content' => $vars['area1']));
-    
-    ?>
-
-    <?php if (isset($vars['area3'])) echo $vars['area3']; ?>
-
-</div><!-- /two_column_left_sidebar -->
-
-<!-- main content -->
-<div id="two_column_left_sidebar_maincontent">
-
-<?php if (isset($vars['area2'])) echo $vars['area2']; ?>
-
-</div><!-- /two_column_left_sidebar_maincontent -->
-
+<?php 
+    $content = ob_get_clean();
+    echo elgg_view_layout("content_shell", $vars['area1'], $content, @$vars['area3']);    
+?>

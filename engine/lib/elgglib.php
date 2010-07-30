@@ -356,8 +356,7 @@
             if (!isset($CONFIG->views->simplecache))
                 $CONFIG->views->simplecache = array();
 
-            //if (elgg_view_exists($viewname))
-                $CONFIG->views->simplecache[] = $viewname;
+            $CONFIG->views->simplecache[] = $viewname;
 
         }
 

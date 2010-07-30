@@ -151,6 +151,7 @@ echo elgg_view('input/submit',array(
 <?php echo elgg_view('input/theme', array(
     'internalname' => 'theme',
     'value' => $user->theme,
+    'options' => $user->getAvailableThemes(),
     'previewUrl' => $user->getURL()
 )); ?>
 

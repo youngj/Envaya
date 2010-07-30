@@ -2,6 +2,7 @@
         <?php
 
         $org = $vars['entity'];
+        $widget = $vars['widget'];
 
         if ($org->approval == 0)
         {
@@ -34,9 +35,15 @@
             ));
         }
 
+        echo "<a href='admin/add_featured?username={$org->username}'>".__('featured:add')."</a>";
         echo "<a href='{$org->username}/dashboard'>".__('dashboard')."</a>";
         echo "<a href='{$org->username}/settings'>".__('help:settings')."</a>";
         echo "<a href='{$org->username}/username'>".__('username:title')."</a>";
+        
+        if ($widget)
+        {
+            echo "<a href='{$widget->getBaseURL()}/options'>".__('widget:options')."</a>";
+        }
 
         ?>
 </div>

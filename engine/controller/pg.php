@@ -89,6 +89,8 @@ class Controller_Pg extends Controller {
     function action_dashboard()
     {
         $this->require_login();
+        
+        page_set_translatable(false);
 
         set_theme('editor');
         set_context('editor');

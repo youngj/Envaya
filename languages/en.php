@@ -3,9 +3,12 @@
     add_translation('en', array(
         'home:title' => "A network of civil society organizations in Tanzania",
         'home:heading' => 'Envaya is a network of civil society organizations in Tanzania who share news about their projects on the Internet.',
+        'home:learn_more' => 'Learn more',        
         'home:for_organizations' => 'For organizations',
         'home:for_everyone' => 'For everyone',
         'home:sign_up' => 'Sign up now',
+        'home:whatwedo' => 'What We Do',
+        'home:description' => "Envaya makes it easy for grassroots civil society organizations to create their own websites, where they can write about their projects and share resources and ideas with other organizations and people around the world.",
 
         'donate:title' => "Donate to Envaya",
         'donate:link' => 'Donate',
@@ -65,7 +68,7 @@
         'about:small_team' => "small team",
         'about:donate' => "Help support Envaya by donating online today!",
 
-        'feed' => "News",
+        'feed' => "Updates",
         'feed:title' => "Latest updates",
         'feed:registered' => "%s joined Envaya.",
         'feed:news' => "%s added a %s.",
@@ -253,6 +256,9 @@
         'widget:view' => "View page",
         'widget:empty' => "This organization has not yet written its %s page.",
 
+        'widget:title:edit' => 'Page title',
+        'widget:new' => "New Page",
+        
         'widget:home' => "Home",
 
         'widget:history' => "History",
@@ -769,6 +775,10 @@ If you requested this, click on the link below to change your password:
 
         'zoom_in' => "Zoom in",
         'show_website' => "Show on website",
+        
+        'featured:home_heading' => 'Featured Organization',
+        'featured:title' => 'Featured Organizations',
+        'featured:see_all' => 'See all featured organizations',
     ));
 
     include(__DIR__."/en_admin.php");

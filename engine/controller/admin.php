@@ -277,7 +277,7 @@ class Controller_Admin extends Controller
 
             $entity->save();
 
-            if (!$approvedBefore && $approvedAfter)
+            if (!$approvedBefore && $approvedAfter && $entity->email)
             {
                 notify_user($entity->guid, $CONFIG->site_guid,
                     __('email:orgapproved:subject', $entity->language),
@@ -307,10 +307,9 @@ class Controller_Admin extends Controller
         $this->validate_security_token();
 
         $guid = get_input('guid');
-
         $entity = get_entity($guid);
 
-        if (($entity) && ($entity->canEdit()))
+        if ($entity)
         {
             if ($entity->delete())
                 system_message(sprintf(__('entity:delete:success'), $guid));
@@ -320,6 +319,107 @@ class Controller_Admin extends Controller
         else
             register_error(sprintf(__('entity:delete:fail'), $guid));
 
-        forward('admin/user');
+        forward_to_referrer();
+    }
+    
+    function action_add_featured()
+    {
+        $username = get_input('username');
+        $user = get_user_by_username($username);
+        if ($user)
+        {
+            $title = __('featured:add');
+            $body = elgg_view('admin/add_featured', array('entity' => $user));
+            $this->page_draw($title, elgg_view_layout("one_column_padded", 
+                elgg_view_title($title), $body));        
+        }
+        else
+        {
+            not_found();
+        }
+    }
+    
+    function action_activate_featured()
+    {
+        $this->validate_security_token();
+        
+        $guid = get_input('guid');
+        $entity = get_entity($guid);
+        
+        if ($entity && $entity instanceof FeaturedSite)
+        {
+            $activeSites = FeaturedSite::filterByCondition(array('active<>0'));
+            
+            $entity->active = 1;
+            $entity->save();
+            
+            foreach ($activeSites as $activeSite)
+            {
+                $activeSite->active = 0;
+                $activeSite->save();
+            }
+            forward('org/featured');
+        }
+        else        
+        {   
+            not_found();
+        }
+
+    }
+    
+    function action_new_featured()
+    {
+        $this->validate_security_token();
+    
+        $username = get_input('username');
+        $user = get_user_by_username($username);
+        if ($user)
+        {
+            $featuredSite = new FeaturedSite();
+            $featuredSite->container_guid = $user->guid;
+            $featuredSite->setContent(get_input('content'), true);
+            $featuredSite->save();
+            system_message('featured:created');
+            forward('org/featured');
+        }
+        else
+        {
+            not_found();
+        }
+    }
+    
+    function action_save_featured()
+    {
+        $this->validate_security_token();
+    
+        $featuredSite = get_entity(get_input('guid'));
+        if ($featuredSite && $featuredSite instanceof FeaturedSite)
+        {
+            $featuredSite->setContent(get_input('content'), true);
+            $featuredSite->save();
+            system_message('featured:saved');
+            forward('org/featured');
+        }
+        else
+        {
+            not_found();
+        }
+    }    
+    
+    function action_edit_featured()
+    {
+        $guid = get_input('guid');
+        $featuredSite = get_entity($guid);
+        if ($featuredSite && $featuredSite instanceof FeaturedSite)
+        {
+            $title = __('featured:edit');
+            $body = elgg_view('admin/edit_featured', array('entity' => $featuredSite));
+            $this->page_draw($title, elgg_view_layout("one_column_padded", 
+                elgg_view_title($title), $body));        
+        }
+        else
+        {
+            not_found();
+        }
     }
 }

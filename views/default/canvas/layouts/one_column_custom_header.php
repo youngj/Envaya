@@ -1,43 +1,30 @@
-
-<div class="heading_container">
 <?php 
-    echo @$vars['area3']; 
-    echo elgg_view('messages/list', array('object' => system_messages(null,"")));
-    echo $vars['area1'];
+    ob_start();
 ?>
-</div>
-<div class="content_container">
-<div class="thin_column">    
-    <?php            
-        $submenu = get_submenu_group('topnav', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group'); 
-        if (!empty($submenu))
-        {
-            echo "<div id='site_menu'>$submenu<div style='clear:both'></div></div>";
-        }    
-        else
-        {
-            echo "<div id='no_site_menu'></div>";
-        }
-    ?>    
 
-    <div id='content'>
-        <div id='content_top'></div>
-        <div id='content_mid'>       
-            <?php echo elgg_view('translation/control_bar'); ?>
-            <?php echo $vars['area2']; ?>            
-            <div style='clear:both'></div>        
-        </div>        
-        <div id='content_bottom'></div>        
-    </div>
+<?php            
+    $submenu = get_submenu_group('topnav', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group'); 
+    if (!empty($submenu))
+    {
+        echo "<div id='site_menu'>$submenu<div style='clear:both'></div></div>";
+    }    
+    else
+    {
+        echo "<div id='no_site_menu'></div>";
+    }
+?>    
+
+<div id='content'>
+    <div id='content_top'></div>
+    <div id='content_mid'>       
+        <?php echo elgg_view('translation/control_bar'); ?>
+        <?php echo $vars['area2']; ?>            
+        <div style='clear:both'></div>        
+    </div>        
+    <div id='content_bottom'></div>        
 </div>
-</div>
-<div class="footer_container">
-<div class='thin_column'>
-<?php
-    echo get_submenu_group('footer', 'canvas_header/link_submenu', 'canvas_header/footer_submenu_group'); 
+
+<?php 
+    $content = ob_get_clean();
+    echo elgg_view_layout("content_shell", $vars['area1'], $content, @$vars['area3']);    
 ?>
-<div class='language'>        
-    <?php echo get_language_links(); ?>    
-</div>
-</div>
-</div>

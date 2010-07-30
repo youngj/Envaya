@@ -1,10 +1,19 @@
 <?php
     $widget = $vars['widget'];
-    $org = $widget->getContainerEntity();
-?>
+    $org = $widget->getContainerEntity();   
+        
+    ?>
 
 <div class='input'>
-    <label><?php echo __("widget:{$widget->widget_name}:label") ?></label>
+    <label><?php 
+    
+        $labelCode = "widget:{$widget->widget_name}:label";
+        $label = __($labelCode);
+        if ($label != $labelCode)
+        {
+            echo $label;
+        }
+    ?></label>
     <?php
         $helpCode = "widget:{$widget->widget_name}:help";
         $help = __($helpCode);
@@ -20,6 +29,7 @@
     <?php echo elgg_view("input/tinymce", array(
         'internalname' => 'content',
         'trackDirty' => true,
+        'allowCustomHTML' => $widget->allowUnsafeHTML(),
         'valueIsHTML' => $widget->hasDataType(DataType::HTML),
         'value' => $widget->content)); ?>
 

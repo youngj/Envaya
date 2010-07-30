@@ -1,6 +1,7 @@
-<p>
-<?php echo sprintf(__('feedback:instructions'), "<a href='mailto:info@envaya.org'>info@envaya.org</a>") ?>
-</p>
+<div class='section_content padded'>
+
+<?php echo $vars['widget']->renderContent(); ?>
+
 <form method="POST" action='pg/send_feedback'>
 <div class='input'>
 <label><?php echo __('feedback:message') ?>:</label>
@@ -35,3 +36,4 @@
 ?>
 
 </form>
+</div>

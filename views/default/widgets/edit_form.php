@@ -2,8 +2,11 @@
     $widget = $vars['widget'];
 
     $noSave = @$vars['noSave'];
-
-    $form_body = elgg_view('input/hidden', array('internalname' => 'widget_name', 'value' => $widget->widget_name));
+        
+    $form_body =  $vars['body'];
+    
+    $form_body .= elgg_view('input/hidden', array('internalname' => 'widget_name', 'value' => $widget->widget_name));
+    
 
     if ($widget->guid && $widget->isEnabled() && $widget->widget_name != 'home')
     {
@@ -29,7 +32,7 @@
 
 
     echo elgg_view('input/form', array(
-        'body' => $vars['body'] . $form_body,
+        'body' => $form_body,
         'action' => "{$widget->getContainerEntity()->getURL()}/{$widget->widget_name}/save",
         'enctype' => 'multipart/form-data'
     ));

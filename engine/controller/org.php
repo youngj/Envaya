@@ -266,7 +266,7 @@ class Controller_Org extends Controller
             }
 
             $homeWidget = $org->getWidgetByName('home');
-            $homeWidget->setContent($mission, false);
+            $homeWidget->setContent($mission, true);
 
             $org->language = get_input('content_language');
 
@@ -286,12 +286,22 @@ class Controller_Org extends Controller
 
             $homeWidget->save();
 
+            $prevSetupState = $org->setup_state;
+            
             $org->setup_state = 5;
             $org->save();
 
-            system_message(__("setup:ok"));
+            if ($prevSetupState < $org->setup_state && !$org->isApproved())
+            {
+                post_feed_items($org, 'register', $org);
 
-            trigger_elgg_event('register', 'organization', $org);
+                send_admin_mail(sprintf(__('email:registernotify:subject'), $org->name), 
+                    sprintf(__('email:registernotify:body'), $org->getURL().'?login=1')
+                );
+            }            
+            
+            system_message(__("setup:ok"));
+            
 
             forward($org->getUrl());
         }
@@ -531,5 +541,13 @@ class Controller_Org extends Controller
         system_message(__("trans:posted"));
 
         forward(get_input('from'));
+    }
+    
+    function action_featured()
+    {
+        page_set_translatable(false);
+        $title = __('featured:title');
+        $body = elgg_view('org/featured');
+        $this->page_draw($title, elgg_view_layout("one_column_padded", elgg_view_title($title), $body));
     }
 }

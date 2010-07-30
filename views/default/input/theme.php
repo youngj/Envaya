@@ -24,17 +24,17 @@ function themeChanged($theme)
 
 <?php
 
-    $themeOptions = array();
+    $optionsValues = array();
 
-    foreach (get_themes() as $theme)
+    foreach ($vars['options'] as $theme)
     {
-        $themeOptions[$theme] = __("theme:$theme");
+        $optionsValues[$theme] = __("theme:$theme");
     }
 
      echo elgg_view('input/pulldown', array(
         'internalname' => $name,
         'internalid' => 'themeList',
-        'options_values' => $themeOptions,
+        'options_values' => $optionsValues,
         //'empty_option' => __('sector:empty_option'),
         'value' => $curTheme,
         'js' => "onchange='themeChanged()' onkeypress='themeChanged()'"

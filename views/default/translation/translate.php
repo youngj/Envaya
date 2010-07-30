@@ -56,8 +56,19 @@ if ($isHTML)
         'value' => $curText));
 }
 else
-{
-    echo elgg_view("input/longtext", array('internalname' => 'translation', 'value' => $curText));
+{    
+    if (strlen($enText) > 50 || strpos($enText, "\n") !== FALSE)
+    {
+       $input = "input/longtext";
+       $js = "style='height:".(30+floor(strlen($enText)/50)*25)."px'";
+    }
+    else
+    {
+        $input = "input/text";
+        $js = '';
+    }
+
+    echo elgg_view($input, array('internalname' => 'translation', 'value' => $curText, 'js' => $js));
 }
 
 echo "<br>".

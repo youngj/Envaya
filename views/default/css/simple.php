@@ -95,14 +95,6 @@ body
     margin-top:0px;
 }
 
-.home #heading
-{
-    font-size: 15px;
-    color: #666;
-    font-family: Verdana, sans-serif;
-    padding:20px 10px;
-}
-
 .home_heading, .section_header
 {
     height:19px;
@@ -118,57 +110,16 @@ body
     margin:0px auto 4px auto;
 }
 
-.home_section
-{
-    background:url("<?php echo $graphicsDir; ?>/home_plate.gif?v4") no-repeat left 31px;
-    width:214px;
-    margin:0 auto;
-    height:190px;
-}
-
-.home_content
-{
-    padding:9px 12px;
-}
-
-.home_content a
-{
-    color:#555;
-    margin:5px 0px;
-}
-
 .heading_green
 {
     background-position:left bottom;
 }
 
-.icon_link
-{
-    background:url(<?php echo $graphicsDir; ?>/homeicons.gif) no-repeat left top;
-}
 
 .view_toggle
 {
     padding-bottom:3px;
 }
-
-.icon_signup            { background-position:left -80px; }
-a.icon_signup:hover     { background-position:left -120px; }
-
-.icon_help              { background-position:left 0px; }
-a.icon_help:hover       { background-position:left -40px; }
-
-.icon_logout            { background-position:left -160px; }
-a.icon_logout:hover     { background-position:left -200px; }
-
-.icon_explore           { background-position:left -240px; }
-a.icon_explore:hover    { background-position:left -280px; }
-
-.icon_search            { background-position:left -320px; }
-a.icon_search:hover     { background-position:left -360px; }
-
-.icon_feed              { background-position:left -400px; }
-a.icon_feed:hover       { background-position:left -440px; }
 
 .footer_container
 {

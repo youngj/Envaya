@@ -79,12 +79,6 @@ function translate_field($obj, $field, $isHTML = false)
         return '';
     }
 
-    $org = $obj->getRootContainerEntity();
-    if (!($org instanceof Organization))
-    {
-        return '';
-    }
-
     $origLang = $obj->getLanguage();
     $viewLang = get_language();
 

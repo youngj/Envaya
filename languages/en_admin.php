@@ -8,6 +8,9 @@
         'item:object:team_member' => "Team members",
         'item:user' => "Users",
         
+        'email:registernotify:subject' => "New organization registered: %s",
+        'email:registernotify:body' => "To view their website and approve or reject it, visit\n%s",
+        
         'username:changed' => "Username changed",
         'username:current' => "Current username",
         'username:new' => "New username",
@@ -426,6 +429,18 @@ Alternatively, you can enter your database settings below and we will try and do
         'comments' => 'Comments',  
         
         'actiongatekeeper:missingfields' => 'Form is missing __token or __ts fields',
+        
+        'featured:active' => '(Active)',
+        'featured:activate' => 'Activate',
+        'featured:edit' => 'Edit featured site',
+        'featured:add' => 'Add featured site',
+        
+        'widget:invalid_class' => 'The handler %s was not found.',
+        'widget:options' => 'Page Options',
+        'widget:title' => 'Page Title',
+        'widget:handler' => 'Page Handler (PHP Class Name)',
+        'widget:handler_arg' => 'Page Handler Argument (optional)',
+        'widget:menu_order' => 'Menu Order',
     );  
     
     global $CONFIG;

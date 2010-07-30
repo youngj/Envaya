@@ -28,12 +28,6 @@ class Controller_Profile extends Controller
     {
         $widgetName = $this->request->param('widgetname');
 
-        if ($this->org && in_array($widgetName, Widget::getAvailableNames()))
-        {
-            $widget = $this->org->getWidgetByName($widgetName);
-            return $this->index_widget($widget);
-        }
-
         if (!$this->org && $widgetName == 'home')
         {
             $widgetName = 'settings';
@@ -44,6 +38,12 @@ class Controller_Profile extends Controller
         {
             return $this->$methodName();
         }
+        
+        if ($this->org)
+        {
+            $widget = $this->org->getWidgetByName($widgetName);            
+            return $this->index_widget($widget);
+        }       
         else
         {
             not_found();
@@ -61,12 +61,6 @@ class Controller_Profile extends Controller
 
         $widgetName = $this->request->param('widgetname');
 
-        if ($this->org && in_array($widgetName, Widget::getAvailableNames()))
-        {
-            $widget = $this->org->getWidgetByName($widgetName);
-            $this->save_widget($widget);
-        }
-
         $methodName = "save_$widgetName";
         if (method_exists($this,$methodName))
         {
@@ -74,48 +68,85 @@ class Controller_Profile extends Controller
         }
         else
         {
-            not_found();
+            if ($this->org)
+            {
+                $widget = $this->org->getWidgetByName($widgetName);
+                $this->save_widget($widget);
+            }
+            else
+            {       
+                not_found();
+            }
         }
 
         forward(get_input('from') ?: $this->user->getURL());
     }
+    
+    function action_options()
+    {
+        $this->require_admin();
+        $this->require_org();
+        $this->use_editor_layout();
+        
+        page_set_translatable(false);
+        
+        $widgetName = $this->request->param('widgetname');
+        $widget = $this->org->getWidgetByName($widgetName);
+        
+        $title = __('widget:options');
+        $body = elgg_view('widgets/options', array('widget' => $widget));
+        
+        $this->page_draw($title, elgg_view_layout("one_column", elgg_view_title($title), $body));        
+    }
+    
+    function action_save_options()
+    {
+        $this->require_admin();
+        $this->require_org();
+        $this->validate_security_token();
+        
+        $widgetName = $this->request->param('widgetname');
+        $widget = $this->org->getWidgetByName($widgetName);
+        
+        $widget->handler_class = get_input('handler_class');
+        $widget->handler_arg = get_input('handler_arg');
+        $widget->title = get_input('title');
+        $widget->menu_order = (int)get_input('menu_order');
+        $widget->save();
+
+        forward($widget->getURL());
+    }
 
     function action_edit()
     {
+        page_set_translatable(false);
         $this->require_editor();
         $this->require_org();
 
         $org = $this->org;
         $widgetName = $this->request->param('widgetname');
 
-        if (!in_array($widgetName, Widget::getAvailableNames()))
+        $widget = $org->getWidgetByName($widgetName);
+
+        $widgetTitle = $widget->getTitle();
+
+        if ($widget->guid && $widget->isEnabled())
         {
-            not_found();
+            $title = sprintf(__("widget:edittitle"), $widgetTitle);
         }
         else
         {
-            $widget = $org->getWidgetByName($widgetName);
-
-            $widgetTitle = __("widget:{$widget->widget_name}");
-
-            if ($widget->guid && $widget->isEnabled())
-            {
-                $title = sprintf(__("widget:edittitle"), $widgetTitle);
-            }
-            else
-            {
-                $title = sprintf(__("widget:edittitle:new"), $widgetTitle);
-            }
-
-            $cancelUrl = get_input('from') ?: $widget->getUrl();
-
-            add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
-
-            $body = elgg_view_layout('one_column',
-                elgg_view_title($title), $widget->renderEdit());
-
-            $this->page_draw($title, $body);
+            $title = sprintf(__("widget:edittitle:new"), $widgetTitle);
         }
+
+        $cancelUrl = get_input('from') ?: $widget->getUrl();
+
+        add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
+
+        $body = elgg_view_layout('one_column',
+            elgg_view_title($title), $widget->renderEdit());
+
+        $this->page_draw($title, $body);
     }
 
     function use_public_layout()
@@ -237,7 +268,7 @@ class Controller_Profile extends Controller
 
         if ($widget && $widget->widget_name == 'home')
         {
-            $subtitle = $org->getLocationText(false);
+            $subtitle = $widget->title ? translate_field($widget, 'title', false) : $org->getLocationText(false);
             $title = '';
         }
         else if (!$widget || !$widget->isActive())
@@ -246,7 +277,7 @@ class Controller_Profile extends Controller
         }
         else
         {
-            $subtitle = __("widget:{$widget->widget_name}");
+            $subtitle = $widget->getTitle();
             $title = $subtitle;
         }
 
@@ -263,7 +294,7 @@ class Controller_Profile extends Controller
 
             if (isadminloggedin())
             {
-                $preBody .= elgg_view("org/admin_box", array('entity' => $org));
+                $preBody .= elgg_view("admin/org_actions", array('entity' => $org, 'widget' => $widget));
             }
 
             if ($org->canCommunicateWith())
@@ -332,10 +363,12 @@ class Controller_Profile extends Controller
     }
 
     function index_dashboard()
-    {
+    {    
         $this->require_editor();
         $this->require_org();
-
+        
+        page_set_translatable(false);
+        
         $org = $this->org;
         if ($org->guid == get_loggedin_userid())
         {

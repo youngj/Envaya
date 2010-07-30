@@ -13,19 +13,7 @@ class Controller_Page extends Controller
         }
         else
         {
-            $area = elgg_view("page/$pageName");
-            if (!$area)
-            {
-                not_found();
-            }
-            else
-            {
-                $title = __("$pageName:title");
-                $args = array('org_only' => (in_array($pageName, array('why'))));
-
-                $body = elgg_view_layout('one_column_padded', elgg_view_title($title, $args), $area);
-                $this->page_draw($title, $body);
-            }
+            forward("envaya/$pageName");
         }
     }
 }

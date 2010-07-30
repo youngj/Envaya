@@ -219,7 +219,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         /* set up homepage */
         $this->mouseOver("//div[@class='good_messages']");
 
-        $this->type("//textarea[@name='mission']", "testing the website");
+        $this->typeInFrame("//iframe", "testing the website");
         $this->check("//input[@name='sector[]' and @value='3']");
         $this->check("//input[@name='sector[]' and @value='99']");
         $this->type("//input[@name='sector_other']", "another sector");
@@ -272,12 +272,12 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     {
         $this->clickAndWait("//a[contains(@href,'lang=sw')]");
         $this->mouseOver("//div[@class='section_header' and contains(text(),'Lengo')]");
-        $this->mouseOver("//div[contains(@class, 'section_content') and contains(text(),'website')]");
+        $this->mouseOver("//div[contains(@class, 'section_content')]//p[contains(text(),'website')]");
         $this->clickAndWait("//a[contains(@href,'trans=3')]");
-        $this->mustNotExist("//div[contains(@class, 'section_content') and contains(text(),'website')]");
-        $this->mouseOver("//div[contains(@class, 'section_content') and contains(text(),'tovuti')]");
+        $this->mustNotExist("//div[contains(@class, 'section_content')]//p[contains(text(),'website')]");
+        $this->mouseOver("//div[contains(@class, 'section_content')]//p[contains(text(),'tovuti')]");
         $this->clickAndWait("//a[contains(@href,'lang=en')]");
-        $this->mouseOver("//div[contains(@class, 'section_content') and contains(text(),'website')]");
+        $this->mouseOver("//div[contains(@class, 'section_content')]//p[contains(text(),'website')]");
     }
 
     private function _testEditHome()
@@ -393,7 +393,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
         $this->mouseOver("//div[@class='good_messages']");
 
-        $this->type("//textarea[@name='mission']", "being a partner");
+        $this->typeInFrame("//iframe", "being a partner");
         $this->check("//input[@name='sector[]' and @value='4']");
         $this->check("//input[@name='sector[]' and @value='99']");
         $this->type("//input[@name='city']", "Konde");

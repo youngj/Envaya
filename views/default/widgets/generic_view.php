@@ -4,7 +4,7 @@
 
     if (!$widget->content)
     {
-        echo sprintf(__('widget:empty'), escape(__("widget:{$widget->widget_name}")));
+        echo sprintf(__('widget:empty'), escape($widget->getTitle()));
     }
     else
     {

@@ -73,6 +73,11 @@
             );
         }
 
+        public function allowUnsafeHTML()
+        {
+            return $this->username == 'envaya'; // could make this DB property if necessary
+        }
+        
         public function isSetupComplete()
         {
             return !$this->subtype || $this->setup_state >= 5;

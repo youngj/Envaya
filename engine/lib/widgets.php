@@ -6,41 +6,100 @@ class Widget extends ElggObject
     static $table_name = 'widgets';
     static $table_attributes = array(
         'widget_name' => 0,
+        'menu_order' => 0,
+        'handler_class' => '',
+        'handler_arg' => '',
+        'title' => '',
         'content' => '',
         'data_types' => 0,
         'language' => '',
     );
-
-    static function getAvailableNames()
+    
+    static $defaultWidgets = array(
+        'home'          => array('menu_order' => 10, 'handler_class' => 'WidgetHandler_Home'),
+        'news'          => array('menu_order' => 20, 'handler_class' => 'WidgetHandler_News'),
+        'projects'      => array('menu_order' => 30, 'handler_class' => 'WidgetHandler_Generic'),
+        'history'       => array('menu_order' => 40, 'handler_class' => 'WidgetHandler_Generic'),
+        'team'          => array('menu_order' => 50, 'handler_class' => 'WidgetHandler_Generic'),
+        'partnerships'  => array('menu_order' => 60, 'handler_class' => 'WidgetHandler_Partnerships'),
+        'contact'       => array('menu_order' => 70, 'handler_class' => 'WidgetHandler_Contact'),
+    );    
+    
+    static function getDefaultNames()
     {
-        return array('home', 'news', 'projects', 'history', 'team', 'partnerships', 'contact');
+        return array_keys(static::$defaultWidgets);
+    }
+    
+    public function getMenuOrder()
+    {
+        return $this->menu_order ?: @static::$defaultWidgets[$this->widget_name]['menu_order'] ?: 100;
     }
 
     public function getTitle()
     {
-        return __("widget:{$this->widget_name}");
+        if ($this->title)
+        {
+            return translate_field($this, 'title', false);
+        }
+        else
+        {
+            $key = "widget:{$this->widget_name}";
+            $title = __($key);
+            return ($title != $key) ? $title : __('widget:new');
+        }
+    }    
+    
+    function getHandlerClass()
+    {
+        $handlerCls = $this->handler_class;
+        if (!$handlerCls)
+        {
+            $handlerCls = @static::$defaultWidgets[$this->widget_name]['handler_class'] ?: 'WidgetHandler_Generic';
+        }
+        return $handlerCls;
+    }    
+    
+    function getHandler()
+    {
+        try
+        {
+            $handlerCls = new ReflectionClass($this->getHandlerClass());
+            
+            if ($this->handler_arg)
+            {
+                return $handlerCls->newInstance($this->handler_arg);
+            }
+            else
+            {
+                return $handlerCls->newInstance();            
+            }            
+        }
+        catch (ReflectionException $ex)
+        {        
+            return new WidgetHandler_Invalid();
+        }        
     }
-
+    
     function renderView()
     {
-        $res = elgg_view("widgets/{$this->widget_name}_view", array('widget' => $this));
-        if ($res)
-        {
-            return $res;
-        }
-        return elgg_view("widgets/generic_view", array('widget' => $this));
+        return $this->getHandler()->view($this);
     }
 
     function renderEdit()
     {
-        $res = elgg_view("widgets/{$this->widget_name}_edit", array('widget' => $this));
-        if ($res)
-        {
-            return $res;
-        }
-        return elgg_view("widgets/generic_edit", array('widget' => $this));
+        return $this->getHandler()->edit($this);
     }
 
+    function saveInput()
+    {
+        return $this->getHandler()->save($this);
+    }
+    
+    public function hasImage()
+    {
+        return ($this->data_types & DataType::Image) != 0;
+    }    
+        
     function getURL()
     {
         $org = $this->getContainerEntity();
@@ -55,137 +114,40 @@ class Widget extends ElggObject
         }
     }
 
-    function getEditURL()
+    function getBaseURL()
     {
         $org = $this->getContainerEntity();
-        return "{$org->getURL()}/{$this->widget_name}/edit";
-    }
-
-    function saveInput()
+        return "{$org->getURL()}/{$this->widget_name}";
+    }    
+    
+    function getEditURL()
     {
-        $fn = "save_widget_{$this->widget_name}";
-        if (!is_callable($fn))
-        {
-            $fn = "save_widget";
-        }
-        $fn($this);
+        return "{$this->getBaseURL()}/edit";
     }
-
-    public function getImageFile($size = '')
+    
+    public function allowUnsafeHTML()
     {
-        $file = new ElggFile();
-        $file->owner_guid = $this->container_guid;
-        $file->setFilename("widget/{$this->guid}$size.jpg");
-        return $file;
+        $container = $this->getContainerEntity();
+        return ($container && $container->allowUnsafeHTML());
     }
-
-    public function hasImage()
-    {
-        return ($this->data_types & DataType::Image) != 0;
-    }
-
-    public function getImageURL($size = 'large')
-    {
-        return $this->hasImage() ? ($this->getImageFile($size)->getURL()."?{$this->time_updated}") : "";
-    }
-
-    static function getImageSizes()
-    {
-        return array(
-            'small' => '150x150',
-            'medium' => '260x260',
-            'large' => '520x520',
-        );
-    }
-
+        
     public function isActive()
     {
         return $this->guid && $this->isEnabled();
     }
 }
 
-function save_widget($widget)
+function widget_sort($a, $b)
 {
-    $prevContent = $widget->content;
-
-    $widget->setContent(get_input('content'), true);
-    $widget->save();
-
-    if (!$prevContent && $widget->content)
-    {
-        post_feed_items($widget->getContainerEntity(), 'new_widget', $widget);
-    }
+    $aOrder = $a->getMenuOrder();
+    $bOrder = $b->getMenuOrder();
+    return $aOrder - $bOrder;
 }
 
-function save_widget_home($widget)
+abstract class WidgetHandler
 {
-    $org = $widget->getContainerEntity();
-
-    $mission = get_input('content');
-    if (!$mission)
-    {
-        throw new InvalidParameterException(__("setup:mission:blank"));
-    }
-
-    $sectors = get_input_array('sector');
-    if (sizeof($sectors) == 0)
-    {
-        throw new InvalidParameterException(__("setup:sector:blank"));
-    }
-    else if (sizeof($sectors) > 5)
-    {
-        throw new InvalidParameterException(__("setup:sector:toomany"));
-    }
-
-    $org->setSectors($sectors);
-    $org->sector_other = get_input('sector_other');
-
-    $org->latitude = get_input('org_lat');
-    $org->longitude = get_input('org_lng');
-
-    $org->region = get_input('region');
-    $org->city = get_input('city');
-
-    $org->save();
-
-    $widget->setContent($mission, true);
-
-    $widget->included = get_input_array('included');
-    $widget->zoom = get_input('map_zoom');
-    $widget->save();
-
+    abstract function view($widget);
+    abstract function edit($widget);
+    abstract function save($widget);
 }
 
-function save_widget_contact($widget)
-{
-    $org = $widget->getContainerEntity();
-
-    $email = trim(get_input('email'));
-
-    validate_email_address($email);
-
-    $org->email = $email;
-    $widget->public_email = sizeof(get_input_array('public_email')) ? 'yes' : 'no';
-
-    $org->phone_number = get_input('phone_number');
-    $widget->public_phone = sizeof(get_input_array('public_phone')) ? 'yes' : 'no';
-    $org->contact_name = get_input('contact_name');
-    $org->contact_title = get_input('contact_title');
-    $org->street_address = get_input('street_address');
-    $org->mailing_address = get_input('mailing_address');
-    $org->save();
-    $widget->save();
-}
-
-function save_widget_partnerships($widget)
-{
-    $org = $widget->getContainerEntity();
-    $partnerships = $org->getPartnerships();
-
-    foreach($partnerships as $p)
-    {
-        $p->description = get_input("partnershipDesc{$p->guid}");
-        $p->save();
-    }
-    $widget->save();
-}

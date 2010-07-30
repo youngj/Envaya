@@ -23,7 +23,11 @@
     $controls = "";
     if ($vars['entity']->canEdit())
     {
-        $controls .= " (<a href=\"admin/delete_entity?guid={$vars['entity']->guid}\">" . __('delete') . "</a>)";
+        $controls .= " (".elgg_view('output/confirmlink', array(
+            'text' => __('delete'),
+            'is_action' => true,
+            'href' => "admin/delete_entity?guid={$vars['entity']->guid}"
+        )).")";        
     }
 
     $info = "<div><p><b><a href=\"" . $vars['entity']->getUrl() . "\">" . escape($title) . "</a></b> $controls </p></div>";

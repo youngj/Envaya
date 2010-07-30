@@ -516,7 +516,7 @@ h3.settings {
 {
     width:100%;
     /* height:48px; */
-    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient.gif?v5") repeat-x left -1px;
+    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient_sm.gif?v5") repeat-x left -1px;
 }
 
 #topRight
@@ -536,27 +536,32 @@ h3.settings {
     display:inline;
 }
 
+.topbarLinks
+{
+    font-size:12px;
+}
+
 .topbarLinks a
 {
     display:block;
     float:left;
-    padding:14px 20px 10px 20px;
+    padding:13px 18px 10px 18px;
     border-left:1px solid #5d5d5d;
     border-right:1px solid #2f2f2f;
-    height:23px;
+    height:19px;
     color:#e6e6e6;
 }
 
 .topbarLinks a:hover
 {
-    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient.gif?v5") repeat-x left -49px;
+    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient_sm.gif?v5") repeat-x left -44px;
     color:#e6e6e6;
     text-decoration:none;
 }
 
 .topbarLinks a#logoContainer
 {
-    padding:8px 22px 16px 15px;
+    padding:6px 10px 16px 10px;
     overflow:hidden;
     border-left:0px;
 }
@@ -569,28 +574,28 @@ h3.settings {
 
 #loginButton, #loggedinArea
 {
-    width:166px;
+    width:159px;
     display:block;
 }
 
 #loginButton
 {
-    height:47px;
+    height:42px;
 }
 
 #loginButton
 {
-    background:#4d4d4d url(<?php echo $graphicsDir; ?>/loginbutton_sm.gif) no-repeat left top;
+    background:#4d4d4d url(<?php echo $graphicsDir; ?>/loginbutton_sm.gif?v3) no-repeat left top;
 }
 
 a#loginButton:hover
 {
-    background-position:left -46px;
+    background-position:left -41px;
 }
 
 #loggedinArea
 {
-    background:url(<?php echo $graphicsDir; ?>/loggedinarea_rounded.gif?v2) no-repeat left top;
+    background:url(<?php echo $graphicsDir; ?>/loggedinarea_rounded.gif?v2) no-repeat left -5px;
 }
 
 a#loginButton:hover
@@ -612,17 +617,17 @@ a#loginButton:hover .loginContent span
 #loginButton .loginContent
 {
     display:block;
-    padding-top:12px;
+    padding-top:10px;
     text-align:center;
     color:#e6e6e6;
-    font-weight:bold;
+    font-weight:bold;    
 }
 
 .loggedInAreaContent
 {
     display:block;
     height:30px;
-    padding:10px 0px 6px 0px;
+    padding:8px 0px 3px 0px;
     text-align:center;
     color:#e6e6e6;
     font-weight:bold;
@@ -1038,12 +1043,6 @@ a.selected
 .homeLanguages
 {
     text-align: center;
-}
-
-.homeHeading
-{
-    padding:5px 10px 10px 10px;
-    font:16px Arial;
 }
 
 .instructions
@@ -1629,3 +1628,21 @@ a.feed_image_link:hover
     border: 1px solid #7391a9;
 }
 
+.top_language
+{
+    float:right;
+    padding:11px 10px 8px 5px;
+    color:white;
+    color:#e6e6e6;
+}   
+
+.featured_site
+{
+    padding-bottom:5px;
+}
+
+.admin_links, .admin_links a
+{
+    color:red;
+    font-size:10px;
+}

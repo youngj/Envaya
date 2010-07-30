@@ -53,7 +53,7 @@ add_translation("sw",array(
     'about:team' => 'Tovuti ya Envaya inaendeshwa na %s ya wahandisi wa programu ya kompyuta na watu wanaojitolea kwa ajili ya maendeleo ya kimataifa toka Marekani, Kanada, na Tanzania.',
     'about:small_team' => 'timu ndogo',
     'about:donate' => 'Saidia Envaya kwa kuchangia leo!',
-    'feed' => 'Habari',
+    'feed' => 'Mabadiliko',
     'feed:title' => 'Mabadiliko mapya',
     'feed:registered' => '%s imejiunga na Envaya.',
     'feed:new_widget' => '%s imeumba ukurasa wa %s.',

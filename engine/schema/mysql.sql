@@ -144,10 +144,27 @@ CREATE TABLE `news_updates` (
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
+CREATE TABLE `featured_sites` (
+  `guid` bigint(20) unsigned  NOT NULL,
+  `user_guid` bigint(20) unsigned  NOT NULL,  
+  `content` text NOT NULL,
+  `data_types` int NOT NULL,
+  `language` varchar(4) default null,
+  `active` tinyint(4) default 0,
+  
+  PRIMARY KEY  (`guid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
 CREATE TABLE `widgets` (
   `guid` bigint(20) unsigned  NOT NULL,
-  
+    
   `widget_name` varchar(32) NOT NULL,
+  `handler_class` varchar(32) NULL,
+  `menu_order` int null,
+  `handler_arg` varchar(64) NULL,
+  `title` varchar(64) NULL,
   `content` text NOT NULL,
   `data_types` int NOT NULL,
   `language` varchar(4) default null,

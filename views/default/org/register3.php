@@ -18,11 +18,15 @@
 <div class='help'>
 <?php echo __('setup:mission:help') ?>
 </div>
-<?php echo elgg_view('input/longtext', array(
-    'internalname' => 'mission',
-    'trackDirty' => true,
-    'value' => $org->getWidgetByName('home')->content
-)) ?>
+<?php 
+    $homeWidget = $org->getWidgetByName('home');
+    echo elgg_view('input/tinymce', array(
+        'internalname' => 'mission',
+        'trackDirty' => true,
+        'valueIsHTML' => $homeWidget->hasDataType(DataType::HTML),
+        'value' => $homeWidget->content
+    )); 
+?>
 </div>
 
 
@@ -80,6 +84,7 @@
 <?php echo elgg_view('input/theme', array(
     'internalname' => 'theme',
     'value' => $org->theme ?: 'green',
+    'options' => $org->getAvailableThemes(),
     'previewUrl' => $org->getURL()
 )); ?>
 

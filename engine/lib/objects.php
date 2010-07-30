@@ -71,11 +71,19 @@
             $this->save();
         }
 
+        public function allowUnsafeHTML()
+        {
+            return false;
+        }
+        
         public function setContent($content, $isHTML)
         {
             if ($isHTML)
             {
-                $content = sanitize_html($content);
+                if (!$this->allowUnsafeHTML())
+                {
+                    $content = sanitize_html($content);
+                }
             }
             else
             {
@@ -135,9 +143,9 @@
             }
         }
 
-        static function all($limit = 10, $offset = 0)
+        static function all($limit = 10, $offset = 0, $count = false)
         {
-            return static::filterByCondition(array(), array(), 'time_created desc', $limit, $offset);
+            return static::filterByCondition(array(), array(), 'time_created desc', $limit, $offset, $count);
         }
 
         static function getByCondition($where, $args)

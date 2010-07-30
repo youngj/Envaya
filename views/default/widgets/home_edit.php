@@ -6,6 +6,7 @@
     ob_start();
 ?>
 
+
 <div class='section_header'><?php echo __("header"); ?></div>
 <div class='section_content padded'>
     <div class='header_preview'>
@@ -27,7 +28,8 @@
 
 <div class='section_header'><?php echo __("org:mission"); ?></div>
 <div class='section_content padded'>
-<div class='input'>
+<div class='input'>    
+
     <label><?php echo __('setup:mission') ?></label>
     <?php echo elgg_view("input/tinymce", array(
         'internalname' => 'content',

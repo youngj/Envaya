@@ -12,7 +12,8 @@
     foreach ($widgets as $widget)
     {
         $class = (!$widget->guid) ? 'class="widget_disabled"' : '';
-        $widgetList[] .= "<a $class href='{$widget->getEditURL()}?from=pg/dashboard'><span>".__("widget:{$widget->widget_name}")."</span></a>";
+        $widgetList[] .= "<a $class href='{$widget->getEditURL()}?from=pg/dashboard'><span>".
+            escape($widget->getTitle())."</span></a>";
     }
 
     $widgets = "<div id='edit_pages_menu'>".implode(' ', $widgetList)."</div>";

@@ -8,8 +8,9 @@
 <?php echo elgg_view('input/securitytoken'); ?>
 
 Subject: <?php echo __('email:reminder:subject', $org->language) ?>
-</div>
-<iframe src='admin/view_email?username=<?php echo $org->username ?>' width='580' height='400'></iframe>
+<br />
+<br />
+<iframe src='admin/view_email?username=<?php echo $org->username ?>' width='560' height='350'></iframe>
 
 <?php
 
@@ -28,5 +29,5 @@ echo elgg_view('input/submit',array(
     'value' => __('message:send')
 ));
 ?>
-
+</div>
 </form>
