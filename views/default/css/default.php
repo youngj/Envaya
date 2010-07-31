@@ -1639,6 +1639,7 @@ a.feed_image_link:hover
 
 .featured_site
 {
+    clear:both;
     padding-bottom:5px;
 }
 
