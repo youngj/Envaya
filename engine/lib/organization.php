@@ -560,6 +560,7 @@ function envaya_init()
         elgg_view_register_simplecache("css/$theme");
     }
 
+    elgg_view_register_simplecache("css/home");
     elgg_view_register_simplecache("css/sidebar");
     elgg_view_register_simplecache("css/admin");
     elgg_view_register_simplecache("css/simple");
