@@ -27,28 +27,14 @@
 <td width='330' rowspan='2' style='background-color:#ece9e3;'>
 <div class='home_section'>
     <div class='home_heading heading_gray'><div><?php echo __("home:whatwedo") ?></div></div>
-    <div class='home_about'>
-    <!--
-    <p>Around the world, countless grassroots civil society organizations are working to improve
-their communities. They advocate for positive change, encourage good governance, 
-develop new approaches to poverty reduction, and lead projects that range from 
-HIV/AIDS education programs to running orphanages to planting trees.
-</p>
-<p>
-As information technology spreads around the world, more and more grassroots organizations 
-want their own websites to better communicate with the rest of the world. But for people in 
-countries like Tanzania, creating websites can be difficult.
-</p>
--->
+    <div class='home_about'>   
 <p>
 <?php echo __('home:description').' '; ?>
 <a class='feed_more' href='/envaya'><?php echo __('home:learn_more') ?></a>
 
 </p>
 <div style='text-align:center'>
-<a href='/envaya'>
-<img src='_graphics/dar_conference_smiling.jpg' width='200' height='150'>
-</a>
+<a href='/envaya' style='margin:0 auto;display:block;width:200px;height:150px;background-image:url(_graphics/dar_conference_smiling.jpg)'></a>
 </div>
     </div>
 </div>
