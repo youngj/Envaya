@@ -9,6 +9,17 @@
 
 <br /><br />
 
+<div class='input'>
+<label><?php echo __('featured:image'); ?></label>
+<?php echo elgg_view('admin/featured_image', array(
+    'internalname' => 'image_url',
+    'org' => $org, 
+    'value' => $entity->image_url
+)); 
+?>
+</div>
+<div class='input'>
+<label><?php echo __('featured:text'); ?></label>
 <?php
 
     echo elgg_view('input/tinymce',
@@ -20,6 +31,10 @@
             'trackDirty' => true
         )
     );
+    
+?>
+</div>
+<?php
 
     echo elgg_view('input/submit',
         array('internalname' => 'submit',

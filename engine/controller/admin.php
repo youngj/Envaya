@@ -385,6 +385,7 @@ class Controller_Admin extends Controller
         {
             $featuredSite = new FeaturedSite();
             $featuredSite->container_guid = $user->guid;
+            $featuredSite->image_url = get_input('image_url');
             $featuredSite->setContent(get_input('content'), true);
             $featuredSite->save();
             system_message('featured:created');
@@ -403,6 +404,7 @@ class Controller_Admin extends Controller
         $featuredSite = get_entity(get_input('guid'));
         if ($featuredSite && $featuredSite instanceof FeaturedSite)
         {
+            $featuredSite->image_url = get_input('image_url');
             $featuredSite->setContent(get_input('content'), true);
             $featuredSite->save();
             system_message('featured:saved');

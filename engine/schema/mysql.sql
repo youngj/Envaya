@@ -148,6 +148,7 @@ CREATE TABLE `news_updates` (
 CREATE TABLE `featured_sites` (
   `guid` bigint(20) unsigned  NOT NULL,
   `user_guid` bigint(20) unsigned  NOT NULL,  
+  `image_url` text default null,
   `content` text NOT NULL,
   `data_types` int NOT NULL,
   `language` varchar(4) default null,

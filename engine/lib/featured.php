@@ -10,6 +10,7 @@ class FeaturedSite extends ElggObject
     static $table_attributes = array(
         'user_guid' => 0,
         'content' => '',
+        'image_url' => '',
         'data_types' => 0,
         'language' => '',
         'active' => 0,

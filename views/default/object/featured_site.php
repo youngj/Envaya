@@ -9,6 +9,10 @@ if ($org)
 <div class='featured_site'>
 <strong><a href='<?php echo $org->getURL() ?>'><?php echo escape($org->name) ?></a></strong><br />
 <?php 
+if ($entity->image_url)
+{
+    echo "<a href='{$org->getURL()}'><img src='".escape($entity->image_url)."' class='image_left' style='margin-top:4px' /></a>";
+}
 echo $entity->renderContent(); ?>
 
 <?php if ($vars['full']) { ?>
