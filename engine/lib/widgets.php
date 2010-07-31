@@ -7,6 +7,7 @@ class Widget extends ElggObject
     static $table_attributes = array(
         'widget_name' => 0,
         'menu_order' => 0,
+        'in_menu' => 1,
         'handler_class' => '',
         'handler_arg' => '',
         'title' => '',
@@ -20,7 +21,7 @@ class Widget extends ElggObject
         'news'          => array('menu_order' => 20, 'handler_class' => 'WidgetHandler_News'),
         'projects'      => array('menu_order' => 30, 'handler_class' => 'WidgetHandler_Generic'),
         'history'       => array('menu_order' => 40, 'handler_class' => 'WidgetHandler_Generic'),
-        'team'          => array('menu_order' => 50, 'handler_class' => 'WidgetHandler_Generic'),
+        'team'          => array('menu_order' => 50, 'handler_class' => 'WidgetHandler_Team'),
         'partnerships'  => array('menu_order' => 60, 'handler_class' => 'WidgetHandler_Partnerships'),
         'contact'       => array('menu_order' => 70, 'handler_class' => 'WidgetHandler_Contact'),
     );    
@@ -30,6 +31,15 @@ class Widget extends ElggObject
         return array_keys(static::$defaultWidgets);
     }
     
+    static function getImageSizes()
+    {
+        return array(
+            'small' => '150x150',
+            'medium' => '260x260',
+            'large' => '520x520',
+        );
+    }    
+        
     public function getMenuOrder()
     {
         return $this->menu_order ?: @static::$defaultWidgets[$this->widget_name]['menu_order'] ?: 100;

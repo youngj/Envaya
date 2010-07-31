@@ -72,14 +72,6 @@ class NewsUpdate extends ElggObject
         return friendly_time($this->time_created);
     }
 
-    static function getImageSizes()
-    {
-        return array(
-            'small' => '100x100',
-            'large' => '450x450',
-        );
-    }
-
     public static function filterByOrganizations($orgs, $limit = 10, $offset = 0)
     {
         if (empty($orgs))

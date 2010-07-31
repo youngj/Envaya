@@ -1634,6 +1634,7 @@ a.feed_image_link:hover
     padding:11px 10px 8px 5px;
     color:white;
     color:#e6e6e6;
+    white-space:nowrap;
 }   
 
 .featured_site

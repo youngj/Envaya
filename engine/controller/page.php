@@ -11,9 +11,17 @@ class Controller_Page extends Controller
         {
             not_found();
         }
+        else if ($pageName == 'about')
+        {
+            forward("/envaya");
+        }
+        else if ($pageName == 'donate')
+        {
+            forward("/envaya/contribute");
+        }
         else
         {
-            forward("envaya/$pageName");
+            forward("/envaya/$pageName");
         }
     }
 }

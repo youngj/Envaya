@@ -163,6 +163,7 @@ CREATE TABLE `widgets` (
   `widget_name` varchar(32) NOT NULL,
   `handler_class` varchar(32) NULL,
   `menu_order` int null,
+  `in_menu` tinyint(4) default 1,
   `handler_arg` varchar(64) NULL,
   `title` varchar(64) NULL,
   `content` text NOT NULL,

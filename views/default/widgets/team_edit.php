@@ -47,7 +47,10 @@ echo elgg_view("widgets/edit_content", array('widget' => $widget));
     'jsname' => 'teamImageUploader',
     'internalid' => 'image',
     'trackDirty' => true,
-    'sizes' => TeamMember::getImageSizes()
+    'sizes' => array(
+            'small' => '150x150',
+            'large' => '450x450',
+        )
 )) ?>
 
 </div>

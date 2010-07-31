@@ -11,7 +11,7 @@ if (get_input('__topbar') !== '0') {
     <a id='logoContainer' href="home">
         <img src="_graphics/logo.gif?v5" alt="Envaya" width="145" height="30">
     </a>
-    <a href='envaya/about'><?php echo __('about:link') ?></a>
+    <a href='envaya'><?php echo __('about:link') ?></a>
     <a href='org/browse'><?php echo __('browse') ?></a>
     <a href='org/search'><?php echo __('search') ?></a>
     <a href='org/feed'><?php echo __('feed') ?></a>    

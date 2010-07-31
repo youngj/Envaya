@@ -36,7 +36,6 @@ echo elgg_view('input/text', array(
 ?>
 </div>
 
-<div class='input'>
 <table style='float:right;font-size:10px;'>
 
 <?php 
@@ -46,6 +45,17 @@ echo elgg_view('input/text', array(
     }
 ?>
 </table>
+<div class='input'>
+<label><?php echo __('widget:in_menu'); ?></label><br />
+<?php
+echo elgg_view('input/radio', array(
+    'internalname' => 'in_menu',
+    'options' => yes_no_options(),
+    'value' => $widget->in_menu ? 'yes' : 'no',
+));
+?>
+</div>
+<div class='input'>
 <label><?php echo __('widget:menu_order'); ?></label><br />
 <?php
 echo elgg_view('input/text', array(
@@ -54,7 +64,7 @@ echo elgg_view('input/text', array(
     'js' => 'style="width:100px"'
 ));
 ?>
-
+</div>
 <div style='clear:both'></div>
 </div>
 

@@ -392,6 +392,7 @@ Alternatively, you can enter your database settings below and we will try and do
         'widget:handler' => 'Page Handler (PHP Class Name)',
         'widget:handler_arg' => 'Page Handler Argument (optional)',
         'widget:menu_order' => 'Menu Order',
+        'widget:in_menu' => 'Show in Menu?',
     );  
     
     global $CONFIG;

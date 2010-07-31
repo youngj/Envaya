@@ -506,6 +506,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
                 $this->s->getConfirmation();
             }
             catch (Testing_Selenium_Exception $ex) {}
+            sleep(1);
 
             try
             {
@@ -514,6 +515,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
             }
             catch (Testing_Selenium_Exception $ex) {}
 
+            sleep(1);
             $this->clickAndWait("//a[contains(@href,'delete')]");
             $this->s->getConfirmation();
 

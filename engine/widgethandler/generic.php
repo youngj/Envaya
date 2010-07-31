@@ -15,6 +15,12 @@ class WidgetHandler_Generic extends WidgetHandler
     {
         $prevContent = $widget->content;
 
+        $title = get_input('title');
+        if ($title)
+        {
+            $widget->title = $title;
+        }
+        
         $widget->setContent(get_input('content'), true);
         $widget->save();
 

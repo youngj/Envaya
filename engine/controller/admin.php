@@ -319,7 +319,15 @@ class Controller_Admin extends Controller
         else
             register_error(sprintf(__('entity:delete:fail'), $guid));
 
-        forward_to_referrer();
+        $next = get_input('next');
+        if ($next)
+        {
+            forward($next);
+        }
+        else
+        {
+            forward_to_referrer();
+        }
     }
     
     function action_add_featured()

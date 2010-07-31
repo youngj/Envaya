@@ -42,11 +42,11 @@ countries like Tanzania, creating websites can be difficult.
 -->
 <p>
 <?php echo __('home:description').' '; ?>
-<a class='feed_more' href='/envaya/about'><?php echo __('home:learn_more') ?></a>
+<a class='feed_more' href='/envaya'><?php echo __('home:learn_more') ?></a>
 
 </p>
 <div style='text-align:center'>
-<a href='/envaya/about'>
+<a href='/envaya'>
 <img src='_graphics/dar_conference_smiling.jpg' width='200' height='150'>
 </a>
 </div>
@@ -55,7 +55,7 @@ countries like Tanzania, creating websites can be difficult.
 </td>
 </tr>
 <tr>
-<td colspan='2'>
+<td colspan='2' width='420'>
 <div class='home_featured'>
 <div class='home_featured_heading'><?php echo __('featured:home_heading') ?></div>
 <?php

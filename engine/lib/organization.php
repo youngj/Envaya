@@ -535,7 +535,7 @@ function add_org_menu($org)
 {
     foreach ($org->getAvailableWidgets() as $widget)
     {
-        if ($widget->isActive())
+        if ($widget->isActive() && $widget->in_menu)
         {
             add_submenu_item($widget->getTitle(), rewrite_to_current_domain($widget->getURL()));
         }
@@ -544,9 +544,9 @@ function add_org_menu($org)
 
 function add_generic_footer()
 {
-    add_submenu_item(__('about:link'), "/envaya/about", 'footer');
+    add_submenu_item(__('about:link'), "/envaya", 'footer');
     add_submenu_item(__('contact:link'), "/envaya/contact", 'footer');
-    add_submenu_item(__('donate:link'), "/envaya/donate", 'footer');
+    add_submenu_item(__('donate:link'), "/envaya/contribute", 'footer');
 }
 
 function envaya_init()

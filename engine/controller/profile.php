@@ -112,6 +112,7 @@ class Controller_Profile extends Controller
         $widget->handler_arg = get_input('handler_arg');
         $widget->title = get_input('title');
         $widget->menu_order = (int)get_input('menu_order');
+        $widget->in_menu = get_input('in_menu') == 'no' ? 0 : 1;
         $widget->save();
 
         forward($widget->getURL());

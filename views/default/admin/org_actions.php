@@ -31,11 +31,11 @@
             echo elgg_view('output/confirmlink', array(
                 'text' => __('approval:delete'),
                 'is_action' => true,
-                'href' => "admin/delete_entity?guid={$org->guid}"
+                'href' => "admin/delete_entity?guid={$org->guid}&next=/admin/user"
             ));
         }
 
-        echo "<a href='admin/add_featured?username={$org->username}'>".__('featured:add')."</a>";
+        echo "<a href='admin/add_featured?username={$org->username}'>".__('featured:add')."</a>";        
         echo "<a href='{$org->username}/dashboard'>".__('dashboard')."</a>";
         echo "<a href='{$org->username}/settings'>".__('help:settings')."</a>";
         echo "<a href='{$org->username}/username'>".__('username:title')."</a>";
