@@ -319,66 +319,6 @@
         }
 
     /**
-     * Registers a view to be simply cached
-     *
-     * Views cached in this manner must take no parameters and be login agnostic -
-     * that is to say, they look the same no matter who is logged in (or logged out).
-     *
-     * CSS and the basic jS views are automatically cached like this.
-     *
-     * @param string $viewname View name
-     */
-        function elgg_view_register_simplecache($viewname) {
-
-            global $CONFIG;
-
-            if (!isset($CONFIG->views))
-                $CONFIG->views = new stdClass;
-
-            if (!isset($CONFIG->views->simplecache))
-                $CONFIG->views->simplecache = array();
-
-            $CONFIG->views->simplecache[] = $viewname;
-
-        }
-
-    /**
-     * Regenerates the simple cache.
-     *
-     * @see elgg_view_register_simplecache
-     *
-     */
-        function elgg_view_regenerate_simplecache()
-        {
-
-            global $CONFIG;
-
-            if (isset($CONFIG->views->simplecache))
-            {
-                if (!file_exists($CONFIG->dataroot . 'views_simplecache'))
-                {
-                    @mkdir($CONFIG->dataroot . 'views_simplecache');
-                }
-
-                if (!empty($CONFIG->views->simplecache) && is_array($CONFIG->views->simplecache))
-                {
-                    foreach($CONFIG->views->simplecache as $view)
-                    {
-                        $viewcontents = elgg_view($view);
-                        $viewname = md5(elgg_get_viewtype() . $view);
-                        if ($handle = fopen($CONFIG->dataroot . 'views_simplecache/' . $viewname, 'w'))
-                        {
-                            fwrite($handle, $viewcontents);
-                            fclose($handle);
-                        }
-                    }
-                }
-
-                datalist_set('simplecache_version', $CONFIG->cache_version);
-            }
-        }
-
-    /**
      * When given an entity, views it intelligently.
      *
      * Expects a view to exist called entity-type/subtype, or for the entity to have a parameter
@@ -582,30 +522,6 @@
                 'submenu' => $submenu,
                 'group_name' => $groupname
             ));
-        }
-
-    /**
-     * Gets a formatted list of submenu items
-     *
-     * @return string List of items
-     */
-        function get_submenu()
-        {
-            $submenu_total = "";
-            global $CONFIG;
-
-            if (isset($CONFIG->submenu) && $submenu_register = $CONFIG->submenu)
-            {
-                ksort($submenu_register);
-
-                foreach($submenu_register as $groupname => $submenu_register_group)
-                {
-                    $submenu_total .= get_submenu_group($groupname);
-                }
-            }
-
-            return $submenu_total;
-
         }
 
     /**
@@ -1232,13 +1148,5 @@ $server
         register_shutdown_function('__elgg_shutdown_hook');
     }
 
-    /**
-     * Some useful constant definitions
-     */
-        define('ACCESS_DEFAULT',-1);
-        define('ACCESS_PRIVATE',0);
-        define('ACCESS_LOGGED_IN',1);
-        define('ACCESS_PUBLIC',2);
-        define('ACCESS_FRIENDS',-2);
 
     register_elgg_event_handler('init','system','elgg_init');

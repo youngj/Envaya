@@ -33,7 +33,7 @@
     {
         $geoQuery = "$query Tanzania";
         
-        $latlong = elgg_geocode_location($geoQuery);
+        $latlong = Geocoder::geocode($geoQuery);
     }
 
     $results = '';

@@ -6,7 +6,7 @@ class Controller_Home extends Controller
     {
         set_context('home');
         set_theme('home');
-        add_generic_footer();
+        $this->add_generic_footer();
         $area = elgg_view("home");
         $title = __("home:title");
         page_set_translatable(false);

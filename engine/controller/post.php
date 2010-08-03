@@ -26,7 +26,7 @@ class Controller_Post extends Controller_Profile
         else
         {
             $this->use_public_layout();
-            org_page_not_found($org);
+            $this->org_page_not_found();
         }
     }
 
@@ -51,7 +51,7 @@ class Controller_Post extends Controller_Profile
         }
         else
         {
-            $body = org_view_body($org, $title, elgg_view("org/blogPost", array('entity'=> $post)));
+            $body = $this->org_view_body($title, elgg_view("org/blogPost", array('entity'=> $post)));
         }
 
         $this->page_draw($title,$body);

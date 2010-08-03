@@ -17,58 +17,51 @@
 
     if (!include_once(__DIR__."/settings.php"))
     {
-        throw new InstallationException("Elgg could not load the settings file.");
+        echo "Error: Could not load the settings file.";
+        exit;        
     }
 
-
     if (!include_once(__DIR__."/lib/exceptions.php")) {     // Exceptions
-        echo "Error in installation: could not load the Exceptions library.";
+        echo "Error: could not load the Exceptions library.";
         exit;
     }
 
     if (!include_once(__DIR__."/lib/elgglib.php")) {        // Main Elgg library
-        echo "Elgg could not load its main library.";
+        echo "Error: could not load main library.";
         exit;
     }
 
     if (!include_once(__DIR__ . "/lib/access.php")) {       // Access library
-        echo "Error in installation: could not load the Access library.";
+        echo "Error: could not load the Access library.";
         exit;
     }
 
     if (!include_once(__DIR__ . "/lib/system_log.php")) {       // Logging library
-        echo "Error in installation: could not load the System Log library.";
+        echo "Error: could not load the System Log library.";
         exit;
     }
 
     if (!include_once(__DIR__ . "/lib/sessions.php")) {
-        echo ("Error in installation: Elgg could not load the Sessions library");
+        echo ("Error: Elgg could not load the Sessions library");
         exit;
     }
 
     if (!include_once(__DIR__ . "/lib/input.php")) {        // Input library
-        echo "Error in installation: could not load the input library.";
+        echo "Error: could not load the input library.";
         exit;
     }
 
     if (!include_once(__DIR__ . "/lib/languages.php")) {        // Languages library
-        echo "Error in installation: could not load the languages library.";
+        echo "Error: could not load the languages library.";
         exit;
     }
-
-    if (!include_once(__DIR__ . "/lib/install.php")) {      // Installation library
-        echo "Error in installation: could not load the installation library.";
-        exit;
-    }
-
+   
     if (!include_once(__DIR__ . "/lib/cache.php")) {
-        echo "Error in installation: could not load the cache library.";
+        echo "Error: could not load the cache library.";
         exit;
     }
-
-    // Use fallback view until sanitised
-    $oldview = get_input('view');
-    set_input('view', 'failsafe');
+    
+    spl_autoload_register('auto_load');
 
     // Register the error handler
     set_error_handler('__elgg_php_error_handler');
@@ -101,38 +94,10 @@
             throw new InstallationException("Could not load {$file}");
     }
 
-    //error_log("includes finished in ".(microtime(true) - $START_MICROTIME)." seconds");
-
+    //error_log("includes finished in ".(microtime(true) - $START_MICROTIME)." seconds");    
+    
     trigger_elgg_event('boot', 'system');
-
-    $installed = is_installed();
-
-    if (!$installed && !substr_count($_SERVER["PHP_SELF"],"install.php") && !substr_count($_SERVER["PHP_SELF"],"css.php") && !substr_count($_SERVER["PHP_SELF"],"action_handler.php"))
-    {
-        header("Location: install.php");
-        exit;
-    }
-
-    if (!substr_count($_SERVER["PHP_SELF"],"install.php") && !substr_count($_SERVER["PHP_SELF"],"setup.php"))
-    {
-        trigger_elgg_event('init', 'system');
-    }
-
-    set_input('view', $oldview);
-    if (empty($oldview))
-    {
-        if (empty($CONFIG->view))
-            $oldview = 'default';
-        else
-            $oldview = $CONFIG->view;
-    }
-
-    if ($installed && $CONFIG->simplecache_enabled && datalist_get('simplecache_version') != $CONFIG->cache_version)
-    {
-        elgg_view_regenerate_simplecache();
-    }
-
-    spl_autoload_register('auto_load');
-
+    trigger_elgg_event('init', 'system');
+    
     //error_log("start.php finished in ".(microtime(true) - $START_MICROTIME)." seconds");
 ?>

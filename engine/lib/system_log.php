@@ -208,11 +208,6 @@
             $time = time();
             $performed_by = (int)@$_SESSION['guid'];
 
-            if (isset($object->access_id))
-                $access_id = $object->access_id;
-            else
-                $access_id = ACCESS_PUBLIC;
-
             if (isset($object->enabled))
                 $enabled = $object->enabled;
             else
@@ -227,10 +222,10 @@
             {
                 insert_data("INSERT DELAYED into system_log (
                     object_id, object_class, object_type, object_subtype, event,
-                    performed_by_guid, owner_guid, access_id, enabled, time_created)
+                    performed_by_guid, owner_guid,  enabled, time_created)
                     VALUES (?,?,?,?,?,?,?,?,?,?)",
                     array($object_id,$object_class,$object_type,$object_subtype,$event,
-                        $performed_by,$owner_guid,$access_id,$enabled,$time)
+                        $performed_by,$owner_guid,$enabled,$time)
                 );
 
                 $logcache[$time][$object_id][$event] = true;

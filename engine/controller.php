@@ -44,6 +44,13 @@ abstract class Controller {
     {
         $this->request->response = page_draw($title, $body, $preBody);
     }
+    
+    public function add_generic_footer()
+    {
+        add_submenu_item(__('about:link'), "/envaya", 'footer');
+        add_submenu_item(__('contact:link'), "/envaya/contact", 'footer');
+        add_submenu_item(__('donate:link'), "/envaya/contribute", 'footer');    
+    }
 
     public function validate_security_token()
     {

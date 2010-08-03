@@ -15,7 +15,7 @@ pcntl_signal(SIGTERM, "sig_handler");
 
 while (time() - $startTime < $maxWorkerTime)
 {
-    if (!exec_queued_function_call($timeout = 500))
+    if (!FunctionQueue::exec_queued_call($timeout = 500))
     {
         sleep(1);
         pcntl_signal_dispatch();

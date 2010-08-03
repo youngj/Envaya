@@ -262,7 +262,7 @@
         }
         else
         {
-            return queue_function_call('_send_mail_now', array($to, $headers, $message));
+            return FunctionQueue::queue_call('_send_mail_now', array($to, $headers, $message));
         }
     }
 

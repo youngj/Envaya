@@ -16,7 +16,6 @@ class Controller_Profile extends Controller
             {
                 $this->org = $user;
             }
-            set_page_owner($user->guid);
         }
         else
         {
@@ -157,7 +156,15 @@ class Controller_Profile extends Controller
         $CONFIG->sitename = $org->name;
 
         set_theme(get_input("__theme") ?: $org->theme ?: 'green');
-        add_org_menu($org);
+
+        foreach ($org->getAvailableWidgets() as $widget)
+        {
+            if ($widget->isActive() && $widget->in_menu)
+            {
+                add_submenu_item($widget->getTitle(), rewrite_to_current_domain($widget->getURL()));
+            }
+        }        
+        
         set_context('orgprofile');
     }
 
@@ -274,7 +281,7 @@ class Controller_Profile extends Controller
         }
         else if (!$widget || !$widget->isActive())
         {
-            org_page_not_found($org);
+            $this->org_page_not_found();
         }
         else
         {
@@ -311,7 +318,7 @@ class Controller_Profile extends Controller
 
         if ($viewOrg)
         {
-            $body = org_view_body($org, $subtitle, ($viewOrg ? $widget->renderView() : ''), $preBody);
+            $body = $this->org_view_body($subtitle, ($viewOrg ? $widget->renderView() : ''), $preBody);
         }
         else
         {
@@ -736,4 +743,51 @@ class Controller_Profile extends Controller
             forward($recipient->getURL());
         }
     }
+    
+    function org_page_not_found()
+    {
+        $org = $this->org;
+        if ($org)
+        {    
+            set_context('orgprofile');
+            set_theme($org->theme ?: 'green');
+            $title = __('page:notfound');
+            $body = $this->org_view_body($title, "<div class='section_content padded'>".__('page:notfound:details')."</div>");
+            header("HTTP/1.1 404 Not Found");
+            echo page_draw($title, $body);
+        }
+        else
+        {
+            not_found();
+        }
+        exit;
+    }   
+    
+    function org_view_body($subtitle, $area2, $area3 = '')
+    {
+        $org = $this->org;
+    
+        if ($org->custom_header)
+        {
+            $header = elgg_view('org/custom_header', array(
+                'org' => $org
+            ));
+        }
+        else
+        {
+            $header = elgg_view('org/default_header', array(
+                'org' => $org,
+                'subtitle' => $subtitle,
+            ));
+        }
+
+        $layout = "one_column_custom_header";
+        if (get_theme() == 'sidebar')
+        {
+            $layout= 'two_column_left_sidebar';
+        }
+        
+        return elgg_view_layout($layout, $header, $area2, $area3);
+    }
+
 }

@@ -94,7 +94,6 @@ class Controller_Pg extends Controller {
 
         set_theme('editor');
         set_context('editor');
-        set_page_owner(get_loggedin_userid());
 
         $title = __('dashboard');
 

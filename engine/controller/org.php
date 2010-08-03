@@ -4,7 +4,7 @@ class Controller_Org extends Controller
 {
     function before()
     {
-        add_generic_footer();
+        $this->add_generic_footer();
     }
 
     function action_browse()
@@ -191,7 +191,6 @@ class Controller_Org extends Controller
             $org->phone_number = get_input('phone');
             $org->email = $email;
             $org->name = $name;
-            $org->access_id = ACCESS_PUBLIC;
             $org->salt = generate_random_cleartext_password();
             $org->password = generate_user_password($org, $password);
             $org->owner_guid = 0;
@@ -277,7 +276,7 @@ class Controller_Org extends Controller
 
             $org->theme = get_input('theme');
 
-            $latlong = elgg_geocode_location($org->getLocationText());
+            $latlong = Geocoder::geocode($org->getLocationText());
 
             if ($latlong)
             {
