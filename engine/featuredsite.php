@@ -1,7 +1,5 @@
 <?php
 
-require_once('objects.php');
-
 class FeaturedSite extends ElggObject
 {
     static $subtype_id = T_featured_site;

@@ -42,7 +42,7 @@
     width:400px;
 }
 
-.heading_container
+.heading_container #heading
 {
     display:none;
 }   

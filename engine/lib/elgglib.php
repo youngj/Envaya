@@ -170,33 +170,15 @@
         );
     }
 
-    function get_guid_index(&$entity_list, $guid)
+    function get_first_key($arr)
     {
-        for ($i = 0; $i < sizeof($entity_list); $i++)
-        {
-            if ($entity_list[$i]->guid == $guid)
-            {
-                return $i;
-            }
-        }
-        return -1;
-    }
-
-    function array_move_item(&$list, $index, $delta)
-    {
-        $item = $list[$index];
-        $newIndex = $index + $delta;
-
-        if ($index != -1 && $newIndex >= 0 && $newIndex < sizeof($list))
-        {
-            array_splice($list, $index, 1);
-            array_splice($list, $newIndex, 0, array($item));
-
-            return true;
-        }
-        return false;
-    }
-
+        reset($arr);
+        $pair = each($arr);
+        $res = $pair[0];
+        reset($arr);
+        return $res;
+    }    
+    
     /**
      * Adds messages to the session so they'll be carried over, and forwards the browser.
      * Returns false if headers have already been sent and the browser cannot be moved.
@@ -709,7 +691,7 @@
      */
 
     /**
-     * Recursive function designed to load library files on start
+     * Loads library files on start
      *
      * @param string $directory Full path to the directory to start with
      * @param string $file_exceptions A list of filenames (with no paths) you don't ever want to include
@@ -1215,35 +1197,6 @@ $server
         }
 
     /**
-     * Returns true or false depending on whether a PHP .ini setting is on or off
-     *
-     * @param string $ini_get_arg The INI setting
-     * @return true|false Depending on whether it's on or off
-     */
-    function ini_get_bool($ini_get_arg) {
-        $temp = ini_get($ini_get_arg);
-
-        if ($temp == '1' or strtolower($temp) == 'on') {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Function to be used in array_filter which returns true if $string is not null.
-     *
-     * @param string $string
-     * @return bool
-     */
-    function is_not_null($string)
-    {
-        if (($string==='') || ($string===false) || ($string===null))
-            return false;
-
-        return true;
-    }
-
-    /**
      * Get the full URL of the current page.
      *
      * @return string The URL
@@ -1254,100 +1207,6 @@ $server
         $protocol = substr(strtolower($_SERVER["SERVER_PROTOCOL"]), 0, strpos(strtolower($_SERVER["SERVER_PROTOCOL"]), "/")) . $s;
         $port = ($_SERVER["SERVER_PORT"] == "80") ? "" : (":".$_SERVER["SERVER_PORT"]);
         return $protocol . "://" . $_SERVER['SERVER_NAME'] . $port . $_SERVER['REQUEST_URI'];
-    }
-
-    /**
-     * Useful function found in the comments on the PHP man page for ip2long.
-     * Returns 1 if an IP matches a given range.
-     *
-     * TODO: Check licence... assuming this is PD since it was found several places on the interwebs..
-     * please check or rewrite.
-     *
-     * Matches:
-     *  xxx.xxx.xxx.xxx        (exact)
-     *  xxx.xxx.xxx.[yyy-zzz]  (range)
-     *  xxx.xxx.xxx.xxx/nn    (nn = # bits, cisco style -- i.e. /24 = class C)
-     * Does not match:
-     * xxx.xxx.xxx.xx[yyy-zzz]  (range, partial octets not supported)
-     */
-    function test_ip($range, $ip)
-    {
-        $result = 1;
-
-        # IP Pattern Matcher
-        # J.Adams <jna@retina.net>
-        #
-        # Matches:
-        #
-        # xxx.xxx.xxx.xxx        (exact)
-        # xxx.xxx.xxx.[yyy-zzz]  (range)
-        # xxx.xxx.xxx.xxx/nn    (nn = # bits, cisco style -- i.e. /24 = class C)
-        #
-        # Does not match:
-        # xxx.xxx.xxx.xx[yyy-zzz]  (range, partial octets not supported)
-
-
-        if (ereg("([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)/([0-9]+)",$range,$regs)) {
-
-            # perform a mask match
-            $ipl = ip2long($ip);
-            $rangel = ip2long($regs[1] . "." . $regs[2] . "." . $regs[3] . "." . $regs[4]);
-
-            $maskl = 0;
-
-            for ($i = 0; $i< 31; $i++) {
-                 if ($i < $regs[5]-1) {
-                     $maskl = $maskl + pow(2,(30-$i));
-                 }
-            }
-
-            if (($maskl & $rangel) == ($maskl & $ipl)) {
-                return 1;
-            } else {
-                return 0;
-            }
-        } else {
-
-             # range based
-             $maskocts = split("\.",$range);
-             $ipocts = split("\.",$ip);
-
-             # perform a range match
-             for ($i=0; $i<4; $i++) {
-                 if (ereg("\[([0-9]+)\-([0-9]+)\]",$maskocts[$i],$regs)) {
-                   if ( ($ipocts[$i] > $regs[2]) || ($ipocts[$i] < $regs[1])) {
-                         $result = 0;
-                     }
-                 }
-                 else
-                 {
-                     if ($maskocts[$i] <> $ipocts[$i]) {
-                         $result = 0;
-                     }
-                 }
-             }
-        }
-        return $result;
-    }
-
-    /**
-     * Match an IP address against a number of ip addresses or ranges, returning true if found.
-     *
-     * @param array $networks
-     * @param string $ip
-     * @return bool
-     */
-    function is_ip_in_array(array $networks, $ip)
-    {
-        global $SYSTEM_LOG;
-
-        foreach ($networks as $network)
-        {
-            if (test_ip(trim($network), $ip))
-                return true;
-        }
-
-        return false;
     }
 
     /**

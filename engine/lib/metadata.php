@@ -41,11 +41,6 @@ class ElggMetadata
         }
     }
 
-    public function getEntity()
-    {
-        return get_entity($this->entity_guid);
-    }
-
     protected function get($name)
     {
         if (isset($this->attributes[$name]))
@@ -263,18 +258,6 @@ function list_entities_from_metadata($meta_name, $meta_value = "", $entity_type 
 function clear_metadata($entity_guid)
 {
     return delete_data("DELETE from metadata where entity_guid=?", array($entity_guid));
-}
-
-function string_to_tag_array($string)
-{
-    if (is_string($string)) {
-        $ar = explode(",",$string);
-        $ar = array_map('trim', $ar); // trim blank spaces
-        $ar = array_map('elgg_strtolower', $ar);
-        $ar = array_filter($ar, 'is_not_null'); // Remove null values
-        return $ar;
-    }
-    return false;
 }
 
 function detect_value_type($value)

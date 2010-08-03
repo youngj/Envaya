@@ -1,130 +1,9 @@
 <?php
 
-    include_once("objects.php");
-
     function get_s3()
     {
         global $CONFIG;
-        require_once("{$CONFIG->path}engine/lib/Net/s3.php");
         return new S3($CONFIG->s3_key, $CONFIG->s3_private);
-    }
-
-    class ElggFile extends ElggObject
-    {
-        static $subtype_id = T_file;
-
-        static $table_name = 'files_entity';
-        static $table_attributes = array(
-            'group_name' => '',
-            'filename' => '',
-            'size' => '',
-            'width' => null,
-            'height' => null,
-            'mime' => '',
-        );
-
-        public function setFilename($name)
-        {
-            $this->filename = $name;
-        }
-
-        public function getFilename()
-        {
-            return $this->filename;
-        }
-
-        public function getFilesInGroup()
-        {
-            return ElggFile::filterByCondition(
-                array('owner_guid = ?', 'group_name = ?'),
-                array($this->owner_guid, $this->group_name)
-            );
-        }
-
-        public function jsProperties()
-        {
-            return array(
-                'guid' => $this->guid,
-                'size' => $this->size,
-                'group_name' => $this->group_name,
-                'filename' => $this->filename,
-                'mime' => $this->mime,
-                'width' => $this->width,
-                'height' => $this->height,
-                'url' => $this->getURL(),
-            );
-        }
-
-        public function getPath()
-        {
-            if ($this->group_name)
-            {
-                return "{$this->owner_guid}/{$this->group_name}/{$this->filename}";
-            }
-            else
-            {
-                return "{$this->owner_guid}/{$this->filename}";
-            }
-        }
-
-        public function getURL()
-        {
-            global $CONFIG;
-            return "http://{$CONFIG->s3_bucket}.s3.amazonaws.com/{$this->getPath()}";
-        }
-
-        public function delete()
-        {
-            global $CONFIG;
-            $res = get_s3()->deleteObject($CONFIG->s3_bucket, $this->getPath());
-
-            if ($res && $this->guid)
-            {
-                return parent::delete();
-            }
-            else
-            {
-                return $res;
-            }
-        }
-
-        public function size()
-        {
-            global $CONFIG;
-            $info = get_s3()->getObjectInfo($CONFIG->s3_bucket, $this->getPath());
-            if ($info)
-            {
-                return $info['Content-Length'];
-            }
-            return -1;
-        }
-
-        public function uploadFile($filePath, $mime = null)
-        {
-            global $CONFIG;
-
-            $headers = array();
-            if ($mime)
-            {
-                $headers['Content-Type'] = $mime;
-            }
-
-            return get_s3()->uploadFile($CONFIG->s3_bucket, $this->getPath(), $filePath, true, $headers);
-        }
-
-        public function copyTo($destFile)
-        {
-            global $CONFIG;
-            $res = get_s3()->copyObject($CONFIG->s3_bucket, $this->getPath(), $CONFIG->s3_bucket, $destFile->getPath(), true);
-            return $res;
-        }
-
-        public function exists()
-        {
-            global $CONFIG;
-            $info = get_s3()->getObjectInfo($CONFIG->s3_bucket, $this->getPath());
-            return ($info) ? true : false;
-        }
     }
 
     function get_uploaded_filename($input_name)
@@ -134,16 +13,6 @@
             return $_FILES[$input_name]['tmp_name'];
         }
         return false;
-    }
-
-    function has_uploaded_file($input_name)
-    {
-        return isset($_FILES[$input_name]) && $_FILES[$input_name]['size'];
-    }
-
-    function is_image_upload($input_name)
-    {
-        return substr_count($_FILES[$input_name]['type'],'image/');
     }
 
     function get_thumbnail_src($html)
@@ -215,7 +84,7 @@
                     $file->width = $resizedImage['width'];
                     $file->height = $resizedImage['height'];
                     $file->mime = $resizedImage['mime'];
-                    $file->setFilename("$sizeName.jpg");
+                    $file->filename = "$sizeName.jpg";
                     $file->uploadFile($resizedImage['filename'], $resizedImage['mime']);
                     $file->save();
                     $lastFile = $file;

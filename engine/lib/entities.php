@@ -342,7 +342,7 @@
             return true;
         }
 
-        public function clearMetaData($name = "")
+        public function clearMetadata($name = "")
         {
             if (empty($name)) {
                 return clear_metadata($this->getGUID());
@@ -405,13 +405,6 @@
         }
 
         /**
-         * Obtain this entity's access ID
-         *
-         * @return int The access ID
-         */
-        public function getAccessID() { return $this->get('access_id'); }
-
-        /**
          * Obtain this entity's GUID
          *
          * @return int GUID
@@ -471,20 +464,6 @@
                 return $container->getLanguage();
             }
         }
-
-        /**
-         * Gets the UNIX epoch time that this entity was created
-         *
-         * @return int UNIX epoch time
-         */
-        public function getTimeCreated() { return $this->get('time_created'); }
-
-        /**
-         * Gets the UNIX epoch time that this entity was last updated
-         *
-         * @return int UNIX epoch time
-         */
-        public function getTimeUpdated() { return $this->get('time_updated'); }
 
         /**
          * Gets the display URL for this entity
@@ -664,35 +643,9 @@
             return false;
         }
 
-        /**
-         * Set the container for this object.
-         *
-         * @param int $container_guid The ID of the container.
-         * @return bool
-         */
-        function setContainer($container_guid)
-        {
-            $container_guid = (int)$container_guid;
-
-            return $this->set('container_guid', $container_guid);
-        }
-
-        /**
-         * Return the container GUID of this object.
-         *
-         * @return int
-         */
-        function getContainer()
-        {
-            return $this->get('container_guid');
-        }
-
-        /**
-         * As getContainer(), but returns the whole entity.
-         */
         function getContainerEntity()
         {
-            return get_entity($this->getContainer());
+            return get_entity($this->container_guid);
         }
 
         function getRootContainerEntity()
@@ -736,11 +689,6 @@
          * This is useful for checking access permissions etc on objects.
          */
         public function getObjectFromID($id) { return get_entity($id); }
-
-        /**
-         * Return the GUID of the owner of this object.
-         */
-        public function getObjectOwnerGUID() { return $this->owner_guid; }
     }
 
     /**
@@ -1120,29 +1068,6 @@
         }
         return false;
 
-    }
-
-    /**
-     * Return an array of all private settings for a given
-     *
-     * @param int $entity_guid The entity GUID
-     */
-    function get_all_private_settings($entity_guid) {
-        global $CONFIG;
-
-        $entity_guid = (int) $entity_guid;
-
-        $result = get_data("SELECT * from private_settings where entity_guid = ?", array($entity_guid));
-        if ($result)
-        {
-            $return = array();
-            foreach ($result as $r)
-                $return[$r->name] = $r->value;
-
-            return $return;
-        }
-
-        return false;
     }
 
     /**

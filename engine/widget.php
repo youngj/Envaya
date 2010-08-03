@@ -145,19 +145,12 @@ class Widget extends ElggObject
     {
         return $this->guid && $this->isEnabled();
     }
-}
-
-function widget_sort($a, $b)
-{
-    $aOrder = $a->getMenuOrder();
-    $bOrder = $b->getMenuOrder();
-    return $aOrder - $bOrder;
-}
-
-abstract class WidgetHandler
-{
-    abstract function view($widget);
-    abstract function edit($widget);
-    abstract function save($widget);
+    
+    static function sort($a, $b)
+    {
+        $aOrder = $a->getMenuOrder();
+        $bOrder = $b->getMenuOrder();
+        return $aOrder - $bOrder;
+    }
 }
 

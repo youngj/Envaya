@@ -99,26 +99,6 @@
             //return new ElggDummy();
         }
         
-    /**
-     * Adds a page owner handler - a function that will
-     * return the page owner if required
-     * (Such functions are required to return false if they don't know)
-     * @uses $CONFIG
-     * @param string $functionname The name of the function to call
-     * @return mixed The guid of the owner or false
-     */
-
-        function add_page_owner_handler($functionname) {
-            
-            global $CONFIG;
-            if (empty($CONFIG->page_owner_handlers)) {
-                $CONFIG->page_owner_handlers = array();
-            }
-            if (is_callable($functionname)) {
-                $CONFIG->page_owner_handlers[] = $functionname;
-            }
-            
-        }
         
 	/**
 	 * Allows a page to manually set a page owner

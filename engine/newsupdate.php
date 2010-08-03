@@ -27,7 +27,7 @@ class NewsUpdate extends ElggObject
     {
         $file = new ElggFile();
         $file->owner_guid = $this->container_guid;
-        $file->setFilename("news/{$this->guid}$size.jpg");
+        $file->filename = "news/{$this->guid}$size.jpg";
         return $file;
     }
 
@@ -70,29 +70,5 @@ class NewsUpdate extends ElggObject
     public function getDateText()
     {
         return friendly_time($this->time_created);
-    }
-
-    public static function filterByOrganizations($orgs, $limit = 10, $offset = 0)
-    {
-        if (empty($orgs))
-        {
-            return array();
-        }
-        else
-        {
-            $where = array();
-            $args = array();
-            $in = array();
-
-            foreach ($orgs as $org)
-            {
-                $in[] = "?";
-                $args[] = $org->guid;
-            }
-
-            $where[] = "container_guid IN (".implode(",", $in).")";
-
-            return static::filterByCondition($where, $args, 'time_created desc', $limit, $offset);
-        }
     }
 }

@@ -284,13 +284,6 @@ function logout()
     return true;
 }
 
-function get_session_fingerprint()
-{
-    $userAgent = @$_SERVER['HTTP_USER_AGENT'];
-
-    return md5($userAgent . get_site_secret());
-}
-
 function force_login()
 {
     Session::set('last_forward_from', Request::instance()->full_rewritten_url());

@@ -25,7 +25,7 @@
             $newFile->owner_guid = $newsUpdate->owner_guid;
             $newFile->group_name = $groupName;
             $newFile->size = $size;
-            $newFile->setFilename("$size.jpg");
+            $newFile->filename = "$size.jpg";
             $oldFile->copyTo($newFile);
             $newFile->save();
 

@@ -300,15 +300,10 @@
 
         if (!isset($mailer))
         {
-            global $CONFIG;
-            require_once("{$CONFIG->path}engine/lib/Net/SMTP.php");
-            require_once("{$CONFIG->path}engine/lib/Net/RFC822.php");
-            require_once("{$CONFIG->path}engine/lib/Net/Mail.php");
+            global $CONFIG;           
 
             if (getenv("MOCK_MAIL_FILE"))
             {
-                require_once("{$CONFIG->path}engine/lib/Net/mock.php");
-
                 $mailer = new Mail_mock(array(
                     'postSendCallback' => 'mock_send_mail',
                 ));

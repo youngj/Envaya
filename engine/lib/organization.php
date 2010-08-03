@@ -274,7 +274,7 @@ class Organization extends ElggUser
                 $availableWidgets[] = $widget;
             }            
         }        
-        usort($availableWidgets, 'widget_sort');
+        usort($availableWidgets, array('Widget', 'sort'));
         return $availableWidgets;
     }
     
@@ -351,15 +351,7 @@ class Organization extends ElggUser
 
         return Partnership::filterByCondition($where, $args, '', $limit, $offset, $count);
     }
-
-    function getTeamMembers($limit = 30, $offset = 0, $count = false)
-    {
-        $where = array("container_guid = ?");
-        $args = array($this->guid);
-
-        return TeamMember::filterByCondition($where, $args, 'list_order asc', $limit, $offset, $count);
-    }
-
+    
     function getPartnership($partnerOrg)
     {
         $partnership = Partnership::getByCondition(array("container_guid = ? AND partner_guid = ?"),

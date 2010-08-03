@@ -129,14 +129,6 @@
      */
     function execute_delayed_write_query($query, $args = array(), $handler = "") { return execute_delayed_query($query, $args, get_db_link('write'), $handler); }
 
-    /**
-     * Read wrapper for execute_delayed_query()
-     *
-     * @param string $query The query to execute
-     * @param string $handler The handler if you care about the result.
-     */
-    function execute_delayed_read_query($query, $args = array(), $handler = "") { return execute_delayed_query($query, $args, get_db_link('read'), $handler); }
-
     function get_data_row($query, $args = array())
     {
         $db = get_db_link('read');

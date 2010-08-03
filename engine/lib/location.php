@@ -15,8 +15,6 @@
      */
     interface Locatable
     {
-        /** Set a location text */
-        public function setLocation($location);
 
         /**
          * Set latitude and longitude tags for a given entity.

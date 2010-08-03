@@ -142,7 +142,7 @@
         {
             $file = new ElggFile();
             $file->owner_guid = $this->guid;
-            $file->setFilename("icon$size.jpg");
+            $file->filename = "icon$size.jpg";
             return $file;
         }
 
@@ -198,7 +198,7 @@
         {
             $file = new ElggFile();
             $file->owner_guid = $this->guid;
-            $file->setFilename("header$size.jpg");
+            $file->filename = "header$size.jpg";
             return $file;
         }
 
@@ -286,25 +286,6 @@
         public function isBanned() { return $this->banned == 'yes'; }
 
         /**
-         * Get an array of ElggObjects owned by this user.
-         *
-         * @param string $subtype The subtype of the objects, if any
-         * @param int $limit Number of results to return
-         * @param int $offset Any indexing offset
-         */
-        public function getObjects($subtype="", $limit = 10, $offset = 0) { return get_user_objects($this->getGUID(), $subtype, $limit, $offset); }
-
-        /**
-         * Counts the number of ElggObjects owned by this user
-         *
-         * @param string $subtype The subtypes of the objects, if any
-         * @return int The number of ElggObjects
-         */
-        public function countObjects($subtype = "") {
-            return count_user_objects($this->getGUID(), $subtype);
-        }
-
-        /**
          * If a user's owner is blank, return its own GUID as the owner
          *
          * @return int User GUID
@@ -314,12 +295,6 @@
                 return $this->getGUID();
 
             return $this->owner_guid;
-        }
-
-        public function setLocation($location)
-        {
-            $this->location = $location;
-            return true;
         }
 
         /**
@@ -360,26 +335,11 @@
             $feedName = get_feed_name(array('user' => $this->guid));
             return FeedItem::filterByFeedName($feedName, $limit);
         }
-
-        function listNewsUpdates($limit = 10, $pagination = true)
-        {
-            $offset = (int) get_input('offset');
-
-            $count = $this->getNewsUpdates($limit, $offset, true);
-            $entities = $this->getNewsUpdates($limit, $offset);
-
-            return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
-        }
-
+        
         function getBlogDates()
         {
             $sql = "SELECT guid, time_created from entities WHERE type='object' AND enabled='yes' AND subtype=? AND container_guid=? ORDER BY guid ASC";
             return get_data($sql, array(T_blog, $this->guid));
-        }
-
-        public function userCanSee()
-        {
-            return ($this->isApproved() || isadminloggedin() || ($this->guid == get_loggedin_userid()));
         }
 
         public function isApproved()
@@ -406,16 +366,6 @@
         static function all($order_by = '', $limit = 10, $offset = 0, $count = false)
         {
             return static::filterByCondition(array(), array(), $order_by, $limit, $offset, $count);
-        }
-
-        static function listAll($limit = 10, $pagination = true)
-        {
-            $offset = (int) get_input('offset');
-
-            $count = static::all($limit, $offset, true);
-            $entities = static::all($limit, $offset);
-
-            return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
         }
 
         static function getByCondition($where, $args)
@@ -460,60 +410,6 @@
                 'url' => $this->getUrl()
             );
         }
-    }
-
-    /**
-     * Obtains a list of objects owned by a user
-     *
-     * @param int $user_guid The GUID of the owning user
-     * @param string $subtype Optionally, the subtype of objects
-     * @param int $limit The number of results to return (default 10)
-     * @param int $offset Indexing offset, if any
-     * @param int $timelower The earliest time the entity can have been created. Default: all
-     * @param int $timeupper The latest time the entity can have been created. Default: all
-     * @return false|array An array of ElggObjects or false, depending on success
-     */
-    function get_user_objects($user_guid, $subtype = "", $limit = 10, $offset = 0, $timelower = 0, $timeupper = 0) {
-        $ntt = get_entities('object',$subtype, $user_guid, "time_created desc", $limit, $offset,false,0,$user_guid,$timelower, $timeupper);
-        return $ntt;
-    }
-
-    /**
-     * Counts the objects (optionally of a particular subtype) owned by a user
-     *
-     * @param int $user_guid The GUID of the owning user
-     * @param string $subtype Optionally, the subtype of objects
-     * @param int $timelower The earliest time the entity can have been created. Default: all
-     * @param int $timeupper The latest time the entity can have been created. Default: all
-     * @return int The number of objects the user owns (of this subtype)
-     */
-    function count_user_objects($user_guid, $subtype = "", $timelower, $timeupper) {
-        $total = get_entities('object', $subtype, $user_guid, "time_created desc", null, null, true, 0, $user_guid,$timelower,$timeupper);
-        return $total;
-    }
-
-    /**
-     * Displays a list of user objects of a particular subtype, with navigation.
-     *
-     * @see elgg_view_entity_list
-     *
-     * @param int $user_guid The GUID of the user
-     * @param string $subtype The object subtype
-     * @param int $limit The number of entities to display on a page
-     * @param true|false $fullview Whether or not to display the full view (default: true)
-     * @param int $timelower The earliest time the entity can have been created. Default: all
-     * @param int $timeupper The latest time the entity can have been created. Default: all
-     * @return string The list in a form suitable to display
-     */
-    function list_user_objects($user_guid, $subtype = "", $limit = 10, $fullview = true, $viewtypetoggle = true, $pagination = true, $timelower = 0, $timeupper = 0) {
-
-        $offset = (int) get_input('offset');
-        $limit = (int) $limit;
-        $count = (int) count_user_objects($user_guid, $subtype,$timelower,$timeupper);
-        $entities = get_user_objects($user_guid, $subtype, $limit, $offset, $timelower, $timeupper);
-
-        return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, $viewtypetoggle, $pagination);
-
     }
 
     /**
@@ -640,26 +536,6 @@
             }
         }
         return false;
-    }
-
-    /**
-     * Displays a list of user objects that have been searched for.
-     *
-     * @see elgg_view_entity_list
-     *
-     * @param string $tag Search criteria
-     * @param int $limit The number of entities to display on a page
-     * @return string The list in a form suitable to display
-     */
-    function list_user_search($tag, $limit = 10, $user_subtype = '') {
-
-        $offset = (int) get_input('offset');
-        $limit = (int) $limit;
-        $count = (int) search_for_user($tag, 10, 0, '', true, $user_subtype);
-        $entities = search_for_user($tag, $limit, $offset, '', false, $user_subtype);
-
-        return elgg_view_entity_list($entities, $count, $offset, $limit, $fullview, false);
-
     }
 
     /**
@@ -965,26 +841,6 @@
         set_user_notification_setting($user->getGUID(), 'email', true);
 
         return $user;
-    }
-
-    /**
-     * Generates a unique invite code for a user
-     *
-     * @param string $username The username of the user sending the invitation
-     * @return string Invite code
-     */
-    function generate_invite_code($username) {
-
-        $secret = datalist_get('__site_secret__');
-        return md5($username . $secret);
-
-    }
-
-    /**
-     * Page handler for dashboard
-     */
-    function dashboard_page_handler($page_elements) {
-        @require_once(dirname(dirname(__DIR__)) . "/dashboard/index.php");
     }
 
     /**

@@ -169,25 +169,6 @@ function __($message_key, $language = "") {
 
 }
 
-function load_all_translations()
-{
-    $path = dirname(dirname(__DIR__)) . "/languages/";
-
-    if ($handle = opendir($path))
-    {
-        while ($language = readdir($handle))
-        {
-            if (endswith($language, '.php'))
-            {
-                include_once($path . $language);
-            }
-        }
-    }
-    else
-        error_log("Missing translation path $path");
-
-}
-
 function load_translation($lang)
 {
     $path = dirname(dirname(__DIR__)) . "/languages/";

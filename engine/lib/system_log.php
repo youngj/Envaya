@@ -52,11 +52,6 @@
          * This is useful for checking access permissions etc on objects.
          */
         public function getObjectFromID($id);
-
-        /**
-         * Return the GUID of the owner of this object.
-         */
-        public function getObjectOwnerGUID();
     }
 
     /**
@@ -292,7 +287,7 @@
 
     /**
      * System log listener.
-     * This function listens to all events in the system and logs anything appropriate.
+     * This  listens to all events in the system and logs anything appropriate.
      *
      * @param String $event
      * @param String $object_type

@@ -3,10 +3,8 @@
     require_once("scripts/cmdline.php");
     
     require_once("engine/start.php");    
-    require_once("engine/lib/Net/Socket.php");
-    require_once("engine/lib/Net/POP3.php");
-    require_once("engine/lib/Net/mime_parser.php");
-    require_once("engine/lib/Net/rfc822_addresses.php");
+    require_once("vendors/mime_parser.php");
+    require_once("vendors/rfc822_addresses.php");
                
     umask(0);           
                
