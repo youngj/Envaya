@@ -173,7 +173,7 @@ for (var i = 0; i < blogDates.length; i++)
 <?php
 }
 
-echo elgg_view_entity($entity, true);
+echo view_entity($entity, true);
 ?>
 
 </div>

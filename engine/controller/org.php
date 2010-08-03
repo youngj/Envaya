@@ -320,7 +320,7 @@ class Controller_Org extends Controller
         $longMax = get_input('longMax');
         $sector = get_input('sector');
 
-        $orgs = Organization::filterByArea(array($latMin, $longMin, $latMax, $longMax), $sector, $limit = 1000);
+        $orgs = Organization::queryByArea(array($latMin, $longMin, $latMax, $longMax), $sector)->filter();
 
         $orgJs = array();
 

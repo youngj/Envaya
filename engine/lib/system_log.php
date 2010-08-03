@@ -54,96 +54,11 @@
         public function getObjectFromID($id);
     }
 
-    /**
-     * Retrieve the system log based on a number of parameters.
-     *
-     * @param int or array $by_user The guid(s) of the user(s) who initiated the event.
-     * @param string $event The event you are searching on.
-     * @param string $class The class of object it effects.
-     * @param string $type The type
-     * @param string $subtype The subtype.
-     * @param int $limit Maximum number of responses to return.
-     * @param int $offset Offset of where to start.
-     * @param bool $count Return count or not
-     */
-    function get_system_log($by_user = "", $event = "", $class = "", $type = "", $subtype = "", $limit = 10, $offset = 0, $count = false, $timebefore = 0, $timeafter = 0, $object_id = 0)
+    function system_log_query()
     {
-        global $CONFIG;
-
-        $where = array();
-        $args = array();
-
-        if ($by_user)
-        {
-            $where[] = "performed_by_guid=?";
-            $args[] = $by_user;
-        }
-        if ($event)
-        {
-            $where[] = "event=?";
-            $args[] = $event;
-        }
-
-        if ($class!=="")
-        {
-            $where[] = "object_class=?";
-            $args = $class;
-        }
-
-        if ($type != "")
-        {
-            $where[] = "object_type=?";
-            $args[] = $type;
-        }
-        if ($subtype!=="")
-        {
-            $where[] = "object_subtype=?";
-            $args[] = $subtype;
-        }
-        if ($timebefore)
-        {
-            $where[] = "time_created < ?";
-            $args[] = $timebefore;
-        }
-        if ($timeafter)
-        {
-            $where[] = "time_created > ?";
-            $args[] = $timeafter;
-        }
-        if ($object_id)
-        {
-            $where[] = "object_id = ?";
-            $args[] = ((int) $object_id);
-        }
-
-        $select = "*";
-        if ($count)
-        {
-            $select = "count(*) as count";
-        }
-
-        $query = "SELECT $select from system_log where 1 ";
-
-        foreach ($where as $w)
-            $query .= " and $w";
-
-        if (!$count)
-        {
-            $query .= " order by time_created desc";
-            $query .= " limit ".((int)$offset).", ".((int)$limit);
-        }
-
-        if ($count)
-        {
-            if ($numrows = get_data_row($query, $args))
-                return $numrows->count;
-        }
-        else
-        {
-            return get_data($query, $args);
-        }
-
-        return false;
+        $query = new Query_Select('system_log');
+        $query->order_by('time_created desc');
+        return $query;
     }
 
     /**

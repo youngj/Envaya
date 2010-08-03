@@ -6,8 +6,8 @@
     $offset = (int) get_input('offset');
     $limit = 10;
 
-    $count = $org->getNewsUpdates($limit, $offset, true);
-    $entities = $org->getNewsUpdates($limit, $offset);            
+    $count = $org->queryNewsUpdates()->count();
+    $entities = $org->queryNewsUpdates()->limit($limit, $offset)->filter();            
 ?>
 
 <?php if (!empty($entities)) { ?>
@@ -18,7 +18,7 @@
 <?php } ?>
 <?php
 
-    echo elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination = true);
+    echo view_entity_list($entities, $count, $offset, $limit);
     
     if (!$count)
     {

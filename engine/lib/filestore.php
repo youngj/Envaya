@@ -22,10 +22,9 @@ function get_thumbnail_src($html)
         $ownerGuid = $matches[2];
         $groupName = $matches[3];
 
-        $files = ElggFile::filterByCondition(
-            array('owner_guid = ?', 'group_name = ?','size = ?'),
-            array($ownerGuid, $groupName, 'small')
-        );
+        $files = ElggFile::query()->where('owner_guid = ?', $ownerGuid)->
+                    where('group_name = ?', $groupName)->
+                    where('size=?', 'small')->filter();
 
         if (sizeof($files) > 0)
         {
@@ -43,10 +42,9 @@ function get_file_from_url($url)
         $groupName = $matches[2];
         $fileName = $matches[3];
 
-        $files = ElggFile::filterByCondition(
-            array('owner_guid = ?', 'group_name = ?','filename = ?'),
-            array($ownerGuid, $groupName, $fileName)
-        );
+        $files = ElggFile::query()->where('owner_guid = ?', $ownerGuid)->
+            where('group_name = ?', $groupName)->where('filename = ?', $fileName)->filter();
+       
         if (sizeof($files) > 0)
         {
             return $files[0];

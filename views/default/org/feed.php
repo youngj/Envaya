@@ -43,5 +43,5 @@ echo elgg_view('input/pulldown', array(
 
 <?php
 	$feedName = get_feed_name(array('sector' => $sector, 'region' => $region));
-	echo elgg_view('feed/list', array('items' => FeedItem::filterByFeedName($feedName, $limit = 20)));
+	echo elgg_view('feed/list', array('items' => FeedItem::queryByFeedName($feedName)->limit(20)->filter()));
 ?>

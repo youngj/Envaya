@@ -28,7 +28,7 @@
 					
 				}
 				echo "<td class=\"search_gallery_item\">";
-				echo elgg_view_entity($entity);
+				echo view_entity($entity);
 				echo "</td>";
 				$col++;
 				if ($col > 3) {

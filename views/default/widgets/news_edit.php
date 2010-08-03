@@ -36,8 +36,8 @@
     $offset = (int) get_input('offset');
     $limit = 10;
 
-    $count = $org->getNewsUpdates($limit, $offset, true);
-    $updates = $org->getNewsUpdates($limit, $offset);
+    $count = $org->queryNewsUpdates()->count();
+    $updates = $org->queryNewsUpdates()->limit($limit, $offset)->filter();
 
     ob_start();
 

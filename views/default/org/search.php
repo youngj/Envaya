@@ -40,15 +40,14 @@
 
     if ($latlong)
     {
-        $nearby = Organization::filterByArea(
+        $nearby = Organization::queryByArea(
             array(
                 $latlong['lat'] - 1.0, 
                 $latlong['long'] - 1.0, 
                 $latlong['lat'] + 1.0, 
                 $latlong['long'] + 1.0
             ),    
-            $sector,
-            $limit=1);
+            $sector)->limit(1)->get();
 
         if ($nearby)
         {

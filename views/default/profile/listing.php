@@ -23,8 +23,6 @@
 	
 		// Simple XFN
 		$rel = "";
-		if (page_owner() == $vars['entity']->guid)
-			$rel = 'me';
 		
 		if (!$banned) {
 			$info .= "<p><b><a href=\"" . $vars['entity']->getUrl() . "\" rel=\"$rel\">" . escape($vars['entity']->name) . "</a></b></p>";

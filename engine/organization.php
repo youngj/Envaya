@@ -50,7 +50,7 @@ class Organization extends ElggUser
         }
         */
 
-        foreach ($this->getPartnerships($limit = 25) as $partnership)
+        foreach ($this->queryPartnerships()->limit(25)->filter() as $partnership)
         {
             $feedNames[] = get_feed_name(array('user' => $partnerhip->partner_guid));
         }
@@ -213,22 +213,8 @@ class Organization extends ElggUser
 
     public function getWidgetByName($name)
     {
-        $where = array();
-        $args = array();
-
-        $where[] = "container_guid=?";
-        $args[] = $this->guid;
-
-        $where[] = "widget_name=?";
-        $args[] = $name;
-
-        $showHidden = access_get_show_hidden_status();
-        access_show_hidden_entities(true);
-
-        $widget = Widget::getByCondition($where, $args);
-
-        $showHidden = access_show_hidden_entities($showHidden);
-
+        $widget = Widget::query()->where('container_guid=?', $this->guid)->where('widget_name=?',$name)->show_disabled(true)->get();
+        
         if (!$widget)
         {
             $widget = new Widget();
@@ -240,13 +226,7 @@ class Organization extends ElggUser
 
     private function getSavedWidgets()
     {
-        $where = array();
-        $args = array();
-
-        $where[] = "container_guid=?";
-        $args[] = $this->guid;
-
-        return Widget::filterByCondition($where, $args);
+        return Widget::query()->where('container_guid=?',$this->guid)->filter();
     }
     
     public function getAvailableWidgets()
@@ -274,85 +254,68 @@ class Organization extends ElggUser
         return $availableWidgets;
     }
     
-    static function search($name, $sector, $region, $limit = 10, $offset = 0, $count = false)
+    static function querySearch($name, $sector, $region)
     {
-        $where = array();
-        $args = array();
+        $query = static::query();
+        
         if ($name)
         {
-            $where[] = "(INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0)";
-            $args[] = $name;
-            $args[] = $name;
+            $query->where("(INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0)", $name, $name);
         }
 
-        $join = '';
         if ($sector)
         {
-            $join = "INNER JOIN org_sectors s ON s.container_guid = e.guid";
-            $where[] = "s.sector_id=?";
-            $args[] = $sector;
+            $query->join("INNER JOIN org_sectors s ON s.container_guid = e.guid");
+            $query->where("s.sector_id=?", $sector);
         }
 
         if ($region)
         {
-            $where[] = "region=?";
-            $args[] = $region;
+            $query->where("region=?", $region);
         }
-
-        return static::filterByCondition($where, $args, 'u.name', $limit, $offset, $count, $join);
+        $query->order_by('u.name');
+        
+        return $query;
     }
 
-    static function listSearch($name, $sector, $region, $limit = 10, $pagination = true)
+    static function listSearch($name, $sector, $region, $limit = 10)
     {
         $offset = (int) get_input('offset');
 
-        $count = static::search($name, $sector, $region, $limit, $offset, true);
-        $entities = static::search($name, $sector, $region, $limit, $offset);
+        $query = static::querySearch($name, $sector, $region);
+        
+        $count = $query->count();
+        $entities = $query->filter();
 
-        return elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination);
+        return view_entity_list($entities, $count, $offset, $limit);
     }
 
-    static function filterByArea($latLongArr, $sector, $limit = 10, $offset = 0, $count = false)
+    static function queryByArea($latLongArr, $sector)
     {
-        $where = array();
-        $args = array();
+        $query = static::query();
+        $query->where("latitude >= ?", $latLongArr[0]);
+        $query->where("latitude <= ?", $latLongArr[2]);
+        $query->where("longitude >= ?", $latLongArr[1]);
+        $query->where("longitude <= ?", $latLongArr[3]);
 
-        $where[] = "latitude >= ?";
-        $args[] = $latLongArr[0];
-
-        $where[] = "latitude <= ?";
-        $args[] = $latLongArr[2];
-
-        $where[] = "longitude >= ?";
-        $args[] = $latLongArr[1];
-
-        $where[] = "longitude <= ?";
-        $args[] = $latLongArr[3];
-
-        $join = '';
         if ($sector)
         {
-            $join = "INNER JOIN org_sectors s ON s.container_guid = e.guid";
-            $where[] = "s.sector_id=?";
-            $args[] = $sector;
+            $query->join("INNER JOIN org_sectors s ON s.container_guid = e.guid");
+            $query->where("s.sector_id=?", $sector);
         }
 
-        return static::filterByCondition($where, $args, '', $limit, $offset, $count, $join);
+        return $query;
     }
 
-    function getPartnerships($limit = 10, $offset = 0, $count = false)
+    function queryPartnerships()
     {
-        $where = array("container_guid = ? AND approval >= 3");
-        $args = array($this->guid);
-
-        return Partnership::filterByCondition($where, $args, '', $limit, $offset, $count);
+        return Partnership::query()->where("container_guid = ? AND approval >= 3", $this->guid);
     }
     
     function getPartnership($partnerOrg)
     {
-        $partnership = Partnership::getByCondition(array("container_guid = ? AND partner_guid = ?"),
-            array($this->guid, $partnerOrg->guid)
-        );
+        $partnership = Partnership::query()->where('container_guid=?',$this->guid)->where('partner_guid=?',$partnerOrg->guid)->get();
+
         if (!$partnership)
         {
             $partnership = new Partnership();

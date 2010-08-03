@@ -143,32 +143,12 @@ class ElggObject extends ElggEntity
         }
     }
 
-    static function all($limit = 10, $offset = 0, $count = false)
+    static function query()
     {
-        return static::filterByCondition(array(), array(), 'time_created desc', $limit, $offset, $count);
+        $query = new Query_SelectEntity(static::$table_name);
+        $query->where("type='object'");
+        $query->where("subtype=?", static::$subtype_id);
+        return $query;
     }
-
-    static function getByCondition($where, $args)
-    {
-        $objs = static::filterByCondition($where, $args, '', 1, 0, false);
-        if (!empty($objs))
-        {
-            return $objs[0];
-        }
-        return null;
-    }
-
-    static function filterByCondition($where, $args, $order_by = '', $limit = 10, $offset = 0, $count = false)
-    {
-        $where[] = "type='object'";
-
-        $subtypeId = static::$subtype_id;
-        if ($subtypeId)
-        {
-            $where[] = "subtype=?";
-            $args[] = $subtypeId;
-        }
-
-        return get_entities_by_condition(static::$table_name, $where, $args, $order_by, $limit, $offset, $count);
-    }
+    
 }

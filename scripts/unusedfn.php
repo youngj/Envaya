@@ -18,6 +18,21 @@ function getDeclaredFunctions($path)
     }
 }
 
+$functionArgs = array();
+
+function getFunctionArguments($path)
+{
+    global $functionArgs;
+    $contents = file_get_contents($path);
+    if (preg_match_all('/function\s+(\w+)\([^\)]+\)/', $contents, $matches, PREG_SET_ORDER))
+    {
+        foreach ($matches as $match)
+        {            
+            $functionArgs[$path.":".$match[1]] = substr_count($match[0],',') + 1;
+        }
+    }
+}
+
 function countCalledFunctions($path)
 {
     global $functionCount;
@@ -54,15 +69,39 @@ function checkDir($dir, $callback)
     }
 }
 
-$dir = dirname(__DIR__);
 
-checkDir("$dir/engine/lib", 'getDeclaredFunctions');
-checkDir($dir, 'countCalledFunctions');
 
-foreach ($functionCount as $functionName => $count)
+function showUnusedFunctions()
 {
-    if ($count == 0)
+    $dir = dirname(__DIR__);
+    global $functionCount;
+    checkDir("$dir/engine/lib", 'getDeclaredFunctions');
+    checkDir($dir, 'countCalledFunctions');
+
+    foreach ($functionCount as $functionName => $count)
     {
-        echo "$functionName\n";
+        if ($count == 0)
+        {
+            echo "$functionName\n";
+        }
     }
 }
+
+function showLongFunctions()
+{
+    $dir = dirname(__DIR__);
+    checkDir("$dir/engine", 'getFunctionArguments');
+
+    global $functionArgs;
+        
+    foreach ($functionArgs as $functionName => $numArgs)
+    {
+        if ($numArgs > 3)
+        {
+            echo "$numArgs $functionName\n";
+        }
+    }
+}
+
+showLongFunctions();
+//showUnusedFunctions();

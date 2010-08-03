@@ -10,7 +10,7 @@
     class ElggUser extends ElggEntity
         implements Locatable
     {
-
+    
         /**
          * Initialise the attributes array.
          * This is vital to distinguish between metadata and base parameters.
@@ -301,24 +301,15 @@
 
         public function getLocation() { return $this->get('location'); }
 
-        function getNewsUpdates($limit = 10, $offset = 0, $count = false)
+        function queryNewsUpdates()
         {
-            $where = array();
-            $args = array();
-
-            $where[] = "subtype=?";
-            $args[] = T_blog;
-
-            $where[] = "container_guid=?";
-            $args[] = $this->guid;
-
-            return NewsUpdate::filterByCondition($where, $args, "time_created desc", $limit, $offset, $count);
+            return NewsUpdate::query()->where("container_guid=?", $this->guid)->order_by('time_created desc');
         }
 
         function getFeedItems($limit = 10)
         {
             $feedName = get_feed_name(array('user' => $this->guid));
-            return FeedItem::filterByFeedName($feedName, $limit);
+            return FeedItem::queryByFeedName($feedName)->limit($limit)->filter();
         }
         
         function getBlogDates()
@@ -342,45 +333,24 @@
 
         static function getByEmailCode($emailCode)
         {
-            return static::getByCondition(
-                array('email_code = ?'),
-                array($emailCode)
-            );
+            return static::query()->where('email_code = ?', $emailCode)->get();
         }
 
-        static function all($order_by = '', $limit = 10, $offset = 0, $count = false)
+        static function query()
         {
-            return static::filterByCondition(array(), array(), $order_by, $limit, $offset, $count);
-        }
-
-        static function getByCondition($where, $args)
-        {
-            $users = static::filterByCondition($where, $args, '', 1, 0, false);
-            if (!empty($users))
+            $query = new Query_SelectEntity('users_entity');
+            $query->where("type='user'");
+            if (static::$subtype_id)
             {
-                return $users[0];
-            }
-            return null;
-        }
-
-        static function filterByCondition($where, $args, $order_by = '', $limit = 10, $offset = 0, $count = false, $join = '')
-        {
-            $where[] = "type='user'";
-
-            $subtypeId = static::$subtype_id;
-            if ($subtypeId)
-            {
-                $where[] = "subtype=?";
-                $args[] = $subtypeId;
+                $query->where("subtype=?", static::$subtype_id);
             }
 
             if (!isadminloggedin() && !access_get_show_hidden_status())
             {
-                $where[] = "(approval > 0 || e.guid = ?)";
-                $args[] = get_loggedin_userid();
+                $query->where("(approval > 0 || e.guid = ?)", get_loggedin_userid());
             }
-
-            return get_entities_by_condition('users_entity', $where, $args, $order_by, $limit, $offset, $count, $join);
+            
+            return $query;
         }
 
 

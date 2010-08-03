@@ -99,6 +99,6 @@
 
         if ($objects)
         {
-            return elgg_view_entity_list($objects, $count,$offset,10,false);
+            return view_entity_list($objects, $count,$offset,10);
         }
     }

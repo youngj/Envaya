@@ -80,54 +80,44 @@ class FeedItem
         ));
     }
 
-    static function filterByFeedNames($feedNames, $excludeUser = null, $limit = 10, $offset = 0, $count = false)
+    static function queryByFeedNames($feedNames, $excludeUser = null)
     {
         $numNames = sizeof($feedNames);
 
+        $query = new Query_Select('feed_items f');
+        $query->join('INNER JOIN users_entity u ON u.guid = f.user_guid');
+        
         if ($numNames == 0)
         {
-            return $count ? 0 : array();
-        }
-
-        $where = array("feed_name in (".implode(',', array_fill(0, $numNames, '?')).")");
-        $args = $feedNames;
-
-        if ($excludeUser)
-        {
-            $where[] = "f.user_guid <> ?";
-            $args[] = $excludeUser->guid;
-        }
-
-        if (!isadminloggedin() && !access_get_show_hidden_status())
-        {
-            $where[] = "(u.approval > 0 || u.guid = ?)";
-            $args[] = get_loggedin_userid();
-        }
-
-        $from = "FROM feed_items f INNER JOIN users_entity u ON u.guid = f.user_guid WHERE ".implode(" AND ", $where);
-
-
-        if ($numNames > 1)
-        {
-            $from .= " GROUP BY action_name, subject_guid, time_posted";
-        }
-
-        if ($count)
-        {
-            return get_data_row("SELECT COUNT(*) as total $from", $args)->total;
+            $query->where("8<3");            
         }
         else
         {
-            $sql = "SELECT f.* $from ORDER BY time_posted DESC LIMIT ".((int)$offset).", ".((int)$limit);
+            $query->where("feed_name in (".implode(',', array_fill(0, $numNames, '?')).")", $feedNames);
 
-            return array_map('feed_row_to_feed_item',
-                get_data($sql, $args)
-            );
+            if ($excludeUser)
+            {
+                $query->where("f.user_guid <> ?", $excludeUser->guid);
+            }
+
+            if (!isadminloggedin() && !access_get_show_hidden_status())
+            {
+                $query->where("(u.approval > 0 || u.guid = ?)", get_loggedin_userid());
+            }
         }
+
+        if ($numNames > 1)
+        {
+            $query->group_by('action_name, subject_guid, time_posted');
+        }
+
+        $query->order_by('time_posted DESC');
+        $query->set_row_function('feed_row_to_feed_item');
+        return $query;
     }
 
-    static function filterByFeedName($feedName, $limit = 10, $offset = 0, $count = false)
+    static function queryByFeedName($feedName)
     {
-        return static::filterByFeedNames(array($feedName), null, $limit, $offset, $count);
+        return static::queryByFeedNames(array($feedName), null);
     }
 }

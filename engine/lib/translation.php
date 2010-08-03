@@ -67,32 +67,13 @@ function translate_field($obj, $field, $isHTML = false)
 
 function lookup_translation($obj, $prop, $origLang, $viewLang, $translateMode = TranslateMode::ManualOnly, $isHTML = false)
 {
-    $where = array();
-    $args = array();
-
-    $where[] = "subtype=?";
-    $args[] = T_translation;
-
-    $where[] = "property=?";
-    $args[] = $prop;
-
-    $where[] = "lang=?";
-    $args[] = $viewLang;
-
-    $where[] = "container_guid=?";
-    $args[] = $obj->guid;
-
-    $where[] = "html=?";
-    $args[] = $isHTML ? 1 : 0;
-
-    $entities = get_entities_by_condition('translations', $where, $args, '', 1);
+    $trans = Translation::query()->where('property=?', $prop)->where('lang=?',$viewLang)->
+                where('container_guid=?',$obj->guid)->where('html=?', $isHTML ? 1 : 0)->get();
 
     $doAutoTranslate = ($translateMode == TranslateMode::All);
 
-    if (!empty($entities))
+    if ($trans)
     {
-        $trans = $entities[0];
-
         if ($doAutoTranslate && $trans->isStale())
         {
             $text = get_auto_translation($obj->$prop, $origLang, $viewLang);

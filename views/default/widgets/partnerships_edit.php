@@ -31,8 +31,10 @@
     $offset = (int) get_input('offset');
     $limit = 10;
 
-    $count = $org->getPartnerships($limit, $offset, true);
-    $entities = $org->getPartnerships($limit, $offset);
+    $query = $org->queryPartnerships()->limit($limit, $offset);
+    
+    $count = $query->count();
+    $entities = $query->filter();
     
     ob_start();
     

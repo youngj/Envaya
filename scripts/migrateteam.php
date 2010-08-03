@@ -15,7 +15,7 @@
             $content = '';
             foreach ($org->getTeamMembers() as $teamMember)
             {
-                $content .= elgg_view_entity($teamMember);
+                $content .= view_entity($teamMember);
             }
 
             $teamWidget = $org->getWidgetByName('team');

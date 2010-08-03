@@ -6,9 +6,10 @@
 
     $limit = 5;
 
-    $entities = Translation::filterByLanguageAndOwner($lang, 0, $limit, $offset);
-    $count = Translation::filterByLanguageAndOwner($lang, 0, $limit, $offset, true);
+    $query = Translation::queryByLanguageAndOwner($lang, 0);
+    $entities = $query->filter();
+    $count = $query->count();
 
-    echo elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination = true);
+    echo view_entity_list($entities, $count, $offset, $limit);
 
 ?>

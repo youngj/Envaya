@@ -24,9 +24,7 @@
      * @return  boolean
      */
     function auto_load($class)
-    {
-        error_log("$class");
-    
+    {        
         // Transform the class name into a path
         $file = str_replace('_', '/', strtolower($class));
 
@@ -330,12 +328,10 @@
      *
      * @param ElggEntity $entity The entity to display
      * @param boolean $full Determines whether or not to display the full version of an object, or a smaller version for use in aggregators etc
-     * @param boolean $bypass If set to true, elgg_view will bypass any specified alternative template handler; by default, it will hand off to this if requested (see set_template_handler)
-     * @param boolean $debug If set to true, the viewer will complain if it can't find a view
      * @return string HTML (etc) to display
      */
-        function elgg_view_entity(ElggEntity $entity, $full = false, $bypass = true, $debug = false) {
-
+        function view_entity(ElggEntity $entity, $full = false) 
+        {
             // No point continuing if entity is null.
             if (!$entity) return '';
 
@@ -346,60 +342,42 @@
 
             $entity_class = get_class($entity);
 
-            if (isset($classes[$entity_class])) {
+            if (isset($classes[$entity_class])) 
+            {
                 $entity_type = $classes[$entity_class];
-            } else {
-                foreach($classes as $class => $type) {
+            } 
+            else 
+            {
+                foreach($classes as $class => $type) 
+                {
                     if ($entity instanceof $class) {
                         $entity_type = $type;
                         break;
                     }
                 }
             }
-            if (!isset($entity_class)) return false;
+            if (!isset($entity_class)) 
+                return false;
 
             $subtype = $entity->getSubtypeName();
-            if (empty($subtype)) { $subtype = $entity_type; }
+            if (empty($subtype)) 
+            { 
+                $subtype = $entity_type; 
+            }
 
-            $contents = '';
-            if (elgg_view_exists("{$entity_type}/{$subtype}")) {
-                $contents = elgg_view("{$entity_type}/{$subtype}",array(
-                                                                    'entity' => $entity,
-                                                                    'full' => $full
-                                                                    ), $bypass, $debug);
+            $args = array('entity' => $entity,'full' => $full);
+            
+            if (elgg_view_exists("{$entity_type}/{$subtype}")) 
+            {
+                return elgg_view("{$entity_type}/{$subtype}", $args);
             }
-            if (empty($contents)) {
-                $contents = elgg_view("{$entity_type}/default",array(
-                                                                'entity' => $entity,
-                                                                'full' => $full
-                                                                ), $bypass, $debug);
+            else
+            {
+                return elgg_view("{$entity_type}/default", $args);
             }
-            return $contents;
         }
 
-
-    /**
-     * Returns a view of a list of entities, plus navigation. It is intended that this function
-     * be called from other wrapper functions.
-     *
-     * @see list_entities
-     * @see list_user_objects
-     * @see list_user_friends_objects
-     * @see list_entities_from_metadata
-     * @see list_entities_from_metadata_multi
-     * @see list_entities_from_relationships
-     * @see list_site_members
-     *
-     * @param array $entities List of entities
-     * @param int $count The total number of entities across all pages
-     * @param int $offset The current indexing offset
-     * @param int $limit The number of entities to display per page
-     * @param true|false $fullview Whether or not to display the full view (default: true)
-     * @param true|false $viewtypetoggle Whether or not to allow users to toggle to gallery view
-     * @param bool $pagination Whether pagination is offered.
-     * @return string The list of entities
-     */
-        function elgg_view_entity_list($entities, $count, $offset, $limit, $fullview = true, $viewtypetoggle = true, $pagination = true) {
+        function view_entity_list($entities, $count, $offset, $limit, $fullview = false, $pagination = true) {
 
             $count = (int) $count;
             $offset = (int) $offset;
@@ -415,7 +393,7 @@
                 'baseurl' => $_SERVER['REQUEST_URI'],
                 'fullview' => $fullview,
                 'context' => $context,
-                'viewtypetoggle' => $viewtypetoggle,
+                'viewtypetoggle' => false,
                 'pagination' => $pagination
               ));
         }
@@ -852,107 +830,6 @@
             $return1 = events($event, $object_type, "", null, true, $object);
             if (!is_null($return1)) $return = $return1;
             return $return;
-        }
-
-    /**
-     * Register a function to a plugin hook for a particular entity type, with a given priority.
-     *
-     * eg if you want the function "export_user" to be called when the hook "export" for "user" entities
-     * is run, use:
-     *
-     *      register_plugin_hook("export", "user", "export_user");
-     *
-     * "all" is a valid value for both $hook and $entity_type. "none" is a valid value for $entity_type.
-     *
-     * The export_user function would then be defined as:
-     *
-     *      function export_user($hook, $entity_type, $returnvalue, $params);
-     *
-     * Where $returnvalue is the return value returned by the last function returned by the hook, and
-     * $params is an array containing a set of parameters (or nothing).
-     *
-     * @param string $hook The name of the hook
-     * @param string $entity_type The name of the type of entity (eg "user", "object" etc)
-     * @param string $function The name of a valid function to be run
-     * @param string $priority The priority - 0 is first, 1000 last, default is 500
-     * @return true|false Depending on success
-     */
-        function register_plugin_hook($hook, $entity_type, $function, $priority = 500) {
-            global $CONFIG;
-
-            if (!isset($CONFIG->hooks)) {
-                $CONFIG->hooks = array();
-            } else if (!isset($CONFIG->hooks[$hook]) && !empty($hook)) {
-                $CONFIG->hooks[$hook] = array();
-            } else if (!isset($CONFIG->hooks[$hook][$entity_type]) && !empty($entity_type)) {
-                $CONFIG->hooks[$hook][$entity_type] = array();
-            }
-
-            if (!empty($hook) && !empty($entity_type) && is_callable($function)) {
-                $priority = (int) $priority;
-                if ($priority < 0) $priority = 0;
-                while (isset($CONFIG->hooks[$hook][$entity_type][$priority])) {
-                    $priority++;
-                }
-                $CONFIG->hooks[$hook][$entity_type][$priority] = $function;
-                ksort($CONFIG->hooks[$hook][$entity_type]);
-                return true;
-            } else {
-                return false;
-            }
-
-        }
-
-    /**
-     * Triggers a plugin hook, with various parameters as an array. For example, to provide
-     * a 'foo' hook that concerns an entity of type 'bar', with a parameter called 'param1'
-     * with value 'value1', that by default returns true, you'd call:
-     *
-     * trigger_plugin_hook('foo', 'bar', array('param1' => 'value1'), true);
-     *
-     * @see register_plugin_hook
-     * @param string $hook The name of the hook to trigger
-     * @param string $entity_type The name of the entity type to trigger it for (or "all", or "none")
-     * @param array $params Any parameters. It's good practice to name the keys, i.e. by using array('name' => 'value', 'name2' => 'value2')
-     * @param mixed $returnvalue An initial return value
-     * @return mixed|null The cumulative return value for the plugin hook functions
-     */
-        function trigger_plugin_hook($hook, $entity_type, $params = null, $returnvalue = null) {
-            global $CONFIG;
-
-            if (!empty($CONFIG->hooks[$hook][$entity_type]) && is_array($CONFIG->hooks[$hook][$entity_type])) {
-                foreach($CONFIG->hooks[$hook][$entity_type] as $hookfunction) {
-
-                    $temp_return_value = $hookfunction($hook, $entity_type, $returnvalue, $params);
-                    if (!is_null($temp_return_value)) $returnvalue = $temp_return_value;
-                }
-            }
-
-            if (!empty($CONFIG->hooks['all'][$entity_type]) && is_array($CONFIG->hooks['all'][$entity_type])) {
-                foreach($CONFIG->hooks['all'][$entity_type] as $hookfunction) {
-
-                    $temp_return_value = $hookfunction($hook, $entity_type, $returnvalue, $params);
-                    if (!is_null($temp_return_value)) $returnvalue = $temp_return_value;
-                }
-            }
-
-            if (!empty($CONFIG->hooks[$hook]['all']) && is_array($CONFIG->hooks[$hook]['all'])) {
-                foreach($CONFIG->hooks[$hook]['all'] as $hookfunction) {
-
-                    $temp_return_value = $hookfunction($hook, $entity_type, $returnvalue, $params);
-                    if (!is_null($temp_return_value)) $returnvalue = $temp_return_value;
-                }
-            }
-
-            if (!empty($CONFIG->hooks['all']['all']) && is_array($CONFIG->hooks['all']['all'])) {
-                foreach($CONFIG->hooks['all']['all'] as $hookfunction) {
-
-                    $temp_return_value = $hookfunction($hook, $entity_type, $returnvalue, $params);
-                    if (!is_null($temp_return_value)) $returnvalue = $temp_return_value;
-                }
-            }
-
-            return $returnvalue;
         }
 
     /**

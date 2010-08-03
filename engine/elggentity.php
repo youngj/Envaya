@@ -646,6 +646,23 @@ abstract class ElggEntity implements
         }
     }
 
+    static function queryByMetadata($meta_name, $meta_value = "")
+    {
+        $query = static::query();  
+        $query->join('JOIN metadata m on e.guid = m.entity_guid');
+
+        if ($meta_name!=="")
+        {
+            $query->where("m.name=?", $meta_name);
+        }
+
+        if ($meta_value!=="")
+        {
+            $query->where("m.value=?", $meta_value);
+        }
+        return $query;
+    }
+    
     // SYSTEM LOG INTERFACE ////////////////////////////////////////////////////////////
 
     /**
@@ -667,4 +684,5 @@ abstract class ElggEntity implements
      * This is useful for checking access permissions etc on objects.
      */
     public function getObjectFromID($id) { return get_entity($id); }
+    
 }

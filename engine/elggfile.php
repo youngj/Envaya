@@ -16,10 +16,8 @@ class ElggFile extends ElggObject
 
     public function getFilesInGroup()
     {
-        return ElggFile::filterByCondition(
-            array('owner_guid = ?', 'group_name = ?'),
-            array($this->owner_guid, $this->group_name)
-        );
+        return ElggFile::query()->where('owner_guid = ?', $this->owner_guid)->
+            where('group_name = ?', $this->group_name)->filter();            
     }
 
     public function jsProperties()

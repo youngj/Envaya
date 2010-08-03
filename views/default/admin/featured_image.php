@@ -11,7 +11,7 @@
         )
     );          
     
-    $files = ElggFile::filterByCondition(array('container_guid=?','size=?'),array($org->guid,'small'), '',$limit = 19);
+    $files = ElggFile::query()->where('container_guid=?',$org->guid)->where('size=?','small')->limit(19)->filter();
     if ($files)
     {    
         echo "<div style='clear:both;padding-top:5px'>";    

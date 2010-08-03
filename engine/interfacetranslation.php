@@ -12,12 +12,12 @@ class InterfaceTranslation extends ElggObject
     );
 
     static function getByKeyAndLang($key, $lang)
-    {
-        return static::getByCondition(array('`key` = ?', 'lang = ?'), array($key, $lang));
+    {        
+        return static::query()->where('`key` = ?', $key)->where('lang = ?', $lang)->get();
     }
 
     static function filterByLang($lang)
     {
-        return static::filterByCondition(array('lang = ?'), array($lang), '', 10000);
+        return static::query()->where('lang = ?', $lang)->filter();
     }
 }

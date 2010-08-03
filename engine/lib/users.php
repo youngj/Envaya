@@ -86,61 +86,6 @@
     }
 
     /**
-     * Searches for a user based on a complete or partial name or username.
-     *
-     * @param string $criteria The partial or full name or username.
-     * @param int $limit Limit of the search.
-     * @param int $offset Offset.
-     * @param string $order_by The order.
-     * @param boolean $count Whether to return the count of results or just the results.
-     */
-    function search_for_user($criteria, $limit = 10, $offset = 0, $order_by = "", $count = false, $user_subtype = "")
-    {
-        $user_subtype_id = get_subtype_id('user', $user_subtype);
-
-        $access = get_access_sql_suffix("e");
-
-        $args = array();
-
-        if ($count)
-        {
-            $query = "SELECT count(e.guid) as total ";
-        }
-        else
-        {
-            $query = "SELECT e.*, u.* ";
-        }
-
-        $query .= "FROM entities e JOIN users_entity u ON e.guid=u.guid WHERE (INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0) and $access";
-        $args[] = $criteria;
-        $args[] = $criteria;
-
-        if ($user_subtype_id)
-        {
-            $query .= "AND e.subtype=?";
-            $args[] = $user_subtype_id;
-        }
-
-        if (!$count)
-        {
-            $order_by = sanitize_order_by($order_by);
-            if ($order_by == "")
-                $order_by = "e.time_created desc";
-
-            return array_map('entity_row_to_elggstar',
-                get_data("$query order by $order_by limit ".((int)$offset).", ".((int)$limit), $args));
-        }
-        else
-        {
-            if ($count = get_data_row($query, $args))
-            {
-                return $count->total;
-            }
-        }
-        return false;
-    }
-
-    /**
      * A function that returns a maximum of $limit users who have done something within the last
      * $seconds seconds.
      *
@@ -464,39 +409,3 @@
         execute_delayed_write_query("UPDATE users_entity set prev_last_login = last_login, last_login = ? where guid = ?", array(time(), $user_guid));
     }
 
-    /**
-     * Users initialisation function, which establishes the page handler
-     *
-     */
-    function users_init() {
-
-        register_plugin_hook('search','all','search_list_users_by_name');
-
-    }
-
-    /**
-     * Returns a formatted list of users suitable for injecting into search.
-     *
-     */
-    function search_list_users_by_name($hook, $user, $returnvalue, $tag) {
-
-        // Change this to set the number of users that display on the search page
-        $threshold = 4;
-
-        $object = get_input('object');
-
-        if (!get_input('offset') && (empty($object) || $object == 'user'))
-        if ($users = search_for_user($tag,$threshold)) {
-
-            $countusers = search_for_user($tag,0,0,"",true);
-
-            $return = elgg_view('user/search/startblurb',array('count' => $countusers, 'tag' => $tag));
-            foreach($users as $user) {
-                $return .= elgg_view_entity($user);
-            }
-            return $return;
-
-        }
-    }
-
-    register_elgg_event_handler('init','system','users_init',0);

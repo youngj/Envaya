@@ -35,8 +35,8 @@ class Translation extends ElggObject
         return $this->calculateHash() != $this->hash;
     }
 
-    public static function filterByLanguageAndOwner($lang, $owner_guid, $limit = 10, $offset = 0, $count = false)
+    public static function queryByLanguageAndOwner($lang, $owner_guid)
     {
-        return static::filterByCondition(array('lang = ?', 'owner_guid = ?'), array($lang, $owner_guid), 'time_created asc', $limit, $offset, $count);
+        return static::query()->where('lang = ?',$lang)->where('owner_guid = ?',$owner_guid)->order_by('time_created asc');
     }
 }

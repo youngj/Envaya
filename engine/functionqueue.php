@@ -29,7 +29,7 @@ class FunctionQueue
         return true;
     }
 
-    function exec_queued_call($timeout = 0)
+    static function exec_queued_call($timeout = 0)
     {
         $kestrel = static::_connect();
 

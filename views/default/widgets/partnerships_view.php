@@ -6,10 +6,12 @@
     $offset = (int) get_input('offset');
     $limit = 10;
 
-    $count = $org->getPartnerships($limit, $offset, true);
-    $entities = $org->getPartnerships($limit, $offset);
+    $query = $org->queryPartnerships()->limit($limit, $offset);
     
-    echo elgg_view_entity_list($entities, $count, $offset, $limit, false, false, $pagination = true);
+    $count = $query->count();
+    $entities = $query->filter();
+    
+    echo view_entity_list($entities, $count, $offset, $limit);
         
     if (!$count)
     {

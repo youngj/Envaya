@@ -6,8 +6,8 @@
     $offset = (int)get_input('offset');
 
     $limit = 15;
-    $orgs = Organization::all($sort, $limit, $offset);
-    $count = Organization::all('', 0, 0, true);
+    $orgs = Organization::query()->order_by($sort)->limit($limit, $offset)->filter();
+    $count = Organization::query()->count();
 
     echo elgg_view('navigation/pagination',array(
         'baseurl' => $baseurl,
@@ -36,7 +36,7 @@
     foreach ($orgs as $org)
     {
         $backgroundColor = ($org->approval > 0) ? '#fff' : (($org->approval == 0) ? '#ddd' : '#f99');
-        $numNewsUpdates = $org->getNewsUpdates(0,0,true);
+        $numNewsUpdates = $org->queryNewsUpdates()->count();
 ?>
 <tr style='background-color:<?php echo $backgroundColor ?>'>
     <td><?php echo "<a href='{$org->getURL()}'>".escape($org->name)."</a>" ?></td>

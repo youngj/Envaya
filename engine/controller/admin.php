@@ -57,9 +57,9 @@ class Controller_Admin extends Controller
         $this->validate_security_token();
 
         /*
-        $orgs = Organization::filterByCondition(
-            array("approval > 0 AND notify_days > 0 AND ((last_notify_time IS NULL) OR (last_notify_time + notify_days * 86400 < ?)) AND email <> ''"),
-            array($time), '', 1);
+        $orgs = Organization::query()->where(
+            "approval > 0 AND notify_days > 0 AND ((last_notify_time IS NULL) OR (last_notify_time + notify_days * 86400 < ?)) AND email <> ''",
+            $time)->limit(1)->filter();
         */
 
         global $CONFIG;
@@ -120,8 +120,11 @@ class Controller_Admin extends Controller
         $offset = get_input('offset', 0);
 
         $title = elgg_view_title(__('admin:user'));
+        
+        $count = ElggUser::query()->count();
+        $entities = ElggUser::query()->limit($limit, $offset)->order_by('e.guid desc')->filter();
 
-        $result = list_entities('user', '', 0, $limit, false);
+        $result = view_entity_list($entities, $count, $offset, $limit);
 
         $this->page_draw(
             __("admin:user"),
@@ -131,45 +134,40 @@ class Controller_Admin extends Controller
 
     function action_search()
     {
-        // Get input
         $tag = stripslashes(get_input('tag'));
-        $subtype = stripslashes(get_input('subtype'));
-        if (!$objecttype = stripslashes(get_input('object'))) {
-            $objecttype = "";
-        }
-        if (!$md_type = stripslashes(get_input('tagtype'))) {
-            $md_type = "";
-        }
-        $owner_guid = (int)get_input('owner_guid',0);
-        if (substr_count($owner_guid,',')) {
-            $owner_guid_array = explode(",",$owner_guid);
-        } else {
-            $owner_guid_array = $owner_guid;
-        }
+        $title = sprintf(__('search:title_with_query'),$tag);
 
-        if (empty($objecttype) && empty($subtype)) {
-            $title = sprintf(__('search:title_with_query'),$tag);
-        } else {
-            if (empty($objecttype)) $objecttype = 'object';
-            $itemtitle = 'item:' . $objecttype;
-            if (!empty($subtype)) $itemtitle .= ':' . $subtype;
-            $itemtitle = __($itemtitle);
-            $title = sprintf(__('advancedsearchtitle'),$itemtitle,$tag);
-        }
-
-        if (!empty($tag)) {
-            $body = "";
-            $body .= elgg_view_title($title); // elgg_view_title(sprintf(__('search:title_with_query'),$tag));
-            $body .= trigger_plugin_hook('search','',$tag,"");
-            $body = elgg_view_layout('one_column_padded','',$body);
+        if (!empty($tag)) 
+        {
+            $body = elgg_view_layout('one_column_padded',elgg_view_title($title),$this->search_users($tag));
         }
 
         $this->page_draw($title,$body);
 
     }
 
+    function search_users($tag)
+    {
+        $limit = 10;
+        $offset = (int)get_input('offset');
+
+        $object = get_input('object');
+       
+        $query = ElggUser::query()->where('(INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0)', $tag, $tag);
+       
+        if ($users = $query->limit($limit, $offset)->filter())         
+        {
+            $count = $query->count();
+            $return = elgg_view('user/search/startblurb',array('count' => $count, 'tag' => $tag));            
+            $return .= view_entity_list($users, $count, $offset, $limit);
+            return $return;
+        }
+    }
+    
     function action_logbrowser()
     {
+        $query = system_log_query();
+    
         $limit = get_input('limit', 40);
         $offset = get_input('offset');
 
@@ -188,15 +186,27 @@ class Controller_Admin extends Controller
         }
 
         $timelower = get_input('timelower');
-        if ($timelower) $timelower = strtotime($timelower);
+        if ($timelower) 
+        {
+            $query->where('time_created > ?', strtotime($timelower));
+        }
         $timeupper = get_input('timeupper');
-        if ($timeupper) $timeupper = strtotime($timeupper);
+        if ($timeupper) 
+        {
+            $query->where('time_created < ?', strtotime($timeupper));
+        }
 
         $title = elgg_view_title(__('logbrowser'));
-
-        // Get log entries
-        $log = get_system_log($user, "", "", "","", $limit, $offset, false, $timeupper, $timelower);
-        $count = get_system_log($user, "", "", "","", $limit, $offset, true, $timeupper, $timelower);
+        
+        if ($user)
+        {
+            $query->where('performed_by_guid=?', $user);
+        }
+                
+        $query->limit($limit, $offset);
+        
+        $log = $query->filter();
+        $count = $query->count();
         $log_entries = array();
 
         foreach ($log as $l)
@@ -209,8 +219,7 @@ class Controller_Admin extends Controller
 
         $form = elgg_view('logbrowser/form',array('user_guid' => $user, 'timeupper' => $timeupper, 'timelower' => $timelower));
 
-        $result = elgg_view_entity_list($log_entries, $count, $offset, $limit, false, false);
-
+        $result = view_entity_list($log_entries, $count, $offset, $limit);
 
         $this->page_draw(__('logbrowser'),elgg_view_layout("one_column_padded", $title,  $form . $result));
 
@@ -356,7 +365,7 @@ class Controller_Admin extends Controller
         
         if ($entity && $entity instanceof FeaturedSite)
         {
-            $activeSites = FeaturedSite::filterByCondition(array('active<>0'));
+            $activeSites = FeaturedSite::query()->where('active<>0')->filter();
             
             $entity->active = 1;
             $entity->save();
