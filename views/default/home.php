@@ -45,7 +45,7 @@
 <div class='home_featured'>
 <div class='home_featured_heading'><?php echo __('featured:home_heading') ?></div>
 <?php
-$activeSite = FeaturedSite::getByCondition(array('active=1'));
+$activeSite = FeaturedSite::getByCondition(array('active=1'), array());
 if ($activeSite)
 {
     echo elgg_view_entity($activeSite);

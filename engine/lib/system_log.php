@@ -223,7 +223,7 @@
                 insert_data("INSERT DELAYED into system_log (
                     object_id, object_class, object_type, object_subtype, event,
                     performed_by_guid, owner_guid,  enabled, time_created)
-                    VALUES (?,?,?,?,?,?,?,?,?,?)",
+                    VALUES (?,?,?,?,?,?,?,?,?)",
                     array($object_id,$object_class,$object_type,$object_subtype,$event,
                         $performed_by,$owner_guid,$enabled,$time)
                 );

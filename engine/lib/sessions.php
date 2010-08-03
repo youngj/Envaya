@@ -156,6 +156,11 @@ function login(ElggUser $user, $persistent = false)
     // Users privilege has been elevated, so change the session id (help prevent session hijacking)
     session_regenerate_id(true);
 
+    if ($user)
+    {
+        trigger_elgg_event('login','user',$user);
+    }    
+    
     set_last_login($user->guid);
     reset_login_failure_count($user->guid);
 
@@ -168,8 +173,7 @@ function logout()
     $curUser = get_loggedin_user();
     if ($curUser)
     {
-        if (!trigger_elgg_event('logout','user',$curUser))
-            return false;
+        trigger_elgg_event('logout','user',$curUser);
     }
 
     Session::destroy();
@@ -193,62 +197,3 @@ function force_login()
     }
 }
 
-function __elgg_session_open($save_path, $session_name)
-{
-    global $sess_save_path;
-    $sess_save_path = $save_path;
-
-    return true;
-}
-
-function __elgg_session_close()
-{
-    return true;
-}
-
-function session_cache_key($sessionId)
-{
-    return make_cache_key("session", $sessionId);
-}
-
-function __elgg_session_read($id)
-{
-    $cacheKey = session_cache_key($id);
-    $sessionData = get_cache()->get($cacheKey);
-
-    if ($sessionData == null)
-    {
-        $result = get_data_row("SELECT * from users_sessions where session=?", array($id));
-        $sessionData = ($result) ? $result->data : '';
-        get_cache()->set($cacheKey, $sessionData);
-    }
-
-    return $sessionData;
-}
-
-function __elgg_session_write($id, $sess_data)
-{
-    if (Session::isDirty())
-    {
-        get_cache()->set(session_cache_key($id), $sess_data);
-
-        return (insert_data("REPLACE INTO users_sessions (session, ts, data) VALUES (?,?,?)",
-                array($id, time(), $sess_data))!==false);
-    }
-}
-
-function __elgg_session_destroy($id)
-{
-    get_cache()->delete(session_cache_key($id));
-
-    return (bool)delete_data("DELETE from users_sessions where session=?", array($id));
-}
-
-function __elgg_session_gc($maxlifetime)
-{
-    $life = time()-$maxlifetime;
-
-    return (bool)delete_data("DELETE from users_sessions where ts<?", array($life));
-
-    return true;
-}

@@ -14,8 +14,7 @@
 	$by = get_entity($entry->performed_by_guid);
 	$object = get_object_from_log_entry($entry->id);
 	
-	if (is_callable(array($object, 'getURL')))
-		$obj_url = $object->getURL();
+	$obj_url = is_callable(array($object, 'getURL')) ? $object->getURL() : '';
 	
 	//echo elgg_view_listing($icon, $info);
 ?>

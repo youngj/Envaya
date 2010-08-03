@@ -20,7 +20,6 @@ CREATE TABLE `entities` (
 	`owner_guid` bigint(20) unsigned NOT NULL,
     `site_guid` bigint(20) unsigned NOT NULL,
     `container_guid` bigint(20) unsigned NOT NULL,
-	`access_id` int(11) NOT NULL,
 	
 	`time_created` int(11) NOT NULL,
 	`time_updated` int(11) NOT NULL,
@@ -33,7 +32,6 @@ CREATE TABLE `entities` (
 	KEY `owner_guid` (`owner_guid`),
 	KEY `site_guid` (`site_guid`),
 	KEY `container_guid` (`container_guid`),
-	KEY `access_id` (`access_id`),
 	KEY `time_created` (`time_created`),
 	KEY `time_updated` (`time_updated`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -394,7 +392,6 @@ CREATE TABLE `system_log` (
 	`performed_by_guid` int(11) NOT NULL,
 
 	`owner_guid` int(11) NOT NULL,
-	`access_id` int(11) NOT NULL,
 	
 	`enabled` enum ('yes', 'no') NOT NULL default 'yes',
 
@@ -407,30 +404,10 @@ CREATE TABLE `system_log` (
 	KEY `object_subtype` (`object_subtype`),
 	KEY `event` (`event`),
 	KEY `performed_by_guid` (`performed_by_guid`),
-	KEY `access_id` (`access_id`),
 	KEY `time_created` (`time_created`),
 	KEY `river_key` (`object_type`, `object_subtype`, `event`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- River
- CREATE TABLE `river` (
-	`id` INT NOT NULL AUTO_INCREMENT ,
-	`type` VARCHAR( 8 ) NOT NULL ,
-	`subtype` VARCHAR( 32 ) NOT NULL ,
-	`action_type` VARCHAR( 32 ) NOT NULL ,
-	`access_id` INT NOT NULL ,
-	`view` TEXT NOT NULL ,
-	`subject_guid` INT NOT NULL ,
-	`object_guid` INT NOT NULL ,
-	`posted` INT NOT NULL ,
-	PRIMARY KEY ( `id` ) ,
-	KEY `type` (`type`),
-	KEY `action_type` (`action_type`),
-	KEY `access_id` (`access_id`),
-	KEY `subject_guid` (`subject_guid`),
-	KEY `object_guid` (`object_guid`),
-	KEY `posted` (`posted`)
-) ENGINE = MYISAM DEFAULT CHARSET=utf8; 
 
 CREATE TABLE `feed_items` (
 	`id` INT NOT NULL AUTO_INCREMENT ,		

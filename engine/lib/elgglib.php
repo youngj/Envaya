@@ -25,6 +25,8 @@
      */
     function auto_load($class)
     {
+        error_log("$class");
+    
         // Transform the class name into a path
         $file = str_replace('_', '/', strtolower($class));
 

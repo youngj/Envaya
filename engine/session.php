@@ -51,7 +51,14 @@ class Session
 
     static function start()
     {
-        session_set_save_handler("__elgg_session_open", "__elgg_session_close", "__elgg_session_read", "__elgg_session_write", "__elgg_session_destroy", "__elgg_session_gc");
+        session_set_save_handler(
+            array('Session', "_session_open"), 
+            array('Session', "_session_close"), 
+            array('Session', "_session_read"),
+            array('Session', "_session_write"), 
+            array('Session', "_session_destroy"), 
+            array('Session', "_session_gc")
+        );
 
         session_name(static::$cookieName);
 
@@ -96,5 +103,62 @@ class Session
             $_SESSION[$key] = $value;
         }
         static::$dirty = true;
+    }
+
+    static function cache_key($sessionId)
+    {
+        return make_cache_key("session", $sessionId);
+    }    
+    
+    static function _session_open($save_path, $session_name)
+    {
+        return true;
+    }    
+
+    static function _session_close()
+    {
+        return true;
+    }
+           
+    static function _session_read($id)
+    {
+        $cacheKey = static::cache_key($id);
+        $sessionData = get_cache()->get($cacheKey);
+
+        if ($sessionData == null)
+        {
+            $result = get_data_row("SELECT * from users_sessions where session=?", array($id));
+            $sessionData = ($result) ? $result->data : '';
+            get_cache()->set($cacheKey, $sessionData);
+        }
+
+        return $sessionData;
+    }
+       
+    static function _session_write($id, $sess_data)
+    {
+        if (Session::isDirty())
+        {
+            get_cache()->set(static::cache_key($id), $sess_data);
+
+            return (insert_data("REPLACE INTO users_sessions (session, ts, data) VALUES (?,?,?)",
+                    array($id, time(), $sess_data))!==false);
+        }
+    }
+    
+    static function _session_destroy($id)
+    {
+        get_cache()->delete(static::cache_key($id));
+
+        return (bool)delete_data("DELETE from users_sessions where session=?", array($id));
+    }
+    
+    static function _session_gc($maxlifetime)
+    {
+        $life = time()-$maxlifetime;
+
+        return (bool)delete_data("DELETE from users_sessions where ts<?", array($life));
+
+        return true;
     }
 }
