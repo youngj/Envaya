@@ -1,4 +1,4 @@
-<?php echo elgg_view("org/registerProgress", array('current' => 1)) ?>
+<?php echo view("org/registerProgress", array('current' => 1)) ?>
 
 <div class='padded'>
 <div id='instructions'>
@@ -13,7 +13,7 @@
 <div class='input'>
 <label><?php echo __('qualify:org_type') ?></label><br />
 
-<?php echo elgg_view('input/radio',
+<?php echo view('input/radio',
     array('internalname' => 'org_type',
         'options' => array(
             'np' => __('qualify:org_type:non_profit'),
@@ -26,7 +26,7 @@
 <div class='input'>
 <label><?php echo __('qualify:country') ?></label><br />
 
-<?php echo elgg_view('input/radio',
+<?php echo view('input/radio',
     array('internalname' => 'country',
         'options' => array(
             'tz' => __('country:tz'),
@@ -38,7 +38,7 @@
 <div class='input'>
 <label><?php echo __('qualify:next') ?></label>
 <br />
-<?php echo elgg_view('input/submit',array(
+<?php echo view('input/submit',array(
     'value' => __('qualify:next:button')
 ));
 ?>

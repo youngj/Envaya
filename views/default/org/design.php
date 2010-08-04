@@ -4,7 +4,7 @@
 
 <form action='<?php echo $user->getURL() ?>/design/save' method='POST'>
 
-<?php echo elgg_view('input/securitytoken'); ?>
+<?php echo view('input/securitytoken'); ?>
 
 <div class='section_header'><?php echo __('header'); ?></div>
 <div class='section_content padded'>
@@ -47,7 +47,7 @@ function customHeaderChanged()
 </script>
 
 <?php
-    echo elgg_view('input/radio', array(
+    echo view('input/radio', array(
         'internalname' => 'custom_header',
         'value' => $user->custom_header ? '1' : '0',
         'js' => "onchange='customHeaderChanged()' onclick='customHeaderChanged()'",
@@ -60,7 +60,7 @@ function customHeaderChanged()
 
 <div id='default_header_container' <?php echo $user->custom_header ? "style='display:none'" : "" ?> >
     <div class='header_preview'>
-        <?php echo elgg_view('org/default_header', array('org' => $user, 'subtitle' => __('header:subtitle'))) ?>
+        <?php echo view('org/default_header', array('org' => $user, 'subtitle' => __('header:subtitle'))) ?>
     </div>
     <div class='help'><?php echo sprintf(__('header:changelogo'), __('icon')) ?></div>
 </div>
@@ -71,7 +71,7 @@ function customHeaderChanged()
         if ($user->custom_header)
         {
             echo "<div style='margin-top:10px'>".__('image:current')."</div>";
-            echo "<div class='header_preview'>".elgg_view('org/custom_header', array('org' => $user))."</div>";
+            echo "<div class='header_preview'>".view('org/custom_header', array('org' => $user))."</div>";
         }
     ?>
 
@@ -89,7 +89,7 @@ function customHeaderChanged()
         <br />
     <?php
 
-    echo elgg_view("input/swfupload_image",
+    echo view("input/swfupload_image",
         array(
             'trackDirty' => true,
             'sizes' => ElggUser::getHeaderSizes(),
@@ -105,7 +105,7 @@ function customHeaderChanged()
 
 
 <?php
-echo elgg_view('input/submit',array(
+echo view('input/submit',array(
     'value' => __('savechanges'),
     'trackDirty' => true,
 ));
@@ -123,7 +123,7 @@ echo elgg_view('input/submit',array(
 
 <?php
 
-echo elgg_view("input/image",
+echo view("input/image",
     array(
         'current' => $user->getIcon('medium'),
         'trackDirty' => true,
@@ -137,7 +137,7 @@ echo elgg_view("input/image",
 ?>
 
 <?php
-echo elgg_view('input/submit',array(
+echo view('input/submit',array(
     'value' => __('savechanges'),
     'trackDirty' => true,
 ));
@@ -148,7 +148,7 @@ echo elgg_view('input/submit',array(
 <div class='section_header'><?php echo __("theme"); ?></div>
 <div class='section_content padded'>
 
-<?php echo elgg_view('input/theme', array(
+<?php echo view('input/theme', array(
     'internalname' => 'theme',
     'value' => $user->theme,
     'options' => $user->getAvailableThemes(),
@@ -156,9 +156,9 @@ echo elgg_view('input/submit',array(
 )); ?>
 
 <?php
-echo elgg_view('input/hidden', array('internalname' => 'guid', 'value' => $user->guid));
+echo view('input/hidden', array('internalname' => 'guid', 'value' => $user->guid));
 
-echo elgg_view('input/submit',array(
+echo view('input/submit',array(
     'value' => __('savechanges'),
     'trackDirty' => true,
 ));

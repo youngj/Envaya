@@ -4,12 +4,12 @@ class WidgetHandler_Contact extends WidgetHandler
 {
     function view($widget)
     {
-        return elgg_view("widgets/contact_view", array('widget' => $widget));
+        return view("widgets/contact_view", array('widget' => $widget));
     }
 
     function edit($widget)
     {
-        return elgg_view("widgets/contact_edit", array('widget' => $widget));
+        return view("widgets/contact_edit", array('widget' => $widget));
     }
 
     function save($widget)

@@ -2,6 +2,6 @@
 
 <input type="hidden" value="Envaya" name="project"/>
 
-<?php echo elgg_view('input/submit', array('internalname' => 'submit', value => __('donate:now'))) ?>
+<?php echo view('input/submit', array('internalname' => 'submit', value => __('donate:now'))) ?>
 
 </form>

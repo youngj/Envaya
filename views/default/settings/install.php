@@ -14,6 +14,6 @@
 
 	echo "<p>" . autop(__("installation:settings:description")) . "</p>";
 
-	echo elgg_view("settings/system",array("action" => "action/systemsettings/install"));
+	echo view("settings/system",array("action" => "action/systemsettings/install"));
 
 ?>

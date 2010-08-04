@@ -9,7 +9,7 @@
 
         $sep = "?";
         if (strpos($link, '?')>0) $sep = "&";
-        $link = "$link{$sep}__elgg_token=$token&__elgg_ts=$ts";
+        $link = "$link{$sep}__token=$token&__ts=$ts";
     }
 
     if ($vars['class']) {

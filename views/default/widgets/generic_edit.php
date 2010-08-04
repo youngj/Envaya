@@ -3,11 +3,11 @@
 
     $widget = $vars['widget'];
     
-    $content = elgg_view('widgets/edit_title', array('widget' => $widget));
+    $content = view('widgets/edit_title', array('widget' => $widget));
     
-    $content .= elgg_view('widgets/edit_content', array('widget' => $widget));
+    $content .= view('widgets/edit_content', array('widget' => $widget));
 
-    echo elgg_view("widgets/edit_form", array(
+    echo view("widgets/edit_form", array(
         'widget' => $widget,
         'body' => $content
     ));

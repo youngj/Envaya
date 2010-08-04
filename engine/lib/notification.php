@@ -333,4 +333,4 @@
         register_notification_handler("email", "email_notify_handler");
     }
 
-    register_elgg_event_handler('init','system','notification_init',0);
+    register_event_handler('init','system','notification_init',0);

@@ -16,5 +16,5 @@
 
     echo "<hr>";
 
-    echo elgg_view('feed/list',
+    echo view('feed/list',
         array('items' => FeedItem::queryByFeedNames($feedNames, $org)->limit(20)->filter()));

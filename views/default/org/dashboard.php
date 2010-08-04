@@ -1,9 +1,9 @@
 <?php
     $org = $vars['org'];
 
-    $form = elgg_view('org/addPost', array('org' => $org));
+    $form = view('org/addPost', array('org' => $org));
 
-    echo elgg_view_layout('section', __("dashboard:add_update"), $form);
+    echo view_layout('section', __("dashboard:add_update"), $form);
 
     $widgets = $org->getAvailableWidgets();
 
@@ -18,7 +18,7 @@
 
     $widgets = "<div id='edit_pages_menu'>".implode(' ', $widgetList)."</div>";
 
-    echo elgg_view_layout('section', __("dashboard:edit_widgets"), $widgets);
+    echo view_layout('section', __("dashboard:edit_widgets"), $widgets);
 
     ob_start();
 ?>
@@ -51,4 +51,4 @@
 <?php
     $links = ob_get_clean();
 
-    echo elgg_view_layout('section', __("dashboard:links"), $links);
+    echo view_layout('section', __("dashboard:links"), $links);

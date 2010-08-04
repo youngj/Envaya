@@ -15,5 +15,5 @@
 	 * 
 	 */
 
-    echo elgg_view('output/tags',$vars);
+    echo view('output/tags',$vars);
 ?>

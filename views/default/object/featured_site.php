@@ -25,7 +25,7 @@ echo $entity->renderContent(); ?>
         <?php 
         if (!$entity->active) 
         { 
-            echo elgg_view('output/confirmlink', array(
+            echo view('output/confirmlink', array(
                     'text' => __('featured:activate'),
                     'is_action' => true,
                     'href' => "admin/activate_featured?guid={$entity->guid}"
@@ -46,7 +46,7 @@ echo $entity->renderContent(); ?>
         
         <a href='admin/edit_featured?guid=<?php echo $entity->guid ?>'><?php echo escape(__('edit')) ?></a>
         <?php
-        echo elgg_view('output/confirmlink', array(
+        echo view('output/confirmlink', array(
             'text' => __('delete'),
             'is_action' => true,
             'href' => "admin/delete_entity?guid={$entity->guid}"

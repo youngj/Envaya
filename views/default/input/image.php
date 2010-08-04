@@ -6,14 +6,14 @@
     $removable = isset($vars['removable']) ? $vars['removable'] : ($current != null);
     
     /*
-    $imageInput = elgg_view("input/file", array(
+    $imageInput = view("input/file", array(
         'internalname' => $vars['internalname'],
         'internalid' => $vars['internalid'],
         'js' => $vars['js']
     )); 
     */
     
-    $imageInput = elgg_view('input/swfupload_image', array(
+    $imageInput = view('input/swfupload_image', array(
         'internalname' => $vars['internalname'],
         'trackDirty' => @$vars['trackDirty'],
         'thumbnail_size' => $vars['thumbnail_size'],
@@ -34,7 +34,7 @@
             </div>                                    
         <?php if ($removable) { ?>
             <div style='padding-top:10px'>
-            <?php echo elgg_view('input/checkboxes', 
+            <?php echo view('input/checkboxes', 
             array('internalname' => $deletename,
                 'internalid' => $deleteid,
                 'options' => array(__('image:delete')),

@@ -13,7 +13,7 @@
 
 	if (isset($vars['search_viewtype']) && $vars['search_viewtype'] == "gallery") {
 		
-		echo elgg_view("search/gallery_listing",$vars);
+		echo view("search/gallery_listing",$vars);
 		
 	} else {
 

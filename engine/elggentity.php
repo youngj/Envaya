@@ -323,33 +323,17 @@ abstract class ElggEntity implements
         return true;
     }
 
-    public function clearMetadata($name = "")
+    public function clearMetaData()
     {
-        if (empty($name)) {
-            return clear_metadata($this->getGUID());
-        } else {
-            return remove_metadata($this->getGUID(),$name);
-        }
+        return clear_metadata($this->getGUID());
     }
-
+    
     public function getSubEntities()
     {
         $guid = $this->guid;
         return array_map('entity_row_to_elggstar',
             get_data("SELECT * from entities WHERE container_guid=? or owner_guid=? or site_guid=?", array($guid, $guid, $guid))
         );
-    }
-
-    function setPrivateSetting($name, $value) {
-        return set_private_setting($this->getGUID(), $name, $value);
-    }
-
-    function getPrivateSetting($name) {
-        return get_private_setting($this->getGUID(), $name);
-    }
-
-    function removePrivateSetting($name) {
-        return remove_private_setting($this->getGUID(), $name);
     }
 
     /**
@@ -475,7 +459,7 @@ abstract class ElggEntity implements
         $guid = (int) $this->guid;
         if ($guid > 0)
         {
-            if (trigger_elgg_event('update',$this->type,$this))
+            if (trigger_event('update',$this->type,$this))
             {
                 $time = time();
                 $this->time_updated = $time;
@@ -524,8 +508,15 @@ abstract class ElggEntity implements
         {
             if ($md->dirty)
             {
-                $md->entity_guid = $this->guid;
-                $md->save();
+                if ($md->value === null)
+                {
+                    $md->delete();
+                }
+                else
+                {
+                    $md->entity_guid = $this->guid;
+                    $md->save();
+                }
                 $md->dirty = false;
             }
         }
@@ -599,7 +590,7 @@ abstract class ElggEntity implements
      */
     public function delete()
     {
-        if (trigger_elgg_event('delete',$this->type,$this))
+        if (trigger_event('delete',$this->type,$this))
         {
             $sub_entities = $this->getSubEntities();
             if ($sub_entities)
@@ -608,9 +599,7 @@ abstract class ElggEntity implements
                     $e->delete();
             }
 
-            $this->clearMetadata();
-
-            delete_data("DELETE from private_settings where entity_guid = ?", array($this->guid));
+            $this->clearMetaData();
 
             $res = delete_data("DELETE from entities where guid=?", array($this->guid));
 

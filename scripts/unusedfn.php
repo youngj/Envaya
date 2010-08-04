@@ -103,5 +103,5 @@ function showLongFunctions()
     }
 }
 
-showLongFunctions();
-//showUnusedFunctions();
+//showLongFunctions();
+showUnusedFunctions();

@@ -9,7 +9,7 @@ class WidgetHandler_Hardcoded extends WidgetHandler_Generic
 
     function view($widget)
     {               
-        return elgg_view($this->view_name, array('widget' => $widget));
+        return view($this->view_name, array('widget' => $widget));
     }
 }
 

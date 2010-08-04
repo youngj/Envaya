@@ -26,7 +26,7 @@
             echo "<br />";
         }
     ?>
-    <?php echo elgg_view("input/tinymce", array(
+    <?php echo view("input/tinymce", array(
         'internalname' => 'content',
         'trackDirty' => true,
         'allowCustomHTML' => $widget->allowUnsafeHTML(),

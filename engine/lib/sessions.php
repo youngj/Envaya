@@ -73,11 +73,11 @@ function log_login_failure($user_guid)
 
     if ($user_guid && $user && ($user instanceof ElggUser))
     {
-        $fails = (int)$user->getPrivateSetting("login_failures");
+        $fails = (int)$user->login_failures;
         $fails++;
 
-        $user->setPrivateSetting("login_failures", $fails);
-        $user->setPrivateSetting("login_failure_$fails", time());
+        $user->login_failures = $fails;
+        $user->set("login_failure_$fails", time());
     }
 }
 
@@ -88,14 +88,15 @@ function reset_login_failure_count($user_guid)
 
     if (($user_guid) && ($user) && ($user instanceof ElggUser))
     {
-        $fails = (int)$user->getPrivateSetting("login_failures");
+        $fails = (int)$user->login_failures;
 
         if ($fails) {
             for ($n=1; $n <= $fails; $n++)
-                $user->removePrivateSetting("login_failure_$n");
+                $user->set("login_failure_$n", null);
 
-            $user->removePrivateSetting("login_failures");
+            $user->login_failures = null;
         }
+        $user->save();
     }
 }
 
@@ -107,14 +108,14 @@ function check_rate_limit_exceeded($user_guid)
 
     if (($user_guid) && ($user) && ($user instanceof ElggUser))
     {
-        $fails = (int)$user->getPrivateSetting("login_failures");
+        $fails = (int)$user->login_failures;
         if ($fails >= $limit)
         {
             $cnt = 0;
             $time = time();
             for ($n=$fails; $n>0; $n--)
             {
-                $f = $user->getPrivateSetting("login_failure_$n");
+                $f = $user->get("login_failure_$n");
                 if ($f > $time - (60*5))
                     $cnt++;
 
@@ -158,7 +159,7 @@ function login(ElggUser $user, $persistent = false)
 
     if ($user)
     {
-        trigger_elgg_event('login','user',$user);
+        EventRegister::trigger_event('login','user',$user);
     }    
     
     set_last_login($user->guid);
@@ -173,7 +174,7 @@ function logout()
     $curUser = get_loggedin_user();
     if ($curUser)
     {
-        trigger_elgg_event('logout','user',$curUser);
+        trigger_event('logout','user',$curUser);
     }
 
     Session::destroy();

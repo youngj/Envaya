@@ -3,7 +3,7 @@
 
     ob_start();
 
-    echo elgg_view('input/tinymce',
+    echo view('input/tinymce',
         array(
             'internalname' => 'blogbody',
             'internalid' => 'post_rich',
@@ -11,13 +11,13 @@
         )
     );
 
-    echo elgg_view('input/submit',
+    echo view('input/submit',
         array('internalname' => 'submit',
             'class' => "submit_button addUpdateButton",
             'trackDirty' => true,
             'value' => __('publish')));
 
-    echo elgg_view('input/hidden', array(
+    echo view('input/hidden', array(
         'internalname' => 'uuid',
         'value' => uniqid("",true)
     ));
@@ -52,7 +52,7 @@ function showAttachImage($show)
 
     $formBody = ob_get_clean();
 
-    echo elgg_view('input/form', array(
+    echo view('input/form', array(
         'internalid' => 'addPostForm',
         'action' => "{$org->getURL()}/post/new",
         'enctype' => "multipart/form-data",

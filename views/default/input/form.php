@@ -27,7 +27,7 @@
 	$security_header = "";
 	if (@$vars['disable_security']!=true)
 	{
-		$security_header = elgg_view('input/securitytoken');
+		$security_header = view('input/securitytoken');
 	}
 ?>
 <form <?php if ($id) { ?>id="<?php echo $id; ?>" <?php } ?> <?php if ($name) { ?>name="<?php echo $name; ?>" <?php } ?> action="<?php echo $action; ?>" method="<?php echo $method; ?>" <?php if ($enctype!="") echo "enctype=\"$enctype\""; ?> <?php echo @$vars['js'] ?>>

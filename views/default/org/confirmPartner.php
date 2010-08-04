@@ -5,7 +5,7 @@
 ?>
 <div class='section_content padded'>
 <form action='<?php echo $partner->getURL() ?>/create_partner' method='POST'>
-<?php echo elgg_view('input/securitytoken') ?>
+<?php echo view('input/securitytoken') ?>
 <div class="partnership_view">
     <a class='feed_org_icon' href='<?php echo $partner->getURL() ?>'><img src='<?php echo $partner->getIcon('small') ?>' /></a>
 
@@ -19,7 +19,7 @@
 <div>
 <?php
 
-echo elgg_view('input/submit',array(
+echo view('input/submit',array(
     'value' => __('partner:confirm:button')
 ));
 

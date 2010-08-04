@@ -25,27 +25,27 @@
 		$form = "";
 		
 		$form .= "<p>" . __('logbrowser:user');
-		$form .= elgg_view('input/text',array(
+		$form .= view('input/text',array(
 														'internalname' => 'search_username',
 														'value' => $userval 
 													)) . "</p>";
 		
 		$form .= "<p>" . __('logbrowser:starttime');
-		$form .= elgg_view('input/text',array(
+		$form .= view('input/text',array(
 														'internalname' => 'timelower',
 														'value' => $lowerval 
 													)) . "</p>";
 
 		$form .= "<p>" . __('logbrowser:endtime');
-		$form .= elgg_view('input/text',array(
+		$form .= view('input/text',array(
 														'internalname' => 'timeupper',
 														'value' => $upperval
 													))  . "</p>";
-		$form .= elgg_view('input/submit',array(
+		$form .= view('input/submit',array(
 														'value' => __('search')
 													));
 													
-		$wrappedform = elgg_view('input/form',array(
+		$wrappedform = view('input/form',array(
 														'body' => $form,
 														'method' => 'get',
 														'action' => $vars['url'] . "mod/logbrowser/"

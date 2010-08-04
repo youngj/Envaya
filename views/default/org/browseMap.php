@@ -27,7 +27,7 @@ function sectorChanged()
     <a id='browseLink' href='org/browse?list=1&sector=<?php echo escape($sector) ?>'><?php echo __('list') ?></a>
 </div>
 
-<?php echo elgg_view('input/pulldown', array(
+<?php echo view('input/pulldown', array(
     'internalname' => 'sector',
     'internalid' => 'sectorList',
     'options_values' => Organization::getSectorOptions(),
@@ -44,6 +44,6 @@ function sectorChanged()
     $zoom = $vars['zoom'] ?: 5;
     $sector = @$vars['sector'] ?: 0;
 
-    echo elgg_view("org/map", array('lat' => $lat, 'long' => $long,  'height' => 350, 'zoom' => $zoom, 'sector' => $sector, 'nearby' => true));
+    echo view("org/map", array('lat' => $lat, 'long' => $long,  'height' => 350, 'zoom' => $zoom, 'sector' => $sector, 'nearby' => true));
 ?>
 </div>

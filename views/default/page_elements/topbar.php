@@ -43,7 +43,7 @@ function languageChanged()
             }            
         }
         
-        echo elgg_view('input/pulldown', array(
+        echo view('input/pulldown', array(
             'internalname' => 'top_language',
             'internalid' => 'top_language',
             'options_values' => $translationUrls,

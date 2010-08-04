@@ -9,7 +9,7 @@
 
 <form method='GET' class='searchForm' action='org/search/'>    
     <input class='searchField' type='text' name='q' value='<?php echo escape($query); ?>'>
-    <?php echo elgg_view('input/pulldown', array('internalname' => 'sector',
+    <?php echo view('input/pulldown', array('internalname' => 'sector',
         'options_values' => Organization::getSectorOptions(), 
         'empty_option' => __('sector:empty_option'),
         'value' => $vars['sector'])) 
@@ -17,7 +17,7 @@
     <br />
     
     <?php 
-        echo elgg_view('input/submit', array(
+        echo view('input/submit', array(
             'internalname' => 'submit',
             'value' => __('search:submit') 
         ));
@@ -51,7 +51,7 @@
 
         if ($nearby)
         {
-            $results .= "<div class='padded'>".elgg_view("org/map", array('lat' => $latlong['lat'], 'long' => $latlong['long'], 'sector' => $sector, 'nearby' => true, 'height' => 300, 'width' => 440, 'zoom' => '8'))."</div>";
+            $results .= "<div class='padded'>".view("org/map", array('lat' => $latlong['lat'], 'long' => $latlong['long'], 'sector' => $sector, 'nearby' => true, 'height' => 300, 'width' => 440, 'zoom' => '8'))."</div>";
         }
     }
 

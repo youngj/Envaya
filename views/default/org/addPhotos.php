@@ -1,7 +1,7 @@
 <div class='section_content padded'>
 <form method='POST' action='action/org/addPhotos'>
 
-<?php echo elgg_view('input/securitytoken') ?>
+<?php echo view('input/securitytoken') ?>
 
 <div id='previews'></div>
 <div id='progressContainer' style='padding-bottom:5px'></div>
@@ -111,7 +111,7 @@ MultiImageUploader.prototype.uploadProgressHandler = function()
     ImageUploader.prototype.uploadProgressHandler.call(this);
 };
 
-new MultiImageUploader(<?php echo elgg_view('input/swfupload_args', array(
+new MultiImageUploader(<?php echo view('input/swfupload_args', array(
     'args' => array(
         'trackDirty' => true,
         'thumbnail_size' => 'small',
@@ -128,9 +128,9 @@ new MultiImageUploader(<?php echo elgg_view('input/swfupload_args', array(
 </script>
 <div class='input'>
 <?php
-    echo elgg_view('input/hidden', array('internalname' => 'org_guid', 'value' => $vars['entity']->guid));
+    echo view('input/hidden', array('internalname' => 'org_guid', 'value' => $vars['entity']->guid));
 
-    echo elgg_view('input/hidden', array(
+    echo view('input/hidden', array(
         'internalname' => 'uuid',
         'value' => uniqid("",true)
     ));
@@ -138,7 +138,7 @@ new MultiImageUploader(<?php echo elgg_view('input/swfupload_args', array(
 ?>
 
 <div id='submit' style='display:none'>
-<?php echo elgg_view('input/submit', array('value' => __('publish'), 'trackDirty' => true)) ?>
+<?php echo view('input/submit', array('value' => __('publish'), 'trackDirty' => true)) ?>
 </div>
 </div>
 </div>

@@ -10,6 +10,6 @@
 	 * @link http://elgg.org/
 	 */
 
-    echo elgg_view("profile/listing",$vars);
+    echo view("profile/listing",$vars);
 	
 ?>

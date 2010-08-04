@@ -12,7 +12,7 @@
 	 * @uses $vars['entity'] The user entity
 	 */
 
-		$icon = elgg_view(
+		$icon = view(
 				"profile/icon", array(
 										'entity' => $vars['entity'],
 										'size' => 'small',
@@ -27,7 +27,7 @@
 		if (!$banned) {
 			$info .= "<p><b><a href=\"" . $vars['entity']->getUrl() . "\" rel=\"$rel\">" . escape($vars['entity']->name) . "</a></b></p>";
 			//create a view that a status plugin could extend - in the default case, this is the wire
-	 		$info .= elgg_view("profile/status", array("entity" => $vars['entity']));
+	 		$info .= view("profile/status", array("entity" => $vars['entity']));
 
 		}
 		else

@@ -14,7 +14,7 @@ ob_start();
 
 echo "<table class='gridView' style='width:1100px;margin:0 auto'><tr><td  style='width:50%;padding-right:10px'>";
 echo "<h3>".sprintf(__("trans:original_in"),
-     elgg_view('input/language', array(
+     view('input/language', array(
         'internalname' => 'language',
         'value' => $entity->getLanguage()
     ))
@@ -29,7 +29,7 @@ if ($isHTML)
 }
 else
 {
-    echo elgg_view("output/longtext", array('value' => $text));
+    echo view("output/longtext", array('value' => $text));
 }
 echo "</td><td style='width:50%'>";
 
@@ -40,7 +40,7 @@ $curTranslation = lookup_translation($entity, $property, $entity->getLanguage(),
 
 $curText = ($curTranslation) ? $curTranslation->value : $text;
 
-$transIn = sprintf(__("trans:inlang"), elgg_view('input/language', array(
+$transIn = sprintf(__("trans:inlang"), view('input/language', array(
         'internalname' => 'newLang',
         'value' => $lang
     ))
@@ -50,7 +50,7 @@ echo "<h3>$transIn: </h3>";
 
 if ($isHTML)
 {
-    echo elgg_view("input/tinymce", array(
+    echo view("input/tinymce", array(
         'internalname' => 'translation',
         'height' => $height,
         'value' => $curText));
@@ -68,18 +68,18 @@ else
         $js = '';
     }
 
-    echo elgg_view($input, array('internalname' => 'translation', 'value' => $curText, 'js' => $js));
+    echo view($input, array('internalname' => 'translation', 'value' => $curText, 'js' => $js));
 }
 
 echo "<br>".
-    elgg_view("input/hidden", array('internalname' => 'entity_guid', 'value' => $entity->guid)).
-    elgg_view("input/hidden", array('internalname' => 'property', 'value' => $property)).
-    elgg_view("input/hidden", array('internalname' => 'html', 'value' => $isHTML)).
-    elgg_view("input/hidden", array('internalname' => 'from', 'value' => $vars['from'])).
-    elgg_view('input/submit', array('internalname' => 'submit', 'trackDirty' => true, 'value' => __('trans:submit')));
+    view("input/hidden", array('internalname' => 'entity_guid', 'value' => $entity->guid)).
+    view("input/hidden", array('internalname' => 'property', 'value' => $property)).
+    view("input/hidden", array('internalname' => 'html', 'value' => $isHTML)).
+    view("input/hidden", array('internalname' => 'from', 'value' => $vars['from'])).
+    view('input/submit', array('internalname' => 'submit', 'trackDirty' => true, 'value' => __('trans:submit')));
 
 echo "</td></tr></table>";
 
 $formBody = ob_get_clean();
 
-echo elgg_view('input/form', array('action' => "org/save_translation", 'body' => $formBody));
+echo view('input/form', array('action' => "org/save_translation", 'body' => $formBody));

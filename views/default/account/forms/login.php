@@ -19,7 +19,7 @@
 
     <label>
         <?php echo __('username') ?><br />
-        <?php echo elgg_view('input/text', array(
+        <?php echo view('input/text', array(
             'internalname' => 'username',
             'internalid' => 'username',
             'value' => $vars['username'], 'class' => 'login-textarea')); ?>
@@ -27,7 +27,7 @@
     <br />
     <label>
         <?php echo __('password') ?><br />
-        <?php echo elgg_view('input/password', array(
+        <?php echo view('input/password', array(
             'internalname' => 'password',
             'internalid' => 'password',
             'class' => 'login-textarea')) ?>
@@ -36,7 +36,7 @@
     <div id="persistent_login"><label><input type="checkbox" class='input-checkboxes' name="persistent" value="true" />
         <?php echo __('user:persistent') ?>
     </label></div>
-    <?php echo elgg_view('input/submit', array('value' => __('login'))); ?>
+    <?php echo view('input/submit', array('value' => __('login'))); ?>
     <div>
         <a href="<?php echo $vars['url'] ?>pg/forgot_password">
         <?php echo __('user:password:lost') ?>
@@ -57,5 +57,5 @@
 ?>
 
         <?php
-            echo elgg_view('input/form', array('body' => $form_body, 'action' => "{$login_url}pg/submit_login"));
+            echo view('input/form', array('body' => $form_body, 'action' => "{$login_url}pg/submit_login"));
         ?>

@@ -61,10 +61,10 @@ echo "<form method='GET' action='org/translate_interface'>";
 
 echo "<label>".__("trans:filter")."</label><br />";
 
-echo elgg_view('input/text', array('internalname' => 'q', 'value' => $query));
-echo elgg_view('input/submit', array('value' => __("search")));
+echo view('input/text', array('internalname' => 'q', 'value' => $query));
+echo view('input/submit', array('value' => __("search")));
 echo "<div class='edited'>";
-echo elgg_view('input/checkboxes', array(
+echo view('input/checkboxes', array(
     'internalname' => 'edited',
     'options' => array('1' => __('trans:edited_only')),
     'value' => $edited ? '1' : null
@@ -87,7 +87,7 @@ if (empty($keys))
 }
 else
 {
-    echo elgg_view('navigation/pagination',array(
+    echo view('navigation/pagination',array(
         'baseurl' => $baseurl,
         'offset' => $offset,
         'count' => $count,
@@ -109,7 +109,7 @@ else
 
         echo "<tr>";
         echo "<td>".escape($key)."</td>";
-        echo "<td>".elgg_view('output/longtext', array('value' => $enText))."</td>";
+        echo "<td>".view('output/longtext', array('value' => $enText))."</td>";
 
         $trans = @$CONFIG->translations[$lang][$key];
 
@@ -117,7 +117,7 @@ else
 
         if ($it)
         {
-            $val = elgg_view('output/longtext', array('value' => $it->value));
+            $val = view('output/longtext', array('value' => $it->value));
             if ($trans != $it->value)
             {
                 $res = "<div class='edited'>$val</div>";
@@ -129,7 +129,7 @@ else
         }
         else if ($trans)
         {
-            $res = elgg_view('output/longtext', array('value' => $trans));
+            $res = view('output/longtext', array('value' => $trans));
         }
         else
         {
@@ -144,7 +144,7 @@ else
 
     echo "</table>";
 
-    echo elgg_view('navigation/pagination',array(
+    echo view('navigation/pagination',array(
         'baseurl' => $baseurl,
         'offset' => $offset,
         'count' => $count,

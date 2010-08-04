@@ -4,7 +4,7 @@
 
     if ($user instanceof Organization)
     {
-        echo elgg_view("org/dashboard", array('org' => $user));
+        echo view("org/dashboard", array('org' => $user));
     }
     else if ($user->admin)
     {

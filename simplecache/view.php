@@ -47,7 +47,7 @@ function output_cached_view($view, $viewtype)
         else
         {
             load_engine();
-            $contents = elgg_view($view);
+            $contents = view($view);
             if ($contents)
             {
                 if (!file_exists($CONFIG->dataroot . 'views_simplecache'))
@@ -69,7 +69,7 @@ function output_cached_view($view, $viewtype)
     else 
     {
         load_engine();
-        $contents = elgg_view($view);        
+        $contents = view($view);        
     }
         
     header("Content-Length: " . strlen($contents));

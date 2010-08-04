@@ -69,28 +69,6 @@
     }
 
     /**
-     * Return the integer ID for a given subtype, or false.
-     *
-     * TODO: Move to a nicer place?
-     *
-     * @param string $type
-     * @param string $subtype
-     */
-    function get_subtype_id($type, $subtype)
-    {
-        global $CONFIG;
-        foreach ($CONFIG->subtypes as $id => $info)
-        {
-            if ($info[0] == $type && $info[1] == $subtype)
-            {
-                return $id;
-            }
-        }
-
-        return 0;
-    }
-
-    /**
      * For a given subtype ID, return its identifier text.
      *
      * TODO: Move to a nicer place?
@@ -191,59 +169,4 @@
         }
 
         return $entity;
-    }
-
-    /**
-     * Gets a private setting for an entity.
-     *
-     * @param int $entity_guid The entity GUID
-     * @param string $name The name of the setting
-     * @return mixed The setting value, or false on failure
-     */
-    function get_private_setting($entity_guid, $name) {
-
-        global $CONFIG;
-
-        if ($setting = get_data_row("SELECT value from private_settings where name = ? and entity_guid = ?",
-            array($name, (int)$entity_guid)
-        )) {
-            return $setting->value;
-        }
-        return false;
-
-    }
-
-    /**
-     * Sets a private setting for an entity.
-     *
-     * @param int $entity_guid The entity GUID
-     * @param string $name The name of the setting
-     * @param string $value The value of the setting
-     * @return mixed The setting ID, or false on failure
-     */
-    function set_private_setting($entity_guid, $name, $value) {
-
-        global $CONFIG;
-
-        $result = insert_data("INSERT into private_settings (entity_guid, name, value) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE value = ?",
-            array((int)$entity_guid, $name, $value, $value)
-        );
-        if ($result === 0) return true;
-        return $result;
-
-    }
-
-    /**
-     * Deletes a private setting for an entity.
-     *
-     * @param int $entity_guid The Entity GUID
-     * @param string $name The name of the setting
-     * @return true|false depending on success
-     *
-     */
-    function remove_private_setting($entity_guid, $name)
-    {
-        global $CONFIG;
-        return delete_data("DELETE from private_settings where name = ? and entity_guid = ?",
-            array($name, (int)$entity_guid));
     }

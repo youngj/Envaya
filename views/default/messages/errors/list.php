@@ -23,7 +23,7 @@
 <?php
         
             foreach($vars['object'] as $message) {
-                echo elgg_view('messages/messages/message',array('object' => $message));
+                echo view('messages/messages/message',array('object' => $message));
             }
 
 ?>

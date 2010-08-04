@@ -10,7 +10,7 @@
     ?>    
     </td>
     <td id='right_content'>
-        <?php echo elgg_view('translation/control_bar'); ?>
+        <?php echo view('translation/control_bar'); ?>
         <?php echo $vars['area2']; ?>            
         <div style='clear:both'></div>        
     </td>
@@ -22,5 +22,5 @@
 
 <?php 
     $content = ob_get_clean();
-    echo elgg_view_layout("content_shell", $vars['area1'], $content, @$vars['area3']);    
+    echo view_layout("content_shell", $vars['area1'], $content, @$vars['area3']);    
 ?>

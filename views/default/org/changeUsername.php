@@ -4,7 +4,7 @@
 <div class='section_content padded'>
 <form action='<?php echo $org->getURL() ?>/username/save' method='POST'>
 
-<?php echo elgg_view('input/securitytoken') ?>
+<?php echo view('input/securitytoken') ?>
 <div class='input'>
 <label>
 <?php echo __('username:current') ?>
@@ -16,10 +16,10 @@
 <label>
 <?php echo __('username:new') ?>
 </label><br />
-<?php echo elgg_view('input/text', array('value' => $org->username, 'internalname' => 'username')) ?>
+<?php echo view('input/text', array('value' => $org->username, 'internalname' => 'username')) ?>
 </div>
 
-<?php echo elgg_view('input/submit', array('value' => __('save'))) ?>
+<?php echo view('input/submit', array('value' => __('save'))) ?>
 
 </form>
 </div>

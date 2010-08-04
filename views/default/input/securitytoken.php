@@ -13,6 +13,6 @@
     $ts = time();
     $token = generate_security_token($ts);
 
-    echo elgg_view('input/hidden', array('internalname' => '__elgg_token', 'value' => $token));
-    echo elgg_view('input/hidden', array('internalname' => '__elgg_ts', 'value' => $ts));
+    echo view('input/hidden', array('internalname' => '__token', 'value' => $token));
+    echo view('input/hidden', array('internalname' => '__ts', 'value' => $ts));
 ?>

@@ -50,7 +50,7 @@
 
         echo " converting to html\n";
 
-        $htmlContent = elgg_view('output/longtext', array('value' => $newsUpdate->content));
+        $htmlContent = view('output/longtext', array('value' => $newsUpdate->content));
         $class = $htmlContent ? "" : " class='last-paragraph'";
         $htmlContent = "<p$class><img class='image_center' src=\"{$large->getURL()}\" /></p>{$htmlContent}";
 
@@ -87,7 +87,7 @@
 
         echo " converting to html\n";
 
-        $htmlContent = elgg_view('output/longtext', array('value' => $widget->content));
+        $htmlContent = view('output/longtext', array('value' => $widget->content));
 
         $imagePos = $widget->image_position;
 
@@ -122,7 +122,7 @@
     {
         echo "{$newsUpdate->getURL()}:\n";
         echo " converting to html\n";
-        $htmlContent = elgg_view('output/longtext', array('value' => $newsUpdate->content));
+        $htmlContent = view('output/longtext', array('value' => $newsUpdate->content));
         $newsUpdate->setContent($htmlContent, true);
         $newsUpdate->save();
     }
@@ -138,7 +138,7 @@
     {
         echo "{$widget->getURL()}:\n";
         echo " converting to html\n";
-        $htmlContent = elgg_view('output/longtext', array('value' => $widget->content));
+        $htmlContent = view('output/longtext', array('value' => $widget->content));
         $widget->setContent($htmlContent, true);
         $widget->save();
     }
@@ -157,7 +157,7 @@
         if ($container)
         {
             echo "{$translation->getContainerEntity()->getURL()}\n";
-            $translation->value = elgg_view('output/longtext', array('value' => $translation->value));
+            $translation->value = view('output/longtext', array('value' => $translation->value));
             $translation->html = 1;
             $translation->save();
         }

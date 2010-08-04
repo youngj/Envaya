@@ -9,5 +9,5 @@
 	 * @link http://elgg.org/
 	 */
     
-    echo elgg_view_layout('one_column', $vars['area1'], "<div class='section_content padded'>".$vars['area2']."</div>", @$vars['area3']);    
+    echo view_layout('one_column', $vars['area1'], "<div class='section_content padded'>".$vars['area2']."</div>", @$vars['area3']);    
 ?>

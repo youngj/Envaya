@@ -19,7 +19,7 @@
 
     if (!$partnership->isSelfApproved() && !$partnership->isPartnerApproved())
     {
-        echo elgg_view('output/confirmlink', array(
+        echo view('output/confirmlink', array(
             'text' => __('partner:request'),
             'is_action' => true,
             'href' => "{$org->getURL()}/request_partner"
@@ -27,7 +27,7 @@
     }
     else if (!$partnership->isSelfApproved())
     {
-        echo elgg_view('output/confirmlink', array(
+        echo view('output/confirmlink', array(
             'text' => __('partner:approve'),
             'href' => $org->getPartnership($loggedInOrg)->getApproveUrl()
         ));
@@ -38,7 +38,7 @@
 
         echo "&nbsp;";
 
-        echo elgg_view('output/confirmlink', array(
+        echo view('output/confirmlink', array(
             'text' => "(".__('partner:re_request').")",
             'is_action' => true,
             'href' => "{$org->getURL()}/request_partner"

@@ -126,7 +126,8 @@
         {
             // generate code
             $code = generate_random_cleartext_password();
-            set_private_setting($user_guid, 'passwd_conf_code', $code);
+            $user->passwd_conf_code = $code;
+            $user->save();
 
             // generate link
             $link = $CONFIG->url . "pg/password_reset?u=$user_guid&c=$code";
@@ -156,14 +157,13 @@
 
         $user = get_entity($user_guid);
 
-        if (($user) && (get_private_setting($user_guid, 'passwd_conf_code') == $conf_code))
+        if ($user && $user->passwd_conf_code == $conf_code)
         {
             $password = generate_random_cleartext_password();
 
             $user->setPassword($password);
+            $user->passwd_conf_code = null;
             $user->save();
-
-            remove_private_setting($user_guid, 'passwd_conf_code');
 
             $email = sprintf(__('email:resetpassword:body',$user->language), $user->name, $password);
 

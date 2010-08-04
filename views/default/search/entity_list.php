@@ -14,7 +14,7 @@
     $nav = "";
     
     if ($pagination)
-        $nav .= elgg_view('navigation/pagination',array(			
+        $nav .= view('navigation/pagination',array(			
             'baseurl' => $baseurl,
             'offset' => $offset,
             'count' => $count,

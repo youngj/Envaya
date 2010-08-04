@@ -7,7 +7,7 @@
 
     echo "<div class='section_content'>";
 
-    echo elgg_view('feed/self_list', array('items' => $items));
+    echo view('feed/self_list', array('items' => $items));
 
     echo "</div>";
     

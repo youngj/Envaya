@@ -93,9 +93,9 @@ class Controller_Profile extends Controller
         $widget = $this->org->getWidgetByName($widgetName);
         
         $title = __('widget:options');
-        $body = elgg_view('widgets/options', array('widget' => $widget));
+        $body = view('widgets/options', array('widget' => $widget));
         
-        $this->page_draw($title, elgg_view_layout("one_column", elgg_view_title($title), $body));        
+        $this->page_draw($title, view_layout("one_column", view_title($title), $body));        
     }
     
     function action_save_options()
@@ -143,8 +143,8 @@ class Controller_Profile extends Controller
 
         add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
-        $body = elgg_view_layout('one_column',
-            elgg_view_title($title), $widget->renderEdit());
+        $body = view_layout('one_column',
+            view_title($title), $widget->renderEdit());
 
         $this->page_draw($title, $body);
     }
@@ -214,8 +214,8 @@ class Controller_Profile extends Controller
         add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
         $title = __("design:edit");
-        $area1 = elgg_view("org/design", array('entity' => $org));
-        $body = elgg_view_layout("one_column", elgg_view_title($title), $area1);
+        $area1 = view("org/design", array('entity' => $org));
+        $body = view_layout("one_column", view_title($title), $area1);
 
         $this->page_draw($title,$body);
     }
@@ -302,17 +302,17 @@ class Controller_Profile extends Controller
 
             if (isadminloggedin())
             {
-                $preBody .= elgg_view("admin/org_actions", array('entity' => $org, 'widget' => $widget));
+                $preBody .= view("admin/org_actions", array('entity' => $org, 'widget' => $widget));
             }
 
             if ($org->canCommunicateWith())
             {
-                $preBody .= elgg_view("org/comm_box", array('entity' => $org));
+                $preBody .= view("org/comm_box", array('entity' => $org));
             }
 
             if ($org->guid == get_loggedin_userid() && $org->approval == 0)
             {
-                $preBody .= elgg_view("org/setupNextStep");
+                $preBody .= view("org/setupNextStep");
             }
         }
 
@@ -365,8 +365,8 @@ class Controller_Profile extends Controller
         $this->require_org();
 
         $title = __("help:title");
-        $area = elgg_view("org/help", array('org' => $this->org));
-        $body = elgg_view_layout('one_column_padded', elgg_view_title($title), $area);
+        $area = view("org/help", array('org' => $this->org));
+        $body = view_layout('one_column_padded', view_title($title), $area);
         $this->page_draw($title, $body);
     }
 
@@ -387,8 +387,8 @@ class Controller_Profile extends Controller
             $title = sprintf(__("dashboard:other_user"), $org->name);
         }
 
-        $area1 = elgg_view("org/dashboard", array('org' => $org));
-        $body = elgg_view_layout("one_column", elgg_view_title($title), $area1);
+        $area1 = view("org/dashboard", array('org' => $org));
+        $body = view_layout("one_column", view_title($title), $area1);
 
         $this->page_draw($title,$body);
     }
@@ -400,8 +400,8 @@ class Controller_Profile extends Controller
         $this->require_admin();
 
         $title = __('username:title');
-        $area1 = elgg_view('org/changeUsername', array('org' => $this->org));
-        $body = elgg_view_layout("one_column", elgg_view_title($title), $area1);
+        $area1 = view('org/changeUsername', array('org' => $this->org));
+        $body = view_layout("one_column", view_title($title), $area1);
 
         $this->page_draw($title,$body);
     }
@@ -452,9 +452,9 @@ class Controller_Profile extends Controller
 
         page_set_translatable(false);
 
-        $area = elgg_view('org/orgfeed', array('org' => $this->org));
+        $area = view('org/orgfeed', array('org' => $this->org));
 
-        $body = elgg_view_layout('one_column', elgg_view_title($title), $area);
+        $body = view_layout('one_column', view_title($title), $area);
 
         $this->page_draw($title, $body);
     }
@@ -476,8 +476,8 @@ class Controller_Profile extends Controller
         add_submenu_item(__("message:cancel"), $org->getURL(), 'edit');
 
         $title = __("message:title");
-        $area1 = elgg_view("org/composeMessage", array('entity' => $org));
-        $body = elgg_view_layout("one_column", elgg_view_title($title), $area1);
+        $area1 = view("org/composeMessage", array('entity' => $org));
+        $body = view_layout("one_column", view_title($title), $area1);
         $this->page_draw($title,$body);
     }
 
@@ -487,8 +487,8 @@ class Controller_Profile extends Controller
 
         $title = __("usersettings:user");
 
-        $body = elgg_view_layout("one_column", elgg_view_title($title),
-            elgg_view("usersettings/form", array('entity' => $this->user)));
+        $body = view_layout("one_column", view_title($title),
+            view("usersettings/form", array('entity' => $this->user)));
 
         return $this->page_draw($title, $body);
     }
@@ -603,8 +603,8 @@ class Controller_Profile extends Controller
             }
 
             $title = __("partner:confirm");
-            $area1 = elgg_view("org/confirmPartner", array('entity' => $org, 'partner' => $partner));
-            $body = elgg_view_layout("one_column", elgg_view_title($title), $area1);
+            $area1 = view("org/confirmPartner", array('entity' => $org, 'partner' => $partner));
+            $body = view_layout("one_column", view_title($title), $area1);
             $this->page_draw($title,$body);
         }
         else
@@ -769,13 +769,13 @@ class Controller_Profile extends Controller
     
         if ($org->custom_header)
         {
-            $header = elgg_view('org/custom_header', array(
+            $header = view('org/custom_header', array(
                 'org' => $org
             ));
         }
         else
         {
-            $header = elgg_view('org/default_header', array(
+            $header = view('org/default_header', array(
                 'org' => $org,
                 'subtitle' => $subtitle,
             ));
@@ -787,7 +787,7 @@ class Controller_Profile extends Controller
             $layout= 'two_column_left_sidebar';
         }
         
-        return elgg_view_layout($layout, $header, $area2, $area3);
+        return view_layout($layout, $header, $area2, $area3);
     }
 
 }

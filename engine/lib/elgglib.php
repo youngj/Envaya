@@ -130,7 +130,7 @@
     function not_found()
     {
         $title = __('page:notfound');
-        $body = elgg_view_layout('one_column_padded', elgg_view_title($title), __('page:notfound:details')."<br/><br/><br/>");
+        $body = view_layout('one_column_padded', view_title($title), __('page:notfound:details')."<br/><br/><br/>");
         header("HTTP/1.1 404 Not Found");
         echo page_draw($title, $body);
         exit;
@@ -258,7 +258,7 @@
      * @param array $vars Any variables that the view requires, passed as an array
      * @return string The HTML content
      */
-        function elgg_view($view, $vars = null)
+        function view($view, $vars = null)
         {
 
             global $CONFIG;
@@ -309,7 +309,7 @@
      * @param string $viewtype If set, forces the viewtype
      * @return true|false Depending on success
      */
-        function elgg_view_exists($view, $viewtype = '')
+        function view_exists($view, $viewtype = '')
         {
             if (empty($viewtype))
                 $viewtype = elgg_get_viewtype();
@@ -322,7 +322,7 @@
      * When given an entity, views it intelligently.
      *
      * Expects a view to exist called entity-type/subtype, or for the entity to have a parameter
-     * 'view' which lists a different view to display.  In both cases, elgg_view will be called with
+     * 'view' which lists a different view to display.  In both cases, view will be called with
      * array('entity' => $entity) as its parameters, and therefore this is what the view should expect
      * to receive.
      *
@@ -367,13 +367,13 @@
 
             $args = array('entity' => $entity,'full' => $full);
             
-            if (elgg_view_exists("{$entity_type}/{$subtype}")) 
+            if (view_exists("{$entity_type}/{$subtype}")) 
             {
-                return elgg_view("{$entity_type}/{$subtype}", $args);
+                return view("{$entity_type}/{$subtype}", $args);
             }
             else
             {
-                return elgg_view("{$entity_type}/default", $args);
+                return view("{$entity_type}/default", $args);
             }
         }
 
@@ -385,7 +385,7 @@
 
             $context = get_context();
 
-            return elgg_view('search/entity_list',array(
+            return view('search/entity_list',array(
                 'entities' => $entities,
                 'count' => $count,
                 'offset' => $offset,
@@ -406,7 +406,7 @@
      * @param string $layout The name of the views in canvas/layouts/.
      * @return string The layout
      */
-        function elgg_view_layout($layout) {
+        function view_layout($layout) {
 
             $arg = 1;
             $param_array = array();
@@ -414,10 +414,10 @@
                 $param_array['area' . $arg] = func_get_arg($arg);
                 $arg++;
             }
-            if (elgg_view_exists("canvas/layouts/{$layout}")) {
-                return elgg_view("canvas/layouts/{$layout}",$param_array);
+            if (view_exists("canvas/layouts/{$layout}")) {
+                return view("canvas/layouts/{$layout}",$param_array);
             } else {
-                return elgg_view("canvas/default",$param_array);
+                return view("canvas/default",$param_array);
             }
 
         }
@@ -429,9 +429,9 @@
      * @param string $submenu Should a submenu be displayed? (default false, use not recommended)
      * @return string The HTML (etc)
      */
-        function elgg_view_title($title, $args = null)
+        function view_title($title, $args = null)
         {
-            $title = elgg_view('page_elements/title', array('title' => $title, 'args' => $args));
+            $title = view('page_elements/title', array('title' => $title, 'args' => $args));
             return $title;
         }
 
@@ -489,7 +489,7 @@
             {
                 $selected = endswith($item->value, $parsedUrl['path']);
 
-                $submenu[] = elgg_view($itemTemplate,
+                $submenu[] = view($itemTemplate,
                     array(
                             'href' => $item->value,
                             'label' => $item->name,
@@ -498,7 +498,7 @@
                         ));
             }
 
-            return elgg_view($groupTemplate, array(
+            return view($groupTemplate, array(
                 'submenu' => $submenu,
                 'group_name' => $groupname
             ));
@@ -512,7 +512,7 @@
      * @return string The HTML (etc) representing the listing
      */
         function elgg_view_listing($icon, $info) {
-            return elgg_view('search/listing',array('icon' => $icon, 'info' => $info));
+            return view('search/listing',array('icon' => $icon, 'info' => $info));
         }
 
     /**
@@ -524,7 +524,7 @@
      */
         function page_draw($title, $body, $preBody = "")
         {
-            return elgg_view('pageshells/pageshell', array(
+            return view('pageshells/pageshell', array(
                     'title' => $title,
                     'body' => $body,
                     'preBody' => $preBody,
@@ -697,141 +697,70 @@
             return system_messages($error, "errors");
         }
 
-    /**
-     * Event register
-     * Adds functions to the register for a particular event, but also calls all functions registered to an event when required
-     *
-     * Event handler functions must be of the form:
-     *
-     *      event_handler_function($event, $object_type, $object);
-     *
-     * And must return true or false depending on success.  A false will halt the event in its tracks and no more functions will be called.
-     *
-     * You can then simply register them using the following function. Optionally, this can be called with a priority nominally from 0 to 1000, where functions with lower priority values are called first (note that priorities CANNOT be negative):
-     *
-     *      register_elgg_event_handler($event, $object_type, $function_name [, $priority = 500]);
-     *
-     * Note that you can also use 'all' in place of both the event and object type.
-     *
-     * To trigger an event properly, you should always use:
-     *
-     *      trigger_elgg_event($event, $object_type [, $object]);
-     *
-     * Where $object is optional, and represents the $object_type the event concerns. This will return true if successful, or false if it fails.
-     *
-     * @param string $event The type of event (eg 'init', 'update', 'delete')
-     * @param string $object_type The type of object (eg 'system', 'blog', 'user')
-     * @param string $function The name of the function that will handle the event
-     * @param int $priority A priority to add new event handlers at. Lower numbers will be called first (default 500)
-     * @param boolean $call Set to true to call the event rather than add to it (default false)
-     * @param mixed $object Optionally, the object the event is being performed on (eg a user)
-     * @return true|false Depending on success
-     */
+    class EventRegister
+    {
+        static $all_events = array();
+        
+        private static function &get_handlers($event, $object_type)
+        {
+            if (!isset(static::$all_events[$event]))
+            {
+                static::$all_events[$event] = array();
+            } 
 
-        function events($event = "", $object_type = "", $function = "", $priority = 500, $call = false, $object = null) {
-
-            global $CONFIG;
-
-            if (!isset($CONFIG->events)) {
-                $CONFIG->events = array();
-            } else if (!isset($CONFIG->events[$event]) && !empty($event)) {
-                $CONFIG->events[$event] = array();
-            } else if (!isset($CONFIG->events[$event][$object_type]) && !empty($event) && !empty($object_type)) {
-                $CONFIG->events[$event][$object_type] = array();
+            if (!isset(static::$all_events[$event][$object_type])) 
+            {
+                static::$all_events[$event][$object_type] = array();
             }
-
-            if (!$call) {
-
-                if (!empty($event) && !empty($object_type) && is_callable($function)) {
-                    $priority = (int) $priority;
-                    if ($priority < 0) $priority = 0;
-                    while (isset($CONFIG->events[$event][$object_type][$priority])) {
-                        $priority++;
-                    }
-                    $CONFIG->events[$event][$object_type][$priority] = $function;
-                    ksort($CONFIG->events[$event][$object_type]);
-                    return true;
-                } else {
-                    return false;
-                }
-
-            } else {
-
-                $return = true;
-                if (!empty($CONFIG->events[$event][$object_type]) && is_array($CONFIG->events[$event][$object_type])) {
-                    foreach($CONFIG->events[$event][$object_type] as $eventfunction) {
-                      if ($eventfunction($event, $object_type, $object) === false) {
-                            return false;
-                            //$return = false;
-                            //break;
-                        }
-                    }
-                }
-
-                if (!empty($CONFIG->events['all'][$object_type]) && is_array($CONFIG->events['all'][$object_type])) {
-                    foreach($CONFIG->events['all'][$object_type] as $eventfunction) {
-                        if ($eventfunction($event, $object_type, $object) === false) {
-                            return false;
-                            //$return = false;
-                            //break;
-                        }
-                    }
-                }
-
-                if (!empty($CONFIG->events[$event]['all']) && is_array($CONFIG->events[$event]['all'])) {
-                    foreach($CONFIG->events[$event]['all'] as $eventfunction) {
-                        if ($eventfunction($event, $object_type, $object) === false) {
-                            return false;
-                            //$return = false;
-                            //break;
-                        }
-                    }
-                }
-
-                if (!empty($CONFIG->events['all']['all']) && is_array($CONFIG->events['all']['all'])) {
-                    foreach($CONFIG->events['all']['all'] as $eventfunction) {
-                        if ($eventfunction($event, $object_type, $object) === false) {
-                            return false;
-                            //$return = false;
-                            //break;
-                        }
-                    }
-                }
-                return $return;
-
+            
+            return static::$all_events[$event][$object_type];
+        }
+        
+        static function register_handler($event, $object_type, $handler, $priority = 500) 
+        {
+            $handlers = &static::get_handlers($event, $object_type);
+            while (isset($handlers[$priority])) 
+            {
+                $priority++;
             }
-
-            return false;
-
+            $handlers[$priority] = $handler;
+            ksort($handlers);
         }
-
-    /**
-     * Alias function for events, that registers a function to a particular kind of event
-     *
-     * @param string $event The event type
-     * @param string $object_type The object type
-     * @param string $function The function name
-     * @return true|false Depending on success
-     */
-        function register_elgg_event_handler($event, $object_type, $function, $priority = 500) {
-            return events($event, $object_type, $function, $priority);
+        
+        private static function trigger_handlers(&$handlers, $event, $object_type, $object)
+        {
+            if (!empty($handlers))
+            {
+                foreach($handlers as $handler) 
+                {
+                    if ($handler($event, $object_type, $object) === false) 
+                    {
+                        return false;
+                    }
+                }
+            }        
+            return true;
         }
-
-    /**
-     * Alias function for events, that triggers a particular kind of event
-     *
-     * @param string $event The event type
-     * @param string $object_type The object type
-     * @param string $function The function name
-     * @return true|false Depending on success
-     */
-        function trigger_elgg_event($event, $object_type, $object = null) {
-            $return = true;
-            $return1 = events($event, $object_type, "", null, true, $object);
-            if (!is_null($return1)) $return = $return1;
-            return $return;
+        
+        static function trigger_event($event, $object_type, $object = null) 
+        {
+            return static::trigger_handlers(static::get_handlers($event, $object_type), $event, $object_type, $object)
+                && static::trigger_handlers(static::get_handlers('all', $object_type), $event, $object_type, $object)
+                && static::trigger_handlers(static::get_handlers($event, 'all'), $event, $object_type, $object)
+                && static::trigger_handlers(static::get_handlers('all', 'all'), $event, $object_type, $object);
         }
+    }
+    
+    function trigger_event($event, $object_type, $object = null)
+    {
+        return EventRegister::trigger_event($event, $object_type, $object);
+    }
 
+    function register_event_handler($event, $object_type, $handler, $priority = 500)
+    {
+        return EventRegister::register_handler($event, $object_type, $handler, $priority);
+    }
+    
     /**
      * Error handling
      */
@@ -847,7 +776,7 @@
      * @param int $linenum The line number the error was raised at
      * @param array $vars An array that points to the active symbol table at the point that the error occurred
      */
-        function __elgg_php_error_handler($errno, $errmsg, $filename, $linenum, $vars)
+        function php_error_handler($errno, $errmsg, $filename, $linenum, $vars)
         {
             $error = date("Y-m-d H:i:s (T)") . ": \"" . $errmsg . "\" in file " . $filename . " (line " . $linenum . ")";
 
@@ -887,11 +816,11 @@
      * @param Exception $exception The exception being handled
      */
 
-        function __elgg_php_exception_handler($exception) {
+        function php_exception_handler($exception) {
 
             error_log("*** FATAL EXCEPTION *** : " . $exception);
             ob_end_clean(); // Wipe any existing output buffer
-            $body = elgg_view("messages/exceptions/exception",array('object' => $exception));
+            $body = view("messages/exceptions/exception",array('object' => $exception));
             echo page_draw(__('exception:title'), $body);
 
 
@@ -992,28 +921,15 @@ $server
         }
 
     /**
-     * Get the full URL of the current page.
-     *
-     * @return string The URL
-     */
-    function full_url()
-    {
-        $s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
-        $protocol = substr(strtolower($_SERVER["SERVER_PROTOCOL"]), 0, strpos(strtolower($_SERVER["SERVER_PROTOCOL"]), "/")) . $s;
-        $port = ($_SERVER["SERVER_PORT"] == "80") ? "" : (":".$_SERVER["SERVER_PORT"]);
-        return $protocol . "://" . $_SERVER['SERVER_NAME'] . $port . $_SERVER['REQUEST_URI'];
-    }
-
-    /**
      * This function is a shutdown hook registered on startup which does nothing more than trigger a
      * shutdown event when the script is shutting down, but before database connections have been dropped etc.
      *
      */
-    function __elgg_shutdown_hook()
+    function __shutdown_hook()
     {
         global $CONFIG, $START_MICROTIME;
 
-        trigger_elgg_event('shutdown', 'system');
+        trigger_event('shutdown', 'system');
 
         if ($CONFIG->debug)
         {
@@ -1024,8 +940,7 @@ $server
 
     function elgg_init()
     {
-        register_shutdown_function('__elgg_shutdown_hook');
+        register_shutdown_function('__shutdown_hook');
     }
 
-
-    register_elgg_event_handler('init','system','elgg_init');
+    register_event_handler('init','system','elgg_init');

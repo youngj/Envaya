@@ -17,7 +17,7 @@
 	global $CONFIG;
 	 
 	$class = get_class($vars['object']);
-	$message = elgg_view('output/longtext', array('value' => $vars['object']->getMessage()));
+	$message = view('output/longtext', array('value' => $vars['object']->getMessage()));
 	
 	$body = <<< END
 		<span title="$class">
@@ -27,7 +27,7 @@ END;
 
 	if ($CONFIG->debug)
 	{
-		$details = elgg_view('output/longtext', array('value' => print_r($vars['object'], true)));
+		$details = view('output/longtext', array('value' => print_r($vars['object'], true)));
 		$body .= <<< END
 		<hr />
 		<p class="messages-exception-detail">
@@ -38,5 +38,5 @@ END;
 	
 	$title = $class;
 	
-	echo elgg_view_layout("one_column_padded", elgg_view_title($title), $body);
+	echo view_layout("one_column_padded", view_title($title), $body);
 ?>

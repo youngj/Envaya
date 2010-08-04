@@ -21,5 +21,5 @@
 	if (!$class) $class = "submit_button";
 	$vars['class'] = $class;
 	
-	echo elgg_view('input/button', $vars);
+	echo view('input/button', $vars);
 ?>

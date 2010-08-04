@@ -23,18 +23,18 @@
 		} else {
 			$title = $vars['config']->sitename . ": " . $vars['title'];
 		}
-		
-	// Remove RSS from URL
-		$url = str_replace('?view=rss','',full_url());
-		$url = str_replace('&view=rss','',full_url());
+			
+		$url = Request::instance()->full_original_url();
+        $url = str_replace('?view=rss','',$url);
+		$url = str_replace('&view=rss','',$url);
 
 ?>
 
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:georss="http://www.georss.org/georss" <?php echo elgg_view('extensions/xmlns'); ?> >
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:georss="http://www.georss.org/georss" <?php echo view('extensions/xmlns'); ?> >
 	<channel>
 		<title><![CDATA[<?php echo $title; ?>]]></title>
 		<link><?php echo htmlentities($url); ?></link>
-		<?php echo elgg_view('extensions/channel'); ?>
+		<?php echo view('extensions/channel'); ?>
 		<?php
 
 			echo $vars['body'];

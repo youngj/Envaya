@@ -2,7 +2,7 @@
 
     $widget = $vars['widget'];
 
-    echo elgg_view_layout('section', __("org:mission"), $widget->renderContent());
+    echo view_layout('section', __("org:mission"), $widget->renderContent());
 
     $org = $vars['widget']->getContainerEntity();
 
@@ -12,7 +12,7 @@
 
     echo "<div class='section_content'>";
 
-    echo elgg_view('feed/self_list', array('items' => $items));
+    echo view('feed/self_list', array('items' => $items));
 
     echo "</div>";
 
@@ -20,8 +20,8 @@
 
     if (!empty($sectors))
     {
-        echo elgg_view_layout('section', __("org:sectors"),
-            elgg_view("org/sectors", array('sectors' => $sectors, 'sector_other' => $org->sector_other))
+        echo view_layout('section', __("org:sectors"),
+            view("org/sectors", array('sectors' => $sectors, 'sector_other' => $org->sector_other))
         );
     }
 
@@ -30,7 +30,7 @@
 
         $lat = $org->getLatitude();
         $long = $org->getLongitude();
-        echo elgg_view("org/map", array(
+        echo view("org/map", array(
             'lat' => $lat,
             'long' => $long,
             'zoom' => $zoom,
@@ -47,6 +47,6 @@
         echo "</a>";
         echo "</div>";
     $map = ob_get_clean();
-    echo elgg_view_layout('section', __("org:location"), $map);
+    echo view_layout('section', __("org:location"), $map);
 
 ?>

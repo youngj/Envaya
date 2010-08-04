@@ -9,9 +9,9 @@ class Controller_Pg extends Controller {
         $username = get_input('username');
 
         $title = __("login");
-        $body = elgg_view_layout('one_column_padded',
-            elgg_view_title($title, array('org_only' => true)),
-            elgg_view("account/forms/login", array('username' => $username)));
+        $body = view_layout('one_column_padded',
+            view_title($title, array('org_only' => true)),
+            view("account/forms/login", array('username' => $username)));
 
         $this->page_draw($title, $body);
     }
@@ -97,10 +97,10 @@ class Controller_Pg extends Controller {
 
         $title = __('dashboard');
 
-        $intro_message = elgg_view('dashboard/blurb');
+        $intro_message = view('dashboard/blurb');
 
-        $body = elgg_view_layout('one_column',
-            elgg_view_title(__("dashboard")),
+        $body = view_layout('one_column',
+            view_title(__("dashboard")),
             $intro_message
         );
 
@@ -111,10 +111,10 @@ class Controller_Pg extends Controller {
     {
         if (!isloggedin())
         {
-            $body = elgg_view("account/forms/forgotten_password");
+            $body = view("account/forms/forgotten_password");
 
-            $this->page_draw(__('user:password:lost'), elgg_view_layout("one_column_padded",
-                elgg_view_title(__('user:password:lost'), array('org_only' => true)), $body));
+            $this->page_draw(__('user:password:lost'), view_layout("one_column_padded",
+                view_title(__('user:password:lost'), array('org_only' => true)), $body));
         }
         else
         {
@@ -178,7 +178,7 @@ class Controller_Pg extends Controller {
 
         if (!isloggedin())
         {
-            $body = elgg_view_layout('one_column_padded', elgg_view_title(__("register")), elgg_view("account/forms/register", array('friend_guid' => $friend_guid, 'invitecode' => $invitecode)));
+            $body = view_layout('one_column_padded', view_title(__("register")), view("account/forms/register", array('friend_guid' => $friend_guid, 'invitecode' => $invitecode)));
             $this->page_draw(__('register'), $body);
         }
         else
@@ -215,7 +215,7 @@ class Controller_Pg extends Controller {
 
     function action_upload_frame()
     {
-        $this->request->response = elgg_view('upload_frame');
+        $this->request->response = view('upload_frame');
     }
 
     function action_upload()

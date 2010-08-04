@@ -3,9 +3,9 @@
     $widget = $vars['widget'];
     $org = $widget->getContainerEntity();
 
-    $form = elgg_view('org/addPost', array('org' => $org));
+    $form = view('org/addPost', array('org' => $org));
 
-    echo elgg_view_layout('section', __("dashboard:add_update"), $form);
+    echo view_layout('section', __("dashboard:add_update"), $form);
 
     //ob_start();
 ?>
@@ -17,7 +17,7 @@
 <?php echo sprintf(__('widget:news:email:summary'), "<strong>{$org->getPostEmail()}</strong>") ?>
 
 <?php
-    echo elgg_view('output/confirmlink', array(
+    echo view('output/confirmlink', array(
         'text' => __('widget:news:change_email'),
         'is_action' => true,
         'href' => "action/org/changeEmail?org_guid={$org->guid}"
@@ -31,7 +31,7 @@
 <?php
     //$settings = ob_get_clean();
 
-    //echo elgg_view_layout('section', __("widget:news:mobile_settings"), $settings);
+    //echo view_layout('section', __("widget:news:mobile_settings"), $settings);
 
     $offset = (int) get_input('offset');
     $limit = 10;
@@ -44,7 +44,7 @@
     if ($count)
     {
 
-        echo  elgg_view('navigation/pagination',array(
+        echo  view('navigation/pagination',array(
             'baseurl' => $widget->getEditURL(),
             'offset' => $offset,
             'count' => $count,
@@ -71,12 +71,12 @@
             $rowClass = (($count % 2) != 0) ? 'odd' : 'even';
 
             echo "<tr class='$rowClass'>";
-            echo "<td>". elgg_view('output/text', array('value' => $update->getSnippet()))."</td>";
+            echo "<td>". view('output/text', array('value' => $update->getSnippet()))."</td>";
             echo "<td><span class='blog_date'>{$update->getDateText()}</span></td>";
             echo "<td><a href='{$update->getURL()}'>".__("view")."</a></td>";
 
             echo "<td><a href='{$update->getURL()}/edit?from=$escUrl'>".__("edit")."</a></td>";
-            echo "<td>".elgg_view('output/confirmlink', array(
+            echo "<td>".view('output/confirmlink', array(
                 'is_action' => true,
                 'href' => "{$update->getURL()}/save?delete=1",
                 'confirm' => __('blog:delete:confirm'),
@@ -94,5 +94,5 @@
 
     $content = ob_get_clean();
 
-    echo elgg_view_layout('section', __("widget:news:manage_updates"), $content);
+    echo view_layout('section', __("widget:news:manage_updates"), $content);
 ?>

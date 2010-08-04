@@ -44,7 +44,7 @@
     }
     else
     {
-        echo elgg_view('navigation/pagination',array(
+        echo view('navigation/pagination',array(
             'baseurl' => $widget->getEditURL(),
             'offset' => $offset,
             'count' => $count,
@@ -63,7 +63,7 @@
         <a class='feed_org_name' href='<?php echo $partner->getUrl() ?>'><?php echo escape($partner->name); ?></a><br />
         <label><?php echo __('widget:partnerships:description'); ?></label>
 
-        <?php echo elgg_view('input/longtext', array(
+        <?php echo view('input/longtext', array(
                 'internalname' => "partnershipDesc{$p->guid}",
                 'js' => 'style="width:350px;height:150px;"',
                 'trackDirty' => true,
@@ -79,7 +79,7 @@
     }
     $content = ob_get_clean();
 
-       echo elgg_view("widgets/edit_form", array(
+       echo view("widgets/edit_form", array(
            'widget' => $widget,
            'body' => $content
        ));

@@ -10,7 +10,7 @@
     <h3><?php echo escape($entity->name); ?></h3>
 <p>
 <?php
-    echo elgg_view('output/longtext', array('value' => $entity->description));
+    echo view('output/longtext', array('value' => $entity->description));
 ?>
 </p>
 <div style='clear:both;'></div>

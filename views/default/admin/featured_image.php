@@ -2,7 +2,7 @@
 <?php
     $org = $vars['org'];
     
-    echo elgg_view('input/text',
+    echo view('input/text',
         array(
             'internalname' => $vars['internalname'],
             'internalid' => 'image_url',

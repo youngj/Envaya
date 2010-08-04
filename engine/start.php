@@ -64,8 +64,8 @@
     spl_autoload_register('auto_load');
 
     // Register the error handler
-    set_error_handler('__elgg_php_error_handler');
-    set_exception_handler('__elgg_php_exception_handler');
+    set_error_handler('php_error_handler');
+    set_exception_handler('php_exception_handler');
 
     if (!include_once(__DIR__ . "/lib/database.php"))
         throw new InstallationException("Elgg could not load the main Elgg database library.");
@@ -96,8 +96,8 @@
 
     //error_log("includes finished in ".(microtime(true) - $START_MICROTIME)." seconds");    
     
-    trigger_elgg_event('boot', 'system');
-    trigger_elgg_event('init', 'system');
+    trigger_event('boot', 'system');
+    trigger_event('init', 'system');
     
     //error_log("start.php finished in ".(microtime(true) - $START_MICROTIME)." seconds");
 ?>

@@ -14,7 +14,7 @@ class Controller_Org extends Controller
 
         if (get_input("list"))
         {
-            $area = elgg_view("org/browseList", array('lat' => $lat, 'long' => $long, 'sector' => $sector));
+            $area = view("org/browseList", array('lat' => $lat, 'long' => $long, 'sector' => $sector));
         }
         else
         {
@@ -22,10 +22,10 @@ class Controller_Org extends Controller
             $long = get_input('long');
             $zoom = get_input('zoom');
 
-            $area = elgg_view("org/browseMap", array('lat' => $lat, 'long' => $long, 'zoom' => $zoom, 'sector' => $sector));
+            $area = view("org/browseMap", array('lat' => $lat, 'long' => $long, 'zoom' => $zoom, 'sector' => $sector));
         }
 
-        $body = elgg_view_layout('one_column', elgg_view_title($title), $area);
+        $body = view_layout('one_column', view_title($title), $area);
 
         $this->page_draw($title, $body);
     }
@@ -44,9 +44,9 @@ class Controller_Org extends Controller
         {
             $title = __('search:title');
         }
-        $content = elgg_view('org/search', array('query' => $query, 'sector' => get_input('sector')));
+        $content = view('org/search', array('query' => $query, 'sector' => get_input('sector')));
 
-        $body = elgg_view_layout('one_column_padded', elgg_view_title(__('search:title')), $content);
+        $body = view_layout('one_column_padded', view_title(__('search:title')), $content);
 
         $this->page_draw($title,$body);
     }
@@ -55,11 +55,11 @@ class Controller_Org extends Controller
     {
         $title = __("feed:title");
 
-        $area = elgg_view("org/feed");
+        $area = view("org/feed");
 
         page_set_translatable(false);
 
-        $body = elgg_view_layout('one_column', elgg_view_title($title), $area);
+        $body = view_layout('one_column', view_title($title), $area);
 
         $this->page_draw($title, $body);
     }
@@ -100,7 +100,7 @@ class Controller_Org extends Controller
         }
 
         $title = __("register:title");
-        $body = elgg_view_layout('one_column', elgg_view_title($title, array('org_only' => true)), elgg_view("org/register$step"));
+        $body = view_layout('one_column', view_title($title, array('org_only' => true)), view("org/register$step"));
         $this->page_draw($title, $body);
     }
 
@@ -343,13 +343,13 @@ class Controller_Org extends Controller
 
         if ($email && $code == get_email_fingerprint($email) && sizeof($users) > 0)
         {
-            $area1 = elgg_view('org/emailSettings', array('email' => $email, 'users' => $users));
+            $area1 = view('org/emailSettings', array('email' => $email, 'users' => $users));
         }
         else
         {
             $area1 = __("user:notification:invalid");
         }
-        $body = elgg_view_layout("one_column_padded", elgg_view_title($title), $area1);
+        $body = view_layout("one_column_padded", view_title($title), $area1);
 
         $this->page_draw($title, $body);
     }
@@ -378,7 +378,7 @@ class Controller_Org extends Controller
 
         $file = get_file_from_url(get_input('src'));
 
-        $content = elgg_view('org/selectImage',
+        $content = view('org/selectImage',
             array(
                 'current' => $file,
                 'position' => get_input('pos'),
@@ -409,7 +409,7 @@ class Controller_Org extends Controller
 
             if ($entity && $entity->canEdit() && $entity->get($prop))
             {
-                $area2[] = elgg_view("translation/translate",
+                $area2[] = view("translation/translate",
                     array(
                         'entity' => $entity,
                         'property' => $prop,
@@ -420,7 +420,7 @@ class Controller_Org extends Controller
 
         $title = __("trans:translate");
 
-        $body = elgg_view_layout("one_column_wide", elgg_view_title($title), implode("<hr><br>", $area2));
+        $body = view_layout("one_column_wide", view_title($title), implode("<hr><br>", $area2));
 
         $this->page_draw($title,$body);
     }
@@ -498,18 +498,18 @@ class Controller_Org extends Controller
         if ($key)
         {
             $title = __("trans:item_title");
-            $body = elgg_view_layout("one_column_padded", elgg_view_title($title), elgg_view("translation/interface_item", array('lang' => $lang, 'key' => $key)));
+            $body = view_layout("one_column_padded", view_title($title), view("translation/interface_item", array('lang' => $lang, 'key' => $key)));
             $this->page_draw($title, $body);
         }
         else if (get_input('export'))
         {
             header("Content-type: text/plain");
-            echo elgg_view("translation/interface_export", array('lang' => $lang));
+            echo view("translation/interface_export", array('lang' => $lang));
         }
         else
         {
             $title = __("trans:list_title");
-            $body = elgg_view_layout("one_column_wide", elgg_view_title($title), elgg_view("translation/interface_list", array('lang' => $lang)));
+            $body = view_layout("one_column_wide", view_title($title), view("translation/interface_list", array('lang' => $lang)));
             $this->page_draw($title, $body);
         }
     }
@@ -546,7 +546,7 @@ class Controller_Org extends Controller
     {
         page_set_translatable(false);
         $title = __('featured:title');
-        $body = elgg_view('org/featured');
-        $this->page_draw($title, elgg_view_layout("one_column_padded", elgg_view_title($title), $body));
+        $body = view('org/featured');
+        $this->page_draw($title, view_layout("one_column_padded", view_title($title), $body));
     }
 }

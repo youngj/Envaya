@@ -28,7 +28,7 @@
 
             $sep = "?";
             if (strpos($val, '?')>0) $sep = "&";
-            $val = "$val{$sep}__elgg_token=$token&__elgg_ts=$ts";
+            $val = "$val{$sep}__token=$token&__ts=$ts";
         }
 
         $val = escape($val);

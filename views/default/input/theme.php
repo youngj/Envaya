@@ -31,7 +31,7 @@ function themeChanged($theme)
         $optionsValues[$theme] = __("theme:$theme");
     }
 
-     echo elgg_view('input/pulldown', array(
+     echo view('input/pulldown', array(
         'internalname' => $name,
         'internalid' => 'themeList',
         'options_values' => $optionsValues,

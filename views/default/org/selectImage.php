@@ -12,7 +12,7 @@
         $defaultSizeName = 'large';
     }
 
-    echo elgg_view('input/hidden', array(
+    echo view('input/hidden', array(
         'internalname' => 'imageUpload',
         'internalid' => 'imageUpload',
         'value' => ''
@@ -38,7 +38,7 @@
             $options[$sizeName] = __("size:$sizeName");
         }
 
-        echo elgg_view('input/radio', array(
+        echo view('input/radio', array(
             'internalname' => 'imageSize',
             'value' => $defaultSizeName,
             'inline' => true,
@@ -55,7 +55,7 @@
 <td>
     <div id='imagePositionContainer'>
     <?php
-        echo elgg_view('input/radio', array(
+        echo view('input/radio', array(
             'internalname' => 'imagePosition',
             'value' => $position ?: 'center',
             'inline' => true,
@@ -72,7 +72,7 @@
 </div>
 
 <script type='text/javascript'>
-    var uploader = new SingleImageUploader(<?php echo elgg_view('input/swfupload_args', array(
+    var uploader = new SingleImageUploader(<?php echo view('input/swfupload_args', array(
         'args' => array(
             'trackDirty' => false,
             'thumbnail_size' => 'small',

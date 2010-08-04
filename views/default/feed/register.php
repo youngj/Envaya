@@ -31,7 +31,7 @@
 
         echo "<div class='feed_snippet'>";
         echo "<em>".__('org:sectors')."</em>: ";
-        echo elgg_view("org/sectors", array('sectors' => $org->getSectors(), 'sector_other' => $org->sector_other));
+        echo view("org/sectors", array('sectors' => $org->getSectors(), 'sector_other' => $org->sector_other));
         echo "</div>";
 
         echo "<div class='feed_snippet'>";

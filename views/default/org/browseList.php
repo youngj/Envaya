@@ -29,7 +29,7 @@ function sectorChanged()
 
 <?php 
 
-echo elgg_view('input/pulldown', array(
+echo view('input/pulldown', array(
     'internalname' => 'sector',
     'internalid' => 'sectorList',
     'options_values' => Organization::getSectorOptions(), 
@@ -42,7 +42,7 @@ echo "<div style='height:5px'></div>";
 
 $region = get_input('region');
 
-echo elgg_view('input/pulldown', array(
+echo view('input/pulldown', array(
     'internalname' => 'region',
     'internalid' => 'regionList',    
     'options_values' => regions_in_country('tz'),

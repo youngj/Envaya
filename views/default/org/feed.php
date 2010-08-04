@@ -19,7 +19,7 @@ function sectorChanged()
 
 <?php
 
-echo elgg_view('input/pulldown', array(
+echo view('input/pulldown', array(
     'internalname' => 'sector',
     'internalid' => 'sectorList',
     'options_values' => Organization::getSectorOptions(),
@@ -28,7 +28,7 @@ echo elgg_view('input/pulldown', array(
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"
 ));
 
-echo elgg_view('input/pulldown', array(
+echo view('input/pulldown', array(
     'internalname' => 'region',
     'internalid' => 'regionList',
     'options_values' => regions_in_country('tz'),
@@ -43,5 +43,5 @@ echo elgg_view('input/pulldown', array(
 
 <?php
 	$feedName = get_feed_name(array('sector' => $sector, 'region' => $region));
-	echo elgg_view('feed/list', array('items' => FeedItem::queryByFeedName($feedName)->limit(20)->filter()));
+	echo view('feed/list', array('items' => FeedItem::queryByFeedName($feedName)->limit(20)->filter()));
 ?>

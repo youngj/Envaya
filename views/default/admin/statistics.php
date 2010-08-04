@@ -10,6 +10,6 @@
      * @link http://elgg.org/
      */
 
-    echo elgg_view("admin/statistics_opt/basic");
-    echo elgg_view("admin/statistics_opt/numentities");
-    echo elgg_view("admin/statistics_opt/online");
+    echo view("admin/statistics_opt/basic");
+    echo view("admin/statistics_opt/numentities");
+    echo view("admin/statistics_opt/online");

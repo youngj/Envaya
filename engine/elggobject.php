@@ -87,7 +87,7 @@ class ElggObject extends ElggEntity
         }
         else
         {
-            $content = elgg_view('output/longtext', array('value' => $content));
+            $content = view('output/longtext', array('value' => $content));
         }
 
         $this->content = $content;
@@ -122,7 +122,7 @@ class ElggObject extends ElggEntity
         }
         else
         {
-            return elgg_view('output/longtext', array('value' => $content));
+            return view('output/longtext', array('value' => $content));
         }
     }
 

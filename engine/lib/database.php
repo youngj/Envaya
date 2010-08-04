@@ -87,8 +87,8 @@ function db_delayedexecution_shutdown_hook()
  */
 function init_db($event, $object_type, $object = null)
 {
-    register_elgg_event_handler('shutdown', 'system', 'db_delayedexecution_shutdown_hook', 1);
-    register_elgg_event_handler('shutdown', 'system', 'db_profiling_shutdown_hook', 999);
+    register_event_handler('shutdown', 'system', 'db_delayedexecution_shutdown_hook', 1);
+    register_event_handler('shutdown', 'system', 'db_profiling_shutdown_hook', 999);
     return true;
 }
 
@@ -264,4 +264,4 @@ function sanitize_order_by($order_by)
     return $order_by;
 }
 
-register_elgg_event_handler('boot','system','init_db',0);
+register_event_handler('boot','system','init_db',0);

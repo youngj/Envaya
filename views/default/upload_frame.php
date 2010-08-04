@@ -5,18 +5,18 @@
 
     <?php
 
-    echo elgg_view('input/file', array(
+    echo view('input/file', array(
         'internalname' => 'file',
         'internalid' => 'file',
         'js' => "onchange='fileChanged()'"
     ));
 
-    echo elgg_view('input/hidden', array(
+    echo view('input/hidden', array(
         'internalname' => 'sizes',
         'value' => get_input('sizes')
     ));
 
-    echo elgg_view('input/hidden', array(
+    echo view('input/hidden', array(
         'internalname' => 'swfupload',
         'internalid' => 'swfupload',
         'value' => get_input('swfupload')

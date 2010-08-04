@@ -3,12 +3,12 @@ class WidgetHandler_Generic extends WidgetHandler
 {
     function view($widget)
     {
-        return elgg_view("widgets/generic_view", array('widget' => $widget));
+        return view("widgets/generic_view", array('widget' => $widget));
     }
 
     function edit($widget)
     {
-        return elgg_view("widgets/generic_edit", array('widget' => $widget));
+        return view("widgets/generic_edit", array('widget' => $widget));
     }
 
     function save($widget)

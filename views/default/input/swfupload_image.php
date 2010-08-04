@@ -40,7 +40,7 @@
     $resultId = @$vars['internalid'] ?: "imageUpload$SWFUPLOAD_INCLUDE_COUNT";
     $progressId = @$vars['progressid'] ?: "imageUploadProgress$SWFUPLOAD_INCLUDE_COUNT";
 
-    echo elgg_view('input/hidden', array(
+    echo view('input/hidden', array(
         'internalname' => $vars['internalname'],
         'internalid' => $resultId,
         'value' => $prevInput
@@ -60,7 +60,7 @@
 
         clearInterval(checkSWFUploadInterval);
 
-        var uploader = new SingleImageUploader(<?php echo elgg_view('input/swfupload_args', array(
+        var uploader = new SingleImageUploader(<?php echo view('input/swfupload_args', array(
             'args' => array(
                 'trackDirty' => (@$vars['trackDirty'] ? true : false),
                 'thumbnail_size' => @$vars['thumbnail_size'] ?: 'small',

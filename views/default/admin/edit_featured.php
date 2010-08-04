@@ -3,7 +3,7 @@
     $org = $entity->getContainerEntity();
 ?>
 <form method='POST' action='admin/save_featured'>
-<?php echo elgg_view('input/securitytoken') ?>
+<?php echo view('input/securitytoken') ?>
 
 <strong><a href='<?php echo $org->getURL() ?>'><?php echo escape($org->name) ?></a></strong>
 
@@ -11,7 +11,7 @@
 
 <div class='input'>
 <label><?php echo __('featured:image'); ?></label>
-<?php echo elgg_view('admin/featured_image', array(
+<?php echo view('admin/featured_image', array(
     'internalname' => 'image_url',
     'org' => $org, 
     'value' => $entity->image_url
@@ -22,7 +22,7 @@
 <label><?php echo __('featured:text'); ?></label>
 <?php
 
-    echo elgg_view('input/tinymce',
+    echo view('input/tinymce',
         array(
             'internalname' => 'content',
             'valueIsHTML' => true,
@@ -36,13 +36,13 @@
 </div>
 <?php
 
-    echo elgg_view('input/submit',
+    echo view('input/submit',
         array('internalname' => 'submit',
             'class' => "submit_button",
             'trackDirty' => true,
             'value' => __('savechanges')));
 
-    echo elgg_view('input/hidden', array(
+    echo view('input/hidden', array(
         'internalname' => 'guid',
         'value' => $entity->guid
     ));

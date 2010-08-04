@@ -13,7 +13,7 @@
     <b><?php echo __('admin:user:label:search'); ?></b>
     <?php
 
-        echo elgg_view('input/text',array('internalname' => 'tag'));
+        echo view('input/text',array('internalname' => 'tag'));
 
     ?>
     <input type="hidden" name="object" value="user" />

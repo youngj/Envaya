@@ -4,12 +4,12 @@ $widget = $vars['widget'];
 ?>
 
 <form action='<?php echo $widget->getBaseURL() ?>/save_options' method='POST'>
-<?php echo elgg_view('input/securitytoken') ?>
+<?php echo view('input/securitytoken') ?>
 <div class='padded'>
 <div class='input'>
 <label><?php echo __('widget:title'); ?></label><br />
 <?php
-echo elgg_view('input/text', array(
+echo view('input/text', array(
     'internalname' => 'title',
     'value' => $widget->title
 ));
@@ -19,7 +19,7 @@ echo elgg_view('input/text', array(
 <div class='input'>
 <label><?php echo __('widget:handler'); ?></label><br />
 <?php
-echo elgg_view('input/text', array(
+echo view('input/text', array(
     'internalname' => 'handler_class',
     'value' => $widget->handler_class
 ));
@@ -29,7 +29,7 @@ echo elgg_view('input/text', array(
 <div class='input'>
 <label><?php echo __('widget:handler_arg'); ?></label><br />
 <?php
-echo elgg_view('input/text', array(
+echo view('input/text', array(
     'internalname' => 'handler_arg',
     'value' => $widget->handler_arg
 ));
@@ -48,7 +48,7 @@ echo elgg_view('input/text', array(
 <div class='input'>
 <label><?php echo __('widget:in_menu'); ?></label><br />
 <?php
-echo elgg_view('input/radio', array(
+echo view('input/radio', array(
     'internalname' => 'in_menu',
     'options' => yes_no_options(),
     'value' => $widget->in_menu ? 'yes' : 'no',
@@ -58,7 +58,7 @@ echo elgg_view('input/radio', array(
 <div class='input'>
 <label><?php echo __('widget:menu_order'); ?></label><br />
 <?php
-echo elgg_view('input/text', array(
+echo view('input/text', array(
     'internalname' => 'menu_order',
     'value' => $widget->menu_order,
     'js' => 'style="width:100px"'
@@ -69,7 +69,7 @@ echo elgg_view('input/text', array(
 </div>
 
 <?php
-echo elgg_view('input/submit', array(
+echo view('input/submit', array(
     'internalname' => 'submit',
     'value' => __('savechanges')
 ));

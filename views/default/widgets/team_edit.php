@@ -6,14 +6,14 @@
 ?>
 <div class='section_content padded'>
 <?php
-echo elgg_view("widgets/edit_content", array('widget' => $widget));
+echo view("widgets/edit_content", array('widget' => $widget));
 
 ?>
 <div id='addTeamMember' class='modalBody' style='display:none'>
 <div class='input'>
 <label><?php echo __('widget:team:name'); ?></label>
 <?php
-    echo elgg_view('input/text',
+    echo view('input/text',
         array(
             'internalname' => 'name',
             'internalid' => 'name',
@@ -27,7 +27,7 @@ echo elgg_view("widgets/edit_content", array('widget' => $widget));
 <div class='input'>
 <label><?php echo __('widget:team:description'); ?></label>
 <?php
-    echo elgg_view('input/longtext',
+    echo view('input/longtext',
         array(
             'internalname' => 'description',
             'internalid' => 'description',
@@ -42,7 +42,7 @@ echo elgg_view("widgets/edit_content", array('widget' => $widget));
 <div class='input'>
 <label><?php echo __('widget:team:photo'); ?></label><br />
 
-<?php echo elgg_view('input/swfupload_image', array(
+<?php echo view('input/swfupload_image', array(
     'internalname' => 'image',
     'jsname' => 'teamImageUploader',
     'internalid' => 'image',
@@ -149,7 +149,7 @@ function openAddTeamMember()
 <?php
     $content = ob_get_clean();
 
-    echo elgg_view("widgets/edit_form", array(
+    echo view("widgets/edit_form", array(
             'widget' => $widget,
             'body' => $content
     ));

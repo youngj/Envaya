@@ -6,7 +6,7 @@
 <div class='input'>
 <label><?php echo __('feedback:message') ?>:</label>
 <?php
-    echo elgg_view('input/longtext', array(
+    echo view('input/longtext', array(
         'internalname' => 'message'
     ));
 ?>
@@ -14,7 +14,7 @@
 <div class='input'>
 <label><?php echo __('feedback:name') ?>:</label>
 <?php
-    echo elgg_view('input/text', array(
+    echo view('input/text', array(
         'internalname' => 'name'
     ));
 ?>
@@ -22,14 +22,14 @@
 <div class='input'>
 <label><?php echo __('feedback:email') ?>:</label>
 <?php
-    echo elgg_view('input/text', array(
+    echo view('input/text', array(
         'internalname' => 'email'
     ));
 ?>
 </div>
 
 <?php
-    echo elgg_view('input/submit', array(
+    echo view('input/submit', array(
         'internalname' => 'submit',
         'value' => __('feedback:send'),
     ));

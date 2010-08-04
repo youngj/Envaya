@@ -9,7 +9,7 @@
     $orgs = Organization::query()->order_by($sort)->limit($limit, $offset)->filter();
     $count = Organization::query()->count();
 
-    echo elgg_view('navigation/pagination',array(
+    echo view('navigation/pagination',array(
         'baseurl' => $baseurl,
         'pagesShown' => 24,
         'offset' => $offset,

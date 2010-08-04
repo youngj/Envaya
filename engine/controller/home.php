@@ -7,10 +7,10 @@ class Controller_Home extends Controller
         set_context('home');
         set_theme('home');
         $this->add_generic_footer();
-        $area = elgg_view("home");
+        $area = view("home");
         $title = __("home:title");
         page_set_translatable(false);
-        $body = elgg_view_layout('one_column', '', $area);
+        $body = view_layout('one_column', '', $area);
         $this->page_draw($title, $body);
     }
 }

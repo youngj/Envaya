@@ -8,7 +8,7 @@
 	 * @link http://elgg.org/
      */
 	    
-    $icon = elgg_view(
+    $icon = view(
             'graphics/icon', array(
             'entity' => $vars['entity'],
             'size' => 'small',

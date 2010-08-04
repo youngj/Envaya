@@ -8,7 +8,7 @@
 <div class='padded'>
 <form action='<?php echo $org->getURL() ?>/send_message' method='POST'>
 
-<?php echo elgg_view('input/securitytoken'); ?>
+<?php echo view('input/securitytoken'); ?>
 
 <table class='messageTable'>
 <tr>
@@ -32,7 +32,7 @@
 <?php echo __("message:subject"); ?>
 </th>
 <td>
-<?php echo elgg_view('input/text', array('internalname' => 'subject')); ?>
+<?php echo view('input/text', array('internalname' => 'subject')); ?>
 </td>
 </tr>
 <tr>
@@ -40,7 +40,7 @@
 <?php echo __("message:message"); ?>
 </th>
 <td>
-<?php echo elgg_view('input/longtext', array('internalname' => 'message')); ?>
+<?php echo view('input/longtext', array('internalname' => 'message')); ?>
 </td>
 
 </tr>
@@ -49,9 +49,9 @@
 </table>
 
 <?php
-echo elgg_view('input/hidden', array('internalname' => 'recipient_guid', 'value' => $org->guid));
+echo view('input/hidden', array('internalname' => 'recipient_guid', 'value' => $org->guid));
 
-echo elgg_view('input/submit',array(
+echo view('input/submit',array(
     'value' => __('message:send')
 ));
 ?>

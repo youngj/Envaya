@@ -19,5 +19,5 @@
 	$vars['type'] = 'submit';
     $vars['class'] = (isset($vars['class'])) ? $vars['class'] : "submit_button";
 	
-	echo elgg_view('input/button', $vars);
+	echo view('input/button', $vars);
 ?>

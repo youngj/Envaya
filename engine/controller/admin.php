@@ -13,8 +13,8 @@ class Controller_Admin extends Controller
     function action_contact()
     {
         $title = __('email:send');
-        $area1 = elgg_view('admin/contact');
-        $body = elgg_view_layout("one_column_wide", elgg_view_title($title), $area1);
+        $area1 = view('admin/contact');
+        $body = view_layout("one_column_wide", view_title($title), $area1);
         $this->page_draw($title,$body);
     }
 
@@ -26,9 +26,9 @@ class Controller_Admin extends Controller
 
         if ($org)
         {
-            $area1 = elgg_view('admin/sendEmail', array('org' => $org, 'from' => get_input('from')));
+            $area1 = view('admin/sendEmail', array('org' => $org, 'from' => get_input('from')));
 
-            $body = elgg_view_layout("one_column", elgg_view_title($title), $area1);
+            $body = view_layout("one_column", view_title($title), $area1);
 
             $this->page_draw($title,$body);
         }
@@ -44,7 +44,7 @@ class Controller_Admin extends Controller
 
         if ($user)
         {
-            echo elgg_view('emails/reminder', array('org' => $user));
+            echo view('emails/reminder', array('org' => $user));
         }
         else
         {
@@ -72,7 +72,7 @@ class Controller_Admin extends Controller
         {
             $subject = __('email:reminder:subject', $org->language);
 
-            $body = elgg_view('emails/reminder', array('org' => $org));
+            $body = view('emails/reminder', array('org' => $org));
 
             $headers = array(
                 'To' => $org->getNameForEmail(),
@@ -98,8 +98,8 @@ class Controller_Admin extends Controller
     {
         $title = __('translate:queue');
 
-        $body = elgg_view_layout("one_column_padded", elgg_view_title($title),
-            elgg_view('translate/queue', array('lang' => get_language()))
+        $body = view_layout("one_column_padded", view_title($title),
+            view('translate/queue', array('lang' => get_language()))
         );
 
         $this->page_draw($title,$body);
@@ -110,7 +110,7 @@ class Controller_Admin extends Controller
     {
         $title = __("admin:statistics");
         $this->page_draw($title,
-            elgg_view_layout("one_column_padded", elgg_view_title($title), elgg_view("admin/statistics")));
+            view_layout("one_column_padded", view_title($title), view("admin/statistics")));
     }
 
     function action_user()
@@ -119,7 +119,7 @@ class Controller_Admin extends Controller
         $limit = get_input('limit', 10);
         $offset = get_input('offset', 0);
 
-        $title = elgg_view_title(__('admin:user'));
+        $title = view_title(__('admin:user'));
         
         $count = ElggUser::query()->count();
         $entities = ElggUser::query()->limit($limit, $offset)->order_by('e.guid desc')->filter();
@@ -128,7 +128,7 @@ class Controller_Admin extends Controller
 
         $this->page_draw(
             __("admin:user"),
-            elgg_view_layout("one_column_padded", $title,  elgg_view("admin/user") . $result)
+            view_layout("one_column_padded", $title,  view("admin/user") . $result)
         );
     }
 
@@ -139,7 +139,7 @@ class Controller_Admin extends Controller
 
         if (!empty($tag)) 
         {
-            $body = elgg_view_layout('one_column_padded',elgg_view_title($title),$this->search_users($tag));
+            $body = view_layout('one_column_padded',view_title($title),$this->search_users($tag));
         }
 
         $this->page_draw($title,$body);
@@ -158,7 +158,7 @@ class Controller_Admin extends Controller
         if ($users = $query->limit($limit, $offset)->filter())         
         {
             $count = $query->count();
-            $return = elgg_view('user/search/startblurb',array('count' => $count, 'tag' => $tag));            
+            $return = view('user/search/startblurb',array('count' => $count, 'tag' => $tag));            
             $return .= view_entity_list($users, $count, $offset, $limit);
             return $return;
         }
@@ -196,7 +196,7 @@ class Controller_Admin extends Controller
             $query->where('time_created < ?', strtotime($timeupper));
         }
 
-        $title = elgg_view_title(__('logbrowser'));
+        $title = view_title(__('logbrowser'));
         
         if ($user)
         {
@@ -217,11 +217,11 @@ class Controller_Admin extends Controller
             $log_entries[] = $tmp;
         }
 
-        $form = elgg_view('logbrowser/form',array('user_guid' => $user, 'timeupper' => $timeupper, 'timelower' => $timelower));
+        $form = view('logbrowser/form',array('user_guid' => $user, 'timeupper' => $timeupper, 'timelower' => $timelower));
 
         $result = view_entity_list($log_entries, $count, $offset, $limit);
 
-        $this->page_draw(__('logbrowser'),elgg_view_layout("one_column_padded", $title,  $form . $result));
+        $this->page_draw(__('logbrowser'),view_layout("one_column_padded", $title,  $form . $result));
 
     }
 
@@ -346,9 +346,9 @@ class Controller_Admin extends Controller
         if ($user)
         {
             $title = __('featured:add');
-            $body = elgg_view('admin/add_featured', array('entity' => $user));
-            $this->page_draw($title, elgg_view_layout("one_column_padded", 
-                elgg_view_title($title), $body));        
+            $body = view('admin/add_featured', array('entity' => $user));
+            $this->page_draw($title, view_layout("one_column_padded", 
+                view_title($title), $body));        
         }
         else
         {
@@ -432,9 +432,9 @@ class Controller_Admin extends Controller
         if ($featuredSite && $featuredSite instanceof FeaturedSite)
         {
             $title = __('featured:edit');
-            $body = elgg_view('admin/edit_featured', array('entity' => $featuredSite));
-            $this->page_draw($title, elgg_view_layout("one_column_padded", 
-                elgg_view_title($title), $body));        
+            $body = view('admin/edit_featured', array('entity' => $featuredSite));
+            $this->page_draw($title, view_layout("one_column_padded", 
+                view_title($title), $body));        
         }
         else
         {

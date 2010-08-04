@@ -3,12 +3,12 @@ class WidgetHandler_Home extends WidgetHandler
 {
     function view($widget)
     {
-        return elgg_view("widgets/home_view", array('widget' => $widget));
+        return view("widgets/home_view", array('widget' => $widget));
     }
 
     function edit($widget)
     {
-        return elgg_view("widgets/home_edit", array('widget' => $widget));
+        return view("widgets/home_edit", array('widget' => $widget));
     }
 
     function save($widget)

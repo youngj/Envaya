@@ -49,7 +49,7 @@
 
 
 <script type='text/javascript'>
-<?php echo elgg_view('js/header'); ?>
+<?php echo view('js/header'); ?>
 </script>
 
 </head>

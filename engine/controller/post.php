@@ -51,7 +51,7 @@ class Controller_Post extends Controller_Profile
         }
         else
         {
-            $body = $this->org_view_body($title, elgg_view("org/blogPost", array('entity'=> $post)));
+            $body = $this->org_view_body($title, view("org/blogPost", array('entity'=> $post)));
         }
 
         $this->page_draw($title,$body);
@@ -69,8 +69,8 @@ class Controller_Post extends Controller_Profile
         add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
         $org = $post->getContainerEntity();
-        $area1 = elgg_view("org/editPost", array('entity' => $post));
-        $body = elgg_view_layout("one_column_padded", elgg_view_title($title), $area1);
+        $area1 = view("org/editPost", array('entity' => $post));
+        $body = view_layout("one_column_padded", view_title($title), $area1);
 
         $this->page_draw($title,$body);
     }

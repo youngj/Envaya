@@ -25,12 +25,12 @@
         <?php
     }
 
-    echo elgg_view("input/longtext", array(
+    echo view("input/longtext", array(
         'internalname' => $internalname,
         'internalid' => "content_html$TINYMCE_INCLUDE_COUNT",
         'trackDirty' => true,
         'js' => "style='display:none;{$widthCSS}{$heightCSS}'",
-        'value' => $valueIsHTML ? $value : elgg_view('output/longtext', array('value' => $value))));
+        'value' => $valueIsHTML ? $value : view('output/longtext', array('value' => $value))));
 ?>
 
 <script type="text/javascript">

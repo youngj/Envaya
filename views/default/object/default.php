@@ -8,7 +8,7 @@
      * @link http://elgg.org/
      */
 
-    $icon = elgg_view(
+    $icon = view(
             'graphics/icon', array(
             'entity' => $vars['entity'],
             'size' => 'small',
@@ -23,7 +23,7 @@
     $controls = "";
     if ($vars['entity']->canEdit())
     {
-        $controls .= " (".elgg_view('output/confirmlink', array(
+        $controls .= " (".view('output/confirmlink', array(
             'text' => __('delete'),
             'is_action' => true,
             'href' => "admin/delete_entity?guid={$vars['entity']->guid}"

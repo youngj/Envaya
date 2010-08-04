@@ -26,8 +26,8 @@
      */
     function validate_security_token()
     {
-        $token = get_input('__elgg_token');
-        $ts = get_input('__elgg_ts');
+        $token = get_input('__token');
+        $ts = get_input('__ts');
         $session_id = Session::id();
 
         if (($token) && ($ts) && ($session_id))

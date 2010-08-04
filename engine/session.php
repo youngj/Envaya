@@ -65,7 +65,7 @@ class Session
         session_start();
         static::$started = true;
 
-        register_elgg_event_handler('shutdown', 'system', 'session_write_close', 10);
+        register_event_handler('shutdown', 'system', 'session_write_close', 10);
 
         if (!isset($_SESSION['__elgg_session']))
         {

@@ -15,5 +15,5 @@
 	 * 
 	 */
 
-    echo elgg_view('output/text',$vars);
+    echo view('output/text',$vars);
 ?>
