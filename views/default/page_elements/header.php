@@ -34,10 +34,7 @@
     <base href='<?php echo $vars['url'] ?>' />
 
     <?php
-        $theme = get_theme();
-
-        echo  '<link rel="stylesheet" href="_css/'.$theme.'.css?v='.$cacheVersion.'" type="text/css" />';
-
+        echo '<link rel="stylesheet" href="_css/'.escape(PageContext::get_theme()).'.css?v='.$cacheVersion.'" type="text/css" />';
     ?>
 
     <!--[if IE 6]>
@@ -54,8 +51,8 @@
 
 </head>
 
-<body class='<?php echo get_context(); ?>'>
+<body class='<?php echo @$vars['bodyClass']; ?>'>
 
 <?php if (get_input("__readonly") == "1") { ?>
-<div style='position:absolute;background-color:white;width:500px;height:500px;left:0px;top:0px;opacity:0.01;z-index:100;filter:alpha(opacity=1);z-index:100'></div>
+<div style='position:absolute;background-color:white;width:600px;height:500px;left:0px;top:0px;opacity:0.01;z-index:100;filter:alpha(opacity=1);z-index:100'></div>
 <?php } ?>

@@ -27,7 +27,7 @@
 <table>
 <tr>
 <td>
-    <label><?php echo __('size'); ?>:</label>
+    <label><?php echo __('size:label'); ?>:</label>
 </td>
 <td>
 <div id='imageSizeContainer'>
@@ -50,7 +50,7 @@
 </tr>
 <tr>
 <td>
-    <label><?php echo __('position'); ?>:</label>
+    <label><?php echo __('position:label'); ?>:</label>
 </td>
 <td>
     <div id='imagePositionContainer'>

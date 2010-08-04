@@ -1,6 +1,6 @@
 <?php
 
-    add_translation('en', array(
+     return array(
         'home:title' => "A network of civil society organizations in Tanzania",
         'home:heading' => 'Envaya is a network of civil society organizations in Tanzania who share news about their projects on the Internet.',
         'home:learn_more' => 'Learn more',        
@@ -10,8 +10,8 @@
         'home:whatwedo' => 'What We Do',
         'home:description' => "Envaya makes it easy for grassroots civil society organizations to create their own websites, where they can write about their projects and share resources and ideas with other organizations and people around the world.",
 
-        'donate:link' => 'Donate',        
-        'donate:now' => "Donate now!",
+        'donate' => 'Donate',        
+        'donate_now' => "Donate now!",
 
         'feedback:name' => "Your name (optional)",
         'feedback:email' => "Your email (optional)",
@@ -26,23 +26,7 @@
 
         'user:settings' => "Account settings",
 
-        'why:title' => 'Why use Envaya?',
-        'why:summary' => "With Envaya, your civil society organization can have its own website, for free, where you can share news about your projects with other organizations and people around the world.",
-        'why:easy' => 'Easy',
-        'why:easy:summary' => "To make a website on Envaya, you don't need any special computer training or equipment. In about five minutes, you can set up a basic home page yourself.",
-        'why:free' => "Free",
-        'why:free:summary' => "Hiring someone to build and host a website for your organization can be expensive. Envaya is free.",
-        'why:convenient' => "Convenient",
-        'why:convenient:summary' => "You can add new news and photos to your website by sending an SMS message from your mobile phone (coming soon). You can also use email.",
-        'why:visible' => "Visible",
-        'why:visible:summary' => "Envaya links your website into its network so that people can easily find you when they are looking for civil society organizations like yours.",
-        'why:translated' => "Translated",
-        'why:translated:summary' => "Envaya is translated in Kiswahili and English, so you can use whichever language you prefer. When somebody visits your site who can't read your language, Envaya will translate your content into their language.",
-        'why:collaborative' => "Collaborative",
-        'why:collaborative:summary' => "Envaya lets you see what other organizations are up to. If an organization hundreds of kilometers away has a successful project and writes about it on Envaya, you can read it and get ideas for your own organization.",
-        'why:example' => 'Example of a website on Envaya',
-
-        'about:link' => "About",        
+        'about' => "About",        
 
         'feed' => "Updates",
         'feed:title' => "Latest updates",
@@ -106,7 +90,7 @@
         'help:connecting:messages:instructions' => "Envaya makes it easy to communicate with other organizations that are also using Envaya. When you are logged in to Envaya, just visit another organization's website, and click the link at the top to %s.",
         'help:connecting:disabled' => "Note: Since your organization has not yet been approved by Envaya's administrators, Partnerships and Messages are currently disabled.",
 
-        'dashboard' => "Edit Site",
+        'dashboard:title' => "Edit Site",
         'dashboard:other_user' => "Edit %s",
         'dashboard:add_update' => 'Write News Update',
         'dashboard:edit_widgets' => 'Edit Pages',
@@ -116,13 +100,12 @@
         'dashboard:settings' => "Change account settings",
         'dashboard:links' => "Links",
 
-        'topbar:your_home' => "Your home page",
-        'topbar:edit_site' => "Edit site",
+        'your_home' => "Your home page",
+        'edit_site' => "Edit site",
 
         'loading' => "Loading...",
 
         'language' => "Language",
-        'language:choose' => "Select a Language",
 
         'browse' => 'Explore',
         'browse:title' => 'Explore organizations',
@@ -186,7 +169,6 @@
 
         'page:dirty' => "The current page has unsaved changes, which will be lost if you continue.",
 
-        'blog:view_all' => "View all news updates",
         'blog:editpost' => "Edit News Update",
         'blog:addpost' => "Add news update",
         'blog:delete' => "Delete update",
@@ -281,10 +263,7 @@
         'widget:team:name:missing' => "Missing name of team member.",
         'widget:team:description' => "Description:",
         'widget:team:photo' => "Photo (optional):",
-
-        'move:up' => "Move up",
-        'move:down' => "Move down",
-
+        
         'canceledit' => "Cancel Edit",
         'savechanges' => "Save changes",
 
@@ -403,8 +382,7 @@
         'upload:image:isdoc' => "Error: You are trying to upload a Microsoft Word document.  Envaya only supports image formats.  Please save the image from your document as a .jpg, .png, and .gif file.",
         'upload:image:isbad' => "Error: You are trying to upload an invalid file. Envaya only supports .jpg, .png, and .gif image formats.",
 
-        'contact:link' => "Contact",
-        'contact:title' => 'Contact us',
+        'contact' => "Contact",
 
         'page:notfound' => "Page not found",
         'page:notfound:details' => "The requested page either does not exist or you do not have access to it.",
@@ -430,7 +408,6 @@
 
         'org:cantedit' => "You do not have access to edit this organization's web site.",
 
-        'design' => "Website design",
         'design:edit' => "Edit website design",
 
         'theme' => "Website theme",
@@ -489,7 +466,7 @@
         'trans:stale_trans_from_to' => "This page has been translated from %s, but the %s version is out of date.",
         'trans:view_stale_automatic' => "View using Google Translate",
 
-        'exception:title' => "Error",
+        'exception_title' => "Error",
 
         'actionloggedout' => "Sorry, you cannot perform this action while logged out.",
 
@@ -580,10 +557,10 @@
         'date:month:11' => 'November',
         'date:month:12' => 'December',
 
-        'option:yes' => "Yes",
-        'option:no' => "No",
+        'yes' => "Yes",
+        'no' => "No",
 
-        'question:areyousure' => 'Are you sure?',
+        'areyousure' => 'Are you sure?',
 
         'save' => "Save",
         'publish' => "Publish",
@@ -737,22 +714,20 @@ If you requested this, click on the link below to change your password:
         'tinymce:code_wordwrap' => "Wordwrap",
         'tinymce:loading' => "Loading...",
 
-        'size' => "Size",
+        'size:label' => "Size",
         'size:small' => "Small",
         'size:medium' => "Medium",
         'size:large' => "Large",
 
-        'position' => 'Position',
+        'position:label' => 'Position',
         'position:left' => 'Left',
         'position:center' => 'Center',
         'position:right' => 'Right',
 
-        'zoom_in' => "Zoom in",
+        'map:zoom_in' => "Zoom in",
         'show_website' => "Show on website",
         
         'featured:home_heading' => 'Featured Organization',
         'featured:title' => 'Featured Organizations',
         'featured:see_all' => 'See all featured organizations',
-    ));
-
-    include(__DIR__."/en_admin.php");
+    );

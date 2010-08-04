@@ -28,14 +28,14 @@
     $CONFIG->s3_private = 'E9s2sGLEKqJyCG6WE4PbE/JMBOuLcZ4DJ2v1hyH4';
     $CONFIG->s3_bucket = 'envayadev';
 
-    $CONFIG->translations = array(
-        'en' => array('en' => 'English'),
-        'sw' => array('sw' => 'Kiswahili'),
-    );
-
     $CONFIG->path = dirname(__DIR__) . "/";
     $CONFIG->viewpath = $CONFIG->path . "views/";
     $CONFIG->pluginspath = $CONFIG->path . "mod/";
+    
+    $CONFIG->languages = array(
+        'en' => 'English',
+        'sw' => 'Kiswahili'
+    );
 
     $CONFIG->dataroot = dirname($CONFIG->path). "/elgg-data/";
 

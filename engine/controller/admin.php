@@ -5,8 +5,7 @@ class Controller_Admin extends Controller
     function before()
     {
         $this->require_admin();
-        set_context('editor');
-        set_theme('editor');
+        PageContext::set_theme('editor');
 
     }
 

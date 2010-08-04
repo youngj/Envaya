@@ -16,7 +16,7 @@ abstract class ElggEntity implements
      * The main attributes of an entity.
      * Blank entries for all database fields should be created by the constructor.
      * Subclasses should add to this in their constructors.
-     * Any field not appearing in this will be viewed as a
+     * Any field not appearing in this will be viewed as metadata
      */
     protected $attributes;
 
@@ -325,7 +325,7 @@ abstract class ElggEntity implements
 
     public function clearMetaData()
     {
-        return clear_metadata($this->getGUID());
+        return delete_data("DELETE from metadata where entity_guid=?", array($this->getGUID()));
     }
     
     public function getSubEntities()
@@ -634,6 +634,110 @@ abstract class ElggEntity implements
             return $this;
         }
     }
+    
+    public function translate_field($field, $isHTML = false)
+    {
+        $text = trim($this->$field);
+        if (!$text)
+        {
+            return '';
+        }
+
+        $origLang = $this->getLanguage();
+        $viewLang = get_language();
+                
+        if ($origLang != $viewLang)
+        {            
+            $translateMode = get_translate_mode();
+            $translation = $this->lookup_translation($field, $origLang, $viewLang, $translateMode, $isHTML);
+            
+            trigger_event('translate',$this->type, $translation);
+            
+            if ($translation->guid && $translation->owner_guid)
+            {
+                $viewTranslation = ($translateMode > TranslateMode::None);
+            }
+            else
+            {
+                $viewTranslation = ($translateMode == TranslateMode::All);
+            }
+
+            if ($viewTranslation && $translation->guid)
+            {
+                return $translation->value;
+            }
+            else
+            {
+                return $this->$field;
+            }
+        }
+
+        return $text;
+    }
+
+    function lookup_translation($prop, $origLang, $viewLang, $translateMode = TranslateMode::ManualOnly, $isHTML = false)
+    {
+        $trans = Translation::query()->where('property=?', $prop)->where('lang=?',$viewLang)->
+                    where('container_guid=?',$this->guid)->where('html=?', $isHTML ? 1 : 0)->get();
+
+        $doAutoTranslate = ($translateMode == TranslateMode::All);
+
+        if ($trans)
+        {
+            if ($doAutoTranslate && $trans->isStale())
+            {
+                $text = get_auto_translation($this->$prop, $origLang, $viewLang);
+                if ($text != null)
+                {
+                    if (!$trans->owner_guid) // previous version was from google
+                    {
+                        $trans->value = $text;
+                        $trans->save();
+                    }
+                    else // previous version was from human
+                    {
+                        // TODO : cache this
+                        $fakeTrans = new Translation();
+                        $fakeTrans->owner_guid = 0;
+                        $fakeTrans->container_guid = $this->guid;
+                        $fakeTrans->property = $prop;
+                        $fakeTrans->lang = $viewLang;
+                        $fakeTrans->value = $text;
+                        $fakeTrans->html = $isHTML;
+                        return $fakeTrans;
+                    }
+                }
+            }
+
+            return $trans;
+        }
+        else if ($doAutoTranslate)
+        {
+            $text = get_auto_translation($this->$prop, $origLang, $viewLang);
+
+            if ($text != null)
+            {
+                $trans = new Translation();
+                $trans->owner_guid = 0;
+                $trans->container_guid = $this->guid;
+                $trans->property = $prop;
+                $trans->lang = $viewLang;
+                $trans->value = $text;
+                $trans->html = $isHTML;
+                $trans->save();
+                return $trans;
+            }
+        }
+        
+        /* not saved */
+        $tempTrans = new Translation();
+        $tempTrans->owner_guid = 0;
+        $tempTrans->container_guid = $this->guid;
+        $tempTrans->property = $prop;
+        $tempTrans->lang = $viewLang;
+        $tempTrans->html = $isHTML;        
+        return $tempTrans;
+    }    
 
     static function queryByMetadata($meta_name, $meta_value = "")
     {

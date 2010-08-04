@@ -74,7 +74,7 @@ class ElggMetadata
             $value = ($value) ? 1 : 0;
         }
 
-        $valueType = detect_value_type($value);
+        $valueType = static::detect_value_type($value);
 
         if ($valueType == 'json')
         {
@@ -96,4 +96,17 @@ class ElggMetadata
     {
         return delete_data("DELETE from metadata where id=?", array($this->id));
     }
+    
+
+    static function detect_value_type($value)
+    {
+        if (is_array($value))
+            return 'json';
+        if (is_int($value))
+            return 'integer';
+        if (is_numeric($value))
+            return 'text'; // todo?
+        return 'text';
+    }    
+        
 }

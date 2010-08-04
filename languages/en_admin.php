@@ -1,5 +1,5 @@
 <?php     
-    $en_admin = array(
+    return array(
         'item:object:widget' => "Pages",                       
         'item:object:blog' => 'News updates',
         'item:object:partnership' => 'Partnerships',
@@ -394,8 +394,3 @@ Alternatively, you can enter your database settings below and we will try and do
         'widget:menu_order' => 'Menu Order',
         'widget:in_menu' => 'Show in Menu?',
     );  
-    
-    global $CONFIG;
-    $CONFIG->en_admin = $en_admin;
-    
-    add_translation("en",$en_admin);

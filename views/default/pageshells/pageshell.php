@@ -18,7 +18,5 @@
     header("Content-type: text/html; charset=UTF-8");
     echo view('page_elements/header', $vars);
     echo view('page_elements/topbar', $vars);
-    echo $vars['preBody'];
-    echo view('messages/list', array('object' => $vars['sysmessages']));
     echo $vars['body'];
     echo view('page_elements/footer', $vars);

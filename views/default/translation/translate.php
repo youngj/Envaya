@@ -36,9 +36,9 @@ echo "</td><td style='width:50%'>";
 $lang = get_language();
 $langStr = __($lang, $lang);
 
-$curTranslation = lookup_translation($entity, $property, $entity->getLanguage(), $lang, TranslateMode::All, $isHTML);
+$curTranslation = $entity->lookup_translation($property, $entity->getLanguage(), $lang, TranslateMode::All, $isHTML);
 
-$curText = ($curTranslation) ? $curTranslation->value : $text;
+$curText = $curTranslation->value ?: $text;
 
 $transIn = sprintf(__("trans:inlang"), view('input/language', array(
         'internalname' => 'newLang',

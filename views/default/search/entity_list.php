@@ -1,12 +1,10 @@
 <?php
 
-    $context = $vars['context'];
     $offset = $vars['offset'];
     $entities = $vars['entities'];
     $limit = $vars['limit'];
     $count = $vars['count'];
     $baseurl = $vars['baseurl'];
-    $context = $vars['context'];
     $pagination = $vars['pagination'];
     $fullview = $vars['fullview']; 
     

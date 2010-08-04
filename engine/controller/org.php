@@ -32,8 +32,6 @@ class Controller_Org extends Controller
 
     function action_search()
     {
-        set_context('search');
-
         $query = get_input('q');
 
         if ($query)
@@ -57,7 +55,7 @@ class Controller_Org extends Controller
 
         $area = view("org/feed");
 
-        page_set_translatable(false);
+        PageContext::set_translatable(false);
 
         $body = view_layout('one_column', view_title($title), $area);
 
@@ -312,8 +310,6 @@ class Controller_Org extends Controller
 
     function action_searchArea()
     {
-        set_context('search');
-
         $latMin = get_input('latMin');
         $latMax = get_input('latMax');
         $longMin = get_input('longMin');
@@ -391,7 +387,7 @@ class Controller_Org extends Controller
     function action_translate()
     {
         $this->require_admin();
-        set_theme('editor');
+        PageContext::set_theme('editor');
 
         $props = get_input_array("prop");
         $from = get_input('from');
@@ -460,14 +456,7 @@ class Controller_Org extends Controller
             }
             if ($actualOrigLang != $newLang)
             {
-                $trans = lookup_translation($entity, $property, $actualOrigLang, $newLang, TranslateMode::ManualOnly, $isHTML);
-                if (!$trans)
-                {
-                    $trans = new Translation();
-                    $trans->container_guid = $entity->guid;
-                    $trans->property = $property;
-                    $trans->lang = $newLang;
-                }
+                $trans = $entity->lookup_translation($property, $actualOrigLang, $newLang, TranslateMode::ManualOnly, $isHTML);
                 $trans->html = $isHTML;
                 $trans->owner_guid = get_loggedin_userid();
                 $trans->value = $text;
@@ -544,7 +533,7 @@ class Controller_Org extends Controller
     
     function action_featured()
     {
-        page_set_translatable(false);
+        PageContext::set_translatable(false);
         $title = __('featured:title');
         $body = view('org/featured');
         $this->page_draw($title, view_layout("one_column_padded", view_title($title), $body));

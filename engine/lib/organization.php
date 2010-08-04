@@ -62,20 +62,6 @@ function get_static_map_url($lat, $long, $zoom, $width, $height)
     return "http://maps.google.com/maps/api/staticmap?center=$lat,$long&zoom=$zoom&size={$width}x$height&maptype=roadmap&markers=$lat,$long&sensor=false&key=$apiKey";
 }
 
-$THEME = null;
-
-function get_theme()
-{
-    global $THEME;
-    return $THEME ?: 'simple';
-}
-
-function set_theme($theme)
-{
-    global $THEME;
-    $THEME = $theme;
-}
-
 function get_themes()
 {
     return array('green','brick','craft4','craft1','cotton2','wovengrass','beads','red');

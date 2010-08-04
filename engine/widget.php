@@ -49,7 +49,7 @@ class Widget extends ElggObject
     {
         if ($this->title)
         {
-            return translate_field($this, 'title', false);
+            return $this->translate_field('title', false);
         }
         else
         {

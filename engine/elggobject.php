@@ -114,7 +114,7 @@ class ElggObject extends ElggEntity
     {
         $isHTML = $this->hasDataType(DataType::HTML);
 
-        $content = translate_field($this, 'content', $isHTML);
+        $content = $this->translate_field('content', $isHTML);
 
         if ($isHTML)
         {

@@ -50,7 +50,7 @@
         echo "Error: could not load the input library.";
         exit;
     }
-
+ 
     if (!include_once(__DIR__ . "/lib/languages.php")) {        // Languages library
         echo "Error: could not load the languages library.";
         exit;
@@ -59,6 +59,11 @@
     if (!include_once(__DIR__ . "/lib/cache.php")) {
         echo "Error: could not load the cache library.";
         exit;
+    }
+    
+    if (@$_GET['lang'])
+    {
+        change_viewer_language($_GET['lang']);
     }
     
     spl_autoload_register('auto_load');

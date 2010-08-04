@@ -11,9 +11,8 @@
 	 */
 
 	// users online
-	get_context('search');
+
 	$users_online = get_online_users();
-	get_context('admin');
 ?>
 
 <div class="admin_users_online">

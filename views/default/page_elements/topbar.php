@@ -11,7 +11,7 @@ if (get_input('__topbar') !== '0') {
     <a id='logoContainer' href="home">
         <img src="_graphics/logo.gif?v5" alt="Envaya" width="145" height="30">
     </a>
-    <a href='envaya'><?php echo __('about:link') ?></a>
+    <a href='envaya'><?php echo __('about') ?></a>
     <a href='org/browse'><?php echo __('browse') ?></a>
     <a href='org/search'><?php echo __('search') ?></a>
     <a href='org/feed'><?php echo __('feed') ?></a>    
@@ -32,7 +32,7 @@ function languageChanged()
         $translationUrls = array();
         $curUrl = null;
         $curLang = get_language();
-        foreach (get_installed_translations() as $lang => $text)
+        foreach (Language::get_options() as $lang => $text)
         {
             $url = url_with_param(Request::instance()->full_original_url(), 'lang', $lang);
             $translationUrls[$url] = $text;
@@ -57,7 +57,7 @@ function languageChanged()
 </tr>
 </table>
 
-<?php if (get_context() != "login") { ?>
+<?php if (!@$vars['hideLogin']) { ?>
 <div id='topRight'>
 
     <?php
@@ -70,11 +70,11 @@ function languageChanged()
 
             if ($user->isSetupComplete())
             {
-                echo "<a href='{$user->getURL()}' title=\"".__('topbar:your_home')."\"><img src='_graphics/home.gif?v2' /></a>";
+                echo "<a href='{$user->getURL()}' title=\"".__('your_home')."\"><img src='_graphics/home.gif?v2' /></a>";
 
                 if ($user instanceof Organization)
                 {
-                    echo "<a href='pg/dashboard' title=\"".__('topbar:edit_site')."\"><img src='_graphics/pencil.gif?v3' /></a>";
+                    echo "<a href='pg/dashboard' title=\"".__('edit_site')."\"><img src='_graphics/pencil.gif?v3' /></a>";
                 }
 
                 echo "<a href='{$user->getURL()}/settings' title=\"".__('settings')."\" id='usersettings'><img src='_graphics/settings.gif' /></a>";
@@ -100,7 +100,7 @@ function languageChanged()
         }
         else
         {
-            $loginUrl = (get_context() == 'orgprofile') ? url_with_param(Request::instance()->full_rewritten_url(), 'login',1) : 'pg/login';
+            $loginUrl = (@$vars['loginToCurrentPage']) ? url_with_param(Request::instance()->full_rewritten_url(), 'login',1) : 'pg/login';
 
             echo "<a id='loginButton' href='".escape($loginUrl)."'><span class='loginContent'><img src='_graphics/lock.gif' height='20' width='20' /><span>".__("login")."</span></span></a>";
         }

@@ -11,7 +11,7 @@
 
  * @link http://elgg.org/
  */
-
+ 
 $DB_PROFILE = array();
 $DB_DELAYED_QUERIES = array();
 

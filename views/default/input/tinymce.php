@@ -43,7 +43,7 @@
 
         $res = array();
 
-        foreach (get_language_keys_by_prefix($prefix) as $key)
+        foreach (Language::get('en')->get_keys_by_prefix($prefix) as $key)
         {
             $res[substr($key, $lenPrefix)] = __($key);
         }

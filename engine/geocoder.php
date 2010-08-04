@@ -37,21 +37,13 @@ class Geocoder
         return $return;
     }
     
-    /**
-     * Mobworking.net geocoder
-     *
-     * @author Marcus Povey <marcus@dushka.co.uk>
-     * @copyright Marcus Povey 2008-2009
-     */
     static function google_geocode($location)
     {
         global $CONFIG;
         $google_api = $CONFIG->google_api_key;
-
-        // Desired address
+        
         $address = "http://maps.google.com/maps/geo?q=".urlencode($location)."&output=json&key=" . $google_api;
 
-        // Retrieve the URL contents
         $result = file_get_contents($address);
         $obj = json_decode($result);
 

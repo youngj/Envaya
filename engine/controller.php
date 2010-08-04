@@ -26,6 +26,8 @@ abstract class Controller {
      * @var  object  Request that created the controller
      */
     public $request;
+    
+    protected $page_draw_vars = array();
 
     /**
      * Creates a new controller instance. Each controller must be constructed
@@ -40,16 +42,16 @@ abstract class Controller {
         $this->request = $request;
     }
 
-    public function page_draw($title, $body, $preBody = '')
-    {
-        $this->request->response = page_draw($title, $body, $preBody);
+    public function page_draw($title, $body, $vars = null)
+    {    
+        $this->request->response = page_draw($title, $body, $vars ?: $this->page_draw_vars);
     }
     
     public function add_generic_footer()
     {
-        add_submenu_item(__('about:link'), "/envaya", 'footer');
-        add_submenu_item(__('contact:link'), "/envaya/contact", 'footer');
-        add_submenu_item(__('donate:link'), "/envaya/contribute", 'footer');    
+        add_submenu_item(__('about'), "/envaya", 'footer');
+        add_submenu_item(__('contact'), "/envaya/contact", 'footer');
+        add_submenu_item(__('donate'), "/envaya/contribute", 'footer');    
     }
 
     public function validate_security_token()

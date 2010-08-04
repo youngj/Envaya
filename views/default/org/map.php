@@ -187,7 +187,7 @@ OrgBucket.prototype = new function() {
             addEvent($a, 'click', function() {
                 $self._map.setCenter($self.center, Math.min($curZoom + 3, $maxZoom));
             });
-            $a.appendChild(document.createTextNode(<?php echo json_encode(__('zoom_in')) ?>));
+            $a.appendChild(document.createTextNode(<?php echo json_encode(__('map:zoom_in')) ?>));
             $div.appendChild($a);
         }
 

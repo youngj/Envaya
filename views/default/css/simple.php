@@ -90,11 +90,6 @@ body
     margin-top:35px;
 }
 
-.orgprofile #heading, .home #heading
-{
-    margin-top:0px;
-}
-
 .home_heading, .section_header
 {
     height:19px;

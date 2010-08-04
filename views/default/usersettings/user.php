@@ -50,7 +50,7 @@
             if ($user->language)
                 $value = $user->language;
 
-            echo view("input/pulldown", array('internalname' => 'language', 'value' => $value, 'options_values' => get_installed_translations(true)));
+            echo view("input/pulldown", array('internalname' => 'language', 'value' => $value, 'options_values' => Language::get_options()));
 
          ?>
 

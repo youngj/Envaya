@@ -19,7 +19,7 @@
 
     $confirm = @$vars['confirm'];
     if (!$confirm)
-        $confirm = __('question:areyousure');
+        $confirm = __('areyousure');
 
     $link = $vars['href'];
 

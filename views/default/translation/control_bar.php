@@ -1,11 +1,11 @@
 <?php
-if (page_is_translatable())
+if (PageContext::is_translatable())
 {
 ?>
 <div id='translate_bar'>
 <?php
     $transMode = get_translate_mode();
-    $origLang = get_original_language();
+    $origLang = PageContext::get_original_language();
     $origLangName = escape(__($origLang));
     $userLangName = escape(__(get_language()));
 
@@ -15,7 +15,7 @@ if (page_is_translatable())
         return "<a href='".escape($url)."'>$text</a>";
     }
 
-    if ($transMode == TranslateMode::ManualOnly && !page_is_translatable(TranslateMode::ManualOnly))
+    if ($transMode == TranslateMode::ManualOnly && !PageContext::is_translatable(TranslateMode::ManualOnly))
     {
         $transMode = TranslateMode::None;
     }
@@ -24,13 +24,13 @@ if (page_is_translatable())
 
     if ($transMode == TranslateMode::ManualOnly) // viewing manual translation
     {
-        if (page_has_stale_translation())
+        if (PageContext::has_stale_translation())
         {
             echo sprintf(__("trans:stale_trans_from_to"), $origLangName, $userLangName);
 
             $links[] = trans_link(TranslateMode::All, __("trans:view_stale_automatic"));
         }
-        else if (page_is_translatable(TranslateMode::All))
+        else if (PageContext::is_translatable(TranslateMode::All))
         {
             echo sprintf(__("trans:partial_trans_from_to"), $origLangName, $userLangName);
 
@@ -45,7 +45,7 @@ if (page_is_translatable())
     }
     else if ($transMode == TranslateMode::All) // viewing automatic translation
     {
-        if (page_is_translatable(TranslateMode::ManualOnly))
+        if (PageContext::is_translatable(TranslateMode::ManualOnly))
         {
             echo sprintf(__("trans:partial_automatic_trans_from_to"), $origLangName, $userLangName);
         }
@@ -60,11 +60,11 @@ if (page_is_translatable())
     {
         echo sprintf(__("trans:page_original_in"), $origLangName);
 
-        if (page_is_translatable(TranslateMode::ManualOnly))
+        if (PageContext::is_translatable(TranslateMode::ManualOnly))
         {
             $links[] = trans_link(TranslateMode::ManualOnly, sprintf(__("trans:view_in"), $userLangName));
         }
-        else if (page_is_translatable(TranslateMode::All))
+        else if (PageContext::is_translatable(TranslateMode::All))
         {
             $links[] = trans_link(TranslateMode::All, sprintf(__("trans:view_automatic_in"), $userLangName));
         }
@@ -72,15 +72,13 @@ if (page_is_translatable())
 
     if (isadminloggedin())
     {
-        $properties = page_translatable_properties();
+        $translations = PageContext::get_available_translations();
 
-        if (sizeof($properties))
+        if (sizeof($translations))
         {
-        
-            $urlProps = array();
-            foreach ($properties as $objProp)
+            foreach ($translations as $trans)
             {
-                $urlProps[] = "prop[]={$objProp[0]}.{$objProp[1]}.{$objProp[2]}";
+                $urlProps[] = "prop[]={$trans->container_guid}.{$trans->property}.{$trans->html}";
             }
 
             $escUrl = urlencode($_SERVER['REQUEST_URI']);

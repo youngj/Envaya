@@ -4,8 +4,6 @@ class Controller_Pg extends Controller {
 
     function action_login()
     {
-        set_context('login');
-
         $username = get_input('username');
 
         $title = __("login");
@@ -13,7 +11,7 @@ class Controller_Pg extends Controller {
             view_title($title, array('org_only' => true)),
             view("account/forms/login", array('username' => $username)));
 
-        $this->page_draw($title, $body);
+        $this->page_draw($title, $body, array('hideLogin' => true));
     }
 
     function action_submit_login()
@@ -62,21 +60,8 @@ class Controller_Pg extends Controller {
         else
         {
             Session::saveInput();
-
-            $error_msg = __('loginerror');
-            // figure out why the login failed
-            if (!empty($username) && !empty($password)) {
-                // See if it exists and is disabled
-                $access_status = access_get_show_hidden_status();
-                access_show_hidden_entities(true);
-
-                register_error(__('loginerror'));
-                forward("pg/login");
-
-                access_show_hidden_entities($access_status);
-            } else {
-                register_error(__('loginerror'));
-            }
+            register_error(__('loginerror'));
+            forward("pg/login");
         }
     }
 
@@ -90,12 +75,11 @@ class Controller_Pg extends Controller {
     {
         $this->require_login();
         
-        page_set_translatable(false);
+        PageContext::set_translatable(false);
 
-        set_theme('editor');
-        set_context('editor');
+        PageContext::set_theme('editor');
 
-        $title = __('dashboard');
+        $title = __('dashboard:title');
 
         $intro_message = view('dashboard/blurb');
 

@@ -4,7 +4,7 @@
 ?>
 
 
-.home .thin_column
+.thin_column
 {
     width:760px;
 }

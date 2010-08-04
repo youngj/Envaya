@@ -1,60 +1,103 @@
 <?php
 
-/**
-* Elgg language module
-* Functions to manage language and translations.
-*
-* @package Elgg
-* @subpackage Core
-
-* @author Curverider Ltd
-
-* @link http://elgg.org/
-*/
-
-/**
-* Add a translation.
-*
-* Translations are arrays in the Zend Translation array format, eg:
-*
-*   $english = array('message1' => 'message1', 'message2' => 'message2');
-*  $german = array('message1' => 'Nachricht1','message2' => 'Nachricht2');
-*
-* @param string $country_code Standard country code (eg 'en', 'nl', 'es')
-* @param array $language_array Formatted array of strings
-* @return true|false Depending on success
-*/
-
-function add_translation($country_code, $language_array)
+class Language
 {
-    global $CONFIG;
-    if (!isset($CONFIG->translations))
-        $CONFIG->translations = array();
+    static $languages = array();
+    
+    static function get($code)
+    {
+        return @static::$languages[$code];
+    }
+    
+    static function get_options()
+    {        
+        $options = array();
+        foreach (static::$languages as $k => $v)
+        {
+            $options[$k] = __($k, $k);
+        }
 
-    if (!isset($CONFIG->translations[$country_code]))
+        return $options;
+    }    
+    
+    static function init($code)
     {
-        $CONFIG->translations[$country_code] = $language_array;
+        $lang = new Language($code);
+        static::$languages[$code] = $lang;
+        return $lang;    
     }
-    else
+    
+    protected $code;
+    protected $translations;
+  
+    function __construct($code)
     {
-        $CONFIG->translations[$country_code] = $language_array + $CONFIG->translations[$country_code];
+        $this->code = $code;
+        $this->translations = array();
+        $this->loaded = false;
     }
+
+    function add_translations($language_array)
+    {
+        $this->translations = $language_array + $this->translations;
+    }
+        
+    function get_translation($key)
+    {
+        return @$this->translations[$key];
+    }   
+    
+    private $loaded;
+    
+    function load()
+    {
+        if (!$this->loaded)
+        {
+            $path = dirname(dirname(__DIR__)) . "/languages";
+            
+            $this->add_translations(include("$path/{$this->code}.php"));
+
+            if ($this->code == 'en')
+            {
+                $this->add_translations(include("$path/en_admin.php"));
+            }
+            $this->loaded = true;
+        }
+        return $this;
+    }    
+    
+    function get_keys_by_prefix($prefix)
+    {
+         $keys = array();
+         foreach ($this->translations as $k => $v)
+         {
+             if (strpos($k, $prefix) === 0)
+             {
+                 $keys[] = $k;
+             }
+         }
+         return $keys;
+    
+    }
+    
 }
 
-/**
-* Detect the current language being used by the current site or logged in user.
-*
-*/
-function get_current_language()
+
+function init_languages()
 {
     global $CONFIG;
+    foreach ($CONFIG->languages as $code => $lang_name)
+    {
+        Language::init($code)->add_translations(
+            array($code => $lang_name)
+        );
+    }
+}
+init_languages();
 
-    $language = get_language();
-
-    if (!$language)
-        $language = 'en';
-
-    return $language;
+function get_current_language()
+{
+    return get_language() ?: 'en';
 }
 
 function get_cookie_language()
@@ -64,7 +107,7 @@ function get_cookie_language()
     if (isset($_COOKIE['lang']))
     {
         $lang = $_COOKIE['lang'];
-        if (isset($CONFIG->translations[$lang]))
+        if (Language::get($lang))
         {
             return $lang;
         }
@@ -146,101 +189,16 @@ function get_language()
 * @param string $language Optionally, the standard language code (defaults to the site default, then English)
 * @return string Either the translated string, or the original English string, or an empty string
 */
-function __($message_key, $language = "") {
+function __($message_key, $language_code = "") {
 
-    global $CONFIG;
-
-    if (!$language)
+    if (!$language_code)
     {
-        $language = get_language();
+        $language_code = get_language();
     }
-    else
-    {
-        load_translation($language);
-    }
-
-    if (isset($CONFIG->translations[$language][$message_key])) {
-        return $CONFIG->translations[$language][$message_key];
-    } else if (isset($CONFIG->translations["en"][$message_key])) {
-        return $CONFIG->translations["en"][$message_key];
-    }
-
-    return $message_key;
-
-}
-
-function load_translation($lang)
-{
-    $path = dirname(dirname(__DIR__)) . "/languages/";
-
-    include_once("$path$lang.php");
-
-    if ($lang != 'en')
-    {
-        include_once("{$path}en.php");
-    }
-}
-
-/**
-* Return an array of installed translations as an associative array "two letter code" => "native language name".
-*/
-function get_installed_translations($show_completeness = false)
-{
-    global $CONFIG;
-
-    $installed = array();
-
-    foreach ($CONFIG->translations as $k => $v)
-    {
-        $installed[$k] = __($k, $k);
-
-        if ($show_completeness)
-        {
-            $completeness = get_language_completeness($k);
-            if ((isadminloggedin()) && ($completeness<100) && ($k!='en'))
-                $installed[$k] .= " (" . $completeness . "% " . __('complete') . ")";
-        }
-    }
-
-    return $installed;
-}
-
-/**
-* Return the level of completeness for a given language code (compared to english)
-*/
-function get_language_completeness($language)
-{
-    global $CONFIG;
-
-    load_translation($language);
-
-    $en = count($CONFIG->translations['en']) - count($CONFIG->en_admin);
-
-    $missing = count(get_missing_language_keys($language));
-
-    $lang = $en - $missing;
-
-    return round(($lang / $en) * 100, 2);
-}
-
-/**
-* Return the translation keys missing from a given language
-*/
-function get_missing_language_keys($language)
-{
-    global $CONFIG;
-
-    load_translation($language);
-
-    $missing = array();
-
-    foreach ($CONFIG->translations['en'] as $k => $v)
-    {
-        if (!isset($CONFIG->translations[$language][$k]) && !isset($CONFIG->en_admin[$k]))
-            $missing[] = $k;
-    }
-
-    return $missing;
+   
+    return Language::get($language_code)->load()->get_translation($message_key) 
+        ?: Language::get('en')->load()->get_translation($message_key) 
+        ?: $message_key;
 }
 
 function get_language_link($lang)
@@ -263,41 +221,12 @@ function get_language_links()
 {
     $links = array();
     global $CONFIG;
-    foreach ($CONFIG->translations as $lang => $v)
+    foreach (Language::$languages as $code => $v)
     {
-        $links[] = get_language_link($lang);
+        $links[] = get_language_link($code);
     }
     echo implode(' &middot; ', $links);
 }
-
-function get_translatable_language_keys()
-{
-    global $CONFIG;
-    $keys = array();
-
-    foreach ($CONFIG->translations['en'] as $k => $v)
-    {
-        if (!isset($CONFIG->en_admin[$k]))
-            $keys[] = $k;
-    }
-
-    return $keys;
-}
-
-function get_language_keys_by_prefix($prefix)
-{
-    $keys = array();
-    global $CONFIG;
-    foreach ($CONFIG->translations['en'] as $k => $v)
-    {
-        if (strpos($k, $prefix) === 0)
-        {
-            $keys[] = $k;
-        }
-    }
-    return $keys;
-}
-
 
 function change_viewer_language($newLanguage)
 {
@@ -311,9 +240,3 @@ function change_viewer_language($newLanguage)
     }
     setcookie("lang", $newLanguage, $expireTime, '/');
 }
-
-if (@$_GET['lang'])
-{
-    change_viewer_language($_GET['lang']);
-}
-load_translation(get_current_language());

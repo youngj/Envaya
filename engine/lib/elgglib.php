@@ -165,8 +165,8 @@
     function yes_no_options()
     {
         return array(
-            'yes' => __('option:yes'),
-            'no' => __('option:no'),
+            'yes' => __('yes'),
+            'no' => __('no'),
         );
     }
 
@@ -383,8 +383,6 @@
             $offset = (int) $offset;
             $limit = (int) $limit;
 
-            $context = get_context();
-
             return view('search/entity_list',array(
                 'entities' => $entities,
                 'count' => $count,
@@ -392,7 +390,6 @@
                 'limit' => $limit,
                 'baseurl' => $_SERVER['REQUEST_URI'],
                 'fullview' => $fullview,
-                'context' => $context,
                 'viewtypetoggle' => false,
                 'pagination' => $pagination
               ));
@@ -522,15 +519,16 @@
      * @param unknown_type $body
      * @return unknown
      */
-        function page_draw($title, $body, $preBody = "")
+        function page_draw($title, $body, $vars = null)
         {
-            return view('pageshells/pageshell', array(
-                    'title' => $title,
-                    'body' => $body,
-                    'preBody' => $preBody,
-                    'sysmessages' => system_messages(null,"")
-                  )
-            );
+            if ($vars == null)
+            {
+                $vars = array();
+            }
+            $vars['title'] = $title;
+            $vars['body'] = $body;
+        
+            return view('pageshells/pageshell', $vars);
         }
 
     /**
@@ -821,7 +819,7 @@
             error_log("*** FATAL EXCEPTION *** : " . $exception);
             ob_end_clean(); // Wipe any existing output buffer
             $body = view("messages/exceptions/exception",array('object' => $exception));
-            echo page_draw(__('exception:title'), $body);
+            echo page_draw(__('exception_title'), $body);
 
 
             global $CONFIG;

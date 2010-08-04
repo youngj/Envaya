@@ -374,13 +374,10 @@
         $user->container_guid = 0; // Users aren't contained by anyone, even if they are admin created.
         $user->save();
 
-        global $registering_admin;
-        if (!$admin) {
+        if (!$admin) 
+        {
             $user->admin = true;
             datalist_set('admin_registered',1);
-            $registering_admin = true;
-        } else {
-            $registering_admin = false;
         }
 
         // Turn on email notifications by default

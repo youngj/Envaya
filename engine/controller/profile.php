@@ -87,7 +87,7 @@ class Controller_Profile extends Controller
         $this->require_org();
         $this->use_editor_layout();
         
-        page_set_translatable(false);
+        PageContext::set_translatable(false);
         
         $widgetName = $this->request->param('widgetname');
         $widget = $this->org->getWidgetByName($widgetName);
@@ -119,7 +119,7 @@ class Controller_Profile extends Controller
 
     function action_edit()
     {
-        page_set_translatable(false);
+        PageContext::set_translatable(false);
         $this->require_editor();
         $this->require_org();
 
@@ -155,7 +155,7 @@ class Controller_Profile extends Controller
         global $CONFIG;
         $CONFIG->sitename = $org->name;
 
-        set_theme(get_input("__theme") ?: $org->theme ?: 'green');
+        PageContext::set_theme(get_input("__theme") ?: $org->theme ?: 'green');
 
         foreach ($org->getAvailableWidgets() as $widget)
         {
@@ -165,13 +165,12 @@ class Controller_Profile extends Controller
             }
         }        
         
-        set_context('orgprofile');
+        $this->page_draw_vars['loginToCurrentPage'] = true;
     }
 
     function use_editor_layout()
     {
-        set_theme('editor');
-        set_context('editor');
+        PageContext::set_theme('editor');
     }
 
     function require_editor()
@@ -276,7 +275,7 @@ class Controller_Profile extends Controller
 
         if ($widget && $widget->widget_name == 'home')
         {
-            $subtitle = $widget->title ? translate_field($widget, 'title', false) : $org->getLocationText(false);
+            $subtitle = $widget->title ? $widget->translate_field('title', false) : $org->getLocationText(false);
             $title = '';
         }
         else if (!$widget || !$widget->isActive())
@@ -375,7 +374,7 @@ class Controller_Profile extends Controller
         $this->require_editor();
         $this->require_org();
         
-        page_set_translatable(false);
+        PageContext::set_translatable(false);
         
         $org = $this->org;
         if ($org->guid == get_loggedin_userid())
@@ -450,7 +449,7 @@ class Controller_Profile extends Controller
 
         $title = __("feed:org");
 
-        page_set_translatable(false);
+        PageContext::set_translatable(false);
 
         $area = view('org/orgfeed', array('org' => $this->org));
 
@@ -749,8 +748,6 @@ class Controller_Profile extends Controller
         $org = $this->org;
         if ($org)
         {    
-            set_context('orgprofile');
-            set_theme($org->theme ?: 'green');
             $title = __('page:notfound');
             $body = $this->org_view_body($title, "<div class='section_content padded'>".__('page:notfound:details')."</div>");
             header("HTTP/1.1 404 Not Found");
@@ -782,7 +779,7 @@ class Controller_Profile extends Controller
         }
 
         $layout = "one_column_custom_header";
-        if (get_theme() == 'sidebar')
+        if (PageContext::get_theme() == 'sidebar')
         {
             $layout= 'two_column_left_sidebar';
         }

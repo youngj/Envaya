@@ -8,6 +8,6 @@
      }     
      
     echo view('input/pulldown', array('internalname' => $vars['internalname'], 'value' => $lang,
-        'options_values' => get_installed_translations()
+        'options_values' => Language::get_options()
     ));
 ?>

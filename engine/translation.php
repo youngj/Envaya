@@ -24,6 +24,12 @@ class Translation extends ElggObject
         $property = $this->property;
         return trim($obj->$property);
     }
+    
+    public function getOriginalLanguage()
+    {
+        $obj = $this->getContainerEntity();
+        return $obj->getLanguage();
+    }
 
     public function calculateHash()
     {
