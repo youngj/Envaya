@@ -61,13 +61,15 @@
         exit;
     }
     
+    spl_autoload_register('auto_load');
+    
+    init_languages();
+    
     if (@$_GET['lang'])
     {
         change_viewer_language($_GET['lang']);
     }
     
-    spl_autoload_register('auto_load');
-
     // Register the error handler
     set_error_handler('php_error_handler');
     set_exception_handler('php_exception_handler');

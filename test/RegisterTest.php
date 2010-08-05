@@ -200,12 +200,14 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->type("//input[@name='password2']", "password2");
         $this->type("//input[@name='email']", "adunar@gmail.com");
         $this->submitForm();
+        sleep(5);
         $this->mouseOver("//div[@class='bad_messages']");
 
         $this->username = "selenium".time();
 
         $this->type("//input[@name='username']", $this->username);
         $this->submitForm();
+        sleep(5);
         $this->mouseOver("//div[@class='bad_messages']");
 
         $this->type("//input[@name='password2']", "password");
@@ -339,6 +341,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->mouseOver("//div[@class='padded' and contains(text(),'No results')]");
 
         $this->open("/{$this->username}");
+        sleep(5);
         $this->mouseOver("//div[@class='good_messages']");
         $this->mustNotExist("//h2");
 

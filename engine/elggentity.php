@@ -36,7 +36,7 @@ abstract class ElggEntity implements
             {
                 if (!$this->loadFromPartialTableRow($guid))
                 {
-                    throw new IOException(sprintf(__('IOException:FailedToLoadGUID'), get_class(), $guid->guid));
+                    throw new IOException(sprintf(__('error:FailedToLoadGUID'), get_class(), $guid->guid));
                 }
             }
             else if ($guid instanceof ElggEntity)
@@ -47,11 +47,11 @@ abstract class ElggEntity implements
             else if (is_numeric($guid))
             {
                 if (!$this->load($guid))
-                    throw new IOException(sprintf(__('IOException:FailedToLoadGUID'), get_class(), $guid));
+                    throw new IOException(sprintf(__('error:FailedToLoadGUID'), get_class(), $guid));
             }
             else
             {
-                throw new InvalidParameterException(__('InvalidParameterException:UnrecognisedValue'));
+                throw new InvalidParameterException(__('error:UnrecognisedValue'));
             }
         }
     }
@@ -478,7 +478,7 @@ abstract class ElggEntity implements
                 $this->container_guid = $this->owner_guid;
 
             if ($this->type == "")
-                throw new InvalidParameterException(__('InvalidParameterException:EntityTypeNotSet'));
+                throw new InvalidParameterException(__('error:EntityTypeNotSet'));
 
             $this->time_created = $time;
             $this->time_updated = $time;
@@ -489,7 +489,7 @@ abstract class ElggEntity implements
             );
 
             if (!$this->guid)
-                throw new IOException(__('IOException:BaseEntitySaveFailed'));
+                throw new IOException(__('error:BaseEntitySaveFailed'));
 
             if ($this->guid)
                 cache_entity($this);
@@ -551,7 +551,7 @@ abstract class ElggEntity implements
             $this->attributes[$key] = $value;
 
         if ($this->attributes['type'] != $typeBefore)
-            throw new InvalidClassException(sprintf(__('InvalidClassException:NotValidElggStar'), $guid, get_class()));
+            throw new InvalidClassException(sprintf(__('error:NotValidElggStar'), $guid, get_class()));
 
         global $ENTITY_CACHE;
         $ENTITY_CACHE[$this->guid] = $this;

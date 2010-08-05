@@ -43,7 +43,7 @@
 
         $res = array();
 
-        foreach (Language::get('en')->get_keys_by_prefix($prefix) as $key)
+        foreach (Language::get('en')->get_group('tinymce') as $key => $enVal)
         {
             $res[substr($key, $lenPrefix)] = __($key);
         }

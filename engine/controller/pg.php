@@ -84,7 +84,7 @@ class Controller_Pg extends Controller {
         $intro_message = view('dashboard/blurb');
 
         $body = view_layout('one_column',
-            view_title(__("dashboard")),
+            view_title(__('dashboard:title')),
             $intro_message
         );
 

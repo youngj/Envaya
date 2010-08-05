@@ -27,7 +27,7 @@ function get_db_link($dblinktype)
         }
         catch (PDOException $ex)
         {
-            throw new DatabaseException(__("DatabaseException:NoConnect"));
+            throw new DatabaseException(__("error:NoConnect"));
         }
     }
     return $DB_LINK;
@@ -40,7 +40,7 @@ function db_profiling_shutdown_hook()
 {
     global $CONFIG, $DB_PROFILE;
 
-    if (isset($CONFIG->debug) && $CONFIG->debug)
+    if (isset($CONFIG->debug) && $CONFIG->debug && isset($DB_PROFILE))
     {
         error_log("***************** DB PROFILING ********************");
 
@@ -60,23 +60,27 @@ function db_delayedexecution_shutdown_hook()
 {
     global $DB_DELAYED_QUERIES, $CONFIG;
 
-    foreach ($DB_DELAYED_QUERIES as $query_details)
+    if (isset($DB_DELAYED_QUERIES))
     {
-        $stmt = stmt_execute($query_details['l'], $query_details['q'], $query_details['a']);
+        foreach ($DB_DELAYED_QUERIES as $query_details)
+        {
+            $stmt = stmt_execute($query_details['l'], $query_details['q'], $query_details['a']);
 
-        try
-        {
-            if ( (isset($query_details['h'])) && (is_callable($query_details['h'])))
-                $query_details['h']($stmt);
-        }
-        catch (Exception $e)
-        {
-            // Suppress all errors since these can't be dealt with here
-            if (isset($CONFIG->debug) && $CONFIG->debug)
-                error_log($e);
+            try
+            {
+                if ( (isset($query_details['h'])) && (is_callable($query_details['h'])))
+                    $query_details['h']($stmt);
+            }
+            catch (Exception $e)
+            {
+                // Suppress all errors since these can't be dealt with here
+                if (isset($CONFIG->debug) && $CONFIG->debug)
+                    error_log($e);
+            }
         }
     }
 }
+
 
 /**
  * Alias to setup_db_connections, for use in the event handler
@@ -259,7 +263,7 @@ function sanitize_order_by($order_by)
 {
     if (preg_match('/[^\\w\\s\\,\\`\\.]/', $order_by))
     {
-        throw new DatabaseException(sprintf(__('DatabaseException:UnspecifiedQueryType'), $scriptlocation));
+        throw new DatabaseException(sprintf(__('error:InvalidQueryParameter'), $order_by));
     }
     return $order_by;
 }

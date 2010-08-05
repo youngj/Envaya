@@ -5,9 +5,34 @@ include("engine/start.php");
 
 $lang = $_SERVER['argv'][1];
 
+$en = Language::get('en');
+$en->load_all();
+
+$en_trans = $en->get_loaded_translations();
+
+
+function get_missing_language_keys($en, $trans)
+{
+    $en_admin = $en->get_group('admin');
+    $missing = array();
+   
+    foreach ($en->get_loaded_translations() as $k => $v)
+    {
+        if (!isset($en_admin[$k]) && !isset($trans[$k]))
+        {
+            $missing[] = $k;
+        }
+    }
+    return $missing;
+}
+
 if ($lang != 'en')
 {
-    $missingKeys = get_missing_language_keys($lang);
+    $language = Language::get($lang);    
+    $language->load_all();
+    $trans = $language->get_loaded_translations();
+
+    $missingKeys = get_missing_language_keys($en, $trans);
 
     foreach ($missingKeys as $key)
     {
@@ -16,16 +41,16 @@ if ($lang != 'en')
 
     echo "\n";
 
-    echo sizeof($CONFIG->translations[$lang])." keys present\n";
-    echo sizeof($missingKeys)." keys missing (".get_language_completeness($lang)."%)\n";
+    echo sizeof($trans)." keys present\n";
+    echo sizeof($missingKeys)." keys missing\n";
 
-    foreach ($CONFIG->translations[$lang] as $k => $v)
+    foreach ($trans as $k => $v)
     {
-        if (!isset($CONFIG->translations['en'][$k]))
+        if (!isset($en_trans[$k]))
         {
             echo "extraneous: $k\n";
         }
-        else if ($CONFIG->translations['en'][$k] == $v)
+        else if ($en_trans[$k] == $v)
         {
             echo "same as english: $k\n";
         }
@@ -33,8 +58,8 @@ if ($lang != 'en')
 }
 else
 {
-
     $seenKeys = array();
+    $trans = $en_trans;
 
     function checkDir($dir)
     {
@@ -67,25 +92,15 @@ else
 
     foreach ($seenKeys as $seenKey => $seen)
     {
-        if (!isset($CONFIG->translations['en'][$seenKey]))
+        if (!isset($en_trans[$seenKey]))
         {
             echo "missing translation: $seenKey\n";
         }
     }
-
-    /*
-    foreach ($CONFIG->translations['en'] as $key => $text)
-    {
-        if (!isset($seenKeys[$key]))
-        {
-            echo "maybe unused: $key\n";
-        }
-    }
-    */
 }
 
 $valueCount = array();
-foreach ($CONFIG->translations[$lang] as $k => $v)
+foreach ($trans as $k => $v)
 {
     if (!isset($valueCount[$v]))
     {

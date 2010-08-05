@@ -27,7 +27,6 @@
             $result = get_entity($guid);
 
         if ((!empty($result)) && (!($result instanceof ElggUser)))
-            //throw new InvalidClassException(sprintf(__('InvalidClassException:NotValidElggStar'), $guid, 'ElggUser'));
             return false;
 
         if (!empty($result))

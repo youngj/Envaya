@@ -1,0 +1,23 @@
+<?php
+return array(
+    'trans:by' => 'Tafsiri kwa',
+    'trans:original_in' => 'Maandiko ya asili kwa %s',
+    'trans:translate' => 'Tafsiri maandiko',
+    'trans:inlang' => 'Tafsiri kwa %s',
+    'trans:contribute' => 'Andika tafsiri',
+    'trans:empty' => 'Tafsiri ilikuwa tupu',
+    'trans:invalid_id' => 'Jina baya ya maandiko',
+    'trans:submit' => 'Hifadhi tafsiri',
+    'trans:posted' => 'Tafsiri imehifadhiwa.',
+    'trans:partial_trans_from_to' => 'Maeneo ya ukurasa huu yametafsiriwa toka %s kwa %s.',
+    'trans:view_rest_automatic' => 'Tafsiri baki na Google Translate',
+    'trans:trans_from_to' => 'Ukurasa huu umetafsiriwa toka %s kwa %s.',
+    'trans:view_original_in' => 'Ona asili kwa %s',
+    'trans:partial_automatic_trans_from_to' => 'Maeneo ya ukurasa huu yametafsiriwa kwa kujiendesha na Google Translate.',
+    'trans:automatic_trans_from_to' => 'Ukurasa huu umetafsiriwa kwa kujiendesha toka %s kwa %s na Google Translate.',
+    'trans:page_original_in' => 'Ukurasa huu umeonyeshwa katika lugha yake ya asili, %s.',
+    'trans:view_in' => 'Ona kwa %s',
+    'trans:view_automatic_in' => 'Ona kwa %s na Google Translate',
+    'trans:stale_trans_from_to' => 'Ukurasa huu umetafsiriwa toka %s, lakini tamko la %s ni la zamani.',
+    'trans:view_stale_automatic' => 'Ona na Google Translate',
+);

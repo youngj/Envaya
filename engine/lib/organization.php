@@ -49,7 +49,7 @@ function regions_in_country($country)
     $res = array();
     foreach ($ids as $id)
     {
-        $res[$id] = __($id);
+        $res[$id] = __("region:$id");
     }
     asort($res);
     return $res;

@@ -1,0 +1,21 @@
+<?php
+return array(
+    'tinymce:paragraph' => "Kawaida",
+    'tinymce:h1' => "Kichwa 1",
+    'tinymce:h2' => "Kichwa 2",
+    'tinymce:h3' => "Kichwa 3",
+    'tinymce:link_desc' => "Ongeza/hariri kiungo",
+    'tinymce:link_insert' => "Ongeza Kiungo",
+    'tinymce:link_edit' => "Hariri Kiungo",
+    'tinymce:link_url' => "Anwani (URL) ya tovuti:",
+    'tinymce:link_url_help' => "Kwanza, pata ukurasa wa intaneti ambao unataka kuuunganisha. Halafu, fuatisha anwani ya intaneti kutoka juu ya browser yako.",
+    'tinymce:link_url_test' => 'Pima Kiungo Hiki',
+    'tinymce:link_text' => "Maandiko kuonyesha:",
+    'tinymce:link_url_empty' => "Tafadhali ingize URL.",
+    'tinymce:image_desc' => "Ongeza/hariri picha",
+    'tinymce:image_insert' => "Ongeza Picha",
+    'tinymce:image_edit' => "Hariri Picha",
+    'tinymce:loading' => 'Ikipakia...',
+    'tinymce:ok' => "Sawa",
+    'tinymce:cancel' => "Ghairi",
+);

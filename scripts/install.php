@@ -40,11 +40,11 @@ function run_sql_script($scriptlocation) {
             $errortxt = "";
             foreach($errors as $error)
                 $errortxt .= " {$error};";
-            throw new DatabaseException(__('DatabaseException:DBSetupIssues') . $errortxt);
+            throw new DatabaseException("There were a number of issues: ". $errortxt);
         }
 
     } else {
-        throw new DatabaseException(sprintf(__('DatabaseException:ScriptNotFound'), $scriptlocation));
+        throw new DatabaseException(sprintf("Elgg couldn't find the requested database script at %s.", $scriptlocation));
     }
 }
 

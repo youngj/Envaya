@@ -141,7 +141,7 @@
         }
         else
         {
-            throw new ClassException(sprintf(__('ClassException:ClassnameNotClass'), $classname, 'ElggEntity'));
+            throw new ClassException(sprintf(__('error:ClassnameNotClass'), $classname, 'ElggEntity'));
         }
     }
 

@@ -379,7 +379,7 @@ class Controller_Profile extends Controller
         $org = $this->org;
         if ($org->guid == get_loggedin_userid())
         {
-            $title = __("dashboard");
+            $title = __('dashboard:title');
         }
         else
         {
