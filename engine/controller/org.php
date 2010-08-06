@@ -391,6 +391,8 @@ class Controller_Org extends Controller
 
         $props = get_input_array("prop");
         $from = get_input('from');
+        
+        $targetLang = get_input('targetlang') ?: get_language();
 
         $area2 = array();
 
@@ -409,6 +411,7 @@ class Controller_Org extends Controller
                     array(
                         'entity' => $entity,
                         'property' => $prop,
+                        'targetLang' => $targetLang,
                         'isHTML' => $isHTML,
                         'from' => $from));
             }
@@ -437,11 +440,6 @@ class Controller_Org extends Controller
             register_error(__("org:cantedit"));
             forward_to_referrer();
         }
-        else if (empty($text))
-        {
-            register_error(__("trans:empty"));
-            forward_to_referrer();
-        }
         else
         {
             $origLang = $entity->getLanguage();
@@ -457,10 +455,18 @@ class Controller_Org extends Controller
             if ($actualOrigLang != $newLang)
             {
                 $trans = $entity->lookup_translation($property, $actualOrigLang, $newLang, TranslateMode::ManualOnly, $isHTML);
-                $trans->html = $isHTML;
-                $trans->owner_guid = get_loggedin_userid();
-                $trans->value = $text;
-                $trans->save();
+                
+                if (get_input('delete'))
+                {
+                    $trans->delete();
+                }
+                else
+                {                
+                    $trans->html = $isHTML;
+                    $trans->owner_guid = get_loggedin_userid();
+                    $trans->value = $text;
+                    $trans->save();
+                }
             }
 
             system_message(__("trans:posted"));

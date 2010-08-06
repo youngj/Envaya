@@ -46,6 +46,11 @@ class Query_Select
         return $this;
     }
     
+    function where_in($column, $values)
+    {
+        return $this->where("$column in (".implode(',', array_fill(0, sizeof($values), '?')).")", $values);
+    }
+    
     function where($condition)
     {   
         $this->conditions[] = $condition;

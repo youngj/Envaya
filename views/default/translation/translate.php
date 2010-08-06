@@ -33,7 +33,7 @@ else
 }
 echo "</td><td style='width:50%'>";
 
-$lang = get_language();
+$lang = $vars['targetLang'];
 $langStr = __($lang, $lang);
 
 $curTranslation = $entity->lookup_translation($property, $entity->getLanguage(), $lang, TranslateMode::All, $isHTML);
@@ -76,6 +76,13 @@ echo "<br>".
     view("input/hidden", array('internalname' => 'property', 'value' => $property)).
     view("input/hidden", array('internalname' => 'html', 'value' => $isHTML)).
     view("input/hidden", array('internalname' => 'from', 'value' => $vars['from'])).
+    view('input/alt_submit', array(
+        'internalname' => "delete",
+        'internalid' => 'widget_delete',
+        'trackDirty' => true,
+        'confirmMessage' => __('areyousure'),
+        'value' => __('delete')
+    )).
     view('input/submit', array('internalname' => 'submit', 'trackDirty' => true, 'value' => __('trans:submit')));
 
 echo "</td></tr></table>";

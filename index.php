@@ -1,5 +1,5 @@
 <?php
-    require_once(__DIR__."/engine/start.php");
+    require_once(__DIR__."/engine/start.php");    
 
     // work around flash uploader cookie bug
     if (@$_POST['session_id'])

@@ -2,6 +2,7 @@
 
 class Controller_Admin extends Controller
 {
+
     function before()
     {
         $this->require_admin();
@@ -17,15 +18,27 @@ class Controller_Admin extends Controller
         $this->page_draw($title,$body);
     }
 
-
-    function action_confirm_email()
+    function action_emails()
     {
-        $title = __('email:send');
-        $org = get_user_by_username(get_input('username'));
+        $emails = EmailTemplate::query()->filter();
+        $title = __('email:list');
+        $area1 = view('admin/list_emails', array('emails' => $emails));
+        $body = view_layout("one_column_padded", view_title($title), $area1);
+        $this->page_draw($title,$body);
+    }
 
-        if ($org)
+    function action_view_email()
+    {
+        $title = __('email:view');
+        $org = get_user_by_username(get_input('username'));
+        
+        PageContext::set_translatable(false);
+               
+        $email = get_entity(get_input('email')) ?: EmailTemplate::query()->where('active<>0')->get();
+
+        if ($email && $email instanceof EmailTemplate)
         {
-            $area1 = view('admin/sendEmail', array('org' => $org, 'from' => get_input('from')));
+            $area1 = view('admin/view_email', array('org' => $org, 'email' => $email, 'from' => get_input('from')));
 
             $body = view_layout("one_column", view_title($title), $area1);
 
@@ -35,54 +48,101 @@ class Controller_Admin extends Controller
         {
             not_found();
         }
-    }
-
-    function action_view_email()
+    }        
+    
+    function action_edit_email()
     {
-        $user = get_user_by_username(get_input('username') ?: 'envaya');
-
-        if ($user)
+        $title = __('email:edit');
+        $email = get_entity(get_input('email'));
+        if ($email && $email instanceof EmailTemplate)
         {
-            echo view('emails/reminder', array('org' => $user));
+            $area1 = view('admin/edit_email', array('email' => $email));
+            $body = view_layout("one_column_padded", view_title($title), $area1);
+            $this->page_draw($title,$body);
+        }
+        else
+        {
+            not_found();
+        }        
+    }
+    
+    function action_view_email_body()
+    {
+        $user = get_user_by_username(get_input('username'));
+        $email = get_entity(get_input('email'));
+
+        if ($email && $email instanceof EmailTemplate)
+        {
+            echo view('emails/template', array('org' => $user, 'email' => $email));
         }
         else
         {
             not_found();
         }
     }
+    
+    function action_batch_email()
+    {
+        $email = get_entity(get_input('email')) ?: EmailTemplate::query()->where('active<>0')->get();
+     
+        $org_guids = get_input_array('orgs');
+        if ($org_guids)
+        {
+            $orgs = Organization::query()->where_in('e.guid', $org_guids)->filter();
+        }
+        else
+        {         
+            $orgs = Organization::query()->
+                where('approval > 0')->
+                where("email <> ''")->
+                where("((last_notify_time IS NULL) OR (last_notify_time + notify_days * 86400 < ?))", time())->
+                where('notify_days > 0')->
+                where('language = ?', $email->getLanguage())->
+                order_by('last_notify_time')->
+                limit(20)->
+                filter(); 
+        }
 
+        if ($email)
+        {
+            $title = __('email:batch');
+            $body = view('admin/batch_email', array('email' => $email, 'orgs' => $orgs));
+            $this->page_draw($title, view_layout("one_column_padded", view_title($title), $body));
+        }
+    }
+
+    function action_send_batch_email()
+    {
+        $this->validate_security_token();
+        
+        $email = get_entity(get_input('email'));
+        $org_guids = get_input_array('orgs');
+        $numSent = 0;
+        foreach ($org_guids as $org_guid)
+        {       
+            $org = get_entity($org_guid);
+
+            if ($email->can_send_to($org))
+            {
+                $numSent++;
+                $email->send_to($org);
+            }
+        }
+        system_message("sent $numSent emails");
+        forward(get_input('from') ?: "/admin/batch_email?email={$email->guid}");
+    }
+    
+    
     function action_send_email()
     {
         $this->validate_security_token();
-
-        /*
-        $orgs = Organization::query()->where(
-            "approval > 0 AND notify_days > 0 AND ((last_notify_time IS NULL) OR (last_notify_time + notify_days * 86400 < ?)) AND email <> ''",
-            $time)->limit(1)->filter();
-        */
-
-        global $CONFIG;
-
+        
+        $email = get_entity(get_input('email'));
         $org = get_entity(get_input('org_guid'));
-
-        if ($org && $org->email && $org->notify_days > 0 && $org->approval > 0
-            && (!$org->last_notify_time || $org->last_notify_time + $org->notify_days * 86400 < time())
-            )
+        
+        if ($email->can_send_to($org))
         {
-            $subject = __('email:reminder:subject', $org->language);
-
-            $body = view('emails/reminder', array('org' => $org));
-
-            $headers = array(
-                'To' => $org->getNameForEmail(),
-                'Content-Type' => 'text/html'
-            );
-
-            send_mail($org->email, $subject, $body, $headers);
-
-            $org->last_notify_time = time();
-            $org->save();
-
+            $email->send_to($org);
             system_message(__('email:reminder:sent'));
         }
         else
@@ -355,6 +415,31 @@ class Controller_Admin extends Controller
         }
     }
     
+    function action_activate_email()
+    {
+        $this->validate_security_token();
+    
+        $email = get_entity(get_input('email'));
+        if ($email && $email instanceof EmailTemplate)
+        {
+            foreach (EmailTemplate::query()->where('active<>0')->filter() as $activeEmail)
+            {
+                $activeEmail->active = 0;
+                $activeEmail->save();
+            }
+
+            $email->active = 1;            
+            $email->save();
+         
+            system_message('activated');
+            forward('/admin/emails');        
+        }
+        else
+        {
+            not_found();
+        }
+    }    
+    
     function action_activate_featured()
     {
         $this->validate_security_token();
@@ -440,4 +525,56 @@ class Controller_Admin extends Controller
             not_found();
         }
     }
+   
+    function action_add_email()
+    {
+        $title = __('email:add');
+        $body = view('admin/add_email');
+        $this->page_draw($title, view_layout("one_column_padded", view_title($title), $body));  
+    }
+    
+    function action_new_email()
+    {
+        $this->validate_security_token();
+        
+        $content = get_input('content');
+        
+        $email = new EmailTemplate();
+        $email->from = get_input('from');
+        $email->subject = get_input('subject');        
+        $email->language = get_input('language');
+        $email->setContent($content, true);
+        $email->save();
+        forward("/admin/view_email?email={$email->guid}");
+    }
+    
+    function action_save_email()
+    {
+        $this->validate_security_token();
+        
+        $email = get_entity(get_input('email'));
+        if ($email && $email instanceof EmailTemplate)
+        {
+            if (get_input('delete'))
+            {
+                $email->disable();
+                $email->save();
+                forward("/admin/emails");
+            }
+            else
+            {
+                $email->subject = get_input('subject');                
+                $email->setContent(get_input('content'), true);
+                $email->language = get_input('language');
+                $email->from = get_input('from');
+                $email->save();
+            }
+            forward("/admin/view_email?email={$email->guid}");    
+        }
+        else
+        {
+            not_found();
+        }
+    }
+
 }

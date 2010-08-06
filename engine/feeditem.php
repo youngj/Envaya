@@ -93,7 +93,7 @@ class FeedItem
         }
         else
         {
-            $query->where("feed_name in (".implode(',', array_fill(0, $numNames, '?')).")", $feedNames);
+            $query->where_in("feed_name", $feedNames);
 
             if ($excludeUser)
             {

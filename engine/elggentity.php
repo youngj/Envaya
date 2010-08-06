@@ -428,6 +428,10 @@ abstract class ElggEntity implements
         {
             return $container->getLanguage();
         }
+        else
+        {
+            return 'en';
+        }
     }
 
     /**
@@ -635,7 +639,7 @@ abstract class ElggEntity implements
         }
     }
     
-    public function translate_field($field, $isHTML = false)
+    public function translate_field($field, $isHTML = false, $viewLang = null)
     {
         $text = trim($this->$field);
         if (!$text)
@@ -644,7 +648,10 @@ abstract class ElggEntity implements
         }
 
         $origLang = $this->getLanguage();
-        $viewLang = get_language();
+        if ($viewLang == null)
+        {
+            $viewLang = get_language();
+        }
                 
         if ($origLang != $viewLang)
         {            

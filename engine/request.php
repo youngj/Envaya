@@ -769,12 +769,12 @@ class Request {
 
         // Change the current request to this request
         Request::$current = $this;
-
+        
         try
         {
             // Load the controller using reflection
             $class = new ReflectionClass($prefix.$this->controller);
-
+         
             if ($class->isAbstract())
             {
                 throw new Kohana_Exception('Cannot create instances of abstract :controller',

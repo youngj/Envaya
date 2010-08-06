@@ -77,6 +77,7 @@
         10 => array('object', 'partnership', 'Partnership'),
         // 11 was previously used for TeamMember
         12 => array('object', 'featured_site', 'FeaturedSite'),
+        13 => array('object', 'email_template', 'EmailTemplate'),
     );
     foreach ($CONFIG->subtypes as $val => $subtypeArr)
     {

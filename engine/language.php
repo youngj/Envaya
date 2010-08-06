@@ -122,8 +122,11 @@ class Language
     {
         global $CONFIG;
         $path = "{$CONFIG->path}languages/{$this->code}/{$this->code}_{$group_name}.php";            
-        $res = @include($path);
-        return $res;
+        if (file_exists($path))
+        {
+            return include($path);
+        }
+        return null;
     }
     
     function get_loaded_files()

@@ -73,16 +73,11 @@ if (PageContext::is_translatable())
     if (isadminloggedin())
     {
         $translations = PageContext::get_available_translations();
-
+        
         if (sizeof($translations))
         {
-            foreach ($translations as $trans)
-            {
-                $urlProps[] = "prop[]={$trans->container_guid}.{$trans->property}.{$trans->html}";
-            }
-
-            $escUrl = urlencode($_SERVER['REQUEST_URI']);
-            $links[] = "<a href='org/translate?from=$escUrl&".implode("&", $urlProps)."'>".__("trans:contribute")."</a>";
+            $url = get_translations_url($translations);
+            $links[] = "<a href='$url'>".__("trans:contribute")."</a>";
         }
     }
 

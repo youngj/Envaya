@@ -151,10 +151,20 @@ CREATE TABLE `featured_sites` (
   `data_types` int NOT NULL,
   `language` varchar(4) default null,
   `active` tinyint(4) default 0,
-  
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `email_templates` (
+  `guid` bigint(20) unsigned  NOT NULL, 
+  `subject` text default null,
+  `from` text default null,
+  `content` text NOT NULL,
+  `data_types` int NOT NULL,
+  `active` tinyint(4) NOT NULL default 0,
+  `language` varchar(4) default null,
+  
+  PRIMARY KEY  (`guid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `widgets` (
   `guid` bigint(20) unsigned  NOT NULL,

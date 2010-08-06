@@ -30,8 +30,8 @@
 
         global $CONFIG;
 
-        $path = $CONFIG->path."engine/$file.php";
-
+        $path = $CONFIG->path."engine/$file.php";       
+        
         if (is_file($path))
         {
             require $path;
@@ -775,8 +775,11 @@
      * @param array $vars An array that points to the active symbol table at the point that the error occurred
      */
         function php_error_handler($errno, $errmsg, $filename, $linenum, $vars)
-        {
-            $error = date("Y-m-d H:i:s (T)") . ": \"" . $errmsg . "\" in file " . $filename . " (line " . $linenum . ")";
+        {            
+            if (error_reporting() == 0) // @ sign
+                return true; 
+                   
+            $error = date("Y-m-d H:i:s (T)") . ": \"" . $errmsg . "\" in file " . $filename . " (line " . $linenum . ")";                      
 
             switch ($errno) {
                 case E_USER_ERROR:
@@ -789,15 +792,12 @@
 
                 case E_WARNING :
                 case E_USER_WARNING :
-                        if (error_reporting() != 0)
-                        {
-                            error_log("WARNING: " . $error);
-                        }
+                        error_log("WARNING: " . $error);                        
                     break;
 
                 default:
                     global $CONFIG;
-                    if (isset($CONFIG->debug) && error_reporting() != 0)
+                    if (isset($CONFIG->debug) && $CONFIG->debug)
                     {
                         error_log("DEBUG: " . $error);
                     }
