@@ -6,25 +6,39 @@
 
 .thin_column
 {
-    width:760px;
+    width:882px;
+}
+
+#content
+{
+    background:url(<?php echo $graphicsDir ?>/bg_combined.gif) no-repeat left top;
+    padding-top:27px;
+    background-color:#fff;
+}
+
+#content_mid
+{
+    background:url(<?php echo $graphicsDir ?>/bg_combined.gif) repeat-y right top;
+    padding-left:31px;
+    padding-right:31px;
+}
+
+#content_bottom
+{
+    background:url(<?php echo $graphicsDir ?>/bg_combined.gif) no-repeat -882px bottom;
+    height:21px;
 }
 
 .home_banner
 {
-    height:322px;
-    background:url(<?php echo $graphicsDir ?>/banner_phone.jpg) no-repeat left top;
-}
-
-.home_content_bg
-{
-    padding:0px 5px 5px 5px;
-    background-color:#666;
+    height:299px;
+    background:#333 url(<?php echo $graphicsDir ?>/banner_phone.jpg?v2) no-repeat left top;
 }
 
 .home_table
 {
-    margin-top:3px;
-    width:750px;
+    margin-top:4px;
+    width:820px;
 }
 
 .home_table td
@@ -32,16 +46,24 @@
     background-color:white;
 }
 
-.home_banner h1
+.home_banner_text
 {
-    font-size: 17px;
-    color: #fff;
-    font-weight:bold;
-    font-family: Verdana, sans-serif;
-    padding:20px 20px;
+    padding:40px 35px;
     width:400px;
 }
 
+.home_banner_text h1
+{
+    font-size: 21px;
+    color: #dbea8f;
+    font-weight:bold;
+    font-family: Verdana, sans-serif;
+}
+.home_banner_text h2
+{
+    font-weight:normal;
+    color:#fff;
+}
 .heading_container #heading
 {
     display:none;
@@ -49,12 +71,13 @@
 
 .content_container
 {
-    background:#fff url("<?php echo $vars['url']; ?>/_graphics/simple/bg_gradient.gif") repeat-x left 135px;
+    background:#fff url("<?php echo $graphicsDir; ?>/featured_bg.gif") repeat-x left 133px;
 }
 
 .home_content
 {
-    padding:9px 12px;
+    padding:9px 5px 9px 16px;
+    background:#fff url(<?php echo $graphicsDir ?>/featured_bg.gif) repeat-x left -60px;
 }
 
 .home_content a
@@ -88,43 +111,39 @@ a.icon_feed:hover       { background-position:left -440px; }
 
 .home_heading
 {
-    height:40px;
-    background:url(<?php echo $graphicsDir; ?>/home_headings.gif) repeat-x left top;
-    border-top: 1px solid #e8e6de;
+    height:42px;
+    background:url(<?php echo $graphicsDir; ?>/home_headings.gif?v2) repeat-x left top;
+    border: 1px solid black;
 }
 .home_heading div
 {
     font-weight:bold;
     text-align:center;
-    padding-top:9px;
+    padding-top:10px;
     font-size:14px;
 }
 
 .heading_blue
 {
-    background-position:left -9px;
+    background-position:left top;
+    border-color:#bccdd5;
 }
 
 .heading_green
 {
-    background-position:left -58px;
+    background-position:left -42px;
+    border-color:#bbc388;
 }
 
 .heading_gray
 {
-    background-position:left -107px;
+    background-position:left -84px;
+    border-color:#e3dfd6;
 }
 
-.home_content
+.home_section_left
 {
-    background-color:#f8f6f3;
-}
-
-.home_section
-{
-    border-left:1px solid #fff;
-    border-right:1px solid #ddd;
-    border-top:1px solid #e8e6de;
+    border-right:3px solid #fff;
 }
 
 .home_about
@@ -133,19 +152,62 @@ a.icon_feed:hover       { background-position:left -440px; }
     font-size:12px;
 }
 
+.home_bottom_left
+{
+    background:url(<?php echo $graphicsDir; ?>/anothershadow.gif) no-repeat 3px top;
+    padding-top:16px;
+}
+
+.home_more
+{
+    font-style:italic;
+    font-size:11px;
+}
+
 .home_featured
 {    
-    padding:10px;
-    border:1px solid #ccd0d0;
-    background-color:#f8f6f3;
+    margin-left:1px;
+    width:445px;
+    padding:2px;
+    background:#fff url(<?php echo $graphicsDir; ?>/featured_bg.gif) repeat-x left top;
+    border:1px solid #e2dfd6;
+    margin-right:3px; 
 }
 
 .home_featured_heading
 {
-    font-size:10px;
-    color:#666;
+    border-bottom:1px solid #c5c4c0;
+    padding:10px 15px;
+    font-size:14px;
 }
+
+.home_featured_content
+{
+    border-top:1px solid #fff;
+    padding:12px 15px;
+}
+
+.home_featured .featured_site_name
+{
+    padding-bottom:7px;
+}
+
+.featured_site img
+{
+    border:1px solid #ccc;
+    margin-top:3px;
+    margin-right:15px;
+}
+
+
 .home_featured_name
 {
     font-weight:bold;
+}
+
+.home_bottom_right
+{
+    border-left:1px solid #e3dfd6;
+    border-right:1px solid #e3dfd6;
+    background:#fff url(<?php echo $graphicsDir; ?>/what_bg.gif) repeat-x left bottom;
 }

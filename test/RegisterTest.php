@@ -186,6 +186,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->mouseOver("//div[@class='bad_messages']");
         $this->click("//input[@name='country' and @value='other']");
         $this->submitForm();
+        sleep(5);
         $this->mouseOver("//div[@class='bad_messages']");
         $this->click("//input[@name='country' and @value='tz']");
         $this->submitForm();
@@ -300,6 +301,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->clickAndWait("//a[contains(@href,'projects/edit')]");
         $this->typeInFrame("//iframe", "we test stuff");
         $this->clickAndWait("//button[@name='submit']");
+        sleep(5);
         $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'we test stuff')]");
     }
 

@@ -7,11 +7,11 @@ if ($org)
 {
 ?>
 <div class='featured_site'>
-<strong><a href='<?php echo $org->getURL() ?>'><?php echo escape($org->name) ?></a></strong><br />
+<div class='featured_site_name'><a href='<?php echo $org->getURL() ?>'><?php echo escape($org->name) ?></a></div>
 <?php 
 if ($entity->image_url)
 {
-    echo "<a href='{$org->getURL()}'><img src='".escape($entity->image_url)."' class='image_left' style='margin-top:4px' /></a>";
+    echo "<a href='{$org->getURL()}'><img src='".escape($entity->image_url)."' class='image_left' /></a>";
 }
 echo $entity->renderContent(); ?>
 

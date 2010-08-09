@@ -1643,6 +1643,11 @@ a.feed_image_link:hover
     padding-bottom:5px;
 }
 
+.featured_site_name
+{
+    font-weight:bold;
+}
+
 .admin_links, .admin_links a
 {
     color:red;
