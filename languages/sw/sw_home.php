@@ -1,8 +1,8 @@
 <?php
 return array(
     'home:title' => 'Mtandao wa mashirika ya jumuiya ya kiraia Tanzania',
-    'home:heading' => 'Envaya ni mtandao wa mashirika ya jumuiya ya kiraia Tanzania',
-    'home:heading2' => 'yagawayo habari katika intaneti',
+    'home:heading' => 'Envaya ni mfumo wa teknologia kwa mashirika ya kiraia',
+    'home:heading2' => 'katika nchi zinazoendelea',
     'home:learn_more' => 'Jifunze zaidi',        
     'home:for_organizations' => 'Kwa mashirika',
     'home:for_everyone' => 'Kwa wote',
