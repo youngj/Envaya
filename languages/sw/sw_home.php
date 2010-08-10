@@ -1,6 +1,6 @@
 <?php
 return array(
-    'home:title' => 'Mtandao wa mashirika ya jumuiya ya kiraia Tanzania',
+    'home:title' => 'Mfumo wa teknologia kwa mashirika ya jumuiya ya kiraia katika nchi zinazoendelea',
     'home:heading' => 'Envaya ni mfumo wa teknologia kwa mashirika ya kiraia',
     'home:heading2' => 'katika nchi zinazoendelea',
     'home:learn_more' => 'Jifunze zaidi',        

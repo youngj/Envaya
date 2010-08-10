@@ -1,6 +1,6 @@
 <?php 
 return array(
-    'home:title' => "A network of civil society organizations in Tanzania",
+    'home:title' => "A technology platform for civil society organizations in developing countries",
     'home:heading' => 'Envaya is a technology platform for civil society organizations',
     'home:heading2' => 'in developing countries',
     'home:learn_more' => 'Learn more',        
