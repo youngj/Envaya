@@ -21,7 +21,6 @@
 // $Id: SMTP.php 293948 2010-01-24 21:46:00Z jon $
 
 require_once 'PEAR.php';
-require_once 'Socket.php';
 
 /**
  * Provides an implementation of the SMTP protocol using PEAR's
