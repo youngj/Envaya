@@ -1653,3 +1653,11 @@ a.feed_image_link:hover
     color:red;
     font-size:10px;
 }
+
+.capslockWarning
+{
+    color:red;
+    font-weight:normal;
+    font-size:11px;
+    padding-left:3px;
+}
