@@ -389,4 +389,5 @@ Once you have logged in, we highly recommend that you change your password.
         'featured:home_heading' => 'Featured Organization',
         'featured:title' => 'Featured Organizations',
         'featured:see_all' => 'See all featured organizations',
+        'featured:about' => "About Featured Organizations",
     );

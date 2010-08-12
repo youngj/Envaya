@@ -74,10 +74,23 @@
     background:#fff url("<?php echo $graphicsDir; ?>/featured_bg.gif") repeat-x left 133px;
 }
 
+.home_section_left
+{
+    background:#fff url(<?php echo $graphicsDir ?>/featured_bg.gif) repeat-x left -10px;
+}
+
 .home_content
 {
-    padding:9px 5px 9px 16px;
-    background:#fff url(<?php echo $graphicsDir ?>/featured_bg.gif) repeat-x left -60px;
+    padding:9px 5px 9px 16px;    
+}
+
+.home_about, .home_content
+{
+    background:transparent url(<?php echo $graphicsDir ?>/circle_shadow.png) repeat-x left -19px;
+}
+.home_about
+{
+    background-position:60px -19px;
 }
 
 .home_content a
@@ -148,8 +161,13 @@ a.icon_feed:hover       { background-position:left -440px; }
 
 .home_about
 {   
-    padding:15px 10px;    
+    padding:15px 10px 10px 10px;    
     font-size:12px;
+}
+
+.home_about .submit_button
+{
+    margin:0px; padding:0px;
 }
 
 .home_bottom_left
@@ -185,24 +203,6 @@ a.icon_feed:hover       { background-position:left -440px; }
 {
     border-top:1px solid #fff;
     padding:12px 15px;
-}
-
-.home_featured .featured_site_name
-{
-    padding-bottom:7px;
-}
-
-.featured_site img
-{
-    border:1px solid #ccc;
-    margin-top:3px;
-    margin-right:15px;
-}
-
-
-.home_featured_name
-{
-    font-weight:bold;
 }
 
 .home_bottom_right

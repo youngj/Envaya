@@ -1661,3 +1661,15 @@ a.feed_image_link:hover
     font-size:11px;
     padding-left:3px;
 }
+
+.featured_site_name
+{
+    padding-bottom:7px;
+}
+
+.featured_site img
+{
+    border:1px solid #ccc;
+    margin-top:3px;
+    margin-right:15px;
+}
