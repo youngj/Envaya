@@ -41,7 +41,7 @@
 <p class='last-paragraph'>
 <?php echo __('home:donate') ?>
 </p>
-<div style='padding-top:6px'>
+<div style='padding-top:6px;text-align:center'>
 <?php echo view('page/donate_button'); ?>
 </div>
     </div>
