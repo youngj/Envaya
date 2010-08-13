@@ -8,7 +8,8 @@ return array(
     'home:for_everyone' => 'Kwa wote',
     'home:sign_up' => 'Jiunge sasa',
     'home:whatwedo' => 'Tunachokifanya',
-    'home:description' => "Envaya inayaruhusu mashirika ya jumuiya ya kiraia kuumba tovuti wao wenyewe, ambapo yanaweza kuandika kuhusu miradi yao na kugawa mali na mawazo na mashirika mengine na watu duniani.",
+    'home:description' => "Envaya inaumba na kueneza programu ya kompyuta ili kuyawezesha na kuyaunganisha mashirika ya kiraia duniani. Tunaumba vifaa vinavyoyaruhusu kujenga tovuti zao wenyewe, na kupa vifaa kwa NGOs kubwa kusaidia bidii hizi za jamii.",    
+    "Envaya inayaruhusu mashirika ya jumuiya ya kiraia kuumba tovuti wao wenyewe, ambapo yanaweza kuandika kuhusu miradi yao na kugawa mali na mawazo na mashirika mengine na watu duniani.",
     'home:why' => "Kwa nini utumie Envaya?",
     'home:donate' => "Sisi ni bila faida. Hata mchango mdogo utakuwa na athari kubwa kugawa teknolojia muhimu kwa mashirika ya kiraia katika nchi zinazoendelea!"
 

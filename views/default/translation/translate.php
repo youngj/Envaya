@@ -36,7 +36,11 @@ echo "</td><td style='width:50%'>";
 $lang = $vars['targetLang'];
 $langStr = __($lang, $lang);
 
-$curTranslation = $entity->lookup_translation($property, $entity->getLanguage(), $lang, TranslateMode::All, $isHTML);
+$curTranslation = $entity->lookup_translation($property, $entity->getLanguage(), $lang, TranslateMode::ManualOnly, $isHTML);
+if (!$curTranslation->value)
+{
+    $curTranslation = $entity->lookup_translation($property, $entity->getLanguage(), $lang, TranslateMode::All, $isHTML);
+}
 
 $curText = $curTranslation->value ?: $text;
 

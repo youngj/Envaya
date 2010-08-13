@@ -10,49 +10,56 @@
     width:750px;
 }
 
+.content_container
+{
+    background:#fff url("<?php echo $vars['url']; ?>_graphics/simple/bg_gradient.gif") repeat-x left 62px;
+}
+
 .content_container .thin_column
 {
-    width:770px;
-    background:url(<?php echo $graphicsDir ?>/top_plate.gif) no-repeat left top;
+    width:763px;
+    background:url(<?php echo $graphicsDir ?>/top_plate.gif?v2) no-repeat left top;
     padding-top:20px;
 }
 
 #content_wrapper
 {
-    background:url(<?php echo $graphicsDir ?>/mid_plate.gif) repeat-y left top;
+    background:url(<?php echo $graphicsDir ?>/mid_plate.gif?v2) repeat-y left top;
 }
 
 #content_bottom
 {
-    background:url(<?php echo $graphicsDir ?>/bottom_plate.gif) no-repeat left top;
+    background:url(<?php echo $graphicsDir ?>/bottom_plate.gif?v2) no-repeat left top;
     height:33px;
 }
 
 .left_sidebar_table
 {
-    margin-left:10px;
+    margin-left:6px;
     
 }
 
 #left_sidebar
 {
     width:160px;
+    padding-top:25px;
     border-right:2px solid #e1e1df;
 }
 
 #left_sidebar a
 {
-    display:block;
-    padding:5px;
+    display:block;    
+    color:#8c8b8b;
+    padding-left:10px;
+    overflow:hidden;
+    padding-top:7px;
+    height:28px;
 }
 
-.thin_column #content
+#left_sidebar a.selected
 {
-    position:absolute;
-    left:175px;
-    top:0px;
-    width:<?php echo (760-175) ?>px;
-    float:left;
+    color:black;
+    background:url(<?php echo $graphicsDir ?>/menu_selected.gif) no-repeat 3px top;
 }
 
 #heading img
