@@ -77,3 +77,18 @@
 {
     font-size:16px;
 }
+
+#right_content h2
+{
+    font-size:1.2em;
+    padding-top:15px;
+    padding-bottom:10px;
+    border-bottom: 1px dashed #b2b2b2;
+    margin-bottom:10px;
+}
+
+#right_content .image_right
+{
+    border:1px solid #ccc;
+    margin-left:12px;
+}
