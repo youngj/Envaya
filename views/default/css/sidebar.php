@@ -50,10 +50,15 @@
 {
     display:block;    
     color:#8c8b8b;
-    padding-left:10px;
+    padding-left:20px;
     overflow:hidden;
     padding-top:7px;
-    height:28px;
+    height:28px;  
+}
+
+#left_sidebar a:hover
+{
+    text-decoration:none;
 }
 
 #left_sidebar a.selected

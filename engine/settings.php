@@ -40,7 +40,7 @@
     $CONFIG->dataroot = dirname($CONFIG->path). "/elgg-data/";
 
     $CONFIG->simplecache_enabled = 0;
-    $CONFIG->cache_version = 73;
+    $CONFIG->cache_version = 74;
 
     $CONFIG->smtp_host = "smtp.com";
     $CONFIG->smtp_port = 2525;
