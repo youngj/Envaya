@@ -156,7 +156,7 @@ class Controller_Profile extends Controller
         $CONFIG->sitename = $org->name;
 
         PageContext::set_theme(get_input("__theme") ?: $org->theme ?: 'green');
-
+        
         foreach ($org->getAvailableWidgets() as $widget)
         {
             if ($widget->isActive() && $widget->in_menu)
@@ -293,12 +293,28 @@ class Controller_Profile extends Controller
             add_submenu_item(__("widget:edit"), $widget->getEditURL(), 'edit');
         }
 
+        if ($viewOrg)
+        {
+            $body = $this->org_view_body($subtitle, ($viewOrg ? $widget->renderView() : ''));
+        }
+        else
+        {
+            $org->showCantViewMessage();
+            $body = '';
+        }
+
+        $this->page_draw($title, $body);
+    }
+    
+    function get_pre_body()
+    {
+        $org = $this->org;
         $preBody = '';
 
         if (get_input("__topbar") != "0")
         {
             $org->showCantViewMessage();
-
+        
             if (isadminloggedin())
             {
                 $preBody .= view("admin/org_actions", array('entity' => $org, 'widget' => $widget));
@@ -309,22 +325,12 @@ class Controller_Profile extends Controller
                 $preBody .= view("org/comm_box", array('entity' => $org));
             }
 
-            if ($org->guid == get_loggedin_userid() && $org->approval == 0)
+            if ($org->guid == get_loggedin_userid())
             {
-                $preBody .= view("org/setupNextStep");
+                $preBody .= view("org/setupNextStep", array('entity' => $org));
             }
-        }
-
-        if ($viewOrg)
-        {
-            $body = $this->org_view_body($subtitle, ($viewOrg ? $widget->renderView() : ''), $preBody);
-        }
-        else
-        {
-            $body = '';
-        }
-
-        $this->page_draw($title, $body);
+        }    
+        return $preBody;
     }
 
     function save_widget($widget)
@@ -371,24 +377,38 @@ class Controller_Profile extends Controller
 
     function index_dashboard()
     {    
-        $this->require_editor();
-        $this->require_org();
+        $this->require_editor();        
         
         PageContext::set_translatable(false);
-        
-        $org = $this->org;
-        if ($org->guid == get_loggedin_userid())
+
+        $user = $this->user;
+        if ($user->guid == get_loggedin_userid())
         {
             $title = __('dashboard:title');
         }
         else
         {
-            $title = sprintf(__("dashboard:other_user"), $org->name);
+            $title = sprintf(__("dashboard:other_user"), $user->name);
         }
-
-        $area1 = view("org/dashboard", array('org' => $org));
-        $body = view_layout("one_column", view_title($title), $area1);
-
+                
+        $org = $this->org;
+        if ($org)
+        {            
+            $area1 = view("org/dashboard", array('org' => $org));
+            $area2 = view("org/setupNextStep", array('entity' => $org));                 
+        }
+        else if ($user->admin)
+        {
+            $area1 = view('admin/dashboard');
+            $area2 = '';
+        }
+        else
+        {
+            $area1 = "<div class='padded'>You are not an organization!</div>";
+            $area2 = '';
+        }
+        
+        $body = view_layout("one_column", view_title($title), $area1, $area2);
         $this->page_draw($title,$body);
     }
 
@@ -580,6 +600,57 @@ class Controller_Profile extends Controller
         $user->save();
     }
 
+    function index_addphotos()
+    {
+        $this->require_org();
+        $this->require_editor();
+        
+        $title = __('addphotos:title');
+        $area1 = view('org/addPhotos', array('entity' => $this->org));
+        
+        $body = view_layout("one_column", view_title($title), $area1);
+        $this->page_draw($title,$body);
+    }
+    
+    function save_addphotos()
+    {
+        $this->require_org();
+        $this->require_editor();
+        $this->validate_security_token();
+        
+        $imageNumbers = get_input_array('imageNumber');
+        
+        $uuid = get_input('uuid');
+        $org = $this->org;
+        
+        $duplicates = NewsUpdate::queryByMetadata('uuid', $uuid)->where('container_guid=?',$org->guid)->filter();
+        
+        foreach ($imageNumbers as $imageNumber)
+        {
+            $imageData = get_input('imageData'.$imageNumber);
+            $imageCaption = get_input('imageCaption'.$imageNumber);
+
+            $images = get_uploaded_files($imageData);
+            $image = @$images['large'] ?: @$images['medium'] ?: @$images['small'];
+            
+            $body = "<p><img class='image_center' src='{$image['url']}' width='{$image['width']}' height='{$image['height']}' /></p>";
+            if ($imageCaption)
+            {
+                $body .= "<p>".view('input/longtext', array('value' => $imageCaption))."</p>";
+            }
+                        
+            $post = new NewsUpdate();
+            $post->owner_guid = get_loggedin_userid();
+            $post->container_guid = $org->guid;
+            $post->setContent($body, true);
+            $post->uuid = $uuid;
+            $post->save();                                  
+        }
+        
+        system_message(__('addphotos:success'));
+        forward($org->getURL()."/news");
+    }
+    
     function index_confirm_partner()
     {
         $this->require_org();
@@ -760,7 +831,7 @@ class Controller_Profile extends Controller
         exit;
     }   
     
-    function org_view_body($subtitle, $area2, $area3 = '')
+    function org_view_body($subtitle, $area2)
     {
         $org = $this->org;
     
@@ -784,7 +855,8 @@ class Controller_Profile extends Controller
             $layout= 'two_column_left_sidebar';
         }
         
-        return view_layout($layout, $header, $area2, $area3);
+        return view_layout($layout, $header, $area2, $this->get_pre_body());
     }
+
 
 }

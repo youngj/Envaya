@@ -74,16 +74,15 @@ function languageChanged()
 
                 if ($user instanceof Organization)
                 {
-                    echo "<a href='pg/dashboard' title=\"".__('edit_site')."\"><img src='_graphics/pencil.gif?v3' /></a>";
+                    echo "<a href='{$user->getURL()}/dashboard' title=\"".__('edit_site')."\"><img src='_graphics/pencil.gif?v3' /></a>";
                 }
 
                 echo "<a href='{$user->getURL()}/settings' title=\"".__('settings')."\" id='usersettings'><img src='_graphics/settings.gif' /></a>";
             }
 
-            // The administration link is for admin or site admin users only
-            if ($vars['user']->admin)
+            if ($user->admin)
             {
-                echo "<a href='pg/dashboard'><img src='_graphics/admin.gif' height='25' width='24' /></a>";
+                echo "<a href='{$user->getURL()}/dashboard'><img src='_graphics/admin.gif' height='25' width='24' /></a>";
             }
 
             echo "<a href='pg/logout' title=\"".__('logout')."\"><img src='_graphics/logout.gif' /></a>";

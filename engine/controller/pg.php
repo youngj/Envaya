@@ -53,7 +53,7 @@ class Controller_Pg extends Controller {
                 }
                 else
                 {
-                    forward("pg/dashboard/");
+                    forward("{$user->getURL()}/dashboard");
                 }
             }
         }
@@ -73,22 +73,8 @@ class Controller_Pg extends Controller {
 
     function action_dashboard()
     {
-        $this->require_login();
-        
-        PageContext::set_translatable(false);
-
-        PageContext::set_theme('editor');
-
-        $title = __('dashboard:title');
-
-        $intro_message = view('dashboard/blurb');
-
-        $body = view_layout('one_column',
-            view_title(__('dashboard:title')),
-            $intro_message
-        );
-
-        $this->page_draw($title, $body);
+        $this->require_login();                
+        forward(get_loggedin_user()->getURL()."/dashboard");
     }
 
     function action_forgot_password()

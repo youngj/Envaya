@@ -9,6 +9,7 @@
         'addphotos:title' => "Add photos",
         'addphotos:label' => "Choose the photos you want to add:",
         'addphotos:more' => "Add More Photos",
+        'addphotos:success' => "Photos saved successfully.",
 
         'user:settings' => "Account settings",
 
@@ -197,12 +198,12 @@
         'icon:saved' => 'Logo saved successfully.',
         'icon:reset' => 'Logo removed successfully.',
         'icon:edit' => 'Edit logo',
-        'icon:description' => "The logo is a small image that appears next to your organization's name in many places in Envaya, such as search results.",
+        'icon:description' => "The logo is a small image that appears next to your organization's name at the top of your Envaya site, and in many other places on Envaya.",
 
         'header' => "Website header",
         'header:default' => "Standard header (logo, name, page title)",
         'header:custom' => "Custom header image",
-        'header:changelogo' => "Note: To change the logo on the left, use the '%s' section below.",
+        'header:changelogo' => "Note: To change the logo on the left, use the '%s' section above.",
         'header:chooseimage' => "Choose an image to use as your website header:",
         'header:constraints' => "The header image must be in JPG, GIF, or PNG format. The maximum size is 700 pixels wide by 150 pixels high.",
         'header:subtitle' => "Page Title",

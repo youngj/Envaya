@@ -335,6 +335,8 @@ class Controller_Admin extends Controller
         $guid = (int)get_input('org_guid');
         $entity = get_entity($guid);
 
+        global $CONFIG;
+        
         if (($entity) && ($entity instanceof Organization))
         {
             $approvedBefore = $entity->isApproved();
@@ -352,9 +354,9 @@ class Controller_Admin extends Controller
                     sprintf(__('email:orgapproved:body', $entity->language),
                         $entity->name,
                         $entity->getURL(),
-                        "{$CONFIG->url}pg/dashboard",
+                        "{$CONFIG->url}pg/login?username={$entity->username}",
                         __('help:title', $entity->language),
-                        "{$CONFIG->url}org/help"
+                        "{$entity->getURL()}/help"
                     ),
                     NULL, 'email');
             }

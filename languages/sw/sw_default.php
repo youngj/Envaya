@@ -8,6 +8,7 @@ return array(
     'addphotos:title' => 'Ongeza picha',
     'addphotos:label' => 'Chagua picha ambazo unataka kuziongeza:',
     'addphotos:more' => 'Ongeza Picha Zaidi',
+    'addphotos:success' => "Picha zimehifadhiwa.",
     'user:settings' => 'Mipangilio ya akaunti',
     'about' => 'Kuhusu',
     'feed' => 'Mabadiliko',

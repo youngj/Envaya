@@ -6,6 +6,38 @@
 
 <?php echo view('input/securitytoken'); ?>
 
+<div class='section_header' id='icon'><?php echo __('icon'); ?></div>
+<div class='section_content padded'>
+<div class='help' style='padding-bottom:5px'>
+<?php echo __('icon:description') ?>
+</div>
+
+
+<?php
+
+echo view("input/image",
+    array(
+        'current' => $user->getIcon('medium'),
+        'trackDirty' => true,
+        'sizes' => ElggUser::getIconSizes(),
+        'removable' => $user->custom_icon,
+        'thumbnail_size' => 'medium',
+        'internalname' => 'icon',
+        'deletename' => 'deleteicon',
+    ))
+
+?>
+
+<?php
+echo view('input/submit',array(
+    'value' => __('savechanges'),
+    'trackDirty' => true,
+));
+
+?>
+
+</div>
+
 <div class='section_header'><?php echo __('header'); ?></div>
 <div class='section_content padded'>
 
@@ -114,37 +146,7 @@ echo view('input/submit',array(
 
 </div>
 
-<div class='section_header' id='icon'><?php echo __('icon'); ?></div>
-<div class='section_content padded'>
-<div class='help' style='padding-bottom:5px'>
-<?php echo __('icon:description') ?>
-</div>
 
-
-<?php
-
-echo view("input/image",
-    array(
-        'current' => $user->getIcon('medium'),
-        'trackDirty' => true,
-        'sizes' => ElggUser::getIconSizes(),
-        'removable' => $user->custom_icon,
-        'thumbnail_size' => 'medium',
-        'internalname' => 'icon',
-        'deletename' => 'deleteicon',
-    ))
-
-?>
-
-<?php
-echo view('input/submit',array(
-    'value' => __('savechanges'),
-    'trackDirty' => true,
-));
-
-?>
-
-</div>
 <div class='section_header'><?php echo __("theme"); ?></div>
 <div class='section_content padded'>
 

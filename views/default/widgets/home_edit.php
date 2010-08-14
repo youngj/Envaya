@@ -6,26 +6,6 @@
     ob_start();
 ?>
 
-
-<div class='section_header'><?php echo __("header"); ?></div>
-<div class='section_content padded'>
-    <div class='header_preview'>
-        <?php
-            if ($org->custom_header)
-            {
-                echo view('org/custom_header', array('org' => $org));
-            }
-            else
-            {
-                echo view('org/default_header', array('org' => $org, 'subtitle' => __('header:subtitle')));
-            }
-        ?>
-    </div>
-    <strong>
-        <a href="<?php echo "{$org->getURL()}/design?from=$escUrl" ?>"><?php echo __('header:edit'); ?></a>
-    </strong>
-</div>
-
 <div class='section_header'><?php echo __("org:mission"); ?></div>
 <div class='section_content padded'>
 <div class='input'>    

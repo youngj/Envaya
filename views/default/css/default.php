@@ -1483,7 +1483,7 @@ a.attachImageClose:hover
 {
     display:block;
     float:left;
-    width:120px;
+    width:170px;
 }
 
 .photoCaptionInput
@@ -1672,4 +1672,35 @@ a.feed_image_link:hover
     border:1px solid #ccc;
     margin-top:3px;
     margin-right:15px;
+}
+
+.todo_container 
+{
+    padding-top:5px;
+}
+
+.todo_container .good_messages
+{
+    padding:12px;
+    width:565px;
+}
+
+.todo_container table
+{
+    margin:0 auto;
+}
+
+.todo_container td
+{
+    width:250px;
+}
+
+.todo_container th
+{
+    text-align:center;
+}
+
+.done_steps li a
+{
+    color:#999;   
 }

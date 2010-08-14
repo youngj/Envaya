@@ -243,7 +243,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
     private function _testPost()
     {
-        $this->clickAndWait("//a[contains(@href,'pg/dashboard')]");
+        $this->clickAndWait("//a[contains(@href,'/dashboard')]");
         $this->typeInFrame("//iframe", "this is a test post");
         $this->submitForm();
         $this->mouseOver("//div[@class='blog_post']//p[contains(text(), 'this is a test post')]");
@@ -251,7 +251,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
     private function _testEditContact()
     {
-        $this->clickAndWait("//a[contains(@href,'contact')]");
+        $this->clickAndWait("//div[@id='site_menu']//a[contains(@href,'contact')]");
         $this->mouseOver("//a[@href='mailto:adunar@gmail.com']");
         $this->clickAndWait("//a[contains(@href,'contact/edit')]");
         $this->s->uncheck("//input[@name='public_email[]']");
@@ -268,7 +268,8 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->clickAndWait("//button[@id='widget_delete']");
         $this->s->getConfirmation();
         $this->mouseOver("//div[@class='good_messages']");
-        $this->mustNotExist("//a[contains(@href,'contact')]");
+        $this->mouseOver("//a[contains(@href,'contact')]"); // todo items
+        $this->mustNotExist("//div[@id='site_menu']//a[contains(@href,'contact')]");
     }
 
     private function _testTranslate()
@@ -295,7 +296,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
     private function _testEditPages()
     {
-        $this->clickAndWait("//a[contains(@href,'pg/dashboard')]");
+        $this->clickAndWait("//a[contains(@href,'/dashboard')]");
         $this->clickAndWait("//a[contains(@href,'home/edit')]");
         $this->clickAndWait("//div[@id='edit_submenu']//a");
         $this->clickAndWait("//a[contains(@href,'projects/edit')]");

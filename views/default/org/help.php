@@ -1,27 +1,18 @@
 <?php
     $org = $vars['org'];
+    $curUrl = $org->getURL()."/help";
 ?>
-
-<p>
-<?php echo __('help:summary1') ?>
-</p>
-<p>
-<?php echo __('help:summary2') ?>
-</p>
-<p>
-<?php echo __('help:summary3') ?>
-</p>
 
 <h3><?php echo __('help:contents') ?></h3>
 <ul style='font-weight:bold'>
-    <li><a href='org/help#viewing'><?php echo __('help:viewing') ?></a></li>
-    <li><a href='org/help#editing'><?php echo __('help:editing') ?></a></li>
-    <li><a href='org/help#design'><?php echo __('help:design') ?></a></li>
-    <li><a href='org/help#settings'><?php echo __('help:settings') ?></a></li>
-    <li><a href='org/help#home'><?php echo __('widget:home') ?></a></li>
-    <li><a href='org/help#news'><?php echo __('help:news') ?></a></li>
-    <li><a href='org/help#other'><?php echo __('help:other') ?></a></li>
-    <li><a href='org/help#connecting'><?php echo __('help:connecting') ?></a></li>
+    <li><a href='<?php echo $curUrl ?>#viewing'><?php echo __('help:viewing') ?></a></li>
+    <li><a href='<?php echo $curUrl ?>#editing'><?php echo __('help:editing') ?></a></li>
+    <li><a href='<?php echo $curUrl ?>#design'><?php echo __('help:design') ?></a></li>
+    <li><a href='<?php echo $curUrl ?>#settings'><?php echo __('help:settings') ?></a></li>
+    <li><a href='<?php echo $curUrl ?>#home'><?php echo __('widget:home') ?></a></li>
+    <li><a href='<?php echo $curUrl ?>#news'><?php echo __('help:news') ?></a></li>
+    <li><a href='<?php echo $curUrl ?>#other'><?php echo __('help:other') ?></a></li>
+    <li><a href='<?php echo $curUrl ?>#connecting'><?php echo __('help:connecting') ?></a></li>
 </ul>
 
 <h3 id='viewing'><?php echo __('help:viewing') ?></h3>
@@ -150,16 +141,16 @@
 <?php echo sprintf(__('help:other:summary'), "<a href='pg/dashboard'>".__('dashboard:title')."</a>") ?>
 </p>
 <ul>
-<li><strong><a href='<?php echo $org->getURL() ?>/projects/edit?from=org/help%23other'><?php echo __('widget:projects') ?></a></strong>:
+<li><strong><a href='<?php echo $org->getURL() ?>/projects/edit'><?php echo __('widget:projects') ?></a></strong>:
     <?php echo __('help:other:projects') ?>
 </li>
-<li><strong><a href='<?php echo $org->getURL() ?>/history/edit?from=org/help%23other'><?php echo __('widget:history') ?></a></strong>:
+<li><strong><a href='<?php echo $org->getURL() ?>/history/edit'><?php echo __('widget:history') ?></a></strong>:
     <?php echo __('help:other:history') ?>
 </li>
-<li><strong><a href='<?php echo $org->getURL() ?>/team/edit?from=org/help%23other'><?php echo __('widget:team') ?></a></strong>:
+<li><strong><a href='<?php echo $org->getURL() ?>/team/edit'><?php echo __('widget:team') ?></a></strong>:
     <?php echo __('help:other:team') ?>
 </li>
-<li><strong><a href='<?php echo $org->getURL() ?>/contact/edit?from=org/help%23other'><?php echo __('widget:contact') ?></a></strong>:
+<li><strong><a href='<?php echo $org->getURL() ?>/contact/edit'><?php echo __('widget:contact') ?></a></strong>:
     <?php echo __('help:other:contact') ?>
 </li>
 </ul>
@@ -174,12 +165,12 @@
 
 <p>
 <?php echo sprintf(__('help:connecting:partnerships'),
-    "<strong><a href='{$org->getURL()}/partnerships/edit?from=org/help%23other'>".__('widget:partnerships')."</a></strong>") ?>
+    "<strong><a href='{$org->getURL()}/partnerships/edit'>".__('widget:partnerships')."</a></strong>") ?>
 </p>
 
 <p>
 <?php echo sprintf(__('help:connecting:partnerships:instructions'),
-    "<strong><a href='{$org->getURL()}/partnerships/edit?from=org/help%23other'>".__('widget:partnerships')."</a></strong>") ?>
+    "<strong><a href='{$org->getURL()}/partnerships/edit'>".__('widget:partnerships')."</a></strong>") ?>
 </p>
 
 <p>

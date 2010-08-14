@@ -209,10 +209,6 @@ class Controller_Org extends Controller
 
             /* auto-create empty pages */
             $org->getWidgetByName('news')->save();
-            $org->getWidgetByName('team')->save();
-            $org->getWidgetByName('projects')->save();
-            $org->getWidgetByName('history')->save();
-            $org->getWidgetByName('partnerships')->save();
 
             $contactWidget = $org->getWidgetByName('contact');
             if ($email)

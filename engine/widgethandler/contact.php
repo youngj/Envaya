@@ -6,7 +6,7 @@ class WidgetHandler_Contact extends WidgetHandler
     {
         return view("widgets/contact_view", array('widget' => $widget));
     }
-
+    
     function edit($widget)
     {
         return view("widgets/contact_edit", array('widget' => $widget));

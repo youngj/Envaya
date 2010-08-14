@@ -10,6 +10,11 @@ class Organization extends ElggUser
 
     static $subtype_id = T_organization;
 
+    public function queryFiles()
+    {    
+        return ElggFile::query()->where('container_guid=?',$this->guid);
+    }
+    
     public function getFeedNames()
     {
         $feedNames = parent::getFeedNames();
@@ -32,7 +37,7 @@ class Organization extends ElggUser
         return $feedNames;
 
     }
-
+    
     public function getRelatedFeedNames()
     {
         $feedNames = array();
@@ -66,6 +71,23 @@ class Organization extends ElggUser
     public function canCommunicateWith()
     {
         return $this->canView() && isloggedin() && get_loggedin_userid() != $this->guid;
+    }
+    
+    public function getContactInfo()
+    {
+        $res = array();
+                
+        $fields = array('mailing_address','street_address','phone_number','email');
+        
+        foreach ($fields as $field)
+        {
+            $val = $this->get($field);
+            if ($val)
+            {
+                $res[$field] = $val;
+            }
+        }
+        return $res;
     }
 
     public function showCantViewMessage()
@@ -283,6 +305,8 @@ class Organization extends ElggUser
         $offset = (int) get_input('offset');
 
         $query = static::querySearch($name, $sector, $region);
+        
+        $query->limit($limit, $offset);
         
         $count = $query->count();
         $entities = $query->filter();
