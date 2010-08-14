@@ -30,7 +30,6 @@
         echo contact_field(__("widget:contact:mailing_address"), view("output/longtext", array('value' => $org->mailing_address)));
     }
 
-
     if ($org->contact_name)
     {
         echo contact_field(__("widget:contact:name"), view("output/text", array('value' => $org->contact_name)));

@@ -16,41 +16,41 @@
         }
     };    
     
-    $addItem("<a href='{$org->getWidgetByName('home')->getEditURL()}'>Create home page</a>", true);
+    $addItem("<a href='{$org->getWidgetByName('home')->getEditURL()}'>".__('todo:home')."</a>", true);
     
     $contact = $org->getWidgetByName('contact');       
-    $addItem("<a href='{$contact->getEditURL()}'>Add contact information</a>", 
+    $addItem("<a href='{$contact->getEditURL()}'>".__('todo:contact')."</a>", 
             $contact->time_updated > $contact->time_created && sizeof($org->getContactInfo()) >= 2);
 
     $history = $org->getWidgetByName('history');           
-    $addItem("<a href='{$history->getEditURL()}'>Write about your history</a>",
+    $addItem("<a href='{$history->getEditURL()}'>".__('todo:history')."</a>",
         $history->isActive() && $history->content
     );            
 
     $projects = $org->getWidgetByName('projects');           
-    $addItem("<a href='{$projects->getEditURL()}'>Write about your projects</a>",
+    $addItem("<a href='{$projects->getEditURL()}'>".__('todo:projects')."</a>",
         $projects->isActive() && $projects->content
     );            
     
     $team = $org->getWidgetByName('team');           
-    $addItem("<a href='{$team->getEditURL()}'>Add your team members</a>",
+    $addItem("<a href='{$team->getEditURL()}'>".__('todo:team')."</a>",
         $team->isActive() && $team->content
     );            
     
     $news = $org->getWidgetByName('news');;
     $numLatestNews = $org->queryNewsUpdates()->where('time_created > ?', time() - 86400 * 31)->count();
-    $addItem("<a href='{$news->getEditURL()}'>Share your latest news</a>",
+    $addItem("<a href='{$news->getEditURL()}'>".__('todo:news')."</a>",
         $numLatestNews > 0
     );            
     
     $numImages = $org->queryFiles()->where("size='small'")->count();
     $addItem(
-        "<a href='{$org->getURL()}/addphotos'>Add some photos</a>",
+        "<a href='{$org->getURL()}/addphotos'>".__('todo:photos')."</a>",
         $numImages >= 2
     );        
     
     $addItem(
-        "<a href='{$org->getURL()}/design'>Add your logo</a>",
+        "<a href='{$org->getURL()}/design'>".__('todo:logo')."</a>",
         ($org->custom_header || $org->custom_icon)    
     );    
 ?>
@@ -67,14 +67,12 @@ foreach (system_messages() as $message)
 }
 ?>
 <p>
-There's still more to do! Click the links below to improve your organization's website. 
-If you complete all the items below, your website may be eligible to be considered for a 
-Featured Organization award. 
+<?php echo __('todo:about'); ?> 
 </p>
 <table>
 <tr>
-<th>To Do</th>
-<th>Done!</th>
+<th><?php echo __('todo:todo') ?></th>
+<th><?php echo __('todo:done') ?></th>
 </tr>
 <tr>
 <td>
