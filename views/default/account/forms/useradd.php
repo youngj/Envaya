@@ -9,7 +9,7 @@
      */
 
     $admin_option = false;
-    if ((get_loggedin_user()->admin) && ($vars['show_admin']))
+    if ((Session::get_loggedin_user()->admin) && ($vars['show_admin']))
         $admin_option = true;
 
     $form_body = "<p><label>" . __('name') . "<br />" . view('input/text' , array('internalname' => 'name')) . "</label></p>";

@@ -345,9 +345,9 @@
                 $query->where("subtype=?", static::$subtype_id);
             }
 
-            if (!isadminloggedin() && !access_get_show_hidden_status())
+            if (!Session::isadminloggedin() && !access_get_show_hidden_status())
             {
-                $query->where("(approval > 0 || e.guid = ?)", get_loggedin_userid());
+                $query->where("(approval > 0 || e.guid = ?)", Session::get_loggedin_userid());
             }
             
             return $query;

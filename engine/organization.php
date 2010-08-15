@@ -70,7 +70,7 @@ class Organization extends ElggUser
 
     public function canCommunicateWith()
     {
-        return $this->canView() && isloggedin() && get_loggedin_userid() != $this->guid;
+        return $this->canView() && Session::isloggedin() && Session::get_loggedin_userid() != $this->guid;
     }
     
     public function getContactInfo()

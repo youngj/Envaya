@@ -152,6 +152,11 @@
      */
     function get_entity($guid)
     {
+        if (!$guid)
+        {
+            return null;
+        }
+    
         $entity = retrieve_cached_entity($guid);
         if (!$entity)
         {

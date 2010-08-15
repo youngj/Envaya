@@ -71,7 +71,7 @@ class Controller_Org extends Controller
             $step = 1;
         }
 
-        $loggedInUser = get_loggedin_user();
+        $loggedInUser = Session::get_loggedin_user();
 
         if ($loggedInUser && !($loggedInUser instanceof Organization))
         {
@@ -240,7 +240,7 @@ class Controller_Org extends Controller
 
         try
         {
-            $org = get_loggedin_user();
+            $org = Session::get_loggedin_user();
 
             $mission = get_input('mission');
             if (!$mission)
@@ -366,7 +366,7 @@ class Controller_Org extends Controller
 
     function action_selectImage()
     {
-        set_input("__topbar",0);
+        $this->page_draw_vars['no_top_bar'] = true;
 
         $file = get_file_from_url(get_input('src'));
 
@@ -459,7 +459,7 @@ class Controller_Org extends Controller
                 else
                 {                
                     $trans->html = $isHTML;
-                    $trans->owner_guid = get_loggedin_userid();
+                    $trans->owner_guid = Session::get_loggedin_userid();
                     $trans->value = $text;
                     $trans->save();
                 }
@@ -524,7 +524,7 @@ class Controller_Org extends Controller
         }
 
         $trans->approval = 0;
-        $trans->owner_guid = get_loggedin_userid();
+        $trans->owner_guid = Session::get_loggedin_userid();
         $trans->value = $value;
         $trans->save();
 

@@ -1,7 +1,7 @@
 <?php
 
     $org = $vars['entity'];
-    $loggedInOrg = get_loggedin_user();
+    $loggedInOrg = Session::get_loggedin_user();
 
     if ($loggedInOrg instanceof Organization && $org->email)
     {

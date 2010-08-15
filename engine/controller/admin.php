@@ -313,7 +313,7 @@ class Controller_Admin extends Controller
             }
 
             $new_user->admin_created = true;
-            $new_user->created_by_guid = get_loggedin_userid();
+            $new_user->created_by_guid = Session::get_loggedin_userid();
             $new_user->save();
 
             notify_user($new_user->guid, $CONFIG->site_guid, __('useradd:subject'), sprintf(__('useradd:body'), $name, $CONFIG->sitename, $CONFIG->url, $username, $password));

@@ -76,7 +76,7 @@ function upload_temp_images($filename, $sizes)
             else
             {
                 $file = new ElggFile();
-                $file->owner_guid = get_loggedin_userid();
+                $file->owner_guid = Session::get_loggedin_userid();
                 $file->group_name = $groupName;
                 $file->size = $sizeName;
                 $file->width = $resizedImage['width'];

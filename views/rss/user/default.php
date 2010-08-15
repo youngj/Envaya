@@ -18,7 +18,7 @@
 	  <pubDate><?php echo date("r",$vars['entity']->time_created) ?></pubDate>
 	  <link><?php echo $vars['entity']->getURL(); ?></link>
 	  <title><![CDATA[<?php echo (($vars['entity']->name)); ?>]]></title>
-	  <description><![CDATA[<?php echo (autop($vars['entity']->description)); ?>]]></description>
+	  <description><![CDATA[<?php echo (Markup::autop($vars['entity']->description)); ?>]]></description>
 	  <?php
 			if (
 				($vars['entity'] instanceof Locatable) &&

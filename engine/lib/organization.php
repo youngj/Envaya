@@ -13,32 +13,32 @@ function regions_in_country($country)
     if ($country == 'tz'  || true)
     {
         $ids = array(
-            'tz:arusha',
-            'tz:dar',
-            'tz:dodoma',
-            'tz:iringa',
-            'tz:kagera',
-            'tz:kigoma',
-            'tz:kilimanjaro',
-            'tz:lindi',
-            'tz:manyara',
-            'tz:mara',
-            'tz:mbeya',
-            'tz:morogoro',
-            'tz:mtwara',
-            'tz:mwanza',
-            'tz:pemba_n',
-            'tz:pemba_s',
-            'tz:pwani',
-            'tz:rukwa',
-            'tz:ruvuma',
-            'tz:shinyanga',
-            'tz:singida',
-            'tz:tabora',
-            'tz:tanga',
-            'tz:zanzibar_cs',
-            'tz:zanzibar_n',
-            'tz:zanzibar_w',
+            'region:tz:arusha',
+            'region:tz:dar',
+            'region:tz:dodoma',
+            'region:tz:iringa',
+            'region:tz:kagera',
+            'region:tz:kigoma',
+            'region:tz:kilimanjaro',
+            'region:tz:lindi',
+            'region:tz:manyara',
+            'region:tz:mara',
+            'region:tz:mbeya',
+            'region:tz:morogoro',
+            'region:tz:mtwara',
+            'region:tz:mwanza',
+            'region:tz:pemba_n',
+            'region:tz:pemba_s',
+            'region:tz:pwani',
+            'region:tz:rukwa',
+            'region:tz:ruvuma',
+            'region:tz:shinyanga',
+            'region:tz:singida',
+            'region:tz:tabora',
+            'region:tz:tanga',
+            'region:tz:zanzibar_cs',
+            'region:tz:zanzibar_n',
+            'region:tz:zanzibar_w',
         );
     }
     else
@@ -49,7 +49,7 @@ function regions_in_country($country)
     $res = array();
     foreach ($ids as $id)
     {
-        $res[$id] = __("region:$id");
+        $res[$id] = __($id);
     }
     asort($res);
     return $res;

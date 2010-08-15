@@ -1,38 +1,5 @@
 <?php
 
-function get_loggedin_user()
-{
-    $guid = Session::get('guid');
-    if ($guid)
-    {
-        return get_entity($guid);
-    }
-
-    return null;
-}
-
-function get_loggedin_userid()
-{
-    $user = get_loggedin_user();
-    if ($user)
-        return $user->guid;
-
-    return 0;
-}
-
-function isloggedin()
-{
-    $user = get_loggedin_user();
-
-    return ($user && ($user instanceof ElggUser) && ($user->guid > 0));
-}
-
-function isadminloggedin()
-{    
-    $user = get_loggedin_user();
-    return ($user && $user->admin);
-}
-
 /**
  * Perform standard authentication with a given username and password.
  * Returns an ElggUser object for use with login.
@@ -171,16 +138,13 @@ function login(ElggUser $user, $persistent = false)
 
 function logout()
 {
-    $curUser = get_loggedin_user();
+    $curUser = Session::get_loggedin_user();
     if ($curUser)
     {
         trigger_event('logout','user',$curUser);
     }
 
     Session::destroy();
-
-    setcookie("elggperm", "", (time()-(86400 * 30)),"/");
-
     return true;
 }
 
@@ -197,4 +161,3 @@ function force_login()
         forward("pg/login");
     }
 }
-

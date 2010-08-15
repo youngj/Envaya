@@ -315,7 +315,7 @@ class Controller_Profile extends Controller
         {
             $org->showCantViewMessage();
         
-            if (isadminloggedin())
+            if (Session::isadminloggedin())
             {
                 $preBody .= view("admin/org_actions", array('entity' => $org, 'widget' => $widget));
             }
@@ -325,7 +325,7 @@ class Controller_Profile extends Controller
                 $preBody .= view("org/comm_box", array('entity' => $org));
             }
 
-            if ($org->guid == get_loggedin_userid())
+            if ($org->guid == Session::get_loggedin_userid())
             {
                 $preBody .= view("org/setupNextStep", array('entity' => $org));
             }
@@ -382,7 +382,7 @@ class Controller_Profile extends Controller
         PageContext::set_translatable(false);
 
         $user = $this->user;
-        if ($user->guid == get_loggedin_userid())
+        if ($user->guid == Session::get_loggedin_userid())
         {
             $title = __('dashboard:title');
         }
@@ -486,7 +486,7 @@ class Controller_Profile extends Controller
 
         $org = $this->org;
 
-        if (!get_loggedin_user()->isApproved())
+        if (!Session::get_loggedin_user()->isApproved())
         {
             register_error(__('message:needapproval'));
             forward_to_referrer();
@@ -640,7 +640,7 @@ class Controller_Profile extends Controller
             }
                         
             $post = new NewsUpdate();
-            $post->owner_guid = get_loggedin_userid();
+            $post->owner_guid = Session::get_loggedin_userid();
             $post->container_guid = $org->guid;
             $post->setContent($body, true);
             $post->uuid = $uuid;
@@ -658,7 +658,7 @@ class Controller_Profile extends Controller
 
         $partner = $this->org;
 
-        $org = get_loggedin_user();
+        $org = Session::get_loggedin_user();
         if (!$org instanceof Organization)
         {
             not_found();
@@ -693,7 +693,7 @@ class Controller_Profile extends Controller
 
         $partner = $this->org;
 
-        $loggedInOrg = get_loggedin_user();
+        $loggedInOrg = Session::get_loggedin_user();
 
         if (!$loggedInOrg->isApproved())
         {
@@ -732,7 +732,7 @@ class Controller_Profile extends Controller
         $this->require_login();
         $this->validate_security_token();
 
-        $user = get_loggedin_user();
+        $user = Session::get_loggedin_user();
 
         $partner = $this->org;
 
@@ -776,7 +776,7 @@ class Controller_Profile extends Controller
         $this->require_login();
         $this->validate_security_token();
 
-        $user = get_loggedin_user();
+        $user = Session::get_loggedin_user();
 
         $recipient = $this->org;
 

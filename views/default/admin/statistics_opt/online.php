@@ -12,7 +12,7 @@
 
 	// users online
 
-	$users_online = get_online_users();
+	$users_online = Statistics::get_online_users();
 ?>
 
 <div class="admin_users_online">

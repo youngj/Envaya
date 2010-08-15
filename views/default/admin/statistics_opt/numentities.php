@@ -12,7 +12,7 @@
 
 	
 	// Get entity statistics
-	$entity_stats = get_entity_statistics();
+	$entity_stats = Statistics::get_entity_stats();
 	$even_odd = "";
 ?>
 <div class="admin_statistics">

@@ -15,5 +15,5 @@
      *
      */
 
-    echo autop(parse_urls(escape($vars['value'])));
+    echo Markup::autop(Markup::parse_urls(escape($vars['value'])));
 ?>

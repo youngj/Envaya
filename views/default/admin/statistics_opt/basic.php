@@ -9,8 +9,8 @@
 	 */
 
 	// Work out number of users
-	$users_stats = get_number_users();
-	$total_users = get_number_users(true);
+	$users_stats = Statistics::get_number_users();
+	$total_users = Statistics::get_number_users(true);
 	
 	
 	global $CONFIG;

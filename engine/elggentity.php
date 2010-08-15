@@ -348,7 +348,7 @@ abstract class ElggEntity implements
         $user = get_entity($user_guid);
 
         if (!$user)
-            $user = get_loggedin_user();
+            $user = Session::get_loggedin_user();
 
         // Test user if possible - should default to false unless a plugin hook says otherwise
         if (!is_null($user))

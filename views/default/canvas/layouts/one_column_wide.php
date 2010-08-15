@@ -2,7 +2,7 @@
     <div class="wide_column">  
         <?php 
             echo @$vars['area3']; 
-            echo view('messages/list', array('object' => system_messages(null,"")));
+            echo SessionMessages::view_all();
         ?>
         <div id='content'>
             <?php echo $vars['area2']; ?>

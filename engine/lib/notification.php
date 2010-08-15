@@ -145,7 +145,8 @@
     {
         $user_guid = (int)$user_guid;
 
-        if ($user_guid == 0) $user_guid = get_loggedin_userid();
+        if ($user_guid == 0) 
+            $user_guid = Session::get_loggedin_userid();
 
         $all_metadata = get_metadata_for_entity($user_guid);
         if ($all_metadata)
@@ -181,7 +182,8 @@
         $user_guid = (int)$user_guid;
         $user = get_entity($user_guid);
 
-        if (!$user) $user = get_loggedin_user();
+        if (!$user) 
+            $user = Session::get_loggedin_user();
 
         if (($user) && ($user instanceof ElggUser))
         {

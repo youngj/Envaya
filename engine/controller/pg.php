@@ -74,12 +74,12 @@ class Controller_Pg extends Controller {
     function action_dashboard()
     {
         $this->require_login();                
-        forward(get_loggedin_user()->getURL()."/dashboard");
+        forward(Session::get_loggedin_user()->getURL()."/dashboard");
     }
 
     function action_forgot_password()
     {
-        if (!isloggedin())
+        if (!Session::isloggedin())
         {
             $body = view("account/forms/forgotten_password");
 
@@ -146,7 +146,7 @@ class Controller_Pg extends Controller {
         $friend_guid = (int) get_input('friend_guid',0);
         $invitecode = get_input('invitecode');
 
-        if (!isloggedin())
+        if (!Session::isloggedin())
         {
             $body = view_layout('one_column_padded', view_title(__("register")), view("account/forms/register", array('friend_guid' => $friend_guid, 'invitecode' => $invitecode)));
             $this->page_draw(__('register'), $body);

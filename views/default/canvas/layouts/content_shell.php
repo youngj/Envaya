@@ -1,7 +1,7 @@
 <div class="heading_container">
 <?php 
     echo @$vars['area3']; 
-    echo view('messages/list', array('object' => system_messages(null,"")));
+    echo SessionMessages::view_all();
     echo $vars['area1'];
 ?>
 </div>

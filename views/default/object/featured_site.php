@@ -18,7 +18,7 @@ echo $entity->renderContent(); ?>
 <?php if ($vars['full']) { ?>
     <div class='blog_date'><?php echo friendly_time($entity->time_created) ?></div>
     <?php 
-    if (isadminloggedin())
+    if (Session::isadminloggedin())
     {
         ?>
         <span class='admin_links'>

@@ -70,7 +70,7 @@ if (PageContext::is_translatable())
         }
     }
 
-    if (isadminloggedin())
+    if (Session::isadminloggedin())
     {
         $translations = PageContext::get_available_translations();
         

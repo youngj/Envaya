@@ -25,7 +25,7 @@
 	  <pubDate><?php echo date("r",$vars['entity']->time_created) ?></pubDate>
 	  <link><?php echo $vars['entity']->getURL(); ?>#<?php echo $vars['annotation']->id; ?></link>
 	  <title><![CDATA[<?php echo $title; ?>]]></title>
-	  <description><![CDATA[<?php echo (autop($vars['annotation']->value)); ?>]]></description>
+	  <description><![CDATA[<?php echo (Markup::autop($vars['annotation']->value)); ?>]]></description>
 	  <?php
 			$owner = get_entity($vars['entity']->owner);
 			if ($owner)

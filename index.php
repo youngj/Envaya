@@ -30,7 +30,7 @@
         'widgetname' => 'home',
     ));
 
-    if (get_input('login') && !isloggedin())
+    if (get_input('login') && !Session::isloggedin())
     {
         force_login();
     }
@@ -39,5 +39,5 @@
         ->execute()
         ->send_headers()
         ->response;
-
-   
+            
+            

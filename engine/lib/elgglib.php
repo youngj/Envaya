@@ -202,7 +202,7 @@
                 $location = $CONFIG->url . $location;
             }
 
-            save_system_messages();
+            SessionMessages::save();
 
             header("Location: {$location}");
             exit;
@@ -274,7 +274,7 @@
                 $vars = array();
             }
 
-            $vars['user'] = get_loggedin_user();
+            $vars['user'] = Session::get_loggedin_user();
             $vars['config'] = $CONFIG;
             $vars['url'] = $CONFIG->url;
             $viewtype = elgg_get_viewtype();
@@ -609,91 +609,77 @@
 
         }
 
-    /**
-     * Message register handling
-     * If no parameter is given, the function returns the array of messages so far and empties it.
-     * Otherwise, any message or array of messages is added.
-     *
-     * @param string|array $message Optionally, a single message or array of messages to add
-     * @param string $register By default, "errors". This allows for different types of messages, eg errors.
-     * @return true|false|array Either the array of messages, or a response regarding whether the message addition was successful
-     */
-
-    function system_messages($message = "", $register = "messages")
+    class SessionMessages
     {
         static $allMessages;
-
-        if (!isset($allMessages))
+        
+        static function init()
         {
-            $messages = Session::get('messages');
+            if (!isset(static::$allMessages))
+            {
+                $messages = Session::get('messages');
+                if ($messages)
+                {
+                    static::$allMessages = $messages;
+                    Session::set('messages', null);
+                }
+                else
+                {
+                    static::$allMessages = array();
+                }
+            }        
+        }
+        
+        static function add_message($message, $register = 'messages')
+        {
+            static::init();
+            
+            if (!isset(static::$allMessages[$register]))
+            {
+                static::$allMessages[$register] = array();
+            }
+            static::$allMessages[$register][] = $message;
+        }
+        
+        static function get_all()
+        {
+            static::init();
+            $res = static::$allMessages;
+            static::$allMessages = null;
+            return $res;
+        }
+        
+        static function view_all()
+        {
+            return view('messages/list', array('object' => static::get_all()));
+        }
+        
+        static function get_register($register)
+        {
+            static::init();
+            $res = static::$allMessages[$register];
+            unset(static::$allMessages[$register]);
+            return $res;        
+        }
+        
+        static function save()
+        {
+            $messages = static::get_all();
             if ($messages)
             {
-                $allMessages = $messages;
-                Session::set('messages', null);
-            }
-            else
-            {
-                $allMessages = array();
-            }
+                Session::set('messages', $messages);
+            }        
         }
+    }     
 
-        if (!isset($allMessages[$register]) && !$register)
-        {
-            $allMessages[$register] = array();
-        }
-
-        if (!empty($message))
-        {
-            $allMessages[$register][] = $message;
-            return true;
-        }
-        else
-        {
-            if ($register)
-            {
-                $res = $allMessages[$register];
-                unset($allMessages[$register]);
-                return $res;
-            }
-            else
-            {
-                $res = $allMessages;
-                $allMessages = null;
-                return $res;
-            }
-        }
-    }
-
-    function save_system_messages()
+    function system_message($message) 
     {
-        $messages = system_messages('', '');
-
-        if ($messages)
-        {
-            Session::set('messages', $messages);
-        }
+        return SessionMessages::add_message($message);
     }
-
-
-    /**
-     * An alias for system_messages($message) to handle standard user information messages
-     *
-     * @param string|array $message Message or messages to add
-     * @return true|false Success response
-     */
-        function system_message($message) {
-            return system_messages($message, "messages");
-        }
-
-    /**
-     * An alias for system_messages($message) to handle error messages
-     *
-     * @param string|array $message Error or errors to add
-     * @return true|false Success response
-     */
-        function register_error($error) {
-            return system_messages($error, "errors");
-        }
+    function register_error($error) 
+    {
+        return SessionMessages::add_message($error, "errors");
+    }
 
     class EventRegister
     {

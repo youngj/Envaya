@@ -61,7 +61,7 @@ if (sizeof($todoItems))
 <div class='todo_container'>
 <div class='good_messages'>
 <?php
-foreach (system_messages() as $message)
+foreach (SessionMessages::get_register('messages') as $message)
 {
     echo "<p><strong>".view('output/longtext',array('value' => $message))."</strong></p>";
 }

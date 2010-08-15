@@ -1,6 +1,6 @@
 <?php
 
-if (get_input('__topbar') !== '0') {
+if (!@$vars['no_top_bar']) {
 
 ?>
 
@@ -62,11 +62,11 @@ function languageChanged()
 
     <?php
 
-        if (isloggedin())
+        if (Session::isloggedin())
         {
             echo "<div id='loggedinArea'><span class='loggedInAreaContent'>";
 
-            $user = get_loggedin_user();
+            $user = Session::get_loggedin_user();
 
             if ($user->isSetupComplete())
             {

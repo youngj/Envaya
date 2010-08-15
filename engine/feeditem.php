@@ -100,9 +100,9 @@ class FeedItem
                 $query->where("f.user_guid <> ?", $excludeUser->guid);
             }
 
-            if (!isadminloggedin() && !access_get_show_hidden_status())
+            if (!Session::isadminloggedin() && !access_get_show_hidden_status())
             {
-                $query->where("(u.approval > 0 || u.guid = ?)", get_loggedin_userid());
+                $query->where("(u.approval > 0 || u.guid = ?)", Session::get_loggedin_userid());
             }
         }
 

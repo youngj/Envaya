@@ -23,16 +23,12 @@
      */
     function get_user($guid)
     {
-        if (!empty($guid)) // Fixes "Exception thrown without stack frame" when db_select fails
-            $result = get_entity($guid);
+        $result = get_entity($guid);
 
-        if ((!empty($result)) && (!($result instanceof ElggUser)))
+        if (!$result || !$result instanceof ElggUser)
             return false;
 
-        if (!empty($result))
-            return $result;
-
-        return false;
+        return $result;
     }
 
     function get_cache_key_for_username($username)

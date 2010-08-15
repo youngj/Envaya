@@ -9,7 +9,7 @@
  * @author Curverider Ltd
  * @link http://elgg.org/
  */
-
+ 
 require_once(dirname(__DIR__). '/engine/settings.php');
 
 function load_engine()
@@ -38,7 +38,7 @@ function output_cached_view($view, $viewtype)
 
     if ($simplecache_enabled)
     {
-        $filename = get_cache_filename($view, $viewtype);
+        $filename = get_cache_filename($view, $viewtype);        
         if (file_exists($filename)) 
         {
             $contents = file_get_contents($filename);
@@ -62,20 +62,14 @@ function output_cached_view($view, $viewtype)
                 header("HTTP/1.1 404 Not Found");                
                 exit;
             }
-        }
-        
-        header("X-Cache-Status: $cacheHeader\n");
+        }        
+        header("X-Cached: $cacheHeader\n");
     } 
     else 
     {
         load_engine();
         $contents = view($view);        
     }
-        
-    header("Content-Length: " . strlen($contents));
-
-    $split_output = str_split($contents, 1024);
-
-    foreach($split_output as $chunk)
-        echo $chunk;
+            
+    echo $contents;
 }

@@ -151,7 +151,7 @@ else
         'limit' => $limit
     ));
 
-    if (isadminloggedin())
+    if (Session::isadminloggedin())
     {
         echo "<br /><br /><a href='org/translate_interface?export=1'>".__('trans:export')."</a>";
     }

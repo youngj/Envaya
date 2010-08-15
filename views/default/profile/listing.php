@@ -33,10 +33,10 @@
 		else
 		{
 			$info .= "<p><b><strike>";
-			if (isadminloggedin())
+			if (Session::isadminloggedin())
 				$info .= "<a href=\"" . $vars['entity']->getUrl() . "\">";
 			$info .= escape($vars['entity']->name);
-			if (isadminloggedin())
+			if (Session::isadminloggedin())
 				$info .= "</a>";
 			$info .= "</strike></b></p>";
 			

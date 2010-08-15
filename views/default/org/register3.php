@@ -1,7 +1,7 @@
 <?php echo view("org/registerProgress", array('current' => 3   )) ?>
 
 <?php
-    $org = get_loggedin_user();
+    $org = Session::get_loggedin_user();
 ?>
 
 <div class='padded'>

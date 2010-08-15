@@ -44,6 +44,11 @@ abstract class Controller {
 
     public function page_draw($title, $body, $vars = null)
     {    
+        if (get_input('__topbar') == '0')
+        {
+            $this->page_draw_vars['no_top_bar'] = true;
+        }
+    
         $this->request->response = page_draw($title, $body, $vars ?: $this->page_draw_vars);
     }
     
@@ -69,7 +74,7 @@ abstract class Controller {
 
     public function require_login()
     {
-        if (!isloggedin())
+        if (!Session::isloggedin())
         {
             force_login();
         }
@@ -77,7 +82,7 @@ abstract class Controller {
 
     public function require_admin()
     {
-        if (!isadminloggedin())
+        if (!Session::isadminloggedin())
         {
             force_login();
         }

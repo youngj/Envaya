@@ -161,4 +161,26 @@ class Session
 
         return true;
     }
+    
+    static function get_loggedin_user()
+    {
+        return get_user(static::get('guid'));
+    }
+
+    static function get_loggedin_userid()
+    {
+        $user = static::get_loggedin_user();
+        return ($user) ? $user->guid : 0;       
+    }
+
+    static function isloggedin()
+    {
+        return static::get_loggedin_user() != null;
+    }
+
+    static function isadminloggedin()
+    {    
+        $user = static::get_loggedin_user();
+        return ($user && $user->admin);
+    }    
 }

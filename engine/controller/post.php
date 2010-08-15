@@ -128,7 +128,7 @@ class Controller_Post extends Controller_Profile
             if (!sizeof($duplicates))
             {
                 $post = new NewsUpdate();
-                $post->owner_guid = get_loggedin_userid();
+                $post->owner_guid = Session::get_loggedin_userid();
                 $post->container_guid = $org->guid;
                 $post->setContent($body, true);
                 $post->uuid = $uuid;

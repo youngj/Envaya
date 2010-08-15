@@ -6,7 +6,7 @@ if (empty($feedItems))
     echo "<div class='padded'>".__("search:noresults")."</div>";
 }
 
-$isAdmin = isadminloggedin();
+$isAdmin = Session::isadminloggedin();
 
 foreach ($feedItems as $feedItem)
 {

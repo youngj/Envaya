@@ -12,7 +12,7 @@
 
     function record_user_action()
     {
-        $userId = get_loggedin_userid();
+        $userId = Session::get_loggedin_userid();
         if ($userId)
         {
             set_last_action($userId);
