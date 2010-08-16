@@ -41,16 +41,6 @@
     );
 ?>
 </div>
-<div class='input'>
-<label><?php echo __('language'); ?></label>
-<?php
-
-    echo view("input/pulldown", array(
-        'internalname' => 'language', 
-        'value' => get_language(), 
-        'options_values' => Language::get_options()));
-?>
-</div>
 
 <?php
     echo view('input/submit',

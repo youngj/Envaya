@@ -73,7 +73,9 @@ class Controller_Admin extends Controller
 
         if ($email && $email instanceof EmailTemplate)
         {
-            echo view('emails/template', array('org' => $user, 'email' => $email));
+            $res = view('emails/template', array('org' => $user, 'email' => $email));
+            
+            echo $res;
         }
         else
         {
@@ -97,7 +99,6 @@ class Controller_Admin extends Controller
                 where("email <> ''")->
                 where("((last_notify_time IS NULL) OR (last_notify_time + notify_days * 86400 < ?))", time())->
                 where('notify_days > 0')->
-                where('language = ?', $email->getLanguage())->
                 order_by('last_notify_time')->
                 limit(20)->
                 filter(); 
@@ -544,7 +545,6 @@ class Controller_Admin extends Controller
         $email = new EmailTemplate();
         $email->from = get_input('from');
         $email->subject = get_input('subject');        
-        $email->language = get_input('language');
         $email->setContent($content, true);
         $email->save();
         forward("/admin/view_email?email={$email->guid}");
@@ -567,7 +567,6 @@ class Controller_Admin extends Controller
             {
                 $email->subject = get_input('subject');                
                 $email->setContent(get_input('content'), true);
-                $email->language = get_input('language');
                 $email->from = get_input('from');
                 $email->save();
             }

@@ -48,7 +48,7 @@ class EmailTemplate extends ElggObject
     function send_to($org)
     {        
         $subject = $this->render_subject($org);
-        $body = $this->render_content($org);
+        $body = view('emails/template', array('org' => $org, 'email' => $this));
 
         global $CONFIG;
         
@@ -59,7 +59,7 @@ class EmailTemplate extends ElggObject
         );
 
         send_mail($org->email, $subject, $body, $headers);
-
+ 
         $org->last_notify_time = time();
         $org->save();
     }

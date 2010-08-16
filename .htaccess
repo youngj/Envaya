@@ -27,19 +27,9 @@ DirectoryIndex index.php
 # Turn on expiry
 <IfModule mod_expires.c>
 	ExpiresActive On
-	ExpiresDefault "access plus 10 years"
-</IfModule>
-
-# php 4, apache 1.x
-<IfModule mod_php4.c>
-    ErrorDocument 500 "Elgg error: Elgg does not support PHP 4."
-    RedirectMatch 302 .* index.php
-</IfModule>
-
-# php 4, apache 2
-<IfModule sapi_apache2.c>
-    ErrorDocument 500 "Elgg error: Elgg does not support PHP 4."
-    RedirectMatch 302 .* index.php
+	ExpiresByType image/gif "access plus 2 years" 
+    ExpiresByType image/jpeg "access plus 2 years" 
+    ExpiresByType image/png "access plus 2 years" 
 </IfModule>
 
 # php 5, apache 1 and 2
