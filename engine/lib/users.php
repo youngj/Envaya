@@ -19,14 +19,14 @@
      *
      * This function returns an ElggUser from a given GUID.
      * @param int $guid The GUID
-     * @return ElggUser|false
+     * @return ElggUser|null
      */
     function get_user($guid)
     {
         $result = get_entity($guid);
 
         if (!$result || !$result instanceof ElggUser)
-            return false;
+            return null;
 
         return $result;
     }
