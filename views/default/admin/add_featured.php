@@ -25,7 +25,6 @@
         array(
             'internalname' => 'content',
             'valueIsHTML' => true,
-            'allowCustomHTML' => true,
             'value' => $homeWidget->content,
             'trackDirty' => true
         )

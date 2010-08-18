@@ -44,10 +44,10 @@
     <td><?php echo escape($org->phone_number) ?></td>
     <td><?php echo friendly_time($org->time_created); ?></td>
     <td><?php
-        $feedItems = $org->getFeedItems(1);
-        if (sizeof($feedItems) > 0)
+        $feedItem = $org->queryFeedItems()->limit(1)->get();
+        if ($feedItem)
         {
-            echo friendly_time($feedItems[0]->time_posted);
+            echo friendly_time($feedItem->time_posted);
         }
     ?></td>
     <td><?php echo $numNewsUpdates; ?></td>

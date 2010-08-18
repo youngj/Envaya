@@ -8,9 +8,7 @@
  * @package Elgg
  * @subpackage Core
  */
-abstract class ElggEntity implements
-    Loggable,   // Can events related to this object class be logged
-    Serializable
+abstract class ElggEntity implements Loggable, Serializable
 {
     /**
      * The main attributes of an entity.
@@ -26,32 +24,15 @@ abstract class ElggEntity implements
 
     static $subtype_id = 0;
 
-    function __construct($guid = null)
+    function __construct($row = null)
     {
         $this->initialise_attributes();
 
-        if (!empty($guid))
+        if ($row)
         {
-            if ($guid instanceof stdClass) // either a entity row, or a user table row.
+            if (!$this->loadFromPartialTableRow($row))
             {
-                if (!$this->loadFromPartialTableRow($guid))
-                {
-                    throw new IOException(sprintf(__('error:FailedToLoadGUID'), get_class(), $guid->guid));
-                }
-            }
-            else if ($guid instanceof ElggEntity)
-            {
-                foreach ($guid->attributes as $key => $value)
-                    $this->attributes[$key] = $value;
-            }
-            else if (is_numeric($guid))
-            {
-                if (!$this->load($guid))
-                    throw new IOException(sprintf(__('error:FailedToLoadGUID'), get_class(), $guid));
-            }
-            else
-            {
-                throw new InvalidParameterException(__('error:UnrecognisedValue'));
+                throw new IOException(sprintf(__('error:FailedToLoadGUID'), get_class(), $row->guid));
             }
         }
     }
@@ -339,18 +320,14 @@ abstract class ElggEntity implements
     /**
      * Determines whether or not the specified user (by default the current one) can edit the entity
      *
-     * @param int $user_guid The user GUID, optionally (defaults to the currently logged in user)
+     * @param int $user The user, optionally (defaults to the currently logged in user)
      * @return true|false
      */
-    function canEdit($user_guid = 0)
+    function canEdit($user = null)
     {
-        $user_guid = (int)$user_guid;
-        $user = get_entity($user_guid);
-
         if (!$user)
             $user = Session::get_loggedin_user();
 
-        // Test user if possible - should default to false unless a plugin hook says otherwise
         if (!is_null($user))
         {
             if (($this->getOwner() == $user->getGUID())
@@ -524,25 +501,6 @@ abstract class ElggEntity implements
                 $md->dirty = false;
             }
         }
-
-    }
-
-    /**
-     * Load the basic entity information and populate base attributes array.
-     *
-     * @param int $guid
-     */
-    protected function load($guid)
-    {
-        $row = get_entity_as_row($guid);
-
-        if ($row)
-        {
-            $this->loadFromTableRow($row);
-            return true;
-        }
-
-        return false;
     }
 
     protected function loadFromTableRow($row)
@@ -693,7 +651,7 @@ abstract class ElggEntity implements
         {
             if ($doAutoTranslate && $trans->isStale())
             {
-                $text = get_auto_translation($this->$prop, $origLang, $viewLang);
+                $text = GoogleTranslate::get_auto_translation($this->$prop, $origLang, $viewLang);
                 if ($text != null)
                 {
                     if (!$trans->owner_guid) // previous version was from google
@@ -720,7 +678,7 @@ abstract class ElggEntity implements
         }
         else if ($doAutoTranslate)
         {
-            $text = get_auto_translation($this->$prop, $origLang, $viewLang);
+            $text = GoogleTranslate::get_auto_translation($this->$prop, $origLang, $viewLang);
 
             if ($text != null)
             {
@@ -763,26 +721,8 @@ abstract class ElggEntity implements
         return $query;
     }
     
-    // SYSTEM LOG INTERFACE ////////////////////////////////////////////////////////////
-
-    /**
-     * Return an identification for the object for storage in the system log.
-     * This id must be an integer.
-     *
-     * @return int
-     */
+    // Loggable interface
     public function getSystemLogID() { return $this->getGUID(); }
-
-    /**
-     * Return the class name of the object.
-     */
     public function getClassName() { return get_class($this); }
-
-    /**
-     * For a given ID, return the object associated with it.
-     * This is used by the river functionality primarily.
-     * This is useful for checking access permissions etc on objects.
-     */
-    public function getObjectFromID($id) { return get_entity($id); }
-    
+    static function getObjectFromID($id) { return get_entity($id); }    
 }

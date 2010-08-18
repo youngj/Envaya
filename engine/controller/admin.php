@@ -73,9 +73,7 @@ class Controller_Admin extends Controller
 
         if ($email && $email instanceof EmailTemplate)
         {
-            $res = view('emails/template', array('org' => $user, 'email' => $email));
-            
-            echo $res;
+            echo view('emails/template', array('org' => $user, 'base' => 'http://ERROR_RELATIVE_URL/ERROR_RELATIVE_URL/', 'email' => $email));            
         }
         else
         {
@@ -226,7 +224,7 @@ class Controller_Admin extends Controller
     
     function action_logbrowser()
     {
-        $query = system_log_query();
+        $query = SystemLog::query();
     
         $limit = get_input('limit', 40);
         $offset = get_input('offset');
@@ -267,21 +265,19 @@ class Controller_Admin extends Controller
         
         $log = $query->filter();
         $count = $query->count();
-        $log_entries = array();
 
-        foreach ($log as $l)
-        {
-            $tmp = new ElggObject();
-            $tmp->subtype = T_logwrapper;
-            $tmp->entry = $l;
-            $log_entries[] = $tmp;
-        }
+        $form = view('logbrowser/form', array(
+            'user_guid' => $user, 
+            'timeupper' => $timeupper, 
+            'timelower' => $timelower,
+            'baseurl' => $_SERVER['REQUEST_URI'],
+            'offset' => $offset,
+            'count' => $count,
+            'limit' => $limit,
+            'entries' => $log
+        ));
 
-        $form = view('logbrowser/form',array('user_guid' => $user, 'timeupper' => $timeupper, 'timelower' => $timelower));
-
-        $result = view_entity_list($log_entries, $count, $offset, $limit);
-
-        $this->page_draw(__('logbrowser'),view_layout("one_column_padded", $title,  $form . $result));
+        $this->page_draw(__('logbrowser'),view_layout("one_column_padded", $title,  $form));
 
     }
 
@@ -317,7 +313,10 @@ class Controller_Admin extends Controller
             $new_user->created_by_guid = Session::get_loggedin_userid();
             $new_user->save();
 
-            notify_user($new_user->guid, $CONFIG->site_guid, __('useradd:subject'), sprintf(__('useradd:body'), $name, $CONFIG->sitename, $CONFIG->url, $username, $password));
+            $new_user->notify(
+                __('useradd:subject'),
+                sprintf(__('useradd:body'), $name, $CONFIG->sitename, $CONFIG->url, $username, $password)
+            );
 
             system_message(sprintf(__("adduser:ok"),$CONFIG->sitename));
         }
@@ -350,7 +349,7 @@ class Controller_Admin extends Controller
 
             if (!$approvedBefore && $approvedAfter && $entity->email)
             {
-                notify_user($entity->guid, $CONFIG->site_guid,
+                $entity->notify(
                     __('email:orgapproved:subject', $entity->language),
                     sprintf(__('email:orgapproved:body', $entity->language),
                         $entity->name,
@@ -358,8 +357,8 @@ class Controller_Admin extends Controller
                         "{$CONFIG->url}pg/login?username={$entity->username}",
                         __('help:title', $entity->language),
                         "{$entity->getURL()}/help"
-                    ),
-                    NULL, 'email');
+                    )
+                );
             }
 
             system_message(__('approval:changed'));

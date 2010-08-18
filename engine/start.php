@@ -1,96 +1,97 @@
 <?php
 
-    /**
-     * Elgg engine bootstrapper
-     * Loads the various elements of the Elgg engine
-     *
-     * @package Elgg
-     * @subpackage Core
+global $START_MICROTIME;
+$START_MICROTIME = microtime(true);
 
-     * @author Curverider Ltd
+/**
+ * Provides auto-loading support of  classes
+ *
+ * Class names are converted to file names by making the class name
+ * lowercase and converting underscores to slashes:
+ *
+ *     // Loads engine/my/class/name.php
+ *     auto_load('My_Class_Name');
+ *
+ * @param   string   class name
+ * @return  boolean
+ */
+function auto_load($class)
+{        
+    $file = str_replace('_', '/', strtolower($class));
 
-     * @link http://elgg.org/
-     */
+    global $CONFIG;
 
-    global $START_MICROTIME;
-    $START_MICROTIME = microtime(true);
+    $path = $CONFIG->path."engine/$file.php";       
+    
+    if (is_file($path))
+    {
+        require $path;
+        return TRUE;
+    }
 
+    return FALSE;
+}
+
+/**
+ * This function is a shutdown hook registered on startup which does nothing more than trigger a
+ * shutdown event when the script is shutting down, but before database connections have been dropped etc.
+ *
+ */
+function __shutdown_hook()
+{
+    global $CONFIG, $START_MICROTIME;
+
+    trigger_event('shutdown', 'system');
+
+    if ($CONFIG->debug)
+    {
+        $uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+        error_log("Page {$uri} generated in ".(float)(microtime(true)-$START_MICROTIME)." seconds");
+    }
+}
+
+function endswith( $str, $sub )
+{
+    return substr($str, strlen($str) - strlen($sub)) == $sub;
+}
+
+function get_library_files($directory) 
+{
+    $file_list = array();
+    
+    if ($handle = opendir($directory))
+    {
+        while ($file = readdir($handle))
+        {
+            if (endswith($file, '.php'))
+            {
+                $file_list[] = $directory . "/" . $file;
+            }
+        }
+    }
+    asort($file_list);
+    return $file_list;
+}
+
+function register_event_handler($event, $object_type, $handler, $priority = 500)
+{
+    return EventRegister::register_handler($event, $object_type, $handler, $priority);
+}
+
+function bootstrap()
+{   
     if (!include_once(__DIR__."/settings.php"))
     {
         echo "Error: Could not load the settings file.";
         exit;        
     }
-
-    if (!include_once(__DIR__."/lib/exceptions.php")) {     // Exceptions
-        echo "Error: could not load the Exceptions library.";
-        exit;
-    }
-
-    if (!include_once(__DIR__."/lib/elgglib.php")) {        // Main Elgg library
-        echo "Error: could not load main library.";
-        exit;
-    }
-
-    if (!include_once(__DIR__ . "/lib/access.php")) {       // Access library
-        echo "Error: could not load the Access library.";
-        exit;
-    }
-
-    if (!include_once(__DIR__ . "/lib/system_log.php")) {       // Logging library
-        echo "Error: could not load the System Log library.";
-        exit;
-    }
-
-    if (!include_once(__DIR__ . "/lib/sessions.php")) {
-        echo ("Error: Elgg could not load the Sessions library");
-        exit;
-    }
-
-    if (!include_once(__DIR__ . "/lib/input.php")) {        // Input library
-        echo "Error: could not load the input library.";
-        exit;
-    }
- 
-    if (!include_once(__DIR__ . "/lib/languages.php")) {        // Languages library
-        echo "Error: could not load the languages library.";
-        exit;
-    }
-   
-    if (!include_once(__DIR__ . "/lib/cache.php")) {
-        echo "Error: could not load the cache library.";
-        exit;
-    }
     
+    mb_internal_encoding('UTF-8');        
     spl_autoload_register('auto_load');
     
-    init_languages();
-    
-    if (@$_GET['lang'])
-    {
-        change_viewer_language($_GET['lang']);
-    }
-    
-    // Register the error handler
-    set_error_handler('php_error_handler');
-    set_exception_handler('php_exception_handler');
-
-    if (!include_once(__DIR__ . "/lib/database.php"))
-        throw new InstallationException("Elgg could not load the main Elgg database library.");
-
-    if (!include_once(__DIR__ . "/lib/actions.php")) {
-        throw new InstallationException("Elgg could not load the Actions library");
-    }
-
-    $file_exceptions = array('.','..','.DS_Store','Thumbs.db','.svn','CVS','cvs',
-        'settings.php','settings.example.php','languages.php','exceptions.php','elgglib.php','access.php','database.php','actions.php','sessions.php'
-    );
-
-    $files = get_library_files(__DIR__ . "/lib",$file_exceptions);
-    asort($files);
-
     global $CONFIG;
 
-    foreach($files as $file)
+    foreach(get_library_files(__DIR__ . "/lib") as $file)
     {
         /*
         if (isset($CONFIG->debug) && $CONFIG->debug)
@@ -98,13 +99,25 @@
         */
 
         if (!include_once($file))
-            throw new InstallationException("Could not load {$file}");
+        {
+            echo "Could not load {$file}";
+            die;
+        }
     }
+    
+    set_error_handler('php_error_handler');
+    set_exception_handler('php_exception_handler');
+    register_shutdown_function('__shutdown_hook');
 
-    //error_log("includes finished in ".(microtime(true) - $START_MICROTIME)." seconds");    
+    init_languages();
     
-    trigger_event('boot', 'system');
-    trigger_event('init', 'system');
+    if (@$_GET['lang'])
+    {
+        change_viewer_language($_GET['lang']);
+    }    
     
-    //error_log("start.php finished in ".(microtime(true) - $START_MICROTIME)." seconds");
-?>
+    trigger_event('init', 'system');        
+}
+
+bootstrap();
+//error_log("start.php finished in ".(microtime(true) - $START_MICROTIME)." seconds");

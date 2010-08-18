@@ -8,7 +8,7 @@
 
     echo "<div class='section_header'>".__("widget:news:latest")."</div>";
 
-    $items = $org->getFeedItems(6);
+    $items = $org->queryFeedItems()->limit(6)->filter();
 
     echo "<div class='section_content'>";
 

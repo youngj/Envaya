@@ -16,7 +16,7 @@
     echo get_submenu_group('footer', 'canvas_header/link_submenu', 'canvas_header/footer_submenu_group'); 
 ?>
 <div class='language'>        
-    <?php echo get_language_links(); ?>    
+    <?php echo view('page_elements/language_links'); ?>    
 </div>
 </div>
 </div>

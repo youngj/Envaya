@@ -4,26 +4,9 @@ class FeedItem
 {
     protected $attributes;
 
-    function __construct($id = null)
+    function __construct($row = null)
     {
-        $this->attributes = array();
-
-        if (!empty($id))
-        {
-            if ($id instanceof stdClass) // db row
-                $row = $id;
-            else
-                $row = get_feed_item($id);
-
-            if ($row)
-            {
-                $objarray = (array) $row;
-                foreach($objarray as $key => $value)
-                {
-                    $this->attributes[$key] = $value;
-                }
-            }
-        }
+        $this->attributes = $row ? ((array)$row) : array();
     }
 
     function __get($name)
@@ -100,7 +83,7 @@ class FeedItem
                 $query->where("f.user_guid <> ?", $excludeUser->guid);
             }
 
-            if (!Session::isadminloggedin() && !access_get_show_hidden_status())
+            if (!Session::isadminloggedin())
             {
                 $query->where("(u.approval > 0 || u.guid = ?)", Session::get_loggedin_userid());
             }

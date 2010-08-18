@@ -35,7 +35,6 @@
         array(
             'internalname' => 'content',
             'valueIsHTML' => true,
-            'allowCustomHTML' => true,
             'value' => $email->content,
             'trackDirty' => true
         )

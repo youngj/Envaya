@@ -3,8 +3,6 @@
 require_once("scripts/cmdline.php");
 require_once("engine/start.php");
 
-access_show_hidden_entities(true);
-
 function get_feed_count($actionName, $subject)
 {
 	return get_data_row("SELECT COUNT(*) as total FROM feed_items WHERE subject_guid = ? AND action_name = ?",

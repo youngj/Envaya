@@ -268,4 +268,4 @@ function sanitize_order_by($order_by)
     return $order_by;
 }
 
-register_event_handler('boot','system','init_db',0);
+register_event_handler('init','system','init_db',0);

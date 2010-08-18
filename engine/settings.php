@@ -71,8 +71,7 @@
         4 => array('user', 'organization', "Organization"),
         5 => array('object', 'translation', 'Translation'),
         6 => array('object', 'interface_translation', 'InterfaceTranslation'),
-        7 => array('object', 'blog', 'NewsUpdate'),
-        8 => array('object', 'logwrapper', 'ElggObject'),
+        7 => array('object', 'blog', 'NewsUpdate'),        
         9 => array('object', 'admin_message', 'ElggObject'),
         10 => array('object', 'partnership', 'Partnership'),
         // 11 was previously used for TeamMember

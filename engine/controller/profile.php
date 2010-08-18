@@ -547,7 +547,7 @@ class Controller_Profile extends Controller
             if ($password == $password2)
             {
                 $user->salt = generate_random_cleartext_password(); // Reset the salt
-                $user->password = generate_user_password($user, $password);
+                $user->password = $user->generate_password($password);
                 system_message(__('user:password:success'));
             }
             else
@@ -715,10 +715,10 @@ class Controller_Profile extends Controller
             $partnership2->setPartnerApproved(true);
             $partnership2->save();
 
-            notify_user($partner->guid, $CONFIG->site_guid,
+            $partner->notify(
                 sprintf(__('email:requestPartnership:subject',$partner->language), $loggedInOrg->name, $partner->name),
-                sprintf(__('email:requestPartnership:body',$partner->language), $partnership->getApproveUrl()),
-                NULL, 'email');
+                sprintf(__('email:requestPartnership:body',$partner->language), $partnership->getApproveUrl())
+            );
 
             system_message(__("partner:request_sent"));
 
@@ -761,10 +761,10 @@ class Controller_Profile extends Controller
 
             post_feed_items($user, 'partnership', $partner);
 
-            notify_user($partner->guid, null,
+            $partner->notify(
                 sprintf(__('email:partnershipConfirmed:subject',$partner->language), $user->name, $partner->name),
-                sprintf(__('email:partnershipConfirmed:body',$partner->language), $partWidget2->getURL()),
-                NULL, 'email');
+                sprintf(__('email:partnershipConfirmed:body',$partner->language), $partWidget2->getURL())
+            );
 
             forward($partWidget->getURL());
         }

@@ -17,7 +17,7 @@ class Partnership extends ElggObject
     {
         if (!$this->language)
         {
-            $this->language = guess_language($this->description);
+            $this->language = GoogleTranslate::guess_language($this->description);
         }
 
         parent::save();

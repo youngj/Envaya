@@ -70,6 +70,14 @@ abstract class Controller {
             forward();
             exit;
         }
+        
+        $user = Session::get_loggedin_user();
+        if ($user)
+        {
+
+            $user->last_action = time();
+            $user->save();
+        }        
     }
 
     public function require_login()
@@ -108,7 +116,6 @@ abstract class Controller {
      */
     public function after()
     {
-        // Nothing by default
     }
 
 } // End Controller

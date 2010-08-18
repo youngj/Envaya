@@ -3,8 +3,6 @@
     require_once("scripts/cmdline.php");
     require_once("engine/start.php");
 
-    access_show_hidden_entities(true);
-
     $newsUpdates = NewsUpdate::filterByCondition(
         array('data_types = ?'),
         array(DataType::Image),

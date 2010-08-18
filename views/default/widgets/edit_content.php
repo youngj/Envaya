@@ -29,7 +29,6 @@
     <?php echo view("input/tinymce", array(
         'internalname' => 'content',
         'trackDirty' => true,
-        'allowCustomHTML' => $widget->allowUnsafeHTML(),
         'valueIsHTML' => $widget->hasDataType(DataType::HTML),
         'value' => $widget->content)); ?>
 

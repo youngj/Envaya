@@ -10,37 +10,6 @@
      * @link http://elgg.org/
      */
 
-    /**
-     * Provides auto-loading support of Kohana classes, as well as transparent
-     * extension of classes that have a _Core suffix.
-     *
-     * Class names are converted to file names by making the class name
-     * lowercase and converting underscores to slashes:
-     *
-     *     // Loads engine/my/class/name.php
-     *     auto_load('My_Class_Name');
-     *
-     * @param   string   class name
-     * @return  boolean
-     */
-    function auto_load($class)
-    {        
-        // Transform the class name into a path
-        $file = str_replace('_', '/', strtolower($class));
-
-        global $CONFIG;
-
-        $path = $CONFIG->path."engine/$file.php";       
-        
-        if (is_file($path))
-        {
-            require $path;
-            return TRUE;
-        }
-
-        return FALSE;
-    }
-
     function url_with_param($url, $param, $value)
     {
         $url = parse_url($url);
@@ -430,13 +399,7 @@
         {
             $title = view('page_elements/title', array('title' => $title, 'args' => $args));
             return $title;
-        }
-
-
-        function endswith( $str, $sub )
-        {
-            return substr($str, strlen($str) - strlen($sub)) == $sub ;
-        }
+        }        
 
         function rewrite_to_current_domain($url)
         {
@@ -580,34 +543,6 @@
 
         }
 
-    /**
-     * Library loading and handling
-     */
-
-    /**
-     * Loads library files on start
-     *
-     * @param string $directory Full path to the directory to start with
-     * @param string $file_exceptions A list of filenames (with no paths) you don't ever want to include
-     * @param string $file_list A list of files that you know already you want to include
-     * @return array Array of full filenames
-     */
-        function get_library_files($directory, $file_exceptions = array(), $file_list = array()) {
-
-            if ($handle = opendir($directory))
-            {
-                while ($file = readdir($handle))
-                {
-                    if (endswith($file, '.php') && !in_array($file,$file_exceptions))
-                    {
-                        $file_list[] = $directory . "/" . $file;
-                    }
-                }
-            }
-
-            return $file_list;
-
-        }
 
     class SessionMessages
     {
@@ -680,70 +615,11 @@
     {
         return SessionMessages::add_message($error, "errors");
     }
-
-    class EventRegister
-    {
-        static $all_events = array();
-        
-        private static function &get_handlers($event, $object_type)
-        {
-            if (!isset(static::$all_events[$event]))
-            {
-                static::$all_events[$event] = array();
-            } 
-
-            if (!isset(static::$all_events[$event][$object_type])) 
-            {
-                static::$all_events[$event][$object_type] = array();
-            }
-            
-            return static::$all_events[$event][$object_type];
-        }
-        
-        static function register_handler($event, $object_type, $handler, $priority = 500) 
-        {
-            $handlers = &static::get_handlers($event, $object_type);
-            while (isset($handlers[$priority])) 
-            {
-                $priority++;
-            }
-            $handlers[$priority] = $handler;
-            ksort($handlers);
-        }
-        
-        private static function trigger_handlers(&$handlers, $event, $object_type, $object)
-        {
-            if (!empty($handlers))
-            {
-                foreach($handlers as $handler) 
-                {
-                    if ($handler($event, $object_type, $object) === false) 
-                    {
-                        return false;
-                    }
-                }
-            }        
-            return true;
-        }
-        
-        static function trigger_event($event, $object_type, $object = null) 
-        {
-            return static::trigger_handlers(static::get_handlers($event, $object_type), $event, $object_type, $object)
-                && static::trigger_handlers(static::get_handlers('all', $object_type), $event, $object_type, $object)
-                && static::trigger_handlers(static::get_handlers($event, 'all'), $event, $object_type, $object)
-                && static::trigger_handlers(static::get_handlers('all', 'all'), $event, $object_type, $object);
-        }
-    }
     
     function trigger_event($event, $object_type, $object = null)
     {
         return EventRegister::trigger_event($event, $object_type, $object);
-    }
-
-    function register_event_handler($event, $object_type, $handler, $priority = 500)
-    {
-        return EventRegister::register_handler($event, $object_type, $handler, $priority);
-    }
+    }    
     
     /**
      * Error handling
@@ -904,27 +780,4 @@ $server
             return true;
         }
 
-    /**
-     * This function is a shutdown hook registered on startup which does nothing more than trigger a
-     * shutdown event when the script is shutting down, but before database connections have been dropped etc.
-     *
-     */
-    function __shutdown_hook()
-    {
-        global $CONFIG, $START_MICROTIME;
 
-        trigger_event('shutdown', 'system');
-
-        if ($CONFIG->debug)
-        {
-            $uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
-            error_log("Page {$uri} generated in ".(float)(microtime(true)-$START_MICROTIME)." seconds");
-        }
-    }
-
-    function elgg_init()
-    {
-        register_shutdown_function('__shutdown_hook');
-    }
-
-    register_event_handler('init','system','elgg_init');

@@ -15,6 +15,43 @@ class Organization extends ElggUser
         return ElggFile::query()->where('container_guid=?',$this->guid);
     }
     
+    public function getWebsiteScore()    
+    {
+        $score = 0;
+    
+        if ($this->queryNewsUpdates()->where('time_created > ?', time() - 86400 * 31)->count() > 0)
+        {
+            $score += 10;
+        }
+        
+        if ($this->queryFiles()->where("size='small'")->count() >= 2)
+        {
+            $score += 10;
+        }
+        
+        if (sizeof($this->getContactInfo()) >= 2)
+        {   
+            $score += 10;
+        }
+        
+        $numWidgets = 0;        
+        foreach (array('history','projects','team') as $widgetName)
+        {
+            $widget = $this->getWidgetByName($widgetName);
+            if ($widget->isActive() && $widget->content)
+            {
+                $numWidgets++;
+            }
+        }
+             
+        if ($numWidgets >= 2)
+        {
+            $score += 10;
+        }
+        
+        return $score;
+    }
+    
     public function getFeedNames()
     {
         $feedNames = parent::getFeedNames();

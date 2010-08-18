@@ -48,7 +48,7 @@ global $CONFIG;
 $value = $trans ? $trans->value : $CONFIG->translations[$lang][$key];
 if (!$value)
 {
-    $value = get_auto_translation($enText, 'en', $lang);
+    $value = GoogleTranslate::get_auto_translation($enText, 'en', $lang);
 }
 
 echo view($input, array('internalname' => 'value', 'value' => $value, 'js'=>$js));

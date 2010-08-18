@@ -75,33 +75,6 @@ function __($message_key, $language_code = "") {
         ?: $message_key;
 }
 
-function get_language_link($lang)
-{
-    $name = escape(__($lang, $lang));
-
-    if (get_language() == $lang)
-    {
-        return "<strong>$name</strong>";
-    }
-    else
-    {
-        $url = url_with_param(Request::instance()->full_original_url(), 'lang', $lang);
-
-        return "<a href='".escape($url)."'>$name</a>";
-    }
-}
-
-function get_language_links()
-{
-    $links = array();
-    global $CONFIG;
-    foreach (Language::$languages as $code => $v)
-    {
-        $links[] = get_language_link($code);
-    }
-    echo implode(' &middot; ', $links);
-}
-
 function change_viewer_language($newLanguage)
 {
     global $CONFIG;

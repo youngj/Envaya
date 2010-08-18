@@ -153,13 +153,10 @@ class Controller_Org extends Controller
 
             validate_username($username);
 
-            access_show_hidden_entities(true);
-
             if (get_user_by_username($username))
             {
                 throw new RegistrationException(__('create:username_exists'));
             }
-
 
             $password = get_input('password');
             $password2 = get_input('password2');
@@ -190,7 +187,7 @@ class Controller_Org extends Controller
             $org->email = $email;
             $org->name = $name;
             $org->salt = generate_random_cleartext_password();
-            $org->password = generate_user_password($org, $password);
+            $org->password = $org->generate_password($password);
             $org->owner_guid = 0;
             $org->container_guid = 0;
             $org->language = get_language();

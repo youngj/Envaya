@@ -70,20 +70,12 @@ class ElggObject extends ElggEntity
         }
         $this->save();
     }
-
-    public function allowUnsafeHTML()
-    {
-        return false;
-    }
     
     public function setContent($content, $isHTML)
     {
         if ($isHTML)
         {
-            if (!$this->allowUnsafeHTML())
-            {
-                $content = sanitize_html($content);
-            }
+            $content = sanitize_html($content);
         }
         else
         {
@@ -106,7 +98,7 @@ class ElggObject extends ElggEntity
 
         if (!$this->language)
         {
-            $this->language = guess_language($this->content);
+            $this->language = GoogleTranslate::guess_language($this->content);
         }
     }
 

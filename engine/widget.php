@@ -134,13 +134,7 @@ class Widget extends ElggObject
     {
         return "{$this->getBaseURL()}/edit";
     }
-    
-    public function allowUnsafeHTML()
-    {
-        $container = $this->getContainerEntity();
-        return ($container && $container->allowUnsafeHTML());
-    }
-        
+            
     public function isActive()
     {
         return $this->guid && $this->isEnabled();

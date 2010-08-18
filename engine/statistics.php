@@ -58,33 +58,7 @@ class Statistics
      */
     function get_number_users($show_deactivated = false)
     {
-        global $CONFIG;
-
-        $access = "";
-
-        if (!$show_deactivated)
-            $access = "and " . get_access_sql_suffix();
-
-        $result = get_data_row("SELECT count(*) as count from entities where type='user' $access");
-
-        if ($result)
-            return $result->count;
-
-        return false;
+        return ElggUser::query()->show_disabled($show_deactivated)->count();
     }
 
-    /**
-     * Return a list of how many users are currently online, rendered as a view.
-     */
-    function get_online_users()
-    {
-        $offset = get_input('offset',0);
-        $count = count(find_active_users(600,9999));
-        $objects = find_active_users(600,10,$offset);
-
-        if ($objects)
-        {
-            return view_entity_list($objects, $count,$offset,10);
-        }
-    }
 }

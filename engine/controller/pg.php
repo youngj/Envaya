@@ -16,8 +16,6 @@ class Controller_Pg extends Controller {
 
     function action_submit_login()
     {
-        record_user_action();
-
         $username = get_input('username');
         $password = get_input("password");
         $persistent = get_input("persistent", false);
@@ -96,8 +94,6 @@ class Controller_Pg extends Controller {
     {
         $username = get_input('username');
 
-        $access_status = access_get_show_hidden_status();
-        access_show_hidden_entities(true);
         $user = get_user_by_username($username);
         if ($user)
         {
@@ -106,7 +102,16 @@ class Controller_Pg extends Controller {
                 register_error(__('user:password:resetreq:no_email'));
                 forward("page/contact");
             }
-            if (send_new_password_request($user->guid))
+            
+            $user->passwd_conf_code = generate_random_cleartext_password();
+            $user->save();
+
+            global $CONFIG;
+            $link = $CONFIG->url . "pg/password_reset?u={$user->guid}&c={$user->passwd_conf_code}";
+
+            $email = sprintf(__('email:resetreq:body',$user->language), $user->name, $link);
+
+            if ($user->notify(__('email:resetreq:subject',$user->language), $email))
             {
                 system_message(__('user:password:resetreq:success'));
             }
@@ -118,7 +123,6 @@ class Controller_Pg extends Controller {
         else
             register_error(sprintf(__('user:username:notfound'), $username));
 
-        access_show_hidden_entities($access_status);
         forward();
     }
 
@@ -127,14 +131,27 @@ class Controller_Pg extends Controller {
         global $CONFIG;
 
         $user_guid = get_input('u');
-        $code = get_input('c');
+        $conf_code = get_input('c');
+        
+        $user = get_user($user_guid);
 
-        access_show_hidden_entities(true);
+        if ($user && $user->passwd_conf_code == $conf_code)
+        {
+            $password = generate_random_cleartext_password();
 
-        if (execute_new_password_request($user_guid, $code))
+            $user->setPassword($password);
+            $user->passwd_conf_code = null;
+            $user->save();
+
+            $email = sprintf(__('email:resetpassword:body',$user->language), $user->name, $password);
+
+            $user->notify(__('email:resetpassword:subject',$user->language), $email);
             system_message(__('user:password:reset'));
+        }
         else
+        {
             register_error(__('user:password:fail'));
+        }
 
         forward("pg/login");
         exit;

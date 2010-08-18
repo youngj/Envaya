@@ -34,7 +34,6 @@
         array(
             'internalname' => 'content',
             'valueIsHTML' => true,
-            'allowCustomHTML' => true,
             'value' => '',
             'trackDirty' => true
         )

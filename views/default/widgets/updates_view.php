@@ -3,7 +3,7 @@
     $widget = $vars['widget'];
     $org = $vars['widget']->getContainerEntity();
        
-    $items = $org->getFeedItems(6);
+    $items = $org->queryFeedItems()->limit(6)->filter();
 
     echo "<div class='section_content'>";
 

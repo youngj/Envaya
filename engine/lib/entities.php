@@ -150,7 +150,7 @@
      * @param int $guid The GUID of the entity
      * @return a child of ElggEntity appropriate for the type.
      */
-    function get_entity($guid)
+    function get_entity($guid, $show_disabled = false)
     {
         if (!$guid)
         {
@@ -168,7 +168,7 @@
             }
         }
 
-        if ($entity && !has_access_to_entity($entity))
+        if ($entity && !$show_disabled && $entity->enabled == 'no')
         {
             return null;
         }

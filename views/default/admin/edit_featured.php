@@ -26,7 +26,6 @@
         array(
             'internalname' => 'content',
             'valueIsHTML' => true,
-            'allowCustomHTML' => true,
             'value' => $entity->content,
             'trackDirty' => true
         )

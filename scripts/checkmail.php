@@ -35,14 +35,9 @@
         }
                         
         $emailCode = $matches[1];
-        
-        $showHidden = access_get_show_hidden_status();
-        access_show_hidden_entities(true);
-                   
+                           
         $org = ElggUser::getByEmailCode($emailCode);
                 
-        access_show_hidden_entities($showHidden);
-        
         if (!$org)
         {
             throw new InvalidParameterException("no matching organization: $emailCode");

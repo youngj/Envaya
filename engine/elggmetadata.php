@@ -5,38 +5,22 @@ class ElggMetadata
     protected $dirty = false;
     protected $attributes;
 
-    function __construct($id = null)
+    function __construct($row = null)
     {
-        $this->attributes = array();
+        $this->attributes = $row ? ((array)$row) : array();
 
-        if (!empty($id))
+        if ($row)
         {
-            if ($id instanceof stdClass) // db row
-                $metadata = $id;
-            else
-                $metadata = get_metadata($id);
+            $value = $row->value;
+            $valueType = $row->value_type;
 
-            if ($metadata)
+            if ($valueType == 'json')
             {
-                $objarray = (array) $metadata;
-                foreach($objarray as $key => $value)
-                {
-                    $this->attributes[$key] = $value;
-                }
-
-                $value = $metadata->value;
-                $valueType = $metadata->value_type;
-
-                if ($valueType == 'json')
-                {
-                    $this->attributes['value'] = json_decode($value, true);
-                }
-                else if ($valueType == 'integer')
-                {
-                    $this->attributes['value'] = (int)$value;
-                }
-
-                $this->attributes['type'] = "metadata";
+                $this->attributes['value'] = json_decode($value, true);
+            }
+            else if ($valueType == 'integer')
+            {
+                $this->attributes['value'] = (int)$value;
             }
         }
     }

@@ -20,79 +20,18 @@ function authenticate($username, $password)
                 return false;
             }
 
-            if ($user->password == generate_user_password($user, $password))
+            if ($user->password == $user->generate_password($password))
             {
                 return $user;
             }
 
-            log_login_failure($user->guid);
+            $user->log_login_failure();
+            $user->save();
         }
     }
 
     return false;
 
-}
-
-function log_login_failure($user_guid)
-{
-    $user_guid = (int)$user_guid;
-    $user = get_entity($user_guid);
-
-    if ($user_guid && $user && ($user instanceof ElggUser))
-    {
-        $fails = (int)$user->login_failures;
-        $fails++;
-
-        $user->login_failures = $fails;
-        $user->set("login_failure_$fails", time());
-    }
-}
-
-function reset_login_failure_count($user_guid)
-{
-    $user_guid = (int)$user_guid;
-    $user = get_entity($user_guid);
-
-    if (($user_guid) && ($user) && ($user instanceof ElggUser))
-    {
-        $fails = (int)$user->login_failures;
-
-        if ($fails) {
-            for ($n=1; $n <= $fails; $n++)
-                $user->set("login_failure_$n", null);
-
-            $user->login_failures = null;
-        }
-        $user->save();
-    }
-}
-
-function check_rate_limit_exceeded($user_guid)
-{
-    $limit = 5;
-    $user_guid = (int)$user_guid;
-    $user = get_entity($user_guid);
-
-    if (($user_guid) && ($user) && ($user instanceof ElggUser))
-    {
-        $fails = (int)$user->login_failures;
-        if ($fails >= $limit)
-        {
-            $cnt = 0;
-            $time = time();
-            for ($n=$fails; $n>0; $n--)
-            {
-                $f = $user->get("login_failure_$n");
-                if ($f > $time - (60*5))
-                    $cnt++;
-
-                if ($cnt==$limit) return true; // Limit reached
-            }
-        }
-
-    }
-
-    return false;
 }
 
 /**
@@ -109,10 +48,8 @@ function login(ElggUser $user, $persistent = false)
     if ($user->isBanned())
         return false;
 
-    /*
-    if (check_rate_limit_exceeded($user->guid))
+    if ($user->check_rate_limit_exceeded())
         return false;
-    */
 
     Session::set('guid', $user->getGUID());
 
@@ -124,13 +61,12 @@ function login(ElggUser $user, $persistent = false)
     // Users privilege has been elevated, so change the session id (help prevent session hijacking)
     session_regenerate_id(true);
 
-    if ($user)
-    {
-        EventRegister::trigger_event('login','user',$user);
-    }    
+    EventRegister::trigger_event('login','user',$user);
     
-    set_last_login($user->guid);
-    reset_login_failure_count($user->guid);
+    $user->reset_login_failure_count();
+    $user->last_login = time();
+    $user->last_action = time();
+    $user->save();    
 
     return true;
 }
