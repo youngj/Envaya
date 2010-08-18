@@ -1,15 +1,5 @@
 <?php
 
-    /**
-     * Elgg library
-     * Contains important functionality core to Elgg
-     *
-     * @package Elgg
-     * @subpackage Core
-     * @author Curverider Ltd
-     * @link http://elgg.org/
-     */
-
     function url_with_param($url, $param, $value)
     {
         $url = parse_url($url);
@@ -26,7 +16,7 @@
         return htmlentities($val, ENT_QUOTES, 'UTF-8');
     }
 
-    function isPearError($res)
+    function is_pear_error($res)
     {
         return is_a($res, 'PEAR_Error');
     }

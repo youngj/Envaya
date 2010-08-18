@@ -1,18 +1,12 @@
 <?php
 
-class Organization extends ElggUser
+class Organization extends User
 {
-    protected function initialise_attributes()
-    {
-        parent::initialise_attributes();
-        $this->attributes['subtype'] = T_organization;
-    }
-
     static $subtype_id = T_organization;
 
     public function queryFiles()
     {    
-        return ElggFile::query()->where('container_guid=?',$this->guid);
+        return UploadedFile::query()->where('container_guid=?',$this->guid);
     }
     
     public function getWebsiteScore()    

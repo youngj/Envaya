@@ -22,7 +22,7 @@ function get_thumbnail_src($html)
         $ownerGuid = $matches[2];
         $groupName = $matches[3];
 
-        $files = ElggFile::query()->where('owner_guid = ?', $ownerGuid)->
+        $files = UploadedFile::query()->where('owner_guid = ?', $ownerGuid)->
                     where('group_name = ?', $groupName)->
                     where('size=?', 'small')->filter();
 
@@ -42,7 +42,7 @@ function get_file_from_url($url)
         $groupName = $matches[2];
         $fileName = $matches[3];
 
-        $files = ElggFile::query()->where('owner_guid = ?', $ownerGuid)->
+        $files = UploadedFile::query()->where('owner_guid = ?', $ownerGuid)->
             where('group_name = ?', $groupName)->where('filename = ?', $fileName)->filter();
        
         if (sizeof($files) > 0)
@@ -75,7 +75,7 @@ function upload_temp_images($filename, $sizes)
             }
             else
             {
-                $file = new ElggFile();
+                $file = new UploadedFile();
                 $file->owner_guid = Session::get_loggedin_userid();
                 $file->group_name = $groupName;
                 $file->size = $sizeName;
@@ -122,7 +122,7 @@ function get_uploaded_files($json)
     foreach ($filedata as $size => $value)
     {
         $file = get_entity($value['guid']);
-        if ($file instanceof ElggFile)
+        if ($file instanceof UploadedFile)
         {
             $filedata[$size]['file'] = $file;
         }

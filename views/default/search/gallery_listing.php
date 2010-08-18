@@ -1,17 +1,3 @@
-<?php
-
-	/**
-	 * Elgg search listing: gallery view
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-
-	 * @author Curverider Ltd
-
-	 * @link http://elgg.org/
-	 */
-
-?>
 
 	<div class="search_listing">
 	

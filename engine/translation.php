@@ -1,6 +1,6 @@
 <?php
 
-class Translation extends ElggObject
+class Translation extends Entity
 {
     static $subtype_id = T_translation;
     static $table_name = 'translations';

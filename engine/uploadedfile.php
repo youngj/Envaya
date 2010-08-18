@@ -1,6 +1,6 @@
 <?php
 
-class ElggFile extends ElggObject
+class UploadedFile extends Entity
 {
     static $subtype_id = T_file;
 
@@ -16,7 +16,7 @@ class ElggFile extends ElggObject
 
     public function getFilesInGroup()
     {
-        return ElggFile::query()->where('owner_guid = ?', $this->owner_guid)->
+        return UploadedFile::query()->where('owner_guid = ?', $this->owner_guid)->
             where('group_name = ?', $this->group_name)->filter();            
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-class NewsUpdate extends ElggObject
+class NewsUpdate extends Entity
 {
     static $subtype_id = T_blog;
     static $table_name = 'news_updates';
@@ -25,7 +25,7 @@ class NewsUpdate extends ElggObject
 
     public function getImageFile($size = '')
     {
-        $file = new ElggFile();
+        $file = new UploadedFile();
         $file->owner_guid = $this->container_guid;
         $file->filename = "news/{$this->guid}$size.jpg";
         return $file;

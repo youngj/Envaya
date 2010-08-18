@@ -1,6 +1,6 @@
 <?php
 
-class EmailTemplate extends ElggObject
+class EmailTemplate extends Entity
 {
     static $subtype_id = T_email_template;
     static $table_name = 'email_templates';

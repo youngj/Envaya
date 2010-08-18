@@ -44,7 +44,7 @@ function run_sql_script($scriptlocation) {
         }
 
     } else {
-        throw new DatabaseException(sprintf("Elgg couldn't find the requested database script at %s.", $scriptlocation));
+        throw new DatabaseException(sprintf("couldn't find the requested database script at %s.", $scriptlocation));
     }
 }
 

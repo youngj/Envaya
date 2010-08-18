@@ -1,15 +1,7 @@
 <?php
 
     /**
-     * Elgg confirmation link
      * A link that displays a confirmation dialog before it executes
-     *
-     * @package Elgg
-     * @subpackage Core
-
-     * @author Curverider Ltd
-
-     * @link http://elgg.org/
      *
      * @uses $vars['text'] The text of the link
      * @uses $vars['href'] The address

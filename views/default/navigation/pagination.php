@@ -1,15 +1,5 @@
 <?php
 
-    /**
-     * Elgg pagination
-     *
-     * @package Elgg
-     * @subpackage Core
-     * @author Curverider Ltd
-     * @link http://elgg.org/
-     *
-     */
-
     if (!isset($vars['offset'])) {
         $offset = 0;
     } else {

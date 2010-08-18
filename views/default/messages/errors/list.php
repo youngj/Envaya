@@ -1,16 +1,7 @@
 <?php
 
     /**
-     * Elgg list system messages
      * Lists system messages
-     * 
-     * @package Elgg
-     * @subpackage Core
-
-     * @author Curverider Ltd
-
-     * @link http://elgg.org/
-     * 
      * @uses $vars['object'] An array of system messages
      */
 

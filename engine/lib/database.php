@@ -1,17 +1,5 @@
 <?php
 
-/**
- * Elgg database
- * Contains database connection and transfer functionality
- *
- * @package Elgg
- * @subpackage Core
-
- * @author Curverider Ltd
-
- * @link http://elgg.org/
- */
- 
 $DB_PROFILE = array();
 $DB_DELAYED_QUERIES = array();
 
@@ -143,7 +131,7 @@ function get_data_row($query, $args = array())
     {
         if ($row = $stmt->fetch())
         {
-            $res = make_obj_from_array($row);
+            $res = (object)$row;
         }
         $stmt->closeCursor();
     }
@@ -161,7 +149,7 @@ function get_data($query, $args = array())
 
         while ($row = $stmt->fetch())
         {
-            $res[] = make_obj_from_array($row);
+            $res[] = (object)$row;
         }
 
         $stmt->closeCursor();
@@ -247,16 +235,6 @@ function stmt_execute($db, $query, $args)
         throw new DatabaseException(__("DatabaseException:ExecuteFailed"));
     }
     return $stmt;
-}
-
-function make_obj_from_array($obj)
-{
-    $res = new stdClass();
-    foreach ($obj as $k => $v)
-    {
-        $res->$k = $v;
-    }
-    return $res;
 }
 
 function sanitize_order_by($order_by)

@@ -1,14 +1,5 @@
 <?php
-	/**
-	 * Elgg statistics screen
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-	 * @author Curverider Ltd
-	 * @link http://elgg.org/
-	 */
 
-	// Work out number of users
 	$users_stats = Statistics::get_number_users();
 	$total_users = Statistics::get_number_users(true);
 	

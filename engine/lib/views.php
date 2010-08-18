@@ -1,42 +1,8 @@
 <?php
 
-/**
- * Templating and visual functionality
- */
-
-$CURRENT_SYSTEM_VIEWTYPE = "";
-
-/**
- * Override the view mode detection for the elgg view system.
- *
- * This function will force any further views to be rendered using $viewtype. Remember to call elgg_set_viewtype() with
- * no parameters to reset.
- *
- * @param string $viewtype The view type, e.g. 'rss', or 'default'.
- * @return bool
- */
-function elgg_set_viewtype($viewtype = "")
+function get_viewtype()
 {
-    global $CURRENT_SYSTEM_VIEWTYPE;
-
-    $CURRENT_SYSTEM_VIEWTYPE = $viewtype;
-
-    return true;
-}
-
-/**
- * Return the current view type used by the elgg view system.
- *
- * By default, this function will return a value based on the default for your system or from the command line
- * view parameter. However, you may force a given view type by calling elgg_set_viewtype()
- *
- * @return string The view.
- */
-function elgg_get_viewtype()
-{
-    global $CURRENT_SYSTEM_VIEWTYPE;
-
-    return $CURRENT_SYSTEM_VIEWTYPE ?: get_input('view') ?: 'default';
+    return get_input('view') ?: 'default';
 }
 
 /**
@@ -67,7 +33,7 @@ function view($view, $vars = null)
     $vars['user'] = Session::get_loggedin_user();
     $vars['config'] = $CONFIG;
     $vars['url'] = $CONFIG->url;
-    $viewtype = elgg_get_viewtype();
+    $viewtype = get_viewtype();
     $viewDir = dirname(dirname(__DIR__)) . "/views/";
     $viewFile = $viewDir . "{$viewtype}/{$view}.php";
 
@@ -102,7 +68,7 @@ function include_view($viewFile, $vars)
 function view_exists($view, $viewtype = '')
 {
     if (empty($viewtype))
-        $viewtype = elgg_get_viewtype();
+        $viewtype = get_viewtype();
 
     return file_exists(dirname(dirname(__DIR__)) . "/views/{$viewtype}/{$view}.php");
 
@@ -116,7 +82,7 @@ function view_exists($view, $viewtype = '')
  * array('entity' => $entity) as its parameters, and therefore this is what the view should expect
  * to receive.
  *
- * @param ElggEntity $entity The entity to display
+ * @param Entity $entity The entity to display
  * @param boolean $full Determines whether or not to display the full version of an object, or a smaller version for use in aggregators etc
  * @return string HTML (etc) to display
  */
@@ -126,8 +92,8 @@ function view_entity($entity, $full = false)
     if (!$entity) return '';
 
     $classes = array(
-        'ElggUser' => 'user',
-        'ElggObject' => 'object',
+        'User' => 'user',
+        'Entity' => 'object',
     );
 
     $entity_class = get_class($entity);
@@ -220,17 +186,6 @@ function view_title($title, $args = null)
 {
     return view('page_elements/title', array('title' => $title, 'args' => $args));
 }        
-
-/**
- * Wrapper function to display search listings.
- *
- * @param string $icon The icon for the listing
- * @param string $info Any information that needs to be displayed.
- * @return string The HTML (etc) representing the listing
- */
-function elgg_view_listing($icon, $info) {
-    return view('search/listing',array('icon' => $icon, 'info' => $info));
-}
 
 /**
  * Returns a representation of a full 'page' (which might be an HTML page, RSS file, etc, depending on the current view)

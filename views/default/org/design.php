@@ -19,7 +19,7 @@ echo view("input/image",
     array(
         'current' => $user->getIcon('medium'),
         'trackDirty' => true,
-        'sizes' => ElggUser::getIconSizes(),
+        'sizes' => User::getIconSizes(),
         'removable' => $user->custom_icon,
         'thumbnail_size' => 'medium',
         'internalname' => 'icon',
@@ -124,7 +124,7 @@ function customHeaderChanged()
     echo view("input/swfupload_image",
         array(
             'trackDirty' => true,
-            'sizes' => ElggUser::getHeaderSizes(),
+            'sizes' => User::getHeaderSizes(),
             'thumbnail_size' => 'large',
             'internalname' => 'header',
         ))

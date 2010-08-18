@@ -4,7 +4,7 @@
     {
         $result = get_entity($guid);
 
-        if (!$result || !$result instanceof ElggUser)
+        if (!$result || !$result instanceof User)
             return null;
 
         return $result;
@@ -38,7 +38,7 @@
 
     function get_users_by_email($email)
     {
-        return ElggUser::query()->where('email = ?', $email)->filter();
+        return User::query()->where('email = ?', $email)->filter();
     }
 
     function is_email_address($address)
@@ -205,7 +205,7 @@
         $admin = Datalist::get('admin_registered');
 
         // Otherwise ...
-        $user = new ElggUser();
+        $user = new User();
         $user->username = $username;
         $user->email = $email;
         $user->name = $name;

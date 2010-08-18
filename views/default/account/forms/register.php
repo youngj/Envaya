@@ -1,15 +1,4 @@
-<?php
-
-     /**
-     * Elgg register form
-     *
-     * @package Elgg
-     * @subpackage Core
-
-     * @author Curverider Ltd
-
-     * @link http://elgg.org/
-     */
+<?php     
 
     $username = get_input('u');
     $email = get_input('e');

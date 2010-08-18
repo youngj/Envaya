@@ -15,7 +15,7 @@ echo "<a style='float:right' href='org/translate?from=$escUrl&prop[]={$entity->g
 echo "<a href='{$org->getURL()}'>".escape($org->name)."</a> : ";
 echo "<a href='{$entity->getURL()}'>".escape($entity->getTitle())."</a>";
 
-echo "<div>".get_snippet($entity->$prop)."</div>";
+echo "<div>".Markup::get_snippet($entity->$prop)."</div>";
 
 ?>
 </div>

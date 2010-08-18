@@ -20,7 +20,7 @@
         echo "<em>".__('org:mission')."</em>: ";
 
         $content = $home->renderContent();
-        $snippet = get_snippet($content, $maxLength);
+        $snippet = Markup::get_snippet($content, $maxLength);
         echo $snippet;
 
         if (strlen($content) > $maxLength)

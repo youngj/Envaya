@@ -1,16 +1,4 @@
 <?php
-
-	/**
-	 * Elgg search listing
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-
-	 * @author Curverider Ltd
-
-	 * @link http://elgg.org/
-	 */
-
 	if (isset($vars['search_viewtype']) && $vars['search_viewtype'] == "gallery") {
 		
 		echo view("search/gallery_listing",$vars);

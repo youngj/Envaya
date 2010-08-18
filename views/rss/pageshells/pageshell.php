@@ -1,14 +1,4 @@
 <?php
-
-	/**
-	 * Elgg RSS output pageshell
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-	 * @link http://elgg.org/
-	 * 
-	 */
-
 	header("Content-Type: text/xml");
 	
 	echo "<?xml version='1.0'?>\n";

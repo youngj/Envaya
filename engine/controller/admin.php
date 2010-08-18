@@ -179,8 +179,8 @@ class Controller_Admin extends Controller
 
         $title = view_title(__('admin:user'));
         
-        $count = ElggUser::query()->count();
-        $entities = ElggUser::query()->limit($limit, $offset)->order_by('e.guid desc')->filter();
+        $count = User::query()->count();
+        $entities = User::query()->limit($limit, $offset)->order_by('e.guid desc')->filter();
 
         $result = view_entity_list($entities, $count, $offset, $limit);
 
@@ -211,7 +211,7 @@ class Controller_Admin extends Controller
 
         $object = get_input('object');
        
-        $query = ElggUser::query()->where('(INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0)', $tag, $tag);
+        $query = User::query()->where('(INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0)', $tag, $tag);
        
         if ($users = $query->limit($limit, $offset)->filter())         
         {

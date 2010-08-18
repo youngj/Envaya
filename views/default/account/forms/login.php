@@ -1,16 +1,4 @@
 <?php
-
-     /**
-     * Elgg login form
-     *
-     * @package Elgg
-     * @subpackage Core
-
-     * @author Curverider Ltd
-
-     * @link http://elgg.org/
-     */
-
     global $CONFIG;
 
     ob_start();
@@ -54,8 +42,6 @@
     $login_url = $vars['url'];
     if ((isset($CONFIG->https_login)) && ($CONFIG->https_login))
         $login_url = str_replace("http", "https", $vars['url']);
-?>
 
-        <?php
-            echo view('input/form', array('body' => $form_body, 'action' => "{$login_url}pg/submit_login"));
-        ?>
+    echo view('input/form', array('body' => $form_body, 'action' => "{$login_url}pg/submit_login"));
+?>

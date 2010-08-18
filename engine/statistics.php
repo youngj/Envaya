@@ -58,7 +58,7 @@ class Statistics
      */
     function get_number_users($show_deactivated = false)
     {
-        return ElggUser::query()->show_disabled($show_deactivated)->count();
+        return User::query()->show_disabled($show_deactivated)->count();
     }
 
 }

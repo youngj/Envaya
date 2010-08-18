@@ -1,16 +1,5 @@
 <?php
 
-	/**
-	 * Elgg gallery view
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-
-	 * @author Curverider Ltd
-
-	 * @link http://elgg.org/
-	 */
-
 		$entities = $vars['entities'];
 		if (is_array($entities) && sizeof($entities) > 0) {
 			

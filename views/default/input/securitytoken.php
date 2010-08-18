@@ -1,13 +1,6 @@
 <?php
     /**
      * CSRF security token view for use with secure forms.
-     *
-     * It is still recommended that you use input/form.
-     *
-     * @package Elgg
-     * @subpackage Core
-     * @author Curverider Ltd
-     * @link http://elgg.org/
      */
 
     $ts = time();

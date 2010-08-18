@@ -1,6 +1,6 @@
 <?php
 
-class FeaturedSite extends ElggObject
+class FeaturedSite extends Entity
 {
     static $subtype_id = T_featured_site;
     static $table_name = 'featured_sites';

@@ -1,13 +1,4 @@
 <?php
-    /**
-     * Elgg add user form.
-     *
-     * @package Elgg
-     * @subpackage Core
-     * @author Curverider Ltd
-     * @link http://elgg.org/
-     */
-
     $admin_option = false;
     if ((Session::get_loggedin_user()->admin) && ($vars['show_admin']))
         $admin_option = true;

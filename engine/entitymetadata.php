@@ -1,6 +1,6 @@
 <?php
 
-class ElggMetadata
+class EntityMetadata
 {
     protected $dirty = false;
     protected $attributes;

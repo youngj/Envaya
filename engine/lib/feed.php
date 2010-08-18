@@ -30,7 +30,7 @@ function post_feed_items($user, $actionName, $subject, $args = null, $time = nul
 
     $feedNames = $user->getFeedNames();
 
-    if ($subject instanceof ElggUser && $subject != $user)
+    if ($subject instanceof User && $subject != $user)
     {
         $feedNames = $feedNames + $subject->getFeedNames();
         $feedNames = array_flip(array_flip($feedNames));

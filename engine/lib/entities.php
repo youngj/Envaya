@@ -1,16 +1,4 @@
 <?php
-    /**
-     * Elgg entities.
-     * Functions to manage all elgg entities (sites, collections, objects and users).
-     *
-     * @package Elgg
-     * @subpackage Core
-
-     * @author Curverider Ltd <info@elgg.com>
-
-     * @link http://elgg.org/
-     */
-
     /// Cache objects in order to minimise database access.
     $ENTITY_CACHE = array();
 
@@ -27,7 +15,7 @@
         get_cache()->delete(entity_cache_key($guid));
     }
 
-    function cache_entity(ElggEntity $entity)
+    function cache_entity($entity)
     {
         global $ENTITY_CACHE;
 
@@ -121,17 +109,10 @@
 
         return get_data_row("SELECT * from entities where guid=?", array($guid));
     }
-
-    /**
-     * Create an Elgg* object from a given entity row.
-     */
-    function entity_row_to_elggstar($row)
+    function entity_row_to_entity($row)
     {
-        if (!($row instanceof stdClass))
-            return $row;
-
-        if ((!isset($row->guid)) || (!isset($row->subtype)))
-            return $row;
+        if (!$row)
+            return null;
 
         $classname = get_subtype_class($row->type, $row->subtype);
 
@@ -141,14 +122,14 @@
         }
         else
         {
-            throw new ClassException(sprintf(__('error:ClassnameNotClass'), $classname, 'ElggEntity'));
+            throw new ClassException(sprintf(__('error:ClassnameNotClass'), $classname, 'Entity'));
         }
     }
 
     /**
      * Return the entity for a given guid as the correct object.
      * @param int $guid The GUID of the entity
-     * @return a child of ElggEntity appropriate for the type.
+     * @return a child of Entity appropriate for the type.
      */
     function get_entity($guid, $show_disabled = false)
     {
@@ -160,7 +141,7 @@
         $entity = retrieve_cached_entity($guid);
         if (!$entity)
         {
-            $entity = entity_row_to_elggstar(get_entity_as_row($guid));
+            $entity = entity_row_to_entity(get_entity_as_row($guid));
 
             if ($entity)
             {

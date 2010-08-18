@@ -19,7 +19,7 @@
 
         if ($oldFile->exists())
         {
-            $newFile = new ElggFile();
+            $newFile = new UploadedFile();
             $newFile->owner_guid = $newsUpdate->owner_guid;
             $newFile->group_name = $groupName;
             $newFile->size = $size;

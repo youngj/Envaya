@@ -1,6 +1,6 @@
 <?php
 
-class InterfaceTranslation extends ElggObject
+class InterfaceTranslation extends Entity
 {
     static $subtype_id = T_interface_translation;
     static $table_name = 'interface_translations';

@@ -6,7 +6,7 @@ class Query_SelectEntity extends Query_Select
     function __construct($sub_table)
     {
         parent::__construct("entities e");
-        $this->set_row_function('entity_row_to_elggstar');
+        $this->set_row_function('entity_row_to_entity');
         $this->join("INNER JOIN $sub_table u ON u.guid = e.guid");        
         $this->show_disabled = false;
     }   

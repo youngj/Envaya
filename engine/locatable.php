@@ -1,15 +1,6 @@
 <?php
 
     /**
-     * Elgg geo-location tagging library.
-     *
-     * @package Elgg
-     * @subpackage Core
-     * @author Curverider Ltd
-     * @link http://elgg.org/
-     */
-
-    /**
      * Define an interface for geo-tagging entities.
      */
     interface Locatable

@@ -1,13 +1,7 @@
 <?php
 
 /**
- * Simple cache viewer
  * Bypasses the engine to view simple cached views.
- *
- * @package Elgg
- * @subpackage Core
- * @author Curverider Ltd
- * @link http://elgg.org/
  */
  
 require_once(dirname(__DIR__). '/engine/settings.php');

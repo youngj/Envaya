@@ -1,15 +1,4 @@
 <?php
-
-    /**
-     * Elgg actions
-     * Allows system modules to specify actions
-     *
-     * @package Elgg
-     * @subpackage Core
-     * @author Curverider Ltd
-     * @link http://elgg.org/
-     */
-
     /**
      * Validate an action token, returning true if valid and false if not
      *

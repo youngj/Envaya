@@ -49,19 +49,17 @@
     $CONFIG->sitename = "Envaya";
 
     $CONFIG->types = array(
-        'object' => 'ElggObject',
-        'user' => 'ElggUser'
+        'object' => 'Entity',
+        'user' => 'User'
     );
 
     $CONFIG->subtypes = array(
-        1 => array("object", "file", "ElggFile"),
-        2 => array("object", "plugin", "ElggPlugin"),
+        1 => array("object", "file", "UploadedFile"),
         3 => array("object", "widget", "Widget"),
         4 => array('user', 'organization', "Organization"),
         5 => array('object', 'translation', 'Translation'),
         6 => array('object', 'interface_translation', 'InterfaceTranslation'),
         7 => array('object', 'blog', 'NewsUpdate'),        
-        9 => array('object', 'admin_message', 'ElggObject'),
         10 => array('object', 'partnership', 'Partnership'),
         // 11 was previously used for TeamMember
         12 => array('object', 'featured_site', 'FeaturedSite'),

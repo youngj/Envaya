@@ -1,17 +1,4 @@
-<?php
-	/**
-	 * Elgg statistics screen
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-
-	 * @author Curverider Ltd
-
-	 * @link http://elgg.org/
-	 */
-
-	
-	// Get entity statistics
+<?php	
 	$entity_stats = Statistics::get_entity_stats();
 	$even_odd = "";
 ?>

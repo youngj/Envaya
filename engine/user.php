@@ -1,30 +1,11 @@
 <?php
-/**
- * ElggUser
- *
- * Representation of a "user" in the system.
- *
- * @package Elgg
- * @subpackage Core
- */
-class ElggUser extends ElggEntity
-    implements Locatable
+
+class User extends Entity implements Locatable
 {
 
-    /**
-     * Initialise the attributes array.
-     * This is vital to distinguish between metadata and base parameters.
-     *
-     * Place your base parameters here.
-     */
+    static $table_name = 'users_entity';
 
-    protected function initialise_attributes()
-    {
-        parent::initialise_attributes();
-
-        $this->attributes['type'] = "user";
-
-        $this->initializeTableAttributes('users_entity', array(
+    static $table_attributes = array(
             'name' => '',
             'username' => '',
             'password' => '',
@@ -49,7 +30,19 @@ class ElggUser extends ElggEntity
             'last_notify_time' => null,
             'last_action' => 0,
             'last_login' => 0
-        ));
+        );
+
+    /**
+     * Initialise the attributes array.
+     * This is vital to distinguish between metadata and base parameters.
+     *
+     * Place your base parameters here.
+     */
+
+    protected function initialize_attributes()
+    {
+        parent::initialize_attributes();
+        $this->attributes['type'] = "user";
     }
 
     public function getFeedNames()
@@ -65,12 +58,6 @@ class ElggUser extends ElggEntity
         return !$this->subtype || $this->setup_state >= 5;
     }
 
-    protected function loadFromPartialTableRow($row)
-    {
-        $userEntityRow = (property_exists($row, 'username')) ? $row : $this->selectTableAttributes('users_entity', $row->guid);
-        return parent::loadFromPartialTableRow($row) && $this->loadFromTableRow($userEntityRow);
-    }
-
     public function getNameForEmail()
     {
         $name = mb_encode_mimeheader($this->name, "UTF-8", "B");
@@ -82,38 +69,6 @@ class ElggUser extends ElggEntity
         return $this->name;
     }
 
-    /**
-     * Override the load function.
-     * This function will ensure that all data is loaded (were possible), so
-     * if only part of the ElggUser is loaded, it'll load the rest.
-     *
-     * @param int $guid
-     * @return true|false
-     */
-    protected function load($guid)
-    {
-        return parent::load($guid) && $this->loadFromTableRow(get_user_entity_as_row($guid));
-    }
-
-    /**
-     * Saves this user to the database.
-     * @return true|false
-     */
-    public function save()
-    {
-        return parent::save() && $this->saveTableAttributes('users_entity');
-    }
-
-    /**
-     * User specific override of the entity delete method.
-     *
-     * @return bool
-     */
-    public function delete()
-    {
-        return parent::delete() && $this->deleteTableAttributes('users_entity');
-    }
-
     public function getURL()
     {
         global $CONFIG;
@@ -122,7 +77,7 @@ class ElggUser extends ElggEntity
 
     public function getIconFile($size = '')
     {
-        $file = new ElggFile();
+        $file = new UploadedFile();
         $file->owner_guid = $this->guid;
         $file->filename = "icon$size.jpg";
         return $file;
@@ -178,7 +133,7 @@ class ElggUser extends ElggEntity
 
     public function getHeaderFile($size = '')
     {
-        $file = new ElggFile();
+        $file = new UploadedFile();
         $file->owner_guid = $this->guid;
         $file->filename = "header$size.jpg";
         return $file;

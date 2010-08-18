@@ -1,13 +1,5 @@
 <?php
-	/**
-	 * ElggEntity default view.
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-	 * @author Curverider Ltd
-	 * @link http://elgg.org/
-     */
-	    
+    
     $icon = view(
             'graphics/icon', array(
             'entity' => $vars['entity'],
@@ -32,4 +24,4 @@
 
     $icon = "<a href=\"" . $vars['entity']->getUrl() . "\">$icon</a>";
 
-    echo elgg_view_listing($icon, $info);
+    echo view('search/listing',array('icon' => $icon, 'info' => $info));

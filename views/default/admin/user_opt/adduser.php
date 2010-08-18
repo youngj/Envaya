@@ -1,14 +1,3 @@
-<?php
-	/**
-	 * Add a user.
-	 * Form to add a new user.
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-	 * @author Curverider Ltd
-	 * @link http://elgg.org/
-	 */
-?>
 
 <script type='text/javascript'>
 function toggle($id)

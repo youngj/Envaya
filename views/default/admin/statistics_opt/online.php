@@ -1,17 +1,3 @@
-<?php
-	/**
-	 * Elgg statistics screen
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-
-	 * @author Curverider Ltd
-
-	 * @link http://elgg.org/
-	 */
-	
-
-?>
 
 <div class="admin_users_online">
     <h3><?php echo __('admin:statistics:label:onlineusers'); ?></h3>
@@ -20,7 +6,7 @@
         $limit = 10;
         
         $time = time() - 600;
-        $query = ElggUser::query()->where('last_action >= ?', $time)->order_by('last_action')->limit($limit, $offset);
+        $query = User::query()->where('last_action >= ?', $time)->order_by('last_action')->limit($limit, $offset);
         
         $objects = $query->filter();
 

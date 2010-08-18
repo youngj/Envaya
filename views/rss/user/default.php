@@ -1,18 +1,3 @@
-<?php
-
-	/**
-	 * Elgg default user view
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-
-	 * @author Curverider Ltd
-
-	 * @link http://elgg.org/
-	 */
-
-?>
-
 	<item>
 	  <guid isPermaLink='true'><?php echo $vars['entity']->getURL(); ?></guid>
 	  <pubDate><?php echo date("r",$vars['entity']->time_created) ?></pubDate>

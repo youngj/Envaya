@@ -1,17 +1,3 @@
-<?php
-
-	/**
-	 * Elgg default group view
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-
-	 * @author Curverider Ltd
-
-	 * @link http://elgg.org/
-	 */
-
-?>
 
 	<item>
 	  <guid isPermaLink='true'><?php echo htmlspecialchars($vars['entity']->getURL()); ?></guid>

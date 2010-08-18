@@ -1,14 +1,6 @@
 <?php
 
-/**
- * ElggEntity The elgg entity superclass
- * This class holds methods for accessing the main entities table.
- *
- * @author Curverider Ltd <info@elgg.com>
- * @package Elgg
- * @subpackage Core
- */
-abstract class ElggEntity implements Loggable, Serializable
+abstract class Entity implements Loggable, Serializable
 {
     /**
      * The main attributes of an entity.
@@ -17,20 +9,21 @@ abstract class ElggEntity implements Loggable, Serializable
      * Any field not appearing in this will be viewed as metadata
      */
     protected $attributes;
-
-    protected $metadata_cache;
-
+    
+    protected $metadata_cache;        
     protected $table_attribute_names;
 
+    static $table_name;
+    static $table_attributes;
     static $subtype_id = 0;
 
     function __construct($row = null)
     {
-        $this->initialise_attributes();
+        $this->initialize_attributes();
 
         if ($row)
         {
-            if (!$this->loadFromPartialTableRow($row))
+            if (!$this->load_from_partial_table_row($row))
             {
                 throw new IOException(sprintf(__('error:FailedToLoadGUID'), get_class(), $row->guid));
             }
@@ -44,14 +37,24 @@ abstract class ElggEntity implements Loggable, Serializable
 
     public function unserialize($data)
     {
-        $this->initialise_attributes();
+        $this->initialize_attributes();
         $this->attributes = unserialize($data);
     }
 
-    protected function loadFromPartialTableRow($row)
+    protected function load_from_partial_table_row($row)
     {
         $entityRow = (property_exists($row, 'type')) ? $row : get_entity_as_row($row->guid);
-        return $this->loadFromTableRow($entityRow);
+        if (!$this->load_from_table_row($entityRow))
+        {
+            return false;
+        }
+        
+        if (!property_exists($row, get_first_key(static::$table_attributes)))
+        {
+            $objectEntityRow = $this->select_table_attributes($row->guid);
+            return $this->load_from_table_row($objectEntityRow);             
+        }
+        return true;
     }
 
     /**
@@ -62,7 +65,7 @@ abstract class ElggEntity implements Loggable, Serializable
      *
      * @return void
      */
-    protected function initialise_attributes()
+    protected function initialize_attributes()
     {
         if (!is_array($this->attributes))
             $this->attributes = array();
@@ -70,54 +73,47 @@ abstract class ElggEntity implements Loggable, Serializable
         if (!is_array($this->metadata_cache))
             $this->metadata_cache = array();
 
-        $this->attributes['guid'] = "";
-        $this->attributes['type'] = "";
-        $this->attributes['subtype'] = 0;
-
+        $this->attributes['guid'] = "";        
+        $this->attributes['type'] = "object";
+        $this->attributes['subtype'] = static::$subtype_id;
         $this->attributes['owner_guid'] = 0;
         $this->attributes['container_guid'] = 0;
-
         $this->attributes['site_guid'] = 0;
         $this->attributes['time_created'] = "";
         $this->attributes['time_updated'] = "";
         $this->attributes['enabled'] = "yes";
+        
+        $this->initialize_table_attributes();
     }
 
-    protected function initializeTableAttributes($tableName, $arr)
+    protected function initialize_table_attributes()
     {
-        $tableAttributes = array();
-        foreach ($arr as $name => $default)
+        foreach (static::$table_attributes as $name => $default)
         {
-            $tableAttributes[] = $name;
             $this->attributes[$name] = $default;
         }
-
-        if (!is_array($this->table_attribute_names))
-        {
-            $this->table_attribute_names = array();
-        }
-
-        $this->table_attribute_names[$tableName] = $tableAttributes;
     }
 
-    protected function getTableAttributes($tableName)
+    protected function get_table_attributes()
     {
         $tableAttributes = array();
-        foreach ($this->table_attribute_names[$tableName] as $name)
+        foreach (static::$table_attributes as $name => $default)
         {
             $tableAttributes[$name] = $this->attributes[$name];
         }
         return $tableAttributes;
     }
 
-    public function saveTableAttributes($tableName)
+    public function save_table_attributes()
     {
+        $tableName = static::$table_name;
+    
         $guid = $this->guid;
         if (get_data_row("SELECT guid from $tableName where guid = ?", array($guid)))
         {
             $args = array();
             $set = array();
-            foreach ($this->getTableAttributes($tableName) as $name => $value)
+            foreach ($this->get_table_attributes() as $name => $value)
             {
                 $set[] = "`$name` = ?";
                 $args[] = $value;
@@ -133,7 +129,7 @@ abstract class ElggEntity implements Loggable, Serializable
             $questions = array('?');
             $args = array($guid);
 
-            foreach ($this->getTableAttributes($tableName) as $name => $value)
+            foreach ($this->get_table_attributes() as $name => $value)
             {
                 $columns[] = "`$name`";
                 $questions[] = '?';
@@ -144,14 +140,16 @@ abstract class ElggEntity implements Loggable, Serializable
         }
     }
 
-    public function deleteTableAttributes($tableName)
+    public function delete_table_attributes()
     {
+        $tableName = static::$table_name;
         delete_data("DELETE from $tableName where guid=?", array($this->guid));
         return true;
     }
 
-    public function selectTableAttributes($tableName, $guid)
+    public function select_table_attributes($guid)
     {
+        $tableName = static::$table_name;
         return get_data_row("SELECT * from $tableName where guid=?", array($guid));
     }
 
@@ -243,7 +241,7 @@ abstract class ElggEntity implements Loggable, Serializable
 
         if (!$md)
         {
-            $md = new ElggMetadata();
+            $md = new EntityMetadata();
             $md->entity_guid = $this->guid;
             $md->name = $name;
             $md->value = null;
@@ -312,7 +310,7 @@ abstract class ElggEntity implements Loggable, Serializable
     public function getSubEntities()
     {
         $guid = $this->guid;
-        return array_map('entity_row_to_elggstar',
+        return array_map('entity_row_to_entity',
             get_data("SELECT * from entities WHERE container_guid=? or owner_guid=? or site_guid=?", array($guid, $guid, $guid))
         );
     }
@@ -363,7 +361,7 @@ abstract class ElggEntity implements Loggable, Serializable
     /**
      * Returns the actual entity of the user who owns this entity, if any
      *
-     * @return ElggEntity The owning user
+     * @return Entity The owning user
      */
     public function getOwnerEntity() { return get_entity($this->get('owner_guid')); }
 
@@ -478,9 +476,9 @@ abstract class ElggEntity implements Loggable, Serializable
             $res = true;
         }
 
-        $this->saveMetaData();
+        $this->saveMetaData();        
 
-        return $res;
+        return $res && $this->save_table_attributes();
     }
 
     function saveMetaData()
@@ -503,7 +501,7 @@ abstract class ElggEntity implements Loggable, Serializable
         }
     }
 
-    protected function loadFromTableRow($row)
+    protected function load_from_table_row($row)
     {
         $typeBefore = $this->attributes['type'];
 
@@ -513,7 +511,7 @@ abstract class ElggEntity implements Loggable, Serializable
             $this->attributes[$key] = $value;
 
         if ($this->attributes['type'] != $typeBefore)
-            throw new InvalidClassException(sprintf(__('error:NotValidElggStar'), $guid, get_class()));
+            throw new InvalidClassException(sprintf(__('error:NotValidEntity'), $guid, get_class()));
 
         global $ENTITY_CACHE;
         $ENTITY_CACHE[$this->guid] = $this;
@@ -567,7 +565,7 @@ abstract class ElggEntity implements Loggable, Serializable
 
             invalidate_cache_for_entity($this->guid);
 
-            return $res;
+            return $res && $this->delete_table_attributes();
         }
         return false;
     }
@@ -703,6 +701,101 @@ abstract class ElggEntity implements Loggable, Serializable
         $tempTrans->html = $isHTML;        
         return $tempTrans;
     }    
+
+    public function setImages($imageFiles)
+    {
+        if (!$imageFiles)
+        {
+            $this->setDataType(DataType::Image, false);
+        }
+        else
+        {
+            foreach ($imageFiles as $size => $srcFile)
+            {
+                $srcFile = $imageFiles[$size]['file'];
+
+                $destFile = $this->getImageFile($size);
+
+                $srcFile->copyTo($destFile);
+                $srcFile->delete();
+            }
+
+            $this->setDataType(DataType::Image, true);
+        }
+        $this->save();
+    }
+    
+    public function setContent($content, $isHTML)
+    {
+        if ($isHTML)
+        {
+            $content = Markup::sanitize_html($content);
+        }
+        else
+        {
+            $content = view('output/longtext', array('value' => $content));
+        }
+
+        $this->content = $content;
+        $this->setDataType(DataType::HTML, true);
+
+        if ($isHTML)
+        {
+            $thumbnailUrl = get_thumbnail_src($content);
+
+            if ($thumbnailUrl != null)
+            {
+                $this->setDataType(DataType::Image, $thumbnailUrl != null);
+                $this->thumbnail_url = $thumbnailUrl;
+            }
+        }
+
+        if (!$this->language)
+        {
+            $this->language = GoogleTranslate::guess_language($this->content);
+        }
+    }
+
+    public function renderContent()
+    {
+        $isHTML = $this->hasDataType(DataType::HTML);
+
+        $content = $this->translate_field('content', $isHTML);
+
+        if ($isHTML)
+        {
+            return $content; // html content should be sanitized when it is input!
+        }
+        else
+        {
+            return view('output/longtext', array('value' => $content));
+        }
+    }
+
+    public function hasDataType($dataType)
+    {
+        return ($this->data_types & $dataType) != 0;
+    }
+
+    public function setDataType($dataType, $val)
+    {
+        if ($val)
+        {
+            $this->data_types |= $dataType;
+        }
+        else
+        {
+            $this->data_types &= ~$dataType;
+        }
+    }        
+    
+    static function query()
+    {
+        $query = new Query_SelectEntity(static::$table_name);
+        $query->where("type='object'");
+        $query->where("subtype=?", static::$subtype_id);
+        return $query;
+    }
 
     static function queryByMetadata($meta_name, $meta_value = "")
     {

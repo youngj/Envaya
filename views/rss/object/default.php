@@ -1,16 +1,5 @@
 <?php
 
-	/**
-	 * Elgg default object view
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-
-	 * @author Curverider Ltd
-
-	 * @link http://elgg.org/
-	 */
-
 	$title = $vars['entity']->title;
 	if (empty($title)) {
 		$subtitle = strip_tags($vars['entity']->description);

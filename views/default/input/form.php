@@ -1,13 +1,7 @@
 <?php
 	/**
 	 * Create a form for data submission.
-	 * Use this view for forms rather than creating a form tag in the wild as it provides
-	 * extra security which help prevent CSRF attacks.
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-	 * @author Curverider Ltd
-	 * @link http://elgg.org/
+	 * It provides extra security which help prevent CSRF attacks.	 
 	 * 
 	 * @uses $vars['body'] The body of the form (made up of other input/xxx views and html
 	 * @uses $vars['method'] Method (default POST)

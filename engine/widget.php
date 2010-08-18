@@ -1,6 +1,6 @@
 <?php
 
-class Widget extends ElggObject
+class Widget extends Entity
 {
     static $subtype_id = T_widget;
     static $table_name = 'widgets';

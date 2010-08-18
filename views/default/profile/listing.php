@@ -1,17 +1,5 @@
 <?php
 
-	/**
-	 * Elgg user display (small)
-	 * 
-	 * @package ElggProfile
-	 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
-	 * @author Curverider Ltd <info@elgg.com>
-	 * @copyright Curverider Ltd 2008-2009
-	 * @link http://elgg.com/
-	 * 
-	 * @uses $vars['entity'] The user entity
-	 */
-
 		$icon = view(
 				"profile/icon", array(
 										'entity' => $vars['entity'],
@@ -42,6 +30,6 @@
 			
 		}
 		
-		echo elgg_view_listing($icon, $info);
+		echo view('search/listing',array('icon' => $icon, 'info' => $info));
 			
 ?>

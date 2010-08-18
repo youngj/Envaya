@@ -1,15 +1,7 @@
 <?php
 
 	/**
-	 * Elgg text input
 	 * Displays a text input field
-	 * 
-	 * @package Elgg
-	 * @subpackage Core
-
-	 * @author Curverider Ltd
-
-	 * @link http://elgg.org/
 	 * 
 	 * @uses $vars['value'] The current value, if any
 	 * @uses $vars['js'] Any Javascript to enter into the input tag

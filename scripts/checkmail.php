@@ -36,7 +36,7 @@
                         
         $emailCode = $matches[1];
                            
-        $org = ElggUser::getByEmailCode($emailCode);
+        $org = User::getByEmailCode($emailCode);
                 
         if (!$org)
         {

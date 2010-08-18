@@ -1,22 +1,22 @@
 <?php
 
 /**
- * Convert a database row to a new ElggMetadata
+ * Convert a database row to a new EntityMetadata
  *
  * @param stdClass $row
- * @return stdClass or ElggMetadata
+ * @return EntityMetadata or null
  */
-function row_to_elggmetadata($row)
+function row_to_metadata($row)
 {
-    if (!($row instanceof stdClass))
-        return $row;
+    if (!$row)
+        return null;
 
-    return new ElggMetadata($row);
+    return new EntityMetadata($row);
 }
 
 function get_metadata_byname($entity_guid, $name)
 {
-    return row_to_elggmetadata(get_data_row(
+    return row_to_metadata(get_data_row(
         "SELECT * from metadata where entity_guid=? and name=? LIMIT 1", array($entity_guid, $name)
     ));
 }

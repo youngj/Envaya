@@ -2,12 +2,12 @@
 
 /**
  * Perform standard authentication with a given username and password.
- * Returns an ElggUser object for use with login.
+ * Returns an User object for use with login.
  *
  * @see login
  * @param string $username The username, optionally (for standard logins)
  * @param string $password The password, optionally (for standard logins)
- * @return ElggUser|false The authenticated user object, or false on failure.
+ * @return User|false The authenticated user object, or false on failure.
  */
 function authenticate($username, $password)
 {
@@ -35,15 +35,15 @@ function authenticate($username, $password)
 }
 
 /**
- * Logs in a specified ElggUser. For standard registration, use in conjunction
+ * Logs in a specified User. For standard registration, use in conjunction
  * with authenticate.
  *
  * @see authenticate
- * @param ElggUser $user A valid Elgg user object
+ * @param User $user A valid user object
  * @param boolean $persistent Should this be a persistent login?
  * @return true|false Whether login was successful
  */
-function login(ElggUser $user, $persistent = false)
+function login($user, $persistent = false)
 {
     if ($user->isBanned())
         return false;

@@ -247,7 +247,7 @@ class Mail_smtp extends Mail {
     {
         /* If we don't already have an SMTP object, create one. */
         $result = &$this->getSMTPObject();
-        if (isPearError($result)) {
+        if (is_pear_error($result)) {
             return $result;
         }
 
@@ -283,7 +283,7 @@ class Mail_smtp extends Mail {
                 $params .= ' ' . $key . (is_null($val) ? '' : '=' . $val);
             }
         }
-        if (isPearError($res = $this->_smtp->mailFrom($from, ltrim($params)))) {
+        if (is_pear_error($res = $this->_smtp->mailFrom($from, ltrim($params)))) {
             $error = $this->_error("Failed to set sender: $from", $res);
             $this->_smtp->rset();
             return PEAR::raiseError($error, PEAR_MAIL_SMTP_ERROR_SENDER);
@@ -362,7 +362,7 @@ class Mail_smtp extends Mail {
         }
 
         /* Attempt to connect to the configured SMTP server. */
-        if (isPearError($res = $this->_smtp->connect($this->timeout))) {
+        if (is_pear_error($res = $this->_smtp->connect($this->timeout))) {
             $error = $this->_error('Failed to connect to ' .
                                    $this->host . ':' . $this->port,
                                    $res);
@@ -373,7 +373,7 @@ class Mail_smtp extends Mail {
         if ($this->auth) {
             $method = is_string($this->auth) ? $this->auth : '';
 
-            if (isPearError($res = $this->_smtp->auth($this->username,
+            if (is_pear_error($res = $this->_smtp->auth($this->username,
                                                         $this->password,
                                                         $method))) {
                 $error = $this->_error("$method authentication failure",

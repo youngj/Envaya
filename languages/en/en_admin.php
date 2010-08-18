@@ -43,9 +43,6 @@ return array(
     'admin:statistics:label:numusers' => "Number of users",
     'admin:statistics:label:numonline' => "Number of users online",
     'admin:statistics:label:onlineusers' => "Users online now",
-    'admin:statistics:label:version' => "Elgg version",
-    'admin:statistics:label:version:release' => "Release",
-    'admin:statistics:label:version:version' => "Version",
 
     'admin:user:label:search' => "Find users:",
 
@@ -65,11 +62,10 @@ return array(
     'admin:user:removeadmin:yes' => "User is no longer an admin.",
     'admin:user:removeadmin:no' => "We could not remove administrator privileges from this user.",
     
-    'error:NoConnect' => "Elgg couldn't select the database '%s', please check that the database is created and you have access to it.",        
+    'error:NoConnect' => "Couldn't select the database '%s', please check that the database is created and you have access to it.",        
     'error:FailedToLoadGUID' => "Failed to load new %s from GUID:%d",
     'error:UnrecognisedValue' => "Unrecognised value passed to constuctor.",
-    'error:NotValidElggStar' => "GUID:%d is not a valid %s",
-    'error:NonElggUser' => "Passing a non-ElggUser to an ElggUser constructor!",
+    'error:NotValidEntity' => "GUID:%d is not a valid %s",
     'error:BaseEntitySaveFailed' => "Unable to save new object's base entity information!",
     'error:EntityTypeNotSet' => "Entity type must be set.",
 
