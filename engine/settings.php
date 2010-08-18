@@ -2,8 +2,7 @@
     error_reporting(E_ERROR | E_PARSE);
 
     global $CONFIG;
-    if (!isset($CONFIG))
-        $CONFIG = new stdClass;
+    $CONFIG = new stdClass;
 
     $CONFIG->dbuser = 'newslink';
     $CONFIG->dbpass = 'scarlett';
@@ -29,8 +28,6 @@
     $CONFIG->s3_bucket = 'envayadev';
 
     $CONFIG->path = dirname(__DIR__) . "/";
-    $CONFIG->viewpath = $CONFIG->path . "views/";
-    $CONFIG->pluginspath = $CONFIG->path . "mod/";
     
     $CONFIG->languages = array(
         'en' => 'English',
@@ -46,18 +43,10 @@
     $CONFIG->smtp_port = 2525;
 
     $CONFIG->cookie_domain = null;
-    $CONFIG->viewpath_cache_enabled = 0;
-    $CONFIG->domain = "localhost";
-    $CONFIG->view = "default";
+    $CONFIG->domain = "localhost";    
     $CONFIG->language = "en";
-    $CONFIG->default_access = "1";
-    $CONFIG->allow_user_default_access = "0";
-    $CONFIG->debug = "1";
-    $CONFIG->site_guid = $CONFIG->site_id = 1;
+    $CONFIG->debug = true;
     $CONFIG->sitename = "Envaya";
-    $CONFIG->sitedescription = "";
-    $CONFIG->siteemail = "youngj@envaya.org";
-    $CONFIG->enabled_plugins = array();
 
     $CONFIG->types = array(
         'object' => 'ElggObject',

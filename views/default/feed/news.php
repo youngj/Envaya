@@ -25,7 +25,7 @@
     $content = $update->renderContent();
 
     echo "<div class='feed_snippet'>";
-    echo get_snippet($content, $maxLength);
+    echo Markup::get_snippet($content, $maxLength);
 
     if (strlen($content) > $maxLength)
     {

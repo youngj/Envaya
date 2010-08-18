@@ -8,7 +8,7 @@ function is_installed()
     global $CONFIG;
     try
     {
-        return datalist_get('installed');
+        return Datalist::get('installed');
     }
     catch (DatabaseException $e)
     {
@@ -53,7 +53,7 @@ if (!is_installed())
 {    
     run_sql_script("engine/schema/mysql.sql");
     init_site_secret();
-    datalist_set('installed', 1);
+    Datalist::set('installed', 1);
     echo "done";
 }
 else

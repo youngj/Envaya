@@ -64,7 +64,7 @@ class NewsUpdate extends ElggObject
 
     public function getSnippet($maxLength = 100)
     {
-        return get_snippet($this->content, $maxLength);
+        return Markup::get_snippet($this->content, $maxLength);
     }
 
     public function getDateText()

@@ -92,7 +92,7 @@
     function init_site_secret()
     {
         $secret = md5(rand().microtime());
-        if (datalist_set('__site_secret__', $secret))
+        if (Datalist::set('__site_secret__', $secret))
             return $secret;
 
         return false;
@@ -104,7 +104,7 @@
      */
     function get_site_secret()
     {
-        $secret = datalist_get('__site_secret__');
+        $secret = Datalist::get('__site_secret__');
         if (!$secret) $secret = init_site_secret();
 
         return $secret;

@@ -97,3 +97,29 @@ function force_login()
         forward("pg/login");
     }
 }
+
+function restore_input($name, $value)
+{
+    $prevInput = Session::get('input');
+    if ($prevInput)
+    {
+        if (isset($prevInput[$name]))
+        {
+            $val = $prevInput[$name];
+            unset($prevInput[$name]);
+            Session::set('input', $prevInput);
+            return $val;
+        }
+    }
+    return $value;
+}
+
+
+function system_message($message) 
+{
+    return SessionMessages::add_message($message);
+}
+function register_error($error) 
+{
+    return SessionMessages::add_message($error, "errors");
+}

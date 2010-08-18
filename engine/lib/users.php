@@ -202,7 +202,7 @@
 
         // Check to see if we've registered the first admin yet.
         // If not, this is the first admin user!
-        $admin = datalist_get('admin_registered');
+        $admin = Datalist::get('admin_registered');
 
         // Otherwise ...
         $user = new ElggUser();
@@ -218,7 +218,7 @@
         if (!$admin) 
         {
             $user->admin = true;
-            datalist_set('admin_registered',1);
+            Datalist::set('admin_registered',1);
         }
 
         return $user;

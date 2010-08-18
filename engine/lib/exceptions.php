@@ -15,3 +15,96 @@ class NotImplementedException extends CallException {}
 class InvalidParameterException extends CallException {}
 class RegistrationException extends InstallationException {}
 class NotificationException extends Exception {}
+
+/**
+ * Error handling
+ */
+
+/**
+ * PHP Error handler function.
+ * This function acts as a wrapper to catch and report PHP error messages.
+ *
+ * @see http://www.php.net/set-error-handler
+ * @param int $errno The level of the error raised
+ * @param string $errmsg The error message
+ * @param string $filename The filename the error was raised in
+ * @param int $linenum The line number the error was raised at
+ * @param array $vars An array that points to the active symbol table at the point that the error occurred
+ */
+function php_error_handler($errno, $errmsg, $filename, $linenum, $vars)
+{            
+    if (error_reporting() == 0) // @ sign
+        return true; 
+           
+    $error = date("Y-m-d H:i:s (T)") . ": \"" . $errmsg . "\" in file " . $filename . " (line " . $linenum . ")";                      
+
+    switch ($errno) {
+        case E_USER_ERROR:
+                error_log("ERROR: " . $error);
+                register_error("ERROR: " . $error);
+
+                // Since this is a fatal error, we want to stop any further execution but do so gracefully.
+                throw new Exception($error);
+            break;
+
+        case E_WARNING :
+        case E_USER_WARNING :
+                error_log("WARNING: " . $error);                        
+            break;
+
+        default:
+            global $CONFIG;
+            if ($CONFIG->debug)
+            {
+                error_log("DEBUG: " . $error);
+            }
+    }
+
+    return true;
+}
+
+/**
+ * Custom exception handler.
+ * This function catches any thrown exceptions and handles them appropriately.
+ *
+ * @see http://www.php.net/set-exception-handler
+ * @param Exception $exception The exception being handled
+ */
+
+function php_exception_handler($exception) {
+
+    error_log("*** FATAL EXCEPTION *** : " . $exception);
+    ob_end_clean(); // Wipe any existing output buffer
+    $body = view("messages/exceptions/exception",array('object' => $exception));
+    echo page_draw(__('exception_title'), $body);
+
+
+    global $CONFIG;
+    if ($CONFIG->error_emails_enabled)
+    {
+        $lastErrorEmailTimeFile = "{$CONFIG->dataroot}last_error_time";
+        $lastErrorEmailTime = (int)file_get_contents($lastErrorEmailTimeFile);
+        $curTime = time();
+
+        if ($curTime - $lastErrorEmailTime > 60)
+        {
+            file_put_contents($lastErrorEmailTimeFile, "$curTime", LOCK_EX);
+
+            $class = get_class($exception);
+            $ex = print_r($exception, true);
+            $server = print_r($_SERVER, true);
+
+            send_admin_mail("$class: {$_SERVER['REQUEST_URI']}", "
+Exception:
+==========
+$ex
+
+
+
+_SERVER:
+=======
+$server
+        ", null, true);
+        }
+    }
+}

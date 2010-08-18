@@ -898,6 +898,11 @@ a.selected
     white-space:nowrap;
 }
 
+.blog_date
+{
+    clear:both;
+}
+
 .blog_date, .blog_date a
 {
     color: #aaa;

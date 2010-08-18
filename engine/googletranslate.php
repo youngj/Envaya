@@ -54,7 +54,7 @@ class GoogleTranslate
 
         $ch = curl_init();
 
-        $url = "ajax.googleapis.com/ajax/services/language/detect?v=1.0&q=".urlencode(get_snippet($text, 500));
+        $url = "ajax.googleapis.com/ajax/services/language/detect?v=1.0&q=".urlencode(Markup::get_snippet($text, 500));
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_REFERER, "www.envaya.org");

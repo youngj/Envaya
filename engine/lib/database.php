@@ -40,7 +40,7 @@ function db_profiling_shutdown_hook()
 {
     global $CONFIG, $DB_PROFILE;
 
-    if (isset($CONFIG->debug) && $CONFIG->debug && isset($DB_PROFILE))
+    if ($CONFIG->debug && isset($DB_PROFILE))
     {
         error_log("***************** DB PROFILING ********************");
 
@@ -74,7 +74,7 @@ function db_delayedexecution_shutdown_hook()
             catch (Exception $e)
             {
                 // Suppress all errors since these can't be dealt with here
-                if (isset($CONFIG->debug) && $CONFIG->debug)
+                if ($CONFIG->debug)
                     error_log($e);
             }
         }

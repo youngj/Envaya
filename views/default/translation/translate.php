@@ -24,7 +24,7 @@ if ($isHTML)
 {
     $leftHeight = $height - 30;
     echo "<div style='height:{$leftHeight}px;border:1px solid black;padding:5px;margin-top:25px;overflow:auto'>";
-    echo sanitize_html($text);
+    echo Markup::sanitize_html($text);
     echo "</div>";
 }
 else

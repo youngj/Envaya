@@ -94,7 +94,7 @@ function bootstrap()
     foreach(get_library_files(__DIR__ . "/lib") as $file)
     {
         /*
-        if (isset($CONFIG->debug) && $CONFIG->debug)
+        if ($CONFIG->debug)
             error_log("Loading $file...");
         */
 

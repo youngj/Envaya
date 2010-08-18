@@ -75,7 +75,7 @@ class ElggObject extends ElggEntity
     {
         if ($isHTML)
         {
-            $content = sanitize_html($content);
+            $content = Markup::sanitize_html($content);
         }
         else
         {
