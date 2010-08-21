@@ -5,8 +5,6 @@
 
     $entity = $vars['entity'];
 
-    $vars['size'] = sanitize_image_size($vars['size']);
-
     // Get any align and js
     if (!empty($vars['align'])) {
         $align = " align=\"{$vars['align']}\" ";

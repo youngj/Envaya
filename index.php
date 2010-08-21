@@ -24,6 +24,11 @@
         'action'     => 'index',
     ));
 
+    Route::set('report', '<username>/report/<id>(/<action>)')->defaults(array(
+        'controller' => 'report',
+        'action'     => 'index',
+    ));   
+    
     Route::set('profile', '(<username>(/<widgetname>(/<action>)))')->defaults(array(
         'controller' => 'profile',
         'action'     => 'index',

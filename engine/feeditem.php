@@ -1,17 +1,23 @@
 <?php
 
-class FeedItem
+class FeedItem extends Model
 {
-    protected $attributes;
+    static $class_name = 'FeedItem';
 
-    function __construct($row = null)
+    static $table_name = 'feed_items';
+    static $primary_key = 'id';
+    static $table_attributes = array(
+        'feed_name' => '',
+        'action_name' => '',
+        'subject_guid' => 0,
+        'user_guid' => 0,
+        'args' => '',
+        'time_posted' => 0,        
+    );   
+    
+    function get($name)
     {
-        $this->attributes = $row ? ((array)$row) : array();
-    }
-
-    function __get($name)
-    {
-        $res = @$this->attributes[$name];
+        $res = parent::get($name);
 
         if ($name == 'args')
         {
@@ -20,14 +26,13 @@ class FeedItem
         return $res;
     }
 
-    function __set($name, $value)
+    function set($name, $value)
     {
         if ($name == 'args')
         {
             $value = json_encode($value);
         }
-        $this->attributes[$name] = $value;
-        return true;
+        parent::set($name, $value);
     }
 
     public function renderView($mode = '')
@@ -48,19 +53,6 @@ class FeedItem
     public function getDateText()
     {
         return friendly_time($this->time_posted);
-    }
-
-    public function save()
-    {
-        save_db_row('feed_items', 'id', $this->attributes['id'], array(
-            'feed_name' => $this->feed_name,
-            'action_name' => $this->action_name,
-            'subject_guid' => $this->subject_guid,
-            'user_guid' => $this->user_guid,
-            'args' => $this->attributes['args'],
-            'time_posted' => $this->time_posted,
-            //'featured' => $this->featured,
-        ));
     }
 
     static function queryByFeedNames($feedNames, $excludeUser = null)

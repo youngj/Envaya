@@ -22,7 +22,7 @@ class Query_Select
         $this->joins = array();
         $this->group_by = '';
         $this->from($from);        
-    }
+    }      
     
     function set_row_function($callback)
     {

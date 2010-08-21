@@ -35,16 +35,6 @@
         exit;
     }
 
-    function sanitize_image_size($size)
-    {
-        $size = strtolower($size);
-        if (!in_array($size, array('large','medium','small','tiny','master','topbar')))
-        {
-            return "medium";
-        }
-        return $size;
-    }
-
     function yes_no_options()
     {
         return array(
@@ -103,9 +93,8 @@
      *
      * @param string $label The human-readable label
      * @param string $link The URL of the submenu item
-     * @param boolean $onclick Used to provide a JS popup to confirm delete
      */
-    function add_submenu_item($label, $link, $group = 'topnav', $onclick = false) {
+    function add_submenu_item($label, $link, $group = 'topnav') {
 
         global $CONFIG;
         if (!isset($CONFIG->submenu)) $CONFIG->submenu = array();
@@ -113,7 +102,6 @@
         $item = new stdClass;
         $item->value = $link;
         $item->name = $label;
-        $item->onclick = $onclick;
         $CONFIG->submenu[$group][] = $item;
 
     }
@@ -145,7 +133,6 @@
                 array(
                         'href' => $item->value,
                         'label' => $item->name,
-                        'onclick' => $item->onclick,
                         'selected' => $selected,
                     ));
         }

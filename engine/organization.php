@@ -9,6 +9,11 @@ class Organization extends User
         return UploadedFile::query()->where('container_guid=?',$this->guid);
     }
     
+    public function queryReports()
+    {
+        return Report::query()->where('container_guid=?',$this->guid);
+    }
+    
     public function getWebsiteScore()    
     {
         $score = 0;

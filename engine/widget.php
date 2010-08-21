@@ -23,7 +23,8 @@ class Widget extends Entity
         'history'       => array('menu_order' => 40, 'handler_class' => 'WidgetHandler_Generic'),
         'team'          => array('menu_order' => 50, 'handler_class' => 'WidgetHandler_Team'),
         'partnerships'  => array('menu_order' => 60, 'handler_class' => 'WidgetHandler_Partnerships'),
-        'contact'       => array('menu_order' => 70, 'handler_class' => 'WidgetHandler_Contact'),
+        //'reports'       => array('menu_order' => 65, 'handler_class' => 'WidgetHandler_Reports'),
+        'contact'       => array('menu_order' => 70, 'handler_class' => 'WidgetHandler_Contact'),        
     );    
     
     static function getDefaultNames()

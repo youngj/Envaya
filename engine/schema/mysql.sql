@@ -182,6 +182,29 @@ CREATE TABLE `widgets` (
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `report_definitions` (
+  `guid` bigint(20) unsigned  NOT NULL,
+  `handler_class` varchar(32) NULL,  
+  PRIMARY KEY  (`guid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `reports` (
+  `guid` bigint(20) unsigned  NOT NULL,
+  `report_guid` bigint(20) unsigned  NOT NULL,
+  `status` tinyint(4)  NOT NULL default 0,
+  `name` text not null,
+  PRIMARY KEY  (`guid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `report_fields` (
+  `id` int auto_increment not null,
+  `report_guid` bigint(20) unsigned  NOT NULL,
+  `name` varchar(64)  NOT NULL default '',
+  `value` text not null,
+  `value_type` tinyint(4) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 CREATE TABLE `partnerships` (
     `guid` bigint(20) unsigned NOT NULL,
     `partner_guid` bigint(20) unsigned NOT NULL,
@@ -189,16 +212,6 @@ CREATE TABLE `partnerships` (
     `description` text,
     `language` varchar(4) default null,
     `date_formed` text,
-    PRIMARY KEY (`guid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `team_members` (
-    `guid` bigint(20) unsigned NOT NULL,
-    `name` text,
-    `description` text,
-    `data_types` smallint not null default 0,
-    `list_order` int not null default 0,
-    `language` varchar(4) default null,
     PRIMARY KEY (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -289,7 +302,7 @@ CREATE TABLE `metadata` (
     `entity_guid` bigint(20) unsigned  NOT NULL,
     `name` varchar(64) NOT NULL ,
     `value` TEXT NOT NULL ,
-    `value_type` enum ('integer','text','json') NOT NULL,
+    `value_type` tinyint(4) NOT NULL,
     PRIMARY KEY ( `id` ) ,
     UNIQUE KEY ( `entity_guid` , `name` ),
     KEY `name` (`name`),

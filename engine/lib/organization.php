@@ -2,6 +2,13 @@
 
 define('SECTOR_OTHER', 99);
 
+class ReportStatus
+{
+    const Blank = 0;
+    const Draft = 4;
+    const Published = 8;
+}
+
 class DataType
 {
     const Image = 2;

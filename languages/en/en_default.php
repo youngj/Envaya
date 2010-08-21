@@ -93,6 +93,8 @@
         
         'widget:home' => "Home",
 
+        'widget:reports' => "Reports", 
+        
         'widget:history' => "History",
         'widget:history:label' => "Your organization's history:",
         'widget:history:help' => "For example, how it was started and its major achievements.",

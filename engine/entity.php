@@ -8,13 +8,12 @@ abstract class Entity implements Loggable, Serializable
      * Subclasses should add to this in their constructors.
      * Any field not appearing in this will be viewed as metadata
      */
-    protected $attributes;
-    
-    protected $metadata_cache;        
-    protected $table_attribute_names;
+    protected $attributes = array();    
+    protected $metadata_cache = array();        
 
     static $table_name;
     static $table_attributes;
+    
     static $subtype_id = 0;
 
     function __construct($row = null)
@@ -48,7 +47,7 @@ abstract class Entity implements Loggable, Serializable
         {
             return false;
         }
-        
+            
         if (!property_exists($row, get_first_key(static::$table_attributes)))
         {
             $objectEntityRow = $this->select_table_attributes($row->guid);
@@ -67,12 +66,6 @@ abstract class Entity implements Loggable, Serializable
      */
     protected function initialize_attributes()
     {
-        if (!is_array($this->attributes))
-            $this->attributes = array();
-
-        if (!is_array($this->metadata_cache))
-            $this->metadata_cache = array();
-
         $this->attributes['guid'] = "";        
         $this->attributes['type'] = "object";
         $this->attributes['subtype'] = static::$subtype_id;
@@ -83,11 +76,6 @@ abstract class Entity implements Loggable, Serializable
         $this->attributes['time_updated'] = "";
         $this->attributes['enabled'] = "yes";
         
-        $this->initialize_table_attributes();
-    }
-
-    protected function initialize_table_attributes()
-    {
         foreach (static::$table_attributes as $name => $default)
         {
             $this->attributes[$name] = $default;
@@ -298,7 +286,6 @@ abstract class Entity implements Loggable, Serializable
     {
         $md = $this->getMetaDataObject($name);
         $md->value = $value;
-        $md->dirty = true;
         return true;
     }
 
@@ -495,8 +482,7 @@ abstract class Entity implements Loggable, Serializable
                 {
                     $md->entity_guid = $this->guid;
                     $md->save();
-                }
-                $md->dirty = false;
+                }                
             }
         }
     }

@@ -64,6 +64,8 @@
         // 11 was previously used for TeamMember
         12 => array('object', 'featured_site', 'FeaturedSite'),
         13 => array('object', 'email_template', 'EmailTemplate'),
+        14 => array('object', 'report_definition', 'ReportDefinition'),
+        15 => array('object', 'report', 'Report'),
     );
     foreach ($CONFIG->subtypes as $val => $subtypeArr)
     {
