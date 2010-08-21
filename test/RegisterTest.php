@@ -155,21 +155,21 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
         $this->setUrl($url);
 
-        $this->mouseOver("//div[@class='good_messages']");
-
-        $email = $this->getLastEmail("Password reset");
-        if (!preg_match('/reset to: (\\w+)/', $email, $matches))
-        {
-            throw new Exception("couldn't find password in email $email");
-        }
-        $password = $matches[1];
-
-        $this->type("//input[@name='username']", $this->username);
-        $this->type("//input[@name='password']", $password);
+        $this->type("//input[@name='password']", "abcdefg");
+        $this->type("//input[@name='password2']", "abcdefgh");
+        $this->submitForm();
+        
+        $this->mouseOver("//div[@class='bad_messages']");
+        
+        $this->type("//input[@name='password']", "abcdefgh");
         $this->submitForm();
 
         $this->mouseOver("//div[@class='good_messages']");
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
+        
+        $this->setUrl($url); // password code can only be used once        
+        $this->mouseOver("//div[@class='bad_messages']");
+        $this->clickAndWait("//a[contains(@href, 'home')]");
     }
 
     private function _testRegister()

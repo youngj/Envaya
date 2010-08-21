@@ -215,7 +215,7 @@ return array(
     'user:password:label' => 'Neno jipya la siri',
     'user:password2:label' => 'Neno jipya la siri (tena)',
     'user:password:success' => 'Neno lako la siri limebadilishwa.',
-    'user:password:reset' => 'Neno lako jipya la siri limepelekwa kwa anwani yako ya email. Soma email yako ili ufahamu neno lako jipya la siri, na iingize chini.',
+    'user:password:reset' => 'Chagua neno jipya la siri',
     'user:password:fail' => 'Hatuwezi kulibadili neno lako la siri.',
     'user:password:fail:notsame' => 'Maneno mawili ya siri si sawa!',
     'user:password:fail:tooshort' => 'Neno lako la siri ni fupi mno!',
@@ -226,7 +226,7 @@ return array(
     'user:password:resetreq:success' => 'Umeomba neno jipya la siri. Soma email yako kuona ujumbe toka Envaya, na bonyeza kiungo ndani.',
     'user:password:resetreq:fail' => 'Huwezi kuomba neno jipya la siri.',
     'user:password:resetreq:no_email' => 'Akaunti hii haina anwani ya email, kwa hiyo haiwezekani kubadilisha neno la siri. Tafadhali tuma fomu ya chini na data yako, na msimamizi wa Envaya atajaribu kuwasiliana nawe kuthibitisha kwamba unaweza kufungua akaunti hii.',
-    'user:password:text' => 'Kupata neno jipya la siri, ingiza jina lako la mtumiaji chini. Tutakutumia anwani ya ukurasa wa kuthibitisha kwa email. Bonyeza kiungo ndani ya ujumbe na neno jipya la siri litakutumwa.',
+    'user:password:text' => 'Kupata neno jipya la siri, ingiza jina lako la mtumiaji chini. Tutakutumia anwani ya ukurasa wa kuthibitisha kwa email.',
 
     'user:email:success' => "Anwani yako ya email imebadilishwa.",
 

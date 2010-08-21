@@ -278,9 +278,7 @@ class User extends Entity implements Locatable
 
     public function setPassword($password)
     {
-        $salt = generate_random_cleartext_password(); // Reset the salt
-
-        $this->salt = $salt;
+        $this->salt = substr(generate_random_cleartext_password(), 0, 8);
         $this->password = $this->generate_password($password);
     }
 

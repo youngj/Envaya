@@ -103,7 +103,7 @@ class Controller_Pg extends Controller {
                 forward("page/contact");
             }
             
-            $user->passwd_conf_code = generate_random_cleartext_password();
+            $user->passwd_conf_code = substr(generate_random_cleartext_password(), 0, 24); // avoid making url too long for 1 line in email
             $user->save();
 
             global $CONFIG;
@@ -121,7 +121,9 @@ class Controller_Pg extends Controller {
             }
         }
         else
-            register_error(sprintf(__('user:username:notfound'), $username));
+        {
+            action_error(sprintf(__('user:username:notfound'), $username));            
+        }
 
         forward();
     }
@@ -136,25 +138,61 @@ class Controller_Pg extends Controller {
         $user = get_user($user_guid);
 
         if ($user && $user->passwd_conf_code == $conf_code)
-        {
-            $password = generate_random_cleartext_password();
-
-            $user->setPassword($password);
-            $user->passwd_conf_code = null;
-            $user->save();
-
-            $email = sprintf(__('email:resetpassword:body',$user->language), $user->name, $password);
-
-            $user->notify(__('email:resetpassword:subject',$user->language), $email);
-            system_message(__('user:password:reset'));
+        {                  
+            $title = __("user:password:reset");
+            $body = view_layout('one_column_padded', 
+                view_title($title, array('org_only' => true)), 
+                view("account/forms/reset_password", array('entity' => $user)));
+            $this->page_draw($title, $body);
         }
         else
         {
             register_error(__('user:password:fail'));
-        }
+            forward("pg/login");
+        }        
+    }
+    
+    function action_submit_password_reset()
+    {
+        $user_guid = get_input('u');
+        $conf_code = get_input('c');        
+        $user = get_user($user_guid);
 
-        forward("pg/login");
-        exit;
+        if ($user && $user->passwd_conf_code == $conf_code)
+        {   
+            $password = get_input('password');
+            $password2 = get_input('password2');
+            if ($password!="")
+            {
+                try
+                {
+                    validate_password($password);
+                }
+                catch (RegistrationException $ex)
+                {
+                    action_error($ex->getMessage());
+                }
+
+                if ($password == $password2)
+                {
+                    $user->setPassword($password);
+                    $user->passwd_conf_code = null;
+                    $user->save();
+                    system_message(__('user:password:success'));
+                    login($user);
+                    forward("pg/dashboard");
+                }
+                else
+                {
+                    action_error(__('user:password:fail:notsame'));
+                }
+            }
+        }
+        else
+        {
+            register_error(__('user:password:fail'));
+            forward("pg/login");
+        }            
     }
 
 

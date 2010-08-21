@@ -1,10 +1,6 @@
 <?php
 
 return array(
-    'email:resetpassword:subject' => 'Neno la siri limepangwa upya!',
-    'email:resetpassword:body' => 'Hujambo %s,
-
-Neno lako la siri limepangwa upya kwa: %s',
     'email:orgapproved:subject' => 'Tovuti yako imekubaliwa',
     'email:orgapproved:body' => 'Hujambo %s,
 

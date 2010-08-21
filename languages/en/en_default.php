@@ -268,11 +268,13 @@
         'user:name:label' => "Name",
         'user:name:success' => "Successfully changed your name on the system.",
 
+        'user:username:label' => "Your username:",
         'user:password:help' => "Leave blank to keep your current password.",
         'user:password:label' => "New password",
         'user:password2:label' => "New password again",
         'user:password:success' => "Your password has been changed.",
-        'user:password:reset' => "Your new password has been emailed to you. Check your email for your new password, and enter it below.",
+        'user:password:new' => "Choose a new password for your account:",
+        'user:password:reset' => "Reset Password",
         'user:password:fail' => "Could not change your password.",
         'user:password:fail:notsame' => "The two passwords are not the same!",
         'user:password:fail:tooshort' => "Password is too short!",
@@ -287,7 +289,7 @@
         'user:password:resetreq:fail' => 'Could not request a new password.',
         'user:password:resetreq:no_email' => 'This account does not have an email address, so the password cannot be reset. Please fill out the form below with your contact information, and a representative of Envaya will try to contact you to verify that you should have access to this account.',
 
-        'user:password:text' => 'To generate a new password, enter your username below. We will send the address of a verification page to you via email. Click on the link in the message and a new password will be sent to you.',
+        'user:password:text' => 'To reset your password, enter your username below. We will send a link to change your password via email.',
 
         'user:email:success' => "Your email address has been updated.",
 

@@ -1,10 +1,6 @@
 <?php
 
 return array(
-    'email:resetpassword:subject' => "Password reset!",
-    'email:resetpassword:body' => "Hi %s,
-
-Your password has been reset to: %s",
 
     'email:orgapproved:subject' => 'Your website has been approved',
     'email:orgapproved:body' => "Hi %s,

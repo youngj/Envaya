@@ -546,8 +546,7 @@ class Controller_Profile extends Controller
 
             if ($password == $password2)
             {
-                $user->salt = generate_random_cleartext_password(); // Reset the salt
-                $user->password = $user->generate_password($password);
+                $user->setPassword($password);
                 system_message(__('user:password:success'));
             }
             else

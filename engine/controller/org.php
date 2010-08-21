@@ -186,8 +186,7 @@ class Controller_Org extends Controller
             $org->phone_number = get_input('phone');
             $org->email = $email;
             $org->name = $name;
-            $org->salt = generate_random_cleartext_password();
-            $org->password = $org->generate_password($password);
+            $org->setPassword($password);
             $org->owner_guid = 0;
             $org->container_guid = 0;
             $org->language = get_language();

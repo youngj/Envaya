@@ -81,7 +81,7 @@
      */
     function generate_random_cleartext_password()
     {
-        return substr(md5(microtime() . rand()), 0, 8);
+        return md5(microtime() . rand());
     }
 
     /**
@@ -209,8 +209,7 @@
         $user->username = $username;
         $user->email = $email;
         $user->name = $name;
-        $user->salt = generate_random_cleartext_password(); // Note salt generated before password!
-        $user->password = $user->generate_password($password);
+        $user->setPassword($password);
         $user->owner_guid = 0; // Users aren't owned by anyone, even if they are admin created.
         $user->container_guid = 0; // Users aren't contained by anyone, even if they are admin created.
         $user->save();
