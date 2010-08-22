@@ -36,11 +36,6 @@
         return get_entity($guid);
     }
 
-    function get_users_by_email($email)
-    {
-        return User::query()->where('email = ?', $email)->filter();
-    }
-
     function is_email_address($address)
     {
         return preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+\.[A-Z]{2,4}$/i', $address, $matches);
@@ -195,7 +190,7 @@
         }
 
         // If we're not allowed multiple emails then see if this address has been used before
-        if ((!$allow_multiple_emails) && (sizeof(get_users_by_email($email)) > 0))
+        if ((!$allow_multiple_emails) && (User::query(true)->where('email = ?', $email)->count() > 0))
         {
             throw new RegistrationException(__('registration:dupeemail'));
         }

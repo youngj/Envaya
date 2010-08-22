@@ -325,7 +325,7 @@ class Controller_Org extends Controller
     {
         $email = get_input('e');
         $code = get_input('c');
-        $users = get_users_by_email($email);
+        $users = User::query(true)->where('email = ?', $email)->filter();
 
         $title = __("user:notification:label");
 
@@ -347,7 +347,7 @@ class Controller_Org extends Controller
         $email = get_input('email');
         $code = get_input('code');
         $enable_batch_email = get_input('enable_batch_email');
-        $users = get_users_by_email($email);
+        $users = User::query(true)->where('email = ?', $email)->filter();
 
         foreach ($users as $user)
         {

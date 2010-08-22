@@ -139,6 +139,11 @@ class Controller_Pg extends Controller {
         $username = get_input('username');
 
         $user = get_user_by_username($username);
+        if (!$user)
+        {
+            $user = User::query(true)->where('email = ?', $username)->get();
+        }        
+        
         if ($user)
         {
             if (!$user->email)

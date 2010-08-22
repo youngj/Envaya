@@ -228,7 +228,8 @@ return array(
     'user:password:resetreq:success' => 'Umeomba neno jipya la siri. Soma email yako kuona ujumbe toka Envaya, na bonyeza kiungo ndani.',
     'user:password:resetreq:fail' => 'Huwezi kuomba neno jipya la siri.',
     'user:password:resetreq:no_email' => 'Akaunti hii haina anwani ya email, kwa hiyo haiwezekani kubadilisha neno la siri. Tafadhali tuma fomu ya chini na data yako, na msimamizi wa Envaya atajaribu kuwasiliana nawe kuthibitisha kwamba unaweza kufungua akaunti hii.',
-    'user:password:text' => 'Kupata neno jipya la siri, ingiza jina lako la mtumiaji chini. Tutakutumia anwani ya ukurasa wa kuthibitisha kwa email.',
+    'user:password:text' => 'Kupata neno jipya la siri, ingiza jina lako la mtumiaji au anwani ya email chini. Tutakutumia anwani ya ukurasa wa kuthibitisha kwa email.',
+    'user:username_or_email' => 'Jina la mtumiaji au Email',
 
     'user:email:success' => "Anwani yako ya email imebadilishwa.",
 
