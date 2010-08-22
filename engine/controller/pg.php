@@ -14,6 +14,11 @@ class Controller_Pg extends Controller {
         $this->page_draw($title, $body, array('hideLogin' => true));
     }
 
+    function action_tci_donate_frame()
+    {
+        echo view("page/tci_donate_frame", $values);    
+    }
+    
     function action_submit_donate_form()
     {    
         $values = $_POST;
