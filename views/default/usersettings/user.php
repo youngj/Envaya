@@ -62,13 +62,11 @@
 
         <label><?php echo __('user:notification:label'); ?>:</label><br />
 
-        <div class='help'><?php echo __('user:notification:freq'); ?>:
         <?php
-            echo view("input/pulldown", array('internalname' => 'notify_days', 'value' => $user->notify_days, 'options_values' =>
-                get_notification_frequencies()
-            ));
-
-         ?></div>
+            echo view("input/pulldown", array('internalname' => 'enable_batch_email', 'value' => $user->enable_batch_email, 'options_values' =>
+                get_batch_email_options()
+            ));           
+         ?>
 
     </div>
 

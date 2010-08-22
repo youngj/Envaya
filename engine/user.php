@@ -26,10 +26,10 @@ class User extends Entity implements Locatable
             'setup_state' => 5,
             'custom_icon' => 0,
             'custom_header' => null,
-            'notify_days' => 14,
             'last_notify_time' => null,
             'last_action' => 0,
-            'last_login' => 0
+            'last_login' => 0,
+            'enable_batch_email' => 1
         );
 
     /**

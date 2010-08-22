@@ -588,10 +588,10 @@ class Controller_Profile extends Controller
 
         if ($user instanceof Organization)
         {
-            $notify_days = get_input('notify_days');
-            if ($notify_days != $user->notify_days)
+            $enable_batch_email = get_input('enable_batch_email');
+            if ($enable_batch_email != $user->enable_batch_email)
             {
-                $user->notify_days = $notify_days;
+                $user->enable_batch_email = $enable_batch_email;
                 system_message(__('user:notification:success'));
             }
         }

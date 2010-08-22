@@ -95,10 +95,10 @@ class Controller_Admin extends Controller
             $orgs = Organization::query()->
                 where('approval > 0')->
                 where("email <> ''")->
-                where("((last_notify_time IS NULL) OR (last_notify_time + notify_days * 86400 < ?))", time())->
-                where('notify_days > 0')->
-                order_by('last_notify_time')->
-                limit(20)->
+                where('enable_batch_email = 1')->
+                where("not exists (select * from sent_emails where email_guid = ? and user_guid = e.guid)", $email->guid)->
+                order_by('e.guid')->
+                limit(5)->
                 filter(); 
         }
 

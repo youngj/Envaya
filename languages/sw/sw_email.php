@@ -37,7 +37,7 @@ Kama uliliomba, bonyeza kiungo chini kubadili neno lako la siri:
     'email:closing' => "Asante,",
     'email:from' => "Timu ya Envaya",
     'email:about' => "Email hii imetumiwa %s kwa sababu %s imeumba tovuti katika Envaya.",
-    'email:change' => "Kuhariri marudio ya email kutoka Envaya, au kusimamisha email hizi, nenda %s.",
+    'email:change' => "Kusimamisha email kutoka Envaya, nenda %s.",
     'email:here' => "hapa",
     'email:clickhere' => "bonyeza hapa",
     'email:envaya' => "Envaya ni mradi wa Trust for Conservation Innovation.",

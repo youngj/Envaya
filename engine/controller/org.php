@@ -346,12 +346,12 @@ class Controller_Org extends Controller
     {
         $email = get_input('email');
         $code = get_input('code');
-        $notify_days = get_input('notify_days');
+        $enable_batch_email = get_input('enable_batch_email');
         $users = get_users_by_email($email);
 
         foreach ($users as $user)
         {
-            $user->notify_days = $notify_days;
+            $user->enable_batch_email = $enable_batch_email;
             $user->save();
 
             system_message(__('user:notification:success'));

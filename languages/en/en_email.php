@@ -1,6 +1,8 @@
 <?php
 
 return array(
+    'email:subscribed' => 'Subscribed',
+    'email:unsubscribed' => 'Unsubscribed',
 
     'email:orgapproved:subject' => 'Your website has been approved',
     'email:orgapproved:body' => "Hi %s,
@@ -42,7 +44,7 @@ If you requested this, click on the link below to change your password:
     'email:closing' => "Thanks,",
     'email:from' => "the Envaya team",
     'email:about' => "This email was sent to %s because %s created a website on Envaya.",
-    'email:change' => "To change how often you receive email from Envaya, or to unsubscribe, go %s.",
+    'email:change' => "To stop receiving email from Envaya, go %s.",
     'email:here' => "here",
     'email:clickhere' => "click here",
     'email:envaya' => "Envaya is a project of the Trust for Conservation Innovation.",

@@ -11,8 +11,7 @@ class EmailTemplate extends Entity
         'from' => '',
         'data_types' => 0,
         'language' => '',
-        'active' => 0,
-        
+        'active' => 0,        
     );
     
     function render_content($org)
@@ -40,9 +39,10 @@ class EmailTemplate extends Entity
     }
     
     function can_send_to($org)
-    {
-        return ($org && $org->email && $org->notify_days > 0 && $org->approval > 0
-            && (!$org->last_notify_time || $org->last_notify_time + $org->notify_days * 86400 < time()));
+    {    
+        return ($org && $org->email && $org->notify_days > 0 && $org->approval > 0 && $org->enable_batch_email        
+            && SentEmail::query()->where('email_guid = ?', $this->guid)->where('user_guid = ?', $org->guid)->count() == 0
+        );
     }
     
     function send_to($org)
@@ -60,7 +60,15 @@ class EmailTemplate extends Entity
 
         send_mail($org->email, $subject, $body, $headers);
  
-        $org->last_notify_time = time();
+        $time = time();
+ 
+        $org->last_notify_time = $time;
         $org->save();
+
+        $sentEmail = new SentEmail();
+        $sentEmail->email_guid = $this->guid;
+        $sentEmail->user_guid = $org->guid;
+        $sentEmail->time_sent = $time;
+        $sentEmail->save();
     }
 }

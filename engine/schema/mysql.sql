@@ -248,6 +248,7 @@ CREATE TABLE `users_entity` (
   
   `notify_days` int default 14,
   `last_notify_time` int default null,
+  `enable_batch_email` tinyint(4) not null default 1,
   
   PRIMARY KEY  (`guid`),
   UNIQUE KEY (`username`),
@@ -445,4 +446,14 @@ CREATE TABLE `feed_items` (
 	KEY `feed_key` (`feed_name`, `time_posted`),
 	KEY `user_guid` (`user_guid`),
 	KEY `subject_guid` (`subject_guid`)
+) ENGINE = MYISAM DEFAULT CHARSET=utf8; 	
+
+CREATE TABLE `sent_emails` (
+	`id` INT NOT NULL AUTO_INCREMENT ,		
+	`email_guid` bigint(20) NOT NULL,
+	`user_guid` bigint(20) NOT NULL,
+	`time_sent` int NOT NULL,
+	PRIMARY KEY ( `id` ),
+	KEY `email_guid` (`email_guid`),
+	KEY `user_guid` (`user_guid`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8; 	

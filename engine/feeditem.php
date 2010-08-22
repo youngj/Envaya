@@ -2,10 +2,7 @@
 
 class FeedItem extends Model
 {
-    static $class_name = 'FeedItem';
-
     static $table_name = 'feed_items';
-    static $primary_key = 'id';
     static $table_attributes = array(
         'feed_name' => '',
         'action_name' => '',

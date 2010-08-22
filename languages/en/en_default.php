@@ -299,8 +299,9 @@
         'user:notification:label' => "Notification Settings",
         'user:notification:freq' => "Send Envaya Updates",
         'user:notification:success' => "Your notification settings have been changed.",
-        'user:notification:desc' => "Envaya Updates keep you informed about what organizations similar to yours have been doing on Envaya. This page lets you change how often Envaya will send you emails at %s.",
-        'user:notification:invalid' => "Unable to access email notification settings. If you copied a link from your email, please ensure that the URL is exactly the same as it was in the email you received.",
+        'user:notification:desc' => "Envaya periodically sends emails to keep everyone informed about new opportunities and to announce Featured Organizations.",
+        'user:notification:desc2' => "Settings for %s:",
+        'user:notification:invalid' => "Unable to access email notification settings. If you copied a link from your email, please ensure that the URL is exactly the same as it was in the email you received.",        
 
         'freq:never' => "Never",
         'freq:2weeks' => "Once every 2 weeks",

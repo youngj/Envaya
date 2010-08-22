@@ -7,7 +7,7 @@
 <form action='org/emailSettings_save' method='POST'>
 
 <div class='instructions'>
-<?php echo sprintf(__('user:notification:desc'), "<em>".escape($email)."</em>"); ?>
+<?php echo __('user:notification:desc'); ?>
 </div>
 
 <div class='input'>
@@ -25,11 +25,12 @@
 
 ?>
 
-    <div class='help'><?php echo __('user:notification:freq'); ?>:
+    <div class='help'>
+    <?php echo sprintf(__('user:notification:desc2'), "<em>".escape($email)."</em>"); ?>        
     <?php
 
-        echo view("input/pulldown", array('internalname' => 'notify_days', 'value' => $users[0]->notify_days, 'options_values' =>
-            get_notification_frequencies()
+        echo view("input/pulldown", array('internalname' => 'enable_batch_email', 'value' => $users[0]->enable_batch_email, 'options_values' =>
+            get_batch_email_options()
         ));
 
      ?></div>

@@ -74,12 +74,10 @@ function get_themes()
     return array('green','brick','craft4','craft1','cotton2','wovengrass','beads','red');
 }
 
-function get_notification_frequencies()
+function get_batch_email_options()
 {
     return array(
-        14 => __('freq:2weeks'),
-        30 => __('freq:month'),
-        60 => __('freq:2months'),
-        0 => __('freq:never')
+        0 => __('email:unsubscribed'),
+        1 => __('email:subscribed'),
     );
 }
