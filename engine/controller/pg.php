@@ -14,21 +14,21 @@ class Controller_Pg extends Controller {
         $this->page_draw($title, $body, array('hideLogin' => true));
     }
 
-    function action_donate()
-    {
-        $title = __("donate:title");
-        $body = view_layout('one_column_padded',
-            view_title($title),
-            view("page/donate_form"));    
-    
-        $this->page_draw($title, $body);
-    }
-    
     function action_submit_donate_form()
     {    
         $values = $_POST;
         $amount = (int)$values['_amount'] ?: (int)$values['_other_amount'];
         $values['donation'] = $amount;
+        
+        $emailBody = "";
+        
+        foreach ($values as $k => $v)
+        {
+            $emailBody .= "$k = $v\n\n";
+        }
+
+        send_admin_mail("Donation form started", $emailBody);
+        
         if (!$amount)
         {
             action_error("Please select a donation amount.");
@@ -48,7 +48,7 @@ class Controller_Pg extends Controller {
 
         unset($values['_amount']);
         unset($values['_other_amount']);
-        unset($values['submit']);
+        unset($values['Submit']);       
 
         echo view("page/submit_tci_donate_form", $values);    
     }

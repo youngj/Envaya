@@ -1,5 +1,5 @@
 
-<form id='donate_form' method="POST" action="pg/submit_donate_form">
+<form style='padding-top:10px' id='donate_form' method="POST" action="pg/submit_donate_form">
     
     <input name="project" type="hidden" value="Envaya" />
 
@@ -61,7 +61,7 @@
         </div>  
         
         <div class='input'>
-            Phone Number<br />
+            Phone number<br />
             <?php echo view('input/text', array(
                 'internalname' => "phone",
                 'js' => "maxlength='75'",
@@ -86,7 +86,7 @@
     </td>
     <td id='donor_address'>
         <div class='input'>
-            Street Address<br />
+            Street address<br />
             <?php echo view('input/text', array(
                 'internalname' => "Address",
                 'js' => "maxlength='75'",
@@ -94,7 +94,7 @@
         </div>        
         
         <div class='input'>
-            Street Address 2 <span class='help'>(optional)</span><br />
+            Street address <span class='help'>(optional)</span><br />
             <?php echo view('input/text', array(
                 'internalname' => "Address2",
                 'js' => "maxlength='75'",
@@ -111,12 +111,12 @@
         
         <table>
         <tr>
-        <td style='width:115px'>
+        <td style='width:130px'>
             <div class='input'>
                 State/Province<br />
                 <?php echo view('input/text', array(
                     'internalname' => "State",
-                    'js' => "maxlength='75' style='width:80px'",
+                    'js' => "maxlength='75' style='width:95px'",
                 )); ?>                
             </div>
         </td>
@@ -125,7 +125,7 @@
                 Zip/Postal Code<br />
                 <?php echo view('input/text', array(
                     'internalname' => "Zip",
-                    'js' => "maxlength='75' style='width:80px'",
+                    'js' => "maxlength='75' style='width:100px'",
                 )); ?>                                
             </div>
         </td>
@@ -161,7 +161,7 @@
     <td style='padding-left:20px'>
     
     <div class='help' style='font-size:12px;padding-top:6px;'><strong>Note:</strong> 
-    All donations to Envaya are processed by 
+    Donations to Envaya are processed by 
     the <a target='_blank' href='http://www.trustforconservationinnovation.org/'>Trust for Conservation Innovation</a>. You will be redirected to 
     their website to complete your donation. 
     </div>

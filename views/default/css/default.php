@@ -1718,7 +1718,7 @@ a.feed_image_link:hover
 
 #donate_form .input-text
 {
-    width:200px;
+    width:230px;
 }
 
 #donate_form input
