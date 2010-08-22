@@ -14,6 +14,45 @@ class Controller_Pg extends Controller {
         $this->page_draw($title, $body, array('hideLogin' => true));
     }
 
+    function action_donate()
+    {
+        $title = __("donate:title");
+        $body = view_layout('one_column_padded',
+            view_title($title),
+            view("page/donate_form"));    
+    
+        $this->page_draw($title, $body);
+    }
+    
+    function action_submit_donate_form()
+    {    
+        $values = $_POST;
+        $amount = (int)$values['_amount'] ?: (int)$values['_other_amount'];
+        $values['donation'] = $amount;
+        if (!$amount)
+        {
+            action_error("Please select a donation amount.");
+        }        
+        if (!$values['Name'])
+        {
+            action_error("Please enter your Full Name.");
+        }
+        if (!$values['phone'])
+        {
+            action_error("Please enter your Phone Number.");
+        }
+        if (!$values['Email'])
+        {
+            action_error("Please enter your Email Address.");
+        }
+
+        unset($values['_amount']);
+        unset($values['_other_amount']);
+        unset($values['submit']);
+
+        echo view("page/submit_tci_donate_form", $values);    
+    }
+    
     function action_submit_login()
     {
         $username = get_input('username');

@@ -1709,3 +1709,33 @@ a.feed_image_link:hover
 {
     color:#999;   
 }
+
+#donate_form .input
+{
+    padding:0px 0px 5px 0px;
+    font-size:12px;
+}
+
+#donate_form .input-text
+{
+    width:200px;
+}
+
+#donate_form input
+{
+    font-size:12px;
+}
+
+#donor_address
+{
+    padding-left:30px;
+}
+#donor_address input
+{
+    width:200px;
+}
+
+#donation_amount label
+{
+    font-weight:normal;
+}
