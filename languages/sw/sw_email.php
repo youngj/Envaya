@@ -1,6 +1,10 @@
 <?php
 
 return array(
+    'email:subscribed' => 'Nitumie email',
+    'email:unsubscribed' => 'Usinitumie email',
+
+
     'email:orgapproved:subject' => 'Tovuti yako imekubaliwa',
     'email:orgapproved:body' => 'Hujambo %s,
 

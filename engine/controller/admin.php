@@ -98,7 +98,7 @@ class Controller_Admin extends Controller
                 where('enable_batch_email = 1')->
                 where("not exists (select * from sent_emails where email_guid = ? and user_guid = e.guid)", $email->guid)->
                 order_by('e.guid')->
-                limit(5)->
+                limit(20)->
                 filter(); 
         }
 

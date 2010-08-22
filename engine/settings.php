@@ -4,6 +4,8 @@
     global $CONFIG;
     $CONFIG = new stdClass;
 
+    $CONFIG->cache_version = 76;
+    
     $CONFIG->dbuser = 'newslink';
     $CONFIG->dbpass = 'scarlett';
     $CONFIG->dbname = 'elgg';
@@ -37,7 +39,6 @@
     $CONFIG->dataroot = dirname($CONFIG->path). "/elgg-data/";
 
     $CONFIG->simplecache_enabled = 0;
-    $CONFIG->cache_version = 75;
 
     $CONFIG->smtp_host = "smtp.com";
     $CONFIG->smtp_port = 2525;
