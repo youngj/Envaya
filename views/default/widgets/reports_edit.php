@@ -1,6 +1,6 @@
 <?php
     $widget = $vars['widget'];
-    $org = $widget->getContainerEntity();
+    $org = $widget->get_container_entity();
 ?>
 <table>
 <tr class='header_row'>
@@ -9,7 +9,7 @@
 </tr>
 
 <?php
-    $reports = $org->queryReports()->filter();
+    $reports = $org->query_reports()->filter();
 
     $escUrl = $_SERVER['REQUEST_URI'];
     
@@ -19,10 +19,10 @@
         $rowClass = (($count % 2) != 0) ? 'odd' : 'even';
        
         echo "<tr class='$rowClass'>";
-        echo "<td>".escape($report->getTitle())."</td>";
-        echo "<td><span class='blog_date'>{$report->getDateText()}</span></td>";
-        echo "<td><a href='{$report->getURL()}'>".__("view")."</a></td>";
-        echo "<td><a href='{$report->getURL()}/edit?from=$escUrl'>".__("edit")."</a></td>";
+        echo "<td>".escape($report->get_title())."</td>";
+        echo "<td><span class='blog_date'>{$report->get_date_text()}</span></td>";
+        echo "<td><a href='{$report->get_url()}'>".__("view")."</a></td>";
+        echo "<td><a href='{$report->get_url()}/edit?from=$escUrl'>".__("edit")."</a></td>";
         echo "</tr>";
     }    
 ?>

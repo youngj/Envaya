@@ -2,15 +2,15 @@
 <?php
 
     $widget = $vars['widget'];
-    $org = $widget->getContainerEntity();
+    $org = $widget->get_container_entity();
 
-    $reports = $org->queryReports()->where('status = ?', ReportStatus::Published)->filter();
+    $reports = $org->query_reports()->where('status = ?', ReportStatus::Published)->filter();
     
     foreach ($reports as $report)
     {
         echo "<div>";
-        echo "<a href='{$report->getURL()}'>".escape($report->getTitle())."</a>";
-        echo "<span class='blog_date'>".$report->getDateText()."</span>";
+        echo "<a href='{$report->get_url()}'>".escape($report->get_title())."</a>";
+        echo "<span class='blog_date'>".$report->get_date_text()."</span>";
         echo "</div>";
     }
 ?>

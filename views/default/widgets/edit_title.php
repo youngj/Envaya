@@ -1,7 +1,7 @@
 <?php
     $widget = $vars['widget'];
 
-    if ($widget->title || !in_array($widget->widget_name, Widget::getDefaultNames()))
+    if ($widget->title || !in_array($widget->widget_name, Widget::get_default_names()))
     {
 ?>
 <div class='input'>

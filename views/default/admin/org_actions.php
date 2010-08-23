@@ -42,7 +42,7 @@
         
         if ($widget)
         {
-            echo "<a href='{$widget->getBaseURL()}/options'>".__('widget:options')."</a>";
+            echo "<a href='{$widget->get_base_url()}/options'>".__('widget:options')."</a>";
         }
 
         ?>

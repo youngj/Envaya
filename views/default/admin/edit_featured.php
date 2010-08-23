@@ -1,11 +1,11 @@
 <?php
     $entity = $vars['entity'];
-    $org = $entity->getContainerEntity();
+    $org = $entity->get_container_entity();
 ?>
 <form method='POST' action='admin/save_featured'>
 <?php echo view('input/securitytoken') ?>
 
-<strong><a href='<?php echo $org->getURL() ?>'><?php echo escape($org->name) ?></a></strong>
+<strong><a href='<?php echo $org->get_url() ?>'><?php echo escape($org->name) ?></a></strong>
 
 <br /><br />
 

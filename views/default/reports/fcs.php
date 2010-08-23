@@ -1,7 +1,7 @@
 <?php
 
 $report = $vars['report'];
-$org = $report->getContainerEntity();
+$org = $report->get_container_entity();
 $render = @$vars['edit'] ? 'edit' : 'view';
 
 ?>

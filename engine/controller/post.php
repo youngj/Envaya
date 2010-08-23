@@ -18,7 +18,7 @@ class Controller_Post extends Controller_Profile
 
         $post = get_entity($postId);
         $org = $this->org;
-        if ($post && $post->container_guid == $org->guid && $post->getSubtype() == T_blog)
+        if ($post && $post->container_guid == $org->guid && $post->subtype == T_blog)
         {
             $this->post = $post;
             return;
@@ -37,16 +37,16 @@ class Controller_Post extends Controller_Profile
 
         $this->use_public_layout();
 
-        if ($post->canEdit())
+        if ($post->can_edit())
         {
-            add_submenu_item(__("widget:edit"), "{$post->getUrl()}/edit", 'edit');
+            add_submenu_item(__("widget:edit"), "{$post->get_url()}/edit", 'edit');
         }
 
         $title = __('widget:news');
 
-        if (!$org->canView())
+        if (!$org->can_view())
         {
-            $org->showCantViewMessage();
+            $this->show_cant_view_message();
             $body = '';
         }
         else
@@ -64,11 +64,11 @@ class Controller_Post extends Controller_Profile
 
         $title = __('blog:editpost');
 
-        $cancelUrl = get_input('from') ?: $post->getUrl();
+        $cancelUrl = get_input('from') ?: $post->get_url();
 
         add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
-        $org = $post->getContainerEntity();
+        $org = $post->get_container_entity();
         $area1 = view("org/editPost", array('entity' => $post));
         $body = view_layout("one_column_padded", view_title($title), $area1);
 
@@ -86,11 +86,11 @@ class Controller_Post extends Controller_Profile
 
         if (get_input('delete'))
         {
-            $org = $post->getContainerEntity();
+            $org = $post->get_container_entity();
             $post->disable();
             $post->save();
             system_message(__('blog:delete:success'));
-            forward($org->getURL()."/news");
+            forward($org->get_url()."/news");
         }
         else if (empty($body))
         {
@@ -99,11 +99,11 @@ class Controller_Post extends Controller_Profile
         }
         else
         {
-            $post->setContent($body, true);
+            $post->set_content($body, true);
             $post->save();
 
             system_message(__("blog:updated"));
-            forward($post->getUrl());
+            forward($post->get_url());
         }
     }
 
@@ -124,13 +124,13 @@ class Controller_Post extends Controller_Profile
         {
             $uuid = get_input('uuid');
 
-            $duplicates = NewsUpdate::queryByMetadata('uuid', $uuid)->where('container_guid=?',$org->guid)->filter();
+            $duplicates = NewsUpdate::query_by_metadata('uuid', $uuid)->where('container_guid=?',$org->guid)->filter();
             if (!sizeof($duplicates))
             {
                 $post = new NewsUpdate();
                 $post->owner_guid = Session::get_loggedin_userid();
                 $post->container_guid = $org->guid;
-                $post->setContent($body, true);
+                $post->set_content($body, true);
                 $post->uuid = $uuid;
                 $post->save();
 
@@ -141,14 +141,14 @@ class Controller_Post extends Controller_Profile
                 $post = $duplicates[0];
             }
 
-            forward($post->getURL());
+            forward($post->get_url());
         }
     }
 
     function action_preview()
     {
         $this->request->headers['Content-type'] = 'text/javascript';
-        $this->request->response = json_encode($this->post->jsProperties());
+        $this->request->response = json_encode($this->post->js_properties());
     }
 
     function action_prev()
@@ -175,7 +175,7 @@ class Controller_Post extends Controller_Profile
         ));
         if ($entity)
         {
-            forward($entity->getURL());
+            forward($entity->get_url());
         }
 
         $entity = entity_row_to_entity(get_data_row("$selectWhere ORDER BY guid $order LIMIT 1",
@@ -184,7 +184,7 @@ class Controller_Post extends Controller_Profile
 
         if ($entity)
         {
-            forward($entity->getURL());
+            forward($entity->get_url());
         }
     }
 }

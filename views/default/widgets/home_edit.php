@@ -1,6 +1,6 @@
 <?php
     $widget = $vars['widget'];
-    $org = $widget->getContainerEntity();
+    $org = $widget->get_container_entity();
     $escUrl = urlencode($_SERVER['REQUEST_URI']);
 
     ob_start();
@@ -14,7 +14,7 @@
     <?php echo view("input/tinymce", array(
         'internalname' => 'content',
         'trackDirty' => true,
-        'valueIsHTML' => $widget->hasDataType(DataType::HTML),
+        'valueIsHTML' => $widget->has_data_type(DataType::HTML),
         'value' => $widget->content)) ?>
 </div>
 <?php echo view('input/submit', array('internalname' => "submit", 'trackDirty' => true, 'value' => __('savechanges'))); ?>
@@ -27,8 +27,8 @@
     <?php
         echo view("input/checkboxes",array(
             'internalname' => 'sector',
-            'options' => Organization::getSectorOptions(),
-            'value' => $org->getSectors()));
+            'options' => Organization::get_sector_options(),
+            'value' => $org->get_sectors()));
     ?>
     <?php echo __('setup:sector:other_specify') ?> <?php echo view('input/text', array(
     'internalname' => 'sector_other',
@@ -48,7 +48,7 @@
     'js' => 'style="width:200px"',
     'trackDirty' => true,
     'value' => $org->city
-)) ?>, <?php echo escape($org->getCountryText()); ?>
+)) ?>, <?php echo escape($org->get_country_text()); ?>
 </div>
 <div>
 <?php echo __('setup:region') ?> <?php echo view('input/pulldown', array(
@@ -60,8 +60,8 @@
 <br />
 <br />
 <?php
-    $lat = $org->getLatitude() ?: 0.0;
-    $long = $org->getLongitude() ?: 0.0;
+    $lat = $org->get_latitude() ?: 0.0;
+    $long = $org->get_longitude() ?: 0.0;
 
     $zoom = ($lat || $long) ? 11 : 1;
 

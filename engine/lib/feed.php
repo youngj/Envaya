@@ -28,11 +28,11 @@ function post_feed_items($user, $actionName, $subject, $args = null, $time = nul
         $time = time();
     }
 
-    $feedNames = $user->getFeedNames();
+    $feedNames = $user->get_feed_names();
 
     if ($subject instanceof User && $subject != $user)
     {
-        $feedNames = $feedNames + $subject->getFeedNames();
+        $feedNames = $feedNames + $subject->get_feed_names();
         $feedNames = array_flip(array_flip($feedNames));
     }
 

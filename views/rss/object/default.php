@@ -11,13 +11,13 @@
 ?>
 
 	<item>
-	  <guid isPermaLink='true'><?php echo htmlspecialchars($vars['entity']->getURL()); ?></guid>
+	  <guid isPermaLink='true'><?php echo htmlspecialchars($vars['entity']->get_url()); ?></guid>
 	  <pubDate><?php echo date("r",$vars['entity']->time_created) ?></pubDate>
-	  <link><?php echo htmlspecialchars($vars['entity']->getURL()); ?></link>
+	  <link><?php echo htmlspecialchars($vars['entity']->get_url()); ?></link>
 	  <title><![CDATA[<?php echo $title; ?>]]></title>
 	  <description><![CDATA[<?php echo (Markup::autop($vars['entity']->description)); ?>]]></description>
 	  <?php
-			$owner = $vars['entity']->getOwnerEntity();
+			$owner = $vars['entity']->get_owner_entity();
 			if ($owner)
 			{
 ?>
@@ -28,11 +28,11 @@
 	  <?php
 			if (
 				($vars['entity'] instanceof Locatable) &&
-				($vars['entity']->getLongitude()) &&
-				($vars['entity']->getLatitude())
+				($vars['entity']->get_longitude()) &&
+				($vars['entity']->get_latitude())
 			) {
 				?>
-				<georss:point><?php echo $vars['entity']->getLatitude(); ?> <?php echo $vars['entity']->getLongitude(); ?></georss:point>
+				<georss:point><?php echo $vars['entity']->get_latitude(); ?> <?php echo $vars['entity']->get_longitude(); ?></georss:point>
 				<?php
 			}
 	  ?>

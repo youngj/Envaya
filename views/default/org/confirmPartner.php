@@ -4,13 +4,13 @@
 
 ?>
 <div class='section_content padded'>
-<form action='<?php echo $partner->getURL() ?>/create_partner' method='POST'>
+<form action='<?php echo $partner->get_url() ?>/create_partner' method='POST'>
 <?php echo view('input/securitytoken') ?>
 <div class="partnership_view">
-    <a class='feed_org_icon' href='<?php echo $partner->getURL() ?>'><img src='<?php echo $partner->getIcon('small') ?>' /></a>
+    <a class='feed_org_icon' href='<?php echo $partner->get_url() ?>'><img src='<?php echo $partner->get_icon('small') ?>' /></a>
 
     <div class='feed_content'>
-        <a class='feed_org_name' href='<?php echo $partner->getUrl() ?>'><?php echo escape($partner->name); ?></a><br />
+        <a class='feed_org_name' href='<?php echo $partner->get_url() ?>'><?php echo escape($partner->name); ?></a><br />
     </div>
     <div style='clear:both;'></div>
 

@@ -14,7 +14,7 @@
 
     $controls = "";
 
-    $info = "<div><p><b><a href=\"" . $vars['entity']->getUrl() . "\">" . escape($title) . "</a>" . (!$vars['entity']->isApproved() ? (" (" . __('approval:notapproved') .") ") : "") . "</b> $controls </p></div>";
+    $info = "<div><p><b><a href=\"" . $vars['entity']->get_url() . "\">" . escape($title) . "</a>" . (!$vars['entity']->is_approved() ? (" (" . __('approval:notapproved') .") ") : "") . "</b> $controls </p></div>";
 
     if (get_input('search_viewtype') == "gallery") {
 
@@ -22,6 +22,6 @@
 
     } 
 
-    $icon = "<a href=\"" . $vars['entity']->getUrl() . "\">$icon</a>";
+    $icon = "<a href=\"" . $vars['entity']->get_url() . "\">$icon</a>";
 
     echo view('search/listing',array('icon' => $icon, 'info' => $info));

@@ -4,7 +4,7 @@ $entity = $vars['entity'];
 $property = $vars['property'];
 $isHTML = $vars['isHTML'];
 
-$org = $entity->getRootContainerEntity();
+$org = $entity->get_root_container_entity();
 
 $text = $entity->get($property);
 
@@ -16,7 +16,7 @@ echo "<table class='gridView' style='width:1100px;margin:0 auto'><tr><td  style=
 echo "<h3>".sprintf(__("trans:original_in"),
      view('input/language', array(
         'internalname' => 'language',
-        'value' => $entity->getLanguage()
+        'value' => $entity->get_language()
     ))
 ).": </h3>";
 
@@ -36,10 +36,10 @@ echo "</td><td style='width:50%'>";
 $lang = $vars['targetLang'];
 $langStr = __($lang, $lang);
 
-$curTranslation = $entity->lookup_translation($property, $entity->getLanguage(), $lang, TranslateMode::ManualOnly, $isHTML);
+$curTranslation = $entity->lookup_translation($property, $entity->get_language(), $lang, TranslateMode::ManualOnly, $isHTML);
 if (!$curTranslation->value)
 {
-    $curTranslation = $entity->lookup_translation($property, $entity->getLanguage(), $lang, TranslateMode::All, $isHTML);
+    $curTranslation = $entity->lookup_translation($property, $entity->get_language(), $lang, TranslateMode::All, $isHTML);
 }
 
 $curText = $curTranslation->value ?: $text;

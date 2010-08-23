@@ -16,40 +16,40 @@ class Translation extends Model
 
     public function save()
     {
-        $this->hash = $this->calculateHash();
+        $this->hash = $this->calculate_hash();
         $this->time_updated = time();
         return parent::save();
     }
     
-    public function getContainerEntity()
+    public function get_container_entity()
     {
         return get_entity($this->container_guid);
     }
 
-    public function getOriginalText()
+    public function get_original_text()
     {
-        $obj = $this->getContainerEntity();
+        $obj = $this->get_container_entity();
         $property = $this->property;
         return trim($obj->$property);
     }
     
-    public function getOriginalLanguage()
+    public function get_original_language()
     {
-        $obj = $this->getContainerEntity();
-        return $obj->getLanguage();
+        $obj = $this->get_container_entity();
+        return $obj->get_language();
     }
 
-    public function calculateHash()
+    public function calculate_hash()
     {
-        return $this->getContainerEntity()->getLanguage() . ":" . sha1($this->getOriginalText());
+        return $this->get_container_entity()->get_language() . ":" . sha1($this->get_original_text());
     }
 
-    public function isStale()
+    public function is_stale()
     {
-        return $this->calculateHash() != $this->hash;
+        return $this->calculate_hash() != $this->hash;
     }
 
-    public static function queryByLanguageAndOwner($lang, $owner_guid)
+    public static function query_by_language_and_owner($lang, $owner_guid)
     {
         return static::query()->where('lang = ?',$lang)->where('owner_guid = ?',$owner_guid)->order_by('time_updated asc');
     }

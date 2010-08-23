@@ -22,7 +22,7 @@ function sectorChanged()
 echo view('input/pulldown', array(
     'internalname' => 'sector',
     'internalid' => 'sectorList',
-    'options_values' => Organization::getSectorOptions(),
+    'options_values' => Organization::get_sector_options(),
     'empty_option' => __('sector:empty_option'),
     'value' => $sector,
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"
@@ -43,5 +43,5 @@ echo view('input/pulldown', array(
 
 <?php
 	$feedName = get_feed_name(array('sector' => $sector, 'region' => $region));
-	echo view('feed/list', array('items' => FeedItem::queryByFeedName($feedName)->limit(20)->filter()));
+	echo view('feed/list', array('items' => FeedItem::query_by_feed_name($feedName)->limit(20)->filter()));
 ?>

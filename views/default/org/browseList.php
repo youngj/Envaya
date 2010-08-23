@@ -32,7 +32,7 @@ function sectorChanged()
 echo view('input/pulldown', array(
     'internalname' => 'sector',
     'internalid' => 'sectorList',
-    'options_values' => Organization::getSectorOptions(), 
+    'options_values' => Organization::get_sector_options(), 
     'empty_option' => __('sector:empty_option'),
     'value' => $sector,
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"        
@@ -53,7 +53,7 @@ echo view('input/pulldown', array(
 
 echo "<br /><br />";
 
-$res = Organization::listSearch($name=null, $sector, $region, $limit = 10);   
+$res = Organization::list_search($name=null, $sector, $region, $limit = 10);   
 if ($res)
 {
     echo $res;

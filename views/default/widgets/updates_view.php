@@ -1,9 +1,9 @@
 <?php
 
     $widget = $vars['widget'];
-    $org = $vars['widget']->getContainerEntity();
+    $org = $vars['widget']->get_container_entity();
        
-    $items = $org->queryFeedItems()->limit(6)->filter();
+    $items = $org->query_feed_items()->limit(6)->filter();
 
     echo "<div class='section_content'>";
 

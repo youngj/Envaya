@@ -28,7 +28,7 @@ function get_thumbnail_src($html)
 
         if (sizeof($files) > 0)
         {
-            return $files[0]->getURL();
+            return $files[0]->get_url();
         }
     }
     return null;
@@ -83,7 +83,7 @@ function upload_temp_images($filename, $sizes)
                 $file->height = $resizedImage['height'];
                 $file->mime = $resizedImage['mime'];
                 $file->filename = "$sizeName.jpg";
-                $file->uploadFile($resizedImage['filename'], $resizedImage['mime']);
+                $file->upload_file($resizedImage['filename'], $resizedImage['mime']);
                 $file->save();
                 $lastFile = $file;
 
@@ -104,7 +104,7 @@ function get_file_group_json($files)
 
     foreach ($files as $file)
     {
-        $res[$file->size] = $file->jsProperties();
+        $res[$file->size] = $file->js_properties();
     }
 
     return json_encode($res);

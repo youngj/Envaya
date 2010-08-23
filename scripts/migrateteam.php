@@ -16,8 +16,8 @@
                 $content .= view_entity($teamMember);
             }
 
-            $teamWidget = $org->getWidgetByName('team');
-            $teamWidget->setContent($content, true);
+            $teamWidget = $org->get_widget_by_name('team');
+            $teamWidget->set_content($content, true);
             $teamWidget->save();
         }
     }

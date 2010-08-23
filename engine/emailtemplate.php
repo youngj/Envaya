@@ -53,7 +53,7 @@ class EmailTemplate extends Entity
         global $CONFIG;
         
         $headers = array(
-            'To' => $org->getNameForEmail(),
+            'To' => $org->get_name_for_email(),
             'Content-Type' => 'text/html',
             'From' => "\"{$this->from}\" <{$CONFIG->email_from}>"
         );

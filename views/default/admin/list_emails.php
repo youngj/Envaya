@@ -11,7 +11,7 @@
             <?php echo escape($email->subject ?: 'No Subject') ?>
             <?php echo ($email->active) ? "</b>" : '' ?>
             </td>            
-            <td><?php echo __($email->getLanguage()) ?></td>            
+            <td><?php echo __($email->get_language()) ?></td>            
             <td><a href='/admin/view_email?email=<?php echo $email->guid ?>'><?php echo __('view') ?></a></td>
             <td><a href='/admin/edit_email?email=<?php echo $email->guid ?>'><?php echo __('edit') ?></a></td>
             <td><a href='/admin/batch_email?email=<?php echo $email->guid ?>'><?php echo __('send') ?></a></td>

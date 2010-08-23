@@ -4,31 +4,47 @@ class Organization extends User
 {
     static $subtype_id = T_organization;
 
-    public function queryFiles()
+    public function is_setup_complete()
+    {
+        return $this->setup_state >= 5;
+    }
+    
+    function query_news_updates()
+    {
+        return NewsUpdate::query()->where("container_guid=?", $this->guid)->order_by('time_created desc');
+    }    
+    
+    public function query_files()
     {    
         return UploadedFile::query()->where('container_guid=?',$this->guid);
     }
     
-    public function queryReports()
+    public function query_reports()
     {
         return Report::query()->where('container_guid=?',$this->guid);
     }
     
-    public function getWebsiteScore()    
+    function query_partnerships()
+    {
+        return Partnership::query()->where("container_guid = ? AND approval >= 3", $this->guid);
+    }
+    
+    
+    public function get_website_score()    
     {
         $score = 0;
     
-        if ($this->queryNewsUpdates()->where('time_created > ?', time() - 86400 * 31)->count() > 0)
+        if ($this->query_news_updates()->where('time_created > ?', time() - 86400 * 31)->count() > 0)
         {
             $score += 10;
         }
         
-        if ($this->queryFiles()->where("size='small'")->count() >= 2)
+        if ($this->query_files()->where("size='small'")->count() >= 2)
         {
             $score += 10;
         }
         
-        if (sizeof($this->getContactInfo()) >= 2)
+        if (sizeof($this->get_contact_info()) >= 2)
         {   
             $score += 10;
         }
@@ -36,8 +52,8 @@ class Organization extends User
         $numWidgets = 0;        
         foreach (array('history','projects','team') as $widgetName)
         {
-            $widget = $this->getWidgetByName($widgetName);
-            if ($widget->isActive() && $widget->content)
+            $widget = $this->get_widget_by_name($widgetName);
+            if ($widget->is_active() && $widget->content)
             {
                 $numWidgets++;
             }
@@ -51,16 +67,16 @@ class Organization extends User
         return $score;
     }
     
-    public function getFeedNames()
+    public function get_feed_names()
     {
-        $feedNames = parent::getFeedNames();
+        $feedNames = parent::get_feed_names();
 
         if ($this->region)
         {
             $feedNames[] = get_feed_name(array("region" => $this->region));
         }
 
-        foreach ($this->getSectors() as $sector)
+        foreach ($this->get_sectors() as $sector)
         {
             $feedNames[] = get_feed_name(array('sector' => $sector));
 
@@ -74,10 +90,10 @@ class Organization extends User
 
     }
     
-    public function getRelatedFeedNames()
+    public function get_related_feed_names()
     {
         $feedNames = array();
-        $sectors = $this->getSectors();
+        $sectors = $this->get_sectors();
 
         foreach ($sectors as $sector)
         {
@@ -91,7 +107,7 @@ class Organization extends User
         }
         */
 
-        foreach ($this->queryPartnerships()->limit(25)->filter() as $partnership)
+        foreach ($this->query_partnerships()->limit(25)->filter() as $partnership)
         {
             $feedNames[] = get_feed_name(array('user' => $partnerhip->partner_guid));
         }
@@ -99,17 +115,12 @@ class Organization extends User
         return $feedNames;
     }
 
-    public function canView()
+    public function can_view()
     {
-        return $this->approval > 0 || $this->canEdit();
-    }
-
-    public function canCommunicateWith()
-    {
-        return $this->canView() && Session::isloggedin() && Session::get_loggedin_userid() != $this->guid;
+        return $this->approval > 0 || $this->can_edit();
     }
     
-    public function getContactInfo()
+    public function get_contact_info()
     {
         $res = array();
                 
@@ -126,57 +137,24 @@ class Organization extends User
         return $res;
     }
 
-    public function showCantViewMessage()
+    public function get_available_themes()
     {
-        if ($this->approval == 0)
-        {
-            system_message(__('approval:waiting'));
-        }
-        else if ($this->approval < 0)
-        {
-            system_message(__('approval:rejected'));
-        }
-    }
-
-    public function getAvailableThemes()
-    {
-        $themes = get_themes();
+        $themes = array('green','brick','craft4','craft1','cotton2','wovengrass','beads','red');
+        
         if ($this->username == 'envaya')
         {
             $themes[] = 'sidebar';
         }        
+        
         return $themes;
     }
     
-    public function generateEmailCode()
-    {
-        $code = '';
-        $characters = "0123456789abcdefghijklmnopqrstuvwxyz";
-        for ($p = 0; $p < 8; $p++)
-        {
-            $code .= $characters[mt_rand(0, strlen($characters) - 1)];
-        }
-        $this->email_code = $code;
-        $this->save();
-    }
-
-    public function getPostEmail()
-    {
-        if (!$this->email_code)
-        {
-            $this->generateEmailCode();
-        }
-        global $CONFIG;
-        $postEmailParts = explode('@', $CONFIG->post_email, 2);
-        return "{$postEmailParts[0]}+{$this->email_code}@{$postEmailParts[1]}";
-    }
-
-    public function getCountryText()
+    public function get_country_text()
     {
         return __("country:{$this->country}");
     }
 
-    public function getLocationText($includeRegion = true)
+    public function get_location_text($includeRegion = true)
     {
         $res = '';
 
@@ -193,7 +171,7 @@ class Organization extends User
                 $res .= "$regionText, ";
             }
         }
-        $res .= $this->getCountryText();
+        $res .= $this->get_country_text();
 
         return $res;
     }
@@ -201,7 +179,7 @@ class Organization extends User
     protected $sectors;
     protected $sectors_dirty = false;
 
-    static function getSectorOptions()
+    static function get_sector_options()
     {
         $sectors = array(
             1 => __('sector:agriculture'),
@@ -233,7 +211,7 @@ class Organization extends User
         return $sectors;
     }
 
-    public function getSectors()
+    public function get_sectors()
     {
         if (!isset($this->sectors))
         {
@@ -248,7 +226,7 @@ class Organization extends User
         return $this->sectors;
     }
 
-    public function setSectors($arr)
+    public function set_sectors($arr)
     {
         $this->sectors = $arr;
         $this->sectors_dirty = true;
@@ -269,7 +247,7 @@ class Organization extends User
         return parent::save();
     }
 
-    public function getWidgetByName($name)
+    public function get_widget_by_name($name)
     {
         $widget = Widget::query()->where('container_guid=?', $this->guid)->where('widget_name=?',$name)->show_disabled(true)->get();
         
@@ -282,23 +260,23 @@ class Organization extends User
         return $widget;
     }
 
-    private function getSavedWidgets()
+    private function get_saved_widgets()
     {
         return Widget::query()->where('container_guid=?',$this->guid)->filter();
     }
     
-    public function getAvailableWidgets()
+    public function get_available_widgets()
     {        
         $savedWidgetsMap = array();
         $availableWidgets = array();
         
-        foreach ($this->getSavedWidgets() as $widget)
+        foreach ($this->get_saved_widgets() as $widget)
         {
             $savedWidgetsMap[$widget->widget_name] = $widget;
             $availableWidgets[] = $widget;
         }        
 
-        foreach (Widget::getDefaultNames() as $name)
+        foreach (Widget::get_default_names() as $name)
         {
             if (!isset($savedWidgetsMap[$name]))
             {
@@ -312,7 +290,7 @@ class Organization extends User
         return $availableWidgets;
     }
     
-    static function querySearch($name, $sector, $region)
+    static function query_search($name, $sector, $region)
     {
         $query = static::query();
         
@@ -336,11 +314,11 @@ class Organization extends User
         return $query;
     }
 
-    static function listSearch($name, $sector, $region, $limit = 10)
+    static function list_search($name, $sector, $region, $limit = 10)
     {
         $offset = (int) get_input('offset');
 
-        $query = static::querySearch($name, $sector, $region);
+        $query = static::query_search($name, $sector, $region);
         
         $query->limit($limit, $offset);
         
@@ -350,7 +328,7 @@ class Organization extends User
         return view_entity_list($entities, $count, $offset, $limit);
     }
 
-    static function queryByArea($latLongArr, $sector)
+    static function query_by_area($latLongArr, $sector)
     {
         $query = static::query();
         $query->where("latitude >= ?", $latLongArr[0]);
@@ -366,13 +344,8 @@ class Organization extends User
 
         return $query;
     }
-
-    function queryPartnerships()
-    {
-        return Partnership::query()->where("container_guid = ? AND approval >= 3", $this->guid);
-    }
     
-    function getPartnership($partnerOrg)
+    function get_partnership($partnerOrg)
     {
         $partnership = Partnership::query()->where('container_guid=?',$this->guid)->where('partner_guid=?',$partnerOrg->guid)->get();
 

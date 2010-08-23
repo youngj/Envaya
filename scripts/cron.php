@@ -3,10 +3,10 @@
 require_once("scripts/cmdline.php");
 
 $cronTasks = array(
-    array(
+/*    array(
         'interval' => 1, 
         'cmd' => "php scripts/checkmail.php"
-    )
+    ) */
 );
 
 $minute = 0;

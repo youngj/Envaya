@@ -21,12 +21,12 @@ class WidgetHandler_Generic extends WidgetHandler
             $widget->title = $title;
         }
         
-        $widget->setContent(get_input('content'), true);
+        $widget->set_content(get_input('content'), true);
         $widget->save();
 
         if (!$prevContent && $widget->content)
         {
-            post_feed_items($widget->getContainerEntity(), 'new_widget', $widget);
+            post_feed_items($widget->get_container_entity(), 'new_widget', $widget);
         }
     }
 }

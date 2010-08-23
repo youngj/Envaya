@@ -30,7 +30,7 @@ function sectorChanged()
 <?php echo view('input/pulldown', array(
     'internalname' => 'sector',
     'internalid' => 'sectorList',
-    'options_values' => Organization::getSectorOptions(),
+    'options_values' => Organization::get_sector_options(),
     'empty_option' => __('sector:empty_option'),
     'value' => $sector,
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"

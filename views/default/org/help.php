@@ -1,6 +1,6 @@
 <?php
     $org = $vars['org'];
-    $curUrl = $org->getURL()."/help";
+    $curUrl = $org->get_url()."/help";
 ?>
 
 <h3><?php echo __('help:contents') ?></h3>
@@ -19,10 +19,10 @@
 
 <p>
 <?php echo __('help:viewing:url') ?>
- <br /><strong><a href='<?php echo $org->getURL() ?>'><?php echo $org->getURL() ?></a></strong>
+ <br /><strong><a href='<?php echo $org->get_url() ?>'><?php echo $org->get_url() ?></a></strong>
 </p>
 
-<?php if (!$org->isApproved()) { ?>
+<?php if (!$org->is_approved()) { ?>
 
 <p>
 <?php echo __('help:viewing:hidden') ?>
@@ -68,7 +68,7 @@
 <p>
 <?php echo sprintf(__('help:design:intro'),
     "<strong><a href='pg/dashboard'>".__('dashboard:title')."</a></strong>",
-    "<strong><a href='{$org->getURL()}/design'>".__('design:edit')."</a></strong>")
+    "<strong><a href='{$org->get_url()}/design'>".__('design:edit')."</a></strong>")
     ?>
 </p>
 <ul>
@@ -80,7 +80,7 @@
 
 <p>
 <?php echo sprintf(__('help:settings:icon'),
-    "<a href='{$org->getURL()}/settings' target='_blank'><img class='icon_with_bg' src='_graphics/settings.gif' /></a>") ?>
+    "<a href='{$org->get_url()}/settings' target='_blank'><img class='icon_with_bg' src='_graphics/settings.gif' /></a>") ?>
 </p>
 
 <p>
@@ -97,7 +97,7 @@
 
 <p>
 <?php echo sprintf(__('help:home:icon'),
-    "<a href='{$org->getURL()}' target='_blank'><img class='icon_with_bg' src='_graphics/home.gif?v2' /></a>") ?>
+    "<a href='{$org->get_url()}' target='_blank'><img class='icon_with_bg' src='_graphics/home.gif?v2' /></a>") ?>
 </p>
 
 <p>
@@ -115,7 +115,7 @@
 
 <p>
 <?php echo sprintf(__('help:news:about'),
-    "<strong><a href='{$org->getURL()}/news'>".__('widget:news')."</a></strong>") ?>
+    "<strong><a href='{$org->get_url()}/news'>".__('widget:news')."</a></strong>") ?>
 </p>
 
 <p>
@@ -123,34 +123,22 @@
     "<strong><a href='org/feed'>".__('feed:title')."</a></strong>") ?>
 </p>
 
-<p>
-<?php echo __('help:news:mobile') ?>
-</p>
-
-<ul>
-<li><strong><?php echo __('widget:news:email') ?></strong>:
-<?php echo sprintf(__('widget:news:email:summary'), "<strong>{$org->getPostEmail()}</strong>") ?>
-</li>
-<li><strong><?php echo __('widget:news:sms') ?></strong>:
-<?php echo __('widget:news:sms:summary') ?></li>
-</ul>
-
 <h3 id='other'><?php echo __('help:other') ?></h3>
 
 <p>
 <?php echo sprintf(__('help:other:summary'), "<a href='pg/dashboard'>".__('dashboard:title')."</a>") ?>
 </p>
 <ul>
-<li><strong><a href='<?php echo $org->getURL() ?>/projects/edit'><?php echo __('widget:projects') ?></a></strong>:
+<li><strong><a href='<?php echo $org->get_url() ?>/projects/edit'><?php echo __('widget:projects') ?></a></strong>:
     <?php echo __('help:other:projects') ?>
 </li>
-<li><strong><a href='<?php echo $org->getURL() ?>/history/edit'><?php echo __('widget:history') ?></a></strong>:
+<li><strong><a href='<?php echo $org->get_url() ?>/history/edit'><?php echo __('widget:history') ?></a></strong>:
     <?php echo __('help:other:history') ?>
 </li>
-<li><strong><a href='<?php echo $org->getURL() ?>/team/edit'><?php echo __('widget:team') ?></a></strong>:
+<li><strong><a href='<?php echo $org->get_url() ?>/team/edit'><?php echo __('widget:team') ?></a></strong>:
     <?php echo __('help:other:team') ?>
 </li>
-<li><strong><a href='<?php echo $org->getURL() ?>/contact/edit'><?php echo __('widget:contact') ?></a></strong>:
+<li><strong><a href='<?php echo $org->get_url() ?>/contact/edit'><?php echo __('widget:contact') ?></a></strong>:
     <?php echo __('help:other:contact') ?>
 </li>
 </ul>
@@ -165,12 +153,12 @@
 
 <p>
 <?php echo sprintf(__('help:connecting:partnerships'),
-    "<strong><a href='{$org->getURL()}/partnerships/edit'>".__('widget:partnerships')."</a></strong>") ?>
+    "<strong><a href='{$org->get_url()}/partnerships/edit'>".__('widget:partnerships')."</a></strong>") ?>
 </p>
 
 <p>
 <?php echo sprintf(__('help:connecting:partnerships:instructions'),
-    "<strong><a href='{$org->getURL()}/partnerships/edit'>".__('widget:partnerships')."</a></strong>") ?>
+    "<strong><a href='{$org->get_url()}/partnerships/edit'>".__('widget:partnerships')."</a></strong>") ?>
 </p>
 
 <p>
@@ -182,7 +170,7 @@
 <?php echo sprintf(__('help:connecting:messages:instructions'), "<strong>".__('message:link')."</strong>") ?>
 </p>
 
-<?php if (!$org->isApproved()) { ?>
+<?php if (!$org->is_approved()) { ?>
 <p>
 <em>
 <?php echo __('help:connecting:disabled') ?>

@@ -36,15 +36,15 @@
     foreach ($orgs as $org)
     {
         $backgroundColor = ($org->approval > 0) ? '#fff' : (($org->approval == 0) ? '#ddd' : '#f99');
-        $numNewsUpdates = $org->queryNewsUpdates()->count();
+        $numNewsUpdates = $org->query_news_updates()->count();
 ?>
 <tr style='background-color:<?php echo $backgroundColor ?>'>
-    <td><?php echo "<a href='{$org->getURL()}'>".escape($org->name)."</a>" ?></td>
+    <td><?php echo "<a href='{$org->get_url()}'>".escape($org->name)."</a>" ?></td>
     <td><?php echo "<a href='mailto:".escape($org->email)."'>".escape($org->email)."</a>" ?></td>
     <td><?php echo escape($org->phone_number) ?></td>
     <td><?php echo friendly_time($org->time_created); ?></td>
     <td><?php
-        $feedItem = $org->queryFeedItems()->limit(1)->get();
+        $feedItem = $org->query_feed_items()->limit(1)->get();
         if ($feedItem)
         {
             echo friendly_time($feedItem->time_posted);

@@ -16,41 +16,41 @@
         }
     };    
     
-    $addItem("<a href='{$org->getWidgetByName('home')->getEditURL()}'>".__('todo:home')."</a>", true);
+    $addItem("<a href='{$org->get_widget_by_name('home')->get_edit_url()}'>".__('todo:home')."</a>", true);
     
-    $contact = $org->getWidgetByName('contact');       
-    $addItem("<a href='{$contact->getEditURL()}'>".__('todo:contact')."</a>", 
-            $contact->time_updated > $contact->time_created && sizeof($org->getContactInfo()) >= 2);
+    $contact = $org->get_widget_by_name('contact');       
+    $addItem("<a href='{$contact->get_edit_url()}'>".__('todo:contact')."</a>", 
+            $contact->time_updated > $contact->time_created && sizeof($org->get_contact_info()) >= 2);
 
-    $history = $org->getWidgetByName('history');           
-    $addItem("<a href='{$history->getEditURL()}'>".__('todo:history')."</a>",
-        $history->isActive() && $history->content
+    $history = $org->get_widget_by_name('history');           
+    $addItem("<a href='{$history->get_edit_url()}'>".__('todo:history')."</a>",
+        $history->is_active() && $history->content
     );            
 
-    $projects = $org->getWidgetByName('projects');           
-    $addItem("<a href='{$projects->getEditURL()}'>".__('todo:projects')."</a>",
-        $projects->isActive() && $projects->content
+    $projects = $org->get_widget_by_name('projects');           
+    $addItem("<a href='{$projects->get_edit_url()}'>".__('todo:projects')."</a>",
+        $projects->is_active() && $projects->content
     );            
     
-    $team = $org->getWidgetByName('team');           
-    $addItem("<a href='{$team->getEditURL()}'>".__('todo:team')."</a>",
-        $team->isActive() && $team->content
+    $team = $org->get_widget_by_name('team');           
+    $addItem("<a href='{$team->get_edit_url()}'>".__('todo:team')."</a>",
+        $team->is_active() && $team->content
     );            
     
-    $news = $org->getWidgetByName('news');;
-    $numLatestNews = $org->queryNewsUpdates()->where('time_created > ?', time() - 86400 * 31)->count();
-    $addItem("<a href='{$news->getEditURL()}'>".__('todo:news')."</a>",
+    $news = $org->get_widget_by_name('news');;
+    $numLatestNews = $org->query_news_updates()->where('time_created > ?', time() - 86400 * 31)->count();
+    $addItem("<a href='{$news->get_edit_url()}'>".__('todo:news')."</a>",
         $numLatestNews > 0
     );            
     
-    $numImages = $org->queryFiles()->where("size='small'")->count();
+    $numImages = $org->query_files()->where("size='small'")->count();
     $addItem(
-        "<a href='{$org->getURL()}/addphotos'>".__('todo:photos')."</a>",
+        "<a href='{$org->get_url()}/addphotos'>".__('todo:photos')."</a>",
         $numImages >= 2
     );        
     
     $addItem(
-        "<a href='{$org->getURL()}/design'>".__('todo:logo')."</a>",
+        "<a href='{$org->get_url()}/design'>".__('todo:logo')."</a>",
         ($org->custom_header || $org->custom_icon)    
     );    
 ?>

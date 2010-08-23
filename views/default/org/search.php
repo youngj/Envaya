@@ -10,7 +10,7 @@
 <form method='GET' class='searchForm' action='org/search/'>    
     <input class='searchField' type='text' name='q' value='<?php echo escape($query); ?>'>
     <?php echo view('input/pulldown', array('internalname' => 'sector',
-        'options_values' => Organization::getSectorOptions(), 
+        'options_values' => Organization::get_sector_options(), 
         'empty_option' => __('sector:empty_option'),
         'value' => $vars['sector'])) 
     ?>
@@ -40,7 +40,7 @@
 
     if ($latlong)
     {
-        $nearby = Organization::queryByArea(
+        $nearby = Organization::query_by_area(
             array(
                 $latlong['lat'] - 1.0, 
                 $latlong['long'] - 1.0, 
@@ -57,7 +57,7 @@
 
     if (!empty($query) || $sector)
     {        
-        $results .= Organization::listSearch($query, $sector, $region=null, $limit = 10);
+        $results .= Organization::list_search($query, $sector, $region=null, $limit = 10);
         
         if ($results)
         {

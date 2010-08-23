@@ -5,7 +5,7 @@
 	$by = get_entity($entry->performed_by_guid);
 	$object = SystemLog::get_loggable_object($entry);
 	
-	$obj_url = is_callable(array($object, 'getURL')) ? $object->getURL() : '';
+	$obj_url = is_callable(array($object, 'get_url')) ? $object->get_url() : '';
 	
 ?>	
     <tr>
@@ -18,7 +18,7 @@
         <td class="log_entry_user">
         <?php
             if ($by) {
-                echo "<a href=\"".$by->getURL()."\">".escape($by->name)."</a>";
+                echo "<a href=\"".$by->get_url()."\">".escape($by->name)."</a>";
                 echo " <a href=\"?user_guid={$by->guid}\">" . $by->guid . "</a>"; 
             } 
             else 

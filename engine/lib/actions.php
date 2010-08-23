@@ -45,7 +45,7 @@
     function action_error($msg)
     {
         register_error($msg);
-        Session::saveInput();
+        Session::save_input();
         forward_to_referrer();
     }
 

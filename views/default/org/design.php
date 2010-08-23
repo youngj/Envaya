@@ -2,7 +2,7 @@
     $user = $vars['entity'];
 ?>
 
-<form action='<?php echo $user->getURL() ?>/design/save' method='POST'>
+<form action='<?php echo $user->get_url() ?>/design/save' method='POST'>
 
 <?php echo view('input/securitytoken'); ?>
 
@@ -17,9 +17,9 @@
 
 echo view("input/image",
     array(
-        'current' => $user->getIcon('medium'),
+        'current' => $user->get_icon('medium'),
         'trackDirty' => true,
-        'sizes' => User::getIconSizes(),
+        'sizes' => User::get_icon_sizes(),
         'removable' => $user->custom_icon,
         'thumbnail_size' => 'medium',
         'internalname' => 'icon',
@@ -124,7 +124,7 @@ function customHeaderChanged()
     echo view("input/swfupload_image",
         array(
             'trackDirty' => true,
-            'sizes' => User::getHeaderSizes(),
+            'sizes' => User::get_header_sizes(),
             'thumbnail_size' => 'large',
             'internalname' => 'header',
         ))
@@ -153,8 +153,8 @@ echo view('input/submit',array(
 <?php echo view('input/theme', array(
     'internalname' => 'theme',
     'value' => $user->theme,
-    'options' => $user->getAvailableThemes(),
-    'previewUrl' => $user->getURL()
+    'options' => $user->get_available_themes(),
+    'previewUrl' => $user->get_url()
 )); ?>
 
 <?php

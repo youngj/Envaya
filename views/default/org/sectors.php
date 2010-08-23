@@ -4,7 +4,7 @@
 
 	sort($sectors);
 
-	$sectorOptions = Organization::getSectorOptions();
+	$sectorOptions = Organization::get_sector_options();
 	$sectorNames = array();
 
 	foreach ($sectors as $sector)

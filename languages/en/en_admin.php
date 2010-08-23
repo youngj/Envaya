@@ -1,11 +1,10 @@
 <?php     
 return array(
-    'item:object:widget' => "Pages",                       
-    'item:object:blog' => 'News updates',
-    'item:object:partnership' => 'Partnerships',
-    'item:user:organization' => "Organizations",
-    'item:object:translation' => "Translations",
-    'item:object:team_member' => "Team members",
+    'item:widget' => "Pages",                       
+    'item:blog' => 'News updates',
+    'item:partnership' => 'Partnerships',
+    'item:organization' => "Organizations",
+    'item:translation' => "Translations",    
     'item:user' => "Users",
     
     'email:registernotify:subject' => "New organization registered: %s",

@@ -16,7 +16,7 @@ class Controller_Report extends Controller_Profile
             return;
         }
 
-        $report = $this->org->queryReports()->where('u.guid = ?', $reportId)->get();
+        $report = $this->org->query_reports()->where('u.guid = ?', $reportId)->get();
         if ($report)
         {
             $this->report = $report;
@@ -36,16 +36,16 @@ class Controller_Report extends Controller_Profile
 
         $this->use_public_layout();
 
-        if ($report->canEdit())
+        if ($report->can_edit())
         {
-            add_submenu_item(__("report:edit"), "{$report->getURL()}/edit", 'edit');
+            add_submenu_item(__("report:edit"), "{$report->get_url()}/edit", 'edit');
         }
 
-        $title = $report->getTitle();
+        $title = $report->get_title();
 
-        if (!$org->canView())
+        if (!$org->can_view())
         {
-            $org->showCantViewMessage();
+            $this->show_cant_view_message();
             $body = '';
         }
         else
@@ -63,7 +63,7 @@ class Controller_Report extends Controller_Profile
 
         $title = __('report:edit');
 
-        $cancelUrl = get_input('from') ?: $report->getURL();
+        $cancelUrl = get_input('from') ?: $report->get_url();
 
         add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
@@ -79,9 +79,9 @@ class Controller_Report extends Controller_Profile
         $this->validate_security_token();
         $report = $this->report;
 
-        $report->saveInput();
+        $report->save_input();
 
-        forward($report->getURL());        
+        forward($report->get_url());        
     }
 
     function action_new()

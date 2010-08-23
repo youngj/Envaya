@@ -18,6 +18,31 @@ function getDeclaredFunctions($path)
     }
 }
 
+$numFns = 0;
+function getCamelCaseFunctions($path)
+{
+    global $numFns;    
+    if (
+            endswith($path, 'pop3.php')
+      ||    endswith($path, 'smtp.php')    
+      ||    endswith($path, 'socket.php')    
+      ||    endswith($path, 's3.php')    
+      ||    endswith($path, 'rfc822.php')    
+      ||    endswith($path, 'mail.php')    
+    )
+        return;
+    
+    $contents = file_get_contents($path);
+    if (preg_match_all('/function\s+(\w*[A-Z]\w*)/', $contents, $matches))
+    {    
+        foreach ($matches[1] as $fnName)
+        {          
+            $numFns++;
+            echo "$path:$fnName\n";
+        }
+    }
+}
+
 $functionArgs = array();
 
 function getFunctionArguments($path)
@@ -104,4 +129,6 @@ function showLongFunctions()
 }
 
 //showLongFunctions();
-showUnusedFunctions();
+//showUnusedFunctions();
+checkDir(dirname(__DIR__)."/engine", 'getCamelCaseFunctions');
+echo "$numFns\n";

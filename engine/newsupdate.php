@@ -18,56 +18,48 @@ class NewsUpdate extends Entity
 
         if ($res && $isNew)
         {
-            post_feed_items($this->getContainerEntity(), 'news', $this);
+            post_feed_items($this->get_container_entity(), 'news', $this);
         }
         return $res;
     }
 
-    public function getImageFile($size = '')
-    {
-        $file = new UploadedFile();
-        $file->owner_guid = $this->container_guid;
-        $file->filename = "news/{$this->guid}$size.jpg";
-        return $file;
-    }
-
-    public function getTitle()
+    public function get_title()
     {
         return __("widget:news:item");
     }
 
-    public function jsProperties()
+    public function js_properties()
     {
         return array(
             'guid' => $this->guid,
             'container_guid' => $this->container_guid,
-            'dateText' => $this->getDateText(),
+            'dateText' => $this->get_date_text(),
             'imageURL' => $this->thumbnail_url,
-            'snippetHTML' => $this->getSnippet()
+            'snippetHTML' => $this->get_snippet()
         );
     }
 
-    public function getURL()
+    public function get_url()
     {
-        $org = $this->getContainerEntity();
+        $org = $this->get_container_entity();
         if ($org)
         {
-            return $org->getUrl() . "/post/" . $this->getGUID();
+            return $org->get_url() . "/post/" . $this->guid;
         }
         return '';
     }
 
-    public function hasImage()
+    public function has_image()
     {
         return ($this->data_types & DataType::Image) != 0;
     }
 
-    public function getSnippet($maxLength = 100)
+    public function get_snippet($maxLength = 100)
     {
         return Markup::get_snippet($this->content, $maxLength);
     }
 
-    public function getDateText()
+    public function get_date_text()
     {
         return friendly_time($this->time_created);
     }

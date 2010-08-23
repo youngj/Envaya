@@ -6,7 +6,8 @@
 
     $limit = 5;
 
-    $query = Translation::queryByLanguageAndOwner($lang, 0);
+    $query = Translation::query_by_language_and_owner($lang, 0);
+    $query->limit($limit, $offset);
     $entities = $query->filter();
     $count = $query->count();
 

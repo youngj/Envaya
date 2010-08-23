@@ -16,7 +16,7 @@ class Widget extends Entity
         'language' => '',
     );
     
-    static $defaultWidgets = array(
+    static $default_widgets = array(
         'home'          => array('menu_order' => 10, 'handler_class' => 'WidgetHandler_Home'),
         'news'          => array('menu_order' => 20, 'handler_class' => 'WidgetHandler_News'),
         'projects'      => array('menu_order' => 30, 'handler_class' => 'WidgetHandler_Generic'),
@@ -27,12 +27,12 @@ class Widget extends Entity
         'contact'       => array('menu_order' => 70, 'handler_class' => 'WidgetHandler_Contact'),        
     );    
     
-    static function getDefaultNames()
+    static function get_default_names()
     {
-        return array_keys(static::$defaultWidgets);
+        return array_keys(static::$default_widgets);
     }
     
-    static function getImageSizes()
+    static function get_image_sizes()
     {
         return array(
             'small' => '150x150',
@@ -41,12 +41,12 @@ class Widget extends Entity
         );
     }    
         
-    public function getMenuOrder()
+    public function get_menu_order()
     {
-        return $this->menu_order ?: @static::$defaultWidgets[$this->widget_name]['menu_order'] ?: 100;
+        return $this->menu_order ?: @static::$default_widgets[$this->widget_name]['menu_order'] ?: 100;
     }
 
-    public function getTitle()
+    public function get_title()
     {
         if ($this->title)
         {
@@ -60,21 +60,21 @@ class Widget extends Entity
         }
     }    
     
-    function getHandlerClass()
+    function get_handler_class()
     {
         $handlerCls = $this->handler_class;
         if (!$handlerCls)
         {
-            $handlerCls = @static::$defaultWidgets[$this->widget_name]['handler_class'] ?: 'WidgetHandler_Generic';
+            $handlerCls = @static::$default_widgets[$this->widget_name]['handler_class'] ?: 'WidgetHandler_Generic';
         }
         return $handlerCls;
     }    
     
-    function getHandler()
+    function get_handler()
     {
         try
         {
-            $handlerCls = new ReflectionClass($this->getHandlerClass());
+            $handlerCls = new ReflectionClass($this->get_handler_class());
             
             if ($this->handler_arg)
             {
@@ -91,60 +91,60 @@ class Widget extends Entity
         }        
     }
     
-    function renderView()
+    function render_view()
     {
-        return $this->getHandler()->view($this);
+        return $this->get_handler()->view($this);
     }
 
-    function renderEdit()
+    function render_edit()
     {
-        return $this->getHandler()->edit($this);
+        return $this->get_handler()->edit($this);
     }
 
-    function saveInput()
+    function save_input()
     {
-        return $this->getHandler()->save($this);
+        return $this->get_handler()->save($this);
     }
     
-    public function hasImage()
+    public function has_image()
     {
         return ($this->data_types & DataType::Image) != 0;
     }    
         
-    function getURL()
+    function get_url()
     {
-        $org = $this->getContainerEntity();
+        $org = $this->get_container_entity();
 
         if ($this->widget_name == 'home')
         {
-            return $org->getURL();
+            return $org->get_url();
         }
         else
         {
-            return "{$org->getURL()}/{$this->widget_name}";
+            return "{$org->get_url()}/{$this->widget_name}";
         }
     }
 
-    function getBaseURL()
+    function get_base_url()
     {
-        $org = $this->getContainerEntity();
-        return "{$org->getURL()}/{$this->widget_name}";
+        $org = $this->get_container_entity();
+        return "{$org->get_url()}/{$this->widget_name}";
     }    
     
-    function getEditURL()
+    function get_edit_url()
     {
-        return "{$this->getBaseURL()}/edit";
+        return "{$this->get_base_url()}/edit";
     }
             
-    public function isActive()
+    public function is_active()
     {
-        return $this->guid && $this->isEnabled();
+        return $this->guid && $this->is_enabled();
     }
     
     static function sort($a, $b)
     {
-        $aOrder = $a->getMenuOrder();
-        $bOrder = $b->getMenuOrder();
+        $aOrder = $a->get_menu_order();
+        $bOrder = $b->get_menu_order();
         return $aOrder - $bOrder;
     }
 }

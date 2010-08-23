@@ -16,6 +16,6 @@
 ?>
 <div class="icon">
 <?php if (@$vars['link']) { ?><a href="<?php echo @$vars['link'] ?>"><?php } ?>
-<img src="<?php echo $entity->getIcon($vars['size']); ?>" border="0" <?php echo $align; ?> <?php echo @$vars['js']; ?> />
+<img src="<?php echo $entity->get_icon($vars['size']); ?>" border="0" <?php echo $align; ?> <?php echo @$vars['js']; ?> />
 <?php if (@$vars['link']) { ?></a><?php } ?>
 </div>

@@ -3,7 +3,7 @@
 $widget = $vars['widget'];
 ?>
 
-<form action='<?php echo $widget->getBaseURL() ?>/save_options' method='POST'>
+<form action='<?php echo $widget->get_base_url() ?>/save_options' method='POST'>
 <?php echo view('input/securitytoken') ?>
 <div class='padded'>
 <div class='input'>
@@ -39,9 +39,9 @@ echo view('input/text', array(
 <table style='float:right;font-size:10px;'>
 
 <?php 
-    foreach ($widget->getContainerEntity()->getAvailableWidgets() as $w)
+    foreach ($widget->get_container_entity()->get_available_widgets() as $w)
     {
-        echo "<tr><td>{$w->getMenuOrder()}</td><td style='padding-left:5px;'><a href='{$w->getBaseURL()}/options'>".escape($w->getTitle())."</a></td></tr>";
+        echo "<tr><td>{$w->get_menu_order()}</td><td style='padding-left:5px;'><a href='{$w->get_base_url()}/options'>".escape($w->get_title())."</a></td></tr>";
     }
 ?>
 </table>

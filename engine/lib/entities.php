@@ -83,14 +83,13 @@
     function get_subtype_class($type, $subtype_id)
     {
         global $CONFIG;
-        if (isset($CONFIG->subtypes[$subtype_id]))
+        if ($subtype_id)
         {
-            return $CONFIG->subtypes[$subtype_id][2];
+            return @$CONFIG->subtypes[$subtype_id][2];
         }
-
-        if (isset($CONFIG->types[$type]))
+        else
         {
-            return $CONFIG->types[$type];
+            return @$CONFIG->types[$type];
         }
         return NULL;
     }
@@ -117,7 +116,7 @@
         $classname = get_subtype_class($row->type, $row->subtype);
 
         if ($classname && class_exists($classname))
-        {
+        {   
             return new $classname($row);
         }
         else

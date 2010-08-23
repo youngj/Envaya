@@ -1,6 +1,6 @@
 <?php
     $widget = $vars['widget'];
-    $org = $widget->getContainerEntity();
+    $org = $widget->get_container_entity();
 
     ob_start();
 ?>

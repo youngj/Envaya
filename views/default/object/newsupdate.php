@@ -1,7 +1,7 @@
 <?php
 
     $entity = $vars['entity'];
-    $url = $entity->getURL();
+    $url = $entity->get_url();
     $full = $vars['full'];
 
     $nextUrl = $url . "/next";
@@ -15,16 +15,16 @@
 
 <div class="blog_post">
     <?php
-        echo $entity->renderContent();
+        echo $entity->render_content();
 
         echo "<div class='blog_date'>";
         if (!$full)
         {
-            echo "<a href='{$entity->getURL()}'>{$entity->getDateText()}</a>";
+            echo "<a href='{$entity->get_url()}'>{$entity->get_date_text()}</a>";
         }
         else
         {
-            echo $entity->getDateText();
+            echo $entity->get_date_text();
         }
         echo "</div>";
     ?>

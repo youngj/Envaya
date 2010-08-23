@@ -10,26 +10,26 @@ class Report extends Entity
     );      
     private $fields = null;
    
-    function getDateText()
+    function get_date_text()
     {
         return friendly_time($this->time_created);
     }
     
-    function getURL()
+    function get_url()
     {
-        return $this->getContainerEntity()->getURL()."/report/".$this->guid;
+        return $this->get_container_entity()->get_url()."/report/".$this->guid;
     }
     
-    function getReportDefinition()
+    function get_report_definition()
     {
         return get_entity($this->report_guid);
     }
     
-    function getHandler()
+    function get_handler()
     {
         try
         {
-            $handlerCls = new ReflectionClass($this->getReportDefinition()->handler_class);
+            $handlerCls = new ReflectionClass($this->get_report_definition()->handler_class);
             return $handlerCls->newInstance();                        
         }
         catch (ReflectionException $ex)
@@ -38,19 +38,19 @@ class Report extends Entity
         }        
     }
 
-    function renderView()
+    function render_view()
     {
-        return $this->getHandler()->view($this);
+        return $this->get_handler()->view($this);
     }
 
-    function saveInput()
+    function save_input()
     {
-        return $this->getHandler()->save($this);
+        return $this->get_handler()->save($this);
     }    
     
-    function renderEdit()
+    function render_edit()
     {
-        return $this->getHandler()->edit($this);
+        return $this->get_handler()->edit($this);
     }
     
     function &get_fields()

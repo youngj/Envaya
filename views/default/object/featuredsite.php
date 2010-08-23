@@ -1,19 +1,19 @@
 <?php
 
 $entity = $vars['entity'];
-$org = $entity->getContainerEntity();
+$org = $entity->get_container_entity();
 
 if ($org) 
 {
 ?>
 <div class='featured_site'>
-<div class='featured_site_name'><a href='<?php echo $org->getURL() ?>'><?php echo escape($org->name) ?></a></div>
+<div class='featured_site_name'><a href='<?php echo $org->get_url() ?>'><?php echo escape($org->name) ?></a></div>
 <?php 
 if ($entity->image_url)
 {
-    echo "<a href='{$org->getURL()}'><img src='".escape($entity->image_url)."' class='image_left' /></a>";
+    echo "<a href='{$org->get_url()}'><img src='".escape($entity->image_url)."' class='image_left' /></a>";
 }
-echo $entity->renderContent(); ?>
+echo $entity->render_content(); ?>
 
 <?php if ($vars['full']) { ?>
     <div class='blog_date'><?php echo friendly_time($entity->time_created) ?></div>
@@ -36,7 +36,7 @@ echo $entity->renderContent(); ?>
             echo escape(__('featured:active'));
         }    
         
-        if (get_language() != $entity->getLanguage())
+        if (get_language() != $entity->get_language())
         {
             $escUrl = urlencode($_SERVER['REQUEST_URI']);                   
             echo " <a href='org/translate?from=$escUrl&prop[]={$entity->guid}.content.1'>".__("trans:contribute")."</a>";

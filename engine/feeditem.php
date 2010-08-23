@@ -32,27 +32,27 @@ class FeedItem extends Model
         parent::set($name, $value);
     }
 
-    public function renderView($mode = '')
+    public function render_view($mode = '')
     {
         return view("feed/{$this->action_name}", array('item' => $this, 'mode' => $mode));
     }
 
-    public function getSubjectEntity()
+    public function get_subject_entity()
     {
         return get_entity($this->subject_guid);
     }
 
-    public function getUserEntity()
+    public function get_user_entity()
     {
         return get_entity($this->user_guid);
     }
 
-    public function getDateText()
+    public function get_date_text()
     {
         return friendly_time($this->time_posted);
     }
 
-    static function queryByFeedNames($feedNames, $excludeUser = null)
+    static function query_by_feed_names($feedNames, $excludeUser = null)
     {
         $numNames = sizeof($feedNames);
 
@@ -88,8 +88,8 @@ class FeedItem extends Model
         return $query;
     }
 
-    static function queryByFeedName($feedName)
+    static function query_by_feed_name($feedName)
     {
-        return static::queryByFeedNames(array($feedName), null);
+        return static::query_by_feed_names(array($feedName), null);
     }
 }

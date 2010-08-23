@@ -23,17 +23,17 @@ class Partnership extends Entity
         parent::save();
     }
 
-    function getPartner()
+    function get_partner()
     {
         return get_entity($this->partner_guid);
     }
 
-    function isSelfApproved()
+    function is_self_approved()
     {
         return ($this->approval & 1) != 0;
     }
 
-    function setSelfApproved($approved)
+    function set_self_approved($approved)
     {
         if ($approved)
         {
@@ -45,12 +45,12 @@ class Partnership extends Entity
         }
     }
 
-    function isPartnerApproved()
+    function is_partner_approved()
     {
         return ($this->approval & 2) != 0;
     }
 
-    function setPartnerApproved($approved)
+    function set_partner_approved($approved)
     {
         if ($approved)
         {
@@ -62,8 +62,8 @@ class Partnership extends Entity
         }
     }
 
-    function getApproveUrl()
+    function get_approve_url()
     {
-        return "{$this->getContainerEntity()->getURL()}/confirm_partner";
+        return "{$this->get_container_entity()->get_url()}/confirm_partner";
     }
 }

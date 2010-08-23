@@ -87,4 +87,9 @@ class Model
         $this->dirty = false;
         return delete_data("DELETE from ".static::$table_name." where id=?", array($this->attributes[static::$primary_key]));
     }
+    
+    function get_default_view_name()
+    {
+        return "object/".strtolower(get_class($this));
+    }    
 }

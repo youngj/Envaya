@@ -89,19 +89,19 @@ class Controller_Pg extends Controller {
                 {
                     forward($_SERVER['HTTP_REFERER']);
                 }
-                else if (!$user->isSetupComplete())
+                else if (!$user->is_setup_complete())
                 {
                     forward("org/new?step={$user->setup_state}");
                 }
                 else
                 {
-                    forward("{$user->getURL()}/dashboard");
+                    forward("{$user->get_url()}/dashboard");
                 }
             }
         }
         else
         {
-            Session::saveInput();
+            Session::save_input();
             register_error(__('loginerror'));
             forward("pg/login");
         }
@@ -116,7 +116,7 @@ class Controller_Pg extends Controller {
     function action_dashboard()
     {
         $this->require_login();                
-        forward(Session::get_loggedin_user()->getURL()."/dashboard");
+        forward(Session::get_loggedin_user()->get_url()."/dashboard");
     }
 
     function action_forgot_password()
@@ -224,7 +224,7 @@ class Controller_Pg extends Controller {
 
                 if ($password == $password2)
                 {
-                    $user->setPassword($password);
+                    $user->set_password($password);
                     $user->passwd_conf_code = null;
                     $user->save();
                     system_message(__('user:password:success'));

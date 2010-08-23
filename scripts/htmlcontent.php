@@ -24,7 +24,7 @@
             $newFile->group_name = $groupName;
             $newFile->size = $size;
             $newFile->filename = "$size.jpg";
-            $oldFile->copyTo($newFile);
+            $oldFile->copy_to($newFile);
             $newFile->save();
 
             return $newFile;
@@ -33,7 +33,7 @@
 
     foreach ($newsUpdates as $newsUpdate)
     {
-        echo "{$newsUpdate->getURL()}:\n";
+        echo "{$newsUpdate->get_url()}:\n";
 
         $small = copyImage($newsUpdate, 'small');
         if (!$small)
@@ -50,9 +50,9 @@
 
         $htmlContent = view('output/longtext', array('value' => $newsUpdate->content));
         $class = $htmlContent ? "" : " class='last-paragraph'";
-        $htmlContent = "<p$class><img class='image_center' src=\"{$large->getURL()}\" /></p>{$htmlContent}";
+        $htmlContent = "<p$class><img class='image_center' src=\"{$large->get_url()}\" /></p>{$htmlContent}";
 
-        $newsUpdate->setContent($htmlContent, true);
+        $newsUpdate->set_content($htmlContent, true);
         $newsUpdate->save();
     }
 
@@ -65,7 +65,7 @@
 
     foreach ($widgets as $widget)
     {
-        echo "{$widget->getURL()}:\n";
+        echo "{$widget->get_url()}:\n";
 
         $small = copyImage($widget, 'small');
         if (!$small)
@@ -93,18 +93,18 @@
 
         if ($imagePos == 'left' || $imagePos == 'right')
         {
-            $htmlContent = "<img class='image_$imagePos' src=\"{$medium->getURL()}\" />{$htmlContent}";
+            $htmlContent = "<img class='image_$imagePos' src=\"{$medium->get_url()}\" />{$htmlContent}";
         }
         else if ($imagePos == 'top')
         {
-            $htmlContent = "<p$class><img class='image_center' src=\"{$large->getURL()}\" /></p>{$htmlContent}";
+            $htmlContent = "<p$class><img class='image_center' src=\"{$large->get_url()}\" /></p>{$htmlContent}";
         }
         else if ($imagePos == 'bottom')
         {
-            $htmlContent = "{$htmlContent}<p class='last-paragraph'><img class='image_center' src=\"{$large->getURL()}\" /></p>";
+            $htmlContent = "{$htmlContent}<p class='last-paragraph'><img class='image_center' src=\"{$large->get_url()}\" /></p>";
         }
 
-        $widget->setContent($htmlContent, true);
+        $widget->set_content($htmlContent, true);
         $widget->save();
     }
 
@@ -118,7 +118,7 @@
 
     foreach ($newsUpdates as $newsUpdate)
     {
-        echo "{$newsUpdate->getURL()}:\n";
+        echo "{$newsUpdate->get_url()}:\n";
         echo " converting to html\n";
         $htmlContent = view('output/longtext', array('value' => $newsUpdate->content));
         $newsUpdate->setContent($htmlContent, true);
@@ -134,10 +134,10 @@
 
     foreach ($widgets as $widget)
     {
-        echo "{$widget->getURL()}:\n";
+        echo "{$widget->get_url()}:\n";
         echo " converting to html\n";
         $htmlContent = view('output/longtext', array('value' => $widget->content));
-        $widget->setContent($htmlContent, true);
+        $widget->set_content($htmlContent, true);
         $widget->save();
     }
 
@@ -151,10 +151,10 @@
     foreach ($translations as $translation)
     {
         //echo "$translation->container_guid\n";
-        $container = $translation->getContainerEntity();
+        $container = $translation->get_container_entity();
         if ($container)
         {
-            echo "{$translation->getContainerEntity()->getURL()}\n";
+            echo "{$translation->get_container_entity()->get_url()}\n";
             $translation->value = view('output/longtext', array('value' => $translation->value));
             $translation->html = 1;
             $translation->save();

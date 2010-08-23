@@ -2,10 +2,10 @@
 <?php
 
     $widget = $vars['widget'];
-    $org = $widget->getContainerEntity();
+    $org = $widget->get_container_entity();
     
-    $lat = $org->getLatitude() ?: 0.0;
-    $long = $org->getLongitude() ?: 0.0;
+    $lat = $org->get_latitude() ?: 0.0;
+    $long = $org->get_longitude() ?: 0.0;
     
     $zoom = ($lat || $long) ? 11 : 1;    
    
@@ -20,7 +20,7 @@
     'internalname' => 'city',
     'js' => 'style="width:200px"',
     'value' => $org->city
-)) ?>, <?php echo escape($org->getCountryText()); ?>   
+)) ?>, <?php echo escape($org->get_country_text()); ?>   
 </div>
 </div>
 <div>

@@ -186,7 +186,7 @@ class Controller_Org extends Controller
             $org->phone_number = get_input('phone');
             $org->email = $email;
             $org->name = $name;
-            $org->setPassword($password);
+            $org->set_password($password);
             $org->owner_guid = 0;
             $org->container_guid = 0;
             $org->language = get_language();
@@ -199,14 +199,14 @@ class Controller_Org extends Controller
             $org->country = $prevInfo['country'];
             //$org->local = $prevInfo['local'];
 
-            $org->setLatLong(-6.140555,35.551758);
+            $org->set_lat_long(-6.140555,35.551758);
 
             $org->save();
 
             /* auto-create empty pages */
-            $org->getWidgetByName('news')->save();
+            $org->get_widget_by_name('news')->save();
 
-            $contactWidget = $org->getWidgetByName('contact');
+            $contactWidget = $org->get_widget_by_name('contact');
             if ($email)
             {
                 $contactWidget->public_email = "yes";
@@ -254,23 +254,23 @@ class Controller_Org extends Controller
                 throw new RegistrationException(__("setup:sector:toomany"));
             }
 
-            $homeWidget = $org->getWidgetByName('home');
-            $homeWidget->setContent($mission, true);
+            $homeWidget = $org->get_widget_by_name('home');
+            $homeWidget->set_content($mission, true);
 
             $org->language = get_input('content_language');
 
-            $org->setSectors($sectors);
+            $org->set_sectors($sectors);
             $org->city = get_input('city');
             $org->region = get_input('region');
             $org->sector_other = get_input('sector_other');
 
             $org->theme = get_input('theme');
 
-            $latlong = Geocoder::geocode($org->getLocationText());
+            $latlong = Geocoder::geocode($org->get_location_text());
 
             if ($latlong)
             {
-                $org->setLatLong($latlong['lat'], $latlong['long']);
+                $org->set_lat_long($latlong['lat'], $latlong['long']);
             }
 
             $homeWidget->save();
@@ -280,19 +280,19 @@ class Controller_Org extends Controller
             $org->setup_state = 5;
             $org->save();
 
-            if ($prevSetupState < $org->setup_state && !$org->isApproved())
+            if ($prevSetupState < $org->setup_state && !$org->is_approved())
             {
                 post_feed_items($org, 'register', $org);
 
                 send_admin_mail(sprintf(__('email:registernotify:subject'), $org->name), 
-                    sprintf(__('email:registernotify:body'), $org->getURL().'?login=1')
+                    sprintf(__('email:registernotify:body'), $org->get_url().'?login=1')
                 );
             }            
             
             system_message(__("setup:ok"));
             
 
-            forward($org->getUrl());
+            forward($org->get_url());
         }
         catch (RegistrationException $r)
         {
@@ -308,13 +308,13 @@ class Controller_Org extends Controller
         $longMax = get_input('longMax');
         $sector = get_input('sector');
 
-        $orgs = Organization::queryByArea(array($latMin, $longMin, $latMax, $longMax), $sector)->filter();
+        $orgs = Organization::query_by_area(array($latMin, $longMin, $latMax, $longMax), $sector)->filter();
 
         $orgJs = array();
 
         foreach ($orgs as $org)
         {
-            $orgJs[] = $org->jsProperties();
+            $orgJs[] = $org->js_properties();
         }
 
         $this->request->headers['Content-Type'] = 'text/javascript';
@@ -397,7 +397,7 @@ class Controller_Org extends Controller
 
             $entity = get_entity($guid);
 
-            if ($entity && $entity->canEdit() && $entity->get($prop))
+            if ($entity && $entity->can_edit() && $entity->get($prop))
             {
                 $area2[] = view("translation/translate",
                     array(
@@ -427,14 +427,14 @@ class Controller_Org extends Controller
         $property = get_input('property');
         $entity = get_entity($guid);
 
-        if (!$entity->canEdit())
+        if (!$entity->can_edit())
         {
             register_error(__("org:cantedit"));
             forward_to_referrer();
         }
         else
         {
-            $origLang = $entity->getLanguage();
+            $origLang = $entity->get_language();
 
             $actualOrigLang = get_input('language');
             $newLang = get_input('newLang');
@@ -463,7 +463,7 @@ class Controller_Org extends Controller
 
             system_message(__("trans:posted"));
 
-            forward(get_input('from') ?: $entity->getUrl());
+            forward(get_input('from') ?: $entity->get_url());
         }
     }
 

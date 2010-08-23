@@ -19,11 +19,11 @@
 <?php echo __('setup:mission:help') ?>
 </div>
 <?php 
-    $homeWidget = $org->getWidgetByName('home');
+    $homeWidget = $org->get_widget_by_name('home');
     echo view('input/tinymce', array(
         'internalname' => 'mission',
         'trackDirty' => true,
-        'valueIsHTML' => $homeWidget->hasDataType(DataType::HTML),
+        'valueIsHTML' => $homeWidget->has_data_type(DataType::HTML),
         'value' => $homeWidget->content
     )); 
 ?>
@@ -46,8 +46,8 @@
     <?php
         echo view("input/checkboxes",array(
             'internalname' => 'sector',
-            'options' => Organization::getSectorOptions(),
-            'value' => $org->getSectors()));
+            'options' => Organization::get_sector_options(),
+            'value' => $org->get_sectors()));
     ?>
     <?php echo __('setup:sector:other_specify') ?> <?php echo view('input/text', array(
     'internalname' => 'sector_other',
@@ -63,7 +63,7 @@
     'internalname' => 'city',
     'js' => 'style="width:200px"',
     'value' => $org->city
-)) ?>, <?php echo escape($org->getCountryText()); ?>
+)) ?>, <?php echo escape($org->get_country_text()); ?>
 </div>
 <div>
 <?php echo __('setup:region') ?> <?php echo view('input/pulldown', array(
@@ -84,8 +84,8 @@
 <?php echo view('input/theme', array(
     'internalname' => 'theme',
     'value' => $org->theme ?: 'green',
-    'options' => $org->getAvailableThemes(),
-    'previewUrl' => $org->getURL()
+    'options' => $org->get_available_themes(),
+    'previewUrl' => $org->get_url()
 )); ?>
 
 

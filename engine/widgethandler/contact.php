@@ -14,7 +14,7 @@ class WidgetHandler_Contact extends WidgetHandler
 
     function save($widget)
     {
-        $org = $widget->getContainerEntity();
+        $org = $widget->get_container_entity();
 
         $email = trim(get_input('email'));
 

@@ -40,7 +40,7 @@ class Controller_Profile extends Controller
         
         if ($this->org)
         {
-            $widget = $this->org->getWidgetByName($widgetName);            
+            $widget = $this->org->get_widget_by_name($widgetName);            
             return $this->index_widget($widget);
         }       
         else
@@ -48,12 +48,24 @@ class Controller_Profile extends Controller
             not_found();
         }
     }
+    
+    function show_cant_view_message()
+    {
+        if ($this->org->approval == 0)
+        {
+            system_message(__('approval:waiting'));
+        }
+        else if ($this->org->approval < 0)
+        {
+            system_message(__('approval:rejected'));
+        }
+    }    
 
     function action_save()
     {
         $this->validate_security_token();
 
-        if (!$this->user->canEdit())
+        if (!$this->user->can_edit())
         {
             action_error(__('org:cantedit'));
         }
@@ -69,7 +81,7 @@ class Controller_Profile extends Controller
         {
             if ($this->org)
             {
-                $widget = $this->org->getWidgetByName($widgetName);
+                $widget = $this->org->get_widget_by_name($widgetName);
                 $this->save_widget($widget);
             }
             else
@@ -78,7 +90,7 @@ class Controller_Profile extends Controller
             }
         }
 
-        forward(get_input('from') ?: $this->user->getURL());
+        forward(get_input('from') ?: $this->user->get_url());
     }
     
     function action_options()
@@ -90,7 +102,7 @@ class Controller_Profile extends Controller
         PageContext::set_translatable(false);
         
         $widgetName = $this->request->param('widgetname');
-        $widget = $this->org->getWidgetByName($widgetName);
+        $widget = $this->org->get_widget_by_name($widgetName);
         
         $title = __('widget:options');
         $body = view('widgets/options', array('widget' => $widget));
@@ -105,7 +117,7 @@ class Controller_Profile extends Controller
         $this->validate_security_token();
         
         $widgetName = $this->request->param('widgetname');
-        $widget = $this->org->getWidgetByName($widgetName);
+        $widget = $this->org->get_widget_by_name($widgetName);
         
         $widget->handler_class = get_input('handler_class');
         $widget->handler_arg = get_input('handler_arg');
@@ -114,7 +126,7 @@ class Controller_Profile extends Controller
         $widget->in_menu = get_input('in_menu') == 'no' ? 0 : 1;
         $widget->save();
 
-        forward($widget->getURL());
+        forward($widget->get_url());
     }
 
     function action_edit()
@@ -126,11 +138,11 @@ class Controller_Profile extends Controller
         $org = $this->org;
         $widgetName = $this->request->param('widgetname');
 
-        $widget = $org->getWidgetByName($widgetName);
+        $widget = $org->get_widget_by_name($widgetName);
 
-        $widgetTitle = $widget->getTitle();
+        $widgetTitle = $widget->get_title();
 
-        if ($widget->guid && $widget->isEnabled())
+        if ($widget->guid && $widget->is_enabled())
         {
             $title = sprintf(__("widget:edittitle"), $widgetTitle);
         }
@@ -139,12 +151,12 @@ class Controller_Profile extends Controller
             $title = sprintf(__("widget:edittitle:new"), $widgetTitle);
         }
 
-        $cancelUrl = get_input('from') ?: $widget->getUrl();
+        $cancelUrl = get_input('from') ?: $widget->get_url();
 
         add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
         $body = view_layout('one_column',
-            view_title($title), $widget->renderEdit());
+            view_title($title), $widget->render_edit());
 
         $this->page_draw($title, $body);
     }
@@ -157,11 +169,11 @@ class Controller_Profile extends Controller
 
         PageContext::set_theme(get_input("__theme") ?: $org->theme ?: 'green');
         
-        foreach ($org->getAvailableWidgets() as $widget)
+        foreach ($org->get_available_widgets() as $widget)
         {
-            if ($widget->isActive() && $widget->in_menu)
+            if ($widget->is_active() && $widget->in_menu)
             {
-                add_submenu_item($widget->getTitle(), rewrite_to_current_domain($widget->getURL()));
+                add_submenu_item($widget->get_title(), rewrite_to_current_domain($widget->get_url()));
             }
         }        
         
@@ -179,7 +191,7 @@ class Controller_Profile extends Controller
 
         $user = $this->user;
 
-        if ($user && $user->canEdit())
+        if ($user && $user->can_edit())
         {
             $this->use_editor_layout();
 
@@ -208,7 +220,7 @@ class Controller_Profile extends Controller
         $this->require_editor();
         $org = $this->org;
 
-        $cancelUrl = get_input('from') ?: $org->getUrl();
+        $cancelUrl = get_input('from') ?: $org->get_url();
 
         add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
@@ -237,12 +249,12 @@ class Controller_Profile extends Controller
 
         if (get_input('deleteicon'))
         {
-            $org->setIcon(null);
+            $org->set_icon(null);
             system_message(__("icon:reset"));
         }
         else if ($iconFiles)
         {
-            $org->setIcon($iconFiles);
+            $org->set_icon($iconFiles);
             system_message(__("icon:saved"));
         }
 
@@ -254,13 +266,13 @@ class Controller_Profile extends Controller
         {
             if ($org->custom_header)
             {
-                $org->setHeader(null);
+                $org->set_header(null);
                 system_message(__("header:reset"));
             }
         }
         else if ($headerFiles)
         {
-            $org->setHeader($headerFiles);
+            $org->set_header($headerFiles);
             system_message(__("header:saved"));
         }
     }
@@ -271,35 +283,35 @@ class Controller_Profile extends Controller
 
         $this->use_public_layout();
 
-        $viewOrg = $org->canView();
+        $viewOrg = $org->can_view();
 
         if ($widget && $widget->widget_name == 'home')
         {
-            $subtitle = $widget->title ? $widget->translate_field('title', false) : $org->getLocationText(false);
+            $subtitle = $widget->title ? $widget->translate_field('title', false) : $org->get_location_text(false);
             $title = '';
         }
-        else if (!$widget || !$widget->isActive())
+        else if (!$widget || !$widget->is_active())
         {
             $this->org_page_not_found();
         }
         else
         {
-            $subtitle = $widget->getTitle();
+            $subtitle = $widget->get_title();
             $title = $subtitle;
         }
 
-        if ($org->canEdit())
+        if ($org->can_edit())
         {
-            add_submenu_item(__("widget:edit"), $widget->getEditURL(), 'edit');
+            add_submenu_item(__("widget:edit"), $widget->get_edit_url(), 'edit');
         }
 
         if ($viewOrg)
         {
-            $body = $this->org_view_body($subtitle, ($viewOrg ? $widget->renderView() : ''));
+            $body = $this->org_view_body($subtitle, ($viewOrg ? $widget->render_view() : ''));
         }
         else
         {
-            $org->showCantViewMessage();
+            $this->show_cant_view_message();
             $body = '';
         }
 
@@ -313,14 +325,14 @@ class Controller_Profile extends Controller
 
         if (get_input("__topbar") != "0")
         {
-            $org->showCantViewMessage();
+            $this->show_cant_view_message();
         
             if (Session::isadminloggedin())
             {
                 $preBody .= view("admin/org_actions", array('entity' => $org, 'widget' => $widget));
             }
 
-            if ($org->canCommunicateWith())
+            if ($org->can_view() && Session::isloggedin() && Session::get_loggedin_userid() != $org->guid)
             {
                 $preBody .= view("org/comm_box", array('entity' => $org));
             }
@@ -342,20 +354,20 @@ class Controller_Profile extends Controller
 
             system_message(__('widget:delete:success'));
 
-            forward($this->user->getURL());
+            forward($this->user->get_url());
         }
         else
         {
-            if (!$widget->isEnabled())
+            if (!$widget->is_enabled())
             {
                 $widget->enable();
             }
 
             try
             {
-                $widget->saveInput();
+                $widget->save_input();
                 system_message(__('widget:save:success'));
-                forward($widget->getURL());
+                forward($widget->get_url());
             }
             catch (Exception $ex)
             {
@@ -459,7 +471,7 @@ class Controller_Profile extends Controller
 
             system_message(__('username:changed'));
         }
-        forward($org->getURL());
+        forward($org->get_url());
     }
 
     function index_feed()
@@ -486,13 +498,13 @@ class Controller_Profile extends Controller
 
         $org = $this->org;
 
-        if (!Session::get_loggedin_user()->isApproved())
+        if (!Session::get_loggedin_user()->is_approved())
         {
             register_error(__('message:needapproval'));
             forward_to_referrer();
         }
 
-        add_submenu_item(__("message:cancel"), $org->getURL(), 'edit');
+        add_submenu_item(__("message:cancel"), $org->get_url(), 'edit');
 
         $title = __("message:title");
         $area1 = view("org/composeMessage", array('entity' => $org));
@@ -546,7 +558,7 @@ class Controller_Profile extends Controller
 
             if ($password == $password2)
             {
-                $user->setPassword($password);
+                $user->set_password($password);
                 system_message(__('user:password:success'));
             }
             else
@@ -622,7 +634,7 @@ class Controller_Profile extends Controller
         $uuid = get_input('uuid');
         $org = $this->org;
         
-        $duplicates = NewsUpdate::queryByMetadata('uuid', $uuid)->where('container_guid=?',$org->guid)->filter();
+        $duplicates = NewsUpdate::query_by_metadata('uuid', $uuid)->where('container_guid=?',$org->guid)->filter();
         
         foreach ($imageNumbers as $imageNumber)
         {
@@ -641,13 +653,13 @@ class Controller_Profile extends Controller
             $post = new NewsUpdate();
             $post->owner_guid = Session::get_loggedin_userid();
             $post->container_guid = $org->guid;
-            $post->setContent($body, true);
+            $post->set_content($body, true);
             $post->uuid = $uuid;
             $post->save();                                  
         }
         
         system_message(__('addphotos:success'));
-        forward($org->getURL()."/news");
+        forward($org->get_url()."/news");
     }
     
     function index_confirm_partner()
@@ -665,8 +677,8 @@ class Controller_Profile extends Controller
 
         if ($partner)
         {
-            $partnership = $org->getPartnership($partner);
-            if ($partnership->isSelfApproved() || !$partnership->isPartnerApproved())
+            $partnership = $org->get_partnership($partner);
+            if ($partnership->is_self_approved() || !$partnership->is_partner_approved())
             {
                 not_found();
             }
@@ -694,7 +706,7 @@ class Controller_Profile extends Controller
 
         $loggedInOrg = Session::get_loggedin_user();
 
-        if (!$loggedInOrg->isApproved())
+        if (!$loggedInOrg->is_approved())
         {
             action_error(__('partner:needapproval'));
         }
@@ -706,22 +718,22 @@ class Controller_Profile extends Controller
         }
         else
         {
-            $partnership = $loggedInOrg->getPartnership($partner);
-            $partnership->setSelfApproved(true);
+            $partnership = $loggedInOrg->get_partnership($partner);
+            $partnership->set_self_approved(true);
             $partnership->save();
 
-            $partnership2 = $partner->getPartnership($loggedInOrg);
-            $partnership2->setPartnerApproved(true);
+            $partnership2 = $partner->get_partnership($loggedInOrg);
+            $partnership2->set_partner_approved(true);
             $partnership2->save();
 
             $partner->notify(
                 sprintf(__('email:requestPartnership:subject',$partner->language), $loggedInOrg->name, $partner->name),
-                sprintf(__('email:requestPartnership:body',$partner->language), $partnership->getApproveUrl())
+                sprintf(__('email:requestPartnership:body',$partner->language), $partnership->get_approve_url())
             );
 
             system_message(__("partner:request_sent"));
 
-            forward($partner->getUrl());
+            forward($partner->get_url());
         }
     }
 
@@ -742,18 +754,18 @@ class Controller_Profile extends Controller
         }
         else
         {
-            $partnership = $partner->getPartnership($user);
-            $partnership->setPartnerApproved(true);
+            $partnership = $partner->get_partnership($user);
+            $partnership->set_partner_approved(true);
             $partnership->save();
 
-            $partnership2 = $user->getPartnership($partner);
-            $partnership2->setSelfApproved(true);
+            $partnership2 = $user->get_partnership($partner);
+            $partnership2->set_self_approved(true);
             $partnership2->save();
 
-            $partWidget = $user->getWidgetByName('partnerships');
+            $partWidget = $user->get_widget_by_name('partnerships');
             $partWidget->save();
 
-            $partWidget2 = $partner->getWidgetByName('partnerships');
+            $partWidget2 = $partner->get_widget_by_name('partnerships');
             $partWidget2->save();
 
             system_message(__("partner:created"));
@@ -762,10 +774,10 @@ class Controller_Profile extends Controller
 
             $partner->notify(
                 sprintf(__('email:partnershipConfirmed:subject',$partner->language), $user->name, $partner->name),
-                sprintf(__('email:partnershipConfirmed:body',$partner->language), $partWidget2->getURL())
+                sprintf(__('email:partnershipConfirmed:body',$partner->language), $partWidget2->get_url())
             );
 
-            forward($partWidget->getURL());
+            forward($partWidget->get_url());
         }
     }
 
@@ -779,7 +791,7 @@ class Controller_Profile extends Controller
 
         $recipient = $this->org;
 
-        if (!$recipient || !$user->isApproved())
+        if (!$recipient || !$user->is_approved())
         {
             register_error(__("message:invalid_recipient"));
             forward();
@@ -799,17 +811,17 @@ class Controller_Profile extends Controller
             }
 
             $headers = array(
-                'To' => $recipient->getNameForEmail(),
-                'From' => $user->getNameForEmail(),
-                'Reply-To' => $user->getNameForEmail(),
-                'Bcc' => $user->getNameForEmail(),
+                'To' => $recipient->get_name_for_email(),
+                'From' => $user->get_name_for_email(),
+                'Reply-To' => $user->get_name_for_email(),
+                'Bcc' => $user->get_name_for_email(),
             );
 
             send_mail($recipient->email, $subject, $message, $headers);
 
             system_message(__("message:sent"));
 
-            forward($recipient->getURL());
+            forward($recipient->get_url());
         }
     }
     

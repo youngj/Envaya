@@ -1,12 +1,12 @@
 <div class='section_content padded'>
 <?php 
     $widget = $vars['widget'];
-    $org = $widget->getContainerEntity();
+    $org = $widget->get_container_entity();
 
     $offset = (int) get_input('offset');
     $limit = 10;
 
-    $query = $org->queryPartnerships()->limit($limit, $offset);
+    $query = $org->query_partnerships()->limit($limit, $offset);
     
     $count = $query->count();
     $entities = $query->filter();

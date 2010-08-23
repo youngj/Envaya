@@ -69,11 +69,6 @@ function get_static_map_url($lat, $long, $zoom, $width, $height)
     return "http://maps.google.com/maps/api/staticmap?center=$lat,$long&zoom=$zoom&size={$width}x$height&maptype=roadmap&markers=$lat,$long&sensor=false&key=$apiKey";
 }
 
-function get_themes()
-{
-    return array('green','brick','craft4','craft1','cotton2','wovengrass','beads','red');
-}
-
 function get_batch_email_options()
 {
     return array(

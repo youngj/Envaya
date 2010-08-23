@@ -1,17 +1,17 @@
 	<item>
-	  <guid isPermaLink='true'><?php echo $vars['entity']->getURL(); ?></guid>
+	  <guid isPermaLink='true'><?php echo $vars['entity']->get_url(); ?></guid>
 	  <pubDate><?php echo date("r",$vars['entity']->time_created) ?></pubDate>
-	  <link><?php echo $vars['entity']->getURL(); ?></link>
+	  <link><?php echo $vars['entity']->get_url(); ?></link>
 	  <title><![CDATA[<?php echo (($vars['entity']->name)); ?>]]></title>
 	  <description><![CDATA[<?php echo (Markup::autop($vars['entity']->description)); ?>]]></description>
 	  <?php
 			if (
 				($vars['entity'] instanceof Locatable) &&
-				($vars['entity']->getLongitude()) &&
-				($vars['entity']->getLatitude())
+				($vars['entity']->get_longitude()) &&
+				($vars['entity']->get_latitude())
 			) {
 				?>
-				<georss:point><?php echo $vars['entity']->getLatitude(); ?> <?php echo $vars['entity']->getLongitude(); ?></georss:point>
+				<georss:point><?php echo $vars['entity']->get_latitude(); ?> <?php echo $vars['entity']->get_longitude(); ?></georss:point>
 				<?php
 			}
 	  ?>

@@ -15,7 +15,7 @@ function authenticate($username, $password)
     {
         if ($user = get_user_by_username($username))
         {
-            if ($user->isBanned())
+            if ($user->is_banned())
             {
                 return false;
             }
@@ -45,13 +45,13 @@ function authenticate($username, $password)
  */
 function login($user, $persistent = false)
 {
-    if ($user->isBanned())
+    if ($user->is_banned())
         return false;
 
     if ($user->check_rate_limit_exceeded())
         return false;
 
-    Session::set('guid', $user->getGUID());
+    Session::set('guid', $user->guid);
 
     if ($persistent)
     {

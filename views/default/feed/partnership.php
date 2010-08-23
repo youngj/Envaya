@@ -2,11 +2,11 @@
 
     $item = $vars['item'];
     $mode = $vars['mode'];
-    $org = $item->getUserEntity();
-    $orgUrl = $org->getURL();
+    $org = $item->get_user_entity();
+    $orgUrl = $org->get_url();
 
-    $partner = $item->getSubjectEntity();
-    $partnerUrl = $partner->getURL();
+    $partner = $item->get_subject_entity();
+    $partnerUrl = $partner->get_url();
 
     echo sprintf(__('feed:partnership'),
         $mode == 'self' ? escape($org->name) :"<a class='feed_org_name' href='$orgUrl'>".escape($org->name)."</a>",

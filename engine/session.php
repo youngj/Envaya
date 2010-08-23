@@ -44,7 +44,7 @@ class Session
 
     }
 
-    static function saveInput()
+    static function save_input()
     {
         static::set('input', $_POST);
     }
@@ -76,14 +76,14 @@ class Session
         if ($guid)
         {
             $user = get_user($guid);
-            if (!$user || $user->isBanned())
+            if (!$user || $user->is_banned())
             {
                 static::set($_SESSION['guid'], null);
             }
         }
     }
 
-    static function isDirty()
+    static function is_dirty()
     {
         return static::$dirty;
     }
@@ -137,7 +137,7 @@ class Session
        
     static function _session_write($id, $sess_data)
     {
-        if (Session::isDirty())
+        if (Session::is_dirty())
         {
             get_cache()->set(static::cache_key($id), $sess_data);
 

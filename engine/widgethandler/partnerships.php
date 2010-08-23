@@ -14,8 +14,8 @@ class WidgetHandler_Partnerships extends WidgetHandler
 
     function save($widget)
     {
-        $org = $widget->getContainerEntity();
-        $partnerships = $org->queryPartnerships()->filter();
+        $org = $widget->get_container_entity();
+        $partnerships = $org->query_partnerships()->filter();
 
         foreach($partnerships as $p)
         {

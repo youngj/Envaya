@@ -1,6 +1,6 @@
 <?php
     $widget = $vars['widget'];
-    $org = $widget->getContainerEntity();   
+    $org = $widget->get_container_entity();   
         
     ?>
 
@@ -29,7 +29,7 @@
     <?php echo view("input/tinymce", array(
         'internalname' => 'content',
         'trackDirty' => true,
-        'valueIsHTML' => $widget->hasDataType(DataType::HTML),
+        'valueIsHTML' => $widget->has_data_type(DataType::HTML),
         'value' => $widget->content)); ?>
 
 </div>

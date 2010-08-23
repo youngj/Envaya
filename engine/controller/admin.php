@@ -156,8 +156,8 @@ class Controller_Admin extends Controller
     {
         $title = __('translate:queue');
 
-        $body = view_layout("one_column_padded", view_title($title),
-            view('translate/queue', array('lang' => get_language()))
+        $body = view_layout("one_column_wide", view_title($title),
+            view('translation/queue', array('lang' => get_language()))
         );
 
         $this->page_draw($title,$body);
@@ -339,11 +339,11 @@ class Controller_Admin extends Controller
         
         if (($entity) && ($entity instanceof Organization))
         {
-            $approvedBefore = $entity->isApproved();
+            $approvedBefore = $entity->is_approved();
 
             $entity->approval = (int)get_input('approval');
 
-            $approvedAfter = $entity->isApproved();
+            $approvedAfter = $entity->is_approved();
 
             $entity->save();
 
@@ -353,10 +353,10 @@ class Controller_Admin extends Controller
                     __('email:orgapproved:subject', $entity->language),
                     sprintf(__('email:orgapproved:body', $entity->language),
                         $entity->name,
-                        $entity->getURL(),
+                        $entity->get_url(),
                         "{$CONFIG->url}pg/login?username={$entity->username}",
                         __('help:title', $entity->language),
-                        "{$entity->getURL()}/help"
+                        "{$entity->get_url()}/help"
                     )
                 );
             }
@@ -368,7 +368,7 @@ class Controller_Admin extends Controller
             register_error(__('approval:notapproved'));
         }
 
-        forward($entity->getUrl());
+        forward($entity->get_url());
 
     }
 
@@ -481,7 +481,7 @@ class Controller_Admin extends Controller
             $featuredSite = new FeaturedSite();
             $featuredSite->container_guid = $user->guid;
             $featuredSite->image_url = get_input('image_url');
-            $featuredSite->setContent(get_input('content'), true);
+            $featuredSite->set_content(get_input('content'), true);
             $featuredSite->save();
             system_message('featured:created');
             forward('org/featured');
@@ -500,7 +500,7 @@ class Controller_Admin extends Controller
         if ($featuredSite && $featuredSite instanceof FeaturedSite)
         {
             $featuredSite->image_url = get_input('image_url');
-            $featuredSite->setContent(get_input('content'), true);
+            $featuredSite->set_content(get_input('content'), true);
             $featuredSite->save();
             system_message('featured:saved');
             forward('org/featured');
@@ -544,7 +544,7 @@ class Controller_Admin extends Controller
         $email = new EmailTemplate();
         $email->from = get_input('from');
         $email->subject = get_input('subject');        
-        $email->setContent($content, true);
+        $email->set_content($content, true);
         $email->save();
         forward("/admin/view_email?email={$email->guid}");
     }
@@ -565,7 +565,7 @@ class Controller_Admin extends Controller
             else
             {
                 $email->subject = get_input('subject');                
-                $email->setContent(get_input('content'), true);
+                $email->set_content(get_input('content'), true);
                 $email->from = get_input('from');
                 $email->save();
             }

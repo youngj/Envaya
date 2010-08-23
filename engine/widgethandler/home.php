@@ -13,7 +13,7 @@ class WidgetHandler_Home extends WidgetHandler
 
     function save($widget)
     {
-        $org = $widget->getContainerEntity();
+        $org = $widget->get_container_entity();
 
         $mission = get_input('content');
         if (!$mission)
@@ -31,7 +31,7 @@ class WidgetHandler_Home extends WidgetHandler
             throw new InvalidParameterException(__("setup:sector:toomany"));
         }
 
-        $org->setSectors($sectors);
+        $org->set_sectors($sectors);
         $org->sector_other = get_input('sector_other');
 
         $org->latitude = get_input('org_lat');
@@ -42,7 +42,7 @@ class WidgetHandler_Home extends WidgetHandler
 
         $org->save();
 
-        $widget->setContent($mission, true);
+        $widget->set_content($mission, true);
 
         $widget->included = get_input_array('included');
         $widget->zoom = get_input('map_zoom');

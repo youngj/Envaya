@@ -12,7 +12,7 @@
     if (!$title) $title = get_class($vars['entity']);
 
     $controls = "";
-    if ($vars['entity']->canEdit())
+    if ($vars['entity']->can_edit())
     {
         $controls .= " (".view('output/confirmlink', array(
             'text' => __('delete'),
@@ -21,7 +21,7 @@
         )).")";        
     }
 
-    $info = "<div><p><b><a href=\"" . $vars['entity']->getUrl() . "\">" . escape($title) . "</a></b> $controls </p></div>";
+    $info = "<div><p><b><a href=\"" . $vars['entity']->get_url() . "\">" . escape($title) . "</a></b> $controls </p></div>";
 
     if (get_input('search_viewtype') == "gallery") {
 
@@ -29,7 +29,7 @@
 
     }
 
-    $owner = $vars['entity']->getOwnerEntity();
+    $owner = $vars['entity']->get_owner_entity();
     $ownertxt = __('unknown');
 
     $info = "<span>$info</span>";

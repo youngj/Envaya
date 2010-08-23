@@ -8,8 +8,8 @@ if (empty($feedItems))
 
 foreach ($feedItems as $feedItem)
 {
-    $org = $feedItem->getUserEntity();
-    $subject = $feedItem->getSubjectEntity();
+    $org = $feedItem->get_user_entity();
+    $subject = $feedItem->get_subject_entity();
     if ($org && $subject)
     {
     ?>
@@ -17,9 +17,9 @@ foreach ($feedItems as $feedItem)
     <div class='blog_post_wrapper padded'>
     <div class="feed_post">
         <?php
-            echo $feedItem->renderView($mode='self');
+            echo $feedItem->render_view($mode='self');
         ?>
-        <div class='blog_date'><?php echo $feedItem->getDateText() ?></div>
+        <div class='blog_date'><?php echo $feedItem->get_date_text() ?></div>
         <div style='clear:both'></div>
     </div>
     </div>

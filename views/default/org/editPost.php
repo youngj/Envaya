@@ -9,7 +9,7 @@
     <?php echo view('input/tinymce', array(
         'internalname' => 'blogbody',
         'trackDirty' => true,
-        'valueIsHTML' => $blog->hasDataType(DataType::HTML),
+        'valueIsHTML' => $blog->has_data_type(DataType::HTML),
         'value' => $body)) ?>
 </div>
 
@@ -28,5 +28,5 @@
 
 <?php
     $form_body = ob_get_clean();
-    echo view('input/form', array('action' => "{$vars['entity']->getURL()}/save", 'enctype' => "multipart/form-data", 'body' => $form_body));
+    echo view('input/form', array('action' => "{$vars['entity']->get_url()}/save", 'enctype' => "multipart/form-data", 'body' => $form_body));
 ?>

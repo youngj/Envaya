@@ -2,13 +2,13 @@
 <?php
 
     $entity = $vars['entity'];
-    $url = rewrite_to_current_domain($entity->getURL());
-    $org = $entity->getRootContainerEntity();
-    $blogDates = $org->getBlogDates();
+    $url = rewrite_to_current_domain($entity->get_url());
+    $org = $entity->get_root_container_entity();
+    $blogDates = $org->get_blog_dates();
 ?>
 
 <div class='view_toggle'>
-    <a href='<?php echo rewrite_to_current_domain($org->getURL().'/news') ?>'><?php echo __('list') ?></a> | <strong><?php echo __('blog:timeline') ?></strong>
+    <a href='<?php echo rewrite_to_current_domain($org->get_url().'/news') ?>'><?php echo __('list') ?></a> | <strong><?php echo __('blog:timeline') ?></strong>
 </div>
 <div style='clear:both'></div>
 <div class='padded'>
@@ -42,7 +42,7 @@ var lastTime = parseInt(blogDates[blogDates.length-1].time_created);
 var now = new Date();
 
 var timeSpan = lastTime - firstTime;
-var orgUrl = <?php echo json_encode($org->getURL()) ?>;
+var orgUrl = <?php echo json_encode($org->get_url()) ?>;
 
 var width = 480;
 function getPosForTime(time, elemWidth)

@@ -10,12 +10,12 @@ $isAdmin = Session::isadminloggedin();
 
 foreach ($feedItems as $feedItem)
 {
-    $org = $feedItem->getUserEntity();
-    $subject = $feedItem->getSubjectEntity();
+    $org = $feedItem->get_user_entity();
+    $subject = $feedItem->get_subject_entity();
     if ($org && $subject)
     {
-        $orgIcon = $org->getIcon('small');
-        $orgUrl = $org->getURL();
+        $orgIcon = $org->get_icon('small');
+        $orgUrl = $org->get_url();
 
     ?>
 
@@ -24,9 +24,9 @@ foreach ($feedItems as $feedItem)
         <a class='feed_org_icon' href='<?php echo $orgUrl ?>'><img src='<?php echo $orgIcon ?>' /></a>
         <div class='feed_content'>
         <?php
-            echo $feedItem->renderView();
+            echo $feedItem->render_view();
         ?>
-        <div class='blog_date'><?php echo $feedItem->getDateText() ?></div>
+        <div class='blog_date'><?php echo $feedItem->get_date_text() ?></div>
         </div>
         <div style='clear:both'></div>
     </div>

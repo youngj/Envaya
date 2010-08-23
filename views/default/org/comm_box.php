@@ -15,24 +15,24 @@
 </td>
 <td class='commBoxMain'>
 <?php
-    $partnership = $loggedInOrg->getPartnership($org);
+    $partnership = $loggedInOrg->get_partnership($org);
 
-    if (!$partnership->isSelfApproved() && !$partnership->isPartnerApproved())
+    if (!$partnership->is_self_approved() && !$partnership->is_partner_approved())
     {
         echo view('output/confirmlink', array(
             'text' => __('partner:request'),
             'is_action' => true,
-            'href' => "{$org->getURL()}/request_partner"
+            'href' => "{$org->get_url()}/request_partner"
         ));
     }
-    else if (!$partnership->isSelfApproved())
+    else if (!$partnership->is_self_approved())
     {
         echo view('output/confirmlink', array(
             'text' => __('partner:approve'),
-            'href' => $org->getPartnership($loggedInOrg)->getApproveUrl()
+            'href' => $org->get_partnership($loggedInOrg)->get_approve_url()
         ));
     }
-    else if (!$partnership->isPartnerApproved())
+    else if (!$partnership->is_partner_approved())
     {
         echo __('partner:pending');
 
@@ -41,7 +41,7 @@
         echo view('output/confirmlink', array(
             'text' => "(".__('partner:re_request').")",
             'is_action' => true,
-            'href' => "{$org->getURL()}/request_partner"
+            'href' => "{$org->get_url()}/request_partner"
         ));
     }
     else
@@ -51,7 +51,7 @@
 ?>
 </td>
 <td class='commBoxMain' style='border-left:1px solid gray'>
-<a href='<?php echo $org->getURL() ?>/compose'><?php echo __('message:link'); ?></a>
+<a href='<?php echo $org->get_url() ?>/compose'><?php echo __('message:link'); ?></a>
 </td>
 <td class='commBoxRight'>
 &nbsp;

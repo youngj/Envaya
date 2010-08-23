@@ -5,7 +5,7 @@ class SystemLog
     static function get_loggable_object($row)
     {
         $class = $row->object_class;
-        return $class::getObjectFromID($row->object_id);
+        return $class::get_object_from_id($row->object_id);
     }    
 
     static $logcache = array();
@@ -48,8 +48,8 @@ class SystemLog
         
     static function record_event($object, $event)
     {
-        $object_id = (int)$object->getSystemLogID();
-        $object_class = $object->getClassName();        
+        $object_id = (int)$object->get_id();
+        $object_class = $object->get_class_name();        
         $time = time();
         $performed_by = (int)@$_SESSION['guid'];
 

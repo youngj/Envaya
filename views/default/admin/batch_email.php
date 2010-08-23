@@ -16,7 +16,7 @@ To:
     $options = array();
     foreach ($orgs as $org)
     {
-        $options[$org->guid] = escape($org->getNameForEmail());
+        $options[$org->guid] = escape($org->get_name_for_email());
     }
 
  echo view('input/checkboxes', array(

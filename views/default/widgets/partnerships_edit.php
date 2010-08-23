@@ -1,12 +1,12 @@
 <?php
     $widget = $vars['widget'];
-    $org = $widget->getContainerEntity();
+    $org = $widget->get_container_entity();
 
 ?>
 
 <div class='section_header'><?php echo __('partner:find_new'); ?></div>
 <div class='section_content padded'>
-<?php if ($org->isApproved()) { ?>
+<?php if ($org->is_approved()) { ?>
 <p>
 <?php echo sprintf(__('partner:instructions'), "<strong>".__('partner:request')."</strong>"); ?>
 </p>
@@ -31,7 +31,7 @@
     $offset = (int) get_input('offset');
     $limit = 10;
 
-    $query = $org->queryPartnerships()->limit($limit, $offset);
+    $query = $org->query_partnerships()->limit($limit, $offset);
     
     $count = $query->count();
     $entities = $query->filter();
@@ -45,7 +45,7 @@
     else
     {
         echo view('navigation/pagination',array(
-            'baseurl' => $widget->getEditURL(),
+            'baseurl' => $widget->get_edit_url(),
             'offset' => $offset,
             'count' => $count,
             'limit' => $limit
@@ -53,14 +53,14 @@
         
         foreach($entities as $p)
         {
-            $partner = $p->getPartner();
+            $partner = $p->get_partner();
             ?>            
             
 <div class="partnership_view">    
-    <a class='feed_org_icon' href='<?php echo $partner->getURL() ?>'><img src='<?php echo $partner->getIcon('small') ?>' /></a>
+    <a class='feed_org_icon' href='<?php echo $partner->get_url() ?>'><img src='<?php echo $partner->get_icon('small') ?>' /></a>
     
     <div class='feed_content'>
-        <a class='feed_org_name' href='<?php echo $partner->getUrl() ?>'><?php echo escape($partner->name); ?></a><br />
+        <a class='feed_org_name' href='<?php echo $partner->get_url() ?>'><?php echo escape($partner->name); ?></a><br />
         <label><?php echo __('widget:partnerships:description'); ?></label>
 
         <?php echo view('input/longtext', array(

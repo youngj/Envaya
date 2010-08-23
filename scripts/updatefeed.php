@@ -14,7 +14,7 @@ foreach ($newsUpdates as $newsUpdate)
 {
 	if (get_feed_count('news', $newsUpdate) == 0)
 	{
-		post_feed_items($newsUpdate->getContainerEntity(), 'news', $newsUpdate, null, $newsUpdate->time_created);
+		post_feed_items($newsUpdate->get_container_entity(), 'news', $newsUpdate, null, $newsUpdate->time_created);
 	}
 }
 
@@ -32,6 +32,6 @@ foreach ($widgets as $widget)
 {
 	if (get_feed_count('new_widget', $widget) == 0 && $widget->content)
 	{
-		post_feed_items($widget->getContainerEntity(), 'new_widget', $widget, null, $widget->time_updated);
+		post_feed_items($widget->get_container_entity(), 'new_widget', $widget, null, $widget->time_updated);
 	}
 }

@@ -32,7 +32,7 @@ class PageContext
     {
         foreach (static::$translations_available as $translation)
         {
-            if ($translation->isStale())
+            if ($translation->is_stale())
             {
                 return true;
             }
@@ -44,7 +44,7 @@ class PageContext
     {
         if (!empty(static::$translations_available))
         {
-            return static::$translations_available[0]->getOriginalLanguage();
+            return static::$translations_available[0]->get_original_language();
         }
         return get_language();
     }

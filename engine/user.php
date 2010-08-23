@@ -1,8 +1,7 @@
 <?php
 
-class User extends Entity implements Locatable
+class User extends Entity
 {
-
     static $table_name = 'users_entity';
 
     static $table_attributes = array(
@@ -45,7 +44,7 @@ class User extends Entity implements Locatable
         $this->attributes['type'] = "user";
     }
 
-    public function getFeedNames()
+    public function get_feed_names()
     {
         return array(
             get_feed_name(array()), // global feed
@@ -53,29 +52,29 @@ class User extends Entity implements Locatable
         );
     }
     
-    public function isSetupComplete()
+    public function is_setup_complete()
     {
-        return !$this->subtype || $this->setup_state >= 5;
+        return true;
     }
 
-    public function getNameForEmail()
+    public function get_name_for_email()
     {
         $name = mb_encode_mimeheader($this->name, "UTF-8", "B");
         return "\"$name\" <{$this->email}>";
     }
 
-    public function getTitle()
+    public function get_title()
     {
         return $this->name;
     }
 
-    public function getURL()
+    public function get_url()
     {
         global $CONFIG;
         return $CONFIG->url . "{$this->username}";
     }
 
-    public function getIconFile($size = '')
+    public function get_icon_file($size = '')
     {
         $file = new UploadedFile();
         $file->owner_guid = $this->guid;
@@ -83,13 +82,13 @@ class User extends Entity implements Locatable
         return $file;
     }
 
-    public function getIcon($size = 'medium')
+    public function get_icon($size = 'medium')
     {
         global $CONFIG;
 
         if ($this->custom_icon)
         {
-            return $this->getIconFile($size)->getURL()."?{$this->time_updated}";
+            return $this->get_icon_file($size)->get_url()."?{$this->time_updated}";
         }
         else if ($this->latitude || $this->longitude)
         {
@@ -101,7 +100,7 @@ class User extends Entity implements Locatable
         }
     }
 
-    static function getIconSizes()
+    static function get_icon_sizes()
     {
         return array(
             'tiny' => '37x25',
@@ -111,7 +110,7 @@ class User extends Entity implements Locatable
         );
     }
 
-    public function setIcon($imageFiles)
+    public function set_icon($imageFiles)
     {
         if (!$imageFiles)
         {
@@ -122,8 +121,8 @@ class User extends Entity implements Locatable
             foreach ($imageFiles as $size => $filedata)
             {
                 $srcFile = $filedata['file'];
-                $destFile = $this->getIconFile($size);
-                $srcFile->copyTo($destFile);
+                $destFile = $this->get_icon_file($size);
+                $srcFile->copy_to($destFile);
             }
 
             $this->custom_icon = true;
@@ -131,7 +130,7 @@ class User extends Entity implements Locatable
         $this->save();
     }
 
-    public function getHeaderFile($size = '')
+    public function get_header_file($size = '')
     {
         $file = new UploadedFile();
         $file->owner_guid = $this->guid;
@@ -139,16 +138,16 @@ class User extends Entity implements Locatable
         return $file;
     }
 
-    public function getHeaderURL($size = 'large')
+    public function get_header_url($size = 'large')
     {
         if ($this->custom_header)
         {
-            return $this->getHeaderFile($size)->getURL()."?{$this->time_updated}";
+            return $this->get_header_file($size)->get_url()."?{$this->time_updated}";
         }
         return '';
     }
 
-    public function setHeader($imageFiles)
+    public function set_header($imageFiles)
     {
         if (!$imageFiles)
         {
@@ -159,8 +158,8 @@ class User extends Entity implements Locatable
             foreach ($imageFiles as $size => $filedata)
             {
                 $srcFile = $filedata['file'];
-                $destFile = $this->getHeaderFile($size);
-                $srcFile->copyTo($destFile);
+                $destFile = $this->get_header_file($size);
+                $srcFile->copy_to($destFile);
             }
 
             $this->custom_header = json_encode(array(
@@ -171,12 +170,12 @@ class User extends Entity implements Locatable
         $this->save();
     }
 
-    public function getHeader()
+    public function get_header()
     {
         return json_decode($this->custom_header, true);
     }
 
-    static function getHeaderSizes()
+    static function get_header_sizes()
     {
         return array(
             'large' => '700x150',
@@ -190,7 +189,7 @@ class User extends Entity implements Locatable
      */
     public function ban($reason = "")
     {
-        if ($this->canEdit())
+        if ($this->can_edit())
         {
             $this->ban_reason = $reason;
             $this->banned = 'yes';
@@ -205,7 +204,7 @@ class User extends Entity implements Locatable
      */
     public function unban()
     {
-        if ($this->canEdit())
+        if ($this->can_edit())
         {
             $this->ban_reason = '';
             $this->banned = 'yes';
@@ -220,19 +219,7 @@ class User extends Entity implements Locatable
      *
      * @return bool
      */
-    public function isBanned() { return $this->banned == 'yes'; }
-
-    /**
-     * If a user's owner is blank, return its own GUID as the owner
-     *
-     * @return int User GUID
-     */
-    function getOwner() {
-        if ($this->owner_guid == 0)
-            return $this->getGUID();
-
-        return $this->owner_guid;
-    }
+    public function is_banned() { return $this->banned == 'yes'; }
 
     /**
      * Set latitude and longitude tags for a given entity.
@@ -240,7 +227,7 @@ class User extends Entity implements Locatable
      * @param float $lat
      * @param float $long
      */
-    public function setLatLong($lat, $long)
+    public function set_lat_long($lat, $long)
     {
         $this->attributes['latitude'] = $lat;
         $this->attributes['longitude'] = $long;
@@ -248,43 +235,30 @@ class User extends Entity implements Locatable
         return true;
     }
 
-    public function getLatitude() { return $this->attributes['latitude']; }
-    public function getLongitude() { return $this->attributes['longitude']; }
+    public function get_latitude() { return $this->attributes['latitude']; }
+    public function get_longitude() { return $this->attributes['longitude']; }
 
-    public function getLocation() { return $this->get('location'); }
-
-    function queryNewsUpdates()
-    {
-        return NewsUpdate::query()->where("container_guid=?", $this->guid)->order_by('time_created desc');
-    }
-
-    function queryFeedItems()
+    function query_feed_items()
     {
         $feedName = get_feed_name(array('user' => $this->guid));
-        return FeedItem::queryByFeedName($feedName);
+        return FeedItem::query_by_feed_name($feedName);
     }
-    
-    
-    function getBlogDates()
+       
+    function get_blog_dates()
     {
         $sql = "SELECT guid, time_created from entities WHERE type='object' AND enabled='yes' AND subtype=? AND container_guid=? ORDER BY guid ASC";
         return get_data($sql, array(T_blog, $this->guid));
     }
 
-    public function isApproved()
+    public function is_approved()
     {
         return $this->approval > 0;
     }
 
-    public function setPassword($password)
+    public function set_password($password)
     {
         $this->salt = substr(generate_random_cleartext_password(), 0, 8);
         $this->password = $this->generate_password($password);
-    }
-
-    static function getByEmailCode($emailCode)
-    {
-        return static::query()->where('email_code = ?', $emailCode)->get();
     }
 
     static function query($show_unapproved = false)
@@ -305,7 +279,7 @@ class User extends Entity implements Locatable
     }
 
 
-    public function jsProperties()
+    public function js_properties()
     {
         return array(
             'guid' => $this->guid,
@@ -313,7 +287,7 @@ class User extends Entity implements Locatable
             'name' => $this->name,
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
-            'url' => $this->getUrl()
+            'url' => $this->get_url()
         );
     }
     
@@ -370,7 +344,7 @@ class User extends Entity implements Locatable
         if (!$this->email)
             throw new NotificationException(sprintf(__('error:NoEmailAddress'), $this->guid));
 
-        $headers = array('To' => $this->getNameForEmail());
+        $headers = array('To' => $this->get_name_for_email());
 
         return send_mail($this->email, $subject, $message, $headers);    
     }

@@ -7,7 +7,7 @@ require_once("engine/start.php");
 $scores = array();
 foreach (Organization::query()->filter() as $org)
 {
-    $scores[$org->getWebsiteScore()][] = $org;
+    $scores[$org->get_website_score()][] = $org;
 }
 
 for ($i = 0; $i < 100; $i++)

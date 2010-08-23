@@ -10,3 +10,5 @@ UPDATE translations t INNER JOIN entities e on e.guid = t.guid
     WHERE e.`subtype` = 5;
 
 ALTER TABLE translations ADD unique key (`container_guid`,`property`,`lang`,`owner_guid`,`html`);
+
+delete from translations where exists(select * from entities where subtype=11 and guid=translations.container_guid) limit 25;

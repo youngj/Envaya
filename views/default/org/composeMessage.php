@@ -6,7 +6,7 @@
 ?>
 
 <div class='padded'>
-<form action='<?php echo $org->getURL() ?>/send_message' method='POST'>
+<form action='<?php echo $org->get_url() ?>/send_message' method='POST'>
 
 <?php echo view('input/securitytoken'); ?>
 

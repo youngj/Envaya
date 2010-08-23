@@ -4,7 +4,7 @@
 <form method='POST' action='admin/new_featured'>
 <?php echo view('input/securitytoken') ?>
 
-<strong><a href='<?php echo $org->getURL() ?>'><?php echo escape($org->name) ?></a></strong>
+<strong><a href='<?php echo $org->get_url() ?>'><?php echo escape($org->name) ?></a></strong>
 
 <br /><br />
 <div class='input'>
@@ -12,14 +12,14 @@
 <?php echo view('admin/featured_image', array(
     'internalname' => 'image_url',
     'org' => $org, 
-    'value' => $org->getIcon('medium')
+    'value' => $org->get_icon('medium')
 )); 
 ?>
 </div>
 <div class='input' style='clear:both'>
 <label><?php echo __('featured:text'); ?></label>
 <?php
-    $homeWidget = $org->getWidgetByName('home');
+    $homeWidget = $org->get_widget_by_name('home');
     
     echo view('input/tinymce',
         array(

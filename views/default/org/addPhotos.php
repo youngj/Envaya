@@ -2,7 +2,7 @@
     $org = $vars['entity'];
 ?>
 <div class='section_content padded'>
-<form method='POST' action='<?php echo $org->getURL() ?>/addphotos/save'>
+<form method='POST' action='<?php echo $org->get_url() ?>/addphotos/save'>
 
 <?php echo view('input/securitytoken') ?>
 
@@ -124,7 +124,7 @@ new MultiImageUploader(<?php echo view('input/swfupload_args', array(
         'placeholder_id' => 'uploadContainer',
         'previews_id' => 'previews',
         'button_more_message' => __('addphotos:more'),
-        'sizes' => json_encode(Widget::getImageSizes())
+        'sizes' => json_encode(Widget::get_image_sizes())
     )
 )) ?>);
 

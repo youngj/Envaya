@@ -33,7 +33,7 @@
 <div id='imageSizeContainer'>
     <?php
         $options = array();
-        foreach (Widget::getImageSizes() as $sizeName => $size)
+        foreach (Widget::get_image_sizes() as $sizeName => $size)
         {
             $options[$sizeName] = __("size:$sizeName");
         }
@@ -81,7 +81,7 @@
             'progress_id' => 'imageUploadProgress',
             'placeholder_id' => "imageUploadContainer",
             'result_id' => 'imageUpload',
-            'sizes' => json_encode(Widget::getImageSizes())
+            'sizes' => json_encode(Widget::get_image_sizes())
         )
     )) ?>);
 
@@ -186,7 +186,7 @@
     <?php
     if ($current)
     {
-        $fileGroup = get_file_group_json($current->getFilesInGroup());
+        $fileGroup = get_file_group_json($current->get_files_in_group());
         ?>
         uploader.swfupload.uploadSuccess(null, <?php echo json_encode($fileGroup) ?>);
         <?php

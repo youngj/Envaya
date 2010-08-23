@@ -4,11 +4,11 @@
 
     if (!$widget->content)
     {
-        echo sprintf(__('widget:empty'), escape($widget->getTitle()));
+        echo sprintf(__('widget:empty'), escape($widget->get_title()));
     }
     else
     {
-        echo $widget->renderContent();
+        echo $widget->render_content();
     }
 
 ?>

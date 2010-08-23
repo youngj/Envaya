@@ -24,7 +24,7 @@
 <br />
 <br />
 <?php echo sprintf(__('email:reminder:formatting',$lang),
-    "<a target='_blank' href='{$org->getURL()}/projects/edit?username={$org->username}'>".__('email:reminder:projectspage',$lang)."</a>"
+    "<a target='_blank' href='{$org->get_url()}/projects/edit?username={$org->username}'>".__('email:reminder:projectspage',$lang)."</a>"
 );
 ?>
 <br />

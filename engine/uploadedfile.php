@@ -14,13 +14,13 @@ class UploadedFile extends Entity
         'mime' => '',
     );
 
-    public function getFilesInGroup()
+    public function get_files_in_group()
     {
         return UploadedFile::query()->where('owner_guid = ?', $this->owner_guid)->
             where('group_name = ?', $this->group_name)->filter();            
     }
 
-    public function jsProperties()
+    public function js_properties()
     {
         return array(
             'guid' => $this->guid,
@@ -30,11 +30,11 @@ class UploadedFile extends Entity
             'mime' => $this->mime,
             'width' => $this->width,
             'height' => $this->height,
-            'url' => $this->getURL(),
+            'url' => $this->get_url(),
         );
     }
 
-    public function getPath()
+    public function get_path()
     {
         if ($this->group_name)
         {
@@ -46,16 +46,16 @@ class UploadedFile extends Entity
         }
     }
 
-    public function getURL()
+    public function get_url()
     {
         global $CONFIG;
-        return "http://{$CONFIG->s3_bucket}.s3.amazonaws.com/{$this->getPath()}";
+        return "http://{$CONFIG->s3_bucket}.s3.amazonaws.com/{$this->get_path()}";
     }
 
     public function delete()
     {
         global $CONFIG;
-        $res = get_s3()->deleteObject($CONFIG->s3_bucket, $this->getPath());
+        $res = get_s3()->deleteObject($CONFIG->s3_bucket, $this->get_path());
 
         if ($res && $this->guid)
         {
@@ -70,7 +70,7 @@ class UploadedFile extends Entity
     public function size()
     {
         global $CONFIG;
-        $info = get_s3()->getObjectInfo($CONFIG->s3_bucket, $this->getPath());
+        $info = get_s3()->getObjectInfo($CONFIG->s3_bucket, $this->get_path());
         if ($info)
         {
             return $info['Content-Length'];
@@ -78,7 +78,7 @@ class UploadedFile extends Entity
         return -1;
     }
 
-    public function uploadFile($filePath, $mime = null)
+    public function upload_file($filePath, $mime = null)
     {
         global $CONFIG;
 
@@ -88,20 +88,20 @@ class UploadedFile extends Entity
             $headers['Content-Type'] = $mime;
         }
 
-        return get_s3()->uploadFile($CONFIG->s3_bucket, $this->getPath(), $filePath, true, $headers);
+        return get_s3()->uploadFile($CONFIG->s3_bucket, $this->get_path(), $filePath, true, $headers);
     }
 
-    public function copyTo($destFile)
+    public function copy_to($destFile)
     {
         global $CONFIG;
-        $res = get_s3()->copyObject($CONFIG->s3_bucket, $this->getPath(), $CONFIG->s3_bucket, $destFile->getPath(), true);
+        $res = get_s3()->copyObject($CONFIG->s3_bucket, $this->get_path(), $CONFIG->s3_bucket, $destFile->get_path(), true);
         return $res;
     }
 
     public function exists()
     {
         global $CONFIG;
-        $info = get_s3()->getObjectInfo($CONFIG->s3_bucket, $this->getPath());
+        $info = get_s3()->getObjectInfo($CONFIG->s3_bucket, $this->get_path());
         return ($info) ? true : false;
     }
 }

@@ -54,7 +54,7 @@ function showAttachImage($show)
 
     echo view('input/form', array(
         'internalid' => 'addPostForm',
-        'action' => "{$org->getURL()}/post/new",
+        'action' => "{$org->get_url()}/post/new",
         'enctype' => "multipart/form-data",
         'body' => $formBody,
     ));

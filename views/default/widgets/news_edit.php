@@ -1,43 +1,17 @@
 <?php
 
     $widget = $vars['widget'];
-    $org = $widget->getContainerEntity();
+    $org = $widget->get_container_entity();
 
     $form = view('org/addPost', array('org' => $org));
 
     echo view_layout('section', __("dashboard:add_update"), $form);
 
-    //ob_start();
-?>
-<!--
-<p><?php echo __('widget:news:mobile_summary') ?></p>
-
-<ul>
-<li><strong><?php echo __('widget:news:email') ?></strong>:
-<?php echo sprintf(__('widget:news:email:summary'), "<strong>{$org->getPostEmail()}</strong>") ?>
-
-<?php
-    echo view('output/confirmlink', array(
-        'text' => __('widget:news:change_email'),
-        'is_action' => true,
-        'href' => "action/org/changeEmail?org_guid={$org->guid}"
-    ));
-?>
-</li>
-<li><strong><?php echo __('widget:news:sms') ?></strong>:
-<?php echo __('widget:news:sms:summary') ?></li>
-</ul>
--->
-<?php
-    //$settings = ob_get_clean();
-
-    //echo view_layout('section', __("widget:news:mobile_settings"), $settings);
-
     $offset = (int) get_input('offset');
     $limit = 10;
 
-    $count = $org->queryNewsUpdates()->count();
-    $updates = $org->queryNewsUpdates()->limit($limit, $offset)->filter();
+    $count = $org->query_news_updates()->count();
+    $updates = $org->query_news_updates()->limit($limit, $offset)->filter();
 
     ob_start();
 
@@ -45,7 +19,7 @@
     {
 
         echo  view('navigation/pagination',array(
-            'baseurl' => $widget->getEditURL(),
+            'baseurl' => $widget->get_edit_url(),
             'offset' => $offset,
             'count' => $count,
             'limit' => $limit,
@@ -71,14 +45,14 @@
             $rowClass = (($count % 2) != 0) ? 'odd' : 'even';
 
             echo "<tr class='$rowClass'>";
-            echo "<td>". view('output/text', array('value' => $update->getSnippet()))."</td>";
-            echo "<td><span class='blog_date'>{$update->getDateText()}</span></td>";
-            echo "<td><a href='{$update->getURL()}'>".__("view")."</a></td>";
+            echo "<td>". view('output/text', array('value' => $update->get_snippet()))."</td>";
+            echo "<td><span class='blog_date'>{$update->get_date_text()}</span></td>";
+            echo "<td><a href='{$update->get_url()}'>".__("view")."</a></td>";
 
-            echo "<td><a href='{$update->getURL()}/edit?from=$escUrl'>".__("edit")."</a></td>";
+            echo "<td><a href='{$update->get_url()}/edit?from=$escUrl'>".__("edit")."</a></td>";
             echo "<td>".view('output/confirmlink', array(
                 'is_action' => true,
-                'href' => "{$update->getURL()}/save?delete=1",
+                'href' => "{$update->get_url()}/save?delete=1",
                 'confirm' => __('blog:delete:confirm'),
                 'text' => __('delete')
             ))."</td>";

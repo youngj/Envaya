@@ -161,7 +161,7 @@ abstract class Entity implements Loggable, Serializable
         }
 
         // No, so see if its in the meta data for this entity
-        $meta = $this->getMetaData($name);
+        $meta = $this->get_metadata($name);
         if ($meta)
             return $meta;
 
@@ -196,15 +196,15 @@ abstract class Entity implements Loggable, Serializable
         }
         else
         {
-            return $this->setMetaData($name, $value);
+            return $this->set_metadata($name, $value);
         }
 
         return true;
     }
 
-    public function getMetaData($name)
+    public function get_metadata($name)
     {
-        $md = $this->getMetaDataObject($name);
+        $md = $this->get_metadata_object($name);
 
         if ($md)
         {
@@ -213,7 +213,7 @@ abstract class Entity implements Loggable, Serializable
         return null;
     }
 
-    protected function getMetaDataObject($name)
+    protected function get_metadata_object($name)
     {
         if (isset($this->metadata_cache[$name]))
         {
@@ -224,7 +224,7 @@ abstract class Entity implements Loggable, Serializable
 
         if ((int) ($this->guid) > 0)
         {
-            $md = get_metadata_byname($this->getGUID(), $name);
+            $md = get_metadata_byname($this->guid, $name);
         }
 
         if (!$md)
@@ -278,23 +278,23 @@ abstract class Entity implements Loggable, Serializable
         }
         else
         {
-            $this->setMetaData($name, null);
+            $this->set_metadata($name, null);
         }
     }
 
-    public function setMetaData($name, $value)
+    public function set_metadata($name, $value)
     {
-        $md = $this->getMetaDataObject($name);
+        $md = $this->get_metadata_object($name);
         $md->value = $value;
         return true;
     }
 
-    public function clearMetaData()
+    public function clear_metadata()
     {
-        return delete_data("DELETE from metadata where entity_guid=?", array($this->getGUID()));
+        return delete_data("DELETE from metadata where entity_guid=?", array($this->guid));
     }
     
-    public function getSubEntities()
+    public function get_sub_entities()
     {
         $guid = $this->guid;
         return array_map('entity_row_to_entity',
@@ -308,87 +308,52 @@ abstract class Entity implements Loggable, Serializable
      * @param int $user The user, optionally (defaults to the currently logged in user)
      * @return true|false
      */
-    function canEdit($user = null)
+    function can_edit($user = null)
     {
         if (!$user)
             $user = Session::get_loggedin_user();
 
         if (!is_null($user))
         {
-            if (($this->getOwner() == $user->getGUID())
-                || ($this->container_guid == $user->getGUID())
-                || ($this->type == "user" && $this->getGUID() == $user->getGUID())
-                || $user->admin)
+            if (($this->owner_guid == $user->guid)
+             || ($this->container_guid == $user->guid)
+             || ($this->type == "user" && $this->guid == $user->guid)
+             || $user->admin)
             {
                 return true;
             }
 
             $container_entity = get_entity($this->container_guid);
 
-            if ($container_entity && $container_entity->canEdit())
+            if ($container_entity && $container_entity->can_edit())
                 return true;
         }
         return false;
-    }
-
-    /**
-     * Obtain this entity's GUID
-     *
-     * @return int GUID
-     */
-    public function getGUID() { return $this->get('guid'); }
-
-    /**
-     * Get the owner of this entity
-     *
-     * @return int The owner GUID
-     */
-    public function getOwner() { return $this->get('owner_guid'); }
+    }   
 
     /**
      * Returns the actual entity of the user who owns this entity, if any
      *
      * @return Entity The owning user
      */
-    public function getOwnerEntity() { return get_entity($this->get('owner_guid')); }
-
-    /**
-     * Gets the type of entity this is
-     *
-     * @return string Entity type
-     */
-    public function getType() { return $this->get('type'); }
-
-    /**
-     * Returns the subtype of this entity
-     *
-     * @return string The entity subtype
-     */
-    public function getSubtype() {
-        return $this->get('subtype');
-    }
-
-    public function getSubtypeName()
+    public function get_owner_entity() { return get_entity($this->get('owner_guid')); }
+    
+    public function get_title()
     {
-        return get_subtype_from_id($this->get('subtype'));
+        return __("item:".strtolower(get_class($this)));
     }
 
-    public function getTitle()
-    {
-        return __("item:{$this->type}:{$this->getSubtypeName()}");
-    }
-
-    public function getLanguage()
+    public function get_language()
     {
         $language = @$this->attributes['language'];
         if ($language)
         {
             return $language;
         }
-        $container = $this->getContainerEntity();
+        $container = $this->get_container_entity();
         if ($container)
         {
-            return $container->getLanguage();
+            return $container->get_language();
         }
         else
         {
@@ -401,7 +366,7 @@ abstract class Entity implements Loggable, Serializable
      *
      * @return string The URL
      */
-    public function getURL() {
+    public function get_url() {
         return null;
     }
 
@@ -411,7 +376,7 @@ abstract class Entity implements Loggable, Serializable
      * @param string $size Either 'large','medium','small' or 'tiny'
      * @return string The url or false if no url could be worked out.
      */
-    public function getIcon($size = 'medium')
+    public function get_icon($size = 'medium')
     {
         global $CONFIG;
         return "{$CONFIG->url}_graphics/default{$size}.gif";
@@ -463,12 +428,12 @@ abstract class Entity implements Loggable, Serializable
             $res = true;
         }
 
-        $this->saveMetaData();        
+        $this->save_metadata();        
 
         return $res && $this->save_table_attributes();
     }
 
-    function saveMetaData()
+    function save_metadata()
     {
         foreach($this->metadata_cache as $name => $md)
         {
@@ -526,7 +491,7 @@ abstract class Entity implements Loggable, Serializable
      *
      * @return boolean
      */
-    public function isEnabled()
+    public function is_enabled()
     {
         return ($this->enabled == 'yes');
     }
@@ -538,14 +503,14 @@ abstract class Entity implements Loggable, Serializable
     {
         if (trigger_event('delete',$this->type,$this))
         {
-            $sub_entities = $this->getSubEntities();
+            $sub_entities = $this->get_sub_entities();
             if ($sub_entities)
             {
                 foreach ($sub_entities as $e)
                     $e->delete();
             }
 
-            $this->clearMetaData();
+            $this->clear_metadata();
 
             $res = delete_data("DELETE from entities where guid=?", array($this->guid));
 
@@ -556,23 +521,23 @@ abstract class Entity implements Loggable, Serializable
         return false;
     }
 
-    function getContainerEntity()
+    function get_container_entity()
     {
         return get_entity($this->container_guid);
     }
 
-    function getRootContainerEntity()
+    function get_root_container_entity()
     {
         if ($this->container_guid)
         {
-            $containerEntity = $this->getContainerEntity();
+            $containerEntity = $this->get_container_entity();
             if ($containerEntity == null || $containerEntity->guid == $this->guid)
             {
                 return $this;
             }
             else
             {
-                return $containerEntity->getRootContainerEntity();
+                return $containerEntity->get_root_container_entity();
             }
         }
         else
@@ -580,7 +545,20 @@ abstract class Entity implements Loggable, Serializable
             return $this;
         }
     }
-    
+
+    function get_default_view_name()
+    {
+        $view_name = "object/".strtolower(get_class($this));
+        if (view_exists($view_name)) 
+        {
+            return $view_name;
+        }
+        else
+        {
+            return 'object/default';
+        }
+    }
+        
     public function translate_field($field, $isHTML = false, $viewLang = null)
     {
         $text = trim($this->$field);
@@ -589,7 +567,7 @@ abstract class Entity implements Loggable, Serializable
             return '';
         }
 
-        $origLang = $this->getLanguage();
+        $origLang = $this->get_language();
         if ($viewLang == null)
         {
             $viewLang = get_language();
@@ -634,7 +612,7 @@ abstract class Entity implements Loggable, Serializable
             ->where('owner_guid = 0')
             ->get(); 
     
-        if ($autoTrans && !$autoTrans->isStale())
+        if ($autoTrans && !$autoTrans->is_stale())
         {        
             return $autoTrans;
         }
@@ -673,7 +651,7 @@ abstract class Entity implements Loggable, Serializable
 
         $doAutoTranslate = ($translateMode == TranslateMode::All);
 
-        if ($doAutoTranslate && (!$humanTrans || $humanTrans->isStale()))
+        if ($doAutoTranslate && (!$humanTrans || $humanTrans->is_stale()))
         {
             return $this->lookup_auto_translation($prop, $origLang, $viewLang, $isHTML);
         }
@@ -695,30 +673,7 @@ abstract class Entity implements Loggable, Serializable
         }
     }    
 
-    public function setImages($imageFiles)
-    {
-        if (!$imageFiles)
-        {
-            $this->setDataType(DataType::Image, false);
-        }
-        else
-        {
-            foreach ($imageFiles as $size => $srcFile)
-            {
-                $srcFile = $imageFiles[$size]['file'];
-
-                $destFile = $this->getImageFile($size);
-
-                $srcFile->copyTo($destFile);
-                $srcFile->delete();
-            }
-
-            $this->setDataType(DataType::Image, true);
-        }
-        $this->save();
-    }
-    
-    public function setContent($content, $isHTML)
+    public function set_content($content, $isHTML)
     {
         if ($isHTML)
         {
@@ -730,7 +685,7 @@ abstract class Entity implements Loggable, Serializable
         }
 
         $this->content = $content;
-        $this->setDataType(DataType::HTML, true);
+        $this->set_data_type(DataType::HTML, true);
 
         if ($isHTML)
         {
@@ -738,7 +693,7 @@ abstract class Entity implements Loggable, Serializable
 
             if ($thumbnailUrl != null)
             {
-                $this->setDataType(DataType::Image, $thumbnailUrl != null);
+                $this->set_data_type(DataType::Image, $thumbnailUrl != null);
                 $this->thumbnail_url = $thumbnailUrl;
             }
         }
@@ -749,9 +704,9 @@ abstract class Entity implements Loggable, Serializable
         }
     }
 
-    public function renderContent()
+    public function render_content()
     {
-        $isHTML = $this->hasDataType(DataType::HTML);
+        $isHTML = $this->has_data_type(DataType::HTML);
 
         $content = $this->translate_field('content', $isHTML);
 
@@ -765,12 +720,12 @@ abstract class Entity implements Loggable, Serializable
         }
     }
 
-    public function hasDataType($dataType)
+    public function has_data_type($dataType)
     {
         return ($this->data_types & $dataType) != 0;
     }
 
-    public function setDataType($dataType, $val)
+    public function set_data_type($dataType, $val)
     {
         if ($val)
         {
@@ -790,7 +745,7 @@ abstract class Entity implements Loggable, Serializable
         return $query;
     }
 
-    static function queryByMetadata($meta_name, $meta_value = "")
+    static function query_by_metadata($meta_name, $meta_value = "")
     {
         $query = static::query();  
         $query->join('JOIN metadata m on e.guid = m.entity_guid');
@@ -808,7 +763,7 @@ abstract class Entity implements Loggable, Serializable
     }
     
     // Loggable interface
-    public function getSystemLogID() { return $this->getGUID(); }
-    public function getClassName() { return get_class($this); }
-    static function getObjectFromID($id) { return get_entity($id); }    
+    public function get_id() { return $this->guid; }
+    public function get_class_name() { return get_class($this); }
+    static function get_object_from_id($id) { return get_entity($id); }    
 }

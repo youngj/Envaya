@@ -11,15 +11,15 @@
         )
     );          
     
-    $files = $org->queryFiles()->where('size=?','small')->limit(19)->filter();
+    $files = $org->query_files()->where('size=?','small')->limit(19)->filter();
     if ($files)
     {    
         echo "<div style='clear:both;padding-top:5px'>";    
                 
-        $urls = array($org->getIcon('medium'));
+        $urls = array($org->get_icon('medium'));
         foreach ($files as $file)
         {
-            $urls[] = $file->getURL();
+            $urls[] = $file->get_url();
         }
         
         foreach ($urls as $url)
