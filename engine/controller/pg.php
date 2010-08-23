@@ -186,7 +186,7 @@ class Controller_Pg extends Controller {
         
         $user = get_user($user_guid);
 
-        if ($user && $user->passwd_conf_code == $conf_code)
+        if ($user && $user->passwd_conf_code && $user->passwd_conf_code == $conf_code)
         {                  
             $title = __("user:password:reset");
             $body = view_layout('one_column_padded', 
@@ -207,7 +207,7 @@ class Controller_Pg extends Controller {
         $conf_code = get_input('c');        
         $user = get_user($user_guid);
 
-        if ($user && $user->passwd_conf_code == $conf_code)
+        if ($user && $user->passwd_conf_code && $user->passwd_conf_code == $conf_code)
         {   
             $password = get_input('password');
             $password2 = get_input('password2');
