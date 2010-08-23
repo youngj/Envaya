@@ -58,7 +58,7 @@
         1 => array("object", "file", "UploadedFile"),
         3 => array("object", "widget", "Widget"),
         4 => array('user', 'organization', "Organization"),
-        5 => array('object', 'translation', 'Translation'),
+        //5 => array('object', 'translation', 'Translation'),
         6 => array('object', 'interface_translation', 'InterfaceTranslation'),
         7 => array('object', 'blog', 'NewsUpdate'),        
         10 => array('object', 'partnership', 'Partnership'),

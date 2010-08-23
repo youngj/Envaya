@@ -108,15 +108,18 @@ CREATE TABLE `files_entity` (
 
 
 CREATE TABLE `translations` (
-  `guid` bigint(20) unsigned  NOT NULL,
-  
+  `id` int auto_increment not null,
+  `guid` bigint(20) unsigned  NOT NULL default 0,
+  `owner_guid` bigint(20) unsigned NOT NULL,  
+  `container_guid` bigint(20) unsigned NOT NULL,
+  `time_updated` int(11) NOT NULL,
   `hash` varchar(64) NOT NULL,
   `property` varchar(32) NOT NULL,
   `lang` varchar(4) NOT NULL,
   `value` text NOT NULL,
   `html` tinyint not null default 0,
   
-  PRIMARY KEY  (`guid`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `interface_translations` (

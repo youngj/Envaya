@@ -602,7 +602,7 @@ abstract class Entity implements Loggable, Serializable
             
             trigger_event('translate',$this->type, $translation);
             
-            if ($translation->guid && $translation->owner_guid)
+            if ($translation->owner_guid)
             {
                 $viewTranslation = ($translateMode > TranslateMode::None);
             }
@@ -611,7 +611,7 @@ abstract class Entity implements Loggable, Serializable
                 $viewTranslation = ($translateMode == TranslateMode::All);
             }
 
-            if ($viewTranslation && $translation->guid)
+            if ($viewTranslation && $translation->id)
             {
                 return $translation->value;
             }
@@ -623,69 +623,76 @@ abstract class Entity implements Loggable, Serializable
 
         return $text;
     }
-
-    function lookup_translation($prop, $origLang, $viewLang, $translateMode = TranslateMode::ManualOnly, $isHTML = false)
+    
+    function lookup_auto_translation($prop, $origLang, $viewLang, $isHTML)
     {
-        $trans = Translation::query()->where('property=?', $prop)->where('lang=?',$viewLang)->
-                    where('container_guid=?',$this->guid)->where('html=?', $isHTML ? 1 : 0)->get();
-
-        $doAutoTranslate = ($translateMode == TranslateMode::All);
-
-        if ($trans)
-        {
-            if ($doAutoTranslate && $trans->isStale())
-            {
-                $text = GoogleTranslate::get_auto_translation($this->$prop, $origLang, $viewLang);
-                if ($text != null)
-                {
-                    if (!$trans->owner_guid) // previous version was from google
-                    {
-                        $trans->value = $text;
-                        $trans->save();
-                    }
-                    else // previous version was from human
-                    {
-                        // TODO : cache this
-                        $fakeTrans = new Translation();
-                        $fakeTrans->owner_guid = 0;
-                        $fakeTrans->container_guid = $this->guid;
-                        $fakeTrans->property = $prop;
-                        $fakeTrans->lang = $viewLang;
-                        $fakeTrans->value = $text;
-                        $fakeTrans->html = $isHTML;
-                        return $fakeTrans;
-                    }
-                }
-            }
-
-            return $trans;
+        $autoTrans = Translation::query()
+            ->where('property=?', $prop)
+            ->where('lang=?',$viewLang)
+            ->where('container_guid=?',$this->guid)
+            ->where('html=?', $isHTML ? 1 : 0)
+            ->where('owner_guid = 0')
+            ->get(); 
+    
+        if ($autoTrans && !$autoTrans->isStale())
+        {        
+            return $autoTrans;
         }
-        else if ($doAutoTranslate)
+        else
         {
             $text = GoogleTranslate::get_auto_translation($this->$prop, $origLang, $viewLang);
 
             if ($text != null)
             {
-                $trans = new Translation();
-                $trans->owner_guid = 0;
-                $trans->container_guid = $this->guid;
-                $trans->property = $prop;
-                $trans->lang = $viewLang;
-                $trans->value = $text;
-                $trans->html = $isHTML;
-                $trans->save();
-                return $trans;
+                if (!$autoTrans)
+                {
+                    $autoTrans = new Translation();                    
+                    $autoTrans->owner_guid = 0;
+                    $autoTrans->container_guid = $this->guid;
+                    $autoTrans->property = $prop;
+                    $autoTrans->html = $isHTML;
+                    $autoTrans->lang = $viewLang;
+                }
+                $autoTrans->value = $text;                
+                $autoTrans->save();
+                return $autoTrans;
             }
         }
-        
-        /* not saved */
-        $tempTrans = new Translation();
-        $tempTrans->owner_guid = 0;
-        $tempTrans->container_guid = $this->guid;
-        $tempTrans->property = $prop;
-        $tempTrans->lang = $viewLang;
-        $tempTrans->html = $isHTML;        
-        return $tempTrans;
+    }
+
+    function lookup_translation($prop, $origLang, $viewLang, $translateMode = TranslateMode::ManualOnly, $isHTML = false)
+    {
+        $humanTrans = Translation::query()
+            ->where('property=?', $prop)
+            ->where('lang=?',$viewLang)
+            ->where('container_guid=?',$this->guid)
+            ->where('html=?', $isHTML ? 1 : 0)
+            ->where('owner_guid > 0')
+            ->order_by('time_updated desc')
+            ->get(); 
+
+        $doAutoTranslate = ($translateMode == TranslateMode::All);
+
+        if ($doAutoTranslate && (!$humanTrans || $humanTrans->isStale()))
+        {
+            return $this->lookup_auto_translation($prop, $origLang, $viewLang, $isHTML);
+        }
+        else if ($humanTrans)
+        {
+            return $humanTrans;            
+        }
+
+        else
+        {        
+            // return translation with empty value
+            $tempTrans = new Translation();
+            $tempTrans->owner_guid = 0;
+            $tempTrans->container_guid = $this->guid;
+            $tempTrans->property = $prop;
+            $tempTrans->lang = $viewLang;
+            $tempTrans->html = $isHTML;        
+            return $tempTrans;
+        }
     }    
 
     public function setImages($imageFiles)
