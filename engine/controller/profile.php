@@ -303,6 +303,7 @@ class Controller_Profile extends Controller
         if ($org->can_edit())
         {
             add_submenu_item(__("widget:edit"), $widget->get_edit_url(), 'edit');
+            add_submenu_item(__('widget:options'), "{$widget->get_base_url()}/options", 'org_actions');
         }
 
         if ($viewOrg)
@@ -329,7 +330,7 @@ class Controller_Profile extends Controller
         
             if (Session::isadminloggedin())
             {
-                $preBody .= view("admin/org_actions", array('entity' => $org, 'widget' => $widget));
+                $preBody .= view("admin/org_actions", array('entity' => $org));
             }
 
             if ($org->can_view() && Session::isloggedin() && Session::get_loggedin_userid() != $org->guid)

@@ -61,7 +61,7 @@ return array(
     'admin:user:removeadmin:yes' => "User is no longer an admin.",
     'admin:user:removeadmin:no' => "We could not remove administrator privileges from this user.",
     
-    'error:NoConnect' => "Couldn't select the database '%s', please check that the database is created and you have access to it.",        
+    'error:NoConnect' => "Couldn't connect to the database.",        
     'error:FailedToLoadGUID' => "Failed to load new %s from GUID:%d",
     'error:UnrecognisedValue' => "Unrecognised value passed to constuctor.",
     'error:NotValidEntity' => "GUID:%d is not a valid %s",

@@ -19,6 +19,11 @@ class Report extends Entity
     {
         return $this->get_container_entity()->get_url()."/report/".$this->guid;
     }
+
+    function get_edit_url()
+    {
+        return $this->get_url()."/edit";
+    }
     
     function get_report_definition()
     {

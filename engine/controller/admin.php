@@ -381,10 +381,8 @@ class Controller_Admin extends Controller
 
         if ($entity)
         {
-            if ($entity->delete())
-                system_message(sprintf(__('entity:delete:success'), $guid));
-            else
-                register_error(sprintf(__('entity:delete:fail'), $guid));
+            $entity->delete();
+            system_message(sprintf(__('entity:delete:success'), $guid));
         }
         else
             register_error(sprintf(__('entity:delete:fail'), $guid));

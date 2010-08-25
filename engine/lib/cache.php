@@ -4,7 +4,7 @@ abstract class Cache
 {
     abstract public function get($key);
     abstract public function set($key, $value, $timeout = 0);
-    abstract public function delete($key);
+    abstract public function delete($key);    
 }
 
 class NullCache extends Cache
@@ -99,4 +99,16 @@ function get_cache()
         $cache = new $cls();
     }
     return $cache;
+}
+
+function cache_result($fn, $cache_key)
+{
+    $cache = get_cache();
+    $res = $cache->get($cache_key);
+    if ($res === null)
+    {
+        $res = array($fn());
+        $cache->set($cache_key, $res);
+    }
+    return $res[0];
 }

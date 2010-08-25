@@ -54,7 +54,7 @@
 <div class='home_featured_heading'><?php echo __('featured:home_heading') ?></div>
 <div class='home_featured_content'>
 <?php
-$activeSite = FeaturedSite::query()->where('active=1')->get();
+$activeSite = FeaturedSite::get_active();
 if ($activeSite)
 {
     echo view_entity($activeSite);

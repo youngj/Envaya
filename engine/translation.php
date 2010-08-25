@@ -13,12 +13,24 @@ class Translation extends Model
         'value' => '',
         'html' => 0
     );
-
+    
+    function clear_from_cache()
+    {        
+        $container = $this->get_container_entity();
+    }    
+    
     public function save()
     {
         $this->hash = $this->calculate_hash();
-        $this->time_updated = time();
-        return parent::save();
+        $this->time_updated = time();        
+        parent::save();
+        $this->clear_from_cache();
+    }
+    
+    public function delete()
+    {
+        parent::delete();
+        $this->clear_from_cache();
     }
     
     public function get_container_entity()

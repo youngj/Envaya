@@ -28,13 +28,18 @@ class ReportField extends Model
             $value = VariantType::encode_value($value, $this->attributes['value_type']);            
         }
         parent::set($name, $value);
-        echo "$name = $value";
-        var_dump($this);
     }         
     
     function view($args)
-    {
-        return escape($this->value);
+    {        
+        if ($this->value !== '')
+        {    
+            return escape($this->value);
+        }
+        else
+        {
+            return "<em>".__('report:blank')."</em>";
+        }
     }
     
     function edit($args)

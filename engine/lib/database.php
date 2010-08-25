@@ -2,16 +2,23 @@
 
 $DB_PROFILE = array();
 $DB_DELAYED_QUERIES = array();
+$DB_CONNECT_TRIED = false;
 
 function get_db_link($dblinktype)
 {
     global $DB_LINK, $CONFIG;
-    if (!isset($DB_LINK))
-    {
+    global $DB_CONNECT_TRIED;
+    if (!isset($DB_LINK) && !$DB_CONNECT_TRIED)
+    {              
+        $DB_CONNECT_TRIED = true;
+        
         try
         {
-            $DB_LINK = new PDO("mysql:host={$CONFIG->dbhost};dbname={$CONFIG->dbname}", $CONFIG->dbuser, $CONFIG->dbpass);
+            $DB_LINK = new PDO("mysql:host={$CONFIG->dbhost};dbname={$CONFIG->dbname}", $CONFIG->dbuser, $CONFIG->dbpass, array(
+                PDO::ATTR_TIMEOUT => 2
+            ));
             $DB_LINK->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
+            $DB_LINK->setAttribute(PDO::ATTR_TIMEOUT, 8);
         }
         catch (PDOException $ex)
         {
@@ -52,10 +59,10 @@ function db_delayedexecution_shutdown_hook()
     {
         foreach ($DB_DELAYED_QUERIES as $query_details)
         {
-            $stmt = stmt_execute($query_details['l'], $query_details['q'], $query_details['a']);
-
             try
             {
+                $stmt = stmt_execute($query_details['l'], $query_details['q'], $query_details['a']);
+            
                 if ( (isset($query_details['h'])) && (is_callable($query_details['h'])))
                     $query_details['h']($stmt);
             }
@@ -226,7 +233,7 @@ function delete_data($query, $args = array())
 function stmt_execute($db, $query, $args)
 {
     global $DB_PROFILE;
-    $DB_PROFILE[] = $query;
+    $DB_PROFILE[] = $query;   
 
     $stmt = $db->prepare($query);
 

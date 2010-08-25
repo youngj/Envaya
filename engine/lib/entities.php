@@ -1,60 +1,4 @@
 <?php
-    /// Cache objects in order to minimise database access.
-    $ENTITY_CACHE = array();
-
-    /**
-     * Invalidate this class' entry in the cache.
-     *
-     * @param int $guid The guid
-     */
-    function invalidate_cache_for_entity($guid)
-    {
-        global $ENTITY_CACHE;
-        $guid = (int)$guid;
-        unset($ENTITY_CACHE[$guid]);
-        get_cache()->delete(entity_cache_key($guid));
-    }
-
-    function cache_entity($entity)
-    {
-        global $ENTITY_CACHE;
-
-        $guid = $entity->guid;
-        $ENTITY_CACHE[$guid] = $entity;
-        get_cache()->set(entity_cache_key($guid), $entity);
-    }
-
-    function entity_cache_key($guid)
-    {
-        return make_cache_key("entity", $guid);
-    }
-
-    /**
-     * Retrieve a entity from the cache.
-     *
-     * @param int $guid The guid
-     */
-    function retrieve_cached_entity($guid)
-    {
-        global $ENTITY_CACHE;
-
-        $guid = (int)$guid;
-
-        if (isset($ENTITY_CACHE[$guid]))
-        {
-            return $ENTITY_CACHE[$guid];
-        }
-        else
-        {
-            $entity = get_cache()->get(entity_cache_key($guid));
-            if ($entity)
-            {
-                $ENTITY_CACHE[$guid] = $entity;
-                return $entity;
-            }
-        }
-        return null;
-    }
 
     /**
      * For a given subtype ID, return its identifier text.
@@ -132,19 +76,21 @@
      */
     function get_entity($guid, $show_disabled = false)
     {
+        $guid = (int)$guid;
+    
         if (!$guid)
         {
             return null;
         }
     
-        $entity = retrieve_cached_entity($guid);
+        $entity = Entity::get_from_cache($guid);
         if (!$entity)
         {
             $entity = entity_row_to_entity(get_entity_as_row($guid));
 
             if ($entity)
             {
-                cache_entity($entity);
+                $entity->save_to_cache();
             }
         }
 

@@ -1,5 +1,4 @@
 <div class='section_content padded'>
-
 <?php
 $report = $vars['report'];
 ?>
@@ -8,7 +7,5 @@ $report = $vars['report'];
 echo view('input/securitytoken'); 
 echo $report->render_edit();
 ?>
-
-<?php echo view('input/submit', array('value' => __('save'), 'trackDirty' => true)); ?>
 </form>
 </div>

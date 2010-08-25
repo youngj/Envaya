@@ -14,7 +14,7 @@
 			$title = $vars['config']->sitename . ": " . $vars['title'];
 		}
 			
-		$url = Request::instance()->full_original_url();
+		$url = Request::full_original_url();
         $url = str_replace('?view=rss','',$url);
 		$url = str_replace('&view=rss','',$url);
 

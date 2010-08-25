@@ -16,6 +16,8 @@ abstract class Entity implements Loggable, Serializable
     
     static $subtype_id = 0;
 
+    static $current_request_entities = array();
+    
     function __construct($row = null)
     {
         $this->initialize_attributes();
@@ -26,9 +28,51 @@ abstract class Entity implements Loggable, Serializable
             {
                 throw new IOException(sprintf(__('error:FailedToLoadGUID'), get_class(), $row->guid));
             }
+            
+            $this->cache_for_current_request();
         }
     }
 
+    function cache_for_current_request()
+    {
+        static::$current_request_entities[$this->guid] = $this;
+    }
+    
+    function clear_from_cache()
+    {        
+        unset(static::$current_request_entities[$this->guid]);
+        get_cache()->delete(static::entity_cache_key($this->guid));
+    }        
+    
+    function save_to_cache()
+    {        
+        $this->cache_for_current_request();
+        get_cache()->set(static::entity_cache_key($this->guid), $this);
+    }
+    
+    static function get_from_cache($guid)
+    {
+        if (isset(static::$current_request_entities[$guid]))
+        {
+            return static::$current_request_entities[$guid];
+        }
+        else
+        {
+            $entity = get_cache()->get(static::entity_cache_key($guid));
+            if ($entity)
+            {
+                static::$current_request_entities[$guid] = $entity;
+                return $entity;
+            }
+        }
+        return null;
+    }    
+    
+    static function entity_cache_key($guid)
+    {
+        return make_cache_key("entity", $guid);
+    }  
+    
     public function serialize()
     {
         return serialize($this->attributes);
@@ -109,7 +153,7 @@ abstract class Entity implements Loggable, Serializable
 
             $args[] = $guid;
 
-            return update_data("UPDATE $tableName set ".implode(',', $set)." where guid = ?", $args);
+            update_data("UPDATE $tableName set ".implode(',', $set)." where guid = ?", $args);
         }
         else
         {
@@ -124,7 +168,7 @@ abstract class Entity implements Loggable, Serializable
                 $args[] = $value;
             }
 
-            return update_data("INSERT into $tableName (".implode(',', $columns).") values (".implode(',', $questions).")", $args);
+            update_data("INSERT into $tableName (".implode(',', $columns).") values (".implode(',', $questions).")", $args);
         }
     }
 
@@ -132,7 +176,6 @@ abstract class Entity implements Loggable, Serializable
     {
         $tableName = static::$table_name;
         delete_data("DELETE from $tableName where guid=?", array($this->guid));
-        return true;
     }
 
     public function select_table_attributes($guid)
@@ -390,16 +433,12 @@ abstract class Entity implements Loggable, Serializable
         $guid = (int) $this->guid;
         if ($guid > 0)
         {
-            if (trigger_event('update',$this->type,$this))
-            {
-                $time = time();
-                $this->time_updated = $time;
+            $time = time();
+            $this->time_updated = $time;
 
-                $res = update_data("UPDATE entities set owner_guid=?, container_guid=?, enabled=?, time_updated=? WHERE guid=?",
-                    array($this->owner_guid,$this->container_guid,$this->enabled,$this->time_updated,$guid)
-                );
-                cache_entity($this);
-            }
+            update_data("UPDATE entities set owner_guid=?, container_guid=?, enabled=?, time_updated=? WHERE guid=?",
+                array($this->owner_guid,$this->container_guid,$this->enabled,$this->time_updated,$guid)
+            );            
         }
         else
         {
@@ -422,15 +461,14 @@ abstract class Entity implements Loggable, Serializable
             if (!$this->guid)
                 throw new IOException(__('error:BaseEntitySaveFailed'));
 
-            if ($this->guid)
-                cache_entity($this);
-
-            $res = true;
-        }
-
+        }        
         $this->save_metadata();        
-
-        return $res && $this->save_table_attributes();
+        $this->save_table_attributes();
+        
+        $this->clear_from_cache();
+        $this->cache_for_current_request();
+        
+        trigger_event('update',$this->type,$this);
     }
 
     function save_metadata()
@@ -463,9 +501,6 @@ abstract class Entity implements Loggable, Serializable
 
         if ($this->attributes['type'] != $typeBefore)
             throw new InvalidClassException(sprintf(__('error:NotValidEntity'), $guid, get_class()));
-
-        global $ENTITY_CACHE;
-        $ENTITY_CACHE[$this->guid] = $this;
 
         return true;
     }
@@ -501,24 +536,21 @@ abstract class Entity implements Loggable, Serializable
      */
     public function delete()
     {
-        if (trigger_event('delete',$this->type,$this))
+        $sub_entities = $this->get_sub_entities();
+        if ($sub_entities)
         {
-            $sub_entities = $this->get_sub_entities();
-            if ($sub_entities)
-            {
-                foreach ($sub_entities as $e)
-                    $e->delete();
-            }
-
-            $this->clear_metadata();
-
-            $res = delete_data("DELETE from entities where guid=?", array($this->guid));
-
-            invalidate_cache_for_entity($this->guid);
-
-            return $res && $this->delete_table_attributes();
+            foreach ($sub_entities as $e)
+                $e->delete();
         }
-        return false;
+
+        $this->clear_metadata();
+
+        $res = delete_data("DELETE from entities where guid=?", array($this->guid));
+                
+        $this->delete_table_attributes();
+        $this->clear_from_cache();
+        
+        trigger_event('delete',$this->type,$this);
     }
 
     function get_container_entity()
@@ -600,17 +632,19 @@ abstract class Entity implements Loggable, Serializable
         }
 
         return $text;
-    }
-    
+    }        
+        
     function lookup_auto_translation($prop, $origLang, $viewLang, $isHTML)
-    {
-        $autoTrans = Translation::query()
+    {        
+        $guid = $this->guid;
+    
+        $autoTrans =  Translation::query()
             ->where('property=?', $prop)
             ->where('lang=?',$viewLang)
-            ->where('container_guid=?',$this->guid)
+            ->where('container_guid=?',$guid)
             ->where('html=?', $isHTML ? 1 : 0)
             ->where('owner_guid = 0')
-            ->get(); 
+            ->get();             
     
         if ($autoTrans && !$autoTrans->is_stale())
         {        
@@ -633,6 +667,7 @@ abstract class Entity implements Loggable, Serializable
                 }
                 $autoTrans->value = $text;                
                 $autoTrans->save();
+                
                 return $autoTrans;
             }
         }
@@ -640,14 +675,16 @@ abstract class Entity implements Loggable, Serializable
 
     function lookup_translation($prop, $origLang, $viewLang, $translateMode = TranslateMode::ManualOnly, $isHTML = false)
     {
+        $guid = $this->guid;
+        
         $humanTrans = Translation::query()
             ->where('property=?', $prop)
             ->where('lang=?',$viewLang)
-            ->where('container_guid=?',$this->guid)
+            ->where('container_guid=?',$guid)
             ->where('html=?', $isHTML ? 1 : 0)
             ->where('owner_guid > 0')
             ->order_by('time_updated desc')
-            ->get(); 
+            ->get();                
 
         $doAutoTranslate = ($translateMode == TranslateMode::All);
 

@@ -625,7 +625,7 @@ class Request {
         return $url;
     }
 
-    public function full_original_url()
+    public static function full_original_url()
     {
         $protocol = @$_SERVER['HTTPS'] ? "https://" : "http://";
         return "$protocol{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";

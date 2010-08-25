@@ -34,7 +34,7 @@ function languageChanged()
         $curLang = get_language();
         foreach (Language::get_options() as $lang => $text)
         {
-            $url = url_with_param(Request::instance()->full_original_url(), 'lang', $lang);
+            $url = url_with_param(Request::full_original_url(), 'lang', $lang);
             $translationUrls[$url] = $text;
             
             if ($curLang == $lang)
