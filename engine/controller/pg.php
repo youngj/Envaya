@@ -121,17 +121,12 @@ class Controller_Pg extends Controller {
 
     function action_forgot_password()
     {
-        if (!Session::isloggedin())
-        {
-            $body = view("account/forms/forgotten_password");
+        $body = view("account/forms/forgotten_password",
+            array('username' => get_input('username'))
+        );
 
-            $this->page_draw(__('user:password:lost'), view_layout("one_column_padded",
-                view_title(__('user:password:lost'), array('org_only' => true)), $body));
-        }
-        else
-        {
-            forward();
-        }
+        $this->page_draw(__('user:password:lost'), view_layout("one_column_padded",
+            view_title(__('user:password:lost'), array('org_only' => true)), $body));
     }
 
     function action_request_new_password()

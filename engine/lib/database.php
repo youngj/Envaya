@@ -167,33 +167,47 @@ function get_data($query, $args = array())
     return false;
 }
 
-function save_db_row($tableName, $pkColumn, &$pkValue, $values)
+function insert_db_row($tableName, $values)
 {
     $columns = array();
     $args = array();
 
+    foreach ($values as $column => $value)
+    {
+        $columns[] = "`$column`";
+        $args[] = $value;
+    }
+
+    return insert_data("INSERT into $tableName (".implode(',', $columns).") VALUES (".implode(',',array_fill(0, sizeof($columns), '?')).")",
+        $args
+    );
+}
+
+function update_db_row($tableName, $pkColumn, $pkValue, $values)
+{
+    $columns = array();
+    $args = array();
+
+    foreach ($values as $column => $value)
+    {
+        $columns[] = "`$column` = ?";
+        $args[] = $value;
+    }
+    $args[] = $pkValue;
+
+    insert_data("UPDATE $tableName SET ".implode(',', $columns)." WHERE $pkColumn = ?", $args);
+}
+
+
+function save_db_row($tableName, $pkColumn, &$pkValue, $values)
+{
     if ($pkValue)
     {
-        foreach ($values as $column => $value)
-        {
-            $columns[] = "`$column` = ?";
-            $args[] = $value;
-        }
-        $args[] = $pkValue;
-
-        insert_data("UPDATE $tableName SET ".implode(',', $columns)." WHERE $pkColumn = ?", $args);
+        update_db_row($tableName, $pkColumn, $pkValue, $values);
     }
     else
     {
-        foreach ($values as $column => $value)
-        {
-            $columns[] = "`$column`";
-            $args[] = $value;
-        }
-
-        $pkValue = insert_data("INSERT into $tableName (".implode(',', $columns).") VALUES (".implode(',',array_fill(0, sizeof($columns), '?')).")",
-            $args
-        );
+        $pkValue = insert_db_row($tableName, $values);
     }
 }
 

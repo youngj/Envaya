@@ -95,12 +95,13 @@
             });
 
         },
-        content_css: "/_css/tinymce.css?v<?php echo $CONFIG->cache_version ?>",
-        editor_css: '/_css/tinymce_ui.css?v<?php echo $CONFIG->cache_version ?>',
+        content_css: "<?php echo $CONFIG->url ?>_css/tinymce.css?v<?php echo $CONFIG->cache_version ?>",
+        editor_css: '<?php echo $CONFIG->url ?>_css/tinymce_ui.css?v<?php echo $CONFIG->cache_version ?>',
         mode : "exact",
         theme_advanced_buttons1 : "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link,image,|,formatselect<?php echo (Session::isadminloggedin()) ? ",|,code" : '' ?>",
         language: '',
         relative_urls : false,
+        remove_script_host: false,
         elements: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
         <?php if ($TINYMCE_INCLUDE_COUNT == 0) { ?>
         auto_focus: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",

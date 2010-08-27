@@ -17,6 +17,9 @@
 
     function get_user_by_username($username)
     {
+        if (!$username)
+            return null;
+    
         $cache = get_cache();
         $cacheKey = get_cache_key_for_username($username);
 

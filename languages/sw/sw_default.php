@@ -4,6 +4,7 @@ return array(
     'donate_now' => 'Toa msaada sasa!',
     
     'capslock_warning' => "Angalia: Unatumia CAPS LOCK sasa",
+    'submit_request' => "Peleka ombi",
     
     'addphotos:title' => 'Ongeza picha',
     'addphotos:label' => 'Chagua picha ambazo unataka kuziongeza:',

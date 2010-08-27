@@ -1,34 +1,21 @@
 <?php
 
-abstract class Entity implements Loggable, Serializable
+abstract class Entity extends Model
+    implements Loggable, Serializable
 {
-    /**
-     * The main attributes of an entity.
-     * Blank entries for all database fields should be created by the constructor.
-     * Subclasses should add to this in their constructors.
-     * Any field not appearing in this will be viewed as metadata
-     */
-    protected $attributes = array();    
     protected $metadata_cache = array();        
 
-    static $table_name;
-    static $table_attributes;
-    
+    static $primary_key = 'guid';    
     static $subtype_id = 0;
 
     static $current_request_entities = array();
     
     function __construct($row = null)
     {
-        $this->initialize_attributes();
+        parent::__construct($row);
 
         if ($row)
         {
-            if (!$this->load_from_partial_table_row($row))
-            {
-                throw new IOException(sprintf(__('error:FailedToLoadGUID'), get_class(), $row->guid));
-            }
-            
             $this->cache_for_current_request();
         }
     }
@@ -73,67 +60,30 @@ abstract class Entity implements Loggable, Serializable
         return make_cache_key("entity", $guid);
     }  
     
-    public function serialize()
-    {
-        return serialize($this->attributes);
-    }
-
-    public function unserialize($data)
-    {
-        $this->initialize_attributes();
-        $this->attributes = unserialize($data);
-    }
-
-    protected function load_from_partial_table_row($row)
+    protected function init_from_row($row)
     {
         $entityRow = (property_exists($row, 'type')) ? $row : get_entity_as_row($row->guid);
-        if (!$this->load_from_table_row($entityRow))
-        {
-            return false;
-        }
+        parent::init_from_row($entityRow);
             
         if (!property_exists($row, get_first_key(static::$table_attributes)))
         {
             $objectEntityRow = $this->select_table_attributes($row->guid);
-            return $this->load_from_table_row($objectEntityRow);             
+            parent::init_from_row($objectEntityRow);
         }
-        return true;
     }
 
-    /**
-     * Initialise the attributes array.
-     * This is vital to distinguish between metadata and base parameters.
-     *
-     * Place your base parameters here.
-     *
-     * @return void
-     */
     protected function initialize_attributes()
-    {
-        $this->attributes['guid'] = "";        
+    {        
         $this->attributes['type'] = "object";
         $this->attributes['subtype'] = static::$subtype_id;
         $this->attributes['owner_guid'] = 0;
         $this->attributes['container_guid'] = 0;
         $this->attributes['site_guid'] = 0;
-        $this->attributes['time_created'] = "";
-        $this->attributes['time_updated'] = "";
+        $this->attributes['time_created'] = 0;
+        $this->attributes['time_updated'] = 0;
         $this->attributes['enabled'] = "yes";
         
-        foreach (static::$table_attributes as $name => $default)
-        {
-            $this->attributes[$name] = $default;
-        }
-    }
-
-    protected function get_table_attributes()
-    {
-        $tableAttributes = array();
-        foreach (static::$table_attributes as $name => $default)
-        {
-            $tableAttributes[$name] = $this->attributes[$name];
-        }
-        return $tableAttributes;
+        parent::initialize_attributes();
     }
 
     public function save_table_attributes()
@@ -143,39 +93,15 @@ abstract class Entity implements Loggable, Serializable
         $guid = $this->guid;
         if (get_data_row("SELECT guid from $tableName where guid = ?", array($guid)))
         {
-            $args = array();
-            $set = array();
-            foreach ($this->get_table_attributes() as $name => $value)
-            {
-                $set[] = "`$name` = ?";
-                $args[] = $value;
-            }
-
-            $args[] = $guid;
-
-            update_data("UPDATE $tableName set ".implode(',', $set)." where guid = ?", $args);
+            update_db_row($tableName, 'guid', $guid, $this->get_table_attributes());
         }
         else
         {
-            $columns = array('guid');
-            $questions = array('?');
-            $args = array($guid);
-
-            foreach ($this->get_table_attributes() as $name => $value)
-            {
-                $columns[] = "`$name`";
-                $questions[] = '?';
-                $args[] = $value;
-            }
-
-            update_data("INSERT into $tableName (".implode(',', $columns).") values (".implode(',', $questions).")", $args);
+            $values = $this->get_table_attributes();
+            $values['guid'] = $guid;
+                        
+            insert_db_row($tableName, $values);        
         }
-    }
-
-    public function delete_table_attributes()
-    {
-        $tableName = static::$table_name;
-        delete_data("DELETE from $tableName where guid=?", array($this->guid));
     }
 
     public function select_table_attributes($guid)
@@ -202,14 +128,8 @@ abstract class Entity implements Loggable, Serializable
         {
             return $this->attributes[$name];
         }
-
-        // No, so see if its in the meta data for this entity
-        $meta = $this->get_metadata($name);
-        if ($meta)
-            return $meta;
-
-        // Can't find it, so return null
-        return null;
+        
+        return $this->get_metadata($name);
     }
 
     /**
@@ -231,18 +151,13 @@ abstract class Entity implements Loggable, Serializable
     {
         if (array_key_exists($name, $this->attributes))
         {
-            // Check that we're not trying to change the guid!
-            if ((array_key_exists('guid', $this->attributes)) && ($name=='guid'))
-                return false;
-
             $this->attributes[$name] = $value;
         }
         else
         {
-            return $this->set_metadata($name, $value);
+            $this->set_metadata($name, $value);
         }
-
-        return true;
+        $this->dirty = true;
     }
 
     public function get_metadata($name)
@@ -283,48 +198,6 @@ abstract class Entity implements Loggable, Serializable
         return $md;
     }
 
-    /**
-     * Class member get overloading
-     *
-     * @param string $name
-     * @return mixed
-     */
-    function __get($name) { return $this->get($name); }
-
-    /**
-     * Class member set overloading
-     *
-     * @param string $name
-     * @param mixed $value
-     * @return mixed
-     */
-    function __set($name, $value) { return $this->set($name, $value); }
-
-    /**
-     * Supporting isset.
-     *
-     * @param string $name The name of the attribute or metadata.
-     * @return bool
-     */
-    function __isset($name) { if ($this->$name!="") return true; else return false; }
-
-    /**
-     * Supporting unsetting of magic attributes.
-     *
-     * @param string $name The name of the attribute or metadata.
-     */
-    function __unset($name)
-    {
-        if (array_key_exists($name, $this->attributes))
-        {
-            $this->attributes[$name] = "";
-        }
-        else
-        {
-            $this->set_metadata($name, null);
-        }
-    }
-
     public function set_metadata($name, $value)
     {
         $md = $this->get_metadata_object($name);
@@ -341,7 +214,7 @@ abstract class Entity implements Loggable, Serializable
     {
         $guid = $this->guid;
         return array_map('entity_row_to_entity',
-            get_data("SELECT * from entities WHERE container_guid=? or owner_guid=? or site_guid=?", array($guid, $guid, $guid))
+            get_data("SELECT * from entities WHERE container_guid=? or owner_guid=?", array($guid, $guid))
         );
     }
 
@@ -430,37 +303,41 @@ abstract class Entity implements Loggable, Serializable
      */
     public function save()
     {
-        $guid = (int) $this->guid;
+        $time = time();
+        $this->time_updated = $time;
+
+        if (!$this->time_created)
+        {
+            $this->time_created = $time;
+        }        
+        
+        if ($this->container_guid == 0)
+        {
+            $this->container_guid = $this->owner_guid;
+        }
+        
+        $entity_values = array(
+            'owner_guid' => $this->owner_guid,
+            'container_guid' => $this->container_guid,
+            'enabled' => $this->enabled,
+            'site_guid' => 0,
+            'time_updated' => $this->time_updated,
+            'time_created' => $this->time_created,
+            'type' => $this->type,
+            'subtype' => $this->subtype,
+        );
+        
+        $guid = $this->guid;
+        
         if ($guid > 0)
         {
-            $time = time();
-            $this->time_updated = $time;
-
-            update_data("UPDATE entities set owner_guid=?, container_guid=?, enabled=?, time_updated=? WHERE guid=?",
-                array($this->owner_guid,$this->container_guid,$this->enabled,$this->time_updated,$guid)
-            );            
+            update_db_row('entities', 'guid', $guid, $entity_values);
         }
         else
-        {
-            $time = time();
-
-            if ($this->container_guid == 0)
-                $this->container_guid = $this->owner_guid;
-
-            if ($this->type == "")
-                throw new InvalidParameterException(__('error:EntityTypeNotSet'));
-
-            $this->time_created = $time;
-            $this->time_updated = $time;
-
-            $this->attributes['guid'] = insert_data("INSERT into entities (type, subtype, owner_guid, site_guid, container_guid, enabled,  time_created, time_updated) values (?,?,?,?,?,?,?,?)",
-                array($this->type, $this->subtype, $this->owner_guid, $this->site_guid,
-                    $this->container_guid, $this->enabled, $this->time_created, $this->time_updated)
-            );
-
+        {            
+            $this->guid = insert_db_row('entities', $entity_values);
             if (!$this->guid)
                 throw new IOException(__('error:BaseEntitySaveFailed'));
-
         }        
         $this->save_metadata();        
         $this->save_table_attributes();
@@ -488,21 +365,6 @@ abstract class Entity implements Loggable, Serializable
                 }                
             }
         }
-    }
-
-    protected function load_from_table_row($row)
-    {
-        $typeBefore = $this->attributes['type'];
-
-        $objarray = (array) $row;
-
-        foreach($objarray as $key => $value)
-            $this->attributes[$key] = $value;
-
-        if ($this->attributes['type'] != $typeBefore)
-            throw new InvalidClassException(sprintf(__('error:NotValidEntity'), $guid, get_class()));
-
-        return true;
     }
 
     /**
@@ -547,7 +409,7 @@ abstract class Entity implements Loggable, Serializable
 
         $res = delete_data("DELETE from entities where guid=?", array($this->guid));
                 
-        $this->delete_table_attributes();
+        parent::delete();
         $this->clear_from_cache();
         
         trigger_event('delete',$this->type,$this);
@@ -575,19 +437,6 @@ abstract class Entity implements Loggable, Serializable
         else
         {
             return $this;
-        }
-    }
-
-    function get_default_view_name()
-    {
-        $view_name = "object/".strtolower(get_class($this));
-        if (view_exists($view_name)) 
-        {
-            return $view_name;
-        }
-        else
-        {
-            return 'object/default';
         }
     }
         

@@ -5,6 +5,7 @@
         'donate_now' => "Donate now!",
 
         'capslock_warning' => "Warning: CAPS LOCK is on",
+        'submit_request' => "Submit request",
         
         'addphotos:title' => "Add photos",
         'addphotos:label' => "Choose the photos you want to add:",
