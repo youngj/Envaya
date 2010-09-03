@@ -1739,3 +1739,22 @@ a.feed_image_link:hover
 {
     font-weight:normal;
 }
+
+.report_view h3
+{
+    font-size:1.2em;
+    padding-top:15px;
+    padding-bottom:10px;
+    border-bottom: 1px dashed #b2b2b2;
+    margin-bottom:10px;
+}
+
+.report_view label
+{
+    font-size:12px;
+}
+
+.report_info th
+{
+    padding-right:10px;    
+}

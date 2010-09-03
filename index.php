@@ -19,16 +19,12 @@
             'action'     => 'index',
     ));
 
-    Route::set('post', '<username>/post/<id>(/<action>)')->defaults(array(
-        'controller' => 'post',
+    Route::set('sub_item', '<username>/<controller>/<id>(/<action>)',
+        array('controller' => '(post|report|reporting)')
+    )->defaults(array(
         'action'     => 'index',
     ));
 
-    Route::set('report', '<username>/report/<id>(/<action>)')->defaults(array(
-        'controller' => 'report',
-        'action'     => 'index',
-    ));   
-    
     Route::set('profile', '(<username>(/<widgetname>(/<action>)))')->defaults(array(
         'controller' => 'profile',
         'action'     => 'index',

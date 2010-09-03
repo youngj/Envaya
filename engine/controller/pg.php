@@ -5,11 +5,12 @@ class Controller_Pg extends Controller {
     function action_login()
     {
         $username = get_input('username');
+        $next = get_input('next');
 
         $title = __("login");
         $body = view_layout('one_column_padded',
             view_title($title, array('org_only' => true)),
-            view("account/forms/login", array('username' => $username)));
+            view("account/forms/login", array('username' => $username, 'next' => $next)));
 
         $this->page_draw($title, $body, array('hideLogin' => true));
     }
@@ -62,6 +63,7 @@ class Controller_Pg extends Controller {
     {
         $username = get_input('username');
         $password = get_input("password");
+        $next = get_input('next');
         $persistent = get_input("persistent", false);
 
         $result = false;
@@ -76,20 +78,14 @@ class Controller_Pg extends Controller {
         if ($result)
         {
             system_message(sprintf(__('loginok'), $user->name));
-
-            $forward_url = Session::get('last_forward_from');
-            if ($forward_url)
+            
+            if ($next)
             {
-                Session::set('last_forward_from', null);
-                forward($forward_url);
+                forward($next);
             }
             else
             {
-                if (get_input('returntoreferer'))
-                {
-                    forward($_SERVER['HTTP_REFERER']);
-                }
-                else if (!$user->is_setup_complete())
+                if (!$user->is_setup_complete())
                 {
                     forward("org/new?step={$user->setup_state}");
                 }
@@ -103,7 +99,7 @@ class Controller_Pg extends Controller {
         {
             Session::save_input();
             register_error(__('loginerror'));
-            forward("pg/login");
+            forward("pg/login?next=".urlencode($next));
         }
     }
 

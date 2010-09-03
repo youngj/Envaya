@@ -50,7 +50,7 @@ class Controller_Post extends Controller_Profile
             $body = '';
         }
         else
-        {
+        {                    
             $body = $this->org_view_body($title, view("org/blogPost", array('entity'=> $post)));
         }
 

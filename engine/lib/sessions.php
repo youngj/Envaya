@@ -86,11 +86,22 @@ function logout()
 
 function force_login()
 {
-    Session::set('last_forward_from', Request::instance()->full_rewritten_url());
+    $next = Request::instance()->full_rewritten_url();
     $username = get_input('username');
+    
+    $args = array();
     if ($username)
     {
-        forward("pg/login?username=".urlencode($username));
+        $args[] = "username=".urlencode($username);
+    }
+    if ($next)
+    {
+        $args[] = "next=".urlencode($next);
+    }
+    
+    if ($args)
+    {
+        forward("pg/login?".implode("&", $args));
     }
     else
     {

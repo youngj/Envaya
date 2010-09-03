@@ -23,13 +23,17 @@ class Organization extends User
     {
         return Report::query()->where('container_guid=?',$this->guid);
     }
+
+    public function query_report_definitions()
+    {
+        return ReportDefinition::query()->where('container_guid=?',$this->guid);
+    }
     
     function query_partnerships()
     {
         return Partnership::query()->where("container_guid = ? AND approval >= 3", $this->guid);
     }
-    
-    
+
     public function get_website_score()    
     {
         $score = 0;

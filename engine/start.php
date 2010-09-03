@@ -108,7 +108,7 @@ function bootstrap()
     set_error_handler('php_error_handler');
     set_exception_handler('php_exception_handler');
     register_shutdown_function('__shutdown_hook');
-
+    
     init_languages();
     
     if (@$_GET['lang'])
@@ -116,7 +116,7 @@ function bootstrap()
         change_viewer_language($_GET['lang']);
     }    
     
-    trigger_event('init', 'system');        
+    trigger_event('init', 'system');      
 }
 
 bootstrap();

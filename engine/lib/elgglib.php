@@ -173,22 +173,32 @@
                 return sprintf(__("friendlytime:days"),$diff);
             return sprintf(__("friendlytime:days:singular"),$diff);
         } else {
-            $date = getdate($time);
-            $now = getdate();
-
-            $month = __("date:month:{$date['mon']}");
-            $dateText = sprintf(__("date:withmonth"), $month, $date['mday']);
-
-            if ($now['year'] != $date['year'])
-            {
-                return sprintf(__("date:withyear"), $dateText, $date['year']);
-            }
-            else
-            {
-                return $dateText;
-            }
+            return get_date_text($time);
         }
     }
+    
+    function get_date_text($time, $always_show_year = false)
+    {
+        if (!$time)
+        {   
+            return '';
+        }
+        $date = getdate($time);
+        $now = getdate();
+
+        $month = __("date:month:{$date['mon']}");
+        $dateText = sprintf(__("date:withmonth"), $month, $date['mday']);
+
+        if ($always_show_year || $now['year'] != $date['year'])
+        {
+            return sprintf(__("date:withyear"), $dateText, $date['year']);
+        }
+        else
+        {
+            return $dateText;
+        }   
+    }
+    
     
     function trigger_event($event, $object_type, $object = null)
     {

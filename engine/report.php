@@ -9,10 +9,38 @@ class Report extends Entity
         'status' => 0,
     );      
     private $fields = null;
+    private $handler = null;
+    private $field_args = null;
    
     function get_date_text()
     {
         return friendly_time($this->time_created);
+    }
+    
+    function get_title()
+    {
+        return $this->get_report_definition()->name;
+    }
+    
+    function get_field_args()
+    {
+        if ($this->field_args == null)
+        {
+            $this->field_args = $this->get_handler()->get_field_args($this);
+        }
+        return $this->field_args;
+    }
+        
+    function get_status_text()
+    {
+        switch ($this->status)
+        {
+            case ReportStatus::Blank:   return __('report:status_blank');
+            case ReportStatus::Draft:   return __('report:status_draft');
+            case ReportStatus::Submitted: return __('report:status_submitted');
+            case ReportStatus::Approved: return __('report:status_approved');
+            default: return __('report:status_unknown');
+        }    
     }
     
     function get_url()
@@ -32,26 +60,18 @@ class Report extends Entity
     
     function get_handler()
     {
-        try
-        {
-            $handlerCls = new ReflectionClass($this->get_report_definition()->handler_class);
-            return $handlerCls->newInstance();                        
-        }
-        catch (ReflectionException $ex)
-        {        
-            return new ReportHandler_Invalid();
-        }        
+        return $this->get_report_definition()->get_handler();
     }
 
+    function can_edit()
+    {
+        return parent::can_edit() && ($this->status < ReportStatus::Submitted || Session::isadminloggedin());
+    }
+    
     function render_view()
     {
         return $this->get_handler()->view($this);
     }
-
-    function save_input()
-    {
-        return $this->get_handler()->save($this);
-    }    
     
     function render_edit()
     {
@@ -70,7 +90,7 @@ class Report extends Entity
             $this->fields = $fields;
         }
         return $this->fields;
-    }
+    }   
     
     function get_field($name)
     {
@@ -79,7 +99,7 @@ class Report extends Entity
         {
             $field = new ReportField();
             $field->name = $name;
-            $field->report_guid = $this->guid;
+            $field->report_guid = $this->guid;            
             $fields[$name] = $field;
         }
         
@@ -97,6 +117,19 @@ class Report extends Entity
                 $field->save();
             }
         }
+        
+        $org = $this->get_container_entity();
+        $reportsWidget = $org->get_widget_by_name('reports');
+        if (!$reportsWidget->is_active())
+        {
+            $reportsWidget->enable();
+            $reportsWidget->save();            
+        }
     }
-    
+
+    function can_manage()
+    {
+        $report_def = $this->get_report_definition();
+        return Session::isadminloggedin() || Session::get_loggedin_userid() == $report_def->container_guid;
+    }
 }

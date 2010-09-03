@@ -52,7 +52,7 @@ return array(
     'password' => 'Neno la siri',
     'passwordagain' => 'Neno la siri (tena)',
     'user:persistent' => 'Nikumbuke',
-    'user:password:lost' => 'Neno la siri limesahauliwa',
+    'user:password:lost' => 'Neno la siri limesahauliwa?',
     'org:yours' => 'Tovuti Yako',
     'org:mission' => 'Lengo',
     'org:sectors' => 'Sekta',

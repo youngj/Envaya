@@ -65,6 +65,12 @@ class Controller_Org extends Controller
     function action_new()
     {
         $step = ((int) get_input('step')) ?: 1;
+        $next = get_input('next');
+        
+        if ($next)
+        {
+            Session::set('registration_next', $next);
+        }
 
         if ($step > 3)
         {
@@ -215,9 +221,15 @@ class Controller_Org extends Controller
 
             $guid = $org->guid;
 
+            $prevNext = Session::get('registration_next');
+            
             login($org, false);
 
             Session::set('registration', null);
+            if ($prevNext)
+            {
+                Session::set('registration_next', $prevNext);
+            }
 
             system_message(__("create:ok"));
 
@@ -291,8 +303,8 @@ class Controller_Org extends Controller
             
             system_message(__("setup:ok"));
             
-
-            forward($org->get_url());
+            $next = Session::get('registration_next');
+            forward($next ?: $org->get_url());
         }
         catch (RegistrationException $r)
         {

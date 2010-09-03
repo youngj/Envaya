@@ -70,7 +70,7 @@
         'password' => "Password",
         'passwordagain' => "Password (again)",
         'user:persistent' => 'Stay logged in',
-        'user:password:lost' => 'Forgot password',
+        'user:password:lost' => 'Forgot password?',
 
         'org:yours' => 'Your Site',
         'org:mission' => 'Mission',

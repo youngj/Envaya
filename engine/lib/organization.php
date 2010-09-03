@@ -6,7 +6,8 @@ class ReportStatus
 {
     const Blank = 0;
     const Draft = 4;
-    const Published = 8;
+    const Submitted = 8;
+    const Approved = 12;
 }
 
 class DataType

@@ -48,7 +48,7 @@ class SessionMessages
     static function get_register($register)
     {
         static::init();
-        $res = static::$allMessages[$register];
+        $res = @static::$allMessages[$register];
         unset(static::$allMessages[$register]);
         return $res;        
     }

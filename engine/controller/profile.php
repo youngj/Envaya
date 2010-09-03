@@ -338,7 +338,7 @@ class Controller_Profile extends Controller
                 $preBody .= view("org/comm_box", array('entity' => $org));
             }
 
-            if ($org->guid == Session::get_loggedin_userid())
+            if ($this->show_next_steps())
             {
                 $preBody .= view("org/setupNextStep", array('entity' => $org));
             }
@@ -346,6 +346,11 @@ class Controller_Profile extends Controller
         return $preBody;
     }
 
+    function show_next_steps()
+    {
+        return $this->org->guid == Session::get_loggedin_userid();
+    }
+    
     function save_widget($widget)
     {
         if (get_input('delete'))
@@ -865,7 +870,7 @@ class Controller_Profile extends Controller
         if (PageContext::get_theme() == 'sidebar')
         {
             $layout= 'two_column_left_sidebar';
-        }
+        }       
         
         return view_layout($layout, $header, $area2, $this->get_pre_body());
     }

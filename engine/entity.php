@@ -539,13 +539,17 @@ abstract class Entity extends Model
 
         if ($doAutoTranslate && (!$humanTrans || $humanTrans->is_stale()))
         {
-            return $this->lookup_auto_translation($prop, $origLang, $viewLang, $isHTML);
+            $autoTrans = $this->lookup_auto_translation($prop, $origLang, $viewLang, $isHTML);
+            if ($autoTrans)
+            {
+                return $autoTrans;
+            }
         }
-        else if ($humanTrans)
+        
+        if ($humanTrans)
         {
             return $humanTrans;            
         }
-
         else
         {        
             // return translation with empty value

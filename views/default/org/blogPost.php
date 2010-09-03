@@ -1,7 +1,7 @@
 <div class='section_content'>
 <?php
 
-    $entity = $vars['entity'];
+    $entity = $vars['entity'];              
     $url = rewrite_to_current_domain($entity->get_url());
     $org = $entity->get_root_container_entity();
     $blogDates = $org->get_blog_dates();
@@ -172,7 +172,7 @@ for (var i = 0; i < blogDates.length; i++)
 
 <?php
 }
-
+            
 echo view_entity($entity, true);
 ?>
 

@@ -186,3 +186,23 @@ a.icon_link:hover
 .log_entry_action {
     width: 75px;
 }
+
+.report_section_nav
+{
+    border-bottom: 1px dotted gray;
+    text-align:center;
+    padding-bottom:5px;
+}
+
+.report_section_nav strong, .report_section_nav a 
+{
+    white-space:nowrap;
+}
+
+.report_preview_message
+{
+    padding:7px;
+    margin:7px;
+    border:1px solid gray;
+    background:#f0f0f0;
+}
