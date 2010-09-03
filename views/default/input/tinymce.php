@@ -59,9 +59,26 @@
 
     tinyMCE.init({
         setup : function(ed) {
-
-            ed.onBeforeGetContent.add(function(ed, o) {
+        
+            ed.onBeforeGetContent.add(function(ed, o) 
+            {
                 var body = ed.getBody();
+                        
+                var invalidTagNames = ['meta','style','title','link'];
+                for (var j = 0; j < invalidTagNames.length; j++)
+                {
+                    var badTags = body.getElementsByTagName(invalidTagNames[j]), badTagsCopy = [];                    
+                    
+                    for (var i = 0; i < badTags.length; i++)
+                    {
+                        badTagsCopy.push(badTags[i]);
+                    }
+                    for (var i = 0; i < badTagsCopy.length; i++)
+                    {
+                        removeElem(badTagsCopy[i]);
+                    }                    
+                }                
+                            
                 var paragraphs = body.getElementsByTagName('p');
                 for (var i = 0; i < paragraphs.length - 1; i++)
                 {
@@ -70,7 +87,12 @@
                 if (paragraphs.length > 0)
                 {
                     paragraphs[i].className = 'last-paragraph';
-                }
+                    
+                    if (paragraphs[0].childNodes.length == 0)
+                    {
+                        removeElem(paragraphs[0]);
+                    }
+                }                
             });
 
             ed.onDblClick.add(function(ed, e) {
@@ -93,8 +115,7 @@
                     setDirty(true);
                 }
             });
-
-        },
+        },        
         content_css: "<?php echo $CONFIG->url ?>_css/tinymce.css?v<?php echo $CONFIG->cache_version ?>",
         editor_css: '<?php echo $CONFIG->url ?>_css/tinymce_ui.css?v<?php echo $CONFIG->cache_version ?>',
         mode : "exact",
