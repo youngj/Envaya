@@ -6,11 +6,17 @@ class Controller_Pg extends Controller {
     {
         $username = get_input('username');
         $next = get_input('next');
+        $error = get_input('error');
 
         $title = __("login");
+        
+        $error_msg = $error ? view('account/login_error') : '';
+        
         $body = view_layout('one_column_padded',
             view_title($title, array('org_only' => true)),
-            view("account/forms/login", array('username' => $username, 'next' => $next)));
+            view("account/forms/login", array('username' => $username, 'next' => $next)),
+            $error_msg
+        );
 
         $this->page_draw($title, $body, array('hideLogin' => true));
     }
@@ -98,8 +104,7 @@ class Controller_Pg extends Controller {
         else
         {
             Session::save_input();
-            register_error(__('loginerror'));
-            forward("pg/login?next=".urlencode($next));
+            forward("pg/login?error=1&next=".urlencode($next));
         }
     }
 
@@ -121,8 +126,9 @@ class Controller_Pg extends Controller {
             array('username' => get_input('username'))
         );
 
-        $this->page_draw(__('user:password:lost'), view_layout("one_column_padded",
-            view_title(__('user:password:lost'), array('org_only' => true)), $body));
+        $title = __('user:password:reset');
+        $this->page_draw($title, view_layout("one_column_padded",
+            view_title($title, array('org_only' => true)), $body));
     }
 
     function action_request_new_password()
@@ -179,7 +185,7 @@ class Controller_Pg extends Controller {
 
         if ($user && $user->passwd_conf_code && $user->passwd_conf_code == $conf_code)
         {                  
-            $title = __("user:password:reset");
+            $title = __("user:password:choose_new");
             $body = view_layout('one_column_padded', 
                 view_title($title, array('org_only' => true)), 
                 view("account/forms/reset_password", array('entity' => $user)));

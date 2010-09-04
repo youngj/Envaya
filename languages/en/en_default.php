@@ -60,7 +60,8 @@
         'search:noresults' => "No results found!",
 
         'login' => "Log in",
-        'loginerror' => "Incorrect username or password. Make sure they are correct and try again.",
+        'loginerror' => "Incorrect username or password. Make sure they are correct and try again. If you still can't log in, %s to reset your password.",
+        'clickhere' => 'click here',
         'loginok' => "Welcome, %s!",
         'logout' => "Log out",
 
@@ -71,6 +72,7 @@
         'passwordagain' => "Password (again)",
         'user:persistent' => 'Stay logged in',
         'user:password:lost' => 'Forgot password?',
+        'user:password:reset' => 'Reset password',
 
         'org:yours' => 'Your Site',
         'org:mission' => 'Mission',
@@ -275,7 +277,7 @@
         'user:password2:label' => "New password again",
         'user:password:success' => "Your password has been changed.",
         'user:password:new' => "Choose a new password for your account:",
-        'user:password:reset' => "Reset Password",
+        'user:password:choose_new' => "Reset Password",
         'user:password:fail' => "Could not change your password.",
         'user:password:fail:notsame' => "The two passwords are not the same!",
         'user:password:fail:tooshort' => "Password is too short!",
@@ -284,7 +286,7 @@
         'user:language:success' => "Your language settings have been updated.",
         'user:language:fail' => "Your language settings could not be saved.",
 
-        'user:username:notfound' => 'Username %s not found.',
+        'user:username:notfound' => 'The username or email address %s was not found on Envaya. Make sure you have typed it correctly and try again.',
 
         'user:password:resetreq:success' => 'Successfully requested a new password. Check your email for a message from Envaya and click on the link inside.',
         'user:password:resetreq:fail' => 'Could not request a new password.',
