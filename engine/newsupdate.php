@@ -14,13 +14,12 @@ class NewsUpdate extends Entity
     {
         $isNew = (!$this->guid);
 
-        $res = parent::save();
+        parent::save();
 
-        if ($res && $isNew)
+        if ($isNew)
         {
             post_feed_items($this->get_container_entity(), 'news', $this);
         }
-        return $res;
     }
 
     public function get_title()

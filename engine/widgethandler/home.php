@@ -13,6 +13,7 @@ class WidgetHandler_Home extends WidgetHandler
 
     function save($widget)
     {
+        $lastUpdated = $widget->time_updated;
         $org = $widget->get_container_entity();
 
         $mission = get_input('content');
@@ -47,5 +48,10 @@ class WidgetHandler_Home extends WidgetHandler
         $widget->included = get_input_array('included');
         $widget->zoom = get_input('map_zoom');
         $widget->save();
+        
+        if (!Session::isadminloggedin() && time() - $lastUpdated > 86400)
+        {
+            post_feed_items($widget->get_container_entity(), 'edit_home', $widget);
+        }        
     }
 }

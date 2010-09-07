@@ -74,7 +74,7 @@ class Controller_Post extends Controller_Profile
 
         $this->page_draw($title,$body);
     }
-
+    
     function action_save()
     {
         $this->require_editor();

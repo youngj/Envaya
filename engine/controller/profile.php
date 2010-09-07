@@ -370,18 +370,19 @@ class Controller_Profile extends Controller
             }
 
             try
-            {
+            {             
                 $widget->save_input();
-                system_message(__('widget:save:success'));
-                forward($widget->get_url());
             }
             catch (Exception $ex)
             {
                 action_error($ex->getMessage());
             }
+            
+            system_message(__('widget:save:success'));
+            forward($widget->get_url());
         }
     }
-
+    
     function index_help()
     {
         $this->require_editor();

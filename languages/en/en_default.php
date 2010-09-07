@@ -21,6 +21,8 @@
         'feed:registered' => "%s joined Envaya.",
         'feed:news' => "%s added a %s.",
         'feed:new_widget' => "%s created a %s page.",
+        'feed:edit_widget' => "%s updated its %s page.",
+        'feed:edit_home' => '%s updated its home page.',
         'feed:partnership' => "%s has a partnership with %s.",
         'feed:more' => "Read more",
         'feed:org' => "News from related organizations",

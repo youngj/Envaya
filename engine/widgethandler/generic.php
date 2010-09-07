@@ -14,6 +14,7 @@ class WidgetHandler_Generic extends WidgetHandler
     function save($widget)
     {
         $prevContent = $widget->content;
+        $lastUpdated = $widget->time_updated;
 
         $title = get_input('title');
         if ($title)
@@ -23,11 +24,17 @@ class WidgetHandler_Generic extends WidgetHandler
         
         $widget->set_content(get_input('content'), true);
         $widget->save();
-
-        if (!$prevContent && $widget->content)
+        
+        if ($widget->content)
         {
-            post_feed_items($widget->get_container_entity(), 'new_widget', $widget);
-        }
+            if (!$prevContent)
+            {
+                post_feed_items($widget->get_container_entity(), 'new_widget', $widget);
+            }
+            else if (!Session::isadminloggedin() && time() - $lastUpdated > 86400)
+            {
+                post_feed_items($widget->get_container_entity(), 'edit_widget', $widget);
+            }
+        }     
     }
 }
-

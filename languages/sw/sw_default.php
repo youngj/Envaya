@@ -16,6 +16,8 @@ return array(
     'feed:title' => 'Mabadiliko mapya',
     'feed:registered' => '%s imejiunga na Envaya.',
     'feed:new_widget' => '%s imeumba ukurasa wa %s.',
+    'feed:edit_widget' => '%s imehariri ukurasa wa %s.',
+    'feed:edit_home' => '%s imehariri ukurasa mkuu.',
     'feed:news' => '%s imeongeza %s.',
     'feed:partnership' => '%s ina ubia na %s.',
     'feed:more' => 'Soma zaidi',

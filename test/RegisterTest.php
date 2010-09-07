@@ -247,6 +247,12 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->typeInFrame("//iframe", "this is a test post");
         $this->submitForm();
         $this->mouseOver("//div[@class='blog_post']//p[contains(text(), 'this is a test post')]");
+        
+        $this->clickAndWait("//a[contains(@href,'org/feed')]");
+        $this->mouseOver("//div[@class='feed_snippet' and contains(text(), 'this is a test post')]");
+        $this->clickAndWait("//a[contains(text(), 'News update')]");
+        $this->mouseOver("//div[@class='blog_post']//p[contains(text(), 'this is a test post')]");
+        
     }
 
     private function _testEditContact()

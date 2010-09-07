@@ -6,7 +6,7 @@
     $orgUrl = $org->get_url();
     
     echo "<div style='padding-bottom:5px'>";
-    echo sprintf(__('feed:registered'),
+    echo sprintf(__('feed:edit_home'),
         $mode == 'self' ? escape($org->name) : "<a class='feed_org_name' href='$orgUrl'>".escape($org->name)."</a>");
     echo "</div>";
 
