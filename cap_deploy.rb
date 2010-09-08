@@ -2,16 +2,13 @@
 default_run_options[:pty] = true
 
 set :application, "envaya"
-set :repository,  "http://anvaya.unfuddle.com/svn/anvaya_anvaya"
+set :repository,  "git@anvaya.unfuddle.com:anvaya/envaya.git"
 set :deploy_to, "/var/envaya"
 set :deploy_via, :remote_cache
 set :copy_exclude, [".svn", "localsettings.php", "selenium-server.jar"]
 
 set :user, "root"
-
-set :scm, :subversion
-set :scm_username, "youngj"
-set :scm_password, "LssP12"
+set :scm, :git
 
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 

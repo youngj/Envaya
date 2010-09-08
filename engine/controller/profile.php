@@ -832,6 +832,55 @@ class Controller_Profile extends Controller
         }
     }
     
+    function index_domains()
+    {
+        $this->require_org();
+        $this->require_admin();
+        $this->use_editor_layout();
+        $title = __('domains:edit');
+        $area1 = view('org/domains', array('org' => $this->org));
+        $body = view_layout("one_column", view_title($title), $area1);
+        $this->page_draw($title,$body);
+    }
+    
+    function index_add_domain()
+    {
+        $this->require_org();
+        $this->require_admin();
+        $this->validate_security_token();
+        $domain_name = get_input('domain_name');
+        if (OrgDomainName::query()->where('domain_name = ?', $domain_name)->count() > 0)
+        {
+            action_error(__('domains:duplicate'));
+        }
+        if (preg_match('/[^\w\.\-]/', $domain_name))
+        {
+            action_error(__('domains:invalid'));
+        }
+        
+        $org_domain_name = new OrgDomainName();
+        $org_domain_name->domain_name = $domain_name;
+        $org_domain_name->guid = $this->org->guid;
+        $org_domain_name->save();
+        system_message(__('domains:added'));
+        forward_to_referrer();
+    }
+    
+    function index_delete_domain()
+    {
+        $this->require_org();
+        $this->require_admin();
+        $this->validate_security_token();
+        $org_domain_name = OrgDomainName::query()->where('id = ?', (int)get_input('id'))->get();
+        if (!$org_domain_name)
+        {
+            action_error(__('domains:not_found'));
+        }
+        $org_domain_name->delete();
+        system_message(__('domains:deleted'));
+        forward_to_referrer();
+    }
+        
     function org_page_not_found()
     {
         $org = $this->org;

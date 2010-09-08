@@ -586,7 +586,7 @@ class Controller_Admin extends Controller
             {
                 $item->delete();
             }           
-            system_message("Feed item deleted successfully...");
+            system_message("Feed item deleted successfully.");
             forward_to_referrer();
         }
         else

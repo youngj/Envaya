@@ -266,8 +266,10 @@ CREATE TABLE `users_entity` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `org_domain_names` (
+    `id` int(11) NOT NULL auto_increment,
 	`guid` bigint(20) unsigned  NOT NULL,
 	`domain_name` varchar(128) NOT NULL,
+    PRIMARY KEY  (`id`),
 	KEY (`guid`),
 	UNIQUE KEY (`domain_name`)
 );

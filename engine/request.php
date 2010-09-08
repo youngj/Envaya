@@ -192,7 +192,7 @@ class Request {
             // Remove all dot-paths from the URI, they are not valid
             $uri = preg_replace('#\.[\s./]*/#', '', $uri);
 
-            $username = Request::$custom_domain_username = get_username_for_host($_SERVER['HTTP_HOST']);
+            $username = Request::$custom_domain_username = OrgDomainName::get_username_for_host($_SERVER['HTTP_HOST']);
             if ($username)
             {
                 $uri = "$username$uri";

@@ -43,33 +43,6 @@
     {
         return preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+\.[A-Z]{2,4}$/i', $address, $matches);
     }
-
-	function get_username_for_host($host)
-	{
-		$cacheKey = make_cache_key('username_for_host', $host);
-        $cache = get_cache();
-        $cachedUsername = $cache->get($cacheKey);
-        
-        if ($cachedUsername !== null)
-        {
-            return $cachedUsername;
-        }
-        else
-        {
-            $row = get_data_row('SELECT * FROM org_domain_names WHERE domain_name = ?', array($host));
-            if ($row)
-            {
-                $user = get_entity($row->guid);
-                if ($user)
-                {
-                    $cache->set($cacheKey, $user->username);
-                    return $user->username;
-                }
-            }
-            $cache->set($cacheKey, '');
-            return '';
-        }
-	}	
 	
     /**
      * Simple function that will generate a random clear text password suitable for feeding into generate_user_password().

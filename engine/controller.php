@@ -67,6 +67,7 @@ abstract class Controller {
         }
         catch (SecurityException $ex)
         {
+            action_error($ex->getMessage());
             forward();
             exit;
         }

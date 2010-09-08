@@ -402,4 +402,10 @@ Once you have logged in, we highly recommend that you change your password.
         'featured:title' => 'Featured Organizations',
         'featured:see_all' => 'See all featured organizations',
         'featured:about' => "About Featured Organizations",
+        
+        'domains:edit' => "Edit domain names",
+        'domains:added' => "Domain name added",
+        'domains:deleted' => "Domain name deleted",
+        'domains:invalid' => "Invalid domain name",
+        'domains:duplicate' => "That domain name already exists.",
     );
