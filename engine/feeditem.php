@@ -51,6 +51,14 @@ class FeedItem extends Model
     {
         return friendly_time($this->time_posted);
     }
+    
+    function query_items_in_group()
+    {
+        return FeedItem::query()
+            ->where('action_name = ?', $this->action_name)
+            ->where('subject_guid = ?', $this->subject_guid)
+            ->where('time_posted = ?', $this->time_posted);
+    }
 
     static function query_by_feed_names($feedNames, $excludeUser = null)
     {

@@ -27,6 +27,18 @@ foreach ($feedItems as $feedItem)
             echo $feedItem->render_view();
         ?>
         <div class='blog_date'><?php echo $feedItem->get_date_text() ?></div>
+        <?php
+        if ($isAdmin) {
+            echo "<span class='admin_links'>";
+            echo view('output/confirmlink', array(
+                'is_action' => true,
+                'href' => "/admin/delete_feed_item?item={$feedItem->id}",
+                'text' => __('delete')
+            ));
+            echo "</span>";
+        }
+        ?>
+
         </div>
         <div style='clear:both'></div>
     </div>
