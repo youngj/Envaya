@@ -23,6 +23,7 @@
     </div>        
     <div id='content_bottom'></div>        
 </div>
+<script type='text/javascript'>addImageLinks(document.getElementById('content_mid'));</script>
 
 <?php 
     $content = ob_get_clean();

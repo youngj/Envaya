@@ -51,3 +51,11 @@ else
 window.dirty=$dirty;return true;}
 function setSubmitted()
 {setDirty(false);window.submitted=true;return true;}
+function addImageLink(img)
+{var match=/http:\/\/(\w+)\.s3\.amazonaws\.com\/(\d+)\/([\w\.]+)\/([\w\.]+)/.exec(img.src);if(match&&match[4]!='large.jpg')
+{img.style.cursor='pointer';addEvent(img,'click',function(){window.location="/pg/large_img?owner="+(match[2])+"&group="+match[3];});}}
+function addImageLinks(container)
+{if(container)
+{var imgs=container.getElementsByTagName('img');for(var i=0;i<imgs.length;i++)
+{var img=imgs[i];if(img.parentNode.nodeName!='A')
+{addImageLink(img);}}}}

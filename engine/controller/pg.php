@@ -335,4 +335,22 @@ class Controller_Pg extends Controller {
         system_message(__('feedback:sent'));
         forward("page/contact");
     }
+    
+    function action_large_img()
+    {
+        $owner_guid = get_input('owner');
+        $group_name = get_input('group');
+        
+        $largeFile = UploadedFile::query()->where('owner_guid = ?', $owner_guid)->where('group_name = ?', $group_name)
+            ->order_by('width desc')->get();            
+            
+        if ($largeFile)
+        {
+            echo "<html><body><img src='{$largeFile->get_url()}' width='{$largeFile->width}' height='{$largeFile->height}' /></body></html>";
+        }
+        else
+        {
+            not_found();
+        }
+    }
 }

@@ -22,6 +22,6 @@
         if ($numFeedItems == 0)
         {
             echo "{$newsUpdate->get_url()}\n";            
-            post_feed_items($newsUpdate->get_container_entity(), 'news', $newsUpdate);
+            post_feed_items($newsUpdate->get_container_entity(), 'news', $newsUpdate, null, $newsUpdate->time_updated);
         }    
     }

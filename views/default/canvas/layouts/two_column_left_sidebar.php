@@ -19,6 +19,7 @@
 </div>
 <div id='content_bottom'>
 </div>
+<script type='text/javascript'>addImageLinks(document.getElementById('right_content'));</script>
 
 <?php 
     $content = ob_get_clean();
