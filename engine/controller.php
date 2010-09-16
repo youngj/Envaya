@@ -93,6 +93,11 @@ abstract class Controller {
     {
         if (!Session::isadminloggedin())
         {
+            if (Session::isloggedin())
+            {
+                register_error(__('noaccess'));
+            }
+        
             force_login();
         }
     }

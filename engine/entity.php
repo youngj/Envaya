@@ -581,11 +581,8 @@ abstract class Entity extends Model
         {
             $thumbnailUrl = get_thumbnail_src($content);
 
-            if ($thumbnailUrl != null)
-            {
-                $this->set_data_type(DataType::Image, $thumbnailUrl != null);
-                $this->thumbnail_url = $thumbnailUrl;
-            }
+            $this->set_data_type(DataType::Image, $thumbnailUrl != null);
+            $this->thumbnail_url = $thumbnailUrl;            
         }
 
         if (!$this->language)

@@ -408,4 +408,5 @@ Once you have logged in, we highly recommend that you change your password.
         'domains:deleted' => "Domain name deleted",
         'domains:invalid' => "Invalid domain name",
         'domains:duplicate' => "That domain name already exists.",
+        'noaccess' => "The current user does not have access to view that page.",
     );

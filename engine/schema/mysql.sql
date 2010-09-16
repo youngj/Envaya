@@ -274,6 +274,25 @@ CREATE TABLE `org_domain_names` (
 	UNIQUE KEY (`domain_name`)
 );
 
+CREATE TABLE `org_phone_numbers` (
+    `id` int(11) NOT NULL auto_increment,
+    `phone_number` varchar(32) not null,
+	`org_guid` bigint(20) unsigned  NOT NULL,
+	`confirmed` tinyint(4) NOT NULL default 0,
+    PRIMARY KEY  (`id`),
+    UNIQUE KEY (`phone_number`),
+	KEY (`org_guid`)
+);
+
+CREATE TABLE `sms_state` (
+    `id` int(11) NOT NULL auto_increment,
+    `phone_number` varchar(32) not null,
+	`time_updated` int NOT NULL default 0,
+	`args_json` text not null,
+    PRIMARY KEY  (`id`),
+    UNIQUE KEY (`phone_number`)
+);
+
 CREATE TABLE `org_sectors` (
   `id` int(11) NOT NULL auto_increment,
   

@@ -353,4 +353,22 @@ class Controller_Pg extends Controller {
             not_found();
         }
     }
+    
+    function action_receive_sms()
+    {
+        $from = @$_REQUEST['From'];
+        $body = @$_REQUEST['Body'];
+        
+        error_log("SMS received:\n from=$from body=$body");
+    
+        if ($from && $body)
+        {
+            $sms_request = new SMS_Request($from, $body);
+            $sms_request->execute();
+        }
+        else
+        {        
+            not_found();
+        }                
+    }
 }

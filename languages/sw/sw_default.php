@@ -304,4 +304,6 @@ return array(
     'featured:home_heading' => 'Shirika maalum',
     'featured:title' => 'Mashirika Maalum',
     'featured:see_all' => 'Ona mashirika maalum yote',  
+    
+    'noaccess' => "Mtumiaji wa sasa hana ruhusu kuona ukurasa ule.",
 );

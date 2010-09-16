@@ -199,6 +199,11 @@ class Controller_Profile extends Controller
         }
         else if ($user)
         {
+            if (Session::isloggedin())
+            {
+                register_error(__('noaccess'));
+            }        
+        
             force_login();
         }
         else
