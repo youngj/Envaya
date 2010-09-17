@@ -18,6 +18,16 @@ role :db,  "www.envaya.org", :primary => true # This is where Rails migrations w
 #role :db,  "your slave db-server here"
 
 namespace :deploy do
+    task :default do
+        backup_db
+        update
+        restart
+    end
+    
+    task :backup_db, :roles => :app, :except => { :no_release => true } do            
+        run "cd #{current_path} && php scripts/backup.php"
+    end    
+
     task :finalize_update, :except => { :no_release => true } do
         run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
         run "cp #{shared_path}/cached-copy/.htaccess #{latest_release}/"
