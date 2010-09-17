@@ -299,7 +299,6 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->mouseOver("//div[@id='site_menu']//a[@class='selected']");
     }
 
-
     private function _testEditPages()
     {
         $this->clickAndWait("//a[contains(@href,'/dashboard')]");
