@@ -33,8 +33,12 @@ namespace :deploy do
         post_setup
     end
     
-    task :localsettings_setup do
-        top.upload(File.join(Dir.pwd, "engine/localsettings_vps.php"), "#{shared_path}/localsettings.php")
+    task :localsettings_setup do    
+        begin
+            run "stat -t #{shared_path}/localsettings.php"
+        rescue Exception    
+            top.upload(File.join(Dir.pwd, "engine/localsettings_vps.php"), "#{shared_path}/localsettings.php")
+        end
     end
     
     task :pre_setup do
@@ -52,9 +56,14 @@ namespace :deploy do
     task :ssh_key_setup do
         run "if [ ! -e ~/.ssh/id_rsa ]; then ssh-keygen -f ~/.ssh/id_rsa -N ''; fi"       
         local_file = File.join(Dir.pwd, "id_rsa.pub")
-        top.download("/root/.ssh/id_rsa.pub", local_file)
-        warn "Copy the contents of ssh public key in #{local_file} to unfuddle personal settings to allow server to access git. Press enter when complete"        
-        _response = gets
+        top.download("/root/.ssh/id_rsa.pub", local_file)        
+        prompt = "Copy the contents of ssh public key in #{local_file} to unfuddle personal settings to allow server to access git. Enter ok when complete"
+        k = Capistrano::CLI.ui.ask(prompt) do |q|
+            q.overwrite = false
+            q.validate = /ok/i
+            q.responses[:not_valid] = "?"
+        end 
+        run "echo done"
     end
     
     task :backup_db, :roles => :app, :except => { :no_release => true } do            

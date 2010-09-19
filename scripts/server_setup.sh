@@ -107,6 +107,7 @@ useradd -r -d /var/kestrel -g kestrel -s /bin/false kestrel
 chown kestrel.kestrel /var/kestrel
 
 cp /var/envaya/current/vendors/kestrel_dev/kestrel-1.2.jar /var/kestrel
+cp -r /var/envaya/current/vendors/kestrel_dev/libs /var/kestrel
 
 cat <<EOF > /var/kestrel/production.conf
 
