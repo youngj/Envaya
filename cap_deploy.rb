@@ -24,6 +24,39 @@ namespace :deploy do
         restart
     end
     
+    task :full_setup do                
+        pre_setup
+        setup
+        ssh_key_setup
+        localsettings_setup
+        update
+        post_setup
+    end
+    
+    task :localsettings_setup do
+        top.upload(File.join(Dir.pwd, "engine/localsettings_vps.php"), "#{shared_path}/localsettings.php")
+    end
+    
+    task :pre_setup do
+        top.upload(File.join(Dir.pwd, "scripts/server_pre_setup.sh"), "/root/server_pre_setup.sh")
+        run "chmod 744 /root/server_pre_setup.sh"
+        run "/root/server_pre_setup.sh"
+    end
+    
+    task :post_setup do
+        top.upload(File.join(Dir.pwd, "scripts/server_setup.sh"), "/root/server_setup.sh")
+        run "chmod 744 /root/server_setup.sh"
+        run "/root/server_setup.sh"
+    end
+    
+    task :ssh_key_setup do
+        run "if [ ! -e ~/.ssh/id_rsa ]; then ssh-keygen -f ~/.ssh/id_rsa -N ''; fi"       
+        local_file = File.join(Dir.pwd, "id_rsa.pub")
+        top.download("/root/.ssh/id_rsa.pub", local_file)
+        warn "Copy the contents of ssh public key in #{local_file} to unfuddle personal settings to allow server to access git. Press enter when complete"        
+        _response = gets
+    end
+    
     task :backup_db, :roles => :app, :except => { :no_release => true } do            
         run "cd #{current_path} && php scripts/backup.php"
     end    
