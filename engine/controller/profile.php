@@ -667,7 +667,8 @@ class Controller_Profile extends Controller
             $post->container_guid = $org->guid;
             $post->set_content($body, true);
             $post->uuid = $uuid;
-            $post->save();                                  
+            $post->save();              
+            $post->post_feed_items();
         }
         
         system_message(__('addphotos:success'));

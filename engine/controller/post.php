@@ -132,8 +132,9 @@ class Controller_Post extends Controller_Profile
                 $post->container_guid = $org->guid;
                 $post->set_content($body, true);
                 $post->uuid = $uuid;
-                $post->save();
-
+                $post->save();                
+                $post->post_feed_items();
+                
                 system_message(__("blog:posted"));
             }
             else

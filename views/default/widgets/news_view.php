@@ -2,12 +2,23 @@
 <?php 
     $widget = $vars['widget'];
     $org = $widget->get_container_entity();
+    
+    $end_guid = $vars['end_guid'];
+    
+    if (get_input('offset') === '' && $end_guid)
+    {
+        $offset = $org->query_news_updates()->where('u.guid > ?', $end_guid)->count();
+    }
+    else
+    {
+        $offset = (int) get_input('offset');
+    }
 
-    $offset = (int) get_input('offset');
     $limit = 10;
-
-    $count = $org->query_news_updates()->count();
-    $entities = $org->query_news_updates()->limit($limit, $offset)->filter();            
+    
+    $query = $org->query_news_updates();    
+    $count = $query->count();
+    $entities = $query->limit($limit, $offset)->filter();            
 ?>
 
 <?php if (!empty($entities)) { ?>

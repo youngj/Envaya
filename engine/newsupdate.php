@@ -10,18 +10,6 @@ class NewsUpdate extends Entity
         'language' => '',
     );
 
-    public function save()
-    {
-        $isNew = (!$this->guid);
-
-        parent::save();
-
-        if ($isNew)
-        {
-            post_feed_items($this->get_container_entity(), 'news', $this);
-        }
-    }
-
     public function get_title()
     {
         return __("widget:news:item");
@@ -62,4 +50,35 @@ class NewsUpdate extends Entity
     {
         return friendly_time($this->time_created);
     }
+    
+    function post_feed_items()
+    {
+        $org = $this->get_container_entity();
+        $recent = time() - 60*60*6;
+        
+        $recent_update = $org->query_feed_items()
+            ->where("action_name in ('news','news_multi')")
+            ->where('time_posted > ?', $recent)
+            ->order_by('id desc')
+            ->get();
+        
+        if ($recent_update)
+        {
+            $time = time();
+        
+            foreach ($recent_update->query_items_in_group()->filter() as $r)
+            {
+                $r->action_name = 'news_multi';
+                $r->subject_guid = $this->guid;
+                $r->time_posted = $time;
+                $prev_count = @$r->args['count'] ?: 1;
+                $r->args = array('count' => $prev_count + 1);
+                $r->save();
+            }
+        }
+        else
+        {                
+            post_feed_items($org, 'news', $this);
+        }
+    }                
 }

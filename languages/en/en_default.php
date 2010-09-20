@@ -19,7 +19,8 @@
         'feed' => "Updates",
         'feed:title' => "Latest updates",
         'feed:registered' => "%s joined Envaya.",
-        'feed:news' => "%s added a %s.",
+        'feed:news' => "%s added a %s.",        
+        'feed:news_multi' => "%%s added %d %%s.",
         'feed:new_widget' => "%s created a %s page.",
         'feed:edit_widget' => "%s updated its %s page.",
         'feed:edit_home' => '%s updated its home page.',
@@ -110,6 +111,7 @@
 
         'widget:news' => "News",
         'widget:news:item' => "News update",
+        'widget:news:items' => "News updates",
         'widget:news:latest' => 'Latest Updates',
         'widget:news:empty' => "This organization has not yet written any news updates.",
         'widget:news:edit' => 'Edit news updates',

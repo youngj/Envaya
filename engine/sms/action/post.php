@@ -21,6 +21,7 @@ class SMS_Action_Post extends SMS_Action
         $news_update->container_guid = $org->guid;
         $news_update->set_content($this->message, false);
         $news_update->save();
+        $news_update->post_feed_items();
         
         $sms_request->reply("Posted news update to {$news_update->get_url()} . To delete, reply UNDO.");            
         $sms_request->reset_state();            
