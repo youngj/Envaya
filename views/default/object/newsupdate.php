@@ -14,7 +14,9 @@
 ?>
 
 <div class="blog_post">
+
     <?php
+    
         echo $entity->render_content();
 
         echo "<div class='blog_date'>";

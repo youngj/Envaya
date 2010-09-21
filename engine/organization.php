@@ -11,7 +11,7 @@ class Organization extends User
     
     function query_news_updates()
     {
-        return NewsUpdate::query()->where("container_guid=?", $this->guid)->order_by('time_created desc');
+        return NewsUpdate::query()->where("container_guid=?", $this->guid)->order_by('u.guid desc');
     }    
     
     public function query_files()

@@ -3,7 +3,7 @@
 require_once("scripts/cmdline.php");
 require_once("engine/start.php");
 
-$users = User::all('', 1000);
+$users = User::query()->filter();
 
 foreach ($users as $user)
 {
