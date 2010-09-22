@@ -41,6 +41,12 @@ namespace :deploy do
         end
     end
     
+    task :dropbox_setup do
+        top.upload(File.join(Dir.pwd, "scripts/server_dropbox_setup.sh"), "/root/server_dropbox_setup.sh")    
+        run "chmod 744 /root/server_dropbox_setup.sh"
+        run "/root/server_dropbox_setup.sh"
+    end
+    
     task :pre_setup do
         top.upload(File.join(Dir.pwd, "scripts/server_pre_setup.sh"), "/root/server_pre_setup.sh")
         run "chmod 744 /root/server_pre_setup.sh"
