@@ -2,7 +2,7 @@
 
 groupadd dropbox
 useradd -r -d /etc/dropbox -g dropbox -s /bin/false dropbox
-wget -O /tmp/dropbox.tar.gz http://www.dropbox.com/download/?plat=lnx.x86_64
+wget -O /tmp/dropbox.tar.gz http://www.dropbox.com/download/?plat=lnx.x86
 mkdir -p /usr/local/dropbox /etc/dropbox
 chown dropbox.dropbox /etc/dropbox
 chmod 700 /etc/dropbox

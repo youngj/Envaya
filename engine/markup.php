@@ -60,6 +60,7 @@ class Markup
                 $content = preg_replace('/(<br \/>\s*)+/', ' &ndash; ', $content);
                 $content = preg_replace('/&ndash;\s*$/', '', $content);
                 $content = preg_replace('/^\s*&ndash;/', '', $content);
+                $content = preg_replace('/(&nbsp;)+/', ' ', $content);
 
                 if ($tooLong)
                 {
@@ -84,8 +85,8 @@ class Markup
             $options = array();
         }
         $options['Cache.SerializerPath'] = $CONFIG->dataroot;
-        $options['AutoFormat.Linkify'] = true;
-
+        $options['AutoFormat.Linkify'] = true;        
+        
         $purifier = new HTMLPurifier($options);
         return $purifier->purify( $html );
     }

@@ -55,7 +55,7 @@ class GoogleTranslate
         $ch = curl_init();
 
         $url = "ajax.googleapis.com/ajax/services/language/detect?v=1.0&q=".urlencode(Markup::get_snippet($text, 500));
-
+        
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_REFERER, "www.envaya.org");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -70,7 +70,7 @@ class GoogleTranslate
 
         global $CONFIG;
 
-        if (!$lang || !isset($CONFIG->translations[$lang]))
+        if (!$lang || !isset($CONFIG->languages[$lang]))
         {
             return null;
         }

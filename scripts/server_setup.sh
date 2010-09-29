@@ -19,6 +19,10 @@ cat <<EOF | mysql
 CREATE DATABASE envaya;
 CREATE USER 'web'@'localhost' IDENTIFIED BY 'f03;aoeA';
 GRANT ALL PRIVILEGES ON envaya.* TO 'web'@'localhost';
+
+CREATE USER 'dropbox'@'localhost' IDENTIFIED BY '';
+GRANT SELECT, LOCK TABLES ON envaya.* TO 'dropbox'@'localhost';
+
 FLUSH PRIVILEGES;
 EOF
 

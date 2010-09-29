@@ -573,7 +573,7 @@ abstract class Entity extends Model
         {
             $content = view('output/longtext', array('value' => $content));
         }
-
+        
         $this->content = $content;
         $this->set_data_type(DataType::HTML, true);
 
@@ -586,7 +586,7 @@ abstract class Entity extends Model
         }
 
         if (!$this->language)
-        {
+        {            
             $this->language = GoogleTranslate::guess_language($this->content);
         }
     }
