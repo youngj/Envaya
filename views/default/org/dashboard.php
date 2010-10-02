@@ -27,13 +27,11 @@
 <td>
     <a class='icon_link icon_home' href='<?php echo $org->get_url() ?>'><?php echo __('dashboard:view_home') ?></a>
     <div class='icon_separator'></div>
-    <!--
-    <a class='icon_link icon_photos' href='<?php echo $org->get_url() . "/addphotos" ?>?from=pg/dashboard'><?php echo __('addphotos:title') ?></a>
-    <div class='icon_separator'></div>
-    -->
     <a class='icon_link icon_design' href='<?php echo $org->get_url() . "/design" ?>?from=pg/dashboard'><?php echo __('design:edit') ?></a>
     <div class='icon_separator'></div>
     <a class='icon_link icon_settings' href='<?php echo $org->username ?>/settings'><?php echo __('dashboard:settings') ?></a>
+    <div class='icon_separator'></div>
+    <a class='icon_link icon_photos' href='<?php echo $org->get_url() . "/addphotos" ?>?from=pg/dashboard'><?php echo __('addphotos:title') ?></a>
     <div class='icon_separator'></div>
     <a class='icon_link icon_help' href='<?php echo $org->get_url() ?>/help'><?php echo __('help:title') ?></a>
 </td>
