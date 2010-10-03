@@ -1,10 +1,10 @@
 #!/bin/bash
-# ubuntu 8.04 x64 lamp installation
+# ubuntu 10.04
 
 function add_php_settings {
-cat <<EOF >> /etc/php5/apache2/php.ini
+cat <<EOF >> /etc/php5/fpm/php.ini
 
-# envaya custom settings
+; envaya custom settings
 error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_NOTICE
 date.timezone = "Europe/London"
 zlib.output_compression = 1
@@ -13,7 +13,7 @@ expose_php = 0
 EOF
 }
 
-if ! grep -q envaya /etc/php5/apache2/php.ini ; then add_php_settings; fi
+if ! grep -q envaya /etc/php5/fpm/php.ini ; then add_php_settings; fi
 
 cat <<EOF | mysql
 CREATE DATABASE envaya;
@@ -29,44 +29,124 @@ EOF
 mkdir -p /var/elgg-data
 chmod 777 /var/elgg-data
 
-cat <<EOF > /etc/apache2/sites-enabled/000-default
+cat <<EOF > /etc/php5/fpm/php5-fpm.conf
 
-# envaya custom settings
-ServerTokens Prod
-LoadModule rewrite_module /usr/lib/apache2/modules/mod_rewrite.so
-LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %D" combined2
+[global]
+pid = /var/run/php5-fpm.pid
+error_log = /var/log/php5-fpm.log
+log_level = notice
+;emergency_restart_threshold = 0
+;emergency_restart_interval = 0
+;process_control_timeout = 0
+;daemonize = yes
 
-NameVirtualHost *
-<VirtualHost *>
-        ServerAdmin admin@envaya.org
+[www]
+listen = 127.0.0.1:9000
+;listen.backlog = -1
+;listen.allowed_clients = 127.0.0.1
+;listen.owner = www-data
+;listen.group = www-data
+;listen.mode = 0666
+user = www-data
+group = www-data
 
-        DocumentRoot /var/envaya/current/
-        <Directory />
-                Options FollowSymLinks
-                AllowOverride None
-        </Directory>
-        <Directory /var/envaya/>
-                Options Indexes FollowSymLinks
-                AllowOverride All
-                Order allow,deny
-                allow from all
-        </Directory>
+pm = dynamic
+pm.max_children = 20
+pm.start_servers = 10
+pm.min_spare_servers = 5
+pm.max_spare_servers = 20
+pm.max_requests = 500
+pm.status_path = /status.php
+;ping.path = /ping
+;ping.response = pong
+;request_terminate_timeout = 0
+;request_slowlog_timeout = 0
+;slowlog = /var/log/php5-fpm.log.slow
+;rlimit_files = 1024
+;rlimit_core = 0
+;chroot = 
+;chdir = /var/www
+;catch_workers_output = yes
+ 
+; Pass environment variables like LD_LIBRARY_PATH. All \$VARIABLEs are taken from
+; the current environment.
+; Default Value: clean env
+;env[HOSTNAME] = \$HOSTNAME
+;env[PATH] = /usr/local/bin:/usr/bin:/bin
+;env[TMP] = /tmp
+;env[TMPDIR] = /tmp
+;env[TEMP] = /tmp
 
-        <Files ~ "~">
-          Order allow,deny
-          Deny from all
-        </Files>
+;php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
+;php_flag[display_errors] = off
+;php_admin_value[error_log] = /var/log/fpm-php.www.log
+;php_admin_flag[log_errors] = on
+;php_admin_value[memory_limit] = 32M
 
-        ErrorLog /var/log/apache2/error.log
-        LogLevel warn
-
-        CustomLog /var/log/apache2/access.log combined2
-        ServerSignature On
-</VirtualHost>
-        
 EOF
 
-/etc/init.d/apache2 restart
+cat <<EOF > /etc/nginx/sites-available/default
+
+server {
+    listen   80;
+    access_log  /var/log/nginx/access.log;
+    root /var/envaya/current;
+
+    location / {
+        index  index.php;
+        rewrite ^(.*)\$ /index.php\$1 last;
+    }
+
+    location /_graphics/ {}
+    location /_media/ {
+        rewrite tiny_mce\.js /_media/tiny_mce/tiny_mce_gzip.php last;
+    }
+    location /_css/ {
+        rewrite  ([\w]+)\.css  /_css/css.php?name=\$1  last;
+    }
+
+    location ~ \.php
+    {
+      fastcgi_pass 127.0.0.1:9000;
+      fastcgi_param SCRIPT_FILENAME /var/envaya/current/\$fastcgi_script_name;
+      fastcgi_param PATH_INFO \$fastcgi_script_name;
+      include /etc/nginx/fastcgi_params;
+    }
+}
+
+EOF
+
+cat <<EOF > /etc/nginx/nginx.conf
+user www-data;
+worker_processes 2;
+
+error_log  /var/log/nginx/error.log;
+pid        /var/run/nginx.pid;
+
+events {
+    worker_connections  1024;
+    # multi_accept on;
+}
+
+http {
+    include       /etc/nginx/mime.types;
+
+    access_log  /var/log/nginx/access.log;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  15;
+    tcp_nodelay        on;
+
+    gzip  on;
+    gzip_disable "MSIE [1-6]\.(?!.*SV1)";
+
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+}
+
+EOF
 
 cat <<EOF > /etc/stunnel/stunnel.conf
 
@@ -147,3 +227,5 @@ chmod 755 /etc/init.d/phpCron
 update-rc.d phpCron defaults 97
 /etc/init.d/phpCron start
 
+/etc/init.d/nginx restart
+/etc/init.d/php5-fpm start
