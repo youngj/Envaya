@@ -89,18 +89,31 @@ cat <<EOF > /etc/nginx/sites-available/default
 
 server {
     listen   80;
-    access_log  /var/log/nginx/access.log;
     root /var/envaya/current;
-
+    log_format combined_time '\$remote_addr - \$remote_user [\$time_local]  '
+                    '"\$request" \$status \$body_bytes_sent '
+                    '"\$http_referer" "\$http_user_agent" \$request_time';
+    access_log  /var/log/nginx/access.log combined_time;
+    
     location / {
         index  index.php;
         rewrite ^(.*)\$ /index.php\$1 last;
     }
 
-    location /_graphics/ {}
+    location /status.nginx
+    {
+        stub_status on;
+        access_log   off;
+    }    
+    
+    location /_graphics/ {
+        expires 1y;
+    }
     location /_media/ {
+        expires 1y;
         rewrite tiny_mce\.js /_media/tiny_mce/tiny_mce_gzip.php last;
     }
+    
     location /_css/ {
         rewrite  ([\w]+)\.css  /_css/css.php?name=\$1  last;
     }

@@ -18,4 +18,7 @@ return array(
     'tinymce:loading' => 'Ikipakia...',
     'tinymce:ok' => "Sawa",
     'tinymce:cancel' => "Ghairi",
+    'tinymce:justifyleft_desc' => 'Kushoto',
+    'tinymce:justifycenter_desc' => 'Katikati',
+    'tinymce:justifyright_desc' => 'Kulia',
 );

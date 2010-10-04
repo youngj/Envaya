@@ -57,6 +57,7 @@ class Markup
                     $content = $shortStr;
                 }
                 $content = Markup::sanitize_html($content, array('HTML.AllowedElements' => 'a,em,strong,br','AutoFormat.RemoveEmpty' => true));
+                $content = mb_ereg_replace('(\xc2\xa0)+',' ',$content); # non-breaking space
                 $content = preg_replace('/(<br \/>\s*)+/', ' &ndash; ', $content);
                 $content = preg_replace('/&ndash;\s*$/', '', $content);
                 $content = preg_replace('/^\s*&ndash;/', '', $content);
@@ -67,7 +68,7 @@ class Markup
                     $content = $content."...";
                 }
                 $snippet = $content;
-                $cache->set($cacheKey, $snippet);
+                $cache->set($cacheKey, $snippet);                               
             }
 
             return $snippet;
