@@ -31,10 +31,38 @@ class FeedItem extends Model
         }
         parent::set($name, $value);
     }
-
-    public function render_view($mode = '')
+    
+    function get_handler()
     {
-        return view("feed/{$this->action_name}", array('item' => $this, 'mode' => $mode));
+        if (!$this->handler)
+        {    
+            try
+            {
+                $action_name = str_replace('_', '', $this->action_name);           
+                $handlerCls = new ReflectionClass('FeedItemHandler_'.$action_name);
+                $this->handler = $handlerCls->newInstance();                        
+            }
+            catch (ReflectionException $ex)
+            {        
+                $this->handler = new FeedItemHandler();
+            }        
+        }
+        return $this->handler;
+    }    
+
+    public function render_heading($mode = '')
+    {
+        return $this->get_handler()->render_heading($this, $mode);    
+    }
+
+    public function render_thumbnail($mode = '')
+    {
+        return $this->get_handler()->render_thumbnail($this, $mode);    
+    }    
+    
+    public function render_content($mode = '')
+    {
+        return $this->get_handler()->render_content($this, $mode);
     }
 
     public function get_subject_entity()

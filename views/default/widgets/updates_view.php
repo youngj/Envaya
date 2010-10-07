@@ -7,7 +7,7 @@
 
     echo "<div class='section_content'>";
 
-    echo view('feed/self_list', array('items' => $items));
+    echo view('feed/self_list', array('items' => $items, 'mode' => 'self'));
 
     echo "</div>";
     

@@ -52,9 +52,15 @@ class Controller_Org extends Controller
     function action_feed()
     {
         $title = __("feed:title");
+        
+        $sector = get_input('sector');
+        $region = get_input('region');
+        $feedName = get_feed_name(array('sector' => $sector, 'region' => $region));
+        $items = FeedItem::query_by_feed_name($feedName)->limit(20)->filter();
 
-        $area = view("org/feed");
+        $area = view("org/feed", array('sector' => $sector, 'region' => $region, 'items' => $items));
 
+        PageContext::set_rss(true);
         PageContext::set_translatable(false);
 
         $body = view_layout('one_column', view_title($title), $area);

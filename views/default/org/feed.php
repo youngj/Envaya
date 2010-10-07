@@ -1,8 +1,9 @@
 <div class='padded'>
 <?php
 
-$sector = get_input('sector');
-$region = get_input('region');
+$sector = $vars['sector'];
+$region = $vars['region'];
+$items = $vars['items'];
 
 ?>
 
@@ -41,7 +42,6 @@ echo view('input/pulldown', array(
 
 </div>
 
-<?php
-	$feedName = get_feed_name(array('sector' => $sector, 'region' => $region));
-	echo view('feed/list', array('items' => FeedItem::query_by_feed_name($feedName)->limit(20)->filter()));
+<?php	
+	echo view('feed/list', array('items' => $items));
 ?>

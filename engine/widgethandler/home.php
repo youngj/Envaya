@@ -3,6 +3,8 @@ class WidgetHandler_Home extends WidgetHandler
 {
     function view($widget)
     {
+        PageContext::set_rss(true);
+        
         return view("widgets/home_view", array('widget' => $widget));
     }
 

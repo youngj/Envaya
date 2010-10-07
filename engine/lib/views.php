@@ -14,7 +14,7 @@ function get_viewtype()
  * @param array $vars Any variables that the view requires, passed as an array
  * @return string The HTML content
  */
-function view($view, $vars = null)
+function view($view, $vars = null, $viewtype = null)
 {
 
     global $CONFIG;
@@ -33,7 +33,10 @@ function view($view, $vars = null)
     $vars['user'] = Session::get_loggedin_user();
     $vars['config'] = $CONFIG;
     $vars['url'] = $CONFIG->url;
-    $viewtype = get_viewtype();
+    if (!$viewtype)
+    {
+        $viewtype = get_viewtype();
+    }
     $viewDir = dirname(dirname(__DIR__)) . "/views/";
     $viewFile = $viewDir . "{$viewtype}/{$view}.php";
 

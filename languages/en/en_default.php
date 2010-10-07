@@ -20,7 +20,7 @@
         'feed:title' => "Latest updates",
         'feed:registered' => "%s joined Envaya.",
         'feed:news' => "%s added a %s.",        
-        'feed:news_multi' => "%%s added %d %%s.",
+        'feed:news_multi' => '%s added %3$d %2$s.',
         'feed:new_widget' => "%s created a %s page.",
         'feed:edit_widget' => "%s updated its %s page.",
         'feed:edit_home' => '%s updated its home page.',

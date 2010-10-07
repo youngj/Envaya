@@ -8,6 +8,7 @@ class ReportDefinition extends Entity
         'handler_class' => '',
         'name' => '',
     );
+    private $handler = null;
     
     function get_title()
     {

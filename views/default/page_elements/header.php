@@ -28,6 +28,12 @@
 
     <?php
         echo '<link rel="stylesheet" href="_css/'.escape(PageContext::get_theme()).'.css?v='.$cacheVersion.'" type="text/css" />';
+        
+        if (PageContext::has_rss())
+        {
+            echo '<link rel="alternate" type="application/rss+xml" title="RSS" '.
+                'href="'.url_with_param(Request::full_original_url(), 'view', 'rss').'" />';
+        }   
     ?>
 
     <!--[if IE 6]>

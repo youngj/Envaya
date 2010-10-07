@@ -2,8 +2,6 @@
 	header("Content-Type: text/xml");
 	
 	echo "<?xml version='1.0'?>\n";
-
-	
 	
 	// Set title
 		if (empty($vars['title'])) {
@@ -20,15 +18,12 @@
 
 ?>
 
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:georss="http://www.georss.org/georss" <?php echo view('extensions/xmlns'); ?> >
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:georss="http://www.georss.org/georss">
 	<channel>
 		<title><![CDATA[<?php echo $title; ?>]]></title>
 		<link><?php echo htmlentities($url); ?></link>
-		<?php echo view('extensions/channel'); ?>
-		<?php
-
-			echo $vars['body'];
-		
+		<?php 
+			echo $vars['body'];	
 		?>
 	</channel>
 </rss>

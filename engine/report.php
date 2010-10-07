@@ -8,8 +8,7 @@ class Report extends Entity
         'report_guid' => 0,
         'status' => 0,
     );      
-    private $fields = null;
-    private $handler = null;
+    private $fields = null;    
     private $field_args = null;
    
     function get_date_text()

@@ -11,9 +11,7 @@
     $items = $org->query_feed_items()->limit(6)->filter();
 
     echo "<div class='section_content'>";
-
-    echo view('feed/self_list', array('items' => $items));
-
+    echo view('feed/list', array('items' => $items, 'mode' => 'self'));
     echo "</div>";
 
     $sectors = $org->get_sectors();

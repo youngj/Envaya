@@ -2,24 +2,15 @@
     $org = $vars['org'];
     $home = $vars['home_widget'];
 
-    $maxLength = 500;
-
-    echo "<div class='feed_snippet'>";
-    echo "<em>".__('org:mission')."</em>: ";
-
-    $content = $home->render_content();
-    $snippet = Markup::get_snippet($content, $maxLength);
-    echo $snippet;
-
-    if (strlen($content) > $maxLength)
-    {
-        echo " <a class='feed_more' href='{$home->get_url()}'>".__('feed:more')."</a>";
-    }
-    echo "</div>";
+    echo view('feed/snippet', array(
+        'max_length' => 50,
+        'content' => "<em>".__('org:mission')."</em>: " . $home->render_content(),
+        'link_url' => $home->get_url()
+    ));
 
     echo "<div class='feed_snippet'>";
     echo "<em>".__('org:sectors')."</em>: ";
-    echo view("org/sectors", array('sectors' => $org->get_sectors(), 'sector_other' => $org->sector_other));
+    echo view("org/sectors", array('sectors' => $org->get_sectors(), 'sector_other' => $org->sector_other), 'default');
     echo "</div>";
 
     echo "<div class='feed_snippet'>";
