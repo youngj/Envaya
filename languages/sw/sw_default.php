@@ -3,6 +3,10 @@ return array(
     'donate' => 'Changia',
     'donate_now' => 'Toa msaada sasa!',
     
+    'viewtype:default' => "Kawaida",
+    'viewtype:mobile' => "Simu",
+
+    
     'capslock_warning' => "Angalia: Unatumia CAPS LOCK sasa",
     'submit_request' => "Peleka ombi",
     

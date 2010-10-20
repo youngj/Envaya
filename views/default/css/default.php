@@ -1271,15 +1271,22 @@ a.attachImageClose:hover
     border:0px;
 }
 
-.language, .footerLinks
+#language, #viewtype
 {
     padding:0px 10px 0px 10px;
 }
 
-.footerLinks
+#viewtype
 {
     float:right;
 }
+
+.footerLinks
+{
+    padding:5px;
+    text-align:center;
+}
+
 
 .commBox
 {
