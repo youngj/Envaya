@@ -94,6 +94,9 @@ server {
                     '"\$request" \$status \$body_bytes_sent '
                     '"\$http_referer" "\$http_user_agent" \$request_time';
     access_log  /var/log/nginx/access.log combined_time;
+    client_max_body_size 10m;
+    client_body_timeout 118;
+    send_timeout 124;
     
     location / {
         index  index.php;
