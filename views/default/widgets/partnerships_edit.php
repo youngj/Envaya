@@ -61,7 +61,7 @@
     
     <div class='feed_content'>
         <a class='feed_org_name' href='<?php echo $partner->get_url() ?>'><?php echo escape($partner->name); ?></a><br />
-        <label><?php echo __('widget:partnerships:description'); ?></label>
+        <label><?php echo __('widget:partnerships:description'); ?></label><br />
 
         <?php echo view('input/longtext', array(
                 'internalname' => "partnershipDesc{$p->guid}",

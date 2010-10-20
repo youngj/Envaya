@@ -116,6 +116,15 @@ function bootstrap()
         change_viewer_language($_GET['lang']);
     }    
     
+    if (@$_GET['__sv'])
+    {
+        $view = @$_GET['view'];
+        if (in_array($view, array('mobile','default')))
+        {    
+            set_persistent_cookie('view', $view);
+        }
+    }
+    
     trigger_event('init', 'system');      
 }
 

@@ -151,8 +151,3 @@ body
     color:black;
 }
 
-.tabs .active
-{
-    font-weight:bold;
-}
-

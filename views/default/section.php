@@ -1,7 +1,7 @@
 <div class='section_header'>
-    <?php echo $vars['area1'] ?>  
+    <?php echo $vars['header'] ?>  
 </div>
 <div class='section_content padded'>
-    <?php echo $vars['area2'] ?>  
+    <?php echo $vars['content'] ?>  
     <div style='clear:both'></div>
 </div>

@@ -103,13 +103,12 @@ small {
     font-size: 90%;
 }
 h1, h2, h3, h4, h5, h6 {
-    font-weight: bold;
-    line-height: normal;
+    font-weight: bold;    
 }
-h1 { font-size: 1.8em; }
-h2 { font-size: 1.5em; }
-h3 { font-size: 1.2em; }
-h4 { font-size: 1.0em; }
+h1 { font-size: 1.8em; line-height: normal; }
+h2 { font-size: 1.5em; line-height: normal; }
+h3 { font-size: 1.2em; line-height: normal; }
+h4 { font-size: 1.0em; line-height: 1.4; }
 h5 { font-size: 0.9em; }
 h6 { font-size: 0.8em; }
 
@@ -341,7 +340,7 @@ input[type="submit"] {
 .input-tags,
 .input-url,
 .input-textarea {
-    width:<?php echo $contentWidth - 52 ?>px;
+    width:<?php echo $contentWidth ? ($contentWidth - 52)."px" : "auto" ?>;
     margin-top:4px;
 }
 
@@ -691,7 +690,7 @@ a.dropdown_item:hover
 
 .thin_column
 {
-    width:<?php echo $contentWidth ?>px;
+    width:<?php echo $contentWidth ? $contentWidth."px" : 'auto' ?>;
     margin:0 auto;
 }
 
@@ -829,7 +828,7 @@ a.selected
     background:#b9e9ff;
     color:#000000;
     padding:3px;
-    width:<?php echo $contentWidth - 17 ?>px;
+    width:<?php echo $contentWidth ? ($contentWidth - 17)."px" : "auto" ?>;
     margin:0 auto;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -1274,7 +1273,7 @@ a.attachImageClose:hover
 
 .language, .footerLinks
 {
-    padding:0px 10px 15px 10px;
+    padding:0px 10px 0px 10px;
 }
 
 .footerLinks
@@ -1687,7 +1686,7 @@ a.feed_image_link:hover
 .todo_container .good_messages
 {
     padding:12px;
-    width:565px;
+    width:<?php echo $contentWidth ? "565px" : 'auto'; ?>;
 }
 
 .todo_container table
@@ -1757,4 +1756,9 @@ a.feed_image_link:hover
 .report_info th
 {
     padding-right:10px;    
+}
+
+.tabs .active
+{
+    font-weight:bold;
 }

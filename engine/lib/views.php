@@ -2,7 +2,23 @@
 
 function get_viewtype()
 {
-    return get_input('view') ?: 'default';
+    static $VIEWTYPE;
+    
+    if (!isset($VIEWTYPE))
+    {
+        $VIEWTYPE = get_input('view') ?: $_COOKIE['view'] ?: '';        
+        
+        if (!$VIEWTYPE && is_mobile_browser())
+        {
+            $VIEWTYPE = 'mobile';
+        }
+        
+        if (preg_match('/[^\w]/', $VIEWTYPE))
+        {            
+            $VIEWTYPE = '';
+        }
+    }
+    return $VIEWTYPE;
 }
 
 /**
@@ -16,7 +32,6 @@ function get_viewtype()
  */
 function view($view, $vars = null, $viewtype = null)
 {
-
     global $CONFIG;
 
     // basic checking for bad paths
@@ -37,14 +52,12 @@ function view($view, $vars = null, $viewtype = null)
     {
         $viewtype = get_viewtype();
     }
-    $viewDir = dirname(dirname(__DIR__)) . "/views/";
-    $viewFile = $viewDir . "{$viewtype}/{$view}.php";
-
-    $exists = file_exists($viewFile);
+       
+    $viewPath = get_view_path($view, $viewtype);
 
     ob_start();
 
-    if ($exists && include_view($viewFile, $vars))
+    if (include_view($viewPath, $vars))
     {
         // success
     }
@@ -54,6 +67,33 @@ function view($view, $vars = null, $viewtype = null)
     }
 
     return ob_get_clean();
+}
+
+function get_view_path($view, $viewtype = '', $fallback = true)
+{
+    if (empty($viewtype))
+        $viewtype = get_viewtype();
+
+    $viewDir = dirname(dirname(__DIR__)) . "/views/";
+    $exists = false;
+    
+    if ($viewtype)
+    {
+        $viewPath  = $viewDir . "{$viewtype}/{$view}.php";
+        $exists = file_exists($viewPath);
+        if (!$exists && !$fallback)
+        {
+            return null;
+        }
+    }
+    
+    if (!$exists)
+    {
+        $viewPath = $viewDir . "default/{$view}.php";
+        $exists = file_exists($viewPath);
+    }
+    
+    return ($exists) ? $viewPath : null;
 }
 
 function include_view($viewFile, $vars)
@@ -68,13 +108,9 @@ function include_view($viewFile, $vars)
  * @param string $viewtype If set, forces the viewtype
  * @return true|false Depending on success
  */
-function view_exists($view, $viewtype = '')
+function view_exists($view, $viewtype = '', $fallback = true)
 {
-    if (empty($viewtype))
-        $viewtype = get_viewtype();
-
-    return file_exists(dirname(dirname(__DIR__)) . "/views/{$viewtype}/{$view}.php");
-
+    return get_view_path($view, $viewtype, $fallback) != null; 
 }
 
 /**
@@ -123,10 +159,13 @@ function view_layout($layout)
         $param_array['area' . $arg] = func_get_arg($arg);
         $arg++;
     }
-    if (view_exists("canvas/layouts/{$layout}")) {
-        return view("canvas/layouts/{$layout}",$param_array);
-    } else {
-        return view("canvas/default",$param_array);
+    if (view_exists("canvas/default", false)) 
+    {
+        return view("canvas/default",$param_array);               
+    } 
+    else 
+    {
+        return view("canvas/layouts/{$layout}", $param_array);
     }
 
 }

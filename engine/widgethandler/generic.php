@@ -29,11 +29,11 @@ class WidgetHandler_Generic extends WidgetHandler
         {
             if (!$prevContent)
             {
-                post_feed_items($widget->get_container_entity(), 'new_widget', $widget);
+                post_feed_items($widget->get_container_entity(), 'newwidget', $widget);
             }
             else if (!Session::isadminloggedin() && time() - $lastUpdated > 86400)
             {
-                post_feed_items($widget->get_container_entity(), 'edit_widget', $widget);
+                post_feed_items($widget->get_container_entity(), 'editwidget', $widget);
             }
         }     
     }

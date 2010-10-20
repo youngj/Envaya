@@ -5,7 +5,7 @@
 
     $form = view('org/addPost', array('org' => $org));
 
-    echo view_layout('section', __("dashboard:add_update"), $form);
+    echo view('section', array('header' => __("dashboard:add_update"), 'content' => $form));
 
     $offset = (int) get_input('offset');
     $limit = 10;
@@ -68,5 +68,8 @@
 
     $content = ob_get_clean();
 
-    echo view_layout('section', __("widget:news:manage_updates"), $content);
+    echo view("section", array(
+        'header' => __("widget:news:manage_updates"),
+        'content' => $content
+    ));
 ?>

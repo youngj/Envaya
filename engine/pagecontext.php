@@ -65,6 +65,22 @@ class PageContext
         return static::$theme;
     }
 
+    static function get_css_path()
+    {        
+        if (get_viewtype() == 'mobile')
+        {
+            $filename = 'mobile';
+        }
+        else
+        {
+            $filename = escape(static::get_theme());
+        }
+        global $CONFIG;
+        $cacheVersion = $CONFIG->cache_version;        
+        
+        return '_css/'.$filename.'.css?v='.$cacheVersion;
+    }
+        
     static function set_theme($theme)
     {
         static::$theme = $theme;

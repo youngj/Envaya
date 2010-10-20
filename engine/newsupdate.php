@@ -57,7 +57,7 @@ class NewsUpdate extends Entity
         $recent = time() - 60*60*6;
         
         $recent_update = $org->query_feed_items()
-            ->where("action_name in ('news','news_multi')")
+            ->where("action_name in ('news','newsmulti')")
             ->where('time_posted > ?', $recent)
             ->order_by('id desc')
             ->get();
@@ -68,7 +68,7 @@ class NewsUpdate extends Entity
         
             foreach ($recent_update->query_items_in_group()->filter() as $r)
             {
-                $r->action_name = 'news_multi';
+                $r->action_name = 'newsmulti';
                 $r->subject_guid = $this->guid;
                 $r->time_posted = $time;
                 $prev_count = @$r->args['count'] ?: 1;

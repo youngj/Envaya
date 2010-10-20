@@ -77,13 +77,5 @@ function __($message_key, $language_code = "") {
 
 function change_viewer_language($newLanguage)
 {
-    global $CONFIG;
-
-    $expireTime = time() + 60 * 60 * 24 * 365 * 15;
-
-    if ($CONFIG->cookie_domain)
-    {
-        setcookie("lang", $newLanguage, $expireTime, '/', $CONFIG->cookie_domain);
-    }
-    setcookie("lang", $newLanguage, $expireTime, '/');
+    set_persistent_cookie('lang', $newLanguage);
 }

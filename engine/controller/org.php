@@ -11,8 +11,10 @@ class Controller_Org extends Controller
     {
         $title = __("browse:title");
         $sector = get_input('sector');
-
-        if (get_input("list"))
+        
+        $list = get_input("list");
+        
+        if ($list || ($list == '' && get_viewtype() == 'mobile'))
         {
             $area = view("org/browseList", array('lat' => $lat, 'long' => $long, 'sector' => $sector));
         }
@@ -22,8 +24,9 @@ class Controller_Org extends Controller
             $long = get_input('long');
             $zoom = get_input('zoom');
 
-            $area = view("org/browseMap", array('lat' => $lat, 'long' => $long, 'zoom' => $zoom, 'sector' => $sector));
+            $area = view("org/browseMap", array('lat' => $lat, 'long' => $long, 'zoom' => $zoom, 'sector' => $sector));        
         }
+        
 
         $body = view_layout('one_column', view_title($title), $area);
 

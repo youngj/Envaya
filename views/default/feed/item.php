@@ -12,9 +12,9 @@
 
     <div class='blog_post_wrapper padded'>
     <div class="feed_post">
-        <?php if ($mode != 'self') { ?>                
-            <a class='feed_org_icon' href='<?php echo $orgUrl ?>'><img src='<?php echo $orgIcon ?>' /></a>
-        <?php } ?>
+        <?php if ($mode != 'self') { 
+            echo view('feed/icon', array('org' => $org));            
+        } ?>
         <div class='feed_content'>
         <?php
             echo $feedItem->render_thumbnail($mode);

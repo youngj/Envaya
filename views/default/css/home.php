@@ -128,7 +128,7 @@ a.icon_feed:hover       { background-position:left -440px; }
     background:url(<?php echo $graphicsDir; ?>/home_headings.gif?v2) repeat-x left top;
     border: 1px solid black;
 }
-.home_heading div
+.home_heading h4
 {
     font-weight:bold;
     text-align:center;
@@ -197,6 +197,7 @@ a.icon_feed:hover       { background-position:left -440px; }
     border-bottom:1px solid #c5c4c0;
     padding:10px 15px;
     font-size:14px;
+    font-weight:normal;
 }
 
 .home_featured_content

@@ -10,7 +10,10 @@
 
     header("Content-type: text/html; charset=UTF-8");
     echo view('page_elements/header', $vars);
-    echo view('page_elements/topbar', $vars);
+    if (!@$vars['no_top_bar']) 
+    {
+        echo view('page_elements/topbar', $vars);
+    }
     echo SessionMessages::view_all();
     echo $vars['body'];
     echo view('page_elements/footer', $vars);

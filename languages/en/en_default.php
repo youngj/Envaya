@@ -3,6 +3,9 @@
      return array(
         'donate' => 'Donate',        
         'donate_now' => "Donate now!",
+        
+        'viewtype:default' => "Standard",
+        'viewtype:mobile' => "Mobile",
 
         'capslock_warning' => "Warning: CAPS LOCK is on",
         'submit_request' => "Submit request",

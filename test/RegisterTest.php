@@ -125,8 +125,9 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     }
 
     public function test()
-    {
+    {        
         $this->_testContactForm();
+        $this->_testMobile();
         $this->_testRegister();
         $this->_testResetPassword();
         $this->_testSettings();
@@ -139,6 +140,16 @@ class RegisterTest extends PHPUnit_Framework_TestCase
         $this->_testPartnership();
         $this->_testMessages();
         $this->_testDeleteOrg();
+    }
+    
+    private function _testMobile()
+    {
+        $this->clickAndWait("//a[contains(@href,'view=mobile')]");
+        $this->clickAndWait("//div[@id='topbar2']//a[contains(@href,'org/feed')]");
+        $this->clickAndWait("//div[@id='topbar2']//a[contains(@href,'envaya')]");
+        $this->mustNotExist("//table[@class='left_sidebar_table']");
+        $this->clickAndWait("//a[contains(@href,'view=default')]");
+        $this->mouseOver("//table[@class='left_sidebar_table']");
     }
 
     private function _testResetPassword()

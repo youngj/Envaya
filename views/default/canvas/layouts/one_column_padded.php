@@ -1,3 +1,7 @@
 <?php
-    echo view_layout('one_column', $vars['area1'], "<div class='section_content padded'>".$vars['area2']."</div>", @$vars['area3']);    
+    echo view("canvas/layouts/one_column", array(
+        'area1' => $vars['area1'],
+        'area2' => "<div class='section_content padded'>".$vars['area2']."</div>",
+        'area3' => @$vars['area3']
+    ));        
 ?>

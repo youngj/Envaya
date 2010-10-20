@@ -2,8 +2,8 @@
     $org = $vars['org'];
 
     $form = view('org/addPost', array('org' => $org));
-
-    echo view_layout('section', __("dashboard:add_update"), $form);
+    
+    echo view('section', array('header' => __("dashboard:add_update"), 'content' => $form));
 
     $widgets = $org->get_available_widgets();
 
@@ -18,7 +18,7 @@
 
     $widgets = "<div id='edit_pages_menu'>".implode(' ', $widgetList)."</div>";
 
-    echo view_layout('section', __("dashboard:edit_widgets"), $widgets);
+    echo view('section', array('header' => __("dashboard:edit_widgets"), 'content' => $widgets));
 
     ob_start();
 ?>
@@ -48,5 +48,4 @@
 </table>
 <?php
     $links = ob_get_clean();
-
-    echo view_layout('section', __("dashboard:links"), $links);
+    echo view('section', array('header' => __("dashboard:links"), 'content' => $links));

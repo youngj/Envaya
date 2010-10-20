@@ -12,11 +12,6 @@
 </div>
 <div class="footer_container">
 <div class='thin_column'>
-<?php
-    echo get_submenu_group('footer', 'canvas_header/link_submenu', 'canvas_header/footer_submenu_group'); 
-?>
-<div class='language'>        
-    <?php echo view('page_elements/language_links'); ?>    
-</div>
+<?php echo view('page_elements/content_footer'); ?>
 </div>
 </div>

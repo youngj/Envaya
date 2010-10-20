@@ -2,7 +2,7 @@
 
     $widget = $vars['widget'];
 
-    echo view_layout('section', __("org:mission"), $widget->render_content());
+    echo view('section', array('header' => __("org:mission"), 'content' => $widget->render_content()));
 
     $org = $vars['widget']->get_container_entity();
 
@@ -18,9 +18,10 @@
 
     if (!empty($sectors))
     {
-        echo view_layout('section', __("org:sectors"),
-            view("org/sectors", array('sectors' => $sectors, 'sector_other' => $org->sector_other))
-        );
+        echo view('section', array(
+            'header' => __("org:sectors"), 
+            'content' => view("org/sectors", array('sectors' => $sectors, 'sector_other' => $org->sector_other)))
+        );    
     }
 
     ob_start();
@@ -45,6 +46,6 @@
         echo "</a>";
         echo "</div>";
     $map = ob_get_clean();
-    echo view_layout('section', __("org:location"), $map);
-
+    
+    echo view('section', array('header' => __("org:location"), 'content' => $map));
 ?>

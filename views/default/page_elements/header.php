@@ -17,7 +17,7 @@
             $title = $vars['config']->sitename . ": " . $vars['title'];
         }
 
-        $cacheVersion = $vars['config']->cache_version;
+        
 ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -27,8 +27,8 @@
     <base href='<?php echo $vars['url'] ?>' />
 
     <?php
-        echo '<link rel="stylesheet" href="_css/'.escape(PageContext::get_theme()).'.css?v='.$cacheVersion.'" type="text/css" />';
-        
+        echo '<link rel="stylesheet" href="'.PageContext::get_css_path().'" type="text/css" />';
+    
         if (PageContext::has_rss())
         {
             echo '<link rel="alternate" type="application/rss+xml" title="RSS" '.

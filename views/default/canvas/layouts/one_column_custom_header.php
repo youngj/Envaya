@@ -27,5 +27,10 @@
 
 <?php 
     $content = ob_get_clean();
-    echo view_layout("content_shell", $vars['area1'], $content, @$vars['area3']);    
+    
+    echo view("canvas/layouts/content_shell", array(
+        'area1' => $vars['area1'],
+        'area2' => $content,
+        'area3' => @$vars['area3']
+    ));        
 ?>
