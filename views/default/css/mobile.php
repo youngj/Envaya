@@ -12,6 +12,7 @@
 {
     background-color:#dddddd;
     padding:2px;
+    font-size:medium;
 }
 
 #heading
@@ -22,7 +23,12 @@
 .top_language
 {
     color:white;
-    padding:3px;
+    padding:3px;   
+}
+
+body
+{
+    font-size:100%;
 }
 
 #translate_bar
