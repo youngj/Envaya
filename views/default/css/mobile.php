@@ -39,6 +39,7 @@ body
     border-color:black;
     color:black;
 }
+#translate_bar a { color:black; }
 
 .feed_content
 {

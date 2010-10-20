@@ -4,8 +4,6 @@
     </a>
 <div class='top_language'>
     <?php 
-        echo __('language'); 
-        echo ": ";
         echo view('page_elements/language_links'); ?>    
 </div>    
 <div style='clear:both'></div>    
