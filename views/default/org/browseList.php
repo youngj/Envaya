@@ -5,6 +5,8 @@ $sector = @$vars['sector'];
 ?>
 
 <div class='padded'>
+<form method='GET' action='/org/browse'>
+<input type='hidden' name='list' value='1' />
 <script type='text/javascript'>
 function sectorChanged()
 {
@@ -21,11 +23,7 @@ function sectorChanged()
 }
 </script>
 
-
-<div class='view_toggle'>
-    <a href='org/browse?list=0&sector=<?php echo escape($sector); ?>'><?php echo __('browse:map') ?></a> &middot;
-    <strong><?php echo __('list') ?></strong>
-</div>
+<?php echo view('org/browseToggle', $vars); ?>
 
 <?php 
 
@@ -37,9 +35,7 @@ echo view('input/pulldown', array(
     'value' => $sector,
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"        
 ));
-
 echo "<div style='height:5px'></div>";
-
 $region = get_input('region');
 
 echo view('input/pulldown', array(
@@ -51,7 +47,14 @@ echo view('input/pulldown', array(
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"        
 ));
 
-echo "<br /><br />";
+?>
+<noscript>
+<?php echo view('input/submit', array('internalname' => 'submit', 'value' => __('go'))); ?>
+</noscript>
+</form>
+<br />
+
+<?php
 
 $res = Organization::list_search($name=null, $sector, $region, $limit = 10);   
 if ($res)

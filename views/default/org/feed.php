@@ -18,6 +18,7 @@ function sectorChanged()
 }
 </script>
 
+<form method='GET' action='/org/feed'>
 <?php
 
 echo view('input/pulldown', array(
@@ -37,9 +38,13 @@ echo view('input/pulldown', array(
     'value' => $region,
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"
 ));
-
+    
 ?>
+<noscript>
+<?php echo view('input/submit', array('internalname' => 'submit', 'value' => __('go'))); ?>
+</noscript>
 
+</form>
 </div>
 
 <?php	

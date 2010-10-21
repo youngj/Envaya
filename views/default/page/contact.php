@@ -4,7 +4,7 @@
 
 <form method="POST" action='pg/send_feedback'>
 <div class='input'>
-<label><?php echo __('feedback:message') ?>:</label>
+<div><label><?php echo __('feedback:message') ?>:</label></div>
 <?php
     echo view('input/longtext', array(
         'internalname' => 'message'

@@ -6,6 +6,7 @@ return array(
     'viewtype:default' => "Kawaida",
     'viewtype:mobile' => "Simu",
 
+    'go' => 'Nenda',
     
     'capslock_warning' => "Angalia: Unatumia CAPS LOCK sasa",
     'submit_request' => "Peleka ombi",
@@ -44,7 +45,7 @@ return array(
     'list' => 'Orodha',
     'search' => 'Tafuta',
     'search:title' => 'Tafuta shirika',
-    'search:title_with_query' => 'Tafuta: %s',
+    'search:results' => "Matokeo ya utafutaji",
     'search:submit' => 'Tafuta',
     'search:instructions' => 'Chapa jina au sehemu ya shirika unalotafuta.',
     'search:noresults' => 'Shirika lolote halionekani!',

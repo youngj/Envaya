@@ -1668,6 +1668,7 @@ a.feed_image_link:hover
 .capslockWarning
 {
     color:red;
+    display:none;
     font-weight:normal;
     font-size:11px;
     padding-left:3px;

@@ -7,9 +7,6 @@
     $blogDates = $org->get_blog_dates();
 ?>
 
-<div class='view_toggle'>
-    <a href='<?php echo rewrite_to_current_domain($org->get_url().'/news') ?>'><?php echo __('list') ?></a> | <strong><?php echo __('blog:timeline') ?></strong>
-</div>
 <div style='clear:both'></div>
 <div class='padded'>
 

@@ -14,7 +14,7 @@
 
     $controls = "";
 
-    $info = "<div><p><b><a href=\"" . $vars['entity']->get_url() . "\">" . escape($title) . "</a>" . (!$vars['entity']->is_approved() ? (" (" . __('approval:notapproved') .") ") : "") . "</b> $controls </p></div>";
+    $info = "<div><b><a href=\"" . $vars['entity']->get_url() . "\">" . escape($title) . "</a>" . (!$vars['entity']->is_approved() ? (" (" . __('approval:notapproved') .") ") : "") . "</b> $controls</div>";
 
     if (get_input('search_viewtype') == "gallery") {
 

@@ -14,7 +14,7 @@ class Controller_Org extends Controller
         
         $list = get_input("list");
         
-        if ($list || ($list == '' && get_viewtype() == 'mobile'))
+        if ($list || get_viewtype() == 'mobile')
         {
             $area = view("org/browseList", array('lat' => $lat, 'long' => $long, 'sector' => $sector));
         }
@@ -32,23 +32,47 @@ class Controller_Org extends Controller
 
         $this->page_draw($title, $body);
     }
-
+    
     function action_search()
     {
         $query = get_input('q');
-
-        if ($query)
-        {
-            $title = sprintf(__('search:title_with_query'),$query);
+        $sector = get_input('sector');
+        
+        $vars = array('query' => $query, 'sector' => $sector);
+        
+        if (empty($query) && !$sector)
+        {        
+            $title = __('search:title');
+            $content = view('org/search', $vars);
         }
         else
         {
-            $title = __('search:title');
+            $title = __('search:results');            
+            
+            if (!empty($query)) 
+            {
+                $geoQuery = "$query Tanzania";            
+                $latlong = Geocoder::geocode($geoQuery);
+            }
+            
+            if ($latlong)
+            {
+                $vars['nearby'] = Organization::query_by_area(
+                    array(
+                        $latlong['lat'] - 1.0, 
+                        $latlong['long'] - 1.0, 
+                        $latlong['lat'] + 1.0, 
+                        $latlong['long'] + 1.0
+                    ),    
+                    $sector)->limit(1)->get() != null;
+            }
+
+            $vars['results'] = Organization::list_search($query, $sector, $region=null, $limit = 10);            
+            
+            $content = view('org/search_results', $vars);
         }
-        $content = view('org/search', array('query' => $query, 'sector' => get_input('sector')));
 
-        $body = view_layout('one_column_padded', view_title(__('search:title')), $content);
-
+        $body = view_layout('one_column_padded', view_title($title), $content);
         $this->page_draw($title,$body);
     }
 

@@ -5,16 +5,9 @@
     $url = rewrite_to_current_domain($entity->get_url());
     $org = $entity->get_root_container_entity();
     $blogDates = $org->get_blog_dates();
-?>
-
-<div class='view_toggle'>
-    <a href='<?php echo rewrite_to_current_domain($org->get_url().'/news') ?>'><?php echo __('list') ?></a> | <strong><?php echo __('blog:timeline') ?></strong>
-</div>
-<div style='clear:both'></div>
-
-<?php
-
-if (sizeof($blogDates) > 1)
+    echo view_entity($entity, true);
+    
+    if (sizeof($blogDates) > 1)
 {
 
 ?>
@@ -24,9 +17,8 @@ if (sizeof($blogDates) > 1)
 </div>
 <?php
 }
-            
-echo view_entity($entity, true);
 ?>
+
 
 </div>
 </div>

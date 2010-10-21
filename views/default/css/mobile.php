@@ -8,6 +8,11 @@
     background-image:none;
 }
 
+h1,h2,h3
+{
+    font-size:large;
+}   
+
 #topbar2
 {
     background-color:#dddddd;
@@ -64,4 +69,9 @@ body
 .icon_link
 {
     height:auto;
+}
+
+label
+{
+    font-size:medium;
 }

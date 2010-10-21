@@ -4,6 +4,8 @@
         'donate' => 'Donate',        
         'donate_now' => "Donate now!",
         
+        'go' => 'Go',
+        
         'viewtype:default' => "Standard",
         'viewtype:mobile' => "Mobile",
 
@@ -60,7 +62,7 @@
 
         'search' => "Search",
         'search:title' => "Find an organization",
-        'search:title_with_query' => "Search: %s",
+        'search:results' => "Search results",
         'search:submit' => 'Search',
         'search:instructions' => "Enter the name or location of the organization you're looking for.",
         'search:noresults' => "No results found!",
