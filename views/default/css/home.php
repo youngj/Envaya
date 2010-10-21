@@ -37,7 +37,7 @@
 .home_banner
 {
     height:299px;
-    background:#333 url(<?php echo $graphicsDir ?>/banner_planting.jpg?v6) no-repeat left top;
+    background:#333 url(<?php echo $graphicsDir ?>/banner_planting4.jpg) no-repeat left top;
 }
 
 .home_table
