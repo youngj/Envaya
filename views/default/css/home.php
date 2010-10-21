@@ -29,10 +29,15 @@
     height:21px;
 }
 
+.home_content_bg
+{
+
+}
+
 .home_banner
 {
     height:299px;
-    background:#333 url(<?php echo $graphicsDir ?>/banner_phone.jpg?v2) no-repeat left top;
+    background:#333 url(<?php echo $graphicsDir ?>/banner_planting.jpg?v6) no-repeat left top;
 }
 
 .home_table
@@ -48,7 +53,7 @@
 
 .home_banner_text
 {
-    padding:40px 35px;
+    padding:43px 35px;
     width:400px;
 }
 
