@@ -5,7 +5,7 @@
 
 #topbar
 {
-    background-image:none;
+    background:#1d1d1d;
 }
 
 h1,h2,h3
@@ -13,7 +13,7 @@ h1,h2,h3
     font-size:large;
 }   
 
-#topbar2
+#topbar2, .adminBox
 {
     background-color:#dddddd;
     padding:2px;
@@ -71,5 +71,3 @@ label
 {
     font-size:medium;
 }
-
-

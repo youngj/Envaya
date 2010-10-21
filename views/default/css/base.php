@@ -2,70 +2,32 @@
     $graphicsDir = $vars['url'] . "_graphics";
 ?>
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, cite, code,
-del, dfn, em, font, img, ins, kbd, q, s, samp,
-strike, sub, sup, tt, var,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-weight: inherit;
-    font-style: inherit;
-    font-size: 100%;
-    font-family: inherit;
-    vertical-align: baseline;
-}
-
-th
+html,body
 {
-font-weight:bold;
+    margin:0; padding:0;
 }
 
-em, i {
-    font-style:italic;
+body
+{
+    text-align:left;
+    font: 80%/1.4  "Lucida Grande", Verdana, sans-serif;
+    color: #333333;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;  
+    line-height: normal; 
+    margin:0; padding: 0;
 }
 
 table {
     border-collapse: collapse;
     border-spacing: 0;
 }
-caption, th, td
-{
-    text-align: left;
-    vertical-align: top;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-    content: "";
-}
-blockquote, q {
-    quotes: "" "";
-}
-.clearfloat {
-    clear:both;
-    height:0;
-    font-size: 1px;
-    line-height: 0px;
-}
 
-body
-{
-    text-align:left;
-    margin:0 auto;
-    padding:0;
-    font: 80%/1.4  "Lucida Grande", Verdana, sans-serif;
-    color: #333333;
-}
+
 a {
     color: #4690d6;
     text-decoration: none;
-}
-a:visited {
-
 }
 a:hover {
     color: #0054a7;
@@ -77,79 +39,9 @@ p {
 img {
     border: none;
 }
-ul {
-    margin: 0px 0px 15px;
-    padding-left: 20px;
-}
-ul li {
-    margin: 0px;
-}
-ol {
-    margin: 0px 0px 15px;
-    padding-left: 20px;
-}
-ul li {
-    margin: 0px;
-}
 form {
     margin: 0px;
     padding: 0px;
-}
-small {
-    font-size: 90%;
-}
-h1, h2, h3, h4, h5, h6 {
-    font-weight: bold;    
-}
-h1 { font-size: 1.8em; line-height: normal; }
-h2 { font-size: 1.5em; line-height: normal; }
-h3 { font-size: 1.2em; line-height: normal; }
-h4 { font-size: 1.0em; line-height: 1.4; }
-h5 { font-size: 0.9em; }
-h6 { font-size: 0.8em; }
-
-dt {
-    margin: 0;
-    padding: 0;
-    font-weight: bold;
-}
-dd {
-    margin: 0 0 1em 1em;
-    padding: 0;
-}
-pre, code {
-    font-family:Monaco,"Courier New",Courier,monospace;
-    font-size:12px;
-    background:#EBF5FF;
-    overflow:auto;
-
-    overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
-    white-space: pre-wrap; /* css-3 */
-    white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
-    white-space: -pre-wrap; /* Opera 4-6 */
-    white-space: -o-pre-wrap; /* Opera 7 */
-    word-wrap: break-word; /* Internet Explorer 5.5+ */
-
-}
-code {
-    padding:2px 3px;
-}
-pre {
-    padding:3px 15px;
-    margin:0px 0 15px 0;
-    line-height:1.3em;
-}
-blockquote {
-    padding:3px 15px;
-    margin:0px 0 15px 0;
-    line-height:1.3em;
-    background:#EBF5FF;
-    border:none !important;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-}
-blockquote p {
-    margin:0 0 5px 0;
 }
 
 .notitle {
@@ -213,13 +105,6 @@ input[type="submit"] {
 #persistent_login label {
     font-size:1.0em;
     font-weight: normal;
-}
-
-#topbar
-{
-    width:100%;
-    /* height:48px; */
-    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient_sm.gif?v5") repeat-x left -1px;
 }
 
 #site_menu
@@ -438,46 +323,10 @@ a.selected
     padding-right:10px;
 }
 
-.adminBox
-{
-    position:absolute;
-    top:75px;
-    right:2px;
-    border:1px solid red;
-    background:#ffcccc;
-    padding:5px;
-}
-
-.adminBox a
-{
-    display:block;
-    color:#000066;
-}
-
 .addUpdateButton
 {
     float:right;
     margin:4px 0px !important;
-}
-
-#attachControls
-{
-    padding:4px;
-}
-
-#attachControls img
-{
-    vertical-align:middle;
-}
-
-#attachControls a
-{
-    color:#333;
-}
-
-#attachImage input
-{
-    margin:3px;
 }
 
 .view_toggle
@@ -497,19 +346,6 @@ a.selected
     background:#444;
     color:#ddd;
 }
-
-.header_icons
-{
-    height:30px;
-    width:36px;
-    margin:0 auto;
-    background:url(<?php echo $graphicsDir ?>/move_edit_delete.gif) no-repeat left top;
-}
-
-.down_icon { background-position:left -40px; }
-.edit_icon { background-position:left -80px; }
-.delete_icon { background-position:left -120px; }
-.up_icon { background-position:left -160px; }
 
 .gridTable .even td
 {
@@ -554,41 +390,6 @@ a.selected
 {
     padding:5px;
     text-align:center;
-}
-
-
-.commBox
-{
-    text-align: center;
-    height:36px;
-    color:white;
-    width:100%;
-    margin-bottom:3px;
-}
-
-.commBox a
-{
-    font-weight: bold;
-    color:white;
-}
-
-.commBoxLeft
-{
-    background:url(<?php echo $graphicsDir ?>/commBox.gif) no-repeat right -10px;
-    width:45%;
-}
-
-.commBoxMain
-{
-    background:url(<?php echo $graphicsDir ?>/commBox.gif) repeat-x left -56px;
-    white-space:nowrap;
-    padding:5px 15px;
-}
-
-.commBoxRight
-{
-    background:url(<?php echo $graphicsDir ?>/commBox.gif) no-repeat left -102px;
-    width:45%;
 }
 
 .partnership_view
@@ -655,17 +456,6 @@ a.selected
     text-align:center;
 }
 
-.linkUrl, .linkText
-{
-    padding-bottom:10px;
-}
-
-.linkUrl input, .linkText input
-{
-    width:350px;
-    display:block;
-}
-
 .feed_snippet
 {
     color:#666;
@@ -688,15 +478,6 @@ a.feed_image_link:hover
 {
     border: 1px solid #7391a9;
 }
-
-.top_language
-{
-    float:right;
-    padding:11px 10px 8px 5px;
-    color:white;
-    color:#e6e6e6;
-    white-space:nowrap;
-}   
 
 .featured_site
 {
@@ -734,53 +515,4 @@ a.feed_image_link:hover
     border:1px solid #ccc;
     margin-top:3px;
     margin-right:15px;
-}
-
-.todo_container 
-{
-    padding-top:5px;
-}
-
-.todo_container table
-{
-    margin:0 auto;
-}
-
-.todo_container td
-{
-    width:250px;
-}
-
-.todo_container th
-{
-    text-align:center;
-}
-
-.done_steps li a
-{
-    color:#999;   
-}
-
-.report_view h3
-{
-    font-size:1.2em;
-    padding-top:15px;
-    padding-bottom:10px;
-    border-bottom: 1px dashed #b2b2b2;
-    margin-bottom:10px;
-}
-
-.report_view label
-{
-    font-size:12px;
-}
-
-.report_info th
-{
-    padding-right:10px;    
-}
-
-.tabs .active
-{
-    font-weight:bold;
 }

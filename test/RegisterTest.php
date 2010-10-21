@@ -145,8 +145,10 @@ class RegisterTest extends PHPUnit_Framework_TestCase
     private function _testMobile()
     {
         $this->clickAndWait("//a[contains(@href,'view=mobile')]");
+        $this->clickAndWait("//div[@id='topbar']//a"); // home page
         $this->clickAndWait("//div[@id='topbar2']//a[contains(@href,'org/feed')]");
-        $this->clickAndWait("//div[@id='topbar2']//a[contains(@href,'envaya')]");
+        $this->clickAndWait("//div[@id='topbar']//a"); // home page
+        $this->clickAndWait("//a[contains(@href,'envaya')]");
         $this->mustNotExist("//table[@class='left_sidebar_table']");
         $this->clickAndWait("//a[contains(@href,'view=default')]");
         $this->mouseOver("//table[@class='left_sidebar_table']");

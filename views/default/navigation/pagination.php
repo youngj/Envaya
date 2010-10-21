@@ -130,7 +130,7 @@
     }
 
 ?>
-<div class="clearfloat"></div>
+<div style="clear:both"></div>
 </div>
 <?php
     } // end of pagination check if statement

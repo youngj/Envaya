@@ -3,11 +3,126 @@
     {
         $contentWidth = 600;
     }
-    
-    include(__DIR__."/base.php");
-    
-    
 ?>
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+strike, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    font-size: 100%;
+    font-family: inherit;
+    vertical-align: baseline;
+}
+
+<?php    
+    include(__DIR__."/base.php");     
+?>
+
+th
+{
+    font-weight:bold;
+}
+
+em, i {
+    font-style:italic;
+}
+
+caption, th, td
+{
+    text-align: left;
+    vertical-align: top;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: "";
+}
+blockquote, q {
+    quotes: "" "";
+}
+
+ul {
+    margin: 0px 0px 15px;
+    padding-left: 20px;
+}
+ul li {
+    margin: 0px;
+}
+ol {
+    margin: 0px 0px 15px;
+    padding-left: 20px;
+}
+ul li {
+    margin: 0px;
+}
+
+small {
+    font-size: 90%;
+}
+h1 { font-size: 1.8em;  }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.2em; }
+h4 { font-size: 1.0em; }
+h5 { font-size: 0.9em; }
+h6 { font-size: 0.8em; }
+
+dt {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+dd {
+    margin: 0 0 1em 1em;
+    padding: 0;
+}
+pre, code {
+    font-family:Monaco,"Courier New",Courier,monospace;
+    font-size:12px;
+    background:#EBF5FF;
+    overflow:auto;
+
+    overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+code {
+    padding:2px 3px;
+}
+pre {
+    padding:3px 15px;
+    margin:0px 0 15px 0;
+    line-height:1.3em;
+}
+blockquote {
+    padding:3px 15px;
+    margin:0px 0 15px 0;
+    line-height:1.3em;
+    background:#EBF5FF;
+    border:none !important;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+blockquote p {
+    margin:0 0 5px 0;
+}
+
+
+#topbar
+{
+    width:100%;
+    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient_sm.gif?v5") repeat-x left -1px;
+}
 
 #translate_bar
 {
@@ -757,3 +872,145 @@ a.photoDelete:hover
     font-weight:normal;
 }
 
+.todo_container 
+{
+    padding-top:5px;
+}
+
+.todo_container table
+{
+    margin:0 auto;
+}
+
+.todo_container td
+{
+    width:250px;
+}
+
+.todo_container th
+{
+    text-align:center;
+}
+
+.done_steps li a
+{
+    color:#999;   
+}
+
+.report_view h3
+{
+    font-size:1.2em;
+    padding-top:15px;
+    padding-bottom:10px;
+    border-bottom: 1px dashed #b2b2b2;
+    margin-bottom:10px;
+}
+
+.report_view label
+{
+    font-size:12px;
+}
+
+.report_info th
+{
+    padding-right:10px;    
+}
+
+.tabs .active
+{
+    font-weight:bold;
+}
+
+.top_language
+{
+    float:right;
+    padding:11px 10px 8px 5px;
+    color:white;
+    color:#e6e6e6;
+    white-space:nowrap;
+}   
+
+.header_icons
+{
+    height:30px;
+    width:36px;
+    margin:0 auto;
+    background:url(<?php echo $graphicsDir ?>/move_edit_delete.gif) no-repeat left top;
+}
+
+.down_icon { background-position:left -40px; }
+.edit_icon { background-position:left -80px; }
+.delete_icon { background-position:left -120px; }
+.up_icon { background-position:left -160px; }
+
+#attachControls
+{
+    padding:4px;
+}
+
+#attachControls img
+{
+    vertical-align:middle;
+}
+
+#attachControls a
+{
+    color:#333;
+}
+
+#attachImage input
+{
+    margin:3px;
+}
+
+.adminBox
+{
+    position:absolute;
+    top:75px;
+    right:2px;
+    border:1px solid red;
+    background:#ffcccc;
+    padding:5px;
+}
+
+.adminBox a
+{
+    display:block;
+    color:#000066;
+}
+
+
+
+.commBox
+{
+    text-align: center;
+    height:36px;
+    color:white;
+    width:100%;
+    margin-bottom:3px;
+}
+
+.commBox a
+{
+    font-weight: bold;
+    color:white;
+}
+
+.commBoxLeft
+{
+    background:url(<?php echo $graphicsDir ?>/commBox.gif) no-repeat right -10px;
+    width:45%;
+}
+
+.commBoxMain
+{
+    background:url(<?php echo $graphicsDir ?>/commBox.gif) repeat-x left -56px;
+    white-space:nowrap;
+    padding:5px 15px;
+}
+
+.commBoxRight
+{
+    background:url(<?php echo $graphicsDir ?>/commBox.gif) no-repeat left -102px;
+    width:45%;
+}

@@ -1,0 +1,1 @@
+<div style='text-align:center'><?php echo "<a href='/'>".__('menu')."</a>"; ?></div>

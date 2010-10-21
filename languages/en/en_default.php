@@ -5,6 +5,7 @@
         'donate_now' => "Donate now!",
         
         'go' => 'Go',
+        'menu' => 'Main Menu',
         
         'viewtype:default' => "Standard",
         'viewtype:mobile' => "Mobile",

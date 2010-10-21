@@ -26,11 +26,11 @@ class Controller_Profile extends Controller
     function action_index()
     {
         $widgetName = $this->request->param('widgetname');
-
+        
         if (!$this->org && $widgetName == 'home')
         {
             $widgetName = 'settings';
-        }
+        }               
 
         $methodName = "index_$widgetName";
         if (method_exists($this,$methodName))
@@ -161,7 +161,7 @@ class Controller_Profile extends Controller
         $this->page_draw($title, $body);
     }
 
-    function use_public_layout()
+    function use_public_layout($show_menu = true)
     {
         $org = $this->org;
         global $CONFIG;
@@ -169,13 +169,16 @@ class Controller_Profile extends Controller
 
         PageContext::set_theme(get_input("__theme") ?: $org->theme ?: 'green');
         
-        foreach ($org->get_available_widgets() as $widget)
+        if ($show_menu)
         {
-            if ($widget->is_active() && $widget->in_menu)
+            foreach ($org->get_available_widgets() as $widget)
             {
-                add_submenu_item($widget->get_title(), rewrite_to_current_domain($widget->get_url()));
-            }
-        }        
+                if ($widget->is_active() && $widget->in_menu)
+                {
+                    add_submenu_item($widget->get_title(), rewrite_to_current_domain($widget->get_url()));
+                }
+            }        
+        }
         
         $this->page_draw_vars['loginToCurrentPage'] = true;
     }
@@ -285,8 +288,14 @@ class Controller_Profile extends Controller
     function index_widget($widget)
     {
         $org = $this->org;
-
-        $this->use_public_layout();
+        
+        $show_menu = true;
+        if (get_viewtype() == 'mobile' && $widget && $widget->widget_name != 'home')
+        {
+            $show_menu = false;
+        }
+        
+        $this->use_public_layout($show_menu);
 
         $viewOrg = $org->can_view();
 

@@ -21,6 +21,7 @@
 ?>
 
 <script type='text/javascript'>
+<!--
 function checkCapslock(e, warningId) {
     var ev = e || window.event;
     if (ev) {
@@ -38,6 +39,7 @@ function checkCapslock(e, warningId) {
         }
     }
 } 
+// -->
 </script>
 
 <?php
@@ -53,4 +55,9 @@ function checkCapslock(e, warningId) {
 
 ?>
 
-<input type="password" <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> <?php echo $js; ?> name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> value="<?php echo escape($value); ?>" class="<?php echo $class; ?>" /><span class='capslockWarning' id='<?php echo $warningId ?>' style='display:none'><?php echo __('capslock_warning'); ?></span>
+<input type="password" <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> <?php echo $js; ?> name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> value="<?php echo escape($value); ?>" class="<?php echo $class; ?>" /><span class='capslockWarning' id='<?php echo $warningId ?>' style='display:none'></span>
+<script type='text/javascript'>
+<!--
+document.getElementById('<?php echo $warningId; ?>').innerHTML = <?php echo json_encode(__('capslock_warning')); ?>;
+// -->
+</script>

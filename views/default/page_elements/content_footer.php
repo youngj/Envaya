@@ -26,4 +26,4 @@
     <?php echo view('page_elements/language_links'); ?>    
 </div>
 <div style='clear:both;padding:4px;'></div>
-<?php echo get_submenu_group('footer', 'canvas_header/link_submenu', 'canvas_header/footer_submenu_group'); ?>
+<?php echo view('page_elements/footer_menu'); ?>

@@ -35,7 +35,9 @@ class Controller_Post extends Controller_Profile
         $org = $this->org;
         $post = $this->post;
 
-        $this->use_public_layout();
+        $show_menu = get_viewtype() != 'mobile';
+        
+        $this->use_public_layout($show_menu);
 
         if ($post->can_edit())
         {

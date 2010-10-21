@@ -22,7 +22,7 @@ if ($user->admin)
 }
 $links[] = "<a href='/pg/logout'>".__('logout')."</a>";
 
-echo implode(" &middot; ", $links);
+echo implode(" &nbsp; ", $links);
 
 $submenuB = get_submenu_group('edit', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group');
 if ($submenuB)

@@ -2,18 +2,7 @@
     ob_start();
 ?>
 
-<?php            
-    $submenu = get_submenu_group('topnav', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group'); 
-    if (!empty($submenu))
-    {
-        echo "<div id='site_menu'>$submenu<div style='clear:both'></div></div>";
-    }    
-    else
-    {
-        echo "<div id='no_site_menu'></div>";
-    }
-?>    
-
+<?php echo view('page_elements/site_menu'); ?>
 <div id='content'>
     <div id='content_top'></div>
     <div id='content_mid'>       

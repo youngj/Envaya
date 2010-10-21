@@ -56,4 +56,4 @@ function languageChanged()
 <?php } ?>
 
 </div>
-<div class="clearfloat"></div>
+<div style="clear:both"></div>
