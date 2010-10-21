@@ -2,7 +2,7 @@
     <div class='home_heading heading_gray'><h4><?php echo __("home:whatwedo") ?></h4></div>
     <div class='home_about'>   
 <p class='last-paragraph'>
-<?php echo __('home:description').' '; ?>
+<?php echo __('home:description').' '.__('home:description2').' '; ?>
 <a class='home_more' href='/envaya'><?php echo __('home:learn_more') ?></a>
 </p>
 <div style='text-align:center;padding:8px;'>
