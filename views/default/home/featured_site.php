@@ -9,6 +9,6 @@ if ($activeSite)
 }
 ?>
 
-<a class='home_more' href='org/featured'><?php echo __('featured:see_all') ?></a>
+<a class='home_more' href='/org/featured'><?php echo __('featured:see_all') ?></a>
 </div>
 </div>

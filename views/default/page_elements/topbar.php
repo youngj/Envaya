@@ -2,13 +2,13 @@
 <table class='topbarTable'>
 <tr>
 <td class='topbarLinks'>
-    <a id='logoContainer' href="home">
-        <img src="_graphics/logo.gif?v5" alt="Envaya" width="145" height="30">
+    <a id='logoContainer' href="/home">
+        <img src="/_graphics/logo.gif?v5" alt="Envaya" width="145" height="30">
     </a>
-    <a href='envaya'><?php echo __('about') ?></a>
-    <a href='org/browse'><?php echo __('browse') ?></a>
-    <a href='org/search'><?php echo __('search') ?></a>
-    <a href='org/feed'><?php echo __('feed') ?></a>    
+    <a href='/envaya'><?php echo __('about') ?></a>
+    <a href='/org/browse'><?php echo __('browse') ?></a>
+    <a href='/org/search'><?php echo __('search') ?></a>
+    <a href='/org/feed'><?php echo __('feed') ?></a>    
     <div class='top_language'>
     <script type='text/javascript'>
 function languageChanged()
