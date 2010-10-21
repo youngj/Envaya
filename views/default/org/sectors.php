@@ -9,7 +9,7 @@
 
 	foreach ($sectors as $sector)
 	{
-		$sectorNames[] = "<a href='org/browse?list=1&sector=$sector'>".escape($sectorOptions[$sector])."</a>";
+		$sectorNames[] = "<a href='/org/browse?list=1&sector=$sector'>".escape($sectorOptions[$sector])."</a>";
 	}
 
 	echo implode(', ', $sectorNames);

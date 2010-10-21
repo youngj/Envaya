@@ -34,11 +34,11 @@ if ($org->approval < 0)
     ));
 }
 
-echo "<a href='admin/add_featured?username={$org->username}'>".__('featured:add')."</a>";        
-echo "<a href='{$org->username}/dashboard'>".__('dashboard:title')."</a>";
-echo "<a href='{$org->username}/settings'>".__('help:settings')."</a>";
-echo "<a href='{$org->username}/username'>".__('username:title')."</a>";
-echo "<a href='{$org->username}/domains'>".__('domains:edit')."</a>";
+echo "<a href='/admin/add_featured?username={$org->username}'>".__('featured:add')."</a>";        
+echo "<a href='/{$org->username}/dashboard'>".__('dashboard:title')."</a>";
+echo "<a href='/{$org->username}/settings'>".__('help:settings')."</a>";
+echo "<a href='/{$org->username}/username'>".__('username:title')."</a>";
+echo "<a href='/{$org->username}/domains'>".__('domains:edit')."</a>";
 
 echo get_submenu_group('org_actions', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group'); 
 

@@ -3,7 +3,7 @@
     $user = $vars['entity'];
 ?>
 
-<form action='pg/submit_password_reset' method='POST'>
+<form action='/pg/submit_password_reset' method='POST'>
 <?php echo view('input/securitytoken'); ?>
 
 <?php echo view('input/hidden', array('internalname' => 'u', 'value' => $user->guid)); ?>

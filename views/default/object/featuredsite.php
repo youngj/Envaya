@@ -39,12 +39,12 @@ echo $entity->render_content(); ?>
         if (get_language() != $entity->get_language())
         {
             $escUrl = urlencode($_SERVER['REQUEST_URI']);                   
-            echo " <a href='org/translate?from=$escUrl&prop[]={$entity->guid}.content.1'>".__("trans:contribute")."</a>";
+            echo " <a href='/org/translate?from=$escUrl&prop[]={$entity->guid}.content.1'>".__("trans:contribute")."</a>";
         }
         
         ?>              
         
-        <a href='admin/edit_featured?guid=<?php echo $entity->guid ?>'><?php echo escape(__('edit')) ?></a>
+        <a href='/admin/edit_featured?guid=<?php echo $entity->guid ?>'><?php echo escape(__('edit')) ?></a>
         <?php
         echo view('output/confirmlink', array(
             'text' => __('delete'),

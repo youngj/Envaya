@@ -50,8 +50,8 @@
 
 <p>
 <?php echo sprintf(__('help:editing:editsite'),
-    "<strong><a href='pg/dashboard'>".__('dashboard:title')."</a></strong>",
-    "<a href='pg/dashboard' target='_blank'><img class='icon_with_bg' src='_graphics/pencil.gif?v3' /></a>") ?>
+    "<strong><a href='/pg/dashboard'>".__('dashboard:title')."</a></strong>",
+    "<a href='/pg/dashboard' target='_blank'><img class='icon_with_bg' src='/_graphics/pencil.gif?v3' /></a>") ?>
 </p>
 
 <p>
@@ -59,7 +59,7 @@
 </p>
 
 <p>
-<?php echo sprintf(__('help:editing:logout'), "<img class='icon_with_bg' src='_graphics/logout.gif?v2' />") ?>
+<?php echo sprintf(__('help:editing:logout'), "<img class='icon_with_bg' src='/_graphics/logout.gif?v2' />") ?>
 </p>
 
 
@@ -80,7 +80,7 @@
 
 <p>
 <?php echo sprintf(__('help:settings:icon'),
-    "<a href='{$org->get_url()}/settings' target='_blank'><img class='icon_with_bg' src='_graphics/settings.gif' /></a>") ?>
+    "<a href='{$org->get_url()}/settings' target='_blank'><img class='icon_with_bg' src='/_graphics/settings.gif' /></a>") ?>
 </p>
 
 <p>
@@ -97,7 +97,7 @@
 
 <p>
 <?php echo sprintf(__('help:home:icon'),
-    "<a href='{$org->get_url()}' target='_blank'><img class='icon_with_bg' src='_graphics/home.gif?v2' /></a>") ?>
+    "<a href='{$org->get_url()}' target='_blank'><img class='icon_with_bg' src='/_graphics/home.gif?v2' /></a>") ?>
 </p>
 
 <p>

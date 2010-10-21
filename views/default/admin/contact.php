@@ -2,7 +2,7 @@
 <?php
 
     $sort = sanitize_order_by(get_input('sort') ?: 'name');
-    $baseurl = "admin/contact?sort=$sort";
+    $baseurl = "/admin/contact?sort=$sort";
     $offset = (int)get_input('offset');
 
     $limit = 15;
@@ -21,14 +21,14 @@
 
 <table class='gridTable'>
 <tr>
-    <th><a href='admin/contact?sort=name'><?php echo __('name') ?></a></th>
-    <th><a href='admin/contact?sort=email'><?php echo __('email') ?></a></th>
+    <th><a href='/admin/contact?sort=name'><?php echo __('name') ?></a></th>
+    <th><a href='/admin/contact?sort=email'><?php echo __('email') ?></a></th>
     <th><?php echo __('user:phone:label') ?></th>
-    <th><a href='admin/contact?sort=time_created'><?php echo __('created') ?></a></th>
+    <th><a href='/admin/contact?sort=time_created'><?php echo __('created') ?></a></th>
     <th><?php echo __('last_update') ?></th>
     <th><?php echo __('posts') ?></th>
     <th><?php echo __('lang') ?></th>
-    <th><a href='admin/contact?sort=last_notify_time'><?php echo __('last_notify') ?></a></th>
+    <th><a href='/admin/contact?sort=last_notify_time'><?php echo __('last_notify') ?></a></th>
 </tr>
 <?php
     $escUrl = urlencode($_SERVER['REQUEST_URI']);
@@ -54,8 +54,8 @@
     <td><?php echo $org->language; ?></td>
     <td><?php echo $org->last_notify_time ? friendly_time($org->last_notify_time) : ''; ?></td>
     <td style='padding:0px;background-color:#068488;white-space:nowrap'>
-        <?php echo "<a href='{$org->username}/settings?from=$escUrl'><img src='_graphics/settings.gif'></a>" ?>
-        <a href='admin/batch_email?orgs[]=<?php echo $org->guid ?>&from=<?php echo $escUrl ?>'><img src='_graphics/message.gif' style='vertical-align:5px'></a>
+        <?php echo "<a href='/{$org->username}/settings?from=$escUrl'><img src='/_graphics/settings.gif'></a>" ?>
+        <a href='/admin/batch_email?orgs[]=<?php echo $org->guid ?>&from=<?php echo $escUrl ?>'><img src='/_graphics/message.gif' style='vertical-align:5px'></a>
     </td>
 </tr>
 <?php } ?>

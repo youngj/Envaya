@@ -20,7 +20,7 @@ if ($user->admin)
 {
     $links[] = "<a href='{$user->get_url()}/dashboard'>Admin</a>";
 }
-$links[] = "<a href='pg/logout'>".__('logout')."</a>";
+$links[] = "<a href='/pg/logout'>".__('logout')."</a>";
 
 echo implode(" &middot; ", $links);
 

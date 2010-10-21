@@ -36,13 +36,13 @@
     <a class='icon_link icon_help' href='<?php echo $org->get_url() ?>/help'><?php echo __('help:title') ?></a>
 </td>
 <td>
-    <a class='icon_link icon_explore' href='org/browse'><?php echo __("browse:title") ?></a>
+    <a class='icon_link icon_explore' href='/org/browse'><?php echo __("browse:title") ?></a>
     <div class='icon_separator'></div>
-    <a class='icon_link icon_search' href='org/search'><?php echo __("search:title") ?></a>
+    <a class='icon_link icon_search' href='/org/search'><?php echo __("search:title") ?></a>
     <div class='icon_separator'></div>
-    <a class='icon_link icon_feed' href='org/feed'><?php echo __("feed:title") ?></a>
+    <a class='icon_link icon_feed' href='/org/feed'><?php echo __("feed:title") ?></a>
     <div class='icon_separator'></div>
-    <a class='icon_link icon_logout' href='pg/logout'><?php echo __('logout') ?></a>
+    <a class='icon_link icon_logout' href='/pg/logout'><?php echo __('logout') ?></a>
 </td>
 </tr>
 </table>

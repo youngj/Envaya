@@ -24,7 +24,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title><?php echo escape($title); ?></title>
-    <base href='<?php echo $vars['url'] ?>' />
+    <base href='<?php echo $vars['config']->url; ?>' /> 
+
     <?php
         echo view('page_elements/css', $vars);          
         if (PageContext::has_rss())

@@ -15,7 +15,7 @@
 
     echo "<div class='feed_snippet'>";
     echo "<em>".__('org:location')."</em>: ";
-    echo "<a href='org/browse/?lat={$org->get_latitude()}&long={$org->get_longitude()}&zoom=10'>";
+    echo "<a href='/org/browse/?lat={$org->get_latitude()}&long={$org->get_longitude()}&zoom=10'>";
     echo $org->get_location_text(false);
     echo "</a>";
     echo "</div>";

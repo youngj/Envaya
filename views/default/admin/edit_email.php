@@ -1,7 +1,7 @@
 <?php
     $email = $vars['email'];
 ?>
-<form method='POST' action='admin/save_email'>
+<form method='POST' action='/admin/save_email'>
 <?php echo view('input/securitytoken') ?>
 
 <div class='input'>

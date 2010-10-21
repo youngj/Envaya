@@ -1,5 +1,5 @@
 
-<form style='padding-top:10px' id='donate_form' method="POST" action="pg/submit_donate_form">
+<form style='padding-top:10px' id='donate_form' method="POST" action="/pg/submit_donate_form">
     
     <input name="project" type="hidden" value="Envaya" />
 

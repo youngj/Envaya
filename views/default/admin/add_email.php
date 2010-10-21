@@ -1,6 +1,6 @@
 <?php
 ?>
-<form method='POST' action='admin/new_email'>
+<form method='POST' action='/admin/new_email'>
 <?php echo view('input/securitytoken') ?>
 
 <div class='input'>

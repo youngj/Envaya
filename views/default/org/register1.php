@@ -8,7 +8,7 @@
     <?php echo __('qualify:instructions') ?>
 </div>
 
-<form action='org/register1' method='POST'>
+<form action='/org/register1' method='POST'>
 
 <div class='input'>
 <label><?php echo __('qualify:org_type') ?></label><br />

@@ -1,7 +1,7 @@
 <?php
     $org = $vars['entity'];
 ?>
-<form method='POST' action='admin/new_featured'>
+<form method='POST' action='/admin/new_featured'>
 <?php echo view('input/securitytoken') ?>
 
 <strong><a href='<?php echo $org->get_url() ?>'><?php echo escape($org->name) ?></a></strong>

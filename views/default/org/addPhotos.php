@@ -9,10 +9,10 @@
 <div id='previews'></div>
 <div id='progressContainer' style='padding-bottom:5px'></div>
 
-<label id='uploadLabel'><img src='_graphics/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo __('addphotos:label') ?></label><br />
+<label id='uploadLabel'><img src='/_graphics/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo __('addphotos:label') ?></label><br />
 <div id='uploadContainer'></div>
 
-<script type='text/javascript' src='_media/swfupload.js?v6'></script>
+<script type='text/javascript' src='/_media/swfupload.js?v6'></script>
 <script type='text/javascript'>
 
 var MultiImageUploader = makeClass(ImageUploader);

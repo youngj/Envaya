@@ -1,6 +1,6 @@
 <?php
     $contentWidth = 0;
-    include(__DIR__."/default.php");    
+    include(__DIR__."/base.php");    
 ?>
 
 #topbar
@@ -41,15 +41,11 @@ body
     background:transparent;
     padding:6px;
     margin:6px;
-    border-color:black;
+    border:1px solid black;
     color:black;
+    font-size:small;
 }
-#translate_bar a { color:black; }
-
-.feed_content
-{
-    width:100%;
-}
+#translate_bar a { color:black; font-weight:bold; }
 
 .padded, .section_header
 {
@@ -75,3 +71,5 @@ label
 {
     font-size:medium;
 }
+
+

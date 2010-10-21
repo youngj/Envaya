@@ -5,7 +5,7 @@
     <?php echo __('create:instructions') ?>
 </div>
 
-<form action='org/register2' method='POST'>
+<form action='/org/register2' method='POST'>
 
 <?php echo view('input/securitytoken'); ?>
 

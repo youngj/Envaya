@@ -51,13 +51,13 @@ if ($edited)
 }
 
 $limit = 10;
-$baseurl = "org/translate_interface?q=".urlencode($query)."&edited=".($edited ? 1 : 0);
+$baseurl = "/org/translate_interface?q=".urlencode($query)."&edited=".($edited ? 1 : 0);
 $offset = (int)get_input('offset');
 $count = sizeof($keys);
 
 $from = urlencode("$baseurl&offset=$offset");
 
-echo "<form method='GET' action='org/translate_interface'>";
+echo "<form method='GET' action='/org/translate_interface'>";
 
 echo "<label>".__("trans:filter")."</label><br />";
 

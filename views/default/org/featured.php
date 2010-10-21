@@ -9,4 +9,4 @@ $count = FeaturedSite::query()->count();
 echo view_entity_list($sites, $count, $offset, $limit, true);
 
 echo "<br />";
-echo "<a href='envaya/featured'>".__('featured:about')."</a>";
+echo "<a href='/envaya/featured'>".__('featured:about')."</a>";

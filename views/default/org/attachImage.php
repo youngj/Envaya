@@ -18,6 +18,6 @@ function showAttachImage($show)
 </script>
 
 <div id='attachControls'>
-    <a href='javascript:void(0)' onclick='showAttachImage()'><img src='_graphics/attach_image.gif?v2' /></a>
+    <a href='javascript:void(0)' onclick='showAttachImage()'><img src='/_graphics/attach_image.gif?v2' /></a>
     <a href='javascript:void(0)' onclick='showAttachImage()'><?php echo __('dashboard:attach_image') ?></a>
 </div>

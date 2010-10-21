@@ -5,6 +5,6 @@
     }
     else
     {
-        $loginUrl = (@$vars['loginToCurrentPage']) ? url_with_param(Request::instance()->full_rewritten_url(), 'login',1) : 'pg/login';    
+        $loginUrl = (@$vars['loginToCurrentPage']) ? url_with_param(Request::instance()->full_rewritten_url(), 'login',1) : '/pg/login';    
         echo view('page_elements/login_button', array('login_url' => $loginUrl));
     }

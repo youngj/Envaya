@@ -21,7 +21,7 @@
     if (!$TINYMCE_INCLUDE_COUNT)
     {
         ?>
-        <script type='text/javascript' src='_media/tiny_mce/tiny_mce.js?v<?php echo $CONFIG->cache_version ?>'></script>
+        <script type='text/javascript' src='/_media/tiny_mce/tiny_mce.js?v<?php echo $CONFIG->cache_version ?>'></script>
         <?php
     }
 

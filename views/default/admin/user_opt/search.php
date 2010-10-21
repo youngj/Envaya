@@ -1,6 +1,6 @@
 
 <div id="search-box">
-    <form action="admin/search" method="get">
+    <form action="/admin/search" method="get">
     <b><?php echo __('admin:user:label:search'); ?></b>
     <?php
 

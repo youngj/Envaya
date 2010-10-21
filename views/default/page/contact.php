@@ -2,7 +2,7 @@
 
 <?php echo $vars['widget']->render_content(); ?>
 
-<form method="POST" action='pg/send_feedback'>
+<form method="POST" action='/pg/send_feedback'>
 <div class='input'>
 <div><label><?php echo __('feedback:message') ?>:</label></div>
 <?php
