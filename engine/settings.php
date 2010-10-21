@@ -4,7 +4,7 @@
     global $CONFIG;
     $CONFIG = new stdClass;
 
-    $CONFIG->cache_version = 92;
+    $CONFIG->cache_version = 93;
     
     $CONFIG->dbuser = 'newslink';
     $CONFIG->dbpass = 'scarlett';
