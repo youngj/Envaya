@@ -191,8 +191,7 @@
             $fh = fopen($fs_path, 'w');
             $curl_opts = array('CURLOPT_FILE' => $fh);
  
-            if(is_null($headers))
-                $headers = array();
+            $headers = array();
  
             $result = $this->sendRequest($request, $headers, $curl_opts);
             fclose($fh);
@@ -221,7 +220,7 @@
             return $url;
         }
  
-        private function sendRequest($request, $headers = null, $curl_opts = null)
+        public function sendRequest($request, $headers = null, $curl_opts = null)
         {
             if(is_null($headers))
                 $headers = array();
@@ -232,6 +231,7 @@
                 $headers[$k] = "$k: $v";
  
             $uri = 'http://' . $this->host . $request['resource'];
+            
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $uri);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request['verb']);
