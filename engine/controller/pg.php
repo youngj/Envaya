@@ -3,14 +3,22 @@
 class Controller_Pg extends Controller {
 
     function action_login()
-    {
+    {        
         $username = get_input('username');
         $next = get_input('next');
         $error = get_input('error');
 
         $title = __("login");
-        
-        $error_msg = $error ? view('account/login_error') : '';
+
+        $loginTime = (int)get_input('_lt');
+        if ($loginTime && time() - $loginTime < 10 && !Session::isloggedin())
+        {
+            $error_msg = view('account/cookie_error');
+        }        
+        else
+        {        
+            $error_msg = ($error) ?  view('account/login_error') : '';
+        }
         
         $body = view_layout('one_column_padded',
             view_title($title, array('org_only' => true)),
@@ -84,22 +92,22 @@ class Controller_Pg extends Controller {
         if ($result)
         {
             system_message(sprintf(__('loginok'), $user->name));
-            
-            if ($next)
-            {
-                forward($next);
-            }
-            else
+                        
+            if (!$next)
             {
                 if (!$user->is_setup_complete())
                 {
-                    forward("org/new?step={$user->setup_state}");
+                    $next = "org/new?step={$user->setup_state}";
                 }
                 else
                 {
-                    forward("{$user->get_url()}/dashboard");
+                    $next = "{$user->get_url()}/dashboard";
                 }
             }
+            
+            $next = url_with_param($next, '_lt', time());
+            
+            forward($next);
         }
         else
         {

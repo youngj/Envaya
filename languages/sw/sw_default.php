@@ -3,6 +3,9 @@ return array(
     'donate' => 'Changia',
     'donate_now' => 'Toa msaada sasa!',
     
+    'cookie_error' => "Kulikuwa na kosa kwa kufungua katika Envaya. Tafadhali hakikisha browser yako inaruhusu cookies kutoka '%s' na jaribu tena.",
+    'cookie_help' => "Bonyeza kwa maelekezo",
+    
     'viewtype:default' => "Kawaida",
     'viewtype:mobile' => "Simu",
 
