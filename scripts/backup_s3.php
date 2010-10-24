@@ -1,14 +1,14 @@
 <?php
 
-    require_once("scripts/cmdline.php");
-    require_once("engine/start.php");
+require_once("scripts/cmdline.php");
+require_once("engine/start.php");
    
 function enumerate_bucket($s3, $bucketName, $callback)
 {  
     $marker = null;
     do
     {
-        $q = '?max-keys=250';
+        $q = '?max-keys=500';
         if(!is_null($marker)) 
         {
             $q .= '&marker=' . urlencode($marker);
@@ -39,11 +39,11 @@ global $n;
 
 function handle_item($item)
 {
-    global $s3, $bucketName, $n;
-    $key = $item->Key;
+    global $s3, $bucketName, $n, $CONFIG;
+    $key = $item->Key;    
     
-    $localPath = "../envayadata/$key";
-    $dir = dirname($localPath);    
+    $localPath = "/etc/dropbox/Dropbox/s3_backup/$key";
+    $dir = dirname($localPath);       
     
     if (!is_dir($dir))
     {
@@ -52,8 +52,8 @@ function handle_item($item)
     if (!is_file($localPath))
     {
         echo "$localPath\n";
-        $s3->downloadFile($bucketName, $key, $localPath);
-        $mtime = strtotime($item->LastModified);
+        $s3->downloadFile($bucketName, $key, $localPath);    
+        $mtime = strtotime($item->LastModified);        
         touch($localPath, $mtime);
     }    
     else

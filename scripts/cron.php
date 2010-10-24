@@ -6,7 +6,11 @@ $cronTasks = array(
    array(
        'interval' => 720,
        'cmd' => "php scripts/backup.php"
-   )
+   ),
+   array(
+       'interval' => 1440,
+       'cmd' => "php scripts/backup_s3.php"
+   )   
 );
 
 $minute = 0;
