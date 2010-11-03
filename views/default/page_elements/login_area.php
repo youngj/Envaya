@@ -8,6 +8,6 @@
         global $CONFIG;
         $loginUrl = (@$vars['loginToCurrentPage']) 
             ? url_with_param(Request::instance()->full_rewritten_url(), 'login',1) 
-            : "{$CONFIG->secure_url}pg/login";    
-        echo view('page_elements/login_button', array('login_url' => $loginUrl));
+            : "pg/login";    
+        echo view('page_elements/login_button', array('login_url' => secure_url($loginUrl)));
     }

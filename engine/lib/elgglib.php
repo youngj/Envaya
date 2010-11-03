@@ -10,13 +10,24 @@
 
         return $prefix.$url['path']."?".http_build_query($query);
     }
-    
+        
     function secure_url($url)
     {
         global $CONFIG;
-        if ($CONFIG->ssl_enabled)
+        if ($CONFIG->ssl_enabled && !is_mobile_browser())
         {
-            return str_replace("http://", "https://", $url);
+            if (strpos($url, "://") !== false)
+            {
+                return str_replace("http://", "https://", $url);
+            }
+            else
+            {
+                if ($url[0] == '/')
+                {
+                    $url = substr($url,1);
+                }            
+                return "{$CONFIG->secure_url}$url";
+            }
         }
         else
         {

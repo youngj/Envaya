@@ -95,7 +95,7 @@ abstract class Controller {
     {
         global $CONFIG;
     
-        if (Request::$protocol == 'http' && $CONFIG->ssl_enabled)
+        if (Request::$protocol == 'http' && $CONFIG->ssl_enabled && !is_mobile_browser())
         {
             $url = secure_url(Request::full_original_url());
             forward($url);
