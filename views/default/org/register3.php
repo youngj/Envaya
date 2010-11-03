@@ -9,7 +9,7 @@
     <?php echo __('setup:instructions') ?>
 </div>
 
-<form action='/org/register3' method='POST'>
+<form action='<?php echo $vars['config']->secure_url; ?>org/register3' method='POST'>
 
 <?php echo view('input/securitytoken'); ?>
 

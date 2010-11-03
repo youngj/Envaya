@@ -4,6 +4,8 @@ class Controller_Home extends Controller
 {
     function action_index()
     {       
+        $this->require_http();
+    
         PageContext::set_theme('home');
         $this->add_generic_footer();
         $area = view("home");

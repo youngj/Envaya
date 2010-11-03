@@ -9,6 +9,8 @@ class Controller_Org extends Controller
 
     function action_browse()
     {
+        $this->require_http();
+    
         $title = __("browse:title");
         $sector = get_input('sector');
         
@@ -35,6 +37,8 @@ class Controller_Org extends Controller
     
     function action_search()
     {
+        $this->require_http();
+    
         $query = get_input('q');
         $sector = get_input('sector');
         
@@ -78,6 +82,8 @@ class Controller_Org extends Controller
 
     function action_feed()
     {
+        $this->require_http();
+    
         $title = __("feed:title");
         
         $sector = get_input('sector');
@@ -166,7 +172,8 @@ class Controller_Org extends Controller
             ));
 
             system_message(__("qualify:ok"));
-            forward("org/new?step=2");
+            global $CONFIG;
+            forward("{$CONFIG->secure_url}org/new?step=2");            
 
         }
         catch (RegistrationException $r)
@@ -266,7 +273,8 @@ class Controller_Org extends Controller
 
             system_message(__("create:ok"));
 
-            forward("org/new?step=3");
+            global $CONFIG;
+            forward("{$CONFIG->secure_url}org/new?step=3");
         }
         catch (RegistrationException $r)
         {

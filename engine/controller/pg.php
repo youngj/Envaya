@@ -4,6 +4,8 @@ class Controller_Pg extends Controller {
 
     function action_login()
     {        
+        $this->require_https();
+    
         $username = get_input('username');
         $next = get_input('next');
         $error = get_input('error');
@@ -161,7 +163,7 @@ class Controller_Pg extends Controller {
             $user->save();
 
             global $CONFIG;
-            $link = $CONFIG->url . "pg/password_reset?u={$user->guid}&c={$user->passwd_conf_code}";
+            $link = $CONFIG->secure_url . "pg/password_reset?u={$user->guid}&c={$user->passwd_conf_code}";
 
             $email = sprintf(__('email:resetreq:body',$user->language), $user->name, $link);
 
@@ -184,6 +186,8 @@ class Controller_Pg extends Controller {
 
     function action_password_reset()
     {
+        $this->require_https();
+    
         global $CONFIG;
 
         $user_guid = get_input('u');

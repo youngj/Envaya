@@ -288,6 +288,8 @@ class Controller_Profile extends Controller
 
     function index_widget($widget)
     {
+        $this->require_http();
+        
         $org = $this->org;
         
         $show_menu = true;
@@ -535,7 +537,8 @@ class Controller_Profile extends Controller
     }
 
     function index_settings()
-    {
+    {    
+        $this->require_https();
         $this->require_editor();
 
         $title = __("usersettings:user");

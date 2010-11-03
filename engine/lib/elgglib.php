@@ -11,6 +11,19 @@
         return $prefix.$url['path']."?".http_build_query($query);
     }
     
+    function secure_url($url)
+    {
+        global $CONFIG;
+        if ($CONFIG->ssl_enabled)
+        {
+            return str_replace("http://", "https://", $url);
+        }
+        else
+        {
+            return $url;
+        }        
+    }
+    
     function is_mobile_browser()
     {
         $useragent = $_SERVER['HTTP_USER_AGENT'];

@@ -80,7 +80,28 @@ abstract class Controller {
             $user->save();
         }        
     }
-
+    
+    public function require_http()
+    {
+        if (Request::$protocol == 'https')
+        {
+            $url = Request::full_original_url();
+            $url = str_replace("https://", "http://", $url);
+            forward($url);
+        }
+    }
+    
+    public function require_https()
+    {
+        global $CONFIG;
+    
+        if (Request::$protocol == 'http' && $CONFIG->ssl_enabled)
+        {
+            $url = secure_url(Request::full_original_url());
+            forward($url);
+        }
+    }
+    
     public function require_login()
     {
         if (!Session::isloggedin())
