@@ -2,7 +2,7 @@
     $contentWidth = 500;
     include(__DIR__."/default.php");
 
-    $graphicsDir = $vars['url'] . "_graphics/simple";
+    $graphicsDir = "/_graphics/simple";
 ?>
 
 body

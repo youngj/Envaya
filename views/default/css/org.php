@@ -1,6 +1,6 @@
 <?php
     include(__DIR__."/default.php");
-    $graphicsDir = $vars['url'] . "_graphics/green";    
+    $graphicsDir = "/_graphics/green";    
 ?>
 
 .content_container .thin_column

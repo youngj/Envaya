@@ -2,7 +2,7 @@
     include(__DIR__."/org.php");
     include(__DIR__."/content_margin.php");
     include(__DIR__."/beige_content.php");
-    $graphicsDir = $vars['url'] . "_graphics/craft";
+    $graphicsDir = "/_graphics/craft";
 ?>
 
 body { color:#fff; background:#f2c346 url("<?php echo $graphicsDir; ?>/craft4-bg.jpg") repeat left -60px; }

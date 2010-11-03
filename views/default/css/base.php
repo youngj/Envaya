@@ -1,5 +1,5 @@
 <?php
-    $graphicsDir = $vars['url'] . "_graphics";
+    $graphicsDir = "/_graphics";
 ?>
 
 html,body

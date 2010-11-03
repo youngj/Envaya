@@ -2,7 +2,7 @@
     include(__DIR__."/org.php");
     include(__DIR__."/content_margin.php");
 
-    $graphicsDir = $vars['url'] . "_graphics/sidebar";
+    $graphicsDir = "/_graphics/sidebar";
 ?>
 
 .left_sidebar_table, .thin_column

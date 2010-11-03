@@ -2,7 +2,7 @@
     include(__DIR__."/org.php");
     include(__DIR__."/content_margin.php");
     include(__DIR__."/beige_content.php");
-    $graphicsDir = $vars['url'] . "_graphics/cotton";
+    $graphicsDir = "/_graphics/cotton";
 ?>
 
 body { color:#fff; background:#d0b66b url("<?php echo $graphicsDir; ?>/cotton-bg.jpg") repeat left top; }

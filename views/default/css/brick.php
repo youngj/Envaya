@@ -1,7 +1,7 @@
 <?php
     include(__DIR__."/org.php");
     include(__DIR__."/beige_content.php");
-    $graphicsDir = $vars['url'] . "_graphics/brick";
+    $graphicsDir = "/_graphics/brick";
 ?>
 
 body { color:#fff; background:#69493e url("<?php echo $graphicsDir; ?>/brick.jpg") repeat left top; }

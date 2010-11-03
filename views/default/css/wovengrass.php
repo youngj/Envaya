@@ -1,7 +1,7 @@
 <?php
     include(__DIR__."/org.php");
     include(__DIR__."/content_margin.php");
-    $graphicsDir = $vars['url'] . "_graphics/wovengrass";
+    $graphicsDir = "/_graphics/wovengrass";
 ?>
 
 body { color:#000; background:#d5b24a url("<?php echo $graphicsDir; ?>/woven-grass.jpg") repeat left -60px; }

@@ -1,6 +1,6 @@
 <?php
     include(__DIR__."/default.php");
-    $graphicsDir = $vars['url'] . "_graphics/red";
+    $graphicsDir = "/_graphics/red";
 ?>
 
 body
