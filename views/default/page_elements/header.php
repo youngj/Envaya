@@ -26,7 +26,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title><?php echo escape($title); ?></title>
-    <base href='<?php echo $vars['config']->url; ?>' />     
+    <base href='<?php echo Request::$protocol == 'https' ? $vars['config']->secure_url : $vars['config']->url; ?>' />     
 
     <?php
         echo view('page_elements/css', $vars);          

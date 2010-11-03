@@ -5,7 +5,7 @@
 $activeSite = FeaturedSite::get_active();
 if ($activeSite)
 {
-    echo view_entity($activeSite);
+    echo view_entity($activeSite, array('show_date' => false));
 }
 ?>
 

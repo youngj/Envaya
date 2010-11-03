@@ -20,7 +20,7 @@ class Controller_Pg extends Controller {
             $error_msg = ($error) ?  view('account/login_error') : '';
         }
         
-        $body = view_layout('one_column_padded',
+        $body = view_layout('one_column',
             view_title($title, array('org_only' => true)),
             view("account/forms/login", array('username' => $username, 'next' => $next)),
             $error_msg
@@ -135,7 +135,7 @@ class Controller_Pg extends Controller {
         );
 
         $title = __('user:password:reset');
-        $this->page_draw($title, view_layout("one_column_padded",
+        $this->page_draw($title, view_layout("one_column",
             view_title($title, array('org_only' => true)), $body));
     }
 

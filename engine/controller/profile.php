@@ -168,6 +168,7 @@ class Controller_Profile extends Controller
         $CONFIG->sitename = $org->name;
 
         PageContext::set_theme(get_input("__theme") ?: $org->theme ?: 'green');
+        PageContext::set_site_org($org);
         
         if ($show_menu)
         {
@@ -322,7 +323,7 @@ class Controller_Profile extends Controller
 
         if ($viewOrg)
         {
-            $body = $this->org_view_body($subtitle, ($viewOrg ? $widget->render_view() : ''));
+            $body = $this->org_view_body($subtitle, ($viewOrg ? view('widgets/view', array('widget' => $widget)) : ''));
         }
         else
         {

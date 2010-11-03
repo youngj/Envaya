@@ -6,7 +6,7 @@ function get_viewtype()
     
     if (!isset($VIEWTYPE))
     {
-        $VIEWTYPE = get_input('view') ?: $_COOKIE['view'] ?: '';        
+        $VIEWTYPE = get_input('view') ?: @$_COOKIE['view'] ?: '';        
         
         if (!$VIEWTYPE && is_mobile_browser())
         {
@@ -115,32 +115,20 @@ function view_exists($view, $viewtype = '', $fallback = true)
 
 /**
  * @param Entity $entity The entity to display
- * @param boolean $full Determines whether or not to display the full version of an object, or a smaller version
+
  * @return string HTML (etc) to display
  */
-function view_entity($entity, $full = false) 
+function view_entity($entity, $args = null) 
 {
+    if (!$args)
+    {
+        $args = array();
+    }
+    $args['entity'] = $entity;
+    
     return $entity 
-        ? view($entity->get_default_view_name(), array('entity' => $entity, 'full' => $full))
+        ? view($entity->get_default_view_name(), $args)
         : '';
-}
-
-function view_entity_list($entities, $count, $offset, $limit, $fullview = false, $pagination = true) {
-
-    $count = (int) $count;
-    $offset = (int) $offset;
-    $limit = (int) $limit;
-
-    return view('search/entity_list',array(
-        'entities' => $entities,
-        'count' => $count,
-        'offset' => $offset,
-        'limit' => $limit,
-        'baseurl' => $_SERVER['REQUEST_URI'],
-        'fullview' => $fullview,
-        'viewtypetoggle' => false,
-        'pagination' => $pagination
-      ));
 }
 
 /**

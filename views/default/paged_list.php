@@ -1,17 +1,15 @@
 <?php
-    $offset = $vars['offset'];
-    $entities = $vars['entities'];
-    $limit = $vars['limit'];
-    $count = $vars['count'];
-    
+
     $nav = view('navigation/pagination',array(
-        'offset' => $offset,
-        'count' => $count,
-        'limit' => $limit,
+        'offset' => $vars['offset'],
+        'count' => $vars['count'],
+        'limit' => $vars['limit'],
     ));
         
     echo $nav;
-
+      
+    $entities = $vars['entities'];       
+    
     if (is_array($entities) && sizeof($entities) > 0) 
     {
         foreach($entities as $entity) 

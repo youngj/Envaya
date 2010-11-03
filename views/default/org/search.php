@@ -3,6 +3,7 @@
     $sector = $vars['sector'];
 
 ?>
+<div class='padded'>
 <div class='instructions'>
     <?php echo __('search:instructions'); ?>
 </div>    
@@ -24,3 +25,4 @@
     ?>    
     
 </form>
+</div>

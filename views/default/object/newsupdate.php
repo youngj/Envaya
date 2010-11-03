@@ -2,12 +2,9 @@
 
     $entity = $vars['entity'];
     $url = $entity->get_url();
-    $full = $vars['full'];
+    $single_post = @$vars['single_post'];
 
-    $nextUrl = $url . "/next";
-    $prevUrl = $url . "/prev";
-
-    if (!$full)
+    if (!$single_post)
     {
         echo "<div class='blog_post_wrapper padded'>";
     }
@@ -20,7 +17,7 @@
         echo $entity->render_content();
 
         echo "<div class='blog_date'>";
-        if (!$full)
+        if (!$single_post)
         {
             echo "<a href='{$entity->get_url()}'>{$entity->get_date_text()}</a>";
         }
@@ -35,7 +32,7 @@
 
 <?php
 
-    if (!$full)
+    if (!$single_post)
     {
         echo "</div>";
     }

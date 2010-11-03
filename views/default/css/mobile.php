@@ -49,7 +49,7 @@ body
 
 .padded, .section_header
 {
-    padding:4px;
+    padding:3px;
 }
 
 .tabs td
@@ -70,4 +70,32 @@ body
 label
 {
     font-size:medium;
+}
+
+.section_header
+{
+    background:#ccc;
+    margin-top:8px;
+}
+
+.heading_container h1
+{
+    padding:3px;
+}
+
+.footer_container
+{
+    border-top:1px dashed #999;
+    padding:5px 0px;
+    margin-top:5px;
+}
+
+.button_alt
+{
+    padding:2px;
+}
+
+ul,ol
+{
+    margin:0px;
 }

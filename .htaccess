@@ -111,4 +111,4 @@ RewriteRule ^(\w+\.php|_media|_graphics|_css) - [L]
 RewriteRule .* index.php/$0 [L]
 
 </IfModule>
-php_value display_errors 1
+php_value display_errors 7

@@ -52,56 +52,6 @@ label {
     color:#333333;
 }
 
-#widget_delete
-{
-    float:right;
-}
-
-#widget_delete div
-{
-    background-position:left -96px;
-}
-
-#widget_delete span
-{
-    background-position:right -96px;
-}
-
-button#widget_delete:hover div
-{
-    background-position:left -160px;
-}
-
-button#widget_delete:hover span
-{
-    background-position:right -160px;
-}
-
-button#widget_delete:active div
-{
-    background-position:left -128px;
-}
-
-button#widget_delete:active span
-{
-    background-position:right -128px;
-}
-
-input[type="submit"] {
-    font: 12px/100% Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    color: #ffffff;
-    background:#4690d6;
-    border: 1px solid #4690d6;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    width: auto;
-    height: 25px;
-    padding: 2px 6px 2px 6px;
-    margin:10px 0 10px 0;
-    cursor: pointer;
-}
-
 #persistent_login label {
     font-size:1.0em;
     font-weight: normal;

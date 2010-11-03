@@ -1,3 +1,4 @@
+<div class='padded'>
 <?php
     global $CONFIG;
 
@@ -48,9 +49,6 @@
     
     $form_body = ob_get_clean();
 
-    $login_url = $vars['url'];
-    if ((isset($CONFIG->https_login)) && ($CONFIG->https_login))
-        $login_url = str_replace("http", "https", $vars['url']);
-
-    echo view('input/form', array('body' => $form_body, 'action' => "{$login_url}pg/submit_login"));
+    echo view('input/form', array('body' => $form_body, 'action' => "{$CONFIG->secure_url}pg/submit_login"));
 ?>
+</div>

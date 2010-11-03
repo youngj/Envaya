@@ -12,7 +12,12 @@
 
         if ($objects)
         {
-            echo view_entity_list($objects, $query->count(),$offset, $limit);
+            echo view('paged_list', array(
+                'entities' => $objects,
+                'count' => $query->count(),
+                'offset' => $offset,
+                'limit' => $limit,
+            ));                    
         }    
     ?>
 </div>

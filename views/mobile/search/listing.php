@@ -1,1 +1,1 @@
-<div><?php echo $vars['info']; ?></div>
+<?php echo $vars['info']; ?>

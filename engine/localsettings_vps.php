@@ -23,3 +23,4 @@
     $CONFIG->cookie_domain = ".envaya.org";
     $CONFIG->dataroot = "/var/elgg-data/";
     $CONFIG->debug = false;
+    $CONFIG->ssl_enabled = true;

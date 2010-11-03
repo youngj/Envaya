@@ -168,9 +168,8 @@ for (var i = 0; i < blogDates.length; i++)
 
 
 <?php
-}
-            
-echo view_entity($entity, true);
+}            
+echo view_entity($entity, array('single_post' => true));
 ?>
 
 </div>

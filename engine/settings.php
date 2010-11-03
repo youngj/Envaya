@@ -24,6 +24,7 @@
     $CONFIG->google_api_key = "ABQIAAAAHy69XWEjciJIVElz0OYMsRR3-IOatrPZ1tLat998tYHgwqPnkhTKyWcq8ytRPMx3RyxFjK0O7WSCHA";
     $CONFIG->analytics_enabled = 0;
     $CONFIG->error_emails_enabled = 0;
+    $CONFIG->ssl_enabled = false;
 
     $CONFIG->s3_key = 'AKIAJAJKJDBD2RSGAILQ';
     $CONFIG->s3_private = 'E9s2sGLEKqJyCG6WE4PbE/JMBOuLcZ4DJ2v1hyH4';
@@ -76,4 +77,5 @@
     include_once(__DIR__ . "/localsettings.php");
 
     $CONFIG->url = "http://{$CONFIG->domain}/";
+    $CONFIG->secure_url = ($CONFIG->ssl_enabled) ? "https://{$CONFIG->domain}/" : $CONFIG->url;
 ?>

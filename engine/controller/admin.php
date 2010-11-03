@@ -182,7 +182,12 @@ class Controller_Admin extends Controller
         $count = User::query()->count();
         $entities = User::query()->limit($limit, $offset)->order_by('e.guid desc')->filter();
 
-        $result = view_entity_list($entities, $count, $offset, $limit);
+        $result = view('paged_list', array(
+            'entities' => $entities,
+            'count' => $count,
+            'offset' => $offset,
+            'limit' => $limit,
+        ));        
 
         $this->page_draw(
             __("admin:user"),
@@ -217,7 +222,14 @@ class Controller_Admin extends Controller
         {
             $count = $query->count();
             $return = view('user/search/startblurb',array('count' => $count, 'tag' => $tag));            
-            $return .= view_entity_list($users, $count, $offset, $limit);
+            
+            $return .= view('search/results_list', array(
+                'entities' => $users,
+                'count' => $count(),
+                'offset' => $offset,
+                'limit' => $limit,
+            ));            
+            
             return $return;
         }
     }

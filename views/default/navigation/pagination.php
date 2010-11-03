@@ -3,7 +3,7 @@
     if (!isset($vars['offset'])) {
         $offset = 0;
     } else {
-        $offset = $vars['offset'];
+        $offset = (int)$vars['offset'];
     }
 
     $pagesShown = @$vars['pagesShown'] ?: 12;
@@ -18,7 +18,7 @@
     if (!isset($vars['count'])) {
         $count = 0;
     } else {
-        $count = $vars['count'];
+        $count = (int)$vars['count'];
     }
     if (!isset($vars['word'])) {
         $word = "offset";
@@ -34,7 +34,9 @@
     $totalpages = ceil($count / $limit);
     $currentpage = ceil($offset / $limit) + 1;
 
-    $baseurl = preg_replace('/[\&\?]'.$word.'\=[0-9]*/',"",$vars['baseurl']);
+    $baseurl = @$vars['baseurl'] ?: $_SERVER['REQUEST_URI'];
+    
+    $baseurl = preg_replace('/[\&\?]'.$word.'\=[0-9]*/',"",$baseurl);
 
     //only display if there is content to paginate through or if we already have an offset
     if ($count > $limit || $offset > 0) {

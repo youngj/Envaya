@@ -6,6 +6,7 @@ class PageContext
     private static $translations_available = array();
     private static $theme = 'simple';
     private static $rss = false;
+    private static $site_org = null;
     
     static function set_translatable($translatable)
     {
@@ -80,4 +81,13 @@ class PageContext
         static::$rss = $rss;
     }
    
+    static function set_site_org($org)
+    {
+        static::$site_org = $org;
+    }
+    
+    static function get_site_org()
+    {
+        return static::$site_org;
+    }
 }

@@ -26,6 +26,11 @@ GRANT SELECT, LOCK TABLES ON envaya.* TO 'dropbox'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 
+mkdir -p /var/nginx/ssl
+chown www-data:www-data /var/nginx/ssl
+chmod 700 /var/nginx/ssl
+cp /var/envaya/current/_media/envaya_combined.crt /var/nginx/ssl/
+
 mkdir -p /var/elgg-data
 chmod 777 /var/elgg-data
 
@@ -89,10 +94,23 @@ cat <<EOF > /etc/nginx/sites-available/default
 
 server {
     listen   80;
+    include /etc/nginx/envaya.conf;
+}
+
+server {
+    listen 443;
+    server_name envaya.org;
+    ssl on;
+    ssl_certificate /etc/nginx/ssl/envaya_combined.crt;
+    ssl_certificate_key /etc/nginx/ssl/envaya.org.key;
+    include /etc/nginx/envaya.conf;
+}
+
+EOF
+
+cat <<EOF > /etc/nginx/envaya.conf
+
     root /var/envaya/current;
-    log_format combined_time '\$remote_addr - \$remote_user [\$time_local]  '
-                    '"\$request" \$status \$body_bytes_sent '
-                    '"\$http_referer" "\$http_user_agent" \$request_time';
     access_log  /var/log/nginx/access.log combined_time;
     client_max_body_size 10m;
     client_body_timeout 118;
@@ -128,7 +146,6 @@ server {
       fastcgi_param PATH_INFO \$fastcgi_script_name;
       include /etc/nginx/fastcgi_params;
     }
-}
 
 EOF
 
@@ -148,6 +165,10 @@ http {
     include       /etc/nginx/mime.types;
 
     access_log  /var/log/nginx/access.log;
+    
+    log_format combined_time '\$remote_addr - \$remote_user [\$time_local]  '
+                    '"\$request" \$status \$body_bytes_sent '
+                    '"\$http_referer" "\$http_user_agent" \$request_time';    
 
     sendfile        on;
     #tcp_nopush     on;

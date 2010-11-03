@@ -72,7 +72,7 @@ class Controller_Org extends Controller
             $content = view('org/search_results', $vars);
         }
 
-        $body = view_layout('one_column_padded', view_title($title), $content);
+        $body = view_layout('one_column', view_title($title), $content);
         $this->page_draw($title,$body);
     }
 
@@ -579,6 +579,6 @@ class Controller_Org extends Controller
         PageContext::set_translatable(false);
         $title = __('featured:title');
         $body = view('org/featured');
-        $this->page_draw($title, view_layout("one_column_padded", view_title($title), $body));
+        $this->page_draw($title, view_layout("one_column", view_title($title), $body));
     }
 }

@@ -325,11 +325,13 @@ class Organization extends User
         $query = static::query_search($name, $sector, $region);
         
         $query->limit($limit, $offset);
-        
-        $count = $query->count();
-        $entities = $query->filter();
-
-        return view_entity_list($entities, $count, $offset, $limit);
+       
+        return view('search/results_list', array(
+            'entities' => $query->filter(),
+            'count' => $query->count(),
+            'offset' => $offset,
+            'limit' => $limit,
+        ));
     }
 
     static function query_by_area($latLongArr, $sector)

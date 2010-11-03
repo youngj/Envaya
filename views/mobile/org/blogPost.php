@@ -5,7 +5,8 @@
     $url = rewrite_to_current_domain($entity->get_url());
     $org = $entity->get_root_container_entity();
     $blogDates = $org->get_blog_dates();
-    echo view_entity($entity, true);
+        
+    echo view_entity($entity, array('single_post' => true));
     
     if (sizeof($blogDates) > 1)
 {

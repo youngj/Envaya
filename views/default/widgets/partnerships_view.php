@@ -11,7 +11,12 @@
     $count = $query->count();
     $entities = $query->filter();
     
-    echo view_entity_list($entities, $count, $offset, $limit);
+    echo view('paged_list', array(
+        'entities' => $entities,
+        'count' => $count,
+        'offset' => $offset,
+        'limit' => $limit,
+    ));        
         
     if (!$count)
     {
