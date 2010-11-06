@@ -1,17 +1,7 @@
 <?php
 
-$report = $vars['report'];
-$org = $report->get_container_entity();
-$edit = @$vars['edit'];
+/*
 
-$html = $edit ? 'edit_html' : 'view_html';
-$input = $edit ? 'edit_input' : 'view_input';
-
-
-?>
-
-<?php echo $report->get_field('thematic_areas')->$html(); ?>
-<?php echo $report->get_field('project_description')->$html(); ?>
 
 <div class='input'>
 <label>C. Who is benefitting from your project?</label><br />
@@ -60,6 +50,6 @@ $constituency_fields = function($name) use ($input, $report)
 echo $report->get_field('other_details')->$html();
 ?>
 
-<?php
-echo $report->get_field('project_regions')->$html();
+*/
+
 ?>

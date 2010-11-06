@@ -42,4 +42,9 @@ return array(
     'report:view_response' => "View Response",
     'report:view_response_title' => "Response to %s",
     'report:status_changed' => "Report status changed.",
+    
+    'report:section_heading' => "Part %d: %s",
+    
+    'report:instructions' => "Type your responses in the fields below. When you are done with each section, press the button at the bottom of the page to save your changes and continue to the next section.",
+    'report:youare' => "You are currently submitting responses for <b>%s</b>.",
 );

@@ -61,6 +61,11 @@ class Controller_Report extends Controller_Profile
         $this->page_draw($title,$body);
     }
 
+    function use_editor_layout()
+    {
+        PageContext::set_theme('editor_wide');
+    }    
+    
     function require_editor()
     {
         parent::require_editor();

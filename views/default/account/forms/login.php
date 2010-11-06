@@ -5,20 +5,19 @@
     ob_start();
     ?>
 
-
     <label>
         <?php echo __('username') ?>    </label><br />
         <?php echo view('input/text', array(
             'internalname' => 'username',
             'internalid' => 'username',
-            'value' => $vars['username'], 'class' => 'login-textarea')); ?>
+            'value' => $vars['username'], 'class' => 'input-text login-input')); ?>
     <br />
     <label>
         <?php echo __('password') ?></label><br />
         <?php echo view('input/password', array(
             'internalname' => 'password',
             'internalid' => 'password',
-            'class' => 'login-textarea')) ?>
+            'class' => 'input-text login-input')) ?>
     <br />
     <div id="persistent_login"><label><input type="checkbox" class='input-checkboxes' name="persistent" value="true" />
         <?php echo __('user:persistent') ?>

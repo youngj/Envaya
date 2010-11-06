@@ -7,6 +7,8 @@ class PageContext
     private static $theme = 'simple';
     private static $rss = false;
     private static $site_org = null;
+    private static $header_html = array();
+    
     
     static function set_translatable($translatable)
     {
@@ -89,5 +91,23 @@ class PageContext
     static function get_site_org()
     {
         return static::$site_org;
+    }
+    
+    static function add_header_html($key, $html)
+    {
+        if (!isset(static::$header_html[$key]))
+        {
+            static::$header_html[$key] = $html;
+        }
+    }
+    
+    static function get_header_html()
+    {
+        $res = '';
+        foreach (static::$header_html as $key => $html)
+        {
+            $res .= $html;
+        }
+        return $res;
     }
 }

@@ -2,18 +2,17 @@
 
 class ReportHandler
 {
-    public $num_sections = 1;
-    public $report_code = '';    
-
     function view($report)
     {
         $res = '';
-        for ($i = 1; $i <= $this->num_sections; $i++)
+        
+        foreach ($this->get_sections() as $section_id => $section)
         {   
             $res .= view('reports/view_section', array(
-                'section' => $i, 
+                'section_id' => $section_id, 
+                'section' => $section,
                 'report' => $report,
-                'content' => view("reports/{$this->report_code}/section$i", array('report' => $report))
+                'content' => view("reports/{$section['view']}", array('report' => $report))
             ));
         }
         return $res;
@@ -21,23 +20,23 @@ class ReportHandler
     
     function edit($report)
     {
-        $section = (int)get_input('section') ?: 1;        
-        $content = $this->get_edit_content($report, $section);        
+        $section_id = (int)get_input('section') ?: 1;        
         
+        $sections = $this->get_sections();
+        $section = $sections[$section_id];        
+       
+        $content = view("reports/{$section['view']}", 
+            array('report' => $report, 'edit' => true)
+        );
+                
         return view('reports/edit_section',             
             array(
                 'content' => $content,
                 'report' => $report,
-                'section' => $section,
+                'section_id' => $section_id,
+                'section' => $section
             )
         );
     }    
-    
-    function get_edit_content($report, $section)
-    {
-        $args = array('report' => $report, 'section' => $section, 'edit' => true);        
-        $view_name = "reports/{$this->report_code}/section$section";
-        return view($view_name, $args);
-    }    
-    
+      
 }

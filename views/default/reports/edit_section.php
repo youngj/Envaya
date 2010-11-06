@@ -1,8 +1,9 @@
 <?php
 $report = $vars['report'];
 $content = $vars['content'];
-$section = $vars['section'];
-$num_sections = $report->get_handler()->num_sections;
+$section_id = $vars['section_id'];
+$sections = $report->get_handler()->get_sections();
+$num_sections = sizeof($sections);
 ?>
 <script type='text/javascript'>
 function setNextSection($section)
@@ -14,10 +15,11 @@ function setNextSection($section)
 
 echo "<div class='report_section_nav'>";
 $links = array();
-for ($i = 1; $i <= $num_sections; $i++)
+
+foreach ($sections as $i => $section)
 {
-    $section_title = __("{$report->get_handler()->report_code}:section{$i}_title");
-    if ($section == $i)
+    $section_title = $section['title'];
+    if ($section_id == $i)
     {
         $links[] = "<span>".escape($section_title)."</span> ";
     }
@@ -25,15 +27,17 @@ for ($i = 1; $i <= $num_sections; $i++)
     {
         $links[] = "<a href='javascript:void(0)' onclick='setSubmitted(); setNextSection($i); document.forms[0].submit()'>".
             escape($section_title)."</a> ";            
-    }    
+    }
 }
 echo implode(" &middot; ", $links);
 
 echo "</div>";
 
+echo "<h2 class='report_section_heading'>".escape(sprintf(__('report:section_heading'), $section_id, $vars['section']['title']))."</h2>";
+
 echo $content;
 
-echo view('input/hidden', array('internalname' => 'section', 'value' => $section)); 
+echo view('input/hidden', array('internalname' => 'section', 'value' => $section_id)); 
 
 echo view('input/hidden', array(
     'internalname' => 'next_section',
@@ -41,12 +45,12 @@ echo view('input/hidden', array(
     'value' => '',
 ));
 
-if ($section < $num_sections)
+if ($section_id < $num_sections)
 {
     echo view('input/submit', array(
         'internalname' => '_submit',
         'value' => __('report:next_page'), 
-        'js' => "onclick='return setSubmitted() && setNextSection(".($section+1).")'"
+        'js' => "onclick='return setSubmitted() && setNextSection(".($section_id+1).")'"
     ));
 }
 else
@@ -57,6 +61,5 @@ else
         'trackDirty' => true
     ));
 }
-
 
 ?>

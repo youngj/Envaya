@@ -8,6 +8,13 @@ $html = $edit ? 'edit_html' : 'view_html';
 $input = $edit ? 'edit_input' : 'view_input';
 
 ?>  
+<?php if ($edit) { ?>
+<div class='instructions'>
+<p><?php echo __('fcs:narrative:preamble'); ?></p>
+<p><?php echo sprintf(__('report:youare'), escape($org->name));?></p>
+<p><?php echo __('report:instructions'); ?></p>
+</div>
+<?php } ?>
 
 <?php echo $report->get_field('full_name')->$html(); ?>
 <?php echo $report->get_field('other_name')->$html(); ?>
@@ -16,7 +23,7 @@ $input = $edit ? 'edit_input' : 'view_input';
 
 <div class='input'>
 
-<?php 
+<?php
     $report_period = $report->get_field('report_period');
     echo "<label>".$report_period->label()."</label><br />";
     if ($edit) {
@@ -25,7 +32,7 @@ $input = $edit ? 'edit_input' : 'view_input';
 
     $report_dates = $report->get_field('report_dates');
     $report_quarters = $report->get_field('report_quarters');
-    
+
     echo "<table><tr><td style='padding-right:10px'>";
     echo $report_dates->label().": ".$report_dates->$input();
     echo "</td><td>";

@@ -40,6 +40,7 @@
 <script type='text/javascript'>
 <?php echo view('js/header'); ?>
 </script>
+    <?php echo PageContext::get_header_html(); ?>
 </head>
 
 <body class='<?php echo @$vars['bodyClass']; ?>'>

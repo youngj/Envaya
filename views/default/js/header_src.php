@@ -158,9 +158,19 @@ function setDirty($dirty)
     return true;
 }
 
+var _submitFns = [];
+function addSubmitFn($fn)
+{
+    _submitFns.push($fn);
+}
+
 function setSubmitted()
 {
     setDirty(false);
+    for (var i = 0; i < _submitFns.length; i++)
+    {
+        _submitFns[i]();
+    }
     window.submitted = true;
     return true;
 }

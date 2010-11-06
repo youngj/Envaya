@@ -108,17 +108,15 @@ class ReportField extends Model
         {    
             $output_args = array('value' => $this->value);
             
-            if (isset($args['output_args']))
+            foreach (array('view_args','output_args') as $arg_group)
             {
-                foreach ($args['output_args'] as $k => $v)
+                if (isset($args[$arg_group]))
                 {
-                    $output_args[$k] = $v;
+                    foreach ($args[$arg_group] as $k => $v)
+                    {
+                        $output_args[$k] = $v;
+                    }
                 }
-            }
-            
-            if (isset($args['options']))
-            {
-                $output_args['options'] = $args['options'];
             }
         
             return view(@$args['output_type'] ?: 'output/text', $output_args);
@@ -141,18 +139,16 @@ class ReportField extends Model
             'value' => !$this->is_blank() ? $this->value : @$args['default'],
         );
         
-        if (isset($args['input_args']))
+        foreach (array('view_args','input_args') as $arg_group)
         {
-            foreach ($args['input_args'] as $k => $v)
+            if (isset($args[$arg_group]))
             {
-                $input_args[$k] = $v;
+                foreach ($args[$arg_group] as $k => $v)
+                {
+                    $input_args[$k] = $v;
+                }
             }
         }
-        
-        if (isset($args['options']))
-        {
-            $input_args['options'] = $args['options'];
-        }        
     
         $res = view(@$args['input_type'] ?: 'input/text', $input_args);       
                

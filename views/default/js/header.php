@@ -49,8 +49,12 @@ window.dirty=false;function setDirty($dirty)
 else
 {window.onbeforeunload=null;}
 window.dirty=$dirty;return true;}
+var _submitFns=[];function addSubmitFn($fn)
+{_submitFns.push($fn);}
 function setSubmitted()
-{setDirty(false);window.submitted=true;return true;}
+{setDirty(false);for(var i=0;i<_submitFns.length;i++)
+{_submitFns[i]();}
+window.submitted=true;return true;}
 function addImageLink(img)
 {var match=/http:\/\/(\w+)\.s3\.amazonaws\.com\/(\d+)\/([\w\.]+)\/([\w\.]+)/.exec(img.src);if(match&&match[4]!='large.jpg')
 {img.style.cursor='pointer';addEvent(img,'click',function(){window.location="/pg/large_img?owner="+(match[2])+"&group="+match[3];});}}

@@ -188,6 +188,7 @@ CREATE TABLE `widgets` (
 CREATE TABLE `report_definitions` (
   `guid` bigint(20) unsigned  NOT NULL,
   `handler_class` varchar(32) NULL,  
+  `name` text NULL,  
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

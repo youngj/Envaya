@@ -1,6 +1,5 @@
 <?php
     include(__DIR__."/default.php");
-
     $graphicsDir = "/_graphics";
 ?>
 
@@ -194,7 +193,7 @@ a.icon_link:hover
     padding-bottom:5px;
 }
 
-.report_section_nav strong, .report_section_nav a 
+.report_section_nav span, .report_section_nav a 
 {
     white-space:nowrap;
 }
@@ -205,4 +204,14 @@ a.icon_link:hover
     margin:7px;
     border:1px solid gray;
     background:#f0f0f0;
+}
+
+.paddedTable td, .paddedTable th
+{
+    padding:5px;
+}
+
+.report_section_heading
+{
+    padding-top:8px;
 }

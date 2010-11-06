@@ -559,7 +559,12 @@ a#loginButton:hover .loginContent span
 label {
     font-size: 120%;
 }
-input {
+.sub_input label
+{
+    font-size:100%;
+}
+
+.input-text, .input-textarea {
     font: 120% Arial, Helvetica, sans-serif;
     padding: 5px;
     border: 1px solid #cccccc;
@@ -567,7 +572,7 @@ input {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
 }
-textarea {
+.input-textarea {
     font: 120% Arial, Helvetica, sans-serif;
     border: solid 1px #cccccc;
     padding: 5px;
@@ -575,7 +580,7 @@ textarea {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
 }
-textarea:focus, input[type="text"]:focus {
+.input-textarea:focus, .input-text:focus {
     border: solid 1px #4690d6;
     background: #e4ecf5;
     color:#333333;
@@ -1063,4 +1068,9 @@ input[type="submit"] {
     padding: 2px 6px 2px 6px;
     margin:10px 0 10px 0;
     cursor: pointer;
+}
+
+.login-input
+{
+    width:200px;
 }

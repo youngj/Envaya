@@ -8,6 +8,10 @@ class ReportDefinition extends Entity
         'handler_class' => '',
         'name' => '',
     );
+    static $handler_classes = array(
+        'ReportHandler_FCS_Narrative',
+    );
+    
     private $handler = null;
     
     function get_title()
@@ -18,15 +22,10 @@ class ReportDefinition extends Entity
     static function get_handler_options()
     {
         $options = array();
-        $files = get_library_files(__DIR__."/reporthandler");
-        foreach ($files as $file)
+        foreach (static::$handler_classes as $classname)
         {
-            if (preg_match('/(\w+)\.php$/', $file, $matches))
-            {
-                $classname = "ReportHandler_$matches[1]";
-                $handler = new $classname();                
-                $options[get_class($handler)] = $handler->name;
-            }            
+            $handler = new $classname();                
+            $options[get_class($handler)] = $handler->name;
         }
     
         return $options;
