@@ -8,6 +8,7 @@ return array(
     'fcs:narrative:challenges' => 'Changamoto',    
     'fcs:narrative:linkages' => 'Mahusiano',
     'fcs:narrative:future_plans' => 'Mipango ya Baadae',
+    'fcs:narrative:beneficiaries' => 'Walengwa Waliofikiwa',
     'fcs:narrative:events_attended' => 'Matukio Mliyoyahudhuria',
     
     'fcs:narrative:events_attended:label' => 'Eleza kama asasi yako imewahi Kuhudhuria Shughuli zozote ambazo zimeandaliwa na The Foundation.',
@@ -76,19 +77,26 @@ Kama mradi wako ulianza Agosti 12, 2010 na ni wa miaka miwili taarifa ya <b>mwis
     'fcs:narrative:linkages:organization' => 'Wadau',
     'fcs:narrative:linkages:description' => 'Namna mlivyoshirikiana nayo',
 
+    'fcs:narrative:beneficiaries_other_details' => 'Kama "Watu wengine", eleza:',
+    'fcs:narrative:beneficiaries_container:help' => "Walengwa wa Moja kwa Moja - yaani Watu walioshiriki moja kwa moja kwenye shughuli za Mradi<br>Walengwa wasio wa moja kwa moja - wale mliowafikia kupitia walengwa wa moja kwa moja au ambao hawatafikiwa moja kwa moja na shughuli za mradi.",
+  
+    'fcs:narrative:total_beneficiaries' => 'D. Idadi kamili ya wanufaika',
     
-    'fcs:widows' => "Widows",
-    'fcs:elderly' => "Elderly",
-    'fcs:refugees' => "Refugees",
-    'fcs:poor' => "Poor",
-    'fcs:orphans' => "Orphans",
-    'fcs:unemployed' => "Unemployed",
-    'fcs:hiv_aids' => 'HIV and AIDS',
-    'fcs:children' => 'Children',
-    'fcs:youth' => 'Youth',
-    'fcs:homeless' => "Homeless",
-    'fcs:disabled' => "Disabled",
-    'fcs:other' => "Other",
+    'fcs:directness:direct' => 'Walengwa wa moja kwa moja',
+    'fcs:directness:indirect' => 'Walengwa wasio wa moja kwa moja',
+    'fcs:gender:female' => 'Wanawake',
+    'fcs:gender:male' => 'Wanaume',
+    'fcs:total' => 'Jumla',
+    
+    
+    'fcs:widows' => "Wajane na Wagane",
+    'fcs:elderly' => "Wazee",
+    'fcs:orphans' => "Watoto Yatima",
+    'fcs:hiv_aids' => 'Watu wanaoishi na VVU/UKIMWI',
+    'fcs:children' => 'Watoto',
+    'fcs:youth' => 'Vijana',
+    'fcs:disabled' => "Watu wenye Ulemavu",
+    'fcs:other' => "Watu wengine",
     
     'fcs:thematic_area:policy' => "Sera",
     'fcs:thematic_area:capacity' => "Uimarishaji Asasi za Kiraia",

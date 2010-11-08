@@ -12,10 +12,19 @@ class ReportHandler
                 'section_id' => $section_id, 
                 'section' => $section,
                 'report' => $report,
-                'content' => view("reports/{$section['view']}", array('report' => $report))
+                'content' => $this->render_section($report, $section)
             ));
         }
         return $res;
+    }
+    
+    function render_section($report, $section, $edit = false)
+    {
+        $view = @$section['view'] ?: 'default_section';
+        
+        return view("reports/$view", 
+            array('report' => $report, 'section' => $section, 'edit' => $edit)
+        );
     }
     
     function edit($report)
@@ -24,14 +33,10 @@ class ReportHandler
         
         $sections = $this->get_sections();
         $section = $sections[$section_id];        
-       
-        $content = view("reports/{$section['view']}", 
-            array('report' => $report, 'edit' => true)
-        );
                 
         return view('reports/edit_section',             
             array(
-                'content' => $content,
+                'content' => $this->render_section($report, $section, true),
                 'report' => $report,
                 'section_id' => $section_id,
                 'section' => $section

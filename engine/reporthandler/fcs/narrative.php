@@ -10,42 +10,66 @@ class ReportHandler_FCS_Narrative extends ReportHandler
             1 => array(
                 'title' => __('fcs:narrative:introduction'),
                 'view' => 'fcs/narrative/introduction',
+                'field_names' => array(
+                    'full_name',
+                    'other_name',
+                    'project_name',
+                    'reference_num',
+                    'report_period',
+                    'project_coordinator'
+                )
             ),
             2 => array(
                 'title' => __('fcs:narrative:description'),
-                'view' => 'fcs/narrative/description',
+                'field_names' => array(
+                    'thematic_areas',
+                    'project_description',
+                    'regions',
+                    'total_beneficiaries'
+                )                    
             ),
             3 => array(
                 'title' => __('fcs:narrative:activities'),
-                'view' => 'fcs/narrative/activities',
+                'field_names' => array(
+                    'outputs',
+                    'planned_activities',
+                    'achievements',
+                    'difference_reason',
+                    'resources_used'                
+                )
             ),
             4 => array(
                 'title' => __('fcs:narrative:outcomes'),
-                'view' => 'fcs/narrative/outcomes',
+                'field_names' => array(
+                    'intended_results',
+                    'actual_outcomes',
+                    'other_outcomes',
+                    'outcome_difference_reason'
+                ),
             ), 
             5 => array(
                 'title' => __('fcs:narrative:lessons'),
-                'view' => 'fcs/narrative/lessons',
+                'field_names' => array('lessons_learned'),
             ),
             6 => array(
                 'title' => __('fcs:narrative:challenges'),
-                'view' => 'fcs/narrative/challenges',
+                'field_names' => array('challenges_encountered'),
             ),         
             7 => array(
                 'title' => __('fcs:narrative:linkages'),
-                'view' => 'fcs/narrative/linkages',
+                'field_names' => array('linkages'),
             ),
             8 => array(
                 'title' => __('fcs:narrative:future_plans'),
-                'view' => 'fcs/narrative/future_plans',
+                'field_names' => array('future_activities'),
             ), 
             9 => array(
                 'title' => __('fcs:narrative:beneficiaries'),
-                'view' => 'fcs/narrative/beneficiaries',
+                'field_names' => array('beneficiaries_container','beneficiaries_other_details'),
             ),
             10 => array(
                 'title' => __('fcs:narrative:events_attended'),
-                'view' => 'fcs/narrative/events_attended',
+                'field_names' => array('events_attended'),
             ),            
         );
     }
@@ -75,15 +99,15 @@ class ReportHandler_FCS_Narrative extends ReportHandler
             'report_period' => array(
                 'label' => __('fcs:narrative:report_period'),
                 'help' => __('fcs:narrative:report_period:help'), 
-                'label_only' => true
+                'custom_view' => 'fcs/narrative/report_period'
             ),
             'report_dates' => array(
                 'label' => __('fcs:narrative:report_dates'),
-                'input_args' => array('js' => "style='width:200px;'"),
+                'input_args' => array('js' => "style='width:250px;'"),
             ),
             'report_quarters' => array(
                 'label' => __('fcs:narrative:report_quarters'),
-                'input_args' => array('js' => "style='width:80px;'"),
+                'input_args' => array('js' => "style='width:100px;'"),
             ),                            
             'project_coordinator' => array(
                 'label' => __('fcs:narrative:project_coordinator'),
@@ -139,12 +163,17 @@ class ReportHandler_FCS_Narrative extends ReportHandler
                     )
                 )                
             ),
+            'total_beneficiaries' => array(
+                'label' => __('fcs:narrative:total_beneficiaries'),
+                'help' => __('fcs:narrative:beneficiaries_container:help'),
+                'custom_view' => 'fcs/narrative/total_beneficiaries'
+            ),
             'outputs' => array(
                 'label' => __('fcs:narrative:outputs'),
                 'input_type' => 'input/longtext',
                 'input_args' => array('js' => "style='height:80px;'"),
                 'output_type' => 'output/longtext',    
-            ),            
+            ),             
             'planned_activities' => array(
                 'label' => __('fcs:narrative:planned_activities'),
                 'input_type' => 'input/longtext',
@@ -298,6 +327,15 @@ class ReportHandler_FCS_Narrative extends ReportHandler
                     )
                 )
             ),
+            'beneficiaries_container' => array(                
+                'label' => __('fcs:narrative:beneficiaries_container'),
+                'help' => __('fcs:narrative:beneficiaries_container:help'),
+                'custom_view' => 'fcs/narrative/activity_beneficiaries',
+                'view_args' => array(
+                    //'num_activities' => 3,
+                    'constituencies' => array('widows','hiv_aids','elderly','orphans','children','disabled','youth','other')
+                )
+            ),               
             'events_attended' => array(
                 'label' => __('fcs:narrative:events_attended:label'),
                 'help' => __('fcs:narrative:events_attended:help'),
@@ -334,24 +372,31 @@ class ReportHandler_FCS_Narrative extends ReportHandler
         );
         
         $beneficiaries_args = array('input_args' => array('js' => 'style="width:80px"'));                
-        foreach (array('direct','indirect') as $directness)
+        $directnesses = array('direct','indirect');
+        foreach ($directnesses as $directness)
         {
             $fields["beneficiaries_male_$directness"] = $beneficiaries_args;
             $fields["beneficiaries_female_$directness"] = $beneficiaries_args;
             $fields["beneficiaries_$directness"] = $beneficiaries_args;
         }
                 
-        $constituency_args = array('input_args' => array('js' => 'style="width:80px"'));                
-                
-        foreach (array('widows','elderly','refugees','poor','orphans','unemployed','hiv_aids','children','youth','homeless','disabled','other')
-            as $constituency)
-        {
-            $fields[$constituency."_female"] = $constituency_args;
-            $fields[$constituency."_male"] = $constituency_args;
-        }
+        $constituency_args = array('input_args' => array('class' => ' ','js' => 'style="width:100px; font-size:120%"'));                        
         
-        $fields['other_details'] = array(
-            'label' => 'If other, provide details.'
+        //for ($activity_num = 1; $activity_num <= $fields['beneficiaries_container']['view_args']['num_activities']; $activity_num++)
+        //{                  
+            foreach ($fields['beneficiaries_container']['view_args']['constituencies'] as $constituency)
+            {
+                foreach ($directnesses as $directness)
+                {                                   
+                    $fields[$constituency."_female_".$directness] = $constituency_args;
+                    $fields[$constituency."_male_".$directness] = $constituency_args;
+                    $fields[$constituency."_".$directness] = $constituency_args;
+                }
+            }
+        //}
+        
+        $fields['beneficiaries_other_details'] = array(
+            'label' => __('fcs:narrative:beneficiaries_other_details')
         );
         
         return $fields;        

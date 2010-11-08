@@ -100,9 +100,19 @@ class ReportField extends Model
         return view('reports/edit_field', array('field' => $this));
     }
     
+    private function render_custom_view($view_name, $edit = false)
+    {
+        return view("reports/$view_name", array('field' => $this, 'report' => $this->get_report(), 'edit' => $edit));    
+    }
+    
     function view_input()
     {   
         $args = $this->get_args();
+        $custom_view = @$args['custom_view'];
+        if ($custom_view)
+        {
+            return $this->render_custom_view($custom_view);
+        }           
         
         if (!$this->is_blank())
         {    
@@ -130,6 +140,12 @@ class ReportField extends Model
     function edit_input()
     {   
         $args = $this->get_args();
+        
+        $custom_view = @$args['custom_view'];
+        if ($custom_view)
+        {
+            return $this->render_custom_view($custom_view, true);
+        }                   
         
         $input_name = "field_{$this->name}";
     

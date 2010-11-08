@@ -1074,3 +1074,8 @@ input[type="submit"] {
 {
     width:200px;
 }
+
+.paddedTable td, .paddedTable th
+{
+    padding:5px;
+}

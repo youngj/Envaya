@@ -54,8 +54,8 @@ for two years, your <b>end-of-year</b> report covers <b>quarters 1 to 4</b> from
     
     'fcs:narrative:total_beneficiaries' => 'D. Total beneficiaries reached',
     
-    'fcs:directness:direct' => 'Direct',
-    'fcs:directness:indirect' => 'Indirect',
+    'fcs:directness:direct' => 'Direct Beneficiaries',
+    'fcs:directness:indirect' => 'Indirect Beneficiaries',
     'fcs:gender:female' => 'Female',
     'fcs:gender:male' => 'Male',
     'fcs:total' => 'Total',
@@ -84,13 +84,17 @@ for two years, your <b>end-of-year</b> report covers <b>quarters 1 to 4</b> from
     'fcs:narrative:linkages:organization' => 'Stakeholder',
     'fcs:narrative:linkages:description' => 'How you worked with them',
     
+    'fcs:narrative:beneficiaries_other_details' => 'If "Other", provide details:',
+    'fcs:narrative:beneficiaries_container' => "Indicate the total number of beneficiaries reached by your project from each of the following constituency groups.",
+    'fcs:narrative:beneficiaries_container:help' => "Direct beneficiaries - those who will benefit or participate directly in the project.<br> Indirect Beneficiaries - those who have no direct contact with the project but are affected by it via direct beneficiaries.",
+    
     'fcs:widows' => "Widows",
     'fcs:elderly' => "Elderly",
     'fcs:refugees' => "Refugees",
     'fcs:poor' => "Poor",
     'fcs:orphans' => "Orphans",
     'fcs:unemployed' => "Unemployed",
-    'fcs:hiv_aids' => 'HIV and AIDS',
+    'fcs:hiv_aids' => 'People living with HIV/AIDS',
     'fcs:children' => 'Children',
     'fcs:youth' => 'Youth',
     'fcs:homeless' => "Homeless",
