@@ -69,7 +69,8 @@ class Controller_Org extends Controller
                         $latlong['long'] + 1.0
                     ),    
                     $sector)->limit(1)->get() != null;
-            }
+                $vars['latlong'] = $latlong;
+            }            
 
             $vars['results'] = Organization::list_search($query, $sector, $region=null, $limit = 10);            
             

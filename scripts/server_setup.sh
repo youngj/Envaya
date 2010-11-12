@@ -162,6 +162,11 @@ cat <<EOF > /etc/nginx/envaya.conf
         index  index.php;
         rewrite ^(.*)\$ /index.php\$1 last;
     }
+    
+    location ~ ^\/(engine|scripts|views|languages|test|vendors)\/
+    {
+        return 403;
+    }
 
     location /status.nginx
     {

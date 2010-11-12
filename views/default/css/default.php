@@ -564,7 +564,7 @@ label {
     font-size:100%;
 }
 
-.input-text, .input-textarea {
+.input-text, .input-textarea, .input-password {
     font: 120% Arial, Helvetica, sans-serif;
     padding: 5px;
     border: 1px solid #cccccc;

@@ -9,7 +9,7 @@
 </div>    
 
 <form method='GET' class='searchForm' action='/org/search/'>    
-    <input class='searchField input-text' type='text' name='q' value='<?php echo escape($query); ?>'>
+    <?php echo view('input/text', array('internalname' => 'q', 'class' => 'searchField input-text', 'value' => $query)); ?>
     <?php echo view('input/pulldown', array('internalname' => 'sector',
         'options_values' => Organization::get_sector_options(), 
         'empty_option' => __('sector:empty_option'),
