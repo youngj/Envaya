@@ -45,11 +45,6 @@ class NewsUpdate extends Entity
     {
         return Markup::get_snippet($this->content, $maxLength);
     }
-
-    public function get_date_text()
-    {
-        return friendly_time($this->time_created);
-    }
     
     function post_feed_items()
     {

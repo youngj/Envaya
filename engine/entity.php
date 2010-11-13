@@ -20,6 +20,11 @@ abstract class Entity extends Model
         }
     }
 
+    public function get_date_text()
+    {
+        return friendly_time($this->time_created);
+    }    
+    
     function cache_for_current_request()
     {
         static::$current_request_entities[$this->guid] = $this;
