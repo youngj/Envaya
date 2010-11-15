@@ -81,19 +81,6 @@ a.selected
     color:black;
 }
 
-#edit_submenu
-{
-    text-align:center;
-    height:20px;
-    padding:3px 10px;
-}
-
-#edit_submenu a
-{
-    color:white;
-    font-weight:bold;
-}
-
 .float_right
 {
     clear:both;

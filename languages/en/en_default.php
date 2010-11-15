@@ -7,6 +7,9 @@
         'cookie_error' => "There was an error logging into Envaya. Please ensure that your browser accepts cookies from '%s' and try again.", 
         'cookie_help' => "Click for instructions",
         
+        'photo:file' => "Select a photo:",
+        'photo:caption' => "Photo description:",
+        
         'go' => 'Go',
         'menu' => 'Main Menu',
         

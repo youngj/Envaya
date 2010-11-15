@@ -78,17 +78,14 @@
         return str_replace("&", "&amp;", $url);
     }
         
-    function set_persistent_cookie($name, $val)
+    function set_cookie($name, $val, $expireTime = 0)
     {
         global $CONFIG;
-
-        $expireTime = time() + 60 * 60 * 24 * 365 * 15;
-        
         if ($CONFIG->cookie_domain)
         {
             setcookie($name, $val, $expireTime, '/', $CONFIG->cookie_domain);
         }
-        setcookie($name, $val, $expireTime, '/');
+        setcookie($name, $val, $expireTime, '/');    
     }
     
     function escape($val)

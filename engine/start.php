@@ -121,7 +121,7 @@ function bootstrap()
         $view = @$_GET['view'];
         if (in_array($view, array('mobile','default')))
         {    
-            set_persistent_cookie('view', $view);
+            set_cookie('view', $view);
         }
     }
     

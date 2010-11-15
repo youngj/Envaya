@@ -7,7 +7,6 @@
     
     $form_body .= view('input/hidden', array('internalname' => 'widget_name', 'value' => $widget->widget_name));
     
-
     if ($widget->guid && $widget->is_enabled() && $widget->widget_name != 'home')
     {
         $form_body .= view('input/alt_submit', array(
@@ -18,7 +17,6 @@
             'value' => __('widget:delete')
         ));
     }
-
     if (!$noSave)
     {
         $saveText = $widget->is_active() ? __('savechanges') : __('widget:save:new');

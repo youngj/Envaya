@@ -660,10 +660,19 @@ class Controller_Profile extends Controller
         $org = $this->org;
         
         $duplicates = NewsUpdate::query_by_metadata('uuid', $uuid)->where('container_guid=?',$org->guid)->filter();
+
         
         foreach ($imageNumbers as $imageNumber)
-        {
+        {                        
             $imageData = get_input('imageData'.$imageNumber);
+            
+            if (!$imageData) // mobile version uploads image files when the form is submitted, rather than asynchronously via javascript
+            {
+                $uploadedFilename = get_uploaded_filename('imageFile'.$imageNumber);                    
+                $sizes = json_decode(get_input('sizes'));
+                $imageData = upload_temp_images($uploadedFilename, $sizes);
+            }
+            
             $imageCaption = get_input('imageCaption'.$imageNumber);
 
             $images = get_uploaded_files($imageData);

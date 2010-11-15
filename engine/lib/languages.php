@@ -77,5 +77,5 @@ function __($message_key, $language_code = "") {
 
 function change_viewer_language($newLanguage)
 {
-    set_persistent_cookie('lang', $newLanguage);
+    set_cookie('lang', $newLanguage);
 }
