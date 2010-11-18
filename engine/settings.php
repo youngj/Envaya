@@ -68,6 +68,7 @@
         13 => array('object', 'email_template', 'EmailTemplate'),
         14 => array('object', 'report_definition', 'ReportDefinition'),
         15 => array('object', 'report', 'Report'),
+        16 => array('object', 'comment', 'Comment'),
     );
     foreach ($CONFIG->subtypes as $val => $subtypeArr)
     {

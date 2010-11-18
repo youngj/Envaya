@@ -383,4 +383,21 @@ class Controller_Pg extends Controller {
             not_found();
         }                
     }
+        
+    function action_delete_comment()
+    {
+        $guid = (int)get_input('comment');
+        $comment = Comment::query()->where('e.guid=?', $guid)->get();
+        if ($comment && $comment->can_edit())
+        {
+            $comment->disable();
+            $comment->save();
+            system_message(__('comment:deleted'));
+        }
+        else
+        {
+            register_error(__('comment:not_deleted'));
+        }
+        forward_to_referrer();
+    }
 }

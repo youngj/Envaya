@@ -3,7 +3,6 @@
 -- 
 -- @link http://elgg.org/
 --
-
 -- --------------------------------------------------------
 
 --
@@ -144,6 +143,18 @@ CREATE TABLE `news_updates` (
   
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `comments` (
+  `guid` bigint(20) unsigned  NOT NULL,
+  
+  `content` text NOT NULL,
+  `data_types` int NOT NULL,
+  `language` varchar(4) default null,
+  `name` text default null,
+  `email` varchar(128) default null,
+  PRIMARY KEY  (`guid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 
 CREATE TABLE `featured_sites` (

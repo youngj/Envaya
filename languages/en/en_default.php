@@ -9,6 +9,16 @@
         
         'photo:file' => "Select a photo:",
         'photo:caption' => "Photo description:",
+
+        'comment:count' => "Comments (%d)",
+        'comment:add' => "Add a comment",
+        'comment:name_said' => "%s said:",
+        'comment:anonymous' => "(Anonymous)",        
+        'comment:success' => "Your comment has been published.",        
+        'comment:name' => "Your name:",
+        'comment:empty' => "Comment was empty.",
+        'comment:deleted' => "Comment deleted.",
+        'comment:not_deleted' => "Comment could not be deleted.",
         
         'go' => 'Go',
         'menu' => 'Main Menu',

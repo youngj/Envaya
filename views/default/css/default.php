@@ -1092,3 +1092,41 @@ input[type="submit"] {
     color:white;
     font-weight:bold;
 }
+
+#comments
+{
+    padding:12px;
+    margin-top:12px;
+    border-top:1px dashed #ccc;
+}
+
+.comment
+{
+    padding-bottom:8px;
+}
+
+#comments h4
+{
+    font-size:16px;
+    text-align:center;
+}
+
+#comment_form textarea
+{
+    height:70px;
+    width:<?php echo ($contentWidth - 70) ?>px;
+}
+
+#comment_form label
+{
+    font-size:100%;
+}
+
+.comment_name_input
+{
+    width:250px;
+}
+.comment_name
+{
+    font-weight:bold;
+}

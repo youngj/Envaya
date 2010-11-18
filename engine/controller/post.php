@@ -29,7 +29,7 @@ class Controller_Post extends Controller_Profile
             $this->org_page_not_found();
         }
     }
-
+    
     function action_index()
     {
         $org = $this->org;
@@ -57,6 +57,52 @@ class Controller_Post extends Controller_Profile
         }
 
         $this->page_draw($title,$body);
+    }
+    
+    function action_post_comment()
+    {    
+        $userId = Session::get_loggedin_userid();
+        
+        if ($userId)
+        {
+            $this->validate_security_token();
+        }
+        
+        $post = $this->post;
+        
+        $name = get_input('name');
+        $content = get_input('content');
+        
+        if (!$content)
+        {   
+            action_error(__('comment:empty'));
+        }
+        
+        if (!$userId && !get_input('captcha'))
+        {        
+            $title = __('comment:verify_human');
+            $body = $this->org_view_body($title, view("org/comment_captcha"));
+            $this->page_draw($title, $body);
+        }
+        else
+        {        
+            $comment = new Comment();
+            $comment->container_guid = $post->guid;
+            $comment->owner_guid = $userId;
+            $comment->name = $name;
+            $comment->set_content($content, false);
+            $comment->save();
+        
+            if (!$userId)
+            {
+                $posted_comments = Session::get('posted_comments') ?: array();
+                $posted_comments[] = $comment->guid;
+                Session::set('posted_comments', $posted_comments);
+            }
+            
+            system_message(__('comment:success'));
+            forward($post->get_url());
+        }
     }
 
     function action_edit()

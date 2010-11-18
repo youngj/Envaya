@@ -10,6 +10,11 @@ class NewsUpdate extends Entity
         'language' => '',
     );
 
+    public function query_comments()
+    {
+        return Comment::query()->where('container_guid = ?', $this->guid)->order_by('e.guid');
+    }
+    
     public function get_title()
     {
         return __("widget:news:item");
