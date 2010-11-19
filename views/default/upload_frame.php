@@ -54,33 +54,8 @@
 
         if (file.value)
         {
-            <?php if ($image) { ?>
-            
-            var len = file.value.length;
-            var position = eval(len - 4);
-            var fileType = file.value.toLowerCase().substr(position, len);
-
-            if (fileType == ".jpg" || fileType == ".png" || fileType == ".gif")
-            {
-                swfupload.uploadProgress();
-                form.submit();
-            }
-            else
-            {
-                if (fileType == ".doc")
-                {
-                    alert("<?php echo __('upload:image:isdoc'); ?>");
-                }
-                {
-                    alert("<?php echo __('upload:image:isbad'); ?>");
-                }
-                file.value = '';
-            }
-          
-            <?php } else { ?>
-                swfupload.uploadProgress();
-                form.submit();
-            <?php } ?>
+            swfupload.uploadProgress();
+            form.submit();
         }
     }
     </script>

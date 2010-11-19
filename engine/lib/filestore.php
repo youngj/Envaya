@@ -61,18 +61,208 @@ function upload_file($file_input)
     $file->upload_file($tmp_file);
     $file->save();
     
-    return get_file_group_json(array($file));
+    return get_file_group_array(array($file));
+}
+
+function convert_to_pdf($filename, $extension)
+{
+   require_once("vendors/scribd.php");
+
+   global $CONFIG;
+   $scribd = new Scribd($CONFIG->scribd_key, $CONFIG->scribd_private);
+
+   $res = $scribd->upload($filename, $extension, 'private');
+   
+   $doc_id = @$res['doc_id'];
+   if (!$doc_id)
+   {
+      error_log($res);
+      return null;
+   }
+
+   for ($i = 0; $i < 15; $i++)
+   {
+      $status = $scribd->getConversionStatus($doc_id);
+      if ($status == 'PROCESSING' || $status == 'DISPLAYABLE') 
+      {
+         sleep(1);
+      }
+      else
+      {
+         break;
+      }
+  }
+  try 
+  {
+     $pdf_url = $scribd->getDownloadUrl($doc_id, 'pdf');
+     return $pdf_url;
+  }
+  catch (Exception $ex)
+  {
+     error_log("error in pdf conversion: ".$ex->getMessage());
+     return null;
+  }
+}
+
+function download_file($url, $filename)
+{
+  $fh = fopen($filename, 'w');
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_FILE, $fh);
+  curl_setopt($curl, CURLOPT_URL, $url);
+  curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+  $res = curl_exec($curl);
+  if (!$res)
+  {
+    error_log(curl_error($curl));
+  }
+  curl_close($curl);
+
+  fclose($fh);
+  return $res;
+}
+
+function create_temp_dir($prefix)
+{
+   $temp_dir = sys_get_temp_dir();
+   for ($i = 0; $i < 10; $i++)
+   {
+      $output_dir = "$temp_dir/$prefix".mt_rand(0,10000000);
+      if (mkdir($output_dir, 0700))
+      {
+         return $output_dir;
+      }
+   }
+   return false;
+}
+
+function extract_image_from_pdf($filename)
+{
+    $temp_dir = create_temp_dir("pdfimages");
+
+    // pdfimages extracts images from .pdf file
+    // in either .jpg or .ppm format
+    system("pdfimages -j $filename $temp_dir/img"); 
+
+    $ppm_file = null;
+    $jpg_file = null;
+    $res_file = null;
+
+   if ($handle = opendir($temp_dir))
+   {
+      while($file = readdir($handle))
+      {
+         $path = "$temp_dir/$file";
+         if (endswith($file, '.jpg'))
+         {
+            $jpg_file = $path;
+            break; // only need 1 image
+         }
+         else if (endswith($file, '.ppm'))
+         {
+            $ppm_file = $path;
+            break; 
+         } 
+      }
+      closedir($handle);
+   }
+  
+    // php gd doesn't understand .ppm files, so convert them to .jpg
+    if ($ppm_file)
+    {
+        $jpg_file = "$ppm_file.jpg";
+        system("pnmtojpeg $ppm_file > $jpg_file");
+    }
+
+    // clean up
+    if ($jpg_file)
+    {
+       // move result file out of temporary directory
+       // so we can delete the temporary directory
+       for ($i = 0; $i < 10; $i++)
+       {
+           $res_file = sys_get_temp_dir(). '/pdfimages_jpg' . mt_rand(0,100000000);
+           if (rename($jpg_file, $res_file)) break;
+       }
+    }
+
+    system("rm -rf \"$temp_dir\"");
+
+    return $res_file;
+}
+
+function get_image_document_extensions()
+{
+   // file types that we can extract images from, and accept as image uploads
+   return array('pdf', 'rtf', 'odt', 'odg', 'doc', 'ppt', 'docx', 'pptx'); 
+}
+
+function store_image_from_doc($tmp_file, $ext, $sizes)
+{
+    $res = null;
+    if ($ext != 'pdf')
+    {
+        $pdf_url = convert_to_pdf($tmp_file, $ext);
+        $pdf_filename = tempnam(sys_get_temp_dir(), 'pdfimages_pdf');
+        if (!download_file($pdf_url, $pdf_filename))
+        {
+            $pdf_filename = null;
+        }
+    } 
+    else
+    {
+        $pdf_filename = $tmp_file;
+        $pdf_url = null;
+    }
+
+    if ($pdf_filename)
+    {
+        $pdf_image = extract_image_from_pdf($pdf_filename);
+        if ($pdf_image)
+        {
+            $res = store_image($pdf_image, $sizes);
+            @unlink($pdf_image); 
+        }
+        if ($pdf_url)
+        {
+            @unlink($pdf_filename);
+        }
+    }
+
+    return $res;
 }
 
 function upload_image($file_input, $sizes)
 {
     if (!$file_input || $file_input['error'] != 0)
         return null;
-        
-    error_log("3");
 
     $tmp_file = $file_input['tmp_name'];        
-        
+
+    global $CONFIG;
+
+    $orig_name = $file_input['name'];
+    $pathinfo = pathinfo($orig_name);
+    $ext = strtolower($pathinfo['extension']);
+    if (in_array($ext, get_image_document_extensions()))
+    {
+        if ($CONFIG->extract_images_from_docs)
+        {
+            return store_image_from_doc($tmp_file, $ext, $sizes);
+        }
+        else
+        {
+            return null;
+        }
+    } 
+    else
+    {
+        return store_image($tmp_file, $sizes);
+    }
+}
+
+function store_image($tmp_file, $sizes)
+{
     $files = array();
     $groupName = uniqid("",true);
     $lastFile = null;
@@ -107,16 +297,21 @@ function upload_image($file_input, $sizes)
 
                 $files[] = $file;
             }
+
+            if ($resizedImage['filename'] != $tmp_file)
+            {
+                @unlink($resizedImage['filename']);
+            }
         }
         else
         {
-            return json_encode(null);
+            return null;
         }
     }
-    return get_file_group_json($files);
+    return get_file_group_array($files);
 }
 
-function get_file_group_json($files)
+function get_file_group_array($files)
 {
     $res = array();
 
@@ -125,7 +320,7 @@ function get_file_group_json($files)
         $res[$file->size] = $file->js_properties();
     }
 
-    return json_encode($res);
+    return $res;
 }
 
 function get_uploaded_files($json)

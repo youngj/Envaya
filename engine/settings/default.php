@@ -27,7 +27,7 @@
     $CONFIG->error_emails_enabled = 0;
     $CONFIG->ssl_enabled = false;
 
-	$CONFIG->storage_backend = 'Storage_Local';
+    $CONFIG->storage_backend = 'Storage_Local';
 
     $CONFIG->path = dirname(dirname(__DIR__)) . "/";
     
@@ -51,5 +51,10 @@
     $CONFIG->sitename = "Envaya";
 
     $CONFIG->recaptcha_key = '';
-	$CONFIG->recaptcha_private = '';    
+    $CONFIG->recaptcha_private = '';   
+    
+    $CONFIG->scribd_key = '';
+    $CONFIG->scribd_private = '';
+
+    $CONFIG->extract_images_from_docs = false;  
 ?>

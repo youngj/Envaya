@@ -173,7 +173,7 @@
     <?php
     if ($current)
     {
-        $fileGroup = get_file_group_json($current->get_files_in_group());
+        $fileGroup = json_encode(get_file_group_array($current->get_files_in_group()));
         ?>
         uploader.swfupload.uploadSuccess(null, <?php echo json_encode($fileGroup) ?>);
         <?php

@@ -307,11 +307,11 @@ class Controller_Pg extends Controller {
 
         if (get_input('image'))
         {
-            $json = upload_image($_FILES['file'], json_decode(get_input('sizes')));
+            $json = json_encode(upload_image($_FILES['file'], json_decode(get_input('sizes'))));
         }
         else
         {
-            $json = upload_file($_FILES['file']);
+            $json = json_encode(upload_file($_FILES['file']));
         }
 
         if (get_input('iframe'))

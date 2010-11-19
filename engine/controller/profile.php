@@ -671,7 +671,7 @@ class Controller_Profile extends Controller
             if (!$imageData) // mobile version uploads image files when the form is submitted, rather than asynchronously via javascript
             {     
                 $sizes = json_decode(get_input('sizes'));
-                $imageData = upload_image($_FILES['imageFile'.$imageNumber], $sizes);
+                $imageData = json_encode(upload_image($_FILES['imageFile'.$imageNumber], $sizes));
             }
             
             $imageCaption = get_input('imageCaption'.$imageNumber);

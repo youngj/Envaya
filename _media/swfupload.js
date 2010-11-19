@@ -1328,7 +1328,9 @@ ImageUploader.prototype.startUpload = function($file)
 {
     this.setProgress(this.options.processing_message);
 
-    if ($file.size > 100000)
+    var $type = $file.type;
+
+    if ($file.size > 100000 && $type == '.jpg')
     {
         this.swfupload.startResizedUpload($file.ID, this.options.max_width, this.options.max_height, SWFUpload.RESIZE_ENCODING.JPEG, 75);
     }
@@ -1341,7 +1343,7 @@ ImageUploader.prototype.startUpload = function($file)
 ImageUploader.prototype.getSWFUploadOptions = function()
 {
     var options = FileUploader.prototype.getSWFUploadOptions.call(this);
-    options.file_types = "*.jpg;*.gif;*.png";
+    options.file_types = "*.jpg;*.gif;*.png;*.doc;*.docx;*.pdf;*.rtf;*.odt";
     options.file_types_description = "Images";
     options.post_params.image = "1";
     return options;
