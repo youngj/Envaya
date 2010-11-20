@@ -65,6 +65,6 @@ function handle_item($item)
 global $s3;
 global $bucketName;
 
-$s3 = get_s3();
+$s3 = get_storage();
 $bucketName = 'envayadata';
 enumerate_bucket($s3, $bucketName, 'handle_item');

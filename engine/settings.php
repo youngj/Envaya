@@ -26,8 +26,7 @@
     $CONFIG->error_emails_enabled = 0;
     $CONFIG->ssl_enabled = false;
 
-    $CONFIG->s3_key = 'AKIAJAJKJDBD2RSGAILQ';
-    $CONFIG->s3_private = 'E9s2sGLEKqJyCG6WE4PbE/JMBOuLcZ4DJ2v1hyH4';
+	$CONFIG->storage_backend = 'Storage_Local';
     $CONFIG->s3_bucket = 'envayadev';
 
     $CONFIG->path = dirname(__DIR__) . "/";
@@ -37,8 +36,8 @@
         'sw' => 'Kiswahili'
     );
 
-    $CONFIG->dataroot = dirname($CONFIG->path). "/elgg-data/";
-
+    $CONFIG->dataroot = dirname($CONFIG->path). "/envayadata/";
+	
     $CONFIG->simplecache_enabled = 0;
 
     $CONFIG->smtp_host = "smtp.com";

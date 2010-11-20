@@ -400,4 +400,50 @@ class Controller_Pg extends Controller {
         }
         forward_to_referrer();
     }
+	
+	function action_local_store()
+	{
+		// not for use in production environment
+		$storage_local = get_storage();
+		
+		if (!($storage_local instanceof Storage_Local))
+		{
+			return not_found();
+		}
+		
+		$bucket_name = get_input('bucket');
+		$path = get_input('path');
+		
+		$components = explode('/', $path);
+		
+		if (preg_match('/[^\w]/', $bucket))
+		{
+			return not_found();
+		}
+		
+		foreach ($components as $component)
+		{
+			if (preg_match('/[^\w\.]|(\.\.)/', $component))
+			{
+				return not_found();
+			}
+		}
+		
+		$local_path = $storage_local->get_file_path($bucket_name, implode('/', $components));
+		
+		if (!is_file($local_path))
+		{
+			return not_found();
+		}
+		
+		$extension = 'jpg';  // todo get from file name
+		$mime_type = @UploadedFile::$mime_types[$extension];
+		
+		if ($mime_type)
+		{
+			header("Content-Type: $mime_type");
+		}
+		echo file_get_contents($local_path);
+		exit;
+	}
 }

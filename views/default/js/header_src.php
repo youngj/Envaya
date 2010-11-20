@@ -177,13 +177,13 @@ function setSubmitted()
 
 function addImageLink(img)
 {    
-    var match = /http:\/\/(\w+)\.s3\.amazonaws\.com\/(\d+)\/([\w\.]+)\/([\w\.]+)/.exec(img.src);
+    var match = /(\d+)\/([\w\.]+)\/([\w\.]+)/.exec(img.src);
         
-    if (match && match[4] != 'large.jpg')
+    if (match && match[3] != 'large.jpg')
     {
         img.style.cursor = 'pointer';
         addEvent(img, 'click', function() { 
-            window.location = "/pg/large_img?owner=" + (match[2]) + "&group=" + match[3];
+            window.location = "/pg/large_img?owner=" + (match[1]) + "&group=" + match[2];
         });
     }     
 }

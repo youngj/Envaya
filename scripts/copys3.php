@@ -5,14 +5,14 @@
 
     global $CONFIG;
 
-    $s3 = get_s3();
+    $s3 = get_storage();
 
-    foreach ($s3->getBucketContents('envaya_data') as $key => $keyInfo)
+    foreach ($s3->get_bucket_contents('envaya_data') as $key => $keyInfo)
     {
         //var_dump($keyInfo);
         if (strpos($key,'temp') == false)
         {
-            $s3->copyObject('envaya_data', $key, 'envayadata', $key, true);
+            $s3->copy_object('envaya_data', $key, 'envayadata', $key, true);
             echo "$key\n";
         }
         else

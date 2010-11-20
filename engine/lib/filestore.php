@@ -1,9 +1,10 @@
 <?php
 
-function get_s3()
+function get_storage()
 {
     global $CONFIG;
-    return new S3($CONFIG->s3_key, $CONFIG->s3_private);
+	$storage_backend = $CONFIG->storage_backend;
+	return new $storage_backend();
 }
 
 function get_uploaded_filename($input_name)
@@ -17,11 +18,11 @@ function get_uploaded_filename($input_name)
 
 function get_thumbnail_src($html)
 {
-    if (preg_match('/src="http:\/\/(\w+)\.s3\.amazonaws\.com\/(\d+)\/([\w\.]+)\//', $html, $matches))
+    if (preg_match('/src=".*[\/\=](\d+)\/([\w\.]+)\//', $html, $matches))
     {
-        $ownerGuid = $matches[2];
-        $groupName = $matches[3];
-
+        $ownerGuid = $matches[1];
+        $groupName = $matches[2];
+		
         $files = UploadedFile::query()->where('owner_guid = ?', $ownerGuid)->
                     where('group_name = ?', $groupName)->
                     where('size=?', 'small')->filter();

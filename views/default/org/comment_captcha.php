@@ -14,4 +14,4 @@ echo view('input/submit', array('value' => __('comment:submit_captcha')))	;
 ?>
 
 </form>
-</div>
+</div>	

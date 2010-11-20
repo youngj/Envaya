@@ -10,7 +10,7 @@
         100
     );
 
-    $s3 = get_s3();
+    $s3 = get_storage();
 
     function copyImage($newsUpdate, $size)
     {
