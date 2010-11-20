@@ -58,11 +58,18 @@
         global $CONFIG;
         return send_mail($CONFIG->admin_email, $subject, $message, $headers, $immediate);
     }
+	
+	function get_mock_mail_file()
+	{
+		global $CONFIG;
+		return getenv("MOCK_MAIL_FILE") ?: $CONFIG->mock_mail_file;
+	}
 
     function mock_send_mail($mail, $recipients, $headers, $body)
     {
         global $CONFIG;
-        $file = fopen(getenv("MOCK_MAIL_FILE"), 'a');
+		echo get_mock_mail_file()."\n";
+        $file = fopen(get_mock_mail_file(), 'a');
         fwrite($file, "========\n");
         foreach ($headers as $k => $v)
         {
@@ -82,7 +89,7 @@
         {
             global $CONFIG;           
 
-            if (getenv("MOCK_MAIL_FILE"))
+            if (get_mock_mail_file())
             {
                 $mailer = new Mail_mock(array(
                     'postSendCallback' => 'mock_send_mail',

@@ -20,3 +20,13 @@
             return array();
         }
     }
+
+	function get_bit_field_from_options($options)
+	{
+		$field = 0;
+		foreach ($options as $item)
+		{
+			$field |= (int)$item;
+		}
+		return $field;
+	}

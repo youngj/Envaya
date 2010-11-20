@@ -400,12 +400,12 @@ class Controller_Org extends Controller
     {
         $email = get_input('email');
         $code = get_input('code');
-        $enable_batch_email = get_input('enable_batch_email');
+        $notifications = get_bit_field_from_options(get_input_array('notifications'));
         $users = User::query(true)->where('email = ?', $email)->filter();
 
         foreach ($users as $user)
         {
-            $user->enable_batch_email = $enable_batch_email;
+            $user->notifications = $notifications;
             $user->save();
 
             system_message(__('user:notification:success'));

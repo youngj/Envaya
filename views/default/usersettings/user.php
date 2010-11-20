@@ -62,9 +62,10 @@
 
         <label><?php echo __('user:notification:label'); ?>:</label><br />
 
-        <?php
-            echo view("input/pulldown", array('internalname' => 'enable_batch_email', 'value' => $user->enable_batch_email, 'options_values' =>
-                get_batch_email_options()
+        <?php		
+            echo view("input/checkboxes", array('internalname' => 'notifications', 
+				'value' => $user->get_notifications(), 
+				'options' => Notification::get_options()
             ));           
          ?>
 

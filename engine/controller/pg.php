@@ -392,7 +392,12 @@ class Controller_Pg extends Controller {
         {
             $comment->disable();
             $comment->save();
-            system_message(__('comment:deleted'));
+			
+			$container = $comment->get_container_entity();
+			$container->num_comments = $container->query_comments()->count();
+			$container->save();
+		   
+			system_message(__('comment:deleted'));
         }
         else
         {

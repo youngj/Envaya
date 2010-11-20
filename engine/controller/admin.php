@@ -95,7 +95,7 @@ class Controller_Admin extends Controller
             $orgs = Organization::query()->
                 where('approval > 0')->
                 where("email <> ''")->
-                where('enable_batch_email = 1')->
+                where('(notifications & ?) > 0', Notification::Batch)->
                 where("not exists (select * from sent_emails where email_guid = ? and user_guid = e.guid)", $email->guid)->
                 order_by('e.guid')->
                 limit(20)->

@@ -1,4 +1,8 @@
 <div class='section_content padded'>
+
+<div class='instructions'>
+<?php echo __('comment:captcha_instructions'); ?>
+</div>
 <form method='POST' action='<?php echo escape($_SERVER['REQUEST_URL']); ?>'>
 
 <?php

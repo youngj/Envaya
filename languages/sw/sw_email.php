@@ -1,10 +1,10 @@
 <?php
 
 return array(
-    'email:subscribed' => 'Nitumie email',
-    'email:unsubscribed' => 'Usinitumie email',
+    'email:subscribe_reminders' => 'Nitumie taarifa muhimu kutoka Envaya',
+    'email:subscribe_comments' => 'Nitumie email ambapo mtu ameandika maoni katika tovuti yangu',
 
-
+	
     'email:orgapproved:subject' => 'Tovuti yako imekubaliwa',
     'email:orgapproved:body' => 'Hujambo %s,
 

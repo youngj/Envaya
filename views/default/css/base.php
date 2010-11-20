@@ -223,6 +223,13 @@ a.selected
     text-decoration:underline;
 }
 
+.comment_deleted
+{
+	color: #aaa;
+    font-size:11px;
+	font-style:italic;
+}
+
 .blog_more
 {
     float:right;

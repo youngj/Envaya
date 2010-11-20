@@ -11,6 +11,19 @@ class Comment extends Entity
         'name' => '',
     );   
     
+	function get_name()
+	{
+		$owner = $this->get_owner_entity();
+		if ($owner)
+		{
+			return $owner->name;
+		}
+		else
+		{
+			return $this->name;
+		}
+	}
+	
     function can_edit($user = null)
     {   
         if (!$user)

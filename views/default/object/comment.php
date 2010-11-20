@@ -3,6 +3,10 @@
 ?>
 
 <div class="comment">
+<?php 
+if ($entity->is_enabled())
+{
+?>
     <div class='comment_name'>
     <?php
         $owner = $entity->get_owner_entity();
@@ -24,7 +28,7 @@
     ?>
     </div>
     <?php    
-        echo $entity->render_content();
+		echo Markup::autop(escape($entity->content));
     ?>  
     <div class='blog_date'><?php echo $entity->get_date_text(); ?></div>
     <?php
@@ -39,4 +43,11 @@
             echo "</span>";
         }    
     ?>
+<?php
+}
+else
+{
+	echo "<div class='comment_deleted'>".__('comment:deleted_marker')."</div>";
+}
+?>
 </div>

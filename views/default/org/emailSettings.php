@@ -6,10 +6,6 @@
 ?>
 <form action='/org/emailSettings_save' method='POST'>
 
-<div class='instructions'>
-<?php echo __('user:notification:desc'); ?>
-</div>
-
 <div class='input'>
 
 <?php
@@ -27,13 +23,15 @@
 
     <div class='help'>
     <?php echo sprintf(__('user:notification:desc2'), "<em>".escape($email)."</em>"); ?>        
-    <?php
+    </div>
+	<?php
 
-        echo view("input/pulldown", array('internalname' => 'enable_batch_email', 'value' => $users[0]->enable_batch_email, 'options_values' =>
-            get_batch_email_options()
+        echo view("input/checkboxes", array('internalname' => 'notifications', 
+			'value' => $users[0]->get_notifications(), 
+			'options' => Notification::get_options()
         ));
 
-     ?></div>
+     ?>
 
 </div>
 

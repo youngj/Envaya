@@ -625,10 +625,11 @@ class Controller_Profile extends Controller
 
         if ($user instanceof Organization)
         {
-            $enable_batch_email = get_input('enable_batch_email');
-            if ($enable_batch_email != $user->enable_batch_email)
+            $notifications = get_bit_field_from_options(get_input_array('notifications'));
+			
+            if ($notifications != $user->notifications)
             {
-                $user->enable_batch_email = $enable_batch_email;
+                $user->notifications = $notifications;
                 system_message(__('user:notification:success'));
             }
         }
@@ -952,6 +953,104 @@ class Controller_Profile extends Controller
         
         return view_layout($layout, $header, $area2, $this->get_pre_body());
     }
+	
+	function action_post_comment()
+	{
+		$widgetName = $this->request->param('widgetname');
+        if ($this->org)
+        {
+            $widget = $this->org->get_widget_by_name($widgetName);            
+			if ($widget->is_active())
+			{
+				$this->post_comment($widget);
+			}
+			else
+			{
+				return not_found();
+			}
+		}
+		else
+		{
+			return not_found();
+		}
+		
+	}
 
-
+	function post_comment($entity)
+	{
+		$comments_url = $entity->get_url()."?comments=1";
+	
+        $userId = Session::get_loggedin_userid();
+        
+        if ($userId)
+        {
+            $this->validate_security_token();
+        }       
+     
+        $name = get_input('name');
+        $content = get_input('content');
+        
+        if (!$content)
+        {   
+            register_error(__('comment:empty'));
+			Session::save_input();
+			forward($comments_url);
+        }
+        
+		if ($entity->query_comments()->where('content = ?', $content)->count() > 0)
+		{
+			register_error(__('comment:duplicate'));
+			Session::save_input();
+			forward($comments_url);
+		}
+		
+        if (!$userId && !get_input('captcha'))
+        {        
+            $title = __('comment:verify_human');
+			$this->use_public_layout();
+            $body = $this->org_view_body($title, view("org/comment_captcha"));
+            $this->page_draw($title, $body);
+        }
+        else
+        {     	
+            $comment = new Comment();
+            $comment->container_guid = $entity->guid;
+            $comment->owner_guid = $userId;
+            $comment->name = $name;
+            $comment->content = $content;
+			$comment->language = GoogleTranslate::guess_language($content);
+            $comment->save();
+        
+			$entity->num_comments = $entity->query_comments()->count();
+			$entity->save();
+		
+            if (!$userId)
+            {
+                $posted_comments = Session::get('posted_comments') ?: array();
+                $posted_comments[] = $comment->guid;
+                Session::set('posted_comments', $posted_comments);
+            }
+			
+			$owner = $entity->get_owner_entity();
+			
+			$notification_subject = sprintf(__('comment:notification_subject', $owner->language), 
+				$comment->get_name());
+			$notification_body = sprintf(__('comment:notification_body', $owner->language),
+				$comment->content,
+				"$comments_url#comments"
+			);
+			
+			if ($owner && $owner->email && $owner->is_notification_enabled(Notification::Comments) 
+					&& $ownerGuid != $owner->guid)
+			{		
+				$owner->notify($notification_subject, $notification_body);
+			}
+			send_admin_mail(
+				sprintf(__('comment:notification_admin_subject'), $comment->get_name(), $owner->name), 
+				$notification_body);
+            
+            system_message(__('comment:success'));
+            forward($comments_url);
+        }
+	}
 }

@@ -40,7 +40,7 @@ class EmailTemplate extends Entity
     
     function can_send_to($org)
     {    
-        return ($org && $org->email && $org->enable_batch_email        
+        return ($org && $org->email && $org->is_notification_enabled(Notification::Batch)        
             && SentEmail::query()->where('email_guid = ?', $this->guid)->where('user_guid = ?', $org->guid)->count() == 0
         );
     }

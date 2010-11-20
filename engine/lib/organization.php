@@ -69,11 +69,3 @@ function get_static_map_url($lat, $long, $zoom, $width, $height)
     $apiKey = $CONFIG->google_api_key;
     return "http://maps.google.com/maps/api/staticmap?center=$lat,$long&zoom=$zoom&size={$width}x$height&maptype=roadmap&markers=$lat,$long&sensor=false&key=$apiKey";
 }
-
-function get_batch_email_options()
-{
-    return array(
-        0 => __('email:unsubscribed'),
-        1 => __('email:subscribed'),
-    );
-}

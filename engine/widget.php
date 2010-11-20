@@ -46,6 +46,12 @@ class Widget extends Entity
         return $this->menu_order ?: @static::$default_widgets[$this->widget_name]['menu_order'] ?: 100;
     }
 
+    public function query_comments()
+    {
+        return Comment::query()->where('container_guid = ?', $this->guid)->order_by('e.guid');
+    }
+
+	
     public function get_title()
     {
         if ($this->title)

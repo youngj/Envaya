@@ -27,8 +27,8 @@ class User extends Entity
             'custom_header' => null,
             'last_notify_time' => null,
             'last_action' => 0,
-            'last_login' => 0,
-            'enable_batch_email' => 1
+            'last_login' => 0,    
+			'notifications' => 3,
         );
 
     /**
@@ -348,5 +348,24 @@ class User extends Entity
 
         return send_mail($this->email, $subject, $message, $headers);    
     }
+	
+	function is_notification_enabled($notification)
+	{
+		return ($this->notifications & $notification) != 0;
+	}
+	
+	function get_notifications()
+	{
+		$notifications = array();
+		
+		foreach (Notification::all() as $n)
+		{
+			if ($this->is_notification_enabled($n))
+			{
+				$notifications[] = $n;
+			}
+		}		
+		return $notifications;
+	}
 
 }

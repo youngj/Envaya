@@ -263,8 +263,7 @@ CREATE TABLE `users_entity` (
   
   `notify_days` int default 14,
   `last_notify_time` int default null,
-  `enable_batch_email` tinyint(4) not null default 1,
-  
+  `notifications` int(11) not null default 3,
   PRIMARY KEY  (`guid`),
   UNIQUE KEY (`username`),
   UNIQUE KEY (`email_code`),

@@ -1130,3 +1130,10 @@ input[type="submit"] {
 {
     font-weight:bold;
 }
+
+.comment_link
+{
+	font-size:11px;
+	padding-top:3px;
+}
+

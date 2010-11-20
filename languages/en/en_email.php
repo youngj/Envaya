@@ -1,8 +1,8 @@
 <?php
 
 return array(
-    'email:subscribed' => 'Subscribed',
-    'email:unsubscribed' => 'Unsubscribed',
+    'email:subscribe_reminders' => 'Send important announcements from Envaya',
+    'email:subscribe_comments' => 'Send me email when someone comments on my website',
 
     'email:orgapproved:subject' => 'Your website has been approved',
     'email:orgapproved:body' => "Hi %s,

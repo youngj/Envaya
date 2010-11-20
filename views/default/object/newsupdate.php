@@ -26,6 +26,13 @@
             echo $entity->get_date_text();
         }
         echo "</div>";
+		
+		if (!$single_post)
+		{
+			echo "<div class='comment_link'>";
+			echo "<a href='{$entity->get_url()}#comments'>".sprintf(__('comment:count'), $entity->num_comments)."</a>";
+			echo "</div>";
+		}
     ?>
     <div style='clear:both'></div>
 </div>
