@@ -26,6 +26,9 @@
     $CONFIG->admin_email = "admin@envaya.org";
     $CONFIG->post_email = "post@envaya.org";
     
+	$CONFIG->cache_backend = "MemcacheCache";	
+	$CONFIG->memcache_servers = array('localhost');
+	
     $CONFIG->analytics_enabled = 1;
     $CONFIG->error_emails_enabled = 1;
     $CONFIG->cookie_domain = ".envaya.org";

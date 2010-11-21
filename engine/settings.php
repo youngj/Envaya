@@ -13,9 +13,8 @@
 
     $CONFIG->queue_host = "localhost";
     $CONFIG->queue_port = 22133;
-    $CONFIG->cache_backend = "MemcacheCache";
-    //$CONFIG->cache_backend = "DatabaseCache";
-    $CONFIG->memcache_servers = array('localhost');
+   
+    $CONFIG->cache_backend = "DatabaseCache";
 
     $CONFIG->admin_email = "nobody@envaya.org";
     $CONFIG->post_email = "postdev@envaya.org";

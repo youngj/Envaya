@@ -8,6 +8,7 @@ class NewsUpdate extends Entity
         'content' => '',
         'data_types' => 0,
         'language' => '',
+		'num_comments' => 0
     );
 
     public function query_comments()

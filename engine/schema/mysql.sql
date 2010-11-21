@@ -140,6 +140,7 @@ CREATE TABLE `news_updates` (
   `content` text NOT NULL,
   `data_types` int NOT NULL,
   `language` varchar(4) default null,
+  `num_comments` int not null default 0,
   
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
