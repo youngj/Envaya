@@ -460,3 +460,21 @@ a.feed_image_link:hover
     margin-top:3px;
     margin-right:15px;
 }
+
+#comments
+{
+    padding:12px;
+    margin-top:12px;
+    border-top:1px dashed #ccc;
+}
+
+.comment
+{
+    padding-bottom:8px;
+}
+
+#comments h4
+{
+    font-size:16px;
+    text-align:center;
+}

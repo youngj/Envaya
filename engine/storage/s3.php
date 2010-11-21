@@ -133,7 +133,8 @@
             if(!isset($headers['Content-Type']))
             {
                 $ext = pathinfo($s3_path, PATHINFO_EXTENSION);
-                $headers['Content-Type'] = isset($this->mimeTypes[$ext]) ? $this->mimeTypes[$ext] : 'application/octet-stream';
+				$mimeTypes = UploadedFile::$mime_types;
+                $headers['Content-Type'] = isset($mimeTypes[$ext]) ? $mimeTypes[$ext] : 'application/octet-stream';
             }
             $request['content-type'] = $headers['Content-Type'];
  
@@ -318,7 +319,5 @@
             else
                 return false;
         }
-		 
-        private $mimeTypes = UploadedFile::$mime_types;
 	}
  

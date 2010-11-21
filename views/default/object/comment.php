@@ -21,7 +21,7 @@ if ($entity->is_enabled())
         }
         else
         {
-            $nameHTML = escape($entity->name ?: __('comment:anonymous'));        
+            $nameHTML = escape($entity->get_name());        
         }
     
         echo sprintf(__('comment:name_said'), $nameHTML);

@@ -20,7 +20,7 @@ class Comment extends Entity
 		}
 		else
 		{
-			return $this->name;
+			return $this->name ?: __('comment:anonymous');
 		}
 	}
 	

@@ -171,8 +171,6 @@ for (var i = 0; i < blogDates.length; i++)
 }            
 echo view_entity($entity, array('single_post' => true));
 
-echo view('org/comments', array('entity' => $entity));
-
 ?>
 
 </div>

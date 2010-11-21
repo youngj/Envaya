@@ -43,3 +43,8 @@
     {
         echo "</div>";
     }
+	
+	if ($single_post)
+	{
+		echo view('org/comments', array('entity' => $entity));
+	}

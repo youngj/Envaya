@@ -13,6 +13,8 @@ foreach ($_POST as $k => $v)
 }
 
 echo view('input/hidden', array('internalname' => 'captcha', 'value' => '1'));
+echo Recaptcha::get_html();
+
 echo view('input/submit', array('value' => __('comment:submit_captcha')))	;
 
 ?>

@@ -282,7 +282,7 @@ class Organization extends User
 
         foreach (Widget::get_default_names() as $name)
         {
-            if (!isset($savedWidgetsMap[$name]))
+            if (!isset($savedWidgetsMap[$name]) && !@Widget::$default_widgets[$name]['hidden'])
             {
                 $widget = new Widget();
                 $widget->container_guid = $this->guid;

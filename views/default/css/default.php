@@ -1093,23 +1093,6 @@ input[type="submit"] {
     font-weight:bold;
 }
 
-#comments
-{
-    padding:12px;
-    margin-top:12px;
-    border-top:1px dashed #ccc;
-}
-
-.comment
-{
-    padding-bottom:8px;
-}
-
-#comments h4
-{
-    font-size:16px;
-    text-align:center;
-}
 
 #comment_form textarea
 {

@@ -1004,53 +1004,69 @@ class Controller_Profile extends Controller
 			forward($comments_url);
 		}
 		
-        if (!$userId && !get_input('captcha'))
+        if (!$userId)
         {        
-            $title = __('comment:verify_human');
-			$this->use_public_layout();
-            $body = $this->org_view_body($title, view("org/comment_captcha"));
-            $this->page_draw($title, $body);
-        }
-        else
-        {     	
-            $comment = new Comment();
-            $comment->container_guid = $entity->guid;
-            $comment->owner_guid = $userId;
-            $comment->name = $name;
-            $comment->content = $content;
-			$comment->language = GoogleTranslate::guess_language($content);
-            $comment->save();
-        
-			$entity->num_comments = $entity->query_comments()->count();
-			$entity->save();
-		
-            if (!$userId)
-            {
-                $posted_comments = Session::get('posted_comments') ?: array();
-                $posted_comments[] = $comment->guid;
-                Session::set('posted_comments', $posted_comments);
-            }
-			
-			$owner = $entity->get_owner_entity();
-			
-			$notification_subject = sprintf(__('comment:notification_subject', $owner->language), 
-				$comment->get_name());
-			$notification_body = sprintf(__('comment:notification_body', $owner->language),
-				$comment->content,
-				"$comments_url#comments"
-			);
-			
-			if ($owner && $owner->email && $owner->is_notification_enabled(Notification::Comments) 
-					&& $ownerGuid != $owner->guid)
-			{		
-				$owner->notify($notification_subject, $notification_body);
+			$valid_captcha = false;
+			if (get_input('captcha'))
+			{
+				$res = Recaptcha::check_answer();
+				if ($res->is_valid)
+				{
+					$valid_captcha = true;
+				}
+				else
+				{
+					register_error(__('comment:captcha_invalid'));
+				}
 			}
-			send_admin_mail(
-				sprintf(__('comment:notification_admin_subject'), $comment->get_name(), $owner->name), 
-				$notification_body);
-            
-            system_message(__('comment:success'));
-            forward($comments_url);
-        }
+		
+			if (!$valid_captcha)
+			{
+				$title = __('comment:verify_human');
+				$this->use_public_layout();
+				$body = $this->org_view_body($title, view("org/comment_captcha"));
+				$this->page_draw($title, $body);
+				return;
+			}
+		}
+		
+		$comment = new Comment();
+		$comment->container_guid = $entity->guid;
+		$comment->owner_guid = $userId;
+		$comment->name = $name;
+		$comment->content = $content;
+		$comment->language = GoogleTranslate::guess_language($content);
+		$comment->save();
+	
+		$entity->num_comments = $entity->query_comments()->count();
+		$entity->save();
+	
+		if (!$userId)
+		{
+			$posted_comments = Session::get('posted_comments') ?: array();
+			$posted_comments[] = $comment->guid;
+			Session::set('posted_comments', $posted_comments);
+		}
+		
+		$org = $entity->get_root_container_entity();
+		
+		$notification_subject = sprintf(__('comment:notification_subject', $org->language), 
+			$comment->get_name());
+		$notification_body = sprintf(__('comment:notification_body', $org->language),
+			$comment->content,
+			"$comments_url#comments"
+		);
+		
+		if ($org && $org->email && $org->is_notification_enabled(Notification::Comments) 
+				&& $ownerGuid != $org->guid)
+		{		
+			$org->notify($notification_subject, $notification_body);
+		}
+		send_admin_mail(
+			sprintf(__('comment:notification_admin_subject'), $comment->get_name(), $org->name), 
+			$notification_body);
+		
+		system_message(__('comment:success'));
+		forward($comments_url);
 	}
 }
