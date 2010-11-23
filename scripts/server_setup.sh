@@ -26,10 +26,10 @@ GRANT SELECT, LOCK TABLES ON envaya.* TO 'dropbox'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 
-mkdir -p /var/nginx/ssl
-chown www-data:www-data /var/nginx/ssl
-chmod 700 /var/nginx/ssl
-cp /var/envaya/current/_media/envaya_combined.crt /var/nginx/ssl/
+mkdir -p /etc/nginx/ssl
+chown www-data:www-data /etc/nginx/ssl
+chmod 700 /etc/nginx/ssl
+cp /var/envaya/current/_media/envaya_combined.crt /etc/nginx/ssl/
 
 mkdir -p /var/elgg-data
 chmod 777 /var/elgg-data
