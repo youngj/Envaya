@@ -3,7 +3,7 @@
     $home = $vars['home_widget'];
 
     echo view('feed/snippet', array(
-        'max_length' => 50,
+        'max_length' => 500,
         'content' => "<em>".__('org:mission')."</em>: " . $home->render_content(),
         'link_url' => $home->get_url()
     ));
