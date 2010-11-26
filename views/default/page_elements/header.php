@@ -9,12 +9,12 @@
      */
 
      // Set title
+        $sitename = @$vars['sitename'] ?: $vars['config']->sitename;
+     
         if (empty($vars['title'])) {
-            $title = $vars['config']->sitename;
-        } else if (empty($vars['config']->sitename)) {
-            $title = $vars['title'];
+            $title = $sitename;
         } else {
-            $title = $vars['config']->sitename . ": " . $vars['title'];
+            $title = $sitename . ": " . $vars['title'];
         }
 
     echo view('page_elements/doctype');

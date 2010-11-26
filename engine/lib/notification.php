@@ -102,7 +102,7 @@
                     'port' => $CONFIG->smtp_port,
                     'username' => 'web@envaya.org',
                     'auth' => true,
-                    'password' => $CONFIG->email_pass));
+                    'password' => $CONFIG->smtp_pass));
             }
         }
         return $mailer;

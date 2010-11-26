@@ -20,13 +20,13 @@
     $CONFIG->post_email = "postdev@envaya.org";
     $CONFIG->email_from = "web@envaya.org";
     $CONFIG->email_pass = "f03;aoeA";
+    
     $CONFIG->google_api_key = "ABQIAAAAHy69XWEjciJIVElz0OYMsRR3-IOatrPZ1tLat998tYHgwqPnkhTKyWcq8ytRPMx3RyxFjK0O7WSCHA";
     $CONFIG->analytics_enabled = 0;
     $CONFIG->error_emails_enabled = 0;
     $CONFIG->ssl_enabled = false;
 
 	$CONFIG->storage_backend = 'Storage_Local';
-    $CONFIG->s3_bucket = 'envayadev';
 
     $CONFIG->path = dirname(__DIR__) . "/";
     
@@ -34,6 +34,7 @@
         'en' => 'English',
         'sw' => 'Kiswahili'
     );
+    $CONFIG->language = "en";
 
     $CONFIG->dataroot = dirname($CONFIG->path). "/envayadata/";
 	
@@ -41,37 +42,12 @@
 
     $CONFIG->smtp_host = "smtp.com";
     $CONFIG->smtp_port = 2525;
+    $CONFIG->smtp_pass = "f03;aoeA";
 
     $CONFIG->cookie_domain = null;
     $CONFIG->domain = "localhost";    
-    $CONFIG->language = "en";
     $CONFIG->debug = true;
     $CONFIG->sitename = "Envaya";
-
-    $CONFIG->types = array(
-        'object' => 'Entity',
-        'user' => 'User'
-    );
-
-    $CONFIG->subtypes = array(
-        1 => array("object", "file", "UploadedFile"),
-        3 => array("object", "widget", "Widget"),
-        4 => array('user', 'organization', "Organization"),
-        //5 => array('object', 'translation', 'Translation'),
-        6 => array('object', 'interface_translation', 'InterfaceTranslation'),
-        7 => array('object', 'blog', 'NewsUpdate'),        
-        10 => array('object', 'partnership', 'Partnership'),
-        // 11 was previously used for TeamMember
-        12 => array('object', 'featured_site', 'FeaturedSite'),
-        13 => array('object', 'email_template', 'EmailTemplate'),
-        14 => array('object', 'report_definition', 'ReportDefinition'),
-        15 => array('object', 'report', 'Report'),
-        16 => array('object', 'comment', 'Comment'),
-    );
-    foreach ($CONFIG->subtypes as $val => $subtypeArr)
-    {
-        define('T_' . $subtypeArr[1], $val);
-    }
 
     include_once(__DIR__ . "/localsettings.php");
 

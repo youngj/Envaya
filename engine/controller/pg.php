@@ -416,15 +416,9 @@ class Controller_Pg extends Controller {
 			return not_found();
 		}
 		
-		$bucket_name = get_input('bucket');
 		$path = get_input('path');
 		
 		$components = explode('/', $path);
-		
-		if (preg_match('/[^\w]/', $bucket))
-		{
-			return not_found();
-		}
 		
 		foreach ($components as $component)
 		{
@@ -434,7 +428,7 @@ class Controller_Pg extends Controller {
 			}
 		}
 		
-		$local_path = $storage_local->get_file_path($bucket_name, implode('/', $components));
+		$local_path = $storage_local->get_file_path(implode('/', $components));
 		
 		if (!is_file($local_path))
 		{

@@ -88,7 +88,7 @@ class User extends Entity
 
         if ($this->custom_icon)
         {
-            return $this->get_icon_file($size)->get_url()."?{$this->time_updated}";
+            return url_with_param($this->get_icon_file($size)->get_url(), 't', $this->time_updated);
         }
         else if ($this->latitude || $this->longitude)
         {

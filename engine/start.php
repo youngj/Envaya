@@ -85,7 +85,7 @@ function bootstrap()
         echo "Error: Could not load the settings file.";
         exit;        
     }
-    
+        
     mb_internal_encoding('UTF-8');        
     spl_autoload_register('auto_load');
     

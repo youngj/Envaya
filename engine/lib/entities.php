@@ -1,5 +1,32 @@
 <?php
 
+    // todo: this is gross, make it go away... 
+    global $ENTITY_TYPES, $ENTITY_SUBTYPES;
+   
+    $ENTITY_TYPES = array(
+        'object' => 'Entity',
+        'user' => 'User'
+    );
+
+    $ENTITY_SUBTYPES = array(
+        1 => array("object", "file", "UploadedFile"),
+        3 => array("object", "widget", "Widget"),
+        4 => array('user', 'organization', "Organization"),
+        6 => array('object', 'interface_translation', 'InterfaceTranslation'),
+        7 => array('object', 'blog', 'NewsUpdate'),        
+        10 => array('object', 'partnership', 'Partnership'),
+        12 => array('object', 'featured_site', 'FeaturedSite'),
+        13 => array('object', 'email_template', 'EmailTemplate'),
+        14 => array('object', 'report_definition', 'ReportDefinition'),
+        15 => array('object', 'report', 'Report'),
+        16 => array('object', 'comment', 'Comment'),
+    );
+    foreach ($ENTITY_SUBTYPES as $val => $subtypeArr)
+    {
+        define('T_' . $subtypeArr[1], $val);
+    }
+
+
     /**
      * For a given subtype ID, return its identifier text.
      *
@@ -9,10 +36,10 @@
      */
     function get_subtype_from_id($subtype_id)
     {
-        global $CONFIG;
-        if (isset($CONFIG->subtypes[$subtype_id]))
+        global $ENTITY_SUBTYPES;
+        if (isset($ENTITY_SUBTYPES[$subtype_id]))
         {
-            return $CONFIG->subtypes[$subtype_id][1];
+            return $ENTITY_SUBTYPES[$subtype_id][1];
         }
 
         return false;
@@ -26,14 +53,15 @@
      */
     function get_subtype_class($type, $subtype_id)
     {
-        global $CONFIG;
         if ($subtype_id)
         {
-            return @$CONFIG->subtypes[$subtype_id][2];
+            global $ENTITY_SUBTYPES;            
+            return @$ENTITY_SUBTYPES[$subtype_id][2];
         }
         else
         {
-            return @$CONFIG->types[$type];
+            global $ENTITY_TYPES;
+            return @$ENTITY_TYPES[$type];
         }
         return NULL;
     }
@@ -45,8 +73,6 @@
      */
     function get_entity_as_row($guid)
     {
-        global $CONFIG;
-
         if (!$guid)
             return false;
 

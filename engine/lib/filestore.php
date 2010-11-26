@@ -37,7 +37,7 @@ function get_thumbnail_src($html)
 
 function get_file_from_url($url)
 {
-    if (preg_match('/\/(\d+)\/([\w\.]+)\/([^\/]+)$/', $url, $matches))
+    if (preg_match('/(\d+)\/([\w\.]+)\/([^\/]+)$/', $url, $matches))
     {
         $ownerGuid = $matches[1];
         $groupName = $matches[2];

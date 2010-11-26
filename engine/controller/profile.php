@@ -165,7 +165,8 @@ class Controller_Profile extends Controller
     {
         $org = $this->org;
         global $CONFIG;
-        $CONFIG->sitename = $org->name;
+        
+        $this->page_draw_vars['sitename'] = $org->name;
 
         PageContext::set_theme(get_input("__theme") ?: $org->theme ?: 'green');
         PageContext::set_site_org($org);

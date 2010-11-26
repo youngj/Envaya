@@ -49,13 +49,13 @@ class UploadedFile extends Entity
     public function get_url()
     {
 		global $CONFIG;
-		return get_storage()->get_url($CONFIG->s3_bucket, $this->get_path());        
+		return get_storage()->get_url($this->get_path());        
     }
 
     public function delete()
     {
         global $CONFIG;
-        $res = get_storage()->delete_object($CONFIG->s3_bucket, $this->get_path());
+        $res = get_storage()->delete_object($this->get_path());
 
         if ($res && $this->guid)
         {
@@ -70,7 +70,7 @@ class UploadedFile extends Entity
     public function size()
     {
         global $CONFIG;
-        $info = get_storage()->get_object_info($CONFIG->s3_bucket, $this->get_path());
+        $info = get_storage()->get_object_info($this->get_path());
         if ($info)
         {
             return $info['Content-Length'];
@@ -88,20 +88,20 @@ class UploadedFile extends Entity
             $headers['Content-Type'] = $mime;
         }
 
-        return get_storage()->upload_file($CONFIG->s3_bucket, $this->get_path(), $filePath, true, $headers);
+        return get_storage()->upload_file($this->get_path(), $filePath, true, $headers);
     }
 
     public function copy_to($destFile)
     {
         global $CONFIG;
-        $res = get_storage()->copy_object($CONFIG->s3_bucket, $this->get_path(), $CONFIG->s3_bucket, $destFile->get_path(), true);
+        $res = get_storage()->copy_object($this->get_path(), $destFile->get_path(), true);
         return $res;
     }
 
     public function exists()
     {
         global $CONFIG;
-        $info = get_storage()->get_object_info($CONFIG->s3_bucket, $this->get_path());
+        $info = get_storage()->get_object_info($this->get_path());
         return ($info) ? true : false;
     }
 	
