@@ -142,16 +142,13 @@
      */
     function register_user($username, $password, $name, $email, $allow_multiple_emails = false, $friend_guid = 0, $invitecode = '') 
     {
-        // Load the configuration
         global $CONFIG;
 
         $username = trim($username);
         $password = trim($password);
         $name = trim($name);
-        $email = trim($email);
 
-        // A little sanity checking
-        if (empty($username) || empty($password) || empty($name) || empty($email)) 
+        if (empty($username) || empty($password) || empty($name)) 
         {
             throw new RegistrationException(__('registerbad'));
         }				       
@@ -171,11 +168,6 @@
             throw new RegistrationException(__('registration:dupeemail'));
         }
 
-        // Check to see if we've registered the first admin yet.
-        // If not, this is the first admin user!
-        $admin = Datalist::get('admin_registered');
-
-        // Otherwise ...
         $user = new User();
         $user->username = $username;
         $user->email = $email;
@@ -184,12 +176,6 @@
         $user->owner_guid = 0; // Users aren't owned by anyone, even if they are admin created.
         $user->container_guid = 0; // Users aren't contained by anyone, even if they are admin created.
         $user->save();
-
-        if (!$admin) 
-        {
-            $user->admin = true;
-            Datalist::set('admin_registered',1);
-        }
 
         return $user;
     }

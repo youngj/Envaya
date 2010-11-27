@@ -6,7 +6,7 @@ $DB_CONNECT_TRIED = false;
 
 function get_db_link($dblinktype)
 {
-    global $DB_LINK, $CONFIG;
+    global $DB_LINK;
     global $DB_CONNECT_TRIED;
     if (!isset($DB_LINK) && !$DB_CONNECT_TRIED)
     {              
@@ -14,11 +14,7 @@ function get_db_link($dblinktype)
         
         try
         {
-            $DB_LINK = new PDO("mysql:host={$CONFIG->dbhost};dbname={$CONFIG->dbname}", $CONFIG->dbuser, $CONFIG->dbpass, array(
-                PDO::ATTR_TIMEOUT => 2
-            ));
-            $DB_LINK->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
-            $DB_LINK->setAttribute(PDO::ATTR_TIMEOUT, 8);
+            $DB_LINK = _get_db_link();
         }
         catch (PDOException $ex)
         {
@@ -26,6 +22,17 @@ function get_db_link($dblinktype)
         }
     }
     return $DB_LINK;
+}
+
+function _get_db_link()
+{
+    global $CONFIG;
+    $pdo = new PDO("mysql:host={$CONFIG->dbhost};dbname={$CONFIG->dbname}", $CONFIG->dbuser, $CONFIG->dbpass, array(
+        PDO::ATTR_TIMEOUT => 2
+    ));
+    $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
+    $pdo->setAttribute(PDO::ATTR_TIMEOUT, 8);
+    return $pdo;
 }
 
 /**

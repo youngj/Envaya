@@ -85,7 +85,7 @@ function bootstrap()
         echo "Error: Could not load the settings file.";
         exit;        
     }
-        
+    
     mb_internal_encoding('UTF-8');        
     spl_autoload_register('auto_load');
     
@@ -124,6 +124,13 @@ function bootstrap()
             set_cookie('view', $view);
         }
     }
+    
+    // work around flash uploader cookie bug, where the session cookie is sent as a POST field
+    // instead of as a cookie
+    if (@$_POST['session_id'])
+    {
+        $_COOKIE['envaya'] = $_POST['session_id'];
+    }  
     
     trigger_event('init', 'system');      
 }

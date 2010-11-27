@@ -1,12 +1,6 @@
 <?php
     require_once(__DIR__."/engine/start.php");    
 
-    // work around flash uploader cookie bug
-    if (@$_POST['session_id'])
-    {
-        $_COOKIE['envaya'] = $_POST['session_id'];
-    }
-
     Route::set('page', 'page/<name>')->defaults(array(
         'controller' => 'page',
         'action' => 'view',

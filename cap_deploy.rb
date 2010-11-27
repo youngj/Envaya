@@ -5,7 +5,7 @@ set :application, "envaya"
 set :repository,  "git@anvaya.unfuddle.com:anvaya/envaya.git"
 set :deploy_to, "/var/envaya"
 set :deploy_via, :remote_cache
-set :copy_exclude, [".svn", "localsettings.php", "selenium-server.jar"]
+set :copy_exclude, [".svn", "settings.php", "selenium-server.jar"]
 
 set :user, "root"
 set :scm, :git
@@ -35,9 +35,9 @@ namespace :deploy do
     
     task :localsettings_setup do    
         begin
-            run "stat -t #{shared_path}/localsettings.php"
+            run "stat -t #{shared_path}/settings.php"
         rescue Exception    
-            top.upload(File.join(Dir.pwd, "engine/localsettings_vps.php"), "#{shared_path}/localsettings.php")
+            top.upload(File.join(Dir.pwd, "engine/settings_vps.php"), "#{shared_path}/settings.php")
         end
     end
     
@@ -79,7 +79,7 @@ namespace :deploy do
     task :finalize_update, :except => { :no_release => true } do
         run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
         run "cp #{shared_path}/cached-copy/.htaccess #{latest_release}/"
-        run "cp #{shared_path}/localsettings.php #{latest_release}/engine/localsettings.php"
+        run "cp #{shared_path}/settings.php #{latest_release}/engine/settings.php"
     end
     
     task :restart, :roles => :app, :except => { :no_release => true } do        

@@ -1,8 +1,29 @@
 <?php
 
 require_once("scripts/cmdline.php");
+
+$settings_file = "engine/settings.php";
+
+if (!is_file($settings_file))
+{
+    copy("scripts/settings_template.php", $settings_file);
+    echo "Created $settings_file with default settings.\n";
+    echo "Create an empty database and update $settings_file accordingly.\n";
+    die;
+}
+
 require_once("engine/start.php");
-    
+ 
+try
+{
+    $db = _get_db_link();
+}
+catch (PDOException $ex)
+{
+    echo "Database error: {$ex->getMessage()}\n";
+    die;
+}
+ 
 function is_installed()
 {
     global $CONFIG;
@@ -53,10 +74,13 @@ if (!is_installed())
 {    
     run_sql_script("engine/schema/mysql.sql");
     init_site_secret();
-    Datalist::set('installed', 1);
-    echo "done";
+    Datalist::set('installed', 1);    
+    echo "done\n";
 }
 else
 {
-    echo "already installed";
+    echo "already installed\n";
 }
+
+global $CONFIG;
+$CONFIG->debug = false; // hack to suppress SQL profiling messages for this script

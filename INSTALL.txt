@@ -1,0 +1,21 @@
+INSTALL
+
+The recommended way of installing Envaya is to use the setup scripts for Ubuntu 10.04, which will install all required dependencies.
+
+But it can also be set up on Windows or Mac given enough time.
+
+Envaya requires the following dependencies:
+
+PHP 5.3 or higher
+PHP extensions:
+    curl
+    gd
+    json
+    mbstring
+    mcrypt
+    memcache
+    PDO
+    pdo_mysql
+Apache or Nginx/FastCGI
+Mysql
+Ruby / Capistrano (only for deployment of releases to other computers)

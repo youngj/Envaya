@@ -3,12 +3,12 @@
 
     global $CONFIG;
     $CONFIG = new stdClass;
-
+    
     $CONFIG->cache_version = 100;
     
-    $CONFIG->dbuser = 'newslink';
-    $CONFIG->dbpass = 'scarlett';
-    $CONFIG->dbname = 'elgg';
+    $CONFIG->dbuser = '';
+    $CONFIG->dbpass = '';
+    $CONFIG->dbname = '';    
     $CONFIG->dbhost = 'localhost';
 
     $CONFIG->queue_host = "localhost";
@@ -16,19 +16,20 @@
    
     $CONFIG->cache_backend = "DatabaseCache";
 
-    $CONFIG->admin_email = "nobody@envaya.org";
-    $CONFIG->post_email = "postdev@envaya.org";
-    $CONFIG->email_from = "web@envaya.org";
-    $CONFIG->email_pass = "f03;aoeA";
+    $CONFIG->admin_email = "admin@localhost";
+    $CONFIG->post_email = "post@localhost";
+    $CONFIG->email_from = "web@localhost";
+    $CONFIG->email_pass = "";
     
     $CONFIG->google_api_key = "ABQIAAAAHy69XWEjciJIVElz0OYMsRR3-IOatrPZ1tLat998tYHgwqPnkhTKyWcq8ytRPMx3RyxFjK0O7WSCHA";
+    
     $CONFIG->analytics_enabled = 0;
     $CONFIG->error_emails_enabled = 0;
     $CONFIG->ssl_enabled = false;
 
 	$CONFIG->storage_backend = 'Storage_Local';
 
-    $CONFIG->path = dirname(__DIR__) . "/";
+    $CONFIG->path = dirname(dirname(__DIR__)) . "/";
     
     $CONFIG->languages = array(
         'en' => 'English',
@@ -40,17 +41,15 @@
 	
     $CONFIG->simplecache_enabled = 0;
 
-    $CONFIG->smtp_host = "smtp.com";
-    $CONFIG->smtp_port = 2525;
-    $CONFIG->smtp_pass = "f03;aoeA";
+    $CONFIG->smtp_host = "localhost";
+    $CONFIG->smtp_port = 25;
+    $CONFIG->smtp_pass = "";
 
     $CONFIG->cookie_domain = null;
     $CONFIG->domain = "localhost";    
     $CONFIG->debug = true;
     $CONFIG->sitename = "Envaya";
 
-    include_once(__DIR__ . "/localsettings.php");
-
-    $CONFIG->url = "http://{$CONFIG->domain}/";
-    $CONFIG->secure_url = ($CONFIG->ssl_enabled) ? "https://{$CONFIG->domain}/" : $CONFIG->url;
+    $CONFIG->recaptcha_key = '';
+	$CONFIG->recaptcha_private = '';    
 ?>
