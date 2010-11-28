@@ -1,6 +1,8 @@
 INSTALL
 
-The recommended way of installing Envaya is to use the setup scripts for Ubuntu 10.04, which will install all required dependencies assuming that you are starting from a base OS installation.
+The recommended way of installing Envaya is to use the setup scripts for Ubuntu
+10.04, which will install all required dependencies assuming that you are
+starting from a base OS installation.
 
 # step 0: copy source code into a world-readable directory, e.g. /var/www/envaya
 
@@ -20,8 +22,9 @@ php scripts/db_setup.php | mysql
 php scripts/install.php
 
 # step 5: install system services and configuration files
-# warning: should not be used on computers that already are using php, fastcgi, kestrel, stunnel, or nginx
-for other uses. Existing settings files will be overwritten.
+# warning: should not be used on computers that already are using 
+# php, fastcgi, kestrel, stunnel, or nginx for other uses. 
+# Existing settings files will be overwritten.
 
 ./scripts/server_setup.sh
 
@@ -32,11 +35,15 @@ php scripts/create_admin.php
 Manual Installation
 -------------------
 
-Envaya can also be set up on Windows or Mac, although there are currently no scripts for installing the prerequisites / services / configuration files (replacing step 1 and step 5 above).
+Envaya can also be set up on Windows or Mac, although there are currently no
+scripts for installing the prerequisites / services / configuration files
+(replacing step 1 and step 5 above).
 
-For development environments, "php runserver.php" can be used instead of installing kestrel, queueRunner, and phpCron as system services.
+For development environments, "php runserver.php" can be used instead of
+installing kestrel, queueRunner, and phpCron as system services.
 
-To use Apache (with mod_php) as the web server, set DocumentRoot to the root directory where envaya's source code is located.
+To use Apache (with mod_php) as the web server, set DocumentRoot to the root
+directory where envaya's source code is located.
 
 Envaya requires the following prerequisites:
 
@@ -60,7 +67,8 @@ Deploying releases to a server
 
 This requires Ruby / Capistrano to be installed on your local computer.
 
-# initial installation of all prerequisites and latest code on a server (assumes ubuntu 10.04)
+# initial installation of all prerequisites and latest code on a server 
+# (assumes ubuntu 10.04)
 cap HOSTS=hostname deploy:full_setup
 
 # subsequently, updating server to latest code
