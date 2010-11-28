@@ -56,7 +56,7 @@ namespace :deploy do
     task :post_setup do
         top.upload(File.join(Dir.pwd, "scripts/server_setup.sh"), "/root/server_setup.sh")
         run "chmod 744 /root/server_setup.sh"
-        run "/root/server_setup.sh"
+        run "/root/server_setup.sh /var/envaya/current"
     end
     
     task :ssh_key_setup do

@@ -8,20 +8,29 @@ if (!is_file($settings_file))
 {
     copy("scripts/settings_template.php", $settings_file);
     echo "Created $settings_file with default settings.\n";
-    echo "Create an empty database and update $settings_file accordingly.\n";
+    echo "Update $settings_file and run this again to create the database.\n";
     die;
 }
 
 require_once("engine/start.php");
- 
+
 try
 {
-    $db = _get_db_link();
+    _get_db_link();
+}
+catch (PDOException $ex)
+{
+    system("php scripts/db_setup.php | mysql");
+}
+
+try
+{
+    _get_db_link();
 }
 catch (PDOException $ex)
 {
     echo "Database error: {$ex->getMessage()}\n";
-    die;
+    die;        
 }
  
 function is_installed()

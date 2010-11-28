@@ -2,7 +2,7 @@
 
 
 APP_NAME="cron"
-APP_HOME="/var/envaya/current"
+APP_HOME=""
 AS_USER="kestrel"
 PHP_HOME="/usr"
 DAEMON="/usr/bin/daemon"

@@ -9,6 +9,15 @@ chmod 755 /etc/dropbox
 tar xvzf /tmp/dropbox.tar.gz -C /usr/local/dropbox --strip 1
 rm /tmp/dropbox.tar.gz
 
+cat <<EOF | mysql
+
+CREATE USER 'dropbox'@'localhost' IDENTIFIED BY '';
+GRANT SELECT, LOCK TABLES ON envaya.* TO 'dropbox'@'localhost';
+
+FLUSH PRIVILEGES;
+
+EOF
+
 cat <<EOF | sed -e "s,%,$,g" >/etc/init.d/dropbox
 # dropbox service
 DROPBOX_USERS="dropbox"

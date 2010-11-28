@@ -1,6 +1,13 @@
 #!/bin/bash
 # ubuntu 10.04
 
+INSTALL_DIR=$1
+if [ ! $1  ]; then
+  SCRIPT_DIR=$(cd `dirname $0` && pwd)
+  INSTALL_DIR=`dirname $SCRIPT_DIR`
+fi
+echo "INSTALL_DIR is $INSTALL_DIR"
+
 function add_php_settings {
 cat <<EOF >> /etc/php5/fpm/php.ini
 
@@ -15,21 +22,9 @@ EOF
 
 if ! grep -q envaya /etc/php5/fpm/php.ini ; then add_php_settings; fi
 
-cat <<EOF | mysql
-CREATE DATABASE envaya;
-CREATE USER 'web'@'localhost' IDENTIFIED BY 'f03;aoeA';
-GRANT ALL PRIVILEGES ON envaya.* TO 'web'@'localhost';
-
-CREATE USER 'dropbox'@'localhost' IDENTIFIED BY '';
-GRANT SELECT, LOCK TABLES ON envaya.* TO 'dropbox'@'localhost';
-
-FLUSH PRIVILEGES;
-EOF
-
 mkdir -p /etc/nginx/ssl
 chown www-data:www-data /etc/nginx/ssl
 chmod 700 /etc/nginx/ssl
-cp /var/envaya/current/_media/envaya_combined.crt /etc/nginx/ssl/
 
 mkdir -p /var/elgg-data
 chmod 777 /var/elgg-data
@@ -102,6 +97,10 @@ server {
     }
 }
 
+EOF
+
+cat <<EOF > /etc/nginx/sites-available/ssl
+
 server {
     listen 443;
     server_name envaya.org;
@@ -119,10 +118,11 @@ server {
 
 EOF
 
+
 cat <<EOF > /etc/nginx/fastcgi_params
 
 fastcgi_pass 127.0.0.1:9000;
-fastcgi_param SCRIPT_FILENAME /var/envaya/current/\$fastcgi_script_name;
+fastcgi_param SCRIPT_FILENAME $INSTALL_DIR/\$fastcgi_script_name;
 fastcgi_param PATH_INFO \$fastcgi_script_name;
 
 fastcgi_param  QUERY_STRING       \$query_string;
@@ -152,7 +152,7 @@ EOF
 
 cat <<EOF > /etc/nginx/envaya.conf
 
-    root /var/envaya/current;
+    root $INSTALL_DIR;
     access_log  /var/log/nginx/access.log combined_time;
     client_max_body_size 10m;
     client_body_timeout 118;
@@ -266,8 +266,8 @@ groupadd kestrel
 useradd -r -d /var/kestrel -g kestrel -s /bin/false kestrel
 chown kestrel.kestrel /var/kestrel
 
-cp /var/envaya/current/vendors/kestrel_dev/kestrel-1.2.jar /var/kestrel
-cp -r /var/envaya/current/vendors/kestrel_dev/libs /var/kestrel
+cp $INSTALL_DIR/vendors/kestrel_dev/kestrel-1.2.jar /var/kestrel
+cp -r $INSTALL_DIR/vendors/kestrel_dev/libs /var/kestrel
 
 cat <<EOF > /var/kestrel/production.conf
 
@@ -288,17 +288,19 @@ max_journal_overflow = 10
 
 EOF
 
-cp /var/envaya/current/scripts/init.d/kestrel /etc/init.d/kestrel
+cp $INSTALL_DIR/scripts/init.d/kestrel /etc/init.d/kestrel
 chmod 755 /etc/init.d/kestrel
 update-rc.d kestrel defaults 95
 /etc/init.d/kestrel start
 
-cp /var/envaya/current/scripts/init.d/queueRunner /etc/init.d/queueRunner
+cat $INSTALL_DIR/scripts/init.d/queueRunner | sed -e "s,APP_HOME=\"\",APP_HOME=\"$INSTALL_DIR\",g" > /etc/init.d/queueRunner
+
 chmod 755 /etc/init.d/queueRunner
 update-rc.d queueRunner defaults 96
 /etc/init.d/queueRunner start
 
-cp /var/envaya/current/scripts/init.d/phpCron /etc/init.d/phpCron
+cat $INSTALL_DIR/scripts/init.d/phpCron | sed -e "s,APP_HOME=\"\",APP_HOME=\"$INSTALL_DIR\",g" > /etc/init.d/phpCron
+
 chmod 755 /etc/init.d/phpCron
 update-rc.d phpCron defaults 97
 /etc/init.d/phpCron start
