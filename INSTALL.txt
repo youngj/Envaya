@@ -25,9 +25,12 @@ for other uses. Existing settings files will be overwritten.
 
 ./scripts/server_setup.sh
 
+# step 6: create initial administrator user
+php scripts/create_admin.php
+
 =======
 
-Envaya can also be set up on Windows or Mac, although there are currently no scripts for installing the prerequisites / services / configuration files (replacing step 1 and step 5 above),
+Envaya can also be set up on Windows or Mac, although there are currently no scripts for installing the prerequisites / services / configuration files (replacing step 1 and step 5 above).
 
 For development environments, "php runserver.php" can be used instead of installing kestrel, queueRunner, and phpCron as system services.
 
