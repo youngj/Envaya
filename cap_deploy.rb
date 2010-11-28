@@ -28,8 +28,9 @@ namespace :deploy do
         pre_setup
         setup
         ssh_key_setup
-        localsettings_setup
+        localsettings_setup       
         update
+        db_install
         post_setup
     end
     
@@ -39,6 +40,11 @@ namespace :deploy do
         rescue Exception    
             top.upload(File.join(Dir.pwd, "engine/settings_vps.php"), "#{shared_path}/settings.php")
         end
+    end
+    
+    task :db_install do
+        run "cd #{current_path} && (php scripts/db_setup.php | mysql)"
+        run "cd #{current_path} && php scripts/install.php"
     end
     
     task :dropbox_setup do

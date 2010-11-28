@@ -28,7 +28,9 @@ for other uses. Existing settings files will be overwritten.
 # step 6: create initial administrator user
 php scripts/create_admin.php
 
-=======
+===================
+Manual Installation
+-------------------
 
 Envaya can also be set up on Windows or Mac, although there are currently no scripts for installing the prerequisites / services / configuration files (replacing step 1 and step 5 above).
 
@@ -51,4 +53,15 @@ PHP extensions:
 Apache or Nginx
 mod_php or FastCGI
 Mysql
-Ruby / Capistrano (only for deployment of releases to other computers)
+
+==============================
+Deploying releases to a server
+------------------------------
+
+This requires Ruby / Capistrano to be installed on your local computer.
+
+# initial installation of all prerequisites and latest code on a server (assumes ubuntu 10.04)
+cap HOSTS=hostname deploy:full_setup
+
+# subsequently, updating server to latest code
+cap HOSTS=hostname deploy
