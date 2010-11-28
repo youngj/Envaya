@@ -232,9 +232,13 @@ function randomString {
 
 system_update
 postfix_install_loopback_only
+
 mysql_install "root" && mysql_tune 40
+
 goodstuff
 restartServices
+
+mysqladmin -u root -p'root' password ""
 
 echo "deb http://ppa.launchpad.net/nginx/stable/ubuntu lucid main" >> /etc/apt/sources.list
 echo "deb http://php53.dotdeb.org stable all" >> /etc/apt/sources.list
@@ -248,7 +252,6 @@ wget http://us.archive.ubuntu.com/ubuntu/pool/main/k/krb5/libkrb53_1.6.dfsg.4~be
 wget http://us.archive.ubuntu.com/ubuntu/pool/main/i/icu/libicu38_3.8-6ubuntu0.2_$PKG_ARCH.deb
 sudo dpkg -i *.deb
 
-mysqladmin -u root -p'root' password ""
 apt-get update
 apt-get -y --allow-unauthenticated install php5-cli php5-curl php5-gd php5-memcache php-pear php5-fpm php5-mysql php5-apc
 apt-get -y install nginx emacs memcached stunnel4 git-core mcrypt daemon default-jre

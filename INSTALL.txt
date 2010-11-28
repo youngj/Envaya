@@ -1,10 +1,39 @@
 INSTALL
 
-The recommended way of installing Envaya is to use the setup scripts for Ubuntu 10.04, which will install all required dependencies.
+The recommended way of installing Envaya is to use the setup scripts for Ubuntu 10.04, which will install all required dependencies assuming that you are starting from a base OS installation.
 
-But it can also be set up on Windows or Mac given enough time.
+# step 0: copy source code into a world-readable directory, e.g. /var/www/envaya
 
-Envaya requires the following dependencies:
+# step 1: install prerequisites (mysql, nginx, php, php extensions, etc.)
+# warning: the mysql root password will be reset to the empty string (should fix this...)
+./scripts/server_pre_setup.sh
+
+# step 2: create your local settings file
+php scripts/install_settings.php
+
+# optionally, edit engine/settings.php to provide desired database settings
+
+# step 3: create empty database and default user
+php scripts/db_setup.php | mysql
+
+# step 4: install database tables and initial data
+php scripts/install.php
+
+# step 5: install system services and configuration files
+# warning: should not be used on computers that already are using php, fastcgi, kestrel, stunnel, or nginx
+for other uses. Existing settings files will be overwritten.
+
+./scripts/server_setup.sh
+
+=======
+
+Envaya can also be set up on Windows or Mac, although there are currently no scripts for installing the prerequisites / services / configuration files (replacing step 1 and step 5 above),
+
+For development environments, "php runserver.php" can be used instead of installing kestrel, queueRunner, and phpCron as system services.
+
+To use Apache (with mod_php) as the web server, set DocumentRoot to the root directory where envaya's source code is located.
+
+Envaya requires the following prerequisites:
 
 PHP 5.3 or higher
 PHP extensions:
@@ -16,6 +45,7 @@ PHP extensions:
     memcache
     PDO
     pdo_mysql
-Apache or Nginx/FastCGI
+Apache or Nginx
+mod_php or FastCGI
 Mysql
 Ruby / Capistrano (only for deployment of releases to other computers)

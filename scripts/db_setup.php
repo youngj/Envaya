@@ -18,12 +18,6 @@ GRANT ALL PRIVILEGES ON {$CONFIG->dbname}.* TO '{$CONFIG->dbuser}'@'localhost';
 ";
 }
 
-/* 
-echo "
-CREATE USER 'dropbox'@'localhost' IDENTIFIED BY '';
-GRANT SELECT, LOCK TABLES ON {$CONFIG->dbname}".* TO 'dropbox'@'localhost';
-"; */
-
 echo "
 FLUSH PRIVILEGES;
 ";

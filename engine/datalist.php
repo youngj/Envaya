@@ -49,7 +49,7 @@ class Datalist
      * @param string $value The new value
      * @return true
      */
-    function set($name, $value)
+    static function set($name, $value)
     {
         static::init();
         insert_data("INSERT into datalists set name = ?, value = ? ON DUPLICATE KEY UPDATE value = ?",

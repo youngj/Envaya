@@ -1,27 +1,7 @@
 <?php
 
 require_once("scripts/cmdline.php");
-
-$settings_file = "engine/settings.php";
-
-if (!is_file($settings_file))
-{
-    copy("scripts/settings_template.php", $settings_file);
-    echo "Created $settings_file with default settings.\n";
-    echo "Update $settings_file and run this again to create the database.\n";
-    die;
-}
-
 require_once("engine/start.php");
-
-try
-{
-    _get_db_link();
-}
-catch (PDOException $ex)
-{
-    system("php scripts/db_setup.php | mysql");
-}
 
 try
 {
@@ -32,7 +12,7 @@ catch (PDOException $ex)
     echo "Database error: {$ex->getMessage()}\n";
     die;        
 }
- 
+
 function is_installed()
 {
     global $CONFIG;
