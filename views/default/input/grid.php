@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="/_media/slickgrid/slick.grid.merged.css" type="text/css" media="screen" charset="utf-8" />        
 <script type='text/javascript' src="/_media/slickgrid/jquery-1.4.3.min.js"></script>
 <script type='text/javascript' src="/_media/slickgrid/jquery-ui-1.8.5.custom.min.js"></script>
-<script type='text/javascript' src="/_media/slickgrid/slick.editors.js"></script>
+<script type='text/javascript' src="/_media/slickgrid/slick.editors.js?v3"></script>
 <script type='text/javascript' src="/_media/slickgrid/slick.grid-1.4.3.merged.min.js"></script>
 <script type='text/javascript' src="/_media/slickgrid/json.js"></script>
 <script type='text/javascript'>
@@ -116,6 +116,11 @@ $(function()
             {
                 $editor = @$column['editor'] ?: (@$column['multiline'] ? 'TextareaCellEditor' : 'TextCellEditor');
                 echo "col.editor = window[".json_encode($editor)."];";
+                
+                if (@$column['args'])
+                {
+                    echo "col.args = ".json_encode($column['args']).";";
+                }
             }                       
             
             $formatter = @$column['formatter'] ?: (@$column['multiline'] ? 'TextareaCellFormatter' : 'TextCellFormatter');

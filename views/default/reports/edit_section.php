@@ -10,10 +10,39 @@ function setNextSection($section)
 {
     document.getElementById('next_section').value = $section;
 }
+
+var autoFunctions = {};
+
+function updateValue($fieldName)
+{
+    setTimeout(function() {
+        var val = autoFunctions[$fieldName]();
+        if (!isNaN(val))
+        {
+            getField($fieldName).value = '' + val;
+        }
+    }, 1);
+}
+
+function getField($fieldName)
+{
+    return document.forms[0]['field_'+$fieldName];
+}
+
+function getInteger($fieldName)
+{
+    var val = getField($fieldName).value;
+    if (!val)
+    {
+        return 0;
+    }
+    return parseInt(val,10);
+}
+
 </script>
 <?php
 
-echo "<div class='report_section_nav'>";
+echo "<div class='repor t_section_nav'>";
 $links = array();
 
 foreach ($sections as $i => $section)

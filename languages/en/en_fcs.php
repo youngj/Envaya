@@ -10,6 +10,7 @@ return array(
     'fcs:narrative:future_plans' => 'Future Plans',
     'fcs:narrative:beneficiaries' => 'Beneficiaries Reached',
     'fcs:narrative:events_attended' => 'Events Attended',
+    'fcs:narrative:attachments' => 'Attachments',
     
     'fcs:narrative:events_attended:label' => 'Indicate any FCS organized events that your organization benefited from or attended.',
     'fcs:narrative:events_attended:help' => "Choose the type of event from this list: Manage Your Grants Training (MYG), Tailor Made Training (mention the type of training, e.g. Monitoring and Evaluation), Information Session, and Annual Forum",
@@ -112,4 +113,7 @@ for two years, your <b>end-of-year</b> report covers <b>quarters 1 to 4</b> from
     'fcs:area:total' => "Total Beneficiaries",    
     
     'fcs:narrative:explanation' => "Explanation",
-);
+
+    'fcs:narrative:success_story:label' => 'Success Stories',    
+    'fcs:narrative:success_story:help' => "Attach any other documents that show your organization's accomplishments.",
+    );

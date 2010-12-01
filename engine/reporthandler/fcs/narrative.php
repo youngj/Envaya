@@ -70,7 +70,11 @@ class ReportHandler_FCS_Narrative extends ReportHandler
             10 => array(
                 'title' => __('fcs:narrative:events_attended'),
                 'field_names' => array('events_attended'),
-            ),            
+            ),        
+            11 => array(
+                'title' => __('fcs:narrative:attachments'),
+                'field_names' => array('success_story_1','success_story_2','success_story_3'),
+            )
         );
     }
     
@@ -142,7 +146,12 @@ class ReportHandler_FCS_Narrative extends ReportHandler
                     'columns' => array(
                         'region' => array(
                             'label' => __('fcs:area:region'),
-                            'width' => 150,
+                            'editor' => 'DropDownListCellEditor',
+                            'formatter' => 'DropDownListCellFormatter',
+                            'args' => array(
+                                'options' => regions_in_country('tz'),
+                            ),
+                            'width' => 200,
                         ),
                         'district' => array(
                             'label' => __('fcs:area:district'),
@@ -355,6 +364,7 @@ class ReportHandler_FCS_Narrative extends ReportHandler
                             'label' => __('fcs:narrative:events_attended:when'),
                             'multiline' => true,
                             'width' => 200,
+                            'editor' => 'DateCellEditor'
                         ),   
                         'lessons' => array(
                             'label' => __('fcs:narrative:events_attended:lessons'),
@@ -368,29 +378,72 @@ class ReportHandler_FCS_Narrative extends ReportHandler
                         ),           
                     )
                 )                  
-            ),                        
+            ),  
+            'success_story_1' => array(
+                'label' => __('fcs:narrative:success_story:label'),
+                'help' => __('fcs:narrative:success_story:help'),
+                'input_type' => 'input/upload',
+                'output_type' => 'output/upload',                
+            ),
+            'success_story_2' => array(
+                'input_type' => 'input/upload',
+                'output_type' => 'output/upload',                
+            ),
+            'success_story_3' => array(
+                'input_type' => 'input/upload',
+                'output_type' => 'output/upload',                
+            ),
+
         );
         
-        $beneficiaries_args = array('input_args' => array('js' => 'style="width:80px"'));                
         $directnesses = array('direct','indirect');
         foreach ($directnesses as $directness)
         {
-            $fields["beneficiaries_male_$directness"] = $beneficiaries_args;
-            $fields["beneficiaries_female_$directness"] = $beneficiaries_args;
-            $fields["beneficiaries_$directness"] = $beneficiaries_args;
-        }
-                
-        $constituency_args = array('input_args' => array('class' => ' ','js' => 'style="width:100px; font-size:120%"'));                        
+            $male_field = "beneficiaries_male_$directness";
+            $female_field = "beneficiaries_female_$directness";
+            $total_field = "beneficiaries_$directness";
         
+            $beneficiaries_args = array(
+                'input_args' => array('js' => "style='width:80px'"),
+                'auto_update' => $total_field,
+            );
+
+            $fields[$male_field] = $beneficiaries_args;
+            $fields[$female_field] = $beneficiaries_args;
+            
+            $total_args = array(
+                'input_args' => array('js' => "style='width:80px'"),
+                'auto_value' => "getInteger('$male_field') + getInteger('$female_field')"
+            );
+            
+            $fields[$total_field] = $total_args;
+        }
+                        
         //for ($activity_num = 1; $activity_num <= $fields['beneficiaries_container']['view_args']['num_activities']; $activity_num++)
         //{                  
             foreach ($fields['beneficiaries_container']['view_args']['constituencies'] as $constituency)
             {
                 foreach ($directnesses as $directness)
-                {                                   
-                    $fields[$constituency."_female_".$directness] = $constituency_args;
-                    $fields[$constituency."_male_".$directness] = $constituency_args;
-                    $fields[$constituency."_".$directness] = $constituency_args;
+                {
+                    $total_field = $constituency."_".$directness;
+                    $female_field = $constituency."_female_".$directness;
+                    $male_field = $constituency."_male_".$directness;
+                    
+                    $constituency_args = array('input_args' => 
+                        array(
+                            'class' => ' ', 
+                            'js' => "style='width:100px; font-size:120%'",
+                        ));
+                        
+                    $gender_args = $constituency_args;
+                    $gender_args['auto_update'] = $total_field;
+
+                    $total_args = $constituency_args;
+                    $total_args['auto_value'] = "getInteger('$male_field') + getInteger('$female_field')";                    
+                
+                    $fields[$female_field] = $gender_args;
+                    $fields[$male_field] = $gender_args;
+                    $fields[$total_field] = $total_args;
                 }
             }
         //}

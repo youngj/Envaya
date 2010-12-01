@@ -12,16 +12,14 @@
         $defaultSizeName = 'large';
     }
 
-    echo view('input/hidden', array(
+    echo view('input/swfupload_image', array(
         'internalname' => 'imageUpload',
         'internalid' => 'imageUpload',
-        'value' => ''
+        'jsname' => 'uploader',
+        'sizes' => Widget::get_image_sizes()
     ));
-
+    
 ?>
-<script type='text/javascript' src='/_media/swfupload.js?v8'></script>
-<span id='imageUploadContainer'></span>
-<div id='imageUploadProgress' class='imageUploadProgress'></div>
 
 <div id='imageOptionsContainer' style='display:none'>
 <table>
@@ -72,19 +70,8 @@
 </div>
 
 <script type='text/javascript'>
-    var uploader = new SingleImageUploader(<?php echo view('input/swfupload_args', array(
-        'args' => array(
-            'trackDirty' => false,
-            'thumbnail_size' => 'small',
-            'max_width' => 520,
-            'max_height' => 520,
-            'progress_id' => 'imageUploadProgress',
-            'placeholder_id' => "imageUploadContainer",
-            'result_id' => 'imageUpload',
-            'sizes' => json_encode(Widget::get_image_sizes())
-        )
-    )) ?>);
-
+    var uploader = window.uploader;
+    
     var images = null;
 
     uploader.onImageComplete = function($images) {

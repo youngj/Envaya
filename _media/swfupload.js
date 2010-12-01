@@ -1139,16 +1139,16 @@ swfobject.addDomLoadEvent(function () {
     Envaya-specific usage below:
  **/
  
-var ImageUploader = makeClass();
+var FileUploader = makeClass();
 
-ImageUploader.prototype.init = function($vars)
+FileUploader.prototype.init = function($vars)
 {
     this.options = $vars;    
     
     this.swfupload = new SWFUpload(this.getSWFUploadOptions());        
 };
 
-ImageUploader.prototype.getSWFUploadOptions = function()
+FileUploader.prototype.getSWFUploadOptions = function()
 {
     var $self = this;
 
@@ -1156,12 +1156,10 @@ ImageUploader.prototype.getSWFUploadOptions = function()
         upload_url: "/pg/upload",
         file_post_name: "file",
         post_params: { 
-            "sizes": this.options.sizes, 
+            "sizes": this.options.sizes || '', 
             "session_id": this.options.session_id 
         },  
 
-        file_types : "*.jpg;*.gif;*.png",
-        file_types_description : "Images",
         file_upload_limit : 0,
 
         swfupload_preload_handler: function()
@@ -1229,7 +1227,7 @@ ImageUploader.prototype.getSWFUploadOptions = function()
     }
 };
 
-ImageUploader.prototype.fileDialogCompleteHandler = function(numFilesSelected, numFilesQueued)
+FileUploader.prototype.fileDialogCompleteHandler = function(numFilesSelected, numFilesQueued)
 {
     if (numFilesQueued > 0) 
     {
@@ -1246,15 +1244,85 @@ ImageUploader.prototype.fileDialogCompleteHandler = function(numFilesSelected, n
     }
 };    
     
-ImageUploader.prototype.setProgress = function($html)
+FileUploader.prototype.setProgress = function($html)
 {
     document.getElementById(this.options.progress_id).innerHTML = $html; 
 };
 
-ImageUploader.prototype.uploadProgressHandler = function()
+FileUploader.prototype.uploadProgressHandler = function()
 {
     this.setProgress(this.options.upload_progress_message);
 };
+
+FileUploader.prototype.startUpload = function($file)
+{
+    this.setProgress(this.options.processing_message);
+    this.swfupload.startUpload($file.ID);
+};
+        
+FileUploader.prototype.uploadSuccessHandler = function($file, $serverData)
+{
+    if (this.options.trackDirty)
+    {
+        setDirty(true);
+    }
+    this.showPreviewImage($serverData);            
+}; 
+               
+FileUploader.prototype.showPreviewImage = function($serverData) 
+{
+    var $images;
+
+    eval("$images = " + $serverData);    
+
+    if (!$images)
+    {
+        this.setProgress(this.options.upload_error_message + " -1");
+        return false;
+    }
+    else
+    {
+        this.setProgress('');
+        this.showParsedPreviewImage($images, $serverData);
+        if (this.onImageComplete)
+        {
+            this.onImageComplete($images);
+        }
+                
+        return true;
+    }    
+};
+
+FileUploader.prototype.showParsedPreviewImage = function($images, $serverData) {
+};
+    
+FileUploader.prototype.addFallbackIframe = function($swfupload)
+{
+    this.iframe_mode = true;
+
+    var $placeholder = document.getElementById(this.options.placeholder_id);
+    removeChildren($placeholder);
+
+    var $iframe = document.createElement('iframe');
+    $iframe.border = 0;
+    $iframe.frameBorder = 0;
+    $iframe.scrolling = 'no';
+    $iframe.id = 'uploadIframe' + Math.floor(Math.random() * 1000000);        
+    $iframe.src = "pg/upload_frame?sizes=" + escape(this.options.sizes) + 
+        "&swfupload=" + this.swfupload.movieName +
+        "&image=" + (this.getSWFUploadOptions().post_params.image || '');
+    $iframe.className = 'uploadIframe';
+    $placeholder.appendChild($iframe);
+
+    this.setProgress(this.options.recommend_flash_message);
+};
+
+var ImageUploader = makeClass(FileUploader);
+
+ImageUploader.prototype.init = function($vars)
+{
+    FileUploader.prototype.init.call(this, $vars);
+}
 
 ImageUploader.prototype.startUpload = function($file)
 {
@@ -1269,58 +1337,19 @@ ImageUploader.prototype.startUpload = function($file)
         this.swfupload.startUpload($file.ID);
     }
 };
-        
-ImageUploader.prototype.uploadSuccessHandler = function($file, $serverData)
-{
-    if (this.options.trackDirty)
-    {
-        setDirty(true);
-    }
-    this.showPreviewImage($serverData);            
-}; 
-               
-ImageUploader.prototype.showPreviewImage = function($serverData) 
-{
-    var $images;
 
-    eval("$images = " + $serverData);    
-
-    if (!$images)
-    {
-        this.setProgress(this.options.upload_error_message + " -1");
-        return false;
-    }
-    else
-    {
-        this.showParsedPreviewImage($images, $serverData);
-        if (this.onImageComplete)
-        {
-            this.onImageComplete($images);
-        }
-                
-        return true;
-    }    
+ImageUploader.prototype.getSWFUploadOptions = function()
+{
+    var options = FileUploader.prototype.getSWFUploadOptions.call(this);
+    options.file_types = "*.jpg;*.gif;*.png";
+    options.file_types_description = "Images";
+    options.post_params.image = "1";
+    return options;
 };
 
-ImageUploader.prototype.showParsedPreviewImage = function($images, $serverData) {};
-    
-ImageUploader.prototype.addFallbackIframe = function($swfupload)
+ImageUploader.prototype.uploadProgressHandler = function()
 {
-    this.iframe_mode = true;
-
-    var $placeholder = document.getElementById(this.options.placeholder_id);
-    removeChildren($placeholder);
-
-    var $iframe = document.createElement('iframe');
-    $iframe.border = 0;
-    $iframe.frameBorder = 0;
-    $iframe.scrolling = 'no';
-    $iframe.id = 'uploadIframe' + Math.floor(Math.random() * 1000000);        
-    $iframe.src = "pg/upload_frame?sizes=" + escape(this.options.sizes) + "&swfupload=" + this.swfupload.movieName;
-    $iframe.className = 'uploadIframe';
-    $placeholder.appendChild($iframe);
-
-    this.setProgress(this.options.recommend_flash_message);
+    FileUploader.prototype.uploadProgressHandler.call(this);
 };
 
 var SingleImageUploader = makeClass(ImageUploader);
@@ -1382,6 +1411,7 @@ SingleImageUploader.prototype.showParsedPreviewImage = function($images, $server
         img.style.display = 'inline';
         progress.removeChild(loadingMessage);
     });
+    
     img.src = $images[this.options.thumbnail_size].url;
     progress.appendChild(img);             
     

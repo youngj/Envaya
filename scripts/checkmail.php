@@ -93,7 +93,7 @@
                     fwrite($fh, $attachment['Data']);
                     fclose($fh);
                     
-                    $json = upload_temp_images($tempFileName, NewsUpdate::get_image_sizes());
+                    $json = upload_image($tempFileName, NewsUpdate::get_image_sizes());
                     $imageFiles = get_uploaded_files($json);
                     
                     

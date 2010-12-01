@@ -78,14 +78,14 @@ class UploadedFile extends Entity
         return -1;
     }
 
-    public function upload_file($filePath, $mime = null)
+    public function upload_file($filePath)
     {
         global $CONFIG;
 
         $headers = array();
-        if ($mime)
+        if ($this->mime)
         {
-            $headers['Content-Type'] = $mime;
+            $headers['Content-Type'] = $this->mime;
         }
 
         return get_storage()->upload_file($this->get_path(), $filePath, true, $headers);
@@ -105,6 +105,12 @@ class UploadedFile extends Entity
         return ($info) ? true : false;
     }
 	
+    static function get_mime_type($filename)
+    {
+        $pathinfo = pathinfo($filename);
+        return @static::$mime_types[strtolower($pathinfo['extension'])];
+    }
+    
 	static $mime_types = array("323" => "text/h323", "acx" => "application/internet-property-stream", "ai" => "application/postscript", "aif" => "audio/x-aiff", "aifc" => "audio/x-aiff", "aiff" => "audio/x-aiff",
         "asf" => "video/x-ms-asf", "asr" => "video/x-ms-asf", "asx" => "video/x-ms-asf", "au" => "audio/basic", "avi" => "video/quicktime", "axs" => "application/olescript", "bas" => "text/plain", "bcpio" => "application/x-bcpio", "bin" => "application/octet-stream", "bmp" => "image/bmp",
         "c" => "text/plain", "cat" => "application/vnd.ms-pkiseccat", "cdf" => "application/x-cdf", "cer" => "application/x-x509-ca-cert", "class" => "application/octet-stream", "clp" => "application/x-msclip", "cmx" => "image/x-cmx", "cod" => "image/cis-cod", "cpio" => "application/x-cpio", "crd" => "application/x-mscardfile",

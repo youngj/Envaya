@@ -10,6 +10,7 @@ return array(
     'fcs:narrative:future_plans' => 'Mipango ya Baadae',
     'fcs:narrative:beneficiaries' => 'Walengwa Waliofikiwa',
     'fcs:narrative:events_attended' => 'Matukio Mliyoyahudhuria',
+    'fcs:narrative:attachments' => 'Viambatanisho',
     
     'fcs:narrative:events_attended:label' => 'Eleza kama asasi yako imewahi Kuhudhuria Shughuli zozote ambazo zimeandaliwa na The Foundation.',
     'fcs:narrative:events_attended:help' => "Chagua aina ya tukio kutoka kwenye orodha hii: Mafunzo ya Usimamizi wa Ruzuku (MYG), Mafunzo mengine yoyote (taja aina ya mafunzo mf. Ufuatiliaji na tathmini),
@@ -109,4 +110,8 @@ Kama mradi wako ulianza Agosti 12, 2010 na ni wa miaka miwili taarifa ya <b>mwis
     'fcs:area:total' => "Idadi ya Wanufaika",        
     
     'fcs:narrative:explanation' => "Maelezo",
+    
+    'fcs:narrative:success_story:label' => 'Hadithi za mafanikio',    
+    'fcs:narrative:success_story:help' => "Ambatanisha hati nyingine zozote zinazoonyesha mafanikio ya asasi yako.",
+    
 );

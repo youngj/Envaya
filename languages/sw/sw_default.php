@@ -8,6 +8,8 @@ return array(
     'cookie_error' => "Kulikuwa na kosa kwa kufungua katika Envaya. Tafadhali hakikisha browser yako inaruhusu cookies kutoka '%s' na jaribu tena.",
     'cookie_help' => "Bonyeza kwa maelekezo",
     
+    'upload:remove' => 'Ondosha',    
+    
     'photo:file' => "Chagua picha:",
     'photo:caption' => "Maelezo ya picha:",
     

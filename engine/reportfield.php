@@ -167,7 +167,13 @@ class ReportField extends Model
         }
     
         $res = view(@$args['input_type'] ?: 'input/text', $input_args);       
-               
+         
+        $res .= view('reports/auto_value', array(
+            'field_name' => $this->name, 
+            'auto_value' => @$args['auto_value'],
+            'auto_update' => @$args['auto_update'],
+        ));
+         
         $res .= view('input/hidden', array(
             'internalname' => 'fields[]',
             'value' => $this->name

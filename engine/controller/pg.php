@@ -304,17 +304,22 @@ class Controller_Pg extends Controller {
     function action_upload()
     {
         $this->require_login();
-
-        $sizes = json_decode(get_input('sizes'));
-
-        $filename = get_uploaded_filename('file');
-
-        $json = upload_temp_images($filename, $sizes);
+        
+        if (get_input('image'))
+        {
+            $json = upload_image($_FILES['file'], json_decode(get_input('sizes')));
+        }
+        else
+        {
+            $json = upload_file($_FILES['file']);
+        }
 
         if (get_input('iframe'))
         {
             Session::set('lastUpload', $json);
-            forward("pg/upload_frame?swfupload=".urlencode(get_input('swfupload'))."&sizes=".urlencode(get_input('sizes')));
+            forward("pg/upload_frame?swfupload=".urlencode(get_input('swfupload')).
+                "&sizes=".urlencode(get_input('sizes')).
+                "&image=".(get_input('image') ? '1' : ''));
         }
         else
         {
@@ -422,7 +427,7 @@ class Controller_Pg extends Controller {
 		
 		foreach ($components as $component)
 		{
-			if (preg_match('/[^\w\.]|(\.\.)/', $component))
+			if (preg_match('/[^\w\.\-]|(\.\.)/', $component))
 			{
 				return not_found();
 			}
@@ -435,9 +440,7 @@ class Controller_Pg extends Controller {
 			return not_found();
 		}
 		
-		$extension = 'jpg';  // todo get from file name
-		$mime_type = @UploadedFile::$mime_types[$extension];
-		
+		$mime_type = UploadedFile::get_mime_type($local_path);		
 		if ($mime_type)
 		{
 			header("Content-Type: $mime_type");

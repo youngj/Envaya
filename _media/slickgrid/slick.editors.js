@@ -27,6 +27,20 @@
             }
             return '';
         },
+
+        DropDownListCellFormatter: function(row, cell, value, columnDef, dataContext) {
+        
+            var columnArgs = columnDef.args;
+            if (columnArgs)
+            {       
+                var options = columnArgs.options;        
+                if (options[value])
+                {
+                    value = options[value];
+                }                
+            }
+            return this.TextCellFormatter(row, cell, value, columnDef, dataContext);
+        },
         
         TextareaCellFormatter: function(row, cell, value, columnDef, dataContext) {
         
@@ -251,7 +265,8 @@
                     buttonImageOnly: true,
                     buttonImage: "/_media/slickgrid/images/calendar.gif",
                     beforeShow: function() { calendarOpen = true },
-                    onClose: function() { calendarOpen = false }
+                    onClose: function() { calendarOpen = false },
+                    dateFormat: 'dd/mm/yy'
                 });
                 $input.width($input.width() - 18);
             };
@@ -315,13 +330,30 @@
             this.init();
         },
 
-        YesNoSelectCellEditor : function(args) {
+        DropDownListCellEditor : function(args) {
             var $select;
             var defaultValue;
             var scope = this;
 
             this.init = function() {
-                $select = $("<SELECT tabIndex='0' class='editor-yesno'><OPTION value='yes'>Yes</OPTION><OPTION value='no'>No</OPTION></SELECT>");
+                $select = $("<SELECT class='grid-dropdown' tabIndex='0'></SELECT>");
+                               
+               var $el = $(document.createElement('option'));
+               $el.appendTo($select);
+                               
+                var columnArgs = args.column.args;
+                if (columnArgs)
+                {       
+                    var options = columnArgs.options;
+                    for (var key in options)
+                    {
+                        var $el = $(document.createElement('option'));
+                        $el.val(key);
+                        $el.append(options[key]);
+                        $el.appendTo($select);
+                    }
+                }
+                
                 $select.appendTo(args.container);
                 $select.focus();
             };
@@ -335,12 +367,13 @@
             };
 
             this.loadValue = function(item) {
-                $select.val((defaultValue = item[args.column.field]) ? "yes" : "no");
+                defaultValue = item[args.column.field]
+                $select.val(defaultValue);
                 $select.select();
             };
 
             this.serializeValue = function() {
-                return ($select.val() == "yes");
+                return $select.val();
             };
 
             this.applyValue = function(item,state) {

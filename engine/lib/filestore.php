@@ -7,15 +7,6 @@ function get_storage()
 	return new $storage_backend();
 }
 
-function get_uploaded_filename($input_name)
-{
-    if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == 0)
-    {
-        return $_FILES[$input_name]['tmp_name'];
-    }
-    return false;
-}
-
 function get_thumbnail_src($html)
 {
     if (preg_match('/src=".*[\/\=](\d+)\/([\w\.]+)\//', $html, $matches))
@@ -54,8 +45,34 @@ function get_file_from_url($url)
     return null;
 }
 
-function upload_temp_images($filename, $sizes)
+function upload_file($file_input)
 {
+    if (!$file_input || $file_input['error'] != 0)
+        return null;
+        
+    $tmp_file = $file_input['tmp_name'];
+
+    $file = new UploadedFile();
+    $file->owner_guid = Session::get_loggedin_userid();
+    $file->group_name = uniqid("",true);
+    $file->size = 'original';
+    $file->mime = UploadedFile::get_mime_type($file_input['name']);
+    $file->filename = preg_replace('/[^\w\.\-]|(\.\.)/', '_', basename($file_input['name']));
+    $file->upload_file($tmp_file);
+    $file->save();
+    
+    return get_file_group_json(array($file));
+}
+
+function upload_image($file_input, $sizes)
+{
+    if (!$file_input || $file_input['error'] != 0)
+        return null;
+        
+    error_log("3");
+
+    $tmp_file = $file_input['tmp_name'];        
+        
     $files = array();
     $groupName = uniqid("",true);
     $lastFile = null;
@@ -64,7 +81,7 @@ function upload_temp_images($filename, $sizes)
     {
         $sizeArray = explode("x", $size);
 
-        $resizedImage = resize_image_file($filename, $sizeArray[0], $sizeArray[1]);
+        $resizedImage = resize_image_file($tmp_file, $sizeArray[0], $sizeArray[1]);
 
         if ($resizedImage)
         {
@@ -84,7 +101,7 @@ function upload_temp_images($filename, $sizes)
                 $file->height = $resizedImage['height'];
                 $file->mime = $resizedImage['mime'];
                 $file->filename = "$sizeName.jpg";
-                $file->upload_file($resizedImage['filename'], $resizedImage['mime']);
+                $file->upload_file($resizedImage['filename']);
                 $file->save();
                 $lastFile = $file;
 
