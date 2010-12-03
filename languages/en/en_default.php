@@ -6,9 +6,7 @@
         
         'cookie_error' => "There was an error logging into Envaya. Please ensure that your browser accepts cookies from '%s' and try again.", 
         'cookie_help' => "Click for instructions",
-        
-        'upload:remove' => 'Remove',
-        
+                
         'photo:file' => "Select a photo:",
         'photo:caption' => "Photo description:",
         
@@ -208,7 +206,12 @@
         'upload:image:complete' => "Upload complete. Previewing...",
         'upload:image:error' => "Error uploading image: ",
         'upload:image:recommend_flash' => "Note: To add photos faster, install %s.",
+        'upload:remove' => 'Remove',
+        'upload:uploading' => "Uploading file...",
+        'upload:error' => "Error uploading file: ",
 
+        
+        
         'upload:image:isdoc' => "Error: You are trying to upload a Microsoft Word document.  Envaya only supports image formats.  Please save the image from your document as a .jpg, .png, and .gif file.",
         'upload:image:isbad' => "Error: You are trying to upload an invalid file. Envaya only supports .jpg, .png, and .gif image formats.",
 

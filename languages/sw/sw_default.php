@@ -89,6 +89,7 @@ return array(
     'widget:view' => 'Ona ukurasa',
     'widget:empty' => 'Shirika hili halijaandika ukurasa wake wa %s.',
     'widget:home' => 'Mkuu',
+    'widget:reports' => "Ripoti", 
     'widget:history' => 'Historia',
     'widget:history:label' => 'Historia ya shirika lako:',
     'widget:history:help' => 'Kwa mfano, jinsi ya lilianzwa na mafanikio yake makuu.',

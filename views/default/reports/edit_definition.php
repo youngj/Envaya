@@ -38,21 +38,15 @@ echo "</div>";
 if (!$section) { 
 ?>
     <div class='input'>
-        <label>Form Template</label><br />
-    <?php    
-        echo escape($report_def->get_handler()->name);
-    ?>  
-    </div>
-
-    <div class='input'>
         <label>Report Name</label><br />
     <?php    
-        echo view('input/text', array('internalname' => 'report_name', 'value' => $report_def->name));
+        echo escape($report_def->get_handler()->get_title());
     ?>  
-    </div>    
+    </div>
     
+    <em>Note: To modify the report template, please contact Envaya.</em>
     <?php
-        echo view('input/submit', array('value' => __('savechanges')));
+        //echo view('input/submit', array('value' => __('savechanges')));
     ?>
 <?php 
 } 

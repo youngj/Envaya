@@ -1401,7 +1401,7 @@ SingleImageUploader.prototype.showParsedPreviewImage = function($images, $server
     loadingMessage.appendChild(document.createTextNode(this.options.loading_preview_message));
 
     removeChildren(progress);
-    progress.appendChild(loadingMessage);
+    progress.appendChild(loadingMessage);    
 
     var img = document.createElement('img');
 

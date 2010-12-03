@@ -1,5 +1,7 @@
 <?php
 return array(
+    'fcs:narrative' =>  'FCS Narrative Report',
+
     'fcs:narrative:introduction' => 'Introduction',
     'fcs:narrative:description' => 'Project Description',
     'fcs:narrative:activities' => 'Project Outputs and Activities',
@@ -91,14 +93,10 @@ for two years, your <b>end-of-year</b> report covers <b>quarters 1 to 4</b> from
     
     'fcs:widows' => "Widows",
     'fcs:elderly' => "Elderly",
-    'fcs:refugees' => "Refugees",
-    'fcs:poor' => "Poor",
     'fcs:orphans' => "Orphans",
-    'fcs:unemployed' => "Unemployed",
     'fcs:hiv_aids' => 'People living with HIV/AIDS',
     'fcs:children' => 'Children',
     'fcs:youth' => 'Youth',
-    'fcs:homeless' => "Homeless",
     'fcs:disabled' => "Disabled",
     'fcs:other' => "Other",
     

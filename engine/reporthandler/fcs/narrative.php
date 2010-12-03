@@ -1,8 +1,11 @@
 <?php
 
 class ReportHandler_FCS_Narrative extends ReportHandler
-{ 
-    public $name = 'FCS - Narrative Report';    
+{     
+    public function get_title()
+    {
+        return __('fcs:narrative');
+    }
     
     public function get_sections()
     {

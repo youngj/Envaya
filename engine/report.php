@@ -18,7 +18,7 @@ class Report extends Entity
     
     function get_title()
     {
-        return $this->get_report_definition()->name;
+        return $this->get_report_definition()->get_title();
     }
     
     function get_field_args()

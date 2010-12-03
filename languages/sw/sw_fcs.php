@@ -79,6 +79,7 @@ Kama mradi wako ulianza Agosti 12, 2010 na ni wa miaka miwili taarifa ya <b>mwis
     'fcs:narrative:linkages:description' => 'Namna mlivyoshirikiana nayo',
 
     'fcs:narrative:beneficiaries_other_details' => 'Kama "Watu wengine", eleza:',
+    'fcs:narrative:beneficiaries_container' => "Taja idadi kamili ya walengwa wanaoathirikia mradi wako kutoka kila kundi lifuatalo.",        
     'fcs:narrative:beneficiaries_container:help' => "Walengwa wa Moja kwa Moja - yaani Watu walioshiriki moja kwa moja kwenye shughuli za Mradi<br>Walengwa wasio wa moja kwa moja - wale mliowafikia kupitia walengwa wa moja kwa moja au ambao hawatafikiwa moja kwa moja na shughuli za mradi.",
   
     'fcs:narrative:total_beneficiaries' => 'D. Idadi kamili ya wanufaika',

@@ -829,7 +829,8 @@ a.photoDelete:hover
 
 .uploadIframe
 {
-    display:block;
+    display:inline;
+    vertical-align:top;
     width:270px;
     height:30px;
     border:0px;

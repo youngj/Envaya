@@ -10,6 +10,7 @@
     }
     
     $resultId = @$vars['internalid'] ?: "upload_result$UPLOAD_INCLUDE_COUNT";
+    $progressId = "upload_progress$UPLOAD_INCLUDE_COUNT";
 ?>
 
 <span id='upload_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>'><?php
@@ -28,18 +29,28 @@
 <input type='button' onclick='removeUpload<?php echo $UPLOAD_INCLUDE_COUNT ?>();' value='<?php echo escape(__('upload:remove')); ?>' />
 </span>
 
+<span id='upload_browse_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>' <?php 
+    if ($has_value) { echo "style='display:none'"; } 
+?>>
 <?php
     echo view('input/swfupload', array(
         'internalname' => $vars['internalname'],
         'internalid' => $resultId,
+        'progressid' => $progressId,
         'value' => @$vars['value'],
         'swfupload_class' => 'FileUploader',
         'swfupload_args' => array(
-            'recommend_flash_message' => ''),
+            'recommend_flash_message' => '',
+            'upload_progress_message' =>  __('upload:uploading'),
+            'upload_error_message' => __('upload:error'),
+            
+        ),
         'jsname' => 'uploader'
     ));
 ?>
+</span>
 <script type='text/javascript'>
+
     var uploader = window.uploader;
     
     uploader.showParsedPreviewImage = function($images, $serverData) 
@@ -54,6 +65,9 @@
             
         var removeSpan = document.getElementById('upload_remove_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
         removeSpan.style.display = 'inline';
+
+        var browseSpan = document.getElementById('upload_browse_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
+        browseSpan.style.display = 'none';        
         
         document.getElementById('<?php echo $resultId; ?>').value = $serverData;
     };
@@ -62,10 +76,15 @@
     {
         var removeSpan = document.getElementById('upload_remove_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
         removeSpan.style.display = 'none';
+
+        var browseSpan = document.getElementById('upload_browse_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
+        browseSpan.style.display = 'inline';
         
         var span = document.getElementById('upload_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
         removeChildren(span);
         
         document.getElementById('<?php echo $resultId; ?>').value = '';
     }
+    
+    document.getElementById('<?php echo $progressId; ?>').style.display = 'inline';
 </script>

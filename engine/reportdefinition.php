@@ -16,7 +16,7 @@ class ReportDefinition extends Entity
     
     function get_title()
     {
-        return $this->name;
+        return $this->get_handler()->get_title();
     }    
     
     static function get_handler_options()
