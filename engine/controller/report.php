@@ -130,7 +130,7 @@ class Controller_Report extends Controller_Profile
         $report = $this->report;        
         $report_def = $report->get_report_definition();
         
-        add_submenu_item(__("report:cancel_preview"), $report_def->get_url()."/edit?section=manage", 'edit');        
+        add_submenu_item(__("report:cancel_preview"), $report_def->get_url()."/edit?tab=manage", 'edit');        
         
         $title = sprintf(__('report:view_response_title'), $report->get_title());
         $area1 = view('reports/view_response', array('report' => $report));
@@ -146,7 +146,7 @@ class Controller_Report extends Controller_Profile
         $report->status = $newStatus;
         $report->save();
         system_message(__('report:status_changed'));
-        forward($report->get_report_definition()->get_url()."/edit?section=manage");
+        forward($report->get_report_definition()->get_url()."/edit?tab=manage");
     }
     
     function action_confirm_submit()
