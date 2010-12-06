@@ -63,7 +63,7 @@ class Controller_Reporting extends Controller_Profile
 
         add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
         
-        $area1 = view('reports/edit_definition', array('report_def' => $report_def, 'section' => get_input('section')));
+        $area1 = view('reports/edit_definition', array('report_def' => $report_def, 'tab' => get_input('tab')));
         $body = view_layout("one_column", view_title($title), $area1);
 
         $this->page_draw($title,$body);
@@ -94,7 +94,7 @@ class Controller_Reporting extends Controller_Profile
         
         system_message(__('report:created'));
         
-        forward("{$report_def->get_url()}/edit?section=invite");
+        forward("{$report_def->get_url()}/edit?tab=invite");
     }
     
     function action_delete()
@@ -115,14 +115,8 @@ class Controller_Reporting extends Controller_Profile
     {
         $this->require_editor();
         $this->validate_security_token();
-        $report_def = $this->report_def;
-        $report_def->name = get_input('report_name');        
-        $report_def->save();
-        
-        system_message(__('report:saved'));
-        $org = $this->org;
-        
-        forward($org->get_widget_by_name('reports')->get_edit_url());    
+        $report_def = $this->report_def;        
+        forward($report_def->get_url(). "/edit?section=".urlencode(get_input('next_section')));    
     }
     
     function action_start()

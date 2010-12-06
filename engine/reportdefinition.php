@@ -25,7 +25,7 @@ class ReportDefinition extends Entity
         foreach (static::$handler_classes as $classname)
         {
             $handler = new $classname();                
-            $options[get_class($handler)] = $handler->name;
+            $options[get_class($handler)] = $handler->get_title();
         }
     
         return $options;

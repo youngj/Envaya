@@ -11,7 +11,7 @@
 <div class='section_content padded'>    
 
 <p>
-Report Name: <strong><?php echo escape($report_def->name); ?></strong><br />
+Report Title: <strong><?php echo escape($report_def->get_title()); ?></strong><br />
 Report Sponsor: <strong><?php echo escape($report_def->get_container_entity()->name); ?></strong>
 </p>
 

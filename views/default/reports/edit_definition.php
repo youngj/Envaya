@@ -2,9 +2,9 @@
     $report_def = $vars['report_def'];
     $org = $report_def->get_container_entity();
     
-    $section = $vars['section'];
-    $sections = array(
-        '' => "Edit Report",
+    $tab = $vars['tab'];
+    $tabs = array(
+        '' => "Preview Report",
         'invite' => "Invite Organizations",
         'manage' => "Manage Responses",
         'export' => "Export Responses",
@@ -15,15 +15,15 @@
 <?php
 echo "<div class='report_section_nav'>";
 $links = array();
-foreach ($sections as $s => $section_title)
+foreach ($tabs as $s => $section_title)
 {
-    if ($section == $s)
+    if ($tab == $s)
     {
         $links[] = "<span>".escape($section_title)."</span> ";
     }
     else
     {
-        $links[] = "<a href='{$report_def->get_url()}/edit?section=$s'>".escape($section_title)."</a> ";            
+        $links[] = "<a href='{$report_def->get_url()}/edit?tab=$s'>".escape($section_title)."</a> ";            
     }    
 }
 echo implode(" &middot; ", $links);
@@ -35,22 +35,33 @@ echo "</div>";
 <?php echo view('input/securitytoken'); ?>
 
 <?php 
-if (!$section) { 
+if (!$tab) { 
 ?>
+    <!--
     <div class='input'>
         <label>Report Name</label><br />
     <?php    
         echo escape($report_def->get_handler()->get_title());
     ?>  
     </div>
-    
+    -->
+    <div class='instructions' style='text-align:center'>
     <em>Note: To modify the report template, please contact Envaya.</em>
+    </div>
+    <hr />
     <?php
         //echo view('input/submit', array('value' => __('savechanges')));
+        $report = new Report();
+        $report->report_guid = $report_def->guid;
+        $report->container_guid = Session::get_loggedin_user()->guid;
+        
+        echo $report->render_edit();
     ?>
+    
+    
 <?php 
 } 
-else if ($section == 'invite')
+else if ($tab == 'invite')
 {
 ?>
 <div class='padded'>
@@ -73,7 +84,7 @@ they can register at that time.
 </div>
 <?php
 }
-else if ($section == 'manage')
+else if ($tab == 'manage')
 {
 
     $reports = $report_def->query_reports()->filter();
@@ -126,10 +137,10 @@ else if ($section == 'manage')
     }
     else
     {
-        echo __('report:none_available');
+        echo "<div class='padded'>".__('report:no_responses')."</div>";
     }
 }
-else if ($section == 'export')
+else if ($tab == 'export')
 {
     echo "<div class='padded'>";
     echo "<p>Export accepted responses as: ";

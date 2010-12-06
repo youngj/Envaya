@@ -48,6 +48,8 @@ $report = $vars['report'];
 
 echo $report->render_view();
 
+echo "<hr />";
+
 echo view('reports/set_status_links', array('report' => $report));
 echo "<br />";
 echo "<a href='{$report->get_report_definition()->get_url()}/edit?section=manage'>Return to all Reports</a>";

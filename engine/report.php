@@ -98,7 +98,7 @@ class Report extends Entity
         {
             $field = new ReportField();
             $field->name = $name;
-            $field->report_guid = $this->guid;            
+            $field->set_report($this);            
             $fields[$name] = $field;
         }
         

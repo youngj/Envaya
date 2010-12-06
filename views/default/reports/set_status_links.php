@@ -1,7 +1,7 @@
 <?php
     $report = $vars['report'];
     $status = $report->status;
-    
+    echo "<strong>";
     if ($status == ReportStatus::Draft)
     {
         echo view('output/confirmlink', array(
@@ -32,3 +32,4 @@
             'is_action' => true,
         ));                    
     }
+    echo "</strong>";

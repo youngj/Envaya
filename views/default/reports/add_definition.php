@@ -13,13 +13,6 @@
     ?>  
     </div>
 
-    <div class='input'>
-        <label>Report Name</label><br />
-    <?php    
-        echo view('input/text', array('internalname' => 'report_name'));
-    ?>  
-    </div>    
-    
     <?php
         echo view('input/submit', array('value' => __('save')));
     ?>

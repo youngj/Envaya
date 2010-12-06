@@ -79,9 +79,17 @@ class ReportField extends Model
         return $this->get_arg('help');
     }
     
+    private $report;
+    
+    function set_report($report)
+    {
+        $this->report = $report;
+        $this->report_guid = $report->guid;
+    }
+    
     function get_report()
     {
-        return get_entity($this->report_guid);
+        return $this->report ?: get_entity($this->report_guid);
     }
     
     function is_blank()

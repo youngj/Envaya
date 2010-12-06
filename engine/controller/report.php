@@ -167,10 +167,27 @@ class Controller_Report extends Controller_Profile
         $this->require_editor();
         $this->validate_security_token();
         $report = $this->report;
+        
         $report->signature = get_input('signature');
         $report->status = ReportStatus::Submitted;
         $report->time_submitted = time();
         $report->save();
+        
+        $report_def = $report->get_report_definition();
+        $report_recipient = $report_def->get_container_entity();
+        if ($report_recipient && $report_recipient->email)
+        {
+            $email_body = view('emails/report_submitted', array('report' => $report));
+            $email_subject = sprintf(__('report:submitted_subject', $report_recipient->language), 
+                $report->get_title(), $report->get_container_entity()->name);
+            
+            $headers = array(
+                'To' => $report_recipient->get_name_for_email(),
+                'Content-Type' => 'text/html',
+            );
+            
+            send_mail($report_recipient->email, $email_subject, $email_body, $headers);
+        }
         
         system_message(__('report:submitted'));
         forward($this->org->get_widget_by_name('reports')->get_edit_url());

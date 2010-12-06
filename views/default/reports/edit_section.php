@@ -42,7 +42,8 @@ function getInteger($fieldName)
 </script>
 <?php
 
-echo "<div class='repor t_section_nav'>";
+
+echo "<div class='report_section_nav'>";
 $links = array();
 
 foreach ($sections as $i => $section)
@@ -58,6 +59,11 @@ foreach ($sections as $i => $section)
             escape($section_title)."</a> ";            
     }
 }
+
+$links[] = "<a href='javascript:void(0)' onclick='setSubmitted(); document.forms[0].submit()'>".
+    __('report:preview_submit')."</a> ";            
+
+
 echo implode(" &middot; ", $links);
 
 echo "</div>";

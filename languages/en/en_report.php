@@ -45,4 +45,9 @@ return array(
     
     'report:instructions' => "Type your responses in the fields below. When you are done with each section, press the button at the bottom of the page to save your changes and continue to the next section.",
     'report:youare' => "You are currently submitting responses for <b>%s</b>.",
+    
+    'report:submitted_subject' => "%s submitted by %s",
+    'report:cantmanage' => "Please log in with a user account that has permission to manage this report.",
+    'report:preview_submit' => "Verify Responses",
+    'report:no_responses' => "No organizations have started this report yet.",
 );

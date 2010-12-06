@@ -28,10 +28,10 @@
             echo "</td>";
             
             echo "<td>";            
-            echo "<div><a href='{$report_def->get_url()}/edit'>Edit Report</a></div>";
-            echo "<div><a href='{$report_def->get_url()}/edit?section=invite'>Invite Organizations</a></div>";
-            echo "<div><a href='{$report_def->get_url()}/edit?section=manage'>Manage Responses</a></div>";
-            echo "<div><a href='{$report_def->get_url()}/edit?section=export'>Export Responses</a></div>";
+            echo "<div><a href='{$report_def->get_url()}/edit'>Preview Report</a></div>";
+            echo "<div><a href='{$report_def->get_url()}/edit?tab=invite'>Invite Organizations</a></div>";
+            echo "<div><a href='{$report_def->get_url()}/edit?tab=manage'>Manage Responses</a></div>";
+            echo "<div><a href='{$report_def->get_url()}/edit?tab=export'>Export Responses</a></div>";
             
             echo "<div>";
             
