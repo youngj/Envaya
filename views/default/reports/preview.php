@@ -11,13 +11,12 @@ if ($submit)  {
 
 <div class='report_preview_message'>
 <p>
-Carefully read your responses below and verify that they are complete and correct.
-</p>
+<?php echo __('report:verify_instructions'); ?></p>
 <p>
-To make any changes, click "Edit Responses" next to the appropriate section.
+<?php echo __('report:to_make_changes'); ?>
 </p>
 <p class='last-paragraph'>
-When you are ready to submit your report, click "Submit Report" at the bottom of the page.
+<?php echo __('report:how_to_submit'); ?>
 </p>
 </div>
 
@@ -40,15 +39,16 @@ if ($submit)  {
 <div class='report_preview_message'>
 
 <p>
-When you are ready to submit the report, check the box below and type your full name as an electronic signature. 
+<?php echo __('report:type_signature'); ?>
 </p>
 <p>
-After submitting the report, you will no longer be able to edit your responses.
+<?php echo __('report:cant_edit_after_submit'); ?>
 </p>
 
-<label><input type='checkbox' id='confirm_box' name='confirm' />I have verified that all responses are complete and correct.</label><br />
+<label><input type='checkbox' id='confirm_box' name='confirm' />
+<?php echo __('report:verified'); ?></label><br />
 
-Signature:
+<?php echo __('report:signature'); ?>:
 <?php
     echo view('input/text', array('internalname' => 'signature', 'js' => 'style="width:250px"', 'internalid' => 'signature'));
 ?>
@@ -59,12 +59,12 @@ function verifyConfirmed()
 {
     if (!document.getElementById('confirm_box').checked)
     {
-        alert("Please verify that all responses are complete and correct.");
+        alert(<?php echo json_encode(__('report:error_not_verified')); ?>);
         return false;
     }
     if (!document.getElementById('signature').value)
     {
-        alert("Please type your name as a signature.");
+        alert(<?php echo json_encode(__('report:error_no_signature')); ?>);
         return false;
     }
     return true;

@@ -224,6 +224,11 @@ class Controller_Report extends Controller_Profile
         }
         $report->save();
         
+        if (get_input('_submit'))
+        {
+            system_message(__('report:saved'));
+        }
+            
         $next_section = get_input('next_section');        
         if ($next_section)
         {            

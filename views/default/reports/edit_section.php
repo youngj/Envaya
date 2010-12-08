@@ -80,6 +80,14 @@ echo view('input/hidden', array(
     'value' => '',
 ));
 
+echo view('input/submit', array(
+    'internalname' => '_submit',
+    'value' => __('report:save_changes'), 
+    'js' => "onclick='return setSubmitted() && setNextSection(".($section_id).")'"
+));
+
+echo "<br />";
+
 if ($section_id < $num_sections)
 {
     echo view('input/submit', array(

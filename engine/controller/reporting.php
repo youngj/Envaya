@@ -123,11 +123,14 @@ class Controller_Reporting extends Controller_Profile
     {
         $report_def = $this->report_def;
         
-        $title = __('report:start');
+        $this->use_public_layout(false);
+        PageContext::set_translatable(false);
+        
+        $title = $report_def->get_title();
         
         $area1 = view('reports/start', array('report_def' => $report_def));        
         
-        $body = view_layout("one_column", view_title($title), $area1);
+        $body = $this->org_view_body($title, $area1);
         
         $this->page_draw($title,$body);        
     }
