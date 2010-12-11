@@ -231,6 +231,7 @@ class RegisterTest extends PHPUnit_Framework_TestCase
 
         $this->type("//input[@name='username']", $this->username);
         $this->submitForm();
+        sleep(2);
 
         /* set up homepage */
         $this->mouseOver("//div[@class='good_messages']");

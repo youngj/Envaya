@@ -28,7 +28,7 @@ return array(
     'report:cancel_preview' => "Ghairi Kuchunguza",
     'report:confirm_submit' => "Toa %s",
     'report:cancel_submit' => "Ghairi Kutoa",
-    'report:none_available' => "Shirika lako halina ripoti yoyote.",
+    'report:none_available' => "Shirika hili halina ripoti yoyote.",
     'report:add_new' => "Ongeza Ripoti Mpya",
     'report:created' => "Ripoti imeumbwa.",
     'report:deleted' => "Ripoti imefutwa.",

@@ -26,7 +26,7 @@ return array(
     'report:cancel_preview' => "Cancel Preview",
     'report:confirm_submit' => "Submit %s",
     'report:cancel_submit' => "Cancel Submit",
-    'report:none_available' => "Your organization does not have any reports.",
+    'report:none_available' => "This organization does not have any reports.",
     'report:add_new' => "Add New Report",
     'report:created' => "Report created successfully.",
     'report:deleted' => "Report deleted successfully.",

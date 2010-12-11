@@ -29,7 +29,7 @@
 
 </li>
 <li>
-<?php echo sprintf(__('report:no_account'), "<a href='org/new?next=<?php echo urlencode($post_login_url); ?>' style='white-space:nowrap;font-weight:bold'>".__('report:click_create')."</a>"); ?>
+<?php echo sprintf(__('report:no_account'), "<a href='org/new?next=".urlencode($post_login_url)."' style='white-space:nowrap;font-weight:bold'>".__('report:click_create')."</a>"); ?>
 
 
 </li>

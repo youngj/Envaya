@@ -8,7 +8,7 @@
     
     if (!sizeof($report_defs))
     {
-        echo escape(__("report:none_defined"));
+        echo escape(__("report:none_available"));
     }
     else
     {      
