@@ -83,4 +83,15 @@ return array(
     'report:start_message' => "Kukamilisha ripoti hii, ingiza majibu yako kwa maswali ya chini. Wakati wowote ambapo unataka kuhifadhi majibu yako, bonyeza kitufe chini ya ukurasa.",
     'report:start_message_2' => "Ambapo umemaliza sehemu, bonyeza Endelea kwa Ukurasa ufuatao, au chagua sehemu nyingine kutoka menu ya chini.",    
     'report:preview_submit' => "Angalia Majibu",
+    
+    'report:start_message' => "Kukamilisha ripoti hii, fuata maelekezo rahisi haya:",
+    'report:start_message_0' => "Ingiza majibu yako kwa kila swali kwenye maeneo matupu ya chini.",
+    'report:start_message_1' => "Wakati wowote unapotaka kuhifadhi majibu yako, bonyeza %s chini ya ukurasa.",
+    'report:start_message_2' => "Ambapo umemaliza sehemu, bonyeza %s, au chagua sehemu nyingine kutoka menu.",
+    'report:start_message_3' => "Baada ya kuhifadhi majibu yako, unaweza bonyeza dirisha na rudi %s baadaye kuimaliza ripoti.",
+    'report:start_message_4' => "Ambapo ripoti ni tayari kutolewa kwa %s, fuata maelekezo kwenye ukurasa wa %s.",
+    
+    'report:saved_at' => "Responses saved %s at %s.",
+    'report:not_saved' => "Responses have not yet been saved.",
+    
 );

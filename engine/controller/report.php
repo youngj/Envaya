@@ -113,7 +113,11 @@ class Controller_Report extends Controller_Profile
 
         add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
-        $area1 = view('reports/edit', array('report' => $report, 'start' => get_input('start')));
+        $area1 = view('reports/edit', array(
+            'report' => $report, 
+            'start' => get_input('start'), 
+            'scroll_position' => (int)get_input('scroll')
+        ));
         $body = view_layout("one_column", view_title($title), $area1);
 
         $this->page_draw($title,$body);
@@ -269,17 +273,24 @@ class Controller_Report extends Controller_Profile
         {
             $report->status = ReportStatus::Draft;        
         }
+        $user_save_time = (int)get_input('user_save_time');        
+        if ($user_save_time)
+        {
+            $report->user_save_time = $user_save_time;
+        }        
+        
         $report->save();
         
-        if (get_input('_submit'))
-        {
-            system_message(__('report:saved'));
-        }
-            
         $next_section = get_input('next_section');        
         if ($next_section)
-        {            
-            forward($report->get_edit_url()."?section=$next_section");
+        {           
+            $url = $report->get_edit_url()."?section=$next_section&saved=1";
+            $scroll = (int)get_input('scroll_position');
+            if ($scroll)
+            {
+                $url .= "&scroll=$scroll";
+            }        
+            forward($url);
         }
         else
         {

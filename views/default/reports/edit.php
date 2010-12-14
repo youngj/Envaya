@@ -2,19 +2,8 @@
 <?php
 $report = $vars['report'];
 $start = $vars['start'];
-
-if ($start) {
+$scroll_position = $vars['scroll_position'];
 ?>
-
-<div class='report_preview_message'>
-    <p><?php echo __('report:start_message'); ?></p>
-    <p class='last-paragraph'><?php echo __('report:start_message_2'); ?></p>
-</div>
-
-<?php
-}
-?>
-
 <form method='POST' action='<?php echo $report->get_url()."/save" ?>'>
 <?php
 echo view('input/securitytoken'); 
@@ -22,3 +11,17 @@ echo $report->render_edit();
 ?>
 </form>
 </div>
+
+<?php
+if ($scroll_position)
+{
+?>
+<script type='text/javascript'>
+setTimeout(function() {
+    window.scrollTo(0, <?php echo (int)$scroll_position ?>);
+}, 1);
+</script>
+<?php
+}
+?>
+

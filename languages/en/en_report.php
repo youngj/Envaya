@@ -85,6 +85,13 @@ return array(
     'report:create_profile_instructions' => "Before filling out the report, enter some basic information to create your organization's home page on Envaya.",
     'report:create_profile:next' => "Click the button below to continue to the report.",
     'report:create_profile:button' => "Start the report!",
-    'report:start_message' => "To complete this report, enter your responses to the questions below. Whenever you want to save your responses, click the button at the bottom of the page.",
-    'report:start_message_2' => "When you are done with a section, click Continue to Next Page, or select another section from the menu below.",
+    'report:start_message' => "To complete this report, follow these simple instructions:",
+    'report:start_message_0' => "Enter your responses to each question in the blanks below.",
+    'report:start_message_1' => "Whenever you want to save your responses, click %s at the bottom of the page.",
+    'report:start_message_2' => "When you finish a section, click %s, or choose another section from the menu.",
+    'report:start_message_3' => "After saving your responses, you can close the window and return to %s later to finish the report.",
+    'report:start_message_4' => "When you are ready to submit your final report to %s, follow the instructions on the %s page.",
+    
+    'report:saved_at' => "Responses saved %s at %s.",
+    'report:not_saved' => "Responses have not yet been saved.",
 );

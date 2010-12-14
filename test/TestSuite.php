@@ -37,6 +37,13 @@ function main()
     @unlink($mockMailFile);
     
     $env = $_ENV;    
+    
+    if (!sizeof($env))
+    {
+        echo "error: \$_ENV is empty. add variables_order=\"GPCSE\" to your php.ini file and try again.\n";
+        die;
+    }   
+    
     $env["ENVAYA_CONFIG"] = json_encode(array(
         'mock_mail_file' => $mockMailFile
     ));

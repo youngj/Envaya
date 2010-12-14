@@ -215,3 +215,34 @@ a.icon_link:hover
 {
     padding-top:8px;
 }
+
+#floating_save
+{
+    position:fixed;
+    text-align:center;
+    bottom:0px;
+    left:0px;
+    width:100%;
+    border-top:1px solid #666;
+    height:42px;
+    background-color:#e0e0e0;
+}
+
+.floating_save_content
+{
+    width:600px;
+    margin:0 auto;
+}
+
+#floating_save .submit_button
+{
+    margin:0px;    
+}
+
+.last_save_time
+{
+    float:left;
+    width:350px;
+    height:42px;
+    padding-top:12px;
+}

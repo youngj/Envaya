@@ -9,6 +9,16 @@ $num_sections = sizeof($sections);
 function setNextSection($section)
 {
     document.getElementById('next_section').value = $section;
+    var now = new Date();
+    document.getElementById('user_save_time').value = "" + (now.getTime()/1000 - now.getTimezoneOffset() * 60);
+    return true;
+}
+
+function setScrollPosition()
+{
+    var scrollY = window.pageYOffset || window.document.documentElement.scrollTop || window.document.body.scrollTop;
+    document.getElementById('scroll_position').value = "" + scrollY;
+    return true;
 }
 
 var autoFunctions = {};
@@ -41,8 +51,6 @@ function getInteger($fieldName)
 
 </script>
 <?php
-
-
 echo "<div class='report_section_nav'>";
 $links = array();
 
@@ -67,10 +75,46 @@ $links[] = "<a href='javascript:void(0)' onclick='setSubmitted(); document.forms
 echo implode(" &middot; ", $links);
 
 echo "</div>";
+?>
 
+<?php
+if ($section_id == 1) {
+?>
+
+<div class='report_preview_message' style='font-size:12px'>
+    <p><?php echo __('report:start_message'); ?></p>
+    <ol>
+    <li><?php echo __('report:start_message_0'); ?></li>
+    <li><?php echo sprintf(__('report:start_message_1'), "<em>".__('report:save_changes')."</em>"); ?></li>
+    <li><?php echo sprintf(__('report:start_message_2'), "<em>".__('report:next_page')."</em>"); ?></li>
+    <li><?php echo sprintf(__('report:start_message_3'), "<strong style='white-space:nowrap'>{$report->get_report_definition()->get_url()}/start</strong>"); ?></li>
+    <li><?php echo sprintf(__('report:start_message_4'), 
+        escape($report->get_report_definition()->get_container_entity()->name),
+        "<em>".__('report:preview_submit')."</em>"
+    ); ?></li>
+    </ol>
+</div>
+
+<?php
+}
+?>
+
+<?php
 echo "<h2 class='report_section_heading'>".escape(sprintf(__('report:section_heading'), $section_id, $vars['section']['title']))."</h2>";
 
+?>
+<?php
 echo $content;
+
+echo view('input/hidden', array(
+    'internalname' => 'user_save_time',
+    'internalid' => 'user_save_time',
+));
+
+echo view('input/hidden', array(
+    'internalname' => 'scroll_position',
+    'internalid' => 'scroll_position',
+));
 
 echo view('input/hidden', array('internalname' => 'section', 'value' => $section_id)); 
 
@@ -79,14 +123,6 @@ echo view('input/hidden', array(
     'internalid' => 'next_section',
     'value' => '',
 ));
-
-echo view('input/submit', array(
-    'internalname' => '_submit',
-    'value' => __('report:save_changes'), 
-    'js' => "onclick='return setSubmitted() && setNextSection(".($section_id).")'"
-));
-
-echo "<br />";
 
 if ($section_id < $num_sections)
 {
@@ -106,3 +142,67 @@ else
 }
 
 ?>
+<div id='floating_save'>
+<div class='floating_save_content'>
+<div class='last_save_time'>
+
+<span id='last_save_time'>
+<?php 
+if ($report->user_save_time) 
+{ 
+    if (abs($report->user_save_time - time()) > 86400) // a bit fuzzy since this compares server time to the user's computer time
+    {    
+        $date_str = get_date_text($report->user_save_time);
+    }
+    else
+    {
+        $date_str = '';
+    }
+
+    $time_str = date("g:i a", $report->user_save_time);     
+
+    echo sprintf(__('report:saved_at'), $date_str, $time_str);
+} 
+else 
+{ 
+    echo sprintf(__('report:not_saved'));
+ } 
+?>
+</span>
+<span id='saved_now' style='display:none'>
+<strong><?php
+    echo __('report:saved');
+?></strong>
+</span>
+</div>
+
+<?php
+
+if (get_input('saved'))
+{
+?>
+<script type='text/javascript'>
+setTimeout(function() {
+    document.getElementById('saved_now').style.display = 'inline';
+    document.getElementById('last_save_time').style.display = 'none';    
+    
+    setTimeout(function()
+    {
+        document.getElementById('saved_now').style.display = 'none';
+        document.getElementById('last_save_time').style.display = 'inline';        
+    }, 5000);
+    
+}, 1);
+</script>
+<?php
+}
+
+echo view('input/submit', array(
+    'internalname' => '_save',
+    'value' => __('report:save_changes'), 
+    'js' => "onclick='return setSubmitted() && setScrollPosition() && setNextSection(".($section_id).")'"
+));
+?>
+
+</div>
+</div>
