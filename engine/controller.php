@@ -145,4 +145,143 @@ abstract class Controller {
     {
     }
 
+    function process_create_account_form()
+    {        
+        $name = trim(get_input('org_name'));
+
+        if (!$name)
+        {
+            throw new RegistrationException(__('create:no_name'));
+        }
+
+        $username = trim(get_input('username'));
+
+        validate_username($username);
+
+        if (get_user_by_username($username))
+        {
+            throw new RegistrationException(__('create:username_exists'));
+        }
+
+        $password = get_input('password');
+        $password2 = get_input('password2');
+
+        if (strcmp($password, $password2) != 0)
+        {
+            throw new RegistrationException(__('create:passwords_differ'));
+        }
+
+        $lpassword = strtolower($password);
+        $lusername = strtolower($username);
+        $lname = strtolower($name);
+
+        if (strpos($lname, $lpassword) !== FALSE || strpos($lusername, $lpassword) !== FALSE)
+        {
+            throw new RegistrationException(__('create:password_too_easy'));
+        }
+
+        validate_password($password);
+
+        $email = trim(get_input('email'));
+
+        validate_email_address($email);
+
+        $org = new Organization();
+        $org->username = $username;
+        $org->phone_number = get_input('phone');
+        $org->email = $email;
+        $org->name = $name;
+        $org->set_password($password);
+        $org->owner_guid = 0;
+        $org->container_guid = 0;
+        $org->language = get_language();
+        $org->theme = "green";
+        $org->setup_state = SetupState::CreatedAccount;
+
+        //$org->registration_number = $prevInfo['registration_number'];
+        //$org->local = $prevInfo['local'];
+
+        $org->set_lat_long(-6.140555,35.551758);
+
+        $org->save();
+
+        /* auto-create empty pages */
+        $org->get_widget_by_name('news')->save();
+
+        $contactWidget = $org->get_widget_by_name('contact');
+        if ($email)
+        {
+            $contactWidget->public_email = "yes";
+        }
+        $contactWidget->save();
+
+        $guid = $org->guid;
+        
+        login($org, false);
+
+        system_message(__("create:ok"));   
+
+        return $org;        
+    }
+    
+    function process_create_profile_form()
+    {
+        $org = Session::get_loggedin_user();
+
+        $mission = get_input('mission');
+        if (!$mission)
+        {
+            throw new RegistrationException(__("setup:mission:blank"));
+        }
+
+        $sectors = get_input_array('sector');
+        if (sizeof($sectors) == 0)
+        {
+            throw new RegistrationException(__("setup:sector:blank"));
+        }
+        else if (sizeof($sectors) > 5)
+        {
+            throw new RegistrationException(__("setup:sector:toomany"));
+        }
+
+        $homeWidget = $org->get_widget_by_name('home');
+        $homeWidget->set_content($mission, true);
+
+        $org->language = get_input('content_language');
+
+        $org->set_sectors($sectors);
+        $org->city = get_input('city');
+        $org->region = get_input('region');
+        $org->sector_other = get_input('sector_other');
+
+        $org->theme = get_input('theme');
+
+        $latlong = Geocoder::geocode($org->get_location_text());
+
+        if ($latlong)
+        {
+            $org->set_lat_long($latlong['lat'], $latlong['long']);
+        }
+
+        $homeWidget->save();
+
+        $prevSetupState = $org->setup_state;
+        
+        $org->setup_state = SetupState::CreatedHomePage;
+        $org->save();
+
+        if ($prevSetupState < $org->setup_state && !$org->is_approved())
+        {
+            post_feed_items($org, 'register', $org);
+
+            send_admin_mail(sprintf(__('email:registernotify:subject'), $org->name), 
+                sprintf(__('email:registernotify:body'), $org->get_url().'?login=1')
+            );
+        }            
+        
+        system_message(__("setup:ok"));                
+        
+        return $org;
+    }    
+    
 } // End Controller

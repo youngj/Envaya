@@ -79,7 +79,15 @@ class Controller_Report extends Controller_Profile
         else if (!$report->can_edit())
         {
             register_error(__('report:cantedit'));
-            forward($report->get_url());
+            
+            if ($report->status == ReportStatus::Submitted)
+            {
+                forward($report->get_url()."/submit_success");
+            }
+            else
+            {
+                forward($report->get_url());
+            }
         }
     }
 
@@ -98,14 +106,14 @@ class Controller_Report extends Controller_Profile
     {
         $this->require_editor();
         $report = $this->report;
-
+        
         $title = sprintf(__('report:edit_title'), $report->get_title());
 
         $cancelUrl = get_input('from') ?: $this->org->get_widget_by_name('reports')->get_edit_url();
 
         add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
-        $area1 = view('reports/edit', array('report' => $report));
+        $area1 = view('reports/edit', array('report' => $report, 'start' => get_input('start')));
         $body = view_layout("one_column", view_title($title), $area1);
 
         $this->page_draw($title,$body);
@@ -168,29 +176,68 @@ class Controller_Report extends Controller_Profile
         $this->validate_security_token();
         $report = $this->report;
         
-        $report->signature = get_input('signature');
-        $report->status = ReportStatus::Submitted;
-        $report->time_submitted = time();
-        $report->save();
+        $sent_email = false;
         
-        $report_def = $report->get_report_definition();
-        $report_recipient = $report_def->get_container_entity();
-        if ($report_recipient && $report_recipient->email)
-        {
-            $email_body = view('emails/report_submitted', array('report' => $report));
-            $email_subject = sprintf(__('report:submitted_subject', $report_recipient->language), 
-                $report->get_title(), $report->get_container_entity()->name);
+        if ($report->status != ReportStatus::Submitted)
+        {        
+            $report->signature = get_input('signature');
+            $report->status = ReportStatus::Submitted;
+            $report->time_submitted = time();
+            $report->save();
             
-            $headers = array(
-                'To' => $report_recipient->get_name_for_email(),
-                'Content-Type' => 'text/html',
-            );
+            $report_def = $report->get_report_definition();
+            $report_recipient = $report_def->get_container_entity();
+            if ($report_recipient && $report_recipient->email)
+            {
+                $email_body = view('emails/report_submitted', array('report' => $report));
+                $email_subject = sprintf(__('report:submitted_subject', $report_recipient->language), 
+                    $report->get_title(), $report->get_container_entity()->name);
+                
+                $headers = array(
+                    'To' => $report_recipient->get_name_for_email(),
+                    'Content-Type' => 'text/html',
+                );
+                
+                send_mail($report_recipient->email, $email_subject, $email_body, $headers);
+            }
             
-            send_mail($report_recipient->email, $email_subject, $email_body, $headers);
+            $report_org = $report->get_container_entity();
+            if ($report_org && $report_org->email)
+            {
+                $email_body = view('emails/report_submit_success', array('report' => $report));
+                $email_subject = sprintf(__('report:submit_success_subject', $report_org->language), 
+                    $report->get_title(), $report_recipient->name);
+                    
+                $headers = array(
+                    'To' => $report_org->get_name_for_email(),
+                    'Content-Type' => 'text/html',
+                );
+                
+                send_mail($report_org->email, $email_subject, $email_body, $headers);                    
+                $sent_email = true;
+            }
         }
         
-        system_message(__('report:submitted'));
-        forward($this->org->get_widget_by_name('reports')->get_edit_url());
+        forward($report->get_url()."/submit_success" . ($sent_email ? "?sent_email=1" : ""));
+    }
+    
+    function action_submit_success()
+    {
+        $this->use_editor_layout();
+        $report = $this->report;
+    
+        if ($report->status >= ReportStatus::Submitted)
+        {                
+            $title = sprintf(__('report:submit_success'), $report->get_title());        
+            $area1 = view('reports/submit_success', array('report' => $report, 'sent_email' => get_input('sent_email')));
+            $body = view_layout("one_column", view_title($title), $area1);
+            $this->page_draw($title,$body);  
+        }
+        else
+        {
+            register_error(__('report:not_submitted'));
+            forward($report->get_edit_url());
+        }
     }
 
     function action_save()

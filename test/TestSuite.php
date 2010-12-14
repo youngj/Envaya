@@ -35,10 +35,13 @@ function main()
     $mockMailFile = __DIR__."/mail.out";
 
     @unlink($mockMailFile);
-
-    putenv("MOCK_MAIL_FILE=$mockMailFile");
-
-    $queue = proc_open('php runserver.php', $descriptorspec, $pipes2, dirname(__DIR__));
+    
+    $env = $_ENV;    
+    $env["ENVAYA_CONFIG"] = json_encode(array(
+        'mock_mail_file' => $mockMailFile
+    ));
+        
+    $queue = proc_open('php runserver.php', $descriptorspec, $pipes2, dirname(__DIR__), $env);
 
     sleep(2);
 

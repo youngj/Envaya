@@ -149,12 +149,99 @@ class Controller_Reporting extends Controller_Profile
                 $report->container_guid = $user->guid;
                 $report->save();
             }
-            forward($report->get_edit_url());
+            forward($report->get_edit_url()."?start=1");
         }
         else
         {
             register_error(__('report:invaliduser'));
-            forward("/");
+            forward($this->report_def->get_url()."/create_account");
         }
+    }
+    
+    function action_create_account()
+    {
+        if (get_input('logout'))
+        {
+            logout();
+            forward($this->report_def->get_url(). "/create_account");
+        }
+    
+        $loggedInUser = Session::get_loggedin_user();
+        if ($loggedInUser)
+        {
+            if ($loggedInUser instanceof Organization)
+            {
+                if ($loggedInUser->is_setup_complete())
+                {
+                    return $this->action_new_report();                
+                }
+                else
+                {
+                    forward($this->report_def->get_url(). "/create_profile");
+                }                
+            }
+            else
+            {
+                logout();
+                forward($this->report_def->get_url(). "/create_account");
+            }
+        }
+        
+        $title = __("register:title");
+        $body = view_layout('one_column', 
+            view_title($title, array('org_only' => true)), 
+            view("reports/create_account", array('report_def' => $this->report_def)));
+        $this->page_draw($title, $body);    
+    }
+    
+    function action_new_account()
+    {
+        try
+        {            
+            $org = $this->process_create_account_form();
+            
+            $org->country = 'tz'; // todo: add this to the form
+            $org->save();
+
+            forward($this->report_def->get_url()."/create_profile");
+        }
+        catch (RegistrationException $r)
+        {
+            action_error($r->getMessage());
+        }
+    }
+    
+    function action_create_profile()
+    {
+        $loggedInUser = Session::get_loggedin_user();
+        if (!$loggedInUser || !$loggedInUser instanceof Organization)
+        {
+            logout();
+            forward($this->report_def->get_url(). "/create_account");
+        }            
+
+        $title = __("report:create_profile");
+        $body = view_layout('one_column', 
+            view_title($title, array('org_only' => true)), 
+            view("reports/create_profile", array('report_def' => $this->report_def)));
+            
+        $this->page_draw($title, $body);    
+        
+    }
+    
+    function action_new_profile()
+    {
+        $this->require_login();
+        $this->validate_security_token();
+
+        try
+        {
+            $org = $this->process_create_profile_form();
+            $this->action_new_report();
+        }
+        catch (RegistrationException $r)
+        {
+            action_error($r->getMessage());
+        }            
     }
 }

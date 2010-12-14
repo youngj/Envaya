@@ -78,6 +78,28 @@ function register_event_handler($event, $object_type, $handler, $priority = 500)
     return EventRegister::register_handler($event, $object_type, $handler, $priority);
 }
 
+function load_environment_config()
+{
+    $config_json = getenv("ENVAYA_CONFIG");
+    
+    if (!$config_json)
+    {
+        return;
+    }
+    $config_obj = json_decode($config_json, true);
+    
+    if (!$config_obj || !is_array($config_obj))
+    {
+        return;
+    }
+    
+    global $CONFIG;
+    foreach ($config_obj as $k => $v)
+    {
+        $CONFIG->$k = $v;
+    }
+}
+
 function bootstrap()
 {   
     if (!include_once(__DIR__."/settings.php"))
@@ -85,6 +107,7 @@ function bootstrap()
         echo "Error: Could not load the settings file.";
         exit;        
     }
+    load_environment_config();
     
     mb_internal_encoding('UTF-8');        
     spl_autoload_register('auto_load');

@@ -6,7 +6,7 @@ class Organization extends User
 
     public function is_setup_complete()
     {
-        return $this->setup_state >= 5;
+        return $this->setup_state >= SetupState::CreatedHomePage;
     }
     
     function query_news_updates()

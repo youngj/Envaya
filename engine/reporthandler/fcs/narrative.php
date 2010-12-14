@@ -12,7 +12,6 @@ class ReportHandler_FCS_Narrative extends ReportHandler
         return array(
             1 => array(
                 'title' => __('fcs:narrative:introduction'),
-                'view' => 'fcs/narrative/introduction',
                 'field_names' => array(
                     'full_name',
                     'other_name',

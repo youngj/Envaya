@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'report:none_submitted' => "This organization has not yet submitted any reports.",
+    'report:none_published' => "This organization has not yet published any reports.",
     'report:view' => "View Report",
     'report:edit' => "Edit Report",
     'report:preview' => "Preview %s",
@@ -42,11 +42,19 @@ return array(
     'report:status_changed' => "Report status changed.",
     
     'report:section_heading' => "Part %d: %s",
-    
-    'report:instructions' => "Type your responses in the fields below. When you are done with each section, press the button at the bottom of the page to save your changes and continue to the next section.",
-    'report:youare' => "You are currently submitting responses for <b>%s</b>.",
-    
+        
     'report:submitted_subject' => "%s submitted by %s",
+    'report:submit_success_subject' => "%s submitted to %s",    
+    'report:submit_success' => "Report submitted",
+    'report:submit_success_2' => "Your report has been submitted!",
+    'report:submit_notified' => "%s has been notified that your report is ready to be reviewed.",
+    'report:email_confirmation_sent' => "A copy of your responses has been sent to %s for your records.",
+    'report:if_changes_required' => "If any changes are required before your report is accepted, %s will contact you.",
+    'report:if_feedback' => "If you have any feedback, questions, or suggestions about this online reporting system, please %s.",
+    'report:send_feedback_message' => "send us a message",
+    'report:edit_website' => "Edit your website",
+    'report:copy_included' => "A copy of your responses is included below:",
+    'report:not_submitted' => "This report has not yet been submitted.",
     'report:cantmanage' => "Please log in with a user account that has permission to manage this report.",
     'report:preview_submit' => "Verify Responses",
     'report:no_responses' => "No organizations have started this report yet.",
@@ -57,7 +65,7 @@ return array(
     'report:editing_2' => "Whenever you want to continue editing your responses, just return to this page (%s).",
     'report:have_account' => "If you already have an Envaya account, %s.",
     'report:click_log_in' => "click here to log in",
-    'report:no_account' => 'If you do not have an Envaya account yet, %s.',
+    'report:no_account' => 'If you do not yet have an Envaya account, %s.',
     'report:click_create' => 'click here to create an account',
     
     'report:verify_instructions' => "Carefully read your responses below and verify that they are complete and correct.",
@@ -69,5 +77,14 @@ return array(
     'report:type_signature' => "When you are ready to submit the report, check the box below and type your full name as a signature.",
     'report:cant_edit_after_submit' => "After submitting the report, you will no longer be able to edit your responses.",
     'report:error_not_verified' => "Please verify that all responses are complete and correct.",
-    'report:error_no_signature' => "Please type your name as a signature.",
+    'report:error_no_signature' => "Please type your name as a signature.",    
+    'report:create_account_instructions' => "In order to complete this report, your organization needs an account on Envaya.",
+    'report:create_account_instructions_2' => "This account will let you log in and update your responses before submitting your report. This account also provides your organization with a free website, where you can share news about your projects and let everyone know about your work.", 
+    
+    'report:create_profile' => "Organization Information",
+    'report:create_profile_instructions' => "Before filling out the report, enter some basic information to create your organization's home page on Envaya.",
+    'report:create_profile:next' => "Click the button below to continue to the report.",
+    'report:create_profile:button' => "Start the report!",
+    'report:start_message' => "To complete this report, enter your responses to the questions below. Whenever you want to save your responses, click the button at the bottom of the page.",
+    'report:start_message_2' => "When you are done with a section, click Continue to Next Page, or select another section from the menu below.",
 );

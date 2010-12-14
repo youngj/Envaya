@@ -24,15 +24,17 @@
 
 <p>
 <ul>
+
 <li>
 <?php echo sprintf(__('report:have_account'), "<a href='pg/login?next=".urlencode($post_login_url)."' style='white-space:nowrap;font-weight:bold'>".__('report:click_log_in')."</a>"); ?>
 
 </li>
 <li>
-<?php echo sprintf(__('report:no_account'), "<a href='org/new?next=".urlencode($post_login_url)."' style='white-space:nowrap;font-weight:bold'>".__('report:click_create')."</a>"); ?>
+<?php echo sprintf(__('report:no_account'), "<a href='".$report_def->get_url()."/create_account?logout=1' style='white-space:nowrap;font-weight:bold'>".__('report:click_create')."</a>"); ?>
 
 
 </li>
 </p>
+
 
 </div>   

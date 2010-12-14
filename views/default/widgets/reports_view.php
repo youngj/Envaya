@@ -5,12 +5,12 @@
     $org = $widget->get_container_entity();
 
     $reports = $org->query_reports()
-        ->where('status >= ?', ReportStatus::Submitted)
+        ->where('status >= ?', ReportStatus::Approved)
         ->filter();
     
     if (!sizeof($reports))
     {
-        echo escape(__("report:none_submitted"));
+        echo escape(__("report:none_published"));
     }
     else
     {

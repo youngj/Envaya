@@ -62,7 +62,7 @@
 	function get_mock_mail_file()
 	{
 		global $CONFIG;
-		return getenv("MOCK_MAIL_FILE") ?: $CONFIG->mock_mail_file;
+		return $CONFIG->mock_mail_file;
 	}
 
     function mock_send_mail($mail, $recipients, $headers, $body)

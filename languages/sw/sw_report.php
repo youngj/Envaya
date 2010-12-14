@@ -3,7 +3,7 @@
 return array(    
     'report:section_heading' => "Sehemu ya %d: %s",
 
-    'report:none_submitted' => "Shirika hili halijachapisha ripoti yoyote.",
+    'report:none_published' => "Shirika hili halijachapisha ripoti yoyote.",
     'report:view' => "Tazama Ripoti",
     'report:edit' => "Hariri Ripoti",
     'report:preview' => "Chunguza %s",
@@ -60,4 +60,27 @@ return array(
     'report:error_no_signature' => "Tafadhali ingiza jina lako kama saini.",    
     
     'report:submit' => "Toa Ripoti",
+    
+    'report:submit_success_subject' => "%s imetolewa kwa %s",    
+    'report:submit_success' => "Ripoti imetolewa",
+    'report:submit_success_2' => "Ripoti yako imetolewa!",
+    'report:submit_notified' => "%s imefahamishwa kwamba ripoti yako ni tayari kupitiwa upya.",
+    'report:email_confirmation_sent' => "Nakala ya majibu yako imetumiwa %s kwa rekodi zako.",
+    'report:if_changes_required' => "Kama mabadiliko yoyote ni muhimu, %s itawasiliana nawe.",
+    'report:if_feedback' => "Kama una maoni, maswali, au mapendekezo kuhusu mfumo huu ya ripoti kwa njia ya intaneti, tafadhali %s.",
+    'report:send_feedback_message' => "tutumie ujumbe",
+    'report:edit_website' => "Hariri tovuti yako",
+    'report:copy_included' => "Nakala ya majibu yako ipo chini:",
+    'report:not_submitted' => "Ripoti hii haijatolewa.",    
+
+    'report:create_account_instructions' => "Ili kujaza ripoti hii, shirika lako linahitaji akaunti kwenye Envaya.",
+    'report:create_account_instructions_2' =>  "Akaunti hii itakuruhusu kufungua na kupanga upya majibu yako kabla ya kutoa ripoti yako. Vile vile, akaunti hii inatoa tovuti ya bure kwa shirika lako, ambapo unaweza kugawa habari kuhusu miradi yako na kuwaambia watu kuhusu shughuli yako.", 
+    
+    'report:create_profile' => "Data ya Shirika",
+    'report:create_profile_instructions' => "Kabla ya kujaza ripoti, ingiza data ya msingi kuumba ukurasa mkuu wa shirika lako kwenye Envaya.",
+    'report:create_profile:next' => "Bonyeza kitufe cha chini kuendelea kwa ripoti.",
+    'report:create_profile:button' => "Anza ripoti!",
+    'report:start_message' => "Kukamilisha ripoti hii, ingiza majibu yako kwa maswali ya chini. Wakati wowote ambapo unataka kuhifadhi majibu yako, bonyeza kitufe chini ya ukurasa.",
+    'report:start_message_2' => "Ambapo umemaliza sehemu, bonyeza Endelea kwa Ukurasa ufuatao, au chagua sehemu nyingine kutoka menu ya chini.",    
+    'report:preview_submit' => "Angalia Majibu",
 );
