@@ -8,7 +8,7 @@
         <label>Form Template</label><br />
     <?php    
         echo view('input/pulldown', array('internalname' => 'handler_class', 
-            'options_values' => ReportDefinition::get_handler_options(),
+            'options' => ReportDefinition::get_handler_options(),
         ));
     ?>  
     </div>

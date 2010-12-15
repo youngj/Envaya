@@ -1,3 +1,3 @@
 <?php
-    echo escape($vars['value']);
+    echo view('output/checkboxes', $vars);
 ?>

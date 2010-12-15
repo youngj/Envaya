@@ -11,7 +11,7 @@
 <form method='GET' class='searchForm' action='/org/search/'>    
     <?php echo view('input/text', array('internalname' => 'q', 'class' => 'searchField input-text', 'value' => $query)); ?>
     <?php echo view('input/pulldown', array('internalname' => 'sector',
-        'options_values' => Organization::get_sector_options(), 
+        'options' => Organization::get_sector_options(), 
         'empty_option' => __('sector:empty_option'),
         'value' => $vars['sector'])) 
     ?>

@@ -59,7 +59,7 @@
 <div>
 <?php echo __('setup:region') ?> <?php echo view('input/pulldown', array(
     'internalname' => 'region',
-    'options_values' => regions_in_country($org->country),
+    'options' => regions_in_country($org->country),
     'empty_option' => __('setup:region:blank'),
     'value' => $org->region
 )) ?>

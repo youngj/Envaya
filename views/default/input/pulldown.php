@@ -6,8 +6,7 @@
      * @uses $vars['value'] The current value, if any
      * @uses $vars['js'] Any Javascript to enter into the input tag
      * @uses $vars['internalname'] The name of the input field
-     * @uses $vars['options'] An array of strings representing the options for the pulldown field
-     * @uses $vars['options_values'] An associative array of "value" => "option" where "value" is an internal name and "option" is
+     * @uses $vars['options'] An associative array of "value" => "option" where "value" is an internal name and "option" is
      *                               the value displayed on the button. Replaces $vars['options'] when defined.
      */
 
@@ -24,9 +23,9 @@
         echo "<option value=''>".escape($vars['empty_option'])."</option>";
     }
 
-    if ($vars['options_values'])
+    if ($vars['options'])
     {
-        foreach($vars['options_values'] as $value => $option)
+        foreach($vars['options'] as $value => $option)
         {
             if ($value != $vars['value'])
             {
@@ -36,19 +35,6 @@
             }
         }
     }
-    else
-    {
-        foreach($vars['options'] as $option) {
 
-            if ($option != $vars['value'])
-            {
-                echo "<option>".escape($option)."</option>";
-            }
-            else
-            {
-                echo "<option selected=\"selected\">".escape($option)."</option>";
-            }
-        }
-    }
 ?>
 </select>

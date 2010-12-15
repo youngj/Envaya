@@ -144,32 +144,39 @@ class ReportHandler_FCS_Narrative extends ReportHandler
                 'label' => __('fcs:narrative:regions'), 
                 'input_type' => 'input/grid',
                 'output_type' => 'output/grid',
+                'input_args' => array(
+                    'initial_rows' => 6,            
+                ),
                 'view_args' => array(
                     'columns' => array(
                         'region' => array(
                             'label' => __('fcs:area:region'),
-                            'editor' => 'DropDownListCellEditor',
-                            'formatter' => 'DropDownListCellFormatter',
+                            'input_type' => 'input/pulldown',
+                            'output_type' => 'output/pulldown',
+                            'input_args' => array(
+                                'js' => "style='font-size:11px'",
+                            ),
                             'args' => array(
                                 'options' => regions_in_country('tz'),
+                                'empty_option' => ' ',
                             ),
-                            'width' => 200,
+                            'width' => 130,
                         ),
                         'district' => array(
                             'label' => __('fcs:area:district'),
-                            'width' => 150,
+                            'width' => 120,
                         ),
                         'ward' => array(
                             'label' => __('fcs:area:ward'), 
-                            'width' => 150,
+                            'width' => 120,
                         ), 
                         'villages' => array(
                             'label' => __('fcs:area:villages'),
-                            'width' => 150,
+                            'width' => 120,
                         ),
                         'total' => array(
                             'label' => __('fcs:area:total'),
-                            'width' => 110,
+                            'width' => 90,
                         ),                        
                     )
                 )                
@@ -249,8 +256,9 @@ class ReportHandler_FCS_Narrative extends ReportHandler
                     'columns' => array(                  
                         'lesson' => array(
                             'label' => __('fcs:narrative:explanation'),
-                            'multiline' => true,
-                            'width' => 500,
+                            'input_type' => 'input/longtext',
+                            'output_type' => 'output/longtext',
+                            'width' => 600,
                         ),           
                     )
                 )                  
@@ -269,13 +277,15 @@ class ReportHandler_FCS_Narrative extends ReportHandler
                     'columns' => array(                  
                         'challenge' => array(
                             'label' => __('fcs:narrative:challenge'),
-                            'multiline' => true,
-                            'width' => 350,
+                            'input_type' => 'input/longtext',
+                            'output_type' => 'output/longtext',
+                            'width' => 300,
                         ),           
                         'how_overcome' => array(
                             'label' => __('fcs:narrative:how_overcome'),
-                            'multiline' => true,
-                            'width' => 350,
+                            'input_type' => 'input/longtext',
+                            'output_type' => 'output/longtext',
+                            'width' => 300,
                         ),                                   
                     )
                 )                  
@@ -295,12 +305,14 @@ class ReportHandler_FCS_Narrative extends ReportHandler
                     'columns' => array(  
                         'organization' => array(
                             'label' => __('fcs:narrative:linkages:organization'),
-                            'multiline' => true,
+                            'input_type' => 'input/longtext',
+                            'output_type' => 'output/longtext',
                             'width' => 200,
                         ),                               
                         'description' => array(
                             'label' => __('fcs:narrative:linkages:description'),
-                            'multiline' => true,
+                            'input_type' => 'input/longtext',
+                            'output_type' => 'output/longtext',
                             'width' => 400,
                         ),           
                     )
@@ -320,7 +332,8 @@ class ReportHandler_FCS_Narrative extends ReportHandler
                     'columns' => array(
                         'activity' => array(
                             'label' => __('fcs:narrative:future_activities:header'),
-                            'multiline' => true,
+                            'input_type' => 'input/longtext',
+                            'output_type' => 'output/longtext',
                             'width' => 400,
                         ),                
                         'month1' => array(
@@ -359,24 +372,25 @@ class ReportHandler_FCS_Narrative extends ReportHandler
                     'columns' => array(  
                         'event_type' => array(
                             'label' => __('fcs:narrative:events_attended:event_type'),
-                            'multiline' => true,
-                            'width' => 200,
+                            'input_type' => 'input/longtext',
+                            'output_type' => 'output/longtext',
+                            'width' => 130,
                         ),                                           
                         'when' => array(
                             'label' => __('fcs:narrative:events_attended:when'),
-                            'multiline' => true,
-                            'width' => 200,
-                            'editor' => 'DateCellEditor'
+                            'width' => 100,
                         ),   
                         'lessons' => array(
                             'label' => __('fcs:narrative:events_attended:lessons'),
-                            'multiline' => true,
-                            'width' => 200,
+                            'input_type' => 'input/longtext',
+                            'output_type' => 'output/longtext',
+                            'width' => 190,
                         ),                               
                         'actions' => array(
                             'label' => __('fcs:narrative:events_attended:actions'),
-                            'multiline' => true,
-                            'width' => 200,
+                            'input_type' => 'input/longtext',
+                            'output_type' => 'output/longtext',
+                            'width' => 190,
                         ),           
                     )
                 )                  

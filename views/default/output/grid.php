@@ -17,21 +17,34 @@
 </tr>
 </thead>
 <tbody>
-    <?php 
+    <?php        
+        $row_num = 1;
+    
         foreach ($rows as $row)
         {
     ?>
     <tr>
-        <?php 
+        <?php                
             foreach ($columns as $column_id => $column)
-            {                
-                $res = view((@$column['multiline'] ? 'output/longtext' : 'output/text'), 
-                    array('value' => @$row[$column_id]));
+            {              
+                $args = @$column['args'] ?: array();
+                $output_args = @$column['output_args'];
+                if ($output_args)
+                {
+                    foreach ($output_args as $k => $v)
+                    {
+                        $args[$k] = $v;
+                    }   
+                }
+                $args['value'] = @$row[$column_id];
+            
+                $res = view((@$column['output_type'] ?: 'output/text'), $args);                    
                 echo "<td>$res</td>";
             }
         ?>    
     </tr>
     <?php
+            $row_num++;
         }
     ?>    
 </tbody>

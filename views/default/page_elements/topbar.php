@@ -40,7 +40,7 @@ function languageChanged()
         echo view('input/pulldown', array(
             'internalname' => 'top_language',
             'internalid' => 'top_language',
-            'options_values' => $translationUrls,
+            'options' => $translationUrls,
             'value' => $curUrl,
             'js' => "onchange='languageChanged()' onkeypress='languageChanged()'"
         ));

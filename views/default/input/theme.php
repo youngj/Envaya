@@ -34,7 +34,7 @@ function themeChanged($theme)
      echo view('input/pulldown', array(
         'internalname' => $name,
         'internalid' => 'themeList',
-        'options_values' => $optionsValues,
+        'options' => $optionsValues,
         //'empty_option' => __('sector:empty_option'),
         'value' => $curTheme,
         'js' => "onchange='themeChanged()' onkeypress='themeChanged()'"

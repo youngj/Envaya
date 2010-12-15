@@ -4,6 +4,30 @@ $content = $vars['content'];
 $section_id = $vars['section_id'];
 $sections = $report->get_handler()->get_sections();
 $num_sections = sizeof($sections);
+
+    ob_start();
+?>
+<!--[if gte IE 5.5]>
+<![if lt IE 7]>
+<style type="text/css">
+
+div#floating_save
+{
+    position: absolute;
+    bottom:auto;    
+    overflow:hidden;
+    z-index:1000;
+    width: expression( ( document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth ) + 'px' );
+    top: expression( ( -43 + ( document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight ) +(ignoreMe =  document.documentElement.scrollTop ? document.documentElement.scrollTop :  document.body.scrollTop ) ) + 'px' );
+}
+
+</style>
+<![endif]>
+<![endif]-->
+<?php
+    $ie6_css = ob_get_clean();
+    PageContext::add_header_html('edit_section_ie6_css', $ie6_css);
+
 ?>
 <script type='text/javascript'>
 function setNextSection($section)
@@ -12,6 +36,15 @@ function setNextSection($section)
     var now = new Date();
     document.getElementById('user_save_time').value = "" + (now.getTime()/1000 - now.getTimezoneOffset() * 60);
     return true;
+}
+
+function goToSection($i)
+{
+    setTimeout(function() {
+        setSubmitted();     
+        setNextSection($i);     
+        document.forms[0].submit();
+    }, 10);    
 }
 
 function setScrollPosition()
@@ -63,12 +96,12 @@ foreach ($sections as $i => $section)
     }
     else
     {
-        $links[] = "<a href='javascript:void(0)' onclick='setSubmitted(); setNextSection($i); document.forms[0].submit()'>".
+        $links[] = "<a href='javascript:void(0)' onclick='goToSection($i)'>".
             escape($section_title)."</a> ";            
     }
 }
 
-$links[] = "<a href='javascript:void(0)' onclick='setSubmitted(); document.forms[0].submit()'>".
+$links[] = "<a href='javascript:void(0)' onclick='goToSection(\"\")'>".
     __('report:preview_submit')."</a> ";            
 
 

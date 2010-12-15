@@ -1,5 +1,3 @@
-
-
 <?php
     global $GRID_INCLUDE_COUNT;
     
@@ -12,181 +10,173 @@
         $GRID_INCLUDE_COUNT++;
     }
     
-    echo "<div id='grid_container{$GRID_INCLUDE_COUNT}' class='grid-container'></div>";
-    echo "<input type='hidden' name='{$vars['internalname']}' id='grid_value{$GRID_INCLUDE_COUNT}' value='".escape(@$vars['value'])."' />";    
+    $tableId = "inputGrid$GRID_INCLUDE_COUNT";
+    $resultId = "grid_value{$GRID_INCLUDE_COUNT}";
+    $columns = $vars['columns'];
+    $rows = json_decode($vars['value'], true) ?: array();        
+    
+    $initial_rows = @$vars['initial_rows'] ?: 3;
+    $show_row_num = $vars['show_row_num'];
+    
+    $enable_add_row = @$vars['enable_add_row'] || !isset($vars['enable_add_row']);
+    
+    if ($enable_add_row)
+    {
+        $rows[] = array();
+    }    
+    
+    while (sizeof($rows) < $initial_rows)
+    {
+        $rows[] = array();
+    }
+       
+    echo "<input type='hidden' name='{$vars['internalname']}' id='$resultId' value='".escape(@$vars['value'])."' />";     
+?>
 
+<table class='gridTable inputGrid' id='<?php echo $tableId; ?>'>
+<thead>
+<tr>
+    <?php 
+        if ($show_row_num)
+        {
+            echo "<th>&nbsp;</th>";
+        }      
+    
+        foreach ($columns as $column_id => $column)
+        {
+            echo "<th class='column_$column_id'>".escape($column['label'])."</th>";
+        }
+    ?>
+</tr>
+</thead>
+<tbody>
+    <?php 
+        $row_num = 1;
+        foreach ($rows as $row)
+        {
+    ?>
+    <tr rownum='<?php echo $row_num; ?>'>
+        <?php 
+            if ($show_row_num)
+            {
+                echo "<th>{$row_num}</th>";
+            }        
+        
+            foreach ($columns as $column_id => $column)
+            {       
+                $args = @$column['args'] ?: array();
+                $input_args = @$column['input_args'];
+                if ($input_args)
+                {
+                    foreach ($input_args as $k => $v)
+                    {
+                        $args[$k] = $v;
+                    }   
+                }
+            
+                $args['internalid'] = "{$tableId}_{$column_id}_{$row_num}";
+                $args['js'] = (@$args['js'] ?: '') . " onchange='serializeGrid$GRID_INCLUDE_COUNT()'";
+                $args['value'] = @$row[$column_id];
+            
+                $res = view(@$column['input_type'] ?: 'input/text', $args);
+                echo "<td class='column_{$column_id}'>$res</td>";
+            }            
+        ?>    
+    </tr>
+    <?php
+            $row_num++;
+        }
+    ?>    
+</tbody>
+</table>
+<?php
+    
     ob_start();
 ?>
-<link rel="stylesheet" href="/_media/slickgrid/slick.grid.merged.css" type="text/css" media="screen" charset="utf-8" />        
-<script type='text/javascript' src="/_media/slickgrid/jquery-1.4.3.min.js"></script>
-<script type='text/javascript' src="/_media/slickgrid/jquery-ui-1.8.5.custom.min.js"></script>
-<script type='text/javascript' src="/_media/slickgrid/slick.editors.js?v3"></script>
-<script type='text/javascript' src="/_media/slickgrid/slick.grid-1.4.3.merged.min.js"></script>
-<script type='text/javascript' src="/_media/slickgrid/json.js"></script>
-<script type='text/javascript'>
-var all_slickgrids = {};
 
-function setDirty(){}
-
-function isEmptyGridItem(grid, item)
-{   
-    var columns = grid.getColumns();
-    for (var i = 0; i < columns.length; i++)
-    {
-        if (item[columns[i].field])
-            return false;
-    }   
-    return true;
+<style type='text/css'>
+<?php
+$row_height = @$vars['row_height'];
+if ($row_height)
+{
+    echo "#{$tableId} .input-textarea, ";
+    echo "#{$tableId} .input-text { height: {$row_height}px; } ";
 }
 
-function removeGridRow(gridNum, gridRow) 
+foreach ($columns as $column_id => $column)
 {
-    var grid = all_slickgrids[gridNum];
-    var data = grid.getData();
-    var item = data[gridRow];
-
-    if (isEmptyGridItem(grid, item) || confirm("Are you sure you want to delete this row?"))
+    $column_class = "column_{$column_id}";
+    $width = @$column['width'];
+    if ($width)
     {
-        data.splice(gridRow,1);           
-        grid.removeRow(gridRow);
-        grid.updateRowCount();
-        grid.onCellChange();
-        grid.render();
+        echo "#{$tableId} .{$column_class}, ";
+        echo "#{$tableId} .{$column_class} .input-textarea, ";
+        echo "#{$tableId} .{$column_class} .input-text { width: {$width}px; } ";
     }
+}
+
+?>
+</style>
+<?php    
+    $this_grid_header = ob_get_clean();
+    PageContext::add_header_html("grid_header_{$GRID_INCLUDE_COUNT}", $this_grid_header);
+    
+    ob_start();
+?>
+
+<script type='text/javascript' src='/_media/json.js'></script>
+<script type='text/javascript'>
+
+function getInputValue(input)
+{
+    return input.value;
 }
 
 </script>
-<?php    
-    $slickgrid_header = ob_get_clean();
-    PageContext::add_header_html('slickgrid', $slickgrid_header);
+
+<?php
+    $grid_header = ob_get_clean();
+    PageContext::add_header_html("grid_header_common", $grid_header);       
 ?>
 
-<script>
+<script type='text/javascript'>
 
-$(function()
+function serializeGrid<?php echo $GRID_INCLUDE_COUNT; ?>()
 {
-    var data = <?php         
-        echo json_encode(json_decode($vars['value'], true) ?: array());
-    ?>;
+    var tableValues = [];
+
+    var table = document.getElementById('<?php echo $tableId; ?>');
+    var tbody = table.getElementsByTagName('tbody')[0];
+    var rows = tbody.getElementsByTagName('tr');
     
-    for (var i = data.length; i < <?php echo @$vars['initial_rows'] ?: 3; ?>; i++)
+    var numRows = rows.length;
+    for (var i = 0; i < numRows; i++)
     {
-        data.push({});
-    }
-
-    var options = {
-        editable: true,
-        enableAddRow: <?php echo json_encode(isset($vars['enable_add_row']) ? $vars['enable_add_row'] : true); ?>,
-        enableCellNavigation: true,
-        asyncEditorLoading: false,
-        autoHeight: true,
-        forceFitColumns : true
-    };
-           
-    var columns = [];
-    
-    <?php if (@$vars['show_row_num']) { ?>
-        columns.push({ 
-         id: '_row_num',
-         name: '&nbsp;', 
-         field: '_row_num', 
-         width:30,
-         unselectable: true,
-         formatter: RowNumCellFormatter
-        });
-    <?php } ?>
-    
-
+        var row = rows[i];
+        var rowNum = parseInt(row.getAttribute('rownum'), 10);
+        var rowValues = {};
+        var blankRow = true;
     <?php 
-        foreach ($vars['columns'] as $column_id => $column)
-        {
-            $jsonArgs  = array(
-                'id' => $column_id,
-                'field' => $column_id,
-                'name' => @$column['label'] ?: '&nbsp;',
-            );
-            if (@$column['width'])
+        foreach ($columns as $column_id => $column)
+        {                
+    ?>
+            var input = document.getElementById(<?php echo json_encode("{$tableId}_{$column_id}_"); ?> + rowNum);
+            var val = getInputValue(input);
+            rowValues[<?php echo json_encode($column_id); ?>] = val;
+            if (val)
             {
-                $jsonArgs['width'] = $column['width'];
+                blankRow = false;
             }
-        
-            echo "var col = " . json_encode($jsonArgs) . ";";
-            
-            if (!@$column['readonly'])
-            {
-                $editor = @$column['editor'] ?: (@$column['multiline'] ? 'TextareaCellEditor' : 'TextCellEditor');
-                echo "col.editor = window[".json_encode($editor)."];";
-                
-                if (@$column['args'])
-                {
-                    echo "col.args = ".json_encode($column['args']).";";
-                }
-            }                       
-            
-            $formatter = @$column['formatter'] ?: (@$column['multiline'] ? 'TextareaCellFormatter' : 'TextCellFormatter');
-
-            echo "col.formatter = window[".json_encode($formatter)."];";
-            
-            echo "columns.push(col);";
+    <?php
         }
     ?>
-
-    if (options.enableAddRow)
-    {
-        columns.push({ 
-                 id: '_delete',
-                 name: '', 
-                 field: '_delete', 
-                 width:30,
-                 unselectable: true,
-                 formatter: function (r, c, id, def, datactx) { 
-                    return '<a href="javascript:void(0)" class="gridDelete" onclick="removeGridRow(<?php echo $GRID_INCLUDE_COUNT; ?>,' + r + ')"></a>'; 
-                }
-        });
+        if (!blankRow)
+        {
+            tableValues.push(rowValues);
+        }
     }
-        
-    <?php 
-        if (@$vars['row_height'])
-        {
-            echo "options.rowHeight = {$vars['row_height']};\n";
-        }
-    ?>
-
-    var grid = new Slick.Grid($("#grid_container<?php echo $GRID_INCLUDE_COUNT; ?>"), data, columns, options);
-          
-    grid.onAddNewRow = function(item, columnDef) {
-        data.push(item);        
-        grid.removeRows([data.length-1]);
-        grid.onCellChange();
-        grid.updateRowCount();
-        grid.render();
-    };    
     
-    grid.onCellChange = function()
-    {
-        var nonEmptyData = [];
-        for (var i = 0; i < data.length; i++)
-        {
-            if (!isEmptyGridItem(grid, data[i]))
-            {
-                nonEmptyData.push(data[i]);
-            }
-        }    
-        if (options.enableAddRow && nonEmptyData.length > data.length - 1)
-        {
-            data.push({});    
-            grid.updateRowCount();
-            grid.render();            
-        }
-        document.getElementById("grid_value<?php echo $GRID_INCLUDE_COUNT; ?>").value = JSON.serialize(nonEmptyData);
-    };
-    
-    all_slickgrids[<?php echo $GRID_INCLUDE_COUNT; ?>] = grid;
-    
-    addSubmitFn(function()
-    {
-        Slick.GlobalEditorLock.commitCurrentEdit();
-    });
-});
-
+    var resultInput = document.getElementById('<?php echo $resultId; ?>');
+    resultInput.value = JSON.serialize(tableValues);
+}
 </script>
