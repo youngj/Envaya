@@ -89,8 +89,13 @@
     ?>    
 </tbody>
 </table>
-<?php
-    
+
+<?php if ($enable_add_row) { ?> 
+<a href='javascript:void(0)' id='grid_add_row<?php echo $GRID_INCLUDE_COUNT; ?>' style='display:none' onclick='saveChanges()'><?php echo __('grid:add_row'); ?></a>
+<?php } ?>
+
+<?php    
+   
     ob_start();
 ?>
 
@@ -178,5 +183,12 @@ function serializeGrid<?php echo $GRID_INCLUDE_COUNT; ?>()
     
     var resultInput = document.getElementById('<?php echo $resultId; ?>');
     resultInput.value = JSON.serialize(tableValues);
+    
+    <?php if ($enable_add_row) { ?> 
+    if (tableValues.length == rows.length)
+    {
+        document.getElementById('grid_add_row<?php echo $GRID_INCLUDE_COUNT; ?>').style.display = 'block';
+    }
+    <?php } ?>
 }
 </script>

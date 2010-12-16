@@ -427,4 +427,6 @@ Once you have logged in, we highly recommend that you change your password.
         'domains:invalid' => "Invalid domain name",
         'domains:duplicate' => "That domain name already exists.",
         'noaccess' => "The current user does not have access to view that page.",
+        
+        'grid:add_row' => "Add another row",
     );

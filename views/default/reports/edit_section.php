@@ -47,6 +47,16 @@ function goToSection($i)
     }, 10);    
 }
 
+function saveChanges()
+{
+    setTimeout(function() {
+        setSubmitted();
+        setScrollPosition();
+        setNextSection(<?php echo $section_id; ?>);
+        document.forms[0].submit();
+    }, 10);
+}
+
 function setScrollPosition()
 {
     var scrollY = window.pageYOffset || window.document.documentElement.scrollTop || window.document.body.scrollTop;

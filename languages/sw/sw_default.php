@@ -323,4 +323,6 @@ return array(
     'featured:see_all' => 'Ona mashirika maalum yote',  
     
     'noaccess' => "Mtumiaji wa sasa hana ruhusu kuona ukurasa ule.",
+    
+    'grid:add_row' => "Ongeza mstari mwingine",
 );
