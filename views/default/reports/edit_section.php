@@ -143,7 +143,11 @@ if ($section_id == 1) {
 ?>
 
 <?php
-echo "<h2 class='report_section_heading'>".escape(sprintf(__('report:section_heading'), $section_id, $vars['section']['title']))."</h2>";
+echo "<h2 class='report_section_heading'>".escape(sprintf(__('report:section_heading'), 
+    $section_id, 
+    $num_sections,
+    $vars['section']['title'])
+)."</h2>";
 
 ?>
 <?php

@@ -1,7 +1,7 @@
 <?php
 
 return array(    
-    'report:section_heading' => "Sehemu ya %d: %s",
+    'report:section_heading' => "Sehemu %d ya %d: %s",
 
     'report:none_published' => "Shirika hili halijachapisha ripoti yoyote.",
     'report:view' => "Tazama Ripoti",
@@ -13,7 +13,7 @@ return array(
     'report:status_submitted' => "Imetolewa - Inasubiri kukubaliwa",
     'report:status_approved' => "Imekubaliwa",
     'report:start' => "Anza Ripoti",
-    'report:next_page' => "Endelea kwa Ukurasa ufuatao",
+    'report:next_page' => "Hifadhi na Kuendelea",
     'report:prev_page' => "Ukurasa uliotangulia",
     'report:finish' => "Maliza Kuhariri",
     'report:save_changes' => "Hifadhi Mabadiliko",
@@ -91,7 +91,7 @@ return array(
     'report:start_message_3' => "Baada ya kuhifadhi majibu yako, unaweza bonyeza dirisha na rudi %s baadaye kuimaliza ripoti.",
     'report:start_message_4' => "Ambapo ripoti ni tayari kutolewa kwa %s, fuata maelekezo kwenye ukurasa wa %s.",
     
-    'report:saved_at' => "Responses saved %s at %s.",
-    'report:not_saved' => "Responses have not yet been saved.",
+    'report:saved_at' => "Majibu yamehifadhiwa %s %s.",
+    'report:not_saved' => "Majibu hayajahifadhiwa.",
     
 );

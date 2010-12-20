@@ -12,7 +12,7 @@ return array(
     'report:status_approved' => "Approved",
     'report:start' => "Start Report",
     'report:save_changes' => "Save Changes",
-    'report:next_page' => "Continue to Next Page",
+    'report:next_page' => "Save and Continue",
     'report:prev_page' => "Previous Page",
     'report:finish' => "Finish Editing",
     'report:saved' => "Your responses have been saved.",
@@ -41,7 +41,7 @@ return array(
     'report:view_response_title' => "Response to %s",
     'report:status_changed' => "Report status changed.",
     
-    'report:section_heading' => "Part %d: %s",
+    'report:section_heading' => "Part %d of %d: %s",
         
     'report:submitted_subject' => "%s submitted by %s",
     'report:submit_success_subject' => "%s submitted to %s",    
