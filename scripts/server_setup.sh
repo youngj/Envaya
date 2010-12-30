@@ -18,6 +18,12 @@ zlib.output_compression = 1
 expose_php = 0
 
 EOF
+
+cat <<EOF >> /etc/php5/cli/php.ini
+
+; envaya custom settings
+date.timezone = "Europe/London"
+EOF
 }
 
 if ! grep -q envaya /etc/php5/fpm/php.ini ; then add_php_settings; fi

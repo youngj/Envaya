@@ -1,10 +1,12 @@
 <?php
 
+global $BACKUP_DIR;
+$BACKUP_DIR = "/etc/dropbox/Dropbox/s3_backup";
+
 require_once("scripts/cmdline.php");
 require_once("engine/start.php");
 
 global $CONFIG;
-
 require_once("{$CONFIG->path}vendors/s3.php");
 
 global $s3;
@@ -48,10 +50,10 @@ global $n;
 
 function handle_item($item)
 {
-    global $s3, $n, $CONFIG;
+    global $s3, $n, $CONFIG, $BACKUP_DIR;
     $key = $item->Key;
 
-    $localPath = "{$CONFIG->dataroot}s3_backup/$key"; //"/etc/dropbox/Dropbox/s3_backup/$key";
+    $localPath = "$BACKUP_DIR/$key";
     $dir = dirname($localPath);
 
     if (!is_dir($dir))
