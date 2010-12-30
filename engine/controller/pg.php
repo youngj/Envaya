@@ -3,9 +3,9 @@
 class Controller_Pg extends Controller {
 
     function action_login()
-    {        
+    {
         $this->require_https();
-    
+
         $username = get_input('username');
         $next = get_input('next');
         $error = get_input('error');
@@ -16,45 +16,45 @@ class Controller_Pg extends Controller {
         if ($loginTime && time() - $loginTime < 10 && !Session::isloggedin())
         {
             $error_msg = view('account/cookie_error');
-        }        
+        }
         else
-        {        
+        {
             $error_msg = ($error) ?  view('account/login_error') : '';
         }
-        
+
         $body = view_layout('one_column',
             view_title($title, array('org_only' => true)),
             view("account/forms/login", array('username' => $username, 'next' => $next)),
             $error_msg
         );
 
-        $this->page_draw($title, $body, array('hideLogin' => true));
+        $this->page_draw($title, $body, array('hideLogin' => !Session::isloggedin()));
     }
 
     function action_tci_donate_frame()
     {
-        echo view("page/tci_donate_frame", $values);    
+        echo view("page/tci_donate_frame", $values);
     }
-    
+
     function action_submit_donate_form()
-    {    
+    {
         $values = $_POST;
         $amount = (int)$values['_amount'] ?: (int)$values['_other_amount'];
         $values['donation'] = $amount;
-        
+
         $emailBody = "";
-        
+
         foreach ($values as $k => $v)
         {
             $emailBody .= "$k = $v\n\n";
         }
 
         send_admin_mail("Donation form started", $emailBody);
-        
+
         if (!$amount)
         {
             action_error("Please select a donation amount.");
-        }        
+        }
         if (!$values['Name'])
         {
             action_error("Please enter your Full Name.");
@@ -70,11 +70,11 @@ class Controller_Pg extends Controller {
 
         unset($values['_amount']);
         unset($values['_other_amount']);
-        unset($values['Submit']);       
+        unset($values['Submit']);
 
-        echo view("page/submit_tci_donate_form", $values);    
+        echo view("page/submit_tci_donate_form", $values);
     }
-    
+
     function action_submit_login()
     {
         $username = get_input('username');
@@ -94,7 +94,7 @@ class Controller_Pg extends Controller {
         if ($result)
         {
             system_message(sprintf(__('loginok'), $user->name));
-                        
+
             if (!$next)
             {
                 if (!$user->is_setup_complete())
@@ -106,9 +106,9 @@ class Controller_Pg extends Controller {
                     $next = "{$user->get_url()}/dashboard";
                 }
             }
-            
+
             $next = url_with_param($next, '_lt', time());
-            
+
             forward($next);
         }
         else
@@ -126,7 +126,7 @@ class Controller_Pg extends Controller {
 
     function action_dashboard()
     {
-        $this->require_login();                
+        $this->require_login();
         forward(Session::get_loggedin_user()->get_url()."/dashboard");
     }
 
@@ -149,8 +149,8 @@ class Controller_Pg extends Controller {
         if (!$user)
         {
             $user = User::query(true)->where('email = ?', $username)->get();
-        }        
-        
+        }
+
         if ($user)
         {
             if (!$user->email)
@@ -158,7 +158,7 @@ class Controller_Pg extends Controller {
                 register_error(__('user:password:resetreq:no_email'));
                 forward("page/contact");
             }
-            
+
             $user->passwd_conf_code = substr(generate_random_cleartext_password(), 0, 24); // avoid making url too long for 1 line in email
             $user->save();
 
@@ -178,7 +178,7 @@ class Controller_Pg extends Controller {
         }
         else
         {
-            action_error(sprintf(__('user:username:notfound'), $username));            
+            action_error(sprintf(__('user:username:notfound'), $username));
         }
 
         forward();
@@ -187,19 +187,19 @@ class Controller_Pg extends Controller {
     function action_password_reset()
     {
         $this->require_https();
-    
+
         global $CONFIG;
 
         $user_guid = get_input('u');
         $conf_code = get_input('c');
-        
+
         $user = get_user($user_guid);
 
         if ($user && $user->passwd_conf_code && $user->passwd_conf_code == $conf_code)
-        {                  
+        {
             $title = __("user:password:choose_new");
-            $body = view_layout('one_column_padded', 
-                view_title($title, array('org_only' => true)), 
+            $body = view_layout('one_column_padded',
+                view_title($title, array('org_only' => true)),
                 view("account/forms/reset_password", array('entity' => $user)));
             $this->page_draw($title, $body);
         }
@@ -207,17 +207,17 @@ class Controller_Pg extends Controller {
         {
             register_error(__('user:password:fail'));
             forward("pg/login");
-        }        
+        }
     }
-    
+
     function action_submit_password_reset()
     {
         $user_guid = get_input('u');
-        $conf_code = get_input('c');        
+        $conf_code = get_input('c');
         $user = get_user($user_guid);
 
         if ($user && $user->passwd_conf_code && $user->passwd_conf_code == $conf_code)
-        {   
+        {
             $password = get_input('password');
             $password2 = get_input('password2');
             if ($password!="")
@@ -250,7 +250,7 @@ class Controller_Pg extends Controller {
         {
             register_error(__('user:password:fail'));
             forward("pg/login");
-        }            
+        }
     }
 
 
@@ -304,7 +304,7 @@ class Controller_Pg extends Controller {
     function action_upload()
     {
         $this->require_login();
-        
+
         if (get_input('image'))
         {
             $json = upload_image($_FILES['file'], json_decode(get_input('sizes')));
@@ -352,15 +352,15 @@ class Controller_Pg extends Controller {
         system_message(__('feedback:sent'));
         forward("page/contact");
     }
-    
+
     function action_large_img()
     {
         $owner_guid = get_input('owner');
         $group_name = get_input('group');
-        
+
         $largeFile = UploadedFile::query()->where('owner_guid = ?', $owner_guid)->where('group_name = ?', $group_name)
-            ->order_by('width desc')->get();            
-            
+            ->order_by('width desc')->get();
+
         if ($largeFile)
         {
             echo "<html><body><img src='{$largeFile->get_url()}' width='{$largeFile->width}' height='{$largeFile->height}' /></body></html>";
@@ -370,25 +370,25 @@ class Controller_Pg extends Controller {
             not_found();
         }
     }
-    
+
     function action_receive_sms()
     {
         $from = @$_REQUEST['From'];
         $body = @$_REQUEST['Body'];
-        
+
         error_log("SMS received:\n from=$from body=$body");
-    
+
         if ($from && $body)
         {
             $sms_request = new SMS_Request($from, $body);
             $sms_request->execute();
         }
         else
-        {        
+        {
             not_found();
-        }                
+        }
     }
-        
+
     function action_delete_comment()
     {
         $guid = (int)get_input('comment');
@@ -397,12 +397,12 @@ class Controller_Pg extends Controller {
         {
             $comment->disable();
             $comment->save();
-			
-			$container = $comment->get_container_entity();
-			$container->num_comments = $container->query_comments()->count();
-			$container->save();
-		   
-			system_message(__('comment:deleted'));
+
+            $container = $comment->get_container_entity();
+            $container->num_comments = $container->query_comments()->count();
+            $container->save();
+
+            system_message(__('comment:deleted'));
         }
         else
         {
@@ -410,42 +410,42 @@ class Controller_Pg extends Controller {
         }
         forward_to_referrer();
     }
-	
-	function action_local_store()
-	{
-		// not for use in production environment
-		$storage_local = get_storage();
-		
-		if (!($storage_local instanceof Storage_Local))
-		{
-			return not_found();
-		}
-		
-		$path = get_input('path');
-		
-		$components = explode('/', $path);
-		
-		foreach ($components as $component)
-		{
-			if (preg_match('/[^\w\.\-]|(\.\.)/', $component))
-			{
-				return not_found();
-			}
-		}
-		
-		$local_path = $storage_local->get_file_path(implode('/', $components));
-		
-		if (!is_file($local_path))
-		{
-			return not_found();
-		}
-		
-		$mime_type = UploadedFile::get_mime_type($local_path);		
-		if ($mime_type)
-		{
-			header("Content-Type: $mime_type");
-		}
-		echo file_get_contents($local_path);
-		exit;
-	}
+
+    function action_local_store()
+    {
+        // not for use in production environment
+        $storage_local = get_storage();
+
+        if (!($storage_local instanceof Storage_Local))
+        {
+            return not_found();
+        }
+
+        $path = get_input('path');
+
+        $components = explode('/', $path);
+
+        foreach ($components as $component)
+        {
+            if (preg_match('/[^\w\.\-]|(\.\.)/', $component))
+            {
+                return not_found();
+            }
+        }
+
+        $local_path = $storage_local->get_file_path(implode('/', $components));
+
+        if (!is_file($local_path))
+        {
+            return not_found();
+        }
+
+        $mime_type = UploadedFile::get_mime_type($local_path);
+        if ($mime_type)
+        {
+            header("Content-Type: $mime_type");
+        }
+        echo file_get_contents($local_path);
+        exit;
+    }
 }

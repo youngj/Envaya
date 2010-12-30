@@ -8,7 +8,7 @@
 
 <div class='section_header'><?php echo __("org:mission"); ?></div>
 <div class='section_content padded'>
-<div class='input'>    
+<div class='input'>
 
     <label><?php echo __('setup:mission') ?></label>
     <?php echo view("input/tinymce", array(
@@ -63,7 +63,7 @@
     $lat = $org->get_latitude() ?: 0.0;
     $long = $org->get_longitude() ?: 0.0;
 
-    $zoom = ($lat || $long) ? 11 : 1;
+    $zoom = $widget->zoom ?: (($lat || $long) ? 11 : 1);
 
     echo view("org/map", array(
         'lat' => $lat,

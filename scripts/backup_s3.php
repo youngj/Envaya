@@ -2,14 +2,23 @@
 
 require_once("scripts/cmdline.php");
 require_once("engine/start.php");
-   
-function enumerate_bucket($s3, $bucketName, $callback)
-{  
+
+global $CONFIG;
+
+require_once("{$CONFIG->path}vendors/s3.php");
+
+global $s3;
+$s3 = new S3($CONFIG->s3_key, $CONFIG->s3_private);
+
+function enumerate_bucket($s3, $callback)
+{
+    global $CONFIG;
+    $bucketName = $CONFIG->s3_bucket;
     $marker = null;
     do
     {
         $q = '?max-keys=500';
-        if(!is_null($marker)) 
+        if(!is_null($marker))
         {
             $q .= '&marker=' . urlencode($marker);
         }
@@ -17,20 +26,20 @@ function enumerate_bucket($s3, $bucketName, $callback)
         $request = array('verb' => 'GET', 'resource' => "/$bucketName/$q");
         $result = $s3->sendRequest($request);
         $xml = simplexml_load_string($result);
-        
+
         if($xml === false)
             return false;
 
         foreach($xml->Contents as $item)
-        {            
+        {
             $callback($item);
-            
-            $key = $item->Key;            
+
+            $key = $item->Key;
             if ($marker == null || strcmp($key, $marker) > 0)
             {
                 $marker = $key;
             }
-        }        
+        }
     }
     while((string) $xml->IsTruncated == 'true');
 }
@@ -39,12 +48,12 @@ global $n;
 
 function handle_item($item)
 {
-    global $s3, $bucketName, $n, $CONFIG;
-    $key = $item->Key;    
-    
-    $localPath = "/etc/dropbox/Dropbox/s3_backup/$key";
-    $dir = dirname($localPath);       
-    
+    global $s3, $n, $CONFIG;
+    $key = $item->Key;
+
+    $localPath = "{$CONFIG->dataroot}s3_backup/$key"; //"/etc/dropbox/Dropbox/s3_backup/$key";
+    $dir = dirname($localPath);
+
     if (!is_dir($dir))
     {
         mkdir($dir, 0777, true);
@@ -52,19 +61,14 @@ function handle_item($item)
     if (!is_file($localPath))
     {
         echo "$localPath\n";
-        $s3->downloadFile($bucketName, $key, $localPath);    
-        $mtime = strtotime($item->LastModified);        
+        $s3->downloadFile($CONFIG->s3_bucket, $key, $localPath);
+        $mtime = strtotime($item->LastModified);
         touch($localPath, $mtime);
-    }    
+    }
     else
     {
         echo "exists: $localPath\n";
     }
 }
 
-global $s3;
-global $bucketName;
-
-$s3 = get_storage();
-$bucketName = 'envayadata';
-enumerate_bucket($s3, $bucketName, 'handle_item');
+enumerate_bucket($s3, 'handle_item');

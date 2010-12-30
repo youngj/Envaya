@@ -147,10 +147,10 @@
         {
             $request = array('verb' => 'PUT', 'resource' => "/$dest_bucket_name/$dest_s3_path");
             $headers = array('x-amz-copy-source' => "/$bucket_name/$s3_path");
-            
+
             if($web_accessible === true)
-                $headers['x-amz-acl'] = 'public-read';                        
-            
+                $headers['x-amz-acl'] = 'public-read';
+
             $result = $this->sendRequest($request, $headers);
 
             if($this->curlInfo['http_code'] != '200')
@@ -191,8 +191,7 @@
             $fh = fopen($fs_path, 'w');
             $curl_opts = array('CURLOPT_FILE' => $fh);
 
-            if(is_null($headers))
-                $headers = array();
+            $headers = array();
 
             $result = $this->sendRequest($request, $headers, $curl_opts);
             fclose($fh);
@@ -200,28 +199,28 @@
 
         }
 
-		public function getAuthenticatedURLRelative($bucket_name, $s3_path, $seconds_till_expires = 3600)
-		{
-			return $this->getAuthenticatedURL($bucket_name, $s3_path, gmmktime() + $seconds_till_expires);
-		}
+        public function getAuthenticatedURLRelative($bucket_name, $s3_path, $seconds_till_expires = 3600)
+        {
+            return $this->getAuthenticatedURL($bucket_name, $s3_path, gmmktime() + $seconds_till_expires);
+        }
 
-		public function getAuthenticatedURL($bucket_name, $s3_path, $expires_on)
-		{
-			// $expires_on must be a GMT Unix timestamp
+        public function getAuthenticatedURL($bucket_name, $s3_path, $expires_on)
+        {
+            // $expires_on must be a GMT Unix timestamp
 
-			$request = array('verb' => 'GET', 'resource' => "/$bucket_name/$s3_path", 'date' => $expires_on);
-			$signature = urlencode($this->signature($request));
-			
-			$url = sprintf("http://%s.s3.amazonaws.com/%s?AWSAccessKeyId=%s&Expires=%s&Signature=%s",
-							$bucket_name,
-							$s3_path,
-							$this->key,
-							$expires_on,
-							$signature);
-			return $url;
-		}
+            $request = array('verb' => 'GET', 'resource' => "/$bucket_name/$s3_path", 'date' => $expires_on);
+            $signature = urlencode($this->signature($request));
 
-        private function sendRequest($request, $headers = null, $curl_opts = null)
+            $url = sprintf("http://%s.s3.amazonaws.com/%s?AWSAccessKeyId=%s&Expires=%s&Signature=%s",
+                            $bucket_name,
+                            $s3_path,
+                            $this->key,
+                            $expires_on,
+                            $signature);
+            return $url;
+        }
+
+        public function sendRequest($request, $headers = null, $curl_opts = null)
         {
             if(is_null($headers))
                 $headers = array();
@@ -253,8 +252,8 @@
 
         private function signature($request, $headers = null)
         {
-			if(is_null($headers))
-				$headers = array();
+            if(is_null($headers))
+                $headers = array();
 
             $CanonicalizedAmzHeadersArr = array();
             $CanonicalizedAmzHeadersStr = '';
