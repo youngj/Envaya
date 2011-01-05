@@ -357,7 +357,7 @@ blockquote p {
 {
     display:block;
     float:left;
-    padding:13px 18px 10px 18px;
+    padding:6px 18px 4px 18px;
     border-left:1px solid #5d5d5d;
     border-right:1px solid #2f2f2f;
     height:19px;
@@ -373,7 +373,7 @@ blockquote p {
 
 .topbarLinks a#logoContainer
 {
-    padding:6px 10px 16px 10px;
+    padding:2px 10px 8px 10px;
     overflow:hidden;
     border-left:0px;
 }
@@ -392,12 +392,12 @@ blockquote p {
 
 #loginButton
 {
-    height:42px;
+    height:29px;
 }
 
 #loginButton
 {
-    background:#4d4d4d url(<?php echo $graphicsDir; ?>/loginbutton_sm.gif?v3) no-repeat left top;
+    background:#4d4d4d url(<?php echo $graphicsDir; ?>/loginbutton_sm.gif?v4) no-repeat left top;
 }
 
 a#loginButton:hover
@@ -407,7 +407,7 @@ a#loginButton:hover
 
 #loggedinArea
 {
-    background:url(<?php echo $graphicsDir; ?>/loggedinarea_rounded.gif?v2) no-repeat left -5px;
+    background:url(<?php echo $graphicsDir; ?>/loggedinarea_rounded.gif?v2) no-repeat left -18px;
 }
 
 a#loginButton:hover
@@ -429,7 +429,7 @@ a#loginButton:hover .loginContent span
 #loginButton .loginContent
 {
     display:block;
-    padding-top:10px;
+    padding-top:3px;
     text-align:center;
     color:#e6e6e6;
     font-weight:bold;    
@@ -438,8 +438,8 @@ a#loginButton:hover .loginContent span
 .loggedInAreaContent
 {
     display:block;
-    height:30px;
-    padding:8px 0px 3px 0px;
+    height:26px;
+    padding:1px 0px 2px 0px;
     text-align:center;
     color:#e6e6e6;
     font-weight:bold;
@@ -930,7 +930,7 @@ a.photoDelete:hover
 .top_language
 {
     float:right;
-    padding:11px 10px 8px 5px;
+    padding:3px 10px 2px 5px;
     color:white;
     color:#e6e6e6;
     white-space:nowrap;

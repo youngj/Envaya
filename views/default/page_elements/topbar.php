@@ -3,7 +3,7 @@
 <tr>
 <td class='topbarLinks'>
     <a id='logoContainer' href="/home">
-        <img src="/_graphics/logo.gif?v5" alt="Envaya" width="145" height="30">
+        <img src="/_graphics/logo_sm.gif?v5" alt="Envaya" width="120" height="25">
     </a>
     <a href='/envaya'><?php echo __('about') ?></a>
     <a href='/org/browse'><?php echo __('browse') ?></a>

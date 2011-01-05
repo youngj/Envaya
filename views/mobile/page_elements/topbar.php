@@ -1,4 +1,4 @@
-<div id="topbar"><a href="/home"><img style='display:block' src="/_graphics/logo.gif?v5" alt="Envaya" width="145" height="30"></a></div>
+<div id="topbar"><a href="/home"><img style='display:block' src="/_graphics/logo_sm.gif?v5" alt="Envaya" width="120" height="25"></a></div>
 <?php
 $submenuB = get_submenu_group('edit', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group');
 if ($submenuB)
