@@ -120,10 +120,11 @@ else if ($tab == 'manage')
         {
             echo "--";
         }
-        else if ($status >= ReportStatus::Submitted)
+        else if ($status >= ReportStatus::Submitted || Session::isadminloggedin())
         {
             echo "<a href='{$report->get_url()}/view_response'>".__("report:view_response")."</a><br />";   
         }
+        
         echo view('reports/set_status_links', array('report' => $report));
         
         echo "</td>";
