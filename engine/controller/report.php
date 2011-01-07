@@ -176,6 +176,8 @@ class Controller_Report extends Controller_Profile
 
     function action_submit()
     {
+        global $CONFIG;
+    
         $this->require_editor();
         $this->validate_security_token();
         $report = $this->report;
@@ -203,6 +205,7 @@ class Controller_Report extends Controller_Profile
                 );
                 
                 send_mail($report_recipient->email, $email_subject, $email_body, $headers);
+                send_mail($CONFIG->admin_email, $email_subject, $email_body, $headers);
             }
             
             $report_org = $report->get_container_entity();
