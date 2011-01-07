@@ -37,6 +37,7 @@
         'feed:edit_widget' => "%s updated its %s page.",
         'feed:edit_home' => '%s updated its home page.',
         'feed:partnership' => "%s has a partnership with %s.",
+        'feed:report' => "%s submitted %s.",
         'feed:more' => "Read more",
         'feed:org' => "News from related organizations",
         'feed:org:about' => "This page shows the latest news from all organizations on Envaya that work in the same sectors as %s, and all organizations on its %s page.",

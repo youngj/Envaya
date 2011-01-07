@@ -157,6 +157,12 @@ class Controller_Report extends Controller_Profile
         $report = $this->report;
         $report->status = $newStatus;
         $report->save();
+        
+        if ($report->status == ReportStatus::Approved)
+        {
+            $report->post_feed_items();
+        }
+        
         system_message(__('report:status_changed'));
         forward($report->get_report_definition()->get_url()."/edit?tab=manage");
     }
@@ -189,7 +195,7 @@ class Controller_Report extends Controller_Profile
             $report->signature = get_input('signature');
             $report->status = ReportStatus::Submitted;
             $report->time_submitted = time();
-            $report->save();
+            $report->save();           
             
             $report_def = $report->get_report_definition();
             $report_recipient = $report_def->get_container_entity();
