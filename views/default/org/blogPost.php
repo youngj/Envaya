@@ -78,7 +78,7 @@ function makeLabelForDate(date)
 
             if (date.getFullYear() != new Date().getFullYear())
             {
-                text = date.getFullYear() % 100 + "/" . text;
+                text += "/" + date.getFullYear() % 100;
             }
 
             label.appendChild(document.createTextNode(text));
