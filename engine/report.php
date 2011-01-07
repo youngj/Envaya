@@ -131,4 +131,13 @@ class Report extends Entity
         $report_def = $this->get_report_definition();
         return Session::isadminloggedin() || Session::get_loggedin_userid() == $report_def->container_guid;
     }
+    
+    function post_feed_items()
+    {
+        if (FeedItem::query()->where('subject_guid = ?', $this->guid)->count() == 0)
+        {
+            $org = $this->get_container_entity();   
+            post_feed_items($org, 'report', $this);
+        }
+    }                    
 }
