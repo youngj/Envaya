@@ -28,7 +28,14 @@ php scripts/install.php
 
 ./scripts/server_setup.sh
 
-# step 6: create initial administrator user
+# step 6: create initial users 
+# (required for selenium tests, but should not be used in production)    
+# creates admin username:testadmin pw:testtest
+# creates organization username:testorg pw:testtest
+# creates organization username:envaya pw:testtest
+php scripts/install_test_data.php
+
+# optional: create admin users with custom username/password
 php scripts/create_admin.php
 
 ===================

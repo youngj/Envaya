@@ -1,22 +1,30 @@
 <?php
 
-require_once '../scripts/cmdline.php';
+$TEST_CASES = array(
+    'MobileTest',
+    'EnvayaSiteTest',
+    'RegisterTest'
+);
 
+require_once '../scripts/cmdline.php';
 require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/TextUI/TestRunner.php';
-
-require_once 'RegisterTest.php';
+require_once 'SeleniumTest.php';
 
 function main()
 {
-    global $BROWSER;
+    global $BROWSER, $TEST_CASES;
 
     $opts = getopt('',array("browser:"));
     $BROWSER = @$opts['browser'] ?: '*firefox';
 
     $suite = new PHPUnit_Framework_TestSuite('Envaya');
 
-    $suite->addTestSuite('RegisterTest');
+    foreach ($TEST_CASES as $test_case)
+    {
+        require_once("testcases/$test_case.php");
+        $suite->addTestSuite($test_case);
+    }
 
     $descriptorspec = array(
        0 => array("pipe", "r"),

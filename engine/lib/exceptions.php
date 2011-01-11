@@ -75,11 +75,17 @@ function php_exception_handler($exception) {
 
     error_log("*** FATAL EXCEPTION *** : " . $exception);
     ob_end_clean(); // Wipe any existing output buffer
-    $body = view("messages/exceptions/exception",array('object' => $exception));
     
-    header("HTTP/1.1 500 Internal Server Error");
-    echo page_draw(__('exception_title'), $body);
-
+    if (@$_SERVER['REQUEST_URI'])
+    {    
+        $body = view("messages/exceptions/exception",array('object' => $exception));        
+        header("HTTP/1.1 500 Internal Server Error");
+        echo page_draw(__('exception_title'), $body);
+    }
+    else // CLI
+    {
+        echo $exception;
+    }
 
     global $CONFIG;
     if ($CONFIG->error_emails_enabled)
