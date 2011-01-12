@@ -21,5 +21,6 @@ return array(
     'sector:trade' => 'Biashara',
     'sector:women' => 'Wanawake',
     'sector:other' => 'Nyingine',
+    'sector:all' => "Zote",
     'sector:empty_option' => 'Sekta zote',
 );

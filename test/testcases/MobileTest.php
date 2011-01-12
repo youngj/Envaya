@@ -2,12 +2,15 @@
 
 class MobileTest extends SeleniumTest
 {
+    private $post_content;
+
     public function test()
     {        
         $this->open("/");
         $this->clickAndWait("//a[contains(@href,'view=mobile')]");
         
         $this->_testEdit();
+        $this->_testFeed();
         $this->_testLayout();
         $this->_testSearch();
         $this->_testBrowse();
@@ -71,6 +74,31 @@ class MobileTest extends SeleniumTest
 
         $this->clickAndWait("//li//a[contains(@href,'testorg')]");
         $this->mouseOver("//a[contains(@href,'contact')]");
+        
+        $this->goToMainMenu();
+        
+        $this->clickAndWait("//a[contains(@href,'org/browse')]");     
+        
+        $this->clickAndWait("//a[contains(@href,'org/change_browse_view')]");     
+        
+        $this->select("//select[@name='sector']", "Education");     
+        $this->submitForm();
+        
+        $this->assertTrue($this->isElementInPagedList("//a[contains(@href,'testorg')]"));
+        
+        $this->clickAndWait("//a[contains(@href,'lang=sw')]");     
+        
+        $this->assertTrue($this->isElementInPagedList("//a[contains(@href,'testorg')]"));
+        
+        $this->clickAndWait("//a[contains(@href,'org/change_browse_view')]");     
+        
+        $this->select("//select[@name='sector']", "Mazingira");     
+        $this->submitForm();        
+        
+        $this->assertFalse($this->isElementInPagedList("//a[contains(@href,'testorg')]"));
+        
+        $this->clickAndWait("//a[contains(@href,'lang=en')]");     
+        
         $this->goToMainMenu();
     }
     
@@ -84,10 +112,35 @@ class MobileTest extends SeleniumTest
         $this->submitForm();
         $this->mouseOver("//div[@class='blog_post' and contains(text(), 'mobile test post')]");
         $this->clickAndWait("//a[contains(@href,'/edit')]"); 
-        $this->type("//textarea", "This is my mobile post.");
+        
+        $this->post_content = "This is my mobile post ".time();
+        
+        $this->type("//textarea", $this->post_content);
         $this->submitForm();
-        $this->mouseOver("//div[@class='blog_post' and contains(text(), 'mobile post')]");
+        $this->mouseOver("//div[@class='blog_post' and contains(text(), '{$this->post_content}')]");
         $this->goToMainMenu();
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");     
+    }
+    
+    private function _testFeed()
+    {
+        $this->clickAndWait("//a[contains(@href,'org/feed')]");   
+        $this->mouseOver("//div[@class='feed_snippet' and contains(text(), '{$this->post_content}')]");        
+        
+        $this->clickAndWait("//a[contains(@href,'org/change_feed_view')]");     
+        
+        $this->select("//select[@name='sector']", "Education");     
+        $this->submitForm();
+        
+        $this->mouseOver("//div[@class='feed_snippet' and contains(text(), '{$this->post_content}')]");        
+        
+        $this->clickAndWait("//a[contains(@href,'org/change_feed_view')]");     
+        
+        $this->select("//select[@name='region']", "Arusha");     
+        $this->submitForm();        
+        
+        $this->mustNotExist("//div[@class='feed_snippet' and contains(text(), '{$this->post_content}')]");        
+        
+        $this->goToMainMenu();        
     }
 }

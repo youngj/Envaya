@@ -44,7 +44,7 @@
 
         $disabled = (@$vars['disabled']) ? ' disabled="yes" ' : '';
         $js = @$vars['js'] ?: '';
-        echo "<label class='optionLabel'><input type=\"checkbox\" $id $disabled {$js} name=\"{$vars['internalname']}[]\" value=\"".escape($option)."\" {$selected} class=\"$class\" />{$label}</label><br />";
+        echo "<label class='optionLabel'><input type=\"checkbox\" $id $disabled {$js} name=\"{$vars['internalname']}[]\" value=\"".escape($option)."\" {$selected} class=\"$class\" />".escape($label)."</label><br />";
     }
 
 ?>

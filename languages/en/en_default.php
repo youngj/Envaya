@@ -3,7 +3,7 @@
      return array(
         'donate' => 'Donate',        
         'donate_now' => "Donate now!",
-        
+            
         'cookie_error' => "There was an error logging into Envaya. Please ensure that your browser accepts cookies from '%s' and try again.", 
         'cookie_help' => "Click for instructions",
                 
@@ -43,6 +43,7 @@
         'feed:org:about' => "This page shows the latest news from all organizations on Envaya that work in the same sectors as %s, and all organizations on its %s page.",
         'feed:feature' => "Feature",
         'feed:unfeature' => "Unfeature",
+        'feed:change_view' => "Change",
 
         'dashboard:title' => "Edit Site",
         'dashboard:other_user' => "Edit %s",
@@ -93,6 +94,8 @@
         'org:yours' => 'Your Site',
         'org:mission' => 'Mission',
         'org:sectors' => 'Sectors',
+        'org:sector' => 'Sector',
+        'org:region' => 'Region',
         'org:location' => 'Location',
         'org:see_nearby' => 'See nearby organizations',
 

@@ -8,7 +8,7 @@
     }
     foreach ($values as $value)
     {
-        $text = @$options[$value] ?: escape($value);
+        $text = escape(@$options[$value] ?: $value);
         echo "<div class='checkbox_value'>$text</div> ";
     }    
 ?>

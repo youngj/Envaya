@@ -26,5 +26,6 @@ return array(
     'region:tz:zanzibar_cs' => 'Zanzibar Central/South',
     'region:tz:zanzibar_n' => 'Zanzibar North',
     'region:tz:zanzibar_w' => 'Zanzibar West',
+    'region:all' => "All",
     'region:empty_option' => 'All regions',
 );

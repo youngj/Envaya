@@ -5,5 +5,6 @@ return array(
     'region:tz:zanzibar_cs' => 'Unguja Kusini',
     'region:tz:zanzibar_n' => 'Unguja Kaskazini',
     'region:tz:zanzibar_w' => 'Unguja Mjini Magharibi',
+    'region:all' => "Zote",
     'region:empty_option' => 'Sehemu zote',
 );

@@ -1,5 +1,13 @@
 <?php
 
+/*
+ usage: php TestSuite.php
+    --test=TestClass1 --test=TestClass2 (from testcases directory, omit to run all $TEST_CASES)
+    --browser=*browser (selenium browser expression, omit to use *firefox)
+    
+    Assumes that http://localhost is running Envaya code, and no other Envaya services are running on localhost.
+*/
+
 $TEST_CASES = array(
     'MobileTest',
     'ReportingTest',    

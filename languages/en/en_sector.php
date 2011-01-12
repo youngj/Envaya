@@ -21,5 +21,6 @@ return array(
     'sector:trade' => 'Trade',
     'sector:women' => 'Women',
     'sector:other' => 'Other',
+    'sector:all' => "All",
     'sector:empty_option' => 'All sectors',
 );

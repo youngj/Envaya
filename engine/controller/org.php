@@ -18,7 +18,7 @@ class Controller_Org extends Controller
         
         if ($list || get_viewtype() == 'mobile')
         {
-            $area = view("org/browseList", array('lat' => $lat, 'long' => $long, 'sector' => $sector));
+            $area = view("org/browseList", array('lat' => $lat, 'long' => $long, 'sector' => $sector, 'region' => get_input('region')));
         }
         else
         {
@@ -28,12 +28,23 @@ class Controller_Org extends Controller
 
             $area = view("org/browseMap", array('lat' => $lat, 'long' => $long, 'zoom' => $zoom, 'sector' => $sector));        
         }
-        
 
         $body = view_layout('one_column', view_title($title), $area);
 
         $this->page_draw($title, $body);
     }
+
+    function action_change_browse_view()
+    {
+        $sector = get_input('sector');
+        $region = get_input('region');
+        
+        $area = view("org/change_filter", array('baseurl' => '/org/browse', 'sector' => $sector, 'region' => $region), 'mobile');
+        
+        $title = __("browse:title");
+        $body = view_layout('one_column', view_title($title), $area);
+        $this->page_draw($title, $body);       
+    }        
     
     function action_search()
     {
@@ -79,6 +90,18 @@ class Controller_Org extends Controller
 
         $body = view_layout('one_column', view_title($title), $content);
         $this->page_draw($title,$body);
+    }
+        
+    function action_change_feed_view()
+    {
+        $sector = get_input('sector');
+        $region = get_input('region');
+        
+        $area = view("org/change_filter", array('baseurl' => '/org/feed', 'sector' => $sector, 'region' => $region), 'mobile');
+        
+        $title = __("feed:title");
+        $body = view_layout('one_column', view_title($title), $area);
+        $this->page_draw($title, $body);       
     }
 
     function action_feed()

@@ -1,6 +1,7 @@
 <?php 
 
 $sector = @$vars['sector'];
+$region = @$vars['region'];
 
 ?>
 
@@ -36,7 +37,6 @@ echo view('input/pulldown', array(
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"        
 ));
 echo "<div style='height:5px'></div>";
-$region = get_input('region');
 
 echo view('input/pulldown', array(
     'internalname' => 'region',
