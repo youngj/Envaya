@@ -3,28 +3,33 @@
 require_once("engine/start.php");
 
 function main()
-{
-    //install_admin();
-    install_testorg();
+{   
+    install_admin();
+    install_org('testorg');
+    install_grantmaker();
     install_envaya();
 }
 
 function install_admin()
 {
     global $CONFIG;
-    $admin = register_user("testadmin", 'testtest', "Test Admin", $CONFIG->admin_email, true);
-    $admin->admin = true;    
-    $admin->save();
+    $admin = get_user_by_username('testadmin');
+    if (!$admin)
+    {
+        $admin = register_user("testadmin", 'testtest', "Test Admin", $CONFIG->admin_email, true);
+        $admin->admin = true;    
+        $admin->save();
+    }
 }
 
-function install_testorg()
+function install_org($username)
 {
     global $CONFIG;
-    $org = Organization::query()->where('username = ?', 'testorg')->get();
+    $org = Organization::query()->where('username = ?', $username)->get();
     if (!$org)
     {    
         $org = new Organization();
-        $org->username = 'testorg';
+        $org->username = $username;
         $org->email = $CONFIG->admin_email;
         $org->name = "Test Org";
         $org->set_password('testtest');
@@ -39,6 +44,20 @@ function install_testorg()
     $org->get_widget_by_name('home')->save();
     $org->get_widget_by_name('news')->save();
     $org->get_widget_by_name('contact')->save();
+    
+    return $org;
+}
+    
+function install_grantmaker()
+{
+    $org = install_org('testgrantmaker');
+    
+    $org->name = "Test Grantmaker";
+    $org->save();
+    
+    $reports = $org->get_widget_by_name('reports');
+    $reports->handler_class = 'WidgetHandler_ReportDefinitions';
+    $reports->save();
 }
     
 function install_envaya()    

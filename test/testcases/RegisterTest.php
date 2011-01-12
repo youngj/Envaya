@@ -32,6 +32,7 @@ class RegisterTest extends SeleniumTest
         $email = $this->getLastEmail("Request for new password");
 
         $url = $this->getLinkFromEmail($email);
+        echo "\n$url\n";
 
         $this->setUrl($url);
 

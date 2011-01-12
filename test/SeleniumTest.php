@@ -10,7 +10,9 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-        global $BROWSER;
+        global $BROWSER, $MOCK_MAIL_FILE;
+        
+        @unlink($MOCK_MAIL_FILE);
 
         $this->s = new Testing_Selenium($BROWSER, "http://localhost");
         $this->s->start();
@@ -22,6 +24,16 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $this->s->open($url);
     }
 
+    public function getSelectedLabel($id)
+    {
+        return $this->s->getSelectedLabel($id);
+    }
+    
+    public function getText($id)
+    {
+        return $this->s->getText($id);
+    }
+    
     public function tearDown()
     {
         $this->s->stop();
@@ -31,6 +43,11 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     {
         $this->s->click($id);
     }
+    
+    public function getLocation()
+    {
+        return $this->s->getLocation();
+    }
 
     public function select($id, $val)
     {
@@ -39,14 +56,15 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
 
     public function mustNotExist($id)
     {
-        try
+        if ($this->isElementPresent($id))
         {
-            $this->mouseOver($id);
             throw new Exception("Element $id exists");
         }
-        catch (Testing_Selenium_Exception $ex)
-        {
-        }
+    }   
+    
+    public function isElementPresent($id)
+    {
+        return $this->s->isElementPresent($id);
     }
 
     public function mouseOver($id)
@@ -64,9 +82,9 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $this->s->check($id);
     }
 
-    public function submitForm()
+    public function submitForm($button = "//button")
     {
-        $this->clickAndWait("//button");
+        $this->clickAndWait($button);
     }
 
     public function clickAndWait($selector)
@@ -89,21 +107,35 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
 
     public function _getLastEmail($match)
     {
-        $mailFile = __DIR__."/mail.out";
-        if (file_exists($mailFile))
+        global $MOCK_MAIL_FILE;
+        
+        if (!file_exists($MOCK_MAIL_FILE))
+        {    
+            throw new Exception("no emails in file");
+        }        
+        $contents = file_get_contents($MOCK_MAIL_FILE);
+        
+        $matchPos = strrpos($contents, $match);
+        if ($matchPos === false)
         {
-            $contents = file_get_contents($mailFile);
-
-            $marker = strrpos($contents, "========");
-
-            $email = substr($contents, $marker);
-
-            if ($email && strpos($email, '--------') && ($match == null || strpos($email, $match) !== false))
-            {
-                return $email;
-            }
+            throw new Exception("'$match' not found in email");
         }
-        throw new Exception("couldn't find matching email");
+        
+        $endPos = strpos($contents, '--------', $matchPos);
+        if ($endPos === false)
+        {
+            throw new Exception("full email not yet written to file");
+        }
+        
+        $startPos = strrpos($contents, "========", $matchPos - strlen($contents));
+        if ($startPos === false)
+        {
+            throw new Exception("email start marker not found");
+        }
+        
+        $email = substr($contents, $startPos, $endPos - $startPos);                    
+                
+        return $email;
     }
 
     public function getLinkFromEmail($email)

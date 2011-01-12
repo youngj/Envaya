@@ -1,10 +1,13 @@
 <?php
 
 $TEST_CASES = array(
+    'ReportingTest',
     'MobileTest',
     'EnvayaSiteTest',
-    'RegisterTest'
+    'RegisterTest',
 );
+
+$MOCK_MAIL_FILE = __DIR__."/mail.out";
 
 require_once '../scripts/cmdline.php';
 require_once 'PHPUnit/Framework.php';
@@ -13,7 +16,7 @@ require_once 'SeleniumTest.php';
 
 function main()
 {
-    global $BROWSER, $TEST_CASES;
+    global $BROWSER, $TEST_CASES, $MOCK_MAIL_FILE;
 
     $opts = getopt('',array("browser:"));
     $BROWSER = @$opts['browser'] ?: '*firefox';
@@ -39,10 +42,6 @@ function main()
        1 => STDOUT, //array("file", "runserver.out", 'w'),
        2 => STDERR
     );
-
-    $mockMailFile = __DIR__."/mail.out";
-
-    @unlink($mockMailFile);
     
     $env = $_ENV;    
     
@@ -53,7 +52,7 @@ function main()
     }   
     
     $env["ENVAYA_CONFIG"] = json_encode(array(
-        'mock_mail_file' => $mockMailFile
+        'mock_mail_file' => $MOCK_MAIL_FILE
     ));
         
     $queue = proc_open('php runserver.php', $descriptorspec, $pipes2, dirname(__DIR__), $env);
