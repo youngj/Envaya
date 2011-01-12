@@ -43,7 +43,7 @@
         'feed:org:about' => "This page shows the latest news from all organizations on Envaya that work in the same sectors as %s, and all organizations on its %s page.",
         'feed:feature' => "Feature",
         'feed:unfeature' => "Unfeature",
-        'feed:change_view' => "Change",
+        'feed:show_more' => "Show more updates",
 
         'dashboard:title' => "Edit Site",
         'dashboard:other_user' => "Edit %s",

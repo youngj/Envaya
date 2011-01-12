@@ -1125,3 +1125,10 @@ input[type="submit"] {
 {
     vertical-align:top;
 }
+
+#load_more
+{
+    text-align:center;
+    padding-top:5px;
+    height:30px;
+}

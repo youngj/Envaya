@@ -110,12 +110,19 @@ class Controller_Org extends Controller
     
         $title = __("feed:title");
         
+        $max_items = 20;
+        
         $sector = get_input('sector');
         $region = get_input('region');
         $feedName = get_feed_name(array('sector' => $sector, 'region' => $region));
-        $items = FeedItem::query_by_feed_name($feedName)->limit(20)->filter();
+        $items = FeedItem::query_by_feed_name($feedName)->limit($max_items)->filter();
 
-        $area = view("org/feed", array('sector' => $sector, 'region' => $region, 'items' => $items));
+        $area = view("org/feed", array(
+            'sector' => $sector, 
+            'region' => $region, 
+            'items' => $items,
+            'first_id' => $this->get_first_item_id($items, $max_items)
+        ));
 
         PageContext::set_rss(true);
         PageContext::set_translatable(false);
@@ -123,6 +130,43 @@ class Controller_Org extends Controller
         $body = view_layout('one_column', view_title($title), $area);
 
         $this->page_draw($title, $body);
+    }
+    
+    private function get_first_item_id($items, $num_requested)
+    {
+        if (sizeof($items) < $num_requested)
+        {
+            return 0;
+        }
+        $first_id = null;
+        foreach ($items as $item)
+        {
+            if (is_null($first_id) || $item->id < $first_id)
+            {
+                $first_id = $item->id;
+            }
+        }           
+        return $first_id;
+    }
+    
+    function action_feed_more()
+    {
+        $sector = get_input('sector');
+        $region = get_input('region');
+        $before_id = (int)get_input('before_id');
+        $feedName = get_feed_name(array('sector' => $sector, 'region' => $region));
+        
+        $max_items = 20;
+        
+        $items = FeedItem::query_by_feed_name($feedName)->where('id < ?', $before_id)->limit($max_items)->filter();
+
+        $items_html = view('feed/list', array('items' => $items));
+        
+        $this->request->headers['Content-Type'] = 'text/javascript';
+        $this->request->response = json_encode(array(
+            'items_html' => $items_html,
+            'first_id' => $this->get_first_item_id($items, $max_items)
+        ));
     }
 
     function action_new()
