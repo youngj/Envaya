@@ -1,8 +1,8 @@
 <?php
 
 $TEST_CASES = array(
-    'ReportingTest',
     'MobileTest',
+    'ReportingTest',    
     'EnvayaSiteTest',
     'RegisterTest',
 );
@@ -18,12 +18,21 @@ function main()
 {
     global $BROWSER, $TEST_CASES, $MOCK_MAIL_FILE;
 
-    $opts = getopt('',array("browser:"));
+    $opts = getopt('',array("browser:","test:"));
     $BROWSER = @$opts['browser'] ?: '*firefox';
+
+    if (@$opts['test'])
+    {
+        $test_cases = is_array($opts['test']) ? $opts['test'] : array($opts['test']);
+    }
+    else
+    {    
+        $test_cases = $TEST_CASES;    
+    }
 
     $suite = new PHPUnit_Framework_TestSuite('Envaya');
 
-    foreach ($TEST_CASES as $test_case)
+    foreach ($test_cases as $test_case)
     {
         require_once("testcases/$test_case.php");
         $suite->addTestSuite($test_case);
@@ -62,4 +71,4 @@ function main()
     PHPUnit_TextUI_TestRunner::run($suite);
 }
 
-main();
+main(); 

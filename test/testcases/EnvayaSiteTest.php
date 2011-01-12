@@ -4,9 +4,96 @@ class EnvayaSiteTest extends SeleniumTest
 {
     public function test()
     {        
+        $this->_testBrowseMap();
         $this->_testContactForm();
     }
+    
+    private function _testBrowseMap()
+    {
+        $this->open("/org/browse");
+        
+        $this->waitForMapMarker();        
+        
+        $this->click("//div[@class='mapMarker']");
+        $this->click("//div[@class='mapBucketControls']//a"); // zoom in
+        
+        $this->waitForMapMarker();        
+        
+        $this->assertFalse($this->isVisible("//div[@id='infoOverlay']"));
+        
+        $this->click("//div[@class='mapMarker']");
+        
+        $this->assertTrue($this->isVisible("//div[@id='infoOverlay']"));
+        $this->clickAndWait("//div[@id='infoOverlay']//a[@class='mapOrgLink']");        
+        
+        $this->clickAndWait("//a[contains(@href,'/org/browse/?lat')]"); // assume map link on org home page
+        
+        $this->waitForMapMarker();        
+        
+        $this->clickAndWait("//a[contains(@href,'list=1')]");
+        
+        $this->assertTrue($this->isElementInPagedList("//a[contains(@href,'testorg')]"));
+        
+        $this->select("//select[@id='sectorList']","Health");
+        $this->waitForPageToLoad(10000);
 
+        $this->assertFalse($this->isElementInPagedList("//a[contains(@href,'testorg')]"));        
+        
+        $this->select("//select[@id='sectorList']","Education");
+        $this->waitForPageToLoad(10000);
+        
+        $this->assertTrue($this->isElementInPagedList("//a[contains(@href,'testorg')]"));
+                
+        $this->clickAndWait("//a[contains(@href,'list=0')]");
+        $this->assertEquals($this->getSelectedLabel("//select[@id='sectorList']"), "Education");
+        
+        $this->waitForMapMarker();               
+        
+        // test map updates when scrolling
+        // testorg should be at -6.140555,35.551758, and the test assumes that there are no orgs immediately to the east
+        $this->open("/org/browse/?lat=-6.14055&long=35.5523&zoom=20"); // testorg is 2 clicks out of screen to the west
+        sleep(1);
+        $this->mustNotExist("//div[@class='mapMarker']");
+        
+        $this->click("//div[@title='Pan left']");
+        sleep(1);
+        $this->mustNotExist("//div[@class='mapMarker']");
+        
+        $this->click("//div[@title='Pan left']");        
+        $this->waitForMapMarker();        
+        
+        // test map updates when zooming
+        $this->open("/org/browse/?lat=-6.14055&long=35.5523&zoom=20"); 
+        sleep(1);
+        $this->mustNotExist("//div[@class='mapMarker']");
+        
+        $this->click("//div[@title='Zoom Out']");        
+        $this->waitForMapMarker();        
+        
+        $this->assertTrue($this->isVisible("//div[@class='mapMarker']"));
+        
+        $this->click("//div[@class='mapMarker']");
+        $this->mouseOver("//div[@id='infoOverlay']//a[@class='mapOrgLink' and contains(@href,'testorg')]");                
+        
+        $this->assertTrue($this->isVisible("//div[@id='infoOverlay']"));        
+        $this->click("//div[@title='Pan left']");         // should close the overlay
+        sleep(1);
+        $this->assertFalse($this->isVisible("//div[@id='infoOverlay']"));
+        
+        // test map updates when changing sector
+        $this->select("//select[@id='sectorList']","Health");
+        sleep(1);
+        $this->assertFalse($this->isVisible("//div[@class='mapMarker']"));
+        
+        $this->select("//select[@id='sectorList']","Education");
+        retry(array($this->s, 'mouseOver'), array("//div[@class='mapMarker'][2]"));                
+    }    
+    
+    private function waitForMapMarker()
+    {
+        retry(array($this->s, 'mouseOver'), array("//div[@class='mapMarker']"));        
+    }
+    
     private function _testContactForm()
     {
         $this->open("/page/contact");

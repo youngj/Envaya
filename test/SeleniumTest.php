@@ -62,6 +62,11 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         }
     }   
     
+    public function isVisible($id)
+    {
+        return $this->s->isVisible($id);
+    }    
+    
     public function isElementPresent($id)
     {
         return $this->s->isElementPresent($id);
@@ -81,6 +86,11 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     {
         $this->s->check($id);
     }
+    
+    public function waitForPageToLoad($timeout = 10000)
+    {
+        $this->s->waitForPageToLoad($timeout);
+    }
 
     public function submitForm($button = "//button")
     {
@@ -92,6 +102,24 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $this->s->click($selector);
         $this->s->waitForPageToLoad(10000);
     }
+    
+    public function isElementInPagedList($elem)
+    {
+        while (true)
+        {
+            if ($this->isElementPresent($elem))
+            {
+                return true;
+            }
+        
+            if (!$this->isElementPresent("//a[@class='pagination_next']"))
+            {
+                break;
+            }
+            $this->clickAndWait("//a[@class='pagination_next']");
+        }        
+        return false;
+    }    
     
     public function typeInFrame($selector, $value)
     {

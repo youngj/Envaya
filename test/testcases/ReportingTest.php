@@ -128,7 +128,8 @@ class ReportingTest extends SeleniumTest
         
         $email = $this->getLastEmail("FCS Narrative Report submitted by Test Org");
         $this->assertContains('YAAAY', $email);
-        
+
+        sleep(2);
         $email = $this->getLastEmail("FCS Narrative Report submitted to Test Grantmaker");
         $this->assertContains('YAAAY', $email);
                 

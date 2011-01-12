@@ -66,10 +66,9 @@ class MobileTest extends SeleniumTest
     private function _testBrowse()
     {
         $this->clickAndWait("//a[contains(@href,'org/browse')]");     
-        while (!$this->isElementPresent("//a[contains(@href,'testorg')]"))
-        {
-            $this->clickAndWait("//a[@class='pagination_next']");
-        }
+        
+        $this->assertTrue($this->isElementInPagedList("//a[contains(@href,'testorg')]"));
+
         $this->clickAndWait("//li//a[contains(@href,'testorg')]");
         $this->mouseOver("//a[contains(@href,'contact')]");
         $this->goToMainMenu();

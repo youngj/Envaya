@@ -30,17 +30,19 @@ function install_org($username)
     {    
         $org = new Organization();
         $org->username = $username;
-        $org->email = $CONFIG->admin_email;
-        $org->name = "Test Org";
-        $org->set_password('testtest');
-        $org->language = 'en';
-        $org->country = 'tz';
-        $org->setup_state = SetupState::CreatedHomePage;
-        $org->set_lat_long(-6.140555,35.551758);
-        $org->approval = 1;
-        $org->save();
     }
 
+    $org->email = $CONFIG->admin_email;
+    $org->name = "Test Org";
+    $org->set_password('testtest');
+    $org->language = 'en';
+    $org->set_sectors(array(6,19));
+    $org->country = 'tz';
+    $org->setup_state = SetupState::CreatedHomePage;
+    $org->set_lat_long(-6.140555,35.551758);
+    $org->approval = 1;
+    $org->save();
+    
     $org->get_widget_by_name('home')->save();
     $org->get_widget_by_name('news')->save();
     $org->get_widget_by_name('contact')->save();

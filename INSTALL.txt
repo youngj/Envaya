@@ -80,3 +80,14 @@ cap HOSTS=hostname deploy:full_setup
 
 # subsequently, updating server to latest code
 cap HOSTS=hostname deploy
+
+=============
+Running tests
+-------------
+Envaya's user-interface tests are in the test/ directory. 
+The tests assume that a web server is running on http://localhost with 
+the Envaya code being tested, that no other Envaya services are running,
+and that Firefox is installed on the local computer.
+
+cd test
+php TestSuite.php
