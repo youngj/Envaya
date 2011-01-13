@@ -90,6 +90,8 @@
         'user:persistent' => 'Stay logged in',
         'user:password:lost' => 'Forgot password?',
         'user:password:reset' => 'Reset password',
+        'user:if_not_registered' => "If you are a representative of a civil society organization in Tanzania that hasn't yet registered for Envaya, %s.",
+        'user:sign_up_now' => "sign up now",
 
         'org:yours' => 'Your Site',
         'org:mission' => 'Mission',

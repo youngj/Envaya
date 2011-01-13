@@ -50,4 +50,9 @@
 
     echo view('input/form', array('body' => $form_body, 'action' => secure_url("/pg/submit_login")));
 ?>
+
+<br />
+<p>
+<?php echo sprintf(__('user:if_not_registered'), "<a href='/org/new' style='font-weight:bold'>".__('user:sign_up_now')."</a>"); ?>
+</p>
 </div>

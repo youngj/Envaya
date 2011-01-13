@@ -76,6 +76,9 @@ return array(
     'user:persistent' => 'Nikumbuke',
     'user:password:lost' => 'Neno la siri limesahauliwa?',
     'user:password:reset' => 'Pata neno jipya la siri',
+    'user:if_not_registered' => "Ikiwa wewe ni mwakilishi wa shirika la jumuiya ya kiraia Tanzania ambalo halijajiandikisha kwa Envaya, %s.",
+    'user:sign_up_now' => "jiunge sasa",
+    
     'org:yours' => 'Tovuti Yako',
     'org:mission' => 'Lengo',
     'org:sectors' => 'Sekta',
