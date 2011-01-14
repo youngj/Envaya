@@ -8,7 +8,7 @@ class Scribd {
 	public $secret;
 	private $url;
 	public $session_key;
-  public $my_user_id;
+    public $my_user_id;
 	private $error;
 
 	public function __construct($api_key, $secret) {

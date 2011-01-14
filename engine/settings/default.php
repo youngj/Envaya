@@ -56,5 +56,5 @@
     $CONFIG->scribd_key = '';
     $CONFIG->scribd_private = '';
 
-    $CONFIG->extract_images_from_docs = false;  
+    $CONFIG->extract_images_from_docs = false;
 ?>
