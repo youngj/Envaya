@@ -182,8 +182,13 @@ return array(
     'upload:image:uploading' => 'Ikihifadhi picha...',
     'upload:image:complete' => 'Picha imehifadhiwa. Itaonekana hivi punde...',
     'upload:image:recommend_flash' => 'Angalia: Kuongeza picha kwa haraka zaidi, weka %s.',
-    'upload:image:isdoc' => 'Tatizo: Unajaribu kuweka faili la Microsoft Word.  Envaya imefanya kazi na picha tu.  Tafadhali hifadhi picha kutoka document na tumia muundo .jpg au .png au .gif',
-    'upload:image:isbad' => 'Tatizo: Unajaribu kuweka faili baya. Envaya imefanya kazi na picha tu na muundo .jpg au .png au .gif',
+    
+    'upload:no_image_in_doc' => "Hakuna picha kwenye faili iliyopelekwa.",
+    'upload:transfer_error' => "Tatizo kupeleka faili kwenye mtandao.",
+    'upload:invalid_image_format' => "Faili si picha halali. Tafadhali hifadhi picha kwenye faili yako kama muundo wa .jpg, .png, au .gif.",
+    'upload:image_bad' => "Komputa yetu haifahamu faili ya picha. Hifadhi picha kama muundo wa .jpg, .png, au .gif na jaribu tena.",
+    'upload:image_extract_failed' => "Tatizo kupata picha kutoka faili. Jaribu kuhifadhi picha kwenye faili kama muundo wa .jpg na jaribu tena.",    
+    
     'contact' => 'Wasiliana nasi',
     'page:notfound' => 'Ukurasa hauonekani',
     'page:notfound:details' => 'Ukurasa unaoomba haupo ama huna ruhusa kuuona.',

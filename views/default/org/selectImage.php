@@ -73,7 +73,13 @@
     var uploader = window.uploader;
     
     var images = null;
+    var upload_error = null;
 
+    uploader.onImageError = function($error) {
+        upload_error = $error;
+        resizeFrame();
+    };
+    
     uploader.onImageComplete = function($images) {
         images = $images;
 
@@ -123,6 +129,10 @@
                         imageHeight = 150;
                     }
                     height = imageHeight + 80;
+                }
+                else if (upload_error)
+                {
+                    height = 80;
                 }
 
                 iframe.style.height = height+"px";

@@ -1156,6 +1156,7 @@ FileUploader.prototype.getSWFUploadOptions = function()
         upload_url: "/pg/upload",
         file_post_name: "file",
         post_params: { 
+            "lang": this.options.lang || '',
             "sizes": this.options.sizes || '', 
             "session_id": this.options.session_id 
         },  
@@ -1275,9 +1276,15 @@ FileUploader.prototype.showPreviewImage = function($serverData)
 
     eval("$images = " + $serverData);    
 
-    if (!$images)
+    if ($images.error)
     {
-        this.setProgress(this.options.upload_error_message + " -1");
+        this.setProgress($images.error);
+
+        if (this.onImageError)
+        {
+            this.onImageError($images.error);
+        }        
+        
         return false;
     }
     else

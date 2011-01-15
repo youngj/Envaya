@@ -48,7 +48,9 @@ function get_file_from_url($url)
 function upload_file($file_input)
 {
     if (!$file_input || $file_input['error'] != 0)
-        return null;
+    {    
+        throw new IOException(__("upload:transfer_error"));
+    }
         
     $tmp_file = $file_input['tmp_name'];
 
@@ -71,16 +73,18 @@ function convert_to_pdf($filename, $extension)
     global $CONFIG;
     $scribd = new Scribd($CONFIG->scribd_key, $CONFIG->scribd_private);
 
-    $res = $scribd->upload($filename, $extension, 'private');
-
-    $doc_id = @$res['doc_id'];
-    if (!$doc_id)
+    try
     {
-        error_log($res);
-        return null;
+        $res = $scribd->upload($filename, $extension, 'private');
+        $doc_id = @$res['doc_id'];
+    }
+    catch (Exception $ex)
+    {
+        error_log("error uploading document to scribd: ".$ex->getMessage());
+        throw new IOException(__('upload:image_extract_failed'));
     }
 
-    for ($i = 0; $i < 15; $i++)
+    for ($i = 0; $i < 20; $i++)
     {
         $status = $scribd->getConversionStatus($doc_id);
         if ($status == 'PROCESSING' || $status == 'DISPLAYABLE') 
@@ -100,7 +104,7 @@ function convert_to_pdf($filename, $extension)
     catch (Exception $ex)
     {
         error_log("error in pdf conversion: ".$ex->getMessage());
-        return null;
+        throw new IOException(__('upload:image_extract_failed'));
     }
 }
 
@@ -223,6 +227,11 @@ function store_image_from_doc($tmp_file, $ext, $sizes)
             $res = store_image($pdf_image, $sizes);
             @unlink($pdf_image); 
         }
+        else
+        {
+            throw new DataFormatException(__("upload:no_image_in_doc"));
+        }
+        
         if ($pdf_url)
         {
             @unlink($pdf_filename);
@@ -235,7 +244,9 @@ function store_image_from_doc($tmp_file, $ext, $sizes)
 function upload_image($file_input, $sizes)
 {
     if (!$file_input || $file_input['error'] != 0)
-        return null;
+    {
+        throw new IOException(__("upload:transfer_error"));
+    }
 
     $tmp_file = $file_input['tmp_name'];        
 
@@ -252,7 +263,7 @@ function upload_image($file_input, $sizes)
         }
         else
         {
-            return null;
+            throw new InvalidParameterException(__("upload:invalid_image_format"));
         }
     } 
     else
@@ -305,7 +316,7 @@ function store_image($tmp_file, $sizes)
         }
         else
         {
-            return null;
+            throw new DataFormatException(__("upload:image_bad"));
         }
     }
     return get_file_group_array($files);

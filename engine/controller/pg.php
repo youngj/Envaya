@@ -304,15 +304,26 @@ class Controller_Pg extends Controller {
     function action_upload()
     {
         $this->require_login();
-
-        if (get_input('image'))
-        {
-            $json = json_encode(upload_image($_FILES['file'], json_decode(get_input('sizes'))));
+        
+        try
+        {                   
+            if (get_input('image'))
+            {
+                $sizes = json_decode(get_input('sizes'));
+                $upload_res = upload_image($_FILES['file'], $sizes);
+            }
+            else
+            {
+                $upload_res = upload_file($_FILES['file']);
+            }
         }
-        else
+        catch (Exception $ex)
         {
-            $json = json_encode(upload_file($_FILES['file']));
+            $upload_res = array('error' => $ex->getMessage());
         }
+                
+        
+        $json = json_encode($upload_res);
 
         if (get_input('iframe'))
         {

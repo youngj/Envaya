@@ -1,6 +1,7 @@
 <?php 
     $args = array(
         'session_id' => session_id(),
+        'lang' => get_language(),
         'button_message' => __('upload:browse'),
         'queue_error_message' => __('upload:image:error'),
         'processing_message' => __('upload:image:processing'),

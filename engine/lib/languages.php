@@ -45,7 +45,7 @@ function get_language()
         return $CURRENT_LANGUAGE;
     }
 
-    $language = @$_GET['lang'] ?: @$_COOKIE['lang'] ?: get_accept_language();
+    $language = @$_GET['lang'] ?: @$_COOKIE['lang'] ?: @$_POST['lang'] ?: get_accept_language();
     
     if (!$language || !Language::get($language))
     {

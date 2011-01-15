@@ -216,10 +216,11 @@
         'upload:uploading' => "Uploading file...",
         'upload:error' => "Error uploading file: ",
 
-        
-        
-        'upload:image:isdoc' => "Error: You are trying to upload a Microsoft Word document.  Envaya only supports image formats.  Please save the image from your document as a .jpg, .png, and .gif file.",
-        'upload:image:isbad' => "Error: You are trying to upload an invalid file. Envaya only supports .jpg, .png, and .gif image formats.",
+        'upload:no_image_in_doc' => "No images were found in the uploaded document.",
+        'upload:transfer_error' => "Error transferring file to server.",
+        'upload:invalid_image_format' => "Invalid image format. Please save the image from your document as a .jpg, .png, or .gif file.",
+        'upload:image_bad' => "The server could not understand the image file. Save your image as a .jpg, .png, or .gif file and try again.",
+        'upload:image_extract_failed' => "Failed to extract images from document. Try saving the image from your document as a .jpg file.",
 
         'contact' => "Contact",
 
