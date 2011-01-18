@@ -1,8 +1,8 @@
 <div id='topbar2'>
+<a href='/envaya'><?php echo __('about') ?></a> &nbsp;
 <a href='/org/browse'><?php echo __('browse') ?></a> &nbsp;
 <a href='/org/search'><?php echo __('search') ?></a> &nbsp;
 <a href='/org/feed'><?php echo __('feed') ?></a> &nbsp; 
-<?php echo view('page_elements/login_area', $vars); ?>
 </div>
 <div class='padded'>
 <p>

@@ -3,9 +3,14 @@
     include(__DIR__."/base.php");    
 ?>
 
-#topbar
+#topbar, #topbar_login
 {
     background:#1d1d1d;
+}
+
+#topbar a
+{
+    color:white;
 }
 
 h1,h2,h3
