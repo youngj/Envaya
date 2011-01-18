@@ -5,6 +5,12 @@ require_once("engine/start.php");
 function main()
 {   
     install_admin();
+    
+    for ($i = 0; $i < 22; $i++)
+    {
+        install_org("testposter$i");
+    }
+    
     install_org('testorg');
     install_grantmaker();
     install_envaya();

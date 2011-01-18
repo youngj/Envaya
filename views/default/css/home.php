@@ -12,6 +12,7 @@
 #content
 {
     background:url(<?php echo $graphicsDir ?>/bg_combined.gif) no-repeat left top;
+    margin-top:5px;
     padding-top:27px;
     background-color:#fff;
 }
@@ -31,14 +32,133 @@
 
 .home_content_bg
 {
-
 }
+
+<?php
+    $contentWidth = 820;
+    $headerLeftWidth = 330;
+    $headerRightWidth = $contentWidth - $headerLeftWidth;
+?>
 
 .home_banner
 {
+    position:relative;
     height:299px;
-    background:#333 url(<?php echo $graphicsDir ?>/banner_planting4.jpg) no-repeat left top;
+    width:<?php echo $contentWidth; ?>px;
 }
+
+.home_banner_text
+{
+    position:absolute;
+    top:0px;
+    left:0px;
+    width:<?php echo $headerLeftWidth; ?>px;
+    height:299px;
+    background:#333;
+}
+
+.home_follow_shadow
+{
+    position:absolute;
+    bottom:0px;
+    left:<?php echo $headerLeftWidth; ?>px;
+    height:48px;
+    width:<?php echo $headerRightWidth; ?>px;
+    background-color:#000;
+    opacity:0.6;
+    filter:alpha(opacity=60);
+}
+
+.home_donate_sticker
+{
+    position:absolute;
+    bottom:0px;
+    left:44px;
+    width:234px;
+    height:150px;    
+    background:url(<?php echo $graphicsDir ?>/donate_sticker.jpg) no-repeat left top;
+}
+
+.home_donate_difference
+{
+    padding-top:30px;
+    padding-left:25px;
+    padding-right:30px;
+    text-align:center;
+    color:#5b7d26;
+    font-weight:bold;
+    font-size:16px;
+}
+
+.home_donate_button
+{
+    margin-top:15px;
+    margin-left:40px;
+    display:block;
+    width:142px;
+    height:43px;
+    background:url(<?php echo $graphicsDir ?>/donate.gif) no-repeat left top;    
+}
+
+.home_donate_button:hover
+{
+    text-decoration:none;
+    background-position:left -45px;    
+}
+
+.home_donate_button span
+{
+    text-align:center;
+    display:block;
+    color:white;
+    font-weight:bold;
+    padding:7px 4px;
+    font-size:18px;
+}
+
+
+.home_banner_photo
+{
+    position:absolute;
+    left:<?php echo $headerLeftWidth; ?>px;
+    top:0px;
+    height:299px;
+    width:<?php echo $headerRightWidth; ?>px;
+    background-color:#f0f0f0;
+}
+
+.home_follow
+{
+    position:absolute;
+    bottom:10px;
+    right:115px;
+    text-align:right;
+    width:300px;
+    color:#ccc;
+    font-size:20px;
+}
+
+.home_follow_icon
+{
+    position:absolute;
+    background:url(<?php echo $graphicsDir ?>/facebook.gif) no-repeat left top;
+    display:block;
+    width:36px;
+    height:36px;
+    bottom:5px;    
+}
+
+.home_follow_fb
+{
+    right:65px;    
+}
+
+.home_follow_twitter
+{
+    background-position:-36px top;
+    right:20px;
+}
+
 
 .home_table
 {
@@ -51,22 +171,24 @@
     background-color:white;
 }
 
-.home_banner_text
-{
-    padding:43px 35px;
-    width:400px;
-}
-
 .home_banner_text h1
 {
-    font-size: 21px;
+}
+
+.home_banner_text em
+{
+    font-size: 19px;
     color: #dbea8f;
     font-weight:bold;
     font-family: Verdana, sans-serif;
+    font-style:normal;
 }
+
 .home_banner_text h2
 {
+    font-size:16px;
     font-weight:normal;
+    padding:0px 10px 0px 5px;
     color:#fff;
 }
 .heading_container #heading
@@ -76,7 +198,7 @@
 
 .content_container
 {
-    background:#fff url("<?php echo $graphicsDir; ?>/featured_bg.gif") repeat-x left 133px;
+    background:#fff url("<?php echo $graphicsDir; ?>/featured_bg.gif") repeat-x left 128px;
 }
 
 .home_section_left

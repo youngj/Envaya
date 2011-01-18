@@ -12,6 +12,7 @@ class RegisterTest extends SeleniumTest
         $this->_testSettings();
         $this->_testTranslate();
         $this->_testPost();
+        $this->_testComment();
         $this->_testEditPages();
         $this->_testEditContact();
         $this->_testEditHome();
@@ -132,8 +133,12 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'org/feed')]");
         $this->mouseOver("//div[@class='feed_snippet' and contains(text(), 'this is a test post')]");
         $this->clickAndWait("//a[contains(text(), 'News update')]");
-        $this->mouseOver("//div[@class='blog_post']//p[contains(text(), 'this is a test post')]");
-        
+        $this->mouseOver("//div[@class='blog_post']//p[contains(text(), 'this is a test post')]");        
+    }
+    
+    private function _testComment()
+    {
+    
     }
 
     private function _testEditContact()
