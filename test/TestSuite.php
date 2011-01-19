@@ -11,6 +11,7 @@
 $TEST_CASES = array(
     'MobileTest',
     'ReportingTest',    
+    'FeedTest',
     'EnvayaSiteTest',
     'RegisterTest',
 );
