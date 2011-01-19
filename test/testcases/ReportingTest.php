@@ -62,12 +62,12 @@ class ReportingTest extends SeleniumTest
         
         $this->assertContains("YAAAY", $this->getText("//div[@class='report_field_other_name']"));                        
         $this->clickAndWait("//a[contains(text(),'Approve Report')]");        
-        $this->s->getConfirmation();
+        $this->getConfirmation();
         
         $this->mouseOver("//a[contains(@href,'testorg') and contains(text(),'Remove Approval')]");
                 
         $this->clickAndWait("//a[contains(@href,'status=12') and contains(@href,'{$this->username}')]");
-        $this->s->getConfirmation();
+        $this->getConfirmation();
         $this->mouseOver("//a[contains(@href,'{$this->username}') and contains(text(),'Remove Approval')]");
 
         $this->clickAndWait("//a[contains(@href,'tab=export')]");

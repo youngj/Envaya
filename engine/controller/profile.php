@@ -978,6 +978,8 @@ class Controller_Profile extends Controller
 
 	function post_comment($entity)
 	{
+        global $CONFIG;
+    
 		$comments_url = $entity->get_url()."?comments=1";
 	
         $userId = Session::get_loggedin_userid();
@@ -1004,7 +1006,7 @@ class Controller_Profile extends Controller
 			forward($comments_url);
 		}
 		
-        if (!$userId)
+        if (!$userId && $CONFIG->recaptcha_enabled)
         {        
 			$valid_captcha = false;
 			if (get_input('captcha'))

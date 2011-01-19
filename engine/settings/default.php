@@ -50,6 +50,7 @@
     $CONFIG->debug = true;
     $CONFIG->sitename = "Envaya";
 
+    $CONFIG->recaptcha_enabled = false;
     $CONFIG->recaptcha_key = '';
     $CONFIG->recaptcha_private = '';   
     

@@ -4,6 +4,7 @@ class RegisterTest extends SeleniumTest
 {
     private $username;
     private $username2;
+    private $post_url;
 
     public function test()
     {        
@@ -12,11 +13,11 @@ class RegisterTest extends SeleniumTest
         $this->_testSettings();
         $this->_testTranslate();
         $this->_testPost();
-        $this->_testComment();
         $this->_testEditPages();
         $this->_testEditContact();
         $this->_testEditHome();
         $this->_testMakePublic();
+        $this->_testComment();                
         $this->_testPartnership();
         $this->_testMessages();
         $this->_testDeleteOrg();
@@ -134,11 +135,60 @@ class RegisterTest extends SeleniumTest
         $this->mouseOver("//div[@class='feed_snippet' and contains(text(), 'this is a test post')]");
         $this->clickAndWait("//a[contains(text(), 'News update')]");
         $this->mouseOver("//div[@class='blog_post']//p[contains(text(), 'this is a test post')]");        
+        
+        $this->post_url = $this->getLocation();
     }
     
     private function _testComment()
     {
+        // assumes that recaptcha is disabled in settings file
+        
+        $this->clickAndWait("//a[contains(@href,'?login=1')]");
+        $this->type("//input[@name='username']",$this->username);
+        $this->type("//input[@name='password']",'password2');
+        $this->submitForm();
+        $this->mouseOver("//div[@class='good_messages']");
+        
+        $this->open($this->post_url);        
     
+        // comment as logged in user
+        $this->type("//textarea[@name='content']", "comment number one");
+        $this->submitForm();
+        $this->mouseOver("//div[@class='good_messages']");
+        $this->assertContains("comment number one", $this->getText("//div[@class='comment']"));
+        $this->assertContains("New Name", $this->getText("//div[@class='comment_name']"));
+        $this->type("//textarea[@name='content']", "comment number one");
+        $this->submitForm();
+        $this->mouseOver("//div[@class='bad_messages']");
+        
+        $this->mouseOver("//div[@class='comment']//span[@class='admin_links']//a");        
+        
+        $url = $this->getLocation();
+        
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        
+        // comment as anonymous user        
+        
+        $this->open($this->post_url);        
+        
+        $this->type("//textarea[@name='content']", "comment number two");
+        $this->type("//input[@name='name']", "random dude");
+        $this->submitForm();
+        $this->mouseOver("//div[@class='good_messages']");
+        
+        $this->assertContains("comment number two", $this->getText("//div[@class='comment'][2]"));                
+        $this->assertContains("random dude", $this->getText("//div[@class='comment'][2]//div[@class='comment_name']"));
+                
+        $this->assertContains("comment number one", $this->getText("//div[@class='comment']"));                        
+               
+        // delete your own comment
+        $this->clickAndWait("//span[@class='admin_links']//a");
+        
+        $this->getConfirmation();
+        $this->mouseOver("//div[@class='good_messages']");
+        
+        $this->assertContains("comment number one", $this->getText("//div[@class='comment']"));                        
+        $this->assertContains("comment deleted", $this->getText("//div[@class='comment'][2]"));                        
     }
 
     private function _testEditContact()
@@ -158,7 +208,7 @@ class RegisterTest extends SeleniumTest
 
         $this->clickAndWait("//a[contains(@href,'contact/edit')]");
         $this->clickAndWait("//button[@id='widget_delete']");
-        $this->s->getConfirmation();
+        $this->getConfirmation();
         $this->mouseOver("//div[@class='good_messages']");
         $this->mouseOver("//a[contains(@href,'contact')]"); // todo items
         $this->mustNotExist("//div[@id='site_menu']//a[contains(@href,'contact')]");
@@ -245,7 +295,7 @@ class RegisterTest extends SeleniumTest
         $this->submitForm();
 
         $this->clickAndWait("//a[contains(@href, 'approval=2')]");
-        $this->s->getConfirmation();
+        $this->getConfirmation();
         $this->mouseOver("//div[@class='good_messages']");
 
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
@@ -315,7 +365,7 @@ class RegisterTest extends SeleniumTest
         $this->mouseOver("//div[@class='good_messages']");
         $this->open("/{$this->username2}");
         $this->clickAndWait("//a[contains(@href, 'approval=2')]");
-        $this->s->getConfirmation();
+        $this->getConfirmation();
         $this->mouseOver("//div[@class='good_messages']");
 
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
@@ -328,7 +378,7 @@ class RegisterTest extends SeleniumTest
 
         $this->open("/{$this->username}");
         $this->click("//a[contains(@href,'request_partner')]");
-        $this->s->getConfirmation();
+        $this->getConfirmation();
 
         $email = $this->getLastEmail("wants to add");
 
@@ -384,7 +434,7 @@ class RegisterTest extends SeleniumTest
             try
             {
                 $this->clickAndWait("//a[contains(@href,'approval=0')]");
-                $this->s->getConfirmation();
+                $this->getConfirmation();
             }
             catch (Testing_Selenium_Exception $ex) {}
             sleep(1);
@@ -392,13 +442,13 @@ class RegisterTest extends SeleniumTest
             try
             {
                 $this->clickAndWait("//a[contains(@href,'approval=-1')]");
-                $this->s->getConfirmation();
+                $this->getConfirmation();
             }
             catch (Testing_Selenium_Exception $ex) {}
 
             sleep(1);
             $this->clickAndWait("//a[contains(@href,'delete')]");
-            $this->s->getConfirmation();
+            $this->getConfirmation();
 
             $this->mouseOver("//div[@class='good_messages']");
             try

@@ -24,6 +24,11 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $this->s->open($url);
     }
 
+    public function getConfirmation()
+    {
+        return $this->s->getConfirmation();
+    }    
+    
     public function getSelectedLabel($id)
     {
         return $this->s->getSelectedLabel($id);
