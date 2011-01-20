@@ -263,19 +263,8 @@ class Controller_Report extends Controller_Profile
         
         foreach ($field_names as $field_name)
         {        
-            $field = $report->get_field($field_name);
-        
-            $input_name = "field_{$field_name}";
-            $input_type = $field->get_arg('input_type');
-        
-            if ($input_type == 'input/checkboxes')
-            {
-                $field->value = get_input_array($input_name);
-            }
-            else
-            {
-                $field->value = get_input($input_name);
-            }
+            $field = $report->get_field($field_name);            
+            $field->value = $field->get_input_value();            
         }
         
         if ($report->status == ReportStatus::Blank)

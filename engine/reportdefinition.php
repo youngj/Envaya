@@ -62,4 +62,23 @@ class ReportDefinition extends Entity
     {
         return "{$this->get_container_entity()->get_url()}/reporting/{$this->guid}";
     }
+    
+    function get_field_definitions()
+    {
+        return $this->get_handler()->get_field_definitions();
+    }
+    
+    function get_exported_field_definitions()
+    {           
+        $field_defs = array();
+
+        foreach ($this->get_field_definitions() as $field_name => $field_def)
+        {
+            if ($field_def->export_value)
+            {
+                $field_defs[$field_name] = $field_def;
+            }
+        }
+        return $field_defs;
+    }
 }

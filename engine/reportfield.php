@@ -30,53 +30,19 @@ class ReportField extends Model
         parent::set($name, $value);
     }         
     
-    function get_option_text($value)
+    function get_definition()
     {
-        $options = $this->get_arg('options');
-        if ($options)
-        {
-            return @$options[$value] ?: $value;
-        }
-        else
-        {
-            return $value;
-        }
+        return $this->get_report()->get_field_definition($this->name);
     }
-    
-    function get_csv_value()
-    {   
-        $value = $this->value;
-        if (is_array($value))
-        {
-            return implode(",", array_map(array($this, 'get_option_text'), $value));
-        }
-        else
-        {
-            return $this->get_option_text($value);
-        }
-    }
-
-    function get_args()
-    {
-        $report = $this->get_report();
-        $args = $report->get_field_args();
-        return @$args[$this->name];
-    }
-    
-    function get_arg($arg_name)
-    {
-        $args = $this->get_args();
-        return @$args[$arg_name];
-    }
-    
+        
     function label()
     {
-        return $this->get_arg('label');
+        return $this->get_definition()->label;
     }
 
     function help()
     {
-        return $this->get_arg('help');
+        return $this->get_definition()->help;
     }
     
     private $report;
@@ -107,86 +73,19 @@ class ReportField extends Model
     {        
         return view('reports/edit_field', array('field' => $this));
     }
-    
-    private function render_custom_view($view_name, $edit = false)
-    {
-        return view("reports/$view_name", array('field' => $this, 'report' => $this->get_report(), 'edit' => $edit));    
-    }
-    
+        
     function view_input()
     {   
-        $args = $this->get_args();
-        $custom_view = @$args['custom_view'];
-        if ($custom_view)
-        {
-            return $this->render_custom_view($custom_view);
-        }           
-        
-        if (!$this->is_blank())
-        {    
-            $output_args = array('value' => $this->value);
-            
-            foreach (array('view_args','output_args') as $arg_group)
-            {
-                if (isset($args[$arg_group]))
-                {
-                    foreach ($args[$arg_group] as $k => $v)
-                    {
-                        $output_args[$k] = $v;
-                    }
-                }
-            }
-        
-            return view(@$args['output_type'] ?: 'output/text', $output_args);
-        }
-        else
-        {
-            return "<em>".__('report:blank')."</em>";
-        }
+        return $this->get_definition()->render_view($this);        
     }
     
     function edit_input()
     {   
-        $args = $this->get_args();
-        
-        $custom_view = @$args['custom_view'];
-        if ($custom_view)
-        {
-            return $this->render_custom_view($custom_view, true);
-        }                   
-        
-        $input_name = "field_{$this->name}";
-    
-        $input_args = array(
-            'internalname' => $input_name,
-            'trackDirty' => true,
-            'value' => !$this->is_blank() ? $this->value : @$args['default'],
-        );
-        
-        foreach (array('view_args','input_args') as $arg_group)
-        {
-            if (isset($args[$arg_group]))
-            {
-                foreach ($args[$arg_group] as $k => $v)
-                {
-                    $input_args[$k] = $v;
-                }
-            }
-        }
-    
-        $res = view(@$args['input_type'] ?: 'input/text', $input_args);       
-         
-        $res .= view('reports/auto_value', array(
-            'field_name' => $this->name, 
-            'auto_value' => @$args['auto_value'],
-            'auto_update' => @$args['auto_update'],
-        ));
-         
-        $res .= view('input/hidden', array(
-            'internalname' => 'fields[]',
-            'value' => $this->name
-        )); 
-        
-        return $res;
+        return $this->get_definition()->render_edit($this);        
     }    
+    
+    function get_input_value()
+    {
+        return $this->get_definition()->get_input_value($this);
+    }
 }

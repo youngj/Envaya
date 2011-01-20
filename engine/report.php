@@ -9,7 +9,7 @@ class Report extends Entity
         'status' => 0,
     );      
     private $fields = null;    
-    private $field_args = null;
+    private $field_defs = null;
    
     function get_date_text()
     {
@@ -21,15 +21,21 @@ class Report extends Entity
         return $this->get_report_definition()->get_title();
     }
     
-    function get_field_args()
+    function get_field_definitions()
     {
-        if ($this->field_args == null)
+        if ($this->field_defs == null)
         {
-            $this->field_args = $this->get_handler()->get_field_args($this);
+            $this->field_defs = $this->get_handler()->get_field_definitions($this);
         }
-        return $this->field_args;
+        return $this->field_defs;
     }
-        
+    
+    function get_field_definition($field_name)
+    {
+        $field_defs = $this->get_field_definitions();
+        return @$field_defs[$field_name];
+    }
+    
     function get_status_text()
     {
         switch ($this->status)

@@ -29,6 +29,11 @@ class Controller_Reporting extends Controller_Profile
         }
     }
 
+    function use_editor_layout()
+    {
+        PageContext::set_theme('editor_wide');
+    }        
+    
     function show_next_steps()
     {
         return false;
@@ -54,7 +59,8 @@ class Controller_Reporting extends Controller_Profile
     
     function action_edit()
     {
-        $this->require_editor();
+        $this->require_editor();        
+        
         $report_def = $this->report_def;
 
         $title = $report_def->get_title();

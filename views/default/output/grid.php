@@ -27,18 +27,7 @@
         <?php                
             foreach ($columns as $column_id => $column)
             {              
-                $args = @$column['args'] ?: array();
-                $output_args = @$column['output_args'];
-                if ($output_args)
-                {
-                    foreach ($output_args as $k => $v)
-                    {
-                        $args[$k] = $v;
-                    }   
-                }
-                $args['value'] = @$row[$column_id];
-            
-                $res = view((@$column['output_type'] ?: 'output/text'), $args);                    
+                $res = ReportFieldDefinition_Grid::render_cell_value(@$row[$column_id], $column);            
                 echo "<td>$res</td>";
             }
         ?>    

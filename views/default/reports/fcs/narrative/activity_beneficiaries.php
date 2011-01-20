@@ -3,8 +3,8 @@
     $input = @$vars['edit'] ? 'edit_input' : 'view_input';
     
     $field = $vars['field'];
-    $args = $field->get_arg('view_args');
-    $constituencies = $args['constituencies'];
+    $view_args = $field->get_definition()->view_args;
+    $constituencies = $view_args['constituencies'];
     
     //for ($activity_num = 1; $activity_num <= $args['num_activities']; $activity_num++)
     //{
@@ -42,5 +42,5 @@
 
 </table>
 <?php
-    //}
+
 ?>
