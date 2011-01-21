@@ -73,17 +73,17 @@
 {
     position:absolute;
     bottom:0px;
-    left:44px;
+    left:50px;
     width:234px;
     height:150px;    
     background:url(<?php echo $graphicsDir ?>/donate_sticker.jpg) no-repeat left top;
 }
 
-.home_donate_difference
+.home_donate_difference, .home_get_website
 {
-    padding-top:30px;
-    padding-left:25px;
-    padding-right:30px;
+    padding-top:33px;
+    padding-left:15px;
+    padding-right:20px;
     text-align:center;
     color:#5b7d26;
     font-weight:bold;
@@ -171,10 +171,6 @@
     background-color:white;
 }
 
-.home_banner_text h1
-{
-}
-
 .home_banner_text em
 {
     color: #dbea8f;
@@ -183,11 +179,12 @@
     font-style:normal;
 }
 
-.home_banner_text h2
+.home_banner_text h1
 {
     font-size:19px;
+    text-align:right;
     font-weight:normal;
-    padding:0px 10px 0px 5px;
+    padding:0px 13px 0px 5px;
     color:#bbb;
     white-space:nowrap;
 }

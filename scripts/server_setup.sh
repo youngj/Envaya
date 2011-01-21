@@ -151,6 +151,8 @@ fastcgi_param  SERVER_ADDR        \$server_addr;
 fastcgi_param  SERVER_PORT        \$server_port;
 fastcgi_param  SERVER_NAME        \$server_name;
 
+fastcgi_param  GEOIP_COUNTRY_CODE \$geoip_country_code;
+
 # PHP only, required if PHP was built with --enable-force-cgi-redirect
 fastcgi_param  REDIRECT_STATUS    200;
 
@@ -209,6 +211,8 @@ events {
 http {
     include       /etc/nginx/mime.types;
 
+    geoip_country /usr/share/GeoIP/GeoIP.dat;
+    
     access_log  /var/log/nginx/access.log;
     
     log_format combined_time '\$remote_addr - \$remote_user [\$time_local]  '

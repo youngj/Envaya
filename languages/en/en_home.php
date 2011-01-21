@@ -13,5 +13,7 @@ return array(
     'home:donate' => "We're non-profit. Even a small donation will have a big impact in providing essential technology to grassroots organizations in the developing world!",
     'home:follow' => "Follow us:",
     'home:make_difference' => "Make a difference!",
+    'home:sign_up_button' => "Sign Up",
+    'home:sign_up_heading' => "Get a website now",
 );
    

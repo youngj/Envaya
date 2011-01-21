@@ -6,9 +6,7 @@
 <img src='/_graphics/home/envaya-logo-big.gif' width='300' height='61' title='Envaya' alt='Envaya' />
 </a>
 </div>
-<h2>
-<div style='text-align:right'><?php echo __('home:heading_html'); ?></div>
-</h2>
+<h1><?php echo __('home:heading_html'); ?></h1>
 </div>
 <div class='home_banner_photo' style='background-image:url(/_graphics/home/banner_planting.jpg?v5)'></div>
 <div class='home_follow_shadow'></div>
@@ -16,8 +14,27 @@
 <a title='Facebook' href='http://www.facebook.com/pages/Envaya/109170625791670' class='home_follow_icon home_follow_fb'></a>
 <a title='Twitter' href='http://twitter.com/EnvayaTZ' class='home_follow_icon home_follow_twitter'></a>
 <div class='home_donate_sticker'>
+
+<?php
+    if (GeoIP::get_country_code() == 'TZ')
+    {
+?>
+
+<div class='home_get_website'><?php echo __('home:sign_up_heading'); ?></div>
+<a class='home_donate_button' href='/org/new'><span><?php echo __('home:sign_up_button'); ?></span></a>
+
+<?php
+    }
+    else    
+    {
+?>
+
 <div class='home_donate_difference'><?php echo __('home:make_difference'); ?></div>
 <a class='home_donate_button' href='/envaya/contribute'><span><?php echo __('donate'); ?></span></a>
+
+<?php
+    }
+?>
 </div>
 </div>
 

@@ -13,4 +13,6 @@ return array(
     'home:donate' => "Sisi ni bila faida. Hata mchango mdogo utakuwa na athari kubwa kugawa teknolojia muhimu kwa mashirika ya kiraia katika nchi zinazoendelea!",
     'home:follow' => "Tufuate:",
     'home:make_difference' => "Leta mabadiliko!",
+    'home:sign_up_button' => "Jiunge",
+    'home:sign_up_heading' => "Pata tovuti sasa",
 );
