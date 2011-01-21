@@ -36,7 +36,7 @@
 
 <?php
     $contentWidth = 820;
-    $headerLeftWidth = 330;
+    $headerLeftWidth = 340;
     $headerRightWidth = $contentWidth - $headerLeftWidth;
 ?>
 
@@ -177,7 +177,6 @@
 
 .home_banner_text em
 {
-    font-size: 19px;
     color: #dbea8f;
     font-weight:bold;
     font-family: Verdana, sans-serif;
@@ -186,10 +185,11 @@
 
 .home_banner_text h2
 {
-    font-size:16px;
+    font-size:19px;
     font-weight:normal;
     padding:0px 10px 0px 5px;
-    color:#fff;
+    color:#bbb;
+    white-space:nowrap;
 }
 .heading_container #heading
 {

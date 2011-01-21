@@ -10,7 +10,7 @@
 <div style='text-align:right'><?php echo __('home:heading_html'); ?></div>
 </h2>
 </div>
-<div class='home_banner_photo' style='background-image:url(/_graphics/home/banner_planting.jpg?v4)'></div>
+<div class='home_banner_photo' style='background-image:url(/_graphics/home/banner_planting.jpg?v5)'></div>
 <div class='home_follow_shadow'></div>
 <div class='home_follow'><?php echo __('home:follow'); ?></div>
 <a title='Facebook' href='http://www.facebook.com/pages/Envaya/109170625791670' class='home_follow_icon home_follow_fb'></a>

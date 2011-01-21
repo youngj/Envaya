@@ -10,9 +10,11 @@
 </div>
 <p class='last-paragraph'>
 <?php echo __('home:donate') ?>
+
 </p>
+
 <div style='padding-top:6px;text-align:center'>
-<?php echo view('page/donate_button'); ?>
+<a href='/envaya/contribute'><strong><?php echo __('donate_now'); ?></strong></a>
 </div>
     </div>
 </div>

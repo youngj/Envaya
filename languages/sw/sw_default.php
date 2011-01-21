@@ -1,7 +1,7 @@
 <?php
 return array(
     'donate' => 'Changia',
-    'donate_now' => 'Toa msaada sasa!',
+    'donate_now' => 'Changia sasa!',
     
     'menu' => 'Menyu Kuu',
     
