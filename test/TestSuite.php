@@ -10,6 +10,7 @@
 
 $TEST_CASES = array(
     'MobileTest',
+    'UploadTest',    
     'ReportingTest',    
     'FeedTest',
     'EnvayaSiteTest',
@@ -53,7 +54,7 @@ function main()
        2 => STDERR
     );
 
-    $selenium = proc_open('java -jar selenium-server.jar', $descriptorspec, $pipes);
+    $selenium = proc_open('java -jar selenium-server.jar -firefoxProfileTemplate profiles/noflash', $descriptorspec, $pipes);
 
     $descriptorspec = array(
        0 => array("pipe", "r"),

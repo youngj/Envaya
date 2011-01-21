@@ -10,13 +10,19 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-        global $BROWSER, $MOCK_MAIL_FILE;
+        global $MOCK_MAIL_FILE;
         
         @unlink($MOCK_MAIL_FILE);
 
-        $this->s = new Testing_Selenium($BROWSER, "http://localhost");
+        $this->s = $this->init_selenium();
         $this->s->start();
         $this->s->windowMaximize();
+    }
+    
+    public function init_selenium()
+    {
+        global $BROWSER;
+        return new Testing_Selenium($BROWSER, "http://localhost");    
     }
 
     public function open($url)
@@ -67,6 +73,22 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         }
     }   
     
+    public function mustBeVisible($id)
+    {
+        if (!$this->isVisible($id))
+        {
+            throw new Exception("Element $id is not visible");
+        }
+    }       
+    
+    public function mustNotBeVisible($id)
+    {
+        if ($this->isVisible($id))
+        {
+            throw new Exception("Element $id is visible");
+        }
+    }           
+    
     public function isVisible($id)
     {
         return $this->s->isVisible($id);
@@ -80,6 +102,11 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     public function mouseOver($id)
     {
         $this->s->mouseOver($id);
+    }
+    
+    public function getAttribute($attributeLocator)
+    {
+        return $this->s->getAttribute($attributeLocator);
     }
 
     public function type($id, $val)
@@ -185,7 +212,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         // for some reason open() loads the action twice?
         $this->s->getEval("window.location.href='$url';");
         $this->s->waitForPageToLoad(10000);
-    }
+    }    
 }
 
 

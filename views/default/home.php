@@ -3,7 +3,7 @@
 <div class='home_banner_text'>
 <div style='text-align:center;padding-top:10px;padding-left:10px'>
 <a href='/envaya'>
-<img src='/_graphics/home/envaya-logo-big.gif' title='Envaya' alt='Envaya' />
+<img src='/_graphics/home/envaya-logo-big.gif' width='300' height='61' title='Envaya' alt='Envaya' />
 </a>
 </div>
 <h2>
