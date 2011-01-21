@@ -88,16 +88,7 @@
             {
                 if ($attachment['Type'] == 'image')
                 {
-                    $tempFileName = tempnam(sys_get_temp_dir(), 'img');
-                    $fh = fopen($tempFileName, 'wb');
-                    fwrite($fh, $attachment['Data']);
-                    fclose($fh);
-                    
-                    $json = json_encode(upload_image($tempFileName, NewsUpdate::get_image_sizes()));
-                    $imageFiles = get_uploaded_files($json);
-                    
-                    
-                    print_msg($tempFileName);
+                    // here we could save images
                     break; 
                 }
             }

@@ -53,9 +53,9 @@ class UploadTest extends SeleniumTest
         
         $this->checkImage($imgUrl, 10000, 25000);
                 
-        $this->mustNotExist("//img[contains(@src,'large.jpg')]");
-        $this->clickAndWait("//img[contains(@src,'medium.jpg')]");        
-        $this->mouseOver("//img[contains(@src,'large.jpg')]");
+        $this->mustNotExist("//img[contains(@src,'/large.jpg')]"); 
+        $this->clickAndWait("//img[contains(@src,'/medium.jpg')]");
+        $this->mouseOver("//img[contains(@src,'/large.jpg')]");
         
         $largeImgUrl = $this->getAttribute("//img[contains(@src,'/large.jpg')]@src");
         

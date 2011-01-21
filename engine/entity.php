@@ -584,7 +584,7 @@ abstract class Entity extends Model
 
         if ($isHTML)
         {
-            $thumbnailUrl = get_thumbnail_src($content);
+            $thumbnailUrl = UploadedFile::get_thumbnail_url_from_html($content);
 
             $this->set_data_type(DataType::Image, $thumbnailUrl != null);
             $this->thumbnail_url = $thumbnailUrl;            

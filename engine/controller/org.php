@@ -347,7 +347,7 @@ class Controller_Org extends Controller
     {
         $this->page_draw_vars['no_top_bar'] = true;
 
-        $file = get_file_from_url(get_input('src'));
+        $file = UploadedFile::get_from_url(get_input('src'));
 
         $content = view('org/selectImage',
             array(

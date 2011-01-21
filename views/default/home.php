@@ -1,3 +1,7 @@
+<?php
+    $developingVersion = GeoIP::is_supported_country();
+?>
+
 <div class='home_content_bg'>
 <div class='home_banner'>
 <div class='home_banner_text'>
@@ -9,14 +13,27 @@
 <h1><?php echo __('home:heading_html'); ?></h1>
 </div>
 <div class='home_banner_photo' style='background-image:url(/_graphics/home/banner_planting.jpg?v5)'></div>
+
+<?php
+
+if (!$developingVersion)
+{
+
+?>
+
 <div class='home_follow_shadow'></div>
 <div class='home_follow'><?php echo __('home:follow'); ?></div>
 <a title='Facebook' href='http://www.facebook.com/pages/Envaya/109170625791670' class='home_follow_icon home_follow_fb'></a>
 <a title='Twitter' href='http://twitter.com/EnvayaTZ' class='home_follow_icon home_follow_twitter'></a>
+
+<?php 
+    }
+?>
+
 <div class='home_donate_sticker'>
 
 <?php
-    if (GeoIP::get_country_code() == 'TZ')
+    if ($developingVersion)
     {
 ?>
 
@@ -48,7 +65,23 @@
 <?php echo view('home/for_everyone'); ?>
 </td>
 <td width='363' rowspan='2' class='home_bottom_right'>
-<?php echo view('home/what_we_do'); ?>
+<div class='home_section home_section_right'>
+    <div class='home_heading heading_gray'><h4><?php echo __("home:whatwedo") ?></h4></div>
+    <div class='home_about'>   
+<?php 
+
+    if ($developingVersion)
+    {
+        echo view('home/about_developing'); 
+    }
+    else 
+    {
+        echo view('home/about'); 
+    }
+
+?>
+    </div>   
+</div>
 </td>
 </tr>
 <tr>

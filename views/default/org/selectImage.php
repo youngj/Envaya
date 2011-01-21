@@ -183,7 +183,7 @@
     <?php
     if ($current)
     {
-        $fileGroup = json_encode(get_file_group_array($current->get_files_in_group()));
+        $fileGroup = UploadedFile::json_encode_array($current->get_files_in_group());
         ?>
         uploader.swfupload.uploadSuccess(null, <?php echo json_encode($fileGroup) ?>);
         <?php

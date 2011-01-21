@@ -255,7 +255,7 @@ class Controller_Profile extends Controller
             $org->save();
         }
 
-        $iconFiles = get_uploaded_files($_POST['icon']);
+        $iconFiles = UploadedFile::json_decode_array($_POST['icon']);
 
         if (get_input('deleteicon'))
         {
@@ -268,7 +268,7 @@ class Controller_Profile extends Controller
             system_message(__("icon:saved"));
         }
 
-        $headerFiles = get_uploaded_files($_POST['header']);
+        $headerFiles = UploadedFile::json_decode_array($_POST['header']);
 
         $customHeader = (int)get_input('custom_header');
 
@@ -671,15 +671,18 @@ class Controller_Profile extends Controller
             if (!$imageData) // mobile version uploads image files when the form is submitted, rather than asynchronously via javascript
             {     
                 $sizes = json_decode(get_input('sizes'));
-                $imageData = json_encode(upload_image($_FILES['imageFile'.$imageNumber], $sizes));
+                $images = UploadedFile::upload_images_from_input($_FILES['imageFile'.$imageNumber], $sizes);
+            }
+            else
+            {
+                $images = UploadedFile::json_decode_array($imageData);
             }
             
             $imageCaption = get_input('imageCaption'.$imageNumber);
-
-            $images = get_uploaded_files($imageData);
-            $image = @$images['large'] ?: @$images['medium'] ?: @$images['small'];
             
-            $body = "<p><img class='image_center' src='{$image['url']}' width='{$image['width']}' height='{$image['height']}' /></p>";
+            $image = $images[sizeof($images) - 1];
+            
+            $body = "<p><img class='image_center' src='{$image->get_url()}' width='{$image->width}' height='{$image->height}' /></p>";
             if ($imageCaption)
             {
                 $body .= "<p>".view('input/longtext', array('value' => $imageCaption))."</p>";

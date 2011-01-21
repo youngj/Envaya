@@ -1,6 +1,3 @@
-<div class='home_section home_section_right'>
-    <div class='home_heading heading_gray'><h4><?php echo __("home:whatwedo") ?></h4></div>
-    <div class='home_about'>   
 <p class='last-paragraph'>
 <?php echo __('home:description').' '.__('home:description2').' '; ?>
 <a class='home_more' href='/envaya'><?php echo __('home:learn_more') ?></a>
@@ -15,6 +12,4 @@
 
 <div style='padding-top:6px;text-align:center'>
 <a href='/envaya/contribute'><strong><?php echo __('donate_now'); ?></strong></a>
-</div>
-    </div>
 </div>

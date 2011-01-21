@@ -118,9 +118,9 @@ class User extends Entity
         }
         else
         {
-            foreach ($imageFiles as $size => $filedata)
+            foreach ($imageFiles as $srcFile)
             {
-                $srcFile = $filedata['file'];
+                $size = $srcFile->size;
                 $destFile = $this->get_icon_file($size);
                 $srcFile->copy_to($destFile);
             }
@@ -130,19 +130,19 @@ class User extends Entity
         $this->save();
     }
 
-    public function get_header_file($size = '')
+    public function get_header_file()
     {
         $file = new UploadedFile();
         $file->owner_guid = $this->guid;
-        $file->filename = "header$size.jpg";
+        $file->filename = "headerlarge.jpg";
         return $file;
     }
 
-    public function get_header_url($size = 'large')
+    public function get_header_url()
     {
         if ($this->custom_header)
         {
-            return $this->get_header_file($size)->get_url()."?{$this->time_updated}";
+            return url_with_param($this->get_header_file()->get_url(), 't', $this->time_updated);
         }
         return '';
     }
@@ -155,16 +155,14 @@ class User extends Entity
         }
         else
         {
-            foreach ($imageFiles as $size => $filedata)
-            {
-                $srcFile = $filedata['file'];
-                $destFile = $this->get_header_file($size);
-                $srcFile->copy_to($destFile);
-            }
+            $srcFile = $imageFiles[0];            
+            
+            $destFile = $this->get_header_file();
+            $srcFile->copy_to($destFile);
 
             $this->custom_header = json_encode(array(
-                'width' => $imageFiles['large']['width'],
-                'height' => $imageFiles['large']['height']
+                'width' => $srcFile->width,
+                'height' => $srcFile->height
             ));
         }
         $this->save();

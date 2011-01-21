@@ -304,6 +304,7 @@ a.icon_feed:hover       { background-position:left -440px; }
 {
     font-style:italic;
     font-size:11px;
+    white-space:nowrap;
 }
 
 .home_featured

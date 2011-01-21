@@ -16,4 +16,9 @@ class GeoIP
         
         return @$_SERVER['GEOIP_COUNTRY_CODE'];
     }
+    
+    static function is_supported_country()
+    {
+        return static::get_country_code() == 'TZ';
+    }
 }

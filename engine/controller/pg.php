@@ -310,21 +310,20 @@ class Controller_Pg extends Controller {
             if (get_input('image'))
             {
                 $sizes = json_decode(get_input('sizes'));
-                $upload_res = upload_image($_FILES['file'], $sizes);
+                $files = UploadedFile::upload_images_from_input($_FILES['file'], $sizes);
+                $json = UploadedFile::json_encode_array($files);
             }
             else
             {
-                $upload_res = upload_file($_FILES['file']);
-            }
+                $file = UploadedFile::upload_from_input($_FILES['file']);
+                $json = UploadedFile::json_encode_array($file);
+            }            
         }
         catch (Exception $ex)
         {
-            $upload_res = array('error' => $ex->getMessage());
+            $json = json_encode(array('error' => $ex->getMessage()));
         }
                 
-        
-        $json = json_encode($upload_res);
-
         if (get_input('iframe'))
         {
             Session::set('lastUpload', $json);
