@@ -12,7 +12,7 @@ return array(
     'home:description2' => "We build tools that allow them to easily create their own websites, and provide larger NGOs tools to support these local efforts.",    
     'home:description_developing' => "With Envaya, civil society organizations in Tanzania can create their own websites, for free, where they can share news about their projects with other organizations and people around the world.",
     'home:sign_up_info' => "If you are a representative of a civil society organization in Tanzania that hasn't yet registered for Envaya, %s! In about five minutes, you can create a website for your organization.",
-    'home:donate' => "We're non-profit. Even a small donation will have a big impact in providing essential technology to grassroots organizations in the developing world!",
+    'home:donate' => "We're non-profit. Even a small donation will help provide essential technology to grassroots organizations in the developing world!",
     'home:follow' => "Follow us:",
     'home:make_difference' => "Make a difference!",
     'home:sign_up_button' => "Sign Up",

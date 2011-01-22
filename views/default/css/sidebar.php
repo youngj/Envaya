@@ -85,15 +85,27 @@
 
 #right_content h2
 {
-    font-size:1.2em;
-    padding-top:15px;
+    clear:both;
+    font-size:18px;
+    font-weight:normal;
+    padding-top:5px;
     padding-bottom:10px;
-    border-bottom: 1px dashed #b2b2b2;
     margin-bottom:10px;
+    border-bottom:1px dashed #b1b1b1;    
 }
 
 #right_content .image_right
 {
     border:1px solid #ccc;
-    margin-left:12px;
+    margin-top:3px;
+    margin-right:5px;
+    margin-left:15px;
+    margin-bottom:15px;
+}
+
+#right_content h2 small
+{
+    font-size:15px;
+    padding-left:5px;
+    color:#808080;
 }
