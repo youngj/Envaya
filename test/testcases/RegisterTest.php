@@ -384,6 +384,8 @@ class RegisterTest extends SeleniumTest
 
         $url = $this->getLinkFromEmail($email);
 
+        sleep(1);
+        
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
 
         $this->setUrl($url);

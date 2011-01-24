@@ -29,6 +29,7 @@ function main()
     global $BROWSER, $TEST_CASES, $MOCK_MAIL_FILE;
 
     $opts = getopt('',array("browser:","test:"));
+        
     $BROWSER = @$opts['browser'] ?: '*firefox';
 
     if (@$opts['test'])

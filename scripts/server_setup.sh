@@ -32,6 +32,9 @@ mkdir -p /etc/nginx/ssl
 chown www-data:www-data /etc/nginx/ssl
 chmod 700 /etc/nginx/ssl
 
+mkdir -p /var/nginx/cache
+chmod 777 /var/nginx/cache
+
 mkdir -p /var/elgg-data
 chmod 777 /var/elgg-data
 
@@ -131,6 +134,13 @@ fastcgi_pass 127.0.0.1:9000;
 fastcgi_param SCRIPT_FILENAME $INSTALL_DIR/\$fastcgi_script_name;
 fastcgi_param PATH_INFO \$fastcgi_script_name;
 
+fastcgi_cache envaya;
+fastcgi_no_cache \$cookie_envaya \$arg_nocache;
+fastcgi_cache_bypass \$cookie_envaya \$arg_nocache;
+fastcgi_cache_key "\$scheme:\$host:\$request_uri:\$cookie_lang\$arg_lang:\$cookie_view\$arg_view:\$geoip_country_code:\$http_accept_encoding";
+fastcgi_cache_valid any 1m;
+fastcgi_cache_use_stale error timeout http_500;
+
 fastcgi_param  QUERY_STRING       \$query_string;
 fastcgi_param  REQUEST_METHOD     \$request_method;
 fastcgi_param  CONTENT_TYPE       \$content_type;
@@ -211,6 +221,8 @@ events {
 http {
     include       /etc/nginx/mime.types;
 
+    fastcgi_cache_path /var/nginx/cache/envaya levels=2:2 keys_zone=envaya:10m;
+    
     geoip_country /usr/share/GeoIP/GeoIP.dat;
     
     access_log  /var/log/nginx/access.log;
