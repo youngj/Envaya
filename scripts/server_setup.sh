@@ -137,7 +137,7 @@ fastcgi_param PATH_INFO \$fastcgi_script_name;
 fastcgi_cache envaya;
 fastcgi_no_cache \$cookie_envaya \$arg_nocache;
 fastcgi_cache_bypass \$cookie_envaya \$arg_nocache;
-fastcgi_cache_key "\$scheme:\$host:\$request_uri:\$cookie_lang\$arg_lang:\$cookie_view\$arg_view:\$geoip_country_code:\$http_accept_encoding";
+fastcgi_cache_key "\$scheme:\$host:\$request_uri:\$cookie_lang:\$cookie_view:\$geoip_country_code:\$http_accept_encoding";
 fastcgi_cache_valid any 1m;
 fastcgi_cache_use_stale error timeout http_500;
 

@@ -1,5 +1,16 @@
 <?php
     $developingVersion = GeoIP::is_supported_country();
+    
+    PageContext::add_header_html('ie_heading_css', "    
+<!--[if lte IE 7]>
+<style type='text/css'>
+.home_banner_text h1 .centered
+{
+    display:inline;
+}
+</style>
+<![endif]-->       
+");
 ?>
 
 <div class='home_content_bg'>
@@ -10,7 +21,24 @@
 <img src='/_graphics/home/envaya-logo-big.gif' width='300' height='61' title='Envaya' alt='Envaya' />
 </a>
 </div>
-<h1><?php echo __('home:heading_html'); ?></h1>
+<h1>
+<div class='centered'>
+
+<?php 
+
+if ($developingVersion)
+{
+    echo sprintf(__('home:heading_html_developing'), GeoIP::get_country_name()); 
+}
+else
+{
+    echo __('home:heading_html');     
+}
+
+
+?>
+</div>
+</h1>
 </div>
 <div class='home_banner_photo' style='background-image:url(/_graphics/home/banner_planting.jpg?v5)'></div>
 

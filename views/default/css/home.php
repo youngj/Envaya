@@ -182,12 +182,19 @@
 .home_banner_text h1
 {
     font-size:19px;
-    text-align:right;
+    text-align:center;
     font-weight:normal;
-    padding:0px 13px 0px 5px;
+    padding:0px 5px 0px 5px;
     color:#bbb;
     white-space:nowrap;
 }
+
+.home_banner_text h1 .centered
+{
+    display:inline-block;
+    text-align:right;
+}
+
 .heading_container #heading
 {
     display:none;

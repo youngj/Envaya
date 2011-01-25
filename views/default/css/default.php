@@ -121,7 +121,7 @@ blockquote p {
 #topbar
 {
     width:100%;
-    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient_sm.gif?v5") repeat-x left -1px;
+    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient_sm.gif?v7") repeat-x left -1px;
 }
 
 #translate_bar
