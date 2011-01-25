@@ -366,7 +366,7 @@ blockquote p {
 
 .topbarLinks a:hover
 {
-    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient_sm.gif?v5") repeat-x left -44px;
+    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient_sm.gif?v7") repeat-x left -30px;
     color:#e6e6e6;
     text-decoration:none;
 }
