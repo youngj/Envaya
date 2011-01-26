@@ -7,7 +7,6 @@ class Controller_Admin extends Controller
     {
         $this->require_admin();
         PageContext::set_theme('editor');
-
     }
 
     function action_contact()
@@ -607,4 +606,103 @@ class Controller_Admin extends Controller
         }        
     }
     
+    function action_add_featured_photo()
+    {
+        $title = __('featured_photo:add');
+        $body = view('admin/add_featured_photo', array(
+            'image_url' => get_input('image_url'),
+            'href' => get_input('href'),
+            'user_guid' => get_input('user_guid')
+        ));
+        $this->page_draw($title, view_layout("one_column_padded", view_title($title), $body));         
+    }
+    
+    function action_edit_featured_photo()
+    {
+        $title = __('featured_photo:edit');
+        
+        $photo = FeaturedPhoto::query()->where("e.guid = ?", get_input('guid'))->get();
+        
+        if (!$photo)
+        {
+            return not_found();
+        }
+        
+        $body = view('admin/edit_featured_photo', array(
+            'photo' => $photo,
+        ));
+        $this->page_draw($title, view_layout("one_column_padded", view_title($title), $body));         
+    }
+    
+    function action_new_featured_photo()
+    {
+        $this->validate_security_token();
+        
+        $featured_photo = new FeaturedPhoto();
+        $featured_photo->user_guid = get_input('user_guid');
+        $featured_photo->image_url = get_input('image_url');
+        $featured_photo->x_offset = (int)get_input('x_offset');
+        $featured_photo->y_offset = (int)get_input('y_offset');
+        $featured_photo->weight = (double)get_input('weight');
+        $featured_photo->href = get_input('href');
+        $featured_photo->caption = get_input('caption');
+        $featured_photo->org_name = get_input('org_name');
+        $featured_photo->active = get_input('active') == 'yes' ? 1 : 0;
+        $featured_photo->save();
+        
+        system_message(__("featured_photo:added"));
+        forward("/admin/featured_photos");
+    }
+    
+    function action_save_featured_photo()
+    {
+        $this->validate_security_token();
+        
+        $featured_photo = FeaturedPhoto::query()->where('e.guid = ?', get_input('guid'))->get();
+        if (!$featured_photo)
+        {
+            return not_found();
+        }        
+                
+        $featured_photo->x_offset = (int)get_input('x_offset');
+        $featured_photo->y_offset = (int)get_input('y_offset');
+        $featured_photo->weight = (double)get_input('weight');
+        $featured_photo->href = get_input('href');
+        $featured_photo->caption = get_input('caption');
+        $featured_photo->org_name = get_input('org_name');
+        $featured_photo->active = get_input('active') == 'yes' ? 1 : 0;
+        $featured_photo->save();
+        
+        system_message(__("featured_photo:saved"));
+        forward("/admin/featured_photos");    
+    }
+    
+    function action_delete_featured_photo()
+    {
+        $this->validate_security_token();
+        
+        $photo = FeaturedPhoto::query()->where('e.guid = ?', get_input('guid'))->get();
+        if ($photo)
+        {
+            $photo->delete();
+        }
+        else
+        {
+            return not_found();
+        }
+        
+        system_message(__("featured_photo:deleted"));
+        forward("/admin/featured_photos");
+    }
+    
+    function action_featured_photos()
+    {
+        PageContext::set_theme('editor_wide');
+    
+        $title = __('featured_photo:all');
+        $body = view('admin/featured_photos', array(
+            'photos' => FeaturedPhoto::query()->filter()
+        ));
+        $this->page_draw($title, view_layout("one_column_padded", view_title($title), $body));          
+    }
 }

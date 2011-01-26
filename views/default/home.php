@@ -1,7 +1,18 @@
 <?php
     $developingVersion = GeoIP::is_supported_country();
     
-    PageContext::add_header_html('ie_heading_css', "    
+    $defaultPhoto = "/_graphics/home/banner_planting.jpg?v5";
+    
+    PageContext::add_header_html('heading_css', "        
+<noscript>
+<style type='text/css'>
+#home_banner_photo
+{
+    background-image:url($defaultPhoto);
+}
+</style>
+</noscript>       
+    
 <!--[if lte IE 7]>
 <style type='text/css'>
 .home_banner_text h1 .centered
@@ -14,7 +25,7 @@
 ?>
 
 <div class='home_content_bg'>
-<div class='home_banner'>
+<div id='home_banner'>
 <div class='home_banner_text'>
 <div style='text-align:center;padding-top:10px;padding-left:10px'>
 <a href='/envaya'>
@@ -40,7 +51,101 @@ else
 </div>
 </h1>
 </div>
-<div class='home_banner_photo' style='background-image:url(/_graphics/home/banner_planting.jpg?v5)'></div>
+
+<div class='slideshow_container'>
+    <div id='home_banner_photo' class='slideshow_photo'></div>
+    <div class='slideshow_shadow'></div>
+    <div id='home_slideshow_controls' class='slideshow_controls'></div>    
+</div>
+
+<script type='text/javascript'>
+(function ()
+{
+    var images = <?php echo FeaturedPhoto::get_json_array(); ?>,        
+        currentIndex = -1,
+        caption = createElem('a'),
+        orgLink = createElem('a'),
+        controls = document.getElementById('home_slideshow_controls');
+    
+    controls.appendChild(
+        createElem('div', {className: 'slideshow_caption'},
+            caption,
+            orgLink
+        )
+    );
+        
+    if (images.length > 1)
+    {
+        controls.appendChild(createElem('div', {className: 'slideshow_nav'},
+            createElem('a', {
+                    className: 'slideshow_nav_prev', 
+                    href:'javascript:void(0)', 
+                    click:function() { setCurrentIndex(currentIndex - 1); }
+                }, 
+                createElem('span',"<")
+            ),
+            createElem('a', {
+                    className: 'slideshow_nav_next', 
+                    href:'javascript:void(0)', 
+                    click:function() { setCurrentIndex(currentIndex + 1); }
+                }, 
+                createElem('span',">")
+            )
+        ));
+    }
+        
+    function setCurrentIndex(index)
+    {    
+        index = (index + images.length) % images.length;
+    
+        if (currentIndex != -1)
+        {
+            images[currentIndex].elem.style.display = 'none';
+        }
+    
+        var image = images[index];
+    
+        if (!image.elem)
+        {
+            var imgContainer = document.getElementById('home_banner_photo');    
+            
+            var img = image.elem = createElem('img',{
+                src:image.url
+            });
+            img.style.left = (-image.x || 0) + "px ";
+            img.style.top = (-image.y || 0) + "px ";
+            imgContainer.appendChild(img);                        
+        }   
+        image.elem.style.display = 'block';
+        
+        caption.href = image.href;
+        orgLink.href = image.href;
+        removeChildren(orgLink);
+        removeChildren(caption);
+        caption.appendChild(document.createTextNode(image.caption));
+        orgLink.appendChild(document.createTextNode(image.org));
+        
+        currentIndex = index;
+    }
+    
+    function getStartIndex()
+    {
+        for (var i = 0; i < 100; i++)
+        {
+            var index = Math.floor(Math.random() * images.length);
+            var image = images[index];
+
+            if (Math.random() <= images[index].weight)
+            {
+                return index;
+            }
+        }
+        return 0;
+    }
+    
+    setCurrentIndex(getStartIndex());
+})();
+</script>
 
 <?php
 
@@ -49,7 +154,6 @@ if (!$developingVersion)
 
 ?>
 
-<div class='home_follow_shadow'></div>
 <div class='home_follow'><?php echo __('home:follow'); ?></div>
 <a title='Facebook' href='http://www.facebook.com/pages/Envaya/109170625791670' class='home_follow_icon home_follow_fb'></a>
 <a title='Twitter' href='http://twitter.com/EnvayaTZ' class='home_follow_icon home_follow_twitter'></a>

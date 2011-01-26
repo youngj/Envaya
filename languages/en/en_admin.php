@@ -153,6 +153,8 @@ return array(
     'featured:edit' => 'Edit featured site',
     'featured:add' => 'Add featured site',
     
+    'featured_photo:add' => "Add featured photo",
+    
     'widget:invalid_class' => 'The handler %s was not found.',
     'widget:options' => 'Page Options',
     'widget:title' => 'Page Title',

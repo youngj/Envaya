@@ -58,7 +58,7 @@ class RegisterTest extends SeleniumTest
     {
         $this->open("/");
 
-        $this->clickAndWait("//a[contains(@href,'org/new')]");
+        $this->clickAndWait("//a[contains(@href,'/org/new')]");
 
         /* qualification */
         $this->click("//input[@name='org_type' and @value='p']");
@@ -316,7 +316,7 @@ class RegisterTest extends SeleniumTest
     {
         //$this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->clickAndWait("//a[contains(@href,'home')]");
-        $this->clickAndWait("//a[contains(@href,'org/new')]");
+        $this->clickAndWait("//a[contains(@href,'/org/new')]");
 
         /* qualification */
         $this->click("//input[@name='org_type' and @value='np']");

@@ -20,6 +20,7 @@
         14 => array('object', 'report_definition', 'ReportDefinition'),
         15 => array('object', 'report', 'Report'),
         16 => array('object', 'comment', 'Comment'),
+        17 => array('object', 'featured_photo', 'FeaturedPhoto'),
     );
     foreach ($ENTITY_SUBTYPES as $val => $subtypeArr)
     {

@@ -177,7 +177,7 @@ function setSubmitted()
 
 function addImageLink(img)
 {    
-    var match = /(\d+)\/([\w\.]+)\/([\w\.]+)/.exec(img.src);
+    var match = /[\=\/](\d+)\/([\w\.]+)\/([\w\.]+)/.exec(img.src);
         
     if (match && match[3] != 'large.jpg')
     {

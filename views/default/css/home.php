@@ -1,5 +1,6 @@
 <?php
     include(__DIR__."/default.php");
+    include(__DIR__."/slideshow.php");
     $graphicsDir = "/_graphics/home";
 ?>
 
@@ -40,7 +41,7 @@
     $headerRightWidth = $contentWidth - $headerLeftWidth;
 ?>
 
-.home_banner
+#home_banner
 {
     position:relative;
     height:299px;
@@ -55,18 +56,6 @@
     width:<?php echo $headerLeftWidth; ?>px;
     height:299px;
     background:#333;
-}
-
-.home_follow_shadow
-{
-    position:absolute;
-    bottom:0px;
-    left:<?php echo $headerLeftWidth; ?>px;
-    height:48px;
-    width:<?php echo $headerRightWidth; ?>px;
-    background-color:#000;
-    opacity:0.6;
-    filter:alpha(opacity=60);
 }
 
 .home_donate_sticker
@@ -116,22 +105,11 @@
     font-size:18px;
 }
 
-
-.home_banner_photo
-{
-    position:absolute;
-    left:<?php echo $headerLeftWidth; ?>px;
-    top:0px;
-    height:299px;
-    width:<?php echo $headerRightWidth; ?>px;
-    background-color:#f0f0f0;
-}
-
 .home_follow
 {
     position:absolute;
     bottom:10px;
-    right:115px;
+    right:110px;
     text-align:right;
     width:300px;
     color:#ccc;
@@ -150,13 +128,13 @@
 
 .home_follow_fb
 {
-    right:65px;    
+    right:60px;    
 }
 
 .home_follow_twitter
 {
     background-position:-36px top;
-    right:20px;
+    right:15px;
 }
 
 
