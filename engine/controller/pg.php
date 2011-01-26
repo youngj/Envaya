@@ -4,8 +4,6 @@ class Controller_Pg extends Controller {
 
     function action_login()
     {
-        $this->require_https();
-
         $username = get_input('username');
         $next = get_input('next');
         $error = get_input('error');
