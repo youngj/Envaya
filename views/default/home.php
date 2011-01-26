@@ -59,39 +59,45 @@ else
 </div>
 
 <script type='text/javascript'>
-(function ()
-{
+(function () {
     var images = <?php echo FeaturedPhoto::get_json_array(); ?>,        
         currentIndex = -1,
         caption = createElem('a'),
         orgLink = createElem('a'),
         controls = document.getElementById('home_slideshow_controls');
     
-    controls.appendChild(
-        createElem('div', {className: 'slideshow_caption'},
-            caption,
-            orgLink
-        )
-    );
+    controls.appendChild(createElem('div', {className: 'slideshow_caption'},caption,orgLink));
         
     if (images.length > 1)
     {
         controls.appendChild(createElem('div', {className: 'slideshow_nav'},
             createElem('a', {
                     className: 'slideshow_nav_prev', 
-                    href:'javascript:void(0)', 
-                    click:function() { setCurrentIndex(currentIndex - 1); }
+                    href:'javascript:void(0)',
+                    mouseover:function() { preloadIndex(currentIndex - 1); },
+                    click:function() { setCurrentIndex(currentIndex - 1); preloadIndex(currentIndex - 1); }
                 }, 
                 createElem('span',"<")
             ),
             createElem('a', {
                     className: 'slideshow_nav_next', 
                     href:'javascript:void(0)', 
-                    click:function() { setCurrentIndex(currentIndex + 1); }
+                    mouseover:function() { preloadIndex(currentIndex + 1); },
+                    click:function() { setCurrentIndex(currentIndex + 1); preloadIndex(currentIndex + 1); }
                 }, 
                 createElem('span',">")
             )
         ));
+    }
+    
+    function preloadIndex(index)
+    {
+        var image = images[(index + images.length) % images.length];        
+        if (!image.elem && !image.preload)
+        {
+            image.preload = new Image();
+            image.preload.src = image.url;            
+        }   
     }
         
     function setCurrentIndex(index)
@@ -107,14 +113,11 @@ else
     
         if (!image.elem)
         {
-            var imgContainer = document.getElementById('home_banner_photo');    
-            
-            var img = image.elem = createElem('img',{
-                src:image.url
-            });
-            img.style.left = (-image.x || 0) + "px ";
-            img.style.top = (-image.y || 0) + "px ";
-            imgContainer.appendChild(img);                        
+            var imgContainer = document.getElementById('home_banner_photo');                
+            var img = image.elem = createElem('img',{src:image.url});
+            img.style.left = (-image.x || 0) + "px";
+            img.style.top = (-image.y || 0) + "px";
+            imgContainer.appendChild(img);
         }   
         image.elem.style.display = 'block';
         
