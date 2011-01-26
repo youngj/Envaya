@@ -64,9 +64,16 @@ else
         currentIndex = -1,
         caption = createElem('a'),
         orgLink = createElem('a'),
+        imgContainer = document.getElementById('home_banner_photo'),
         controls = document.getElementById('home_slideshow_controls');
     
-    controls.appendChild(createElem('div', {className: 'slideshow_caption'},caption,orgLink));
+    if (!images.length)
+    {
+        imgContainer.style.backgroundImage = "url(<?php echo $defaultPhoto; ?>)";
+        return;
+    }    
+    
+    controls.appendChild(createElem('div', {className: 'slideshow_caption'}, caption, orgLink));
         
     if (images.length > 1)
     {
@@ -113,7 +120,6 @@ else
     
         if (!image.elem)
         {
-            var imgContainer = document.getElementById('home_banner_photo');                
             var img = image.elem = createElem('img',{src:image.url});
             img.style.left = (-image.x || 0) + "px";
             img.style.top = (-image.y || 0) + "px";
