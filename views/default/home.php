@@ -165,7 +165,7 @@ if (!$developingVersion)
 
 <div class='home_follow'><?php echo __('home:follow'); ?></div>
 <a title='Facebook' href='http://www.facebook.com/pages/Envaya/109170625791670' class='home_follow_icon home_follow_fb'></a>
-<a title='Twitter' href='http://twitter.com/EnvayaTZ' class='home_follow_icon home_follow_twitter'></a>
+<a title='Twitter' href='http://twitter.com/Envaya' class='home_follow_icon home_follow_twitter'></a>
 
 <?php 
     }
