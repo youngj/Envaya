@@ -64,7 +64,7 @@ echo view('admin/nudge_photo', array(
 
 <div class='input'>
 <label>Weight</label><br />
-<?php echo view('input/text', array('internalname' => 'weight', 'value' => "1.0")); ?>
+<?php echo view('input/text', array('internalname' => 'weight', 'value' => "0.0")); ?>
 </div>
 
 <div class='input'>
