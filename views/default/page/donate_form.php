@@ -168,5 +168,5 @@
     </tr>
     </table>   
     
-    <iframe src='pg/tci_donate_frame' style='width:1px;height:1px;border:0px' frameborder='0' border='0'></iframe>
+    <div style='width:1px;height:1px;overflow:hidden'><iframe src='pg/tci_donate_frame' frameborder='0' border='0'></iframe></div>
 </form>
