@@ -102,7 +102,7 @@ else
                     className: 'slideshow_nav_prev', 
                     href:'javascript:void(0)',
                     mouseover:function() { preloadIndex(currentIndex - 1); },
-                    click:function() { setCurrentIndex(currentIndex - 1); preloadIndex(currentIndex - 1); }
+                    click:function() { setTimeout(function() { setCurrentIndex(currentIndex - 1); preloadIndex(currentIndex - 1); }, 10); }
                 }, 
                 createElem('span',"\xab")
             ),
@@ -110,7 +110,7 @@ else
                     className: 'slideshow_nav_next', 
                     href:'javascript:void(0)', 
                     mouseover:function() { preloadIndex(currentIndex + 1); },
-                    click:function() { setCurrentIndex(currentIndex + 1); preloadIndex(currentIndex + 1); }
+                    click:function() { setTimeout(function() { setCurrentIndex(currentIndex + 1); preloadIndex(currentIndex + 1); }, 10); }
                 }, 
                 createElem('span',"\xbb")
             )
