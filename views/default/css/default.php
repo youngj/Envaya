@@ -1132,3 +1132,29 @@ input[type="submit"] {
     padding-top:5px;
     height:30px;
 }
+
+#viewtype
+{
+    float:right;
+}
+
+.image_left
+{
+    float:left;
+    clear:left;
+    margin-right:8px;
+    margin-bottom:8px;
+}
+.image_right
+{
+    float:right;
+    clear:right;
+    margin-left:8px;
+    margin-bottom:8px;
+}
+.image_center
+{
+    display:block;
+    margin:0 auto;
+    text-align:center;
+}

@@ -1,4 +1,4 @@
-<div style='text-align:center'>
+<div style='padding:0px 10px'>
 
 <?php
     $site_org = PageContext::get_site_org();

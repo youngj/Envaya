@@ -325,11 +325,6 @@ a.selected
     padding:0px 10px 0px 10px;
 }
 
-#viewtype
-{
-    float:right;
-}
-
 .footerLinks
 {
     padding:5px;
@@ -379,26 +374,6 @@ a.selected
     margin-bottom:0;
 }
 
-.image_left
-{
-    float:left;
-    clear:left;
-    margin-right:8px;
-    margin-bottom:8px;
-}
-.image_right
-{
-    float:right;
-    clear:right;
-    margin-left:8px;
-    margin-bottom:8px;
-}
-.image_center
-{
-    display:block;
-    margin:0 auto;
-    text-align:center;
-}
 
 .feed_snippet
 {
