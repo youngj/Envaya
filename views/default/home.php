@@ -54,8 +54,15 @@ else
 
 <div class='slideshow_container'>
     <div id='home_banner_photo' class='slideshow_photo'></div>
-    <div class='slideshow_shadow'></div>
+    <div id='home_caption_shadow' class='slideshow_shadow'></div>
     <div id='home_slideshow_controls' class='slideshow_controls'></div>    
+    <div id='home_follow_container'>
+    <?php if (!$developingVersion) { ?>
+        <div class='home_follow'><?php echo __('home:follow'); ?></div>
+    <?php } ?>
+        <a title='Facebook' href='http://www.facebook.com/pages/Envaya/109170625791670' class='home_follow_icon home_follow_fb'></a>
+        <a title='Twitter' href='http://twitter.com/Envaya' class='home_follow_icon home_follow_twitter'></a>
+    </div>
 </div>
 
 <script type='text/javascript'>
@@ -72,7 +79,7 @@ else
         }
         return a;
     }
-    
+        
     var images = shuffle(<?php echo FeaturedPhoto::get_json_array(); ?>),
         currentIndex = -1,
         caption = createElem('a'),
@@ -148,6 +155,10 @@ else
         orgLink.appendChild(document.createTextNode(image.org));
         
         currentIndex = index;
+
+        var hasCaption = image.caption || image.org;
+        
+        document.getElementById('home_follow_container').style.display = hasCaption ? 'none' : 'block';        
     }
     
     function getStartIndex()
@@ -161,21 +172,6 @@ else
     setCurrentIndex(getStartIndex());
 })();
 </script>
-
-<?php
-
-if (!$developingVersion)
-{
-
-?>
-
-<div class='home_follow'><?php echo __('home:follow'); ?></div>
-<a title='Facebook' href='http://www.facebook.com/pages/Envaya/109170625791670' class='home_follow_icon home_follow_fb'></a>
-<a title='Twitter' href='http://twitter.com/Envaya' class='home_follow_icon home_follow_twitter'></a>
-
-<?php 
-    }
-?>
 
 <div class='home_donate_sticker'>
 
