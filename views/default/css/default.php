@@ -706,7 +706,7 @@ span.contentIntro p {
 
 .submit_button div
 {
-    background: url(<?php echo $graphicsDir ?>/buttons.gif?v2) left -32px;
+    background: #08c url(<?php echo $graphicsDir ?>/buttons.gif?v3) left -32px;
     display:block;
     height:32px;
     margin:0px;
@@ -715,7 +715,7 @@ span.contentIntro p {
 
 .submit_button span
 {
-    background: url(<?php echo $graphicsDir ?>/buttons.gif?v2) right -32px;
+    background: #08c url(<?php echo $graphicsDir ?>/buttons.gif?v3) right -32px; 
     display:block;
     height:24px;
     padding-top:8px;
