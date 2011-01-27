@@ -44,9 +44,9 @@
 
 .slideshow_nav a
 {
-    opacity:0.3;
-    filter:alpha(opacity=30);   
-    color:#000;
+    opacity:0.7;
+    filter:alpha(opacity=70);   
+    color:#fff;
     display:block;
     height:251px;
     width:40px;
@@ -62,11 +62,13 @@
 .slideshow_nav a span
 {
     display:block;
-    padding-top:110px;
+    padding-top:115px;
 }
 
 .slideshow_nav a:hover
 {
+    opacity:0.50;
+    filter:alpha(opacity=50);   
     background-color:#000; 
 }
 

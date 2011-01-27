@@ -60,13 +60,26 @@ else
 
 <script type='text/javascript'>
 (function () {
-    var images = <?php echo FeaturedPhoto::get_json_array(); ?>,        
+    function shuffle(a)
+    {
+        var i = a.length;
+        while (i > 0) {
+            var j = Math.floor(Math.random() * i);
+            i--;
+            var tmp = a[i];
+            a[i] = a[j];
+            a[j] = tmp;
+        }
+        return a;
+    }
+    
+    var images = shuffle(<?php echo FeaturedPhoto::get_json_array(); ?>),
         currentIndex = -1,
         caption = createElem('a'),
         orgLink = createElem('a'),
         imgContainer = document.getElementById('home_banner_photo'),
         controls = document.getElementById('home_slideshow_controls');
-    
+
     if (!images.length)
     {
         imgContainer.style.backgroundImage = "url(<?php echo $defaultPhoto; ?>)";
@@ -84,7 +97,7 @@ else
                     mouseover:function() { preloadIndex(currentIndex - 1); },
                     click:function() { setCurrentIndex(currentIndex - 1); preloadIndex(currentIndex - 1); }
                 }, 
-                createElem('span',"<")
+                createElem('span',"\xab")
             ),
             createElem('a', {
                     className: 'slideshow_nav_next', 
@@ -92,7 +105,7 @@ else
                     mouseover:function() { preloadIndex(currentIndex + 1); },
                     click:function() { setCurrentIndex(currentIndex + 1); preloadIndex(currentIndex + 1); }
                 }, 
-                createElem('span',">")
+                createElem('span',"\xbb")
             )
         ));
     }
@@ -139,16 +152,9 @@ else
     
     function getStartIndex()
     {
-        for (var i = 0; i < 100; i++)
-        {
-            var index = Math.floor(Math.random() * images.length);
-            var image = images[index];
-
-            if (Math.random() <= images[index].weight)
-            {
-                return index;
-            }
-        }
+        for (var i = 0; i < images.length; i++)
+            if (images[i].weight >= Math.random())
+                return i;
         return 0;
     }
     
