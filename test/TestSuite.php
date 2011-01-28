@@ -20,8 +20,7 @@ $TEST_CASES = array(
 $MOCK_MAIL_FILE = __DIR__."/mail.out";
 
 require_once '../scripts/cmdline.php';
-require_once 'PHPUnit/Framework.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
+require_once 'PHPUnit/Autoload.php';
 require_once 'SeleniumTest.php';
 
 function main()
@@ -77,7 +76,7 @@ function main()
         
     $queue = proc_open('php runserver.php', $descriptorspec, $pipes2, dirname(__DIR__), $env);
 
-    sleep(2);
+    sleep(5);
 
     PHPUnit_TextUI_TestRunner::run($suite);
 }

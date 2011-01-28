@@ -238,6 +238,8 @@ class Organization extends User
 
     public function save()
     {
+        $res = parent::save();
+
         if ($this->sectors_dirty)
         {
             delete_data("delete from org_sectors where container_guid = ?", array($this->guid));
@@ -248,7 +250,7 @@ class Organization extends User
             $this->sectors_dirty = false;
         }
 
-        return parent::save();
+        return $res;
     }
 
     public function get_widget_by_name($name)
