@@ -17,7 +17,7 @@
 if ($sent_email) {
 ?>
 <p>
-<?php echo sprintf(__("report:email_confirmation_sent"), "<em>".escape($report_def->get_container_entity()->email)."</em>"); ?>
+<?php echo sprintf(__("report:email_confirmation_sent"), "<em>".escape($report->get_container_entity()->email)."</em>"); ?>
 </p>
 <?php
 }
