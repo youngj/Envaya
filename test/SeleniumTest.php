@@ -1,8 +1,8 @@
 <?php
 
-set_include_path(get_include_path() . PATH_SEPARATOR . './PEAR/');
+//set_include_path(get_include_path() . PATH_SEPARATOR . './PEAR/');
 require_once 'Selenium.php';
-require_once 'PHPUnit/Framework.php';
+//require_once 'PHPUnit/Framework.php';
 
 class SeleniumTest extends PHPUnit_Framework_TestCase
 {
