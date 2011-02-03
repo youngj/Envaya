@@ -38,6 +38,15 @@ php scripts/install_test_data.php
 # optional: create admin users with custom username/password
 php scripts/create_admin.php
 
+# optional (only for testing computers): install dependencies for selenium tests
+sudo aptitude install x-window-system-core gnome-core gdm
+# reboot into gui
+apt-get install firefox
+pear channel-discover pear.phpunit.de
+pear channel-discover pear.symfony-project.com
+pear channel-discover components.ez.no
+pear install phpunit/PHPUnit
+
 ===================
 Manual Installation
 -------------------
@@ -84,10 +93,10 @@ cap HOSTS=hostname deploy
 =============
 Running tests
 -------------
+
 Envaya's user-interface tests are in the test/ directory. 
 The tests assume that a web server is running on http://localhost with 
 the Envaya code being tested, that no other Envaya services are running,
 and that Firefox is installed on the local computer.
 
-cd test
-php TestSuite.php
+php test/TestSuite.php

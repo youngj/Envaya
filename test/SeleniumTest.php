@@ -25,44 +25,14 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         return new Testing_Selenium($BROWSER, "http://localhost");    
     }
 
-    public function open($url)
+    public function __call($name, $arguments)
     {
-        $this->s->open($url);
+        return call_user_func_array(array($this->s, $name), $arguments);
     }
 
-    public function getConfirmation()
-    {
-        return $this->s->getConfirmation();
-    }    
-    
-    public function getSelectedLabel($id)
-    {
-        return $this->s->getSelectedLabel($id);
-    }
-    
-    public function getText($id)
-    {
-        return $this->s->getText($id);
-    }
-    
     public function tearDown()
     {
         $this->s->stop();
-    }
-
-    public function click($id)
-    {
-        $this->s->click($id);
-    }
-    
-    public function getLocation()
-    {
-        return $this->s->getLocation();
-    }
-
-    public function select($id, $val)
-    {
-        $this->s->select($id, $val);
     }
 
     public function mustNotExist($id)
@@ -88,37 +58,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
             throw new Exception("Element $id is visible");
         }
     }           
-    
-    public function isVisible($id)
-    {
-        return $this->s->isVisible($id);
-    }    
-    
-    public function isElementPresent($id)
-    {
-        return $this->s->isElementPresent($id);
-    }
-
-    public function mouseOver($id)
-    {
-        $this->s->mouseOver($id);
-    }
-    
-    public function getAttribute($attributeLocator)
-    {
-        return $this->s->getAttribute($attributeLocator);
-    }
-
-    public function type($id, $val)
-    {
-        $this->s->type($id, $val);
-    }
-
-    public function check($id)
-    {
-        $this->s->check($id);
-    }
-    
+        
     public function waitForPageToLoad($timeout = 10000)
     {
         $this->s->waitForPageToLoad($timeout);

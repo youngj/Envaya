@@ -101,6 +101,17 @@ class Scribd {
 		$result = $this->postRequest($method, $params);
 		return $result;
 	}
+    
+    public function getThumbnail($doc_id, $width, $height)
+    {
+        $method = "thumbnail.get";
+        $params = array('doc_id' => $doc_id);
+        $params['width'] = $width;
+        $params['height'] = $height;
+        
+        return $this->postRequest($method, $params);
+    }
+    
   /**
    * Change settings of a document
    * @param array $doc_ids : document id

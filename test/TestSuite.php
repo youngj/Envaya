@@ -19,6 +19,8 @@ $TEST_CASES = array(
 
 $MOCK_MAIL_FILE = __DIR__."/mail.out";
 
+chdir(__DIR__);
+
 require_once '../scripts/cmdline.php';
 require_once 'PHPUnit/Autoload.php';
 require_once 'SeleniumTest.php';
@@ -54,7 +56,7 @@ function main()
        2 => STDERR
     );
 
-    $selenium = proc_open('java -jar selenium-server.jar -firefoxProfileTemplate profiles/noflash', $descriptorspec, $pipes);
+    $selenium = proc_open('java -jar selenium-server.jar -firefoxProfileTemplate profiles/noflash', $descriptorspec, $pipes, __DIR__);
 
     $descriptorspec = array(
        0 => array("pipe", "r"),
