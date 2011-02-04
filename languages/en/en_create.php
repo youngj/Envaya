@@ -28,4 +28,10 @@ return array(
     'create:password_too_easy' => 'Your password is too easy to guess. Please choose a different password.',
     'create:ok' => 'Congratulations! Your account was created successfully.',
     'create:notloggedin' => 'You must be logged in to view this page.',
+    
+    'create:possible_duplicate' => "Organization already registered?",
+    'create:duplicate_instructions' => "If your organization is shown below, click on it to log in using your organization's existing username and password.",
+    'create:not_duplicate_instructions' => "If your organization is not shown above, click the button below to continue and create a new account for your organization.",
+    'create:not_duplicate' => "Continue registration",
+
 );

@@ -143,11 +143,11 @@ class ReportingTest extends SeleniumTest
         $this->mouseOver("//div[@class='bad_messages']");
             
         $this->username = "selenium".time();
-        $this->type("//input[@name='org_name']", "Report Org");
+        $this->type("//input[@name='org_name']", "Report Org ".time());
         $this->type("//input[@name='username']", $this->username);
         $this->type("//input[@name='password']", "password");
         $this->type("//input[@name='password2']", "password");
-        $this->type("//input[@name='email']", "adunar@gmail.com");
+        $this->type("//input[@name='email']", "adunar+".time()."@gmail.com");
         $this->type("//input[@name='phone']", "555-1212");
         $this->submitForm();
         $this->mouseOver("//div[@class='good_messages']");
@@ -167,7 +167,7 @@ class ReportingTest extends SeleniumTest
         
         // part 1: introduction
         
-        $this->mouseOver("//input[@name='field_full_name' and @value='Report Org']");
+        $this->mouseOver("//input[@name='field_full_name' and contains(@value,'Report Org')]");
         $this->type("//input[@name='field_full_name']", 'Report Org 2.0');
         $this->type("//input[@name='field_other_name']", 'RO2');
         $this->clickSave();

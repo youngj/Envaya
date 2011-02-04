@@ -144,9 +144,7 @@ return array(
     'close' => 'Close',
     'reply' => "Reply",
     'more' => 'More',
-    'comments' => 'Comments',  
-    
-    'actiongatekeeper:missingfields' => 'Form is missing __token or __ts fields',
+    'comments' => 'Comments',     
     
     'featured:active' => '(Active)',
     'featured:activate' => 'Activate',

@@ -158,11 +158,6 @@ abstract class Controller {
 
         validate_username($username);
 
-        if (get_user_by_username($username))
-        {
-            throw new RegistrationException(__('create:username_exists'));
-        }
-
         $password = get_input('password');
         $password2 = get_input('password2');
 
@@ -186,6 +181,24 @@ abstract class Controller {
 
         validate_email_address($email);
 
+        if (!get_input('ignore_possible_duplicates'))
+        {
+            $dups = Organization::query(true)
+                ->where("(username = ? OR (email = ? AND ? <> '') OR INSTR(name,?) > 0 OR INSTR(?,name) > 0)", 
+                    $username, $email, $email, $name, $name)
+                ->filter();  
+                
+            if (sizeof($dups) > 0)
+            {
+                throw new PossibleDuplicateException(__('create:possible_duplicate'), $dups);
+            }
+        }
+        
+        if (get_user_by_username($username))
+        {
+            throw new RegistrationException(__('create:username_exists'));
+        }                
+        
         $org = new Organization();
         $org->username = $username;
         $org->phone_number = get_input('phone');
@@ -222,6 +235,16 @@ abstract class Controller {
         system_message(__("create:ok"));   
 
         return $org;        
+    }
+    
+    function show_possible_duplicate($ex, $login_url = '/pg/login')
+    {
+        $title = __("create:possible_duplicate");
+        $body = view_layout('one_column', 
+            view_title($title, array('org_only' => true)), 
+            view("org/possible_duplicate", array('message' => $ex->getMessage(), 'login_url' => $login_url, 'duplicates' => $ex->duplicates))
+        );
+        $this->page_draw($title, $body);
     }
     
     function process_create_profile_form()
@@ -283,5 +306,6 @@ abstract class Controller {
         
         return $org;
     }    
+    
     
 } // End Controller

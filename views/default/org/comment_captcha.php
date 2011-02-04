@@ -7,10 +7,7 @@
 
 <?php
 
-foreach ($_POST as $k => $v)
-{
-	echo view('input/hidden', array('internalname' => escape($k), 'value' => $v));
-}
+echo view('input/hidden_multi', array('fields' => $_POST));
 
 echo view('input/hidden', array('internalname' => 'captcha', 'value' => '1'));
 echo Recaptcha::get_html();

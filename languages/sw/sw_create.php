@@ -28,4 +28,10 @@ return array(
     'create:password_too_easy' => 'Neno lako la siri si gumu kulidhani. Tafadhali chagua neno jingine la siri.',
     'create:ok' => 'Hongera! Akaunti yako imeumbwa.',
     'create:notloggedin' => 'Lazima uwe umefungua akaunti yako kuona ukurasa huu.',
+    
+    'create:possible_duplicate' => "Shirika limewahi kujiandikisha?",
+    'create:duplicate_instructions' => "Kama shirika lako likionyesha chini, libonyeze kufungua kwa kutumia jina lake la mtumiaji na neno la siri.",
+    'create:not_duplicate_instructions' => "Kama shirika lako halionyeshi juu, bonyeza kitufe cha chini kuendelea na kuumba akaunti mpya kwa shirika lako.",
+    'create:not_duplicate' => "Endelea kujiandikisha",
+    
 );

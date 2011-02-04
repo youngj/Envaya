@@ -261,9 +261,15 @@ class Controller_Org extends Controller
             global $CONFIG;
             forward("{$CONFIG->secure_url}org/new?step=3");
         }
+        catch (PossibleDuplicateException $p)
+        {
+            $this->show_possible_duplicate($p);
+        }
         catch (RegistrationException $r)
         {
-            action_error($r->getMessage());
+            register_error($r->getMessage());
+            Session::save_input();
+            forward("{$CONFIG->secure_url}org/new?step=2");
         }
     }
 

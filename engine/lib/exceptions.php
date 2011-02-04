@@ -13,7 +13,17 @@ class ClassNotFoundException extends ClassException {}
 class InstallationException extends ConfigurationException {}
 class NotImplementedException extends CallException {}
 class InvalidParameterException extends CallException {}
-class RegistrationException extends InstallationException {}
+class RegistrationException extends Exception {}
+class PossibleDuplicateException extends Exception 
+{
+    public $duplicates;
+
+    function __construct($msg, $duplicates)
+    {
+        parent::__construct($msg);
+        $this->duplicates = $duplicates;
+    }
+}
 class NotificationException extends Exception {}
 
 /**

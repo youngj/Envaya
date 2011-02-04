@@ -63,9 +63,9 @@ return array(
     'report:languages' => "The reporting system is available in either Kiswahili or English. To change the language, use the box at the top of the page.",
     'report:editing' => "You can start the report, save your responses, and return later to make changes before submitting the final version to %s.",
     'report:editing_2' => "Whenever you want to continue editing your responses, just return to this page (%s).",
-    'report:have_account' => "If you already have an Envaya account, %s.",
+    'report:have_account' => "If your organization already has an Envaya account, %s.",
     'report:click_log_in' => "click here to log in",
-    'report:no_account' => 'If you do not yet have an Envaya account, %s.',
+    'report:no_account' => 'If your organization does not yet have an Envaya account, %s.',
     'report:click_create' => 'click here to create an account',
     
     'report:verify_instructions' => "Carefully read your responses below and verify that they are complete and correct.",

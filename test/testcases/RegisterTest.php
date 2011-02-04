@@ -2,9 +2,13 @@
 
 class RegisterTest extends SeleniumTest
 {
+    private $name;
     private $username;
+    private $email;
     private $username2;
-    private $post_url;
+    private $email2;
+    private $name2;
+    private $post_url;    
 
     public function test()
     {        
@@ -74,18 +78,23 @@ class RegisterTest extends SeleniumTest
         $this->submitForm();
 
         /* create account */
+        
+        $this->name = "testorg".time();
 
-        $this->s->mouseOver("//div[@class='good_messages']");
+        $this->mouseOver("//div[@class='good_messages']");
 
-        $this->type("//input[@name='org_name']", "testorg");
+        $this->type("//input[@name='org_name']", $this->name);
         $this->type("//input[@name='username']", "t<b>x</b>");
         $this->type("//input[@name='password']", "password");
-        $this->type("//input[@name='password2']", "password2");
-        $this->type("//input[@name='email']", "adunar@gmail.com");
+        $this->type("//input[@name='password2']", "password2");        
+        
+        $this->email = "adunar+".time()."@gmail.com";
+        
+        $this->type("//input[@name='email']", $this->email);
         $this->submitForm();
         sleep(2);
         $this->mouseOver("//div[@class='bad_messages']");
-
+        
         $this->username = "selenium".time();
 
         $this->type("//input[@name='username']", $this->username);
@@ -98,8 +107,27 @@ class RegisterTest extends SeleniumTest
         $this->submitForm();
         $this->mouseOver("//div[@class='bad_messages']");
 
+        $this->type("//input[@name='username']", "testgrantmaker");
+        $this->submitForm();
+        
+        // duplicate username: suggested to log in instead of create account
+        $this->mouseOver("//a[contains(@href,'/pg/login?username=testgrantmaker')]");
+        $this->submitForm();
+        
+        // can't create new account, need to choose new username
+        $this->mouseOver("//div[@class='bad_messages']"); 
+        
+        $this->name = "Test Org";
+        
+        $this->type("//input[@name='org_name']", $this->name);                
         $this->type("//input[@name='username']", $this->username);
         $this->submitForm();
+                
+        // warn for possible duplicate name, but can still create new account
+                
+        $this->mouseOver("//a[contains(@href,'/pg/login?username=testorg')]");
+        $this->submitForm();
+        
         sleep(2);
 
         /* set up homepage */
@@ -119,7 +147,7 @@ class RegisterTest extends SeleniumTest
 
         $this->mouseOver("//div[@class='good_messages']");
 
-        $this->mouseOver("//h2[text()='testorg']");
+        $this->mouseOver("//h2[text()='{$this->name}']");
         $this->mouseOver("//h3[text()='Wete, Tanzania']");
         $this->mouseOver("//a[contains(@href,'org/browse?list=1&sector=3') and text()='Conflict resolution']");
     }
@@ -194,9 +222,9 @@ class RegisterTest extends SeleniumTest
     private function _testEditContact()
     {
         $this->clickAndWait("//div[@id='site_menu']//a[contains(@href,'contact')]");
-        $this->mouseOver("//a[@href='mailto:adunar@gmail.com']");
+        $this->mouseOver("//a[@href='mailto:{$this->email}']");
         $this->clickAndWait("//a[contains(@href,'contact/edit')]");
-        $this->s->uncheck("//input[@name='public_email[]']");
+        $this->uncheck("//input[@name='public_email[]']");
         $this->type("//input[@name='phone_number']", "1234567");
         $this->type("//input[@name='contact_name']", "Test Person");
 
@@ -204,7 +232,7 @@ class RegisterTest extends SeleniumTest
 
         $this->mouseOver("//td[contains(text(),'1234567')]");
         $this->mouseOver("//td[contains(text(),'Test Person')]");
-        $this->mustNotExist("//a[@href='mailto:adunar@gmail.com']");
+        $this->mustNotExist("//a[@href='mailto:{$this->email}']");
 
         $this->clickAndWait("//a[contains(@href,'contact/edit')]");
         $this->clickAndWait("//button[@id='widget_delete']");
@@ -328,12 +356,14 @@ class RegisterTest extends SeleniumTest
         $this->s->mouseOver("//div[@class='good_messages']");
 
         $this->username2 = "selenium".time();
+        $this->name2 = "Test Partner ".time();
+        $this->email2 = "adunar+".time()."@gmail.com";
 
-        $this->type("//input[@name='org_name']", "Test Org Partner");
+        $this->type("//input[@name='org_name']", $this->name2);
         $this->type("//input[@name='username']", $this->username2);
         $this->type("//input[@name='password']", "password");
         $this->type("//input[@name='password2']", "password");
-        $this->type("//input[@name='email']", "adunar+foo@gmail.com");
+        $this->type("//input[@name='email']", $this->email2);
         $this->submitForm();
 
         /* set up homepage */
@@ -418,8 +448,8 @@ class RegisterTest extends SeleniumTest
         $email = $this->getLastEmail("Test Subject");
 
         $this->assertContains("Test Message",$email);
-        $this->assertContains('To: "Test Org Partner" <adunar+foo@gmail.com>', $email);
-        $this->assertContains('Reply-To: "New Name" <adunar@gmail.com>', $email);
+        $this->assertContains("To: \"{$this->name2}\" <{$this->email2}>", $email);
+        $this->assertContains("Reply-To: \"New Name\" <{$this->email}>", $email);
     }
 
     private function _testDeleteOrg()

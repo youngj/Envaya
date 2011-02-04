@@ -211,10 +211,20 @@ class Controller_Reporting extends Controller_Profile
 
             forward($this->report_def->get_url()."/create_profile");
         }
+        catch (PossibleDuplicateException $p)
+        {
+            $ts = time();
+            $token = generate_security_token($ts);    
+            $post_login_url = $this->report_def->get_url()."/new_report?__ts=$ts&__token=$token";
+            
+            $this->show_possible_duplicate($p, '/pg/login?next='.urlencode($post_login_url));
+        }
         catch (RegistrationException $r)
         {
-            action_error($r->getMessage());
-        }
+            register_error($r->getMessage());
+            Session::save_input();
+            forward("{$this->report_def->get_url()}/create_account");
+        }        
     }
     
     function action_create_profile()

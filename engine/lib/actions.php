@@ -18,28 +18,17 @@
             // Validate token
             if (strcmp($token, $generated_token)==0)
             {
-                $hour = 60*60*24;
+                $day = 60*60*24;
                 $now = time();
 
                 // Validate time to ensure its not crazy
-                if (($ts>$now-$hour) && ($ts<$now+$hour))
+                if (($ts>$now-$day) && ($ts<$now+$day))
                 {
                     return;
                 }
-                else
-                {
-                    throw new SecurityException(__('actiongatekeeper:timeerror'));
-                }
-            }
-            else
-            {
-                throw new SecurityException(__('actiongatekeeper:timeerror'));
             }
         }
-        else
-        {
-            throw new SecurityException(__('actiongatekeeper:missingfields'));
-        }
+        throw new SecurityException(__('actiongatekeeper:timeerror'));        
     }
 
     function action_error($msg)
