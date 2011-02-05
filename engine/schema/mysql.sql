@@ -35,61 +35,10 @@ CREATE TABLE `entities` (
 	KEY `time_updated` (`time_updated`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- Describe relationships between entities, can describe friendships but also site membership, depending on context
-CREATE TABLE `entity_relationships` (
-  `id` int(11) NOT NULL auto_increment,
-  
-  `guid_one` bigint(20) unsigned  NOT NULL,
-  `relationship` varchar(50) NOT NULL,
-  `guid_two` bigint(20) unsigned  NOT NULL,
-  
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY (`guid_one`,`relationship`,`guid_two`),
-  KEY `relationship` (`relationship`),
-  KEY `guid_two` (`guid_two`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- *** Access controls ***
---
-
--- Table structure for table `access_collections`
-CREATE TABLE `access_collections` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` text NOT NULL,
-  `owner_guid` bigint(20) unsigned NOT NULL,
-  `site_guid` bigint(20) unsigned NOT NULL default '0',
-
-  PRIMARY KEY  (`id`),
-  KEY `owner_guid` (`owner_guid`),
-  KEY `site_guid` (`site_guid`)
-) AUTO_INCREMENT=3  ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- Access containers 
-CREATE TABLE `access_collection_membership` (
-  `user_guid` int(11) NOT NULL,
-  `access_collection_id` int(11) NOT NULL,
-  PRIMARY KEY  (`user_guid`,`access_collection_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
 --
 -- *** Entity superclass details ***
--- NB: Aside from GUID, these should now have any field names in common with the entities table.
+-- NB: Aside from GUID, these should not have any field names in common with the entities table.
 --
-
--- Extra information relating to "objects"
-CREATE TABLE `objects_entity` (
-  `guid` bigint(20) unsigned  NOT NULL,
-  
-  `title` text NOT NULL,
-  `description` text NOT NULL,
-
-  PRIMARY KEY  (`guid`),
-  FULLTEXT KEY (`title`,`description`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
 
 CREATE TABLE `files_entity` (
   `guid` bigint(20) unsigned  NOT NULL,

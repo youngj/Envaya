@@ -25,6 +25,24 @@ function print_msg($msg)
     echo "\n";
 }
 
+// readline from http://us3.php.net/manual/en/function.readline.php#49937
+function _readline($prompt="") {
+    echo $prompt;
+    $o = "";
+    $c = "";
+    while ($c!="\r"&&$c!="\n") {
+        $o.= $c;
+        $c = fread(STDIN, 1);
+    }
+    fgetc(STDIN);
+    return $o;
+}
+
+function prompt_default($prompt, $default)
+{
+    return _readline("$prompt [$default]") ?: $default;
+}
+
 if (!function_exists('pcntl_signal'))
 {
     // stubs for windows

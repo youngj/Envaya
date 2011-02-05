@@ -465,6 +465,8 @@ class Controller_Profile extends Controller
     function save_username()
     {
         $this->require_org();
+        $this->require_admin();
+        
         $org = $this->org;
 
         $username = get_input('username');
@@ -492,6 +494,7 @@ class Controller_Profile extends Controller
             $org->username = $username;
             $org->save();
 
+            get_cache()->delete(get_cache_key_for_username($username));
             get_cache()->delete(get_cache_key_for_username($oldUsername));
 
             system_message(__('username:changed'));
