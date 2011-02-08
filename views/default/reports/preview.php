@@ -45,9 +45,6 @@ if ($submit)  {
 <?php echo __('report:cant_edit_after_submit'); ?>
 </p>
 
-<label><input type='checkbox' id='confirm_box' name='confirm' />
-<?php echo __('report:verified'); ?></label><br />
-
 <?php echo __('report:signature'); ?>:
 <?php
     echo view('input/text', array('internalname' => 'signature', 'js' => 'style="width:250px"', 'internalid' => 'signature'));
@@ -57,11 +54,6 @@ if ($submit)  {
 <script type='text/javascript'>
 function verifyConfirmed()
 {
-    if (!document.getElementById('confirm_box').checked)
-    {
-        alert(<?php echo json_encode(__('report:error_not_verified')); ?>);
-        return false;
-    }
     if (!document.getElementById('signature').value)
     {
         alert(<?php echo json_encode(__('report:error_no_signature')); ?>);

@@ -73,8 +73,7 @@ return array(
     'report:how_to_submit' => "When you are ready to submit your report, click <b>Submit Report</b> at the bottom of the page.",
 
     'report:signature' => "Signature",
-    'report:verified' => "I have verified that all responses are complete and correct.",
-    'report:type_signature' => "When you are ready to submit the report, check the box below and type your full name as a signature.",
+    'report:type_signature' => "When you are ready to submit the report, type your full name as a signature and click the button below.",
     'report:cant_edit_after_submit' => "After submitting the report, you will no longer be able to edit your responses.",
     'report:error_not_verified' => "Please verify that all responses are complete and correct.",
     'report:error_no_signature' => "Please type your name as a signature.",    

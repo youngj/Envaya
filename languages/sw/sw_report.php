@@ -53,8 +53,7 @@ return array(
     'report:how_to_submit' => "Wakati ambapo ripoti ni tayari kutolewa, bonyeza <b>Toa Ripoti</b> chini ya ukurasa.",
 
     'report:signature' => "Saini",
-    'report:verified' => "Nimethibitisha kwamba majibu yote ni kamili na sahihi.",
-    'report:type_signature' => "Ambapo ripoti ni tayari kutolewa, bonyeza boksi hapo chini na chapa jina lako kamili kama saini.",
+    'report:type_signature' => "Ambapo ripoti ni tayari kutolewa, chapa jina lako kamili kama saini, na bonyeza kitufe cha chini.",
     'report:cant_edit_after_submit' => "Baada ya kutolewa ripoti, hutaweza kuhariri majibu yako.",
     'report:error_not_verified' => "Tafadhali thibitisha kwamba maoni yote ni kamili na sahihi.",
     'report:error_no_signature' => "Tafadhali ingiza jina lako kama saini.",    

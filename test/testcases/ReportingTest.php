@@ -118,7 +118,6 @@ class ReportingTest extends SeleniumTest
         $this->clickAndWait("//div[@class='report_section_nav']//a[contains(text(),'Attachments')]");
         $this->submitForm();
         
-        $this->check("//input[@id='confirm_box']");
         $this->type("//input[@id='signature']", "Mr. User");
         $this->submitForm();
         
@@ -260,7 +259,6 @@ class ReportingTest extends SeleniumTest
         $this->assertContains("fooo", $this->getText("//div[@class='report_field_total_beneficiaries']//tbody/tr[3]/td[1]"));
         $this->assertContains("30", $this->getText("//div[@class='report_field_total_beneficiaries']//tbody/tr[4]/td[1]"));
         
-        $this->check("//input[@id='confirm_box']");
         $this->type("//input[@id='signature']", "Mr. User");
         $this->submitForm();
         
