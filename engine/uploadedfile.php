@@ -29,7 +29,8 @@ class UploadedFile extends Entity
 
     // file types that we can extract images from, and accept as image uploads
     static $image_document_extensions = array('pdf', 'rtf', 'odt', 'odg', 'doc', 'ppt', 'docx', 'pptx'); 
-    
+    static $scribd_document_extensions = array('doc', 'docx', 'pdf', 'txt', 'rtf', 'odt', 'odg', 'ppt', 'pptx', 'xls', 'xlsx', 'pps', 'ppsx');
+
     public function get_files_in_group()
     {
         return UploadedFile::query()->where('owner_guid = ?', $this->owner_guid)->
@@ -240,16 +241,26 @@ class UploadedFile extends Entity
             
     static function upload_scribd_from_input($file_input)
     {
+        $filename = $file_input['name'];
+        $extension = static::get_extension($filename);
+    
+        if (!in_array($extension, static::$scribd_document_extensions))
+        {
+            throw new InvalidParameterException(
+                sprintf(__("upload:invalid_document_format"),
+                    implode(", ", static::$scribd_document_extensions)
+                )
+            );
+        }
+    
         $file = static::new_from_file_input($file_input);
         $file->storage = 'scribd';
-        
-        $filename = $file_input['name'];
         
         $scribd = get_scribd();
         
         $res = $scribd->upload(
             $file_input['tmp_name'], 
-            static::get_extension($filename), 
+            $extension, 
             'private'
         );
         if (!@$res['doc_id'])

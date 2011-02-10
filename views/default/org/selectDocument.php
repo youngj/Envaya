@@ -8,6 +8,11 @@
         'jsname' => 'uploader',
         'swfupload_class' => "FileUploader",
         'swfupload_args' => array(
+            'file_types' => implode(";", 
+                array_map(function($ext) { return "*.$ext"; },             
+                    UploadedFile::$scribd_document_extensions)
+            ),
+            'file_types_description' => 'Documents',
             'post_params' => array('mode' => 'scribd')
         )
     ));    
@@ -49,7 +54,7 @@
             var iframe = parentDoc.getElementById(<?php echo json_encode($frameId); ?>);
             if (iframe)
             {
-                iframe.style.height = uploadedFile ? "300px" : "50px";
+                iframe.style.height = uploadedFile ? "300px" : "65px";
                 
                 var loading = parentDoc.getElementById(<?php echo json_encode($frameId."_loading"); ?>);
                 loading.style.display = 'none';

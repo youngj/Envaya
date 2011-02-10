@@ -4,7 +4,7 @@
 <label id='uploadLabel'><img src='/_graphics/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo __('addphotos:label') ?></label><br />
 <div id='uploadContainer'></div>
 
-<script type='text/javascript' src='/_media/swfupload.js?v25'></script>
+<script type='text/javascript' src='/_media/swfupload.js?v<?php echo $vars['config']->cache_version ?>'></script>
 <script type='text/javascript'>
 
 var MultiImageUploader = makeClass(ImageUploader);

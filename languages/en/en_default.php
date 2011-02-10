@@ -220,6 +220,7 @@
         'upload:transfer_error' => "Error transferring file to server.",
         'upload:storage_error' => "Error storing file.",
         'upload:invalid_image_format' => "Invalid image format. Please save the image from your document as a .jpg, .png, or .gif file.",
+        'upload:invalid_document_format' => "Invalid document format. Accepted formats are: %s",
         'upload:image_bad' => "The server could not understand the image file. Save your image as a .jpg, .png, or .gif file and try again.",
         'upload:image_extract_failed' => "Failed to extract images from document. Try saving the image from your document as a .jpg file.",
 

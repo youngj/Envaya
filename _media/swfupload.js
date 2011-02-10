@@ -1157,6 +1157,9 @@ FileUploader.prototype.getSWFUploadOptions = function()
         file_post_name: "file",
         post_params: this.options.post_params,
         file_upload_limit : 0,
+        
+        file_types: this.options.file_types,
+        file_types_description: this.options.file_types_description,
 
         swfupload_preload_handler: function()
         {

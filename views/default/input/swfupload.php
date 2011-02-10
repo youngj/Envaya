@@ -3,7 +3,7 @@
     if (!isset($SWFUPLOAD_INCLUDE_COUNT))
     {
         $SWFUPLOAD_INCLUDE_COUNT = 0;
-        echo "<script type='text/javascript' src='/_media/swfupload.js?v25'></script>";
+        echo "<script type='text/javascript' src='/_media/swfupload.js?v{$vars['config']->cache_version}'></script>";
     }
     else
     {
