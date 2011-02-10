@@ -4,7 +4,7 @@
     global $CONFIG;
     $CONFIG = new stdClass;
     
-    $CONFIG->cache_version = 120;
+    $CONFIG->cache_version = 121;
     
     $CONFIG->dbuser = '';
     $CONFIG->dbpass = '';

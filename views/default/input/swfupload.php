@@ -27,7 +27,6 @@
         'value' => $prevInput
     ));
 ?>
-
 <span id='imageUploadContainer<?php echo $SWFUPLOAD_INCLUDE_COUNT ?>'></span>
 <div id='<?php echo $progressId ?>' class='imageUploadProgress'></div>
 <script type="text/javascript">

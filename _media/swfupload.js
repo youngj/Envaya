@@ -1245,7 +1245,9 @@ FileUploader.prototype.fileDialogCompleteHandler = function(numFilesSelected, nu
     
 FileUploader.prototype.setProgress = function($html)
 {
-    document.getElementById(this.options.progress_id).innerHTML = $html; 
+    var progress = document.getElementById(this.options.progress_id);
+    progress.innerHTML = $html; 
+    progress.style.display = $html ? 'block' : 'none';
 };
 
 FileUploader.prototype.uploadProgressHandler = function()
@@ -1415,6 +1417,7 @@ SingleImageUploader.prototype.showPreview = function($images, $json)
 
     removeChildren(progress);
     progress.appendChild(loadingMessage);    
+    progress.style.display = 'block';
 
     var img = document.createElement('img');
 

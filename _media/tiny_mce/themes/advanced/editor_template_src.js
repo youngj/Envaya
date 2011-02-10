@@ -1273,6 +1273,10 @@
             }
                                                               
             document.body.appendChild(imageBox);                  
+
+            setTimeout(function() {
+                iframe.focus();
+            }, 1);            
         },
         
         _mceImage : function(ui, val) {
