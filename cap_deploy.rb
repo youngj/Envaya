@@ -89,9 +89,9 @@ namespace :deploy do
     end
     
     task :restart, :roles => :app, :except => { :no_release => true } do        
-        run "rm -rf /var/nginx/cache/envaya"
         run "/etc/init.d/phpCron restart"
         run "/etc/init.d/queueRunner restart"
         run "/etc/init.d/php5-fpm restart"
+        run "rm -rf /var/nginx/cache/envaya"
     end
 end
