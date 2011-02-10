@@ -1,6 +1,6 @@
 <?php
     $imgDir = "/_media/tiny_mce/themes/advanced/img";
-    $iconsUrl = "$imgDir/icons.gif";
+    $iconsUrl = "$imgDir/icons.gif?v2";
     $skinDir = "/_media/tiny_mce/themes/advanced/skins/default/img";
 ?>
 
