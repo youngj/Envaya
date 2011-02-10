@@ -299,23 +299,33 @@ class Controller_Pg extends Controller {
         $this->request->response = view('upload_frame');
     }
 
+    private function upload_file_in_mode($file_input, $mode)
+    {   
+        if (!$file_input || $file_input['error'] != 0)
+        {    
+            throw new IOException(__("upload:transfer_error"));
+        }    
+    
+        switch ($mode)
+        {
+            case 'image':        
+                $sizes = json_decode(get_input('sizes'));
+                return UploadedFile::upload_images_from_input($file_input, $sizes);           
+            case 'scribd':
+                return UploadedFile::upload_scribd_from_input($file_input);
+            default:
+                return UploadedFile::upload_from_input($file_input);
+        }         
+    }
+    
     function action_upload()
     {
         $this->require_login();
         
         try
-        {                   
-            if (get_input('image'))
-            {
-                $sizes = json_decode(get_input('sizes'));
-                $files = UploadedFile::upload_images_from_input($_FILES['file'], $sizes);
-                $json = UploadedFile::json_encode_array($files);
-            }
-            else
-            {
-                $file = UploadedFile::upload_from_input($_FILES['file']);
-                $json = UploadedFile::json_encode_array($file);
-            }            
+        {  
+            $files = $this->upload_file_in_mode($_FILES['file'], get_input('mode'));        
+            $json = UploadedFile::json_encode_array($files);            
         }
         catch (Exception $ex)
         {
@@ -325,9 +335,7 @@ class Controller_Pg extends Controller {
         if (get_input('iframe'))
         {
             Session::set('lastUpload', $json);
-            forward("pg/upload_frame?swfupload=".urlencode(get_input('swfupload')).
-                "&sizes=".urlencode(get_input('sizes')).
-                "&image=".(get_input('image') ? '1' : ''));
+            forward("pg/upload_frame?".http_build_query($_POST));
         }
         else
         {

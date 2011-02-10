@@ -44,6 +44,7 @@ CREATE TABLE `files_entity` (
   `guid` bigint(20) unsigned  NOT NULL,
   
   `group_name` varchar(32) NOT NULL,
+  `storage` varchar(16) null,
   `filename` varchar(64) NOT NULL,
   `width` int NULL,
   `height` int NULL,

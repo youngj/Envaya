@@ -13,8 +13,24 @@
 
     // Tell it to load theme specific language pack(s)
     //tinymce.ThemeManager.requireLangPack('advanced');
+    
+    tinymce.Editor.prototype.insertOrUpdateImage = function(imgNode, imgArgs)
+    {
+        if (!imgNode)
+        {
+            this.execCommand('mceInsertContent', false, '<img id="__mce_tmp" />', {skip_undo : 1});
+            this.dom.setAttribs('__mce_tmp', imgArgs);
+            this.dom.setAttrib('__mce_tmp', 'id', '');
+            this.undoManager.add();                
+        }
+        else
+        {
+            this.dom.setAttribs(imgNode, imgArgs);
+            this.execCommand('mceRepaint');
+        }                     
+    };
 
-    function createModalBox(title, content, saveChanges, cancel)
+    function createModalBox(title, content, saveChanges, cancel, width)
     {
         var ed = this;
                 
@@ -57,8 +73,12 @@
         
         var $shadow = createElem('div', { className: 'modalShadow' });        
     
-        var width = document.body.offsetWidth || window.innerWidth;
-        $box.style.left = (width / 2 - 200) + 'px';
+        width = width || 400;
+        
+        $box.style.width = width + 'px';
+    
+        var windowWidth = document.body.offsetWidth || window.innerWidth;
+        $box.style.left = (windowWidth / 2 - width / 2) + 'px';
                 
         var scrollTop = window.pageYOffset || window.document.documentElement.scrollTop || window.document.body.scrollTop;
         $box.style.top = (scrollTop + 100) + 'px';
@@ -97,6 +117,7 @@
             link : ['link_desc', 'mceLink'],
             unlink : ['unlink_desc', 'unlink'],
             image : ['image_desc', 'mceImage'],
+            document : ['document_desc', 'mceDocument'],
             cleanup : ['cleanup_desc', 'mceCleanup'],
             help : ['help_desc', 'mceHelp'],
             code : ['code_desc', 'mceCodeEditor'],
@@ -128,7 +149,7 @@
             t.settings = s = extend({
                 theme_advanced_path : true,
                 theme_advanced_toolbar_location : 'top',
-                theme_advanced_buttons1 : "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link,image,|,formatselect", // "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect",
+                theme_advanced_buttons1 : "", 
                 theme_advanced_buttons2 : '', //"bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code",
                 theme_advanced_buttons3 : '', //"hr,removeformat,visualaid,|,sub,sup,|,charmap",
                 theme_advanced_blockformats : "p,pre,h1,h2,h3",
@@ -940,8 +961,13 @@
             }
 
             p = getParent('IMG');
+            var isDoc = !!p && p.className.indexOf('scribd_placeholder') != -1;
+            
             if (c = cm.get('image'))
-                c.setActive(!!p && n.className.indexOf('mceItem') == -1);
+                c.setActive(!!p && !isDoc && n.className.indexOf('mceItem') == -1);
+            
+            if (c = cm.get('document'))
+                c.setActive(isDoc);
 
             if (c = cm.get('styleselect')) {
                 t._importClasses();
@@ -1180,8 +1206,77 @@
             });
         },
 
-        _mceImage : function(ui, val) {
+        _mceDocument: function(ui, val)
+        {
+            var ed = this.editor;   
+        
+            var e = ed.selection.getNode();
+            var imageNode = (e && e.nodeName == 'IMG') ? e : null;
+            
+            var range = ed.selection.getRng();            
+            
+            var guid = '';
+            if (imageNode && imageNode.alt)
+            {
+                var metadata = imageNode.alt.split(':');
+                guid = metadata[3];
+            }
+        
+            var iframeName = 'modalDocumentFrame_'+Math.ceil(Math.random()*1000000);
+        
+            var iframe = createElem('iframe',
+                 {
+                    src:'/org/selectDocument?r='+Math.random()+"&guid="+escape(guid)+"&frameId="+iframeName,
+                    scrolling:'no',
+                    frameBorder:'0',
+                    border:'0',
+                    className:'modalDocumentFrame',
+                    name:iframeName,
+                    id:iframeName
+                 }                  
+             );
+
+            var imageBox = ed.createModalBox(                
+                ed.getLang(imageNode ? 'advanced.document_edit' : 'advanced.document_insert'),
+                     createElem('div',
+                         {className:'modalBody'},
+                         createElem('div', {id: iframeName + "_loading", className:'modalImageFrameLoading'}, ed.getLang('advanced.loading')),
+                         iframe
+                     ),
+                     saveChanges, cancel,
+                     640
+             );               
+             
+            function saveChanges()
+            {
+                var iframeWindow = window.frames[iframeName];                
+                var uploadedFile = iframeWindow.getUploadedFile();
                 
+                ed.selection.setRng(range);
+
+                if (uploadedFile)
+                {
+                    ed.insertOrUpdateImage(imageNode, {
+                        src: "/_graphics/document_icon.jpg",
+                        width: '100%',
+                        height: '300',
+                        'class': 'scribd_placeholder',
+                        alt: uploadedFile.filename+':'+uploadedFile.docid+':'+uploadedFile.accesskey+':'+uploadedFile.guid
+                    });               
+                }            
+                removeElem(imageBox); 
+            }
+            
+            function cancel()
+            {
+                removeElem(imageBox); 
+            }
+                                                              
+            document.body.appendChild(imageBox);                  
+        },
+        
+        _mceImage : function(ui, val) {
+ 
             var ed = this.editor;   
             
             var e = ed.selection.getNode();
@@ -1229,31 +1324,16 @@
             
                 var iframeWindow = window.frames[iframeName];
                 
-                var selectedImage = iframeWindow.getSelectedImage();
-                
+                var selectedImage = iframeWindow.getSelectedImage();                
                 if (selectedImage)
                 {
-                    var pos = iframeWindow.getSelectedPosition();
-                                                           
-                    var imgArgs = {
+                    var pos = iframeWindow.getSelectedPosition();                                                          
+                    ed.insertOrUpdateImage(imageNode, {
                         src: selectedImage.url,
                         width: selectedImage.width,
                         height: selectedImage.height,
                         'class': 'image_' + pos
-                    };
-                
-                    if (!imageNode)
-                    {
-                        ed.execCommand('mceInsertContent', false, '<img id="__mce_tmp" />', {skip_undo : 1});
-                        ed.dom.setAttribs('__mce_tmp', imgArgs);
-                        ed.dom.setAttrib('__mce_tmp', 'id', '');
-                        ed.undoManager.add();                
-                    }
-                    else
-                    {
-                        ed.dom.setAttribs(imageNode, imgArgs);
-                        ed.execCommand('mceRepaint');
-                    }                    
+                    });                         
                 }
             
                 removeElem(imageBox); 
@@ -1269,21 +1349,6 @@
             setTimeout(function() {
                 iframe.focus();
             }, 1);
-
-            /*
-            // Internal image object like a flash placeholder
-            if (ed.dom.getAttrib(ed.selection.getNode(), 'class').indexOf('mceItem') != -1)
-                return;
-
-            ed.windowManager.open({
-                url : tinymce.baseURL + '/themes/advanced/image.htm',
-                width : 355 + parseInt(ed.getLang('advanced.image_delta_width', 0)),
-                height : 275 + parseInt(ed.getLang('advanced.image_delta_height', 0)),
-                inline : true
-            }, {
-                theme_url : this.url
-            });
-            */
         },
 
         _mceLink : function(ui, val) {
@@ -1298,7 +1363,7 @@
             
             var range = ed.selection.getRng();
             
-            var textField = createElem('input', {type:'text', value:(e ? (e.innerText || e.textContent || '') : content)});
+            var textField = createElem('input', {type:'text', className:'input-text', value:(e ? (e.innerText || e.textContent || '') : content)});
             
             var textDiv = imageLink ? createElem('div') : createElem('div',
                 {className:'linkText'},
@@ -1308,6 +1373,7 @@
             
             var urlField = createElem('input', {
                 type:'text',       
+                className:'input-text', 
                 value:(e ? e.href : '')
             });
             var linkBox = ed.createModalBox(

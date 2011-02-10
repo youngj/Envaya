@@ -39,12 +39,7 @@
         'progressid' => $progressId,
         'value' => @$vars['value'],
         'swfupload_class' => 'FileUploader',
-        'swfupload_args' => array(
-            'recommend_flash_message' => '',
-            'upload_progress_message' =>  __('upload:uploading'),
-            'upload_error_message' => __('upload:error'),
-            
-        ),
+        'swfupload_args' => array(),
         'jsname' => 'uploader'
     ));
 ?>
@@ -53,14 +48,14 @@
 
     var uploader = window.uploader;
     
-    uploader.showParsedPreviewImage = function($images, $serverData) 
+    uploader.showPreview = function($files, $json) 
     {
         var span = document.getElementById('upload_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
         removeChildren(span);
         var link = document.createElement('a');
         link.target = "_blank";
-        link.href = $images.original.url;
-        link.appendChild(document.createTextNode($images.original.filename));
+        link.href = $files.original.url;
+        link.appendChild(document.createTextNode($files.original.filename));
         span.appendChild(link);
             
         var removeSpan = document.getElementById('upload_remove_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
@@ -69,7 +64,7 @@
         var browseSpan = document.getElementById('upload_browse_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
         browseSpan.style.display = 'none';        
         
-        document.getElementById('<?php echo $resultId; ?>').value = $serverData;
+        document.getElementById('<?php echo $resultId; ?>').value = $json;
     };
     
     function removeUpload<?php echo $UPLOAD_INCLUDE_COUNT ?>()

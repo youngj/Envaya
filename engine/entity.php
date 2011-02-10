@@ -604,6 +604,8 @@ abstract class Entity extends Model
 
         if ($isHTML)
         {
+            $content = Markup::render_custom_tags($content);
+        
             return $content; // html content should be sanitized when it is input!
         }
         else

@@ -8,15 +8,27 @@ class UploadedFile extends Entity
     static $table_attributes = array(
         'group_name' => '',
         'filename' => '',
-        'size' => '',
-        'width' => null,
-        'height' => null,
+        'storage' => '',
+        'size' => '', 
+            /* sizes:
+                large (image)
+                medium (image)
+                small (image)
+                tiny (image)
+                original
+                
+              NOTE: doesn't refer to file size or pixel dimensions
+              there may be several different versions of file with same group_name
+            */
         'mime' => '',
+
+        // only used for images
+        'width' => null,
+        'height' => null,        
     );
 
     // file types that we can extract images from, and accept as image uploads
     static $image_document_extensions = array('pdf', 'rtf', 'odt', 'odg', 'doc', 'ppt', 'docx', 'pptx'); 
-
     
     public function get_files_in_group()
     {
@@ -26,9 +38,10 @@ class UploadedFile extends Entity
 
     public function js_properties()
     {
-        return array(
+        $props = array(
             'guid' => $this->guid,
             'size' => $this->size,
+            'storage' => $this->storage,
             'group_name' => $this->group_name,
             'filename' => $this->filename,
             'mime' => $this->mime,
@@ -36,30 +49,53 @@ class UploadedFile extends Entity
             'height' => $this->height,
             'url' => $this->get_url(),
         );
+        
+        if ($this->storage == 'scribd')
+        {
+            $props['docid'] = $this->docid;
+            $props['accesskey'] = $this->accesskey;
+        }
+        
+        return $props;
     }
 
-    public function get_path()
+    public function get_storage_key()
     {
-        if ($this->group_name)
+        switch ($this->storage)
         {
-            return "{$this->owner_guid}/{$this->group_name}/{$this->filename}";
+            case 'scribd':
+                return array('docid' => $this->docid, 'accesskey' => $this->accesskey);
+            default:
+                if ($this->group_name)
+                {
+                    return "{$this->owner_guid}/{$this->group_name}/{$this->filename}";
+                }
+                else
+                {
+                    return "{$this->owner_guid}/{$this->filename}";
+                }
         }
-        else
+    }
+    
+    public function get_storage()
+    {
+        switch ($this->storage)
         {
-            return "{$this->owner_guid}/{$this->filename}";
+            case 'scribd':
+                return new Storage_Scribd();
+            default:
+                return get_storage();
         }
     }
 
     public function get_url()
     {
-		global $CONFIG;
-		return get_storage()->get_url($this->get_path());        
+        return $this->get_storage()->get_url($this->get_storage_key());        
     }
 
     public function delete()
     {
-        global $CONFIG;
-        $res = get_storage()->delete_object($this->get_path());
+        $res = $this->get_storage()->delete_object($this->get_storage_key());
 
         if ($res && $this->guid)
         {
@@ -73,8 +109,7 @@ class UploadedFile extends Entity
 
     public function size()
     {
-        global $CONFIG;
-        $info = get_storage()->get_object_info($this->get_path());
+        $info = $this->get_storage()->get_object_info($this->get_storage_key());
         if ($info)
         {
             return $info['Content-Length'];
@@ -84,35 +119,29 @@ class UploadedFile extends Entity
 
     public function upload_file($filePath)
     {
-        global $CONFIG;
-
-        $headers = array();
-        if ($this->mime)
-        {
-            $headers['Content-Type'] = $this->mime;
-        }
-
-        return get_storage()->upload_file($this->get_path(), $filePath, true, $headers);
+        return $this->get_storage()->upload_file($this->get_storage_key(), $filePath, true, $this->mime);
     }
 
     public function copy_to($destFile)
     {
-        global $CONFIG;
-        $res = get_storage()->copy_object($this->get_path(), $destFile->get_path(), true);
-        return $res;
+        return $this->get_storage()->copy_object($this->get_storage_key(), $destFile->get_storage_key(), true);
     }
 
     public function exists()
     {
-        global $CONFIG;
-        $info = get_storage()->get_object_info($this->get_path());
+        $info = $this->get_storage()->get_object_info($this->get_storage_key());
         return ($info) ? true : false;
+    }
+
+    private static function get_extension($filename)
+    {
+        $pathinfo = pathinfo($filename);
+        return strtolower($pathinfo['extension']);
     }
 	
     static function get_mime_type($filename)
     {
-        $pathinfo = pathinfo($filename);
-        return @static::$mime_types[strtolower($pathinfo['extension'])];
+        return @static::$mime_types[static::get_extension($filename)];
     }
     
     static function get_thumbnail_url_from_html($html)
@@ -193,6 +222,52 @@ class UploadedFile extends Entity
         return $files;
     }
     
+    private static function new_from_file_input($file_input)
+    {
+        $file = new UploadedFile();
+        $file->owner_guid = Session::get_loggedin_userid();
+        $file->group_name = uniqid("",true);
+        $file->mime = UploadedFile::get_mime_type($file_input['name']);        
+        $file->filename = static::sanitize_file_name(basename($file_input['name']));                    
+        $file->size = 'original';
+        return $file;
+    }
+    
+    static function sanitize_file_name($file_name)
+    {
+        return preg_replace('/[^\w\.\-]|(\.\.)/', '_', $file_name); 
+    }
+            
+    static function upload_scribd_from_input($file_input)
+    {
+        $file = static::new_from_file_input($file_input);
+        $file->storage = 'scribd';
+        
+        $filename = $file_input['name'];
+        
+        $scribd = get_scribd();
+        
+        $res = $scribd->upload(
+            $file_input['tmp_name'], 
+            static::get_extension($filename), 
+            'private'
+        );
+        if (!@$res['doc_id'])
+        {   
+            throw new IOException(__('upload:storage_error'));
+        }           
+        $file->docid = $res['doc_id'];
+        $file->accesskey = $res['access_key'];                
+        
+        $file->save();
+        
+        $scribd->changeSettings(
+            $file->docid,
+            $file->filename,
+            "From ".Session::get_loggedin_user()->get_url()
+        );
+        return $file;    
+    }
     
     /*
      * Uploads a file from user input 
@@ -200,26 +275,14 @@ class UploadedFile extends Entity
      *  returns: a new UploadedFile object
      */
     static function upload_from_input($file_input)
-    {
-        if (!$file_input || $file_input['error'] != 0)
-        {    
-            throw new IOException(__("upload:transfer_error"));
-        }
-            
-        $tmp_file = $file_input['tmp_name'];
-
-        $file = new UploadedFile();
-        $file->owner_guid = Session::get_loggedin_userid();
-        $file->group_name = uniqid("",true);
-        $file->size = 'original';
-        $file->mime = UploadedFile::get_mime_type($file_input['name']);
-        $file->filename = preg_replace('/[^\w\.\-]|(\.\.)/', '_', basename($file_input['name']));
-        $file->upload_file($tmp_file);
+    {          
+        $file = static::new_from_file_input($file_input);
+        $file->upload_file($file_input['tmp_name']);
         $file->save();
         
         return $file;
     }
-
+    
     /*
      * Uploads an image file from user input and saves versions in multiple sizes
      *  $file_input: an element from $_FILES corresponding to the uploaded file
@@ -227,18 +290,13 @@ class UploadedFile extends Entity
      */    
     static function upload_images_from_input($file_input, $sizes)
     {
-        if (!$file_input || $file_input['error'] != 0)
-        {
-            throw new IOException(__("upload:transfer_error"));
-        }
-
         $tmp_file = $file_input['tmp_name'];        
 
         global $CONFIG;
 
         $orig_name = $file_input['name'];
-        $pathinfo = pathinfo($orig_name);
-        $ext = strtolower($pathinfo['extension']);
+        $ext = static::get_extension($orig_name);
+        
         if (in_array($ext, static::$image_document_extensions))
         {
             if ($CONFIG->extract_images_from_docs)
@@ -255,13 +313,10 @@ class UploadedFile extends Entity
             return static::store_image($tmp_file, $sizes);
         }
     }    
-    
+        
     private static function convert_to_pdf($filename, $extension)
     {
-        require_once("vendors/scribd.php");
-
-        global $CONFIG;
-        $scribd = new Scribd($CONFIG->scribd_key, $CONFIG->scribd_private);
+        $scribd = get_scribd();
 
         try
         {

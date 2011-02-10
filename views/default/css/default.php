@@ -533,9 +533,13 @@ a#loginButton:hover .loginContent span
     z-index:101;
     border:5px solid #3E5A77;
     background-color:white;
-    width:400px;
     left:200px;
     top:200px;
+}
+
+.linkUrl .input-text, .linkText .input-text
+{
+    width:350px;
 }
 
 .modalButtons
@@ -839,6 +843,12 @@ a.photoDelete:hover
 .modalImageFrame
 {
     width:370px;
+    height:1px;
+}
+
+.modalDocumentFrame
+{
+    width:600px;
     height:1px;
 }
 

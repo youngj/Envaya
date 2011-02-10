@@ -1155,12 +1155,7 @@ FileUploader.prototype.getSWFUploadOptions = function()
     return {
         upload_url: "/pg/upload",
         file_post_name: "file",
-        post_params: { 
-            "lang": this.options.lang || '',
-            "sizes": this.options.sizes || '', 
-            "session_id": this.options.session_id 
-        },  
-
+        post_params: this.options.post_params,
         file_upload_limit : 0,
 
         swfupload_preload_handler: function()
@@ -1267,22 +1262,21 @@ FileUploader.prototype.uploadSuccessHandler = function($file, $serverData)
     {
         setDirty(true);
     }
-    this.showPreviewImage($serverData);            
+    this.showPreviewJson($serverData);            
 }; 
                
-FileUploader.prototype.showPreviewImage = function($serverData) 
+FileUploader.prototype.showPreviewJson = function($json) 
 {
-    var $images;
+    var $files;
 
-    eval("$images = " + $serverData);    
+    eval("$files = " + $json);    
 
-    if ($images.error)
+    if ($files.error)
     {
-        this.setProgress($images.error);
-
-        if (this.onImageError)
+        this.setProgress($files.error);
+        if (this.onError)
         {
-            this.onImageError($images.error);
+            this.onError($files.error);
         }        
         
         return false;
@@ -1290,18 +1284,17 @@ FileUploader.prototype.showPreviewImage = function($serverData)
     else
     {
         this.setProgress('');
-        this.showParsedPreviewImage($images, $serverData);
-        if (this.onImageComplete)
+        this.showPreview($files, $json);
+        if (this.onComplete)
         {
-            this.onImageComplete($images);
+            this.onComplete($files);
         }
                 
         return true;
     }    
 };
 
-FileUploader.prototype.showParsedPreviewImage = function($images, $serverData) {
-};
+FileUploader.prototype.showPreview = function($files, $json) {};
     
 FileUploader.prototype.addFallbackIframe = function($swfupload)
 {
@@ -1315,9 +1308,17 @@ FileUploader.prototype.addFallbackIframe = function($swfupload)
     $iframe.frameBorder = 0;
     $iframe.scrolling = 'no';
     $iframe.id = 'uploadIframe' + Math.floor(Math.random() * 1000000);        
-    $iframe.src = "pg/upload_frame?sizes=" + escape(this.options.sizes) + 
-        "&swfupload=" + this.swfupload.movieName +
-        "&image=" + (this.getSWFUploadOptions().post_params.image || '');
+        
+    var query = [],
+        post_params = this.getSWFUploadOptions().post_params;
+    
+    for (var p in post_params)
+    {
+        query.push(p + "=" + encodeURIComponent(post_params[p]));
+    }    
+    query.push("swfupload=" + this.swfupload.movieName);    
+    
+    $iframe.src = "pg/upload_frame?" + query.join("&");
     $iframe.className = 'uploadIframe';
     $placeholder.appendChild($iframe);
 
@@ -1352,7 +1353,7 @@ ImageUploader.prototype.getSWFUploadOptions = function()
     var options = FileUploader.prototype.getSWFUploadOptions.call(this);
     options.file_types = "*.jpg;*.gif;*.png;*.doc;*.docx;*.pdf;*.rtf;*.odt";
     options.file_types_description = "Images";
-    options.post_params.image = "1";
+    options.post_params.mode = "image";
     return options;
 };
 
@@ -1370,7 +1371,7 @@ SingleImageUploader.prototype.init = function($vars)
     var prevValue = document.getElementById($vars.result_id).value;
     if (prevValue)
     {
-        this.showPreviewImage(prevValue);
+        this.showPreviewJson(prevValue);
     }    
 };
 
@@ -1400,9 +1401,9 @@ SingleImageUploader.prototype.getSWFUploadOptions = function()
     return $options;
 };
 
-SingleImageUploader.prototype.showParsedPreviewImage = function($images, $serverData)
+SingleImageUploader.prototype.showPreview = function($images, $json)
 {            
-    document.getElementById(this.options.result_id).value = $serverData;
+    document.getElementById(this.options.result_id).value = $json;
 
     var progress = document.getElementById(this.options.progress_id);
 
@@ -1425,4 +1426,3 @@ SingleImageUploader.prototype.showParsedPreviewImage = function($images, $server
     progress.appendChild(img);             
     
 };
-

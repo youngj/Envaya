@@ -35,7 +35,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         $this->factory = new HTMLPurifier_TokenFactory();
     }
 
-    public function tokenizeHTML($html, $config, $context) {
+    public function tokenizeHTML($html, $config, $context) {    
 
         $html = $this->normalize($html, $config, $context);
 
@@ -61,13 +61,14 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         set_error_handler(array($this, 'muteErrorHandler'));
         $doc->loadHTML($html);
         restore_error_handler();
-
+        
         $tokens = array();
         $this->tokenizeDOM(
             $doc->getElementsByTagName('html')->item(0)-> // <html>
                   getElementsByTagName('body')->item(0)-> //   <body>
                   getElementsByTagName('div')->item(0)    //     <div>
-            , $tokens);
+            , $tokens);            
+            
         return $tokens;
     }
 

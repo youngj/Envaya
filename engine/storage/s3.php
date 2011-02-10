@@ -6,9 +6,16 @@ class Storage_S3 implements Storage
         global $CONFIG;
         return "http://{$CONFIG->s3_bucket}.s3.amazonaws.com/{$path}";
     }    
-    public function upload_file($path, $fs_path, $web_accessible = false, $headers = null)
+    public function upload_file($path, $fs_path, $web_accessible = false, $mime = null)
     {
         global $CONFIG;
+        
+        $headers = array();
+        if ($mime)
+        {
+            $headers['Content-Type'] = $mime;
+        }
+        
         return $this->get_s3()->uploadFile($CONFIG->s3_bucket, $path, $fs_path, $web_accessible, $headers);      
     }
     public function delete_object($path)

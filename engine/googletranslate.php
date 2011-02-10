@@ -26,6 +26,13 @@ class GoogleTranslate
         curl_setopt($ch, CURLOPT_REFERER, "www.envaya.org");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, true);
+        
+        // "To post a file, prepend a filename with @ and use the full path"
+        // is a security vulnerability waiting to happen
+        if ($text[0] == "@")
+        {
+            $text = " ".$text;
+        }        
         curl_setopt($ch, CURLOPT_POSTFIELDS, array('q' => $text));
 
         $json = curl_exec($ch);

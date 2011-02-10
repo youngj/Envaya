@@ -37,7 +37,7 @@ class Widget extends Entity
         return array(
             'small' => '150x150',
             'medium' => '260x260',
-            'large' => '520x520',
+            'large' => '540x1080',
         );
     }    
         

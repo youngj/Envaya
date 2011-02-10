@@ -30,7 +30,7 @@
         'internalid' => "content_html$TINYMCE_INCLUDE_COUNT",
         'trackDirty' => true,
         'js' => "style='display:none;{$widthCSS}{$heightCSS}'",
-        'value' => $valueIsHTML ? $value : view('output/longtext', array('value' => $value))));
+        'value' => $valueIsHTML ? Markup::render_editor_html($value) : view('output/longtext', array('value' => $value))));
 ?>
 
 <script type="text/javascript">
@@ -59,7 +59,7 @@
 
     tinyMCE.init({
         setup : function(ed) {
-
+        
             ed.onBeforeGetContent.add(function(ed, o)
             {
                 var body = ed.getBody();
@@ -96,13 +96,21 @@
             });
 
             ed.onDblClick.add(function(ed, e) {
-                if (e.target)
+                var target = e.target;
+                if (target)
                 {
-                    if (e.target.nodeName == 'IMG')
+                    if (target.nodeName == 'IMG')
                     {
-                        ed.execCommand('mceImage');
+                        if (target.className.indexOf('scribd_placeholder') != -1)
+                        {
+                            ed.execCommand('mceDocument');
+                        }
+                        else
+                        {
+                            ed.execCommand('mceImage');
+                        }
                     }
-                    else if (e.target.nodeName == 'A')
+                    else if (target.nodeName == 'A')
                     {
                         ed.execCommand('mceLink');
                     }
@@ -119,7 +127,7 @@
         content_css: "<?php echo $CONFIG->url ?>_css/tinymce.css?v<?php echo $CONFIG->cache_version ?>",
         editor_css: '<?php echo $CONFIG->url ?>_css/tinymce_ui.css?v<?php echo $CONFIG->cache_version ?>',
         mode : "exact",
-        theme_advanced_buttons1 : "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link,image,|,justifyleft,justifycenter,justifyright,|,formatselect<?php echo (Session::isadminloggedin()) ? ",|,code" : '' ?>",
+        theme_advanced_buttons1 : "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link,image,document,|,justifyleft,justifycenter,justifyright,|,formatselect<?php echo (Session::isadminloggedin()) ? ",|,code" : '' ?>",
         language: '',
         relative_urls : false,
         remove_script_host: false,

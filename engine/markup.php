@@ -76,20 +76,115 @@ class Markup
         return '';
     }
     
-    static function sanitize_html($html, $options = null)
+    private static function get_purifier_config($options = null)
     {
         require_once(dirname(__DIR__).'/vendors/htmlpurifier/library/HTMLPurifier.auto.php');
-        global $CONFIG;
-
-        if (!$options)
+        global $CONFIG;    
+    
+        $config = HTMLPurifier_Config::createDefault();
+        $config->set('Cache.SerializerPath', $CONFIG->dataroot);
+        $config->set('AutoFormat.Linkify', true);
+        if ($options)
         {
-            $options = array();
+            foreach ($options as $k => $v)
+            {
+                $config->set($k, $v);
+            }
         }
-        $options['Cache.SerializerPath'] = $CONFIG->dataroot;
-        $options['AutoFormat.Linkify'] = true;        
-        
-        $purifier = new HTMLPurifier($options);
-        return $purifier->purify( $html );
-    }
 
+        $config->set('HTML.DefinitionID', 'EnvayaHTMLExtensions');
+        $config->set('HTML.DefinitionRev', 3);
+        $config->set('Cache.DefinitionImpl', null); 
+
+        $def = $config->getHTMLDefinition(true);
+
+        /*
+         * Would like to do something like envaya:scribd for custom tags, but HTMLPurifier uses
+         * DOMDocument which strips out any namespaces we set (except xml).
+         */
+        $scribd = $def->addElement(
+          'scribd',   
+          'Inline',  
+          'Empty', 
+          'Common', 
+          array( 
+            'docid' => 'Number',
+            'width' => 'Number',
+            'height' => 'Number',
+            'guid' => 'Number',
+            'filename' => 'Text',
+            'accesskey' => 'Text'
+          )
+        );
+        
+        return $config;
+    }
+    
+    static function sanitize_html($html, $options = null)
+    {              
+        $html = static::parse_editor_html($html);                    
+        $config = static::get_purifier_config($options);
+        $purifier = new HTMLPurifier($config);
+        return $purifier->purify($html);
+    }    
+    
+    static $scribd_re = '/<scribd ([^>]*)\/>/';
+    
+    static function render_custom_tags($html)
+    {
+        return preg_replace_callback(static::$scribd_re, array('Markup', 'render_scribd'), $html);
+    }
+        
+    static function render_editor_html($html)
+    {
+        return preg_replace_callback(static::$scribd_re, array('Markup', 'render_scribd_placeholder'), $html);
+    }
+    
+    static function parse_editor_html($html)
+    {
+        return preg_replace_callback('/<img ([^>]*)class=[\'"]scribd_placeholder[\'"]([^>]*)\/>/', 
+            array('Markup', 'undo_scribd_placeholder'), $html);
+    }
+    
+    private static function render_scribd($match)
+    {        
+        $scribd = new SimpleXMLElement($match[0]);
+        if ($scribd)
+        {
+            return view('output/scribd', array(
+                'docid' => @$scribd['docid'], 
+                'accesskey' => @$scribd['accesskey'],
+                'filename' => @$scribd['filename']));
+        }
+        return '';
+    }    
+    
+    private static function render_scribd_placeholder($match)
+    {
+        $scribd = new SimpleXMLElement($match[0]);
+        if ($scribd)
+        {
+            return view('output/scribd_placeholder', array(
+                'docid' => @$scribd['docid'], 
+                'accesskey' => @$scribd['accesskey'], 
+                'filename' => @$scribd['filename'], 
+                'guid' => @$scribd['guid']));
+        }
+        return '';    
+    }    
+    
+    private static function undo_scribd_placeholder($match)
+    {
+        $img = new SimpleXMLElement($match[0]);
+        if ($img && @$img['alt'])
+        {
+            $alt = $img['alt'];
+            $metadata = explode(':', $alt);
+            return "<scribd docid='".escape($metadata[1])
+                ."' accesskey='".escape($metadata[2])
+                ."' guid='".(int)($metadata[3])
+                ."' filename='".escape($metadata[0])."' />";
+        }        
+        return '';    
+    }        
 }

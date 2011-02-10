@@ -4,7 +4,7 @@
 <label id='uploadLabel'><img src='/_graphics/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo __('addphotos:label') ?></label><br />
 <div id='uploadContainer'></div>
 
-<script type='text/javascript' src='/_media/swfupload.js?v6'></script>
+<script type='text/javascript' src='/_media/swfupload.js?v25'></script>
 <script type='text/javascript'>
 
 var MultiImageUploader = makeClass(ImageUploader);
@@ -15,7 +15,7 @@ MultiImageUploader.prototype.init = function($vars)
     this.imageCount = 0;
 };
 
-MultiImageUploader.prototype.showParsedPreviewImage = function($data, $serverData)
+MultiImageUploader.prototype.showPreview = function($data, $json)
 {
     this.imageCount++;
 
@@ -75,7 +75,7 @@ MultiImageUploader.prototype.showParsedPreviewImage = function($data, $serverDat
     var imageData = document.createElement('input');
     imageData.type = 'hidden';
     imageData.name = 'imageData' + this.imageCount;
-    imageData.value = $serverData;
+    imageData.value = $json;
     container.appendChild(imageData);
 
     var clear = document.createElement('div');
@@ -110,13 +110,16 @@ new MultiImageUploader(<?php echo view('input/swfupload_args', array(
     'args' => array(
         'trackDirty' => true,
         'thumbnail_size' => 'small',
-        'max_width' => 450,
-        'max_height' => 450,
+        'max_width' => 540,
+        'max_height' => 1080,
         'progress_id' => 'progressContainer',
         'placeholder_id' => 'uploadContainer',
         'previews_id' => 'previews',
+        'recommend_flash_message' => view('org/recommend_flash_message'),                
         'button_more_message' => __('addphotos:more'),
-        'sizes' => json_encode(Widget::get_image_sizes())
+        'post_params' => array(
+            'sizes' => json_encode(Widget::get_image_sizes())
+        )
     )
 )) ?>);
 

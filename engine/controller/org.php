@@ -364,6 +364,24 @@ class Controller_Org extends Controller
         );
         $this->page_draw('',$content);
     }
+    
+    function action_selectDocument()
+    {
+        $this->page_draw_vars['no_top_bar'] = true;
+
+        $guid = (int)get_input('guid');
+        $file = ($guid) ? UploadedFile::query()->where('e.guid = ?', $guid)->get() : null;
+        
+        $content = view('org/selectDocument',
+            array(
+                'current' => $file,
+                'frameId' => get_input('frameId'),
+            )
+        );
+        $this->page_draw('',$content);
+    }
+    
+        
 
     function action_translate()
     {

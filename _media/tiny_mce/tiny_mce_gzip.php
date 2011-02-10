@@ -19,7 +19,7 @@
 
     $diskCache = true;
     $compress = true;
-    $suffix = ""; // "_src";
+    $suffix = "";// "_src";
     $cachePath = $CONFIG->dataroot; // this is where the .gz files will be stored
     $expiresOffset = 3600 * 24 * 60;
     $encodings = array();

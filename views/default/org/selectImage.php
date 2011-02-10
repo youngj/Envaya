@@ -75,12 +75,12 @@
     var images = null;
     var upload_error = null;
 
-    uploader.onImageError = function($error) {
+    uploader.onError = function($error) {
         upload_error = $error;
         resizeFrame();
     };
     
-    uploader.onImageComplete = function($images) {
+    uploader.onComplete = function($images) {
         images = $images;
 
         var optionsContainer = document.getElementById('imageOptionsContainer');

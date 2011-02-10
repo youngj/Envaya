@@ -1,4 +1,5 @@
 <?php
+    $contentWidth = 630;
     include(__DIR__."/default.php");
     include(__DIR__."/slideshow.php");    
     $graphicsDir = "/_graphics";

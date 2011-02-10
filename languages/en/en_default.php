@@ -206,10 +206,10 @@
         'image:delete' => "Remove image?",
 
         'upload:browse' => 'Browse',
+        'upload:complete' => "Upload complete. Previewing...",
         'upload:image:error' => "Error processing image: ",
         'upload:image:processing' => "Processing image...",
-        'upload:image:uploading' => "Uploading image...",
-        'upload:image:complete' => "Upload complete. Previewing...",
+        'upload:image:uploading' => "Uploading image...",        
         'upload:image:error' => "Error uploading image: ",
         'upload:image:recommend_flash' => "Note: To add photos faster, install %s.",
         'upload:remove' => 'Remove',
@@ -218,6 +218,7 @@
 
         'upload:no_image_in_doc' => "No images were found in the uploaded document.",
         'upload:transfer_error' => "Error transferring file to server.",
+        'upload:storage_error' => "Error storing file.",
         'upload:invalid_image_format' => "Invalid image format. Please save the image from your document as a .jpg, .png, or .gif file.",
         'upload:image_bad' => "The server could not understand the image file. Save your image as a .jpg, .png, or .gif file and try again.",
         'upload:image_extract_failed' => "Failed to extract images from document. Try saving the image from your document as a .jpg file.",
@@ -435,5 +436,5 @@ Once you have logged in, we highly recommend that you change your password.
         'domains:duplicate' => "That domain name already exists.",
         'noaccess' => "The current user does not have access to view that page.",
         
-        'grid:add_row' => "Add another row",
+        'grid:add_row' => "Add another row",        
     );

@@ -15,6 +15,10 @@ return array(
     'tinymce:image_desc' => "Ongeza/hariri picha",
     'tinymce:image_insert' => "Ongeza Picha",
     'tinymce:image_edit' => "Hariri Picha",
+    'tinymce:document_desc' => "Ongeza/hariri hati",
+    'tinymce:document_insert' => "Ongeza Hati",
+    'tinymce:document_edit' => "Hariri Hati",
+    
     'tinymce:loading' => 'Ikipakia...',
     'tinymce:ok' => "Sawa",
     'tinymce:cancel' => "Ghairi",

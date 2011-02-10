@@ -47,7 +47,8 @@ function view($view, $vars = null, $viewtype = null)
 
     $vars['user'] = Session::get_loggedin_user();
     $vars['config'] = $CONFIG;
-    $vars['url'] = $CONFIG->url;
+    $vars['url'] = $CONFIG->url;    
+    
     if (!$viewtype)
     {
         $viewtype = get_viewtype();

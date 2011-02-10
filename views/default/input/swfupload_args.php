@@ -1,21 +1,34 @@
 <?php 
-    $args = array(
+    $post_params = array(
         'session_id' => session_id(),
-        'lang' => get_language(),
+        'lang' => get_language(),    
+    );
+
+    $args = array(
         'button_message' => __('upload:browse'),
-        'queue_error_message' => __('upload:image:error'),
+        'upload_progress_message' =>  __('upload:uploading'),
+        'upload_error_message' => __('upload:error'),
+        'queue_error_message' => __('upload:error'),
         'processing_message' => __('upload:image:processing'),
-        'upload_progress_message' =>  __('upload:image:uploading'),
-        'loading_preview_message' => __('upload:image:complete'),
-        'upload_error_message' => __('upload:image:error'),
-        'recommend_flash_message' => "<div class='help' style='font-size:10px'>".
-            sprintf(__('upload:image:recommend_flash'),
-                    "<a href='http://www.adobe.com/go/getflash' target='_blank'>Adobe Flash 10</a>")
-            ."</div>"
+        'loading_preview_message' => __('upload:complete'),
+        'recommend_flash_message' => '',
     );
 
     foreach ($vars['args'] as $k => $v)
     {
-        $args[$k] = $v;
+        if ($k == 'post_params')
+        {
+            foreach ($v as $post_k => $post_v)
+            {
+                $post_params[$post_k] = $post_v;
+            }
+        }
+        else
+        {
+            $args[$k] = $v;
+        }
     }
+    
+    $args['post_params'] = $post_params;
+    
     echo json_encode($args);

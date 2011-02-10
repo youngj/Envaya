@@ -7,7 +7,7 @@ class Storage_Local implements Storage
 		return "http://{$CONFIG->domain}/pg/local_store?path={$path}";
 	}
 	
-	public function upload_file($path, $fs_path, $web_accessible = false, $headers = null)
+	public function upload_file($path, $fs_path, $web_accessible = false, $mime = null)
 	{
 		$file_path = $this->get_file_path($path);
 		$dir = dirname($file_path);
@@ -38,12 +38,12 @@ class Storage_Local implements Storage
 	
 	public function delete_object($path)
 	{
-		// todo
+		throw new NotImplementedException();
 	}
 	
 	public function download_file($path, $fs_path)
 	{
-		// todo
+		throw new NotImplementedException();
 	}
 
 	public function get_file_path($path)

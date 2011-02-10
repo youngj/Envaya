@@ -24,6 +24,7 @@ class Scribd {
    * @param string $doc_type : PDF, DOC, TXT, PPT, etc.
    * @param string $access : public or private. Default is Public.
    * @param int $rev_id : id of file to modify
+   * @param string $filename : actual name of file
    * @return array containing doc_id, access_key, and secret_password if nessesary.
    */
 	public function upload($file, $doc_type = null, $access = null, $rev_id = null){
@@ -204,8 +205,7 @@ class Scribd {
 	private function postRequest($method, $params){
 		$params['method'] = $method;
 		$params['session_key'] = $this->session_key;
-    $params['my_user_id'] = $this->my_user_id;
-
+        $params['my_user_id'] = $this->my_user_id;
 
 		$post_params = array();
 		foreach ($params as $key => &$val) {
