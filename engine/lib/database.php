@@ -2,12 +2,11 @@
 
 $DB_PROFILE = array();
 $DB_DELAYED_QUERIES = array();
-$DB_CONNECT_TRIED = false;
 
 function get_db_link($dblinktype)
 {
-    global $DB_LINK;
-    global $DB_CONNECT_TRIED;
+    static $DB_LINK;
+    static $DB_CONNECT_TRIED = false;
     if (!isset($DB_LINK) && !$DB_CONNECT_TRIED)
     {              
         $DB_CONNECT_TRIED = true;
