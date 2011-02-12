@@ -142,7 +142,10 @@ function execute_delayed_write_query($query, $args = array(), $handler = "") { r
 function get_data_row($query, $args = array())
 {
     $db = get_db_link('read');
-
+    
+    if (!$db)
+        return null;
+   
     $res = false;
 
     if ($stmt = stmt_execute($db, $query, $args))
@@ -160,6 +163,9 @@ function get_data_row($query, $args = array())
 function get_data($query, $args = array())
 {
     $db = get_db_link('read');
+    
+    if (!$db)
+        return null;    
 
     if ($stmt = stmt_execute($db, $query, $args))
     {
@@ -225,7 +231,10 @@ function save_db_row($tableName, $pkColumn, &$pkValue, $values)
 function insert_data($query, $args = array())
 {
     $db = get_db_link('write');
-
+    
+    if (!$db)
+        return null;
+    
     if (stmt_execute($db, $query, $args))
     {
         return $db->lastInsertId();
@@ -236,6 +245,9 @@ function insert_data($query, $args = array())
 function update_data($query, $args = array())
 {
     $db = get_db_link('write');
+    
+    if (!$db)
+        return null;    
 
     if (stmt_execute($db, $query, $args))
     {
@@ -247,6 +259,9 @@ function update_data($query, $args = array())
 function delete_data($query, $args = array())
 {
     $db = get_db_link('write');
+    
+    if (!$db)
+        return null;    
 
     if ($stmt = stmt_execute($db, $query, $args))
     {

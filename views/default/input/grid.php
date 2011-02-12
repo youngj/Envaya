@@ -1,14 +1,5 @@
-<?php
-    global $GRID_INCLUDE_COUNT;
-    
-    if (!isset($GRID_INCLUDE_COUNT))
-    {
-        $GRID_INCLUDE_COUNT = 0;
-    }
-    else
-    {
-        $GRID_INCLUDE_COUNT++;
-    }
+<?php    
+    $GRID_INCLUDE_COUNT = $vars['include_count'];
     
     $tableId = "inputGrid$GRID_INCLUDE_COUNT";
     $resultId = "grid_value{$GRID_INCLUDE_COUNT}";

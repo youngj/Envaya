@@ -1,13 +1,5 @@
 <?php
-    global $UPLOAD_INCLUDE_COUNT;
-    if (!isset($UPLOAD_INCLUDE_COUNT))
-    {
-        $UPLOAD_INCLUDE_COUNT = 0;
-    }
-    else
-    {
-        $UPLOAD_INCLUDE_COUNT++;
-    }
+    $UPLOAD_INCLUDE_COUNT = $vars['include_count'];
     
     $resultId = @$vars['internalid'] ?: "upload_result$UPLOAD_INCLUDE_COUNT";
     $progressId = "upload_progress$UPLOAD_INCLUDE_COUNT";

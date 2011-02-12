@@ -2,16 +2,11 @@
     $docid = $vars['docid'];
     $accesskey = $vars['accesskey'];
     
-    global $SCRIBD_INCLUDE_COUNT;
+    $SCRIBD_INCLUDE_COUNT = $vars['include_count'];
     
-    if (!isset($SCRIBD_INCLUDE_COUNT))
+    if (!$SCRIBD_INCLUDE_COUNT)
     {
-        $SCRIBD_INCLUDE_COUNT = 0;
         echo "<script type='text/javascript' src='http://www.scribd.com/javascripts/view.js'></script>";
-    }
-    else
-    {
-        $SCRIBD_INCLUDE_COUNT++;
     }
 ?>
 <div id='scribd<?php echo $SCRIBD_INCLUDE_COUNT; ?>'></div>

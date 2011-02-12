@@ -1,13 +1,10 @@
 <?php
-    global $SWFUPLOAD_INCLUDE_COUNT;
-    if (!isset($SWFUPLOAD_INCLUDE_COUNT))
+
+    $SWFUPLOAD_INCLUDE_COUNT = $vars['include_count'];
+
+    if (!$SWFUPLOAD_INCLUDE_COUNT)
     {
-        $SWFUPLOAD_INCLUDE_COUNT = 0;
         echo "<script type='text/javascript' src='/_media/swfupload.js?v".Config::get('cache_version')."'></script>";
-    }
-    else
-    {
-        $SWFUPLOAD_INCLUDE_COUNT++;
     }
 
     $prevInput = restore_input($vars['internalname'], @$vars['value']);

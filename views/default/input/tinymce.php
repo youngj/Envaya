@@ -5,16 +5,8 @@
     $widthCSS = @$vars['width'] ? "width:{$vars['width']}px;" : '';
     $heightCSS = @$vars['height'] ? "height:{$vars['height']}px;" : '';
 
-    global $TINYMCE_INCLUDE_COUNT;
-    if (!isset($TINYMCE_INCLUDE_COUNT))
-    {
-        $TINYMCE_INCLUDE_COUNT = 0;
-    }
-    else
-    {
-        $TINYMCE_INCLUDE_COUNT++;
-    }
-
+    $TINYMCE_INCLUDE_COUNT = $vars['include_count'];
+    
     echo "<div class='input-textarea' style='padding-bottom:15px' id='tinymce_loading$TINYMCE_INCLUDE_COUNT'>".__("Loading...")."</div>";
 
     if (!$TINYMCE_INCLUDE_COUNT)

@@ -34,7 +34,7 @@ function get_language()
 {
     $language = '';
 
-    global $CURRENT_LANGUAGE;
+    static $CURRENT_LANGUAGE;
     if ($CURRENT_LANGUAGE)
     {
         return $CURRENT_LANGUAGE;

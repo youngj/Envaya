@@ -10,14 +10,13 @@
 	 */
 
 	$class = @$vars['class'] ?: "input-password";
-        
-    global $PASSWORD_INCLUDE_COUNT;
+
+    $PASSWORD_INCLUDE_COUNT = $vars['include_count'];
     
     $value = restore_input($vars['internalname'], @$vars['value']); 
     
-    if (!isset($PASSWORD_INCLUDE_COUNT))
+    if (!$PASSWORD_INCLUDE_COUNT)
     {
-        $PASSWORD_INCLUDE_COUNT = 0;
 ?>
 
 <script type='text/javascript'>
@@ -43,10 +42,6 @@ function checkCapslock(e, warningId) {
 </script>
 
 <?php
-    }
-    else
-    {
-        $PASSWORD_INCLUDE_COUNT++;
     }
     
     $warningId = "capslockWarning$PASSWORD_INCLUDE_COUNT";

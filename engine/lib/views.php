@@ -22,9 +22,11 @@ function get_viewtype()
 }
 
 /**
- * Handles templating views
- *
- * @see set_template_handler
+ * Handles templating views.
+ * 
+ * Adds special variable 'include_count', which increments each time a given view is rendered.
+ *   include_count is 0 the first time a view is rendered for a given script execution.
+ *    This allows views to do one-time setup or generate unique DOM ids.
  *
  * @param string $view The name and location of the view to use
  * @param array $vars Any variables that the view requires, passed as an array
@@ -32,6 +34,8 @@ function get_viewtype()
  */
 function view($view, $vars = null, $viewtype = null)
 {
+    static $INCLUDE_COUNTS = array();
+
     // basic checking for bad paths
     if (strpos($view, '..') !== false)
     {
@@ -49,6 +53,15 @@ function view($view, $vars = null, $viewtype = null)
     }
        
     $viewPath = get_view_path($view, $viewtype);
+        
+    if (!isset($INCLUDE_COUNTS[$viewPath]))
+    {
+        $INCLUDE_COUNTS[$viewPath] = 0;
+    }
+    $include_count = $INCLUDE_COUNTS[$viewPath];
+    $INCLUDE_COUNTS[$viewPath] = $include_count + 1;
+    
+    $vars['include_count'] = $include_count;       
 
     ob_start();
 
