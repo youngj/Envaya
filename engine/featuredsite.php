@@ -2,7 +2,6 @@
 
 class FeaturedSite extends Entity
 {
-    static $subtype_id = T_featured_site;
     static $table_name = 'featured_sites';
 
     static $table_attributes = array(

@@ -18,7 +18,7 @@ class Controller_Post extends Controller_Profile
 
         $post = get_entity($postId);
         $org = $this->org;
-        if ($post && $post->container_guid == $org->guid && $post->subtype == T_blog)
+        if ($post && $post->container_guid == $org->guid && $post instanceof NewsUpdate)
         {
             $this->post = $post;
             return;
@@ -180,7 +180,7 @@ class Controller_Post extends Controller_Profile
         $selectWhere = "SELECT * from entities WHERE type='object' AND enabled='yes' AND subtype=? AND container_guid=?";
 
         $entity = entity_row_to_entity(get_data_row("$selectWhere AND guid $op ? ORDER BY guid $order LIMIT 1",
-            array(T_blog, $post->container_guid, $post->guid)
+            array(NewsUpdate::get_subtype_id(), $post->container_guid, $post->guid)
         ));
         if ($entity)
         {
@@ -188,7 +188,7 @@ class Controller_Post extends Controller_Profile
         }
 
         $entity = entity_row_to_entity(get_data_row("$selectWhere ORDER BY guid $order LIMIT 1",
-            array(T_blog, $post->container_guid)
+            array(NewsUpdate::get_subtype_id(), $post->container_guid)
         ));
 
         if ($entity)

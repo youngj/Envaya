@@ -2,7 +2,6 @@
 
 class NewsUpdate extends Entity
 {
-    static $subtype_id = T_blog;
     static $table_name = 'news_updates';
     static $table_attributes = array(
         'content' => '',

@@ -1,70 +1,37 @@
 <?php
 
-    // todo: this is gross, make it go away... 
-    global $ENTITY_TYPES, $ENTITY_SUBTYPES;
-   
-    $ENTITY_TYPES = array(
-        'object' => 'Entity',
-        'user' => 'User'
-    );
-
-    $ENTITY_SUBTYPES = array(
-        1 => array("object", "file", "UploadedFile"),
-        3 => array("object", "widget", "Widget"),
-        4 => array('user', 'organization', "Organization"),
-        6 => array('object', 'interface_translation', 'InterfaceTranslation'),
-        7 => array('object', 'blog', 'NewsUpdate'),        
-        10 => array('object', 'partnership', 'Partnership'),
-        12 => array('object', 'featured_site', 'FeaturedSite'),
-        13 => array('object', 'email_template', 'EmailTemplate'),
-        14 => array('object', 'report_definition', 'ReportDefinition'),
-        15 => array('object', 'report', 'Report'),
-        16 => array('object', 'comment', 'Comment'),
-        17 => array('object', 'featured_photo', 'FeaturedPhoto'),
-    );
-    foreach ($ENTITY_SUBTYPES as $val => $subtypeArr)
+    class EntityRegistry
     {
-        define('T_' . $subtypeArr[1], $val);
-    }
-
-
-    /**
-     * For a given subtype ID, return its identifier text.
-     *
-     * TODO: Move to a nicer place?
-     *
-     * @param int $subtype_id
-     */
-    function get_subtype_from_id($subtype_id)
-    {
-        global $ENTITY_SUBTYPES;
-        if (isset($ENTITY_SUBTYPES[$subtype_id]))
+        private static $subtype_to_class = array(
+            0 => 'User',
+            1 => 'UploadedFile',
+            3 => 'Widget',
+            4 => 'Organization',
+            6 => 'InterfaceTranslation',
+            7 => 'NewsUpdate',        
+            10 => 'Partnership',
+            12 => 'FeaturedSite',
+            13 => 'EmailTemplate',
+            14 => 'ReportDefinition',
+            15 => 'Report',
+            16 => 'Comment',
+            17 => 'FeaturedPhoto',
+        );
+        private static $class_to_subtype = null;
+        
+        static function get_subtype_class($subtype_id)
         {
-            return $ENTITY_SUBTYPES[$subtype_id][1];
+            return @static::$subtype_to_class[$subtype_id];
         }
-
-        return false;
-    }
-
-    /**
-     * This function tests to see if a subtype has a registered class handler by its id.
-     *
-     * @param int $subtype_id The subtype
-     * @return a class name or null
-     */
-    function get_subtype_class($type, $subtype_id)
-    {
-        if ($subtype_id)
+        
+        static function get_subtype_id($class_name)
         {
-            global $ENTITY_SUBTYPES;            
-            return @$ENTITY_SUBTYPES[$subtype_id][2];
+            if (static::$class_to_subtype == null)
+            {
+                static::$class_to_subtype = array_flip(static::$subtype_to_class);
+            }
+            return @static::$class_to_subtype[$class_name];
         }
-        else
-        {
-            global $ENTITY_TYPES;
-            return @$ENTITY_TYPES[$type];
-        }
-        return NULL;
     }
 
     /**
@@ -85,7 +52,7 @@
         if (!$row)
             return null;
 
-        $classname = get_subtype_class($row->type, $row->subtype);
+        $classname = EntityRegistry::get_subtype_class($row->subtype);
 
         if ($classname && class_exists($classname))
         {   

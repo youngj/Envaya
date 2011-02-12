@@ -2,7 +2,6 @@
 
 class EmailTemplate extends Entity
 {
-    static $subtype_id = T_email_template;
     static $table_name = 'email_templates';
 
     static $table_attributes = array(

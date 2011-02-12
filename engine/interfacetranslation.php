@@ -2,7 +2,6 @@
 
 class InterfaceTranslation extends Entity
 {
-    static $subtype_id = T_interface_translation;
     static $table_name = 'interface_translations';
     static $table_attributes = array(
         'key' => '',

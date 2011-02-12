@@ -2,7 +2,6 @@
 
 class Comment extends Entity
 {
-    static $subtype_id = T_comment;
     static $table_name = 'comments';
     static $table_attributes = array(
         'content' => '',

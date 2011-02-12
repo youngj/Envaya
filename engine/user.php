@@ -242,7 +242,7 @@ class User extends Entity
     function get_blog_dates()
     {
         $sql = "SELECT guid, time_created from entities WHERE type='object' AND enabled='yes' AND subtype=? AND container_guid=? ORDER BY guid ASC";
-        return get_data($sql, array(T_blog, $this->guid));
+        return get_data($sql, array(NewsUpdate::get_subtype_id(), $this->guid));
     }
 
     public function is_approved()
@@ -259,12 +259,7 @@ class User extends Entity
     static function query($show_unapproved = false)
     {
         $query = new Query_SelectEntity('users_entity');
-        $query->where("type='user'");
-        if (static::$subtype_id)
-        {
-            $query->where("subtype=?", static::$subtype_id);
-        }
-
+        
         if (!Session::isadminloggedin() && !$show_unapproved)
         {
             $query->where("(approval > 0 || e.guid = ?)", Session::get_loggedin_userid());

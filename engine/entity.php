@@ -6,8 +6,6 @@ abstract class Entity extends Model
     protected $metadata_cache = array();        
 
     static $primary_key = 'guid';    
-    static $subtype_id = 0;
-
     static $current_request_entities = array();
     
     function __construct($row = null)
@@ -18,6 +16,11 @@ abstract class Entity extends Model
         {
             $this->cache_for_current_request();
         }
+    }
+    
+    static function get_subtype_id()
+    {
+        return EntityRegistry::get_subtype_id(get_called_class());
     }
 
     public function get_date_text()
@@ -80,7 +83,7 @@ abstract class Entity extends Model
     protected function initialize_attributes()
     {        
         $this->attributes['type'] = "object";
-        $this->attributes['subtype'] = static::$subtype_id;
+        $this->attributes['subtype'] = static::get_subtype_id();
         $this->attributes['owner_guid'] = 0;
         $this->attributes['container_guid'] = 0;
         $this->attributes['site_guid'] = 0;
@@ -632,10 +635,7 @@ abstract class Entity extends Model
     
     static function query()
     {
-        $query = new Query_SelectEntity(static::$table_name);
-        $query->where("type='object'");
-        $query->where("subtype=?", static::$subtype_id);
-        return $query;
+        return new Query_SelectEntity(static::$table_name);
     }
 
     static function query_by_metadata($meta_name, $meta_value = "")

@@ -2,7 +2,6 @@
 
 class Report extends Entity
 {
-    static $subtype_id = T_report;
     static $table_name = 'reports';
     static $table_attributes = array(
         'report_guid' => 0,

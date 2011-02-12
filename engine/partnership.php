@@ -2,7 +2,6 @@
 
 class Partnership extends Entity
 {
-    static $subtype_id = T_partnership;
     static $table_name = 'partnerships';
 
     static $table_attributes = array(

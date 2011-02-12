@@ -2,8 +2,6 @@
 
 class UploadedFile extends Entity
 {
-    static $subtype_id = T_file;
-
     static $table_name = 'files_entity';
     static $table_attributes = array(
         'group_name' => '',

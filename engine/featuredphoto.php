@@ -2,7 +2,6 @@
 
 class FeaturedPhoto extends Entity
 {
-    static $subtype_id = T_featured_photo;
     static $table_name = 'featured_photos';
 
     static $table_attributes = array(

@@ -2,7 +2,6 @@
 
 class Widget extends Entity
 {
-    static $subtype_id = T_widget;
     static $table_name = 'widgets';
     static $table_attributes = array(
         'widget_name' => 0,

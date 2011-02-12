@@ -6,7 +6,7 @@ class Statistics
     {
         $entity_stats = array();
 
-        $query = "SELECT distinct e.type,e.subtype as subtype_id from entities e";
+        $query = "SELECT distinct e.subtype as subtype_id from entities e";
         $args = array();
         if ($owner_guid)
         {
@@ -17,12 +17,10 @@ class Statistics
         $types = get_data($query, $args);
         foreach ($types as $type)
         {
-            $subtype = get_subtype_from_id($type->subtype_id);
-
             $args = array();
 
-            $query = "SELECT count(*) as count from entities where type = ? ";
-            $args[] = $type->type;
+            $query = "SELECT count(*) as count from entities where subtype = ? ";
+            $args[] = $type->subtype_id;
 
             if ($owner_guid)
             {
@@ -30,21 +28,8 @@ class Statistics
                 $args[] = $owner_guid;
             }
 
-            if ($subtype)
-            {
-                $query .= " and subtype = ?";
-                $args[] = $type->subtype_id;
-            }
-
             $subtype_cnt = get_data_row($query, $args);
-
-            if (!is_array($entity_stats[$type->type]))
-                $entity_stats[$type->type] = array();
-
-            if ($subtype)
-                $entity_stats[$type->type][$subtype] = $subtype_cnt->count;
-            else
-                $entity_stats[$type->type]['__base__'] = $subtype_cnt->count;
+            $entity_stats[$type->subtype_id] = $subtype_cnt->count;
         }
 
         return $entity_stats;

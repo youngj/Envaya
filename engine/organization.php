@@ -2,7 +2,12 @@
 
 class Organization extends User
 {
-    static $subtype_id = T_organization;
+    static function query($show_unapproved = false)
+    {
+        $query = User::query($show_unapproved);
+        $query->where("subtype=?", static::get_subtype_id());
+        return $query;
+    }
 
     public function is_setup_complete()
     {
