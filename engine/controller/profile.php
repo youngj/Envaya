@@ -153,7 +153,7 @@ class Controller_Profile extends Controller
 
         $cancelUrl = get_input('from') ?: $widget->get_url();
 
-        add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
+        PageContext::add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
         $body = view_layout('one_column',
             view_title($title), $widget->render_edit());
@@ -164,7 +164,6 @@ class Controller_Profile extends Controller
     function use_public_layout($show_menu = true)
     {
         $org = $this->org;
-        global $CONFIG;
         
         $this->page_draw_vars['sitename'] = $org->name;
 
@@ -177,7 +176,7 @@ class Controller_Profile extends Controller
             {
                 if ($widget->is_active() && $widget->in_menu)
                 {
-                    add_submenu_item($widget->get_title(), rewrite_to_current_domain($widget->get_url()));
+                    PageContext::add_submenu_item($widget->get_title(), rewrite_to_current_domain($widget->get_url()));
                 }
             }        
         }
@@ -232,7 +231,7 @@ class Controller_Profile extends Controller
 
         $cancelUrl = get_input('from') ?: $org->get_url();
 
-        add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
+        PageContext::add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
         $title = __("design:edit");
         $area1 = view("org/design", array('entity' => $org));
@@ -320,8 +319,8 @@ class Controller_Profile extends Controller
 
         if ($org->can_edit())
         {
-            add_submenu_item(__("widget:edit"), $widget->get_edit_url(), 'edit');
-            add_submenu_item(__('widget:options'), "{$widget->get_base_url()}/options", 'org_actions');
+            PageContext::add_submenu_item(__("widget:edit"), $widget->get_edit_url(), 'edit');
+            PageContext::add_submenu_item(__('widget:options'), "{$widget->get_base_url()}/options", 'org_actions');
         }
 
         if ($viewOrg)
@@ -532,10 +531,10 @@ class Controller_Profile extends Controller
             forward_to_referrer();
         }
 
-        add_submenu_item(__("message:cancel"), $org->get_url(), 'edit');
+        PageContext::add_submenu_item(__("message:cancel"), $org->get_url(), 'edit');
 
         $title = __("message:title");
-        $area1 = view("org/composeMessage", array('entity' => $org));
+        $area1 = view("org/composeMessage", array('entity' => $org, 'user' => Session::get_loggedin_user()));
         $body = view_layout("one_column", view_title($title), $area1);
         $this->page_draw($title,$body);
     }
@@ -741,8 +740,6 @@ class Controller_Profile extends Controller
         $this->require_org();
         $this->require_login();
         $this->validate_security_token();
-
-        global $CONFIG;
 
         $partner = $this->org;
 
@@ -983,9 +980,7 @@ class Controller_Profile extends Controller
 	}
 
 	function post_comment($entity)
-	{
-        global $CONFIG;
-    
+	{    
 		$comments_url = $entity->get_url()."?comments=1";
 	
         $userId = Session::get_loggedin_userid();
@@ -1012,7 +1007,7 @@ class Controller_Profile extends Controller
 			forward($comments_url);
 		}
 		
-        if (!$userId && $CONFIG->recaptcha_enabled)
+        if (!$userId && Config::get('recaptcha_enabled'))
         {        
 			$valid_captcha = false;
 			if (get_input('captcha'))

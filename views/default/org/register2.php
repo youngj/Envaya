@@ -5,7 +5,7 @@
     <?php echo __('create:instructions') ?>
 </div>
 
-<form action='<?php echo $vars['config']->secure_url; ?>org/register2' method='POST'>
+<form action='<?php echo Config::get('secure_url'); ?>org/register2' method='POST'>
 <?php
     echo view('org/create_account_form');
 ?>

@@ -3,6 +3,8 @@
 global $START_MICROTIME;
 $START_MICROTIME = microtime(true);
 
+error_reporting(E_ERROR | E_PARSE);
+
 /**
  * Provides auto-loading support of  classes
  *
@@ -18,10 +20,8 @@ $START_MICROTIME = microtime(true);
 function auto_load($class)
 {        
     $file = str_replace('_', '/', strtolower($class));
-
-    global $CONFIG;
-
-    $path = $CONFIG->path."engine/$file.php";       
+    
+    $path = Config::get('path')."engine/$file.php";       
     
     if (is_file($path))
     {
@@ -39,11 +39,11 @@ function auto_load($class)
  */
 function __shutdown_hook()
 {
-    global $CONFIG, $START_MICROTIME;
+    global $START_MICROTIME;
 
     trigger_event('shutdown', 'system');
 
-    if ($CONFIG->debug)
+    if (Config::get('debug'))
     {
         $uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
         error_log("Page {$uri} generated in ".(float)(microtime(true)-$START_MICROTIME)." seconds");
@@ -93,31 +93,26 @@ function load_environment_config()
         return;
     }
     
-    global $CONFIG;
     foreach ($config_obj as $k => $v)
     {
-        $CONFIG->$k = $v;
+        Config::set($k, $v);
     }
 }
 
 function bootstrap()
 {   
-    if (!include_once(__DIR__."/settings.php"))
-    {
-        echo "Error: Could not load the settings file.";
-        exit;        
-    }
+    require_once __DIR__."/config.php";
+    Config::load();
+    
     load_environment_config();
     
     mb_internal_encoding('UTF-8');        
     spl_autoload_register('auto_load');
     
-    global $CONFIG;
-
     foreach(get_library_files(__DIR__ . "/lib") as $file)
     {
         /*
-        if ($CONFIG->debug)
+        if (Config::get('debug'))
             error_log("Loading $file...");
         */
 

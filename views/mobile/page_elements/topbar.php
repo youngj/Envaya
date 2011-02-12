@@ -8,7 +8,7 @@
 <div style='clear:both'></div>
 </div>
 <?php
-$submenuB = get_submenu_group('edit', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group');
+$submenuB = PageContext::get_submenu_group('edit', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group');
 if ($submenuB)
 {
     echo "<div id='edit_submenu'>$submenuB</div>";

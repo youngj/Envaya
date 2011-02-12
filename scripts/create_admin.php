@@ -13,5 +13,4 @@ $new_user->admin = true;
 $new_user->save();
 echo "Admin created\n";
 
-global $CONFIG;
-$CONFIG->debug = false;
+Config::set('debug', false);

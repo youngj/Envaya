@@ -75,9 +75,9 @@ class GoogleTranslate
 
         $lang = $res->responseData->language;
 
-        global $CONFIG;
+        $languages = Config::get('languages');
 
-        if (!$lang || !isset($CONFIG->languages[$lang]))
+        if (!$lang || !isset($languages[$lang]))
         {
             return null;
         }

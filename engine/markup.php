@@ -79,10 +79,9 @@ class Markup
     private static function get_purifier_config($options = null)
     {
         require_once(dirname(__DIR__).'/vendors/htmlpurifier/library/HTMLPurifier.auto.php');
-        global $CONFIG;    
     
         $config = HTMLPurifier_Config::createDefault();
-        $config->set('Cache.SerializerPath', $CONFIG->dataroot);
+        $config->set('Cache.SerializerPath', Config::get('dataroot'));
         $config->set('AutoFormat.Linkify', true);
         if ($options)
         {

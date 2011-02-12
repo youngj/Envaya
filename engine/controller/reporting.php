@@ -48,7 +48,7 @@ class Controller_Reporting extends Controller_Profile
 
         if ($report_def->can_edit())
         {
-            add_submenu_item(__("report:edit"), "{$report_def->get_url()}/edit", 'edit');
+            PageContext::add_submenu_item(__("report:edit"), "{$report_def->get_url()}/edit", 'edit');
         }
 
         $title = $report_def->get_title();
@@ -67,7 +67,7 @@ class Controller_Reporting extends Controller_Profile
 
         $cancelUrl = get_input('from') ?: $this->org->get_widget_by_name('reports')->get_edit_url();
 
-        add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
+        PageContext::add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
         
         $area1 = view('reports/edit_definition', array('report_def' => $report_def, 'tab' => get_input('tab')));
         $body = view_layout("one_column", view_title($title), $area1);

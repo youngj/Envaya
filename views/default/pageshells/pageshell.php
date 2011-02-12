@@ -3,7 +3,6 @@
     /**
      * The standard HTML page shell that everything else fits into
      *
-     * @uses $vars['config'] The site configuration settings, imported
      * @uses $vars['title'] The page title
      * @uses $vars['body'] The main content of the page
      */

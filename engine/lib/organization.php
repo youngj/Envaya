@@ -65,7 +65,6 @@ function regions_in_country($country)
 
 function get_static_map_url($lat, $long, $zoom, $width, $height)
 {
-    global $CONFIG;
-    $apiKey = $CONFIG->google_api_key;
+    $apiKey = Config::get('google_api_key');
     return "http://maps.google.com/maps/api/staticmap?center=$lat,$long&zoom=$zoom&size={$width}x$height&maptype=roadmap&markers=$lat,$long&sensor=false&key=$apiKey";
 }

@@ -24,8 +24,6 @@ class SystemLog
      */    
     static function archive($offset = 0)
     {
-        global $CONFIG;
-
         $offset = (int)$offset;
         $now = time(); // Take a snapshot of now
 

@@ -94,8 +94,7 @@ class Language
     
     function load_all()
     {
-        global $CONFIG;
-        if ($handle = opendir("{$CONFIG->path}languages/{$this->code}"))
+        if ($handle = opendir(Config::get('path')."languages/{$this->code}"))
         {
             while ($file = readdir($handle))
             {
@@ -120,8 +119,7 @@ class Language
     
     function get_group($group_name)
     {
-        global $CONFIG;
-        $path = "{$CONFIG->path}languages/{$this->code}/{$this->code}_{$group_name}.php";            
+        $path = Config::get('path')."languages/{$this->code}/{$this->code}_{$group_name}.php";            
         if (file_exists($path))
         {
             return include($path);

@@ -13,8 +13,7 @@
         
     function secure_url($url)
     {
-        global $CONFIG;
-        if ($CONFIG->ssl_enabled && !is_mobile_browser())
+        if (Config::get('ssl_enabled') && !is_mobile_browser())
         {
             if (strpos($url, "://") !== false)
             {
@@ -26,7 +25,7 @@
                 {
                     $url = substr($url,1);
                 }            
-                return "{$CONFIG->secure_url}$url";
+                return Config::get('secure_url').$url;
             }
         }
         else
@@ -52,7 +51,7 @@
     function google_analytics_image_url()
     {
         // Copyright 2009 Google Inc. All Rights Reserved.
-        $GA_ACCOUNT = "UA-15456979-1";
+        $GA_ACCOUNT = Config::get('google_analytics_id');
         $GA_PIXEL = "/ga.php";
 
         $url = "";
@@ -80,10 +79,10 @@
         
     function set_cookie($name, $val, $expireTime = 0)
     {
-        global $CONFIG;
-        if ($CONFIG->cookie_domain)
+        $cookie_domain = Config::get('cookie_domain');
+        if ($cookie_domain)
         {
-            setcookie($name, $val, $expireTime, '/', $CONFIG->cookie_domain);
+            setcookie($name, $val, $expireTime, '/', $cookie_domain);
         }
         setcookie($name, $val, $expireTime, '/');    
     }
@@ -139,7 +138,6 @@
 
     function forward($location = "/")
     {
-        global $CONFIG;
         if (!headers_sent())
         {
             if ($location && $location[0] == '/')
@@ -149,7 +147,7 @@
 
             if ((substr_count($location, 'http://') == 0) && (substr_count($location, 'https://') == 0))
             {
-                $location = $CONFIG->url . $location;
+                $location = Config::get('url') . $location;
             }
 
             SessionMessages::save();
@@ -163,61 +161,6 @@
     function rewrite_to_current_domain($url)
     {
         return Request::instance()->rewrite_to_current_domain($url);
-    }
-
-    /**
-     * Adds an item to the submenu
-     *
-     * @param string $label The human-readable label
-     * @param string $link The URL of the submenu item
-     */
-    function add_submenu_item($label, $link, $group = 'topnav') {
-
-        global $CONFIG;
-        if (!isset($CONFIG->submenu)) $CONFIG->submenu = array();
-        if (!isset($CONFIG->submenu[$group])) $CONFIG->submenu[$group] = array();
-        $item = new stdClass;
-        $item->value = $link;
-        $item->name = $label;
-        $CONFIG->submenu[$group][] = $item;
-
-    }
-
-    function get_submenu_group($groupname, $itemTemplate = 'canvas_header/submenu_template', $groupTemplate = 'canvas_header/submenu_group')
-    {
-        global $CONFIG;
-        if (!isset($CONFIG->submenu))
-        {
-            return '';
-        }
-
-        $submenu_register = $CONFIG->submenu;
-        if (!isset($submenu_register[$groupname]))
-        {
-            return '';
-        }
-
-        $submenu = array();
-        $submenu_register_group = $CONFIG->submenu[$groupname];
-
-        $parsedUrl = parse_url($_SERVER['REQUEST_URI']);
-
-        foreach($submenu_register_group as $key => $item)
-        {
-            $selected = endswith($item->value, $parsedUrl['path']);
-
-            $submenu[] = view($itemTemplate,
-                array(
-                        'href' => $item->value,
-                        'label' => $item->name,
-                        'selected' => $selected,
-                    ));
-        }
-
-        return view($groupTemplate, array(
-            'submenu' => $submenu,
-            'group_name' => $groupname
-        ));
     }
 
     /**

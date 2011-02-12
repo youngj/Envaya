@@ -4,12 +4,14 @@
 	echo "<?xml version='1.0'?>\n";
 	
 	// Set title
+        $sitename = Config::get('sitename');
+    
 		if (empty($vars['title'])) {
-			$title = $vars['config']->sitename;
-		} else if (empty($vars['config']->sitename)) {
+			$title = $sitename;
+		} else if (empty($sitename)) {
 			$title = $vars['title'];
 		} else {
-			$title = $vars['config']->sitename . ": " . $vars['title'];
+			$title = $sitename . ": " . $vars['title'];
 		}
 			
 		$url = Request::full_original_url();

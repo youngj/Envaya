@@ -296,8 +296,6 @@ class Controller_Admin extends Controller
     {
         $this->validate_security_token();
 
-        global $CONFIG;
-
         $username = get_input('username');
         $password = get_input('password');
         $password2 = get_input('password2');
@@ -326,10 +324,10 @@ class Controller_Admin extends Controller
 
             $new_user->notify(
                 __('useradd:subject'),
-                sprintf(__('useradd:body'), $name, $CONFIG->sitename, $CONFIG->url, $username, $password)
+                sprintf(__('useradd:body'), $name, Config::get('sitename'), Config::get('url'), $username, $password)
             );
 
-            system_message(sprintf(__("adduser:ok"),$CONFIG->sitename));
+            system_message(sprintf(__("adduser:ok"), Config::get('sitename')));
         }
         catch (RegistrationException $r)
         {
@@ -346,8 +344,6 @@ class Controller_Admin extends Controller
         $guid = (int)get_input('org_guid');
         $entity = get_entity($guid);
 
-        global $CONFIG;
-        
         if (($entity) && ($entity instanceof Organization))
         {
             $approvedBefore = $entity->is_approved();
@@ -365,7 +361,7 @@ class Controller_Admin extends Controller
                     sprintf(__('email:orgapproved:body', $entity->language),
                         $entity->name,
                         $entity->get_url(),
-                        "{$CONFIG->url}pg/login?username={$entity->username}",
+                        Config::get('url')."pg/login?username={$entity->username}",
                         __('help:title', $entity->language),
                         "{$entity->get_url()}/help"
                     )

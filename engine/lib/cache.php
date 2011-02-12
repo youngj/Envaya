@@ -22,8 +22,7 @@ class MemcacheCache extends Cache
     {
         $memcache = new Memcache;
 
-        global $CONFIG;
-        foreach ($CONFIG->memcache_servers as $server)
+        foreach (Config::get('memcache_servers') as $server)
         {
             $memcache->addServer($server, 11211);
         }
@@ -79,8 +78,7 @@ function make_cache_key()
 {
     $args = func_get_args();
 
-    global $CONFIG;
-    $key = implode(":", $args) . ":{$CONFIG->cache_version}";
+    $key = implode(":", $args) . ":" . Config::get('cache_version');
 
     if (strlen($key) > 250)
         $key = md5($key);
@@ -94,8 +92,7 @@ function get_cache()
 
     if (!isset($cache))
     {
-        global $CONFIG;
-        $cls = $CONFIG->cache_backend;
+        $cls = Config::get('cache_backend');
         $cache = new $cls();
     }
     return $cache;

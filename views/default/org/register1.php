@@ -8,7 +8,7 @@
     <?php echo __('qualify:instructions') ?>
 </div>
 
-<form action='<?php echo $vars['config']->secure_url; ?>org/register1' method='POST'>
+<form action='<?php echo Config::get('secure_url'); ?>org/register1' method='POST'>
 
 <div class='input'>
 <label><?php echo __('qualify:org_type') ?></label><br />

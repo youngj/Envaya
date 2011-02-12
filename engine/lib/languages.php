@@ -2,8 +2,7 @@
 
 function init_languages()
 {
-    global $CONFIG;
-    foreach ($CONFIG->languages as $code => $lang_name)
+    foreach (Config::get('languages') as $code => $lang_name)
     {
         Language::init($code)->add_translations(
             array($code => $lang_name)
@@ -13,8 +12,6 @@ function init_languages()
 
 function get_accept_language()
 {
-    global $CONFIG;
-
     $acceptLanguage = @$_SERVER['HTTP_ACCEPT_LANGUAGE'];
     if ($acceptLanguage)
     {
@@ -35,8 +32,6 @@ function get_accept_language()
 */
 function get_language()
 {
-    global $CONFIG;
-
     $language = '';
 
     global $CURRENT_LANGUAGE;
@@ -49,7 +44,7 @@ function get_language()
     
     if (!$language || !Language::get($language))
     {
-        $language = $CONFIG->language;
+        $language = Config::get('language');
     }
 
     $CURRENT_LANGUAGE = $language;

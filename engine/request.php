@@ -610,8 +610,7 @@ class Request {
         $username = Request::$custom_domain_username;
         if ($username)
         {
-            global $CONFIG;
-            $sitePrefix = $CONFIG->url . $username;
+            $sitePrefix = Config::get('url') . $username;
             if (strpos($url, $sitePrefix) === 0)
             {
                 $path = substr($url, strlen($sitePrefix));
@@ -633,11 +632,12 @@ class Request {
 
     public function full_rewritten_url()
     {
-        global $CONFIG;
         $protocol = @$_SERVER['HTTPS'] ? "https://" : "http://";
+        $domain = Config::get('domain');
         $uri = Request::instance()->uri;
         $queryString = ($_SERVER['QUERY_STRING']) ? "?{$_SERVER['QUERY_STRING']}" : '';
-        return "$protocol{$CONFIG->domain}/$uri$queryString";
+        
+        return "$protocol$domain/$uri$queryString";
     }
 
 } // End Request

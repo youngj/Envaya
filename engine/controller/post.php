@@ -41,7 +41,7 @@ class Controller_Post extends Controller_Profile
 
         if ($post->can_edit())
         {
-            add_submenu_item(__("widget:edit"), "{$post->get_url()}/edit", 'edit');
+            PageContext::add_submenu_item(__("widget:edit"), "{$post->get_url()}/edit", 'edit');
         }
 
         $title = __('widget:news');
@@ -74,7 +74,7 @@ class Controller_Post extends Controller_Profile
 
         $cancelUrl = get_input('from') ?: $post->get_url();
 
-        add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
+        PageContext::add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
         $org = $post->get_container_entity();
         $area1 = view("org/editPost", array('entity' => $post));

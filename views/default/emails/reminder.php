@@ -1,10 +1,8 @@
 <?php
-    global $CONFIG;
-
     $org = $vars['org'];
     $lang = $org->language;
 
-    $imageDir = "{$CONFIG->url}_graphics/email";
+    $imageDir = Config::get('url')."_graphics/email";
 ?>
 <html>
 <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" bgcolor='#FFFFFF' style="font-size:13px;color:#000000;line-height:150%;font-family:trebuchet ms;">
@@ -18,7 +16,7 @@
 <br />
 <?php echo __('email:reminder:while',$lang). " " ?>
 <?php echo sprintf(__('email:reminder:addnews',$lang),
-    "<a target='_blank' href='{$CONFIG->url}pg/login?username={$org->username}'>".__('email:clickhere',$lang)."</a>"
+    "<a target='_blank' href='".Config::get('url')."pg/login?username={$org->username}'>".__('email:clickhere',$lang)."</a>"
 );
 ?>
 <br />
@@ -30,7 +28,7 @@
 <br />
 <br />
 <?php echo sprintf(__('email:reminder:feedback',$lang),
-    "<a href='mailto:{$CONFIG->admin_email}'>{$CONFIG->admin_email}</a>"
+    "<a href='mailto:".Config::get('admin_email')."'>".Config::get('admin_email')."</a>"
 );
 ?>
 <br />
@@ -52,7 +50,7 @@
 <br />
 <?php echo sprintf(
     __('email:change',$lang),
-    "<a target='_blank' href='{$CONFIG->url}org/emailSettings?e=".urlencode($org->email)."&c=".get_email_fingerprint($org->email)."'>".
+    "<a target='_blank' href='".Config::get('url')."org/emailSettings?e=".urlencode($org->email)."&c=".get_email_fingerprint($org->email)."'>".
     __('email:here',$lang)."</a>"
 );
 ?>

@@ -7,8 +7,6 @@
 
     function send_mail($to, $subject, $message, $headers = null, $immediate = false)
     {
-        global $CONFIG;
-
         if (!$headers)
         {
             $headers = array();
@@ -16,7 +14,7 @@
 
         if (!isset($headers['From']))
         {
-            $headers['From'] = "\"{$CONFIG->sitename}\" <{$CONFIG->email_from}>";
+            $headers['From'] = "\"".Config::get('sitename')."\" <".Config::get('email_from').">";
         }
         if (!isset($headers['To']))
         {
@@ -55,19 +53,16 @@
 
     function send_admin_mail($subject, $message, $headers  = null, $immediate = false)
     {
-        global $CONFIG;
-        return send_mail($CONFIG->admin_email, $subject, $message, $headers, $immediate);
+        return send_mail(Config::get('admin_email'), $subject, $message, $headers, $immediate);
     }
 	
 	function get_mock_mail_file()
 	{
-		global $CONFIG;
-		return @$CONFIG->mock_mail_file;
+		return Config::get('mock_mail_file');
 	}
 
     function mock_send_mail($mail, $recipients, $headers, $body)
     {
-        global $CONFIG;
 		echo get_mock_mail_file()."\n";
         $file = fopen(get_mock_mail_file(), 'a');
         fwrite($file, "========\n");
@@ -87,8 +82,6 @@
 
         if (!isset($mailer))
         {
-            global $CONFIG;           
-
             if (get_mock_mail_file())
             {
                 $mailer = new Mail_mock(array(
@@ -98,11 +91,11 @@
             else
             {
                 $mailer = new Mail_smtp(array(
-                    'host' => $CONFIG->smtp_host,
-                    'port' => $CONFIG->smtp_port,
-                    'username' => 'web@envaya.org',
+                    'host' => Config::get('smtp_host'),
+                    'port' => Config::get('smtp_port'),
+                    'username' => Config::get('smtp_user'),
                     'auth' => true,
-                    'password' => $CONFIG->smtp_pass));
+                    'password' => Config::get('smtp_pass')));
             }
         }
         return $mailer;

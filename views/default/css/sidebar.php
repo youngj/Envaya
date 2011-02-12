@@ -12,7 +12,7 @@
 
 .content_container
 {
-    background:#fff url("<?php echo $vars['url']; ?>_graphics/simple/bg_gradient.gif") repeat-x left 62px;
+    background:#fff url("<?php echo Config::get('url'); ?>_graphics/simple/bg_gradient.gif") repeat-x left 62px;
 }
 
 .content_container .thin_column

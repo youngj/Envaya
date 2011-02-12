@@ -43,7 +43,7 @@ class Controller_Report extends Controller_Profile
 
         if ($report->can_edit())
         {
-            add_submenu_item(__("report:edit"), "{$report->get_url()}/edit", 'edit');
+            PageContext::add_submenu_item(__("report:edit"), "{$report->get_url()}/edit", 'edit');
         }
 
         $title = $report->get_title();
@@ -111,7 +111,7 @@ class Controller_Report extends Controller_Profile
 
         $cancelUrl = get_input('from') ?: $this->org->get_widget_by_name('reports')->get_edit_url();
 
-        add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
+        PageContext::add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
 
         $area1 = view('reports/edit', array(
             'report' => $report, 
@@ -128,7 +128,7 @@ class Controller_Report extends Controller_Profile
         $report = $this->report;
         $this->require_editor();
         
-        add_submenu_item(__("report:cancel_preview"), $this->org->get_widget_by_name('reports')->get_edit_url(), 'edit');        
+        PageContext::add_submenu_item(__("report:cancel_preview"), $this->org->get_widget_by_name('reports')->get_edit_url(), 'edit');        
         
         $title = sprintf(__('report:preview'), $report->get_title());        
         $area1 = view('reports/preview', array('report' => $report));
@@ -142,7 +142,7 @@ class Controller_Report extends Controller_Profile
         $report = $this->report;        
         $report_def = $report->get_report_definition();
         
-        add_submenu_item(__("report:cancel_preview"), $report_def->get_url()."/edit?tab=manage", 'edit');        
+        PageContext::add_submenu_item(__("report:cancel_preview"), $report_def->get_url()."/edit?tab=manage", 'edit');        
         
         $title = sprintf(__('report:view_response_title'), $report->get_title());
         $area1 = view('reports/view_response', array('report' => $report));
@@ -172,7 +172,7 @@ class Controller_Report extends Controller_Profile
         $this->require_editor();
         $report = $this->report;
         
-        add_submenu_item(__("report:cancel_submit"), $this->org->get_widget_by_name('reports')->get_edit_url(), 'edit');        
+        PageContext::add_submenu_item(__("report:cancel_submit"), $this->org->get_widget_by_name('reports')->get_edit_url(), 'edit');        
         
         $title = sprintf(__('report:confirm_submit'), $report->get_title());        
         $area1 = view('reports/preview', array('report' => $report, 'submit' => true));
@@ -182,8 +182,6 @@ class Controller_Report extends Controller_Profile
 
     function action_submit()
     {
-        global $CONFIG;
-    
         $this->require_editor();
         $this->validate_security_token();
         $report = $this->report;
@@ -211,7 +209,7 @@ class Controller_Report extends Controller_Profile
                 );
                 
                 send_mail($report_recipient->email, $email_subject, $email_body, $headers);
-                send_mail($CONFIG->admin_email, $email_subject, $email_body, $headers);
+                send_mail(Config::get('admin_email'), $email_subject, $email_body, $headers);
             }
             
             $report_org = $report->get_container_entity();

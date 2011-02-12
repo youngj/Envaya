@@ -32,8 +32,6 @@ function get_viewtype()
  */
 function view($view, $vars = null, $viewtype = null)
 {
-    global $CONFIG;
-
     // basic checking for bad paths
     if (strpos($view, '..') !== false)
     {
@@ -45,10 +43,6 @@ function view($view, $vars = null, $viewtype = null)
         $vars = array();
     }
 
-    $vars['user'] = Session::get_loggedin_user();
-    $vars['config'] = $CONFIG;
-    $vars['url'] = $CONFIG->url;    
-    
     if (!$viewtype)
     {
         $viewtype = get_viewtype();
@@ -62,7 +56,7 @@ function view($view, $vars = null, $viewtype = null)
     {
         // success
     }
-    else if (@$CONFIG->debug)
+    else if (Config::get('debug'))
     {
         error_log(" [This view ({$view}) could not be included] ");
     }
@@ -163,7 +157,6 @@ function view_layout($layout)
  * Returns a view for the page title
  *
  * @param string $title The page title
- * @param string $submenu Should a submenu be displayed? (default false, use not recommended)
  * @return string The HTML (etc)
  */
 function view_title($title, $args = null)

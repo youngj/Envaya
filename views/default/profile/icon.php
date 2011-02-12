@@ -6,9 +6,6 @@
      */
 
     // Get entity
-        if (empty($vars['entity']))
-            $vars['entity'] = $vars['user'];
-
         if ($vars['entity'] instanceof User) {
 
         $name = htmlentities($vars['entity']->name, ENT_QUOTES, 'UTF-8');

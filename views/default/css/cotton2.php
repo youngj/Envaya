@@ -23,7 +23,7 @@ body { color:#fff; background:#d0b66b url("<?php echo $graphicsDir; ?>/cotton-bg
     color:#000;
     background-color:#c6b186;
     border-color:#e3d2a7;
-    background-image:url("<?php echo $vars['url'] ?>_graphics/world_black.gif");
+    background-image:url("<?php echo Config::get('url') ?>_graphics/world_black.gif");
 }
 #translate_bar a { color:#000; }
 .section_header { color:#fff; background:#bb895a url("<?php echo $graphicsDir; ?>/section_header.gif") repeat-x left top;  }

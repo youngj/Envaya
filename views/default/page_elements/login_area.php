@@ -5,7 +5,6 @@
     }
     else
     {
-        global $CONFIG;
         $loginUrl = (@$vars['loginToCurrentPage']) 
             ? url_with_param(Request::instance()->full_rewritten_url(), 'login',1) 
             : "pg/login";    

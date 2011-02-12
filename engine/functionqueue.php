@@ -3,14 +3,13 @@
 class FunctionQueue
 {
     static function _connect()
-    {
-        global $CONFIG;
+    {        
         static $kestrel;
         
         if (!isset($kestrel))
         {
             $kestrel = new Memcache;
-            if (!$kestrel->connect($CONFIG->queue_host, $CONFIG->queue_port))
+            if (!$kestrel->connect(Config::get('queue_host'), Config::get('queue_port')))
             {
                 throw new IOException(__("IOException:QueueConnectFailed"));
             }

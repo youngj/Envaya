@@ -5,7 +5,6 @@
     $widthCSS = @$vars['width'] ? "width:{$vars['width']}px;" : '';
     $heightCSS = @$vars['height'] ? "height:{$vars['height']}px;" : '';
 
-    global $CONFIG;
     global $TINYMCE_INCLUDE_COUNT;
     if (!isset($TINYMCE_INCLUDE_COUNT))
     {
@@ -21,7 +20,7 @@
     if (!$TINYMCE_INCLUDE_COUNT)
     {
         ?>
-        <script type='text/javascript' src='/_media/tiny_mce/tiny_mce.js?v<?php echo $CONFIG->cache_version ?>'></script>
+        <script type='text/javascript' src='/_media/tiny_mce/tiny_mce.js?v<?php echo Config::get('cache_version'); ?>'></script>
         <?php
     }
 
@@ -124,8 +123,8 @@
                 }
             });
         },
-        content_css: "<?php echo $CONFIG->url ?>_css/tinymce.css?v<?php echo $CONFIG->cache_version ?>",
-        editor_css: '<?php echo $CONFIG->url ?>_css/tinymce_ui.css?v<?php echo $CONFIG->cache_version ?>',
+        content_css: "<?php echo Config::get('url') ?>_css/tinymce.css?v<?php echo Config::get('cache_version') ?>",
+        editor_css: '<?php echo Config::get('url') ?>_css/tinymce_ui.css?v<?php echo Config::get('cache_version') ?>',
         mode : "exact",
         theme_advanced_buttons1 : "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link,image,document,|,justifyleft,justifycenter,justifyright,|,formatselect<?php echo (Session::isadminloggedin()) ? ",|,code" : '' ?>",
         language: '',

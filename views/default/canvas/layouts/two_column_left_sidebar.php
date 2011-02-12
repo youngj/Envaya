@@ -6,7 +6,7 @@
     <tr>
     <td id='left_sidebar'>
     <?php            
-        echo get_submenu_group('topnav', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group'); 
+        echo PageContext::get_submenu_group('topnav', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group'); 
     ?>    
     </td>
     <td id='right_content'>

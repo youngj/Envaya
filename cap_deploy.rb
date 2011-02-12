@@ -36,9 +36,9 @@ namespace :deploy do
     
     task :localsettings_setup do    
         begin
-            run "stat -t #{shared_path}/settings.php"
+            run "stat -t #{shared_path}/local.php"
         rescue Exception    
-            top.upload(File.join(Dir.pwd, "engine/settings_vps.php"), "#{shared_path}/settings.php")
+            top.upload(File.join(Dir.pwd, "config/production.php"), "#{shared_path}/local.php")
         end
     end
     
@@ -85,7 +85,7 @@ namespace :deploy do
     task :finalize_update, :except => { :no_release => true } do
         run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
         run "cp #{shared_path}/cached-copy/.htaccess #{latest_release}/"
-        run "cp #{shared_path}/settings.php #{latest_release}/engine/settings.php"
+        run "cp #{shared_path}/local.php #{latest_release}/config/local.php"
     end
     
     task :restart, :roles => :app, :except => { :no_release => true } do        

@@ -117,7 +117,7 @@ echo " ";
 echo "<a href='/{$org->username}/domains'>".__('domains:edit')."</a>";
 echo " ";
 
-echo get_submenu_group('org_actions', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group'); 
+echo PageContext::get_submenu_group('org_actions', 'canvas_header/link_submenu', 'canvas_header/basic_submenu_group'); 
 
 ?>
 </div>

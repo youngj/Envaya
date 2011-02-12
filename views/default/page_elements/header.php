@@ -3,13 +3,12 @@
     /**    
      * The standard HTML header that displays across the site
      
-     * @uses $vars['config'] The site configuration settings, imported
      * @uses $vars['title'] The page title
      * @uses $vars['body'] The main content of the page
      */
 
      // Set title
-        $sitename = @$vars['sitename'] ?: $vars['config']->sitename;
+        $sitename = @$vars['sitename'] ?: Config::get('sitename');
      
         if (empty($vars['title'])) {
             $title = $sitename;
@@ -26,7 +25,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title><?php echo escape($title); ?></title>
-    <base href='<?php echo Request::$protocol == 'https' ? $vars['config']->secure_url : $vars['config']->url; ?>' />     
+    <base href='<?php echo Request::$protocol == 'https' ? Config::get('secure_url') : Config::get('url'); ?>' />     
 
     <?php
         echo view('page_elements/css', $vars);          

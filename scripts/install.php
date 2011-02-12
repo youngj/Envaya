@@ -15,7 +15,6 @@ catch (PDOException $ex)
 
 function is_installed()
 {
-    global $CONFIG;
     try
     {
         return Datalist::get('installed');
@@ -29,8 +28,6 @@ function is_installed()
 function run_sql_script($scriptlocation) {
 
     if ($script = file_get_contents($scriptlocation)) {
-
-        global $CONFIG;
 
         $errors = array();
 
@@ -71,5 +68,4 @@ else
     echo "already installed\n";
 }
 
-global $CONFIG;
-$CONFIG->debug = false; // hack to suppress SQL profiling messages for this script
+Config::set('debug', false); // hack to suppress SQL profiling messages for this script

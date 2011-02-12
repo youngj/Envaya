@@ -1,11 +1,9 @@
 <?php
-    global $CONFIG;
-
     $org = $vars['org'];
     $email = $vars['email'];
     $lang = $org->language;
 
-    $imageDir = "{$CONFIG->url}_graphics/email";
+    $imageDir = Config::get('url')."_graphics/email";
 ?>
 <html>
 <head>
@@ -31,7 +29,7 @@
 <br />
 <?php echo sprintf(
     __('email:change',$lang),
-    "<a target='_blank' href='{$CONFIG->url}org/emailSettings?e=".urlencode($org->email)."&c=".get_email_fingerprint($org->email)."'>".
+    "<a target='_blank' href='".Config::get('url')."org/emailSettings?e=".urlencode($org->email)."&c=".get_email_fingerprint($org->email)."'>".
     __('email:here',$lang)."</a>"
 );
 ?>

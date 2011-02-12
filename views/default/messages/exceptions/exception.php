@@ -5,8 +5,6 @@
 	 * @uses $vars['object'] An exception
 	 */
 
-	global $CONFIG;
-	 
 	$class = get_class($vars['object']);
 	$message = view('output/longtext', array('value' => $vars['object']->getMessage()));
 	
@@ -16,7 +14,7 @@
 		</span>
 END;
 
-	if ($CONFIG->debug)
+	if (Config::get('debug'))
 	{
 		$details = view('output/longtext', array('value' => print_r($vars['object'], true)));
 		$body .= <<< END

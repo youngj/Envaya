@@ -18,11 +18,10 @@ function main()
 
 function install_admin()
 {
-    global $CONFIG;
     $admin = get_user_by_username('testadmin');
     if (!$admin)
     {
-        $admin = register_user("testadmin", 'testtest', "Test Admin", $CONFIG->admin_email, true);
+        $admin = register_user("testadmin", 'testtest', "Test Admin", Config::get('admin_email'), true);
         $admin->admin = true;    
         $admin->save();
     }
@@ -30,7 +29,6 @@ function install_admin()
 
 function install_org($username)
 {
-    global $CONFIG;
     $org = Organization::query()->where('username = ?', $username)->get();
     if (!$org)
     {    
@@ -38,7 +36,7 @@ function install_org($username)
         $org->username = $username;
     }
 
-    $org->email = $CONFIG->admin_email;
+    $org->email = Config::get('admin_email');
     $org->name = "Test Org";
     $org->set_password('testtest');
     $org->language = 'en';
@@ -70,13 +68,12 @@ function install_grantmaker()
     
 function install_envaya()    
 {
-    global $CONFIG;
     $envaya = Organization::query()->where('username = ?', 'envaya')->get();
     if (!$envaya)
     {
         $envaya = new Organization();
         $envaya->username = 'envaya';
-        $envaya->email = $CONFIG->admin_email;
+        $envaya->email = Config::get('admin_email');
         $envaya->name = 'Envaya';
         $envaya->set_password('testtest');
         $envaya->language = 'en';
@@ -110,6 +107,7 @@ function install_envaya()
 }
 
 main();
-    
-$CONFIG->debug = false;
+ 
+Config::set('debug', false);
+
 print "done";

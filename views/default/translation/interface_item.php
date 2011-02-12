@@ -44,8 +44,7 @@ else
     $js = '';
 }
 
-global $CONFIG;
-$value = $trans ? $trans->value : $CONFIG->translations[$lang][$key];
+$value = $trans ? $trans->value : Language::get($lang)->get_translation($key);
 if (!$value)
 {
     $value = GoogleTranslate::get_auto_translation($enText, 'en', $lang);

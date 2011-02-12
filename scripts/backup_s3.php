@@ -6,16 +6,14 @@ $BACKUP_DIR = "/etc/dropbox/Dropbox/s3_backup";
 require_once("scripts/cmdline.php");
 require_once("engine/start.php");
 
-global $CONFIG;
-require_once("{$CONFIG->path}vendors/s3.php");
+require_once("vendors/s3.php");
 
 global $s3;
-$s3 = new S3($CONFIG->s3_key, $CONFIG->s3_private);
+$s3 = new S3(Config::get('s3_key'), Config::get('s3_private'));
 
 function enumerate_bucket($s3, $callback)
 {
-    global $CONFIG;
-    $bucketName = $CONFIG->s3_bucket;
+    $bucketName = Config::get('s3_bucket');
     $marker = null;
     do
     {
@@ -50,7 +48,7 @@ global $n;
 
 function handle_item($item)
 {
-    global $s3, $n, $CONFIG, $BACKUP_DIR;
+    global $s3, $n, $BACKUP_DIR;
     $key = $item->Key;
 
     $localPath = "$BACKUP_DIR/$key";
@@ -63,7 +61,7 @@ function handle_item($item)
     if (!is_file($localPath))
     {
         echo "$localPath\n";
-        $s3->downloadFile($CONFIG->s3_bucket, $key, $localPath);
+        $s3->downloadFile(Config::get('s3_bucket'), $key, $localPath);
         $mtime = strtotime($item->LastModified);
         touch($localPath, $mtime);
     }

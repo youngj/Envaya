@@ -3,8 +3,7 @@ class Storage_Local implements Storage
 {
 	public function get_url($path)
 	{	
-		global $CONFIG;
-		return "http://{$CONFIG->domain}/pg/local_store?path={$path}";
+		return "http://".Config::get('domain')."/pg/local_store?path={$path}";
 	}
 	
 	public function upload_file($path, $fs_path, $web_accessible = false, $mime = null)
@@ -48,7 +47,6 @@ class Storage_Local implements Storage
 
 	public function get_file_path($path)
 	{
-		global $CONFIG;
-		return "{$CONFIG->dataroot}local_store/{$path}";	
+		return Config::get('dataroot')."local_store/{$path}";	
 	}
 }

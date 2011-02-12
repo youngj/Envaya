@@ -1,6 +1,5 @@
 <?php
 
-global $CONFIG;
 $lang = $vars['lang'];
 
 $keys = get_translatable_language_keys();
@@ -15,7 +14,7 @@ foreach (InterfaceTranslation::filterByLang($lang) as $itrans)
 echo "array(\n";
 foreach ($keys as $key)
 {
-    $newValue = @$newTrans[$key] ?: $CONFIG->translations[$lang][$key];
+    $newValue = @$newTrans[$key] ?: Language::get($lang)->get_translation($key);
     if ($newValue)
     {
         echo "\t";

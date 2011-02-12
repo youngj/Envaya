@@ -45,8 +45,7 @@
 
         <label><?php echo __('user:language:label'); ?>:</label><br />
         <?php
-            global $CONFIG;
-            $value = $CONFIG->language;
+            $value = Config::get('language');
             if ($user->language)
                 $value = $user->language;
 

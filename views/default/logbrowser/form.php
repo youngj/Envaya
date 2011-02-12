@@ -47,7 +47,7 @@
     $wrappedform = view('input/form',array(
         'body' => $form,
         'method' => 'get',
-        'action' => $vars['url'] . "admin/logbrowser"
+        'action' => Config::get('url') . "admin/logbrowser"
     ));
 
     if ($upperval || $lowerval || $userval) {

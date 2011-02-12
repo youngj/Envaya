@@ -65,8 +65,6 @@
      */
     function validate_username($username)
     {
-        global $CONFIG;
-
         if (strlen($username) < 3)
         {
             throw new RegistrationException(__('registration:usernametooshort'));
@@ -142,8 +140,6 @@
      */
     function register_user($username, $password, $name, $email, $allow_multiple_emails = false, $friend_guid = 0, $invitecode = '') 
     {
-        global $CONFIG;
-
         $username = trim($username);
         $password = trim($password);
         $name = trim($name);

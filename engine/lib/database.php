@@ -26,10 +26,14 @@ function get_db_link($dblinktype)
 
 function _get_db_link()
 {
-    global $CONFIG;
-    $pdo = new PDO("mysql:host={$CONFIG->dbhost};dbname={$CONFIG->dbname}", $CONFIG->dbuser, $CONFIG->dbpass, array(
-        PDO::ATTR_TIMEOUT => 2
-    ));
+    $dbhost = Config::get('dbhost');
+    $dbname = Config::get('dbname');
+    
+    $pdo = new PDO("mysql:host={$dbhost};dbname={$dbname}", 
+        Config::get('dbuser'), 
+        Config::get('dbpass'), 
+        array(PDO::ATTR_TIMEOUT => 2)
+    );
     $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
     $pdo->setAttribute(PDO::ATTR_TIMEOUT, 8);
     return $pdo;
@@ -40,9 +44,9 @@ function _get_db_link()
  */
 function db_profiling_shutdown_hook()
 {
-    global $CONFIG, $DB_PROFILE;
+    global $DB_PROFILE;
 
-    if ($CONFIG->debug && isset($DB_PROFILE))
+    if (Config::get('debug') && isset($DB_PROFILE))
     {
         error_log("***************** DB PROFILING ********************");
 
@@ -60,7 +64,7 @@ function db_profiling_shutdown_hook()
  */
 function db_delayedexecution_shutdown_hook()
 {
-    global $DB_DELAYED_QUERIES, $CONFIG;
+    global $DB_DELAYED_QUERIES;
 
     if (isset($DB_DELAYED_QUERIES))
     {
@@ -76,7 +80,7 @@ function db_delayedexecution_shutdown_hook()
             catch (Exception $e)
             {
                 // Suppress all errors since these can't be dealt with here
-                if ($CONFIG->debug)
+                if (Config::get('debug'))
                     error_log($e);
             }
         }

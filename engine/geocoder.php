@@ -9,8 +9,6 @@ class Geocoder
      */
     static function geocode($location)
     {
-        global $CONFIG;
-
         // Handle cases where we are passed an array (shouldn't be but can happen if location is a tag field)
         if (is_array($location))
             $location = implode(', ', $location);
@@ -38,9 +36,8 @@ class Geocoder
     }
     
     static function google_geocode($location)
-    {
-        global $CONFIG;
-        $google_api = $CONFIG->google_api_key;
+    {        
+        $google_api = Config::get('google_api_key');
         
         $address = "http://maps.google.com/maps/geo?q=".urlencode($location)."&output=json&key=" . $google_api;
 

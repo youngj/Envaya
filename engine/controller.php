@@ -54,9 +54,9 @@ abstract class Controller {
     
     public function add_generic_footer()
     {
-        add_submenu_item(__('about'), "/envaya", 'footer');
-        add_submenu_item(__('contact'), "/envaya/contact", 'footer');
-        add_submenu_item(__('donate'), "/envaya/contribute", 'footer');    
+        PageContext::add_submenu_item(__('about'), "/envaya", 'footer');
+        PageContext::add_submenu_item(__('contact'), "/envaya/contact", 'footer');
+        PageContext::add_submenu_item(__('donate'), "/envaya/contribute", 'footer');    
     }
 
     public function validate_security_token()
@@ -93,9 +93,7 @@ abstract class Controller {
     
     public function require_https()
     {
-        global $CONFIG;
-    
-        if (Request::$protocol == 'http' && $CONFIG->ssl_enabled && !is_mobile_browser())
+        if (Request::$protocol == 'http' && Config::get('ssl_enabled') && !is_mobile_browser())
         {
             $url = secure_url(Request::full_original_url());
             forward($url);

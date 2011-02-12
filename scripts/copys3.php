@@ -3,8 +3,6 @@
     require_once("scripts/cmdline.php");
     require_once("engine/start.php");
 
-    global $CONFIG;
-
     $s3 = get_storage();
 
     foreach ($s3->get_bucket_contents('envaya_data') as $key => $keyInfo)

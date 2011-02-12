@@ -32,8 +32,7 @@ if ($edited)
     $editedKeys = array();
     foreach (InterfaceTranslation::filterByLang($lang) as $itrans)
     {
-
-        if ($itrans->value != @$CONFIG->translations[$lang][$itrans->key])
+        if ($itrans->value != Language::get($lang)->get_translation($itrans->key))
         {
             $editedKeys[$itrans->key] = true;
         }
@@ -111,7 +110,7 @@ else
         echo "<td>".escape($key)."</td>";
         echo "<td>".view('output/longtext', array('value' => $enText))."</td>";
 
-        $trans = @$CONFIG->translations[$lang][$key];
+        $trans = Language::get($lang)->get_translation($key);
 
         $it = InterfaceTranslation::getByKeyAndLang($key, $lang);
 

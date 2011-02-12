@@ -63,8 +63,7 @@ function php_error_handler($errno, $errmsg, $filename, $linenum, $vars)
             break;
 
         default:
-            global $CONFIG;
-            if ($CONFIG->debug)
+            if (Config::get('debug'))
             {
                 error_log("DEBUG: " . $error);
             }
@@ -97,10 +96,9 @@ function php_exception_handler($exception) {
         echo $exception;
     }
 
-    global $CONFIG;
-    if ($CONFIG->error_emails_enabled)
+    if (Config::get('error_emails_enabled'))
     {
-        $lastErrorEmailTimeFile = "{$CONFIG->dataroot}last_error_time";
+        $lastErrorEmailTimeFile = Config::get('dataroot')."last_error_time";
         $lastErrorEmailTime = (int)file_get_contents($lastErrorEmailTimeFile);
         $curTime = time();
 

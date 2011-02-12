@@ -1,11 +1,6 @@
 <?php
-
 	$users_stats = Statistics::get_number_users();
-	$total_users = Statistics::get_number_users(true);
-	
-	
-	global $CONFIG;
-		
+	$total_users = Statistics::get_number_users(true);		
 ?>
 <div class="admin_statistics">
     <h3><?php echo __('admin:statistics:label:basic'); ?></h3>

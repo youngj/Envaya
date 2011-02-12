@@ -3,18 +3,21 @@
 require_once("engine/start.php");
 require_once("scripts/cmdline.php");
 
-global $CONFIG;
-$CONFIG->debug = false;
+Config::set('debug', false);
+
+$dbname = Config::get('dbname');
+$dbuser = Config::get('dbuser');
+$dbpass = Config::get('dbpass');
 
 echo "
-CREATE DATABASE {$CONFIG->dbname};
+CREATE DATABASE {$dbname};
 ";
 
-if ($CONFIG->dbuser != 'root')
+if ($dbuser != 'root')
 {
 echo "
-CREATE USER '{$CONFIG->dbuser}'@'localhost' IDENTIFIED BY '{$CONFIG->dbpass}';
-GRANT ALL PRIVILEGES ON {$CONFIG->dbname}.* TO '{$CONFIG->dbuser}'@'localhost';
+CREATE USER '{$dbuser}'@'localhost' IDENTIFIED BY '{$dbpass}';
+GRANT ALL PRIVILEGES ON {$dbname}.* TO '{$dbuser}'@'localhost';
 ";
 }
 

@@ -8,8 +8,6 @@
                
     umask(0);           
                
-    global $CONFIG;              
-               
     function handle_message($msg)
     {
         $mime = new mime_parser_class;
@@ -100,7 +98,7 @@
     $pop3 = new Net_POP3();
     if ($pop3->connect())
     {
-        $pop3->login($CONFIG->post_email,$CONFIG->email_pass);
+        $pop3->login(Config::get('post_email'),Config::get('email_pass'));
                 
         print_msg("{$pop3->numMsg()} messages in mailbox");
                 

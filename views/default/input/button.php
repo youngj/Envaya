@@ -10,8 +10,6 @@
      *
      */
 
-    global $CONFIG;
-
     $class = (isset($vars['class'])) ? $vars['class'] : "submit_button";
 
     if (isset($vars['type'])) { $type = strtolower($vars['type']); } else { $type = 'submit'; }

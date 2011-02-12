@@ -303,14 +303,12 @@ class UploadedFile extends Entity
     {
         $tmp_file = $file_input['tmp_name'];        
 
-        global $CONFIG;
-
         $orig_name = $file_input['name'];
         $ext = static::get_extension($orig_name);
         
         if (in_array($ext, static::$image_document_extensions))
         {
-            if ($CONFIG->extract_images_from_docs)
+            if (Config::get('extract_images_from_docs'))
             {
                 return static::store_image_from_doc($tmp_file, $ext, $sizes);
             }

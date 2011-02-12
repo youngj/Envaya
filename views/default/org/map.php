@@ -8,8 +8,7 @@
     $mapType = @$vars['mapType'] ?: "G_NORMAL_MAP";
     $nearby = @$vars['nearby'] ?: false;
 
-    global $CONFIG;
-    $apiKey = $CONFIG->google_api_key;
+    $apiKey = Config::get('google_api_key');
     $lat = (float)$vars['lat'];
     $long = (float)$vars['long'];
 

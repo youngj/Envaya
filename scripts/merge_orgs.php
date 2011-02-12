@@ -3,8 +3,7 @@
 require_once "scripts/cmdline.php";
 require_once "engine/start.php";
 
-//global $CONFIG;
-//$CONFIG->debug = false;
+//Config::set('debug', false);
 
 $opts = getopt('h');
 

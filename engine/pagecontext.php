@@ -8,7 +8,7 @@ class PageContext
     private static $rss = false;
     private static $site_org = null;
     private static $header_html = array();
-    
+    private static $submenu = null;    
     
     static function set_translatable($translatable)
     {
@@ -109,5 +109,57 @@ class PageContext
             $res .= $html;
         }
         return $res;
+    }   
+    
+    /**
+     * Adds an item to the submenu
+     *
+     * @param string $label The human-readable label
+     * @param string $link The URL of the submenu item
+     */
+    static function add_submenu_item($label, $link, $group = 'topnav') {
+
+        if (!isset(static::$submenu)) static::$submenu = array();
+        if (!isset(static::$submenu[$group])) static::$submenu[$group] = array();
+        $item = new stdClass;
+        $item->value = $link;
+        $item->name = $label;
+        static::$submenu[$group][] = $item;
     }
+
+    static function get_submenu_group($groupname, $itemTemplate = 'canvas_header/submenu_template', $groupTemplate = 'canvas_header/submenu_group')
+    {
+        if (!isset(static::$submenu))
+        {
+            return '';
+        }
+
+        $submenu_register = static::$submenu;
+        if (!isset($submenu_register[$groupname]))
+        {
+            return '';
+        }
+
+        $submenu = array();
+        $submenu_register_group = static::$submenu[$groupname];
+
+        $parsedUrl = parse_url($_SERVER['REQUEST_URI']);
+
+        foreach($submenu_register_group as $key => $item)
+        {
+            $selected = endswith($item->value, $parsedUrl['path']);
+
+            $submenu[] = view($itemTemplate,
+                array(
+                        'href' => $item->value,
+                        'label' => $item->name,
+                        'selected' => $selected,
+                    ));
+        }
+
+        return view($groupTemplate, array(
+            'submenu' => $submenu,
+            'group_name' => $groupname
+        ));
+    }    
 }

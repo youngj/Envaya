@@ -160,8 +160,7 @@ class Controller_Pg extends Controller {
             $user->passwd_conf_code = substr(generate_random_cleartext_password(), 0, 24); // avoid making url too long for 1 line in email
             $user->save();
 
-            global $CONFIG;
-            $link = $CONFIG->secure_url . "pg/password_reset?u={$user->guid}&c={$user->passwd_conf_code}";
+            $link = Config::get('secure_url') . "pg/password_reset?u={$user->guid}&c={$user->passwd_conf_code}";
 
             $email = sprintf(__('email:resetreq:body',$user->language), $user->name, $link);
 
@@ -185,8 +184,6 @@ class Controller_Pg extends Controller {
     function action_password_reset()
     {
         $this->require_https();
-
-        global $CONFIG;
 
         $user_guid = get_input('u');
         $conf_code = get_input('c');

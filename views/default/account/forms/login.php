@@ -1,7 +1,5 @@
 <div class='padded'>
-<?php
-    global $CONFIG;
-
+<?php    
     ob_start();
     ?>
 
@@ -25,7 +23,7 @@
     <?php echo view('input/submit', array('value' => __('login'))); ?>
 
     <div>
-    <a href="<?php echo $vars['url'] ?>pg/forgot_password">
+    <a href="<?php echo Config::get('url') ?>pg/forgot_password">
             <?php echo __('user:password:lost') ?>
     </a>    
     </div>

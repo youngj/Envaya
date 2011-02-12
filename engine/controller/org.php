@@ -234,8 +234,7 @@ class Controller_Org extends Controller
             ));
 
             system_message(__("qualify:ok"));
-            global $CONFIG;
-            forward("{$CONFIG->secure_url}org/new?step=2");            
+            forward(Config::get('secure_url')."org/new?step=2");            
 
         }
         catch (RegistrationException $r)
@@ -258,8 +257,7 @@ class Controller_Org extends Controller
             $org->country = $prevInfo['country'];
             $org->save();
 
-            global $CONFIG;
-            forward("{$CONFIG->secure_url}org/new?step=3");
+            forward(Config::get('secure_url')."org/new?step=3");
         }
         catch (PossibleDuplicateException $p)
         {
@@ -269,7 +267,7 @@ class Controller_Org extends Controller
         {
             register_error($r->getMessage());
             Session::save_input();
-            forward("{$CONFIG->secure_url}org/new?step=2");
+            forward(Config::get('secure_url')."org/new?step=2");
         }
     }
 

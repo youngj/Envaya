@@ -70,8 +70,7 @@ class User extends Entity
 
     public function get_url()
     {
-        global $CONFIG;
-        return $CONFIG->url . "{$this->username}";
+        return Config::get('url') . $this->username;
     }
 
     public function get_icon_file($size = '')
@@ -84,8 +83,6 @@ class User extends Entity
 
     public function get_icon($size = 'medium')
     {
-        global $CONFIG;
-
         if ($this->custom_icon)
         {
             return url_with_param($this->get_icon_file($size)->get_url(), 't', $this->time_updated);
@@ -96,7 +93,7 @@ class User extends Entity
         }
         else
         {
-            return "{$CONFIG->url}_graphics/default{$size}.gif";
+            return Config::get('url')."_graphics/default{$size}.gif";
         }
     }
 

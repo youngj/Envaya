@@ -13,14 +13,13 @@
     // Set the error reporting to minimal.
     @error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-    require_once(dirname(dirname(__DIR__))."/engine/settings.php");
-
-    global $CONFIG;
+    require_once(dirname(dirname(__DIR__))."/engine/config.php");
+    Config::load();
 
     $diskCache = true;
     $compress = true;
     $suffix = "";// "_src";
-    $cachePath = $CONFIG->dataroot; // this is where the .gz files will be stored
+    $cachePath = Config::get('dataroot'); // this is where the .gz files will be stored
     $expiresOffset = 3600 * 24 * 60;
     $encodings = array();
     $supportsGzip = false;
@@ -33,7 +32,7 @@
 
     if ($diskCache)
     {
-        $cacheKey = md5("$suffix{$CONFIG->cache_version}");
+        $cacheKey = md5($suffix . Config::get('cache_version'));
 
         if ($compress)
             $cacheFile = $cachePath . "/tiny_mce_" . $cacheKey . ".gz";

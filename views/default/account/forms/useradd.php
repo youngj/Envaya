@@ -19,5 +19,5 @@
 
     <div id="add-box">
     <h2><?php echo __('adduser'); ?></h2>
-        <?php echo view('input/form', array('action' => "{$vars['url']}admin/add_user", 'body' => $form_body)) ?>
+        <?php echo view('input/form', array('action' => Config::get('url')."admin/add_user", 'body' => $form_body)) ?>
     </div>
