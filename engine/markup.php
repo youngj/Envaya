@@ -2,6 +2,9 @@
 
 class Markup
 {
+    const Normal = null;
+    const Feed = 'feed';
+
     /**
      * Takes a string and turns any URLs into formatted links
      *
@@ -129,9 +132,10 @@ class Markup
     
     static $scribd_re = '/<scribd ([^>]*)\/>/';
     
-    static function render_custom_tags($html)
-    {
-        return preg_replace_callback(static::$scribd_re, array('Markup', 'render_scribd'), $html);
+    static function render_custom_tags($html, $mode = null)
+    {        
+        $scribd_fn = ($mode == static::Feed) ? 'render_scribd_link' : 'render_scribd_embed';
+        return preg_replace_callback(static::$scribd_re, array('Markup', $scribd_fn), $html);
     }
         
     static function render_editor_html($html)
@@ -145,31 +149,34 @@ class Markup
             array('Markup', 'undo_scribd_placeholder'), $html);
     }
     
-    private static function render_scribd($match)
-    {        
-        $scribd = new SimpleXMLElement($match[0]);
-        if ($scribd)
-        {
-            return view('output/scribd', array(
-                'docid' => @$scribd['docid'], 
-                'accesskey' => @$scribd['accesskey'],
-                'filename' => @$scribd['filename']));
-        }
-        return '';
-    }    
-    
-    private static function render_scribd_placeholder($match)
+    private static function render_scribd_view($view_name, $match)
     {
         $scribd = new SimpleXMLElement($match[0]);
         if ($scribd)
         {
-            return view('output/scribd_placeholder', array(
+            return view($view_name, array(
                 'docid' => @$scribd['docid'], 
-                'accesskey' => @$scribd['accesskey'], 
-                'filename' => @$scribd['filename'], 
-                'guid' => @$scribd['guid']));
+                'accesskey' => @$scribd['accesskey'],
+                'filename' => @$scribd['filename'],
+                'guid' => @$scribd['guid']
+            ));
         }
         return '';    
+    }
+    
+    private static function render_scribd_embed($match)
+    {        
+        return static::render_scribd_view('output/scribd', $match);
+    }    
+    
+    private static function render_scribd_placeholder($match)
+    {
+        return static::render_scribd_view('output/scribd_placeholder', $match);
+    }    
+
+    private static function render_scribd_link($match)
+    {
+        return static::render_scribd_view('output/scribd_link', $match);
     }    
     
     private static function undo_scribd_placeholder($match)
@@ -185,5 +192,5 @@ class Markup
                 ."' filename='".escape($metadata[0])."' />";
         }        
         return '';    
-    }        
+    }
 }

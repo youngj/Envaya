@@ -25,7 +25,7 @@ class FeedItemHandler_News extends FeedItemHandler
 
         return view('feed/snippet', array(            
             'link_url' => $this->get_url($item),
-            'content' => $update->render_content()
+            'content' => $update->render_content(Markup::Feed)
         ));
     }
 }

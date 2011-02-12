@@ -598,7 +598,7 @@ abstract class Entity extends Model
         }
     }
 
-    public function render_content()
+    public function render_content($markup_mode = null)
     {
         $isHTML = $this->has_data_type(DataType::HTML);
 
@@ -606,7 +606,7 @@ abstract class Entity extends Model
 
         if ($isHTML)
         {
-            $content = Markup::render_custom_tags($content);
+            $content = Markup::render_custom_tags($content, $markup_mode);
         
             return $content; // html content should be sanitized when it is input!
         }

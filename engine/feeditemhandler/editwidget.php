@@ -25,7 +25,7 @@ class FeedItemHandler_EditWidget extends FeedItemHandler
         $widget = $item->get_subject_entity();
         return view('feed/snippet', array(            
             'link_url' => $this->get_url($item),
-            'content' => $widget->render_content()
+            'content' => $widget->render_content(Markup::Feed)
         ));    
     }
 }

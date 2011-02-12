@@ -4,7 +4,7 @@
 
     echo view('feed/snippet', array(
         'max_length' => 500,
-        'content' => "<em>".__('org:mission')."</em>: " . $home->render_content(),
+        'content' => "<em>".__('org:mission')."</em>: " . $home->render_content(Markup::Feed),
         'link_url' => $home->get_url()
     ));
 
