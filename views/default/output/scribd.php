@@ -9,7 +9,7 @@
         echo "<script type='text/javascript' src='http://www.scribd.com/javascripts/view.js'></script>";
     }
 ?>
-<div id='scribd<?php echo $SCRIBD_INCLUDE_COUNT; ?>'></div>
+<div id='scribd<?php echo $SCRIBD_INCLUDE_COUNT; ?>'><?php echo view('output/scribd_link', $vars); ?></div>
 <script type="text/javascript">
 (function() {
     var doc = scribd.Document.getDoc(<?php echo (int)$docid ?>, <?php echo json_encode((string)$accesskey) ?>);
