@@ -119,7 +119,7 @@ class Query_Select
     
     function count()
     {
-        $total = get_data_row($this->_query("COUNT(*) as total"), $this->args);
+        $total = Database::get_row($this->_query("COUNT(*) as total"), $this->args);
         return $total->total;
     }
     
@@ -129,7 +129,7 @@ class Query_Select
     
         if ($this->order_by)
         {
-            $query .= " order by ".sanitize_order_by($this->order_by);
+            $query .= " order by ".Database::sanitize_order_by($this->order_by);
         }
 
         if ($this->limit)
@@ -137,7 +137,7 @@ class Query_Select
             $query .= " limit ".((int)$this->offset).", ".((int)$this->limit);
         }
     
-        $res = get_data($query, $this->args); 
+        $res = Database::get_rows($query, $this->args); 
         if ($this->row_function)
         {
             return array_map($this->row_function, $res);

@@ -242,7 +242,7 @@ class User extends Entity
     function get_blog_dates()
     {
         $sql = "SELECT guid, time_created from entities WHERE type='object' AND enabled='yes' AND subtype=? AND container_guid=? ORDER BY guid ASC";
-        return get_data($sql, array(NewsUpdate::get_subtype_id(), $this->guid));
+        return Database::get_rows($sql, array(NewsUpdate::get_subtype_id(), $this->guid));
     }
 
     public function is_approved()

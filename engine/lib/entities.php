@@ -44,7 +44,7 @@
         if (!$guid)
             return false;
 
-        return get_data_row("SELECT * from entities where guid=?", array($guid));
+        return Database::get_row("SELECT * from entities where guid=?", array($guid));
     }
     
     function entity_row_to_entity($row)

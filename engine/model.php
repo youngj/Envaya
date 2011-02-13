@@ -100,14 +100,14 @@ class Model
     {
         $attributes = $this->get_table_attributes();
     
-        save_db_row(static::$table_name, static::$primary_key, $this->attributes[static::$primary_key], $attributes);
+        Database::save_row(static::$table_name, static::$primary_key, $this->attributes[static::$primary_key], $attributes);
         $this->dirty = false;
     }    
     
     public function delete()
     {
         $this->dirty = false;
-        return delete_data("DELETE from ".static::$table_name." where ".static::$primary_key."=?", array($this->attributes[static::$primary_key]));
+        return Database::delete("DELETE from ".static::$table_name." where ".static::$primary_key."=?", array($this->attributes[static::$primary_key]));
     }
     
     function get_default_view_name()

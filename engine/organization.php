@@ -224,7 +224,7 @@ class Organization extends User
     {
         if (!isset($this->sectors))
         {
-            $sectorRows = get_data("select * from org_sectors where container_guid = ?", array($this->guid));
+            $sectorRows = Database::get_rows("select * from org_sectors where container_guid = ?", array($this->guid));
             $sectors = array();
             foreach ($sectorRows as $row)
             {
@@ -247,10 +247,10 @@ class Organization extends User
 
         if ($this->sectors_dirty)
         {
-            delete_data("delete from org_sectors where container_guid = ?", array($this->guid));
+            Database::delete("delete from org_sectors where container_guid = ?", array($this->guid));
             foreach ($this->sectors as $sector)
             {
-                insert_data("insert into org_sectors (container_guid, sector_id) VALUES (?,?)", array($this->guid, $sector));
+                Database::update("insert into org_sectors (container_guid, sector_id) VALUES (?,?)", array($this->guid, $sector));
             }
             $this->sectors_dirty = false;
         }

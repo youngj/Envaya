@@ -35,7 +35,7 @@
             {
                 foreach($handlers as $handler) 
                 {
-                    if ($handler($event, $object_type, $object) === false) 
+                    if (call_user_func_array($handler, array($event, $object_type, $object)) === false) 
                     {
                         return false;
                     }

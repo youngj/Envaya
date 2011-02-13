@@ -14,7 +14,7 @@ class Statistics
             $args[] = $owner_guid;
         }
 
-        $types = get_data($query, $args);
+        $types = Database::get_rows($query, $args);
         foreach ($types as $type)
         {
             $args = array();
@@ -28,7 +28,7 @@ class Statistics
                 $args[] = $owner_guid;
             }
 
-            $subtype_cnt = get_data_row($query, $args);
+            $subtype_cnt = Database::get_row($query, $args);
             $entity_stats[$type->subtype_id] = $subtype_cnt->count;
         }
 

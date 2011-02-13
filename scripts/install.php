@@ -37,7 +37,7 @@ function run_sql_script($scriptlocation) {
             $statement = trim($statement);
             if (!empty($statement)) {
                 try {
-                    $result = update_data($statement);
+                    $result = Database::update($statement);
                 } catch (DatabaseException $e) {
                     $errors[] = "$statement: $e->getMessage()";
                 }

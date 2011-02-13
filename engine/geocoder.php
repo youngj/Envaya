@@ -13,7 +13,7 @@ class Geocoder
         if (is_array($location))
             $location = implode(', ', $location);
 
-        $cached_location = get_data_row("SELECT * from geocode_cache WHERE location=?", array($location));
+        $cached_location = Database::get_row("SELECT * from geocode_cache WHERE location=?", array($location));
         if ($cached_location)
             return array('lat' => $cached_location->lat, 'long' => $cached_location->long);
 
@@ -27,7 +27,8 @@ class Geocoder
             $long = (float)$return['long'];
 
             // Put into cache at the end of the page since we don't really care that much
-            execute_delayed_write_query("INSERT DELAYED INTO geocode_cache (location, lat, `long`) VALUES (?,?,?) ON DUPLICATE KEY UPDATE lat=?, `long`=?",
+            Database::execute_delayed(
+                "INSERT DELAYED INTO geocode_cache (location, lat, `long`) VALUES (?,?,?) ON DUPLICATE KEY UPDATE lat=?, `long`=?",
                 array($location, $lat, $long, $lat, $long)
             );
         }

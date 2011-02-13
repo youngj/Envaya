@@ -179,7 +179,7 @@ class Controller_Post extends Controller_Profile
 
         $selectWhere = "SELECT * from entities WHERE type='object' AND enabled='yes' AND subtype=? AND container_guid=?";
 
-        $entity = entity_row_to_entity(get_data_row("$selectWhere AND guid $op ? ORDER BY guid $order LIMIT 1",
+        $entity = entity_row_to_entity(Database::get_row("$selectWhere AND guid $op ? ORDER BY guid $order LIMIT 1",
             array(NewsUpdate::get_subtype_id(), $post->container_guid, $post->guid)
         ));
         if ($entity)
@@ -187,7 +187,7 @@ class Controller_Post extends Controller_Profile
             forward($entity->get_url());
         }
 
-        $entity = entity_row_to_entity(get_data_row("$selectWhere ORDER BY guid $order LIMIT 1",
+        $entity = entity_row_to_entity(Database::get_row("$selectWhere ORDER BY guid $order LIMIT 1",
             array(NewsUpdate::get_subtype_id(), $post->container_guid)
         ));
 

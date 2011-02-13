@@ -26,7 +26,7 @@
         $guid = $cache->get($cacheKey);
         if (!$guid)
         {
-            $guidRow = get_data_row("SELECT guid from users_entity where username=?", array($username));
+            $guidRow = Database::get_row("SELECT guid from users_entity where username=?", array($username));
             if (!$guidRow)
             {
                 return null;

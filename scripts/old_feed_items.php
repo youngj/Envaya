@@ -10,7 +10,7 @@ foreach ($feedItems as $feedItem)
 {
     $feedName = "user={$feedItem->user_guid}";
 
-    $row = get_data_row("select * from feed_items where feed_name=? and subject_guid=? and time_posted=?",
+    $row = Database::get_row("select * from feed_items where feed_name=? and subject_guid=? and time_posted=?",
         array($feedName, $feedItem->subject_guid, $feedItem->time_posted)
     );
     if ($row)
@@ -20,7 +20,7 @@ foreach ($feedItems as $feedItem)
     else
     {
         $id = 0;
-        save_db_row('feed_items', 'id', $id, array(
+        Database::save_row('feed_items', 'id', $id, array(
             'feed_name' => $feedName,
             'action_name' => $feedItem->action_name,
             'subject_guid' => $feedItem->subject_guid,

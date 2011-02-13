@@ -30,15 +30,15 @@ class SystemLog
         $ts = $now - $offset;
 
         // create table
-        if (!update_data("CREATE TABLE system_log_$now as SELECT * from system_log WHERE time_created<?", array($ts)))
+        if (!Database::update("CREATE TABLE system_log_$now as SELECT * from system_log WHERE time_created<?", array($ts)))
             return false;
 
         // delete
-        if (delete_data("DELETE from system_log WHERE time_created<?", array($ts))===false)
+        if (Database::delete("DELETE from system_log WHERE time_created<?", array($ts))===false)
             return false;
 
         // alter table to engine
-        if (!update_data("ALTER TABLE system_log_$now engine=archive"))
+        if (!Database::update("ALTER TABLE system_log_$now engine=archive"))
             return false;
 
         return true;
@@ -53,7 +53,7 @@ class SystemLog
 
         if (!isset(static::$logcache[$time][$object_id][$event]))
         {
-            insert_data("INSERT DELAYED into system_log (
+            Database::update("INSERT DELAYED into system_log (
                 object_id, object_class, object_type, object_subtype, event,
                 performed_by_guid, owner_guid, enabled, time_created)
                 VALUES (?,?,?,?,?,?,?,?,?)",

@@ -127,6 +127,7 @@ function bootstrap()
     set_exception_handler('php_exception_handler');
     register_shutdown_function('__shutdown_hook');
     
+    Database::init();
     init_languages();
     
     if (@$_GET['lang'])

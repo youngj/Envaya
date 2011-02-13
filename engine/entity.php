@@ -99,23 +99,23 @@ abstract class Entity extends Model
         $tableName = static::$table_name;
     
         $guid = $this->guid;
-        if (get_data_row("SELECT guid from $tableName where guid = ?", array($guid)))
+        if (Database::get_row("SELECT guid from $tableName where guid = ?", array($guid)))
         {
-            update_db_row($tableName, 'guid', $guid, $this->get_table_attributes());
+            Database::update_row($tableName, 'guid', $guid, $this->get_table_attributes());
         }
         else
         {
             $values = $this->get_table_attributes();
             $values['guid'] = $guid;
                         
-            insert_db_row($tableName, $values);        
+            Database::insert_row($tableName, $values);        
         }
     }
 
     public function select_table_attributes($guid)
     {
         $tableName = static::$table_name;
-        return get_data_row("SELECT * from $tableName where guid=?", array($guid));
+        return Database::get_row("SELECT * from $tableName where guid=?", array($guid));
     }
 
     /**
@@ -215,14 +215,14 @@ abstract class Entity extends Model
 
     public function clear_metadata()
     {
-        return delete_data("DELETE from metadata where entity_guid=?", array($this->guid));
+        return Database::delete("DELETE from metadata where entity_guid=?", array($this->guid));
     }
     
     public function get_sub_entities()
     {
         $guid = $this->guid;
         return array_map('entity_row_to_entity',
-            get_data("SELECT * from entities WHERE container_guid=? or owner_guid=?", array($guid, $guid))
+            Database::get_rows("SELECT * from entities WHERE container_guid=? or owner_guid=?", array($guid, $guid))
         );
     }
 
@@ -338,11 +338,11 @@ abstract class Entity extends Model
         
         if ($guid > 0)
         {
-            update_db_row('entities', 'guid', $guid, $entity_values);
+            Database::update_row('entities', 'guid', $guid, $entity_values);
         }
         else
         {            
-            $this->guid = insert_db_row('entities', $entity_values);
+            $this->guid = Database::insert_row('entities', $entity_values);
             if (!$this->guid)
                 throw new IOException(__('error:BaseEntitySaveFailed'));
         }        
@@ -414,7 +414,7 @@ abstract class Entity extends Model
 
         $this->clear_metadata();
 
-        $res = delete_data("DELETE from entities where guid=?", array($this->guid));
+        $res = Database::delete("DELETE from entities where guid=?", array($this->guid));
                 
         parent::delete();
         $this->clear_from_cache();

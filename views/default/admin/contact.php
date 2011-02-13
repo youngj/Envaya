@@ -1,7 +1,7 @@
 
 <?php
 
-    $sort = sanitize_order_by(get_input('sort') ?: 'name');
+    $sort = Database::sanitize_order_by(get_input('sort') ?: 'name');
     $baseurl = "/admin/contact?sort=$sort";
     $offset = (int)get_input('offset');
 
