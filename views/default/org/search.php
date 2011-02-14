@@ -22,7 +22,11 @@
             'internalname' => 'submit',
             'value' => __('search:submit') 
         ));
-    ?>    
-    
+    ?>        
 </form>
+<script type='text/javascript'>
+setTimeout(function() {
+    document.forms[0].q.focus();
+},10);
+</script>
 </div>
