@@ -1,6 +1,6 @@
 <?php
 
-$settings_file = "settings/local.php";
+$settings_file = "config/local.php";
 
 if (!is_file($settings_file))
 {

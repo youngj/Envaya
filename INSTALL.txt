@@ -10,10 +10,10 @@ starting from a base OS installation.
 # warning: the mysql root password will be reset to the empty string (should fix this...)
 ./scripts/server_pre_setup.sh
 
-# step 2: create your local settings file
+# step 2: create your local config file
 php scripts/install_settings.php
 
-# optionally, edit engine/settings.php to provide desired database settings
+# optionally, edit config/local.php to provide desired database settings
 
 # step 3: create empty database and default user
 php scripts/db_setup.php | mysql
