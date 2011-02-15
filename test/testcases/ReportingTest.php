@@ -7,6 +7,12 @@ class ReportingTest extends SeleniumTest
     private $view_url;
     private $username;
 
+    public function init_selenium()
+    {
+        // Selenium attachFile only works with *chrome browser
+        return new Testing_Selenium("*chrome", "http://localhost");    
+    }
+    
     public function test()
     {        
         $this->_testNewReportDefinition();
@@ -116,7 +122,52 @@ class ReportingTest extends SeleniumTest
         $this->mouseOver("//input[@name='field_other_name' and @value='YAAAY']");        
         
         $this->clickAndWait("//div[@class='report_section_nav']//a[contains(text(),'Attachments')]");
-        $this->submitForm();
+        
+        $this->mustNotExist("//span[@id='upload_span0']//a");
+        
+        $this->selectUploadFrame("//span[@id='imageUploadContainer0']//iframe[contains(@src,'upload_frame')]");        
+        $this->attachFile("//input[@type='file']", "http://localhost/_graphics/test/1.jpg");
+        $this->selectFrame("relative=parent");
+        
+        $this->retry('mouseOver', array("//span[@id='upload_span0']//a"));
+        
+        $this->mustNotExist("//span[@id='upload_span1']//a");
+        
+        $this->selectUploadFrame("//span[@id='imageUploadContainer1']//iframe[contains(@src,'upload_frame')]");        
+        $this->attachFile("//input[@type='file']", "http://localhost/_graphics/test/test.rtf");        
+        $this->selectFrame("relative=parent");
+        
+        $this->retry('mouseOver', array("//span[@id='upload_span1']//a"));
+
+        $this->mustNotExist("//span[@id='upload_span2']//a");
+        
+        $this->selectUploadFrame("//span[@id='imageUploadContainer2']//iframe[contains(@src,'upload_frame')]");        
+        $this->attachFile("//input[@type='file']", "http://localhost/_graphics/test/bad.jpg");        
+        $this->selectFrame("relative=parent");
+        
+        $this->retry('mouseOver', array("//span[@id='upload_span2']//a"));
+        
+        $this->click("//span[@id='upload_remove_span2']//input");        
+        
+        $this->mustNotExist("//span[@id='upload_span2']//a");
+        
+        $this->selectUploadFrame("//span[@id='imageUploadContainer2']//iframe[contains(@src,'upload_frame')]");
+        $this->attachFile("//input[@type='file']", "http://localhost/_graphics/test/3.jpg");
+        $this->selectFrame("relative=parent");
+        
+        $this->retry('mouseOver', array("//span[@id='upload_span2']//a"));
+                        
+        $this->submitForm();        
+        
+        $this->mouseOver("//div[@class='report_field_success_story_1']//a");
+        $this->mouseOver("//div[@class='report_field_success_story_2']//a");
+        $this->mouseOver("//div[@class='report_field_success_story_3']//a");
+        
+        $imgUrl = $this->getAttribute("//div[@class='report_field_success_story_1']//a@href");        
+        $this->checkImage($imgUrl, 110000, 120000); 
+
+        $imgUrl = $this->getAttribute("//div[@class='report_field_success_story_3']//a@href");        
+        $this->checkImage($imgUrl, 65000, 75000);         
         
         $this->type("//input[@id='signature']", "Mr. User");
         $this->submitForm();
@@ -130,8 +181,7 @@ class ReportingTest extends SeleniumTest
 
         sleep(2);
         $email = $this->getLastEmail("FCS Narrative Report submitted to Test Grantmaker");
-        $this->assertContains('YAAAY', $email);
-                
+        $this->assertContains('YAAAY', $email);                
     }
     
     private function _testCreateAccount()

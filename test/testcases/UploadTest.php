@@ -69,33 +69,7 @@ class UploadTest extends SeleniumTest
         
         $this->checkImage($smallImgUrl, 1000, 10000);        
     }
-    
-    private function selectUploadFrame()
-    {
-        // requires the profiles/noflash profile 
-        // (selenium can only test upload via normal html file input)
-        retry(array($this->s, 'selectFrame'), array("//iframe[contains(@src,'upload_frame')]"));        
-        retry(array($this->s, 'mouseOver'), array("//input[@type='file']"));    
-    }
-    
-    private function checkImage($imgUrl, $minBytes, $maxBytes)
-    {
-        $imgData = file_get_contents($imgUrl);
-        $imgSize = strlen($imgData);
-        $this->assertGreaterThan($minBytes, $imgSize);
-        $this->assertLessThan($maxBytes, $imgSize);        
-        
-        $sizeArray = getimagesize($imgUrl);
-        
-        $this->assertTrue(is_array($sizeArray));
-                
-        $width = $sizeArray[0];
-        $height = $sizeArray[1];
-        
-        $this->assertGreaterThan(10, $width);
-        $this->assertGreaterThan(10, $height);
-    }
-    
+      
     private function _testAddPhotos()
     {
         $this->open("/testorg/dashboard");

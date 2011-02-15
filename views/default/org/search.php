@@ -1,7 +1,6 @@
 <?php
     $query = $vars['query'];
     $sector = $vars['sector'];
-
 ?>
 <div class='padded'>
 <div class='instructions'>

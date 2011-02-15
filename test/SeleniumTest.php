@@ -146,13 +146,45 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         }
         return $matches[0];
     }
+    
+    public function retry($fn_name, $args = null)
+    {
+        return retry(array($this, $fn_name), $args);
+    }
 
+    public function selectUploadFrame($xpath = "//iframe[contains(@src,'upload_frame')]")
+    {
+        // requires the profiles/noflash profile 
+        // (selenium can only test upload via normal html file input)
+        $this->retry('selectFrame', array($xpath));        
+        $this->retry('mouseOver', array("//input[@type='file']"));    
+    }    
+    
     public function setUrl($url)
     {
         // for some reason open() loads the action twice?
         $this->s->getEval("window.location.href='$url';");
         $this->s->waitForPageToLoad(10000);
     }    
+    
+    public function checkImage($imgUrl, $minBytes, $maxBytes)
+    {
+        $imgData = file_get_contents($imgUrl);
+        $imgSize = strlen($imgData);
+        $this->assertGreaterThan($minBytes, $imgSize);
+        $this->assertLessThan($maxBytes, $imgSize);        
+        
+        $sizeArray = getimagesize($imgUrl);
+        
+        $this->assertTrue(is_array($sizeArray));
+                
+        $width = $sizeArray[0];
+        $height = $sizeArray[1];
+        
+        $this->assertGreaterThan(10, $width);
+        $this->assertGreaterThan(10, $height);
+    }
+        
 }
 
 
