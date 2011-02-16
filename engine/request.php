@@ -629,6 +629,20 @@ class Request {
         $protocol = @$_SERVER['HTTPS'] ? "https://" : "http://";
         return "$protocol{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
     }
+    
+    public static function canonical_url()
+    {
+        $canonical_url = Request::full_original_url();
+        if (@$_GET['view'])
+        {
+            $canonical_url = url_with_param($canonical_url, 'view', null);
+        }
+        if (@$_GET['__sv'])
+        {
+            $canonical_url = url_with_param($canonical_url, '__sv', null);
+        }
+        return $canonical_url;
+    }
 
     public function full_rewritten_url()
     {

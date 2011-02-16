@@ -27,20 +27,20 @@ class UploadTest extends SeleniumTest
         
         $this->click("//div[@id='attachControls']//a");
         
-        retry(array($this->s, 'selectFrame'), array("//iframe[contains(@src,'selectImage')]"));
+        $this->retry('selectFrame', array("//iframe[contains(@src,'selectImage')]"));
         
         $this->selectUploadFrame();
         
-        $this->s->attachFile("//input[@type='file']","http://localhost/_graphics/test/1.jpg");
+        $this->attachFile("//input[@type='file']","http://localhost/_graphics/test/1.jpg");
         
-        $this->s->selectFrame("relative=parent");
+        $this->selectFrame("relative=parent");
         
-        retry(array($this, 'mustBeVisible'), array("//div[@id='imageOptionsContainer']"));
+        $this->retry('mustBeVisible', array("//div[@id='imageOptionsContainer']"));
         
-        $this->s->check("//input[@value='medium']");
-        $this->s->check("//input[@value='right']");        
+        $this->check("//input[@value='medium']");
+        $this->check("//input[@value='right']");        
         
-        $this->s->selectFrame("relative=top");
+        $this->selectFrame("relative=top");
         
         $this->click("//input[@type='submit' and @value='OK']");
         sleep(1);
@@ -77,16 +77,16 @@ class UploadTest extends SeleniumTest
         
         // test errors for iimages
         $this->selectUploadFrame();        
-        $this->s->attachFile("//input[@type='file']","http://localhost/_graphics/test/bad.jpg");        
-        $this->s->selectFrame("relative=parent");
+        $this->attachFile("//input[@type='file']","http://localhost/_graphics/test/bad.jpg");        
+        $this->selectFrame("relative=parent");
         
-        retry(array($this, 'mustBeVisible'), array("//div[@id='progressContainer' and contains(text(), 'could not understand')]"));
+        $this->retry('mustBeVisible', array("//div[@id='progressContainer' and contains(text(), 'could not understand')]"));
         
         $this->selectUploadFrame();        
-        $this->s->attachFile("//input[@type='file']","http://localhost/_graphics/test/3.jpg");
-        $this->s->selectFrame("relative=parent");
+        $this->attachFile("//input[@type='file']","http://localhost/_graphics/test/3.jpg");
+        $this->selectFrame("relative=parent");
         
-        retry(array($this, 'mustBeVisible'), array("//div[@class='photoPreview']//img"));
+        $this->retry('mustBeVisible', array("//div[@class='photoPreview']//img"));
         
         $imgUrl = $this->getAttribute("//div[@class='photoPreview']//img@src");        
         $this->checkImage($imgUrl, 2000, 10000); 
@@ -94,10 +94,10 @@ class UploadTest extends SeleniumTest
         $this->type("//textarea[@class='photoCaptionInput']","caption 3");
         
         $this->selectUploadFrame();        
-        $this->s->attachFile("//input[@type='file']","http://localhost/_graphics/test/1.jpg");
-        $this->s->selectFrame("relative=parent");        
+        $this->attachFile("//input[@type='file']","http://localhost/_graphics/test/1.jpg");
+        $this->selectFrame("relative=parent");        
         
-        retry(array($this, 'mustBeVisible'), array("//div[@class='photoPreviewContainer'][2]//div[@class='photoPreview']//img"));
+        $this->retry('mustBeVisible', array("//div[@class='photoPreviewContainer'][2]//div[@class='photoPreview']//img"));
         
         $imgUrl = $this->getAttribute("//div[@class='photoPreviewContainer'][2]//div[@class='photoPreview']//img@src");        
         $this->checkImage($imgUrl, 2000, 10000); 
@@ -124,11 +124,11 @@ class UploadTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'/design')]");
         $this->selectUploadFrame();
         
-        $this->s->attachFile("//input[@type='file']","http://localhost/_graphics/test/logo.png");
+        $this->attachFile("//input[@type='file']","http://localhost/_graphics/test/logo.png");
         
-        $this->s->selectFrame("relative=parent");
+        $this->selectFrame("relative=parent");
         
-        retry(array($this, 'mustBeVisible'), array("//div[@class='imageUploadProgress']//img"));
+        $this->retry('mustBeVisible', array("//div[@class='imageUploadProgress']//img"));
         
         $this->submitForm();
         
@@ -167,7 +167,7 @@ class UploadTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'view=mobile')]");
         $this->clickAndWait("//a[contains(@href,'/addphotos')]");
         
-        $this->s->attachFile("//input[@name='imageFile1']","http://localhost/_graphics/test/2.jpg");
+        $this->attachFile("//input[@name='imageFile1']","http://localhost/_graphics/test/2.jpg");
         $this->type("//textarea[@name='imageCaption1']", "example caption");
         
         $this->clickAndWait("//input[@type='submit']");

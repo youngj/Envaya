@@ -353,7 +353,7 @@ class RegisterTest extends SeleniumTest
 
         /* create account */
 
-        $this->s->mouseOver("//div[@class='good_messages']");
+        $this->mouseOver("//div[@class='good_messages']");
 
         $this->username2 = "selenium".time();
         $this->name2 = "Test Partner ".time();

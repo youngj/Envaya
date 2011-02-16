@@ -2,13 +2,25 @@
 
     function url_with_param($url, $param, $value)
     {
-        $url = parse_url($url);
-        parse_str(@$url['query'],$query);
-        $query[$param] = $value;
+        $parsed = parse_url($url);
+        parse_str(@$parsed['query'],$query);
+        if (is_null($value))
+        {
+            unset($query[$param]);
+        }
+        else
+        {
+            $query[$param] = $value;
+        }
 
-        $prefix = @$url['scheme'] ? $url['scheme']."://".$url['host'] : '';
+        $prefix = @$parsed['scheme'] ? $parsed['scheme']."://".$parsed['host'] : '';
 
-        return $prefix.$url['path']."?".http_build_query($query);
+        $url = $prefix.$parsed['path'];
+        if (sizeof($query) > 0)
+        {
+            return $url."?".http_build_query($query);
+        }
+        return $url;
     }
         
     function secure_url($url)

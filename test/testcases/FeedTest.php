@@ -63,7 +63,7 @@ class FeedTest extends SeleniumTest
         
         $this->click("//a[@id='load_more_link']");
         
-        retry(array($this->s, 'mouseOver'), array("//a[contains(@href,'testposter0')]"));
+        $this->retry('mouseOver', array("//a[contains(@href,'testposter0')]"));
         
         $this->mouseOver("//a[contains(@href,'testposter21')]");
         $this->mouseOver("//a[contains(@href,'testposter14')]");

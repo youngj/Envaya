@@ -32,8 +32,10 @@
         if (PageContext::has_rss())
         {
             echo '<link rel="alternate" type="application/rss+xml" title="RSS" '.
-                'href="'.url_with_param(Request::full_original_url(), 'view', 'rss').'" />';
+                'href="'.escape(url_with_param(Request::full_original_url(), 'view', 'rss')).'" />';
         }   
+        
+        echo "<link rel='canonical' href='".escape(Request::canonical_url())."' />";
     ?>
     <link rel="shortcut icon" href="/_graphics/favicon2.ico" />
 <script type='text/javascript'>

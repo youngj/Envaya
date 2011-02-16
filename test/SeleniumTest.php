@@ -95,14 +95,14 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
     public function typeInFrame($selector, $value)
     {
-        retry(array($this->s, 'selectFrame'), array($selector));
+        $this->retry('selectFrame', array($selector));
         $this->s->type("//body", $value);
         $this->s->selectFrame("relative=top");
     }
 
     public function getLastEmail($match = null)
     {
-        return retry(array($this, '_getLastEmail'), array($match));
+        return $this->retry('_getLastEmail', array($match));
     }
 
     public function _getLastEmail($match)
@@ -147,9 +147,9 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         return $matches[0];
     }
     
-    public function retry($fn_name, $args = null)
+    public function retry($fn_name, $args = null, $timeout = 15)
     {
-        return retry(array($this, $fn_name), $args);
+        return retry(array($this, $fn_name), $args, $timeout);
     }
 
     public function selectUploadFrame($xpath = "//iframe[contains(@src,'upload_frame')]")

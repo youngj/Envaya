@@ -230,20 +230,20 @@ class ReportingTest extends SeleniumTest
         // part 2: project description
         
         $this->type("//input[@name='field_beneficiaries_female_direct']", "10");
-        $this->s->fireEvent("//input[@name='field_beneficiaries_female_direct']", "keyup");
+        $this->fireEvent("//input[@name='field_beneficiaries_female_direct']", "keyup");
         
         $this->type("//input[@name='field_beneficiaries_male_direct']", "20");
-        $this->s->fireEvent("//input[@name='field_beneficiaries_male_direct']", "keyup");
+        $this->fireEvent("//input[@name='field_beneficiaries_male_direct']", "keyup");
         
         sleep(1);
         
-        $this->assertEquals($this->s->getValue("//input[@name='field_beneficiaries_direct']"), '30'); // automatically calculated field
+        $this->assertEquals($this->getValue("//input[@name='field_beneficiaries_direct']"), '30'); // automatically calculated field
         $this->type("//input[@name='field_beneficiaries_male_direct']", "fooo"); // not a number
         
-        $this->s->fireEvent("//input[@name='field_beneficiaries_male_direct']", "keyup");        
+        $this->fireEvent("//input[@name='field_beneficiaries_male_direct']", "keyup");        
         sleep(1);
         
-        $this->assertEquals($this->s->getValue("//input[@name='field_beneficiaries_direct']"), '30');
+        $this->assertEquals($this->getValue("//input[@name='field_beneficiaries_direct']"), '30');
         
         $this->select("//select[@id='inputGrid0_region_1']", "Iringa");
         $this->type("//input[@id='inputGrid0_district_1']", "Iringa Urban");

@@ -86,12 +86,12 @@ class EnvayaSiteTest extends SeleniumTest
         $this->assertFalse($this->isVisible("//div[@class='mapMarker']"));
         
         $this->select("//select[@id='sectorList']","Education");
-        retry(array($this->s, 'mouseOver'), array("//div[@class='mapMarker'][2]"));                
+        $this->retry('mouseOver', array("//div[@class='mapMarker'][2]"));                
     }    
     
     private function waitForMapMarker()
     {
-        retry(array($this->s, 'mouseOver'), array("//div[@class='mapMarker']"));        
+        $this->retry('mouseOver', array("//div[@class='mapMarker']"));        
     }
     
     private function _testContactForm()
