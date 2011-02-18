@@ -2,7 +2,7 @@
     $org = $vars['org'];
 ?>
 <div class='section_content padded'>
-<form action='<?php echo $org->get_url() ?>/username/save' method='POST'>
+<form action='<?php echo $org->get_url() ?>/username' method='POST'>
 
 <?php echo view('input/securitytoken') ?>
 <div class='input'>

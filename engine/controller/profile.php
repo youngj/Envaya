@@ -109,6 +109,10 @@ class Controller_Profile extends Controller
 
     function action_edit()
     {
+        // backwards compatibility to avoid breaking links and allow editing widgets
+        // at /<username>/<widgetname>/edit         
+        // by forwarding to new URLs at /<username>/page/<widgetname>/edit         
+     
         $widgetName = $this->request->param('widgetname');
         $widget = $this->org->get_widget_by_name($widgetName);
         if ($widget->is_active())
@@ -120,67 +124,7 @@ class Controller_Profile extends Controller
             not_found();
         }
     }
-
-    function action_save()
-    {
-        $this->validate_security_token();
-
-        if (!$this->user->can_edit())
-        {
-            action_error(__('org:cantedit'));
-        }
-
-        $widgetName = $this->request->param('widgetname');
-
-        $methodName = "save_$widgetName";
-        if (method_exists($this,$methodName))
-        {
-            $this->$methodName();
-        }
-        else
-        {
-            return not_found();
-        }
-
-        forward(get_input('from') ?: $this->user->get_url());
-    }
     
-    function action_options()
-    {
-        $this->require_admin();
-        $this->require_org();
-        $this->use_editor_layout();
-        
-        PageContext::set_translatable(false);
-        
-        $widgetName = $this->request->param('widgetname');
-        $widget = $this->org->get_widget_by_name($widgetName);
-        
-        $title = __('widget:options');
-        $body = view('widgets/options', array('widget' => $widget));
-        
-        $this->page_draw($title, view_layout("one_column", view_title($title), $body));        
-    }
-    
-    function action_save_options()
-    {
-        $this->require_admin();
-        $this->require_org();
-        $this->validate_security_token();
-        
-        $widgetName = $this->request->param('widgetname');
-        $widget = $this->org->get_widget_by_name($widgetName);
-        
-        $widget->handler_class = get_input('handler_class');
-        $widget->handler_arg = get_input('handler_arg');
-        $widget->title = get_input('title');
-        $widget->menu_order = (int)get_input('menu_order');
-        $widget->in_menu = get_input('in_menu') == 'no' ? 0 : 1;
-        $widget->save();
-
-        forward($widget->get_url());
-    }
-
     function use_public_layout($show_menu = true)
     {
         $org = $this->org;
@@ -246,7 +190,12 @@ class Controller_Profile extends Controller
 
     function index_add_page()
     {
-        $this->require_editor();
+        $this->require_editor();  
+
+        if (Request::is_post())
+        {
+            $this->save_add_page();
+        }
         
         $org = $this->org;
         
@@ -261,39 +210,46 @@ class Controller_Profile extends Controller
         $this->page_draw($title,$body);        
     }
     
-    function save_add_page()
+    private function save_add_page()
     {
+        $this->validate_security_token();
         $this->require_editor();
         
         $title = get_input('title');
         if (!$title)
         {
-            return action_error(__('widget:no_title'));            
+            return register_error(__('widget:no_title'));            
         }
         
         $widget_name = get_input('widget_name');
         if (!$widget_name || !Widget::is_valid_name($widget_name))
         {
-            return action_error(__('widget:bad_name'));            
+            return register_error(__('widget:bad_name'));            
         }
         
         $widget = $this->org->get_widget_by_name($widget_name);
         
         if ($widget->guid && ((time() - $widget->time_created > 30) || !($widget->get_handler() instanceof WidgetHandler_Generic)))
         {
-            return action_error(__('widget:duplicate_name')); 
+            return register_error(__('widget:duplicate_name')); 
         }
         
         $widget->save_input();             
         
         system_message(__('widget:save:success'));
         
-        forward($widget->get_url());
+        forward($widget->get_url());        
     }
     
     function index_design()
     {
         $this->require_editor();
+        
+        if (Request::is_post())
+        {
+            $this->save_design();
+        }
+        
         $org = $this->org;
 
         $cancelUrl = get_input('from') ?: $org->get_url();
@@ -307,8 +263,9 @@ class Controller_Profile extends Controller
         $this->page_draw($title,$body);
     }
 
-    function save_design()
-    {
+    private function save_design()
+    {        
+        $this->validate_security_token();
         $this->require_org();
         $org = $this->org;
 
@@ -351,6 +308,8 @@ class Controller_Profile extends Controller
             $org->set_header($headerFiles);
             system_message(__("header:saved"));
         }
+        
+        forward($org->get_url());
     }
     
     function get_pre_body()
@@ -384,39 +343,7 @@ class Controller_Profile extends Controller
     {
         return $this->org->guid == Session::get_loggedin_userid();
     }
-    
-    function save_widget($widget)
-    {
-        if (get_input('delete'))
-        {
-            $widget->disable();
-            $widget->save();
-
-            system_message(__('widget:delete:success'));
-
-            forward($this->user->get_url());
-        }
-        else
-        {
-            if (!$widget->is_enabled())
-            {
-                $widget->enable();
-            }
-
-            try
-            {             
-                $widget->save_input();
-            }
-            catch (Exception $ex)
-            {
-                action_error($ex->getMessage());
-            }
-            
-            system_message(__('widget:save:success'));
-            forward($widget->get_url());
-        }
-    }
-    
+        
     function index_help()
     {
         $this->require_editor();
@@ -470,6 +397,11 @@ class Controller_Profile extends Controller
         $this->require_editor();
         $this->require_org();
         $this->require_admin();
+        
+        if (Request::is_post())
+        {
+            $this->save_username();
+        }
 
         $title = __('username:title');
         $area1 = view('org/changeUsername', array('org' => $this->org));
@@ -482,6 +414,7 @@ class Controller_Profile extends Controller
     {
         $this->require_org();
         $this->require_admin();
+        $this->validate_security_token();
         
         $org = $this->org;
 
@@ -497,14 +430,12 @@ class Controller_Profile extends Controller
             }
             catch (RegistrationException $ex)
             {
-                register_error($ex->getMessage());
-                forward_to_referrer();
+                return register_error($ex->getMessage());
             }
 
             if (get_user_by_username($username))
             {
-                register_error(__('registration:userexists'));
-                forward_to_referrer();
+                return register_error(__('registration:userexists'));
             }
 
             $org->username = $username;
@@ -560,6 +491,11 @@ class Controller_Profile extends Controller
     {    
         $this->require_https();
         $this->require_editor();
+        
+        if (Request::is_post())
+        {
+            $this->save_settings();
+        }
 
         $title = __("usersettings:user");
 
@@ -571,6 +507,8 @@ class Controller_Profile extends Controller
 
     function save_settings()
     {
+        $this->validate_security_token();
+        
         $user = $this->user;
 
         $name = get_input('name');
@@ -585,7 +523,7 @@ class Controller_Profile extends Controller
         }
         else
         {
-            action_error(__('create:no_name'));
+            return register_error(__('create:no_name'));
         }
 
         $password = get_input('password');
@@ -598,7 +536,7 @@ class Controller_Profile extends Controller
             }
             catch (RegistrationException $ex)
             {
-                action_error($ex->getMessage());
+                return register_error($ex->getMessage());
             }
 
             if ($password == $password2)
@@ -608,7 +546,7 @@ class Controller_Profile extends Controller
             }
             else
             {
-                action_error(__('user:password:fail:notsame'));
+                return register_error(__('user:password:fail:notsame'));
             }
         }
 
@@ -629,7 +567,7 @@ class Controller_Profile extends Controller
             }
             catch (RegistrationException $ex)
             {
-                action_error($ex->getMessage());
+                return register_error($ex->getMessage());
             }
 
             $user->email = $email;
@@ -655,12 +593,18 @@ class Controller_Profile extends Controller
         }
 
         $user->save();
+        forward($user->get_url());
     }
 
     function index_addphotos()
     {
         $this->require_org();
         $this->require_editor();
+        
+        if (Request::is_post())
+        {
+            $this->save_addphotos();
+        }
         
         $title = __('addphotos:title');
         $area1 = view('org/addPhotos', array('entity' => $this->org));
@@ -669,10 +613,8 @@ class Controller_Profile extends Controller
         $this->page_draw($title,$body);
     }
     
-    function save_addphotos()
+    private function save_addphotos()
     {
-        $this->require_org();
-        $this->require_editor();
         $this->validate_security_token();
         
         $imageNumbers = get_input_array('imageNumber');
@@ -681,7 +623,6 @@ class Controller_Profile extends Controller
         $org = $this->org;
         
         $duplicates = NewsUpdate::query_by_metadata('uuid', $uuid)->where('container_guid=?',$org->guid)->filter();
-
         
         foreach ($imageNumbers as $imageNumber)
         {                        
@@ -974,28 +915,6 @@ class Controller_Profile extends Controller
         return view_layout($layout, $header, $area2, $this->get_pre_body());
     }
 	
-	function action_post_comment()
-	{
-		$widgetName = $this->request->param('widgetname');
-        if ($this->org)
-        {
-            $widget = $this->org->get_widget_by_name($widgetName);            
-			if ($widget->is_active())
-			{
-				$this->post_comment($widget);
-			}
-			else
-			{
-				return not_found();
-			}
-		}
-		else
-		{
-			return not_found();
-		}
-		
-	}
-
 	function post_comment($entity)
 	{    
 		$comments_url = $entity->get_url()."?comments=1";

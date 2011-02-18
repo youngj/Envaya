@@ -116,7 +116,12 @@ function force_login()
 
 function restore_input($name, $value)
 {
-    $prevInput = Session::get('input');
+    if (isset($_POST[$name]))
+    {
+        return $_POST[$name];
+    }
+
+    $prevInput =  Session::get('input');
     if ($prevInput)
     {
         if (isset($prevInput[$name]))

@@ -2,7 +2,7 @@
     $user = $vars['entity'];
 ?>
 
-<form action='<?php echo $user->get_url() ?>/design/save' method='POST'>
+<form action='<?php echo $user->get_url() ?>/design' method='POST'>
 
 <?php echo view('input/securitytoken'); ?>
 

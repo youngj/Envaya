@@ -171,8 +171,7 @@ class Controller_Org extends Controller
 
     function action_new()
     {
-        $step = ((int) get_input('step')) ?: 1;
-        
+        $step = ((int) get_input('step')) ?: 1;        
         if ($step > 3)
         {
             $step = 1;

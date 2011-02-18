@@ -238,6 +238,11 @@ class Request {
         return new Request($uri);
     }
 
+    public static function is_post()
+    {
+        return Request::$method == "POST";
+    }
+    
     /**
      * @var  object  route matched for this request
      */

@@ -29,5 +29,5 @@
 
 <?php
     $form_body = ob_get_clean();
-    echo view('input/form', array('action' => "{$vars['entity']->get_url()}/save", 'enctype' => "multipart/form-data", 'body' => $form_body));
+    echo view('input/form', array('action' => "{$vars['entity']->get_url()}/edit", 'enctype' => "multipart/form-data", 'body' => $form_body));
 ?>

@@ -68,8 +68,14 @@ class Controller_Post extends Controller_Profile
     function action_edit()
     {
         $this->require_editor();
-        $post = $this->post;
 
+        if (Request::is_post())
+        {
+            $this->save_post();
+        }
+        
+        $post = $this->post;
+        
         $title = __('blog:editpost');
 
         $cancelUrl = get_input('from') ?: $post->get_url();
@@ -83,9 +89,8 @@ class Controller_Post extends Controller_Profile
         $this->page_draw($title,$body);
     }
     
-    function action_save()
+    private function save_post()
     {
-        $this->require_editor();
         $this->validate_security_token();
         $post = $this->post;
         $org = $this->org;
@@ -102,8 +107,7 @@ class Controller_Post extends Controller_Profile
         }
         else if (empty($body))
         {
-            register_error(__("blog:blank"));
-            forward_to_referrer();
+            return register_error(__("blog:blank"));
         }
         else
         {

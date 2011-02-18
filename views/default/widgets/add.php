@@ -2,7 +2,7 @@
     $org = $vars['org'];
 
 ?>
-<form action='<?php echo $org->get_url() ?>/add_page/save' method='POST'>
+<form action='<?php echo $org->get_url() ?>/add_page' method='POST'>
 <?php echo view('input/securitytoken'); ?>
 <div class='input'>
 <label><?php echo __('widget:title'); ?></label><br />

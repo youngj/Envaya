@@ -3,7 +3,7 @@
 $widget = $vars['widget'];
 ?>
 
-<form action='<?php echo $widget->get_base_url() ?>/save_options' method='POST'>
+<form action='<?php echo $widget->get_base_url() ?>/options' method='POST'>
 <?php echo view('input/securitytoken') ?>
 <div class='padded'>
 <div class='input'>
