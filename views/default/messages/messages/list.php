@@ -8,17 +8,13 @@
 	if (!empty($vars['object']) && is_array($vars['object'])) {
 
 ?>
-
     <div class='message_container'>
 	<div class="good_messages">
-<?php
-		
-			foreach($vars['object'] as $message) {
-				echo view('messages/messages/message',array('object' => $message));
-			}
-
+<?php		
+        foreach($vars['object'] as $message) {
+            echo "<p>$message</p>";
+        }
 ?>
-
 	</div>
     </div>
 	

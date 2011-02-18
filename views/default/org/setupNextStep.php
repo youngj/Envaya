@@ -66,7 +66,7 @@ if ($messages)
 {
     foreach ($messages as $message)
     {
-        echo "<p><strong>".view('output/longtext',array('value' => $message))."</strong></p>";
+        echo "<p><strong>$message</strong></p>";
     }
 }
 ?>

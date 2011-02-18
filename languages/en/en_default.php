@@ -118,7 +118,7 @@
         'widget:address' => "Page Address",
         'widget:no_title' => "Please enter a title for this page.",
         'widget:bad_name' => "Please enter an address for this page using letters (a-z), digits (0-9), dashes (-), or underscores (_).",
-        'widget:duplicate_name' => "That page address is already being used. Please choose another address.",
+        'widget:duplicate_name' => "That page address is already being used. Please choose another address, or %s to edit the existing page.",
         'widget:add_link' => "Add another page...",
         'widget:new' => "New Page",
 

@@ -231,7 +231,7 @@ class Controller_Profile extends Controller
         
         if ($widget->guid && ((time() - $widget->time_created > 30) || !($widget->get_handler() instanceof WidgetHandler_Generic)))
         {
-            return register_error(__('widget:duplicate_name')); 
+            return register_error_html(sprintf(__('widget:duplicate_name'),"<a href='{$widget->get_edit_url()}'><strong>".__('clickhere')."</strong></a>")); 
         }
         
         $widget->save_input();             

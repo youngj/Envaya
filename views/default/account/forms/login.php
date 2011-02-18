@@ -46,7 +46,7 @@
     
     $form_body = ob_get_clean();
 
-    echo view('input/form', array('body' => $form_body, 'action' => secure_url("/pg/submit_login")));
+    echo view('input/form', array('body' => $form_body, 'action' => secure_url("/pg/login")));
 ?>
 
 <br />

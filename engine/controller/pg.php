@@ -6,29 +6,70 @@ class Controller_Pg extends Controller {
     {
         $username = get_input('username');
         $next = get_input('next');
-        $error = get_input('error');
 
+        if (Request::is_post())
+        {
+            $this->submit_login();
+        }
+        
         $title = __("login");
 
         $loginTime = (int)get_input('_lt');
         if ($loginTime && time() - $loginTime < 10 && !Session::isloggedin())
         {
-            $error_msg = view('account/cookie_error');
-        }
-        else
-        {
-            $error_msg = ($error) ?  view('account/login_error') : '';
+            register_error_html(view('account/cookie_error'));
         }
 
         $body = view_layout('one_column',
             view_title($title, array('org_only' => true)),
-            view("account/forms/login", array('username' => $username, 'next' => $next)),
-            $error_msg
+            view("account/forms/login", array('username' => $username, 'next' => $next))
         );
 
         $this->page_draw($title, $body, array('hideLogin' => !Session::isloggedin()));
     }
 
+    private function submit_login()
+    {
+        $username = get_input('username');
+        $password = get_input("password");
+        $next = get_input('next');
+        $persistent = get_input("persistent", false);
+
+        $result = false;
+        if (!empty($username) && !empty($password))
+        {
+            if ($user = authenticate($username,$password))
+            {
+                $result = login($user, $persistent);
+            }
+        }
+
+        if ($result)
+        {
+            system_message(sprintf(__('loginok'), $user->name));
+
+            if (!$next)
+            {
+                if (!$user->is_setup_complete())
+                {
+                    $next = "org/new?step={$user->setup_state}";
+                }
+                else
+                {
+                    $next = "{$user->get_url()}/dashboard";
+                }
+            }
+
+            $next = url_with_param($next, '_lt', time());
+
+            forward($next);
+        }
+        else
+        {
+            return register_error_html(view('account/login_error'));
+        }
+    }    
+    
     function action_tci_donate_frame()
     {
         echo view("page/tci_donate_frame", $values);
@@ -71,49 +112,6 @@ class Controller_Pg extends Controller {
         unset($values['Submit']);
 
         echo view("page/submit_tci_donate_form", $values);
-    }
-
-    function action_submit_login()
-    {
-        $username = get_input('username');
-        $password = get_input("password");
-        $next = get_input('next');
-        $persistent = get_input("persistent", false);
-
-        $result = false;
-        if (!empty($username) && !empty($password))
-        {
-            if ($user = authenticate($username,$password))
-            {
-                $result = login($user, $persistent);
-            }
-        }
-
-        if ($result)
-        {
-            system_message(sprintf(__('loginok'), $user->name));
-
-            if (!$next)
-            {
-                if (!$user->is_setup_complete())
-                {
-                    $next = "org/new?step={$user->setup_state}";
-                }
-                else
-                {
-                    $next = "{$user->get_url()}/dashboard";
-                }
-            }
-
-            $next = url_with_param($next, '_lt', time());
-
-            forward($next);
-        }
-        else
-        {
-            Session::save_input();
-            forward("pg/login?error=1&next=".urlencode($next));
-        }
     }
 
     function action_logout()
