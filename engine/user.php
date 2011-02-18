@@ -100,10 +100,9 @@ class User extends Entity
     static function get_icon_sizes()
     {
         return array(
-            'tiny' => '37x25',
             'small' => '60x40',
             'medium' => '150x100',
-            'large' => '300x200',
+            'large' => '540x540',
         );
     }
 

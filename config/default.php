@@ -1,6 +1,6 @@
 <?php
 return array(
-    'cache_version' => 121,    
+    'cache_version' => 122,    
     
     'dbuser' => '',
     'dbpass' => '',
