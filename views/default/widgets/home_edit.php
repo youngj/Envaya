@@ -12,12 +12,13 @@
 
     <label><?php echo __('setup:mission') ?></label>
     <?php echo view("input/tinymce", array(
-        'internalname' => 'content',
+        'name' => 'content',
+        'autoFocus' => true,
         'trackDirty' => true,
         'valueIsHTML' => $widget->has_data_type(DataType::HTML),
         'value' => $widget->content)) ?>
 </div>
-<?php echo view('input/submit', array('internalname' => "submit", 'trackDirty' => true, 'value' => __('savechanges'))); ?>
+<?php echo view('input/submit', array('name' => "submit", 'trackDirty' => true, 'value' => __('savechanges'))); ?>
 </div>
 
 <div class='section_header'><?php echo __("org:sectors"); ?></div>
@@ -26,12 +27,12 @@
     <label><?php echo __("setup:sector"); ?><br /></label>
     <?php
         echo view("input/checkboxes",array(
-            'internalname' => 'sector',
+            'name' => 'sector',
             'options' => Organization::get_sector_options(),
             'value' => $org->get_sectors()));
     ?>
     <?php echo __('setup:sector:other_specify') ?> <?php echo view('input/text', array(
-    'internalname' => 'sector_other',
+    'name' => 'sector_other',
     'value' => $org->sector_other,
     'js' => 'style="width:200px"'
 )) ?>
@@ -44,7 +45,7 @@
 <label><?php echo __('setup:location') ?></label>
 <div>
 <?php echo __('setup:city') ?> <?php echo view('input/text', array(
-    'internalname' => 'city',
+    'name' => 'city',
     'js' => 'style="width:200px"',
     'trackDirty' => true,
     'value' => $org->city
@@ -52,7 +53,7 @@
 </div>
 <div>
 <?php echo __('setup:region') ?> <?php echo view('input/pulldown', array(
-    'internalname' => 'region',
+    'name' => 'region',
     'options' => regions_in_country($org->country),
     'empty_option' => __('setup:region:blank'),
     'value' => $org->region

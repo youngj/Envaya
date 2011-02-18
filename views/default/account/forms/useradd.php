@@ -3,17 +3,17 @@
     if ((Session::get_loggedin_user()->admin) && ($vars['show_admin']))
         $admin_option = true;
 
-    $form_body = "<p><label>" . __('name') . "<br />" . view('input/text' , array('internalname' => 'name')) . "</label></p>";
+    $form_body = "<p><label>" . __('name') . "<br />" . view('input/text' , array('name' => 'name')) . "</label></p>";
 
-    $form_body .= "<p><label>" . __('email') . "<br />" . view('input/text' , array('internalname' => 'email')) . "</label></p>";
-    $form_body .= "<p><label>" . __('username') . "<br />" . view('input/text' , array('internalname' => 'username')) . "</label></p>";
-    $form_body .= "<p><label>" . __('password') . "<br />" . view('input/password' , array('internalname' => 'password')) . "</label></p>";
-    $form_body .= "<p><label>" . __('passwordagain') . "<br />" . view('input/password' , array('internalname' => 'password2')) . "</label></p>";
+    $form_body .= "<p><label>" . __('email') . "<br />" . view('input/text' , array('name' => 'email')) . "</label></p>";
+    $form_body .= "<p><label>" . __('username') . "<br />" . view('input/text' , array('name' => 'username')) . "</label></p>";
+    $form_body .= "<p><label>" . __('password') . "<br />" . view('input/password' , array('name' => 'password')) . "</label></p>";
+    $form_body .= "<p><label>" . __('passwordagain') . "<br />" . view('input/password' , array('name' => 'password2')) . "</label></p>";
 
     if ($admin_option)
-        $form_body .= "<p>" . view('input/checkboxes', array('internalname' => "admin", 'options' => array(__('admin_option'))));
+        $form_body .= "<p>" . view('input/checkboxes', array('name' => "admin", 'options' => array(__('admin_option'))));
 
-    $form_body .= view('input/submit', array('internalname' => 'submit', 'value' => __('register'))) . "</p>";
+    $form_body .= view('input/submit', array('name' => 'submit', 'value' => __('register'))) . "</p>";
 ?>
 
 

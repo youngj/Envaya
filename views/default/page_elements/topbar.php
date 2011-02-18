@@ -38,8 +38,8 @@ function languageChanged()
         }
         
         echo view('input/pulldown', array(
-            'internalname' => 'top_language',
-            'internalid' => 'top_language',
+            'name' => 'top_language',
+            'id' => 'top_language',
             'options' => $translationUrls,
             'value' => $curUrl,
             'js' => "onchange='languageChanged()' onkeypress='languageChanged()'"

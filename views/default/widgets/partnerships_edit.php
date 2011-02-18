@@ -64,7 +64,7 @@
         <label><?php echo __('widget:partnerships:description'); ?></label><br />
 
         <?php echo view('input/longtext', array(
-                'internalname' => "partnershipDesc{$p->guid}",
+                'name' => "partnershipDesc{$p->guid}",
                 'js' => 'style="width:350px;height:150px;"',
                 'trackDirty' => true,
                 'value' => $p->description

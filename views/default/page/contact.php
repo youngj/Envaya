@@ -7,7 +7,7 @@
 <div><label><?php echo __('feedback:message') ?>:</label></div>
 <?php
     echo view('input/longtext', array(
-        'internalname' => 'message'
+        'name' => 'message'
     ));
 ?>
 </div>
@@ -15,7 +15,7 @@
 <label><?php echo __('feedback:name') ?>:</label>
 <?php
     echo view('input/text', array(
-        'internalname' => 'name'
+        'name' => 'name'
     ));
 ?>
 </div>
@@ -23,14 +23,14 @@
 <label><?php echo __('feedback:email') ?>:</label>
 <?php
     echo view('input/text', array(
-        'internalname' => 'email'
+        'name' => 'email'
     ));
 ?>
 </div>
 
 <?php
     echo view('input/submit', array(
-        'internalname' => 'submit',
+        'name' => 'submit',
         'value' => __('feedback:send'),
     ));
 ?>

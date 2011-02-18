@@ -7,9 +7,9 @@
         echo "<script type='text/javascript' src='/_media/swfupload.js?v".Config::get('cache_version')."'></script>";
     }
 
-    $prevInput = restore_input($vars['internalname'], @$vars['value']);
+    $prevInput = restore_input($vars['name'], @$vars['value']);
 
-    $resultId = @$vars['internalid'] ?: "imageUpload$SWFUPLOAD_INCLUDE_COUNT";
+    $resultId = @$vars['id'] ?: "imageUpload$SWFUPLOAD_INCLUDE_COUNT";
     $progressId = @$vars['progressid'] ?: "imageUploadProgress$SWFUPLOAD_INCLUDE_COUNT";
 
     $swfupload_args = $vars['swfupload_args'];
@@ -19,8 +19,8 @@
     $swfupload_args['result_id'] = $resultId;
     
     echo view('input/hidden', array(
-        'internalname' => $vars['internalname'],
-        'internalid' => $resultId,
+        'name' => $vars['name'],
+        'id' => $resultId,
         'value' => $prevInput
     ));
 ?>

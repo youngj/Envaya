@@ -11,7 +11,7 @@ $baseurl = $vars['baseurl'];
 <?php
 
 echo view('input/pulldown', array(
-    'internalname' => 'sector',
+    'name' => 'sector',
     'options' => Organization::get_sector_options(),
     'empty_option' => __('sector:empty_option'),
     'value' => $sector
@@ -23,7 +23,7 @@ echo view('input/pulldown', array(
 <?php
 
 echo view('input/pulldown', array(
-    'internalname' => 'region',
+    'name' => 'region',
     'options' => regions_in_country('tz'),
     'empty_option' => __('region:empty_option'),
     'value' => $region,
@@ -34,7 +34,7 @@ echo view('input/pulldown', array(
 <div>
 <?php
     
-echo view('input/submit', array('internalname' => 'submit', 'value' => __('go'))); 
+echo view('input/submit', array('name' => 'submit', 'value' => __('go'))); 
 ?>
 </div>
 </form>

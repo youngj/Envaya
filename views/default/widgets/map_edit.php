@@ -17,7 +17,7 @@
 <label><?php echo __('setup:location') ?></label>
 <div>
 <?php echo __('setup:city') ?> <?php echo view('input/text', array(
-    'internalname' => 'city',
+    'name' => 'city',
     'js' => 'style="width:200px"',
     'value' => $org->city
 )) ?>, <?php echo escape($org->get_country_text()); ?>   
@@ -25,7 +25,7 @@
 </div>
 <div>
 <?php echo __('setup:region') ?> <?php echo view('input/pulldown', array(
-    'internalname' => 'region',
+    'name' => 'region',
     'options' => regions_in_country($org->country),
     'empty_option' => __('setup:region:blank'),
     'value' => $org->region

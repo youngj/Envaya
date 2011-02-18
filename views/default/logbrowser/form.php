@@ -23,20 +23,20 @@
     
     $form .= "<p>" . __('logbrowser:user');
     $form .= view('input/text',array(
-        'internalname' => 'search_username',
+        'name' => 'search_username',
         'value' => $userval 
     )) . "</p>";
 
     $form .= "<p>" . __('logbrowser:starttime');
     $form .= view('input/text',array(
-        'internalname' => 'timelower',
+        'name' => 'timelower',
         'value' => $lowerval 
     )) . "</p>";
 
     $form .= "<p>" . __('logbrowser:endtime');
     
     $form .= view('input/text',array(
-        'internalname' => 'timeupper',
+        'name' => 'timeupper',
         'value' => $upperval
     ))  . "</p>";
     

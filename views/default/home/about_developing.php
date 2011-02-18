@@ -1,6 +1,6 @@
 <p class='last-paragraph'>
 <?php echo sprintf(__('home:description_developing'), GeoIP::get_country_name())." "; ?>
-<a class='home_more' href='/envaya/why'><?php echo __('home:learn_more') ?></a>
+<a class='home_more' href='/envaya/page/why'><?php echo __('home:learn_more') ?></a>
 </p>
 
 <div style='text-align:center;padding:8px;'>

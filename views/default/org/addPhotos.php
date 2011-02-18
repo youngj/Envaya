@@ -7,7 +7,7 @@
 <?php echo view('input/securitytoken') ?>
 <?php
     echo view('input/hidden', array(
-        'internalname' => 'uuid',
+        'name' => 'uuid',
         'value' => uniqid("",true)
     ));
     echo view('org/addPhotosContent');

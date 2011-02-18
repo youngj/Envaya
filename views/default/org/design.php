@@ -22,7 +22,7 @@ echo view("input/image",
         'sizes' => User::get_icon_sizes(),
         'removable' => $user->custom_icon,
         'thumbnail_size' => 'medium',
-        'internalname' => 'icon',
+        'name' => 'icon',
         'deletename' => 'deleteicon',
     ))
 
@@ -80,7 +80,7 @@ function customHeaderChanged()
 
 <?php
     echo view('input/radio', array(
-        'internalname' => 'custom_header',
+        'name' => 'custom_header',
         'value' => $user->custom_header ? '1' : '0',
         'js' => "onchange='customHeaderChanged()' onclick='customHeaderChanged()'",
         'options' => array(
@@ -126,7 +126,7 @@ function customHeaderChanged()
             'trackDirty' => true,
             'sizes' => User::get_header_sizes(),
             'thumbnail_size' => 'large',
-            'internalname' => 'header',
+            'name' => 'header',
         ))
     ?>
     <div class='help'>
@@ -151,14 +151,14 @@ echo view('input/submit',array(
 <div class='section_content padded'>
 
 <?php echo view('input/theme', array(
-    'internalname' => 'theme',
+    'name' => 'theme',
     'value' => $user->theme,
     'options' => $user->get_available_themes(),
     'previewUrl' => $user->get_url()
 )); ?>
 
 <?php
-echo view('input/hidden', array('internalname' => 'guid', 'value' => $user->guid));
+echo view('input/hidden', array('name' => 'guid', 'value' => $user->guid));
 
 echo view('input/submit',array(
     'value' => __('savechanges'),

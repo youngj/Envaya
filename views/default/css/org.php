@@ -39,7 +39,7 @@
     line-height: 34px;
     height:34px;
     padding-left:3px;
-    margin:0px 1px 8px 0px;
+    margin:0px 1px 5px 0px;
     text-decoration:none;
 }
 

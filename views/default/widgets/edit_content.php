@@ -27,7 +27,8 @@
         }
     ?>
     <?php echo view("input/tinymce", array(
-        'internalname' => 'content',
+        'name' => 'content',
+        'autoFocus' => true,
         'trackDirty' => true,
         'valueIsHTML' => $widget->has_data_type(DataType::HTML),
         'value' => $widget->content)); ?>

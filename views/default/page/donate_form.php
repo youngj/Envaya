@@ -32,7 +32,7 @@
         </td>
         <td>
         <label><?php echo amount_button('other', $last_amount); ?> Other Amount</label><br />
-        $ <?php echo view('input/text', array('internalname' => "_other_amount", 'js' => 'style="width:100px;margin-top:0px;"')); ?>         
+        $ <?php echo view('input/text', array('name' => "_other_amount", 'js' => 'style="width:100px;margin-top:0px;"')); ?>         
         </td>
         </tr>
         </table>                
@@ -47,7 +47,7 @@
         <div class='input'>
             Full name<br />
             <?php echo view('input/text', array(
-                'internalname' => "Name",
+                'name' => "Name",
                 'js' => "maxlength='75'",
             )); ?> 
         </div>
@@ -55,7 +55,7 @@
         <div class='input'>
             Email address<br />
             <?php echo view('input/text', array(
-                'internalname' => "Email",
+                'name' => "Email",
                 'js' => "maxlength='75'",
             )); ?> 
         </div>  
@@ -63,7 +63,7 @@
         <div class='input'>
             Phone number<br />
             <?php echo view('input/text', array(
-                'internalname' => "phone",
+                'name' => "phone",
                 'js' => "maxlength='75'",
             )); ?>
         </div>
@@ -71,7 +71,7 @@
         <div class='input'>
             Organization <span class='help'>(optional)</span><br />
             <?php echo view('input/text', array(
-                'internalname' => "Organization",
+                'name' => "Organization",
                 'js' => "maxlength='75'",
             )); ?>            
         </div>        
@@ -79,7 +79,7 @@
         <div class='input'>
             Website <span class='help'>(optional)</span><br />
             <?php echo view('input/text', array(
-                'internalname' => "Website",
+                'name' => "Website",
             )); ?>                        
         </div>    
 
@@ -88,7 +88,7 @@
         <div class='input'>
             Street address<br />
             <?php echo view('input/text', array(
-                'internalname' => "Address",
+                'name' => "Address",
                 'js' => "maxlength='75'",
             )); ?>             
         </div>        
@@ -96,7 +96,7 @@
         <div class='input'>
             Street address <span class='help'>(optional)</span><br />
             <?php echo view('input/text', array(
-                'internalname' => "Address2",
+                'name' => "Address2",
                 'js' => "maxlength='75'",
             )); ?>
 		</div>        
@@ -104,7 +104,7 @@
         <div class='input'>
             City<br />
             <?php echo view('input/text', array(
-                'internalname' => "City",
+                'name' => "City",
                 'js' => "maxlength='75'",
             )); ?>
         </div>                
@@ -115,7 +115,7 @@
             <div class='input'>
                 State/Province<br />
                 <?php echo view('input/text', array(
-                    'internalname' => "State",
+                    'name' => "State",
                     'js' => "maxlength='75' style='width:95px'",
                 )); ?>                
             </div>
@@ -124,7 +124,7 @@
             <div class='input'>
                 Zip/Postal Code<br />
                 <?php echo view('input/text', array(
-                    'internalname' => "Zip",
+                    'name' => "Zip",
                     'js' => "maxlength='75' style='width:100px'",
                 )); ?>                                
             </div>
@@ -135,7 +135,7 @@
         <div class='input'>
             Country<br />
                 <?php echo view('input/text', array(
-                    'internalname' => "Country",
+                    'name' => "Country",
                     'js' => "maxlength='75'",
                 )); ?>                                            
         </div>       
@@ -153,7 +153,7 @@
     <td>
     <?php
         echo view('input/submit', array(
-            'internalname' => "Submit",
+            'name' => "Submit",
             'value' => "Continue to Payment Info",
         ));    
     ?>

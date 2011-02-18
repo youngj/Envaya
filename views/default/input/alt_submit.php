@@ -14,8 +14,8 @@ function setHiddenSubmit($id)
     $hidden_id = "_alt_submit".mt_rand();
 
     echo view('input/hidden', array(
-        'internalname' => $vars['internalname'],
-        'internalid' => $hidden_id,
+        'name' => $vars['name'],
+        'id' => $hidden_id,
         'value' => '',
     ));
 
@@ -32,8 +32,8 @@ function setHiddenSubmit($id)
     $js .= "&& setHiddenSubmit(".json_encode($hidden_id).");'";
 
     echo view('input/submit', array(
-        'internalname' => "_alt_submit",
-        'internalid' => @$vars['internalid'],
+        'name' => "_alt_submit",
+        'id' => @$vars['id'],
         'js' => $js,
         'trackDirty' => @$vars['trackDirty'],
         'class' => @$vars['class'],

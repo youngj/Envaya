@@ -3,8 +3,8 @@
 <form id='form' method='POST' enctype='multipart/form-data' action='/pg/upload?iframe=1'>
 <?php
     echo view('input/file', array(
-        'internalname' => 'file',
-        'internalid' => 'file',
+        'name' => 'file',
+        'id' => 'file',
         'js' => "onchange='fileChanged()'"
     ));   
     echo view('input/hidden_multi', array('fields' => $_GET));

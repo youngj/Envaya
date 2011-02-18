@@ -9,7 +9,7 @@
 <?php
     echo view('input/text',
         array(
-            'internalname' => 'from',
+            'name' => 'from',
             'value' => $email->from,
         )
     );   
@@ -21,7 +21,7 @@
 <?php
     echo view('input/text',
         array(
-            'internalname' => 'subject',
+            'name' => 'subject',
             'value' => $email->subject,
         )
     );   
@@ -33,7 +33,7 @@
 
     echo view('input/tinymce',
         array(
-            'internalname' => 'content',
+            'name' => 'content',
             'valueIsHTML' => true,
             'value' => $email->content,
             'trackDirty' => true
@@ -43,19 +43,19 @@
 </div>
 <?php
     echo view('input/hidden',
-        array('internalname' => 'email',
+        array('name' => 'email',
             'value' => $email->guid));
 
     echo view('input/alt_submit', array(
-        'internalname' => "delete",
-        'internalid' => 'widget_delete',
+        'name' => "delete",
+        'id' => 'widget_delete',
         'trackDirty' => true,
         'confirmMessage' => __('areyousure'),
         'value' => __('delete')
     ));
             
     echo view('input/submit',
-        array('internalname' => 'submit',
+        array('name' => 'submit',
             'class' => "submit_button",
             'trackDirty' => true,
             'value' => __('save')));

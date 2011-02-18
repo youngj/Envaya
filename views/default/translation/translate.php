@@ -15,7 +15,7 @@ ob_start();
 echo "<table class='gridView' style='width:1100px;margin:0 auto'><tr><td  style='width:50%;padding-right:10px'>";
 echo "<h3>".sprintf(__("trans:original_in"),
      view('input/language', array(
-        'internalname' => 'language',
+        'name' => 'language',
         'value' => $entity->get_language()
     ))
 ).": </h3>";
@@ -45,7 +45,7 @@ if (!$curTranslation->value)
 $curText = $curTranslation->value ?: $text;
 
 $transIn = sprintf(__("trans:inlang"), view('input/language', array(
-        'internalname' => 'newLang',
+        'name' => 'newLang',
         'value' => $lang
     ))
 );
@@ -55,7 +55,7 @@ echo "<h3>$transIn: </h3>";
 if ($isHTML)
 {
     echo view("input/tinymce", array(
-        'internalname' => 'translation',
+        'name' => 'translation',
         'height' => $height,
         'value' => $curText));
 }
@@ -72,22 +72,22 @@ else
         $js = '';
     }
 
-    echo view($input, array('internalname' => 'translation', 'value' => $curText, 'js' => $js));
+    echo view($input, array('name' => 'translation', 'value' => $curText, 'js' => $js));
 }
 
 echo "<br>".
-    view("input/hidden", array('internalname' => 'entity_guid', 'value' => $entity->guid)).
-    view("input/hidden", array('internalname' => 'property', 'value' => $property)).
-    view("input/hidden", array('internalname' => 'html', 'value' => $isHTML)).
-    view("input/hidden", array('internalname' => 'from', 'value' => $vars['from'])).
+    view("input/hidden", array('name' => 'entity_guid', 'value' => $entity->guid)).
+    view("input/hidden", array('name' => 'property', 'value' => $property)).
+    view("input/hidden", array('name' => 'html', 'value' => $isHTML)).
+    view("input/hidden", array('name' => 'from', 'value' => $vars['from'])).
     view('input/alt_submit', array(
-        'internalname' => "delete",
-        'internalid' => 'widget_delete',
+        'name' => "delete",
+        'id' => 'widget_delete',
         'trackDirty' => true,
         'confirmMessage' => __('areyousure'),
         'value' => __('delete')
     )).
-    view('input/submit', array('internalname' => 'submit', 'trackDirty' => true, 'value' => __('trans:submit')));
+    view('input/submit', array('name' => 'submit', 'trackDirty' => true, 'value' => __('trans:submit')));
 
 echo "</td></tr></table>";
 

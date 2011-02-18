@@ -154,27 +154,27 @@ echo "<h2 class='report_section_heading'>".escape(sprintf(__('report:section_hea
 echo $content;
 
 echo view('input/hidden', array(
-    'internalname' => 'user_save_time',
-    'internalid' => 'user_save_time',
+    'name' => 'user_save_time',
+    'id' => 'user_save_time',
 ));
 
 echo view('input/hidden', array(
-    'internalname' => 'scroll_position',
-    'internalid' => 'scroll_position',
+    'name' => 'scroll_position',
+    'id' => 'scroll_position',
 ));
 
-echo view('input/hidden', array('internalname' => 'section', 'value' => $section_id)); 
+echo view('input/hidden', array('name' => 'section', 'value' => $section_id)); 
 
 echo view('input/hidden', array(
-    'internalname' => 'next_section',
-    'internalid' => 'next_section',
+    'name' => 'next_section',
+    'id' => 'next_section',
     'value' => '',
 ));
 
 if ($section_id < $num_sections)
 {
     echo view('input/submit', array(
-        'internalname' => '_submit',
+        'name' => '_submit',
         'value' => __('report:next_page'), 
         'js' => "onclick='return setSubmitted() && setNextSection(".($section_id+1).")'"
     ));
@@ -182,7 +182,7 @@ if ($section_id < $num_sections)
 else
 {
     echo view('input/submit', array(
-        'internalname' => '_submit',
+        'name' => '_submit',
         'value' => __('report:next_page'), 
         'trackDirty' => true
     ));
@@ -245,7 +245,7 @@ setTimeout(function() {
 }
 
 echo view('input/submit', array(
-    'internalname' => '_save',
+    'name' => '_save',
     'value' => __('report:save_changes'), 
     'js' => "onclick='return setSubmitted() && setScrollPosition() && setNextSection(".($section_id).")'"
 ));

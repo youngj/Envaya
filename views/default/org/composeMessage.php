@@ -32,7 +32,7 @@
 <?php echo __("message:subject"); ?>
 </th>
 <td>
-<?php echo view('input/text', array('internalname' => 'subject')); ?>
+<?php echo view('input/text', array('name' => 'subject')); ?>
 </td>
 </tr>
 <tr>
@@ -40,7 +40,7 @@
 <?php echo __("message:message"); ?>
 </th>
 <td>
-<?php echo view('input/longtext', array('internalname' => 'message')); ?>
+<?php echo view('input/longtext', array('name' => 'message')); ?>
 </td>
 
 </tr>
@@ -49,7 +49,7 @@
 </table>
 
 <?php
-echo view('input/hidden', array('internalname' => 'recipient_guid', 'value' => $org->guid));
+echo view('input/hidden', array('name' => 'recipient_guid', 'value' => $org->guid));
 
 echo view('input/submit',array(
     'value' => __('message:send')

@@ -4,8 +4,8 @@
     
     echo view('input/text',
         array(
-            'internalname' => $vars['internalname'],
-            'internalid' => 'image_url',
+            'name' => $vars['name'],
+            'id' => 'image_url',
             'js' => 'onchange="updatePreview()" style="width:350px"',
             'value' => $vars['value'],
         )

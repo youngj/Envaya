@@ -6,8 +6,8 @@
 <form action='/pg/submit_password_reset' method='POST'>
 <?php echo view('input/securitytoken'); ?>
 
-<?php echo view('input/hidden', array('internalname' => 'u', 'value' => $user->guid)); ?>
-<?php echo view('input/hidden', array('internalname' => 'c', 'value' => $user->passwd_conf_code)); ?>
+<?php echo view('input/hidden', array('name' => 'u', 'value' => $user->guid)); ?>
+<?php echo view('input/hidden', array('name' => 'c', 'value' => $user->passwd_conf_code)); ?>
 
 <div class='input'>
 <label><?php echo __('user:username:label') ?></label><br />
@@ -17,7 +17,7 @@
 <div class='input'>
 <label><?php echo __('user:password:new') ?></label><br />
 <?php echo view('input/password', array(
-    'internalname' => 'password'
+    'name' => 'password'
 )) ?>
 <div class='help'><?php echo __('create:password:help') ?></div>
 <div class='help' style='padding-top:5px'><?php echo __('create:password:length') ?></div>
@@ -26,7 +26,7 @@
 <div class='input'>
 <label><?php echo __('create:password2') ?></label><br />
 <?php echo view('input/password', array(
-    'internalname' => 'password2'
+    'name' => 'password2'
 )) ?>
 </div>
 

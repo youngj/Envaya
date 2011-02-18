@@ -16,7 +16,7 @@
 <label>
 <?php echo __('username:new') ?>
 </label><br />
-<?php echo view('input/text', array('value' => $org->username, 'internalname' => 'username')) ?>
+<?php echo view('input/text', array('value' => $org->username, 'name' => 'username')) ?>
 </div>
 
 <?php echo view('input/submit', array('value' => __('save'))) ?>

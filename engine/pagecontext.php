@@ -8,7 +8,7 @@ class PageContext
     private static $rss = false;
     private static $site_org = null;
     private static $header_html = array();
-    private static $submenu = null;    
+    private static $submenu = array();    
     
     static function set_translatable($translatable)
     {
@@ -119,8 +119,9 @@ class PageContext
      */
     static function add_submenu_item($label, $link, $group = 'topnav') {
 
-        if (!isset(static::$submenu)) static::$submenu = array();
-        if (!isset(static::$submenu[$group])) static::$submenu[$group] = array();
+        if (!isset(static::$submenu[$group])) 
+            static::$submenu[$group] = array();
+        
         $item = new stdClass;
         $item->value = $link;
         $item->name = $label;
@@ -129,11 +130,6 @@ class PageContext
 
     static function get_submenu_group($groupname, $itemTemplate = 'canvas_header/submenu_template', $groupTemplate = 'canvas_header/submenu_group')
     {
-        if (!isset(static::$submenu))
-        {
-            return '';
-        }
-
         $submenu_register = static::$submenu;
         if (!isset($submenu_register[$groupname]))
         {

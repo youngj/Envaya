@@ -3,13 +3,18 @@
 
     $widgets = $org->get_available_widgets();
 
-    $widgetList = array();
+    $widgetList = array();   
 
     foreach ($widgets as $widget)
     {
-        $class = (!$widget->guid) ? 'class="widget_disabled"' : '';
-        $widgetList[] .= "<a $class href='{$widget->get_edit_url()}?from=pg/dashboard'><span>".
-            escape($widget->get_title())."</span></a>";
+        if ($widget->is_active())
+        {
+            $widgetList[] = "<a href='{$widget->get_edit_url()}?from=pg/dashboard'><span>".
+                escape($widget->get_title())."</span></a>";
+        }
     }
 
-    echo "<div id='edit_pages_menu'>".implode(' ', $widgetList)."</div>";
+    echo "<div id='edit_pages_menu'>";
+    echo implode(' ', $widgetList);
+    echo "</div>";
+        

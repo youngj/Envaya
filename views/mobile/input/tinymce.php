@@ -1,9 +1,9 @@
 <?php
     $value = @$vars['value'];
     $valueIsHTML = isset($vars['valueIsHTML']) ? $vars['valueIsHTML'] : true;
-    $internalname = $vars['internalname'];
+    $name = $vars['name'];
     
     echo view("input/longtext", array(
-        'internalname' => $internalname,
+        'name' => $name,
         'value' => $valueIsHTML ? $value : view('output/longtext', array('value' => $value))));
 ?>

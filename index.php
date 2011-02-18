@@ -2,7 +2,7 @@
     require_once(__DIR__."/engine/start.php");    
 
     Route::set('page', 'page/<name>')->defaults(array(
-        'controller' => 'page',
+        'controller' => 'globalpage',
         'action' => 'view',
     ));
 
@@ -14,7 +14,7 @@
     ));
 
     Route::set('sub_item', '<username>/<controller>/<id>(/<action>)',
-        array('controller' => '(post|report|reporting)')
+        array('controller' => '(post|report|reporting|page)')
     )->defaults(array(
         'action'     => 'index',
     ));

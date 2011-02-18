@@ -8,7 +8,7 @@
 <?php
     echo view('input/text',
         array(
-            'internalname' => 'from',
+            'name' => 'from',
             'value' => 'Envaya',
         )
     );   
@@ -20,7 +20,7 @@
 <?php
     echo view('input/text',
         array(
-            'internalname' => 'subject',
+            'name' => 'subject',
             'value' => '',
         )
     );   
@@ -32,7 +32,7 @@
 
     echo view('input/tinymce',
         array(
-            'internalname' => 'content',
+            'name' => 'content',
             'valueIsHTML' => true,
             'value' => '',
             'trackDirty' => true
@@ -43,7 +43,7 @@
 
 <?php
     echo view('input/submit',
-        array('internalname' => 'submit',
+        array('name' => 'submit',
             'class' => "submit_button",
             'trackDirty' => true,
             'value' => __('save')));

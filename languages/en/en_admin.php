@@ -155,7 +155,6 @@ return array(
     
     'widget:invalid_class' => 'The handler %s was not found.',
     'widget:options' => 'Page Options',
-    'widget:title' => 'Page Title',
     'widget:handler' => 'Page Handler (PHP Class Name)',
     'widget:handler_arg' => 'Page Handler Argument (optional)',
     'widget:menu_order' => 'Menu Order',

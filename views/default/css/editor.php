@@ -121,8 +121,6 @@ a.icon_link:hover
 .icon_design    { background-position:left -273px; }
 .icon_photos    { background-position:left -313px; }
 
-
-
 #edit_pages_menu a
 {
     color:#333;
@@ -135,9 +133,20 @@ a.icon_link:hover
     text-decoration:none;
 }
 
-#edit_pages_menu a.widget_disabled
+#new_pages_menu
 {
-    color:#999;
+    clear:both;
+}
+
+#new_pages_menu h4
+{
+    margin-bottom:4px;
+}
+
+#new_pages_menu a
+{
+    padding-left:6px;
+    color:#333;
 }
 
 #edit_pages_menu  a:hover

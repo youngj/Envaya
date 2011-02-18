@@ -2,7 +2,7 @@
 
 <div class='input'>
 <label><?php echo __('create:org_name') ?></label><br />
-<?php echo view('input/text', array('internalname' => 'org_name', 'trackDirty' => true)) ?>
+<?php echo view('input/text', array('name' => 'org_name', 'trackDirty' => true)) ?>
 <div class='help'><?php echo __('create:org_name:help') ?></div>
 </div>
 
@@ -23,8 +23,8 @@ function updateUrl()
 <div class='input'>
 <label><?php echo __('create:username') ?></label><br />
 <?php echo view('input/text', array(
-    'internalname' => 'username',
-    'internalid' => 'username',
+    'name' => 'username',
+    'id' => 'username',
     'js' => 'onkeyup="javascript:updateUrl()" onchange="javascript:updateUrl()"'
 )) ?>
 <div class='help' style='font-weight:bold'><?php echo __('create:username:help') ?>
@@ -36,7 +36,7 @@ function updateUrl()
 <div class='input'>
 <label><?php echo __('create:password') ?></label><br />
 <?php echo view('input/password', array(
-    'internalname' => 'password'
+    'name' => 'password'
 )) ?>
 <div class='help'><?php echo __('create:password:help') ?></div>
 <div class='help' style='padding-top:5px'><?php echo __('create:password:length') ?></div>
@@ -45,14 +45,14 @@ function updateUrl()
 <div class='input'>
 <label><?php echo __('create:password2') ?></label><br />
 <?php echo view('input/password', array(
-    'internalname' => 'password2'
+    'name' => 'password2'
 )) ?>
 </div>
 
 <div class='input'>
 <label><?php echo __('create:email') ?></label><br />
 <?php echo view('input/email', array(
-    'internalname' => 'email'
+    'name' => 'email'
 )) ?>
 <div class='help'><?php echo __('create:email:help') ?></div>
 <div class='help'><?php echo __('create:email:help_2') ?></div>
@@ -62,7 +62,7 @@ function updateUrl()
 <div class='input'>
 <label><?php echo __('create:phone') ?></label><br />
 <?php echo view('input/text', array(
-    'internalname' => 'phone',
+    'name' => 'phone',
     'js' => "style='width:200px'"
 )) ?>
 <div class='help'><?php echo __('create:phone:help') ?></div>

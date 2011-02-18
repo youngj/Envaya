@@ -47,7 +47,7 @@ if ($submit)  {
 
 <?php echo __('report:signature'); ?>:
 <?php
-    echo view('input/text', array('internalname' => 'signature', 'js' => 'style="width:250px"', 'internalid' => 'signature'));
+    echo view('input/text', array('name' => 'signature', 'js' => 'style="width:250px"', 'id' => 'signature'));
 ?>
 <br />
 
@@ -65,7 +65,7 @@ function verifyConfirmed()
 
 <?php
     echo view('input/submit', array(
-        'internalname' => '_submit',
+        'name' => '_submit',
         'value' => __('report:submit'), 
         'js' => "onclick='return verifyConfirmed() && setSubmitted()'"
     ));

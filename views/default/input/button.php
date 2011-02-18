@@ -4,7 +4,7 @@
      *
      * @uses $vars['value'] The current value, if any
      * @uses $vars['js'] Any Javascript to enter into the input tag
-     * @uses $vars['internalname'] The name of the input field
+     * @uses $vars['name'] The name of the input field
      * @uses $vars['type'] Submit or reset, defaults to submit.
      * @uses $vars['src'] Src of an image
      *
@@ -22,9 +22,9 @@
     }
 
     $value = escape(@$vars['value']);
-    $name = @$vars['internalname'];
+    $name = @$vars['name'];
     $src = (isset($vars['src'])) ? "src=\"{$vars['src']}\"" : '';
 
     $setDirty = (@$vars['trackDirty']) ? " onclick='setSubmitted()'" : "";
 ?>
-<button name="<?php echo $name; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> type="<?php echo $type; ?>" class="<?php echo $class; ?>" <?php echo @$vars['js'], $setDirty; ?> value='1' <?php echo $src; ?> ><div><span><?php echo $value; ?></span></div></button>
+<button name="<?php echo $name; ?>" <?php if (isset($vars['id'])) echo "id=\"{$vars['id']}\""; ?> type="<?php echo $type; ?>" class="<?php echo $class; ?>" <?php echo @$vars['js'], $setDirty; ?> value='1' <?php echo $src; ?> ><div><span><?php echo $value; ?></span></div></button>

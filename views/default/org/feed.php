@@ -23,8 +23,8 @@ function sectorChanged()
 <?php
 
 echo view('input/pulldown', array(
-    'internalname' => 'sector',
-    'internalid' => 'sectorList',
+    'name' => 'sector',
+    'id' => 'sectorList',
     'options' => Organization::get_sector_options(),
     'empty_option' => __('sector:empty_option'),
     'value' => $sector,
@@ -32,8 +32,8 @@ echo view('input/pulldown', array(
 ));
 
 echo view('input/pulldown', array(
-    'internalname' => 'region',
-    'internalid' => 'regionList',
+    'name' => 'region',
+    'id' => 'regionList',
     'options' => regions_in_country('tz'),
     'empty_option' => __('region:empty_option'),
     'value' => $region,
@@ -42,7 +42,7 @@ echo view('input/pulldown', array(
     
 ?>
 <noscript>
-<?php echo view('input/submit', array('internalname' => 'submit', 'value' => __('go'))); ?>
+<?php echo view('input/submit', array('name' => 'submit', 'value' => __('go'))); ?>
 </noscript>
 
 </form>

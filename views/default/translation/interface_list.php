@@ -60,11 +60,11 @@ echo "<form method='GET' action='/org/translate_interface'>";
 
 echo "<label>".__("trans:filter")."</label><br />";
 
-echo view('input/text', array('internalname' => 'q', 'value' => $query));
+echo view('input/text', array('name' => 'q', 'value' => $query));
 echo view('input/submit', array('value' => __("search")));
 echo "<div class='edited'>";
 echo view('input/checkboxes', array(
-    'internalname' => 'edited',
+    'name' => 'edited',
     'options' => array('1' => __('trans:edited_only')),
     'value' => $edited ? '1' : null
 ));

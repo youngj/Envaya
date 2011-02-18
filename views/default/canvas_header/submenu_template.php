@@ -7,4 +7,4 @@
 	}
 	
 ?>
-<li <?php echo $selected; ?>><a href="<?php echo $vars['href']; ?>"><?php echo $vars['label']; ?></a></li>
+<li <?php echo $selected; ?>><a href="<?php echo escape($vars['href']); ?>"><?php echo escape($vars['label']); ?></a></li>

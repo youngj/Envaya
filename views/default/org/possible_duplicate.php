@@ -29,7 +29,7 @@ foreach ($vars['duplicates'] as $dup)
 
 <?php
 
-echo view('input/hidden', array('internalname' => 'ignore_possible_duplicates', 'value' => '1'));
+echo view('input/hidden', array('name' => 'ignore_possible_duplicates', 'value' => '1'));
 
 echo view('input/hidden_multi', array('fields' => $_POST));
 

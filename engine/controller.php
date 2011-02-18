@@ -56,7 +56,7 @@ abstract class Controller {
     {
         PageContext::add_submenu_item(__('about'), "/envaya", 'footer');
         PageContext::add_submenu_item(__('contact'), "/envaya/contact", 'footer');
-        PageContext::add_submenu_item(__('donate'), "/envaya/contribute", 'footer');    
+        PageContext::add_submenu_item(__('donate'), "/envaya/page/contribute", 'footer');    
     }
 
     public function validate_security_token()

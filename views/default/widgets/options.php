@@ -10,7 +10,7 @@ $widget = $vars['widget'];
 <label><?php echo __('widget:title'); ?></label><br />
 <?php
 echo view('input/text', array(
-    'internalname' => 'title',
+    'name' => 'title',
     'value' => $widget->title
 ));
 ?>
@@ -20,7 +20,7 @@ echo view('input/text', array(
 <label><?php echo __('widget:handler'); ?></label><br />
 <?php
 echo view('input/text', array(
-    'internalname' => 'handler_class',
+    'name' => 'handler_class',
     'value' => $widget->handler_class
 ));
 ?>
@@ -30,7 +30,7 @@ echo view('input/text', array(
 <label><?php echo __('widget:handler_arg'); ?></label><br />
 <?php
 echo view('input/text', array(
-    'internalname' => 'handler_arg',
+    'name' => 'handler_arg',
     'value' => $widget->handler_arg
 ));
 ?>
@@ -49,7 +49,7 @@ echo view('input/text', array(
 <label><?php echo __('widget:in_menu'); ?></label><br />
 <?php
 echo view('input/radio', array(
-    'internalname' => 'in_menu',
+    'name' => 'in_menu',
     'options' => yes_no_options(),
     'value' => $widget->in_menu ? 'yes' : 'no',
 ));
@@ -59,7 +59,7 @@ echo view('input/radio', array(
 <label><?php echo __('widget:menu_order'); ?></label><br />
 <?php
 echo view('input/text', array(
-    'internalname' => 'menu_order',
+    'name' => 'menu_order',
     'value' => $widget->menu_order,
     'js' => 'style="width:100px"'
 ));
@@ -70,7 +70,7 @@ echo view('input/text', array(
 
 <?php
 echo view('input/submit', array(
-    'internalname' => 'submit',
+    'name' => 'submit',
     'value' => __('savechanges')
 ));
 

@@ -18,6 +18,7 @@ class RegisterTest extends SeleniumTest
         $this->_testTranslate();
         $this->_testPost();
         $this->_testEditPages();
+        $this->_testAddPage();
         $this->_testEditContact();
         $this->_testEditHome();
         $this->_testMakePublic();
@@ -273,6 +274,47 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//button[@name='submit']");
         sleep(2);
         $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'we test stuff')]");
+    }
+    
+    private function _testAddPage()
+    {
+        $this->clickAndWait("//a[contains(@href,'/dashboard')]");
+        $this->clickAndWait("//a[contains(@href,'/add_page')]");
+        
+        $this->type("//input[@name='title']", "New page");
+        $this->type("//input[@name='widget_name']", "settings!!!");
+        $this->typeInFrame("//iframe", "another page!!!!!!");
+        $this->submitForm();
+                
+        $this->mouseOver("//div[@class='bad_messages']"); // invalid characters in widget_name
+        $this->type("//input[@name='widget_name']", "settings");
+        $this->clickAndWait("//button[@name='submit']");
+        
+        $this->mouseOver("//h3[text()='New page']");
+        $this->mouseOver("//a[@class='selected' and contains(@href,'page/settings')]");
+        $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'another page!!!!')]");
+        
+        // change title
+        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->type("//input[@name='title']", "New title");
+        
+        $this->clickAndWait("//button[@name='submit']");
+              
+        $this->mouseOver("//h3[text()='New title']");
+        $this->mouseOver("//a[@class='selected' and contains(@href,'page/settings')]");
+        $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'another page!!!!')]");        
+        
+        // make sure page names don't conflict with built-in actions
+        $this->clickAndWait("//a[@id='usersettings']");
+        $this->type("//input[@name='phone']", "123456890");
+        $this->submitForm();
+        
+        $this->mouseOver("//div[@class='good_messages']");        
+        
+        $this->clickAndWait("//a[@id='usersettings']");
+        $this->assertEquals("123456890", $this->getValue("//input[@name='phone']"));        
+        
+        $this->clickAndWait("//a[@title='Your home page']");
     }
 
     private function _testSettings()

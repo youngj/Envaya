@@ -12,6 +12,11 @@
     ));
    
     echo view('section', array(
+        'header' => __("dashboard:new_widgets"), 
+        'content' => view('org/new_widget_links', array('org' => $org))
+    ));   
+   
+    echo view('section', array(
         'header' => __("dashboard:links"), 
         'content' => view('org/dashboard_links', array('org' => $org))
     ));

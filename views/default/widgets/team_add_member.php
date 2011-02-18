@@ -4,8 +4,8 @@
 <?php
     echo view('input/text',
         array(
-            'internalname' => 'name',
-            'internalid' => 'name',
+            'name' => 'name',
+            'id' => 'name',
             'trackDirty' => true,
             'js' => "style='width:350px'",
         )
@@ -18,8 +18,8 @@
 <?php
     echo view('input/longtext',
         array(
-            'internalname' => 'description',
-            'internalid' => 'description',
+            'name' => 'description',
+            'id' => 'description',
             'trackDirty' => true,
             'js' => "style='height:60px;width:350px'",
         )
@@ -32,9 +32,9 @@
 <label><?php echo __('widget:team:photo'); ?></label><br />
 
 <?php echo view('input/swfupload_image', array(
-    'internalname' => 'image',
+    'name' => 'image',
     'jsname' => 'teamImageUploader',
-    'internalid' => 'image',
+    'id' => 'image',
     'trackDirty' => true,
     'sizes' => array(
             'small' => '150x150',

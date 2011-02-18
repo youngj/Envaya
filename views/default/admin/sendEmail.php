@@ -18,17 +18,17 @@ Subject: <?php echo $email->render_subject($org) ?>
 if ($org) 
 {
     echo view('input/hidden',array(
-        'internalname' => 'org_guid',
+        'name' => 'org_guid',
         'value' => $org->guid
     ));
 
     echo view('input/hidden',array(
-        'internalname' => 'email',
+        'name' => 'email',
         'value' => $email->guid
     ));
 
     echo view('input/hidden',array(
-        'internalname' => 'from',
+        'name' => 'from',
         'value' => $vars['from']
     ));
 

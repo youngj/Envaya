@@ -21,7 +21,7 @@
         $rows[] = array();
     }
        
-    echo "<input type='hidden' name='{$vars['internalname']}' id='$resultId' value='".escape(@$vars['value'])."' />";     
+    echo "<input type='hidden' name='{$vars['name']}' id='$resultId' value='".escape(@$vars['value'])."' />";     
 ?>
 
 <table class='gridTable inputGrid' id='<?php echo $tableId; ?>'>
@@ -65,7 +65,7 @@
                     }   
                 }
             
-                $args['internalid'] = "{$tableId}_{$column_id}_{$row_num}";
+                $args['id'] = "{$tableId}_{$column_id}_{$row_num}";
                 $args['js'] = (@$args['js'] ?: '') . " onchange='serializeGrid$GRID_INCLUDE_COUNT()'";
                 $args['value'] = @$row[$column_id];
             

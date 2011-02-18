@@ -1,7 +1,7 @@
 <?php
     $UPLOAD_INCLUDE_COUNT = $vars['include_count'];
     
-    $resultId = @$vars['internalid'] ?: "upload_result$UPLOAD_INCLUDE_COUNT";
+    $resultId = @$vars['id'] ?: "upload_result$UPLOAD_INCLUDE_COUNT";
     $progressId = "upload_progress$UPLOAD_INCLUDE_COUNT";
 ?>
 
@@ -26,8 +26,8 @@
 ?>>
 <?php
     echo view('input/swfupload', array(
-        'internalname' => $vars['internalname'],
-        'internalid' => $resultId,
+        'name' => $vars['name'],
+        'id' => $resultId,
         'progressid' => $progressId,
         'value' => @$vars['value'],
         'swfupload_class' => 'FileUploader',

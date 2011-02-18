@@ -14,7 +14,7 @@
 <label><?php echo __('qualify:org_type') ?></label><br />
 
 <?php echo view('input/radio',
-    array('internalname' => 'org_type',
+    array('name' => 'org_type',
         'options' => array(
             'np' => __('qualify:org_type:non_profit'),
             'p' => __('qualify:org_type:for_profit'),
@@ -27,7 +27,7 @@
 <label><?php echo __('qualify:country') ?></label><br />
 
 <?php echo view('input/radio',
-    array('internalname' => 'country',
+    array('name' => 'country',
         'options' => array(
             'tz' => __('country:tz'),
             'other' => __('country:other'),

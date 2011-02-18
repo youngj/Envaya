@@ -60,13 +60,8 @@ label {
 #site_menu
 {
     clear:both;
-    padding-top:8px;
+    padding-top:5px;
     text-align:center;
-}
-
-#edit_pages_menu
-{
-   text-align:center;
 }
 
 #site_menu a, #edit_pages_menu a

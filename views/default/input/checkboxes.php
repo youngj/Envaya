@@ -5,7 +5,7 @@
      *
      * @uses $vars['value'] The current value, if any
      * @uses $vars['js'] Any Javascript to enter into the input tag
-     * @uses $vars['internalname'] The name of the input field
+     * @uses $vars['name'] The name of the input field
      * @uses $vars['options'] An array of strings representing the label => options for the checkbox field
      *
      */
@@ -13,7 +13,7 @@
     $class = @$vars['class'];
     if (!$class) $class = "input-checkboxes";
 
-    $vars['value'] = restore_input($vars['internalname'], @$vars['value']);
+    $vars['value'] = restore_input($vars['name'], @$vars['value']);
 
     $valIsArray = is_array($vars['value']);
 
@@ -40,11 +40,11 @@
 
         $selected = ($isSelected) ? "checked = \"checked\"" : "";
 
-        $id = (isset($vars['internalid'])) ? "id=\"{$vars['internalid']}\"" : '';
+        $id = (isset($vars['id'])) ? "id=\"{$vars['id']}\"" : '';
 
         $disabled = (@$vars['disabled']) ? ' disabled="yes" ' : '';
         $js = @$vars['js'] ?: '';
-        echo "<label class='optionLabel'><input type=\"checkbox\" $id $disabled {$js} name=\"{$vars['internalname']}[]\" value=\"".escape($option)."\" {$selected} class=\"$class\" />".escape($label)."</label><br />";
+        echo "<label class='optionLabel'><input type=\"checkbox\" $id $disabled {$js} name=\"{$vars['name']}[]\" value=\"".escape($option)."\" {$selected} class=\"$class\" />".escape($label)."</label><br />";
     }
 
 ?>

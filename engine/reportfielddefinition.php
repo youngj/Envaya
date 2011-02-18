@@ -56,7 +56,7 @@ class ReportFieldDefinition
             ));
             
             $res .= view('input/hidden', array(
-                'internalname' => 'fields[]',
+                'name' => 'fields[]',
                 'value' => $field->name
             )); 
             
@@ -101,7 +101,7 @@ class ReportFieldDefinition
         $input_name = $this->get_html_name($field);
     
         $input_args = array(
-            'internalname' => $input_name,
+            'name' => $input_name,
             'trackDirty' => true,
             'value' => !$field->is_blank() ? $field->value : $this->default_value,
         );

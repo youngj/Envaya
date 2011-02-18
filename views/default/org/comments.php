@@ -23,7 +23,7 @@
 <h4><?php echo __('comment:add'); ?></h4>
 
 <div class='input'>
-<?php echo view('input/longtext', array('internalname' => 'content')); ?>
+<?php echo view('input/longtext', array('name' => 'content')); ?>
 
 <div>
 <label><?php echo __('comment:name'); ?></label> 
@@ -36,7 +36,7 @@ if ($user)
 }
 else
 {
-    echo view('input/text', array('internalname' => 'name', 'class' => 'comment_name_input input-text')); 
+    echo view('input/text', array('name' => 'name', 'class' => 'comment_name_input input-text')); 
 }
 ?>
 </div>

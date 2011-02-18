@@ -7,7 +7,7 @@
     <div class='input'>
         <label>Form Template</label><br />
     <?php    
-        echo view('input/pulldown', array('internalname' => 'handler_class', 
+        echo view('input/pulldown', array('name' => 'handler_class', 
             'options' => ReportDefinition::get_handler_options(),
         ));
     ?>  

@@ -15,6 +15,6 @@ echo view('paged_list', array(
 ));        
 
 echo "<br />";
-echo "<a href='/envaya/featured'>".__('featured:about')."</a>";
+echo "<a href='/envaya/page/featured'>".__('featured:about')."</a>";
 ?>
 </div>

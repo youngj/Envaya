@@ -28,8 +28,8 @@ function sectorChanged()
 </div>
 
 <?php echo view('input/pulldown', array(
-    'internalname' => 'sector',
-    'internalid' => 'sectorList',
+    'name' => 'sector',
+    'id' => 'sectorList',
     'options' => Organization::get_sector_options(),
     'empty_option' => __('sector:empty_option'),
     'value' => $sector,

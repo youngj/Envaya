@@ -190,7 +190,7 @@ else
 ?>
 
 <div class='home_donate_difference'><?php echo __('home:make_difference'); ?></div>
-<a class='home_donate_button' href='/envaya/contribute'><span><?php echo __('donate'); ?></span></a>
+<a class='home_donate_button' href='/envaya/page/contribute'><span><?php echo __('donate'); ?></span></a>
 
 <?php
     }

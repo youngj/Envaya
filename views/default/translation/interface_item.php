@@ -11,8 +11,8 @@ echo "<form method='POST' action='/org/save_interface_item'>";
 
 echo view('input/securitytoken');
 
-echo view('input/hidden', array('internalname' => 'from', 'value' => $from));
-echo view('input/hidden', array('internalname' => 'key', 'value' => $key));
+echo view('input/hidden', array('name' => 'from', 'value' => $from));
+echo view('input/hidden', array('name' => 'key', 'value' => $key));
 
 $enText = __($key, 'en');
 
@@ -50,7 +50,7 @@ if (!$value)
     $value = GoogleTranslate::get_auto_translation($enText, 'en', $lang);
 }
 
-echo view($input, array('internalname' => 'value', 'value' => $value, 'js'=>$js));
+echo view($input, array('name' => 'value', 'value' => $value, 'js'=>$js));
 
 echo view('input/submit', array('value' => __('save')));
 

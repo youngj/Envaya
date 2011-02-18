@@ -49,6 +49,7 @@
         'dashboard:other_user' => "Edit %s",
         'dashboard:add_update' => 'Write News Update',
         'dashboard:edit_widgets' => 'Edit Pages',
+        'dashboard:new_widgets' => 'Add Pages',
         'dashboard:attach_image' => "Attach image",
         'dashboard:view_home' => "View your home page",
         'dashboard:settings' => "Change account settings",
@@ -111,9 +112,17 @@
         'blog:timeline' => "Timeline",
 
         'widget:view' => "View page",
-        'widget:empty' => "This organization has not yet written its %s page.",
 
+        'widget:title' => 'Short Page Title',       
+        'widget:title_help' => "Enter a word or short phrase to show in your website's menu.",
+        'widget:address' => "Page Address",
+        'widget:no_title' => "Please enter a title for this page.",
+        'widget:bad_name' => "Please enter an address for this page using letters (a-z), digits (0-9), dashes (-), or underscores (_).",
+        'widget:duplicate_name' => "That page address is already being used. Please choose another address.",
+        'widget:add_link' => "Add another page...",
         'widget:new' => "New Page",
+
+        'widget:empty' => "This organization has not yet written its %s page.",
         
         'widget:home' => "Home",
 

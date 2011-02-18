@@ -10,7 +10,7 @@
 <div class='input'>
 <label><?php echo __('featured:image'); ?></label>
 <?php echo view('admin/featured_image', array(
-    'internalname' => 'image_url',
+    'name' => 'image_url',
     'org' => $org, 
     'value' => $org->get_icon('medium')
 )); 
@@ -23,7 +23,7 @@
     
     echo view('input/tinymce',
         array(
-            'internalname' => 'content',
+            'name' => 'content',
             'valueIsHTML' => true,
             'value' => $homeWidget->content,
             'trackDirty' => true
@@ -34,13 +34,13 @@
 <?php
 
     echo view('input/submit',
-        array('internalname' => 'submit',
+        array('name' => 'submit',
             'class' => "submit_button",
             'trackDirty' => true,
             'value' => __('publish')));
 
     echo view('input/hidden', array(
-        'internalname' => 'username',
+        'name' => 'username',
         'value' => $org->username
     ));
     

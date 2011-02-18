@@ -7,7 +7,8 @@
 ?>
 <div class='input'>
     <?php echo view('input/tinymce', array(
-        'internalname' => 'blogbody',
+        'name' => 'blogbody',
+        'autoFocus' => true,
         'trackDirty' => true,
         'valueIsHTML' => $blog->has_data_type(DataType::HTML),
         'value' => $body)) ?>
@@ -16,14 +17,14 @@
 
 <?php
     echo view('input/alt_submit', array(
-            'internalname' => "delete",
-            'internalid' => 'widget_delete',
+            'name' => "delete",
+            'id' => 'widget_delete',
             'trackDirty' => true,
             'confirmMessage' => __('blog:delete:confirm'),
             'value' => __('blog:delete')
         ));
 
-    echo view('input/submit', array('internalname' => 'submit', 'trackDirty' => true, 'value' => __('savechanges')));
+    echo view('input/submit', array('name' => 'submit', 'trackDirty' => true, 'value' => __('savechanges')));
 ?>
 
 <?php

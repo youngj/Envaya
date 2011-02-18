@@ -5,7 +5,7 @@
      *
      * @uses $vars['value'] The current value, if any
      * @uses $vars['js'] Any Javascript to enter into the input tag
-     * @uses $vars['internalname'] The name of the input field
+     * @uses $vars['name'] The name of the input field
      * @uses $vars['options'] An array of strings representing the options for the radio field as "label" => option
      *
      */
@@ -13,7 +13,7 @@
     $class = @$vars['class'];
     if (!$class) $class = "input-radio";
 
-    $vars['value'] = restore_input($vars['internalname'], @$vars['value']);
+    $vars['value'] = restore_input($vars['name'], @$vars['value']);
 
     $js = @$vars['js'] ?: '';
 
@@ -27,9 +27,9 @@
             $selected = "checked = \"checked\"";
         }
 
-        $id = (isset($vars['internalid'])) ? "id=\"{$vars['internalid']}\"" : '';
+        $id = (isset($vars['id'])) ? "id=\"{$vars['id']}\"" : '';
         $disabled = (@$vars['disabled']) ? ' disabled="yes" ' : '';
-        echo "<label class='optionLabel$labelClass'><input type=\"radio\" $disabled {$js} name=\"{$vars['internalname']}\" $id value=\"".escape($option)."\" {$selected} class=\"$class\" />{$label}</label>$br";
+        echo "<label class='optionLabel$labelClass'><input type=\"radio\" $disabled {$js} name=\"{$vars['name']}\" $id value=\"".escape($option)."\" {$selected} class=\"$class\" />{$label}</label>$br";
     }
 
 ?>

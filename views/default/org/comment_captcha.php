@@ -9,7 +9,7 @@
 
 echo view('input/hidden_multi', array('fields' => $_POST));
 
-echo view('input/hidden', array('internalname' => 'captcha', 'value' => '1'));
+echo view('input/hidden', array('name' => 'captcha', 'value' => '1'));
 echo Recaptcha::get_html();
 
 echo view('input/submit', array('value' => __('comment:submit_captcha')))	;

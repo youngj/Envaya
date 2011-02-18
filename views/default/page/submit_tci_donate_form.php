@@ -5,7 +5,7 @@ Forwarding to Trust for Conservation Innovation...
 <?php
     foreach ($vars as $k => $v)
     {
-        echo view('input/hidden', array('internalname' => escape($k), 'value' => $v));
+        echo view('input/hidden', array('name' => escape($k), 'value' => $v));
     }
 ?>
 <input type='submit' name='_submit' value='Retry' />

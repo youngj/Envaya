@@ -95,6 +95,16 @@ return array(
     'blog:timeline' => 'Ratiba',
 
     'widget:view' => 'Ona ukurasa',
+    
+    'widget:title' => 'Jina Fupi la Ukurasa',    
+    'widget:title_help' => "Ingiza neno au maneno chache kuonyesha kwenye menyu ya tovuti yako.",    
+    'widget:address' => "Anwani ya Ukurasa",
+    'widget:no_title' => "Tafadhali ingiza jina kwa ukurasa huu.",
+    'widget:bad_name' => "Tafadhali ingiza anwani kwa ukurasa huu itumiayo tarakium zifuatazo tu: a-z 0-9 - _",
+    'widget:duplicate_name' => "Anwani hii tayari inatumiwa. Tafadhali chagua anwani nyingine.",
+    'widget:add_link' => "Ongeza ukurasa nyingine...",
+    'widget:new' => "Ukurasa Mpya",
+    
     'widget:empty' => 'Shirika hili halijaandika ukurasa wake wa %s.',
     'widget:home' => 'Mkuu',
     'widget:reports' => "Ripoti", 

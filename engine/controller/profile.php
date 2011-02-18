@@ -37,17 +37,63 @@ class Controller_Profile extends Controller
         {
             return $this->$methodName();
         }
-        
-        if ($this->org)
+        else if ($this->org)
         {
-            $widget = $this->org->get_widget_by_name($widgetName);            
+            $widget = $this->org->get_widget_by_name($widgetName);                        
             return $this->index_widget($widget);
         }       
+        return not_found();
+    }
+    
+    function index_widget($widget)
+    {
+        $org = $this->org;
+    
+        $this->require_http();
+
+        $show_menu = true;
+        if (get_viewtype() == 'mobile' && $widget && $widget->widget_name != 'home')
+        {
+            $show_menu = false;
+        }
+        
+        $this->use_public_layout($show_menu);
+
+        $viewOrg = $org->can_view();
+
+        if ($widget && $widget->widget_name == 'home')
+        {
+            $subtitle = $widget->title ? $widget->translate_field('title', false) : $org->get_location_text(false);
+            $title = '';
+        }
+        else if (!$widget || !$widget->is_active())
+        {
+            $this->org_page_not_found();
+        }
         else
         {
-            not_found();
+            $subtitle = $widget->get_title();
+            $title = $subtitle;
         }
-    }
+
+        if ($org->can_edit())
+        {
+            PageContext::add_submenu_item(__("widget:edit"), $widget->get_edit_url(), 'edit');
+            PageContext::add_submenu_item(__('widget:options'), "{$widget->get_base_url()}/options", 'org_actions');
+        }
+
+        if ($viewOrg)
+        {
+            $body = $this->org_view_body($subtitle, ($viewOrg ? view('widgets/view', array('widget' => $widget)) : ''));
+        }
+        else
+        {
+            $this->show_cant_view_message();
+            $body = '';
+        }
+
+        $this->page_draw($title, $body);
+    }        
     
     function show_cant_view_message()
     {
@@ -59,7 +105,21 @@ class Controller_Profile extends Controller
         {
             system_message(__('approval:rejected'));
         }
-    }    
+    }
+
+    function action_edit()
+    {
+        $widgetName = $this->request->param('widgetname');
+        $widget = $this->org->get_widget_by_name($widgetName);
+        if ($widget->is_active())
+        {
+            forward($widget->get_edit_url());
+        }
+        else
+        {
+            not_found();
+        }
+    }
 
     function action_save()
     {
@@ -79,15 +139,7 @@ class Controller_Profile extends Controller
         }
         else
         {
-            if ($this->org)
-            {
-                $widget = $this->org->get_widget_by_name($widgetName);
-                $this->save_widget($widget);
-            }
-            else
-            {       
-                not_found();
-            }
+            return not_found();
         }
 
         forward(get_input('from') ?: $this->user->get_url());
@@ -127,38 +179,6 @@ class Controller_Profile extends Controller
         $widget->save();
 
         forward($widget->get_url());
-    }
-
-    function action_edit()
-    {
-        PageContext::set_translatable(false);
-        $this->require_editor();
-        $this->require_org();
-
-        $org = $this->org;
-        $widgetName = $this->request->param('widgetname');
-
-        $widget = $org->get_widget_by_name($widgetName);
-
-        $widgetTitle = $widget->get_title();
-
-        if ($widget->guid && $widget->is_enabled())
-        {
-            $title = sprintf(__("widget:edittitle"), $widgetTitle);
-        }
-        else
-        {
-            $title = sprintf(__("widget:edittitle:new"), $widgetTitle);
-        }
-
-        $cancelUrl = get_input('from') ?: $widget->get_url();
-
-        PageContext::add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
-
-        $body = view_layout('one_column',
-            view_title($title), $widget->render_edit());
-
-        $this->page_draw($title, $body);
     }
 
     function use_public_layout($show_menu = true)
@@ -224,6 +244,53 @@ class Controller_Profile extends Controller
         }
     }
 
+    function index_add_page()
+    {
+        $this->require_editor();
+        
+        $org = $this->org;
+        
+        $cancelUrl = get_input('from') ?: $org->get_url();
+        PageContext::add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
+        
+        $title = __("widget:new");
+        
+        $area1 = view("widgets/add", array('org' => $org));
+        $body = view_layout("one_column_padded", view_title($title), $area1);
+
+        $this->page_draw($title,$body);        
+    }
+    
+    function save_add_page()
+    {
+        $this->require_editor();
+        
+        $title = get_input('title');
+        if (!$title)
+        {
+            return action_error(__('widget:no_title'));            
+        }
+        
+        $widget_name = get_input('widget_name');
+        if (!$widget_name || !Widget::is_valid_name($widget_name))
+        {
+            return action_error(__('widget:bad_name'));            
+        }
+        
+        $widget = $this->org->get_widget_by_name($widget_name);
+        
+        if ($widget->guid && ((time() - $widget->time_created > 30) || !($widget->get_handler() instanceof WidgetHandler_Generic)))
+        {
+            return action_error(__('widget:duplicate_name')); 
+        }
+        
+        $widget->save_input();             
+        
+        system_message(__('widget:save:success'));
+        
+        forward($widget->get_url());
+    }
+    
     function index_design()
     {
         $this->require_editor();
@@ -284,56 +351,6 @@ class Controller_Profile extends Controller
             $org->set_header($headerFiles);
             system_message(__("header:saved"));
         }
-    }
-
-    function index_widget($widget)
-    {
-        $this->require_http();
-        
-        $org = $this->org;
-        
-        $show_menu = true;
-        if (get_viewtype() == 'mobile' && $widget && $widget->widget_name != 'home')
-        {
-            $show_menu = false;
-        }
-        
-        $this->use_public_layout($show_menu);
-
-        $viewOrg = $org->can_view();
-
-        if ($widget && $widget->widget_name == 'home')
-        {
-            $subtitle = $widget->title ? $widget->translate_field('title', false) : $org->get_location_text(false);
-            $title = '';
-        }
-        else if (!$widget || !$widget->is_active())
-        {
-            $this->org_page_not_found();
-        }
-        else
-        {
-            $subtitle = $widget->get_title();
-            $title = $subtitle;
-        }
-
-        if ($org->can_edit())
-        {
-            PageContext::add_submenu_item(__("widget:edit"), $widget->get_edit_url(), 'edit');
-            PageContext::add_submenu_item(__('widget:options'), "{$widget->get_base_url()}/options", 'org_actions');
-        }
-
-        if ($viewOrg)
-        {
-            $body = $this->org_view_body($subtitle, ($viewOrg ? view('widgets/view', array('widget' => $widget)) : ''));
-        }
-        else
-        {
-            $this->show_cant_view_message();
-            $body = '';
-        }
-
-        $this->page_draw($title, $body);
     }
     
     function get_pre_body()

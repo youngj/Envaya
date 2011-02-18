@@ -11,5 +11,5 @@
 </p>
 
 <div style='padding-top:6px;text-align:center'>
-<a href='/envaya/contribute'><strong><?php echo __('donate_now'); ?></strong></a>
+<a href='/envaya/page/contribute'><strong><?php echo __('donate_now'); ?></strong></a>
 </div>

@@ -5,7 +5,7 @@
 	 * 
 	 * @uses $vars['value'] The current value, if any
 	 * @uses $vars['js'] Any Javascript to enter into the input tag
-	 * @uses $vars['internalname'] The name of the input field
+	 * @uses $vars['name'] The name of the input field
 	 * 
 	 */
 
@@ -13,7 +13,7 @@
 
     $PASSWORD_INCLUDE_COUNT = $vars['include_count'];
     
-    $value = restore_input($vars['internalname'], @$vars['value']); 
+    $value = restore_input($vars['name'], @$vars['value']); 
     
     if (!$PASSWORD_INCLUDE_COUNT)
     {
@@ -50,7 +50,7 @@ function checkCapslock(e, warningId) {
 
 ?>
 
-<input type="password" <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> <?php echo $js; ?> name="<?php echo $vars['internalname']; ?>" <?php if (isset($vars['internalid'])) echo "id=\"{$vars['internalid']}\""; ?> value="<?php echo escape($value); ?>" class="<?php echo $class; ?>" /><span class='capslockWarning' id='<?php echo $warningId ?>' style='display:none'></span>
+<input type="password" <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> <?php echo $js; ?> name="<?php echo $vars['name']; ?>" <?php if (isset($vars['id'])) echo "id=\"{$vars['id']}\""; ?> value="<?php echo escape($value); ?>" class="<?php echo $class; ?>" /><span class='capslockWarning' id='<?php echo $warningId ?>' style='display:none'></span>
 <script type='text/javascript'>
 <!--
 document.getElementById('<?php echo $warningId; ?>').innerHTML = <?php echo json_encode(__('capslock_warning')); ?>;

@@ -29,7 +29,7 @@ if ($org_domain_names)
 <?php echo view('input/securitytoken'); ?>
 <div class='input'>
 <label>Add Domain Name</label><br />
-<?php echo view('input/text', array('internalname' => 'domain_name')); ?>
+<?php echo view('input/text', array('name' => 'domain_name')); ?>
 </div>
 <?php echo view('input/submit', array('value' => __('save'))); ?>
 </form>

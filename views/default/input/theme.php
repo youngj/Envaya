@@ -1,8 +1,8 @@
 <?php
     $previewUrl = $vars['previewUrl'];
-    $name = $vars['internalname'];
+    $name = $vars['name'];
 
-    $curTheme = restore_input($vars['internalname'], @$vars['value']);
+    $curTheme = restore_input($vars['name'], @$vars['value']);
 ?>
 
 <script type='text/javascript'>
@@ -32,8 +32,8 @@ function themeChanged($theme)
     }
 
      echo view('input/pulldown', array(
-        'internalname' => $name,
-        'internalid' => 'themeList',
+        'name' => $name,
+        'id' => 'themeList',
         'options' => $optionsValues,
         //'empty_option' => __('sector:empty_option'),
         'value' => $curTheme,

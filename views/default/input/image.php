@@ -6,7 +6,7 @@
     $removable = isset($vars['removable']) ? $vars['removable'] : ($current != null);
     
     $imageInput = view('input/swfupload_image', array(
-        'internalname' => $vars['internalname'],
+        'name' => $vars['name'],
         'trackDirty' => @$vars['trackDirty'],
         'thumbnail_size' => $vars['thumbnail_size'],
         'sizes' => $vars['sizes']
@@ -27,8 +27,8 @@
         <?php if ($removable) { ?>
             <div style='padding-top:10px'>
             <?php echo view('input/checkboxes', 
-            array('internalname' => $deletename,
-                'internalid' => $deleteid,
+            array('name' => $deletename,
+                'id' => $deleteid,
                 'options' => array(__('image:delete')),
                 'js' => $vars['js']
             )) ?>

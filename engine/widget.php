@@ -119,21 +119,27 @@ class Widget extends Entity
     function get_url()
     {
         $org = $this->get_container_entity();
+        
+        $name = $this->widget_name;
 
-        if ($this->widget_name == 'home')
+        if ($name == 'home')
         {
             return $org->get_url();
         }
+        else if (@static::$default_widgets[$name])
+        {
+            return "{$org->get_url()}/{$name}";
+        }
         else
         {
-            return "{$org->get_url()}/{$this->widget_name}";
+            return "{$org->get_url()}/page/{$name}";
         }
     }
 
     function get_base_url()
     {
         $org = $this->get_container_entity();
-        return "{$org->get_url()}/{$this->widget_name}";
+        return "{$org->get_url()}/page/{$this->widget_name}";
     }    
     
     function get_edit_url()
@@ -144,6 +150,25 @@ class Widget extends Entity
     public function is_active()
     {
         return $this->guid && $this->is_enabled();
+    }
+    
+    function post_feed_items_new()
+    {
+        return post_feed_items($this->get_container_entity(), 'newwidget', $this);
+    }
+    
+    function post_feed_items()    
+    {
+        return post_feed_items($this->get_container_entity(), 'editwidget', $this); 
+    }
+    
+    static function is_valid_name($widget_name)
+    {
+        if (!$widget_name || preg_match('/[^\w\.\-]/', $widget_name))
+        {
+            return false;            
+        }
+        return true;
     }
     
     static function sort($a, $b)

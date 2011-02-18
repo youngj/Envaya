@@ -20,7 +20,7 @@ To:
     }
 
  echo view('input/checkboxes', array(
-    'internalname' => 'orgs',
+    'name' => 'orgs',
     'options' => $options,
     'value' => array_keys($options)
  ));
@@ -34,12 +34,12 @@ To:
 
 <?php
     echo view('input/hidden',array(
-        'internalname' => 'email',
+        'name' => 'email',
         'value' => $email->guid
     ));
     
     echo view('input/hidden',array(
-        'internalname' => 'from',
+        'name' => 'from',
         'value' => get_input('from')
     ));
     

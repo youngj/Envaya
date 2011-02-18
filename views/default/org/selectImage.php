@@ -13,8 +13,8 @@
     }
 
     echo view('input/swfupload_image', array(
-        'internalname' => 'imageUpload',
-        'internalid' => 'imageUpload',
+        'name' => 'imageUpload',
+        'id' => 'imageUpload',
         'jsname' => 'uploader',
         'sizes' => Widget::get_image_sizes()
     ));
@@ -37,7 +37,7 @@
         }
 
         echo view('input/radio', array(
-            'internalname' => 'imageSize',
+            'name' => 'imageSize',
             'value' => $defaultSizeName,
             'inline' => true,
             'options' => $options
@@ -54,7 +54,7 @@
     <div id='imagePositionContainer'>
     <?php
         echo view('input/radio', array(
-            'internalname' => 'imagePosition',
+            'name' => 'imagePosition',
             'value' => $position ?: 'center',
             'inline' => true,
             'options' => array(

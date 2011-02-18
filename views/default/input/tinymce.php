@@ -1,7 +1,7 @@
 <?php
     $value = @$vars['value'];
     $valueIsHTML = isset($vars['valueIsHTML']) ? $vars['valueIsHTML'] : true;
-    $internalname = $vars['internalname'];
+    $name = $vars['name'];
     $widthCSS = @$vars['width'] ? "width:{$vars['width']}px;" : '';
     $heightCSS = @$vars['height'] ? "height:{$vars['height']}px;" : '';
 
@@ -17,8 +17,8 @@
     }
 
     echo view("input/longtext", array(
-        'internalname' => $internalname,
-        'internalid' => "content_html$TINYMCE_INCLUDE_COUNT",
+        'name' => $name,
+        'id' => "content_html$TINYMCE_INCLUDE_COUNT",
         'trackDirty' => true,
         'js' => "style='display:none;{$widthCSS}{$heightCSS}'",
         'value' => $valueIsHTML ? Markup::render_editor_html($value) : view('output/longtext', array('value' => $value))));
@@ -123,7 +123,7 @@
         relative_urls : false,
         remove_script_host: false,
         elements: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
-        <?php if ($TINYMCE_INCLUDE_COUNT == 0) { ?>
+        <?php if (@$vars['autoFocus']) { ?>
         auto_focus: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
         <?php } ?>
         theme : "-advanced"

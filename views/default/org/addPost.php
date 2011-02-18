@@ -5,20 +5,21 @@
 
     echo view('input/tinymce',
         array(
-            'internalname' => 'blogbody',
-            'internalid' => 'post_rich',
+            'name' => 'blogbody',
+            'id' => 'post_rich',
+            'autoFocus' => true,
             'trackDirty' => true
         )
     );
 
     echo view('input/submit',
-        array('internalname' => 'submit',
+        array('name' => 'submit',
             'class' => "submit_button addUpdateButton",
             'trackDirty' => true,
             'value' => __('publish')));
 
     echo view('input/hidden', array(
-        'internalname' => 'uuid',
+        'name' => 'uuid',
         'value' => uniqid("",true)
     ));
 
@@ -27,7 +28,7 @@
     $formBody = ob_get_clean();
 
     echo view('input/form', array(
-        'internalid' => 'addPostForm',
+        'id' => 'addPostForm',
         'action' => "{$org->get_url()}/post/new",
         'enctype' => "multipart/form-data",
         'body' => $formBody,

@@ -5,9 +5,10 @@
     {
 ?>
 <div class='input'>
-    <label><?php echo __("widget:title") ?></label>
+    <label><?php echo __("widget:title") ?></label><br />
     <?php echo view("input/text", array(
-        'internalname' => 'title',
+        'name' => 'title',
+        'js' => "style='width:170px' maxlength='22'",
         'trackDirty' => true,        
         'value' => $widget->title)); 
     ?>

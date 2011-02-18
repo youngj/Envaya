@@ -3,8 +3,8 @@
     $frameId = $vars['frameId'];
 
     echo view('input/swfupload', array(
-        'internalname' => 'docUpload',
-        'internalid' => 'docUpload',
+        'name' => 'docUpload',
+        'id' => 'docUpload',
         'jsname' => 'uploader',
         'swfupload_class' => "FileUploader",
         'swfupload_args' => array(

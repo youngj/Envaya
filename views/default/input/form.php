@@ -10,8 +10,8 @@
 	 * 
 	 */
 	
-	if (isset($vars['internalid'])) { $id = $vars['internalid']; } else { $id = ''; }
-	if (isset($vars['internalname'])) { $name = $vars['internalname']; } else { $name = ''; }
+	if (isset($vars['id'])) { $id = $vars['id']; } else { $id = ''; }
+	if (isset($vars['name'])) { $name = $vars['name']; } else { $name = ''; }
 	$body = $vars['body'];
 	$action = $vars['action'];
 	if (isset($vars['enctype'])) { $enctype = $vars['enctype']; } else { $enctype = ''; }

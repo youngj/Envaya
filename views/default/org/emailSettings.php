@@ -10,12 +10,12 @@
 
 <?php
     echo view('input/hidden', array(
-        'internalname' => 'email',
+        'name' => 'email',
         'value' => $email
     ));
 
     echo view('input/hidden', array(
-        'internalname' => 'code',
+        'name' => 'code',
         'value' => $code
     ));
 
@@ -26,7 +26,7 @@
     </div>
 	<?php
 
-        echo view("input/checkboxes", array('internalname' => 'notifications', 
+        echo view("input/checkboxes", array('name' => 'notifications', 
 			'value' => $users[0]->get_notifications(), 
 			'options' => Notification::get_options()
         ));
