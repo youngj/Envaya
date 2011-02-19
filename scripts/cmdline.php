@@ -1,8 +1,14 @@
 <?php
 
+/*
+ * Provides utility functions for running scripts on the command line,
+ * and ensures that scripts cannot be accessed via a browser.
+ */
+
 if (@$_SERVER['REQUEST_URI'])
 {
-    die("This process must be run on the command line.");
+    echo "This process must be run on the command line.";
+    die;
 }
 
 function run_task($cmd, $cwd = null)

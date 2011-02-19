@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Command-line script that prints out website scores to help figure out 
+ * which ones to consider for a Featured Organization award
+ */
+
 require_once("scripts/cmdline.php");
 require_once("engine/start.php");
 

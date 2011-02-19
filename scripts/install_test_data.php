@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Installs test data required for selenium tests. Recommended for development computers,
+ * not to be used on production servers.
+ */
+
 require_once("engine/start.php");
 
 function main()

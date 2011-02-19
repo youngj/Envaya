@@ -2,6 +2,14 @@
 
 /**
  * Bypasses the engine to view simple cached views.
+ * 
+ * If 'simplecache_enabled' is true, it caches each view's output on disk the first 
+ * time it is requested, so the engine/ php code does not need to be
+ * loaded on subsequent requests. 
+ * 
+ * If the views change, either remove the views_simplecache directory, 
+ * or increment 'cache_version'.
+ *
  */
  
 require_once(dirname(__DIR__). '/engine/config.php');

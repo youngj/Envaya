@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# configures dropbox on ubuntu as a simple backup mechanism
+
 groupadd dropbox
 useradd -r -d /etc/dropbox -g dropbox -s /bin/false dropbox
 wget -O /tmp/dropbox.tar.gz http://www.dropbox.com/download/?plat=lnx.x86

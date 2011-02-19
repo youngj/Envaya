@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Long-running script to run commands at regular intervals, 
+ * while ensuring that only one instance of a command is executing at a given time
+ * (in case actual command runtime is longer than the scheduled interval).
+ *
+ * This process does as little as possible to avoid memory leaks. 
+ */
+
 require_once("scripts/cmdline.php");
 
 $cronTasks = array(

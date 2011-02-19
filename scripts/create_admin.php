@@ -1,5 +1,7 @@
 <?php
 
+// Prompt user at command line to create admin user account
+
 require_once("scripts/cmdline.php");
 require_once("engine/start.php");
 

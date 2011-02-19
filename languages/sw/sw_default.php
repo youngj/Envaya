@@ -38,7 +38,6 @@ return array(
     'feed:partnership' => '%s ina ubia na %s.',
     'feed:report' => "%s imetoa %s.",
     'feed:more' => 'Soma zaidi',
-    'feed:all' => "Zote",
     'feed:show_more' => "Onyesha mabadiliko zaidi",
     'dashboard:title' => 'Hariri Tovuti',
     'dashboard:add_update' => 'Andika habari',

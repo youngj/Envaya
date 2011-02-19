@@ -1,5 +1,17 @@
 <?php
 
+/*
+ * A long-running command line task that spawns short-lived worker processes 
+ * to execute queued functions (e.g. sending emails). 
+ *
+ * On a server it is run as a daemon by /etc/init.d/queueRunner, but can also
+ * be run directly (php scripts/queueRunner.php) in a development environment.
+ *
+ * Workers are short-lived so that memory leaks in tasks do not matter,
+ * as the worker's memory will be reclaimed by the operating system
+ * when the worker exits. This master process should use very little memory.
+ */
+
 require_once("scripts/cmdline.php");
 
 function sig_handler($signo)

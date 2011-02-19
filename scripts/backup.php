@@ -1,5 +1,10 @@
 <?php
 
+    /*
+     * Poor-man's backup service; encrypts a database dump and writes 
+     * it to a directory that's synchronized with a dropbox account.
+     */
+
     require_once("scripts/cmdline.php");
     require_once("engine/start.php");
 

@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * Merges data from two organizations into one, for cases when
+ * people accidentally created multiple accounts for the same 
+ * organization.
+ */
+
 require_once "scripts/cmdline.php";
 require_once "engine/start.php";
 

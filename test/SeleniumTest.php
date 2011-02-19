@@ -1,8 +1,10 @@
 <?php
 
-//set_include_path(get_include_path() . PATH_SEPARATOR . './PEAR/');
+/*
+ * Base class for Envaya's Selenium tests in /test/testcases .
+ */
+
 require_once 'Selenium.php';
-//require_once 'PHPUnit/Framework.php';
 
 class SeleniumTest extends PHPUnit_Framework_TestCase
 {
@@ -25,6 +27,10 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         return new Testing_Selenium($BROWSER, "http://localhost");    
     }
 
+    /*
+     * Allows all functions on selenium object $this->s to be called directly on SeleniumTest object,
+     * e.g. $this->click('//a');
+     */
     public function __call($name, $arguments)
     {
         return call_user_func_array(array($this->s, $name), $arguments);

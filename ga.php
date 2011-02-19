@@ -1,8 +1,11 @@
 <?php
 
-/**
-  Copyright 2009 Google Inc. All Rights Reserved.
-**/
+    /**
+     * Google analytics tracking script for browsers without JavaScript -
+     * requested via a hidden <img> tag in the footer.
+     *     
+     *  Copyright 2009 Google Inc. All Rights Reserved.
+     */
 
   // Tracker version.
   define("VERSION", "4.4sh");

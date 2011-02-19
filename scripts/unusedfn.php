@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * A script that scans the codebase for functions that are unused or
+ * that differ from style conventions.
+ */
+
 include("scripts/cmdline.php");
 include("engine/start.php");
 

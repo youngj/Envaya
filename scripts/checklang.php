@@ -1,15 +1,25 @@
 <?php
 
-include("scripts/cmdline.php");
-include("engine/start.php");
+/* 
+ * Checks for common errors in language files, such as missing translations for a given language.
+ * Prints results to stdout.
+ *
+ * To check english:
+ *   php scripts/checklang.php 
+ *
+ * To check any other language:
+ *   php scripts/checklang.php <languagecode>
+ */
 
-$lang = $_SERVER['argv'][1];
+require_once "scripts/cmdline.php";
+require_once "engine/start.php";
+
+$lang = @$_SERVER['argv'][1] ?: 'en';
 
 $en = Language::get('en');
 $en->load_all();
 
 $en_trans = $en->get_loaded_translations();
-
 
 function get_missing_language_keys($en, $trans)
 {
@@ -36,7 +46,7 @@ if ($lang != 'en')
 
     foreach ($missingKeys as $key)
     {
-        echo "$key\n";
+        echo "missing: $key\n";
     }
 
     echo "\n";
@@ -94,7 +104,7 @@ else
     {
         if (!isset($en_trans[$seenKey]))
         {
-            echo "missing translation: $seenKey\n";
+            echo "missing: $seenKey\n";
         }
     }
 }

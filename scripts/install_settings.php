@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Creates a local config file for the current computer, where default settings can be overridden.
+ * This file should not be committed to source control.
+ */
+
 $settings_file = "config/local.php";
 
 if (!is_file($settings_file))

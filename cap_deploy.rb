@@ -1,3 +1,14 @@
+#
+# Capistrano deployment script for releasing code on envaya.org or a similar test server,
+# or configuring a new remote production/test server.
+#
+# Update latest code on 1.2.3.4:
+# cap HOSTS=1.2.3.4 deploy
+# 
+# Configure a new server:
+# cap HOSTS=1.2.3.4 deploy:full_setup
+#
+#
 
 default_run_options[:pty] = true
 

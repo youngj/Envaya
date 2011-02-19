@@ -1,6 +1,8 @@
 #!/bin/bash
 # ubuntu 10.04
 
+# configures envaya services on ubuntu, assuming prerequisites already installed
+
 INSTALL_DIR=$1
 if [ ! $1  ]; then
   SCRIPT_DIR=$(cd `dirname $0` && pwd)

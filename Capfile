@@ -1,3 +1,7 @@
+#
+# Capistrano configuration; see cap_deploy.rb
+#
+
 require 'rubygems'
 #require 'railsless-deploy'
 

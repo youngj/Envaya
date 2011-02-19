@@ -1,13 +1,22 @@
 <?php
 
+/*
+ * Rewrites email addresses for all users in the database.
+ * Makes sure that users won't be emailed from the test server,
+ * when testing with production data
+ */
+
 require_once("scripts/cmdline.php");
 require_once("engine/start.php");
 
-$users = User::query()->filter();
-
-foreach ($users as $user)
+if (Config::get('debug') && Config::get('domain') != 'envaya.org')
 {
-    echo "{$user->email}\n";
-    $user->email = "adunar+{$user->username}@gmail.com";
-    $user->save();
+    $users = User::query()->filter();
+
+    foreach ($users as $user)
+    {
+        echo "{$user->email}\n";
+        $user->email = "adunar+{$user->username}@gmail.com";
+        $user->save();
+    }
 }

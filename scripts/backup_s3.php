@@ -1,5 +1,12 @@
 <?php
 
+/*
+* Poor-man's s3 backup service, copies new files from a s3 bucket,
+* and saves them to a local directory that's synchronized with a dropbox account.
+*
+* Doesn't update previously backed-up files that have changed on s3.
+*/
+
 global $BACKUP_DIR;
 $BACKUP_DIR = "/etc/dropbox/Dropbox/s3_backup";
 

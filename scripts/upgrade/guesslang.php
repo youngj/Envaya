@@ -1,5 +1,7 @@
 <?php
 
+// Use google translate to guess language of content where the current language is unknown.
+
 require_once("scripts/cmdline.php");
 require_once("engine/start.php");
 

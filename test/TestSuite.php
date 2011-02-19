@@ -1,6 +1,8 @@
 <?php
 
 /*
+ Command-line script for running Envaya's Selenium tests.
+ 
  usage: php TestSuite.php
     --test=TestClass1 --test=TestClass2 (from testcases directory, omit to run all $TEST_CASES)
     --browser=*browser (selenium browser expression, omit to use *firefox)

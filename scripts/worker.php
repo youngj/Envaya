@@ -1,5 +1,10 @@
 <?php
 
+/* 
+ * A short-lived command line task that executes queued functions
+ * (e.g. sending emails). 
+ */
+
 require_once("scripts/cmdline.php");
 require_once("engine/start.php");
 

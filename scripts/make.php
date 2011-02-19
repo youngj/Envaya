@@ -1,19 +1,24 @@
 <?php
 
-    require_once("scripts/cmdline.php");
-    require_once("vendors/jsmin.php");
+/*
+ * Minifies javascript files. 
+ * Any other necessary compilation steps should be added here as needed.
+ */     
 
-    function minify($srcFile, $destFile)
-    {
-        $src = file_get_contents($srcFile);
+require_once("scripts/cmdline.php");
+require_once("vendors/jsmin.php");
 
-        $compressed = JSMin::minify($src);
-        file_put_contents($destFile, $compressed);
+function minify($srcFile, $destFile)
+{
+    $src = file_get_contents($srcFile);
 
-        echo strlen($src)." ".strlen($compressed)." $destFile\n";
-    }
+    $compressed = JSMin::minify($src);
+    file_put_contents($destFile, $compressed);
 
-    minify('_media/tiny_mce/themes/advanced/editor_template_src.js',
-            '_media/tiny_mce/themes/advanced/editor_template.js');
+    echo strlen($src)." ".strlen($compressed)." $destFile\n";
+}
 
-    minify('views/default/js/header_src.php', 'views/default/js/header.php');
+minify('_media/tiny_mce/themes/advanced/editor_template_src.js',
+        '_media/tiny_mce/themes/advanced/editor_template.js');
+
+minify('views/default/js/header_src.php', 'views/default/js/header.php');

@@ -1,5 +1,9 @@
 <?php
 
+/* 
+ * Create the initial database schema and required initial data.
+ */
+
 require_once("scripts/cmdline.php");
 require_once("engine/start.php");
 
