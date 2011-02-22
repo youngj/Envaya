@@ -388,7 +388,8 @@ class Controller_Admin extends Controller
 
         if ($entity)
         {
-            $entity->delete();
+            $entity->disable();
+            $entity->save();
             system_message(sprintf(__('entity:delete:success'), $guid));
         }
         else

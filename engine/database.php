@@ -209,7 +209,7 @@ class Database
         }
     }
                
-    private static function get_pdo()
+    static function get_pdo()
     {
         $dbhost = Config::get('dbhost');
         $dbname = Config::get('dbname');

@@ -9,7 +9,7 @@ require_once("engine/start.php");
 
 try
 {
-    _get_db_link();
+    Database::get_pdo();
 }
 catch (PDOException $ex)
 {
