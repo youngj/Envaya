@@ -320,62 +320,45 @@ class UploadedFile extends Entity
             return static::store_image($tmp_file, $sizes);
         }
     }    
-        
-    private static function convert_to_pdf($filename, $extension)
+  
+    static function print_to_pdf($temp_path)
     {
-        $scribd = get_scribd();
+        // output pdf file is printed to /tmp/PDF directory 
+        // with filename as $temp_path but .pdf extension,
+        // as specified in /etc/cups/cups-pdf.conf
+        $args = "-norestore -nofirststartwizard -nologo -headless -pt Cups-PDF";
+        $cmd = "/usr/bin/openoffice.org $args $temp_path";
+        system($cmd);
+    }
+ 
+    private static function convert_to_pdf($path, $ext)
+    {
+        $temp_name = uniqid("upload",false);
+        $temp_path = "/tmp/$temp_name";
+       
+        copy($path, $temp_path);
+        $output_path = "/tmp/PDF/$temp_name.pdf";
 
-        try
-        {
-            $res = $scribd->upload($filename, $extension, 'private');
-            $doc_id = @$res['doc_id'];
-        }
-        catch (Exception $ex)
-        {
-            error_log("error uploading document to scribd: ".$ex->getMessage());
-            throw new IOException(__('upload:image_extract_failed'));
-        }
+        FunctionQueue::queue_call(
+                array("UploadedFile", "print_to_pdf"), 
+                array($temp_path)
+        );
 
-        for ($i = 0; $i < 20; $i++)
+        for ($i = 0; $i < 30; $i++)
         {
-            $status = $scribd->getConversionStatus($doc_id);
-            if ($status == 'PROCESSING' || $status == 'DISPLAYABLE') 
-            {
-                sleep(1);
-            }
-            else
+            sleep(1);
+            if (is_file($output_path))
             {
                 break;
             }
         }
-        try 
+        if (!is_file($output_path))
         {
-            $pdf_url = $scribd->getDownloadUrl($doc_id, 'pdf');
-            return $pdf_url;
-        }
-        catch (Exception $ex)
-        {
-            error_log("error in pdf conversion: ".$ex->getMessage());
             throw new IOException(__('upload:image_extract_failed'));
         }
-    }
+        @unlink($temp_path);
 
-    private static function download_file($url, $filename)
-    {
-        $fh = fopen($filename, 'w');
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_FILE, $fh);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        $res = curl_exec($curl);
-        if (!$res)
-        {
-            error_log(curl_error($curl));
-        }
-        curl_close($curl);
-
-        fclose($fh);
-        return $res;
+        return $output_path;
     }
 
     private static function create_temp_dir($prefix)
@@ -450,19 +433,15 @@ class UploadedFile extends Entity
     private static function store_image_from_doc($tmp_file, $ext, $sizes)
     {
         $res = null;
+        $converted_pdf = false;
         if ($ext != 'pdf')
         {
-            $pdf_url = static::convert_to_pdf($tmp_file, $ext);
-            $pdf_filename = tempnam(sys_get_temp_dir(), 'pdfimages_pdf');
-            if (!static::download_file($pdf_url, $pdf_filename))
-            {
-                $pdf_filename = null;
-            }
+            $pdf_filename = static::convert_to_pdf($tmp_file, $ext);
+            $converted_pdf = true;
         } 
         else
         {
             $pdf_filename = $tmp_file;
-            $pdf_url = null;
         }
 
         if ($pdf_filename)
@@ -478,7 +457,7 @@ class UploadedFile extends Entity
                 throw new DataFormatException(__("upload:no_image_in_doc"));
             }
             
-            if ($pdf_url)
+            if ($converted_pdf)
             {
                 @unlink($pdf_filename);
             }

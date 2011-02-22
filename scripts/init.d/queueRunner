@@ -1,15 +1,17 @@
 #!/bin/sh
 
-
 APP_NAME="queueRunner"
 APP_HOME=""
+USER_HOME="/var/kestrel"
 AS_USER="kestrel"
 PHP_HOME="/usr"
 DAEMON="/usr/bin/daemon"
 
-pidfile="/var/kestrel/$APP_NAME.pid"
+APP_ENV="-i -e HOME=$USER_HOME -e USER=$AS_USER -e USERNAME=$AS_USER"
+
+pidfile="$USER_HOME/$APP_NAME.pid"
 daemon_args="--name $APP_NAME --pidfile $pidfile"
-daemon_start_args="--user $AS_USER --stdout=/var/log/$APP_NAME/stdout --stderr=/var/log/$APP_NAME/error --chdir=$APP_HOME"
+daemon_start_args="$APP_ENV --user $AS_USER --stdout=/var/log/$APP_NAME/stdout --stderr=/var/log/$APP_NAME/error --chdir=$APP_HOME"
 
 running() {
   $DAEMON $daemon_args --running

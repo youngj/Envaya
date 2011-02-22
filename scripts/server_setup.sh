@@ -283,6 +283,8 @@ EOF
 
 /etc/init.d/stunnel4 restart
 
+cp $INSTALL_DIR/scripts/config/cups-pdf.conf /etc/cups/
+
 mkdir -p /var/kestrel
 chmod 755 /var/kestrel
 
