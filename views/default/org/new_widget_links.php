@@ -16,6 +16,5 @@
 
     echo "<div id='new_pages_menu'>";   
     echo implode('<br />', $newWidgetList);
-    echo "<br />";
-    echo "<a href='{$org->get_url()}/add_page?from=pg/dashboard'>".__('widget:add_link')."</a>";
+    echo "<div><a href='{$org->get_url()}/add_page?from=pg/dashboard'>".__('widget:add_link')."</a></div>";
     echo "</div>";

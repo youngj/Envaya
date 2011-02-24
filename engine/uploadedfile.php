@@ -327,8 +327,7 @@ class UploadedFile extends Entity
         // with filename as $temp_path but .pdf extension,
         // as specified in /etc/cups/cups-pdf.conf
         $args = "-norestore -nofirststartwizard -nologo -headless -pt Cups-PDF";
-        $cmd = "/usr/bin/openoffice.org $args $temp_path";
-        system($cmd);
+        system("/usr/bin/openoffice.org $args ".escapeshellarg($temp_path));
     }
  
     private static function convert_to_pdf($path, $ext)
@@ -381,7 +380,7 @@ class UploadedFile extends Entity
 
         // pdfimages extracts images from .pdf file
         // in either .jpg or .ppm format
-        system("pdfimages -j $filename $temp_dir/img"); 
+        system("pdfimages -j ".escapeshellarg($filename)." ".escapeshellarg("$temp_dir/img")); 
 
         $ppm_file = null;
         $jpg_file = null;
@@ -410,7 +409,7 @@ class UploadedFile extends Entity
         if ($ppm_file)
         {
             $jpg_file = "$ppm_file.jpg";
-            system("pnmtojpeg $ppm_file > $jpg_file");
+            system("pnmtojpeg ".escapeshellarg($ppm_file)." > ".escapeshellarg($jpg_file));
         }
 
         // clean up
@@ -425,7 +424,7 @@ class UploadedFile extends Entity
             }
         }
 
-        system("rm -rf \"$temp_dir\"");
+        system("rm -rf ".escapeshellarg($temp_dir));
 
         return $res_file;
     }
