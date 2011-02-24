@@ -1,23 +1,37 @@
 <script type='text/javascript'>
 
-function showAttachImage($show)
+function keepDirty()
 {
-    $dirty = window.dirty;
+    var $dirty = window.dirty;
     setDirty(false);
     setTimeout(function() { setDirty($dirty) }, 5);
-
-    if (!window.tinyMCE)
-    {
-        return;
-    }
-
-    setTimeout(function() {
-        tinyMCE.activeEditor.execCommand("mceImage");
-    }, 1);
 }
+
+function showAttachImage()
+{
+    keepDirty();    
+    if (window.tinyMCE)
+    {       
+        setTimeout(function() {
+            tinyMCE.activeEditor.execCommand("mceImage");
+        }, 1);
+    }
+}
+
+function showAttachDocument()
+{
+    keepDirty();
+    if (window.tinyMCE)
+    {
+        setTimeout(function() {
+            tinyMCE.activeEditor.execCommand("mceDocument");
+        }, 1);
+    }
+}
+
 </script>
 
-<div id='attachControls'>
-    <a href='javascript:void(0)' onclick='showAttachImage()'><img src='/_graphics/attach_image.gif?v2' /></a>
-    <a href='javascript:void(0)' onclick='showAttachImage()'><?php echo __('dashboard:attach_image') ?></a>
+<div class='attachControls'>
+    <a href='javascript:void(0)' class='attachImage' onclick='showAttachImage()'><?php echo __('dashboard:attach_image') ?></a>
+    <a href='javascript:void(0)' class='attachDocument' onclick='showAttachDocument()'><?php echo __('dashboard:attach_document') ?></a>    
 </div>

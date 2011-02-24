@@ -43,6 +43,7 @@ return array(
     'dashboard:add_update' => 'Andika habari',
     'dashboard:edit_widgets' => 'Hariri kurasa',
     'dashboard:attach_image' => 'Fungia picha',
+    'dashboard:attach_document' => "Fungia hati",
     'dashboard:view_home' => 'Tazama ukurasa wako mkuu',
     'dashboard:settings' => 'Badili mipangilio ya akaunti',
     'dashboard:links' => 'Viungo',

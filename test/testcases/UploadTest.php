@@ -25,7 +25,7 @@ class UploadTest extends SeleniumTest
         $this->type("//input[@name='password']", "testtest");
         $this->submitForm();
         
-        $this->click("//div[@id='attachControls']//a");
+        $this->click("//div[@class='attachControls']//a");
         
         $this->retry('selectFrame', array("//iframe[contains(@src,'selectImage')]"));
         

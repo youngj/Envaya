@@ -283,3 +283,27 @@ a.gridDelete:hover
 {
     background-position:left -5px;
 }
+
+.attachControls 
+{
+    width:300px;
+}
+
+.attachControls a
+{
+    display:block;
+    padding-left:52px;
+    padding-top:6px;
+    padding-bottom:6px;
+    background:url("/_graphics/attach_controls.gif") no-repeat left top;
+}
+
+.attachControls .attachImage
+{
+    background-position:left top;
+}
+
+.attachControls .attachDocument
+{
+    background-position:left bottom;
+}

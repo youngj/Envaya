@@ -51,6 +51,7 @@
         'dashboard:edit_widgets' => 'Edit Pages',
         'dashboard:new_widgets' => 'Add Pages',
         'dashboard:attach_image' => "Attach image",
+        'dashboard:attach_document' => "Attach document",
         'dashboard:view_home' => "View your home page",
         'dashboard:settings' => "Change account settings",
         'dashboard:links' => "Links",

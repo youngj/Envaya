@@ -959,26 +959,6 @@ a.photoDelete:hover
 .delete_icon { background-position:left -120px; }
 .up_icon { background-position:left -160px; }
 
-#attachControls
-{
-    padding:4px;
-}
-
-#attachControls img
-{
-    vertical-align:middle;
-}
-
-#attachControls a
-{
-    color:#333;
-}
-
-#attachImage input
-{
-    margin:3px;
-}
-
 .adminBox
 {
     position:absolute;
