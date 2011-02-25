@@ -18,6 +18,7 @@ error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_NOTICE
 date.timezone = "Europe/London"
 zlib.output_compression = 1
 expose_php = 0
+upload_max_filesize = "12M"
 
 EOF
 
