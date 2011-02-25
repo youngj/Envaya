@@ -301,6 +301,8 @@ a.gridDelete:hover
 .attachControls .attachImage
 {
     background-position:left top;
+    margin-top:2px;
+    margin-bottom:4px;
 }
 
 .attachControls .attachDocument

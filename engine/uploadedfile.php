@@ -27,7 +27,8 @@ class UploadedFile extends Entity
 
     // file types that we can extract images from, and accept as image uploads
     static $image_document_extensions = array('pdf', 'rtf', 'odt', 'odg', 'doc', 'ppt', 'docx', 'pptx'); 
-    static $scribd_document_extensions = array('doc', 'docx', 'pdf', 'txt', 'rtf', 'odt', 'odg', 'ppt', 'pptx', 'xls', 'xlsx', 'pps', 'ppsx');
+    static $scribd_document_extensions = array('doc', 'docx', 'pdf', 'txt', 'rtf', 'ppt', 'pptx', 
+                                                'xls', 'xlsx', 'pps', 'ppsx', 'odt', 'odg', 'odp');
 
     public function get_files_in_group()
     {
@@ -266,7 +267,7 @@ class UploadedFile extends Entity
             throw new IOException(__('upload:storage_error'));
         }           
         $file->docid = $res['doc_id'];
-        $file->accesskey = $res['access_key'];                
+        $file->accesskey = $res['access_key'];
         
         $file->save();
         

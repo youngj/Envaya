@@ -1,6 +1,6 @@
 <?php
 return array(
-    'cache_version' => 123,  // increment when css, or external js (tinymce/swfupload) changes
+    'cache_version' => 124,  // increment when css, or external js (tinymce/swfupload) changes
     
     'dbuser' => '',
     'dbpass' => '',
