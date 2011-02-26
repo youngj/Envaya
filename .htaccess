@@ -112,3 +112,4 @@ RewriteRule .* index.php/$0 [L]
 
 </IfModule>
 php_value display_errors 7
+#LimitRequestBody 10000

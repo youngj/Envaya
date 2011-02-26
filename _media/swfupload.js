@@ -1359,13 +1359,34 @@ FileUploader.prototype.addFallbackIframe = function($swfupload)
     
 };
 
+FileUploader.prototype.resetFrameWithError = function(msg)            
+{
+    this.loadedIframe = false;
+    this.iframeErrorMessage = msg; 
+    this.fallbackIframe.src = this.fallbackIframeSrc + "&r=" + Math.random();
+};
+
 FileUploader.prototype.checkIframeError = function()
 {
     var iframeWindow = window.frames[this.fallbackIframe.id];
-
-    if (iframeWindow && iframeWindow.document && iframeWindow.document.title)
+    
+    try
     {
-        var title = iframeWindow.document.title;
+        var doc = iframeWindow.document;
+    }
+    catch (ex) // likely iframe is on a different domain than current page, 
+               // possibly an access error due to connection reset
+    {
+        if (this.loadedIframe)
+        {
+            this.resetFrameWithError("Connection reset. Likely the file was too big, or took too long to upload.");
+        }
+        return;
+    }
+
+    if (iframeWindow && doc && doc.title)
+    {
+        var title = doc.title;
         if (title == 'UPLOAD')
         {
             this.loadedIframe = true;
@@ -1377,14 +1398,8 @@ FileUploader.prototype.checkIframeError = function()
         }
         else if (this.loadedIframe)
         {
-            this.loadedIframe = false;
-            
-            var doc = iframeWindow.document;
-            var h1 = doc.getElementsByTagName('h1')[0];
-            
-            this.iframeErrorMessage = (h1) ? (h1.innerText || h1.textContent || title) : title;
-            
-            this.fallbackIframe.src = this.fallbackIframeSrc + "&r=" + Math.random();
+            var h1 = doc.getElementsByTagName('h1')[0];                        
+            this.resetFrameWithError((h1) ? (h1.innerText || h1.textContent || title) : title);
         }
     }
 };
