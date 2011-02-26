@@ -1157,6 +1157,7 @@ FileUploader.prototype.getSWFUploadOptions = function()
         file_post_name: "file",
         post_params: this.options.post_params,
         file_upload_limit : 0,
+        file_size_limit: "10000000 B",
         
         file_types: this.options.file_types,
         file_types_description: this.options.file_types_description,
@@ -1164,6 +1165,8 @@ FileUploader.prototype.getSWFUploadOptions = function()
         swfupload_preload_handler: function()
         {
             $self.swfupload = this;
+            
+            $self.setProgress($self.options.initial_message);
         
             if (!$self.swfupload.support.imageResize) 
             {
@@ -1180,7 +1183,7 @@ FileUploader.prototype.getSWFUploadOptions = function()
         
         file_queue_error_handler: function(file, errorCode, message)
         {
-            $self.setProgress($self.options.queue_error_message + errorCode);
+            $self.setProgress($self.options.queue_error_message + $self.getErrorMsg(errorCode, SWFUpload.QUEUE_ERROR));
         },
         
         file_dialog_complete_handler: function(numFilesSelected, numFilesQueued) 
@@ -1195,7 +1198,7 @@ FileUploader.prototype.getSWFUploadOptions = function()
         
         upload_error_handler: function(file, errorCode, message) 
         { 
-            $self.setProgress($self.options.upload_error_message + errorCode);            
+            $self.setProgress($self.options.upload_error_message + $self.getErrorMsg(errorCode, SWFUpload.UPLOAD_ERROR));            
         },
         
         upload_success_handler: function(file, serverData) 
@@ -1226,6 +1229,18 @@ FileUploader.prototype.getSWFUploadOptions = function()
     }
 };
 
+FileUploader.prototype.getErrorMsg = function($errorCode, $errors)
+{
+    for (var name in $errors)
+    {
+        if ($errors[name] == $errorCode)
+        {
+            return name;
+        }
+    }
+    return "" + $errorCode;
+};
+
 FileUploader.prototype.fileDialogCompleteHandler = function(numFilesSelected, numFilesQueued)
 {
     if (numFilesQueued > 0) 
@@ -1238,7 +1253,7 @@ FileUploader.prototype.fileDialogCompleteHandler = function(numFilesSelected, nu
         }   
         else
         {
-            this.setProgress(this.options.queue_error_message + "-2");                
+            this.setProgress(this.options.queue_error_message + "NO_QUEUED_FILE");                
         }
     }
 };    
@@ -1308,11 +1323,14 @@ FileUploader.prototype.addFallbackIframe = function($swfupload)
     var $placeholder = document.getElementById(this.options.placeholder_id);
     removeChildren($placeholder);
 
+    var iframeName = 'uploadIframe' + Math.floor(Math.random() * 1000000);
+    
     var $iframe = document.createElement('iframe');
     $iframe.border = 0;
     $iframe.frameBorder = 0;
     $iframe.scrolling = 'no';
-    $iframe.id = 'uploadIframe' + Math.floor(Math.random() * 1000000);        
+    $iframe.id = iframeName;        
+    $iframe.name = iframeName;
         
     var query = [],
         post_params = this.getSWFUploadOptions().post_params;
@@ -1323,11 +1341,52 @@ FileUploader.prototype.addFallbackIframe = function($swfupload)
     }    
     query.push("swfupload=" + this.swfupload.movieName);    
     
-    $iframe.src = "pg/upload_frame?" + query.join("&");
+    this.fallbackIframe = $iframe;
+    this.fallbackIframeSrc = "pg/upload_frame?" + query.join("&");
+    
+    $iframe.src = this.fallbackIframeSrc;
     $iframe.className = 'uploadIframe';
     $placeholder.appendChild($iframe);
+    
+    var msg = this.options.no_flash_message;
+    if (msg)
+    {
+        this.setProgress(this.options.no_flash_message);
+    }
 
-    this.setProgress(this.options.recommend_flash_message);
+    var $self = this;
+    setInterval(function() { $self.checkIframeError(); }, 400);
+    
+};
+
+FileUploader.prototype.checkIframeError = function()
+{
+    var iframeWindow = window.frames[this.fallbackIframe.id];
+
+    if (iframeWindow && iframeWindow.document && iframeWindow.document.title)
+    {
+        var title = iframeWindow.document.title;
+        if (title == 'UPLOAD')
+        {
+            this.loadedIframe = true;
+            if (this.iframeErrorMessage)
+            {
+                this.setProgress(this.options.upload_error_message + this.iframeErrorMessage);
+                this.iframeErrorMessage = null;
+            }
+        }
+        else if (this.loadedIframe)
+        {
+            this.loadedIframe = false;
+            
+            var doc = iframeWindow.document;
+            var h1 = doc.getElementsByTagName('h1')[0];
+            
+            this.iframeErrorMessage = (h1) ? (h1.innerText || h1.textContent || title) : title;
+            
+            this.fallbackIframe.src = this.fallbackIframeSrc + "&r=" + Math.random();
+        }
+    }
 };
 
 var ImageUploader = makeClass(FileUploader);
@@ -1342,7 +1401,7 @@ ImageUploader.prototype.startUpload = function($file)
     this.setProgress(this.options.processing_message);
 
     var $type = $file.type;
-
+    
     if ($file.size > 100000 && $type == '.jpg')
     {
         this.swfupload.startResizedUpload($file.ID, this.options.max_width, this.options.max_height, SWFUpload.RESIZE_ENCODING.JPEG, 75);

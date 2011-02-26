@@ -19,6 +19,7 @@ date.timezone = "Europe/London"
 zlib.output_compression = 1
 expose_php = 0
 upload_max_filesize = "12M"
+post_max_size = "12M"
 
 EOF
 

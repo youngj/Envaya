@@ -216,6 +216,7 @@
         'image:delete' => "Remove image?",
 
         'upload:browse' => 'Browse',
+        'upload:max_size' => "Maximum file size 10 MB",
         'upload:complete' => "Upload complete. Previewing...",
         'upload:image:error' => "Error processing image: ",
         'upload:image:processing' => "Processing image...",
@@ -227,7 +228,7 @@
         'upload:error' => "Error uploading file: ",
 
         'upload:no_image_in_doc' => "No images were found in the uploaded document.",
-        'upload:transfer_error' => "Error transferring file to server.",
+        'upload:transfer_error' => "Error transferring file to server: %s",
         'upload:storage_error' => "Error storing file.",
         'upload:invalid_image_format' => "Invalid image format. Please save the image from your document as a .jpg, .png, or .gif file.",
         'upload:invalid_document_format' => "Invalid document format. Accepted formats are: %s",

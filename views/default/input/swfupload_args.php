@@ -11,7 +11,8 @@
         'queue_error_message' => __('upload:error'),
         'processing_message' => __('upload:image:processing'),
         'loading_preview_message' => __('upload:complete'),
-        'recommend_flash_message' => '',
+        'no_flash_message' => '',
+        'initial_message' => '',
     );
 
     foreach ($vars['args'] as $k => $v)

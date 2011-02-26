@@ -237,3 +237,14 @@
         return EventRegister::trigger_event($event, $object_type, $object);
     }    
     
+    function get_constant_name($val, $prefix)
+    {
+        foreach (get_defined_constants() as $name => $value) 
+        {
+            if ($value == $val && strpos($name, $prefix) === 0)
+            {
+                return $name;
+            }            
+        }
+        return null;
+    }

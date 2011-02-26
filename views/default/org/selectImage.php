@@ -74,6 +74,8 @@
     
     var images = null;
     var upload_error = null;
+    
+    var parentAPI = window.parent["frameapi_" + <?php echo json_encode($frameId); ?>];
 
     uploader.onError = function($error) {
         upload_error = $error;
@@ -116,8 +118,7 @@
     function resizeFrame()
     {
         setTimeout(function() {
-            var parentDoc = window.parent.document;
-            var iframe = parentDoc.getElementById(<?php echo json_encode($frameId); ?>);
+            var iframe = parentAPI.iframe;
             if (iframe)
             {
                 var height = 50;
@@ -137,8 +138,7 @@
 
                 iframe.style.height = height+"px";
 
-                var loading = parentDoc.getElementById(<?php echo json_encode($frameId."_loading"); ?>);
-                loading.style.display = 'none';
+                parentAPI.loading.style.display = 'none';
             }
         }, 1);
     }

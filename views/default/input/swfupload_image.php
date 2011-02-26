@@ -26,7 +26,7 @@
         'upload_progress_message' =>  __('upload:image:uploading'),
         'upload_error_message' => __('upload:image:error'),
         'queue_error_message' => __('upload:image:error'),
-        'recommend_flash_message' => view('org/recommend_flash_message'),        
+        'no_flash_message' => view('org/recommend_flash_message'),        
         'post_params' => array(
             'sizes' => json_encode($sizes)
         )

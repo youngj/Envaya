@@ -298,7 +298,8 @@ class Controller_Pg extends Controller {
     {   
         if (!$file_input || $file_input['error'] != 0)
         {    
-            throw new IOException(__("upload:transfer_error"));
+            $error_code = $file_input ? get_constant_name($file_input['error'], 'UPLOAD_ERR') : 'UPLOAD_ERR_NO_FILE';
+            throw new IOException(sprintf(__("upload:transfer_error"), $error_code));
         }    
     
         switch ($mode)

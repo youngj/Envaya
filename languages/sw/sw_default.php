@@ -196,7 +196,7 @@ return array(
     'upload:image:recommend_flash' => 'Angalia: Kuongeza picha kwa haraka zaidi, weka %s.',
     
     'upload:no_image_in_doc' => "Hakuna picha kwenye faili iliyopelekwa.",
-    'upload:transfer_error' => "Tatizo kupeleka faili kwenye mtandao.",
+    'upload:transfer_error' => "Tatizo kupeleka faili kwenye mtandao: %s",
     'upload:invalid_image_format' => "Faili si picha halali. Tafadhali hifadhi picha kwenye faili yako kama muundo wa .jpg, .png, au .gif.",
     'upload:image_bad' => "Komputa yetu haifahamu faili ya picha. Hifadhi picha kama muundo wa .jpg, .png, au .gif na jaribu tena.",
     'upload:image_extract_failed' => "Tatizo kupata picha kutoka faili. Jaribu kuhifadhi picha kwenye faili kama muundo wa .jpg na jaribu tena.",    

@@ -115,7 +115,7 @@ new MultiImageUploader(<?php echo view('input/swfupload_args', array(
         'progress_id' => 'progressContainer',
         'placeholder_id' => 'uploadContainer',
         'previews_id' => 'previews',
-        'recommend_flash_message' => view('org/recommend_flash_message'),                
+        'no_flash_message' => view('org/recommend_flash_message'),                
         'button_more_message' => __('addphotos:more'),
         'post_params' => array(
             'sizes' => json_encode(Widget::get_image_sizes())

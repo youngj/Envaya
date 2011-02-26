@@ -1236,11 +1236,13 @@
                  }                  
              );
 
+            var loading = createElem('div', {className:'modalImageFrameLoading'}, ed.getLang('advanced.loading'));
+             
             var imageBox = ed.createModalBox(                
                 ed.getLang(imageNode ? 'advanced.document_edit' : 'advanced.document_insert'),
                      createElem('div',
                          {className:'modalBody'},
-                         createElem('div', {id: iframeName + "_loading", className:'modalImageFrameLoading'}, ed.getLang('advanced.loading')),
+                         loading,
                          iframe
                      ),
                      saveChanges, cancel,
@@ -1265,12 +1267,19 @@
                     });               
                 }            
                 removeElem(imageBox); 
-            }
+            }           
             
             function cancel()
             {
                 removeElem(imageBox); 
             }
+            
+            window["frameapi_" + iframeName] = {
+                'saveChanges': saveChanges,
+                'cancel': cancel,
+                'iframe': iframe,
+                'loading': loading
+            };
                                                               
             document.body.appendChild(imageBox);                  
 
@@ -1312,11 +1321,12 @@
                  }                  
              );
 
+            var loading = createElem('div', {className:'modalImageFrameLoading'}, ed.getLang('advanced.loading'));
             var imageBox = ed.createModalBox(                
                 ed.getLang(imageNode ? 'advanced.image_edit' : 'advanced.image_insert'),
                      createElem('div',
                          {className:'modalBody'},
-                         createElem('div', {id: iframeName + "_loading", className:'modalImageFrameLoading'}, ed.getLang('advanced.loading')),
+                         loading,
                          iframe
                      ),
                      saveChanges, cancel
@@ -1347,6 +1357,13 @@
             {
                 removeElem(imageBox); 
             }
+            
+            window["frameapi_" + iframeName] = {
+                'saveChanges': saveChanges,
+                'cancel': cancel,
+                'iframe': iframe,
+                'loading': loading
+            };            
                                                               
             document.body.appendChild(imageBox);        
 
