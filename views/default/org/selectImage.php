@@ -96,7 +96,7 @@
         for (var i = 0; i < radios.length; i++)
         {
             var radio = radios[i];
-            var visible = $images[radio.value];
+            var visible = uploader.getFileByProp($images, 'size', radio.value) != null;
             if (visible)
             {
                 lastVisible = i;
@@ -121,10 +121,12 @@
             var iframe = parentAPI.iframe;
             if (iframe)
             {
-                var height = 50;
-                if (images && images.small)
+                var height = 50;                
+                var small = uploader.getFileByProp(images, 'size', 'small');
+                
+                if (small)
                 {
-                    var imageHeight = parseInt(images.small.height);
+                    var imageHeight = parseInt(small.height);
                     if (isNaN(imageHeight))
                     {
                         imageHeight = 150;
@@ -158,7 +160,7 @@
             var radio = radios[i];
             if (radio.checked)
             {
-                return images[radio.value];
+                return uploader.getFileByProp(images, 'size', radio.value);
             }
         }
 

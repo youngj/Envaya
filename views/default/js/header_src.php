@@ -145,7 +145,7 @@ function setDirty($dirty)
         if (!window.onbeforeunload)
         {
             window.onbeforeunload = function() {
-                return <?php echo json_encode(__("page:dirty")) ?>;
+                return __['page:dirty'];
             };
         }
     }

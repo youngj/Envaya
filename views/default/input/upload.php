@@ -7,11 +7,11 @@
 
 <span id='upload_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>'><?php
     $value = json_decode(@$vars['value'], true);
-    $has_value = $value && isset($value['original']);
+    $has_value = $value && isset($value[0]);
     
     if ($has_value)
     {
-        $original = $value['original'];        
+        $original = $value[0];        
         echo "<a target='_blank' href='".escape($original['url'])."'>".escape($original['filename'])."</a>";
     }
 ?></span>
@@ -46,8 +46,9 @@
         removeChildren(span);
         var link = document.createElement('a');
         link.target = "_blank";
-        link.href = $files.original.url;
-        link.appendChild(document.createTextNode($files.original.filename));
+        
+        link.href = $files[0].url;
+        link.appendChild(document.createTextNode($files[0].filename));
         span.appendChild(link);
             
         var removeSpan = document.getElementById('upload_remove_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');

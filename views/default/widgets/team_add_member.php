@@ -76,13 +76,15 @@ function openAddTeamMember()
         container.style.clear = 'both';
 
         var image = window.teamImageUploader.getCurrentImage();
-        if (image && image.small)
+        var small = window.teamImageUploader.getFileByProp(image, 'size', 'small');
+        
+        if (small)
         {
             container.appendChild(createElem('img', {
                 className: 'image_right',
-                src: image.small.url,
-                width: image.small.width,
-                height: image.small.height
+                src: small.url,
+                width: small.width,
+                height: small.height
             }));
         }
 

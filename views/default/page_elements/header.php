@@ -39,6 +39,7 @@
     ?>
     <link rel="shortcut icon" href="/_graphics/favicon2.ico" />
 <script type='text/javascript'>
+var __ = <?php echo json_encode(array('page:dirty' => __("page:dirty"))); ?>;
 <?php echo view('js/header'); ?>
 </script>
     <?php echo PageContext::get_header_html(); ?>

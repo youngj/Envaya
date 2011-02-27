@@ -62,7 +62,7 @@ function run_sql_script($scriptlocation) {
     
 if (!is_installed())
 {    
-    run_sql_script("engine/schema/mysql.sql");
+    run_sql_script("schema/mysql.sql");
     init_site_secret();
     Datalist::set('installed', 1);    
     echo "done\n";

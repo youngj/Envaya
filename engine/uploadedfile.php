@@ -79,12 +79,14 @@ class UploadedFile extends Entity
     
     public function get_storage()
     {
-        switch ($this->storage)
+        if ($this->storage)
         {
-            case 'scribd':
-                return new Storage_Scribd();
-            default:
-                return get_storage();
+            $storage_class = "Storage_{$this->storage}";
+            return new $storage_class();
+        }
+        else
+        {
+            return get_storage();
         }
     }
 
@@ -192,7 +194,7 @@ class UploadedFile extends Entity
 
         foreach ($files as $file)
         {
-            $res[$file->size] = $file->js_properties();
+            $res[] = $file->js_properties();
         }
 
         return json_encode($res);
@@ -204,14 +206,14 @@ class UploadedFile extends Entity
      */    
     static function json_decode_array($json)
     {
-        $filedata = json_decode($json, true);
-        if (!$filedata)
+        $values = json_decode($json, true);
+        if (!$values)
         {
             return null;
         }
 
         $files = array();        
-        foreach ($filedata as $size => $value)
+        foreach ($values as $value)
         {
             $file = get_entity($value['guid']);
             if ($file instanceof UploadedFile)
@@ -274,9 +276,16 @@ class UploadedFile extends Entity
         $scribd->changeSettings(
             $file->docid,
             $file->filename,
-            "From ".Session::get_loggedin_user()->get_url()
+            Session::get_loggedin_user()->get_url()
         );
-        return $file;    
+        
+        /* save a copy on default storage (e.g. s3) */
+        $backup_file = static::new_from_file_input($file_input);
+        $backup_file->group_name = $file->group_name;
+        $backup_file->upload_file($file_input['tmp_name']);
+        $backup_file->save();        
+        
+        return array($file, $backup_file);
     }
     
     /*

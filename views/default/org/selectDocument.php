@@ -37,7 +37,7 @@
     
     uploader.onComplete = function($files) {
                   
-        uploadedFile = $files.original;
+        uploadedFile = uploader.getFileByProp($files, 'storage', 'scribd');
         
         if (showPreview)
         {        

@@ -44,7 +44,9 @@ MultiImageUploader.prototype.showPreview = function($data, $json)
         imageContainer.removeChild(loadingMessage);
     });
 
-    img.src = $data[this.options.thumbnail_size].url;
+    var thumbnailInfo = this.getFileByProp($data, 'size', this.options.thumbnail_size);
+    
+    img.src = thumbnailInfo.url;
     imageContainer.appendChild(img);
 
     var caption = document.createElement('textarea');
