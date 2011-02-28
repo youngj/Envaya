@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Base class for rendering a specific report definition, overridden by subclasses in
+ * reporthandler/ . Eventually this will be replaced by storing report definitions in
+ * the database instead of code.
+ */
 class ReportHandler
 {
     function view($report)

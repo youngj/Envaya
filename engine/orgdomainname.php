@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * A custom domain name for an organization using Envaya; 
+ * allows them to have a URL like http://www.mywebsite.com 
+ * instead of http://envaya.org/myusername
+ */
 class OrgDomainName extends Model
 {
     static $table_name = 'org_domain_names';

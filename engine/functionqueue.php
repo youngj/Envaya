@@ -1,5 +1,12 @@
 <?php
 
+/* 
+ * Simple method for queuing functions that are executed later by a separate process (not in the current web request).
+ * kestrel is used to store the queue. scripts/queueRunner.php (/etc/init.d/queueRunner) executes tasks from the queue.
+ *
+ * Currently provides no mechanism for tracking whether a queued function has completed, although that
+ * may be inferred by checking for output. 
+ */
 class FunctionQueue
 {
     static function _connect()

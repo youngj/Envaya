@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * A row of the 'entities' table, containing partial data for an Entity instance.
+ *
+ * Usually this is only used when manipulating many rows of the entities table at once.
+ */
 class EntityRow extends Model
 {
     static $table_name = 'entities';

@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Interface for viewing/editing a specific type of Widget;
+ * see subclasses defined in widgethandler/.
+ */
 abstract class WidgetHandler
 {
     abstract function view($widget);

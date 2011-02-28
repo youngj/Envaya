@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * A phone number that an organization has registered for the SMS interface.
+ * (Different from phone number(s) listed on the contact page)
+ */
 class OrgPhoneNumber extends Model
 {
     static $table_name = 'org_phone_numbers';

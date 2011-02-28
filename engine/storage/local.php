@@ -1,4 +1,8 @@
 <?php
+
+/*
+ * Stores uploaded files on the local computer
+ */
 class Storage_Local implements Storage
 {
 	public function get_url($path)

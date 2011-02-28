@@ -1,5 +1,24 @@
 <?php
 
+/* 
+ * Represents an action that a user has performed on Envaya, 
+ * which is published for other people to read about.
+ * 
+ * Each action may result in multiple FeedItems with a different feed_name. 
+ * There are many feeds each with their own feed_name, e.g.:
+ * - all organizations in a sector (e.g. Environment)
+ * - all organizations in a region (e.g. Dar es Salaam)
+ * - all organizations in a sector/region combination (e.g. Environment and Dar es Salaam)
+ * - all organizations
+ * - one particular organization 
+ *
+ * Each FeedItem is associated with a particular user (user_guid).
+ * action_name refers to a FeedItemHandler subclass defined in engine/feeditemhandler/
+ * which is responsible for rendering a view of the feed item.
+ *
+ * Depending on the action, it may be associated with another Entity (subject_guid)
+ * or other arbitrary properties (args).
+ */
 class FeedItem extends Model
 {
     static $table_name = 'feed_items';

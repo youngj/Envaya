@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * Represents a select query for an Entity subclass.
+ *
+ * Includes an implicit join on the entities table and 
+ * normally avoids returning disabled rows.
+ *
+ * For where() statements, the entities table is named e 
+ * and the subclass's table is named u.
+ */
 class Query_SelectEntity extends Query_Select
 {
     private $show_disabled;

@@ -1,4 +1,9 @@
 <?php
+
+/* 
+ * An interface for storing and retrieving uploaded files;
+ * see implementations in storage/ directory.
+ */
 interface Storage
 {
 	public function get_url($key);

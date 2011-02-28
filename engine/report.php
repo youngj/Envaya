@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Represents one organization's response to a particular report.
+ * 
+ * Many Report instances by different organizations can be associated with one ReportDefinition
+ * (referenced by report_guid)
+ *
+ * Each Report instance can be associated with many ReportField instances, 
+ * which each represent one response to a question on a report.
+ */
 class Report extends Entity
 {
     static $table_name = 'reports';

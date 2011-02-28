@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Represents a user account on Envaya, each with a unique username.
+ *
+ * (The Organization subclass is the most common type of user.)
+ */
 class User extends Entity
 {
     static $table_name = 'users_entity';

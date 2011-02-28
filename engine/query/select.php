@@ -1,5 +1,24 @@
 <?php
 
+/*
+ * Represents a 'select' SQL query.  
+ * Allows building up a SQL prepared statement in multiple steps before executing it,
+ *  e.g.:
+ *
+ * $query = new Query_Select('my_table');
+ * $query->where('foo = ?', $foo);
+ * $query->limit(10);
+ * $rows = $query->filter();
+ * $total_num_rows = $query->count();
+ *
+ * Note that count() ignores limits set by limit() and returns the total
+ * number of rows otherwise matching the query (using count(*)); it is not
+ * the same as sizeof($rows).
+ *
+ * Note also that methods such as where/join/limit etc. modify the current 
+ * query object and do not return a copy.
+ * 
+ */
 class Query_Select 
 {
     protected $conditions;

@@ -7,7 +7,6 @@
             1 => 'UploadedFile',
             3 => 'Widget',
             4 => 'Organization',
-            6 => 'InterfaceTranslation',
             7 => 'NewsUpdate',        
             10 => 'Partnership',
             12 => 'FeaturedSite',

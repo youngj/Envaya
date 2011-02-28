@@ -1,5 +1,9 @@
 <?php
 
+/* 
+ * Storage and retrieval of system-wide data values.
+ * Similar idea as Config, but with keys/values persisted in the database.
+ */
 class Datalist
 {
     static $cached_list = null;

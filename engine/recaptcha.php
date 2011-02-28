@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * Interface for Google's recaptcha library
+ */
 class Recaptcha
 {
 	static function get_html()

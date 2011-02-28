@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Represents the structure of one field in a report definition,
+ * including e.g. the type of input field, default value, and label text.
+ */
 class ReportFieldDefinition
 {    
     public $label;

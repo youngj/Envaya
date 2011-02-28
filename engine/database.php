@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * Low-level database access layer, using PDO and prepared SQL queries. 
+ * Functions querying database rows return them as stdClass objects.
+ *
+ * Typically, most code should use Model functions (query, save, delete, etc), 
+ * rather than using the Database class directly.
+ */
 class Database
 {
     const Write = 'write';

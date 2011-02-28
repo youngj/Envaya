@@ -1,5 +1,18 @@
 <?php
 
+/*
+ * Interface for accessing site configuration settings 
+ * (defined in config/ directory as php files 
+ *  that returnan array)
+ * 
+ * e.g. Config::get('setting_name')
+ *
+ * config/default.php -- default settings
+ * config/local.php -- local machine settings, not under source control
+ * config/dependent.php -- hacky way to define settings that are dependent 
+ *                          on other settings
+ */
+
 class Config
 {
     private static $settings = null;

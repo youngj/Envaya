@@ -1,15 +1,23 @@
 <?php
 
+/*
+ * Base class of data objects that correspond to a row in a database table.
+ * Defines save() and delete() methods which perform insert/update/delete SQL commands
+ *
+ * Also has a 'query' interface for selecting objects from a database, e.g.:
+ *  ModelSubclass::query()->where('foo > ?', 10)->filter();
+ */
 class Model
 {       
+    // subclasses should override these static properties
     static $primary_key = 'id';
     static $table_name;
     static $table_attributes;
     
     /**
-     * The main attributes of an entity.
+     * The main attributes of a model.
      * Blank entries for all database fields should be created by the constructor.     
-     * Any field not appearing in this will be viewed as metadata
+     * For Entity subclasses, any field not appearing in this will be viewed as metadata
      */    
     protected $attributes = array();
     
@@ -34,7 +42,6 @@ class Model
         $this->initialize_attributes();
         $this->attributes = unserialize($data);
     }
-    
     
     function get($name)
     {

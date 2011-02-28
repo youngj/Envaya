@@ -1,5 +1,8 @@
 <?php
 
+/* 
+ * A photo that is chosen by an administrator to be featured on the home page slideshow.
+ */
 class FeaturedPhoto extends Entity
 {
     static $table_name = 'featured_photos';

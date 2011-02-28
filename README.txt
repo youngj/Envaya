@@ -25,3 +25,35 @@ networking platform, but most of Elgg's source code is now largely
 unrecognizable. Some of Envaya's current code structure (URL routing,
 controllers, and auto-loading) was inspired by the Kohana web framework,
 although Envaya includes very little of the Kohana web framework itself.
+
+====================
+Source Code Overview
+====================
+index.php 
+    - Main entry point for most web requests (except for static files)
+_css/css.php
+    - Main entry point for CSS web requests
+_graphics/
+    - Image files, served directly by web server
+_media/
+    - Other static files, such as JavaScript and Flash
+config/
+    - Configuration settings. Local settings should be defined in config/local.php
+engine/
+    - Core PHP code, mostly autoloaded classes. engine/start.php bootstraps the rest
+languages/
+    - Translation strings for each supported language
+schema/
+    - SQL for initializing the database
+scripts/
+    - Miscellaneous command line scripts
+simplecache/view.php
+    - Renders simple cached views (used for CSS files)
+test/
+    - Test scripts. test/TestSuite.php is main script
+vendors/
+    - Third-party PHP libraries and external programs 
+views/
+    - PHP files loaded by view() function to render parts of the output.
+      Organized by viewtype, 'default' is standard HTML view
+   

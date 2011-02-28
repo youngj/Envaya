@@ -1,9 +1,13 @@
 <?php
 
+/*
+ * Defines constants for an organization's notification settings 
+ * (e.g. which emails they subscribe to)
+ */
 class Notification
 {
-	const Batch = 1;
-	const Comments = 2;
+	const Batch = 1;    // emails sent by administrators to all users
+	const Comments = 2; // emails sent when someone leaves a comment on one of their news updates
 	
 	static function all()
 	{

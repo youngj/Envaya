@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * Provides functions for storing and retrieving values of multiple types 
+ * in a single database field. (e.g. metadata values)
+ *
+ * An alternative to this would be storing all variant types as JSON,
+ * but this makes it slightly more tedious to run some SQL queries directly.
+ */
 class VariantType
 {
     const _Integer = 1;

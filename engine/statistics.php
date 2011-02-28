@@ -1,5 +1,8 @@
 <?php 
 
+/* 
+ * Methods for calculating various statistics
+ */
 class Statistics
 {    
     static function get_entity_stats($owner_guid = 0)

@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * Functions for processing HTML in user-generated content.
+ */
 class Markup
 {
     const Normal = null;

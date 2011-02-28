@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * A news update posted by an organization. 
+ * Basically a blog post by another name.
+ */
 class NewsUpdate extends Entity
 {
     static $table_name = 'news_updates';

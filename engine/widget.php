@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * Represents a 'page' on an organization's website,
+ * like /<username>/page/foo or /<username>/contact ,
+ * and provides methods for viewing and editing that page.
+ *
+ * However, some widgets have more complex behavior
+ * than just a standard content page (e.g. a news feed).
+ * The behavior of a widget is determined by its corresponding 
+ * handler_class (a subclass of WidgetHandler).
+ */
 class Widget extends Entity
 {
     static $table_name = 'widgets';

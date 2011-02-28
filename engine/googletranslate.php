@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * Interface for automatically translating text and guessing the text's language.
+ */
 class GoogleTranslate
 {
     static function get_auto_translation($text, $origLang, $viewLang)
@@ -32,7 +35,7 @@ class GoogleTranslate
         if ($text[0] == "@")
         {
             $text = " ".$text;
-        }        
+        } 
         curl_setopt($ch, CURLOPT_POSTFIELDS, array('q' => $text));
 
         $json = curl_exec($ch);
@@ -41,7 +44,7 @@ class GoogleTranslate
 
         $res = json_decode($json);
 
-        $translated = $res->responseData->translatedText;
+        $translated = @$res->responseData->translatedText;
         if (!$translated)
         {
             return null;

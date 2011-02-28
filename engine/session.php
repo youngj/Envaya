@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Interface for getting and setting session data, which is persisted in the database.
+ * Acts as a wrapper around the standard PHP session interface that lazy-loads the 
+ * session data to avoid querying the database unless necessary.
+ */ 
 class Session
 {
     private static $started = false;

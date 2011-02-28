@@ -1,5 +1,18 @@
 <?php
 
+/*
+ * Bootstraps the Envaya engine.
+ * - Loads all php files in engine/lib/. 
+ * - Configures auto-load for Envaya's PHP classes in the engine/ directory.
+ *   (almost everything in the engine/ directory is an
+ *    auto-loaded class, except for this file and the engine/lib/ directory)
+ *
+ * Typically, PHP files wishing to use the Envaya engine should include this file
+ * and not any others in engine/. However, engine/config.php can be loaded 
+ * separately for scripts that just need to access config settings.
+ *
+ */
+
 global $START_MICROTIME;
 $START_MICROTIME = microtime(true);
 

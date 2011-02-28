@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Interface for Google's geocode API, associating free-text place names with latitude/longitude.
+ */
+
 class Geocoder
 {
     /**

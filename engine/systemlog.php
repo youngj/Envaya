@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * Functions for logging user actions and other events to the database.
+ */
 class SystemLog
 {
     static function get_loggable_object($row)

@@ -1,5 +1,9 @@
 <?php
 
+/* 
+ * A site that is chosen by an administrator to be featured on the home page 
+ * or the /org/featured page. Each featured site has an image and summary text.
+ */
 class FeaturedSite extends Entity
 {
     static $table_name = 'featured_sites';

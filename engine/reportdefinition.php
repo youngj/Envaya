@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * Represents the structure of a report as defined by a grantmaker.
+ * 
+ * One ReportDefinition may be associated with many Report instances 
+ * with responses from different organizations.
+ */
 class ReportDefinition extends Entity
 {    
     static $table_name = 'report_definitions';

@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * A place for temporarily storing various pieces of data/state that are later used
+ * when rendering the page (kind of like global variables). 
+ * 
+ * Used in cases when passing the data as variables to the relevant views is too 
+ * tedious.
+ */
 class PageContext
 {
     private static $translatable = true;

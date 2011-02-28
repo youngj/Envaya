@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * Represents one version of a user-uploaded file.
+ * Provides methods for handling file uploads and saving them
+ * to a data store.
+ *
+ * Each uploaded file may have different versions saved
+ * (e.g. different image sizes, different formats, different
+ * data stores). These correspond to multiple UploadedFile
+ * objects which each share the same group_name.
+ */
 class UploadedFile extends Entity
 {
     static $table_name = 'files_entity';

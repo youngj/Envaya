@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Interface for determining the country where the current web request likely originated,
+ * and other related properties.
+ */
 class GeoIP
 {
     static $country_code;

@@ -4,7 +4,10 @@ $lang = $vars['lang'];
 
 $query = get_input('q');
 
-$keys = get_translatable_language_keys();
+$language = Language::get($lang);
+$language->load_all();
+
+$keys = array_keys($language->get_loaded_translations());
 
 if ($query)
 {
@@ -30,9 +33,9 @@ if ($edited)
     $filteredKeys = array();
 
     $editedKeys = array();
-    foreach (InterfaceTranslation::filterByLang($lang) as $itrans)
+    foreach (InterfaceTranslation::filter_by_lang($lang) as $itrans)
     {
-        if ($itrans->value != Language::get($lang)->get_translation($itrans->key))
+        if ($itrans->value != $language->get_translation($itrans->key))
         {
             $editedKeys[$itrans->key] = true;
         }
@@ -112,18 +115,18 @@ else
 
         $trans = Language::get($lang)->get_translation($key);
 
-        $it = InterfaceTranslation::getByKeyAndLang($key, $lang);
+        $it = InterfaceTranslation::get_by_key_and_lang($key, $lang);
 
         if ($it)
         {
             $val = view('output/longtext', array('value' => $it->value));
             if ($trans != $it->value)
             {
-                $res = "<div class='edited'>$val</div>";
+                $res = "<div style='color:red'>$val</div>";
             }
             else
             {
-                $res = "<div class='reviewed'>$val</div>";
+                $res = "<div style='color:green'>$val</div>";
             }
         }
         else if ($trans)

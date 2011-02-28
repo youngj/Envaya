@@ -1,5 +1,27 @@
 <?php
 
+/*
+ * Base class for many types of models. 
+ *
+ * Each Entity has a guid which is unique even among different entity subclasses.
+ * This allows you to specify any subclass instance by guid, without needing to record the subclass separately.
+ * This is kind of useful for things like feed items and translations, 
+ * which may refer to many different types of entities.
+ * 
+ * Entities also have an 'enabled' field which allows effectively deleting rows
+ * while leaving them in the database to allow them to be undeleted.
+ *
+ * Entities can also have metadata, which allows storing/retreiving arbitrary properties (e.g. $entity->foo)
+ * without needing to define them in the database schema. Metadata is only fetched when requested.
+ * Warning: if you forget to define an attribute, or make a typo, a property might be saved
+ * as metadata accidentally.
+ *
+ * However there are also significant drawbacks to the current implementation,
+ * such as that data is split across multiple tables ('entities' and the subclass's $table_name)
+ * and a join is required in order to get all the data.
+ * 
+ */
+
 abstract class Entity extends Model
     implements Loggable, Serializable
 {
@@ -82,11 +104,11 @@ abstract class Entity extends Model
 
     protected function initialize_attributes()
     {        
-        $this->attributes['type'] = "object";
+        $this->attributes['type'] = "object"; // ignored
         $this->attributes['subtype'] = static::get_subtype_id();
         $this->attributes['owner_guid'] = 0;
         $this->attributes['container_guid'] = 0;
-        $this->attributes['site_guid'] = 0;
+        $this->attributes['site_guid'] = 0; // ignored
         $this->attributes['time_created'] = 0;
         $this->attributes['time_updated'] = 0;
         $this->attributes['enabled'] = "yes";

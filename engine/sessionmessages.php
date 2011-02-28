@@ -1,15 +1,14 @@
 <?php
 
+/*
+ * A place to collect HTML-encoded messages (including errors) which will be 
+ * displayed at the top of the current page, when it is rendered. If the current 
+ * request ends with forward() (such that messages cannot be displayed 
+ * during the current request), messages will be saved to the session state, 
+ * and they will be displayed on the next page.
+ */
 class SessionMessages
 {
-    /*
-     * A place to collect HTML-encoded messages (including errors) which will be 
-     * displayed at the top of the current page, when it is rendered. If the current 
-     * request ends with forward() (such that messages cannot be displayed 
-     * during the current request), they will be saved to the session state, 
-     * and they will be displayed on the next page.
-     */
-
     static $allMessages;
     
     static function init()

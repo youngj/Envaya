@@ -1,5 +1,11 @@
 <?php
 
+/*
+ * A template for an email message that can be sent to multiple users.
+ * The message can contain {}-delimited strings with properties of a User or Organization,
+ * (e.g. {username}) which will be replaced with the appropriate values for each user.
+ */
+
 class EmailTemplate extends Entity
 {
     static $table_name = 'email_templates';

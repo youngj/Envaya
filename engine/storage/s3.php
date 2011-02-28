@@ -1,4 +1,8 @@
 <?php
+
+/*
+ * Stores uploaded files on Amazon S3
+ */
 class Storage_S3 implements Storage
 {
     public function get_url($path)

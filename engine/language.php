@@ -1,5 +1,25 @@
 <?php
 
+/*
+ * Interface for retrieving localized strings for the UI.
+ * Typically used via __('key') .
+ *
+ * These strings are stored in PHP files under languages/<language_code>/, each of 
+ * which returns an associative array of key => localized string.
+ *
+ * languages/<language_code>/<language_code>_default.php is always loaded,
+ * but strings can be split into multiple files that are only loaded on demand.
+ *
+ * Keys beginning with "<group_name>:" will be searched for in 
+ * languages/<language_code>/<language_code>_<group_name>.php if not in the default file
+ * 
+ * While 'gettext' or '_' is perhaps a more standard way of doing internationalization, 
+ * it is annoying due to its use of binary files and compilation step. Also the gettext 
+ * convention of using English text as the translation key is more fragile than using 
+ * opaque keys (e.g. _('This is a translatable string.') instead of __('translatable_str')
+ * because a change to the original text requires a change to all language files,
+ * and also because the same English text may be translated multiple ways in another language.
+ */
 class Language
 {
     static $languages = array();
@@ -34,7 +54,7 @@ class Language
     
     protected $code;
     protected $translations;
-    protected $loaded_files;
+    protected $loaded_files;    
   
     function __construct($code)
     {
@@ -135,5 +155,5 @@ class Language
     function get_loaded_translations()
     {
         return $this->translations;
-    }
+    }    
 }

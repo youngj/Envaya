@@ -5,7 +5,7 @@ $key = $vars['key'];
 
 $from = get_input('from');
 
-$trans = InterfaceTranslation::getByKeyAndLang($key, $lang);
+$trans = InterfaceTranslation::get_by_key_and_lang($key, $lang);
 
 echo "<form method='POST' action='/org/save_interface_item'>";
 

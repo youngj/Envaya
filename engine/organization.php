@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * A civil society organization that has registered for Envaya.
+ * Each organization is its own user account.
+ */
 class Organization extends User
 {
     static function query($show_unapproved = false)

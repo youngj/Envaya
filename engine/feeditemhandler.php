@@ -1,5 +1,9 @@
 <?php
 
+/* 
+ * Base class for rendering a view of a FeedItem;
+ * Subclasses for each action_name are defined in engine/feeditemhandler
+ */
 class FeedItemHandler
 {
     function render_heading($item, $mode)

@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Represents a comment about a news update (or other entity).
+ * Each news update may have multiple associated comments.
+ * Comments may be associated with a registered User, or anonymous.
+ */
 class Comment extends Entity
 {
     static $table_name = 'comments';

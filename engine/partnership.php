@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Represents a partnership between two organizations, from one partner's point of view.
+ * (Each bilateral partnership has two Partnership objects.)
+ */
 class Partnership extends Entity
 {
     static $table_name = 'partnerships';

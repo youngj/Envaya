@@ -1,5 +1,17 @@
 <?php
 
+/*
+ * A translation of a piece of user-generated text (possibly HTML) 
+ * into a different language. 
+ *
+ * Each translation is associated with a particular
+ * property of an Entity subclass. If the value of that property
+ * changes after the Translation is saved, the Translation is 
+ * considered "stale".
+ *
+ * Translations may be automatically generated from Google Translate
+ * (owner_guid = 0) or manually saved by a particular user.
+ */
 class Translation extends Model
 {
     static $table_name = 'translations';

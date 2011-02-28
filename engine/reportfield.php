@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Represents one organization's response to one question on a report,
+ * and provides methods for rendering the response or input field.
+ */
 class ReportField extends Model
 {
     static $table_name = 'report_fields';

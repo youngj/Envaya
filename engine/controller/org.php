@@ -482,8 +482,6 @@ class Controller_Org extends Controller
 
         $lang = 'sw';
 
-        load_translation($lang);
-
         $key = get_input('key');
 
         if ($key)
@@ -514,7 +512,7 @@ class Controller_Org extends Controller
         $value = get_input('value');
         $lang = 'sw';
 
-        $trans = InterfaceTranslation::getByKeyAndLang($key, $lang);
+        $trans = InterfaceTranslation::get_by_key_and_lang($key, $lang);
 
         if (!$trans)
         {
