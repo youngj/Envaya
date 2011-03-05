@@ -126,7 +126,8 @@
         <?php if (@$vars['autoFocus']) { ?>
         auto_focus: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
         <?php } ?>
-        theme : "-advanced"
+        theme: "-advanced",
+        plugins: '-paste'
     });
 
 })();

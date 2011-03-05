@@ -201,7 +201,6 @@ cat <<EOF > /etc/nginx/envaya.conf
     }
     location /_media/ {
         expires 1y;
-        rewrite tiny_mce\.js /_media/tiny_mce/tiny_mce_gzip.php last;
         gzip_types application/x-javascript text/css;
         gzip on;
         gzip_min_length 1000;

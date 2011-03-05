@@ -51,7 +51,17 @@ function parse_bounce_email($bounce_email)
         $reason = str_replace('Requested action not taken: ','', $reason);
         $reason = trim($reason);
         
-        return array('address' => $email, 'reason' => $reason);
+        $date = null;
+        if (preg_match('/(\w+\s\w+)\s20\d\d/', $bounce_email, $date_matches))
+        {
+            $date = $date_matches[1];
+        }        
+        
+        return array(
+            'address' => $email, 
+            'reason' => $reason,            
+            'date' => $date
+        );
     }
     else
     {
@@ -77,7 +87,15 @@ function query_bounces($since_time)
             
         if ($bounce_info)
         {
-            $bounced_addresses[$bounce_info['address']] = $bounce_info['reason'];
+            $address = $bounce_info['address'];
+            if (isset($bounced_addresses[$address]))
+            {
+                $bounced_addresses[$address]['date'] .= ", " . $bounce_info['date'];
+            }
+            else
+            {
+                $bounced_addresses[$address] = $bounce_info;
+            }
         }
     }
 
@@ -86,9 +104,9 @@ function query_bounces($since_time)
     return $bounced_addresses;
 }
 
-$bounce_info = query_bounces(time() - 24 * 60 * 60 * 30);
+$bounces_info = query_bounces(time() - 24 * 60 * 60 * 30);
 
-foreach ($bounce_info as $address => $reason)
+foreach ($bounces_info as $address => $bounce_info)
 {
-    echo sprintf("%-30s %s\n", $address, $reason);
+    echo sprintf("%-30s %-10s %s\n", $address, $bounce_info['date'], $bounce_info['reason']);
 }

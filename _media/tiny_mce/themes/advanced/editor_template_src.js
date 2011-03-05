@@ -154,7 +154,7 @@
                 theme_advanced_buttons3 : '', //"hr,removeformat,visualaid,|,sub,sup,|,charmap",
                 theme_advanced_blockformats : "p,pre,h1,h2,h3",
                 theme_advanced_toolbar_align : "center",
-                theme_advanced_fonts : "Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats",
+                theme_advanced_fonts : '', //"Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats",
                 theme_advanced_more_colors : 1,
                 theme_advanced_row_height : 23,
                 theme_advanced_resize_horizontal : 1,
@@ -166,6 +166,7 @@
                 readonly : ed.settings.readonly
             }, ed.settings);
 
+            /*
             // Setup default font_size_style_values
             if (!s.font_size_style_values)
                 s.font_size_style_values = "8pt,10pt,12pt,14pt,18pt,24pt,36pt";
@@ -194,6 +195,7 @@
 
                 s.theme_advanced_font_sizes = o;
             }
+            */
 
             if ((v = s.theme_advanced_path_location) && v != 'none')
                 s.theme_advanced_statusbar_location = s.theme_advanced_path_location;
@@ -207,6 +209,7 @@
                     ed.onNodeChange.add(t._nodeChanged, t);
             });
 
+            /*
             ed.onSetProgressState.add(function(ed, b, ti) {
                 var co, id = ed.id, tb;
 
@@ -225,11 +228,14 @@
                     clearTimeout(t.progressTimer);
                 }
             });
+            */
 
             DOM.loadCSS(s.editor_css ? ed.documentBaseURI.toAbsolute(s.editor_css) : url + "/skins/" + ed.settings.skin + "/ui.css");
 
+            /*
             if (s.skin_variant)
                 DOM.loadCSS(url + "/skins/" + ed.settings.skin + "/ui_" + s.skin_variant + ".css");
+            */
         },
 
         createControl : function(n, cf) {
@@ -239,12 +245,13 @@
                 return c;
 
             switch (n) {
+                /*
                 case "styleselect":
                     return this._createStyleSelect();
-
+                */
                 case "formatselect":
                     return this._createBlockFormats();
-
+                /*
                 case "fontselect":
                     return this._createFontSelect();
 
@@ -256,6 +263,7 @@
 
                 case "backcolor":
                     return this._createBackColorMenu();
+                */
             }
 
             if ((cd = this.controls[n]))
@@ -273,6 +281,7 @@
             return false;
         },
 
+        /*
         _importClasses : function(e) {
             var ed = this.editor, ctrl = ed.controlManager.get('styleselect');
 
@@ -290,7 +299,9 @@
                 });
             }
         },
+        */
 
+        /*
         _createStyleSelect : function(n) {
             var t = this, ed = t.editor, ctrlMan = ed.controlManager, ctrl;
 
@@ -372,7 +383,9 @@
 
             return ctrl;
         },
+        */
 
+        /*
         _createFontSelect : function() {
             var c, t = this, ed = t.editor;
 
@@ -398,7 +411,9 @@
 
             return c;
         },
+        */
 
+        /*
         _createFontSizeSelect : function() {
             var t = this, ed = t.editor, c, i = 0, cl = [];
 
@@ -433,6 +448,7 @@
 
             return c;
         },
+        */
 
         _createBlockFormats : function() {
             var c, fmts = {
@@ -463,6 +479,7 @@
             return c;
         },
 
+        /*
         _createForeColorMenu : function() {
             var c, t = this, s = t.settings, o = {}, v;
 
@@ -491,7 +508,9 @@
 
             return c;
         },
-
+        */
+        
+        /*
         _createBackColorMenu : function() {
             var c, t = this, s = t.settings, o = {}, v;
 
@@ -520,6 +539,7 @@
 
             return c;
         },
+        */
 
         renderUI : function(o) {
             var n, ic, tb, t = this, ed = t.editor, s = t.settings, sc, p, nl;
@@ -532,7 +552,7 @@
             n = sc = DOM.add(n, 'table', {id : ed.id + '_tbl', 'class' : 'mceLayout', cellSpacing : 0, cellPadding : 0});
             n = tb = DOM.add(n, 'tbody');
 
-            switch ((s.theme_advanced_layout_manager || '').toLowerCase()) {
+            /*switch ((s.theme_advanced_layout_manager || '').toLowerCase()) {
                 case "rowlayout":
                     ic = t._rowLayout(s, tb, o);
                     break;
@@ -541,9 +561,9 @@
                     ic = ed.execCallback("theme_advanced_custom_layout", s, tb, o, p);
                     break;
 
-                default:
+                default: */
                     ic = t._simpleLayout(s, tb, o, p);
-            }
+            /* } */
 
             n = o.targetNode;
 
@@ -598,8 +618,10 @@
             if (!ed.getParam('accessibility_focus'))
                 Event.add(DOM.add(p, 'a', {href : '#'}, '<!-- IE -->'), 'focus', function() {tinyMCE.get(ed.id).focus();});
 
+            /*
             if (s.theme_advanced_toolbar_location == 'external')
                 o.deltaHeight = 0;
+            */
 
             t.deltaHeight = o.deltaHeight;
             o.targetNode = null;
@@ -673,6 +695,7 @@
             if (lo == 'top')
                 t._addToolbars(tb, o);
 
+            /*
             // Create external toolbar
             if (lo == 'external') {
                 n = c = DOM.create('div', {style : 'position:relative'});
@@ -712,6 +735,7 @@
                     e = null;
                 });
             }
+            */
 
             if (sl == 'top')
                 t._addStatusBar(tb, o);
@@ -732,6 +756,7 @@
             return ic;
         },
 
+        /*
         _rowLayout : function(s, tb, o) {
             var t = this, ed = t.editor, dc, da, cf = ed.controlManager, n, ic, to, a;
 
@@ -768,6 +793,7 @@
 
             return ic;
         },
+        */
 
         _addControls : function(v, tb) {
             var t = this, s = t.settings, di, cf = t.editor.controlManager;
@@ -843,6 +869,7 @@
             DOM.setHTML(n, h.join(''));
         },
 
+        /*
         _addStatusBar : function(tb, o) {
             var n, t = this, ed = t.editor, s = t.settings, r, mf, me, td;
 
@@ -915,6 +942,7 @@
             o.deltaHeight -= 21;
             n = tb = null;
         },
+        */
 
         _nodeChanged : function(ed, cm, n, co, ob) {
             var t = this, p, de = 0, v, c, s = t.settings, cl, fz, fn, formatNames, matches;
@@ -969,6 +997,7 @@
             if (c = cm.get('document'))
                 c.setActive(isDoc);
 
+            /*
             if (c = cm.get('styleselect')) {
                 t._importClasses();
 
@@ -980,6 +1009,7 @@
                 matches = ed.formatter.matchAll(formatNames);
                 c.select(matches[0]);
             }
+            */
 
             if (c = cm.get('formatselect')) {
                 p = getParent(DOM.isBlock);
@@ -988,7 +1018,8 @@
                     c.select(p.nodeName.toLowerCase());
             }
 
-            // Find out current fontSize, fontFamily and fontClass
+            /*
+            // Find out current fontSize, fontFamily and fontClass            
             getParent(function(n) {
                 if (n.nodeName === 'SPAN') {
                     if (!cl && n.className)
@@ -997,19 +1028,22 @@
                     if (!fz && n.style.fontSize)
                         fz = n.style.fontSize;
 
-                    if (!fn && n.style.fontFamily)
-                        fn = n.style.fontFamily.replace(/[\"\']+/g, '').replace(/^([^,]+).*/, '$1').toLowerCase();
-                }
+                    if (!fn && n.style.fontFamily) */
+            //            fn = n.style.fontFamily.replace(/[\"\']+/g, '').replace(/^([^,]+).*/, '$1').toLowerCase();
+            /*    }
 
                 return false;
             });
+            */
+            
+            /* if (c = cm.get('fontselect')) {
+                    c.select(function(v) { */
+            //         return v.replace(/^([^,]+).*/, '$1').toLowerCase() == fn;
+            /*     });
+             }             
+            */
 
-            if (c = cm.get('fontselect')) {
-                c.select(function(v) {
-                    return v.replace(/^([^,]+).*/, '$1').toLowerCase() == fn;
-                });
-            }
-
+            /*
             // Select font size
             if (c = cm.get('fontsizeselect')) {
                 // Use computed style
@@ -1024,7 +1058,9 @@
                         return true;
                 });
             }
+            */
 
+            /*
             if (s.theme_advanced_path && s.theme_advanced_statusbar_location) {
                 p = DOM.get(ed.id + '_path') || DOM.add(ed.id + '_path_row', 'span', {id : ed.id + '_path'});
                 DOM.setHTML(p, '');
@@ -1032,9 +1068,9 @@
                 getParent(function(n) {
                     var na = n.nodeName.toLowerCase(), u, pi, ti = '';
 
-                    /*if (n.getAttribute('_mce_bogus'))
-                        return;
-*/
+                    //if (n.getAttribute('_mce_bogus'))
+                    //    return;
+
                     // Ignore non element and hidden elements
                     if (n.nodeType != 1 || n.nodeName === 'BR' || (DOM.hasClass(n, 'mceItemHidden') || DOM.hasClass(n, 'mceItemRemoved')))
                         return;
@@ -1126,6 +1162,7 @@
                         p.appendChild(pi);
                 }, ed.getBody());
             }
+            */
         },
 
         // Commands gets called by execCommand
@@ -1134,6 +1171,7 @@
             this.editor.execCommand('mceSelectNodeDepth', false, v);
         },
 
+        /*
         _mceInsertAnchor : function(ui, v) {
             var ed = this.editor;
 
@@ -1146,7 +1184,9 @@
                 theme_url : this.url
             });
         },
+        */
 
+        /*
         _mceCharMap : function() {
             var ed = this.editor;
 
@@ -1159,7 +1199,9 @@
                 theme_url : this.url
             });
         },
+        */
 
+        /*
         _mceHelp : function() {
             var ed = this.editor;
 
@@ -1172,7 +1214,9 @@
                 theme_url : this.url
             });
         },
+        */
 
+        /*
         _mceColorPicker : function(u, v) {
             var ed = this.editor;
 
@@ -1190,6 +1234,7 @@
                 theme_url : this.url
             });
         },
+        */
 
         _mceCodeEditor : function(ui, val) {
             var ed = this.editor;
@@ -1489,6 +1534,7 @@
             setTimeout(function() { urlField.focus(); }, 1);
         },
 
+        /*
         _mceNewDocument : function() {
             var ed = this.editor;
 
@@ -1497,7 +1543,9 @@
                     ed.execCommand('mceSetContent', false, '');
             });
         },
+        */
 
+        /*
         _mceForeColor : function() {
             var t = this;
 
@@ -1509,7 +1557,9 @@
                 }
             });
         },
+        */
 
+        /*
         _mceBackColor : function() {
             var t = this;
 
@@ -1521,6 +1571,7 @@
                 }
             });
         },
+        */
 
         _ufirst : function(s) {
             return s.substring(0, 1).toUpperCase() + s.substring(1);
