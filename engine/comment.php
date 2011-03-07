@@ -13,6 +13,7 @@ class Comment extends Entity
         'data_types' => 0,
         'language' => '',
         'name' => '',
+        'location' => '',
     );   
     
 	function get_name()

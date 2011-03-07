@@ -25,8 +25,12 @@
 <div class='input'>
 <?php echo view('input/longtext', array('name' => 'content')); ?>
 
-<div>
+<table>
+<tr>
+<th>
 <label><?php echo __('comment:name'); ?></label> 
+</th>
+<td>
 <?php 
 
 $user = Session::get_loggedin_user();
@@ -36,12 +40,34 @@ if ($user)
 }
 else
 {
-    echo view('input/text', array('name' => 'name', 'class' => 'comment_name_input input-text')); 
+    $name = Session::get('user_name');
+    echo view('input/text', array('name' => 'name', 'class' => 'comment_name_input input-text', 'value' => $name)); 
 }
 ?>
-</div>
+</td>
+</tr>
 
-</div>
+<?php
+if (!$user) {
+?>
+
+<tr>
+<th>
+<label><?php echo __('comment:location'); ?></label> 
+</th>
+<td>
+<?php 
+    $location = Session::get('user_location');
+    echo view('input/text', array('name' => 'location', 'class' => 'comment_name_input input-text', 'value' => $location)); 
+?>
+</td>
+</tr>
+
+<?php
+}
+?>
+
+</table>
 
 <?php echo view('input/submit', array('value' => __('comment:publish'))); ?>
 

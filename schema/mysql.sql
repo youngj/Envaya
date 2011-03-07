@@ -104,6 +104,7 @@ CREATE TABLE `comments` (
   `language` varchar(4) default null,
   `name` text default null,
   `email` varchar(128) default null,
+  `location` text default null,
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

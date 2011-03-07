@@ -928,6 +928,7 @@ class Controller_Profile extends Controller
      
         $name = get_input('name');
         $content = get_input('content');
+        $location = get_input('location');
         
         if (!$content)
         {   
@@ -969,10 +970,14 @@ class Controller_Profile extends Controller
 			}
 		}
 		
+        Session::set('user_name', $name);
+        Session::set('user_location', $location);
+        
 		$comment = new Comment();
 		$comment->container_guid = $entity->guid;
 		$comment->owner_guid = $userId;
 		$comment->name = $name;
+        $comment->location = $location;
 		$comment->content = $content;
 		$comment->language = GoogleTranslate::guess_language($content);
 		$comment->save();

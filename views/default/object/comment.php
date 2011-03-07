@@ -23,8 +23,15 @@ if ($entity->is_enabled())
         {
             $nameHTML = escape($entity->get_name());        
         }
-    
-        echo sprintf(__('comment:name_said'), $nameHTML);
+        
+        if ($entity->location)
+        {
+            echo sprintf(__('comment:name_location_said'), $nameHTML, escape($entity->location));
+        }
+        else
+        {
+            echo sprintf(__('comment:name_said'), $nameHTML);
+        }
     ?>
     </div>
     <?php    

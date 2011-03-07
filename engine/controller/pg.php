@@ -344,25 +344,35 @@ class Controller_Pg extends Controller {
     function action_send_feedback()
     {
         $message = get_input('message');
-
+        $from = get_input('name');
+        $email = get_input('email');
+        
         if (!$message)
         {
             action_error(__('feedback:empty'));
         }
-
-        $from = get_input('name');
-        $email = get_input('email');
-
-        $headers = array();
-
-        if ($email && is_email_address($email))
+        
+        if (!$email)
         {
-            $headers['Reply-To'] = mb_encode_mimeheader($email, "UTF-8", "B");
+            action_error(__('feedback:email_empty'));
         }
 
+        try
+        {
+            validate_email_address($email);
+        }
+        catch (RegistrationException $ex)
+        {
+            action_error($ex->getMessage());
+        }
+        
+        $headers = array(
+            'Reply-To' => mb_encode_mimeheader($email, "UTF-8", "B"),
+        );
+        
         send_admin_mail("User feedback", "From: $from\n\nEmail: $email\n\n$message", $headers);
         system_message(__('feedback:sent'));
-        forward("page/contact");
+        forward("/");
     }
 
     function action_large_img()

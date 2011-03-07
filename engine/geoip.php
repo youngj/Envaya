@@ -35,7 +35,16 @@ class GeoIP
         if (!static::$country_name)
         {
             $lang_key = "country:".strtolower(static::get_country_code());        
-            static::$country_name = __($lang_key);
+            
+            $name = __($lang_key);
+            if ($name != $lang_key)
+            {            
+                static::$country_name = $name;
+            }
+            else
+            {
+                static::$country_name = @$_SERVER['GEOIP_COUNTRY_NAME'];
+            }
         }
         return static::$country_name;
     }

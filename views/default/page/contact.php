@@ -14,16 +14,23 @@
 <div class='input'>
 <label><?php echo __('feedback:name') ?>:</label>
 <?php
+
+    $name = Session::isloggedin() ? Session::get_loggedin_user()->name : Session::get('user_name');
+
     echo view('input/text', array(
-        'name' => 'name'
+        'name' => 'name',
+        'value' => $name
     ));
 ?>
 </div>
 <div class='input'>
 <label><?php echo __('feedback:email') ?>:</label>
 <?php
+    $email = Session::isloggedin() ? Session::get_loggedin_user()->email : '';
+
     echo view('input/text', array(
-        'name' => 'email'
+        'name' => 'email',
+        'value' => $email
     ));
 ?>
 </div>

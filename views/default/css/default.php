@@ -1091,6 +1091,13 @@ input[type="submit"] {
     width:<?php echo ($contentWidth - 70) ?>px;
 }
 
+#comment_form th
+{
+    text-align:right;
+    vertical-align:middle;
+    padding-right:10px;
+}   
+
 #comment_form label
 {
     font-size:100%;
