@@ -274,19 +274,6 @@ a.icon_link:hover
     border:0px;
 }
 
-.gridDelete
-{
-    display:block;
-    width:30px;
-    height:20px;
-    background:url("/_graphics/delete.gif?v2") no-repeat left -35px;
-}
-
-a.gridDelete:hover
-{
-    background-position:left -5px;
-}
-
 .attachControls 
 {
     width:300px;
