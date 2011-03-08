@@ -15,7 +15,8 @@ return array(
     'home:why' => "Kwa nini utumie Envaya?",
     'home:donate' => "Sisi ni bila faida. Hata mchango mdogo utasaidia kugawa teknolojia muhimu kwa mashirika ya kiraia katika nchi zinazoendelea!",
     'home:follow' => "Tufuate:",
-    'home:make_difference' => "Leta mabadiliko!",
+    'home:see_news' => "Ona habari mpya<br />kutoka Tanzania",
+    'home:view_updates' => "Ona Mabadiliko",       
     'home:sign_up_button' => "Jiunge",
     'home:sign_up_heading' => "Pata tovuti sasa",
 );

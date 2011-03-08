@@ -86,8 +86,8 @@ slideshow(<?php echo FeaturedPhoto::get_json_array(); ?>, <?php echo json_encode
     {
 ?>
 
-<div class='home_donate_difference'><?php echo __('home:make_difference'); ?></div>
-<a class='home_donate_button' href='/envaya/page/contribute'><span><?php echo __('donate'); ?></span></a>
+<div class='home_donate_difference' style='padding-top:28px;font-size:14px'><?php echo __('home:see_news'); ?></div>
+<a class='home_donate_button' href='/org/feed' style='margin-top:9px'><span style='font-size:15px'><?php echo __('home:view_updates'); ?></span></a>
 
 <?php
     }

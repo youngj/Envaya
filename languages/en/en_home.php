@@ -15,7 +15,8 @@ return array(
     'home:sign_up_info' => "If you are a representative of a civil society organization in %s that hasn't yet registered for Envaya, %s! In about five minutes, you can create a website for your organization.",
     'home:donate' => "We're non-profit. Even a small donation will help provide essential technology to grassroots organizations in the developing world!",
     'home:follow' => "Follow us:",
-    'home:make_difference' => "Make a difference!",
+    'home:see_news' => "See latest news<br /> from Tanzania",
+    'home:view_updates' => "View Updates",
     'home:sign_up_button' => "Sign Up",
     'home:sign_up_heading' => "Get a website now",
 );
