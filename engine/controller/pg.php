@@ -470,4 +470,12 @@ class Controller_Pg extends Controller {
         echo file_get_contents($local_path);
         exit;
     }
+    
+    function action_hide_todo()
+    {
+        Session::set('hide_todo', 1);
+        
+        $this->request->headers['Content-Type'] = 'text/javascript';
+        $this->request->response = json_encode("OK");    
+    }
 }
