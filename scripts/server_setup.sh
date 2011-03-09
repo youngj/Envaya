@@ -199,6 +199,12 @@ cat <<EOF > /etc/nginx/envaya.conf
     location /_graphics/ {
         expires 1y;
     }
+    
+    location ~ ^\/mod\/(\w+)\/_graphics\/
+    {
+        expires 1y;
+    }
+
     location /_media/ {
         expires 1y;
         gzip_types application/x-javascript text/css;

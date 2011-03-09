@@ -63,6 +63,16 @@ function run_sql_script($scriptlocation) {
 if (!is_installed())
 {    
     run_sql_script("schema/mysql.sql");
+    
+    foreach (Config::get('modules') as $module_name)
+    {
+        $module_path = "modules/$module_name/schema/mysql.sql";
+        if (is_file($module_path))
+        {
+            run_sql_script($module_path);
+        }
+    }
+    
     init_site_secret();
     Datalist::set('installed', 1);    
     echo "done\n";

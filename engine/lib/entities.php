@@ -11,12 +11,15 @@
             10 => 'Partnership',
             12 => 'FeaturedSite',
             13 => 'EmailTemplate',
-            14 => 'ReportDefinition',
-            15 => 'Report',
             16 => 'Comment',
             17 => 'FeaturedPhoto',
         );
         private static $class_to_subtype = null;
+        
+        static function register_subtype($subtype_id, $class_name)
+        {
+            static::$subtype_to_class[$subtype_id] = $class_name;
+        }
         
         static function get_subtype_class($subtype_id)
         {

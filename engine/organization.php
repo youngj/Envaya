@@ -27,17 +27,7 @@ class Organization extends User
     {    
         return UploadedFile::query()->where('container_guid=?',$this->guid);
     }
-    
-    public function query_reports()
-    {
-        return Report::query()->where('container_guid=?',$this->guid);
-    }
-
-    public function query_report_definitions()
-    {
-        return ReportDefinition::query()->where('container_guid=?',$this->guid);
-    }
-    
+        
     function query_partnerships()
     {
         return Partnership::query()->where("container_guid = ? AND approval >= 3", $this->guid);
@@ -386,4 +376,16 @@ class Organization extends User
    
         return strtr($template, $args);
     }
+    
+    /* requires reports module */
+    public function query_reports()
+    {
+        return Report::query()->where('container_guid=?',$this->guid);
+    }
+
+    public function query_report_definitions()
+    {
+        return ReportDefinition::query()->where('container_guid=?',$this->guid);
+    }
+    
 }

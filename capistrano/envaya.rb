@@ -13,15 +13,10 @@
 default_run_options[:pty] = true
 
 set :application, "envaya"
-set :repository,  "git@anvaya.unfuddle.com:anvaya/envaya.git"
 set :deploy_to, "/var/envaya"
-set :deploy_via, :remote_cache
-set :copy_exclude, [".svn", "settings.php", "selenium-server.jar"]
-
+set :deploy_via, :rsync_with_remote_cache
+set :copy_exclude, [".svn", ".git", "yuicompressor-2.4.2.jar", "kestrel_dev", "selenium-server.jar"]
 set :user, "root"
-set :scm, :git
-
-# Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
 role :web, "www.envaya.org"                          # Your HTTP server, Apache/etc
 role :app, "www.envaya.org"                          # This may be the same as your `Web` server

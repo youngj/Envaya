@@ -164,31 +164,6 @@ CREATE TABLE `widgets` (
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `report_definitions` (
-  `guid` bigint(20) unsigned  NOT NULL,
-  `handler_class` varchar(32) NULL,  
-  `name` text NULL,  
-  PRIMARY KEY  (`guid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `reports` (
-  `guid` bigint(20) unsigned  NOT NULL,
-  `report_guid` bigint(20) unsigned  NOT NULL,
-  `status` tinyint(4)  NOT NULL default 0,
-  `name` text not null,
-  PRIMARY KEY  (`guid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-CREATE TABLE `report_fields` (
-  `id` int auto_increment not null,
-  `report_guid` bigint(20) unsigned  NOT NULL,
-  `name` varchar(64)  NOT NULL default '',
-  `value` text not null,
-  `value_type` tinyint(4) NOT NULL,
-  `access` tinyint(4) not null default 0,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 CREATE TABLE `partnerships` (
     `guid` bigint(20) unsigned NOT NULL,
     `partner_guid` bigint(20) unsigned NOT NULL,

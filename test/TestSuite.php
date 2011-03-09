@@ -23,6 +23,30 @@ $MOCK_MAIL_FILE = __DIR__."/mail.out";
 
 chdir(__DIR__);
 
+function find_test_case_path($test_case)
+{
+    $path = "testcases/$test_case.php";
+    
+    $core_path = __DIR__."/$path";
+    if (is_file($core_path))
+    {
+        return $core_path;
+    }
+    $module_dir = dirname(__DIR__)."/mod";
+
+    $handle = opendir($module_dir);
+    while ($module_name = readdir($handle))
+    {
+        $module_path = "$module_dir/$module_name/$path";
+        if (is_file($module_path))
+        {
+            return $module_path;
+        }
+    }
+    throw new Exception("$test_case not found");
+}
+
+
 require_once '../scripts/cmdline.php';
 require_once 'PHPUnit/Autoload.php';
 require_once 'SeleniumTest.php';
@@ -48,7 +72,7 @@ function main()
 
     foreach ($test_cases as $test_case)
     {
-        require_once("testcases/$test_case.php");
+        require_once find_test_case_path($test_case);
         $suite->addTestSuite($test_case);
     }
 

@@ -53,7 +53,7 @@ DirectoryIndex index.php
     RewriteEngine on
     RewriteBase /
     RewriteRule ^_css\/([\w]+)\.css$ _css/css.php?name=$1 [L]
-    RewriteRule ^(\w+\.php|_media|_graphics|_css) - [L]
+    RewriteRule ^(\w+\.php|_media|_graphics|_css|(mod\/(\w+)\/_graphics\/)) - [L]
     RewriteRule .* index.php/$0 [L]
 </IfModule>
 

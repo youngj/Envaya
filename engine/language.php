@@ -139,11 +139,11 @@ class Language
     
     function get_group($group_name)
     {
-        $path = Config::get('path')."languages/{$this->code}/{$this->code}_{$group_name}.php";            
-        if (file_exists($path))
+        $path = get_real_path("languages/{$this->code}/{$this->code}_{$group_name}.php");    
+        if ($path)
         {
             return include($path);
-        }
+        }        
         return null;
     }
     

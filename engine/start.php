@@ -32,17 +32,39 @@ error_reporting(E_ERROR | E_PARSE);
  */
 function auto_load($class)
 {        
-    $file = str_replace('_', '/', strtolower($class));
+    $file = str_replace('_', '/', strtolower($class));    
     
-    $path = Config::get('path')."engine/$file.php";       
-    
-    if (is_file($path))
+    $path = get_real_path("engine/$file.php");
+    if ($path)
     {
         require $path;
         return TRUE;
     }
-
     return FALSE;
+}
+
+function get_module_path($module_name)
+{
+    return Config::get('path')."mod/$module_name/";
+}
+
+function get_real_path($path)
+{
+    $core_path = Config::get('path').$path;            
+    if (file_exists($core_path))
+    {
+        return $core_path;
+    }
+    
+    foreach (Config::get('modules') as $module_name)
+    {
+        $module_path = get_module_path($module_name).$path;
+        if (file_exists($module_path))
+        {
+            return $module_path;
+        }
+    }
+    return null;
 }
 
 /**
@@ -142,6 +164,11 @@ function bootstrap()
     
     Database::init();
     init_languages();
+    
+    foreach (Config::get('modules') as $module_name)
+    {
+        require_once get_module_path($module_name)."start.php";
+    }
     
     if (@$_GET['lang'])
     {

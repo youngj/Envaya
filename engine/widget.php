@@ -34,7 +34,7 @@ class Widget extends Entity
         'partnerships'  => array('menu_order' => 60, 'handler_class' => 'WidgetHandler_Partnerships'),
         'reports'       => array('menu_order' => 65, 'hidden' => true, 'handler_class' => 'WidgetHandler_Reports'),
         'contact'       => array('menu_order' => 70, 'handler_class' => 'WidgetHandler_Contact'),        
-    );    
+    );        
     
     static function get_default_names()
     {

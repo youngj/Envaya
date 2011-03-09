@@ -82,26 +82,23 @@ function get_view_path($view, $viewtype = '', $fallback = true)
     if (empty($viewtype))
         $viewtype = get_viewtype();
 
-    $viewDir = dirname(dirname(__DIR__)) . "/views/";
-    $exists = false;
+    $viewPath = null;
     
     if ($viewtype)
     {
-        $viewPath  = $viewDir . "{$viewtype}/{$view}.php";
-        $exists = file_exists($viewPath);
-        if (!$exists && !$fallback)
+        $viewPath = get_real_path("views/{$viewtype}/{$view}.php");
+        if (!$viewPath && !$fallback)
         {
             return null;
         }
     }
     
-    if (!$exists)
+    if (!$viewPath)
     {
-        $viewPath = $viewDir . "default/{$view}.php";
-        $exists = file_exists($viewPath);
+        $viewPath = get_real_path("views/default/{$view}.php");
     }
     
-    return ($exists) ? $viewPath : null;
+    return $viewPath;
 }
 
 function include_view($viewFile, $vars)

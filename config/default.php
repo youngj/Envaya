@@ -59,4 +59,6 @@ return array(
     'scribd_private' => '',
 
     'extract_images_from_docs' => false,
+    
+    'modules' => array(),
 );
