@@ -45,6 +45,10 @@ class Controller_Report extends Controller_Profile
         {
             PageContext::add_submenu_item(__("report:edit"), "{$report->get_url()}/edit", 'edit');
         }
+        else if ($report->can_edit_access_settings())
+        {
+            PageContext::add_submenu_item(__("report:edit"), "{$report->get_url()}/access_settings", 'edit');
+        }
 
         $title = $report->get_title();
 
@@ -299,5 +303,58 @@ class Controller_Report extends Controller_Profile
     {
         $this->require_editor();
         $this->validate_security_token();
+    }
+    
+    private function save_access_settings()
+    {
+        $report = $this->report;
+        $field_names = get_input_array('fields');
+        
+        foreach ($field_names as $field_name)
+        {
+            $field = $report->get_field($field_name);
+
+            $new_access = (int)get_input($field_name);
+            if ($new_access != $field->access)
+            {
+                $field->access = $new_access;
+                $field->save();
+            }
+        }
+        system_message(__('report:access_settings_saved'));
+        forward($report->get_url());    
+    }    
+    
+    
+    
+    function action_access_settings()
+    {    
+        $this->use_editor_layout();
+                
+        $report = $this->report;
+        
+        if ($report->can_edit_access_settings())
+        {        
+            if (Request::is_post())
+            {
+                $this->save_access_settings();
+            }
+        
+            PageContext::add_submenu_item(__("canceledit"), $this->org->get_widget_by_name('reports')->get_edit_url(), 'edit');        
+        
+            $title = sprintf(__('report:access_settings'), $report->get_title());
+            
+            $area1 = view('reports/access_settings', 
+                array('report' => $report)
+            );
+            
+            $body = view_layout("one_column", view_title($title), $area1);
+            $this->page_draw($title,$body);  
+        }
+        else
+        {
+            register_error(__('report:cantedit'));
+            forward($report->get_url());
+        }
     }
 }

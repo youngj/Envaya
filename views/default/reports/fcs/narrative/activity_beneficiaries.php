@@ -9,7 +9,7 @@
     //for ($activity_num = 1; $activity_num <= $args['num_activities']; $activity_num++)
     //{
 ?>
-<table>
+<table class='noBorderTable'>
 <tr>
 <td>&nbsp;</td>
 <td style='border-right:1px solid #ccc;text-align:center'>&nbsp;</td>

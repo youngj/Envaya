@@ -41,12 +41,31 @@ class ReportingTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'testorg/reports')]");
         $this->clickAndWait("//a[contains(@href,'report/{$report_id}')]");
         $this->assertContains("YAAAY", $this->getText("//div[@class='report_field_other_name']"));                        
+                        
+        // test access permissions -- confidential fields hidden when logged out, visible when logged in as testgrantmaker
+        $this->assertContains("Confidential", $this->getText("//div[@class='report_field_project_name']"));                        
+        $this->assertNotContains("Secret Project", $this->getText("//div[@class='report_field_project_name']"));                   
+        
+        $this->assertContains("Confidential", $this->getText("//div[@class='report_field_total_beneficiaries']"));                                
+                
+        $this->clickAndWait("//a[contains(@href,'login=1')]");
+        $this->type("//input[@name='username']",'testgrantmaker');
+        $this->type("//input[@name='password']",'testtest');                
+        $this->submitForm();
+
+        $this->assertNotContains("Confidential", $this->getText("//div[@class='report_field_project_name']"));                        
+        $this->assertContains("Secret Project", $this->getText("//div[@class='report_field_project_name']"));                           
+        $this->assertNotContains("Confidential", $this->getText("//div[@class='report_field_total_beneficiaries']"));                                        
+        
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");        
         
         $this->open($this->view_url);
         $this->clickAndWait("//a[contains(@href,'{$this->username}')]");
         
         $this->mouseOver("//div[@class='good_messages']"); // awaiting review
         $this->mustNotExist("//div[@class='report_field_other_name']");                
+        
+
     }
     
     private function _testApproveResponses()
@@ -121,6 +140,8 @@ class ReportingTest extends SeleniumTest
         $this->clickSave();
         $this->mouseOver("//input[@name='field_other_name' and @value='YAAAY']");        
         
+        $this->type("//input[@name='field_project_name']", 'Secret Project');
+        
         $this->clickAndWait("//div[@class='report_section_nav']//a[contains(text(),'Attachments')]");
         
         $this->mustNotExist("//span[@id='upload_span0']//a");
@@ -173,6 +194,13 @@ class ReportingTest extends SeleniumTest
         $this->submitForm();
         
         $this->assertContains("Report submitted", $this->getText("//h1"));
+        
+        $this->clickAndWait("//a[contains(@href,'access_settings')]");
+        $this->click("//input[@name='project_name' and @value='1']");
+        $this->click("//input[@name='total_beneficiaries' and @value='1']");
+        $this->submitForm();
+        
+        $this->mouseOver("//div[@class='good_messages']");        
         
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");        
         

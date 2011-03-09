@@ -8,8 +8,9 @@ class ReportField extends Model
 {
     static $table_name = 'report_fields';
     static $table_attributes = array(
-        'name' => '',
+        'name' => '',        
         'value' => '',
+        'access' => 0,
         'value_type' => 0,
         'report_guid' => 0
     );   
@@ -78,9 +79,43 @@ class ReportField extends Model
         return view('reports/edit_field', array('field' => $this));
     }
         
+    function can_view($user = null)
+    {
+        if ($this->access == ReportAccess::OpenToPublic)
+        {
+            return true;
+        }
+        
+        if (!$user)
+        {
+            $user = Session::get_loggedin_user();
+        }
+        
+        if ($user)
+        {
+            $report = $this->get_report();
+
+            if ($user->guid == $report->container_guid) 
+                return true;
+            if ($user->guid == $report->get_report_definition()->container_guid) 
+                return true;
+            if ($user->admin)
+                return true;                
+        }
+        
+        return false;
+    }
+        
     function view_input()
-    {   
-        return $this->get_definition()->render_view($this);        
+    {       
+        if ($this->can_view())
+        {    
+            return $this->get_definition()->render_view($this);        
+        }
+        else
+        {
+            return view('reports/confidential_field');
+        }
     }
     
     function edit_input()

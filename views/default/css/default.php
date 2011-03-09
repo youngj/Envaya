@@ -1167,3 +1167,8 @@ a.gridDelete:hover
 {
     background-position:left -5px;
 }
+
+.noBorderTable th, .noBorderTable td
+{
+    border:0px;
+}

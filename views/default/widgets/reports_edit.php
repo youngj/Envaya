@@ -43,7 +43,8 @@
         }
         else
         {
-            echo "<a href='{$report->get_url()}'>".__("report:view")."</a> ";   
+            echo "<a href='{$report->get_url()}'>".__("report:view")."</a><br />";   
+            echo "<a href='{$report->get_url()}/access_settings'>".__("report:edit_access_settings")."</a> ";   
         }
         
         echo "</td>";

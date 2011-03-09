@@ -102,33 +102,36 @@ else if ($tab == 'manage')
 <?php    
 
     foreach ($reports as $report)
-    {
-        $count += 1;
-        $rowClass = (($count % 2) != 0) ? 'odd' : 'even';
-        
+    {        
         $org = $report->get_container_entity();
+        
+        if ($org)
+        {
+            $count += 1;
+            $rowClass = (($count % 2) != 0) ? 'odd' : 'even';
        
-        echo "<tr class='$rowClass'>";
-        echo "<td><a href='{$org->get_url()}'>".escape($org->name)."</a></td>";
-        echo "<td>";        
-        echo escape($report->get_status_text());        
-        echo "</td>";        
-        echo "<td style='white-space:nowrap'>";
-        
-        $status = $report->status;
-        if ($status == ReportStatus::Blank)
-        {
-            echo "--";
+            echo "<tr class='$rowClass'>";
+            echo "<td><a href='{$org->get_url()}'>".escape($org->name)."</a></td>";
+            echo "<td>";        
+            echo escape($report->get_status_text());        
+            echo "</td>";        
+            echo "<td style='white-space:nowrap'>";
+            
+            $status = $report->status;
+            if ($status == ReportStatus::Blank)
+            {
+                echo "--";
+            }
+            else if ($status >= ReportStatus::Submitted || Session::isadminloggedin())
+            {
+                echo "<a href='{$report->get_url()}/view_response'>".__("report:view_response")."</a><br />";   
+            }
+            
+            echo view('reports/set_status_links', array('report' => $report));
+            
+            echo "</td>";
+            echo "</tr>";
         }
-        else if ($status >= ReportStatus::Submitted || Session::isadminloggedin())
-        {
-            echo "<a href='{$report->get_url()}/view_response'>".__("report:view_response")."</a><br />";   
-        }
-        
-        echo view('reports/set_status_links', array('report' => $report));
-        
-        echo "</td>";
-        echo "</tr>";
     }    
 ?>
 

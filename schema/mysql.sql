@@ -185,6 +185,7 @@ CREATE TABLE `report_fields` (
   `name` varchar(64)  NOT NULL default '',
   `value` text not null,
   `value_type` tinyint(4) NOT NULL,
+  `access` tinyint(4) not null default 0,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

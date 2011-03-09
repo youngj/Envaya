@@ -24,7 +24,11 @@ $num_approved = $report_def->query_approved()->count();
     
     foreach ($reports as $report)
     {
-        echo "<div><a href='{$report->get_url()}'>".escape($report->get_container_entity()->name)."</a></div>";
+        $org = $report->get_container_entity();
+        if ($org)
+        {    
+            echo "<div><a href='{$report->get_url()}'>".escape($org->name)."</a></div>";
+        }
     }      
 ?>
 </td>

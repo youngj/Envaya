@@ -7,9 +7,15 @@
  */
 class ReportHandler
 {
-    function view($report)
+    function view($report, $args = null)
     {
         $res = '';
+        
+        if (!$args)
+        {
+            $args = array();
+        }
+        $args['edit'] = false;
         
         foreach ($this->get_sections() as $section_id => $section)
         {   
@@ -17,31 +23,38 @@ class ReportHandler
                 'section_id' => $section_id, 
                 'section' => $section,
                 'report' => $report,
-                'content' => $this->render_section($report, $section)
+                'content' => $this->render_section($report, $section, $args)
             ));
         }
         return $res;
     }
     
-    function render_section($report, $section, $edit = false)
+    function render_section($report, $section, $args)
     {
-        $view = @$section['view'] ?: 'default_section';
+        $view = @$args['section_view'] ?: 'reports/default_section';
         
-        return view("reports/$view", 
-            array('report' => $report, 'section' => $section, 'edit' => $edit)
-        );
+        $args['report'] = $report;
+        $args['section'] = $section;
+        
+        return view($view, $args);
     }
     
-    function edit($report)
+    function edit($report, $args = null)
     {
         $section_id = (int)get_input('section') ?: 1;        
         
         $sections = $this->get_sections();
         $section = $sections[$section_id];        
                 
+        if (!$args)
+        {
+            $args = array();
+        }
+        $args['edit'] = true;
+                
         return view('reports/edit_section',             
             array(
-                'content' => $this->render_section($report, $section, true),
+                'content' => $this->render_section($report, $section, $args),
                 'report' => $report,
                 'section_id' => $section_id,
                 'section' => $section

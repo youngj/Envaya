@@ -81,9 +81,14 @@ class Report extends Entity
         return parent::can_edit() && ($this->status < ReportStatus::Submitted || Session::isadminloggedin());
     }
     
-    function render_view()
+    function can_edit_access_settings()
     {
-        return $this->get_handler()->view($this);
+        return $this->can_edit() || $this->container_guid == Session::get_loggedin_userid();
+    }
+    
+    function render_view($args = null)
+    {
+        return $this->get_handler()->view($this, $args);
     }
     
     function render_edit()

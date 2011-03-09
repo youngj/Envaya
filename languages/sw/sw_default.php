@@ -42,6 +42,7 @@ return array(
     'dashboard:title' => 'Hariri Tovuti',
     'dashboard:add_update' => 'Andika habari',
     'dashboard:edit_widgets' => 'Hariri kurasa',
+    'dashboard:new_widgets' => 'Ongeza kurasa',
     'dashboard:attach_image' => 'Fungia picha',
     'dashboard:attach_document' => "Fungia hati",
     'dashboard:view_home' => 'Tazama ukurasa wako mkuu',

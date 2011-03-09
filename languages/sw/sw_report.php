@@ -66,6 +66,9 @@ return array(
     'report:submit_notified' => "%s imefahamishwa kwamba ripoti yako ni tayari kupitiwa upya.",
     'report:email_confirmation_sent' => "Nakala ya majibu yako imetumiwa %s kwa rekodi zako.",
     'report:if_changes_required' => "Kama mabadiliko yoyote ni muhimu, %s itawasiliana nawe.",
+    'report:default_public' => "Zingatia, baada ya ripoti yako kukubaliwa, itaonekana hadharani katika ukurasa wa %s wa tovuti yako.",
+    'report:if_sensitive' => "Ikiwa ripoti yako ina data ambayo lazima isichapishwe katika intaneti, hakikisha %s.",
+    'report:mark_confidential' => "kuweka majibu yako kama siri",    
     'report:if_feedback' => "Kama una maoni, maswali, au mapendekezo kuhusu mfumo huu ya ripoti kwa njia ya intaneti, tafadhali %s.",
     'report:send_feedback_message' => "tutumie ujumbe",
     'report:edit_website' => "Hariri tovuti yako",
@@ -92,5 +95,15 @@ return array(
     
     'report:saved_at' => "Majibu yamehifadhiwa %s %s.",
     'report:not_saved' => "Majibu hayajahifadhiwa.",
+
+    'report:access_settings' => 'Mipangilio ya upatikanaji kwa %s',
+    'report:access_settings_instructions' => 
+        "Kama baadhi ya majibu yako yana data nyeti ambayo lazima isichapishwe katika intaneti, weka majibu yale kama siri. 
+        Majibu ya siri yataonekana kwa shirika lako na %s tu. Ambapo tumemaliza, bonyeza %s chini ya ukurasa.",
+    'report:open_to_public' => "Hadharani",
+    'report:confidential' => "Siri",
+    'report:edit_access_settings' => "Hariri mipangilio ya upatikanaji",
+    'report:access_settings_saved' => "Mipangilio ya upatikanaji kwa ripoti yamehifadhiwa.",
+    'report:confidential_field' => "(Siri)",
     
 );

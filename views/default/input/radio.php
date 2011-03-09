@@ -29,7 +29,9 @@
 
         $id = (isset($vars['id'])) ? "id=\"{$vars['id']}\"" : '';
         $disabled = (@$vars['disabled']) ? ' disabled="yes" ' : '';
-        echo "<label class='optionLabel$labelClass'><input type=\"radio\" $disabled {$js} name=\"{$vars['name']}\" $id value=\"".escape($option)."\" {$selected} class=\"$class\" />{$label}</label>$br";
+        $onclick = (@$vars['trackDirty']) ? "onclick='javascript:setDirty(true)' " : '';
+             
+        echo "<label class='optionLabel$labelClass'><input type=\"radio\" $disabled{$onclick} {$js} name=\"{$vars['name']}\" $id value=\"".escape($option)."\" {$selected} class=\"$class\" />{$label}</label>$br";
     }
 
 ?>

@@ -2,7 +2,7 @@
     $report = $vars['report'];
     $input = @$vars['edit'] ? 'edit_input' : 'view_input';
 ?>
-<table class='paddedTable'>
+<table class='paddedTable noBorderTable'>
 <tr>
 <td>&nbsp;</td>
 <th style='text-align:center; width:120px; vertical-align:bottom'><?php echo __('fcs:directness:direct'); ?></th>

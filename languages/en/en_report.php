@@ -50,6 +50,9 @@ return array(
     'report:submit_notified' => "%s has been notified that your report is ready to be reviewed.",
     'report:email_confirmation_sent' => "A copy of your responses has been sent to %s for your records.",
     'report:if_changes_required' => "If any changes are required before your report is accepted, %s will contact you.",
+    'report:default_public' => "Note that after your report is accepted, it will be publicly available on your website's %s page.",
+    'report:if_sensitive' => "If your report contains any sensitive information that should not be published on the internet, make sure to %s.",
+    'report:mark_confidential' => "mark your responses as confidential",
     'report:if_feedback' => "If you have any feedback, questions, or suggestions about this online reporting system, please %s.",
     'report:send_feedback_message' => "send us a message",
     'report:edit_website' => "Edit your website",
@@ -93,4 +96,14 @@ return array(
     
     'report:saved_at' => "Responses saved %s at %s.",
     'report:not_saved' => "Responses have not yet been saved.",
+    
+    'report:access_settings' => 'Access settings for %s',
+    'report:access_settings_instructions' => 
+        "If any of your responses contain sensitive information that should not be published on the internet, mark those responses as confidential. 
+        Confidential responses will only be visible to you and %s. When you are finished, click %s at the bottom of the page.",
+    'report:open_to_public' => "Public",
+    'report:confidential' => "Confidential",
+    'report:edit_access_settings' => "Edit access settings",
+    'report:access_settings_saved' => "The access settings for the report were saved successfully.",
+    'report:confidential_field' => "(Confidential)",
 );
