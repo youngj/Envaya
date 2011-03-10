@@ -20,6 +20,16 @@
         if (!$username)
             return null;
     
+        /*
+         * some people might try entering http://envaya.org/foo as the username when logging in,
+         * so we just ignore everything before the last slash (/ is not allowed in usernames)
+         */
+        $last_slash = strrpos($username, '/');
+        if ($last_slash !== FALSE)
+        {
+            $username = substr($username, $last_slash + 1);
+        }
+    
         $cache = get_cache();
         $cacheKey = get_cache_key_for_username($username);
 
