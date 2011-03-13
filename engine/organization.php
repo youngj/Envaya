@@ -23,6 +23,16 @@ class Organization extends User
         return NewsUpdate::query()->where("container_guid=?", $this->guid)->order_by('u.guid desc');
     }    
     
+    public function query_network_members()
+    {
+        return NetworkMember::query()->where("container_guid=?", $this->guid)->order_by('name asc');
+    }
+    
+    public function query_network_memberships()
+    {
+        return NetworkMember::query()->where("org_guid=?", $this->guid);
+    }
+    
     public function query_files()
     {    
         return UploadedFile::query()->where('container_guid=?',$this->guid);
@@ -235,11 +245,31 @@ class Organization extends User
         $this->sectors_dirty = true;
     }
 
+    protected $attributes_dirty = null;
+    
+    public function set($name, $value)
+    {
+        parent::set($name,$value);
+        
+        if (!$this->attributes_dirty)
+        {
+            $this->attributes_dirty = array();
+        }
+        $this->attributes_dirty[$name] = true;
+    }
+    
     public function save()
     {
+        $isNew = !$this->guid;
+    
         $res = parent::save();
-
-        if ($this->sectors_dirty)
+        
+        $attributesDirty = $this->attributes_dirty ?: array();
+        
+        $this->attributes_dirty = false;
+        
+        $sectorsDirty = $this->sectors_dirty;
+        if ($sectorsDirty)
         {
             Database::delete("delete from org_sectors where container_guid = ?", array($this->guid));
             foreach ($this->sectors as $sector)
@@ -248,13 +278,59 @@ class Organization extends User
             }
             $this->sectors_dirty = false;
         }
-
+        
+        if ($isNew || $sectorsDirty 
+            || @$attributesDirty['name'] || @$attributesDirty['username'] || @$attributesDirty['region'])
+        {
+            Sphinx::reindex();
+        }        
+        
         return $res;
+    }
+    
+    public function query_widgets()
+    {
+        return Widget::query()->where('container_guid=?', $this->guid);
+    }
+    
+    public function query_widgets_by_class($class_name)
+    {
+        $conditions = array('handler_class=?');
+        $args = array($class_name);
+        
+        foreach (Widget::get_default_names_by_class($class_name) as $widget_name)
+        {
+            $conditions[] = "(widget_name=? AND handler_class='')";
+            $args[] = $widget_name;
+        }
+        
+        $query = $this->query_widgets();
+        $query = $query->where(implode(' OR ', $conditions))->args($args);
+         
+        return $query;
+    }
+    
+    public function get_widget_by_class($class_name)
+    {
+        $widget = $this->query_widgets_by_class($class_name)->show_disabled(true)->get();
+        
+        if (!$widget)
+        {
+            $default_names = Widget::get_default_names_by_class($class_name);
+            if (sizeof($default_names))
+            {
+                $widget = new Widget();
+                $widget->container_guid = $this->guid;
+                $widget->widget_name = $default_names[0];
+            }
+        }
+        
+        return $widget;
     }
 
     public function get_widget_by_name($name)
     {
-        $widget = Widget::query()->where('container_guid=?', $this->guid)->where('widget_name=?',$name)->show_disabled(true)->get();
+        $widget = $this->query_widgets()->where('widget_name=?',$name)->show_disabled(true)->get();
         
         if (!$widget)
         {
@@ -295,15 +371,10 @@ class Organization extends User
         return $availableWidgets;
     }
     
-    static function query_search($name, $sector, $region)
+    static function query_sector_region($sector, $region)
     {
         $query = static::query();
         
-        if ($name)
-        {
-            $query->where("(INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0)", $name, $name);
-        }
-
         if ($sector)
         {
             $query->join("INNER JOIN org_sectors s ON s.container_guid = e.guid");
@@ -315,6 +386,54 @@ class Organization extends User
             $query->where("region=?", $region);
         }
         $query->order_by('u.name');
+        return $query;
+    }
+    
+    static function query_search($name, $sector = null, $region = null)
+    {                       
+        if (!$name)
+        {
+            return static::query_sector_region($sector, $region);
+        }
+        else
+        {
+            $sphinx = Sphinx::get_client();
+            $sphinx->setMatchMode(SPH_MATCH_ANY);
+            $sphinx->setLimits(0,30);
+            $sphinx->setConnectTimeout(5);
+            $sphinx->setMaxQueryTime(3);
+            
+            if ($sector)
+            {
+                $sphinx->setFilter('sector_id', array($sector));
+            }
+            if ($region)
+            {
+                $sphinx->setFilter('region', array($region));
+            }
+            
+            $results = $sphinx->query($name, 'orgs');
+            
+            if (!$results)
+            {
+                throw new IOException("Error connecting to search service");
+            }            
+            
+            $matches = @$results['matches'];
+                        
+            if (!is_array($matches) || sizeof($matches) == 0)
+            {
+                return new Query_Empty();
+            }
+                    
+            $org_guids = array_keys($matches);
+            $sql_guids = implode(',',$org_guids);
+         
+            $query = static::query();
+        
+            $query->where("e.guid in ($sql_guids)");
+            $query->order_by("FIND_IN_SET(e.guid, '$sql_guids')", true);
+        }
         
         return $query;
     }

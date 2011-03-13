@@ -21,26 +21,38 @@ class WidgetHandler_Home extends WidgetHandler
         $mission = get_input('content');
         if (!$mission)
         {
-            throw new InvalidParameterException(__("setup:mission:blank"));
+            return action_error(__("setup:mission:blank"));
         }
 
         $sectors = get_input_array('sector');
         if (sizeof($sectors) == 0)
         {
-            throw new InvalidParameterException(__("setup:sector:blank"));
+            return action_error(__("setup:sector:blank"));
         }
         else if (sizeof($sectors) > 5)
         {
-            throw new InvalidParameterException(__("setup:sector:toomany"));
+            return action_error(__("setup:sector:toomany"));
         }
 
-        $org->set_sectors($sectors);
+        $old_sectors = $org->get_sectors();
+        sort($old_sectors);
+        sort($sectors);
+        
+        // optimization to avoid dirtying fields that would force sphinx reindex
+        if ($old_sectors !== $sectors)
+        {        
+            $org->set_sectors($sectors);
+        }
         $org->sector_other = get_input('sector_other');
 
         $org->latitude = get_input('org_lat');
         $org->longitude = get_input('org_lng');
 
-        $org->region = get_input('region');
+        $new_region = get_input('region');
+        if ($new_region != $org->region)
+        {
+            $org->region = $new_region;
+        }
         $org->city = get_input('city');
 
         $org->save();

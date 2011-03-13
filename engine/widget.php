@@ -31,10 +31,23 @@ class Widget extends Entity
         'projects'      => array('menu_order' => 30, 'handler_class' => 'WidgetHandler_Generic'),
         'history'       => array('menu_order' => 40, 'handler_class' => 'WidgetHandler_Generic'),
         'team'          => array('menu_order' => 50, 'handler_class' => 'WidgetHandler_Team'),
-        'partnerships'  => array('menu_order' => 60, 'handler_class' => 'WidgetHandler_Partnerships'),
+        'network'       => array('menu_order' => 59, 'handler_class' => 'WidgetHandler_Network'),
         'reports'       => array('menu_order' => 65, 'hidden' => true, 'handler_class' => 'WidgetHandler_Reports'),
         'contact'       => array('menu_order' => 70, 'handler_class' => 'WidgetHandler_Contact'),        
     );        
+    
+    static function get_default_names_by_class($class_name)
+    {
+        $names = array();
+        foreach (static::$default_widgets as $widget_name => $args)
+        {
+            if (@$args['handler_class'] == $class_name)
+            {
+                $names[] = $widget_name;
+            }
+        }
+        return $names;
+    }
     
     static function get_default_names()
     {
@@ -69,9 +82,7 @@ class Widget extends Entity
         }
         else
         {
-            $key = "widget:{$this->widget_name}";
-            $title = __($key);
-            return ($title != $key) ? $title : __('widget:new');
+            return $this->get_handler()->get_default_title($this);
         }
     }    
     

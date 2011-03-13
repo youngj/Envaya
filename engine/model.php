@@ -20,7 +20,6 @@ class Model
      * For Entity subclasses, any field not appearing in this will be viewed as metadata
      */    
     protected $attributes = array();
-    
     public $dirty = false;
 
     function __construct($row = null)

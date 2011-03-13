@@ -27,6 +27,11 @@ class Config
         static::$settings[$key] = $value;
     }
     
+    static function get_all()
+    {
+        return static::$settings;
+    }
+    
     static function load()
     {
         if (static::$settings == null)

@@ -659,124 +659,7 @@ class Controller_Profile extends Controller
         
         system_message(__('addphotos:success'));
         forward($org->get_url()."/news");
-    }
-    
-    function index_confirm_partner()
-    {
-        $this->require_org();
-        $this->require_login();
-
-        $partner = $this->org;
-
-        $org = Session::get_loggedin_user();
-        if (!$org instanceof Organization)
-        {
-            not_found();
-        }
-
-        if ($partner)
-        {
-            $partnership = $org->get_partnership($partner);
-            if ($partnership->is_self_approved() || !$partnership->is_partner_approved())
-            {
-                not_found();
-            }
-
-            $title = __("partner:confirm");
-            $area1 = view("org/confirmPartner", array('entity' => $org, 'partner' => $partner));
-            $body = view_layout("one_column", view_title($title), $area1);
-            $this->page_draw($title,$body);
-        }
-        else
-        {
-            not_found();
-        }
-    }
-
-    function index_request_partner()
-    {
-        $this->require_org();
-        $this->require_login();
-        $this->validate_security_token();
-
-        $partner = $this->org;
-
-        $loggedInOrg = Session::get_loggedin_user();
-
-        if (!$loggedInOrg->is_approved())
-        {
-            action_error(__('partner:needapproval'));
-        }
-
-        if (!$partner || $partner_guid == $loggedInOrg->guid)
-        {
-            register_error(__("partner:invalid"));
-            forward();
-        }
-        else
-        {
-            $partnership = $loggedInOrg->get_partnership($partner);
-            $partnership->set_self_approved(true);
-            $partnership->save();
-
-            $partnership2 = $partner->get_partnership($loggedInOrg);
-            $partnership2->set_partner_approved(true);
-            $partnership2->save();
-
-            $partner->notify(
-                sprintf(__('email:requestPartnership:subject',$partner->language), $loggedInOrg->name, $partner->name),
-                sprintf(__('email:requestPartnership:body',$partner->language), $partnership->get_approve_url())
-            );
-
-            system_message(__("partner:request_sent"));
-
-            forward($partner->get_url());
-        }
-    }
-
-    function index_create_partner()
-    {
-        $this->require_org();
-        $this->require_login();
-        $this->validate_security_token();
-
-        $user = Session::get_loggedin_user();
-
-        $partner = $this->org;
-
-        if (!$partner || $partner_guid == $user->guid)
-        {
-            register_error(__("partner:invalid"));
-            forward();
-        }
-        else
-        {
-            $partnership = $partner->get_partnership($user);
-            $partnership->set_partner_approved(true);
-            $partnership->save();
-
-            $partnership2 = $user->get_partnership($partner);
-            $partnership2->set_self_approved(true);
-            $partnership2->save();
-
-            $partWidget = $user->get_widget_by_name('partnerships');
-            $partWidget->save();
-
-            $partWidget2 = $partner->get_widget_by_name('partnerships');
-            $partWidget2->save();
-
-            system_message(__("partner:created"));
-
-            post_feed_items($user, 'partnership', $partner);
-
-            $partner->notify(
-                sprintf(__('email:partnershipConfirmed:subject',$partner->language), $user->name, $partner->name),
-                sprintf(__('email:partnershipConfirmed:body',$partner->language), $partWidget2->get_url())
-            );
-
-            forward($partWidget->get_url());
-        }
-    }
+    }    
 
     function index_send_message()
     {
@@ -1013,4 +896,69 @@ class Controller_Profile extends Controller
 		system_message(__('comment:success'));
 		forward($comments_url);
 	}
+    
+    function index_search_new_member()
+    {
+        $this->require_org();
+        $this->require_editor();    
+    
+        $this->request->headers['Content-Type'] = 'text/javascript';                
+    
+        $name = get_input('name');
+        $email = get_input('email');
+        $website = get_input('website');
+        
+        $orgs_by_name = $orgs_by_email = $orgs_by_website = array();       
+        
+        if ($email)
+        {
+            $orgs_by_email = Organization::query()->where('email = ?', $email)->filter();
+        }
+        
+        if ($website)
+        {
+            $username = null;
+            $parsed_website = parse_url($website);                
+            if ($parsed_website)            
+            {
+                $host = @$parsed_website['host'];
+                $username = OrgDomainName::get_username_for_host($host);                
+            }
+            if (!$username && preg_match('/\/([\w\-]+)/', $parsed_website['path'], $matches))
+            {
+                $username = $matches[1];
+            }
+            if ($username)
+            {
+                $orgs_by_website = Organization::query()->where('username = ?', $username)->filter();
+            }
+        }        
+        
+        // if there's a likely unique match by website or email, avoid searching by name
+        // (where we are likely to get some bad matches)
+        if (sizeof($orgs_by_website) != 1 && sizeof($orgs_by_email) != 1) 
+        {            
+            if ($name)
+            {
+                $orgs_by_name = Organization::query_search($name)->limit(4)->filter();
+            }
+        }
+            
+        $all_orgs = array_merge($orgs_by_website, $orgs_by_email, $orgs_by_name);
+                
+        // remove duplicates
+        $all_orgs = array_values(array_combine(
+            array_map(function($o) { return $o->guid; }, $all_orgs),
+            $all_orgs
+        ) ?: array());
+                
+        $this->request->response = json_encode(array(
+            'results' => array_map(function($o) { 
+                return array(
+                    'org' => $o->js_properties(),
+                    'view' => view('org/js_search_result', array('org' => $o))
+                );
+            }, $all_orgs),
+        ));                
+    }   
 }

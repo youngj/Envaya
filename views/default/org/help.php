@@ -149,22 +149,6 @@
 <?php echo __('help:connecting:summary') ?>
 </p>
 
-<h4><?php echo __('widget:partnerships') ?></h4>
-
-<p>
-<?php echo sprintf(__('help:connecting:partnerships'),
-    "<strong><a href='{$org->get_url()}/partnerships/edit'>".__('widget:partnerships')."</a></strong>") ?>
-</p>
-
-<p>
-<?php echo sprintf(__('help:connecting:partnerships:instructions'),
-    "<strong><a href='{$org->get_url()}/partnerships/edit'>".__('widget:partnerships')."</a></strong>") ?>
-</p>
-
-<p>
-<?php echo __('help:connecting:partnerships:invite') ?>
-</p>
-
 <h4><?php echo __('help:connecting:messages') ?></h4>
 <p>
 <?php echo sprintf(__('help:connecting:messages:instructions'), "<strong>".__('message:link')."</strong>") ?>

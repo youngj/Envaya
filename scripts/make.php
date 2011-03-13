@@ -26,10 +26,12 @@ file_put_contents($tinymce_temp, file_get_contents('_media/tiny_mce/themes/advan
 file_put_contents($tinymce_temp, file_get_contents('_media/tiny_mce/plugins/paste/editor_plugin_src.js'), FILE_APPEND);
 minify($tinymce_temp, '_media/tiny_mce/tiny_mce.js');
 unlink($tinymce_temp);
-        
-minify('_media/swfupload_src.js',
-       '_media/swfupload.js');
-        
-minify('views/default/js/header_src.php', 'views/default/js/header.php');
 
-minify('views/default/home/slideshow_src.php', 'views/default/home/slideshow.php');
+minify('_media/swfupload_src.js', '_media/swfupload.js');
+
+$js_src_files = glob('_media/inline_js/*_src.js');
+
+foreach ($js_src_files as $js_src_file)
+{
+    minify($js_src_file,  str_replace('_src','',$js_src_file));
+}

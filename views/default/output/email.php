@@ -8,6 +8,6 @@
 	 */
 
     if (!empty($vars['value'])) {
-    	echo "<a href=\"mailto:" . $vars['value'] . "\">". escape($vars['value']) ."</a>";
+    	echo "<a href=\"mailto:" . escape($vars['value']) . "\">". escape($vars['value']) ."</a>";
     }
 ?>

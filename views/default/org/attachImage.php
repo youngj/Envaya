@@ -1,15 +1,7 @@
 <script type='text/javascript'>
 
-function keepDirty()
-{
-    var $dirty = window.dirty;
-    setDirty(false);
-    setTimeout(function() { setDirty($dirty) }, 5);
-}
-
 function showAttachImage()
 {
-    keepDirty();    
     if (window.tinyMCE)
     {       
         setTimeout(function() {
@@ -20,7 +12,6 @@ function showAttachImage()
 
 function showAttachDocument()
 {
-    keepDirty();
     if (window.tinyMCE)
     {
         setTimeout(function() {
@@ -32,6 +23,6 @@ function showAttachDocument()
 </script>
 
 <div class='attachControls'>
-    <a href='javascript:void(0)' class='attachImage' onclick='showAttachImage()'><?php echo __('dashboard:attach_image') ?></a>
-    <a href='javascript:void(0)' class='attachDocument' onclick='showAttachDocument()'><?php echo __('dashboard:attach_document') ?></a>    
+    <a href='javascript:showAttachImage()' class='attachImage' onclick='ignoreDirty()'><?php echo __('dashboard:attach_image') ?></a>
+    <a href='javascript:showAttachDocument()' class='attachDocument' onclick='ignoreDirty()'><?php echo __('dashboard:attach_document') ?></a>    
 </div>

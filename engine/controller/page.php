@@ -123,14 +123,7 @@ class Controller_Page extends Controller_Profile
                 $widget->enable();
             }
 
-            try
-            {             
-                $widget->save_input();
-            }
-            catch (Exception $ex)
-            {
-                return register_error($ex->getMessage());
-            }
+            $widget->save_input();
             
             system_message(__('widget:save:success'));
             forward($widget->get_url());

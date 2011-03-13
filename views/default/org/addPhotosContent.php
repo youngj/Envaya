@@ -23,19 +23,16 @@ MultiImageUploader.prototype.showPreview = function($data, $json)
 
     var previews = document.getElementById(this.options.previews_id);
 
-    var container = document.createElement('div');
-    container.className = 'photoPreviewContainer';
+    var container = createElem('div', {className:'photoPreviewContainer'});
 
-    var imageContainer = document.createElement('div');
-    imageContainer.className = 'photoPreview';
+    var imageContainer = createElem('div', {className:'photoPreview'});
     container.appendChild(imageContainer);
 
-    var loadingMessage = document.createElement('span');
-    loadingMessage.appendChild(document.createTextNode(this.options.loading_preview_message));
+    var loadingMessage = createElem('span', this.options.loading_preview_message);
 
     imageContainer.appendChild(loadingMessage);
 
-    var img = document.createElement('img');
+    var img = createElem('img');
 
     img.style.display = 'none';
 
@@ -49,36 +46,31 @@ MultiImageUploader.prototype.showPreview = function($data, $json)
     img.src = thumbnailInfo.url;
     imageContainer.appendChild(img);
 
-    var caption = document.createElement('textarea');
-    caption.name = 'imageCaption' + this.imageCount;
-    caption.className = 'photoCaptionInput';
-    container.appendChild(caption);
+    container.appendChild(createElem('textarea', {
+        name: 'imageCaption' + this.imageCount,
+        className: 'photoCaptionInput'
+    }));
 
-    var deleteButton = document.createElement('a');
-    deleteButton.className = 'photoDelete';
-    deleteButton.href = "javascript:void(0)";
+    container.appendChild(createElem('a',{
+        className:'photoDelete', 
+        href:'javascript:void(0)',
+        click: function() {
+            ignoreDirty();
+            previews.removeChild(container);
+        }
+    }));
 
-    addEvent(deleteButton, 'click', function() {
-        $dirty = window.dirty;
-        setDirty(false);
-        setTimeout(function() { setDirty($dirty) }, 5);
+    container.appendChild(createElem('input', {
+        type:'hidden',
+        name:'imageNumber[]',
+        value: this.imageCount
+    }));
 
-        previews.removeChild(container);
-    });
-
-    container.appendChild(deleteButton);
-
-    var imageNumber = document.createElement('input');
-    imageNumber.type = 'hidden';
-    imageNumber.name = 'imageNumber[]';
-    imageNumber.value = this.imageCount;
-    container.appendChild(imageNumber);
-
-    var imageData = document.createElement('input');
-    imageData.type = 'hidden';
-    imageData.name = 'imageData' + this.imageCount;
-    imageData.value = $json;
-    container.appendChild(imageData);
+    container.appendChild(createElem('input', {
+        type: 'hidden',
+        name: 'imageData' + this.imageCount,
+        value: $json
+    }));    
 
     var clear = document.createElement('div');
     clear.style.clear = 'both';

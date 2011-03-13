@@ -70,15 +70,10 @@ class Query_Select
         return $this->where("$column in (".implode(',', array_fill(0, sizeof($values), '?')).")", $values);
     }
     
-    function where($condition)
-    {   
-        $this->conditions[] = $condition;
-        
-        $numArgs = func_num_args();
-        
-        for ($i = 1; $i < $numArgs; $i++)
+    function args($args)
+    {
+        foreach ($args as $arg)
         {
-            $arg = func_get_arg($i);
             if (is_array($arg))                      
             {
                 foreach ($arg as $a)
@@ -89,15 +84,37 @@ class Query_Select
             else
             {
                 $this->args[] = $arg;
-            }
+            }        
         }
+        return $this;
+    }
+    
+    function where($condition)
+    {   
+        $this->conditions[] = "($condition)";
+        
+        $args = array();
+        $numArgs = func_num_args();
+        
+        for ($i = 1; $i < $numArgs; $i++)
+        {
+            $args[] = func_get_arg($i);
+        }
+        $this->args($args);
     
         return $this;
     }
     
-    function order_by($order_by)
+    function order_by($order_by, $sanitized = false)
     {
-        $this->order_by = $order_by;
+        if (!$sanitized)
+        {
+            $this->order_by = Database::sanitize_order_by($order_by);
+        }
+        else
+        {    
+            $this->order_by = $order_by;
+        }
         return $this;
     }
     
@@ -148,7 +165,7 @@ class Query_Select
     
         if ($this->order_by)
         {
-            $query .= " order by ".Database::sanitize_order_by($this->order_by);
+            $query .= " order by {$this->order_by}";
         }
 
         if ($this->limit)

@@ -164,6 +164,17 @@ CREATE TABLE `widgets` (
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `network_members` (
+    `guid` bigint(20) unsigned NOT NULL,
+    `org_guid` bigint(20) unsigned NOT NULL,
+    `name` text default null,    
+    `email` varchar(128) default null,
+    `website` text default null,
+    `logo_url` text default null,
+    `order` int default 0,
+    PRIMARY KEY (`guid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 CREATE TABLE `partnerships` (
     `guid` bigint(20) unsigned NOT NULL,
     `partner_guid` bigint(20) unsigned NOT NULL,

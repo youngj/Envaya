@@ -1,6 +1,6 @@
 <?php
 return array(
-    'cache_version' => 138,  // increment when css, or external js (tinymce/swfupload) changes
+    'cache_version' => 139,  // increment when css, or external js (tinymce/swfupload) changes
     
     'dbuser' => '',
     'dbpass' => '',
@@ -9,6 +9,9 @@ return array(
 
     'queue_host' => "localhost",
     'queue_port' => 22133,
+    
+    'sphinx_host' => 'localhost',
+    'sphinx_port' => 9312,
    
     'cache_backend' => "DatabaseCache",
 
@@ -16,6 +19,10 @@ return array(
     'post_email' => "post@localhost",
     'email_from' => "web@localhost",
     'email_pass' => "",
+    
+    'sphinx_conf_dir' => '/etc/sphinxsearch',
+    'sphinx_bin_dir' => '/usr/bin',
+    'sphinx_log_dir' => '/var/log/sphinx',
     
     'google_api_key' => "ABQIAAAAHy69XWEjciJIVElz0OYMsRR3-IOatrPZ1tLat998tYHgwqPnkhTKyWcq8ytRPMx3RyxFjK0O7WSCHA",
     

@@ -22,4 +22,5 @@
 		'comment:notification_subject' => "%s added a comment on your website",
 		'comment:notification_admin_subject' => "%s added a comment on %s",
 		'comment:notification_body' => "\"%s\"\n\n%s",
+        'comment:confirm_delete' => "Are you sure you want to delete this comment?",
 	);

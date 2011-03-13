@@ -4,28 +4,6 @@
 
 ?>
 
-<div class='section_header'><?php echo __('partner:find_new'); ?></div>
-<div class='section_content padded'>
-<?php if ($org->is_approved()) { ?>
-<p>
-<?php echo sprintf(__('partner:instructions'), "<strong>".__('partner:request')."</strong>"); ?>
-</p>
-
-<p>
-<strong><a href='org/search'><?php echo __('partner:search') ?></a></strong> &middot;
-<strong><a href='org/browse?zoom=10&lat=<?php echo escape($org->latitude) ?>&long=<?php echo escape($org->longitude) ?>'><?php echo __('partner:browse') ?></a></strong>
-</p>
-<?php } else { ?>
-<p>
-<?php echo __('partner:needapproval') ?>
-</p>
-<p>
-<?php echo __('partner:wait') ?>
-</p>
-<?php } ?>
-</div>
-
-<div class='section_header'><?php echo __('partner:current'); ?></div>
 <div class='section_content padded'>
 <?php
     $offset = (int) get_input('offset');

@@ -1,6 +1,8 @@
 <div class='padded'>
 <?php
 
+PageContext::add_header_html('robots', '<meta name="robots" content="noindex,follow" />'); 
+
 $sector = $vars['sector'];
 $region = $vars['region'];
 $items = $vars['items'];
@@ -107,7 +109,7 @@ function itemsLoaded(res)
 </script>
 
 <div id='load_more'>
-<a id='load_more_link' href='javascript:void(0)' onclick='loadMore()'><?php echo __('feed:show_more'); ?></a>
+<a id='load_more_link' href='javascript:loadMore()'><?php echo __('feed:show_more'); ?></a>
 <div id='load_more_progress' style='display:none'><?php echo __('loading'); ?></div>
 </div>
 <?php 

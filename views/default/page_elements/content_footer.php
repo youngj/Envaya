@@ -16,7 +16,7 @@
         {
             $url = url_with_param(Request::full_original_url(), 'view', $viewType);
             $url = url_with_param($url, '__sv','1');
-            $links[] = "<a href='".escape($url)."'>$text</a>";
+            $links[] = "<a rel='nofollow' href='".escape($url)."'>$text</a>";
         }           
     }
     echo implode(' &middot; ', $links);

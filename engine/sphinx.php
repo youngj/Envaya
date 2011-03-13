@@ -1,0 +1,35 @@
+<?php
+
+class Sphinx
+{
+    static function load_lib()
+    {
+        require_once Config::get('path')."vendors/sphinxapi.php";
+    }
+    
+    static function get_client()
+    {
+        static::load_lib();
+        
+        $s = new SphinxClient();
+        $s->setServer(Config::get('sphinx_host'), Config::get('sphinx_port'));
+        
+        return $s;
+    }    
+    
+    static function reindex()
+    {
+        FunctionQueue::queue_call(array('Sphinx', '_reindex'), array());
+    }
+    
+    static function _reindex()
+    {
+        $bin_dir = Config::get('sphinx_bin_dir');
+        $conf_dir = Config::get('sphinx_conf_dir');
+        $log_dir = Config::get('sphinx_log_dir');
+        
+        $rotate = is_file("$log_dir/searchd.pid") ? "--rotate" : "";
+        
+        system(escapeshellcmd("$bin_dir/indexer") . " --all $rotate --config " . escapeshellarg("$conf_dir/sphinx.conf"));
+    }
+}

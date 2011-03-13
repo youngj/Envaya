@@ -20,16 +20,6 @@ For instructions on how to get started using Envaya, and to learn what you can d
 
 Thanks for using Envaya!",
 
-
-
-    'email:requestPartnership:subject' => "%s wants to add %s as a partner",
-    'email:requestPartnership:body' => "To approve this partnership, click on the link below and log into your Envaya account:
-%s",
-
-    'email:partnershipConfirmed:subject' => "%s confirmed its partnership with %s",
-    'email:partnershipConfirmed:body' => "To see your Partnerships page, click on the link below:
-%s",
-
     'email:resetreq:subject' => "Request for new password",
     'email:resetreq:body' => "Hi %s,
 

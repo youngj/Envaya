@@ -52,10 +52,6 @@ var modalBox;
 
 function openAddTeamMember()
 {
-    var $dirty = window.dirty;
-    setDirty(false);
-    setTimeout(function() { setDirty($dirty) }, 5);
-
     function saveChanges()
     {
         var nameInput = document.getElementById('name');
@@ -115,7 +111,12 @@ function openAddTeamMember()
 
     if (!modalBox)
     {
-        modalBox = tinyMCE.activeEditor.createModalBox(<?php echo json_encode(__('widget:team:add')) ?>, addTeamMember, saveChanges, cancel);
+        modalBox = createModalBox({
+            title: <?php echo json_encode(__('widget:team:add')) ?>, 
+            content: addTeamMember, 
+            okFn: saveChanges, 
+            cancelFn: cancel
+        });
         document.body.appendChild(modalBox);
         addTeamMember.style.display = 'block';
     }
@@ -131,6 +132,6 @@ function openAddTeamMember()
 
 </script>
 
-<a href='javascript:void(0)' onclick='openAddTeamMember()' style='font-weight:bold'>
+<a href='javascript:openAddTeamMember()' onclick='ignoreDirty()' style='font-weight:bold'>
 <?php echo __('widget:team:add') ?>
 </a>

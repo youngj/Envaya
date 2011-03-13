@@ -31,8 +31,6 @@ return array(
     'tinymce:justifyleft_desc' => 'Align Left',
     'tinymce:justifycenter_desc' => 'Align Center',
     'tinymce:justifyright_desc' => 'Align Right',
-    'tinymce:ok' => "OK",
-    'tinymce:cancel' => "Cancel",
     'tinymce:code_desc' => "Edit HTML Code",
     'tinymce:code_wordwrap' => "Wordwrap",
     'tinymce:loading' => "Loading...",

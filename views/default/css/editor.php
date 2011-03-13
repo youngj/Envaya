@@ -299,3 +299,14 @@ a.icon_link:hover
 {
     background-position:left bottom;
 }
+
+.selectMemberButton
+{
+    float:right;
+    padding-top:5px;
+}
+
+.selectMemberNotShown
+{
+    font-size:10px
+}

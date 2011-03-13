@@ -16,6 +16,7 @@ class PageContext
     private static $site_org = null;
     private static $header_html = array();
     private static $submenu = array();    
+    private static $js_strings = array();
     
     static function set_translatable($translatable)
     {
@@ -124,9 +125,9 @@ class PageContext
      * @param string $label The human-readable label
      * @param string $link The URL of the submenu item
      */
-    static function add_submenu_item($label, $link, $group = 'topnav') {
+    static function add_submenu_item($label, $link, $group = 'topnav', $clear_existing = false) {
 
-        if (!isset(static::$submenu[$group])) 
+        if (!isset(static::$submenu[$group]) || $clear_existing) 
             static::$submenu[$group] = array();
         
         $item = new stdClass;
@@ -164,5 +165,15 @@ class PageContext
             'submenu' => $submenu,
             'group_name' => $groupname
         ));
+    }    
+        
+    static function get_js_strings()
+    {
+        return array_keys(static::$js_strings);
+    }
+
+    static function add_js_string($key)
+    {
+        static::$js_strings[$key] = true;
     }    
 }

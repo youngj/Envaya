@@ -441,6 +441,8 @@ class RegisterTest extends SeleniumTest
         $this->mouseOver("//div[@class='good_messages']");
 
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        
+        /*
         $this->clickAndWait("//a[contains(@href,'pg/login')]");
         $this->type("//input[@name='username']","{$this->username2}");
         $this->type("//input[@name='password']",'password');
@@ -477,6 +479,15 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//a[@class='feed_org_name' and contains(@href,'/{$this->username2}')]");
         $this->clickAndWait("//a[contains(@href,'/partnerships')]");
         $this->mouseOver("//a[@class='feed_org_name' and contains(@href,'/{$this->username}')]");
+        
+        */
+
+        $this->open('/pg/login');
+
+        $this->type("//input[@name='username']","{$this->username}");
+        $this->type("//input[@name='password']",'password2');
+        $this->submitForm();
+        $this->mouseOver("//div[@class='good_messages']");        
     }
 
     private function _testMessages()

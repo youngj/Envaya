@@ -13,6 +13,7 @@
             13 => 'EmailTemplate',
             16 => 'Comment',
             17 => 'FeaturedPhoto',
+            18 => 'NetworkMember',
         );
         private static $class_to_subtype = null;
         

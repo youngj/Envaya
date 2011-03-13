@@ -77,6 +77,8 @@
         'search:submit' => 'Search',
         'search:instructions' => "Enter the name or location of the organization you're looking for.",
         'search:noresults' => "No results found!",
+        'search:orgs_near' => "Organizations near '%s':",
+        'search:orgs_matching' => "Organizations with '%s' in their name:",
 
         'login' => "Log in",
         'loginerror' => "Incorrect username or password. Make sure they are correct and try again. If you still can't log in, %s to reset your password.",
@@ -194,7 +196,7 @@
 
         'widget:partnerships' => 'Partnerships',
         'widget:partnerships:description' => "Describe your partnership with this organization:",
-
+        
         'register:step1' => '1. Qualification',
         'register:step2' => '2. Create account',
         'register:step3' => '3. Set up homepage',

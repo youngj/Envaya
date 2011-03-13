@@ -286,12 +286,12 @@ a.selected
     color:#ddd;
 }
 
-.gridTable .even td
+.gridTable .even td, div.even
 {
     background-color:#e8e8e8;
 }
 
-.gridTable .odd td
+.gridTable .odd td, div.odd
 {
     background-color:#f3f3f3;
 }

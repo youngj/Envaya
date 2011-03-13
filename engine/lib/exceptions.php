@@ -87,9 +87,22 @@ function php_exception_handler($exception) {
     
     if (@$_SERVER['REQUEST_URI'])
     {    
-        $body = view("messages/exceptions/exception",array('object' => $exception));        
         header("HTTP/1.1 500 Internal Server Error");
-        echo page_draw(__('exception_title'), $body);
+        
+        $request = Request::current();
+        
+        if (@$request->headers['Content-Type'] == 'text/javascript')
+        {
+            echo json_encode(array(
+                'error' => $exception->getMessage(), 
+                'errorClass' => get_class($exception)
+            ));
+        }
+        else
+        {    
+            $body = view("messages/exceptions/exception", array('object' => $exception));                
+            echo page_draw(__('exception_title'), $body);
+        }
     }
     else // CLI
     {

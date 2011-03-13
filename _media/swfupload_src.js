@@ -1287,9 +1287,7 @@ FileUploader.prototype.uploadSuccessHandler = function($file, $serverData)
                
 FileUploader.prototype.showPreviewJson = function($json) 
 {
-    var $files;
-
-    eval("$files = " + $json);    
+    var $files = _eval($json);
 
     if ($files.error)
     {
@@ -1476,14 +1474,7 @@ SingleImageUploader.prototype.reset = function()
 SingleImageUploader.prototype.getCurrentImage = function()
 {
     var imageJson = document.getElementById(this.options.result_id).value;
-
-    if (imageJson)
-    {
-        var image;
-        eval("image = " + imageJson);
-        return image;
-    }
-    return null;
+    return imageJson ? _eval(imageJson) : null;    
 };
     
 SingleImageUploader.prototype.getSWFUploadOptions = function()

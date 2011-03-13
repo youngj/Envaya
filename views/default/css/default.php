@@ -542,6 +542,20 @@ a#loginButton:hover .loginContent span
     width:350px;
 }
 
+.modalClose
+{
+    display:block;
+    float:right;
+    width:23px;
+    height:23px;
+    cursor:pointer;
+    background:url("/_graphics/delete.gif?v2") no-repeat left -33px;    
+}
+.modalClose:hover
+{
+    background-position:left -3px;
+}
+
 .modalButtons
 {
     padding:0px 15px 8px 15px;
@@ -634,9 +648,6 @@ label {
 
 .search_listing {
     display: block;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    background:white;
     margin:0 10px 5px 10px;
     padding:5px;
 }
@@ -1090,19 +1101,19 @@ input[type="submit"] {
     width:<?php echo ($contentWidth - 70) ?>px;
 }
 
-#comment_form th
+.inputTable th
 {
     text-align:right;
     vertical-align:middle;
     padding-right:10px;
 }   
 
-#comment_form label
+.inputTable label
 {
     font-size:100%;
 }
 
-.comment_name_input
+.inputTable input
 {
     width:250px;
 }

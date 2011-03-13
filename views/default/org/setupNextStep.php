@@ -17,7 +17,7 @@
     };    
     
     $addItem("<a href='{$org->get_widget_by_name('home')->get_edit_url()}'>".__('todo:home')."</a>", true);
-    
+        
     $contact = $org->get_widget_by_name('contact');       
     $addItem("<a href='{$contact->get_edit_url()}'>".__('todo:contact')."</a>", 
             $contact->time_updated > $contact->time_created && sizeof($org->get_contact_info()) >= 2);
@@ -53,6 +53,12 @@
         "<a href='{$org->get_url()}/design'>".__('todo:logo')."</a>",
         ($org->custom_header || $org->custom_icon)    
     );    
+
+    $network = $org->get_widget_by_class('WidgetHandler_Network');
+    $addItem("<a href='{$network->get_edit_url()}'>".__('todo:network')."</a>",
+        $network->is_active()
+    );
+    
 ?>
 <?php 
 if (sizeof($todoItems) && !Session::get('hide_todo'))
@@ -61,11 +67,6 @@ if (sizeof($todoItems) && !Session::get('hide_todo'))
 <script type='text/javascript'>
 function hideTodo()
 {
-    // avoid ie dirty warning
-    var $dirty = window.dirty;
-    setDirty(false);
-    setTimeout(function() { setDirty($dirty) }, 5);
-
     var todo = document.getElementById('todo_container');
     todo.style.display = 'none';
     fetchJson("/pg/hide_todo", function(){});
@@ -73,7 +74,7 @@ function hideTodo()
 </script>
 <div class='todo_container' id='todo_container'>
 <div class='good_messages'>
-<a class='gridDelete' href='javascript:void(0)' onclick='hideTodo()' style='float:right;width:22px;margin-right:-5px;margin-top:-10px'></a>
+<a class='gridDelete' href='javascript:hideTodo()' onclick='ignoreDirty()' style='float:right;width:22px;margin-right:-5px;margin-top:-10px'></a>
 <?php
 $messages = SessionMessages::get_register('messages');
 if ($messages)

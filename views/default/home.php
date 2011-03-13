@@ -66,7 +66,7 @@ else
 </div>
 
 <script type='text/javascript'>
-<?php echo view('home/slideshow'); ?>
+<?php readfile(Config::get('path').'_media/inline_js/slideshow.js'); ?>
 slideshow(<?php echo FeaturedPhoto::get_json_array(); ?>, <?php echo json_encode($defaultPhoto); ?>);
 </script>
 

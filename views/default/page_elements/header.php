@@ -39,8 +39,19 @@
     ?>
     <link rel="shortcut icon" href="/_graphics/favicon2.ico" />
 <script type='text/javascript'>
-var __ = <?php echo json_encode(array('page:dirty' => __("page:dirty"))); ?>;
 <?php echo view('js/header'); ?>
+<?php 
+
+$js_strs = array();
+foreach (PageContext::get_js_strings() as $key)
+{
+    $js_strs[$key] = __($key);
+}
+if (sizeof($js_strs))
+{
+    echo "var __ = ".json_encode($js_strs).";"; 
+}
+?>
 </script>
     <?php echo PageContext::get_header_html(); ?>
 </head>

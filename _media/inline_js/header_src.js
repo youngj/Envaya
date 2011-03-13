@@ -33,36 +33,53 @@ function removeEvent(elem, type, fn)
     }
 }
 
-var _jsonCache = {};
-
-function fetchJson(url, fn)
+function _eval(x)
 {
-    if (_jsonCache[url])
-    {
-        setTimeout(function() {
-            fn(_jsonCache[url]);
-        }, 1);
-        return null;
-    }
-    else
-    {
-        var xhr = (window.ActiveXObject && !window.XMLHttpRequest) ? new ActiveXObject("Msxml2.XMLHTTP") : new XMLHttpRequest();
-        xhr.onreadystatechange = function()
-        {
-            if(xhr.readyState == 4 && xhr.status == 200)
-            {
-                var $data;
-                eval("$data = " + xhr.responseText);
-                _jsonCache[url] = $data;
-                fn($data);
-            }
-        };
-        xhr.open("GET", url, true);
-        xhr.send(null);
-        return xhr;
-    }
+    return eval("("+x+")");
 }
 
+var fetchJson = (function() {
+    var _jsonCache = {};
+
+    return function(url, fn, errorFn)
+    {
+        if (_jsonCache[url])
+        {
+            setTimeout(function() {
+                fn(_jsonCache[url]);
+            }, 1);
+            return null;
+        }
+        else
+        {
+            var xhr = (window.ActiveXObject && !window.XMLHttpRequest) ? new ActiveXObject("Msxml2.XMLHTTP") : new XMLHttpRequest();
+            xhr.onreadystatechange = function()
+            {
+                if (xhr.readyState == 4)
+                {
+                    var status = xhr.status;
+                    if (status == 200)
+                    {
+                        fn(_jsonCache[url] = _eval(xhr.responseText));
+                    }
+                    else if (status == 500)
+                    {
+                        var data = _eval(xhr.responseText);                       
+                        errorFn ? errorFn(data) : alert(data.error);
+                    }
+                    else if (status >= 400)
+                    {
+                        alert("HTTP Error " + status); 
+                    }
+                }
+            };
+            xhr.open("GET", url, true);
+            xhr.send(null);
+            return xhr;
+        }
+    }
+})();
+    
 function bind(obj, fn)
 {
     return function() {
@@ -136,7 +153,6 @@ function createElem(/* args */)
     return el;
 }
 
-
 window.dirty = false;
 function setDirty($dirty)
 {
@@ -158,19 +174,20 @@ function setDirty($dirty)
     return true;
 }
 
-var _submitFns = [];
-function addSubmitFn($fn)
+/*
+ * Needed for onclick in IE anchor tags with javascript: urls, 
+ * since IE calls onbeforeunload in this case
+ */
+function ignoreDirty()
 {
-    _submitFns.push($fn);
+    var $dirty = window.dirty;
+    setDirty(false);
+    setTimeout(function() { setDirty($dirty) }, 5);    
 }
 
 function setSubmitted()
 {
     setDirty(false);
-    for (var i = 0; i < _submitFns.length; i++)
-    {
-        _submitFns[i]();
-    }
     window.submitted = true;
     return true;
 }

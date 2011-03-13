@@ -5,12 +5,31 @@
     
     if (@$vars['nearby'])
     {
+        
+    
         $latlong = $vars['latlong'];
     
-        echo "<div class='padded'>".view("org/map", array('lat' => $latlong['lat'], 'long' => $latlong['long'], 'sector' => $sector, 'nearby' => true, 'height' => 300, 'width' => 440, 'zoom' => '8'))."</div>";    
+        echo "<div class='padded'>";
+        
+        echo "<em>".sprintf(__('search:orgs_near'), escape($query))."</em>";
+        
+        echo view("org/map", array(
+            'lat' => $latlong['lat'], 'long' => $latlong['long'], 
+            'sector' => $sector, 
+            'nearby' => true, 
+            'height' => 300, 'width' => 440, 
+            'zoom' => '8'
+        ));
+        
+        echo "</div>";    
     }
     if ($results)
     {
+        if (@$vars['nearby'])
+        {
+            echo "<div class='padded' style='padding-bottom:0px'><em>".sprintf(__('search:orgs_matching'), escape($query))."</em></div>";
+        }
+    
         echo $results;
     }
     else

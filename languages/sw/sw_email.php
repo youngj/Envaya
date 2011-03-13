@@ -20,12 +20,6 @@ Kusoma maagizo kuhusu kuanza kutumia Envaya, na kujifunza vitu unavyofanya na to
 %s
 
 Asante kwa kutumia Envaya!',
-    'email:requestPartnership:subject' => '%s inataka kuongeza %s kama ubia',
-    'email:requestPartnership:body' => 'Kuthibitisha ubia huu, bonyeza kiungo chini na fungua katika akaunti yako ya Envaya:
-%s',
-    'email:partnershipConfirmed:subject' => '%s imethibitisha ubia wake na %s',
-    'email:partnershipConfirmed:body' => 'Kuona ukurasa wako wa Ubia, bonyeza kiungo chini:
-%s',
     'email:resetreq:subject' => 'Ombi kwa neno jipya la siri',
     'email:resetreq:body' => 'Hujambo %s,
 

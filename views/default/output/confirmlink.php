@@ -9,9 +9,7 @@
      *
      */
 
-    $confirm = @$vars['confirm'];
-    if (!$confirm)
-        $confirm = __('areyousure');
+    $confirm = @$vars['confirm'] ?:__('areyousure');
 
     $link = $vars['href'];
 
@@ -20,9 +18,14 @@
         $ts = time();
         $token = generate_security_token($ts);
 
-        $sep = "?";
-        if (strpos($link, '?')>0) $sep = "&";
-        $link = "$link{$sep}__token=$token&__ts=$ts";
+        if ($vars['include_count'] == 0)
+        {
+            PageContext::add_header_html('post_link', 
+                "<script type='text/javascript'>".file_get_contents(Config::get('path')."_media/inline_js/post_link.js")."</script>"
+            );
+        }
+        
+        $link = "javascript:postLink(".json_encode($link).", ".json_encode($ts).", ".json_encode($token).");";        
     }
 
     if (@$vars['class']) {
@@ -31,4 +34,4 @@
         $class = '';
     }
 ?>
-<a href="<?php echo $link; ?>" <?php echo $class; ?> onclick="return confirm('<?php echo addslashes($confirm); ?>');"><?php echo escape($vars['text']); ?></a>
+<a href='<?php echo $link; ?>' <?php echo $class; ?> onclick='return confirm(<?php echo json_encode($confirm); ?>);'><?php echo escape($vars['text']); ?></a>

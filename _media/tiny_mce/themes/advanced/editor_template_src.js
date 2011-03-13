@@ -30,68 +30,6 @@
         }                     
     };
 
-    function createModalBox(title, content, saveChanges, cancel, width)
-    {
-        var ed = this;
-                
-        var $box = createElem('div',
-                {
-                    className:'modalBox',
-                    keypress: function(e) {
-                        e = window.event ? event : e;
-                        var code = e.charCode || e.keyCode;
-                        if (code == 13)
-                        {
-                            saveChanges();   
-                        }
-                        else if (code == 27)
-                        {
-                            cancel();
-                        }
-                    }   
-                },                    
-                createElem('div', 
-                    {
-                        className:'modalHeading'
-                    },
-                    title
-                ),
-                content,
-                createElem('div',
-                    {className:'modalButtons'},
-                    createElem('input', {type:'submit', value:ed.getLang('advanced.ok'),
-                        click: function() {
-                           saveChanges(); 
-                        }
-                    }),
-                    ' ',
-                    createElem('input', {type:'submit', value:ed.getLang('advanced.cancel'),
-                        click: function() { cancel(); }
-                    })
-                )                    
-        );
-        
-        var $shadow = createElem('div', { className: 'modalShadow' });        
-    
-        width = width || 400;
-        
-        $box.style.width = width + 'px';
-    
-        var windowWidth = document.body.offsetWidth || window.innerWidth;
-        $box.style.left = (windowWidth / 2 - width / 2) + 'px';
-                
-        var scrollTop = window.pageYOffset || window.document.documentElement.scrollTop || window.document.body.scrollTop;
-        $box.style.top = (scrollTop + 100) + 'px';
-        
-        var height = document.documentElement.scrollHeight || document.body.scrollHeight;        
-        
-        $shadow.style.height = height + 'px';
-    
-        return createElem('div', $shadow, $box);                      
-    }              
-
-    tinymce.Editor.prototype.createModalBox = createModalBox;
-
     tinymce.create('tinymce.themes.AdvancedTheme', {
         sizes : [8, 10, 12, 14, 18, 24, 36],
 
@@ -236,6 +174,71 @@
             if (s.skin_variant)
                 DOM.loadCSS(url + "/skins/" + ed.settings.skin + "/ui_" + s.skin_variant + ".css");
             */
+            
+        
+            ed.onBeforeGetContent.add(function(ed, o)
+            {
+                var body = ed.getBody();
+
+                var invalidTagNames = ['meta','style','title','link'];
+                for (var j = 0; j < invalidTagNames.length; j++)
+                {
+                    var badTags = body.getElementsByTagName(invalidTagNames[j]), badTagsCopy = [];
+
+                    for (var i = 0; i < badTags.length; i++)
+                    {
+                        badTagsCopy.push(badTags[i]);
+                    }
+                    for (var i = 0; i < badTagsCopy.length; i++)
+                    {
+                        removeElem(badTagsCopy[i]);
+                    }
+                }
+
+                var paragraphs = body.getElementsByTagName('p');
+                for (var i = 0; i < paragraphs.length - 1; i++)
+                {
+                    paragraphs[i].className = '';
+                }
+                if (paragraphs.length > 0)
+                {
+                    paragraphs[i].className = 'last-paragraph';
+
+                    if (paragraphs[0].childNodes.length == 0)
+                    {
+                        removeElem(paragraphs[0]);
+                    }
+                }
+            });
+
+            ed.onDblClick.add(function(ed, e) {
+                var target = e.target;
+                if (target)
+                {
+                    if (target.nodeName == 'IMG')
+                    {
+                        if (target.className.indexOf('scribd_placeholder') != -1)
+                        {
+                            ed.execCommand('mceDocument');
+                        }
+                        else
+                        {
+                            ed.execCommand('mceImage');
+                        }
+                    }
+                    else if (target.nodeName == 'A')
+                    {
+                        ed.execCommand('mceLink');
+                    }
+                }
+            });
+
+            ed.onChange.add(function(ed, l) {
+                if (ed.isDirty())
+                {
+                    setDirty(true);
+                }
+            });            
         },
 
         createControl : function(n, cf) {
@@ -1283,16 +1286,17 @@
 
             var loading = createElem('div', {className:'modalImageFrameLoading'}, ed.getLang('advanced.loading'));
              
-            var imageBox = ed.createModalBox(                
-                ed.getLang(imageNode ? 'advanced.document_edit' : 'advanced.document_insert'),
-                     createElem('div',
+            var imageBox = createModalBox({               
+                title: ed.getLang(imageNode ? 'advanced.document_edit' : 'advanced.document_insert'),
+                content: createElem('div',
                          {className:'modalBody'},
                          loading,
                          iframe
                      ),
-                     saveChanges, cancel,
-                     640
-             );               
+                okFn: saveChanges, 
+                cancelFn: cancel,
+                width: 640
+            });               
              
             function saveChanges()
             {
@@ -1367,15 +1371,16 @@
              );
 
             var loading = createElem('div', {className:'modalImageFrameLoading'}, ed.getLang('advanced.loading'));
-            var imageBox = ed.createModalBox(                
-                ed.getLang(imageNode ? 'advanced.image_edit' : 'advanced.image_insert'),
-                     createElem('div',
+            var imageBox = createModalBox({
+                title: ed.getLang(imageNode ? 'advanced.image_edit' : 'advanced.image_insert'),
+                content: createElem('div',
                          {className:'modalBody'},
                          loading,
                          iframe
                      ),
-                     saveChanges, cancel
-             );       
+                okFn: saveChanges, 
+                cancelFn: cancel
+            });       
 
             function saveChanges()
             {
@@ -1442,9 +1447,9 @@
                 className:'input-text', 
                 value:(e ? e.href : '')
             });
-            var linkBox = ed.createModalBox(
-                ed.getLang(e ? 'advanced.link_edit' : 'advanced.link_insert'),
-                    createElem('div',
+            var linkBox = createModalBox({
+                title: ed.getLang(e ? 'advanced.link_edit' : 'advanced.link_insert'),
+                content: createElem('div',
                         {className:'modalBody'},
                         createElem('div',
                             {className:'linkUrl'},
@@ -1475,8 +1480,9 @@
                         ), 
                         textDiv
                     ),
-                    saveChanges, cancel
-            );       
+                okFn: saveChanges,
+                focus: true
+            });       
             
             function saveChanges()
             {
@@ -1525,13 +1531,7 @@
                 removeElem(linkBox); 
             }          
             
-            function cancel()
-            {
-                removeElem(linkBox); 
-            }
-                          
             document.body.appendChild(linkBox);        
-            setTimeout(function() { urlField.focus(); }, 1);
         },
 
         /*

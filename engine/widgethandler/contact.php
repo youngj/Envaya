@@ -18,7 +18,14 @@ class WidgetHandler_Contact extends WidgetHandler
 
         $email = trim(get_input('email'));
 
-        validate_email_address($email);
+        try
+        {
+            validate_email_address($email);
+        }
+        catch (Exception $ex)
+        {
+            return action_error($ex->getMessage());
+        }
 
         $org->email = $email;
         $widget->public_email = sizeof(get_input_array('public_email')) ? 'yes' : 'no';
