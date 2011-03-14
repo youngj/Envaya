@@ -27,13 +27,10 @@
             <?php echo __('user:password:lost') ?>
     </a>    
     </div>
+
+    <?php 
     
-    <script type='text/javascript'>
-        setTimeout(function() {
-            document.getElementById('<?php echo $vars['username'] ? 'password' : 'username' ?>').focus();
-        }, 10);
-    </script>
-    <?php       
+    echo view('focus', array('id' => $vars['username'] ? 'password' : 'username')); 
     
     if (@$vars['next'])
     {

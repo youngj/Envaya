@@ -66,7 +66,6 @@ return array(
     'error:UnrecognisedValue' => "Unrecognised value passed to constuctor.",
     'error:NotValidEntity' => "GUID:%d is not a valid %s",
     'error:BaseEntitySaveFailed' => "Unable to save new object's base entity information!",
-    'error:EntityTypeNotSet' => "Entity type must be set.",
 
     'error:ClassnameNotClass' => "%s is not a %s.",
 

@@ -18,16 +18,13 @@
 </div>
 </div>
 
+<?php echo view('focus', array('id' => 'title')); ?>
 <script type='text/javascript'>
 (function() {
 
 var widgetName = document.getElementById('widget_name');
 var title = document.getElementById('title');
 var autoFill = true;
-
-setTimeout(function() {
-    document.getElementById('title').focus();
-},10);
 
 function makeWidgetName(value)
 {

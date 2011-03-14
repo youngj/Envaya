@@ -91,7 +91,69 @@ class Controller_Org extends Controller
         $body = view_layout('one_column', view_title($title), $content);
         $this->page_draw($title,$body);
     }
+
+    function action_js_search()
+    {
+        $this->request->headers['Content-Type'] = 'text/javascript';                
+    
+        $name = get_input('name');
+        $email = get_input('email');
+        $website = get_input('website');
         
+        $orgs_by_name = $orgs_by_email = $orgs_by_website = array();       
+        
+        if ($email)
+        {
+            $orgs_by_email = Organization::query()->where('email = ?', $email)->filter();
+        }
+        
+        if ($website)
+        {
+            $username = null;
+            $parsed_website = parse_url($website);                
+            if ($parsed_website)            
+            {
+                $host = @$parsed_website['host'];
+                $username = OrgDomainName::get_username_for_host($host);                
+            }
+            if (!$username && preg_match('/\/([\w\-]+)/', $parsed_website['path'], $matches))
+            {
+                $username = $matches[1];
+            }
+            if ($username)
+            {
+                $orgs_by_website = Organization::query()->where('username = ?', $username)->filter();
+            }
+        }        
+        
+        // if there's a likely unique match by website or email, avoid searching by name
+        // (where we are likely to get some bad matches)
+        if (sizeof($orgs_by_website) != 1 && sizeof($orgs_by_email) != 1) 
+        {            
+            if ($name)
+            {
+                $orgs_by_name = Organization::query_search($name)->limit(4)->filter();
+            }
+        }
+            
+        $all_orgs = array_merge($orgs_by_website, $orgs_by_email, $orgs_by_name);
+                
+        // remove duplicates
+        $all_orgs = array_values(array_combine(
+            array_map(function($o) { return $o->guid; }, $all_orgs),
+            $all_orgs
+        ) ?: array());
+                
+        $this->request->response = json_encode(array(
+            'results' => array_map(function($o) { 
+                return array(
+                    'org' => $o->js_properties(),
+                    'view' => view('org/js_search_result', array('org' => $o))
+                );
+            }, $all_orgs),
+        ));                
+    }   
+    
     function action_change_feed_view()
     {
         $sector = get_input('sector');

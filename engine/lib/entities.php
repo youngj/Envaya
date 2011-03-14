@@ -13,7 +13,7 @@
             13 => 'EmailTemplate',
             16 => 'Comment',
             17 => 'FeaturedPhoto',
-            18 => 'NetworkMember',
+            19 => 'OrgRelationship',
         );
         private static $class_to_subtype = null;
         
@@ -63,7 +63,7 @@
         }
         else
         {
-            throw new ClassException(sprintf(__('error:ClassnameNotClass'), $classname, 'Entity'));
+            throw new ClassException(sprintf(__('error:ClassnameNotClass'), ($classname ?: "Entity subtype {$row->subtype}"), 'Entity'));
         }
     }
 

@@ -67,14 +67,13 @@ if (sizeof($todoItems) && !Session::get('hide_todo'))
 <script type='text/javascript'>
 function hideTodo()
 {
-    var todo = document.getElementById('todo_container');
-    todo.style.display = 'none';
+    hideMessages('todo_container');
     fetchJson("/pg/hide_todo", function(){});
 }
 </script>
 <div class='todo_container' id='todo_container'>
 <div class='good_messages'>
-<a class='gridDelete' href='javascript:hideTodo()' onclick='ignoreDirty()' style='float:right;width:22px;margin-right:-5px;margin-top:-10px'></a>
+<a class='hideMessages' style='margin-right:-5px;margin-top:-10px;' href='javascript:hideTodo()' onclick='ignoreDirty()'></a>
 <?php
 $messages = SessionMessages::get_register('messages');
 if ($messages)

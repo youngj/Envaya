@@ -92,7 +92,7 @@ abstract class Entity extends Model
     
     protected function init_from_row($row)
     {
-        $entityRow = (property_exists($row, 'type')) ? $row : get_entity_as_row($row->guid);
+        $entityRow = (property_exists($row, 'subtype')) ? $row : get_entity_as_row($row->guid);
         parent::init_from_row($entityRow);
             
         if (!property_exists($row, get_first_key(static::$table_attributes)))
@@ -104,11 +104,9 @@ abstract class Entity extends Model
 
     protected function initialize_attributes()
     {        
-        $this->attributes['type'] = "object"; // ignored
         $this->attributes['subtype'] = static::get_subtype_id();
         $this->attributes['owner_guid'] = 0;
         $this->attributes['container_guid'] = 0;
-        $this->attributes['site_guid'] = 0; // ignored
         $this->attributes['time_created'] = 0;
         $this->attributes['time_updated'] = 0;
         $this->attributes['enabled'] = "yes";
@@ -263,7 +261,7 @@ abstract class Entity extends Model
         {
             if (($this->owner_guid == $user->guid)
              || ($this->container_guid == $user->guid)
-             || ($this->type == "user" && $this->guid == $user->guid)
+             || ($this->guid == $user->guid)
              || $user->admin)
             {
                 return true;
@@ -349,10 +347,8 @@ abstract class Entity extends Model
             'owner_guid' => $this->owner_guid,
             'container_guid' => $this->container_guid,
             'enabled' => $this->enabled,
-            'site_guid' => 0,
             'time_updated' => $this->time_updated,
             'time_created' => $this->time_created,
-            'type' => $this->type,
             'subtype' => $this->subtype,
         );
         
@@ -374,7 +370,7 @@ abstract class Entity extends Model
         $this->clear_from_cache();
         $this->cache_for_current_request();
         
-        trigger_event('update',$this->type,$this);
+        trigger_event('update',get_class($this),$this);
     }
 
     function save_metadata()
@@ -425,13 +421,16 @@ abstract class Entity extends Model
     /**
      * Delete this entity.
      */
-    public function delete()
+    public function delete($recursive = false)
     {
-        $sub_entities = $this->get_sub_entities();
-        if ($sub_entities)
+        if ($recursive)
         {
-            foreach ($sub_entities as $e)
-                $e->delete();
+            $sub_entities = $this->get_sub_entities();
+            if ($sub_entities)
+            {
+                foreach ($sub_entities as $e)
+                    $e->delete($recursive);
+            }
         }
 
         $this->clear_metadata();
@@ -441,7 +440,7 @@ abstract class Entity extends Model
         parent::delete();
         $this->clear_from_cache();
         
-        trigger_event('delete',$this->type,$this);
+        trigger_event('delete',get_class($this),$this);
     }
 
     function get_container_entity()
@@ -488,7 +487,7 @@ abstract class Entity extends Model
             $translateMode = get_translate_mode();
             $translation = $this->lookup_translation($field, $origLang, $viewLang, $translateMode, $isHTML);
             
-            trigger_event('translate',$this->type, $translation);
+            trigger_event('translate',get_class($this), $translation);
             
             if ($translation->owner_guid)
             {

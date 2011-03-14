@@ -30,7 +30,7 @@ function post_feed_items($user, $actionName, $subject, $args = null, $time = nul
 
     $feedNames = $user->get_feed_names();
 
-    if ($subject instanceof User && $subject != $user)
+    if ($subject != $user && method_exists($subject, 'get_feed_names'))
     {
         $feedNames = $feedNames + $subject->get_feed_names();
         $feedNames = array_flip(array_flip($feedNames));

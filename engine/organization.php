@@ -23,14 +23,9 @@ class Organization extends User
         return NewsUpdate::query()->where("container_guid=?", $this->guid)->order_by('u.guid desc');
     }    
     
-    public function query_network_members()
+    public function query_relationships()
     {
-        return NetworkMember::query()->where("container_guid=?", $this->guid)->order_by('name asc');
-    }
-    
-    public function query_network_memberships()
-    {
-        return NetworkMember::query()->where("org_guid=?", $this->guid);
+        return OrgRelationship::query()->where("container_guid=?", $this->guid)->order_by('subject_name asc');
     }
     
     public function query_files()

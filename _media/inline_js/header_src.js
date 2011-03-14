@@ -220,3 +220,12 @@ function addImageLinks(container)
         }
     }
 }
+
+function hideMessages(containerId)
+{
+    var div = document.getElementById(containerId);
+    if (div)
+    {
+        div.style.display = 'none';
+    }
+}

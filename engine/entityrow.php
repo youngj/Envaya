@@ -11,7 +11,6 @@ class EntityRow extends Model
     static $primary_key = 'guid';
     
     static $table_attributes = array(
-        'type' => "object",
         'subtype' => 0,
         'owner_guid' => 0,
         'container_guid' => 0,

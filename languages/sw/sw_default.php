@@ -36,7 +36,6 @@ return array(
     'feed:news' => '%s imeongeza %s.',    
     'feed:news_multi' => "%s imeongeza %s %d.",
     'feed:partnership' => '%s ina ubia na %s.',
-    'feed:report' => "%s imetoa %s.",
     'feed:more' => 'Soma zaidi',
     'feed:show_more' => "Onyesha mabadiliko zaidi",
     'dashboard:title' => 'Hariri Tovuti',

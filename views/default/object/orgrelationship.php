@@ -1,8 +1,6 @@
-<?php
-    
-    $entity = $vars['entity'];   
-    
-    $org = $entity->get_member_organization();
+<?php    
+    $relationship = $vars['entity'];      
+    $org = $relationship->get_subject_organization();
     
     if ($org)
     {
@@ -11,21 +9,21 @@
     else
     {    
         $icon = view('graphics/icon', array(
-            'entity' => $entity,
+            'entity' => $relationship,
             'size' => 'small',
         ));
 
-        $name = $entity->name;
+        $name = $relationship->get_subject_name();
         
-        $url = $entity->get_url();
+        $url = $relationship->get_subject_url();
         $link_open = $url ? "<a href='".escape($url)."'>" : '';
         $link_close = $url ? "</a>" : '';
 
         $info = "<div><b>$link_open".escape($name)."$link_close</b></div>";
         
-        if (!$entity->org_guid && $entity->email)
+        if (!$relationship->subject_guid && $relationship->subject_email)
         {
-            $info .= "<div>".view('output/email', array('value' => $entity->email))."</div>";
+            $info .= "<div>".view('output/email', array('value' => $relationship->subject_email))."</div>";
         }
         
         $icon = "$link_open$icon$link_close";

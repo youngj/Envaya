@@ -648,6 +648,7 @@ label {
 
 .search_listing {
     display: block;
+    clear:both;
     margin:0 10px 5px 10px;
     padding:5px;
 }
@@ -1166,7 +1167,7 @@ input[type="submit"] {
     text-align:center;
 }
 
-.gridDelete
+.gridDelete, .hideMessages
 {
     display:block;
     width:30px;
@@ -1174,10 +1175,17 @@ input[type="submit"] {
     background:url("/_graphics/delete.gif?v2") no-repeat left -35px;
 }
 
-a.gridDelete:hover
+a.gridDelete:hover, a.hideMessages:hover
 {
     background-position:left -5px;
 }
+
+.hideMessages
+{
+    float:right; 
+    width:22px;
+    margin-top:3px;
+}   
 
 .noBorderTable th, .noBorderTable td
 {

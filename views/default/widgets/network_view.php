@@ -1,15 +1,32 @@
 <?php 
     $widget = $vars['widget'];
-    
-    echo view('section', array('header' => __("network:memberships"), 
-        'content' => view('widgets/network_view_memberships', array('widget' => $widget))    
-    ));    
         
-    echo view('section', array('header' => __("network:members"), 
-        'content' => view('widgets/network_view_members', array('widget' => $widget))    
-    ));    
+    ob_start();
+        
+    echo view('widgets/network_view_relationship', array(
+        'header' => __("network:memberships"),
+        'widget' => $widget,
+        'type' => OrgRelationship::Membership,
+    ));
+        
+    echo view('widgets/network_view_relationship', array(
+        'header' => __("network:members"),
+        'widget' => $widget,
+        'type' => OrgRelationship::Member,
+    ));
 
-    echo view('section', array('header' => __("network:partnerships"), 
-        'content' => view('widgets/network_view_partnerships', array('widget' => $widget))    
-    ));    
+    echo view('widgets/network_view_relationship', array(
+        'header' => __("network:partnerships"),
+        'widget' => $widget,
+        'type' => OrgRelationship::Partnership,
+    ));   
     
+    $content = ob_get_clean();
+    if ($content)
+    {
+        echo $content;
+    }
+    else
+    {
+        echo "<div class='section_content padded'>".__('network:empty')."</div>";
+    }

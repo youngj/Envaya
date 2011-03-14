@@ -36,19 +36,6 @@ class User extends Entity
 			'notifications' => 3,
         );
 
-    /**
-     * Initialise the attributes array.
-     * This is vital to distinguish between metadata and base parameters.
-     *
-     * Place your base parameters here.
-     */
-
-    protected function initialize_attributes()
-    {
-        parent::initialize_attributes();
-        $this->attributes['type'] = "user";
-    }
-
     public function get_feed_names()
     {
         return array(
@@ -245,7 +232,7 @@ class User extends Entity
        
     function get_blog_dates()
     {
-        $sql = "SELECT guid, time_created from entities WHERE type='object' AND enabled='yes' AND subtype=? AND container_guid=? ORDER BY guid ASC";
+        $sql = "SELECT guid, time_created from entities WHERE enabled='yes' AND subtype=? AND container_guid=? ORDER BY guid ASC";
         return Database::get_rows($sql, array(NewsUpdate::get_subtype_id(), $this->guid));
     }
 

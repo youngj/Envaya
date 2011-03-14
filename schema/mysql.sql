@@ -11,13 +11,10 @@
 
 -- Define entities. 
 CREATE TABLE `entities` (
-	`guid` bigint(20) unsigned  NOT NULL auto_increment,
-	
-	`type` enum ('object', 'user', 'group', 'site') NOT NULL,
+	`guid` bigint(20) unsigned  NOT NULL auto_increment,	
 	`subtype` int(11) NULL,
 	
 	`owner_guid` bigint(20) unsigned NOT NULL,
-    `site_guid` bigint(20) unsigned NOT NULL,
     `container_guid` bigint(20) unsigned NOT NULL,
 	
 	`time_created` int(11) NOT NULL,
@@ -26,10 +23,8 @@ CREATE TABLE `entities` (
 	`enabled` enum ('yes', 'no') NOT NULL default 'yes',
 	
 	primary key (`guid`),
-	KEY `type` (`type`),
 	KEY `subtype` (`subtype`),
 	KEY `owner_guid` (`owner_guid`),
-	KEY `site_guid` (`site_guid`),
 	KEY `container_guid` (`container_guid`),
 	KEY `time_created` (`time_created`),
 	KEY `time_updated` (`time_updated`)
@@ -164,13 +159,22 @@ CREATE TABLE `widgets` (
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `network_members` (
+CREATE TABLE `org_relationships` (
     `guid` bigint(20) unsigned NOT NULL,
-    `org_guid` bigint(20) unsigned NOT NULL,
-    `name` text default null,    
-    `email` varchar(128) default null,
-    `website` text default null,
-    `logo_url` text default null,
+    `type` tinyint(4) not null default 0,
+    
+    `subject_guid` bigint(20) unsigned NOT NULL,
+    `subject_name` text default null,    
+    `subject_email` varchar(128) default null,
+    `subject_website` text default null,
+    `subject_logo` text default null,
+    
+    `invite_code` varchar(32) default null,    
+    
+    `content` text default null,
+    `language` varchar(4) default null,
+    `approval` int default 0,    
+    
     `order` int default 0,
     PRIMARY KEY (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
