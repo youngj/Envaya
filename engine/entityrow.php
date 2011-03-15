@@ -14,7 +14,6 @@ class EntityRow extends Model
         'subtype' => 0,
         'owner_guid' => 0,
         'container_guid' => 0,
-        'site_guid' => 0,
         'time_created' => 0,
         'time_updated' => 0,
         'enabled' => "yes",

@@ -97,7 +97,7 @@ class Controller_Admin extends Controller
                 where('(notifications & ?) > 0', Notification::Batch)->
                 where("not exists (select * from sent_emails where email_guid = ? and user_guid = e.guid)", $email->guid)->
                 order_by('e.guid')->
-                limit(20)->
+                limit(50)->
                 filter(); 
         }
 

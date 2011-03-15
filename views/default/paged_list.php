@@ -8,14 +8,18 @@
         
     echo $nav;
       
-    $entities = $vars['entities'];       
-    
-    if (is_array($entities) && sizeof($entities) > 0) 
+    $entities = @$vars['entities'];       
+    if (is_array($entities)) 
     {
-        foreach($entities as $entity) 
-        {
-            echo view_entity($entity);
-        }      
-        echo $nav;
+        $elements = array_map('view_entity', $entities);
     }
-?>
+    else
+    {    
+        $elements = @$vars['elements'] ?: array();
+    }
+    
+    if (sizeof($elements) > 0)
+    {
+        echo implode(@$vars['separator'] ?: '', $elements);
+        echo $nav;        
+    }       

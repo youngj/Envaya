@@ -13,21 +13,13 @@ class WidgetHandler_Network extends WidgetHandler
     }   
 
     function edit($widget)
-    {
+    {                
         switch (get_input('action'))       
         {
-            case 'add_member': 
-                $this->set_submenu($widget);
-                return view("widgets/network_add_member", array('widget' => $widget));
-                
-            case 'add_membership':
-                $this->set_submenu($widget);
-                return view("widgets/network_add_membership", array('widget' => $widget));
-
-            case 'add_partnership':
-                $this->set_submenu($widget);
-                return view("widgets/network_add_partnership", array('widget' => $widget));                
-                
+            case 'add_relationship':        return $this->add_relationship_view($widget);                               
+            case 'approve_relationship':    return $this->approve_relationship_view($widget);                
+            case 'edit_relationship':       return $this->edit_relationship_view($widget);                                
+            
             default:                 
                 return view("widgets/network_edit", array('widget' => $widget));
         }    
@@ -37,13 +29,10 @@ class WidgetHandler_Network extends WidgetHandler
     {        
         switch (get_input('action'))
         {
-            case 'delete_member':      return $this->delete_member($widget);
-            case 'delete_membership':  return $this->delete_membership($widget);
-            case 'delete_partnership': return $this->delete_partnership($widget);
-            
-            case 'add_member':       return $this->add_member($widget);
-            case 'add_membership':   return $this->add_membership($widget);
-            case 'add_partnership':  return $this->add_partnership($widget);
+            case 'delete_relationship':  return $this->delete_relationship($widget);
+            case 'save_relationship':    return $this->save_relationship($widget);
+            case 'approve_relationship': return $this->approve_relationship($widget);                        
+            case 'add_relationship':     return $this->add_relationship($widget);
             
             default: 
                 $widget->save();
@@ -51,25 +40,51 @@ class WidgetHandler_Network extends WidgetHandler
         }
     }
     
-    private function set_submenu($widget)
+    private function show_cancel_edit_button($widget)
     {
-        PageContext::add_submenu_item(__("cancel"), $widget->get_edit_url(), 'edit', true);
+        PageContext::add_submenu_item(__("cancel"), $widget->get_edit_url(), 'edit', true);                           
+    }
+    
+    private function add_relationship_view($widget)
+    {
+        $this->show_cancel_edit_button($widget);
+                        
+        $org_guid = (int)get_input('org_guid');
+        $org = $org_guid ? Organization::query()->where('e.guid = ?', $org_guid)->get() : null;
+        
+        $type = (int)get_input('type');
+        if (!OrgRelationship::is_valid_type($type))
+        {
+            return not_found();
+        }
+                
+        return view('widgets/network_add_relationship', array(
+            'widget' => $widget, 
+            'org' => $org,
+            'type' => $type
+        ));            
     }    
     
-    private function add_relationship($widget, $relationshipType, $messages)
+    private function add_relationship($widget)
     {
         $org = $widget->get_container_entity();
     
         $relationship = new OrgRelationship();
-        $relationship->type = $relationshipType;
+        $relationship->type = (int)get_input('type');
         $relationship->container_guid = $org->guid;
+        $relationship->set_self_approved();
 
+        if (!OrgRelationship::is_valid_type($relationship->type))
+        {
+            return not_found();
+        }
+        
         $subject_org = Organization::query()->where('e.guid = ?', (int)get_input('org_guid'))->get();        
         if (!$subject_org) // subject_org not an envaya member
         {
             $relationship->subject_name = get_input('name');
-            $relationship->subject_email = get_input('email');
-            $relationship->subject_website = get_input('website');            
+            $relationship->subject_email = $this->validate_email(get_input('email'));
+            $relationship->subject_website = $this->clean_url(get_input('website'));
             $relationship->subject_guid = 0;
             
             $matchingRelationships = $org->query_relationships()
@@ -81,18 +96,9 @@ class WidgetHandler_Network extends WidgetHandler
 
             if ($matchingRelationships > 0)
             {
-                return action_error(sprintf($messages['duplicate'], $relationship->get_subject_name()));
-            }            
-            
-            try
-            {
-                validate_email_address($relationship->subject_email);
+                return action_error(sprintf($relationship->__('duplicate'), $relationship->get_subject_name()));
             }
-            catch (Exception $ex)
-            {
-                return action_error($ex->getMessage());
-            }
-            
+
             if (get_input('invite'))
             {
                 $relationship->invite_code = substr(generate_random_cleartext_password(), 0, 20);
@@ -108,7 +114,7 @@ class WidgetHandler_Network extends WidgetHandler
         
             if ($org->guid == $relationship->subject_guid)
             {
-                return action_error($messages['no_self']);
+                return action_error($relationship->__('no_self'));
             }
         
             if ($org->query_relationships()
@@ -116,15 +122,22 @@ class WidgetHandler_Network extends WidgetHandler
                 ->where('subject_guid = ?', $relationship->subject_guid)
                 ->count() > 0)
             {
-                return action_error(sprintf($messages['duplicate'], $relationship->get_subject_name()));
+                return action_error(sprintf($relationship->__('duplicate'), $relationship->get_subject_name()));
             }
             
-            $reverse = new OrgRelationship();
-            $reverse->type = OrgRelationship::get_reverse_type($relationship->type);
-            $reverse->container_guid = $relationship->subject_guid;
-            $reverse->subject_guid = $relationship->container_guid;
-            $reverse->subject_name = $org->name;
-            $reverse->save();
+            if ($subject_org->query_relationships()
+                ->where('type = ?', $relationship->type)
+                ->where('subject_guid = ?', $org->guid)
+                ->count() == 0)
+            {            
+                $reverse = new OrgRelationship();
+                $reverse->type = OrgRelationship::get_reverse_type($relationship->type);
+                $reverse->container_guid = $relationship->subject_guid;
+                $reverse->subject_guid = $org->guid;
+                $reverse->subject_name = $org->name;
+                $reverse->set_subject_approved();
+                $reverse->save();
+            }
         }
                 
         $relationship->save();
@@ -132,77 +145,165 @@ class WidgetHandler_Network extends WidgetHandler
         
         $widget->save();
 
-        system_message(sprintf($messages['added'], $relationship->get_subject_name()));
+        system_message(sprintf($relationship->__('added'), $relationship->get_subject_name()));
         forward($widget->get_edit_url());    
     }
     
-    private function add_member($widget)
+    private function clean_url($url)
     {
-        $this->add_relationship($widget, OrgRelationship::Member, array(
-            'duplicate' => __('network:already_member'),
-            'added' => __('network:member_added'),
-            'no_self' => __('network:no_self_member'),
-        ));
-    }
-    
-    private function add_membership($widget)
-    {
-        $this->add_relationship($widget, OrgRelationship::Membership, array(
-            'duplicate' => __('network:already_membership'),
-            'added' => __('network:membership_added'),
-            'no_self' => __('network:no_self_member'),
-        ));
-    }
-    
-    private function add_partnership($widget)
-    {
-        $this->add_relationship($widget, OrgRelationship::Partnership, array(
-            'duplicate' => __('network:already_partnership'),
-            'added' => __('network:partnership_added'),
-            'no_self' => __('network:no_self_partnership'),
-        ));
+        if ($url)
+        {
+            $parsed = parse_url($url);
+            $scheme = @$parsed['scheme'];
+            if (!$scheme)
+            {
+                $url = "http://$url";
+            }         
+            else if ($scheme != 'http' || $scheme != 'https')
+            {
+                $url = '';
+            }
+            $url = filter_var($url, FILTER_SANITIZE_URL);
+            $url = preg_replace('/[\<\>\(\)\'\"]/', '', $url);
+        }    
+        return $url;
     }    
             
-    private function delete_relationship($widget, $messages)
+    private function delete_relationship($widget)
     {
-        $relationship_guid = (int)get_input('guid');
-        if ($relationship_guid)
-        {        
-            $org = $widget->get_container_entity();
-            
-            $relationship = $org->query_relationships()->where('e.guid = ?', $relationship_guid)->get();
-            if ($relationship)
+        $org = $widget->get_container_entity();
+        
+        try
+        {
+            $relationship = $this->get_current_relationship($org);                        
+        }
+        catch (InvalidParameterException $ex)
+        {
+            // ignore
+            $relationship = null;
+        }
+        
+        if ($relationship)
+        {
+            $reverse = $relationship->get_reverse_relationship();
+            if ($reverse && !$reverse->is_self_approved())
             {
-                $reverse = $relationship->get_reverse_relationship();
-                if ($reverse)
-                {
-                    $reverse->delete();
-                }            
-                $relationship->delete();
-                system_message(sprintf($messages['deleted'], $relationship->get_subject_name()));
-            }           
-            return forward($widget->get_edit_url());        
+                $reverse->delete();
+            }            
+            $relationship->delete();
+            
+            system_message(sprintf($relationship->__('deleted'), $relationship->get_subject_name()));
+        }       
+        
+        return forward($widget->get_edit_url());        
+    }
+    
+    private function get_current_relationship($org)
+    {
+        $guid = (int)get_input('guid');
+        $relationship = $org->query_relationships()->where('e.guid = ?', $guid)->get();
+        if (!$relationship)
+        {            
+            throw new InvalidParameterException("invalid guid");
         }    
+        return $relationship;
+    }    
+    
+    private function approve_relationship_view($widget)
+    {
+        $org = $widget->get_container_entity();
+        try
+        {
+            $relationship = $this->get_current_relationship($org);
+        }
+        catch (InvalidParameterException $ex)
+        {
+            return not_found();
+        }        
+        
+        return view('widgets/network_approve_relationship', array('widget' => $widget, 'relationship' => $relationship));
     }
     
-    private function delete_partnership($widget)
+    private function approve_relationship($widget)
     {
-        $this->delete_relationship($widget, array(
-            'deleted' => __('network:partnership_deleted'),
-        ));
+        $org = $widget->get_container_entity();
+        try
+        {
+            $relationship = $this->get_current_relationship($org);
+        }
+        catch (InvalidParameterException $ex)
+        {
+            return not_found();
+        }        
+        
+        $relationship->set_self_approved();
+        $relationship->save();
+        
+        system_message(__('network:relationship_approved'));
+        return forward($widget->get_edit_url());        
     }
     
-    private function delete_membership($widget)
+    private function save_relationship($widget)
     {
-        $this->delete_relationship($widget, array(
-            'deleted' => __('network:membership_deleted'),
-        ));
+        $org = $widget->get_container_entity();
+
+        try
+        {
+            $relationship = $this->get_current_relationship($org);
+        }
+        catch (InvalidParameterException $ex)
+        {
+            return not_found();
+        }                
+        
+        $relationship->set_content(get_input('content'), true);
+        
+        $subject_org = $relationship->get_subject_organization();
+        
+        if ($subject_org)
+        {
+            $relationship->subject_name = $subject_org->name;
+        }
+        else
+        {
+            $relationship->subject_name = get_input('name');
+            $relationship->subject_email = $this->validate_email(get_input('email'));
+            $relationship->subject_website = $this->clean_url(get_input('website'));            
+        }
+        $relationship->set_self_approved();
+        $relationship->save();
+        
+        system_message(__('network:relationship_saved'));
+        return forward($widget->get_edit_url());
+    }    
+    
+    private function validate_email($email)
+    {
+        try
+        {
+            validate_email_address($email);
+            return $email;
+        }
+        catch (Exception $ex)
+        {
+            return action_error($ex->getMessage());
+        }                
     }
     
-    private function delete_member($widget)
+    private function edit_relationship_view($widget)
     {
-        $this->delete_relationship($widget, array(
-            'deleted' => __('network:member_deleted'),
-        ));
+        $this->show_cancel_edit_button($widget);
+        
+        $org = $widget->get_container_entity();
+        try
+        {
+            $relationship = $this->get_current_relationship($org);
+        }
+        catch (InvalidParameterException $ex)
+        {
+            return not_found();
+        }
+        
+        return view('widgets/network_edit_relationship', array('widget' => $widget, 'relationship' => $relationship));
     }
 }

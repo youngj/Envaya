@@ -3,23 +3,36 @@
     $org = $vars['entity'];
     $loggedInOrg = Session::get_loggedin_user();
 
-    if ($loggedInOrg instanceof Organization && $org->email)
+    if ($loggedInOrg instanceof Organization)
     {
+        $controls = array();
+        if ($org->email)
+        {
+            $controls[] = "<a href='{$org->get_url()}/compose'>".__('message:link')."</a>";
+        }
+        
+        $networkPage = $loggedInOrg->get_widget_by_class('WidgetHandler_Network');
+        
+        if ($loggedInOrg->query_relationships()->where('subject_guid = ?', $org->guid)->count() == 0)
+        {        
+            $controls[] = view('widgets/network_add_relationship_link', array('widget' => $networkPage, 
+                'org' => $org, 'type' => OrgRelationship::Membership));
 
-?>
-
-<table class='commBox'>
-<tr>
-<td class='commBoxLeft'>
-&nbsp;
-</td>
-<td class='commBoxMain'>
-<a href='<?php echo $org->get_url() ?>/compose'><?php echo __('message:link'); ?></a>
-</td>
-<td class='commBoxRight'>
-&nbsp;
-</td>
-</table>
-<?php
-}
-?>
+            $controls[] = view('widgets/network_add_relationship_link', array('widget' => $networkPage, 
+                'org' => $org, 'type' => OrgRelationship::Partnership));
+        }
+            
+        if (sizeof($controls))
+        {
+            echo "<table class='commBox'><tr><td class='commBoxLeft'>&nbsp;</td>";
+            
+            foreach ($controls as $control)
+            {
+                echo "<td class='commBoxMain'>$control</td>";
+            }
+            
+            echo "<td class='commBoxRight'>&nbsp;</td></table>";
+        }
+    }
+    
+    

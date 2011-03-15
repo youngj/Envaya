@@ -1,25 +1,20 @@
 <?php 
     $widget = $vars['widget'];
-        
+
+    $types = array(
+        OrgRelationship::Membership,
+        OrgRelationship::Member,
+        OrgRelationship::Partnership);
+    
     ob_start();
         
-    echo view('widgets/network_view_relationship', array(
-        'header' => __("network:memberships"),
-        'widget' => $widget,
-        'type' => OrgRelationship::Membership,
-    ));
-        
-    echo view('widgets/network_view_relationship', array(
-        'header' => __("network:members"),
-        'widget' => $widget,
-        'type' => OrgRelationship::Member,
-    ));
-
-    echo view('widgets/network_view_relationship', array(
-        'header' => __("network:partnerships"),
-        'widget' => $widget,
-        'type' => OrgRelationship::Partnership,
-    ));   
+    foreach ($types as $type)
+    {
+        echo view('widgets/network_view_relationship_group', array(
+            'widget' => $widget,
+            'type' => $type,
+        ));
+    }        
     
     $content = ob_get_clean();
     if ($content)

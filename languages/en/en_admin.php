@@ -109,8 +109,7 @@ return array(
     
     'viewtype:change' => "Change listing type",
     'viewtype:list' => "List view",
-    'viewtype:gallery' => "Gallery",
-
+    
     'search:startblurb' => "Items matching '%s':",
 
     'user:search:startblurb' => "Users matching '%s':",

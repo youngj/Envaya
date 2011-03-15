@@ -1191,3 +1191,10 @@ a.gridDelete:hover, a.hideMessages:hover
 {
     border:0px;
 }
+
+.separator
+{
+    border-top:1px solid #f0f0f0;
+    height:0px;
+    overflow:hidden;
+}

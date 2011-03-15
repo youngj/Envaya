@@ -1,13 +1,17 @@
 <?php
+    $org = $vars['org'];
+    $type = $vars['type'];
     $widget = $vars['widget'];
-    $action = $vars['action'];
-    $header = $vars['header'];
     $name_label = @$vars['name_label'] ?: __('network:search_name');
-    $can_add_unregistered = $vars['can_add_unregistered'];
-    $confirm = $vars['confirm'];
-    $not_shown = $vars['not_shown'];
+    $header = OrgRelationship::msg($type, 'add_header');    
+    $can_add_unregistered = OrgRelationship::msg($type, 'can_add_unregistered');
+    $confirm = OrgRelationship::msg($type, 'add_confirm');
+    $not_shown = OrgRelationship::msg($type, 'not_shown');
     
     ob_start();
+    
+    if (!$org)
+    {
 ?>
 
 <script type='text/javascript'>
@@ -56,6 +60,7 @@ function searchOrg()
 
 function addNewOrg(invite)
 {
+    setSubmitted();
     document.getElementById('org_guid').value = '';
     document.getElementById('invite').value = invite ? '1' : '';
     document.forms[0].submit();
@@ -63,6 +68,7 @@ function addNewOrg(invite)
 
 function addExistingOrg(org)
 {
+    setSubmitted();
     document.getElementById('org_guid').value = org.guid;
     document.forms[0].submit();
 }
@@ -111,7 +117,10 @@ function showNotFoundDialog(query)
 
 function getOrgResultView(result)
 {
-    return createElem('div',
+    var container = createElem('div', {innerHTML:result.view});
+    
+    var view = container.firstChild;
+    view.insertBefore(
         createElem('div', {className:'selectMemberButton'}, 
             createElem('input', {
                 type:'submit',                 
@@ -119,8 +128,9 @@ function getOrgResultView(result)
                 value:<?php echo json_encode(__('network:add_select')); ?>+" \xbb"
             })
         ),
-        createElem('div', {innerHTML:result.view})
+        view.firstChild        
     );
+    return container;
 }
 
 function showConfirmMemberDialog(query, results)
@@ -154,39 +164,63 @@ function showConfirmMemberDialog(query, results)
 
 </script>
 
-<form method='POST' action='<?php echo $widget->get_edit_url() ?>?action=<?php echo $vars['action']; ?>'>
-<div class='instructions'>
-<?php echo $vars['instructions']; ?>
-</div>
+<?php
+}
+?>
+
+<form method='POST' action='<?php echo $widget->get_edit_url() ?>?action=add_relationship'>
 <?php
 
 echo view('input/securitytoken');
-echo view('input/hidden', array('name' => 'org_guid', 'id' => 'org_guid'));
+echo view('input/hidden', array('name' => 'org_guid', 'id' => 'org_guid', 'value' => $org->guid));
 echo view('input/hidden', array('name' => 'invite', 'id' => 'invite')); 
+echo view('input/hidden', array('name' => 'type', 'value' => $type)); 
 
+if (!$org)
+{
 ?>
+
+<div class='instructions'>
+<?php echo OrgRelationship::msg($type, 'add_instructions'); ?>
+</div>
 
 <table class='inputTable' style='margin:0 auto'>
 <tr><th><?php echo $name_label; ?></th>
-<td><?php echo view('input/text', array('name' => 'name', 'id' => 'name')); ?></td></tr>
+<td><?php echo view('input/text', array('name' => 'name', 'trackDirty' => true, 'id' => 'name')); ?></td></tr>
 <tr><th><?php echo __('network:search_email'); ?></th>
-<td><?php echo view('input/text', array('name' => 'email', 'id' => 'email')); ?></td></tr>
+<td><?php echo view('input/text', array('name' => 'email', 'trackDirty' => true,  'id' => 'email')); ?></td></tr>
 <tr><th><?php echo __('network:search_website'); ?></th>
-<td><?php echo view('input/text', array('name' => 'website', 'id' => 'website')); ?></td></tr>
+<td><?php echo view('input/text', array('name' => 'website', 'trackDirty' => true, 'id' => 'website')); ?></td></tr>
 <tr><th>&nbsp;</th>
 <td>
 <div id='searching_message' style='display:none;float:right;padding-top:18px'><?php echo __('network:searching'); ?></div>
 <?php echo view('input/submit', array(
     'name' => '_save',
-    'value' => __('network:search_button'),
+    'trackDirty' => true, 
+    'value' => __('network:add_button'),
     'js' => "onclick='searchOrg(); return false;'"
 ));
 ?>
 </td></tr>
 </table>    
+
+<?php
+    echo view('focus', array('name' => 'name'));
+}
+else
+{
+    echo view_entity($org);
+
+    echo view('input/submit', array(
+        'name' => '_save',
+        'trackDirty' => true, 
+        'value' => __('network:add_button'),
+    ));
+}
+?>
 </form>
 
-<?php echo view('focus', array('name' => 'name')); ?>
+
 
 <?php
     $content = ob_get_clean();

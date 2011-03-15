@@ -303,7 +303,7 @@ a.icon_link:hover
 .selectMemberButton
 {
     float:right;
-    padding-top:5px;
+    padding-top:0px;
 }
 
 .selectMemberNotShown

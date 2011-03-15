@@ -11,6 +11,14 @@ return array(
     'network:add_member' => "Add Member Organization",
     'network:add_partnership' => "Add Partner Organization",
     
+    'network:add_member_link' => 'Add as Member Organization',
+    'network:add_membership_link' => 'Join this Network',
+    'network:add_partnership_link' => 'Add as Partner',
+
+    'network:add_another_membership' => "Add another network",
+    'network:add_another_member' => "Add another member organization",
+    'network:add_another_partnership' => "Add another partner organization",
+    
     'network:edit_members' => "Edit Member Organizations",
     'network:edit_memberships' => "Edit Network Memberships",
     'network:edit_partnerships' => "Edit Partner Organizations",
@@ -42,7 +50,15 @@ return array(
     
     'network:confirm_delete_membership' => "Are you sure you want to remove %s from your list of network memberships?",    
     'network:confirm_delete_member' => "Are you sure you want to remove %s from your list of member organizations?",    
-    'network:confirm_delete_partnership' => "Are you sure you want to remove %s from your list of partner organizations?",    
+    'network:confirm_delete_partnership' => "Are you sure you want to remove %s from your list of partner organizations?",        
+    
+    'network:can_add_unregistered_network' => "However, you can still add them to your list of networks.",
+    'network:can_add_unregistered_member' => "However, you can still add them to your list of member organizations.",
+    'network:can_add_unregistered_partner' => "However, you can still add them to your list of partner organizations.",
+    
+    'network:feed_partnership' => '%s has a partnership with %s.',
+    'network:feed_membership' => '%s is a member of %s.',
+    'network:feed_member' => '%2$s is a member of %1$s.',    
     
     'network:no_self_member' => "You cannot add yourself as a member of your network.",    
     'network:no_self_partnership' => "You cannot add yourself as a partner organization.",    
@@ -56,21 +72,30 @@ return array(
     'network:search_name' => "Organization name",
     'network:search_email' => "Email address",
     'network:search_website' => "Website",
-    'network:search_button' => "Add Organization",
     'network:searching' => "Searching...",
-    
-    'network:network_name' => "Name of Network",            
+
+    'network:add_button' => "Add Organization",        
     
     'network:org_not_registered' => "It seems that %s has not yet joined Envaya.",
     
-    'network:can_add_unregistered_network' => "However, you can still add them to your list of networks.",
-    'network:can_add_unregistered_member' => "However, you can still add them to your list of member organizations.",
     'network:invite_org' => "Invite %s to join Envaya?",
     'network:add_select' => "Add",
        
-    'network:invited' => "%s has been invited to join Envaya.",                      
+    'network:invited' => "%s has been invited to join Envaya.",                          
     
-    'network:feed_partnership' => '%s has a partnership with %s.',
-    'network:feed_membership' => '%s is a member of %s.',
-    'network:feed_member' => '%2$s is a member of %1$s.',
+    'network:describe_relationship' => "Describe your organization's relationship with %s:",
+    'network:edit_relationship' => "Edit relationship",    
+    'network:relationship_saved' => "Relationship saved successfully.",
+    'network:relationship_approved' => "Relationship approved.",
+    
+    'network:awaiting_approval' => 'Awaiting approval',
+    'network:approve' => "Approve",
+    'network:approve_partnership' => "Approve Partner Organization",
+    'network:approve_member' => "Approve Member Organization",
+    'network:approve_membership' => "Approve Network Membership",
+    
+    'network:approve_instructions' => '%s has added your organization to their list of %s.',
+    'network:approve_instructions_2' => 'If you want to add %s to your list of %s, click the %s button below.',
+    
+    'network:add_description' => 'Add description...',
 );
