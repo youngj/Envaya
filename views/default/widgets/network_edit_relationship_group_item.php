@@ -17,7 +17,7 @@
     
     if (!$relationship->is_self_approved())
     {
-        $url = view('output/post_url', array('href' => "{$widget->get_edit_url()}?action=approve_relationship&guid={$relationship->guid}"));    
+        $url = view('output/post_url', array('href' => "{$widget->get_edit_url()}?action=approve&guid={$relationship->guid}"));    
         echo "<a href='$url'>".__('network:approve')."</a> &middot; ";
     }
     
@@ -43,7 +43,7 @@
     
     echo "</div>";
 
-    if (!$relationship->subject_guid && $relationship->subject_email)
+    if ($relationship->show_email())
     {
         echo "<div>".view('output/email', array('value' => $relationship->subject_email))."</div>";
     }

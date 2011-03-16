@@ -17,8 +17,8 @@ class WidgetHandler_Network extends WidgetHandler
         switch (get_input('action'))       
         {
             case 'add_relationship':        return $this->add_relationship_view($widget);                               
-            case 'approve_relationship':    return $this->approve_relationship_view($widget);                
             case 'edit_relationship':       return $this->edit_relationship_view($widget);                                
+            case 'approve':                 return $this->approve_relationship_view($widget);                            
             
             default:                 
                 return view("widgets/network_edit", array('widget' => $widget));
@@ -31,7 +31,6 @@ class WidgetHandler_Network extends WidgetHandler
         {
             case 'delete_relationship':  return $this->delete_relationship($widget);
             case 'save_relationship':    return $this->save_relationship($widget);
-            case 'approve_relationship': return $this->approve_relationship($widget);                        
             case 'add_relationship':     return $this->add_relationship($widget);
             
             default: 
@@ -73,6 +72,8 @@ class WidgetHandler_Network extends WidgetHandler
         $relationship->type = (int)get_input('type');
         $relationship->container_guid = $org->guid;
         $relationship->set_self_approved();
+        
+        $relationship->set_content(get_input('content'), true);
 
         if (!OrgRelationship::is_valid_type($relationship->type))
         {
@@ -103,7 +104,8 @@ class WidgetHandler_Network extends WidgetHandler
             {
                 $relationship->invite_code = substr(generate_random_cleartext_password(), 0, 20);
                 
-                // todo: actually send invite email                
+                // todo: actually send invite email                                
+                
                 system_message(sprintf(__('network:invited'), $relationship->get_subject_name()));
             }
         }
@@ -137,6 +139,18 @@ class WidgetHandler_Network extends WidgetHandler
                 $reverse->subject_name = $org->name;
                 $reverse->set_subject_approved();
                 $reverse->save();
+                                
+                if ($subject_org->email)
+                {
+                    $subject_org->send_mail(
+                        sprintf($relationship->__('notify_added_subject', $subject_org->language), $org->name, $subject_org->name), 
+                        view('emails/network_relationship_added', array(
+                            'relationship' => $relationship,
+                            'reverse' => $reverse,
+                            'widget' => $widget
+                        ))
+                    );
+                }
             }
         }
                 
@@ -222,29 +236,15 @@ class WidgetHandler_Network extends WidgetHandler
         }        
         
         return view('widgets/network_approve_relationship', array('widget' => $widget, 'relationship' => $relationship));
-    }
-    
-    private function approve_relationship($widget)
-    {
-        $org = $widget->get_container_entity();
-        try
-        {
-            $relationship = $this->get_current_relationship($org);
-        }
-        catch (InvalidParameterException $ex)
-        {
-            return not_found();
-        }        
-        
-        $relationship->set_self_approved();
-        $relationship->save();
-        
-        system_message(__('network:relationship_approved'));
-        return forward($widget->get_edit_url());        
-    }
+    }    
     
     private function save_relationship($widget)
     {
+        if (get_input('delete_relationship'))
+        {
+            return $this->delete_relationship($widget);
+        }
+    
         $org = $widget->get_container_entity();
 
         try

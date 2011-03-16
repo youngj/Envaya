@@ -2,9 +2,10 @@
     $widget = $vars['widget'];
 
     $types = array(
+        OrgRelationship::Partnership,
         OrgRelationship::Membership,
         OrgRelationship::Member,
-        OrgRelationship::Partnership);
+    );
     
     ob_start();
         

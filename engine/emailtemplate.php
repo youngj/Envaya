@@ -54,14 +54,11 @@ class EmailTemplate extends Entity
     {        
         $subject = $this->render_subject($org);
         $body = view('emails/template', array('org' => $org, 'email' => $this));
-        
-        $headers = array(
-            'To' => $org->get_name_for_email(),
+                
+        $org->send_mail($subject, $body, array(
             'Content-Type' => 'text/html',
-            'From' => "\"{$this->from}\" <".Config::get('email_from').">"
-        );
-
-        send_mail($org->email, $subject, $body, $headers);
+            'From' => "\"{$this->from}\" <".Config::get('email_from').">"        
+        ));
  
         $time = time();
  

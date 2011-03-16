@@ -162,7 +162,7 @@ class Controller_Pg extends Controller {
 
             $email = sprintf(__('email:resetreq:body',$user->language), $user->name, $link);
 
-            if ($user->notify(__('email:resetreq:subject',$user->language), $email))
+            if ($user->send_mail(__('email:resetreq:subject',$user->language), $email))
             {
                 system_message(__('user:password:resetreq:success'));
             }

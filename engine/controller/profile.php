@@ -690,16 +690,18 @@ class Controller_Profile extends Controller
                 action_error(__("message:message_missing"));
             }
 
-            $headers = array(
-                'To' => $recipient->get_name_for_email(),
+            if ($recipient->send_mail($subject, $message, array(
                 'From' => $user->get_name_for_email(),
                 'Reply-To' => $user->get_name_for_email(),
-                'Bcc' => $user->get_name_for_email(),
-            );
-
-            send_mail($recipient->email, $subject, $message, $headers);
-
-            system_message(__("message:sent"));
+                'Bcc' => $user->get_name_for_email(),            
+            )))
+            {
+                system_message(__("message:sent"));
+            }
+            else
+            {
+                action_error(__("message:not_sent"));
+            }
 
             forward($recipient->get_url());
         }
@@ -887,7 +889,7 @@ class Controller_Profile extends Controller
 		if ($org && $org->email && $org->is_notification_enabled(Notification::Comments) 
 				&& $ownerGuid != $org->guid)
 		{		
-			$org->notify($notification_subject, $notification_body);
+			$org->send_mail($notification_subject, $notification_body);
 		}
 		send_admin_mail(
 			sprintf(__('comment:notification_admin_subject'), $comment->get_name(), $org->name), 

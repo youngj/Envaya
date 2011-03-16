@@ -17,4 +17,10 @@
             ."</div>";
     }
     echo "<h3 id='r{$relationship->guid}'>$link_open".escape($name)."$link_close</h3>";        
+    
+    if ($relationship->show_email())
+    {
+        echo "<div>".view('output/email', array('value' => $relationship->subject_email))."</div>";
+    }
+    
     echo $relationship->render_content();

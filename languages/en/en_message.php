@@ -10,8 +10,9 @@ return array(
     'message:message' => "Message:",
     'message:send' => "Send Message",
     'message:sent' => "Message sent.",
+    'message:not_sent' => "Error sending message.",
     'message:message_missing' => "Your message was blank.",
     'message:subject_missing' => "The subject of your message was blank.",
-    'message:invalid_recipient' => "Bad recipient.",
+    'message:invalid_recipient' => "Bad recipient.",    
     'message:needapproval' => "You can't send messages right now because your organization has not yet been approved by Envaya's administrators.",
 );

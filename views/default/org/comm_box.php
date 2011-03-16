@@ -15,11 +15,17 @@
         
         if ($loggedInOrg->query_relationships()->where('subject_guid = ?', $org->guid)->count() == 0)
         {        
-            $controls[] = view('widgets/network_add_relationship_link', array('widget' => $networkPage, 
-                'org' => $org, 'type' => OrgRelationship::Membership));
+            $controls[] = view('widgets/network_add_relationship_link', array(
+                'widget' => $networkPage, 
+                'org' => $org, 
+                'type' => OrgRelationship::Membership
+            ));
 
-            $controls[] = view('widgets/network_add_relationship_link', array('widget' => $networkPage, 
-                'org' => $org, 'type' => OrgRelationship::Partnership));
+            $controls[] = view('widgets/network_add_relationship_link', array(
+                'widget' => $networkPage, 
+                'org' => $org, 
+                'type' => OrgRelationship::Partnership
+            ));
         }
             
         if (sizeof($controls))

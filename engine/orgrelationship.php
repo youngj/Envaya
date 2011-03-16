@@ -34,7 +34,6 @@ class OrgRelationship extends Entity
     static $msg_ids = array(
         2 => array(
             'header' => 'network:members',
-            'approve_header' => 'network:approve_member',
             'deleted' => 'network:member_deleted',
             'duplicate' => 'network:already_member',
             'added' => 'network:member_added',
@@ -43,15 +42,12 @@ class OrgRelationship extends Entity
             'can_add_unregistered' => 'network:can_add_unregistered_member',
             'add_confirm' => 'network:confirm_member',
             'add_instructions' => 'network:add_member_instructions',            
-            'edit_header' => 'network:edit_members',
-            'empty' => "network:no_members",
             'add' => 'network:add_member',
-            'add_another' => 'network:add_another_member',        
             'confirm_delete' => 'network:confirm_delete_member',
+            'notify_added_subject' => 'network:notify_added_member_subject',
         ),
         3 => array(
             'header' => 'network:memberships',
-            'approve_header' => 'network:approve_membership',
             'deleted' => 'network:membership_deleted',
             'duplicate' => 'network:already_membership',
             'added' => 'network:membership_added',
@@ -61,16 +57,13 @@ class OrgRelationship extends Entity
             'not_shown' => 'network:network_not_shown',
             'can_add_unregistered' => 'network:can_add_unregistered_network',
             'add_instructions' => 'network:add_membership_instructions',  
-            'edit_header' => 'network:edit_memberships',         
-            'empty' => 'network:no_memberships',
             'add' => 'network:add_membership',        
-            'add_another' => 'network:add_another_membership',        
             'confirm_delete' => 'network:confirm_delete_membership',            
-            'add_link' => 'network:add_membership_link',
+            'add_this_link' => 'network:add_membership_link',
+            'notify_added_subject' => 'network:notify_added_membership_subject',            
         ),
         1 => array(
             'header' => 'network:partnerships',
-            'approve_header' => 'network:approve_partnership',
             'deleted' => 'network:partnership_deleted',
             'duplicate' => 'network:already_partnership',
             'added' => 'network:partnership_added',
@@ -79,12 +72,10 @@ class OrgRelationship extends Entity
             'can_add_unregistered' => 'network:can_add_unregistered_partner',
             'add_confirm' => 'network:confirm_partner',
             'add_instructions' => 'network:add_partnership_instructions', 
-            'edit_header' => 'network:edit_partnerships', 
-            'empty' => 'network:no_partnerships',
             'add' => 'network:add_partnership',        
-            'add_another' => 'network:add_another_partnership',        
             'confirm_delete' => 'network:confirm_delete_partnership',
-            'add_link' => 'network:add_partnership_link',
+            'add_this_link' => 'network:add_partnership_link',
+            'notify_added_subject' => 'network:notify_added_partnership_subject',
         ),
         'default' => array(
             'not_shown' => 'network:org_not_shown',
@@ -210,6 +201,13 @@ class OrgRelationship extends Entity
         
     static function msg($type, $msg_type, $lang = null)
     {       
-        return __(@static::$msg_ids[$type][$msg_type] ?: static::$msg_ids['default'][$msg_type], $lang);
+        return __(@static::$msg_ids[$type][$msg_type] 
+            ?: @static::$msg_ids['default'][$msg_type]
+            ?: "network:$msg_type", $lang);
+    }
+    
+    function show_email()
+    {
+        return !$this->subject_guid && $this->subject_email;
     }
 }

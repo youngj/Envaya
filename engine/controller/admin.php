@@ -322,7 +322,7 @@ class Controller_Admin extends Controller
             $new_user->created_by_guid = Session::get_loggedin_userid();
             $new_user->save();
 
-            $new_user->notify(
+            $new_user->send_mail(
                 __('useradd:subject'),
                 sprintf(__('useradd:body'), $name, Config::get('sitename'), Config::get('url'), $username, $password)
             );
@@ -356,7 +356,7 @@ class Controller_Admin extends Controller
 
             if (!$approvedBefore && $approvedAfter && $entity->email)
             {
-                $entity->notify(
+                $entity->send_mail(
                     __('email:orgapproved:subject', $entity->language),
                     sprintf(__('email:orgapproved:body', $entity->language),
                         $entity->name,

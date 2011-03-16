@@ -5,8 +5,7 @@
     $type = $vars['type'];
     $empty = OrgRelationship::msg($type, 'empty');
     $add = OrgRelationship::msg($type, 'add');
-    $addAnother = OrgRelationship::msg($type, 'add_another');
-    $header = OrgRelationship::msg($type, 'edit_header');
+    $header = OrgRelationship::msg($type, 'header');
     
     $offset = (int) get_input('offset');
     $limit = 5;
@@ -17,12 +16,8 @@
     
     $addUrl = "{$widget->get_edit_url()}?action=add_relationship&type={$type}";
     
-    if (!$count)
-    {
-        echo "<div class='section_header'><a href='$addUrl'>$add</a></div>";
-    }
-    else
-    {
+    if ($count)
+    {        
         ob_start();
     
         $elements = array();
@@ -42,8 +37,6 @@
             'limit' => $limit,
             'separator' => "<div class='separator'></div>"
         ));
-        
-        echo "<div style='text-align:center;padding-top:5px'><a href='$addUrl'><strong>$addAnother</strong></a></div>";
         
         $content = ob_get_clean();
     

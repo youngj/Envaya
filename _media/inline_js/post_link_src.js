@@ -4,8 +4,8 @@ function postLink(url, ts, token)
             action: url,
             method: 'POST'
         },
-        createElem('input', {name:'__ts', value:ts}),
-        createElem('input', {name:'__token', value:token})
+        createElem('input', {name:'__ts', type:'hidden', value:ts}),
+        createElem('input', {name:'__token', type:'hidden', value:token})
     );
     document.body.appendChild(form);    
     setTimeout(function() {

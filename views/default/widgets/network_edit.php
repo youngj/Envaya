@@ -1,12 +1,31 @@
 <?php
     $widget = $vars['widget'];
+    $org = $widget->get_container_entity();
     
     $types = array(
+        OrgRelationship::Partnership,
         OrgRelationship::Membership,
         OrgRelationship::Member,
-        OrgRelationship::Partnership);
+        );
     
     ob_start();
+    
+    echo "<div class='section_content padded'>";
+    
+    echo "<div class='instructions'>";
+    echo "<p>".sprintf(__('network:instructions'), escape($org->name))."</p>";
+    echo "<p>".__('network:instructions_2')."</p>";
+    echo "</div>";
+    
+    echo "<ul>";
+    foreach ($types as $type)
+    {
+        echo "<li><a href='{$widget->get_edit_url()}?action=add_relationship&type={$type}'>"
+            .OrgRelationship::msg($type, 'add_header')."</a></li>";
+    }
+    echo "</ul>";
+    
+    echo "</div>";    
     
     foreach ($types as $type)
     {

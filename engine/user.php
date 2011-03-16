@@ -52,7 +52,8 @@ class User extends Entity
     public function get_name_for_email()
     {
         $name = mb_encode_mimeheader($this->name, "UTF-8", "B");
-        return "\"$name\" <{$this->email}>";
+        $email = $this->email ?: Config::get('email_from');
+        return "\"$name\" <$email>";
     }
 
     public function get_title()
@@ -320,14 +321,20 @@ class User extends Entity
         return md5($password . $this->salt);
     }    
 
-    function notify($subject, $message)
+    function send_mail($subject, $message, $headers = null)
     {
-        if (!$this->email)
-            throw new NotificationException(sprintf(__('error:NoEmailAddress'), $this->guid));
+        if ($this->email)
+        {
+            if (!$headers)        
+            {
+                $headers = array();
+            }
+            $headers['To'] = $this->get_name_for_email();
 
-        $headers = array('To' => $this->get_name_for_email());
-
-        return send_mail($this->email, $subject, $message, $headers);    
+            send_mail($this->email, $subject, $message, $headers);    
+            return true;
+        }
+        return false;
     }
 	
 	function is_notification_enabled($notification)

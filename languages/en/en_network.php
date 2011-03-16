@@ -14,21 +14,25 @@ return array(
     'network:add_member_link' => 'Add as Member Organization',
     'network:add_membership_link' => 'Join this Network',
     'network:add_partnership_link' => 'Add as Partner',
-
-    'network:add_another_membership' => "Add another network",
-    'network:add_another_member' => "Add another member organization",
-    'network:add_another_partnership' => "Add another partner organization",
     
     'network:edit_members' => "Edit Member Organizations",
     'network:edit_memberships' => "Edit Network Memberships",
     'network:edit_partnerships' => "Edit Partner Organizations",
+
+    'network:notify_added_member_subject' => "%s has listed %s as a member",    
+    'network:notify_added_membership_subject' => "%s has listed itself as a member of %s",
+    'network:notify_added_partnership_subject' => "%s has listed %s as a partner",
+
+    'network:notify_added_info' => "%s has added %s to its list of %s on Envaya:",    
+    'network:notify_added_instructions' => "To add %s to your list of %s, click here:",        
+    //'network:notify_added_notifications' => "To change your settings for notifications:",    
     
     'network:member_added' => "%s has been added to your network.",    
     'network:membership_added' => "Your organization has been added to the %s network.",
     'network:partnership_added' => "%s has been added to your list of partner organizations.",
     
     'network:member_deleted' => "%s has been removed from your network.",    
-    'network:membership_deleted' => "Your organization has been removed from the %s network.",
+    'network:membership_deleted' => "%s has been removed from your list of networks.",
     'network:partnership_deleted' => "%s has been removed from your list of partner organizations.",    
     
     'network:already_member' => "%s is already a member of your network.",
@@ -39,9 +43,6 @@ return array(
     'network:add_membership_instructions' => "To list your organization as part of a network, enter the name of the network, as well as their email address and website (if available).",       
     'network:add_partnership_instructions' => "Enter the name of the partner organization, as well as their email address and website (if available).",           
 
-    'network:no_members' => "No member organizations have been added to this network.",
-    'network:no_memberships' => "This organization is not listed as a member of any networks.",
-    'network:no_partnerships' => "This organization has not listed any partner organizations.",
     'network:empty' => "This organization's network is empty.",
         
     'network:confirm_member' => "Confirm the organization to add to this network:",    
@@ -75,6 +76,7 @@ return array(
     'network:searching' => "Searching...",
 
     'network:add_button' => "Add Organization",        
+    'network:dont_add_button' => "Don't Add",
     
     'network:org_not_registered' => "It seems that %s has not yet joined Envaya.",
     
@@ -90,12 +92,13 @@ return array(
     
     'network:awaiting_approval' => 'Awaiting approval',
     'network:approve' => "Approve",
-    'network:approve_partnership' => "Approve Partner Organization",
-    'network:approve_member' => "Approve Member Organization",
-    'network:approve_membership' => "Approve Network Membership",
     
     'network:approve_instructions' => '%s has added your organization to their list of %s.',
-    'network:approve_instructions_2' => 'If you want to add %s to your list of %s, click the %s button below.',
+    'network:approve_instructions_2' => 'To add %s to your list of %s, click the %s button below.',
     
     'network:add_description' => 'Add description...',
+    
+    'network:instructions' => "On this page, you can list organizations that have a relationship with %s.",
+    'network:instructions_2' => "These organizations may include partners that fund, support, or work with you,
+        as well as networks of organizations where you are a member.",
 );
