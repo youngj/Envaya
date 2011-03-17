@@ -449,22 +449,6 @@ class Controller_Profile extends Controller
         forward($org->get_url());
     }
 
-    function index_feed()
-    {
-        $this->require_editor();
-        $this->require_org();
-
-        $title = __("feed:org");
-
-        PageContext::set_translatable(false);
-
-        $area = view('org/orgfeed', array('org' => $this->org));
-
-        $body = view_layout('one_column', view_title($title), $area);
-
-        $this->page_draw($title, $body);
-    }
-
     function index_compose()
     {
         $this->require_login();

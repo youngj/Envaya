@@ -110,27 +110,25 @@ class FeedItem extends Model
     static function query_by_feed_names($feedNames, $excludeUser = null)
     {
         $numNames = sizeof($feedNames);
-
-        $query = new Query_Select('feed_items f');
-        $query->join('INNER JOIN users_entity u ON u.guid = f.user_guid');
         
         if ($numNames == 0)
         {
-            $query->where("8<3");            
+            return new Query_Empty();
         }
-        else
+        
+        $query = new Query_Select('feed_items f');
+        $query->join('INNER JOIN users_entity u ON u.guid = f.user_guid');
+            
+        $query->where_in("feed_name", $feedNames);
+
+        if ($excludeUser)
         {
-            $query->where_in("feed_name", $feedNames);
+            $query->where("f.user_guid <> ?", $excludeUser->guid);
+        }
 
-            if ($excludeUser)
-            {
-                $query->where("f.user_guid <> ?", $excludeUser->guid);
-            }
-
-            if (!Session::isadminloggedin())
-            {
-                $query->where("(u.approval > 0 || u.guid = ?)", Session::get_loggedin_userid());
-            }
+        if (!Session::isadminloggedin())
+        {
+            $query->where("(u.approval > 0 || u.guid = ?)", Session::get_loggedin_userid());
         }
 
         if ($numNames > 1)

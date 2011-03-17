@@ -48,11 +48,11 @@ function searchOrg()
             
             if (results.length == 0)
             {
-                showNotFoundDialog(query);            
+                showNotFoundDialog(query, res);            
             }            
             else 
             {
-                showConfirmMemberDialog(query, results);
+                showConfirmMemberDialog(query, res);
             }                       
         }
     );      
@@ -82,13 +82,13 @@ function closeDialog()
     }
 }
 
-function showNotFoundDialog(query)
+function showNotFoundDialog(query, res)
 {
-    var content = createElem('div', {className:'padded'},
+    var content = createElem('div', {className:'padded selectMemberNotFound'},
         <?php echo json_encode(__('network:org_not_registered')); ?>.replace("%s",query.name||query.email||query.website)
     );        
     
-    if (query.email)
+    if (query.email && res.can_invite)
     {
         var invite = createElem('input', { type: 'checkbox', id: 'invite_box', checked: 'checked', defaultChecked: 'checked' });
         
@@ -133,8 +133,10 @@ function getOrgResultView(result)
     return container;
 }
 
-function showConfirmMemberDialog(query, results)
+function showConfirmMemberDialog(query, res)
 {
+    var results = res.results;
+
     var content = createElem('div', {className:'padded'});        
     content.appendChild(createElem('div', <?php echo json_encode($confirm); ?>));
                   
@@ -147,8 +149,7 @@ function showConfirmMemberDialog(query, results)
         createElem('hr'),                    
         createElem('a', {
                 href:'javascript:void(0)', 
-                click:function() { ignoreDirty(); closeDialog(); showNotFoundDialog(query); }, 
-                className:'selectMemberNotShown'
+                click:function() { ignoreDirty(); closeDialog(); showNotFoundDialog(query, res); }
             }, 
             <?php echo json_encode($not_shown); ?>)
     ));

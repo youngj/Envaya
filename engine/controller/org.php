@@ -137,7 +137,7 @@ class Controller_Org extends Controller
         }
             
         $all_orgs = array_merge($orgs_by_website, $orgs_by_email, $orgs_by_name);
-                
+        
         // remove duplicates
         $all_orgs = array_values(array_combine(
             array_map(function($o) { return $o->guid; }, $all_orgs),
@@ -145,6 +145,7 @@ class Controller_Org extends Controller
         ) ?: array());
                 
         $this->request->response = json_encode(array(
+            'can_invite' => InvitedEmail::get_by_email($email)->can_send_invite(),
             'results' => array_map(function($o) { 
                 return array(
                     'org' => $o->js_properties(),
@@ -233,6 +234,12 @@ class Controller_Org extends Controller
 
     function action_new()
     {
+        $invite_code = get_input('invite');
+        if ($invite_code)
+        {
+            Session::set('invite_code', $invite_code);
+        }
+    
         $step = ((int) get_input('step')) ?: 1;        
         if ($step > 3)
         {
@@ -244,7 +251,7 @@ class Controller_Org extends Controller
         if ($loggedInUser && !($loggedInUser instanceof Organization))
         {
             logout();
-            forward("org/new");
+            forward("org/new?invite=".urlencode($invite_code));
         }
 
         if ($step == 3 && !$loggedInUser)
@@ -302,7 +309,7 @@ class Controller_Org extends Controller
         {
             action_error($r->getMessage());
         }
-    }
+    }  
     
     function action_register2()
     {
@@ -314,11 +321,18 @@ class Controller_Org extends Controller
             
             $prevInfo = Session::get('registration');            
             Session::set('registration', null);
-
+                        
             $org->country = $prevInfo['country'];
             $org->save();
 
-            forward(Config::get('secure_url')."org/new?step=3");
+            $invite_code = Session::get('invite_code');
+            Session::set('invite_code', null);
+            if ($invite_code)
+            {
+                $this->update_existing_relationships($org, $invite_code);
+            }
+            
+            forward("/org/new?step=3");            
         }
         catch (PossibleDuplicateException $p)
         {
@@ -331,6 +345,47 @@ class Controller_Org extends Controller
             forward(Config::get('secure_url')."org/new?step=2");
         }
     }
+    
+    private function update_existing_relationships($org, $invite_code)
+    {
+        $invitedEmail = InvitedEmail::query()
+            ->where('invite_code = ?', $invite_code)
+            ->where('registered_guid = 0')
+            ->get();
+        
+        if (!$invitedEmail)
+        {
+            return;
+        }
+        
+        /*
+         * only update existing relationships if we're fairly confident they refer to 
+         * the newly registered organization.
+         */
+        $invitedAddress = $invitedEmail->email;                            
+        if ($invitedAddress == $org->email)
+        {
+            $relationships = OrgRelationship::query()
+                ->where('subject_guid = 0')
+                ->where('subject_email = ?', $invitedAddress)
+                ->filter();
+                
+            foreach ($relationships as $relationship)
+            {
+                $relationship->subject_guid = $org->guid;
+                $relationship->save();
+                
+                $reverse = $relationship->make_reverse_relationship();
+                $reverse->set_subject_approved();
+                $reverse->set_self_approved(); // not really, but they can always delete it before creating their network page
+                $reverse->save();                                                                            
+            }        
+        }
+        
+        $invitedEmail->registered_guid = $org->guid;
+        $invitedEmail->save();                
+    }
+    
 
     function action_register3()
     {

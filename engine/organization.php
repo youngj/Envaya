@@ -28,6 +28,11 @@ class Organization extends User
         return OrgRelationship::query()->where("container_guid=?", $this->guid)->order_by('subject_name asc');
     }
     
+    public function query_subject_relationships()
+    {
+        return OrgRelationship::query()->where("subject_guid=?", $this->guid);
+    }
+    
     public function query_files()
     {    
         return UploadedFile::query()->where('container_guid=?',$this->guid);
@@ -93,6 +98,13 @@ class Organization extends User
                 $feedNames[] = get_feed_name(array('region' => $this->region, 'sector' => $sector));
             }
         }
+        
+        /*
+        foreach ($this->query_subject_relationships()->filter() as $relationship)
+        {
+            $feedNames[] = get_feed_name(array('network' => $relationship->container_guid));
+        }        
+        */
 
         return $feedNames;
 
@@ -490,7 +502,42 @@ class Organization extends User
    
         return strtr($template, $args);
     }
-    
+     
+    /*
+     * Send out notification/invite emails for relationships created by the new organization
+     * before it was approved.
+     */
+    function send_relationship_emails()
+    {
+        foreach ($this->query_relationships()
+            ->where('subject_notified = 0')
+            ->filter() as $relationship)
+        {                    
+            if ($relationship->subject_guid)
+            {
+                // if the relationship refers to an registered Envaya organization, 
+                // create reverse relationship and send notification email
+                $reverse = $relationship->get_reverse_relationship();
+                if (!$reverse)
+                {
+                    $reverse = $relationship->make_reverse_relationship();
+                    $reverse->set_subject_approved();
+                    $reverse->save();
+                }            
+                $relationship->send_notification_email();
+            }
+            else
+            {
+                // if the subject is not a registered Envaya organization,
+                // send an invite email if the user requested it
+                if ($relationship->invite_subject)
+                {
+                    $relationship->send_invite_email();
+                }
+            }            
+        }    
+    }
+        
     /* requires reports module */
     public function query_reports()
     {

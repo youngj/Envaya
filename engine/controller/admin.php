@@ -358,15 +358,11 @@ class Controller_Admin extends Controller
             {
                 $entity->send_mail(
                     __('email:orgapproved:subject', $entity->language),
-                    sprintf(__('email:orgapproved:body', $entity->language),
-                        $entity->name,
-                        $entity->get_url(),
-                        Config::get('url')."pg/login?username={$entity->username}",
-                        __('help:title', $entity->language),
-                        "{$entity->get_url()}/help"
-                    )
+                    view('emails/org_approved', array('org' => $entity))
                 );
             }
+            
+            $entity->send_relationship_emails();
 
             system_message(__('approval:changed'));
         }

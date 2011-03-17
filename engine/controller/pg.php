@@ -158,11 +158,9 @@ class Controller_Pg extends Controller {
             $user->passwd_conf_code = substr(generate_random_cleartext_password(), 0, 24); // avoid making url too long for 1 line in email
             $user->save();
 
-            $link = Config::get('secure_url') . "pg/password_reset?u={$user->guid}&c={$user->passwd_conf_code}";
+            $body = view('emails/password_reset_request', array('user' => $user));
 
-            $email = sprintf(__('email:resetreq:body',$user->language), $user->name, $link);
-
-            if ($user->send_mail(__('email:resetreq:subject',$user->language), $email))
+            if ($user->send_mail(__('email:resetreq:subject',$user->language), $body))
             {
                 system_message(__('user:password:resetreq:success'));
             }

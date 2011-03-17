@@ -1,8 +1,35 @@
+<?php
+
+    $initial_email = '';
+    $initial_name = '';
+
+    $invite_code = Session::get('invite_code');
+    if ($invite_code)
+    {
+        $invitedEmail = InvitedEmail::query()
+            ->where('invite_code = ?', $invite_code)
+            ->where('registered_guid = 0')
+            ->get();
+        if ($invitedEmail)
+        {
+            $initial_email = $invitedEmail->email;
+            
+            $relationship = OrgRelationship::query()->where('subject_email = ?', $initial_email)->get();
+            if ($relationship)
+            {
+                $initial_name = $relationship->get_subject_name();
+            }
+        }
+    }
+
+
+?>
+
 <?php echo view('input/securitytoken'); ?>
 
 <div class='input'>
 <label><?php echo __('create:org_name') ?></label><br />
-<?php echo view('input/text', array('name' => 'org_name', 'trackDirty' => true)) ?>
+<?php echo view('input/text', array('name' => 'org_name', 'value' => $initial_name, 'trackDirty' => true)) ?>
 <div class='help'><?php echo __('create:org_name:help') ?></div>
 </div>
 
@@ -52,7 +79,8 @@ function updateUrl()
 <div class='input'>
 <label><?php echo __('create:email') ?></label><br />
 <?php echo view('input/email', array(
-    'name' => 'email'
+    'name' => 'email',
+    'value' => $initial_email
 )) ?>
 <div class='help'><?php echo __('create:email:help') ?></div>
 <div class='help'><?php echo __('create:email:help_2') ?></div>

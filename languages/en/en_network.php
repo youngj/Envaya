@@ -23,8 +23,15 @@ return array(
     'network:notify_added_membership_subject' => "%s has listed itself as a member of %s",
     'network:notify_added_partnership_subject' => "%s has listed %s as a partner",
 
-    'network:notify_added_info' => "%s has added %s to its list of %s on Envaya:",    
+    'network:notify_invited_subject' => "%s has invited your organization to join Envaya",    
+    
+    'network:notify_added_info' => "%s just added %s to its list of %s on Envaya:",    
     'network:notify_added_instructions' => "To add %s to your list of %s, click here:",        
+    
+    'network:invite_notify_info' => "%s just added %s to its list of %s on Envaya ( %s ), and has invited you to join Envaya as well!",
+    'network:invite_sign_up' => "If your organization hasn't yet registered for Envaya, sign up and create your website now!",
+    'network:invite_learn_more' => "To learn more about Envaya, click here:",
+    
     //'network:notify_added_notifications' => "To change your settings for notifications:",    
     
     'network:member_added' => "%s has been added to your network.",    
@@ -100,5 +107,6 @@ return array(
     
     'network:instructions' => "On this page, you can list organizations that have a relationship with %s.",
     'network:instructions_2' => "These organizations may include partners that fund, support, or work with you,
-        as well as networks of organizations where you are a member.",
+        as well as networks of organizations where you are a member.",        
+        
 );

@@ -1,9 +1,9 @@
 <?php
 
     $nav = view('navigation/pagination',array(
-        'offset' => $vars['offset'],
-        'count' => $vars['count'],
-        'limit' => $vars['limit'],
+        'offset' => @$vars['offset'] ?: 0,
+        'count' => @$vars['count'] ?: 0,
+        'limit' => @$vars['limit'] ?: 0,
     ));
         
     echo $nav;

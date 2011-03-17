@@ -9,7 +9,14 @@ class WidgetHandler_Network extends WidgetHandler
 
     function view($widget)
     {
-        return view("widgets/network_view", array('widget' => $widget));
+        switch (get_input('mode'))       
+        {    
+            case 'feed':
+                PageContext::set_translatable(false);
+                return view("widgets/network_view_feed", array('widget' => $widget));
+            default:
+                return view("widgets/network_view", array('widget' => $widget));
+        }
     }   
 
     function edit($widget)
@@ -18,7 +25,7 @@ class WidgetHandler_Network extends WidgetHandler
         {
             case 'add_relationship':        return $this->add_relationship_view($widget);                               
             case 'edit_relationship':       return $this->edit_relationship_view($widget);                                
-            case 'approve':                 return $this->approve_relationship_view($widget);                            
+            case 'approve':                 return $this->approve_relationship_view($widget);
             
             default:                 
                 return view("widgets/network_edit", array('widget' => $widget));
@@ -32,6 +39,8 @@ class WidgetHandler_Network extends WidgetHandler
             case 'delete_relationship':  return $this->delete_relationship($widget);
             case 'save_relationship':    return $this->save_relationship($widget);
             case 'add_relationship':     return $this->add_relationship($widget);
+            
+            case 'approve':              return $this->approve_relationship($widget);
             
             default: 
                 $widget->save();
@@ -67,6 +76,8 @@ class WidgetHandler_Network extends WidgetHandler
     private function add_relationship($widget)
     {
         $org = $widget->get_container_entity();
+        
+        $reverse = null;
     
         $relationship = new OrgRelationship();
         $relationship->type = (int)get_input('type');
@@ -87,6 +98,7 @@ class WidgetHandler_Network extends WidgetHandler
             $relationship->subject_email = $this->validate_email(get_input('email'));
             $relationship->subject_website = $this->clean_url(get_input('website'));
             $relationship->subject_guid = 0;
+            $relationship->invite_subject = get_input('invite') ? true : false;
             
             $matchingRelationships = $org->query_relationships()
                 ->where('`type` = ?', $relationship->type)
@@ -98,15 +110,6 @@ class WidgetHandler_Network extends WidgetHandler
             if ($matchingRelationships > 0)
             {
                 return action_error(sprintf($relationship->__('duplicate'), $relationship->get_subject_name()));
-            }
-
-            if (get_input('invite'))
-            {
-                $relationship->invite_code = substr(generate_random_cleartext_password(), 0, 20);
-                
-                // todo: actually send invite email                                
-                
-                system_message(sprintf(__('network:invited'), $relationship->get_subject_name()));
             }
         }
         else // subject_org already an envaya member
@@ -127,30 +130,14 @@ class WidgetHandler_Network extends WidgetHandler
                 return action_error(sprintf($relationship->__('duplicate'), $relationship->get_subject_name()));
             }
             
-            if ($subject_org->query_relationships()
+            if ($org->is_approved() && $subject_org->query_relationships()
                 ->where('type = ?', $relationship->type)
                 ->where('subject_guid = ?', $org->guid)
                 ->count() == 0)
-            {            
-                $reverse = new OrgRelationship();
-                $reverse->type = OrgRelationship::get_reverse_type($relationship->type);
-                $reverse->container_guid = $relationship->subject_guid;
-                $reverse->subject_guid = $org->guid;
-                $reverse->subject_name = $org->name;
+            {
+                $reverse = $relationship->make_reverse_relationship();
                 $reverse->set_subject_approved();
-                $reverse->save();
-                                
-                if ($subject_org->email)
-                {
-                    $subject_org->send_mail(
-                        sprintf($relationship->__('notify_added_subject', $subject_org->language), $org->name, $subject_org->name), 
-                        view('emails/network_relationship_added', array(
-                            'relationship' => $relationship,
-                            'reverse' => $reverse,
-                            'widget' => $widget
-                        ))
-                    );
-                }
+                $reverse->save();                                                                
             }
         }
                 
@@ -159,6 +146,22 @@ class WidgetHandler_Network extends WidgetHandler
         
         $widget->save();
 
+        if ($org->is_approved())
+        {
+            if ($reverse)
+            {                    
+                $relationship->send_notification_email();
+            }
+            
+            if ($relationship->invite_subject)
+            {
+                if ($relationship->send_invite_email())
+                {                
+                    system_message(sprintf(__('network:invited'), $relationship->get_subject_name()));
+                }
+            }
+        }
+        
         system_message(sprintf($relationship->__('added'), $relationship->get_subject_name()));
         forward($widget->get_edit_url());    
     }
@@ -237,6 +240,27 @@ class WidgetHandler_Network extends WidgetHandler
         
         return view('widgets/network_approve_relationship', array('widget' => $widget, 'relationship' => $relationship));
     }    
+    
+    private function approve_relationship($widget)
+    {    
+        $org = $widget->get_container_entity();
+
+        try
+        {
+            $relationship = $this->get_current_relationship($org);
+        }
+        catch (InvalidParameterException $ex)
+        {
+            return not_found();
+        }                
+        
+        $relationship->set_self_approved();
+        $relationship->save();
+
+        system_message(__('network:relationship_saved'));
+        return forward($widget->get_edit_url());
+    }    
+    
     
     private function save_relationship($widget)
     {

@@ -20,14 +20,15 @@ class OrgRelationship extends Entity
         'language' => '',
         'approval' => 0,
         
+        'subject_notified' => 0,
+        'invite_subject' => 0,
+        
         // information about subject organization, if not envaya member
         'subject_name' => '',
         'subject_email' => '',
         'subject_website' => '',
         'subject_logo' => '',
-        
-        'invite_code' => '', 
-        
+                
         'order' => 0
     );    
                                   
@@ -113,7 +114,7 @@ class OrgRelationship extends Entity
     function get_subject_url()
     {
         $org = $this->get_subject_organization();
-        return $org ? $org->get_url() : $this->subject_website;
+        return $org && $org->is_approved() ? $org->get_url() : $this->subject_website;
     }
     
     function get_subject_name()
@@ -132,6 +133,16 @@ class OrgRelationship extends Entity
                 ->where('subject_guid = ?', $this->container_guid)->get();
         }
         return null;
+    }
+    
+    function make_reverse_relationship()
+    {
+        $reverse = new OrgRelationship();
+        $reverse->type = OrgRelationship::get_reverse_type($this->type);
+        $reverse->container_guid = $this->subject_guid;
+        $reverse->subject_guid = $this->container_guid;
+        $reverse->subject_name = $this->get_container_entity()->name;
+        return $reverse;
     }
     
     public function get_feed_names()
@@ -210,4 +221,64 @@ class OrgRelationship extends Entity
     {
         return !$this->subject_guid && $this->subject_email;
     }
+    
+    function send_notification_email()
+    {
+        $org = $this->get_container_entity();
+
+        $subject_org = $this->get_subject_organization();        
+        $widget = $org->get_widget_by_class('WidgetHandler_Network');
+        $reverse = $this->get_reverse_relationship();
+        
+        if ($subject_org && $widget && $reverse && $subject_org->email)
+        {    
+            $subject_org->send_mail(
+                sprintf($this->__('notify_added_subject', $subject_org->language), $org->name, $subject_org->name), 
+                view('emails/network_relationship_added', array(
+                    'relationship' => $this,
+                    'reverse' => $reverse,
+                    'widget' => $widget
+                ))
+            );   
+            $this->subject_notified = true;
+            $this->save();
+            return true;
+        }
+        return false;
+    }
+    
+    function send_invite_email()
+    {
+        $org = $this->get_container_entity();
+        $widget = $org->get_widget_by_class('WidgetHandler_Network');
+        $email = $this->subject_email;
+        
+        if (!$email || $this->subject_guid || !$widget)
+        {
+            return false;
+        }
+        
+        $invitedEmail = InvitedEmail::get_by_email($email);
+
+        if (!$invitedEmail->can_send_invite())
+        {
+            return false;
+        }
+                       
+        send_mail($email, 
+            sprintf(__('network:notify_invited_subject', $org->language), $org->name),
+            view('emails/network_relationship_invite', array(
+                'relationship' => $this,
+                'invited_email' => $invitedEmail,
+                'widget' => $widget
+            ))
+        );
+        
+        $invitedEmail->mark_invite_sent();
+        
+        $this->subject_notified = true;
+        $this->save();
+            
+        return true;        
+    }    
 }

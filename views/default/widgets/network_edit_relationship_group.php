@@ -7,16 +7,14 @@
     $add = OrgRelationship::msg($type, 'add');
     $header = OrgRelationship::msg($type, 'header');
     
-    $offset = (int) get_input('offset');
-    $limit = 5;
-    $query = $org->query_relationships()->where('`type` = ?', $type)->limit($limit, $offset);
+    $query = $org->query_relationships()
+        ->where('`type` = ?', $type);
     
-    $count = $query->count();
     $relationships = $query->filter();
     
     $addUrl = "{$widget->get_edit_url()}?action=add_relationship&type={$type}";
     
-    if ($count)
+    if (sizeof($relationships) > 0)
     {        
         ob_start();
     
@@ -32,9 +30,6 @@
         
         echo view('paged_list', array(
             'elements' => $elements,
-            'offset' => $offset,
-            'count' => $count,
-            'limit' => $limit,
             'separator' => "<div class='separator'></div>"
         ));
         

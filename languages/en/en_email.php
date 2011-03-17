@@ -5,29 +5,16 @@ return array(
     'email:subscribe_comments' => 'Send me email when someone comments on my website',
 
     'email:orgapproved:subject' => 'Your website has been approved',
-    'email:orgapproved:body' => "Hi %s,
+    'email:orgapproved:congratulations' => "Congratulations! Your website has been approved by Envaya and it's now online:",
+    'email:orgapproved:nextsteps' => "Now, continue building your website by choosing a design, adding news and photos, and adding other pages about your organization's history, projects, team, and other topics.",
+    'email:orgapproved:login' => "To do this, log in to edit your website here:",
+    'email:orgapproved:help' => "For instructions on how to get started using Envaya, and to learn what you can do with your new website, visit our %s page here:",
+    'email:orgapproved:thanks' => "Thanks for using Envaya!",
 
-Congratulations! Your website has been approved by Envaya and it's now online:
-%s
+    'email:resetreq:subject' => "Request for new password",    
+    'email:resetreq:somebody_requested' => "Somebody has requested a new password for your account.",
+    'email:resetreq:click_link' => "If you requested this, click on the link below to change your password:",
 
-Now, continue building your website by choosing a design, adding news and photos, and adding other pages about your organization's history, projects, team, and other topics.
-
-To do this, log in to edit your website here:
-%s
-
-For instructions on how to get started using Envaya, and to learn what you can do with your new website, visit our %s page here:
-%s
-
-Thanks for using Envaya!",
-
-    'email:resetreq:subject' => "Request for new password",
-    'email:resetreq:body' => "Hi %s,
-
-Somebody has requested a new password for your account.
-
-If you requested this, click on the link below to change your password:
-
-%s",
     'email:reminder:subject' => 'Update your website on Envaya!',
     'email:salutation' => "Hi %s,",
     'email:greetings' => "Greetings from Envaya!",

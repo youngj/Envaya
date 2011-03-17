@@ -1,6 +1,7 @@
 <?php 
     $widget = $vars['widget'];
-
+    $org = $widget->get_container_entity();
+    
     $types = array(
         OrgRelationship::Partnership,
         OrgRelationship::Membership,
@@ -8,14 +9,18 @@
     );
     
     ob_start();
-        
+          
     foreach ($types as $type)
     {
         echo view('widgets/network_view_relationship_group', array(
             'widget' => $widget,
             'type' => $type,
         ));
-    }        
+    }
+    
+    echo view('widgets/network_view_feed', array(
+        'widget' => $widget,
+    ));
     
     $content = ob_get_clean();
     if ($content)

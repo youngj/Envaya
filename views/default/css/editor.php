@@ -306,7 +306,7 @@ a.icon_link:hover
     padding-top:0px;
 }
 
-.selectMemberNotShown
+.selectMemberNotFound label
 {
-    font-size:10px
+    font-size:100%;
 }
