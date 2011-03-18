@@ -606,7 +606,7 @@ class Controller_Profile extends Controller
         $uuid = get_input('uuid');
         $org = $this->org;
         
-        $duplicates = NewsUpdate::query_by_metadata('uuid', $uuid)->where('container_guid=?',$org->guid)->filter();
+        $duplicates = NewsUpdate::query()->with_metadata('uuid', $uuid)->where('container_guid=?',$org->guid)->filter();
         
         foreach ($imageNumbers as $imageNumber)
         {                        

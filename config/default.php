@@ -18,7 +18,7 @@ return array(
     'admin_email' => "admin@localhost",
     'post_email' => "post@localhost",
     'email_from' => "web@localhost",
-    'email_pass' => "",
+    'email_pass' => "",    
     
     'sphinx_conf_dir' => '/etc/sphinxsearch',
     'sphinx_bin_dir' => '/usr/bin',

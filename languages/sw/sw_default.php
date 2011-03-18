@@ -35,7 +35,6 @@ return array(
     'feed:edit_home' => '%s imehariri ukurasa mkuu.',
     'feed:news' => '%s imeongeza %s.',    
     'feed:news_multi' => "%s imeongeza %s %d.",
-    'feed:partnership' => '%s ina ubia na %s.',
     'feed:more' => 'Soma zaidi',
     'feed:show_more' => "Onyesha mabadiliko zaidi",
     'dashboard:title' => 'Hariri Tovuti',
@@ -70,6 +69,8 @@ return array(
     'logout' => 'Ondoka',
     'name' => 'Jina',
     'email' => 'Email',
+    'phone_number' => "Namba ya simu",
+    'website' => "Tovuti",
     'username' => 'Jina la mtumiaji',
     'password' => 'Neno la siri',
     'passwordagain' => 'Neno la siri (tena)',
@@ -281,7 +282,6 @@ return array(
 
     'user:email:success' => "Anwani yako ya email imebadilishwa.",
 
-    'user:phone:label' => "Namba ya simu",
     'user:phone:success' => "Namba yako ya simu imebadilishwa.",
 
     'user:notification:label' => "Mipangilio ya Kutaarifu",
@@ -346,8 +346,12 @@ return array(
     'featured:home_heading' => 'Shirika maalum',
     'featured:title' => 'Mashirika Maalum',
     'featured:see_all' => 'Ona mashirika maalum yote',  
+    'featured:about' => "Kuhusu Mashirika Maalum",
     
     'noaccess' => "Mtumiaji wa sasa hana ruhusu kuona ukurasa ule.",
     
     'grid:add_row' => "Ongeza mstari mwingine",
+
+    'ok' => "Sawa",
+    'cancel' => "Ghairi",        
 );

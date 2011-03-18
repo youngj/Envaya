@@ -658,23 +658,6 @@ abstract class Entity extends Model
     {
         return new Query_SelectEntity(static::$table_name);
     }
-
-    static function query_by_metadata($meta_name, $meta_value = "")
-    {
-        $query = static::query();  
-        $query->join('JOIN metadata m on e.guid = m.entity_guid');
-
-        if ($meta_name!=="")
-        {
-            $query->where("m.name=?", $meta_name);
-        }
-
-        if ($meta_value!=="")
-        {
-            $query->where("m.value=?", $meta_value);
-        }
-        return $query;
-    }
     
     // Loggable interface
     public function get_id() { return $this->guid; }

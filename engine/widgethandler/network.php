@@ -97,6 +97,7 @@ class WidgetHandler_Network extends WidgetHandler
             $relationship->subject_name = get_input('name');
             $relationship->subject_email = $this->validate_email(get_input('email'));
             $relationship->subject_website = $this->clean_url(get_input('website'));
+            $relationship->subject_phone = get_input('phone_number');
             $relationship->subject_guid = 0;
             $relationship->invite_subject = get_input('invite') ? true : false;
             
@@ -293,6 +294,7 @@ class WidgetHandler_Network extends WidgetHandler
             $relationship->subject_name = get_input('name');
             $relationship->subject_email = $this->validate_email(get_input('email'));
             $relationship->subject_website = $this->clean_url(get_input('website'));            
+            $relationship->subject_phone = get_input('phone_number');            
         }
         $relationship->set_self_approved();
         $relationship->save();

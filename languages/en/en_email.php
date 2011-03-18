@@ -2,7 +2,8 @@
 
 return array(
     'email:subscribe_reminders' => 'Send important announcements from Envaya',
-    'email:subscribe_comments' => 'Send me email when someone comments on my website',
+    'email:subscribe_comments' => 'Send email when someone comments on my website',
+    'email:subscribe_network' => "Send email when added to another organization's Network page",
 
     'email:orgapproved:subject' => 'Your website has been approved',
     'email:orgapproved:congratulations' => "Congratulations! Your website has been approved by Envaya and it's now online:",

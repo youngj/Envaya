@@ -43,10 +43,7 @@
     
     echo "</div>";
 
-    if ($relationship->show_email())
-    {
-        echo "<div>".view('output/email', array('value' => $relationship->subject_email))."</div>";
-    }
+    echo view('widgets/network_view_relationship_contact', array('relationship' => $relationship));   
 
     if ($relationship->content)
     {

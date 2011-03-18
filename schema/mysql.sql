@@ -179,6 +179,7 @@ CREATE TABLE `org_relationships` (
     `subject_guid` bigint(20) unsigned NOT NULL,
     `subject_name` text default null,    
     `subject_email` varchar(128) default null,
+    `subject_phone` varchar(128) default null,
     `subject_website` text default null,
     `subject_logo` text default null,    
     
@@ -209,6 +210,8 @@ CREATE TABLE `users_entity` (
   `password` varchar(32) NOT NULL default '',
   `salt`     varchar(8)  NOT NULL default '',
   `email` text NOT NULL,
+  `phone_number` varchar(128) NULL,
+  `canonical_phone` varchar(128) NULL,
   `language` varchar(6)  NOT NULL default '',
   `code` varchar(32) NOT NULL default '',
   `banned` enum ('yes', 'no') NOT NULL default 'no',
@@ -258,10 +261,12 @@ CREATE TABLE `org_domain_names` (
 CREATE TABLE `org_phone_numbers` (
     `id` int(11) NOT NULL auto_increment,
     `phone_number` varchar(32) not null,
+    `last_digits` int not null default 0,
 	`org_guid` bigint(20) unsigned  NOT NULL,
 	`confirmed` tinyint(4) NOT NULL default 0,
     PRIMARY KEY  (`id`),
-    UNIQUE KEY (`phone_number`),
+    KEY (`phone_number`),
+    KEY (`last_digits`),
 	KEY (`org_guid`)
 );
 

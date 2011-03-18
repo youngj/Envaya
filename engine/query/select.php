@@ -65,9 +65,33 @@ class Query_Select
         return $this;
     }
     
+    function where_not_in($column, $values)
+    {
+        if (sizeof($values) == 0)
+        {
+            return $this;
+        }
+        else
+        {
+            return $this->where_set($column, 'NOT IN', $values);
+        }
+    }    
+    
     function where_in($column, $values)
     {
-        return $this->where("$column in (".implode(',', array_fill(0, sizeof($values), '?')).")", $values);
+        if (sizeof($values) == 0)
+        {
+            return new Query_Empty();
+        }
+        else
+        {
+            return $this->where_set($column, 'IN', $values);
+        }
+    }    
+    
+    protected function where_set($column, $condition, $values)
+    {
+        return $this->where("$column $condition (".implode(',', array_fill(0, sizeof($values), '?')).")", $values);
     }
     
     function args($args)

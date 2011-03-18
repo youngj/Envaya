@@ -15,6 +15,7 @@ class User extends Entity
             'password' => '',
             'salt' => '',
             'email' => '',
+            'phone_number' => '',
             'language' => '',
             'code' => '',
             'banned' => 'no',
@@ -33,7 +34,7 @@ class User extends Entity
             'last_notify_time' => null,
             'last_action' => 0,
             'last_login' => 0,    
-			'notifications' => 3,
+			'notifications' => 7,
         );
 
     public function get_feed_names()
@@ -341,6 +342,18 @@ class User extends Entity
 	{
 		return ($this->notifications & $notification) != 0;
 	}
+    
+    function set_notification_enabled($notification, $enabled = true)
+    {
+        if ($enabled)
+        {
+            $this->notifications |= $notification;
+        }
+        else
+        {
+            $this->notifications &= ~$notification;
+        }   
+    }
 	
 	function get_notifications()
 	{

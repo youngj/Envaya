@@ -20,4 +20,5 @@
 		'comment:captcha_instructions' => "Chapa maneno yanayoonekana chini kuchapisha maoni yako.",
 		'comment:captcha_invalid' => "Maneno ya kuthibitisha si sahihi. Jaribu tena.", 
 		'comment:notification_subject' => "%s imeongeza maoni katika tovuti yako",
+        'comment:confirm_delete' => "Una hakika kuwa unataka kufuta maoni haya?",
 	);

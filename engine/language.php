@@ -114,7 +114,16 @@ class Language
     
     function load_all()
     {
-        if ($handle = opendir(Config::get('path')."languages/{$this->code}"))
+        $this->load_all_from_dir(Config::get('path'));        
+        foreach (Config::get('modules') as $module_name)
+        {
+            $this->load_all_from_dir(get_module_path($module_name));
+        }
+    }
+    
+    private function load_all_from_dir($dir_name)
+    {
+        if ($handle = opendir("{$dir_name}languages/{$this->code}"))
         {
             while ($file = readdir($handle))
             {
@@ -123,7 +132,7 @@ class Language
                     $this->load($matches[1]);
                 }
             }
-        }
+        }    
     }
     
     function load($group_name)

@@ -99,8 +99,9 @@ class Controller_Org extends Controller
         $name = get_input('name');
         $email = get_input('email');
         $website = get_input('website');
+        $phone_numbers = OrgPhoneNumber::split_phone_number(get_input('phone_number'));
         
-        $orgs_by_name = $orgs_by_email = $orgs_by_website = array();       
+        $orgs_by_name = $orgs_by_email = $orgs_by_website = $orgs_by_phone = array();       
         
         if ($email)
         {
@@ -126,17 +127,28 @@ class Controller_Org extends Controller
             }
         }        
         
+        if (sizeof($phone_numbers) > 0)
+        {
+            $last_digits = array_map(function($pn) { return OrgPhoneNumber::get_last_digits($pn); }, $phone_numbers);
+            
+            $phone_number_entities = OrgPhoneNumber::query()->where_in('last_digits', $last_digits)->filter();        
+            
+            $org_guids = array_map(function($p) { return $p->org_guid; }, $phone_number_entities);            
+            
+            $orgs_by_phone = Organization::query()->where_in('e.guid', $org_guids)->filter();
+        }
+        
         // if there's a likely unique match by website or email, avoid searching by name
         // (where we are likely to get some bad matches)
         if (sizeof($orgs_by_website) != 1 && sizeof($orgs_by_email) != 1) 
         {            
             if ($name)
             {
-                $orgs_by_name = Organization::query_search($name)->limit(4)->filter();
+                $orgs_by_name = Organization::query_search($name)->limit(2)->filter();
             }
         }
             
-        $all_orgs = array_merge($orgs_by_website, $orgs_by_email, $orgs_by_name);
+        $all_orgs = array_merge($orgs_by_website, $orgs_by_email, $orgs_by_phone, $orgs_by_name);
         
         // remove duplicates
         $all_orgs = array_values(array_combine(

@@ -46,9 +46,9 @@ return array(
     'network:already_membership' => "Your organization is already a member of %s.",    
     'network:already_partnership' => "%s is already listed as one of your partner organizations.",        
         
-    'network:add_member_instructions' => "Enter the name of the member organization, as well as their email address and website (if available).",       
-    'network:add_membership_instructions' => "To list your organization as part of a network, enter the name of the network, as well as their email address and website (if available).",       
-    'network:add_partnership_instructions' => "Enter the name of the partner organization, as well as their email address and website (if available).",           
+    'network:add_member_instructions' => "Enter the name of the member organization, and any available contact information:",       
+    'network:add_membership_instructions' => "To list your organization as part of a network, enter the name of the network, and any available contact information:",       
+    'network:add_partnership_instructions' => "Enter the name of the partner organization, and any available contact information:",           
 
     'network:empty' => "This organization's network is empty.",
         
@@ -72,14 +72,11 @@ return array(
     'network:no_self_partnership' => "You cannot add yourself as a partner organization.",    
     
     'network:blank_org' => "Please enter the name of the organization.",    
-    'network:blank_network' => "Please enter the name of the network.",    
     
     'network:org_not_shown' => "Is the organization you want to add not shown above?",
     'network:network_not_shown' => "Is the network you want to join not shown above?",            
             
-    'network:search_name' => "Organization name",
-    'network:search_email' => "Email address",
-    'network:search_website' => "Website",
+    'network:org_name' => "Organization name",
     'network:searching' => "Searching...",
 
     'network:add_button' => "Add Organization",        
@@ -97,8 +94,8 @@ return array(
     'network:relationship_saved' => "Relationship saved successfully.",
     'network:relationship_approved' => "Relationship approved.",
     
-    'network:awaiting_approval' => 'Awaiting approval',
-    'network:approve' => "Approve",
+    'network:awaiting_approval' => 'Suggested',
+    'network:approve' => "Add",
     
     'network:approve_instructions' => '%s has added your organization to their list of %s.',
     'network:approve_instructions_2' => 'To add %s to your list of %s, click the %s button below.',

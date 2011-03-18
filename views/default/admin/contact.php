@@ -23,7 +23,7 @@
 <tr>
     <th><a href='/admin/contact?sort=name'><?php echo __('name') ?></a></th>
     <th><a href='/admin/contact?sort=email'><?php echo __('email') ?></a></th>
-    <th><?php echo __('user:phone:label') ?></th>
+    <th><?php echo __('phone_number') ?></th>
     <th><a href='/admin/contact?sort=time_created'><?php echo __('created') ?></a></th>
     <th><?php echo __('last_update') ?></th>
     <th><?php echo __('posts') ?></th>

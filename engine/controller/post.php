@@ -136,7 +136,7 @@ class Controller_Post extends Controller_Profile
         {
             $uuid = get_input('uuid');
 
-            $duplicates = NewsUpdate::query_by_metadata('uuid', $uuid)->where('container_guid=?',$org->guid)->filter();
+            $duplicates = NewsUpdate::query()->with_metadata('uuid', $uuid)->where('container_guid=?',$org->guid)->filter();
             if (!sizeof($duplicates))
             {
                 $post = new NewsUpdate();

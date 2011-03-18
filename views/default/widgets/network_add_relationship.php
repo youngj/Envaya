@@ -2,7 +2,6 @@
     $org = $vars['org'];
     $type = $vars['type'];
     $widget = $vars['widget'];
-    $name_label = @$vars['name_label'] ?: __('network:search_name');
     $header = OrgRelationship::msg($type, 'add_header');    
     $can_add_unregistered = OrgRelationship::msg($type, 'can_add_unregistered');
     $confirm = OrgRelationship::msg($type, 'add_confirm');
@@ -23,12 +22,13 @@ function searchOrg()
     var query = {
         'name': document.getElementById('name').value,
         'email': document.getElementById('email').value,
-        'website': document.getElementById('website').value
+        'website': document.getElementById('website').value,
+        'phone_number': document.getElementById('phone_number').value
     };   
     
-    if (!query.name && !query.email && !query.website)
+    if (!query.name)
     {
-        alert(<?php echo json_encode(__('network:blank_member')); ?>);
+        alert(<?php echo json_encode(__('network:blank_org')); ?>);
         return;
     }    
         
@@ -37,6 +37,7 @@ function searchOrg()
         
     fetchJson('/org/js_search?name='+encodeURIComponent(query.name)+
             '&email='+encodeURIComponent(query.email)+
+            '&phone_number='+encodeURIComponent(query.phone_number)+
             '&website='+encodeURIComponent(query.website), 
         function(res) {        
             closeDialog();
@@ -186,12 +187,7 @@ if (!$org)
 </div>
 
 <table class='inputTable' style='margin:0 auto'>
-<tr><th><?php echo $name_label; ?></th>
-<td><?php echo view('input/text', array('name' => 'name', 'trackDirty' => true, 'id' => 'name')); ?></td></tr>
-<tr><th><?php echo __('network:search_email'); ?></th>
-<td><?php echo view('input/text', array('name' => 'email', 'trackDirty' => true,  'id' => 'email')); ?></td></tr>
-<tr><th><?php echo __('network:search_website'); ?></th>
-<td><?php echo view('input/text', array('name' => 'website', 'trackDirty' => true, 'id' => 'website')); ?></td></tr>
+<?php echo view('widgets/network_relationship_fields'); ?>
 <tr><th>&nbsp;</th>
 <td>
 <div id='searching_message' style='display:none;float:right;padding-top:18px'><?php echo __('network:searching'); ?></div>

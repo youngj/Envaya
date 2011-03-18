@@ -27,6 +27,7 @@ class OrgRelationship extends Entity
         'subject_name' => '',
         'subject_email' => '',
         'subject_website' => '',
+        'subject_phone' => '',
         'subject_logo' => '',
                 
         'order' => 0
@@ -180,11 +181,11 @@ class OrgRelationship extends Entity
     {
         if ($approved)
         {
-            $this->approval = $this->approval | static::SelfApproved;
+            $this->approval |= static::SelfApproved;
         }
         else
         {
-            $this->approval = $this->approval & ~static::SelfApproved;
+            $this->approval &= ~static::SelfApproved;
         }
     }
 
@@ -197,11 +198,11 @@ class OrgRelationship extends Entity
     {
         if ($approved)
         {
-            $this->approval = $this->approval | static::SubjectApproved;
+            $this->approval |= static::SubjectApproved;
         }
         else
         {
-            $this->approval = $this->approval & ~static::SubjectApproved;
+            $this->approval &= ~static::SubjectApproved;
         }
     }    
     
@@ -216,12 +217,7 @@ class OrgRelationship extends Entity
             ?: @static::$msg_ids['default'][$msg_type]
             ?: "network:$msg_type", $lang);
     }
-    
-    function show_email()
-    {
-        return !$this->subject_guid && $this->subject_email;
-    }
-    
+        
     function send_notification_email()
     {
         $org = $this->get_container_entity();
@@ -230,7 +226,7 @@ class OrgRelationship extends Entity
         $widget = $org->get_widget_by_class('WidgetHandler_Network');
         $reverse = $this->get_reverse_relationship();
         
-        if ($subject_org && $widget && $reverse && $subject_org->email)
+        if ($subject_org && $widget && $reverse && $subject_org->email && $subject_org->is_notification_enabled(Notification::Network))
         {    
             $subject_org->send_mail(
                 sprintf($this->__('notify_added_subject', $subject_org->language), $org->name, $subject_org->name), 

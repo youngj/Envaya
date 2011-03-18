@@ -12,15 +12,12 @@
     {            
         echo "<div class='image_right'>"
             .$link_open
-            .view('graphics/icon', array('entity' => $org, 'size' => 'medium'))
+            .view('graphics/icon', array('entity' => $org, 'size' => 'small', 'js' => "style='width:40px'"))
             .$link_close
             ."</div>";
     }
     echo "<h3 id='r{$relationship->guid}'>$link_open".escape($name)."$link_close</h3>";        
-    
-    if ($relationship->show_email())
-    {
-        echo "<div>".view('output/email', array('value' => $relationship->subject_email))."</div>";
-    }
+
+    echo view('widgets/network_view_relationship_contact', array('relationship' => $relationship));
     
     echo $relationship->render_content();

@@ -37,10 +37,6 @@
         'feed:edit_widget' => "%s updated its %s page.",
         'feed:edit_home' => '%s updated its home page.',                
         'feed:more' => "Read more",
-        'feed:org' => "News from related organizations",
-        'feed:org:about' => "This page shows the latest news from all organizations on Envaya that work in the same sectors as %s, and all organizations on its %s page.",
-        'feed:feature' => "Feature",
-        'feed:unfeature' => "Unfeature",
         'feed:show_more' => "Show more updates",
 
         'dashboard:title' => "Edit Site",
@@ -86,6 +82,8 @@
 
         'name' => "Display name",
         'email' => "Email address",
+        'phone_number' => "Phone number",        
+        'website' => "Website",
         'username' => "Username",
         'password' => "Password",
         'passwordagain' => "Password (again)",
@@ -338,7 +336,6 @@
 
         'user:email:success' => "Your email address has been updated.",
 
-        'user:phone:label' => "Phone number",
         'user:phone:success' => "Your phone number has been updated.",
 
         'user:notification:label' => "Notification Settings",

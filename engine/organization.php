@@ -171,7 +171,14 @@ class Organization extends User
     
     public function get_country_text()
     {
-        return __("country:{$this->country}");
+        if ($this->country)
+        {
+            return __("country:{$this->country}");
+        }
+        else
+        {
+            return '';
+        }
     }
 
     public function get_location_text($includeRegion = true)
@@ -286,6 +293,26 @@ class Organization extends User
             $this->sectors_dirty = false;
         }
         
+        if ($this->phone_numbers_dirty)
+        {            
+            $newIds = array_map(function($op) { return $op->id; }, $this->phone_numbers);        
+            
+            foreach ($this->query_phone_numbers()
+                ->where('confirmed = 0')
+                ->where_not_in('id', $newIds)
+                ->filter() 
+                    as $oldPhoneNumber)
+            {
+                $oldPhoneNumber->delete();
+            }
+            foreach ($this->phone_numbers as $phone_number)
+            {
+                $phone_number->org_guid = $this->guid;
+                $phone_number->save();
+            }        
+            $this->phone_numbers_dirty = false;
+        }
+                
         if ($isNew || $sectorsDirty 
             || @$attributesDirty['name'] || @$attributesDirty['username'] || @$attributesDirty['region'])
         {
@@ -537,6 +564,39 @@ class Organization extends User
             }            
         }    
     }
+    
+    protected $phone_numbers;
+    protected $phone_numbers_dirty = false;
+
+    function query_phone_numbers()
+    {
+        return OrgPhoneNumber::query()->where('org_guid = ?', $this->guid);
+    }
+        
+    function set_phone_number($phone_number_str)
+    {
+        $this->phone_number = $phone_number_str;
+        
+        $phone_numbers = OrgPhoneNumber::split_phone_number($phone_number_str, $this->country);
+
+        $this->phone_numbers = array();        
+        foreach ($phone_numbers as $phone_number)
+        {
+            if ($this->guid)
+            {   
+                $orgPhoneNumber = $this->query_phone_numbers()
+                    ->where('phone_number = ?', $phone_number)->get();
+            }
+            if (!$orgPhoneNumber)
+            {
+                $orgPhoneNumber = new OrgPhoneNumber();
+                $orgPhoneNumber->org_guid = $this->guid;
+                $orgPhoneNumber->phone_number = $phone_number;
+            }            
+            $this->phone_numbers[] = $orgPhoneNumber;
+        }        
+        $this->phone_numbers_dirty = true;
+    }    
         
     /* requires reports module */
     public function query_reports()

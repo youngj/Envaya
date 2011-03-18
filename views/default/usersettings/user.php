@@ -35,7 +35,7 @@
     </div>
 
     <div class='input'>
-        <label><?php echo __('user:phone:label'); ?>:</label><br />
+        <label><?php echo __('phone_number'); ?>:</label><br />
         <?php
             echo view('input/text',array('name' => 'phone', 'value' => $user->phone_number));
         ?>
