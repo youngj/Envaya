@@ -11,9 +11,6 @@ class WidgetHandler_Network extends WidgetHandler
     {
         switch (get_input('mode'))       
         {    
-            case 'feed':
-                PageContext::set_translatable(false);
-                return view("widgets/network_view_feed", array('widget' => $widget));
             default:
                 return view("widgets/network_view", array('widget' => $widget));
         }
@@ -177,7 +174,7 @@ class WidgetHandler_Network extends WidgetHandler
             {
                 $url = "http://$url";
             }         
-            else if ($scheme != 'http' || $scheme != 'https')
+            else if ($scheme != 'http' && $scheme != 'https')
             {
                 $url = '';
             }

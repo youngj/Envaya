@@ -26,9 +26,9 @@ class Sphinx
     {
         $bin_dir = Config::get('sphinx_bin_dir');
         $conf_dir = Config::get('sphinx_conf_dir');
-        $log_dir = Config::get('sphinx_log_dir');
+        $pid_dir = Config::get('sphinx_pid_dir');
         
-        $rotate = is_file("$log_dir/searchd.pid") ? "--rotate" : "";
+        $rotate = is_file("$pid_dir/searchd.pid") ? "--rotate" : "";
         
         system(escapeshellcmd("$bin_dir/indexer") . " --all $rotate --config " . escapeshellarg("$conf_dir/sphinx.conf"));
     }

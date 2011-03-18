@@ -254,4 +254,4 @@ sudo dpkg -i *.deb
 
 apt-get update
 apt-get -y --allow-unauthenticated install php5-cli php5-curl php5-gd php5-memcache php-pear php5-fpm php5-mysql php5-apc
-apt-get -y install nginx emacs memcached stunnel4 git-core mcrypt daemon default-jre poppler-utils netpbm geoip-database cups-pdf openoffice.org-writer openoffice.org-draw sphinxsearch
+apt-get -y install nginx emacs memcached stunnel4 git-core mcrypt daemon default-jre poppler-utils netpbm geoip-database cups-pdf openoffice.org-writer openoffice.org-draw
