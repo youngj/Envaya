@@ -199,7 +199,7 @@ abstract class Controller {
         
         $org = new Organization();
         $org->username = $username;
-        $org->phone_number = get_input('phone');
+        $org->set_phone_number(get_input('phone'));
         $org->email = $email;
         $org->name = $name;
         $org->set_password($password);

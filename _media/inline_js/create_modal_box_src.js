@@ -26,7 +26,7 @@ function createModalBox(options)
                     var code = e.charCode || e.keyCode;
                     if (code == 13)
                     {
-                        okFn();   
+                        okFn();
                     }
                     else if (code == 27)
                     {

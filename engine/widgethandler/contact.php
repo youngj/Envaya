@@ -30,7 +30,7 @@ class WidgetHandler_Contact extends WidgetHandler
         $org->email = $email;
         $widget->public_email = sizeof(get_input_array('public_email')) ? 'yes' : 'no';
 
-        $org->phone_number = get_input('phone_number');
+        $org->set_phone_number(get_input('phone_number'));
         $widget->public_phone = sizeof(get_input_array('public_phone')) ? 'yes' : 'no';
         $org->contact_name = get_input('contact_name');
         $org->contact_title = get_input('contact_title');

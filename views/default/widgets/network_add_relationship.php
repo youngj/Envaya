@@ -158,6 +158,10 @@ function showConfirmMemberDialog(query, res)
     document.body.appendChild(modalBox = createModalBox({
         title: <?php echo json_encode($header); ?>, 
         content: content,
+        okFn: function() {
+            // don't remove modal box, so any onclick events can be called as a result of the enter key.
+            // IE won't call onclick events if the element is removed from the DOM
+        },
         hideOk: true,
         hideCancel: true,
         focus: true
@@ -188,9 +192,12 @@ if (!$org)
 
 <table class='inputTable' style='margin:0 auto'>
 <?php echo view('widgets/network_relationship_fields'); ?>
-<tr><th>&nbsp;</th>
+<tr><th>
+<div id='searching_message' style='display:none'>
+    <?php echo __('network:searching'); ?>
+</div>
+</th>
 <td>
-<div id='searching_message' style='display:none;float:right;padding-top:18px'><?php echo __('network:searching'); ?></div>
 <?php echo view('input/submit', array(
     'name' => '_save',
     'trackDirty' => true, 

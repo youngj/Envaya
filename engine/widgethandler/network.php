@@ -116,7 +116,7 @@ class WidgetHandler_Network extends WidgetHandler
         else // subject_org already an envaya member
         {            
             $relationship->subject_guid = $subject_org->guid;
-            $relationship->subject_name = $member_org->name; // duplicate data, but allows sorting members alphabetically
+            $relationship->subject_name = $subject_org->name; // duplicate data, but allows sorting members alphabetically
         
             if ($org->guid == $relationship->subject_guid)
             {

@@ -561,7 +561,7 @@ class Controller_Profile extends Controller
         $phone = get_input('phone');
         if ($phone != $user->phone_number)
         {
-            $user->phone_number = $phone;
+            $user->set_phone_number($phone);
             system_message(__('user:phone:success'));
         }
 
