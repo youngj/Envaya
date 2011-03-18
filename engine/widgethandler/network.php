@@ -299,6 +299,11 @@ class WidgetHandler_Network extends WidgetHandler
         $relationship->set_self_approved();
         $relationship->save();
         
+        if ($relationship->content)
+        {
+            $relationship->post_feed_items();
+        }
+        
         system_message(__('network:relationship_saved'));
         return forward($widget->get_edit_url());
     }    

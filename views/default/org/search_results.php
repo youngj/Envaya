@@ -5,8 +5,6 @@
     
     if (@$vars['nearby'])
     {
-        
-    
         $latlong = $vars['latlong'];
     
         echo "<div class='padded'>";
@@ -32,7 +30,7 @@
     
         echo $results;
     }
-    else
+    else if (@!$vars['nearby'])
     {
         echo "<div class='padded'>" . __("search:noresults") . "</div>";
     }            

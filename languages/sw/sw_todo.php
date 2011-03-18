@@ -12,4 +12,5 @@ return array(
     'todo:photos' => "Ongeza picha nyingine",
     'todo:logo' => "Ongeza nembo yako",
     'todo:contact' => "Ongeza data ya mawasiliano",
+    'todo:network' => "Eleza ubia wako",
 );

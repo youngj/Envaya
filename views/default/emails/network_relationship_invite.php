@@ -8,6 +8,9 @@
 
     $org = $relationship->get_container_entity();
     
+    echo sprintf(__('email:salutation', $org->language), $subject_name);
+    echo "\n\n";        
+    
     echo sprintf(__('network:invite_notify_info', $org->language), 
         $org->name, 
         $subject_name, 

@@ -61,6 +61,9 @@ return array(
     'search:submit' => 'Tafuta',
     'search:instructions' => 'Chapa jina au sehemu ya shirika unalotafuta.',
     'search:noresults' => 'Shirika lolote halionekani!',
+    'search:orgs_near' => "Mashirika karibu na '%s':",
+    'search:orgs_matching' => "Mashirika yaliyo na '%s' ndani ya majina yao:",
+    
     
     'login' => 'Fungua',
     'loginerror' => 'Umekosea jina la mtumiaji au neno ya siri. Hakikisha kuwa yote ni sahihi, na tafadhali jaribu tena. Kama ikiwa huwezi bado kufungua, %s kupata neno jipya la siri.',

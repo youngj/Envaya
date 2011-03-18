@@ -12,5 +12,5 @@ return array(
     'todo:photos' => "Add some photos",
     'todo:logo' => "Add your logo",
     'todo:contact' => "Add contact information",
-    'todo:network' => "Set up your network",
+    'todo:network' => "Describe your partnerships",
 );

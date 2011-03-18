@@ -4,8 +4,8 @@
     
     $types = array(
         OrgRelationship::Partnership,
-        OrgRelationship::Membership,
-        OrgRelationship::Member,
+        //OrgRelationship::Membership,
+        //OrgRelationship::Member,
     );
     
     ob_start();

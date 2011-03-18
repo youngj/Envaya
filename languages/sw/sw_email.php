@@ -3,6 +3,7 @@
 return array(
     'email:subscribe_reminders' => 'Nitumie taarifa muhimu kutoka Envaya',
     'email:subscribe_comments' => 'Nitumie email ambapo mtu ameandika maoni katika tovuti yangu',
+    'email:subscribe_network' => "Nitumie email ambapo shirika jingine limeniongeza kwenye ukurasa wa Mtandao",
 	
     'email:orgapproved:subject' => 'Tovuti yako imekubaliwa',
     

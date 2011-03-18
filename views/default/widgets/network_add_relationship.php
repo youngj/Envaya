@@ -102,7 +102,7 @@ function showNotFoundDialog(query, res)
     }
     else
     {
-        content.appendChild(createElem('div',
+        content.appendChild(document.createTextNode(' ' +
             <?php echo json_encode($can_add_unregistered); ?>
         ));
     }

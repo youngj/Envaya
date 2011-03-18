@@ -50,10 +50,13 @@ class User extends Entity
         return true;
     }
 
-    public function get_name_for_email()
+    public function get_name_for_email($email = null)
     {
         $name = mb_encode_mimeheader($this->name, "UTF-8", "B");
-        $email = $this->email ?: Config::get('email_from');
+        if (!$email)
+        {
+            $email = $this->email ?: Config::get('email_from');
+        }
         return "\"$name\" <$email>";
     }
 

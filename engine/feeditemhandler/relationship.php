@@ -24,11 +24,15 @@ class FeedItemHandler_Relationship extends FeedItemHandler
     
     function render_content($item, $mode)
     {
-        $update = $item->get_subject_entity();
-
-        return view('feed/snippet', array(            
-            'link_url' => $this->get_url($item),
-            'content' => $update->render_content(Markup::Feed)
-        ));
+        $relationship = $item->get_subject_entity();
+        
+        if ($relationship->content)
+        {
+            return view('feed/snippet', array(            
+                'link_url' => $this->get_url($item),
+                'content' => $relationship->render_content(Markup::Feed)
+            ));
+        }
+        return '';
     }    
 }

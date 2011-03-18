@@ -4,8 +4,8 @@
     
     $types = array(
         OrgRelationship::Partnership,
-        OrgRelationship::Membership,
-        OrgRelationship::Member,
+        //OrgRelationship::Membership,
+        //OrgRelationship::Member,
         );
     
     ob_start();
@@ -17,13 +17,15 @@
     echo "<p>".__('network:instructions_2')."</p>";
     echo "</div>";
     
-    echo "<ul>";
+    //echo "<ul>";
     foreach ($types as $type)
     {
-        echo "<li><a href='{$widget->get_edit_url()}?action=add_relationship&type={$type}'>"
-            .OrgRelationship::msg($type, 'add_header')."</a></li>";
+        //echo "<li>";
+        echo "<div style='font-weight:bold;text-align:center'><a href='{$widget->get_edit_url()}?action=add_relationship&type={$type}'>"
+            .OrgRelationship::msg($type, 'add_header')."</a></div>";
+        //echo "</li>";
     }
-    echo "</ul>";
+    //echo "</ul>";
     
     echo "</div>";    
     
@@ -37,11 +39,17 @@
         
     $content = ob_get_clean();
 
-    echo view("widgets/edit_form", array(
-       'widget' => $widget,
-       'body' => $content,
-       'noSave' => true
-       
-    ));
+    if ($widget->guid || $org->query_relationships()->count())
+    {
+        echo view("widgets/edit_form", array(
+           'widget' => $widget,
+           'body' => $content,
+           'noSave' => true          
+        ));
+    }
+    else
+    {
+        echo $content."<br />";
+    }
         
 ?>

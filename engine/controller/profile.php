@@ -675,9 +675,10 @@ class Controller_Profile extends Controller
             }
 
             if ($recipient->send_mail($subject, $message, array(
-                'From' => $user->get_name_for_email(),
+                // can't use org's email as from address, or else may get marked as spam
+                'From' => $user->get_name_for_email(Config::get('email_from')), 
                 'Reply-To' => $user->get_name_for_email(),
-                'Bcc' => $user->get_name_for_email(),            
+                'Bcc' => $user->get_name_for_email(),
             )))
             {
                 system_message(__("message:sent"));
