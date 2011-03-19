@@ -11,9 +11,15 @@ function main()
 {   
     install_admin();
     
+    $admin_email = Config::get('admin_email');
+    
     for ($i = 0; $i < 22; $i++)
     {
-        install_org("testposter$i");
+        $org = install_org("testposter$i");        
+        $org->set_phone_number("cell: $i$i$i$i$i$i$i, fax: +124124129481");                        
+        $org->name = "Test Poster$i";
+        $org->email = str_replace('@',"+p$i@", $admin_email);
+        $org->save();        
     }
     
     install_org('testorg');

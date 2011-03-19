@@ -4,52 +4,38 @@
  Command-line script for running Envaya's Selenium tests.
  
  usage: php TestSuite.php
-    --test=TestClass1 --test=TestClass2 (from testcases directory, omit to run all $TEST_CASES)
+    --test=TestClass1 --test=TestClass2 (from testcases directory, omit to run all test cases)
     --browser=*browser (selenium browser expression, omit to use *firefox)
     
     Assumes that http://localhost is running Envaya code, and no other Envaya services are running on localhost.
 */
 
-$TEST_CASES = array(
-    'MobileTest',
-    'UploadTest',    
-    'ReportingTest',    
-    'FeedTest',
-    'EnvayaSiteTest',
-    'RegisterTest',
-);
-
-$MOCK_MAIL_FILE = __DIR__."/mail.out";
-
 chdir(__DIR__);
-
-function find_test_case_path($test_case)
-{
-    $path = "testcases/$test_case.php";
-    
-    $core_path = __DIR__."/$path";
-    if (is_file($core_path))
-    {
-        return $core_path;
-    }
-    $module_dir = dirname(__DIR__)."/mod";
-
-    $handle = opendir($module_dir);
-    while ($module_name = readdir($handle))
-    {
-        $module_path = "$module_dir/$module_name/$path";
-        if (is_file($module_path))
-        {
-            return $module_path;
-        }
-    }
-    throw new Exception("$test_case not found");
-}
-
 
 require_once '../scripts/cmdline.php';
 require_once 'PHPUnit/Autoload.php';
 require_once 'SeleniumTest.php';
+
+$MOCK_MAIL_FILE = __DIR__."/mail.out";
+
+function get_all_test_cases()
+{
+    $paths = glob("{testcases/*.php,../mod/*/testcases/*.php}", GLOB_BRACE);
+    return array_map(function($path) { 
+        $pathinfo = pathinfo($path);
+        return $pathinfo['filename'];
+    }, $paths);
+}
+
+function find_test_case_path($test_case)
+{
+    $paths = glob("{testcases/$test_case.php,../mod/*/testcases/$test_case.php}", GLOB_BRACE);
+    if (sizeof($paths))
+    {
+        return $paths[0];
+    }
+    throw new Exception("$test_case not found");
+}
 
 function main()
 {
@@ -65,7 +51,7 @@ function main()
     }
     else
     {    
-        $test_cases = $TEST_CASES;    
+        $test_cases = get_all_test_cases();    
     }
 
     $suite = new PHPUnit_Framework_TestSuite('Envaya');

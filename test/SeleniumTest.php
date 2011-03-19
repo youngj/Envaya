@@ -35,12 +35,29 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     {
         return call_user_func_array(array($this->s, $name), $arguments);
     }
-
+    
     public function tearDown()
     {
         $this->s->stop();
     }
 
+    function login($username, $password)
+    {
+        $this->type("//input[@name='username']",$username);
+        $this->type("//input[@name='password']",$password);
+        $this->submitForm();    
+    }    
+    
+    function ensureGoodMessage()
+    {
+        $this->mouseOver("//div[@class='good_messages']");
+    }
+    
+    function ensureBadMessage()
+    {
+        $this->mouseOver("//div[@class='bad_messages']");
+    }
+    
     public function mustNotExist($id)
     {
         if ($this->isElementPresent($id))
@@ -106,12 +123,12 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $this->s->selectFrame("relative=top");
     }
 
-    public function getLastEmail($match = null)
+    public function getLastEmail($match = "Subject")
     {
         return $this->retry('_getLastEmail', array($match));
     }
 
-    public function _getLastEmail($match)
+    public function _getLastEmail($match = "Subject")
     {
         global $MOCK_MAIL_FILE;
         
@@ -144,13 +161,17 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         return $email;
     }
 
-    public function getLinkFromEmail($email)
+    public function getLinkFromEmail($email, $index = 0)
     {
-        if (!preg_match('/http:[^\\s]+/', $email, $matches))
+        if (!preg_match_all('/http:[^\\s]+/', $email, $matches))
         {
-            throw new Exception("couldn't find link in email $email");
+            throw new Exception("couldn't find any links in email $email");
         }
-        return $matches[0];
+        if ($index >= sizeof($matches[0]))
+        {
+            throw new Exception("couldn't find link $index in email $email");
+        }
+        return $matches[0][$index];
     }
     
     public function retry($fn_name, $args = null, $timeout = 15)

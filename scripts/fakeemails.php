@@ -13,10 +13,13 @@ if (Config::get('debug') && Config::get('domain') != 'envaya.org')
 {
     $users = User::query()->filter();
 
+    $admin_email = Config::get('admin_email');
+    
     foreach ($users as $user)
     {
-        echo "{$user->email}\n";
-        $user->email = "adunar+{$user->username}@gmail.com";
+        echo "{$user->email} -> ";        
+        $user->email = str_replace('@',"+{$user->username}@", $admin_email);
+        echo "{$user->email}\n";                
         $user->save();
     }
 }

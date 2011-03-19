@@ -17,15 +17,13 @@ class FeedTest extends SeleniumTest
         for ($i = 0; $i < 22; $i++)
         {
             $this->open("/pg/login");
-            
-            $this->type("//input[@name='username']","testposter$i");
-            $this->type("//input[@name='password']",'testtest');
-            $this->submitForm();
-            $this->mouseOver("//div[@class='good_messages']");
+
+            $this->login("testposter$i", 'testtest');            
+            $this->ensureGoodMessage();
             
             $this->typeInFrame("//iframe", "test post $i");
             $this->submitForm();
-            $this->mouseOver("//div[@class='good_messages']");
+            $this->ensureGoodMessage();
 
             if ($i >= 20)
             {   
@@ -35,7 +33,7 @@ class FeedTest extends SeleniumTest
                     $this->clickAndWait("//a[contains(@href,'dashboard')]");
                     $this->typeInFrame("//iframe", "another post $i.$j");
                     $this->submitForm();
-                    $this->mouseOver("//div[@class='good_messages']");                    
+                    $this->ensureGoodMessage();
                 }                
             }
                         

@@ -53,7 +53,7 @@ return array(
     'network:org_not_registered' => "Inaonekana kwamba %s haijajiunga Envaya.",
     
     'network:invite_org' => "Karibisha %s kujiunga Envaya?",
-    'network:add_select' => "Ongeza",
+    'network:add' => "Ongeza",
        
     'network:invited' => "%s imekaribishwa kujiunga Envaya.",                          
     
@@ -61,11 +61,10 @@ return array(
     'network:edit_relationship' => "Hariri Uhusiano",    
     'network:relationship_saved' => "Uhusiano umehifadhiwa.",
     
-    'network:awaiting_approval' => 'Rai',
-    'network:approve' => "Ongeza",
+    'network:suggestion' => 'Kipendekezo',
     
     'network:approve_instructions' => '%s imeongeza shirika lako kwenye orodha yake ya %s.',
-    'network:approve_instructions_2' => 'Ili kuongeza %s kwenye orodha yako ya %s, bonyeza kitufe cha %s cha chini.',
+    'network:approve_instructions_2' => 'Ili kuongeza %s kwenye orodha yako ya %s, bonyeza kitufe cha %s hapo chini.',
     
     'network:add_description' => 'Ongeza maelezo...',
     

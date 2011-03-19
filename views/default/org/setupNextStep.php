@@ -94,7 +94,7 @@ if ($messages)
 </tr>
 <tr>
 <td>
-<ul>
+<ul class='todo_steps'>
 <?php
 foreach ($todoItems as $todoItem)
 {

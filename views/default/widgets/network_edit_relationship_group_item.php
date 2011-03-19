@@ -18,7 +18,7 @@
     if (!$relationship->is_self_approved())
     {
         $url = view('output/post_url', array('href' => "{$widget->get_edit_url()}?action=approve&guid={$relationship->guid}"));    
-        echo "<a href='$url'>".__('network:approve')."</a> &middot; ";
+        echo "<a href='$url'>".__('network:add')."</a> &middot; ";
     }
     
     echo "<a href='{$widget->get_edit_url()}?action=edit_relationship&guid={$relationship->guid}'>".__('edit')."</a> &middot; ";
@@ -38,7 +38,7 @@
     
     if (!$relationship->is_self_approved())
     {
-        echo " <em>(".__('network:awaiting_approval').")</em>";
+        echo " <em>(".__('network:suggestion').")</em>";
     }
     
     echo "</div>";

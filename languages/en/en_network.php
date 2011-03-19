@@ -81,7 +81,7 @@ return array(
     'network:org_not_registered' => "It seems that %s has not yet joined Envaya.",
     
     'network:invite_org' => "Invite %s to join Envaya?",
-    'network:add_select' => "Add",
+    'network:add' => "Add",
        
     'network:invited' => "%s has been invited to join Envaya.",                          
     
@@ -89,8 +89,7 @@ return array(
     'network:edit_relationship' => "Edit Relationship",    
     'network:relationship_saved' => "Relationship saved successfully.",
     
-    'network:awaiting_approval' => 'Suggested',
-    'network:approve' => "Add",
+    'network:suggestion' => 'Suggested',
     
     'network:approve_instructions' => '%s has added your organization to their list of %s.',
     'network:approve_instructions_2' => 'To add %s to your list of %s, click the %s button below.',

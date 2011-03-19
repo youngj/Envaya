@@ -126,7 +126,7 @@ function getOrgResultView(result)
             createElem('input', {
                 type:'submit',                 
                 click: function() { closeDialog(); addExistingOrg(result.org); },
-                value:<?php echo json_encode(__('network:add_select')); ?>+" \xbb"
+                value:<?php echo json_encode(__('network:add')); ?>+" \xbb"
             })
         ),
         view.firstChild        
@@ -150,6 +150,7 @@ function showConfirmMemberDialog(query, res)
         createElem('hr'),                    
         createElem('a', {
                 href:'javascript:void(0)', 
+                className: 'selectMemberNone',
                 click:function() { ignoreDirty(); closeDialog(); showNotFoundDialog(query, res); }
             }, 
             <?php echo json_encode($not_shown); ?>)

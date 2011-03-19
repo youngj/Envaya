@@ -175,9 +175,7 @@ abstract class Controller {
 
         validate_password($password);
 
-        $email = trim(get_input('email'));
-
-        validate_email_address($email);
+        $email = validate_email_address(trim(get_input('email')));
 
         if (!get_input('ignore_possible_duplicates'))
         {

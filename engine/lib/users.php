@@ -134,7 +134,7 @@
         if ($address !== "" && !is_email_address($address))
             throw new RegistrationException(__('registration:notemail'));
 
-        return true;
+        return $address;
     }
 
     /**

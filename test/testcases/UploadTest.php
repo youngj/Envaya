@@ -21,9 +21,7 @@ class UploadTest extends SeleniumTest
     private function _testNewsUpdateImage()
     {
         $this->open("/pg/login");
-        $this->type("//input[@name='username']", "testorg");
-        $this->type("//input[@name='password']", "testtest");
-        $this->submitForm();
+        $this->login('testorg','testtest');
         
         $this->click("//div[@class='attachControls']//a");
         
@@ -132,7 +130,7 @@ class UploadTest extends SeleniumTest
         
         $this->submitForm();
         
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
         $this->mouseOver("//div[@id='heading']//img[contains(@src,'iconmedium.jpg')]");
         
         $imgUrl = $this->getAttribute("//div[@id='heading']//img[contains(@src,'iconmedium.jpg')]@src");

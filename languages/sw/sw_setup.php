@@ -17,7 +17,7 @@ return array(
     'setup:sector:other_specify' => 'Kama kuna \'Nyingine\', zitaje:',
     'setup:theme' => 'Chagua wazo la tovuti yako:',
     'setup:theme:help' => 'Baadaye unaweza kubadilisha usanii wa tovuti yako kwa kuongeza nembo ya shirika lako juu ya ukurasa wako.',
-    'setup:next' => 'Bonyeza kitufe cha chini kuona ukurasa wako mkuu!',
+    'setup:next' => 'Bonyeza kitufe hapo chini kuona ukurasa wako mkuu!',
     'setup:next:button' => 'Tuuone!',
     'setup:next_step_message' => 'Jifunze jinsi ya kutumia tovuti yako ya Envaya.',
     'setup:ok' => 'Ukurasa wako mkuu umeumbwa.',

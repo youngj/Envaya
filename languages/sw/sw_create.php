@@ -20,7 +20,7 @@ return array(
     'create:phone:help' => "Ingiza namba yako ya simu ya mkononi kama unayo.",
     'create:phone:help_2' => "Kama ukiwa na zaidi ya namba moja, zigawanye na koma.",
 
-    'create:next' => 'Bonyeza kitufe cha chini kuumba akaunti yako.',
+    'create:next' => 'Bonyeza kitufe hapo chini kuumba akaunti yako.',
     'create:next:button' => 'Umba akaunti',
     'create:no_name' => 'Tafadhali ingiza jina la shirika lako.',
     'create:username_exists' => 'Mtu mwengine ameandikisha jina hilo la mtumiaji. Tafadhali chagua jingine.',
@@ -31,7 +31,7 @@ return array(
     
     'create:possible_duplicate' => "Shirika limewahi kujiandikisha?",
     'create:duplicate_instructions' => "Kama shirika lako likionyesha chini, libonyeze kufungua kwa kutumia jina lake la mtumiaji na neno la siri.",
-    'create:not_duplicate_instructions' => "Kama shirika lako halionyeshi juu, bonyeza kitufe cha chini kuendelea na kuumba akaunti mpya kwa shirika lako.",
+    'create:not_duplicate_instructions' => "Kama shirika lako halionyeshi juu, bonyeza kitufe hapo chini kuendelea na kuumba akaunti mpya kwa shirika lako.",
     'create:not_duplicate' => "Endelea kujiandikisha",
     
 );

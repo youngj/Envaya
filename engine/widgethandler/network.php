@@ -88,15 +88,16 @@ class WidgetHandler_Network extends WidgetHandler
             return not_found();
         }
         
+        $relationship->subject_phone = get_input('phone_number');
+        $relationship->subject_website = $this->clean_url(get_input('website'));        
+        
         $subject_org = Organization::query()->where('e.guid = ?', (int)get_input('org_guid'))->get();        
         if (!$subject_org) // subject_org not an envaya member
         {
             $relationship->subject_name = get_input('name');
-            $relationship->subject_email = $this->validate_email(get_input('email'));
-            $relationship->subject_website = $this->clean_url(get_input('website'));
-            $relationship->subject_phone = get_input('phone_number');
             $relationship->subject_guid = 0;
             $relationship->invite_subject = get_input('invite') ? true : false;
+            $relationship->subject_email = $this->validate_email(trim(get_input('email')));
             
             $matchingRelationships = $org->query_relationships()
                 ->where('`type` = ?', $relationship->type)
@@ -114,6 +115,14 @@ class WidgetHandler_Network extends WidgetHandler
         {            
             $relationship->subject_guid = $subject_org->guid;
             $relationship->subject_name = $subject_org->name; // duplicate data, but allows sorting members alphabetically
+            
+            try
+            {
+                $relationship->subject_email = validate_email_address(trim(get_input('email')));        
+            }
+            catch (RegistrationException $ex)
+            {
+            }            
         
             if ($org->guid == $relationship->subject_guid)
             {
@@ -236,6 +245,8 @@ class WidgetHandler_Network extends WidgetHandler
             return not_found();
         }        
         
+        $widget->save();
+        
         return view('widgets/network_approve_relationship', array('widget' => $widget, 'relationship' => $relationship));
     }    
     
@@ -300,6 +311,13 @@ class WidgetHandler_Network extends WidgetHandler
         {
             $relationship->post_feed_items();
         }
+
+        if ($org->is_approved())
+        {
+            $relationship->send_notification_email();
+        }
+        
+        $widget->save();
         
         system_message(__('network:relationship_saved'));
         return forward($widget->get_edit_url());
@@ -309,10 +327,9 @@ class WidgetHandler_Network extends WidgetHandler
     {
         try
         {
-            validate_email_address($email);
-            return $email;
+            return validate_email_address($email);
         }
-        catch (Exception $ex)
+        catch (RegistrationException $ex)
         {
             return action_error($ex->getMessage());
         }                

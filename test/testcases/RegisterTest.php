@@ -23,7 +23,7 @@ class RegisterTest extends SeleniumTest
         $this->_testEditHome();
         $this->_testMakePublic();
         $this->_testComment();                
-        $this->_testPartnership();
+        $this->_testAnotherRegister();
         $this->_testMessages();
         $this->_testDeleteOrg();
     }
@@ -46,16 +46,16 @@ class RegisterTest extends SeleniumTest
         $this->type("//input[@name='password2']", "abcdefgh");
         $this->submitForm();
         
-        $this->mouseOver("//div[@class='bad_messages']");
+        $this->ensureBadMessage();
         
         $this->type("//input[@name='password']", "abcdefgh");
         $this->submitForm();
 
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
         
         $this->setUrl($url); // password code can only be used once        
-        $this->mouseOver("//div[@class='bad_messages']");
+        $this->ensureBadMessage();
         $this->clickAndWait("//a[contains(@href, 'home')]");
     }
 
@@ -70,11 +70,11 @@ class RegisterTest extends SeleniumTest
         $this->submitForm();
         $this->click("//input[@name='org_type' and @value='np']");
         $this->submitForm();
-        $this->mouseOver("//div[@class='bad_messages']");
+        $this->ensureBadMessage();
         $this->click("//input[@name='country' and @value='other']");
         $this->submitForm();
         sleep(2);
-        $this->mouseOver("//div[@class='bad_messages']");
+        $this->ensureBadMessage();
         $this->click("//input[@name='country' and @value='tz']");
         $this->submitForm();
 
@@ -82,31 +82,31 @@ class RegisterTest extends SeleniumTest
         
         $this->name = "testorg".time();
 
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
 
         $this->type("//input[@name='org_name']", $this->name);
         $this->type("//input[@name='username']", "t<b>x</b>");
         $this->type("//input[@name='password']", "password");
         $this->type("//input[@name='password2']", "password2");        
         
-        $this->email = "adunar+".time()."@gmail.com";
+        $this->email = "nobody+".time()."@nowhere.com";
         
         $this->type("//input[@name='email']", $this->email);
         $this->submitForm();
         sleep(2);
-        $this->mouseOver("//div[@class='bad_messages']");
+        $this->ensureBadMessage();
         
         $this->username = "selenium".time();
 
         $this->type("//input[@name='username']", $this->username);
         $this->submitForm();
         sleep(2);
-        $this->mouseOver("//div[@class='bad_messages']");
+        $this->ensureBadMessage();
 
         $this->type("//input[@name='password2']", "password");
         $this->type("//input[@name='username']", "org");
         $this->submitForm();
-        $this->mouseOver("//div[@class='bad_messages']");
+        $this->ensureBadMessage();
 
         $this->type("//input[@name='username']", "testgrantmaker");
         $this->submitForm();
@@ -116,7 +116,7 @@ class RegisterTest extends SeleniumTest
         $this->submitForm();
         
         // can't create new account, need to choose new username
-        $this->mouseOver("//div[@class='bad_messages']"); 
+        $this->ensureBadMessage();
         
         $this->name = "Test Org";
         
@@ -132,7 +132,7 @@ class RegisterTest extends SeleniumTest
         sleep(2);
 
         /* set up homepage */
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
 
         $this->typeInFrame("//iframe", "testing the website");
         $this->check("//input[@name='sector[]' and @value='3']");
@@ -146,7 +146,7 @@ class RegisterTest extends SeleniumTest
 
         /* home page */
 
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
 
         $this->mouseOver("//h2[text()='{$this->name}']");
         $this->mouseOver("//h3[text()='Wete, Tanzania']");
@@ -173,22 +173,20 @@ class RegisterTest extends SeleniumTest
         // assumes that recaptcha is disabled in settings file
         
         $this->clickAndWait("//a[contains(@href,'?login=1')]");
-        $this->type("//input[@name='username']",$this->username);
-        $this->type("//input[@name='password']",'password2');
-        $this->submitForm();
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->login($this->username,'password2');
+        $this->ensureGoodMessage();
         
         $this->open($this->post_url);        
     
         // comment as logged in user
         $this->type("//textarea[@name='content']", "comment number one");
         $this->submitForm();
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
         $this->assertContains("comment number one", $this->getText("//div[@class='comment']"));
         $this->assertContains("New Name", $this->getText("//div[@class='comment_name']"));
         $this->type("//textarea[@name='content']", "comment number one");
         $this->submitForm();
-        $this->mouseOver("//div[@class='bad_messages']");
+        $this->ensureBadMessage();
         
         $this->mouseOver("//div[@class='comment']//span[@class='admin_links']//a");        
         
@@ -203,7 +201,7 @@ class RegisterTest extends SeleniumTest
         $this->type("//textarea[@name='content']", "comment number two");
         $this->type("//input[@name='name']", "random dude");
         $this->submitForm();
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
         
         $this->assertContains("comment number two", $this->getText("//div[@class='comment'][2]"));                
         $this->assertContains("random dude", $this->getText("//div[@class='comment'][2]//div[@class='comment_name']"));
@@ -214,7 +212,7 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//span[@class='admin_links']//a");
         
         $this->getConfirmation();
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
         
         $this->assertContains("comment number one", $this->getText("//div[@class='comment']"));                        
         $this->assertContains("comment deleted", $this->getText("//div[@class='comment'][2]"));                        
@@ -238,7 +236,7 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'contact/edit')]");
         $this->clickAndWait("//button[@id='widget_delete']");
         $this->getConfirmation();
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
         $this->mouseOver("//a[contains(@href,'contact')]"); // todo items
         $this->mustNotExist("//div[@id='site_menu']//a[contains(@href,'contact')]");
     }
@@ -286,7 +284,7 @@ class RegisterTest extends SeleniumTest
         $this->typeInFrame("//iframe", "another page!!!!!!");
         $this->submitForm();
                 
-        $this->mouseOver("//div[@class='bad_messages']"); // invalid characters in widget_name
+        $this->ensureBadMessage(); // invalid characters in widget_name
         $this->type("//input[@name='widget_name']", "settings");
         $this->clickAndWait("//button[@name='submit']");
         
@@ -309,7 +307,7 @@ class RegisterTest extends SeleniumTest
         $this->type("//input[@name='phone']", "123456890");
         $this->submitForm();
         
-        $this->mouseOver("//div[@class='good_messages']");        
+        $this->ensureGoodMessage();
         
         $this->clickAndWait("//a[@id='usersettings']");
         $this->assertEquals("123456890", $this->getValue("//input[@name='phone']"));        
@@ -324,23 +322,19 @@ class RegisterTest extends SeleniumTest
         $this->type("//input[@name='password']", "password2");
         $this->type("//input[@name='password2']", "password3");
         $this->submitForm();
-        $this->mouseOver("//div[@class='bad_messages']");
+        $this->ensureBadMessage();
         $this->type("//input[@name='password']", "password2");
         $this->type("//input[@name='password2']", "password2");
         $this->submitForm();
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
         $this->mouseOver("//h2[text()='New Name']");
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->clickAndWait("//a[contains(@href,'pg/login')]");
-        $this->type("//input[@name='username']",$this->username);
-        $this->type("//input[@name='password']",'password');
-        $this->submitForm();
-        $this->mouseOver("//div[@class='bad_messages']");
-        $this->type("//input[@name='username']",$this->username);
-        $this->type("//input[@name='password']",'password2');
-        $this->submitForm();
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->login($this->username, 'password');
+        $this->ensureBadMessage();
+        $this->login($this->username, 'password2');
+        $this->ensureGoodMessage();
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
     }
 
@@ -356,17 +350,15 @@ class RegisterTest extends SeleniumTest
 
         $this->open("/{$this->username}");
         sleep(2);
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
         $this->mustNotExist("//h2");
 
         $this->clickAndWait("//a[contains(@href,'?login=1')]");
-        $this->type("//input[@name='username']",'testadmin');
-        $this->type("//input[@name='password']",'testtest');
-        $this->submitForm();
+        $this->login('testadmin','testtest');
 
         $this->clickAndWait("//a[contains(@href, 'approval=2')]");
         $this->getConfirmation();
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
 
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
 
@@ -382,9 +374,8 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
     }
 
-    private function _testPartnership()
+    private function _testAnotherRegister()
     {
-        //$this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->clickAndWait("//a[contains(@href,'home')]");
         $this->clickAndWait("//a[contains(@href,'/org/new')]");
 
@@ -395,11 +386,11 @@ class RegisterTest extends SeleniumTest
 
         /* create account */
 
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
 
         $this->username2 = "selenium".time();
         $this->name2 = "Test Partner ".time();
-        $this->email2 = "adunar+".time()."@gmail.com";
+        $this->email2 = "nobody+".time()."@nowhere.com";
 
         $this->type("//input[@name='org_name']", $this->name2);
         $this->type("//input[@name='username']", $this->username2);
@@ -410,7 +401,7 @@ class RegisterTest extends SeleniumTest
 
         /* set up homepage */
 
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
 
         $this->typeInFrame("//iframe", "being a partner");
         $this->check("//input[@name='sector[]' and @value='4']");
@@ -423,7 +414,7 @@ class RegisterTest extends SeleniumTest
 
         /* home page */
 
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
 
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
 
@@ -431,63 +422,18 @@ class RegisterTest extends SeleniumTest
         $url = $this->getLinkFromEmail($email);
         $this->setUrl($url);
 
-        $this->type("//input[@name='username']",'testadmin');
-        $this->type("//input[@name='password']",'testtest');
-        $this->submitForm();
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->login('testadmin','testtest');
+        $this->ensureGoodMessage();
         $this->open("/{$this->username2}");
         $this->clickAndWait("//a[contains(@href, 'approval=2')]");
         $this->getConfirmation();
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
 
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         
-        /*
-        $this->clickAndWait("//a[contains(@href,'pg/login')]");
-        $this->type("//input[@name='username']","{$this->username2}");
-        $this->type("//input[@name='password']",'password');
-        $this->submitForm();
-
-        $this->mouseOver("//div[@class='good_messages']");
-
-        $this->open("/{$this->username}");
-        $this->click("//a[contains(@href,'request_partner')]");
-        $this->getConfirmation();
-
-        $email = $this->getLastEmail("wants to add");
-
-        $url = $this->getLinkFromEmail($email);
-
-        sleep(1);
-        
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
-
-        $this->setUrl($url);
-
-        $this->type("//input[@name='username']","{$this->username}");
-        $this->type("//input[@name='password']",'password2');
-        $this->submitForm();
-
-        $this->mouseOver("//div[@class='good_messages']");
-        $this->submitForm();
-        $this->mouseOver("//div[@class='good_messages']");
-        $this->mouseOver("//a[@class='feed_org_name' and contains(@href,'/{$this->username2}')]");
-        $this->clickAndWait("//a[contains(@href,'partnerships/edit')]");
-        $this->type("//textarea", 'We work together on stuff');
-        $this->clickAndWait("//button[@name='submit']");
-        $this->mouseOver("//span[contains(text(),'We work together on stuff')]");
-        $this->clickAndWait("//a[@class='feed_org_name' and contains(@href,'/{$this->username2}')]");
-        $this->clickAndWait("//a[contains(@href,'/partnerships')]");
-        $this->mouseOver("//a[@class='feed_org_name' and contains(@href,'/{$this->username}')]");
-        
-        */
-
         $this->open('/pg/login');
-
-        $this->type("//input[@name='username']","{$this->username}");
-        $this->type("//input[@name='password']",'password2');
-        $this->submitForm();
-        $this->mouseOver("//div[@class='good_messages']");        
+        $this->login($this->username, 'password2');
+        $this->ensureGoodMessage();
     }
 
     private function _testMessages()
@@ -497,7 +443,7 @@ class RegisterTest extends SeleniumTest
         $this->type("//input[@name='subject']","Test Subject");
         $this->type("//textarea[@name='message']", "Test Message");
         $this->submitForm();
-        $this->mouseOver("//div[@class='good_messages']");
+        $this->ensureGoodMessage();
         $email = $this->getLastEmail("Test Subject");
 
         $this->assertContains("Test Message",$email);
@@ -508,9 +454,7 @@ class RegisterTest extends SeleniumTest
     private function _testDeleteOrg()
     {
         $this->open("/admin/user");
-        $this->type("//input[@name='username']",'testadmin');
-        $this->type("//input[@name='password']",'testtest');
-        $this->submitForm();
+        $this->login('testadmin','testtest');
 
         $this->clickAndWait("//a[contains(@href,'selenium')]");
 
@@ -535,7 +479,7 @@ class RegisterTest extends SeleniumTest
             $this->clickAndWait("//a[contains(@href,'delete')]");
             $this->getConfirmation();
 
-            $this->mouseOver("//div[@class='good_messages']");
+            $this->ensureGoodMessage();
             try
             {
                 $this->clickAndWait("//a[contains(@href,'selenium')]");

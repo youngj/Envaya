@@ -105,9 +105,7 @@ class MobileTest extends SeleniumTest
     private function _testEdit()
     {
         $this->clickAndWait("//a[contains(@href,'pg/login')]");     
-        $this->type("//input[@name='username']", "testorg");
-        $this->type("//input[@name='password']", "testtest");
-        $this->submitForm();
+        $this->login('testorg','testtest');
         $this->type("//textarea", "This is my mobile test post.");
         $this->submitForm();
         $this->mouseOver("//div[@class='blog_post' and contains(text(), 'mobile test post')]");

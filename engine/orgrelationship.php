@@ -223,6 +223,11 @@ class OrgRelationship extends Entity
         
     function send_notification_email()
     {
+        if ($this->subject_notified)
+        {
+            return false;
+        }
+    
         $org = $this->get_container_entity();
 
         $subject_org = $this->get_subject_organization();        

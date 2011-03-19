@@ -11,7 +11,7 @@ return array(
     'qualify:org_info:citizen' => 'Ni shirika la kitanzania.',
     'qualify:org_info:funder' => 'Inagawa pesa hasa kwa mashirika mengine.',
     'qualify:country' => 'Shirika lako linafanya kazi nchi gani?',
-    'qualify:next' => 'Bonyeza kitufe cha chini kuendelea.',
+    'qualify:next' => 'Bonyeza kitufe hapo chini kuendelea.',
     'qualify:next:button' => 'Hatua ifuatayo',
     'qualify:wrong_country' => 'Samahani, katika mradi wa jaribio wa Envaya, mashirika kutoka Tanzania tu yanaweza kujiandikisha. Tunatumaini kufikisha Envaya katika nchi nyingine miaka ijayo.',
     'qualify:wrong_org_type' => 'Samahani, kwa sasa Envaya inakusudiwa kwa mashirika ya jumuiya ya kiraia tu.',
