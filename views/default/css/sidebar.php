@@ -1,6 +1,7 @@
 <?php
-    include(__DIR__."/org.php");
-    include(__DIR__."/content_margin.php");
+    $vars['contentWidth'] = 600;
+    echo view('css/snippets/org', $vars);
+    echo view('css/snippets/content_margin', $vars);
 
     $graphicsDir = "/_graphics/sidebar";
 ?>
@@ -12,7 +13,7 @@
 
 .content_container
 {
-    background:#fff url("<?php echo Config::get('url'); ?>_graphics/simple/bg_gradient.gif") repeat-x left 62px;
+    background:#fff url("/_graphics/simple/bg_gradient.gif") repeat-x left 62px;
 }
 
 .content_container .thin_column

@@ -1,5 +1,5 @@
 <?php
-    include(__DIR__."/default.php");
+    echo view('css/default', $vars);
 ?>
 body
 {

@@ -90,7 +90,6 @@ namespace :deploy do
 
     task :finalize_update, :except => { :no_release => true } do
         run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
-        run "cp #{shared_path}/cached-copy/.htaccess #{latest_release}/"
         run "cp #{shared_path}/local.php #{latest_release}/config/local.php"
     end
     

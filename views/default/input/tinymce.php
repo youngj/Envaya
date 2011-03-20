@@ -11,7 +11,13 @@
 
     if (!$TINYMCE_INCLUDE_COUNT)
     {
+        PageContext::add_header_html('tinymce_ui', 
+            "<style type='text/css'>"
+            .file_get_contents(Config::get('path').'/_css/tinymce_ui.css')
+            ."</style>"
+        );
         ?>
+        
         <script type='text/javascript'><?php echo view('js/create_modal_box'); ?></script>
         <script type='text/javascript' src='/_media/tiny_mce/tiny_mce.js?v<?php echo Config::get('cache_version'); ?>'></script>
         <?php                
@@ -45,8 +51,7 @@ document.getElementById('tinymce_loading<?php echo $TINYMCE_INCLUDE_COUNT ?>').s
 document.getElementById('content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>').style.display = 'block';
 
 tinyMCE.init({
-    content_css: "<?php echo Config::get('url') ?>_css/tinymce.css?v<?php echo Config::get('cache_version') ?>",
-    editor_css: '<?php echo Config::get('url') ?>_css/tinymce_ui.css?v<?php echo Config::get('cache_version') ?>',
+    content_css: "<?php echo css_url('tinymce'); ?>",
     mode: "exact",
     theme_advanced_buttons1 : "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link,image,document,|,justifyleft,justifycenter,justifyright,|,formatselect<?php echo (Session::isadminloggedin()) ? ",|,code" : '' ?>",
     language: '',
@@ -57,7 +62,8 @@ tinyMCE.init({
     auto_focus: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
     <?php } ?>
     theme: "-advanced",
-    plugins: '-paste'
+    plugins: '-paste',
+    skin: 't'
 });
 
 })();

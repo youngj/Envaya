@@ -107,3 +107,8 @@ function updateUrl()
 ));
 ?>
 </div>
+
+<?php echo view('focus',array(
+    'name' => 'org_name'
+));
+?>

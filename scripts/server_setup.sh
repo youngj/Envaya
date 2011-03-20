@@ -213,7 +213,10 @@ cat <<EOF > /etc/nginx/envaya.conf
     }
     
     location /_css/ {
-        rewrite  ([\w]+)\.css  /_css/css.php?name=\$1  last;
+        expires 1y;
+        gzip_types application/x-javascript text/css;
+        gzip on;
+        gzip_min_length 1000;    
     }
 
 EOF

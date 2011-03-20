@@ -168,14 +168,10 @@
             });
             */
 
-            DOM.loadCSS(s.editor_css ? ed.documentBaseURI.toAbsolute(s.editor_css) : url + "/skins/" + ed.settings.skin + "/ui.css");
-
             /*
-            if (s.skin_variant)
-                DOM.loadCSS(url + "/skins/" + ed.settings.skin + "/ui_" + s.skin_variant + ".css");
+            DOM.loadCSS(s.editor_css ? ed.documentBaseURI.toAbsolute(s.editor_css) : url + "/skins/" + ed.settings.skin + "/ui.css");
             */
-            
-        
+
             ed.onBeforeGetContent.add(function(ed, o)
             {
                 var body = ed.getBody();

@@ -1,6 +1,5 @@
 <?php
-    $contentWidth = 0;
-    include(__DIR__."/base.php");    
+    echo view('css/base', $vars);
 ?>
 
 #topbar, #topbar_login

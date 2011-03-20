@@ -1,10 +1,12 @@
 <?php
-    if (!isset($contentWidth))
+    if (!isset($vars['contentWidth']))
     {
-        $contentWidth = 630;
+        $vars['contentWidth'] = 630;
     }
-    include(__DIR__."/default.php");
-    include(__DIR__."/slideshow.php");    
+    
+    echo view('css/default', $vars);    
+    echo view('css/snippets/slideshow', $vars);    
+    
     $graphicsDir = "/_graphics";
 ?>
 
@@ -20,7 +22,7 @@ body
 
 .thin_column
 {
-    width:<?php echo $contentWidth ?>px;
+    width:<?php echo $vars['contentWidth'] ?>px;
 }
 
 .content_container .thin_column
@@ -32,7 +34,7 @@ body
 .header_preview
 {
     overflow:auto;
-    width:<?php echo $contentWidth - 40 ?>px;
+    width:<?php echo $vars['contentWidth'] - 40 ?>px;
     margin:5px 0px;
     border:1px solid #ccc;
 }
@@ -54,7 +56,7 @@ body
 #content_mid
 {
     margin:10px auto 10px auto;
-    width:<?php echo $contentWidth - 20 ?>px;
+    width:<?php echo $vars['contentWidth'] - 20 ?>px;
     background-color:white;
 }
 

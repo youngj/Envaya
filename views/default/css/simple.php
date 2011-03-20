@@ -1,6 +1,7 @@
 <?php
-    $contentWidth = 500;
-    include(__DIR__."/default.php");
+    $contentWidth = $vars['contentWidth'] = 500;
+    
+    echo view('css/default', $vars);
 
     $graphicsDir = "/_graphics/simple";
 ?>
@@ -60,7 +61,7 @@ body
 #content_top
 {
     height:17px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v3") no-repeat -<?php echo $contentWidth - 15 ?>px -8px;
+    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v3") no-repeat -<?php echo $vars['contentWidth'] - 15 ?>px -8px;
 }
 
 .home #content_top
@@ -132,7 +133,7 @@ body
     width:100%;
     margin-bottom:5px;
     margin-top:-10px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v3") no-repeat -<?php $contentWidth - 13 ?>px -16px;
+    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v3") no-repeat -<?php $vars['contentWidth'] - 13 ?>px -16px;
 }
 
 .tab

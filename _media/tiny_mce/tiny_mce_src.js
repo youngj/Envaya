@@ -8410,6 +8410,8 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 		}
 	});
 })(tinymce);
+
+/*
 (function(tinymce) {
 	var DOM = tinymce.DOM, Event = tinymce.dom.Event, each = tinymce.each;
 
@@ -8499,7 +8501,9 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 		}
 	});
 })(tinymce);
+*/
 
+/*
 (function(tinymce) {
 	var DOM = tinymce.DOM, Event = tinymce.dom.Event, each = tinymce.each;
 
@@ -8565,7 +8569,9 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 		}
 	});
 })(tinymce);
+*/
 
+/*
 (function(tinymce) {
 	var DOM = tinymce.DOM, Event = tinymce.dom.Event, is = tinymce.is, each = tinymce.each;
 
@@ -8732,6 +8738,7 @@ tinymce.create('tinymce.ui.Separator:tinymce.ui.Control', {
 		}
 	});
 })(tinymce);
+*/
 
 tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 	renderHTML : function() {
@@ -12553,13 +12560,16 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 			return t.add(c);
 		},
 
+        /*
 		createMenuButton : function(id, s, cc) {
 			s = s || {};
 			s.menu_button = 1;
 
 			return this.createButton(id, s, cc);
 		},
+        */
 
+        /*
 		createSplitButton : function(id, s, cc) {
 			var t = this, ed = t.editor, cmd, c, cls;
 
@@ -12595,7 +12605,9 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 
 			return c;
 		},
+        */
 
+        /*
 		createColorSplitButton : function(id, s, cc) {
 			var t = this, ed = t.editor, cmd, c, cls, bm;
 
@@ -12656,6 +12668,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 
 			return t.add(c);
 		},
+        */
 
 		createToolbar : function(id, s, cc) {
 			var c, t = this, cls;

@@ -1,5 +1,6 @@
 <?php
-    include(__DIR__."/default.php");
+    $vars['contentWidth'] = 600;
+    echo view('css/default', $vars);        
     $graphicsDir = "/_graphics/red";
 ?>
 
@@ -35,7 +36,7 @@ body
 
 .thin_column
 {
-    width:<?php echo $contentWidth - 7 ?>px;
+    width:<?php echo $vars['contentWidth'] - 7 ?>px;
 }
 
 #translate_bar

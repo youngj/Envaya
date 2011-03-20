@@ -1,6 +1,6 @@
 <?php
-    include(__DIR__."/org.php");
-    include(__DIR__."/beige_content.php");
+    echo view('css/snippets/org', $vars);
+    echo view('css/snippets/beige_content', $vars);
     $graphicsDir = "/_graphics/brick";
 ?>
 

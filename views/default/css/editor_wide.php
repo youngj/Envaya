@@ -1,3 +1,3 @@
 <?php
-    $contentWidth = 700;
-    include(__DIR__."/editor.php");
+    $vars['contentWidth'] = 700;
+    echo view('css/editor', $vars);

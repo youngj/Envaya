@@ -1,7 +1,8 @@
 <?php
-    include(__DIR__."/org.php");
-    include(__DIR__."/content_margin.php");
-    include(__DIR__."/beige_content.php");
+    $vars['contentWidth'] = 600;
+    echo view('css/snippets/org', $vars);
+    echo view('css/snippets/content_margin', $vars);
+    echo view('css/snippets/beige_content', $vars);
     $graphicsDir = "/_graphics/cotton";
 ?>
 
@@ -23,7 +24,7 @@ body { color:#fff; background:#d0b66b url("<?php echo $graphicsDir; ?>/cotton-bg
     color:#000;
     background-color:#c6b186;
     border-color:#e3d2a7;
-    background-image:url("<?php echo Config::get('url') ?>_graphics/world_black.gif");
+    background-image:url("/_graphics/world_black.gif");
 }
 #translate_bar a { color:#000; }
 .section_header { color:#fff; background:#bb895a url("<?php echo $graphicsDir; ?>/section_header.gif") repeat-x left top;  }

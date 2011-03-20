@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/_css/<?php echo escape(PageContext::get_theme()); ?>.css?v=<?php echo Config::get('cache_version'); ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo escape(css_url(PageContext::get_theme())); ?>" type="text/css" />
 <!--[if IE 6]>
 <style type='text/css'>
 #site_menu a,

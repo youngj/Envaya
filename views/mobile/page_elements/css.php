@@ -1,1 +1,1 @@
-<link rel="stylesheet" href="/_css/mobile.css?v=<?php echo Config::get('cache_version') ?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo css_url('mobile'); ?>" type="text/css" />

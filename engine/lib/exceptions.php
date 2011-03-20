@@ -83,7 +83,11 @@ function php_error_handler($errno, $errmsg, $filename, $linenum, $vars)
 function php_exception_handler($exception) {
     
     error_log("*** FATAL EXCEPTION *** : " . $exception);
-    ob_end_clean(); // Wipe any existing output buffer
+    
+    if (ob_get_level() > 0)
+    {    
+        ob_end_clean(); // Wipe any existing output buffer
+    }
     
     if (@$_SERVER['REQUEST_URI'])
     {    

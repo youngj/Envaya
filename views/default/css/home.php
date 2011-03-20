@@ -1,9 +1,13 @@
 <?php
-    include(__DIR__."/default.php");
-    include(__DIR__."/slideshow.php");
+    echo view('css/default', $vars);
+    echo view('css/snippets/slideshow', $vars);
+
+    $contentWidth = 820;    
+    $headerLeftWidth = 340;
+    $headerRightWidth = $contentWidth - $headerLeftWidth;
+    
     $graphicsDir = "/_graphics/home";
 ?>
-
 
 .thin_column
 {
@@ -34,12 +38,6 @@
 .home_content_bg
 {
 }
-
-<?php
-    $contentWidth = 820;
-    $headerLeftWidth = 340;
-    $headerRightWidth = $contentWidth - $headerLeftWidth;
-?>
 
 #home_banner
 {

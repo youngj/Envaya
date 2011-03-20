@@ -1,8 +1,11 @@
 <?php
-    if (!isset($contentWidth))
+    if (!isset($vars['contentWidth']))
     {
-        $contentWidth = 600;
-    }
+        $vars['contentWidth'] = 600;
+    }    
+    
+    $contentWidth = $vars['contentWidth'];
+    
 ?>
 
 html, body, div, span, applet, object, iframe,
@@ -24,7 +27,7 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 }
 
 <?php    
-    include(__DIR__."/base.php");     
+    echo view('css/base', $vars);
 ?>
 
 th
@@ -121,7 +124,7 @@ blockquote p {
 #topbar
 {
     width:100%;
-    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient_sm.gif?v7") repeat-x left -1px;
+    background:#1d1d1d url("/_graphics/topgradient_sm.gif?v7") repeat-x left -1px;
 }
 
 #translate_bar
@@ -129,7 +132,7 @@ blockquote p {
     margin:0px 1px 3px 1px;
     padding: 6px 2px 8px 51px;
     overflow:visible;
-    background:#948f87 url(<?php echo $graphicsDir; ?>/world.gif) no-repeat 5px 5px;
+    background:#948f87 url(/_graphics/world.gif) no-repeat 5px 5px;
     color:white;
     border:1px solid #fff;
     -webkit-border-radius: 4px;
@@ -240,21 +243,21 @@ blockquote p {
 {
     left:18px;
     width:13px;
-    background:url(<?php echo $graphicsDir ?>/timeline.gif) no-repeat left -26px;
+    background:url(/_graphics/timeline.gif) no-repeat left -26px;
 }
 
 #blogTimelineRight
 {
     left:<?php echo $timelineWidth - 29 ?>px;
     width:13px;
-    background:url(<?php echo $graphicsDir ?>/timeline.gif) no-repeat left -52px;
+    background:url(/_graphics/timeline.gif) no-repeat left -52px;
 }
 
 #blogTimelineLine
 {
     left:31px;
     width:<?php echo $timelineWidth - 60 ?>px;
-    background:url(<?php echo $graphicsDir ?>/timeline.gif) repeat-x left top;
+    background:url(/_graphics/timeline.gif) repeat-x left top;
 }
 
 .timelineMarker
@@ -284,7 +287,7 @@ blockquote p {
     height:17px;
     top:-3px;
     width:13px;
-    background:url(<?php echo $graphicsDir; ?>/timeline.gif) no-repeat left -87px;
+    background:url(/_graphics/timeline.gif) no-repeat left -87px;
 }
 
 .timelineLabel
@@ -320,13 +323,13 @@ blockquote p {
 #blogNavPrev
 {
     left:0px;
-    background: url(<?php echo $graphicsDir ?>/arrows_sm.gif) no-repeat left top;
+    background: url(/_graphics/arrows_sm.gif) no-repeat left top;
 }
 
 #blogNavNext
 {
     left:<?php echo $timelineWidth - 20 ?>px;
-    background: url(<?php echo $graphicsDir ?>/arrows_sm.gif) no-repeat right top;
+    background: url(/_graphics/arrows_sm.gif) no-repeat right top;
 }
 
 
@@ -366,7 +369,7 @@ blockquote p {
 
 .topbarLinks a:hover
 {
-    background:#1d1d1d url("<?php echo $graphicsDir; ?>/topgradient_sm.gif?v7") repeat-x left -30px;
+    background:#1d1d1d url("/_graphics/topgradient_sm.gif?v7") repeat-x left -30px;
     color:#e6e6e6;
     text-decoration:none;
 }
@@ -397,7 +400,7 @@ blockquote p {
 
 #loginButton
 {
-    background:#4d4d4d url(<?php echo $graphicsDir; ?>/loginbutton_sm.gif?v4) no-repeat left top;
+    background:#4d4d4d url(/_graphics/loginbutton_sm.gif?v4) no-repeat left top;
 }
 
 a#loginButton:hover
@@ -407,7 +410,7 @@ a#loginButton:hover
 
 #loggedinArea
 {
-    background:url(<?php echo $graphicsDir; ?>/loggedinarea_rounded.gif?v2) no-repeat left -18px;
+    background:url(/_graphics/loggedinarea_rounded.gif?v2) no-repeat left -18px;
 }
 
 a#loginButton:hover
@@ -721,7 +724,7 @@ span.contentIntro p {
 
 .submit_button div
 {
-    background: #08c url(<?php echo $graphicsDir ?>/buttons.gif?v3) left -32px;
+    background: #08c url(/_graphics/buttons.gif?v3) left -32px;
     display:block;
     height:32px;
     margin:0px;
@@ -730,7 +733,7 @@ span.contentIntro p {
 
 .submit_button span
 {
-    background: #08c url(<?php echo $graphicsDir ?>/buttons.gif?v3) right -32px; 
+    background: #08c url(/_graphics/buttons.gif?v3) right -32px; 
     display:block;
     height:24px;
     padding-top:8px;
@@ -828,7 +831,7 @@ button.submit_button:active span
     margin-left:5px;
     width:29px;
     height:29px;
-    background:url("<?php echo $graphicsDir ?>/delete.gif?v2") no-repeat left -30px;
+    background:url("/_graphics/delete.gif?v2") no-repeat left -30px;
 }
 
 a.photoDelete:hover
@@ -962,7 +965,7 @@ a.photoDelete:hover
     height:30px;
     width:36px;
     margin:0 auto;
-    background:url(<?php echo $graphicsDir ?>/move_edit_delete.gif) no-repeat left top;
+    background:url(/_graphics/move_edit_delete.gif) no-repeat left top;
 }
 
 .down_icon { background-position:left -40px; }
@@ -1005,20 +1008,20 @@ a.photoDelete:hover
 
 .commBoxLeft
 {
-    background:url(<?php echo $graphicsDir ?>/commBox.gif) no-repeat right -10px;
+    background:url(/_graphics/commBox.gif) no-repeat right -10px;
     width:45%;
 }
 
 .commBoxMain
 {
-    background:url(<?php echo $graphicsDir ?>/commBox.gif) repeat-x left -56px;
+    background:url(/_graphics/commBox.gif) repeat-x left -56px;
     white-space:nowrap;
     padding:5px 15px;
 }
 
 .commBoxRight
 {
-    background:url(<?php echo $graphicsDir ?>/commBox.gif) no-repeat left -102px;
+    background:url(/_graphics/commBox.gif) no-repeat left -102px;
     width:45%;
 }
 

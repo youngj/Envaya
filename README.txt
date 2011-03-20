@@ -31,8 +31,8 @@ Source Code Overview
 ====================
 index.php 
     - Main entry point for most web requests (except for static files)
-_css/css.php
-    - Main entry point for CSS web requests
+_css/
+    - compressed CSS files served directly by web server, as well as entry point for testing CSS
 _graphics/
     - Image files, served directly by web server
 _media/
@@ -43,12 +43,16 @@ engine/
     - Core PHP code, mostly autoloaded classes. engine/start.php bootstraps the rest
 languages/
     - Translation strings for each supported language
+mod/
+    - Modules (which may be stored in a separate source control repository with different licensing terms)
+      Each module is a (mostly) self-contained implementation of some feature set
+      Each module's directory structure looks like:
+        mod/<modulename>/{_graphics,engine,languages,schema,testcases,views,start.php}      
+      mod/<modulename>/start.php is called by engine/start.php to initialize the module.
 schema/
     - SQL for initializing the database
 scripts/
     - Miscellaneous command line scripts
-simplecache/view.php
-    - Renders simple cached views (used for CSS files)
 test/
     - Test scripts. test/TestSuite.php is main script
 vendors/

@@ -1,7 +1,8 @@
 <?php
-    include(__DIR__."/org.php");
-    include(__DIR__."/content_margin.php");
-    include(__DIR__."/beige_content.php");
+    $vars['contentWidth'] = 600;
+    echo view('css/snippets/org', $vars);
+    echo view('css/snippets/content_margin', $vars);
+    echo view('css/snippets/beige_content', $vars);
     $graphicsDir = "/_graphics/craft";
 ?>
 
