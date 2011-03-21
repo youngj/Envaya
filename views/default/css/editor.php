@@ -202,66 +202,6 @@ a.icon_link:hover
     width: 75px;
 }
 
-.report_section_nav
-{
-    border-bottom: 1px dotted gray;
-    text-align:center;
-    padding-bottom:5px;
-}
-
-.report_section_nav span, .report_section_nav a 
-{
-    white-space:nowrap;
-}
-
-.report_preview_message
-{
-    padding:7px;
-    margin:7px;
-    border:1px solid gray;
-    background:#f0f0f0;
-}
-
-.paddedTable td, .paddedTable th
-{
-    padding:5px;
-}
-
-.report_section_heading
-{
-    padding-top:8px;
-}
-
-#floating_save
-{
-    position:fixed;
-    text-align:center;
-    bottom:0px;
-    left:0px;
-    width:100%;
-    border-top:1px solid #666;
-    height:42px;
-    background-color:#e0e0e0;
-}
-
-.floating_save_content
-{
-    width:600px;
-    margin:0 auto;
-}
-
-#floating_save .submit_button
-{
-    margin:0px;    
-}
-
-.last_save_time
-{
-    float:left;
-    width:350px;
-    height:42px;
-    padding-top:12px;
-}
 
 .inputGrid td
 {
@@ -311,4 +251,9 @@ a.icon_link:hover
 .selectMemberNotFound label
 {
     font-size:100%;
+}
+
+.paddedTable td, .paddedTable th
+{
+    padding:5px;
 }

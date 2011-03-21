@@ -111,7 +111,7 @@ class NetworkTest extends SeleniumTest
         $this->click("//button");        
         $this->retry('mouseOver', array("//span[@class='search_url' and contains(text(), 'testorg')]"));
         $this->clickAndWait("//input[@type='submit']");
-        $this->ensureBadMessage();                       
+        $this->ensureBadMessage();            
         
         // add org by clicking link at top of their site
         $this->open("/testposter16");

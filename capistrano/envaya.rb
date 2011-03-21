@@ -25,6 +25,7 @@ role :db,  "www.envaya.org", :primary => true # This is where Rails migrations w
 
 namespace :deploy do
     task :default do
+        sanity_check
         backup_db
         update
         restart
@@ -35,9 +36,18 @@ namespace :deploy do
         setup
         ssh_key_setup
         localsettings_setup       
+        sanity_check        
         update
         db_install
         post_setup
+    end
+    
+    task :sanity_check do
+        if File.file?(File.join(Dir.pwd, "_css/home.css"))
+            print "sanity check passed"
+        else
+            throw :sanity_check_failed
+        end
     end
     
     task :localsettings_setup do    

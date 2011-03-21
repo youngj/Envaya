@@ -34,8 +34,6 @@ function get_viewtype()
  */
 function view($view, $vars = null, $viewtype = null)
 {
-    static $INCLUDE_COUNTS = array();
-
     // basic checking for bad paths
     if (strpos($view, '..') !== false)
     {
@@ -51,29 +49,15 @@ function view($view, $vars = null, $viewtype = null)
     {
         $viewtype = get_viewtype();
     }
-       
-    $viewPath = get_view_path($view, $viewtype);
-        
-    if (!isset($INCLUDE_COUNTS[$viewPath]))
-    {
-        $INCLUDE_COUNTS[$viewPath] = 0;
-    }
-    $include_count = $INCLUDE_COUNTS[$viewPath];
-    $INCLUDE_COUNTS[$viewPath] = $include_count + 1;
-    
-    $vars['include_count'] = $include_count;       
-
+           
     ob_start();
 
-    if (include_view($viewPath, $vars))
+    include_view($view, $viewtype, $vars);
+    foreach (Views::get_extensions($view) as $extension_view)
     {
-        // success
-    }
-    else if (Config::get('debug'))
-    {
-        error_log(" [This view ({$view}) could not be included] ");
-    }
-
+        include_view($extension_view, $viewtype, $vars);
+    }    
+    
     return ob_get_clean();
 }
 
@@ -101,11 +85,35 @@ function get_view_path($view, $viewtype = '', $fallback = true)
     return $viewPath;
 }
 
-function include_view($viewFile, $vars)
+function include_view($view, $viewtype, $vars)
+{
+    static $INCLUDE_COUNTS = array();
+
+    $viewPath = get_view_path($view, $viewtype);
+        
+    if (!isset($INCLUDE_COUNTS[$viewPath]))
+    {
+        $INCLUDE_COUNTS[$viewPath] = 0;
+    }
+    $include_count = $INCLUDE_COUNTS[$viewPath];
+    $INCLUDE_COUNTS[$viewPath] = $include_count + 1;
+    
+    $vars['include_count'] = $include_count;       
+
+    if (include_view_file($viewPath, $vars))
+    {
+        // success
+    }
+    else if (Config::get('debug'))
+    {
+        error_log(" [This view ({$view}) could not be included] ");
+    }
+}
+
+function include_view_file($viewFile, $vars)
 {
     return include $viewFile;
 }
-
 /**
  * Returns whether the specified view exists
  *
@@ -191,4 +199,38 @@ function page_draw($title, $body, $vars = null)
     $vars['body'] = $body;
 
     return view('pageshells/pageshell', $vars);
+}
+
+class Views
+{
+    static $extensions_map = array();
+    static function extend($base_view, $extend_view, $priority = 1)
+    {
+        $extensions = @static::$extensions_map[$base_view];    
+        if (!$extensions)
+        {
+            $extensions = array();
+            static::$extensions_map[$base_view] =& $extensions;
+        }        
+        while (isset($extensions[$priority])) 
+        {
+            $priority++;
+        }        
+        
+        $extensions[$priority] = $extend_view;
+    }
+    
+    static function get_extensions($base_view)
+    {
+        $extensions = @static::$extensions_map[$base_view];
+        if ($extensions)
+        {
+            ksort($extensions);
+            return array_values($extensions);
+        }
+        else
+        {
+            return array();
+        }
+    }
 }

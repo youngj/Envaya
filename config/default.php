@@ -1,7 +1,7 @@
 <?php
 return array(
     'cache_version' => 143,  // increment when css, or external js (tinymce/swfupload) changes
-    'debug' => false,
+    'debug' => true,
     
     'dbuser' => '',
     'dbpass' => '',
