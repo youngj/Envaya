@@ -1,1 +1,1 @@
-addEvent=removeEvent=fetchJson=bind=removeChildren=removeElem=setDirty=setSubmitted=addImageLinks=ignoreDirty=function(){};
+addEvent=removeEvent=fetchJson=bind=removeChildren=removeElem=setDirty=setSubmitted=addImageLinks=ignoreDirty=setLang=function(){};

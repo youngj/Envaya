@@ -13,7 +13,7 @@
     
     $setDirty = (@$vars['trackDirty']) ? " onchange='setDirty(true)'" : "";
 
-    $value = restore_input($vars['name'], @$vars['value']); 
+    $value = restore_input($vars['name'], @$vars['value'], @$vars['trackDirty']); 
 	
 ?>
 

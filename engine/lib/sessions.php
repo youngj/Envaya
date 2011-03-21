@@ -114,7 +114,7 @@ function force_login()
     }
 }
 
-function restore_input($name, $value)
+function restore_input($name, $value, $trackDirty = false)
 {
     if (isset($_POST[$name]))
     {
@@ -126,6 +126,10 @@ function restore_input($name, $value)
     {
         if (isset($prevInput[$name]))
         {
+            if ($trackDirty)
+            {
+                PageContext::set_dirty(true);
+            }
             $val = $prevInput[$name];
             unset($prevInput[$name]);
             Session::set('input', $prevInput);

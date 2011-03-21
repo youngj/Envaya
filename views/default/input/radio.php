@@ -13,7 +13,7 @@
     $class = @$vars['class'];
     if (!$class) $class = "input-radio";
 
-    $vars['value'] = restore_input($vars['name'], @$vars['value']);
+    $vars['value'] = restore_input($vars['name'], @$vars['value'], @$vars['trackDirty']);
 
     $js = @$vars['js'] ?: '';
 

@@ -10,38 +10,15 @@
     <a href='/org/search'><?php echo __('search') ?></a>
     <a href='/org/feed'><?php echo __('feed') ?></a>    
     <div class='top_language'>
-    <script type='text/javascript'>
-function languageChanged()
-{
-    setTimeout(function() {
-        var languageList = document.getElementById('top_language');
-        window.location.href = languageList.options[languageList.selectedIndex].value;
-    }, 1);
-}
-    </script>
     <?php
         echo __('language');
         echo '&nbsp;';
         
-        $translationUrls = array();
-        $curUrl = null;
-        $curLang = get_language();
-        foreach (Language::get_options() as $lang => $text)
-        {
-            $url = url_with_param(Request::full_original_url(), 'lang', $lang);
-            $translationUrls[$url] = $text;
-            
-            if ($curLang == $lang)
-            {
-                $curUrl = $url;
-            }            
-        }
-        
         echo view('input/pulldown', array(
             'name' => 'top_language',
             'id' => 'top_language',
-            'options' => $translationUrls,
-            'value' => $curUrl,
+            'options' => Language::get_options(),
+            'value' => get_language(),
             'js' => "onchange='languageChanged()' onkeypress='languageChanged()'"
         ));
     ?>

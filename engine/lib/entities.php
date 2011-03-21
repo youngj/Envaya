@@ -8,7 +8,6 @@
             3 => 'Widget',
             4 => 'Organization',
             7 => 'NewsUpdate',        
-            10 => 'Partnership',
             12 => 'FeaturedSite',
             13 => 'EmailTemplate',
             16 => 'Comment',

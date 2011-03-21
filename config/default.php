@@ -46,8 +46,6 @@ return array(
 
     'dataroot' => dirname(dirname(__DIR__)). "/envayadata/",
 	
-    'simplecache_enabled' => false,
-    
     'mock_mail_file' => null,
 
     'smtp_host' => "localhost",

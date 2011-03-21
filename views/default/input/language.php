@@ -1,6 +1,4 @@
-<?php
-    
-     
+<?php       
      $lang = $vars['value'];
      if (empty($lang))
      {

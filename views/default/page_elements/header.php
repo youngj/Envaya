@@ -42,6 +42,11 @@
 <?php echo view('js/header'); ?>
 <?php 
 
+if (PageContext::is_dirty())
+{
+    echo "setDirty(true);";
+}
+
 $js_strs = array();
 foreach (PageContext::get_js_strings() as $key)
 {

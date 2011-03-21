@@ -7,7 +7,7 @@
         echo "<script type='text/javascript' src='/_media/swfupload.js?v".Config::get('cache_version')."'></script>";
     }
 
-    $prevInput = restore_input($vars['name'], @$vars['value']);
+    $prevInput = restore_input($vars['name'], @$vars['value'], @$vars['trackDirty']);
 
     $resultId = @$vars['id'] ?: "imageUpload$SWFUPLOAD_INCLUDE_COUNT";
     $progressId = @$vars['progressid'] ?: "imageUploadProgress$SWFUPLOAD_INCLUDE_COUNT";

@@ -17,6 +17,7 @@ class PageContext
     private static $header_html = array();
     private static $submenu = array();    
     private static $js_strings = array();
+    private static $dirty = false;
     
     static function set_translatable($translatable)
     {
@@ -111,6 +112,16 @@ class PageContext
     static function get_site_org()
     {
         return static::$site_org;
+    }
+    
+    static function set_dirty($dirty = true)
+    {
+        static::$dirty = $dirty;
+    }
+    
+    static function is_dirty()
+    {
+        return static::$dirty;
     }
     
     static function add_header_html($key, $html)

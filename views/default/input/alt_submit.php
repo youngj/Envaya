@@ -1,18 +1,37 @@
+<?php
+     /*
+        Allows you to determine which submit button was clicked in IE6.
+        Also uses type='button' instead of type='submit', so that the enter key doesn't press it unless it is focused.
+     */
+     
+    if ($vars['include_count'] == 0)
+    {
+        ob_start();
+        ?>
 <script type='text/javascript'>
-function doHiddenSubmit($id)
+function altSubmit($id)
 {
-    document.getElementById($id).value = "1";
+    var hiddenField = document.getElementById($id);
+    hiddenField.value = "1";
+    for (var i = 0; i < document.forms.length; i++)
+    {
+        var form = document.forms[i];
+        if (form[hiddenField.name] == hiddenField)
+        {
+            form.submit();
+            return true;
+        }        
+    }    
     document.forms[0].submit();
     return true;
 }
 </script>
-<?php
+        <?php
+            $script = ob_get_clean();
+            PageContext::add_header_html('alt_submit', $script);
+    }
 
-     /*
-        Allows you to determine which submit button was clicked in IE6
-     */
-
-    $hidden_id = "_alt_submit".mt_rand();
+    $hidden_id = "_alt_submit".$vars['include_count'];
 
     echo view('input/hidden', array(
         'name' => $vars['name'],
@@ -30,7 +49,7 @@ function doHiddenSubmit($id)
     {
         $js .= "&& setSubmitted() ";
     }
-    $js .= "&& doHiddenSubmit(".json_encode($hidden_id).");'";
+    $js .= "&& altSubmit(".json_encode($hidden_id).");'";
 	    
     echo view('input/button', array(
         'name' => "_alt_submit",
