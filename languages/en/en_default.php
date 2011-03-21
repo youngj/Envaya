@@ -415,7 +415,7 @@ Once you have logged in, we highly recommend that you change your password.
         'email:save:success' => "New email address saved.",
         'email:save:fail' => "Your new email address could not be saved.",
 
-        'actiongatekeeper:timeerror' => 'The page you were using has expired. Please refresh and try again.',
+        'actiongatekeeper:timeerror' => 'The page you were using has expired. Please try again.',
 
         "en" => "English",
         "sw" => "Swahili",

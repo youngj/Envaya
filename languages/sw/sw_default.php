@@ -334,7 +334,7 @@ return array(
     'email:save:success' => 'Anwani mpya ya email imehifadhiwa.',
     'email:save:fail' => 'Anwani yako ya email haikuweza kuhifadhiwa.',
 
-    'actiongatekeeper:timeerror' => 'Samahani, ukurasa ulioutumia umekufa. Tafadhali burudisha na jaribu tena.',
+    'actiongatekeeper:timeerror' => 'Samahani, ukurasa ulioutumia umekufa. Tafadhali jaribu tena.',
     'en' => 'Kiingereza',
     'sw' => 'Kiswahili',
 
