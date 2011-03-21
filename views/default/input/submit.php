@@ -11,6 +11,12 @@
 
 	$vars['type'] = 'submit';
     $vars['class'] = (isset($vars['class'])) ? $vars['class'] : "submit_button";
+    $vars['name'] = @$vars['name'] ?: '_submit';
+    
+    if (!isset($vars['trackDirty']))
+    {
+        $vars['trackDirty'] = true;
+    }
 	
 	echo view('input/button', $vars);
 ?>

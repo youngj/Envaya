@@ -69,8 +69,7 @@ echo view('input/text', array(
 </div>
 
 <?php
-echo view('input/submit', array(
-    'name' => 'submit',
+echo view('input/submit', array(    
     'value' => __('savechanges')
 ));
 

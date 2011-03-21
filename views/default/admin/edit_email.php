@@ -54,10 +54,6 @@
         'value' => __('delete')
     ));
             
-    echo view('input/submit',
-        array('name' => 'submit',
-            'class' => "submit_button",
-            'trackDirty' => true,
-            'value' => __('save')));
+    echo view('input/submit', array('value' => __('save')));
 ?>
 </form>

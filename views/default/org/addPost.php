@@ -13,9 +13,8 @@
     );
 
     echo view('input/submit',
-        array('name' => 'submit',
+        array(
             'class' => "submit_button addUpdateButton",
-            'trackDirty' => true,
             'value' => __('publish')));
 
     echo view('input/hidden', array(

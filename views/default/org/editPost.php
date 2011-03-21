@@ -24,7 +24,7 @@
             'value' => __('blog:delete')
         ));
 
-    echo view('input/submit', array('name' => 'submit', 'trackDirty' => true, 'value' => __('savechanges')));
+    echo view('input/submit', array('value' => __('savechanges')));
 ?>
 
 <?php

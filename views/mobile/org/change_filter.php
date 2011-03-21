@@ -34,7 +34,7 @@ echo view('input/pulldown', array(
 <div>
 <?php
     
-echo view('input/submit', array('name' => 'submit', 'value' => __('go'))); 
+echo view('input/submit', array('value' => __('go'))); 
 ?>
 </div>
 </form>

@@ -49,7 +49,7 @@ echo view('input/pulldown', array(
 
 ?>
 <noscript>
-<?php echo view('input/submit', array('name' => 'submit', 'value' => __('go'))); ?>
+<?php echo view('input/submit', array('value' => __('go'))); ?>
 </noscript>
 </form>
 <br />

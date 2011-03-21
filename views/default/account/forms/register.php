@@ -24,7 +24,7 @@
     $form_body .= view('input/hidden', array('name' => 'friend_guid', 'value' => $vars['friend_guid']));
     $form_body .= view('input/hidden', array('name' => 'invitecode', 'value' => $vars['invitecode']));
     $form_body .= view('input/hidden', array('name' => 'action', 'value' => 'register'));
-    $form_body .= view('input/submit', array('name' => 'submit', 'value' => __('register'))) . "</p>";
+    $form_body .= view('input/submit', array('value' => __('register'))) . "</p>";
 ?>
 
 

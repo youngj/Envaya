@@ -12,14 +12,7 @@
 
     $class = (isset($vars['class'])) ? $vars['class'] : "submit_button";
 
-    if (isset($vars['type'])) { $type = strtolower($vars['type']); } else { $type = 'submit'; }
-    switch ($type)
-    {
-        case 'button' : $type='button'; break;
-        case 'reset' : $type='reset'; break;
-        case 'submit':
-        default: $type = 'submit';
-    }
+    $type = @$vars['type'] ?: 'submit';
 
     $value = escape(@$vars['value']);
     $name = @$vars['name'];

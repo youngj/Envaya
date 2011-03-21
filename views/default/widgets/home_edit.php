@@ -18,7 +18,7 @@
         'valueIsHTML' => $widget->has_data_type(DataType::HTML),
         'value' => $widget->content)) ?>
 </div>
-<?php echo view('input/submit', array('name' => "submit", 'trackDirty' => true, 'value' => __('savechanges'))); ?>
+<?php echo view('input/submit', array('value' => __('savechanges'))); ?>
 </div>
 
 <div class='section_header'><?php echo __("org:sectors"); ?></div>

@@ -13,7 +13,7 @@
     if ($admin_option)
         $form_body .= "<p>" . view('input/checkboxes', array('name' => "admin", 'options' => array(__('admin_option'))));
 
-    $form_body .= view('input/submit', array('name' => 'submit', 'value' => __('register'))) . "</p>";
+    $form_body .= view('input/submit', array('value' => __('register'))) . "</p>";
 ?>
 
 

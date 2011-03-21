@@ -74,12 +74,7 @@ echo view('admin/nudge_photo', array(
 
 <?php
 
-    echo view('input/submit',
-        array('name' => 'submit',
-            'class' => "submit_button",
-            'trackDirty' => true,
-            'value' => __('publish')));
-
+    echo view('input/submit', array('value' => __('publish')));
     
 ?>
 

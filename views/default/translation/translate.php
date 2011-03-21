@@ -87,7 +87,7 @@ echo "<br>".
         'confirmMessage' => __('areyousure'),
         'value' => __('delete')
     )).
-    view('input/submit', array('name' => 'submit', 'trackDirty' => true, 'value' => __('trans:submit')));
+    view('input/submit', array('value' => __('trans:submit')));
 
 echo "</td></tr></table>";
 

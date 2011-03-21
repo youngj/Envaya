@@ -35,11 +35,7 @@
 </div>
 <?php
 
-    echo view('input/submit',
-        array('name' => 'submit',
-            'class' => "submit_button",
-            'trackDirty' => true,
-            'value' => __('savechanges')));
+    echo view('input/submit', array('value' => __('savechanges')));
 
     echo view('input/hidden', array(
         'name' => 'guid',

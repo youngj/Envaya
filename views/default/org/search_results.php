@@ -48,7 +48,6 @@
     
     <?php 
         echo view('input/submit', array(
-            'name' => 'submit',
             'value' => __('search:submit') 
         ));
     ?>    

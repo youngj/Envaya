@@ -227,7 +227,7 @@ class RegisterTest extends SeleniumTest
         $this->type("//input[@name='phone_number']", "1234567");
         $this->type("//input[@name='contact_name']", "Test Person");
 
-        $this->clickAndWait("//button[@name='submit']");
+        $this->clickAndWait("//button[@type='submit']");
 
         $this->mouseOver("//td[contains(text(),'1234567')]");
         $this->mouseOver("//td[contains(text(),'Test Person')]");
@@ -257,7 +257,7 @@ class RegisterTest extends SeleniumTest
     {
         $this->clickAndWait("//a[contains(@href,'home/edit')]");
         $this->typeInFrame("//iframe", "new mission!");
-        $this->clickAndWait("//button[@name='submit']");
+        $this->clickAndWait("//button[@type='submit']");
         $this->mouseOver("//div[contains(@class, 'section_content')]//p[contains(text(),'new mission!')]");
         $this->mouseOver("//div[@id='site_menu']//a[@class='selected']");
     }
@@ -269,7 +269,7 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//div[@id='edit_submenu']//a");
         $this->clickAndWait("//a[contains(@href,'projects/edit')]");
         $this->typeInFrame("//iframe", "we test stuff");
-        $this->clickAndWait("//button[@name='submit']");
+        $this->clickAndWait("//button[@type='submit']");
         sleep(2);
         $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'we test stuff')]");
     }
@@ -286,7 +286,7 @@ class RegisterTest extends SeleniumTest
                 
         $this->ensureBadMessage(); // invalid characters in widget_name
         $this->type("//input[@name='widget_name']", "settings");
-        $this->clickAndWait("//button[@name='submit']");
+        $this->clickAndWait("//button[@type='submit']");
         
         $this->mouseOver("//h3[text()='New page']");
         $this->mouseOver("//a[@class='selected' and contains(@href,'page/settings')]");
@@ -296,7 +296,7 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//div[@id='edit_submenu']//a");
         $this->type("//input[@name='title']", "New title");
         
-        $this->clickAndWait("//button[@name='submit']");
+        $this->clickAndWait("//button[@type='submit']");
               
         $this->mouseOver("//h3[text()='New title']");
         $this->mouseOver("//a[@class='selected' and contains(@href,'page/settings')]");

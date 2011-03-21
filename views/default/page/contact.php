@@ -37,7 +37,6 @@
 
 <?php
     echo view('input/submit', array(
-        'name' => 'submit',
         'value' => __('feedback:send'),
     ));
 ?>

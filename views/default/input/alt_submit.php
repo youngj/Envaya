@@ -1,7 +1,8 @@
 <script type='text/javascript'>
-function setHiddenSubmit($id)
+function doHiddenSubmit($id)
 {
     document.getElementById($id).value = "1";
+    document.forms[0].submit();
     return true;
 }
 </script>
@@ -29,14 +30,15 @@ function setHiddenSubmit($id)
     {
         $js .= "&& setSubmitted() ";
     }
-    $js .= "&& setHiddenSubmit(".json_encode($hidden_id).");'";
-
-    echo view('input/submit', array(
+    $js .= "&& doHiddenSubmit(".json_encode($hidden_id).");'";
+	    
+    echo view('input/button', array(
         'name' => "_alt_submit",
         'id' => @$vars['id'],
         'js' => $js,
         'trackDirty' => @$vars['trackDirty'],
-        'class' => @$vars['class'],
+        'type' => 'button', // not 'submit' so that enter key doesn't automatically click this button
+        'class' => @$vars['class'] ?: "submit_button",
         'value' => @$vars['value']
     ));
 

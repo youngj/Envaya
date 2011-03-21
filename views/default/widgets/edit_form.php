@@ -17,17 +17,17 @@
             'value' => __('widget:delete')
         ));
     }
+    
     if (!$noSave)
     {
-        $saveText = $widget->is_active() ? __('savechanges') : __('widget:save:new');
-        $form_body .= view('input/submit', array('name' => "submit", 'trackDirty' => true, 'value' => $saveText)) ;
+        $saveText = $widget->is_active() ? __('savechanges') : __('widget:save:new');       
     }
     else
     {
-        $saveText = $widget->is_active() ? __('widget:view') : __('widget:save:new');
-        $form_body .= view('input/submit', array('name' => "submit", 'value' => $saveText)) ;
+        $saveText = $widget->is_active() ? __('widget:view') : __('widget:save:new');        
     }
-
+    $form_body .= view('input/submit', array('value' => $saveText));
+    
 
     echo view('input/form', array(
         'body' => $form_body,
