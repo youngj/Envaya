@@ -22,7 +22,7 @@ class PageContext
     {
         static::$translatable = $translatable;
     }
-    
+        
     static function is_translatable($mode=TranslateMode::All)
     {
         if (!static::$translatable)
@@ -37,6 +37,18 @@ class PageContext
                 return true;
             }
         }
+        return false;
+    }
+    
+    static function has_translation_error()
+    {
+        foreach (static::$translations_available as $translation)
+        {
+            if (!$translation->id)
+            {
+                return true;
+            }
+        }    
         return false;
     }
 

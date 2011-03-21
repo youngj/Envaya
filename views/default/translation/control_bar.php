@@ -45,7 +45,11 @@ if (PageContext::is_translatable())
     }
     else if ($transMode == TranslateMode::All) // viewing automatic translation
     {
-        if (PageContext::is_translatable(TranslateMode::ManualOnly))
+        if (PageContext::has_translation_error())
+        {
+            echo sprintf(__("trans:automatic_trans_error"), $origLangName, $userLangName);
+        }
+        else if (PageContext::is_translatable(TranslateMode::ManualOnly))
         {
             echo sprintf(__("trans:partial_automatic_trans_from_to"), $origLangName, $userLangName);
         }

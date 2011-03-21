@@ -35,6 +35,19 @@ class Markup
         $p = preg_replace("/\n/", "<br />", $p);
         return $p;
     }
+    
+    static function truncate_at_word_boundary($content, $maxLength)
+    {        
+        // todo: multi-byte support
+        $shortStr = substr($content, 0, $maxLength);
+
+        $lastSpace = strrpos($shortStr, ' ');
+        if ($lastSpace && $lastSpace > $maxLength / 2)
+        {
+            $shortStr = substr($shortStr, 0, $lastSpace);
+        }
+        return $shortStr;
+    }
 
     static function get_snippet($content, $maxLength = 100)
     {
@@ -48,20 +61,12 @@ class Markup
                 $content = preg_replace('/<img[^>]+>/i', '', $content);
                 $content = preg_replace('/<\/(p|h1|h2|h3)>/i', '</$1> <br />', $content);
 
-                $tooLong = strlen($content) > $maxLength;
-                // todo: multi-byte support
+                $tooLong = strlen($content) > $maxLength;                
                 if ($tooLong)
                 {
-                    $shortStr = substr($content, 0, $maxLength);
-
-                    $lastSpace = strrpos($shortStr, ' ');
-                    if ($lastSpace && $lastSpace > $maxLength / 2)
-                    {
-                        $shortStr = substr($shortStr, 0, $lastSpace);
-                    }
-
-                    $content = $shortStr;
+                    $content = static::truncate_at_word_boundary($content, $maxLength);
                 }
+                
                 $content = Markup::sanitize_html($content, array('HTML.AllowedElements' => 'a,em,strong,br','AutoFormat.RemoveEmpty' => true));
                 $content = mb_ereg_replace('(\xc2\xa0)+',' ',$content); # non-breaking space
                 $content = preg_replace('/(<br \/>\s*)+/', ' &ndash; ', $content);

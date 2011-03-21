@@ -18,17 +18,10 @@ class GoogleTranslate
             return null;
         }
 
-        $ch = curl_init();
-
         $text = str_replace("\r","", $text);
         $text = str_replace("\n", ",;", $text);
 
         $url = "ajax.googleapis.com/ajax/services/language/translate?v=1.0&langpair=$origLang%7C$viewLang";
-
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_REFERER, "www.envaya.org");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, true);
         
         // "To post a file, prepend a filename with @ and use the full path"
         // is a security vulnerability waiting to happen
@@ -36,6 +29,24 @@ class GoogleTranslate
         {
             $text = " ".$text;
         } 
+        
+        $maxLength = 4999; // max limit for google translate api        
+        $translatedChunks = array();
+        
+        $tooLong = strlen($text) > $maxLength;
+        if ($tooLong)
+        {
+            $truncated = Markup::truncate_at_word_boundary($text, $maxLength);            
+            $text = $truncated;
+        }        
+        
+        $ch = curl_init();
+        
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_REFERER, "www.envaya.org");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, true);
+    
         curl_setopt($ch, CURLOPT_POSTFIELDS, array('q' => $text));
 
         $json = curl_exec($ch);
@@ -43,16 +54,21 @@ class GoogleTranslate
         curl_close($ch);
 
         $res = json_decode($json);
-
+        
         $translated = @$res->responseData->translatedText;
         if (!$translated)
         {
             return null;
         }
 
-        $text = html_entity_decode($translated, ENT_QUOTES);
+        $translated = html_entity_decode($translated, ENT_QUOTES);                    
 
-        return str_replace(",;", "\n", $text);
+        if ($tooLong)
+        {
+            $translated .= "...";
+        }
+            
+        return str_replace(",;", "\n", $translated);
     }
 
     static function guess_language($text)

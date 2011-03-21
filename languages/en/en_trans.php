@@ -27,6 +27,7 @@ return array(
     "trans:view_original_in" => 'View original in %s',
     "trans:partial_automatic_trans_from_to" => 'Parts of this page have been automatically translated using Google Translate.',
     "trans:automatic_trans_from_to" => "This page been automatically translated from %s to %s by Google Translate.",
+    "trans:automatic_trans_error" => "Envaya was unable to automatically translate parts of this page from %s to %s.",
     "trans:page_original_in" => "This page is displayed in its original language, %s.",
     "trans:view_in" => "View in %s",
     "trans:view_automatic_in" => "View in %s using Google Translate",
