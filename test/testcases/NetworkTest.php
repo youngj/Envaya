@@ -108,10 +108,17 @@ class NetworkTest extends SeleniumTest
         $this->type("//input[@name='name']","a;lskdjfalkdsfj");
         $this->type("//input[@name='phone_number']","");
         $this->type("//input[@name='website']","localhost/testorg");
+        
+        $this->assertEquals('true', $this->getEval('window.dirty'));
+        
         $this->click("//button");        
         $this->retry('mouseOver', array("//span[@class='search_url' and contains(text(), 'testorg')]"));
         $this->clickAndWait("//input[@type='submit']");
         $this->ensureBadMessage();            
+        
+        // dirtiness persists after form submit failure
+        $this->assertEquals('true', $this->getEval('window.dirty'));
+        $this->getEval('window.setDirty(false);'); // avoid onbeforesubmit warning, selenium can't deal with it
         
         // add org by clicking link at top of their site
         $this->open("/testposter16");
