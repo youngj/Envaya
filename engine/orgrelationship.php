@@ -162,18 +162,7 @@ class OrgRelationship extends Entity
             $org = $this->get_container_entity();
             post_feed_items($org, 'relationship', $this);
         }
-    }        
-    
-    function get_feed_heading_format()
-    {
-        switch ($this->type)
-        {
-            case static::Partnership:   return __('network:feed_partnership');
-            case static::Member:        return __('network:feed_member');
-            case static::Membership:    return __('network:feed_membership');
-            default: throw new Exception("Invalid relationship type: {$this->type}");
-        }    
-    }
+    }           
     
     function is_self_approved()
     {

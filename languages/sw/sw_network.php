@@ -36,7 +36,7 @@ return array(
         
     'network:can_add_unregistered_partner' => "Hata hivyo, unaweza kuliongeza kwenye orodha yako ya ubia.",
     
-    'network:feed_partnership' => '%s ina ubia na %s.',
+    'network:feed_heading' => '%s imeongeza %s kwenye orodha yake ya %s.',
     
     'network:no_self_partnership' => "Huwezi kujiongeza kama ubia.",    
     

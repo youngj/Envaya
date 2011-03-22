@@ -60,9 +60,7 @@ return array(
     //'network:can_add_unregistered_member' => "However, you can still add them to your list of member organizations.",
     'network:can_add_unregistered_partner' => "However, you can still add them to your list of partner organizations.",
     
-    'network:feed_partnership' => '%s has a partnership with %s.',
-    //'network:feed_membership' => '%s is a member of %s.',
-    //'network:feed_member' => '%2$s is a member of %1$s.',    
+    'network:feed_heading' => '%s added %s to its list of %s.',
     
     //'network:no_self_member' => "You cannot add yourself as a member of your network.",    
     'network:no_self_partnership' => "You cannot add yourself as a partner organization.",    

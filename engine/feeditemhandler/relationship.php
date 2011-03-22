@@ -16,9 +16,20 @@ class FeedItemHandler_Relationship extends FeedItemHandler
             $subject_html = escape($relationship->get_subject_name());
         }
         
-        return sprintf($relationship->get_feed_heading_format(), 
+        $org = $relationship->get_container_entity();
+        $network = $org->get_widget_by_class('WidgetHandler_Network');
+        
+        $list_name = $relationship->__('header');
+        
+        if ($network->is_active())
+        {
+            $list_name = "<a href='{$network->get_url()}'>$list_name</a>";
+        }        
+        
+        return sprintf(__('network:feed_heading'), 
             $this->get_org_link($item, $mode),
-            $subject_html
+            $subject_html,
+            $list_name
         );
     }
     
