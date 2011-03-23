@@ -2,7 +2,6 @@
 
     $relationship = $vars['relationship'];
     $widget = $vars['widget'];
-    $confirmDelete = $relationship->__('confirm_delete');
 
     $org = $relationship->get_subject_organization();
     $name = $relationship->get_subject_name();    
@@ -25,7 +24,7 @@
        
     echo view('output/confirmlink', array(
             'text' => __('delete'),
-            'confirm' => sprintf($confirmDelete, $relationship->get_subject_name()),
+            'confirm' => sprintf($relationship->__('confirm_delete'), $relationship->get_subject_name()),
             'href' => "{$widget->get_edit_url()}?action=delete_relationship&guid={$relationship->guid}",
             'is_action' => true,
     ));

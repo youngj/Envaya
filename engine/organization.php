@@ -32,6 +32,16 @@ class Organization extends User
     {
         return OrgRelationship::query()->where("subject_guid=?", $this->guid);
     }
+
+    public function query_discussion_memberships()
+    {
+        return DiscussionMember::query()->where('member_guid = ?', $this->guid);
+    }
+    
+    public function query_discussion_lists()
+    {
+        return DiscussionList::query()->where('e.guid in (select list_guid from discussion_members where member_guid = ?)', $this->guid);
+    }
     
     public function query_files()
     {    

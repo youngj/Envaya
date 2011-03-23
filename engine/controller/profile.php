@@ -674,12 +674,12 @@ class Controller_Profile extends Controller
                 action_error(__("message:message_missing"));
             }
 
-            if ($recipient->send_mail($subject, $message, array(
-                // can't use org's email as from address, or else may get marked as spam
-                'From' => $user->get_name_for_email(Config::get('email_from')), 
-                'Reply-To' => $user->get_name_for_email(),
-                'Bcc' => $user->get_name_for_email(),
-            )))
+            $mail = Zend::mail($subject, $message);
+            $mail->setFrom(Config::get('email_from'), $user->name);
+            $mail->setReplyTo($user->email, $user->name);
+            $mail->addBcc($user->email);
+            
+            if ($recipient->send_mail($mail))
             {
                 system_message(__("message:sent"));
             }
@@ -874,11 +874,16 @@ class Controller_Profile extends Controller
 		if ($org && $org->email && $org->is_notification_enabled(Notification::Comments) 
 				&& $ownerGuid != $org->guid)
 		{		
-			$org->send_mail($notification_subject, $notification_body);
+            $mail = Zend::mail($notification_subject, $notification_body);        
+			$org->send_mail($mail);
 		}
-		send_admin_mail(
-			sprintf(__('comment:notification_admin_subject'), $comment->get_name(), $org->name), 
-			$notification_body);
+
+        $mail = Zend::mail(
+            sprintf(__('comment:notification_admin_subject'), $comment->get_name(), $org->name),
+            $notification_body
+        );
+
+		send_admin_mail($mail);
 		
 		system_message(__('comment:success'));
 		forward($comments_url);

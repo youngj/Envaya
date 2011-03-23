@@ -139,11 +139,11 @@ function bootstrap()
     require_once __DIR__."/config.php";
     Config::load();
     
-    load_environment_config();
+    load_environment_config();    
     
     mb_internal_encoding('UTF-8');        
     spl_autoload_register('auto_load');
-    
+        
     foreach(get_library_files(__DIR__ . "/lib") as $file)
     {
         /*

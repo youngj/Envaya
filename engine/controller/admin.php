@@ -322,10 +322,12 @@ class Controller_Admin extends Controller
             $new_user->created_by_guid = Session::get_loggedin_userid();
             $new_user->save();
 
-            $new_user->send_mail(
+            $mail = Zend::mail(
                 __('useradd:subject'),
                 sprintf(__('useradd:body'), $name, Config::get('sitename'), Config::get('url'), $username, $password)
             );
+                        
+            $new_user->send_mail($mail);
 
             system_message(sprintf(__("adduser:ok"), Config::get('sitename')));
         }
@@ -356,10 +358,10 @@ class Controller_Admin extends Controller
 
             if (!$approvedBefore && $approvedAfter && $entity->email)
             {
-                $entity->send_mail(
+                $entity->send_mail(Zend::mail(
                     __('email:orgapproved:subject', $entity->language),
                     view('emails/org_approved', array('org' => $entity))
-                );
+                ));
             }
             
             $entity->send_relationship_emails();

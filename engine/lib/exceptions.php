@@ -127,17 +127,17 @@ function php_exception_handler($exception) {
             $ex = print_r($exception, true);
             $server = print_r($_SERVER, true);
 
-            send_admin_mail("$class: {$_SERVER['REQUEST_URI']}", "
-Exception:
+            send_admin_mail(Zend::mail(
+                "$class: {$_SERVER['REQUEST_URI']}", 
+"Exception:
 ==========
 $ex
-
 
 
 _SERVER:
 =======
 $server
-        ", null, true);
+        "));
         }
     }
 }

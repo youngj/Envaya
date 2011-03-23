@@ -27,6 +27,7 @@ php scripts/install.php
 # Existing settings files will be overwritten.
 
 ./scripts/server_setup.sh
+./scripts/server_sphinx_setup.sh
 
 # step 6: create initial users 
 # (required for selenium tests, but should not be used in production)    
@@ -34,6 +35,9 @@ php scripts/install.php
 # creates organization username:testorg pw:testtest
 # creates organization username:envaya pw:testtest
 php scripts/install_test_data.php
+
+# step 7: make compressed CSS and JS files
+php scripts/make.php
 
 # optional: create admin users with custom username/password
 php scripts/create_admin.php

@@ -293,9 +293,10 @@ abstract class Controller {
         {
             post_feed_items($org, 'register', $org);
 
-            send_admin_mail(sprintf(__('email:registernotify:subject'), $org->name), 
+            send_admin_mail(Zend::mail(
+                sprintf(__('email:registernotify:subject'), $org->name), 
                 sprintf(__('email:registernotify:body'), $org->get_url().'?login=1')
-            );
+            ));
         }            
         
         system_message(__("setup:ok"));                

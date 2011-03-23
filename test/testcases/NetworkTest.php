@@ -216,7 +216,7 @@ class NetworkTest extends SeleniumTest
         $this->assertContains("whee reverse relationship", $this->getText("//div[@class='feed_snippet']"));
         
         // verify notification email sent out to testorg, but without link to add reverse (since already added)
-        $email = $this->getLastEmail('To: "Test Org"');        
+        $email = $this->getLastEmail('To: Test Org');        
         $this->assertContains('/testposter16/network', $email);
         $this->assertNotContains('/testorg', $email);
         

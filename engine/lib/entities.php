@@ -12,7 +12,9 @@
             13 => 'EmailTemplate',
             16 => 'Comment',
             17 => 'FeaturedPhoto',
-            19 => 'OrgRelationship',
+            19 => 'OrgRelationship',            
+            20 => 'DiscussionList',
+            21 => 'DiscussionMessage',
         );
         private static $class_to_subtype = null;
         

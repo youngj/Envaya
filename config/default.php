@@ -67,4 +67,9 @@ return array(
     'extract_images_from_docs' => false,
     
     'modules' => array(),
+    
+    'discussion_list_suffix' => '-list',
+    'apps_domain' => '',
+    'apps_admin' => '',
+    'apps_password' => '',
 );

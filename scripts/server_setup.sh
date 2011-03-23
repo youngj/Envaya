@@ -261,41 +261,6 @@ http {
 
 EOF
 
-cat <<EOF > /etc/stunnel/stunnel.conf
-
-; Protocol version (all, SSLv2, SSLv3, TLSv1)
-sslVersion = SSLv3
-
-; Some security enhancements for UNIX systems - comment them out on Win32
-chroot = /var/lib/stunnel4/
-setuid = stunnel4
-setgid = stunnel4
-; PID is created inside chroot jail
-pid = /stunnel4.pid
-
-; Some performance tunings
-socket = l:TCP_NODELAY=1
-socket = r:TCP_NODELAY=1
-;compression = rle
-
-; Some debugging stuff useful for troubleshooting
-;debug = 7
-
-client = yes
-
-; Service-level configuration
-[pop3s]
-accept = 127.0.0.1:110
-connect = pop.gmail.com:995
-
-[smtps]
-accept = 127.0.0.1:25
-connect = smtp.gmail.com:465
-
-EOF
-
-/etc/init.d/stunnel4 restart
-
 cp $INSTALL_DIR/scripts/config/cups-pdf.conf /etc/cups/
 
 mkdir -p /var/kestrel

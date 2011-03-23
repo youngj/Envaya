@@ -447,8 +447,8 @@ class RegisterTest extends SeleniumTest
         $email = $this->getLastEmail("Test Subject");
 
         $this->assertContains("Test Message",$email);
-        $this->assertContains("To: \"{$this->name2}\" <{$this->email2}>", $email);
-        $this->assertContains("Reply-To: \"New Name\" <{$this->email}>", $email);
+        $this->assertContains("To: {$this->name2} <{$this->email2}>", $email);
+        $this->assertContains("Reply-To: New Name <{$this->email}>", $email);
     }
 
     private function _testDeleteOrg()

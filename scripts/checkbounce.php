@@ -5,28 +5,11 @@
  * 
  * Prints a list of bounced email addresses and the reason why 
  * the email was rejected by the destination SMTP server.
- *
- * Assumes that the IMAP server is accessible on an unencrypted 
- * connection at localhost:143. Stunnel should be configured 
- * to forward connections on that port to the real IMAP 
- * server, e.g. with these lines in stunnel.conf:
- 
-[imaps]
-accept  = 127.0.0.1:143
-connect = imap.gmail.com:993
- 
+ * 
  */
 
 require_once "scripts/cmdline.php";
 require_once "engine/start.php";
-
-function get_imap_inbox()
-{
-    $imap = new Net_IMAP('localhost',143);
-    $imap->login(Config::get('email_from'),Config::get('email_pass'));
-    $imap->selectMailbox("INBOX");
-    return $imap;
-}
 
 function parse_bounce_email($bounce_email)
 {
@@ -74,14 +57,27 @@ function query_bounces($since_time)
 {
     $bounced_addresses = array();
 
-    $imap = get_imap_inbox();
+    echo "hi!\n";
+    
+    $imap = Zend::imap();
+    $imap->login(Config::get('email_from'), Config::get('email_pass'));
+    $imap->select("INBOX");
+    
+    echo "logged in, searching...\n";
 
     $since_str = date('d-M-Y', $since_time);    
-    $bounced_ids = $imap->search('(SINCE '.$since_str.' FROM "MAILER-DAEMON@smtp.com")');
+    $bounced_ids = $imap->search(array(
+        'SINCE', $since_str,
+        'FROM', $imap->escapeString("MAILER-DAEMON@smtp.com")
+    ));
 
+    echo "search complete\n";
+    echo sizeof($bounced_ids);
+    echo "\n";
+    
     foreach ($bounced_ids as $bounced_id)
     {
-        $body = $imap->getBody($bounced_id);
+        $body = $imap->fetch('RFC822.TEXT', $bounced_id);
             
         $bounce_info = parse_bounce_email($body);
             
@@ -99,7 +95,7 @@ function query_bounces($since_time)
         }
     }
 
-    $imap->disconnect();
+    $imap->logout();
    
     return $bounced_addresses;
 }

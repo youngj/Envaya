@@ -325,17 +325,12 @@ class User extends Entity
         return md5($password . $this->salt);
     }    
 
-    function send_mail($subject, $message, $headers = null)
+    function send_mail($mail)
     {
         if ($this->email)
         {
-            if (!$headers)        
-            {
-                $headers = array();
-            }
-            $headers['To'] = $this->get_name_for_email();
-
-            send_mail($this->email, $subject, $message, $headers);    
+            $mail->addTo($this->email, $this->name);
+            send_mail($mail);    
             return true;
         }
         return false;

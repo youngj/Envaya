@@ -3,9 +3,6 @@
     $type = $vars['type'];
     $widget = $vars['widget'];
     $header = OrgRelationship::msg($type, 'add_header');    
-    $can_add_unregistered = OrgRelationship::msg($type, 'can_add_unregistered');
-    $confirm = OrgRelationship::msg($type, 'add_confirm');
-    $not_shown = OrgRelationship::msg($type, 'not_shown');
     
     ob_start();
     
@@ -103,7 +100,7 @@ function showNotFoundDialog(query, res)
     else
     {
         content.appendChild(document.createTextNode(' ' +
-            <?php echo json_encode($can_add_unregistered); ?>
+            <?php echo json_encode(OrgRelationship::msg($type, 'can_add_unregistered')); ?>
         ));
     }
     
@@ -139,7 +136,7 @@ function showConfirmMemberDialog(query, res)
     var results = res.results;
 
     var content = createElem('div', {className:'padded'});        
-    content.appendChild(createElem('div', <?php echo json_encode($confirm); ?>));
+    content.appendChild(createElem('div', <?php echo json_encode(OrgRelationship::msg($type, 'add_confirm')); ?>));
                   
     for (var i = 0; i < results.length; i++)
     {       
@@ -153,7 +150,7 @@ function showConfirmMemberDialog(query, res)
                 className: 'selectMemberNone',
                 click:function() { ignoreDirty(); closeDialog(); showNotFoundDialog(query, res); }
             }, 
-            <?php echo json_encode($not_shown); ?>)
+            <?php echo json_encode(OrgRelationship::msg($type, 'not_shown')); ?>)
     ));
     
     document.body.appendChild(modalBox = createModalBox({
@@ -200,8 +197,6 @@ if (!$org)
 </th>
 <td>
 <?php echo view('input/submit', array(
-    'name' => '_save',
-    'trackDirty' => true, 
     'value' => __('network:add_button'),
     'js' => "onclick='searchOrg(); return false;'"
 ));
@@ -220,8 +215,6 @@ else
     echo view('input/tinymce', array('name' => 'content', 'trackDirty' => true));
 
     echo view('input/submit', array(
-        'name' => '_save',
-        'trackDirty' => true, 
         'value' => __('network:add_button'),
     ));
 }

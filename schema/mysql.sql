@@ -191,16 +191,6 @@ CREATE TABLE `org_relationships` (
     PRIMARY KEY (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `partnerships` (
-    `guid` bigint(20) unsigned NOT NULL,
-    `partner_guid` bigint(20) unsigned NOT NULL,
-    `approval` smallint not null default 0,    
-    `description` text,
-    `language` varchar(4) default null,
-    `date_formed` text,
-    PRIMARY KEY (`guid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 -- Extra information relating to "users"
 CREATE TABLE `users_entity` (
   `guid` bigint(20) unsigned  NOT NULL,
@@ -467,3 +457,21 @@ CREATE TABLE `sent_emails` (
 	KEY `email_guid` (`email_guid`),
 	KEY `user_guid` (`user_guid`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8; 	
+
+CREATE TABLE `discussion_lists` (
+    `guid` bigint(20) unsigned NOT NULL,
+    `address` varchar(64) NOT NULL default '',
+    `name` text default '',    
+    `type` tinyint(4) not null default 0,        
+    PRIMARY KEY (`guid`),
+    UNIQUE KEY (`address`)
+) ENGINE = MYISAM DEFAULT CHARSET=utf8; 	
+
+CREATE TABLE `discussion_members` (
+    `id` INT NOT NULL AUTO_INCREMENT primary key,		
+    `list_guid` bigint(20) unsigned NOT NULL,
+    `member_guid` bigint(20) unsigned NOT NULL,
+    `role` tinyint(4) not null default 0,        
+    KEY (`list_guid`),
+    UNIQUE KEY (`member_guid`,`list_guid`)
+) ENGINE = MYISAM DEFAULT CHARSET=utf8;

@@ -1,7 +1,6 @@
 <?php
     $widget = $vars['widget'];
     $type = $vars['type'];
-    $header = OrgRelationship::msg($type, 'header');
     
     $org = $widget->get_container_entity();
     
@@ -13,7 +12,8 @@
         
     if (sizeof($entities) > 0)
     {
-        echo view('section', array('header' => $header, 
+        echo view('section', array(
+            'header' => OrgRelationship::msg($type, 'header'), 
             'content' => view('paged_list', array(
                 'entities' => $entities,
                 'separator' => "<div style='clear:both;margin:10px 0px;' class='separator'></div>"

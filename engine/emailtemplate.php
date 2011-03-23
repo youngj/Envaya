@@ -54,11 +54,12 @@ class EmailTemplate extends Entity
     {        
         $subject = $this->render_subject($org);
         $body = view('emails/template', array('org' => $org, 'email' => $this));
-                
-        $org->send_mail($subject, $body, array(
-            'Content-Type' => 'text/html',
-            'From' => "\"{$this->from}\" <".Config::get('email_from').">"        
-        ));
+
+        $mail = Zend::mail($subject);
+        $mail->setBodyHtml($body);
+        $mail->setFrom(Config::get('email_from'), $this->from);
+        
+        $org->send_mail($mail);
  
         $time = time();
  

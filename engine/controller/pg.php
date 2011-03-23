@@ -88,7 +88,7 @@ class Controller_Pg extends Controller {
             $emailBody .= "$k = $v\n\n";
         }
 
-        send_admin_mail("Donation form started", $emailBody);
+        send_admin_mail(Zend::mail("Donation form started", $emailBody));
 
         if (!$amount)
         {
@@ -158,9 +158,12 @@ class Controller_Pg extends Controller {
             $user->passwd_conf_code = substr(generate_random_cleartext_password(), 0, 24); // avoid making url too long for 1 line in email
             $user->save();
 
-            $body = view('emails/password_reset_request', array('user' => $user));
-
-            if ($user->send_mail(__('email:resetreq:subject',$user->language), $body))
+            $mail = Zend::mail(
+                __('email:resetreq:subject',$user->language),
+                view('emails/password_reset_request', array('user' => $user))
+            );
+            
+            if ($user->send_mail($mail))
             {
                 system_message(__('user:password:resetreq:success'));
             }
@@ -364,11 +367,10 @@ class Controller_Pg extends Controller {
             action_error($ex->getMessage());
         }
         
-        $headers = array(
-            'Reply-To' => mb_encode_mimeheader($email, "UTF-8", "B"),
-        );
+        $mail = Zend::mail("User feedback", "From: $from\n\nEmail: $email\n\n$message");
+        $mail->setReplyTo($email);
         
-        send_admin_mail("User feedback", "From: $from\n\nEmail: $email\n\n$message", $headers);
+        send_admin_mail($mail);
         system_message(__('feedback:sent'));
         forward("/");
     }

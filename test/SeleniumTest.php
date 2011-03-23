@@ -148,15 +148,21 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         if ($endPos === false)
         {
             throw new Exception("full email not yet written to file");
-        }
+        }        
         
         $startPos = strrpos($contents, "========", $matchPos - strlen($contents));
         if ($startPos === false)
         {
             throw new Exception("email start marker not found");
-        }
+        }                
+        $startPos = strpos($contents, "\n", $startPos) + 1;
         
-        $email = substr($contents, $startPos, $endPos - $startPos);                    
+        $email = substr($contents, $startPos, $endPos - $startPos);                            
+                                        
+        // decode quoted-printable
+        $email = str_replace("=\r\n","", $email);
+        $email = preg_replace('/\=([A-F0-9][A-F0-9])/','%$1',$email);
+        $email = rawurldecode($email);        
                 
         return $email;
     }

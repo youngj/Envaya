@@ -31,9 +31,10 @@ class Widget extends Entity
         'projects'      => array('menu_order' => 30, 'handler_class' => 'WidgetHandler_Generic'),
         'history'       => array('menu_order' => 40, 'handler_class' => 'WidgetHandler_Generic'),
         'team'          => array('menu_order' => 50, 'handler_class' => 'WidgetHandler_Team'),
-        'network'       => array('menu_order' => 59, 'handler_class' => 'WidgetHandler_Network'),
-        'reports'       => array('menu_order' => 65, 'hidden' => true, 'handler_class' => 'WidgetHandler_Reports'),
-        'contact'       => array('menu_order' => 70, 'handler_class' => 'WidgetHandler_Contact'),        
+        'network'       => array('menu_order' => 60, 'handler_class' => 'WidgetHandler_Network'),
+        'discussions'   => array('menu_order' => 70, 'handler_class' => 'WidgetHandler_Discussions'),
+        'reports'       => array('menu_order' => 80, 'hidden' => true, 'handler_class' => 'WidgetHandler_Reports'),
+        'contact'       => array('menu_order' => 90, 'handler_class' => 'WidgetHandler_Contact'),        
     );        
     
     static function get_default_names_by_class($class_name)
@@ -61,7 +62,7 @@ class Widget extends Entity
             'medium' => '260x260',
             'large' => '540x1080',
         );
-    }    
+    }
         
     public function get_menu_order()
     {
