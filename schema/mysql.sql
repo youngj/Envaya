@@ -83,9 +83,10 @@ CREATE TABLE `interface_translations` (
 CREATE TABLE `news_updates` (
   `guid` bigint(20) unsigned  NOT NULL,
   
-  `content` text NOT NULL,
-  `data_types` int NOT NULL,
+  `content` mediumtext NOT NULL,
+  `data_types` tinyint(4) not null default 0,        
   `language` varchar(4) default null,
+
   `num_comments` int not null default 0,
   
   PRIMARY KEY  (`guid`)
@@ -95,8 +96,9 @@ CREATE TABLE `comments` (
   `guid` bigint(20) unsigned  NOT NULL,
   
   `content` text NOT NULL,
-  `data_types` int NOT NULL,
+  `data_types` tinyint(4) not null default 0,        
   `language` varchar(4) default null,
+
   `name` text default null,
   `email` varchar(128) default null,
   `location` text default null,
@@ -109,9 +111,11 @@ CREATE TABLE `featured_sites` (
   `guid` bigint(20) unsigned  NOT NULL,
   `user_guid` bigint(20) unsigned  NOT NULL,  
   `image_url` text default null,
+
   `content` text NOT NULL,
-  `data_types` int NOT NULL,
+  `data_types` tinyint(4) not null default 0,        
   `language` varchar(4) default null,
+
   `active` tinyint(4) default 0,
   PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -135,9 +139,10 @@ CREATE TABLE `email_templates` (
   `guid` bigint(20) unsigned  NOT NULL, 
   `subject` text default null,
   `from` text default null,
-  `content` text NOT NULL,
-  `data_types` int NOT NULL,
   `active` tinyint(4) NOT NULL default 0,
+  
+  `content` mediumtext NOT NULL,
+  `data_types` tinyint(4) not null default 0,        
   `language` varchar(4) default null,
   
   PRIMARY KEY  (`guid`)
@@ -152,8 +157,9 @@ CREATE TABLE `widgets` (
   `in_menu` tinyint(4) default 1,
   `handler_arg` varchar(64) NULL,
   `title` varchar(64) NULL,
-  `content` text NOT NULL,
-  `data_types` int NOT NULL,
+  
+  `content` mediumtext NOT NULL,
+  `data_types` tinyint(4) not null default 0,        
   `language` varchar(4) default null,
   
   PRIMARY KEY  (`guid`)
@@ -183,10 +189,11 @@ CREATE TABLE `org_relationships` (
     `subject_website` text default null,
     `subject_logo` text default null,    
     
-    `content` text default null,
+    `content` mediumtext default null,
+    `data_types` tinyint(4) not null default 0,        
     `language` varchar(4) default null,
-    `approval` int default 0,    
-    
+  
+    `approval` int default 0,        
     `order` int default 0,
     PRIMARY KEY (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -466,8 +473,11 @@ CREATE TABLE `discussion_messages` (
     `from_name` text default '',
     `from_email` varchar(128) default '',
     `time_posted` int(11),
-    `content` text default '',        
+    
+    `content` mediumtext default '',        
     `data_types` tinyint(4) not null default 0,        
+    `language` varchar(4) default null,
+    
     PRIMARY KEY (`guid`),
     KEY (`message_id`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;

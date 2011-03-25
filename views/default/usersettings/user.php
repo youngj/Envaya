@@ -30,14 +30,14 @@
     <div class='input'>
         <label><?php echo __('email:address:label'); ?>:</label><br />
         <?php
-            echo view('input/email',array('name' => 'email', 'value' => $user->email));
+            echo view('input/email',array('name' => 'email', 'value' => $user->email, 'trackDirty' => true));
         ?>
     </div>
 
     <div class='input'>
         <label><?php echo __('phone_number'); ?>:</label><br />
         <?php
-            echo view('input/text',array('name' => 'phone', 'value' => $user->phone_number));
+            echo view('input/text',array('name' => 'phone', 'value' => $user->phone_number, 'trackDirty' => true));
         ?>
     </div>
 

@@ -17,7 +17,9 @@ class OrgRelationship extends Entity
         'subject_guid' => null, // guid of subject entity to which container_guid entity is related
         
         'content' => '',
+        'data_types' => 0,        
         'language' => '',
+        
         'approval' => 0,
         
         'subject_notified' => 0,

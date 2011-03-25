@@ -126,13 +126,15 @@ function restore_input($name, $value, $trackDirty = false)
     {
         if (isset($prevInput[$name]))
         {
-            if ($trackDirty)
-            {
-                PageContext::set_dirty(true);
-            }
             $val = $prevInput[$name];
             unset($prevInput[$name]);
             Session::set('input', $prevInput);
+            
+            if ($trackDirty && $val != $value)
+            {
+                PageContext::set_dirty(true);
+            }
+            
             return $val;
         }
     }
