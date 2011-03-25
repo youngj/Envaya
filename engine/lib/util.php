@@ -119,11 +119,6 @@
         return htmlentities($val, ENT_QUOTES, 'UTF-8');
     }
 
-    function is_pear_error($res)
-    {
-        return is_a($res, 'PEAR_Error');
-    }
-
     function forward_to_referrer()
     {
         forward($_SERVER['HTTP_REFERER']);

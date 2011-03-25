@@ -25,7 +25,7 @@
     ));
 
     Route::set('sub_item', '<username>/<controller>/<id>(/<action>)',
-        array('controller' => '(post|page)')
+        array('controller' => '(post|page|topic)')
     )->defaults(array(
         'action'     => 'index',
     ));

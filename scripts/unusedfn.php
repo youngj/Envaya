@@ -27,15 +27,6 @@ $numFns = 0;
 function getCamelCaseFunctions($path)
 {
     global $numFns;    
-    if (
-            endswith($path, 'pop3.php')
-      ||    endswith($path, 'smtp.php')    
-      ||    endswith($path, 'socket.php')    
-      ||    endswith($path, 's3.php')    
-      ||    endswith($path, 'rfc822.php')    
-      ||    endswith($path, 'mail.php')    
-    )
-        return;
     
     $contents = file_get_contents($path);
     if (preg_match_all('/function\s+(\w*[A-Z]\w*)/', $contents, $matches))
@@ -53,11 +44,12 @@ $functionArgs = array();
 function getFunctionArguments($path)
 {
     global $functionArgs;
+
     $contents = file_get_contents($path);
     if (preg_match_all('/function\s+(\w+)\([^\)]+\)/', $contents, $matches, PREG_SET_ORDER))
     {
         foreach ($matches as $match)
-        {            
+        {                                       
             $functionArgs[$path.":".$match[1]] = substr_count($match[0],',') + 1;
         }
     }
@@ -89,10 +81,10 @@ function checkDir($dir, $callback)
         $path = "$dir/$file";
 
         if (endswith($path, ".php"))
-        {            
+        {           
             $callback($path);
         }
-        else if ($file != "." && $file != ".." && $file != ".svn" && is_dir($path))
+        else if ($file != "." && $file != ".." && $file != ".svn" && $file != '.git' && is_dir($path))
         {
             checkDir($path, $callback);
         }
@@ -105,12 +97,12 @@ function showUnusedFunctions()
 {
     $dir = dirname(__DIR__);
     global $functionCount;
-    checkDir("$dir/engine/lib", 'getDeclaredFunctions');
+    checkDir("$dir/engine", 'getDeclaredFunctions');
     checkDir($dir, 'countCalledFunctions');
 
     foreach ($functionCount as $functionName => $count)
     {
-        if ($count == 0)
+        if ($count == 0 && !preg_match('/^(action_|index_)/',$functionName))
         {
             echo "$functionName\n";
         }
@@ -133,7 +125,19 @@ function showLongFunctions()
     }
 }
 
-//showLongFunctions();
-//showUnusedFunctions();
-checkDir(dirname(__DIR__)."/engine", 'getCamelCaseFunctions');
-echo "$numFns\n";
+function main()
+{
+    global $argv;
+    $mode = @$argv[1] ?: 'unused';
+    echo "mode = $mode\n";
+    switch ($mode)
+    {
+        case 'unused': return showUnusedFunctions();
+        case 'camel': return checkDir(dirname(__DIR__)."/engine", 'getCamelCaseFunctions');
+        case 'long': return showLongFunctions();
+        default: echo "invalid mode: $mode\n";
+    }
+}
+
+main();
+    

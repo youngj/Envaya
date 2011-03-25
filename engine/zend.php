@@ -36,7 +36,7 @@ class Zend
     {
         if (!static::$mailer)
         {
-            if (get_mock_mail_file())
+            if (Config::get('mock_mail_file'))
             {
                 static::$mailer = new Mail_Mock();
             }

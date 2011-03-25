@@ -458,20 +458,26 @@ CREATE TABLE `sent_emails` (
 	KEY `user_guid` (`user_guid`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8; 	
 
-CREATE TABLE `discussion_lists` (
+CREATE TABLE `discussion_messages` (
     `guid` bigint(20) unsigned NOT NULL,
-    `address` varchar(64) NOT NULL default '',
-    `name` text default '',    
-    `type` tinyint(4) not null default 0,        
-    PRIMARY KEY (`guid`),
-    UNIQUE KEY (`address`)
-) ENGINE = MYISAM DEFAULT CHARSET=utf8; 	
-
-CREATE TABLE `discussion_members` (
-    `id` INT NOT NULL AUTO_INCREMENT primary key,		
     `list_guid` bigint(20) unsigned NOT NULL,
-    `member_guid` bigint(20) unsigned NOT NULL,
-    `role` tinyint(4) not null default 0,        
-    KEY (`list_guid`),
-    UNIQUE KEY (`member_guid`,`list_guid`)
+    `message_id` varchar(128) default '',
+    `subject` text default '',
+    `from_name` text default '',
+    `from_email` varchar(128) default '',
+    `time_posted` int(11),
+    `content` text default '',        
+    `data_types` tinyint(4) not null default 0,        
+    PRIMARY KEY (`guid`),
+    KEY (`message_id`)
+) ENGINE = MYISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `discussion_topics` (
+    `guid` bigint(20) unsigned NOT NULL,
+    `subject` text default '',
+    `last_time_posted` int(11) default 0,
+    `last_from_name` text default '',
+    `num_messages` int(11) default 0,
+    `snippet` text default '',
+    PRIMARY KEY (`guid`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;

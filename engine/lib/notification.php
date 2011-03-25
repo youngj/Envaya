@@ -29,9 +29,3 @@
         $mail->addTo(Config::get('admin_email'));    
         return send_mail($mail, $immediate);
     }
-	
-	function get_mock_mail_file()
-	{
-		return Config::get('mock_mail_file');
-	}
-

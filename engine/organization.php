@@ -33,14 +33,9 @@ class Organization extends User
         return OrgRelationship::query()->where("subject_guid=?", $this->guid);
     }
 
-    public function query_discussion_memberships()
+    public function query_discussion_topics()
     {
-        return DiscussionMember::query()->where('member_guid = ?', $this->guid);
-    }
-    
-    public function query_discussion_lists()
-    {
-        return DiscussionList::query()->where('e.guid in (select list_guid from discussion_members where member_guid = ?)', $this->guid);
+        return DiscussionTopic::query()->where('container_guid = ?', $this->guid)->order_by('last_time_posted desc');
     }
     
     public function query_files()
@@ -113,31 +108,6 @@ class Organization extends User
 
         return $feedNames;
 
-    }
-    
-    public function get_related_feed_names()
-    {
-        $feedNames = array();
-        $sectors = $this->get_sectors();
-
-        foreach ($sectors as $sector)
-        {
-            $feedNames[] = get_feed_name(array('sector' => $sector));
-        }
-
-        /*
-        if ($org->region)
-        {
-            $feedNames[] = get_feed_name(array('region' => $this->region));
-        }
-        */
-
-        foreach ($this->query_partnerships()->limit(25)->filter() as $partnership)
-        {
-            $feedNames[] = get_feed_name(array('user' => $partnerhip->partner_guid));
-        }
-
-        return $feedNames;
     }
 
     public function can_view()
@@ -510,19 +480,6 @@ class Organization extends User
         return $query;
     }
     
-    function get_partnership($partnerOrg)
-    {
-        $partnership = Partnership::query()->where('container_guid=?',$this->guid)->where('partner_guid=?',$partnerOrg->guid)->get();
-
-        if (!$partnership)
-        {
-            $partnership = new Partnership();
-            $partnership->container_guid = $this->guid;
-            $partnership->partner_guid = $partnerOrg->guid;
-        }
-        return $partnership;
-    }
-        
     function render_email_template($template)
     {
         $args = array();

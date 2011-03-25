@@ -32,7 +32,7 @@ class Widget extends Entity
         'history'       => array('menu_order' => 40, 'handler_class' => 'WidgetHandler_Generic'),
         'team'          => array('menu_order' => 50, 'handler_class' => 'WidgetHandler_Team'),
         'network'       => array('menu_order' => 60, 'handler_class' => 'WidgetHandler_Network'),
-        'discussions'   => array('menu_order' => 70, 'handler_class' => 'WidgetHandler_Discussions'),
+        'discussions'   => array('menu_order' => 70, 'hidden' => true, 'handler_class' => 'WidgetHandler_Discussions'),
         'reports'       => array('menu_order' => 80, 'hidden' => true, 'handler_class' => 'WidgetHandler_Reports'),
         'contact'       => array('menu_order' => 90, 'handler_class' => 'WidgetHandler_Contact'),        
     );        

@@ -13,8 +13,8 @@
             16 => 'Comment',
             17 => 'FeaturedPhoto',
             19 => 'OrgRelationship',            
-            20 => 'DiscussionList',
             21 => 'DiscussionMessage',
+            22 => 'DiscussionTopic',
         );
         private static $class_to_subtype = null;
         
