@@ -1,12 +1,9 @@
 <?php
     if (Session::isloggedin())
     {
-        echo view('page_elements/loggedin_area');
+        echo view('page_elements/loggedin_area', $vars);
     }
     else
     {
-        $loginUrl = (@$vars['loginToCurrentPage']) 
-            ? url_with_param(Request::instance()->full_rewritten_url(), 'login',1) 
-            : "pg/login";    
-        echo view('page_elements/login_button', array('login_url' => $loginUrl));
+        echo view('page_elements/login_button', $vars);
     }

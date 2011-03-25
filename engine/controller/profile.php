@@ -145,7 +145,7 @@ class Controller_Profile extends Controller
             }        
         }
         
-        $this->page_draw_vars['loginToCurrentPage'] = true;
+        $this->page_draw_vars['login_url'] = url_with_param(Request::instance()->full_rewritten_url(), 'login', 1);
     }
 
     function use_editor_layout()
