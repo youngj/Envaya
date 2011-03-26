@@ -257,3 +257,12 @@ a.icon_link:hover
 {
     padding:5px;
 }
+
+.revisionPreview
+{
+    margin:5px;
+    padding:5px;
+    height: 200px;
+    border: 1px solid #ccc;
+    overflow:auto;
+}

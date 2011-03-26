@@ -53,11 +53,21 @@ document.getElementById('content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>').styl
 tinyMCE.init({
     content_css: "<?php echo css_url('tinymce'); ?>",
     mode: "exact",
-    theme_advanced_buttons1 : "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link,image,document,|,justifyleft,justifycenter,justifyright,|,formatselect<?php echo (Session::isadminloggedin()) ? ",|,code" : '' ?>",
+    theme_advanced_buttons1 : "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link,image,document,|,justifyleft,justifycenter,justifyright,|,formatselect<?php 
+        echo (@$vars['saveFn']) ? ",|,save" : "";
+        echo (@$vars['restoreDraftFn']) ? ",restoredraft" : "";
+        echo (Session::isadminloggedin()) ? ",|,code" : '';
+    ?>",
     language: '',
     relative_urls: false,
     remove_script_host: false,
     elements: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
+    <?php if (@$vars['saveFn']) { ?>
+    save_draft_callback: <?php echo $vars['saveFn']; ?>,
+    <?php } ?>
+    <?php if (@$vars['restoreDraftFn']) { ?>
+    restore_draft_callback: <?php echo $vars['restoreDraftFn']; ?>,
+    <?php } ?>    
     <?php if (@$vars['autoFocus']) { ?>
     auto_focus: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
     <?php } ?>

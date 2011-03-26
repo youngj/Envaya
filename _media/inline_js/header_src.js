@@ -38,41 +38,53 @@ function _eval(x)
     return eval("("+x+")");
 }
 
+function getXHR(successFn, errorFn)
+{
+    var xhr = (window.ActiveXObject && !window.XMLHttpRequest) ? new ActiveXObject("Msxml2.XMLHTTP") : new XMLHttpRequest();
+
+    xhr.onreadystatechange = function()
+    {
+        if (xhr.readyState == 4)
+        {
+            var status = xhr.status;
+            if (status == 200)
+            {            
+                successFn(_eval(xhr.responseText));
+            }
+            else if (status == 500)
+            {
+                var data = _eval(xhr.responseText);                       
+                errorFn ? errorFn(data) : alert(data.error);
+            }
+            else if (status >= 400)
+            {
+                alert("HTTP Error " + status); 
+            }
+        }
+    };    
+    return xhr;
+}
+
 var fetchJson = (function() {
     var _jsonCache = {};
 
-    return function(url, fn, errorFn)
+    return function(url, successFn, errorFn)
     {
         if (_jsonCache[url])
         {
             setTimeout(function() {
-                fn(_jsonCache[url]);
+                successFn(_jsonCache[url]);
             }, 1);
             return null;
         }
         else
         {
-            var xhr = (window.ActiveXObject && !window.XMLHttpRequest) ? new ActiveXObject("Msxml2.XMLHTTP") : new XMLHttpRequest();
-            xhr.onreadystatechange = function()
-            {
-                if (xhr.readyState == 4)
-                {
-                    var status = xhr.status;
-                    if (status == 200)
-                    {
-                        fn(_jsonCache[url] = _eval(xhr.responseText));
-                    }
-                    else if (status == 500)
-                    {
-                        var data = _eval(xhr.responseText);                       
-                        errorFn ? errorFn(data) : alert(data.error);
-                    }
-                    else if (status >= 400)
-                    {
-                        alert("HTTP Error " + status); 
-                    }
-                }
-            };
+            var xhr = getXHR(
+                function(result) {
+                    successFn(_jsonCache[url] = result);
+                },
+                errorFn
+            );
             xhr.open("GET", url, true);
             xhr.send(null);
             return xhr;

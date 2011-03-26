@@ -4,6 +4,7 @@ return array(
     'tinymce:h1' => "Kichwa 1",
     'tinymce:h2' => "Kichwa 2",
     'tinymce:h3' => "Kichwa 3",
+    'tinymce:save_desc' => "Hifadhi (Ctrl+S)",
     'tinymce:link_desc' => "Ongeza/hariri kiungo",
     'tinymce:link_insert' => "Ongeza Kiungo",
     'tinymce:link_edit' => "Hariri Kiungo",

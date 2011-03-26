@@ -9,6 +9,8 @@ return array(
     'tinymce:bold_desc' => "Bold (Ctrl+B)",
     'tinymce:italic_desc' => "Italic (Ctrl+I)",
     'tinymce:underline_desc' => "Underline (Ctrl+U)",
+    'tinymce:save_desc' => "Save (Ctrl+S)",
+    'tinymce:restoredraft_desc' => "Restore Older Version",
     'tinymce:bullist_desc' => "Unordered list",
     'tinymce:numlist_desc' => "Ordered list",
     'tinymce:outdent_desc' => "Outdent",

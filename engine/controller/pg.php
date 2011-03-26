@@ -487,4 +487,23 @@ class Controller_Pg extends Controller {
         Session::save_input();
         forward(url_with_param($url, 'lang', $newLang));
     }
+    
+    function action_js_revisions()
+    {
+        $this->request->headers['Content-Type'] = 'text/javascript';                
+        
+        $entity_guid = (int)get_input('entity_guid');
+        
+        $entity = get_entity($entity_guid, true);
+        if (!$entity || !$entity->can_edit())
+        {
+            throw new SecurityException("Access denied.");
+        }
+        
+        $revisions = ContentRevision::query()->where('entity_guid = ?', $entity_guid)->order_by('time_updated desc')->filter();
+        
+        $this->request->response = json_encode(array(
+            'revisions' => array_map(function($r) { return $r->js_properties(); }, $revisions),
+        ));
+    }
 }

@@ -22,8 +22,16 @@ class WidgetHandler_Generic extends WidgetHandler
             $widget->title = $title;
         }
         
-        $widget->set_content(get_input('content'), true);
+        $content = get_input('content');
+                
+        $widget->set_content($content, true);
         $widget->save();        
+        
+        $revision = ContentRevision::get_recent_draft($widget);
+        $revision->time_updated = time();
+        $revision->status = ContentRevision::Published;
+        $revision->content = $content;
+        $revision->save();                
         
         if ($widget->content)
         {

@@ -20,11 +20,11 @@
     
     if (!$noSave)
     {
-        $saveText = $widget->is_active() ? __('savechanges') : __('widget:save:new');       
+        $saveText = __('widget:save');       
     }
     else
     {
-        $saveText = $widget->is_active() ? __('widget:view') : __('widget:save:new');        
+        $saveText = $widget->is_active() ? __('widget:view') : __('widget:create');        
     }
     $form_body .= view('input/submit', array('value' => $saveText));
     

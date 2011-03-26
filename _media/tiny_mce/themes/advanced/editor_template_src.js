@@ -71,7 +71,9 @@
             visualaid : ['visualaid_desc', 'mceToggleVisualAid'],
             anchor : ['anchor_desc', 'mceInsertAnchor'],
             newdocument : ['newdocument_desc', 'mceNewDocument'],
-            blockquote : ['blockquote_desc', 'mceBlockQuote']
+            blockquote : ['blockquote_desc', 'mceBlockQuote'],
+            save : ['save_desc', 'mceSave'],
+            restoredraft : ['restoredraft_desc', 'mceRestoreDraft']
         },
 
         stateControls : ['bold', 'italic', 'underline', 'strikethrough', 'bullist', 'numlist', 'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'sub', 'sup', 'blockquote'],
@@ -134,7 +136,12 @@
                 s.theme_advanced_font_sizes = o;
             }
             */
-
+                                   
+            if (s.save_draft_callback)
+            {
+                ed.addShortcut('ctrl+s', 'save', 'mceSave');
+            }                                                       
+                                   
             if ((v = s.theme_advanced_path_location) && v != 'none')
                 s.theme_advanced_statusbar_location = s.theme_advanced_path_location;
 
@@ -144,7 +151,7 @@
             // Init editor
             ed.onInit.add(function() {
                 if (!ed.settings.readonly)
-                    ed.onNodeChange.add(t._nodeChanged, t);
+                    ed.onNodeChange.add(t._nodeChanged, t);                    
             });
 
             /*
@@ -1250,6 +1257,16 @@
             });
         },
 
+        _mceSave: function(ui, val)
+        {            
+            this.settings.save_draft_callback(this.editor);
+        },
+
+        _mceRestoreDraft: function(ui, val)
+        {            
+            this.settings.restore_draft_callback(this.editor);
+        },
+        
         _mceDocument: function(ui, val)
         {
             var ed = this.editor;   

@@ -56,6 +56,6 @@ addEvent(widgetName, 'keypress', function() {
     );
 ?>
 
-<?php echo view('input/submit', array('name' => "submit", 'trackDirty' => true, 'value' => __('widget:save:new'))); ?>
+<?php echo view('input/submit', array('name' => "submit", 'trackDirty' => true, 'value' => __('widget:create'))); ?>
 
 </form>

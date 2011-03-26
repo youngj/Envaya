@@ -27,7 +27,14 @@ class Controller_Page extends Controller_Profile
         
         if (Request::is_post())
         {
-            $this->save_widget();
+            if (get_input('_draft'))
+            {
+                return $this->save_draft();
+            }
+            else
+            {
+                $this->save_widget();
+            }
         }
 
         $widget = $this->widget;        
@@ -99,7 +106,28 @@ class Controller_Page extends Controller_Profile
 
         system_message(__('widget:saved'));
         forward($widget->get_url());
-    }    
+    }       
+    
+    private function save_draft()
+    {
+        $this->request->headers['Content-Type'] = 'text/javascript';                
+    
+        $this->validate_security_token();        
+    
+        $widget = $this->widget;
+        if (!$widget->guid)
+        {
+            $widget->disable();
+            $widget->save();            
+        }
+        
+        $revision = ContentRevision::get_recent_draft($widget);
+        $revision->time_updated = time();
+        $revision->content = get_input('content');                       
+        $revision->save();
+        
+        $this->request->response = json_encode(array('guid' => $widget->guid));
+    }
     
     private function save_widget()
     {

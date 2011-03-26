@@ -24,11 +24,11 @@ function createModalBox(options)
                 keypress: function(e) {
                     e = window.event ? event : e;
                     var code = e.charCode || e.keyCode;
-                    if (code == 13)
+                    if (code == 13) // enter
                     {
                         okFn();
                     }
-                    else if (code == 27)
+                    else if (code == 27) // esc
                     {
                         cancelFn();
                     }

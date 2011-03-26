@@ -168,6 +168,8 @@
 .tSkin span.mce_forecolorpicker {background-position:-720px 0}
 .tSkin span.mce_backcolorpicker {background-position:-760px 0}
 .tSkin span.mce_document {background-position:-380px -20px}
+.tSkin span.mce_save {background-position:-480px -20px}
+.tSkin span.mce_restoredraft {background-position:-20px -40px}
 
 /* Plugins */
 /*
@@ -194,7 +196,6 @@
 .tSkin span.mce_preview {background-position:-420px -20px}
 .tSkin span.mce_print {background-position:-440px -20px}
 .tSkin span.mce_cancel {background-position:-460px -20px}
-.tSkin span.mce_save {background-position:-480px -20px}
 .tSkin span.mce_replace {background-position:-500px -20px}
 .tSkin span.mce_search {background-position:-520px -20px}
 .tSkin span.mce_styleprops {background-position:-560px -20px}
