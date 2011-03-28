@@ -19,7 +19,13 @@
 
     function _send_mail_now($mail)
     {               
-        $mailer = Zend::mail_transport();                
+        $mailer = Zend::mail_transport();   
+
+        if (!$mail->getFrom())
+        {
+            $mail->setFrom(Config::get('email_from'), Config::get('sitename'));
+        }
+        
         $mail->send($mailer);
         return true;
     }
