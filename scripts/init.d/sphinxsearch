@@ -22,11 +22,12 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/local/bin/searchd
 NAME=sphinx
 DESC=sphinx
+AS_USER=kestrel
 
 test -x $DAEMON || (echo "$DAEMON does not exist or is not executable" ; exit 1)
 
 LOGDIR=/var/log/sphinx
-PIDFILE=/var/run/searchd.pid
+PIDFILE=/var/run/sphinx/searchd.pid
 DODTIME=1                   # Time to wait for the server to die, in seconds
                             # If this value is set too low you might not
                             # let some servers to die gracefully and
@@ -83,8 +84,9 @@ force_stop() {
 case "$1" in
   start)
         echo -n "Starting $DESC: "
-
-        start-stop-daemon --start --exec ${DAEMON}
+        mkdir -p /var/run/sphinx
+        chmod 777 /var/run/sphinx
+        start-stop-daemon --start -c ${AS_USER} --exec ${DAEMON}
         if running ; then
             echo "$NAME."
         else

@@ -24,7 +24,7 @@ return array(
     'sphinx_conf_dir' => '/usr/local/etc',
     'sphinx_bin_dir' => '/usr/local/bin',
     'sphinx_log_dir' => '/var/log/sphinx',
-    'sphinx_pid_dir' => '/var/run',
+    'sphinx_pid_dir' => '/var/run/sphinx',
     
     'google_api_key' => "ABQIAAAAHy69XWEjciJIVElz0OYMsRR3-IOatrPZ1tLat998tYHgwqPnkhTKyWcq8ytRPMx3RyxFjK0O7WSCHA",
     
