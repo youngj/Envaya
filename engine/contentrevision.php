@@ -16,6 +16,16 @@ class ContentRevision extends Model
         'status' => 0,
     );    
     
+    function can_edit()
+    {
+        return $this->get_entity()->can_edit();
+    }
+    
+    function get_entity()
+    {
+        return get_entity($this->entity_guid);
+    }
+    
     static function get_recent_draft($entity)
     {
         $time = time();    
@@ -42,7 +52,6 @@ class ContentRevision extends Model
     {
         return array(
             'id' => $this->id,
-            'content' => $this->content,
             'time_updated' => $this->time_updated,
             'friendly_time' => friendly_time($this->time_updated),
             'status' => $this->status,

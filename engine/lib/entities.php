@@ -1,5 +1,12 @@
 <?php
 
+    class EntityStatus
+    {
+        const Disabled = 0; // aka deleted
+        const Enabled = 1;
+        const Draft = 2;
+    }
+
     class EntityRegistry
     {
         private static $subtype_to_class = array(
@@ -93,7 +100,7 @@
             }
         }
 
-        if ($entity && !$show_disabled && $entity->enabled == 'no')
+        if ($entity && !$show_disabled && $entity->status == EntityStatus::Disabled)
         {
             return null;
         }

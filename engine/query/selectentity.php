@@ -19,7 +19,7 @@ class Query_SelectEntity extends Query_Select
         $this->set_row_function('entity_row_to_entity');
         $this->join("INNER JOIN $sub_table u ON u.guid = e.guid");        
         $this->show_disabled = false;
-    }   
+    }
     
     function show_disabled($show_disabled = true)
     {
@@ -32,7 +32,7 @@ class Query_SelectEntity extends Query_Select
         $conditions = $this->conditions;
         if (!$this->show_disabled)
         {
-            $conditions[] = "enabled = 'yes'";
+            $conditions[] = "status <> 0";
         }   
         return $conditions;        
     }

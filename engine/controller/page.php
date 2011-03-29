@@ -115,9 +115,9 @@ class Controller_Page extends Controller_Profile
         $this->validate_security_token();        
     
         $widget = $this->widget;
-        if (!$widget->guid)
+        if (!$widget->guid || $widget->status == EntityStatus::Disabled)
         {
-            $widget->disable();
+            $widget->set_status(EntityStatus::Draft);
             $widget->save();            
         }
         

@@ -8818,10 +8818,12 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 		},
 
 		requireLangPack : function(n) {
+            /*
 			var s = tinymce.settings;
 
 			if (s && s.language)
 				tinymce.ScriptLoader.add(this.urls[n] + '/langs/' + s.language + '.js');
+            */
 		},
 
 		add : function(id, o) {
@@ -9142,6 +9144,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 		},
 
 		addI18n : function(p, o) {
+            /*
 			var lo, i18n = this.i18n;
 
 			if (!tinymce.is(p, 'string')) {
@@ -9160,6 +9163,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 					i18n[p + '.' + k] = o;
 				});
 			}
+            */
 		},
 
 		// Private methods
@@ -10047,18 +10051,17 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 		},
 
 		translate : function(s) {
-			var c = this.settings.language || 'en', i18n = tinymce.i18n;
-
 			if (!s)
 				return '';
-
-			return i18n[c + '.' + s] || s.replace(/{\#([^}]+)\}/g, function(a, b) {
-				return i18n[c + '.' + b] || '{#' + b + '}';
+                
+			return this.getLang(s) || s.replace(/{\#([^}]+)\}/g, function(a, b) {
+				return this.getLang(b);
 			});
 		},
 
 		getLang : function(n, dv) {
-			return tinymce.i18n[(this.settings.language || 'en') + '.' + n] || (is(dv) ? dv : '{#' + n + '}');
+            return __['tinymce:' + n] || n;
+			//return tinymce.i18n[(this.settings.language || 'en') + '.' + n] || (is(dv) ? dv : '{#' + n + '}');
 		},
 
 		getParam : function(n, dv, ty) {

@@ -234,11 +234,24 @@ class Controller_Profile extends Controller
             return register_error_html(sprintf(__('widget:duplicate_name'),"<a href='{$widget->get_edit_url()}'><strong>".__('clickhere')."</strong></a>")); 
         }
         
+        $draft = (int)get_input('_draft');
+        if ($draft)
+        {
+            $widget->set_status(EntityStatus::Draft);
+        }
+        
         $widget->save_input();             
         
         system_message(__('widget:save:success'));
         
-        forward($widget->get_url());        
+        if ($draft)
+        {
+            forward($widget->get_edit_url());        
+        }
+        else
+        {
+            forward($widget->get_url());        
+        }
     }
     
     function index_design()

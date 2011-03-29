@@ -8,7 +8,7 @@
  * This is kind of useful for things like feed items and translations, 
  * which may refer to many different types of entities.
  * 
- * Entities also have an 'enabled' field which allows effectively deleting rows
+ * Entities also have an 'status' field which allows effectively deleting rows
  * while leaving them in the database to allow them to be undeleted.
  *
  * Entities can also have metadata, which allows storing/retreiving arbitrary properties (e.g. $entity->foo)
@@ -109,7 +109,7 @@ abstract class Entity extends Model
         $this->attributes['container_guid'] = 0;
         $this->attributes['time_created'] = 0;
         $this->attributes['time_updated'] = 0;
-        $this->attributes['enabled'] = "yes";
+        $this->attributes['status'] = EntityStatus::Enabled;
         
         parent::initialize_attributes();
     }
@@ -346,7 +346,7 @@ abstract class Entity extends Model
         $entity_values = array(
             'owner_guid' => $this->owner_guid,
             'container_guid' => $this->container_guid,
-            'enabled' => $this->enabled,
+            'status' => $this->status,
             'time_updated' => $this->time_updated,
             'time_created' => $this->time_created,
             'subtype' => $this->subtype,
@@ -392,12 +392,17 @@ abstract class Entity extends Model
         }
     }
 
+    public function set_status($status)
+    {
+        $this->status = $status;
+    }
+    
     /**
      * Disable this entity.
      */
     public function disable()
     {
-        $this->enabled = 'no';
+        $this->set_status(EntityStatus::Disabled);
     }
 
     /**
@@ -405,7 +410,7 @@ abstract class Entity extends Model
      */
     public function enable()
     {
-        $this->enabled = 'yes';
+        $this->set_status(EntityStatus::Enabled);
     }
 
     /**
@@ -415,7 +420,7 @@ abstract class Entity extends Model
      */
     public function is_enabled()
     {
-        return ($this->enabled == 'yes');
+        return $this->status == EntityStatus::Enabled;
     }
 
     /**

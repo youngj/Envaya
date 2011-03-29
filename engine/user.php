@@ -237,7 +237,7 @@ class User extends Entity
        
     function get_blog_dates()
     {
-        $sql = "SELECT guid, time_created from entities WHERE enabled='yes' AND subtype=? AND container_guid=? ORDER BY guid ASC";
+        $sql = "SELECT guid, time_created from entities WHERE status=1 AND subtype=? AND container_guid=? ORDER BY guid ASC";
         return Database::get_rows($sql, array(NewsUpdate::get_subtype_id(), $this->guid));
     }
 

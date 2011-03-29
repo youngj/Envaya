@@ -87,7 +87,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $this->s->waitForPageToLoad($timeout);
     }
 
-    public function submitForm($button = "//button")
+    public function submitForm($button = "//button[@type='submit']")
     {
         $this->clickAndWait($button);
     }

@@ -16,6 +16,12 @@
             .file_get_contents(Config::get('path').'/_css/tinymce_ui.css')
             ."</style>"
         );
+        
+        foreach (Language::get('en')->get_group('tinymce') as $key => $enVal)
+        {
+            PageContext::add_js_string($key);
+        }
+        
         ?>
         
         <script type='text/javascript'><?php echo view('js/create_modal_box'); ?></script>
@@ -33,19 +39,6 @@
 
 <script type="text/javascript">
 (function() {
-
-tinyMCE.addI18n('en.advanced', <?php
-    $prefix = 'tinymce:';
-    $lenPrefix = strlen($prefix);
-
-    $res = array();
-    foreach (Language::get('en')->get_group('tinymce') as $key => $enVal)
-    {
-        $res[substr($key, $lenPrefix)] = __($key);
-    }
-
-    echo json_encode($res);
-?>);
 
 document.getElementById('tinymce_loading<?php echo $TINYMCE_INCLUDE_COUNT ?>').style.display = 'none';
 document.getElementById('content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>').style.display = 'block';

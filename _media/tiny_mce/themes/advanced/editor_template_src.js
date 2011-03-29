@@ -273,7 +273,7 @@
             }
 
             if ((cd = this.controls[n]))
-                return cf.createButton(n, {title : "advanced." + cd[0], cmd : cd[1], ui : cd[2], value : cd[3]});
+                return cf.createButton(n, {title : cd[0], cmd : cd[1], ui : cd[2], value : cd[3]});
         },
 
         execCommand : function(cmd, ui, val) {
@@ -313,7 +313,7 @@
 
             // Setup style select box
             ctrl = ctrlMan.createListBox('styleselect', {
-                title : 'advanced.style_select',
+                title : 'style_select',
                 onselect : function(name) {
                     var matches, formatNames = [];
 
@@ -396,7 +396,7 @@
             var c, t = this, ed = t.editor;
 
             c = ed.controlManager.createListBox('fontselect', {
-                title : 'advanced.fontdefault',
+                title : 'fontdefault',
                 onselect : function(v) {
                     ed.execCommand('FontName', false, v);
 
@@ -423,7 +423,7 @@
         _createFontSizeSelect : function() {
             var t = this, ed = t.editor, c, i = 0, cl = [];
 
-            c = ed.controlManager.createListBox('fontsizeselect', {title : 'advanced.font_size', onselect : function(v) {
+            c = ed.controlManager.createListBox('fontsizeselect', {title : 'font_size', onselect : function(v) {
                 if (v['class']) {
                     ed.focus();
                     ed.undoManager.add();
@@ -458,24 +458,24 @@
 
         _createBlockFormats : function() {
             var c, fmts = {
-                p : 'advanced.paragraph',
-                address : 'advanced.address',
-                pre : 'advanced.pre',
-                h1 : 'advanced.h1',
-                h2 : 'advanced.h2',
-                h3 : 'advanced.h3',
-                h4 : 'advanced.h4',
-                h5 : 'advanced.h5',
-                h6 : 'advanced.h6',
-                div : 'advanced.div',
-                blockquote : 'advanced.blockquote',
-                code : 'advanced.code',
-                dt : 'advanced.dt',
-                dd : 'advanced.dd',
-                samp : 'advanced.samp'
+                p : 'paragraph',
+                address : 'address',
+                pre : 'pre',
+                h1 : 'h1',
+                h2 : 'h2',
+                h3 : 'h3',
+                h4 : 'h4',
+                h5 : 'h5',
+                h6 : 'h6',
+                div : 'div',
+                blockquote : 'blockquote',
+                code : 'code',
+                dt : 'dt',
+                dd : 'dd',
+                samp : 'samp'
             }, t = this;
 
-            c = t.editor.controlManager.createListBox('formatselect', {title : 'advanced.block', cmd : 'FormatBlock'});
+            c = t.editor.controlManager.createListBox('formatselect', {title : 'block', cmd : 'FormatBlock'});
             if (c) {
                 each(t.editor.getParam('theme_advanced_blockformats', t.settings.theme_advanced_blockformats, 'hash'), function(v, k) {
                     c.add(t.editor.translate(k != v ? k : fmts[v]), v, {'class' : 'mce_formatPreview mce_' + v});
@@ -506,7 +506,7 @@
             if (s.theme_advanced_default_foreground_color)
                 o.default_color = s.theme_advanced_default_foreground_color;
 
-            o.title = 'advanced.forecolor_desc';
+            o.title = 'forecolor_desc';
             o.cmd = 'ForeColor';
             o.scope = this;
 
@@ -537,7 +537,7 @@
             if (s.theme_advanced_default_background_color)
                 o.default_color = s.theme_advanced_default_background_color;
 
-            o.title = 'advanced.backcolor_desc';
+            o.title = 'backcolor_desc';
             o.cmd = 'HiliteColor';
             o.scope = this;
 
@@ -851,7 +851,7 @@
             if (!ed.getParam('accessibility_focus'))
                 h.push(DOM.createHTML('a', {href : '#', onfocus : 'tinyMCE.get(\'' + ed.id + '\').focus();'}, '<!-- IE -->'));
 
-            h.push(DOM.createHTML('a', {href : '#', accesskey : 'q', title : ed.getLang("advanced.toolbar_focus")}, '<!-- IE -->'));
+            h.push(DOM.createHTML('a', {href : '#', accesskey : 'q', title : ed.getLang("toolbar_focus")}, '<!-- IE -->'));
 
             // Create toolbar and add the controls
             for (i=1; (v = s['theme_advanced_buttons' + i]); i++) {
@@ -871,7 +871,7 @@
                 o.deltaHeight -= s.theme_advanced_row_height;
             }
 
-            h.push(DOM.createHTML('a', {href : '#', accesskey : 'z', title : ed.getLang("advanced.toolbar_focus"), onfocus : 'tinyMCE.getInstanceById(\'' + ed.id + '\').focus();'}, '<!-- IE -->'));
+            h.push(DOM.createHTML('a', {href : '#', accesskey : 'z', title : ed.getLang("toolbar_focus"), onfocus : 'tinyMCE.getInstanceById(\'' + ed.id + '\').focus();'}, '<!-- IE -->'));
             DOM.setHTML(n, h.join(''));
         },
 
@@ -881,7 +881,7 @@
 
             n = DOM.add(tb, 'tr');
             n = td = DOM.add(n, 'td', {'class' : 'mceStatusbar'});
-            n = DOM.add(n, 'div', {id : ed.id + '_path_row'}, s.theme_advanced_path ? ed.translate('advanced.path') + ': ' : '&#160;');
+            n = DOM.add(n, 'div', {id : ed.id + '_path_row'}, s.theme_advanced_path ? ed.translate('path') + ': ' : '&#160;');
             DOM.add(n, 'a', {href : '#', accesskey : 'x'});
 
             if (s.theme_advanced_resizing) {
@@ -1183,8 +1183,8 @@
 
             ed.windowManager.open({
                 url : tinymce.baseURL + '/themes/advanced/anchor.htm',
-                width : 320 + parseInt(ed.getLang('advanced.anchor_delta_width', 0)),
-                height : 90 + parseInt(ed.getLang('advanced.anchor_delta_height', 0)),
+                width : 320 + parseInt(ed.getLang('anchor_delta_width', 0)),
+                height : 90 + parseInt(ed.getLang('anchor_delta_height', 0)),
                 inline : true
             }, {
                 theme_url : this.url
@@ -1198,8 +1198,8 @@
 
             ed.windowManager.open({
                 url : tinymce.baseURL + '/themes/advanced/charmap.htm',
-                width : 550 + parseInt(ed.getLang('advanced.charmap_delta_width', 0)),
-                height : 250 + parseInt(ed.getLang('advanced.charmap_delta_height', 0)),
+                width : 550 + parseInt(ed.getLang('charmap_delta_width', 0)),
+                height : 250 + parseInt(ed.getLang('charmap_delta_height', 0)),
                 inline : true
             }, {
                 theme_url : this.url
@@ -1230,8 +1230,8 @@
 
             ed.windowManager.open({
                 url : tinymce.baseURL + '/themes/advanced/color_picker.htm',
-                width : 375 + parseInt(ed.getLang('advanced.colorpicker_delta_width', 0)),
-                height : 250 + parseInt(ed.getLang('advanced.colorpicker_delta_height', 0)),
+                width : 375 + parseInt(ed.getLang('colorpicker_delta_width', 0)),
+                height : 250 + parseInt(ed.getLang('colorpicker_delta_height', 0)),
                 close_previous : false,
                 inline : true
             }, {
@@ -1297,10 +1297,10 @@
                  }                  
              );
 
-            var loading = createElem('div', {className:'modalImageFrameLoading'}, ed.getLang('advanced.loading'));
+            var loading = createElem('div', {className:'modalImageFrameLoading'}, ed.getLang('loading'));
              
             var imageBox = createModalBox({               
-                title: ed.getLang(imageNode ? 'advanced.document_edit' : 'advanced.document_insert'),
+                title: ed.getLang(imageNode ? 'document_edit' : 'document_insert'),
                 content: createElem('div',
                          {className:'modalBody'},
                          loading,
@@ -1383,9 +1383,9 @@
                  }                  
              );
 
-            var loading = createElem('div', {className:'modalImageFrameLoading'}, ed.getLang('advanced.loading'));
+            var loading = createElem('div', {className:'modalImageFrameLoading'}, ed.getLang('loading'));
             var imageBox = createModalBox({
-                title: ed.getLang(imageNode ? 'advanced.image_edit' : 'advanced.image_insert'),
+                title: ed.getLang(imageNode ? 'image_edit' : 'image_insert'),
                 content: createElem('div',
                          {className:'modalBody'},
                          loading,
@@ -1451,7 +1451,7 @@
             
             var textDiv = imageLink ? createElem('div') : createElem('div',
                 {className:'linkText'},
-                createElem('h3', ed.getLang('advanced.link_text')),
+                createElem('h3', ed.getLang('link_text')),
                 textField
             );
             
@@ -1461,15 +1461,15 @@
                 value:(e ? e.href : '')
             });
             var linkBox = createModalBox({
-                title: ed.getLang(e ? 'advanced.link_edit' : 'advanced.link_insert'),
+                title: ed.getLang(e ? 'link_edit' : 'link_insert'),
                 content: createElem('div',
                         {className:'modalBody'},
                         createElem('div',
                             {className:'linkUrl'},
-                                createElem('h3', ed.getLang('advanced.link_url')),
+                                createElem('h3', ed.getLang('link_url')),
                             urlField,
                             createElem('div', {className:'help'}, 
-                                ed.getLang('advanced.link_url_help')
+                                ed.getLang('link_url_help')
                             ),
                             createElem('div',
                                 createElem('a', 
@@ -1483,11 +1483,11 @@
                                             }
                                             else
                                             {
-                                                alert(ed.getLang('advanced.link_url_empty'));
+                                                alert(ed.getLang('link_url_empty'));
                                             }                                        
                                         }
                                     },
-                                    ed.getLang('advanced.link_url_test')
+                                    ed.getLang('link_url_test')
                                 )
                             )
                         ), 
@@ -1551,7 +1551,7 @@
         _mceNewDocument : function() {
             var ed = this.editor;
 
-            ed.windowManager.confirm('advanced.newdocument', function(s) {
+            ed.windowManager.confirm('newdocument', function(s) {
                 if (s)
                     ed.execCommand('mceSetContent', false, '');
             });

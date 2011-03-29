@@ -20,7 +20,7 @@ CREATE TABLE `entities` (
 	`time_created` int(11) NOT NULL,
 	`time_updated` int(11) NOT NULL,
 
-	`enabled` enum ('yes', 'no') NOT NULL default 'yes',
+    `status` tinyint(4) not null default 1,	
 	
 	primary key (`guid`),
 	KEY `subtype` (`subtype`),

@@ -177,23 +177,29 @@ class Controller_Post extends Controller_Profile
     function redirect_delta($delta)
     {
         $post = $this->post;
+        
+        $org = $this->org;
 
         $op = ($delta > 0) ? ">" : "<";
         $order = ($delta > 0) ? "asc" : "desc";
 
-        $selectWhere = "SELECT * from entities WHERE enabled='yes' AND subtype=? AND container_guid=?";
-
-        $entity = entity_row_to_entity(Database::get_row("$selectWhere AND guid $op ? ORDER BY guid $order LIMIT 1",
-            array(NewsUpdate::get_subtype_id(), $post->container_guid, $post->guid)
-        ));
-        if ($entity)
+        $newsUpdate = $org->query_news_updates()
+            ->where('status = ?', EntityStatus::Enabled)
+            ->where("guid $op ?", $post->guid)
+            ->order_by("guid $order")
+            ->limit(1)
+            ->get();
+        
+        if ($newsUpdate)
         {
-            forward($entity->get_url());
+            forward($newsUpdate->get_url());
         }
-
-        $entity = entity_row_to_entity(Database::get_row("$selectWhere ORDER BY guid $order LIMIT 1",
-            array(NewsUpdate::get_subtype_id(), $post->container_guid)
-        ));
+        
+        $newsUpdate = $org->query_news_updates()
+            ->where('status = ?', EntityStatus::Enabled)
+            ->order_by("guid $order")
+            ->limit(1)
+            ->get();        
 
         if ($entity)
         {

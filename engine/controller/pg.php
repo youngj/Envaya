@@ -488,6 +488,23 @@ class Controller_Pg extends Controller {
         forward(url_with_param($url, 'lang', $newLang));
     }
     
+    function action_js_revision_content()
+    {
+        $this->request->headers['Content-Type'] = 'text/javascript';                
+        
+        $id = (int)get_input('id');
+        
+        $revision = ContentRevision::query()->where('id = ?', $id)->get();
+        if (!$revision || !$revision->can_edit())
+        {
+            throw new SecurityException("Access denied.");
+        }
+        
+        $this->request->response = json_encode(array(
+            'content' => $revision->content
+        ));
+    }
+    
     function action_js_revisions()
     {
         $this->request->headers['Content-Type'] = 'text/javascript';                
@@ -495,12 +512,19 @@ class Controller_Pg extends Controller {
         $entity_guid = (int)get_input('entity_guid');
         
         $entity = get_entity($entity_guid, true);
-        if (!$entity || !$entity->can_edit())
+        if (!$entity)
         {
-            throw new SecurityException("Access denied.");
+            $revisions = array();
         }
-        
-        $revisions = ContentRevision::query()->where('entity_guid = ?', $entity_guid)->order_by('time_updated desc')->filter();
+        else
+        {
+            if (!$entity->can_edit())
+            {
+                throw new SecurityException("Access denied.");
+            }
+            
+            $revisions = ContentRevision::query()->where('entity_guid = ?', $entity_guid)->order_by('time_updated desc')->filter();        
+        }
         
         $this->request->response = json_encode(array(
             'revisions' => array_map(function($r) { return $r->js_properties(); }, $revisions),

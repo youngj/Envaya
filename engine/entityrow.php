@@ -16,7 +16,7 @@ class EntityRow extends Model
         'container_guid' => 0,
         'time_created' => 0,
         'time_updated' => 0,
-        'enabled' => "yes",
+        'status' => 1,
     );   
     
     function save()
