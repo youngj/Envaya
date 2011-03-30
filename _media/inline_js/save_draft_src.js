@@ -48,38 +48,40 @@
     };            
     
     window.saveDraft = function()
-    {               
-        var ed = tinyMCE.activeEditor;
-    
-        lastSaveTime = new Date().getTime();
-    
-        var content = ed.getContent();        
-        if (!content || content == lastSavedContent)
-        {
-            showSaveMessage(__['tinymce:no_unsaved_changes'], 3000);
-            return;
-        }
+    {              
+        setTimeout(function() {
+            var ed = tinyMCE.activeEditor;
         
-        var form = document.forms[0];
+            lastSaveTime = new Date().getTime();
         
-        showSaveMessage(__['tinymce:saving']);
-        
-        var xhr = getXHR(function(res) {             
-            window.save_draft_guid = res.guid;
-            lastSavedContent = content;
-            ed.isNotDirty = true;            
+            var content = ed.getContent();        
+            if (!content || content == lastSavedContent)
+            {
+                showSaveMessage(__['tinymce:no_unsaved_changes'], 3000);
+                return;
+            }
             
-            showSaveMessage(__['tinymce:saved'], 5000);
-            setDirty(false);
-        });
+            var form = document.forms[0];
+            
+            showSaveMessage(__['tinymce:saving']);
+            
+            var xhr = getXHR(function(res) {             
+                window.save_draft_guid = res.guid;
+                lastSavedContent = content;
+                ed.isNotDirty = true;            
+                
+                showSaveMessage(__['tinymce:saved'], 5000);
+                setDirty(false);
+            });
 
-        xhr.open("POST", form.action, true);
-        
-        var params = "_draft=1&content="+encodeURIComponent(content) + "&__ts=" + form.__ts.value + "&__token=" + form.__token.value;
-        
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.setRequestHeader("Content-Length", params.length);            
-        xhr.send(params);    
+            xhr.open("POST", form.action, true);
+            
+            var params = "_draft=1&content="+encodeURIComponent(content) + "&__ts=" + form.__ts.value + "&__token=" + form.__token.value;
+            
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.setRequestHeader("Content-Length", params.length);            
+            xhr.send(params);    
+        }, 10);
     };
     
     function restoreRevision(revision)
@@ -168,50 +170,53 @@
     
     window.showOlderVersions = function()
     {        
-        var content = createElem('div', {className: 'padded'});
+        setTimeout(function() {
         
-        content.appendChild(document.createTextNode(__['tinymce:loading']));
-        
-        closeModalBox();
+            var content = createElem('div', {className: 'padded'});
+            
+            content.appendChild(document.createTextNode(__['tinymce:loading']));
+            
+            closeModalBox();
 
-        modalBox = createModalBox({
-            title: __['tinymce:restoredraft_desc'],
-            content: content,
-            hideOk: true,
-            cancelText: __['tinymce:close']
-        });
-        
-        document.body.appendChild(modalBox);
-        
-        var xhr = getXHR(function(res) {
-                removeChildren(content);
-                var revisions = res.revisions;
-                
-                if (revisions.length == 0)
-                {
-                    content.appendChild(__['tinymce:no_revisions']);
-                }
-                else
-                {
-                    if (revisions.length > 15)
+            modalBox = createModalBox({
+                title: __['tinymce:restoredraft_desc'],
+                content: content,
+                hideOk: true,
+                cancelText: __['tinymce:close']
+            });
+            
+            document.body.appendChild(modalBox);
+            
+            var xhr = getXHR(function(res) {
+                    removeChildren(content);
+                    var revisions = res.revisions;
+                    
+                    if (revisions.length == 0)
                     {
-                        content.style.height = "246px";
-                        content.style.overflow = "auto";
+                        content.appendChild(document.createTextNode(__['tinymce:no_revisions']));
                     }
-                
-                    for (var i = 0; i < revisions.length; i++)
+                    else
                     {
-                        content.appendChild(makeRevisionElem(revisions.length - i, revisions[i]));
+                        if (revisions.length > 15)
+                        {
+                            content.style.height = "246px";
+                            content.style.overflow = "auto";
+                        }
+                    
+                        for (var i = 0; i < revisions.length; i++)
+                        {
+                            content.appendChild(makeRevisionElem(revisions.length - i, revisions[i]));
+                        }
                     }
+                },
+                function (err)
+                {
+                    removeChildren(content);
+                    content.appendChild(document.createTextNode(err.error));
                 }
-            },
-            function (err)
-            {
-                removeChildren(content);
-                content.appendChild(document.createTextNode(err.error));
-            }
-        );
-        xhr.open("GET", '/pg/js_revisions?entity_guid=' + window.save_draft_guid, true);
-        xhr.send(null);                
+            );
+            xhr.open("GET", '/pg/js_revisions?entity_guid=' + window.save_draft_guid, true);
+            xhr.send(null);                
+        }, 10);
     };
 })();
