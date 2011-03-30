@@ -708,10 +708,17 @@
 			vp = dom.getViewPort(ed.getWin());
 			y = ed.dom.getPos(elm).y;
 			elmHeight = elm.clientHeight;
-
+            
 			// Is element within viewport if not then scroll it into view
+            
 			if (y < vp.y || y + elmHeight > vp.y + vp.h)
-				ed.getDoc().body.scrollTop = y < vp.y ? y : y - vp.h + 25;
+            {
+                var scrollTop = y < vp.y ? y : y - vp.h + 25;
+                if (scrollTop > 0) // this is sometimes incorrectly 0 in webkit; not scrolling is an easy workaround;
+                {            
+                    ed.getDoc().body.scrollTop = scrollTop;
+                }
+            }
 		},
 
 		/**

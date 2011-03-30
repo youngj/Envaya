@@ -86,8 +86,7 @@
     
     function restoreRevision(revision)
     {
-        if (!tinyMCE.activeEditor.isDirty()
-            || confirm(__['tinymce:restore_confirm']))
+        if (!tinyMCE.activeEditor.isDirty() || confirm(__['tinymce:restore_confirm']))
         {    
             var ed = tinyMCE.activeEditor;        
             ed.setContent(revision.content);
