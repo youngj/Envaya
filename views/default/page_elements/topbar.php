@@ -18,7 +18,7 @@
             'name' => 'top_language',
             'id' => 'top_language',
             'options' => Language::get_options(),
-            'value' => get_language(),
+            'value' => Language::get_current_code(),
             'js' => "onchange='languageChanged()' onkeypress='languageChanged()'"
         ));
     ?>

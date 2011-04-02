@@ -1,7 +1,7 @@
 <?php 
     $post_params = array(
         'session_id' => session_id(),
-        'lang' => get_language(),    
+        'lang' => Language::get_current_code(),    
     );
 
     $args = array(

@@ -1,6 +1,27 @@
-<div class='section_content padded'>
 <?php
     $topic = $vars['topic'];
+    
+    ob_start();
+    
+    echo "<table class='inputTable' style='margin:0 auto'>";
+    echo "<tr><th>".__('discussions:subject')."</th>";
+    echo "<td>";
+    echo view('input/text', array('name' => 'subject', 'trackDirty' => true, 'value' => $topic->subject, 'js' => "style='width:350px'"));
+    echo "</td>";
+    echo "</tr>";
+    echo "<tr><th>&nbsp;</th><td>";
+    echo view('input/submit', array('value' => __('savechanges')));
+    echo "</td></tr>";
+    echo "</table>";
+    
+    $content = ob_get_clean();
+         
+    echo view('section', array(
+        'header' => __('discussions:topic_settings'), 
+        'content' => view('input/form', array('action' => $topic->get_edit_url(), 'body' => $content))
+    ));
+       
+    ob_start();
        
     $limit = 20;
     $offset = (int)get_input('offset');
@@ -30,5 +51,7 @@
     
     echo "<br />";
     echo "<strong><a href='{$topic->get_url()}/add_message'>".__('discussions:add_message')."</a></strong>";
-?>
-</div>
+    
+    $content = ob_get_clean();
+    
+    echo view('section', array('header' => __('discussions:messages'), 'content' => $content));

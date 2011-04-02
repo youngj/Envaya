@@ -71,7 +71,7 @@ class PageContext
         {
             return static::$translations_available[0]->get_original_language();
         }
-        return get_language();
+        return Language::get_current_code();
     }
     
     static function get_available_translations()

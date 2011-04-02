@@ -6,6 +6,6 @@
         "</label></p>";
     $form_body .= "<p>" . view('input/submit', array('value' => __('submit_request'))) . "</p>";
 
-    echo view('input/form', array('action' => Config::get('url')."pg/request_new_password", 'body' => $form_body)); 
+    echo view('input/form', array('action' => Config::get('url')."pg/forgot_password", 'body' => $form_body)); 
 ?>
 </div>

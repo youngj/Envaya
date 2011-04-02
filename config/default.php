@@ -1,6 +1,6 @@
 <?php
 return array(
-    'cache_version' => 145,  // increment when css, or external js (tinymce/swfupload) changes
+    'cache_version' => 146,  // increment when css, or external js (tinymce/swfupload) changes
     'debug' => true,
     
     'dbuser' => '',
@@ -72,4 +72,7 @@ return array(
     'apps_domain' => '',
     'apps_admin' => '',
     'apps_password' => '',
+    
+    'geonames_user' => '',
+    'default_timezone' => 'Africa/Dar_es_Salaam',
 );

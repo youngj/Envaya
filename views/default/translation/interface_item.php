@@ -7,7 +7,7 @@ $from = get_input('from');
 
 $trans = InterfaceTranslation::get_by_key_and_lang($key, $lang);
 
-echo "<form method='POST' action='/org/save_interface_item'>";
+echo "<form method='POST' action='/tr/save_interface_item'>";
 
 echo view('input/securitytoken');
 

@@ -11,7 +11,7 @@ class Organization extends User
         $query = User::query($show_unapproved);
         $query->where("subtype=?", static::get_subtype_id());
         return $query;
-    }
+    }    
 
     public function is_setup_complete()
     {
@@ -27,7 +27,7 @@ class Organization extends User
     {
         return OrgRelationship::query()->where("container_guid=?", $this->guid)->order_by('subject_name asc');
     }
-    
+        
     public function query_subject_relationships()
     {
         return OrgRelationship::query()->where("subject_guid=?", $this->guid);

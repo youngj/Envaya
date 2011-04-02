@@ -20,7 +20,6 @@
             'limit' => $limit,
             'count' => $count,
             'entities' => $topics,
-            'separator' => "<div style='padding:5px'></div>"
         ));
     }        
     else

@@ -6,7 +6,7 @@ foreach (Language::$languages as $lang => $v)
 {    
     $name = escape(__($lang, $lang));
 
-    if (get_language() == $lang)
+    if (Language::get_current_code() == $lang)
     {
         $links[] = "<strong>$name</strong>";
     }

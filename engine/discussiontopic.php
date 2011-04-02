@@ -6,11 +6,17 @@ class DiscussionTopic extends Entity
     
     static $table_attributes = array(
         'subject' => '',
+        'first_message_guid' => 0,
         'num_messages' => 0,
         'last_time_posted' => 0,
         'last_from_name' => 0,
         'snippet' => '',
     );    
+    
+    function get_first_message()
+    {
+        return get_entity($this->first_message_guid);
+    }
     
     function refresh_attributes()
     {

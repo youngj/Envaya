@@ -423,10 +423,7 @@ abstract class Entity extends Model
         return $this->status == EntityStatus::Enabled;
     }
 
-    /**
-     * Delete this entity.
-     */
-    public function delete($recursive = false)
+    function delete_recursive()
     {
         if ($recursive)
         {
@@ -434,10 +431,18 @@ abstract class Entity extends Model
             if ($sub_entities)
             {
                 foreach ($sub_entities as $e)
-                    $e->delete($recursive);
+                    $e->delete_recursive();
             }
-        }
-
+        }    
+        
+        $this->delete();
+    }
+    
+    /**
+     * Delete this entity.
+     */
+    public function delete()
+    {
         $this->clear_metadata();
 
         $res = Database::delete("DELETE from entities where guid=?", array($this->guid));
@@ -484,7 +489,7 @@ abstract class Entity extends Model
         $origLang = $this->get_language();
         if ($viewLang == null)
         {
-            $viewLang = get_language();
+            $viewLang = Language::get_current_code();
         }
                 
         if ($origLang != $viewLang)

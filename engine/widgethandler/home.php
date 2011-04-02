@@ -45,8 +45,7 @@ class WidgetHandler_Home extends WidgetHandler
         }
         $org->sector_other = get_input('sector_other');
 
-        $org->latitude = get_input('org_lat');
-        $org->longitude = get_input('org_lng');
+        $org->set_lat_long(get_input('org_lat'), get_input('org_lng'));
 
         $new_region = get_input('region');
         if ($new_region != $org->region)

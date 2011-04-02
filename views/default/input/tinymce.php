@@ -46,7 +46,10 @@ document.getElementById('content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>').styl
 tinyMCE.init({
     content_css: "<?php echo css_url('tinymce'); ?>",
     mode: "exact",
-    theme_advanced_buttons1 : "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link,image,document,|,justifyleft,justifycenter,justifyright,|,formatselect<?php 
+    theme_advanced_buttons1 : "<?php 
+        echo "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link";        
+        echo Session::isloggedin() ? ',image,document' : '';
+        echo ",|,justifyleft,justifycenter,justifyright,|,formatselect";
         echo (@$vars['saveFn']) ? ",|,save" : "";
         echo (@$vars['restoreDraftFn']) ? ",restoredraft" : "";
         echo (Session::isadminloggedin()) ? ",|,code" : '';

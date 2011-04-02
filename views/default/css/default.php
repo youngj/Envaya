@@ -1182,3 +1182,20 @@ a.gridDelete:hover, a.hideMessages:hover
     height:0px;
     overflow:hidden;
 }
+
+.discussionTopic
+{
+    display:block;
+    padding:4px;
+    border:1px solid transparent;
+}
+
+a.discussionTopic:hover 
+{
+    border:1px solid #ccc;
+}
+
+a.discussionTopic
+{
+    text-decoration:none;
+}

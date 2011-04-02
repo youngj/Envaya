@@ -23,15 +23,61 @@
 class Language
 {
     static $languages = array();
+    private static $current_code = null;
     
     static function get($code)
     {
         return @static::$languages[$code];
     }
     
+    /**
+    * Gets the current language in use by the system or user.
+    * @return string The language code (eg "en")
+    */
+    static function get_current_code()
+    {
+        $language = '';
+
+        if (static::$current_code)
+        {
+            return static::$current_code;
+        }
+
+        $language = @$_GET['lang'] ?: @$_COOKIE['lang'] ?: @$_POST['lang'] ?: static::get_accept_language();
+        
+        if (!$language || !Language::get($language))
+        {
+            $language = Config::get('language');
+        }
+
+        static::$current_code = $language;
+        return $language;
+    }
+
+    private static function get_accept_language()
+    {
+        $acceptLanguage = @$_SERVER['HTTP_ACCEPT_LANGUAGE'];
+        if ($acceptLanguage)
+        {
+            $languages = explode(",", $acceptLanguage);
+            foreach ($languages as $language)
+            {
+                $langQ = explode(";", $language);
+                $lang = trim($langQ[0]);
+                $langLocale = explode("-", $lang);
+                return $langLocale[0];
+            }
+        }
+    }
+    
+    static function set_current_code($code)
+    {
+        static::$current_code = $code;
+    }
+    
     static function current()
     {
-        return static::get(get_language());
+        return static::get(static::get_current_code());
     }
     
     static function get_options()

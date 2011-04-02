@@ -18,7 +18,7 @@
 
     echo view('page_elements/doctype');
     
-    $lang = escape(get_language());
+    $lang = escape(Language::get_current_code());
         
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $lang ?>" lang="<?php echo $lang ?>">

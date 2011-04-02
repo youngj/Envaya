@@ -307,7 +307,10 @@ return array(
     'friendlytime:hours:singular' => 'saa moja iliyopita',
     'friendlytime:days' => 'siku %s zilizopita',
     'friendlytime:days:singular' => 'jana',
-    'date:withmonth' => '%2$s %1$s',
+    
+    'date:no_year' => '{day} {month}',
+    'date:with_year' => '{day} {month}, {year}',
+    
     'date:month:1' => 'Januari',
     'date:month:2' => 'Februari',
     'date:month:3' => 'Machi',
@@ -358,4 +361,9 @@ return array(
 
     'ok' => "Sawa",
     'cancel' => "Ghairi",        
+    
+    'captcha:title' => 'Ingiza maneno ya kuthibitisha',
+    'captcha:button' => 'Peleka maneno',
+    'captcha:invalid' => "Maneno ya kuthibitisha si sahihi. Jaribu tena.", 
+    
 );

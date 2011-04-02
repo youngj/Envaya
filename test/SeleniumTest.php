@@ -185,7 +185,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         return retry(array($this, $fn_name), $args, $timeout);
     }
 
-    public function selectUploadFrame($xpath = "//iframe[contains(@src,'upload_frame')]")
+    public function selectUploadFrame($xpath = "//iframe[contains(@src,'upload')]")
     {
         // requires the profiles/noflash profile 
         // (selenium can only test upload via normal html file input)

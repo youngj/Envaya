@@ -1287,7 +1287,7 @@
         
             var iframe = createElem('iframe',
                  {
-                    src:'/org/selectDocument?r='+Math.random()+"&guid="+escape(guid)+"&frameId="+iframeName,
+                    src:'/pg/select_document?r='+Math.random()+"&guid="+escape(guid)+"&frameId="+iframeName,
                     scrolling:'no',
                     frameBorder:'0',
                     border:'0',
@@ -1373,7 +1373,7 @@
             
             var iframe = createElem('iframe',
                  {
-                    src:'/org/selectImage?r='+Math.random()+"&src="+escape(src)+"&pos="+escape(pos)+"&frameId="+iframeName,
+                    src:'/pg/select_image?r='+Math.random()+"&src="+escape(src)+"&pos="+escape(pos)+"&frameId="+iframeName,
                     scrolling:'no',
                     frameBorder:'0',
                     border:'0',

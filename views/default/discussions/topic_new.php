@@ -28,6 +28,14 @@
 </tr></table>
 
 <?php
+
+    $widget = $org->get_widget_by_class('WidgetHandler_Discussions');    
+    
+    echo "<div style='float:right'><br /><br />";    
+    echo "<a href='{$widget->get_url()}'>".__('discussions:back_to_topics'). "</a>";
+    echo "</div>";
+
+
     echo view('input/securitytoken');
     echo view('input/submit', array('value' => __('publish')));
  ?>

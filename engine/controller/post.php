@@ -4,6 +4,11 @@ class Controller_Post extends Controller_Profile
 {
     protected $post;
 
+    function get_post()
+    {
+        return $this->post;
+    }
+    
     function before()
     {
         parent::before();
@@ -61,64 +66,16 @@ class Controller_Post extends Controller_Profile
     
     function action_post_comment()
     {   
-		$post = $this->post;
-		$this->post_comment($post);
+		$action = new Action_PostComment($this, $this->post);
+        $action->process_input();
     }
 
     function action_edit()
     {
-        $this->require_editor();
-
-        if (Request::is_post())
-        {
-            $this->save_post();
-        }
-        
-        $post = $this->post;
-        
-        $title = __('blog:editpost');
-
-        $cancelUrl = get_input('from') ?: $post->get_url();
-
-        PageContext::add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
-
-        $org = $post->get_container_entity();
-        $area1 = view("org/editPost", array('entity' => $post));
-        $body = view_layout("one_column_padded", view_title($title), $area1);
-
-        $this->page_draw($title,$body);
+        $action = new Action_EditPost($this);
+        $action->execute();
     }
     
-    private function save_post()
-    {
-        $this->validate_security_token();
-        $post = $this->post;
-        $org = $this->org;
-
-        $body = get_input('blogbody');
-
-        if (get_input('delete'))
-        {
-            $org = $post->get_container_entity();
-            $post->disable();
-            $post->save();
-            system_message(__('blog:delete:success'));
-            forward($org->get_url()."/news");
-        }
-        else if (empty($body))
-        {
-            return register_error(__("blog:blank"));
-        }
-        else
-        {
-            $post->set_content($body, true);
-            $post->save();
-
-            system_message(__("blog:updated"));
-            forward($post->get_url());
-        }
-    }
-
     function action_new()
     {
         $this->require_editor();

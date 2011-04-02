@@ -1,7 +1,4 @@
-<html>
-<head>
-<title>UPLOAD</title>
-</head>
+<html><head><title>UPLOAD</title></head>
 <body style='padding:0px;margin:0px'>
 <form id='form' method='POST' enctype='multipart/form-data' action='/pg/upload?iframe=1'>
 <?php

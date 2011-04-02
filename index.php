@@ -18,7 +18,7 @@
     )); 
 
     Route::set('default', '(<controller>(/<action>(/<id>)))',
-        array('controller' => '(pg|home|org|admin|action)?')
+        array('controller' => '(pg|home|org|admin|action|tr)?')
     )->defaults(array(
             'controller' => 'home',
             'action'     => 'index',

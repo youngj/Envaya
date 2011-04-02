@@ -23,6 +23,7 @@ class User extends Entity
             'approval' => 0,
             'latitude' => null,
             'longitude' => null,
+            'timezone_id' => '',
             'city' => '',
             'region' => '',
             'country' => '',
@@ -84,7 +85,7 @@ class User extends Entity
         {
             return url_with_param($this->get_icon_file($size)->get_url(), 't', $this->time_updated);
         }
-        else if ($this->latitude || $this->longitude)
+        else if ($this->has_lat_long())
         {
             return get_static_map_url($this->latitude, $this->longitude, 6, 100, 100);
         }
@@ -212,6 +213,11 @@ class User extends Entity
      */
     public function is_banned() { return $this->banned == 'yes'; }
 
+    function has_lat_long()
+    {
+        return $this->latitude || $this->longitude;
+    }
+        
     /**
      * Set latitude and longitude tags for a given entity.
      *
@@ -220,14 +226,17 @@ class User extends Entity
      */
     public function set_lat_long($lat, $long)
     {
-        $this->attributes['latitude'] = $lat;
-        $this->attributes['longitude'] = $long;
-
+        if ($lat != $this->latitude || $long != $this->longitude)
+        {
+            $this->latitude = $lat;
+            $this->longitude = $long;
+            $this->timezone_id = '';
+        }
         return true;
     }
 
-    public function get_latitude() { return $this->attributes['latitude']; }
-    public function get_longitude() { return $this->attributes['longitude']; }
+    public function get_latitude() { return $this->latitude; }
+    public function get_longitude() { return $this->longitude; }
 
     function query_feed_items()
     {
@@ -243,7 +252,7 @@ class User extends Entity
 
     public function is_approved()
     {
-        return $this->approval > 0;
+        return $this->approval > 0 || $this->admin;
     }
 
     public function set_password($password)
@@ -366,5 +375,33 @@ class User extends Entity
 		}		
 		return $notifications;
 	}
-
+    
+    function get_timezone_id()
+    {
+        if (!$this->timezone_id) 
+        {
+            if (!$this->has_lat_long())
+            {
+                return Config::get('default_timezone');
+            }
+        
+            try 
+            {
+                $geonames = Zend::geonames();
+                $res = $geonames->timezone(array(
+                    'lat' => $this->latitude,
+                    'lng' => $this->longitude
+                ));
+                
+                $this->timezone_id = @$res['timezoneId'] ?: Config::get('default_timezone');
+            }
+            catch (Bgy_Service_Geonames_Exception $ex)
+            {
+                $this->timezone_id = Config::get('default_timezone');
+            }
+            
+            $this->save();
+        }
+        return $this->timezone_id;
+    }
 }

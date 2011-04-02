@@ -439,7 +439,7 @@ class RegisterTest extends SeleniumTest
     private function _testMessages()
     {
         $this->open("/{$this->username2}");
-        $this->clickAndWait("//a[contains(@href,'/compose')]");
+        $this->clickAndWait("//a[contains(@href,'/send_message')]");
         $this->type("//input[@name='subject']","Test Subject");
         $this->type("//textarea[@name='message']", "Test Message");
         $this->submitForm();

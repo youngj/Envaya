@@ -25,7 +25,7 @@ class UploadTest extends SeleniumTest
         
         $this->click("//div[@class='attachControls']//a");
         
-        $this->retry('selectFrame', array("//iframe[contains(@src,'selectImage')]"));
+        $this->retry('selectFrame', array("//iframe[contains(@src,'select_image')]"));
         
         $this->selectUploadFrame();
         

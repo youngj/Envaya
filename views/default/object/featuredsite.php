@@ -42,10 +42,10 @@ if (Session::isadminloggedin())
         echo escape(__('featured:active'));
     }    
     
-    if (get_language() != $entity->get_language())
+    if (Language::get_current_code() != $entity->get_language())
     {
         $escUrl = urlencode($_SERVER['REQUEST_URI']);                   
-        echo " <a href='/org/translate?from=$escUrl&prop[]={$entity->guid}.content.1'>".__("trans:contribute")."</a>";
+        echo " <a href='/tr/translate?from=$escUrl&prop[]={$entity->guid}.content.1'>".__("trans:contribute")."</a>";
     }
     
     ?>              

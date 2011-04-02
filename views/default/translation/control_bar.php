@@ -7,7 +7,7 @@ if (PageContext::is_translatable())
     $transMode = get_translate_mode();
     $origLang = PageContext::get_original_language();
     $origLangName = escape(__($origLang));
-    $userLangName = escape(__(get_language()));
+    $userLangName = escape(__(Language::get_current_code()));
 
     function trans_link($mode, $text)
     {

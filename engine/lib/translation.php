@@ -18,10 +18,10 @@ function get_translations_url($translations, $targetLang = null)
     {
         $urlProps[] = "prop[]={$trans->container_guid}.{$trans->property}.{$trans->html}";
     }
-    $urlProps[] = "targetLang=".($targetLang ?: get_language());
+    $urlProps[] = "targetLang=".($targetLang ?: Language::get_current_code());
 
     $escUrl = urlencode($_SERVER['REQUEST_URI']);
-    return "/org/translate?from=$escUrl&".implode("&", $urlProps);
+    return "/tr/translate?from=$escUrl&".implode("&", $urlProps);
 }
 
 function translate_listener($event, $object_type, $translation)

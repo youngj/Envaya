@@ -48,7 +48,7 @@ mod/
       Each module is a (mostly) self-contained implementation of some feature set
       Each module's directory structure looks like:
         mod/<modulename>/{_graphics,engine,languages,schema,testcases,views,start.php}      
-      mod/<modulename>/start.php is called by engine/start.php to initialize the module.
+      mod/<modulename>/start.php is included by engine/start.php to initialize the module.
 schema/
     - SQL for initializing the database
 scripts/

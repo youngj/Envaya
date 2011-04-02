@@ -53,13 +53,13 @@ if ($edited)
 }
 
 $limit = 10;
-$baseurl = "/org/translate_interface?q=".urlencode($query)."&edited=".($edited ? 1 : 0);
+$baseurl = "/tr/translate_interface?q=".urlencode($query)."&edited=".($edited ? 1 : 0);
 $offset = (int)get_input('offset');
 $count = sizeof($keys);
 
 $from = urlencode("$baseurl&offset=$offset");
 
-echo "<form method='GET' action='/org/translate_interface'>";
+echo "<form method='GET' action='/tr/translate_interface'>";
 
 echo "<label>".__("trans:filter")."</label><br />";
 
@@ -139,7 +139,7 @@ else
         }
 
         echo "<td>$res</td>";
-        echo "<td><a href='org/translate_interface?key=$key&from=$from'>".__('edit')."</a></td>";
+        echo "<td><a href='/tr/translate_interface?key=$key&from=$from'>".__('edit')."</a></td>";
 
         echo "</tr>";
     }
@@ -155,6 +155,6 @@ else
 
     if (Session::isadminloggedin())
     {
-        echo "<br /><br /><a href='org/translate_interface?export=1'>".__('trans:export')."</a>";
+        echo "<br /><br /><a href='/tr/translate_interface?export=1'>".__('trans:export')."</a>";
     }
 }

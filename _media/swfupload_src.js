@@ -1340,7 +1340,7 @@ FileUploader.prototype.addFallbackIframe = function($swfupload)
     query.push("swfupload=" + this.swfupload.movieName);    
     
     this.fallbackIframe = $iframe;
-    this.fallbackIframeSrc = "pg/upload_frame?" + query.join("&");
+    this.fallbackIframeSrc = "pg/upload?" + query.join("&");
     
     $iframe.src = this.fallbackIframeSrc;
     $iframe.className = 'uploadIframe';

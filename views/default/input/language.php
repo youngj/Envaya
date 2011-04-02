@@ -2,7 +2,7 @@
      $lang = $vars['value'];
      if (empty($lang))
      {
-        $lang = get_language();    
+        $lang = Language::get_current_code();
      }     
      
     echo view('input/pulldown', array('name' => $vars['name'], 'value' => $lang,

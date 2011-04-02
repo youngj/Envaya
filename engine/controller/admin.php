@@ -156,7 +156,7 @@ class Controller_Admin extends Controller
         $title = __('translate:queue');
 
         $body = view_layout("one_column_wide", view_title($title),
-            view('translation/queue', array('lang' => get_language()))
+            view('translation/queue', array('lang' => Language::get_current_code()))
         );
 
         $this->page_draw($title,$body);

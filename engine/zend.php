@@ -81,4 +81,11 @@ class Zend
         }
         return static::$gapps;
     }    
+    
+    static function geonames()
+    {
+        Zend::load('Bgy_Service_Geonames');
+        return new Bgy_Service_Geonames(array('username' => Config::get('geonames_user')));
+    }
+    
 }

@@ -1,18 +1,24 @@
 <?php
     $topic = $vars['entity'];
         
-    echo "<div>";
-               
-    echo "<a href='{$topic->get_url()}'>".escape($topic->subject)." ({$topic->num_messages})</a>";
-       
-    if ($topic->num_messages)
+    $url = $topic->get_url();        
+    echo "<a class='discussionTopic' href='$url'>";
+    
+    echo escape($topic->subject);
+    if ($topic->num_messages > 1)
     {
-        echo " <span class='blog_date'>";
-        echo friendly_time($topic->last_time_posted)." by ".escape($topic->last_from_name);
-        echo "</span>";
+        echo " ({$topic->num_messages})";
     }
     
-    echo "<div class='feed_snippet'>{$topic->snippet}</div>";
+    echo " <span class='feed_snippet'>{$topic->snippet}</span>";    
+    echo "<br />";
     
+    if ($topic->num_messages)
+    {
+        echo "<span class='blog_date'>";
+        $format = __('discussions:topic_time_name');
+        echo sprintf($format, friendly_time($topic->last_time_posted), escape($topic->last_from_name));
+        echo "</span>";
+    }    
             
-    echo "</div>";
+    echo "</a>";

@@ -15,10 +15,7 @@
         'comment:not_deleted' => "Maoni hayawezi kufutwa.",
 		'comment:duplicate' => "Maoni hayakuchapishwa kwa sababu ni sawasawa na maoni mengine.",
 		'comment:deleted_marker' => '[maoni yamefutwa]',
-		'comment:verify_human' => 'Ingiza maneno ya kuthibitisha',
-		'comment:submit_captcha' => 'Peleka maneno',
 		'comment:captcha_instructions' => "Chapa maneno yanayoonekana chini kuchapisha maoni yako.",
-		'comment:captcha_invalid' => "Maneno ya kuthibitisha si sahihi. Jaribu tena.", 
 		'comment:notification_subject' => "%s imeongeza maoni katika tovuti yako",
         'comment:confirm_delete' => "Una hakika kuwa unataka kufuta maoni haya?",
 	);

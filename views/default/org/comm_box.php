@@ -8,7 +8,7 @@
         $controls = array();
         if ($org->email && $loggedInOrg->is_approved())
         {
-            $controls[] = "<a href='{$org->get_url()}/compose'>".__('message:link')."</a>";
+            $controls[] = "<a href='{$org->get_url()}/send_message'>".__('message:link')."</a>";
         }
         
         $networkPage = $loggedInOrg->get_widget_by_class('WidgetHandler_Network');

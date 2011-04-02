@@ -228,6 +228,7 @@ CREATE TABLE `users_entity` (
   `admin` tinyint(4) default '0',
   `latitude` float null,
   `longitude` float null,
+  `timezone_id` varchar(64) default null,
   `region` varchar(32) default NULL,
   `theme` varchar(32) default NULL,
   
@@ -484,6 +485,7 @@ CREATE TABLE `discussion_messages` (
 
 CREATE TABLE `discussion_topics` (
     `guid` bigint(20) unsigned NOT NULL,
+    `first_message_guid` bigint(20) unsigned NOT NULL,
     `subject` text default '',
     `last_time_posted` int(11) default 0,
     `last_from_name` text default '',

@@ -93,4 +93,4 @@ echo "</td></tr></table>";
 
 $formBody = ob_get_clean();
 
-echo view('input/form', array('action' => "org/save_translation", 'body' => $formBody));
+echo view('input/form', array('action' => "/tr/save_translation", 'body' => $formBody));
