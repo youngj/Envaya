@@ -309,7 +309,7 @@ class Organization extends User
         
         foreach (Widget::get_default_names_by_class($class_name) as $widget_name)
         {
-            $conditions[] = "(widget_name=? AND handler_class='')";
+            $conditions[] = "(widget_name=? AND (handler_class='' or handler_class is null))";
             $args[] = $widget_name;
         }
         
