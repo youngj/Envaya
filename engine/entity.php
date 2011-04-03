@@ -245,18 +245,19 @@ abstract class Entity extends Model
             Database::get_rows("SELECT * from entities WHERE container_guid=? or owner_guid=?", array($guid, $guid))
         );
     }
-
+    
+    function can_edit()
+    {
+        return $this->can_user_edit(Session::get_loggedin_user());
+    }
     /**
-     * Determines whether or not the specified user (by default the current one) can edit the entity
+     * Determines whether or not the specified user (can edit the entity
      *
-     * @param int $user The user, optionally (defaults to the currently logged in user)
+     * @param int $user The user
      * @return true|false
      */
-    function can_edit($user = null)
+    function can_user_edit($user)
     {
-        if (!$user)
-            $user = Session::get_loggedin_user();
-
         if (!is_null($user))
         {
             if (($this->owner_guid == $user->guid)

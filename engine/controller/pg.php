@@ -84,35 +84,14 @@ class Controller_Pg extends Controller {
 
     function action_send_feedback()
     {
-        $message = get_input('message');
-        $from = get_input('name');
-        $email = get_input('email');
-        
-        if (!$message)
-        {
-            action_error(__('feedback:empty'));
-        }
-        
-        if (!$email)
-        {
-            action_error(__('feedback:email_empty'));
-        }
+        $action = new Action_Contact($this);
+        $action->process_input();
+    }
 
-        try
-        {
-            validate_email_address($email);
-        }
-        catch (RegistrationException $ex)
-        {
-            action_error($ex->getMessage());
-        }
-        
-        $mail = Zend::mail("User feedback", "From: $from\n\nEmail: $email\n\n$message");
-        $mail->setReplyTo($email);
-        
-        send_admin_mail($mail);
-        system_message(__('feedback:sent'));
-        forward("/");
+    function action_blank()
+    {
+        // this may be useful for displaying a page containing only SessionMessages
+        $this->page_draw('','', array('no_top_bar' => true));
     }
 
     function action_large_img()
@@ -205,10 +184,9 @@ class Controller_Pg extends Controller {
         $mime_type = UploadedFile::get_mime_type($local_path);
         if ($mime_type)
         {
-            header("Content-Type: $mime_type");
+            $this->request->headers['Content-Type'] = $mime_type;
         }
-        echo file_get_contents($local_path);
-        exit;
+        $this->request->response = file_get_contents($local_path);
     }
     
     function action_hide_todo()
@@ -289,7 +267,7 @@ class Controller_Pg extends Controller {
         $guid = (int)get_input('guid');
         $file = ($guid) ? UploadedFile::query()->where('e.guid = ?', $guid)->get() : null;
         
-        $this->page_draw('',view('upload/select_image',
+        $this->page_draw('',view('upload/select_document',
             array(
                 'current' => $file,
                 'frameId' => get_input('frameId'),

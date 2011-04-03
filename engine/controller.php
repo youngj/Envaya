@@ -74,7 +74,6 @@ abstract class Controller {
         {
             action_error($ex->getMessage());
             forward();
-            exit;
         }
         
         $user = Session::get_loggedin_user();

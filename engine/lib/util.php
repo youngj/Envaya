@@ -23,6 +23,19 @@
         return $url;
     }
         
+    function abs_url($url)        
+    {
+        if (strpos($url, "://") === false)
+        {
+            if ($url[0] == '/')
+            {
+                $url = substr($url,1);
+            }
+            return Config::get('url').$url;
+        }        
+        return $url;
+    }
+        
     function secure_url($url)
     {
         if (Config::get('ssl_enabled') && !is_mobile_browser())
@@ -152,10 +165,9 @@
     
     /**
      * Adds messages to the session so they'll be carried over, and forwards the browser.
-     * Returns false if headers have already been sent and the browser cannot be moved.
      *
      * @param string $location URL to forward to browser to
-     * @return nothing|false
+     * @return nothing
      */
 
     function forward($location = "/")
@@ -175,9 +187,8 @@
             SessionMessages::save();
 
             header("Location: {$location}");
-            exit;
         }
-        return false;
+        exit;
     }
 
     function rewrite_to_current_domain($url)

@@ -16,6 +16,10 @@ $cronTasks = array(
        'cmd' => "php scripts/backup.php"
    ),
    array(
+       'interval' => 30,
+       'cmd' => "php mod/reports/scripts/publish_reports.php"
+   ),   
+   array(
        'interval' => 1440,
        'cmd' => "php scripts/backup_s3.php"
    )   

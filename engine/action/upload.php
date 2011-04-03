@@ -43,14 +43,14 @@ class Action_Upload extends Action
         }
         else
         {
-            header("Content-Type: text/javascript");
-            echo $json;
-            exit();
+            $request = $this->get_request();
+            $request->headers['Content-Type'] = 'text/javascript';
+            $request->response = $json;
         }
     }
     
     function render()
     {
-        $this->controller->request->response = view('upload/frame');
+        $this->get_request()->response = view('upload/frame');
     }
 }    

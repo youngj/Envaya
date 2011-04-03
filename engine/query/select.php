@@ -197,7 +197,8 @@ class Query_Select
             $query .= " limit ".((int)$this->offset).", ".((int)$this->limit);
         }
     
-        $res = Database::get_rows($query, $this->args); 
+        $res = Database::get_rows($query, $this->args);        
+        
         if ($this->row_function)
         {
             return array_map($this->row_function, $res);

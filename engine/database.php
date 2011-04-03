@@ -23,7 +23,7 @@ class Database
         {
             if ($row = $stmt->fetch())
             {
-                $res = (object)$row;
+                $res = $row;
             }
             $stmt->closeCursor();
         }
@@ -39,7 +39,7 @@ class Database
 
             while ($row = $stmt->fetch())
             {
-                $res[] = (object)$row;
+                $res[] = $row;
             }
 
             $stmt->closeCursor();
@@ -239,6 +239,7 @@ class Database
         static::$DB_PROFILE[] = $query;   
 
         $stmt = $db->prepare($query);
+        $stmt->setFetchMode(PDO::FETCH_OBJ);
 
         if (!$stmt->execute($args))
         {

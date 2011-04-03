@@ -29,12 +29,9 @@ class Comment extends Entity
 		}
 	}
 	
-    function can_edit($user = null)
-    {   
-        if (!$user)
-            $user = Session::get_loggedin_user();            
-        
-        if (parent::can_edit($user))
+    function can_user_edit($user)
+    {           
+        if (parent::can_user_edit($user))
         {
             return true;
         }
