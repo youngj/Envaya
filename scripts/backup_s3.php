@@ -15,6 +15,8 @@ require_once("engine/start.php");
 
 require_once("vendors/s3.php");
 
+umask(0);
+
 global $s3;
 $s3 = new S3(Config::get('s3_key'), Config::get('s3_private'));
 

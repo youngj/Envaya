@@ -142,8 +142,8 @@ class Controller_Post extends Controller_Profile
 
         $newsUpdate = $org->query_news_updates()
             ->where('status = ?', EntityStatus::Enabled)
-            ->where("guid $op ?", $post->guid)
-            ->order_by("guid $order")
+            ->where("e.guid $op ?", $post->guid)
+            ->order_by("e.guid $order")
             ->limit(1)
             ->get();
         
@@ -154,13 +154,13 @@ class Controller_Post extends Controller_Profile
         
         $newsUpdate = $org->query_news_updates()
             ->where('status = ?', EntityStatus::Enabled)
-            ->order_by("guid $order")
+            ->order_by("e.guid $order")
             ->limit(1)
             ->get();        
 
-        if ($entity)
+        if ($newsUpdate)
         {
-            forward($entity->get_url());
+            forward($newsUpdate->get_url());
         }
     }
 }
