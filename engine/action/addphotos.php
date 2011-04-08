@@ -46,7 +46,7 @@ class Action_AddPhotos extends Action
             $post = new NewsUpdate();
             $post->owner_guid = Session::get_loggedin_userid();
             $post->container_guid = $org->guid;
-            $post->set_content($body, true);
+            $post->set_content($body);
             $post->uuid = $uuid;
             $post->save();              
             $post->post_feed_items();

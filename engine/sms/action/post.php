@@ -19,7 +19,7 @@ class SMS_Action_Post extends SMS_Action
         
         $news_update = new NewsUpdate();
         $news_update->container_guid = $org->guid;
-        $news_update->set_content($this->message, false);
+        $news_update->set_content(view('output/longtext', array('value' => $this->message));
         $news_update->save();
         $news_update->post_feed_items();
         

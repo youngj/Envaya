@@ -35,7 +35,7 @@ class User extends Entity
             'last_notify_time' => null,
             'last_action' => 0,
             'last_login' => 0,    
-			'notifications' => 7,
+			'notifications' => 15,
         );
 
     public function get_feed_names()
@@ -394,6 +394,10 @@ class User extends Entity
                 ));
                 
                 $this->timezone_id = @$res['timezoneId'] ?: Config::get('default_timezone');
+            }
+            catch (Zend_Http_Client_Adapter_Exception $ex)
+            {
+                $this->timezone_id = Config::get('default_timezone');            
             }
             catch (Bgy_Service_Geonames_Exception $ex)
             {

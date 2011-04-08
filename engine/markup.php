@@ -90,45 +90,56 @@ class Markup
     private static function get_purifier_config($options = null)
     {
         require_once(dirname(__DIR__).'/vendors/htmlpurifier/library/HTMLPurifier.auto.php');
-    
+   
         $config = HTMLPurifier_Config::createDefault();
         $config->set('Cache.SerializerPath', Config::get('dataroot'));
+        $config->set('Cache.DefinitionImpl', null);         
         $config->set('AutoFormat.Linkify', true);
         if ($options)
         {
+            if (@$options['Envaya.Untrusted'])
+            {
+                $config->set('HTML.AllowedElements',
+                    'a,em,strong,br,p,u,b,i,ul,li,blockquote,span,h1,h2,h3,h4,pre');                    
+                $config->set('HTML.Nofollow', true);
+                unset($options['Envaya.Untrusted']);
+            }
+        
             foreach ($options as $k => $v)
             {
                 $config->set($k, $v);
             }
         }
 
-        $config->set('HTML.DefinitionID', 'EnvayaHTMLExtensions');
-        $config->set('HTML.DefinitionRev', 3);
-        $config->set('Cache.DefinitionImpl', null); 
+        if (!@$options['Envaya.Untrusted'])
+        {
+            $config->set('HTML.DefinitionID', 'EnvayaHTMLExtensions');
+            $config->set('HTML.DefinitionRev', 3);
 
-        $def = $config->getHTMLDefinition(true);
+            $def = $config->getHTMLDefinition(true);
 
-        /*
-         * Would like to do something like envaya:scribd for custom tags, but HTMLPurifier uses
-         * DOMDocument which strips out any namespaces we set (except xml).
-         */
-        $scribd = $def->addElement(
-          'scribd',   
-          'Inline',  
-          'Empty', 
-          'Common', 
-          array( 
-            'docid' => 'Number',
-            'width' => 'Number',
-            'height' => 'Number',
-            'guid' => 'Number',
-            'filename' => 'Text',
-            'accesskey' => 'Text'
-          )
-        );
-        
+            /*
+             * Would like to do something like envaya:scribd for custom tags, but HTMLPurifier uses
+             * DOMDocument which strips out any namespaces we set (except xml).
+             */
+            $scribd = $def->addElement(
+              'scribd',   
+              'Inline',  
+              'Empty', 
+              'Common', 
+              array( 
+                'docid' => 'Number',
+                'width' => 'Number',
+                'height' => 'Number',
+                'guid' => 'Number',
+                'filename' => 'Text',
+                'accesskey' => 'Text'
+              )
+            );
+        }
         return $config;
     }
+
     
     static function sanitize_html($html, $options = null)
     {              

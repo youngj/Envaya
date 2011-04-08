@@ -78,9 +78,14 @@ abstract class Action
     function check_captcha()
     {
         $user = Session::get_loggedin_user();
-        $needsCaptcha = !$user || !$user->is_approved();
         
-        if ($needsCaptcha && Config::get('recaptcha_enabled'))
+        $site_org = $this->get_org();
+        
+        // show captcha if not logged in, 
+        // or if not approved and using someone else's site.
+        $needsCaptcha = !$user || (!$user->is_approved() && $user->guid != $site_org->guid);
+        
+        if ($needsCaptcha)
         {        
             // after entering a correct captcha, we avoid prompting the user for a captcha again 
             // the next few times during the same session

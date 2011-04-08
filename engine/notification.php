@@ -9,6 +9,7 @@ class Notification
 	const Batch = 1;        // emails sent by administrators to all users
 	const Comments = 2;     // emails sent when someone leaves a comment on one of their news updates
     const Network = 4;      // emails sent when someone adds this organization to their network page
+    const Discussion = 8;   // emails sent when someone adds a message or topic on their discussions page
 	
 	static function all()
 	{
@@ -20,6 +21,7 @@ class Notification
 		return array(
 			static::Batch => __('email:subscribe_reminders'),
 			static::Comments => __('email:subscribe_comments'),
+            static::Discussion => __('email:subscribe_discussion'),
             static::Network => __('email:subscribe_network'),
 		);
 	}

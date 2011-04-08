@@ -81,7 +81,7 @@ class WidgetHandler_Network extends WidgetHandler
         $relationship->container_guid = $org->guid;
         $relationship->set_self_approved();
         
-        $relationship->set_content(get_input('content'), true);
+        $relationship->set_content(get_input('content'));
 
         if (!OrgRelationship::is_valid_type($relationship->type))
         {
@@ -289,7 +289,7 @@ class WidgetHandler_Network extends WidgetHandler
             return not_found();
         }                
         
-        $relationship->set_content(get_input('content'), true);
+        $relationship->set_content(get_input('content'));
         
         $subject_org = $relationship->get_subject_organization();
         

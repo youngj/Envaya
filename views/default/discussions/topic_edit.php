@@ -50,6 +50,14 @@
     ));
     
     echo "<br />";
+    
+    $org = $topic->get_container_entity();
+    $widget = $org->get_widget_by_class('WidgetHandler_Discussions');
+    
+    echo "<div style='float:right'>";    
+    echo "<a href='{$widget->get_url()}/edit'>".__('discussions:back_to_topics'). "</a>";
+    echo "</div>";
+        
     echo "<strong><a href='{$topic->get_url()}/add_message'>".__('discussions:add_message')."</a></strong>";
     
     $content = ob_get_clean();

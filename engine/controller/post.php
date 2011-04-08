@@ -78,41 +78,8 @@ class Controller_Post extends Controller_Profile
     
     function action_new()
     {
-        $this->require_editor();
-        $this->validate_security_token();
-
-        $body = get_input('blogbody');
-        $org = $this->org;
-
-        if (empty($body))
-        {
-            register_error(__("blog:blank"));
-            forward_to_referrer();
-        }
-        else
-        {
-            $uuid = get_input('uuid');
-
-            $duplicates = NewsUpdate::query()->with_metadata('uuid', $uuid)->where('container_guid=?',$org->guid)->filter();
-            if (!sizeof($duplicates))
-            {
-                $post = new NewsUpdate();
-                $post->owner_guid = Session::get_loggedin_userid();
-                $post->container_guid = $org->guid;
-                $post->set_content($body, true);
-                $post->uuid = $uuid;
-                $post->save();                
-                $post->post_feed_items();
-                
-                system_message(__("blog:posted"));
-            }
-            else
-            {
-                $post = $duplicates[0];
-            }
-
-            forward($post->get_url());
-        }
+        $action = new Action_NewPost($this);
+        $action->process_input();
     }
 
     function action_preview()

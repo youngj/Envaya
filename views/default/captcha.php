@@ -7,7 +7,16 @@
 
 <?php
 
-echo view('input/hidden_multi', array('fields' => $_POST));
+$fields = array();
+foreach ($_POST as $k => $v)
+{
+    if (strpos($k, 'captcha') === false)
+    {
+        $fields[$k] = $v;
+    }
+}
+
+echo view('input/hidden_multi', array('fields' => $fields));
 
 echo view('input/hidden', array('name' => 'captcha', 'value' => '1'));
 echo Recaptcha::get_html();

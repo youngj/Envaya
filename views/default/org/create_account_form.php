@@ -49,6 +49,8 @@ function updateUrl()
 
 <div class='input'>
 <label><?php echo __('create:username') ?></label><br />
+<div class='help'><strong><?php echo __('create:username2') ?></strong></div>
+
 <?php echo view('input/text', array(
     'name' => 'username',
     'id' => 'username',

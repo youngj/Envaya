@@ -251,7 +251,7 @@ abstract class Entity extends Model
         return $this->can_user_edit(Session::get_loggedin_user());
     }
     /**
-     * Determines whether or not the specified user (can edit the entity
+     * Determines whether or not the specified user can edit the entity
      *
      * @param int $user The user
      * @return true|false
@@ -602,27 +602,19 @@ abstract class Entity extends Model
         }
     }    
 
-    public function set_content($content, $isHTML)
+    public function set_content($content, $isSanitized = false)
     {
-        if ($isHTML)
+        if (!$isSanitized)
         {
             $content = Markup::sanitize_html($content);
-        }
-        else
-        {
-            $content = view('output/longtext', array('value' => $content));
         }
         
         $this->content = $content;
         $this->set_data_type(DataType::HTML, true);
 
-        if ($isHTML)
-        {
-            $thumbnailUrl = UploadedFile::get_thumbnail_url_from_html($content);
-
-            $this->set_data_type(DataType::Image, $thumbnailUrl != null);
-            $this->thumbnail_url = $thumbnailUrl;            
-        }
+        $thumbnailUrl = UploadedFile::get_thumbnail_url_from_html($content);        
+        $this->set_data_type(DataType::Image, $thumbnailUrl != null);
+        $this->thumbnail_url = $thumbnailUrl;            
 
         if (!$this->language)
         {            

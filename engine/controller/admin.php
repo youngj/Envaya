@@ -485,7 +485,7 @@ class Controller_Admin extends Controller
             $featuredSite = new FeaturedSite();
             $featuredSite->container_guid = $user->guid;
             $featuredSite->image_url = get_input('image_url');
-            $featuredSite->set_content(get_input('content'), true);
+            $featuredSite->set_content(get_input('content'));
             $featuredSite->save();
             system_message('featured:created');
             forward('org/featured');
@@ -504,7 +504,7 @@ class Controller_Admin extends Controller
         if ($featuredSite && $featuredSite instanceof FeaturedSite)
         {
             $featuredSite->image_url = get_input('image_url');
-            $featuredSite->set_content(get_input('content'), true);
+            $featuredSite->set_content(get_input('content'));
             $featuredSite->save();
             system_message('featured:saved');
             forward('org/featured');
@@ -548,7 +548,7 @@ class Controller_Admin extends Controller
         $email = new EmailTemplate();
         $email->from = get_input('from');
         $email->subject = get_input('subject');        
-        $email->set_content($content, true);
+        $email->set_content($content);
         $email->save();
         forward("/admin/view_email?email={$email->guid}");
     }
@@ -569,7 +569,7 @@ class Controller_Admin extends Controller
             else
             {
                 $email->subject = get_input('subject');                
-                $email->set_content(get_input('content'), true);
+                $email->set_content(get_input('content'));
                 $email->from = get_input('from');
                 $email->save();
             }

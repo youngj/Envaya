@@ -68,6 +68,11 @@ class FeedItem extends Model
         }
         return $this->handler;
     }    
+    
+    public function is_valid()
+    {
+        return $this->get_handler()->is_valid($this);
+    }
 
     public function render_heading($mode = '')
     {

@@ -69,9 +69,7 @@ class Action_PostComment extends Action
 	
 		if (!$userId)
 		{
-			$posted_comments = Session::get('posted_comments') ?: array();
-			$posted_comments[] = $comment->guid;
-			Session::set('posted_comments', $posted_comments);
+            $comment->set_session_owner();
 		}
 		
 		$org = $entity->get_root_container_entity();

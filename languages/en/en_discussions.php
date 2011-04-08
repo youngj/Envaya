@@ -2,13 +2,12 @@
 
 return array(
     'discussions:title' => "Discussions",
-    'discussions:topics' => "Topics",
-    'discussions:name' => "Your Name",
+    'discussions:topics' => "Discussions",
     'discussions:add_message' => "Add Message",
     'discussions:add_topic' => "Add New Discussion",
     'discussions:no_topics' => "This organization does not yet have any discussions.",
     'discussions:topic_added' => "Discussion added successfully.",
-    'discussions:subject' => "Subject",
+    'discussions:subject' => "Topic",
     'discussions:edit_topic' => "Edit Discussion",
     'discussions:confirm_remove_message' => "Are you sure you want to delete this message?",
     'discussions:confirm_remove_topic' => "Are you sure you want to delete this discussion?",
@@ -28,4 +27,7 @@ return array(
     'discussions:feed_heading_message' => "%s has a new message in the discussion %s.",
     'discussions:captcha_instructions' => "Type the words that appear below to publish your message.",    
     'discussions:topic_time_name' => "%s by %s",
+    'discussions:notification_subject' => "%s added a new message in %s",
+    'discussions:notification_topic_subject' => "%s added a new discussion about %s",
+    'discussions:message_deleted_marker' => "[message deleted]",
 );

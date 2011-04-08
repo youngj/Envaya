@@ -29,19 +29,21 @@ class Comment extends Entity
 		}
 	}
 	
-    function can_user_edit($user)
+    function can_edit()
     {           
-        if (parent::can_user_edit($user))
-        {
-            return true;
-        }
-
-        $posted_comments = Session::get('posted_comments');
-        
-        if (is_array($posted_comments) && in_array($this->guid,$posted_comments))
-        {
-            return true;
-        }
-        return false;
-    }       
+        return parent::can_edit() || $this->is_session_owner();
+    }
+    
+    function is_session_owner()
+    {       
+        $posted_comments = Session::get('posted_comments') ?: array();
+        return in_array($this->guid, $posted_comments);
+    }   
+    
+    function set_session_owner()
+    {
+        $posted_comments = Session::get('posted_comments') ?: array();
+        $posted_comments[] = $this->guid;
+        Session::set('posted_comments', $posted_comments);    
+    }    
 }

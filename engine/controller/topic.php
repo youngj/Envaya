@@ -88,22 +88,38 @@ class Controller_Topic extends Controller_Profile
         
     function action_delete_message()
     {
-        $this->require_editor();
         $this->validate_security_token();        
         
         $topic = $this->topic;
         $message = $topic->query_messages()->where('e.guid = ?', (int)get_input('guid'))->get();
-        if ($message)
+        if (!$message)
         {
-            $message->disable();
-            $message->save();
-            
-            $topic->refresh_attributes();
-            $topic->save();            
-
-            system_message(__('discussions:message_deleted'));                            
+            return forward_to_referrer();
         }
-                
-        forward($topic->get_edit_url());            
+        
+        if (!$message->can_edit())
+        {
+            return action_error(__('noaccess'));
+        }
+        
+        $message->disable();
+        $message->save();
+        
+        system_message(__('discussions:message_deleted'));
+        
+        if ($topic->query_messages()->count() == 0)
+        {
+            $topic->disable();
+            $topic->save();
+            
+            forward($this->get_org()->get_widget_by_class('WidgetHandler_Discussions')->get_url());
+        }
+        else
+        {
+            $topic->refresh_attributes();
+            $topic->save();                           
+
+            forward_to_referrer();
+        }
     }    
 }

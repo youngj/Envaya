@@ -5,18 +5,27 @@
     $limit = 20;
     $offset = (int)get_input('offset');
     
-    $query  = $topic->query_messages()->limit($limit, $offset);
+    $query  = $topic->query_messages()->show_disabled(true)->limit($limit, $offset);
     
     $count = $topic->num_messages;
     $messages = $query->filter();    
 
-    ob_start();
+    
+    echo "<div class='section_content padded'>";
+    echo "<h3 style='padding-bottom:8px'>".escape($topic->subject)."</h3>";
+    
+    $elements = array();
+    
+    foreach ($messages as $message)
+    {
+        $elements[] = view('discussions/topic_view_message', array('message' => $message));    
+    }
     
     echo view('paged_list', array(
         'offset' => $offset,
         'limit' => $limit,
         'count' => $count,
-        'entities' => $messages,
+        'elements' => $elements,
         'separator' => "<div style='margin:10px 0px' class='separator'></div>"
     ));
     
@@ -29,8 +38,5 @@
     echo "</div>";
     
     echo "<strong><a href='{$topic->get_url()}/add_message'>".__('discussions:add_message')."</a></strong>";
-        
-    $content = ob_get_clean();
-    
-    echo view('section', array('header' => escape($topic->subject), 'content' => $content));
+    echo "</div>";
 ?>

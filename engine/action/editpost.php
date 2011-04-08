@@ -30,7 +30,7 @@ class Action_EditPost extends Action
         }
         else
         {
-            $post->set_content($body, true);
+            $post->set_content($body);
             $post->save();
 
             system_message(__("blog:updated"));

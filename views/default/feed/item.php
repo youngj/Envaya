@@ -1,10 +1,9 @@
 <?php
     $feedItem = $vars['item'];
     $org = $feedItem->get_user_entity();
-    $subject = $feedItem->get_subject_entity();
     $mode = $vars['mode'];
         
-    if ($org && $subject)
+    if ($org && $feedItem->is_valid())
     {
         $orgIcon = $org->get_icon('small');
         $orgUrl = $org->get_url();

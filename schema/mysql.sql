@@ -472,6 +472,7 @@ CREATE TABLE `discussion_messages` (
     `message_id` varchar(128) default '',
     `subject` text default '',
     `from_name` text default '',
+    `from_location` text default '',
     `from_email` varchar(128) default '',
     `time_posted` int(11),
     

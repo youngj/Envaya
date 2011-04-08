@@ -9,6 +9,7 @@ class DiscussionMessage extends Entity
         'list_guid' => 0,
         'subject' => '',        
         'from_name' => '',
+        'from_location' => '',
         'from_email' => '',
         'time_posted' => 0,
         
@@ -61,5 +62,23 @@ class DiscussionMessage extends Entity
             return "<a href='{$owner->get_url()}'>$name</a>";
         }
         return $name;    
+    }
+
+    function can_edit()
+    {           
+        return parent::can_edit() || $this->is_session_owner();
+    }
+        
+    function is_session_owner()
+    {       
+        $posted_messages = Session::get('posted_messages') ?: array();
+        return in_array($this->guid, $posted_messages);
+    }
+    
+    function set_session_owner()
+    {
+        $posted_messages = Session::get('posted_messages') ?: array();
+        $posted_messages[] = $this->guid;
+        Session::set('posted_messages', $posted_messages);    
     }
 }

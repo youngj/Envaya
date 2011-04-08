@@ -56,7 +56,7 @@ class WidgetHandler_Home extends WidgetHandler
 
         $org->save();
 
-        $widget->set_content($mission, true);
+        $widget->set_content($mission);
 
         $widget->included = get_input_array('included');
         $widget->zoom = get_input('map_zoom');

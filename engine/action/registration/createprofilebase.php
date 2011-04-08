@@ -26,7 +26,7 @@ class Action_Registration_CreateProfileBase extends Action
         }
 
         $homeWidget = $org->get_widget_by_name('home');
-        $homeWidget->set_content($mission, true);
+        $homeWidget->set_content($mission);
 
         $org->language = get_input('content_language');
 

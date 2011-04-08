@@ -2,11 +2,16 @@
 
 class FeedItemHandler_Message extends FeedItemHandler
 {
+    function is_valid($item)
+    {
+        $message = $item->get_subject_entity();
+        return $message && $message->get_container_entity();
+    }
+
     function render_heading($item, $mode)
     {
         $message = $item->get_subject_entity();        
         $topic = $message->get_container_entity();
-        $owner = $message->get_owner_entity();
         
         $is_first_message = $message->guid == $topic->first_message_guid;
         

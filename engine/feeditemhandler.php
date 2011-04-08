@@ -6,6 +6,11 @@
  */
 class FeedItemHandler
 {
+    function is_valid($item)
+    {
+        return !!$item->get_subject_entity();
+    }
+
     function render_heading($item, $mode)
     {
         return '';

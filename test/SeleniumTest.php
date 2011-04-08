@@ -217,6 +217,13 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $this->assertGreaterThan(10, $width);
         $this->assertGreaterThan(10, $height);
     }
+    
+    public function submitFakeCaptcha()
+    {
+        $answer = $this->getText("//b[@id='recaptcha_answer']");
+        $this->type("//input[@name='recaptcha_response_field']", $answer);
+        $this->submitForm();
+    }
         
 }
 

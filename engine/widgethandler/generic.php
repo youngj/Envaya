@@ -24,7 +24,7 @@ class WidgetHandler_Generic extends WidgetHandler
         
         $content = get_input('content');
                 
-        $widget->set_content($content, true);
+        $widget->set_content($content);
         $widget->save();        
         
         $revision = ContentRevision::get_recent_draft($widget);

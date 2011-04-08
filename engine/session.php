@@ -46,7 +46,6 @@ class Session
             return session_id();
         }
         return null;
-
     }
 
     static function save_input()

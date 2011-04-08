@@ -9,17 +9,17 @@
  * For more information, see http://www.mozilla.org/unix/customizing.html#prefs
  */
 
-user_pref("app.update.lastUpdateTime.places-maintenance-timer", 1295567436);
-user_pref("app.update.lastUpdateTime.search-engine-update-timer", 1295567102);
+user_pref("app.update.lastUpdateTime.places-maintenance-timer", 1302298372);
+user_pref("app.update.lastUpdateTime.search-engine-update-timer", 1302297945);
 user_pref("browser.bookmarks.restore_default_bookmarks", false);
 user_pref("browser.migration.version", 1);
 user_pref("browser.places.smartBookmarksVersion", 2);
 user_pref("browser.rights.3.shown", true);
 user_pref("browser.startup.homepage_override.mstone", "rv:1.9.2.3");
-user_pref("extensions.enabledItems", "{CAFEEFAC-0016-0000-0020-ABCDEFFEDCBA}:6.0.20,{CAFEEFAC-0016-0000-0021-ABCDEFFEDCBA}:6.0.21,{972ce4c6-7e08-4474-a285-3208198ce6fd}:3.6.3");
+user_pref("extensions.enabledItems", "{CAFEEFAC-0016-0000-0020-ABCDEFFEDCBA}:6.0.20,{972ce4c6-7e08-4474-a285-3208198ce6fd}:3.6.3");
 user_pref("extensions.lastAppVersion", "3.6.3");
 user_pref("extensions.update.notifyUser", false);
 user_pref("intl.charsetmenu.browser.cache", "UTF-8");
 user_pref("network.cookie.prefsMigrated", true);
 user_pref("privacy.sanitize.migrateFx3Prefs", true);
-user_pref("urlclassifier.keyupdatetime.https://sb-ssl.google.com/safebrowsing/newkey", 1298159046);
+user_pref("urlclassifier.keyupdatetime.https://sb-ssl.google.com/safebrowsing/newkey", 1304889922);

@@ -7,7 +7,18 @@ class Action_Discussion_AddMessage extends Action
         $this->validate_security_token();
         
         $topic = $this->get_topic();                       
-                   
+        $org = $this->get_org();
+
+        $uuid = get_input('uuid');
+
+        $duplicate = $topic->query_messages()
+            ->with_metadata('uuid', $uuid)
+            ->get();
+        if ($duplicate)
+        {
+            return forward($topic->get_url());
+        }               
+        
         $name = get_input('name');
         if (!$name)
         {
@@ -25,32 +36,57 @@ class Action_Discussion_AddMessage extends Action
         if (!$this->check_captcha())
         {
             return $this->render_captcha(array('instructions' => __('discussions:captcha_instructions')));
-        }        
+        }    
+
+        $location = get_input('location');
         
         Session::set('user_name', $name);
+        Session::set('user_location', $location);
         
         $user = Session::get_loggedin_user();
+        
+        $content = Markup::sanitize_html($content, array('Envaya.Untrusted' => !$user));
         
         $time = time();
         
         $message = new DiscussionMessage();
         $message->from_name = $name;
+        $message->from_location = $location;
         $message->container_guid = $topic->guid;
         $message->subject = "RE: {$topic->subject}";            
         $message->time_posted = $time;
         $message->set_content($content, true);
+        $message->set_metadata('uuid', $uuid);
         
         if ($user)
         {
             $message->from_email = $user->email;
             $message->owner_guid = $user->guid;            
-        }        
+        } 
         $message->save();
-                
+        
+        if (!$user)
+        {
+            $message->set_session_owner();
+        }
+        
         $topic->refresh_attributes();
         $topic->save();    
         
-        $message->post_feed_items();        
+        $message->post_feed_items();
+        
+        if ($org->is_notification_enabled(Notification::Discussion)
+            && (!$user || $user->guid != $org->guid))
+        {
+            // notify site of message
+            $mail = Zend::mail(
+                sprintf(__('discussions:notification_subject', $org->language), 
+                    $message->from_name, $topic->subject
+                )   
+            );
+            $mail->setBodyHtml(view('emails/discussion_message', array('message' => $message)));
+            $org->send_mail($mail);
+        }
         
         system_message(__('discussions:message_added'));
         
