@@ -3,7 +3,11 @@
     $org = $topic->get_container_entity();
     $user = Session::get_loggedin_user();  
     
-    ob_start();
+    echo "<div class='section_content padded'>";
+    
+    echo "<h3><a href='{$topic->get_url()}' style='color:#333'>".escape($topic->subject)."</a></h3>";
+    echo "<div style='font-weight:bold;padding-bottom:8px'>".__('discussions:add_message')."</div>";
+
 ?>
 <form method='POST' action='<?php echo $topic->get_url(); ?>/add_message'>
 
@@ -37,11 +41,5 @@
 </script>
 
 <?php
-    $content = ob_get_clean();
-        
-    echo view('section', array(
-        'header' => escape($topic->subject), 
-        'content' => $content
-    ));
-    
+    echo "</div>";
 ?>

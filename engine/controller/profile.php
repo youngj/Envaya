@@ -5,6 +5,8 @@ class Controller_Profile extends Controller
     protected $org;
     protected $user;
     
+    protected $show_next_steps = false;
+    
     function get_org()
     {
         return $this->org;
@@ -71,6 +73,8 @@ class Controller_Profile extends Controller
 
         $viewOrg = $org->can_view();
 
+        $this->show_next_steps = $this->org->guid == Session::get_loggedin_userid();
+        
         if ($widget && $widget->widget_name == 'home')
         {
             $subtitle = $widget->title ? $widget->translate_field('title', false) : $org->get_location_text(false);
@@ -229,7 +233,7 @@ class Controller_Profile extends Controller
                 $preBody .= view("org/comm_box", array('entity' => $org));
             }
 
-            if ($this->show_next_steps())
+            if ($this->show_next_steps)
             {
                 $preBody .= view("org/setupNextStep", array('entity' => $org));
             }
@@ -237,11 +241,6 @@ class Controller_Profile extends Controller
         return $preBody;
     }
 
-    function show_next_steps()
-    {
-        return $this->org->guid == Session::get_loggedin_userid();
-    }
-        
     function index_help()
     {
         $this->require_editor();

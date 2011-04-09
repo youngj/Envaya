@@ -12,6 +12,11 @@
         
     ob_start();
 
+    if ($count == 0)
+    {
+        echo "<div class='instructions'>".__('discussions:about')."</div>";
+    }
+    
     $elements = array();
     
     foreach ($topics as $topic)

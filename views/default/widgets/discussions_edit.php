@@ -4,7 +4,6 @@
          
     ob_start();           
         
-    
     /*
     echo "<a href='{$widget->get_edit_url()}?action=add_list'>".__('discussions:add_list')."</a><br />";    
     

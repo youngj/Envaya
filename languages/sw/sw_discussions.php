@@ -2,7 +2,6 @@
 
 return array(
     'discussions:title' => "Majadiliano",
-    'discussions:topics' => "Mada",
     'discussions:add_message' => "Ongeza Ujumbe",
     'discussions:add_topic' => "Ongeza Mada Mpya",
     'discussions:no_topics' => "Shirika hili halijakuwa na majadiliano yoyote.",
@@ -21,7 +20,7 @@ return array(
     'discussions:publish_message' => "Chapisha ujumbe",
     'discussions:message_added' => "Ujumbe wako umeongezwa katika mada.",
     'discussions:message_deleted' => "Ujumbe umefutwa.",
-    'discussions:back_to_topics' => "Nyuma kwa majadiliano yote",
+    'discussions:back_to_topics' => "Nyuma kwa mada zote",
     'discussions:back_to_messages' => "Nyuma kwa ujumbe",
     'discussions:feed_heading_topic' => "%s ina mada mpya kuhusu %s.",
     'discussions:feed_heading_message' => "%s ina ujumbe mpya katika mada %s.",
@@ -30,4 +29,5 @@ return array(
     'discussions:notification_subject' => "%s ameongeza ujumbe mpya katika %s",
     'discussions:notification_topic_subject' => "%s ameongeza mada mpya kuhusu %s",
     'discussions:message_deleted_marker' => "[ujumbe umefutwa]",
+    'discussions:about' => "Ukurasa huu unaruhusu watu wowote &ndash; kutoka shirika lako au mashirika mengine, kutoka jumuiya yako au duniani kote &ndash; kushirikana na kujadiliana mada zinazohusu shirika lako na shughuli yake.",
 );
