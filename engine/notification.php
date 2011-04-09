@@ -13,7 +13,7 @@ class Notification
 	
 	static function all()
 	{
-		return array(static::Batch, static::Comments, static::Network);
+		return array(static::Batch, static::Comments, static::Network, static::Discussion);
 	}
 	
 	static function get_options()

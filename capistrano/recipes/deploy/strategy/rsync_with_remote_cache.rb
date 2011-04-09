@@ -36,7 +36,7 @@ module Capistrano
           define_method(attribute) { configuration[attribute] || default_value }
         end
         
-        default_attribute :rsync_options, '-az --delete --delete-excluded --chmod=u+r,g+r,o+r'
+        default_attribute :rsync_options, '-az --delete --delete-excluded --chmod=u+rx,g+rx,o+rx'
         default_attribute :local_path, '.'
         default_attribute :repository_cache, 'cached-copy'
 
