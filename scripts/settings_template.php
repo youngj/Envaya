@@ -5,5 +5,5 @@ return array(
     'dbpass' => '',
     'dbname' => 'envaya',
     'dbhost' => 'localhost',
-    'admin_email' => "admin@localhost",
+    'admin_email' => "root@localhost",
 );

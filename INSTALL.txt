@@ -13,7 +13,11 @@ starting from a base OS installation.
 # step 2: create your local config file
 php scripts/install_settings.php
 
-# optionally, edit config/local.php to provide desired database settings
+# edit config/local.php, setting admin_email to your own email address
+# and providing the desired database settings, any overriding other
+# settings from config/default.php as necessary. in particular, you will need to 
+# define the smtp_* settings for email sending to work, or set mock_mail_file
+# to have mail written to a local file for testing.
 
 # step 3: create empty database and default user
 php scripts/db_setup.php | mysql
@@ -39,9 +43,6 @@ php scripts/install_test_data.php
 # step 7: make compressed CSS and JS files
 php scripts/make.php
 
-# optional: create admin users with custom username/password
-php scripts/create_admin.php
-
 # optional (only for testing computers): install dependencies for selenium tests
 sudo aptitude install x-window-system-core gnome-core gdm
 # reboot into gui
@@ -57,7 +58,8 @@ Manual Installation
 
 Envaya can also be set up on Windows or Mac, although there are currently no
 scripts for installing the prerequisites / services / configuration files
-(replacing step 1 and step 5 above).
+(replacing step 1 and step 5 above). However, see the next section for
+more detailed instructions for Windows.
 
 For development environments, "php runserver.php" can be used instead of
 installing kestrel, queueRunner, and phpCron as system services.
@@ -80,6 +82,84 @@ PHP extensions:
 Apache or Nginx
 mod_php or FastCGI
 Mysql
+
+====================================================================
+Manual installation for development environment with WAMP on Windows
+--------------------------------------------------------------------
+
+# install wampserver: http://www.wampserver.com/en/ (directions assume install dir is c:\wamp)
+
+# install java jdk 6: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+
+# install cygwin: http://cygwin.com/install.html (directions assume install dir is c:\cygwin)
+# install cygwin packages: rsync, openssh, mcrypt, git
+
+# add c:\cygwin\bin;C:\wamp\bin\php\php5.3.0;C:\wamp\bin\mysql\mysql5.1.36\bin to PATH
+
+# create a ssh keypair for your computer
+# run cygwin shell as administrator
+ssh-keygen
+cp .ssh/id_rsa.pub .
+notepad id_rsa.pub
+# (copy this public key to github or wherever you need it)
+
+# download envaya code to c:/wamp/www/envaya, e.g.:
+cd c:\wamp\www\
+git clone git@github.com:youngj/Envaya.git envaya
+
+# edit C:\wamp\bin\apache\Apache2.2.11\conf\httpd.conf, and add:
+DocumentRoot "c:/wamp/www/envaya"
+LoadModule rewrite_module modules/mod_rewrite.so
+
+# install memcache library from http://downloads.php.net/pierre/php_memcache-cvs-20090703-5.3-VC6-x86.zip
+# copy dll to php extension dir: C:\wamp\bin\php\php5.3.0\ext
+
+# edit php.ini twice (C:\wamp\bin\apache\Apache2.2.11\bin\php.ini and C:\wamp\bin\php\php5.3.0\php.ini), and add:
+extension=php_memcache.dll
+extension=php_curl.dll
+extension=php_gd2.dll
+extension=php_mbstring.dll
+extension=php_pdo_mysql.dll
+variables_order="GPCSE"
+
+# from PEAR directory C:\wamp\bin\php\php5.3.0\PEAR
+php -d phar.require_hash=0 go-pear.phar
+pear upgrade pear
+pear channel-discover pear.phpunit.de
+pear channel-discover components.ez.no
+pear channel-discover pear.symfony-project.com
+pear install phpunit/PHPUnit
+
+# copy to apache php.ini:
+;***** Added by go-pear
+include_path=".;C:\wamp\bin\php\php5.3.0\PEAR\pear"
+;*****
+
+# download sphinx 1.10: http://sphinxsearch.com/files/sphinx-1.10-beta-win32.zip
+# extract to c:/sphinx
+# create c:/sphinx/log directory
+
+# create local config file:
+php scripts/install_settings.php
+
+# add to config/local.php:
+    'sphinx_conf_dir' => 'C:/sphinx',
+    'sphinx_bin_dir' => 'C:/sphinx/bin',
+    'sphinx_log_dir' => 'C:/sphinx/log',
+    'sphinx_pid_dir' => 'C:/sphinx/log',
+# (also, edit database connection settings)
+
+# create empty database and user (may need to specify mysql password; could also do this manually)
+php scripts/db_setup.php | mysql
+
+# install database tables and initial data
+php scripts/install.php
+
+# create sphinx config file and initial index
+php scripts/install_sphinx.php
+
+# install test data:
+php scripts/install_test_data.php
 
 ==============================
 Deploying releases to a server

@@ -51,7 +51,7 @@
 
     function is_email_address($address)
     {
-        return preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+\.[A-Z]{2,4}$/i', $address, $matches);
+        return preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+$/i', $address, $matches);
     }
 	
     /**

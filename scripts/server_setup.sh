@@ -41,6 +41,8 @@ chmod 777 /var/nginx/cache
 
 mkdir -p /var/elgg-data
 chmod 777 /var/elgg-data
+touch /var/elgg-data/last_error_time
+chmod 777 /var/elgg-data/last_error_time
 
 cat <<EOF > /etc/php5/fpm/php5-fpm.conf
 
