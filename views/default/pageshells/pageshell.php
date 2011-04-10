@@ -8,6 +8,7 @@
      */
 
     header("Content-type: text/html; charset=UTF-8");
+
     echo view('page_elements/header', $vars);
     if (!@$vars['no_top_bar']) 
     {

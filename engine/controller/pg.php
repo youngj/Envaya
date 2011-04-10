@@ -144,11 +144,14 @@ class Controller_Pg extends Controller {
             $container->save();
 
             system_message(__('comment:deleted'));
+            
+            forward($container->get_url());
         }
         else
         {
             register_error(__('comment:not_deleted'));
         }
+        
         forward_to_referrer();
     }
 
@@ -274,4 +277,10 @@ class Controller_Pg extends Controller {
             )
         ),  array('no_top_bar' => true));
     }    
+    
+    function action_confirm_action()
+    {
+        $action = new Action_ConfirmAction($this);
+        $action->execute();
+    }
 }

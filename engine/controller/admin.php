@@ -312,7 +312,7 @@ class Controller_Admin extends Controller
 
         try
         {
-            $new_user = register_user($username, $password, $name, $email, true);
+            $new_user = register_user($username, $password, $name, $email);
             if ($admin != null)
             {
                 $new_user->admin = true;
@@ -338,7 +338,7 @@ class Controller_Admin extends Controller
 
         forward_to_referrer();
     }
-
+    
     function action_approve()
     {
         $this->validate_security_token();

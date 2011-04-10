@@ -48,7 +48,7 @@ abstract class Controller {
     }
     
     public function page_draw($title, $body, $vars = null)
-    {    
+    {        
         if (get_input('__topbar') == '0')
         {
             $this->page_draw_vars['no_top_bar'] = true;
@@ -64,11 +64,11 @@ abstract class Controller {
         PageContext::add_submenu_item(__('donate'), "/envaya/page/contribute", 'footer');    
     }
 
-    public function validate_security_token()
+    public function validate_security_token($require_session = false)
     {
         try
         {
-            validate_security_token();
+            validate_security_token($require_session);
         }
         catch (SecurityException $ex)
         {
@@ -79,7 +79,6 @@ abstract class Controller {
         $user = Session::get_loggedin_user();
         if ($user)
         {
-
             $user->last_action = time();
             $user->save();
         }        

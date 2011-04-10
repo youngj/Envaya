@@ -1,7 +1,7 @@
 <?php
 
     /**
-     * A link that displays a confirmation dialog before it executes
+     * A link that displays a confirmation dialog before it executes a POST request
      *
      * @uses $vars['text'] The text of the link
      * @uses $vars['href'] The address
@@ -10,13 +10,8 @@
      */
 
     $confirm = @$vars['confirm'] ?:__('areyousure');
-
-    $link = $vars['href'];
-
-    if ($vars['is_action'])
-    {
-        $link = view('output/post_url', array('href' => $link));
-    }
+    
+    $link = view('output/post_url', array('href' => $vars['href']));
 
     if (@$vars['class']) {
         $class = 'class="' . $vars['class'] . '"';

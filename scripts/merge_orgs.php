@@ -22,7 +22,7 @@ if (sizeof($argv) != 3 || isset($opts['h']))
 
 function get_org($username)
 {
-    $org = Organization::query(true)->where('username = ?', $username)->get();
+    $org = Organization::query()->where('username = ?', $username)->get();
 
     if (!$org)
     {

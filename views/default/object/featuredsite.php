@@ -33,7 +33,6 @@ if (Session::isadminloggedin())
     { 
         echo view('output/confirmlink', array(
                 'text' => __('featured:activate'),
-                'is_action' => true,
                 'href' => "admin/activate_featured?guid={$entity->guid}"
             ));        
     } 
@@ -54,7 +53,6 @@ if (Session::isadminloggedin())
     <?php
     echo view('output/confirmlink', array(
         'text' => __('delete'),
-        'is_action' => true,
         'href' => "admin/delete_entity?guid={$entity->guid}"
     ));        
     ?>

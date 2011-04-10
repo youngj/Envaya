@@ -17,7 +17,6 @@ if ($org_domain_names)
         echo view('output/confirmlink', array(
             'text' => "(".__('delete').")",
             'href' => "{$org->get_url()}/delete_domain?id={$org_domain_name->id}",
-            'is_action' => true            
         ));
         echo "</span></li>";
     }

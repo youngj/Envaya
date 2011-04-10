@@ -6,6 +6,10 @@
  */
 class GeoIP
 {
+    // world regions
+    const Africa = 1;
+    const Unknown = 9;
+
     static $country_code;
 
     static function get_country_code()
@@ -52,5 +56,16 @@ class GeoIP
     static function is_supported_country()
     {
         return static::get_country_code() == 'TZ';
+    }
+    
+    static function get_world_region()
+    {
+        $country_code = static::get_country_code();
+        
+        if (preg_match('/^(D[ZJ]|AO|B[JWFI]|C[MVFDGI]|T[DZN]|K[ME]|E[GRTH]|G[QAMHNW]|L[SRY]|M[GWLRUAZ]|N[AEG]|RW|S[NLODZ]|Z[AMW]|UG)$/', $country_code))
+        {
+            return static::Africa;            
+        }
+        return static::Unknown;
     }
 }

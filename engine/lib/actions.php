@@ -4,13 +4,13 @@
      *
      * @return unknown
      */
-    function validate_security_token()
+    function validate_security_token($require_session = false)
     {
         $token = get_input('__token');
         $ts = get_input('__ts');
         $session_id = Session::id();
         
-        if (!$token && $ts && !$session_id)
+        if (!$require_session && !$token && $ts && !$session_id)
         {
             // user does not have a session; expect an empty token
             return;

@@ -6,12 +6,12 @@
  */
 class Organization extends User
 {
-    static function query($show_unapproved = false)
+    static function query()
     {
-        $query = User::query($show_unapproved);
+        $query = User::query();
         $query->where("subtype=?", static::get_subtype_id());
         return $query;
-    }    
+    }
 
     public function is_setup_complete()
     {
@@ -383,11 +383,11 @@ class Organization extends User
     static function query_sector_region($sector, $region)
     {
         $query = static::query();
-        
+        $query->where_visible_to_user();     
+             
         if ($sector)
         {
-            $query->join("INNER JOIN org_sectors s ON s.container_guid = e.guid");
-            $query->where("s.sector_id=?", $sector);
+            $query->with_sector($sector);
         }
 
         if ($region)
@@ -439,7 +439,6 @@ class Organization extends User
             $sql_guids = implode(',',$org_guids);
          
             $query = static::query();
-        
             $query->where("e.guid in ($sql_guids)");
             $query->order_by("FIND_IN_SET(e.guid, '$sql_guids')", true);
         }
@@ -453,6 +452,8 @@ class Organization extends User
 
         $query = static::query_search($name, $sector, $region);
         
+        $query->where_visible_to_user();
+
         $query->limit($limit, $offset);
        
         return view('search/results_list', array(
@@ -461,23 +462,6 @@ class Organization extends User
             'offset' => $offset,
             'limit' => $limit,
         ));
-    }
-
-    static function query_by_area($latLongArr, $sector)
-    {
-        $query = static::query();
-        $query->where("latitude >= ?", $latLongArr[0]);
-        $query->where("latitude <= ?", $latLongArr[2]);
-        $query->where("longitude >= ?", $latLongArr[1]);
-        $query->where("longitude <= ?", $latLongArr[3]);
-
-        if ($sector)
-        {
-            $query->join("INNER JOIN org_sectors s ON s.container_guid = e.guid");
-            $query->where("s.sector_id=?", $sector);
-        }
-
-        return $query;
     }
     
     function render_email_template($template)

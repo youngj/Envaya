@@ -12,7 +12,6 @@
             'text' => __('delete'),
             'confirm' => sprintf(__('discussions:confirm_remove_topic'), $list->address),
             'href' => "{$topic->get_url()}/edit?delete=1",
-            'is_action' => true,
     ));
     
     echo "</div>";

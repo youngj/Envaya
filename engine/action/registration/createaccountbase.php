@@ -59,7 +59,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
 
         if (!get_input('ignore_possible_duplicates'))
         {
-            $dups = Organization::query(true)
+            $dups = Organization::query()
                 ->where("(username = ? OR (email = ? AND ? <> '') OR INSTR(name,?) > 0 OR INSTR(?,name) > 0)", 
                     $username, $email, $email, $name, $name)
                 ->filter();  

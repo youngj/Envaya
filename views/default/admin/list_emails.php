@@ -20,7 +20,6 @@
             
                 echo view('output/confirmlink', array(
                     'text' => 'Activate',
-                    'is_action' => true,
                     'href' => "admin/activate_email?email={$email->guid}"
                 ));
             

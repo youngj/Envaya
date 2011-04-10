@@ -12,7 +12,6 @@
         echo "<a href='/admin/edit_featured_photo?guid={$photo->guid}'>Edit</a><br />";
         echo view('output/confirmlink', array(
             'text' => 'Delete',
-            'is_action' => true,
             'href' => "admin/delete_featured_photo?guid={$photo->guid}"
         ));
         echo "</div>";

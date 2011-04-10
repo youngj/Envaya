@@ -26,7 +26,6 @@
             'text' => __('delete'),
             'confirm' => sprintf($relationship->__('confirm_delete'), $relationship->get_subject_name()),
             'href' => "{$widget->get_edit_url()}?action=delete_relationship&guid={$relationship->guid}",
-            'is_action' => true,
     ));
     
     echo "</div>";

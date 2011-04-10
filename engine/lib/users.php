@@ -138,17 +138,15 @@
     }
 
     /**
-     * Registers a user, returning false if the username already exists
+     * Registers a user
      *
      * @param string $username The username of the new user
      * @param string $password The password
      * @param string $name The user's display name
      * @param string $email Their email address
-     * @param bool $allow_multiple_emails Allow the same email address to be registered multiple times?
-     * @param int $friend_guid Optionally, GUID of a user this user will friend once fully registered
      * @return int|false The new user's GUID; false on failure
      */
-    function register_user($username, $password, $name, $email, $allow_multiple_emails = false, $friend_guid = 0, $invitecode = '') 
+    function register_user($username, $password, $name, $email) 
     {
         $username = trim($username);
         $password = trim($password);
@@ -168,21 +166,13 @@
             throw new RegistrationException(__('registration:userexists'));
         }
 
-        // If we're not allowed multiple emails then see if this address has been used before
-        if ((!$allow_multiple_emails) && (User::query(true)->where('email = ?', $email)->count() > 0))
-        {
-            throw new RegistrationException(__('registration:dupeemail'));
-        }
-
         $user = new User();
         $user->username = $username;
         $user->email = $email;
         $user->name = $name;
         $user->set_password($password);
-        $user->owner_guid = 0; // Users aren't owned by anyone, even if they are admin created.
-        $user->container_guid = 0; // Users aren't contained by anyone, even if they are admin created.
         $user->save();
 
         return $user;
     }
-
+    

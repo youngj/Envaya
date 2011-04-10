@@ -10,7 +10,7 @@ $password = prompt_default("Admin password", "testtest");
 $name = prompt_default("Admin name", "Test Admin");
 $email = prompt_default("Admin email", '');
 
-$new_user = register_user($username, $password, $name, $email, true);
+$new_user = register_user($username, $password, $name, $email);
 $new_user->admin = true;    
 $new_user->save();
 echo "Admin created\n";

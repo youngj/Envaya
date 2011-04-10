@@ -11,7 +11,6 @@
             'text' => __('delete'),
             'confirm' => __('discussions:confirm_remove_message'),
             'href' => "{$topic->get_url()}/delete_message?guid={$message->guid}",
-            'is_action' => true,
     ));
     
     echo "</div>";

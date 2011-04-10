@@ -51,7 +51,6 @@
 
             echo "<td><a href='{$update->get_url()}/edit?from=$escUrl'>".__("edit")."</a></td>";
             echo "<td>".view('output/confirmlink', array(
-                'is_action' => true,
                 'href' => "{$update->get_url()}/edit?delete=1",
                 'confirm' => __('blog:delete:confirm'),
                 'text' => __('delete')

@@ -7,7 +7,7 @@ class Action_EmailSettings extends Action
         $email = get_input('email');
         $code = get_input('code');
         $notifications = get_bit_field_from_options(get_input_array('notifications'));
-        $users = User::query(true)->where('email = ?', $email)->filter();
+        $users = User::query()->where('email = ?', $email)->filter();
 
         foreach ($users as $user)
         {
@@ -24,7 +24,7 @@ class Action_EmailSettings extends Action
     {
         $email = get_input('e');
         $code = get_input('c');
-        $users = User::query(true)->where('email = ?', $email)->filter();
+        $users = User::query()->where('email = ?', $email)->filter();
 
         $title = __("user:notification:label");
 

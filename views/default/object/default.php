@@ -12,7 +12,6 @@
     {
         $controls .= " (".view('output/confirmlink', array(
             'text' => __('delete'),
-            'is_action' => true,
             'href' => "admin/delete_entity?guid={$entity->guid}"
         )).")";        
     }

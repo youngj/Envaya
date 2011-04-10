@@ -1,5 +1,7 @@
 <?php
-    $developingVersion = GeoIP::is_supported_country();
+    $region = GeoIP::get_world_region();
+    $is_africa = ($region == GeoIP::Africa);
+    $is_supported = GeoIP::is_supported_country();
     
     $defaultPhoto = "/_graphics/home/banner_planting.jpg?v5";
     
@@ -37,9 +39,9 @@
 
 <?php 
 
-if ($developingVersion)
+if ($is_africa)
 {
-    echo sprintf(__('home:heading_html_developing'), GeoIP::get_country_name()); 
+    echo __('home:heading_html_africa');
 }
 else
 {
@@ -57,7 +59,7 @@ else
     <div id='home_caption_shadow' class='slideshow_shadow'></div>
     <div id='home_slideshow_controls' class='slideshow_controls'></div>    
     <div id='home_follow_container'>
-    <?php if (!$developingVersion) { ?>
+    <?php if (!$is_supported) { ?>
         <div class='home_follow'><?php echo __('home:follow'); ?></div>
     <?php } ?>
         <a title='Facebook' href='http://www.facebook.com/Envaya' class='home_follow_icon home_follow_fb'></a>
@@ -73,7 +75,7 @@ slideshow(<?php echo FeaturedPhoto::get_json_array(); ?>, <?php echo json_encode
 <div class='home_donate_sticker'>
 
 <?php
-    if ($developingVersion)
+    if ($is_supported)
     {
 ?>
 
@@ -110,9 +112,9 @@ slideshow(<?php echo FeaturedPhoto::get_json_array(); ?>, <?php echo json_encode
     <div class='home_about'>   
 <?php 
 
-    if ($developingVersion)
+    if ($is_africa)
     {
-        echo view('home/about_developing'); 
+        echo view('home/about_africa'); 
     }
     else 
     {

@@ -261,18 +261,10 @@ class User extends Entity
         $this->password = $this->generate_password($password);
     }
 
-    static function query($show_unapproved = false)
+    static function query()
     {
-        $query = new Query_SelectEntity('users_entity');
-        
-        if (!Session::isadminloggedin() && !$show_unapproved)
-        {
-            $query->where("(approval > 0 || e.guid = ?)", Session::get_loggedin_userid());
-        }
-        
-        return $query;
+        return new Query_SelectUser('users_entity');
     }
-
 
     public function js_properties()
     {

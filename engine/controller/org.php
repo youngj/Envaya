@@ -72,14 +72,19 @@ class Controller_Org extends Controller
             
             if ($latlong)
             {
-                $vars['nearby'] = Organization::query_by_area(
-                    array(
+                    $query = Organization::query();
+                    $query->in_area(
                         $latlong['lat'] - 1.0, 
                         $latlong['long'] - 1.0, 
                         $latlong['lat'] + 1.0, 
                         $latlong['long'] + 1.0
-                    ),    
-                    $sector)->limit(1)->get() != null;
+                    );
+                    if ($sector)
+                    {
+                        $query->with_sector($sector);
+                    }
+                    $vars['nearby'] = ($query->limit(1)->get() != null);
+            
                 $vars['latlong'] = $latlong;
             }            
 
@@ -315,7 +320,16 @@ class Controller_Org extends Controller
         $longMax = get_input('longMax');
         $sector = get_input('sector');
 
-        $orgs = Organization::query_by_area(array($latMin, $longMin, $latMax, $longMax), $sector)->filter();
+        $query = Organization::query();
+        
+        $query->in_area($latMin, $longMin, $latMax, $longMax);        
+        if ($sector)
+        {
+            $query->with_sector($sector);                                        
+        }
+        $query->where_visible_to_user();
+
+        $orgs = $query->filter();
 
         $orgJs = array();
 

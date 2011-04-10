@@ -28,7 +28,6 @@
         if (Session::isadminloggedin()) {
             echo "<span class='admin_links'>";
             echo view('output/confirmlink', array(
-                'is_action' => true,
                 'href' => "/admin/delete_feed_item?item={$feedItem->id}",
                 'text' => __('delete')
             ));

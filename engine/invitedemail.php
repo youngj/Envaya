@@ -38,7 +38,7 @@ class InvitedEmail extends Model
     
     function can_send_invite()
     {
-        if (Organization::query(true)->where('email = ?', $this->email)->count() > 0) 
+        if (Organization::query()->where('email = ?', $this->email)->count() > 0) 
         {
             // avoid inviting people who are already registered
             return false;

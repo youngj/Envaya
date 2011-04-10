@@ -43,7 +43,6 @@ if ($entity->is_enabled())
         {
             echo "<span class='admin_links'>";
             echo view('output/confirmlink', array(
-                'is_action' => true,
                 'href' => "/pg/delete_comment?comment={$entity->guid}",
                 'text' => __('delete'),
                 'confirm' => __('comment:confirm_delete')

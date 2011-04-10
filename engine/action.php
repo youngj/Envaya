@@ -19,6 +19,7 @@ abstract class Action
     function __construct($controller)
     {
         $this->controller = $controller;
+        if (!$controller) { throw new Exception("controller is null"); }
     }
         
     public function __call($name, $arguments)
