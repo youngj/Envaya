@@ -408,22 +408,23 @@ class RegisterTest extends SeleniumTest
         {
             try
             {
-                $this->clickAndWait("//a[contains(@href,'approval=0')]");
+                $this->click("//a[contains(@href,'approval=0')]");
                 $this->getConfirmation();
+                $this->waitForPageToLoad(10000);
             }
             catch (Testing_Selenium_Exception $ex) {}
-            sleep(1);
 
             try
             {
-                $this->clickAndWait("//a[contains(@href,'approval=-1')]");
+                $this->click("//a[contains(@href,'approval=-1')]");
                 $this->getConfirmation();
+                $this->waitForPageToLoad(10000);
             }
             catch (Testing_Selenium_Exception $ex) {}
 
-            sleep(1);
-            $this->clickAndWait("//a[contains(@href,'delete')]");
+            $this->click("//a[contains(@href,'delete')]");
             $this->getConfirmation();
+            $this->waitForPageToLoad(10000);            
 
             $this->ensureGoodMessage();
             try

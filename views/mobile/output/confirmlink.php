@@ -7,8 +7,8 @@
 
     $url = "/pg/confirm_action?ok=".urlencode($vars['href'])
         ."&cancel=".urlencode($_SERVER['REQUEST_URI'])
-        ."&message=".urlencode(escape($confirm))
+        ."&message=".urlencode($confirm)
         ."&__token=$token&__ts=$ts";
 
 ?>
-<a href='<?php echo $url; ?>' class='<?php echo @$vars['class']; ?>'><?php echo escape($vars['text']); ?></a>
+<a href='<?php echo escape($url); ?>' class='<?php echo @$vars['class']; ?>'><?php echo escape($vars['text']); ?></a>

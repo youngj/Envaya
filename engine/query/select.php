@@ -31,6 +31,7 @@ class Query_Select
     protected $joins;
     protected $group_by;
     protected $row_function;
+    protected $is_finalized = false;
 
     function __construct($from = null)
     {
@@ -149,14 +150,9 @@ class Query_Select
         return $this;
     }
     
-    function _where()
-    {
-        return $this->conditions;
-    }
-    
-    function _query($columns)
-    {
-        $conditions = $this->_where();
+    protected function get_query($columns)
+    {    
+        $conditions = $this->conditions;
         $conditions[] = '(1=1)';
         $where = implode($conditions, ' AND ');        
         
@@ -177,15 +173,32 @@ class Query_Select
         }
     }
     
+    protected function finalize_query()
+    {
+        // override to adjust things immediately before the actual query is generated        
+    }
+    
+    private function _finalize_query()
+    {    
+        if (!$this->is_finalized)
+        {
+            $this->finalize_query();
+            $this->is_finalized = true;
+        }                    
+    }
+    
     function count()
     {
-        $total = Database::get_row($this->_query("COUNT(*) as total"), $this->args);
-        return $total->total;
+        $this->_finalize_query();
+        $total = Database::get_row($this->get_query("COUNT(*) as total"), $this->args);
+        return (int)$total->total;
     }
     
     function filter()
-    {    
-        $query = $this->_query($this->columns);
+    {        
+        $this->_finalize_query();
+    
+        $query = $this->get_query($this->columns);
     
         if ($this->order_by)
         {
@@ -211,7 +224,10 @@ class Query_Select
     
     function get()
     {
+        $this->limit = 1;
+    
         $res = $this->filter();
+        
         if (!empty($res))
         {
             return $res[0];

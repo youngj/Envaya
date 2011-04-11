@@ -7,7 +7,14 @@
     --test=TestClass1 --test=TestClass2 (from testcases directory, omit to run all test cases)
     --browser=*browser (selenium browser expression, omit to use *firefox)
     
-    Assumes that http://localhost is running Envaya code, and no other Envaya services are running on localhost.
+    Assumes that http://localhost is running Envaya code, and no other Envaya services are running on localhost.    
+    
+    In Firefox, tries to run tests with Flash disabled.
+    
+    Firefox does not make it easy to programmatically disable plugins like Flash.
+    On Windows, the path to Flash's DLL in test/profiles/noflash/pluginreg.dat must be exactly the same (case sensitive) as:
+        registry key: HKEY_LOCAL_MACHINE\SOFTWARE\MozillaPlugins\@adobe.com/FlashPlayer ; 
+        value name: Path    
 */
 
 chdir(__DIR__);

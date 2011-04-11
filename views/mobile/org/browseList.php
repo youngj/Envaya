@@ -9,8 +9,11 @@ echo view('org/current_filter', array('sector' => $sector, 'region' => $region, 
 
 <div class='padded'>
 <?php
+$res = view('org/search_list', array(    
+    'sector' => $sector,
+    'region' => $region
+));
 
-$res = Organization::list_search($name=null, $sector, $region, $limit = 10);   
 if ($res)
 {
     echo $res;

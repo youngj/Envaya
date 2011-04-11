@@ -88,7 +88,10 @@ class Controller_Org extends Controller
                 $vars['latlong'] = $latlong;
             }            
 
-            $vars['results'] = Organization::list_search($query, $sector, $region=null, $limit = 10);            
+            $vars['results'] = view('org/search_list', array(
+                'fulltext' => $query,
+                'sector' => $sector,
+            ));
             
             $content = view('org/search_results', $vars);
         }
@@ -149,7 +152,7 @@ class Controller_Org extends Controller
         {            
             if ($name)
             {
-                $orgs_by_name = Organization::query_search($name)->limit(2)->filter();
+                $orgs_by_name = Organization::query()->fulltext($name)->limit(2)->filter();
             }
         }
             

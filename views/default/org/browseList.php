@@ -56,7 +56,11 @@ echo view('input/pulldown', array(
 
 <?php
 
-$res = Organization::list_search($name=null, $sector, $region, $limit = 10);   
+$res = view('org/search_list', array(
+    'sector' => $sector,
+    'region' => $region
+));
+
 if ($res)
 {
     echo $res;

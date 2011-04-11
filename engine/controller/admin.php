@@ -224,7 +224,7 @@ class Controller_Admin extends Controller
             
             $return .= view('search/results_list', array(
                 'entities' => $users,
-                'count' => $count(),
+                'count' => $count,
                 'offset' => $offset,
                 'limit' => $limit,
             ));            

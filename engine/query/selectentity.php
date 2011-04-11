@@ -22,19 +22,17 @@ class Query_SelectEntity extends Query_Select
     }
     
     function show_disabled($show_disabled = true)
-    {
+    {    
         $this->show_disabled = $show_disabled;
         return $this;
     }
     
-    function _where()
-    {
-        $conditions = $this->conditions;
+    protected function finalize_query()
+    {        
         if (!$this->show_disabled)
         {
-            $conditions[] = "status <> 0";
-        }   
-        return $conditions;        
+            $this->where('status <> 0');
+        }
     }
     
     function with_metadata($meta_name, $meta_value = null)
