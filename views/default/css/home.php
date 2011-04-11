@@ -16,7 +16,7 @@
 
 #content
 {
-    background:url(<?php echo $graphicsDir ?>/bg_combined.gif) no-repeat left top;
+    background:url(<?php echo $graphicsDir ?>/bg_combined.png) no-repeat left top;
     margin-top:5px;
     padding-top:27px;
     background-color:#fff;
@@ -24,19 +24,15 @@
 
 #content_mid
 {
-    background:url(<?php echo $graphicsDir ?>/bg_combined.gif) repeat-y right top;
+    background:url(<?php echo $graphicsDir ?>/bg_combined.png) repeat-y right top;
     padding-left:31px;
     padding-right:31px;
 }
 
 #content_bottom
 {
-    background:url(<?php echo $graphicsDir ?>/bg_combined.gif) no-repeat -882px bottom;
+    background:url(<?php echo $graphicsDir ?>/bg_combined.png) no-repeat -882px bottom;
     height:21px;
-}
-
-.home_content_bg
-{
 }
 
 #home_banner
@@ -56,17 +52,17 @@
     background:#333;
 }
 
-.home_donate_sticker
+.home_sticker
 {
     position:absolute;
     bottom:0px;
     left:50px;
     width:234px;
     height:150px;    
-    background:url(<?php echo $graphicsDir ?>/donate_sticker.jpg) no-repeat left top;
+    background:url(<?php echo $graphicsDir ?>/sticker.jpg) no-repeat left top;
 }
 
-.home_donate_difference, .home_get_website
+.home_sticker_label
 {
     padding-top:33px;
     padding-left:15px;
@@ -77,23 +73,23 @@
     font-size:16px;
 }
 
-.home_donate_button
+.home_button
 {
     margin-top:15px;
     margin-left:40px;
     display:block;
     width:142px;
     height:43px;
-    background:url(<?php echo $graphicsDir ?>/donate.gif) no-repeat left top;    
+    background:url(<?php echo $graphicsDir ?>/bigbutton.png) no-repeat left top;    
 }
 
-.home_donate_button:hover
+.home_button:hover
 {
     text-decoration:none;
     background-position:left -45px;    
 }
 
-.home_donate_button span
+.home_button span
 {
     text-align:center;
     display:block;
@@ -117,7 +113,7 @@
 .home_follow_icon
 {
     position:absolute;
-    background:url(<?php echo $graphicsDir ?>/facebook.gif) no-repeat left top;
+    background:url(<?php echo $graphicsDir ?>/facebook.png) no-repeat left top;
     display:block;
     width:36px;
     height:36px;
@@ -208,7 +204,7 @@
 
 .icon_link
 {
-    background:url(<?php echo $graphicsDir; ?>/homeicons.gif) no-repeat left top;
+    background:url(<?php echo $graphicsDir; ?>/homeicons.png) no-repeat left top;
 }
 
 .icon_signup            { background-position:left -80px; }
@@ -232,7 +228,7 @@ a.icon_feed:hover       { background-position:left -440px; }
 .home_heading
 {
     height:42px;
-    background:url(<?php echo $graphicsDir; ?>/home_headings.gif?v2) repeat-x left top;
+    background:url(<?php echo $graphicsDir; ?>/home_headings2.gif) repeat-x left top;
     border: 1px solid black;
 }
 .home_heading h4
@@ -279,7 +275,7 @@ a.icon_feed:hover       { background-position:left -440px; }
 
 .home_bottom_left
 {
-    background:url(<?php echo $graphicsDir; ?>/anothershadow.gif) no-repeat 3px top;
+    background:url(<?php echo $graphicsDir; ?>/anothershadow.png) no-repeat 3px top;
     padding-top:16px;
 }
 

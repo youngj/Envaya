@@ -1,4 +1,4 @@
-<div id="topbar"><a href="/home"><img style='vertical-align:middle' src="/_graphics/logo_sm.gif?v5" alt="Envaya" width="120" height="25"></a>
+<div id="topbar"><a href="/home"><img style='vertical-align:middle' src="/_graphics/logo2.gif" alt="Envaya" width="120" height="25"></a>
 <?php
     if (PageContext::get_theme() == 'home') 
     {

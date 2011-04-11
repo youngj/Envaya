@@ -24,7 +24,7 @@ body
 #site_menu,
 #heading h1
 {
-    background:#fff url("<?php echo $graphicsDir; ?>/headings.gif?v2") repeat-x left bottom;
+    background:#fff url(<?php echo $graphicsDir; ?>/headings.png) repeat-x left bottom;
     height:36px;
     text-align:center;
     font-size:18px;
@@ -61,13 +61,13 @@ body
 #content_top
 {
     height:17px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v3") no-repeat -<?php echo $vars['contentWidth'] - 15 ?>px -8px;
+    background:#fff url(<?php echo $graphicsDir; ?>/plate.png) no-repeat -<?php echo $vars['contentWidth'] - 15 ?>px -8px;
 }
 
 .home #content_top
 {
     height:28px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v3") no-repeat left 0px;
+    background:#fff url(<?php echo $graphicsDir; ?>/plate.png) no-repeat left 0px;
 }
 
 
@@ -75,12 +75,12 @@ body
 {
     height:35px;
     margin-top:-10px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v3") no-repeat right bottom;
+    background:#fff url(<?php echo $graphicsDir; ?>/plate.png) no-repeat right bottom;
 }
 
 #content_mid
 {
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v3") repeat-y -<?php echo 2 * ($contentWidth - 15) ?>px top;
+    background:#fff url(<?php echo $graphicsDir; ?>/plate.png) repeat-y -<?php echo 2 * ($contentWidth - 15) ?>px top;
     padding:0px 2px;
 }
 
@@ -98,7 +98,7 @@ body
     padding:13px 0px;
     text-align:center;
     font:bold 16px Arial;
-    background:url("<?php echo $graphicsDir; ?>/home_headings.gif?v2") no-repeat left top;
+    background:url(<?php echo $graphicsDir; ?>/home_headings2.gif) no-repeat left top;
 }
 
 .section_header
@@ -133,7 +133,7 @@ body
     width:100%;
     margin-bottom:5px;
     margin-top:-10px;
-    background:#fff url("<?php echo $graphicsDir; ?>/plate.gif?v3") no-repeat -<?php $vars['contentWidth'] - 13 ?>px -16px;
+    background:#fff url(<?php echo $graphicsDir; ?>/plate.png) no-repeat -<?php $vars['contentWidth'] - 13 ?>px -16px;
 }
 
 .tab

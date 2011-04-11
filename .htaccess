@@ -22,6 +22,7 @@ DirectoryIndex index.php
 	ExpiresByType image/gif "access plus 2 years" 
     ExpiresByType image/jpeg "access plus 2 years" 
     ExpiresByType image/png "access plus 2 years" 
+    ExpiresByType image/x-icon "access plus 2 years"
 </IfModule>
 
 <IfModule mod_php5.c>

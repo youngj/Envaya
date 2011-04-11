@@ -19,18 +19,18 @@
 .content_container .thin_column
 {
     width:763px;
-    background:url(<?php echo $graphicsDir ?>/top_plate.gif?v2) no-repeat left top;
+    background:url(<?php echo $graphicsDir ?>/top_plate.png) no-repeat left top;
     padding-top:20px;
 }
 
 #content_wrapper
 {
-    background:url(<?php echo $graphicsDir ?>/mid_plate.gif?v2) repeat-y left top;
+    background:url(<?php echo $graphicsDir ?>/mid_plate.png) repeat-y left top;
 }
 
 #content_bottom
 {
-    background:url(<?php echo $graphicsDir ?>/bottom_plate.gif?v2) no-repeat left top;
+    background:url(<?php echo $graphicsDir ?>/bottom_plate.png) no-repeat left top;
     height:33px;
 }
 
@@ -65,7 +65,7 @@
 #left_sidebar a.selected
 {
     color:black;
-    background:url(<?php echo $graphicsDir ?>/menu_selected.gif) no-repeat 3px top;
+    background:url(<?php echo $graphicsDir ?>/menu_selected.png) no-repeat 3px top;
 }
 
 #heading img

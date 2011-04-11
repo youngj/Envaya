@@ -124,7 +124,7 @@ blockquote p {
 #topbar
 {
     width:100%;
-    background:#1d1d1d url("/_graphics/topgradient_sm.gif?v7") repeat-x left -1px;
+    background:#1d1d1d url(/_graphics/topgradient2.gif) repeat-x left -1px;
 }
 
 #translate_bar
@@ -369,7 +369,7 @@ blockquote p {
 
 .topbarLinks a:hover
 {
-    background:#1d1d1d url("/_graphics/topgradient_sm.gif?v7") repeat-x left -30px;
+    background:#1d1d1d url(/_graphics/topgradient2.gif) repeat-x left -30px;
     color:#e6e6e6;
     text-decoration:none;
 }
@@ -395,30 +395,21 @@ blockquote p {
 
 #loginButton
 {
+    background:#4d4d4d url(/_graphics/loginbutton.png) no-repeat left top;
     height:29px;
-}
-
-#loginButton
-{
-    background:#4d4d4d url(/_graphics/loginbutton_sm.gif?v4) no-repeat left top;
 }
 
 a#loginButton:hover
 {
-    background-position:left -41px;
+    background-position:left -33px;
 }
 
 #loggedinArea
 {
-    background:url(/_graphics/loggedinarea_rounded.gif?v2) no-repeat left -18px;
+    background:url(/_graphics/loggedinarea.png) no-repeat left -18px;
 }
 
-a#loginButton:hover
-{
-    text-decoration:none;
-}
-
-a#loginButton:hover .loginContent span
+a#loginButton:hover, a#loginButton:hover .loginText
 {
     text-decoration:none;
 }
@@ -724,7 +715,7 @@ span.contentIntro p {
 
 .submit_button div
 {
-    background: #08c url(/_graphics/buttons.gif?v3) left -32px;
+    background: #08c url(/_graphics/buttons.png) left -32px;
     display:block;
     height:32px;
     margin:0px;
@@ -733,7 +724,7 @@ span.contentIntro p {
 
 .submit_button span
 {
-    background: #08c url(/_graphics/buttons.gif?v3) right -32px; 
+    background: #08c url(/_graphics/buttons.png) right -32px; 
     display:block;
     height:24px;
     padding-top:8px;

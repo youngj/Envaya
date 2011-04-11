@@ -79,7 +79,7 @@ body
 {
     padding:4px;
     vertical-align:middle;
-    background:url(<?php echo $graphicsDir; ?>/loggedinarea_rounded.gif?v2) no-repeat -20px -20px;
+    background:url(<?php echo $graphicsDir; ?>/loggedinarea.png) no-repeat -20px -20px;
 }
 
 .dashboard_text_link
