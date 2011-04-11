@@ -23,7 +23,7 @@
 <div id='home_banner'>
 <div class='home_banner_text'>
 <div style='text-align:center;padding-top:10px;padding-left:10px'>
-<a href='/envaya'><img src='/_graphics/home/logo_big.png' width='300' height='61' title='Envaya' alt='Envaya' /></a>
+<a href='/envaya' class='home_logo' title='Envaya'></a>
 </div>
 <h1>
 <div class='centered'>

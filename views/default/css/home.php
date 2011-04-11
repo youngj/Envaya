@@ -80,13 +80,13 @@
     display:block;
     width:142px;
     height:43px;
-    background:url(<?php echo $graphicsDir ?>/bigbutton.png) no-repeat left top;    
+    background:url(<?php echo $graphicsDir ?>/sprite.png) no-repeat left -71px;    
 }
 
 .home_button:hover
 {
     text-decoration:none;
-    background-position:left -45px;    
+    background-position:left -116px;    
 }
 
 .home_button span
@@ -113,7 +113,7 @@
 .home_follow_icon
 {
     position:absolute;
-    background:url(<?php echo $graphicsDir ?>/facebook.png) no-repeat left top;
+    background:url(<?php echo $graphicsDir ?>/sprite.png) no-repeat left top;
     display:block;
     width:36px;
     height:36px;
@@ -122,15 +122,25 @@
 
 .home_follow_fb
 {
+    background-position:-228px -124px;
     right:60px;    
 }
 
 .home_follow_twitter
 {
-    background-position:-36px top;
+    background-position:-264px -124px;
     right:15px;
 }
 
+.home_logo
+{
+    display:block;
+    width:300px;
+    height:61px;
+    margin:0 auto;
+    text-align:center;
+    background:url(<?php echo $graphicsDir ?>/sprite.png) no-repeat left top;
+}
 
 .home_table
 {
