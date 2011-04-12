@@ -18,6 +18,12 @@ $queueRunner = run_task("php scripts/queueRunner.php");
 
 $sphinx_bin_dir = Config::get('sphinx_bin_dir');
 $sphinx_conf_dir = Config::get('sphinx_conf_dir');
+$sphinx_pid_dir = Config::get('sphinx_pid_dir');
+
+if (!is_dir($sphinx_pid_dir))
+{
+   mkdir($sphinx_pid_dir, 0777, true);
+}
 
 $sphinxSearch = run_task(escapeshellcmd("$sphinx_bin_dir/searchd")." --config ".escapeshellarg("$sphinx_conf_dir/sphinx.conf"));
 

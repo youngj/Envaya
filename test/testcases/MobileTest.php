@@ -56,7 +56,7 @@ class MobileTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'org/search')]");     
         $this->type("//input[@name='q']", 'testorg');
         $this->submitForm();
-        $this->clickAndWait("//li//a");
+        $this->retry('clickAndWait',array("//li//a"));
         $this->mouseOver("//a[contains(@href,'contact')]");
         $this->clickAndWait("//a[contains(@href,'news')]");        
         $this->mustNotExist("//a[contains(@href,'contact')]");
@@ -123,7 +123,7 @@ class MobileTest extends SeleniumTest
     private function _testFeed()
     {
         $this->clickAndWait("//a[contains(@href,'org/feed')]");   
-        $this->mouseOver("//div[@class='feed_snippet' and contains(text(), '{$this->post_content}')]");        
+        $this->retry('mouseOver', array("//div[@class='feed_snippet' and contains(text(), '{$this->post_content}')]"));        
         
         $this->clickAndWait("//a[contains(@href,'org/change_feed_view')]");     
         

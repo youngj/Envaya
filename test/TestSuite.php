@@ -44,6 +44,17 @@ function find_test_case_path($test_case)
     throw new Exception("$test_case not found");
 }
 
+function check_selenium()
+{
+    $handle = @fsockopen("localhost", 4444);
+    if (!$handle) { 
+         echo "waiting for selenium server to respond...\n";
+         sleep(1);  
+         throw new Exception("selenium server not responding"); 
+    }
+    fclose($handle);
+}
+
 function main()
 {
     global $BROWSER, $TEST_CASES, $MOCK_MAIL_FILE;
@@ -75,7 +86,7 @@ function main()
        2 => STDERR
     );
 
-    $selenium = proc_open('java -jar selenium-server.jar -firefoxProfileTemplate profiles/noflash', $descriptorspec, $pipes, __DIR__);
+    $selenium = proc_open('java -jar selenium-server.jar -singleWindow -firefoxProfileTemplate profiles/noflash', $descriptorspec, $pipes, __DIR__);
 
     $descriptorspec = array(
        0 => array("pipe", "r"),
@@ -97,7 +108,9 @@ function main()
         
     $queue = proc_open('php runserver.php', $descriptorspec, $pipes2, dirname(__DIR__), $env);
 
-    sleep(5);
+    retry('check_selenium', array());
+
+    sleep(2);
 
     PHPUnit_TextUI_TestRunner::run($suite);
 }

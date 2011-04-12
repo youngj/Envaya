@@ -17,8 +17,8 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         @unlink($MOCK_MAIL_FILE);
 
         $this->s = $this->init_selenium();
-        $this->s->start();
-        $this->s->windowMaximize();
+        $this->start();
+        $this->windowMaximize();
     }
     
     public function init_selenium()
