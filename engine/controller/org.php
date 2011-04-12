@@ -198,7 +198,10 @@ class Controller_Org extends Controller
         $sector = get_input('sector');
         $region = get_input('region');
         $feedName = get_feed_name(array('sector' => $sector, 'region' => $region));
-        $items = FeedItem::query_by_feed_name($feedName)->limit($max_items)->filter();
+        $items = FeedItem::query_by_feed_name($feedName)
+            ->where_visible_to_user()
+            ->limit($max_items)
+            ->filter();
 
         $area = view("org/feed", array(
             'sector' => $sector, 
@@ -241,7 +244,11 @@ class Controller_Org extends Controller
         
         $max_items = 20;
         
-        $items = FeedItem::query_by_feed_name($feedName)->where('id < ?', $before_id)->limit($max_items)->filter();
+        $items = FeedItem::query_by_feed_name($feedName)
+            ->where_visible_to_user()
+            ->where('id < ?', $before_id)
+            ->limit($max_items)
+            ->filter();
 
         $items_html = view('feed/list', array('items' => $items));
         

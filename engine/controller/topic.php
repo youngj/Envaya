@@ -44,7 +44,7 @@ class Controller_Topic extends Controller_Profile
 
         if ($topic->can_edit())
         {
-            PageContext::add_submenu_item(__("widget:edit"), $topic->get_edit_url(), 'edit');
+            PageContext::get_submenu('edit')->add_item(__("widget:edit"), $topic->get_edit_url());
         }
 
         $title = __('discussions:title');
@@ -61,12 +61,6 @@ class Controller_Topic extends Controller_Profile
         
         $this->page_draw($title, $body);
     }    
-    
-    function use_public_layout($show_menu = true)
-    {
-        $show_menu = get_viewtype() != 'mobile';        
-        return parent::use_public_layout($show_menu);    
-    }
     
     function action_add_message()
     {

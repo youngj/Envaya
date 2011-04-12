@@ -7,10 +7,6 @@ class Action_ForgotPassword extends Action
         $username = get_input('username');
 
         $user = get_user_by_username($username);
-        if (!$user)
-        {
-            $user = User::query()->where('email = ?', $username)->get();
-        }
 
         if ($user)
         {

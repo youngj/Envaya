@@ -134,12 +134,7 @@ class Organization extends User
 
     public function get_available_themes()
     {
-        $themes = array('green','brick','craft4','craft1','cotton2','wovengrass','beads','red');
-        
-        if ($this->username == 'envaya')
-        {
-            $themes[] = 'sidebar';
-        }        
+        $themes = array('green','brick','craft4','craft1','cotton2','wovengrass','beads','red','sidebar');
         
         return $themes;
     }
@@ -328,9 +323,8 @@ class Organization extends User
             $default_names = Widget::get_default_names_by_class($class_name);
             if (sizeof($default_names))
             {
-                $widget = new Widget();
+                $widget = Widget::new_default_widget($default_names[0]);
                 $widget->container_guid = $this->guid;
-                $widget->widget_name = $default_names[0];
             }
         }
         
@@ -343,9 +337,8 @@ class Organization extends User
         
         if (!$widget)
         {
-            $widget = new Widget();
+            $widget = Widget::new_default_widget($name);            
             $widget->container_guid = $this->guid;
-            $widget->widget_name = $name;
         }
         return $widget;
     }

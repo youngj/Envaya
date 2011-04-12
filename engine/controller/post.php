@@ -39,14 +39,12 @@ class Controller_Post extends Controller_Profile
     {
         $org = $this->org;
         $post = $this->post;
-
-        $show_menu = get_viewtype() != 'mobile';
         
-        $this->use_public_layout($show_menu);
+        $this->use_public_layout();
 
         if ($post->can_edit())
         {
-            PageContext::add_submenu_item(__("widget:edit"), "{$post->get_url()}/edit", 'edit');
+            PageContext::get_submenu('edit')->add_item(__("widget:edit"), "{$post->get_url()}/edit");
         }
 
         $title = __('widget:news');

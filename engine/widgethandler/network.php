@@ -47,7 +47,9 @@ class WidgetHandler_Network extends WidgetHandler
     
     private function show_cancel_edit_button($widget)
     {
-        PageContext::add_submenu_item(__("cancel"), $widget->get_edit_url(), 'edit', true);                           
+        $submenu = PageContext::get_submenu('edit');
+        $submenu->clear();
+        $submenu->add_item(__("cancel"), $widget->get_edit_url());
     }
     
     private function add_relationship_view($widget)

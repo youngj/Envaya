@@ -46,7 +46,7 @@ class Action_Discussion_Edit extends Action
         $title = __('discussions:edit_topic');
         
         $cancelUrl = get_input('from') ?: $topic->get_url();
-        PageContext::add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
+        PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
                 
         $body = view_layout('one_column', view_title($title), view("discussions/topic_edit", array('topic' => $topic)));
         

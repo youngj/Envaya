@@ -91,7 +91,7 @@ class Query_SelectUser extends Query_SelectEntity
                         
             if (!is_array($matches) || sizeof($matches) == 0)
             {
-                $this->where('0 > 1'); // force an empty result set; can't use Query_Empty here
+                $this->is_empty = true; 
             }
             else
             {                   

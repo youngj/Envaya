@@ -83,7 +83,7 @@ class Action_EditWidget extends Action
         $cancelUrl = get_input('from') ?: $widget->get_url();
 
         PageContext::set_translatable(false);
-        PageContext::add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
+        PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
 
         $body = view_layout('one_column',
             view_title($title), $widget->render_edit());

@@ -1,6 +1,12 @@
 <?php
 class WidgetHandler_Home extends WidgetHandler
 {
+    function get_default_subtitle($widget)
+    {
+        $org = $widget->get_container_entity();
+        return $org->get_location_text(false);    
+    }
+
     function view($widget)
     {
         PageContext::set_rss(true);

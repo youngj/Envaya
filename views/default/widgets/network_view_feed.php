@@ -13,7 +13,10 @@
     
     //$feedName = get_feed_name(array('network' => $org->guid));
     $maxItems = 10;    
-    $items = FeedItem::query_by_feed_names($feedNames)->limit($maxItems)->filter();    
+    $items = FeedItem::query_by_feed_names($feedNames)
+        ->where_visible_to_user()
+        ->limit($maxItems)
+        ->filter();    
     
     if ($items)
     {

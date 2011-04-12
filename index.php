@@ -33,7 +33,7 @@
     Route::set('profile', '(<username>(/<widgetname>(/<action>)))')->defaults(array(
         'controller' => 'profile',
         'action'     => 'index',
-        'widgetname' => 'home',
+        'widgetname' => '',
     ));
 
     if (get_input('login') && !Session::isloggedin())

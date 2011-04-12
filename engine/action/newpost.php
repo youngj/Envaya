@@ -10,9 +10,16 @@ class Action_NewPost extends Action
     function process_input()
     {        
         $this->validate_security_token();
-
+        
         $body = get_input('blogbody');
         $org = $this->get_org();
+        
+        $widget = $org->get_widget_by_class('WidgetHandler_News');
+        if (!$widget->is_active())
+        {
+            $widget->enable();
+            $widget->save();
+        }
 
         if (empty($body))
         {

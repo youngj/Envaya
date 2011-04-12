@@ -68,22 +68,6 @@
     background:url(<?php echo $graphicsDir ?>/menu_selected.png) no-repeat 3px top;
 }
 
-#heading img
-{
-    height:50px;
-}
-
-#heading h2.withicon
-{
-    font-size:14px;
-    padding-top:5px;
-}
-
-#heading h3
-{
-    font-size:16px;
-}
-
 #right_content h2
 {
     clear:both;
@@ -109,4 +93,13 @@
     font-size:15px;
     padding-left:5px;
     color:#808080;
+}
+
+.section_header
+{
+    background:#f0f0f0;
+    border-top:1px solid #ccc;
+    border-bottom:1px solid #ccc;
+    height:21px;
+    font-family:Verdana, sans-serif;
 }

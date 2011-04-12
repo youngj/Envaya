@@ -15,7 +15,7 @@ class WidgetHandler_News extends WidgetHandler
 
     function save($widget)
     {
-        // nothing
+        $widget->save();
     }
 }
 

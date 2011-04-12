@@ -274,6 +274,7 @@ return array(
     'theme:wovengrass' => "Woven Grass",
     'theme:beads' => "Beads",
     'theme:red' => "Chrome",
+    'theme:sidebar' => "Left Menu",
 
     'blog:content:label' => "Write your news update below:",
 

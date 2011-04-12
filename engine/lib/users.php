@@ -21,6 +21,16 @@
             return null;
     
         /*
+         * some people might try entering their email address as their username,
+         * so if the username has an @, we try that (@ is not allowed in usernames)
+         */ 
+        if (strpos($username,'@') !== false)
+        {
+            // if there are multiple accounts with the same email address, we just return one arbitrarily
+            return User::query()->where('email = ?', $username)->get();
+        }
+
+        /*
          * some people might try entering http://envaya.org/foo as the username when logging in,
          * so we just ignore everything before the last slash (/ is not allowed in usernames)
          */
@@ -29,7 +39,7 @@
         {
             $username = substr($username, $last_slash + 1);
         }
-    
+            
         $cache = get_cache();
         $cacheKey = get_cache_key_for_username($username);
 

@@ -46,7 +46,7 @@ class Action_EditPost extends Action
 
         $cancelUrl = get_input('from') ?: $post->get_url();
 
-        PageContext::add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
+        PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
 
         $org = $post->get_container_entity();
         $area1 = view("org/editPost", array('entity' => $post));

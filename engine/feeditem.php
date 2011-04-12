@@ -112,42 +112,28 @@ class FeedItem extends Model
             ->where('time_posted = ?', $this->time_posted);
     }
 
-    static function query_by_feed_names($feedNames, $excludeUser = null)
+    static function query()
     {
-        $numNames = sizeof($feedNames);
-        
-        if ($numNames == 0)
-        {
-            return new Query_Empty();
-        }
-        
-        $query = new Query_Select('feed_items f');
-        $query->join('INNER JOIN users_entity u ON u.guid = f.user_guid');
-            
+        return new Query_SelectFeedItem();
+    }
+    
+    static function query_by_feed_names($feedNames)
+    {
+        $query = static::query();        
         $query->where_in("feed_name", $feedNames);
 
-        if ($excludeUser)
-        {
-            $query->where("f.user_guid <> ?", $excludeUser->guid);
-        }
-
-        if (!Session::isadminloggedin())
-        {
-            $query->where("(u.approval > 0 || u.guid = ?)", Session::get_loggedin_userid());
-        }
-
-        if ($numNames > 1)
+        if (sizeof($feedNames) > 1)
         {
             $query->group_by('action_name, subject_guid, time_posted');
         }
-
-        $query->order_by('time_posted DESC');
-        $query->set_row_function('feed_row_to_feed_item');
+        
         return $query;
     }
 
     static function query_by_feed_name($feedName)
     {
-        return static::query_by_feed_names(array($feedName), null);
+        $query = static::query();
+        $query->where("feed_name = ?", $feedName);
+        return $query;    
     }
 }

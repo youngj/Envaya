@@ -15,7 +15,7 @@ class PageContext
     private static $rss = false;
     private static $site_org = null;
     private static $header_html = array();
-    private static $submenu = array();    
+    private static $submenus = array();    
     private static $js_strings = array();
     private static $dirty = false;
     
@@ -141,54 +141,17 @@ class PageContext
         }
         return $res;
     }   
-    
-    /**
-     * Adds an item to the submenu
-     *
-     * @param string $label The human-readable label
-     * @param string $link The URL of the submenu item
-     */
-    static function add_submenu_item($label, $link, $group = 'topnav', $clear_existing = false) {
-
-        if (!isset(static::$submenu[$group]) || $clear_existing) 
-            static::$submenu[$group] = array();
-        
-        $item = new stdClass;
-        $item->value = $link;
-        $item->name = $label;
-        static::$submenu[$group][] = $item;
-    }
-
-    static function get_submenu_group($groupname, $itemTemplate = 'canvas_header/submenu_template', $groupTemplate = 'canvas_header/submenu_group')
+       
+    static function get_submenu($group = 'topnav') 
     {
-        $submenu_register = static::$submenu;
-        if (!isset($submenu_register[$groupname]))
+        $submenu = @static::$submenus[$group];
+        if (!$submenu) 
         {
-            return '';
+            $submenu = new Submenu();
+            static::$submenus[$group] = $submenu;
         }
-
-        $submenu = array();
-        $submenu_register_group = static::$submenu[$groupname];
-
-        $parsedUrl = parse_url($_SERVER['REQUEST_URI']);
-
-        foreach($submenu_register_group as $key => $item)
-        {
-            $selected = endswith($item->value, $parsedUrl['path']);
-
-            $submenu[] = view($itemTemplate,
-                array(
-                        'href' => $item->value,
-                        'label' => $item->name,
-                        'selected' => $selected,
-                    ));
-        }
-
-        return view($groupTemplate, array(
-            'submenu' => $submenu,
-            'group_name' => $groupname
-        ));
-    }    
+        return $submenu;            
+    }
         
     static function get_js_strings()
     {

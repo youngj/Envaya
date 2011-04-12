@@ -238,6 +238,7 @@ return array(
     'theme:wovengrass' => 'Majani yafumwayo',
     'theme:beads' => 'Shanga',
     'theme:red' => 'Kromu',
+    'theme:sidebar' => "Menyu ya Kushoto",
     'blog:content:label' => 'Andika habari yako chini:',
     'blog:posted' => 'Habari yako imebandikwa.',
     'blog:updated' => 'Habari yako imehifadhiwa.',

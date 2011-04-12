@@ -1,10 +1,13 @@
 <?php
     $org = $vars['org'];
-    
-    echo view('section', array(
-        'header' => __("dashboard:add_update"), 
-        'content' => view('org/addPost', array('org' => $org))
-    ));
+
+    if ($org->get_widget_by_class('WidgetHandler_News')->is_active())
+    {
+        echo view('section', array(
+            'header' => __("dashboard:add_update"), 
+            'content' => view('org/addPost', array('org' => $org))
+        ));
+    }
 
     echo view('section', array(
         'header' => __("dashboard:edit_widgets"), 

@@ -1,1 +1,1 @@
-<?php echo PageContext::get_submenu_group('footer', 'canvas_header/link_submenu', 'canvas_header/footer_submenu_group'); ?>
+<?php echo PageContext::get_submenu('footer')->render('canvas_header/link_submenu', 'canvas_header/footer_submenu_group'); ?>

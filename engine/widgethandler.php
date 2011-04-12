@@ -16,4 +16,9 @@ abstract class WidgetHandler
         $title = __($key);
         return ($title != $key) ? $title : __('widget:new');
     }
+    
+    function get_default_subtitle($widget)
+    {
+        return $this->get_default_title($widget);
+    }
 }

@@ -61,14 +61,19 @@
     }
     else
     {
-        echo __("widget:news:empty");
+        echo "<div>".__("widget:news:empty")."</div>";
     }
 
-
     $content = ob_get_clean();
+    
+    $form = view("widgets/edit_form", array(
+        'widget' => $widget,
+        'body' => $content,
+        'noSave' => true,
+    ));    
 
     echo view("section", array(
         'header' => __("widget:news:manage_updates"),
-        'content' => $content
+        'content' => $form
     ));
 ?>

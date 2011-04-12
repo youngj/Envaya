@@ -59,9 +59,11 @@ abstract class Controller {
     
     public function add_generic_footer()
     {
-        PageContext::add_submenu_item(__('about'), "/envaya", 'footer');
-        PageContext::add_submenu_item(__('contact'), "/envaya/contact", 'footer');
-        PageContext::add_submenu_item(__('donate'), "/envaya/page/contribute", 'footer');    
+        $footer = PageContext::get_submenu('footer');
+    
+        $footer->add_item(__('about'), "/envaya");
+        $footer->add_item(__('contact'), "/envaya/contact");
+        $footer->add_item(__('donate'), "/envaya/page/contribute");    
     }
 
     public function validate_security_token($require_session = false)

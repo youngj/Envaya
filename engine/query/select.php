@@ -32,6 +32,7 @@ class Query_Select
     protected $group_by;
     protected $row_function;
     protected $is_finalized = false;
+    protected $is_empty = false;
 
     function __construct($from = null)
     {
@@ -82,7 +83,8 @@ class Query_Select
     {
         if (sizeof($values) == 0)
         {
-            return new Query_Empty();
+            $this->is_empty = true;
+            return $this;
         }
         else
         {
@@ -153,12 +155,19 @@ class Query_Select
     protected function get_query($columns)
     {    
         $conditions = $this->conditions;
-        $conditions[] = '(1=1)';
-        $where = implode($conditions, ' AND ');        
+        
+        if (sizeof($conditions) > 0)
+        {
+            $where = "WHERE ".implode($conditions, ' AND ');        
+        }
+        else
+        {
+            $where = '';
+        }
         
         $join = implode($this->joins, ' ');
         
-        return  "SELECT {$columns} FROM {$this->from} $join WHERE $where {$this->group_by}";    
+        return  "SELECT {$columns} FROM {$this->from} $join $where {$this->group_by}";    
     }
     
     function group_by($group_by)
@@ -190,6 +199,11 @@ class Query_Select
     function count()
     {
         $this->_finalize_query();
+        if ($this->is_empty)
+        {
+            return 0;
+        }
+                    
         $total = Database::get_row($this->get_query("COUNT(*) as total"), $this->args);
         return (int)$total->total;
     }
@@ -197,6 +211,10 @@ class Query_Select
     function filter()
     {        
         $this->_finalize_query();
+        if ($this->is_empty)
+        {
+            return array();
+        }
     
         $query = $this->get_query($this->columns);
     

@@ -71,7 +71,7 @@ class Action_SendMessage extends Action
         
         $user = Session::get_loggedin_user();
 
-        PageContext::add_submenu_item(__("message:cancel"), $org->get_url(), 'edit');
+        PageContext::get_submenu('edit')->add_item(__("message:cancel"), $org->get_url());
 
         $title = __("message:title");
         $area1 = view("org/composeMessage", array('entity' => $org, 'user' => $user));

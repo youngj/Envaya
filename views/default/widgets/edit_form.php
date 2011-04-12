@@ -7,7 +7,7 @@
     
     $form_body .= view('input/hidden', array('name' => 'widget_name', 'value' => $widget->widget_name));
     
-    if ($widget->guid && ($widget->status != EntityStatus::Disabled) && $widget->widget_name != 'home')
+    if ($widget->guid && ($widget->status != EntityStatus::Disabled))
     {
         $form_body .= view('input/alt_submit', array(
             'name' => "delete",

@@ -113,8 +113,8 @@ class Markup
 
         if (!@$options['Envaya.Untrusted'])
         {
-            $config->set('HTML.DefinitionID', 'EnvayaHTMLExtensions');
-            $config->set('HTML.DefinitionRev', 3);
+            //$config->set('HTML.DefinitionID', 'EnvayaHTMLExtensions');
+            //$config->set('HTML.DefinitionRev', 3);
 
             $def = $config->getHTMLDefinition(true);
 

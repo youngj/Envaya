@@ -74,6 +74,17 @@ class Widget extends Entity
         return Comment::query()->where('container_guid = ?', $this->guid)->order_by('e.guid');
     }
 
+    public function get_subtitle()
+    {
+        if ($this->title)
+        {
+            return $this->translate_field('title', false);
+        }
+        else
+        {
+            return $this->get_handler()->get_default_subtitle($this);
+        }    
+    }
 	
     public function get_title()
     {
@@ -144,11 +155,7 @@ class Widget extends Entity
         
         $name = $this->widget_name;
 
-        if ($name == 'home')
-        {
-            return $org->get_url();
-        }
-        else if (@static::$default_widgets[$name])
+        if (@static::$default_widgets[$name])
         {
             return "{$org->get_url()}/{$name}";
         }
@@ -198,6 +205,25 @@ class Widget extends Entity
         $aOrder = $a->get_menu_order();
         $bOrder = $b->get_menu_order();
         return $aOrder - $bOrder;
+    }
+    
+    static function new_default_widget($widget_name)
+    {
+        $widget = new Widget();
+        $widget->widget_name = $widget_name;    
+        
+        $props = @static::$default_widgets[$widget_name];
+        if ($props)
+        {
+            $widget->menu_order = $props['menu_order'];
+            $widget->handler_class = $props['handler_class'];            
+        }
+        else
+        {
+            $widget->menu_order = 1000;
+            $widget->hander_class = 'WidgetHandler_Generic';
+        }
+        return $widget;
     }
 }
 

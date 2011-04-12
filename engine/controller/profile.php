@@ -39,61 +39,60 @@ class Controller_Profile extends Controller
     {
         $widgetName = $this->request->param('widgetname');
         
-        if (!$this->org && $widgetName == 'home')
+        if (!$widgetName)
         {
-            $widgetName = 'settings';
-        }               
-
-        $methodName = "index_$widgetName";
-        if (method_exists($this,$methodName))
-        {
-            return $this->$methodName();
+            if (!$this->org)
+            {
+                return $this->index_settings();
+            }
+            else
+            {
+                $widget = $this->org->query_widgets()->order_by('menu_order')->get();
+                return $this->index_widget($widget, true);
+            }
         }
-        else if ($this->org)
+        else
         {
-            $widget = $this->org->get_widget_by_name($widgetName);                        
-            return $this->index_widget($widget);
-        }       
+            $methodName = "index_$widgetName";
+            if (method_exists($this,$methodName))
+            {
+                return $this->$methodName();
+            }
+            else if ($this->org)
+            {
+                $widget = $this->org->get_widget_by_name($widgetName);                        
+                return $this->index_widget($widget);
+            }                   
+        }
         return not_found();
     }
     
-    function index_widget($widget)
+    function index_widget($widget, $is_home = false)
     {
         $org = $this->org;
     
         $this->require_http();
-
-        $show_menu = true;
-        if (get_viewtype() == 'mobile' && $widget && $widget->widget_name != 'home')
-        {
-            $show_menu = false;
-        }
         
-        $this->use_public_layout($show_menu);
+        $this->use_public_layout($widget, $is_home);
 
         $viewOrg = $org->can_view();
 
         $this->show_next_steps = $this->org->guid == Session::get_loggedin_userid();
-        
-        if ($widget && $widget->widget_name == 'home')
-        {
-            $subtitle = $widget->title ? $widget->translate_field('title', false) : $org->get_location_text(false);
-            $title = '';
-        }
-        else if (!$widget || !$widget->is_active())
+                
+        if (!$widget || !$widget->is_active())
         {
             $this->org_page_not_found();
         }
         else
         {
-            $subtitle = $widget->get_title();
-            $title = $subtitle;
+            $subtitle = $widget->get_subtitle();
+            $title = $is_home ? '' : $subtitle;
         }
 
         if ($org->can_edit())
         {
-            PageContext::add_submenu_item(__("widget:edit"), $widget->get_edit_url(), 'edit');
-            PageContext::add_submenu_item(__('widget:options'), "{$widget->get_base_url()}/options", 'org_actions');
+            PageContext::get_submenu('edit')->add_item(__("widget:edit"), $widget->get_edit_url());
+            PageContext::get_submenu('org_actions')->add_item(__('widget:options'), "{$widget->get_base_url()}/options");
         }
 
         if ($viewOrg)
@@ -139,27 +138,40 @@ class Controller_Profile extends Controller
         }
     }
     
-    function use_public_layout($show_menu = true)
+    function use_public_layout($cur_widget = null, $is_home = false)
     {
         $org = $this->org;
-        
+                
         $this->page_draw_vars['sitename'] = $org->name;
 
         PageContext::set_theme(get_input("__theme") ?: $org->theme ?: 'green');
-        PageContext::set_site_org($org);
+        PageContext::set_site_org($org);        
         
-        if ($show_menu)
+        if ($is_home || get_viewtype() != 'mobile')
         {
-            foreach ($org->get_available_widgets() as $widget)
-            {
-                if ($widget->is_active() && $widget->in_menu)
-                {
-                    PageContext::add_submenu_item($widget->get_title(), rewrite_to_current_domain($widget->get_url()));
-                }
-            }        
+            $this->show_widget_menu($cur_widget);
         }
         
         $this->page_draw_vars['login_url'] = url_with_param(Request::instance()->full_rewritten_url(), 'login', 1);
+    }
+    
+    function show_widget_menu($cur_widget)
+    {
+        $org = $this->org;
+        
+        foreach ($org->get_available_widgets() as $widget)
+        {
+            if ($widget->is_active() && $widget->in_menu)
+            {
+                $is_selected = $cur_widget && $cur_widget->guid == $widget->guid;
+            
+                PageContext::get_submenu()->add_item(
+                    $widget->get_title(), 
+                    rewrite_to_current_domain($widget->get_url()),
+                    $is_selected
+                );
+            }
+        }        
     }
 
     function use_editor_layout()

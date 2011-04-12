@@ -1,6 +1,6 @@
 <?php
 
-    echo "<div class='thin_column'><div id='heading'>";
+    echo "<div class='thin_column'><table id='heading'><tr>";
 
     $org = $vars['org'];
     $subtitle = @$vars['subtitle'];
@@ -17,7 +17,7 @@
         {
             $img = "<a href='$link'>$img</a>";
         }
-        echo $img;
+        echo "<td>$img</td>";
     }
 
     $hclass = ($icon) ? 'withicon' : 'withouticon';
@@ -29,12 +29,14 @@
         $h1 = "<a href='$link'>$h1</a>";
     }
 
+    echo "<td>";
     echo $h1;      
 
     if ($subtitle)
     {
         echo "<h3 class='$hclass'>".escape($subtitle)."</h3>";
     }        
+    echo "</td>";
     
-    echo "</div><div style='clear:both'></div></div>";
+    echo "</tr></table></div>";
 ?>

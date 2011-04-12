@@ -85,22 +85,24 @@ a.selected
 
 #heading
 {
-    padding:10px;
     color:black;
     font-family:Verdana, sans-serif;
 }
 
+#heading td
+{
+    vertical-align:middle;   
+}
+
 #heading img
 {
-    float:left;
-    margin-right:15px;
-    margin-bottom:10px;
+    margin:10px 15px 10px 0px;
 }
 
 #heading h1, #heading h2
 {
     color:#222;
-    font-size:22px;
+    font-size:20px;
     padding-top:5px;
     padding-bottom:0px;
     margin:0px;
@@ -113,24 +115,26 @@ a.selected
     text-align:center;
 }
 
-
-#heading h2.withicon
-{
-    padding-top:20px;
-    text-align:left;
-}
-
 #heading h3
 {
     color:#222;
-    font-size:14px;
+    font-size:16px;
     padding:0px;
     margin:0px;
 }
 
-#heading h3.withicon
+#heading .withicon
 {
     text-align:left;
+}
+
+#heading h2.withicon
+{
+    padding-top:0px;
+}
+
+#heading h3.withicon
+{
     padding-top:5px;
 }
 

@@ -62,7 +62,7 @@ class Action_EditDesign extends Action
 
         $cancelUrl = get_input('from') ?: $org->get_url();
 
-        PageContext::add_submenu_item(__("canceledit"), $cancelUrl, 'edit');
+        PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
 
         $title = __("design:edit");
         $area1 = view("org/design", array('entity' => $org));
