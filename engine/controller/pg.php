@@ -283,4 +283,9 @@ class Controller_Pg extends Controller {
         $action = new Action_ConfirmAction($this);
         $action->execute();
     }
+    
+    function action_show_captcha()
+    {
+        Captcha::show();
+    }
 }

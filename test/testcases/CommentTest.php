@@ -4,7 +4,7 @@ class CommentTest extends SeleniumTest
 {
     public function test()
     {
-        // assumes that recaptcha is disabled in settings file        
+        // assumes that captcha is disabled in settings file        
         $this->open('/pg/login');
 
         $this->login('testorg','testtest');
@@ -42,10 +42,10 @@ class CommentTest extends SeleniumTest
         $this->type("//input[@name='location']", "DSM");
         $this->submitForm();
         
-        // test fake recaptcha 
-        // (because we can't write an automated test for 'real' recaptcha without breaking it)
+        // test fake captcha 
+        // (because we can't write an automated test for 'real' captcha without breaking it)
         
-        $this->type("//input[@name='recaptcha_response_field']", "wrong");
+        $this->type("//input[@name='captcha_response']", "wrong");
         $this->submitForm();
         $this->ensureBadMessage();
         

@@ -100,8 +100,8 @@ abstract class Action
 			$valid_captcha = false;
 			if (get_input('captcha'))
 			{
-				$res = Recaptcha::check_answer();
-				if ($res->is_valid)
+				$is_valid = Captcha::check_answer($_POST['captcha_response']);
+				if ($is_valid)
 				{
                     Session::set('free_captchas', 3);
 					$valid_captcha = true;

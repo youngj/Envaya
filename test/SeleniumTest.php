@@ -220,8 +220,8 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
     public function submitFakeCaptcha()
     {
-        $answer = $this->getText("//b[@id='recaptcha_answer']");
-        $this->type("//input[@name='recaptcha_response_field']", $answer);
+        $answer = $this->getText("//b[@id='captcha_answer']");
+        $this->type("//input[@name='captcha_response']", $answer);
         $this->submitForm();
     }
         

@@ -24,7 +24,7 @@ return array(
     'discussions:back_to_messages' => "Back to messages",
     'discussions:feed_heading_topic' => "%s has a new discussion about %s.",
     'discussions:feed_heading_message' => "%s has a new message in the discussion %s.",
-    'discussions:captcha_instructions' => "Type the words that appear below to publish your message.",    
+    'discussions:captcha_instructions' => "Type the letters that appear below to publish your message.",    
     'discussions:topic_time_name' => "%s by %s",
     'discussions:notification_subject' => "%s added a new message in %s",
     'discussions:notification_topic_subject' => "%s added a new discussion about %s",

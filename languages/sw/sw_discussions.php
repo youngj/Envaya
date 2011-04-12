@@ -24,7 +24,7 @@ return array(
     'discussions:back_to_messages' => "Nyuma kwa ujumbe",
     'discussions:feed_heading_topic' => "%s ina mada mpya kuhusu %s.",
     'discussions:feed_heading_message' => "%s ina ujumbe mpya katika mada %s.",
-    'discussions:captcha_instructions' => "Chapa maneno yanayoonekana hapo chini kuchapisha ujumbe wako.",    
+    'discussions:captcha_instructions' => "Chapa tarakimu zinazoonekana hapo chini kuchapisha ujumbe wako.",    
     'discussions:topic_time_name' => "%s na %s",
     'discussions:notification_subject' => "%s ameongeza ujumbe mpya katika %s",
     'discussions:notification_topic_subject' => "%s ameongeza mada mpya kuhusu %s",

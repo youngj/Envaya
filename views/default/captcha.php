@@ -19,7 +19,8 @@ foreach ($_POST as $k => $v)
 echo view('input/hidden_multi', array('fields' => $fields));
 
 echo view('input/hidden', array('name' => 'captcha', 'value' => '1'));
-echo Recaptcha::get_html();
+echo Captcha::get_html();
+echo view('input/text', array('name' => 'captcha_response'));
 
 echo view('input/submit', array('value' => __('captcha:button')));
 

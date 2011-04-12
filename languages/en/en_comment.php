@@ -15,7 +15,7 @@
         'comment:not_deleted' => "Comment could not be deleted.",
 		'comment:duplicate' => "Comment was not published because it is the same as an existing comment.",
 		'comment:deleted_marker' => '[comment deleted]',
-		'comment:captcha_instructions' => "Type the words that appear below to publish your comment.",
+		'comment:captcha_instructions' => "Type the letters that appear below to publish your comment.",
 		'comment:notification_subject' => "%s added a comment on your website",
 		'comment:notification_admin_subject' => "%s added a comment on %s",
 		'comment:notification_body' => "\"%s\"\n\n%s",

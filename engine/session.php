@@ -19,7 +19,7 @@ class Session
         }
         else if (@$_COOKIE[static::$cookieName])
         {
-            static::start();
+            static::_start();
             return @$_SESSION[$key];
         }
         else
@@ -34,6 +34,14 @@ class Session
         setcookie(static::$cookieName, "", 0,"/");
     }
 
+    static function start()
+    {
+        if (!static::$started)
+        {
+            static::_start();
+        }
+    }
+    
     static function id()
     {
         if (static::$started)
@@ -42,7 +50,7 @@ class Session
         }
         if (!static::$started && @$_COOKIE[static::$cookieName])
         {
-            static::start();
+            static::_start();
             return session_id();
         }
         return null;
@@ -53,7 +61,7 @@ class Session
         static::set('input', $_POST);
     }
 
-    static function start()
+    private static function _start()
     {
         session_set_save_handler(
             array('Session', "_session_open"), 
@@ -86,6 +94,11 @@ class Session
             }
         }
     }
+    
+    static function set_dirty($dirty = true)
+    {
+        static::$dirty = $dirty;
+    }
 
     static function is_dirty()
     {
@@ -96,7 +109,7 @@ class Session
     {
         if (!static::$started)
         {
-            static::start();
+            static::_start();
         }
         if (is_null($value))
         {
