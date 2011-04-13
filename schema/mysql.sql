@@ -221,13 +221,9 @@ CREATE TABLE `users_entity` (
   `approval` int(11) NOT NULL default '0',
   `setup_state` int(11) NOT NULL default '0',
   `country` varchar(4) NULL,
-  `city` varchar(128) NULL,
-  
+  `city` varchar(128) NULL,  
   `icons_json` text default NULL,
   `header_json` text default NULL,
-  
-  `custom_icon` tinyint(4) default '0',
-  `custom_header` text default NULL,
   `admin` tinyint(4) default '0',
   `latitude` float null,
   `longitude` float null,

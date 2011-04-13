@@ -30,8 +30,6 @@ class User extends Entity
             'theme' => '',
             'email_code' => null,
             'setup_state' => 5,
-            'custom_icon' => 0,
-            'custom_header' => null,
             'icons_json' => null,
             'header_json' => null,
             'last_notify_time' => null,
