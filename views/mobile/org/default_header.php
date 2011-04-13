@@ -3,8 +3,7 @@
 
     $org = $vars['org'];
     $subtitle = @$vars['subtitle'];
-        
-    $icon = $org->get_icon('medium');
+            
     $link = rewrite_to_current_domain($org->get_url());
     
     $escTitle = escape($org->name);

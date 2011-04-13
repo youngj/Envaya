@@ -5,7 +5,6 @@
         
     if ($org && $feedItem->is_valid())
     {
-        $orgIcon = $org->get_icon('small');
         $orgUrl = $org->get_url();
 ?>
 

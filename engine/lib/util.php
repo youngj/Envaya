@@ -314,3 +314,28 @@
         }
         return null;
     }
+    
+    function constrain_size($size_arr, $max_arr)
+    {
+        $width = $size_arr[0];
+        $height = $size_arr[1];
+
+        $maxwidth = $max_arr[0];
+        $maxheight = $max_arr[1];
+     
+        $newwidth = $width;
+        $newheight = $height;     
+     
+        if ($width > $maxwidth)
+        {
+            $newheight = floor($height * ($maxwidth / $width));
+            $newwidth = $maxwidth;
+        }
+        if ($newheight > $maxheight)
+        {
+            $newwidth = floor($newwidth * ($maxheight / $newheight));
+            $newheight = $maxheight;
+        }     
+        
+        return array($newwidth, $newheight);
+    }

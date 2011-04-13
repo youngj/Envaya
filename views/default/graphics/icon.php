@@ -2,7 +2,7 @@
     /**
      * Generic icon view.
      */
-
+     
     $entity = $vars['entity'];
 
     // Get any align and js

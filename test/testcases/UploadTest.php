@@ -47,12 +47,12 @@ class UploadTest extends SeleniumTest
         
         $this->mouseOver("//img[contains(@src,'/medium.jpg') and @class='image_right']");
         
-        $imgUrl = $this->getAttribute("//img[contains(@src,'/medium.jpg')]@src");
+        $imgUrl = $this->getAttribute("//div[@id='content']//img[contains(@src,'/medium.jpg')]@src");
         
         $this->checkImage($imgUrl, 10000, 25000);
                 
         $this->mustNotExist("//img[contains(@src,'/large.jpg')]"); 
-        $this->clickAndWait("//img[contains(@src,'/medium.jpg')]");
+        $this->clickAndWait("//div[@id='content']//img[contains(@src,'/medium.jpg')]");
         $this->mouseOver("//img[contains(@src,'/large.jpg')]");
         
         $largeImgUrl = $this->getAttribute("//img[contains(@src,'/large.jpg')]@src");
@@ -131,9 +131,9 @@ class UploadTest extends SeleniumTest
         $this->submitForm();
         
         $this->ensureGoodMessage();
-        $this->mouseOver("//table[@id='heading']//img[contains(@src,'iconmedium.jpg')]");
+        $this->mouseOver("//table[@id='heading']//img[contains(@src,'medium.jpg')]");
         
-        $imgUrl = $this->getAttribute("//table[@id='heading']//img[contains(@src,'iconmedium.jpg')]@src");
+        $imgUrl = $this->getAttribute("//table[@id='heading']//img[contains(@src,'medium.jpg')]@src");
         
         $this->checkImage($imgUrl, 2000, 10000);    
         
@@ -150,7 +150,7 @@ class UploadTest extends SeleniumTest
         $this->check("//input[@type='checkbox']"); // remove image
         $this->submitForm();
         
-        $this->mustNotExist("//table[@id='heading']//img[contains(@src,'iconmedium.jpg')]");
+        $this->mustNotExist("//table[@id='heading']//img[contains(@src,'medium.jpg')]");
         $this->mouseOver("//table[@id='heading']//img[contains(@src,'/staticmap')]");
         
         $staticMapUrl = $this->getAttribute("//table[@id='heading']//img[contains(@src,'/staticmap')]@src");

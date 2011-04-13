@@ -51,7 +51,7 @@
     
     $addItem(
         "<a href='{$org->get_url()}/design'>".__('todo:logo')."</a>",
-        ($org->custom_header || $org->custom_icon)    
+        ($org->has_custom_header() || $org->has_custom_icon())    
     );    
 
     $network = $org->get_widget_by_class('WidgetHandler_Network');

@@ -8,11 +8,11 @@
     $link_open = $url ? "<a href='".escape($url)."'>" : '';
     $link_close = $url ? "</a>" : '';        
 
-    if ($org && $org->custom_icon)
+    if ($org && $org->has_custom_icon())
     {            
         echo "<div class='image_right'>"
             .$link_open
-            .view('graphics/icon', array('entity' => $org, 'size' => 'small', 'js' => "style='width:40px'"))
+            .view('org/icon', array('org' => $org, 'js' => "style='width:40px'"))
             .$link_close
             ."</div>";
     }

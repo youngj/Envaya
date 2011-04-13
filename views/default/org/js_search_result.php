@@ -2,7 +2,7 @@
     $org = $vars['org'];
 
     echo view('search/listing', array(
-        'icon' => view('graphics/icon', array('entity' => $org, 'size' => 'small')),
+        'icon' => view('org/icon', array('org' => $org)),
         'info' => escape($org->name).
             "<br />".
             "<span style='font-size:10px'>".

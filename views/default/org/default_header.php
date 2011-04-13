@@ -1,42 +1,22 @@
 <?php
-
-    echo "<div class='thin_column'><table id='heading'><tr>";
-
     $org = $vars['org'];
     $subtitle = @$vars['subtitle'];
+
+    echo "<div class='thin_column'><table id='heading'><tr>";
         
-    $icon = $org->get_icon('medium');
     $link = rewrite_to_current_domain($org->get_url());
     
-    $escTitle = escape($org->name);
+    $img = view('org/icon', array('org' => $org, 'size' => 'medium'));
+    echo "<td><a href='$link'>$img</a></td>";
+
+    $escTitle = escape($org->name);    
     
-    if ($icon)
-    {
-        $img = "<img src='$icon' alt='$escTitle' />";
-        if ($link)
-        {
-            $img = "<a href='$link'>$img</a>";
-        }
-        echo "<td>$img</td>";
-    }
-
-    $hclass = ($icon) ? 'withicon' : 'withouticon';
-
-    $h1 = "<h2 class='$hclass'>$escTitle</h2>";
-
-    if ($link)
-    {
-        $h1 = "<a href='$link'>$h1</a>";
-    }
-
     echo "<td>";
-    echo $h1;      
+    echo "<a href='$link'><h2 class='withicon'>$escTitle</h2></a>";      
 
     if ($subtitle)
     {
-        echo "<h3 class='$hclass'>".escape($subtitle)."</h3>";
+        echo "<h3 class='withicon'>".escape($subtitle)."</h3>";
     }        
-    echo "</td>";
-    
+    echo "</td>";    
     echo "</tr></table></div>";
-?>

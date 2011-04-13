@@ -223,6 +223,9 @@ CREATE TABLE `users_entity` (
   `country` varchar(4) NULL,
   `city` varchar(128) NULL,
   
+  `icons_json` text default NULL,
+  `header_json` text default NULL,
+  
   `custom_icon` tinyint(4) default '0',
   `custom_header` text default NULL,
   `admin` tinyint(4) default '0',

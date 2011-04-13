@@ -395,7 +395,7 @@ class Controller_Profile extends Controller
     {
         $org = $this->org;
     
-        if ($org->custom_header)
+        if ($org->has_custom_header())
         {
             $header = view('org/custom_header', array(
                 'org' => $org

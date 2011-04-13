@@ -18,6 +18,7 @@ body
 #heading h1
 {
     color:#e6e6e6;
+    padding:10px;
 }
 
 .thin_column

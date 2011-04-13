@@ -32,6 +32,8 @@ class User extends Entity
             'setup_state' => 5,
             'custom_icon' => 0,
             'custom_header' => null,
+            'icons_json' => null,
+            'header_json' => null,
             'last_notify_time' => null,
             'last_action' => 0,
             'last_login' => 0,    
@@ -71,28 +73,56 @@ class User extends Entity
         return Config::get('url') . $this->username;
     }
 
-    public function get_icon_file($size = '')
+    public function get_icon_props($size = '')
     {
-        $file = new UploadedFile();
-        $file->owner_guid = $this->guid;
-        $file->filename = "icon$size.jpg";
-        return $file;
+        $props = $this->get_icon_props_raw($size);        
+        $sizes = $this->get_icon_sizes();
+        $max_size = explode('x', @$sizes[$size] ?: $size);
+        $new_size = constrain_size(array($props['width'], $props['height']), $max_size);
+        return array(
+            'url' => $props['url'],
+            'width' => $new_size[0],
+            'height' => $new_size[1],
+        );
     }
-
-    public function get_icon($size = 'medium')
-    {
-        if ($this->custom_icon)
+    
+    private function get_icon_props_raw($size = '')
+    {        
+        if ($this->icons_json)
         {
-            return url_with_param($this->get_icon_file($size)->get_url(), 't', $this->time_updated);
+            $all_sizes = json_decode($this->icons_json, true);
+            foreach ($all_sizes as $props)
+            {
+                if ($props['size'] == $size)
+                {
+                    return $props;
+                }
+            }
+            return $all_sizes[0];
         }
         else if ($this->has_lat_long())
-        {
-            return get_static_map_url($this->latitude, $this->longitude, 6, 100, 100);
+        {   
+            return array(
+                'url' => get_static_map_url($this->latitude, $this->longitude, 6, 100, 100),
+                'width' => 100,
+                'height' => 100
+            );
         }
         else
         {
             return Config::get('url')."_graphics/default{$size}.gif";
-        }
+        }    
+    }
+
+    public function has_custom_icon()
+    {
+        return !!$this->icons_json;
+    }        
+    
+    public function get_icon($size = 'medium')
+    {
+        $props = $this->get_icon_props_raw($size);
+        return $props['url'];
     }
 
     static function get_icon_sizes()
@@ -108,63 +138,36 @@ class User extends Entity
     {
         if (!$imageFiles)
         {
-            $this->custom_icon = false;
+            $this->icons_json = null;
         }
         else
         {
-            foreach ($imageFiles as $srcFile)
-            {
-                $size = $srcFile->size;
-                $destFile = $this->get_icon_file($size);
-                $srcFile->copy_to($destFile);
-            }
-
-            $this->custom_icon = true;
+            $this->icons_json = UploadedFile::json_encode_array($imageFiles);
         }
         $this->save();
     }
 
-    public function get_header_file()
+    public function has_custom_header()
     {
-        $file = new UploadedFile();
-        $file->owner_guid = $this->guid;
-        $file->filename = "headerlarge.jpg";
-        return $file;
+        return !!$this->header_json;
     }
-
-    public function get_header_url()
+    
+    public function get_header_props()
     {
-        if ($this->custom_header)
-        {
-            return url_with_param($this->get_header_file()->get_url(), 't', $this->time_updated);
-        }
-        return '';
-    }
-
+        return json_decode($this->header_json, true);
+    }    
+    
     public function set_header($imageFiles)
     {
         if (!$imageFiles)
         {
-            $this->custom_header = null;
+            $this->header_json = null;
         }
         else
-        {
-            $srcFile = $imageFiles[0];            
-            
-            $destFile = $this->get_header_file();
-            $srcFile->copy_to($destFile);
-
-            $this->custom_header = json_encode(array(
-                'width' => $srcFile->width,
-                'height' => $srcFile->height
-            ));
+        {               
+            $this->header_json = json_encode($imageFiles[0]->js_properties());
         }
         $this->save();
-    }
-
-    public function get_header()
-    {
-        return json_decode($this->custom_header, true);
     }
 
     static function get_header_sizes()

@@ -14,7 +14,7 @@ foreach ($vars['duplicates'] as $dup)
     $link_end = "</a>";
 
     echo view('search/listing', array(
-        'icon' => $link_start.view('graphics/icon', array('entity' => $dup, 'size' => 'small')).$link_end,
+        'icon' => $link_start.view('org/icon', array('org' => $dup)).$link_end,
         'info' => $link_start.escape($dup->name).
             "<br /><span style='font-size:10px'>".escape($dup->get_location_text()).
             "<br />Username: {$dup->username}</span>".$link_end

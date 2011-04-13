@@ -1,10 +1,7 @@
 <?php
     $entity = $vars['entity'];
     
-    $icon = view('graphics/icon', array(
-        'entity' => $entity,
-        'size' => 'small',
-    ));
+    $icon = view('org/icon', array('org' => $entity));
 
     $info = "<div><b><a href='{$entity->get_url()}'>" . escape($entity->name) . "</a>" . 
         (!$entity->is_approved() ? (" (" . __('approval:notapproved') .") ") : "") .

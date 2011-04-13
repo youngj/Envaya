@@ -494,8 +494,7 @@ class UploadedFile extends Entity
         foreach($sizes as $sizeName => $size)
         {
             $sizeArray = explode("x", $size);
-
-            $resizedImage = static::resize_image_file($tmp_file, $sizeArray[0], $sizeArray[1]);
+            $resizedImage = static::resize_image_file($tmp_file, $sizeArray);
 
             if ($resizedImage)
             {
@@ -540,46 +539,21 @@ class UploadedFile extends Entity
      * (Returns false if the uploaded file was not an image)
      *
      * @param string $imageFileName Filename of the original image
-     * @param int $maxwidth The maximum width of the resized image
-     * @param int $maxheight The maximum height of the resized image
-     * @param true|false $square If set to true, will take the smallest of maxwidth and maxheight and use it to set the dimensions on all size; the image will be cropped.
+     * @param int $maxsize The maximum width of the resized image, as array(width,height)
      * @return false|mixed array with keys 'filename','width','height','mime' or false on failure
      */
-    private static function resize_image_file($imageFileName, $maxwidth, $maxheight, $square = false, $x1 = 0, $y1 = 0, $x2 = 0, $y2 = 0)
+    private static function resize_image_file($imageFileName, $maxsize)
     {
         if ($imgsizearray = getimagesize($imageFileName))
         {
             $width = $imgsizearray[0];
             $height = $imgsizearray[1];
             $mime = $imgsizearray['mime'];
-            $newwidth = $width;
-            $newheight = $height;
-
-            if ($square)
-            {
-                if ($width < $height)
-                {
-                    $height = $width;
-                }
-                else
-                {
-                    $width = $height;
-                }
-
-                $newwidth = $width;
-                $newheight = $height;
-            }
-
-            if ($width > $maxwidth)
-            {
-                $newheight = floor($height * ($maxwidth / $width));
-                $newwidth = $maxwidth;
-            }
-            if ($newheight > $maxheight)
-            {
-                $newwidth = floor($newwidth * ($maxheight / $newheight));
-                $newheight = $maxheight;
-            }
+            
+            $newsize = constrain_size($imgsizearray, $maxsize);
+            
+            $newwidth = $newsize[0];
+            $newheight = $newsize[1];
 
             $accepted_formats = array(
                 'image/jpeg' => 'jpeg',
@@ -606,35 +580,9 @@ class UploadedFile extends Entity
                 $function = "imagecreatefrom$ext";
                 $newimage = imagecreatetruecolor($newwidth,$newheight);
 
-                if (is_callable($function) && $oldimage = $function($imageFileName)) {
-
-                    // Crop the image if we need a square
-                    if ($square) {
-                        if ($x1 == 0 && $y1 == 0 && $x2 == 0 && $y2 ==0) {
-                            $widthoffset = floor(($imgsizearray[0] - $width) / 2);
-                            $heightoffset = floor(($imgsizearray[1] - $height) / 2);
-                        } else {
-                            $widthoffset = $x1;
-                            $heightoffset = $y1;
-                            $width = ($x2 - $x1);
-                            $height = $width;
-                        }
-                    } else {
-                        if ($x1 == 0 && $y1 == 0 && $x2 == 0 && $y2 ==0) {
-                            $widthoffset = 0;
-                            $heightoffset = 0;
-                        } else {
-                            $widthoffset = $x1;
-                            $heightoffset = $y1;
-                            $width = ($x2 - $x1);
-                            $height = ($y2 - $y1);
-                        }
-                    }
-                    if ($square) {
-                        $newheight = $maxheight;
-                        $newwidth = $maxwidth;
-                    }
-                    imagecopyresampled($newimage, $oldimage, 0,0,$widthoffset,$heightoffset,$newwidth,$newheight,$width,$height);
+                if (is_callable($function) && $oldimage = $function($imageFileName)) 
+                {
+                    imagecopyresampled($newimage, $oldimage, 0,0,0,0, $newwidth,$newheight,$width,$height);
 
                     $tempFileName = tempnam(sys_get_temp_dir(), 'img');
 

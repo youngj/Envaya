@@ -41,7 +41,7 @@ class Action_EditDesign extends Action
 
         if (!$customHeader)
         {
-            if ($org->custom_header)
+            if ($org->has_custom_header())
             {
                 $org->set_header(null);
                 system_message(__("header:reset"));
