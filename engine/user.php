@@ -107,10 +107,14 @@ class User extends Entity
                 'width' => 100,
                 'height' => 100
             );
-        }
+        } 
         else
         {
-            return Config::get('url')."_graphics/default{$size}.gif";
+            return array(
+                'url' => Config::get('url')."_graphics/defaultmedium.gif",
+                'width' => 100,
+                'height' => 100
+            );
         }    
     }
 
