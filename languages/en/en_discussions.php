@@ -39,7 +39,7 @@ return array(
     'discussions:select_partner_invite' => "Select partner organizations to invite to the discussion about %s:",
     'discussions:send_invite' => "Send invitation",
     'discussions:invites_sent' => "Invitation email sent.",
-    'discussions:no_new_invites' => "No email addresses were selected.",
+    'discussions:no_new_invites' => "Please select email addresses to invite.",
     'discussions:topic_tools' => "Tools",
     'discussions:already_invited' => "Already invited",
     'discussions:invite_link' => "Invite your partner organizations",

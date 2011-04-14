@@ -4,7 +4,8 @@ return array(
     'email:subscribe_reminders' => 'Nitumie taarifa muhimu kutoka Envaya',
     'email:subscribe_comments' => 'Nitumie email ambapo mtu ameandika maoni katika tovuti yangu',
     'email:subscribe_network' => "Nitumie email ambapo shirika jingine limeniongeza kwenye ukurasa wa Mtandao",
-	
+	'email:subscribe_discussion' => "Nitumie email ambapo mtu ameongeza ujumbe kwenye ukurasa wa Majadiliano",
+    
     'email:orgapproved:subject' => 'Tovuti yako imekubaliwa',
     
     'email:orgapproved:congratulations' => "Hongera! Tovuti yako imekubaliwa kwenye Envaya na inaonekana sasa:",
