@@ -88,7 +88,8 @@ class Action_Discussion_AddMessage extends Action
             $org->send_mail($mail);
         }
         
-        system_message(__('discussions:message_added'));
+        system_message_html(__('discussions:message_added')
+            . view('discussions/invite_link', array('topic' => $topic)));        
         
         forward($topic->get_url());    
     }

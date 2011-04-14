@@ -112,8 +112,9 @@ class Action_Discussion_NewTopic extends Action
             $org->send_mail($mail);
         }        
         
-        system_message(__('discussions:topic_added'));
-                
+        system_message_html(__('discussions:topic_added')
+            . view('discussions/invite_link', array('topic' => $topic)));        
+
         forward($topic->get_url());    
 	}
     

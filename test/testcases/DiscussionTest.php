@@ -39,6 +39,9 @@ class DiscussionTest extends SeleniumTest
         $this->type("//input[@name='name']", "Mr. Person");
         $this->submitForm();
         $this->ensureGoodMessage();
+        
+        $invite_url = $this->getAttribute("//div[@class='good_messages']//p//a@href");
+        
         $this->mouseOver("//h3[contains(text(),'My First Discussion')]");
         $this->mouseOver("//p[contains(text(),'message 1')]");
         $this->mouseOver("//a[contains(text(),'Mr. Person')]");

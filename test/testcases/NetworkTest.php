@@ -24,7 +24,7 @@ class NetworkTest extends SeleniumTest
         $this->open('/pg/login');
         $this->login('testorg','testtest');
         $this->ensureGoodMessage();
-        
+                
         // click todo item
         $this->clickAndWait("//ul[@class='todo_steps']//a[contains(@href,'page/network/edit')]");
         
@@ -376,6 +376,44 @@ class NetworkTest extends SeleniumTest
         // verify original relationship updated correctly to point to the newly registered org
         $this->open('/testorg/network');
         $this->mouseOver("//h3//a[contains(@href, '$inviteUsername')]");         
+
+        // test inviting partner organizations to discussions
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->open("/pg/login");
+        $this->login('testorg','testtest');
+        
+        $this->open('/testorg/page/discussions/edit');
+        $this->clickAndWait("//a[contains(@href,'topic/new')]");
+        $this->type("//input[@name='subject']", "Test Topic");
+        $this->typeInFrame("//iframe", "test message");
+        $this->type("//input[@name='name']", "Test Name");
+        $this->type("//input[@name='location']", "Test Location");
+        $this->submitForm();
+        $this->ensureGoodMessage();
+        $this->clickAndWait("//div[@class='good_messages']//p//a");        
+        $this->check("//input[@value='nobody@nowhere.com']");
+        $this->check("//input[@value='$invitedOrgEmail']");
+        $this->submitForm();
+        $this->ensureGoodMessage();
+        $email = $this->getLastEmail("invites you to a discussion");
+        $this->assertContains('Test Org', $email);
+        $this->assertContains('Test Topic', $email);
+        $this->assertContains($this->getLocation(), $email);
+        $this->assertContains($invitedOrgEmail, $email);
+        $this->assertContains('nobody@nowhere.com', $email);
+        $this->assertNotContains('+p12', $email);
+        
+        // can't invite same emails twice, but can invite others
+        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->clickAndWait("//a[contains(@href,'/invite')]");
+        $this->mustNotExist("//input[@value='nobody@nowhere.com']");
+        $this->mustNotExist("//input[@value='$invitedOrgEmail']");
+        $this->check("//input[contains(@value,'+p12')]");
+        $this->submitForm();
+        $email = $this->getLastEmail("+p12");
+        $this->assertContains('Test Topic', $email);
+        $this->assertContains($this->getLocation(), $email);  
+        $this->assertNotContains('nobody@nowhere.com', $email);        
     }
         
     private function clickAddRelationship()
@@ -395,7 +433,7 @@ class NetworkTest extends SeleniumTest
         $this->deleteNetwork('testposter14');
         $this->deleteNetwork('testposter15');    
         $this->deleteNetwork('testposter16');    
-    }
+    }    
     
     private function deleteNetwork($username)
     {
@@ -427,5 +465,7 @@ class NetworkTest extends SeleniumTest
         $this->getConfirmation();        
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();        
-    }
+    }    
+    
 }
+

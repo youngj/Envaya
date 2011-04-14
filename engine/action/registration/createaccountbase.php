@@ -95,6 +95,8 @@ abstract class Action_Registration_CreateAccountBase extends Action
         $org->save();
 
         /* auto-create empty pages */
+        $org->get_widget_by_name('home')->save();
+        
         $org->get_widget_by_name('news')->save();
 
         $contactWidget = $org->get_widget_by_name('contact');

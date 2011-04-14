@@ -82,7 +82,7 @@ class Action_PostComment extends Action
 		);
 		
 		if ($org && $org->email && $org->is_notification_enabled(Notification::Comments) 
-				&& $ownerGuid != $org->guid)
+				&& $userId != $org->guid)
 		{		
             $mail = Zend::mail($notification_subject, $notification_body);        
 			$org->send_mail($mail);

@@ -120,6 +120,12 @@ class OrgRelationship extends Entity
         return $org && $org->is_approved() ? $org->get_url() : $this->subject_website;
     }
     
+    function get_subject_email()
+    {
+        $org = $this->get_subject_organization();
+        return $org ? $org->email : $this->subject_email;
+    }
+    
     function get_subject_name()
     {
         $org = $this->get_subject_organization();

@@ -67,6 +67,12 @@ class Controller_Topic extends Controller_Profile
         $action = new Action_Discussion_AddMessage($this);
         $action->execute();
     }
+    
+    function action_invite()
+    {
+        $action = new Action_Discussion_Invite($this);
+        $action->execute();
+    }
         
     function action_new()
     {
