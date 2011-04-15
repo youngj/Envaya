@@ -5,7 +5,7 @@
     {
         echo view('section', array(
             'header' => __("dashboard:add_update"), 
-            'content' => view('org/addPost', array('org' => $org))
+            'content' => view('news/add_post', array('org' => $org))
         ));
     }
 

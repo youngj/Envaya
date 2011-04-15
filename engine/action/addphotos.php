@@ -62,7 +62,7 @@ class Action_AddPhotos extends Action
         
         $this->page_draw(array(
             'title' => __('addphotos:title'),
-            'content' => view('org/addPhotos', array('entity' => $org))
+            'content' => view('org/add_photos', array('org' => $org))
         ));        
     }
     

@@ -1,5 +1,5 @@
 <?php
-    echo view('org/addPost', $vars, 'default');
+    echo view('news/add_post', $vars, 'default');
     
     $org = $vars['org'];
 ?>

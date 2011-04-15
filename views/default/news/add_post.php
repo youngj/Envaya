@@ -22,7 +22,7 @@
         'value' => uniqid("",true)
     ));
 
-    echo view('org/attachImage');
+    echo view('news/attach_image');
 
     $formBody = ob_get_clean();
 

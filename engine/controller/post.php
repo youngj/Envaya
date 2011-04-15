@@ -54,7 +54,7 @@ class Controller_Post extends Controller_Profile
 
         $this->page_draw(array(
             'title' => __('widget:news'),
-            'content' => view("org/blogPost", array('entity'=> $post)),
+            'content' => view('news/view_post', array('post' => $post)),
         ));                    
     }
     

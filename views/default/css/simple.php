@@ -61,7 +61,7 @@ body
 #content_top
 {
     height:17px;
-    background:#fff url(<?php echo $graphicsDir; ?>/plate.png) no-repeat -<?php echo $vars['contentWidth'] - 15 ?>px -8px;
+    background:#fff url(<?php echo $graphicsDir; ?>/plate.png) no-repeat -<?php echo ($contentWidth - 15); ?>px -8px;
 }
 
 .home #content_top
@@ -133,7 +133,7 @@ body
     width:100%;
     margin-bottom:5px;
     margin-top:-10px;
-    background:#fff url(<?php echo $graphicsDir; ?>/plate.png) no-repeat -<?php $vars['contentWidth'] - 13 ?>px -16px;
+    background:#fff url(<?php echo $graphicsDir; ?>/plate.png) no-repeat -<?php echo ($contentWidth - 13); ?>px -16px;
 }
 
 .tab

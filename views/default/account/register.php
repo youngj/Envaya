@@ -15,9 +15,6 @@
     $form_body .= "<label>" . __('password') . "<br />" . view('input/password' , array('name' => 'password', 'class' => "general-textarea")) . "</label><br />";
     $form_body .= "<label>" . __('passwordagain') . "<br />" . view('input/password' , array('name' => 'password2', 'class' => "general-textarea")) . "</label><br />";
 
-    // Add captcha hook
-    $form_body .= view('input/captcha');
-
     if ($admin_option)
         $form_body .= view('input/checkboxes', array('name' => "admin", 'options' => array(__('admin_option'))));
 

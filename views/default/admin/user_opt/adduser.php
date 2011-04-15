@@ -18,5 +18,5 @@ function toggle($id)
     <a href="javascript:toggle('add_user_showhide')"><?php echo __('admin:user:adduser:label'); ?></a>
 </div>
 <div id="add_user_showhide" style="display:none" >
-<?php echo view('account/forms/useradd', array('show_admin'=>true)); ?>
+<?php echo view('account/useradd', array('show_admin'=>true)); ?>
 </div>

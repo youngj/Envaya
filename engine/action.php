@@ -72,7 +72,7 @@ abstract class Action
         $this->use_public_layout();        
         $this->page_draw(array(
             'title' => __('captcha:title'),
-            'content' => view("captcha", $vars),
+            'content' => view("captcha/captcha_form", $vars),
         ));
     }
     

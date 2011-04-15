@@ -1,6 +1,6 @@
 <?php
 
-    $org = $vars['entity'];
+    $org = $vars['org'];
     $loggedInOrg = Session::get_loggedin_user();
 
     if ($loggedInOrg instanceof Organization)

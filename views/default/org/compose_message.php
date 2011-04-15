@@ -1,6 +1,6 @@
 <?php
 
-    $org = $vars['entity'];
+    $org = $vars['org'];
     $user = $vars['user'];
 
 ?>

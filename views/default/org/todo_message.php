@@ -1,5 +1,5 @@
 <?php
-    $org = $vars['entity'];    
+    $org = $vars['org'];    
    
     $todoItems = array();
     $doneItems = array();    

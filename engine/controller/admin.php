@@ -142,11 +142,11 @@ class Controller_Admin extends Controller
         if ($email->can_send_to($org))
         {
             $email->send_to($org);
-            system_message(__('email:reminder:sent'));
+            system_message(__('email:sent'));
         }
         else
         {
-            register_error(__('email:reminder:none'));
+            register_error(__('email:none_sent'));
         }
 
         forward(get_input('from') ?: "/admin/contact");
@@ -202,22 +202,26 @@ class Controller_Admin extends Controller
        
         $query = User::query()->where('(INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0)', $tag, $tag);
        
-        if ($users = $query->limit($limit, $offset)->filter())         
+        $users = $query->limit($limit, $offset)->filter();
+        $count = $query->count();
+        
+        if ($users)
         {
-            $count = $query->count();
-            $content = view('user/search/startblurb',array('count' => $count, 'tag' => $tag));            
-            
-            $content .= view('search/results_list', array(
+            $content = view('search/results_list', array(
                 'entities' => $users,
                 'count' => $count,
                 'offset' => $offset,
                 'limit' => $limit,
             ));            
         }
+        else
+        {
+            $content = __('search:no_results');
+        }
                 
         $this->page_draw(array(
             'title' => sprintf(__('search:title_with_query'),$tag),
-            'content' => $content,
+            'content' => view('section', array('content' => $content)),
         ));
     }
     
@@ -265,7 +269,7 @@ class Controller_Admin extends Controller
 
         $this->page_draw(array(
             'title' => __('logbrowser'),
-            'content' => view('logbrowser/form', array(
+            'content' => view('admin/log_browse', array(
                 'user_guid' => $user, 
                 'timeupper' => $timeupper, 
                 'timelower' => $timelower,

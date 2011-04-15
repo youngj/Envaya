@@ -1,6 +1,6 @@
 <?php
 
-    $nav = view('navigation/pagination',array(
+    $nav = view('pagination',array(
         'offset' => @$vars['offset'] ?: 0,
         'count' => @$vars['count'] ?: 0,
         'limit' => @$vars['limit'] ?: 0,

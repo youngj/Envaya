@@ -13,7 +13,7 @@ class Controller_Home extends Controller
             'theme_name' => 'home',
             'title' => __('home:title'),
             'header' => '',
-            'content' => view('home')        
+            'content' => view('home/home')        
         ));
     }
 }

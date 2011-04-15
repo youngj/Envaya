@@ -295,4 +295,10 @@ class Controller_Pg extends Controller {
     {
         Captcha::show();
     }
+
+    function action_email_settings()
+    {
+        $action = new Action_EmailSettings($this);
+        $action->execute();   
+    }    
 }

@@ -16,7 +16,7 @@ class Captcha
         }
         else
         {
-            return view('test/fake_captcha');
+            return view('captcha/fake');
         }
 	}
 	

@@ -16,7 +16,7 @@ class Controller_Org extends Controller
         
         if ($list || get_viewtype() == 'mobile')
         {
-            $content = view("org/browseList", array('lat' => $lat, 'long' => $long, 'sector' => $sector, 'region' => get_input('region')));
+            $content = view("org/browse_list", array('lat' => $lat, 'long' => $long, 'sector' => $sector, 'region' => get_input('region')));
         }
         else
         {
@@ -24,7 +24,7 @@ class Controller_Org extends Controller
             $long = get_input('long');
             $zoom = get_input('zoom');
 
-            $content = view("org/browseMap", array('lat' => $lat, 'long' => $long, 'zoom' => $zoom, 'sector' => $sector));        
+            $content = view("org/browse_map", array('lat' => $lat, 'long' => $long, 'zoom' => $zoom, 'sector' => $sector));        
         }
 
         $this->page_draw(array(
@@ -352,12 +352,6 @@ class Controller_Org extends Controller
 
         $this->request->headers['Content-Type'] = 'text/javascript';
         $this->request->response = json_encode($orgJs);
-    }
-
-    function action_emailSettings()
-    {
-        $action = new Action_EmailSettings($this);
-        $action->execute();   
     }
     
     function action_featured()

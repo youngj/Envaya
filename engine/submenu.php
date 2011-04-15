@@ -19,7 +19,7 @@ class Submenu
         $this->items[] = $item;
     }
     
-    function render($itemTemplate = 'canvas_header/link_submenu', $groupTemplate = 'canvas_header/basic_submenu_group')
+    function render($groupTemplate = 'page_elements/submenu_basic', $itemTemplate = 'page_elements/submenu_link_item')
     {
         $submenu = array();
     

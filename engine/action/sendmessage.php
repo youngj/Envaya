@@ -75,7 +75,7 @@ class Action_SendMessage extends Action
 
         $this->page_draw(array(
             'title' => __("message:title"),
-            'content' => view("org/composeMessage", array('entity' => $org, 'user' => $user)),
+            'content' => view("org/compose_message", array('org' => $org, 'user' => $user)),
         ));        
     }
     

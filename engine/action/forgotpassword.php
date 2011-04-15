@@ -47,7 +47,7 @@ class Action_ForgotPassword extends Action
     {    
         $this->page_draw(array(
             'title' => __('user:password:reset'),
-            'content' => view("account/forms/forgotten_password",
+            'content' => view("account/forgotten_password",
                 array('username' => get_input('username'))
             ),
             'org_only' => true

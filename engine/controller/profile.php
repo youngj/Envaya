@@ -264,7 +264,7 @@ class Controller_Profile extends Controller
         if ($org)
         {            
             $content = view("org/dashboard", array('org' => $org));
-            $pre_body = view("org/setupNextStep", array('entity' => $org));                 
+            $pre_body = view("org/todo_message", array('org' => $org));                 
         }
         else if ($user->admin)
         {
@@ -372,12 +372,12 @@ class Controller_Profile extends Controller
 
             if ($org->can_view() && Session::isloggedin() && Session::get_loggedin_userid() != $org->guid)
             {
-                $preBody .= view("org/comm_box", array('entity' => $org));
+                $preBody .= view("org/comm_box", array('org' => $org));
             }
 
             if (@$vars['show_next_steps'])
             {
-                $preBody .= view("org/setupNextStep", array('entity' => $org));
+                $preBody .= view("org/todo_message", array('org' => $org));
             }
         }    
         return $preBody;

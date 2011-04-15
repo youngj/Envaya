@@ -17,7 +17,6 @@ return array(
     'email:resetreq:somebody_requested' => "Somebody has requested a new password for your account.",
     'email:resetreq:click_link' => "If you requested this, click on the link below to change your password:",
 
-    'email:reminder:subject' => 'Update your website on Envaya!',
     'email:salutation' => "Hi %s,",
     'email:greetings' => "Greetings from Envaya!",
     'email:closing' => "Thanks,",
@@ -28,9 +27,4 @@ return array(
     'email:clickhere' => "click here",
     'email:envaya' => "Envaya is a project of the Trust for Conservation Innovation.",       
     'email:mailing_address' => "150 Post Street, Suite 342, San Francisco, CA 94108",
-    'email:reminder:while' => "It's been a while since your website on Envaya has been updated.",
-    'email:reminder:addnews' => "Add some news and photos to your website to tell everyone what you've been doing!  To update your website, just %s and enter your password to log in.",
-    'email:reminder:formatting' => "Also, we have been listening to your ideas about how to make Envaya better. For instance, now you can add multiple photos and formatting (like <span style='font-weight:bold'>bold text</span>) to your web pages. Try it out now by editing your %s!",
-    'email:reminder:projectspage' => "Projects page",
-    'email:reminder:feedback' => "If you have any ideas on how to improve Envaya, let us know! And if you have any questions, we'd love to help. Feel free to email us at %s.",
 );

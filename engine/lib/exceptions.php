@@ -108,7 +108,7 @@ function php_exception_handler($exception) {
             echo view('layouts/default', array(
                 'title' => __('exception_title'),
                 'header' => view('page_elements/title', array('title' => __('exception_title'))),
-                'content' => view("messages/exceptions/exception", array('object' => $exception))
+                'content' => view("messages/exception", array('object' => $exception))
             ));
         }
     }

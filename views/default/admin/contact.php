@@ -1,4 +1,3 @@
-
 <?php
 
     $sort = Database::sanitize_order_by(get_input('sort') ?: 'name');
@@ -9,7 +8,7 @@
     $orgs = Organization::query()->order_by($sort)->limit($limit, $offset)->filter();
     $count = Organization::query()->count();
 
-    echo view('navigation/pagination',array(
+    echo view('pagination',array(
         'baseurl' => $baseurl,
         'pagesShown' => 24,
         'offset' => $offset,

@@ -46,5 +46,5 @@
 	
 	if ($single_post)
 	{
-		echo view('org/comments', array('entity' => $entity));
+		echo view('news/comments', array('post' => $entity));
 	}

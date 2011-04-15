@@ -18,7 +18,6 @@ return array(
     'email:resetreq:somebody_requested' => "Mtu fulani ameomba neno jipya la siri kwa akaunti yako.",
     'email:resetreq:click_link' => "Kama uliliomba, bonyeza kiungo chini kubadili neno lako la siri:",
     
-    'email:reminder:subject' => 'Panga upya tovuti yako katika Envaya!',
     'email:salutation' => "Habari za sahizi %s,",
     'email:greetings' => "Salam kutoka Envaya!",
     'email:closing' => "Asante,",
@@ -28,9 +27,4 @@ return array(
     'email:here' => "hapa",
     'email:clickhere' => "bonyeza hapa",
     'email:envaya' => "Envaya ni mradi wa Trust for Conservation Innovation.",
-    'email:reminder:while' => "Siku nyingi zimepita tangu tovuti yako katika Envaya imepangwa upya.",
-    'email:reminder:addnews' => "Tafadhali jitahidi kuongeza habari na picha kwenye tovuti yako, ili kuwafahamisha watu kuhusu shughuli zako mbali mbali!  Kupanga upya tovuti yako, %s tu na ingiza neno lako la siri kufungua.",
-    'email:reminder:formatting' => "Vile vile, tumezingatia maoni yenu kuhusu njia kuboresha Envaya. Kwa mfano, sasa unaweza kuongeza picha nyingi na muundo (kama <span style='font-weight:bold'>hii</span> or <em>hii</em>) kwenye kurasa za tovuti yako. Jaribu sasa kwa kuhariri %s kwenye tovuti yako ya Envaya!",
-    'email:reminder:projectspage' => "Ukurasa wa Miradi",
-    'email:reminder:feedback' => "Kama kuna mawazo yoyote kuhusu jinsi ya kuboresha Envaya, tunaomba mtufahamishe! Pia, kama kuna maswali yoyote, wasiliana nasi kupitia email ya %s.",
 );

@@ -89,7 +89,7 @@ if (empty($keys))
 }
 else
 {
-    echo view('navigation/pagination',array(
+    echo view('pagination',array(
         'baseurl' => $baseurl,
         'offset' => $offset,
         'count' => $count,
@@ -146,7 +146,7 @@ else
 
     echo "</table>";
 
-    echo view('navigation/pagination',array(
+    echo view('pagination',array(
         'baseurl' => $baseurl,
         'offset' => $offset,
         'count' => $count,

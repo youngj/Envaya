@@ -3,7 +3,7 @@
     $widget = $vars['widget'];
     $org = $widget->get_container_entity();
 
-    $form = view('org/addPost', array('org' => $org));
+    $form = view('news/add_post', array('org' => $org));
 
     echo view('section', array('header' => __("dashboard:add_update"), 'content' => $form));
 
@@ -18,7 +18,7 @@
     if ($count)
     {
 
-        echo  view('navigation/pagination',array(
+        echo  view('pagination',array(
             'baseurl' => $widget->get_edit_url(),
             'offset' => $offset,
             'count' => $count,

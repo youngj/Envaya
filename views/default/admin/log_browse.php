@@ -65,13 +65,13 @@
 	</div>
 </div>
 <?php
-    echo view('navigation/pagination', $vars);
+    echo view('pagination', $vars);
 ?>
 <table class="log_entry">
 <?php
     foreach ($vars['entries'] as $entry)
     {
-        echo view("logbrowser/entry", array('entry' => $entry));
+        echo view("admin/log_entry", array('entry' => $entry));
     }
 ?>
 </table>

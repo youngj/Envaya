@@ -5,7 +5,7 @@
 	$by = get_entity($entry->performed_by_guid);
 	$object = SystemLog::get_loggable_object($entry);
 	
-	$obj_url = is_callable(array($object, 'get_url')) ? $object->get_url() : '';
+    $obj_url = is_callable(array($object, 'get_url')) ? $object->get_url() : '';
 	
 ?>	
     <tr>

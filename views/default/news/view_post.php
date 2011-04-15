@@ -1,9 +1,9 @@
 <div class='section_content'>
 <?php
 
-    $entity = $vars['entity'];              
-    $url = rewrite_to_current_domain($entity->get_url());
-    $org = $entity->get_root_container_entity();
+    $post = $vars['post'];              
+    $url = rewrite_to_current_domain($post->get_url());
+    $org = $post->get_root_container_entity();
     $blogDates = $org->get_blog_dates();
 ?>
 
@@ -91,7 +91,7 @@ makeLabelForDate(new Date(lastTime * 1000));
 
 var cur = document.createElement('div');
     cur.className = 'timelineCur';
-    cur.style.left = getPosForTime(<?php echo json_encode($entity->time_created) ?>, 13);
+    cur.style.left = getPosForTime(<?php echo json_encode($post->time_created) ?>, 13);
     timeline.appendChild(cur);
 
 var hoverPost = document.getElementById('hoverPost');
@@ -169,7 +169,7 @@ for (var i = 0; i < blogDates.length; i++)
 
 <?php
 }            
-echo view_entity($entity, array('single_post' => true));
+echo view_entity($post, array('single_post' => true));
 
 ?>
 

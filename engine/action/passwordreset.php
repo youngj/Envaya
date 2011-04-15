@@ -60,7 +60,7 @@ class Action_PasswordReset extends Action
         {
             $this->page_draw(array(
                 'title' => __("user:password:choose_new"),
-                'content' => view("account/forms/reset_password", array('entity' => $user)),
+                'content' => view("account/reset_password", array('entity' => $user)),
                 'org_only' => true,
             ));                
         }

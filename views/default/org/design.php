@@ -1,8 +1,8 @@
 <?php
-    $user = $vars['entity'];
+    $org = $vars['org'];
 ?>
 
-<form action='<?php echo $user->get_url() ?>/design' method='POST'>
+<form action='<?php echo $org->get_url() ?>/design' method='POST'>
 
 <?php echo view('input/securitytoken'); ?>
 
@@ -17,10 +17,10 @@
 
 echo view("input/image",
     array(
-        'current' => $user->get_icon('medium'),
+        'current' => $org->get_icon('medium'),
         'trackDirty' => true,
         'sizes' => User::get_icon_sizes(),
-        'removable' => $user->has_custom_icon(),
+        'removable' => $org->has_custom_icon(),
         'thumbnail_size' => 'medium',
         'name' => 'icon',
         'deletename' => 'deleteicon',
@@ -81,7 +81,7 @@ function customHeaderChanged()
 <?php
     echo view('input/radio', array(
         'name' => 'custom_header',
-        'value' => $user->has_custom_header() ? '1' : '0',
+        'value' => $org->has_custom_header() ? '1' : '0',
         'js' => "onchange='customHeaderChanged()' onclick='customHeaderChanged()'",
         'options' => array(
             '0' => __('header:default'),
@@ -90,26 +90,26 @@ function customHeaderChanged()
     ));
 ?>
 
-<div id='default_header_container' <?php echo $user->has_custom_header() ? "style='display:none'" : "" ?> >
+<div id='default_header_container' <?php echo $org->has_custom_header() ? "style='display:none'" : "" ?> >
     <div class='header_preview'>
-        <?php echo view('org/default_header', array('org' => $user, 'subtitle' => __('header:subtitle'))) ?>
+        <?php echo view('org/default_header', array('org' => $org, 'subtitle' => __('header:subtitle'))) ?>
     </div>
     <div class='help'><?php echo sprintf(__('header:changelogo'), __('icon')) ?></div>
 </div>
 
-<div id='custom_header_container' <?php echo !$user->has_custom_header() ? "style='display:none'" : "" ?>>
+<div id='custom_header_container' <?php echo !$org->has_custom_header() ? "style='display:none'" : "" ?>>
 
     <?php
-        if ($user->has_custom_header())
+        if ($org->has_custom_header())
         {
             echo "<div style='margin-top:10px'>".__('image:current')."</div>";
-            echo "<div class='header_preview'>".view('org/custom_header', array('org' => $user))."</div>";
+            echo "<div class='header_preview'>".view('org/custom_header', array('org' => $org))."</div>";
         }
     ?>
 
     <div class='input'>
             <?php
-                if ($user->has_custom_header())
+                if ($org->has_custom_header())
                 {
                     echo __('image:new');
                 }
@@ -152,13 +152,13 @@ echo view('input/submit',array(
 
 <?php echo view('input/theme', array(
     'name' => 'theme',
-    'value' => $user->theme,
+    'value' => $org->theme,
     'options' => Theme::available_names(),
-    'previewUrl' => $user->get_url()
+    'previewUrl' => $org->get_url()
 )); ?>
 
 <?php
-echo view('input/hidden', array('name' => 'guid', 'value' => $user->guid));
+echo view('input/hidden', array('name' => 'guid', 'value' => $org->guid));
 
 echo view('input/submit',array(
     'value' => __('savechanges'),

@@ -52,7 +52,7 @@ class Action_Admin_ChangeUsername extends Action
     {
         $this->page_draw(array(
             'title' => __('username:title'),
-            'content' => view('org/changeUsername', array('org' => $this->get_org()))
+            'content' => view('org/change_username', array('org' => $this->get_org()))
         ));
     }    
 }    

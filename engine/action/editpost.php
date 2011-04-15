@@ -49,7 +49,7 @@ class Action_EditPost extends Action
 
         $this->page_draw(array(
             'title' => __('blog:editpost'),
-            'content' => view("org/editPost", array('entity' => $post))
+            'content' => view("news/edit_post", array('entity' => $post))
         ));
     }
 }    

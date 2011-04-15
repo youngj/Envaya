@@ -109,12 +109,7 @@ return array(
     
     'viewtype:change' => "Change listing type",
     'viewtype:list' => "List view",
-    
-    'search:startblurb' => "Items matching '%s':",
-
-    'user:search:startblurb' => "Users matching '%s':",
-    'user:search:finishblurb' => "To view more, click here.",
-    
+        
     'invite' => "Invite",
 
     'resetpassword' => "Reset password",

@@ -58,7 +58,7 @@ class Action_Login extends Action
         
         $this->page_draw(array(
             'title' => __("login"),
-            'content' => view("account/forms/login", array('username' => $username, 'next' => $next)),
+            'content' => view("account/login", array('username' => $username, 'next' => $next)),
             'org_only' => true,
             'hideLogin' => !Session::isloggedin()
         ));        

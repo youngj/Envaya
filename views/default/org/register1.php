@@ -1,4 +1,4 @@
-<?php echo view("org/registerProgress", array('current' => 1)) ?>
+<?php echo view("org/register_progress", array('current' => 1)) ?>
 
 <div class='padded'>
 <div id='instructions'>

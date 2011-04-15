@@ -5,7 +5,7 @@
     $code = get_email_fingerprint($email);
 
 ?>
-<form action='/org/emailSettings' method='POST'>
+<form action='/pg/email_settings' method='POST'>
 
 <div class='input'>
 

@@ -13,20 +13,4 @@
 
 ?>
 <div style='clear:both'></div>
-
-<?php
-/*
-	if (get_input('comments'))
-	{
-		echo view('org/comments', array('entity' => $widget));
-	}
-	else
-	{
-		echo "<div class='comment_link'>";
-		echo "<a href='{$widget->get_url()}?comments=1#comments'>".sprintf(__('comment:count'), $widget->num_comments)."</a>";
-		echo "</div>";	
-	}
-	*/
-?>
-
 </div>

@@ -65,7 +65,7 @@ class Action_EditDesign extends Action
 
         $this->page_draw(array(
             'title' => __("design:edit"),
-            'content' => view("org/design", array('entity' => $org))
+            'content' => view("org/design", array('org' => $org))
         ));        
     }
     
