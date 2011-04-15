@@ -1,6 +1,6 @@
 <div id="topbar"><a href="/home"><img style='vertical-align:middle' src="/_graphics/logo2.gif" alt="Envaya" width="120" height="25"></a>
 <?php
-    if (PageContext::get_theme() == 'home') 
+    if (@$vars['theme_name'] == 'home') 
     {
         echo "<div style='float:right'>".view('page_elements/login_area', $vars)."</div>";     
     }

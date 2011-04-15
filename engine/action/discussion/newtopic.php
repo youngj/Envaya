@@ -19,7 +19,7 @@ class Action_Discussion_NewTopic extends Action
             }
             else
             {                
-                return $this->org_page_not_found();
+                return $this->not_found();
             }
         }                
         
@@ -126,11 +126,12 @@ class Action_Discussion_NewTopic extends Action
         $widget = $org->get_widget_by_class('WidgetHandler_Discussions');
         if (!$widget->is_active() && !$widget->can_edit())
         {
-            return $this->org_page_not_found();
+            return $this->not_found();
         }
-        
-        $title = __('discussions:title');        
-        $body = $this->org_view_body($title, view("discussions/topic_new", array('org' => $org)));        
-        $this->page_draw($title, $body);    
+
+        $this->page_draw(array(
+            'title' => __('discussions:title'),
+            'content' => view("discussions/topic_new", array('org' => $org)),
+        ));        
     }
 }

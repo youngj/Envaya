@@ -105,12 +105,10 @@ class Action_Settings extends Action
 
     function render()
     {
-        $title = __("usersettings:user");
-
-        $body = view_layout("one_column", view_title($title),
-            view("usersettings/form", array('entity' => $this->get_user())));
-
-        return $this->page_draw($title, $body);
+        $this->page_draw(array(
+            'title' => __("usersettings:user"),
+            'content' => view("usersettings/form", array('entity' => $this->get_user())),
+        ));                
     }
     
 }    

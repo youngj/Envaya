@@ -1,3 +1,4 @@
+<div class='section_content padded'>
 <?php
     $email = $vars['email'];
     $users = $vars['users'];
@@ -43,3 +44,4 @@ echo view('input/submit',array(
 ?>
 
 </form>
+</div>

@@ -5,14 +5,13 @@ class Controller_Tr extends Controller
     function action_translate()
     {
         $this->require_admin();
-        PageContext::set_theme('editor');
 
         $props = get_input_array("prop");
         $from = get_input('from');
         
         $targetLang = get_input('targetlang') ?: Language::get_current_code();
 
-        $area2 = array();
+        $content = array();
 
         foreach ($props as $propStr)
         {
@@ -25,7 +24,7 @@ class Controller_Tr extends Controller
 
             if ($entity && $entity->can_edit() && $entity->get($prop))
             {
-                $area2[] = view("translation/translate",
+                $content[] = view("translation/translate",
                     array(
                         'entity' => $entity,
                         'property' => $prop,
@@ -35,11 +34,11 @@ class Controller_Tr extends Controller
             }
         }
 
-        $title = __("trans:translate");
-
-        $body = view_layout("one_column_wide", view_title($title), implode("<hr><br>", $area2));
-
-        $this->page_draw($title,$body);
+        $this->page_draw(array(
+            'title' => __("trans:translate"),
+            'theme_name' => 'editor',
+            'content' => implode("<hr><br>", $content)
+        ));
     }
 
     function action_save_translation()
@@ -108,9 +107,10 @@ class Controller_Tr extends Controller
 
         if ($key)
         {
-            $title = __("trans:item_title");
-            $body = view_layout("one_column_padded", view_title($title), view("translation/interface_item", array('lang' => $lang, 'key' => $key)));
-            $this->page_draw($title, $body);
+            $this->page_draw(array(
+                'title' => __("trans:item_title"),
+                'content' => view("translation/interface_item", array('lang' => $lang, 'key' => $key)),
+            ));            
         }
         else if (get_input('export'))
         {
@@ -119,9 +119,12 @@ class Controller_Tr extends Controller
         }
         else
         {
-            $title = __("trans:list_title");
-            $body = view_layout("one_column_wide", view_title($title), view("translation/interface_list", array('lang' => $lang)));
-            $this->page_draw($title, $body);
+            $this->page_draw(array(
+                'title' => __("trans:list_title"),
+                'content' => view("translation/interface_list", array('lang' => $lang)),
+                'header' => '',
+                'theme_name' => 'simple_wide',
+            ));
         }
     }
 

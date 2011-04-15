@@ -46,17 +46,65 @@ abstract class Controller {
     {
         return $this->request;
     }
-    
-    public function page_draw($title, $body, $vars = null)
+        
+    public function page_draw($vars)
     {        
         if (get_input('__topbar') == '0')
         {
-            $this->page_draw_vars['no_top_bar'] = true;
+            $vars['no_top_bar'] = true;
         }
-    
-        $this->request->response = page_draw($title, $body, $vars ?: $this->page_draw_vars);
+                      
+        foreach ($this->page_draw_vars as $k => $v)
+        {
+            if (!isset($vars[$k]))
+            {
+                $vars[$k] = $v;
+            }
+        }
+        
+        if (!isset($vars['header']) && @$vars['title'])
+        {
+            $vars['header'] = view('page_elements/title', $vars);
+        }
+                                
+        if (!isset($vars['full_title']))
+        {
+            $sitename = @$vars['sitename'] ?: Config::get('sitename');     
+            if (empty($vars['title'])) 
+            {
+                $vars['full_title'] = $sitename;
+            } 
+            else 
+            {
+                $vars['full_title'] = $sitename . ": " . $vars['title'];
+            }
+        }
+        
+        $viewtype = get_viewtype();        
+        if ($viewtype == '' || $viewtype == 'default')
+        {
+            $theme = Theme::get(@$vars['theme_name'] ?: 'simple');
+            $vars['css_name'] = $theme->get_css_name();        
+            if (!isset($vars['layout']))
+            {
+                $vars['layout'] = $theme->get_layout();
+            }
+        }
+
+        $this->request->response = view(@$vars['layout'] ?: 'layouts/default', $vars);
     }
     
+    public function not_found()
+    {
+        header("HTTP/1.1 404 Not Found");        
+        $this->page_draw(array(
+            'title' => __('page:notfound'),
+            'content' => view('section', array('content' => __('page:notfound:details')."<br/><br/><br/>"))
+        ));        
+        echo $this->request->response;
+        exit;    
+    }
+        
     public function add_generic_footer()
     {
         $footer = PageContext::get_submenu('footer');
@@ -125,7 +173,7 @@ abstract class Controller {
             force_login();
         }
     }
-
+    
     /**
      * Automatically executed before the controller action. Can be used to set
      * class properties, do authorization checks, and execute other custom code.

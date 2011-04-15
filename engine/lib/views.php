@@ -144,63 +144,6 @@ function view_entity($entity, $args = null)
         : '';
 }
 
-/**
- * Displays an internal layout for the use of a plugin canvas.
- * Takes a variable number of parameters, which are made available
- * in the views as $vars['area1'] .. $vars['areaN'].
- *
- * @param string $layout The name of the views in canvas/layouts/.
- * @return string The layout
- */
-function view_layout($layout) 
-{
-    $arg = 1;
-    $param_array = array();
-    while ($arg < func_num_args()) {
-        $param_array['area' . $arg] = func_get_arg($arg);
-        $arg++;
-    }
-    if (view_exists("canvas/default", false)) 
-    {
-        return view("canvas/default",$param_array);               
-    } 
-    else 
-    {
-        return view("canvas/layouts/{$layout}", $param_array);
-    }
-
-}
-
-/**
- * Returns a view for the page title
- *
- * @param string $title The page title
- * @return string The HTML (etc)
- */
-function view_title($title, $args = null)
-{
-    return view('page_elements/title', array('title' => $title, 'args' => $args));
-}        
-
-/**
- * Returns a representation of a full 'page' (which might be an HTML page, RSS file, etc, depending on the current view)
- *
- * @param unknown_type $title
- * @param unknown_type $body
- * @return unknown
- */
-function page_draw($title, $body, $vars = null)
-{
-    if ($vars == null)
-    {
-        $vars = array();
-    }
-    $vars['title'] = $title;
-    $vars['body'] = $body;
-
-    return view('pageshells/pageshell', $vars);
-}
-
 class Views
 {
     static $extensions_map = array();

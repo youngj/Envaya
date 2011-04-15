@@ -1,3 +1,4 @@
+<div class='padded'>
 <?php
 
 $lang = $vars['lang'];
@@ -59,3 +60,5 @@ echo "<a style='float:right;padding:10px' href='".escape($from)."'>".__('cancel'
 echo "</div>";
 
 echo "</form>";
+?>
+</div>

@@ -30,9 +30,9 @@ class Action_WidgetOptions extends Action
         $this->use_editor_layout();
         PageContext::set_translatable(false);
                
-        $title = __('widget:options');
-        $body = view('widgets/options', array('widget' => $this->get_widget()));
-        
-        $this->page_draw($title, view_layout("one_column", view_title($title), $body));                
+        $this->page_draw(array(
+            'title' => __('widget:options'),
+            'content' => view('widgets/options', array('widget' => $this->get_widget())),
+        ));                       
     }
 }    

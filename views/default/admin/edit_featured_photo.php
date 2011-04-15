@@ -1,3 +1,4 @@
+<div class='padded'>
 <?php
     $photo = $vars['photo'];
 ?>
@@ -74,3 +75,4 @@ echo view('admin/nudge_photo', array(
 ?>
 
 </form>
+</div>

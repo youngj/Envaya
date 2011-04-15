@@ -26,4 +26,4 @@
     <?php echo view('page_elements/language_links'); ?>    
 </div>
 <div style='clear:both;padding:4px;'></div>
-<?php echo view('page_elements/footer_menu'); ?>
+<?php echo view('page_elements/footer_menu', $vars); ?>

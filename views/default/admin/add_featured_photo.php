@@ -1,3 +1,4 @@
+<div class='padded'>
 <?php
     $user = get_user($vars['user_guid']);
 ?>
@@ -79,3 +80,4 @@ echo view('admin/nudge_photo', array(
 ?>
 
 </form>
+</div>

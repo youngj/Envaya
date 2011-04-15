@@ -259,6 +259,7 @@ return array(
     'org:name:edit' => 'Edit name',
 
     'org:cantedit' => "You do not have access to edit this organization's web site.",
+    'org:cantview' => "You do not have access to view this organization's web site.",
 
     'design:edit' => "Edit website design",
 

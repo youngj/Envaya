@@ -70,14 +70,13 @@ class Action_Discussion_Invite extends Action
     function render()
     {
         $topic = $this->get_topic();
-        
-        $title = __('discussions:invite');
-        
+                
         $cancelUrl = get_input('from') ?: $topic->get_url();
         PageContext::get_submenu('edit')->add_item(__("cancel"), $cancelUrl);        
         
-        $body = view_layout('one_column', view_title($title), view("discussions/invite", array('topic' => $topic)));
-        
-        $this->page_draw($title, $body);        
+        $this->page_draw(array(
+            'title' => __('discussions:invite'),
+            'content' => view("discussions/invite", array('topic' => $topic))
+        ));
     }
 }    

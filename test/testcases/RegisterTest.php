@@ -296,10 +296,9 @@ class RegisterTest extends SeleniumTest
 
         $this->open("/{$this->username}");
         sleep(2);
-        $this->ensureGoodMessage();
+        $this->ensureBadMessage();
         $this->mustNotExist("//h2");
 
-        $this->clickAndWait("//a[contains(@href,'?login=1')]");
         $this->login('testadmin','testtest');
 
         $this->clickAndWait("//a[contains(@href, 'approval=2')]");

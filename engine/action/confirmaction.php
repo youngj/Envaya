@@ -16,10 +16,9 @@ class Action_ConfirmAction extends Action
             forward($cancel_url);
         }        
         
-        $area1 = view("output/confirm_action", array('ok_url' => $ok_url, 'cancel_url' => $cancel_url));
-       
-        $body = view_layout("one_column", view_title($message), $area1);
-        
-        $this->page_draw($message,$body);  
+        $this->page_draw(array(
+            'title' => $message,
+            'content' => view("output/confirm_action", array('ok_url' => $ok_url, 'cancel_url' => $cancel_url))
+        ));        
     }
 }    

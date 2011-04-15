@@ -43,13 +43,12 @@ class Action_Discussion_Edit extends Action
         $topic = $this->get_topic();
         $this->use_editor_layout();
         
-        $title = __('discussions:edit_topic');
-        
         $cancelUrl = get_input('from') ?: $topic->get_url();
         PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
                 
-        $body = view_layout('one_column', view_title($title), view("discussions/topic_edit", array('topic' => $topic)));
-        
-        $this->page_draw($title, $body);        
+        $this->page_draw(array(
+            'title' => __('discussions:edit_topic'),
+            'content' => view("discussions/topic_edit", array('topic' => $topic))
+        ));        
     }
 }    

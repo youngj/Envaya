@@ -91,7 +91,12 @@ class Controller_Pg extends Controller {
     function action_blank()
     {
         // this may be useful for displaying a page containing only SessionMessages
-        $this->page_draw('','', array('no_top_bar' => true));
+        $this->page_draw(array(
+            'no_top_bar' => true, 
+            'layout' => 'layouts/frame', 
+            'content' => SessionMessages::view_all(),
+            'header' => ''
+        ));
     }
 
     function action_large_img()
@@ -108,7 +113,7 @@ class Controller_Pg extends Controller {
         }
         else
         {
-            not_found();
+            $this->not_found();
         }
     }
 
@@ -126,7 +131,7 @@ class Controller_Pg extends Controller {
         }
         else
         {
-            not_found();
+            $this->not_found();
         }
     }
 
@@ -162,7 +167,7 @@ class Controller_Pg extends Controller {
 
         if (!($storage_local instanceof Storage_Local))
         {
-            return not_found();
+            return $this->not_found();
         }
 
         $path = get_input('path');
@@ -173,7 +178,7 @@ class Controller_Pg extends Controller {
         {
             if (preg_match('/[^\w\.\-]|(\.\.)/', $component))
             {
-                return not_found();
+                return $this->not_found();
             }
         }
 
@@ -181,7 +186,7 @@ class Controller_Pg extends Controller {
 
         if (!is_file($local_path))
         {
-            return not_found();
+            return $this->not_found();
         }
 
         $mime_type = UploadedFile::get_mime_type($local_path);
@@ -256,13 +261,14 @@ class Controller_Pg extends Controller {
     {
         $file = UploadedFile::get_from_url(get_input('src'));
 
-        $this->page_draw('',view('upload/select_image',
-            array(
+        $this->page_draw(array(
+            'layout' => 'layouts/frame',
+            'content' => view('upload/select_image', array(
                 'current' => $file,
                 'position' => get_input('pos'),
                 'frameId' => get_input('frameId'),
-            )
-        ), array('no_top_bar' => true));
+            ))
+        ));
     }
     
     function action_select_document()
@@ -270,12 +276,13 @@ class Controller_Pg extends Controller {
         $guid = (int)get_input('guid');
         $file = ($guid) ? UploadedFile::query()->where('e.guid = ?', $guid)->get() : null;
         
-        $this->page_draw('',view('upload/select_document',
-            array(
+        $this->page_draw(array(
+            'layout' => 'layouts/frame',
+            'content' => view('upload/select_document', array(
                 'current' => $file,
                 'frameId' => get_input('frameId'),
-            )
-        ),  array('no_top_bar' => true));
+            ))
+        ));        
     }    
     
     function action_confirm_action()

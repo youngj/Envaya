@@ -1,3 +1,4 @@
+<div class='padded'>
 <?php
     echo "<span class=\"contentIntro\">" . view('output/longtext', array('value' => __("admin:user:description"))) . "</span>";
 
@@ -8,3 +9,4 @@
     if ($vars['list']) echo $vars['list'];
 
 ?>
+</div>

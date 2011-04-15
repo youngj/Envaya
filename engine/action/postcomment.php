@@ -16,7 +16,7 @@ class Action_PostComment extends Action
         
         if (!$entity->guid || !$entity->is_enabled())
         {
-            return not_found();
+            return $this->not_found();
         }        
         
 		$comments_url = $entity->get_url()."?comments=1";

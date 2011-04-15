@@ -63,12 +63,10 @@ class Action_AddPage extends Action
         $cancelUrl = get_input('from') ?: $org->get_url();
         PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
         
-        $title = __("widget:new");
-        
-        $area1 = view("widgets/add", array('org' => $org));
-        $body = view_layout("one_column_padded", view_title($title), $area1);
-
-        $this->page_draw($title,$body);     
+        $this->page_draw(array(
+            'title' => __("widget:new"),
+            'content' => view("widgets/add", array('org' => $org))
+        ));
     }
     
 }    

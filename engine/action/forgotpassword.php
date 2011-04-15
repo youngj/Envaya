@@ -45,12 +45,12 @@ class Action_ForgotPassword extends Action
 
     function render()
     {    
-        $body = view("account/forms/forgotten_password",
-            array('username' => get_input('username'))
-        );
-
-        $title = __('user:password:reset');
-        $this->page_draw($title, view_layout("one_column",
-            view_title($title, array('org_only' => true)), $body));
+        $this->page_draw(array(
+            'title' => __('user:password:reset'),
+            'content' => view("account/forms/forgotten_password",
+                array('username' => get_input('username'))
+            ),
+            'org_only' => true
+        ));
     }    
 }    

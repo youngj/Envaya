@@ -58,11 +58,11 @@ class Action_PasswordReset extends Action
 
         if ($user && $user->passwd_conf_code && $user->passwd_conf_code == $conf_code)
         {
-            $title = __("user:password:choose_new");
-            $body = view_layout('one_column_padded',
-                view_title($title, array('org_only' => true)),
-                view("account/forms/reset_password", array('entity' => $user)));
-            $this->page_draw($title, $body);
+            $this->page_draw(array(
+                'title' => __("user:password:choose_new"),
+                'content' => view("account/forms/reset_password", array('entity' => $user)),
+                'org_only' => true,
+            ));                
         }
         else
         {

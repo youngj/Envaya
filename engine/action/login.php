@@ -50,19 +50,17 @@ class Action_Login extends Action
         $username = get_input('username');
         $next = get_input('next');        
         
-        $title = __("login");
-
         $loginTime = (int)get_input('_lt');
         if ($loginTime && time() - $loginTime < 10 && !Session::isloggedin())
         {
             register_error_html(view('account/cookie_error'));
         }
-
-        $body = view_layout('one_column',
-            view_title($title, array('org_only' => true)),
-            view("account/forms/login", array('username' => $username, 'next' => $next))
-        );
-
-        $this->page_draw($title, $body, array('hideLogin' => !Session::isloggedin()));
+        
+        $this->page_draw(array(
+            'title' => __("login"),
+            'content' => view("account/forms/login", array('username' => $username, 'next' => $next)),
+            'org_only' => true,
+            'hideLogin' => !Session::isloggedin()
+        ));        
     }    
 }    

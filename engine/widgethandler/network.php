@@ -62,7 +62,7 @@ class WidgetHandler_Network extends WidgetHandler
         $type = (int)get_input('type');
         if (!OrgRelationship::is_valid_type($type))
         {
-            return not_found();
+            throw new NotFoundException();
         }
                 
         return view('widgets/network_add_relationship', array(
@@ -87,7 +87,7 @@ class WidgetHandler_Network extends WidgetHandler
 
         if (!OrgRelationship::is_valid_type($relationship->type))
         {
-            return not_found();
+            throw new NotFoundException();
         }
         
         $relationship->subject_phone = get_input('phone_number');
@@ -244,7 +244,7 @@ class WidgetHandler_Network extends WidgetHandler
         }
         catch (InvalidParameterException $ex)
         {
-            return not_found();
+            throw new NotFoundException();
         }        
         
         $widget->save();
@@ -262,7 +262,7 @@ class WidgetHandler_Network extends WidgetHandler
         }
         catch (InvalidParameterException $ex)
         {
-            return not_found();
+            throw new NotFoundException();
         }                
         
         $relationship->set_self_approved();
@@ -288,7 +288,7 @@ class WidgetHandler_Network extends WidgetHandler
         }
         catch (InvalidParameterException $ex)
         {
-            return not_found();
+            throw new NotFoundException();
         }                
         
         $relationship->set_content(get_input('content'));
@@ -348,7 +348,7 @@ class WidgetHandler_Network extends WidgetHandler
         }
         catch (InvalidParameterException $ex)
         {
-            return not_found();
+            throw new NotFoundException();
         }
         
         return view('widgets/network_edit_relationship', array('widget' => $widget, 'relationship' => $relationship));

@@ -1,3 +1,4 @@
+<div class='padded'>
 <?php
     $entity = $vars['entity'];
     $org = $entity->get_container_entity();
@@ -45,3 +46,4 @@
     
 ?>
 </form>
+</div>

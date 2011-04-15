@@ -69,11 +69,11 @@ abstract class Action
     
     function render_captcha($vars)
     {
-        $controller = $this->controller;
-        $title = __('captcha:title');
-        $controller->use_public_layout();
-        $body = $controller->org_view_body($title, view("captcha", $vars));
-        $controller->page_draw($title, $body); 
+        $this->use_public_layout();        
+        $this->page_draw(array(
+            'title' => __('captcha:title'),
+            'content' => view("captcha", $vars),
+        ));
     }
     
     function check_captcha()

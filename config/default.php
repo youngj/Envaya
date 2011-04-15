@@ -11,7 +11,7 @@ return array(
     'queue_host' => "localhost",
     'queue_port' => 22133,
     
-    'sphinx_host' => 'localhost',
+    'sphinx_host' => 'localhost',  
     'sphinx_port' => 9312,
    
     'cache_backend' => "DatabaseCache",

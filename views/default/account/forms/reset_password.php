@@ -1,3 +1,4 @@
+<div class='padded'>
 <?php
 
     $user = $vars['entity'];
@@ -32,3 +33,4 @@
 
 <?php echo view('input/submit', array('value' => __('login'))); ?>
 </form>
+</div>

@@ -1,20 +1,10 @@
 <?php
 
     /**    
-     * The standard HTML header that displays across the site
-     
-     * @uses $vars['title'] The page title
-     * @uses $vars['body'] The main content of the page
+     * The standard HTML header that displays across the site     
      */
 
      // Set title
-        $sitename = @$vars['sitename'] ?: Config::get('sitename');
-     
-        if (empty($vars['title'])) {
-            $title = $sitename;
-        } else {
-            $title = $sitename . ": " . $vars['title'];
-        }
 
     echo view('page_elements/doctype');
     
@@ -24,7 +14,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $lang ?>" lang="<?php echo $lang ?>">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title><?php echo escape($title); ?></title>
+    <title><?php echo escape($vars['full_title']); ?></title>
     <base href='<?php echo Request::$protocol == 'https' ? Config::get('secure_url') : Config::get('url'); ?>' />     
 
     <?php

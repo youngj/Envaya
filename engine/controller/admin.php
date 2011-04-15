@@ -2,67 +2,63 @@
 
 class Controller_Admin extends Controller
 {
-
     function before()
     {
         $this->require_admin();
-        PageContext::set_theme('editor');
+        $this->page_draw_vars['theme_name'] = 'editor';
     }
 
     function action_contact()
     {
-        $title = __('email:send');
-        $area1 = view('admin/contact');
-        $body = view_layout("one_column_wide", view_title($title), $area1);
-        $this->page_draw($title,$body);
+        $this->page_draw(array(
+            'theme_name' => 'simple_wide',
+            'title' => __('email:send'),
+            'header' => '',
+            'content' => view('admin/contact')
+        ));
     }
 
     function action_emails()
     {
         $emails = EmailTemplate::query()->filter();
-        $title = __('email:list');
-        $area1 = view('admin/list_emails', array('emails' => $emails));
-        $body = view_layout("one_column_padded", view_title($title), $area1);
-        $this->page_draw($title,$body);
+        
+        $this->page_draw(array(
+            'title' => __('email:list'),
+            'content' => view('admin/list_emails', array('emails' => $emails))
+        ));        
     }
 
     function action_view_email()
     {
-        $title = __('email:view');
         $org = get_user_by_username(get_input('username'));
         
         PageContext::set_translatable(false);
                
         $email = get_entity(get_input('email')) ?: EmailTemplate::query()->where('active<>0')->get();
 
-        if ($email && $email instanceof EmailTemplate)
+        if (!$email || !($email instanceof EmailTemplate))
         {
-            $area1 = view('admin/view_email', array('org' => $org, 'email' => $email, 'from' => get_input('from')));
-
-            $body = view_layout("one_column", view_title($title), $area1);
-
-            $this->page_draw($title,$body);
+            return $this->not_found();
         }
-        else
-        {
-            not_found();
-        }
+
+        $this->page_draw(array(
+            'title' => __('email:view'),
+            'content' => view('admin/view_email', array('org' => $org, 'email' => $email, 'from' => get_input('from')))
+        ));                    
     }        
     
     function action_edit_email()
     {
-        $title = __('email:edit');
         $email = get_entity(get_input('email'));
-        if ($email && $email instanceof EmailTemplate)
+        if (!$email || !($email instanceof EmailTemplate))
         {
-            $area1 = view('admin/edit_email', array('email' => $email));
-            $body = view_layout("one_column_padded", view_title($title), $area1);
-            $this->page_draw($title,$body);
+            return $this->not_found();
         }
-        else
-        {
-            not_found();
-        }        
+
+        $this->page_draw(array(
+            'title' => __('email:edit'),
+            'content' => view('admin/edit_email', array('email' => $email)),
+        ));
     }
     
     function action_view_email_body()
@@ -70,14 +66,16 @@ class Controller_Admin extends Controller
         $user = get_user_by_username(get_input('username'));
         $email = get_entity(get_input('email'));
 
-        if ($email && $email instanceof EmailTemplate)
+        if (!$email || !($email instanceof EmailTemplate))
         {
-            echo view('emails/template', array('org' => $user, 'base' => 'http://ERROR_RELATIVE_URL/ERROR_RELATIVE_URL/', 'email' => $email));            
+            return $this->not_found();
         }
-        else
-        {
-            not_found();
-        }
+        
+        echo view('emails/template', array(
+            'org' => $user, 
+            'base' => 'http://ERROR_RELATIVE_URL/ERROR_RELATIVE_URL/', 
+            'email' => $email
+        ));            
     }
     
     function action_batch_email()
@@ -101,12 +99,15 @@ class Controller_Admin extends Controller
                 filter(); 
         }
 
-        if ($email)
+        if (!$email)
         {
-            $title = __('email:batch');
-            $body = view('admin/batch_email', array('email' => $email, 'orgs' => $orgs));
-            $this->page_draw($title, view_layout("one_column_padded", view_title($title), $body));
+            return $this->not_found();
         }
+
+        $this->page_draw(array(
+            'title' => __('email:batch'),
+            'content' => view('admin/batch_email', array('email' => $email, 'orgs' => $orgs)),
+        ));        
     }
 
     function action_send_batch_email()
@@ -153,21 +154,19 @@ class Controller_Admin extends Controller
 
     function action_translateQueue()
     {
-        $title = __('translate:queue');
-
-        $body = view_layout("one_column_wide", view_title($title),
-            view('translation/queue', array('lang' => Language::get_current_code()))
-        );
-
-        $this->page_draw($title,$body);
+        $this->page_draw(array(
+            'title' => __('translate:queue'),
+            'content' => view('translation/queue', array('lang' => Language::get_current_code())),
+            'theme_name' => 'simple_wide',
+        ));
     }
-
 
     function action_statistics()
     {
-        $title = __("admin:statistics");
-        $this->page_draw($title,
-            view_layout("one_column_padded", view_title($title), view("admin/statistics")));
+        $this->page_draw(array(
+            'title' => __("admin:statistics"),
+            'content' => view("admin/statistics")
+        ));
     }
 
     function action_user()
@@ -175,8 +174,6 @@ class Controller_Admin extends Controller
         $search = get_input('s');
         $limit = get_input('limit', 10);
         $offset = get_input('offset', 0);
-
-        $title = view_title(__('admin:user'));
         
         $count = User::query()->count();
         $entities = User::query()->limit($limit, $offset)->order_by('e.guid desc')->filter();
@@ -188,28 +185,16 @@ class Controller_Admin extends Controller
             'limit' => $limit,
         ));        
 
-        $this->page_draw(
-            __("admin:user"),
-            view_layout("one_column_padded", $title,  view("admin/user") . $result)
-        );
+        $this->page_draw(array(
+            'title' => __("admin:user"),
+            'content' => view("admin/user", array('list' => $result)),
+        ));        
     }
 
     function action_search()
     {
-        $tag = stripslashes(get_input('tag'));
-        $title = sprintf(__('search:title_with_query'),$tag);
-
-        if (!empty($tag)) 
-        {
-            $body = view_layout('one_column_padded',view_title($title),$this->search_users($tag));
-        }
-
-        $this->page_draw($title,$body);
-
-    }
-
-    function search_users($tag)
-    {
+        $tag = get_input('tag');
+        
         $limit = 10;
         $offset = (int)get_input('offset');
 
@@ -220,17 +205,20 @@ class Controller_Admin extends Controller
         if ($users = $query->limit($limit, $offset)->filter())         
         {
             $count = $query->count();
-            $return = view('user/search/startblurb',array('count' => $count, 'tag' => $tag));            
+            $content = view('user/search/startblurb',array('count' => $count, 'tag' => $tag));            
             
-            $return .= view('search/results_list', array(
+            $content .= view('search/results_list', array(
                 'entities' => $users,
                 'count' => $count,
                 'offset' => $offset,
                 'limit' => $limit,
             ));            
-            
-            return $return;
         }
+                
+        $this->page_draw(array(
+            'title' => sprintf(__('search:title_with_query'),$tag),
+            'content' => $content,
+        ));
     }
     
     function action_logbrowser()
@@ -265,8 +253,6 @@ class Controller_Admin extends Controller
             $query->where('time_created < ?', strtotime($timeupper));
         }
 
-        $title = view_title(__('logbrowser'));
-        
         if ($user)
         {
             $query->where('performed_by_guid=?', $user);
@@ -277,18 +263,19 @@ class Controller_Admin extends Controller
         $log = $query->filter();
         $count = $query->count();
 
-        $form = view('logbrowser/form', array(
-            'user_guid' => $user, 
-            'timeupper' => $timeupper, 
-            'timelower' => $timelower,
-            'baseurl' => $_SERVER['REQUEST_URI'],
-            'offset' => $offset,
-            'count' => $count,
-            'limit' => $limit,
-            'entries' => $log
+        $this->page_draw(array(
+            'title' => __('logbrowser'),
+            'content' => view('logbrowser/form', array(
+                'user_guid' => $user, 
+                'timeupper' => $timeupper, 
+                'timelower' => $timelower,
+                'baseurl' => $_SERVER['REQUEST_URI'],
+                'offset' => $offset,
+                'count' => $count,
+                'limit' => $limit,
+                'entries' => $log
+            ))
         ));
-
-        $this->page_draw(__('logbrowser'),view_layout("one_column_padded", $title,  $form));
 
     }
 
@@ -408,17 +395,15 @@ class Controller_Admin extends Controller
     {
         $username = get_input('username');
         $user = get_user_by_username($username);
-        if ($user)
+        if (!$user)
         {
-            $title = __('featured:add');
-            $body = view('admin/add_featured', array('entity' => $user));
-            $this->page_draw($title, view_layout("one_column_padded", 
-                view_title($title), $body));        
+            return $this->not_found();
         }
-        else
-        {
-            not_found();
-        }
+
+        $this->page_draw(array(
+            'title' => __('featured:add'),
+            'content' => view('admin/add_featured', array('entity' => $user)),
+        ));                
     }
     
     function action_activate_email()
@@ -442,7 +427,7 @@ class Controller_Admin extends Controller
         }
         else
         {
-            not_found();
+            $this->not_found();
         }
     }    
     
@@ -469,7 +454,7 @@ class Controller_Admin extends Controller
         }
         else        
         {   
-            not_found();
+            $this->not_found();
         }
 
     }
@@ -480,20 +465,18 @@ class Controller_Admin extends Controller
     
         $username = get_input('username');
         $user = get_user_by_username($username);
-        if ($user)
+        if (!$user)
         {
-            $featuredSite = new FeaturedSite();
-            $featuredSite->container_guid = $user->guid;
-            $featuredSite->image_url = get_input('image_url');
-            $featuredSite->set_content(get_input('content'));
-            $featuredSite->save();
-            system_message('featured:created');
-            forward('org/featured');
+            return $this->not_found();
         }
-        else
-        {
-            not_found();
-        }
+        
+        $featuredSite = new FeaturedSite();
+        $featuredSite->container_guid = $user->guid;
+        $featuredSite->image_url = get_input('image_url');
+        $featuredSite->set_content(get_input('content'));
+        $featuredSite->save();
+        system_message('featured:created');
+        forward('org/featured');
     }
     
     function action_save_featured()
@@ -511,7 +494,7 @@ class Controller_Admin extends Controller
         }
         else
         {
-            not_found();
+            $this->not_found();
         }
     }    
     
@@ -521,22 +504,23 @@ class Controller_Admin extends Controller
         $featuredSite = get_entity($guid);
         if ($featuredSite && $featuredSite instanceof FeaturedSite)
         {
-            $title = __('featured:edit');
-            $body = view('admin/edit_featured', array('entity' => $featuredSite));
-            $this->page_draw($title, view_layout("one_column_padded", 
-                view_title($title), $body));        
+            $this->page_draw(array(
+                'title' => __('featured:edit'),
+                'content' => view('admin/edit_featured', array('entity' => $featuredSite)),
+            ));
         }
         else
         {
-            not_found();
+            $this->not_found();
         }
     }
    
     function action_add_email()
     {
-        $title = __('email:add');
-        $body = view('admin/add_email');
-        $this->page_draw($title, view_layout("one_column_padded", view_title($title), $body));  
+        $this->page_draw(array(
+            'title' => __('email:add'),
+            'content' => view('admin/add_email'),
+        ));                
     }
     
     function action_new_email()
@@ -577,7 +561,7 @@ class Controller_Admin extends Controller
         }
         else
         {
-            not_found();
+            $this->not_found();
         }
     }
 
@@ -597,36 +581,37 @@ class Controller_Admin extends Controller
         }
         else
         {
-            not_found();
+            $this->not_found();
         }        
     }
     
     function action_add_featured_photo()
     {
-        $title = __('featured_photo:add');
-        $body = view('admin/add_featured_photo', array(
-            'image_url' => get_input('image_url'),
-            'href' => get_input('href'),
-            'user_guid' => get_input('user_guid')
-        ));
-        $this->page_draw($title, view_layout("one_column_padded", view_title($title), $body));         
+        $this->page_draw(array(
+            'title' => __('featured_photo:add'),
+            'content' => view('admin/add_featured_photo', array(
+                'image_url' => get_input('image_url'),
+                'href' => get_input('href'),
+                'user_guid' => get_input('user_guid')
+            )),
+        ));        
     }
     
     function action_edit_featured_photo()
     {
-        $title = __('featured_photo:edit');
-        
         $photo = FeaturedPhoto::query()->where("e.guid = ?", get_input('guid'))->get();
         
         if (!$photo)
         {
-            return not_found();
+            return $this->not_found();
         }
         
-        $body = view('admin/edit_featured_photo', array(
-            'photo' => $photo,
-        ));
-        $this->page_draw($title, view_layout("one_column_padded", view_title($title), $body));         
+        $this->page_draw(array(
+            'title' => __('featured_photo:edit'),
+            'content' => view('admin/edit_featured_photo', array(
+                'photo' => $photo,
+            ))
+        ));        
     }
     
     function action_new_featured_photo()
@@ -656,7 +641,7 @@ class Controller_Admin extends Controller
         $featured_photo = FeaturedPhoto::query()->where('e.guid = ?', get_input('guid'))->get();
         if (!$featured_photo)
         {
-            return not_found();
+            return $this->not_found();
         }        
                 
         $featured_photo->x_offset = (int)get_input('x_offset');
@@ -683,7 +668,7 @@ class Controller_Admin extends Controller
         }
         else
         {
-            return not_found();
+            return $this->not_found();
         }
         
         system_message(__("featured_photo:deleted"));
@@ -692,12 +677,12 @@ class Controller_Admin extends Controller
     
     function action_featured_photos()
     {
-        PageContext::set_theme('editor_wide');
-    
-        $title = __('featured_photo:all');
-        $body = view('admin/featured_photos', array(
-            'photos' => FeaturedPhoto::query()->filter()
+        $this->page_draw(array(
+            'title' => __('featured_photo:all'),
+            'content' =>  view('admin/featured_photos', array(
+                'photos' => FeaturedPhoto::query()->filter()
+            )),
+            'theme_name' => 'editor_wide'
         ));
-        $this->page_draw($title, view_layout("one_column_padded", view_title($title), $body));          
     }
 }

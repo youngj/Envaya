@@ -11,9 +11,7 @@ class PageContext
 {
     private static $translatable = true;
     private static $translations_available = array();
-    private static $theme = 'simple';
     private static $rss = false;
-    private static $site_org = null;
     private static $header_html = array();
     private static $submenus = array();    
     private static $js_strings = array();
@@ -84,16 +82,6 @@ class PageContext
         static::$translations_available[] = $translation;
     }
 
-    static function get_theme()
-    {
-        return static::$theme;
-    }
-        
-    static function set_theme($theme)
-    {
-        static::$theme = $theme;
-    }    
-    
     static function has_rss()
     {
         return static::$rss;
@@ -104,16 +92,6 @@ class PageContext
         static::$rss = $rss;
     }
    
-    static function set_site_org($org)
-    {
-        static::$site_org = $org;
-    }
-    
-    static function get_site_org()
-    {
-        return static::$site_org;
-    }
-    
     static function set_dirty($dirty = true)
     {
         static::$dirty = $dirty;

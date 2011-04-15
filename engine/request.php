@@ -539,7 +539,8 @@ class Request {
     {
         if ($this->status == 404)
         {
-            not_found();
+            $controller = new Controller_Default($this);
+            return $controller->not_found();
         }
 
         // Create the class prefix
@@ -561,7 +562,7 @@ class Request {
         {
             // Load the controller using reflection
             $class = new ReflectionClass($prefix.$this->controller);
-         
+            
             if ($class->isAbstract())
             {
                 throw new Kohana_Exception('Cannot create instances of abstract :controller',
@@ -572,7 +573,7 @@ class Request {
             $controller = $class->newInstance($this);
 
             // Execute the "before action" method
-            $class->getMethod('before')->invoke($controller);
+            $class->getMethod('before')->invoke($controller);            
 
             // Determine the action to use
             $action = empty($this->action) ? Route::$default_action : $this->action;
@@ -592,7 +593,8 @@ class Request {
             {
                 // Reflection will throw exceptions for missing classes or actions
                 $this->status = 404;
-                not_found();
+                $controller = new Controller_Default($this);
+                return $controller->not_found();                
             }
             else
             {

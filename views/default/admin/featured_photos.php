@@ -1,3 +1,4 @@
+<div class='section_content padded'>
 <?php
     $photos = $vars['photos'];
     
@@ -25,3 +26,4 @@
         ));        
     }
 ?>
+</div>

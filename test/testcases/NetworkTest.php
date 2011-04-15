@@ -203,6 +203,7 @@ class NetworkTest extends SeleniumTest
         
         // click email link to add reverse relationship
         $this->open('/testposter16/network');
+        sleep(1);
         $this->mustNotExist("//a[contains(@href, 'testorg')]"); // suggested reverse relationship should not be public
         
         $approveUrl = $this->getLinkFromEmail($notify_email, 1);
@@ -245,6 +246,7 @@ class NetworkTest extends SeleniumTest
         
         // visit network page to add suggested reverse relationship by clicking Add link
         $this->open('/testposter15/network');
+        sleep(1);
         $this->mustNotExist("//a[contains(@href, 'testorg')]"); // suggested reverse relationship should not be public
         $this->open('/pg/login');
         $this->login('testposter15','testtest');
@@ -257,6 +259,7 @@ class NetworkTest extends SeleniumTest
         
         // visit network page to add suggested reverse relationship by clicking Edit link to add description
         $this->open('/testposter13/network');
+        sleep(1);
         $this->mustNotExist("//a[contains(@href, 'testorg')]"); // suggested reverse relationship should not be public
         $this->open('/pg/login');
         $this->login('testposter13','testtest');
@@ -410,8 +413,20 @@ class NetworkTest extends SeleniumTest
         $this->mustNotExist("//input[@value='$invitedOrgEmail']");
         $this->check("//input[contains(@value,'+p12')]");
         $this->submitForm();
-        $email = $this->getLastEmail("+p12");
-        $this->assertContains('Test Topic', $email);
+        
+        for ($i = 0; $i < 20; $i++)
+        {
+            $email = $this->getLastEmail("+p12");
+            try
+            {
+                $this->assertContains('Test Topic', $email);
+                break;
+            }
+            catch (Exception $ex)
+            {
+                sleep(0.5);
+            }
+        }
         $this->assertContains($this->getLocation(), $email);  
         $this->assertNotContains('nobody@nowhere.com', $email);        
     }

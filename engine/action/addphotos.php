@@ -60,11 +60,10 @@ class Action_AddPhotos extends Action
     {
         $org = $this->get_org();
         
-        $title = __('addphotos:title');
-        $area1 = view('org/addPhotos', array('entity' => $org));
-        
-        $body = view_layout("one_column", view_title($title), $area1);
-        $this->page_draw($title,$body);
+        $this->page_draw(array(
+            'title' => __('addphotos:title'),
+            'content' => view('org/addPhotos', array('entity' => $org))
+        ));        
     }
     
 }    

@@ -1,3 +1,4 @@
+<div class='section_content padded'>
 <?php
     $org = $vars['org'];
     $curUrl = $org->get_url()."/help";
@@ -160,3 +161,4 @@
 <?php echo __('help:connecting:disabled') ?>
 </p>
 <?php } ?>
+</div>

@@ -11,14 +11,12 @@ class Controller_Org extends Controller
     {
         $this->require_http();
     
-        $title = __("browse:title");
-        $sector = get_input('sector');
-        
+        $sector = get_input('sector');        
         $list = get_input("list");
         
         if ($list || get_viewtype() == 'mobile')
         {
-            $area = view("org/browseList", array('lat' => $lat, 'long' => $long, 'sector' => $sector, 'region' => get_input('region')));
+            $content = view("org/browseList", array('lat' => $lat, 'long' => $long, 'sector' => $sector, 'region' => get_input('region')));
         }
         else
         {
@@ -26,12 +24,13 @@ class Controller_Org extends Controller
             $long = get_input('long');
             $zoom = get_input('zoom');
 
-            $area = view("org/browseMap", array('lat' => $lat, 'long' => $long, 'zoom' => $zoom, 'sector' => $sector));        
+            $content = view("org/browseMap", array('lat' => $lat, 'long' => $long, 'zoom' => $zoom, 'sector' => $sector));        
         }
 
-        $body = view_layout('one_column', view_title($title), $area);
-
-        $this->page_draw($title, $body);
+        $this->page_draw(array(
+            'title' => __('browse:title'),
+            'content' => $content
+        ));
     }
 
     function action_change_browse_view()
@@ -39,11 +38,10 @@ class Controller_Org extends Controller
         $sector = get_input('sector');
         $region = get_input('region');
         
-        $area = view("org/change_filter", array('baseurl' => '/org/browse', 'sector' => $sector, 'region' => $region), 'mobile');
-        
-        $title = __("browse:title");
-        $body = view_layout('one_column', view_title($title), $area);
-        $this->page_draw($title, $body);       
+        $this->page_draw(array(
+            'title' => __('browse:title'),
+            'content' => view("org/change_filter", array('baseurl' => '/org/browse', 'sector' => $sector, 'region' => $region), 'mobile')
+        ));
     }        
     
     function action_search()
@@ -96,8 +94,10 @@ class Controller_Org extends Controller
             $content = view('org/search_results', $vars);
         }
 
-        $body = view_layout('one_column', view_title($title), $content);
-        $this->page_draw($title,$body);
+        $this->page_draw(array(
+            'title' => $title,
+            'content' => $content
+        ));
     }
 
     function action_js_search()
@@ -180,19 +180,20 @@ class Controller_Org extends Controller
         $sector = get_input('sector');
         $region = get_input('region');
         
-        $area = view("org/change_filter", array('baseurl' => '/org/feed', 'sector' => $sector, 'region' => $region), 'mobile');
-        
-        $title = __("feed:title");
-        $body = view_layout('one_column', view_title($title), $area);
-        $this->page_draw($title, $body);       
+        $this->page_draw(array(
+            'title' => __("feed:title"),
+            'content' => view("org/change_filter", array(
+                'baseurl' => '/org/feed', 
+                'sector' => $sector, 
+                'region' => $region
+            ), 'mobile')
+        ));
     }
 
     function action_feed()
     {
         $this->require_http();
     
-        $title = __("feed:title");
-        
         $max_items = 20;
         
         $sector = get_input('sector');
@@ -203,19 +204,18 @@ class Controller_Org extends Controller
             ->limit($max_items)
             ->filter();
 
-        $area = view("org/feed", array(
-            'sector' => $sector, 
-            'region' => $region, 
-            'items' => $items,
-            'first_id' => $this->get_first_item_id($items, $max_items)
-        ));
-
         PageContext::set_rss(true);
         PageContext::set_translatable(false);
 
-        $body = view_layout('one_column', view_title($title), $area);
-
-        $this->page_draw($title, $body);
+        $this->page_draw(array(
+            'title' => __("feed:title"),
+            'content' => view("org/feed", array(
+                'sector' => $sector, 
+                'region' => $region, 
+                'items' => $items,
+                'first_id' => $this->get_first_item_id($items, $max_items)
+            ))
+        ));
     }
     
     private function get_first_item_id($items, $num_requested)
@@ -299,9 +299,11 @@ class Controller_Org extends Controller
             $step = 1;
         }
 
-        $title = __("register:title");
-        $body = view_layout('one_column', view_title($title, array('org_only' => true)), view("org/register$step"));
-        $this->page_draw($title, $body);
+        $this->page_draw(array(
+            'title' => __("register:title"),
+            'content' => view("org/register$step"),
+            'org_only' => true
+        ));
     }
 
     function action_register1()
@@ -361,8 +363,10 @@ class Controller_Org extends Controller
     function action_featured()
     {
         PageContext::set_translatable(false);
-        $title = __('featured:title');
-        $body = view('org/featured');
-        $this->page_draw($title, view_layout("one_column", view_title($title), $body));
+
+        $this->page_draw(array(
+            'title' => __('featured:title'),
+            'content' => view('org/featured')
+        ));
     }
 }

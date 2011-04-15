@@ -61,14 +61,12 @@ class Action_EditDesign extends Action
         $org = $this->get_org();
 
         $cancelUrl = get_input('from') ?: $org->get_url();
-
         PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
 
-        $title = __("design:edit");
-        $area1 = view("org/design", array('entity' => $org));
-        $body = view_layout("one_column", view_title($title), $area1);
-
-        $this->page_draw($title,$body);    
+        $this->page_draw(array(
+            'title' => __("design:edit"),
+            'content' => view("org/design", array('entity' => $org))
+        ));        
     }
     
 }    

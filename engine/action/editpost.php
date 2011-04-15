@@ -42,16 +42,14 @@ class Action_EditPost extends Action
     {
         $post = $this->get_post();
         
-        $title = __('blog:editpost');
-
         $cancelUrl = get_input('from') ?: $post->get_url();
-
         PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
 
         $org = $post->get_container_entity();
-        $area1 = view("org/editPost", array('entity' => $post));
-        $body = view_layout("one_column_padded", view_title($title), $area1);
 
-        $this->page_draw($title,$body);
+        $this->page_draw(array(
+            'title' => __('blog:editpost'),
+            'content' => view("org/editPost", array('entity' => $post))
+        ));
     }
 }    

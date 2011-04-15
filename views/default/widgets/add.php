@@ -1,3 +1,4 @@
+<div class='section_content padded'>
 <?php
     $org = $vars['org'];
 
@@ -72,3 +73,4 @@ function saveInitialDraft()
 <?php echo view('input/submit', array('trackDirty' => true, 'value' => __('widget:create'))); ?>
 
 </form>
+</div>

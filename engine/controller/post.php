@@ -31,7 +31,7 @@ class Controller_Post extends Controller_Profile
         else
         {
             $this->use_public_layout();
-            $this->org_page_not_found();
+            $this->not_found();
         }
     }
     
@@ -40,6 +40,11 @@ class Controller_Post extends Controller_Profile
         $org = $this->org;
         $post = $this->post;
         
+        if (!$org->can_view())
+        {
+            return $this->view_access_denied();
+        }        
+        
         $this->use_public_layout();
 
         if ($post->can_edit())
@@ -47,19 +52,10 @@ class Controller_Post extends Controller_Profile
             PageContext::get_submenu('edit')->add_item(__("widget:edit"), "{$post->get_url()}/edit");
         }
 
-        $title = __('widget:news');
-
-        if (!$org->can_view())
-        {
-            $this->show_cant_view_message();
-            $body = '';
-        }
-        else
-        {                    
-            $body = $this->org_view_body($title, view("org/blogPost", array('entity'=> $post)));
-        }
-
-        $this->page_draw($title,$body);
+        $this->page_draw(array(
+            'title' => __('widget:news'),
+            'content' => view("org/blogPost", array('entity'=> $post)),
+        ));                    
     }
     
     function action_post_comment()

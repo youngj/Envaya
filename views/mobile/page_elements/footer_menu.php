@@ -1,11 +1,11 @@
 <div style='padding:0px 10px'>
 
 <?php
-    $site_org = PageContext::get_site_org();
-    if ($site_org)
+    $site_url = @$vars['site_url'];
+    if ($site_url)
     {
         ?>
-        <form style='display:inline' method='GET' action='<?php echo $site_org->get_url(); ?>'><input class='button_alt' type='submit' value='<?php echo __('widget:home'); ?>' /></form>
+        <form style='display:inline' method='GET' action='<?php echo escape($site_url); ?>'><input class='button_alt' type='submit' value='<?php echo __('widget:home'); ?>' /></form>
         <?php
     }
 ?>

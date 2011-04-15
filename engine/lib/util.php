@@ -137,15 +137,6 @@
         forward($_SERVER['HTTP_REFERER']);
     }
 
-    function not_found()
-    {
-        $title = __('page:notfound');
-        $body = view_layout('one_column_padded', view_title($title), __('page:notfound:details')."<br/><br/><br/>");
-        header("HTTP/1.1 404 Not Found");
-        echo page_draw($title, $body);
-        exit;
-    }
-
     function yes_no_options()
     {
         return array(

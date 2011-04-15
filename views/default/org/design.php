@@ -153,7 +153,7 @@ echo view('input/submit',array(
 <?php echo view('input/theme', array(
     'name' => 'theme',
     'value' => $user->theme,
-    'options' => $user->get_available_themes(),
+    'options' => Theme::available_names(),
     'previewUrl' => $user->get_url()
 )); ?>
 

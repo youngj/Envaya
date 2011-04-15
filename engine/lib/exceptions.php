@@ -14,6 +14,7 @@ class InstallationException extends ConfigurationException {}
 class NotImplementedException extends CallException {}
 class InvalidParameterException extends CallException {}
 class RegistrationException extends Exception {}
+class NotFoundException extends Exception {}
 class PossibleDuplicateException extends Exception 
 {
     public $duplicates;
@@ -103,9 +104,12 @@ function php_exception_handler($exception) {
             ));
         }
         else
-        {    
-            $body = view("messages/exceptions/exception", array('object' => $exception));                
-            echo page_draw(__('exception_title'), $body);
+        {   
+            echo view('layouts/default', array(
+                'title' => __('exception_title'),
+                'header' => view('page_elements/title', array('title' => __('exception_title'))),
+                'content' => view("messages/exceptions/exception", array('object' => $exception))
+            ));
         }
     }
     else // CLI

@@ -11,16 +11,15 @@ abstract class Action_Registration_CreateAccountBase extends Action
     
     protected function show_possible_duplicate($ex)
     {
-        $title = __("create:possible_duplicate");
-        $body = view_layout('one_column', 
-            view_title($title, array('org_only' => true)), 
-            view("org/possible_duplicate", array(
+        $this->page_draw(array(
+            'title' => __("create:possible_duplicate"),
+            'content' => view("org/possible_duplicate", array(
                 'message' => $ex->getMessage(), 
                 'login_url' => $this->get_login_url(), 
                 'duplicates' => $ex->duplicates
-            ))
-        );
-        $this->controller->page_draw($title, $body);
+            )),
+            'org_only' => true,
+        ));
     } 
 
     protected function _process_input()

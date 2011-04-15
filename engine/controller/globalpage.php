@@ -9,7 +9,7 @@ class Controller_GlobalPage extends Controller
 
         if (preg_match('/[^\w]/', $pageName))
         {
-            not_found();
+            $this->not_found();
         }
         else if ($pageName == 'about')
         {

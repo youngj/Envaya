@@ -132,13 +132,6 @@ class Organization extends User
         return $res;
     }
 
-    public function get_available_themes()
-    {
-        $themes = array('green','brick','craft4','craft1','cotton2','wovengrass','beads','red','sidebar');
-        
-        return $themes;
-    }
-    
     public function get_country_text()
     {
         if ($this->country)

@@ -1,6 +1,7 @@
 <?php 
     ob_start();
 ?>
+<div class='thin_column'>
 <div id='content_wrapper'>
 <table class='left_sidebar_table'>
     <tr>
@@ -11,7 +12,7 @@
     </td>
     <td id='right_content'>
         <?php echo view('translation/control_bar'); ?>
-        <?php echo $vars['area2']; ?>            
+        <?php echo $vars['content']; ?>            
         <div style='clear:both'></div>        
     </td>
     </tr>
@@ -19,13 +20,11 @@
 </div>
 <div id='content_bottom'>
 </div>
+</div>
 <script type='text/javascript'>addImageLinks(document.getElementById('right_content'));</script>
-
 <?php 
-    $content = ob_get_clean();
-    echo view("canvas/layouts/content_shell", array(
-        'area1' => $vars['area1'],
-        'area2' => $content,
-        'area3' => @$vars['area3']
-    ));
+    $vars['content'] = ob_get_clean();
+    $vars['header'] = "<div class='thin_column'>{$vars['header']}</div>";    
+    
+    echo view("layouts/content_shell", $vars);
 ?>

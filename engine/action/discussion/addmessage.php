@@ -96,11 +96,12 @@ class Action_Discussion_AddMessage extends Action
     
     function render()
     {    
-        $topic = $this->get_topic();    
-        
+        $topic = $this->get_topic();            
         $this->use_public_layout();                
-        $title = __('discussions:title');                
-        $body = $this->org_view_body($title, view("discussions/topic_add_message", array('topic' => $topic)));                
-        $this->page_draw($title, $body);    
+        
+        $this->page_draw(array(
+            'title' => __('discussions:title'),
+            'content' => view("discussions/topic_add_message", array('topic' => $topic)),
+        ));
     }
 }    

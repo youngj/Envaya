@@ -4,14 +4,16 @@ class Controller_Home extends Controller
 {
     function action_index()
     {       
-        $this->require_http();
-    
-        PageContext::set_theme('home');
-        $this->add_generic_footer();
-        $area = view("home");
-        $title = __("home:title");
+        $this->require_http();    
+        $this->add_generic_footer();        
+        
         PageContext::set_translatable(false);
-        $body = view_layout('one_column', '', $area);
-        $this->page_draw($title, $body);
+
+        $this->page_draw(array(
+            'theme_name' => 'home',
+            'title' => __('home:title'),
+            'header' => '',
+            'content' => view('home')        
+        ));
     }
 }

@@ -1,4 +1,4 @@
-
+<div class='padded'>
 <div id="logbrowser_search_area">
 <?php
 	
@@ -63,7 +63,7 @@
 			<a href="javascript:void(0)" onclick="document.getElementById('logbrowserSearchform').style.display='block'"><?php echo __('logbrowser:search'); ?></a>
 		</p>
 	</div>
-    
+</div>
 <?php
     echo view('navigation/pagination', $vars);
 ?>

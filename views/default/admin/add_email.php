@@ -1,3 +1,4 @@
+<div class='padded'>
 <?php
 ?>
 <form method='POST' action='/admin/new_email'>
@@ -45,3 +46,4 @@
     echo view('input/submit', array('value' => __('save')));
 ?>
 </form>
+</div>

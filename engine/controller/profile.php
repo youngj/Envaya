@@ -4,9 +4,7 @@ class Controller_Profile extends Controller
 {
     protected $org;
     protected $user;
-    
-    protected $show_next_steps = false;
-    
+        
     function get_org()
     {
         return $this->org;
@@ -31,7 +29,7 @@ class Controller_Profile extends Controller
         }
         else
         {
-            not_found();
+            $this->not_found();
         }
     }
 
@@ -64,7 +62,7 @@ class Controller_Profile extends Controller
                 return $this->index_widget($widget);
             }                   
         }
-        return not_found();
+        return $this->not_found();
     }
     
     function index_widget($widget, $is_home = false)
@@ -72,21 +70,22 @@ class Controller_Profile extends Controller
         $org = $this->org;
     
         $this->require_http();
-        
         $this->use_public_layout($widget, $is_home);
-
-        $viewOrg = $org->can_view();
-
-        $this->show_next_steps = $this->org->guid == Session::get_loggedin_userid();
-                
+                        
         if (!$widget || !$widget->is_active())
         {
-            $this->org_page_not_found();
+            $this->not_found();
         }
-        else
+        
+        if (!$org->can_view())
         {
-            $subtitle = $widget->get_subtitle();
-            $title = $is_home ? '' : $subtitle;
+            return $this->view_access_denied();
+        }               
+                
+        $subtitle = $widget->get_subtitle();
+        if ($is_home)
+        {
+            $this->page_draw_vars['full_title'] = $org->name;
         }
 
         if ($org->can_edit())
@@ -95,29 +94,35 @@ class Controller_Profile extends Controller
             PageContext::get_submenu('org_actions')->add_item(__('widget:options'), "{$widget->get_base_url()}/options");
         }
 
-        if ($viewOrg)
-        {
-            $body = $this->org_view_body($subtitle, ($viewOrg ? view('widgets/view', array('widget' => $widget)) : ''));
-        }
-        else
-        {
-            $this->show_cant_view_message();
-            $body = '';
-        }
-
-        $this->page_draw($title, $body);
+        $this->page_draw(array(
+            'content' => view('widgets/view', array('widget' => $widget)),
+            'title' => $subtitle,
+            'show_next_steps' => $org->guid == Session::get_loggedin_userid(),
+        )); 
     }        
     
-    function show_cant_view_message()
+    private function get_approval_message()
     {
-        if ($this->org->approval == 0)
+        $org = $this->org;
+    
+        if ($org->approval == 0)
         {
-            system_message(__('approval:waiting'));
+            return __('approval:waiting');
         }
-        else if ($this->org->approval < 0)
+        else if ($org->approval < 0)
         {
-            system_message(__('approval:rejected'));
+            return __('approval:rejected');
         }
+        else        
+        {
+            return null;
+        }
+    }
+    
+    function view_access_denied()
+    {
+        register_error($this->get_approval_message() ?: __('org:cantview'));
+        force_login();
     }
 
     function action_edit()
@@ -134,25 +139,27 @@ class Controller_Profile extends Controller
         }
         else
         {
-            not_found();
+            $this->not_found();
         }
     }
+    
+    protected $public_layout = false;
     
     function use_public_layout($cur_widget = null, $is_home = false)
     {
         $org = $this->org;
                 
+        $this->public_layout = true;
+        
+        $this->page_draw_vars['theme_name'] = get_input("__theme") ?: $org->theme ?: 'green';                
         $this->page_draw_vars['sitename'] = $org->name;
-
-        PageContext::set_theme(get_input("__theme") ?: $org->theme ?: 'green');
-        PageContext::set_site_org($org);        
+        $this->page_draw_vars['site_url'] = $org->get_url();
+        $this->page_draw_vars['login_url'] = url_with_param(Request::instance()->full_rewritten_url(), 'login', 1);        
         
         if ($is_home || get_viewtype() != 'mobile')
         {
             $this->show_widget_menu($cur_widget);
         }
-        
-        $this->page_draw_vars['login_url'] = url_with_param(Request::instance()->full_rewritten_url(), 'login', 1);
     }
     
     function show_widget_menu($cur_widget)
@@ -176,7 +183,7 @@ class Controller_Profile extends Controller
 
     function use_editor_layout()
     {
-        PageContext::set_theme('editor');
+        $this->page_draw_vars['theme_name'] = 'editor';
     }
 
     function require_editor()
@@ -202,7 +209,7 @@ class Controller_Profile extends Controller
         }
         else
         {
-            not_found();
+            $this->not_found();
         }
     }
 
@@ -210,7 +217,7 @@ class Controller_Profile extends Controller
     {
         if (!$this->org)
         {
-            not_found();
+            $this->not_found();
         }
     }
 
@@ -226,42 +233,15 @@ class Controller_Profile extends Controller
         $action->execute();            
     }
     
-    function get_pre_body()
-    {
-        $org = $this->org;
-        $preBody = '';
-
-        if (get_input("__topbar") != "0")
-        {
-            $this->show_cant_view_message();
-        
-            if (Session::isadminloggedin())
-            {
-                $preBody .= view("admin/org_actions", array('entity' => $org));
-            }
-
-            if ($org->can_view() && Session::isloggedin() && Session::get_loggedin_userid() != $org->guid)
-            {
-                $preBody .= view("org/comm_box", array('entity' => $org));
-            }
-
-            if ($this->show_next_steps)
-            {
-                $preBody .= view("org/setupNextStep", array('entity' => $org));
-            }
-        }    
-        return $preBody;
-    }
-
     function index_help()
     {
         $this->require_editor();
         $this->require_org();
-
-        $title = __("help:title");
-        $area = view("org/help", array('org' => $this->org));
-        $body = view_layout('one_column_padded', view_title($title), $area);
-        $this->page_draw($title, $body);
+        
+        $this->page_draw(array(
+            'title' => __("help:title"),
+            'content' => view("org/help", array('org' => $this->org)),           
+        ));        
     }
 
     function index_dashboard()
@@ -283,22 +263,25 @@ class Controller_Profile extends Controller
         $org = $this->org;
         if ($org)
         {            
-            $area1 = view("org/dashboard", array('org' => $org));
-            $area2 = view("org/setupNextStep", array('entity' => $org));                 
+            $content = view("org/dashboard", array('org' => $org));
+            $pre_body = view("org/setupNextStep", array('entity' => $org));                 
         }
         else if ($user->admin)
         {
-            $area1 = view('admin/dashboard');
-            $area2 = '';
+            $content = view('admin/dashboard');
+            $pre_body = '';
         }
         else
         {
-            $area1 = "<div class='padded'>You are not an organization!</div>";
-            $area2 = '';
+            $content = view('section', array('content' => "You are not an organization!"));
+            $pre_body = '';
         }
         
-        $body = view_layout("one_column", view_title($title), $area1, $area2);
-        $this->page_draw($title,$body);
+        $this->page_draw(array(
+            'title' => $title,
+            'content' => $content,
+            'pre_body' => $pre_body
+        ));
     }
 
     function index_username()
@@ -330,10 +313,11 @@ class Controller_Profile extends Controller
         $this->require_org();
         $this->require_admin();
         $this->use_editor_layout();
-        $title = __('domains:edit');
-        $area1 = view('org/domains', array('org' => $this->org));
-        $body = view_layout("one_column", view_title($title), $area1);
-        $this->page_draw($title,$body);
+        
+        $this->page_draw(array(
+            'title' => __('domains:edit'),
+            'content' => view('org/domains', array('org' => $this->org)),
+        ));
     }
     
     function index_add_domain()
@@ -374,47 +358,60 @@ class Controller_Profile extends Controller
         forward_to_referrer();
     }
         
-    function org_page_not_found()
+    protected function get_pre_body($vars)
     {
         $org = $this->org;
-        if ($org)
-        {    
-            $title = __('page:notfound');
-            $body = $this->org_view_body($title, "<div class='section_content padded'>".__('page:notfound:details')."</div>");
-            header("HTTP/1.1 404 Not Found");
-            echo page_draw($title, $body);
-        }
-        else
-        {
-            not_found();
-        }
-        exit;
-    }   
-    
-    function org_view_body($subtitle, $area2)
-    {
-        $org = $this->org;
-    
-        if ($org->has_custom_header())
-        {
-            $header = view('org/custom_header', array(
-                'org' => $org
-            ));
-        }
-        else
-        {
-            $header = view('org/default_header', array(
-                'org' => $org,
-                'subtitle' => $subtitle,
-            ));
-        }
+        $preBody = '';
 
-        $layout = "one_column_custom_header";
-        if (PageContext::get_theme() == 'sidebar')
+        if (get_input("__topbar") != "0")
         {
-            $layout= 'two_column_left_sidebar';
-        }       
+            if (Session::isadminloggedin())
+            {
+                $preBody .= view("admin/org_actions", array('entity' => $org));
+            }
+
+            if ($org->can_view() && Session::isloggedin() && Session::get_loggedin_userid() != $org->guid)
+            {
+                $preBody .= view("org/comm_box", array('entity' => $org));
+            }
+
+            if (@$vars['show_next_steps'])
+            {
+                $preBody .= view("org/setupNextStep", array('entity' => $org));
+            }
+        }    
+        return $preBody;
+    }
+                
+    public function page_draw($vars)
+    {
+        $org = $this->org;
         
-        return view_layout($layout, $header, $area2, $this->get_pre_body());
+        if ($org && $this->public_layout)
+        {    
+            $approval_message = $this->get_approval_message();
+            if ($approval_message)
+            {
+                system_message($approval_message);
+            }
+        
+            if ($org->has_custom_header())
+            {
+                $vars['header'] = view('org/custom_header', array(
+                    'org' => $org
+                ));
+            }
+            else
+            {
+                $vars['header'] = view('org/default_header', array(
+                    'org' => $org,
+                    'subtitle' => $vars['title'],
+                ));
+            }
+            
+            $vars['pre_body'] = $this->get_pre_body($vars);
+        }
+        
+        return parent::page_draw($vars);
     }	
 }

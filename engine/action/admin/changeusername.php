@@ -50,10 +50,9 @@ class Action_Admin_ChangeUsername extends Action
 
     function render()
     {
-        $title = __('username:title');
-        $area1 = view('org/changeUsername', array('org' => $this->get_org()));
-        $body = view_layout("one_column", view_title($title), $area1);
-
-        $this->page_draw($title,$body);
+        $this->page_draw(array(
+            'title' => __('username:title'),
+            'content' => view('org/changeUsername', array('org' => $this->get_org()))
+        ));
     }    
 }    

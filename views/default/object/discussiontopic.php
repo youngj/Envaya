@@ -2,7 +2,7 @@
     $topic = $vars['entity'];
         
     $url = $topic->get_url();        
-    echo "<a class='discussionTopic' href='$url'>";
+    echo "<div><a class='discussionTopic' href='$url'>";
     
     echo escape($topic->subject);
     if ($topic->num_messages > 1)
@@ -21,4 +21,4 @@
         echo "</span>";
     }    
             
-    echo "</a>";
+    echo "</a></div>";

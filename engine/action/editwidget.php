@@ -57,7 +57,14 @@ class Action_EditWidget extends Action
                 $widget->enable();
             }
 
-            $widget->save_input();
+            try
+            {
+                $widget->save_input();
+            }
+            catch (NotFoundException $ex)
+            {
+                $this->not_found();
+            }
             
             system_message(__('widget:save:success'));
             forward($widget->get_url());
@@ -85,9 +92,16 @@ class Action_EditWidget extends Action
         PageContext::set_translatable(false);
         PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
 
-        $body = view_layout('one_column',
-            view_title($title), $widget->render_edit());
-
-        $this->page_draw($title, $body);
+        try
+        {
+            $this->page_draw(array(
+                'title' => $title,
+                'content' => $widget->render_edit()
+            ));
+        }
+        catch (NotFoundException $ex)
+        {
+            $this->not_found();
+        }
     }
-}    
+}

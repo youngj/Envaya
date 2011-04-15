@@ -1,3 +1,4 @@
+<div class='padded'>
 <?php
     $org = $vars['entity'];
 ?>
@@ -44,3 +45,4 @@
 ?>
 
 </form>
+</div>

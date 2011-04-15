@@ -73,10 +73,10 @@ class Action_SendMessage extends Action
 
         PageContext::get_submenu('edit')->add_item(__("message:cancel"), $org->get_url());
 
-        $title = __("message:title");
-        $area1 = view("org/composeMessage", array('entity' => $org, 'user' => $user));
-        $body = view_layout("one_column", view_title($title), $area1);
-        $this->page_draw($title,$body);  
+        $this->page_draw(array(
+            'title' => __("message:title"),
+            'content' => view("org/composeMessage", array('entity' => $org, 'user' => $user)),
+        ));        
     }
     
 }    

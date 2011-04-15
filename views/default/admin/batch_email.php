@@ -1,3 +1,4 @@
+<div class='padded'>
 <?php 
     $orgs = $vars['orgs'];
     $email = $vars['email'];
@@ -49,3 +50,4 @@ To:
 
     }
 ?>
+</div>

@@ -1,3 +1,4 @@
+<div class='section_content padded'>
 <?php
     $blog = $vars['entity'];
 
@@ -31,3 +32,4 @@
     $form_body = ob_get_clean();
     echo view('input/form', array('action' => "{$vars['entity']->get_url()}/edit", 'enctype' => "multipart/form-data", 'body' => $form_body));
 ?>
+</div>

@@ -1,3 +1,4 @@
+<div class='padded'>
 <table class='gridTable'>
 <?php
     $emails = $vars['emails'];
@@ -33,3 +34,4 @@
 ?>
 </table>
 <a href='/admin/add_email'>Create new email template</a>
+</div>
