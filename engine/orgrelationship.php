@@ -16,10 +16,6 @@ class OrgRelationship extends Entity
         'type' => 0,            // RelationshipType between container_guid entity and subject 
         'subject_guid' => null, // guid of subject entity to which container_guid entity is related
         
-        'content' => '',
-        'data_types' => 0,        
-        'language' => '',
-        
         'approval' => 0,
         
         'subject_notified' => 0,
@@ -33,6 +29,9 @@ class OrgRelationship extends Entity
         'subject_logo' => '',
                 
         'order' => 0
+    );    
+    static $mixin_classes = array(
+        'Mixin_Content'
     );    
                                   
     static $msg_ids = array(

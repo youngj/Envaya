@@ -444,17 +444,5 @@ class Organization extends User
             $this->phone_numbers[] = $orgPhoneNumber;
         }        
         $this->phone_numbers_dirty = true;
-    }    
-        
-    /* requires reports module */
-    public function query_reports()
-    {
-        return Report::query()->where('container_guid=?',$this->guid);
-    }
-
-    public function query_report_definitions()
-    {
-        return ReportDefinition::query()->where('container_guid=?',$this->guid);
-    }
-    
+    }            
 }

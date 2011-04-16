@@ -12,11 +12,11 @@ class DiscussionMessage extends Entity
         'from_location' => '',
         'from_email' => '',
         'time_posted' => 0,
-        
-        'content' => '',
-        'data_types' => 0,        
-        'language' => '',
     );
+    static $mixin_classes = array(
+        'Mixin_Content'
+    );
+    
     
     function get_url()
     {

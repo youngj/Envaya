@@ -12,12 +12,12 @@ class EmailTemplate extends Entity
 
     static $table_attributes = array(
         'subject' => '',
-        'content' => '',
         'from' => '',
-        'data_types' => 0,
-        'language' => '',
         'active' => 0,        
     );
+    static $mixin_classes = array(
+        'Mixin_Content'
+    );    
     
     function render_content($org)
     {

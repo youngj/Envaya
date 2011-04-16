@@ -7,7 +7,7 @@
  * Also has a 'query' interface for selecting objects from a database, e.g.:
  *  ModelSubclass::query()->where('foo > ?', 10)->filter();
  */
-class Model
+class Model extends Mixable
 {       
     // subclasses should override these static properties
     static $primary_key = 'id';
@@ -30,7 +30,22 @@ class Model
             $this->init_from_row($row);        
         }
     }
-
+        
+    protected function get_table_attributes()
+    {
+        $attributes = static::$table_attributes;
+        
+        foreach (static::get_mixin_classes() as $mixin_class)
+        {
+            if (method_exists($mixin_class, 'mixin_table_attributes'))
+            {
+                $attributes = array_merge($attributes, $mixin_class::mixin_table_attributes());
+            }
+        }
+        
+        return $attributes;
+    }    
+    
     public function serialize()
     {
         return serialize($this->attributes);
@@ -59,13 +74,13 @@ class Model
 
     function __set($name, $value) {
         $this->set($name, $value);
-    }    
+    }       
     
     protected function initialize_attributes()
     {
         $this->attributes[static::$primary_key] = 0;
         
-        foreach (static::$table_attributes as $name => $default)
+        foreach ($this->get_table_attributes() as $name => $default)
         {
             $this->attributes[$name] = $default;
         }
@@ -92,10 +107,10 @@ class Model
         }
     }    
     
-    protected function get_table_attributes()
+    protected function get_table_attribute_values()
     {
         $tableAttributes = array();
-        foreach (static::$table_attributes as $name => $default)
+        foreach ($this->get_table_attributes() as $name => $default)
         {
             $tableAttributes[$name] = $this->attributes[$name];
         }
@@ -104,9 +119,9 @@ class Model
     
     public function save()
     {
-        $attributes = $this->get_table_attributes();
+        $values = $this->get_table_attribute_values();
     
-        Database::save_row(static::$table_name, static::$primary_key, $this->attributes[static::$primary_key], $attributes);
+        Database::save_row(static::$table_name, static::$primary_key, $this->attributes[static::$primary_key], $values);
         $this->dirty = false;
     }    
     

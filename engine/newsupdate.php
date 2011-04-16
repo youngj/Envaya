@@ -8,10 +8,10 @@ class NewsUpdate extends Entity
 {
     static $table_name = 'news_updates';
     static $table_attributes = array(
-        'content' => '',
-        'data_types' => 0,
-        'language' => '',
 		'num_comments' => 0
+    );
+    static $mixin_classes = array(
+        'Mixin_Content'
     );
 
     public function query_comments()

@@ -20,9 +20,9 @@ class Widget extends Entity
         'handler_class' => '',
         'handler_arg' => '',
         'title' => '',
-        'content' => '',
-        'data_types' => 0,
-        'language' => '',
+    );
+    static $mixin_classes = array(
+        'Mixin_Content'
     );
     
     static $default_widgets = array(

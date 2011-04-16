@@ -10,12 +10,12 @@ class FeaturedSite extends Entity
 
     static $table_attributes = array(
         'user_guid' => 0,
-        'content' => '',
         'image_url' => '',
-        'data_types' => 0,
-        'language' => '',
         'active' => 0,
     );
+    static $mixin_classes = array(
+        'Mixin_Content'
+    );    
     
     static function active_cache_key()
     {

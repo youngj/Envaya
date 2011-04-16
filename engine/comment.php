@@ -9,12 +9,12 @@ class Comment extends Entity
 {
     static $table_name = 'comments';
     static $table_attributes = array(
-        'content' => '',
-        'data_types' => 0,
-        'language' => '',
         'name' => '',
         'location' => '',
     );   
+    static $mixin_classes = array(
+        'Mixin_Content'
+    );        
     
 	function get_name()
 	{
