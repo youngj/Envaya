@@ -18,6 +18,8 @@ class Storage_S3 implements Storage
             $headers['Content-Type'] = $mime;
         }
         
+        $headers['Cache-Control'] = 'max-age=10000000';
+        
         return $this->get_s3()->uploadFile(Config::get('s3_bucket'), $path, $fs_path, $web_accessible, $headers);      
     }
     public function delete_object($path)
