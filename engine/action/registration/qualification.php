@@ -12,26 +12,26 @@ class Action_Registration_Qualification extends Action
 
             if (!in_array($country, $approvedCountries))
             {
-                throw new RegistrationException(__("qualify:wrong_country"));
+                throw new ValidationException(__("qualify:wrong_country"));
             }
 
             $orgType = get_input('org_type');
             if ($orgType != 'np')
             {
-                throw new RegistrationException(__("qualify:wrong_org_type"));
+                throw new ValidationException(__("qualify:wrong_org_type"));
             }
 
             Session::set('registration', array(
                 'country' => get_input('country'),
             ));
 
-            system_message(__("qualify:ok"));
+            SessionMessages::add(__("qualify:ok"));
             forward(Config::get('secure_url')."org/new?step=2");            
 
         }
-        catch (RegistrationException $r)
+        catch (ValidationException $r)
         {
-            action_error($r->getMessage());
+            redirect_back_error($r->getMessage());
         }
     }
 }

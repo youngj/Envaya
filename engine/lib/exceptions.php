@@ -13,8 +13,8 @@ class ClassNotFoundException extends ClassException {}
 class InstallationException extends ConfigurationException {}
 class NotImplementedException extends CallException {}
 class InvalidParameterException extends CallException {}
-class RegistrationException extends Exception {}
 class NotFoundException extends Exception {}
+class ValidationException extends Exception {}
 class PossibleDuplicateException extends Exception 
 {
     public $duplicates;
@@ -52,7 +52,7 @@ function php_error_handler($errno, $errmsg, $filename, $linenum, $vars)
     switch ($errno) {
         case E_USER_ERROR:
                 error_log("ERROR: " . $error);
-                register_error("ERROR: " . $error);
+                SessionMessages::add_error("ERROR: " . $error);
 
                 // Since this is a fatal error, we want to stop any further execution but do so gracefully.
                 throw new Exception($error);

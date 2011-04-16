@@ -29,9 +29,9 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
         {
             $this->show_possible_duplicate($p);
         }
-        catch (RegistrationException $r)
+        catch (ValidationException $r)
         {
-            register_error($r->getMessage());
+            SessionMessages::add_error($r->getMessage());
             Session::save_input();
             forward(Config::get('secure_url')."org/new?step=2");
         }

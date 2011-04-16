@@ -121,7 +121,7 @@ class Controller_Profile extends Controller
     
     function view_access_denied()
     {
-        register_error($this->get_approval_message() ?: __('org:cantview'));
+        SessionMessages::add_error($this->get_approval_message() ?: __('org:cantview'));
         force_login();
     }
 
@@ -202,7 +202,7 @@ class Controller_Profile extends Controller
         {
             if (Session::isloggedin())
             {
-                register_error(__('noaccess'));
+                SessionMessages::add_error(__('noaccess'));
             }        
         
             force_login();
@@ -328,19 +328,19 @@ class Controller_Profile extends Controller
         $domain_name = get_input('domain_name');
         if (OrgDomainName::query()->where('domain_name = ?', $domain_name)->count() > 0)
         {
-            action_error(__('domains:duplicate'));
+            redirect_back_error(__('domains:duplicate'));
         }
         if (preg_match('/[^\w\.\-]/', $domain_name))
         {
-            action_error(__('domains:invalid'));
+            redirect_back_error(__('domains:invalid'));
         }
         
         $org_domain_name = new OrgDomainName();
         $org_domain_name->domain_name = $domain_name;
         $org_domain_name->guid = $this->org->guid;
         $org_domain_name->save();
-        system_message(__('domains:added'));
-        forward_to_referrer();
+        SessionMessages::add(__('domains:added'));
+        redirect_back();
     }
     
     function index_delete_domain()
@@ -351,11 +351,11 @@ class Controller_Profile extends Controller
         $org_domain_name = OrgDomainName::query()->where('id = ?', (int)get_input('id'))->get();
         if (!$org_domain_name)
         {
-            action_error(__('domains:not_found'));
+            redirect_back_error(__('domains:not_found'));
         }
         $org_domain_name->delete();
-        system_message(__('domains:deleted'));
-        forward_to_referrer();
+        SessionMessages::add(__('domains:deleted'));
+        redirect_back();
     }
         
     protected function get_pre_body($vars)
@@ -389,10 +389,13 @@ class Controller_Profile extends Controller
         
         if ($org && $this->public_layout)
         {    
-            $approval_message = $this->get_approval_message();
-            if ($approval_message)
+            if (!get_input('__theme'))
             {
-                system_message($approval_message);
+                $approval_message = $this->get_approval_message();
+                if ($approval_message)
+                {
+                    SessionMessages::add($approval_message);
+                }
             }
         
             if ($org->has_custom_header())

@@ -10,14 +10,13 @@ class Action_EditDesign extends Action
      
     function process_input()
     {
-        $this->validate_security_token();        
         $org = $this->get_org();
 
         $theme = get_input('theme');
 
         if ($theme != $org->theme)
         {
-            system_message(__("theme:changed"));
+            SessionMessages::add(__("theme:changed"));
             $org->theme = $theme;
             $org->save();
         }
@@ -27,12 +26,12 @@ class Action_EditDesign extends Action
         if (get_input('deleteicon'))
         {
             $org->set_icon(null);
-            system_message(__("icon:reset"));
+            SessionMessages::add(__("icon:reset"));
         }
         else if ($iconFiles)
         {
             $org->set_icon($iconFiles);
-            system_message(__("icon:saved"));
+            SessionMessages::add(__("icon:saved"));
         }
 
         $headerFiles = UploadedFile::json_decode_array($_POST['header']);
@@ -44,13 +43,13 @@ class Action_EditDesign extends Action
             if ($org->has_custom_header())
             {
                 $org->set_header(null);
-                system_message(__("header:reset"));
+                SessionMessages::add(__("header:reset"));
             }
         }
         else if ($headerFiles)
         {
             $org->set_header($headerFiles);
-            system_message(__("header:saved"));
+            SessionMessages::add(__("header:saved"));
         }
         
         forward($org->get_url());

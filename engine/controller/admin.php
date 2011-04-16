@@ -127,7 +127,7 @@ class Controller_Admin extends Controller
                 $email->send_to($org);
             }
         }
-        system_message("sent $numSent emails");
+        SessionMessages::add("sent $numSent emails");
         forward(get_input('from') ?: "/admin/batch_email?email={$email->guid}");
     }
     
@@ -142,11 +142,11 @@ class Controller_Admin extends Controller
         if ($email->can_send_to($org))
         {
             $email->send_to($org);
-            system_message(__('email:sent'));
+            SessionMessages::add(__('email:sent'));
         }
         else
         {
-            register_error(__('email:none_sent'));
+            SessionMessages::add_error(__('email:none_sent'));
         }
 
         forward(get_input('from') ?: "/admin/contact");
@@ -298,7 +298,7 @@ class Controller_Admin extends Controller
 
         if ($password != $password2)
         {
-            action_error(__('create:passwords_differ'));
+            redirect_back_error(__('create:passwords_differ'));
         }
 
         try
@@ -320,14 +320,14 @@ class Controller_Admin extends Controller
                         
             $new_user->send_mail($mail);
 
-            system_message(sprintf(__("adduser:ok"), Config::get('sitename')));
+            SessionMessages::add(sprintf(__("adduser:ok"), Config::get('sitename')));
         }
-        catch (RegistrationException $r)
+        catch (ValidationException $r)
         {
-            action_error($r->getMessage());
+            redirect_back_error($r->getMessage());
         }
 
-        forward_to_referrer();
+        redirect_back();
     }
     
     function action_approve()
@@ -357,11 +357,11 @@ class Controller_Admin extends Controller
             
             $entity->send_relationship_emails();
 
-            system_message(__('approval:changed'));
+            SessionMessages::add(__('approval:changed'));
         }
         else
         {
-            register_error(__('approval:notapproved'));
+            SessionMessages::add_error(__('approval:notapproved'));
         }
 
         forward($entity->get_url());
@@ -379,10 +379,10 @@ class Controller_Admin extends Controller
         {
             $entity->disable();
             $entity->save();
-            system_message(sprintf(__('entity:delete:success'), $guid));
+            SessionMessages::add(sprintf(__('entity:delete:success'), $guid));
         }
         else
-            register_error(sprintf(__('entity:delete:fail'), $guid));
+            SessionMessages::add_error(sprintf(__('entity:delete:fail'), $guid));
 
         $next = get_input('next');
         if ($next)
@@ -391,7 +391,7 @@ class Controller_Admin extends Controller
         }
         else
         {
-            forward_to_referrer();
+            redirect_back();
         }
     }
     
@@ -426,7 +426,7 @@ class Controller_Admin extends Controller
             $email->active = 1;            
             $email->save();
          
-            system_message('activated');
+            SessionMessages::add('activated');
             forward('/admin/emails');        
         }
         else
@@ -479,7 +479,7 @@ class Controller_Admin extends Controller
         $featuredSite->image_url = get_input('image_url');
         $featuredSite->set_content(get_input('content'));
         $featuredSite->save();
-        system_message('featured:created');
+        SessionMessages::add('featured:created');
         forward('org/featured');
     }
     
@@ -493,7 +493,7 @@ class Controller_Admin extends Controller
             $featuredSite->image_url = get_input('image_url');
             $featuredSite->set_content(get_input('content'));
             $featuredSite->save();
-            system_message('featured:saved');
+            SessionMessages::add('featured:saved');
             forward('org/featured');
         }
         else
@@ -580,8 +580,8 @@ class Controller_Admin extends Controller
             {
                 $item->delete();
             }           
-            system_message("Feed item deleted successfully.");
-            forward_to_referrer();
+            SessionMessages::add("Feed item deleted successfully.");
+            redirect_back();
         }
         else
         {
@@ -634,7 +634,7 @@ class Controller_Admin extends Controller
         $featured_photo->active = get_input('active') == 'yes' ? 1 : 0;
         $featured_photo->save();
         
-        system_message(__("featured_photo:added"));
+        SessionMessages::add(__("featured_photo:added"));
         forward("/admin/featured_photos");
     }
     
@@ -657,7 +657,7 @@ class Controller_Admin extends Controller
         $featured_photo->active = get_input('active') == 'yes' ? 1 : 0;
         $featured_photo->save();
         
-        system_message(__("featured_photo:saved"));
+        SessionMessages::add(__("featured_photo:saved"));
         forward("/admin/featured_photos");    
     }
     
@@ -675,7 +675,7 @@ class Controller_Admin extends Controller
             return $this->not_found();
         }
         
-        system_message(__("featured_photo:deleted"));
+        SessionMessages::add(__("featured_photo:deleted"));
         forward("/admin/featured_photos");
     }
     

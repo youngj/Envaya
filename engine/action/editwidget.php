@@ -13,7 +13,7 @@ class Action_EditWidget extends Action
         $request = $this->get_request();
         $request->headers['Content-Type'] = 'text/javascript';                
     
-        $this->validate_security_token();        
+        validate_security_token();        
     
         $widget = $this->get_widget();
         if (!$widget->guid || $widget->status == EntityStatus::Disabled)
@@ -29,7 +29,7 @@ class Action_EditWidget extends Action
         
         $request->response = json_encode(array('guid' => $widget->guid));    
     }
-
+    
     function process_input()
     {        
         if (get_input('_draft'))
@@ -37,7 +37,7 @@ class Action_EditWidget extends Action
             return $this->save_draft();
         }
 
-        $this->validate_security_token();        
+        validate_security_token();        
         
         $widget = $this->get_widget();
     
@@ -46,7 +46,7 @@ class Action_EditWidget extends Action
             $widget->disable();
             $widget->save();
 
-            system_message(__('widget:delete:success'));
+            SessionMessages::add(__('widget:delete:success'));
 
             forward($this->get_org()->get_url());
         }
@@ -61,12 +61,16 @@ class Action_EditWidget extends Action
             {
                 $widget->save_input();
             }
+            catch (ValidationException $ex)
+            {
+                return redirect_back_error($ex->getMessage());
+            }                
             catch (NotFoundException $ex)
             {
                 $this->not_found();
             }
             
-            system_message(__('widget:save:success'));
+            SessionMessages::add(__('widget:save:success'));
             forward($widget->get_url());
         }
     }
@@ -104,4 +108,6 @@ class Action_EditWidget extends Action
             $this->not_found();
         }
     }
+
+    protected function validate_security_token() {}    
 }

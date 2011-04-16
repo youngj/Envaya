@@ -34,21 +34,21 @@ class Action_Contact extends Action
         
         if (!$this->message)
         {
-            action_error(__('feedback:empty'));
+            redirect_back_error(__('feedback:empty'));
         }
         
         if (!$this->email)
         {
-            action_error(__('feedback:email_empty'));
+            redirect_back_error(__('feedback:email_empty'));
         }
 
         try
         {
             validate_email_address($this->email);
         }
-        catch (RegistrationException $ex)
+        catch (ValidationException $ex)
         {
-            action_error($ex->getMessage());
+            redirect_back_error($ex->getMessage());
         }            
             
         $mail = Zend::mail($this->get_email_subject(), $this->get_email_body());
@@ -57,7 +57,7 @@ class Action_Contact extends Action
         
         send_mail($mail);
         
-        system_message(__('feedback:sent'));
+        SessionMessages::add(__('feedback:sent'));
         forward($this->get_redirect_url());
     }    
 }    

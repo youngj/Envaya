@@ -32,8 +32,24 @@ abstract class Action
         $this->before();
     
         if (Request::is_post())
-        {            
-            $this->process_input();
+        {           
+            try
+            {
+                $this->validate_security_token();
+                $this->process_input();
+            }
+            catch (ValidationException $ex)
+            {
+                SessionMessages::add_error($ex->getMessage());
+                $this->render();
+                if (!$this->get_request()->response)
+                {
+                    Session::save_input();
+                    redirect_back();
+                }
+            }
+            
+            $this->record_user_action();
         }
         else
         {
@@ -41,7 +57,22 @@ abstract class Action
         }    
         
         $this->after();
-    }    
+    }        
+    
+    protected function validate_security_token()
+    {
+        validate_security_token();    
+    }
+    
+    protected function record_user_action()
+    {
+        $user = Session::get_loggedin_user();
+        if ($user)
+        {
+            $user->last_action = time();
+            $user->save();
+        }                
+    }
 
     /*
      * Subclasses should override to process the input from a POST request.
@@ -108,7 +139,7 @@ abstract class Action
 				}
 				else
 				{
-					register_error(__('captcha:invalid'));
+					SessionMessages::add_error(__('captcha:invalid'));
 				}
 			}
 		
@@ -119,5 +150,5 @@ abstract class Action
 		}    
         
         return true;
-    }    
+    }        
 }

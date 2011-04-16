@@ -10,6 +10,8 @@
 
 <form action='<?php echo Config::get('secure_url'); ?>org/register1' method='POST'>
 
+<?php echo view('input/securitytoken'); ?>
+
 <div class='input'>
 <label><?php echo __('qualify:org_type') ?></label><br />
 

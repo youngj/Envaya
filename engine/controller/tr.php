@@ -54,8 +54,8 @@ class Controller_Tr extends Controller
 
         if (!$entity->can_edit())
         {
-            register_error(__("org:cantedit"));
-            forward_to_referrer();
+            SessionMessages::add_error(__("org:cantedit"));
+            redirect_back();
         }
         else
         {
@@ -86,7 +86,7 @@ class Controller_Tr extends Controller
                 }
             }
 
-            system_message(__("trans:posted"));
+            SessionMessages::add(__("trans:posted"));
 
             forward(get_input('from') ?: $entity->get_url());
         }
@@ -151,7 +151,7 @@ class Controller_Tr extends Controller
         $trans->value = $value;
         $trans->save();
 
-        system_message(__("trans:posted"));
+        SessionMessages::add(__("trans:posted"));
 
         forward(get_input('from'));
     }

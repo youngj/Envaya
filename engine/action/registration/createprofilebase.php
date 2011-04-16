@@ -5,24 +5,23 @@ class Action_Registration_CreateProfileBase extends Action
     protected function _process_input()
     {
         $this->require_login();
-        $this->validate_security_token();
     
         $org = Session::get_loggedin_user();
 
         $mission = get_input('mission');
         if (!$mission)
         {
-            throw new RegistrationException(__("setup:mission:blank"));
+            throw new ValidationException(__("setup:mission:blank"));
         }
 
         $sectors = get_input_array('sector');
         if (sizeof($sectors) == 0)
         {
-            throw new RegistrationException(__("setup:sector:blank"));
+            throw new ValidationException(__("setup:sector:blank"));
         }
         else if (sizeof($sectors) > 5)
         {
-            throw new RegistrationException(__("setup:sector:toomany"));
+            throw new ValidationException(__("setup:sector:toomany"));
         }
 
         $homeWidget = $org->get_widget_by_name('home');
@@ -61,6 +60,6 @@ class Action_Registration_CreateProfileBase extends Action
             ));
         }            
         
-        system_message(__("setup:ok"));
+        SessionMessages::add(__("setup:ok"));
     }    
 }

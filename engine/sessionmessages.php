@@ -28,7 +28,7 @@ class SessionMessages
         }        
     }
     
-    static function add_message($message, $register = 'messages')
+    private static function _add_html($message, $register)
     {
         static::init();
         
@@ -67,5 +67,25 @@ class SessionMessages
         {
             Session::set('messages', $messages);
         }        
+    }    
+
+    static function add($message) 
+    {
+        return static::_add_html(escape($message), 'messages');
     }
+
+    static function add_html($message) 
+    {
+        return static::_add_html($message, 'messages');
+    }    
+    
+    static function add_error($error) 
+    {
+        return static::_add_html(escape($error), "errors");
+    }
+
+    static function add_error_html($error) 
+    {
+        return static::_add_html($error, "errors");
+    }    
 }     

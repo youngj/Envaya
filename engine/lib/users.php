@@ -81,18 +81,18 @@
      * This should only permit chars that are valid on the file system as well.
      *
      * @param string $username
-     * @throws RegistrationException on invalid
+     * @throws ValidationException on invalid
      */
     function validate_username($username)
     {
         if (strlen($username) < 3)
         {
-            throw new RegistrationException(__('registration:usernametooshort'));
+            throw new ValidationException(__('registration:usernametooshort'));
         }
 
         if (preg_match('/[^a-zA-Z0-9\-\_]/', $username, $matches))
         {
-            throw new RegistrationException(sprintf(__('registration:invalidchars'), $username, $matches[0]));
+            throw new ValidationException(sprintf(__('registration:invalidchars'), $username, $matches[0]));
         }
 
         $lower = strtolower($username);
@@ -112,37 +112,37 @@
 
         if (in_array($lower, $badUsernames) || $username[0] == "_")
         {
-            throw new RegistrationException(sprintf(__('registration:usernamenotvalid'), $username));
+            throw new ValidationException(sprintf(__('registration:usernamenotvalid'), $username));
         }
 
-        return true;
+        return $username;
     }
 
     /**
      * Simple validation of a password.
      *
      * @param string $password
-     * @throws RegistrationException on invalid
+     * @throws ValidationException on invalid
      */
     function validate_password($password)
     {
         if (strlen($password)<6)
-            throw new RegistrationException(__('registration:passwordtooshort'));
+            throw new ValidationException(__('registration:passwordtooshort'));
 
-        return true;
+        return $password;
     }
 
     /**
      * Simple validation of a email.
      *
      * @param string $address
-     * @throws RegistrationException on invalid
+     * @throws ValidationException on invalid
      * @return bool
      */
     function validate_email_address($address)
     {
         if ($address !== "" && !is_email_address($address))
-            throw new RegistrationException(__('registration:notemail'));
+            throw new ValidationException(__('registration:notemail'));
 
         return $address;
     }
@@ -164,7 +164,7 @@
 
         if (empty($username) || empty($password) || empty($name)) 
         {
-            throw new RegistrationException(__('registerbad'));
+            throw new ValidationException(__('registerbad'));
         }				       
 
         validate_email_address($email);
@@ -173,7 +173,7 @@
 
         // Check to see if $username exists already
         if ($user = get_user_by_username($username)) {
-            throw new RegistrationException(__('registration:userexists'));
+            throw new ValidationException(__('registration:userexists'));
         }
 
         $user = new User();

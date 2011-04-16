@@ -10,7 +10,7 @@ class Action_ConfirmAction extends Action
         $ok_url = get_input('ok');
         $cancel_url = get_input('cancel');
 
-        // hack to handle forward_to_referrer or action_error by going back to previous page
+        // hack to handle redirect_back or redirect_back_error by going back to previous page
         if (Session::get('messages'))
         {
             forward($cancel_url);

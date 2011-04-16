@@ -140,23 +140,3 @@ function restore_input($name, $value, $trackDirty = false)
     }
     return $value;
 }
-
-function system_message_html($message) 
-{
-    return SessionMessages::add_message($message);
-}
-
-function register_error_html($error) 
-{
-    return SessionMessages::add_message($error, "errors");
-}
-
-function system_message($message) 
-{
-    return system_message_html(escape($message));
-}
-
-function register_error($error) 
-{
-    return register_error_html(escape($error));
-}

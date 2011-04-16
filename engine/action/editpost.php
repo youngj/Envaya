@@ -9,7 +9,6 @@ class Action_EditPost extends Action
 
     function process_input()
     {        
-        $this->validate_security_token();
         $post = $this->get_post();
         $org = $this->get_org();
 
@@ -20,12 +19,12 @@ class Action_EditPost extends Action
             $org = $post->get_container_entity();
             $post->disable();
             $post->save();
-            system_message(__('blog:delete:success'));
+            SessionMessages::add(__('blog:delete:success'));
             forward($org->get_url()."/news");
         }
         else if (empty($body))
         {
-            register_error(__("blog:blank"));
+            SessionMessages::add_error(__("blog:blank"));
             return $this->render();
         }
         else
@@ -33,7 +32,7 @@ class Action_EditPost extends Action
             $post->set_content($body);
             $post->save();
 
-            system_message(__("blog:updated"));
+            SessionMessages::add(__("blog:updated"));
             forward($post->get_url());
         }
     }

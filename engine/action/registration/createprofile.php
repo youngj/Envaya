@@ -9,9 +9,9 @@ class Action_Registration_CreateProfile extends Action_Registration_CreateProfil
             $this->_process_input(); 
             forward(Session::get_loggedin_user()->get_url());            
         }
-        catch (RegistrationException $r)
+        catch (ValidationException $r)
         {
-            return action_error($r->getMessage());
+            return redirect_back_error($r->getMessage());
         }
     }
 }

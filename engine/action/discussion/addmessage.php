@@ -4,8 +4,6 @@ class Action_Discussion_AddMessage extends Action
 {
     function process_input()
     {
-        $this->validate_security_token();
-        
         $topic = $this->get_topic();                       
         $org = $this->get_org();
 
@@ -22,14 +20,14 @@ class Action_Discussion_AddMessage extends Action
         $name = get_input('name');
         if (!$name)
         {
-            register_error(__('discussions:name_missing'));
+            SessionMessages::add_error(__('discussions:name_missing'));
             return $this->render();
         }
 
         $content = get_input('content');
         if (!$content)
         {
-            register_error(__('discussions:content_missing'));
+            SessionMessages::add_error(__('discussions:content_missing'));
             return $this->render();
         }
         
@@ -88,7 +86,7 @@ class Action_Discussion_AddMessage extends Action
             $org->send_mail($mail);
         }
         
-        system_message_html(__('discussions:message_added')
+        SessionMessages::add_html(__('discussions:message_added')
             . view('discussions/invite_link', array('topic' => $topic)));        
         
         forward($topic->get_url());    

@@ -10,21 +10,19 @@ class Action_AddPage extends Action
      
     function process_input()
     {
-        $this->validate_security_token();
-        
         $org = $this->get_org();
         
         $title = get_input('title');
         if (!$title)
         {
-            register_error(__('widget:no_title'));            
+            SessionMessages::add_error(__('widget:no_title'));            
             return $this->render();
         }
         
         $widget_name = get_input('widget_name');
         if (!$widget_name || !Widget::is_valid_name($widget_name))
         {
-            register_error(__('widget:bad_name'));            
+            SessionMessages::add_error(__('widget:bad_name'));            
             return $this->render();
         }
         
@@ -32,7 +30,9 @@ class Action_AddPage extends Action
         
         if ($widget->guid && ((time() - $widget->time_created > 30) || !($widget->get_handler() instanceof WidgetHandler_Generic)))
         {
-            register_error_html(sprintf(__('widget:duplicate_name'),"<a href='{$widget->get_edit_url()}'><strong>".__('clickhere')."</strong></a>")); 
+            SessionMessages::add_error_html(
+                sprintf(__('widget:duplicate_name'),"<a href='{$widget->get_edit_url()}'><strong>".__('clickhere')."</strong></a>")
+            ); 
             return $this->render();
         }
         
@@ -44,7 +44,7 @@ class Action_AddPage extends Action
         
         $widget->save_input();             
         
-        system_message(__('widget:save:success'));
+        SessionMessages::add(__('widget:save:success'));
         
         if ($draft)
         {

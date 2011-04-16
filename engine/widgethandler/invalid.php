@@ -4,7 +4,7 @@ class WidgetHandler_Invalid extends WidgetHandler
 {
     function show_error($widget)
     {
-        register_error(sprintf(__('widget:invalid_class'), $widget->handler_class));
+        SessionMessages::add_error(sprintf(__('widget:invalid_class'), $widget->handler_class));
     }
 
     function view($widget)

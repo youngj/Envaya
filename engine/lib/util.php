@@ -132,11 +132,18 @@
         return htmlentities($val, ENT_QUOTES, 'UTF-8');
     }
 
-    function forward_to_referrer()
+    function redirect_back()
     {
         forward($_SERVER['HTTP_REFERER']);
     }
 
+    function redirect_back_error($msg)
+    {
+        SessionMessages::add_error($msg);
+        Session::save_input();
+        redirect_back();
+    }    
+    
     function yes_no_options()
     {
         return array(

@@ -20,7 +20,7 @@ class Action_Login extends Action
 
         if ($result)
         {
-            system_message(sprintf(__('loginok'), $user->name));
+            SessionMessages::add(sprintf(__('loginok'), $user->name));
 
             if (!$next)
             {
@@ -40,7 +40,7 @@ class Action_Login extends Action
         }
         else
         {
-            register_error_html(view('account/login_error'));
+            SessionMessages::add_error_html(view('account/login_error'));
             return $this->render();
         }
     }
@@ -53,7 +53,7 @@ class Action_Login extends Action
         $loginTime = (int)get_input('_lt');
         if ($loginTime && time() - $loginTime < 10 && !Session::isloggedin())
         {
-            register_error_html(view('account/cookie_error'));
+            SessionMessages::add_error_html(view('account/cookie_error'));
         }
         
         $this->page_draw(array(

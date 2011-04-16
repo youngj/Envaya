@@ -22,9 +22,9 @@ class WidgetHandler_Contact extends WidgetHandler
         {
             validate_email_address($email);
         }
-        catch (Exception $ex)
+        catch (ValidationException $ex)
         {
-            return action_error($ex->getMessage());
+            return redirect_back_error($ex->getMessage());
         }
 
         $org->email = $email;

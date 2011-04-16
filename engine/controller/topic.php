@@ -90,18 +90,18 @@ class Controller_Topic extends Controller_Profile
         $message = $topic->query_messages()->where('e.guid = ?', (int)get_input('guid'))->get();
         if (!$message)
         {
-            return forward_to_referrer();
+            return redirect_back();
         }
         
         if (!$message->can_edit())
         {
-            return action_error(__('noaccess'));
+            return redirect_back_error(__('noaccess'));
         }
         
         $message->disable();
         $message->save();
         
-        system_message(__('discussions:message_deleted'));
+        SessionMessages::add(__('discussions:message_deleted'));
         
         if ($topic->query_messages()->count() == 0)
         {
@@ -115,7 +115,7 @@ class Controller_Topic extends Controller_Profile
             $topic->refresh_attributes();
             $topic->save();                           
 
-            forward_to_referrer();
+            redirect_back();
         }
     }    
 }

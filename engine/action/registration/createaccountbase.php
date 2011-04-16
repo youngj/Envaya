@@ -28,7 +28,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
 
         if (!$name)
         {
-            throw new RegistrationException(__('create:no_name'));
+            throw new ValidationException(__('create:no_name'));
         }
 
         $username = trim(get_input('username'));
@@ -40,7 +40,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
 
         if (strcmp($password, $password2) != 0)
         {
-            throw new RegistrationException(__('create:passwords_differ'));
+            throw new ValidationException(__('create:passwords_differ'));
         }
 
         $lpassword = strtolower($password);
@@ -49,7 +49,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
 
         if (strpos($lname, $lpassword) !== FALSE || strpos($lusername, $lpassword) !== FALSE)
         {
-            throw new RegistrationException(__('create:password_too_easy'));
+            throw new ValidationException(__('create:password_too_easy'));
         }
 
         validate_password($password);
@@ -71,7 +71,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
         
         if (get_user_by_username($username))
         {
-            throw new RegistrationException(__('create:username_exists'));
+            throw new ValidationException(__('create:username_exists'));
         }                
         
         $org = new Organization();
@@ -109,7 +109,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
         
         login($org, false);
 
-        system_message(__("create:ok"));   
+        SessionMessages::add(__("create:ok"));   
 
         $this->org = $org;
     }

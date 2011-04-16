@@ -12,22 +12,20 @@ class Action_SendMessage extends Action
 
         if (!$user->is_approved())
         {
-            register_error(__('message:needapproval'));
-            forward_to_referrer();
+            SessionMessages::add_error(__('message:needapproval'));
+            redirect_back();
         }
     }
      
     function process_input()
     {
-        $this->validate_security_token();
-
         $user = Session::get_loggedin_user();
 
         $recipient = $this->get_org();
 
         if (!$recipient)
         {
-            register_error(__("message:invalid_recipient"));
+            SessionMessages::add_error(__("message:invalid_recipient"));
             return $this->render();
         }
         else
@@ -35,14 +33,14 @@ class Action_SendMessage extends Action
             $subject = get_input('subject');
             if (!$subject)
             {
-                register_error(__("message:subject_missing"));
+                SessionMessages::add_error(__("message:subject_missing"));
                 return $this->render();
             }
 
             $message = get_input('message');
             if (!$message)
             {
-                register_error(__("message:message_missing"));
+                SessionMessages::add_error(__("message:message_missing"));
                 return $this->render();
             }
 
@@ -53,11 +51,11 @@ class Action_SendMessage extends Action
             
             if ($recipient->send_mail($mail))
             {
-                system_message(__("message:sent"));
+                SessionMessages::add(__("message:sent"));
             }
             else
             {
-                register_error(__("message:not_sent"));
+                SessionMessages::add_error(__("message:not_sent"));
                 return $this->render();
             }
 

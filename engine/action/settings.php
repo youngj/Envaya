@@ -10,8 +10,6 @@ class Action_Settings extends Action
      
     function process_input()
     {
-        $this->validate_security_token();
-        
         $user = $this->get_user();
 
         $name = get_input('name');
@@ -21,12 +19,12 @@ class Action_Settings extends Action
             if (strcmp($name, $user->name)!=0)
             {
                 $user->name = $name;
-                system_message(__('user:name:success'));
+                SessionMessages::add(__('user:name:success'));
             }
         }
         else
         {
-            register_error(__('create:no_name'));
+            SessionMessages::add_error(__('create:no_name'));
             return $this->render();
         }
 
@@ -34,24 +32,16 @@ class Action_Settings extends Action
         $password2 = get_input('password2');
         if ($password!="")
         {
-            try
-            {
-                validate_password($password);
-            }
-            catch (RegistrationException $ex)
-            {
-                register_error($ex->getMessage());
-                return $this->render();
-            }
+            validate_password($password);
 
             if ($password == $password2)
             {
                 $user->set_password($password);
-                system_message(__('user:password:success'));
+                SessionMessages::add(__('user:password:success'));
             }
             else
             {
-                register_error(__('user:password:fail:notsame'));
+                SessionMessages::add_error(__('user:password:fail:notsame'));
                 return $this->render();
             }
         }
@@ -61,31 +51,21 @@ class Action_Settings extends Action
         {
             $user->language = $language;
             change_viewer_language($user->language);
-            system_message(__('user:language:success'));
+            SessionMessages::add(__('user:language:success'));
         }
 
         $email = trim(get_input('email'));
         if ($email != $user->email)
         {
-            try
-            {
-                validate_email_address($email);
-            }
-            catch (RegistrationException $ex)
-            {
-                register_error($ex->getMessage());
-                return $this->render();
-            }
-
-            $user->email = $email;
-            system_message(__('user:email:success'));
+            $user->email = validate_email_address($email);
+            SessionMessages::add(__('user:email:success'));
         }
 
         $phone = get_input('phone');
         if ($phone != $user->phone_number)
         {
             $user->set_phone_number($phone);
-            system_message(__('user:phone:success'));
+            SessionMessages::add(__('user:phone:success'));
         }
 
         if ($user instanceof Organization)
@@ -95,7 +75,7 @@ class Action_Settings extends Action
             if ($notifications != $user->notifications)
             {
                 $user->notifications = $notifications;
-                system_message(__('user:notification:success'));
+                SessionMessages::add(__('user:notification:success'));
             }
         }
 

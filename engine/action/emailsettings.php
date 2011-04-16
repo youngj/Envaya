@@ -6,7 +6,7 @@ class Action_EmailSettings extends Action
     {
         if (!$email || $code != get_email_fingerprint($email) || sizeof($users) == 0)
         {
-            register_error(__("user:notification:invalid"));
+            SessionMessages::add_error(__("user:notification:invalid"));
             return forward("/");
         }            
     }
@@ -25,7 +25,7 @@ class Action_EmailSettings extends Action
             $user->notifications = $notifications;
             $user->save();
 
-            system_message(__('user:notification:success'));
+            SessionMessages::add(__('user:notification:success'));
         }
 
         forward("/");

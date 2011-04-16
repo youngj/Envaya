@@ -14,35 +14,27 @@ class Action_PasswordReset extends Action
             $password2 = get_input('password2');
             if ($password!="")
             {
-                try
-                {
-                    validate_password($password);
-                }
-                catch (RegistrationException $ex)
-                {
-                    register_error($ex->getMessage());
-                    return $this->render();
-                }
+                validate_password($password);
 
                 if ($password == $password2)
                 {
                     $user->set_password($password);
                     $user->passwd_conf_code = null;
                     $user->save();
-                    system_message(__('user:password:success'));
+                    SessionMessages::add(__('user:password:success'));
                     login($user);
                     forward("pg/dashboard");
                 }
                 else
                 {
-                    register_error(__('user:password:fail:notsame'));
+                    SessionMessages::add_error(__('user:password:fail:notsame'));
                     return $this->render();
                 }
             }
         }
         else
         {
-            register_error(__('user:password:fail'));
+            SessionMessages::add_error(__('user:password:fail'));
             forward("pg/login");
         }
     }
@@ -66,7 +58,7 @@ class Action_PasswordReset extends Action
         }
         else
         {
-            register_error(__('user:password:fail'));
+            SessionMessages::add_error(__('user:password:fail'));
             forward("pg/login");
         }
     }

@@ -34,14 +34,7 @@
                 }
             }
         }
-        throw new SecurityException(__('actiongatekeeper:timeerror'));        
-    }
-
-    function action_error($msg)
-    {
-        register_error($msg);
-        Session::save_input();
-        forward_to_referrer();
+        throw new ValidationException(__('actiongatekeeper:timeerror'));        
     }
 
     /**

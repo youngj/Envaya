@@ -9,7 +9,6 @@ class Action_Discussion_Edit extends Action
      
     function process_input()
     {
-        $this->validate_security_token();        
         $topic = $this->get_topic();
         $org = $this->get_org();
         
@@ -17,7 +16,7 @@ class Action_Discussion_Edit extends Action
         {
             $topic->disable();
             $topic->save();
-            system_message(__('discussions:topic_deleted'));            
+            SessionMessages::add(__('discussions:topic_deleted'));            
             
             $widget = $org->get_widget_by_class('WidgetHandler_Discussions');
             forward($widget->get_edit_url());
@@ -26,13 +25,13 @@ class Action_Discussion_Edit extends Action
         $subject = get_input('subject');
         if (!$subject)
         {
-            return register_error(__('discussions:subject_missing'));
+            return SessionMessages::add_error(__('discussions:subject_missing'));
         }
         
         $topic->subject = $subject;
         $topic->save();
         
-        system_message(__('discussions:topic_saved'));                    
+        SessionMessages::add(__('discussions:topic_saved'));                    
         forward($topic->get_edit_url());   
     }
 

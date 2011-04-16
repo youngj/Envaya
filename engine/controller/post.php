@@ -61,7 +61,7 @@ class Controller_Post extends Controller_Profile
     function action_post_comment()
     {   
 		$action = new Action_PostComment($this, $this->post);
-        $action->process_input();
+        $action->execute();
     }
 
     function action_edit()
@@ -73,7 +73,7 @@ class Controller_Post extends Controller_Profile
     function action_new()
     {
         $action = new Action_NewPost($this);
-        $action->process_input();
+        $action->execute();
     }
 
     function action_preview()

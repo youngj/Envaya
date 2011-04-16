@@ -10,8 +10,6 @@ class Action_WidgetOptions extends Action
 
     function process_input()
     {        
-        $this->validate_security_token();
-        
         $widget = $this->get_widget();
         
         $widget->handler_class = get_input('handler_class');
@@ -21,7 +19,7 @@ class Action_WidgetOptions extends Action
         $widget->in_menu = get_input('in_menu') == 'no' ? 0 : 1;
         $widget->save();
 
-        system_message(__('widget:saved'));
+        SessionMessages::add(__('widget:saved'));
         forward($widget->get_url());
     }
     

@@ -283,7 +283,7 @@ class Controller_Org extends Controller
 
         if ($step == 3 && !$loggedInUser)
         {
-            register_error(__("create:notloggedin"));
+            SessionMessages::add_error(__("create:notloggedin"));
             $step = 1;
             forward('pg/login');
         }
@@ -295,7 +295,7 @@ class Controller_Org extends Controller
 
         if ($step == 2 && !Session::get('registration'))
         {
-            register_error(__("qualify:missing"));
+            SessionMessages::add_error(__("qualify:missing"));
             $step = 1;
         }
 
@@ -309,19 +309,19 @@ class Controller_Org extends Controller
     function action_register1()
     {
         $action = new Action_Registration_Qualification($this);
-        $action->process_input();    
+        $action->execute();    
     }  
     
     function action_register2()
     {
         $action = new Action_Registration_CreateAccount($this);
-        $action->process_input();
+        $action->execute();
     }       
 
     function action_register3()
     {
         $action = new Action_Registration_CreateProfile($this);
-        $action->process_input();
+        $action->execute();
     }
 
     function action_searchArea()

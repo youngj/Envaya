@@ -12,7 +12,7 @@ class Action_ForgotPassword extends Action
         {
             if (!$user->email)
             {
-                register_error(__('user:password:resetreq:no_email'));
+                SessionMessages::add_error(__('user:password:resetreq:no_email'));
                 forward("page/contact");
             }
 
@@ -26,17 +26,17 @@ class Action_ForgotPassword extends Action
             
             if ($user->send_mail($mail))
             {
-                system_message(__('user:password:resetreq:success'));
+                SessionMessages::add(__('user:password:resetreq:success'));
             }
             else
             {
-                register_error(__('user:password:resetreq:fail'));
+                SessionMessages::add_error(__('user:password:resetreq:fail'));
                 return $this->render();
             }
         }
         else
         {
-            register_error(sprintf(__('user:username:notfound'), $username));
+            SessionMessages::add_error(sprintf(__('user:username:notfound'), $username));
             return $this->render();
         }
 

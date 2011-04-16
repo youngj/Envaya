@@ -9,7 +9,7 @@ class Action_Discussion_Invite extends Action
         $org = $this->get_org();
         if (!$org->is_approved())
         {
-            register_error(__('noaccess'));
+            SessionMessages::add_error(__('noaccess'));
             forward($this->get_topic()->get_url());
         }
     }
@@ -55,11 +55,11 @@ class Action_Discussion_Invite extends Action
             $topic->set_metadata('invited_emails', $invited_emails);
             $topic->save();
             
-            system_message(__('discussions:invites_sent'));
+            SessionMessages::add(__('discussions:invites_sent'));
         }
         else
         {
-            register_error(__('discussions:no_new_invites'));
+            SessionMessages::add_error(__('discussions:no_new_invites'));
             return $this->render();
         }
                 

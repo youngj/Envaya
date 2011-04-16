@@ -49,6 +49,8 @@ class Action_Upload extends Action
         }
     }
     
+    protected function validate_security_token() {}
+    
     function render()
     {
         $this->get_request()->response = view('upload/frame');

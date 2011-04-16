@@ -27,17 +27,17 @@ class WidgetHandler_Home extends WidgetHandler
         $mission = get_input('content');
         if (!$mission)
         {
-            return action_error(__("setup:mission:blank"));
+            return redirect_back_error(__("setup:mission:blank"));
         }
 
         $sectors = get_input_array('sector');
         if (sizeof($sectors) == 0)
         {
-            return action_error(__("setup:sector:blank"));
+            return redirect_back_error(__("setup:sector:blank"));
         }
         else if (sizeof($sectors) > 5)
         {
-            return action_error(__("setup:sector:toomany"));
+            return redirect_back_error(__("setup:sector:toomany"));
         }
 
         $old_sectors = $org->get_sectors();

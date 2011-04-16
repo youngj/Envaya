@@ -4,8 +4,6 @@ class Action_Discussion_NewTopic extends Action
 {            
     function process_input()
 	{            
-        $this->validate_security_token();
-   
         $user = Session::get_loggedin_user();
         $org = $this->get_org();
         
@@ -36,14 +34,14 @@ class Action_Discussion_NewTopic extends Action
         $subject = get_input('subject');
         if (!$subject)
         {
-            register_error(__('discussions:subject_missing'));
+            SessionMessages::add_error(__('discussions:subject_missing'));
             return $this->render();
         }
         
         $content = get_input('content');
         if (!$content)
         {
-            register_error(__('discussions:content_missing'));
+            SessionMessages::add_error(__('discussions:content_missing'));
             return $this->render();
         }        
         
@@ -112,7 +110,7 @@ class Action_Discussion_NewTopic extends Action
             $org->send_mail($mail);
         }        
         
-        system_message_html(__('discussions:topic_added')
+        SessionMessages::add_html(__('discussions:topic_added')
             . view('discussions/invite_link', array('topic' => $topic)));        
 
         forward($topic->get_url());    

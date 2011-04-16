@@ -1,3 +1,6 @@
+<?php
+    echo view('input/securitytoken');
+?>
 <div class='input'>
 <div><label><?php echo __('feedback:message') ?>:</label></div>
 <?php

@@ -99,7 +99,7 @@ class WidgetHandler_Network extends WidgetHandler
             $relationship->subject_name = get_input('name');
             $relationship->subject_guid = 0;
             $relationship->invite_subject = get_input('invite') ? true : false;
-            $relationship->subject_email = $this->validate_email(trim(get_input('email')));
+            $relationship->subject_email = validate_email_address(trim(get_input('email')));
             
             $matchingRelationships = $org->query_relationships()
                 ->where('`type` = ?', $relationship->type)
@@ -110,7 +110,7 @@ class WidgetHandler_Network extends WidgetHandler
 
             if ($matchingRelationships > 0)
             {
-                return action_error(sprintf($relationship->__('duplicate'), $relationship->get_subject_name()));
+                return redirect_back_error(sprintf($relationship->__('duplicate'), $relationship->get_subject_name()));
             }
         }
         else // subject_org already an envaya member
@@ -122,13 +122,14 @@ class WidgetHandler_Network extends WidgetHandler
             {
                 $relationship->subject_email = validate_email_address(trim(get_input('email')));        
             }
-            catch (RegistrationException $ex)
+            catch (ValidationException $ex)
             {
+                // ignore
             }            
         
             if ($org->guid == $relationship->subject_guid)
             {
-                return action_error($relationship->__('no_self'));
+                return redirect_back_error($relationship->__('no_self'));
             }
         
             if ($org->query_relationships()
@@ -136,7 +137,7 @@ class WidgetHandler_Network extends WidgetHandler
                 ->where('subject_guid = ?', $relationship->subject_guid)
                 ->count() > 0)
             {
-                return action_error(sprintf($relationship->__('duplicate'), $relationship->get_subject_name()));
+                return redirect_back_error(sprintf($relationship->__('duplicate'), $relationship->get_subject_name()));
             }
             
             if ($org->is_approved() && $subject_org->query_relationships()
@@ -166,12 +167,12 @@ class WidgetHandler_Network extends WidgetHandler
             {
                 if ($relationship->send_invite_email())
                 {                
-                    system_message(sprintf(__('network:invited'), $relationship->get_subject_name()));
+                    SessionMessages::add(sprintf(__('network:invited'), $relationship->get_subject_name()));
                 }
             }
         }
         
-        system_message(sprintf($relationship->__('added'), $relationship->get_subject_name()));
+        SessionMessages::add(sprintf($relationship->__('added'), $relationship->get_subject_name()));
         forward($widget->get_edit_url());    
     }
     
@@ -218,7 +219,7 @@ class WidgetHandler_Network extends WidgetHandler
             }            
             $relationship->delete();
             
-            system_message(sprintf($relationship->__('deleted'), $relationship->get_subject_name()));
+            SessionMessages::add(sprintf($relationship->__('deleted'), $relationship->get_subject_name()));
         }       
         
         return forward($widget->get_edit_url());        
@@ -268,7 +269,7 @@ class WidgetHandler_Network extends WidgetHandler
         $relationship->set_self_approved();
         $relationship->save();
 
-        system_message(__('network:relationship_saved'));
+        SessionMessages::add(__('network:relationship_saved'));
         return forward($widget->get_edit_url());
     }    
     
@@ -302,7 +303,7 @@ class WidgetHandler_Network extends WidgetHandler
         else
         {
             $relationship->subject_name = get_input('name');
-            $relationship->subject_email = $this->validate_email(get_input('email'));
+            $relationship->subject_email = validate_email_address(get_input('email'));
             $relationship->subject_website = $this->clean_url(get_input('website'));            
             $relationship->subject_phone = get_input('phone_number');            
         }
@@ -321,21 +322,9 @@ class WidgetHandler_Network extends WidgetHandler
         
         $widget->save();
         
-        system_message(__('network:relationship_saved'));
+        SessionMessages::add(__('network:relationship_saved'));
         return forward($widget->get_edit_url());
     }    
-    
-    private function validate_email($email)
-    {
-        try
-        {
-            return validate_email_address($email);
-        }
-        catch (RegistrationException $ex)
-        {
-            return action_error($ex->getMessage());
-        }                
-    }
     
     private function edit_relationship_view($widget)
     {

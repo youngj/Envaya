@@ -9,8 +9,6 @@ class Action_NewPost extends Action
 
     function process_input()
     {        
-        $this->validate_security_token();
-        
         $body = get_input('blogbody');
         $org = $this->get_org();
         
@@ -23,8 +21,8 @@ class Action_NewPost extends Action
 
         if (empty($body))
         {
-            register_error(__("blog:blank"));
-            forward_to_referrer();
+            SessionMessages::add_error(__("blog:blank"));
+            redirect_back();
         }
         else
         {
@@ -44,7 +42,7 @@ class Action_NewPost extends Action
                 $post->save();                
                 $post->post_feed_items();
                 
-                system_message(__("blog:posted"));
+                SessionMessages::add(__("blog:posted"));
             }
             else
             {

@@ -11,8 +11,6 @@ class Action_Admin_ChangeUsername extends Action
      
     function process_input()
     {
-        $this->validate_security_token();
-        
         $org = $this->get_org();
 
         $username = get_input('username');
@@ -21,20 +19,11 @@ class Action_Admin_ChangeUsername extends Action
 
         if ($username && $username != $oldUsername)
         {
-            try
-            {
-                validate_username($username);
-            }
-            catch (RegistrationException $ex)
-            {
-                register_error($ex->getMessage());
-                return $this->render();
-            }
+            validate_username($username);
 
             if (get_user_by_username($username))
             {
-                register_error(__('registration:userexists'));
-                return $this->render();
+                throw new ValidationException(__('registration:userexists'));
             }
 
             $org->username = $username;
@@ -43,7 +32,7 @@ class Action_Admin_ChangeUsername extends Action
             get_cache()->delete(get_cache_key_for_username($username));
             get_cache()->delete(get_cache_key_for_username($oldUsername));
 
-            system_message(__('username:changed'));
+            SessionMessages::add(__('username:changed'));
         }
         forward($org->get_url());
     }

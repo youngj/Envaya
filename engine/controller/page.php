@@ -31,7 +31,7 @@ class Controller_Page extends Controller_Profile
 	function action_post_comment()
 	{
         $action = new Action_PostComment($this, $this->widget);
-        $action->process_input();
+        $action->execute();
 	}           
            
     function action_options()

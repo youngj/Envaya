@@ -114,23 +114,15 @@ abstract class Controller {
         $footer->add_item(__('donate'), "/envaya/page/contribute");    
     }
 
-    public function validate_security_token($require_session = false)
+    public function validate_security_token()
     {
         try
         {
-            validate_security_token($require_session);
+            validate_security_token();
         }
-        catch (SecurityException $ex)
+        catch (ValidationException $ex)
         {
-            action_error($ex->getMessage());
-            forward();
-        }
-        
-        $user = Session::get_loggedin_user();
-        if ($user)
-        {
-            $user->last_action = time();
-            $user->save();
+            redirect_back_error($ex->getMessage());
         }        
     }
     
@@ -167,7 +159,7 @@ abstract class Controller {
         {
             if (Session::isloggedin())
             {
-                register_error(__('noaccess'));
+                SessionMessages::add_error(__('noaccess'));
             }
         
             force_login();

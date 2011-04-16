@@ -34,14 +34,14 @@ class Action_PostComment extends Action
         
         if (!$content)
         {   
-            register_error(__('comment:empty'));
+            SessionMessages::add_error(__('comment:empty'));
 			Session::save_input();
 			return forward($comments_url);
         }
         
 		if ($entity->query_comments()->where('content = ?', $content)->count() > 0)
 		{
-			register_error(__('comment:duplicate'));
+			SessionMessages::add_error(__('comment:duplicate'));
 			Session::save_input();
 			return forward($comments_url);
 		}
@@ -95,7 +95,7 @@ class Action_PostComment extends Action
 
 		send_admin_mail($mail);
 		
-		system_message(__('comment:success'));
+		SessionMessages::add(__('comment:success'));
 		forward($comments_url);
         return true;
 	}    

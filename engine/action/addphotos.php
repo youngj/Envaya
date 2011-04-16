@@ -10,8 +10,6 @@ class Action_AddPhotos extends Action
      
     function process_input()
     {
-        $this->validate_security_token();
-        
         $imageNumbers = get_input_array('imageNumber');
         
         $uuid = get_input('uuid');
@@ -52,7 +50,7 @@ class Action_AddPhotos extends Action
             $post->post_feed_items();
         }
         
-        system_message(__('addphotos:success'));
+        SessionMessages::add(__('addphotos:success'));
         forward($org->get_url()."/news");
     }
 

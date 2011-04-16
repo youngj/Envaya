@@ -36,19 +36,19 @@ class Controller_Pg extends Controller {
 
         if (!$amount)
         {
-            action_error("Please select a donation amount.");
+            redirect_back_error("Please select a donation amount.");
         }
         if (!$values['Name'])
         {
-            action_error("Please enter your Full Name.");
+            redirect_back_error("Please enter your Full Name.");
         }
         if (!$values['phone'])
         {
-            action_error("Please enter your Phone Number.");
+            redirect_back_error("Please enter your Phone Number.");
         }
         if (!$values['Email'])
         {
-            action_error("Please enter your Email Address.");
+            redirect_back_error("Please enter your Email Address.");
         }
 
         unset($values['_amount']);
@@ -85,7 +85,7 @@ class Controller_Pg extends Controller {
     function action_send_feedback()
     {
         $action = new Action_Contact($this);
-        $action->process_input();
+        $action->execute();
     }
 
     function action_blank()
@@ -148,16 +148,16 @@ class Controller_Pg extends Controller {
             $container->num_comments = $container->query_comments()->count();
             $container->save();
 
-            system_message(__('comment:deleted'));
+            SessionMessages::add(__('comment:deleted'));
             
             forward($container->get_url());
         }
         else
         {
-            register_error(__('comment:not_deleted'));
+            SessionMessages::add_error(__('comment:not_deleted'));
         }
         
-        forward_to_referrer();
+        redirect_back();
     }
 
     function action_local_store()
