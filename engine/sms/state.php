@@ -17,7 +17,7 @@ class SMS_State extends Model
     
     function get_org()
     {
-        return get_entity($this->org_guid);
+        return Organization::get_by_guid($this->org_guid);
     }
     
     function reset()

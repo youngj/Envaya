@@ -20,7 +20,7 @@ class Controller_Tr extends Controller
             $prop = $guidProp[1];
             $isHTML = (int)$guidProp[2];
 
-            $entity = get_entity($guid);
+            $entity = Entity::get_by_guid($guid);
 
             if ($entity && $entity->can_edit() && $entity->get($prop))
             {
@@ -50,7 +50,7 @@ class Controller_Tr extends Controller
         $guid = get_input('entity_guid');
         $isHTML = (int)get_input('html');
         $property = get_input('property');
-        $entity = get_entity($guid);
+        $entity = Entity::get_by_guid($guid);
 
         if (!$entity->can_edit())
         {

@@ -74,36 +74,3 @@
             throw new ClassException(sprintf(__('error:ClassnameNotClass'), ($classname ?: "Entity subtype {$row->subtype}"), 'Entity'));
         }
     }
-
-    /**
-     * Return the entity for a given guid as the correct object.
-     * @param int $guid The GUID of the entity
-     * @return a child of Entity appropriate for the type.
-     */
-    function get_entity($guid, $show_disabled = false)
-    {
-        $guid = (int)$guid;
-    
-        if (!$guid)
-        {
-            return null;
-        }
-    
-        $entity = Entity::get_from_cache($guid);
-        if (!$entity)
-        {
-            $entity = entity_row_to_entity(get_entity_as_row($guid));
-
-            if ($entity)
-            {
-                $entity->save_to_cache();
-            }
-        }
-
-        if ($entity && !$show_disabled && $entity->status == EntityStatus::Disabled)
-        {
-            return null;
-        }
-
-        return $entity;
-    }

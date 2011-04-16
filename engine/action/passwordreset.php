@@ -6,7 +6,7 @@ class Action_PasswordReset extends Action
     {
         $user_guid = get_input('u');
         $conf_code = get_input('c');
-        $user = get_user($user_guid);
+        $user = User::get_by_guid($user_guid);
 
         if ($user && $user->passwd_conf_code && $user->passwd_conf_code == $conf_code)
         {
@@ -46,7 +46,7 @@ class Action_PasswordReset extends Action
         $user_guid = get_input('u');
         $conf_code = get_input('c');
 
-        $user = get_user($user_guid);
+        $user = User::get_by_guid($user_guid);
 
         if ($user && $user->passwd_conf_code && $user->passwd_conf_code == $conf_code)
         {

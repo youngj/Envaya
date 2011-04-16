@@ -268,7 +268,7 @@ abstract class Entity extends Model
                 return true;
             }
 
-            $container_entity = get_entity($this->container_guid);
+            $container_entity = Entity::get_by_guid($this->container_guid);
 
             if ($container_entity && $container_entity->can_edit())
                 return true;
@@ -281,7 +281,10 @@ abstract class Entity extends Model
      *
      * @return Entity The owning user
      */
-    public function get_owner_entity() { return get_entity($this->get('owner_guid')); }
+    public function get_owner_entity() 
+    { 
+        return User::get_by_guid($this->get('owner_guid')); 
+    }
     
     public function get_title()
     {
@@ -456,7 +459,7 @@ abstract class Entity extends Model
 
     function get_container_entity()
     {
-        return get_entity($this->container_guid);
+        return Entity::get_by_guid($this->container_guid);
     }
 
     function get_root_container_entity()
@@ -662,8 +665,42 @@ abstract class Entity extends Model
         return new Query_SelectEntity(static::$table_name);
     }
     
+    static function get_by_guid($guid, $show_disabled = false)
+    {
+        $guid = (int)$guid;
+        
+        if (!$guid)
+        {
+            return null;
+        }
+    
+        $entity = Entity::get_from_cache($guid);
+        if (!$entity)
+        {
+            $entity = entity_row_to_entity(get_entity_as_row($guid));
+            if (!$entity)
+            {
+                return null;
+            }
+            $entity->save_to_cache();
+        }
+
+        if (!$show_disabled && $entity->status == EntityStatus::Disabled)
+        {
+            return null;
+        }       
+        
+        $cls = get_called_class();
+        if (!($entity instanceof $cls))
+        {
+            return null;
+        }
+        
+        return $entity;
+    }
+    
     // Loggable interface
     public function get_id() { return $this->guid; }
     public function get_class_name() { return get_class($this); }
-    static function get_object_from_id($id) { return get_entity($id); }    
+    static function get_object_from_id($id) { return Entity::get_by_guid($id); }    
 }

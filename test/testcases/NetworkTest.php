@@ -414,22 +414,18 @@ class NetworkTest extends SeleniumTest
         $this->check("//input[contains(@value,'+p12')]");
         $this->submitForm();
         
-        for ($i = 0; $i < 20; $i++)
-        {
-            $email = $this->getLastEmail("+p12");
-            try
-            {
-                $this->assertContains('Test Topic', $email);
-                break;
-            }
-            catch (Exception $ex)
-            {
-                sleep(0.5);
-            }
-        }
+        $this->retry('_checkEmail12', array());
+    }
+        
+    function _checkEmail12()
+    {
+        $email = $this->getLastEmail("+p12");
+        $this->assertContains('Test Topic', $email);
         $this->assertContains($this->getLocation(), $email);  
         $this->assertNotContains('nobody@nowhere.com', $email);        
+        return $email;
     }
+        
         
     private function clickAddRelationship()
     {

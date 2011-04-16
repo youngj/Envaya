@@ -225,8 +225,8 @@ class UploadedFile extends Entity
         $files = array();        
         foreach ($values as $value)
         {
-            $file = get_entity($value['guid']);
-            if ($file instanceof UploadedFile)
+            $file = UploadedFile::get_by_guid($value['guid']);
+            if ($file)
             {
                 $files[] = $file;
             }

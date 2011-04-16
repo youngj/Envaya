@@ -1,64 +1,5 @@
 <?php
 
-    function get_user($guid)
-    {
-        $result = get_entity($guid);
-
-        if (!$result || !$result instanceof User)
-            return null;
-
-        return $result;
-    }
-
-    function get_cache_key_for_username($username)
-    {
-        return make_cache_key("guid_for_username", $username);
-    }
-
-    function get_user_by_username($username)
-    {
-        if (!$username)
-            return null;
-    
-        /*
-         * some people might try entering their email address as their username,
-         * so if the username has an @, we try that (@ is not allowed in usernames)
-         */ 
-        if (strpos($username,'@') !== false)
-        {
-            // if there are multiple accounts with the same email address, we just return one arbitrarily
-            return User::query()->where('email = ?', $username)->get();
-        }
-
-        /*
-         * some people might try entering http://envaya.org/foo as the username when logging in,
-         * so we just ignore everything before the last slash (/ is not allowed in usernames)
-         */
-        $last_slash = strrpos($username, '/');
-        if ($last_slash !== FALSE)
-        {
-            $username = substr($username, $last_slash + 1);
-        }
-            
-        $cache = get_cache();
-        $cacheKey = get_cache_key_for_username($username);
-
-        $guid = $cache->get($cacheKey);
-        if (!$guid)
-        {
-            $guidRow = Database::get_row("SELECT guid from users_entity where username=?", array($username));
-            if (!$guidRow)
-            {
-                return null;
-            }
-
-            $guid = $guidRow->guid;
-            $cache->set($cacheKey, $guid);
-        }
-
-        return get_entity($guid);
-    }
-
     function is_email_address($address)
     {
         return preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+$/i', $address, $matches);
@@ -172,7 +113,7 @@
         validate_username($username);
 
         // Check to see if $username exists already
-        if ($user = get_user_by_username($username)) {
+        if ($user = User::get_by_username($username)) {
             throw new ValidationException(__('registration:userexists'));
         }
 

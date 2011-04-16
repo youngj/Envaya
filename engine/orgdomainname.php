@@ -50,7 +50,7 @@ class OrgDomainName extends Model
             $row = static::query()->where('domain_name = ?', $host)->get();
             if ($row)
             {
-                $user = get_entity($row->guid);
+                $user = User::get_by_guid($row->guid);
                 if ($user)
                 {
                     $cache->set($cacheKey, $user->username);

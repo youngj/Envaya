@@ -13,7 +13,7 @@
         $upperval = "";
     }
     if ($vars['user_guid']) {
-        if ($user = get_entity($vars['user_guid']))
+        if ($user = User::get_by_guid($vars['user_guid']))
             $userval = $user->username;
     } else {
         $userval = "";

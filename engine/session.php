@@ -87,7 +87,7 @@ class Session
         $guid = @$_SESSION['guid'];
         if ($guid)
         {
-            $user = get_user($guid);
+            $user = User::get_by_guid($guid);
             if (!$user || $user->is_banned())
             {
                 static::set($_SESSION['guid'], null);
@@ -179,7 +179,7 @@ class Session
     
     static function get_loggedin_user()
     {
-        return get_user(static::get('guid'));
+        return User::get_by_guid(static::get('guid'));
     }
 
     static function get_loggedin_userid()

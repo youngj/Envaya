@@ -30,13 +30,12 @@ class Controller_Admin extends Controller
 
     function action_view_email()
     {
-        $org = get_user_by_username(get_input('username'));
+        $org = User::get_by_username(get_input('username'));
         
         PageContext::set_translatable(false);
                
-        $email = get_entity(get_input('email')) ?: EmailTemplate::query()->where('active<>0')->get();
-
-        if (!$email || !($email instanceof EmailTemplate))
+        $email = EmailTemplate::get_by_guid(get_input('email')) ?: EmailTemplate::query()->where('active<>0')->get();
+        if (!$email)
         {
             return $this->not_found();
         }
@@ -49,8 +48,8 @@ class Controller_Admin extends Controller
     
     function action_edit_email()
     {
-        $email = get_entity(get_input('email'));
-        if (!$email || !($email instanceof EmailTemplate))
+        $email = EmailTemplate::get_by_guid(get_input('email'));
+        if (!$email)
         {
             return $this->not_found();
         }
@@ -63,10 +62,10 @@ class Controller_Admin extends Controller
     
     function action_view_email_body()
     {
-        $user = get_user_by_username(get_input('username'));
-        $email = get_entity(get_input('email'));
+        $user = User::get_by_username(get_input('username'));
+        $email = EmailTemplate::get_by_guid(get_input('email'));
 
-        if (!$email || !($email instanceof EmailTemplate))
+        if (!$email)
         {
             return $this->not_found();
         }
@@ -106,8 +105,12 @@ class Controller_Admin extends Controller
     
     function action_batch_email()
     {
-        $email = get_entity(get_input('email')) ?: EmailTemplate::query()->where('active<>0')->get();
-     
+        $email = EmailTemplate::get_by_guid(get_input('email')) ?: EmailTemplate::query()->where('active<>0')->get();        
+        if (!$email)
+        {
+            return $this->not_found();
+        }
+        
         $org_guids = get_input_array('orgs');
         if ($org_guids)
         {
@@ -125,11 +128,6 @@ class Controller_Admin extends Controller
                 filter(); 
         }
 
-        if (!$email)
-        {
-            return $this->not_found();
-        }
-
         $this->page_draw(array(
             'title' => __('email:batch'),
             'content' => view('admin/batch_email', array('email' => $email, 'orgs' => $orgs)),
@@ -140,12 +138,12 @@ class Controller_Admin extends Controller
     {
         $this->validate_security_token();
         
-        $email = get_entity(get_input('email'));
+        $email = EmailTemplate::get_by_guid(get_input('email'));
         $org_guids = get_input_array('orgs');
         $numSent = 0;
         foreach ($org_guids as $org_guid)
         {       
-            $org = get_entity($org_guid);
+            $org = Organization::get_by_guid($org_guid);
 
             if ($email->can_send_to($org))
             {
@@ -162,8 +160,8 @@ class Controller_Admin extends Controller
     {
         $this->validate_security_token();
         
-        $email = get_entity(get_input('email'));
-        $org = get_entity(get_input('org_guid'));
+        $email = EmailTemplate::get_by_guid(get_input('email'));
+        $org = Organization::get_by_guid(get_input('org_guid'));
         
         if ($email->can_send_to($org))
         {
@@ -260,7 +258,7 @@ class Controller_Admin extends Controller
 
         $search_username = get_input('search_username');
         if ($search_username) {
-            if ($user = get_user_by_username($search_username)) {
+            if ($user = User::get_by_username($search_username)) {
                 $user = $user->guid;
             }
         } else {
@@ -359,37 +357,34 @@ class Controller_Admin extends Controller
         $this->validate_security_token();
 
         $guid = (int)get_input('org_guid');
-        $entity = get_entity($guid);
+        $org = Organization::get_by_guid($guid);
 
-        if (($entity) && ($entity instanceof Organization))
+        if (!$org)
         {
-            $approvedBefore = $entity->is_approved();
-
-            $entity->approval = (int)get_input('approval');
-
-            $approvedAfter = $entity->is_approved();
-
-            $entity->save();
-
-            if (!$approvedBefore && $approvedAfter && $entity->email)
-            {
-                OutgoingMail::create(
-                    __('email:orgapproved:subject', $entity->language),
-                    view('emails/org_approved', array('org' => $entity))
-                )->send_to_user($entity);
-            }
-            
-            $entity->send_relationship_emails();
-
-            SessionMessages::add(__('approval:changed'));
+            return $this->not_found();
         }
-        else
+        
+        $approvedBefore = $org->is_approved();
+
+        $org->approval = (int)get_input('approval');
+
+        $approvedAfter = $org->is_approved();
+
+        $org->save();
+
+        if (!$approvedBefore && $approvedAfter && $org->email)
         {
-            SessionMessages::add_error(__('approval:notapproved'));
+            OutgoingMail::create(
+                __('email:orgapproved:subject', $org->language),
+                view('emails/org_approved', array('org' => $org))
+            )->send_to_user($org);
         }
+        
+        $org->send_relationship_emails();
 
-        forward($entity->get_url());
+        SessionMessages::add(__('approval:changed'));
 
+        forward($org->get_url());
     }
 
     function action_delete_entity()
@@ -397,7 +392,7 @@ class Controller_Admin extends Controller
         $this->validate_security_token();
 
         $guid = get_input('guid');
-        $entity = get_entity($guid);
+        $entity = Entity::get_by_guid($guid);
 
         if ($entity)
         {
@@ -422,7 +417,7 @@ class Controller_Admin extends Controller
     function action_add_featured()
     {
         $username = get_input('username');
-        $user = get_user_by_username($username);
+        $user = User::get_by_username($username);
         if (!$user)
         {
             return $this->not_found();
@@ -438,25 +433,23 @@ class Controller_Admin extends Controller
     {
         $this->validate_security_token();
     
-        $email = get_entity(get_input('email'));
-        if ($email && $email instanceof EmailTemplate)
+        $email = EmailTemplate::get_by_guid(get_input('email'));
+        if (!$email)
         {
-            foreach (EmailTemplate::query()->where('active<>0')->filter() as $activeEmail)
-            {
-                $activeEmail->active = 0;
-                $activeEmail->save();
-            }
+            return $this->not_found();
+        }
+        
+        foreach (EmailTemplate::query()->where('active<>0')->filter() as $activeEmail)
+        {
+            $activeEmail->active = 0;
+            $activeEmail->save();
+        }
 
-            $email->active = 1;            
-            $email->save();
-         
-            SessionMessages::add('activated');
-            forward('/admin/emails');        
-        }
-        else
-        {
-            $this->not_found();
-        }
+        $email->active = 1;            
+        $email->save();
+     
+        SessionMessages::add('activated');
+        forward('/admin/emails');        
     }    
     
     function action_activate_featured()
@@ -464,27 +457,23 @@ class Controller_Admin extends Controller
         $this->validate_security_token();
         
         $guid = get_input('guid');
-        $entity = get_entity($guid);
+        $featuredSite = FeaturedSite::get_by_guid($guid);
         
-        if ($entity && $entity instanceof FeaturedSite)
+        if (!$featuredSite)
         {
-            $activeSites = FeaturedSite::query()->where('active<>0')->filter();
-            
-            $entity->active = 1;
-            $entity->save();
-            
-            foreach ($activeSites as $activeSite)
-            {
-                $activeSite->active = 0;
-                $activeSite->save();
-            }
-            forward('org/featured');
+            return $this->not_found();
         }
-        else        
-        {   
-            $this->not_found();
+        $activeSites = FeaturedSite::query()->where('active<>0')->filter();
+        
+        $featuredSite->active = 1;
+        $featuredSite->save();
+        
+        foreach ($activeSites as $activeSite)
+        {
+            $activeSite->active = 0;
+            $activeSite->save();
         }
-
+        forward('org/featured');
     }
     
     function action_new_featured()
@@ -492,7 +481,7 @@ class Controller_Admin extends Controller
         $this->validate_security_token();
     
         $username = get_input('username');
-        $user = get_user_by_username($username);
+        $user = User::get_by_username($username);
         if (!$user)
         {
             return $this->not_found();
@@ -511,36 +500,31 @@ class Controller_Admin extends Controller
     {
         $this->validate_security_token();
     
-        $featuredSite = get_entity(get_input('guid'));
-        if ($featuredSite && $featuredSite instanceof FeaturedSite)
+        $featuredSite = FeaturedSite::get_by_guid(get_input('guid'));
+        if (!$featuredSite)
         {
-            $featuredSite->image_url = get_input('image_url');
-            $featuredSite->set_content(get_input('content'));
-            $featuredSite->save();
-            SessionMessages::add('featured:saved');
-            forward('org/featured');
+            return $this->not_found();
         }
-        else
-        {
-            $this->not_found();
-        }
+        $featuredSite->image_url = get_input('image_url');
+        $featuredSite->set_content(get_input('content'));
+        $featuredSite->save();
+        SessionMessages::add('featured:saved');
+        forward('org/featured');
     }    
     
     function action_edit_featured()
     {
         $guid = get_input('guid');
-        $featuredSite = get_entity($guid);
-        if ($featuredSite && $featuredSite instanceof FeaturedSite)
+        $featuredSite = FeaturedSite::get_by_guid($guid);
+        if (!$featuredSite)
         {
-            $this->page_draw(array(
-                'title' => __('featured:edit'),
-                'content' => view('admin/edit_featured', array('entity' => $featuredSite)),
-            ));
+            return $this->not_found();
         }
-        else
-        {
-            $this->not_found();
-        }
+        
+        $this->page_draw(array(
+            'title' => __('featured:edit'),
+            'content' => view('admin/edit_featured', array('entity' => $featuredSite)),
+        ));
     }
    
     function action_add_email()
@@ -569,28 +553,26 @@ class Controller_Admin extends Controller
     {
         $this->validate_security_token();
         
-        $email = get_entity(get_input('email'));
-        if ($email && $email instanceof EmailTemplate)
+        $email = EmailTemplate::get_by_guid(get_input('email'));
+        if (!$email)
         {
-            if (get_input('delete'))
-            {
-                $email->disable();
-                $email->save();
-                forward("/admin/emails");
-            }
-            else
-            {
-                $email->subject = get_input('subject');                
-                $email->set_content(get_input('content'));
-                $email->from = get_input('from');
-                $email->save();
-            }
-            forward("/admin/view_email?email={$email->guid}");    
+            return $this->not_found();        
+        }
+        
+        if (get_input('delete'))
+        {
+            $email->disable();
+            $email->save();
+            forward("/admin/emails");
         }
         else
         {
-            $this->not_found();
+            $email->subject = get_input('subject');                
+            $email->set_content(get_input('content'));
+            $email->from = get_input('from');
+            $email->save();
         }
+        forward("/admin/view_email?email={$email->guid}");    
     }
 
     function action_delete_feed_item()
@@ -598,19 +580,17 @@ class Controller_Admin extends Controller
         $this->validate_security_token();
         $feedItem = FeedItem::query()->where('id = ?', (int)get_input('item'))->get();
         
-        if ($feedItem)
+        if (!$feedItem)
         {
-            foreach ($feedItem->query_items_in_group()->filter() as $item)
-            {
-                $item->delete();
-            }           
-            SessionMessages::add("Feed item deleted successfully.");
-            redirect_back();
+            return $this->not_found();
         }
-        else
+        
+        foreach ($feedItem->query_items_in_group()->filter() as $item)
         {
-            $this->not_found();
-        }        
+            $item->delete();
+        }           
+        SessionMessages::add("Feed item deleted successfully.");
+        redirect_back();
     }
     
     function action_add_featured_photo()
@@ -627,8 +607,7 @@ class Controller_Admin extends Controller
     
     function action_edit_featured_photo()
     {
-        $photo = FeaturedPhoto::query()->where("e.guid = ?", get_input('guid'))->get();
-        
+        $photo = FeaturedPhoto::get_by_guid(get_input('guid'));        
         if (!$photo)
         {
             return $this->not_found();
@@ -666,7 +645,7 @@ class Controller_Admin extends Controller
     {
         $this->validate_security_token();
         
-        $featured_photo = FeaturedPhoto::query()->where('e.guid = ?', get_input('guid'))->get();
+        $featured_photo = FeaturedPhoto::get_by_guid(get_input('guid'));
         if (!$featured_photo)
         {
             return $this->not_found();
@@ -689,15 +668,13 @@ class Controller_Admin extends Controller
     {
         $this->validate_security_token();
         
-        $photo = FeaturedPhoto::query()->where('e.guid = ?', get_input('guid'))->get();
-        if ($photo)
-        {
-            $photo->delete();
-        }
-        else
+        $photo = FeaturedPhoto::get_by_guid(get_input('guid'));
+        if (!$photo)
         {
             return $this->not_found();
         }
+        
+        $photo->delete();
         
         SessionMessages::add(__("featured_photo:deleted"));
         forward("/admin/featured_photos");

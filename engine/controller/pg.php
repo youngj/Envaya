@@ -237,7 +237,7 @@ class Controller_Pg extends Controller {
         
         $entity_guid = (int)get_input('entity_guid');
         
-        $entity = get_entity($entity_guid, true);
+        $entity = Entity::get_by_guid($entity_guid, true);
         if (!$entity)
         {
             $revisions = array();

@@ -13,7 +13,7 @@ function authenticate($username, $password)
 {
     if ($username && $password)
     {
-        if ($user = get_user_by_username($username))
+        if ($user = User::get_by_username($username))
         {
             if ($user->is_banned())
             {

@@ -7,7 +7,7 @@
 		if (strlen($subtitle) > 32)
 			$title .= " ...";
 	}
-
+    
 ?>
 
 	<item>
@@ -25,16 +25,4 @@
 <?php
 			}
 	  ?>
-	  <?php
-			if (
-				($vars['entity'] instanceof Locatable) &&
-				($vars['entity']->get_longitude()) &&
-				($vars['entity']->get_latitude())
-			) {
-				?>
-				<georss:point><?php echo $vars['entity']->get_latitude(); ?> <?php echo $vars['entity']->get_longitude(); ?></georss:point>
-				<?php
-			}
-	  ?>
-	  <?php echo view('extensions/item'); ?>
 	</item>

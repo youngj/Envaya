@@ -21,9 +21,9 @@ class Controller_Topic extends Controller_Profile
             return;
         }        
         
-        $topic = get_entity($topicId);
+        $topic = DiscussionTopic::get_by_guid($topicId);
         $org = $this->org;
-        if ($topic && $topic->container_guid == $org->guid && $topic instanceof DiscussionTopic)
+        if ($topic && $topic->container_guid == $org->guid)
         {
             $this->topic = $topic;
             return;

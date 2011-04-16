@@ -21,7 +21,7 @@ class Action_Admin_ChangeUsername extends Action
         {
             validate_username($username);
 
-            if (get_user_by_username($username))
+            if (User::get_by_username($username))
             {
                 throw new ValidationException(__('registration:userexists'));
             }
@@ -29,8 +29,8 @@ class Action_Admin_ChangeUsername extends Action
             $org->username = $username;
             $org->save();
 
-            get_cache()->delete(get_cache_key_for_username($username));
-            get_cache()->delete(get_cache_key_for_username($oldUsername));
+            get_cache()->delete(User::get_cache_key_for_username($username));
+            get_cache()->delete(User::get_cache_key_for_username($oldUsername));
 
             SessionMessages::add(__('username:changed'));
         }

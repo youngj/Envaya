@@ -104,7 +104,7 @@ class OrgRelationship extends Entity
                        
     function get_subject_organization()
     {
-        return get_entity($this->subject_guid);
+        return Organization::get_by_guid($this->subject_guid);
     }
     
     function get_url()

@@ -21,9 +21,9 @@ class Controller_Post extends Controller_Profile
             return;
         }
 
-        $post = get_entity($postId);
+        $post = NewsUpdate::get_by_guid($postId);
         $org = $this->org;
-        if ($post && $post->container_guid == $org->guid && $post instanceof NewsUpdate)
+        if ($post && $post->container_guid == $org->guid)
         {
             $this->post = $post;
             return;

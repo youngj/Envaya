@@ -15,7 +15,7 @@ class DiscussionTopic extends Entity
     
     function get_first_message()
     {
-        return get_entity($this->first_message_guid);
+        return DiscussionMessage::get_by_guid($this->first_message_guid);
     }
     
     function refresh_attributes()

@@ -91,12 +91,12 @@ class FeedItem extends Model
 
     public function get_subject_entity()
     {
-        return get_entity($this->subject_guid);
+        return Entity::get_by_guid($this->subject_guid);
     }
 
     public function get_user_entity()
     {
-        return get_entity($this->user_guid);
+        return User::get_by_guid($this->user_guid);
     }
 
     public function get_date_text()

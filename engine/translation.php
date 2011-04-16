@@ -47,7 +47,7 @@ class Translation extends Model
     
     public function get_container_entity()
     {
-        return get_entity($this->container_guid);
+        return Entity::get_by_guid($this->container_guid);
     }
 
     public function get_original_text()

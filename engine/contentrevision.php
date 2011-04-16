@@ -23,7 +23,7 @@ class ContentRevision extends Model
     
     function get_entity()
     {
-        return get_entity($this->entity_guid);
+        return Entity::get_by_guid($this->entity_guid);
     }
     
     static function get_recent_draft($entity)
