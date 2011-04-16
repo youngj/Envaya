@@ -233,14 +233,14 @@ class OrgRelationship extends Entity
         
         if ($subject_org && $widget && $reverse && $subject_org->email && $subject_org->is_notification_enabled(Notification::Network))
         {    
-            $subject_org->send_mail(Zend::mail(
+            OutgoingMail::create(
                 sprintf($this->__('notify_added_subject', $subject_org->language), $org->name, $subject_org->name), 
                 view('emails/network_relationship_added', array(
                     'relationship' => $this,
                     'reverse' => $reverse,
                     'widget' => $widget
                 ))
-            ));   
+            )->send_to_user($subject_org);   
             $this->subject_notified = true;
             $this->save();
             return true;
@@ -266,7 +266,7 @@ class OrgRelationship extends Entity
             return false;
         }
 
-        $mail = Zend::mail(
+        $mail = OutgoingMail::create(
             sprintf(__('network:notify_invited_subject', $org->language), $org->name),
             view('emails/network_relationship_invite', array(
                 'relationship' => $this,
@@ -275,7 +275,7 @@ class OrgRelationship extends Entity
             ))
         );
         $mail->addTo($email, $this->subject_name);        
-        send_mail($mail);
+        $mail->send();
         
         $invitedEmail->mark_invite_sent();
         

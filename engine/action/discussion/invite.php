@@ -30,7 +30,7 @@ class Action_Discussion_Invite extends Action
             $invite_message = "$topic_url\n\n$invite_message";
         }
         
-        $mail = Zend::mail(
+        $mail = OutgoingMail::create(
             sprintf(__('discussions:invite_subject'), $org->name, $topic->subject),
             $invite_message
         );
@@ -50,7 +50,7 @@ class Action_Discussion_Invite extends Action
         if (sizeof($new_invited_emails) > 0)
         {        
             $mail->addTo(Config::get('admin_email'));
-            send_mail($mail);
+            $mail->send();
         
             $topic->set_metadata('invited_emails', $invited_emails);
             $topic->save();

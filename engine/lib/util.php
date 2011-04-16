@@ -337,3 +337,9 @@
         
         return array($newwidth, $newheight);
     }
+
+    function get_email_fingerprint($email)
+    {
+        return substr(md5($email . get_site_secret() . "-email"), 0,15);
+    }
+    

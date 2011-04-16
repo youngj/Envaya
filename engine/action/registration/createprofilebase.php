@@ -54,10 +54,10 @@ class Action_Registration_CreateProfileBase extends Action
         {
             post_feed_items($org, 'register', $org);
 
-            send_admin_mail(Zend::mail(
+            OutgoingMail::create(
                 sprintf(__('email:registernotify:subject'), $org->name), 
                 sprintf(__('email:registernotify:body'), $org->get_url().'?login=1')
-            ));
+            )->send_to_admin();
         }            
         
         SessionMessages::add(__("setup:ok"));

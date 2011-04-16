@@ -46,7 +46,11 @@ class EmailTemplate extends Entity
     function can_send_to($org)
     {    
         return ($org && $org->email && $org->is_notification_enabled(Notification::Batch)        
-            && SentEmail::query()->where('email_guid = ?', $this->guid)->where('user_guid = ?', $org->guid)->count() == 0
+            && OutgoingMail::query()
+                ->where('email_guid = ?', $this->guid)
+                ->where('user_guid = ?', $org->guid)
+                ->where('status <> ?', OutgoingMail::Failed)
+                ->count() == 0
         );
     }
     
@@ -55,21 +59,13 @@ class EmailTemplate extends Entity
         $subject = $this->render_subject($org);
         $body = view('emails/template', array('org' => $org, 'email' => $this));
 
-        $mail = Zend::mail($subject);
+        $mail = OutgoingMail::create($subject);
         $mail->setBodyHtml($body);
         $mail->setFrom(Config::get('email_from'), $this->from);
-        
-        $org->send_mail($mail);
+        $mail->email_guid = $this->guid;
+        $mail->send_to_user($org);
  
-        $time = time();
- 
-        $org->last_notify_time = $time;
+        $org->last_notify_time = time();
         $org->save();
-
-        $sentEmail = new SentEmail();
-        $sentEmail->email_guid = $this->guid;
-        $sentEmail->user_guid = $org->guid;
-        $sentEmail->time_sent = $time;
-        $sentEmail->save();
     }
 }

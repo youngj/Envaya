@@ -27,4 +27,8 @@ return array(
     'email:clickhere' => "click here",
     'email:envaya' => "Envaya is a project of the Trust for Conservation Innovation.",       
     'email:mailing_address' => "150 Post Street, Suite 342, San Francisco, CA 94108",
+    
+    'email:sent' => "Sent",
+    'email:queued' => "Queued",
+    'email:failed' => "Failed",
 );

@@ -78,6 +78,32 @@ class Controller_Admin extends Controller
         ));            
     }
     
+    function action_resend_mail()
+    {
+        $this->validate_security_token();
+        
+        $id = get_input('id');
+        
+        $mail = OutgoingMail::query()->where('id = ?', $id)->get();
+        if (!$mail)
+        {
+            return $this->not_found();
+        }        
+        $mail->send(true);        
+        SessionMessages::add(__('email:sent_ok'));
+        forward('/admin/outgoing_mail');
+    }
+    
+    function action_outgoing_mail()
+    {
+        $this->page_draw(array(
+            'title' => __('email:outgoing_mail'),
+            'content' => view('admin/outgoing_mail'),
+            'theme_name' => 'simple_wide',
+            'header' => '',
+        ));        
+    }
+    
     function action_batch_email()
     {
         $email = get_entity(get_input('email')) ?: EmailTemplate::query()->where('active<>0')->get();
@@ -93,7 +119,7 @@ class Controller_Admin extends Controller
                 where('approval > 0')->
                 where("email <> ''")->
                 where('(notifications & ?) > 0', Notification::Batch)->
-                where("not exists (select * from sent_emails where email_guid = ? and user_guid = e.guid)", $email->guid)->
+                where("not exists (select * from outgoing_mail where email_guid = ? and user_guid = e.guid)", $email->guid)->
                 order_by('e.guid')->
                 limit(50)->
                 filter(); 
@@ -313,12 +339,10 @@ class Controller_Admin extends Controller
             $new_user->created_by_guid = Session::get_loggedin_userid();
             $new_user->save();
 
-            $mail = Zend::mail(
+            OutgoingMail::create(
                 __('useradd:subject'),
                 sprintf(__('useradd:body'), $name, Config::get('sitename'), Config::get('url'), $username, $password)
-            );
-                        
-            $new_user->send_mail($mail);
+            )->send_to_user($new_user);                        
 
             SessionMessages::add(sprintf(__("adduser:ok"), Config::get('sitename')));
         }
@@ -349,10 +373,10 @@ class Controller_Admin extends Controller
 
             if (!$approvedBefore && $approvedAfter && $entity->email)
             {
-                $entity->send_mail(Zend::mail(
+                OutgoingMail::create(
                     __('email:orgapproved:subject', $entity->language),
                     view('emails/org_approved', array('org' => $entity))
-                ));
+                )->send_to_user($entity);
             }
             
             $entity->send_relationship_emails();

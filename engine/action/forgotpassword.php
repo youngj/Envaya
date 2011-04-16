@@ -19,12 +19,12 @@ class Action_ForgotPassword extends Action
             $user->passwd_conf_code = substr(generate_random_cleartext_password(), 0, 24); // avoid making url too long for 1 line in email
             $user->save();
 
-            $mail = Zend::mail(
+            $mail = OutgoingMail::create(
                 __('email:resetreq:subject',$user->language),
                 view('emails/password_reset_request', array('user' => $user))
             );
             
-            if ($user->send_mail($mail))
+            if ($mail->send_to_user($user))
             {
                 SessionMessages::add(__('user:password:resetreq:success'));
             }

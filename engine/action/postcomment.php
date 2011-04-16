@@ -84,16 +84,15 @@ class Action_PostComment extends Action
 		if ($org && $org->email && $org->is_notification_enabled(Notification::Comments) 
 				&& $userId != $org->guid)
 		{		
-            $mail = Zend::mail($notification_subject, $notification_body);        
-			$org->send_mail($mail);
+            $mail = OutgoingMail::create($notification_subject, $notification_body);        
+			$mail->send_to_user($org);
 		}
 
-        $mail = Zend::mail(
+        $mail = OutgoingMail::create(
             sprintf(__('comment:notification_admin_subject'), $comment->get_name(), $org->name),
             $notification_body
         );
-
-		send_admin_mail($mail);
+        $mail->send_to_admin();
 		
 		SessionMessages::add(__('comment:success'));
 		forward($comments_url);

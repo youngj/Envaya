@@ -16,20 +16,10 @@ class Zend
         Zend_Loader::loadClass($cls);
     }    
     
-    static function mail($subject = null, $bodyText = null)
+    static function mail()
     {
         static::load('Zend_Mail');
-        $mail = new Zend_Mail('UTF-8');    
-        if ($subject)
-        {
-            $mail->setSubject($subject);
-        }
-        if ($bodyText)
-        {
-            $mail->setBodyText($bodyText);
-        }
-        
-        return $mail;
+        return new Zend_Mail('UTF-8');    
     }
     
     static function mail_transport()

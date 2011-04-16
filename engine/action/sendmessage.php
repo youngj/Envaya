@@ -44,12 +44,12 @@ class Action_SendMessage extends Action
                 return $this->render();
             }
 
-            $mail = Zend::mail($subject, $message);
+            $mail = OutgoingMail::create($subject, $message);
             $mail->setFrom(Config::get('email_from'), $user->name);
             $mail->setReplyTo($user->email, $user->name);
             $mail->addBcc($user->email);
             
-            if ($recipient->send_mail($mail))
+            if ($mail->send_to_user($recipient))
             {
                 SessionMessages::add(__("message:sent"));
             }

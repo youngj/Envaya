@@ -330,17 +330,6 @@ class User extends Entity
     {
         return md5($password . $this->salt);
     }    
-
-    function send_mail($mail)
-    {
-        if ($this->email)
-        {
-            $mail->addTo($this->email, $this->name);
-            send_mail($mail);    
-            return true;
-        }
-        return false;
-    }
 	
 	function is_notification_enabled($notification)
 	{

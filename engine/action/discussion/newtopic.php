@@ -100,14 +100,13 @@ class Action_Discussion_NewTopic extends Action
         {
             // notify site of message
            
-            $mail = Zend::mail(
+            $mail = OutgoingMail::create(
                 sprintf(__('discussions:notification_topic_subject', $org->language), 
                     $message->from_name, $topic->subject
                 )   
             );
-            $mail->setBodyHtml(view('emails/discussion_message', array('message' => $message)));
-            
-            $org->send_mail($mail);
+            $mail->setBodyHtml(view('emails/discussion_message', array('message' => $message)));            
+            $mail->send_to_user($org);
         }        
         
         SessionMessages::add_html(__('discussions:topic_added')

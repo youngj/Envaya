@@ -51,11 +51,10 @@ class Action_Contact extends Action
             redirect_back_error($ex->getMessage());
         }            
             
-        $mail = Zend::mail($this->get_email_subject(), $this->get_email_body());
+        $mail = OutgoingMail::create($this->get_email_subject(), $this->get_email_body());
         $mail->setReplyTo($this->email);
         $mail->addTo($this->get_recipient_email());    
-        
-        send_mail($mail);
+        $mail->send();
         
         SessionMessages::add(__('feedback:sent'));
         forward($this->get_redirect_url());

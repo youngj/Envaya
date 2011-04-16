@@ -32,7 +32,7 @@ class Controller_Pg extends Controller {
             $emailBody .= "$k = $v\n\n";
         }
 
-        send_admin_mail(Zend::mail("Donation form started", $emailBody));
+        OutgoingMail::create("Donation form started", $emailBody)->send_to_admin();
 
         if (!$amount)
         {

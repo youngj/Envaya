@@ -77,13 +77,13 @@ class Action_Discussion_AddMessage extends Action
             && (!$user || $user->guid != $org->guid))
         {
             // notify site of message
-            $mail = Zend::mail(
+            $mail = OutgoingMail::create(
                 sprintf(__('discussions:notification_subject', $org->language), 
                     $message->from_name, $topic->subject
                 )   
             );
             $mail->setBodyHtml(view('emails/discussion_message', array('message' => $message)));
-            $org->send_mail($mail);
+            $mail->send_to_user($org);
         }
         
         SessionMessages::add_html(__('discussions:message_added')

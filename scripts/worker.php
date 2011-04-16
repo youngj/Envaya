@@ -18,8 +18,6 @@ function sig_handler($signo)
 
 pcntl_signal(SIGTERM, "sig_handler");
 
-Zend::load('Zend_Mail');
-
 while (time() - $startTime < $maxWorkerTime)
 {
     if (!FunctionQueue::exec_queued_call($timeout = 500))
