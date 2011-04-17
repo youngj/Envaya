@@ -87,7 +87,7 @@ class Controller_Topic extends Controller_Profile
         $this->validate_security_token();        
         
         $topic = $this->topic;
-        $message = $topic->query_messages()->where('e.guid = ?', (int)get_input('guid'))->get();
+        $message = $topic->query_messages()->guid((int)get_input('guid'))->get();
         if (!$message)
         {
             return redirect_back();

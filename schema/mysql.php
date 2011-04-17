@@ -1,43 +1,12 @@
---
--- Main Elgg database
--- 
--- @link http://elgg.org/
---
--- --------------------------------------------------------
-
---
--- *** The main tables ***
---
-
--- Define entities. 
 CREATE TABLE `entities` (
 	`guid` bigint(20) unsigned  NOT NULL auto_increment,	
-	`subtype` int(11) NULL,
-	
-	`owner_guid` bigint(20) unsigned NOT NULL,
-    `container_guid` bigint(20) unsigned NOT NULL,
-	
-	`time_created` int(11) NOT NULL,
-	`time_updated` int(11) NOT NULL,
-
-    `status` tinyint(4) not null default 1,	
-	
-	primary key (`guid`),
-	KEY `subtype` (`subtype`),
-	KEY `owner_guid` (`owner_guid`),
-	KEY `container_guid` (`container_guid`),
-	KEY `time_created` (`time_created`),
-	KEY `time_updated` (`time_updated`)
+	`subtype` int(11) NULL,	
+    primary key (`guid`),
+	KEY `subtype` (`subtype`)    
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
---
--- *** Entity superclass details ***
--- NB: Aside from GUID, these should not have any field names in common with the entities table.
---
-
-CREATE TABLE `files_entity` (
-  `guid` bigint(20) unsigned  NOT NULL,
-  
+CREATE TABLE `files` (   
+    <?php require 'schema/entity_columns.php'; ?>,
   `group_name` varchar(32) NOT NULL,
   `storage` varchar(16) null,
   `filename` varchar(64) NOT NULL,
@@ -46,7 +15,6 @@ CREATE TABLE `files_entity` (
   `size` varchar(32) NULL,
   `mime` varchar(32) NULL,
 
-  PRIMARY KEY  (`guid`),
   KEY `group_name` (`group_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -60,10 +28,11 @@ CREATE TABLE `translations` (
   `hash` varchar(64) NOT NULL,
   `property` varchar(32) NOT NULL,
   `lang` varchar(4) NOT NULL,
-  `value` text NOT NULL,
+  `value` mediumtext NOT NULL,
   `html` tinyint not null default 0,
   
-  PRIMARY KEY  (`id`)
+  PRIMARY KEY  (`id`),
+  KEY `prop` (`container_guid`,`property`,`lang`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `interface_translations` (
@@ -76,52 +45,37 @@ CREATE TABLE `interface_translations` (
   `owner_guid` bigint(20) unsigned NOT NULL,  
   
   PRIMARY KEY  (`id`),
-  KEY `key` (`key`)
+  KEY `prop` (`key`,`lang`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `news_updates` (
-  `guid` bigint(20) unsigned  NOT NULL,
+    <?php require 'schema/entity_columns.php'; ?>,
+    <?php require 'schema/content_columns.php'; ?>,  
+  `num_comments` int not null default 0
   
-  `content` mediumtext NOT NULL,
-  `data_types` tinyint(4) not null default 0,        
-  `language` varchar(4) default null,
-
-  `num_comments` int not null default 0,
-  
-  PRIMARY KEY  (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `comments` (
-  `guid` bigint(20) unsigned  NOT NULL,
-  
-  `content` text NOT NULL,
-  `data_types` tinyint(4) not null default 0,        
-  `language` varchar(4) default null,
-
+    <?php require 'schema/entity_columns.php'; ?>,
+    <?php require 'schema/content_columns.php'; ?>,  
   `name` text default null,
   `email` varchar(128) default null,
-  `location` text default null,
-  PRIMARY KEY  (`guid`)
+  `location` text default null
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-
-
 CREATE TABLE `featured_sites` (
-  `guid` bigint(20) unsigned  NOT NULL,
+    <?php require 'schema/entity_columns.php'; ?>,
+    <?php require 'schema/content_columns.php'; ?>, 
   `user_guid` bigint(20) unsigned  NOT NULL,  
   `image_url` text default null,
-
-  `content` text NOT NULL,
-  `data_types` tinyint(4) not null default 0,        
-  `language` varchar(4) default null,
-
-  `active` tinyint(4) default 0,
-  PRIMARY KEY  (`guid`)
+  `active` tinyint(4) default 0
+  
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `featured_photos` (
-  `guid` bigint(20) unsigned  NOT NULL,
+    <?php require 'schema/entity_columns.php'; ?>,
+
   `user_guid` bigint(20) unsigned NULL,  
   `image_url` text not null,
   `x_offset` int not null default 0,
@@ -131,38 +85,26 @@ CREATE TABLE `featured_photos` (
   `caption` text default null,
   `org_name` varchar(127) default null,  
   `language` varchar(4) default null,
-  `active` tinyint(4) default 0,
-  PRIMARY KEY  (`guid`)
+  `active` tinyint(4) default 0
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `email_templates` (
-  `guid` bigint(20) unsigned  NOT NULL, 
+    <?php require 'schema/entity_columns.php'; ?>,
+    <?php require 'schema/content_columns.php'; ?>, 
   `subject` text default null,
   `from` text default null,
-  `active` tinyint(4) NOT NULL default 0,
-  
-  `content` mediumtext NOT NULL,
-  `data_types` tinyint(4) not null default 0,        
-  `language` varchar(4) default null,
-  
-  PRIMARY KEY  (`guid`)
+  `active` tinyint(4) NOT NULL default 0 
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `widgets` (
-  `guid` bigint(20) unsigned  NOT NULL,
-    
+    <?php require 'schema/entity_columns.php'; ?>,
+    <?php require 'schema/content_columns.php'; ?>,
   `widget_name` varchar(32) NOT NULL,
   `handler_class` varchar(32) NULL,
   `menu_order` int null,
   `in_menu` tinyint(4) default 1,
   `handler_arg` varchar(64) NULL,
-  `title` varchar(64) NULL,
-  
-  `content` mediumtext NOT NULL,
-  `data_types` tinyint(4) not null default 0,        
-  `language` varchar(4) default null,
-  
-  PRIMARY KEY  (`guid`)
+  `title` varchar(64) NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `invited_emails` (
@@ -177,7 +119,9 @@ CREATE TABLE `invited_emails` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
         
 CREATE TABLE `org_relationships` (
-    `guid` bigint(20) unsigned NOT NULL,
+    <?php require 'schema/entity_columns.php'; ?>,
+    <?php require 'schema/content_columns.php'; ?>,
+
     `type` tinyint(4) not null default 0,
     
     `subject_notified` tinyint(4) NOT NULL default 0,
@@ -188,35 +132,25 @@ CREATE TABLE `org_relationships` (
     `subject_phone` varchar(128) default null,
     `subject_website` text default null,
     `subject_logo` text default null,    
-    
-    `content` mediumtext default null,
-    `data_types` tinyint(4) not null default 0,        
-    `language` varchar(4) default null,
-  
+      
     `approval` int default 0,        
     `order` int default 0,
-    PRIMARY KEY (`guid`)
+    
+    KEY `subject_guid` (`subject_guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- Extra information relating to "users"
-CREATE TABLE `users_entity` (
-  `guid` bigint(20) unsigned  NOT NULL,
+CREATE TABLE `users` (
+    <?php require 'schema/entity_columns.php'; ?>,
   
+  `subtype` int(11) NULL,	
   `name` text NOT NULL,
   `username` varchar(128) NOT NULL default '',
   `password` varchar(32) NOT NULL default '',
   `salt`     varchar(8)  NOT NULL default '',
   `email` text NOT NULL,
-  `phone_number` varchar(128) NULL,
-  `canonical_phone` varchar(128) NULL,
+  `phone_number` text NULL,
   `language` varchar(6)  NOT NULL default '',
-  `code` varchar(32) NOT NULL default '',
-  `banned` enum ('yes', 'no') NOT NULL default 'no',
-  
   `last_action` int(11) NOT NULL default '0',
-  `prev_last_action` int(11) NOT NULL default '0',
-  `last_login` int(11) NOT NULL default '0',
-  `prev_last_login` int(11) NOT NULL default '0',
   `email_code` varchar(24) default NULL,
   `approval` int(11) NOT NULL default '0',
   `setup_state` int(11) NOT NULL default '0',
@@ -229,21 +163,14 @@ CREATE TABLE `users_entity` (
   `longitude` float null,
   `timezone_id` varchar(64) default null,
   `region` varchar(32) default NULL,
-  `theme` varchar(32) default NULL,
-  
-  `notify_days` int default 14,
+  `theme` varchar(32) default NULL,  
   `last_notify_time` int default null,
   `notifications` int(11) not null default 3,
-  PRIMARY KEY  (`guid`),
   UNIQUE KEY (`username`),
   UNIQUE KEY (`email_code`),
-  KEY `password` (`password`),
+  KEY `subtype` (`subtype`),
   KEY `email` (`email`(50)),
-  KEY `code` (`code`),
-  KEY `last_action` (`last_action`),
-  KEY `last_login` (`last_login`),
-  FULLTEXT KEY `name` (`name`),
-  FULLTEXT KEY (`name`,`username`)
+  KEY `last_action` (`last_action`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `org_domain_names` (
@@ -288,23 +215,6 @@ CREATE TABLE `org_sectors` (
   
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- Extra information relating to "groups"
-CREATE TABLE `groups_entity` (
-  `guid` bigint(20) unsigned  NOT NULL,
-  
-  `name` text NOT NULL,
-  `description` text NOT NULL,
-   
-  PRIMARY KEY  (`guid`),
-  KEY `name` (`name`(50)),
-  KEY `description` (`description`(50)),
-  FULLTEXT KEY (`name`,`description`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- *** Annotations and tags ***
---
-
 CREATE TABLE `metadata` (
     `id` INT NOT NULL auto_increment,
     `entity_guid` bigint(20) unsigned  NOT NULL,
@@ -317,7 +227,6 @@ CREATE TABLE `metadata` (
     KEY `value` (`value` (50))
 ) ENGINE = MYISAM  DEFAULT CHARSET=utf8;
 
-
 CREATE TABLE `cache` (
     `key` varchar(255) not null,
     `value` TEXT default null,
@@ -325,49 +234,6 @@ CREATE TABLE `cache` (
     PRIMARY KEY ( `key` )
 ) ENGINE = MYISAM  DEFAULT CHARSET=utf8;
 
---
--- *** Misc ***
---
-
--- API Users
-CREATE TABLE `api_users` (
-	id     int(11)     auto_increment,
-	
-	site_guid bigint(20) unsigned,
-	
-	api_key   varchar(40),
-	secret    varchar(40) NOT NULL,
-	active    int(1) default 1,
-	
-	unique key (api_key),
-	primary key (id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- API Sessions
-CREATE TABLE `users_apisessions` (
-	`id` int(11) NOT NULL auto_increment,
-	`user_guid` bigint(20) unsigned NOT NULL,
-  	`site_guid` bigint(20) unsigned NOT NULL,
-  	
-  	`token` varchar(40),
-  	
-  	`expires` int(11) NOT NULL,
-	
-	PRIMARY KEY  (`id`),
-	UNIQUE KEY (`user_guid`,`site_guid`),
-	KEY `token` (`token`)
-) ENGINE=MEMORY;
-
--- HMAC Cache protecting against Replay attacks
-CREATE TABLE `hmac_cache` (
-	`hmac` varchar(255) NOT NULL,
-	`ts` int(11) NOT NULL,
-
-	PRIMARY KEY  (`hmac`),
-	KEY `ts` (`ts`)
-) ENGINE=MEMORY;
-
--- Geocode engine cache
 CREATE TABLE `geocode_cache` (
 	id     int(11)     auto_increment,
 	location varchar(128),
@@ -379,8 +245,7 @@ CREATE TABLE `geocode_cache` (
 	
 ) ENGINE=MEMORY;
 
--- PHP Session storage
-CREATE TABLE `users_sessions` (
+CREATE TABLE `sessions` (
 	`session` varchar(255) NOT NULL,
  	`ts` int(11) unsigned NOT NULL default '0',
 	`data` mediumblob,
@@ -389,66 +254,33 @@ CREATE TABLE `users_sessions` (
 	KEY `ts` (`ts`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- Datalists for things like db version
-CREATE TABLE `datalists` (
+CREATE TABLE `state` (
   `name` varchar(32) NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY `name` (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- Ultra-private system settings for entities
-CREATE TABLE `private_settings` (
-	`id` INT NOT NULL auto_increment,
-	`entity_guid` INT NOT NULL ,
-	`name` varchar(128) NOT NULL ,
-	`value` TEXT NOT NULL ,
-	PRIMARY KEY ( `id` ) ,
-	UNIQUE KEY ( `entity_guid` , `name` ),
-	KEY `name` (`name`),
-	KEY `value` (`value` (50))
-) ENGINE = MYISAM  DEFAULT CHARSET=utf8;
-
-
--- System log
 CREATE TABLE `system_log` (
-	`id` int(11) NOT NULL auto_increment,
-	
+	`id` bigint(20) unsigned NOT NULL auto_increment,
 	`object_id` int(11) NOT NULL,
-
-	`object_class` varchar(50) NOT NULL,
-	`object_type` varchar(50) NOT NULL,
-	`object_subtype` varchar(50) NOT NULL,
-	
+	`object_class` varchar(50) NOT NULL,   
 	`event` varchar(50) NOT NULL,
-	`performed_by_guid` int(11) NOT NULL,
-
-	`owner_guid` int(11) NOT NULL,
-	
-	`enabled` enum ('yes', 'no') NOT NULL default 'yes',
-
-	`time_created` int(11) NOT NULL,
-	
+	`user_guid` int(11) NOT NULL,
+	`time_created` int(11) NOT NULL,	
 	PRIMARY KEY  (`id`),
-	KEY `object_id` (`object_id`),
-	KEY `object_class` (`object_class`),
-	KEY `object_type` (`object_type`),
-	KEY `object_subtype` (`object_subtype`),
 	KEY `event` (`event`),
-	KEY `performed_by_guid` (`performed_by_guid`),
-	KEY `time_created` (`time_created`),
-	KEY `river_key` (`object_type`, `object_subtype`, `event`)
+	KEY `user_guid` (`user_guid`),
+	KEY `time_created` (`time_created`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-
 CREATE TABLE `feed_items` (
-	`id` INT NOT NULL AUTO_INCREMENT ,		
+	`id` INT NOT NULL AUTO_INCREMENT,		
 	`feed_name` varchar(128) NOT NULL,
 	`action_name` varchar(32) NOT NULL,
 	`subject_guid` bigint(20) NOT NULL,
 	`user_guid` bigint(20) NOT NULL,
 	`time_posted` int NOT NULL,
 	`args` TEXT default NULL,
-	`featured` tinyint(4) default 0,
 	PRIMARY KEY ( `id` ),
 	KEY `feed_key` (`feed_name`, `time_posted`),
 	KEY `user_guid` (`user_guid`),
@@ -472,32 +304,26 @@ CREATE TABLE `outgoing_mail` (
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8; 	
 
 CREATE TABLE `discussion_messages` (
-    `guid` bigint(20) unsigned NOT NULL,
-    `list_guid` bigint(20) unsigned NOT NULL,
+    <?php require 'schema/entity_columns.php'; ?>,
+    <?php require 'schema/content_columns.php'; ?>,
     `message_id` varchar(128) default '',
     `subject` text default '',
     `from_name` text default '',
     `from_location` text default '',
     `from_email` varchar(128) default '',
-    `time_posted` int(11),
-    
-    `content` mediumtext default '',        
-    `data_types` tinyint(4) not null default 0,        
-    `language` varchar(4) default null,
-    
-    PRIMARY KEY (`guid`),
+    `time_posted` int(11),    
     KEY (`message_id`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `discussion_topics` (
-    `guid` bigint(20) unsigned NOT NULL,
+    <?php require 'schema/entity_columns.php'; ?>,
+
     `first_message_guid` bigint(20) unsigned NOT NULL,
     `subject` text default '',
     `last_time_posted` int(11) default 0,
     `last_from_name` text default '',
     `num_messages` int(11) default 0,
-    `snippet` text default '',
-    PRIMARY KEY (`guid`)
+    `snippet` text default ''
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `revisions` (

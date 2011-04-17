@@ -12,11 +12,6 @@ class EntityRow extends Model
     
     static $table_attributes = array(
         'subtype' => 0,
-        'owner_guid' => 0,
-        'container_guid' => 0,
-        'time_created' => 0,
-        'time_updated' => 0,
-        'status' => 1,
     );   
     
     function save()

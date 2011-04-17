@@ -29,7 +29,7 @@ function main()
 
 function install_admin()
 {
-    $admin = get_user_by_username('testadmin');
+    $admin = User::get_by_username('testadmin');
     if (!$admin)
     {
         $admin = register_user("testadmin", 'testtest', "Test Admin", Config::get('admin_email'));

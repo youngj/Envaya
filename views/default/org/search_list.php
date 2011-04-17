@@ -23,7 +23,7 @@
     }
     else
     {
-        $query->order_by('u.name');                
+        $query->order_by('name');                
     }
                 
     $query->limit($vars['limit'] ?: 10, $offset);

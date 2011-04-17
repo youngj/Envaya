@@ -18,6 +18,7 @@ class Controller_Profile extends Controller
     function before()
     {
         $user = User::get_by_username($this->request->param('username'));
+                
         if ($user)
         {
             $this->user = $user;

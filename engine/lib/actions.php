@@ -62,27 +62,7 @@
         return false;
     }
 
-    /**
-     * Initialise the site secret.
-     *
-     */
-    function init_site_secret()
-    {
-        $secret = md5(rand().microtime());
-        if (Datalist::set('__site_secret__', $secret))
-            return $secret;
-
-        return false;
-    }
-
-    /**
-     * Retrieve the site secret.
-     *
-     */
     function get_site_secret()
     {
-        $secret = Datalist::get('__site_secret__');
-        if (!$secret) $secret = init_site_secret();
-
-        return $secret;
+        return Config::get('site_secret') ?: 'default_secret';
     }

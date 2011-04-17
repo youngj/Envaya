@@ -138,7 +138,7 @@ class Controller_Pg extends Controller {
     function action_delete_comment()
     {
         $guid = (int)get_input('comment');
-        $comment = Comment::query()->where('e.guid=?', $guid)->get();
+        $comment = Comment::get_by_guid($guid);
         if ($comment && $comment->can_edit())
         {
             $comment->disable();
@@ -274,7 +274,7 @@ class Controller_Pg extends Controller {
     function action_select_document()
     {
         $guid = (int)get_input('guid');
-        $file = ($guid) ? UploadedFile::query()->where('e.guid = ?', $guid)->get() : null;
+        $file = UploadedFile::get_by_guid($guid);
         
         $this->page_draw(array(
             'layout' => 'layouts/frame',

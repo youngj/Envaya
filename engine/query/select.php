@@ -34,7 +34,7 @@ class Query_Select
     protected $is_finalized = false;
     protected $is_empty = false;
 
-    function __construct($from = null)
+    function __construct($from = null, $class = null)
     {
         $this->conditions = array();
         $this->args = array();
@@ -42,17 +42,30 @@ class Query_Select
         $this->columns = "*";
         $this->joins = array();
         $this->group_by = '';
-        $this->from($from);        
+        $this->from($from);  
+
+        if ($class)
+        {
+            $this->set_row_class($class);
+        }
     }      
+    
+    function set_row_class($class)
+    {
+        $this->set_row_function(array($class, '_new'));
+        return $this;
+    }
     
     function set_row_function($callback)
     {
         $this->row_function = $callback;
+        return $this;
     }
     
     function join($join)
     {
         $this->joins[] = $join;
+        return $this;
     }
     
     function columns($columns)

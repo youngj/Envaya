@@ -15,7 +15,7 @@
         }
     }
 
-    $newsUpdates = NewsUpdate::query()->where('e.guid > 3240')->filter();
+    $newsUpdates = NewsUpdate::query()->where('guid > 3240')->filter();
     foreach ($newsUpdates as $newsUpdate)
     {
         $numFeedItems = FeedItem::query()->where('subject_guid = ?', $newsUpdate->guid)->count();

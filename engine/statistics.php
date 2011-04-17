@@ -5,33 +5,14 @@
  */
 class Statistics
 {    
-    static function get_entity_stats($owner_guid = 0)
+    static function get_entity_stats()
     {
         $entity_stats = array();
 
-        $query = "SELECT distinct e.subtype as subtype_id from entities e";
-        $args = array();
-        if ($owner_guid)
-        {
-            $query .= " where owner_guid=?";
-            $args[] = $owner_guid;
-        }
-
-        $types = Database::get_rows($query, $args);
+        $types = Database::get_rows("SELECT distinct subtype as subtype_id from entities");
         foreach ($types as $type)
         {
-            $args = array();
-
-            $query = "SELECT count(*) as count from entities where subtype = ? ";
-            $args[] = $type->subtype_id;
-
-            if ($owner_guid)
-            {
-                $query .= " and owner_guid=? ";
-                $args[] = $owner_guid;
-            }
-
-            $subtype_cnt = Database::get_row($query, $args);
+            $subtype_cnt = Database::get_row("SELECT count(*) as count from entities where subtype = ? ", array($type->subtype_id));
             $entity_stats[$type->subtype_id] = $subtype_cnt->count;
         }
 

@@ -20,7 +20,7 @@ class Datalist
             {
                 static::$cached_list = array();
 
-                $result = Database::get_rows("SELECT * from datalists");
+                $result = Database::get_rows("SELECT * from `state`");
                 if ($result)
                 {
                     foreach ($result as $row)
@@ -56,7 +56,7 @@ class Datalist
     static function set($name, $value)
     {
         static::init();
-        Database::update("INSERT into datalists set name = ?, value = ? ON DUPLICATE KEY UPDATE value = ?",
+        Database::update("INSERT into `state` set name = ?, value = ? ON DUPLICATE KEY UPDATE value = ?",
             array($name, $value, $value)
         );
         

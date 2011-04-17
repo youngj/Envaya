@@ -57,7 +57,7 @@ class WidgetHandler_Network extends WidgetHandler
         $this->show_cancel_edit_button($widget);
                         
         $org_guid = (int)get_input('org_guid');
-        $org = $org_guid ? Organization::query()->where('e.guid = ?', $org_guid)->get() : null;
+        $org = Organization::get_by_guid($org_guid);
         
         $type = (int)get_input('type');
         if (!OrgRelationship::is_valid_type($type))
@@ -93,7 +93,7 @@ class WidgetHandler_Network extends WidgetHandler
         $relationship->subject_phone = get_input('phone_number');
         $relationship->subject_website = $this->clean_url(get_input('website'));        
         
-        $subject_org = Organization::query()->where('e.guid = ?', (int)get_input('org_guid'))->get();        
+        $subject_org = Organization::get_by_guid(get_input('org_guid'));        
         if (!$subject_org) // subject_org not an envaya member
         {
             $relationship->subject_name = get_input('name');
@@ -228,7 +228,7 @@ class WidgetHandler_Network extends WidgetHandler
     private function get_current_relationship($org)
     {
         $guid = (int)get_input('guid');
-        $relationship = $org->query_relationships()->where('e.guid = ?', $guid)->get();
+        $relationship = $org->query_relationships()->guid($guid)->get();
         if (!$relationship)
         {            
             throw new InvalidParameterException("invalid guid");

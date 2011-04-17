@@ -15,10 +15,6 @@
  * without needing to define them in the database schema. Metadata is only fetched when requested.
  * Warning: if you forget to define an attribute, or make a typo, a property might be saved
  * as metadata accidentally.
- *
- * However there are also significant drawbacks to the current implementation,
- * such as that data is split across multiple tables ('entities' and the subclass's $table_name)
- * and a join is required in order to get all the data.
  * 
  */
 
@@ -90,30 +86,17 @@ abstract class Entity extends Model
         return make_cache_key("entity", $guid);
     }  
     
-    protected function init_from_row($row)
+    protected function get_table_attributes()
     {
-        $entityRow = (property_exists($row, 'subtype')) ? $row : get_entity_as_row($row->guid);
-        parent::init_from_row($entityRow);
-            
-        if (!property_exists($row, get_first_key(static::$table_attributes)))
-        {
-            $objectEntityRow = $this->select_table_attributes($row->guid);
-            parent::init_from_row($objectEntityRow);
-        }
-    }
-
-    protected function initialize_attributes()
-    {        
-        $this->attributes['subtype'] = static::get_subtype_id();
-        $this->attributes['owner_guid'] = 0;
-        $this->attributes['container_guid'] = 0;
-        $this->attributes['time_created'] = 0;
-        $this->attributes['time_updated'] = 0;
-        $this->attributes['status'] = EntityStatus::Enabled;
-        
-        parent::initialize_attributes();
-    }
-
+        return array_merge(parent::get_table_attributes(), array(
+            'owner_guid' => 0,
+            'container_guid' => 0,
+            'time_created' => 0,
+            'time_updated' => 0,
+            'status' => EntityStatus::Enabled
+        ));
+    }    
+    
     public function save_table_attributes()
     {
         $tableName = static::$table_name;
@@ -126,16 +109,9 @@ abstract class Entity extends Model
         else
         {
             $values = $this->get_table_attribute_values();
-            $values['guid'] = $guid;
-                        
+            $values['guid'] = $guid;                        
             Database::insert_row($tableName, $values);        
         }
-    }
-
-    public function select_table_attributes($guid)
-    {
-        $tableName = static::$table_name;
-        return Database::get_row("SELECT * from $tableName where guid=?", array($guid));
     }
 
     /**
@@ -237,15 +213,7 @@ abstract class Entity extends Model
     {
         return Database::delete("DELETE from metadata where entity_guid=?", array($this->guid));
     }
-    
-    public function get_sub_entities()
-    {
-        $guid = $this->guid;
-        return array_map('entity_row_to_entity',
-            Database::get_rows("SELECT * from entities WHERE container_guid=? or owner_guid=?", array($guid, $guid))
-        );
-    }
-    
+        
     function can_edit()
     {
         return $this->can_user_edit(Session::get_loggedin_user());
@@ -346,25 +314,15 @@ abstract class Entity extends Model
         {
             $this->container_guid = $this->owner_guid;
         }
-        
-        $entity_values = array(
-            'owner_guid' => $this->owner_guid,
-            'container_guid' => $this->container_guid,
-            'status' => $this->status,
-            'time_updated' => $this->time_updated,
-            'time_created' => $this->time_created,
-            'subtype' => $this->subtype,
-        );
-        
+                
         $guid = $this->guid;
         
-        if ($guid > 0)
+        if ($guid == 0)
         {
-            Database::update_row('entities', 'guid', $guid, $entity_values);
-        }
-        else
-        {            
-            $this->guid = Database::insert_row('entities', $entity_values);
+            $this->guid = Database::insert_row('entities', array(
+                'subtype' => static::get_subtype_id()
+            ));
+            
             if (!$this->guid)
                 throw new IOException(__('error:BaseEntitySaveFailed'));
         }        
@@ -427,21 +385,6 @@ abstract class Entity extends Model
         return $this->status == EntityStatus::Enabled;
     }
 
-    function delete_recursive()
-    {
-        if ($recursive)
-        {
-            $sub_entities = $this->get_sub_entities();
-            if ($sub_entities)
-            {
-                foreach ($sub_entities as $e)
-                    $e->delete_recursive();
-            }
-        }    
-        
-        $this->delete();
-    }
-    
     /**
      * Delete this entity.
      */
@@ -607,7 +550,7 @@ abstract class Entity extends Model
 
     static function query()
     {
-        return new Query_SelectEntity(static::$table_name);
+        return new Query_SelectEntity(static::$table_name, get_called_class());
     }
     
     static function get_by_guid($guid, $show_disabled = false)
@@ -622,7 +565,11 @@ abstract class Entity extends Model
         $entity = Entity::get_from_cache($guid);
         if (!$entity)
         {
-            $entity = entity_row_to_entity(get_entity_as_row($guid));
+            $entity = static::query()
+                ->show_disabled($show_disabled)
+                ->guid($guid)
+                ->get();        
+        
             if (!$entity)
             {
                 return null;

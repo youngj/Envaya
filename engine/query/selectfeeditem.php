@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Represents a select query for an FeedItem
+ * Represents a select query for a FeedItem
  */
 class Query_SelectFeedItem extends Query_Select
 {
@@ -14,10 +14,10 @@ class Query_SelectFeedItem extends Query_Select
 
     function where_visible_to_user()
     {        
-        $this->join('INNER JOIN users_entity u ON u.guid = f.user_guid');        
         if (!Session::isadminloggedin())
         {
-            $this->where("(u.approval > 0 || u.guid = ?)", Session::get_loggedin_userid());
+            $this->join('INNER JOIN users u ON u.guid = f.user_guid');        
+            $this->where("(u.approval > 0 OR f.user_guid = ?)", Session::get_loggedin_userid());
         }
         return $this;
     }

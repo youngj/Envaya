@@ -15,11 +15,6 @@ function authenticate($username, $password)
     {
         if ($user = User::get_by_username($username))
         {
-            if ($user->is_banned())
-            {
-                return false;
-            }
-
             if ($user->password == $user->generate_password($password))
             {
                 return $user;
@@ -45,9 +40,6 @@ function authenticate($username, $password)
  */
 function login($user, $persistent = false)
 {
-    if ($user->is_banned())
-        return false;
-
     if ($user->check_rate_limit_exceeded())
         return false;
 
@@ -64,7 +56,6 @@ function login($user, $persistent = false)
     EventRegister::trigger_event('login','user',$user);
     
     $user->reset_login_failure_count();
-    $user->last_login = time();
     $user->last_action = time();
     $user->save();    
 

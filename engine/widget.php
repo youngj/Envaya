@@ -71,7 +71,7 @@ class Widget extends Entity
 
     public function query_comments()
     {
-        return Comment::query()->where('container_guid = ?', $this->guid)->order_by('e.guid');
+        return Comment::query()->where('container_guid = ?', $this->guid)->order_by('guid');
     }
 
     public function get_subtitle()

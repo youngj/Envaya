@@ -16,7 +16,7 @@ class SMS_Action_Undo extends SMS_Action
             return $sms_request->reply("UNDO is not available at this time.");
         }
         
-        $news_update = $org->query_news_updates()->where('e.guid = ?', $undo_post)->get();
+        $news_update = $org->query_news_updates()->guid($undo_post)->get();
         if (!$news_update)
         {
             return $sms_request->reply("Could not delete news update.");

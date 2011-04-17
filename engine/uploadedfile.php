@@ -12,7 +12,7 @@
  */
 class UploadedFile extends Entity
 {
-    static $table_name = 'files_entity';
+    static $table_name = 'files';
     static $table_attributes = array(
         'group_name' => '',
         'filename' => '',

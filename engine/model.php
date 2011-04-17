@@ -85,12 +85,10 @@ class Model extends Mixable
             $this->attributes[$name] = $default;
         }
     }
-        
+
     static function query()
     {       
-        $query = new Query_Select(static::$table_name);
-        $query->set_row_function(array(get_called_class(), '_new'));
-        return $query;
+        return new Query_Select(static::$table_name, get_called_class());
     }    
     
     static function _new($row)

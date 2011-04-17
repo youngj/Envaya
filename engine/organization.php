@@ -20,7 +20,7 @@ class Organization extends User
     
     function query_news_updates()
     {
-        return NewsUpdate::query()->where("container_guid=?", $this->guid)->order_by('u.guid desc');
+        return NewsUpdate::query()->where("container_guid=?", $this->guid)->order_by('guid desc');
     }    
     
     public function query_relationships()

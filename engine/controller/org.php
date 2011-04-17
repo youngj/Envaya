@@ -143,7 +143,7 @@ class Controller_Org extends Controller
             
             $org_guids = array_map(function($p) { return $p->org_guid; }, $phone_number_entities);            
             
-            $orgs_by_phone = Organization::query()->where_in('e.guid', $org_guids)->filter();
+            $orgs_by_phone = Organization::query()->where_in('guid', $org_guids)->filter();
         }
         
         // if there's a likely unique match by website or email, avoid searching by name

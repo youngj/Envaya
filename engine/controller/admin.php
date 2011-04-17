@@ -114,18 +114,18 @@ class Controller_Admin extends Controller
         $org_guids = get_input_array('orgs');
         if ($org_guids)
         {
-            $orgs = Organization::query()->where_in('e.guid', $org_guids)->filter();
+            $orgs = Organization::query()->where_in('guid', $org_guids)->filter();
         }
         else
         {         
-            $orgs = Organization::query()->
-                where('approval > 0')->
-                where("email <> ''")->
-                where('(notifications & ?) > 0', Notification::Batch)->
-                where("not exists (select * from outgoing_mail where email_guid = ? and user_guid = e.guid)", $email->guid)->
-                order_by('e.guid')->
-                limit(50)->
-                filter(); 
+            $orgs = Organization::query()
+                ->where('approval > 0')
+                ->where("email <> ''")
+                ->where('(notifications & ?) > 0', Notification::Batch)
+                ->where("not exists (select * from outgoing_mail where email_guid = ? and user_guid = users.guid)", $email->guid)
+                ->order_by('guid')
+                ->limit(50)
+                ->filter(); 
         }
 
         $this->page_draw(array(
@@ -200,7 +200,7 @@ class Controller_Admin extends Controller
         $offset = get_input('offset', 0);
         
         $count = User::query()->count();
-        $entities = User::query()->limit($limit, $offset)->order_by('e.guid desc')->filter();
+        $entities = User::query()->limit($limit, $offset)->order_by('guid desc')->filter();
 
         $result = view('paged_list', array(
             'entities' => $entities,
@@ -224,7 +224,7 @@ class Controller_Admin extends Controller
 
         $object = get_input('object');
        
-        $query = User::query()->where('(INSTR(u.username, ?) > 0 OR INSTR(u.name, ?) > 0)', $tag, $tag);
+        $query = User::query()->where('(INSTR(username, ?) > 0 OR INSTR(name, ?) > 0)', $tag, $tag);
        
         $users = $query->limit($limit, $offset)->filter();
         $count = $query->count();
@@ -283,7 +283,7 @@ class Controller_Admin extends Controller
 
         if ($user)
         {
-            $query->where('performed_by_guid=?', $user);
+            $query->where('user_guid=?', $user);
         }
                 
         $query->limit($limit, $offset);

@@ -8,7 +8,14 @@ class SystemLog
     static function get_loggable_object($row)
     {
         $class = $row->object_class;
-        return $class::get_object_from_id($row->object_id);
+        if (class_exists($class))
+        {
+            return $class::get_object_from_id($row->object_id);
+        }
+        else
+        {
+            return null;
+        }
     }    
 
     static $logcache = array();
@@ -52,18 +59,16 @@ class SystemLog
         $object_id = (int)$object->get_id();
         $object_class = $object->get_class_name();        
         $time = time();
-        $performed_by = (int)@$_SESSION['guid'];
+        $user_guid = (int)@$_SESSION['guid'];
 
-        if (!isset(static::$logcache[$time][$object_id][$event]))
+        if (!isset(static::$logcache[$object_id][$event]))
         {
             Database::update("INSERT DELAYED into system_log (
-                object_id, object_class, object_type, object_subtype, event,
-                performed_by_guid, owner_guid, enabled, time_created)
-                VALUES (?,?,?,?,?,?,?,?,?)",
-                array($object_id,$object_class,'','',$event,
-                    $performed_by,'','',$time)
+                object_id, object_class, event, user_guid, time_created)
+                VALUES (?,?,?,?,?)",
+                array($object_id, $object_class, $event, $user_guid, $time)
             );
-            static::$logcache[$time][$object_id][$event] = true;
+            static::$logcache[$object_id][$event] = true;
         }
     }
 }

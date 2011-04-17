@@ -7,37 +7,43 @@
  */
 class User extends Entity
 {
-    static $table_name = 'users_entity';
+    static $table_name = 'users';
 
-    static $table_attributes = array(
-            'name' => '',
-            'username' => '',
-            'password' => '',
-            'salt' => '',
-            'email' => '',
-            'phone_number' => '',
-            'language' => '',
-            'code' => '',
-            'banned' => 'no',
-            'admin' => 0,
-            'approval' => 0,
-            'latitude' => null,
-            'longitude' => null,
-            'timezone_id' => '',
-            'city' => '',
-            'region' => '',
-            'country' => '',
-            'theme' => '',
-            'email_code' => null,
-            'setup_state' => 5,
-            'icons_json' => null,
-            'header_json' => null,
-            'last_notify_time' => null,
-            'last_action' => 0,
-            'last_login' => 0,    
-			'notifications' => 15,
-        );
+    static $table_attributes = array(        
+        'subtype' => 0,
+        'name' => '',
+        'username' => '',
+        'password' => '',
+        'salt' => '',
+        'email' => '',
+        'phone_number' => '',
+        'language' => '',
+        'admin' => 0,
+        'approval' => 0,
+        'latitude' => null,
+        'longitude' => null,
+        'timezone_id' => '',
+        'city' => '',
+        'region' => '',
+        'country' => '',
+        'theme' => '',
+        'email_code' => null,
+        'setup_state' => 5,
+        'icons_json' => null,
+        'header_json' => null,
+        'last_notify_time' => null,
+        'last_action' => 0,
+        'notifications' => 15,
+    );
 
+    protected function get_table_attributes()
+    {
+        return array_merge(parent::get_table_attributes(), array(
+            'subtype' => static::get_subtype_id(),
+        ));
+    }    
+        
+    
     public function get_feed_names()
     {
         return array(
@@ -179,45 +185,6 @@ class User extends Entity
         );
     }
 
-    /**
-     * Ban this user.
-     *
-     * @param string $reason Optional reason
-     */
-    public function ban($reason = "")
-    {
-        if ($this->can_edit())
-        {
-            $this->ban_reason = $reason;
-            $this->banned = 'yes';
-            $this->save();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Unban this user.
-     */
-    public function unban()
-    {
-        if ($this->can_edit())
-        {
-            $this->ban_reason = '';
-            $this->banned = 'yes';
-            $this->save();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Is this user banned or not?
-     *
-     * @return bool
-     */
-    public function is_banned() { return $this->banned == 'yes'; }
-
     function has_lat_long()
     {
         return $this->latitude || $this->longitude;
@@ -250,9 +217,9 @@ class User extends Entity
     }
        
     function get_blog_dates()
-    {
-        $sql = "SELECT guid, time_created from entities WHERE status=1 AND subtype=? AND container_guid=? ORDER BY guid ASC";
-        return Database::get_rows($sql, array(NewsUpdate::get_subtype_id(), $this->guid));
+    {   
+        $sql = "SELECT guid, time_created from news_updates WHERE status=1 AND container_guid=? ORDER BY guid ASC";
+        return Database::get_rows($sql, array($this->guid));
     }
 
     public function is_approved()
@@ -266,9 +233,15 @@ class User extends Entity
         $this->password = $this->generate_password($password);
     }
 
+    static function _new($row)
+    {
+        $cls = EntityRegistry::get_subtype_class($row->subtype);
+        return new $cls($row);
+    }
+    
     static function query()
     {
-        return new Query_SelectUser('users_entity');
+        return new Query_SelectUser(static::$table_name, get_called_class());
     }
 
     public function js_properties()
@@ -431,7 +404,7 @@ class User extends Entity
         $guid = $cache->get($cacheKey);
         if (!$guid)
         {
-            $guidRow = Database::get_row("SELECT guid from users_entity where username=?", array($username));
+            $guidRow = Database::get_row("SELECT guid from users where username=?", array($username));
             if (!$guidRow)
             {
                 return null;

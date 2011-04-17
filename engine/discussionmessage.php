@@ -6,7 +6,6 @@ class DiscussionMessage extends Entity
     
     static $table_attributes = array(
         'message_id' => '',
-        'list_guid' => 0,
         'subject' => '',        
         'from_name' => '',
         'from_location' => '',

@@ -13,7 +13,7 @@ class Query_SelectUser extends Query_SelectEntity
     {        
         if (!Session::isadminloggedin())
         {
-            $this->where("(approval > 0 || e.guid = ?)", (int)Session::get_loggedin_userid());
+            $this->where("(approval > 0 OR guid = ?)", (int)Session::get_loggedin_userid());
         }
         return $this;
     }
@@ -54,8 +54,7 @@ class Query_SelectUser extends Query_SelectEntity
         {
             if ($this->sector)
             {
-                $this->join("INNER JOIN org_sectors s ON s.container_guid = e.guid");
-                $this->where("s.sector_id=?", $this->sector);        
+                $this->where("exists (select id from org_sectors s where s.container_guid = guid AND s.sector_id = ?)", $this->sector);        
             }
             
             if ($this->region)
@@ -98,8 +97,8 @@ class Query_SelectUser extends Query_SelectEntity
                 $org_guids = array_keys($matches);
                 $sql_guids = implode(',',$org_guids);
              
-                $this->where("e.guid in ($sql_guids)");
-                $this->order_by("FIND_IN_SET(e.guid, '$sql_guids')", true);        
+                $this->where("guid in ($sql_guids)");
+                $this->order_by("FIND_IN_SET(guid, '$sql_guids')", true);        
             }
         }
     }       

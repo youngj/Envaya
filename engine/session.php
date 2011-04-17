@@ -88,7 +88,7 @@ class Session
         if ($guid)
         {
             $user = User::get_by_guid($guid);
-            if (!$user || $user->is_banned())
+            if (!$user)
             {
                 static::set($_SESSION['guid'], null);
             }
@@ -144,7 +144,7 @@ class Session
 
         if ($sessionData == null)
         {
-            $result = Database::get_row("SELECT * from users_sessions where session=?", array($id));
+            $result = Database::get_row("SELECT * from `sessions` where session=?", array($id));
             $sessionData = ($result) ? $result->data : '';
             get_cache()->set($cacheKey, $sessionData);
         }
@@ -158,7 +158,7 @@ class Session
         {
             get_cache()->set(static::cache_key($id), $sess_data);
 
-            return (Database::update("REPLACE INTO users_sessions (session, ts, data) VALUES (?,?,?)",
+            return (Database::update("REPLACE INTO `sessions` (session, ts, data) VALUES (?,?,?)",
                     array($id, time(), $sess_data))!==false);
         }
     }
@@ -167,14 +167,14 @@ class Session
     {
         get_cache()->delete(static::cache_key($id));
 
-        return (bool)Database::delete("DELETE from users_sessions where session=?", array($id));
+        return (bool)Database::delete("DELETE from `sessions` where session=?", array($id));
     }
     
     static function _session_gc($maxlifetime)
     {
         $life = time()-$maxlifetime;
         
-        return (bool)Database::delete("DELETE from users_sessions where ts<?", array($life));
+        return (bool)Database::delete("DELETE from `sessions` where ts<?", array($life));
     }
     
     static function get_loggedin_user()

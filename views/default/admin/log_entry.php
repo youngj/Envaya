@@ -2,7 +2,7 @@
 
 	$entry = $vars['entry'];
 	
-	$by = Entity::get_by_guid($entry->performed_by_guid);
+	$by = User::get_by_guid($entry->user_guid);
 	$object = SystemLog::get_loggable_object($entry);
 	
     $obj_url = is_callable(array($object, 'get_url')) ? $object->get_url() : '';

@@ -7,7 +7,7 @@
     
     if (get_input('offset') === '' && $end_guid)
     {
-        $offset = $org->query_news_updates()->where('u.guid > ?', $end_guid)->count();
+        $offset = $org->query_news_updates()->where('guid > ?', $end_guid)->count();
     }
     else
     {
