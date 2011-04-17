@@ -269,6 +269,8 @@ class WidgetHandler_Network extends WidgetHandler
         $relationship->set_self_approved();
         $relationship->save();
 
+        $widget->save();
+
         SessionMessages::add(__('network:relationship_saved'));
         return forward($widget->get_edit_url());
     }    
