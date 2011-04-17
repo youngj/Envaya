@@ -136,4 +136,49 @@ class FeedItem extends Model
         $query->where("feed_name = ?", $feedName);
         return $query;    
     }
+
+    static function make_feed_name($conditions)
+    {
+        ksort($conditions);
+
+        $encConditions = array();
+
+        foreach ($conditions as $name => $value)
+        {
+            if (!is_null($value) && $value !== '')
+            {
+                $encConditions[] = "$name=".urlencode($value);
+            }
+        }
+        return implode("&", $encConditions);
+    }    
+    
+    static function post($user, $actionName, $subject, $args = null, $time = null)
+    {
+        if (!$time)
+        {
+            $time = time();
+        }
+
+        $feedNames = $user->get_feed_names();
+
+        if ($subject != $user && method_exists($subject, 'get_feed_names'))
+        {
+            $feedNames = $feedNames + $subject->get_feed_names();
+            $feedNames = array_flip(array_flip($feedNames));
+        }
+
+        foreach ($feedNames as $feedName)
+        {
+            $feedItem = new FeedItem();
+            $feedItem->feed_name = $feedName;
+            $feedItem->action_name = $actionName;
+            $feedItem->subject_guid = $subject->guid;
+            $feedItem->user_guid = $user->guid;
+            $feedItem->time_posted = $time;
+            $feedItem->args = $args;
+
+            $feedItem->save();
+        }
+    }    
 }

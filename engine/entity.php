@@ -186,7 +186,7 @@ abstract class Entity extends Model
 
         if ((int) ($this->guid) > 0)
         {
-            $md = get_metadata_byname($this->guid, $name);
+            $md = EntityMetadata::query()->where('entity_guid = ? and name = ?', $this->guid, $name)->get();
         }
 
         if (!$md)
@@ -425,7 +425,7 @@ abstract class Entity extends Model
         }
     }
         
-    public function translate_field($field, $isHTML = false, $viewLang = null)
+    public function translate_field($field, $isHTML = false)
     {
         $text = trim($this->$field);
         if (!$text)
@@ -434,14 +434,11 @@ abstract class Entity extends Model
         }
 
         $origLang = $this->get_language();
-        if ($viewLang == null)
-        {
-            $viewLang = Language::get_current_code();
-        }
-                
+        $viewLang = Language::get_current_code();        
+
         if ($origLang != $viewLang)
         {            
-            $translateMode = get_translate_mode();
+            $translateMode = TranslateMode::get_current();
             $translation = $this->lookup_translation($field, $origLang, $viewLang, $translateMode, $isHTML);
             
             trigger_event('translate',get_class($this), $translation);

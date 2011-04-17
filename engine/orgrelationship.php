@@ -167,7 +167,7 @@ class OrgRelationship extends Entity
             ->count() == 0)
         {
             $org = $this->get_container_entity();
-            post_feed_items($org, 'relationship', $this);
+            FeedItem::post($org, 'relationship', $this);
         }
     }           
     

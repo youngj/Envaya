@@ -11,7 +11,7 @@
         if ($numFeedItems == 0)
         {
             echo "{$widget->get_url()}\n";
-            post_feed_items($widget->get_container_entity(), 'edit_widget', $widget, null, $widget->time_updated);
+            FeedItem::post($widget->get_container_entity(), 'edit_widget', $widget, null, $widget->time_updated);
         }
     }
 
@@ -22,6 +22,6 @@
         if ($numFeedItems == 0)
         {
             echo "{$newsUpdate->get_url()}\n";            
-            post_feed_items($newsUpdate->get_container_entity(), 'news', $newsUpdate, null, $newsUpdate->time_updated);
+            FeedItem::post($newsUpdate->get_container_entity(), 'news', $newsUpdate, null, $newsUpdate->time_updated);
         }    
     }

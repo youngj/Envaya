@@ -12,7 +12,7 @@ class Action_Login extends Action
         $result = false;
         if (!empty($username) && !empty($password))
         {
-            if ($user = authenticate($username,$password))
+            if ($user = $this->authenticate($username,$password))
             {
                 $result = login($user, $persistent);
             }
@@ -45,6 +45,30 @@ class Action_Login extends Action
         }
     }
 
+    /**
+     * Perform standard authentication with a given username and password.
+     * Returns an User object for use with login.
+     *
+     * @see login
+     * @param string $username The username
+     * @param string $password The password
+     * @return User|false The authenticated user object, or false on failure.
+     */
+    function authenticate($username, $password)
+    {
+        if ($user = User::get_by_username($username))
+        {
+            if ($user->password == $user->generate_password($password))
+            {
+                return $user;
+            }
+
+            $user->log_login_failure();
+            $user->save();
+        }
+        return false;
+    }    
+    
     function render()
     {
         $username = get_input('username');

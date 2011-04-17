@@ -1,4 +1,3 @@
-
 <?php
 
     $editPinMode = @$vars['edit'];
@@ -478,7 +477,15 @@ google.setOnLoadCallback(initialize);
         echo "<div>";
         echo "<a href='org/browse/?lat=$lat&long=$long&zoom=10'>";
 
-        echo "<img style='display:block;margin:0 auto;width='$width' height='$height' src='".get_static_map_url($lat, $long, $zoom, $width, $height)."' />";
+        echo "<img style='display:block;margin:0 auto;width='$width' height='$height' src='".
+            view('output/static_map_url', array(
+                'lat' => $lat, 
+                'long' => $long, 
+                'zoom' => $zoom, 
+                'width' => $width, 
+                'height' => $height
+            ))
+        ."' />";
         echo "</a>";
         echo "</div>";
     }

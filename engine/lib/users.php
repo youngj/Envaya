@@ -1,21 +1,5 @@
 <?php
 
-    function is_email_address($address)
-    {
-        return preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+$/i', $address, $matches);
-    }
-	
-    /**
-     * Simple function that will generate a random clear text password suitable for feeding into generate_user_password().
-     *
-     * @see generate_user_password
-     * @return string
-     */
-    function generate_random_cleartext_password()
-    {
-        return md5(microtime() . rand());
-    }
-
     /**
      * Simple function which ensures that a username contains only valid characters.
      *
@@ -82,7 +66,7 @@
      */
     function validate_email_address($address)
     {
-        if ($address !== "" && !is_email_address($address))
+        if ($address !== "" && !preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+$/i', $address))
             throw new ValidationException(__('registration:notemail'));
 
         return $address;
@@ -127,3 +111,7 @@
         return $user;
     }
     
+    function get_email_fingerprint($email)
+    {
+        return substr(md5($email . Config::get('site_secret') . "-email"), 0,15);
+    }    

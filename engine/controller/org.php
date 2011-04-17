@@ -65,7 +65,7 @@ class Controller_Org extends Controller
             if (!empty($query)) 
             {
                 $geoQuery = "$query Tanzania";            
-                $latlong = Geocoder::geocode($geoQuery);
+                $latlong = Geography::geocode($geoQuery);
             }
             
             if ($latlong)
@@ -198,7 +198,7 @@ class Controller_Org extends Controller
         
         $sector = get_input('sector');
         $region = get_input('region');
-        $feedName = get_feed_name(array('sector' => $sector, 'region' => $region));
+        $feedName = FeedItem::make_feed_name(array('sector' => $sector, 'region' => $region));
         $items = FeedItem::query_by_feed_name($feedName)
             ->where_visible_to_user()
             ->limit($max_items)
@@ -240,7 +240,7 @@ class Controller_Org extends Controller
         $sector = get_input('sector');
         $region = get_input('region');
         $before_id = (int)get_input('before_id');
-        $feedName = get_feed_name(array('sector' => $sector, 'region' => $region));
+        $feedName = FeedItem::make_feed_name(array('sector' => $sector, 'region' => $region));
         
         $max_items = 20;
         

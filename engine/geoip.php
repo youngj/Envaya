@@ -22,11 +22,11 @@ class GeoIP
             
             if ($override_code)
             {
-                static::$country_code = preg_replace('/\W/','',strtoupper($override_code));
+                static::$country_code = preg_replace('/\W/','',strtolower($override_code));
             }        
             else
             {            
-                static::$country_code = @$_SERVER['GEOIP_COUNTRY_CODE'];
+                static::$country_code = strtolower(@$_SERVER['GEOIP_COUNTRY_CODE'] ?: '');
             }
         }
         return static::$country_code;
@@ -38,7 +38,7 @@ class GeoIP
     {
         if (!static::$country_name)
         {
-            $lang_key = "country:".strtolower(static::get_country_code());        
+            $lang_key = "country:".static::get_country_code();        
             
             $name = __($lang_key);
             if ($name != $lang_key)
@@ -55,14 +55,14 @@ class GeoIP
     
     static function is_supported_country()
     {
-        return static::get_country_code() == 'TZ';
+        return static::get_country_code() == 'tz';
     }
     
     static function get_world_region()
     {
         $country_code = static::get_country_code();
         
-        if (preg_match('/^(D[ZJ]|AO|B[JWFI]|C[MVFDGI]|T[DZN]|K[ME]|E[GRTH]|G[QAMHNW]|L[SRY]|M[GWLRUAZ]|N[AEG]|RW|S[NLODZ]|Z[AMW]|UG)$/', $country_code))
+        if (preg_match('/^(d[zj]|ao|b[jwfi]|c[mvfdgi]|t[dzn]|k[me]|e[grth]|g[qamhnw]|l[sry]|m[gwlruaz]|n[aeg]|rw|s[nlodz]|z[amw]|ug)$/', $country_code))
         {
             return static::Africa;            
         }

@@ -70,7 +70,7 @@ class WidgetHandler_Home extends WidgetHandler
         
         if (!Session::isadminloggedin() && time() - $lastUpdated > 86400)
         {
-            post_feed_items($widget->get_container_entity(), 'edithome', $widget);
+            FeedItem::post($widget->get_container_entity(), 'edithome', $widget);
         }        
     }
 }

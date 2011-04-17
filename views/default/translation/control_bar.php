@@ -4,7 +4,7 @@ if (PageContext::is_translatable())
 ?>
 <div id='translate_bar'>
 <?php
-    $transMode = get_translate_mode();
+    $transMode = TranslateMode::get_current();
     $origLang = PageContext::get_original_language();
     $origLangName = escape(__($origLang));
     $userLangName = escape(__(Language::get_current_code()));
@@ -80,8 +80,7 @@ if (PageContext::is_translatable())
         
         if (sizeof($translations))
         {
-            $url = get_translations_url($translations);
-            $links[] = "<a href='$url'>".__("trans:contribute")."</a>";
+            $links[] = view('translation/translate_link', array('translations' => $translations));
         }
     }
 

@@ -2,9 +2,15 @@
 
 class EntityStatus
 {
-    const Disabled = 0; // aka deleted
+    const Disabled = 0; // basically deleted, except the db row still exists so we can undelete
     const Enabled = 1;
     const Draft = 2;
+}
+
+class DataType
+{
+    const Image = 2;
+    const HTML = 4;
 }
 
 class EntityRegistry

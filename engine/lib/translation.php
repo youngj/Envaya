@@ -5,23 +5,22 @@ class TranslateMode
     const None = 1;
     const ManualOnly = 2;
     const All = 3;
-}
-
-function get_translate_mode()
-{
-    return ((int)get_input("trans")) ?: TranslateMode::ManualOnly;
-}
-
-function get_translations_url($translations, $targetLang = null)
-{
-    foreach ($translations as $trans)
+    
+    private static $current_mode = null;
+    
+    static function get_current()
     {
-        $urlProps[] = "prop[]={$trans->container_guid}.{$trans->property}.{$trans->html}";
+        if (static::$current_mode == null)
+        {
+            static::$current_mode = ((int)get_input("trans")) ?: TranslateMode::ManualOnly;
+        }
+        return static::$current_mode;
+    }    
+    
+    static function set_current($mode)
+    {
+        static::$current_mode = $mode;
     }
-    $urlProps[] = "targetLang=".($targetLang ?: Language::get_current_code());
-
-    $escUrl = urlencode($_SERVER['REQUEST_URI']);
-    return "/tr/translate?from=$escUrl&".implode("&", $urlProps);
 }
 
 function translate_listener($event, $object_type, $translation)

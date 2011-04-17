@@ -7,7 +7,7 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
         try
         {    
             $this->_process_input();
-
+            
             $org = $this->org;
             
             $prevInfo = Session::get('registration');            
@@ -24,10 +24,6 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
             }        
             
             forward("/org/new?step=3");
-        }
-        catch (PossibleDuplicateException $p)
-        {
-            $this->show_possible_duplicate($p);
         }
         catch (ValidationException $r)
         {

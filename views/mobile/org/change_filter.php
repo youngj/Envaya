@@ -12,7 +12,7 @@ $baseurl = $vars['baseurl'];
 
 echo view('input/pulldown', array(
     'name' => 'sector',
-    'options' => Organization::get_sector_options(),
+    'options' => OrgSectors::get_options(),
     'empty_option' => __('sector:empty_option'),
     'value' => $sector
 ));
@@ -24,7 +24,7 @@ echo view('input/pulldown', array(
 
 echo view('input/pulldown', array(
     'name' => 'region',
-    'options' => regions_in_country('tz'),
+    'options' => Geography::get_region_options('tz'),
     'empty_option' => __('region:empty_option'),
     'value' => $region,
 ));

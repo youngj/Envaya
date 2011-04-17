@@ -9,17 +9,19 @@ abstract class Action_Registration_CreateAccountBase extends Action
         return '/pg/login';
     }
     
-    protected function show_possible_duplicate($ex)
+    protected function show_possible_duplicates($dups)
     {
         $this->page_draw(array(
             'title' => __("create:possible_duplicate"),
             'content' => view("org/possible_duplicate", array(
-                'message' => $ex->getMessage(), 
+                'message' => __('create:possible_duplicate'), 
                 'login_url' => $this->get_login_url(), 
-                'duplicates' => $ex->duplicates
+                'duplicates' => $dups
             )),
             'org_only' => true,
         ));
+        echo $this->get_request()->response;
+        exit;
     } 
 
     protected function _process_input()
@@ -65,7 +67,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
                 
             if (sizeof($dups) > 0)
             {
-                throw new PossibleDuplicateException(__('create:possible_duplicate'), $dups);
+                return $this->show_possible_duplicates($dups);
             }
         }
         

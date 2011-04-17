@@ -14,7 +14,7 @@ class InvitedEmail extends Model
     
     function generate_invite_code()
     {
-        $this->invite_code = substr(generate_random_cleartext_password(), 0, 20);
+        $this->invite_code = generate_random_code(20);
     }
     
     static function get_by_email($email)

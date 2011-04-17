@@ -47,8 +47,8 @@ class User extends Entity
     public function get_feed_names()
     {
         return array(
-            get_feed_name(array()), // global feed
-            get_feed_name(array('user' => $this->guid))
+            FeedItem::make_feed_name(array()), // global feed
+            FeedItem::make_feed_name(array('user' => $this->guid))
         );
     }
     
@@ -107,7 +107,13 @@ class User extends Entity
         else if ($this->has_lat_long())
         {   
             return array(
-                'url' => get_static_map_url($this->latitude, $this->longitude, 6, 100, 100),
+                'url' => view('output/static_map_url', array(
+                    'lat' => $this->latitude, 
+                    'long' => $this->longitude, 
+                    'zoom' => 6, 
+                    'width' => 100, 
+                    'height' => 100
+                )),
                 'width' => 100,
                 'height' => 100
             );
@@ -212,7 +218,7 @@ class User extends Entity
 
     function query_feed_items()
     {
-        $feedName = get_feed_name(array('user' => $this->guid));
+        $feedName = FeedItem::make_feed_name(array('user' => $this->guid));
         return FeedItem::query_by_feed_name($feedName);
     }
        
@@ -229,7 +235,7 @@ class User extends Entity
 
     public function set_password($password)
     {
-        $this->salt = substr(generate_random_cleartext_password(), 0, 8);
+        $this->salt = generate_random_code(8);
         $this->password = $this->generate_password($password);
     }
 

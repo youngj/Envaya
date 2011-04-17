@@ -37,6 +37,7 @@ class Controller_Tr extends Controller
         $this->page_draw(array(
             'title' => __("trans:translate"),
             'theme_name' => 'editor',
+            'layout' => 'layouts/one_column_wide',
             'content' => implode("<hr><br>", $content)
         ));
     }

@@ -38,7 +38,7 @@
     <?php
         echo view("input/checkboxes",array(
             'name' => 'sector',
-            'options' => Organization::get_sector_options(),
+            'options' => OrgSectors::get_options(),
             'value' => $org->get_sectors()));
     ?>
     <?php echo __('setup:sector:other_specify') ?> <?php echo view('input/text', array(
@@ -60,7 +60,7 @@
 <div>
 <?php echo __('setup:region') ?> <?php echo view('input/pulldown', array(
     'name' => 'region',
-    'options' => regions_in_country($org->country),
+    'options' => Geography::get_region_options($org->country),
     'empty_option' => __('setup:region:blank'),
     'value' => $org->region
 )) ?>

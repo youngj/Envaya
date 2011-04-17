@@ -86,23 +86,23 @@ class Organization extends User
 
         if ($this->region)
         {
-            $feedNames[] = get_feed_name(array("region" => $this->region));
+            $feedNames[] = FeedItem::make_feed_name(array("region" => $this->region));
         }
 
         foreach ($this->get_sectors() as $sector)
         {
-            $feedNames[] = get_feed_name(array('sector' => $sector));
+            $feedNames[] = FeedItem::make_feed_name(array('sector' => $sector));
 
             if ($this->region)
             {
-                $feedNames[] = get_feed_name(array('region' => $this->region, 'sector' => $sector));
+                $feedNames[] = FeedItem::make_feed_name(array('region' => $this->region, 'sector' => $sector));
             }
         }
         
         /*
         foreach ($this->query_subject_relationships()->filter() as $relationship)
         {
-            $feedNames[] = get_feed_name(array('network' => $relationship->container_guid));
+            $feedNames[] = FeedItem::make_feed_name(array('network' => $relationship->container_guid));
         }        
         */
 
@@ -168,38 +168,6 @@ class Organization extends User
 
     protected $sectors;
     protected $sectors_dirty = false;
-
-    static function get_sector_options()
-    {
-        $sectors = array(
-            1 => __('sector:agriculture'),
-            2 => __('sector:communications'),
-            3 => __('sector:conflict_res'),
-            4 => __('sector:cooperative'),
-            5 => __('sector:culture'),
-            6 => __('sector:education'),
-            7 => __('sector:environment'),
-            8 => __('sector:health'),
-            9 => __('sector:hiv_aids'),
-            13 => __('sector:human_rights'),
-            14 => __('sector:labor_rights'),
-            15 => __('sector:microenterprise'),
-            16 => __('sector:natural_resources'),
-            17 => __('sector:prof_training'),
-            18 => __('sector:rural_dev'),
-            19 => __('sector:sci_tech'),
-            20 => __('sector:substance_abuse'),
-            21 => __('sector:tourism'),
-            22 => __('sector:trade'),
-            23 => __('sector:women'),
-        );
-
-        asort($sectors);
-
-        $sectors[SECTOR_OTHER] = __('sector:other');
-
-        return $sectors;
-    }
 
     public function get_sectors()
     {

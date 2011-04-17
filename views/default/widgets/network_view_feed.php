@@ -8,10 +8,10 @@
                 ->where('approval & ? > 0', OrgRelationship::SelfApproved)
                 ->filter() as $relationship)
     {
-        $feedNames[] = get_feed_name(array('user' => $relationship->subject_guid));
+        $feedNames[] = FeedItem::make_feed_name(array('user' => $relationship->subject_guid));
     }
     
-    //$feedName = get_feed_name(array('network' => $org->guid));
+    //$feedName = FeedItem::make_feed_name(array('network' => $org->guid));
     $maxItems = 10;    
     $items = FeedItem::query_by_feed_names($feedNames)
         ->where_visible_to_user()

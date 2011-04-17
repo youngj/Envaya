@@ -13,7 +13,7 @@ pageTracker._trackPageview();
 } catch(err) {}</script>
 
 <noscript>
-<img src="<?php echo google_analytics_image_url(); ?>" width='1' height='1' />
+<?php echo view('page_elements/google_analytics_image'); ?>
 </noscript>
 
 <?php 

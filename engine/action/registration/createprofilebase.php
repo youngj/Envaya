@@ -36,7 +36,7 @@ class Action_Registration_CreateProfileBase extends Action
 
         $org->theme = get_input('theme');
 
-        $latlong = Geocoder::geocode($org->get_location_text());
+        $latlong = Geography::geocode($org->get_location_text());
 
         if ($latlong)
         {
@@ -52,7 +52,7 @@ class Action_Registration_CreateProfileBase extends Action
 
         if ($prevSetupState < $org->setup_state && !$org->is_approved())
         {
-            post_feed_items($org, 'register', $org);
+            FeedItem::post($org, 'register', $org);
 
             OutgoingMail::create(
                 sprintf(__('email:registernotify:subject'), $org->name), 

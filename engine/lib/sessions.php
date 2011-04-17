@@ -1,39 +1,8 @@
 <?php
 
 /**
- * Perform standard authentication with a given username and password.
- * Returns an User object for use with login.
+ * Logs in a specified User. 
  *
- * @see login
- * @param string $username The username, optionally (for standard logins)
- * @param string $password The password, optionally (for standard logins)
- * @return User|false The authenticated user object, or false on failure.
- */
-function authenticate($username, $password)
-{
-    if ($username && $password)
-    {
-        if ($user = User::get_by_username($username))
-        {
-            if ($user->password == $user->generate_password($password))
-            {
-                return $user;
-            }
-
-            $user->log_login_failure();
-            $user->save();
-        }
-    }
-
-    return false;
-
-}
-
-/**
- * Logs in a specified User. For standard registration, use in conjunction
- * with authenticate.
- *
- * @see authenticate
  * @param User $user A valid user object
  * @param boolean $persistent Should this be a persistent login?
  * @return true|false Whether login was successful
@@ -61,7 +30,6 @@ function login($user, $persistent = false)
 
     return true;
 }
-
 
 function logout()
 {
@@ -103,31 +71,4 @@ function force_login()
     {
         forward("pg/login");
     }
-}
-
-function restore_input($name, $value, $trackDirty = false)
-{
-    if (isset($_POST[$name]))
-    {
-        return $_POST[$name];
-    }
-
-    $prevInput =  Session::get('input');
-    if ($prevInput)
-    {
-        if (isset($prevInput[$name]))
-        {
-            $val = $prevInput[$name];
-            unset($prevInput[$name]);
-            Session::set('input', $prevInput);
-            
-            if ($trackDirty && $val != $value)
-            {
-                PageContext::set_dirty(true);
-            }
-            
-            return $val;
-        }
-    }
-    return $value;
 }

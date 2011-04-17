@@ -11,7 +11,7 @@ $change_view_link_end = "</a>";
 
 echo __('org:sector') . ": ".$change_view_link_start.
 view('output/pulldown', array(
-    'options' => Organization::get_sector_options(),
+    'options' => OrgSectors::get_options(),
     'value' => $sector,
     'empty_option' => __('sector:all')
 )).$change_view_link_end;   
@@ -19,7 +19,7 @@ view('output/pulldown', array(
 <br />
 <?php
 echo __('org:region') . ": ". $change_view_link_start. view('output/pulldown', array(
-    'options' => regions_in_country('tz'),
+    'options' => Geography::get_region_options('tz'),
     'value' => $region,
     'empty_option' => __('region:all')
 )). $change_view_link_end;

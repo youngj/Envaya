@@ -4,7 +4,7 @@
 
 	sort($sectors);
 
-	$sectorOptions = Organization::get_sector_options();
+	$sectorOptions = OrgSectors::get_options();
 	$sectorNames = array();
 
 	foreach ($sectors as $sector)
@@ -14,7 +14,7 @@
 
 	echo implode(', ', $sectorNames);
 
-	if (in_array(SECTOR_OTHER, $sectors) && $other)
+	if (in_array(OrgSectors::Other, $sectors) && $other)
 	{
 		echo " (".escape($other).")";
 	}

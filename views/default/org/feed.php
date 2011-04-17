@@ -27,7 +27,7 @@ function sectorChanged()
 echo view('input/pulldown', array(
     'name' => 'sector',
     'id' => 'sectorList',
-    'options' => Organization::get_sector_options(),
+    'options' => OrgSectors::get_options(),
     'empty_option' => __('sector:empty_option'),
     'value' => $sector,
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"
@@ -36,7 +36,7 @@ echo view('input/pulldown', array(
 echo view('input/pulldown', array(
     'name' => 'region',
     'id' => 'regionList',
-    'options' => regions_in_country('tz'),
+    'options' => Geography::get_region_options('tz'),
     'empty_option' => __('region:empty_option'),
     'value' => $region,
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"

@@ -8,7 +8,7 @@ class Query_SelectFeedItem extends Query_Select
     function __construct()
     {
         parent::__construct('feed_items f');
-        $this->set_row_function('feed_row_to_feed_item');
+        $this->set_row_class('FeedItem');
         $this->order_by('time_posted DESC');
     }
 

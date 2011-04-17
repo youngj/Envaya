@@ -5,7 +5,7 @@ $zoom = $vars['zoom'] ?: 10;
 
 $lat = $org->get_latitude();
 $long = $org->get_longitude();
-echo view("org/map", array(
+echo view("output/map", array(
     'lat' => $lat,
     'long' => $long,
     'zoom' => $zoom,

@@ -14,7 +14,7 @@ return array(
     'sphinx_host' => 'localhost',  
     'sphinx_port' => 9312,
    
-    'cache_backend' => "DatabaseCache",
+    'cache_backend' => "Cache_Database",
 
     'admin_email' => "admin@localhost",
     'post_email' => "post@localhost",
@@ -75,4 +75,6 @@ return array(
     
     'geonames_user' => '',
     'default_timezone' => 'Africa/Dar_es_Salaam',
+    
+    'site_secret' => 'default_secret',
 );

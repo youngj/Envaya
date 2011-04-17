@@ -30,7 +30,7 @@ function sectorChanged()
 <?php echo view('input/pulldown', array(
     'name' => 'sector',
     'id' => 'sectorList',
-    'options' => Organization::get_sector_options(),
+    'options' => OrgSectors::get_options(),
     'empty_option' => __('sector:empty_option'),
     'value' => $sector,
     'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"
@@ -44,6 +44,13 @@ function sectorChanged()
     $zoom = $vars['zoom'] ?: 5;
     $sector = @$vars['sector'] ?: 0;
 
-    echo view("org/map", array('lat' => $lat, 'long' => $long,  'height' => 350, 'zoom' => $zoom, 'sector' => $sector, 'nearby' => true));
+    echo view("output/map", array(
+        'lat' => $lat, 
+        'long' => $long,  
+        'height' => 350, 
+        'zoom' => $zoom, 
+        'sector' => $sector, 
+        'nearby' => true
+    ));
 ?>
 </div>

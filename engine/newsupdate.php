@@ -82,7 +82,7 @@ class NewsUpdate extends Entity
         }
         else
         {                
-            post_feed_items($org, 'news', $this);
+            FeedItem::post($org, 'news', $this);
         }
     }                
 }

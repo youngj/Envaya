@@ -183,12 +183,12 @@ class Widget extends Entity
     
     function post_feed_items_new()
     {
-        return post_feed_items($this->get_container_entity(), 'newwidget', $this);
+        return FeedItem::post($this->get_container_entity(), 'newwidget', $this);
     }
     
     function post_feed_items()    
     {
-        return post_feed_items($this->get_container_entity(), 'editwidget', $this); 
+        return FeedItem::post($this->get_container_entity(), 'editwidget', $this); 
     }
     
     static function is_valid_name($widget_name)

@@ -16,7 +16,7 @@ class Action_ForgotPassword extends Action
                 forward("page/contact");
             }
 
-            $user->passwd_conf_code = substr(generate_random_cleartext_password(), 0, 24); // avoid making url too long for 1 line in email
+            $user->passwd_conf_code = generate_random_code(24); // avoid making url too long for 1 line in email
             $user->save();
 
             $mail = OutgoingMail::create(

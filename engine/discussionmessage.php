@@ -46,7 +46,7 @@ class DiscussionMessage extends Entity
         if ($owner && $owner->is_approved())
         {    
             $org = $this->get_root_container_entity();    
-            post_feed_items($org, 'message', $this);
+            FeedItem::post($org, 'message', $this);
         }
     }
     

@@ -26,19 +26,18 @@
 <div>
 <?php echo __('setup:region') ?> <?php echo view('input/pulldown', array(
     'name' => 'region',
-    'options' => regions_in_country($org->country),
+    'options' => Geography::get_region_options($org->country),
     'empty_option' => __('setup:region:blank'),
     'value' => $org->region
 )) ?>    
 <br />
 <br />
 <?php
-    echo view("org/map", array(
+    echo view("output/map", array(
         'lat' => $lat, 
         'long' => $long,
         'zoom' => $zoom,
         'pin' => true,
-        'org' => $group,
         'edit' => true
     ));   
 ?>    
