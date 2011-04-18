@@ -158,7 +158,7 @@ a.icon_link:hover
 #edit_pages_menu  a:hover
 {
     color:black;
-    background:#d5d0c8 url(<?php echo $graphicsDir; ?>/green/button.gif) no-repeat left top;
+    background:#d5d0c8 url(<?php echo $graphicsDir; ?>/green/button.png) no-repeat left top;
 }
 
 #edit_pages_menu a span
@@ -170,7 +170,7 @@ a.icon_link:hover
 
 #edit_pages_menu a:hover span
 {
-    background:#d5d0c8 url(<?php echo $graphicsDir; ?>/green/button.gif) no-repeat right top;
+    background:#d5d0c8 url(<?php echo $graphicsDir; ?>/green/button.png) no-repeat right top;
     display:block;
 }
 

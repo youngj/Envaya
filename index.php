@@ -9,7 +9,6 @@
      * * "action" maps to a public function of that class with name prefixed by "action_"
      */
 
-
     require_once(__DIR__."/engine/start.php");    
 
     Route::set('page', 'page/<name>')->defaults(array(

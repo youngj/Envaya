@@ -8,11 +8,11 @@
 
 body { background-color:white; }
 .heading_container { background-color:#f2f5f6; }
-.content_container { background:#fff url("<?php echo $graphicsDir; ?>/section_content.gif") repeat-x left top; }
-.content_container .thin_column { background:#e5e5e5 url("<?php echo $graphicsDir; ?>/thin_column.gif") repeat-x left top; }
-.section_content { background:#fff url("<?php echo $graphicsDir; ?>/section_content.gif") repeat-x left -15px; }
-#site_menu a.selected, #site_menu a:hover { background:#d5d0c8 url(<?php echo $graphicsDir; ?>/button.gif) no-repeat left top; }
-#site_menu a.selected span, #site_menu a:hover span { background:#d5d0c8 url(<?php echo $graphicsDir; ?>/button.gif) no-repeat right top; }
+.content_container { background:#fff url(<?php echo $graphicsDir; ?>/section_content.gif) repeat-x left top; }
+.content_container .thin_column { background:#e5e5e5 url(<?php echo $graphicsDir; ?>/thin_column.gif) repeat-x left top; }
+.section_content { background:#fff url(<?php echo $graphicsDir; ?>/section_content.gif) repeat-x left -15px; }
+#site_menu a.selected, #site_menu a:hover { background:#d5d0c8 url(<?php echo $graphicsDir; ?>/button.png) no-repeat left top; }
+#site_menu a.selected span, #site_menu a:hover span { background:#d5d0c8 url(<?php echo $graphicsDir; ?>/button.png) no-repeat right top; }
 
 .section_header
 {

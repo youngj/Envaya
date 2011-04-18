@@ -13,7 +13,7 @@
  */
 abstract class Mixable
 {
-    static $mixin_classes; /* array of Mixin class names; subclasses can override */
+    static $mixin_classes = array(); /* array of Mixin class names; subclasses can override */
     
     private static $mixin_classes_map = array();
 
@@ -22,18 +22,10 @@ abstract class Mixable
         $cls = get_called_class();
      
         $mixin_classes = @Mixable::$mixin_classes_map[$cls];
-          
+        
         if (!isset($mixin_classes))
         {   
-            if (isset(static::$mixin_classes))
-            {
-                $mixin_classes = static::$mixin_classes;
-            }
-            else
-            {
-                $mixin_classes = array();
-            }
-        
+            $mixin_classes = static::$mixin_classes;        
             Mixable::$mixin_classes_map[$cls] = $mixin_classes;
         }
         return $mixin_classes;
