@@ -21,7 +21,7 @@ function is_installed()
 {
     try
     {
-        return Datalist::get('installed');
+        return State::get('installed');
     }
     catch (DatabaseException $e)
     {
@@ -73,7 +73,7 @@ if (!is_installed())
         }
     }
     
-    Datalist::set('installed', 1);    
+    State::set('installed', 1);    
     echo "done\n";
 }
 else

@@ -4,7 +4,7 @@
  * Storage and retrieval of system-wide data values.
  * Similar idea as Config, but with keys/values persisted in the database.
  */
-class Datalist
+class State
 {
     static $cached_list = null;
 
@@ -14,7 +14,7 @@ class Datalist
         {
             $cache = get_cache();
 
-            static::$cached_list = $cache->get('datalist');
+            static::$cached_list = $cache->get('state');
 
             if (!is_array(static::$cached_list))
             {
@@ -29,16 +29,13 @@ class Datalist
                     }
                 }
 
-                $cache->set('datalist', static::$cached_list);
+                $cache->set('state', static::$cached_list);
             }
         }    
     }
     
     /**
-     * Get the value of a particular piece of data in the datalist
-     *
-     * @param string $name The name of the datalist
-     * @return string|false Depending on success
+     * Get the value of a particular piece of global state
      */
     static function get($name)
     {
@@ -47,11 +44,7 @@ class Datalist
     }
 
     /**
-     * Sets the value for a system-wide piece of data (overwriting a previous value if it exists)
-     *
-     * @param string $name The name of the datalist
-     * @param string $value The new value
-     * @return true
+     * Sets the value for a system-wide piece of global state (overwriting a previous value if it exists)
      */
     static function set($name, $value)
     {
@@ -62,8 +55,6 @@ class Datalist
         
         static::$cached_list[$name] = $value;
 
-        get_cache()->set('datalist', static::$cached_list);
-
-        return true;
+        get_cache()->set('state', static::$cached_list);
     }
 }

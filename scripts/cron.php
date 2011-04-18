@@ -8,22 +8,20 @@
  * This process does as little as possible to avoid memory leaks. 
  */
 
-require_once("scripts/cmdline.php");
+require_once "engine/start.php";
+require_once "scripts/cmdline.php";
 
-$cronTasks = array(
-   array(
-       'interval' => 720,
-       'cmd' => "php scripts/backup.php"
-   ),
-   array(
-       'interval' => 30,
-       'cmd' => "php mod/reports/scripts/publish_reports.php"
-   ),   
-   array(
-       'interval' => 1440,
-       'cmd' => "php scripts/backup_s3.php"
-   )   
-);
+$cron_file = Config::get('path') . "crontab.php";
+$cronTasks = include $cron_file;
+
+foreach (Config::get('modules') as $module_name)
+{
+    $cron_file = get_module_path($module_name) . "crontab.php";
+    if (is_file($cron_file))
+    {
+        $cronTasks = array_merge($cronTasks, include $cron_file);
+    }
+}
 
 $minute = 0;
 
