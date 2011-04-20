@@ -305,7 +305,7 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'home/edit')]");
         $this->clickAndWait("//a[contains(text(),'Latest Updates')]");
 
-        $this->clickAndWait("//div[@class='feed_post' and .//div[@class='feed_snippet' and contains(text(), 'this is a test post')]]//a[@class='hideMessages']");        
+        $this->clickAndWait("//div[@class='feed_post' and .//div[@class='feed_snippet' and contains(text(), 'this is a test post')]]//a[@class='admin_links']");        
         $this->getConfirmation();
         $this->ensureGoodMessage();
         $this->mustNotExist("//div[@class='feed_snippet' and contains(text(), 'this is a test post')]");        
