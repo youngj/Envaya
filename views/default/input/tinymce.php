@@ -1,6 +1,5 @@
 <?php
     $value = @$vars['value'];
-    $valueIsHTML = isset($vars['valueIsHTML']) ? $vars['valueIsHTML'] : true;
     $name = $vars['name'];
     $widthCSS = @$vars['width'] ? "width:{$vars['width']}px;" : '';
     $heightCSS = @$vars['height'] ? "height:{$vars['height']}px;" : '';
@@ -34,7 +33,8 @@
         'id' => "content_html$TINYMCE_INCLUDE_COUNT",
         'trackDirty' => true,
         'js' => "style='display:none;{$widthCSS}{$heightCSS}'",
-        'value' => $valueIsHTML ? Markup::render_editor_html($value) : view('output/longtext', array('value' => $value))));
+        'value' => Markup::render_editor_html($value)
+    ));
 ?>
 
 <script type="text/javascript">

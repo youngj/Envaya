@@ -34,22 +34,15 @@ class Action_Contact extends Action
         
         if (!$this->message)
         {
-            redirect_back_error(__('feedback:empty'));
+            throw new ValidationException(__('feedback:empty'));
         }
         
         if (!$this->email)
         {
-            redirect_back_error(__('feedback:email_empty'));
+            throw new ValidationException(__('feedback:email_empty'));
         }
 
-        try
-        {
-            validate_email_address($this->email);
-        }
-        catch (ValidationException $ex)
-        {
-            redirect_back_error($ex->getMessage());
-        }            
+        validate_email_address($this->email);
             
         $mail = OutgoingMail::create($this->get_email_subject(), $this->get_email_body());
         $mail->setReplyTo($this->email);
@@ -58,5 +51,10 @@ class Action_Contact extends Action
         
         SessionMessages::add(__('feedback:sent'));
         forward($this->get_redirect_url());
+    }    
+    
+    protected function handle_validation_exception($ex)
+    {
+        redirect_back_error($ex->getMessage());
     }    
 }    

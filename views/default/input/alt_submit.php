@@ -9,10 +9,10 @@
         ob_start();
         ?>
 <script type='text/javascript'>
-function altSubmit($id)
+function altSubmit($id, $value)
 {
     var hiddenField = document.getElementById($id);
-    hiddenField.value = "1";
+    hiddenField.value = $value;
     for (var i = 0; i < document.forms.length; i++)
     {
         var form = document.forms[i];
@@ -49,7 +49,7 @@ function altSubmit($id)
     {
         $js .= "&& setSubmitted() ";
     }
-    $js .= "&& altSubmit(".json_encode($hidden_id).");'";
+    $js .= "&& altSubmit(".json_encode($hidden_id).",1);'";
 	    
     echo view('input/button', array(
         'name' => "_alt_submit",

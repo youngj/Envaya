@@ -301,4 +301,22 @@ class Controller_Pg extends Controller {
         $action = new Action_EmailSettings($this);
         $action->execute();   
     }    
+
+    function action_delete_feed_item()
+    {
+        $this->validate_security_token();
+        $feedItem = FeedItem::query()->where('id = ?', (int)get_input('item'))->get();
+        
+        if (!$feedItem || !$feedItem->can_edit())
+        {
+            return redirect_back_error(__('page:notfound:details'));
+        }
+        
+        foreach ($feedItem->query_items_in_group()->filter() as $item)
+        {
+            $item->delete();
+        }           
+        SessionMessages::add(__('feed:item_deleted'));
+        redirect_back();
+    }    
 }

@@ -2,7 +2,9 @@
 
 class Action_Registration_CreateProfileBase extends Action
 {
-    protected function _process_input()
+    protected function post_process_input() {} // subclasses should override
+
+    function process_input()
     {
         $this->require_login();
     
@@ -24,11 +26,7 @@ class Action_Registration_CreateProfileBase extends Action
             throw new ValidationException(__("setup:sector:toomany"));
         }
 
-        $homeWidget = $org->get_widget_by_name('home');
-        $homeWidget->set_content($mission);
-
         $org->language = get_input('content_language');
-
         $org->set_sectors($sectors);
         $org->city = get_input('city');
         $org->region = get_input('region');
@@ -43,7 +41,14 @@ class Action_Registration_CreateProfileBase extends Action
             $org->set_lat_long($latlong['lat'], $latlong['long']);
         }
 
-        $homeWidget->save();
+        $home = $org->get_widget_by_class('WidgetHandler_Home');
+        if (!$home->guid)
+        {
+            $home->save();
+        }
+        $mission_section = $home->get_widget_by_class('WidgetHandler_Mission');        
+        $mission_section->set_content($mission);                
+        $mission_section->save();
 
         $prevSetupState = $org->setup_state;
         
@@ -61,5 +66,7 @@ class Action_Registration_CreateProfileBase extends Action
         }            
         
         SessionMessages::add(__("setup:ok"));
+        
+        $this->post_process_input();
     }    
 }

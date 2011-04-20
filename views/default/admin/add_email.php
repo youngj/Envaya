@@ -34,7 +34,6 @@
     echo view('input/tinymce',
         array(
             'name' => 'content',
-            'valueIsHTML' => true,
             'value' => '',
             'trackDirty' => true
         )

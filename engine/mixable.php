@@ -10,6 +10,7 @@
  *
  * Mixins can also be added to a Mixable class at runtime, which allows modules 
  * (in mod/.../start.php) to extend the functionality of core classes in engine/
+ *
  */
 abstract class Mixable
 {

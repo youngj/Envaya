@@ -40,13 +40,7 @@ abstract class Action
             }
             catch (ValidationException $ex)
             {
-                SessionMessages::add_error($ex->getMessage());
-                $this->render();
-                if (!$this->get_request()->response)
-                {
-                    Session::save_input();
-                    redirect_back();
-                }
+                $this->handle_validation_exception($ex);
             }
             
             $this->record_user_action();
@@ -58,6 +52,17 @@ abstract class Action
         
         $this->after();
     }        
+    
+    protected function handle_validation_exception($ex)
+    {
+        SessionMessages::add_error($ex->getMessage());
+        $this->render();
+        if (!$this->get_request()->response)
+        {
+            Session::save_input();
+            redirect_back();
+        }    
+    }
     
     protected function validate_security_token()
     {

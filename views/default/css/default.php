@@ -1155,6 +1155,14 @@ a.gridDelete:hover, a.hideMessages:hover
     background-position:left -5px;
 }
 
+.deleteSection
+{
+    cursor:pointer;
+    border: 0px;
+    width:22px;
+}
+
+
 .hideMessages
 {
     float:right; 

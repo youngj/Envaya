@@ -5,7 +5,14 @@ class FeedItemHandler_Message extends FeedItemHandler
     function is_valid($item)
     {
         $message = $item->get_subject_entity();
-        return $message && $message->get_container_entity();
+        if (!$message || !$message->is_enabled())
+            return false;
+        
+        $container = $message->get_container_entity();
+        if (!$container || !$container->is_enabled())
+            return false;
+        
+        return true;
     }
 
     function render_heading($item, $mode)

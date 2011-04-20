@@ -3,9 +3,23 @@
 
     $widget = $vars['widget'];
     
-    $content = view('widgets/edit_title', array('widget' => $widget));
+    ob_start();
     
-    $content .= view('widgets/edit_content', array('widget' => $widget));
+    if ($widget->title || !in_array($widget->widget_name, Widget::get_default_names()))
+    {
+        if ($widget->is_page())
+        {
+            echo view('widgets/edit_title', array('value' => $widget->title));
+        }
+        else
+        {
+            echo view('widgets/edit_section_title', array('value' => $widget->title));
+        }
+    }
+    
+    echo view('widgets/edit_content', array('widget' => $widget));
+    
+    $content = ob_get_clean();
 
     echo view("widgets/edit_form", array(
         'widget' => $widget,

@@ -21,10 +21,10 @@ class Action_Discussion_NewTopic extends Action
             }
         }                
         
-        $uuid = get_input('uuid');
+        $uniqid = get_input('uniqid');
 
         $duplicate = $org->query_discussion_topics()
-            ->with_metadata('uuid', $uuid)
+            ->with_metadata('uniqid', $uniqid)
             ->get();
         if ($duplicate)
         {
@@ -66,7 +66,7 @@ class Action_Discussion_NewTopic extends Action
         {
             $topic->owner_guid = $user->guid;
         }
-        $topic->set_metadata('uuid', $uuid);
+        $topic->set_metadata('uniqid', $uniqid);
         $topic->save();
         
         $message = new DiscussionMessage();

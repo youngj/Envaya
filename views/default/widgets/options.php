@@ -39,7 +39,9 @@ echo view('input/text', array(
 <table style='float:right;font-size:10px;'>
 
 <?php 
-    foreach ($widget->get_container_entity()->get_available_widgets() as $w)
+    $sibling_widgets = $widget->get_container_entity()->query_menu_widgets()->filter();
+
+    foreach ($sibling_widgets as $w)
     {
         echo "<tr><td>{$w->get_menu_order()}</td><td style='padding-left:5px;'><a href='{$w->get_base_url()}/options'>".escape($w->get_title())."</a></td></tr>";
     }

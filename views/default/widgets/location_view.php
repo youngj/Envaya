@@ -1,7 +1,11 @@
+<div class='section_content padded'>
 <?php
 
-$org = $vars['org'];
-$zoom = $vars['zoom'] ?: 10;
+$widget = $vars['widget'];
+
+$org = $widget->get_root_container_entity();
+
+$zoom = $widget->zoom ?: 10;
 
 $lat = $org->get_latitude();
 $long = $org->get_longitude();
@@ -21,3 +25,5 @@ echo "<a href='/org/browse/?lat=$lat&long=$long&zoom=10'>";
 echo __('org:see_nearby');
 echo "</a>";
 echo "</div>";
+?>
+</div>

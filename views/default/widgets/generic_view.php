@@ -1,16 +1,13 @@
-<div class='padded section_content'>
 <?php
     $widget = $vars['widget'];
 
-    if (!$widget->content)
-    {
-        echo sprintf(__('widget:empty'), escape($widget->get_title()));
+    if (!$widget->content && $widget->is_page())
+    {    
+        $content = sprintf(__('widget:empty'), escape($widget->get_title()));
     }
     else
     {
-        echo $widget->render_content();
+        $content = $widget->render_content();
     }
-
+    echo view('section', array('content' => $content));
 ?>
-<div style='clear:both'></div>
-</div>

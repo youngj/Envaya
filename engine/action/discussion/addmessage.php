@@ -7,10 +7,10 @@ class Action_Discussion_AddMessage extends Action
         $topic = $this->get_topic();                       
         $org = $this->get_org();
 
-        $uuid = get_input('uuid');
+        $uniqid = get_input('uniqid');
 
         $duplicate = $topic->query_messages()
-            ->with_metadata('uuid', $uuid)
+            ->with_metadata('uniqid', $uniqid)
             ->get();
         if ($duplicate)
         {
@@ -54,7 +54,7 @@ class Action_Discussion_AddMessage extends Action
         $message->subject = "RE: {$topic->subject}";            
         $message->time_posted = $time;
         $message->set_content($content, true);
-        $message->set_metadata('uuid', $uuid);
+        $message->set_metadata('uniqid', $uniqid);
         
         if ($user)
         {

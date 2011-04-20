@@ -11,8 +11,12 @@ class Controller_Page extends Controller_Profile
     
     function before()
     {
-        parent::before();
-        
+        parent::before();        
+        $this->init_widget();
+    }    
+    
+    protected function init_widget()
+    {    
         $widgetName = $this->request->param('id');        
         $this->widget = $this->org->get_widget_by_name($widgetName); 
     }
@@ -39,4 +43,16 @@ class Controller_Page extends Controller_Profile
         $action = new Action_WidgetOptions($this);
         $action->execute();                           
     }           
+    
+    function action_reorder()
+    {
+        $action = new Action_ReorderWidget($this);
+        $action->execute();
+    }
+    
+    function action_add_widget()
+    {
+        $action = new Action_AddWidget($this);
+        $action->execute();
+    }
 }

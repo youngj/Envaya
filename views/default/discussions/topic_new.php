@@ -23,7 +23,7 @@
     echo "</div>";
 
     echo view('input/hidden', array(
-        'name' => 'uuid',
+        'name' => 'uniqid',
         'value' => uniqid("",true)
     ));
     
@@ -34,7 +34,7 @@
 
 <script type='text/javascript'>
 (function(){
-    document.forms[0].uuid.value = new Date().getTime() + "." + Math.random();
+    document.forms[0].uniqid.value = new Date().getTime() + "." + Math.random();
 })();
 </script>
 

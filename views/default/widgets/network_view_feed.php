@@ -21,7 +21,7 @@
     if ($items)
     {
 ?>
-<div class='section_header'><?php echo __('widget:news:latest'); ?></div>
+<div class='section_header'><?php echo __('widget:updates'); ?></div>
 <div class='section_content'>
 <div id='feed_container'>
 <?php	

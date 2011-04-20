@@ -58,9 +58,16 @@ function install_org($username)
     $org->approval = 1;
     $org->save();
     
-    $org->get_widget_by_name('home')->save();
-    $org->get_widget_by_name('news')->save();
-    $org->get_widget_by_name('contact')->save();
+    $home = $org->get_widget_by_class('WidgetHandler_Home');
+    $home->save();
+            
+    $home->get_widget_by_class('WidgetHandler_Mission')->save();        
+    $home->get_widget_by_class('WidgetHandler_Updates')->save();        
+    $home->get_widget_by_class('WidgetHandler_Sectors')->save();
+    $home->get_widget_by_class('WidgetHandler_Location')->save();    
+    
+    $org->get_widget_by_class('WidgetHandler_News')->save();
+    $org->get_widget_by_class('WidgetHandler_Contact')->save();
     
     return $org;
 }
@@ -73,6 +80,7 @@ function install_grantmaker()
     $org->save();
     
     $reports = $org->get_widget_by_name('reports');
+    $reports->menu_order = 80;
     $reports->handler_class = 'WidgetHandler_ReportDefinitions';
     $reports->save();
 }

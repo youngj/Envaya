@@ -2,9 +2,8 @@
 
     return array(
         'setup:instructions' => "Now we will ask a few questions about your organization so that we can create a homepage for you. (You will be able to add more content later.)",
-        'setup:mission' => "What is the mission of your organization?",
-        'setup:mission:help' => "This will appear at the top of your homepage.",
         'setup:mission:blank' => "Please enter the mission of your organization.",
+        'setup:mission:help' => "This will appear at the top of your homepage.",
         'setup:language' => "What language will you use for the written content on your website?",
         'setup:language:help' => "Envaya will allow people who cannot read that language to view a translated version in their own language.",
 

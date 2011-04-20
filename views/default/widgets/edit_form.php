@@ -7,24 +7,27 @@
     
     $form_body .= view('input/hidden', array('name' => 'widget_name', 'value' => $widget->widget_name));
     
+    $is_page = $widget->is_page();
+    
     if ($widget->guid && ($widget->status != EntityStatus::Disabled))
     {
         $form_body .= view('input/alt_submit', array(
             'name' => "delete",
             'trackDirty' => true,
-            'confirmMessage' => __('widget:delete:confirm'),
+            'confirmMessage' => $is_page ? __('widget:delete:confirm') : __('widget:delete_section:confirm'),
             'id' => 'widget_delete',
-            'value' => __('widget:delete')
+            'value' => $is_page ? __('widget:delete') : __('widget:delete_section')
         ));
     }
     
     if (!$noSave)
     {
-        $saveText = __('widget:save');       
+        $saveText = __('widget:publish');
     }
     else
     {
-        $saveText = $widget->is_active() ? __('widget:view') : __('widget:create');        
+        $saveText = $widget->is_active() ? __('widget:view') : 
+            ($is_page ? __('widget:create') : __('widget:create_section'));        
     }
     $form_body .= view('input/submit', array('value' => $saveText));
     

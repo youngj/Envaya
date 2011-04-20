@@ -46,7 +46,7 @@ class Controller_Profile extends Controller
             }
             else
             {
-                $widget = $this->org->query_widgets()->order_by('menu_order')->get();
+                $widget = $this->org->query_menu_widgets()->get();
                 return $this->index_widget($widget, true);
             }
         }
@@ -167,18 +167,17 @@ class Controller_Profile extends Controller
     {
         $org = $this->org;
         
-        foreach ($org->get_available_widgets() as $widget)
+        $widgets = $org->query_menu_widgets()->filter();
+        
+        foreach ($widgets as $widget)
         {
-            if ($widget->is_active() && $widget->in_menu)
-            {
-                $is_selected = $cur_widget && $cur_widget->guid == $widget->guid;
-            
-                PageContext::get_submenu()->add_item(
-                    $widget->get_title(), 
-                    rewrite_to_current_domain($widget->get_url()),
-                    $is_selected
-                );
-            }
+            $is_selected = $cur_widget && $cur_widget->guid == $widget->guid;
+        
+            PageContext::get_submenu()->add_item(
+                $widget->get_title(), 
+                rewrite_to_current_domain($widget->get_url()),
+                $is_selected
+            );
         }        
     }
 

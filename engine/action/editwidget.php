@@ -46,7 +46,7 @@ class Action_EditWidget extends Action
             $widget->disable();
             $widget->save();
 
-            SessionMessages::add(__('widget:delete:success'));
+            SessionMessages::add($widget->is_page() ? __('widget:delete:success') : __('widget:delete_section:success'));            
 
             forward($this->get_org()->get_url());
         }
@@ -55,6 +55,12 @@ class Action_EditWidget extends Action
             if (!$widget->is_enabled())
             {
                 $widget->enable();
+            }            
+            $container = $widget->get_container_entity();
+            if (!$container->is_enabled())
+            {
+                $container->enable();
+                $container->save();
             }
 
             try
@@ -71,6 +77,7 @@ class Action_EditWidget extends Action
             }
             
             SessionMessages::add(__('widget:save:success'));
+            
             forward($widget->get_url());
         }
     }
@@ -82,14 +89,15 @@ class Action_EditWidget extends Action
         
         $widgetTitle = $widget->get_title();
 
-        if ($widget->guid && $widget->is_enabled())
+        if ($widget->is_page())
         {
-            $title = sprintf(__("widget:edittitle"), $widgetTitle);
+            $title = sprintf(__("widget:edit_title"), $widgetTitle);
         }
         else
         {
-            $title = sprintf(__("widget:edittitle:new"), $widgetTitle);
+            $title = sprintf(__("widget:edit_section_title"), $widget->get_container_entity()->get_title(), $widgetTitle);
         }
+        
 
         $cancelUrl = get_input('from') ?: $widget->get_url();
 

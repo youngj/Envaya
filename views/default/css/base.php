@@ -64,7 +64,7 @@ label {
     text-align:center;
 }
 
-#site_menu a, #edit_pages_menu a
+#site_menu a
 {
     margin:0px 3px;
     white-space:nowrap;

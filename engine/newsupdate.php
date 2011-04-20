@@ -45,16 +45,6 @@ class NewsUpdate extends Entity
         return '';
     }
 
-    public function has_image()
-    {
-        return ($this->data_types & DataType::Image) != 0;
-    }
-
-    public function get_snippet($maxLength = 100)
-    {
-        return Markup::get_snippet($this->content, $maxLength);
-    }
-    
     function post_feed_items()
     {
         $org = $this->get_container_entity();

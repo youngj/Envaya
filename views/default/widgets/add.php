@@ -4,12 +4,11 @@
 
 ?>
 <form action='<?php echo $org->get_url() ?>/add_page' method='POST'>
-<?php echo view('input/securitytoken'); ?>
-<div class='input'>
-<label><?php echo __('widget:title'); ?></label><br />
-<?php echo view('input/text', array('name' => 'title', 'id' => 'title', 'js' => "style='width:170px' maxlength='22'")); ?>
-<div class='help'><?php echo __('widget:title_help'); ?></div>
-</div>
+<?php
+    echo view('input/securitytoken'); 
+    
+    echo view('widgets/edit_title');
+?>
 
 <div class='input'>
 <label><?php echo __('widget:address'); ?></label>

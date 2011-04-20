@@ -2,6 +2,8 @@
     $feedItem = $vars['item'];
     $org = $feedItem->get_user_entity();
     $mode = $vars['mode'];
+    
+    $show_edit_controls = @$vars['show_edit_controls'];
         
     if ($org && $feedItem->is_valid())
     {
@@ -10,7 +12,17 @@
 
     <div class='blog_post_wrapper padded'>
     <div class="feed_post">
-        <?php 
+        <?php         
+        if ($show_edit_controls && $feedItem->can_edit()) 
+        {
+            echo view('output/confirmlink', array(
+                'href' => "/pg/delete_feed_item?item={$feedItem->id}",
+                'class' => 'hideMessages',
+                'text' => '',
+                'confirm' => __('feed:confirm_delete'),
+            ));            
+        }        
+        
         if ($mode != 'self') 
         {        
             echo view('feed/icon', array('org' => $org));            
@@ -24,15 +36,6 @@
         ?>               
         <div class='blog_date'><?php echo $feedItem->get_date_text() ?></div>
         <?php
-        if (Session::isadminloggedin()) {
-            echo "<span class='admin_links'>";
-            echo view('output/confirmlink', array(
-                'href' => "/admin/delete_feed_item?item={$feedItem->id}",
-                'text' => __('delete')
-            ));
-            echo "</span>";
-        }
-        
         if ($mode != 'self') 
         {        
             echo "</div>";

@@ -2,35 +2,31 @@
 
 class Action_Registration_CreateAccount extends Action_Registration_CreateAccountBase
 {
-    function process_input()
+    function post_process_input()
     {        
-        try
-        {    
-            $this->_process_input();
-            
-            $org = $this->org;
-            
-            $prevInfo = Session::get('registration');            
-            Session::set('registration', null);
-                        
-            $org->country = $prevInfo['country'];
-            $org->save();
+        $org = $this->org;
+        
+        $prevInfo = Session::get('registration');            
+        Session::set('registration', null);
+                    
+        $org->country = $prevInfo['country'];
+        $org->save();
 
-            $invite_code = Session::get('invite_code');
-            Session::set('invite_code', null);
-            if ($invite_code)
-            {
-                $this->update_existing_relationships($invite_code);
-            }        
-            
-            forward("/org/new?step=3");
-        }
-        catch (ValidationException $r)
+        $invite_code = Session::get('invite_code');
+        Session::set('invite_code', null);
+        if ($invite_code)
         {
-            SessionMessages::add_error($r->getMessage());
-            Session::save_input();
-            forward(Config::get('secure_url')."org/new?step=2");
-        }
+            $this->update_existing_relationships($invite_code);
+        }        
+        
+        forward("/org/new?step=3");    
+    }
+    
+    protected function handle_validation_exception($ex)
+    {
+        SessionMessages::add_error($ex->getMessage());
+        Session::save_input();
+        forward(Config::get('secure_url')."org/new?step=2");    
     }
 
     private function update_existing_relationships($invite_code)

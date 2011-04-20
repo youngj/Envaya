@@ -41,6 +41,15 @@ class FeedItem extends Model
         }
         return $res;
     }
+    
+    function can_edit()
+    {
+        $user = Session::get_loggedin_user();
+        if (!$user)
+            return false;
+    
+        return $user->admin || $user->guid == $this->subject_guid || $user->guid == $this->user_guid;
+    }
 
     function set($name, $value)
     {

@@ -20,12 +20,12 @@ abstract class Action_Registration_CreateAccountBase extends Action
             )),
             'org_only' => true,
         ));
-        echo $this->get_request()->response;
-        exit;
     } 
 
-    protected function _process_input()
-    {        
+    protected function post_process_input() {} // subclasses should override
+    
+    function process_input()
+    {
         $name = trim(get_input('org_name'));
 
         if (!$name)
@@ -96,11 +96,17 @@ abstract class Action_Registration_CreateAccountBase extends Action
         $org->save();
 
         /* auto-create empty pages */
-        $org->get_widget_by_name('home')->save();
+        $home = $org->get_widget_by_class('WidgetHandler_Home');
+        $home->save();
+                
+        $home->get_widget_by_class('WidgetHandler_Mission')->save();        
+        $home->get_widget_by_class('WidgetHandler_Updates')->save();        
+        $home->get_widget_by_class('WidgetHandler_Sectors')->save();
+        $home->get_widget_by_class('WidgetHandler_Location')->save();
         
-        $org->get_widget_by_name('news')->save();
+        $org->get_widget_by_class('WidgetHandler_News')->save();
 
-        $contactWidget = $org->get_widget_by_name('contact');
+        $contactWidget = $org->get_widget_by_class('WidgetHandler_Contact');
         if ($email)
         {
             $contactWidget->public_email = "yes";
@@ -114,5 +120,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
         SessionMessages::add(__("create:ok"));   
 
         $this->org = $org;
-    }
+        
+        $this->post_process_input();
+    }      
 }

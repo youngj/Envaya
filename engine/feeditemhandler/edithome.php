@@ -19,7 +19,7 @@ class FeedItemHandler_EditHome extends FeedItemHandler
         if ($mode != 'self')
         {
             $org = $item->get_user_entity();
-            return view('feed/home', array('org' => $org, 'home_widget' => $org->get_widget_by_name('home')), 'default');
+            return view('feed/home', array('org' => $org, 'home_widget' => $org->get_widget_by_name('home')));
         }        
         return '';
     }

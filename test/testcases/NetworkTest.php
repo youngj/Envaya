@@ -250,7 +250,7 @@ class NetworkTest extends SeleniumTest
         $this->mustNotExist("//a[contains(@href, 'testorg')]"); // suggested reverse relationship should not be public
         $this->open('/pg/login');
         $this->login('testposter15','testtest');
-        $this->clickAndWait("//div[@id='new_pages_menu']//a[contains(@href,'network/edit')]");
+        $this->clickAndWait("//div[@class='widget_list']//a[contains(@href,'network/edit')]");
         $this->clickAndWait("//a[contains(@href,'action=approve')]");
         $this->ensureGoodMessage();
         $this->open('/testposter15/network');
@@ -263,7 +263,7 @@ class NetworkTest extends SeleniumTest
         $this->mustNotExist("//a[contains(@href, 'testorg')]"); // suggested reverse relationship should not be public
         $this->open('/pg/login');
         $this->login('testposter13','testtest');
-        $this->clickAndWait("//div[@id='new_pages_menu']//a[contains(@href,'network/edit')]");
+        $this->clickAndWait("//div[@class='widget_list']//a[contains(@href,'network/edit')]");
         $this->clickAndWait("//a[contains(@href,'action=edit_relationship')]");
         $this->typeInFrame("//iframe", "my description");        
         $this->submitForm();
@@ -276,7 +276,7 @@ class NetworkTest extends SeleniumTest
         // visit network page but delete suggestion
         $this->open('/pg/login');
         $this->login('testposter14','testtest');
-        $this->clickAndWait("//div[@id='new_pages_menu']//a[contains(@href,'network/edit')]");
+        $this->clickAndWait("//div[@class='widget_list']//a[contains(@href,'network/edit')]");
         $this->mouseOver("//a[contains(@href, 'testorg')]"); 
         $this->click("//a[contains(@href,'action=delete_relationship')]");
         $this->getConfirmation();

@@ -11,7 +11,6 @@
         'name' => 'blogbody',
         'autoFocus' => true,
         'trackDirty' => true,
-        'valueIsHTML' => $blog->has_data_type(DataType::HTML),
         'value' => $body)) ?>
 </div>
 

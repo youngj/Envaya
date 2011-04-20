@@ -402,7 +402,7 @@ abstract class Entity extends Model
 
     function get_container_entity()
     {
-        return Entity::get_by_guid($this->container_guid);
+        return Entity::get_by_guid($this->container_guid, true);
     }
 
     function get_root_container_entity()

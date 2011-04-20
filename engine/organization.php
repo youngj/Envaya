@@ -6,6 +6,10 @@
  */
 class Organization extends User
 {
+    static $mixin_classes = array(
+        'Mixin_WidgetContainer',
+    );
+
     static function query()
     {
         $query = User::query();
@@ -253,87 +257,6 @@ class Organization extends User
         return $res;
     }
     
-    public function query_widgets()
-    {
-        return Widget::query()->where('container_guid=?', $this->guid);
-    }
-    
-    public function query_widgets_by_class($class_name)
-    {
-        $conditions = array('handler_class=?');
-        $args = array($class_name);
-        
-        foreach (Widget::get_default_names_by_class($class_name) as $widget_name)
-        {
-            $conditions[] = "(widget_name=? AND (handler_class='' or handler_class is null))";
-            $args[] = $widget_name;
-        }
-        
-        $query = $this->query_widgets();
-        $query = $query->where(implode(' OR ', $conditions))->args($args);
-         
-        return $query;
-    }
-    
-    public function get_widget_by_class($class_name)
-    {
-        $widget = $this->query_widgets_by_class($class_name)->show_disabled(true)->get();
-        
-        if (!$widget)
-        {
-            $default_names = Widget::get_default_names_by_class($class_name);
-            if (sizeof($default_names))
-            {
-                $widget = Widget::new_default_widget($default_names[0]);
-                $widget->container_guid = $this->guid;
-            }
-        }
-        
-        return $widget;
-    }
-
-    public function get_widget_by_name($name)
-    {
-        $widget = $this->query_widgets()->where('widget_name=?',$name)->show_disabled(true)->get();
-        
-        if (!$widget)
-        {
-            $widget = Widget::new_default_widget($name);            
-            $widget->container_guid = $this->guid;
-        }
-        return $widget;
-    }
-
-    private function get_saved_widgets()
-    {
-        return Widget::query()->where('container_guid=?',$this->guid)->filter();
-    }
-    
-    public function get_available_widgets()
-    {        
-        $savedWidgetsMap = array();
-        $availableWidgets = array();
-        
-        foreach ($this->get_saved_widgets() as $widget)
-        {
-            $savedWidgetsMap[$widget->widget_name] = $widget;
-            $availableWidgets[] = $widget;
-        }        
-
-        foreach (Widget::get_default_names() as $name)
-        {
-            if (!isset($savedWidgetsMap[$name]) && !@Widget::$default_widgets[$name]['hidden'])
-            {
-                $widget = new Widget();
-                $widget->container_guid = $this->guid;
-                $widget->widget_name = $name;
-                $availableWidgets[] = $widget;
-            }            
-        }        
-        usort($availableWidgets, array('Widget', 'sort'));
-        return $availableWidgets;
-    }
-        
     function render_email_template($template)
     {
         $args = array();

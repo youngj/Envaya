@@ -52,7 +52,7 @@ echo view('input/pulldown', array(
 
 <div id='feed_container'>
 <?php	
-	echo view('feed/list', array('items' => $items));
+	echo view('feed/list', array('items' => $items, 'show_edit_controls' => Session::isadminloggedin()));
 ?>
 </div>
 

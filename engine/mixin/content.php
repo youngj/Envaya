@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Mixin for Entity classes that have free-text content stored as HTML.
+ *
+ */
 class Mixin_Content extends Mixin
 {    
     static function mixin_table_attributes()
@@ -33,20 +37,11 @@ class Mixin_Content extends Mixin
 
     public function render_content($markup_mode = null)
     {
-        $isHTML = $this->has_data_type(DataType::HTML);
+        $content = $this->translate_field('content', true);
 
-        $content = $this->translate_field('content', $isHTML);
-
-        if ($isHTML)
-        {
-            $content = Markup::render_custom_tags($content, $markup_mode);
+        // html content should be sanitized when it is input!
         
-            return $content; // html content should be sanitized when it is input!
-        }
-        else
-        {
-            return view('output/longtext', array('value' => $content));
-        }
+        return Markup::render_custom_tags($content, $markup_mode);        
     }
 
     public function has_data_type($dataType)
@@ -65,4 +60,14 @@ class Mixin_Content extends Mixin
             $this->data_types &= ~$dataType;
         }
     }        
+
+    public function has_image()
+    {
+        return ($this->data_types & DataType::Image) != 0;
+    }               
+    
+    public function get_snippet($maxLength = 100)
+    {
+        return Markup::get_snippet($this->content, $maxLength);
+    }       
 }

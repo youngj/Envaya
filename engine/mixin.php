@@ -8,6 +8,7 @@
  * into Mixins without needing to rewrite them.
  *
  * However any undefined functions called via static:: in Mixins is not forwarded to the Mixable class.
+ *
  */
 abstract class Mixin
 {

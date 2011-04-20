@@ -41,7 +41,6 @@
         'name' => 'content',
         'autoFocus' => true,
         'trackDirty' => true,
-        'valueIsHTML' => $widget->has_data_type(DataType::HTML),
         'saveFn' => 'saveDraft',
         'restoreDraftFn' => 'showOlderVersions',
         'value' => $lastRevision ? $lastRevision->content : $widget->content

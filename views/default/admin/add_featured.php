@@ -25,7 +25,6 @@
     echo view('input/tinymce',
         array(
             'name' => 'content',
-            'valueIsHTML' => true,
             'value' => $homeWidget->content,
             'trackDirty' => true
         )

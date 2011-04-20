@@ -574,24 +574,6 @@ class Controller_Admin extends Controller
         }
         forward("/admin/view_email?email={$email->guid}");    
     }
-
-    function action_delete_feed_item()
-    {
-        $this->validate_security_token();
-        $feedItem = FeedItem::query()->where('id = ?', (int)get_input('item'))->get();
-        
-        if (!$feedItem)
-        {
-            return $this->not_found();
-        }
-        
-        foreach ($feedItem->query_items_in_group()->filter() as $item)
-        {
-            $item->delete();
-        }           
-        SessionMessages::add("Feed item deleted successfully.");
-        redirect_back();
-    }
     
     function action_add_featured_photo()
     {

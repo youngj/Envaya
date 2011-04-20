@@ -26,10 +26,10 @@ class Action_NewPost extends Action
         }
         else
         {
-            $uuid = get_input('uuid');
+            $uniqid = get_input('uniqid');
 
             $duplicate = $org->query_news_updates()
-                ->with_metadata('uuid', $uuid)
+                ->with_metadata('uniqid', $uniqid)
                 ->get();
             
             if (!$duplicate)
@@ -38,7 +38,7 @@ class Action_NewPost extends Action
                 $post->owner_guid = Session::get_loggedin_userid();
                 $post->container_guid = $org->guid;
                 $post->set_content($body);
-                $post->uuid = $uuid;
+                $post->set_metadata('uniqid', $uniqid);
                 $post->save();                
                 $post->post_feed_items();
                 

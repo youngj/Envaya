@@ -127,51 +127,11 @@ a.icon_link:hover
 .icon_design    { background-position:left -273px; }
 .icon_photos    { background-position:left -313px; }
 
-#edit_pages_menu a
+.widget_list a
 {
-    color:#333;
-    display:block;
-    float:left;
-    line-height: 34px;
-    height:34px;
-    padding-left:3px;
-    margin:0px 1px 2px 0px;
-    text-decoration:none;
-}
-
-#new_pages_menu
-{
-    clear:both;
-}
-
-#new_pages_menu h4
-{
-    margin-bottom:4px;
-}
-
-#new_pages_menu a
-{
+    line-height:20px;
     padding-left:6px;
     color:#333;
-}
-
-#edit_pages_menu  a:hover
-{
-    color:black;
-    background:#d5d0c8 url(<?php echo $graphicsDir; ?>/green/button.png) no-repeat left top;
-}
-
-#edit_pages_menu a span
-{
-    padding:0 6px 0 3px;
-    height:34px;
-    cursor:pointer;
-}
-
-#edit_pages_menu a:hover span
-{
-    background:#d5d0c8 url(<?php echo $graphicsDir; ?>/green/button.png) no-repeat right top;
-    display:block;
 }
 
 .log_entry {

@@ -18,7 +18,7 @@
             'value' => __('publish')));
 
     echo view('input/hidden', array(
-        'name' => 'uuid',
+        'name' => 'uniqid',
         'value' => uniqid("",true)
     ));
 

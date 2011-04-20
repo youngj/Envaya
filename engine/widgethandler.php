@@ -21,4 +21,9 @@ abstract class WidgetHandler
     {
         return $this->get_default_title($widget);
     }
+
+    function view_feed($widget)
+    {
+        return $widget->render_content(Markup::Feed);
+    }
 }

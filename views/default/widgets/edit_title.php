@@ -1,18 +1,16 @@
-<?php
-    $widget = $vars['widget'];
-
-    if ($widget->title || !in_array($widget->widget_name, Widget::get_default_names()))
-    {
-?>
 <div class='input'>
-    <label><?php echo __("widget:title") ?></label><br />
+    <label><?php  echo __("widget:title"); ?></label><br />
     <?php echo view("input/text", array(
         'name' => 'title',
+        'id' => 'title',
         'js' => "style='width:170px' maxlength='22'",
         'trackDirty' => true,        
-        'value' => $widget->title)); 
+        'value' => @$vars['value']
+    )); 
+    
+    if (!@$vars['value'])
+    {
+        echo "<div class='help'>".__('widget:title_help')."</div>";
+    }
     ?>
 </div>
-<?php
-    }
-?>

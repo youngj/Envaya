@@ -12,10 +12,10 @@ class Action_AddPhotos extends Action
     {
         $imageNumbers = get_input_array('imageNumber');
         
-        $uuid = get_input('uuid');
+        $uniqid = get_input('uniqid');
         $org = $this->get_org();
         
-        $duplicates = NewsUpdate::query()->with_metadata('uuid', $uuid)->where('container_guid=?',$org->guid)->filter();
+        $duplicates = NewsUpdate::query()->with_metadata('uniqid', $uniqid)->where('container_guid=?',$org->guid)->filter();
         
         foreach ($imageNumbers as $imageNumber)
         {                        
@@ -45,7 +45,7 @@ class Action_AddPhotos extends Action
             $post->owner_guid = Session::get_loggedin_userid();
             $post->container_guid = $org->guid;
             $post->set_content($body);
-            $post->uuid = $uuid;
+            $post->set_metadata('uniqid', $uniqid);
             $post->save();              
             $post->post_feed_items();
         }

@@ -2,7 +2,6 @@
 
 return array(
     'setup:instructions' => 'Sasa tunauliza maswali machache kuhusu shirika lako ili tuweze kuumba ukurasa mkuu kwa ajili yako. (Utaweza kuongeza vitu zaidi baadaye.)',
-    'setup:mission' => 'Lengo la shirika lako ni nini?',
     'setup:mission:help' => 'Hili litaonyeshwa juu ya ukurasa wako mkuu.',
     'setup:mission:blank' => 'Tafadhali ingiza lengo la shirika lako.',
     'setup:language' => 'Lugha gani utatumia kuandika maandiko katika tovuti yako?',

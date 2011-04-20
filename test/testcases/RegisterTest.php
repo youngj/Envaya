@@ -201,16 +201,135 @@ class RegisterTest extends SeleniumTest
 
     private function _testEditHome()
     {
+        $this->clickAndWait("//a[contains(@href,'{$this->username}/home')]");
+    
+        $this->assertContains("Mission", $this->getText("//div[@class='section_header']"));
+        $this->assertContains("Latest Updates", $this->getText("//div[@class='section_header'][2]"));
+        $this->assertContains("Sectors", $this->getText("//div[@class='section_header'][3]"));
+        $this->assertContains("Location", $this->getText("//div[@class='section_header'][4]"));
+    
+        // update mission
         $this->clickAndWait("//a[contains(@href,'home/edit')]");
+        $this->clickAndWait("//a[contains(text(),'Mission')]");
         $this->typeInFrame("//iframe", "new mission!");
         $this->clickAndWait("//button[@type='submit']");
         $this->mouseOver("//div[contains(@class, 'section_content')]//p[contains(text(),'new mission!')]");
         $this->mouseOver("//div[@id='site_menu']//a[@class='selected']");
+        
+        $this->clickAndWait("//a[contains(@href,'home/edit')]");
+        
+        // reorder sections
+        
+        $locationRowId = $this->getAttribute("//tr[.//a[contains(text(),'Location')]]@id");
+        $sectorsRowId = $this->getAttribute("//tr[.//a[contains(text(),'Sectors')]]@id");
+        $updatesRowId = $this->getAttribute("//tr[.//a[contains(text(),'Latest Updates')]]@id");
+        $missionRowId = $this->getAttribute("//tr[.//a[contains(text(),'Mission')]]@id");
+        
+        $this->mouseOver("//tr[4]//a[@id='{$locationRowId}_up']");
+        
+        $this->click("//a[@id='{$locationRowId}_up']");
+        
+        $this->retry('mouseOver', array("//tr[1]//a[@id='{$missionRowId}_up']"));
+        $this->retry('mouseOver', array("//tr[2]//a[@id='{$updatesRowId}_up']"));        
+        $this->retry('mouseOver', array("//tr[3]//a[@id='{$locationRowId}_up']"));
+        $this->retry('mouseOver', array("//tr[4]//a[@id='{$sectorsRowId}_up']"));
+        
+        $this->click("//a[@id='{$locationRowId}_up']");
+        
+        $this->retry('mouseOver', array("//tr[1]//a[@id='{$missionRowId}_up']"));
+        $this->retry('mouseOver', array("//tr[2]//a[@id='{$locationRowId}_up']"));        
+        $this->retry('mouseOver', array("//tr[3]//a[@id='{$updatesRowId}_up']"));
+        $this->retry('mouseOver', array("//tr[4]//a[@id='{$sectorsRowId}_up']"));        
+        
+        $this->click("//a[@id='{$locationRowId}_up']");
+
+        $this->retry('mouseOver', array("//tr[1]//a[@id='{$locationRowId}_up']"));
+        $this->retry('mouseOver', array("//tr[2]//a[@id='{$missionRowId}_up']"));        
+        $this->retry('mouseOver', array("//tr[3]//a[@id='{$updatesRowId}_up']"));
+        $this->retry('mouseOver', array("//tr[4]//a[@id='{$sectorsRowId}_up']"));                        
+        
+        $this->click("//a[@id='{$sectorsRowId}_up']");
+
+        $this->retry('mouseOver', array("//tr[1]//a[@id='{$locationRowId}_up']"));
+        $this->retry('mouseOver', array("//tr[2]//a[@id='{$missionRowId}_up']"));        
+        $this->retry('mouseOver', array("//tr[3]//a[@id='{$sectorsRowId}_up']"));
+        $this->retry('mouseOver', array("//tr[4]//a[@id='{$updatesRowId}_up']"));                        
+        
+        // create custom section
+        $this->clickAndWait("//a[contains(@href,'add_widget')]");
+        $this->type("//input[@name='title']",'My New Section');
+        $this->typeInFrame("//iframe", "yay!");
+        
+        $this->submitForm();
+
+        $this->assertContains("Location", $this->getText("//div[@class='section_header']"));
+        $this->assertContains("Mission", $this->getText("//div[@class='section_header'][2]"));
+        $this->assertContains("Sectors", $this->getText("//div[@class='section_header'][3]"));
+        $this->assertContains("Latest Updates", $this->getText("//div[@class='section_header'][4]"));        
+        $this->assertContains("My New Section", $this->getText("//div[@class='section_header'][5]"));        
+        $this->mouseOver("//div[contains(@class, 'section_content')][5]//p[contains(text(),'yay!')]");        
+
+        // edit custom section
+        $this->clickAndWait("//a[contains(@href,'home/edit')]");
+        
+        $this->clickAndWait("//a[contains(text(),'My New Section')]");
+
+        $this->type("//input[@name='title']",'New Section 2');
+        $this->typeInFrame("//iframe", "yay 2!");
+        $this->submitForm();
+        
+        $this->assertContains("New Section 2", $this->getText("//div[@class='section_header'][5]"));        
+        $this->mouseOver("//div[contains(@class, 'section_content')][5]//p[contains(text(),'yay 2!')]");
+        
+        // delete sectors section
+        $this->mouseOver("//a[text()='Conflict resolution']");
+        $this->mustNotExist("//a[text()='Tourism']");                
+        $this->clickAndWait("//a[contains(@href,'home/edit')]");
+        $this->clickAndWait("//a[contains(text(),'Sectors')]");
+        $this->submitForm("//button[@id='widget_delete']");        
+        $this->getConfirmation();
+        $this->mustNotExist("//div[@class='section_header' and contains(text(),'Sectors')]");
+        
+        // bring sectors section back
+        $this->clickAndWait("//a[contains(@href,'home/edit')]");
+        $this->clickAndWait("//div[@class='widget_list']//a[contains(text(),'Sectors')]");
+        $this->check("//input[@name='sector[]' and @value='21']");
+        $this->submitForm();
+        $this->mouseOver("//div[@class='section_header' and contains(text(),'Sectors')]");
+        $this->mouseOver("//a[text()='Conflict resolution']");
+        $this->mouseOver("//a[text()='Tourism']");
+        
+        // test delete feed item from news update
+        $this->mouseOver("//div[@class='feed_snippet' and contains(text(), 'this is a test post')]");
+        $this->mouseOver("//div[@class='feed_post']//a[contains(@href,'projects')]");
+        $this->clickAndWait("//a[contains(@href,'home/edit')]");
+        $this->clickAndWait("//a[contains(text(),'Latest Updates')]");
+
+        $this->clickAndWait("//div[@class='feed_post' and .//div[@class='feed_snippet' and contains(text(), 'this is a test post')]]//a[@class='hideMessages']");        
+        $this->getConfirmation();
+        $this->ensureGoodMessage();
+        $this->mustNotExist("//div[@class='feed_snippet' and contains(text(), 'this is a test post')]");        
+        $this->mouseOver("//div[@class='feed_post']//a[contains(@href,'projects')]");
+        $this->submitForm();
+        $this->mustNotExist("//div[@class='feed_snippet' and contains(text(), 'this is a test post')]");        
+        $this->mouseOver("//div[@class='feed_post']//a[contains(@href,'projects')]");
+
+        // test edit location
+        $this->mouseOver("//em[contains(text(),'Wete, Pemba North, Tanzania')]");        
+        $this->clickAndWait("//a[contains(@href,'home/edit')]");
+        $this->clickAndWait("//a[contains(text(),'Location')]");
+        
+        $this->assertEquals("Wete", $this->getValue("//input[@name='city']"));
+        $this->type("//input[@name='city']", "Vitongoji");
+        $this->submitForm();
+        $this->mouseOver("//em[contains(text(),'Vitongoji, Pemba North, Tanzania')]");        
+        $this->assertContains("Vitongoji, Tanzania", $this->getText("//h3"));        
     }
 
     private function _testEditPages()
     {
         $this->clickAndWait("//a[contains(@href,'/dashboard')]");
+                
         $this->clickAndWait("//a[contains(@href,'home/edit')]");
         $this->clickAndWait("//div[@id='edit_submenu']//a");
         $this->clickAndWait("//a[contains(@href,'projects/edit')]");
@@ -218,6 +337,32 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//button[@type='submit']");
         sleep(2);
         $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'we test stuff')]");
+        
+        $this->clickAndWait("//a[contains(@href,'/dashboard')]");
+        
+        // test reordering pages so News is first
+        $homeRowId = $this->getAttribute("//tr[.//a[contains(text(),'Home')]]@id");
+        $newsRowId = $this->getAttribute("//tr[.//a[contains(text(),'News')]]@id");
+        $projectsRowId = $this->getAttribute("//tr[.//a[contains(text(),'Projects')]]@id");
+        
+        $this->mouseOver("//tr[2]//a[@id='{$newsRowId}_up']");
+        
+        $this->click("//a[@id='{$newsRowId}_up']");
+        
+        $this->retry('mouseOver', array("//tr[1]//a[@id='{$newsRowId}_up']"));
+        $this->retry('mouseOver', array("//tr[2]//a[@id='{$homeRowId}_up']"));        
+        $this->retry('mouseOver', array("//tr[3]//a[@id='{$projectsRowId}_up']"));
+        
+        $this->clickAndWait("//a[@title='Your home page']");
+        
+        // test that default page is the first one in the menu
+        $this->assertContains("News", $this->getText("//h3"));
+        $this->mouseOver("//a[@class='selected']//span[contains(text(),'News')]");
+        
+        // test that "Home" page is now the second one in the menu
+        $this->clickAndWait("//div[@id='site_menu']//a[2]");        
+        $this->assertContains("Tanzania", $this->getText("//h3"));
+
     }
     
     private function _testAddPage()

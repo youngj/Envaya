@@ -5,18 +5,19 @@
 <?php echo view('input/securitytoken'); ?>
 
 <div class='input'>
-<label><?php echo __('setup:mission') ?></label>
+<label><?php echo __('widget:mission:label') ?></label>
 <div class='help'>
 <?php echo __('setup:mission:help') ?>
 </div>
 <?php 
-    $homeWidget = $org->get_widget_by_name('home');
+    $home = $org->get_widget_by_class('WidgetHandler_Home');    
+    $mission = $home->get_widget_by_class('WidgetHandler_Mission');
+    
     echo view('input/tinymce', array(
         'name' => 'mission',
         'autoFocus' => true,
-        'trackDirty' => true,
-        'valueIsHTML' => $homeWidget->has_data_type(DataType::HTML),
-        'value' => $homeWidget->content
+        'trackDirty' => true,        
+        'value' => $mission->content
     )); 
 ?>
 </div>

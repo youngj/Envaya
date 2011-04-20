@@ -1,21 +1,20 @@
 <?php
     $org = $vars['org'];
-    $home = $vars['home_widget'];
+    $widget = $vars['home_widget'];
 
-    echo view('feed/snippet', array(
-        'max_length' => 500,
-        'content' => "<em>".__('org:mission')."</em>: " . $home->render_content(Markup::Feed),
-        'link_url' => $home->get_url()
-    ));
-
-    echo "<div class='feed_snippet'>";
-    echo "<em>".__('org:sectors')."</em>: ";
-    echo view("org/sectors", array('sectors' => $org->get_sectors(), 'sector_other' => $org->sector_other), 'default');
-    echo "</div>";
-
-    echo "<div class='feed_snippet'>";
-    echo "<em>".__('org:location')."</em>: ";
-    echo "<a href='/org/browse/?lat={$org->get_latitude()}&long={$org->get_longitude()}&zoom=10'>";
-    echo $org->get_location_text(false);
-    echo "</a>";
-    echo "</div>";
+    $handler = $widget->get_handler();
+    
+    $url = $widget->get_url();
+    
+    foreach ($widget->query_menu_widgets()->limit(5)->filter() as $sub_widget)
+    {
+        $feed_html = $sub_widget->render_view_feed();        
+        if ($feed_html)
+        {
+            echo view('feed/snippet', array(
+                'content' => "<em>".escape($sub_widget->get_title())."</em>: $feed_html",
+                'max_length' => 500,
+                'link_url' => $url,
+            ));
+        }
+    }
