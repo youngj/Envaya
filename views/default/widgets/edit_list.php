@@ -111,6 +111,6 @@ function asyncReorderWidget($url, $table_id, $link_id)
     if (sizeof($non_menu_widgets))
     {
         echo "<div class='widget_list'>";
-        echo implode('', $non_menu_widgets);
+        echo implode('<br />', $non_menu_widgets);
         echo "</div>";    
     }

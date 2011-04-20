@@ -1,3 +1,3 @@
   `content` mediumtext NOT NULL,
-  `data_types` tinyint(4) not null default 0,        
+  `thumbnail_url` text default null,        
   `language` varchar(4) default null

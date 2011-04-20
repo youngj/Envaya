@@ -5,7 +5,6 @@
     $org = $widget->get_root_container_entity();
     
     $sectors = $org->get_sectors();
-	$other = $org->sector_other;
 
 	sort($sectors);
 
@@ -19,9 +18,9 @@
 
 	echo implode(', ', $sectorNames);
 
-	if (in_array(OrgSectors::Other, $sectors) && $other)
+	if (in_array(OrgSectors::Other, $sectors) && $org->sector_other)
 	{
-		echo " (".escape($other).")";
+		echo " (".escape($org->sector_other).")";
 	}       
 ?>
 </div>

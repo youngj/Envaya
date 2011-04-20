@@ -7,12 +7,6 @@ class EntityStatus
     const Draft = 2;
 }
 
-class DataType
-{
-    const Image = 2;
-    const HTML = 4;
-}
-
 class EntityRegistry
 {
     private static $subtype_to_class = array(

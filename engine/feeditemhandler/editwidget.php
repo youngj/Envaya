@@ -17,7 +17,7 @@ class FeedItemHandler_EditWidget extends FeedItemHandler
         $widget = $item->get_subject_entity();
         return view('feed/thumbnail', array(
             'link_url' => $this->get_url($item),
-            'thumbnail_url' => $widget->has_image() ? $widget->thumbnail_url : ''
+            'thumbnail_url' => $widget->thumbnail_url
         ));
     }
         

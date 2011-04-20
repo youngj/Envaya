@@ -15,7 +15,7 @@ class FeedItemHandler_News extends FeedItemHandler
         $update = $item->get_subject_entity();
         return view('feed/thumbnail', array(
             'link_url' => $this->get_url($item),
-            'thumbnail_url' => $update->has_image() ? $update->thumbnail_url : ''
+            'thumbnail_url' => $update->thumbnail_url
         ));        
     }
         

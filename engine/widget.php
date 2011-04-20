@@ -19,7 +19,7 @@ class Widget extends Entity
         'in_menu' => 1,
         'handler_class' => '',
         'handler_arg' => '',
-        'title' => '',
+        'title' => '',       
     );
     static $mixin_classes = array(
         'Mixin_Content',

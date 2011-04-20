@@ -10,7 +10,7 @@ class Mixin_Content extends Mixin
     {
         return array(
             'content' => '',
-            'data_types' => 0,
+            'thumbnail_url' => '',
             'language' => '',
         );
     }
@@ -23,11 +23,7 @@ class Mixin_Content extends Mixin
         }
         
         $this->content = $content;
-        $this->set_data_type(DataType::HTML, true);
-
-        $thumbnailUrl = UploadedFile::get_thumbnail_url_from_html($content);        
-        $this->set_data_type(DataType::Image, $thumbnailUrl != null);
-        $this->thumbnail_url = $thumbnailUrl;            
+        $this->thumbnail_url = UploadedFile::get_thumbnail_url_from_html($content);        
 
         if (!$this->language)
         {            
@@ -39,33 +35,11 @@ class Mixin_Content extends Mixin
     {
         $content = $this->translate_field('content', true);
 
-        // html content should be sanitized when it is input!
+        // html content should be sanitized when it is input!        
         
         return Markup::render_custom_tags($content, $markup_mode);        
     }
 
-    public function has_data_type($dataType)
-    {
-        return ($this->data_types & $dataType) != 0;
-    }
-
-    public function set_data_type($dataType, $val)
-    {
-        if ($val)
-        {
-            $this->data_types |= $dataType;
-        }
-        else
-        {
-            $this->data_types &= ~$dataType;
-        }
-    }        
-
-    public function has_image()
-    {
-        return ($this->data_types & DataType::Image) != 0;
-    }               
-    
     public function get_snippet($maxLength = 100)
     {
         return Markup::get_snippet($this->content, $maxLength);
