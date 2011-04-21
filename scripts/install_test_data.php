@@ -58,16 +58,16 @@ function install_org($username)
     $org->approval = 1;
     $org->save();
     
-    $home = $org->get_widget_by_class('WidgetHandler_Home');
+    $home = $org->get_widget_by_class('Home');
     $home->save();
             
-    $home->get_widget_by_class('WidgetHandler_Mission')->save();        
-    $home->get_widget_by_class('WidgetHandler_Updates')->save();        
-    $home->get_widget_by_class('WidgetHandler_Sectors')->save();
-    $home->get_widget_by_class('WidgetHandler_Location')->save();    
+    $home->get_widget_by_class('Mission')->save();        
+    $home->get_widget_by_class('Updates')->save();        
+    $home->get_widget_by_class('Sectors')->save();
+    $home->get_widget_by_class('Location')->save();    
     
-    $org->get_widget_by_class('WidgetHandler_News')->save();
-    $org->get_widget_by_class('WidgetHandler_Contact')->save();
+    $org->get_widget_by_class('News')->save();
+    $org->get_widget_by_class('Contact')->save();
     
     return $org;
 }
@@ -81,7 +81,7 @@ function install_grantmaker()
     
     $reports = $org->get_widget_by_name('reports');
     $reports->menu_order = 80;
-    $reports->handler_class = 'WidgetHandler_ReportDefinitions';
+    $reports->subclass = 'ReportDefinitions';
     $reports->save();
 }
     
@@ -105,7 +105,7 @@ function install_envaya()
     }
     
     $home = $envaya->get_widget_by_name('home');
-    $home->handler_class = 'WidgetHandler_Hardcoded';
+    $home->subclass = 'Hardcoded';
     $home->handler_arg = 'page/about';
     $home->title = 'About Us';
     $home->save();
@@ -113,12 +113,12 @@ function install_envaya()
     $envaya->get_widget_by_name('news')->save();
 
     $contact = $envaya->get_widget_by_name('contact');
-    $contact->handler_class = 'WidgetHandler_Hardcoded';
+    $contact->subclass = 'Hardcoded';
     $contact->handler_arg = 'page/contact';
     $contact->save();
 
     $donate = $envaya->get_widget_by_name('contribute');
-    $donate->handler_class = 'WidgetHandler_Hardcoded';
+    $donate->subclass = 'Hardcoded';
     $donate->handler_arg = 'page/donate';
     $donate->title = 'Contribute';
     $donate->in_menu = 1;

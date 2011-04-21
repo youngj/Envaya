@@ -42,7 +42,7 @@
     
     if (!sizeof($relationship_options))
     {
-        $network = $org->get_widget_by_class('WidgetHandler_Network');
+        $network = $org->get_widget_by_class('Network');
         echo "<a href='". $network->get_edit_url(). "?action=add_relationship&type=".OrgRelationship::Partnership."'>";
         echo __('network:add_partnership');
         echo "</a>";

@@ -1,60 +1,60 @@
 <?php
 
-class WidgetHandler_Network extends WidgetHandler
+class Widget_Network extends Widget
 {
-    function get_default_title($widget)
+    function get_default_title()
     {
         return __('network:title');
     }
 
-    function view($widget)
+    function render_view()
     {
         switch (get_input('mode'))       
         {    
             default:
-                return view("widgets/network_view", array('widget' => $widget));
+                return view("widgets/network_view", array('widget' => $this));
         }
     }   
 
-    function edit($widget)
+    function render_edit()
     {                
         switch (get_input('action'))       
         {
-            case 'add_relationship':        return $this->add_relationship_view($widget);                               
-            case 'edit_relationship':       return $this->edit_relationship_view($widget);                                
-            case 'approve':                 return $this->approve_relationship_view($widget);
+            case 'add_relationship':        return $this->add_relationship_view();                               
+            case 'edit_relationship':       return $this->edit_relationship_view();                                
+            case 'approve':                 return $this->approve_relationship_view();
             
             default:                 
-                return view("widgets/network_edit", array('widget' => $widget));
+                return view("widgets/network_edit", array('widget' => $this));
         }    
     }
 
-    function save($widget)
+    function process_input($action)
     {        
         switch (get_input('action'))
         {
-            case 'delete_relationship':  return $this->delete_relationship($widget);
-            case 'save_relationship':    return $this->save_relationship($widget);
-            case 'add_relationship':     return $this->add_relationship($widget);
+            case 'delete_relationship':  return $this->delete_relationship();
+            case 'save_relationship':    return $this->save_relationship();
+            case 'add_relationship':     return $this->add_relationship();
             
-            case 'approve':              return $this->approve_relationship($widget);
+            case 'approve':              return $this->approve_relationship();
             
             default: 
-                $widget->save();
+                $this->save();
                 return;
         }
     }
     
-    private function show_cancel_edit_button($widget)
+    private function show_cancel_edit_button()
     {
         $submenu = PageContext::get_submenu('edit');
         $submenu->clear();
-        $submenu->add_item(__("cancel"), $widget->get_edit_url());
+        $submenu->add_item(__("cancel"), $this->get_edit_url());
     }
     
-    private function add_relationship_view($widget)
+    private function add_relationship_view()
     {
-        $this->show_cancel_edit_button($widget);
+        $this->show_cancel_edit_button();
                         
         $org_guid = (int)get_input('org_guid');
         $org = Organization::get_by_guid($org_guid);
@@ -66,15 +66,15 @@ class WidgetHandler_Network extends WidgetHandler
         }
                 
         return view('widgets/network_add_relationship', array(
-            'widget' => $widget, 
+            'widget' => $this, 
             'org' => $org,
             'type' => $type
         ));            
     }    
     
-    private function add_relationship($widget)
+    private function add_relationship()
     {
-        $org = $widget->get_container_entity();
+        $org = $this->get_container_entity();
         
         $reverse = null;
     
@@ -154,7 +154,7 @@ class WidgetHandler_Network extends WidgetHandler
         $relationship->save();
         $relationship->post_feed_items();
         
-        $widget->save();
+        $this->save();
 
         if ($org->is_approved())
         {
@@ -173,7 +173,7 @@ class WidgetHandler_Network extends WidgetHandler
         }
         
         SessionMessages::add(sprintf($relationship->__('added'), $relationship->get_subject_name()));
-        forward($widget->get_edit_url());    
+        forward($this->get_edit_url());    
     }
     
     private function clean_url($url)
@@ -196,9 +196,9 @@ class WidgetHandler_Network extends WidgetHandler
         return $url;
     }    
             
-    private function delete_relationship($widget)
+    private function delete_relationship()
     {
-        $org = $widget->get_container_entity();
+        $org = $this->get_container_entity();
         
         try
         {
@@ -222,7 +222,7 @@ class WidgetHandler_Network extends WidgetHandler
             SessionMessages::add(sprintf($relationship->__('deleted'), $relationship->get_subject_name()));
         }       
         
-        return forward($widget->get_edit_url());        
+        return forward($this->get_edit_url());        
     }
     
     private function get_current_relationship($org)
@@ -236,9 +236,9 @@ class WidgetHandler_Network extends WidgetHandler
         return $relationship;
     }    
     
-    private function approve_relationship_view($widget)
+    private function approve_relationship_view()
     {
-        $org = $widget->get_container_entity();
+        $org = $this->get_container_entity();
         try
         {
             $relationship = $this->get_current_relationship($org);
@@ -248,14 +248,14 @@ class WidgetHandler_Network extends WidgetHandler
             throw new NotFoundException();
         }        
         
-        $widget->save();
+        $this->save();
         
-        return view('widgets/network_approve_relationship', array('widget' => $widget, 'relationship' => $relationship));
+        return view('widgets/network_approve_relationship', array('widget' => $this, 'relationship' => $relationship));
     }    
     
-    private function approve_relationship($widget)
+    private function approve_relationship()
     {    
-        $org = $widget->get_container_entity();
+        $org = $this->get_container_entity();
 
         try
         {
@@ -269,21 +269,21 @@ class WidgetHandler_Network extends WidgetHandler
         $relationship->set_self_approved();
         $relationship->save();
 
-        $widget->save();
+        $this->save();
 
         SessionMessages::add(__('network:relationship_saved'));
-        return forward($widget->get_edit_url());
+        return forward($this->get_edit_url());
     }    
     
     
-    private function save_relationship($widget)
+    private function save_relationship()
     {
         if (get_input('delete_relationship'))
         {
-            return $this->delete_relationship($widget);
+            return $this->delete_relationship();
         }
     
-        $org = $widget->get_container_entity();
+        $org = $this->get_container_entity();
 
         try
         {
@@ -322,17 +322,17 @@ class WidgetHandler_Network extends WidgetHandler
             $relationship->send_notification_email();
         }
         
-        $widget->save();
+        $this->save();
         
         SessionMessages::add(__('network:relationship_saved'));
-        return forward($widget->get_edit_url());
+        return forward($this->get_edit_url());
     }    
     
-    private function edit_relationship_view($widget)
+    private function edit_relationship_view()
     {
-        $this->show_cancel_edit_button($widget);
+        $this->show_cancel_edit_button();
         
-        $org = $widget->get_container_entity();
+        $org = $this->get_container_entity();
         try
         {
             $relationship = $this->get_current_relationship($org);
@@ -342,6 +342,6 @@ class WidgetHandler_Network extends WidgetHandler
             throw new NotFoundException();
         }
         
-        return view('widgets/network_edit_relationship', array('widget' => $widget, 'relationship' => $relationship));
+        return view('widgets/network_edit_relationship', array('widget' => $this, 'relationship' => $relationship));
     }
 }

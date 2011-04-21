@@ -41,12 +41,12 @@ class Action_Registration_CreateProfileBase extends Action
             $org->set_lat_long($latlong['lat'], $latlong['long']);
         }
 
-        $home = $org->get_widget_by_class('WidgetHandler_Home');
+        $home = $org->get_widget_by_class('Home');
         if (!$home->guid)
         {
             $home->save();
         }
-        $mission_section = $home->get_widget_by_class('WidgetHandler_Mission');        
+        $mission_section = $home->get_widget_by_class('Mission');        
         $mission_section->set_content($mission);                
         $mission_section->save();
 
@@ -57,7 +57,7 @@ class Action_Registration_CreateProfileBase extends Action
 
         if ($prevSetupState < $org->setup_state && !$org->is_approved())
         {
-            FeedItem::post($org, 'register', $org);
+            FeedItem_Register::post($org, $org);
 
             OutgoingMail::create(
                 sprintf(__('email:registernotify:subject'), $org->name), 

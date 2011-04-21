@@ -100,7 +100,7 @@ CREATE TABLE `widgets` (
     <?php require 'schema/entity_columns.php'; ?>,
     <?php require 'schema/content_columns.php'; ?>,
   `widget_name` varchar(32) NOT NULL,
-  `handler_class` varchar(32) NULL,
+  `subclass` varchar(32) NULL,
   `menu_order` int null,
   `in_menu` tinyint(4) default 1,
   `handler_arg` varchar(64) NULL,

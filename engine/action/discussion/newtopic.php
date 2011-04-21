@@ -7,7 +7,7 @@ class Action_Discussion_NewTopic extends Action
         $user = Session::get_loggedin_user();
         $org = $this->get_org();
         
-        $widget = $org->get_widget_by_class('WidgetHandler_Discussions');
+        $widget = $org->get_widget_by_class('Discussions');
         if (!$widget->is_active())
         {
             if ($widget->can_edit())
@@ -120,7 +120,7 @@ class Action_Discussion_NewTopic extends Action
         $this->use_public_layout();        
         $org = $this->get_org();       
 
-        $widget = $org->get_widget_by_class('WidgetHandler_Discussions');
+        $widget = $org->get_widget_by_class('Discussions');
         if (!$widget->is_active() && !$widget->can_edit())
         {
             return $this->not_found();

@@ -11,7 +11,7 @@
             $controls[] = "<a href='{$org->get_url()}/send_message'>".__('message:link')."</a>";
         }
         
-        $networkPage = $loggedInOrg->get_widget_by_class('WidgetHandler_Network');
+        $networkPage = $loggedInOrg->get_widget_by_class('Network');
         
         if ($loggedInOrg->query_relationships()->where('subject_guid = ?', $org->guid)->count() == 0)
         {        

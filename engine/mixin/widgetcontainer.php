@@ -4,7 +4,7 @@
  * Mixin for Entity classes that can have Widgets as child entities ($parent->guid == $child->container_guid)
  * Such classes include:
  *  - Organization (child widgets are shown in the site menu) 
- *  - Widget (child widgets could be shown as a sub menu, or as embedded sections depending on WidgetHandler)
+ *  - Widget (child widgets could be shown as a sub menu, or as embedded sections depending on type of widget)
  */
 class Mixin_WidgetContainer extends Mixin
 {        
@@ -50,24 +50,28 @@ class Mixin_WidgetContainer extends Mixin
     {
         $props = @Widget::$default_widgets[$widget_name] ?: array();
         
-        $widget = new Widget();
+        $subclass = (@$props['subclass'] ?: 'Generic');
+        
+        $cls = "Widget_{$subclass}";
+        
+        $widget = new $cls();
         $widget->widget_name = $widget_name;    
         $widget->container_guid = $this->guid;        
         $widget->menu_order = @$props['menu_order'] ?: 1000;
-        $widget->handler_class = @$props['handler_class'] ?: 'WidgetHandler_Generic';            
+        $widget->subclass = $subclass;
 
         return $widget;
     }            
         
-    public function get_widget_by_class($class_name)
+    public function get_widget_by_class($subclass)
     {
         $widget = $this->query_widgets()
-            ->where('handler_class = ?', $class_name)
+            ->where('subclass = ?', $subclass)
             ->show_disabled(true)->get();
         
         if (!$widget)
         {
-            $default_names = Widget::get_default_names_by_class($class_name);
+            $default_names = Widget::get_default_names_by_class($subclass);
             if (sizeof($default_names))
             {
                 $widget = $this->new_widget_by_name($default_names[0]);

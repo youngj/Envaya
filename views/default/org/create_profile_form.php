@@ -10,8 +10,8 @@
 <?php echo __('setup:mission:help') ?>
 </div>
 <?php 
-    $home = $org->get_widget_by_class('WidgetHandler_Home');    
-    $mission = $home->get_widget_by_class('WidgetHandler_Mission');
+    $home = $org->get_widget_by_class('Home');    
+    $mission = $home->get_widget_by_class('Mission');
     
     echo view('input/tinymce', array(
         'name' => 'mission',

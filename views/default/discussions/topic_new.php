@@ -16,7 +16,7 @@
     echo view('input/tinymce', array('name' => 'content'));    
     echo view('discussions/user_info');
     
-    $widget = $org->get_widget_by_class('WidgetHandler_Discussions');    
+    $widget = $org->get_widget_by_class('Discussions');    
     
     echo "<div style='float:right'><br /><br />";    
     echo "<a href='{$widget->get_url()}'>".__('discussions:back_to_topics'). "</a>";

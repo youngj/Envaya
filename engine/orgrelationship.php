@@ -109,7 +109,7 @@ class OrgRelationship extends Entity
     function get_url()
     {
         $org = $this->get_container_entity();
-        $widget = $org->get_widget_by_class('WidgetHandler_Network');        
+        $widget = $org->get_widget_by_class('Network');        
         return $widget->get_url() . "#r{$this->guid}";
     }
     
@@ -167,7 +167,7 @@ class OrgRelationship extends Entity
             ->count() == 0)
         {
             $org = $this->get_container_entity();
-            FeedItem::post($org, 'relationship', $this);
+            FeedItem_Relationship::post($org, $this);
         }
     }           
     
@@ -227,7 +227,7 @@ class OrgRelationship extends Entity
         $org = $this->get_container_entity();
 
         $subject_org = $this->get_subject_organization();        
-        $widget = $org->get_widget_by_class('WidgetHandler_Network');
+        $widget = $org->get_widget_by_class('Network');
         $reverse = $this->get_reverse_relationship();
         
         if ($subject_org && $widget && $reverse && $subject_org->email && $subject_org->is_notification_enabled(Notification::Network))
@@ -250,7 +250,7 @@ class OrgRelationship extends Entity
     function send_invite_email()
     {
         $org = $this->get_container_entity();
-        $widget = $org->get_widget_by_class('WidgetHandler_Network');
+        $widget = $org->get_widget_by_class('Network');
         $email = $this->subject_email;
         
         if (!$email || $this->subject_guid || !$widget)

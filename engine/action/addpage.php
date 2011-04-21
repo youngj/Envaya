@@ -28,7 +28,7 @@ class Action_AddPage extends Action
         
         $widget = $org->get_widget_by_name($widget_name);
         
-        if ($widget->guid && ((time() - $widget->time_created > 30) || !($widget->get_handler() instanceof WidgetHandler_Generic)))
+        if ($widget->guid && ((time() - $widget->time_created > 30) || !($widget instanceof Widget_Generic)))
         {
             SessionMessages::add_error_html(
                 sprintf(__('widget:duplicate_name'),"<a href='{$widget->get_edit_url()}'><strong>".__('clickhere')."</strong></a>")
@@ -42,7 +42,7 @@ class Action_AddPage extends Action
             $widget->set_status(EntityStatus::Draft);
         }
         
-        $widget->save_input();             
+        $widget->process_input($this);             
         
         SessionMessages::add(__('widget:save:success'));
         

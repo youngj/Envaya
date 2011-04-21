@@ -28,7 +28,7 @@
         
         echo "\n";
         
-        $subjectWidget = $subject->get_widget_by_class('WidgetHandler_Network');
+        $subjectWidget = $subject->get_widget_by_class('Network');
         echo  "{$subjectWidget->get_edit_url()}?action=approve&guid={$reverse->guid}&username={$subject->username}";
         echo "\n\n";        
     }

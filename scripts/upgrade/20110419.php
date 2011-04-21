@@ -3,9 +3,9 @@
     require_once("scripts/cmdline.php");
     require_once("engine/start.php");
     
-    foreach (Widget::query()->where('handler_class = ?', 'WidgetHandler_Home')->filter() as $widget)
+    foreach (Widget::query()->where('subclass = ?', 'Home')->filter() as $widget)
     {
-        $mission = $widget->get_widget_by_class('WidgetHandler_Mission');       
+        $mission = $widget->get_widget_by_class('Mission');       
         if (!$mission->content)
         {
             $mission->content = $widget->content;

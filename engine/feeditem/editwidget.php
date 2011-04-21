@@ -1,29 +1,29 @@
 <?php
 
-class FeedItemHandler_EditWidget extends FeedItemHandler
+class FeedItem_EditWidget extends FeedItem
 {
-    function render_heading($item, $mode)
+    function render_heading($mode)
     {
-        $widget = $item->get_subject_entity();
+        $widget = $this->get_subject_entity();
         
         return sprintf($widget->is_page() ? __('feed:edit_page') : __('feed:edit_section'), 
-            $this->get_org_link($item, $mode),
-            $this->get_link($item, $widget->get_title())
+            $this->get_org_link($mode),
+            $this->get_link($widget->get_title())
         );    
     }
     
-    function render_thumbnail($item, $mode)
+    function render_thumbnail($mode)
     {
-        $widget = $item->get_subject_entity();
+        $widget = $this->get_subject_entity();
         return view('feed/thumbnail', array(
-            'link_url' => $this->get_url($item),
+            'link_url' => $this->get_url(),
             'thumbnail_url' => $widget->thumbnail_url
         ));
     }
         
-    function render_content($item, $mode)
+    function render_content($mode)
     {
-        $widget = $item->get_subject_entity();
+        $widget = $this->get_subject_entity();
         
         if ($mode == 'self' && !$widget->is_page())
         {
@@ -31,7 +31,7 @@ class FeedItemHandler_EditWidget extends FeedItemHandler
         }
         
         return view('feed/snippet', array(            
-            'link_url' => $this->get_url($item),
+            'link_url' => $this->get_url(),
             'content' => $widget->render_content(Markup::Feed)
         ));    
     }

@@ -1,20 +1,20 @@
 <?php
 
-class WidgetHandler_Contact extends WidgetHandler
+class Widget_Contact extends Widget
 {
-    function view($widget)
+    function render_view()
     {
-        return view("widgets/contact_view", array('widget' => $widget));
+        return view("widgets/contact_view", array('widget' => $this));
     }
     
-    function edit($widget)
+    function render_edit()
     {
-        return view("widgets/contact_edit", array('widget' => $widget));
+        return view("widgets/contact_edit", array('widget' => $this));
     }
 
-    function save($widget)
+    function process_input($action)
     {
-        $org = $widget->get_container_entity();
+        $org = $this->get_container_entity();
 
         $email = trim(get_input('email'));
 
@@ -28,15 +28,15 @@ class WidgetHandler_Contact extends WidgetHandler
         }
 
         $org->email = $email;
-        $widget->public_email = sizeof(get_input_array('public_email')) ? 'yes' : 'no';
+        $this->public_email = sizeof(get_input_array('public_email')) ? 'yes' : 'no';
 
         $org->set_phone_number(get_input('phone_number'));
-        $widget->public_phone = sizeof(get_input_array('public_phone')) ? 'yes' : 'no';
+        $this->public_phone = sizeof(get_input_array('public_phone')) ? 'yes' : 'no';
         $org->contact_name = get_input('contact_name');
         $org->contact_title = get_input('contact_title');
         $org->street_address = get_input('street_address');
         $org->mailing_address = get_input('mailing_address');
         $org->save();
-        $widget->save();
+        $this->save();
     }
 }

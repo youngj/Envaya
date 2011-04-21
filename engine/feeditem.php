@@ -13,8 +13,7 @@
  * - one particular organization 
  *
  * Each FeedItem is associated with a particular user (user_guid).
- * action_name refers to a FeedItemHandler subclass defined in engine/feeditemhandler/
- * which is responsible for rendering a view of the feed item.
+ * action_name refers to a FeedItem subclass defined in engine/feeditem/
  *
  * Depending on the action, it may be associated with another Entity (subject_guid)
  * or other arbitrary properties (args).
@@ -42,6 +41,19 @@ class FeedItem extends Model
         return $res;
     }
     
+    static function new_from_row($row)
+    {
+        $cls = "FeedItem_{$row->action_name}";
+        if (class_exists($cls))
+        {
+            return new $cls($row);
+        }
+        else
+        {
+            return new FeedItem_Invalid($row);
+        }
+    }    
+    
     function can_edit()
     {
         $user = Session::get_loggedin_user();
@@ -58,46 +70,8 @@ class FeedItem extends Model
             $value = json_encode($value);
         }
         parent::set($name, $value);
-    }
-    
-    function get_handler()
-    {
-        if (!$this->handler)
-        {    
-            try
-            {
-                $action_name = str_replace('_', '', $this->action_name);           
-                $handlerCls = new ReflectionClass('FeedItemHandler_'.$action_name);
-                $this->handler = $handlerCls->newInstance();                        
-            }
-            catch (ReflectionException $ex)
-            {        
-                $this->handler = new FeedItemHandler();
-            }        
-        }
-        return $this->handler;
     }    
     
-    public function is_valid()
-    {
-        return $this->get_handler()->is_valid($this);
-    }
-
-    public function render_heading($mode = '')
-    {
-        return $this->get_handler()->render_heading($this, $mode);    
-    }
-
-    public function render_thumbnail($mode = '')
-    {
-        return $this->get_handler()->render_thumbnail($this, $mode);    
-    }    
-    
-    public function render_content($mode = '')
-    {
-        return $this->get_handler()->render_content($this, $mode);
-    }
-
     public function get_subject_entity()
     {
         return Entity::get_by_guid($this->subject_guid);
@@ -121,6 +95,55 @@ class FeedItem extends Model
             ->where('time_posted = ?', $this->time_posted);
     }
 
+    function is_valid()
+    {
+        return !!$this->get_subject_entity();
+    }
+
+    function render_heading($mode)
+    {
+        return '';
+    }
+
+    function render_content($mode)
+    {
+        return '';
+    }
+
+    function render_thumbnail($mode)
+    {
+        return '';
+    }
+    
+    protected function get_link($title)
+    {
+        return "<a href='{$this->get_url()}'>".escape($title)."</a>";
+    }
+    
+    protected function get_org_link($mode)
+    {
+        $org = $this->get_user_entity();
+        
+        if ($mode == 'self')
+        {
+            return escape($org->name);
+        }
+        else
+        {
+            return "<a class='feed_org_name' href='{$org->get_url()}'>".escape($org->name)."</a>";
+        }
+    }
+    
+    function get_url()
+    {
+        return rewrite_to_current_domain($this->get_subject_entity()->get_url());
+    }         
+
+    static function get_action_name()    
+    {
+        return substr(get_called_class(), 9 /* strlen(FeedItem_) */ );
+    }
+    
     static function query()
     {
         return new Query_SelectFeedItem();
@@ -162,7 +185,7 @@ class FeedItem extends Model
         return implode("&", $encConditions);
     }    
     
-    static function post($user, $actionName, $subject, $args = null, $time = null)
+    static function post($user, $subject, $args = null, $time = null)
     {
         if (!$time)
         {
@@ -181,7 +204,7 @@ class FeedItem extends Model
         {
             $feedItem = new FeedItem();
             $feedItem->feed_name = $feedName;
-            $feedItem->action_name = $actionName;
+            $feedItem->action_name = static::get_action_name();
             $feedItem->subject_guid = $subject->guid;
             $feedItem->user_guid = $user->guid;
             $feedItem->time_posted = $time;

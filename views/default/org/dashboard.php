@@ -1,7 +1,7 @@
 <?php
     $org = $vars['org'];
 
-    if ($org->get_widget_by_class('WidgetHandler_News')->is_active())
+    if ($org->get_widget_by_class('News')->is_active())
     {
         echo view('section', array(
             'header' => __("dashboard:add_update"), 

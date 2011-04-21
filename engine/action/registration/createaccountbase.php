@@ -96,17 +96,17 @@ abstract class Action_Registration_CreateAccountBase extends Action
         $org->save();
 
         /* auto-create empty pages */
-        $home = $org->get_widget_by_class('WidgetHandler_Home');
+        $home = $org->get_widget_by_class('Home');
         $home->save();
                 
-        $home->get_widget_by_class('WidgetHandler_Mission')->save();        
-        $home->get_widget_by_class('WidgetHandler_Updates')->save();        
-        $home->get_widget_by_class('WidgetHandler_Sectors')->save();
-        $home->get_widget_by_class('WidgetHandler_Location')->save();
+        $home->get_widget_by_class('Mission')->save();        
+        $home->get_widget_by_class('Updates')->save();        
+        $home->get_widget_by_class('Sectors')->save();
+        $home->get_widget_by_class('Location')->save();
         
-        $org->get_widget_by_class('WidgetHandler_News')->save();
+        $org->get_widget_by_class('News')->save();
 
-        $contactWidget = $org->get_widget_by_class('WidgetHandler_Contact');
+        $contactWidget = $org->get_widget_by_class('Contact');
         if ($email)
         {
             $contactWidget->public_email = "yes";

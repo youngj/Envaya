@@ -91,7 +91,7 @@ class Model extends Mixable
         return new Query_Select(static::$table_name, get_called_class());
     }    
     
-    static function _new($row)
+    static function new_from_row($row)
     {
         $cls = get_called_class();
         return new $cls($row);

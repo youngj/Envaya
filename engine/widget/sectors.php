@@ -1,25 +1,25 @@
 <?php
 
-class WidgetHandler_Sectors extends WidgetHandler
+class Widget_Sectors extends Widget
 {
-    function view($widget)
+    function render_view()
     {
-        return view("widgets/sectors_view", array('widget' => $widget));
+        return view("widgets/sectors_view", array('widget' => $this));
     }
     
-    function edit($widget)
+    function render_edit()
     {
-        return view("widgets/sectors_edit", array('widget' => $widget));
+        return view("widgets/sectors_edit", array('widget' => $this));
     }
     
-    function view_feed($widget)
+    function render_view_feed()
     {
-        return $this->view($widget);
+        return $this->render_view();
     }
     
-    function save($widget)
+    function process_input($action)
     {
-        $org = $widget->get_root_container_entity();
+        $org = $this->get_root_container_entity();
     
         $sectors = get_input_array('sector');
         if (sizeof($sectors) == 0)
@@ -44,6 +44,6 @@ class WidgetHandler_Sectors extends WidgetHandler
         $org->sector_other = get_input('sector_other');
         $org->save();
         
-        $widget->save();
+        $this->save();
     }
 }

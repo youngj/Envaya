@@ -12,7 +12,7 @@ class Action_WidgetOptions extends Action
     {        
         $widget = $this->get_widget();
         
-        $widget->handler_class = get_input('handler_class');
+        $widget->subclass = get_input('subclass');
         $widget->handler_arg = get_input('handler_arg');
         $widget->title = get_input('title');
         $widget->menu_order = (int)get_input('menu_order');

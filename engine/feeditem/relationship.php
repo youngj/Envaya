@@ -1,10 +1,10 @@
 <?php
 
-class FeedItemHandler_Relationship extends FeedItemHandler
+class FeedItem_Relationship extends FeedItem
 {
-    function render_heading($item, $mode)
+    function render_heading($mode)
     {
-        $relationship = $item->get_subject_entity();
+        $relationship = $this->get_subject_entity();
         
         $url = escape($relationship->get_subject_url());
         if ($url)
@@ -17,7 +17,7 @@ class FeedItemHandler_Relationship extends FeedItemHandler
         }
         
         $org = $relationship->get_container_entity();
-        $network = $org->get_widget_by_class('WidgetHandler_Network');
+        $network = $org->get_widget_by_class('Network');
         
         $list_name = $relationship->__('header');
         
@@ -27,20 +27,20 @@ class FeedItemHandler_Relationship extends FeedItemHandler
         }        
         
         return sprintf(__('network:feed_heading'), 
-            $this->get_org_link($item, $mode),
+            $this->get_org_link($mode),
             $subject_html,
             $list_name
         );
     }
     
-    function render_content($item, $mode)
+    function render_content($mode)
     {
-        $relationship = $item->get_subject_entity();
+        $relationship = $this->get_subject_entity();
         
         if ($relationship->content)
         {
             return view('feed/snippet', array(            
-                'link_url' => $this->get_url($item),
+                'link_url' => $this->get_url(),
                 'content' => $relationship->render_content(Markup::Feed)
             ));
         }

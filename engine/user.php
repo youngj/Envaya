@@ -239,7 +239,7 @@ class User extends Entity
         $this->password = $this->generate_password($password);
     }
 
-    static function _new($row)
+    static function new_from_row($row)
     {
         $cls = EntityRegistry::get_subtype_class($row->subtype);
         return new $cls($row);

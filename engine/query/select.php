@@ -52,7 +52,7 @@ class Query_Select
     
     function set_row_class($class)
     {
-        $this->set_row_function(array($class, '_new'));
+        $this->set_row_function(array($class, 'new_from_row'));
         return $this;
     }
     

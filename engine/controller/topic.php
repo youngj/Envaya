@@ -108,7 +108,7 @@ class Controller_Topic extends Controller_Profile
             $topic->disable();
             $topic->save();
             
-            forward($this->get_org()->get_widget_by_class('WidgetHandler_Discussions')->get_url());
+            forward($this->get_org()->get_widget_by_class('Discussions')->get_url());
         }
         else
         {

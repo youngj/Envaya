@@ -54,7 +54,7 @@
         ($org->has_custom_header() || $org->has_custom_icon())    
     );    
 
-    $network = $org->get_widget_by_class('WidgetHandler_Network');
+    $network = $org->get_widget_by_class('Network');
     $addItem("<a href='{$network->get_edit_url()}'>".__('todo:network')."</a>",
         $network->is_active()
     );

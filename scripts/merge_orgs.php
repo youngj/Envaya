@@ -74,7 +74,6 @@ foreach ($widgets as $widget)
 {
     if ($dest_org->get_widget_by_name($widget->widget_name)->guid)
     {
-        $widget->handler_class = $widget->get_handler_class();
         $widget->widget_name = "{$widget->widget_name}_old";
         $widget->disable();
         $widget->save();

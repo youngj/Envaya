@@ -8,7 +8,7 @@
  * However, some widgets have more complex behavior
  * than just a standard content page (e.g. a news feed).
  * The behavior of a widget is determined by its corresponding 
- * handler_class (a subclass of WidgetHandler).
+ * subclass (a subclass of Widget with class name Widget_{subclass}).
  */
 class Widget extends Entity
 {
@@ -17,7 +17,7 @@ class Widget extends Entity
         'widget_name' => 0,
         'menu_order' => 0,
         'in_menu' => 1,
-        'handler_class' => '',
+        'subclass' => '',
         'handler_arg' => '',
         'title' => '',       
     );
@@ -27,32 +27,37 @@ class Widget extends Entity
     );
     
     static $default_widgets = array(
-        'home'          => array('menu_order' => 10, 'page' => true, 'handler_class' => 'WidgetHandler_Home'),
-        'news'          => array('menu_order' => 20, 'page' => true, 'handler_class' => 'WidgetHandler_News'),
-        'projects'      => array('menu_order' => 30, 'page' => true, 'handler_class' => 'WidgetHandler_Generic'),
-        'history'       => array('menu_order' => 40, 'page' => true, 'handler_class' => 'WidgetHandler_Generic'),
-        'team'          => array('menu_order' => 50, 'page' => true, 'handler_class' => 'WidgetHandler_Team'),
-        'network'       => array('menu_order' => 60, 'page' => true, 'handler_class' => 'WidgetHandler_Network'),
-        'discussions'   => array('menu_order' => 70, 'page' => true, 'handler_class' => 'WidgetHandler_Discussions'),
-        'contact'       => array('menu_order' => 90, 'page' => true, 'handler_class' => 'WidgetHandler_Contact'),
-
-        'mission'       => array('menu_order' => 100, 'home_section' => true, 'handler_class' => 'WidgetHandler_Mission'),        
-        'updates'       => array('menu_order' => 110, 'home_section' => true, 'handler_class' => 'WidgetHandler_Updates'),        
-        'sectors'       => array('menu_order' => 120, 'home_section' => true, 'handler_class' => 'WidgetHandler_Sectors'),        
-        'location'      => array('menu_order' => 130, 'home_section' => true, 'handler_class' => 'WidgetHandler_Location'),        
+        'home'          => array('menu_order' => 10, 'page' => true, 'subclass' => 'Home'),
+        'news'          => array('menu_order' => 20, 'page' => true, 'subclass' => 'News'),
+        'projects'      => array('menu_order' => 30, 'page' => true, 'subclass' => 'Generic'),
+        'history'       => array('menu_order' => 40, 'page' => true, 'subclass' => 'Generic'),
+        'team'          => array('menu_order' => 50, 'page' => true, 'subclass' => 'Team'),
+        'network'       => array('menu_order' => 60, 'page' => true, 'subclass' => 'Network'),
+        'discussions'   => array('menu_order' => 70, 'page' => true, 'subclass' => 'Discussions'),
+        'contact'       => array('menu_order' => 90, 'page' => true, 'subclass' => 'Contact'),
+        'mission'       => array('menu_order' => 100, 'home_section' => true, 'subclass' => 'Mission'),        
+        'updates'       => array('menu_order' => 110, 'home_section' => true, 'subclass' => 'Updates'),        
+        'sectors'       => array('menu_order' => 120, 'home_section' => true, 'subclass' => 'Sectors'),        
+        'location'      => array('menu_order' => 130, 'home_section' => true, 'subclass' => 'Location'),        
     );
+    
+    static function get_subtype_id()
+    {
+        // all subclasses share same subtype id
+        return EntityRegistry::get_subtype_id('Widget'); 
+    }    
     
     static function add_default_widget($widget_name, $props)
     {
         static::$default_widgets[$widget_name] = $props;
     }
     
-    static function get_default_names_by_class($class_name)
+    static function get_default_names_by_class($subclass)
     {
         $names = array();
         foreach (static::$default_widgets as $widget_name => $args)
         {
-            if (@$args['handler_class'] == $class_name)
+            if (@$args['subclass'] == $subclass)
             {
                 $names[] = $widget_name;
             }
@@ -92,7 +97,7 @@ class Widget extends Entity
         }
         else
         {
-            return $this->get_handler()->get_default_subtitle($this);
+            return $this->get_default_subtitle();
         }    
     }
 	
@@ -104,59 +109,53 @@ class Widget extends Entity
         }
         else
         {
-            return $this->get_handler()->get_default_title($this);
+            return $this->get_default_title();
         }
     }    
     
-    function get_handler_class()
+    function get_default_title()
     {
-        $handlerCls = $this->handler_class;
-        if (!$handlerCls)
-        {
-            $handlerCls = 'WidgetHandler_Generic';
-        }
-        return $handlerCls;
-    }    
+        $key = "widget:{$this->widget_name}";
+        $title = __($key);
+        return ($title != $key) ? $title : __('widget:new');
+    }
     
-    function get_handler()
+    function get_default_subtitle()
     {
-        try
+        return $this->get_default_title();
+    }
+        
+    static function new_from_row($row)
+    {
+        $cls = "Widget_{$row->subclass}";        
+        if (class_exists($cls))
         {
-            $handlerCls = new ReflectionClass($this->get_handler_class());
-            
-            if ($this->handler_arg)
-            {
-                return $handlerCls->newInstance($this->handler_arg);
-            }
-            else
-            {
-                return $handlerCls->newInstance();            
-            }            
+            return new $cls($row);
         }
-        catch (ReflectionException $ex)
-        {        
-            return new WidgetHandler_Invalid();
+        else
+        {
+            return new Widget_Invalid($row);
         }        
     }
     
     function render_view()
     {
-        return $this->get_handler()->view($this);
+        return '';
     }
 
     function render_view_feed()
     {
-        return $this->get_handler()->view_feed($this);
+        return '';
     }
     
     function render_edit()
     {
-        return $this->get_handler()->edit($this);
+        return '';
     }
 
-    function save_input()
+    function process_input($action)
     {
-        return $this->get_handler()->save($this);
+        
     }
     
     function get_url()
@@ -222,12 +221,12 @@ class Widget extends Entity
     
     function post_feed_items_new()
     {
-        return FeedItem::post($this->get_root_container_entity(), 'newwidget', $this);
+        return FeedItem_NewWidget::post($this->get_root_container_entity(), $this);
     }
     
     function post_feed_items()    
     {
-        return FeedItem::post($this->get_root_container_entity(), 'editwidget', $this); 
+        return FeedItem_EditWidget::post($this->get_root_container_entity(), $this); 
     }
     
     static function is_valid_name($widget_name)
@@ -245,4 +244,5 @@ class Widget extends Entity
         $bOrder = $b->get_menu_order();
         return $aOrder - $bOrder;
     }    
+    
 }

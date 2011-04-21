@@ -65,7 +65,7 @@ class Action_EditWidget extends Action
 
             try
             {
-                $widget->save_input();
+                $widget->process_input($this);             
             }
             catch (ValidationException $ex)
             {

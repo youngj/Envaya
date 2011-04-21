@@ -32,7 +32,7 @@
     echo "<br />";
 
         
-    $widget = $org->get_widget_by_class('WidgetHandler_Discussions');    
+    $widget = $org->get_widget_by_class('Discussions');    
     
     echo "<div style='float:right'>";    
     echo "<a href='{$widget->get_url()}'>".__('discussions:back_to_topics'). "</a>";

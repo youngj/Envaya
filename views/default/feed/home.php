@@ -2,8 +2,6 @@
     $org = $vars['org'];
     $widget = $vars['home_widget'];
 
-    $handler = $widget->get_handler();
-    
     $url = $widget->get_url();
     
     foreach ($widget->query_menu_widgets()->limit(5)->filter() as $sub_widget)

@@ -20,8 +20,8 @@ echo view('input/text', array(
 <label><?php echo __('widget:handler'); ?></label><br />
 <?php
 echo view('input/text', array(
-    'name' => 'handler_class',
-    'value' => $widget->handler_class
+    'name' => 'subclass',
+    'value' => $widget->subclass
 ));
 ?>
 </div>

@@ -26,7 +26,7 @@ class Action_AddWidget extends Action
         }
                 
         $widget = $container->get_widget_by_name(get_input('uniqid'));
-        $widget->save_input();
+        $widget->process_input($this);             
         
         SessionMessages::add(__('widget:save:success'));        
         

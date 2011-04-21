@@ -12,7 +12,7 @@ class Action_NewPost extends Action
         $body = get_input('blogbody');
         $org = $this->get_org();
         
-        $widget = $org->get_widget_by_class('WidgetHandler_News');
+        $widget = $org->get_widget_by_class('News');
         if (!$widget->is_active())
         {
             $widget->enable();
