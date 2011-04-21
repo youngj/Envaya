@@ -6,7 +6,7 @@ class FeedItem_EditWidget extends FeedItem
     {
         $widget = $this->get_subject_entity();
         
-        return sprintf($widget->is_page() ? __('feed:edit_page') : __('feed:edit_section'), 
+        return sprintf(!$widget->is_section() ? __('feed:edit_page') : __('feed:edit_section'), 
             $this->get_org_link($mode),
             $this->get_link($widget->get_title())
         );    
@@ -25,7 +25,7 @@ class FeedItem_EditWidget extends FeedItem
     {
         $widget = $this->get_subject_entity();
         
-        if ($mode == 'self' && !$widget->is_page())
+        if ($mode == 'self' && $widget->is_section())
         {
             return '';
         }

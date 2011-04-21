@@ -38,7 +38,7 @@
     );            
     
     $news = $org->get_widget_by_name('news');;
-    $numLatestNews = $org->query_news_updates()->where('time_created > ?', time() - 86400 * 31)->count();
+    $numLatestNews = $news->query_widgets()->where('time_created > ?', time() - 86400 * 31)->count();
     $addItem("<a href='{$news->get_edit_url()}'>".__('todo:news')."</a>",
         $numLatestNews > 0
     );            

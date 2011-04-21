@@ -187,5 +187,14 @@ abstract class Controller {
     public function after()
     {
     }       
+
+    function set_content_type($content_type)
+    {
+        $this->request->headers['Content-type'] = $content_type;
+    }
     
+    function set_response($response)
+    {
+        $this->request->response = $response;
+    }
 } // End Controller

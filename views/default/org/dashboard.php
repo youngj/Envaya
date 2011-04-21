@@ -1,12 +1,14 @@
 <?php
     $org = $vars['org'];
 
-    if ($org->get_widget_by_class('News')->is_active())
+    $news = $org->get_widget_by_class('News');
+    
+    if ($news->is_active())
     {
         echo view('section', array(
             'header' => __("dashboard:add_update"), 
-            'content' => view('news/add_post', array('org' => $org))
-        ));
+        ));                
+        echo view('news/add_post', array('widget' => $news));
     }
 
     echo view('section', array(

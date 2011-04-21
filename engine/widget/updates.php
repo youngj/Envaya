@@ -1,4 +1,8 @@
 <?php
+
+/* 
+ * A widget that displays the latest activity by an organization (FeedItem objects).
+ */
 class Widget_Updates extends Widget
 {
     function render_view()

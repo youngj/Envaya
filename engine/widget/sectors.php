@@ -1,5 +1,9 @@
 <?php
 
+/* 
+ * A widget that displays an organization's sectors (see OrgSector)
+ * storing the sectors on the organization itself so they can be easily queried.
+ */
 class Widget_Sectors extends Widget
 {
     function render_view()

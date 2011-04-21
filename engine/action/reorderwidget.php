@@ -10,14 +10,13 @@ class Action_ReorderWidget extends Action
         
     function process_input()
     {        
-        $request = $this->get_request();
-        $request->headers['Content-Type'] = 'text/javascript';
+        $this->set_content_type('text/javascript');
     
         $widget = $this->get_widget();        
         $delta = ((int)get_input('delta') > 0) ? 1 : -1;
         
         $container = $widget->get_container_entity();        
-        $siblings = $container->query_menu_widgets()->filter();                
+        $siblings = $container->query_widgets()->where('in_menu = 1')->filter();                
         
         $adjacent_widget = $this->get_adjacent_widget($siblings, $widget, $delta);
                 
@@ -41,9 +40,9 @@ class Action_ReorderWidget extends Action
             $widget->save();
         }
         
-        $request->response = json_encode(array(
-            'guids' => array_map(function($w) { return $w->guid; }, $container->query_menu_widgets()->filter())
-        ));
+        $this->set_response(json_encode(array(
+            'guids' => array_map(function($w) { return $w->guid; }, $container->query_widgets()->where('in_menu = 1')->filter())
+        )));
     }
     
     function get_adjacent_widget($siblings, $widget, $delta)

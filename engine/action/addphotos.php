@@ -15,7 +15,13 @@ class Action_AddPhotos extends Action
         $uniqid = get_input('uniqid');
         $org = $this->get_org();
         
-        $duplicates = NewsUpdate::query()->with_metadata('uniqid', $uniqid)->where('container_guid=?',$org->guid)->filter();
+        $news = $org->get_widget_by_class('News');
+        if (!$news->guid)
+        {
+            $news->save();
+        }
+        
+        $duplicates = $news->query_widgets()->with_metadata('uniqid', $uniqid)->filter();
         
         foreach ($imageNumbers as $imageNumber)
         {                        
@@ -41,9 +47,8 @@ class Action_AddPhotos extends Action
                 $body .= "<p>".view('input/longtext', array('value' => $imageCaption))."</p>";
             }
                         
-            $post = new NewsUpdate();
+            $post = $news->new_widget_by_class('Post');
             $post->owner_guid = Session::get_loggedin_userid();
-            $post->container_guid = $org->guid;
             $post->set_content($body);
             $post->set_metadata('uniqid', $uniqid);
             $post->save();              

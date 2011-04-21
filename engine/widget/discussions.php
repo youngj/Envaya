@@ -1,5 +1,8 @@
 <?php
 
+/* 
+ * A widget that implements a discussion forum, with a collection of topics that each contain messages.
+ */
 class Widget_Discussions extends Widget
 {
     function get_default_title()

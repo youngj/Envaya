@@ -1,22 +1,27 @@
 <div class='section_content'>
 <?php 
     $widget = $vars['widget'];
-    $org = $widget->get_container_entity();
     
     $end_guid = $vars['end_guid'];
+    $offset = (int) get_input('offset');
     
-    if (get_input('offset') === '' && $end_guid)
+    if ($end_guid)
     {
-        $offset = $org->query_news_updates()->where('guid > ?', $end_guid)->count();
-    }
-    else
-    {
-        $offset = (int) get_input('offset');
+        $end_widget = Widget::get_by_guid($end_guid);    
+        if ($end_widget)
+        {
+            $offset = $widget->query_widgets()
+                ->where('time_created > ?', $end_widget->time_created)
+                ->where('status = ?', EntityStatus::Enabled)
+                ->count();
+        }
     }
 
-    $limit = 10;
-    
-    $query = $org->query_news_updates();    
+    $limit = 10;    
+    $query = $widget->query_widgets()
+        ->order_by('time_created desc')
+        ->where('status = ?', EntityStatus::Enabled);
+        
     $count = $query->count();
     $entities = $query->limit($limit, $offset)->filter();            
 ?>
@@ -32,6 +37,7 @@
         'count' => $count,
         'offset' => $offset,
         'limit' => $limit,
+        'baseurl' => $widget->get_url(),
     ));        
     
     if (!$count)

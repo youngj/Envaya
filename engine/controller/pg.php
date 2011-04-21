@@ -201,8 +201,8 @@ class Controller_Pg extends Controller {
     {
         Session::set('hide_todo', 1);
         
-        $this->request->headers['Content-Type'] = 'text/javascript';
-        $this->request->response = json_encode("OK");    
+        $this->set_content_type('text/javascript');
+        $this->set_response(json_encode("OK"));    
     }
     
     function action_change_lang()
@@ -216,7 +216,7 @@ class Controller_Pg extends Controller {
     
     function action_js_revision_content()
     {
-        $this->request->headers['Content-Type'] = 'text/javascript';                
+        $this->set_content_type('text/javascript');
         
         $id = (int)get_input('id');
         
@@ -226,14 +226,14 @@ class Controller_Pg extends Controller {
             throw new SecurityException("Access denied.");
         }
         
-        $this->request->response = json_encode(array(
+        $this->set_response(json_encode(array(
             'content' => $revision->content
-        ));
+        )));
     }
     
     function action_js_revisions()
     {
-        $this->request->headers['Content-Type'] = 'text/javascript';                
+        $this->set_content_type('text/javascript');
         
         $entity_guid = (int)get_input('entity_guid');
         
@@ -252,9 +252,9 @@ class Controller_Pg extends Controller {
             $revisions = ContentRevision::query()->where('entity_guid = ?', $entity_guid)->order_by('time_updated desc')->filter();        
         }
         
-        $this->request->response = json_encode(array(
+        $this->set_response(json_encode(array(
             'revisions' => array_map(function($r) { return $r->js_properties(); }, $revisions),
-        ));
+        )));
     }
 
     function action_select_image()

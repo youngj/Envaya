@@ -1,5 +1,10 @@
 <?php
 
+/* 
+ * A structured widget that displays an organization's contact information,
+ * (phone number, address, email, etc.). It stores values on the organization 
+ * itself so that the contact information can be easily queried throughout the system.
+ */
 class Widget_Contact extends Widget
 {
     function render_view()

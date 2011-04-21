@@ -17,11 +17,6 @@ function set_lang($entity)
     echo "\n";
 }
 
-foreach (NewsUpdate::query()->where('language is null')->filter() as $newsUpdate)
-{
-    set_lang($newsUpdate);
-}
-
 foreach (Widget::query()->where('language is null')->where("content <> ''")->filter() as $widget)
 {
     set_lang($widget);

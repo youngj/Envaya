@@ -3,8 +3,9 @@
 
     $post = $vars['post'];              
     $url = rewrite_to_current_domain($post->get_url());
-    $org = $post->get_root_container_entity();
-    $blogDates = $org->get_blog_dates();
+    $news = $post->get_container_entity();
+    $blogDates = $news->get_widget_dates();
+    $org = $news->get_root_container_entity();
 ?>
 
 <div style='clear:both'></div>
@@ -144,7 +145,8 @@ function addTimelineLink(blogDate)
                 previewXHR.abort();
                 previewXHR = null;
             }
-            previewXHR = fetchJson(orgUrl + "/post/" + blogDate.guid + "/preview", showPreview);
+            var url = orgUrl + "/post/" + blogDate.guid + "/preview";
+            previewXHR = fetchJson(url, showPreview);
         }
 
         hoverPost.style.left = link.offsetLeft + "px";

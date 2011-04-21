@@ -34,7 +34,7 @@ class Controller_Page extends Controller_Profile
            
 	function action_post_comment()
 	{
-        $action = new Action_PostComment($this, $this->widget);
+        $action = new Action_PostComment($this);
         $action->execute();
 	}           
            
@@ -50,9 +50,9 @@ class Controller_Page extends Controller_Profile
         $action->execute();
     }
     
-    function action_add_widget()
+    function action_add()
     {
-        $action = new Action_AddWidget($this);
+        $action = new Action_AddWidget($this, $this->widget);
         $action->execute();
     }
 }

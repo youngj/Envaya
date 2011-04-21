@@ -1,29 +1,46 @@
 <?php
 
-/*
- * A news update posted by an organization. 
- * Basically a blog post by another name.
+/* 
+ * A widget that implements a single blog post (news update), typically
+ * as a child of a Widget_News container.
  */
-class NewsUpdate extends Entity
+class Widget_Post extends Widget_Generic
 {
-    static $table_name = 'news_updates';
-    static $table_attributes = array(
-		'num_comments' => 0
-    );
-    static $mixin_classes = array(
-        'Mixin_Content'
-    );
-
-    public function query_comments()
-    {
-        return Comment::query()->where('container_guid = ?', $this->guid)->order_by('guid');
-    }
-    
-    public function get_title()
+    public function get_default_title()
     {
         return __("widget:news:item");
     }
 
+    function render_view()
+    {
+        return view('news/view_post', array('post' => $this));
+    }
+    
+    function process_input($action)
+    {
+        $content = get_input('content');
+        if (empty($content))
+        {
+            throw new ValidationException(__("widget:post:blank"));
+        }
+        parent::process_input($action);
+    }
+    
+    public function get_url()
+    {
+        $org = $this->get_root_container_entity();
+        if ($org)
+        {
+            return $org->get_url() . "/post/" . $this->guid;
+        }
+        return '';
+    }    
+    
+    public function get_base_url()
+    {
+        return $this->get_url();
+    }
+       
     public function js_properties()
     {
         return array(
@@ -35,19 +52,11 @@ class NewsUpdate extends Entity
         );
     }
 
-    public function get_url()
-    {
-        $org = $this->get_container_entity();
-        if ($org)
-        {
-            return $org->get_url() . "/post/" . $this->guid;
-        }
-        return '';
-    }
-
+    function post_feed_items_edit() {}
+    
     function post_feed_items()
     {
-        $org = $this->get_container_entity();
+        $org = $this->get_root_container_entity();
         $recent = time() - 60*60*6;
         
         $recent_update = $org->query_feed_items()
@@ -74,5 +83,5 @@ class NewsUpdate extends Entity
         {                
             FeedItem_News::post($org, $this);
         }
-    }                
+    }
 }

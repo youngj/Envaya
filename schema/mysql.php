@@ -49,13 +49,6 @@ CREATE TABLE `interface_translations` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE `news_updates` (
-    <?php require 'schema/entity_columns.php'; ?>,
-    <?php require 'schema/content_columns.php'; ?>,  
-  `num_comments` int not null default 0
-  
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 CREATE TABLE `comments` (
     <?php require 'schema/entity_columns.php'; ?>,
     <?php require 'schema/content_columns.php'; ?>,  
@@ -104,7 +97,8 @@ CREATE TABLE `widgets` (
   `menu_order` int null,
   `in_menu` tinyint(4) default 1,
   `handler_arg` varchar(64) NULL,
-  `title` varchar(64) NULL
+  `title` varchar(64) NULL,
+  `num_comments` int not null default 0
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `invited_emails` (

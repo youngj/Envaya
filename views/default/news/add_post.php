@@ -1,17 +1,11 @@
+<div class='section_content padded'>
 <?php
-    $org = $vars['org'];
+    $widget = $vars['widget'];
 
     ob_start();
 
-    echo view('input/tinymce',
-        array(
-            'name' => 'blogbody',
-            'id' => 'post_rich',
-            'autoFocus' => true,
-            'trackDirty' => true
-        )
-    );
-
+    echo view('widgets/edit_initial_content', array('autoFocus' => true));
+    
     echo view('input/submit',
         array(
             'class' => "submit_button addUpdateButton",
@@ -28,7 +22,9 @@
 
     echo view('input/form', array(
         'id' => 'addPostForm',
-        'action' => "{$org->get_url()}/post/new",
+        'action' => "{$widget->get_base_url()}/add",
         'enctype' => "multipart/form-data",
         'body' => $formBody,
     ));
+?>
+</div>

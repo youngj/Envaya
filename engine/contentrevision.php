@@ -40,7 +40,7 @@ class ContentRevision extends Model
         if (!$revision)
         {
             $revision = new ContentRevision();
-            $revision->owner_guid = $entity->container_guid;
+            $revision->owner_guid = $entity->owner_guid;
             $revision->entity_guid = $entity->guid;
             $revision->time_created = $time;
             $revision->status = ContentRevision::Draft;        

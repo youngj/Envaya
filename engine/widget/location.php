@@ -1,4 +1,9 @@
 <?php
+
+/* 
+ * A widget that displays the location of an organization on a map, storing the 
+ * latitude/longitude on the Organization itself so it can be easily queried.
+ */
 class Widget_Location extends Widget
 {
     function render_view()

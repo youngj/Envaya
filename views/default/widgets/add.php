@@ -5,8 +5,7 @@
 ?>
 <form action='<?php echo $org->get_url() ?>/add_page' method='POST'>
 <?php
-    echo view('input/securitytoken'); 
-    
+    echo view('input/securitytoken');     
     echo view('widgets/edit_title');
 ?>
 
@@ -44,32 +43,11 @@ addEvent(widgetName, 'keypress', function() {
 });
 
 })();
-
-function saveInitialDraft()
-{
-    document.getElementById('save_message').style.display='inline';
-    setSubmitted();
-    var form = document.forms[0];
-    form._draft.value = '1';
-    form.submit();
-}
-
 </script>
 
 <?php 
-    echo view('input/hidden', array('name' => '_draft'));
-    echo view('input/tinymce',
-        array(
-            'name' => 'content',
-            'id' => 'post_rich',
-            'saveFn' => 'saveInitialDraft',            
-            'trackDirty' => true
-        )
-    );
-?>
-<div><span id='save_message' style='font-weight:bold;display:none'>Saving...</span>&nbsp;</div>
-
-<?php echo view('input/submit', array('trackDirty' => true, 'value' => __('widget:create'))); ?>
+    echo view('widgets/edit_initial_content');
+    echo view('input/submit', array('trackDirty' => true, 'value' => __('widget:create'))); ?>
 
 </form>
 </div>

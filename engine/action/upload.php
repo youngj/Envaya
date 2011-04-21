@@ -43,9 +43,8 @@ class Action_Upload extends Action
         }
         else
         {
-            $request = $this->get_request();
-            $request->headers['Content-Type'] = 'text/javascript';
-            $request->response = $json;
+            $this->set_content_type('text/javascript');
+            $this->set_response($json);
         }
     }
     

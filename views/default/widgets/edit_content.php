@@ -15,25 +15,19 @@
 <?php echo view('js/save_draft', array('guid' => $widget->guid)); ?>
 </script>       
 <div class='input' style='padding-bottom:0px'>
-    <label><?php 
-    
+    <?php     
         $labelCode = "widget:{$widget->widget_name}:label";
         $label = __($labelCode);
         if ($label != $labelCode)
         {
-            echo $label;
+            echo "<label>$label</label>";
         }
-    ?></label>
-    <?php
+        
         $helpCode = "widget:{$widget->widget_name}:help";
         $help = __($helpCode);
         if ($help != $helpCode)
         {
             echo "<div class='help'>$help</div>";
-        }
-        else
-        {
-            echo "<br />";
         }
     ?>
     

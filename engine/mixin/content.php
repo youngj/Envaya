@@ -2,7 +2,6 @@
 
 /*
  * Mixin for Entity classes that have free-text content stored as HTML.
- *
  */
 class Mixin_Content extends Mixin
 {    

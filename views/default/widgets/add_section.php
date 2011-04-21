@@ -3,7 +3,7 @@
     $widget = $vars['widget'];
 
 ?>
-<form action='<?php echo $widget->get_base_url() ?>/add_widget' method='POST'>
+<form action='<?php echo $widget->get_base_url() ?>/add' method='POST'>
 <?php 
     echo view('input/securitytoken'); 
 
@@ -15,10 +15,7 @@
     ));
 
     echo view('focus', array('id' => 'title')); 
-    echo view('input/tinymce', array(
-        'name' => 'content',
-        'trackDirty' => true
-    ));
+    echo view('widgets/edit_initial_content');    
     echo view('input/submit', array('trackDirty' => true, 'value' => __('widget:create_section'))); 
 ?>
 </form>

@@ -55,7 +55,14 @@ abstract class Action
     
     protected function handle_validation_exception($ex)
     {
-        SessionMessages::add_error($ex->getMessage());
+        if ($ex->is_html())
+        {
+            SessionMessages::add_error_html($ex->getMessage());
+        }
+        else
+        {
+            SessionMessages::add_error($ex->getMessage());
+        }
         $this->render();
         if (!$this->get_request()->response)
         {

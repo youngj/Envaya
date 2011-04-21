@@ -1,5 +1,9 @@
 <?php
 
+/* 
+ * A widget that shows an organization's partner organizations (OrgRelationships)
+ * and allows the organization to add/remove partner organizations.
+ */
 class Widget_Network extends Widget
 {
     function get_default_title()

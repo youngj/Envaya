@@ -183,6 +183,7 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//button[@id='widget_delete']");
         $this->getConfirmation();
         $this->ensureGoodMessage();
+        $this->open("/{$this->username}");
         $this->mouseOver("//a[contains(@href,'contact')]"); // todo items
         $this->mustNotExist("//div[@id='site_menu']//a[contains(@href,'contact')]");
     }
@@ -256,7 +257,7 @@ class RegisterTest extends SeleniumTest
         $this->retry('mouseOver', array("//tr[4]//a[@id='{$updatesRowId}_up']"));                        
         
         // create custom section
-        $this->clickAndWait("//a[contains(@href,'add_widget')]");
+        $this->clickAndWait("//a[contains(@href,'/add')]");
         $this->type("//input[@name='title']",'My New Section');
         $this->typeInFrame("//iframe", "yay!");
         
@@ -291,7 +292,6 @@ class RegisterTest extends SeleniumTest
         $this->mustNotExist("//div[@class='section_header' and contains(text(),'Sectors')]");
         
         // bring sectors section back
-        $this->clickAndWait("//a[contains(@href,'home/edit')]");
         $this->clickAndWait("//div[@class='widget_list']//a[contains(text(),'Sectors')]");
         $this->check("//input[@name='sector[]' and @value='21']");
         $this->submitForm();

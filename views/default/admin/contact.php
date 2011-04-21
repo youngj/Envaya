@@ -25,7 +25,7 @@
     <th><?php echo __('phone_number') ?></th>
     <th><a href='/admin/contact?sort=time_created'><?php echo __('created') ?></a></th>
     <th><?php echo __('last_update') ?></th>
-    <th><?php echo __('posts') ?></th>
+    <th><?php echo __('pages') ?></th>
     <th><?php echo __('lang') ?></th>
     <th><a href='/admin/contact?sort=last_notify_time'><?php echo __('last_notify') ?></a></th>
 </tr>
@@ -35,7 +35,7 @@
     foreach ($orgs as $org)
     {
         $backgroundColor = ($org->approval > 0) ? '#fff' : (($org->approval == 0) ? '#ddd' : '#f99');
-        $numNewsUpdates = $org->query_news_updates()->count();
+        $numWidgets = $org->query_widgets()->count();
 ?>
 <tr style='background-color:<?php echo $backgroundColor ?>'>
     <td><?php echo "<a href='{$org->get_url()}'>".escape($org->name)."</a>" ?></td>
@@ -49,7 +49,7 @@
             echo friendly_time($feedItem->time_posted);
         }
     ?></td>
-    <td><?php echo $numNewsUpdates; ?></td>
+    <td><?php echo $numWidgets; ?></td>
     <td><?php echo $org->language; ?></td>
     <td><?php echo $org->last_notify_time ? friendly_time($org->last_notify_time) : ''; ?></td>
     <td style='padding:0px;background-color:#068488;white-space:nowrap'>

@@ -104,27 +104,22 @@ return array(
 
     'page:dirty' => "The current page has unsaved changes, which will be lost if you continue.",
 
-    'blog:editpost' => "Edit News Update",
-    'blog:addpost' => "Add news update",
-    'blog:delete' => "Delete update",
-    'blog:delete:confirm' => "Are you sure you want to delete this news update?",
-    'blog:delete:success' => "News update deleted successfully.",
-    'blog:timeline' => "Timeline",
-
     'widget:view' => "View page",
     'widget:title' => 'Short Page Title',       
     'widget:section_title' => 'Section Title',       
     'widget:title_help' => "Enter a word or short phrase to show in your website's menu.",
     'widget:address' => "Page Address",
     'widget:no_title' => "Please enter a title for this page.",
+    'widget:no_section_title' => "Please enter a title for this section.",
     'widget:bad_name' => "Please enter an address for this page using letters (a-z), digits (0-9), dashes (-), or underscores (_).",
     'widget:duplicate_name' => "That page address is already being used. Please choose another address, or %s to edit the existing page.",
     'widget:add_link' => "Add another page...",
+    'widget:add' => "Add Page",
     'widget:add_section_link' => "Add another section...",
-    'widget:new' => "New Page",
     'widget:add_section' => "Edit %s: Add Section",
     'widget:empty' => "This organization has not yet written its %s page.",    
     'widget:edit_sections' => "Edit Sections",
+    'widget:draft' => "not yet published",
     
     'widget:home' => "Home",    
     'widget:sectors' => 'Sectors',
@@ -286,12 +281,8 @@ return array(
     'theme:red' => "Chrome",
     'theme:sidebar' => "Left Menu",
 
-    'blog:content:label' => "Write your news update below:",
-
-    'blog:posted' => "Your news update was successfully posted.",
-    'blog:updated' => "Your news update was successfully updated.",
-    'blog:deleted' => "Your news update was successfully deleted.",
-    'blog:blank' => "Your news update was empty.",
+    'widget:news:delete_confirm' => "Are you sure you want to delete this news update?",
+    'widget:post:blank' => "Your news update was empty.",
 
     'map:drop_pin' => "Add pin to map",
     'map:drag_pin' => "Drag and drop the red map pin below to your organization's location.",

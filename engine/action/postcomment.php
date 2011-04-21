@@ -2,24 +2,16 @@
 
 class Action_PostComment extends Action
 {
-    protected $entity;
-
-    function __construct($controller, $entity)
-    {
-        parent::__construct($controller);
-        $this->entity = $entity;
-    }	
-        
     function process_input()
 	{      
-        $entity = $this->entity;
+        $widget = $this->get_widget();
         
-        if (!$entity->guid || !$entity->is_enabled())
+        if (!$widget->guid || !$widget->is_enabled())
         {
             return $this->not_found();
         }        
         
-		$comments_url = $entity->get_url()."?comments=1";
+		$comments_url = $widget->get_url()."?comments=1";
 	
         $userId = Session::get_loggedin_userid();
         
@@ -39,7 +31,7 @@ class Action_PostComment extends Action
 			return forward($comments_url);
         }
         
-		if ($entity->query_comments()->where('content = ?', $content)->count() > 0)
+		if ($widget->query_comments()->where('content = ?', $content)->count() > 0)
 		{
 			SessionMessages::add_error(__('comment:duplicate'));
 			Session::save_input();
@@ -56,7 +48,7 @@ class Action_PostComment extends Action
         Session::set('user_location', $location);
         
 		$comment = new Comment();
-		$comment->container_guid = $entity->guid;
+		$comment->container_guid = $widget->guid;
 		$comment->owner_guid = $userId;
 		$comment->name = $name;
         $comment->location = $location;
@@ -64,15 +56,15 @@ class Action_PostComment extends Action
 		$comment->language = GoogleTranslate::guess_language($content);
 		$comment->save();
 	
-		$entity->num_comments = $entity->query_comments()->count();
-		$entity->save();
+		$widget->num_comments = $widget->query_comments()->count();
+		$widget->save();
 	
 		if (!$userId)
 		{
             $comment->set_session_owner();
 		}
 		
-		$org = $entity->get_root_container_entity();
+		$org = $widget->get_root_container_entity();
 		
 		$notification_subject = sprintf(__('comment:notification_subject', $org->language), 
 			$comment->get_name());

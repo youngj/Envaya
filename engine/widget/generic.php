@@ -1,4 +1,9 @@
 <?php
+
+/* 
+ * A widget with free-text HTML content, and possibly a custom title.
+ * Drafts of the content can be saved before publishing.
+ */
 class Widget_Generic extends Widget
 {
     function render_view()
@@ -13,8 +18,9 @@ class Widget_Generic extends Widget
 
     function process_input($action)
     {
-        $prevContent = $this->content;
-        $lastUpdated = $this->time_updated;
+        $publish = $this->is_enabled();
+        $time = time();
+        $lastPublished = (int)$this->get_metadata('last_publish_time');
 
         $title = get_input('title');
         if ($title)
@@ -22,27 +28,36 @@ class Widget_Generic extends Widget
             $this->title = $title;
         }
         
+        if (!$this->get_title())
+        {
+            throw new ValidationException($this->is_section() ? __('widget:no_section_title') : __('widget:no_title'));
+        }       
+                
         $content = get_input('content');
+        if ($publish)
+        {
+            $this->set_metadata('last_publish_time', $time);
+        }
                 
         $this->set_content($content);
-        $this->save();        
+        $this->save();         
         
         $revision = ContentRevision::get_recent_draft($this);
-        $revision->time_updated = time();
-        $revision->status = ContentRevision::Published;
-        $revision->content = $content;
+        $revision->time_updated = $time;
+        $revision->status = $publish ? ContentRevision::Published : ContentRevision::Draft;
+        $revision->content = $content;            
         $revision->save();                
-        
-        if ($this->content)
+            
+        if ($publish && $this->content)
         {
-            if (!$prevContent)
-            {
-                $this->post_feed_items_new();
-            }
-            else if (!Session::isadminloggedin() && time() - $lastUpdated > 86400)
+            if (!$lastPublished)
             {
                 $this->post_feed_items();
             }
-        }     
+            else if (!Session::isadminloggedin() && $time - $lastPublished > 86400)
+            {
+                $this->post_feed_items_edit();
+            }        
+        }
     }
 }

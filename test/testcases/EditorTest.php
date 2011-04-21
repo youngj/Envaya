@@ -34,8 +34,6 @@ class EditorTest extends SeleniumTest
         $this->type("//input[@name='widget_name']", $pageName);
         $this->typeInFrame("//iframe", "test content 1");
         $this->clickAndWait("//a[@id='content_html0_save']");
-        sleep(1);
-        $this->ensureGoodMessage();
         
         $this->assertEquals("Test Page", $this->getValue("//input[@name='title']"));
 
@@ -92,19 +90,18 @@ class EditorTest extends SeleniumTest
         $this->click("//a[@id='content_html0_restoredraft']");
         $this->retry('mouseOver', array("//div[@class='revisionLink']//a"));
         $this->mouseOver("//div[@class='revisionLink'][2]//a");
-        $this->mouseOver("//div[@class='revisionLink'][3]//a");
-        $this->mustNotExist("//div[@class='revisionLink'][4]//a");
-        $this->click("//div[@class='revisionLink'][3]//a");
+        $this->mustNotExist("//div[@class='revisionLink'][3]//a");
+        $this->click("//div[@class='revisionLink'][2]//a");
         
         $this->retry('mouseOver', array("//div[@class='revisionPreview']//p"));
         
-        $this->assertContains("test content 1", $this->getText("//div[@class='revisionPreview']//p"));
+        $this->assertContains("test content 2", $this->getText("//div[@class='revisionPreview']//p"));
         $this->click("//input[@value='Restore']");
         $this->retry('selectFrame', array("//iframe"));
-        $this->retry('mouseOver', array("//p[contains(text(),'test content 1')]"));
+        $this->retry('mouseOver', array("//p[contains(text(),'test content 2')]"));
         $this->selectFrame("relative=top");
         $this->submitForm();
-        $this->mouseOver("//p[contains(text(),'test content 1')]");
+        $this->mouseOver("//p[contains(text(),'test content 2')]");
         $this->mustNotExist("//p[contains(text(),'test content 3')]");        
         
         // delete page

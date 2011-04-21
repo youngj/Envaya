@@ -4,11 +4,10 @@
     $post = $vars['post'];              
     $url = rewrite_to_current_domain($post->get_url());
     $org = $post->get_root_container_entity();
-    $blogDates = $org->get_blog_dates();
         
     echo view_entity($post, array('single_post' => true));
     
-    if (sizeof($blogDates) > 1)
+    if ($org->query_widgets()->count() > 1)
 {
 
 ?>

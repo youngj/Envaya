@@ -10,8 +10,7 @@ class Action_EditWidget extends Action
     
     protected function save_draft()
     {
-        $request = $this->get_request();
-        $request->headers['Content-Type'] = 'text/javascript';                
+        $this->set_content_type('text/javascript');
     
         validate_security_token();        
     
@@ -27,7 +26,7 @@ class Action_EditWidget extends Action
         $revision->content = get_input('content');                       
         $revision->save();
         
-        $request->response = json_encode(array('guid' => $widget->guid));    
+        $this->set_response(json_encode(array('guid' => $widget->guid)));    
     }
     
     function process_input()
@@ -46,9 +45,9 @@ class Action_EditWidget extends Action
             $widget->disable();
             $widget->save();
 
-            SessionMessages::add($widget->is_page() ? __('widget:delete:success') : __('widget:delete_section:success'));            
+            SessionMessages::add(!$widget->is_section() ? __('widget:delete:success') : __('widget:delete_section:success'));            
 
-            forward($this->get_org()->get_url());
+            forward($widget->get_container_entity()->get_edit_url());
         }
         else
         {
@@ -89,7 +88,7 @@ class Action_EditWidget extends Action
         
         $widgetTitle = $widget->get_title();
 
-        if ($widget->is_page())
+        if (!$widget->is_section())
         {
             $title = sprintf(__("widget:edit_title"), $widgetTitle);
         }

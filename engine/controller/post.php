@@ -1,85 +1,11 @@
 <?php
 
-class Controller_Post extends Controller_Profile
-{
-    protected $post;
-
-    function get_post()
-    {
-        return $this->post;
-    }
-    
-    function before()
-    {
-        parent::before();
-
-        $postId = $this->request->param('id');
-
-        if ($postId == 'new')
-        {
-            $this->request->action = 'new';
-            return;
-        }
-
-        $post = NewsUpdate::get_by_guid($postId);
-        $org = $this->org;
-        if ($post && $post->container_guid == $org->guid)
-        {
-            $this->post = $post;
-            return;
-        }
-        else
-        {
-            $this->use_public_layout();
-            $this->not_found();
-        }
-    }
-    
-    function action_index()
-    {
-        $org = $this->org;
-        $post = $this->post;
-        
-        if (!$org->can_view())
-        {
-            return $this->view_access_denied();
-        }        
-        
-        $this->use_public_layout();
-
-        if ($post->can_edit())
-        {
-            PageContext::get_submenu('edit')->add_item(__("widget:edit"), "{$post->get_url()}/edit");
-        }
-
-        $this->page_draw(array(
-            'title' => __('widget:news'),
-            'content' => view('news/view_post', array('post' => $post)),
-        ));                    
-    }
-    
-    function action_post_comment()
-    {   
-		$action = new Action_PostComment($this, $this->post);
-        $action->execute();
-    }
-
-    function action_edit()
-    {
-        $action = new Action_EditPost($this);
-        $action->execute();
-    }
-    
-    function action_new()
-    {
-        $action = new Action_NewPost($this);
-        $action->execute();
-    }
-
+class Controller_Post extends Controller_Widget
+{   
     function action_preview()
     {
-        $this->request->headers['Content-type'] = 'text/javascript';
-        $this->request->response = json_encode($this->post->js_properties());
+        $this->set_content_type('text/javascript');
+        $this->set_response(json_encode($this->widget->js_properties()));
     }
 
     function action_prev()
@@ -94,34 +20,32 @@ class Controller_Post extends Controller_Profile
 
     function redirect_delta($delta)
     {
-        $post = $this->post;
-        
-        $org = $this->org;
+        $widget = $this->widget;
 
         $op = ($delta > 0) ? ">" : "<";
         $order = ($delta > 0) ? "asc" : "desc";
+        
+        $container = $widget->get_container_entity();
 
-        $newsUpdate = $org->query_news_updates()
+        $sibling = $container->query_widgets()
             ->where('status = ?', EntityStatus::Enabled)
-            ->where("guid $op ?", $post->guid)
+            ->where("guid $op ?", $widget->guid)
             ->order_by("guid $order")
-            ->limit(1)
             ->get();
         
-        if ($newsUpdate)
+        if ($sibling)
         {
-            forward($newsUpdate->get_url());
+            forward($sibling->get_url());
         }
         
-        $newsUpdate = $org->query_news_updates()
+        $sibling = $container->query_widgets()
             ->where('status = ?', EntityStatus::Enabled)
             ->order_by("guid $order")
-            ->limit(1)
             ->get();        
 
-        if ($newsUpdate)
+        if ($sibling)
         {
-            forward($newsUpdate->get_url());
+            forward($sibling->get_url());
         }
     }
 }

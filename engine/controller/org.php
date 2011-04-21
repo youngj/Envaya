@@ -102,7 +102,7 @@ class Controller_Org extends Controller
 
     function action_js_search()
     {
-        $this->request->headers['Content-Type'] = 'text/javascript';                
+        $this->set_content_type('text/javascript');
     
         $name = get_input('name');
         $email = get_input('email');
@@ -164,7 +164,7 @@ class Controller_Org extends Controller
             $all_orgs
         ) ?: array());
                 
-        $this->request->response = json_encode(array(
+        $this->set_response(json_encode(array(
             'can_invite' => InvitedEmail::get_by_email($email)->can_send_invite(),
             'results' => array_map(function($o) { 
                 return array(
@@ -172,7 +172,7 @@ class Controller_Org extends Controller
                     'view' => view('org/js_search_result', array('org' => $o))
                 );
             }, $all_orgs),
-        ));                
+        )));                
     }   
     
     function action_change_feed_view()
@@ -237,6 +237,8 @@ class Controller_Org extends Controller
     
     function action_feed_more()
     {
+        $this->set_content_type('text/javascript');
+
         $sector = get_input('sector');
         $region = get_input('region');
         $before_id = (int)get_input('before_id');
@@ -252,11 +254,10 @@ class Controller_Org extends Controller
 
         $items_html = view('feed/list', array('items' => $items));
         
-        $this->request->headers['Content-Type'] = 'text/javascript';
-        $this->request->response = json_encode(array(
+        $this->set_response(json_encode(array(
             'items_html' => $items_html,
             'first_id' => $this->get_first_item_id($items, $max_items)
-        ));
+        )));
     }
 
     function action_new()
@@ -326,6 +327,8 @@ class Controller_Org extends Controller
 
     function action_searchArea()
     {
+        $this->set_content_type('text/javascript');
+    
         $latMin = get_input('latMin');
         $latMax = get_input('latMax');
         $longMin = get_input('longMin');
@@ -350,8 +353,7 @@ class Controller_Org extends Controller
             $orgJs[] = $org->js_properties();
         }
 
-        $this->request->headers['Content-Type'] = 'text/javascript';
-        $this->request->response = json_encode($orgJs);
+        $this->set_response(json_encode($orgJs));
     }
     
     function action_featured()

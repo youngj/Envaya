@@ -220,13 +220,7 @@ class User extends Entity
     {
         $feedName = FeedItem::make_feed_name(array('user' => $this->guid));
         return FeedItem::query_by_feed_name($feedName);
-    }
-       
-    function get_blog_dates()
-    {   
-        $sql = "SELECT guid, time_created from news_updates WHERE status=1 AND container_guid=? ORDER BY guid ASC";
-        return Database::get_rows($sql, array($this->guid));
-    }
+    }      
 
     public function is_approved()
     {

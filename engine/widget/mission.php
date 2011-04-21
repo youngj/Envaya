@@ -1,4 +1,8 @@
 <?php
+
+/* 
+ * A widget that displays the mission statement of an organization.
+ */
 class Widget_Mission extends Widget_Generic
 {
     function process_input($action)

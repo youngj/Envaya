@@ -7,7 +7,7 @@
             'container' => $widget, 
             'mode' => 'home_section',
             'add_link_text' => __('widget:add_section_link'),
-            'add_link_url' => "{$widget->get_base_url()}/add_widget",        
+            'add_link_url' => "{$widget->get_base_url()}/add",        
         ))
     )); 
     

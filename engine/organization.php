@@ -22,11 +22,6 @@ class Organization extends User
         return $this->setup_state >= SetupState::CreatedHomePage;
     }
     
-    function query_news_updates()
-    {
-        return NewsUpdate::query()->where("container_guid=?", $this->guid)->order_by('guid desc');
-    }    
-    
     public function query_relationships()
     {
         return OrgRelationship::query()->where("container_guid=?", $this->guid)->order_by('subject_name asc');
@@ -51,7 +46,7 @@ class Organization extends User
     {
         $score = 0;
     
-        if ($this->query_news_updates()->where('time_created > ?', time() - 86400 * 31)->count() > 0)
+        if ($this->query_widgets_by_class('Post')->where('time_created > ?', time() - 86400 * 31)->count() > 0)
         {
             $score += 10;
         }
@@ -336,4 +331,44 @@ class Organization extends User
         }        
         $this->phone_numbers_dirty = true;
     }            
+
+    /* 
+     * WidgetContainer methods - an Organization is a container for Widgets
+     * which are shown as pages on their site.
+     */
+    function is_page_container()
+    {
+        return true;
+    }        
+    
+    function get_edit_url()
+    {
+        return $this->get_url() . "/dashboard";
+    }    
+    
+    function new_child_widget_from_input()
+    {        
+        $widget_name = get_input('widget_name');
+        if (!$widget_name || !Widget::is_valid_name($widget_name))
+        {
+            throw new ValidationException(__('widget:bad_name'));            
+        }
+        
+        $widget = $this->get_widget_by_name($widget_name);
+        
+        if ($widget->guid && ((time() - $widget->time_created > 30) || !($widget instanceof Widget_Generic)))
+        {
+            throw new ValidationException(
+                sprintf(__('widget:duplicate_name'),
+                    "<a href='{$widget->get_edit_url()}'><strong>".__('clickhere')."</strong></a>"),
+                true
+            );
+        }
+        return $widget;
+    }
+    
+    function render_add_child()
+    {
+        return view("widgets/add", array('org' => $this));
+    }
 }

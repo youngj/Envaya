@@ -223,8 +223,8 @@ class Controller_Profile extends Controller
 
     function index_add_page()
     {
-        $action = new Action_AddPage($this);
-        $action->execute();              
+        $action = new Action_AddWidget($this, $this->org);
+        $action->execute();
     }
         
     function index_design()

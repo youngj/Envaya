@@ -16,13 +16,17 @@
         $link = "<a style='font-weight:bold' href='{$widget->get_edit_url()}?from=$from'>".
                         escape($widget->get_title())."</a>";
     
+        if ($widget->status == EntityStatus::Draft)
+        {
+            $link .= " (".__('widget:draft').")";
+        }           
+            
         if ($widget->in_menu)
         {
             ob_start();
             
             echo "<tr id='{$table_id}_{$widget->guid}'><td>";
-            echo $link;
-
+            echo $link;            
             echo "</td><td style='text-align:right;color:#999'>";
             $link_id = "{$table_id}_{$widget->guid}_up";
             $url = "javascript:asyncReorderWidget(".

@@ -20,6 +20,7 @@ class Widget extends Entity
         'subclass' => '',
         'handler_arg' => '',
         'title' => '',       
+        'num_comments' => 0
     );
     static $mixin_classes = array(
         'Mixin_Content',
@@ -39,6 +40,7 @@ class Widget extends Entity
         'updates'       => array('menu_order' => 110, 'home_section' => true, 'subclass' => 'Updates'),        
         'sectors'       => array('menu_order' => 120, 'home_section' => true, 'subclass' => 'Sectors'),        
         'location'      => array('menu_order' => 130, 'home_section' => true, 'subclass' => 'Location'),        
+        'post'          => array('subclass' => 'Post'),        
     );
     
     static function get_subtype_id()
@@ -117,7 +119,7 @@ class Widget extends Entity
     {
         $key = "widget:{$this->widget_name}";
         $title = __($key);
-        return ($title != $key) ? $title : __('widget:new');
+        return ($title != $key) ? $title : '';
     }
     
     function get_default_subtitle()
@@ -162,13 +164,12 @@ class Widget extends Entity
     {
         $name = $this->widget_name;
         $container = $this->get_container_entity();
-        $is_page = $this->is_page();
         
-        if ($is_page && isset(static::$default_widgets[$name]))
+        if ($this->is_page() && isset(static::$default_widgets[$name]))
         {
             return "{$container->get_url()}/{$name}";
         }
-        else if (!$is_page)
+        else if ($this->is_section())
         {
             return $container->get_url();
         }        
@@ -214,17 +215,22 @@ class Widget extends Entity
         return $this->guid && $this->is_enabled();
     }
     
+    public function is_section()
+    {
+        return $this->get_container_entity()->is_section_container();
+    }
+        
     public function is_page()
     {
-        return ($this->get_container_entity() instanceof Organization);
+        return $this->get_container_entity()->is_page_container();
     }
     
-    function post_feed_items_new()
+    function post_feed_items()
     {
         return FeedItem_NewWidget::post($this->get_root_container_entity(), $this);
     }
     
-    function post_feed_items()    
+    function post_feed_items_edit()    
     {
         return FeedItem_EditWidget::post($this->get_root_container_entity(), $this); 
     }

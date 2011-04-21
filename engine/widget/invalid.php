@@ -1,6 +1,10 @@
 <?php
 
-class Widget_Invalid extends Widget
+/* 
+ * A fallback widget that is used when a widget subclass is not defined
+ * (indicating a likely programming or schema migration error), and displays an error message.
+ */
+class Widget_Invalid extends Widget_Generic
 {
     private function show_error()
     {
@@ -10,12 +14,12 @@ class Widget_Invalid extends Widget
     function render_view()
     {        
         $this->show_error();
-        return '';
+        return parent::render_view();
     }
 
     function render_edit()
     {
         $this->show_error();
-        return '';
+        return parent::render_edit();
     }    
 }

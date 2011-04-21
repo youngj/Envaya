@@ -8,7 +8,17 @@ class DataFormatException extends Exception {}
 class NotImplementedException extends CallException {}
 class InvalidParameterException extends CallException {}
 class NotFoundException extends Exception {}
-class ValidationException extends Exception {}
+class ValidationException extends Exception 
+{
+    protected $is_html;
+    function is_html() { return $this->is_html; }
+
+    function __construct($msg, $is_html = false)
+    {
+        $this->is_html = $is_html;
+        parent::__construct($msg);
+    }
+}
 
 /**
  * PHP Error handler function.
