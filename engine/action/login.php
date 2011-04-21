@@ -56,17 +56,33 @@ class Action_Login extends Action
      */
     function authenticate($username, $password)
     {
-        if ($user = User::get_by_username($username))
+        // if the username has an @, it must be an email address (@ is not allowed in usernames)        
+        if (strpos($username,'@') !== false)
         {
-            if ($user->password == $user->generate_password($password))
+            // if there are multiple accounts with the same email address, try all of them, preferring any that is approved
+            $users = User::query()->where('email = ?', $username)->order_by('approval desc')->filter();
+        }
+        else
+        {
+            $user = User::get_by_username($username);
+            $users = $user ? array($user) : array();
+        }    
+    
+        // try all matching users, using the first one with a valid password
+        foreach ($users as $user)
+        {
+            if ($user->has_password($password))
             {
                 return $user;
-            }
-
-            $user->log_login_failure();
-            $user->save();
+            }            
         }
-        return false;
+                
+        foreach ($users as $user)
+        {
+            $user->log_login_failure();
+            $user->save();            
+        }
+        return false;            
     }    
     
     function render()

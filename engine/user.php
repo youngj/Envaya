@@ -36,11 +36,14 @@ class User extends Entity
         'notifications' => 15,
     );
 
-    protected function get_table_attributes()
+    static function get_table_attributes()
     {
-        return array_merge(parent::get_table_attributes(), array(
-            'subtype' => static::get_subtype_id(),
-        ));
+        return array_merge(
+            forward_static_call(array('Entity','get_table_attributes')),
+            array(
+                'subtype' => static::get_subtype_id(),
+            )
+        );
     }    
         
     
@@ -299,6 +302,11 @@ class User extends Entity
         $this->set("login_failure_$fails", time());
     }        
     
+    function has_password($password)
+    {
+        return $this->password == $this->generate_password($password);
+    }
+    
     function generate_password($password)
     {
         return md5($password . $this->salt);
@@ -373,21 +381,11 @@ class User extends Entity
         return make_cache_key("guid_for_username", $username);
     }
 
-    static function get_by_username($username)
+    static function get_by_username($username, $show_disabled = false)
     {
         if (!$username)
             return null;
     
-        /*
-         * some people might try entering their email address as their username,
-         * so if the username has an @, we try that (@ is not allowed in usernames)
-         */ 
-        if (strpos($username,'@') !== false)
-        {
-            // if there are multiple accounts with the same email address, we just return one arbitrarily
-            return User::query()->where('email = ?', $username)->get();
-        }
-
         /*
          * some people might try entering http://envaya.org/foo as the username when logging in,
          * so we just ignore everything before the last slash (/ is not allowed in usernames)
@@ -414,6 +412,6 @@ class User extends Entity
             $cache->set($cacheKey, $guid);
         }
 
-        return static::get_by_guid($guid);
+        return static::get_by_guid($guid, $show_disabled);
     }    
 }

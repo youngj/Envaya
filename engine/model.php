@@ -12,7 +12,7 @@ class Model extends Mixable
     // subclasses should override these static properties
     static $primary_key = 'id';
     static $table_name;
-    static $table_attributes;
+    static $table_attributes = array();
     
     /**
      * The main attributes of a model.
@@ -31,7 +31,7 @@ class Model extends Mixable
         }
     }
         
-    protected function get_table_attributes()
+    static function get_table_attributes()
     {
         $attributes = static::$table_attributes;
         
@@ -80,7 +80,7 @@ class Model extends Mixable
     {
         $this->attributes[static::$primary_key] = 0;
         
-        foreach ($this->get_table_attributes() as $name => $default)
+        foreach (static::get_table_attributes() as $name => $default)
         {
             $this->attributes[$name] = $default;
         }
@@ -108,7 +108,7 @@ class Model extends Mixable
     protected function get_table_attribute_values()
     {
         $tableAttributes = array();
-        foreach ($this->get_table_attributes() as $name => $default)
+        foreach (static::get_table_attributes() as $name => $default)
         {
             $tableAttributes[$name] = $this->attributes[$name];
         }

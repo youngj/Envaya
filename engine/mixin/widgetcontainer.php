@@ -86,13 +86,17 @@ class Mixin_WidgetContainer extends Mixin
         return $this->query_widgets()
             ->where('subclass = ?', $subclass)
             ->show_disabled(true)
+            ->order_by('status desc') // prefer enabled over disabled widgets
             ->get()
         ?: $this->new_widget_by_class($subclass);        
     }
     
     public function get_widget_by_name($name, $default_subclass = 'Generic')
     {
-        return $this->query_widgets()->where('widget_name=?', $name)->show_disabled(true)->get()
+        return $this->query_widgets()
+            ->where('widget_name=?', $name)
+            ->show_disabled(true)
+            ->get()
             ?: $this->new_widget_by_name($name, $default_subclass);
     }        
     

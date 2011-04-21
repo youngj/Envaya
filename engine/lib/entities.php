@@ -25,6 +25,11 @@ class EntityRegistry
     );
     private static $class_to_subtype = null;
     
+    static function all_classes()
+    {
+        return static::$subtype_to_class;
+    }
+    
     static function register_subtype($subtype_id, $class_name)
     {
         static::$subtype_to_class[$subtype_id] = $class_name;

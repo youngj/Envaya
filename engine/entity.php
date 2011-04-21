@@ -86,15 +86,18 @@ abstract class Entity extends Model
         return make_cache_key("entity", $guid);
     }  
     
-    protected function get_table_attributes()
+    static function get_table_attributes()
     {
-        return array_merge(parent::get_table_attributes(), array(
-            'owner_guid' => 0,
-            'container_guid' => 0,
-            'time_created' => 0,
-            'time_updated' => 0,
-            'status' => EntityStatus::Enabled
-        ));
+        return array_merge(
+            forward_static_call(array('Model','get_table_attributes')),
+            array(
+                'owner_guid' => 0,
+                'container_guid' => 0,
+                'time_created' => 0,
+                'time_updated' => 0,
+                'status' => EntityStatus::Enabled
+            )
+        );
     }    
     
     public function save_table_attributes()

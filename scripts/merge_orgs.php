@@ -47,7 +47,7 @@ if (prompt_default("OK? [y/n]", "") != 'y')
     exit;
 }
 
-$update_guids = function($models, $props) use ($src_guid, $dest_guid)
+function update_guids($models, $props, $src_guid, $dest_guid)
 {
     foreach ($models as $model)
     {
@@ -67,65 +67,111 @@ $update_guids = function($models, $props) use ($src_guid, $dest_guid)
             echo "Could not save ".get_class($model).".\n";
         }
     }
-};   
+}
 
-$widgets = Widget::query()->where('container_guid = ?', $src_guid)->show_disabled(true)->filter();
+// migrate child widgets of Home page
+$src_widget = $src_org->get_widget_by_class('Home');
+$dest_widget = $dest_org->get_widget_by_class('Home');
+if ($src_widget->guid && $dest_widget->guid)
+{
+    $src_sections = $src_widget->query_widgets();
+    foreach ($src_sections as $src_section)
+    {
+        $dest_section = $dest_widget->get_widget_by_class($src_section->subclass);
+        if (!$dest_section || !$dest_section->guid)
+        {
+            $src_section->container_guid = $dest_widget->guid;
+            $src_section->save();
+        }
+    }
+}
+
+// migrate child widgets of News page
+$src_widget = $src_org->get_widget_by_class('News');
+$dest_widget = $dest_org->get_widget_by_class('News');
+if ($src_widget->guid && $dest_widget->guid)
+{
+    update_guids(
+        $src_widget->query_widgets()->filter(),
+        array('container_guid'),
+        $src_widget->guid,
+        $dest_widget->guid
+    );
+}
+
+// migrate duplicate pages, but with a unique widget name to avoid collisions
+$widgets = $src_org->query_widgets()->show_disabled(true)->filter();
 foreach ($widgets as $widget)
 {
     if ($dest_org->get_widget_by_name($widget->widget_name)->guid)
     {
-        $widget->widget_name = "{$widget->widget_name}_old";
+        $widget->widget_name = "{$widget->widget_name}_old{$widget->guid}";
+        $widget->container_guid = $dest_guid;
         $widget->disable();
         $widget->save();
     }
 }
 
-$update_guids(
-    EntityRow::query()->where('(owner_guid = ? OR container_guid = ?)', $src_guid, $src_guid)->filter(),
-    array('container_guid', 'owner_guid')
+// migrate feed_names
+$old_feed_name = FeedItem::make_feed_name(array('user' => $src_guid));
+$new_feed_name = FeedItem::make_feed_name(array('user' => $dest_guid));
+foreach (FeedItem::query()->where('feed_name = ?', $old_feed_name)->filter() as $feed_item)
+{
+    $feed_item->feed_name = $new_feed_name;
+    $feed_item->save();
+}
+
+// migrate all properties pointing to the source organization's guid to the destination organization's guid
+$classes = array_merge(array(
+        'EntityMetadata',
+        'FeedItem',
+        'Translation',
+        'OrgPhoneNumber',
+        'OrgDomainName'
+    ),
+    EntityRegistry::all_classes()
 );
 
-$update_guids(
-    EntityMetadata::query()->where('entity_guid = ?', $src_guid)->filter(),
-    array('entity_guid')
-);        
-
-$update_guids(
-    FeedItem::query()->where('(subject_guid = ? OR user_guid = ?)', $src_guid, $src_guid)->filter(),
-    array('subject_guid', 'user_guid')
-);
-
-$update_guids(
-    FeaturedSite::query()->where('user_guid = ?', $src_guid)->filter(),
-    array('user_guid')
-);
-
-$update_guids(
-    FeaturedPhoto::query()->where('user_guid = ?', $src_guid)->filter(),
-    array('user_guid')
-);
-
-$update_guids(
-    Translation::query()->where('(owner_guid = ? OR container_guid = ?)', $src_guid, $src_guid)->filter(),
-    array('owner_guid', 'container_guid')
-);  
-
-$update_guids(
-    Partnership::query()->where('partner_guid = ?', $src_guid)->filter(),
-    array('partner_guid')
-);  
-
-$update_guids(
-    OrgPhoneNumber::query()->where('org_guid = ?', $src_guid)->filter(),
-    array('org_guid')
-);
-
-$update_guids(
-    OrgDomainName::query()->where('guid = ?', $src_guid)->filter(),
-    array('guid')
-);    
+foreach ($classes as $cls)
+{
+    $attributes = $cls::get_table_attributes();
+    $guid_columns = array();
+    $guid_values = array();
+    
+    foreach ($attributes as $column_name => $default)
+    {
+        if (endswith($column_name, 'guid'))
+        {
+            $guid_columns[] = $column_name;
+            $guid_values[] = $src_guid;
+        }
+    }
+    
+    if (sizeof($guid_columns))
+    {
+        $where = implode(' OR ', array_map(function($n) { return "`$n` = ?"; }, $guid_columns));    
+        
+        $query = $cls::query()->where($where)->args($guid_values);
+        
+        if (method_exists($query, 'show_disabled'))
+        {
+            $query->show_disabled(true);
+        }
+        
+        echo $query->get_filter_sql();
+        echo "\n";
+                
+        update_guids(
+            $query->filter(),
+            $guid_columns,
+            $src_guid,
+            $dest_guid
+        );
+    }
+}
 
 $src_org->username = $src_org->username . ".deleted";
+$src_org->approval = -1;
 $src_org->disable();
 $src_org->save();
 

@@ -8,7 +8,7 @@ class Widget_Post extends Widget_Generic
 {
     public function get_default_title()
     {
-        return __("widget:news:item");
+        return __("widget:news");
     }
 
     function render_view()

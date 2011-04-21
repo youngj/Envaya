@@ -6,8 +6,18 @@ class Action_ForgotPassword extends Action
     {
         $username = get_input('username');
 
-        $user = User::get_by_username($username);
-
+        // if the username has an @, it must be an email address (@ is not allowed in usernames)        
+        if (strpos($username,'@') !== false)
+        {
+            // if there are multiple accounts with the same email address, we just return one of them, preferring any that is approved
+            $user = User::query()->where('email = ?', $username)->order_by('approval desc')->get();
+        }
+        else
+        {
+            $user = User::get_by_username($username);
+        }
+        
+        
         if ($user)
         {
             if (!$user->email)

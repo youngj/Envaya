@@ -219,15 +219,11 @@ class Query_Select
                     
         $total = Database::get_row($this->get_query("COUNT(*) as total"), $this->args);
         return (int)$total->total;
-    }
+    }   
     
-    function filter()
-    {        
+    function get_filter_sql()
+    {
         $this->_finalize_query();
-        if ($this->is_empty)
-        {
-            return array();
-        }
     
         $query = $this->get_query($this->columns);
     
@@ -240,6 +236,18 @@ class Query_Select
         {
             $query .= " limit ".((int)$this->offset).", ".((int)$this->limit);
         }
+
+        return $query;        
+    }
+    
+    function filter()
+    {            
+        $query = $this->get_filter_sql();
+    
+        if ($this->is_empty)
+        {
+            return array();
+        }    
     
         $res = Database::get_rows($query, $this->args);        
         

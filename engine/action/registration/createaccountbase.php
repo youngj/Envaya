@@ -71,7 +71,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
             }
         }
         
-        if (User::get_by_username($username))
+        if (User::get_by_username($username, true))
         {
             throw new ValidationException(__('create:username_exists'));
         }                
