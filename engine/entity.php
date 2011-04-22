@@ -89,7 +89,7 @@ abstract class Entity extends Model
     static function get_table_attributes()
     {
         return array_merge(
-            forward_static_call(array('Model','get_table_attributes')),
+            parent::get_table_attributes(),
             array(
                 'owner_guid' => 0,
                 'container_guid' => 0,

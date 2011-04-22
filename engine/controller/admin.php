@@ -577,90 +577,15 @@ class Controller_Admin extends Controller
     
     function action_add_featured_photo()
     {
-        $this->page_draw(array(
-            'title' => __('featured_photo:add'),
-            'content' => view('admin/add_featured_photo', array(
-                'image_url' => get_input('image_url'),
-                'href' => get_input('href'),
-                'user_guid' => get_input('user_guid')
-            )),
-        ));        
+        $action = new Action_Admin_AddFeaturedPhoto($this);
+        $action->execute();
     }
     
     function action_edit_featured_photo()
     {
-        $photo = FeaturedPhoto::get_by_guid(get_input('guid'));        
-        if (!$photo)
-        {
-            return $this->not_found();
-        }
-        
-        $this->page_draw(array(
-            'title' => __('featured_photo:edit'),
-            'content' => view('admin/edit_featured_photo', array(
-                'photo' => $photo,
-            ))
-        ));        
-    }
-    
-    function action_new_featured_photo()
-    {
-        $this->validate_security_token();
-        
-        $featured_photo = new FeaturedPhoto();
-        $featured_photo->user_guid = get_input('user_guid');
-        $featured_photo->image_url = get_input('image_url');
-        $featured_photo->x_offset = (int)get_input('x_offset');
-        $featured_photo->y_offset = (int)get_input('y_offset');
-        $featured_photo->weight = (double)get_input('weight');
-        $featured_photo->href = get_input('href');
-        $featured_photo->caption = get_input('caption');
-        $featured_photo->org_name = get_input('org_name');
-        $featured_photo->active = get_input('active') == 'yes' ? 1 : 0;
-        $featured_photo->save();
-        
-        SessionMessages::add(__("featured_photo:added"));
-        forward("/admin/featured_photos");
-    }
-    
-    function action_save_featured_photo()
-    {
-        $this->validate_security_token();
-        
-        $featured_photo = FeaturedPhoto::get_by_guid(get_input('guid'));
-        if (!$featured_photo)
-        {
-            return $this->not_found();
-        }        
-                
-        $featured_photo->x_offset = (int)get_input('x_offset');
-        $featured_photo->y_offset = (int)get_input('y_offset');
-        $featured_photo->weight = (double)get_input('weight');
-        $featured_photo->href = get_input('href');
-        $featured_photo->caption = get_input('caption');
-        $featured_photo->org_name = get_input('org_name');
-        $featured_photo->active = get_input('active') == 'yes' ? 1 : 0;
-        $featured_photo->save();
-        
-        SessionMessages::add(__("featured_photo:saved"));
-        forward("/admin/featured_photos");    
-    }
-    
-    function action_delete_featured_photo()
-    {
-        $this->validate_security_token();
-        
-        $photo = FeaturedPhoto::get_by_guid(get_input('guid'));
-        if (!$photo)
-        {
-            return $this->not_found();
-        }
-        
-        $photo->delete();
-        
-        SessionMessages::add(__("featured_photo:deleted"));
-        forward("/admin/featured_photos");
-    }
+        $action = new Action_Admin_EditFeaturedPhoto($this);
+        $action->execute();  
+    }   
     
     function action_featured_photos()
     {

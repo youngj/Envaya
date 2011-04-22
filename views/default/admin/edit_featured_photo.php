@@ -2,7 +2,7 @@
 <?php
     $photo = $vars['photo'];
 ?>
-<form method='POST' action='/admin/save_featured_photo'>
+<form method='POST' action='/admin/edit_featured_photo'>
 <?php 
 
     echo view('input/securitytoken');
@@ -40,6 +40,11 @@ echo view('admin/nudge_photo', array(
 ));
 
 ?>
+
+<div class='input'>
+<label>Image URL</label>
+<?php echo view('admin/featured_photo_url', array('name' => 'image_url',  'value' => $photo->image_url, 'photo_id' => 'photo')); ?>
+</div>
 
 <div class='input'>
 <label>Organization Name</label>

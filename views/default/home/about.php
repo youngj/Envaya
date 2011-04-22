@@ -2,14 +2,8 @@
 <?php echo __('home:description').' '.__('home:description2').' '; ?>
 <a class='home_more' href='/envaya'><?php echo __('home:learn_more') ?></a>
 </p>
-<div style='text-align:center;padding:8px;'>
-<a href='/envaya' style='margin:0 auto;display:block;width:200px;height:150px;background-image:url(_graphics/dar_conference_smiling.jpg)'></a>
-</div>
+<?php echo view('home/about_photo'); ?>
 <p class='last-paragraph'>
-<?php echo __('home:donate') ?>
-
-</p>
-
-<div style='padding-top:6px;text-align:center'>
+<?php echo __('home:donate').' '; ?>
 <a href='/envaya/page/contribute'><strong><?php echo __('donate_now'); ?></strong></a>
-</div>
+</p>

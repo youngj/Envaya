@@ -99,39 +99,6 @@
     font-size:18px;
 }
 
-.home_follow
-{
-    position:absolute;
-    bottom:10px;
-    right:110px;
-    text-align:right;
-    width:300px;
-    color:#ccc;
-    font-size:20px;
-}
-
-.home_follow_icon
-{
-    position:absolute;
-    background:url(<?php echo $graphicsDir ?>/sprite.png) no-repeat left top;
-    display:block;
-    width:36px;
-    height:36px;
-    bottom:5px;    
-}
-
-.home_follow_fb
-{
-    background-position:-228px -124px;
-    right:60px;    
-}
-
-.home_follow_twitter
-{
-    background-position:-264px -124px;
-    right:15px;
-}
-
 .home_logo
 {
     display:block;

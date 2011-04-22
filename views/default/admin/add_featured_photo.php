@@ -1,8 +1,8 @@
 <div class='padded'>
 <?php
-    $user = get_user($vars['user_guid']);
+    $user = User::get_by_guid($vars['user_guid']);
 ?>
-<form method='POST' action='/admin/new_featured_photo'>
+<form method='POST' action='/admin/add_featured_photo'>
 <?php 
 
     echo view('input/securitytoken');
@@ -12,11 +12,6 @@
         'value' => $vars['user_guid']
     ));
 
-    echo view('input/hidden', array(
-        'name' => 'image_url',
-        'value' => $vars['image_url']
-    ));
-    
     echo view('input/hidden', array(
         'name' => 'x_offset',
         'id' => 'x_offset',
@@ -47,6 +42,11 @@ echo view('admin/nudge_photo', array(
 ));
 
 ?>
+
+<div class='input'>
+<label>Image URL</label>
+<?php echo view('admin/featured_photo_url', array('name' => 'image_url',  'value' => $vars['image_url'], 'photo_id' => 'photo')); ?>
+</div>
 
 <div class='input'>
 <label>Organization Name</label>

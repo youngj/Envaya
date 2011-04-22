@@ -13,7 +13,7 @@
         echo "<a href='/admin/edit_featured_photo?guid={$photo->guid}'>Edit</a><br />";
         echo view('output/confirmlink', array(
             'text' => 'Delete',
-            'href' => "admin/delete_featured_photo?guid={$photo->guid}"
+            'href' => "admin/edit_featured_photo?guid={$photo->guid}&delete=1"
         ));
         echo "</div>";
         echo view('admin/preview_featured_photo', array(
@@ -26,4 +26,6 @@
         ));        
     }
 ?>
+
+<a href='/admin/add_featured_photo'>Add Featured Photo</a>
 </div>

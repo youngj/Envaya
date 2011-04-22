@@ -22,6 +22,7 @@ function slideshow(featuredPhotos, defaultPhoto) {
     if (!images.length)
     {
         imgContainer.style.backgroundImage = "url("+defaultPhoto+")";
+        document.getElementById('home_caption_shadow').style.display = 'none';
         return;
     }    
     
@@ -88,9 +89,7 @@ function slideshow(featuredPhotos, defaultPhoto) {
         
         currentIndex = index;
 
-        var hasCaption = image.caption || image.org;
-        
-        document.getElementById('home_follow_container').style.display = hasCaption ? 'none' : 'block';        
+        var hasCaption = image.caption || image.org;        
     }
     
     function getStartIndex()

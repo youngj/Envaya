@@ -39,7 +39,7 @@ class User extends Entity
     static function get_table_attributes()
     {
         return array_merge(
-            forward_static_call(array('Entity','get_table_attributes')),
+            parent::get_table_attributes(),
             array(
                 'subtype' => static::get_subtype_id(),
             )

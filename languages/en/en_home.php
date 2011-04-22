@@ -14,7 +14,7 @@ return array(
     'home:description_africa' => "With Envaya, civil society organizations in Tanzania can create their own websites, for free, where they can share news about their projects with other organizations and people around the world.",
     'home:sign_up_info' => "If you are a representative of a civil society organization in Tanzania that hasn't yet registered for Envaya, %s!",
     'home:sign_up_info_2' => "In about five minutes, you can create a website for your organization.",
-    'home:donate' => "We're non-profit. Even a small donation will help provide essential technology to grassroots organizations in the developing world!",
+    'home:donate' => "We're non-profit. Even a small donation will help provide essential technology to grassroots organizations in developing countries!",
     'home:follow' => "Follow us:",
     'home:see_news' => "See latest news<br /> from Tanzania",
     'home:view_updates' => "View Updates",
