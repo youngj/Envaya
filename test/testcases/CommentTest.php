@@ -15,7 +15,7 @@ class CommentTest extends SeleniumTest
         $this->typeInFrame("//iframe", $content);
         $this->submitForm();
         $this->ensureGoodMessage();
-        $this->mouseOver("//div[@class='blog_post']//p[contains(text(), '$content')]");
+        $this->mouseOver("//div[@class='section_content padded']//p[contains(text(), '$content')]");
 
         // comment as logged in user
         $this->type("//textarea[@name='content']", "comment number one");

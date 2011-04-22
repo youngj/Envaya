@@ -6,7 +6,7 @@
  */
 class Widget_Location extends Widget
 {
-    function render_view()
+    function render_view($args = null)
     {
         return view("widgets/location_view", array('widget' => $this));
     }

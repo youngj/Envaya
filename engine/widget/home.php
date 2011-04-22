@@ -13,7 +13,7 @@ class Widget_Home extends Widget
         return $org->get_location_text(false);    
     }
    
-    function render_view()
+    function render_view($args = null)
     {
         return view("widgets/home_view", array('widget' => $this));
     }

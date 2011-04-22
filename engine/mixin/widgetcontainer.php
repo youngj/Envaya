@@ -100,12 +100,6 @@ class Mixin_WidgetContainer extends Mixin
             ?: $this->new_widget_by_name($name, $default_subclass);
     }        
     
-    function get_widget_dates()
-    {   
-        $sql = "SELECT guid, time_created from widgets WHERE status=1 AND container_guid=? ORDER BY guid ASC";
-        return Database::get_rows($sql, array($this->guid));
-    }    
-    
     function is_section_container()
     {
         return false;

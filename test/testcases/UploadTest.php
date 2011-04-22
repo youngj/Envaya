@@ -104,15 +104,15 @@ class UploadTest extends SeleniumTest
         
         $this->submitForm();
                
-        $this->mouseOver("//div[@class='blog_post']//p[contains(text(),'caption 3')]");
-        $this->mouseOver("//div[@class='blog_post']//p[contains(text(),'caption 4')]");
+        $this->mouseOver("//div[@class='section_content padded']//p[contains(text(),'caption 3')]");
+        $this->mouseOver("//div[@class='section_content padded']//p[contains(text(),'caption 4')]");
                 
         $this->clickAndWait("//div[@class='blog_date']//a");
         
-        $this->mouseOver("//div[@class='blog_post']//p[contains(text(),'caption 4')]");
-        $this->mouseOver("//div[@class='blog_post']//img");
+        $this->mouseOver("//div[@class='section_content padded']//p[contains(text(),'caption 4')]");
+        $this->mouseOver("//div[@class='section_content padded']//img");
         
-        $imgUrl = $this->getAttribute("//div[@class='blog_post']//img@src");        
+        $imgUrl = $this->getAttribute("//div[@class='section_content padded']//img@src");        
         $this->checkImage($imgUrl, 20000, 100000);         
     }
     
@@ -170,8 +170,8 @@ class UploadTest extends SeleniumTest
         
         $this->clickAndWait("//input[@type='submit']");
         
-        $this->mouseOver("//div[@class='blog_post']//img[contains(@src,'large.jpg')]");
-        $this->assertContains("example caption", $this->getText("//div[@class='blog_post']"));
+        $this->mouseOver("//div[@class='section_content padded']//img[contains(@src,'large.jpg')]");
+        $this->assertContains("example caption", $this->getText("//div[@class='section_content padded']"));
         
         $imgUrl = $this->getAttribute("//img[contains(@src,'/large.jpg')]@src");
         

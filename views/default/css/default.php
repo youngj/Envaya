@@ -220,118 +220,31 @@ blockquote p {
     -moz-border-radius: 4px;
 }
 
-<?php
-    $timelineWidth = $contentWidth - 60;
-?>
-
-#blogTimeline
+.post_nav
 {
-    margin:0px 0px 5px 0px;
     position:relative;
-    width:<?php echo $timelineWidth ?>px;
-    height:50px;
+    height:20px;
+    width:<?php echo $contentWidth - 42; ?>px;
 }
 
-#blogTimelineLeft, #blogTimelineRight, #blogTimelineLine
-{
-    position:absolute;
-    top:7px;
-    height:26px;
-}
-
-#blogTimelineLeft
-{
-    left:18px;
-    width:13px;
-    background:url(/_graphics/timeline.gif) no-repeat left -26px;
-}
-
-#blogTimelineRight
-{
-    left:<?php echo $timelineWidth - 29 ?>px;
-    width:13px;
-    background:url(/_graphics/timeline.gif) no-repeat left -52px;
-}
-
-#blogTimelineLine
-{
-    left:31px;
-    width:<?php echo $timelineWidth - 60 ?>px;
-    background:url(/_graphics/timeline.gif) repeat-x left top;
-}
-
-.timelineMarker
-{
-    position:absolute;
-    height:4px;
-    top:27px;
-    width:1px;
-    overflow:hidden;
-    background-color:#333;
-}
-
-.timelineLink
-{
-    position:absolute;
-    top:13px;
-    width:5px;
-    height:14px;
-    display:block;
-    overflow:hidden;
-    background-color:#333;
-}
-
-.timelineCur
-{
-    position:absolute;
-    height:17px;
-    top:-3px;
-    width:13px;
-    background:url(/_graphics/timeline.gif) no-repeat left -87px;
-}
-
-.timelineLabel
-{
-    position:absolute;
-    top:30px;
-    width:70px;
-    text-align:center;
-    font-size:10px;
-}
-
-#hoverPost
-{
-    position:absolute;
-    top:27px;
-}
-
-#hoverPost img
-{
-    display:block;
-    margin:0 auto;
-}
-
-#blogNavPrev, #blogNavNext
+.post_nav a
 {
     position:absolute;
     display:block;
-    height:19px;
-    width:22px;
-    top:9px;
+    top:5px;
+    width:120px;
 }
 
-#blogNavPrev
+.post_nav_prev
 {
     left:0px;
-    background: url(/_graphics/arrows_sm.gif) no-repeat left top;
 }
 
-#blogNavNext
+.post_nav_next
 {
-    left:<?php echo $timelineWidth - 20 ?>px;
-    background: url(/_graphics/arrows_sm.gif) no-repeat right top;
+    right:0px;
+    text-align:right;
 }
-
 
 #topRight
 {
@@ -1173,13 +1086,6 @@ a.gridDelete:hover, a.hideMessages:hover
 .noBorderTable th, .noBorderTable td
 {
     border:0px;
-}
-
-.separator
-{
-    border-top:1px solid #f0f0f0;
-    height:0px;
-    overflow:hidden;
 }
 
 .discussionTopic

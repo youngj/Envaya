@@ -6,7 +6,7 @@
  */
 class Widget_Hardcoded extends Widget_Generic
 {
-    function render_view()
+    function render_view($args = null)
     {               
         return view($this->handler_arg, array('widget' => $this));
     }

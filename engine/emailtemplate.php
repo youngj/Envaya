@@ -50,7 +50,7 @@ class EmailTemplate extends Entity
                 ->where('email_guid = ?', $this->guid)
                 ->where('user_guid = ?', $org->guid)
                 ->where('status <> ?', OutgoingMail::Failed)
-                ->count() == 0
+                ->is_empty()
         );
     }
     

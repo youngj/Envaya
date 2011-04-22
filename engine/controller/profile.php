@@ -96,7 +96,7 @@ class Controller_Profile extends Controller
         }
 
         $this->page_draw(array(
-            'content' => view('widgets/view', array('widget' => $widget)),
+            'content' => $widget->render_view(array('is_primary' => true)),
             'title' => $subtitle,
             'show_next_steps' => $org->guid == Session::get_loggedin_userid(),
         )); 
@@ -326,7 +326,7 @@ class Controller_Profile extends Controller
         $this->require_admin();
         $this->validate_security_token();
         $domain_name = get_input('domain_name');
-        if (OrgDomainName::query()->where('domain_name = ?', $domain_name)->count() > 0)
+        if (OrgDomainName::query()->where('domain_name = ?', $domain_name)->exists())
         {
             redirect_back_error(__('domains:duplicate'));
         }

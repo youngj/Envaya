@@ -103,7 +103,7 @@ class Controller_Topic extends Controller_Profile
         
         SessionMessages::add(__('discussions:message_deleted'));
         
-        if ($topic->query_messages()->count() == 0)
+        if ($topic->query_messages()->is_empty())
         {
             $topic->disable();
             $topic->save();

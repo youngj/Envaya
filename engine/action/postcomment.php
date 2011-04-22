@@ -31,7 +31,7 @@ class Action_PostComment extends Action
 			return forward($comments_url);
         }
         
-		if ($widget->query_comments()->where('content = ?', $content)->count() > 0)
+		if ($widget->query_comments()->where('content = ?', $content)->exists())
 		{
 			SessionMessages::add_error(__('comment:duplicate'));
 			Session::save_input();

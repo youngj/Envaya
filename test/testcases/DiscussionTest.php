@@ -66,9 +66,9 @@ class DiscussionTest extends SeleniumTest
         
         // test feed items
         $this->open("/org/feed");
-        $this->mouseOver("//div[@class='feed_post']//div[@class='feed_snippet' and contains(text(), 'Mr. Person')]");
-        $this->mouseOver("//div[@class='feed_post']//div[@class='feed_snippet' and contains(text(), 'message 2')]");
-        $this->clickAndWait("//div[@class='feed_post']//a[contains(@href,'$url')]");
+        $this->mouseOver("//div[contains(@class,'feed_post')]//div[@class='feed_snippet' and contains(text(), 'Mr. Person')]");
+        $this->mouseOver("//div[contains(@class,'feed_post')]//div[@class='feed_snippet' and contains(text(), 'message 2')]");
+        $this->clickAndWait("//div[contains(@class,'feed_post')]//a[contains(@href,'$url')]");
 
         // test edit discussion subject
         $this->clickAndWait("//div[@id='edit_submenu']//a");
@@ -143,11 +143,11 @@ class DiscussionTest extends SeleniumTest
         
         // test no feed items from deleted or anonymous messages
         $this->open("/org/feed");
-        $this->mouseOver("//div[@class='feed_post']//div[@class='feed_snippet' and contains(text(), 'message 0')]");        
-        $this->mustNotExist("//div[@class='feed_post']//div[@class='feed_snippet' and contains(text(), 'Mr. Person')]");
-        $this->mustNotExist("//div[@class='feed_post']//div[@class='feed_snippet' and contains(text(), 'message 2')]");
-        $this->mustNotExist("//div[@class='feed_post']//div[@class='feed_snippet' and contains(text(), 'message 3')]");
-        $this->mustNotExist("//div[@class='feed_post']//div[@class='feed_snippet' and contains(text(), 'message 4')]");
+        $this->mouseOver("//div[contains(@class,'feed_post')]//div[@class='feed_snippet' and contains(text(), 'message 0')]");        
+        $this->mustNotExist("//div[contains(@class,'feed_post')]//div[@class='feed_snippet' and contains(text(), 'Mr. Person')]");
+        $this->mustNotExist("//div[contains(@class,'feed_post')]//div[@class='feed_snippet' and contains(text(), 'message 2')]");
+        $this->mustNotExist("//div[contains(@class,'feed_post')]//div[@class='feed_snippet' and contains(text(), 'message 3')]");
+        $this->mustNotExist("//div[contains(@class,'feed_post')]//div[@class='feed_snippet' and contains(text(), 'message 4')]");
 
         // test deleting own message as anonymous user
         $this->setUrl($url);

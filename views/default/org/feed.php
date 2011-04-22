@@ -54,6 +54,7 @@ echo view('input/pulldown', array(
 <?php	
 	echo view('feed/list', array('items' => $items, 'show_edit_controls' => Session::isadminloggedin()));
 ?>
+<div class='separator'></div>
 </div>
 
 <?php 
@@ -93,7 +94,7 @@ function itemsLoaded(res)
 {
     var container = document.getElementById('feed_container');
     var childContainer = document.createElement('div');
-    childContainer.innerHTML = res.items_html;
+    childContainer.innerHTML = res.items_html + "<div class='separator'></div>";
     container.appendChild(childContainer);
     first_id = res.first_id;
         

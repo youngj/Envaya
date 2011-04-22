@@ -6,7 +6,7 @@
  */
 class Widget_Generic extends Widget
 {
-    function render_view()
+    function render_view($args = null)
     {
         return view("widgets/generic_view", array('widget' => $this));
     }

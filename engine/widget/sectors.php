@@ -6,7 +6,7 @@
  */
 class Widget_Sectors extends Widget
 {
-    function render_view()
+    function render_view($args = null)
     {
         return view("widgets/sectors_view", array('widget' => $this));
     }

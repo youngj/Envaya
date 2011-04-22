@@ -156,12 +156,12 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'/dashboard')]");
         $this->typeInFrame("//iframe", "this is a test post");
         $this->submitForm();
-        $this->mouseOver("//div[@class='blog_post']//p[contains(text(), 'this is a test post')]");
+        $this->mouseOver("//p[contains(text(), 'this is a test post')]");
         
         $this->clickAndWait("//a[contains(@href,'org/feed')]");
         $this->mouseOver("//div[@class='feed_snippet' and contains(text(), 'this is a test post')]");
         $this->clickAndWait("//a[contains(text(), 'News update')]");
-        $this->mouseOver("//div[@class='blog_post']//p[contains(text(), 'this is a test post')]");               
+        $this->mouseOver("//p[contains(text(), 'this is a test post')]");               
     }
     
     private function _testEditContact()
@@ -301,18 +301,18 @@ class RegisterTest extends SeleniumTest
         
         // test delete feed item from news update
         $this->mouseOver("//div[@class='feed_snippet' and contains(text(), 'this is a test post')]");
-        $this->mouseOver("//div[@class='feed_post']//a[contains(@href,'projects')]");
+        $this->mouseOver("//div[contains(@class,'feed_post')]//a[contains(@href,'projects')]");
         $this->clickAndWait("//a[contains(@href,'home/edit')]");
         $this->clickAndWait("//a[contains(text(),'Latest Updates')]");
 
-        $this->clickAndWait("//div[@class='feed_post' and .//div[@class='feed_snippet' and contains(text(), 'this is a test post')]]//a[@class='admin_links']");        
+        $this->clickAndWait("//div[contains(@class,'feed_post') and .//div[@class='feed_snippet' and contains(text(), 'this is a test post')]]//a[@class='admin_links']");        
         $this->getConfirmation();
         $this->ensureGoodMessage();
         $this->mustNotExist("//div[@class='feed_snippet' and contains(text(), 'this is a test post')]");        
-        $this->mouseOver("//div[@class='feed_post']//a[contains(@href,'projects')]");
+        $this->mouseOver("//div[contains(@class,'feed_post')]//a[contains(@href,'projects')]");
         $this->submitForm();
         $this->mustNotExist("//div[@class='feed_snippet' and contains(text(), 'this is a test post')]");        
-        $this->mouseOver("//div[@class='feed_post']//a[contains(@href,'projects')]");
+        $this->mouseOver("//div[contains(@class,'feed_post')]//a[contains(@href,'projects')]");
 
         // test edit location
         $this->mouseOver("//em[contains(text(),'Wete, Pemba North, Tanzania')]");        

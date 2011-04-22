@@ -1,13 +1,21 @@
 <?php
     $feedItems = $vars['items'];
     
-    if (empty($feedItems))
-    {
-        echo "<div class='padded'>".__("feed:noresults")."</div>";
-    }
-
+    $elements = array();
     foreach ($feedItems as $feedItem)
     {
-        $vars['item'] = $feedItem;    
-        echo view('feed/item', $vars);
+        if ($feedItem->is_valid())
+        {
+            $vars['item'] = $feedItem;    
+            $elements[] = view('feed/item', $vars);
+        }
+    }
+    
+    if (sizeof($elements))
+    {
+        echo implode("<div class='separator'></div>", $elements);
+    }
+    else
+    {
+        echo "<div class='padded'>".__("feed:noresults")."</div>";
     }

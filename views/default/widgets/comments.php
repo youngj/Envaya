@@ -1,15 +1,15 @@
 <?php
-	$post = $vars['post'];
+	$widget = $vars['widget'];
 ?>
 
 <div id='comments'>
 
 <?php
-    $comments = $post->query_comments()->show_disabled(true)->filter();
+    $comments = $widget->query_comments()->show_disabled(true)->filter();
     
     if (sizeof($comments) > 0)
     {
-        echo "<h4>".sprintf(__('comment:count'), $post->num_comments)."</h4>";
+        echo "<h4>".sprintf(__('comment:count'), $widget->num_comments)."</h4>";
     }
     
     foreach ($comments as $comment)
@@ -17,7 +17,7 @@
         echo view_entity($comment);
     }
 ?>
-<form id='comment_form' method='POST' action='<?php echo $post->get_url() ?>/post_comment'>
+<form id='comment_form' method='POST' action='<?php echo $widget->get_url() ?>/post_comment'>
 <?php echo view('input/securitytoken'); ?>
 
 <h4><?php echo __('comment:add'); ?></h4>

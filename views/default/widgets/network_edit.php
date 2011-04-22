@@ -39,7 +39,7 @@
         
     $content = ob_get_clean();
 
-    if ($widget->guid || $org->query_relationships()->count())
+    if ($widget->guid || !$org->query_relationships()->is_empty())
     {
         echo view("widgets/edit_form", array(
            'widget' => $widget,

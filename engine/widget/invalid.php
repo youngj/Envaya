@@ -11,10 +11,10 @@ class Widget_Invalid extends Widget_Generic
         SessionMessages::add_error(sprintf(__('widget:invalid_class'), $this->subclass));
     }
 
-    function render_view()
+    function render_view($args = null)
     {        
         $this->show_error();
-        return parent::render_view();
+        return parent::render_view($args);
     }
 
     function render_edit()

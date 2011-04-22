@@ -6,7 +6,7 @@
  */
 class Widget_News extends Widget
 {
-    function render_view()
+    function render_view($args = null)
     {
         $end_guid = (int)get_input('end');    
         return view("widgets/news_view", array('widget' => $this, 'end_guid' => $end_guid));

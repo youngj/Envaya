@@ -11,9 +11,12 @@ class Widget_Post extends Widget_Generic
         return __("widget:news");
     }
 
-    function render_view()
+    function render_view($args = null)
     {
-        return view('news/view_post', array('post' => $this));
+        return view('widgets/post_view', array(
+            'widget' => $this, 
+            'is_primary' => @$args['is_primary']
+        ));
     }
     
     function process_input($action)

@@ -18,4 +18,4 @@
     {
         echo implode(@$vars['separator'] ?: '', $elements);
         echo $nav;        
-    }       
+    }

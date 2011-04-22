@@ -10,7 +10,7 @@ class Widget_Discussions extends Widget
         return __('discussions:title');
     }
 
-    function render_view()
+    function render_view($args = null)
     {
         return view("widgets/discussions_view", array('widget' => $this));
     }   

@@ -164,7 +164,7 @@ class OrgRelationship extends Entity
         if (FeedItem::query()
             ->where('subject_guid = ?', $this->guid)
             ->where('time_posted > ?', time() - 60 * 60 * 24)
-            ->count() == 0)
+            ->is_empty())
         {
             $org = $this->get_container_entity();
             FeedItem_Relationship::post($org, $this);

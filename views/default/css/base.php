@@ -161,6 +161,11 @@ a.selected
 {
 }
 
+.section_content .section_content
+{
+    background:transparent none;
+}
+
 .message_container
 {
     padding:4px;
@@ -188,16 +193,6 @@ a.selected
 .padded
 {
     padding:8px 10px;
-}
-
-.blog_post
-{
-    clear:both;
-}
-
-.blog_post_wrapper
-{
-    border-bottom:1px solid #ddd;
 }
 
 .feed_more
@@ -451,4 +446,11 @@ a.feed_image_link:hover
 {
     font-size:16px;
     text-align:center;
+}
+
+.separator
+{
+    border-top:1px solid #f0f0f0;
+    height:0px;
+    overflow:hidden;
 }

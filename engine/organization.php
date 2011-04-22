@@ -46,7 +46,7 @@ class Organization extends User
     {
         $score = 0;
     
-        if ($this->query_widgets_by_class('Post')->where('time_created > ?', time() - 86400 * 31)->count() > 0)
+        if ($this->query_widgets_by_class('Post')->where('time_created > ?', time() - 86400 * 31)->exists())
         {
             $score += 10;
         }

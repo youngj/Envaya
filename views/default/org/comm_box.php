@@ -13,7 +13,7 @@
         
         $networkPage = $loggedInOrg->get_widget_by_class('Network');
         
-        if ($loggedInOrg->query_relationships()->where('subject_guid = ?', $org->guid)->count() == 0)
+        if ($loggedInOrg->query_relationships()->where('subject_guid = ?', $org->guid)->is_empty())
         {        
             /*
             $controls[] = view('widgets/network_add_relationship_link', array(

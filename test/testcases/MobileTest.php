@@ -108,14 +108,14 @@ class MobileTest extends SeleniumTest
         $this->login('testorg','testtest');
         $this->type("//textarea", "This is my mobile test post.");
         $this->submitForm();
-        $this->mouseOver("//div[@class='blog_post' and contains(text(), 'mobile test post')]");
+        $this->mouseOver("//div[contains(text(), 'mobile test post')]");
         $this->clickAndWait("//a[contains(@href,'/edit')]"); 
         
         $this->post_content = "This is my mobile post ".time();
         
         $this->type("//textarea", $this->post_content);
         $this->submitForm();
-        $this->mouseOver("//div[@class='blog_post' and contains(text(), '{$this->post_content}')]");
+        $this->mouseOver("//div[contains(text(), '{$this->post_content}')]");
         $this->goToMainMenu();
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");     
     }

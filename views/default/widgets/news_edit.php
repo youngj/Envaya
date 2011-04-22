@@ -12,7 +12,7 @@
 
     $count = $widget->query_widgets()->count();
     $updates = $widget->query_widgets()
-        ->order_by('time_created desc')
+        ->order_by('time_created desc, guid desc')
         ->limit($limit, $offset)
         ->filter();
 

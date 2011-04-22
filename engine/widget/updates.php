@@ -5,7 +5,7 @@
  */
 class Widget_Updates extends Widget
 {
-    function render_view()
+    function render_view($args = null)
     {
         PageContext::set_rss(true);
         return view("widgets/updates_view", array('widget' => $this));

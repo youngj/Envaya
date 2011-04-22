@@ -140,7 +140,7 @@ class Widget extends Entity
         }        
     }
     
-    function render_view()
+    function render_view($args = null)
     {
         return '';
     }

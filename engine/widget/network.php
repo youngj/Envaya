@@ -11,13 +11,9 @@ class Widget_Network extends Widget
         return __('network:title');
     }
 
-    function render_view()
+    function render_view($args = null)
     {
-        switch (get_input('mode'))       
-        {    
-            default:
-                return view("widgets/network_view", array('widget' => $this));
-        }
+        return view("widgets/network_view", array('widget' => $this));
     }   
 
     function render_edit()
@@ -139,7 +135,7 @@ class Widget_Network extends Widget
             if ($org->query_relationships()
                 ->where('type = ?', $relationship->type)
                 ->where('subject_guid = ?', $relationship->subject_guid)
-                ->count() > 0)
+                ->exists())
             {
                 return redirect_back_error(sprintf($relationship->__('duplicate'), $relationship->get_subject_name()));
             }
@@ -147,7 +143,7 @@ class Widget_Network extends Widget
             if ($org->is_approved() && $subject_org->query_relationships()
                 ->where('type = ?', $relationship->type)
                 ->where('subject_guid = ?', $org->guid)
-                ->count() == 0)
+                ->is_empty())
             {
                 $reverse = $relationship->make_reverse_relationship();
                 $reverse->set_subject_approved();

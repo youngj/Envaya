@@ -7,7 +7,7 @@
  */
 class Widget_Contact extends Widget
 {
-    function render_view()
+    function render_view($args = null)
     {
         return view("widgets/contact_view", array('widget' => $this));
     }

@@ -165,8 +165,10 @@ class Query_Select
         return $this;
     }
     
-    protected function get_query($columns)
+    function get_sql($columns)
     {    
+        $this->_finalize_query();
+
         $conditions = $this->conditions;
         
         if (sizeof($conditions) > 0)
@@ -217,15 +219,31 @@ class Query_Select
             return 0;
         }
                     
-        $total = Database::get_row($this->get_query("COUNT(*) as total"), $this->args);
+        $total = Database::get_row($this->get_sql("COUNT(*) as total"), $this->args);
         return (int)$total->total;
     }   
     
-    function get_filter_sql()
+    // like ($this->count() == 0), 
+    // but presumably more efficient because the db only needs to find one matching row
+    function is_empty()
     {
         $this->_finalize_query();
+        if ($this->is_empty)
+        {
+            return true;
+        }    
+        $row = Database::get_row($this->get_sql("1 as `one`"). " limit 1", $this->args);
+        return $row == null;
+    }
     
-        $query = $this->get_query($this->columns);
+    function exists()
+    {
+        return !$this->is_empty();
+    }
+    
+    function get_filter_sql()
+    {
+        $query = $this->get_sql($this->columns);
     
         if ($this->order_by)
         {
