@@ -4,7 +4,7 @@ class Controller_Home extends Controller
 {
     function action_index()
     {       
-        $this->require_http();    
+        $this->prefer_http();    
         $this->add_generic_footer();        
         
         PageContext::set_translatable(false);

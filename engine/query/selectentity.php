@@ -43,9 +43,6 @@ class Query_SelectEntity extends Query_Select
                 
                 if (!$classname || !class_exists($classname))
                 {   
-                    var_dump($row);
-                    exit;
-                
                     throw new InvalidParameterException(
                         ($classname ?: "Entity subtype {$row->subtype}")." is not defined"
                     );

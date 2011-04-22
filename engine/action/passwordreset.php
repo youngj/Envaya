@@ -41,7 +41,7 @@ class Action_PasswordReset extends Action
 
     function render()
     {    
-        $this->require_https();
+        $this->prefer_https();
 
         $user_guid = get_input('u');
         $conf_code = get_input('c');

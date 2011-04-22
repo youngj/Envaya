@@ -40,7 +40,7 @@
         force_login();
     }
 
-    echo Request::instance()
-        ->execute()
-        ->send_headers()
-        ->response;
+    $request = Request::instance();    
+    $request->execute();
+    $request->send_headers();    
+    echo $request->response;

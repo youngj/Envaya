@@ -45,21 +45,7 @@ class Controller_Admin extends Controller
             'content' => view('admin/view_email', array('org' => $org, 'email' => $email, 'from' => get_input('from')))
         ));                    
     }        
-    
-    function action_edit_email()
-    {
-        $email = EmailTemplate::get_by_guid(get_input('email'));
-        if (!$email)
-        {
-            return $this->not_found();
-        }
-
-        $this->page_draw(array(
-            'title' => __('email:edit'),
-            'content' => view('admin/edit_email', array('email' => $email)),
-        ));
-    }
-    
+        
     function action_view_email_body()
     {
         $user = User::get_by_username(get_input('username'));
@@ -79,18 +65,8 @@ class Controller_Admin extends Controller
     
     function action_resend_mail()
     {
-        $this->validate_security_token();
-        
-        $id = get_input('id');
-        
-        $mail = OutgoingMail::query()->where('id = ?', $id)->get();
-        if (!$mail)
-        {
-            return $this->not_found();
-        }        
-        $mail->send(true);        
-        SessionMessages::add(__('email:sent_ok'));
-        forward('/admin/outgoing_mail');
+        $action = new Action_Admin_ResendMail($this);
+        $action->execute();        
     }
     
     function action_outgoing_mail()
@@ -101,81 +77,8 @@ class Controller_Admin extends Controller
             'theme_name' => 'simple_wide',
             'header' => '',
         ));        
-    }
+    }   
     
-    function action_batch_email()
-    {
-        $email = EmailTemplate::get_by_guid(get_input('email')) ?: EmailTemplate::query()->where('active<>0')->get();        
-        if (!$email)
-        {
-            return $this->not_found();
-        }
-        
-        $org_guids = get_input_array('orgs');
-        if ($org_guids)
-        {
-            $orgs = Organization::query()->where_in('guid', $org_guids)->filter();
-        }
-        else
-        {         
-            $orgs = Organization::query()
-                ->where('approval > 0')
-                ->where("email <> ''")
-                ->where('(notifications & ?) > 0', Notification::Batch)
-                ->where("not exists (select * from outgoing_mail where email_guid = ? and user_guid = users.guid)", $email->guid)
-                ->order_by('guid')
-                ->limit(50)
-                ->filter(); 
-        }
-
-        $this->page_draw(array(
-            'title' => __('email:batch'),
-            'content' => view('admin/batch_email', array('email' => $email, 'orgs' => $orgs)),
-        ));        
-    }
-
-    function action_send_batch_email()
-    {
-        $this->validate_security_token();
-        
-        $email = EmailTemplate::get_by_guid(get_input('email'));
-        $org_guids = get_input_array('orgs');
-        $numSent = 0;
-        foreach ($org_guids as $org_guid)
-        {       
-            $org = Organization::get_by_guid($org_guid);
-
-            if ($email->can_send_to($org))
-            {
-                $numSent++;
-                $email->send_to($org);
-            }
-        }
-        SessionMessages::add("sent $numSent emails");
-        forward(get_input('from') ?: "/admin/batch_email?email={$email->guid}");
-    }
-    
-    
-    function action_send_email()
-    {
-        $this->validate_security_token();
-        
-        $email = EmailTemplate::get_by_guid(get_input('email'));
-        $org = Organization::get_by_guid(get_input('org_guid'));
-        
-        if ($email->can_send_to($org))
-        {
-            $email->send_to($org);
-            SessionMessages::add(__('email:sent'));
-        }
-        else
-        {
-            SessionMessages::add_error(__('email:none_sent'));
-        }
-
-        forward(get_input('from') ?: "/admin/contact");
-    }
-
     function action_translateQueue()
     {
         $this->page_draw(array(
@@ -309,270 +212,62 @@ class Controller_Admin extends Controller
 
     function action_add_user()
     {
-        $this->validate_security_token();
-
-        $username = get_input('username');
-        $password = get_input('password');
-        $password2 = get_input('password2');
-        $email = get_input('email');
-        $name = get_input('name');
-
-        $admin = get_input('admin');
-        if (is_array($admin)) $admin = $admin[0];
-
-        if ($password != $password2)
-        {
-            redirect_back_error(__('create:passwords_differ'));
-        }
-
-        try
-        {
-            $new_user = register_user($username, $password, $name, $email);
-            if ($admin != null)
-            {
-                $new_user->admin = true;
-            }
-
-            $new_user->admin_created = true;
-            $new_user->created_by_guid = Session::get_loggedin_userid();
-            $new_user->save();
-
-            OutgoingMail::create(
-                __('useradd:subject'),
-                sprintf(__('useradd:body'), $name, Config::get('sitename'), Config::get('url'), $username, $password)
-            )->send_to_user($new_user);                        
-
-            SessionMessages::add(sprintf(__("adduser:ok"), Config::get('sitename')));
-        }
-        catch (ValidationException $r)
-        {
-            redirect_back_error($r->getMessage());
-        }
-
-        redirect_back();
+        $action = new Action_Admin_AddUser($this);
+        $action->execute();
     }
     
     function action_approve()
     {
-        $this->validate_security_token();
-
-        $guid = (int)get_input('org_guid');
-        $org = Organization::get_by_guid($guid);
-
-        if (!$org)
-        {
-            return $this->not_found();
-        }
-        
-        $approvedBefore = $org->is_approved();
-
-        $org->approval = (int)get_input('approval');
-
-        $approvedAfter = $org->is_approved();
-
-        $org->save();
-
-        if (!$approvedBefore && $approvedAfter && $org->email)
-        {
-            OutgoingMail::create(
-                __('email:orgapproved:subject', $org->language),
-                view('emails/org_approved', array('org' => $org))
-            )->send_to_user($org);
-        }
-        
-        $org->send_relationship_emails();
-
-        SessionMessages::add(__('approval:changed'));
-
-        forward($org->get_url());
+        $action = new Action_Admin_ChangeOrgApproval($this);
+        $action->execute();
     }
 
     function action_delete_entity()
     {
-        $this->validate_security_token();
-
-        $guid = get_input('guid');
-        $entity = Entity::get_by_guid($guid);
-
-        if ($entity)
-        {
-            $entity->disable();
-            $entity->save();
-            SessionMessages::add(sprintf(__('entity:delete:success'), $guid));
-        }
-        else
-            SessionMessages::add_error(sprintf(__('entity:delete:fail'), $guid));
-
-        $next = get_input('next');
-        if ($next)
-        {
-            forward($next);
-        }
-        else
-        {
-            redirect_back();
-        }
+        $action = new Action_Admin_DeleteEntity($this);
+        $action->execute();
+    }
+        
+    function action_activate_featured()
+    {
+        $action = new Action_Admin_ActivateFeaturedSite($this);
+        $action->execute();
     }
     
     function action_add_featured()
     {
-        $username = get_input('username');
-        $user = User::get_by_username($username);
-        if (!$user)
-        {
-            return $this->not_found();
-        }
-
-        $this->page_draw(array(
-            'title' => __('featured:add'),
-            'content' => view('admin/add_featured', array('entity' => $user)),
-        ));                
-    }
-    
-    function action_activate_email()
-    {
-        $this->validate_security_token();
-    
-        $email = EmailTemplate::get_by_guid(get_input('email'));
-        if (!$email)
-        {
-            return $this->not_found();
-        }
+        $action = new Action_Admin_AddFeaturedSite($this);
+        $action->execute();
+    }       
         
-        foreach (EmailTemplate::query()->where('active<>0')->filter() as $activeEmail)
-        {
-            $activeEmail->active = 0;
-            $activeEmail->save();
-        }
-
-        $email->active = 1;            
-        $email->save();
-     
-        SessionMessages::add('activated');
-        forward('/admin/emails');        
-    }    
-    
-    function action_activate_featured()
-    {
-        $this->validate_security_token();
-        
-        $guid = get_input('guid');
-        $featuredSite = FeaturedSite::get_by_guid($guid);
-        
-        if (!$featuredSite)
-        {
-            return $this->not_found();
-        }
-        $activeSites = FeaturedSite::query()->where('active<>0')->filter();
-        
-        $featuredSite->active = 1;
-        $featuredSite->save();
-        
-        foreach ($activeSites as $activeSite)
-        {
-            $activeSite->active = 0;
-            $activeSite->save();
-        }
-        forward('org/featured');
-    }
-    
-    function action_new_featured()
-    {
-        $this->validate_security_token();
-    
-        $username = get_input('username');
-        $user = User::get_by_username($username);
-        if (!$user)
-        {
-            return $this->not_found();
-        }
-        
-        $featuredSite = new FeaturedSite();
-        $featuredSite->container_guid = $user->guid;
-        $featuredSite->image_url = get_input('image_url');
-        $featuredSite->set_content(get_input('content'));
-        $featuredSite->save();
-        SessionMessages::add('featured:created');
-        forward('org/featured');
-    }
-    
-    function action_save_featured()
-    {
-        $this->validate_security_token();
-    
-        $featuredSite = FeaturedSite::get_by_guid(get_input('guid'));
-        if (!$featuredSite)
-        {
-            return $this->not_found();
-        }
-        $featuredSite->image_url = get_input('image_url');
-        $featuredSite->set_content(get_input('content'));
-        $featuredSite->save();
-        SessionMessages::add('featured:saved');
-        forward('org/featured');
-    }    
-    
     function action_edit_featured()
     {
-        $guid = get_input('guid');
-        $featuredSite = FeaturedSite::get_by_guid($guid);
-        if (!$featuredSite)
-        {
-            return $this->not_found();
-        }
-        
-        $this->page_draw(array(
-            'title' => __('featured:edit'),
-            'content' => view('admin/edit_featured', array('entity' => $featuredSite)),
-        ));
+        $action = new Action_Admin_EditFeaturedSite($this);
+        $action->execute();    
+    }
+   
+    function action_edit_email()
+    {
+        $action = new Action_Admin_EditEmailTemplate($this);
+        $action->execute();    
     }
    
     function action_add_email()
     {
-        $this->page_draw(array(
-            'title' => __('email:add'),
-            'content' => view('admin/add_email'),
-        ));                
+        $action = new Action_Admin_AddEmailTemplate($this);
+        $action->execute();               
+    }
+
+    function action_send_email()
+    {
+        $action = new Action_Admin_SendEmailTemplate($this);
+        $action->execute();
     }
     
-    function action_new_email()
+    function action_activate_email()
     {
-        $this->validate_security_token();
-        
-        $content = get_input('content');
-        
-        $email = new EmailTemplate();
-        $email->from = get_input('from');
-        $email->subject = get_input('subject');        
-        $email->set_content($content);
-        $email->save();
-        forward("/admin/view_email?email={$email->guid}");
-    }
-    
-    function action_save_email()
-    {
-        $this->validate_security_token();
-        
-        $email = EmailTemplate::get_by_guid(get_input('email'));
-        if (!$email)
-        {
-            return $this->not_found();        
-        }
-        
-        if (get_input('delete'))
-        {
-            $email->disable();
-            $email->save();
-            forward("/admin/emails");
-        }
-        else
-        {
-            $email->subject = get_input('subject');                
-            $email->set_content(get_input('content'));
-            $email->from = get_input('from');
-            $email->save();
-        }
-        forward("/admin/view_email?email={$email->guid}");    
+        $action = new Action_Admin_ActivateEmailTemplate($this);
+        $action->execute();    
     }
     
     function action_add_featured_photo()

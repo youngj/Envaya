@@ -7,7 +7,7 @@
     if ($org) {
 ?>
 
-<form action='/admin/send_batch_email' method='POST'>
+<form action='/admin/send_email' method='POST'>
 
 <?php echo view('input/securitytoken'); ?>
 To:

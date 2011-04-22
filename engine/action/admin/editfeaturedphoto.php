@@ -2,18 +2,23 @@
 
 class Action_Admin_EditFeaturedPhoto extends Action
 {
+    protected $photo;
+
     function before()
     {
         $this->require_admin();
+
+        $photo = FeaturedPhoto::get_by_guid(get_input('guid'));        
+        if (!$photo)
+        {
+            return $this->not_found();
+        }
+        $this->photo = $photo;        
     }
      
     function process_input()
     {
-        $photo = FeaturedPhoto::get_by_guid(get_input('guid'));
-        if (!$photo)
-        {
-            return $this->not_found();
-        }        
+        $photo = $this->photo;
         
         if (get_input('delete'))
         {
@@ -39,12 +44,8 @@ class Action_Admin_EditFeaturedPhoto extends Action
 
     function render()
     {
-        $photo = FeaturedPhoto::get_by_guid(get_input('guid'));        
-        if (!$photo)
-        {
-            return $this->not_found();
-        }
-        
+        $photo = $this->photo;
+    
         $this->page_draw(array(
             'title' => __('featured_photo:edit'),
             'content' => view('admin/edit_featured_photo', array(

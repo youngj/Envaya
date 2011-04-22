@@ -1,7 +1,7 @@
 <div class='padded'>
 <?php
 ?>
-<form method='POST' action='/admin/new_email'>
+<form method='POST' action='/admin/add_email'>
 <?php echo view('input/securitytoken') ?>
 
 <div class='input'>

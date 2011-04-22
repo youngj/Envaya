@@ -70,7 +70,7 @@ class Controller_Profile extends Controller
     {
         $org = $this->org;
     
-        $this->require_http();
+        $this->prefer_http();
         $this->use_public_layout($widget, $is_home);
                         
         if (!$widget || !$widget->is_active())

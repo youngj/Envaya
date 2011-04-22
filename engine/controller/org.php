@@ -9,7 +9,7 @@ class Controller_Org extends Controller
 
     function action_browse()
     {
-        $this->require_http();
+        $this->prefer_http();
     
         $sector = get_input('sector');        
         $list = get_input("list");
@@ -46,7 +46,7 @@ class Controller_Org extends Controller
     
     function action_search()
     {
-        $this->require_http();
+        $this->prefer_http();
     
         $query = get_input('q');
         $sector = get_input('sector');
@@ -192,7 +192,7 @@ class Controller_Org extends Controller
 
     function action_feed()
     {
-        $this->require_http();
+        $this->prefer_http();
     
         $max_items = 20;
         

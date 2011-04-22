@@ -8,6 +8,7 @@ class DataFormatException extends Exception {}
 class NotImplementedException extends CallException {}
 class InvalidParameterException extends CallException {}
 class NotFoundException extends Exception {}
+
 class ValidationException extends Exception 
 {
     protected $is_html;

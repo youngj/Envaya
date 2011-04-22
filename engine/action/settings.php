@@ -4,7 +4,7 @@ class Action_Settings extends Action
 {
     function before()
     {
-        $this->require_https();
+        $this->prefer_https();
         $this->require_editor();
     }
      

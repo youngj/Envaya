@@ -93,7 +93,10 @@ abstract class Controller {
 
         $this->request->response = view(@$vars['layout'] ?: 'layouts/default', $vars);
     }
-    
+
+    /*
+     * Displays a friendly 404 page and ends the request.
+     */            
     public function not_found()
     {
         header("HTTP/1.1 404 Not Found");        
@@ -114,6 +117,11 @@ abstract class Controller {
         $footer->add_item(__('donate'), "/envaya/page/contribute");    
     }
 
+    /*
+     * Redirects to the previous page if the submitted security token 
+     * (rendered by view input/securitytoken) is incorrect.
+     * Should be called at the beginning of a POST request to protect against CSRF attacks.
+     */
     public function validate_security_token()
     {
         try
@@ -125,10 +133,14 @@ abstract class Controller {
             redirect_back_error($ex->getMessage());
         }        
     }
-    
-    public function require_http()
+
+    /*
+     * If the client is using a secure HTTPS connection, 
+     * redirects to the same page on an insecure connection when possible.
+     */    
+    public function prefer_http()
     {
-        if (Request::$protocol == 'https')
+        if (!Request::is_post() && Request::$protocol == 'https')
         {
             $url = Request::full_original_url();
             $url = str_replace("https://", "http://", $url);
@@ -136,15 +148,22 @@ abstract class Controller {
         }
     }
     
-    public function require_https()
+    /*
+     * If the client is using an insecure HTTP connection, 
+     * redirects to the same page on https when possible.
+     */
+    public function prefer_https()
     {
-        if (Request::$protocol == 'http' && Config::get('ssl_enabled') && !is_mobile_browser())
+        if (!Request::is_post() && Request::$protocol == 'http' && Config::get('ssl_enabled') && !is_mobile_browser())
         {
             $url = secure_url(Request::full_original_url());
             forward($url);
         }
     }
     
+    /*
+     * Redirects to the login page if the client is not logged in.
+     */    
     public function require_login()
     {
         if (!Session::isloggedin())
@@ -153,6 +172,9 @@ abstract class Controller {
         }
     }
 
+    /*
+     * Redirects to the login page if the client is not an administrator.
+     */        
     public function require_admin()
     {
         if (!Session::isadminloggedin())
@@ -190,7 +212,7 @@ abstract class Controller {
 
     function set_content_type($content_type)
     {
-        $this->request->headers['Content-type'] = $content_type;
+        $this->request->headers['Content-Type'] = $content_type;
     }
     
     function set_response($response)
