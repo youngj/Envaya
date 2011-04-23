@@ -16,9 +16,10 @@ class Action_EditWidget extends Action
         validate_security_token();        
     
         $widget = $this->get_widget();
-        if (!$widget->guid || $widget->status == EntityStatus::Disabled)
+        if (!$widget->guid || $widget->status == Entity::Disabled)
         {
-            $widget->set_status(EntityStatus::Draft);
+            $widget->publish_status = Widget::Draft;
+            $widget->enable();            
             $widget->save();            
         }
         
@@ -56,6 +57,9 @@ class Action_EditWidget extends Action
             {
                 $widget->enable();
             }            
+            
+            $widget->publish_status = Widget::Published;
+            
             $container = $widget->get_container_entity();
             if (!$container->is_enabled())
             {

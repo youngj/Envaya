@@ -3,7 +3,7 @@
 /*
  * An item of metadata for an Entity.
  *
- * e.g. $entity->foo = 7 will correspond to an instance of EntityMetadata
+ * e.g. $entity->set_metadata('foo', 7) will correspond to an instance of EntityMetadata
  * with name = foo, value = 7, and entity_guid = $entity->guid.
  *
  * value_type corresponds to a VariantType constant.

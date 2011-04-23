@@ -44,7 +44,7 @@
             echo $update->get_snippet();
             echo "<div class='blog_date'>";
             echo "<a href='{$update->get_edit_url()}?from=$escUrl'>{$update->get_date_text()}</a>";
-            if ($update->status == EntityStatus::Draft)
+            if ($update->publish_status == Widget::Draft)
             {
                 echo " (".__('widget:draft').")";
             }

@@ -1,12 +1,15 @@
 <?php
-
-class EntityStatus
-{
-    const Disabled = 0; // basically deleted, except the db row still exists so we can undelete
-    const Enabled = 1;
-    const Draft = 2;
-}
-
+/*
+ * A registry that maps unique string identifiers to Entity class names. 
+ * This allows the system to determine the PHP class for a given entity guid.
+ *
+ * These string identifiers are stored in the 'entities' table in the 'subtype_id' column,
+ * so they should generally not be changed once created.
+ *
+ * Modules can register new entity types by calling EntityRegistry::register_subtype 
+ * in their start.php file. Modules should namespace their subtype_ids to avoid conflicting
+ * with subtype_ids defined in other modules.
+ */
 class EntityRegistry
 {
     private static $subtype_to_class = array(

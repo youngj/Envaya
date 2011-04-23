@@ -32,8 +32,7 @@ class Controller_Post extends Controller_Widget
         
         $container = $widget->get_container_entity();
 
-        $sibling = $container->query_widgets()
-            ->where('status = ?', EntityStatus::Enabled)
+        $sibling = $container->query_published_widgets()
             ->where("guid $op ?", $widget->guid)
             ->order_by("guid $order")
             ->get();
@@ -43,8 +42,7 @@ class Controller_Post extends Controller_Widget
             forward($sibling->get_url());
         }
         
-        $sibling = $container->query_widgets()
-            ->where('status = ?', EntityStatus::Enabled)
+        $sibling = $container->query_published_widgets()
             ->order_by("guid $order")
             ->get();        
 

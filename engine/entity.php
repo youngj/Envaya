@@ -6,7 +6,11 @@
  * Each Entity has a guid which is unique even among different entity subclasses.
  * This allows you to specify any subclass instance by guid, without needing to record the subclass separately.
  * This is kind of useful for things like feed items and translations, 
- * which may refer to many different types of entities.
+ * which may refer to many different types of entities. 
+ *
+ * In order for the system to determine which type of entity a guid refers to, the entity class name
+ * must be registered with a unique string identifier (subtype_id) in the EntityRegistry. 
+ * The 'entities' database table stores a subtype_id for each entity guid.
  * 
  * Entities also have an 'status' field which allows effectively deleting rows
  * while leaving them in the database to allow them to be undeleted.
@@ -21,6 +25,10 @@
 abstract class Entity extends Model
     implements Loggable, Serializable
 {
+    // values for 'status' field
+    const Disabled = 0; // aka 'deleted', except the db row still exists so we can undelete
+    const Enabled = 1;  // not deleted
+
     protected $metadata_cache = array();        
 
     static $primary_key = 'guid';    
@@ -95,7 +103,7 @@ abstract class Entity extends Model
                 'container_guid' => 0,
                 'time_created' => 0,
                 'time_updated' => 0,
-                'status' => EntityStatus::Enabled
+                'status' => Entity::Enabled
             )
         );
     }    
@@ -367,7 +375,7 @@ abstract class Entity extends Model
      */
     public function disable()
     {
-        $this->set_status(EntityStatus::Disabled);
+        $this->set_status(Entity::Disabled);
     }
 
     /**
@@ -375,7 +383,7 @@ abstract class Entity extends Model
      */
     public function enable()
     {
-        $this->set_status(EntityStatus::Enabled);
+        $this->set_status(Entity::Enabled);
     }
 
     /**
@@ -385,7 +393,7 @@ abstract class Entity extends Model
      */
     public function is_enabled()
     {
-        return $this->status == EntityStatus::Enabled;
+        return $this->status == Entity::Enabled;
     }
 
     /**
@@ -577,7 +585,7 @@ abstract class Entity extends Model
             $entity->save_to_cache();
         }
 
-        if (!$show_disabled && $entity->status == EntityStatus::Disabled)
+        if (!$show_disabled && $entity->status == Entity::Disabled)
         {
             return null;
         }       

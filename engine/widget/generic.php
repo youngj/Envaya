@@ -18,7 +18,7 @@ class Widget_Generic extends Widget
 
     function process_input($action)
     {
-        $publish = $this->is_enabled();
+        $publish = ($this->publish_status == Widget::Published);        
         $time = time();
         $lastPublished = (int)$this->get_metadata('last_publish_time');
 
@@ -44,7 +44,7 @@ class Widget_Generic extends Widget
         
         $revision = ContentRevision::get_recent_draft($this);
         $revision->time_updated = $time;
-        $revision->status = $publish ? ContentRevision::Published : ContentRevision::Draft;
+        $revision->publish_status = $this->publish_status;
         $revision->content = $content;            
         $revision->save();                
             
@@ -57,7 +57,7 @@ class Widget_Generic extends Widget
             else if (!Session::isadminloggedin() && $time - $lastPublished > 86400)
             {
                 $this->post_feed_items_edit();
-            }        
+            }
         }
     }
 }

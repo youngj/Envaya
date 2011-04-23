@@ -10,17 +10,15 @@
         $end_widget = Widget::get_by_guid($end_guid);    
         if ($end_widget)
         {
-            $offset = $widget->query_widgets()
+            $offset = $widget->query_published_widgets()
                 ->where('time_created > ?', $end_widget->time_created)
-                ->where('status = ?', EntityStatus::Enabled)
                 ->count();
         }
     }
 
     $limit = 10;    
-    $query = $widget->query_widgets()
-        ->order_by('time_created desc, guid desc')
-        ->where('status = ?', EntityStatus::Enabled);
+    $query = $widget->query_published_widgets()
+        ->order_by('time_created desc, guid desc');
         
     $count = $query->count();
     $posts = $query->limit($limit, $offset)->filter();            

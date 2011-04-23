@@ -16,10 +16,10 @@
         $link = "<a style='font-weight:bold' href='{$widget->get_edit_url()}?from=$from'>".
                         escape($widget->get_title())."</a>";
     
-        if ($widget->status == EntityStatus::Draft)
+        if ($widget->publish_status == Widget::Draft)
         {
             $link .= " (".__('widget:draft').")";
-        }           
+        }
             
         if ($widget->in_menu)
         {

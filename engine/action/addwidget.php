@@ -28,10 +28,8 @@ class Action_AddWidget extends Action
         $widget = $container->new_child_widget_from_input();        
         
         $draft = (int)get_input('_draft');
-        if ($draft)
-        {
-            $widget->set_status(EntityStatus::Draft);
-        }        
+        
+        $widget->publish_status = $draft ? Widget::Draft : Widget::Published;       
         
         $widget->process_input($this);
         

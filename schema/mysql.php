@@ -93,6 +93,7 @@ CREATE TABLE `widgets` (
     <?php require 'schema/entity_columns.php'; ?>,
     <?php require 'schema/content_columns.php'; ?>,
   `widget_name` varchar(32) NOT NULL,
+  `publish_status` tinyint(4) NOT NULL default 1,
   `subclass` varchar(32) NULL,
   `menu_order` int null,
   `in_menu` tinyint(4) default 1,
@@ -327,7 +328,7 @@ CREATE TABLE `revisions` (
     `time_created` int not null,
     `time_updated` int not null,
     `content` mediumtext not null,
-    `status` tinyint(4) not null,
+    `publish_status` tinyint(4) not null default 0,
     KEY (`entity_guid`),
     KEY (`owner_guid`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;

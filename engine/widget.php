@@ -12,9 +12,14 @@
  */
 class Widget extends Entity
 {
+    // publish_status values
+    const Draft = 0;
+    const Published = 1;
+
     static $table_name = 'widgets';
     static $table_attributes = array(
         'widget_name' => 0,
+        'publish_status' => 1,
         'menu_order' => 0,
         'in_menu' => 1,
         'subclass' => '',

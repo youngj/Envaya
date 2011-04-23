@@ -2,9 +2,6 @@
 
 class ContentRevision extends Model
 {
-    const Draft = 0;
-    const Published = 1;
-    
     static $table_name = 'revisions';
     
     static $table_attributes = array(
@@ -13,7 +10,7 @@ class ContentRevision extends Model
         'time_created' => 0,        
         'time_updated' => 0,        
         'content' => '',
-        'status' => 0,
+        'publish_status' => 0,
     );    
     
     function can_edit()
@@ -33,7 +30,7 @@ class ContentRevision extends Model
         $revision = ContentRevision::query()
             ->where('entity_guid = ?', $entity->guid)
             ->where('time_created > ? ', $time - 15 * 60)
-            ->where('status = ?', ContentRevision::Draft)
+            ->where('publish_status = ?', Widget::Draft)
             ->order_by('time_created desc')
             ->get();
         
@@ -43,7 +40,7 @@ class ContentRevision extends Model
             $revision->owner_guid = $entity->owner_guid;
             $revision->entity_guid = $entity->guid;
             $revision->time_created = $time;
-            $revision->status = ContentRevision::Draft;        
+            $revision->publish_status = Widget::Draft;        
         }            
         return $revision;
     }    
@@ -54,7 +51,7 @@ class ContentRevision extends Model
             'id' => $this->id,
             'time_updated' => $this->time_updated,
             'friendly_time' => friendly_time($this->time_updated),
-            'status' => $this->status,
+            'publish_status' => $this->publish_status,
         );
     }
 }

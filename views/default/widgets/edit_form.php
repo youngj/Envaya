@@ -9,7 +9,7 @@
     
     $is_section = $widget->is_section();
     
-    if ($widget->guid && ($widget->status != EntityStatus::Disabled))
+    if ($widget->guid && $widget->is_enabled())
     {
         $form_body .= view('input/alt_submit', array(
             'name' => "delete",

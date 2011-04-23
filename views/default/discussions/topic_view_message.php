@@ -3,7 +3,7 @@
     
     echo view_entity($message);
 
-    if ($message->can_edit() && $message->status == EntityStatus::Enabled) 
+    if ($message->can_edit() && $message->is_enabled()) 
     {
         echo "<div class='admin_links'>";
         echo view('output/confirmlink', array(

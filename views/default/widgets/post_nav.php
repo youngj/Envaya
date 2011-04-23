@@ -4,13 +4,11 @@
     $news = $widget->get_container_entity();
     $url = rewrite_to_current_domain($widget->get_url());
            
-    $has_prev = $news->query_widgets()
-        ->where('status = ?', EntityStatus::Enabled)
+    $has_prev = $news->query_published_widgets()
         ->where('guid < ?', $widget->guid)
         ->exists();    
         
-    $has_next = $news->query_widgets()
-        ->where('status = ?', EntityStatus::Enabled)
+    $has_next = $news->query_published_widgets()
         ->where('guid > ?', $widget->guid)
         ->exists();
     

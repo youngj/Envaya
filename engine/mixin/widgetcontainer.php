@@ -15,17 +15,20 @@ class Mixin_WidgetContainer extends Mixin
             ->order_by('menu_order');
     }
     
+    public function query_published_widgets()
+    {
+        return $this->query_widgets()->where('publish_status = ?', Widget::Published);
+    }
+
+    public function query_menu_widgets()
+    {
+        return $this->query_published_widgets()->where('in_menu = 1');
+    }    
+    
     public function query_widgets_by_class($subclass)
     {
         return $this->query_widgets()->where('subclass = ?', $subclass);
-    }
-    
-    public function query_menu_widgets()
-    {
-        return $this->query_widgets()
-            ->where('in_menu = 1')
-            ->where('status = ?', EntityStatus::Enabled);
-    }
+    }    
     
     /*
      * Returns a list of widgets that are available to add as children of this container,

@@ -3,7 +3,7 @@
     
     echo "<div id='msg{$message->guid}'>";
     
-    if ($message->status == EntityStatus::Enabled)
+    if ($message->is_enabled())
     {   
         echo "<strong>";
         echo $message->get_from_link();
