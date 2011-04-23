@@ -32,6 +32,9 @@ class Action_Admin_ChangeUsername extends Action
             get_cache()->delete(User::get_cache_key_for_username($username));
             get_cache()->delete(User::get_cache_key_for_username($oldUsername));
 
+            $redirect = NotFoundRedirect::new_simple_redirect("/{$oldUsername}","/{$username}");
+            $redirect->save();
+            
             SessionMessages::add(__('username:changed'));
         }
         forward($org->get_url());

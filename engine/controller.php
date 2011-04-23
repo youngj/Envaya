@@ -98,6 +98,14 @@ abstract class Controller {
      */            
     public function not_found()
     {
+        $request = $this->request;
+        $url = $_SERVER['REQUEST_URI'];
+        $redirect_url = NotFoundRedirect::get_redirect_url($url);
+        if ($redirect_url)
+        {
+            return forward($redirect_url);
+        }
+        
         header("HTTP/1.1 404 Not Found");        
         $this->page_draw(array(
             'title' => __('page:notfound'),

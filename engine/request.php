@@ -655,7 +655,7 @@ class Request {
     {
         $protocol = @$_SERVER['HTTPS'] ? "https://" : "http://";
         $domain = Config::get('domain');
-        $uri = Request::instance()->uri;
+        $uri = $this->uri;
         $queryString = ($_SERVER['QUERY_STRING']) ? "?{$_SERVER['QUERY_STRING']}" : '';
         
         return "$protocol$domain/$uri$queryString";

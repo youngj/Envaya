@@ -9,7 +9,7 @@
 require_once "scripts/cmdline.php";
 require_once "engine/start.php";
 
-//Config::set('debug', false);
+Config::set('debug', false);
 
 $opts = getopt('h');
 
@@ -169,6 +169,11 @@ foreach ($classes as $cls)
         );
     }
 }
+
+$redirect = NotFoundRedirect::new_simple_redirect("/{$src_org->username}","/{$dest_org->username}");
+$redirect->save();
+
+echo "added 404 redirect: $redirect\n";
 
 $src_org->username = $src_org->username . ".deleted";
 $src_org->approval = -1;
