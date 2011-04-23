@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Controller for allowing users to contribute translations.
+ *
+ * URL: /tr/<action>
+ */
 class Controller_Tr extends Controller
 {
     function action_translate()

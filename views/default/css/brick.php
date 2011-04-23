@@ -1,5 +1,6 @@
 <?php
-    echo view('css/snippets/org', $vars);
+    echo view('css/default', $vars);
+    echo view('css/snippets/site_menu_top', $vars);
     echo view('css/snippets/beige_content', $vars);
     $graphicsDir = "/_graphics/brick";
 ?>

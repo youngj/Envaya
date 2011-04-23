@@ -103,3 +103,15 @@ ul,ol
 {
     margin:0px;
 }
+
+#site_menu
+{
+    padding-top:5px;
+    text-align:center;
+}
+
+#site_menu a
+{
+    margin:0px 3px;
+    white-space:nowrap;
+}

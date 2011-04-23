@@ -96,7 +96,7 @@ class EnvayaSiteTest extends SeleniumTest
     
     private function _testContactForm()
     {
-        $this->open("/page/contact");
+        $this->open("/envaya/contact");
         $this->type("//textarea[@name='message']", "contact message");
         $this->type("//input[@name='name']", "contact name");
         $this->type("//input[@name='email']", "nobody+bar@nowhere.com");

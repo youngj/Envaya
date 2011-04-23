@@ -98,7 +98,14 @@ class FeedItem extends Model
     function is_valid()
     {
         $subject = $this->get_subject_entity();
-        return ($subject && $subject->is_enabled());
+        if (!$subject || !$subject->is_enabled())
+            return false;
+
+        $user = $this->get_user_entity();
+        if (!$user || !$user->is_enabled())
+            return false;
+        
+        return true;
     }
 
     function render_heading($mode)

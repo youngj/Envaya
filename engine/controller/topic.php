@@ -1,6 +1,11 @@
 <?php
 
-class Controller_Topic extends Controller_Profile
+/*
+ * Controller for a DiscussionTopic on a user's site, accessed by guid
+ *
+ * URL: /<username>/topic/<guid>[/<action>] 
+ */
+class Controller_Topic extends Controller_User
 {
     protected $topic;
     
@@ -40,6 +45,9 @@ class Controller_Topic extends Controller_Profile
         $org = $this->org;
         $topic = $this->topic;
 
+        $this->allow_view_types(null);
+        $this->allow_content_translation();
+        
         if (!$org->can_view())
         {
             return $this->view_access_denied();

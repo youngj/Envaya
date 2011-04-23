@@ -9,6 +9,18 @@ body
     background-color:#e7e2d7;
 }
 
+#site_menu
+{
+    padding-top:5px;
+    text-align:center;
+}
+
+#site_menu a
+{
+    margin:0px 3px;
+    white-space:nowrap;
+}
+
 #content_top
 {
     height:24px;

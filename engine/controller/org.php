@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Controller for a variety of global/public pages relating to organizations
+ *
+ * URL: /org/<action>
+ */
 class Controller_Org extends Controller
 {
     function before()
@@ -10,22 +15,9 @@ class Controller_Org extends Controller
     function action_browse()
     {
         $this->prefer_http();
+        $this->allow_view_types(null);
     
-        $sector = get_input('sector');        
-        $list = get_input("list");
-        
-        if ($list || get_viewtype() == 'mobile')
-        {
-            $content = view("org/browse_list", array('lat' => $lat, 'long' => $long, 'sector' => $sector, 'region' => get_input('region')));
-        }
-        else
-        {
-            $lat = get_input('lat');
-            $long = get_input('long');
-            $zoom = get_input('zoom');
-
-            $content = view("org/browse_map", array('lat' => $lat, 'long' => $long, 'zoom' => $zoom, 'sector' => $sector));        
-        }
+        $content = view('org/browse');
 
         $this->page_draw(array(
             'title' => __('browse:title'),
@@ -35,6 +27,8 @@ class Controller_Org extends Controller
 
     function action_change_browse_view()
     {
+        $this->allow_view_types(null);
+    
         $sector = get_input('sector');
         $region = get_input('region');
         
@@ -47,6 +41,7 @@ class Controller_Org extends Controller
     function action_search()
     {
         $this->prefer_http();
+        $this->allow_view_types(null);
     
         $query = get_input('q');
         $sector = get_input('sector');
@@ -177,6 +172,8 @@ class Controller_Org extends Controller
     
     function action_change_feed_view()
     {
+        $this->allow_view_types(null);
+        
         $sector = get_input('sector');
         $region = get_input('region');
         
@@ -193,6 +190,7 @@ class Controller_Org extends Controller
     function action_feed()
     {
         $this->prefer_http();
+        $this->allow_view_types('rss');
     
         $max_items = 20;
         
@@ -203,9 +201,6 @@ class Controller_Org extends Controller
             ->where_visible_to_user()
             ->limit($max_items)
             ->filter();
-
-        PageContext::set_rss(true);
-        PageContext::set_translatable(false);
 
         $this->page_draw(array(
             'title' => __("feed:title"),
@@ -262,6 +257,8 @@ class Controller_Org extends Controller
 
     function action_new()
     {
+        $this->allow_view_types(null);
+    
         $invite_code = get_input('invite');
         if ($invite_code)
         {
@@ -358,7 +355,7 @@ class Controller_Org extends Controller
     
     function action_featured()
     {
-        PageContext::set_translatable(false);
+        $this->allow_view_types(null);
 
         $this->page_draw(array(
             'title' => __('featured:title'),

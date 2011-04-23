@@ -250,5 +250,9 @@ class Widget extends Entity
         $bOrder = $b->get_menu_order();
         return $aOrder - $bOrder;
     }    
-    
+
+    function get_view_types()
+    {
+        return array();
+    }    
 }

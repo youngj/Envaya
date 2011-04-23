@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Controller for a wide variety of actions that don't fit anywhere else.
+ *
+ * URL: /pg/<action>
+ */
 class Controller_Pg extends Controller {
 
     function action_login()
@@ -90,6 +95,7 @@ class Controller_Pg extends Controller {
 
     function action_blank()
     {
+        $this->allow_view_types(null);
         // this may be useful for displaying a page containing only SessionMessages
         $this->page_draw(array(
             'no_top_bar' => true, 
@@ -261,6 +267,7 @@ class Controller_Pg extends Controller {
     {
         $file = UploadedFile::get_from_url(get_input('src'));
 
+        $this->allow_view_types(null);
         $this->page_draw(array(
             'layout' => 'layouts/frame',
             'content' => view('upload/select_image', array(
@@ -276,6 +283,7 @@ class Controller_Pg extends Controller {
         $guid = (int)get_input('guid');
         $file = UploadedFile::get_by_guid($guid);
         
+        $this->allow_view_types(null);
         $this->page_draw(array(
             'layout' => 'layouts/frame',
             'content' => view('upload/select_document', array(

@@ -7,6 +7,11 @@
  */
 class Widget_Home extends Widget
 {
+    function get_view_types()
+    {
+        return array('rss');
+    }
+
     function get_default_subtitle()
     {
         $org = $this->get_root_container_entity();

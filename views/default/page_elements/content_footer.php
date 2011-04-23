@@ -1,7 +1,7 @@
 <div id='viewtype'>
 <?php
     $viewTypes = array('default', 'mobile');
-    $curViewType = get_viewtype() ?: 'default';
+    $curViewType = Views::get_current_type();
     $links = array();
     
     foreach ($viewTypes as $viewType)

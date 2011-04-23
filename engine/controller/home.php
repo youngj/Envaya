@@ -1,14 +1,19 @@
 <?php
 
+/*
+ * Controller for the main home page
+ *
+ * URL: / 
+ *      /home
+ */
 class Controller_Home extends Controller
 {
     function action_index()
     {       
         $this->prefer_http();    
-        $this->add_generic_footer();        
+        $this->add_generic_footer();
+        $this->allow_view_types(null);
         
-        PageContext::set_translatable(false);
-
         $this->page_draw(array(
             'theme_name' => 'home',
             'title' => __('home:title'),

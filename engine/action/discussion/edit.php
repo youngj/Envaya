@@ -37,8 +37,6 @@ class Action_Discussion_Edit extends Action
 
     function render()
     {
-        PageContext::set_translatable(false);
-    
         $topic = $this->get_topic();
         $this->use_editor_layout();
         

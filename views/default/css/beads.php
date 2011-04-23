@@ -1,6 +1,7 @@
 <?php
     $vars['contentWidth'] = 600;
-    echo view('css/snippets/org', $vars);
+    echo view('css/default', $vars);
+    echo view('css/snippets/site_menu_top', $vars);
     echo view('css/snippets/content_margin', $vars);
     
     $graphicsDir = "/_graphics/beads";

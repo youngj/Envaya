@@ -1,6 +1,6 @@
 <?php
     $vars['contentWidth'] = 600;
-    echo view('css/snippets/org', $vars);
+    echo view('css/default', $vars);
     echo view('css/snippets/content_margin', $vars);
 
     $graphicsDir = "/_graphics/sidebar";

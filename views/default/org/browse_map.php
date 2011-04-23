@@ -1,6 +1,9 @@
 <?php
 
-$sector = @$vars['sector'];
+$sector = get_input('sector') ?: 0;
+$lat = get_input('lat') ?: -6.6;
+$long = get_input('long') ?: 36;
+$zoom = get_input('zoom') ?: 5;
 
 ?>
 
@@ -39,11 +42,6 @@ function sectorChanged()
 
 <div class='instructions' style='clear:both'><?php echo __("browse:instructions") ?></div>
 <?php
-    $lat = $vars['lat'] ?: -6.6;
-    $long = $vars['long'] ?: 36;
-    $zoom = $vars['zoom'] ?: 5;
-    $sector = @$vars['sector'] ?: 0;
-
     echo view("output/map", array(
         'lat' => $lat, 
         'long' => $long,  

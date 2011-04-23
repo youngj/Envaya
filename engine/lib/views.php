@@ -1,32 +1,20 @@
 <?php
 
-function get_viewtype()
-{
-    static $VIEWTYPE;
-    
-    if (!isset($VIEWTYPE))
-    {
-        $VIEWTYPE = get_input('view') ?: @$_COOKIE['view'] ?: '';        
-        
-        if (!$VIEWTYPE && is_mobile_browser())
-        {
-            $VIEWTYPE = 'mobile';
-        }
-        
-        if (preg_match('/[^\w]/', $VIEWTYPE))
-        {            
-            $VIEWTYPE = '';
-        }
-    }
-    return $VIEWTYPE;
-}
-
 /**
- * Handles templating views.
+ * view - Renders a view (a normal PHP file that outputs content), captures the output content
+ * and returns it as a string. An associative array of parameters is passed into the view
+ * with the variable name $vars.
+ *
+ * View files are allowed to call methods defined in the engine/ directory to query the database
+ * and access properties of models. They can also render other views.
  * 
- * Adds special variable 'include_count', which increments each time a given view is rendered.
+ * Views are not allowed to use controllers or actions, perform access control, 
+ * or end/forward the request, and are generally not allowed to modify state, 
+ * but they are allowed to call PageContext methods to modify state for the current request.
+ * 
+ * view() adds a special variable 'include_count', which increments each time a given view is rendered.
  *   include_count is 0 the first time a view is rendered for a given script execution.
- *    This allows views to do one-time setup or generate unique DOM ids.
+ *   This allows views to do one-time setup or generate unique DOM ids.
  *
  * @param string $view The name and location of the view to use
  * @param array $vars Any variables that the view requires, passed as an array
@@ -47,7 +35,7 @@ function view($view, $vars = null, $viewtype = null)
 
     if (!$viewtype)
     {
-        $viewtype = get_viewtype();
+        $viewtype = Views::get_current_type();
     }
            
     ob_start();
@@ -61,14 +49,16 @@ function view($view, $vars = null, $viewtype = null)
     return ob_get_clean();
 }
 
-function get_view_path($view, $viewtype = '', $fallback = true)
+function get_view_path($view, $viewtype = null, $fallback = true)
 {
-    if (empty($viewtype))
-        $viewtype = get_viewtype();
+    if (!$viewtype)
+    {
+        $viewtype = Views::get_current_type();
+    }
 
     $viewPath = null;
     
-    if ($viewtype)
+    if ($viewtype != 'default')
     {
         $viewPath = get_real_path("views/{$viewtype}/{$view}.php");
         if (!$viewPath && !$fallback)
@@ -121,7 +111,7 @@ function include_view_file($viewFile, $vars)
  * @param string $viewtype If set, forces the viewtype
  * @return true|false Depending on success
  */
-function view_exists($view, $viewtype = '', $fallback = true)
+function view_exists($view, $viewtype = null, $fallback = true)
 {
     return get_view_path($view, $viewtype, $fallback) != null; 
 }
@@ -146,7 +136,9 @@ function view_entity($entity, $args = null)
 
 class Views
 {
-    static $extensions_map = array();
+    private static $current_type = null;
+    private static $extensions_map = array();
+    
     static function extend($base_view, $extend_view, $priority = 1)
     {
         $extensions = @static::$extensions_map[$base_view];    
@@ -161,6 +153,33 @@ class Views
         }        
         
         $extensions[$priority] = $extend_view;
+    }
+    
+    static function get_current_type()
+    {
+        $type = static::$current_type;
+    
+        if ($type === null)
+        {
+            $type = get_input('view') ?: @$_COOKIE['view'] ?: 'default';        
+            
+            if (!$type && is_mobile_browser())
+            {
+                $type = 'mobile';
+            }
+            
+            if (preg_match('/[^\w]/', $type))
+            {            
+                $type = 'default';
+            }
+            static::$current_type = $type;
+        }
+        return $type;
+    }
+    
+    static function set_current_type($type)
+    {
+        static::$current_type = $type;
     }
     
     static function get_extensions($base_view)

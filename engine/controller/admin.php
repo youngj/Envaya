@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * Controller for actions that are only accessible to site administrators.
+ *
+ * URL: /admin/<action>
+ */
 class Controller_Admin extends Controller
 {
     function before()
@@ -32,8 +37,6 @@ class Controller_Admin extends Controller
     {
         $org = User::get_by_username(get_input('username'));
         
-        PageContext::set_translatable(false);
-               
         $email = EmailTemplate::get_by_guid(get_input('email')) ?: EmailTemplate::query()->where('active<>0')->get();
         if (!$email)
         {

@@ -1,7 +1,7 @@
 <?php 
 
-$sector = @$vars['sector'];
-$region = @$vars['region'];
+$sector = get_input('sector');
+$region = get_input('region');
 
 echo view('org/current_filter', array('sector' => $sector, 'region' => $region, 'changeurl' => '/org/change_browse_view'));
 

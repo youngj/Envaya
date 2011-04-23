@@ -27,8 +27,8 @@ function altSubmit($id, $value)
 }
 </script>
         <?php
-            $script = ob_get_clean();
-            PageContext::add_header_html('alt_submit', $script);
+        $script = ob_get_clean();
+        PageContext::add_header_html($script);
     }
 
     $hidden_id = "_alt_submit".$vars['include_count'];

@@ -1,7 +1,7 @@
 <div class='padded'>
 <?php
 
-PageContext::add_header_html('robots', '<meta name="robots" content="noindex,follow" />'); 
+PageContext::add_header_html('<meta name="robots" content="noindex,follow" />'); 
 
 $sector = $vars['sector'];
 $region = $vars['region'];

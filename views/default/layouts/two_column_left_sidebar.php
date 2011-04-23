@@ -4,18 +4,18 @@
 <div class='thin_column'>
 <div id='content_wrapper'>
 <table class='left_sidebar_table'>
-    <tr>
-    <td id='left_sidebar'>
-    <?php            
-        echo PageContext::get_submenu()->render(); 
-    ?>    
-    </td>
-    <td id='right_content'>
-        <?php echo view('translation/control_bar'); ?>
-        <?php echo $vars['content']; ?>            
-        <div style='clear:both'></div>        
-    </td>
-    </tr>
+<tr>
+<td id='left_sidebar'>
+<?php echo view('page_elements/site_menu', $vars); ?>
+</td>
+<td id='right_content'>
+<?php 
+    echo view('translation/control_bar', $vars); 
+    echo $vars['content']; 
+?>         
+<div style='clear:both'></div>
+</td>
+</tr>
 </table>
 </div>
 <div id='content_bottom'>

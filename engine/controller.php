@@ -80,8 +80,7 @@ abstract class Controller {
             }
         }
         
-        $viewtype = get_viewtype();        
-        if ($viewtype == '' || $viewtype == 'default')
+        if (Views::get_current_type() == 'default')
         {
             $theme = Theme::get(@$vars['theme_name'] ?: 'simple');
             $vars['css_name'] = $theme->get_css_name();        
@@ -208,8 +207,33 @@ abstract class Controller {
      */
     public function after()
     {
-    }       
-
+    }
+    
+    public function allow_view_types($allowed_view_types = null /* array, or variable arguments */)
+    {
+        if (!is_array($allowed_view_types))
+        {
+            $allowed_view_types = func_get_args();
+        }
+    
+        if (in_array('rss', $allowed_view_types))
+        {
+            $this->page_draw_vars['rss_url'] = url_with_param(Request::full_original_url(), 'view', 'rss');
+        }
+        
+        $view_type = Views::get_current_type();
+        
+        if ($view_type == 'default' || $view_type == 'mobile' || in_array($view_type, $allowed_view_types))
+            return;
+        
+        Views::set_current_type('default');
+    }
+    
+    function allow_content_translation($allow = true)
+    {
+        $this->page_draw_vars['show_translate_bar'] = $allow;
+    }
+    
     function set_content_type($content_type)
     {
         $this->request->headers['Content-Type'] = $content_type;

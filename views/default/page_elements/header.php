@@ -1,15 +1,6 @@
 <?php
-
-    /**    
-     * The standard HTML header that displays across the site     
-     */
-
-     // Set title
-
-    echo view('page_elements/doctype');
-    
-    $lang = escape(Language::get_current_code());
-        
+    echo view('page_elements/doctype');    
+    $lang = escape(Language::get_current_code());        
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $lang ?>" lang="<?php echo $lang ?>">
 <head>
@@ -19,12 +10,10 @@
 
     <?php
         echo view('page_elements/css', $vars);          
-        if (PageContext::has_rss())
+        if (@$vars['rss_url'])
         {
-            echo '<link rel="alternate" type="application/rss+xml" title="RSS" '.
-                'href="'.escape(url_with_param(Request::full_original_url(), 'view', 'rss')).'" />';
-        }   
-        
+            echo "<link rel='alternate' type='application/rss+xml' title='RSS' href='".escape($vars['rss_url'])."' />";
+        }
         echo "<link rel='canonical' href='".escape(Request::canonical_url())."' />";
     ?>
     <link rel="shortcut icon" href="/_graphics/favicon2.ico" />

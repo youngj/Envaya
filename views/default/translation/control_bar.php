@@ -1,5 +1,5 @@
 <?php
-if (PageContext::is_translatable())
+if (@$vars['show_translate_bar'] && PageContext::has_translation())
 {
 ?>
 <div id='translate_bar'>
@@ -15,7 +15,7 @@ if (PageContext::is_translatable())
         return "<a href='".escape($url)."'>$text</a>";
     }
 
-    if ($transMode == TranslateMode::ManualOnly && !PageContext::is_translatable(TranslateMode::ManualOnly))
+    if ($transMode == TranslateMode::ManualOnly && !PageContext::has_translation(TranslateMode::ManualOnly))
     {
         $transMode = TranslateMode::None;
     }
@@ -30,7 +30,7 @@ if (PageContext::is_translatable())
 
             $links[] = trans_link(TranslateMode::All, __("trans:view_stale_automatic"));
         }
-        else if (PageContext::is_translatable(TranslateMode::All))
+        else if (PageContext::has_translation(TranslateMode::All))
         {
             echo sprintf(__("trans:partial_trans_from_to"), $origLangName, $userLangName);
 
@@ -49,7 +49,7 @@ if (PageContext::is_translatable())
         {
             echo sprintf(__("trans:automatic_trans_error"), $origLangName, $userLangName);
         }
-        else if (PageContext::is_translatable(TranslateMode::ManualOnly))
+        else if (PageContext::has_translation(TranslateMode::ManualOnly))
         {
             echo sprintf(__("trans:partial_automatic_trans_from_to"), $origLangName, $userLangName);
         }
@@ -64,11 +64,11 @@ if (PageContext::is_translatable())
     {
         echo sprintf(__("trans:page_original_in"), $origLangName);
 
-        if (PageContext::is_translatable(TranslateMode::ManualOnly))
+        if (PageContext::has_translation(TranslateMode::ManualOnly))
         {
             $links[] = trans_link(TranslateMode::ManualOnly, sprintf(__("trans:view_in"), $userLangName));
         }
-        else if (PageContext::is_translatable(TranslateMode::All))
+        else if (PageContext::has_translation(TranslateMode::All))
         {
             $links[] = trans_link(TranslateMode::All, sprintf(__("trans:view_automatic_in"), $userLangName));
         }
@@ -91,4 +91,3 @@ if (PageContext::is_translatable())
 <?php
 }
 ?>
-

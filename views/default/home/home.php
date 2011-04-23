@@ -5,7 +5,7 @@
     
     $defaultPhoto = "/_graphics/home/banner_planting5.jpg";
     
-    PageContext::add_header_html('heading_css', "        
+    PageContext::add_header_html("        
 <noscript>
 <style type='text/css'>
 #home_banner_photo { background-image:url($defaultPhoto); }

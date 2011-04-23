@@ -4,6 +4,7 @@ class Action_EditWidget extends Action
 {
     function before()
     {
+        parent::before();
         $this->require_editor();
         $this->require_org();
     }
@@ -100,7 +101,6 @@ class Action_EditWidget extends Action
 
         $cancelUrl = get_input('from') ?: $widget->get_url();
 
-        PageContext::set_translatable(false);
         PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
 
         try

@@ -57,19 +57,6 @@ label {
     font-weight: normal;
 }
 
-#site_menu
-{
-    clear:both;
-    padding-top:5px;
-    text-align:center;
-}
-
-#site_menu a
-{
-    margin:0px 3px;
-    white-space:nowrap;
-}
-
 a.selected
 {
     font-weight:bold;

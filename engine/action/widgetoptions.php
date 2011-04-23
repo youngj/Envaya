@@ -26,7 +26,6 @@ class Action_WidgetOptions extends Action
     function render()
     {
         $this->use_editor_layout();
-        PageContext::set_translatable(false);
                
         $this->page_draw(array(
             'title' => __('widget:options'),

@@ -1,8 +1,3 @@
-<?php
-    echo view('css/default', $vars);    
-    $graphicsDir = "/_graphics/green";    
-?>
-
 .content_container .thin_column
 {
     padding-bottom:1px;
@@ -21,9 +16,26 @@
     padding-bottom:12px;
 }
 
+.language
+{
+    padding-top:5px;
+}
+
 #no_site_menu
 {
     height:8px;
+}
+
+#site_menu
+{
+    padding-top:5px;
+    text-align:center;
+}
+
+#site_menu a
+{
+    margin:0px 3px;
+    white-space:nowrap;
 }
 
 #site_menu
@@ -61,9 +73,4 @@
 #site_menu a:hover span
 {
     display:block;
-}
-
-.language
-{
-    padding-top:5px;
 }

@@ -15,6 +15,7 @@
 abstract class Action
 {    
     protected $controller;
+    static $view_types = array();
     
     function __construct($controller)
     {
@@ -30,6 +31,7 @@ abstract class Action
     function execute()
     {
         $this->before();
+        $this->allow_view_types();
     
         if (Request::is_post())
         {           
@@ -102,13 +104,17 @@ abstract class Action
     }
 
     function before()
-    {    
+    {
     }
 
     function after()
-    {    
+    {
     }
 
+    function allow_view_types()
+    {
+        $this->controller->allow_view_types(static::$view_types);
+    }
     
     function render_captcha($vars)
     {
