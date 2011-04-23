@@ -49,7 +49,10 @@ module Capistrano
           finder_options = {:except => { :no_release => true }}
           find_servers(finder_options).each do |s| 
             # TODO pass the password to rsync (e.g. with expect, or ruby rsync library) to avoid double prompting
-            system(rsync_command_for(s)) 
+            res = system(rsync_command_for(s)) 
+            if !res
+                throw :rsync_failed
+            end
           end
         end
         
