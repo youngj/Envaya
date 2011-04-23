@@ -323,7 +323,7 @@ abstract class Entity extends Model
         if ($guid == 0)
         {
             $this->guid = Database::insert_row('entities', array(
-                'subtype' => static::get_subtype_id()
+                'subtype_id' => static::get_subtype_id()
             ));
             
             if (!$this->guid)

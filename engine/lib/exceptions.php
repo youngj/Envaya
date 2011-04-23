@@ -75,9 +75,9 @@ function php_exception_handler($exception) {
     
     error_log("*** FATAL EXCEPTION *** : " . $exception);
     
-    if (ob_get_level() > 0)
-    {    
-        ob_end_clean(); // Wipe any existing output buffer
+    for ($i = ob_get_level(); $i > 0; $i--)
+    {            
+        ob_end_clean(); // discard all output buffers
     }
     
     if (@$_SERVER['REQUEST_URI'])

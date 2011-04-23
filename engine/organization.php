@@ -13,7 +13,7 @@ class Organization extends User
     static function query()
     {
         $query = User::query();
-        $query->where("subtype=?", static::get_subtype_id());
+        $query->where("subtype_id=?", static::get_subtype_id());
         return $query;
     }
 

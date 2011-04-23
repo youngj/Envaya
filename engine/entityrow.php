@@ -11,7 +11,7 @@ class EntityRow extends Model
     static $primary_key = 'guid';
     
     static $table_attributes = array(
-        'subtype' => 0,
+        'subtype_id' => '',
     );   
     
     function save()

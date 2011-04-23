@@ -10,7 +10,7 @@ class User extends Entity
     static $table_name = 'users';
 
     static $table_attributes = array(        
-        'subtype' => 0,
+        'subtype_id' => '',
         'name' => '',
         'username' => '',
         'password' => '',
@@ -41,7 +41,7 @@ class User extends Entity
         return array_merge(
             parent::get_table_attributes(),
             array(
-                'subtype' => static::get_subtype_id(),
+                'subtype_id' => static::get_subtype_id(),
             )
         );
     }    
@@ -238,7 +238,11 @@ class User extends Entity
 
     static function new_from_row($row)
     {
-        $cls = EntityRegistry::get_subtype_class($row->subtype);
+        $cls = EntityRegistry::get_subtype_class($row->subtype_id);
+        if (!$cls)
+        {   
+            throw new InvalidParameterException("Entity subtype {$row->subtype_id} is not defined");
+        }                
         return new $cls($row);
     }
     

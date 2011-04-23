@@ -10,18 +10,17 @@ class EntityStatus
 class EntityRegistry
 {
     private static $subtype_to_class = array(
-        0 => 'User',
-        1 => 'UploadedFile',
-        3 => 'Widget',
-        4 => 'Organization',
-        7 => 'Widget_Post',
-        12 => 'FeaturedSite',
-        13 => 'EmailTemplate',
-        16 => 'Comment',        
-        17 => 'FeaturedPhoto',
-        19 => 'OrgRelationship',            
-        21 => 'DiscussionMessage',
-        22 => 'DiscussionTopic',
+        'core.user' => 'User',
+        'core.user.org' => 'Organization',        
+        'core.user.org.relation' => 'OrgRelationship',                                    
+        'core.file' => 'UploadedFile',
+        'core.widget' => 'Widget',
+        'core.widget.comment' => 'Comment',
+        'core.email.template' => 'EmailTemplate',
+        'core.featured.site' => 'FeaturedSite',
+        'core.featured.photo' => 'FeaturedPhoto',
+        'core.discussion.message' => 'DiscussionMessage',
+        'core.discussion.topic' => 'DiscussionTopic',
     );
     private static $class_to_subtype = null;
     

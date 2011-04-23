@@ -1,8 +1,8 @@
 CREATE TABLE `entities` (
 	`guid` bigint(20) unsigned  NOT NULL auto_increment,	
-	`subtype` int(11) NULL,	
+	`subtype_id` varchar(63) not null,	
     primary key (`guid`),
-	KEY `subtype` (`subtype`)    
+	KEY `subtype_id` (`subtype_id`)    
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `files` (   
@@ -136,7 +136,7 @@ CREATE TABLE `org_relationships` (
 CREATE TABLE `users` (
     <?php require 'schema/entity_columns.php'; ?>,
   
-  `subtype` int(11) NULL,	
+  `subtype_id` varchar(63) not null,
   `name` text NOT NULL,
   `username` varchar(128) NOT NULL default '',
   `password` varchar(32) NOT NULL default '',
@@ -162,7 +162,7 @@ CREATE TABLE `users` (
   `notifications` int(11) not null default 3,
   UNIQUE KEY (`username`),
   UNIQUE KEY (`email_code`),
-  KEY `subtype` (`subtype`),
+  KEY `subtype_id` (`subtype_id`),
   KEY `email` (`email`(50)),
   KEY `last_action` (`last_action`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
