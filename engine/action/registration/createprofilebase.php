@@ -26,7 +26,7 @@ class Action_Registration_CreateProfileBase extends Action
             throw new ValidationException(__("setup:sector:toomany"));
         }
 
-        $org->language = get_input('content_language');
+        $org->language = Language::get_current_code();
         $org->set_sectors($sectors);
         $org->city = get_input('city');
         $org->region = get_input('region');

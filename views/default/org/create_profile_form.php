@@ -22,23 +22,12 @@
 ?>
 </div>
 
-
-<div class='input'>
-<label><?php echo __('setup:language') ?></label><br />
-<?php echo view('input/language', array(
-    'name' => 'content_language',
-    'value' => $org->language
-)) ?>
-<div class='help'>
-<?php echo __('setup:language:help') ?>
-</div>
-</div>
-
 <div class='input'>
     <label><?php echo __("setup:sector"); ?><br /></label>
     <?php
         echo view("input/checkboxes",array(
             'name' => 'sector',
+            'columns' => 2,
             'options' => OrgSectors::get_options(),
             'value' => $org->get_sectors()));
     ?>

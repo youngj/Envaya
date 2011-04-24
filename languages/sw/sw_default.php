@@ -279,7 +279,7 @@ return array(
     'user:password:fail' => 'Hatuwezi kulibadili neno lako la siri.',
     'user:password:fail:notsame' => 'Maneno mawili ya siri si sawa!',
     'user:password:fail:tooshort' => 'Neno lako la siri ni fupi mno!',
-    'user:language:label' => 'Lugha ya tovuti',
+    'user:language:label' => 'Lugha kuu',
     'user:language:success' => 'Lugha yako imehifadhiwa.',
     'user:language:fail' => 'Mipangilio yako ya lugha haiwezi kuhifadhiwa.',
     'user:username:notfound' => 'Jina la mtumiaji au email %s halionekani katika Envaya. Hakikisha kuwa umeichapisha sahihi na jaribu tena.',   

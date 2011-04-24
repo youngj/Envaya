@@ -10,6 +10,7 @@
     <?php
         echo view("input/checkboxes",array(
             'name' => 'sector',
+            'columns' => 2,
             'options' => OrgSectors::get_options(),
             'value' => $org->get_sectors()));
     ?>

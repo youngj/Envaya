@@ -121,7 +121,10 @@ function addRedirect($opts)
     $redirect = new NotFoundRedirect();
     $redirect->pattern = $pattern;
     $redirect->replacement = $replacement;
-    $redirect->order = $order;
+    if ($order)
+    {
+        $redirect->order = $order;
+    }
     
     try
     {

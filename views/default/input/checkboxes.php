@@ -27,6 +27,8 @@
         $val = strtolower($vars['value']);
     }
 
+    $checkboxes = array();
+    
     foreach($vars['options'] as $option => $label)
     {
         if ($valIsArray)
@@ -44,7 +46,29 @@
 
         $disabled = (@$vars['disabled']) ? ' disabled="yes" ' : '';
         $js = @$vars['js'] ?: '';
-        echo "<label class='optionLabel'><input type=\"checkbox\" $id $disabled {$js} name=\"{$vars['name']}[]\" value=\"".escape($option)."\" {$selected} class=\"$class\" />".escape($label)."</label><br />";
+        $checkboxes[] = "<label class='optionLabel'><input type=\"checkbox\" $id $disabled {$js} name=\"{$vars['name']}[]\" value=\"".escape($option)."\" {$selected} class=\"$class\" />".escape($label)."</label><br />";
+    }
+    
+    $columns = @$vars['columns'] ?: 1;
+    if ($columns <= 1)
+    {
+        echo implode('',$checkboxes);
+    }
+    else
+    {
+        $start = 0;
+        echo "<table>";
+        echo "<tr>";
+        for ($i = 0; $i < $columns; $i++)
+        {
+            $end = (int) (($i + 1) * sizeof($checkboxes) / $columns);
+            echo "<td style='".(($i > 0) ? 'padding-left:15px' : '')."'>";
+            echo implode('', array_slice($checkboxes, $start, $end - $start));
+            echo "</td>";
+            $start = $end;
+        }        
+        echo "</tr>";
+        echo "</table>";
     }
 
 ?>

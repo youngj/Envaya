@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * A model representing a regex-based HTTP redirect. 
+ * 
+ * If a request would normally result in a 404 and a NotFoundRedirect matches the current URL, 
+ * then the user is forwarded to another URL instead of showing a 404 not found page.
+ *
+ * This allows merging organizations, changing usernames, and changing site URL patterns 
+ * without breaking existing URLs (or having to maintain old urls in the code).
+ */
 class NotFoundRedirect extends Model
 {
     static $table_name = 'not_found_redirects';
