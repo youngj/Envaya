@@ -104,7 +104,9 @@ abstract class Controller_User extends Controller
     {
         $org = $this->get_org();
         
-        $widgets = $org->query_menu_widgets()->filter();
+        $widgets = $org->query_menu_widgets()
+            ->columns('guid,container_guid,owner_guid,language,widget_name,subclass,handler_arg,title')
+            ->filter();
         
         foreach ($widgets as $widget)
         {

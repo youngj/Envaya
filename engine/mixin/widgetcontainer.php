@@ -17,7 +17,8 @@ class Mixin_WidgetContainer extends Mixin
     
     public function query_published_widgets()
     {
-        return $this->query_widgets()->where('publish_status = ?', Widget::Published);
+        return $this->query_widgets()
+            ->where('publish_status = ?', Widget::Published);
     }
 
     public function query_menu_widgets()
@@ -37,7 +38,11 @@ class Mixin_WidgetContainer extends Mixin
     public function get_available_widgets($mode)
     {       
         $savedWidgetsMap = array();                
-        foreach ($this->query_widgets()->filter() as $widget)
+        
+        $query = $this->query_widgets()
+            ->columns('guid,container_guid,owner_guid,language,widget_name,subclass,handler_arg,title');
+        
+        foreach ($query->filter() as $widget)
         {
             $savedWidgetsMap[$widget->widget_name] = $widget;
         }

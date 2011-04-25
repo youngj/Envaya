@@ -27,7 +27,7 @@ class EntityMetadata extends Model
 
         if ($name == 'value')
         {
-            return VariantType::decode_value($value, $this->attributes['value_type']);
+            return VariantType::decode_value($value, $this->value_type);
         }
         return $value;
     }
@@ -36,7 +36,7 @@ class EntityMetadata extends Model
     {
         if ($name == 'value')
         {          
-            $value = VariantType::encode_value($value, $this->attributes['value_type']);
+            $value = VariantType::encode_value($value, /* reference */ $this->attributes['value_type']);
         }
         parent::__set($name, $value);
     }         

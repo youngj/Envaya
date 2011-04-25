@@ -1,4 +1,6 @@
 <?php
+if (!Session::get('hide_todo'))
+{        
     $org = $vars['org'];    
    
     $todoItems = array();
@@ -16,31 +18,53 @@
         }
     };    
     
-    $addItem("<a href='{$org->get_widget_by_name('home')->get_edit_url()}'>".__('todo:home')."</a>", true);
+    $widget_names = array('home', 'contact','history','projects','team','news','network');
+    $query = $org->query_widgets()
+        ->where_in('widget_name', $widget_names)
+        ->columns('guid, status, time_created, time_updated, container_guid, owner_guid,
+                    widget_name, subclass, title, length(content) as content_len');
+    
+    $widgets = $query->filter();
+    
+    $widgets_map = array();
+    foreach ($widgets as $widget)
+    {
+        $widgets_map[$widget->widget_name] = $widget;
+    }
+    foreach ($widget_names as $widget_name)
+    {    
+        if (!isset($widgets_map[$widget_name]))
+        {
+            $widgets_map[$widget_name] = $org->new_widget_by_name($widget_name);
+        }
+    }
         
-    $contact = $org->get_widget_by_name('contact');       
+    $home = $widgets_map['home'];
+    $addItem("<a href='{$home->get_edit_url()}'>".__('todo:home')."</a>", true);
+    
+    $contact = $widgets_map['contact'];
     $addItem("<a href='{$contact->get_edit_url()}'>".__('todo:contact')."</a>", 
             $contact->time_updated > $contact->time_created && sizeof($org->get_contact_info()) >= 2);
 
-    $history = $org->get_widget_by_name('history');           
+    $history = $widgets_map['history'];
     $addItem("<a href='{$history->get_edit_url()}'>".__('todo:history')."</a>",
-        $history->is_active() && $history->content
+        $history->is_active() && $history->content_len > 0
     );            
 
-    $projects = $org->get_widget_by_name('projects');           
+    $projects = $widgets_map['projects'];
     $addItem("<a href='{$projects->get_edit_url()}'>".__('todo:projects')."</a>",
-        $projects->is_active() && $projects->content
+        $projects->is_active() && $projects->content_len > 0
     );            
     
-    $team = $org->get_widget_by_name('team');           
+    $team = $widgets_map['team'];
     $addItem("<a href='{$team->get_edit_url()}'>".__('todo:team')."</a>",
-        $team->is_active() && $team->content
+        $team->is_active() && $team->content_len > 0
     );            
     
-    $news = $org->get_widget_by_name('news');;
-    $numLatestNews = $news->query_widgets()->where('time_created > ?', time() - 86400 * 31)->count();
+    $news = $widgets_map['news'];
+    $hasRecentNews = $news->query_widgets()->where('time_created > ?', time() - 86400 * 31)->exists();
     $addItem("<a href='{$news->get_edit_url()}'>".__('todo:news')."</a>",
-        $numLatestNews > 0
+        $hasRecentNews > 0
     );            
     
     $numImages = $org->query_files()->where("size='small'")->count();
@@ -54,14 +78,14 @@
         ($org->has_custom_header() || $org->has_custom_icon())    
     );    
 
-    $network = $org->get_widget_by_class('Network');
+    $network = $widgets_map['network'];
     $addItem("<a href='{$network->get_edit_url()}'>".__('todo:network')."</a>",
         $network->is_active()
     );
     
 ?>
 <?php 
-if (sizeof($todoItems) && !Session::get('hide_todo'))
+if (sizeof($todoItems))
 {
 ?>
 <script type='text/javascript'>
@@ -120,5 +144,6 @@ foreach ($doneItems as $doneItem)
 </div>
 </div>
 <?php 
+}
 }
 ?>

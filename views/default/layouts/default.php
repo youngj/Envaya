@@ -3,6 +3,7 @@
 ?>
 <div class='thin_column'>
 <div id='top_menu_container'>
+
 <?php echo view('page_elements/site_menu', $vars); ?>
 </div>
 <div id='content'>

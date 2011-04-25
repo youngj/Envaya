@@ -339,7 +339,8 @@ class Controller_Org extends Controller_Simple
         {
             $query->with_sector($sector);                                        
         }
-        $query->where_visible_to_user();
+        $query->where_visible_to_user();        
+        $query->columns('guid,subtype_id,username,name,latitude,longitude');
 
         $orgs = $query->filter();
 

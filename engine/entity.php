@@ -37,7 +37,7 @@ abstract class Entity extends Model
     function __construct($row = null)
     {
         parent::__construct($row);
-
+        
         if ($row)
         {
             $this->cache_for_current_request();
@@ -246,7 +246,7 @@ abstract class Entity extends Model
 
     public function get_language()
     {
-        $language = @$this->attributes['language'];
+        $language = $this->language;
         if ($language)
         {
             return $language;
@@ -536,7 +536,7 @@ abstract class Entity extends Model
     }
     
     static function get_by_guid($guid, $show_disabled = false)
-    {
+    {    
         $guid = (int)$guid;
         
         if (!$guid)
@@ -545,12 +545,14 @@ abstract class Entity extends Model
         }
     
         $entity = Entity::get_from_cache($guid);
+                
         if (!$entity)
         {
+                
             $entity = static::query()
                 ->show_disabled($show_disabled)
                 ->guid($guid)
-                ->get();        
+                ->get();                     
         
             if (!$entity)
             {

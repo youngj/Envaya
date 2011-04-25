@@ -243,6 +243,8 @@ class Query_Select
     
     function get_filter_sql()
     {
+        $this->_finalize_query();
+        
         $query = $this->get_sql($this->columns);
     
         if ($this->order_by)
@@ -259,7 +261,7 @@ class Query_Select
     }
     
     function filter()
-    {            
+    {                
         $query = $this->get_filter_sql();
     
         if ($this->is_empty)

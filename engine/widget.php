@@ -48,7 +48,7 @@ class Widget extends Entity
         'location'      => array('menu_order' => 130, 'home_section' => true, 'subclass' => 'Location'),        
         'post'          => array('subclass' => 'Post'),        
     );
-    
+
     static function get_subtype_id()
     {
         // all subclasses share same subtype_id

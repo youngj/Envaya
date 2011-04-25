@@ -38,7 +38,7 @@ class Query_SelectEntity extends Query_Select
                 $this->is_empty = true;
             }
             else
-            {
+            {            
                 $classname = EntityRegistry::get_subtype_class($row->subtype_id);                                
                 if (!$classname)
                 {   

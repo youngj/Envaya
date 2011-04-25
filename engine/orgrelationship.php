@@ -84,7 +84,7 @@ class OrgRelationship extends Entity
             'not_shown' => 'network:org_not_shown',
         )
     );    
-    
+        
     static function is_valid_type($type)
     {
         return isset(static::$msg_ids[$type]);
@@ -126,7 +126,7 @@ class OrgRelationship extends Entity
     }
     
     function get_subject_name()
-    {
+    {    
         $org = $this->get_subject_organization();
         return $org ? $org->get_title() : ($this->subject_name ?: $this->subject_email ?: $this->subject_website);
     }

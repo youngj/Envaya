@@ -16,21 +16,26 @@ class Model extends Mixable
     
     /**
      * The main attributes of a model.
-     * Blank entries for all database fields should be created by the constructor.     
-     * For Entity subclasses, any field not appearing in this will be viewed as metadata
      */    
     protected $attributes = array();
+    
+    protected $attribute_defaults;
+       
     public $dirty = false;
 
     function __construct($row = null)
     {
-        $this->initialize_attributes();
         if ($row)
         {
             $this->init_from_row($row);        
         }
+        else
+        {
+            $this->attributes = static::get_table_attributes();
+            $this->attributes[static::$primary_key] = 0;
+        }
     }
-        
+    
     static function get_table_attributes()
     {
         $attributes = static::$table_attributes;
@@ -53,13 +58,50 @@ class Model extends Mixable
 
     public function unserialize($data)
     {
-        $this->initialize_attributes();
         $this->attributes = unserialize($data);
     }
-    
+        
     function __get($name)
     {
-        return @$this->attributes[$name];
+        $val = @$this->attributes[$name];    
+        if ($val !== null || array_key_exists($name, $this->attributes))
+        {
+            return $val;
+        }
+        
+        /* 
+         * Store default values of attributes separately (so that
+         * when save() is called we only save the attributes that are
+         * already loaded from the database).
+         */
+        if (!isset($this->attribute_defaults))
+        {
+            $this->attribute_defaults = static::get_table_attributes();
+        }        
+        
+        /* 
+         * lazy-load attribute from database if it is defined as an attribute
+         * and not loaded already (e.g. if loaded by a query with a subset of columns)
+         */
+        if (array_key_exists($name, $this->attribute_defaults))
+        {
+            $pk = static::$primary_key;    
+            $pk_val = $this->$pk;
+            
+            if ($pk_val)
+            {
+                $table = static::$table_name;
+                $row = Database::get_row("select `$name` as val from `$table` where `$pk` = ?", array($pk_val));
+                if ($row)
+                {
+                    $val = $row->val;
+                    $this->attributes[$name] = $val;
+                    return $val;
+                }
+            }
+        }
+        
+        return @$this->attribute_defaults[$name];
     }
 
     function __set($name, $value)
@@ -68,16 +110,6 @@ class Model extends Mixable
         $this->dirty = true;
     }    
     
-    protected function initialize_attributes()
-    {
-        $this->attributes[static::$primary_key] = 0;
-        
-        foreach (static::get_table_attributes() as $name => $default)
-        {
-            $this->attributes[$name] = $default;
-        }
-    }
-
     static function query()
     {       
         return new Query_Select(static::$table_name, get_called_class());
@@ -102,7 +134,10 @@ class Model extends Mixable
         $tableAttributes = array();
         foreach (static::get_table_attributes() as $name => $default)
         {
-            $tableAttributes[$name] = $this->attributes[$name];
+            if (array_key_exists($name, $this->attributes))
+            {            
+                $tableAttributes[$name] = $this->attributes[$name];
+            }
         }
         return $tableAttributes;
     }
@@ -110,15 +145,20 @@ class Model extends Mixable
     public function save()
     {
         $values = $this->get_table_attribute_values();
-    
-        Database::save_row(static::$table_name, static::$primary_key, $this->attributes[static::$primary_key], $values);
+        $pk = static::$primary_key;    
+        Database::save_row(static::$table_name, $pk, 
+            /* reference */ $this->attributes[$pk], $values);
         $this->dirty = false;
     }    
     
     public function delete()
     {
         $this->dirty = false;
-        return Database::delete("DELETE from ".static::$table_name." where ".static::$primary_key."=?", array($this->attributes[static::$primary_key]));
+        $table = static::$table_name;
+        $pk = static::$primary_key;    
+        return Database::delete("DELETE from `{$table}` WHERE `{$pk}`=?", 
+            array($this->$pk)
+        );
     }
     
     function get_default_view_name()
