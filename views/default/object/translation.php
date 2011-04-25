@@ -8,7 +8,7 @@ $prop = $trans->property;
 
 $escUrl = urlencode($_SERVER['REQUEST_URI']);
 
-if ($entity && $entity->can_edit() && $entity->get($prop))
+if ($entity && $entity->can_edit() && $entity->$prop)
 {
     echo view("translation/translate",
         array(

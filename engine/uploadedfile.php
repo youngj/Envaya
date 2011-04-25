@@ -62,8 +62,8 @@ class UploadedFile extends Entity
         
         if ($this->storage == 'scribd')
         {
-            $props['docid'] = $this->docid;
-            $props['accesskey'] = $this->accesskey;
+            $props['docid'] = $this->get_metadata('docid');
+            $props['accesskey'] = $this->get_metadata('accesskey');
         }
         
         return $props;
@@ -74,7 +74,10 @@ class UploadedFile extends Entity
         switch ($this->storage)
         {
             case 'scribd':
-                return array('docid' => $this->docid, 'accesskey' => $this->accesskey);
+                return array(
+                    'docid' => $this->get_metadata('docid'), 
+                    'accesskey' => $this->get_metadata('accesskey')
+                );
             default:
                 if ($this->group_name)
                 {
@@ -278,13 +281,13 @@ class UploadedFile extends Entity
         {   
             throw new IOException(__('upload:storage_error'));
         }           
-        $file->docid = $res['doc_id'];
-        $file->accesskey = $res['access_key'];
+        $file->set_metadata('docid', $res['doc_id']);
+        $file->set_metadata('accesskey', $res['access_key']);
         
         $file->save();
         
         $scribd->changeSettings(
-            $file->docid,
+            $res['docid'],
             $file->filename,
             Session::get_loggedin_user()->get_url()
         );

@@ -244,28 +244,28 @@ class User extends Entity
     
     function reset_login_failure_count()
     {
-        $fails = (int)$this->login_failures;
+        $fails = (int)$this->get_metadata('login_failures');
 
         if ($fails) 
         {
             for ($n=1; $n <= $fails; $n++)
-                $this->set("login_failure_$n", null);
+                $this->set_metadata("login_failure_$n", null);
 
-            $this->login_failures = null;
+            $this->set_metadata('login_failures', null);
         }
     }
     
     function check_rate_limit_exceeded()
     {
         $limit = 50;
-        $fails = (int)$this->login_failures;
+        $fails = (int)$this->get_metadata('login_failures');
         if ($fails >= $limit)
         {
             $cnt = 0;
             $time = time();
             for ($n=$fails; $n>0; $n--)
             {
-                $f = $this->get("login_failure_$n");
+                $f = $this->get_metadata("login_failure_$n");
                 if ($f > $time - (60*5))
                     $cnt++;
 
@@ -278,11 +278,11 @@ class User extends Entity
     
     function log_login_failure()
     {
-        $fails = (int)$this->login_failures;
+        $fails = (int)$this->get_metadata('login_failures');
         $fails++;
 
-        $this->login_failures = $fails;
-        $this->set("login_failure_$fails", time());
+        $this->set_metadata('login_failures', $fails);
+        $this->set_metadata("login_failure_$fails", time());
     }        
     
     function has_password($password)

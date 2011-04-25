@@ -27,7 +27,7 @@ class Controller_Tr extends Controller_Simple
 
             $entity = Entity::get_by_guid($guid);
 
-            if ($entity && $entity->can_edit() && $entity->get($prop))
+            if ($entity && $entity->can_edit() && $entity->$prop)
             {
                 $content[] = view("translation/translate",
                     array(

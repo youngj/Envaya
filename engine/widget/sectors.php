@@ -45,7 +45,7 @@ class Widget_Sectors extends Widget
             $org->set_sectors($sectors);
         }
         
-        $org->sector_other = get_input('sector_other');
+        $org->set_metadata('sector_other', get_input('sector_other'));
         $org->save();
         
         $this->save();

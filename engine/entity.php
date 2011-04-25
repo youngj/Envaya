@@ -149,56 +149,6 @@ abstract class Entity extends Model
         }
     }
 
-    /**
-     * Return the value of a given key.
-     * If $name is a key field (as defined in $this->attributes) that value is returned, otherwise it will
-     * then look to see if the value is in this object's metadata.
-     *
-     * Q: Why are we not using __get overload here?
-     * A: Because overload operators cause problems during subclassing, so we put the code here and
-     * create overloads in subclasses.
-     *
-     * @param string $name
-     * @return mixed Returns the value of a given value, or null.
-     */
-    public function get($name)
-    {
-        if (array_key_exists($name, $this->attributes))
-        {
-            return $this->attributes[$name];
-        }
-        
-        return $this->get_metadata($name);
-    }
-
-    /**
-     * Set the value of a given key, replacing it if necessary.
-     * If $name is a base attribute (as defined in $this->attributes) that value is set, otherwise it will
-     * set the appropriate item of metadata.
-     *
-     * Note: It is important that your class populates $this->attributes with keys for all base attributes, anything
-     * not in there gets set as METADATA.
-     *
-     * Q: Why are we not using __set overload here?
-     * A: Because overload operators cause problems during subclassing, so we put the code here and
-     * create overloads in subclasses.
-     *
-     * @param string $name
-     * @param mixed $value
-     */
-    public function set($name, $value)
-    {
-        if (array_key_exists($name, $this->attributes))
-        {
-            $this->attributes[$name] = $value;
-        }
-        else
-        {
-            $this->set_metadata($name, $value);
-        }
-        $this->dirty = true;
-    }
-
     public function get_metadata($name)
     {
         $md = $this->get_metadata_object($name);
@@ -286,7 +236,7 @@ abstract class Entity extends Model
      */
     public function get_owner_entity() 
     { 
-        return User::get_by_guid($this->get('owner_guid')); 
+        return User::get_by_guid($this->owner_guid); 
     }
     
     public function get_title()

@@ -33,14 +33,14 @@ class Widget_Contact extends Widget
         }
 
         $org->email = $email;
-        $this->public_email = sizeof(get_input_array('public_email')) ? 'yes' : 'no';
+        $this->set_metadata('public_email', sizeof(get_input_array('public_email')) ? 'yes' : 'no');
 
         $org->set_phone_number(get_input('phone_number'));
-        $this->public_phone = sizeof(get_input_array('public_phone')) ? 'yes' : 'no';
-        $org->contact_name = get_input('contact_name');
-        $org->contact_title = get_input('contact_title');
-        $org->street_address = get_input('street_address');
-        $org->mailing_address = get_input('mailing_address');
+        $this->set_metadata('public_phone', sizeof(get_input_array('public_phone')) ? 'yes' : 'no');
+        $org->set_metadata('contact_name', get_input('contact_name'));
+        $org->set_metadata('contact_title', get_input('contact_title'));
+        $org->set_metadata('street_address', get_input('street_address'));
+        $org->set_metadata('mailing_address', get_input('mailing_address'));
         $org->save();
         $this->save();
     }

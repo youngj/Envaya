@@ -8,7 +8,9 @@ class Action_PasswordReset extends Action
         $conf_code = get_input('c');
         $user = User::get_by_guid($user_guid);
 
-        if ($user && $user->passwd_conf_code && $user->passwd_conf_code == $conf_code)
+        $correct_code = $user->get_metadata('passwd_conf_code');
+        
+        if ($user && $correct_code && $correct_code == $conf_code)
         {
             $password = get_input('password');
             $password2 = get_input('password2');
@@ -19,7 +21,7 @@ class Action_PasswordReset extends Action
                 if ($password == $password2)
                 {
                     $user->set_password($password);
-                    $user->passwd_conf_code = null;
+                    $user->set_metadata('passwd_conf_code', null);
                     $user->save();
                     SessionMessages::add(__('user:password:success'));
                     login($user);
@@ -48,7 +50,8 @@ class Action_PasswordReset extends Action
 
         $user = User::get_by_guid($user_guid);
 
-        if ($user && $user->passwd_conf_code && $user->passwd_conf_code == $conf_code)
+        $correct_code = $user->get_metadata('passwd_conf_code');
+        if ($user && $correct_code && $correct_code == $conf_code)
         {
             $this->page_draw(array(
                 'title' => __("user:password:choose_new"),

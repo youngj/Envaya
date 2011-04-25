@@ -16,7 +16,7 @@
     ?>
     <?php echo __('setup:sector:other_specify') ?> <?php echo view('input/text', array(
     'name' => 'sector_other',
-    'value' => $org->sector_other,
+    'value' => $org->get_metadata('sector_other'),
     'js' => 'style="width:200px"'
 )) ?>
 </div>

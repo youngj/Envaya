@@ -57,24 +57,16 @@ class Model extends Mixable
         $this->attributes = unserialize($data);
     }
     
-    function get($name)
+    function __get($name)
     {
         return @$this->attributes[$name];
     }
 
-    function set($name, $value)
+    function __set($name, $value)
     {
         $this->attributes[$name] = $value;
         $this->dirty = true;
-    }
-    
-    function __get($name) {
-        return $this->get($name);
-    }
-
-    function __set($name, $value) {
-        $this->set($name, $value);
-    }       
+    }    
     
     protected function initialize_attributes()
     {

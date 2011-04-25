@@ -36,7 +36,7 @@ class Widget_Location extends Widget
 
         $org->save();
 
-        $this->zoom = get_input('map_zoom');
+        $this->set_metadata('zoom', get_input('map_zoom'));
         $this->save();    
     }
 }

@@ -116,19 +116,12 @@ class Organization extends User
     
     public function get_contact_info()
     {
-        $res = array();
-                
-        $fields = array('mailing_address','street_address','phone_number','email');
-        
-        foreach ($fields as $field)
-        {
-            $val = $this->get($field);
-            if ($val)
-            {
-                $res[$field] = $val;
-            }
-        }
-        return $res;
+        return array(
+            'mailing_address' => $this->get_metadata('mailing_address'),
+            'street_address' => $this->get_metadata('street_address'),
+            'phone_number' => $this->phone_number,
+            'email' => $this->email,
+        );
     }
 
     public function get_country_text()
@@ -191,9 +184,9 @@ class Organization extends User
 
     protected $attributes_dirty = null;
     
-    public function set($name, $value)
+    function __set($name, $value)
     {
-        parent::set($name,$value);
+        parent::__set($name,$value);
         
         if (!$this->attributes_dirty)
         {

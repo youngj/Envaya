@@ -30,7 +30,7 @@ class Action_Registration_CreateProfileBase extends Action
         $org->set_sectors($sectors);
         $org->city = get_input('city');
         $org->region = get_input('region');
-        $org->sector_other = get_input('sector_other');
+        $org->set_metadata('sector_other', get_input('sector_other'));
 
         $org->theme = get_input('theme');
 

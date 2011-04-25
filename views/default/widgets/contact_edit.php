@@ -15,7 +15,7 @@ ob_start();
 ));
 
 echo view("input/checkboxes", array('name' => 'public_email',
-    'value' => $widget->public_email ?: 'yes',
+    'value' => $widget->get_metadata('public_email') ?: 'yes',
     'options' => array('yes' => __('show_website'))
 ));
 
@@ -32,7 +32,7 @@ echo view("input/checkboxes", array('name' => 'public_email',
 ));
 
 echo view("input/checkboxes", array('name' => 'public_phone',
-    'value' => $widget->public_phone ?: 'yes',
+    'value' => $widget->get_metadata('public_phone') ?: 'yes',
     'options' => array('yes' => __('show_website'))
 ));
 
@@ -45,7 +45,7 @@ echo view("input/checkboxes", array('name' => 'public_phone',
     <div class='help'><?php echo __('widget:contact:street_address:help') ?></div>
 <?php echo view("input/longtext", array(
     'name' => 'street_address',
-    'value' => $org->street_address,
+    'value' => $org->get_metadata('street_address'),
     'trackDirty' => true,
     'js' => 'style="height:50px"'
 ));
@@ -57,7 +57,7 @@ echo view("input/checkboxes", array('name' => 'public_phone',
 <?php echo view("input/longtext", array(
     'name' => 'mailing_address',
     'trackDirty' => true,
-    'value' => $org->mailing_address,
+    'value' => $org->get_metadata('mailing_address'),
     'js' => 'style="height:50px"'
 ));
 ?>
@@ -65,7 +65,7 @@ echo view("input/checkboxes", array('name' => 'public_phone',
 <div class='input'>
     <label><?php echo __('widget:contact:name:edit') ?></label><br />
 <?php echo view("input/text", array('name' => 'contact_name',
-    'value' => $org->contact_name
+    'value' => $org->get_metadata('contact_name')
 ));
 ?>
 </div>
@@ -73,7 +73,7 @@ echo view("input/checkboxes", array('name' => 'public_phone',
 <div class='input'>
     <label><?php echo __('widget:contact:title:edit') ?></label><br />
 <?php echo view("input/text", array('name' => 'contact_title',
-    'value' => $org->contact_title
+    'value' => $org->get_metadata('contact_title')
 ));
 ?>
 </div>

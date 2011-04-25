@@ -28,7 +28,7 @@ ob_start();
     $lat = $org->get_latitude() ?: 0.0;
     $long = $org->get_longitude() ?: 0.0;
 
-    $zoom = $widget->zoom ?: (($lat || $long) ? 11 : 1);
+    $zoom = $widget->get_metadata('zoom') ?: (($lat || $long) ? 11 : 1);
 
     echo view("output/map", array(
         'lat' => $lat,

@@ -21,9 +21,9 @@ class EntityMetadata extends Model
     
     public $dirty = false;
 
-    function get($name)
+    function __get($name)
     {
-        $value = parent::get($name);
+        $value = parent::__get($name);
 
         if ($name == 'value')
         {
@@ -32,12 +32,12 @@ class EntityMetadata extends Model
         return $value;
     }
 
-    function set($name, $value)
+    function __set($name, $value)
     {
         if ($name == 'value')
         {          
             $value = VariantType::encode_value($value, $this->attributes['value_type']);
         }
-        parent::set($name, $value);
+        parent::__set($name, $value);
     }         
 }

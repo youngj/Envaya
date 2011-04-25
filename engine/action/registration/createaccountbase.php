@@ -88,9 +88,6 @@ abstract class Action_Registration_CreateAccountBase extends Action
         $org->theme = "green";
         $org->setup_state = SetupState::CreatedAccount;
 
-        //$org->registration_number = $prevInfo['registration_number'];
-        //$org->local = $prevInfo['local'];
-
         $org->set_lat_long(-6.140555,35.551758);
 
         $org->save();
@@ -109,7 +106,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
         $contactWidget = $org->get_widget_by_class('Contact');
         if ($email)
         {
-            $contactWidget->public_email = "yes";
+            $contactWidget->set_metadata('public_email', "yes");
         }
         $contactWidget->save();
 

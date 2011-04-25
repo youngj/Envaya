@@ -6,7 +6,7 @@ $isHTML = $vars['isHTML'];
 
 $org = $entity->get_root_container_entity();
 
-$text = $entity->get($property);
+$text = $entity->$property;
 
 $height = 300;
 

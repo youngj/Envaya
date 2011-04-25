@@ -18,9 +18,9 @@
 
 	echo implode(', ', $sectorNames);
 
-	if (in_array(OrgSectors::Other, $sectors) && $org->sector_other)
+	if (in_array(OrgSectors::Other, $sectors) && $org->get_metadata('sector_other'))
 	{
-		echo " (".escape($org->sector_other).")";
+		echo " (".escape($org->get_metadata('sector_other')).")";
 	}       
 ?>
 </div>

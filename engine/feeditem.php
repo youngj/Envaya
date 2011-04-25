@@ -30,9 +30,9 @@ class FeedItem extends Model
         'time_posted' => 0,        
     );   
     
-    function get($name)
+    function __get($name)
     {
-        $res = parent::get($name);
+        $res = parent::__get($name);
 
         if ($name == 'args')
         {
@@ -63,13 +63,13 @@ class FeedItem extends Model
         return $user->admin || $user->guid == $this->subject_guid || $user->guid == $this->user_guid;
     }
 
-    function set($name, $value)
+    function __set($name, $value)
     {
         if ($name == 'args')
         {
             $value = json_encode($value);
         }
-        parent::set($name, $value);
+        parent::__set($name, $value);
     }    
     
     public function get_subject_entity()

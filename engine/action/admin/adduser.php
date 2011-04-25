@@ -29,8 +29,8 @@ class Action_Admin_AddUser extends Action
             $new_user->admin = true;
         }
 
-        $new_user->admin_created = true;
-        $new_user->created_by_guid = Session::get_loggedin_userid();
+        $new_user->set_metadata('admin_created', true);
+        $new_user->set_metadata('created_by_guid', Session::get_loggedin_userid());
         $new_user->save();
 
         OutgoingMail::create(
