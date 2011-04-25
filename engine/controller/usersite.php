@@ -11,11 +11,24 @@
  */
 class Controller_UserSite extends Controller_User
 {
+    static $routes = array(
+        array(
+            'regex' => '$',
+            'defaults' => array('widget_name' => ''), 
+        ),    
+        array(
+            'regex' => '/(?P<controller>post|page|topic|widget)\b',
+        ),        
+        array(
+            'regex' => '/(?P<widget_name>[\w\-]*)(/(?P<action>\w+))?',
+        )
+    );
+
     function action_index()
     {
-        $org = $this->org;
+        $org = $this->get_org();
     
-        $widgetName = $this->request->param('widget_name');
+        $widgetName = $this->param('widget_name');
         
         if (!$widgetName)
         {
@@ -39,9 +52,9 @@ class Controller_UserSite extends Controller_User
             {
                 return $this->$methodName();
             }
-            else if ($this->org)
+            else if ($org)
             {
-                $widget = $this->org->get_widget_by_name($widgetName);                        
+                $widget = $org->get_widget_by_name($widgetName);                        
                 return $this->index_widget($widget);
             }                   
         }
@@ -54,8 +67,8 @@ class Controller_UserSite extends Controller_User
         // at /<username>/<widget_name>/edit         
         // by forwarding to new URLs at /<username>/page/<widget_name>/edit         
      
-        $widgetName = $this->request->param('widget_name');
-        $widget = $this->org->get_widget_by_name($widgetName);
+        $widgetName = $this->param('widget_name');
+        $widget = $this->get_org()->get_widget_by_name($widgetName);
         if ($widget->is_active())
         {
             forward($widget->get_edit_url());
@@ -68,7 +81,7 @@ class Controller_UserSite extends Controller_User
     
     function index_add_page()
     {
-        $action = new Action_AddWidget($this, $this->org);
+        $action = new Action_AddWidget($this, $this->get_org());
         $action->execute();
     }
         
@@ -85,7 +98,7 @@ class Controller_UserSite extends Controller_User
         
         $this->page_draw(array(
             'title' => __("help:title"),
-            'content' => view("org/help", array('org' => $this->org)),           
+            'content' => view("org/help", array('org' => $this->get_org())),           
         ));        
     }
 
@@ -94,7 +107,7 @@ class Controller_UserSite extends Controller_User
         $this->require_editor();        
         $this->allow_view_types(null);        
 
-        $user = $this->user;
+        $user = $this->get_user();
         if ($user->guid == Session::get_loggedin_userid())
         {
             $title = __('dashboard:title');
@@ -104,7 +117,7 @@ class Controller_UserSite extends Controller_User
             $title = sprintf(__("dashboard:other_user"), $user->name);
         }
                 
-        $org = $this->org;
+        $org = $this->get_org();
         if ($org)
         {            
             $content = view("org/dashboard", array('org' => $org));
@@ -160,7 +173,7 @@ class Controller_UserSite extends Controller_User
         
         $this->page_draw(array(
             'title' => __('domains:edit'),
-            'content' => view('org/domains', array('org' => $this->org)),
+            'content' => view('org/domains', array('org' => $this->get_org())),
         ));
     }
     
@@ -181,7 +194,7 @@ class Controller_UserSite extends Controller_User
         
         $org_domain_name = new OrgDomainName();
         $org_domain_name->domain_name = $domain_name;
-        $org_domain_name->guid = $this->org->guid;
+        $org_domain_name->guid = $this->get_org()->guid;
         $org_domain_name->save();
         SessionMessages::add(__('domains:added'));
         redirect_back();

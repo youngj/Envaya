@@ -8,6 +8,10 @@
  */
 class Controller_Home extends Controller
 {
+    static $routes = array(
+        array()
+    );      
+
     function action_index()
     {       
         $this->prefer_http();    

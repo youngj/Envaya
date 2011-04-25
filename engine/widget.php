@@ -20,6 +20,7 @@ class Widget extends Entity
     static $table_attributes = array(
         'widget_name' => 0,
         'publish_status' => 1,
+        'time_published' => null,
         'menu_order' => 0,
         'in_menu' => 1,
         'subclass' => '',
@@ -205,7 +206,7 @@ class Widget extends Entity
             }
             else
             {
-                return "{$org->get_url()}/widget/{$this->container_guid}_{$this->widget_name}";
+                return "{$org->get_url()}/widget/{$this->container_guid}.{$this->widget_name}";
             }
         }
     }    
@@ -260,4 +261,46 @@ class Widget extends Entity
     {
         return array();
     }    
+    
+    function save()
+    {
+        if ($this->publish_status == Widget::Published && !$this->time_published)
+        {
+            $this->time_published = time();
+        }    
+        parent::save();
+    }
+    
+    public function get_date_text()
+    {
+        return friendly_time($this->time_published);
+    }    
+    
+    private $url_slug = null;
+    
+    public function get_url_slug()
+    {
+        if (!$this->url_slug)
+        {
+            $guid = $this->guid;
+            $title = $this->title;            
+            
+            $this->url_slug = $guid;
+
+            if ($title && $guid)
+            {
+                // adapted from https://gist.github.com/853906#file_gistfile2.php
+                $title = strtolower(substr($title, 0, 64));
+                $title = trim(preg_replace("/[^a-z0-9\s-]/", "", $title));
+                $title = preg_replace("/[\s-]+/", "-", $title);
+                
+                if ($title)
+                {
+                    $this->url_slug = "{$title},{$guid}";
+                }
+            }
+        }
+        return $this->url_slug;
+        
+    }
 }

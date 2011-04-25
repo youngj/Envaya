@@ -5,7 +5,7 @@
  *
  * URL: /admin/<action>
  */
-class Controller_Admin extends Controller
+class Controller_Admin extends Controller_Simple
 {
     function before()
     {

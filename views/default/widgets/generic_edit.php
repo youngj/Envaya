@@ -12,6 +12,10 @@
         }
         else if ($widget->is_page())
         {
+            echo view('widgets/edit_page_title', array('value' => $widget->title));
+        }
+        else
+        {
             echo view('widgets/edit_title', array('value' => $widget->title));
         }
     }

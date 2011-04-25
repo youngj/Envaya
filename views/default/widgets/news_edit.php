@@ -12,7 +12,7 @@
 
     $count = $widget->query_widgets()->count();
     $updates = $widget->query_widgets()
-        ->order_by('time_created desc, guid desc')
+        ->order_by('guid desc')
         ->limit($limit, $offset)
         ->filter();
 
@@ -37,6 +37,10 @@
             ));
             
             echo "</div>";
+            if ($update->title)
+            {
+                echo "<strong>".escape($update->title)."</strong><br />";
+            }
             if ($update->thumbnail_url)
             {
                 echo "<img src='".escape($update->thumbnail_url)."' style='display:block;padding:2px' />";

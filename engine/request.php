@@ -1,7 +1,6 @@
 <?php
 /**
- * Request and response wrapper. Uses the [Route] class to determine what
- * [Controller] to send the request to.
+ * Request and response wrapper. 
  *
  * @package    Kohana
  * @category   Base
@@ -106,11 +105,6 @@ class Request {
      */
     public static $instance;
 
-    /**
-     * @var  object  currently executing request instance
-     */
-    public static $current;
-
     private static $custom_domain_username;
 
     /**
@@ -199,28 +193,13 @@ class Request {
             }
 
             // Create the instance singleton
-            Request::$instance = Request::$current = new Request($uri);
+            Request::$instance = new Request($uri);
 
             // Add the default Content-Type header
             //Request::$instance->headers['Content-Type'] = 'text/html; charset='.Kohana::$charset;
         }
 
         return Request::$instance;
-    }
-
-    /**
-     * Return the currently executing request. This is changed to the current
-     * request when [Request::execute] is called and restored when the request
-     * is completed.
-     *
-     *     $request = Request::current();
-     *
-     * @return  Request
-     * @since   3.0.5
-     */
-    public static function current()
-    {
-        return Request::$current;
     }
 
     /**
@@ -244,11 +223,6 @@ class Request {
     }
     
     /**
-     * @var  object  route matched for this request
-     */
-    public $route;
-
-    /**
      * @var  integer  HTTP response code: 200, 404, 500, etc
      */
     public $status = 200;
@@ -262,29 +236,11 @@ class Request {
      * @var  array  headers to send with the response body
      */
     public $headers = array();
-
-    /**
-     * @var  string  controller directory
-     */
-    public $directory = '';
-
-    /**
-     * @var  string  controller to be executed
-     */
-    public $controller;
-
-    /**
-     * @var  string  action to be executed in the controller
-     */
-    public $action;
-
+    
     /**
      * @var  string  the URI of the request
      */
     public $uri;
-
-    // Parameters extracted from the route
-    protected $_params;
 
     /**
      * Creates a new request object for the given URI. New requests should be
@@ -300,54 +256,7 @@ class Request {
      */
     public function __construct($uri)
     {
-        // Remove trailing slashes from the URI
-        $uri = trim($uri, '/');
-
-        // Load routes
-        $routes = Route::all();
-
-        foreach ($routes as $name => $route)
-        {
-            if ($params = $route->matches($uri))
-            {
-                // Store the URI
-                $this->uri = $uri;
-
-                // Store the matching route
-                $this->route = $route;
-
-                if (isset($params['directory']))
-                {
-                    // Controllers are in a sub-directory
-                    $this->directory = $params['directory'];
-                }
-
-                // Store the controller
-                $this->controller = $params['controller'];
-
-                if (isset($params['action']))
-                {
-                    // Store the action
-                    $this->action = $params['action'];
-                }
-                else
-                {
-                    // Use the default action
-                    $this->action = Route::$default_action;
-                }
-
-                // These are accessible as public vars and can be overloaded
-                unset($params['controller'], $params['action'], $params['directory']);
-
-                // Params cannot be changed once matched
-                $this->_params = $params;
-
-                return;
-            }
-        }
-
-        // No matching route for this URI
-        $this->status = 404;
+        $this->uri = $uri;
     }
 
     /**
@@ -361,80 +270,7 @@ class Request {
     {
         return (string) $this->response;
     }
-
-    /**
-     * Generates a relative URI for the current route.
-     *
-     *     $request->uri($params);
-     *
-     * @param   array   additional route parameters
-     * @return  string
-     * @uses    Route::uri
-     */
-    public function uri(array $params = NULL)
-    {
-        if ( ! isset($params['directory']))
-        {
-            // Add the current directory
-            $params['directory'] = $this->directory;
-        }
-
-        if ( ! isset($params['controller']))
-        {
-            // Add the current controller
-            $params['controller'] = $this->controller;
-        }
-
-        if ( ! isset($params['action']))
-        {
-            // Add the current action
-            $params['action'] = $this->action;
-        }
-
-        // Add the current parameters
-        $params += $this->_params;
-
-        return $this->route->uri($params);
-    }
-
-    /**
-     * Create a URL from the current request. This is a shortcut for:
-     *
-     *     echo URL::site($this->request->uri($params), $protocol);
-     *
-     * @param   string   route name
-     * @param   array    URI parameters
-     * @param   mixed    protocol string or boolean, adds protocol and domain
-     * @return  string
-     * @since   3.0.7
-     * @uses    URL::site
-     */
-    public function url(array $params = NULL, $protocol = NULL)
-    {
-        // Create a URI with the current route and convert it to a URL
-        return URL::site($this->uri($params), $protocol);
-    }
-
-    /**
-     * Retrieves a value from the route parameters.
-     *
-     *     $id = $request->param('id');
-     *
-     * @param   string   key of the value
-     * @param   mixed    default value if the key is not set
-     * @return  mixed
-     */
-    public function param($key = NULL, $default = NULL)
-    {
-        if ($key === NULL)
-        {
-            // Return the full array
-            return $this->_params;
-        }
-
-        return isset($this->_params[$key]) ? $this->_params[$key] : $default;
-    }
-
+    
     /**
      * Sends the response status and all set headers. The current server
      * protocol (HTTP/1.0 or HTTP/1.1) will be used when available. If not
@@ -475,139 +311,6 @@ class Request {
                 header($value, TRUE);
             }
         }
-
-        return $this;
-    }
-
-    /**
-     * Redirects as the request response. If the URL does not include a
-     * protocol, it will be converted into a complete URL.
-     *
-     *     $request->redirect($url);
-     *
-     * [!!] No further processing can be done after this method is called!
-     *
-     * @param   string   redirect location
-     * @param   integer  status code: 301, 302, etc
-     * @return  void
-     * @uses    URL::site
-     * @uses    Request::send_headers
-     */
-    public function redirect($url, $code = 302)
-    {
-        if (strpos($url, '://') === FALSE)
-        {
-            // Make the URI into a URL
-            $url = URL::site($url, TRUE);
-        }
-
-        // Set the response status
-        $this->status = $code;
-
-        // Set the location header
-        $this->headers['Location'] = $url;
-
-        // Send headers
-        $this->send_headers();
-
-        // Stop execution
-        exit;
-    }
-
-
-    /**
-     * Processes the request, executing the controller action that handles this
-     * request, determined by the [Route].
-     *
-     * 1. Before the controller action is called, the [Controller::before] method
-     * will be called.
-     * 2. Next the controller action will be called.
-     * 3. After the controller action is called, the [Controller::after] method
-     * will be called.
-     *
-     * By default, the output from the controller is captured and returned, and
-     * no headers are sent.
-     *
-     *     $request->execute();
-     *
-     * @return  $this
-     * @throws  Kohana_Exception
-     * @uses    [Kohana::$profiling]
-     * @uses    [Profiler]
-     */
-    public function execute()
-    {
-        if ($this->status == 404)
-        {
-            $controller = new Controller_Default($this);
-            return $controller->not_found();
-        }
-
-        // Create the class prefix
-        $prefix = 'controller_';
-
-        if ($this->directory)
-        {
-            // Add the directory name to the class prefix
-            $prefix .= str_replace(array('\\', '/'), '_', trim($this->directory, '/')).'_';
-        }
-
-        // Store the currently active request
-        $previous = Request::$current;
-
-        // Change the current request to this request
-        Request::$current = $this;
-        
-        try
-        {
-            // Load the controller using reflection
-            $class = new ReflectionClass($prefix.$this->controller);
-            
-            if ($class->isAbstract())
-            {
-                throw new Kohana_Exception('Cannot create instances of abstract :controller',
-                    array(':controller' => $prefix.$this->controller));
-            }
-
-            // Create a new instance of the controller
-            $controller = $class->newInstance($this);
-
-            // Execute the "before action" method
-            $class->getMethod('before')->invoke($controller);            
-
-            // Determine the action to use
-            $action = empty($this->action) ? Route::$default_action : $this->action;
-
-            // Execute the main action with the parameters
-            $class->getMethod('action_'.$action)->invokeArgs($controller, $this->_params);
-
-            // Execute the "after action" method
-            $class->getMethod('after')->invoke($controller);
-        }
-        catch (Exception $e)
-        {
-            // Restore the previous request
-            Request::$current = $previous;
-
-            if ($e instanceof ReflectionException)
-            {
-                // Reflection will throw exceptions for missing classes or actions
-                $this->status = 404;
-                $controller = new Controller_Default($this);
-                return $controller->not_found();                
-            }
-            else
-            {
-                // All other exceptions are PHP/server errors
-                $this->status = 500;
-            }
-
-            // Re-throw the exception
-            throw $e;
-        }
-
-        // Restore the previous request
-        Request::$current = $previous;
 
         return $this;
     }

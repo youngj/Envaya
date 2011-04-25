@@ -5,7 +5,7 @@
  *
  * URL: /tr/<action>
  */
-class Controller_Tr extends Controller
+class Controller_Tr extends Controller_Simple
 {
     function action_translate()
     {

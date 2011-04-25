@@ -92,14 +92,16 @@ CREATE TABLE `email_templates` (
 CREATE TABLE `widgets` (
     <?php require 'schema/entity_columns.php'; ?>,
     <?php require 'schema/content_columns.php'; ?>,
-  `widget_name` varchar(32) NOT NULL,
+  `widget_name` varchar(127) NOT NULL,
   `publish_status` tinyint(4) NOT NULL default 1,
+  `time_published` int(11) null,
   `subclass` varchar(32) NULL,
   `menu_order` int null,
   `in_menu` tinyint(4) default 1,
   `handler_arg` varchar(64) NULL,
-  `title` varchar(64) NULL,
-  `num_comments` int not null default 0
+  `title` varchar(127) NULL,
+  `num_comments` int not null default 0,
+  key `name_key` (`container_guid`,`widget_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `invited_emails` (
@@ -338,4 +340,10 @@ CREATE TABLE `not_found_redirects` (
     `pattern` varchar(127) not null,
     `replacement` varchar(127) not null,
     `order` int(11) not null
+) ENGINE = MYISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `external_feeds` (
+    <?php require 'schema/entity_columns.php'; ?>,
+    `url` text NOT NULL,
+    `subtype_id` varchar(63) not null
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;

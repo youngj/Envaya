@@ -2,13 +2,10 @@
 /**
  * Abstract controller class. Controllers should only be created using a [Request].
  *
- * Controllers methods will be automatically called in the following order by
- * the request:
- *
- *     $controller = new Controller_Foo($request);
- *     $controller->before();
- *     $controller->action_bar();
- *     $controller->after();
+ * URLs are routed to controller methods by the execute($uri) method. 
+ * Controller classes may define a static $routes array. Each element of the $routes 
+ * array describes a path regex, and what action to take when the regex matches the
+ * next component of the $uri.
  *
  * The controller action should add the output it creates to
  * `$this->request->response`, typically in the form of a [View], during the
@@ -22,10 +19,11 @@
  */
 abstract class Controller {
 
-    /**
-     * @var  object  Request that created the controller
-     */
-    public $request;
+    static $routes = array();
+
+    public $request;    
+    protected $parent_controller;
+    protected $params;    
     
     protected $page_draw_vars = array();
 
@@ -36,10 +34,165 @@ abstract class Controller {
      * @param   object  Request that created the controller
      * @return  void
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, $parent_controller = null)
     {
         // Assign the request to the controller
         $this->request = $request;
+        $this->parent_controller = $parent_controller;
+    }   
+    
+    /**
+     * Retrieves a value from the route parameters.
+     *
+     *     $id = $controller->param('id');
+     *
+     * @param   string   key of the value
+     * @param   mixed    default value if the key is not set
+     * @return  mixed
+     */
+    public function param($key, $default = NULL)
+    {
+        if (isset($this->params[$key]))        
+        {
+            return $this->params[$key];
+        }
+        if ($this->parent_controller)
+        {
+            return $this->parent_controller->param($key, $default);
+        }
+        return $default;
+    }
+    
+    /*
+     * Tries all the route regexes for this controller, 
+     * executing the first one that matches the beginning of the uri.
+     * Displays a 404 page if there is no valid route.
+     */
+    public function execute($uri)
+    {
+        foreach (static::$routes as $route)
+        {
+            $params = $this->match_route($route, $uri);
+            if ($params)
+            {       
+                return $this->execute_route($route, $params);                
+            }
+        }
+        $this->not_found();
+    }
+    
+    /*
+     * Performs the action for the route that matched the request URI.
+     *
+     *  - if the 'before' key is set on the route, calls it as a method on this controller.
+     *  - calls before()
+     *  - if 'controller' is set (by a match with the named regex  parameters or defaults):
+     *      - instantiates that controller and calls execute(), passing the remainder (unmatched part) of the URI
+     *  - otherwise, if the method named 'action_<action>' exists, where <action> is taken from the named 
+     *    regex parameters or defaults, with a default value of 'index':
+     *      - calls 'action_<action>()'
+     *  - calls after()
+     */
+    protected function execute_route($route, $params)
+    {        
+        $this->params = $params;
+        
+        $before = @$route['before'];
+        if ($before)
+        {
+            $this->$before();
+        }
+        $this->before();                               
+                
+        $controller = @$params['controller'];
+        if ($controller)
+        {
+            $cls = "Controller_{$controller}";
+            if (!class_exists($cls))
+            {
+                return $this->not_found();
+            }
+            $controller = new $cls($this->request, $this);
+            $controller->execute($params['rest']);
+        }
+        else
+        {
+            $action = @$params['action'] ?: 'index';                
+            $method = "action_{$action}";
+            if (!method_exists($this, $method))
+            {
+                return $this->not_found();                
+            }
+            $this->$method();                       
+        }
+        $this->after();    
+    }
+    
+    /*
+     * Tests if the beginning of the URI component matches a given route regex.
+     *
+     * If the regex matched, returns an associative array of route parameters taken from the
+     * matched values of the named regex parameters, merged with the array of defaults,
+     * with the special parameter 'rest' which is the remainder of the URI after the
+     * part that matched the regex.
+     *
+     * If the route regex did not match, returns false.
+     */    
+    protected function match_route($route, $uri)
+    {
+        $regex = $route['regex'];
+        
+        if ($regex)
+        {    
+            if (!preg_match('#^'.$regex.'#i', $uri, $matches))
+                return false;
+
+            $params = array('rest' => 
+                substr($uri, strlen($matches[0])) ?: ''
+            );
+            
+            foreach ($matches as $key => $value)
+            {
+                if (is_int($key))
+                {
+                    // Skip all unnamed keys
+                    continue;
+                }
+                // Set the value for all matched keys
+                $params[$key] = $value;
+            }                       
+        }
+        else
+        {
+            $params = array('rest' => $uri);
+        }
+
+        $defaults = @$route['defaults'];
+        if ($defaults)
+        {
+            foreach ($defaults as $key => $value)
+            {
+                if (!isset($params[$key]) OR $params[$key] === '')
+                {
+                    // Set default values for any key that was not matched
+                    $params[$key] = $value;
+                }
+            }
+        }
+   
+        return $params;                
+    }
+    
+    static function add_route($route, $index = null)
+    {
+        if ($index === null)
+        {
+            static::$routes[] = $route;
+        }
+        else
+        {
+            array_splice(static::$routes, $index, 0, array($route));
+        }
     }
 
     public function get_request()

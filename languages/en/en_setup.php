@@ -11,7 +11,7 @@
         'setup:city' => 'City:',
         'setup:region' => 'Region:',
         'setup:region:blank' => 'Select your region',
-        'setup:sector' => "Check at most five sectors that apply for your organization:",
+        'setup:sector' => "Choose at most five sectors that apply for your organization:",
         'setup:sector:blank' => "Please select at least one sector that applies for your organization.",
         'setup:sector:toomany' => "Too many sectors selected for your organization. Please select at most 5 sectors.",
         'setup:sector:other_specify' => "If 'Other', specify:",

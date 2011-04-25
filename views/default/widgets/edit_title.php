@@ -3,14 +3,9 @@
     <?php echo view("input/text", array(
         'name' => 'title',
         'id' => 'title',
-        'js' => "style='width:170px' maxlength='22'",
+        'js' => "maxlength='127'",
         'trackDirty' => true,        
         'value' => @$vars['value']
     )); 
-    
-    if (!@$vars['value'])
-    {
-        echo "<div class='help'>".__('widget:title_help')."</div>";
-    }
     ?>
 </div>

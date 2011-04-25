@@ -5,7 +5,7 @@
  *
  * URL: /pg/<action>
  */
-class Controller_Pg extends Controller {
+class Controller_Pg extends Controller_Simple {
 
     function action_login()
     {

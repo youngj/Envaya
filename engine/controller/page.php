@@ -8,9 +8,16 @@
  */
 class Controller_Page extends Controller_Widget
 {       
-    protected function init_widget()
+    static $routes = array(
+        array(
+            'regex' => '/(?P<widget_name>[\w\-]+)(/(?P<action>\w+)\b)?',
+            'before' => 'init_widget_from_name',
+        ),
+    );
+
+    protected function init_widget_from_name()
     {    
-        $widgetName = $this->request->param('id');        
-        $this->widget = $this->org->get_widget_by_name($widgetName); 
+        $widgetName = $this->param('widget_name');        
+        $this->init_widget($this->get_org()->get_widget_by_name($widgetName)); 
     }
 }

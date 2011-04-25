@@ -4,6 +4,11 @@
 ?>
 <div class='section_content padded'>
 <?php
+    if (!$is_primary && $widget->title)
+	{
+        echo "<h3><a href='{$widget->get_url()}'>".escape($widget->title)."</a></h3>";
+	}
+
     echo $widget->render_content();
     echo "<div class='blog_date'>";        
     $date_text = $widget->get_date_text();    

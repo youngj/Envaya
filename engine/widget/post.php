@@ -34,7 +34,7 @@ class Widget_Post extends Widget_Generic
         $org = $this->get_root_container_entity();
         if ($org)
         {
-            return $org->get_url() . "/post/" . $this->guid;
+            return $org->get_url() . "/post/" . $this->get_url_slug();
         }
         return '';
     }    
@@ -44,17 +44,6 @@ class Widget_Post extends Widget_Generic
         return $this->get_url();
     }
        
-    public function js_properties()
-    {
-        return array(
-            'guid' => $this->guid,
-            'container_guid' => $this->container_guid,
-            'dateText' => $this->get_date_text(),
-            'imageURL' => $this->thumbnail_url,
-            'snippetHTML' => $this->get_snippet()
-        );
-    }
-
     function post_feed_items_edit() {}
     
     function post_feed_items()

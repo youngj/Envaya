@@ -43,6 +43,23 @@ abstract class Entity extends Model
             $this->cache_for_current_request();
         }
     }
+
+    static function new_from_row($row)
+    {
+        if (isset(static::$table_attributes['subtype_id']))
+        {    
+            $cls = EntityRegistry::get_subtype_class($row->subtype_id);
+            if (!$cls)
+            {   
+                throw new InvalidParameterException("Entity subtype {$row->subtype_id} is not defined");
+            }                
+            return new $cls($row);
+        }
+        else
+        {
+            return parent::new_from_row($row);
+        }
+    }
     
     static function get_subtype_id()
     {
@@ -96,7 +113,7 @@ abstract class Entity extends Model
     
     static function get_table_attributes()
     {
-        return array_merge(
+        $attributes = array_merge(
             parent::get_table_attributes(),
             array(
                 'owner_guid' => 0,
@@ -106,6 +123,13 @@ abstract class Entity extends Model
                 'status' => Entity::Enabled
             )
         );
+        
+        if (isset($attributes['subtype_id']))
+        {
+            $attributes['subtype_id'] = static::get_subtype_id();
+        }
+        
+        return $attributes;
     }    
     
     public function save_table_attributes()

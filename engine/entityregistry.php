@@ -24,6 +24,8 @@ class EntityRegistry
         'core.featured.photo' => 'FeaturedPhoto',
         'core.discussion.message' => 'DiscussionMessage',
         'core.discussion.topic' => 'DiscussionTopic',
+        'core.feed' => 'ExternalFeed',
+        'core.feed.rss' => 'ExternalFeed_RSS',
     );
     private static $class_to_subtype = null;
     

@@ -35,17 +35,6 @@ class User extends Entity
         'last_action' => 0,
         'notifications' => 15,
     );
-
-    static function get_table_attributes()
-    {
-        return array_merge(
-            parent::get_table_attributes(),
-            array(
-                'subtype_id' => static::get_subtype_id(),
-            )
-        );
-    }    
-        
     
     public function get_feed_names()
     {
@@ -234,16 +223,6 @@ class User extends Entity
     {
         $this->salt = generate_random_code(8);
         $this->password = $this->generate_password($password);
-    }
-
-    static function new_from_row($row)
-    {
-        $cls = EntityRegistry::get_subtype_class($row->subtype_id);
-        if (!$cls)
-        {   
-            throw new InvalidParameterException("Entity subtype {$row->subtype_id} is not defined");
-        }                
-        return new $cls($row);
     }
     
     static function query()

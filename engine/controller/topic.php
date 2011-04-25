@@ -7,31 +7,32 @@
  */
 class Controller_Topic extends Controller_User
 {
+    static $routes = array(
+        array(
+            'regex' => '/(?P<guid>\d+)(/(?P<action>\w+)\b)?',
+            'before' => 'init_topic_by_guid',
+        ),
+        array(
+            'regex' => '/(?P<action>new)\b',
+        ),        
+    );
+
     protected $topic;
     
     function get_topic()
     {
-        return $this->topic;
+        return $this->param('topic');
     }
 
-    function before()
+    function init_topic_by_guid()
     {
-        parent::before();
-
-        $topicId = $this->request->param('id');
-
-        if ($topicId == 'new')
-        {
-            $this->request->action = 'new';
-            return;
-        }        
+        $topicId = $this->param('guid');
         
         $topic = DiscussionTopic::get_by_guid($topicId);
-        $org = $this->org;
+        $org = $this->get_org();
         if ($topic && $topic->container_guid == $org->guid)
         {
-            $this->topic = $topic;
-            return;
+            $this->params['topic'] = $topic;
         }
         else
         {
@@ -42,8 +43,8 @@ class Controller_Topic extends Controller_User
     
     function action_index()
     {
-        $org = $this->org;
-        $topic = $this->topic;
+        $org = $this->get_org();
+        $topic = $this->get_topic();
 
         $this->allow_view_types(null);
         $this->allow_content_translation();
@@ -94,7 +95,7 @@ class Controller_Topic extends Controller_User
     {
         $this->validate_security_token();        
         
-        $topic = $this->topic;
+        $topic = $this->get_topic();
         $message = $topic->query_messages()->guid((int)get_input('guid'))->get();
         if (!$message)
         {

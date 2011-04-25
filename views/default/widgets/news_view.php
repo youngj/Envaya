@@ -11,14 +11,14 @@
         if ($end_widget)
         {
             $offset = $widget->query_published_widgets()
-                ->where('time_created > ?', $end_widget->time_created)
+                ->where('time_published > ?', $end_widget->time_published)
                 ->count();
         }
     }
 
     $limit = 10;    
     $query = $widget->query_published_widgets()
-        ->order_by('time_created desc, guid desc');
+        ->order_by('time_published desc, guid desc');
         
     $count = $query->count();
     $posts = $query->limit($limit, $offset)->filter();            

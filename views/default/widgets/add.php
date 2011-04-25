@@ -6,7 +6,7 @@
 <form action='<?php echo $org->get_url() ?>/add_page' method='POST'>
 <?php
     echo view('input/securitytoken');     
-    echo view('widgets/edit_title');
+    echo view('widgets/edit_page_title');
 ?>
 
 <div class='input'>

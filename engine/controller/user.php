@@ -8,42 +8,23 @@
  */
 abstract class Controller_User extends Controller
 {
-    protected $org;
-    protected $user;
+    static $routes = array();
+
     protected $public_layout = false;
         
     function get_org()
     {
-        return $this->org;
+        return $this->param('org');
     }
 
     function get_user()
     {
-        return $this->user;
-    }    
-    
-    function before()
-    {
-        $user = User::get_by_username($this->request->param('username'));
-                
-        if ($user)
-        {
-            $this->user = $user;
-
-            if ($user instanceof Organization)
-            {
-                $this->org = $user;
-            }
-        }
-        else
-        {
-            $this->not_found();
-        }
-    }    
+        return $this->param('user');
+    }       
         
     private function get_approval_message()
     {
-        $org = $this->org;
+        $org = $this->get_org();
     
         if ($org->approval == 0)
         {
@@ -61,7 +42,7 @@ abstract class Controller_User extends Controller
    
     function index_widget($widget)
     {
-        $org = $this->org;
+        $org = $this->get_org();
     
         $this->prefer_http();      
         $this->use_public_layout($widget);
@@ -107,7 +88,7 @@ abstract class Controller_User extends Controller
         
     function use_public_layout($cur_widget = null)
     {
-        $org = $this->org;
+        $org = $this->get_org();
                 
         $this->public_layout = true;
         
@@ -121,7 +102,7 @@ abstract class Controller_User extends Controller
     
     private function show_site_menu($cur_widget)
     {
-        $org = $this->org;
+        $org = $this->get_org();
         
         $widgets = $org->query_menu_widgets()->filter();
         
@@ -146,7 +127,7 @@ abstract class Controller_User extends Controller
     {
         $this->require_login();
 
-        $user = $this->user;
+        $user = $this->get_user();
 
         if ($user && $user->can_edit())
         {
@@ -171,7 +152,7 @@ abstract class Controller_User extends Controller
 
     function require_org()
     {
-        if (!$this->org)
+        if (!$this->get_org())
         {
             $this->not_found();
         }
@@ -179,7 +160,7 @@ abstract class Controller_User extends Controller
 
     protected function get_pre_body($vars)
     {
-        $org = $this->org;
+        $org = $this->get_org();
         $preBody = '';
 
         if (get_input("__topbar") != "0")
@@ -204,7 +185,7 @@ abstract class Controller_User extends Controller
                 
     public function page_draw($vars)
     {
-        $org = $this->org;
+        $org = $this->get_org();
         
         if ($org && $this->public_layout)
         {    

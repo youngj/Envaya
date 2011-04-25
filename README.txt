@@ -21,10 +21,10 @@ Potential ways of using Envaya's source code may include:
 * ...?
 
 Envaya's source code was originally based on Elgg, a generic open-source social
-networking platform, but most of Elgg's source code is now largely
-unrecognizable. Some of Envaya's current code structure (URL routing,
-controllers, and auto-loading) was inspired by the Kohana web framework,
-although Envaya includes very little of the Kohana web framework itself.
+networking platform, but most of Elgg's source code is now largely removed or
+unrecognizable. Some of Envaya's current code structure (controllers and 
+auto-loading) was inspired by the Kohana web framework although Envaya 
+includes very little of the Kohana web framework itself.
 
 ====================
 Source Code Overview

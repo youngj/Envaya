@@ -5,7 +5,7 @@
  *
  * URL: /org/<action>
  */
-class Controller_Org extends Controller
+class Controller_Org extends Controller_Simple
 {
     function before()
     {

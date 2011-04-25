@@ -105,9 +105,10 @@ return array(
     'page:dirty' => "The current page has unsaved changes, which will be lost if you continue.",
 
     'widget:view' => "View page",
-    'widget:title' => 'Short Page Title',       
+    'widget:title' => 'Title',       
+    'widget:page_title' => 'Short Page Title',       
     'widget:section_title' => 'Section Title',       
-    'widget:title_help' => "Enter a word or short phrase to show in your website's menu.",
+    'widget:page_title_help' => "Enter a word or short phrase to show in your website's menu.",
     'widget:address' => "Page Address",
     'widget:no_title' => "Please enter a title for this page.",
     'widget:no_section_title' => "Please enter a title for this section.",

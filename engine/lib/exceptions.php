@@ -84,7 +84,7 @@ function php_exception_handler($exception) {
     {    
         header("HTTP/1.1 500 Internal Server Error");
         
-        $request = Request::current();
+        $request = Request::instance();
         
         if (@$request->headers['Content-Type'] == 'text/javascript')
         {

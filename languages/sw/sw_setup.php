@@ -10,7 +10,7 @@ return array(
     'setup:city' => 'Mji:',
     'setup:region' => 'Mkoa:',
     'setup:region:blank' => 'Chagua mkoa wako',
-    'setup:sector' => 'Bonyeza hadi sekta tano zinazoendana na shirika lako:',
+    'setup:sector' => 'Chagua hadi sekta tano zinazoendana na shirika lako:',
     'setup:sector:blank' => 'Tafadhali chagua angalau sekta moja kuendana na shirika lako.',
     'setup:sector:toomany' => 'Secta nyingi zimechaguliwa kwa shirika lako. Tafadhali chagua hadi sekta 5 tu.',
     'setup:sector:other_specify' => 'Kama kuna \'Nyingine\', zitaje:',

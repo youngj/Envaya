@@ -6,6 +6,11 @@
  */
 class Widget_News extends Widget
 {
+    function get_view_types()
+    {
+        return array('rss');
+    }    
+
     function render_view($args = null)
     {
         $end_guid = (int)get_input('end');    
