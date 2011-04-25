@@ -4,7 +4,7 @@
     $org = $vars['org'];
     $subtitle = @$vars['subtitle'];
             
-    $link = rewrite_to_current_domain($org->get_url());
+    $link = $org->get_url();
     
     $escTitle = escape($org->name);
    

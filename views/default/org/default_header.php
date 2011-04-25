@@ -4,7 +4,7 @@
 
     echo "<div class='thin_column'><table id='heading'><tr>";
         
-    $link = rewrite_to_current_domain($org->get_url());
+    $link = $org->get_url();
     
     $img = view('org/icon', array('org' => $org, 'size' => 'medium'));
     echo "<td><a href='$link'>$img</a></td>";

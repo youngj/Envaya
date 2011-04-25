@@ -142,11 +142,6 @@
         }
         exit;
     }
-
-    function rewrite_to_current_domain($url)
-    {
-        return Request::instance()->rewrite_to_current_domain($url);
-    }
         
     function trigger_event($event, $object_type, $object = null)
     {

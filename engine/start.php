@@ -80,7 +80,7 @@ function __shutdown_hook()
 
     if (Config::get('debug'))
     {
-        $uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+        $uri = @$_SERVER['REQUEST_URI'] ?: '';
         error_log("Page {$uri} generated in ".(float)(microtime(true)-$START_MICROTIME)." seconds");
     }
 }

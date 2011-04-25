@@ -24,7 +24,7 @@ class Controller_Default extends Controller
     {
         if (get_input('login') && !Session::isloggedin())
         {
-            force_login();
+            $this->force_login();
         }
         parent::execute($uri);
     }

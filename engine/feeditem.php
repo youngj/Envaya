@@ -144,7 +144,7 @@ class FeedItem extends Model
     
     function get_url()
     {
-        return rewrite_to_current_domain($this->get_subject_entity()->get_url());
+        return $this->get_subject_entity()->get_url();
     }         
 
     static function get_action_name()    

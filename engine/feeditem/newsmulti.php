@@ -16,8 +16,7 @@ class FeedItem_NewsMulti extends FeedItem_News
     function get_url()
     {
         $user = $this->get_user_entity();
-        $update = $this->get_subject_entity();
-        
-        return rewrite_to_current_domain($user->get_url() . "/news?end={$update->guid}");
+        $update = $this->get_subject_entity();        
+        return $user->get_url() . "/news?end={$update->guid}";
     }               
 }

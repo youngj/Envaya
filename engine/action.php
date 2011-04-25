@@ -33,7 +33,7 @@ abstract class Action
         $this->before();
         $this->allow_view_types();
     
-        if (Request::is_post())
+        if ($this->get_request()->is_post())
         {           
             try
             {

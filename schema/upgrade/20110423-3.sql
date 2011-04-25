@@ -3,7 +3,6 @@ alter table widgets add key `news_key` (`container_guid`,`time_published`,`guid`
 alter table widgets change `widget_name` `widget_name` varchar(127) NOT NULL;
 alter table widgets change `title` `title` varchar(127) NULL;
 alter table widgets add key `name_key` (`container_guid`,`widget_name`);
-
 update widgets set time_published = time_created where time_published is null and publish_status=1;
 
 CREATE TABLE `external_feeds` (

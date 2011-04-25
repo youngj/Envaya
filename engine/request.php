@@ -71,157 +71,37 @@ class Request {
     );
 
     /**
+     * @var  object  main request instance
+     */
+    public static $instance;
+    
+    /**
      * @var  string  method: GET, POST, PUT, DELETE, etc
      */
-    public static $method = 'GET';
+    public $method = 'GET';
 
     /**
      * @var  string  protocol: http, https, ftp, cli, etc
      */
-    public static $protocol = 'http';
+    public $protocol = 'http';
 
     /**
      * @var  string  referring URL
      */
-    public static $referrer;
+    public $referrer;
 
     /**
      * @var  string  client user agent
      */
-    public static $user_agent = '';
+    public $user_agent = '';
 
     /**
      * @var  string  client IP address
      */
-    public static $client_ip = '0.0.0.0';
+    public $client_ip = '0.0.0.0';    
 
-    /**
-     * @var  boolean  AJAX-generated request
-     */
-    public static $is_ajax = FALSE;
-
-    /**
-     * @var  object  main request instance
-     */
-    public static $instance;
-
-    private static $custom_domain_username;
-
-    /**
-     * Main request singleton instance. If no URI is provided, the URI will
-     * be automatically detected using PATH_INFO, REQUEST_URI, or PHP_SELF.
-     *
-     *     $request = Request::instance();
-     *
-     * @param   string   URI of the request
-     * @return  Request
-     */
-    public static function instance( & $uri = TRUE)
-    {
-        if ( ! Request::$instance)
-        {
-            if (isset($_SERVER['REQUEST_METHOD']))
-            {
-                // Use the server request method
-                Request::$method = $_SERVER['REQUEST_METHOD'];
-            }
-
-            if ( ! empty($_SERVER['HTTPS']) AND filter_var($_SERVER['HTTPS'], FILTER_VALIDATE_BOOLEAN))
-            {
-                // This request is secure
-                Request::$protocol = 'https';
-            }
-
-            if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest')
-            {
-                // This request is an AJAX request
-                Request::$is_ajax = TRUE;
-            }
-
-            if (isset($_SERVER['HTTP_REFERER']))
-            {
-                // There is a referrer for this request
-                Request::$referrer = $_SERVER['HTTP_REFERER'];
-            }
-
-            if (isset($_SERVER['HTTP_USER_AGENT']))
-            {
-                // Set the client user agent
-                Request::$user_agent = $_SERVER['HTTP_USER_AGENT'];
-            }
-
-            if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-            {
-                // Use the forwarded IP address, typically set when the
-                // client is using a proxy server.
-                Request::$client_ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-            }
-            elseif (isset($_SERVER['HTTP_CLIENT_IP']))
-            {
-                // Use the forwarded IP address, typically set when the
-                // client is using a proxy server.
-                Request::$client_ip = $_SERVER['HTTP_CLIENT_IP'];
-            }
-            elseif (isset($_SERVER['REMOTE_ADDR']))
-            {
-                // The remote IP address
-                Request::$client_ip = $_SERVER['REMOTE_ADDR'];
-            }
-
-            if (Request::$method !== 'GET' AND Request::$method !== 'POST')
-            {
-                // Methods besides GET and POST do not properly parse the form-encoded
-                // query string into the $_POST array, so we overload it manually.
-                parse_str(file_get_contents('php://input'), $_POST);
-            }
-
-            if ($uri === TRUE)
-            {
-                $uri = $_SERVER['PATH_INFO'];
-            }
-
-            // Reduce multiple slashes to a single slash
-            $uri = preg_replace('#//+#', '/', $uri);
-
-            // Remove all dot-paths from the URI, they are not valid
-            $uri = preg_replace('#\.[\s./]*/#', '', $uri);
-
-            $username = Request::$custom_domain_username = OrgDomainName::get_username_for_host($_SERVER['HTTP_HOST']);
-            if ($username)
-            {
-                $uri = "$username$uri";
-            }
-
-            // Create the instance singleton
-            Request::$instance = new Request($uri);
-
-            // Add the default Content-Type header
-            //Request::$instance->headers['Content-Type'] = 'text/html; charset='.Kohana::$charset;
-        }
-
-        return Request::$instance;
-    }
-
-    /**
-     * Creates a new request object for the given URI. This differs from
-     * [Request::instance] in that it does not automatically detect the URI
-     * and should only be used for creating HMVC requests.
-     *
-     *     $request = Request::factory($uri);
-     *
-     * @param   string  URI of the request
-     * @return  Request
-     */
-    public static function factory($uri)
-    {
-        return new Request($uri);
-    }
-
-    public static function is_post()
-    {
-        return Request::$method == "POST";
-    }
-    
+    public $custom_domain_username;
+   
     /**
      * @var  integer  HTTP response code: 200, 404, 500, etc
      */
@@ -238,34 +118,89 @@ class Request {
     public $headers = array();
     
     /**
-     * @var  string  the URI of the request
+     * @var  string the URI of the request, possibly after rewriting
      */
-    public $uri;
-
+    public $uri;    
+    
+    public $original_uri;
+    
+    public $host;
+    
+    public $query_string;
+    
     /**
-     * Creates a new request object for the given URI. New requests should be
-     * created using the [Request::instance] or [Request::factory] methods.
+     * Main request singleton instance, with parameters determined from the
+     * http request
      *
-     *     $request = new Request($uri);
+     *     $request = Request::instance();
      *
-     * @param   string  URI of the request
-     * @return  void
-     * @throws  Kohana_Request_Exception
-     * @uses    Route::all
-     * @uses    Route::matches
+     * @return  Request
      */
-    public function __construct($uri)
+    public static function instance()
     {
-        $this->uri = $uri;
+        if (!Request::$instance)
+        {
+            $options = array();
+                    
+            if ( ! empty($_SERVER['HTTPS']) AND filter_var($_SERVER['HTTPS'], FILTER_VALIDATE_BOOLEAN))
+            {
+                // This request is secure
+                $options['protocol'] = 'https';
+            }
+
+            $options['method'] = $method = @$_SERVER['REQUEST_METHOD'];            
+            $options['referrer'] = @$_SERVER['HTTP_REFERER'];
+            $options['user_agent'] = @$_SERVER['HTTP_USER_AGENT'];
+            $options['client_ip'] = @$_SERVER['HTTP_X_FORWARDED_FOR'] ?: @$_SERVER['HTTP_CLIENT_IP'] ?: @$_SERVER['REMOTE_ADDR'];
+            $options['query_string'] = @$_SERVER['QUERY_STRING'] ? "?{$_SERVER['QUERY_STRING']}" : '';            
+            $options['host'] = @$_SERVER['HTTP_HOST'];            
+
+            if ($method !== 'GET' AND $method !== 'POST')
+            {
+                // Methods besides GET and POST do not properly parse the form-encoded
+                // query string into the $_POST array, so we overload it manually.
+                parse_str(file_get_contents('php://input'), $_POST);
+            }           
+            
+            $uri = $_SERVER['PATH_INFO'];
+
+            // Reduce multiple slashes to a single slash
+            $uri = preg_replace('#//+#', '/', $uri);
+
+            // Remove all dot-paths from the URI, they are not valid
+            $uri = preg_replace('#\.[\s./]*/#', '', $uri);
+            
+            Request::$instance = new Request($uri, $options);
+        }
+
+        return Request::$instance;
     }
 
-    /**
-     * Returns the response as the string representation of a request.
-     *
-     *     echo $request;
-     *
-     * @return  string
-     */
+    public function __construct($uri, $options)
+    {
+        $this->original_uri = $uri;
+    
+        $host = @$options['host'];    
+        $username = OrgDomainName::get_username_for_host($host);
+        if ($username)
+        {
+            $this->custom_domain_username = $username;
+            $this->uri = "/{$username}{$uri}";
+        }
+        else
+        {
+            $this->uri = $uri;
+        }
+    
+        if ($options)
+        {
+            foreach ($options as $name => $value)
+            {
+                $this->$name = $value;
+            }
+        }
+    }
+
     public function __toString()
     {
         return (string) $this->response;
@@ -315,53 +250,24 @@ class Request {
         return $this;
     }
 
-    public function rewrite_to_current_domain($url)
+    public function full_original_url()
     {
-        $username = Request::$custom_domain_username;
-        if ($username)
-        {
-            $sitePrefix = Config::get('url') . $username;
-            if (strpos($url, $sitePrefix) === 0)
-            {
-                $path = substr($url, strlen($sitePrefix));
-                if (empty($path))
-                {
-                    $path = '/';
-                }
-                return "http://{$_SERVER['HTTP_HOST']}".$path;
-            }
-        }
-        return $url;
-    }
-
-    public static function full_original_url()
-    {
-        $protocol = @$_SERVER['HTTPS'] ? "https://" : "http://";
-        return "$protocol{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+        return "{$this->protocol}://{$this->host}{$this->original_uri}{$this->query_string}";
     }
     
-    public static function canonical_url()
-    {
-        $canonical_url = Request::full_original_url();
-        if (@$_GET['view'])
-        {
-            $canonical_url = url_with_param($canonical_url, 'view', null);
-        }
-        if (@$_GET['__sv'])
-        {
-            $canonical_url = url_with_param($canonical_url, '__sv', null);
-        }
-        return $canonical_url;
-    }
-
     public function full_rewritten_url()
     {
-        $protocol = @$_SERVER['HTTPS'] ? "https://" : "http://";
-        $domain = Config::get('domain');
-        $uri = $this->uri;
-        $queryString = ($_SERVER['QUERY_STRING']) ? "?{$_SERVER['QUERY_STRING']}" : '';
-        
-        return "$protocol$domain/$uri$queryString";
+        $domain = Config::get('domain');        
+        return "{$this->protocol}://$domain/{$this->uri}{$this->query_string}";
     }
-
-} // End Request
+    
+    public function is_post()
+    {
+        return $this->method == "POST";
+    }
+    
+    public function is_secure()
+    {
+        return $this->protocol == 'https';
+    }   
+}

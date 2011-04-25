@@ -6,15 +6,14 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title><?php echo escape($vars['full_title']); ?></title>
-    <base href='<?php echo Request::$protocol == 'https' ? Config::get('secure_url') : Config::get('url'); ?>' />     
-
+    <base href='<?php echo $vars['is_secure'] ? Config::get('secure_url') : Config::get('url'); ?>' />     
     <?php
         echo view('page_elements/css', $vars);          
         if (@$vars['rss_url'])
         {
             echo "<link rel='alternate' type='application/rss+xml' title='RSS' href='".escape($vars['rss_url'])."' />";
         }
-        echo "<link rel='canonical' href='".escape(Request::canonical_url())."' />";
+        echo "<link rel='canonical' href='".escape($vars['canonical_url'])."' />";
     ?>
     <link rel="shortcut icon" href="/_graphics/favicon2.ico" />
 <script type='text/javascript'>

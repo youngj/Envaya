@@ -47,9 +47,9 @@ class NotFoundRedirect extends Model
         restore_error_handler();    
     }    
     
-    function try_get_redirect_url($url)
+    function try_get_redirect_url($uri)
     {
-        $redirect_url = preg_replace($this->get_preg_pattern(), $this->replacement, $url, 1, $count);
+        $redirect_url = preg_replace($this->get_preg_pattern(), $this->replacement, $uri, 1, $count);
         if ($count > 0)
         {
             return $redirect_url;
@@ -67,11 +67,11 @@ class NotFoundRedirect extends Model
         return static::query()->order_by('`order`')->filter();
     }
     
-    static function get_redirect_url($url)
+    static function get_redirect_url($uri)
     {        
         foreach (static::all() as $redirect)
         {
-            $redirect_url = $redirect->try_get_redirect_url($url);
+            $redirect_url = $redirect->try_get_redirect_url($uri);
             if ($redirect_url)
             {
                 return $redirect_url;

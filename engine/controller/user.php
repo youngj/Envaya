@@ -83,7 +83,7 @@ abstract class Controller_User extends Controller
     function view_access_denied()
     {
         SessionMessages::add_error($this->get_approval_message() ?: __('org:cantview'));
-        force_login();
+        $this->force_login();
     }
         
     function use_public_layout($cur_widget = null)
@@ -95,7 +95,7 @@ abstract class Controller_User extends Controller
         $this->page_draw_vars['theme_name'] = get_input("__theme") ?: $org->theme ?: 'green';                
         $this->page_draw_vars['sitename'] = $org->name;
         $this->page_draw_vars['site_url'] = $org->get_url();
-        $this->page_draw_vars['login_url'] = url_with_param(Request::instance()->full_rewritten_url(), 'login', 1);
+        $this->page_draw_vars['login_url'] = url_with_param($this->request->full_rewritten_url(), 'login', 1);
         
         $this->show_site_menu($cur_widget);
     }
@@ -112,7 +112,7 @@ abstract class Controller_User extends Controller
         
             PageContext::get_submenu()->add_item(
                 $widget->get_title(), 
-                rewrite_to_current_domain($widget->get_url()),
+                $widget->get_url(),
                 $is_selected
             );
         }        
@@ -142,7 +142,7 @@ abstract class Controller_User extends Controller
                 SessionMessages::add_error(__('noaccess'));
             }        
         
-            force_login();
+            $this->force_login();
         }
         else
         {

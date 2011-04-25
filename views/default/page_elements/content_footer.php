@@ -14,7 +14,7 @@
         }
         else
         {
-            $url = url_with_param(Request::full_original_url(), 'view', $viewType);
+            $url = url_with_param($vars['original_url'], 'view', $viewType);
             $url = url_with_param($url, '__sv','1');
             $links[] = "<a rel='nofollow' href='".escape($url)."'>$text</a>";
         }           
@@ -23,7 +23,7 @@
 ?>
 </div>
 <div id='language'>        
-    <?php echo view('page_elements/language_links'); ?>    
+    <?php echo view('page_elements/language_links', $vars); ?>    
 </div>
 <div style='clear:both;padding:4px;'></div>
 <?php echo view('page_elements/footer_menu', $vars); ?>

@@ -140,7 +140,7 @@ abstract class Controller {
      */    
     protected function match_route($route, $uri)
     {
-        $regex = $route['regex'];
+        $regex = @$route['regex'];
         
         if ($regex)
         {    
@@ -233,6 +233,10 @@ abstract class Controller {
             }
         }
         
+        $vars['canonical_url'] = $this->get_canonical_url();
+        $vars['original_url'] = $this->request->full_original_url();
+        $vars['is_secure'] = $this->request->is_secure();        
+        
         if (Views::get_current_type() == 'default')
         {
             $theme = Theme::get(@$vars['theme_name'] ?: 'simple');
@@ -246,14 +250,27 @@ abstract class Controller {
         $this->request->response = view(@$vars['layout'] ?: 'layouts/default', $vars);
     }
 
+    protected function get_canonical_url()
+    {
+        $canonical_url = $this->request->full_original_url();
+        if (@$_GET['view'])
+        {
+            $canonical_url = url_with_param($canonical_url, 'view', null);
+        }
+        if (@$_GET['__sv'])
+        {
+            $canonical_url = url_with_param($canonical_url, '__sv', null);
+        }
+        return $canonical_url;        
+    }
+    
     /*
      * Displays a friendly 404 page and ends the request.
      */            
     public function not_found()
     {
         $request = $this->request;
-        $url = $_SERVER['REQUEST_URI'];
-        $redirect_url = NotFoundRedirect::get_redirect_url($url);
+        $redirect_url = NotFoundRedirect::get_redirect_url($request->uri);
         if ($redirect_url)
         {
             return forward($redirect_url);
@@ -300,9 +317,10 @@ abstract class Controller {
      */    
     public function prefer_http()
     {
-        if (!Request::is_post() && Request::$protocol == 'https')
+        $request = $this->request;
+        if (!$request->is_post() && $request->is_secure())
         {
-            $url = Request::full_original_url();
+            $url = $request->full_original_url();
             $url = str_replace("https://", "http://", $url);
             forward($url);
         }
@@ -314,9 +332,10 @@ abstract class Controller {
      */
     public function prefer_https()
     {
-        if (!Request::is_post() && Request::$protocol == 'http' && Config::get('ssl_enabled') && !is_mobile_browser())
+        $request = $this->request;
+        if (!$request->is_post() && !$request->is_secure() && Config::get('ssl_enabled') && !is_mobile_browser())
         {
-            $url = secure_url(Request::full_original_url());
+            $url = secure_url($request->full_original_url());
             forward($url);
         }
     }
@@ -328,10 +347,40 @@ abstract class Controller {
     {
         if (!Session::isloggedin())
         {
-            force_login();
+            $this->force_login();
         }
     }
 
+    function force_login()
+    {
+        $next = $this->request->full_rewritten_url();
+        $username = get_input('username');
+        $loginTime = get_input('_lt');
+        
+        $args = array();
+        if ($username)
+        {
+            $args[] = "username=".urlencode($username);
+        }
+        if ($next)
+        {
+            $args[] = "next=".urlencode($next);
+        }
+        if ($loginTime)
+        {
+            $args[] = '_lt='.urlencode($loginTime);
+        }
+        
+        if ($args)
+        {
+            forward("pg/login?".implode("&", $args));
+        }
+        else
+        {
+            forward("pg/login");
+        }
+    }
+    
     /*
      * Redirects to the login page if the client is not an administrator.
      */        
@@ -344,7 +393,7 @@ abstract class Controller {
                 SessionMessages::add_error(__('noaccess'));
             }
         
-            force_login();
+            $this->force_login();
         }
     }
     
@@ -379,7 +428,7 @@ abstract class Controller {
     
         if (in_array('rss', $allowed_view_types))
         {
-            $this->page_draw_vars['rss_url'] = url_with_param(Request::full_original_url(), 'view', 'rss');
+            $this->page_draw_vars['rss_url'] = url_with_param($this->request->full_original_url(), 'view', 'rss');
         }
         
         $view_type = Views::get_current_type();

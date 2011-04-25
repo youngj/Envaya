@@ -2,8 +2,8 @@
     $widget = $vars['widget'];
 
     $news = $widget->get_container_entity();
-    $url = rewrite_to_current_domain($widget->get_url());
-           
+    $url = $widget->get_url();
+    
     $has_prev = $news->query_published_widgets()
         ->where('guid < ?', $widget->guid)
         ->exists();    

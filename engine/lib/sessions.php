@@ -42,33 +42,3 @@ function logout()
     Session::destroy();
     return true;
 }
-
-function force_login()
-{
-    $next = Request::instance()->full_rewritten_url();
-    $username = get_input('username');
-    $loginTime = get_input('_lt');
-    
-    $args = array();
-    if ($username)
-    {
-        $args[] = "username=".urlencode($username);
-    }
-    if ($next)
-    {
-        $args[] = "next=".urlencode($next);
-    }
-    if ($loginTime)
-    {
-        $args[] = '_lt='.urlencode($loginTime);
-    }
-    
-    if ($args)
-    {
-        forward("pg/login?".implode("&", $args));
-    }
-    else
-    {
-        forward("pg/login");
-    }
-}
