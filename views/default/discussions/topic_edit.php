@@ -17,7 +17,7 @@
     $content = ob_get_clean();
          
     echo view('section', array(
-        'header' => __('discussions:topic_settings'), 
+        'header' => __('settings'), 
         'content' => view('input/form', array('action' => $topic->get_edit_url(), 'body' => $content))
     ));
     

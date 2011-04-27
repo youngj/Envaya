@@ -261,9 +261,7 @@ class UploadedFile extends Entity
         if (!in_array($extension, static::$scribd_document_extensions))
         {
             throw new InvalidParameterException(
-                sprintf(__("upload:invalid_document_format"),
-                    implode(", ", static::$scribd_document_extensions)
-                )
+                __("upload:invalid_document_format")." ".implode(", ", static::$scribd_document_extensions)
             );
         }
     
@@ -271,12 +269,13 @@ class UploadedFile extends Entity
         $file->storage = 'scribd';
         
         $scribd = get_scribd();
-        
+                
         $res = $scribd->upload(
             $file_input['tmp_name'], 
             $extension, 
             'private'
         );
+                
         if (!@$res['doc_id'])
         {   
             throw new IOException(__('upload:storage_error'));
@@ -287,7 +286,7 @@ class UploadedFile extends Entity
         $file->save();
         
         $scribd->changeSettings(
-            $res['docid'],
+            $res['doc_id'],
             $file->filename,
             Session::get_loggedin_user()->get_url()
         );

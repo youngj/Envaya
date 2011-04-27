@@ -85,7 +85,7 @@ if ($org->approval == 0)
 else
 {
     echo view('output/confirmlink', array(
-        'text' => __($org->approval > 0 ? 'approval:unapprove' : 'approval:unreject'),
+        'text' => ($org->approval > 0) ? __('approval:unapprove') : __('approval:unreject'),
         'href' => "admin/approve?org_guid={$org->guid}&approval=0"
     ));
     echo " ";
@@ -104,7 +104,7 @@ echo "<a href='/admin/add_featured?username={$org->username}'>".__('featured:add
 echo " ";
 echo "<a href='javascript:void(0)' onclick='javascript:selectFeaturedPhoto()'>".__('featured_photo:add')."</a>";        
 echo " ";
-echo "<a href='/{$org->username}/dashboard'>".__('dashboard:title')."</a>";
+echo "<a href='/{$org->username}/dashboard'>".__('edit_site')."</a>";
 echo " ";
 echo "<a href='/{$org->username}/settings'>".__('help:settings')."</a>";
 echo " ";

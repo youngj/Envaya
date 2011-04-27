@@ -110,11 +110,11 @@ class Controller_UserSite extends Controller_User
         $user = $this->get_user();
         if ($user->guid == Session::get_loggedin_userid())
         {
-            $title = __('dashboard:title');
+            $title = __('edit_site');
         }
         else
         {
-            $title = sprintf(__("dashboard:other_user"), $user->name);
+            $title = sprintf(__('edit_item'), $user->name);
         }
                 
         $org = $this->get_org();

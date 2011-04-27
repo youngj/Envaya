@@ -26,7 +26,7 @@ function sectorChanged()
 
 <div class='view_toggle'>
     <a href='/org/browse?list=0&sector=<?php echo escape($sector); ?>'><?php echo __('browse:map') ?></a> &middot;
-    <strong><?php echo __('list') ?></strong>
+    <strong><?php echo __('browse:list') ?></strong>
 </div>
 
 <?php 

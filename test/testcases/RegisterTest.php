@@ -478,7 +478,7 @@ class RegisterTest extends SeleniumTest
 
         $this->ensureGoodMessage();
 
-        $this->username2 = "selenium".time();
+        $this->username2 = "selenium_-_".time();
         $this->name2 = "Test Partner ".time();
         $this->email2 = "nobody+".time()."@nowhere.com";
 

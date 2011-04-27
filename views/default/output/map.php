@@ -17,14 +17,14 @@
         {
 ?>
             <div id="dropPinBtn">
-            <a href="javascript:dropPin();"><?php echo __("map:drop_pin"); ?></a>
+            <a href="javascript:dropPin();"><?php echo __("widget:location:drop_pin"); ?></a>
             </div>
 <?php
         }
 ?>
 
 <label id="pinDragInstr" style="display:none;">
-<?php echo __("map:drag_pin"); ?>
+<?php echo __("widget:location:drag_pin"); ?>
 </label>
 
 <div id='map' style='margin:0 auto;width:<?php echo $width; ?>px;height:<?php echo $height; ?>px'></div>

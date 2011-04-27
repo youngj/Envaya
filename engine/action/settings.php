@@ -24,7 +24,7 @@ class Action_Settings extends Action
         }
         else
         {
-            SessionMessages::add_error(__('create:no_name'));
+            SessionMessages::add_error(__('register:no_name'));
             return $this->render();
         }
 
@@ -86,7 +86,7 @@ class Action_Settings extends Action
     function render()
     {
         $this->page_draw(array(
-            'title' => __("usersettings:user"),
+            'title' => __('user:settings'),
             'content' => view("account/settings", array('entity' => $this->get_user())),
         ));                
     }

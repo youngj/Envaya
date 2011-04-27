@@ -20,6 +20,7 @@
         {
             PageContext::add_js_string($key);
         }
+        PageContext::add_js_string('loading');
         
         ?>
         

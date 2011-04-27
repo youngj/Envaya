@@ -12,16 +12,17 @@ echo view('input/hidden', array('name' => 'guid', 'value' => $relationship->guid
 <p>
 <?php 
 
-echo sprintf(__('network:approve_instructions'), 
-    "<a target='_blank' href='".escape($relationship->get_subject_url())."'>".escape($relationship->get_subject_name()).'</a>', 
-    escape(OrgRelationship::msg(OrgRelationship::get_reverse_type($relationship->type), 'header'))
-);
+
+echo strtr(__('network:approve_instructions'), array(
+    '{name}' => "<a target='_blank' href='".escape($relationship->get_subject_url())."'>".escape($relationship->get_subject_name()).'</a>', 
+    '{type}' => escape(OrgRelationship::msg_for_type(OrgRelationship::get_reverse_type($relationship->type), 'header'))
+));
 echo ' ';
-echo sprintf(__('network:approve_instructions_2'), 
-    escape($relationship->get_subject_name()), 
-    escape($relationship->__('header')),
-    __('network:add_button')
-);
+echo strtr(__('network:approve_instructions_2'), array(
+    '{name}' => escape($relationship->get_subject_name()), 
+    '{type}' => escape($relationship->msg('header')),
+    '{button}' => __('network:add_button')
+));
  ?>
 </p>
 </div>
@@ -50,7 +51,7 @@ echo sprintf(__('network:approve_instructions_2'),
 <?php
     $content = ob_get_clean();   
     echo view('section', array(
-        'header' =>  $relationship->__('add_header'), 
+        'header' =>  $relationship->msg('add_header'), 
         'content' => $content
     ));
 ?>    

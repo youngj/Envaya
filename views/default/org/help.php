@@ -51,7 +51,7 @@
 
 <p>
 <?php echo sprintf(__('help:editing:editsite'),
-    "<strong><a href='/pg/dashboard'>".__('dashboard:title')."</a></strong>",
+    "<strong><a href='/pg/dashboard'>".__('edit_site')."</a></strong>",
     "<a href='/pg/dashboard' target='_blank'><img class='icon_with_bg' src='/_graphics/pencil.gif?v3' /></a>") ?>
 </p>
 
@@ -68,7 +68,7 @@
 
 <p>
 <?php echo sprintf(__('help:design:intro'),
-    "<strong><a href='pg/dashboard'>".__('dashboard:title')."</a></strong>",
+    "<strong><a href='pg/dashboard'>".__('edit_site')."</a></strong>",
     "<strong><a href='{$org->get_url()}/design'>".__('design:edit')."</a></strong>")
     ?>
 </p>
@@ -127,7 +127,7 @@
 <h3 id='other'><?php echo __('help:other') ?></h3>
 
 <p>
-<?php echo sprintf(__('help:other:summary'), "<a href='pg/dashboard'>".__('dashboard:title')."</a>") ?>
+<?php echo sprintf(__('help:other:summary'), "<a href='pg/dashboard'>".__('edit_site')."</a>") ?>
 </p>
 <ul>
 <li><strong><a href='<?php echo $org->get_url() ?>/projects/edit'><?php echo __('widget:projects') ?></a></strong>:
@@ -158,7 +158,7 @@
 <?php if (!$org->is_approved()) { ?>
 <p>
 <em>
-<?php echo __('help:connecting:disabled') ?>
+<?php echo __('help:connecting:messages:disabled') ?>
 </p>
 <?php } ?>
 </div>

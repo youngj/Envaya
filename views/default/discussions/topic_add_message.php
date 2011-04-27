@@ -24,22 +24,10 @@
 
 <?php
     echo view('input/securitytoken');
-    
-    echo view('input/hidden', array(
-        'name' => 'uniqid',
-        'value' => uniqid("",true)
-    ));
-    
+    echo view('input/uniqid');    
     echo view('input/submit', array('value' => __('discussions:publish_message')));    
  ?>
 </form>
-
-<script type='text/javascript'>
-(function(){
-    document.forms[0].uniqid.value = new Date().getTime() + "." + Math.random();
-})();
-</script>
-
 <?php
     echo "</div>";
 ?>

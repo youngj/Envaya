@@ -26,12 +26,9 @@ if ($entity->is_enabled())
         
         if ($entity->location)
         {
-            echo sprintf(__('comment:name_location_said'), $nameHTML, escape($entity->location));
+            $nameHTML = "$nameHTML (".escape($entity->location).")";
         }
-        else
-        {
-            echo sprintf(__('comment:name_said'), $nameHTML);
-        }
+        echo sprintf(__('comment:name_said'), $nameHTML);
     ?>
     </div>
     <?php    
@@ -54,7 +51,7 @@ if ($entity->is_enabled())
 }
 else
 {
-	echo "<div class='comment_deleted'>".__('comment:deleted_marker')."</div>";
+	echo "<div class='comment_deleted'>[".__('comment:deleted_marker')."]</div>";
 }
 ?>
 </div>

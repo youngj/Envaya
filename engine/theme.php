@@ -18,7 +18,7 @@ class Theme
         'red'           => array(),        
         'sidebar'       => array('layout' => 'layouts/two_column_left_sidebar'),        
         'simple'        => array('hidden' => true),
-        'simple_wide'   => array('hidden' => true, 'css' => 'simple', 'layout' => 'layouts/one_column_wide'),
+        'simple_wide'   => array('hidden' => true, 'css' => 'default', 'layout' => 'layouts/one_column_wide'),
         'editor'        => array('hidden' => true),
         'editor_wide'   => array('hidden' => true),
         'home'          => array('hidden' => true),

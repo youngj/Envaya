@@ -28,7 +28,7 @@ function themeChanged($theme)
 
     foreach ($vars['options'] as $theme)
     {
-        $optionsValues[$theme] = __("theme:$theme");
+        $optionsValues[$theme] = __("design:theme:$theme");
     }
 
      echo view('input/pulldown', array(

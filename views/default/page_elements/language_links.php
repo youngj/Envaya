@@ -4,7 +4,7 @@ $links = array();
 
 foreach (Language::$languages as $lang => $v)
 {    
-    $name = escape(__($lang, $lang));
+    $name = escape(__("lang:$lang", $lang));
 
     if (Language::get_current_code() == $lang)
     {

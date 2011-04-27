@@ -20,12 +20,12 @@
 <?php echo view('input/password', array(
     'name' => 'password'
 )) ?>
-<div class='help'><?php echo __('create:password:help') ?></div>
-<div class='help' style='padding-top:5px'><?php echo __('create:password:length') ?></div>
+<div class='help'><?php echo __('register:password:help') ?></div>
+<div class='help' style='padding-top:5px'><?php echo __('register:password:length') ?></div>
 </div>
 
 <div class='input'>
-<label><?php echo __('create:password2') ?></label><br />
+<label><?php echo __('register:password2') ?></label><br />
 <?php echo view('input/password', array(
     'name' => 'password2'
 )) ?>

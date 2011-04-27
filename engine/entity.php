@@ -241,7 +241,7 @@ abstract class Entity extends Model
     
     public function get_title()
     {
-        return __("item:".strtolower(get_class($this)));
+        return get_class($this)."({$this->guid})";
     }
 
     public function get_language()

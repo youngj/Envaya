@@ -22,10 +22,10 @@ class FeedItem_Message extends FeedItem
         
         $is_first_message = $message->guid == $topic->first_message_guid;
         
-        return sprintf($is_first_message ? __('discussions:feed_heading_topic') : __('discussions:feed_heading_message'), 
-            $this->get_org_link($mode),
-            "<a href='{$topic->get_url()}'>".escape($topic->subject)."</a>"
-        );                    
+        return strtr($is_first_message ? __('discussions:feed_heading_topic') : __('discussions:feed_heading_message'), array(
+            '{name}' => $this->get_org_link($mode),
+            '{topic}' => "<a href='{$topic->get_url()}'>".escape($topic->subject)."</a>"
+        ));
     }
     
     function render_content($mode)

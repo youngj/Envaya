@@ -23,7 +23,7 @@ class Action_Admin_ChangeUsername extends Action
 
             if (User::get_by_username($username))
             {
-                throw new ValidationException(__('registration:userexists'));
+                throw new ValidationException(__('register:userexists'));
             }
 
             $org->username = $username;

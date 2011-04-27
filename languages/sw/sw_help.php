@@ -1,9 +1,6 @@
 <?php 
 return array(
     'help:title' => 'Msaada',
-    'help:summary1' => 'Kwa kujiunga katika Envaya, shirika lako linapata tovuti ya msingi na ukurasa mkuu. Njema! Lakini usisimame sasa, kwa sababu tovuti yako inaweza kuwa bora sana.',
-    'help:summary2' => 'Kwa mfano, unaweza kuongeza kurasa nyingine kuhusu mada kama historia, miradi, na timu za shirika lako. Unaweza pia kuandika habari na kuonyesha picha kutoka miradi yako.',
-    'help:summary3' => 'Ukurasa huu utakusaidia kujifunza jinsi ya tovuti yako ya Envaya inafanya, na jinsi ya unaweza kuifanya bora.',
     'help:contents' => 'Fahirisi',
     'help:viewing' => 'Kuona tovuti yako',
     'help:viewing:url' => 'Anwani ya intaneti kwa ukurasa mkuu wa tovuti yako ni:',
@@ -34,7 +31,6 @@ return array(
     'help:news' => 'Habari',
     'help:news:about' => 'Ukurasa wa %s wa tovuti yako unaonyesha habari zote ambazo shirika lako limeziandika. Habari pia zinakuruhusu kuonyesha picha kutoka miradi yako. Tunakutia moyo kuchapisha habari mara kwa mara!',
     'help:news:feed' => 'Habari ni njia bora kuyaambia mashirika mengine vitu unavyovifanya. Katika ukurasa wa %s, unaweza kusoma habari kutoka mashirika mengine upendeleayo. Kama shirika linalopo mbali sana likiwa na mradi mzuri na likiandika kuhusu mradi katika Envaya, unaweza kuisoma na kupata mawazo kwa shirika lako!',
-    'help:news:mobile' => 'Kama huna web browser inayopatikana, unaweza pia kuongeza habari njia nyingine:',
     'help:other' => 'Kurasa nyingine',
     'help:other:summary' => 'Katika ukurasa wa %s, unaweza pia kuongeza kurasa nyingine kadhaa katika tovuti yako, unapoweza kuandika kuhusu:',
     'help:other:projects' => 'Kazi na shughuli linazozifanya shirika lako.',
@@ -45,5 +41,5 @@ return array(
     'help:connecting:summary' => 'Faida mkuu kutoka kuwa na tovuti yako katika Envaya ni kwamba mtandao ya tovuti unasababisha iwe rahisi utafute mashirika mengine, na kwa mashirika mengine kukugundua!',
     'help:connecting:messages' => 'Ujumbe',
     'help:connecting:messages:instructions' => 'Envaya inasababisha iwe rahisi kuwasiliana na mashirika mengine yanayotumia Envaya pia. Wakati ambapo umefungua katika Envaya, zuru tovuti ya shirika jingine tu, na bonyeza kiungo juu cha %s kuomba ubia.',
-    'help:connecting:disabled' => 'Angalia: Kwa sababu shirika lako halijakubaliwa kwa wasimamizi wa Envaya, Ubia na Ujumbe hazifanya kazi sasa.',
+    'help:connecting:messages:disabled' => 'Angalia: Kwa sababu shirika lako halijakubaliwa kwa wasimamizi wa Envaya, Ujumbe hazifanya kazi sasa.',
 );

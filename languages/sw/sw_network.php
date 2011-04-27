@@ -9,34 +9,29 @@ return array(
     
     'network:add_partnership_link' => 'Ongeza kama Ubia',
     
-    'network:notify_added_partnership_subject' => "%s imeorodhesha %s kama ubia",
+    'network:notify_added_partnership_subject' => "{name} imeorodhesha {subject} kama ubia",
 
-    'network:notify_invited_subject' => "%s imekaribisha shirika lako kujiunga Envaya",    
+    'network:notify_invited_subject' => "{name} imekaribisha shirika lako kujiunga Envaya",    
     
-    'network:notify_added_info' => "%s imeshaongeza %s kwenye orodha yake ya %s katika Envaya:",    
-    'network:notify_added_instructions' => "Ili kuongeza %s kwenye orodha yako ya %s, bonyeza hapa:",        
+    'network:notify_added_info' => "{name} imeshaongeza {subject} kwenye orodha yake ya {type} katika Envaya:",    
+    'network:notify_added_instructions' => "Ili kuongeza {name} kwenye orodha yako ya {type}, bonyeza hapa:",        
     
-    'network:invite_notify_info' => "%s imeshaongeza %s kwenye orodha yake ya %s katika Envaya ( %s ), na imekukaribisha kujiunga Envaya pia!",
+    'network:invite_notify_info' => "{name} imeshaongeza {subject} kwenye orodha yake ya {type} katika Envaya ( {url} ), na imekukaribisha kujiunga Envaya pia!",
     'network:invite_sign_up' => "Ikiwa shirika lako halijaandikisha kwenye Envaya, jiunge na kuumba tovuti yako sasa!",
     'network:invite_learn_more' => "Ili kujifunza zaidi kuhusu Envaya, bonyeza hapa:",
     
-    'network:partnership_added' => "%s imeongezwa kwenye orodha yako ya ubia.",
-
-    'network:partnership_deleted' => "%s imeondolewa kutoka orodha yako ya ubia.",    
-    
-    'network:already_partnership' => "%s imewahi kutajwa kwenye orodha yako ya ubia.",        
+    'network:added' => "{name} imeongezwa kwenye orodha yako ya {type}.",
+    'network:confirm_delete' => "Una hakika kuwa unataka kuondoa {name} kutoka orodha yako ya {type}?",            
+    'network:deleted' => "{name} imeondolewa kutoka orodha yako ya {type}.",       
+    'network:duplicate' => "{name} imewahi kutajwa kwenye orodha yako ya {type}.",        
+    'network:can_add_unregistered' => "Hata hivyo, unaweza kuliongeza kwenye orodha yako ya {type}.",
         
     'network:add_partnership_instructions' => "Ingiza jina la shirika la ubia, na data yoyote ya mawasiliano:",           
 
-    'network:empty' => "Mtandao wa shirika hili ni mtupu.",
-        
+    'network:empty' => "Mtandao wa shirika hili ni mtupu.",        
     'network:confirm_partner' => "Thibitisha shirika kuongeza kama ubia:",
-    
-    'network:confirm_delete_partnership' => "Una hakika kuwa unataka kuondoa %s kutoka orodha yako ya ubia?",        
-        
-    'network:can_add_unregistered_partner' => "Hata hivyo, unaweza kuliongeza kwenye orodha yako ya ubia.",
-    
-    'network:feed_heading' => '%s imeongeza %s kwenye orodha yake ya %s.',
+                
+    'network:feed_heading' => '{name} imeongeza {subject} kwenye orodha yake ya {type}.',
     
     'network:no_self_partnership' => "Huwezi kujiongeza kama ubia.",    
     
@@ -50,12 +45,12 @@ return array(
     'network:add_button' => "Ongeza Shirika",        
     'network:dont_add_button' => "Usiongeze",
     
-    'network:org_not_registered' => "Inaonekana kwamba %s haijajiunga Envaya.",
+    'network:org_not_registered' => "Inaonekana kwamba {name} haijajiunga Envaya.",
     
-    'network:invite_org' => "Karibisha %s kujiunga Envaya?",
+    'network:invite_org' => "Karibisha {email} kujiunga Envaya?",
     'network:add' => "Ongeza",
        
-    'network:invited' => "%s imekaribishwa kujiunga Envaya.",                          
+    'network:invited' => "{name} imekaribishwa kujiunga Envaya.",                          
     
     'network:describe_relationship' => "Eleza uhusiano wa shirika lako na %s:",
     'network:edit_relationship' => "Hariri Uhusiano",    
@@ -63,8 +58,8 @@ return array(
     
     'network:suggestion' => 'Kipendekezo',
     
-    'network:approve_instructions' => '%s imeongeza shirika lako kwenye orodha yake ya %s.',
-    'network:approve_instructions_2' => 'Ili kuongeza %s kwenye orodha yako ya %s, bonyeza kitufe cha %s hapo chini.',
+    'network:approve_instructions' => '{name} imeongeza shirika lako kwenye orodha yake ya {type}.',
+    'network:approve_instructions_2' => 'Ili kuongeza {name} kwenye orodha yako ya {type}, bonyeza kitufe cha {button} hapo chini.',
     
     'network:add_description' => 'Ongeza maelezo...',
     

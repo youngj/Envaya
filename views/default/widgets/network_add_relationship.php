@@ -2,7 +2,7 @@
     $org = $vars['org'];
     $type = $vars['type'];
     $widget = $vars['widget'];
-    $header = OrgRelationship::msg($type, 'add_header');    
+    $header = OrgRelationship::msg_for_type($type, 'add_header');    
     
     ob_start();
     
@@ -83,7 +83,7 @@ function closeDialog()
 function showNotFoundDialog(query, res)
 {
     var content = createElem('div', {className:'padded selectMemberNotFound'},
-        <?php echo json_encode(__('network:org_not_registered')); ?>.replace("%s",query.name||query.email||query.website)
+        <?php echo json_encode(__('network:org_not_registered')); ?>.replace("{name}",query.name||query.email||query.website)
     );        
     
     if (query.email && res.can_invite)
@@ -93,14 +93,16 @@ function showNotFoundDialog(query, res)
         content.appendChild(createElem('div',
             createElem('label', { 'for': 'invite_box' },
                 invite,
-                <?php echo json_encode(__('network:invite_org')); ?>.replace("%s",query.email)
+                <?php echo json_encode(__('network:invite_org')); ?>.replace("{email}",query.email)
             )
         ));
     }
     else
     {
         content.appendChild(document.createTextNode(' ' +
-            <?php echo json_encode(OrgRelationship::msg($type, 'can_add_unregistered')); ?>
+            <?php echo json_encode(strtr(__('network:can_add_unregistered'), array(
+                '{type}' => OrgRelationship::msg_for_type($type, 'header')
+            ))); ?>
         ));
     }
     
@@ -136,7 +138,7 @@ function showConfirmMemberDialog(query, res)
     var results = res.results;
 
     var content = createElem('div', {className:'padded'});        
-    content.appendChild(createElem('div', <?php echo json_encode(OrgRelationship::msg($type, 'add_confirm')); ?>));
+    content.appendChild(createElem('div', <?php echo json_encode(OrgRelationship::msg_for_type($type, 'add_confirm')); ?>));
                   
     for (var i = 0; i < results.length; i++)
     {       
@@ -150,7 +152,7 @@ function showConfirmMemberDialog(query, res)
                 className: 'selectMemberNone',
                 click:function() { ignoreDirty(); closeDialog(); showNotFoundDialog(query, res); }
             }, 
-            <?php echo json_encode(OrgRelationship::msg($type, 'not_shown')); ?>)
+            <?php echo json_encode(OrgRelationship::msg_for_type($type, 'not_shown')); ?>)
     ));
     
     document.body.appendChild(modalBox = createModalBox({
@@ -185,7 +187,7 @@ if (!$org)
 ?>
 
 <div class='instructions'>
-<?php echo OrgRelationship::msg($type, 'add_instructions'); ?>
+<?php echo OrgRelationship::msg_for_type($type, 'add_instructions'); ?>
 </div>
 
 <table class='inputTable' style='margin:0 auto'>

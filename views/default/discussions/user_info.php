@@ -1,6 +1,6 @@
 <table class='inputTable'>
 <tr>
-<th><?php echo __('comment:name'); ?></th>
+<th><?php echo __('message:name'); ?></th>
 <td>
 <?php 
     $name = Session::get('user_name');

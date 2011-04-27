@@ -101,9 +101,9 @@ class Action_Discussion_NewTopic extends Action
             // notify site of message
            
             $mail = OutgoingMail::create(
-                sprintf(__('discussions:notification_topic_subject', $org->language), 
-                    $message->from_name, $topic->subject
-                )   
+                strtr(__('discussions:notification_topic_subject', $org->language), array(
+                    '{name}' => $message->from_name, '{topic}' => $topic->subject
+                ))
             );
             $mail->setBodyHtml(view('emails/discussion_message', array('message' => $message)));            
             $mail->send_to_user($org);

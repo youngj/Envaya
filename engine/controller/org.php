@@ -281,8 +281,6 @@ class Controller_Org extends Controller_Simple
 
         if ($step == 3 && !$loggedInUser)
         {
-            SessionMessages::add_error(__("create:notloggedin"));
-            $step = 1;
             forward('pg/login');
         }
 
@@ -293,7 +291,7 @@ class Controller_Org extends Controller_Simple
 
         if ($step == 2 && !Session::get('registration'))
         {
-            SessionMessages::add_error(__("qualify:missing"));
+            SessionMessages::add_error(__('register:qualify_missing'));
             $step = 1;
         }
 

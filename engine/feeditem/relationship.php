@@ -19,18 +19,18 @@ class FeedItem_Relationship extends FeedItem
         $org = $relationship->get_container_entity();
         $network = $org->get_widget_by_class('Network');
         
-        $list_name = $relationship->__('header');
+        $list_name = $relationship->msg('header');
         
         if ($network->is_active())
         {
             $list_name = "<a href='{$network->get_url()}'>$list_name</a>";
         }        
         
-        return sprintf(__('network:feed_heading'), 
-            $this->get_org_link($mode),
-            $subject_html,
-            $list_name
-        );
+        return strtr(__('network:feed_heading'), array(
+            '{name}' => $this->get_org_link($mode),
+            '{subject}' => $subject_html,
+            '{type}' => $list_name
+        ));
     }
     
     function render_content($mode)

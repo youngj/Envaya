@@ -21,6 +21,10 @@ body
     padding:10px;
 }
 
+#heading h1 a
+{
+    color:#b0b0b0;
+}
 .thin_column
 {
     width:<?php echo $vars['contentWidth'] ?>px;

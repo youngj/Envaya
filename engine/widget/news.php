@@ -31,12 +31,7 @@ class Widget_News extends Widget
     {
         return view("news/add_post", array('widget' => $this));
     }
-    
-    function render_add_child_title()
-    {
-        return sprintf(__('widget:edit_title'), $this->get_title());
-    }
-    
+        
     function new_child_widget_from_input()
     {           
         return $this->get_widget_by_name(get_input('uniqid'), 'Post');

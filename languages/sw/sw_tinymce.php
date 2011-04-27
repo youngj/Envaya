@@ -20,7 +20,6 @@ return array(
     'tinymce:document_insert' => "Ongeza Hati",
     'tinymce:document_edit' => "Hariri Hati",
     
-    'tinymce:loading' => 'Ikipakia...',
     'tinymce:justifyleft_desc' => 'Kushoto',
     'tinymce:justifycenter_desc' => 'Katikati',
     'tinymce:justifyright_desc' => 'Kulia',

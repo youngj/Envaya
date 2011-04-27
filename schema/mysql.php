@@ -35,20 +35,6 @@ CREATE TABLE `translations` (
   KEY `prop` (`container_guid`,`property`,`lang`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `interface_translations` (
-  `id` int auto_increment not null,
-  
-  `lang` varchar(4) NOT NULL,
-  `key` varchar(64) NOT NULL,
-  `value` text NOT NULL,
-  `approval` int NOT NULL default 0,
-  `owner_guid` bigint(20) unsigned NOT NULL,  
-  
-  PRIMARY KEY  (`id`),
-  KEY `prop` (`key`,`lang`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
 CREATE TABLE `comments` (
     <?php require 'schema/entity_columns.php'; ?>,
     <?php require 'schema/content_columns.php'; ?>,  

@@ -9,6 +9,6 @@
     $urlProps[] = "targetLang=".Language::get_current_code();
 
     $from = urlencode($_SERVER['REQUEST_URI']);
-    $url = "/tr/translate?from=$from&".implode("&", $urlProps);
+    $url = "/admin/translate?from=$from&".implode("&", $urlProps);
 
-    echo "<a href='".escape($url)."'>".__("trans:contribute")."</a>";
+    echo "<a href='".escape($url)."'>".__("trans:add")."</a>";

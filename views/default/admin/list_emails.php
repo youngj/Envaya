@@ -15,7 +15,7 @@
             <td><?php echo __($email->get_language()) ?></td>            
             <td><a href='/admin/view_email?email=<?php echo $email->guid ?>'><?php echo __('view') ?></a></td>
             <td><a href='/admin/edit_email?email=<?php echo $email->guid ?>'><?php echo __('edit') ?></a></td>
-            <td><a href='/admin/send_email?email=<?php echo $email->guid ?>'><?php echo __('send') ?></a></td>
+            <td><a href='/admin/send_email?email=<?php echo $email->guid ?>'><?php echo __('email:send') ?></a></td>
             <td>
             <?php if (!$email->active) { 
             

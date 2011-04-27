@@ -4,8 +4,8 @@ class FeedItem_EditHome extends FeedItem
 {
     function render_heading($mode)
     {
-        return sprintf(__('feed:edit_home'), 
-            $this->get_org_link($mode)
+        return strtr(__('feed:edit_home'), 
+            array('{name}' => $this->get_org_link($mode))
         );    
     }
     

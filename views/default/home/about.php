@@ -5,5 +5,5 @@
 <?php echo view('home/about_photo'); ?>
 <p class='last-paragraph'>
 <?php echo __('home:donate').' '; ?>
-<a href='/envaya/page/contribute'><strong><?php echo __('donate_now'); ?></strong></a>
+<a href='/envaya/page/contribute'><strong><?php echo __('home:donate_now'); ?></strong></a>
 </p>

@@ -22,7 +22,7 @@
     {
         //echo "<li>";
         echo "<div style='font-weight:bold;text-align:center'><a href='{$widget->get_edit_url()}?action=add_relationship&type={$type}'>"
-            .OrgRelationship::msg($type, 'add_header')."</a></div>";
+            .OrgRelationship::msg_for_type($type, 'add_header')."</a></div>";
         //echo "</li>";
     }
     //echo "</ul>";

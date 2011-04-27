@@ -1,0 +1,3 @@
+<?php
+    $translation = $vars['translation'];
+?>

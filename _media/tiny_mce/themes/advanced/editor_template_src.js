@@ -1297,7 +1297,7 @@
                  }                  
              );
 
-            var loading = createElem('div', {className:'modalImageFrameLoading'}, ed.getLang('loading'));
+            var loading = createElem('div', {className:'modalImageFrameLoading'}, __['loading']);
              
             var imageBox = createModalBox({               
                 title: ed.getLang(imageNode ? 'document_edit' : 'document_insert'),
@@ -1383,7 +1383,7 @@
                  }                  
              );
 
-            var loading = createElem('div', {className:'modalImageFrameLoading'}, ed.getLang('loading'));
+            var loading = createElem('div', {className:'modalImageFrameLoading'}, __['loading']);
             var imageBox = createModalBox({
                 title: ed.getLang(imageNode ? 'image_edit' : 'image_insert'),
                 content: createElem('div',

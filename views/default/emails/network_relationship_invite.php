@@ -11,20 +11,21 @@
     echo sprintf(__('email:salutation', $org->language), $subject_name);
     echo "\n\n";        
     
-    echo sprintf(__('network:invite_notify_info', $org->language), 
-        $org->name, 
-        $subject_name, 
-        $relationship->__('header', $org->language),
-        $widget->get_url()
+    $tr = array(
+        '{name}' => $org->name, 
+        '{subject}' => $subject_name, 
+        '{type}' => $relationship->msg('header', $subject->language),
+        '{url}' => $widget->get_url(),
     );
+    
+    
+    echo strtr(__('network:invite_notify_info', $org->language), $tr);
     echo "\n\n";
     
-    $country_name = 'Tanzania';
-    
-    echo sprintf(__('home:description_developing', $org->language), $country_name);
+    echo __('home:description_africa', $org->language);
     echo "\n\n";    
        
-    echo sprintf(__('network:invite_sign_up', $org->language));
+    echo __('network:invite_sign_up', $org->language);
     echo "\n";
     echo "{$base_url}org/new?invite={$invitedEmail->invite_code}";
     echo "\n\n";

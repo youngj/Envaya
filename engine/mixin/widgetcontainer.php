@@ -128,11 +128,6 @@ class Mixin_WidgetContainer extends Mixin
         return '';
     }
     
-    function render_add_child_title()
-    {
-        return $this->is_section_container() ? sprintf(__("widget:add_section"), $this->get_title()) : __('widget:add');
-    }
-    
     function new_child_widget_from_input()
     {        
         return null;

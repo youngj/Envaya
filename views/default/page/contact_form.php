@@ -2,7 +2,7 @@
     echo view('input/securitytoken');
 ?>
 <div class='input'>
-<div><label><?php echo __('feedback:message') ?>:</label></div>
+<div><label><?php echo __('message:message') ?></label></div>
 <?php
     echo view('input/longtext', array(
         'name' => 'message',
@@ -11,7 +11,7 @@
 ?>
 </div>
 <div class='input'>
-<label><?php echo __('feedback:name') ?>:</label>
+<label><?php echo __('message:name') ?></label>
 <?php
 
     $name = Session::isloggedin() ? Session::get_loggedin_user()->name : Session::get('user_name');
@@ -23,7 +23,7 @@
 ?>
 </div>
 <div class='input'>
-<label><?php echo __('feedback:email') ?>:</label>
+<label><?php echo __('message:email') ?></label>
 <?php
     $email = Session::isloggedin() ? Session::get_loggedin_user()->email : '';
 
@@ -36,6 +36,6 @@
 
 <?php
     echo view('input/submit', array(
-        'value' => __('feedback:send'),
+        'value' => __('message:send'),
     ));
 ?>

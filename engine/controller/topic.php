@@ -104,7 +104,7 @@ class Controller_Topic extends Controller_User
         
         if (!$message->can_edit())
         {
-            return redirect_back_error(__('noaccess'));
+            return redirect_back_error(__('page:noaccess'));
         }
         
         $message->disable();

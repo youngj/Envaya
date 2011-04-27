@@ -11,10 +11,10 @@ class Controller_Default extends Controller
             'defaults' => array('controller' => 'home'), 
         ),
         array(
-            'regex' => '/(?P<controller>pg|home|org|admin|tr)\b',
+            'regex' => '/(?P<controller>pg|home|org|admin)\b',
         ),
         array(
-            'regex' => '/(?P<username>\w{3,})\b', 
+            'regex' => '/(?P<username>[\w\-]{3,})\b', 
             'defaults' => array('controller' => 'usersite'), 
             'before' => 'init_user_by_username',
         ),

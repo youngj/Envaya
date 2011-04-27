@@ -91,18 +91,6 @@ class Action_EditWidget extends Action
         $org = $this->get_org();        
         $widget = $this->get_widget();        
         
-        $widgetTitle = $widget->get_title();
-
-        if (!$widget->is_section())
-        {
-            $title = sprintf(__("widget:edit_title"), $widgetTitle);
-        }
-        else
-        {
-            $title = sprintf(__("widget:edit_section_title"), $widget->get_container_entity()->get_title(), $widgetTitle);
-        }
-        
-
         $cancelUrl = get_input('from') ?: $widget->get_url();
 
         PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
@@ -110,7 +98,8 @@ class Action_EditWidget extends Action
         try
         {
             $this->page_draw(array(
-                'title' => $title,
+                'title' => sprintf(__('edit_item'), $widget->get_title()),
+                'header' => view('widgets/edit_header', array('widget' => $widget)),
                 'content' => $widget->render_edit()
             ));
         }

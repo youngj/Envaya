@@ -101,7 +101,7 @@
         
         var previewElem = createElem('div', {
             className: 'revisionPreview',
-            innerHTML: __['tinymce:loading']
+            innerHTML: __['loading']
         });
         
         var previewBox = createModalBox({
@@ -173,7 +173,7 @@
         
             var content = createElem('div', {className: 'padded'});
             
-            content.appendChild(document.createTextNode(__['tinymce:loading']));
+            content.appendChild(document.createTextNode(__['loading']));
             
             closeModalBox();
 

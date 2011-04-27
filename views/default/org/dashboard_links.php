@@ -10,7 +10,7 @@
     <div class='icon_separator'></div>
     <a class='icon_link icon_settings' href='<?php echo $org->username ?>/settings'><?php echo __('dashboard:settings') ?></a>
     <div class='icon_separator'></div>
-    <a class='icon_link icon_photos' href='<?php echo $org->get_url() . "/addphotos" ?>?from=pg/dashboard&t=<?php echo time(); ?>'><?php echo __('addphotos:title') ?></a>
+    <a class='icon_link icon_photos' href='<?php echo $org->get_url() . "/addphotos" ?>?from=pg/dashboard&t=<?php echo time(); ?>'><?php echo __('upload:photos:title') ?></a>
     <div class='icon_separator'></div>
     <a class='icon_link icon_help' href='<?php echo $org->get_url() ?>/help'><?php echo __('help:title') ?></a>
 </td>

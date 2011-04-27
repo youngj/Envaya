@@ -6,8 +6,8 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
 <?php
     $transMode = TranslateMode::get_current();
     $origLang = PageContext::get_original_language();
-    $origLangName = escape(__($origLang));
-    $userLangName = escape(__(Language::get_current_code()));
+    $origLangName = escape(__("lang:$origLang"));
+    $userLangName = escape(__("lang:".Language::get_current_code()));
 
     if ($transMode == TranslateMode::ManualOnly && !PageContext::has_translation(TranslateMode::ManualOnly))
     {
@@ -15,12 +15,14 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
     }
 
     $links = array();
+    
+    $tr = array('{origlang}' => $origLangName, '{curlang}' => $userLangName);
 
     if ($transMode == TranslateMode::ManualOnly) // viewing manual translation
     {
         if (PageContext::has_stale_translation())
         {
-            echo sprintf(__("trans:stale_trans_from_to"), $origLangName, $userLangName);
+            echo strtr(__("trans:stale_trans_from_to"), $tr);
 
             $links[] = view('translation/mode_link', array(
                 'mode' => TranslateMode::All, 
@@ -30,7 +32,7 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
         }
         else if (PageContext::has_translation(TranslateMode::All))
         {
-            echo sprintf(__("trans:partial_trans_from_to"), $origLangName, $userLangName);
+            echo strtr(__("trans:partial_trans_from_to"), $tr);
 
             $links[] = view('translation/mode_link', array(
                 'mode' => TranslateMode::All, 
@@ -40,7 +42,7 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
         }
         else
         {
-            echo sprintf(__("trans:trans_from_to"), $origLangName, $userLangName);
+            echo strtr(__("trans:trans_from_to"), $tr);
         }
 
         $links[] = view('translation/mode_link', array(
@@ -53,15 +55,15 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
     {
         if (PageContext::has_translation_error())
         {
-            echo sprintf(__("trans:automatic_trans_error"), $origLangName, $userLangName);
+            echo strtr(__("trans:automatic_trans_error"), $tr);
         }
         else if (PageContext::has_translation(TranslateMode::ManualOnly))
         {
-            echo sprintf(__("trans:partial_automatic_trans_from_to"), $origLangName, $userLangName);
+            echo strtr(__("trans:partial_automatic_trans_from_to"), $tr);
         }
         else
         {
-            echo sprintf(__("trans:automatic_trans_from_to"), $origLangName, $userLangName);
+            echo strtr(__("trans:automatic_trans_from_to"), $tr);
         }
 
         $links[] = view('translation/mode_link', array(

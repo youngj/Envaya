@@ -9,11 +9,10 @@ class Statistics
     {
         $entity_stats = array();
 
-        $types = Database::get_rows("SELECT distinct subtype_id from entities");
+        $types = Database::get_rows("SELECT subtype_id, count(*) as count from entities group by subtype_id");
         foreach ($types as $type)
         {
-            $subtype_cnt = Database::get_row("SELECT count(*) as count from entities where subtype_id = ? ", array($type->subtype_id));
-            $entity_stats[$type->subtype_id] = $subtype_cnt->count;
+            $entity_stats[$type->subtype_id] = $type->count;
         }
 
         return $entity_stats;

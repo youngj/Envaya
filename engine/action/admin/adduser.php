@@ -20,7 +20,7 @@ class Action_Admin_AddUser extends Action
 
         if ($password != $password2)
         {
-            throw new ValidationException(__('create:passwords_differ'));
+            throw new ValidationException(__('register:passwords_differ'));
         }
 
         $new_user = register_user($username, $password, $name, $email);
@@ -31,12 +31,7 @@ class Action_Admin_AddUser extends Action
 
         $new_user->set_metadata('admin_created', true);
         $new_user->set_metadata('created_by_guid', Session::get_loggedin_userid());
-        $new_user->save();
-
-        OutgoingMail::create(
-            __('useradd:subject'),
-            sprintf(__('useradd:body'), $name, Config::get('sitename'), Config::get('url'), $username, $password)
-        )->send_to_user($new_user);                        
+        $new_user->save();                     
 
         SessionMessages::add(sprintf(__("adduser:ok"), Config::get('sitename')));
 

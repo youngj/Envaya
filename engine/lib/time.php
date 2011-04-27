@@ -11,28 +11,28 @@
         $diff = time() - ((int) $time);
         if ($diff < 60) 
         {
-            return __("friendlytime:justnow");
+            return __("date:justnow");
         } 
         else if ($diff < 3600) 
         {
             $minutes = round($diff / 60);
             return ($minutes > 1) 
-                ? sprintf(__("friendlytime:minutes"), $minutes) 
-                : __("friendlytime:minutes:singular");
+                ? sprintf(__("date:minutes"), $minutes) 
+                : __("date:minutes:singular");
         } 
         else if ($diff < 86400) 
         {
             $hours = round($diff / 3600);
             return ($hours > 1)
-                ? sprintf(__("friendlytime:hours"), $hours)
-                : __("friendlytime:hours:singular");               
+                ? sprintf(__("date:hours"), $hours)
+                : __("date:hours:singular");               
         } 
         else if ($diff < 604800) 
         {
             $days = round($diff / 86400);
             return ($days > 1)
-                ? sprintf(__("friendlytime:days"), $days)
-                : __("friendlytime:days:singular");
+                ? sprintf(__("date:days"), $days)
+                : __("date:days:singular");
         } 
         else 
         {

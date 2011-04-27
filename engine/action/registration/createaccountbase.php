@@ -12,9 +12,9 @@ abstract class Action_Registration_CreateAccountBase extends Action
     protected function show_possible_duplicates($dups)
     {
         $this->page_draw(array(
-            'title' => __("create:possible_duplicate"),
+            'title' => __("register:possible_duplicate"),
             'content' => view("org/possible_duplicate", array(
-                'message' => __('create:possible_duplicate'), 
+                'message' => __('register:possible_duplicate'), 
                 'login_url' => $this->get_login_url(), 
                 'duplicates' => $dups
             )),
@@ -30,7 +30,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
 
         if (!$name)
         {
-            throw new ValidationException(__('create:no_name'));
+            throw new ValidationException(__('register:no_name'));
         }
 
         $username = trim(get_input('username'));
@@ -42,7 +42,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
 
         if (strcmp($password, $password2) != 0)
         {
-            throw new ValidationException(__('create:passwords_differ'));
+            throw new ValidationException(__('register:passwords_differ'));
         }
 
         $lpassword = strtolower($password);
@@ -51,7 +51,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
 
         if (strpos($lname, $lpassword) !== FALSE || strpos($lusername, $lpassword) !== FALSE)
         {
-            throw new ValidationException(__('create:password_too_easy'));
+            throw new ValidationException(__('register:password_too_easy'));
         }
 
         validate_password($password);
@@ -73,7 +73,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
         
         if (User::get_by_username($username, true))
         {
-            throw new ValidationException(__('create:username_exists'));
+            throw new ValidationException(__('register:username_exists'));
         }                
         
         $org = new Organization();
@@ -114,7 +114,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
         
         login($org, false);
 
-        SessionMessages::add(__("create:ok"));   
+        SessionMessages::add(__('register:created_ok'));   
 
         $this->org = $org;
         

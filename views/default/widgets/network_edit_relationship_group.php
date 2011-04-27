@@ -30,7 +30,7 @@
         $content = ob_get_clean();
     
         echo view('section', array(
-            'header' => OrgRelationship::msg($type, 'header'), 
+            'header' => OrgRelationship::msg_for_type($type, 'header'), 
             'content' => $content
         ));
     }    

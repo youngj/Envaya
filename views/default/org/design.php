@@ -6,10 +6,10 @@
 
 <?php echo view('input/securitytoken'); ?>
 
-<div class='section_header' id='icon'><?php echo __('icon'); ?></div>
+<div class='section_header' id='icon'><?php echo __('design:logo'); ?></div>
 <div class='section_content padded'>
 <div class='help' style='padding-bottom:5px'>
-<?php echo __('icon:description') ?>
+<?php echo __('design:logo:description') ?>
 </div>
 
 
@@ -38,7 +38,7 @@ echo view('input/submit',array(
 
 </div>
 
-<div class='section_header'><?php echo __('header'); ?></div>
+<div class='section_header'><?php echo __('design:header'); ?></div>
 <div class='section_content padded'>
 
 <script type='text/javascript'>
@@ -84,17 +84,17 @@ function customHeaderChanged()
         'value' => $org->has_custom_header() ? '1' : '0',
         'js' => "onchange='customHeaderChanged()' onclick='customHeaderChanged()'",
         'options' => array(
-            '0' => __('header:default'),
-            '1' => __('header:custom'),
+            '0' => __('design:header:default'),
+            '1' => __('design:header:custom'),
         )
     ));
 ?>
 
 <div id='default_header_container' <?php echo $org->has_custom_header() ? "style='display:none'" : "" ?> >
     <div class='header_preview'>
-        <?php echo view('org/default_header', array('org' => $org, 'subtitle' => __('header:subtitle'))) ?>
+        <?php echo view('org/default_header', array('org' => $org, 'subtitle' => __('design:header:subtitle'))) ?>
     </div>
-    <div class='help'><?php echo sprintf(__('header:changelogo'), __('icon')) ?></div>
+    <div class='help'><?php echo sprintf(__('design:header:changelogo'), __('design:logo')) ?></div>
 </div>
 
 <div id='custom_header_container' <?php echo !$org->has_custom_header() ? "style='display:none'" : "" ?>>
@@ -102,7 +102,7 @@ function customHeaderChanged()
     <?php
         if ($org->has_custom_header())
         {
-            echo "<div style='margin-top:10px'>".__('image:current')."</div>";
+            echo "<div style='margin-top:10px'>".__('upload:image:current')."</div>";
             echo "<div class='header_preview'>".view('org/custom_header', array('org' => $org))."</div>";
         }
     ?>
@@ -111,11 +111,11 @@ function customHeaderChanged()
             <?php
                 if ($org->has_custom_header())
                 {
-                    echo __('image:new');
+                    echo __('upload:image:new');
                 }
                 else
                 {
-                    echo __('header:chooseimage');
+                    echo __('design:header:chooseimage');
                 }
             ?>
         <br />
@@ -130,7 +130,7 @@ function customHeaderChanged()
         ))
     ?>
     <div class='help'>
-    <?php echo __('header:constraints') ?>
+    <?php echo __('design:header:constraints') ?>
     </div>
     </div>
 </div>
@@ -147,7 +147,7 @@ echo view('input/submit',array(
 </div>
 
 
-<div class='section_header'><?php echo __("theme"); ?></div>
+<div class='section_header'><?php echo __('design:theme'); ?></div>
 <div class='section_content padded'>
 
 <?php echo view('input/theme', array(

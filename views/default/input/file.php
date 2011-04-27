@@ -7,11 +7,6 @@
 	 * @uses $vars['name'] The name of the input field
 	 * 
 	 */
-
-    if (!empty($vars['value'])) {
-        echo __('fileexists') . "<br />";
-    }
-
     $class = $vars['class'];
 	if (!$class) $class = "input-file";
 ?>

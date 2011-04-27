@@ -59,26 +59,48 @@ function run_sql_script($scriptlocation)
     }
 }
 
-    
-if (!is_installed())
-{    
-    run_sql_script("schema/mysql.php");
-    
-    foreach (Config::get('modules') as $module_name)
+function install_schema($module_name = null)
+{
+    $path = "schema/mysql.php";
+    if ($module_name)
     {
-        $module_path = get_module_path($module_name)."schema/mysql.php";
-        if (is_file($module_path))
-        {
-            run_sql_script($module_path);
-        }
+        $path = get_module_path($module_name).$path;
     }
     
-    State::set('installed', 1);    
-    echo "done\n";
+    if (is_file($path))
+    {
+        run_sql_script($path);
+    }
+    else
+    {   
+        echo "(no schema at $path)";
+    }
+}
+
+$module_name = @$argv[1];
+
+if ($module_name)
+{
+    install_schema($module_name);
 }
 else
-{
-    echo "already installed\n";
+{    
+    if (!is_installed())
+    {    
+        install_schema();
+        
+        foreach (Config::get('modules') as $module_name)
+        {
+            install_schema($module_name);
+        }
+        
+        State::set('installed', 1);    
+        echo "done\n";
+    }
+    else
+    {
+        echo "already installed\n";
+    }
 }
 
 Config::set('debug', false); // hack to suppress SQL profiling messages for this script

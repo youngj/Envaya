@@ -23,6 +23,6 @@ function showAttachDocument()
 </script>
 
 <div class='attachControls'>
-    <a href='javascript:showAttachImage()' class='attachImage' onclick='ignoreDirty()'><?php echo __('dashboard:attach_image') ?></a>
-    <a href='javascript:showAttachDocument()' class='attachDocument' onclick='ignoreDirty()'><?php echo __('dashboard:attach_document') ?></a>    
+    <a href='javascript:showAttachImage()' class='attachImage' onclick='ignoreDirty()'><?php echo __('widget:news:attach_image') ?></a>
+    <a href='javascript:showAttachDocument()' class='attachDocument' onclick='ignoreDirty()'><?php echo __('widget:news:attach_document') ?></a>    
 </div>

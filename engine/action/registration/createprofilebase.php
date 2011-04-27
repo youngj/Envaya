@@ -13,17 +13,17 @@ class Action_Registration_CreateProfileBase extends Action
         $mission = get_input('mission');
         if (!$mission)
         {
-            throw new ValidationException(__("setup:mission:blank"));
+            throw new ValidationException(__("register:mission:blank"));
         }
 
         $sectors = get_input_array('sector');
         if (sizeof($sectors) == 0)
         {
-            throw new ValidationException(__("setup:sector:blank"));
+            throw new ValidationException(__("register:sector:blank"));
         }
         else if (sizeof($sectors) > 5)
         {
-            throw new ValidationException(__("setup:sector:toomany"));
+            throw new ValidationException(__("register:sector:toomany"));
         }
 
         $org->language = Language::get_current_code();
@@ -65,7 +65,7 @@ class Action_Registration_CreateProfileBase extends Action
             )->send_to_admin();
         }            
         
-        SessionMessages::add(__("setup:ok"));
+        SessionMessages::add(__("register:homepage_created"));
         
         $this->post_process_input();
     }    

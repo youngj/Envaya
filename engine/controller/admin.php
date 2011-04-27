@@ -17,7 +17,7 @@ class Controller_Admin extends Controller_Simple
     {
         $this->page_draw(array(
             'theme_name' => 'simple_wide',
-            'title' => __('email:send'),
+            'title' => __('user:contact_list'),
             'header' => '',
             'content' => view('admin/contact')
         ));
@@ -82,15 +82,6 @@ class Controller_Admin extends Controller_Simple
         ));        
     }   
     
-    function action_translateQueue()
-    {
-        $this->page_draw(array(
-            'title' => __('translate:queue'),
-            'content' => view('translation/queue', array('lang' => Language::get_current_code())),
-            'theme_name' => 'simple_wide',
-        ));
-    }
-
     function action_statistics()
     {
         $this->page_draw(array(
@@ -146,7 +137,7 @@ class Controller_Admin extends Controller_Simple
         }
         else
         {
-            $content = __('search:no_results');
+            $content = __('search:noresults');
         }
                 
         $this->page_draw(array(
@@ -294,5 +285,11 @@ class Controller_Admin extends Controller_Simple
             )),
             'theme_name' => 'editor_wide'
         ));
+    }
+    
+    function action_translate()
+    {
+        $action = new Action_Admin_TranslateContent($this);
+        $action->execute();
     }
 }

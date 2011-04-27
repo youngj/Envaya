@@ -6,7 +6,7 @@
     ob_start();
 ?>
 <div class='input'>
-    <label><?php echo __("setup:sector"); ?><br /></label>
+    <label><?php echo __("register:sector"); ?><br /></label>
     <?php
         echo view("input/checkboxes",array(
             'name' => 'sector',
@@ -14,7 +14,7 @@
             'options' => OrgSectors::get_options(),
             'value' => $org->get_sectors()));
     ?>
-    <?php echo __('setup:sector:other_specify') ?> <?php echo view('input/text', array(
+    <?php echo __('register:sector:other_specify') ?> <?php echo view('input/text', array(
     'name' => 'sector_other',
     'value' => $org->get_metadata('sector_other'),
     'js' => 'style="width:200px"'

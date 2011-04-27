@@ -1,6 +1,6 @@
 <?php
 return array(
-    'cache_version' => 171,  // increment when css, or external js (tinymce/swfupload) changes
+    'cache_version' => 172,  // increment when css, or external js (tinymce/swfupload) changes
     'debug' => true,
     
     'dbuser' => '',
@@ -66,7 +66,7 @@ return array(
 
     'extract_images_from_docs' => false,
     
-    'modules' => array(),
+    'modules' => array('translate'),
     
     'discussion_list_suffix' => '-list',
     'apps_domain' => '',

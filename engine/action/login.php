@@ -20,7 +20,7 @@ class Action_Login extends Action
 
         if ($result)
         {
-            SessionMessages::add(sprintf(__('loginok'), $user->name));
+            SessionMessages::add(sprintf(__('login:welcome'), $user->name));
 
             if (!$next)
             {

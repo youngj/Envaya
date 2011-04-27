@@ -23,44 +23,33 @@ class Action_SendMessage extends Action
 
         $recipient = $this->get_org();
 
-        if (!$recipient)
+        $subject = get_input('subject');
+        if (!$subject)
         {
-            SessionMessages::add_error(__("message:invalid_recipient"));
-            return $this->render();
+            throw new ValidationException(__("message:subject_missing"));
+        }
+
+        $message = get_input('message');
+        if (!$message)
+        {
+            throw new ValidationException(__("message:empty"));
+        }
+
+        $mail = OutgoingMail::create($subject, $message);
+        $mail->setFrom(Config::get('email_from'), $user->name);
+        $mail->setReplyTo($user->email, $user->name);
+        $mail->addBcc($user->email);
+        
+        if ($mail->send_to_user($recipient))
+        {
+            SessionMessages::add(__("message:sent"));
         }
         else
         {
-            $subject = get_input('subject');
-            if (!$subject)
-            {
-                SessionMessages::add_error(__("message:subject_missing"));
-                return $this->render();
-            }
-
-            $message = get_input('message');
-            if (!$message)
-            {
-                SessionMessages::add_error(__("message:message_missing"));
-                return $this->render();
-            }
-
-            $mail = OutgoingMail::create($subject, $message);
-            $mail->setFrom(Config::get('email_from'), $user->name);
-            $mail->setReplyTo($user->email, $user->name);
-            $mail->addBcc($user->email);
-            
-            if ($mail->send_to_user($recipient))
-            {
-                SessionMessages::add(__("message:sent"));
-            }
-            else
-            {
-                SessionMessages::add_error(__("message:not_sent"));
-                return $this->render();
-            }
-
-            forward($recipient->get_url());
+            throw new ValidationException(__("message:not_sent"));
         }
+
+        forward($recipient->get_url());
     }
 
     function render()

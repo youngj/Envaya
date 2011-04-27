@@ -1,10 +1,10 @@
 <div class='padded'>
 <?php
-    $form_body = "<p>" . __('user:password:text') . "</p>";
-    $form_body .= "<p><label>". __('user:username_or_email') . " " . 
+    $form_body = "<p>" . __('login:resetreq:text') . "</p>";
+    $form_body .= "<p><label>". __('login:username_or_email') . " " . 
         view('input/text', array('name' => 'username', 'value' => $vars['username'])) . 
         "</label></p>";
-    $form_body .= "<p>" . view('input/submit', array('value' => __('submit_request'))) . "</p>";
+    $form_body .= "<p>" . view('input/submit', array('value' => __('login:resetreq:submit'))) . "</p>";
 
     echo view('input/form', array('action' => Config::get('url')."pg/forgot_password", 'body' => $form_body)); 
 ?>

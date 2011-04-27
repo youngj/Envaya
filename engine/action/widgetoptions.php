@@ -19,7 +19,7 @@ class Action_WidgetOptions extends Action
         $widget->in_menu = get_input('in_menu') == 'no' ? 0 : 1;
         $widget->save();
 
-        SessionMessages::add(__('widget:saved'));
+        SessionMessages::add(__('widget:save:success'));
         forward($widget->get_url());
     }
     

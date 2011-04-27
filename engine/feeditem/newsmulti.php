@@ -6,11 +6,11 @@ class FeedItem_NewsMulti extends FeedItem_News
     {
         $count = @$this->args['count'] ?: 1;
     
-        return sprintf(__('feed:news_multi'), 
-            $this->get_org_link($mode),                
-            $this->get_link(__('widget:news:items')),
-            $count
-        );
+        return strtr(__('feed:news_multi'), array(
+            '{name}' => $this->get_org_link($mode),
+            '{title}' => $this->get_link(__('widget:news:items')),
+            '{count}' => $count,
+        ));             
     }
     
     function get_url()

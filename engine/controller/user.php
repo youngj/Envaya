@@ -141,7 +141,7 @@ abstract class Controller_User extends Controller
         {
             if (Session::isloggedin())
             {
-                SessionMessages::add_error(__('noaccess'));
+                SessionMessages::add_error(__('page:noaccess'));
             }        
         
             $this->force_login();

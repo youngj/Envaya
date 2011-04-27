@@ -50,7 +50,8 @@ class Action_AddWidget extends Action
         PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
         
         $this->page_draw(array(
-            'title' => $container->render_add_child_title(),
+            'title' => $container->is_section_container() ? __('widget:add_section') : __('widget:add'),
+            'header' => view('widgets/add_header', array('widget' => $container)),
             'content' => $container->render_add_child()
         ));
     }

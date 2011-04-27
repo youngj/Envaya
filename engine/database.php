@@ -243,7 +243,7 @@ class Database
 
         if (!$stmt->execute($args))
         {
-            throw new DatabaseException(__("DatabaseException:ExecuteFailed"));
+            throw new DatabaseException(__('error:DatabaseExecuteFailed'));
         }
         return $stmt;
     }    

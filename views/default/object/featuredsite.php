@@ -44,7 +44,7 @@ if (Session::isadminloggedin())
     if (Language::get_current_code() != $entity->get_language())
     {
         $escUrl = urlencode($_SERVER['REQUEST_URI']);                   
-        echo " <a href='/tr/translate?from=$escUrl&prop[]={$entity->guid}.content.1'>".__("trans:contribute")."</a>";
+        echo " <a href='/tr/translate?from=$escUrl&prop[]={$entity->guid}.content.1'>".__("trans:add")."</a>";
     }
     
     ?>              

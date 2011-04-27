@@ -22,7 +22,7 @@ class Action_ForgotPassword extends Action
         {
             if (!$user->email)
             {
-                SessionMessages::add_error(__('user:password:resetreq:no_email'));
+                SessionMessages::add_error(__('login:resetreq:no_email'));
                 forward("page/contact");
             }
 
@@ -30,23 +30,16 @@ class Action_ForgotPassword extends Action
             $user->save();
 
             $mail = OutgoingMail::create(
-                __('email:resetreq:subject',$user->language),
+                __('login:resetreq:subject',$user->language),
                 view('emails/password_reset_request', array('user' => $user))
             );
             
-            if ($mail->send_to_user($user))
-            {
-                SessionMessages::add(__('user:password:resetreq:success'));
-            }
-            else
-            {
-                SessionMessages::add_error(__('user:password:resetreq:fail'));
-                return $this->render();
-            }
+            $mail->send_to_user($user);
+            SessionMessages::add(__('login:resetreq:success'));
         }
         else
         {
-            SessionMessages::add_error(sprintf(__('user:username:notfound'), $username));
+            SessionMessages::add_error(sprintf(__('login:resetreq:notfound'), $username));
             return $this->render();
         }
 
@@ -56,7 +49,7 @@ class Action_ForgotPassword extends Action
     function render()
     {    
         $this->page_draw(array(
-            'title' => __('user:password:reset'),
+            'title' => __('login:resetreq:title'),
             'content' => view("account/forgotten_password",
                 array('username' => get_input('username'))
             ),

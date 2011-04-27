@@ -2,7 +2,7 @@
 
 <div class='padded'>
 <div id='instructions'>
-    <?php echo __('create:instructions') ?>
+    <?php echo __('register:account_instructions') ?>
 </div>
 
 <form action='<?php echo Config::get('secure_url'); ?>org/register2' method='POST'>

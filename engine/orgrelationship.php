@@ -33,50 +33,16 @@ class OrgRelationship extends Entity
     static $mixin_classes = array(
         'Mixin_Content'
     );    
-                                  
+           
+       
     static $msg_ids = array(
-        2 => array(
-            'header' => 'network:members',
-            'deleted' => 'network:member_deleted',
-            'duplicate' => 'network:already_member',
-            'added' => 'network:member_added',
-            'no_self' => 'network:no_self_member',            
-            'add_header' => 'network:add_member',
-            'can_add_unregistered' => 'network:can_add_unregistered_member',
-            'add_confirm' => 'network:confirm_member',
-            'add_instructions' => 'network:add_member_instructions',            
-            'add' => 'network:add_member',
-            'confirm_delete' => 'network:confirm_delete_member',
-            'notify_added_subject' => 'network:notify_added_member_subject',
-        ),
-        3 => array(
-            'header' => 'network:memberships',
-            'deleted' => 'network:membership_deleted',
-            'duplicate' => 'network:already_membership',
-            'added' => 'network:membership_added',
-            'no_self' => 'network:no_self_member',            
-            'add_header' => 'network:add_membership',
-            'add_confirm' => 'network:confirm_network',
-            'not_shown' => 'network:network_not_shown',
-            'can_add_unregistered' => 'network:can_add_unregistered_network',
-            'add_instructions' => 'network:add_membership_instructions',  
-            'add' => 'network:add_membership',        
-            'confirm_delete' => 'network:confirm_delete_membership',            
-            'add_this_link' => 'network:add_membership_link',
-            'notify_added_subject' => 'network:notify_added_membership_subject',            
-        ),
         1 => array(
             'header' => 'network:partnerships',
-            'deleted' => 'network:partnership_deleted',
-            'duplicate' => 'network:already_partnership',
-            'added' => 'network:partnership_added',
             'no_self' => 'network:no_self_partnership',            
             'add_header' => "network:add_partnership",
-            'can_add_unregistered' => 'network:can_add_unregistered_partner',
             'add_confirm' => 'network:confirm_partner',
             'add_instructions' => 'network:add_partnership_instructions', 
             'add' => 'network:add_partnership',        
-            'confirm_delete' => 'network:confirm_delete_partnership',
             'add_this_link' => 'network:add_partnership_link',
             'notify_added_subject' => 'network:notify_added_partnership_subject',
         ),
@@ -205,12 +171,12 @@ class OrgRelationship extends Entity
         }
     }    
     
-    function __($msg_type, $lang = null)
+    function msg($msg_type, $lang = null)
     {
-        return static::msg($this->type, $msg_type, $lang);
+        return static::msg_for_type($this->type, $msg_type, $lang);
     }
         
-    static function msg($type, $msg_type, $lang = null)
+    static function msg_for_type($type, $msg_type, $lang = null)
     {       
         return __(@static::$msg_ids[$type][$msg_type] 
             ?: @static::$msg_ids['default'][$msg_type]
@@ -233,7 +199,9 @@ class OrgRelationship extends Entity
         if ($subject_org && $widget && $reverse && $subject_org->email && $subject_org->is_notification_enabled(Notification::Network))
         {    
             OutgoingMail::create(
-                sprintf($this->__('notify_added_subject', $subject_org->language), $org->name, $subject_org->name), 
+                strtr($this->msg('notify_added_subject', $subject_org->language), array(
+                    '{name}' => $org->name, '{subject}' => $subject_org->name
+                )), 
                 view('emails/network_relationship_added', array(
                     'relationship' => $this,
                     'reverse' => $reverse,
@@ -266,7 +234,7 @@ class OrgRelationship extends Entity
         }
 
         $mail = OutgoingMail::create(
-            sprintf(__('network:notify_invited_subject', $org->language), $org->name),
+            strtr(__('network:notify_invited_subject', $org->language), array('{name}' => $org->name)),
             view('emails/network_relationship_invite', array(
                 'relationship' => $this,
                 'invited_email' => $invitedEmail,

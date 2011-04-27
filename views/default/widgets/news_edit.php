@@ -3,7 +3,7 @@
     $widget = $vars['widget'];
 
     echo view('section', array(
-        'header' => __("dashboard:add_update"), 
+        'header' => __("widget:news:add_update"), 
     ));        
     echo view('news/add_post', array('widget' => $widget));    
 

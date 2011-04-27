@@ -19,10 +19,10 @@ class Notification
 	static function get_options()
 	{
 		return array(
-			static::Batch => __('email:subscribe_reminders'),
-			static::Comments => __('email:subscribe_comments'),
-            static::Discussion => __('email:subscribe_discussion'),
-            static::Network => __('email:subscribe_network'),
+			static::Batch => __('user:subscribe_reminders'),
+			static::Comments => __('user:subscribe_comments'),
+            static::Discussion => __('user:subscribe_discussion'),
+            static::Network => __('user:subscribe_network'),
 		);
 	}
 

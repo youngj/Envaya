@@ -28,9 +28,9 @@
 <?php echo view('input/securitytoken'); ?>
 
 <div class='input'>
-<label><?php echo __('create:org_name') ?></label><br />
+<label><?php echo __('register:org_name') ?></label><br />
 <?php echo view('input/text', array('name' => 'org_name', 'value' => $initial_name, 'trackDirty' => true)) ?>
-<div class='help'><?php echo __('create:org_name:help') ?></div>
+<div class='help'><?php echo __('register:org_name:help') ?></div>
 </div>
 
 <script type='text/javascript'>
@@ -48,63 +48,63 @@ function updateUrl()
 </script>
 
 <div class='input'>
-<label><?php echo __('create:username') ?></label><br />
-<div class='help'><strong><?php echo __('create:username2') ?></strong></div>
+<label><?php echo __('register:username') ?></label><br />
+<div class='help'><strong><?php echo __('register:username2') ?></strong></div>
 
 <?php echo view('input/text', array(
     'name' => 'username',
     'id' => 'username',
     'js' => 'onkeyup="javascript:updateUrl()" onchange="javascript:updateUrl()"'
 )) ?>
-<div class='help' style='font-weight:bold'><?php echo __('create:username:help') ?>
-    <span class='websiteUrl'>http://envaya.org/<span id='urlUsername' style='font-weight:bold'><?php echo __('create:username:placeholder') ?></span></span>
+<div class='help' style='font-weight:bold'><?php echo __('register:username:help') ?>
+    <span class='websiteUrl'>http://envaya.org/<span id='urlUsername' style='font-weight:bold'><?php echo __('register:username:placeholder') ?></span></span>
 </div>
-<div style='padding-top:5px' class='help'><?php echo __('create:username:help2') ?></div>
+<div style='padding-top:5px' class='help'><?php echo __('register:username:help2') ?></div>
 </div>
 
 <div class='input'>
-<label><?php echo __('create:password') ?></label><br />
+<label><?php echo __('register:password') ?></label><br />
 <?php echo view('input/password', array(
     'name' => 'password'
 )) ?>
-<div class='help'><?php echo __('create:password:help') ?></div>
-<div class='help' style='padding-top:5px'><?php echo __('create:password:length') ?></div>
+<div class='help'><?php echo __('register:password:help') ?></div>
+<div class='help' style='padding-top:5px'><?php echo __('register:password:length') ?></div>
 </div>
 
 <div class='input'>
-<label><?php echo __('create:password2') ?></label><br />
+<label><?php echo __('register:password2') ?></label><br />
 <?php echo view('input/password', array(
     'name' => 'password2'
 )) ?>
 </div>
 
 <div class='input'>
-<label><?php echo __('create:email') ?></label><br />
+<label><?php echo __('register:email') ?></label><br />
 <?php echo view('input/email', array(
     'name' => 'email',
     'value' => $initial_email
 )) ?>
-<div class='help'><?php echo __('create:email:help') ?></div>
-<div class='help'><?php echo __('create:email:help_2') ?></div>
+<div class='help'><?php echo __('register:email:help') ?></div>
+<div class='help'><?php echo __('register:email:help_2') ?></div>
 </div>
 
 
 <div class='input'>
-<label><?php echo __('create:phone') ?></label><br />
+<label><?php echo __('register:phone') ?></label><br />
 <?php echo view('input/text', array(
     'name' => 'phone',
     'js' => "style='width:200px'"
 )) ?>
-<div class='help'><?php echo __('create:phone:help') ?></div>
-<div class='help'><?php echo __('create:phone:help_2') ?></div>
+<div class='help'><?php echo __('register:phone:help') ?></div>
+<div class='help'><?php echo __('register:phone:help_2') ?></div>
 </div>
 
 
 <div class='input'>
-<label><?php echo __('create:next') ?></label>
+<label><?php echo __('register:click_to_create') ?></label>
 <br />
 <?php echo view('input/submit',array(
-    'value' => __('create:next:button'),
+    'value' => __('register:create_button'),
     'trackDirty' => true
 ));
 ?>

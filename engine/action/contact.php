@@ -34,12 +34,12 @@ class Action_Contact extends Action
         
         if (!$this->message)
         {
-            throw new ValidationException(__('feedback:empty'));
+            throw new ValidationException(__('message:empty'));
         }
         
         if (!$this->email)
         {
-            throw new ValidationException(__('feedback:email_empty'));
+            throw new ValidationException(__('message:email_empty'));
         }
 
         validate_email_address($this->email);
@@ -49,7 +49,7 @@ class Action_Contact extends Action
         $mail->addTo($this->get_recipient_email());    
         $mail->send();
         
-        SessionMessages::add(__('feedback:sent'));
+        SessionMessages::add(__('message:feedback_sent'));
         forward($this->get_redirect_url());
     }    
     

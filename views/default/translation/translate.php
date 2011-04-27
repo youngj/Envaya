@@ -34,7 +34,7 @@ else
 echo "</td><td style='width:50%'>";
 
 $lang = $vars['targetLang'];
-$langStr = __($lang, $lang);
+$langStr = __("lang:$lang", $lang);
 
 $curTranslation = $entity->lookup_translation($property, $entity->get_language(), $lang, TranslateMode::ManualOnly, $isHTML);
 if (!$curTranslation->value)
@@ -93,4 +93,4 @@ echo "</td></tr></table>";
 
 $formBody = ob_get_clean();
 
-echo view('input/form', array('action' => "/tr/save_translation", 'body' => $formBody));
+echo view('input/form', array('action' => "/admin/translate", 'body' => $formBody));

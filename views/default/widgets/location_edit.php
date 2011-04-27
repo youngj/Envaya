@@ -6,9 +6,9 @@ $org = $widget->get_root_container_entity();
 
 ob_start();
 ?>
-<label><?php echo __('setup:location') ?></label>
+<label><?php echo __('register:location') ?></label>
 <div>
-<?php echo __('setup:city') ?> <?php echo view('input/text', array(
+<?php echo __('register:city') ?> <?php echo view('input/text', array(
     'name' => 'city',
     'js' => 'style="width:200px"',
     'trackDirty' => true,
@@ -16,10 +16,10 @@ ob_start();
 )) ?>, <?php echo escape($org->get_country_text()); ?>
 </div>
 <div>
-<?php echo __('setup:region') ?> <?php echo view('input/pulldown', array(
+<?php echo __('register:region') ?> <?php echo view('input/pulldown', array(
     'name' => 'region',
     'options' => Geography::get_region_options($org->country),
-    'empty_option' => __('setup:region:blank'),
+    'empty_option' => __('register:region:blank'),
     'value' => $org->region
 )) ?>
 <br />

@@ -11,11 +11,7 @@
             'class' => "submit_button addUpdateButton",
             'value' => __('publish')));
 
-    echo view('input/hidden', array(
-        'name' => 'uniqid',
-        'value' => uniqid("",true)
-    ));
-
+    echo view('input/uniqid');    
     echo view('news/attach_image');
 
     $formBody = ob_get_clean();

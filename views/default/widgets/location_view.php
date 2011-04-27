@@ -22,7 +22,7 @@ echo escape($org->get_location_text());
 echo "</em>";
 echo "<br />";
 echo "<a href='/org/browse/?lat=$lat&long=$long&zoom=10'>";
-echo __('org:see_nearby');
+echo __('widget:location:see_nearby');
 echo "</a>";
 echo "</div>";
 ?>

@@ -9,7 +9,7 @@
     
     if (sizeof($comments) > 0)
     {
-        echo "<h4>".sprintf(__('comment:count'), $widget->num_comments)."</h4>";
+        echo "<h4>".__('comment:title')." ({$widget->num_comments})</h4>";
     }
     
     foreach ($comments as $comment)
@@ -28,7 +28,7 @@
 <table class='inputTable'>
 <tr>
 <th>
-<label><?php echo __('comment:name'); ?></label> 
+<label><?php echo __('message:name'); ?></label> 
 </th>
 <td>
 <?php 

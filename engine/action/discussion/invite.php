@@ -9,7 +9,7 @@ class Action_Discussion_Invite extends Action
         $org = $this->get_org();
         if (!$org->is_approved())
         {
-            SessionMessages::add_error(__('noaccess'));
+            SessionMessages::add_error(__('page:noaccess'));
             forward($this->get_topic()->get_url());
         }
     }
@@ -31,7 +31,10 @@ class Action_Discussion_Invite extends Action
         }
         
         $mail = OutgoingMail::create(
-            sprintf(__('discussions:invite_subject'), $org->name, $topic->subject),
+            strtr(__('discussions:invite_subject'), array(
+                '{name}' => $org->name, 
+                '{topic}' => $topic->subject
+            )),
             $invite_message
         );
         

@@ -2,10 +2,10 @@
 
 <div class='padded'>
 <div id='instructions'>
-    <?php echo __('qualify:welcome') ?>
+    <?php echo __('register:welcome') ?>
 </div>
 <div class='instructions'>
-    <?php echo __('qualify:instructions') ?>
+    <?php echo __('register:qualify_instructions') ?>
 </div>
 
 <form action='<?php echo Config::get('secure_url'); ?>org/register1' method='POST'>
@@ -13,20 +13,20 @@
 <?php echo view('input/securitytoken'); ?>
 
 <div class='input'>
-<label><?php echo __('qualify:org_type') ?></label><br />
+<label><?php echo __('register:org_type') ?></label><br />
 
 <?php echo view('input/radio',
     array('name' => 'org_type',
         'options' => array(
-            'np' => __('qualify:org_type:non_profit'),
-            'p' => __('qualify:org_type:for_profit'),
-            'other' => __('qualify:org_type:other'),
+            'np' => __('register:org_type:non_profit'),
+            'p' => __('register:org_type:for_profit'),
+            'other' => __('register:org_type:other'),
         ))
     ) ?>
 </div>
 
 <div class='input'>
-<label><?php echo __('qualify:country') ?></label><br />
+<label><?php echo __('register:country') ?></label><br />
 
 <?php echo view('input/radio',
     array('name' => 'country',
@@ -38,10 +38,10 @@
 </div>
 
 <div class='input'>
-<label><?php echo __('qualify:next') ?></label>
+<label><?php echo __('register:click_to_continue') ?></label>
 <br />
 <?php echo view('input/submit',array(
-    'value' => __('qualify:next:button')
+    'value' => __('register:next_step')
 ));
 ?>
 </div>

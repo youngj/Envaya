@@ -16,7 +16,7 @@ class Action_EditDesign extends Action
 
         if ($theme != $org->theme)
         {
-            SessionMessages::add(__("theme:changed"));
+            SessionMessages::add(__("design:theme_changed"));
             $org->theme = $theme;
             $org->save();
         }
@@ -26,12 +26,12 @@ class Action_EditDesign extends Action
         if (get_input('deleteicon'))
         {
             $org->set_icon(null);
-            SessionMessages::add(__("icon:reset"));
+            SessionMessages::add(__("design:logo:reset"));
         }
         else if ($iconFiles)
         {
             $org->set_icon($iconFiles);
-            SessionMessages::add(__("icon:saved"));
+            SessionMessages::add(__("design:logo:saved"));
         }
 
         $headerFiles = UploadedFile::json_decode_array($_POST['header']);
@@ -43,13 +43,13 @@ class Action_EditDesign extends Action
             if ($org->has_custom_header())
             {
                 $org->set_header(null);
-                SessionMessages::add(__("header:reset"));
+                SessionMessages::add(__("design:header:reset"));
             }
         }
         else if ($headerFiles)
         {
             $org->set_header($headerFiles);
-            SessionMessages::add(__("header:saved"));
+            SessionMessages::add(__("design:header:saved"));
         }
         
         forward($org->get_url());

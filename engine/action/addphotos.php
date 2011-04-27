@@ -55,7 +55,7 @@ class Action_AddPhotos extends Action
             $post->post_feed_items();
         }
         
-        SessionMessages::add(__('addphotos:success'));
+        SessionMessages::add(__('upload:photos:success'));
         forward($org->get_url()."/news");
     }
 
@@ -64,7 +64,7 @@ class Action_AddPhotos extends Action
         $org = $this->get_org();
         
         $this->page_draw(array(
-            'title' => __('addphotos:title'),
+            'title' => __('upload:photos:title'),
             'content' => view('org/add_photos', array('org' => $org))
         ));        
     }

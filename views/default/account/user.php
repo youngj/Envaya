@@ -28,7 +28,7 @@
     </div>
 
     <div class='input'>
-        <label><?php echo __('email:address:label'); ?>:</label><br />
+        <label><?php echo __('email'); ?>:</label><br />
         <?php
             echo view('input/email',array('name' => 'email', 'value' => $user->email, 'trackDirty' => true));
         ?>

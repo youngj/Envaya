@@ -35,7 +35,7 @@
     else
     {
         echo "<div class='comment_link'>";
-        echo "<a href='{$widget->get_url()}#comments'>".sprintf(__('comment:count'), $widget->num_comments)."</a>";
+        echo "<a href='{$widget->get_url()}#comments'>".__('comment:title')." ({$widget->num_comments})</a>";
         echo "</div>";
     }
 ?>

@@ -2,7 +2,7 @@
 
 /*
  * Interface for retrieving localized strings for the UI.
- * Typically used via __('key') .
+ * Typically used via __( 'key' ) .
  *
  * These strings are stored in PHP files under languages/<language_code>/, each of 
  * which returns an associative array of key => localized string.
@@ -16,7 +16,7 @@
  * While 'gettext' or '_' is perhaps a more standard way of doing internationalization, 
  * it is annoying due to its use of binary files and compilation step. Also the gettext 
  * convention of using English text as the translation key is more fragile than using 
- * opaque keys (e.g. _('This is a translatable string.') instead of __('translatable_str')
+ * opaque keys (e.g. _('This is a translatable string.') instead of __( 'translatable_str')
  * because a change to the original text requires a change to all language files,
  * and also because the same English text may be translated multiple ways in another language.
  */
@@ -85,7 +85,7 @@ class Language
         $options = array();
         foreach (static::$languages as $k => $v)
         {
-            $options[$k] = __($k, $k);
+            $options[$k] = __("lang:$k", $k);
         }
 
         return $options;
@@ -107,6 +107,11 @@ class Language
         $this->code = $code;
         $this->translations = array();
         $this->loaded_files = array();
+    }   
+    
+    function get_code()
+    {
+        return $this->code;
     }
 
     function add_translations($language_array)
@@ -157,17 +162,8 @@ class Language
                 
         return null;
     }   
-    
-    function load_all()
-    {
-        $this->load_all_from_dir(Config::get('path'));        
-        foreach (Config::get('modules') as $module_name)
-        {
-            $this->load_all_from_dir(get_module_path($module_name));
-        }
-    }
-    
-    private function load_all_from_dir($dir_name)
+
+    private function add_group_names_in_dir(&$group_names, $dir_name)
     {
         if ($handle = opendir("{$dir_name}languages/{$this->code}"))
         {
@@ -175,12 +171,31 @@ class Language
             {
                 if (preg_match('/^'.$this->code.'_(\w+).php$/', $file, $matches))
                 {
-                    $this->load($matches[1]);
+                    $group_names[] = $matches[1];
                 }
             }
         }    
     }
     
+    function get_all_group_names()
+    {
+        $group_names = array();        
+        $this->add_group_names_in_dir($group_names, Config::get('path'));        
+        foreach (Config::get('modules') as $module_name)
+        {
+            $this->add_group_names_in_dir($group_names, get_module_path($module_name));
+        }    
+        return $group_names;
+    }
+    
+    function load_all()
+    {
+        foreach ($this->get_all_group_names() as $group_name)
+        {
+            $this->load($group_name);
+        }
+    }
+        
     function load($group_name)
     {        
         if (!@$this->loaded_files[$group_name])
@@ -211,4 +226,10 @@ class Language
     {
         return $this->translations;
     }    
+    
+    static function get_placeholders($value)
+    {
+        preg_match_all('/\%s|\{\w+\}/', $value, $matches);        
+        return @$matches[0] ?: array();
+    }
 }

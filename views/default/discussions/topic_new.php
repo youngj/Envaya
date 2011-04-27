@@ -22,22 +22,11 @@
     echo "<a href='{$widget->get_url()}'>".__('discussions:back_to_topics'). "</a>";
     echo "</div>";
 
-    echo view('input/hidden', array(
-        'name' => 'uniqid',
-        'value' => uniqid("",true)
-    ));
-    
+    echo view('input/uniqid');    
     echo view('input/securitytoken');
     echo view('input/submit', array('value' => __('publish')));
  ?>
 </form>
-
-<script type='text/javascript'>
-(function(){
-    document.forms[0].uniqid.value = new Date().getTime() + "." + Math.random();
-})();
-</script>
-
 <?php
     echo view('focus', array('name' => 'subject'));
 

@@ -23,7 +23,7 @@ class FunctionQueue
             
             if (!@$k->connect(Config::get('queue_host'), Config::get('queue_port')))
             {
-                throw new IOException(__("IOException:QueueConnectFailed"));
+                throw new IOException(__("error:QueueConnectFailed"));
             }
                         
             $kestrel = $k;
@@ -65,7 +65,7 @@ class FunctionQueue
         {       
             if (!$kestrel->set('call', serialize($queue_entry)))
             {
-                throw new IOException(__("IOException:QueueAppendFailed")); 
+                throw new IOException(__("error:QueueAppendFailed")); 
             }
         }
         return true;

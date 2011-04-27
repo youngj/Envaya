@@ -72,6 +72,14 @@ class Widget_Network extends Widget
         ));            
     }    
     
+    private function duplicate_error($relationship)
+    {
+        return redirect_back_error(strtr(__('network:duplicate'), array(
+                '{name}' => $relationship->get_subject_name(),
+                '{type}' => $relationship->msg('header')
+        )));
+    }
+    
     private function add_relationship()
     {
         $org = $this->get_container_entity();
@@ -110,7 +118,7 @@ class Widget_Network extends Widget
 
             if ($matchingRelationships > 0)
             {
-                return redirect_back_error(sprintf($relationship->__('duplicate'), $relationship->get_subject_name()));
+                return $this->duplicate_error($relationship);
             }
         }
         else // subject_org already an envaya member
@@ -129,7 +137,7 @@ class Widget_Network extends Widget
         
             if ($org->guid == $relationship->subject_guid)
             {
-                return redirect_back_error($relationship->__('no_self'));
+                return redirect_back_error($relationship->msg('no_self'));
             }
         
             if ($org->query_relationships()
@@ -137,7 +145,7 @@ class Widget_Network extends Widget
                 ->where('subject_guid = ?', $relationship->subject_guid)
                 ->exists())
             {
-                return redirect_back_error(sprintf($relationship->__('duplicate'), $relationship->get_subject_name()));
+                return $this->duplicate_error($relationship);
             }
             
             if ($org->is_approved() && $subject_org->query_relationships()
@@ -167,12 +175,17 @@ class Widget_Network extends Widget
             {
                 if ($relationship->send_invite_email())
                 {                
-                    SessionMessages::add(sprintf(__('network:invited'), $relationship->get_subject_name()));
+                    SessionMessages::add(strtr(__('network:invited'), array(
+                        '{name}' => $relationship->get_subject_name()
+                    )));
                 }
             }
         }
         
-        SessionMessages::add(sprintf($relationship->__('added'), $relationship->get_subject_name()));
+        SessionMessages::add(strtr(__('network:added'), array(
+            '{name}' => $relationship->get_subject_name(),
+            '{type}' => $relationship->msg('header')
+        )));
         forward($this->get_edit_url());    
     }
     
@@ -219,7 +232,10 @@ class Widget_Network extends Widget
             }            
             $relationship->delete();
             
-            SessionMessages::add(sprintf($relationship->__('deleted'), $relationship->get_subject_name()));
+            SessionMessages::add(strtr(__('network:deleted'), array(
+                '{name}' => $relationship->get_subject_name(),
+                '{type}' => $relationship->msg('header')
+            )));
         }       
         
         return forward($this->get_edit_url());        

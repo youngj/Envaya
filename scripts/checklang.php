@@ -36,12 +36,39 @@ function get_missing_language_keys($en, $trans)
     return $missing;
 }
 
+function get_placeholder_errors($en_trans, $trans)
+{
+    $error_keys = array();
+    foreach ($trans as $k => $v)
+    {
+        if (isset($en_trans[$k]))
+        {
+            $correct_placeholders = Language::get_placeholders($en_trans[$k]);
+            $placeholders = Language::get_placeholders($v);
+            sort($correct_placeholders);
+            sort($placeholders);
+            if ($placeholders != $correct_placeholders)
+            {
+                $error_keys[] = $k;
+            }
+            
+        }
+    }
+    return $error_keys;
+}
+
 if ($lang != 'en')
 {
     $language = Language::get($lang);    
     $language->load_all();
     $trans = $language->get_loaded_translations();
 
+    $placeholder_errors = get_placeholder_errors($en_trans, $trans);
+    foreach ($placeholder_errors as $key)
+    {
+        echo "mismatched placeholder: $key\n";
+    }
+    
     $missingKeys = get_missing_language_keys($en, $trans);
 
     foreach ($missingKeys as $key)
@@ -84,9 +111,9 @@ else
             {
                 //echo "$path\n";
                 $contents = file_get_contents($path);
-                if (preg_match_all('/__\(["\\\']([\w\:]+)["\\\']\)/', $contents, $langKeys))
+                if (preg_match_all('/(__|add_js_string)\(["\\\']([\w\:]+)["\\\']/', $contents, $langKeys))
                 {
-                    foreach ($langKeys[1] as $langKey)
+                    foreach ($langKeys[2] as $langKey)
                     {
                         $seenKeys[$langKey] = true;
                     }
@@ -105,6 +132,14 @@ else
         if (!isset($en_trans[$seenKey]))
         {
             echo "missing: $seenKey\n";
+        }
+    }
+    
+    foreach ($en_trans as $k => $v)
+    {
+        if (!isset($seenKeys[$k]) && !preg_match('/^(region|tinymce|design\:theme|lang|date\:month|viewtype)\:/', $k))
+        {
+            echo "maybe unused: $k\n";
         }
     }
 }

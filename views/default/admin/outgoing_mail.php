@@ -36,7 +36,7 @@
         echo "<td>".$mail->get_status_text()."</td>";        
         echo "<td>".view('output/confirmlink', array(
             'href' => "/admin/resend_mail?id={$mail->id}",
-            'text' => "Resend"
+            'text' => __('email:resend'),
         ))."</td>";
         echo "</tr>";
     }    

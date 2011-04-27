@@ -3,7 +3,7 @@
 <form method='POST' action='<?php echo escape($_SERVER['REQUEST_URL']); ?>'>
 
 <div class='instructions'>
-<?php echo __('create:duplicate_instructions'); ?>
+<?php echo __('register:duplicate_instructions'); ?>
 </div>
 
 <?php
@@ -24,7 +24,7 @@ foreach ($vars['duplicates'] as $dup)
 ?>
 
 <div class='instructions'>
-<?php echo __('create:not_duplicate_instructions'); ?>
+<?php echo __('register:not_duplicate_instructions'); ?>
 </div>
 
 <?php
@@ -33,7 +33,7 @@ echo view('input/hidden', array('name' => 'ignore_possible_duplicates', 'value' 
 
 echo view('input/hidden_multi', array('fields' => $_POST));
 
-echo view('input/submit', array('value' => __('create:not_duplicate')));
+echo view('input/submit', array('value' => __('register:not_duplicate')));
 
 ?>
 </form>

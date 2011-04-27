@@ -1,7 +1,7 @@
 <div id='previews'></div>
 <div id='progressContainer' style='padding-bottom:5px'></div>
 
-<label id='uploadLabel'><img src='/_graphics/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo __('addphotos:label') ?></label><br />
+<label id='uploadLabel'><img src='/_graphics/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo __('upload:photos:label') ?></label><br />
 <div id='uploadContainer'></div>
 
 <script type='text/javascript' src='/_media/swfupload.js?v<?php echo Config::get('cache_version') ?>'></script>
@@ -110,7 +110,7 @@ new MultiImageUploader(<?php echo view('input/swfupload_args', array(
         'placeholder_id' => 'uploadContainer',
         'previews_id' => 'previews',
         'no_flash_message' => view('upload/recommend_flash_message'),                
-        'button_more_message' => __('addphotos:more'),
+        'button_more_message' => __('upload:photos:more'),
         'post_params' => array(
             'sizes' => json_encode(Widget::get_image_sizes())
         )

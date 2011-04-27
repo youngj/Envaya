@@ -28,7 +28,7 @@ class Action_Admin_ChangeOrgApproval extends Action
         if (!$approvedBefore && $approvedAfter && $org->email)
         {
             OutgoingMail::create(
-                __('email:orgapproved:subject', $org->language),
+                __('register:approval_email:subject', $org->language),
                 view('emails/org_approved', array('org' => $org))
             )->send_to_user($org);
         }

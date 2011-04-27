@@ -35,7 +35,6 @@ return array(
     'tinymce:justifyright_desc' => 'Align Right',
     'tinymce:code_desc' => "Edit HTML Code",
     'tinymce:code_wordwrap' => "Wordwrap",
-    'tinymce:loading' => "Loading...",
     'tinymce:saving' => "Saving...",
     'tinymce:no_unsaved_changes' => "No unsaved changes.",
     'tinymce:saved' => "Changes saved.",

@@ -12,7 +12,6 @@ return array(
     'home:description2' => "Tunaumba vifaa vinavyoyaruhusu kujenga tovuti zao wenyewe, na kupa vifaa kwa NGOs kubwa kusaidia bidii hizi za jamii.",
     'home:description_africa' => "Envaya inatoa fursa kwa mashirika ya jumuiya ya kiraia Tanzania kupata tovuti bila malipo yoyote, ambapo yanaweza kusambaza habari za miradi yao na mashirika mengine na pia kimataifa.",
     'home:sign_up_info' => "Ikiwa wewe ni mwakilishi wa shirika la jumuiya ya kiraia Tanzania ambalo halijajiandikisha kwa Envaya, %s!",      
-    'home:sign_up_info_2' => "Kwa muda wa dakika tano tu, unaweza kutengeneza tovuti wewe mwenyewe.",
     'home:why' => "Kwa nini utumie Envaya?",
     'home:donate' => "Sisi ni bila faida. Hata mchango mdogo utasaidia kugawa teknolojia muhimu kwa mashirika ya kiraia katika nchi zinazoendelea!",
     'home:follow' => "Tufuate:",
@@ -20,4 +19,6 @@ return array(
     'home:view_updates' => "Ona Mabadiliko",       
     'home:sign_up_button' => "Jiunge",
     'home:sign_up_heading' => "Pata tovuti sasa",
+    'home:donate_now' => 'Changia sasa!',
+
 );

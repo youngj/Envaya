@@ -68,10 +68,10 @@ class Action_PostComment extends Action
 		
 		$notification_subject = sprintf(__('comment:notification_subject', $org->language), 
 			$comment->get_name());
-		$notification_body = sprintf(__('comment:notification_body', $org->language),
-			$comment->content,
-			"$comments_url#comments"
-		);
+		$notification_body = view('emails/comment_added', array(
+            'comment' => $comment, 
+            'url' => "$comments_url#comments",
+        ));
 		
 		if ($org && $org->email && $org->is_notification_enabled(Notification::Comments) 
 				&& $userId != $org->guid)
@@ -81,7 +81,7 @@ class Action_PostComment extends Action
 		}
 
         $mail = OutgoingMail::create(
-            sprintf(__('comment:notification_admin_subject'), $comment->get_name(), $org->name),
+            sprintf(__('comment:notification_subject'), $comment->get_name(), $org->name),
             $notification_body
         );
         $mail->send_to_admin();

@@ -16,7 +16,7 @@ ob_start();
 
 echo view("input/checkboxes", array('name' => 'public_email',
     'value' => $widget->get_metadata('public_email') ?: 'yes',
-    'options' => array('yes' => __('show_website'))
+    'options' => array('yes' => __('widget:contact:show_website'))
 ));
 
 ?>
@@ -24,8 +24,8 @@ echo view("input/checkboxes", array('name' => 'public_email',
 
 <div class='input'>
     <label><?php echo __('widget:contact:phone_number:edit') ?></label>
-    <div class='help'><?php echo __('create:phone:help') ?></div>
-    <div class='help'><?php echo __('create:phone:help_2') ?></div>
+    <div class='help'><?php echo __('register:phone:help') ?></div>
+    <div class='help'><?php echo __('register:phone:help_2') ?></div>
 <?php echo view("input/text", array('name' => 'phone_number',
     'value' => $org->phone_number,
     'js' => "style='width:250px'"
@@ -33,7 +33,7 @@ echo view("input/checkboxes", array('name' => 'public_email',
 
 echo view("input/checkboxes", array('name' => 'public_phone',
     'value' => $widget->get_metadata('public_phone') ?: 'yes',
-    'options' => array('yes' => __('show_website'))
+    'options' => array('yes' => __('widget:contact:show_website'))
 ));
 
 

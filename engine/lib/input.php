@@ -102,7 +102,7 @@
                 }
             }
         }
-        throw new ValidationException(__('actiongatekeeper:timeerror'));        
+        throw new ValidationException(__('page:expired'));        
     }
 
     /**

@@ -12,12 +12,12 @@
     {
         if (strlen($username) < 3)
         {
-            throw new ValidationException(__('registration:usernametooshort'));
+            throw new ValidationException(__('register:usernametooshort'));
         }
 
-        if (preg_match('/[^a-zA-Z0-9\-\_]/', $username, $matches))
+        if (preg_match('/[^\w\-]/', $username, $matches))
         {
-            throw new ValidationException(sprintf(__('registration:invalidchars'), $username, $matches[0]));
+            throw new ValidationException(sprintf(__('register:invalidchars'), $username, $matches[0]));
         }
 
         $lower = strtolower($username);
@@ -37,7 +37,7 @@
 
         if (in_array($lower, $badUsernames) || $username[0] == "_")
         {
-            throw new ValidationException(sprintf(__('registration:usernamenotvalid'), $username));
+            throw new ValidationException(sprintf(__('register:usernamenotvalid'), $username));
         }
 
         return $username;
@@ -52,7 +52,7 @@
     function validate_password($password)
     {
         if (strlen($password)<6)
-            throw new ValidationException(__('registration:passwordtooshort'));
+            throw new ValidationException(__('register:passwordtooshort'));
 
         return $password;
     }
@@ -67,7 +67,7 @@
     function validate_email_address($address)
     {
         if ($address !== "" && !preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+$/i', $address))
-            throw new ValidationException(__('registration:notemail'));
+            throw new ValidationException(__('register:notemail'));
 
         return $address;
     }
@@ -89,7 +89,7 @@
 
         if (empty($username) || empty($password) || empty($name)) 
         {
-            throw new ValidationException(__('registerbad'));
+            throw new ValidationException(__('register:bad'));
         }				       
 
         validate_email_address($email);
@@ -98,7 +98,7 @@
 
         // Check to see if $username exists already
         if ($user = User::get_by_username($username)) {
-            throw new ValidationException(__('registration:userexists'));
+            throw new ValidationException(__('register:userexists'));
         }
 
         $user = new User();

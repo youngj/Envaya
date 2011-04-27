@@ -13,7 +13,7 @@
     if (sizeof($entities) > 0)
     {
         echo view('section', array(
-            'header' => OrgRelationship::msg($type, 'header'), 
+            'header' => OrgRelationship::msg_for_type($type, 'header'), 
             'content' => view('paged_list', array(
                 'entities' => $entities,
                 'separator' => "<div style='clear:both;margin:10px 0px;' class='separator'></div>"

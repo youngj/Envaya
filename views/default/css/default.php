@@ -400,7 +400,6 @@ a#loginButton:hover, a#loginButton:hover .loginText
 
 .wide_column
 {
-    background-color:#f8f8f8;
     padding:10px;
 }
 

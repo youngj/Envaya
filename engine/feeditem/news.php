@@ -4,10 +4,10 @@ class FeedItem_News extends FeedItem
 {
     function render_heading($mode)
     {
-        return sprintf(__('feed:news'), 
-            $this->get_org_link($mode),                
-            $this->get_link(__('widget:news:item'))
-        );    
+        return strtr(__('feed:news'), array(
+            '{name}' => $this->get_org_link($mode),
+            '{title}' => $this->get_link(__('widget:news:item')),
+        ));         
     }
     
     function render_thumbnail($mode)

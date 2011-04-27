@@ -308,7 +308,7 @@ class Controller_Pg extends Controller_Simple {
     {
         $action = new Action_EmailSettings($this);
         $action->execute();   
-    }    
+    }        
 
     function action_delete_feed_item()
     {

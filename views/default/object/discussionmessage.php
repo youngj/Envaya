@@ -17,7 +17,7 @@
     }
     else
     {
-        echo "<div class='comment_deleted'>".__('discussions:message_deleted_marker')."</div>";
+        echo "<div class='comment_deleted'>[".__('discussions:message_deleted_marker')."]</div>";
     }
     echo "</div>";
 ?>

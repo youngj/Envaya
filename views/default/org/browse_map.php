@@ -27,7 +27,7 @@ function sectorChanged()
 
 <div class='view_toggle'>
     <strong><?php echo __('browse:map') ?></strong> &middot;
-    <a id='browseLink' href='/org/browse?list=1&sector=<?php echo escape($sector) ?>'><?php echo __('list') ?></a>
+    <a id='browseLink' href='/org/browse?list=1&sector=<?php echo escape($sector) ?>'><?php echo __('browse:list') ?></a>
 </div>
 
 <?php echo view('input/pulldown', array(

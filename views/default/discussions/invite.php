@@ -25,7 +25,7 @@
 <form method='POST' action="<?php echo $topic->get_url() ?>/invite">
 <?php echo view('input/securitytoken'); ?>
 <div class='input'>
-<label><?php echo sprintf(__('discussions:select_partner_invite'), $topic->subject); ?></label><br />
+<label><?php echo strtr(__('discussions:select_partner_invite'), array('{topic}' => $topic->subject)); ?></label><br />
 <?php
     if (sizeof($relationship_options))
     {

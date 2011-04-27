@@ -9,11 +9,13 @@
     echo sprintf(__('email:salutation', $subject->language), $subject->name);
     echo "\n\n";    
     
-    echo sprintf(__('network:notify_added_info', $subject->language), 
-        $org->name, 
-        $subject->name, 
-        $relationship->__('header', $subject->language)
+    $tr = array(
+        '{name}' => $org->name, 
+        '{subject}' => $subject->name, 
+        '{type}' => $relationship->msg('header', $subject->language)
     );
+    
+    echo strtr(__('network:notify_added_info', $subject->language), $tr);
     
     echo "\n";
     echo $widget->get_url();
@@ -21,10 +23,9 @@
     
     if (!$reverse->is_self_approved())
     {    
-        echo sprintf(__('network:notify_added_instructions', $subject->language), 
-            $org->name, 
-            $reverse->__('header', $subject->language)
-        );
+        $tr['{type}'] = $reverse->msg('header', $subject->language);
+        
+        echo strtr(__('network:notify_added_instructions', $subject->language), $tr);
         
         echo "\n";
         

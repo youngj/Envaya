@@ -5,7 +5,7 @@ function init_languages()
     foreach (Config::get('languages') as $code => $lang_name)
     {
         Language::init($code)->add_translations(
-            array($code => $lang_name)
+            array("lang:$code" => $lang_name)
         );
     }
 }
