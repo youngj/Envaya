@@ -188,6 +188,11 @@ class Organization extends User
     {
         parent::__set($name,$value);
         
+        if ($name == 'phone_number')
+        {
+            $this->set_phone_number($value);
+        }
+        
         if (!$this->attributes_dirty)
         {
             $this->attributes_dirty = array();
@@ -300,10 +305,8 @@ class Organization extends User
         return OrgPhoneNumber::query()->where('org_guid = ?', $this->guid);
     }
         
-    function set_phone_number($phone_number_str)
+    private function set_phone_number($phone_number_str)
     {
-        $this->phone_number = $phone_number_str;
-        
         $phone_numbers = OrgPhoneNumber::split_phone_number($phone_number_str, $this->country);
 
         $this->phone_numbers = array();        

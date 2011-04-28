@@ -16,7 +16,7 @@ function main()
     for ($i = 0; $i < 22; $i++)
     {
         $org = install_org("testposter$i");        
-        $org->set_phone_number("cell: $i$i$i$i$i$i$i, fax: +124124129481");                        
+        $org->phone_number = "cell: $i$i$i$i$i$i$i, fax: +124124129481";                        
         $org->name = "Test Poster$i";
         $org->email = str_replace('@',"+p$i@", $admin_email);
         $org->save();        
@@ -32,7 +32,11 @@ function install_admin()
     $admin = User::get_by_username('testadmin');
     if (!$admin)
     {
-        $admin = register_user("testadmin", 'testtest', "Test Admin", Config::get('admin_email'));
+        $admin = new User();
+        $admin->username = "testadmin";
+        $admin->set_password('testtest');
+        $admin->name = "Test Admin";
+        $admin->email = Config::get('admin_email');
         $admin->admin = true;    
         $admin->save();
     }

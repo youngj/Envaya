@@ -8,8 +8,8 @@ return array(
 
     'register:notemail' => 'The email address you provided does not appear to be a valid email address.',
     'register:userexists' => 'That username already exists',
-    'register:usernametooshort' => 'Your username must be a minimum of 3 characters long.',
-    'register:passwordtooshort' => 'The password must be a minimum of 6 characters long.',
+    'register:usernametooshort' => 'Your username must be a minimum of {min} characters long.',
+    'register:passwordtooshort' => 'The password must be a minimum of {min} characters long.',
     'register:invalidchars' => 'Sorry, the username "%s" is invalid because it contains the character "%s". Please choose a username using only the following characters: a-z 0-9 - _',
     'register:usernamenotvalid' => 'Sorry, the username "%s" is invalid. Please choose another.',
 
@@ -28,18 +28,19 @@ return array(
     'register:qualify_missing' => "Your qualification information was not found. Please complete the qualification form again.",
     'register:qualify_ok' => "Congratulations! Your organization appears to qualify for a website on Envaya.",    
 
-    // create account
+    // create account    
     'register:account_instructions' => "Now, enter a few pieces of information to create your account on Envaya. This account will let you log in and update your organization's website.",
     'register:org_name' => "Enter the full name of your organization:",
     'register:org_name:help' => "This will be the title of your website.",
     'register:username' => "Choose your organization's username for Envaya:",
     'register:username2' => "(A short name for your organization)",
     'register:username:help' => "Your web address will be:",
-    'register:username:help2' => "Your username must be at least 3 characters, and can contain letters (a-z), digits (0-9), dashes (-), and underscores (_).",
+    'register:username:help2' => "Your username must be at least {min} characters, and can contain letters (a-z), digits (0-9), dashes (-), and underscores (_).",
     'register:username:placeholder' => 'username',
     'register:password' => "Choose a password for your account:",
-    'register:password:help' => "Together with your username, this will let you log in to edit your website. Remember this password and keep it secure.",
-    'register:password:length' => "Your password must be at least 6 characters long.",
+    'register:password:help' => "Together with your username, this will let you log in to edit your website.",
+    'register:password:remember' => "Remember this password and keep it secure.",
+    'register:password:length' => "Your password must be at least {min} characters long.",
     'register:password2' => "Enter the password again to confirm:",
     'register:email' => "Enter your organization's email address:",
     'register:email:help' => "If your organization doesn't have an email address, use the email address of someone in your organization.",
@@ -87,4 +88,16 @@ return array(
     'register:approval_email:login' => "To do this, log in to edit your website here:",
     'register:approval_email:help' => "For instructions on how to get started using Envaya, and to learn what you can do with your new website, visit our %s page here:",
     'register:approval_email:thanks' => "Thanks for using Envaya!",    
+    
+    
+    // individual user registration    
+    'register:user:instructions' => "This page allows you to register a personal user account on Envaya.",
+    'register:user:name' => "Your full name:",
+    'register:user:no_name' => "Please enter your name.",
+    'register:user:password:help' => "Together with your username, this will let you log in to Envaya.",
+    'register:user:email' => "Enter your email address:",
+    'register:user:email:help' => "If you don't have an email address, leave this blank.",
+    'register:user:phone' => "Enter your phone number:",    
+    'register:user:username' => "Choose a username for your account:",
+    'register:if_org' => "To register an organization, %s.",
 );

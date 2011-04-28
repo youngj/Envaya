@@ -13,7 +13,6 @@ return array(
     'discussions:messages' => "Messages",
     'discussions:subject_missing' => "Please enter a topic for this discussion.",
     'discussions:content_missing' => "Please enter a message to add to this discussion.",
-    'discussions:name_missing' => "Please enter your name.",
     'discussions:topic_saved' => "Topic saved successfully.",
     'discussions:topic_deleted' => "Topic deleted successfully.",
     'discussions:publish_message' => "Publish message",

@@ -14,25 +14,15 @@ class Action_PasswordReset extends Action
         {
             $password = get_input('password');
             $password2 = get_input('password2');
-            if ($password!="")
-            {
-                validate_password($password);
 
-                if ($password == $password2)
-                {
-                    $user->set_password($password);
-                    $user->set_metadata('passwd_conf_code', null);
-                    $user->save();
-                    SessionMessages::add(__('user:password:success'));
-                    login($user);
-                    forward("pg/dashboard");
-                }
-                else
-                {
-                    SessionMessages::add_error(__('user:password:fail:notsame'));
-                    return $this->render();
-                }
-            }
+            User::validate_password($password, $password2, $user->name, $user->username);
+
+            $user->set_password($password);
+            $user->set_metadata('passwd_conf_code', null);
+            $user->save();
+            SessionMessages::add(__('user:password:success'));
+            login($user);
+            forward("pg/dashboard");
         }
         else
         {

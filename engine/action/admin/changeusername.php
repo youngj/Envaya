@@ -19,7 +19,7 @@ class Action_Admin_ChangeUsername extends Action
 
         if ($username && $username != $oldUsername)
         {
-            validate_username($username);
+            User::validate_username($username);
 
             if (User::get_by_username($username))
             {

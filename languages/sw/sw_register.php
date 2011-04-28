@@ -8,8 +8,8 @@ return array(
 
     'register:notemail' => 'Email ambayo umetupa haionekani kuwa sahihi.',
     'register:userexists' => 'Jina lile la mtumiaji limeshatumiwa.',
-    'register:usernametooshort' => 'Lazima jina lako la mtumiaji liwe angalau tarakimu 3.',
-    'register:passwordtooshort' => 'Lazima neno la siri liwe angalau tarakimu 6.',
+    'register:usernametooshort' => 'Lazima jina lako la mtumiaji liwe angalau tarakimu {min}.',
+    'register:passwordtooshort' => 'Lazima neno la siri liwe angalau tarakimu {min}.',
     'register:invalidchars' => 'Samahani, jina la mtumiaji "%s" haliruhusiwi kwa sababu lina tarakimu "%s". Tafadhali uchague jina la mtumiaji litumialo tarakimu zifuatazo tu: a-z 0-9 - _',
     'register:usernamenotvalid' => 'Samahani, jina la mtumiaji "%s" haliruhusiwi. Tafadhali uchague jingine.',
         
@@ -35,11 +35,12 @@ return array(
     'register:username' => 'Chagua \'jina la mtumiaji\' la shirika lako katika Envaya:',
     'register:username2' => "(Jina la kifupi kwa shirika lako)",
     'register:username:help' => 'Anwani yako ya intaneti itakuwa:',
-    'register:username:help2' => 'Lazima jina la mtumiaji la shirika lako liwe angalau tarakimu 3, na linaweza kuwa na tarakimu zifuatazo tu: a-z 0-9 - _',
+    'register:username:help2' => 'Lazima jina la mtumiaji la shirika lako liwe angalau tarakimu {min}, na linaweza kuwa na tarakimu zifuatazo tu: a-z 0-9 - _',
     'register:username:placeholder' => 'jina',
     'register:password' => 'Chagua neno la siri kwa akaunti yako:',
-    'register:password:help' => 'Jina la mtumiaji pamoja na neno la siri yatakuruhusu kufungua kuhariri tovuti yako. Kumbuka neno hili la siri na ulilinde.',
-    'register:password:length' => 'Lazima neno lako la siri liwe angalau tarakimu 6.',
+    'register:password:help' => 'Jina la mtumiaji pamoja na neno la siri yatakuruhusu kufungua kuhariri tovuti yako.',
+    'register:password:remember' => "Kumbuka neno hili la siri na ulilinde.",
+    'register:password:length' => 'Lazima neno lako la siri liwe angalau tarakimu {min}.',
     'register:password2' => 'Ingiza neno la siri tena kuthibitisha:',
     'register:email' => 'Ingiza anwani ya email ya shirika lako:',
 
@@ -88,4 +89,15 @@ return array(
     'register:approval_email:login' => "Kufanya hivyo, fungua kuhariri tovuti yako hapa:",
     'register:approval_email:help' => "Kusoma maagizo kuhusu kuanza kutumia Envaya, na kujifunza vitu unavyofanya na tovuti yako mpya, tembelea ukurasa wetu wa %s hapa:",
     'register:approval_email:thanks' => "Asante kwa kutumia Envaya!",    
+    
+    // user registration    
+    'register:user:instructions' => "Ukurasa huu unakuruhusu kujiandikisha akaunti ya binafsi katika Envaya.",
+    'register:user:name' => "Jina lako kamili:",
+    'register:user:no_name' => "Tafadhali ingiza jina lako.",
+    'register:user:password:help' => 'Jina la mtumiaji pamoja na neno la siri yatakuruhusu kufungua katika Envaya.',
+    'register:user:email' => "Ingiza anwani yako ya email:",
+    'register:user:email:help' => "Ikiwa huna anwani ya email, iache tupu.",
+    'register:user:phone' => "Ingiza namba yako ya simu:",    
+    'register:user:username' => "Chagua 'jina la mtumiaji' kwa akaunti yako:",
+    'register:if_org' => "Kuandikisha shirika, %s.",    
 );

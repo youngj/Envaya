@@ -35,26 +35,12 @@ abstract class Action_Registration_CreateAccountBase extends Action
 
         $username = trim(get_input('username'));
 
-        validate_username($username);
+        User::validate_username($username);
 
         $password = get_input('password');
         $password2 = get_input('password2');
-
-        if (strcmp($password, $password2) != 0)
-        {
-            throw new ValidationException(__('register:passwords_differ'));
-        }
-
-        $lpassword = strtolower($password);
-        $lusername = strtolower($username);
-        $lname = strtolower($name);
-
-        if (strpos($lname, $lpassword) !== FALSE || strpos($lusername, $lpassword) !== FALSE)
-        {
-            throw new ValidationException(__('register:password_too_easy'));
-        }
-
-        validate_password($password);
+        
+        User::validate_password($password, $password2, $name, $username);
 
         $email = validate_email_address(trim(get_input('email')));
 
@@ -78,7 +64,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
         
         $org = new Organization();
         $org->username = $username;
-        $org->set_phone_number(get_input('phone'));
+        $org->phone_number = get_input('phone');
         $org->email = $email;
         $org->name = $name;
         $org->set_password($password);

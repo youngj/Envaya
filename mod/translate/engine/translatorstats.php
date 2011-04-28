@@ -36,8 +36,8 @@ class TranslatorStats extends Entity
             ->set_row_function(null)
             ->get();
             
-        $this->num_translations = $row->num_translations;
-        $this->score = $row->score;        
+        $this->num_translations = $row->num_translations ?: 0;
+        $this->score = $row->score ?: 0;        
         
         $this->num_votes = $language->query_votes()
             ->where('owner_guid = ?', $this->owner_guid)

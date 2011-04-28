@@ -10,7 +10,6 @@ return array(
     
     'itrans:language_code' => "Language Code",
     'itrans:language_name' => "Language Name",
-    'itrans:title' => "Translations",
     'itrans:language_group' => "Module",
     'itrans:language_key' => "Internal ID",
     'itrans:progress' => "Progress", 
@@ -33,5 +32,5 @@ return array(
     'itrans:translations' => "Translations",
     'itrans:votes' => "Votes",
     'itrans:admin' => 'admin',    
-    'itrans:need_login' => "You are currently logged out. In order to edit translations, you need to log in.",
+    'itrans:need_login' => "In order to edit translations, you need to log in.",
 );

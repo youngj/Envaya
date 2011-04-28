@@ -1,7 +1,7 @@
 <h2 style='padding:5px'>
 <?php
     $sections = array(
-        array('url' => '/tr', 'title' => __('itrans:title'))
+        array('url' => '/tr', 'title' => __('itrans:translations'))
     );
     
     $items = @$vars['items'];

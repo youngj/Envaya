@@ -51,5 +51,5 @@ CREATE TABLE `translator_stats` (
   <?php require 'schema/entity_columns.php'; ?>,  
   `score` int(11) NOT NULL default 0,
   `num_translations` int(11) NOT NULL default 0,
-  `num_votes` int(11) NOT NULL default 0,
+  `num_votes` int(11) NOT NULL default 0
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

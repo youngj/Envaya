@@ -13,7 +13,6 @@ return array(
     'discussions:messages' => "Ujumbe",
     'discussions:subject_missing' => "Tafadhali ingiza mada kwa jadiliano hili.",
     'discussions:content_missing' => "Tafadhali ingiza ujumbe kuongeza katika mada hii.",
-    'discussions:name_missing' => "Tafadhali ingiza jina lako.",
     'discussions:topic_saved' => "Mada imehifadhiwa.",
     'discussions:topic_deleted' => "Mada imefutwa.",
     'discussions:publish_message' => "Chapisha ujumbe",

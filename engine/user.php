@@ -397,4 +397,68 @@ class User extends Entity
 
         return static::get_by_guid($guid, $show_disabled);
     }    
+
+    static function get_email_fingerprint($email)
+    {
+        return substr(md5($email . Config::get('site_secret') . "-email"), 0,15);
+    }        
+    
+    static function validate_username($username, $min_length = 3)
+    {
+        if (strlen($username) < $min_length)
+        {
+            throw new ValidationException(strtr(__('register:usernametooshort'), array('{min}' => $min_length)));
+        }
+
+        if (preg_match('/[^\w\-]/', $username, $matches))
+        {
+            throw new ValidationException(sprintf(__('register:invalidchars'), $username, $matches[0]));
+        }
+
+        $lower = strtolower($username);
+
+        $badUsernames = array(
+            'pg',
+            'org',
+            'page',
+            'action',
+            'account',
+            'mod',
+            'search',
+            'admin',
+            'dashboard',
+            'engine'
+        );
+
+        if (in_array($lower, $badUsernames) || $username[0] == "_")
+        {
+            throw new ValidationException(sprintf(__('register:usernamenotvalid'), $username));
+        }
+
+        return $username;
+    }
+
+    static function validate_password($password, $password2, $name, $username, $min_length = 6)
+    {
+        if (strlen($password) < $min_length)
+        {
+            throw new ValidationException(strtr(__('register:passwordtooshort'), array('{min}' => $min_length)));
+        }
+
+        $lpassword = strtolower($password);
+        $lusername = strtolower($username);
+        $lname = strtolower($name);
+                
+        if (strpos($lname, $lpassword) !== FALSE || strpos($lusername, $lpassword) !== FALSE)
+        {
+            throw new ValidationException(__('register:password_too_easy'));
+        }
+
+        if (strcmp($password, $password2) != 0)
+        {
+            throw new ValidationException(__('register:passwords_differ'));
+        }        
+     
+        return $password;
+    }    
 }

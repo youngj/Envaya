@@ -130,8 +130,7 @@ class Controller_UserSite extends Controller_User
         }
         else
         {
-            $content = view('section', array('content' => "You are not an organization!"));
-            $pre_body = '';
+            forward($user->get_url());
         }
         
         $this->page_draw(array(

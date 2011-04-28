@@ -7,6 +7,7 @@ return array(
     'contact' => "Contact",
     'feed' => "Updates",    
     'menu' => 'Main Menu',
+    'register' => "Register",
     
     'exception_title' => "Error",
 

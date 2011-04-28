@@ -20,7 +20,7 @@ class Action_Discussion_AddMessage extends Action
         $name = get_input('name');
         if (!$name)
         {
-            SessionMessages::add_error(__('discussions:name_missing'));
+            SessionMessages::add_error(__('register:user:no_name'));
             return $this->render();
         }
 

@@ -29,7 +29,7 @@
 <br />
 <?php echo sprintf(
     __('email:change',$lang),
-    "<a target='_blank' href='".Config::get('url')."pg/email_settings?e=".urlencode($org->email)."&c=".get_email_fingerprint($org->email)."'>".
+    "<a target='_blank' href='".Config::get('url')."pg/email_settings?e=".urlencode($org->email)."&c=".User::get_email_fingerprint($org->email)."'>".
     __('email:here',$lang)."</a>"
 );
 ?>

@@ -4,7 +4,7 @@ class Action_EmailSettings extends Action
 {
     private function verify_access($email, $code, $users)
     {
-        if (!$email || $code != get_email_fingerprint($email) || sizeof($users) == 0)
+        if (!$email || $code != User::get_email_fingerprint($email) || sizeof($users) == 0)
         {
             SessionMessages::add_error(__("user:notification:invalid"));
             return forward("/");

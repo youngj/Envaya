@@ -11,12 +11,20 @@ class Action_Settings extends Action
     function process_input()
     {
         $user = $this->get_user();
+        
+        if (Session::isadminloggedin() && get_input('delete'))
+        {
+            $user->disable();
+            $user->save();
+            SessionMessages::add(__('user:deleted'));
+            forward('/admin/user');
+        }
 
         $name = get_input('name');
 
         if ($name)
         {
-            if (strcmp($name, $user->name)!=0)
+            if ($name != $user->name)
             {
                 $user->name = $name;
                 SessionMessages::add(__('user:name:success'));
@@ -24,26 +32,17 @@ class Action_Settings extends Action
         }
         else
         {
-            SessionMessages::add_error(__('register:no_name'));
-            return $this->render();
+            throw new ValidationException(__('register:no_name'));
         }
 
         $password = get_input('password');
         $password2 = get_input('password2');
-        if ($password!="")
+        if ($password != "")
         {
-            validate_password($password);
+            User::validate_password($password, $password2, $name, $user->username);
 
-            if ($password == $password2)
-            {
-                $user->set_password($password);
-                SessionMessages::add(__('user:password:success'));
-            }
-            else
-            {
-                SessionMessages::add_error(__('user:password:fail:notsame'));
-                return $this->render();
-            }
+            $user->set_password($password);
+            SessionMessages::add(__('user:password:success'));
         }
 
         $language = get_input('language');
@@ -64,7 +63,7 @@ class Action_Settings extends Action
         $phone = get_input('phone');
         if ($phone != $user->phone_number)
         {
-            $user->set_phone_number($phone);
+            $user->phone_number = $phone;
             SessionMessages::add(__('user:phone:success'));
         }
 
@@ -89,6 +88,5 @@ class Action_Settings extends Action
             'title' => __('user:settings'),
             'content' => view("account/settings", array('entity' => $this->get_user())),
         ));                
-    }
-    
+    }    
 }    

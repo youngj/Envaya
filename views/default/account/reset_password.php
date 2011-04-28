@@ -20,8 +20,8 @@
 <?php echo view('input/password', array(
     'name' => 'password'
 )) ?>
-<div class='help'><?php echo __('register:password:help') ?></div>
-<div class='help' style='padding-top:5px'><?php echo __('register:password:length') ?></div>
+<div class='help'><?php echo __('register:password:help').' '.__('register:password:remember'); ?></div>
+<div class='help' style='padding-top:5px'><?php echo strtr(__('register:password:length'), array('{min}' => 6)); ?></div>
 </div>
 
 <div class='input'>

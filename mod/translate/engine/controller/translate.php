@@ -49,6 +49,7 @@ class Controller_Translate extends Controller
     function before()
     {
         $this->page_draw_vars['theme_name'] = 'simple_wide';
+        $this->page_draw_vars['login_url'] = url_with_param($this->request->full_original_url(), 'login', 1);
     }
 
     function init_language()
@@ -93,7 +94,7 @@ class Controller_Translate extends Controller
     function action_index()
     {
         return $this->page_draw(array(
-            'title' => __('itrans:title'),
+            'title' => __('itrans:translations'),
             'header' => view('translate/header'),
             'content' => view('translate/interface_languages')
         ));
@@ -104,7 +105,7 @@ class Controller_Translate extends Controller
         $language = $this->param('language');
         
         return $this->page_draw(array(
-            'title' => __('itrans:title'),
+            'title' => __('itrans:translations'),
             'header' => view('translate/header', array('items' => array($language))),
             'content' => view('translate/interface_language', array('language' => $language))
         ));
@@ -214,7 +215,7 @@ class Controller_Translate extends Controller
         $filtered_keys = $this->filter_keys($keys);
         
         return $this->page_draw(array(
-            'title' => __('itrans:title'),
+            'title' => __('itrans:translations'),
             'header' => view('translate/header',  array('items' => array($language, $group))),
             'content' => view('translate/interface_group', array(
                 'group' => $group,

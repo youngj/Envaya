@@ -192,3 +192,18 @@
     {
         return substr(md5(microtime() . rand()), 0, $len);
     }    
+
+    /**
+     * Simple validation of a email.
+     *
+     * @param string $address
+     * @throws ValidationException on invalid
+     * @return bool
+     */
+    function validate_email_address($address)
+    {
+        if ($address !== "" && !preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+$/i', $address))
+            throw new ValidationException(__('register:notemail'));
+
+        return $address;
+    }

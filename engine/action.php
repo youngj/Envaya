@@ -125,48 +125,57 @@ abstract class Action
         ));
     }
     
-    function check_captcha()
+    function needs_captcha()
     {
         $user = Session::get_loggedin_user();
         
-        $site_org = $this->get_org();
-        
-        // show captcha if not logged in, 
-        // or if not approved and using someone else's site.
-        $needsCaptcha = !$user || (!$user->is_approved() && $user->guid != $site_org->guid);
-        
-        if ($needsCaptcha)
-        {        
-            // after entering a correct captcha, we avoid prompting the user for a captcha again 
-            // the next few times during the same session
-            $free_captchas = Session::get('free_captchas');
-            if ($free_captchas > 0)
+        // show captcha if not logged in
+        if (!$user)
+            return true;
+                
+        // show captcha if not approved and using someone else's site.
+        if (!$user->is_approved())
+        {
+            $controller = $this->controller;
+            if (method_exists($controller, 'get_org'))
             {
-                Session::set('free_captchas', $free_captchas - 1);
+                $site_org = $controller->get_org();            
+                if ($site_org && $user->guid != $site_org->guid)
+                    return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    function check_captcha()
+    {       
+        if (!$this->needs_captcha())
+        {
+            return true;
+        }
+    
+        // after entering a correct captcha, we avoid prompting the user for a captcha again 
+        // the next few times during the same session
+        $free_captchas = Session::get('free_captchas');
+        if ($free_captchas > 0)
+        {
+            Session::set('free_captchas', $free_captchas - 1);
+            return true;
+        }
+    
+        if (get_input('captcha'))
+        {
+            if (Captcha::check_answer($_POST['captcha_response']))
+            {
+                Session::set('free_captchas', 3);
                 return true;
             }
-        
-			$valid_captcha = false;
-			if (get_input('captcha'))
-			{
-				$is_valid = Captcha::check_answer($_POST['captcha_response']);
-				if ($is_valid)
-				{
-                    Session::set('free_captchas', 3);
-					$valid_captcha = true;
-				}
-				else
-				{
-					SessionMessages::add_error(__('captcha:invalid'));
-				}
-			}
-		
-			if (!$valid_captcha)
-			{
-				return false;
-			}
-		}    
-        
-        return true;
-    }        
+            else
+            {
+                SessionMessages::add_error(__('captcha:invalid'));
+            }
+        }
+        return false;
+    }
 }

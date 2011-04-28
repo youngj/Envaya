@@ -6,7 +6,6 @@
     <div class='input'>
         <label><?php echo __('user:name:label'); ?>:</label><br />
         <?php
-
             echo view('input/text',array('name' => 'name', 'trackDirty' => true, 'value' => $user->name));
         ?>
     </div>
@@ -68,13 +67,23 @@
 
     </div>
 
-    <?php } ?>
+    <?php }
 
-    <?php echo view('input/hidden', array('name' => 'from', 'value' => get_input('from'))); ?>
+    echo view('input/hidden', array('name' => 'from', 'value' => get_input('from')));
+    
+    if (Session::isadminloggedin())
+    {   
+        echo view('input/alt_submit', array(
+            'name' => 'delete', 
+            'id' => 'widget_delete', 
+            'confirmMessage' => __('areyousure'),
+            'value' => __('user:delete'))); 
+    }
+    
+    echo view('input/submit', array('value' => __('savechanges'), 'trackDirty' => true)); 
 
-    <?php echo view('input/submit', array('value' => __('savechanges'), 'trackDirty' => true)); ?>
-
-    </div>
+?>
+</div>
 
 <?php 
     $form_body = ob_get_clean();

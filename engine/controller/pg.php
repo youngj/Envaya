@@ -19,6 +19,12 @@ class Controller_Pg extends Controller_Simple {
         forward();
     }    
     
+    function action_register()
+    {
+        $action = new Action_Register($this);
+        $action->execute();
+    }
+    
     function action_tci_donate_frame()
     {
         $this->request->response = view("page/tci_donate_frame", $values);

@@ -14,7 +14,6 @@ return array(
     'user:password:new' => "Choose a new password for your account:",
     'user:password:choose_new' => "Reset Password",
     'user:password:fail' => "Could not change your password.",
-    'user:password:fail:notsame' => "The two passwords are not the same!",
 
     'user:language:label' => "Primary language",
     'user:language:success' => "Your language settings have been updated.",

@@ -203,12 +203,6 @@ class Controller_Admin extends Controller_Simple
         ));
 
     }
-
-    function action_add_user()
-    {
-        $action = new Action_Admin_AddUser($this);
-        $action->execute();
-    }
     
     function action_approve()
     {

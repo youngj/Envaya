@@ -3,7 +3,8 @@ return array(
     'go' => 'Nenda',   
     'menu' => 'Menyu Kuu',
     'sign_up_now' => "jiunge sasa",    
-
+    'register' => "Jiandikishe",
+    
     'capslock_warning' => "Angalia: Unatumia CAPS LOCK sasa",    
     'donate' => "Changia",
     'about' => 'Kuhusu',
@@ -105,8 +106,8 @@ return array(
     'ok' => "Sawa",
     'cancel' => "Ghairi",        
     
-    'captcha:title' => 'Ingiza maneno ya kuthibitisha',
-    'captcha:button' => 'Peleka maneno',
+    'captcha:title' => 'Ingiza neno ya kuthibitisha',
+    'captcha:button' => 'Peleka neno',
     'captcha:invalid' => "Maneno ya kuthibitisha si sahihi. Jaribu tena.", 
     
 );

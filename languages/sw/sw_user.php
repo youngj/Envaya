@@ -12,7 +12,6 @@ return array(
     'user:password:success' => 'Neno lako la siri limebadilishwa.',
     'user:password:choose_new' => 'Chagua neno jipya la siri',
     'user:password:fail' => 'Hatuwezi kulibadili neno lako la siri.',
-    'user:password:fail:notsame' => 'Maneno mawili ya siri si sawa!',
     'user:language:label' => 'Lugha kuu',
     'user:language:success' => 'Lugha yako imehifadhiwa.',
 

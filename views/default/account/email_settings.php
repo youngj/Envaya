@@ -2,7 +2,7 @@
 <?php
     $email = $vars['email'];
     $users = $vars['users'];
-    $code = get_email_fingerprint($email);
+    $code = User::get_email_fingerprint($email);
 
 ?>
 <form action='/pg/email_settings' method='POST'>

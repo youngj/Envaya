@@ -59,7 +59,7 @@ function updateUrl()
 <div class='help' style='font-weight:bold'><?php echo __('register:username:help') ?>
     <span class='websiteUrl'>http://envaya.org/<span id='urlUsername' style='font-weight:bold'><?php echo __('register:username:placeholder') ?></span></span>
 </div>
-<div style='padding-top:5px' class='help'><?php echo __('register:username:help2') ?></div>
+<div style='padding-top:5px' class='help'><?php echo strtr(__('register:username:help2'), array('{min}' => 3)); ?></div>
 </div>
 
 <div class='input'>
@@ -67,8 +67,8 @@ function updateUrl()
 <?php echo view('input/password', array(
     'name' => 'password'
 )) ?>
-<div class='help'><?php echo __('register:password:help') ?></div>
-<div class='help' style='padding-top:5px'><?php echo __('register:password:length') ?></div>
+<div class='help'><?php echo __('register:password:help').' '.__('register:password:remember'); ?></div>
+<div class='help' style='padding-top:5px'><?php echo strtr(__('register:password:length'), array('{min}' => 6)); ?></div>
 </div>
 
 <div class='input'>

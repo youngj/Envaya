@@ -10,9 +10,13 @@ $password = prompt_default("Admin password", "testtest");
 $name = prompt_default("Admin name", "Test Admin");
 $email = prompt_default("Admin email", '');
 
-$new_user = register_user($username, $password, $name, $email);
-$new_user->admin = true;    
-$new_user->save();
+$user = new User();
+$user->username = $username;
+$user->set_password($password);
+$user->name = $name;
+$user->email = $email;
+$user->admin = true;    
+$user->save();
 echo "Admin created\n";
 
 Config::set('debug', false);

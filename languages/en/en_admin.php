@@ -2,12 +2,12 @@
 return array(
     'email:mailing_address' => "150 Post Street, Suite 342, San Francisco, CA 94108",    
 
-    'register' => "Register",
-    'passwordagain' => "Password (again)",    
     'approval:notapproved' => "Not yet approved",    
 
     'search:title_with_query' => "Search User: %s",
 
+    'user:delete' => "Delete user",
+    'user:deleted' => "User deleted successfully.",
     'user:contact_list' => "User Contact List",
     'user:time_created' => "Registered",
     'user:time_updated' => "Updated",
@@ -46,8 +46,6 @@ return array(
     'email:queued' => "Queued",
     'email:failed' => "Failed",
 
-    'register:bad' => "Your registration was unsuccessful. The username may already exist, your passwords might not match, or your username or password may be too short.",
-
     'email:registernotify:subject' => "New organization registered: %s",
     'email:registernotify:body' => "To view their website and approve or reject it, visit\n%s",
     
@@ -56,8 +54,6 @@ return array(
     'username:new' => "New username",
     'username:title' => "Change username",
 
-    'admin_option' => "Make this user an admin?",
-    
     'approval:approve' => "Approve Organization",
     'approval:unapprove' => "Remove Approval",
     'approval:reject' => "Reject Organization",
@@ -83,9 +79,6 @@ return array(
     'error:DatabaseExecuteFailed' => "Database execution error",
     'error:QueueConnectFailed' => "Error connecting to queue",    
     'error:QueueAppendFailed' => "Error appending to queue",    
-
-    'adduser' => "Add User",
-    'adduser:ok' => "You have successfully added a new user.",
 
     'entity:delete:success' => 'Entity %s has been deleted',
     'entity:delete:fail' => 'Entity %s could not be deleted',

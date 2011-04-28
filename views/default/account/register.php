@@ -1,28 +1,70 @@
 <?php     
-
-    $username = get_input('u');
-    $email = get_input('e');
-    $name = get_input('n');
-
-    $admin_option = false;
-    if ((Session::get_loggedin_user()->admin) && ($vars['show_admin']))
-        $admin_option = true;
-
-    $form_body = "<p><label>" . __('name') . "<br />" . view('input/text' , array('name' => 'name', 'class' => "general-textarea", 'value' => $name)) . "</label><br />";
-
-    $form_body .= "<label>" . __('email') . "<br />" . view('input/text' , array('name' => 'email', 'class' => "general-textarea", 'value' => $email)) . "</label><br />";
-    $form_body .= "<label>" . __('username') . "<br />" . view('input/text' , array('name' => 'username', 'class' => "general-textarea", 'value' => $username)) . "</label><br />";
-    $form_body .= "<label>" . __('password') . "<br />" . view('input/password' , array('name' => 'password', 'class' => "general-textarea")) . "</label><br />";
-    $form_body .= "<label>" . __('passwordagain') . "<br />" . view('input/password' , array('name' => 'password2', 'class' => "general-textarea")) . "</label><br />";
-
-    if ($admin_option)
-        $form_body .= view('input/checkboxes', array('name' => "admin", 'options' => array(__('admin_option'))));
-
-    $form_body .= view('input/hidden', array('name' => 'friend_guid', 'value' => $vars['friend_guid']));
-    $form_body .= view('input/hidden', array('name' => 'invitecode', 'value' => $vars['invitecode']));
-    $form_body .= view('input/hidden', array('name' => 'action', 'value' => 'register'));
-    $form_body .= view('input/submit', array('value' => __('register'))) . "</p>";
+    $next = get_input('next');
 ?>
+<div class='section_content padded' style='padding-top:0px'>
+<form method='POST' action='/pg/register'>
+<?php echo view('input/securitytoken'); ?>
+<?php echo view('input/hidden', array('name' => 'next', 'value' => $next)); ?>
+<div class='instructions'>
+<?php echo __('register:user:instructions'). " ";
+echo sprintf(__('register:if_org'), "<a href='/org/new?next=".urlencode($next)."'>".__('clickhere')."</a>"); 
+?>
+</div>
+
+<div class='input'>
+<label><?php echo __('register:user:name'); ?></label><br />
+<?php echo view('input/text' , array('name' => 'name')); ?>
+</div>
+<div class='input'>
+<label><?php echo __('register:user:username'); ?></label><br />
+<?php echo view('input/text' , array('name' => 'username')); ?>
+<div style='padding-top:5px' class='help'><?php echo strtr(__('register:username:help2'), array('{min}' => 6)); ?></div>
+</div>
+
+<div class='input'>
+<label><?php echo __('register:password') ?></label><br />
+<?php echo view('input/password', array(
+    'name' => 'password'
+)) ?>
+<div class='help'><?php echo __('register:user:password:help').' '.__('register:password:remember'); ?></div>
+<div class='help' style='padding-top:5px'><?php echo strtr(__('register:password:length'), array('{min}' => 6)); ?></div>
+</div>
+
+<div class='input'>
+<label><?php echo __('register:password2') ?></label><br />
+<?php echo view('input/password', array(
+    'name' => 'password2'
+)) ?>
+</div>
+
+<div class='input'>
+<label><?php echo __('register:user:email'); ?></label><br />
+<?php echo view('input/text', array('name' => 'email')); ?>
+<div class='help'><?php echo __('register:user:email:help'); ?></div>
+</div>
+
+<div class='input'>
+<label><?php echo __('register:user:phone') ?></label><br />
+<?php echo view('input/text', array(
+    'name' => 'phone',
+    'js' => "style='width:200px'"
+)) ?>
+<div class='help'><?php echo __('register:phone:help') ?></div>
+<div class='help'><?php echo __('register:phone:help_2') ?></div>
+</div>
 
 
-    <?php echo view('input/form', array('action' => "pg/submit_registration", 'body' => $form_body)) ?>
+<div class='input'>
+<label><?php echo __('register:click_to_create') ?></label>
+<br />
+<?php echo view('input/submit',array(
+    'value' => __('register:create_button'),
+    'trackDirty' => true
+));
+?>
+</div>
+<?php
+    echo view('focus', array('name' => 'name'));        
+?>
+</form>
+</div>

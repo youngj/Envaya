@@ -35,6 +35,7 @@ class Controller_TranslateKey extends Controller
     function before()
     {
         $this->page_draw_vars['theme_name'] = 'simple_wide';
+        $this->page_draw_vars['login_url'] = url_with_param($this->request->full_original_url(), 'login', 1);
     }    
     
     function action_index()
@@ -46,7 +47,7 @@ class Controller_TranslateKey extends Controller
         $key->init_defined_translation(true);
         
         return $this->page_draw(array(
-            'title' => __('itrans:title'),
+            'title' => __('itrans:translations'),
             'header' => view('translate/header', array('items' => array($language, $group, $key))),
             'content' => view('translate/interface_key', array('key' => $key))
         ));       
