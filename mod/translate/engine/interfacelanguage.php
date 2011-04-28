@@ -65,6 +65,7 @@ class InterfaceLanguage extends Entity
     {
         $en = Language::get('en');
         $group_names = $en->get_all_group_names();
+        sort($group_names);
         
         $groups = $this->query_groups()
             ->show_disabled(true)
