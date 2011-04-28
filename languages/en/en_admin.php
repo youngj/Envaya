@@ -31,6 +31,10 @@ return array(
     'itrans:add_language' => "Add Language",
     'itrans:manage' => "Manage Languages",
     'itrans:languages' => "Languages",
+    'itrans:export' => 'Export Translations',    
+    'itrans:language_saved' => "Language settings saved.",
+    'itrans:language_deleted' => "Language deleted.",
+    'itrans:enabled_groups' => "Enabled Modules",
 
     'email:outgoing_mail' => "Outgoing Mail",
     'email:list' => "Email Templates",
@@ -61,6 +65,7 @@ return array(
     'approval:unreject' => "Remove Rejection",
     'approval:changed' => "Organization approval changed",        
     
+    'admin' => "Administration",
     'admin:user' => "User Administration",
     'admin:user:adduser:label' => "Click here to add a new user...",
 

@@ -24,7 +24,6 @@ return array(
     'discussions:feed_heading_topic' => "{name} ina mada mpya kuhusu {topic}.",
     'discussions:feed_heading_message' => "{name} ina ujumbe mpya katika mada {topic}.",
     'discussions:captcha_instructions' => "Chapa tarakimu zinazoonekana hapo chini kuchapisha ujumbe wako.",    
-    'discussions:topic_time_name' => "{time} na {name}",
     'discussions:notification_subject' => "{name} ameongeza ujumbe mpya katika {topic}",
     'discussions:notification_topic_subject' => "{name} ameongeza mada mpya kuhusu {topic}",
     'discussions:message_deleted_marker' => "ujumbe umefutwa",

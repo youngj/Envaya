@@ -55,7 +55,7 @@ class InterfaceGroup extends Entity
     
     function get_url()
     {
-        return $this->get_container_entity()->get_url() . "/{$this->name}";
+        return $this->get_container_entity()->get_url() . "/module/{$this->name}";
     }
     
     function update()

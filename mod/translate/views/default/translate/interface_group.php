@@ -1,45 +1,61 @@
 <?php
     $group = $vars['group'];    
+    $filtered_keys = $vars['filtered_keys'];
+    $all_keys = $vars['all_keys'];
     
-    $query = get_input('q');
-    
-    $language = $group->get_container_entity();
-    $keys = $group->get_available_keys();
+    $query = Session::get('translate_filter_query');
+    $status = Session::get('translate_filter_status');
+        
+    $language = $group->get_container_entity();    
     
     $base_lang = Language::get_current_code();
     if ($base_lang == $language->code) // no sense translating from one language to itself
     {
         $base_lang = Config::get('language');
     }
-
-    if ($query)
-    {
-        $filtered_keys = array();
-        foreach ($keys as $key)
-        {
-            $lq = strtolower($query);
-            if (strpos($key->name, $lq) !== false
-                || strpos(strtolower(__($key->name)), $lq) !== false
-                || strpos(strtolower($key->best_translation), $lq) !== false)
-            {
-                $filtered_keys[] = $key;
-            }
-        }
-        $keys = $filtered_keys;
-    }           
+    $time = time();
     
     $offset = (int)get_input('offset');
     $limit = 15;
-    $count = sizeof($keys);    
-
-    echo "<form method='GET' action='{$group->get_url()}' >";
+    $count = sizeof($filtered_keys);    
+                                
+    echo "<form method='GET' action='{$group->get_url()}'>";
     echo "<label>".__("itrans:filter")."</label> ";
     echo view('input/text', array(
         'name' => 'q', 
-        'js' => "style='width:200px;margin:0px'",
-        'value' => $query));
+        'js' => "style='width:150px;margin:0px'",
+        'value' => $query
+    ));
+    echo view('input/pulldown', array(
+        'name' => 'status',
+        'options' => array(
+            'all' => __('itrans:status_all'),
+            'empty' => __('itrans:status_empty'),
+            'notempty' => __('itrans:status_notempty'),
+        ),
+        'value' => $status,
+    ));
+        
     echo view('input/submit', array('value' => __("search"), 'js' => "style='margin:0px;padding:0px'"));
     echo "</form>";
+    
+    echo "<div style='padding-bottom:5px;'>";
+    echo "<label>".__('itrans:progress').":</label> ";
+    
+    $not_empty = function($key) { return $key->best_translation != ''; };   
+    $num_not_empty = sizeof(array_filter($all_keys, $not_empty));
+    $total = sizeof($all_keys);
+    
+    echo "{$num_not_empty} / {$total}";
+    
+    if ($count != $total)
+    {
+        $num_not_empty_in_filter = sizeof(array_filter($filtered_keys, $not_empty));
+
+        echo " (".sprintf(__('itrans:in_filter'), "{$num_not_empty_in_filter} / {$count}").")";
+    }
+    
+    echo "</div>";
 
     echo view('pagination',array(
         'offset' => $offset,
@@ -57,7 +73,7 @@
         
     for ($i = $offset; $i < $offset + $limit && $i >= 0 && $i < $count; $i++)
     {
-        $key = $keys[$i];
+        $key = $filtered_keys[$i];
         
         $output_view = $key->get_output_view();
         

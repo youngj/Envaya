@@ -31,10 +31,9 @@ class Action_AddInterfaceTranslation extends Action
             throw new ValidationException(__('itrans:placeholder_error'));
         }
         
-        $duplicate = $key->query_translations()->with_metadata('uniqid', get_input('uniqid'))->get();
-        if ($duplicate)
+        if ($key->query_translations()->where('value = ?', $value)->exists())
         {
-            forward($key->get_url());
+            throw new ValidationException(__('itrans:duplicate'));
         }
         
         $user = Session::get_loggedin_user();
@@ -43,11 +42,22 @@ class Action_AddInterfaceTranslation extends Action
         $translation->container_guid = $key->guid;
         $translation->owner_guid = $user->guid;
         $translation->value = $value;
+        $translation->score = 1;
         $translation->save();
+        
+        $vote = new TranslationVote();
+        $vote->container_guid = $translation->guid;
+        $vote->owner_guid = $user->guid;
+        $vote->score = 1;
+        $vote->save();
+        
         $key->update();
         $key->get_container_entity()->update();
         
+        $language = $key->get_language();
+        $language->get_stats_for_user($user)->update();
+        
         SessionMessages::add(__('itrans:posted'));
-        forward($key->get_url());
+        redirect_back();
     }
 }

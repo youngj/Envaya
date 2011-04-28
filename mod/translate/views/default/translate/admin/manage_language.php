@@ -18,7 +18,7 @@
 </div>
 
 <div class='input'>
-<label><?php echo __('itrans:language_groups'); ?></label><br />
+<label><?php echo __('itrans:enabled_groups'); ?></label><br />
 <?php 
     $groups = $language->get_available_groups();
     
@@ -43,6 +43,11 @@
 </div>
 
 <?php
+    if ($language->guid)
+    {
+        echo "<div><strong><a href='{$language->get_admin_url()}/export'>".__('itrans:export')."</a></strong></div>";
+    }
+
     echo view('input/alt_submit', array('name' => 'delete', 'id' => 'widget_delete', 'value' => __('delete')));
     echo view('input/submit', array('value' => __('savechanges')));
 ?>

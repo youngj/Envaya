@@ -2,40 +2,21 @@
 
 class Action_Admin_ManageLanguage extends Action
 {
-    protected $language;
-
     function before()
     {
         $this->require_admin();
-        
-        $lang = $this->param('lang');
-        if (!$lang)
-        {
-            return $this->not_found();
-        }
-        
-        $language = InterfaceLanguage::query()
-            ->where('code = ?', $lang)
-            ->show_disabled(true)
-            ->get();
-            
-        if (!$language)
-        {    
-            $language = new InterfaceLanguage();
-            $language->code = $lang;
-        }
-        $this->language = $language;        
     }
     
     function process_input()
     {
-        $language = $this->language;
+        $language = $this->param('language');
         if (get_input('delete'))
         {
             $language->disable();
             $language->save();
             
             SessionMessages::add(__('itrans:language_deleted'));
+            forward('/tr/admin');
         }
         else
         {
@@ -73,13 +54,13 @@ class Action_Admin_ManageLanguage extends Action
             }
             
             SessionMessages::add(__('itrans:language_saved'));            
-        }
-        forward("/tr/admin");
+            forward($language->get_url());
+        }        
     }
     
     function render()
     {
-        $language = $this->language;
+        $language = $this->param('language');
         $this->page_draw(array(
             'title' => __('itrans:manage'),
             'header' => view('translate/admin/header', array('items' => array($language))),

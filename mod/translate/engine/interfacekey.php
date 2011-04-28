@@ -18,7 +18,12 @@ class InterfaceKey extends Entity
     function update($recursive = false)
     {
         $this->num_translations = $this->query_translations()->count();
-        $best = $this->query_translations()->order_by('score desc, guid desc')->get();
+
+        $best = $this->query_translations()
+            ->where('score >= 0')
+            ->order_by('score desc, guid desc')
+            ->get();
+            
         if ($best)
         {
             $this->best_translation = $best->value;

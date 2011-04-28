@@ -16,8 +16,8 @@
     if ($topic->num_messages)
     {
         echo "<span class='blog_date'>";
-        echo strtr(__('discussions:topic_time_name'), array(
-            '{time}' => friendly_time($topic->last_time_posted), 
+        echo strtr(__('date:date_name'), array(
+            '{date}' => friendly_time($topic->last_time_posted), 
             '{name}' => escape($topic->last_from_name)
         ));
         echo "</span>";

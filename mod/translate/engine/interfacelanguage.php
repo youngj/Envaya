@@ -48,6 +48,11 @@ class InterfaceLanguage extends Entity
         return InterfaceTranslation::query()->where('language_guid = ?', $this->guid);
     }    
 
+    function query_votes()
+    {
+        return TranslationVote::query()->where('language_guid = ?', $this->guid);
+    }
+    
     function new_group_by_name($group_name)
     {
         $group = new InterfaceGroup();
@@ -77,5 +82,22 @@ class InterfaceLanguage extends Entity
             $available_groups[] = @$groups_map[$group_name] ?: $this->new_group_by_name($group_name);
         }
         return $available_groups;
+    }
+    
+    function query_translator_stats()
+    {
+        return TranslatorStats::query()->where('container_guid = ?', $this->guid);
+    }
+    
+    function get_stats_for_user($user)
+    {
+        $stats = $this->query_translator_stats()->where('owner_guid = ?', $user->guid)->get();
+        if (!$stats)
+        {
+            $stats = new TranslatorStats();
+            $stats->container_guid = $this->guid;
+            $stats->owner_guid = $user->guid;            
+        }
+        return $stats;
     }
 }

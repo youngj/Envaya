@@ -17,22 +17,22 @@
         {
             $minutes = round($diff / 60);
             return ($minutes > 1) 
-                ? sprintf(__("date:minutes"), $minutes) 
-                : __("date:minutes:singular");
+                ? sprintf(__('date:minutes_ago'), $minutes) 
+                : __('date:minutes_ago:singular');
         } 
         else if ($diff < 86400) 
         {
             $hours = round($diff / 3600);
             return ($hours > 1)
-                ? sprintf(__("date:hours"), $hours)
-                : __("date:hours:singular");               
+                ? sprintf(__('date:hours_ago'), $hours)
+                : __('date:hours_ago:singular');
         } 
         else if ($diff < 604800) 
         {
             $days = round($diff / 86400);
             return ($days > 1)
-                ? sprintf(__("date:days"), $days)
-                : __("date:days:singular");
+                ? sprintf(__('date:days_ago'), $days)
+                : __('date:days_ago:singular');
         } 
         else 
         {

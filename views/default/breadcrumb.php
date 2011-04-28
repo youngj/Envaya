@@ -6,7 +6,7 @@
     for ($i = 0; $i < $num_items; $i++)
     {
         $item = $items[$i];
-        $url = $item['url'];
+        $url = escape($item['url']);
         $title = escape($item['title']);        
         if ($i < $num_items - 1)
         {

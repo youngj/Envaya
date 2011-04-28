@@ -116,7 +116,7 @@
         $site_secret = Config::get('site_secret');
 
         // Current session id
-        $session_id = session_id();
+        $session_id = Session::id();
 
         // Get user agent
         $ua = $_SERVER['HTTP_USER_AGENT'];

@@ -2,7 +2,8 @@
     $language = $vars['language'];
     $groups = $language->query_groups()->order_by('name')->filter();
 ?>
-<table class='gridTable' style='width:300px'>
+<div style='float:left;width:400px;margin-right:20px'>
+<table class='gridTable'>
 <?php
     echo "<tr>";
     echo "<th>".__('itrans:language_group')."</th>";
@@ -30,3 +31,16 @@
     echo "</tr>";
 ?>
 </table>
+</div>
+<div style='float:left'>
+<ul style='font-weight:bold'>
+<?php 
+    echo "<li><a href='{$language->get_url()}/latest'>".__('itrans:latest')."</a></li>"; 
+    echo "<li><a href='{$language->get_url()}/translators'>".__('itrans:translators')."</a></li>";     
+    if (Session::isadminloggedin())
+    {
+        echo "<li><a style='color:red' href='{$language->get_admin_url()}'>".__('admin')."</a></li>";         
+    }
+?>
+</ul>
+</div>

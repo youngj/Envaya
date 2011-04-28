@@ -3,13 +3,32 @@
     $sections = array(
         array('url' => '/tr', 'title' => __('itrans:title'))
     );
-
+    
     $items = @$vars['items'];
     foreach ($items as $item)    
     {
-        $sections[] = array('url' => $item->get_url(), 'title' => $item->get_title());
+        if (is_array($item))
+        {
+            $sections[] = $item;
+        }
+        else
+        {
+            $sections[] = array(
+                'url' => "{$item->get_url()}", 
+                'title' => $item->get_title()
+            );
+        }
+    }
+    
+    $title = @$vars['title'];
+    if ($title)
+    {
+        $sections[] = array('title' => $title);
     }
     
     echo view('breadcrumb', array('items' => $sections));
 ?>
 </h2>
+<?php
+    echo SessionMessages::view_all();
+?>

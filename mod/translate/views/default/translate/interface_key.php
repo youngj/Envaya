@@ -13,9 +13,17 @@
 
     $output_view = $key->get_output_view();      
 ?>
-<table class='inputTable gridTable' style='width:600px'>
+<div class='post_nav' style='padding-bottom:5px;width:650px'>
+<?php  
+    echo "<a href='{$key->get_url()}/prev' title='".__('previous')."' class='post_nav_prev'><span>&#xab; ".__('previous')."</span></a> ";
+    echo "<a href='{$key->get_url()}/next' title='".__('next')."' class='post_nav_next'><span>".__('next')." &#xbb;</span></a>";
+?>
+</div>
+<form method='POST' action='<?php echo $key->get_url(); ?>/add'>
+<?php echo view('input/securitytoken'); ?>
+<table class='inputTable gridTable' style='width:650px'>
 <tr>
-    <th style='width:150px'><?php echo __('itrans:language_key'); ?></th>
+    <th style='width:200px;vertical-align:top'><?php echo __('itrans:language_key'); ?></th>
     <td style='width:450px'><?php echo escape($key->name); ?></td>
 </tr>
 <tr style='border-bottom:1px solid gray'>
@@ -29,76 +37,94 @@
     
     foreach ($translations as $translation)
     {
-        $is_stale = $translation->is_stale();
-        $style = $is_stale ? 'color:#666' : '';
         echo "<tr><th>";
         echo escape($target_language->name);
         echo "<div style='font-weight:normal'>";
+        echo "<div class='blog_date'>";
+            $date = friendly_time($translation->time_created);
+        
+            echo strtr(__('date:date_name'), array(
+                '{date}' => $date,
+                '{name}' => $translation->get_owner_link()
+            ));
+        
+        echo "</div>";
         echo view('translate/translation_score', array('translation' => $translation)); 
         
         if ($translation->can_edit())
         {
-            echo "<div class='admin_links'>".
-                view('output/confirmlink', array(
-                    'href' => $translation->get_url() . "/delete",
-                    'text' => __('delete'),
-                ))."</div>";
+            echo "<div class='admin_links'>";
+            echo view('output/confirmlink', array(
+                'href' => $translation->get_url() . "/delete",
+                'text' => __('delete'),
+            ));
+            echo "</div>";
         }        
         echo "</div>";
-        echo "</th><td style='$style'>";
+        echo "</th><td>";
 
         echo view($output_view, array('value' => $translation->value));
 
-        if ($is_stale)
+        if ($translation->is_stale())
         {
-            echo "<div class='help'>".__('itrans:stale')."</div>";
+            echo "<div style='color:#666' class='help'>".__('itrans:stale')."</div>";
         }
         echo "</td></tr>";
     }
+    
+    if (Session::isloggedin())
+    {
 ?>
-</table>
-<br />
-    <label><?php echo sprintf(__('itrans:add_in'), escape($target_language->name)); ?></label><br />
+    <tr><th style='vertical-align:top;padding-top:12px'><?php echo sprintf(__('itrans:add_in'), escape($target_language->name)); ?></th>
+    <td>
 <?php
-    if (!Session::isloggedin())
-    {
-        echo "<a href='/pg/login?next=".urlencode($key->get_url())."'>".__('login')."</a>";
-    }
-    else
-    {
-?>
-<form method='POST' action='<?php echo $key->get_url(); ?>/add'>
-<?php echo view('input/securitytoken'); ?>
-<?php echo view('input/uniqid'); ?>
-
-<div class='input'>
-<?php 
-    $tokens = $key->get_placeholders();
-    if ($tokens)
-    {
-        $token_str = implode(' ', array_map(function($t) { return "<strong>$t</strong>"; }, $tokens));
-        echo "<div>".__('itrans:needs_placeholders')." $token_str</div>";
-    }
-
     if (strlen($base_value) > 75 || strpos($base_value, "\n") !== FALSE)
     {
        $view = "input/longtext";
-       $js = "style='height:".(30+floor(strlen($enText)/50)*25)."px'";
+       $js = "style='height:".(25+floor(strlen($base_value)/75)*25)."px;width:400px'";
     }
     else
     {
         $view = "input/text";
-        $js = '';
+        $js = 'style="width:400px"';
     }
 
     echo view($view, array(
         'name' => 'value',
         'js' => $js,
     )); 
+    echo "<br />";
+    $tokens = $key->get_placeholders();
+    if ($tokens)
+    {
+        $token_str = implode(' ', array_map(function($t) { return "<strong>$t</strong>"; }, $tokens));
+        echo "<div>".__('itrans:needs_placeholders')."<br />$token_str</div>";
+    }    
+    
+    if (sizeof($translations < 4))
+    {    
+        echo view('focus', array('name' => 'value')); 
+    }
+    
+    echo view('input/submit', array('value' => __('trans:submit'))); 
 ?>
-</div>
-<?php echo view('input/submit', array('value' => __('trans:submit'))); ?>
-</form>
+</td></tr>
 <?php
     }
+?>
+</table>
+</form>
+<?php
+
+    if (!Session::isloggedin())
+    {
+        echo "<br />";
+        echo __('itrans:need_login');
+        echo "<ul style='font-weight:bold'>";
+        $next = urlencode($key->get_url());
+        echo "<li><strong><a href='/pg/login?next=$next'>".__('login')."</a></li>";
+        echo "<li><strong><a href='/pg/register?next=$next'>".__('register')."</a></li>";
+        echo "</ul>";
+    }
+    
 ?>

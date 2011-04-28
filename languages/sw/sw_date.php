@@ -2,15 +2,16 @@
 
 return array(
     'date:justnow' => 'sekundi chache zilizopita',
-    'date:minutes' => 'dakika %s zilizopita',
-    'date:minutes:singular' => 'dakika moja iliyopita',
-    'date:hours' => 'saa %s zilizopita',
-    'date:hours:singular' => 'saa moja iliyopita',
-    'date:days' => 'siku %s zilizopita',
-    'date:days:singular' => 'jana',
+    'date:minutes_ago' => 'dakika %s zilizopita',
+    'date:minutes_ago:singular' => 'dakika moja iliyopita',
+    'date:hours_ago' => 'saa %s zilizopita',
+    'date:hours_ago:singular' => 'saa moja iliyopita',
+    'date:days_ago' => 'siku %s zilizopita',
+    'date:days_ago:singular' => 'jana',
     
     'date:no_year' => '{day} {month}',
     'date:with_year' => '{day} {month}, {year}',
+    'date:date_name' => "{date} na {name}",
     
     'date:month:1' => 'Januari',
     'date:month:2' => 'Februari',

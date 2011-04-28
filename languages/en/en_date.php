@@ -2,17 +2,18 @@
 
 return array(
     'date:justnow' => "just now",
-    'date:minutes' => "%s minutes ago",
-    'date:minutes:singular' => "a minute ago",
-    'date:hours' => "%s hours ago",
-    'date:hours:singular' => "an hour ago",
-    'date:days' => "%s days ago",
-    'date:days:singular' => "yesterday",
-
+    'date:minutes_ago' => "%s minutes ago",
+    'date:minutes_ago:singular' => "a minute ago",
+    'date:hours_ago' => "%s hours ago",
+    'date:hours_ago:singular' => "an hour ago",
+    'date:days_ago' => "%s days ago",
+    'date:days_ago:singular' => "yesterday",
+    
     'date:no_year' => '{month} {day}',
     'date:with_year' => '{month} {day}, {year}',
     'date:time' => '{hour}:{minute} {tz}',
     'date:date_time' => '{date} at {time}',
+    'date:date_name' => "{date} by {name}",
 
     'date:month:1' => 'January',
     'date:month:2' => 'February',

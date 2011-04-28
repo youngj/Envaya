@@ -42,5 +42,14 @@ CREATE TABLE `interface_translations` (
 
 CREATE TABLE `translation_votes` (
   <?php require 'schema/entity_columns.php'; ?>,  
-  `score` int(11) NOT NULL default 0
+  `score` int(11) NOT NULL default 0,
+  `language_guid` bigint(20) unsigned NOT NULL,
+  KEY `language_guid` (`language_guid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `translator_stats` (
+  <?php require 'schema/entity_columns.php'; ?>,  
+  `score` int(11) NOT NULL default 0,
+  `num_translations` int(11) NOT NULL default 0,
+  `num_votes` int(11) NOT NULL default 0,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

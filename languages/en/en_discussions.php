@@ -24,7 +24,6 @@ return array(
     'discussions:feed_heading_topic' => "{name} has a new discussion about {topic}.",
     'discussions:feed_heading_message' => "{name} has a new message in the discussion {topic}.",
     'discussions:captcha_instructions' => "Type the letters that appear below to publish your message.",    
-    'discussions:topic_time_name' => "{time} by {name}",
     'discussions:notification_subject' => "{name} added a new message in {topic}",
     'discussions:notification_topic_subject' => "{name} added a new discussion about {topic}",
     'discussions:message_deleted_marker' => "message deleted",

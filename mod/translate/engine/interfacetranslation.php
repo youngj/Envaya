@@ -26,6 +26,21 @@ class InterfaceTranslation extends Entity
         return $this->default_value != $key->get_default_value();
     }
     
+    function update($recursive = false)
+    {
+        $row = $this->query_votes()
+            ->columns("sum(score) as score")
+            ->set_row_function(null)
+            ->get();
+    
+        $this->score = $row->score;
+        $this->save();
+        if ($recursive)
+        {
+            $this->get_container_entity()->update($recursive);
+        }
+    }    
+    
     function save()
     {
         $key = $this->get_container_entity();
@@ -54,5 +69,19 @@ class InterfaceTranslation extends Entity
     function query_votes()
     {
         return TranslationVote::query()->where('container_guid = ?', $this->guid);
+    }
+    
+    function get_owner_link()
+    {
+        $owner = $this->get_owner_entity();
+        if ($owner)
+        {
+            $language = $this->get_language();
+            return "<a href='{$language->get_url()}/translators/{$owner->guid}'>".escape($owner->username)."</a>";
+        }
+        else
+        {
+            return __('itrans:admin');
+        }    
     }
 }

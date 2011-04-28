@@ -7,12 +7,7 @@ class Action_DeleteInterfaceTranslation extends Action
         $this->require_login();
         
         $key = $this->param('key');
-        
-        $translation = $key->query_translations()->guid($this->param('translation_guid'))->get();
-        if (!$translation)
-        {
-            return $this->not_found();
-        }
+        $translation = $this->param('translation');
         
         if (!$translation->can_edit())
         {
@@ -25,8 +20,15 @@ class Action_DeleteInterfaceTranslation extends Action
         $key->update();
         $key->get_container_entity()->update();
         
+        $user = $translation->get_owner_entity();
+        if ($user)
+        {
+            $language = $key->get_language();
+            $language->get_stats_for_user($user)->update();        
+        }
+        
         SessionMessages::add(__('itrans:deleted'));
         
-        forward($key->get_url());
+        redirect_back();
     }
 }
