@@ -106,6 +106,7 @@ class Controller_Pg extends Controller_Simple {
         $this->page_draw(array(
             'no_top_bar' => true, 
             'layout' => 'layouts/frame', 
+            'no_top_bar' => true,            
             'content' => SessionMessages::view_all(),
             'header' => ''
         ));
@@ -276,6 +277,7 @@ class Controller_Pg extends Controller_Simple {
         $this->allow_view_types(null);
         $this->page_draw(array(
             'layout' => 'layouts/frame',
+            'no_top_bar' => true,            
             'content' => view('upload/select_image', array(
                 'current' => $file,
                 'position' => get_input('pos'),
@@ -292,6 +294,7 @@ class Controller_Pg extends Controller_Simple {
         $this->allow_view_types(null);
         $this->page_draw(array(
             'layout' => 'layouts/frame',
+            'no_top_bar' => true,
             'content' => view('upload/select_document', array(
                 'current' => $file,
                 'frameId' => get_input('frameId'),

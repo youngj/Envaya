@@ -86,7 +86,7 @@ a.selected
     margin:10px 15px 10px 0px;
 }
 
-#heading h1, #heading h2
+#heading h1, #heading h2, #heading h2 a
 {
     color:#222;
     font-size:20px;

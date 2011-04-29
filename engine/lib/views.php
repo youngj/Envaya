@@ -136,6 +136,7 @@ function view_entity($entity, $args = null)
 
 class Views
 {
+    private static $request_type = null;
     private static $current_type = null;
     private static $extensions_map = array();
     
@@ -155,9 +156,9 @@ class Views
         $extensions[$priority] = $extend_view;
     }
     
-    static function get_current_type()
+    static function get_request_type()
     {
-        $type = static::$current_type;
+        $type = static::$request_type;
     
         if ($type === null)
         {
@@ -172,9 +173,19 @@ class Views
             {            
                 $type = 'default';
             }
-            static::$current_type = $type;
+            static::$request_type = $type;
         }
         return $type;
+    }
+    
+    static function set_request_type($type)
+    {
+        static::$request_type = $type;
+    }
+    
+    static function get_current_type()
+    {
+        return static::$current_type ?: static::get_request_type();
     }
     
     static function set_current_type($type)

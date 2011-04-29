@@ -21,8 +21,9 @@
 <div id='content_bottom'>
 </div>
 </div>
-<script type='text/javascript'>addImageLinks(document.getElementById('right_content'));</script>
 <?php 
+    echo view('page_elements/add_image_links', array('id' => 'right_content'));
+
     $vars['content'] = ob_get_clean();
     $vars['header'] = "<div class='thin_column'>{$vars['header']}</div>";    
     

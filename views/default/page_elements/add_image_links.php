@@ -1,0 +1,1 @@
+<script type='text/javascript'>addImageLinks(document.getElementById('<?php echo $vars['id']; ?>'));</script>

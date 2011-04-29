@@ -95,8 +95,9 @@ function php_exception_handler($exception) {
         }
         else
         {   
-            echo view('layouts/default', array(
+            echo view('layouts/base', array(
                 'title' => __('exception_title'),
+                'layout' => 'layouts/default',
                 'hideLogin' => true,
                 'header' => view('page_elements/title', array('title' => __('exception_title'))),
                 'content' => view("messages/exception", array('object' => $exception))

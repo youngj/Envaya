@@ -19,6 +19,11 @@ class Submenu
         $this->items[] = $item;
     }
     
+    function render_list()
+    {
+        echo $this->render('page_elements/submenu_basic', 'page_elements/submenu_list_item');
+    }
+    
     function render($groupTemplate = 'page_elements/submenu_basic', $itemTemplate = 'page_elements/submenu_link_item')
     {
         $submenu = array();

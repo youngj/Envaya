@@ -11,7 +11,7 @@
 body { color:#fff; background:#d0b66b url("<?php echo $graphicsDir; ?>/cotton-bg.jpg") repeat left top; }
 .heading_container { background:#e3d2a7; }
 .content_container .thin_column, .footer_container .thin_column { background-color:#715023; }
-#heading h2 { color:#715023; }
+#heading h2 , #heading h2 a { color:#715023; }
 #heading h3 { color:#a07d28; }
 #site_menu a { color:#fff; }
 #site_menu a.selected, #site_menu a:hover

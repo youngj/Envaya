@@ -53,6 +53,7 @@ DirectoryIndex index.php
 <IfModule mod_rewrite.c>
     RewriteEngine on
     RewriteBase /
+    RewriteRule ^_graphics/mod/(\w+)/(.*) mod/$1/_graphics/$2 [L]
     RewriteRule ^(\w+\.php|_media|_graphics|_css|(mod\/(\w+)\/_graphics\/)) - [L]
     RewriteRule .* index.php/$0 [L]
 </IfModule>

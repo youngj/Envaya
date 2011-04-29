@@ -92,10 +92,18 @@ abstract class Controller_User extends Controller
                 
         $this->public_layout = true;
         
-        $this->page_draw_vars['theme_name'] = get_input("__theme") ?: $org->theme ?: 'green';                
+        $theme_name = get_input("__theme") ?: $org->theme ?: Config::get('fallback_theme');
+        
+        $this->page_draw_vars['theme_name'] = $theme_name;                
         $this->page_draw_vars['sitename'] = $org->name;
         $this->page_draw_vars['site_url'] = $org->get_url();
         $this->page_draw_vars['login_url'] = url_with_param($this->request->full_rewritten_url(), 'login', 1);
+        
+        if (Views::get_request_type() == 'default')
+        {
+            $theme = Theme::get($theme_name);            
+            Views::set_current_type($theme->get_viewtype());         
+        }
         
         $this->show_site_menu($cur_widget);
     }
@@ -208,10 +216,15 @@ abstract class Controller_User extends Controller
             }
             else
             {
+                $vars['logo'] = view('org/icon', array('org' => $org, 'size' => 'medium'));
+                $vars['title_url'] = $org->get_url();
+                
+                /*
                 $vars['header'] = view('org/default_header', array(
                     'org' => $org,
                     'subtitle' => $vars['title'],
                 ));
+                */
             }
             
             $vars['pre_body'] = $this->get_pre_body($vars);

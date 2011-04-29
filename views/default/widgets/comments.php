@@ -1,7 +1,7 @@
 <?php
 	$widget = $vars['widget'];
 ?>
-
+<div style='clear:both'></div>
 <div id='comments'>
 
 <?php

@@ -11,7 +11,7 @@
 body { color:#fff; background:#f2c346 url("<?php echo $graphicsDir; ?>/craft4-bg.jpg") repeat left -60px; }
 .heading_container { background:#461600 url("<?php echo $graphicsDir; ?>/craft4-header.jpg") repeat -80px -20px; }
 .content_container .thin_column, .footer_container .thin_column { background-color:#916c4c; }
-#heading h2 { color:#fff; }
+#heading h2 , #heading h2 a { color:#fff; }
 #heading h3 { color:#dbc777; }
 #site_menu a { color:#fff; }
 #site_menu a.selected, #site_menu a:hover

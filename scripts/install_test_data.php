@@ -52,6 +52,7 @@ function install_org($username)
     }
 
     $org->email = Config::get('admin_email');
+    $org->theme = 'green';
     $org->name = "Test Org";
     $org->set_password('testtest');
     $org->language = 'en';

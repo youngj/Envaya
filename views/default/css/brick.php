@@ -7,7 +7,7 @@
 
 body { color:#fff; background:#69493e url("<?php echo $graphicsDir; ?>/brick.jpg") repeat left top; }
 .heading_container .thin_column, .content_container .thin_column, .footer_container .thin_column { background-color:#2a2a2a; }
-#heading h2 { color:#fff; }
+#heading h2 , #heading h2 a { color:#fff; }
 #heading h3 { color:#dbc777; }
 #heading img { padding-left:10px; }
 #site_menu a { color:#fff; }

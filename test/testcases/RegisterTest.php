@@ -146,7 +146,7 @@ class RegisterTest extends SeleniumTest
 
         $this->ensureGoodMessage();
 
-        $this->mouseOver("//h2[text()='{$this->name}']");
+        $this->mouseOver("//h2//a[text()='{$this->name}']");
         $this->mouseOver("//h3[text()='Wete, Tanzania']");
         $this->mouseOver("//a[contains(@href,'org/browse?list=1&sector=3') and text()='Conflict resolution']");
     }
@@ -419,7 +419,7 @@ class RegisterTest extends SeleniumTest
         $this->submitForm();
         $this->ensureGoodMessage();
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
-        $this->mouseOver("//h2[text()='New Name']");
+        $this->mouseOver("//h2//a[text()='New Name']");
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->clickAndWait("//a[contains(@href,'pg/login')]");
         $this->login($this->username, 'password');
@@ -457,7 +457,7 @@ class RegisterTest extends SeleniumTest
         $this->submitForm();
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
 
-        $this->mouseOver("//h2[text()='New Name']");
+        $this->mouseOver("//h2//a[text()='New Name']");
         $this->mustNotExist("//a[contains(@href,'home/edit')]");
 
         $this->clickAndWait("//a[contains(@href,'org/feed')]");

@@ -65,7 +65,7 @@
 
 <?php echo view('input/theme', array(
     'name' => 'theme',
-    'value' => $org->theme ?: 'green',
+    'value' => $org->theme ?: Config::get('fallback_theme'),
     'options' => Theme::available_names(),
     'previewUrl' => $org->get_url()
 )); ?>

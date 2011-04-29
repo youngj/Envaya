@@ -18,8 +18,9 @@
 <div id='content_bottom'></div>
 </div>
 </div>
-<script type='text/javascript'>addImageLinks(document.getElementById('content_mid'));</script>
 <?php 
+    echo view('page_elements/add_image_links', array('id' => 'content_mid'));
+
     $vars['content'] = ob_get_clean();        
     $vars['header'] = "<div class='thin_column'>{$vars['header']}</div>";    
     

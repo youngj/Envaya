@@ -92,7 +92,7 @@ function customHeaderChanged()
 
 <div id='default_header_container' <?php echo $org->has_custom_header() ? "style='display:none'" : "" ?> >
     <div class='header_preview'>
-        <?php echo view('org/default_header', array('org' => $org, 'subtitle' => __('design:header:subtitle'))) ?>
+        <?php echo view('org/default_header', array('org' => $org, 'title' => __('design:header:subtitle'))) ?>
     </div>
     <div class='help'><?php echo sprintf(__('design:header:changelogo'), __('design:logo')) ?></div>
 </div>

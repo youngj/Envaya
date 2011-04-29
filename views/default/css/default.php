@@ -6,126 +6,10 @@
     
     $contentWidth = $vars['contentWidth'];
     
-?>
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, cite, code,
-del, dfn, em, font, img, ins, kbd, q, s, samp,
-strike, sub, sup, tt, var,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-weight: inherit;
-    font-style: inherit;
-    font-size: 100%;
-    font-family: inherit;
-    vertical-align: baseline;
-}
-
-<?php    
+    echo view('css/snippets/reset', $vars);
     echo view('css/base', $vars);
+    echo view('css/snippets/topbar', $vars);
 ?>
-
-th
-{
-    font-weight:bold;
-}
-
-em, i {
-    font-style:italic;
-}
-
-caption, th, td
-{
-    text-align: left;
-    vertical-align: top;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-    content: "";
-}
-blockquote, q {
-    quotes: "" "";
-}
-
-ul {
-    margin: 0px 0px 15px;
-    padding-left: 20px;
-}
-ul li {
-    margin: 0px;
-}
-ol {
-    margin: 0px 0px 15px;
-    padding-left: 20px;
-}
-ul li {
-    margin: 0px;
-}
-
-small {
-    font-size: 90%;
-}
-h1 { font-size: 1.8em;  }
-h2 { font-size: 1.5em; }
-h3 { font-size: 1.2em; }
-h4 { font-size: 1.0em; }
-h5 { font-size: 0.9em; }
-h6 { font-size: 0.8em; }
-
-dt {
-    margin: 0;
-    padding: 0;
-    font-weight: bold;
-}
-dd {
-    margin: 0 0 1em 1em;
-    padding: 0;
-}
-pre, code {
-    font-family:Monaco,"Courier New",Courier,monospace;
-    font-size:12px;
-    background:#EBF5FF;
-    overflow:auto;
-
-    overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
-    white-space: pre-wrap; /* css-3 */
-    white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
-    white-space: -pre-wrap; /* Opera 4-6 */
-    white-space: -o-pre-wrap; /* Opera 7 */
-    word-wrap: break-word; /* Internet Explorer 5.5+ */
-}
-code {
-    padding:2px 3px;
-}
-pre {
-    padding:3px 15px;
-    margin:0px 0 15px 0;
-    line-height:1.3em;
-}
-blockquote {
-    padding:3px 15px;
-    margin:0px 0 15px 0;
-    line-height:1.3em;
-    background:#EBF5FF;
-    border:none !important;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-}
-blockquote p {
-    margin:0 0 5px 0;
-}
-
-
-#topbar
-{
-    width:100%;
-    background:#1d1d1d url(/_graphics/topgradient2.gif) repeat-x left -1px;
-}
 
 #translate_bar
 {
@@ -244,152 +128,6 @@ blockquote p {
 {
     right:0px;
     text-align:right;
-}
-
-#topRight
-{
-    position:absolute;
-    right:0px;
-    top:0px;
-}
-
-
-.topbarTable
-{
-    width:100%;
-}
-
-#topbar form
-{
-    display:inline;
-}
-
-.topbarLinks
-{
-    font-size:12px;
-}
-
-.topbarLinks a
-{
-    display:block;
-    float:left;
-    padding:6px 18px 4px 18px;
-    border-left:1px solid #5d5d5d;
-    border-right:1px solid #2f2f2f;
-    height:19px;
-    color:#e6e6e6;
-}
-
-.topbarLinks a:hover
-{
-    background:#1d1d1d url(/_graphics/topgradient2.gif) repeat-x left -30px;
-    color:#e6e6e6;
-    text-decoration:none;
-}
-
-.topbarLinks a#logoContainer
-{
-    padding:2px 10px 8px 10px;
-    overflow:hidden;
-    border-left:0px;
-}
-
-.topbarLinks form
-{
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-#loginButton, #loggedinArea
-{
-    width:159px;
-    display:block;
-}
-
-#loginButton
-{
-    background:#4d4d4d url(/_graphics/loginbutton.png) no-repeat left top;
-    height:29px;
-}
-
-a#loginButton:hover
-{
-    background-position:left -33px;
-}
-
-#loggedinArea
-{
-    background:url(/_graphics/loggedinarea.png) no-repeat left -18px;
-}
-
-a#loginButton:hover, a#loginButton:hover .loginText
-{
-    text-decoration:none;
-}
-
-#loginButton img
-{
-    margin-right:10px;
-    vertical-align:-4px;
-}
-
-#loginButton .loginContent
-{
-    display:block;
-    padding-top:3px;
-    text-align:center;
-    color:#e6e6e6;
-    font-weight:bold;    
-}
-
-.loggedInAreaContent
-{
-    display:block;
-    height:26px;
-    padding:1px 0px 2px 0px;
-    text-align:center;
-    color:#e6e6e6;
-    font-weight:bold;
-}
-
-.loggedInAreaContent a
-{
-    margin-left:5px;
-    margin-right:5px;
-}
-
-.loggedInAreaContent a:hover
-{
-    border-bottom:1px solid black;
-}
-
-.dropdown
-{
-    position:absolute;
-    z-index:10;
-    left:100px;
-    top:100px;
-    width:180px;
-    background-color:#2b2b2b;
-    border:1px solid #b8b8b8;
-    padding-bottom:8px;
-    -moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
-    display:none;
-}
-
-.dropdown_title
-{
-    padding:6px;
-    font-weight:bold;
-    border-bottom:1px solid #545454;
-    color:#e6e6e6;
-}
-
-.dropdown_content
-{
-    background-color:#e6e6e6;
-    padding:3px;
 }
 
 .thin_column
@@ -579,12 +317,6 @@ label {
     margin:0 0 3px 0;
     line-height:1.2em;
 }
-.search_listing_info p.owner_timestamp {
-    margin:0;
-    padding:0;
-    color:#666666;
-    font-size: 90%;
-}
 
 .good_messages, .bad_messages
 {
@@ -607,9 +339,6 @@ label {
     -moz-border-radius: 8px;
     padding:10px;
     margin:0 10px 10px 10px;
-}
-span.contentIntro p {
-    margin:0 0 0 0;
 }
 
 .submit_button
@@ -835,15 +564,6 @@ a.photoDelete:hover
     font-weight:bold;
 }
 
-.top_language
-{
-    float:right;
-    padding:3px 10px 2px 5px;
-    color:white;
-    color:#e6e6e6;
-    white-space:nowrap;
-}   
-
 .header_icons
 {
     height:30px;
@@ -968,20 +688,6 @@ input[type="submit"] {
 {
     padding:5px;
 }
-
-#edit_submenu
-{
-    text-align:center;
-    height:20px;
-    padding:3px 10px;
-}
-
-#edit_submenu a
-{
-    color:white;
-    font-weight:bold;
-}
-
 
 #comment_form textarea
 {

@@ -201,7 +201,7 @@ abstract class Controller {
     }
         
     public function page_draw($vars)
-    {        
+    {                
         if (get_input('__topbar') == '0')
         {
             $vars['no_top_bar'] = true;
@@ -213,6 +213,23 @@ abstract class Controller {
             {
                 $vars[$k] = $v;
             }
+        }
+        
+        if (Views::get_request_type() == 'default')
+        {
+            $theme = Theme::get(@$vars['theme_name'] ?: Config::get('fallback_theme'));
+            $vars['css_name'] = $theme->get_css_name();
+            
+            if (!isset($vars['layout']))
+            {
+                $vars['layout'] = $theme->get_layout();
+            }
+            
+            Views::set_current_type($theme->get_viewtype());            
+        }
+        else
+        {
+            $vars['layout'] = 'layouts/default';
         }
         
         if (!isset($vars['header']) && @$vars['title'])
@@ -235,19 +252,9 @@ abstract class Controller {
         
         $vars['canonical_url'] = $this->get_canonical_url();
         $vars['original_url'] = $this->request->full_original_url();
-        $vars['is_secure'] = $this->request->is_secure();        
-        
-        if (Views::get_current_type() == 'default')
-        {
-            $theme = Theme::get(@$vars['theme_name'] ?: 'simple');
-            $vars['css_name'] = $theme->get_css_name();        
-            if (!isset($vars['layout']))
-            {
-                $vars['layout'] = $theme->get_layout();
-            }
-        }
+        $vars['is_secure'] = $this->request->is_secure();                
 
-        $this->request->response = view(@$vars['layout'] ?: 'layouts/default', $vars);
+        $this->request->response = view('layouts/base', $vars);
     }
 
     protected function get_canonical_url()
@@ -431,12 +438,12 @@ abstract class Controller {
             $this->page_draw_vars['rss_url'] = url_with_param($this->request->full_original_url(), 'view', 'rss');
         }
         
-        $view_type = Views::get_current_type();
+        $view_type = Views::get_request_type();
         
         if ($view_type == 'default' || $view_type == 'mobile' || in_array($view_type, $allowed_view_types))
             return;
         
-        Views::set_current_type('default');
+        Views::set_request_type('default');
     }
     
     function allow_content_translation($allow = true)

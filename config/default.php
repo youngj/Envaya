@@ -1,6 +1,6 @@
 <?php
 return array(
-    'cache_version' => 172,  // increment when css, or external js (tinymce/swfupload) changes
+    'cache_version' => 174,  // increment when css, or external js (tinymce/swfupload) changes
     'debug' => true,
     
     'dbuser' => '',
@@ -77,4 +77,5 @@ return array(
     'default_timezone' => 'Africa/Dar_es_Salaam',
     
     'site_secret' => 'default_secret',
+    'fallback_theme' => 'simple',
 );

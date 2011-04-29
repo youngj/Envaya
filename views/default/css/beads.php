@@ -11,7 +11,7 @@ body { color:#fff; background:#f2c346 url("<?php echo $graphicsDir; ?>/beads.jpg
 .heading_container { background:#25160d url("<?php echo $graphicsDir; ?>/wood_header.jpg") repeat left bottom; }
 .content_container .thin_column,
 .footer_container .thin_column { background-color:#090503; }
-#heading h2 { color:#fff; }
+#heading h2 , #heading h2 a { color:#fff; }
 #heading h3 { color:#cca954; }
 #site_menu a { color:#fff; }
 #site_menu a.selected, #site_menu a:hover
