@@ -7,6 +7,7 @@ class Action_Register extends Action
         $user = Session::get_loggedin_user();
         if ($user && !$user->admin)
         {
+            SessionMessages::add(__('register:already_registered'));
             $this->redirect_next($user);
         }
     }

@@ -19,7 +19,7 @@ return array(
     
     'itrans:add_in' => "Add translation in %s",
     
-    'itrans:latest' => "Latest Translations",
+    'itrans:latest' => "Latest translations",
     'itrans:time_created' => "Time Created",
     'itrans:translator' => "Translator",    
     'itrans:translators' => "Translators",    
@@ -33,4 +33,7 @@ return array(
     'itrans:votes' => "Votes",
     'itrans:admin' => 'admin',    
     'itrans:need_login' => "In order to edit translations, you need to log in.",
+    
+    'itrans:instructions' => "Instructions",
+    'itrans:yours' => "Your translations",
 );

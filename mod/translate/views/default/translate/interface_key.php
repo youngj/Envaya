@@ -13,6 +13,7 @@
 
     $output_view = $key->get_output_view();      
 ?>
+<div style='width:650px;float:left'>
 <div class='post_nav' style='padding-bottom:5px;width:650px'>
 <?php  
     echo "<a href='{$key->get_url()}/prev' title='".__('previous')."' class='post_nav_prev'><span>&#xab; ".__('previous')."</span></a> ";
@@ -21,7 +22,7 @@
 </div>
 <form method='POST' action='<?php echo $key->get_url(); ?>/add'>
 <?php echo view('input/securitytoken'); ?>
-<table class='inputTable gridTable' style='width:650px'>
+<table class='inputTable gridTable'>
 <tr>
     <th style='width:200px;vertical-align:top'><?php echo __('itrans:language_key'); ?></th>
     <td style='width:450px'><?php echo escape($key->name); ?></td>
@@ -128,3 +129,11 @@
     }
     
 ?>
+</div>
+<div style='float:left;padding-top:30px;padding-left:10px'>
+<ul>
+<?php
+echo "<li><a href='/tr/instructions#key' target='_blank'>".__('itrans:instructions')."</a></li>";     
+?>
+</ul>
+</div>

@@ -34,9 +34,9 @@ CREATE TABLE `interface_keys` (
 CREATE TABLE `interface_translations` (
   <?php require 'schema/entity_columns.php'; ?>,  
   `language_guid` bigint(20) unsigned NOT NULL,  
-  `value` text NOT NULL,
+  `value` text NOT NULL collate utf8_bin,
   `score` int(11) NOT NULL default 0,
-  `default_value` text not null,
+  `default_value` text not null collate utf8_bin,
   KEY `language_guid` (`language_guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

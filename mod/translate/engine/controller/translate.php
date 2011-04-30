@@ -13,6 +13,10 @@ class Controller_Translate extends Controller
             'defaults' => array('action' => 'index'), 
         ),
         array(
+            'regex' => '/\instructions\b', 
+            'defaults' => array('action' => 'instructions'), 
+        ),                
+        array(
             'regex' => '/admin\b', 
             'defaults' => array('controller' => 'TranslateAdmin'), 
         ),        
@@ -99,7 +103,16 @@ class Controller_Translate extends Controller
             'content' => view('translate/interface_languages')
         ));
     }
-        
+     
+    function action_instructions()
+    {
+        return $this->page_draw(array(
+            'title' => __('itrans:instructions'),
+            'header' => view('translate/header', array('title' => __('itrans:instructions'))),
+            'content' => view('translate/instructions')
+        ));
+    }
+     
     function action_view_language()
     {
         $language = $this->param('language');

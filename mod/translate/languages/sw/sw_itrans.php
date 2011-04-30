@@ -26,4 +26,6 @@ return array(
     'itrans:votes' => "Kura",
     'itrans:admin' => 'msimamizi',    
     'itrans:need_login' => "Ili kuhariri tafsiri, lazima ufungue.",
+    'itrans:instructions' => "Maelekezo",
+    'itrans:yours' => "Tafsiri zako",
 );

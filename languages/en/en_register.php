@@ -100,4 +100,5 @@ return array(
     'register:user:phone' => "Enter your phone number:",    
     'register:user:username' => "Choose a username for your account:",
     'register:if_org' => "To register an organization, %s.",
+    'register:already_registered' => "You are already registered.",
 );

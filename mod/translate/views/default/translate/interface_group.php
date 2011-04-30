@@ -1,3 +1,10 @@
+<div style='float:right;'>
+<ul>
+<?php
+echo "<li><a href='/tr/instructions#group' target='_blank'>".__('itrans:instructions')."</a></li>";     
+?>
+</ul>
+</div>
 <?php
     $group = $vars['group'];    
     $filtered_keys = $vars['filtered_keys'];

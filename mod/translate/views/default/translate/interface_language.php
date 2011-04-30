@@ -35,12 +35,26 @@
 <div style='float:left'>
 <ul style='font-weight:bold'>
 <?php 
+    $user = Session::get_loggedin_user();
+    if ($user)
+    {
+        $stats = $language->get_stats_for_user($user);
+        if ($stats->guid)
+        {
+            echo "<li><a href='{$stats->get_url()}'>".__('itrans:yours')."</a></li>";         
+        }
+    }
+
     echo "<li><a href='{$language->get_url()}/latest'>".__('itrans:latest')."</a></li>"; 
     echo "<li><a href='{$language->get_url()}/translators'>".__('itrans:translators')."</a></li>";     
+    
     if (Session::isadminloggedin())
     {
         echo "<li><a style='color:red' href='{$language->get_admin_url()}'>".__('admin')."</a></li>";         
     }
+    
+    echo "<li><a href='/tr/instructions#target_language' target='_blank'>".__('itrans:instructions')."</a></li>";     
+    
 ?>
 </ul>
 </div>
