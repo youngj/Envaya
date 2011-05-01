@@ -97,8 +97,9 @@ return array(
     'register:user:password:help' => "Together with your username, this will let you log in to Envaya.",
     'register:user:email' => "Enter your email address:",
     'register:user:email:help' => "If you don't have an email address, leave this blank.",
+    'register:user:email:help_2' => "Your email address will not be publicly displayed, given away, or added to a mailing list.",
     'register:user:phone' => "Enter your phone number:",    
     'register:user:username' => "Choose a username for your account:",
     'register:if_org' => "To register an organization, %s.",
-    'register:already_registered' => "You are already registered.",
+    'register:already_registered' => "You are already registered.",    
 );

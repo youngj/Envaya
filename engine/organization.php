@@ -65,7 +65,7 @@ class Organization extends User
         foreach (array('history','projects','team') as $widgetName)
         {
             $widget = $this->get_widget_by_name($widgetName);
-            if ($widget->is_active() && $widget->content)
+            if ($widget->is_enabled() && $widget->content)
             {
                 $numWidgets++;
             }

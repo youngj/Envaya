@@ -40,6 +40,7 @@ echo sprintf(__('register:if_org'), "<a href='/org/new?next=".urlencode($next)."
 <div class='input'>
 <label><?php echo __('register:user:email'); ?></label><br />
 <?php echo view('input/text', array('name' => 'email')); ?>
+<div class='help'><?php echo __('register:user:email:help_2'); ?></div>
 <div class='help'><?php echo __('register:user:email:help'); ?></div>
 </div>
 

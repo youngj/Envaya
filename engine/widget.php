@@ -216,11 +216,6 @@ class Widget extends Entity
         return "{$this->get_base_url()}/edit";
     }
             
-    public function is_active()
-    {
-        return $this->guid && $this->is_enabled();
-    }
-    
     public function is_section()
     {
         return $this->get_container_entity()->is_section_container();

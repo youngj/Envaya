@@ -57,7 +57,7 @@ abstract class Controller_User extends Controller
             $this->allow_view_types(null);
         }
                         
-        if (!$widget || !$widget->is_active() || $widget->publish_status != Widget::Published)
+        if (!$widget || !$widget->is_enabled() || $widget->publish_status != Widget::Published)
         {
             $this->not_found();
         }

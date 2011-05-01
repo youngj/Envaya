@@ -3,7 +3,7 @@
 
     $news = $org->get_widget_by_class('News');
     
-    if ($news->is_active())
+    if ($news->is_enabled())
     {
         echo view('section', array(
             'header' => __("widget:news:add_update"), 

@@ -21,7 +21,7 @@ class FeedItem_Relationship extends FeedItem
         
         $list_name = $relationship->msg('header');
         
-        if ($network->is_active())
+        if ($network->is_enabled())
         {
             $list_name = "<a href='{$network->get_url()}'>$list_name</a>";
         }        

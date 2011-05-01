@@ -8,7 +8,7 @@ class Action_Discussion_NewTopic extends Action
         $org = $this->get_org();
         
         $widget = $org->get_widget_by_class('Discussions');
-        if (!$widget->is_active())
+        if (!$widget->is_enabled())
         {
             if ($widget->can_edit())
             {        
@@ -121,7 +121,7 @@ class Action_Discussion_NewTopic extends Action
         $org = $this->get_org();       
 
         $widget = $org->get_widget_by_class('Discussions');
-        if (!$widget->is_active() && !$widget->can_edit())
+        if (!$widget->is_enabled() && !$widget->can_edit())
         {
             return $this->not_found();
         }

@@ -69,7 +69,7 @@ class Controller_UserSite extends Controller_User
      
         $widgetName = $this->param('widget_name');
         $widget = $this->get_org()->get_widget_by_name($widgetName);
-        if ($widget->is_active())
+        if ($widget->is_enabled())
         {
             forward($widget->get_edit_url());
         }

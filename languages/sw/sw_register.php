@@ -97,6 +97,7 @@ return array(
     'register:user:password:help' => 'Jina la mtumiaji pamoja na neno la siri yatakuruhusu kufungua katika Envaya.',
     'register:user:email' => "Ingiza anwani yako ya email:",
     'register:user:email:help' => "Ikiwa huna anwani ya email, iache tupu.",
+    'register:user:email:help_2' => "Anwani yako ya email haitaonekana hadharani, haitapewa na wengine, na haitaongezwa kwenye orodha ya email.",    
     'register:user:phone' => "Ingiza namba yako ya simu:",    
     'register:user:username' => "Chagua 'jina la mtumiaji' kwa akaunti yako:",
     'register:if_org' => "Kuandikisha shirika, %s.",    

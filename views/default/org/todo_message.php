@@ -48,17 +48,17 @@ if (!Session::get('hide_todo'))
 
     $history = $widgets_map['history'];
     $addItem("<a href='{$history->get_edit_url()}'>".__('todo:history')."</a>",
-        $history->is_active() && $history->content_len > 0
+        $history->is_enabled() && $history->content_len > 0
     );            
 
     $projects = $widgets_map['projects'];
     $addItem("<a href='{$projects->get_edit_url()}'>".__('todo:projects')."</a>",
-        $projects->is_active() && $projects->content_len > 0
+        $projects->is_enabled() && $projects->content_len > 0
     );            
     
     $team = $widgets_map['team'];
     $addItem("<a href='{$team->get_edit_url()}'>".__('todo:team')."</a>",
-        $team->is_active() && $team->content_len > 0
+        $team->is_enabled() && $team->content_len > 0
     );            
     
     $news = $widgets_map['news'];
@@ -80,7 +80,7 @@ if (!Session::get('hide_todo'))
 
     $network = $widgets_map['network'];
     $addItem("<a href='{$network->get_edit_url()}'>".__('todo:network')."</a>",
-        $network->is_active()
+        $network->is_enabled()
     );
     
 ?>

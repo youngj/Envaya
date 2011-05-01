@@ -118,6 +118,7 @@ abstract class Action
     
     function render_captcha($vars)
     {
+        Session::start(); // make sure that securitytoken is correct
         $this->use_public_layout();        
         $this->page_draw(array(
             'title' => __('captcha:title'),

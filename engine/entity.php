@@ -367,7 +367,7 @@ abstract class Entity extends Model
      */
     public function is_enabled()
     {
-        return $this->status == Entity::Enabled;
+        return $this->guid && $this->status == Entity::Enabled;
     }
 
     /**
