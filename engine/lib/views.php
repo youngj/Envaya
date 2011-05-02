@@ -162,12 +162,7 @@ class Views
     
         if ($type === null)
         {
-            $type = get_input('view') ?: @$_COOKIE['view'] ?: 'default';        
-            
-            if (!$type && is_mobile_browser())
-            {
-                $type = 'mobile';
-            }
+            $type = get_input('view') ?: @$_COOKIE['view'] ?: (is_mobile_browser() ? 'mobile' : 'default');
             
             if (preg_match('/[^\w]/', $type))
             {            
