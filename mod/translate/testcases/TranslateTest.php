@@ -1,0 +1,168 @@
+<?php
+
+class TranslateTest extends SeleniumTest
+{
+    function test()
+    {
+        $this->open("/tr/admin/tl");
+        if ($this->isElementPresent("//button[@id='widget_delete']"))
+        {
+            $this->submitForm("//button[@id='widget_delete']");
+            $this->open("/tr/admin/tl");
+        }
+        
+        // create test language
+        $this->login('testadmin','testtest');
+        $this->type("//input[@name='name']", "Test Language");
+        $this->check("//input[@value='comment']");
+        $this->check("//input[@value='default']");
+        $this->submitForm();
+        $this->ensureGoodMessage();
+        
+        // clean up from previous tests
+        $this->clickAndWait("//a[contains(@href,'/tr/tl/module/comment')]");        
+        $this->clickAndWait("//a[contains(@href,'anonymous')]");        
+        $this->deleteAllTranslations();
+        
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        
+        // navigate language while logged out
+        $this->open("/tr");
+        $this->clickAndWait("//a[contains(@href,'/tr/tl')]");        
+        $this->mouseOver("//a[contains(@href,'/tr/tl/module/comment')]");
+        $this->mouseOver("//a[contains(@href,'/tr/tl/module/default')]");
+        $this->mustNotExist("//a[contains(@href,'/tr/tl/module/admin')]");
+        $this->mustNotExist("//a[contains(@href,'/tr/tl/module/network')]");
+        $this->mustNotExist("//a[contains(@href,'/tr/tl/module/date')]");
+        
+        $this->clickAndWait("//a[contains(@href,'/tr/tl/module/comment')]");
+        
+        $this->clickAndWait("//a[contains(@href,'anonymous')]");
+        $this->mouseOver("//td[contains(text(),'Anonymous')]");
+        
+        // register for individual account
+        $this->clickAndWait("//a[contains(@href,'/pg/register')]");
+        $this->type("//input[@name='name']", "Test Translator");
+        
+        $username = "selenium".time();
+        
+        $this->type("//input[@name='username']", $username);
+        $this->type("//input[@name='password']", 'password');
+        $this->type("//input[@name='password2']", 'password2');
+        $this->type("//input[@name='email']", 'nobody@nowhere.com');
+        $this->type("//input[@name='phone']", '555-1212');
+        $this->submitForm();
+        $this->ensureBadMessage();
+        
+        $this->type("//input[@name='password2']", 'password');
+        $this->submitForm();
+        $this->submitFakeCaptcha();
+        $this->ensureGoodMessage();
+        
+        // add translation
+        $this->mouseOver("//td[contains(text(),'Anonymous')]");
+        $this->deleteAllTranslations();
+        $value = 'sidfuaoewir uaoiwuroiaw';
+        
+        $this->type("//input[@name='value']", $value);        
+        $this->submitForm();
+        $this->ensureGoodMessage();
+        $this->mouseOver("//td[contains(text(),'$value')]");
+        
+        // add second translation
+        $value2 = 'akjfdakjdsh alkewjf alkewj';        
+        
+        // test voting
+        $this->type("//input[@name='value']", $value2);        
+        $this->submitForm();
+        $this->ensureGoodMessage();
+        $this->mouseOver("//td[contains(text(),'$value2')]");        
+        $this->mouseOver("//td[contains(text(),'$value')]");
+        $this->mustNotExist("//a[contains(@href,'delta=1')]");
+        $this->clickAndWait("//tr[.//td[contains(text(),'$value2')]]//a[contains(@href,'delta=-1')]");
+        $this->mouseOver("//a[contains(@href,'delta=1')]");
+        
+        // test highest score is shown on module page
+        $this->clickAndWait("//h2//a[contains(@href,'/module/comment')]");
+        $this->mouseOver("//td[contains(text(),'$value')]");
+        $this->mustNotExist("//td[contains(text(),'$value2')]");
+        
+        $this->clickAndWait("//a[contains(@href,'anonymous')]");
+        $this->clickAndWait("//tr[.//td[contains(text(),'$value')]]//a[contains(@href,'delta=-1')]");
+        $this->clickAndWait("//tr[.//td[contains(text(),'$value')]]//a[contains(@href,'delta=-1')]");
+        $this->mustNotExist("//tr[.//td[contains(text(),'$value')]]//a[contains(@href,'delta=-1')]");
+
+        $this->clickAndWait("//h2//a[contains(@href,'/module/comment')]");
+        $this->mouseOver("//td[contains(text(),'$value2')]");
+        $this->mustNotExist("//td[contains(text(),'$value')]");        
+        
+        // test filtering
+        $this->select("//select[@name='status']", "Has translation");
+        $this->submitForm();
+        $this->mouseOver("//a[contains(@href,'anonymous')]");
+        $this->mustNotExist("//a[contains(@href,'name_said')]");
+
+        $this->select("//select[@name='status']", "Missing translation");
+        $this->submitForm();
+        $this->mustNotExist("//a[contains(@href,'anonymous')]");
+        $this->mouseOver("//a[contains(@href,'name_said')]");        
+        
+        $this->type("//input[@name='q']","deleted");
+        $this->submitForm();
+        
+        $this->mustNotExist("//a[contains(@href,'anonymous')]");
+        $this->mustNotExist("//a[contains(@href,'name_said')]");        
+        $this->clickAndWait("//a[contains(@href,'deleted')]");
+        
+        // test filters persist through navigation
+        $this->clickAndWait("//a[contains(@href,'/next')]");
+        $this->clickAndWait("//a[contains(@href,'/next')]");
+        $this->clickAndWait("//a[contains(@href,'/next')]");
+        $this->mustNotExist("//a[contains(@href,'/next')]");
+        
+        $this->assertEquals("deleted", $this->getValue("//input[@name='q']"));
+        $this->mustNotExist("//a[contains(@href,'anonymous')]");
+        $this->mustNotExist("//a[contains(@href,'name_said')]");                
+        $this->mouseOver("//a[contains(@href,'deleted')]");
+        
+        $this->type("//input[@name='q']","");
+        $this->select("//select[@name='status']", "All");
+        $this->submitForm();
+        
+        $this->mouseOver("//a[contains(@href,'anonymous')]");
+        $this->mouseOver("//a[contains(@href,'name_said')]");                
+        $this->mouseOver("//a[contains(@href,'deleted')]");
+        
+        // test latest translations
+        $this->clickAndWait("//h2//a[contains(@href, '/tr/tl')]");
+        $this->clickAndWait("//a[contains(@href, '/tr/tl/latest')]");
+        $this->mouseOver("//td[contains(text(),'$value2')]");
+        $this->mouseOver("//td[contains(text(),'$value')]");
+        
+        // test user stats
+        $this->clickAndWait("//a[contains(text(),'$username')]");
+        $this->mouseOver("//td[contains(text(),'$value2')]");        
+        $this->mouseOver("//td[contains(text(),'$value')]");        
+        $this->clickAndWait("//a[contains(@href,'anonymous')]");
+        $this->mouseOver("//td[contains(text(),'$value2')]");        
+        $this->mouseOver("//td[contains(text(),'$value')]");                
+    }
+    
+    function deleteAllTranslations()
+    {
+        while (true)
+        {
+            try
+            {
+                $this->click("//div[@class='admin_links']//a");
+            }
+            catch (Exception $ex)
+            {
+                return;
+            }
+            
+            $this->getConfirmation();
+            $this->waitForPageToLoad(10000);
+        }
+    }
+}

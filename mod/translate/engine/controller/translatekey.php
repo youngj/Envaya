@@ -101,16 +101,25 @@ class Controller_TranslateKey extends Controller
         $key = $this->param('key');
             
         $keys = $group->get_available_keys();
-        $filtered_keys = $this->parent_controller->filter_keys($keys);
-                
-        $i = $this->get_key_index($filtered_keys, $key);
-        if ($i < 0)
-        {
-            forward($group->get_url());
-        }
         
-        $count = sizeof($filtered_keys);
-        $next_key = $filtered_keys[($i + $delta + $count) % $count];
-        forward($next_key->get_url());
+        $i = $this->get_key_index($keys, $key);
+        if ($i >= 0)
+        {
+            $filtered_keys = $this->parent_controller->filter_keys($keys);
+                   
+            // $key may not be in the filter anymore, so we find the closest 
+            // adjacent key from the full list of keys that is still in the filter
+            $num_keys = sizeof($keys);
+            for ($j = $i + $delta; $j >= 0 && $j < $num_keys; $j += $delta)
+            {            
+                $next_key = $keys[$j];
+                
+                if ($this->get_key_index($filtered_keys, $next_key) >= 0)
+                {
+                    forward($next_key->get_url());
+                }            
+            }
+        }                
+        forward($group->get_url());
     }
 }

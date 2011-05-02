@@ -81,7 +81,7 @@ class Action_PostComment extends Action
 		}
 
         $mail = OutgoingMail::create(
-            sprintf(__('comment:notification_subject'), $comment->get_name(), $org->name),
+            sprintf(__('comment:notification_admin_subject'), $comment->get_name(), $org->name),
             $notification_body
         );
         $mail->send_to_admin();

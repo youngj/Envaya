@@ -51,6 +51,12 @@ class Action_Register extends Action
         $user->setup_state = SetupState::CreatedAccount;
         $user->save();
 
+        $mail = OutgoingMail::create(
+            sprintf(__('register:notification_subject'), $user->name),
+            "{$user->get_url()}\n"
+        );
+        $mail->send_to_admin();
+                
         SessionMessages::add(__('register:created_ok'));                
         if (Session::isadminloggedin())
         {            

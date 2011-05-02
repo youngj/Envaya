@@ -70,7 +70,7 @@ return array(
     'page:dirty' => 'Ukurasa huu una mabadiliko yasiyohifadhi, yatayopotea kama ukiendelea.',    
     'page:expired' => 'Samahani, ukurasa ulioutumia umekufa. Tafadhali jaribu tena.',
     'page:notfound' => 'Ukurasa hauonekani',
-    'page:notfound:details' => 'Ukurasa unaoomba haupo ama huna ruhusa kuuona.',
+    'page:notfound:details' => 'Ukurasa unaoomba haupo.',
     'page:noaccess' => "Mtumiaji wa sasa hana ruhusu kuona ukurasa ule.",    
     
     'org:cantview' => 'Huna ruhusa kuona tovuti ya shirika hili.',

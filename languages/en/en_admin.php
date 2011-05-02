@@ -26,7 +26,8 @@ return array(
     'domains:duplicate' => "That domain name already exists.",
     'domains:not_found' => "The domain does not exist.",
 
-    'comment:notification_subject' => "%s added a comment on %s",
+    'comment:notification_admin_subject' => "%s added a comment on %s",
+    'register:notification_subject' => "%s has registered for Envaya",
 
     'itrans:add_language' => "Add Language",
     'itrans:manage' => "Manage Languages",
