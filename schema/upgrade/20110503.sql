@@ -13,6 +13,8 @@ alter table `users` add `design_json` text default null;
 
 alter TABLE `outgoing_mail` add `to_guid` bigint(20) NULL;
 alter TABLE `outgoing_mail` add `from_guid` bigint(20) NULL;
+alter table outgoing_mail add `time_created` int(11) DEFAULT NULL;
 alter TABLE `outgoing_mail` add key `to_guid` (`to_guid`);
 alter TABLE `outgoing_mail` add key `from_guid` (`from_guid`);
+
 update outgoing_mail set to_guid = user_guid;
