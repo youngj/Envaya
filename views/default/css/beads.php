@@ -1,5 +1,5 @@
 <?php
-    $vars['contentWidth'] = 700;
+    $vars['contentWidth'] = 680;
     echo view('css/default', $vars);
     echo view('css/snippets/site_menu_top', $vars);
     echo view('css/snippets/content_margin', $vars);

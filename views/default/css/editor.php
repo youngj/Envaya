@@ -44,7 +44,7 @@ body
 #custom_header_container .imageUploadProgress
 {
     overflow:auto;
-    width:660px;
+    width:650px;
 }
 
 .header_preview .thin_column
