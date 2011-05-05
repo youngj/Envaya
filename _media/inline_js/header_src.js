@@ -290,7 +290,7 @@ function fbShare()
 
 function twitterShare()
 {
-    openShare('https://twitter.com/?status=' + encodeURIComponent(document.title + " - " + window.canonicalUrl),'twshare',626,436);
+    openShare('https://twitter.com/home?status=' + encodeURIComponent(document.title + " - " + window.canonicalUrl),'twshare',726,436);
 }
 
 function emailShare(username)
