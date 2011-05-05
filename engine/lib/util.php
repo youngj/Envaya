@@ -61,16 +61,15 @@
     
     function css_url($css_name)
     {
-        $base = Config::get('url');
         $cache_version = Config::get('cache_version');
         
         if (Config::get('debug'))
         {
-            return "{$base}_css/css.php?name=$css_name&v=$cache_version";
+            return "/_css/css.php?name=$css_name&v=$cache_version";
         }
         else
         {
-            return "{$base}_css/$css_name.css?$cache_version";
+            return "/_css/$css_name.css?$cache_version";
         }        
     }
     
