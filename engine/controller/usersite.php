@@ -38,11 +38,10 @@ class Controller_UserSite extends Controller_User
             }
             else
             {                             
-                $this->page_draw_vars['full_title'] = $org->name;
                 $this->page_draw_vars['is_site_home'] = true;
-            
-                $widget = $org->query_menu_widgets()->get();             
-                return $this->index_widget($widget);
+                
+                $home_widget = $org->query_menu_widgets()->get();             
+                return $this->index_widget($home_widget);
             }
         }
         else
@@ -53,8 +52,15 @@ class Controller_UserSite extends Controller_User
                 return $this->$methodName();
             }
             else if ($org)
-            {
+            {            
                 $widget = $org->get_widget_by_name($widgetName);                        
+
+                $home_widget = $org->query_menu_widgets()->get();
+                if ($home_widget && $widget && $home_widget->guid == $widget->guid)
+                {                
+                    $this->page_draw_vars['is_site_home'] = true;
+                }
+                
                 return $this->index_widget($widget);
             }                   
         }
@@ -213,4 +219,37 @@ class Controller_UserSite extends Controller_User
         SessionMessages::add(__('domains:deleted'));
         redirect_back();
     }
+
+    function index_share()
+    {
+        $action = new Action_Share($this);
+        $action->execute();
+    }
+    
+    function index_relationship_emails_js()
+    {    
+        $this->require_editor();
+        $this->require_org();
+    
+        $this->set_content_type('text/javascript');
+        
+        $org = $this->get_org();
+                
+        $relationships = $org->query_relationships()
+            ->where("subject_guid <> 0 OR subject_email <> ''")
+            ->filter();
+     
+        $emails = array();
+        
+        foreach ($relationships as $relationship)
+        {
+            $email = $relationship->get_subject_email();
+            if ($email)
+            {        
+                $emails[] = $email;
+            }
+        }
+     
+        $this->set_response(json_encode(array('emails' => $emails)));
+    }    
 }

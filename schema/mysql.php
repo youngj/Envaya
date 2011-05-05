@@ -100,6 +100,18 @@ CREATE TABLE `invited_emails` (
     unique key (`email`),
     unique key (`invite_code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `shared_emails` (
+    `id` int(11) auto_increment primary key not null,
+    `email` varchar(128) default null,
+    `user_guid` bigint(20) unsigned NOT NULL,
+    `time_shared` int(11) default null,    
+    `url` text default null,
+    key (`email`),
+    key (`user_guid`),
+    key (`time_shared`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
         
 CREATE TABLE `org_relationships` (
     <?php require 'schema/entity_columns.php'; ?>,
@@ -140,13 +152,12 @@ CREATE TABLE `users` (
   `country` varchar(4) NULL,
   `city` varchar(128) NULL,  
   `icons_json` text default NULL,
-  `header_json` text default NULL,
+  `design_json` text default null,  
   `admin` tinyint(4) default '0',
   `latitude` float null,
   `longitude` float null,
   `timezone_id` varchar(64) default null,
   `region` varchar(32) default NULL,
-  `theme` varchar(32) default NULL,  
   `last_notify_time` int default null,
   `notifications` int(11) not null default 3,
   UNIQUE KEY (`username`),
@@ -273,7 +284,9 @@ CREATE TABLE `feed_items` (
 CREATE TABLE `outgoing_mail` (
 	`id` INT NOT NULL AUTO_INCREMENT,		
 	`email_guid` bigint(20) NULL,
-	`user_guid` bigint(20) NULL,
+	`to_guid` bigint(20) NULL,
+    `from_guid` bigint(20) NULL,
+    `time_created` int NULL,
     `subject` text null,
     `to_address` text NULL,
     `time_queued` int NOT NULL,
@@ -283,7 +296,8 @@ CREATE TABLE `outgoing_mail` (
     `serialized_mail` mediumtext null,    
 	PRIMARY KEY ( `id` ),
 	KEY `email_guid` (`email_guid`),
-	KEY `user_guid` (`user_guid`)
+	KEY `to_guid` (`to_guid`),
+    KEY `from_guid` (`from_guid`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8; 	
 
 CREATE TABLE `discussion_messages` (

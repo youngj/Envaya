@@ -6,7 +6,7 @@ return array(
     'register:step3' => '3. Set up homepage',
     'register:title' => 'Register for Envaya',
 
-    'register:notemail' => 'The email address you provided does not appear to be a valid email address.',
+    'register:notemail' => "The email address '%s' does not appear to be a valid email address.",
     'register:userexists' => 'That username already exists',
     'register:usernametooshort' => 'Your username must be a minimum of {min} characters long.',
     'register:passwordtooshort' => 'The password must be a minimum of {min} characters long.',
@@ -86,6 +86,7 @@ return array(
     'register:approval_email:congratulations' => "Congratulations! Your website has been approved by Envaya and it's now online:",
     'register:approval_email:nextsteps' => "Now, continue building your website by choosing a design, adding news and photos, and adding other pages about your organization's history, projects, team, and other topics.",
     'register:approval_email:login' => "To do this, log in to edit your website here:",
+    'register:approval_email:share' => "Also, be sure to share your new website with your partner organizations, community members, and other stakeholders, by sending them a link to %s .",
     'register:approval_email:help' => "For instructions on how to get started using Envaya, and to learn what you can do with your new website, visit our %s page here:",
     'register:approval_email:thanks' => "Thanks for using Envaya!",    
     

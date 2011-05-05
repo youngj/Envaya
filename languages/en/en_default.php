@@ -55,6 +55,7 @@ return array(
     
     'country:tz' => 'Tanzania',
     'country:us' => 'USA',
+    'country:rw' => "Rwanda",
     'country:other' => 'Other',    
     
     'viewtype:default' => "Standard",
@@ -87,7 +88,7 @@ return array(
     'page:dirty' => "The current page has unsaved changes, which will be lost if you continue.",
     'page:expired' => 'The page you were using has expired. Please try again.',
     'page:notfound' => "Page not found",
-    'page:notfound:details' => "The requested page does not exist.",    
+    'page:notfound:details' => "The requested page was not found.",    
     'page:noaccess' => "The current user does not have access to view that page.",    
         
     'approval:rejected' => 'We are sorry. This organization was not approved by our administrators.',
@@ -112,5 +113,5 @@ return array(
         
     'captcha:title' => 'Enter verification code',
     'captcha:button' => 'Submit code',
-    'captcha:invalid' => "The verification code wasn't entered correctly. Try again.",                
+    'captcha:invalid' => "The verification code wasn't entered correctly. Try again.",                    
 );

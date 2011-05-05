@@ -75,7 +75,7 @@ abstract class Controller_User extends Controller
 
         $this->page_draw(array(
             'content' => $widget->render_view(array('is_primary' => true)),
-            'title' => $widget->get_subtitle(),
+            'title' => $widget->get_title(),
             'show_next_steps' => $org->guid == Session::get_loggedin_userid(),
         )); 
     }           
@@ -91,11 +91,12 @@ abstract class Controller_User extends Controller
         $org = $this->get_org();
                 
         $this->public_layout = true;
+                
+        $theme_name = get_input("__theme") ?: $org->get_design_setting('theme_name') ?: Config::get('fallback_theme');
         
-        $theme_name = get_input("__theme") ?: $org->theme ?: Config::get('fallback_theme');
-        
-        $this->page_draw_vars['theme_name'] = $theme_name;                
-        $this->page_draw_vars['sitename'] = $org->name;
+        $this->page_draw_vars['design'] = $org->get_design_settings();
+        $this->page_draw_vars['theme_name'] = $theme_name;
+        $this->page_draw_vars['site_name'] = $org->name;
         $this->page_draw_vars['site_url'] = $org->get_url();
         $this->page_draw_vars['login_url'] = url_with_param($this->request->full_rewritten_url(), 'login', 1);
         
@@ -168,6 +169,12 @@ abstract class Controller_User extends Controller
         }
     }
 
+    protected function get_header($vars)
+    {
+        $vars['org'] = $this->get_org();           
+        return view('org/header', $vars);
+    }
+    
     protected function get_pre_body($vars)
     {
         $org = $this->get_org();
@@ -193,8 +200,10 @@ abstract class Controller_User extends Controller
         return $preBody;
     }
                 
-    public function page_draw($vars)
+    public function prepare_page_draw_vars(&$vars)
     {
+        parent::prepare_page_draw_vars($vars);        
+        
         $org = $this->get_org();
         
         if ($org && $this->public_layout)
@@ -206,30 +215,9 @@ abstract class Controller_User extends Controller
                 {
                     SessionMessages::add($approval_message);
                 }
-            }
-        
-            if ($org->has_custom_header())
-            {
-                $vars['header'] = view('org/custom_header', array(
-                    'org' => $org
-                ));
-            }
-            else
-            {
-                $vars['logo'] = view('org/icon', array('org' => $org, 'size' => 'medium'));
-                $vars['title_url'] = $org->get_url();
-                
-                /*
-                $vars['header'] = view('org/default_header', array(
-                    'org' => $org,
-                    'subtitle' => $vars['title'],
-                ));
-                */
-            }
-            
+            }                    
             $vars['pre_body'] = $this->get_pre_body($vars);
+            $vars['header'] = $this->get_header($vars);
         }
-        
-        return parent::page_draw($vars);
     }	
 }

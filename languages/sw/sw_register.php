@@ -6,7 +6,7 @@ return array(
     'register:step3' => '3. Tengeneza ukurasa mkuu',
     'register:title' => 'Jiandikishe kwenye Envaya',
 
-    'register:notemail' => 'Email ambayo umetupa haionekani kuwa sahihi.',
+    'register:notemail' => "Anwani ya email '%s' haionekani kuwa sahihi.",
     'register:userexists' => 'Jina lile la mtumiaji limeshatumiwa.',
     'register:usernametooshort' => 'Lazima jina lako la mtumiaji liwe angalau tarakimu {min}.',
     'register:passwordtooshort' => 'Lazima neno la siri liwe angalau tarakimu {min}.',
@@ -87,6 +87,7 @@ return array(
     'register:approval_email:congratulations' => "Hongera! Tovuti yako imekubaliwa kwenye Envaya na inaonekana sasa:",
     'register:approval_email:nextsteps' => "Sasa, endelea kujenga tovuti yako kwa kuchagua mchoro, kuongeza habari na picha, na kuongeza kurasa nyingine kuhusu historia, miradi na timu za shirika lako, na kadhalika.",
     'register:approval_email:login' => "Kufanya hivyo, fungua kuhariri tovuti yako hapa:",
+    'register:approval_email:share' => "Vile vile, hakikisha kusambaza tovuti yako na mashirika yako ya ubia, wanajamii, na wadau wengine, kwa kuwatumia kiungo kwa %s .",    
     'register:approval_email:help' => "Kusoma maagizo kuhusu kuanza kutumia Envaya, na kujifunza vitu unavyofanya na tovuti yako mpya, tembelea ukurasa wetu wa %s hapa:",
     'register:approval_email:thanks' => "Asante kwa kutumia Envaya!",    
     
@@ -101,4 +102,5 @@ return array(
     'register:user:phone' => "Ingiza namba yako ya simu:",    
     'register:user:username' => "Chagua 'jina la mtumiaji' kwa akaunti yako:",
     'register:if_org' => "Kuandikisha shirika, %s.",    
+    'register:already_registered' => "Umejiandikisha tayari.",    
 );

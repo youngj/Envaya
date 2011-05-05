@@ -323,7 +323,7 @@ class RegisterTest extends SeleniumTest
         $this->type("//input[@name='city']", "Vitongoji");
         $this->submitForm();
         $this->mouseOver("//em[contains(text(),'Vitongoji, Pemba North, Tanzania')]");        
-        $this->assertContains("Vitongoji, Tanzania", $this->getText("//h3"));        
+        $this->assertContains("Wete, Tanzania", $this->getText("//h3")); // tagline is not updated
     }
 
     private function _testEditPages()
@@ -356,7 +356,8 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//a[@title='Your home page']");
         
         // test that default page is the first one in the menu
-        $this->assertContains("News", $this->getText("//h3"));
+        $this->assertEquals("New Name", $this->getTitle());
+        $this->assertContains("Wete, Tanzania", $this->getText("//h3"));
         $this->mouseOver("//a[@class='selected']//span[contains(text(),'News')]");
         
         // test that "Home" page is now the second one in the menu
@@ -379,7 +380,7 @@ class RegisterTest extends SeleniumTest
         $this->type("//input[@name='widget_name']", "settings");
         $this->clickAndWait("//button[@type='submit']");
         
-        $this->mouseOver("//h3[text()='New page']");
+        $this->assertContains("New page", $this->getTitle());
         $this->mouseOver("//a[@class='selected' and contains(@href,'page/settings')]");
         $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'another page!!!!')]");
         
@@ -389,7 +390,7 @@ class RegisterTest extends SeleniumTest
         
         $this->clickAndWait("//button[@type='submit']");
               
-        $this->mouseOver("//h3[text()='New title']");
+        $this->assertContains("New title", $this->getTitle());
         $this->mouseOver("//a[@class='selected' and contains(@href,'page/settings')]");
         $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'another page!!!!')]");        
         
@@ -550,25 +551,35 @@ class RegisterTest extends SeleniumTest
 
         while (true)
         {
-            try
+            if ($this->isElementPresent("//button[@id='widget_delete']"))
             {
-                $this->click("//a[contains(@href,'approval=0')]");
+                $this->click("//button[@id='widget_delete']");
                 $this->getConfirmation();
-                $this->waitForPageToLoad(10000);
+                $this->waitForPageToLoad(10000);            
             }
-            catch (Testing_Selenium_Exception $ex) {}
-
-            try
+            else
             {
-                $this->click("//a[contains(@href,'approval=-1')]");
-                $this->getConfirmation();
-                $this->waitForPageToLoad(10000);
-            }
-            catch (Testing_Selenium_Exception $ex) {}
+            
+                try
+                {
+                    $this->click("//a[contains(@href,'approval=0')]");
+                    $this->getConfirmation();
+                    $this->waitForPageToLoad(10000);
+                }
+                catch (Testing_Selenium_Exception $ex) {}
 
-            $this->click("//a[contains(@href,'delete')]");
-            $this->getConfirmation();
-            $this->waitForPageToLoad(10000);            
+                try
+                {
+                    $this->click("//a[contains(@href,'approval=-1')]");
+                    $this->getConfirmation();
+                    $this->waitForPageToLoad(10000);
+                }
+                catch (Testing_Selenium_Exception $ex) {}
+
+                $this->click("//a[contains(@href,'delete')]");
+                $this->getConfirmation();
+                $this->waitForPageToLoad(10000);            
+            }
 
             $this->ensureGoodMessage();
             try

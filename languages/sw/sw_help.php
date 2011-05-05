@@ -41,5 +41,4 @@ return array(
     'help:connecting:summary' => 'Faida mkuu kutoka kuwa na tovuti yako katika Envaya ni kwamba mtandao ya tovuti unasababisha iwe rahisi utafute mashirika mengine, na kwa mashirika mengine kukugundua!',
     'help:connecting:messages' => 'Ujumbe',
     'help:connecting:messages:instructions' => 'Envaya inasababisha iwe rahisi kuwasiliana na mashirika mengine yanayotumia Envaya pia. Wakati ambapo umefungua katika Envaya, zuru tovuti ya shirika jingine tu, na bonyeza kiungo juu cha %s kuomba ubia.',
-    'help:connecting:messages:disabled' => 'Angalia: Kwa sababu shirika lako halijakubaliwa kwa wasimamizi wa Envaya, Ujumbe hazifanya kazi sasa.',
 );

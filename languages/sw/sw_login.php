@@ -10,6 +10,7 @@ return array(
     'login:persistent' => 'Nikumbuke',
     'login:password:lost' => 'Neno la siri limesahauliwa?',
     'login:if_not_registered' => "Ikiwa wewe ni mwakilishi wa shirika la jumuiya ya kiraia Tanzania ambalo halijajiandikisha kwa Envaya, %s.",
+    'login:register_link' => "Jiandikishe akaunti ya binafsi",
 
     'login:resetreq:title' => 'Pata neno jipya la siri',
     'login:resetreq:text' => 'Kupata neno jipya la siri, ingiza jina lako la mtumiaji au anwani ya email chini. Tutakutumia anwani ya ukurasa wa kuthibitisha kwa email.',

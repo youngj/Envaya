@@ -1,4 +1,5 @@
 <?php
+    $vars['contentWidth'] = 700;
     echo view('css/default', $vars);
     echo view('css/snippets/site_menu_top', $vars);
     echo view('css/snippets/beige_content', $vars);
@@ -7,9 +8,10 @@
 
 body { color:#fff; background:#69493e url("<?php echo $graphicsDir; ?>/brick.jpg") repeat left top; }
 .heading_container .thin_column, .content_container .thin_column, .footer_container .thin_column { background-color:#2a2a2a; }
-#heading h2 , #heading h2 a { color:#fff; }
+#heading h2 , #heading a { color:#fff; }
 #heading h3 { color:#dbc777; }
 #heading img { padding-left:10px; }
+#heading .shareLinks { padding-right:10px; }
 #site_menu a { color:#fff; }
 #site_menu a.selected, #site_menu a:hover { color:#fff; background-color:#be2016; }
 #translate_bar { background-color:#764c40;border-color:#7f7f7f; }

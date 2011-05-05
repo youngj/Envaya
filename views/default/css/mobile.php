@@ -24,6 +24,11 @@ h1,h2,h3
     font-size:medium;
 }
 
+#heading a
+{
+    color:black;
+}
+
 #heading
 {
     padding:0px;

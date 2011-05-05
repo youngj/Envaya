@@ -28,8 +28,9 @@
 </tr>
 </table>
 
-<?php if (!@$vars['hideLogin']) { ?>
-<div id='topRight'><?php echo view('page_elements/login_area', $vars); ?></div>
+<?php if (!@$vars['hide_login']) { ?>
+<div id='topRight'><?php echo view('page_elements/login_area', $vars); ?>
+</div>
 <?php } ?>
 
 </div>

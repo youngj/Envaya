@@ -2,9 +2,16 @@
     $widget = $vars['widget'];
     $is_primary = @$vars['is_primary'];        
 
-    if (!$is_primary && $widget->title)
+    if ($widget->title)
 	{
-        echo "<h3><a href='{$widget->get_url()}'>".escape($widget->title)."</a></h3>";
+        if ($is_primary)
+        {
+            echo "<h3>".escape($widget->title)."</h3>";
+        }
+        else
+        {
+            echo "<h3><a href='{$widget->get_url()}'>".escape($widget->title)."</a></h3>";
+        }
 	}
 
     echo $widget->render_content();

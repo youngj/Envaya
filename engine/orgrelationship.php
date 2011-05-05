@@ -196,9 +196,9 @@ class OrgRelationship extends Entity
         $widget = $org->get_widget_by_class('Network');
         $reverse = $this->get_reverse_relationship();
         
-        if ($subject_org && $widget && $reverse && $subject_org->email && $subject_org->is_notification_enabled(Notification::Network))
-        {    
-            OutgoingMail::create(
+        if ($subject_org && $widget && $subject_org->email && $subject_org->is_notification_enabled(Notification::Network))
+        {            
+            $mail = OutgoingMail::create(
                 strtr($this->msg('notify_added_subject', $subject_org->language), array(
                     '{name}' => $org->name, '{subject}' => $subject_org->name
                 )), 
@@ -207,7 +207,9 @@ class OrgRelationship extends Entity
                     'reverse' => $reverse,
                     'widget' => $widget
                 ))
-            )->send_to_user($subject_org);   
+            );
+            $mail->from_guid = $org->guid;
+            $mail->send_to_user($subject_org);   
             $this->subject_notified = true;
             $this->save();
             return true;
@@ -241,6 +243,7 @@ class OrgRelationship extends Entity
                 'widget' => $widget
             ))
         );
+        $mail->from_guid = $org->guid;
         $mail->addTo($email, $this->subject_name);        
         $mail->send();
         

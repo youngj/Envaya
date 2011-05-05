@@ -14,6 +14,8 @@
     if (!$class) $class = "input-checkboxes";
 
     $vars['value'] = restore_input($vars['name'], @$vars['value']);
+    
+    $after_label = @$vars['after_label'];
 
     $valIsArray = is_array($vars['value']);
 
@@ -46,7 +48,10 @@
 
         $disabled = (@$vars['disabled']) ? ' disabled="yes" ' : '';
         $js = @$vars['js'] ?: '';
-        $checkboxes[] = "<label class='optionLabel'><input type=\"checkbox\" $id $disabled {$js} name=\"{$vars['name']}[]\" value=\"".escape($option)."\" {$selected} class=\"$class\" />".escape($label)."</label><br />";
+        $input = "<input type=\"checkbox\" $id $disabled {$js} name=\"{$vars['name']}[]\" value=\"".escape($option)."\" {$selected} class=\"$class\" />";
+        $content = $after_label ? escape($label).$input : $input.escape($label);
+        
+        $checkboxes[] = "<label class='optionLabel'>$content</label><br />";
     }
     
     $columns = @$vars['columns'] ?: 1;

@@ -52,7 +52,9 @@ function install_org($username)
     }
 
     $org->email = Config::get('admin_email');
-    $org->theme = 'green';
+    $org->set_design_setting('theme_name', 'green');
+    $org->set_design_setting('tagline', 'a test organization');
+    $org->set_design_setting('share_links', array('email', 'facebook', 'twitter'));
     $org->name = "Test Org";
     $org->set_password('testtest');
     $org->language = 'en';
@@ -101,7 +103,7 @@ function install_envaya()
         $envaya->name = 'Envaya';
         $envaya->set_password('testtest');
         $envaya->language = 'en';
-        $envaya->theme = 'sidebar';
+        $envaya->set_design_setting('theme_name', 'sidebar');
         $envaya->country = 'us';
         $envaya->set_lat_long(37,-112);
         $envaya->setup_state = SetupState::CreatedHomePage;

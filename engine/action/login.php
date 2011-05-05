@@ -100,7 +100,7 @@ class Action_Login extends Action
             'title' => __("login"),
             'content' => view("account/login", array('username' => $username, 'next' => $next)),
             'org_only' => true,
-            'hideLogin' => !Session::isloggedin()
+            'hide_login' => !Session::isloggedin()
         ));        
     }    
 }    

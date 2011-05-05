@@ -5,7 +5,6 @@
     $feedNames = array();
     foreach ($org->query_relationships()
                 ->where('subject_guid > 0')
-                ->where('approval & ? > 0', OrgRelationship::SelfApproved)
                 ->filter() as $relationship)
     {
         $feedNames[] = FeedItem::make_feed_name(array('user' => $relationship->subject_guid));

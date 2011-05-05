@@ -360,5 +360,5 @@ class Controller_Org extends Controller_Simple
             'title' => __('featured:title'),
             'content' => view('org/featured')
         ));
-    }
+    }    
 }

@@ -14,11 +14,14 @@ class OutgoingMail extends Model
     const Queued = 1;
     const Failed = 2;
     const Sent = 3;
+    const Held = 4;
 
     static $table_name = 'outgoing_mail';
     static $table_attributes = array(
         'email_guid' => 0, // guid of EmailTemplate, if applicable
-        'user_guid' => 0,  // guid of recipient user, if applicable        
+        'to_guid' => 0,  // guid of recipient user, if applicable        
+        'from_guid' => 0, // guid of sending user, if applicable
+        'time_created' => 0,
         'time_queued' => 0,
         'time_sent' => 0,
         'subject' => '',
@@ -39,7 +42,8 @@ class OutgoingMail extends Model
     
     static function create($subject = null, $bodyText = null)
     {
-        $mail = new OutgoingMail();
+        $mail = new OutgoingMail();        
+        $mail->time_created = time();
         
         if ($subject)
         {
@@ -52,6 +56,17 @@ class OutgoingMail extends Model
         
         return $mail;
     }
+    
+    function get_from_entity()
+    {
+        return User::get_by_guid($this->from_guid);
+    }
+
+    function get_to_entity()
+    {
+        return User::get_by_guid($this->to_guid);
+    }
+
     
     function get_mail()
     {
@@ -79,7 +94,7 @@ class OutgoingMail extends Model
         $recipients = $mail->getRecipients();
         if (sizeof($recipients))
         {
-            $this->to_address = $recipients[0];
+            $this->to_address = implode('; ', $recipients);
         }
         
         parent::save();
@@ -95,7 +110,7 @@ class OutgoingMail extends Model
     {
         if ($user->email)
         {
-            $this->user_guid = $user->guid;        
+            $this->to_guid = $user->guid;        
             $this->addTo($user->email, $user->name);
             $this->send();
             return true;
@@ -107,7 +122,7 @@ class OutgoingMail extends Model
     {        
         if (!$this->getFrom())
         {
-            $this->setFrom(Config::get('email_from'), Config::get('sitename'));
+            $this->setFrom(Config::get('email_from'), Config::get('site_name'));
         }    
     
         if ($immediate)
@@ -117,12 +132,26 @@ class OutgoingMail extends Model
         }
         else
         {
-            $this->status = static::Queued;
-            $this->time_queued = time();
-            $this->save();
-                
-            return FunctionQueue::queue_call(array('OutgoingMail', 'send_now_by_id'), array($this->id));
+            $from_user = $this->get_from_entity();
+            if ($from_user && !$from_user->is_approved())
+            {
+                $this->status = static::Held;
+                $this->save();
+            }
+            else
+            {
+                $this->enqueue();
+            }
         }    
+    }
+    
+    function enqueue()
+    {
+        $this->status = static::Queued;
+        $this->time_queued = time();
+        $this->save();
+        
+        return FunctionQueue::queue_call(array('OutgoingMail', 'send_now_by_id'), array($this->id));    
     }
     
     private function send_now()
@@ -174,6 +203,7 @@ class OutgoingMail extends Model
             case static::Queued: return __('email:queued');
             case static::Failed: return __('email:failed');
             case static::Sent: return __('email:sent');
+            case static::Held: return __('email:held');
         }
     }
 }

@@ -211,7 +211,7 @@ class NetworkTest extends SeleniumTest
         $this->login('testposter16','testtest');
         $this->ensureGoodMessage();
         $this->typeInFrame("//iframe", "whee reverse relationship");
-        $this->clickAndWait("//button[@name='_save']");
+        $this->submitForm();
         $this->ensureGoodMessage();
         $this->mouseOver("//a[contains(@href, 'testorg')]");          
         $this->assertContains("whee reverse relationship", $this->getText("//div[@class='feed_snippet']"));
@@ -243,48 +243,7 @@ class NetworkTest extends SeleniumTest
         $this->mustNotExist("//div[@class='feed_content' and .//a[contains(@href,'testposter15')] and .//a[contains(@href,'testposter16')]]");                
 
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
-        
-        // visit network page to add suggested reverse relationship by clicking Add link
-        $this->open('/testposter15/network');
-        sleep(1);
-        $this->mustNotExist("//a[contains(@href, 'testorg')]"); // suggested reverse relationship should not be public
-        $this->open('/pg/login');
-        $this->login('testposter15','testtest');
-        $this->clickAndWait("//div[@class='widget_list']//a[contains(@href,'network/edit')]");
-        $this->clickAndWait("//a[contains(@href,'action=approve')]");
-        $this->ensureGoodMessage();
-        $this->open('/testposter15/network');
-        $this->mouseOver("//a[contains(@href, 'testorg')]"); 
-        $this->open('/pg/logout');
-        
-        // visit network page to add suggested reverse relationship by clicking Edit link to add description
-        $this->open('/testposter13/network');
-        sleep(1);
-        $this->mustNotExist("//a[contains(@href, 'testorg')]"); // suggested reverse relationship should not be public
-        $this->open('/pg/login');
-        $this->login('testposter13','testtest');
-        $this->clickAndWait("//div[@class='widget_list']//a[contains(@href,'network/edit')]");
-        $this->clickAndWait("//a[contains(@href,'action=edit_relationship')]");
-        $this->typeInFrame("//iframe", "my description");        
-        $this->submitForm();
-        $this->ensureGoodMessage();
-        $this->open('/testposter13/network');
-        $this->mouseOver("//a[contains(@href, 'testorg')]"); 
-        $this->mouseOver("//p[contains(text(),'my description')]");               
-        $this->open('/pg/logout');
-        
-        // visit network page but delete suggestion
-        $this->open('/pg/login');
-        $this->login('testposter14','testtest');
-        $this->clickAndWait("//div[@class='widget_list']//a[contains(@href,'network/edit')]");
-        $this->mouseOver("//a[contains(@href, 'testorg')]"); 
-        $this->click("//a[contains(@href,'action=delete_relationship')]");
-        $this->getConfirmation();
-        $this->waitForPageToLoad(10000);
-        $this->ensureGoodMessage();
-        $this->mustNotExist("//a[contains(@href, 'testorg')]");         
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
-        
+                                
         // make sure non-existent org shows up properly, and link in invite email goes to correct URL
         $networkLink = $this->getLinkFromEmail($inviteEmail, 0);
         $this->setUrl($networkLink);
@@ -393,39 +352,62 @@ class NetworkTest extends SeleniumTest
         $this->type("//input[@name='location']", "Test Location");
         $this->submitForm();
         $this->ensureGoodMessage();
-        $this->clickAndWait("//div[@class='good_messages']//p//a");        
-        $this->check("//input[@value='nobody@nowhere.com']");
-        $this->check("//input[@value='$invitedOrgEmail']");
+        $this->click("//div[@class='good_messages']//p//a");        
+        
+        $this->retry('selectShareWindow', array());
+        $this->retry('click', array("//a"));
+        $this->retry('checkEmailEntered', array('nobody@nowhere.com'));
+        $this->retry('checkEmailEntered', array($invitedOrgEmail));
+        $this->retry('checkEmailEntered', array("p12"));
+        $this->type("//textarea[@name='emails']", "nobody@nowhere.com; $invitedOrgEmail");
+        
+        $this->submitForm();
+        $this->ensureBadMessage();
+        $this->type("//input[@name='subject']", "Test Org invites you to a discussion");
+        $this->type("//textarea[@name='message']", "hi!");        
         $this->submitForm();
         $this->ensureGoodMessage();
-        $email = $this->getLastEmail("invites you to a discussion");
-        $this->assertContains('Test Org', $email);
-        $this->assertContains('Test Topic', $email);
+        $this->close();
+        $this->selectWindow(null);                
+        
+        $email = $this->getLastEmail("Test Org invites you to a discussion");
+        $this->assertContains('hi!', $email);
         $this->assertContains($this->getLocation(), $email);
         $this->assertContains($invitedOrgEmail, $email);
         $this->assertContains('nobody@nowhere.com', $email);
         $this->assertNotContains('+p12', $email);
         
         // can't invite same emails twice, but can invite others
-        $this->clickAndWait("//div[@id='edit_submenu']//a");
-        $this->clickAndWait("//a[contains(@href,'/invite')]");
-        $this->mustNotExist("//input[@value='nobody@nowhere.com']");
-        $this->mustNotExist("//input[@value='$invitedOrgEmail']");
-        $this->check("//input[contains(@value,'+p12')]");
+        $this->click("//div[@class='shareLinks']//a[contains(@href,'emailShare')]");        
+        
+        $this->retry('selectShareWindow', array());
+        
+        $this->type("//textarea[@name='emails']", "foo@nowhere.com; nobody@nowhere.com");        
+        $this->type("//textarea[@name='message']", "yo");                
         $this->submitForm();
+        $this->ensureBadMessage(); // duplicate email
+        $this->ensureGoodMessage(); // at least one valid recipient
         
-        $this->retry('_checkEmail12', array());
+        $this->close();
+        $this->selectWindow(null);                
+                
+        $email = $this->getLastEmail("foo@nowhere.com");
+        $this->assertContains('Test Org', $email);
+        $this->assertContains($this->getLocation(), $email);
+        $this->assertNotContains('nobody@nowhere.com', $email);                        
     }
-        
-    function _checkEmail12()
+    
+    function selectShareWindow()
     {
-        $email = $this->getLastEmail("+p12");
-        $this->assertContains('Test Topic', $email);
-        $this->assertContains($this->getLocation(), $email);  
-        $this->assertNotContains('nobody@nowhere.com', $email);        
-        return $email;
+        $this->selectWindow('eshare');
+        $this->mouseOver("//textarea");
     }
-        
+    
+    function checkEmailEntered($email)
+    {
+        $this->assertContains($email, $this->getValue("//textarea[@name='emails']"));
+    }
+                
         
     private function clickAddRelationship()
     {

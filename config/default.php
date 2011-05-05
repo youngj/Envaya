@@ -1,6 +1,6 @@
 <?php
 return array(
-    'cache_version' => 174,  // increment when css, or external js (tinymce/swfupload) changes
+    'cache_version' => 176,  // increment when css, or external js (tinymce/swfupload) changes
     'debug' => true,
     
     'dbuser' => '',
@@ -55,7 +55,7 @@ return array(
 
     'cookie_domain' => null,
     'domain' => "localhost",
-    'sitename' => "Envaya",
+    'site_name' => "Envaya",
 
     'recaptcha_enabled' => false,
     'recaptcha_key' => '',

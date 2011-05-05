@@ -14,9 +14,9 @@
 #translate_bar
 {
     margin:0px 1px 3px 1px;
-    padding: 6px 2px 8px 51px;
+    padding: 7px;
+    background-color:#948f87;
     overflow:visible;
-    background:#948f87 url(/_graphics/world.gif) no-repeat 5px 5px;
     color:white;
     border:1px solid #fff;
     -webkit-border-radius: 4px;
@@ -819,4 +819,39 @@ a.discussionTopic
     height:36px;
     top:0px;
     position:absolute;
+}
+
+.shareLinks
+{
+    padding-top:5px;
+    white-space:nowrap;
+}
+
+.shareLinks a
+{
+    display:block;
+    clear:both;
+    opacity:0.7;
+}
+
+.shareLinks a:hover
+{
+    opacity:1.0;
+}
+
+.shareText
+{
+    text-align:right;
+    display:block;
+    font-size:10px;
+}
+
+.shareIcon 
+{
+    float:right;
+    display:block;
+    margin-left:5px;
+    width:18px;
+    height:18px;
+    background:url(/_graphics/share.png) no-repeat left top;
 }

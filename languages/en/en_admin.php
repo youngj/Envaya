@@ -46,6 +46,8 @@ return array(
     'email:sent_ok' => "Email sent successfully.",
     'email:queued' => "Queued",
     'email:failed' => "Failed",
+    'email:held' => "Held pending approval",
+    'email:stuck_reminder' => "Stuck mail notification",
 
     'email:registernotify:subject' => "New organization registered: %s",
     'email:registernotify:body' => "To view their website and approve or reject it, visit\n%s",

@@ -13,9 +13,9 @@ class DiscussionTest extends SeleniumTest
         // test can't add discussion if not logged in and page doesn't exist
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->open("/testorg/discussions");
-        $this->retry('mouseOver', array("//h3[contains(text(),'Page not found')]"));
+        $this->retry('mouseOver', array("//div[contains(text(),'not found')]"));
         $this->open("/testorg/topic/new");
-        $this->retry('mouseOver', array("//h3[contains(text(),'Page not found')]"));
+        $this->retry('mouseOver', array("//div[contains(text(),'not found')]"));
         
         // test add new discussion as logged in user
         $this->open('/pg/login');

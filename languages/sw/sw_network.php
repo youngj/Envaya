@@ -54,9 +54,7 @@ return array(
     
     'network:describe_relationship' => "Eleza uhusiano wa shirika lako na %s:",
     'network:edit_relationship' => "Hariri Uhusiano",    
-    'network:relationship_saved' => "Uhusiano umehifadhiwa.",
-    
-    'network:suggestion' => 'Kipendekezo',
+    'network:relationship_saved' => "Uhusiano umehifadhiwa.",    
     
     'network:approve_instructions' => '{name} imeongeza shirika lako kwenye orodha yake ya {type}.',
     'network:approve_instructions_2' => 'Ili kuongeza {name} kwenye orodha yako ya {type}, bonyeza kitufe cha {button} hapo chini.',

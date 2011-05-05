@@ -5,8 +5,7 @@
     $org = $widget->get_container_entity();
     
     $query = $org->query_relationships()
-        ->where('`type` = ?', $type)
-        ->where('approval & ? > 0', OrgRelationship::SelfApproved);
+        ->where('`type` = ?', $type);
     
     $entities = $query->filter();    
         

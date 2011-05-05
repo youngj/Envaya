@@ -45,7 +45,7 @@ class EditorTest extends SeleniumTest
         
         // test draft not published
         $this->open("/testorg/page/$pageName");
-        $this->retry('mouseOver', array("//h3[contains(text(),'Page not found')]"));
+        $this->retry('mouseOver', array("//div[contains(text(),'not found')]"));
         $this->mustNotExist("//p[contains(text(),'test content 1')]");
         
         // test publishing page works

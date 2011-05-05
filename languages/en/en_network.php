@@ -55,9 +55,7 @@ return array(
     'network:describe_relationship' => "Describe your organization's relationship with %s:",
     'network:edit_relationship' => "Edit Relationship",    
     'network:relationship_saved' => "Relationship saved successfully.",
-    
-    'network:suggestion' => 'Suggested',
-    
+        
     'network:approve_instructions' => '{name} has added your organization to their list of {type}.',
     'network:approve_instructions_2' => 'To add {name} to your list of {type}, click the {button} button below.',
     

@@ -6,7 +6,7 @@
     if ($loggedInOrg instanceof Organization)
     {
         $controls = array();
-        if ($org->email && $loggedInOrg->is_approved())
+        if ($org->email)
         {
             $controls[] = "<a href='{$org->get_url()}/send_message'>".__('message:link')."</a>";
         }

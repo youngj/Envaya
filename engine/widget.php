@@ -83,7 +83,7 @@ class Widget extends Entity
         return array(
             'small' => '150x150',
             'medium' => '260x260',
-            'large' => '540x1080',
+            'large' => '540x980',
         );
     }
         
@@ -97,18 +97,6 @@ class Widget extends Entity
         return Comment::query()->where('container_guid = ?', $this->guid)->order_by('guid');
     }
 
-    public function get_subtitle()
-    {
-        if ($this->title)
-        {
-            return $this->translate_field('title', false);
-        }
-        else
-        {
-            return $this->get_default_subtitle();
-        }    
-    }
-	
     public function get_title()
     {
         if ($this->title)
@@ -128,11 +116,6 @@ class Widget extends Entity
         return ($title != $key) ? $title : '';
     }
     
-    function get_default_subtitle()
-    {
-        return $this->get_default_title();
-    }
-        
     static function new_from_row($row)
     {
         $cls = "Widget_{$row->subclass}";        

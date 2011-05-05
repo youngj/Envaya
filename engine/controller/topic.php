@@ -62,7 +62,7 @@ class Controller_Topic extends Controller_User
         }
 
         $this->page_draw(array(
-            'title' => __('discussions:title'),
+            'title' =>  __('discussions:title'),
             'content' => view("discussions/topic_view", array('topic' => $topic))
         ));            
     }    
@@ -72,13 +72,7 @@ class Controller_Topic extends Controller_User
         $action = new Action_Discussion_AddMessage($this);
         $action->execute();
     }
-    
-    function action_invite()
-    {
-        $action = new Action_Discussion_Invite($this);
-        $action->execute();
-    }
-        
+            
     function action_new()
     {
         $action = new Action_Discussion_NewTopic($this);

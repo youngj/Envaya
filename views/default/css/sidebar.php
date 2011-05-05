@@ -6,6 +6,8 @@
     $graphicsDir = "/_graphics/sidebar";
 ?>
 
+#heading h2 , #heading a { color:black; }
+
 .left_sidebar_table, .thin_column
 {
     width:750px;

@@ -75,7 +75,7 @@ if (!Session::get('hide_todo'))
     
     $addItem(
         "<a href='{$org->get_url()}/design'>".__('todo:logo')."</a>",
-        ($org->has_custom_header() || $org->has_custom_icon())    
+        ($org->get_design_setting('header_image') || $org->has_custom_icon())    
     );    
 
     $network = $widgets_map['network'];

@@ -7,14 +7,6 @@ class Action_SendMessage extends Action
         $this->require_login();
         $this->use_editor_layout();
         $this->require_org();
-        
-        $user = Session::get_loggedin_user();
-
-        if (!$user->is_approved())
-        {
-            SessionMessages::add_error(__('message:needapproval'));
-            redirect_back();
-        }
     }
      
     function process_input()
@@ -36,13 +28,16 @@ class Action_SendMessage extends Action
         }
 
         $mail = OutgoingMail::create($subject, $message);
+        $mail->from_guid = $user->guid;
         $mail->setFrom(Config::get('email_from'), $user->name);
         $mail->setReplyTo($user->email, $user->name);
         $mail->addBcc($user->email);
         
         if ($mail->send_to_user($recipient))
         {
-            SessionMessages::add(__("message:sent"));
+            SessionMessages::add(
+                ($mail->status == OutgoingMail::Held) ? __('message:held') : __('message:sent')
+            );
         }
         else
         {

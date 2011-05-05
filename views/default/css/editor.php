@@ -1,8 +1,5 @@
 <?php
-    if (!isset($vars['contentWidth']))
-    {
-        $vars['contentWidth'] = 630;
-    }
+    $vars['contentWidth'] = 700;
     
     echo view('css/default', $vars);    
     echo view('css/snippets/slideshow', $vars);    
@@ -47,7 +44,7 @@ body
 #custom_header_container .imageUploadProgress
 {
     overflow:auto;
-    width:460px;
+    width:660px;
 }
 
 .header_preview .thin_column

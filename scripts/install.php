@@ -44,18 +44,8 @@ function run_sql_script($scriptlocation)
     foreach($sql_statements as $statement) {
         $statement = trim($statement);
         if (!empty($statement)) {
-            try {
-                $result = Database::update($statement);
-            } catch (DatabaseException $e) {
-                $errors[] = "$statement: $e->getMessage()";
-            }
+            Database::update($statement);
         }
-    }
-    if (!empty($errors)) {
-        $errortxt = "";
-        foreach($errors as $error)
-            $errortxt .= " {$error};";
-        throw new DatabaseException("There were a number of issues: ". $errortxt);
     }
 }
 

@@ -261,42 +261,7 @@ class Organization extends User
    
         return strtr($template, $args);
     }
-     
-    /*
-     * Send out notification/invite emails for relationships created by the new organization
-     * before it was approved.
-     */
-    function send_relationship_emails()
-    {
-        foreach ($this->query_relationships()
-            ->where('subject_notified = 0')
-            ->filter() as $relationship)
-        {                    
-            if ($relationship->subject_guid)
-            {
-                // if the relationship refers to an registered Envaya organization, 
-                // create reverse relationship and send notification email
-                $reverse = $relationship->get_reverse_relationship();
-                if (!$reverse)
-                {
-                    $reverse = $relationship->make_reverse_relationship();
-                    $reverse->set_subject_approved();
-                    $reverse->save();
-                }            
-                $relationship->send_notification_email();
-            }
-            else
-            {
-                // if the subject is not a registered Envaya organization,
-                // send an invite email if the user requested it
-                if ($relationship->invite_subject)
-                {
-                    $relationship->send_invite_email();
-                }
-            }            
-        }    
-    }
-    
+         
     protected $phone_numbers;
     protected $phone_numbers_dirty = false;
 

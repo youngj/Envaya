@@ -98,8 +98,8 @@ function php_exception_handler($exception) {
             echo view('layouts/base', array(
                 'title' => __('exception_title'),
                 'layout' => 'layouts/default',
-                'hideLogin' => true,
-                'header' => view('page_elements/title', array('title' => __('exception_title'))),
+                'hide_login' => true,
+                'header' => view('page_elements/content_header', array('title' => __('exception_title'))),
                 'content' => view("messages/exception", array('object' => $exception))
             ));
         }

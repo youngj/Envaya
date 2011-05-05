@@ -71,9 +71,8 @@ abstract class Action_Registration_CreateAccountBase extends Action
         $org->owner_guid = 0;
         $org->container_guid = 0;
         $org->language = Language::get_current_code();
-        $org->theme = "green";
+        $org->set_design_setting('theme_name', "green");
         $org->setup_state = SetupState::CreatedAccount;
-
         $org->set_lat_long(-6.140555,35.551758);
 
         $org->save();

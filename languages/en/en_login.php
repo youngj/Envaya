@@ -10,6 +10,7 @@ return array(
     'login:persistent' => 'Stay logged in',
     'login:password:lost' => 'Forgot password?',
     'login:if_not_registered' => "If you are a representative of a civil society organization in Tanzania that hasn't yet registered for Envaya, %s.",
+    'login:register_link' => "Register a personal user account",
 
     'login:resetreq:title' => 'Reset password',
     'login:resetreq:text' => 'To reset your password, enter your username or email address below. We will send a link to change your password via email.',

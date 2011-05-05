@@ -32,7 +32,14 @@ class Mixin_Content extends Mixin
 
     public function render_content($markup_mode = null)
     {
-        $content = $this->translate_field('content', true);
+        if ($markup_mode != Markup::Feed)
+        {
+            $content = $this->translate_field('content', true);
+        }
+        else
+        {
+            $content = $this->content;
+        }
 
         // html content should be sanitized when it is input!        
         

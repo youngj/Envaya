@@ -14,11 +14,9 @@ class Action_EditDesign extends Action
 
         $theme = get_input('theme');
 
-        if ($theme != $org->theme)
+        if ($theme != $org->get_design_setting('theme_name'))
         {
-            SessionMessages::add(__("design:theme_changed"));
-            $org->theme = $theme;
-            $org->save();
+            $org->set_design_setting('theme_name', $theme);
         }
 
         $iconFiles = UploadedFile::json_decode_array($_POST['icon']);
@@ -26,31 +24,32 @@ class Action_EditDesign extends Action
         if (get_input('deleteicon'))
         {
             $org->set_icon(null);
-            SessionMessages::add(__("design:logo:reset"));
         }
         else if ($iconFiles)
         {
             $org->set_icon($iconFiles);
-            SessionMessages::add(__("design:logo:saved"));
         }
 
-        $headerFiles = UploadedFile::json_decode_array($_POST['header']);
+        $custom_header = (int)get_input('custom_header');
+        
+        $org->set_design_setting('custom_header', $custom_header);
 
-        $customHeader = (int)get_input('custom_header');
-
-        if (!$customHeader)
+        if (!$custom_header)
         {
-            if ($org->has_custom_header())
+            $org->set_design_setting('tagline', get_input('tagline'));            
+            $org->set_design_setting('share_links', get_input_array('share_links'));                        
+        }
+        else 
+        {
+            $header_image = json_decode(get_input('header_image'), true);
+            if ($header_image)
             {
-                $org->set_header(null);
-                SessionMessages::add(__("design:header:reset"));
+                $org->set_design_setting('header_image', $header_image[0]);
             }
         }
-        else if ($headerFiles)
-        {
-            $org->set_header($headerFiles);
-            SessionMessages::add(__("design:header:saved"));
-        }
+        
+        SessionMessages::add(__("design:saved"));
+        $org->save();
         
         forward($org->get_url());
     }
@@ -64,6 +63,7 @@ class Action_EditDesign extends Action
 
         $this->page_draw(array(
             'title' => __("design:edit"),
+            'theme_name' => 'editor',
             'content' => view("org/design", array('org' => $org))
         ));        
     }

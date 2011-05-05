@@ -42,5 +42,4 @@ return array(
     'help:connecting:summary' => "A major benefit of having your website on Envaya is that the network of sites makes it easy for you to find other organizations, and for other organizations to find you!",
     'help:connecting:messages' => "Messages",
     'help:connecting:messages:instructions' => "Envaya makes it easy to communicate with other organizations that are also using Envaya. When you are logged in to Envaya, just visit another organization's website, and click the link at the top to %s.",
-    'help:connecting:messages:disabled' => "Note: Since your organization has not yet been approved by Envaya's administrators, Messages are currently disabled.",
 );

@@ -32,7 +32,9 @@ class Action_Registration_CreateProfileBase extends Action
         $org->region = get_input('region');
         $org->set_metadata('sector_other', get_input('sector_other'));
 
-        $org->theme = get_input('theme');
+        $org->set_design_setting('theme_name', get_input('theme'));
+        $org->set_design_setting('tagline', $org->get_location_text(false));
+        $org->set_design_setting('share_links', array('email','facebook','twitter'));
 
         $latlong = Geography::geocode($org->get_location_text());
 
@@ -61,7 +63,7 @@ class Action_Registration_CreateProfileBase extends Action
 
             OutgoingMail::create(
                 sprintf(__('email:registernotify:subject'), $org->name), 
-                sprintf(__('email:registernotify:body'), $org->get_url().'?login=1')
+                sprintf(__('email:registernotify:body'), $org->get_url())
             )->send_to_admin();
         }            
         

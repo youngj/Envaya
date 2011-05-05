@@ -200,20 +200,20 @@ abstract class Controller {
         return $this->request;
     }
         
-    public function page_draw($vars)
-    {                
-        if (get_input('__topbar') == '0')
-        {
-            $vars['no_top_bar'] = true;
-        }
-                      
+    protected function prepare_page_draw_vars(&$vars)
+    {
         foreach ($this->page_draw_vars as $k => $v)
         {
             if (!isset($vars[$k]))
             {
                 $vars[$k] = $v;
             }
-        }
+        }    
+    
+        if (get_input('__topbar') == '0')
+        {
+            $vars['no_top_bar'] = true;
+        }        
         
         if (Views::get_request_type() == 'default')
         {
@@ -234,40 +234,43 @@ abstract class Controller {
         
         if (!isset($vars['header']) && @$vars['title'])
         {
-            $vars['header'] = view('page_elements/title', $vars);
+            $vars['header'] = view('page_elements/content_header', $vars);
         }
                                 
         if (!isset($vars['full_title']))
         {
-            $sitename = @$vars['sitename'] ?: Config::get('sitename');     
-            if (empty($vars['title'])) 
-            {
-                $vars['full_title'] = $sitename;
-            } 
-            else 
-            {
-                $vars['full_title'] = $sitename . ": " . $vars['title'];
-            }
+            $full_title = @$vars['site_name'] ?: Config::get('site_name');                 
+            if (!@$vars['is_site_home'])
+            {                
+                $full_title .= ": " . @$vars['title'];
+            }                        
+            $vars['full_title'] = $full_title;
         }
         
         $vars['canonical_url'] = $this->get_canonical_url();
         $vars['original_url'] = $this->request->full_original_url();
-        $vars['is_secure'] = $this->request->is_secure();                
-
+        $vars['is_secure'] = $this->request->is_secure();                    
+    }
+        
+    public function page_draw($vars)
+    {                                     
+        $this->prepare_page_draw_vars(/* & */ $vars);        
         $this->request->response = view('layouts/base', $vars);
     }
 
     protected function get_canonical_url()
     {
         $canonical_url = $this->request->full_original_url();
-        if (@$_GET['view'])
+        $ignored_params = array('view','__sv','login','_lt','__topbar');
+        
+        foreach ($ignored_params as $ignored_param)
         {
-            $canonical_url = url_with_param($canonical_url, 'view', null);
+            if (@$_GET[$ignored_param])
+            {
+                $canonical_url = url_with_param($canonical_url, $ignored_param, null);
+            }
         }
-        if (@$_GET['__sv'])
-        {
-            $canonical_url = url_with_param($canonical_url, '__sv', null);
-        }
+        
         return $canonical_url;        
     }
     
@@ -361,26 +364,27 @@ abstract class Controller {
     function force_login()
     {
         $next = $this->request->full_rewritten_url();
-        $username = get_input('username');
-        $loginTime = get_input('_lt');
         
         $args = array();
-        if ($username)
-        {
-            $args[] = "username=".urlencode($username);
+        
+        $arg_names = array('username','_lt','__topbar');
+        foreach ($arg_names as $arg_name)
+        {        
+            $arg = get_input($arg_name);
+            if ($arg !== '')
+            {
+                $args[$arg_name] = $arg;
+            }
         }
+        
         if ($next)
         {
-            $args[] = "next=".urlencode($next);
-        }
-        if ($loginTime)
-        {
-            $args[] = '_lt='.urlencode($loginTime);
+            $args['next'] = $next;
         }
         
         if ($args)
         {
-            forward("pg/login?".implode("&", $args));
+            forward("pg/login?".http_build_query($args));
         }
         else
         {

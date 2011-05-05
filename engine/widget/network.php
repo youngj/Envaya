@@ -146,39 +146,23 @@ class Widget_Network extends Widget
                 ->exists())
             {
                 return $this->duplicate_error($relationship);
-            }
-            
-            if ($org->is_approved() && $subject_org->query_relationships()
-                ->where('type = ?', $relationship->type)
-                ->where('subject_guid = ?', $org->guid)
-                ->is_empty())
-            {
-                $reverse = $relationship->make_reverse_relationship();
-                $reverse->set_subject_approved();
-                $reverse->save();                                                                
-            }
+            }            
         }
                 
         $relationship->save();
         $relationship->post_feed_items();
         
         $this->save();
-
-        if ($org->is_approved())
+        
+        $relationship->send_notification_email();
+        
+        if ($relationship->invite_subject)
         {
-            if ($reverse)
-            {                    
-                $relationship->send_notification_email();
-            }
-            
-            if ($relationship->invite_subject)
-            {
-                if ($relationship->send_invite_email())
-                {                
-                    SessionMessages::add(strtr(__('network:invited'), array(
-                        '{name}' => $relationship->get_subject_name()
-                    )));
-                }
+            if ($relationship->send_invite_email())
+            {                
+                SessionMessages::add(strtr(__('network:invited'), array(
+                    '{name}' => $relationship->get_subject_name()
+                )));
             }
         }
         
@@ -225,11 +209,6 @@ class Widget_Network extends Widget
         
         if ($relationship)
         {
-            $reverse = $relationship->get_reverse_relationship();
-            if ($reverse && !$reverse->is_self_approved())
-            {
-                $reverse->delete();
-            }            
             $relationship->delete();
             
             SessionMessages::add(strtr(__('network:deleted'), array(
@@ -333,10 +312,7 @@ class Widget_Network extends Widget
             $relationship->post_feed_items();
         }
 
-        if ($org->is_approved())
-        {
-            $relationship->send_notification_email();
-        }
+        $relationship->send_notification_email();        
         
         $this->save();
         

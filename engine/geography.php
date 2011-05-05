@@ -55,7 +55,24 @@ class Geography
         }
         return null;
     }
-
+    
+    static function get_country_codes()
+    {
+        // lowercase version of http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 code;
+        // same as used by GeoIP class
+        return array('tz','rw','us');
+    }
+    
+    static function get_country_options()
+    {
+        $options = array();
+        foreach (static::get_country_codes as $country)
+        {
+            $options[$country] = __("country:$country");
+        }
+        asort($options);
+        return $options;
+    }
     
     static function get_region_codes($country_code)
     {

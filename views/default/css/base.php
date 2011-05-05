@@ -86,9 +86,8 @@ a.selected
     margin:10px 15px 10px 0px;
 }
 
-#heading h1, #heading h2, #heading h2 a
+#heading h1, #heading h2
 {
-    color:#222;
     font-size:20px;
     padding-top:5px;
     padding-bottom:0px;
@@ -104,7 +103,6 @@ a.selected
 
 #heading h3
 {
-    color:#222;
     font-size:16px;
     padding:0px;
     margin:0px;

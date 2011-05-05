@@ -26,11 +26,10 @@ class User extends Entity
         'city' => '',
         'region' => '',
         'country' => '',
-        'theme' => '',
         'email_code' => null,
         'setup_state' => 5,
         'icons_json' => null,
-        'header_json' => null,
+        'design_json' => null,
         'last_notify_time' => null,
         'last_action' => 0,
         'notifications' => 15,
@@ -150,38 +149,32 @@ class User extends Entity
         {
             $this->icons_json = UploadedFile::json_encode_array($imageFiles);
         }
-        $this->save();
     }
 
-    public function has_custom_header()
-    {
-        return !!$this->header_json;
-    }
+    private $design_settings;
     
-    public function get_header_props()
+    public function get_design_settings()
     {
-        return json_decode($this->header_json, true);
-    }    
-    
-    public function set_header($imageFiles)
-    {
-        if (!$imageFiles)
+        if (!$this->design_settings)
         {
-            $this->header_json = null;
+            $this->design_settings = json_decode($this->design_json, true) ?: array();
         }
-        else
-        {               
-            $this->header_json = json_encode($imageFiles[0]->js_properties());
-        }
-        $this->save();
+        return $this->design_settings;
     }
-
-    static function get_header_sizes()
+    
+    public function get_design_setting($name)
     {
-        return array(
-            'large' => '700x150',
-        );
+        $settings = $this->get_design_settings();
+        return @$settings[$name];
     }
+    
+    public function set_design_setting($name, $value)
+    {
+        $settings = $this->get_design_settings();
+        $settings[$name] = $value;
+        $this->design_settings = $settings;
+        $this->design_json = json_encode($settings);
+    }        
 
     function has_lat_long()
     {

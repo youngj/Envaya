@@ -33,10 +33,15 @@ class Action_Admin_ChangeOrgApproval extends Action
             )->send_to_user($org);
         }
         
-        $org->send_relationship_emails();
+        // send any emails from this user that were held pending approval
+        $held_emails = OutgoingMail::query()->where('status = ?', OutgoingMail::Held)->where('from_guid = ?', $org->guid)->filter();
+        foreach ($held_emails as $held_email)
+        {
+            $held_email->enqueue();
+        }
 
         SessionMessages::add(__('approval:changed'));
 
         forward($org->get_url());
     }
-}    
+}

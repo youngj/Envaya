@@ -14,12 +14,6 @@
     
     echo "<div style='float:right;'>";
     
-    if (!$relationship->is_self_approved())
-    {
-        $url = view('output/post_url', array('href' => "{$widget->get_edit_url()}?action=approve&guid={$relationship->guid}"));    
-        echo "<a href='$url'>".__('network:add')."</a> &middot; ";
-    }
-    
     echo "<a href='{$widget->get_edit_url()}?action=edit_relationship&guid={$relationship->guid}'>".__('edit')."</a> &middot; ";
        
     echo view('output/confirmlink', array(
@@ -36,12 +30,7 @@
     echo "<div>";
     
     echo "<b>$link_open".escape($name)."$link_close</b>";
-    
-    if (!$relationship->is_self_approved())
-    {
-        echo " <em>(".__('network:suggestion').")</em>";
-    }
-    
+        
     echo "</div>";
 
     echo view('widgets/network_view_relationship_contact', array('relationship' => $relationship));   

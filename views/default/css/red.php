@@ -9,6 +9,8 @@ body
     background-color:#e7e2d7;
 }
 
+#heading h2 , #heading a { color:black; }
+
 #site_menu
 {
     padding-top:5px;

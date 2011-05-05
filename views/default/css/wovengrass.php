@@ -1,5 +1,5 @@
 <?php
-    $vars['contentWidth'] = 600;
+    $vars['contentWidth'] = 700;
     
     echo view('css/default', $vars);
     echo view('css/snippets/site_menu_top', $vars);
@@ -12,7 +12,7 @@ body { color:#000; background:#d5b24a url("<?php echo $graphicsDir; ?>/woven-gra
 .heading_container { background:#fff; }
 .content_container .thin_column,
 .footer_container .thin_column { background:#f0e3a7 url("<?php echo $graphicsDir; ?>/woven-grass-2-textbg.jpg") repeat -30px -60px; }
-#heading h2 , #heading h2 a { color:#666; }
+#heading h2 , #heading a { color:#333; }
 #heading h3 { color:#a07d28; }
 #site_menu a { color:#000; }
 #site_menu a.selected, #site_menu a:hover

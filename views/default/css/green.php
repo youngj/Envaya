@@ -1,5 +1,5 @@
 <?php
-    $vars['contentWidth'] = 600;
+    $vars['contentWidth'] = 700;
     
     echo view('css/default', $vars);
     echo view('css/snippets/site_menu_top', $vars);
@@ -9,6 +9,9 @@
 ?>
 
 body { background-color:white; }
+
+#heading h2 , #heading a { color:black; }
+
 .heading_container { background-color:#f2f5f6; }
 .content_container { background:#fff url(<?php echo $graphicsDir; ?>/section_content.gif) repeat-x left top; }
 .content_container .thin_column { background:#e5e5e5 url(<?php echo $graphicsDir; ?>/thin_column.gif) repeat-x left top; }

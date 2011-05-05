@@ -1,5 +1,6 @@
 <?php
     $org = $vars['org'];
+    $custom_header = $org->get_design_setting('custom_header');
 ?>
 
 <form action='<?php echo $org->get_url() ?>/design' method='POST'>
@@ -81,7 +82,7 @@ function customHeaderChanged()
 <?php
     echo view('input/radio', array(
         'name' => 'custom_header',
-        'value' => $org->has_custom_header() ? '1' : '0',
+        'value' => $custom_header ? '1' : '0',
         'js' => "onchange='customHeaderChanged()' onclick='customHeaderChanged()'",
         'options' => array(
             '0' => __('design:header:default'),
@@ -90,26 +91,26 @@ function customHeaderChanged()
     ));
 ?>
 
-<div id='default_header_container' <?php echo $org->has_custom_header() ? "style='display:none'" : "" ?> >
-    <div class='header_preview'>
-        <?php echo view('org/default_header', array('org' => $org, 'title' => __('design:header:subtitle'))) ?>
+<div id='default_header_container' <?php echo $custom_header ? "style='display:none'" : "" ?> >  
+    <div style='border:1px solid #ccc;padding:5px;margin:5px 0px'>
+    <?php echo view('org/default_header_edit', array('org' => $org)); ?>
     </div>
     <div class='help'><?php echo sprintf(__('design:header:changelogo'), __('design:logo')) ?></div>
 </div>
 
-<div id='custom_header_container' <?php echo !$org->has_custom_header() ? "style='display:none'" : "" ?>>
+<div id='custom_header_container' <?php echo !$custom_header ? "style='display:none'" : "" ?>>
 
     <?php
-        if ($org->has_custom_header())
+        if ($custom_header)
         {
             echo "<div style='margin-top:10px'>".__('upload:image:current')."</div>";
-            echo "<div class='header_preview'>".view('org/custom_header', array('org' => $org))."</div>";
+            echo "<div class='header_preview'>".view('org/header', array('org' => $org))."</div>";
         }
     ?>
 
     <div class='input'>
             <?php
-                if ($org->has_custom_header())
+                if ($custom_header)
                 {
                     echo __('upload:image:new');
                 }
@@ -124,9 +125,9 @@ function customHeaderChanged()
     echo view("input/swfupload_image",
         array(
             'trackDirty' => true,
-            'sizes' => User::get_header_sizes(),
+            'sizes' => array('large' => '700x150',),
             'thumbnail_size' => 'large',
-            'name' => 'header',
+            'name' => 'header_image',
         ))
     ?>
     <div class='help'>
@@ -152,7 +153,7 @@ echo view('input/submit',array(
 
 <?php echo view('input/theme', array(
     'name' => 'theme',
-    'value' => $org->theme,
+    'value' => $org->get_design_setting('theme_name'),
     'options' => Theme::available_names(),
     'previewUrl' => $org->get_url()
 )); ?>

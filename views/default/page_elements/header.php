@@ -19,6 +19,7 @@
 <script type='text/javascript'>
 <?php echo view('js/header'); ?>
 <?php 
+echo "var canonicalUrl=".json_encode($vars['canonical_url']).";";
 
 if (PageContext::is_dirty())
 {

@@ -277,7 +277,7 @@ class Controller_Admin extends Controller_Simple
             'content' =>  view('admin/featured_photos', array(
                 'photos' => FeaturedPhoto::query()->filter()
             )),
-            'theme_name' => 'editor_wide'
+            'theme_name' => 'editor'
         ));
     }
     

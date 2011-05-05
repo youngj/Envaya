@@ -99,7 +99,7 @@ class Controller_Widget extends Controller_User
     {
         $this->redirect_delta(1);
     }
-
+        
     function redirect_delta($delta)
     {
         $widget = $this->get_widget();

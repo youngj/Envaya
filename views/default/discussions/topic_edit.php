@@ -21,20 +21,6 @@
         'content' => view('input/form', array('action' => $topic->get_edit_url(), 'body' => $content))
     ));
     
-    if ($topic->get_root_container_entity()->is_approved())
-    {    
-        ob_start();    
-    
-        echo "<strong><a href='{$topic->get_url()}/invite?from=".escape($_SERVER['REQUEST_URI'])."'>". __('discussions:invite')."</a></strong>";
-        
-        $content = ob_get_clean();
-           
-        echo view('section', array(
-            'header' => __('discussions:topic_tools'), 
-            'content' => $content
-        ));
-   }
-       
     ob_start();
        
     $limit = 20;

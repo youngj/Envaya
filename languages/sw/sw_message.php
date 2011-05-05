@@ -10,9 +10,9 @@ return array(
     'message:message' => 'Ujumbe wako:',
     'message:send' => 'Peleka Ujumbe',
     'message:sent' => 'Ujumbe umepelekwa.',
+    'message:held' => "Ujumbe wako unasubiri kukubaliwa na wasimamizi wa Envaya, na utapelekwa hivi karibuni.",
     'message:not_sent' => "Kulikuwa kosa ya kupeleka ujumbe.",
     'message:subject_missing' => 'Mada ya ujumbe wako ilikuwa tupu.',
-    'message:needapproval' => 'Huwezi kupeleka ujumbe sasa kwa sababu shirika lako halijakubaliwa na wasimamizi wa Envaya.',
 
     'message:name' => 'Jina lako:',
     'message:email' => 'Email yako:',

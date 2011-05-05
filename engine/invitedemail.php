@@ -1,5 +1,9 @@
 <?php
 
+/* 
+ * A model with data about an email address that has been invited to join Envaya; created when people
+ * add partner organizations to their network that are not yet Envaya members.
+ */
 class InvitedEmail extends Model
 {
     static $table_name = 'invited_emails';

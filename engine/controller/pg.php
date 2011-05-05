@@ -335,5 +335,5 @@ class Controller_Pg extends Controller_Simple {
         }           
         SessionMessages::add(__('feed:item_deleted'));
         redirect_back();
-    }    
+    }        
 }

@@ -155,10 +155,4 @@
 <?php echo sprintf(__('help:connecting:messages:instructions'), "<strong>".__('message:link')."</strong>") ?>
 </p>
 
-<?php if (!$org->is_approved()) { ?>
-<p>
-<em>
-<?php echo __('help:connecting:messages:disabled') ?>
-</p>
-<?php } ?>
 </div>

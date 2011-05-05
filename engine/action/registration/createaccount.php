@@ -10,6 +10,7 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
         Session::set('registration', null);
                     
         $org->country = $prevInfo['country'];
+        $org->set_design_setting('tagline', $org->get_location_text(false));        
         $org->save();
 
         $invite_code = Session::get('invite_code');
