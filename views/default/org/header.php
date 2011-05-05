@@ -48,25 +48,22 @@
                         
             if (in_array('email', $share_links))
             {
-                echo "<a rel='nofollow' href='javascript:emailShare(".json_encode($org->username).")' onclick='ignoreDirty()'>";
-                echo "<span class='shareIcon' style='background-position:-36px -1px'></span>";
-                echo "<span class='shareText'>".__('share:email')."</span>";
+                echo "<a style='background-position:right -5px;height:18px' rel='nofollow' href='javascript:emailShare(".json_encode($org->username).")' onclick='ignoreDirty()'>";
+                echo __('share:email');
                 echo "</a>";
             }
             
             if (in_array('facebook', $share_links))
             {
-                echo "<a rel='nofollow' href='javascript:fbShare()' onclick='$onclick'>";
-                echo "<span class='shareIcon' style='padding-bottom:3px'></span>";
-                echo "<span class='shareText' style='padding-top:2px'>".__('share:facebook')."</span>";
+                echo "<a style='background-position:right -36px' rel='nofollow' href='javascript:fbShare()' onclick='$onclick'>";
+                echo __('share:facebook');
                 echo "</a>";
             }
             
             if (in_array('twitter', $share_links))
             {
-                echo "<a rel='nofollow' href='javascript:twitterShare()' onclick='$onclick'>";
-                echo "<span class='shareIcon' style='background-position:-18px top'></span>";
-                echo "<span class='shareText' style='padding-top:1px'>".__('share:twitter')."</span>";
+                echo "<a style='background-position:right -65px' rel='nofollow' href='javascript:twitterShare()' onclick='$onclick'>";
+                echo __('share:twitter');
                 echo "</a>";
             }
             

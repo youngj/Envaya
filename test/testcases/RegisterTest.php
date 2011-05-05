@@ -512,6 +512,9 @@ class RegisterTest extends SeleniumTest
         $email = $this->getLastEmail("New organization registered");
         $url = $this->getLinkFromEmail($email);
         $this->setUrl($url);
+        
+        sleep(1);
+        $this->retry('mouseOver', array("//input[@name='username']"));
 
         $this->login('testadmin','testtest');
         $this->ensureGoodMessage();

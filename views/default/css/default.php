@@ -824,6 +824,7 @@ a.discussionTopic
 .shareLinks
 {
     padding-top:5px;
+    padding-left:5px;
     white-space:nowrap;
 }
 
@@ -832,26 +833,15 @@ a.discussionTopic
     display:block;
     clear:both;
     opacity:0.7;
+    text-align:right;
+    font-size:10px;    
+    padding-top:1px;
+    padding-right:23px;
+    background:url(/_graphics/share2.png) no-repeat right top;
+    height:19px;
 }
 
 .shareLinks a:hover
 {
     opacity:1.0;
-}
-
-.shareText
-{
-    text-align:right;
-    display:block;
-    font-size:10px;
-}
-
-.shareIcon 
-{
-    float:right;
-    display:block;
-    margin-left:5px;
-    width:18px;
-    height:18px;
-    background:url(/_graphics/share.png) no-repeat left top;
 }
