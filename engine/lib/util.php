@@ -99,7 +99,7 @@
     
     function escape($val)
     {
-        return htmlentities($val, ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars($val, ENT_QUOTES, 'UTF-8');
     }
 
     function redirect_back()

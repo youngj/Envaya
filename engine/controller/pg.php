@@ -336,4 +336,18 @@ class Controller_Pg extends Controller_Simple {
         SessionMessages::add(__('feed:item_deleted'));
         redirect_back();
     }        
+    
+    function action_manifest()
+    {
+        $this->set_content_type('text/cache-manifest');
+        $this->set_response(view('offline/cache_manifest'));
+    }
+    
+    function action_offline()
+    {
+        $this->page_draw(array(
+            'title' => __('offline:title'),
+            'content' => view('offline/offline')
+        ));       
+    }
 }

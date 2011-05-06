@@ -50,7 +50,7 @@ class Action_Share extends Action
             throw new ValidationException(__('share:no_emails'));
         }
         
-        $max_emails = 10;
+        $max_emails = 15;
         if (sizeof($emails_list) > $max_emails)
         {
             throw new ValidationException(strtr(__('share:too_many_emails'), array('{max}' => $max_emails)));
@@ -64,6 +64,7 @@ class Action_Share extends Action
         $mail = OutgoingMail::create($subject, $message);
         $mail->from_guid = $user->guid;
         $mail->setFrom(Config::get('email_from'), $user->name);        
+        
         if ($user->email)
         {
             $mail->setReplyTo($user->email, $user->name);
