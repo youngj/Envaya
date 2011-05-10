@@ -30,6 +30,7 @@ return array(
     'canceledit' => "Cancel Edit",
     'savechanges' => "Save changes",    
     'areyousure' => 'Are you sure?',    
+    'hide' => "Hide",
     
     'clickhere' => 'click here',
     'sign_up_now' => "sign up now",

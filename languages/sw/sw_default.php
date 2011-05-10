@@ -89,6 +89,7 @@ return array(
     'edit' => 'Hariri',
     'delete' => 'Futa',
     'preview' => 'Onyesho la awali',
+    'hide' => "Ficha",
 
     'lang:en' => 'Kiingereza',
     'lang:sw' => 'Kiswahili',

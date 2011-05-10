@@ -21,9 +21,14 @@ function minify($srcFile, $destFile, $type='js')
 
 class Build
 {
-    static function css()
+    private static function module_glob()
     {
-        $css_paths = glob("{views/default/css/*.php,mod/*/views/default/css/*.php}", GLOB_BRACE);
+        return "{".implode(',',Config::get('modules'))."}";
+    }
+    static function css($name = '*')
+    {
+        $modules = static::module_glob();
+        $css_paths = glob("{views/default/css/$name.php,mod/$modules/views/default/css/$name.php}", GLOB_BRACE);
 
         foreach ($css_paths as $css_path)
         {
@@ -60,8 +65,9 @@ class Build
     }
 
     static function inline_js($name = '*')
-    {
-        $js_src_files = glob("{_media/inline_js_src/$name.js,mod/*/_media/inline_js_src/$name.js}", GLOB_BRACE);
+    {    
+        $modules = static::module_glob();
+        $js_src_files = glob("{_media/inline_js_src/$name.js,mod/$modules/_media/inline_js_src/$name.js}", GLOB_BRACE);
 
         foreach ($js_src_files as $js_src_file)
         {

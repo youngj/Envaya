@@ -4,7 +4,8 @@
     $url = $topic->get_url();        
     echo "<div><a class='discussionTopic' href='$url'>";
     
-    echo escape($topic->subject);
+    echo escape($topic->translate_field('subject'));
+    
     if ($topic->num_messages > 1)
     {
         echo " ({$topic->num_messages})";

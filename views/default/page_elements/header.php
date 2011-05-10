@@ -26,22 +26,11 @@
 <?php echo view('js/header'); ?>
 <?php 
 echo "var canonicalUrl=".json_encode(@$vars['canonical_url']).";";
-
 if (PageContext::is_dirty())
 {
     echo "setDirty(true);";
 }
-
-$js_strs = array();
-foreach (PageContext::get_js_strings() as $key)
-{
-    $js_strs[$key] = __($key);
-}
-if (sizeof($js_strs))
-{
-    echo "var __ = ".json_encode($js_strs).";"; 
-}
-
+echo "var __ = ".json_encode(PageContext::get_js_strings()).";"; 
 ?>
 </script>
     <?php echo PageContext::get_header_html(); ?>
