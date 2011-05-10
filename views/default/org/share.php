@@ -6,8 +6,11 @@
     $network = $org->get_widget_by_class('Network');
 ?>
 <script type='text/javascript'>
-<?php echo view('js/create_modal_box'); ?>
-
+<?php 
+    echo view('js/create_modal_box');
+    echo view('js/dom');
+    echo view('js/xhr');
+?>
 var modalBox;
 
 function addPartners()

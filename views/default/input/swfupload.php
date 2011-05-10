@@ -2,10 +2,7 @@
 
     $SWFUPLOAD_INCLUDE_COUNT = $vars['include_count'];
 
-    if (!$SWFUPLOAD_INCLUDE_COUNT)
-    {
-        echo "<script type='text/javascript' src='/_media/swfupload.js?v".Config::get('cache_version')."'></script>";
-    }
+    echo view('js/swfupload');
 
     $prevInput = restore_input($vars['name'], @$vars['value'], @$vars['trackDirty']);
 

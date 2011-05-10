@@ -215,7 +215,8 @@ abstract class Controller {
             $vars['no_top_bar'] = true;
         }        
         
-        if (Views::get_request_type() == 'default')
+        $viewtype = Views::get_request_type();
+        if ($viewtype == 'default')
         {
             $theme = Theme::get(@$vars['theme_name'] ?: Config::get('fallback_theme'));
             $vars['css_name'] = $theme->get_css_name();
@@ -261,7 +262,7 @@ abstract class Controller {
     protected function get_canonical_url()
     {
         $canonical_url = $this->request->full_original_url();
-        $ignored_params = array('view','__sv','login','_lt','__topbar');
+        $ignored_params = array('view','login','_lt','__topbar');
         
         foreach ($ignored_params as $ignored_param)
         {
@@ -444,7 +445,7 @@ abstract class Controller {
         
         $view_type = Views::get_request_type();
         
-        if ($view_type == 'default' || $view_type == 'mobile' || in_array($view_type, $allowed_view_types))
+        if (Views::is_browsable_type($view_type) || in_array($view_type, $allowed_view_types))
             return;
         
         Views::set_request_type('default');

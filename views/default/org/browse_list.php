@@ -12,9 +12,9 @@ $region = get_input('region');
 function sectorChanged()
 {
     setTimeout(function() {
-        var sectorList = document.getElementById('sectorList');
+        var sectorList = $('sectorList');
         
-        var regionList = document.getElementById('regionList');
+        var regionList = $('regionList');
 
         var sector = sectorList.options[sectorList.selectedIndex].value;
         var region = regionList.options[regionList.selectedIndex].value;

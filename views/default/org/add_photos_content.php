@@ -4,8 +4,12 @@
 <label id='uploadLabel'><img src='/_graphics/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo __('upload:photos:label') ?></label><br />
 <div id='uploadContainer'></div>
 
-<script type='text/javascript' src='/_media/swfupload.js?v<?php echo Config::get('cache_version') ?>'></script>
+<?php echo view('js/swfupload'); ?>
 <script type='text/javascript'>
+<?php 
+    echo view('js/dom'); 
+    echo view('js/class'); 
+?>
 
 var MultiImageUploader = makeClass(ImageUploader);
 
@@ -21,7 +25,7 @@ MultiImageUploader.prototype.showPreview = function($data, $json)
 
     this.setProgress("");
 
-    var previews = document.getElementById(this.options.previews_id);
+    var previews = $(this.options.previews_id);
 
     var container = createElem('div', {className:'photoPreviewContainer'});
 
@@ -72,7 +76,7 @@ MultiImageUploader.prototype.showPreview = function($data, $json)
         value: $json
     }));    
 
-    var clear = document.createElement('div');
+    var clear = createElem('div');
     clear.style.clear = 'both';
     container.appendChild(clear);
 
@@ -90,13 +94,13 @@ MultiImageUploader.prototype.showPreview = function($data, $json)
         }
     }
 
-    var submit = document.getElementById('submit');
+    var submit = $('submit');
     submit.style.display = 'block';
 };
 
 MultiImageUploader.prototype.uploadProgressHandler = function()
 {
-    document.getElementById('uploadLabel').style.display = 'none';
+    $('uploadLabel').style.display = 'none';
     ImageUploader.prototype.uploadProgressHandler.call(this);
 };
 

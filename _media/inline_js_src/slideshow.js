@@ -16,13 +16,13 @@ function slideshow(featuredPhotos, defaultPhoto) {
         currentIndex = -1,
         caption = createElem('a'),
         orgLink = createElem('a'),
-        imgContainer = document.getElementById('home_banner_photo'),
-        controls = document.getElementById('home_slideshow_controls');
+        imgContainer = $('home_banner_photo'),
+        controls = $('home_slideshow_controls');
 
     if (!images.length)
     {
         imgContainer.style.backgroundImage = "url("+defaultPhoto+")";
-        document.getElementById('home_caption_shadow').style.display = 'none';
+        $('home_caption_shadow').style.display = 'none';
         return;
     }    
     

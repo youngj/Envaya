@@ -1,6 +1,6 @@
 <?php
-    echo view('page_elements/doctype');    
-    $lang = escape(Language::get_current_code());        
+    echo view('page_elements/doctype');
+    $lang = escape(Language::get_current_code());
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $lang ?>" lang="<?php echo $lang ?>">
 <head>
@@ -35,13 +35,12 @@ if (sizeof($js_strs))
 {
     echo "var __ = ".json_encode($js_strs).";"; 
 }
+
 ?>
 </script>
     <?php echo PageContext::get_header_html(); ?>
 </head>
-
-<body class='<?php echo @$vars['bodyClass']; ?>'>
-
+<body>
 <?php if (get_input("__readonly") == "1") { ?>
 <div style='position:absolute;background-color:white;width:600px;height:500px;left:0px;top:0px;opacity:0.01;z-index:100;filter:alpha(opacity=1);z-index:100'></div>
 <?php } ?>

@@ -11,7 +11,7 @@
 <script type='text/javascript'>
 function altSubmit($id, $value)
 {
-    var hiddenField = document.getElementById($id);
+    var hiddenField = $($id);
     hiddenField.value = $value;
     for (var i = 0; i < document.forms.length; i++)
     {

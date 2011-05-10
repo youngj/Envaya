@@ -61,8 +61,8 @@ function getSelectedRadio($name)
 function customHeaderChanged()
 {
     setTimeout(function() {
-        var $customDiv = document.getElementById('custom_header_container');
-        var $defaultDiv = document.getElementById('default_header_container');
+        var $customDiv = $('custom_header_container');
+        var $defaultDiv = $('default_header_container');
         var $value = getSelectedRadio('custom_header');
 
         if ($value == '1')

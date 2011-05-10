@@ -23,7 +23,7 @@ class Build
 {
     static function css()
     {
-        $css_paths = glob("{views/default/css/*.php,../mod/*/views/default/css/*.php}", GLOB_BRACE);
+        $css_paths = glob("{views/default/css/*.php,mod/*/views/default/css/*.php}", GLOB_BRACE);
 
         foreach ($css_paths as $css_path)
         {
@@ -61,7 +61,7 @@ class Build
 
     static function inline_js()
     {
-        $js_src_files = glob('_media/inline_js/*_src.js');
+        $js_src_files = glob("{_media/inline_js_src/*.js,mod/*/_media/inline_js_src/*.js}", GLOB_BRACE);
 
         foreach ($js_src_files as $js_src_file)
         {

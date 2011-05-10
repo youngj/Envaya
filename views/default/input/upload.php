@@ -42,7 +42,7 @@
     
     uploader.showPreview = function($files, $json) 
     {
-        var span = document.getElementById('upload_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
+        var span = $('upload_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
         removeChildren(span);
         var link = document.createElement('a');
         link.target = "_blank";
@@ -51,28 +51,28 @@
         link.appendChild(document.createTextNode($files[0].filename));
         span.appendChild(link);
             
-        var removeSpan = document.getElementById('upload_remove_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
+        var removeSpan = $('upload_remove_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
         removeSpan.style.display = 'inline';
 
-        var browseSpan = document.getElementById('upload_browse_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
+        var browseSpan = $('upload_browse_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
         browseSpan.style.display = 'none';        
         
-        document.getElementById('<?php echo $resultId; ?>').value = $json;
+        $('<?php echo $resultId; ?>').value = $json;
     };
     
     function removeUpload<?php echo $UPLOAD_INCLUDE_COUNT ?>()
     {
-        var removeSpan = document.getElementById('upload_remove_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
+        var removeSpan = $('upload_remove_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
         removeSpan.style.display = 'none';
 
-        var browseSpan = document.getElementById('upload_browse_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
+        var browseSpan = $('upload_browse_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
         browseSpan.style.display = 'inline';
         
-        var span = document.getElementById('upload_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
+        var span = $('upload_span<?php echo $UPLOAD_INCLUDE_COUNT; ?>');
         removeChildren(span);
         
-        document.getElementById('<?php echo $resultId; ?>').value = '';
+        $('<?php echo $resultId; ?>').value = '';
     }
     
-    document.getElementById('<?php echo $progressId; ?>').style.display = 'inline';
+    $('<?php echo $progressId; ?>').style.display = 'inline';
 </script>

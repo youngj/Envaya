@@ -1,1 +1,9 @@
-<script type='text/javascript'>addImageLinks(document.getElementById('<?php echo $vars['id']; ?>'));</script>
+<script type='text/javascript'>
+<?php
+    if ($vars['include_count'] == 0)
+    {
+        readfile(Config::get('path').'_media/inline_js/image_links.js');
+    }
+?>
+addImageLinks($('<?php echo $vars['id']; ?>'));
+</script>

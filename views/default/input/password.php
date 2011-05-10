@@ -30,7 +30,7 @@ function checkCapslock(e, warningId) {
         var which = ev.which || ev.keyCode;
         var shiftPressed = ev.shiftKey || (ev.modifiers ? !!(ev.modifiers & 4) : false);
         
-        var warning = document.getElementById(warningId);
+        var warning = $(warningId);
         
         if (((which >= 65 && which <=  90) && !shiftPressed) ||
             ((which >= 97 && which <= 122) && shiftPressed)) {
@@ -55,6 +55,6 @@ function checkCapslock(e, warningId) {
 <input type="password" <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> <?php echo $js, $setDirty; ?> name="<?php echo $vars['name']; ?>" <?php if (isset($vars['id'])) echo "id=\"{$vars['id']}\""; ?> value="<?php echo escape($value); ?>" class="<?php echo $class; ?>" /><span class='capslockWarning' id='<?php echo $warningId ?>' style='display:none'></span>
 <script type='text/javascript'>
 <!--
-document.getElementById('<?php echo $warningId; ?>').innerHTML = <?php echo json_encode(__('capslock_warning')); ?>;
+$('<?php echo $warningId; ?>').innerHTML = <?php echo json_encode(__('capslock_warning')); ?>;
 // -->
 </script>

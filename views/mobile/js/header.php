@@ -1,1 +1,4 @@
-addEvent=removeEvent=fetchJson=bind=removeChildren=removeElem=setDirty=setSubmitted=addImageLinks=ignoreDirty=setLang=function(){};
+<?php
+    echo view('js/header', $vars, 'default');
+    echo "var setDirty=function(){};";
+?>  

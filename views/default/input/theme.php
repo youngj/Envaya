@@ -10,11 +10,11 @@
 function themeChanged($theme)
 {
     setTimeout(function() {
-        var $themeList = document.getElementById('themeList');
+        var $themeList = $('themeList');
 
         var $theme = $themeList.options[$themeList.selectedIndex].value;
 
-        var iframe = document.getElementById('previewFrame');
+        var iframe = $('previewFrame');
         iframe.src = <?php echo json_encode($previewUrl) ?> + "?__topbar=0&__readonly=1&view=default&__theme=" + $theme;
 
     }, 1);

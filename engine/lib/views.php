@@ -140,6 +140,8 @@ class Views
     private static $current_type = null;
     private static $extensions_map = array();
     
+    private static $browsable_types = array('mobile','default');
+    
     static function extend($base_view, $extend_view, $priority = 1)
     {
         $extensions = @static::$extensions_map[$base_view];    
@@ -186,6 +188,11 @@ class Views
     static function set_current_type($type)
     {
         static::$current_type = $type;
+    }
+    
+    static function is_browsable_type($type)
+    {
+        return in_array($type, static::$browsable_types);
     }
     
     static function get_extensions($base_view)

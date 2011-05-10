@@ -8,10 +8,10 @@
 
 function nudgePhoto(dx, dy)
 {
-    var photo = document.getElementById(<?php echo json_encode($photo_id); ?>);
+    var photo = $(<?php echo json_encode($photo_id); ?>);
     
-    var xOffsetField = document.getElementById(<?php echo json_encode($x_offset_id); ?>);
-    var yOffsetField = document.getElementById(<?php echo json_encode($y_offset_id); ?>);
+    var xOffsetField = $(<?php echo json_encode($x_offset_id); ?>);
+    var yOffsetField = $(<?php echo json_encode($y_offset_id); ?>);
     
     var xOffset = parseInt(xOffsetField.value,10);
     var yOffset = parseInt(yOffsetField.value,10);

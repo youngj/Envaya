@@ -60,7 +60,7 @@
 
 		<div id="logbrowserSearchform" <?php echo $hidden; ?>><?php echo $wrappedform; ?></div>
 		<p>
-			<a href="javascript:void(0)" onclick="document.getElementById('logbrowserSearchform').style.display='block'"><?php echo __('logbrowser:search'); ?></a>
+			<a href="javascript:void(0)" onclick="$('logbrowserSearchform').style.display='block'"><?php echo __('logbrowser:search'); ?></a>
 		</p>
 	</div>
 </div>

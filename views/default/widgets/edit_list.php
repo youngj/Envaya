@@ -11,6 +11,9 @@
     $can_move_up = false;
     $table_id = "widget_list_{$include_count}";
     
+    $ts = time();
+    $token = generate_security_token($ts);
+    
     foreach ($widgets as $widget)
     {
         $link = "<a style='font-weight:bold' href='{$widget->get_edit_url()}?from=$from'>".
@@ -30,7 +33,7 @@
             echo "</td><td style='text-align:right;color:#999'>";
             $link_id = "{$table_id}_{$widget->guid}_up";
             $url = "javascript:asyncReorderWidget(".
-                json_encode("{$widget->get_base_url()}/reorder?delta=-1").",\"{$table_id}\",\"{$link_id}\");";
+                json_encode("{$widget->get_base_url()}/reorder?delta=-1").",\"{$table_id}\",\"{$link_id}\", \"$ts\", \"$token\");";
             $style = $can_move_up ? '' : 'display:none';
             echo "<a href='$url' style='$style' id='$link_id' onclick='ignoreDirty()' style='text-decoration:none'>&uarr;</a>";
             echo "</td>";
@@ -53,56 +56,7 @@
 ?>
 
 <script type='text/javascript'>
-function asyncReorderWidget($url, $table_id, $link_id)
-{
-    var xhr = getXHR(function(res) {             
-        var guids = res.guids;        
-        var rows = {};        
-        var tbody = document.getElementById($table_id);
-
-        for (var i = 0; i < guids.length; i++)
-        {
-            var guid = guids[i];
-            var row = document.getElementById($table_id + '_' + guid);
-            if (row)
-            {
-                removeElem(row);
-                rows[guid] = row;
-            }
-        }
-        
-        for (var i = 0; i < guids.length; i++)
-        {
-            var guid = guids[i];
-            var row = rows[guid];
-            if (row)
-            {
-                tbody.appendChild(row);                
-                var up = document.getElementById($table_id + '_' + guid + '_up');
-                if (up) 
-                {
-                    up.style.display = (i == 0) ? 'none' : 'inline';
-                }
-            }
-        }
-    });
-        
-    var link = document.getElementById($link_id);        
-    link.style.display = 'none';
-    
-    xhr.open("POST", $url, true);       
-    
-    var form = document.forms[0];
-    var params = "<?php 
-        $ts = time();
-        $token = generate_security_token($ts);        
-        echo "__ts=$ts&__token=$token";
-    ?>";
-    
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.setRequestHeader("Content-Length", params.length);            
-    xhr.send(params);
-}
+<?php echo view('js/reorder_widget'); ?>
 </script>
 <?php
         }

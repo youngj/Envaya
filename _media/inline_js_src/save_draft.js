@@ -74,13 +74,11 @@
                 setDirty(false);
             });
 
-            xhr.open("POST", form.action, true);
+            asyncPost(xhr, form.action, {
+                _draft:1,
+                content:content                
+            });
             
-            var params = "_draft=1&content="+encodeURIComponent(content) + "&__ts=" + form.__ts.value + "&__token=" + form.__token.value;
-            
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.setRequestHeader("Content-Length", params.length);            
-            xhr.send(params);    
         }, 10);
     };
     

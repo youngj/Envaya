@@ -5,7 +5,7 @@ setTimeout(function() {<?php
     }
     else if (@$vars['id'])
     {
-        echo "document.getElementById(".json_encode($vars['id']).").focus();";
+        echo "$(".json_encode($vars['id']).").focus();";
     }
 ?>},10);
 </script>

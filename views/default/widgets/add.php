@@ -21,8 +21,8 @@
 <script type='text/javascript'>
 (function() {
 
-var widgetName = document.getElementById('widget_name');
-var title = document.getElementById('title');
+var widgetName = $('widget_name');
+var title = $('title');
 var autoFill = true;
 
 function makeWidgetName(value)

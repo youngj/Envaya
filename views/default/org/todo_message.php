@@ -89,6 +89,10 @@ if (sizeof($todoItems))
 {
 ?>
 <script type='text/javascript'>
+<?php 
+    echo view('js/messages'); 
+    echo view('js/xhr');
+?>
 function hideTodo()
 {
     hideMessages('todo_container');

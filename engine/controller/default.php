@@ -22,10 +22,29 @@ class Controller_Default extends Controller
     
     public function execute($uri)
     {
-        if (get_input('login') && !Session::isloggedin())
+        if (@$_GET['login'] && !Session::isloggedin())
         {
             $this->force_login();
         }
+
+        if (@$_GET['lang'])
+        {
+            change_viewer_language($_GET['lang']);
+        }    
+        
+        $viewtype = @$_GET['view'];
+        if ($viewtype && Views::is_browsable_type($viewtype))
+        {
+            set_cookie('view', $viewtype);
+        }
+        
+        // work around flash uploader cookie bug, where the session cookie is sent as a POST field
+        // instead of as a cookie
+        if (@$_POST['session_id'])
+        {
+            $_COOKIE['envaya'] = $_POST['session_id'];
+        }
+        
         parent::execute($uri);
     }
     

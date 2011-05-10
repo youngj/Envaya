@@ -513,6 +513,7 @@ class RegisterTest extends SeleniumTest
         $url = $this->getLinkFromEmail($email);
         $this->open($url);
         
+        sleep(1);
         $this->retry('mouseOver', array("//input[@name='username']"));
 
         $this->login('testadmin','testtest');
