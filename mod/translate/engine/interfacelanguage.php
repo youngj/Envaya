@@ -38,6 +38,12 @@ class InterfaceLanguage extends Entity
         return InterfaceGroup::query()->where('container_guid = ?', $this->guid);
     }
     
+    function query_comments()
+    {
+        return InterfaceKeyComment::query()
+            ->where('language_guid = ? OR language_guid = 0', $this->guid);
+    }
+    
     function query_keys()
     {
         return InterfaceKey::query()->where('language_guid = ?', $this->guid);

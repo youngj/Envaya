@@ -58,6 +58,12 @@ class Controller_TranslateKey extends Controller
         $action = new Action_AddInterfaceTranslation($this);
         $action->execute();
     }
+
+    function action_add_comment()
+    {
+        $action = new Action_AddInterfaceKeyComment($this);
+        $action->execute();
+    }
     
     function action_vote_translation()
     {

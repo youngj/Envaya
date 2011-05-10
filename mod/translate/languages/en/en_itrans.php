@@ -36,4 +36,8 @@ return array(
     
     'itrans:instructions' => "Instructions",
     'itrans:yours' => "Your translations",
+    'itrans:show_comment_in' => "Show comment in:",
+    'itrans:all_languages' => "All languages",
+    'itrans:latest_comments' => "Latest comments",
+    'itrans:comment' => "Comment",
 );

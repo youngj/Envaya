@@ -13,8 +13,8 @@
 
     $output_view = $key->get_output_view();      
 ?>
-<div style='width:650px;float:left'>
-<div class='post_nav' style='padding-bottom:5px;width:650px'>
+<div style='width:600px;float:left'>
+<div class='post_nav' style='padding-bottom:5px;width:600px'>
 <?php  
     echo "<a href='{$key->get_url()}/prev' title='".__('previous')."' class='post_nav_prev'><span>&#xab; ".__('previous')."</span></a> ";
     echo "<a href='{$key->get_url()}/next' title='".__('next')."' class='post_nav_next'><span>".__('next')." &#xbb;</span></a>";
@@ -123,17 +123,62 @@
         echo __('itrans:need_login');
         echo "<ul style='font-weight:bold'>";
         $next = urlencode($key->get_url());
-        echo "<li><strong><a href='/pg/login?next=$next'>".__('login')."</a></li>";
-        echo "<li><strong><a href='/pg/register?next=$next'>".__('register')."</a></li>";
+        echo "<li><strong><a href='/pg/login?next=$next'>".__('login')."</a></strong></li>";
+        echo "<li><strong><a href='/pg/register?next=$next'>".__('register')."</a></strong></li>";
         echo "</ul>";
     }
     
 ?>
 </div>
-<div style='float:left;padding-top:30px;padding-left:10px'>
-<ul>
+<div style='float:left;padding-top:30px;padding-left:10px;width:285px'>
+<script type='text/javascript'>
+function toggleAddComment()
+{
+    var div = $('add_comment');
+    if (div.style.display == 'none')
+    {
+        div.style.display = 'block';
+        $('comment_content').focus();
+    }
+    else
+    {
+        div.style.display = 'none';
+    }
+}
+</script>
 <?php
-echo "<li><a href='/tr/instructions#key' target='_blank'>".__('itrans:instructions')."</a></li>";     
+    
+    $comments = $key->query_comments()->order_by('time_created')->filter();
+    if ($comments)
+    {
+        echo "<h4>".__('comment:title')."</h4>";
+        foreach ($comments as $comment)
+        {
+            echo view('translate/interface_key_comment', array('comment' => $comment));
+        }
+    }
+        
+    echo "<ul>";        
+    if (Session::isloggedin())
+    {    
+        echo "<li><a href='javascript:toggleAddComment()'>".__('comment:add')."</a>";
+        echo "<div id='add_comment' style='display:none'>";
+        echo "<form method='POST' action='{$key->get_url()}/add_comment'>";
+        echo view('input/securitytoken');
+        echo "<div>".view('input/longtext', array('id' => 'comment_content', 'name' => 'content', 'js' => "style='width:250px;height:50px'"))."</div>"; 
+        echo __('itrans:show_comment_in'). " ";
+        echo view('input/pulldown', array(
+            'name' => 'scope',
+            'options' => array('current' => $target_language->name, 'all' => __('itrans:all_languages')),
+            'value' => Session::isadminloggedin() ? 'all' : 'current'
+        ));
+        
+        echo view('input/submit', array('value' => __('comment:publish'))); 
+        echo "</form>";        
+        echo "</div></li>";
+
+    }
+    echo "<li><a href='/tr/instructions#key' target='_blank'>".__('itrans:instructions')."</a></li>";     
+    echo "</ul>";
 ?>
-</ul>
 </div>

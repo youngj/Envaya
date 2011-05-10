@@ -4,6 +4,7 @@ EntityRegistry::register_subtype('translate.interface.lang', 'InterfaceLanguage'
 EntityRegistry::register_subtype('translate.interface.group', 'InterfaceGroup');
 EntityRegistry::register_subtype('translate.interface.key', 'InterfaceKey');
 EntityRegistry::register_subtype('translate.interface.trans', 'InterfaceTranslation');
+EntityRegistry::register_subtype('translate.interface.key.comment', 'InterfaceKeyComment');
 EntityRegistry::register_subtype('translate.vote', 'TranslationVote');
 EntityRegistry::register_subtype('translate.translator.stats', 'TranslatorStats');
 

@@ -53,3 +53,12 @@ CREATE TABLE `translator_stats` (
   `num_translations` int(11) NOT NULL default 0,
   `num_votes` int(11) NOT NULL default 0
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `interface_key_comments` (
+  <?php require 'schema/entity_columns.php'; ?>,  
+  <?php require 'schema/content_columns.php'; ?>,  
+  `language_guid` bigint(20) unsigned NULL default 0,  
+  `key_name` varchar(64) NOT NULL,
+  KEY `language_guid` (`language_guid`),
+  KEY `key_name` (`key_name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
