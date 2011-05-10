@@ -59,9 +59,9 @@ class Build
         minify('_media/swfupload_src.js', '_media/swfupload.js');
     }
 
-    static function inline_js()
+    static function inline_js($name = '*')
     {
-        $js_src_files = glob("{_media/inline_js_src/*.js,mod/*/_media/inline_js_src/*.js}", GLOB_BRACE);
+        $js_src_files = glob("{_media/inline_js_src/$name.js,mod/*/_media/inline_js_src/$name.js}", GLOB_BRACE);
 
         foreach ($js_src_files as $js_src_file)
         {
@@ -79,9 +79,17 @@ class Build
 }
 
 $target = @$argv[1] ?: 'all';
+$arg = @$argv[2];
 if (method_exists('Build', $target))
 {
-    Build::$target();
+    if ($arg)
+    {
+        Build::$target($arg);
+    }
+    else
+    {
+        Build::$target();
+    }
 }
 else
 {

@@ -38,7 +38,7 @@
         {
             return get_date_text($time, $options);
         }
-    }
+    }    
     
     function get_date_text($time, $options = null)
     {
@@ -85,11 +85,7 @@
         
         if ($show_time)
         {
-            $timeStr = strtr(__('date:time'), array(
-                '{hour}' => $date['hours'],
-                '{minute}' => sprintf("%02d", $date['minutes']),
-                '{tz}' => $tzStr
-            ));
+            $timeStr = get_time_text($date, $tzStr);
             
             return strtr(__('date:date_time'), array(
                 '{date}' => $dateStr,
@@ -100,4 +96,16 @@
         {        
             return $dateStr;
         }
+    }
+    
+    function get_time_text($date, $tzStr)
+    {
+        $hours = $date['hours'];
+        return strtr(__('date:time'), array(
+            '{hour}' => sprintf("%02d", $hours),
+            '{hour12}' => ('' . (($hours % 12) ?: 12)),
+            '{minute}' => sprintf("%02d", $date['minutes']),
+            '{tz}' => ($tzStr ? (' ' . $tzStr) : ''),
+            '{ampm}' => (' ' . ($hours < 12 ? __('date:am') : __('date:pm')))
+        ));
     }

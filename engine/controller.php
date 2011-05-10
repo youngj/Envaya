@@ -247,10 +247,12 @@ abstract class Controller {
             }                        
             $vars['full_title'] = $full_title;
         }
-        
+
         $vars['canonical_url'] = $this->get_canonical_url();
         $vars['original_url'] = $this->request->full_original_url();
+        $vars['css_url'] = css_url(@$vars['css_name'] ?: 'simple');
         $vars['is_secure'] = $this->request->is_secure();                    
+        $vars['base_url'] = $vars['is_secure'] ? Config::get('secure_url') : Config::get('url');
     }
         
     public function page_draw($vars)

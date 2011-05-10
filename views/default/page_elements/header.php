@@ -5,21 +5,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $lang ?>" lang="<?php echo $lang ?>">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title><?php echo escape($vars['full_title']); ?></title>
-    <base href='<?php echo $vars['is_secure'] ? Config::get('secure_url') : Config::get('url'); ?>' />     
+    <title><?php echo escape(@$vars['full_title']); ?></title>    
     <?php
+        if (@$vars['base_url'])
+        {
+            echo "<base href='".escape($vars['base_url'])."' />";
+        }    
         echo view('page_elements/css', $vars);          
         if (@$vars['rss_url'])
         {
             echo "<link rel='alternate' type='application/rss+xml' title='RSS' href='".escape($vars['rss_url'])."' />";
         }
-        echo "<link rel='canonical' href='".escape($vars['canonical_url'])."' />";
+        if (@$vars['canonical_url'])
+        {
+            echo "<link rel='canonical' href='".escape($vars['canonical_url'])."' />";
+        }
     ?>
-    <link rel="shortcut icon" href="/_graphics/favicon2.ico" />
+<link rel="shortcut icon" href="/_graphics/favicon2.ico" />
 <script type='text/javascript'>
 <?php echo view('js/header'); ?>
 <?php 
-echo "var canonicalUrl=".json_encode($vars['canonical_url']).";";
+echo "var canonicalUrl=".json_encode(@$vars['canonical_url']).";";
 
 if (PageContext::is_dirty())
 {
