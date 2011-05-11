@@ -7,7 +7,8 @@ class Action_AddInterfaceKeyComment extends Action
         $this->require_login();
         
         $content = Markup::sanitize_html(get_input('content'), array(
-            'HTML.AllowedElements' => 'a,em,strong,br',
+            'HTML.AllowedElements' => 'a,em,strong,br,p',
+            'AutoFormat.AutoParagraph' => true,
             'AutoFormat.RemoveEmpty' => true
         ));
         
