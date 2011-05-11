@@ -4,7 +4,7 @@
 
 <div class="comment">
 <?php 
-echo Markup::autop(escape($entity->content));
+echo $entity->render_content();
 ?>  
 <div class='blog_date'><?php          
     echo strtr(__('date:date_name'), array(

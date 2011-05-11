@@ -6,7 +6,10 @@ class Action_AddInterfaceKeyComment extends Action
     {
         $this->require_login();
         
-        $content = get_input('content');
+        $content = Markup::sanitize_html(get_input('content'), array(
+            'HTML.AllowedElements' => 'a,em,strong,br',
+            'AutoFormat.RemoveEmpty' => true
+        ));
         
         if ($content == '')
         {
@@ -34,7 +37,7 @@ class Action_AddInterfaceKeyComment extends Action
             $comment->language_guid = $key->language_guid;
         }
         $comment->key_name = $key->name;
-        $comment->set_content($content);
+        $comment->set_content($content, true);
 		$comment->save();
 
         $key->update();

@@ -44,7 +44,7 @@
         echo "<td>".view($view_name, array('value' => __($key->name, $base_lang)))."</td>";
         echo "<td>".view($view_name, array('value' => $key->best_translation))."</td>";
         echo "<td>";
-        echo Markup::autop(escape($comment->content));
+        echo $comment->render_content();
         echo "</td>";
         echo "<td>";
         echo strtr(__('date:date_name'), array(
