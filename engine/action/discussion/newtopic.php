@@ -61,6 +61,7 @@ class Action_Discussion_NewTopic extends Action
       
         $topic = new DiscussionTopic();
         $topic->subject = $subject;
+        $topic->language = GoogleTranslate::guess_language($subject);
         $topic->container_guid = $org->guid;
         if ($user)
         {

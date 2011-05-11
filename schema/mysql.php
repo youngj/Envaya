@@ -314,9 +314,9 @@ CREATE TABLE `discussion_messages` (
 
 CREATE TABLE `discussion_topics` (
     <?php require 'schema/entity_columns.php'; ?>,
-
     `first_message_guid` bigint(20) unsigned NOT NULL,
     `subject` text default '',
+    `language` varchar(4) default null,
     `last_time_posted` int(11) default 0,
     `last_from_name` text default '',
     `num_messages` int(11) default 0,

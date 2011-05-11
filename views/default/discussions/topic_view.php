@@ -9,7 +9,6 @@
     
     $count = $topic->num_messages;
     $messages = $query->filter();    
-
     
     echo "<div class='section_content padded'>";
     echo "<h3 style='padding-bottom:8px'>".escape($topic->translate_field('subject'))."</h3>";
