@@ -15,7 +15,7 @@
 	  <pubDate><?php echo date("r",$vars['entity']->time_created) ?></pubDate>
 	  <link><?php echo htmlspecialchars($vars['entity']->get_url()); ?></link>
 	  <title><![CDATA[<?php echo $title; ?>]]></title>
-	  <description><![CDATA[<?php echo (Markup::autop($vars['entity']->description)); ?>]]></description>
+	  <description><![CDATA[<?php echo (nl2br($vars['entity']->description)); ?>]]></description>
 	  <?php
 			$owner = $vars['entity']->get_owner_entity();
 			if ($owner)

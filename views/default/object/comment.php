@@ -32,7 +32,7 @@ if ($entity->is_enabled())
     ?>
     </div>
     <?php    
-		echo Markup::autop(escape($entity->content));
+		echo nl2br(escape($entity->content));
     ?>  
     <div class='blog_date'><?php echo $entity->get_date_text(); ?></div>
     <?php
