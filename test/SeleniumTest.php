@@ -228,9 +228,14 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
 }
 
 
-function retry($fn, $args, $timeout = 15)
+function retry($fn, $args = null, $timeout = 15)
 {
     $time = time();
+    if (!$args) 
+    { 
+        $args = array(); 
+    }
+    
     while (true)
     {
         try

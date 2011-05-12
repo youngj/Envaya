@@ -3,9 +3,7 @@
 
     $noSave = @$vars['noSave'];
         
-    $form_body =  $vars['body'];
-    
-    $form_body .= view('input/hidden', array('name' => 'widget_name', 'value' => $widget->widget_name));
+    $form_body = $vars['body'];
     
     $is_section = $widget->is_section();
     

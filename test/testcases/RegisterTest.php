@@ -2,12 +2,12 @@
 
 class RegisterTest extends SeleniumTest
 {
-    private $name;
-    private $username;
-    private $email;
-    private $username2;
-    private $email2;
-    private $name2;
+    public $name;
+    public $username;
+    public $email;
+    public $username2;
+    public $email2;
+    public $name2;
 
     public function test()
     {        
@@ -394,6 +394,50 @@ class RegisterTest extends SeleniumTest
         $this->mouseOver("//a[@class='selected' and contains(@href,'page/settings')]");
         $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'another page!!!!')]");        
         
+        // change page URL
+        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->type("//input[@name='widget_name']", "home");
+        $this->submitForm();
+        $this->ensureBadMessage(); // duplicate page name
+        $this->type("//input[@name='widget_name']", "new-url");
+        $this->submitForm();
+        $this->ensureGoodMessage();
+        $this->mouseOver("//a[@class='selected' and contains(@href,'page/new-url')]");
+        $this->mustNotExist("//a[contains(@href,'page/settings')]");
+        $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'another page!!!!')]");        
+
+        // test not-found redirects
+        $this->open("/{$this->username}/page/settings");
+        $this->mouseOver("//a[@class='selected' and contains(@href,'page/new-url')]");
+        $this->mustNotExist("//a[contains(@href,'page/settings')]");
+        
+        // change URL again, test redirect chain
+        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->type("//input[@name='widget_name']", "anotherurl");        
+        $this->submitForm();
+        $this->ensureGoodMessage();
+        $this->mouseOver("//a[@class='selected' and contains(@href,'page/anotherurl')]");
+        $this->open("/{$this->username}/page/settings");
+        $this->assertContains("New title", $this->getTitle());
+        $this->mouseOver("//a[@class='selected' and contains(@href,'page/anotherurl')]");        
+
+        // test non-matching url is not redirected
+        $this->open("/{$this->username}/page/new-url2");
+        
+        $self = $this;
+        retry(function() use ($self) {
+            $self->assertContains("/{$self->username}/page/new-url2", $self->getLocation());
+        });
+        $this->assertContains('Page not found', $this->getTitle());        
+        
+        // test redirects are only for the specified user
+        $this->open("/testorg/page/settings");
+        retry(function() use ($self) {
+            $self->assertContains('/testorg/page/settings', $self->getLocation());
+        });
+        
+        $this->assertContains('Page not found', $this->getTitle());
+        
         // make sure page names don't conflict with built-in actions
         $this->clickAndWait("//a[@id='usersettings']");
         $this->type("//input[@name='phone']", "123456890");
@@ -508,12 +552,12 @@ class RegisterTest extends SeleniumTest
         $this->ensureGoodMessage();
 
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->retry('mouseOver', array("//a[@id='loginButton']"));
 
         $email = $this->getLastEmail("New organization registered");
         $url = $this->getLinkFromEmail($email);
         $this->open($url);
         
-        sleep(1);
         $this->retry('mouseOver', array("//input[@name='username']"));
 
         $this->login('testadmin','testtest');

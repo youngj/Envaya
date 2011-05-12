@@ -71,10 +71,6 @@ class Action_EditWidget extends Action
             {
                 $widget->process_input($this);             
             }
-            catch (ValidationException $ex)
-            {
-                return redirect_back_error($ex->getMessage());
-            }                
             catch (NotFoundException $ex)
             {
                 $this->not_found();

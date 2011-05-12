@@ -22,7 +22,6 @@ class Widget_Network extends Widget
         {
             case 'add_relationship':        return $this->add_relationship_view();                               
             case 'edit_relationship':       return $this->edit_relationship_view();                                
-            case 'approve':                 return $this->approve_relationship_view();
             
             default:                 
                 return view("widgets/network_edit", array('widget' => $this));
@@ -34,10 +33,8 @@ class Widget_Network extends Widget
         switch (get_input('action'))
         {
             case 'delete_relationship':  return $this->delete_relationship();
-            case 'save_relationship':    return $this->save_relationship();
+            case 'edit_relationship':    return $this->save_relationship();
             case 'add_relationship':     return $this->add_relationship();
-            
-            case 'approve':              return $this->approve_relationship();
             
             default: 
                 $this->save();
@@ -230,46 +227,6 @@ class Widget_Network extends Widget
         }    
         return $relationship;
     }    
-    
-    private function approve_relationship_view()
-    {
-        $org = $this->get_container_entity();
-        try
-        {
-            $relationship = $this->get_current_relationship($org);
-        }
-        catch (InvalidParameterException $ex)
-        {
-            throw new NotFoundException();
-        }        
-        
-        $this->save();
-        
-        return view('widgets/network_approve_relationship', array('widget' => $this, 'relationship' => $relationship));
-    }    
-    
-    private function approve_relationship()
-    {    
-        $org = $this->get_container_entity();
-
-        try
-        {
-            $relationship = $this->get_current_relationship($org);
-        }
-        catch (InvalidParameterException $ex)
-        {
-            throw new NotFoundException();
-        }                
-        
-        $relationship->set_self_approved();
-        $relationship->save();
-
-        $this->save();
-
-        SessionMessages::add(__('network:relationship_saved'));
-        return forward($this->get_edit_url());
-    }    
-    
     
     private function save_relationship()
     {

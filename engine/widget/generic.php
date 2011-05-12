@@ -32,6 +32,36 @@ class Widget_Generic extends Widget
         {
             throw new ValidationException($this->is_section() ? __('widget:no_section_title') : __('widget:no_title'));
         }       
+            
+        $redirect = null;
+        $widget_name = get_input('widget_name');
+        
+        if ($widget_name && $this->widget_name != $widget_name && $this->is_page())
+        {
+            if (!Widget::is_valid_name($widget_name))
+            {
+                throw new ValidationException(__('widget:bad_name'));            
+            }
+        
+            $org = $this->get_container_entity();
+            $other_widget = $org->get_widget_by_name($widget_name);                
+            if ($other_widget->guid)
+            {
+                throw new ValidationException(
+                    sprintf(__('widget:duplicate_name'),
+                        "<a href='{$other_widget->get_edit_url()}'><strong>".__('clickhere')."</strong></a>"),
+                    true
+                );
+            }
+            
+            if ($lastPublished)
+            {
+                // redirect users from the old page, so that we don't break existing links / search engine results
+                $redirect = NotFoundRedirect::new_simple_redirect("/page/{$this->widget_name}", "/page/{$widget_name}");
+                $redirect->container_guid = $org->guid;
+            }            
+            $this->widget_name = $widget_name;
+        }
                 
         $content = get_input('content');
         if ($publish)
@@ -47,6 +77,11 @@ class Widget_Generic extends Widget
         $revision->publish_status = $this->publish_status;
         $revision->content = $content;            
         $revision->save();                
+            
+        if ($redirect)
+        {
+            $redirect->save();            
+        }
             
         if ($publish && $this->content)
         {

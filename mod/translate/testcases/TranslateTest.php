@@ -16,6 +16,9 @@ class TranslateTest extends SeleniumTest
         $this->type("//input[@name='name']", "Test Language");
         $this->check("//input[@value='comment']");
         $this->check("//input[@value='default']");
+        $this->uncheck("//input[@value='date']");        
+        $this->uncheck("//input[@value='admin']");
+        $this->uncheck("//input[@value='network']");
         $this->submitForm();
         $this->ensureGoodMessage();
         

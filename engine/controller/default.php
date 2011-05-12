@@ -51,6 +51,8 @@ class Controller_Default extends Controller
     function init_user_by_username()
     {    
         $user = User::get_by_username($this->param('username'));
+        
+        $this->params['user_uri'] = $this->param('rest');
                 
         if ($user)
         {
