@@ -24,13 +24,26 @@
 /* Layout */
 .tSkin table.mceLayout {border:0; border-left:1px solid #CCC; border-right:1px solid #CCC}
 .tSkin table.mceLayout tr.mceFirst td {border-top:1px solid #CCC}
-.tSkin table.mceLayout tr.mceLast td {border-bottom:1px solid #CCC}
+.tSkin table.mceLayout tr.mceLast td {/* border-bottom:1px solid #CCC */}
 .tSkin table.mceToolbar, .tSkin tr.mceFirst .mceToolbar tr td, .tSkin tr.mceLast .mceToolbar tr td {border:0; margin:0; padding:0;}
 .tSkin td.mceToolbar {padding-top:1px; vertical-align:top}
 .tSkin .mceIframeContainer {border-top:1px solid #CCC; border-bottom:1px solid #CCC}
-.tSkin .mceStatusbar {font-family:'MS Sans Serif',sans-serif,Verdana,Arial; font-size:9pt; line-height:16px; overflow:visible; color:#000; display:block; height:20px}
+.tSkin .mceStatusbar {
+    font-family:'MS Sans Serif',sans-serif,Verdana,Arial; font-size:9pt; 
+    line-height:16px; overflow:visible; color:#000; display:block; height:0px;
+    position:relative;    
+}
 .tSkin .mceStatusbar div {float:left; margin:2px}
-.tSkin .mceStatusbar a.mceResize {display:block; float:right; background:url(<?php echo $iconsUrl ?>) -800px 0; width:20px; height:20px; cursor:se-resize; outline:0}
+.tSkin .mceStatusbar .mceResize {
+    display:block; 
+    position:absolute;
+    right:0px;
+    bottom:0px;
+    background:url(<?php echo $iconsUrl ?>) -808px -8px; 
+    width:12px; height:12px; 
+    cursor:se-resize; 
+    outline:0;
+}
 .tSkin .mceStatusbar a:hover {text-decoration:underline}
 .tSkin table.mceToolbar {margin-left:3px}
 .tSkin span.mceIcon, .tSkin img.mceIcon {display:block; width:20px; height:20px}

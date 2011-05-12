@@ -93,15 +93,15 @@
                 theme_advanced_buttons2 : '', //"bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code",
                 theme_advanced_buttons3 : '', //"hr,removeformat,visualaid,|,sub,sup,|,charmap",
                 theme_advanced_blockformats : "p,pre,h1,h2,h3",
-                theme_advanced_toolbar_align : "center",
+                //theme_advanced_toolbar_align : "center",
                 theme_advanced_fonts : '', //"Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats",
                 theme_advanced_more_colors : 1,
                 theme_advanced_row_height : 23,
-                theme_advanced_resize_horizontal : 1,
-                theme_advanced_resizing_use_cookie : 1,
+                //theme_advanced_resize_horizontal : 1,
+                //theme_advanced_resizing_use_cookie : 1,
                 theme_advanced_font_sizes : "1,2,3,4,5,6,7",
-                theme_advanced_statusbar_location : "none",
-                theme_advanced_resizing : false,
+                //theme_advanced_statusbar_location : "none",
+                //theme_advanced_resizing : false,
                 theme_advanced_toolbar_align : "left",
                 readonly : ed.settings.readonly
             }, ed.settings);
@@ -659,15 +659,16 @@
             var ed = this.editor, s = this.settings, e = DOM.get(ed.id + '_tbl'), ifr = DOM.get(ed.id + '_ifr');
 
             // Boundery fix box
-            w = Math.max(s.theme_advanced_resizing_min_width || 100, w);
+            //w = Math.max(s.theme_advanced_resizing_min_width || 100, w);
             h = Math.max(s.theme_advanced_resizing_min_height || 100, h);
-            w = Math.min(s.theme_advanced_resizing_max_width || 0xFFFF, w);
+            //w = Math.min(s.theme_advanced_resizing_max_width || 0xFFFF, w);
             h = Math.min(s.theme_advanced_resizing_max_height || 0xFFFF, h);
 
             // Resize iframe and container
             DOM.setStyle(e, 'height', '');
             DOM.setStyle(ifr, 'height', h);
 
+            /*
             if (s.theme_advanced_resize_horizontal) {
                 DOM.setStyle(e, 'width', '');
                 DOM.setStyle(ifr, 'width', w);
@@ -676,6 +677,7 @@
                 if (w < e.clientWidth)
                     DOM.setStyle(ifr, 'width', e.clientWidth);
             }
+            */
         },
 
         destroy : function() {
@@ -698,8 +700,7 @@
             }
 
             // Create toolbar container at top
-            if (lo == 'top')
-                t._addToolbars(tb, o);
+            t._addToolbars(tb, o);
 
             /*
             // Create external toolbar
@@ -743,21 +744,13 @@
             }
             */
 
-            if (sl == 'top')
-                t._addStatusBar(tb, o);
-
             // Create iframe container
             if (!s.theme_advanced_toolbar_container) {
                 n = DOM.add(tb, 'tr');
                 n = ic = DOM.add(n, 'td', {'class' : 'mceIframeContainer'});
             }
 
-            // Create toolbar container at bottom
-            if (lo == 'bottom')
-                t._addToolbars(tb, o);
-
-            if (sl == 'bottom')
-                t._addStatusBar(tb, o);
+            t._addStatusBar(tb, o);
 
             return ic;
         },
@@ -875,18 +868,18 @@
             DOM.setHTML(n, h.join(''));
         },
 
-        /*
         _addStatusBar : function(tb, o) {
             var n, t = this, ed = t.editor, s = t.settings, r, mf, me, td;
 
             n = DOM.add(tb, 'tr');
             n = td = DOM.add(n, 'td', {'class' : 'mceStatusbar'});
-            n = DOM.add(n, 'div', {id : ed.id + '_path_row'}, s.theme_advanced_path ? ed.translate('path') + ': ' : '&#160;');
-            DOM.add(n, 'a', {href : '#', accesskey : 'x'});
+            //n = DOM.add(n, 'div', {id : ed.id + '_path_row'}, s.theme_advanced_path ? ed.translate('path') + ': ' : '&#160;');
+            //DOM.add(n, 'a', {href : '#', accesskey : 'x'});
 
-            if (s.theme_advanced_resizing) {
-                DOM.add(td, 'a', {id : ed.id + '_resize', href : 'javascript:;', onclick : "return false;", 'class' : 'mceResize'});
+            //if (s.theme_advanced_resizing) {
+                DOM.add(td, 'span', {id : ed.id + '_resize', 'class' : 'mceResize'});
 
+                /*
                 if (s.theme_advanced_resizing_use_cookie) {
                     ed.onPostRender.add(function() {
                         var o = Cookie.getHash("TinyMCE_" + ed.id + "_size"), c = DOM.get(ed.id + '_tbl');
@@ -897,6 +890,7 @@
                         t.resizeTo(o.cw, o.ch);
                     });
                 }
+                */
 
                 ed.onPostRender.add(function() {
                     Event.add(ed.id + '_resize', 'mousedown', function(e) {
@@ -919,12 +913,13 @@
                             Event.remove(ed.getDoc(), 'mouseup', mouseUpHandler2);
 
                             // Store away the size
+                            /*
                             if (s.theme_advanced_resizing_use_cookie) {
                                 Cookie.setHash("TinyMCE_" + ed.id + "_size", {
                                     cw : width,
                                     ch : height
                                 });
-                            }
+                            } */
                         };
 
                         e.preventDefault();
@@ -943,12 +938,11 @@
                         mouseUpHandler2 = Event.add(ed.getDoc(), 'mouseup', endResize);
                     });
                 });
-            }
+            //}
 
-            o.deltaHeight -= 21;
+            o.deltaHeight -= 0;
             n = tb = null;
         },
-        */
 
         _nodeChanged : function(ed, cm, n, co, ob) {
             var t = this, p, de = 0, v, c, s = t.settings, cl, fz, fn, formatNames, matches;
