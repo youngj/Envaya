@@ -1,5 +1,7 @@
 <?php
-    $vars['contentWidth'] = 600;
+    $width = 800;
+    $sidebarWidth = 180;
+    $contentWidth = $vars['contentWidth'] = $width - $sidebarWidth - 11;
     echo view('css/default', $vars);
     echo view('css/snippets/content_margin', $vars);
 
@@ -10,7 +12,7 @@
 
 .left_sidebar_table, .thin_column
 {
-    width:750px;
+    width:<?php echo $contentWidth + $sidebarWidth; ?>px;
 }
 
 .content_container
@@ -20,19 +22,19 @@
 
 .content_container .thin_column
 {
-    width:763px;
-    background:url(<?php echo $graphicsDir ?>/top_plate.png) no-repeat left top;
+    width:<?php echo $width; ?>px;
+    background:url(<?php echo $graphicsDir ?>/top_plate2.png) no-repeat left top;
     padding-top:20px;
 }
 
 #content_wrapper
 {
-    background:url(<?php echo $graphicsDir ?>/mid_plate.png) repeat-y left top;
+    background:url(<?php echo $graphicsDir ?>/mid_plate2.png) repeat-y left top;
 }
 
 #content_bottom
 {
-    background:url(<?php echo $graphicsDir ?>/bottom_plate.png) no-repeat left top;
+    background:url(<?php echo $graphicsDir ?>/bottom_plate2.png) no-repeat left top;
     height:33px;
 }
 
@@ -44,7 +46,7 @@
 
 #left_sidebar
 {
-    width:160px;
+    width:<?php echo $sidebarWidth; ?>px;
     padding-top:25px;
     border-right:2px solid #e1e1df;
 }
@@ -53,7 +55,7 @@
 {
     display:block;    
     color:#8c8b8b;
-    padding-left:20px;
+    padding-left:18px;
     overflow:hidden;
     padding-top:7px;
     height:28px;  
@@ -67,7 +69,7 @@
 #left_sidebar a.selected
 {
     color:black;
-    background:url(<?php echo $graphicsDir ?>/menu_selected.png) no-repeat 3px top;
+    background:url(<?php echo $graphicsDir ?>/menu_selected2.png) no-repeat 3px top;
 }
 
 #right_content h2
