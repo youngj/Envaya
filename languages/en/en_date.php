@@ -11,7 +11,8 @@ return array(
     
     'date:no_year' => '{month} {day}',
     'date:with_year' => '{month} {day}, {year}',
-    'date:time' => '{hour12}:{minute}{ampm}{tz}',
+    'date:time' => '[hour12]:{minute} [ampm]',
+    'date:time_with_tz' => '{time} {tz}',
     'date:date_time' => '{date} at {time}',
     'date:date_name' => "{date} by {name}",
     

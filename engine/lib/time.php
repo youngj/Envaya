@@ -98,14 +98,25 @@
         }
     }
     
-    function get_time_text($date, $tzStr)
+    function get_time_text($date, $tzStr = '')
     {
         $hours = $date['hours'];
-        return strtr(__('date:time'), array(
-            '{hour}' => sprintf("%02d", $hours),
-            '{hour12}' => ('' . (($hours % 12) ?: 12)),
+        $time = strtr(__('date:time'), array(
+            '[hour]' => sprintf("%02d", $hours),
+            '[hour12]' => ('' . (($hours % 12) ?: 12)),
             '{minute}' => sprintf("%02d", $date['minutes']),
-            '{tz}' => ($tzStr ? (' ' . $tzStr) : ''),
-            '{ampm}' => (' ' . ($hours < 12 ? __('date:am') : __('date:pm')))
+            '[ampm]' => ($hours < 12 ? __('date:am') : __('date:pm'))
         ));
+        
+        if ($tzStr)
+        {
+            return strtr(__('date:time_with_tz'), array(
+                '{time}' => $time,
+                '{tz}' => $tzStr,
+            ));
+        }
+        else
+        {
+            return $time;
+        }
     }

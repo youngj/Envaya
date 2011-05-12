@@ -1,12 +1,22 @@
 function getTimeText(date, tzStr)
 {
     var hours = date.getHours();
-    return __['date:time'].
-        replace('{hour}', pad2(hours)).
-        replace('{hour12}', '' + ((hours % 12) || 12)).
+    var time = __['date:time'].
+        replace('[hour]', pad2(hours)).
+        replace('[hour12]', '' + ((hours % 12) || 12)).
         replace('{minute}', pad2(date.getMinutes())).
-        replace('{tz}', (tzStr ? (' ' +tzStr) : '')).
-        replace('{ampm}',' ' + (hours < 12 ? __['date:am'] : __['date:pm']));
+        replace('[ampm]', (hours < 12 ? __['date:am'] : __['date:pm']));
+    
+    if (tzStr)
+    {
+        return __['date:time_with_tz'].
+            replace('{time}', time).
+            replace('{tz}', tzStr);
+    }
+    else
+    {
+        return time;
+    }
 }
 
 function pad2(num)

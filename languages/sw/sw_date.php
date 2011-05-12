@@ -9,7 +9,7 @@ return array(
     'date:days_ago' => 'siku %s zilizopita',
     'date:days_ago:singular' => 'jana',
     
-    'date:time' => '{hour}:{minute}{tz}',
+    'date:time' => '[hour]:{minute}',
     'date:no_year' => '{day} {month}',
     'date:with_year' => '{day} {month}, {year}',
     'date:date_name' => "{date} na {name}",
