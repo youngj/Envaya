@@ -18,7 +18,7 @@ if (!Session::get('hide_todo'))
         }
     };    
     
-    $widget_names = array('home', 'contact','history','projects','team','news','network');
+    $widget_names = array('home', 'contact','history','projects','team','news','network','discussions');
     $query = $org->query_widgets()
         ->where_in('widget_name', $widget_names)
         ->columns('guid, status, time_created, time_updated, container_guid, owner_guid,
@@ -38,6 +38,8 @@ if (!Session::get('hide_todo'))
             $widgets_map[$widget_name] = $org->new_widget_by_name($widget_name);
         }
     }
+        
+    $recent_time = time() - 86400 * 31;
         
     $home = $widgets_map['home'];
     $addItem("<a href='{$home->get_edit_url()}'>".__('todo:home')."</a>", true);
@@ -62,17 +64,17 @@ if (!Session::get('hide_todo'))
     );            
     
     $news = $widgets_map['news'];
-    $hasRecentNews = $news->query_widgets()->where('time_created > ?', time() - 86400 * 31)->exists();
+    $hasRecentNews = $news->query_widgets()->where('time_created > ?', $recent_time)->exists();
     $addItem("<a href='{$news->get_edit_url()}'>".__('todo:news')."</a>",
         $hasRecentNews > 0
     );            
     
-    $numImages = $org->query_files()->where("size='small'")->count();
+    $numImages = $org->query_files()->where("size='small'")->where('time_created > ?', $recent_time)->count();
     $addItem(
         "<a href='{$org->get_url()}/addphotos'>".__('todo:photos')."</a>",
         $numImages >= 2
     );        
-    
+           
     $addItem(
         "<a href='{$org->get_url()}/design'>".__('todo:logo')."</a>",
         ($org->get_design_setting('header_image') || $org->has_custom_icon())    
@@ -83,6 +85,10 @@ if (!Session::get('hide_todo'))
         $network->is_enabled()
     );
     
+    $discussions = $widgets_map['discussions'];
+    $addItem("<a href='{$discussions->get_edit_url()}'>".__('todo:discussions')."</a>",
+        $discussions->is_enabled()
+    );    
 ?>
 <?php 
 if (sizeof($todoItems))
