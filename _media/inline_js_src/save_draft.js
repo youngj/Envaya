@@ -57,20 +57,20 @@
             var content = ed.getContent();        
             if (!content || content == lastSavedContent)
             {
-                showSaveMessage(__['tinymce:no_unsaved_changes'], 3000);
+                showSaveMessage(__('tinymce:no_unsaved_changes'), 3000);
                 return;
             }
             
             var form = document.forms[0];
             
-            showSaveMessage(__['tinymce:saving']);
+            showSaveMessage(__('tinymce:saving'));
             
             var xhr = getXHR(function(res) {             
                 window.save_draft_guid = res.guid;
                 lastSavedContent = content;
                 ed.isNotDirty = true;            
                 
-                showSaveMessage(__['tinymce:saved'], 5000);
+                showSaveMessage(__('tinymce:saved'), 5000);
                 setDirty(false);
             });
 
@@ -84,7 +84,7 @@
     
     function restoreRevision(revision)
     {
-        if (!tinyMCE.activeEditor.isDirty() || confirm(__['tinymce:restore_confirm']))
+        if (!tinyMCE.activeEditor.isDirty() || confirm(__('tinymce:restore_confirm')))
         {    
             var ed = tinyMCE.activeEditor;        
             ed.setContent(revision.content);
@@ -99,12 +99,12 @@
         
         var previewElem = createElem('div', {
             className: 'revisionPreview',
-            innerHTML: __['loading']
+            innerHTML: __('loading')
         });
         
         var previewBox = createModalBox({
-            title: __['tinymce:preview_older'],
-            okText: __['tinymce:restore'],
+            title: __('tinymce:preview_older'),
+            okText: __('tinymce:restore'),
             focus: true,
             width: 580,
             okFn: function() 
@@ -171,15 +171,15 @@
         
             var content = createElem('div', {className: 'padded'});
             
-            content.appendChild(document.createTextNode(__['loading']));
+            content.appendChild(document.createTextNode(__('loading')));
             
             closeModalBox();
 
             modalBox = createModalBox({
-                title: __['tinymce:restoredraft_desc'],
+                title: __('tinymce:restoredraft_desc'),
                 content: content,
                 hideOk: true,
-                cancelText: __['tinymce:close']
+                cancelText: __('tinymce:close')
             });
             
             document.body.appendChild(modalBox);
@@ -190,7 +190,7 @@
                     
                     if (revisions.length == 0)
                     {
-                        content.appendChild(document.createTextNode(__['tinymce:no_revisions']));
+                        content.appendChild(document.createTextNode(__('tinymce:no_revisions')));
                     }
                     else
                     {

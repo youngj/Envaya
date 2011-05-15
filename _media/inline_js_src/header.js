@@ -3,6 +3,11 @@ function _eval(x)
     return eval("("+x+")");
 }
 
+function __(key)
+{
+    return js_strs[key];
+}
+
 function addEvent(elem, type, fn)
 {
     if (elem.addEventListener)
@@ -23,7 +28,7 @@ function setDirty($dirty)
         if (!window.onbeforeunload)
         {
             window.onbeforeunload = function() {
-                return __['page:dirty'];
+                return __('page:dirty');
             };
         }
     }

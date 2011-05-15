@@ -1,15 +1,15 @@
 function getTimeText(date, tzStr)
 {
     var hours = date.getHours();
-    var time = __['date:time'].
+    var time = __('date:time').
         replace('[hour]', pad2(hours)).
         replace('[hour12]', '' + ((hours % 12) || 12)).
         replace('{minute}', pad2(date.getMinutes())).
-        replace('[ampm]', (hours < 12 ? __['date:am'] : __['date:pm']));
+        replace('[ampm]', (hours < 12 ? __('date:am') : __('date:pm')));
     
     if (tzStr)
     {
-        return __['date:time_with_tz'].
+        return __('date:time_with_tz').
             replace('{time}', time).
             replace('{tz}', tzStr);
     }
@@ -42,10 +42,10 @@ function getDateText($date, $options)
     
     var $now = new Date();
 
-    var $format = ($always_show_year || $now.getFullYear() != $date.getFullYear()) ? __['date:with_year'] : __['date:no_year'];
+    var $format = ($always_show_year || $now.getFullYear() != $date.getFullYear()) ? __('date:with_year') : __('date:no_year');
     
     var $dateStr = $format.
-        replace('{month}', __["date:month:" + ($date.getMonth() + 1)]).
+        replace('{month}', __("date:month:" + ($date.getMonth() + 1))).
         replace('{day}', $date.getDate()).
         replace('{year}', $date.getFullYear());
     
@@ -53,7 +53,7 @@ function getDateText($date, $options)
     {
         var $timeStr = getTimeText($date,'');
         
-        return __['date:date_time'].
+        return __('date:date_time').
             replace('{date}', $dateStr),
             replace('{time}', $timeStr);
     }
@@ -72,28 +72,28 @@ function friendlyTime($date, $options)
     
     if ($diff < 60) 
     {
-        return __["date:justnow"];
+        return __("date:justnow");
     } 
     else if ($diff < 3600) 
     {
         var $minutes = Math.round($diff / 60);
         return ($minutes > 1) 
-            ? __['date:minutes_ago'].replace('%s', $minutes) 
-            : __['date:minutes_ago:singular'];
+            ? __('date:minutes_ago').replace('%s', $minutes) 
+            : __('date:minutes_ago:singular');
     } 
     else if ($diff < 86400) 
     {
         var $hours = Math.round($diff / 3600);
         return ($hours > 1)
-            ? __['date:hours_ago'].replace('%s', $hours)
-            : __['date:hours_ago:singular'];
+            ? __('date:hours_ago').replace('%s', $hours)
+            : __('date:hours_ago:singular');
     } 
     else if ($diff < 604800) 
     {
         var $days = Math.round($diff / 86400);
         return ($days > 1)
-            ? __['date:days_ago'].replace('%s', $days)
-            : __['date:days_ago:singular'];
+            ? __('date:days_ago').replace('%s', $days)
+            : __('date:days_ago:singular');
     } 
     else 
     {
