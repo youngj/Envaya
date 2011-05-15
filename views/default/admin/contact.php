@@ -5,9 +5,26 @@
     $offset = (int)get_input('offset');
 
     $limit = 15;
-    $orgs = Organization::query()->order_by($sort)->limit($limit, $offset)->filter();
-    $count = Organization::query()->count();
+    
+    $sector = get_input('sector');
+    $region = get_input('region');
+    
+    $query = Organization::query()->order_by($sort);
+    
+    if ($sector)
+    {
+        $query->with_sector($sector);
+    }       
+    if ($region)
+    {
+        $query->with_region($region);
+    }
+    
+    $orgs = $query->limit($limit, $offset)->filter();
+    $count = $query->count();
 
+    echo view('org/filter_controls', array('baseurl' => $baseurl));
+    
     echo view('pagination',array(
         'baseurl' => $baseurl,
         'pagesShown' => 24,
@@ -16,8 +33,6 @@
         'limit' => $limit
     ));
 ?>
-
-
 <table class='gridTable'>
 <tr>
     <th><a href='/admin/contact?sort=name'><?php echo __('name') ?></a></th>

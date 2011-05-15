@@ -8,48 +8,9 @@ $region = $vars['region'];
 $items = $vars['items'];
 $first_id = (int)$vars['first_id'];
 
+echo view('org/filter_controls', array('baseurl' => '/org/feed'));
 ?>
-
-<script type='text/javascript'>
-function sectorChanged()
-{
-    var sectorList = $('sectorList');
-    var regionList = $('regionList');
-    var sector = sectorList.options[sectorList.selectedIndex].value;
-    var region = regionList.options[regionList.selectedIndex].value;
-    window.location.href = "/org/feed?sector=" + sector + "&region=" + region;
-}
-</script>
-
-<form method='GET' action='/org/feed'>
-<?php
-
-echo view('input/pulldown', array(
-    'name' => 'sector',
-    'id' => 'sectorList',
-    'options' => OrgSectors::get_options(),
-    'empty_option' => __('sector:empty_option'),
-    'value' => $sector,
-    'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"
-));
-
-echo view('input/pulldown', array(
-    'name' => 'region',
-    'id' => 'regionList',
-    'options' => Geography::get_region_options('tz'),
-    'empty_option' => __('region:empty_option'),
-    'value' => $region,
-    'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"
-));
-    
-?>
-<noscript>
-<?php echo view('input/submit', array('value' => __('go'))); ?>
-</noscript>
-
-</form>
 </div>
-
 <div id='feed_container'>
 <?php	
 	echo view('feed/list', array('items' => $items, 'show_edit_controls' => Session::isadminloggedin()));
