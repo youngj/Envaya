@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Minifies javascript files. 
+ * Minifies javascript and CSS files. 
  * Any other necessary compilation steps should be added here as needed.
  */     
 

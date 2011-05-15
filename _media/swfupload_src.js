@@ -1155,6 +1155,7 @@ FileUploader.prototype.getSWFUploadOptions = function()
     return {
         upload_url: "/pg/upload",
         file_post_name: "file",
+        button_action: this.options.button_action,
         post_params: this.options.post_params,
         file_upload_limit : 0,
         file_size_limit: "10000000 B",
@@ -1420,7 +1421,7 @@ var ImageUploader = makeClass(FileUploader);
 ImageUploader.prototype.init = function($vars)
 {
     FileUploader.prototype.init.call(this, $vars);
-}
+};
 
 ImageUploader.prototype.startUpload = function($file)
 {
