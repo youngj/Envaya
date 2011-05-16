@@ -36,7 +36,7 @@ class Controller_Default extends Controller
         if ($viewtype && Views::is_browsable_type($viewtype))
         {
             set_cookie('view', $viewtype);
-        }
+        }        
         
         // work around flash uploader cookie bug, where the session cookie is sent as a POST field
         // instead of as a cookie
