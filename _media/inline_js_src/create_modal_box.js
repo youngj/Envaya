@@ -69,7 +69,7 @@ function createModalBox(options)
     
     box.style.width = width + 'px';
     box.style.left = (windowWidth / 2 - width / 2) + 'px';
-    box.style.top = (scrollTop + 100) + 'px';
+    box.style.top = (options.top || (scrollTop + 100)) + 'px';
     shadow.style.height = height + 'px';
 
     if (options.focus)

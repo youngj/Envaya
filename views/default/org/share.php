@@ -11,7 +11,60 @@
     echo view('js/dom');
     echo view('js/xhr');
 ?>
-var modalBox;
+
+function isRecipient(email)
+{
+    var input = document.forms[0].emails;
+    return input.value.toLowerCase().indexOf(email.toLowerCase()) != -1;
+}
+
+function addRecipient(email)
+{
+    var input = document.forms[0].emails;
+    if (input.value)
+    {
+        input.value += "; ";
+    }
+    input.value += email;
+}
+
+function removeRecipient(email)
+{
+    var input = document.forms[0].emails;
+    var value = input.value;
+    
+    var index = value.toLowerCase().indexOf(email.toLowerCase());
+    if (index != -1)
+    {
+        input.value = value.substring(0,index) + value.substring(index + email.length + 1);
+    }
+}
+
+function addUsers()
+{
+    var iframe = createElem('iframe', {
+        src: '/org/browse_email'
+    });
+    
+    var width = 620, height = 320;
+    
+    iframe.style.width = width + 'px';
+    iframe.style.height = height + 'px';
+
+    var modalBox = createModalBox({
+        width:width,
+        height:height,
+        top: 150,
+        title: <?php echo json_encode(__('share:add_users')); ?>, 
+        content: iframe,
+        cancelFn: function() { 
+            removeElem(modalBox);
+        },
+        cancelText: "Close",
+        hideOk: true
+    });            
+    document.body.appendChild(modalBox);  
+}
 
 function addPartners()
 {
@@ -23,19 +76,15 @@ function addPartners()
         for (var i = 0; i < emails.length; i++)
         {
             var email = emails[i];
-            if (input.value.toLowerCase().indexOf(email) == -1)
+            if (!isRecipient(email))
             {
-                if (input.value)
-                {
-                    input.value += "; ";
-                }
-                input.value += email;
+                addRecipient(email);
                 added = true;
             }
         }
         if (!added)
         {
-            document.body.appendChild(modalBox = createModalBox({
+            var modalBox = createModalBox({
                 title: <?php echo json_encode(__('share:no_partners')); ?>, 
                 content: createElem('div', {className:'padded'}, 
                     <?php echo json_encode(__('share:no_partners_2')); ?>
@@ -45,7 +94,8 @@ function addPartners()
                     window.open(<?php echo json_encode($network->get_edit_url()); ?>);
                 },
                 focus: true
-            }));              
+            });            
+            document.body.appendChild(modalBox);              
         }
     });
 }
@@ -63,13 +113,16 @@ function addPartners()
         'js' => "style='height:40px'",
         'value' => '',
     ));
-?>
-<?php
+
     if ($org->can_edit())
     {
 ?>
-<a href='javascript:addPartners()' onclick='ignoreDirty()'><?php echo __('share:add_partners'); ?></a>
-<?php } ?>
+<a href='javascript:addUsers()' id='add_users' onclick='ignoreDirty()'><?php echo __('share:add_users'); ?></a>
+&middot;
+<a href='javascript:addPartners()' id='add_partners' onclick='ignoreDirty()'><?php echo __('share:add_partners'); ?></a>
+<?php 
+    } 
+?>
 </div>
 
 <div class='input'>
