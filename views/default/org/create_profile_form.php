@@ -4,7 +4,7 @@
 
 <?php echo view('input/securitytoken'); ?>
 
-<div class='input'>
+<div class='input'  style='padding-bottom:12px'>
 <label><?php echo __('widget:mission:label') ?></label>
 <div class='help'>
 <?php echo __('register:mission:help') ?>
@@ -22,8 +22,7 @@
 ?>
 </div>
 
-<div style='height:5px'></div>
-<div class='input'>
+<div class='input'  style='padding-bottom:12px'>
     <label><?php echo __("register:sector"); ?><br /></label>
     <?php
         echo view("input/checkboxes",array(
@@ -40,16 +39,14 @@
     </div>
 </div>
 
-<div style='height:5px'></div>
-
-<div class='input'>
+<div class='input'  style='padding-bottom:12px'>
 <label><?php echo __('register:location') ?></label>
 <table class='inputTable'>
 <tr>
 <th>
 <?php echo __('register:city') ?> 
 </th>
-<td style='padding-bottom:5px'>
+<td>
 <?php echo view('input/text', array(
     'name' => 'city',
     'js' => 'style="width:200px"',
@@ -74,17 +71,14 @@
 
 </div>
 
-<div style='height:5px'></div>
-
-<div class='input'>
+<div class='input' style='padding-bottom:12px'>
 <label><?php echo __('register:theme') ?></label>
 <div class='help'><?php echo __('register:theme:help') ?></div>
-</div>
 
 <?php echo view('input/theme', array(
     'name' => 'theme',
     'value' =>  $org->get_design_setting('theme_name') ?: Config::get('fallback_theme'),
     'previewUrl' => $org->get_url()
 )); ?>
+</div>
 
-<div style='height:5px'></div>

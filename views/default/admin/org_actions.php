@@ -108,8 +108,6 @@ echo "<a href='/{$org->username}/dashboard'>".__('edit_site')."</a>";
 echo " ";
 echo "<a href='/{$org->username}/settings'>".__('help:settings')."</a>";
 echo " ";
-echo "<a href='/{$org->username}/username'>".__('username:title')."</a>";
-echo " ";
 echo "<a href='/{$org->username}/domains'>".__('domains:edit')."</a>";
 echo " ";
 

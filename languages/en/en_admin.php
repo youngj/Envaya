@@ -52,11 +52,6 @@ return array(
     'email:registernotify:subject' => "New organization registered: %s",
     'email:registernotify:body' => "To view their website and approve or reject it, visit\n%s",
     
-    'username:changed' => "Username changed",
-    'username:current' => "Current username",
-    'username:new' => "New username",
-    'username:title' => "Change username",
-
     'approval:approve' => "Approve Organization",
     'approval:unapprove' => "Remove Approval",
     'approval:reject' => "Reject Organization",

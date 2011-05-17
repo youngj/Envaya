@@ -695,11 +695,17 @@ input[type="submit"] {
     width:<?php echo ($contentWidth - 70) ?>px;
 }
 
+.inputTable td, .inputTable th
+{
+    padding-bottom:3px;
+    padding-top:3px;    
+}
+
 .inputTable th
 {
     text-align:right;
-    vertical-align:middle;
     padding-right:10px;
+    vertical-align:middle;    
 }   
 
 .inputTable label
@@ -707,9 +713,10 @@ input[type="submit"] {
     font-size:100%;
 }
 
-.inputTable input
+.inputTable .input-text
 {
-    width:250px;
+    margin-top:0px;
+    width:350px;
 }
 .comment_name
 {

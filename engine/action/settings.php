@@ -4,7 +4,6 @@ class Action_Settings extends Action
 {
     function before()
     {
-        $this->prefer_https();
         $this->require_editor();
     }
      
@@ -33,16 +32,6 @@ class Action_Settings extends Action
         else
         {
             throw new ValidationException(__('register:no_name'));
-        }
-
-        $password = get_input('password');
-        $password2 = get_input('password2');
-        if ($password != "")
-        {
-            User::validate_password($password, $password2, $name, $user->username);
-
-            $user->set_password($password);
-            SessionMessages::add(__('user:password:success'));
         }
 
         $language = get_input('language');

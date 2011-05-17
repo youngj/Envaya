@@ -190,6 +190,7 @@ class RegisterTest extends SeleniumTest
 
     private function _testTranslate()
     {
+        $this->clickAndWait("//a[contains(@href,'{$this->username}')]");
         $this->clickAndWait("//a[contains(@href,'lang=sw')]");
         $this->mouseOver("//div[@class='section_header' and contains(text(),'Lengo')]");
         $this->mouseOver("//div[contains(@class, 'section_content')]//p[contains(text(),'website')]");
@@ -453,25 +454,74 @@ class RegisterTest extends SeleniumTest
 
     private function _testSettings()
     {
+        // change name
         $this->clickAndWait("//a[contains(@href,'/settings')]");
         $this->type("//input[@name='name']", "New Name");
-        $this->type("//input[@name='password']", "password2");
-        $this->type("//input[@name='password2']", "password3");
         $this->submitForm();
-        $this->ensureBadMessage();
+        $this->ensureGoodMessage();
+        
+        $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
+        $this->mouseOver("//h2//a[text()='New Name']");
+        
+        // change password
+        $this->clickAndWait("//a[contains(@href,'/settings')]");
+        $this->clickAndWait("//a[contains(@href,'/password')]");
+        $this->type("//input[@name='old_password']", "password");
+        $this->type("//input[@name='password']", "password2");
+        $this->type("//input[@name='password2']", "password3");        
+        $this->submitForm();        
+        $this->ensureBadMessage(); // passwords don't match
+        $this->type("//input[@name='old_password']", "password");
         $this->type("//input[@name='password']", "password2");
         $this->type("//input[@name='password2']", "password2");
         $this->submitForm();
+        $this->ensureBadMessage(); // old password incorrect
+        $this->type("//input[@name='old_password']", "abcdefgh");
+        $this->submitForm();
         $this->ensureGoodMessage();
-        $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
-        $this->mouseOver("//h2//a[text()='New Name']");
+        
+        // test new password works for login
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->clickAndWait("//a[contains(@href,'pg/login')]");
         $this->login($this->username, 'password');
         $this->ensureBadMessage();
+        $this->login($this->username, 'abcdefgh');
+        $this->ensureBadMessage();        
         $this->login($this->username, 'password2');
         $this->ensureGoodMessage();
+        
+        // change username        
+        $this->clickAndWait("//a[contains(@href,'/settings')]");
+        $this->clickAndWait("//a[contains(@href,'/username')]");
+        
+        $this->type("//input[@name='username']", "testorg");
+        $this->submitForm();
+        $this->ensureBadMessage(); // duplicate username
+        
+        $this->type("//input[@name='username']", "mod");
+        $this->submitForm();
+        $this->ensureBadMessage(); // invalid username
+
+        $this->type("//input[@name='username']", "x");
+        $this->submitForm();
+        $this->ensureBadMessage(); // too short username
+
+        $oldUsername = $this->username;
+        $this->username = "selenium".time();
+        $this->type("//input[@name='username']", $this->username);
+        $this->submitForm();
+        $this->ensureGoodMessage(); 
+        
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
+        $this->mouseOver("//h2//a[text()='New Name']");
+        
+        // test new username works for login
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->clickAndWait("//a[contains(@href,'pg/login')]");
+        $this->login($oldUsername, 'password2');
+        $this->ensureBadMessage();
+        $this->login($this->username, 'password2');
+        $this->ensureGoodMessage();        
     }
 
     private function _testMakePublic()
@@ -554,7 +604,7 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->retry('mouseOver', array("//a[@id='loginButton']"));
 
-        $email = $this->getLastEmail("New organization registered");
+        $email = $this->getLastEmail("New organization registered: Test Partner");
         $url = $this->getLinkFromEmail($email);
         $this->open($url);
         

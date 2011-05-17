@@ -64,7 +64,7 @@ return array(
     'register:not_duplicate' => "Endelea kujiandikisha",
     
     // create profile
-    'register:homepage_instructions' => 'Sasa tunauliza maswali machache kuhusu shirika lako ili tuweze kuumba ukurasa mkuu kwa ajili yako. (Utaweza kuongeza vitu zaidi baadaye.)',
+    'register:homepage_instructions' => 'Sasa tunauliza maswali machache ili tuweze kuumba ukurasa mkuu kwa ajili ya shirika lako.',
     'register:mission:help' => 'Hili litaonyeshwa juu ya ukurasa wako mkuu.',
     'register:mission:blank' => 'Tafadhali ingiza lengo la shirika lako.',
     'register:location' => 'Shirika lako liko wapi?',

@@ -3,44 +3,71 @@
     ob_start();
 ?>
     <div class='section_content padded'>
-    <div class='input'>
-        <label><?php echo __('user:name:label'); ?>:</label><br />
+    <table class='inputTable'>
+    <tr>
+        <th><?php echo __('username'); ?>:</th>
+        <td>
+            <?php echo $user->username ?> <a href='<?php echo $user->get_url() ?>/username'><?php echo __('user:username:change'); ?></a>
+        </td>
+    </tr>    
+    <tr>
+        <th><?php echo __('password'); ?>:</th>
+        <td>
+            <span style='font-family:serif'>********</span> <a href='<?php echo $user->get_url() ?>/password'><?php echo __('user:password:change'); ?></a>
+        </td>
+    </tr>          
+    <tr>
+    <th><?php echo __('user:name:label'); ?>:</th>
+    <td>
         <?php
             echo view('input/text',array('name' => 'name', 'trackDirty' => true, 'value' => $user->name));
         ?>
-    </div>
-
-    <div class='input'>
-        <label><?php echo __('user:password:label'); ?>:</label><br />
+    </td>
+    </tr>    
+    <tr>
+        <th><?php echo __('email'); ?>:</th>
+        <td>
         <?php
-            echo view('input/password',array('name' => 'password', 'trackDirty' => true));
+            echo view('input/email',array(
+                'name' => 'email', 
+                'value' => $user->email, 
+                'trackDirty' => true,
+            ));
         ?>
-        <div class='help'><?php echo __('user:password:help'); ?></div>
-    </div>
-    <div class='input'>
-        <label>
-        <?php echo __('user:password2:label'); ?>:</label><br /> <?php
-            echo view('input/password',array('name' => 'password2', 'trackDirty' => true));
-        ?>
-    </div>
-
-    <div class='input'>
-        <label><?php echo __('email'); ?>:</label><br />
+        </td>
+    </tr>
+    <tr>
+        <th><?php echo __('phone_number'); ?>:</th>
+        <td>
         <?php
-            echo view('input/email',array('name' => 'email', 'value' => $user->email, 'trackDirty' => true));
+            echo view('input/text',array(
+                'name' => 'phone', 
+                'value' => $user->phone_number, 
+                'trackDirty' => true
+            ));
         ?>
-    </div>
+        </td>
+    </tr>
 
-    <div class='input'>
-        <label><?php echo __('phone_number'); ?>:</label><br />
-        <?php
-            echo view('input/text',array('name' => 'phone', 'value' => $user->phone_number, 'trackDirty' => true));
-        ?>
-    </div>
-
-    <div class='input'>
-
-        <label><?php echo __('user:language:label'); ?>:</label><br />
+    <?php if (false) { ?>
+    
+    <tr>
+        <th style='vertical-align:top;padding-top:8px'><?php echo __('user:websites'); ?>:</th>
+        <td>
+        <?php		
+            echo view("input/text", array(
+                'name' => 'websites[]', 
+				'value' => '', 
+            ));           
+         ?>
+        <div class='help'><?php echo __('user:websites:help'); ?></div>         
+         </td>
+    </tr>
+        
+    <?php } ?>
+    <tr>
+        <th><?php echo __('user:language:label'); ?>:</th>
+        <td style='padding-top:8px'>
         <?php
             $value = Config::get('language');
             if ($user->language)
@@ -49,25 +76,28 @@
             echo view("input/pulldown", array('name' => 'language', 'value' => $value, 'options' => Language::get_options()));
 
          ?>
-
-    </div>
+        </td>
+    </tr>
 
     <?php if ($user instanceof Organization) { ?>
+    
+    <tr>
 
-    <div class='input'>
-
-        <label><?php echo __('user:notification:label'); ?>:</label><br />
-
+        <th style='vertical-align:top;padding-top:8px'><?php echo __('user:notification:label'); ?>:</th>
+        <td  style='padding-top:8px'>
         <?php		
             echo view("input/checkboxes", array('name' => 'notifications', 
 				'value' => $user->get_notifications(), 
 				'options' => Notification::get_options()
             ));           
          ?>
-
-    </div>
-
-    <?php }
+        </td>
+    </tr>
+    <?php 
+    }
+    ?>
+    </table>
+    <?php
 
     echo view('input/hidden', array('name' => 'from', 'value' => get_input('from')));
     

@@ -11,25 +11,14 @@
 <?php echo view('input/hidden', array('name' => 'c', 'value' => $user->get_metadata('passwd_conf_code'))); ?>
 
 <div class='input'>
-<label><?php echo __('user:username:label') ?></label><br />
+<label><?php echo __('user:username:label') ?>:</label><br />
 <?php echo $user->username; ?>
 </div>
 
-<div class='input'>
-<label><?php echo __('user:password:new') ?></label><br />
-<?php echo view('input/password', array(
-    'name' => 'password'
-)) ?>
-<div class='help'><?php echo __('register:password:help').' '.__('register:password:remember'); ?></div>
-<div class='help' style='padding-top:5px'><?php echo strtr(__('register:password:length'), array('{min}' => 6)); ?></div>
-</div>
-
-<div class='input'>
-<label><?php echo __('register:password2') ?></label><br />
-<?php echo view('input/password', array(
-    'name' => 'password2'
-)) ?>
-</div>
+<?php 
+    echo view('account/new_password_input'); 
+    echo view('focus', array('name' => 'password'));
+?>
 
 <?php echo view('input/submit', array('value' => __('login'))); ?>
 </form>

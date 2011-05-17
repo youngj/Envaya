@@ -24,7 +24,7 @@
 <?php echo view('input/securitytoken'); ?>
 <table class='inputTable gridTable'>
 <tr>
-    <th style='width:200px;vertical-align:top'><?php echo __('itrans:language_key'); ?></th>
+    <th style='width:200px;'><?php echo __('itrans:language_key'); ?></th>
     <td style='width:450px'><?php echo escape($key->name); ?></td>
 </tr>
 <tr style='border-bottom:1px solid gray'>
@@ -76,7 +76,7 @@
     if (Session::isloggedin())
     {
 ?>
-    <tr><th style='vertical-align:top;padding-top:12px'><?php echo sprintf(__('itrans:add_in'), escape($target_language->name)); ?></th>
+    <tr><th style='vertical-align:top;padding-top:5px'><?php echo sprintf(__('itrans:add_in'), escape($target_language->name)); ?></th>
     <td>
 <?php
     if (strlen($base_value) > 75 || strpos($base_value, "\n") !== FALSE)

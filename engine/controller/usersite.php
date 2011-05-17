@@ -145,10 +145,16 @@ class Controller_UserSite extends Controller_User
             'pre_body' => $pre_body
         ));
     }
+    
+    function index_password()
+    {
+        $action = new Action_ChangePassword($this);
+        $action->execute();    
+    }
 
     function index_username()
     {
-        $action = new Action_Admin_ChangeUsername($this);
+        $action = new Action_ChangeUsername($this);
         $action->execute();
     }
 

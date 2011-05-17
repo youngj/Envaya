@@ -33,33 +33,10 @@
 <div class='help'><?php echo __('register:org_name:help') ?></div>
 </div>
 
-<script type='text/javascript'>
-function updateUrl()
-{
-    setTimeout(function()
-    {
-        var usernameField = $('username');
-        var username = usernameField.value;
-        var urlUsername = $('urlUsername');
-        urlUsername.removeChild(urlUsername.firstChild);
-        urlUsername.appendChild(document.createTextNode(username));
-    }, 1);
-}
-</script>
-
 <div class='input'>
 <label><?php echo __('register:username') ?></label><br />
 <div class='help'><strong><?php echo __('register:username2') ?></strong></div>
-
-<?php echo view('input/text', array(
-    'name' => 'username',
-    'id' => 'username',
-    'js' => 'onkeyup="javascript:updateUrl()" onchange="javascript:updateUrl()"'
-)) ?>
-<div class='help' style='font-weight:bold'><?php echo __('register:username:help') ?>
-    <span class='websiteUrl'>http://envaya.org/<span id='urlUsername' style='font-weight:bold'><?php echo __('register:username:placeholder') ?></span></span>
-</div>
-<div style='padding-top:5px' class='help'><?php echo strtr(__('register:username:help2'), array('{min}' => 3)); ?></div>
+<?php echo view('account/username_field', array('min_length' => 3)); ?>
 </div>
 
 <div class='input'>
