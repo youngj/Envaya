@@ -138,7 +138,7 @@ class RegisterTest extends SeleniumTest
         $this->type("//input[@name='sector_other']", "another sector");
         $this->type("//input[@name='city']", "Wete");
         $this->select("//select[@name='region']", "Pemba North");
-        $this->select("//select[@name='theme']", 'Bricks');
+        $this->click("//a[@id='theme_brick']");
 
         $this->submitForm();
 
@@ -543,7 +543,7 @@ class RegisterTest extends SeleniumTest
         $this->check("//input[@name='sector[]' and @value='99']");
         $this->type("//input[@name='city']", "Konde");
         $this->select("//select[@name='region']", "Pemba North");
-        $this->select("//select[@name='theme']","Woven Grass");
+        $this->click("//a[@id='theme_wovengrass']");
 
         $this->submitForm();
 
