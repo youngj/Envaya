@@ -4,7 +4,7 @@ class Action_Registration_Qualification extends Action
 {
     function process_input()
     {            
-        $approvedCountries = array('tz');
+        $approvedCountries = array('tz','lr');
 
         $country = get_input('country');
 

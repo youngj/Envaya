@@ -60,7 +60,7 @@ class Geography
     {
         // lowercase version of http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 code;
         // same as used by GeoIP class
-        return array('tz','rw','us');
+        return array('tz','lr','rw','us');
     }
     
     static function get_country_options()
@@ -76,7 +76,7 @@ class Geography
     
     static function get_region_codes($country_code)
     {
-        if ($country_code == 'tz'  || true)
+        if ($country_code == 'tz')
         {
             return array(
                 'region:tz:arusha',
@@ -105,6 +105,26 @@ class Geography
                 'region:tz:zanzibar_cs',
                 'region:tz:zanzibar_n',
                 'region:tz:zanzibar_w',
+            );
+        }
+        if ($country_code == 'lr')
+        {
+            return array(
+                'region:lr:bomi',
+                'region:lr:bong',
+                'region:lr:gbarpolu',
+                'region:lr:grandbassa',
+                'region:lr:grandcapemount',
+                'region:lr:grandgedeh',
+                'region:lr:grandkru',
+                'region:lr:lofa',
+                'region:lr:margibi',
+                'region:lr:maryland',
+                'region:lr:montserrado',
+                'region:lr:nimba',
+                'region:lr:rivercess',
+                'region:lr:rivergee',
+                'region:lr:sinoe',
             );
         }
         else
