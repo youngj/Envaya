@@ -4,15 +4,8 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
 {
     function post_process_input()
     {        
-        $org = $this->org;
-        
-        $prevInfo = Session::get('registration');            
-        Session::set('registration', null);
-                    
-        $org->country = $prevInfo['country'];
-        $org->set_design_setting('tagline', $org->get_location_text(false));        
-        $org->save();
-
+        Session::set('registration', null);                
+                
         $invite_code = Session::get('invite_code');
         Session::set('invite_code', null);
         if ($invite_code)
@@ -21,6 +14,12 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
         }        
         
         forward("/org/new?step=3");    
+    }
+    
+    protected function get_country()
+    {
+        $prevInfo = Session::get('registration');            
+        return @$prevInfo['country'];
     }
     
     protected function handle_validation_exception($ex)

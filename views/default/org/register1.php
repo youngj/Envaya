@@ -1,6 +1,5 @@
 <?php
-        //fixme: refactor this out into Geography.php from here and qualification.php ASAP -tk
-        $approvedCountries = array('tz','rw','lr');
+        $approvedCountries = Geography::get_approved_countries();
 
         $testing_country = get_input('testing_country');
 

@@ -56,6 +56,11 @@ class Geography
         return null;
     }
     
+    static function get_approved_countries()
+    {
+        return array('tz','lr','rw');
+    }
+    
     static function get_country_codes()
     {
         // lowercase version of http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 code;

@@ -35,7 +35,7 @@ class Action_Registration_CreateProfileBase extends Action
         $org->set_design_setting('theme_name', get_input('theme'));
         $org->set_design_setting('tagline', $org->get_location_text(false));
         $org->set_design_setting('share_links', array('email','facebook','twitter'));
-
+        
         $latlong = Geography::geocode($org->get_location_text());
 
         if ($latlong)

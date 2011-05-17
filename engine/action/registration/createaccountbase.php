@@ -24,6 +24,11 @@ abstract class Action_Registration_CreateAccountBase extends Action
 
     protected function post_process_input() {} // subclasses should override
     
+    protected function get_country()
+    {
+        return null;
+    }
+    
     function process_input()
     {
         $name = trim(get_input('org_name'));
@@ -73,8 +78,20 @@ abstract class Action_Registration_CreateAccountBase extends Action
         $org->language = Language::get_current_code();
         $org->set_design_setting('theme_name', "green");
         $org->setup_state = SetupState::CreatedAccount;
-        $org->set_lat_long(-6.140555,35.551758);
-
+        
+        $country = $this->get_country();
+        if ($country)
+        {        
+            $org->country = $country;
+            $country_name = $org->get_country_text();
+            $org->set_design_setting('tagline', $country_name);        
+            $latlong = Geography::geocode($country_name);
+            if ($latlong)
+            {
+                $org->set_lat_long($latlong['lat'], $latlong['long']);
+            }
+        }
+        
         $org->save();
 
         /* auto-create empty pages */
