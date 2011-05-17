@@ -7,22 +7,14 @@
 <?php
     echo view('input/securitytoken');     
     echo view('widgets/edit_page_title');
+    echo view('widgets/edit_page_address', array('org' => $org));
+    echo view('focus', array('id' => 'title')); 
 ?>
-
-<div class='input'>
-<label><?php echo __('widget:address'); ?></label>
-<div class='websiteUrl'>
-<?php echo $org->get_url() . "/page/" . view('input/text', array('name' => 'widget_name', 'id' => 'widget_name', 'js' => "style='width:200px'")); 
-?>
-</div>
-</div>
-
-<?php echo view('focus', array('id' => 'title')); ?>
 <script type='text/javascript'>
 (function() {
 
-var widgetName = document.getElementById('widget_name');
-var title = document.getElementById('title');
+var widgetName = $('widget_name');
+var title = $('title');
 var autoFill = true;
 
 function makeWidgetName(value)

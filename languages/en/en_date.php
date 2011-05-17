@@ -11,9 +11,13 @@ return array(
     
     'date:no_year' => '{month} {day}',
     'date:with_year' => '{month} {day}, {year}',
-    'date:time' => '{hour}:{minute} {tz}',
+    'date:time' => '[hour12]:{minute} [ampm]',
+    'date:time_with_tz' => '{time} {tz}',
     'date:date_time' => '{date} at {time}',
     'date:date_name' => "{date} by {name}",
+    
+    'date:am' => "AM",
+    'date:pm' => "PM",
 
     'date:month:1' => 'January',
     'date:month:2' => 'February',

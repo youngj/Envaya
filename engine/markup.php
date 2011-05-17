@@ -27,15 +27,6 @@ class Markup
         ), $text);
     }
 
-    static function autop($p, $br = 1)
-    {
-        $p = str_replace(array("\r\n", "\r"), "\n", $p); // cross-platform newlines
-        $p = preg_replace("/\n\n+/", "\n\n", $p); // take care of duplicates
-        $p = trim($p);
-        $p = preg_replace("/\n/", "<br />", $p);
-        return $p;
-    }
-    
     static function truncate_at_word_boundary($content, $maxLength)
     {        
         // todo: multi-byte support

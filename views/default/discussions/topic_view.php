@@ -9,10 +9,9 @@
     
     $count = $topic->num_messages;
     $messages = $query->filter();    
-
     
     echo "<div class='section_content padded'>";
-    echo "<h3 style='padding-bottom:8px'>".escape($topic->subject)."</h3>";
+    echo "<h3 style='padding-bottom:8px'>".escape($topic->translate_field('subject'))."</h3>";
     
     $elements = array();
     
@@ -38,7 +37,19 @@
     echo "<a href='{$widget->get_url()}'>".__('discussions:back_to_topics'). "</a>";
     echo "</div>";
     
-    echo "<strong><a href='{$topic->get_url()}/add_message'>".__('discussions:add_message')."</a></strong>";    
-    
+    if (!@$vars['show_add_message'])
+    {
+        echo "<a style='font-weight:bold' id='add_message' href='{$topic->get_url()}/add_message?offset={$offset}#add_message'>";
+        echo __('discussions:add_message');
+        echo "</a>";
+    }
+    else
+    {
+        echo "<div id='add_message' style='font-weight:bold;padding-bottom:8px;'>";
+        echo __('discussions:add_message');
+        echo " <a href='{$topic->get_url()}?offset={$offset}#add_message'>(".__('hide').")</a>";
+        echo "</div>";    
+        echo view('discussions/add_message_form', array('topic' => $topic));    
+    }        
     echo "</div>";
 ?>

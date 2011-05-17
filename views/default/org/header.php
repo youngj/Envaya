@@ -40,6 +40,7 @@
         if (is_array($share_links) && sizeof($share_links) > 0) 
         {         
             echo "<td>";       
+            echo "<script type='text/javascript'>".view('js/share')."</script>";
             echo "<div class='shareLinks'>";
 
             // no point in sharing a site that isn't publicly visible on facebook/twitter. 

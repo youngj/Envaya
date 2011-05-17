@@ -11,16 +11,20 @@
 ?>
 
 <script type='text/javascript'>
-<?php echo view('js/create_modal_box'); ?>
+<?php 
+    echo view('js/create_modal_box');
+    echo view('js/dom');
+    echo view('js/xhr');
+?>
 var modalBox;
 
 function searchOrg()
 {
     var query = {
-        'name': document.getElementById('name').value,
-        'email': document.getElementById('email').value,
-        'website': document.getElementById('website').value,
-        'phone_number': document.getElementById('phone_number').value
+        'name': $('name').value,
+        'email': $('email').value,
+        'website': $('website').value,
+        'phone_number': $('phone_number').value
     };   
     
     if (!query.name)
@@ -29,7 +33,7 @@ function searchOrg()
         return;
     }    
         
-    var searching = document.getElementById('searching_message');
+    var searching = $('searching_message');
     searching.style.display = 'block';        
         
     fetchJson('/org/js_search?name='+encodeURIComponent(query.name)+
@@ -59,15 +63,15 @@ function searchOrg()
 function addNewOrg(invite)
 {
     setSubmitted();
-    document.getElementById('org_guid').value = '';
-    document.getElementById('invite').value = invite ? '1' : '';
+    $('org_guid').value = '';
+    $('invite').value = invite ? '1' : '';
     document.forms[0].submit();
 }
 
 function addExistingOrg(org)
 {
     setSubmitted();
-    document.getElementById('org_guid').value = org.guid;
+    $('org_guid').value = org.guid;
     document.forms[0].submit();
 }
 

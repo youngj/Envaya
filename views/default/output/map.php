@@ -32,6 +32,10 @@
 <div id='loadingOverlay'><?php echo __('loading') ?></div>
 
 <script type='text/javascript'>
+<?php
+    echo view('js/dom');
+    echo view('js/xhr');
+?>  
 
 var sector = <?php echo (int)$vars['sector'] ?>;
 
@@ -57,20 +61,20 @@ function dropPin()
     if($ll)
     {
         placeMarker($ll);
-        document.getElementById("dropPinBtn").style.display = "none";
+        $("dropPinBtn").style.display = "none";
     }
 }
 
 function setSavedLL($ll)
 {
-    document.getElementById("orgLat").value = $ll.lat();
-    document.getElementById("orgLng").value = $ll.lng();
+    $("orgLat").value = $ll.lat();
+    $("orgLng").value = $ll.lng();
     setSavedMapState();
 }
 
 function setSavedMapState()
 {
-    document.getElementById("mapZoom").value = map.getZoom();
+    $("mapZoom").value = map.getZoom();
 }
 
 function placeMarker($ll)
@@ -90,7 +94,7 @@ function placeMarker($ll)
 
     map.addOverlay(marker);
     setSavedLL($ll);
-    document.getElementById("pinDragInstr").style.display = "block";
+    $("pinDragInstr").style.display = "block";
 
     <?php } else { ?>
 
@@ -99,7 +103,7 @@ function placeMarker($ll)
     <?php } ?>
 }
 
-var info = document.getElementById('info');
+var info = $('info');
 
 var displayedBuckets = {};
 
@@ -109,8 +113,8 @@ OrgBucket = function($center, $orgs)
     this.orgs = $orgs || [];
 };
 
-var infoOverlay = document.getElementById('infoOverlay');
-var loadingOverlay = document.getElementById('loadingOverlay');
+var infoOverlay = $('infoOverlay');
+var loadingOverlay = $('loadingOverlay');
 var expandedBucket = null;
 
 function closeExpandedBucket()
@@ -253,7 +257,7 @@ OrgBucket.prototype = new function() {
     {
         var $point = this._map.fromLatLngToContainerPixel(this.center);
 
-        var $mapElem = document.getElementById('map');
+        var $mapElem = $('map');
 
         infoOverlay.style.left = ($mapElem.offsetLeft + $point.x + 13) + "px";
         infoOverlay.style.top = ($mapElem.offsetTop + $point.y - 12) + "px";
@@ -401,7 +405,7 @@ function fetchOrgs()
         }
     }
 
-    var $mapElem = document.getElementById('map');
+    var $mapElem = $('map');
 
     loadingOverlay.style.display = 'block';
     loadingOverlay.style.left = ($mapElem.offsetLeft + $mapElem.offsetWidth - loadingOverlay.offsetWidth - 10) + "px";
@@ -423,7 +427,7 @@ var map = null;
 
 function initialize()
 {
-    map = new google.maps.Map2(document.getElementById("map"));
+    map = new google.maps.Map2($("map"));
     map.addControl(new GSmallMapControl());
     map.addControl(new GMapTypeControl());
     map.setMapType(<?php echo $mapType; ?>);

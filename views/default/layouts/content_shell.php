@@ -10,6 +10,11 @@
 </div>
 <div class="footer_container">
 <div class='thin_column'>
-<?php echo view('page_elements/content_footer', $vars); ?>
+<?php 
+    if (!@$vars['no_footer']) 
+    {
+        echo view('page_elements/content_footer', $vars); 
+    }
+?>
 </div>
 </div>

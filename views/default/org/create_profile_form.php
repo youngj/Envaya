@@ -22,6 +22,7 @@
 ?>
 </div>
 
+<div style='height:5px'></div>
 <div class='input'>
     <label><?php echo __("register:sector"); ?><br /></label>
     <?php
@@ -31,32 +32,49 @@
             'options' => OrgSectors::get_options(),
             'value' => $org->get_sectors()));
     ?>
+    <div style='text-align:right'>
     <?php echo __('register:sector:other_specify') ?> <?php echo view('input/text', array(
     'name' => 'sector_other',
     'js' => 'style="width:200px"'
-)) ?>
+    )); ?>
+    </div>
 </div>
 
+<div style='height:5px'></div>
 
 <div class='input'>
 <label><?php echo __('register:location') ?></label>
-<div>
-<?php echo __('register:city') ?> <?php echo view('input/text', array(
+<table class='inputTable'>
+<tr>
+<th>
+<?php echo __('register:city') ?> 
+</th>
+<td style='padding-bottom:5px'>
+<?php echo view('input/text', array(
     'name' => 'city',
     'js' => 'style="width:200px"',
     'value' => $org->city
 )) ?>, <?php echo escape($org->get_country_text()); ?>
-</div>
-<div>
-<?php echo __('register:region') ?> <?php echo view('input/pulldown', array(
+</td>
+</tr>
+<tr>
+<th>
+<?php echo __('register:region') ?> 
+</th>
+<td>
+<?php echo view('input/pulldown', array(
     'name' => 'region',
     'options' => Geography::get_region_options($org->country),
     'empty_option' => __('register:region:blank'),
     'value' => $org->region
 )) ?>
-</div>
+</td>
+</tr>
+</table>
 
 </div>
+
+<div style='height:5px'></div>
 
 <div class='input'>
 <label><?php echo __('register:theme') ?></label>
@@ -66,6 +84,7 @@
 <?php echo view('input/theme', array(
     'name' => 'theme',
     'value' =>  $org->get_design_setting('theme_name') ?: Config::get('fallback_theme'),
-    'options' => Theme::available_names(),
     'previewUrl' => $org->get_url()
 )); ?>
+
+<div style='height:5px'></div>

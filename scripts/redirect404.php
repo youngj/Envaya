@@ -5,10 +5,26 @@ require_once "engine/start.php";
 
 Config::set('debug', false);
 
-function listRedirects()
+function getUser($username)
 {
-    $redirects = NotFoundRedirect::all();
-    
+    if (!$username)
+        return null;
+        
+    $user = User::get_by_username($username);
+    if (!$user)
+    {
+        echo "Unknown username $username\n";
+        die;        
+    }
+    return $user;
+}
+
+function listRedirects($opts)
+{
+    $user = getUser(@$opts['username']);
+
+    $redirects = NotFoundRedirect::query_by_user($user)->filter();
+ 
     if (sizeof($redirects) > 0)
     {
         foreach ($redirects as $redirect)
@@ -22,9 +38,11 @@ function listRedirects()
     }
 }
 
-function testRedirect($url)
+function testRedirect($url, $opts)
 {
-    $redirect_url = NotFoundRedirect::get_redirect_url($url);
+    $user = getUser(@$opts['username']);
+
+    $redirect_url = NotFoundRedirect::get_redirect_url($url, $user);
     if ($redirect_url)
     {
         echo "$url -> $redirect_url\n";
@@ -62,6 +80,7 @@ function editRedirect($id, $opts)
         $pattern = @$opts['pattern'];
         $replacement = @$opts['replacement'];
         $order = @$opts['order'];   
+        $username = @$opts['username'];
             
         if ($pattern)
         {
@@ -76,6 +95,12 @@ function editRedirect($id, $opts)
         if ($order)
         {
             $redirect->order = $order;
+        }
+        
+        if ($username)
+        {
+            $user = getUser($username);
+            $redirect->container_guid = $user->guid;
         }
         
         try
@@ -98,6 +123,7 @@ function addRedirect($opts)
     $pattern = @$opts['pattern'];
     $replacement = @$opts['replacement'];
     $order = @$opts['order'];
+    $username = @$opts['username'];
     
     if (!$order)
     {
@@ -126,6 +152,11 @@ function addRedirect($opts)
         $redirect->order = $order;
     }
     
+    if ($username)
+    {
+        $redirect->container_guid = getUser($username)->guid;
+    }
+    
     try
     {
         $redirect->validate();
@@ -146,27 +177,27 @@ function usage()
     global $argv;
     echo "\nUsage:\n\n";
     echo "List redirects\n";
-    echo "-l\n\n";    
+    echo "-l [--username=<username>]\n\n";    
 
     echo "Add redirect\n";
-    echo "-a --pattern=<pattern> --replacement=<replacement> [--order=<order>]\n\n";    
+    echo "-a --pattern=<pattern> --replacement=<replacement> [--order=<order>] [--username=<username>]\n\n";    
     
     echo "Edit redirect\n";
-    echo "-e <id> [--pattern=<pattern>] [--replacement=<replacement>] [--order=<order>]\n\n";
+    echo "-e <id> [--pattern=<pattern>] [--replacement=<replacement>] [--order=<order>] [--username=<username>]\n\n";
        
     echo "Delete redirect\n";
     echo "-d <id>\n\n";
    
     echo "Test redirect\n";
-    echo "-t <url>\n\n";   
+    echo "-t <url> [--username=<username>]\n\n";   
 }
 
 function main()
 {        
-    $opts = getopt('e:t:ad:lh',array("order:","pattern:","replacement:"));                               
+    $opts = getopt('e:t:ad:lh',array("order:","pattern:","replacement:","username:"));                               
     
     if (isset($opts['t']))
-        return testRedirect(@$opts['t']);
+        return testRedirect(@$opts['t'], $opts);
     
     if (isset($opts['d']))
         return deleteRedirect(@$opts['d']);
@@ -178,7 +209,7 @@ function main()
         return addRedirect($opts);
     
     if (isset($opts['l']))
-        return listRedirects();
+        return listRedirects($opts);
         
     return usage();
 }

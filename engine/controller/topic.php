@@ -43,6 +43,11 @@ class Controller_Topic extends Controller_User
     
     function action_index()
     {
+        $this->index_topic();
+    }    
+
+    function index_topic($vars = null)
+    {
         $org = $this->get_org();
         $topic = $this->get_topic();
 
@@ -61,11 +66,17 @@ class Controller_Topic extends Controller_User
             PageContext::get_submenu('edit')->add_item(__("widget:edit"), $topic->get_edit_url());
         }
 
+        if (!$vars)
+        {
+            $vars = array();
+        }
+        $vars['topic'] = $topic;
+        
         $this->page_draw(array(
             'title' =>  __('discussions:title'),
-            'content' => view("discussions/topic_view", array('topic' => $topic))
+            'content' => view("discussions/topic_view", $vars)
         ));            
-    }    
+    }
     
     function action_add_message()
     {

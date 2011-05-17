@@ -61,8 +61,8 @@ function getSelectedRadio($name)
 function customHeaderChanged()
 {
     setTimeout(function() {
-        var $customDiv = document.getElementById('custom_header_container');
-        var $defaultDiv = document.getElementById('default_header_container');
+        var $customDiv = $('custom_header_container');
+        var $defaultDiv = $('default_header_container');
         var $value = getSelectedRadio('custom_header');
 
         if ($value == '1')
@@ -150,14 +150,13 @@ echo view('input/submit',array(
 
 <div class='section_header'><?php echo __('design:theme'); ?></div>
 <div class='section_content padded'>
-
+<div style='width:480px;margin:auto'>
 <?php echo view('input/theme', array(
     'name' => 'theme',
     'value' => $org->get_design_setting('theme_name'),
-    'options' => Theme::available_names(),
     'previewUrl' => $org->get_url()
 )); ?>
-
+</div>
 <?php
 echo view('input/hidden', array('name' => 'guid', 'value' => $org->guid));
 

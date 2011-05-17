@@ -16,6 +16,9 @@ class TranslateTest extends SeleniumTest
         $this->type("//input[@name='name']", "Test Language");
         $this->check("//input[@value='comment']");
         $this->check("//input[@value='default']");
+        $this->uncheck("//input[@value='date']");        
+        $this->uncheck("//input[@value='admin']");
+        $this->uncheck("//input[@value='network']");
         $this->submitForm();
         $this->ensureGoodMessage();
         
@@ -23,6 +26,7 @@ class TranslateTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'/tr/tl/module/comment')]");        
         $this->clickAndWait("//a[contains(@href,'anonymous')]");        
         $this->deleteAllTranslations();
+        $this->deleteAllComments();
         
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         
@@ -69,6 +73,38 @@ class TranslateTest extends SeleniumTest
         $this->ensureGoodMessage();
         $this->mouseOver("//td[contains(text(),'$value')]");
         
+        // add comment
+        $this->click("//a[contains(@href,'toggleAddComment')]");
+        $this->type("//textarea[@name='content']", "comment one");
+        $this->submitForm("//form[contains(@action,'add_comment')]//button");
+        $this->mouseOver("//div[@class='comment' and contains(text(),'comment one')]");
+        $this->ensureGoodMessage();
+
+        // add second comment
+        $this->click("//a[contains(@href,'toggleAddComment')]");
+        $this->type("//textarea[@name='content']", "comment two");
+        $this->submitForm("//form[contains(@action,'add_comment')]//button");
+        $this->ensureGoodMessage();        
+        $this->mouseOver("//div[@class='comment' and contains(text(),'comment one')]");
+        $this->mouseOver("//div[@class='comment' and contains(text(),'comment two')]");
+        
+        // delete first comment
+        $this->click("//div[@class='comment']//span[@class='admin_links']//a");
+        $this->getConfirmation();
+        $this->waitForPageToLoad(10000);
+        $this->ensureGoodMessage();
+        $this->mustNotExist("//div[@class='comment' and contains(text(),'comment one')]");
+        $this->mouseOver("//div[@class='comment' and contains(text(),'comment two')]");
+                
+        // add comment in all languages
+        $this->click("//a[contains(@href,'toggleAddComment')]");
+        $this->type("//textarea[@name='content']", "comment three");
+        $this->select("//select[@name='scope']", "All languages");
+        $this->submitForm("//form[contains(@action,'add_comment')]//button");
+        $this->ensureGoodMessage();
+        $this->mouseOver("//div[@class='comment' and contains(text(),'comment two')]");
+        $this->mouseOver("//div[@class='comment' and contains(text(),'comment three')]");
+                
         // add second translation
         $value2 = 'akjfdakjdsh alkewjf alkewj';        
         
@@ -137,7 +173,7 @@ class TranslateTest extends SeleniumTest
         $this->clickAndWait("//h2//a[contains(@href, '/tr/tl')]");
         $this->clickAndWait("//a[contains(@href, '/tr/tl/latest')]");
         $this->mouseOver("//td[contains(text(),'$value2')]");
-        $this->mouseOver("//td[contains(text(),'$value')]");
+        $this->mouseOver("//td[contains(text(),'$value')]");       
         
         // test user stats
         $this->clickAndWait("//a[contains(text(),'$username')]");
@@ -146,6 +182,17 @@ class TranslateTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'anonymous')]");
         $this->mouseOver("//td[contains(text(),'$value2')]");        
         $this->mouseOver("//td[contains(text(),'$value')]");                
+        
+        // test latest comments
+        $this->open("/tr/tl");
+        $this->clickAndWait("//a[contains(@href, '/tr/tl/comments')]");
+        $this->mouseOver("//td[contains(text(),'comment two')]");        
+        $this->mouseOver("//td[contains(text(),'comment three')]");        
+        $this->mustNotExist("//td[contains(text(),'comment one')]");        
+        $this->mustNotExist("//td[contains(text(),'$value')]");
+        $this->mouseOver("//td[contains(text(),'$value2')]");
+        $this->mouseOver("//td[contains(text(),'Anonymous')]");
+        $this->mouseOver("//a[contains(@href,'anonymous')]");
     }
     
     function deleteAllTranslations()
@@ -165,4 +212,22 @@ class TranslateTest extends SeleniumTest
             $this->waitForPageToLoad(10000);
         }
     }
+    
+    function deleteAllComments()
+    {
+        while (true)
+        {
+            try
+            {
+                $this->click("//div[@class='comment']//span[@class='admin_links']//a");
+            }
+            catch (Exception $ex)
+            {
+                return;
+            }
+            
+            $this->getConfirmation();
+            $this->waitForPageToLoad(10000);
+        }
+    }    
 }

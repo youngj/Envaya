@@ -1,1 +1,0 @@
-function postLink(a,d,b){var c=createElem("form",{action:a,method:"POST"},createElem("input",{name:"__ts",type:"hidden",value:d}),createElem("input",{name:"__token",type:"hidden",value:b}));document.body.appendChild(c);setTimeout(function(){c.submit()},2)};

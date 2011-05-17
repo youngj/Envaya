@@ -13,4 +13,5 @@ return array(
     'todo:logo' => "Ongeza nembo yako",
     'todo:contact' => "Ongeza data ya mawasiliano",
     'todo:network' => "Eleza ubia wako",
+    'todo:discussions' => "Anza majadiliano",
 );

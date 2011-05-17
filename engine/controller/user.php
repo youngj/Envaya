@@ -220,4 +220,16 @@ abstract class Controller_User extends Controller
             $vars['header'] = $this->get_header($vars);
         }
     }	
+            
+    public function not_found()
+    {
+        $uri_part = $this->param('user_uri');
+        $user = $this->get_user();
+        $redirect_url = NotFoundRedirect::get_redirect_url($uri_part, $user);
+        if ($redirect_url)
+        {
+            return forward($user->get_url() . $redirect_url);
+        }
+        parent::not_found();
+    }
 }

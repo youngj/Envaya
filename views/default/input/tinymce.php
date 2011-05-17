@@ -24,7 +24,10 @@
         
         ?>
         
-        <script type='text/javascript'><?php echo view('js/create_modal_box'); ?></script>
+        <script type='text/javascript'><?php 
+            echo view('js/create_modal_box');         
+            echo view('js/dom'); 
+        ?></script>
         <script type='text/javascript' src='/_media/tiny_mce/tiny_mce.js?v<?php echo Config::get('cache_version'); ?>'></script>
         <?php                
     }
@@ -41,8 +44,8 @@
 <script type="text/javascript">
 (function() {
 
-document.getElementById('tinymce_loading<?php echo $TINYMCE_INCLUDE_COUNT ?>').style.display = 'none';
-document.getElementById('content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>').style.display = 'block';
+$('tinymce_loading<?php echo $TINYMCE_INCLUDE_COUNT ?>').style.display = 'none';
+$('content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>').style.display = 'block';
 
 tinyMCE.init({
     content_css: "<?php echo css_url('tinymce'); ?>",

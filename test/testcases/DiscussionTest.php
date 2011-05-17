@@ -28,6 +28,40 @@ class DiscussionTest extends SeleniumTest
         $this->type("//input[@name='name']", "....");
         $this->submitForm();
         $this->ensureGoodMessage();
+        
+        // test inviting other envaya users from list of organizations
+        $this->click("//div[@class='good_messages']//p//a");        
+        
+        $this->retry('selectShareWindow', array());
+        $this->retry('click', array("//a[@id='add_users']"));
+        
+        $this->retry('selectFrame', array("//iframe"));
+        $this->retry('select', array("//select[@id='sectorList']", "Education"));
+        $this->retry('click', array("//a[contains(@title,'+p0')]"));
+        $this->click("//a[contains(@title,'+p10')]");
+        $this->click("//a[contains(@title,'+p11')]");
+        $this->click("//a[contains(@title,'+p10')]");
+        $this->selectFrame("relative=top");
+        $this->click("//input[@value='Close']");
+        
+        $emails = $this->getValue("//textarea[@name='emails']");
+        $this->assertContains("+p0", $emails);
+        $this->assertContains("+p11", $emails);
+        $this->assertNotContains("+p10", $emails);
+                
+        $this->type("//textarea[@name='message']", "hiiiiii");
+                
+        $this->submitForm();
+        $this->ensureGoodMessage();
+        
+        $email = $this->getLastEmail("hiiiiii");
+        $this->assertContains('+p0', $email);
+        $this->assertContains('+p11', $email);
+        $this->assertNotContains('+p10', $email);
+        
+        $this->close();
+        $this->selectWindow(null);                        
+        
         $this->mouseOver("//h3[contains(text(),'My Zeroth Discussion')]");
         $this->mouseOver("//p[contains(text(),'message 0')]");
         $this->mouseOver("//a[contains(text(),'....')]");

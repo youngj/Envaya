@@ -97,6 +97,8 @@ function php_exception_handler($exception) {
         {   
             echo view('layouts/base', array(
                 'title' => __('exception_title'),
+                'css_url' => css_url('simple'),
+                'base_url' => Config::get('url'),
                 'layout' => 'layouts/default',
                 'hide_login' => true,
                 'header' => view('page_elements/content_header', array('title' => __('exception_title'))),

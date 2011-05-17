@@ -46,6 +46,7 @@
     }
 
     echo "<li><a href='{$language->get_url()}/latest'>".__('itrans:latest')."</a></li>"; 
+    echo "<li><a href='{$language->get_url()}/comments'>".__('itrans:latest_comments')."</a></li>"; 
     echo "<li><a href='{$language->get_url()}/translators'>".__('itrans:translators')."</a></li>";     
     
     if (Session::isadminloggedin())

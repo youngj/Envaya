@@ -8,7 +8,7 @@ function updatePhotoPreview()
 {
     var input = getPhotoUrlInput();
     var url = input.value;
-    var photo_id = document.getElementById(<?php echo json_encode($vars['photo_id']); ?>);    
+    var photo_id = $(<?php echo json_encode($vars['photo_id']); ?>);    
     photo_id.src = url;
 }
 </script>

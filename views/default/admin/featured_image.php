@@ -32,13 +32,13 @@
 <script type='text/javascript'>
 function setImageUrl(url)
 {
-    document.getElementById('image_url').value = url;    
+    $('image_url').value = url;    
     updatePreview();
 }
 function updatePreview()
 {
     setTimeout(function() {
-        document.getElementById('image_preview').src = document.getElementById('image_url').value;
+        $('image_preview').src = $('image_url').value;
     }, 1);
 }
 updatePreview();

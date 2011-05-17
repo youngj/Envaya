@@ -2,7 +2,7 @@
     $region = GeoIP::get_world_region();
     $is_africa = ($region == GeoIP::Africa);
     $is_supported = GeoIP::is_supported_country();
-    
+
     $defaultPhoto = "/_graphics/home/banner_planting5.jpg";
     
     PageContext::add_header_html("        
@@ -51,7 +51,7 @@ else
 </div>
 
 <script type='text/javascript'>
-<?php readfile(Config::get('path').'_media/inline_js/slideshow.js'); ?>
+<?php echo view('js/slideshow'); ?>
 slideshow(<?php echo FeaturedPhoto::get_json_array(); ?>, <?php echo json_encode($defaultPhoto); ?>);
 </script>
 
@@ -117,4 +117,3 @@ slideshow(<?php echo FeaturedPhoto::get_json_array(); ?>, <?php echo json_encode
 </tr>
 </table>
 <div style='height:4px'></div>
-</div>

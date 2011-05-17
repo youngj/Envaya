@@ -170,27 +170,6 @@ function bootstrap()
         require_once get_module_path($module_name)."start.php";
     }
     
-    if (@$_GET['lang'])
-    {
-        change_viewer_language($_GET['lang']);
-    }    
-    
-    if (@$_GET['__sv'])
-    {
-        $view = @$_GET['view'];
-        if (in_array($view, array('mobile','default')))
-        {    
-            set_cookie('view', $view);
-        }
-    }
-    
-    // work around flash uploader cookie bug, where the session cookie is sent as a POST field
-    // instead of as a cookie
-    if (@$_POST['session_id'])
-    {
-        $_COOKIE['envaya'] = $_POST['session_id'];
-    }  
-    
     trigger_event('init', 'system');      
 }
 

@@ -8,8 +8,8 @@
   <pubDate><?php echo date("r",$feedItem->time_posted) ?></pubDate>
   <link><?php echo escape($subject->get_url()); ?></link>
   <title><?php 
-    echo escape(Markup::sanitize_html($feedItem->render_heading(), 
-        array('HTML.AllowedElements' => '','AutoFormat.RemoveEmpty' => true)));
+    echo escape(Markup::sanitize_html($feedItem->render_heading(@$vars['mode']), 
+        array('HTML.AllowedElements' => '','AutoFormat.Linkify' => false,'AutoFormat.RemoveEmpty' => true)));
   ?></title>
   <description><?php echo escape($feedItem->render_content(@$vars['mode'])); ?></description>
 </item>

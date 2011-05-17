@@ -27,6 +27,11 @@ class Session
             return null;
         }
     }
+    
+    static function cookie_name()
+    {
+        return static::$cookieName;
+    }
 
     static function destroy()
     {

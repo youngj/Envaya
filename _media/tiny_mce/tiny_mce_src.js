@@ -10060,7 +10060,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 		},
 
 		getLang : function(n, dv) {
-            return __['tinymce:' + n] || n;
+            return __('tinymce:' + n) || n;
 			//return tinymce.i18n[(this.settings.language || 'en') + '.' + n] || (is(dv) ? dv : '{#' + n + '}');
 		},
 

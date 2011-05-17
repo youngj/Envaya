@@ -1,7 +1,7 @@
 <script type='text/javascript'>
 function saveInitialDraft()
 {
-    document.getElementById('save_message').style.display='inline';
+    $('save_message').style.display='inline';
     setSubmitted();
     var form = document.forms[0];
     form._draft.value = '1';

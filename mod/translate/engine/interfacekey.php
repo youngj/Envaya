@@ -102,6 +102,13 @@ class InterfaceKey extends Entity
     {
         return InterfaceTranslation::query()->where('container_guid = ?', $this->guid);
     }
+
+    function query_comments()
+    {
+        return InterfaceKeyComment::query()
+            ->where('container_guid = ? OR (key_name = ? AND language_guid = 0)', $this->guid, $this->name);
+    }
+
     
     function get_default_value()
     {

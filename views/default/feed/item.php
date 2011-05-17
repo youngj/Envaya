@@ -1,7 +1,7 @@
 <?php
     $feedItem = $vars['item'];
     $org = $feedItem->get_user_entity();
-    $mode = $vars['mode'];
+    $mode = @$vars['mode'];
     
     $show_edit_controls = @$vars['show_edit_controls'];        
 ?>

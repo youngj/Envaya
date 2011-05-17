@@ -29,6 +29,7 @@ class Action_Discussion_Edit extends Action
         }
         
         $topic->subject = $subject;
+        $topic->language = GoogleTranslate::guess_language($subject);
         $topic->save();
         
         SessionMessages::add(__('discussions:topic_saved'));                    

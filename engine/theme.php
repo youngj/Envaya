@@ -5,8 +5,10 @@ class Theme
     private $layout = 'layouts/default';
     private $viewtype = 'default';
     private $name;
+    private $lang_key = null;
     private $hidden = false;
     private $css;
+    private $thumbnail = null;
     
     private static $loaded_themes = array();
     private static $loaded_all = false;
@@ -19,6 +21,16 @@ class Theme
         {
             $this->$k = $v;
         }
+    }
+    
+    function get_display_name()
+    {
+        return __($this->lang_key ?: "design:theme:{$this->name}");
+    }
+    
+    function get_thumbnail()
+    {
+        return $this->thumbnail;
     }
     
     function get_css_name()

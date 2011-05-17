@@ -224,13 +224,24 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $this->type("//input[@name='captcha_response']", $answer);
         $this->submitForm();
     }
-        
+     
+    function selectShareWindow()
+    {
+        $this->selectWindow('eshare');
+        $this->mouseOver("//textarea");
+    }
+     
 }
 
 
-function retry($fn, $args, $timeout = 15)
+function retry($fn, $args = null, $timeout = 15)
 {
     $time = time();
+    if (!$args) 
+    { 
+        $args = array(); 
+    }
+    
     while (true)
     {
         try

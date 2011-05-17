@@ -6,7 +6,7 @@
       
     ob_start();
 ?>
-<form method='POST' action='<?php echo $widget->get_edit_url() ?>?action=save_relationship'>
+<form method='POST' action='<?php echo $widget->get_edit_url() ?>?action=edit_relationship'>
 <?php
     
 echo view('input/securitytoken');

@@ -46,16 +46,19 @@
 </div>
 
 <script type='text/javascript'>
-
-var addTeamMember = document.getElementById('addTeamMember');
+<?php 
+    echo view('js/create_modal_box');
+    echo view('js/dom');
+?>
+var addTeamMember = $('addTeamMember');
 var modalBox;
 
 function openAddTeamMember()
 {
     function saveChanges()
     {
-        var nameInput = document.getElementById('name');
-        var descriptionInput = document.getElementById('description');
+        var nameInput = $('name');
+        var descriptionInput = $('description');
 
         var name = nameInput.value;
 
@@ -126,7 +129,7 @@ function openAddTeamMember()
     }
 
     setTimeout(function() {
-        document.getElementById('name').focus();
+        $('name').focus();
     }, 1);
 }
 

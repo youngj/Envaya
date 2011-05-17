@@ -6,6 +6,7 @@ class DiscussionTopic extends Entity
     
     static $table_attributes = array(
         'subject' => '',
+        'language' => '',
         'first_message_guid' => 0,
         'num_messages' => 0,
         'last_time_posted' => 0,

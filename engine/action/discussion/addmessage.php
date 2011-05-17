@@ -79,7 +79,7 @@ class Action_Discussion_AddMessage extends Action
             // notify site of message
             $mail = OutgoingMail::create(
                 strtr(__('discussions:notification_subject', $org->language), array(
-                    '{name}' => $message->from_name, '{topic}' => $topic->subject
+                    '{name}' => $message->from_name
                 ))   
             );
             $mail->setBodyHtml(view('emails/discussion_message', array('message' => $message)));
@@ -93,13 +93,7 @@ class Action_Discussion_AddMessage extends Action
     }
     
     function render()
-    {    
-        $topic = $this->get_topic();            
-        $this->use_public_layout();                
-        
-        $this->page_draw(array(
-            'title' => __('discussions:title'),
-            'content' => view("discussions/topic_add_message", array('topic' => $topic)),
-        ));
+    {   
+        $this->index_topic(array('show_add_message' => true));    
     }
 }    

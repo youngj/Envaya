@@ -13,6 +13,7 @@ class NotFoundRedirect extends Model
 {
     static $table_name = 'not_found_redirects';
     static $table_attributes = array(
+        'container_guid' => 0,
         'pattern' => '',
         'replacement' => '',
         'order' => 1000,
@@ -20,13 +21,13 @@ class NotFoundRedirect extends Model
     
     function __toString()
     {
-        return "id={$this->id} order={$this->order}: {$this->get_preg_pattern()} -> {$this->replacement}";
+        return "id={$this->id} container_guid={$this->container_guid} order={$this->order}: {$this->get_preg_pattern()} -> {$this->replacement}";
     }
     
     static function new_simple_redirect($old_path, $new_path)
     {
         $redirect = new NotFoundRedirect();
-        $redirect->pattern = '^'.str_replace('/', '\/', $old_path).'\b';
+        $redirect->pattern = '^'.preg_replace('/[^\w]/', '\\\$0', $old_path).'\b';
         $redirect->replacement = $new_path;
         $redirect->validate();
         return $redirect;
@@ -62,18 +63,30 @@ class NotFoundRedirect extends Model
         return "/{$this->pattern}/i";
     }
     
-    static function all()
-    {
-        return static::query()->order_by('`order`')->filter();
+    static function query_by_user($user)
+    {        
+        $query = static::query()->order_by('`order`');
+    
+        if ($user)
+        {
+            $query->where('container_guid = ?', $user->guid);
+        }
+        else
+        {
+            $query->where('container_guid = 0');
+        }
+        return $query;
     }
     
-    static function get_redirect_url($uri)
+    static function get_redirect_url($uri, $user = null)
     {        
-        foreach (static::all() as $redirect)
+        $query = static::query_by_user($user);
+
+        foreach ($query->filter() as $redirect)
         {
             $redirect_url = $redirect->try_get_redirect_url($uri);
             if ($redirect_url)
-            {
+            {            
                 return $redirect_url;
             }
         }

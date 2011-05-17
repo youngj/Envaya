@@ -1,5 +1,8 @@
 <?php
     $message = $vars['message'];
+
+    $topic = $message->get_container_entity();
+    echo "<b>".escape($topic->subject)."</b><br /><br />";
     
     echo $message->render_content();
     echo "<br /><br />";

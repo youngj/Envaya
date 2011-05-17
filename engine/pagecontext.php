@@ -124,8 +124,12 @@ class PageContext
     }
         
     static function get_js_strings()
-    {
-        return array_keys(static::$js_strings);
+    {   
+        $res = array();
+        foreach (array_keys(static::$js_strings) as $key)
+        {
+            $res[$key] = __($key);
+        }
+        return $res;
     }
-
 }

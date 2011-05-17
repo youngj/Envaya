@@ -38,9 +38,9 @@ function updateUrl()
 {
     setTimeout(function()
     {
-        var usernameField = document.getElementById('username');
+        var usernameField = $('username');
         var username = usernameField.value;
-        var urlUsername = document.getElementById('urlUsername');
+        var urlUsername = $('urlUsername');
         urlUsername.removeChild(urlUsername.firstChild);
         urlUsername.appendChild(document.createTextNode(username));
     }, 1);

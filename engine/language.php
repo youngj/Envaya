@@ -80,6 +80,11 @@ class Language
         return static::get(static::get_current_code());
     }
     
+    static function all()
+    {
+        return array_values(static::$languages);
+    }
+    
     static function get_options()
     {        
         $options = array();

@@ -203,10 +203,18 @@ class Controller_Pg extends Controller_Simple {
         }
 
         $mime_type = UploadedFile::get_mime_type($local_path);
-        if ($mime_type)
+        $filename = $components[sizeof($components) - 1];
+        
+        if ($mime_type && in_array($mime_type, array('text/plain','application/pdf','image/jpeg','image/png','image/gif')))
         {
-            $this->request->headers['Content-Type'] = $mime_type;
-        }
+            // okay to show in browser
+        }   
+        else
+        {
+            // possibly dangerous to show in browser; show as download
+            $this->request->headers['Content-Disposition'] = "attachment; filename=\"$filename\"";
+        }        
+        $this->set_content_type($mime_type);
         $this->request->response = file_get_contents($local_path);
     }
     

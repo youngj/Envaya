@@ -25,6 +25,21 @@ class Controller_Org extends Controller_Simple
         ));
     }
 
+    function action_browse_email()
+    {
+        $this->require_login();
+        $this->allow_view_types(null);
+    
+        $content = view('org/browse_email');
+
+        $this->page_draw(array(
+            'title' => __('browse:title'),
+            'layout' => 'layouts/frame',
+            'no_top_bar' => true,
+            'content' => $content
+        ));
+    }    
+    
     function action_change_browse_view()
     {
         $this->allow_view_types(null);

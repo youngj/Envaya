@@ -15,4 +15,7 @@ return array(
     'share:no_emails' => "Tafadhali ingiza anwani za email kusambaza ukurasa huu nazo.",
     'share:too_many_emails' => "Umeingiza anwani mno za email. Tafadhali ingiza anwani {max} za email, au chini.",
     'share:link_is' => "Kiungo ni:",
+    'share:add_users' => "Ongeza watumiaji wa Envaya",
+    'share:browse_instructions' => "Bonyeza mashirika ambayo unataka kusambaza ukurasa huu nayo:",
+    
 );

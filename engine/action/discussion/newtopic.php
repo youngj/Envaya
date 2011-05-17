@@ -61,6 +61,7 @@ class Action_Discussion_NewTopic extends Action
       
         $topic = new DiscussionTopic();
         $topic->subject = $subject;
+        $topic->language = GoogleTranslate::guess_language($subject);
         $topic->container_guid = $org->guid;
         if ($user)
         {
@@ -102,7 +103,7 @@ class Action_Discussion_NewTopic extends Action
            
             $mail = OutgoingMail::create(
                 strtr(__('discussions:notification_topic_subject', $org->language), array(
-                    '{name}' => $message->from_name, '{topic}' => $topic->subject
+                    '{name}' => $message->from_name
                 ))
             );
             $mail->setBodyHtml(view('emails/discussion_message', array('message' => $message)));            

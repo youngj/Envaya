@@ -7,5 +7,5 @@
      *
      */
 
-    echo Markup::autop(Markup::parse_urls(escape($vars['value'])));
+    echo nl2br(Markup::parse_urls(escape($vars['value'])));
 ?>

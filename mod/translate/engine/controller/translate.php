@@ -13,8 +13,7 @@ class Controller_Translate extends Controller
             'defaults' => array('action' => 'index'), 
         ),
         array(
-            'regex' => '/\instructions\b', 
-            'defaults' => array('action' => 'instructions'), 
+            'regex' => '/(?P<action>instructions|delete_comment)\b', 
         ),                
         array(
             'regex' => '/admin\b', 
@@ -237,4 +236,34 @@ class Controller_Translate extends Controller
             ))
         ));       
     }    
+    
+    function action_delete_comment()
+    {
+        $this->validate_security_token();    
+        
+        $guid = (int)get_input('comment');
+        $comment = InterfaceKeyComment::get_by_guid($guid);
+        if (!$comment || !$comment->can_edit())
+        {
+            redirect_back_error(__('comment:not_deleted'));
+        }
+        
+        $comment->disable();
+        $comment->save();
+
+        $container = $comment->get_container_entity();
+        SessionMessages::add(__('comment:deleted'));            
+        forward($container->get_url());
+    }    
+    
+    function action_comments()
+    {
+        $language = $this->param('language');
+        
+        return $this->page_draw(array(
+            'title' => __('itrans:latest_comments'),
+            'header' => view('translate/header', array('items' => array($language), 'title' => __('itrans:latest_comments'))),
+            'content' => view('translate/latest_comments', array('language' => $language))
+        ));            
+    }
 }

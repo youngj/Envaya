@@ -3,7 +3,7 @@
 ?>
 
 <script type='text/javascript'>
-
+<?php echo view('js/dom'); ?>
 function selectFeaturedPhoto()
 {
     function getURLForImg(img) {

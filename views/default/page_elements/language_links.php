@@ -1,6 +1,11 @@
 <?php
 
 $links = array();
+$js = view('js/language');
+if ($js)
+{
+    echo "<script type='text/javascript'>$js</script>";
+}
 
 foreach (Language::$languages as $lang => $v)
 {    

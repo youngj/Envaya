@@ -2,11 +2,38 @@
 
 class Action_Login extends Action
 {
+    protected function login_success($user)
+    {
+        SessionMessages::add(sprintf(__('login:welcome'), $user->name));
+
+        $next = get_input('next');
+        if (!$next)
+        {
+            if (!$user->is_setup_complete())
+            {
+                $next = "org/new?step={$user->setup_state}";
+            }
+            else
+            {
+                $next = "{$user->get_url()}/dashboard";
+            }
+        }
+
+        $next = url_with_param($next, '_lt', time());
+
+        forward($next);    
+    }
+    
+    protected function login_failure()
+    {
+        SessionMessages::add_error_html(view('account/login_error'));
+        return $this->render();
+    }
+
     function process_input()
     {
         $username = get_input('username');
         $password = get_input("password");
-        $next = get_input('next');
         $persistent = get_input("persistent", false);
 
         $result = false;
@@ -20,28 +47,11 @@ class Action_Login extends Action
 
         if ($result)
         {
-            SessionMessages::add(sprintf(__('login:welcome'), $user->name));
-
-            if (!$next)
-            {
-                if (!$user->is_setup_complete())
-                {
-                    $next = "org/new?step={$user->setup_state}";
-                }
-                else
-                {
-                    $next = "{$user->get_url()}/dashboard";
-                }
-            }
-
-            $next = url_with_param($next, '_lt', time());
-
-            forward($next);
+            $this->login_success($user);
         }
         else
         {
-            SessionMessages::add_error_html(view('account/login_error'));
-            return $this->render();
+            $this->login_failure();
         }
     }
 
@@ -97,10 +107,10 @@ class Action_Login extends Action
         }
         
         $this->page_draw(array(
-            'title' => __("login"),
+            'title' => __("login"),            
             'content' => view("account/login", array('username' => $username, 'next' => $next)),
             'org_only' => true,
             'hide_login' => !Session::isloggedin()
         ));        
-    }    
+    }
 }    

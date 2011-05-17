@@ -12,11 +12,11 @@ $zoom = get_input('zoom') ?: 5;
 function sectorChanged()
 {
     setTimeout(function() {
-        var sectorList = document.getElementById('sectorList');
+        var sectorList = $('sectorList');
 
         var val = sectorList.options[sectorList.selectedIndex].value;
 
-        var browseLink = document.getElementById('browseLink');
+        var browseLink = $('browseLink');
         browseLink.href = "org/browse?list=1&sector=" + val;
 
         setMapSector(val);

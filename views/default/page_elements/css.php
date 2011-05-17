@@ -1,4 +1,9 @@
-<link rel="stylesheet" href="<?php echo escape(css_url($vars['css_name'] ?: 'simple')); ?>" type="text/css" />
+<?php
+    if (@$vars['css_url'])
+    {
+        echo "<link rel='stylesheet' href='".escape($vars['css_url'])."' type='text/css' />";
+    }
+?>
 <!--[if IE 6]>
 <style type='text/css'>
 #top_menu_container a {width:10px}

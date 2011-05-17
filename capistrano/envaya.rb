@@ -43,11 +43,31 @@ namespace :deploy do
     end
     
     task :sanity_check do
-        if File.file?(File.join(Dir.pwd, "_css/home.css"))
-            print "sanity check passed"
-        else
-            throw :sanity_check_failed
+    
+        files = [
+            "_css/home.css",
+            "_css/simple.css",
+            "_css/green.css",
+            "_css/craft1.css",
+            "_css/brick.css",
+            "_css/editor.css",
+            "_css/tinymce_ui.css",
+            "_css/mobile.css",
+            "_media/inline_js/header.js",
+            "_media/inline_js/xhr.js",
+            "_media/inline_js/dom.js",
+            "_media/inline_js/language.js",
+            "_media/swfupload.js",
+            "_media/tiny_mce/tiny_mce.js",
+        ]
+    
+        files.each do |file|
+            if !File.file?(File.join(Dir.pwd, file))
+                throw "sanity check failed, missing #{file}; run make.php"
+            end
         end
+        
+        print "sanity check passed"
     end
     
     task :localsettings_setup do    

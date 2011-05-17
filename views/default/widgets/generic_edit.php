@@ -4,7 +4,9 @@
     
     ob_start();
     
-    if ($widget->title || !in_array($widget->widget_name, Widget::get_default_names()))
+    $is_custom_widget = !in_array($widget->widget_name, Widget::get_default_names());
+    
+    if ($widget->title || $is_custom_widget)
     {    
         if ($widget->is_section())
         {
@@ -18,6 +20,13 @@
         {
             echo view('widgets/edit_title', array('value' => $widget->title));
         }
+    }
+    if ($is_custom_widget && $widget->is_page())
+    {
+        echo view('widgets/edit_page_address', array(
+            'org' => $widget->get_root_container_entity(),
+            'value' => $widget->widget_name,
+        ));
     }
     
     echo view('widgets/edit_content', array('widget' => $widget));

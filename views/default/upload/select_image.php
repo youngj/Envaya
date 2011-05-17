@@ -85,10 +85,10 @@
     uploader.onComplete = function($images) {
         images = $images;
 
-        var optionsContainer = document.getElementById('imageOptionsContainer');
+        var optionsContainer = $('imageOptionsContainer');
         optionsContainer.style.display = 'block';
 
-        var imageSizeContainer = document.getElementById('imageSizeContainer');
+        var imageSizeContainer = $('imageSizeContainer');
         var radios = imageSizeContainer.getElementsByTagName('input');
 
         var lastVisible = null;
@@ -152,7 +152,7 @@
             return null;
         }
 
-        var imageSizeContainer = document.getElementById('imageSizeContainer');
+        var imageSizeContainer = $('imageSizeContainer');
 
         var radios = imageSizeContainer.getElementsByTagName('input');
         for (var i = 0; i < radios.length; i++)
@@ -169,7 +169,7 @@
 
     function getSelectedPosition()
     {
-        var imageSizeContainer = document.getElementById('imagePositionContainer');
+        var imageSizeContainer = $('imagePositionContainer');
 
         var radios = imageSizeContainer.getElementsByTagName('input');
         for (var i = 0; i < radios.length; i++)

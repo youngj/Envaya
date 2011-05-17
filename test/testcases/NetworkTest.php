@@ -355,7 +355,7 @@ class NetworkTest extends SeleniumTest
         $this->click("//div[@class='good_messages']//p//a");        
         
         $this->retry('selectShareWindow', array());
-        $this->retry('click', array("//a"));
+        $this->retry('click', array("//a[@id='add_partners']"));
         $this->retry('checkEmailEntered', array('nobody@nowhere.com'));
         $this->retry('checkEmailEntered', array($invitedOrgEmail));
         $this->retry('checkEmailEntered', array("p12"));
@@ -394,15 +394,9 @@ class NetworkTest extends SeleniumTest
         $email = $this->getLastEmail("foo@nowhere.com");
         $this->assertContains('Test Org', $email);
         $this->assertContains($this->getLocation(), $email);
-        $this->assertNotContains('nobody@nowhere.com', $email);                        
+        $this->assertNotContains('nobody@nowhere.com', $email);
     }
-    
-    function selectShareWindow()
-    {
-        $this->selectWindow('eshare');
-        $this->mouseOver("//textarea");
-    }
-    
+        
     function checkEmailEntered($email)
     {
         $this->assertContains($email, $this->getValue("//textarea[@name='emails']"));

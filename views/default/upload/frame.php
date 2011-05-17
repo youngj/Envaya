@@ -1,4 +1,8 @@
-<html><head><title>UPLOAD</title></head>
+<html><head><title>UPLOAD</title>
+<script type='text/javascript'>
+<?php echo view('js/header'); ?>
+</script>
+</head>
 <body style='padding:0px;margin:0px'>
 <form id='form' method='POST' enctype='multipart/form-data' action='/pg/upload?iframe=1'>
 <?php
@@ -26,8 +30,8 @@ var swfupload = window.parent.SWFUpload.instances[swfupload_id];
 ?>
 function fileChanged()
 {
-    var form = document.getElementById('form'),
-        file = document.getElementById('file');
+    var form = $('form'),
+        file = $('file');
 
     if (file.value)
     {
