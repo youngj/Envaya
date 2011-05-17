@@ -59,6 +59,7 @@ class Controller_Org extends Controller_Simple
             
             if (!empty($query)) 
             {
+		//fixme: use relevant country for geoquery -tk
                 $geoQuery = "$query Tanzania";            
                 $latlong = Geography::geocode($geoQuery);
             }

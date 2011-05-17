@@ -1,3 +1,16 @@
+<?php
+        //fixme: refactor this out into Geography.php from here and qualification.php ASAP -tk
+        $approvedCountries = array('tz','rw','lr');
+
+        $testing_country = get_input('testing_country');
+
+        if (!empty($testing_country) && !in_array($testing_country, $approvedCountries))
+        {
+            throw new ValidationException(__("register:wrong_country"));
+        }
+?>
+
+
 <?php echo view("org/register_progress", array('current' => 1)) ?>
 
 <div class='padded'>
@@ -28,13 +41,20 @@
 <div class='input'>
 <label><?php echo __('register:country') ?></label><br />
 
-<?php echo view('input/radio',
+<?php
+ $country_options= array();
+ $country_options['tz'] = __('country:tz');
+ if ($testing_country)
+ {
+	$country_options[$testing_country] = __('country:'.$testing_country);
+ }
+ $country_options['other'] = __('country:other');
+
+ echo view('input/radio',
     array('name' => 'country',
-        'options' => array(
-            'tz' => __('country:tz'),
-            'other' => __('country:other'),
-        ))
-    ) ?>
+        'options' => $country_options)
+    ); 
+ ?>
 </div>
 
 <div class='input'>

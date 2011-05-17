@@ -1,5 +1,10 @@
 <?php
 return array(
+    #general options
+    'region:all' => "All",
+    'region:empty_option' => 'All regions',
+
+    #tanzania
     'region:tz:arusha' => 'Arusha',
     'region:tz:dar' => 'Dar es Salaam',
     'region:tz:dodoma' => 'Dodoma',
@@ -26,6 +31,21 @@ return array(
     'region:tz:zanzibar_cs' => 'Zanzibar Central/South',
     'region:tz:zanzibar_n' => 'Zanzibar North',
     'region:tz:zanzibar_w' => 'Zanzibar West',
-    'region:all' => "All",
-    'region:empty_option' => 'All regions',
+
+    #liberia
+    'region:lr:bomi' => "Bomi County",
+    'region:lr:bong' => "Bong County",
+    'region:lr:gbarpolu' => "Gbarpolu County",
+    'region:lr:grandbassa' => "Grand Bassa County",
+    'region:lr:grandcapemount' => "Grand Cape Mount County",
+    'region:lr:grandgedeh' => "Grand Gedeh County",
+    'region:lr:grandkru' => "Grand Kru County",
+    'region:lr:lofa' => "Lofa County",
+    'region:lr:margibi' => "Margibi County",
+    'region:lr:maryland' => "Maryland County",
+    'region:lr:montserrado' => "Montserrado County",
+    'region:lr:nimba' => "Nimba County",
+    'region:lr:rivercess' => "River Cess County",
+    'region:lr:rivergee' => "River Gee County",
+    'region:lr:sinoe' => "Sinoe County",
 );

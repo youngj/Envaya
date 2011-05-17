@@ -56,6 +56,7 @@ return array(
     'country:tz' => 'Tanzania',
     'country:us' => 'USA',
     'country:rw' => "Rwanda",
+    'country:lr' => "Liberia",
     'country:other' => 'Other',    
     
     'viewtype:default' => "Standard",
