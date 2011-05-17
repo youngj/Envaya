@@ -4,11 +4,9 @@
     $widthCSS = @$vars['width'] ? "width:{$vars['width']}px;" : '';
     $heightCSS = @$vars['height'] ? "height:{$vars['height']}px;" : '';
 
-    $TINYMCE_INCLUDE_COUNT = $vars['include_count'];
-    
-    echo "<div class='input-textarea' style='padding-bottom:15px' id='tinymce_loading$TINYMCE_INCLUDE_COUNT'>".__("Loading...")."</div>";
+    echo "<div class='input-textarea' style='padding-bottom:15px' id='tinymce_loading$INCLUDE_COUNT'>".__("Loading...")."</div>";
 
-    if (!$TINYMCE_INCLUDE_COUNT)
+    if (!$INCLUDE_COUNT)
     {
         PageContext::add_header_html(
             "<style type='text/css'>"
@@ -34,7 +32,7 @@
 
     echo view("input/longtext", array(
         'name' => $name,
-        'id' => "content_html$TINYMCE_INCLUDE_COUNT",
+        'id' => "content_html$INCLUDE_COUNT",
         'trackDirty' => true,
         'js' => "style='display:none;{$widthCSS}{$heightCSS}'",
         'value' => Markup::render_editor_html($value)
@@ -44,8 +42,8 @@
 <script type="text/javascript">
 (function() {
 
-$('tinymce_loading<?php echo $TINYMCE_INCLUDE_COUNT ?>').style.display = 'none';
-$('content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>').style.display = 'block';
+$('tinymce_loading<?php echo $INCLUDE_COUNT ?>').style.display = 'none';
+$('content_html<?php echo $INCLUDE_COUNT ?>').style.display = 'block';
 
 tinyMCE.init({
     content_css: "<?php echo css_url('tinymce'); ?>",
@@ -61,7 +59,7 @@ tinyMCE.init({
     language: '',
     relative_urls: false,
     remove_script_host: false,
-    elements: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
+    elements: "content_html<?php echo $INCLUDE_COUNT ?>",
     <?php if (@$vars['saveFn']) { ?>
     save_draft_callback: <?php echo $vars['saveFn']; ?>,
     <?php } ?>
@@ -69,7 +67,7 @@ tinyMCE.init({
     restore_draft_callback: <?php echo $vars['restoreDraftFn']; ?>,
     <?php } ?>    
     <?php if (@$vars['autoFocus']) { ?>
-    auto_focus: "content_html<?php echo $TINYMCE_INCLUDE_COUNT ?>",
+    auto_focus: "content_html<?php echo $INCLUDE_COUNT ?>",
     <?php } ?>
     theme: "-advanced",
     plugins: '-paste',

@@ -6,7 +6,7 @@
 	 */
 
 	if (!empty($vars['object']) && is_array($vars['object'])) {
-        $id = "message_container{$vars['include_count']}";
+        $id = "message_container{$INCLUDE_COUNT}";
 
 ?>
     <div class='message_container' id='<?php echo $id; ?>'>

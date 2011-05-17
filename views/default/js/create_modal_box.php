@@ -1,5 +1,5 @@
 <?php 
-    if ($vars['include_count'] == 0)
+    if ($INCLUDE_COUNT == 0)
     {
         PageContext::add_js_string('ok');
         PageContext::add_js_string('cancel');        

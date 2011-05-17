@@ -1,6 +1,6 @@
 <script type='text/javascript'>
 <?php
-    if ($vars['include_count'] == 0)
+    if ($INCLUDE_COUNT == 0)
     {
         readfile(Config::get('path').'_media/inline_js/image_links.js');
     }

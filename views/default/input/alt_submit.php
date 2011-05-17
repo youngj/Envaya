@@ -4,7 +4,7 @@
         Also uses type='button' instead of type='submit', so that the enter key doesn't press it unless it is focused.
      */
      
-    if ($vars['include_count'] == 0)
+    if ($INCLUDE_COUNT == 0)
     {
         ob_start();
         ?>
@@ -31,7 +31,7 @@ function altSubmit($id, $value)
         PageContext::add_header_html($script);
     }
 
-    $hidden_id = "_alt_submit".$vars['include_count'];
+    $hidden_id = "_alt_submit".$INCLUDE_COUNT;
 
     echo view('input/hidden', array(
         'name' => $vars['name'],

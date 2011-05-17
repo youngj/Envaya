@@ -1,5 +1,5 @@
 <?php 
-    if ($vars['include_count'] == 0)
+    if ($INCLUDE_COUNT == 0)
     {
         foreach (Language::get('en')->get_group('date') as $key => $enVal)
         {

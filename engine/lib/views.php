@@ -8,12 +8,12 @@
  * View files are allowed to call methods defined in the engine/ directory to query the database
  * and access properties of models. They can also render other views.
  * 
- * Views are not allowed to use controllers or actions, perform access control, 
+ * Views are not allowed to use controllers or actions, perform access control, throw exceptions,
  * or end/forward the request, and are generally not allowed to modify state, 
  * but they are allowed to call PageContext methods to modify state for the current request.
  * 
- * view() adds a special variable 'include_count', which increments each time a given view is rendered.
- *   include_count is 0 the first time a view is rendered for a given script execution.
+ * view() adds a special variable $INCLUDE_COUNT, which increments each time a given view is rendered.
+ *   $INCLUDE_COUNT is 0 the first time a view is rendered for a given script execution.
  *   This allows views to do one-time setup or generate unique DOM ids.
  *
  * @param string $view The name and location of the view to use
@@ -79,18 +79,16 @@ function include_view($view, $viewtype, $vars)
 {
     static $INCLUDE_COUNTS = array();
 
-    $viewPath = get_view_path($view, $viewtype);
+    $view_path = get_view_path($view, $viewtype);
         
-    if (!isset($INCLUDE_COUNTS[$viewPath]))
+    if (!isset($INCLUDE_COUNTS[$view_path]))
     {
-        $INCLUDE_COUNTS[$viewPath] = 0;
+        $INCLUDE_COUNTS[$view_path] = 0;
     }
-    $include_count = $INCLUDE_COUNTS[$viewPath];
-    $INCLUDE_COUNTS[$viewPath] = $include_count + 1;
+    $INCLUDE_COUNT = $INCLUDE_COUNTS[$view_path];
+    $INCLUDE_COUNTS[$view_path] = $INCLUDE_COUNT + 1;
     
-    $vars['include_count'] = $include_count;       
-
-    if (include_view_file($viewPath, $vars))
+    if (include_view_file($view_path, $vars, $INCLUDE_COUNT))
     {
         // success
     }
@@ -100,9 +98,9 @@ function include_view($view, $viewtype, $vars)
     }
 }
 
-function include_view_file($viewFile, $vars)
+function include_view_file($VIEW_PATH, $vars, $INCLUDE_COUNT)
 {
-    return include $viewFile;
+    return include $VIEW_PATH;
 }
 /**
  * Returns whether the specified view exists

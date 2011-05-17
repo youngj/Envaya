@@ -7,9 +7,8 @@
     $menu_widgets = array();
     $non_menu_widgets = array();
     
-    $include_count = $vars['include_count'];
     $can_move_up = false;
-    $table_id = "widget_list_{$include_count}";
+    $table_id = "widget_list_{$INCLUDE_COUNT}";
     
     $ts = time();
     $token = generate_security_token($ts);
@@ -51,7 +50,7 @@
      
     if (sizeof($menu_widgets))
     {
-        if ($include_count == 0)
+        if ($INCLUDE_COUNT == 0)
         {
 ?>
 

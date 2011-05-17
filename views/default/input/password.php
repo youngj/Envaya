@@ -11,13 +11,11 @@
 
 	$class = @$vars['class'] ?: "input-password";
 
-    $PASSWORD_INCLUDE_COUNT = $vars['include_count'];
-    
     $setDirty = (@$vars['trackDirty']) ? " onchange='setDirty(true)'" : "";
     
     $value = restore_input($vars['name'], @$vars['value'], @$vars['trackDirty']); 
     
-    if (!$PASSWORD_INCLUDE_COUNT)
+    if (!$INCLUDE_COUNT)
     {
 ?>
 
@@ -46,7 +44,7 @@ function checkCapslock(e, warningId) {
 <?php
     }
     
-    $warningId = "capslockWarning$PASSWORD_INCLUDE_COUNT";
+    $warningId = "capslockWarning$INCLUDE_COUNT";
     $js = @$vars['js'] ?: '';
     $js .= " onkeypress='checkCapslock(event,\"$warningId\")'";
 

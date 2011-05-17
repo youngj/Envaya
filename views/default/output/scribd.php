@@ -5,15 +5,13 @@
     
     $ext = pathinfo($filename, PATHINFO_EXTENSION);    
     $is_presentation = in_array($ext, array('ppt','pptx','odp'));
-    
-    $SCRIBD_INCLUDE_COUNT = $vars['include_count'];
-    
-    if (!$SCRIBD_INCLUDE_COUNT)
+        
+    if (!$INCLUDE_COUNT)
     {
         echo "<script type='text/javascript' src='http://www.scribd.com/javascripts/view.js'></script>";
     }
 ?>
-<div id='scribd<?php echo $SCRIBD_INCLUDE_COUNT; ?>'><?php echo view('output/scribd_link', $vars); ?></div>
+<div id='scribd<?php echo $INCLUDE_COUNT; ?>'><?php echo view('output/scribd_link', $vars); ?></div>
 <script type="text/javascript">
 (function() {
     var doc = scribd.Document.getDoc(<?php echo (int)$docid ?>, <?php echo json_encode((string)$accesskey) ?>);
@@ -26,6 +24,6 @@
         doc.api.setZoom(1);
     });
     <?php } ?>
-    doc.write('scribd<?php echo $SCRIBD_INCLUDE_COUNT; ?>');
+    doc.write('scribd<?php echo $INCLUDE_COUNT; ?>');
 })();
 </script>
