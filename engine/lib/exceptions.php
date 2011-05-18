@@ -55,17 +55,12 @@ function php_error_handler($errno, $errmsg, $filename, $linenum, $vars)
     switch ($errno) {
         case E_USER_ERROR:
                 error_log("ERROR: " . $error);
-                SessionMessages::add_error("ERROR: " . $error);
-
-                // Since this is a fatal error, we want to stop any further execution but do so gracefully.
                 throw new Exception($error);
             break;
-
-        case E_WARNING :
-        case E_USER_WARNING :
+        case E_WARNING:
+        case E_USER_WARNING:
                 error_log("WARNING: " . $error);                        
             break;
-
         default:
             if (Config::get('debug'))
             {
@@ -76,71 +71,41 @@ function php_error_handler($errno, $errmsg, $filename, $linenum, $vars)
     return true;
 }
 
-/**
- * Custom exception handler.
- * This function catches any thrown exceptions and handles them appropriately.
- *
- * @see http://www.php.net/set-exception-handler
- * @param Exception $exception The exception being handled
- */
-
-function php_exception_handler($exception) {
-    
-    error_log("*** FATAL EXCEPTION *** : " . $exception);
-    
+function ob_discard_all()
+{
     for ($i = ob_get_level(); $i > 0; $i--)
     {            
-        ob_end_clean(); // discard all output buffers
+        ob_end_clean();
     }
-    
-    if (@$_SERVER['REQUEST_URI'])
-    {    
-        header("HTTP/1.1 500 Internal Server Error");
-        
-        $request = Request::instance();
-        
-        if (@$request->headers['Content-Type'] == 'text/javascript')
-        {
-            echo json_encode(array(
-                'error' => $exception->getMessage(), 
-                'errorClass' => get_class($exception)
-            ));
-        }
-        else
-        {   
-            echo view('layouts/base', array(
-                'title' => __('exception_title'),
-                'css_url' => css_url('simple'),
-                'base_url' => Config::get('url'),
-                'layout' => 'layouts/default',
-                'hide_login' => true,
-                'header' => view('page_elements/content_header', array('title' => __('exception_title'))),
-                'content' => view("messages/exception", array('object' => $exception))
-            ));
-        }
-    }
-    else // CLI
-    {
-        echo $exception;
-    }
+}
+
+function notify_exception($exception)
+{
+    error_log("*** FATAL EXCEPTION *** : " . $exception);
 
     if (Config::get('error_emails_enabled'))
     {
         $lastErrorEmailTimeFile = Config::get('dataroot')."last_error_time";
-        $lastErrorEmailTime = (int)file_get_contents($lastErrorEmailTimeFile);
+        $lastErrorEmailTime = (int)@file_get_contents($lastErrorEmailTimeFile);
         $curTime = time();
 
         if ($curTime - $lastErrorEmailTime > 60)
         {
-            file_put_contents($lastErrorEmailTimeFile, "$curTime", LOCK_EX);
+            @file_put_contents($lastErrorEmailTimeFile, "$curTime", LOCK_EX);
 
             $class = get_class($exception);
             $ex = print_r($exception, true);
             $server = print_r($_SERVER, true);
 
-            OutgoingMail::create(
-                "$class: {$_SERVER['REQUEST_URI']}", 
-"Exception:
+            // avoid using OutgoingMail class, since it has dependencies on the Database and FunctionQueue,
+            // and this exception may occur because one of those components is failing.
+            
+            $url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : @$_SERVER['PHP_SELF'];
+            
+            $mail = Zend::mail();
+            $mail->setSubject("$class: $url");
+            $mail->setBodyText("
+Exception:
 ==========
 $ex
 
@@ -148,7 +113,26 @@ $ex
 _SERVER:
 =======
 $server
-        ")->send_to_admin();
+        ");
+            $mail->addTo(Config::get('admin_email'));
+            $mailer = Zend::mail_transport();
+            $mail->send($mailer);
         }
     }
+}
+
+/**
+ * Custom exception handler.
+ * This function catches any unhandled exceptions and handles them appropriately.
+ *
+ * @see http://www.php.net/set-exception-handler
+ * @param Exception $exception The exception being handled
+ */
+
+function php_exception_handler($exception) 
+{    
+    ob_discard_all();
+    echo get_class($exception) . " " . $exception->getMessage() . "\n";
+    notify_exception($exception);
+    die;
 }

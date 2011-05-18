@@ -69,9 +69,11 @@ class Action_EditWidget extends Action
 
             $widget->process_input($this);             
             
-            SessionMessages::add(__('widget:save:success'));
-            
-            $this->redirect($widget->get_url());
+            if ($this->get_request()->status == 200)
+            {            
+                SessionMessages::add(__('widget:save:success'));            
+                $this->redirect($widget->get_url());
+            }
         }
     }
     

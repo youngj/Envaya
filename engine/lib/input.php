@@ -39,7 +39,8 @@
             return $_POST[$name];
         }
 
-        $prevInput =  Session::get('input');
+        $prevInput = Session::get('input');
+        
         if ($prevInput)
         {
             if (isset($prevInput[$name]))

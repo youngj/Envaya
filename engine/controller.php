@@ -325,6 +325,33 @@ abstract class Controller {
             ));                
         }
     }
+    
+    function server_error($exception)
+    {
+        ob_discard_all();
+    
+        $request = $this->request;   
+        $request->status = 500;
+        
+        if (@$request->headers['Content-Type'] == 'text/javascript')
+        {
+            $request->response = json_encode(array(
+                'error' => $exception->getMessage(), 
+                'errorClass' => get_class($exception)
+            ));
+        }
+        else
+        {   
+            $this->page_draw(array(
+                'title' => __('exception_title'),
+                'theme_name' => 'simple',
+                'hide_login' => true,
+                'content' => view("messages/exception", array('object' => $exception))
+            ));
+        }    
+        
+        notify_exception($exception);
+    }
             
     public function add_generic_footer()
     {
@@ -374,7 +401,7 @@ abstract class Controller {
     public function prefer_https()
     {
         $request = $this->request;
-        if (!$request->is_post() && !$request->is_secure() && Config::get('ssl_enabled') && !is_mobile_browser())
+        if (!$request->is_post() && !$request->is_secure() && Config::get('ssl_enabled') && !$request->is_mobile_browser())
         {
             $url = secure_url($request->full_original_url());
             throw new RedirectException('', $url);

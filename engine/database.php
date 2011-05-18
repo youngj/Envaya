@@ -155,17 +155,24 @@ class Database
         static $DB_LINK;
         static $DB_CONNECT_TRIED = false;
         
-        if (!isset($DB_LINK) && !$DB_CONNECT_TRIED)
+        if (!isset($DB_LINK))
         {              
-            $DB_CONNECT_TRIED = true;
-            
-            try
-            {
-                $DB_LINK = static::get_pdo();
+            if (!$DB_CONNECT_TRIED)
+            {        
+                $DB_CONNECT_TRIED = true;
+                
+                try
+                {
+                    $DB_LINK = static::get_pdo();
+                }
+                catch (PDOException $ex)
+                {
+                    throw new DatabaseException(__("error:NoConnect"));
+                }
             }
-            catch (PDOException $ex)
+            else
             {
-                throw new DatabaseException(__("error:NoConnect"));
+                // just return null
             }
         }
         return $DB_LINK;

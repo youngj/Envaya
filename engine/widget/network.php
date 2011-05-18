@@ -32,9 +32,9 @@ class Widget_Network extends Widget
     {        
         switch (get_input('action'))
         {
-            case 'delete_relationship':  return $this->delete_relationship();
-            case 'edit_relationship':    return $this->save_relationship();
-            case 'add_relationship':     return $this->add_relationship();
+            case 'delete_relationship':  return $this->delete_relationship($action);
+            case 'edit_relationship':    return $this->save_relationship($action);
+            case 'add_relationship':     return $this->add_relationship($action);
             
             default: 
                 $this->save();
@@ -77,7 +77,7 @@ class Widget_Network extends Widget
         )));
     }
     
-    private function add_relationship()
+    private function add_relationship($action)
     {
         $org = $this->get_container_entity();
         
@@ -167,7 +167,7 @@ class Widget_Network extends Widget
             '{name}' => $relationship->get_subject_name(),
             '{type}' => $relationship->msg('header')
         )));
-        throw new RedirectException('', $this->get_edit_url());    
+        $action->redirect($this->get_edit_url());    
     }
     
     private function clean_url($url)
@@ -190,7 +190,7 @@ class Widget_Network extends Widget
         return $url;
     }    
             
-    private function delete_relationship()
+    private function delete_relationship($action)
     {
         $org = $this->get_container_entity();
         
@@ -214,7 +214,7 @@ class Widget_Network extends Widget
             )));
         }       
         
-        throw new RedirectException('', $this->get_edit_url());        
+        $action->redirect($this->get_edit_url());    
     }
     
     private function get_current_relationship($org)
@@ -228,11 +228,11 @@ class Widget_Network extends Widget
         return $relationship;
     }    
     
-    private function save_relationship()
+    private function save_relationship($action)
     {
         if (get_input('delete_relationship'))
         {
-            return $this->delete_relationship();
+            return $this->delete_relationship($action);
         }
     
         $org = $this->get_container_entity();
@@ -274,7 +274,7 @@ class Widget_Network extends Widget
         $this->save();
         
         SessionMessages::add(__('network:relationship_saved'));
-        throw new RedirectException('', $this->get_edit_url());
+        $action->redirect($this->get_edit_url());    
     }    
     
     private function edit_relationship_view()

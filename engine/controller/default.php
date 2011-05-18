@@ -24,6 +24,12 @@ class Controller_Default extends Controller
     {
         try
         {
+            $request = $this->request;
+            if ($request->init_exception)
+            {
+                throw $request->init_exception;
+            }
+        
             if (@$_GET['login'] && !Session::isloggedin())
             {
                 $this->force_login();
@@ -38,7 +44,14 @@ class Controller_Default extends Controller
             if ($viewtype && Views::is_browsable_type($viewtype))
             {
                 set_cookie('view', $viewtype);
-            }        
+            }
+            
+            $viewtype = $viewtype ?: @$_COOKIE['view'] ?: ($this->request->is_mobile_browser() ? 'mobile' : 'default');            
+            if (preg_match('/[^\w]/', $viewtype))
+            {            
+                $viewtype = 'default';
+            }
+            Views::set_request_type($viewtype);
             
             // work around flash uploader cookie bug, where the session cookie is sent as a POST field
             // instead of as a cookie
@@ -65,6 +78,10 @@ class Controller_Default extends Controller
                 Session::save_input();
             }
             $this->redirect($ex->url, $ex->status);
+        }
+        catch (Exception $ex)
+        {
+            $this->server_error($ex);
         }
     }
     

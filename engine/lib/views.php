@@ -135,7 +135,7 @@ function view_entity($entity, $args = null)
 
 class Views
 {
-    private static $request_type = null;
+    private static $request_type = 'default';
     private static $current_type = null;
     private static $extensions_map = array();
     
@@ -159,19 +159,7 @@ class Views
     
     static function get_request_type()
     {
-        $type = static::$request_type;
-    
-        if ($type === null)
-        {
-            $type = get_input('view') ?: @$_COOKIE['view'] ?: (is_mobile_browser() ? 'mobile' : 'default');
-            
-            if (preg_match('/[^\w]/', $type))
-            {            
-                $type = 'default';
-            }
-            static::$request_type = $type;
-        }
-        return $type;
+        return static::$request_type;
     }
     
     static function set_request_type($type)

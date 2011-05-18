@@ -52,7 +52,16 @@ else
 
 <script type='text/javascript'>
 <?php echo view('js/slideshow'); ?>
-slideshow(<?php echo FeaturedPhoto::get_json_array(); ?>, <?php echo json_encode($defaultPhoto); ?>);
+slideshow(<?php 
+    try
+    {
+        echo FeaturedPhoto::get_json_array(); 
+    }
+    catch (DatabaseException $ex) 
+    {    
+        echo '[]';
+    }
+?>, <?php echo json_encode($defaultPhoto); ?>);
 </script>
 
 <div class='home_sticker'>
