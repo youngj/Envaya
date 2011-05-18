@@ -100,8 +100,6 @@ class Request {
      */
     public $client_ip = '0.0.0.0';    
 
-    public $custom_domain_username;
-   
     /**
      * @var  integer  HTTP response code: 200, 404, 500, etc
      */
@@ -118,17 +116,13 @@ class Request {
     public $headers = array();
     
     /**
-     * @var  string the URI of the request, possibly after rewriting
+     * @var  string the URI of the request
      */
     public $uri;    
-    
-    public $original_uri;
     
     public $host;
     
     public $query_string;
-    
-    public $init_exception;
     
     /**
      * Main request singleton instance, with parameters determined from the HTTP request.
@@ -175,31 +169,10 @@ class Request {
         return Request::$instance;
     }
 
-    public function __construct($uri, $options)
+    public function __construct($uri, $options = null)
     {
-        $this->original_uri = $uri;
-    
-        $host = @$options['host'];    
-        try
-        {
-            $username = OrgDomainName::get_username_for_host($host);
-        }
-        catch (Exception $ex)
-        {
-            $this->init_exception = $ex;
-            $username = null;
-        }
+        $this->uri = $uri;
         
-        if ($username)
-        {
-            $this->custom_domain_username = $username;
-            $this->uri = "/{$username}{$uri}";
-        }
-        else
-        {
-            $this->uri = $uri;
-        }
-    
         if ($options)
         {
             foreach ($options as $name => $value)
@@ -260,13 +233,7 @@ class Request {
 
     public function full_original_url()
     {
-        return "{$this->protocol}://{$this->host}{$this->original_uri}{$this->query_string}";
-    }
-    
-    public function full_rewritten_url()
-    {
-        $domain = Config::get('domain');        
-        return "{$this->protocol}://$domain/{$this->uri}{$this->query_string}";
+        return "{$this->protocol}://{$this->host}{$this->uri}{$this->query_string}";
     }
     
     public function is_post()

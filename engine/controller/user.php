@@ -109,7 +109,7 @@ abstract class Controller_User extends Controller
         $this->page_draw_vars['theme_name'] = $theme_name;
         $this->page_draw_vars['site_name'] = $org->name;
         $this->page_draw_vars['site_url'] = $org->get_url();
-        $this->page_draw_vars['login_url'] = url_with_param($this->request->full_rewritten_url(), 'login', 1);
+        $this->page_draw_vars['login_url'] = url_with_param($this->full_rewritten_url(), 'login', 1);
         
         if (Views::get_request_type() == 'default')
         {

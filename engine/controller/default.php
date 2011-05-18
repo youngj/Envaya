@@ -25,11 +25,15 @@ class Controller_Default extends Controller
         try
         {
             $request = $this->request;
-            if ($request->init_exception)
+            
+            $username = OrgDomainName::get_username_for_host($request->host);            
+            if ($username)
             {
-                throw $request->init_exception;
+                $uri = "/{$username}{$uri}";
             }
-        
+            
+            $this->params['rewritten_uri'] = $uri;
+            
             if (@$_GET['login'] && !Session::isloggedin())
             {
                 $this->force_login();

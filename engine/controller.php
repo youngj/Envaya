@@ -81,6 +81,16 @@ abstract class Controller {
         throw new NotFoundException();
     }
     
+    public function full_rewritten_url()
+    {
+        $domain = Config::get('domain');        
+        $request = $this->get_request();
+        $base_uri = $this->param('rewritten_uri');
+        
+        return "{$request->protocol}://{$domain}/{$base_uri}{$request->query_string}";
+    }
+        
+    
     /*
      * Performs the action for the route that matched the request URI.
      *
@@ -421,7 +431,7 @@ abstract class Controller {
 
     function force_login($msg = '')
     {
-        $next = $this->request->full_rewritten_url();
+        $next = $this->full_rewritten_url();
         
         $args = array();
         
