@@ -40,7 +40,7 @@ class Controller_Admin extends Controller_Simple
         $email = EmailTemplate::get_by_guid(get_input('email')) ?: EmailTemplate::query()->where('active<>0')->get();
         if (!$email)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
 
         $this->page_draw(array(
@@ -56,7 +56,7 @@ class Controller_Admin extends Controller_Simple
 
         if (!$email)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
         
         echo view('emails/template', array(

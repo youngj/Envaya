@@ -19,21 +19,23 @@ class Action_Discussion_Edit extends Action
             SessionMessages::add(__('discussions:topic_deleted'));            
             
             $widget = $org->get_widget_by_class('Discussions');
-            forward($widget->get_edit_url());
+            $this->redirect($widget->get_edit_url());
         }
-
-        $subject = get_input('subject');
-        if (!$subject)
-        {
-            return SessionMessages::add_error(__('discussions:subject_missing'));
+        else
+        {        
+            $subject = get_input('subject');
+            if (!$subject)
+            {
+                throw new ValidationException(__('discussions:subject_missing'));
+            }
+            
+            $topic->subject = $subject;
+            $topic->language = GoogleTranslate::guess_language($subject);
+            $topic->save();
+            
+            SessionMessages::add(__('discussions:topic_saved'));                    
+            $this->redirect($topic->get_edit_url());   
         }
-        
-        $topic->subject = $subject;
-        $topic->language = GoogleTranslate::guess_language($subject);
-        $topic->save();
-        
-        SessionMessages::add(__('discussions:topic_saved'));                    
-        forward($topic->get_edit_url());   
     }
 
     function render()

@@ -61,7 +61,7 @@ class Controller_Translate extends Controller
         $language = InterfaceLanguage::query()->where('code = ?', $code)->get();
         if (!$language)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
         $this->params['language'] = $language;
     }
@@ -75,7 +75,7 @@ class Controller_Translate extends Controller
         $group = $language->query_groups()->where('name = ?', $group_name)->get();
         if (!$group)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
         $this->params['group'] = $group;
     }
@@ -89,7 +89,7 @@ class Controller_Translate extends Controller
         $key = $group->get_key_by_name($key_name);
         if (!$key)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
         $this->params['key'] = $key;
     }
@@ -141,12 +141,12 @@ class Controller_Translate extends Controller
         $user = User::get_by_guid($this->param('guid'));
         if (!$user)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
         $stats = $language->get_stats_for_user($user);
         if (!$stats->guid)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
     
         return $this->page_draw(array(
@@ -245,7 +245,7 @@ class Controller_Translate extends Controller
         $comment = InterfaceKeyComment::get_by_guid($guid);
         if (!$comment || !$comment->can_edit())
         {
-            redirect_back_error(__('comment:not_deleted'));
+            throw new RedirectException(__('comment:not_deleted'));
         }
         
         $comment->disable();
@@ -253,7 +253,7 @@ class Controller_Translate extends Controller
 
         $container = $comment->get_container_entity();
         SessionMessages::add(__('comment:deleted'));            
-        forward($container->get_url());
+        $this->redirect($container->get_url());
     }    
     
     function action_comments()

@@ -11,7 +11,7 @@ class Action_Admin_ActivateEmailTemplate extends Action
         $email = EmailTemplate::get_by_guid(get_input('email'));
         if (!$email)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
         $this->email = $email;        
     }
@@ -29,6 +29,6 @@ class Action_Admin_ActivateEmailTemplate extends Action
         $email->save();
      
         SessionMessages::add('activated');
-        forward('/admin/emails');        
+        $this->redirect('/admin/emails');        
     }
 }    

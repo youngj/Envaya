@@ -120,47 +120,7 @@
     {
         return htmlspecialchars($val, ENT_QUOTES, 'UTF-8');
     }
-
-    function redirect_back()
-    {
-        forward($_SERVER['HTTP_REFERER']);
-    }
-
-    function redirect_back_error($msg)
-    {
-        SessionMessages::add_error($msg);
-        Session::save_input();
-        redirect_back();
-    }    
-        
-    /**
-     * Adds messages to the session so they'll be carried over, and forwards the browser.
-     *
-     * @param string $location URL to forward to browser to
-     * @return nothing
-     */
-
-    function forward($location = "/")
-    {
-        if (!headers_sent())
-        {
-            if ($location && $location[0] == '/')
-            {
-                $location = substr($location, 1);
-            }
-
-            if ((substr_count($location, 'http://') == 0) && (substr_count($location, 'https://') == 0))
-            {
-                $location = Config::get('url') . $location;
-            }
-
-            SessionMessages::save();
-
-            header("Location: {$location}");
-        }
-        exit;
-    }
-            
+                    
     function get_constant_name($val, $prefix)
     {
         foreach (get_defined_constants() as $name => $value) 

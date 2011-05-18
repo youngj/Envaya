@@ -44,7 +44,7 @@ class Action_SendMessage extends Action
             throw new ValidationException(__("message:not_sent"));
         }
 
-        forward($recipient->get_url());
+        $this->redirect($recipient->get_url());
     }
 
     function render()

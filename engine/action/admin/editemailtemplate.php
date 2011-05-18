@@ -11,7 +11,7 @@ class Action_Admin_EditEmailTemplate extends Action
         $email = EmailTemplate::get_by_guid(get_input('email'));
         if (!$email)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
         $this->email = $email;
     }
@@ -24,7 +24,7 @@ class Action_Admin_EditEmailTemplate extends Action
         {
             $email->disable();
             $email->save();
-            forward("/admin/emails");
+            $this->redirect("/admin/emails");
         }
         else
         {
@@ -32,8 +32,8 @@ class Action_Admin_EditEmailTemplate extends Action
             $email->set_content(get_input('content'));
             $email->from = get_input('from');
             $email->save();
+            $this->redirect("/admin/view_email?email={$email->guid}");       
         }
-        forward("/admin/view_email?email={$email->guid}");       
     }
 
     function render()

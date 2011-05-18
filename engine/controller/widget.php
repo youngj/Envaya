@@ -51,7 +51,7 @@ class Controller_Widget extends Controller_User
         }
         else
         {
-            $this->not_found();
+            throw new NotFoundException();
         }       
     }
         
@@ -116,7 +116,7 @@ class Controller_Widget extends Controller_User
         
         if ($sibling)
         {
-            forward($sibling->get_url());
+            return $this->redirect($sibling->get_url());
         }
         
         $sibling = $container->query_published_widgets()
@@ -125,7 +125,7 @@ class Controller_Widget extends Controller_User
 
         if ($sibling)
         {
-            forward($sibling->get_url());
+            return $this->redirect($sibling->get_url());
         }
     }    
 }

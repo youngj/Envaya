@@ -27,8 +27,7 @@ class Action_DeleteInterfaceTranslation extends Action
             $language->get_stats_for_user($user)->update();        
         }
         
-        SessionMessages::add(__('itrans:deleted'));
-        
-        redirect_back();
+        SessionMessages::add(__('itrans:deleted'));        
+        $this->redirect();
     }
 }

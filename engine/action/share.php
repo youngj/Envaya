@@ -15,8 +15,7 @@ class Action_Share extends Action
             
         if ($recentSharedEmails > 60)
         {
-            SessionMessages::add_error(__('share:rate_limit_exceeded'));   
-            forward("/pg/blank");
+            throw new RedirectException(__('share:rate_limit_exceeded'), "/pg/blank");
         }        
     }
     
@@ -118,7 +117,7 @@ class Action_Share extends Action
             SessionMessages::add(
                 ($mail->status == OutgoingMail::Held) ? __('message:held') : __('message:sent')
             );
-            forward('/pg/blank');
+            $this->redirect('/pg/blank');
         }
         else
         {

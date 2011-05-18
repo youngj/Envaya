@@ -8,7 +8,7 @@ class Action_PostComment extends Action
         
         if (!$widget->guid || !$widget->is_enabled())
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }        
         
 		$comments_url = $widget->get_url()."?comments=1";
@@ -26,16 +26,12 @@ class Action_PostComment extends Action
         
         if (!$content)
         {   
-            SessionMessages::add_error(__('comment:empty'));
-			Session::save_input();
-			return forward($comments_url);
+			throw new RedirectException(__('comment:empty'), $comments_url);
         }
         
 		if ($widget->query_comments()->where('content = ?', $content)->exists())
 		{
-			SessionMessages::add_error(__('comment:duplicate'));
-			Session::save_input();
-			return forward($comments_url);
+			throw new RedirectException(__('comment:duplicate'), $comments_url);
 		}
 		
         if (!$this->check_captcha())
@@ -87,7 +83,6 @@ class Action_PostComment extends Action
         $mail->send_to_admin();
 		
 		SessionMessages::add(__('comment:success'));
-		forward($comments_url);
-        return true;
+		$this->redirect($comments_url);        
 	}    
 }

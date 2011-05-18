@@ -78,7 +78,7 @@ abstract class Controller {
                 return $this->execute_route($route, $params);                
             }
         }
-        $this->not_found();
+        throw new NotFoundException();
     }
     
     /*
@@ -110,7 +110,7 @@ abstract class Controller {
             $cls = "Controller_{$controller}";
             if (!class_exists($cls))
             {
-                return $this->not_found();
+                throw new NotFoundException();
             }
             $controller = new $cls($this->request, $this);
             $controller->execute($params['rest']);
@@ -121,7 +121,7 @@ abstract class Controller {
             $method = "action_{$action}";
             if (!method_exists($this, $method))
             {
-                return $this->not_found();                
+                throw new NotFoundException();
             }
             $this->$method();                       
         }
@@ -277,27 +277,55 @@ abstract class Controller {
         return $canonical_url;        
     }
     
+    /**
+     * Adds messages to the session so they'll be carried over, and forwards the browser.
+     */    
+    function redirect($url = null, $status = 302)
+    {
+        if (!$url)
+        {
+            $url = @$_SERVER['HTTP_REFERER'] ?: "/";
+        }
+    
+        if ($url && $url[0] == '/')
+        {
+            $url = substr($url, 1);
+        }
+
+        if (!preg_match('#^http(s)?://#', $url))
+        {
+            $url = Config::get('url').$url;
+        }
+
+        SessionMessages::save();
+
+        $request = $this->request;    
+        $request->status = $status;
+        $request->headers['Location'] = $url;               
+    }
+    
     /*
-     * Displays a friendly 404 page and ends the request.
+     * Displays a friendly 404 page, unless the url matches a global NotFoundRedirect pattern,
+     * in which case it redirects the user to another page.
      */            
-    public function not_found()
+    function not_found()
     {
         $request = $this->request;
         $redirect_url = NotFoundRedirect::get_redirect_url($request->uri);
         if ($redirect_url)
         {
-            return forward($redirect_url);
+            $this->redirect($redirect_url);
         }
-        
-        header("HTTP/1.1 404 Not Found");        
-        $this->page_draw(array(
-            'title' => __('page:notfound'),
-            'content' => view('section', array('content' => __('page:notfound:details')."<br/><br/><br/>"))
-        ));        
-        echo $this->request->response;
-        exit;    
+        else
+        {        
+            $request->status = 404;        
+            $this->page_draw(array(
+                'title' => __('page:notfound'),
+                'content' => view('section', array('content' => __('page:notfound:details')."<br/><br/><br/>"))
+            ));                
+        }
     }
-        
+            
     public function add_generic_footer()
     {
         $footer = PageContext::get_submenu('footer');
@@ -320,7 +348,7 @@ abstract class Controller {
         }
         catch (ValidationException $ex)
         {
-            redirect_back_error($ex->getMessage());
+            throw new RedirectException($ex->getMessage());
         }        
     }
 
@@ -335,7 +363,7 @@ abstract class Controller {
         {
             $url = $request->full_original_url();
             $url = str_replace("https://", "http://", $url);
-            forward($url);
+            throw new RedirectException('', $url);
         }
     }
     
@@ -349,7 +377,7 @@ abstract class Controller {
         if (!$request->is_post() && !$request->is_secure() && Config::get('ssl_enabled') && !is_mobile_browser())
         {
             $url = secure_url($request->full_original_url());
-            forward($url);
+            throw new RedirectException('', $url);
         }
     }
     
@@ -364,7 +392,7 @@ abstract class Controller {
         }
     }
 
-    function force_login()
+    function force_login($msg = '')
     {
         $next = $this->request->full_rewritten_url();
         
@@ -385,14 +413,9 @@ abstract class Controller {
             $args['next'] = $next;
         }
         
-        if ($args)
-        {
-            forward("pg/login?".http_build_query($args));
-        }
-        else
-        {
-            forward("pg/login");
-        }
+        $query = $args ? ("?".http_build_query($args)) : "";
+        
+        throw new RedirectException($msg, "/pg/login{$query}");      
     }
     
     /*
@@ -402,12 +425,7 @@ abstract class Controller {
     {
         if (!Session::isadminloggedin())
         {
-            if (Session::isloggedin())
-            {
-                SessionMessages::add_error(__('page:noaccess'));
-            }
-        
-            $this->force_login();
+            $this->force_login(Session::isloggedin() ? __('page:noaccess') : '');
         }
     }
     

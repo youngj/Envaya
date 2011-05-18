@@ -56,7 +56,7 @@ class Action_AddPhotos extends Action
         }
         
         SessionMessages::add(__('upload:photos:success'));
-        forward($org->get_url()."/news");
+        $this->redirect($org->get_url()."/news");
     }
 
     function render()

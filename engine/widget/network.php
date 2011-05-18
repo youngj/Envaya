@@ -71,7 +71,7 @@ class Widget_Network extends Widget
     
     private function duplicate_error($relationship)
     {
-        return redirect_back_error(strtr(__('network:duplicate'), array(
+        throw new RedirectException(strtr(__('network:duplicate'), array(
                 '{name}' => $relationship->get_subject_name(),
                 '{type}' => $relationship->msg('header')
         )));
@@ -134,7 +134,7 @@ class Widget_Network extends Widget
         
             if ($org->guid == $relationship->subject_guid)
             {
-                return redirect_back_error($relationship->msg('no_self'));
+                throw new RedirectException($relationship->msg('no_self'));
             }
         
             if ($org->query_relationships()
@@ -167,7 +167,7 @@ class Widget_Network extends Widget
             '{name}' => $relationship->get_subject_name(),
             '{type}' => $relationship->msg('header')
         )));
-        forward($this->get_edit_url());    
+        throw new RedirectException('', $this->get_edit_url());    
     }
     
     private function clean_url($url)
@@ -214,7 +214,7 @@ class Widget_Network extends Widget
             )));
         }       
         
-        return forward($this->get_edit_url());        
+        throw new RedirectException('', $this->get_edit_url());        
     }
     
     private function get_current_relationship($org)
@@ -274,7 +274,7 @@ class Widget_Network extends Widget
         $this->save();
         
         SessionMessages::add(__('network:relationship_saved'));
-        return forward($this->get_edit_url());
+        throw new RedirectException('', $this->get_edit_url());
     }    
     
     private function edit_relationship_view()

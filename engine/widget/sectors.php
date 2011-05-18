@@ -28,11 +28,11 @@ class Widget_Sectors extends Widget
         $sectors = get_input_array('sector');
         if (sizeof($sectors) == 0)
         {
-            return redirect_back_error(__("register:sector:blank"));
+            throw new ValidationException(__("register:sector:blank"));
         }
         else if (sizeof($sectors) > 5)
         {
-            return redirect_back_error(__("register:sector:toomany"));
+            throw new ValidationException(__("register:sector:toomany"));
         }
 
         $old_sectors = $org->get_sectors();

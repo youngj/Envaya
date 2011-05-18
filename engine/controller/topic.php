@@ -37,7 +37,7 @@ class Controller_Topic extends Controller_User
         else
         {
             $this->use_public_layout();
-            $this->not_found();
+            throw new NotFoundException();
         }
     }
     
@@ -104,12 +104,12 @@ class Controller_Topic extends Controller_User
         $message = $topic->query_messages()->guid((int)get_input('guid'))->get();
         if (!$message)
         {
-            return redirect_back();
+            throw new RedirectException();
         }
         
         if (!$message->can_edit())
         {
-            return redirect_back_error(__('page:noaccess'));
+            throw new RedirectException(__('page:noaccess'));
         }
         
         $message->disable();
@@ -122,14 +122,14 @@ class Controller_Topic extends Controller_User
             $topic->disable();
             $topic->save();
             
-            forward($this->get_org()->get_widget_by_class('Discussions')->get_url());
+            $this->redirect($this->get_org()->get_widget_by_class('Discussions')->get_url());
         }
         else
         {
             $topic->refresh_attributes();
             $topic->save();                           
 
-            redirect_back();
+            $this->redirect();
         }
     }    
 }

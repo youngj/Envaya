@@ -22,13 +22,6 @@ class Action_Admin_DeleteEntity extends Action
         SessionMessages::add(sprintf(__('entity:delete:success'), $guid));
 
         $next = get_input('next');
-        if ($next)
-        {
-            forward($next);
-        }
-        else
-        {
-            redirect_back();
-        }
+        $this->redirect($next);
     }
 }    

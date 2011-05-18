@@ -22,8 +22,7 @@ class Action_ForgotPassword extends Action
         {
             if (!$user->email)
             {
-                SessionMessages::add_error(__('login:resetreq:no_email'));
-                forward("page/contact");
+                throw new RedirectException(__('login:resetreq:no_email'), "page/contact");
             }
 
             $user->set_metadata('passwd_conf_code', generate_random_code(24)); // avoid making url too long for 1 line in email
@@ -36,14 +35,12 @@ class Action_ForgotPassword extends Action
             
             $mail->send_to_user($user);
             SessionMessages::add(__('login:resetreq:success'));
+            $this->redirect('/');            
         }
         else
         {
-            SessionMessages::add_error(sprintf(__('login:resetreq:notfound'), $username));
-            return $this->render();
+            throw new ValidationException(sprintf(__('login:resetreq:notfound'), $username));
         }
-
-        forward();
     }
 
     function render()

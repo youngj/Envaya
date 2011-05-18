@@ -58,6 +58,6 @@ class Action_AddInterfaceTranslation extends Action
         $language->get_stats_for_user($user)->update();
         
         SessionMessages::add(__('itrans:posted'));
-        redirect_back();
+        $this->redirect();
     }
 }

@@ -22,30 +22,50 @@ class Controller_Default extends Controller
     
     public function execute($uri)
     {
-        if (@$_GET['login'] && !Session::isloggedin())
+        try
         {
-            $this->force_login();
-        }
+            if (@$_GET['login'] && !Session::isloggedin())
+            {
+                $this->force_login();
+            }
 
-        if (@$_GET['lang'])
-        {
-            $this->change_viewer_language($_GET['lang']);
-        }    
-        
-        $viewtype = @$_GET['view'];
-        if ($viewtype && Views::is_browsable_type($viewtype))
-        {
-            set_cookie('view', $viewtype);
-        }        
-        
-        // work around flash uploader cookie bug, where the session cookie is sent as a POST field
-        // instead of as a cookie
-        if (@$_POST['session_id'])
-        {
-            $_COOKIE['envaya'] = $_POST['session_id'];
+            if (@$_GET['lang'])
+            {
+                $this->change_viewer_language($_GET['lang']);
+            }    
+            
+            $viewtype = @$_GET['view'];
+            if ($viewtype && Views::is_browsable_type($viewtype))
+            {
+                set_cookie('view', $viewtype);
+            }        
+            
+            // work around flash uploader cookie bug, where the session cookie is sent as a POST field
+            // instead of as a cookie
+            if (@$_POST['session_id'])
+            {
+                $_COOKIE['envaya'] = $_POST['session_id'];
+            }
+            
+            parent::execute($uri);
         }
-        
-        parent::execute($uri);
+        catch (NotFoundException $ex)
+        {
+            $this->not_found();
+        }
+        catch (RedirectException $ex)
+        {
+            $msg = $ex->getMessage();
+            if ($msg)
+            {
+                SessionMessages::add_error($msg);
+            }
+            if ($this->request->is_post())
+            {
+                Session::save_input();
+            }
+            $this->redirect($ex->url, $ex->status);
+        }
     }
     
     function init_user_by_username()
@@ -65,7 +85,7 @@ class Controller_Default extends Controller
         }
         else
         {
-            $this->not_found();
+            throw new NotFoundException();
         }
     }
 }

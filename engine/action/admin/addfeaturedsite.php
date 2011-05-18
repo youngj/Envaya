@@ -12,7 +12,7 @@ class Action_Admin_AddFeaturedSite extends Action
         $user = User::get_by_username($username);
         if (!$user)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }   
 
         $this->user = $user;
@@ -27,7 +27,7 @@ class Action_Admin_AddFeaturedSite extends Action
         $featuredSite->set_content(get_input('content'));
         $featuredSite->save();
         SessionMessages::add('featured:created');
-        forward('org/featured');
+        $this->redirect('org/featured');
     }
 
     function render()

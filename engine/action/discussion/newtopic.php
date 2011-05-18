@@ -17,7 +17,7 @@ class Action_Discussion_NewTopic extends Action
             }
             else
             {                
-                return $this->not_found();
+                throw new NotFoundException();
             }
         }                
         
@@ -28,21 +28,19 @@ class Action_Discussion_NewTopic extends Action
             ->get();
         if ($duplicate)
         {
-            return forward($duplicate->get_url());
+            throw new RedirectException('', $duplicate->get_url());
         }               
         
         $subject = get_input('subject');
         if (!$subject)
         {
-            SessionMessages::add_error(__('discussions:subject_missing'));
-            return $this->render();
+            throw new ValidationException(__('discussions:subject_missing'));
         }
         
         $content = get_input('content');
         if (!$content)
         {
-            SessionMessages::add_error(__('discussions:content_missing'));
-            return $this->render();
+            throw new ValidationException(__('discussions:content_missing'));
         }        
         
         if (!$this->check_captcha())
@@ -113,7 +111,7 @@ class Action_Discussion_NewTopic extends Action
         SessionMessages::add_html(__('discussions:topic_added')
             . view('discussions/invite_link', array('topic' => $topic)));        
 
-        forward($topic->get_url());    
+        $this->redirect($topic->get_url());    
 	}
     
     function render()
@@ -124,7 +122,7 @@ class Action_Discussion_NewTopic extends Action
         $widget = $org->get_widget_by_class('Discussions');
         if (!$widget->is_enabled() && !$widget->can_edit())
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
 
         $this->page_draw(array(

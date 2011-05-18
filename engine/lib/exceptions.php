@@ -7,7 +7,20 @@ class CallException extends Exception {}
 class DataFormatException extends Exception {}
 class NotImplementedException extends CallException {}
 class InvalidParameterException extends CallException {}
-class NotFoundException extends Exception {}
+
+class RequestAbortedException extends Exception {}
+class NotFoundException extends RequestAbortedException {}
+class RedirectException extends RequestAbortedException 
+{
+    public $url; /* null url indicates redirect to http referrer, if possible */
+    public $status;
+    function __construct($msg, $url = null, $status = 302)
+    {
+        $this->url = $url;
+        $this->status = $status;
+        parent::__construct($msg);
+    }
+}
 
 class ValidationException extends Exception 
 {

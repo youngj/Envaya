@@ -12,7 +12,7 @@ class Action_Admin_SendEmailTemplate extends Action
         $email = EmailTemplate::get_by_guid(get_input('email'));
         if (!$email)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
                 
         $org_guids = get_input_array('orgs');
@@ -28,7 +28,7 @@ class Action_Admin_SendEmailTemplate extends Action
             }
         }
         SessionMessages::add("sent $numSent emails");
-        forward(get_input('from') ?: "/admin/batch_email?email={$email->guid}");
+        $this->redirect(get_input('from') ?: "/admin/batch_email?email={$email->guid}");
     }
 
     function render()
@@ -37,7 +37,7 @@ class Action_Admin_SendEmailTemplate extends Action
             ?: EmailTemplate::query()->where('active<>0')->get();
         if (!$email)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
         
         $org_guids = get_input_array('orgs');

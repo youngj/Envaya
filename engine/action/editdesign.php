@@ -51,7 +51,7 @@ class Action_EditDesign extends Action
         SessionMessages::add(__("design:saved"));
         $org->save();
         
-        forward($org->get_url());
+        $this->redirect($org->get_url());
     }
 
     function render()

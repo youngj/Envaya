@@ -81,6 +81,6 @@ class Action_Admin_TranslateContent extends Action
 
         SessionMessages::add(__("itrans:posted"));
 
-        forward(get_input('from') ?: $entity->get_url());
+        $this->redirect(get_input('from') ?: $entity->get_url());
     }
 }

@@ -292,12 +292,12 @@ class Controller_Org extends Controller_Simple
         if ($loggedInUser && !($loggedInUser instanceof Organization))
         {
             logout();
-            forward("org/new?invite=".urlencode($invite_code));
+            throw new RedirectException('', "org/new?invite=".urlencode($invite_code));
         }
 
         if ($step == 3 && !$loggedInUser)
         {
-            forward('pg/login');
+            return $this->force_login();
         }
 
         if ($loggedInUser  && $step < 3)

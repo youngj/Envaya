@@ -21,13 +21,12 @@ class Action_Login extends Action
 
         $next = url_with_param($next, '_lt', time());
 
-        forward($next);    
+        $this->redirect($next);    
     }
     
     protected function login_failure()
     {
-        SessionMessages::add_error_html(view('account/login_error'));
-        return $this->render();
+        throw new ValidationException(view('account/login_error'), true);
     }
 
     function process_input()

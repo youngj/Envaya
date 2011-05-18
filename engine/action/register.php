@@ -60,7 +60,7 @@ class Action_Register extends Action
         SessionMessages::add(__('register:created_ok'));                
         if (Session::isadminloggedin())
         {            
-            forward('/admin/user');
+            $this->redirect('/admin/user');
         }
         else
         {
@@ -72,7 +72,7 @@ class Action_Register extends Action
     function redirect_next($user)
     {
         $next = get_input('next');
-        forward($next ?: $user->get_url());
+        throw new RedirectException('', $next ?: $user->get_url());
     }
     
     function render()

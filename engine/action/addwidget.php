@@ -35,11 +35,13 @@ class Action_AddWidget extends Action
         
         if ($draft)
         {
-            forward($widget->get_edit_url());        
+            $this->redirect($widget->get_edit_url());        
         }        
-        
-        SessionMessages::add(__('widget:save:success'));                
-        forward($widget->get_url());
+        else
+        {
+            SessionMessages::add(__('widget:save:success'));                
+            $this->redirect($widget->get_url());
+        }
     }
 
     function render()

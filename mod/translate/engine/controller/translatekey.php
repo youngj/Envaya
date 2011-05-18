@@ -27,7 +27,7 @@ class Controller_TranslateKey extends Controller
         $translation = $key->query_translations()->guid($this->param('translation_guid'))->get();
         if (!$translation)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
         $this->params['translation'] = $translation;
     }
@@ -122,10 +122,10 @@ class Controller_TranslateKey extends Controller
                 
                 if ($this->get_key_index($filtered_keys, $next_key) >= 0)
                 {
-                    forward($next_key->get_url());
+                    return $this->redirect($next_key->get_url());
                 }            
             }
         }                
-        forward($group->get_url());
+        $this->redirect($group->get_url());
     }
 }

@@ -14,7 +14,7 @@ class Action_Admin_ChangeOrgApproval extends Action
 
         if (!$org)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
         
         $approvedBefore = $org->is_approved();
@@ -42,6 +42,6 @@ class Action_Admin_ChangeOrgApproval extends Action
 
         SessionMessages::add(__('approval:changed'));
 
-        forward($org->get_url());
+        $this->redirect($org->get_url());
     }
 }

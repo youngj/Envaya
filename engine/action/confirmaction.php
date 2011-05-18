@@ -10,15 +10,17 @@ class Action_ConfirmAction extends Action
         $ok_url = get_input('ok');
         $cancel_url = get_input('cancel');
 
-        // hack to handle redirect_back or redirect_back_error by going back to previous page
+        // hack to handle RedirectException by going back to previous page
         if (Session::get('messages'))
         {
-            forward($cancel_url);
+            $this->redirect($cancel_url);
         }        
-        
-        $this->page_draw(array(
-            'title' => $message,
-            'content' => view("output/confirm_action", array('ok_url' => $ok_url, 'cancel_url' => $cancel_url))
-        ));        
+        else
+        {        
+            $this->page_draw(array(
+                'title' => $message,
+                'content' => view("output/confirm_action", array('ok_url' => $ok_url, 'cancel_url' => $cancel_url))
+            ));        
+        }
     }
 }    

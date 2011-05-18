@@ -13,7 +13,7 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
             $this->update_existing_relationships($invite_code);
         }        
         
-        forward("/org/new?step=3");    
+        $this->redirect("/org/new?step=3");    
     }
     
     protected function get_country()
@@ -23,10 +23,8 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
     }
     
     protected function handle_validation_exception($ex)
-    {
-        SessionMessages::add_error($ex->getMessage());
-        Session::save_input();
-        forward(Config::get('secure_url')."org/new?step=2");    
+    {        
+        throw new RedirectException($ex->getMessage(), Config::get('secure_url')."org/new?step=2");    
     }
 
     private function update_existing_relationships($invite_code)

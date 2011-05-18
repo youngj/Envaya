@@ -46,6 +46,6 @@ class Action_AddInterfaceKeyComment extends Action
         $key->get_container_entity()->update();
         
         SessionMessages::add(__('comment:success'));
-        redirect_back();
+        $this->redirect();
     }
 }

@@ -16,7 +16,7 @@ class Action_Admin_ManageLanguage extends Action
             $language->save();
             
             SessionMessages::add(__('itrans:language_deleted'));
-            forward('/tr/admin');
+            $this->redirect('/tr/admin');
         }
         else
         {
@@ -54,7 +54,7 @@ class Action_Admin_ManageLanguage extends Action
             }
             
             SessionMessages::add(__('itrans:language_saved'));            
-            forward($language->get_url());
+            $this->redirect($language->get_url());
         }        
     }
     

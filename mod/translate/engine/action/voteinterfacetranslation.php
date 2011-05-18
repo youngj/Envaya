@@ -36,6 +36,6 @@ class Action_VoteInterfaceTranslation extends Action
         $language = $key->get_language();
         $language->get_stats_for_user($user)->update();        
                 
-        redirect_back();
+        $this->redirect();
     }
 }

@@ -64,7 +64,7 @@ class Controller_UserSite extends Controller_User
                 return $this->index_widget($widget);
             }                   
         }
-        return $this->not_found();
+        throw new NotFoundException();
     }
         
     function action_edit()
@@ -77,11 +77,11 @@ class Controller_UserSite extends Controller_User
         $widget = $this->get_org()->get_widget_by_name($widgetName);
         if ($widget->is_enabled())
         {
-            forward($widget->get_edit_url());
+            $this->redirect($widget->get_edit_url());
         }
         else
         {
-            $this->not_found();
+            throw new NotFoundException();
         }
     }
     
@@ -136,7 +136,7 @@ class Controller_UserSite extends Controller_User
         }
         else
         {
-            forward($user->get_url());
+            throw new RedirectException('', $user->get_url());
         }
         
         $this->page_draw(array(
@@ -196,11 +196,11 @@ class Controller_UserSite extends Controller_User
         $domain_name = get_input('domain_name');
         if (OrgDomainName::query()->where('domain_name = ?', $domain_name)->exists())
         {
-            redirect_back_error(__('domains:duplicate'));
+            throw new RedirectException(__('domains:duplicate'));
         }
         if (preg_match('/[^\w\.\-]/', $domain_name))
         {
-            redirect_back_error(__('domains:invalid'));
+            throw new RedirectException(__('domains:invalid'));
         }
         
         $org_domain_name = new OrgDomainName();
@@ -208,7 +208,7 @@ class Controller_UserSite extends Controller_User
         $org_domain_name->guid = $this->get_org()->guid;
         $org_domain_name->save();
         SessionMessages::add(__('domains:added'));
-        redirect_back();
+        $this->redirect();
     }
     
     function index_delete_domain()
@@ -219,11 +219,11 @@ class Controller_UserSite extends Controller_User
         $org_domain_name = OrgDomainName::query()->where('id = ?', (int)get_input('id'))->get();
         if (!$org_domain_name)
         {
-            redirect_back_error(__('domains:not_found'));
+            throw new RedirectException(__('domains:not_found'));
         }
         $org_domain_name->delete();
         SessionMessages::add(__('domains:deleted'));
-        redirect_back();
+        $this->redirect();
     }
 
     function index_share()

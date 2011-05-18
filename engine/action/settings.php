@@ -16,7 +16,7 @@ class Action_Settings extends Action
             $user->disable();
             $user->save();
             SessionMessages::add(__('user:deleted'));
-            forward('/admin/user');
+            return $this->redirect('/admin/user');
         }
 
         $name = get_input('name');
@@ -68,7 +68,7 @@ class Action_Settings extends Action
         }
 
         $user->save();
-        forward($user->get_url());
+        $this->redirect($user->get_url());
     }
 
     function render()

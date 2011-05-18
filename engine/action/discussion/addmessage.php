@@ -14,21 +14,19 @@ class Action_Discussion_AddMessage extends Action
             ->get();
         if ($duplicate)
         {
-            return forward($topic->get_url());
+            throw new RedirectException('', $topic->get_url());
         }               
         
         $name = get_input('name');
         if (!$name)
         {
-            SessionMessages::add_error(__('register:user:no_name'));
-            return $this->render();
+            throw new ValidationException(__('register:user:no_name'));
         }
 
         $content = get_input('content');
         if (!$content)
         {
-            SessionMessages::add_error(__('discussions:content_missing'));
-            return $this->render();
+            throw new ValidationException(__('discussions:content_missing'));
         }
         
         if (!$this->check_captcha())
@@ -89,7 +87,7 @@ class Action_Discussion_AddMessage extends Action
         SessionMessages::add_html(__('discussions:message_added')
             . view('discussions/invite_link', array('topic' => $topic)));        
         
-        forward($topic->get_url());    
+        $this->redirect($topic->get_url());    
     }
     
     function render()

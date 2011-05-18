@@ -16,7 +16,7 @@ class Action_Admin_AddEmailTemplate extends Action
         $email->subject = get_input('subject');        
         $email->set_content($content);
         $email->save();
-        forward("/admin/view_email?email={$email->guid}");
+        $this->redirect("/admin/view_email?email={$email->guid}");
     }
 
     function render()

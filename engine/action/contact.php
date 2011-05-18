@@ -50,11 +50,6 @@ class Action_Contact extends Action
         $mail->send();
         
         SessionMessages::add(__('message:feedback_sent'));
-        forward($this->get_redirect_url());
-    }    
-    
-    protected function handle_validation_exception($ex)
-    {
-        redirect_back_error($ex->getMessage());
+        $this->redirect($this->get_redirect_url());
     }    
 }    

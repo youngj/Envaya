@@ -25,7 +25,7 @@ class Controller_TranslateAdmin extends Controller
         $lang = $this->param('lang');
         if (!$lang)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
         
         $language = InterfaceLanguage::query()

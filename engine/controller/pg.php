@@ -16,7 +16,7 @@ class Controller_Pg extends Controller_Simple {
     function action_logout()
     {
         logout();
-        forward();
+        $this->redirect('/');
     }    
     
     function action_register()
@@ -47,19 +47,19 @@ class Controller_Pg extends Controller_Simple {
 
         if (!$amount)
         {
-            redirect_back_error("Please select a donation amount.");
+            throw new RedirectException("Please select a donation amount.");
         }
         if (!$values['Name'])
         {
-            redirect_back_error("Please enter your Full Name.");
+            throw new RedirectException("Please enter your Full Name.");
         }
         if (!$values['phone'])
         {
-            redirect_back_error("Please enter your Phone Number.");
+            throw new RedirectException("Please enter your Phone Number.");
         }
         if (!$values['Email'])
         {
-            redirect_back_error("Please enter your Email Address.");
+            throw new RedirectException("Please enter your Email Address.");
         }
 
         unset($values['_amount']);
@@ -72,7 +72,7 @@ class Controller_Pg extends Controller_Simple {
     function action_dashboard()
     {
         $this->require_login();
-        forward(Session::get_loggedin_user()->get_url()."/dashboard");
+        $this->redirect(Session::get_loggedin_user()->get_url()."/dashboard");
     }
 
     function action_forgot_password()
@@ -126,7 +126,7 @@ class Controller_Pg extends Controller_Simple {
         }
         else
         {
-            $this->not_found();
+            throw new NotFoundException();
         }
     }
 
@@ -144,7 +144,7 @@ class Controller_Pg extends Controller_Simple {
         }
         else
         {
-            $this->not_found();
+            throw new NotFoundException();
         }
     }
 
@@ -163,14 +163,12 @@ class Controller_Pg extends Controller_Simple {
 
             SessionMessages::add(__('comment:deleted'));
             
-            forward($container->get_url());
+            $this->redirect($container->get_url());
         }
         else
         {
-            SessionMessages::add_error(__('comment:not_deleted'));
+            throw new RedirectException(__('comment:not_deleted'));
         }
-        
-        redirect_back();
     }
 
     function action_local_store()
@@ -180,7 +178,7 @@ class Controller_Pg extends Controller_Simple {
 
         if (!($storage_local instanceof Storage_Local))
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
 
         $path = get_input('path');
@@ -191,7 +189,7 @@ class Controller_Pg extends Controller_Simple {
         {
             if (preg_match('/[^\w\.\-]|(\.\.)/', $component))
             {
-                return $this->not_found();
+                throw new NotFoundException();
             }
         }
 
@@ -199,7 +197,7 @@ class Controller_Pg extends Controller_Simple {
 
         if (!is_file($local_path))
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
 
         $mime_type = UploadedFile::get_mime_type($local_path);
@@ -232,7 +230,7 @@ class Controller_Pg extends Controller_Simple {
         $newLang = $_GET['lang'];
         // $this->change_viewer_language($newLang); // unnecessary because done in default controller
         Session::save_input();
-        forward(url_with_param($url, 'lang', $newLang));
+        $this->redirect(url_with_param($url, 'lang', $newLang));
     }
     
     function action_js_revision_content()
@@ -334,7 +332,7 @@ class Controller_Pg extends Controller_Simple {
         
         if (!$feedItem || !$feedItem->can_edit())
         {
-            return redirect_back_error(__('page:notfound:details'));
+            throw new RedirectException(__('page:notfound:details'));
         }
         
         foreach ($feedItem->query_items_in_group()->filter() as $item)
@@ -342,20 +340,6 @@ class Controller_Pg extends Controller_Simple {
             $item->delete();
         }           
         SessionMessages::add(__('feed:item_deleted'));
-        redirect_back();
-    }        
-    
-    function action_manifest()
-    {
-        $this->set_content_type('text/cache-manifest');
-        $this->set_response(view('offline/cache_manifest'));
-    }
-    
-    function action_offline()
-    {
-        $this->page_draw(array(
-            'title' => __('offline:title'),
-            'content' => view('offline/offline')
-        ));       
-    }
+        $this->redirect();
+    }   
 }

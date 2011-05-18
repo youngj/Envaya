@@ -33,7 +33,7 @@ class Action_ChangePassword extends Action
         $user->save();
 
         SessionMessages::add(__('user:password:success'));
-        forward($user->get_url()."/settings");
+        $this->redirect($user->get_url()."/settings");
     }
 
     function render()

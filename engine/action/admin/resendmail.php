@@ -14,10 +14,10 @@ class Action_Admin_ResendMail extends Action
         $mail = OutgoingMail::query()->where('id = ?', $id)->get();
         if (!$mail)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }        
         $mail->send(true);        
         SessionMessages::add(__('email:sent_ok'));
-        forward('/admin/outgoing_mail');
+        $this->redirect('/admin/outgoing_mail');
     }
 }    

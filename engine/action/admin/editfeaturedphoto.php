@@ -11,7 +11,7 @@ class Action_Admin_EditFeaturedPhoto extends Action
         $photo = FeaturedPhoto::get_by_guid(get_input('guid'));        
         if (!$photo)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
         $this->photo = $photo;        
     }
@@ -25,21 +25,23 @@ class Action_Admin_EditFeaturedPhoto extends Action
             $photo->delete();
             
             SessionMessages::add(__("featured_photo:deleted"));
-            return forward("/admin/featured_photos");        
-        }        
-                                
-        $photo->x_offset = (int)get_input('x_offset');
-        $photo->y_offset = (int)get_input('y_offset');
-        $photo->weight = (double)get_input('weight');
-        $photo->image_url = get_input('image_url');        
-        $photo->href = get_input('href');
-        $photo->caption = get_input('caption');
-        $photo->org_name = get_input('org_name');
-        $photo->active = get_input('active') == 'yes' ? 1 : 0;
-        $photo->save();
-        
-        SessionMessages::add(__("featured_photo:saved"));
-        forward("/admin/featured_photos");    
+            $this->redirect("/admin/featured_photos");        
+        }   
+        else
+        {                               
+            $photo->x_offset = (int)get_input('x_offset');
+            $photo->y_offset = (int)get_input('y_offset');
+            $photo->weight = (double)get_input('weight');
+            $photo->image_url = get_input('image_url');        
+            $photo->href = get_input('href');
+            $photo->caption = get_input('caption');
+            $photo->org_name = get_input('org_name');
+            $photo->active = get_input('active') == 'yes' ? 1 : 0;
+            $photo->save();
+            
+            SessionMessages::add(__("featured_photo:saved"));
+            $this->redirect("/admin/featured_photos");    
+        }
     }
 
     function render()

@@ -58,7 +58,7 @@ class Action_ChangeUsername extends Action
             
             SessionMessages::add(__('user:username:changed'));
         }
-        forward($user->get_url()."/settings");
+        $this->redirect($user->get_url()."/settings");
     }
 
     function render()

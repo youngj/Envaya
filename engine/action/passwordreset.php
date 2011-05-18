@@ -10,15 +10,14 @@ class Action_PasswordReset extends Action
         $user = User::get_by_guid($user_guid);
         if (!$user)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }    
         
         $conf_code = get_input('c');
         $correct_code = $user->get_metadata('passwd_conf_code');
         if (!$correct_code || $correct_code != $conf_code)
         {
-            SessionMessages::add_error(__('user:password:fail'));
-            return forward("pg/login");
+            throw new RedirectException(__('user:password:fail'), "pg/login");
         }
         $this->user = $user;
     }
@@ -37,7 +36,7 @@ class Action_PasswordReset extends Action
 
         SessionMessages::add(__('user:password:success'));
         login($user);
-        forward("pg/dashboard");
+        $this->redirect("pg/dashboard");
     }
 
     function render()

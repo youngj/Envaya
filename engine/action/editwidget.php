@@ -49,7 +49,7 @@ class Action_EditWidget extends Action
 
             SessionMessages::add(!$widget->is_section() ? __('widget:delete:success') : __('widget:delete_section:success'));            
 
-            forward($widget->get_container_entity()->get_edit_url());
+            $this->redirect($widget->get_container_entity()->get_edit_url());
         }
         else
         {
@@ -67,18 +67,11 @@ class Action_EditWidget extends Action
                 $container->save();
             }
 
-            try
-            {
-                $widget->process_input($this);             
-            }
-            catch (NotFoundException $ex)
-            {
-                $this->not_found();
-            }
+            $widget->process_input($this);             
             
             SessionMessages::add(__('widget:save:success'));
             
-            forward($widget->get_url());
+            $this->redirect($widget->get_url());
         }
     }
     
@@ -91,18 +84,11 @@ class Action_EditWidget extends Action
 
         PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
 
-        try
-        {
-            $this->page_draw(array(
-                'title' => sprintf(__('edit_item'), $widget->get_title()),
-                'header' => view('widgets/edit_header', array('widget' => $widget)),
-                'content' => $widget->render_edit()
-            ));
-        }
-        catch (NotFoundException $ex)
-        {
-            $this->not_found();
-        }
+        $this->page_draw(array(
+            'title' => sprintf(__('edit_item'), $widget->get_title()),
+            'header' => view('widgets/edit_header', array('widget' => $widget)),
+            'content' => $widget->render_edit()
+        ));
     }
 
     protected function validate_security_token() {}    

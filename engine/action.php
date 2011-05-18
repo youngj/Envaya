@@ -68,8 +68,7 @@ abstract class Action
         $this->render();
         if (!$this->get_request()->response)
         {
-            Session::save_input();
-            redirect_back();
+            throw new RedirectException();
         }    
     }
     

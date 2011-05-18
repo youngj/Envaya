@@ -22,7 +22,7 @@ class Action_Admin_AddFeaturedPhoto extends Action
         $photo->save();
         
         SessionMessages::add(__("featured_photo:added"));
-        forward("/admin/featured_photos");
+        $this->redirect("/admin/featured_photos");
     }
 
     function render()

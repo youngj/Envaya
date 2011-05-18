@@ -12,7 +12,7 @@ class Action_Admin_EditFeaturedSite extends Action
         $featuredSite = FeaturedSite::get_by_guid($guid);
         if (!$featuredSite)
         {
-            return $this->not_found();
+            throw new NotFoundException();
         }
         $this->featuredSite = $featuredSite;        
     }
@@ -24,7 +24,7 @@ class Action_Admin_EditFeaturedSite extends Action
         $featuredSite->set_content(get_input('content'));
         $featuredSite->save();
         SessionMessages::add('featured:saved');
-        forward('org/featured');
+        $this->redirect('org/featured');
     }
 
     function render()

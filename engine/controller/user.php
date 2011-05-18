@@ -40,6 +40,18 @@ abstract class Controller_User extends Controller
         }
     }
    
+    public function execute($uri)
+    {
+        try
+        {           
+            parent::execute($uri);
+        }
+        catch (NotFoundException $ex)
+        {
+            $this->not_found();
+        }
+    }   
+   
     function index_widget($widget)
     {
         $org = $this->get_org();
@@ -59,7 +71,7 @@ abstract class Controller_User extends Controller
                         
         if (!$widget || !$widget->is_enabled() || $widget->publish_status != Widget::Published)
         {
-            $this->not_found();
+            throw new NotFoundException();
         }
         
         if (!$org->can_view())
@@ -82,8 +94,7 @@ abstract class Controller_User extends Controller
    
     function view_access_denied()
     {
-        SessionMessages::add_error($this->get_approval_message() ?: __('org:cantview'));
-        $this->force_login();
+        $this->force_login($this->get_approval_message() ?: __('org:cantview'));
     }
         
     function use_public_layout($cur_widget = null)
@@ -143,21 +154,14 @@ abstract class Controller_User extends Controller
         if ($user && $user->can_edit())
         {
             $this->use_editor_layout();
-
-            return;
         }
         else if ($user)
         {
-            if (Session::isloggedin())
-            {
-                SessionMessages::add_error(__('page:noaccess'));
-            }        
-        
-            $this->force_login();
+            $this->force_login(Session::isloggedin() ? __('page:noaccess') : '');
         }
         else
         {
-            $this->not_found();
+            throw new NotFoundException();
         }
     }
 
@@ -165,7 +169,7 @@ abstract class Controller_User extends Controller
     {
         if (!$this->get_org())
         {
-            $this->not_found();
+            throw new NotFoundException();
         }
     }
 
@@ -228,8 +232,11 @@ abstract class Controller_User extends Controller
         $redirect_url = NotFoundRedirect::get_redirect_url($uri_part, $user);
         if ($redirect_url)
         {
-            return forward($user->get_url() . $redirect_url);
+            $this->redirect($user->get_url() . $redirect_url);
         }
-        parent::not_found();
+        else
+        {
+            parent::not_found();
+        }
     }
 }

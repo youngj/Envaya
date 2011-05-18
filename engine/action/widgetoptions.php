@@ -20,7 +20,7 @@ class Action_WidgetOptions extends Action
         $widget->save();
 
         SessionMessages::add(__('widget:save:success'));
-        forward($widget->get_url());
+        $this->redirect($widget->get_url());
     }
     
     function render()

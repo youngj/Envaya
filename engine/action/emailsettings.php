@@ -6,8 +6,7 @@ class Action_EmailSettings extends Action
     {
         if (!$email || $code != User::get_email_fingerprint($email) || sizeof($users) == 0)
         {
-            SessionMessages::add_error(__("user:notification:invalid"));
-            return forward("/");
+            throw new RedirectException(__("user:notification:invalid"), "/pg/login");
         }            
     }
 
@@ -28,7 +27,7 @@ class Action_EmailSettings extends Action
             SessionMessages::add(__('user:notification:success'));
         }
 
-        forward("/");
+        $this->redirect("/pg/login");
     }
 
     function render()
