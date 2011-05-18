@@ -29,7 +29,7 @@ class Controller_Default extends Controller
 
         if (@$_GET['lang'])
         {
-            change_viewer_language($_GET['lang']);
+            $this->change_viewer_language($_GET['lang']);
         }    
         
         $viewtype = @$_GET['view'];

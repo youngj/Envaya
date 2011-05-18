@@ -5,8 +5,7 @@
  * Any other necessary compilation steps should be added here as needed.
  */     
 
-require_once("scripts/cmdline.php");
-require_once("engine/start.php");
+require_once "scripts/cmdline.php";
 
 function minify($srcFile, $destFile, $type='js')
 {
@@ -24,9 +23,97 @@ class Build
     private static function module_glob()
     {
         return "{".implode(',',Config::get('modules'))."}";
-    }
-    static function css($name = '*')
+    }    
+    
+    static function clean()
     {
+        @unlink("build/lib_cache.php");
+        @unlink("build/path_cache.php");
+    }
+    
+    static function lib_cache()
+    {
+        require_once "engine/start.php";
+        $paths = Engine::get_lib_paths();        
+        static::write_file("build/lib_cache.php", static::get_array_php($paths));
+    }
+       
+    static function path_cache()
+    {
+        require_once "engine/start.php";
+        $paths = array();        
+        static::add_paths_in_dir('', 'engine', $paths);
+        static::add_paths_in_dir('', 'themes', $paths);        
+        static::add_paths_in_dir('', 'engine/controller', $paths);
+        static::add_paths_in_dir('', 'engine/cache', $paths);
+        static::add_paths_in_dir('', 'engine/mixin', $paths);
+        static::add_paths_in_dir('', 'engine/query', $paths);
+        static::add_paths_in_dir('', 'engine/feeditem', $paths);
+        static::add_paths_in_dir('', 'engine/widget', $paths);
+        static::add_paths_in_dir('', 'languages/en', $paths);        
+        static::add_paths_in_dir('', 'views/default', $paths);
+        static::add_paths_in_dir('', 'views/default/home', $paths);
+        static::add_paths_in_dir('', 'views/default/layouts', $paths);        
+        static::add_paths_in_dir('', 'views/default/page_elements', $paths);        
+        static::add_paths_in_dir('', 'views/default/input', $paths);        
+        static::add_paths_in_dir('', 'views/default/messages', $paths);        
+        static::add_paths_in_dir('', 'views/default/js', $paths);        
+        static::add_paths_in_dir('', 'views/default/translation', $paths);        
+        
+        /*
+        $modules = Config::get('modules');
+        foreach ($modules as $module)
+        {
+            static::add_paths_in_dir("mod/{$module}/", "engine", $paths);
+            static::add_paths_in_dir("mod/{$module}/", "languages", $paths);
+            static::add_paths_in_dir("mod/{$module}/", "views", $paths);            
+        }        
+        */
+        
+        static::write_file("build/path_cache.php", static::get_array_php($paths));
+    }
+    
+    static function write_file($filename, $contents)
+    {
+        echo strlen($contents) . " ".$filename."\n";
+        file_put_contents($filename, $contents);            
+    }
+
+    private static function add_paths_in_dir($rel_base, $dir, &$paths, $recursive = false)
+    {
+        $abs_base = Config::get('path'); 
+        $handle = opendir("{$abs_base}{$rel_base}{$dir}");
+        if ($handle)
+        {
+            while ($file = readdir($handle))
+            {
+                $virtual_path = "{$dir}/{$file}";
+                $real_rel_path = "{$rel_base}{$virtual_path}";
+                $real_path = "{$abs_base}{$real_rel_path}";
+
+                if (preg_match('/\.php$/', $file))
+                {
+                    if (!isset($paths[$virtual_path]))
+                    {
+                        $paths[$virtual_path] = $real_rel_path;
+                    }
+                }              
+                if ($recursive && $file != '.' && $file != '..' && is_dir($real_path))
+                {
+                    static::add_paths_in_dir($rel_base, $virtual_path, $paths, $recursive);
+                }
+            }
+        }
+    }
+    
+    private static function get_array_php($arr)
+    {
+        return "<?php return ".var_export($arr, true).";";
+    }
+    
+    static function css($name = '*')
+    {    
+        require_once "engine/start.php";
         $modules = static::module_glob();
         $css_paths = glob("{views/default/css/$name.php,mod/$modules/views/default/css/$name.php}", GLOB_BRACE);
 
@@ -66,6 +153,7 @@ class Build
 
     static function inline_js($name = '*')
     {    
+        require_once "engine/start.php";
         $modules = static::module_glob();
         $js_src_files = glob("{_media/inline_js_src/$name.js,mod/$modules/_media/inline_js_src/$name.js}", GLOB_BRACE);
 
@@ -77,6 +165,9 @@ class Build
 
     static function all()
     {
+        Build::clean();
+        Build::lib_cache();
+        Build::path_cache();
         Build::css();
         Build::tinymce();
         Build::swfupload();

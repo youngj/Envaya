@@ -80,7 +80,7 @@ function checkDir($dir, $callback)
     {
         $path = "$dir/$file";
 
-        if (endswith($path, ".php"))
+        if (preg_match('/\.php$/', $path))
         {           
             $callback($path);
         }

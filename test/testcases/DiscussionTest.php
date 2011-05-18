@@ -38,9 +38,9 @@ class DiscussionTest extends SeleniumTest
         $this->retry('selectFrame', array("//iframe"));
         $this->retry('select', array("//select[@id='sectorList']", "Education"));
         $this->retry('click', array("//a[contains(@title,'+p0')]"));
-        $this->click("//a[contains(@title,'+p10')]");
-        $this->click("//a[contains(@title,'+p11')]");
-        $this->click("//a[contains(@title,'+p10')]");
+        $this->retry('click', array("//a[contains(@title,'+p10')]"));
+        $this->retry('click', array("//a[contains(@title,'+p11')]"));
+        $this->retry('click', array("//a[contains(@title,'+p10')]"));
         $this->selectFrame("relative=top");
         $this->click("//input[@value='Close']");
         

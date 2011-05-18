@@ -140,7 +140,7 @@ foreach ($classes as $cls)
     
     foreach ($attributes as $column_name => $default)
     {
-        if (endswith($column_name, 'guid'))
+        if (preg_match('/guid$/', $column_name))
         {
             $guid_columns[] = $column_name;
             $guid_values[] = $src_guid;

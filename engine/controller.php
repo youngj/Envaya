@@ -451,12 +451,21 @@ abstract class Controller {
             return;
         
         Views::set_request_type('default');
-    }
+    }   
     
     function allow_content_translation($allow = true)
     {
         $this->page_draw_vars['show_translate_bar'] = $allow;
+        if ($allow)
+        {
+            EventRegister::register_handler('translate','all', array('PageContext','translate_listener'));
+        }
     }
+    
+    function change_viewer_language($newLanguage)
+    {
+        set_cookie('lang', $newLanguage);
+    }    
     
     function set_content_type($content_type)
     {

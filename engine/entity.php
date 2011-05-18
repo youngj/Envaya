@@ -317,7 +317,7 @@ abstract class Entity extends Model
         $this->clear_from_cache();
         $this->cache_for_current_request();
         
-        trigger_event('update',get_class($this),$this);
+        EventRegister::trigger_event('update',get_class($this),$this);
     }
 
     function save_metadata()
@@ -382,7 +382,7 @@ abstract class Entity extends Model
         parent::delete();
         $this->clear_from_cache();
         
-        trigger_event('delete',get_class($this),$this);
+        EventRegister::trigger_event('delete',get_class($this),$this);
     }
 
     function get_container_entity()
@@ -426,7 +426,7 @@ abstract class Entity extends Model
             $translateMode = TranslateMode::get_current();
             $translation = $this->lookup_translation($field, $origLang, $viewLang, $translateMode, $isHTML);
             
-            trigger_event('translate',get_class($this), $translation);
+            EventRegister::trigger_event('translate', get_class($this), $translation);
             
             if ($translation->owner_guid)
             {

@@ -103,7 +103,7 @@ class FeedItem extends Model
 
         $user = $this->get_user_entity();
         if (!$user || !$user->is_enabled())
-            return false;
+            return false;        
         
         return true;
     }

@@ -173,8 +173,8 @@ class Database
 
     static function init()
     {
-        register_event_handler('shutdown', 'system', array('Database', 'delayedexecution_shutdown_hook'), 1);
-        register_event_handler('shutdown', 'system', array('Database', 'profiling_shutdown_hook'), 999);
+        EventRegister::register_handler('shutdown', 'system', array('Database', 'delayedexecution_shutdown_hook'), 1);
+        EventRegister::register_handler('shutdown', 'system', array('Database', 'profiling_shutdown_hook'), 999);
         return true;
     }           
         

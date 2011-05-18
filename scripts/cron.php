@@ -16,7 +16,7 @@ $cronTasks = include $cron_file;
 
 foreach (Config::get('modules') as $module_name)
 {
-    $cron_file = get_module_path($module_name) . "crontab.php";
+    $cron_file = Engine::get_module_path($module_name) . "crontab.php";
     if (is_file($cron_file))
     {
         $cronTasks = array_merge($cronTasks, include $cron_file);

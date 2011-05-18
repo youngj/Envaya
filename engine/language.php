@@ -188,7 +188,7 @@ class Language
         $this->add_group_names_in_dir($group_names, Config::get('path'));        
         foreach (Config::get('modules') as $module_name)
         {
-            $this->add_group_names_in_dir($group_names, get_module_path($module_name));
+            $this->add_group_names_in_dir($group_names, Engine::get_module_path($module_name));
         }    
         return $group_names;
     }
@@ -214,7 +214,7 @@ class Language
     
     function get_group($group_name)
     {
-        $path = get_real_path("languages/{$this->code}/{$this->code}_{$group_name}.php");    
+        $path = Engine::get_real_path("languages/{$this->code}/{$this->code}_{$group_name}.php");    
         if ($path)
         {
             return include($path);

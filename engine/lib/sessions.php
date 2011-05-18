@@ -36,7 +36,7 @@ function logout()
     $curUser = Session::get_loggedin_user();
     if ($curUser)
     {
-        trigger_event('logout','user',$curUser);
+        EventRegister::trigger_event('logout','user',$curUser);
     }
 
     Session::destroy();

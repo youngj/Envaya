@@ -39,7 +39,7 @@ class Config
             static::$settings = array();
             static::load_group('default');
             static::load_group('local');
-            static::load_group('dependent');
+            static::load_group('dependent');            
         }
     }
 
@@ -49,18 +49,14 @@ class Config
         {
             foreach ($config_array as $k => $v)
             {
-                static::set($k, $v);
+                static::$settings[$k] = $v;
             }
         }
     }
     
     private static function load_group($group_name)
     {
-        $path = dirname(__DIR__)."/config/{$group_name}.php";                    
-        if (file_exists($path))
-        {
-            return static::load_array(include($path));
-        }
-        return null;
+        $path = dirname(__DIR__)."/config/{$group_name}.php";
+        return static::load_array(@include($path));
     }    
 }

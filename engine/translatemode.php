@@ -22,10 +22,3 @@ class TranslateMode
         static::$current_mode = $mode;
     }
 }
-
-function translate_listener($event, $object_type, $translation)
-{
-    PageContext::add_available_translation($translation);
-}
-
-register_event_handler('translate','all','translate_listener');

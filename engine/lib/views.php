@@ -60,7 +60,7 @@ function get_view_path($view, $viewtype = null, $fallback = true)
     
     if ($viewtype != 'default')
     {
-        $viewPath = get_real_path("views/{$viewtype}/{$view}.php");
+        $viewPath = Engine::get_real_path("views/{$viewtype}/{$view}.php");
         if (!$viewPath && !$fallback)
         {
             return null;
@@ -69,7 +69,7 @@ function get_view_path($view, $viewtype = null, $fallback = true)
     
     if (!$viewPath)
     {
-        $viewPath = get_real_path("views/default/{$view}.php");
+        $viewPath = Engine::get_real_path("views/default/{$view}.php");
     }
     
     return $viewPath;
@@ -85,6 +85,7 @@ function include_view($view, $viewtype, $vars)
     {
         $INCLUDE_COUNTS[$view_path] = 0;
     }
+    
     $INCLUDE_COUNT = $INCLUDE_COUNTS[$view_path];
     $INCLUDE_COUNTS[$view_path] = $INCLUDE_COUNT + 1;
     
@@ -195,7 +196,11 @@ class Views
     
     static function get_extensions($base_view)
     {
-        $extensions = @static::$extensions_map[$base_view];
+        if (!isset(static::$extensions_map[$base_view]))
+        {
+            return array();
+        }
+        $extensions = static::$extensions_map[$base_view];
         if ($extensions)
         {
             ksort($extensions);

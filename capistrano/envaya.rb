@@ -45,6 +45,8 @@ namespace :deploy do
     task :sanity_check do
     
         files = [
+            "build/lib_cache.php",
+            "build/path_cache.php",
             "_css/home.css",
             "_css/simple.css",
             "_css/green.css",

@@ -413,12 +413,12 @@ class UploadedFile extends Entity
             while($file = readdir($handle))
             {
                 $path = "$temp_dir/$file";
-                if (endswith($file, '.jpg'))
+                if (preg_match('/\.jpg$/', $file))
                 {
                     $jpg_file = $path;
                     break; // only need 1 image
                 }
-                else if (endswith($file, '.ppm'))
+                else if (preg_match('/\.ppm$/', $file))
                 {
                     $ppm_file = $path;
                     break; 

@@ -6,12 +6,14 @@
      * Controller_Default.  See engine/controller/default.php for the top 
      * level routing of URLs.
      */
-    require_once(__DIR__."/engine/start.php");    
+    require __DIR__."/engine/start.php";    
 
     $request = Request::instance();    
-    
+
     $controller = new Controller_Default($request);
     $controller->execute($request->uri);
     
     $request->send_headers();    
     echo $request->response;
+    
+    

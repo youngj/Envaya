@@ -1,5 +1,24 @@
 <?php
 
+    /**
+    * Given a message shortcode, returns an appropriately translated full-text string
+    *
+    * @param string $message_key The short message code
+    * @param string $language Optionally, the standard language code (defaults to the site default, then English)
+    * @return string Either the translated string, or the original English string, or an empty string
+    */
+    function __($message_key, $language_code = "") {
+
+        if (!$language_code)
+        {
+            $language_code = Language::get_current_code();
+        }
+       
+        return Language::get($language_code)->get_translation($message_key) 
+            ?: Language::get('en')->get_translation($message_key) 
+            ?: $message_key;
+    }
+
     function url_with_param($url, $param, $value)
     {
         $parsed = parse_url($url);
@@ -141,12 +160,7 @@
         }
         exit;
     }
-        
-    function trigger_event($event, $object_type, $object = null)
-    {
-        return EventRegister::trigger_event($event, $object_type, $object);
-    }    
-    
+            
     function get_constant_name($val, $prefix)
     {
         foreach (get_defined_constants() as $name => $value) 

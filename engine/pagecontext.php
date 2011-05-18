@@ -132,4 +132,10 @@ class PageContext
         }
         return $res;
     }
+    
+    static function translate_listener($event, $object_type, $translation)
+    {
+        static::add_available_translation($translation);
+    }
+
 }

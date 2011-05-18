@@ -230,7 +230,7 @@ class Controller_Pg extends Controller_Simple {
     {
         $url = @$_GET['url'];
         $newLang = $_GET['lang'];
-        // change_viewer_language($newLang); // unnecessary because done in start.php
+        // $this->change_viewer_language($newLang); // unnecessary because done in default controller
         Session::save_input();
         forward(url_with_param($url, 'lang', $newLang));
     }

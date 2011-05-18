@@ -15,5 +15,3 @@ function system_log_listener($event, $object_type, $object)
     }
     return true;
 }
-
-register_event_handler('all','all','system_log_listener', 400);    

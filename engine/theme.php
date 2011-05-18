@@ -63,7 +63,7 @@ class Theme
                 throw new InvalidParameterException("Invalid theme name $name");
             }
             
-            $path = get_real_path("themes/{$name}.php");                    
+            $path = Engine::get_real_path("themes/{$name}.php");                    
             
             if (!$path)
             {
@@ -101,7 +101,7 @@ class Theme
             static::load_all_in_dir(Config::get('path'));
             foreach (Config::get('modules') as $module_name)
             {
-                static::load_all_in_dir(get_module_path($module_name));
+                static::load_all_in_dir(Engine::get_module_path($module_name));
             }        
             static::$loaded_all = true;
         }

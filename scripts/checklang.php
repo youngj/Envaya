@@ -107,7 +107,7 @@ else
         {
             $path = "$dir/$file";
 
-            if (endswith($path, ".php"))
+            if (preg_match('/\.php$/', $path))
             {
                 //echo "$path\n";
                 $contents = file_get_contents($path);

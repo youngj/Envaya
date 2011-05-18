@@ -38,7 +38,7 @@ class Action_Settings extends Action
         if ($language && $language != $user->language)
         {
             $user->language = $language;
-            change_viewer_language($user->language);
+            $this->change_viewer_language($user->language);
             SessionMessages::add(__('user:language:success'));
         }
 
