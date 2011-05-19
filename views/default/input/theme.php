@@ -43,22 +43,11 @@ function previewTheme()
 </script>
 
 <?php
-
-    $optionsValues = array();
-
-    foreach ($vars['options'] as $theme)
-    {
-        $optionsValues[$theme] = __("design:theme:$theme");
-    }
-
     echo view('input/hidden', array(
         'name' => $name,
         'id' => 'theme',
         'value' => $curTheme,
     ));        
-    
-    //style='width:100%;height:190px;overflow:auto'
-    //style='width:px'
 ?>
 
 <div id='themes'>

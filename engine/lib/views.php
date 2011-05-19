@@ -80,6 +80,10 @@ function include_view($view, $viewtype, $vars)
     static $INCLUDE_COUNTS = array();
 
     $view_path = get_view_path($view, $viewtype);
+    if ($view_path == null)
+    {
+        throw new InvalidParameterException("view $view does not exist");
+    }
         
     if (!isset($INCLUDE_COUNTS[$view_path]))
     {
@@ -89,14 +93,7 @@ function include_view($view, $viewtype, $vars)
     $INCLUDE_COUNT = $INCLUDE_COUNTS[$view_path];
     $INCLUDE_COUNTS[$view_path] = $INCLUDE_COUNT + 1;
     
-    if (include_view_file($view_path, $vars, $INCLUDE_COUNT))
-    {
-        // success
-    }
-    else if (Config::get('debug'))
-    {
-        error_log(" [This view ({$view}) could not be included] ");
-    }
+    include_view_file($view_path, $vars, $INCLUDE_COUNT);
 }
 
 function include_view_file($VIEW_PATH, $vars, $INCLUDE_COUNT)

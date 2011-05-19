@@ -23,7 +23,7 @@ abstract class Controller {
 
     public $request;    
     protected $parent_controller;
-    protected $params;    
+    protected $params = array();    
     
     protected $page_draw_vars = array();
 
@@ -87,7 +87,7 @@ abstract class Controller {
         $request = $this->get_request();
         $base_uri = $this->param('rewritten_uri');
         
-        return "{$request->protocol}://{$domain}/{$base_uri}{$request->query_string}";
+        return "{$request->protocol}://{$domain}{$base_uri}{$request->query_string}";
     }
         
     
@@ -105,7 +105,10 @@ abstract class Controller {
      */
     protected function execute_route($route, $params)
     {        
-        $this->params = $params;
+        foreach ($params as $k => $v)
+        {        
+            $this->params[$k] = $v;
+        }
         
         $before = @$route['before'];
         if ($before)
@@ -336,25 +339,31 @@ abstract class Controller {
         }
     }
     
+    function render_error_js($exception)
+    {
+        $request = $this->request;
+        $request->response = json_encode(array(
+            'error' => $exception->getMessage(), 
+            'errorClass' => get_class($exception)
+        ));    
+    }
+    
     function server_error($exception)
     {
         ob_discard_all();
     
         $request = $this->request;   
-        $request->status = 500;
+        $request->status = 500;                
         
         if (@$request->headers['Content-Type'] == 'text/javascript')
         {
-            $request->response = json_encode(array(
-                'error' => $exception->getMessage(), 
-                'errorClass' => get_class($exception)
-            ));
+            $this->render_error_js($exception);
         }
         else
-        {   
+        {
             $this->page_draw(array(
                 'title' => __('exception_title'),
-                'theme_name' => 'simple',
+                'theme_name' => Config::get('debug') ? 'simple_wide' : 'simple',
                 'hide_login' => true,
                 'content' => view("messages/exception", array('object' => $exception))
             ));

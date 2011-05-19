@@ -170,7 +170,7 @@ class Language
 
     private function add_group_names_in_dir(&$group_names, $dir_name)
     {
-        if ($handle = opendir("{$dir_name}languages/{$this->code}"))
+        if ($handle = @opendir("{$dir_name}languages/{$this->code}"))
         {
             while ($file = readdir($handle))
             {

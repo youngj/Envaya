@@ -14,8 +14,9 @@ if ($org_domain_names)
         $domain_name = $org_domain_name->domain_name;
         echo "<li><a href='http://".escape($domain_name)."'>".escape($domain_name)."</a>";
         echo " <span class='admin_links'>";
-        echo view('output/confirmlink', array(
+        echo view('input/post_link', array(
             'text' => "(".__('delete').")",
+            'confirm' => __('areyousure'),
             'href' => "{$org->get_url()}/delete_domain?id={$org_domain_name->id}",
         ));
         echo "</span></li>";

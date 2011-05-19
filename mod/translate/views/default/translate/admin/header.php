@@ -5,10 +5,13 @@
         array('url' => '/tr/admin', 'title' => __('itrans:manage'))
     );
 
-    $items = @$vars['items'];
-    foreach ($items as $item)    
+    if (isset($vars['items']))
     {
-        $sections[] = array('url' => $item->get_admin_url(), 'title' => $item->get_title());
+        $items = $vars['items'];
+        foreach ($items as $item)    
+        {
+            $sections[] = array('url' => $item->get_admin_url(), 'title' => $item->get_title());
+        }
     }
     
     echo view('breadcrumb', array('items' => $sections));

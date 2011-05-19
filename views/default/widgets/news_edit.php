@@ -30,7 +30,7 @@
             echo "<div style='float:right;margin-left:5px'>";
             echo "<a href='{$update->get_edit_url()}?from=$escUrl'>".__("edit")."</a>";
             echo " &middot; ";
-            echo view('output/confirmlink', array(
+            echo view('input/post_link', array(
                 'href' => "{$update->get_edit_url()}?delete=1",
                 'confirm' => __('widget:news:delete_confirm'),
                 'text' => __('delete')

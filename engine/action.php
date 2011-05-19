@@ -56,20 +56,28 @@ abstract class Action
     }        
     
     protected function handle_validation_exception($ex)
-    {
-        if ($ex->is_html())
-        {
-            SessionMessages::add_error_html($ex->getMessage());
+    {       
+        $request = $this->get_request();
+        if (@$request->headers['Content-Type'] == 'text/javascript')
+        {                    
+            $this->render_error_js($ex);
         }
         else
-        {
-            SessionMessages::add_error($ex->getMessage());
+        {            
+            if ($ex->is_html())
+            {
+                SessionMessages::add_error_html($ex->getMessage());
+            }
+            else
+            {
+                SessionMessages::add_error($ex->getMessage());
+            }                
+            $this->render();
+            if (!$request->response)
+            {
+                throw new RedirectException();
+            }    
         }
-        $this->render();
-        if (!$this->get_request()->response)
-        {
-            throw new RedirectException();
-        }    
     }
     
     protected function validate_security_token()
@@ -115,10 +123,14 @@ abstract class Action
         $this->controller->allow_view_types(static::$view_types);
     }
     
-    function render_captcha($vars)
+    function render_captcha($vars = null)
     {
         Session::start(); // make sure that securitytoken is correct
-        $this->use_public_layout();        
+        
+        if (method_exists($this->controller, 'use_public_layout'))
+        {        
+            $this->controller->use_public_layout();        
+        }
         $this->page_draw(array(
             'title' => __('captcha:title'),
             'content' => view("captcha/captcha_form", $vars),

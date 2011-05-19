@@ -106,7 +106,7 @@
         echo view('input/alt_submit', array(
             'name' => 'delete', 
             'id' => 'widget_delete', 
-            'confirmMessage' => __('areyousure'),
+            'confirm' => __('areyousure'),
             'value' => __('user:delete'))); 
     }
     

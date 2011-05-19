@@ -19,8 +19,8 @@
             <td>
             <?php if (!$email->active) { 
             
-                echo view('output/confirmlink', array(
-                    'text' => 'Activate',
+                echo view('input/post_link', array(
+                    'text' => 'Activate',                    
                     'href' => "admin/activate_email?email={$email->guid}"
                 ));
             

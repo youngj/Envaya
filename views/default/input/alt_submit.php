@@ -41,9 +41,9 @@ function altSubmit($id, $value)
 
     $js = "onclick='return true ";
 
-    if (@$vars['confirmMessage'])
+    if (@$vars['confirm'])
     {
-        $js .= "&& confirm(".json_encode(@$vars['confirmMessage']).")";
+        $js .= "&& confirm(".json_encode(@$vars['confirm']).")";
     }
     if (@$vars['trackDirty'])
     {

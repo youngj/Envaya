@@ -31,8 +31,9 @@ if (Session::isadminloggedin())
     <?php 
     if (!$entity->active) 
     { 
-        echo view('output/confirmlink', array(
+        echo view('input/post_link', array(
                 'text' => __('featured:activate'),
+                'confirm' => __('areyousure'),
                 'href' => "admin/activate_featured?guid={$entity->guid}"
             ));        
     } 
@@ -43,16 +44,23 @@ if (Session::isadminloggedin())
     
     if (Language::get_current_code() != $entity->get_language())
     {
-        $escUrl = urlencode($_SERVER['REQUEST_URI']);                   
-        echo " <a href='/tr/translate?from=$escUrl&prop[]={$entity->guid}.content.1'>".__("trans:add")."</a>";
+        $trans = new Translation();
+        $trans->container_guid = $entity->guid;
+        $trans->property = 'content';
+        $trans->html = true;
+    
+        echo ' ' . view('translation/translate_link', array(
+            'translations' => array($trans)
+        )) . ' ';
     }
     
     ?>              
     
     <a href='/admin/edit_featured?guid=<?php echo $entity->guid ?>'><?php echo escape(__('edit')) ?></a>
     <?php
-    echo view('output/confirmlink', array(
+    echo view('input/post_link', array(
         'text' => __('delete'),
+        'confirm' => __('areyousure'),        
         'href' => "admin/delete_entity?guid={$entity->guid}"
     ));        
     ?>

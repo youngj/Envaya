@@ -34,8 +34,9 @@
         echo "<td style='white-space:nowrap'>".friendly_time($mail->time_sent)."</td>";
         echo "<td>".escape($mail->error_message)."</td>";
         echo "<td>".$mail->get_status_text()."</td>";        
-        echo "<td>".view('output/confirmlink', array(
+        echo "<td>".view('input/post_link', array(
             'href' => "/admin/resend_mail?id={$mail->id}",
+            'confirm' => __('areyousure'),
             'text' => __('email:resend'),
         ))."</td>";
         echo "</tr>";

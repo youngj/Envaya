@@ -44,6 +44,7 @@ class Widget extends Entity
         'contact'       => array('menu_order' => 90, 'page' => true, 'subclass' => 'Contact'),
         'mission'       => array('menu_order' => 100, 'home_section' => true, 'subclass' => 'Mission'),        
         'updates'       => array('menu_order' => 110, 'home_section' => true, 'subclass' => 'Updates'),        
+        'links'         => array('menu_order' => 115, 'home_section' => true, 'subclass' => 'Links'),                
         'sectors'       => array('menu_order' => 120, 'home_section' => true, 'subclass' => 'Sectors'),        
         'location'      => array('menu_order' => 130, 'home_section' => true, 'subclass' => 'Location'),        
         'post'          => array('subclass' => 'Post'),        

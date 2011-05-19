@@ -408,7 +408,7 @@ class UploadedFile extends Entity
         $jpg_file = null;
         $res_file = null;
 
-        if ($handle = opendir($temp_dir))
+        if ($handle = @opendir($temp_dir))
         {
             while($file = readdir($handle))
             {

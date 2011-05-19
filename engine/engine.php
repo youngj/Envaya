@@ -93,7 +93,7 @@ class Engine
         $lib_dir = "engine/lib";
 
         $paths = array();
-        $handle = opendir($base.$lib_dir);
+        $handle = @opendir($base.$lib_dir);
         if ($handle)
         {
             while ($file = readdir($handle))

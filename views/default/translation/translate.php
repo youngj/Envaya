@@ -84,7 +84,7 @@ echo "<br>".
         'name' => "delete",
         'id' => 'widget_delete',
         'trackDirty' => true,
-        'confirmMessage' => __('areyousure'),
+        'confirm' => __('areyousure'),
         'value' => __('delete')
     )).
     view('input/submit', array('value' => __('trans:submit')));

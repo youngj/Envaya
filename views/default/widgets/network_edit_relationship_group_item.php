@@ -16,7 +16,7 @@
     
     echo "<a href='{$widget->get_edit_url()}?action=edit_relationship&guid={$relationship->guid}'>".__('edit')."</a> &middot; ";
        
-    echo view('output/confirmlink', array(
+    echo view('input/post_link', array(
             'text' => __('delete'),
             'confirm' => strtr(__('network:confirm_delete'), array(
                 '{name}' => $relationship->get_subject_name(),

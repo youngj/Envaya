@@ -48,7 +48,7 @@ class EmailTemplate extends Entity
         return ($org && $org->email && $org->is_notification_enabled(Notification::Batch)        
             && OutgoingMail::query()
                 ->where('email_guid = ?', $this->guid)
-                ->where('user_guid = ?', $org->guid)
+                ->where('to_guid = ?', $org->guid)
                 ->where('status <> ?', OutgoingMail::Failed)
                 ->is_empty()
         );

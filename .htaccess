@@ -31,7 +31,7 @@ DirectoryIndex index.php
 	php_value post_max_size 10M
 	php_value upload_max_filesize 10M
     php_value display_errors 7
-    #php_value zlib.output_compression 0
+    php_value zlib.output_compression 0
 </IfModule>
 
 ## Important note: mod_headers is required for correct functioning across proxies.

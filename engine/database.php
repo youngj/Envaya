@@ -172,7 +172,9 @@ class Database
             }
             else
             {
-                // just return null
+                // if we already tried and failed to connect, just return null instead of rethrowing the exception.                
+                // this allows the error handler for the first DatabaseException
+                // to call functions that could possibly try to connect to the database again.
             }
         }
         return $DB_LINK;

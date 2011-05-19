@@ -270,6 +270,10 @@ class Query_Select
         }    
     
         $res = Database::get_rows($query, $this->args);        
+        if ($res === false) // attempt to use Database after connection failure
+        {
+            return array();
+        }
         
         if ($this->row_function)
         {

@@ -28,7 +28,7 @@ class Action_Admin_SendEmailTemplate extends Action
             }
         }
         SessionMessages::add("sent $numSent emails");
-        $this->redirect(get_input('from') ?: "/admin/batch_email?email={$email->guid}");
+        $this->redirect(get_input('from') ?: "/admin/send_email?email={$email->guid}");
     }
 
     function render()
@@ -51,7 +51,7 @@ class Action_Admin_SendEmailTemplate extends Action
                 ->where('approval > 0')
                 ->where("email <> ''")
                 ->where('(notifications & ?) > 0', Notification::Batch)
-                ->where("not exists (select * from outgoing_mail where email_guid = ? and user_guid = users.guid)", $email->guid)
+                ->where("not exists (select * from outgoing_mail where email_guid = ? and to_guid = users.guid)", $email->guid)
                 ->order_by('guid')
                 ->limit(50)
                 ->filter(); 

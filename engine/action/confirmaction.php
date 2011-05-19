@@ -19,7 +19,7 @@ class Action_ConfirmAction extends Action
         {        
             $this->page_draw(array(
                 'title' => $message,
-                'content' => view("output/confirm_action", array('ok_url' => $ok_url, 'cancel_url' => $cancel_url))
+                'content' => view("input/confirm_action", array('ok_url' => $ok_url, 'cancel_url' => $cancel_url))
             ));        
         }
     }

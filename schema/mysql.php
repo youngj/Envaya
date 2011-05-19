@@ -348,5 +348,14 @@ CREATE TABLE `not_found_redirects` (
 CREATE TABLE `external_feeds` (
     <?php require 'schema/entity_columns.php'; ?>,
     `url` text NOT NULL,
+    `title` text NOT NULL,
+    `subtype_id` varchar(63) not null
+) ENGINE = MYISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `external_sites` (
+    <?php require 'schema/entity_columns.php'; ?>,
+    `url` text NOT NULL,
+    `title` text NOT NULL,
+    `order` int(11) not null,
     `subtype_id` varchar(63) not null
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;

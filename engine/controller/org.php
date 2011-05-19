@@ -170,10 +170,12 @@ class Controller_Org extends Controller_Simple
         $all_orgs = array_merge($orgs_by_website, $orgs_by_email, $orgs_by_phone, $orgs_by_name);
         
         // remove duplicates
-        $all_orgs = array_values(array_combine(
-            array_map(function($o) { return $o->guid; }, $all_orgs),
-            $all_orgs
-        ) ?: array());
+        $all_orgs_map = array();
+        foreach ($all_orgs as $org)
+        {
+            $all_orgs_map[$org->guid] = $org;
+        }
+        $all_orgs = array_values($all_orgs_map);
                 
         $this->set_response(json_encode(array(
             'can_invite' => InvitedEmail::get_by_email($email)->can_send_invite(),

@@ -26,6 +26,9 @@ class EntityRegistry
         'core.discussion.topic' => 'DiscussionTopic',
         'core.feed' => 'ExternalFeed',
         'core.feed.rss' => 'ExternalFeed_RSS',
+        'core.externalsite' => 'ExternalSite',
+        'core.externalsite.facebook' => 'ExternalSite_Facebook',
+        'core.externalsite.twitter' => 'ExternalSite_Twitter',
     );
     private static $class_to_subtype = null;
     

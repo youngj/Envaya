@@ -7,7 +7,7 @@
     
     echo "<div style='float:right;'>";
            
-    echo view('output/confirmlink', array(
+    echo view('input/post_link', array(
             'text' => __('delete'),
             'confirm' => __('discussions:confirm_remove_message'),
             'href' => "{$topic->get_url()}/delete_message?guid={$message->guid}",

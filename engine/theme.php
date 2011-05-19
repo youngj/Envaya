@@ -82,7 +82,7 @@ class Theme
     
     private static function load_all_in_dir($dir_name)
     {
-        if ($handle = opendir("{$dir_name}themes"))
+        if ($handle = @opendir("{$dir_name}themes"))
         {
             while ($file = readdir($handle))
             {

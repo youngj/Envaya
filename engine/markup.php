@@ -88,11 +88,14 @@ class Markup
         $config->set('AutoFormat.Linkify', true);
         if ($options)
         {
-            if (@$options['Envaya.Untrusted'])
+            if (isset($options['Envaya.Untrusted']))
             {
-                $config->set('HTML.AllowedElements',
-                    'a,em,strong,br,p,u,b,i,ul,li,blockquote,span,h1,h2,h3,h4,pre');                    
-                $config->set('HTML.Nofollow', true);
+                if ($options['Envaya.Untrusted'])
+                {
+                    $config->set('HTML.AllowedElements',
+                        'a,em,strong,br,p,u,b,i,ul,li,blockquote,span,h1,h2,h3,h4,pre');                    
+                    $config->set('HTML.Nofollow', true);
+                }
                 unset($options['Envaya.Untrusted']);
             }
         

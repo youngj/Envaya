@@ -71,21 +71,24 @@ function selectFeaturedPhoto()
 
 if ($org->approval == 0)
 {
-    echo view('output/confirmlink', array(
+    echo view('input/post_link', array(
         'text' => __('approval:approve'),
+        'confirm' => __('areyousure'),
         'href' => "admin/approve?org_guid={$org->guid}&approval=2"
     ));
     echo " ";
-    echo view('output/confirmlink', array(
+    echo view('input/post_link', array(
         'text' => __('approval:reject'),
+        'confirm' => __('areyousure'),
         'href' => "admin/approve?org_guid={$org->guid}&approval=-1"
     ));
     echo " ";
 }
 else
 {
-    echo view('output/confirmlink', array(
+    echo view('input/post_link', array(
         'text' => ($org->approval > 0) ? __('approval:unapprove') : __('approval:unreject'),
+        'confirm' => __('areyousure'),
         'href' => "admin/approve?org_guid={$org->guid}&approval=0"
     ));
     echo " ";
@@ -93,8 +96,9 @@ else
 
 if ($org->approval < 0)
 {
-    echo view('output/confirmlink', array(
+    echo view('input/post_link', array(
         'text' => __('approval:delete'),
+        'confirm' => __('areyousure'),        
         'href' => "admin/delete_entity?guid={$org->guid}&next=/admin/user"
     ));
     echo " ";

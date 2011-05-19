@@ -12,7 +12,7 @@
         $form_body .= view('input/alt_submit', array(
             'name' => "delete",
             'trackDirty' => true,
-            'confirmMessage' => $is_section ? __('widget:delete_section:confirm') : __('widget:delete:confirm'),
+            'confirm' => $is_section ? __('widget:delete_section:confirm') : __('widget:delete:confirm'),
             'id' => 'widget_delete',
             'value' => $is_section ? __('widget:delete_section') : __('widget:delete')
         ));

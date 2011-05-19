@@ -82,7 +82,7 @@ class Build
     private static function add_paths_in_dir($rel_base, $dir, &$paths, $recursive = false)
     {
         $abs_base = Config::get('path'); 
-        $handle = opendir("{$abs_base}{$rel_base}{$dir}");
+        $handle = @opendir("{$abs_base}{$rel_base}{$dir}");
         if ($handle)
         {
             while ($file = readdir($handle))

@@ -11,9 +11,9 @@
 	if (Config::get('debug'))
 	{
 		echo "<hr />";
-		echo "<p class='messages-exception-detail'>";
-        echo view('output/longtext', array('value' => print_r($vars['object'], true)));
-        echo "</p>";
+		echo "<p class='messages-exception-detail'><pre>";
+        echo escape(print_r($vars['object'], true));
+        echo "</pre></p>";
 	}		
 ?>
 </div>

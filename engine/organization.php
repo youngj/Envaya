@@ -25,13 +25,18 @@ class Organization extends User
     public function query_relationships()
     {
         return OrgRelationship::query()->where("container_guid=?", $this->guid)->order_by('subject_name asc');
-    }
+    }       
         
     public function query_subject_relationships()
     {
         return OrgRelationship::query()->where("subject_guid=?", $this->guid);
     }
 
+    public function query_external_sites()
+    {
+        return ExternalSite::query()->where('container_guid = ?', $this->guid)->order_by('`order`');
+    }
+    
     public function query_discussion_topics()
     {
         return DiscussionTopic::query()->where('container_guid = ?', $this->guid)->order_by('last_time_posted desc');

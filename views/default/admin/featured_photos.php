@@ -11,8 +11,9 @@
         echo "<br />";
         
         echo "<a href='/admin/edit_featured_photo?guid={$photo->guid}'>Edit</a><br />";
-        echo view('output/confirmlink', array(
+        echo view('input/post_link', array(
             'text' => 'Delete',
+            'confirm' => __('areyousure'),            
             'href' => "admin/edit_featured_photo?guid={$photo->guid}&delete=1"
         ));
         echo "</div>";

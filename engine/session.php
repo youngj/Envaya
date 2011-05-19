@@ -35,7 +35,7 @@ class Session
 
     static function destroy()
     {
-        session_destroy();
+        @session_destroy();
         setcookie(static::$cookieName, "", 0,"/");
     }
 

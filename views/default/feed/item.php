@@ -23,7 +23,7 @@
     
     if ($show_edit_controls && $feedItem->can_edit()) 
     {            
-        echo view('output/confirmlink', array(
+        echo view('input/post_link', array(
             'href' => "/pg/delete_feed_item?item={$feedItem->id}",
             'text' => __('delete'),
             'class' => 'admin_links',

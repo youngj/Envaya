@@ -76,6 +76,16 @@ return array(
     'widget:team:description' => "Description:",
     'widget:team:photo' => "Photo (optional):",
     
+    'widget:links' => "Links",
+    'widget:links:add' => "Add Link",
+    'widget:links:added' => "Link added successfully.",
+    'widget:links:options' => "Link Options",
+    'widget:links:confirm_delete' => "Are you sure you want to remove this link?",
+    'widget:links:deleted' => "Link removed successfully.",
+    'widget:links:broken' => "There was an error loading the entered web address ({url}).\nMake sure that the address is correct, then try again.",
+    'widget:links:invalid' => "The entered web address ({url}) is not allowed.\nMake sure that the address is correct, then try again.",
+    'widget:links:blank' => "Please enter the address of the website to link to.",
+    
     'widget:edit' => "Edit Page",
     'widget:publish' => "Publish page",
     'widget:create' => 'Create page',        
@@ -87,4 +97,5 @@ return array(
     'widget:delete_section:success' => "Section removed successfully.",
     'widget:delete:confirm' => "Are you sure you want to remove this page from your site?",
     'widget:delete_section:confirm' => "Are you sure you want to remove this section?",    
+    
 );

@@ -12,10 +12,11 @@
     
         if ($can_downvote)
         {        
-            $href = view('output/post_url', array(
+            echo " ".view('input/post_link', array(
                 'href' => "{$translation->get_url()}/vote?delta=-1",
-            ));
-            echo " <a style='background-color:#ccc;color:#000;text-decoration:none' href='$href'>&nbsp;-&nbsp;</a> ";
+                'js' => "style='background-color:#ccc;color:#000;text-decoration:none'",
+                'html' => "&nbsp;-&nbsp;",
+            ))." ";
         }
         else
         {
@@ -24,10 +25,11 @@
         echo "<strong>{$translation->score}</strong>";
         if ($can_upvote)
         {
-            $href = view('output/post_url', array(
+            echo " ".view('input/post_link', array(
                 'href' => "{$translation->get_url()}/vote?delta=1",
-            ));
-            echo " <a style='background-color:#ccc;color:#000;text-decoration:none' href='$href'>&nbsp;+&nbsp;</a>";
+                'js' => "style='background-color:#ccc;color:#000;text-decoration:none'",
+                'html' => "&nbsp;+&nbsp;",
+            ))." ";            
         }
         else
         {

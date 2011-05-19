@@ -55,8 +55,9 @@
         if ($translation->can_edit())
         {
             echo "<div class='admin_links'>";
-            echo view('output/confirmlink', array(
+            echo view('input/post_link', array(
                 'href' => $translation->get_url() . "/delete",
+                'confirm' => __('areyousure'),                
                 'text' => __('delete'),
             ));
             echo "</div>";

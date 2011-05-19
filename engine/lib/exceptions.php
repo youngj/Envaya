@@ -7,6 +7,7 @@ class CallException extends Exception {}
 class DataFormatException extends Exception {}
 class NotImplementedException extends CallException {}
 class InvalidParameterException extends CallException {}
+//class ErrorException extends Exception {}
 
 class RequestAbortedException extends Exception {}
 class NotFoundException extends RequestAbortedException {}
@@ -14,7 +15,7 @@ class RedirectException extends RequestAbortedException
 {
     public $url; /* null url indicates redirect to http referrer, if possible */
     public $status;
-    function __construct($msg, $url = null, $status = 302)
+    function __construct($msg = '', $url = null, $status = 302)
     {
         $this->url = $url;
         $this->status = $status;
@@ -49,17 +50,15 @@ function php_error_handler($errno, $errmsg, $filename, $linenum, $vars)
 {            
     if (error_reporting() == 0) // @ sign
         return true; 
-           
+                      
     $error = date("Y-m-d H:i:s (T)") . ": \"" . $errmsg . "\" in file " . $filename . " (line " . $linenum . ")";                      
 
     switch ($errno) {
         case E_USER_ERROR:
-                error_log("ERROR: " . $error);
-                throw new Exception($error);
-            break;
         case E_WARNING:
         case E_USER_WARNING:
-                error_log("WARNING: " . $error);                        
+                error_log("ERROR: " . $error);
+                throw new ErrorException($errmsg, 0, $errno, $filename, $linenum);
             break;
         default:
             if (Config::get('debug'))

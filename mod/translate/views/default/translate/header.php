@@ -4,19 +4,22 @@
         array('url' => '/tr', 'title' => __('itrans:translations'))
     );
     
-    $items = @$vars['items'];
-    foreach ($items as $item)    
+    if (isset($vars['items']))
     {
-        if (is_array($item))
+        $items = $vars['items'];
+        foreach ($items as $item)    
         {
-            $sections[] = $item;
-        }
-        else
-        {
-            $sections[] = array(
-                'url' => "{$item->get_url()}", 
-                'title' => $item->get_title()
-            );
+            if (is_array($item))
+            {
+                $sections[] = $item;
+            }
+            else
+            {
+                $sections[] = array(
+                    'url' => "{$item->get_url()}", 
+                    'title' => $item->get_title()
+                );
+            }
         }
     }
     
