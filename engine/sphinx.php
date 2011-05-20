@@ -17,6 +17,13 @@ class Sphinx
         return $s;
     }    
     
+    static function is_server_available()
+    {
+        $client = static::get_client();        
+        $status = $client->Status();
+        return ($status != false);
+    }
+    
     static function reindex()
     {
         FunctionQueue::queue_call(array('Sphinx', '_reindex'), array());

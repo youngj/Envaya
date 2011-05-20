@@ -349,7 +349,19 @@ CREATE TABLE `external_feeds` (
     <?php require 'schema/entity_columns.php'; ?>,
     `url` text NOT NULL,
     `title` text NOT NULL,
-    `subtype_id` varchar(63) not null
+    `subtype_id` varchar(63) not null,
+    `feed_url` text NOT NULL,    
+    `update_status` tinyint(4) not null default 0,
+    `time_next_update` int(11) not null default 0,
+    `time_queued` int(11) null,
+    `time_changed` int(11) null,
+    `time_update_started` int(11) null,
+    `time_update_complete` int(11) null,
+    `time_last_error` int(11) null,
+    `last_error` text,
+    `consecutive_errors` int(11) null,
+    KEY `feed_url` (`feed_url`(50)),
+    KEY (`time_next_update`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `external_sites` (

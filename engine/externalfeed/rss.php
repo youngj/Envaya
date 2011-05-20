@@ -60,41 +60,61 @@ class ExternalFeed_RSS extends ExternalFeed
     
     protected function _update()
     {
-        Zend::load('Zend_Feed_Reader');       
-        $feed = Zend_Feed_Reader::import($this->feed_url);
+        Zend::load('Zend_Feed_Reader');         
+
+        $request = new Web_Request($this->feed_url);
+        $response = $request->get_response();
         
-        $language = null;
+        if ($response->status != 200)
+            throw new IOException("Error {$response->status} retrieving feed");
+        
+        try
+        {
+            $feed = Zend_Feed_Reader::importString($response->content);        
+            $feed->setOriginalSourceUri($this->feed_url);
+        
+            $language = null;
+            $changed = false;            
 
-        foreach ($feed as $entry)
-        {            
-            $external_id = $entry->getId();
-            $widget = $this->get_widget_by_external_id($external_id);
+            foreach ($feed as $entry)
+            {            
+                $external_id = $entry->getId();
+                $widget = $this->get_widget_by_external_id($external_id);
+                    
+                echo "  $external_id => $widget->widget_name ($widget->guid)\n";                
+                    
+                if ($widget->guid)
+                    continue;                
+                    
+                $content = $entry->getContent();
+                    
+                // assume items in a feed are all in the same language to avoid checking Google Translate for each one                
+                if (!$language && $content)
+                {
+                    $language = GoogleTranslate::guess_language($this->content);
+                }
+                    
+                $widget->enable();
+                $widget->language = $language;
+                $widget->title = $entry->getTitle();
+                $widget->time_published = $entry->getDateCreated()->getTimestamp();
+                $widget->set_content($content);
+                                                    
+                $link = static::absolutize_url($entry->getLink(), $this->url);
+           
+                $widget->set_metadata('link', $link);
+                $widget->set_metadata('feed_guid', $this->guid);
+                $widget->set_metadata('feed_name', $this->title);
+                $widget->save();
                 
-            echo "  $external_id => $widget->widget_name ($widget->guid)\n";                
-                
-            if ($widget->guid)
-                continue;
-
-            $content = $entry->getContent();
-                
-            // assume items in a feed are all in the same language to avoid checking Google Translate for each one                
-            if (!$language && $content)
-            {
-                $language = 'en'; //GoogleTranslate::guess_language($this->content);
+                $changed = true;
             }
-                
-            $widget->enable();
-            $widget->language = $language;
-            $widget->title = $entry->getTitle();
-            $widget->time_published = $entry->getDateCreated()->getTimestamp();
-            $widget->set_content($content);
-                                                
-            $link = static::absolutize_url($entry->getLink(), $this->url);
-       
-            $widget->set_metadata('link', $link);
-            $widget->set_metadata('feed_guid', $this->guid);
-            $widget->set_metadata('feed_name', $this->title);
-            $widget->save();
+            
+            return $changed;
+        }
+        catch (Zend_Feed_Exception $ex)
+        {
+            throw new DataFormatException($ex->getMessage());
         }
     }
 }

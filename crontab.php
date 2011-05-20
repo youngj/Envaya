@@ -17,8 +17,8 @@ return array(
        'interval' => 1440,
        'cmd' => "php scripts/backup_s3.php"
    ),
-   /* array(
-        'interval' => 360,
+   array(
+        'interval' => 2,
         'cmd' => "php scripts/check_external_feeds.php"
-    ) */
+    )
 );

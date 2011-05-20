@@ -2,12 +2,25 @@
 
 class ExternalFeed extends Entity
 {
+    const Idle = 0;
+    const Queued = 1;
+    const Updating = 2;
+
     static $table_name = 'external_feeds';
     static $table_attributes = array(
         'subtype_id' => '',
         'url' => '',
         'feed_url' => '',
         'title' => '',
+        'update_status' => 0,
+        'time_next_update' => 0,
+        'time_queued' => 0,
+        'time_update_started' => 0,
+        'time_update_complete' => 0,
+        'time_changed' => 0,
+        'time_last_error' => 0,
+        'last_error' => '',
+        'consecutive_errors' => 0,
     );
     
     static $regexes = array(
@@ -15,14 +28,42 @@ class ExternalFeed extends Entity
         '#://[^/]*twitter\.com#i' => 'ExternalFeed_Twitter',
     );
     
-    function queue_update()
-    {
-        return FunctionQueue::queue_call(array('ExternalFeed', 'update_by_guid'), array($this->guid));    
-    }
-
     function get_widget_subclass() { throw new NotImplementedException("ExternalFeed::get_widget_subclass"); }
     protected function _update() { throw new NotImplementedException("ExternalFeed::_update"); }
 
+    function get_default_update_interval()
+    {    
+        return 5 * 60;
+    }
+    
+    function calculate_next_update_time()
+    {
+        $interval = $this->get_default_update_interval();        
+        
+        $time = time();
+        
+        // gradually slow down checking feeds that do not change often
+        if ($this->time_changed && $this->time_changed < $time)
+        {
+            $days_since_changed = floor(($time - $this->time_changed) / 86400.0);
+            $interval *= min((1 + $days_since_changed * 0.5), 500);
+        }
+        
+        // exponential backoff to slow down rechecking broken feeds
+        $interval *= min(pow(2, $this->consecutive_errors), 2048); 
+                
+        $this->time_next_update = $time + $interval;
+    }
+    
+    function queue_update()
+    {
+        $this->update_status = static::Queued;
+        $this->time_queued = time();
+        $this->save();
+    
+        return FunctionQueue::queue_call(array('ExternalFeed', 'update_by_guid'), array($this->guid));    
+    }    
+    
     function get_widget_by_external_id($id)
     {
         // ensure widget_name is less than size of database column        
@@ -43,37 +84,81 @@ class ExternalFeed extends Entity
             $feed->update();
         }
     }
-    
-    function update()
+
+    function can_update()
     {
         if (!$this->is_enabled())
-            return;
+            return false;
     
         $container = $this->get_container_entity();
         if (!$container || !$container->is_enabled())
-            return;
+            return false;
 
         $root = $this->get_root_container_entity();
         if (!$root || !$root->is_enabled())
-            return;
+            return false;
             
-        // avoid rechecking the same feed too frequently
-        $time_checked = $this->get_metadata('time_checked');
-        $time = time();
-        if ($time - $time_checked < 60 * 5)
+        if (time() - $this->time_update_started < $this->get_default_update_interval())
         {
-            echo "ignoring {$this->feed_url}, too recent\n";
+            return false;
+        }
+        
+        return true;
+    }
+    
+    function update()
+    {    
+        if (!$this->can_update())
+        {
+            echo "ignoring {$this->feed_url} for now...\n";
+            $this->update_status = static::Idle;
+            $this->save();
             return;
         }
         
+        $this->update_status = static::Updating;
+        $this->time_update_started = time();
+        $this->save();
+        
         echo "updating {$this->feed_url}...\n";
             
-        $this->set_metadata('time_checked', $time);
-        $this->save();
-
-        $this->_update();
+        try
+        {
+            $changed = $this->_update();
+            if ($changed)
+            {
+                $this->time_changed = time();
+            }
+            
+            $this->time_update_complete = time();
+            $this->consecutive_errors = 0;
+            $this->calculate_next_update_time();         
+            $this->update_status = static::Idle;
+            $this->save();            
+        }
+        catch (Exception $ex)
+        {
+            $msg = get_class($ex).": ".$ex->getMessage();
+            error_log("error updating external feed {$this->feed_url}: $msg");
+            
+            $this->time_last_error = time();
+            $this->last_error = $msg;
+            $this->consecutive_errors += 1;
+            $this->calculate_next_update_time();
+            $this->update_status = static::Idle;
+            $this->save();            
+       
+            if ($ex instanceof IOException || $ex instanceof DataFormatException) 
+            {
+                // suppress exception for feeds that are broken in expected ways
+            }
+            else
+            {                   
+                throw $ex;
+            }
+        }
     }
-    
+        
     static function validate_url($url)
     {
         Web_Request::validate_url($url);            

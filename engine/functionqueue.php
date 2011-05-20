@@ -9,16 +9,15 @@
  */
 class FunctionQueue
 {
-    static $in_process_queue = array();
+    private static $in_process_queue = array();
+    private static $connect_tried = false;    
+    private static $kestrel = null;    
 
-    static function _connect()
+    private static function _connect()
     {        
-        static $kestrel = null;
-        static $connect_tried = false;
-        
-        if (!$kestrel && !$connect_tried)
+        if (!static::$kestrel && !static::$connect_tried)
         {
-            $connect_tried = true;
+            static::$connect_tried = true;
             $k = new Memcache;
             
             if (!@$k->connect(Config::get('queue_host'), Config::get('queue_port')))
@@ -26,12 +25,26 @@ class FunctionQueue
                 throw new IOException(__("error:QueueConnectFailed"));
             }
                         
-            $kestrel = $k;
+            static::$kestrel = $k;
         }
-        return $kestrel;
+        return static::$kestrel;
+    }
+    
+    static function is_server_available()
+    {
+        static::$connect_tried = false;
+        try
+        {
+            $kestrel = static::_connect();
+            return $kestrel != null;
+        }
+        catch (IOException $ex)
+        {
+            return false;
+        }
     }
 
-    static function queue_call($fn, $args)
+    static function queue_call($fn, $args, $queue_name = 'call')
     {    
         $queue_entry = array('fn' => $fn, 'args' => $args);
         
@@ -63,7 +76,7 @@ class FunctionQueue
         }
         else
         {       
-            if (!$kestrel->set('call', serialize($queue_entry)))
+            if (!$kestrel->set($queue_name, serialize($queue_entry)))
             {
                 throw new IOException(__("error:QueueAppendFailed")); 
             }
@@ -95,13 +108,13 @@ class FunctionQueue
     private static function exec_queue_entry($queue_entry)
     {
         call_user_func_array($queue_entry['fn'], $queue_entry['args']);
-    }
+    }   
         
-    static function exec_queued_call($timeout = 0)
+    static function exec_queued_call($timeout_ms = 0, $queue_name = 'call')
     {
         $kestrel = static::_connect();
 
-        if ($nextCallStr = $kestrel->get("call/t=$timeout"))
+        if ($nextCallStr = $kestrel->get("$queue_name/t=$timeout_ms"))
         {   
             static::exec_queue_entry(unserialize($nextCallStr));
             return true;
