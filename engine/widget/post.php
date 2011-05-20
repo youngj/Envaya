@@ -11,14 +11,29 @@ class Widget_Post extends Widget_Generic
         return __("widget:news");
     }
 
-    function render_view($args = null)
+    function render_view($vars = null)
     {
         return view('widgets/post_view', array(
-            'widget' => $this, 
-            'is_primary' => @$args['is_primary']
+            'widget' => $this,
+            'is_primary' => @$vars['is_primary'],
         ));
     }
+
+    function get_content_view()
+    {
+        return 'widgets/post_view_content';
+    }
     
+    function get_date_view()
+    {
+        return 'widgets/post_view_date';
+    }
+    
+    function get_title_view()
+    {
+        return 'widgets/post_view_title';
+    }        
+        
     function process_input($action)
     {
         $content = get_input('content');

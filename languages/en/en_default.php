@@ -116,4 +116,8 @@ return array(
     'captcha:title' => 'Enter verification code',
     'captcha:button' => 'Submit code',
     'captcha:invalid' => "The verification code wasn't entered correctly. Try again.",                    
+    
+    'web:url_error' => "There was an error loading the web address {url}.",    
+    'web:invalid_url' => "The web address {url} is not allowed.",    
+    'web:try_again' => "Make sure that the address is correct, then try again.",    
 );

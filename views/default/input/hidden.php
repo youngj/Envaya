@@ -8,4 +8,4 @@
      */
 
 ?>
-<input type="hidden" <?php echo @$vars['js']; ?> name="<?php echo $vars['name']; ?>" <?php if (isset($vars['id'])) echo "id=\"{$vars['id']}\""; ?> value="<?php echo escape($vars['value']); ?>" />
+<input type="hidden" <?php echo @$vars['js']; ?> name="<?php echo $vars['name']; ?>" <?php if (isset($vars['id'])) echo "id=\"{$vars['id']}\""; ?> value="<?php echo escape(@$vars['value']); ?>" />

@@ -15,6 +15,7 @@ return array(
     'date:time_with_tz' => '{time} {tz}',
     'date:date_time' => '{date} at {time}',
     'date:date_name' => "{date} by {name}",
+    'date:date_feed' => '{date} via {feed}',
     
     'date:am' => "AM",
     'date:pm' => "PM",

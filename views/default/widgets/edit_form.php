@@ -33,7 +33,6 @@
     echo view('input/form', array(
         'body' => $form_body,
         'action' => "{$widget->get_base_url()}/edit",
-        'enctype' => 'multipart/form-data'
     ));
 
 ?>

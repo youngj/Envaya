@@ -708,7 +708,7 @@ input[type="submit"] {
     vertical-align:middle;    
 }   
 
-.inputTable label
+.inputTable label, .normalLabel
 {
     font-size:100%;
 }

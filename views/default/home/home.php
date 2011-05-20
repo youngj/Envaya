@@ -2,7 +2,7 @@
     $region = GeoIP::get_world_region();
     $is_africa = ($region == GeoIP::Africa);
     $is_supported = GeoIP::is_supported_country();
-
+    
     $defaultPhoto = "/_graphics/home/banner_planting5.jpg";
     
     PageContext::add_header_html("        

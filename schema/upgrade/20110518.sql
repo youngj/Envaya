@@ -1,4 +1,5 @@
 alter table external_feeds add `title` text NULL;
+alter table external_feeds add `feed_url` text NULL;
 
 CREATE TABLE `external_sites` (
     `guid` bigint(20) unsigned  NOT NULL,  

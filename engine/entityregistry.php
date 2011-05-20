@@ -26,6 +26,8 @@ class EntityRegistry
         'core.discussion.topic' => 'DiscussionTopic',
         'core.feed' => 'ExternalFeed',
         'core.feed.rss' => 'ExternalFeed_RSS',
+        'core.feed.facebook' => 'ExternalFeed_Facebook',
+        'core.feed.twitter' => 'ExternalFeed_Twitter',        
         'core.externalsite' => 'ExternalSite',
         'core.externalsite.facebook' => 'ExternalSite_Facebook',
         'core.externalsite.twitter' => 'ExternalSite_Twitter',

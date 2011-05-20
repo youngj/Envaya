@@ -5,7 +5,12 @@ class SecurityException extends Exception {}
 class DatabaseException extends Exception {}
 class CallException extends Exception {}
 class DataFormatException extends Exception {}
-class NotImplementedException extends CallException {}
+class NotImplementedException extends CallException {
+    function __construct()
+    {
+        echo "???";
+    }
+}
 class InvalidParameterException extends CallException {}
 //class ErrorException extends Exception {}
 
@@ -80,43 +85,50 @@ function ob_discard_all()
 
 function notify_exception($exception)
 {
-    error_log("*** FATAL EXCEPTION *** : " . $exception);
-
-    if (Config::get('error_emails_enabled'))
+    try
     {
-        $lastErrorEmailTimeFile = Config::get('dataroot')."last_error_time";
-        $lastErrorEmailTime = (int)@file_get_contents($lastErrorEmailTimeFile);
-        $curTime = time();
+        error_log("*** FATAL EXCEPTION *** : " . $exception);
 
-        if ($curTime - $lastErrorEmailTime > 60)
+        if (Config::get('error_emails_enabled'))
         {
-            @file_put_contents($lastErrorEmailTimeFile, "$curTime", LOCK_EX);
+            $lastErrorEmailTimeFile = Config::get('dataroot')."last_error_time";
+            $lastErrorEmailTime = (int)@file_get_contents($lastErrorEmailTimeFile);
+            $curTime = time();
 
-            $class = get_class($exception);
-            $ex = print_r($exception, true);
-            $server = print_r($_SERVER, true);
+            if ($curTime - $lastErrorEmailTime > 60)
+            {
+                @file_put_contents($lastErrorEmailTimeFile, "$curTime", LOCK_EX);
 
-            // avoid using OutgoingMail class, since it has dependencies on the Database and FunctionQueue,
-            // and this exception may occur because one of those components is failing.
-            
-            $url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : @$_SERVER['PHP_SELF'];
-            
-            $mail = Zend::mail();
-            $mail->setSubject("$class: $url");
-            $mail->setBodyText("
-Exception:
-==========
-$ex
+                $class = get_class($exception);
+                $ex = print_r($exception, true);
+                $server = print_r($_SERVER, true);
+
+                // avoid using OutgoingMail class, since it has dependencies on the Database and FunctionQueue,
+                // and this exception may occur because one of those components is failing.
+                
+                $url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : @$_SERVER['PHP_SELF'];
+                
+                $mail = Zend::mail();
+                $mail->setSubject("$class: $url");
+                $mail->setBodyText("
+    Exception:
+    ==========
+    $ex
 
 
-_SERVER:
-=======
-$server
-        ");
-            $mail->addTo(Config::get('admin_email'));
-            $mailer = Zend::mail_transport();
-            $mail->send($mailer);
+    _SERVER:
+    =======
+    $server
+            ");
+                $mail->addTo(Config::get('admin_email'));
+                $mailer = Zend::mail_transport();
+                $mail->send($mailer);
+            }
         }
+    }
+    catch (Exception $ex) 
+    {
+        // suppress exceptions in exception handler to avoid php errors
     }
 }
 
@@ -130,8 +142,15 @@ $server
 
 function php_exception_handler($exception) 
 {    
-    ob_discard_all();
-    echo get_class($exception) . " " . $exception->getMessage() . "\n";
-    notify_exception($exception);
+    try
+    {
+        ob_discard_all();
+        echo get_class($exception) . " " . $exception->getMessage() . "\n";
+        notify_exception($exception);
+    }
+    catch (Exception $ex) 
+    {
+        // suppress exceptions in exception handler to avoid php errors
+    }
     die;
 }

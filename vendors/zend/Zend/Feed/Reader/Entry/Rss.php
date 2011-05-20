@@ -265,7 +265,7 @@ class Zend_Feed_Reader_Entry_Rss extends Zend_Feed_Reader_EntryAbstract implemen
         ) {
             $dateModified = $this->_xpath->evaluate('string('.$this->_xpathQueryRss.'/pubDate)');
             if ($dateModified) {
-                $dateModifiedParsed = strtotime($dateModified);
+                $dateModifiedParsed = strtotime($dateModified);                
                 if ($dateModifiedParsed) {
                     $date = new Zend_Date($dateModifiedParsed);
                 } else {

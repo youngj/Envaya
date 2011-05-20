@@ -156,10 +156,10 @@ class Zend_Feed_Reader_Entry_Atom extends Zend_Feed_Reader_EntryAbstract impleme
      * @return string
      */
     public function getDateModified()
-    {
+    {   
         if (array_key_exists('datemodified', $this->_data)) {
             return $this->_data['datemodified'];
-        }
+        }        
 
         $dateModified = $this->getExtension('Atom')->getDateModified();
 
