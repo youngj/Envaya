@@ -11,11 +11,10 @@ function removeFeed(guid, url, hasItems)
     function removeConfirmed(remove_posts)
     {
         setSubmitted(true);    
-        var form = $('feed_hidden_form');
-        form.action.value = 'remove_feed';
+        var form = $('feed_remove_form');
         form.guid.value = guid;        
         form.remove_posts.value = remove_posts ? '1' : '';
-        form.submit();
+        setTimeout(function() { form.submit() }, 1);
     }
 
     var modalBox;
@@ -74,10 +73,9 @@ function linkSuccess(res)
                 )})
             ),
             okFn: function() {
-                var form = $('feed_hidden_form');
-                form.action.value = 'add_link';
+                var form = $('feed_add_link_form');
                 form.url.value = res.url;
-                form.submit();
+                setTimeout(function() { form.submit(); }, 1);
             },
             focus: true
         });
@@ -86,13 +84,12 @@ function linkSuccess(res)
     {    
         function addConfirmed(add_link)
         {
-            var form = $('feed_hidden_form');
-            form.action.value = 'add_feed';
+            var form = $('feed_add_form');
             form.url.value = res.url;
             form.feed_url.value = res.feed_url;
             form.feed_subtype.value = res.feed_subtype;
             form.add_link.value = add_link ? '1' : '';
-            form.submit();
+            setTimeout(function() { form.submit(); }, 1);
         }    
     
         var addLinkBox = null;         
@@ -149,7 +146,7 @@ function getLinkInfo()
     
         echo "<tr>";
         echo "<td>";
-        echo "<a target='_blank' href='".escape($feed->feed_url)."' style='font-weight:bold'>".escape($feed->url)."</a>";
+        echo "<a target='_blank' href='".escape($feed->url)."' style='font-weight:bold'>".escape($feed->url)."</a>";
         echo "</td>";
         echo "<td>";
         echo "<a href='javascript:removeFeed($feed->guid, ".json_encode($feed->url).",".json_encode($has_items).");' class='gridDelete'></a>";
@@ -176,18 +173,26 @@ function getLinkInfo()
     }
     echo "</table>";
     echo "</form>";
-                
-    echo "<form id='feed_hidden_form' method='POST' action='{$widget->get_edit_url()}'>";
+
+    echo "<form id='feed_add_link_form' method='POST' action='{$widget->get_edit_url()}?action=add_link'>";
     echo view('input/securitytoken');
-    echo view('input/hidden', array('name' => 'action'));
-    echo view('input/hidden', array('name' => 'guid'));
-    echo view('input/hidden', array('name' => 'remove_posts'));
+    echo view('input/hidden', array('name' => 'url'));
+    echo "</form>";
+                
+    echo "<form id='feed_add_form' method='POST' action='{$widget->get_edit_url()}?action=add_feed'>";
+    echo view('input/securitytoken');
     echo view('input/hidden', array('name' => 'url'));
     echo view('input/hidden', array('name' => 'feed_url'));
     echo view('input/hidden', array('name' => 'feed_subtype'));
     echo view('input/hidden', array('name' => 'add_link'));
     echo "</form>";
-        
+
+    echo "<form id='feed_remove_form' method='POST' action='{$widget->get_edit_url()}?action=remove_feed'>";
+    echo view('input/securitytoken');
+    echo view('input/hidden', array('name' => 'guid'));
+    echo view('input/hidden', array('name' => 'remove_posts'));
+    echo "</form>";
+    
     $content = ob_get_clean();    
     
     echo view("section", array(
