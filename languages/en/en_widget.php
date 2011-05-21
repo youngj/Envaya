@@ -90,12 +90,10 @@ return array(
     'widget:links:add' => "Add Website",
     'widget:links:added' => "Website added successfully.",
     'widget:links:options' => "Link Options",
-    'widget:links:confirm_delete' => "Are you sure you want to remove the link to this website?",
     'widget:links:deleted' => "Website removed successfully.",
     'widget:links:instructions' => "If your organization has another website, Facebook page, or Twitter profile, enter its web address in order to create a link on your Envaya website.",    
     'widget:links:blank' => "Please enter the address of the website to link to.",
     'widget:links:include_feed' => "Automatically include news from this website on your News page?",
-    'widget:links:url' => "Website address",
     'widget:links:title' => "Website name",
     
     'widget:edit' => "Edit Page",

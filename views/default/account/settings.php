@@ -48,23 +48,6 @@
         ?>
         </td>
     </tr>
-
-    <?php if (false) { ?>
-    
-    <tr>
-        <th style='vertical-align:top;padding-top:8px'><?php echo __('user:websites'); ?>:</th>
-        <td>
-        <?php		
-            echo view("input/text", array(
-                'name' => 'websites[]', 
-				'value' => '', 
-            ));           
-         ?>
-        <div class='help'><?php echo __('user:websites:help'); ?></div>         
-         </td>
-    </tr>
-        
-    <?php } ?>
     <tr>
         <th><?php echo __('user:language:label'); ?>:</th>
         <td style='padding-top:8px'>

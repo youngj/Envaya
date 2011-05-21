@@ -46,6 +46,18 @@ return array(
     'widget:news:items' => "Habari",
     'widget:news:empty' => 'Shirika hili halijaandika habari yoyote.',
     'widget:news:manage_updates' => 'Hariri habari',
+    
+    'widget:news:feeds' => "Habari Kutoka Tovuti Nyingine",
+    'widget:news:feeds:instructions' => "Ikiwa shirika lako lina tovuti nyingine, ukurasa wa Facebook, au ukurasa wa Twitter, ingiza anwani yake hapo chini ili kuongeza habari moja kwa moja katika tovuti yako ya Envaya.",
+    'widget:news:feeds:error' => "Samahani, Envaya haiwezi kuongeza habari moja kwa moja kutoka tovuti hii.",
+    'widget:news:feeds:add_link' => "Je, unataka kuongeza kiungo kwa {url} katika ukurasa wako mkuu?",
+    'widget:news:feeds:confirm_remove_title' => "Thibitisha Kuondoa Tovuti",
+    'widget:news:feeds:confirm_remove' => "Tafadhali thibitisha nini unataka kufanya na habari zilizopo kutoka {url}:",
+    'widget:news:feeds:delay' => "Habari kutoka {url} zitaanza kuongezwa katika ukurasa huu baada ya dakika chache.",
+    'widget:news:feeds:include_link' => "Ongeza kiungo kwa tovuti hii katika ukurasa wako mkuu?",
+    'widget:news:feeds:remove_posts' => "Ondoa habari kutoka {url}",
+    'widget:news:feeds:keep_posts' => "Hifadhi habari kutoka {url}",    
+    
     'widget:contact' => 'Mawasiliano',
     'widget:contact:email' => 'Email:',
     'widget:contact:email:edit' => 'Anwani yako ya email ni gani?',
@@ -70,6 +82,17 @@ return array(
     'widget:team:name:missing' => 'Mahali kwa jina la mwenzio ni patupu.',
     'widget:team:description' => 'Maelezo:',
     'widget:team:photo' => 'Picha (sio lazima):',
+    
+    'widget:links' => "Tovuti Nyingine",
+    'widget:links:add' => "Ongeza Tovuti",
+    'widget:links:added' => "Tovuti imeongezwa.",
+    'widget:links:options' => "Chaguzi za Kiungo",
+    'widget:links:deleted' => "Tovuti imeondolewa.",
+    'widget:links:instructions' => "Ikiwa shirika lako lina tovuti nyingine, ukurasa wa Facebook, au ukurasa wa Twitter, ingiza anwani yake hapo chini ili kuumba kiungo katika tovuti yako ya Envaya.",    
+    'widget:links:blank' => "Tafadhali ingiza anwani ya tovuti kuunga nayo.",
+    'widget:links:include_feed' => "Ongeza habari kutoka tovuti hii moja kwa moja katika ukurasa wako wa Habari?",
+    'widget:links:title' => "Jina la tovuti",    
+    
     'widget:edit' => 'Hariri Ukurasa',
     'widget:publish' => 'Chapisha ukurasa',
     'widget:create' => 'Umba ukurasa',
@@ -81,4 +104,5 @@ return array(
     'widget:delete_section:success' => 'Sehemu imefutwa.',
     'widget:delete:confirm' => 'Una hakika kuwa unataka kufuta ukurasa huu kutoka kwenye tovuti yako?',
     'widget:delete_section:confirm' => 'Una hakika kuwa unataka kufuta sehemu hii?',
+        
 );
