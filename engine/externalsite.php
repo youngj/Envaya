@@ -89,8 +89,10 @@ class ExternalSite extends Entity
         }
         $site = static::new_from_url($url);
         
+        
         return array(
             'url' => $feed ? $feed->url : $url,
+            'title' => $response->get_title(),
             'site_subtype' => $site->subtype_id,
             'feed_url' => $feed ? $feed->feed_url : null,
             'feed_subtype' => $feed->subtype_id,

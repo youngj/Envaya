@@ -21,26 +21,21 @@ class ExternalFeed_RSS extends ExternalFeed
         return null;
     }
 
-    static function try_new_from_html($html, $url)
+    static function try_new_from_document($dom, $url)
     {
         Zend::load('Zend_Feed_Reader_FeedSet');
-        
-        $dom = new DOMDocument;
-        $status = @$dom->loadHTML($html);                
-        if ($status)
+                
+        $feedSet = new Zend_Feed_Reader_FeedSet();
+        $links = $dom->getElementsByTagName('link');
+        $feedSet->addLinks($links, $url);
+        foreach ($feedSet as $feedItem)
         {
-            $feedSet = new Zend_Feed_Reader_FeedSet();
-            $links = $dom->getElementsByTagName('link');
-            $feedSet->addLinks($links, $url);
-            foreach ($feedSet as $feedItem)
+            $feed = static::try_new_from_content_type($feedItem['type']);
+            if ($feed) 
             {
-                $feed = static::try_new_from_content_type($feedItem['type']);
-                if ($feed) 
-                {
-                    $feed->url = $url;
-                    $feed->feed_url = $feedItem['href'];
-                    return $feed;
-                }
+                $feed->url = $url;
+                $feed->feed_url = $feedItem['href'];
+                return $feed;
             }
         }
         return null;

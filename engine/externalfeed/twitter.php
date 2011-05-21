@@ -7,23 +7,18 @@ class ExternalFeed_Twitter extends ExternalFeed
         return 'Tweet';
     }
     
-    static function try_new_from_html($html, $url)
+    static function try_new_from_document($dom, $url)
     {
-        $dom = new DOMDocument;
-        $status = @$dom->loadHTML($html);                
-        if ($status)
+        foreach ($dom->getElementsByTagName('link') as $link)
         {
-            foreach ($dom->getElementsByTagName('link') as $link)
+            $rel = $link->getAttribute('rel');
+            $href = $link->getAttribute('href');
+            if ($rel == 'alternate' && preg_match('/\.rss$/', $href))
             {
-                $rel = $link->getAttribute('rel');
-                $href = $link->getAttribute('href');
-                if ($rel == 'alternate' && preg_match('/\.rss$/', $href))
-                {
-                    $feed = new ExternalFeed_Twitter();
-                    $feed->url = $url;
-                    $feed->feed_url = preg_replace('/\.rss$/', '.json', $href);
-                    return $feed;
-                }
+                $feed = new ExternalFeed_Twitter();
+                $feed->url = $url;
+                $feed->feed_url = preg_replace('/\.rss$/', '.json', $href);
+                return $feed;
             }
         }
         return null;

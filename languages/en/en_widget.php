@@ -96,6 +96,7 @@ return array(
     'widget:links:blank' => "Please enter the address of the website to link to.",
     'widget:links:include_feed' => "Automatically include news from this website on your News page?",
     'widget:links:url' => "Website address",
+    'widget:links:title' => "Website name",
     
     'widget:edit' => "Edit Page",
     'widget:publish' => "Publish page",

@@ -193,7 +193,7 @@ class ExternalFeed extends Entity
         {
             return false;
         }
-    }               
+    }                  
     
     static function try_new_from_web_response($response)
     {
@@ -228,7 +228,11 @@ class ExternalFeed extends Entity
             }
             else if (strpos($headers['Content-Type'], 'text/html') !== false)
             {
-                $feed = $feed_cls::try_new_from_html($response->content, $url);            
+                $dom = $response->get_dom();            
+                if ($dom)
+                {
+                    $feed = $feed_cls::try_new_from_document($dom, $url);            
+                }
             }
         }
         
@@ -240,7 +244,7 @@ class ExternalFeed extends Entity
         return null;
     }
     
-    static function try_new_from_html($html, $url)
+    static function try_new_from_document($dom, $url)
     {
         return null;
     }
