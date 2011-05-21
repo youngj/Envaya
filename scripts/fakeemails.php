@@ -23,3 +23,7 @@ if (Config::get('debug') && Config::get('domain') != 'envaya.org')
         $user->save();
     }
 }
+else
+{
+    echo "not in debug mode";
+}

@@ -315,9 +315,7 @@ class ExternalFeed extends Entity
         {            
             $external_id = $this->get_entry_external_id($entry);
 
-            $widget = $this->get_widget_by_external_id($external_id);
-                
-            echo "  $external_id => $widget->widget_name ($widget->guid)\n";                
+            $widget = $this->get_widget_by_external_id($external_id);                
                                                 
             // ignore any items we have already saved
             if ($widget->guid)
@@ -333,6 +331,8 @@ class ExternalFeed extends Entity
             $widget->time_published = $this->get_entry_time($entry);             
             $widget->set_metadata('link', static::absolutize_url($this->get_entry_link($entry), $this->url));                
             $widget->save();
+            
+            echo "  {$widget->widget_name} => {$widget->guid}\n";                            
             
             $changed = true;
         }
