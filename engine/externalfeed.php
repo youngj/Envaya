@@ -237,41 +237,102 @@ class ExternalFeed extends Entity
     
     static function try_new_from_content_type($content_type)
     {
-        $feed_content_types = array('application/atom+xml', 'application/rss+xml');
-        foreach ($feed_content_types as $feed_content_type)
-        {
-            if (strpos($content_type, $feed_content_type) !== false)
-            {
-                $cls = get_called_class();
-                return new $cls();
-            }
-        }
+        return null;
+    }
+    
+    static function try_new_from_html($html, $url)
+    {
         return null;
     }
         
-    static function try_new_from_html($html, $url)
+    function load_feed()
     {
-        Zend::load('Zend_Feed_Reader_FeedSet');
+        $request = new Web_Request($this->feed_url);
+        $response = $request->get_response();
         
-        $dom = new DOMDocument;
-        $status = @$dom->loadHTML($html);                
-        if ($status)
-        {
-            $feedSet = new Zend_Feed_Reader_FeedSet();
-            $links = $dom->getElementsByTagName('link');
-            $feedSet->addLinks($links, $url);
-            foreach ($feedSet as $feedItem)
-            {
-                $feed = static::try_new_from_content_type($feedItem['type']);
-                if ($feed) 
-                {
-                    $feed->url = $url;
-                    $feed->feed_url = $feedItem['href'];
-                    return $feed;
-                }
-            }
-        }
-        return null;
-    }    
+        if ($response->status != 200)
+            throw new IOException("Error {$response->status} retrieving feed");    
+            
+        return $response;
+    }
     
+    function set_widget_content($widget, $content)
+    {
+        // assume items in a feed are all in the same language to avoid checking Google Translate for each one                
+        if (!$this->language && $content)
+        {
+            $this->language = GoogleTranslate::guess_language($content);
+        }
+
+        $widget->language = $this->language;        
+        $widget->set_content($content);
+    }           
+    
+    static function absolutize_url($rel, $base)
+    {
+        // from http://nashruddin.com/PHP_Script_for_Converting_Relative_to_Absolute_URL,
+        // no license information found
+       
+        if (parse_url($rel, PHP_URL_SCHEME) != '') 
+            return $rel;
+       
+        /* queries and anchors */
+        if ($rel[0]=='#' || $rel[0]=='?') 
+            return $base.$rel;
+       
+        $parsed_base = parse_url($base);
+        
+        $path = @$parsed_base['path'];
+        $scheme = @$parsed_base['scheme'];
+        $host = @$parsed_base['host'];
+                    
+        /* remove non-directory element from path */
+        $path = preg_replace('#/[^/]*$#', '', $path);
+     
+        /* destroy path if relative url points to root */
+        if ($rel[0] == '/') 
+            $path = '';
+       
+        /* dirty absolute URL */
+        $abs = "$host$path/$rel";
+     
+        /* replace '//' or '/./' or '/foo/../' with '/' */
+        $re = array('#(/\.?/)#', '#/(?!\.\.)[^/]+/\.\./#');
+        for($n=1; $n>0; $abs=preg_replace($re, '/', $abs, -1, $n)) {}
+       
+        return $scheme.'://'.$abs;
+    }        
+    
+    protected function update_entries($entries)
+    {
+        $changed = false;            
+
+        foreach ($entries as $entry)
+        {            
+            $external_id = $this->get_entry_external_id($entry);
+
+            $widget = $this->get_widget_by_external_id($external_id);
+                
+            echo "  $external_id => $widget->widget_name ($widget->guid)\n";                
+                                                
+            // ignore any items we have already saved
+            if ($widget->guid)
+            {
+                continue;
+            }
+                
+            $widget->set_metadata('feed_guid', $this->guid);
+            $widget->set_metadata('feed_name', $this->title);
+                
+            $this->set_widget_content($widget, $this->get_entry_content($entry));           
+            $widget->title = $this->get_entry_title($entry);
+            $widget->time_published = $this->get_entry_time($entry);             
+            $widget->set_metadata('link', static::absolutize_url($this->get_entry_link($entry), $this->url));                
+            $widget->save();
+            
+            $changed = true;
+        }
+        
+        return $changed;    
+    }    
 }

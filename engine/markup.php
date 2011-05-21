@@ -56,9 +56,9 @@ class Markup
                 if ($tooLong)
                 {
                     $content = static::truncate_at_word_boundary($content, $maxLength);
-                }
+                }                                
                 
-                $content = Markup::sanitize_html($content, array('HTML.AllowedElements' => 'a,em,strong,br','AutoFormat.RemoveEmpty' => true));
+                $content = Markup::sanitize_html($content, array('HTML.AllowedElements' => 'a,em,strong,br','AutoFormat.RemoveEmpty' => true));                
                 $content = mb_ereg_replace('(\xc2\xa0)+',' ',$content); # non-breaking space
                 $content = preg_replace('/(<br \/>\s*)+/', ' &ndash; ', $content);
                 $content = preg_replace('/&ndash;\s*$/', '', $content);

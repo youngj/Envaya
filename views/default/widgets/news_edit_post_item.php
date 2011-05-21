@@ -20,6 +20,6 @@
     {
         echo "<img src='".escape($widget->thumbnail_url)."' style='display:block;padding:2px' />";
     }
-    echo $widget->get_snippet();                
+    echo $widget->get_snippet(300);                
     echo view($widget->get_date_view(), array('widget' => $widget, 'is_primary' => false));
     echo "</div>";

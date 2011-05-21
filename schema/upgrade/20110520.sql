@@ -1,0 +1,11 @@
+ALTER TABLE `external_feeds` ADD `update_status` tinyint(4) not null default 0;
+ALTER TABLE `external_feeds` ADD     `time_next_update` int(11) not null default 0;
+ALTER TABLE `external_feeds` ADD `time_queued` int(11) null;
+ALTER TABLE `external_feeds` ADD `time_changed` int(11) null;
+ALTER TABLE `external_feeds` ADD     `time_update_started` int(11) null;
+ALTER TABLE `external_feeds` ADD     `time_update_complete` int(11) null;
+ALTER TABLE `external_feeds` ADD     `time_last_error` int(11) null;
+ALTER TABLE `external_feeds` ADD     `last_error` text;
+ALTER TABLE `external_feeds` ADD `consecutive_errors` int(11) null;
+ALTER TABLE `external_feeds` ADD  KEY `feed_url` (`feed_url`(50));
+ALTER TABLE `external_feeds` ADD  KEY (`time_next_update`);

@@ -29,6 +29,7 @@ function removeFeed(guid, url, hasItems)
     var modalBox = createModalBox({
         title: <?php echo json_encode(__('widget:news:feeds:confirm_remove_title')); ?>,
         hideOk: true,
+        focus: true,
         width:460,
         content: createElem('div', {className:'modalBody'},
             createElem('p', <?php echo json_encode(__('widget:news:feeds:confirm_remove')); ?>.replace('{url}',url)),

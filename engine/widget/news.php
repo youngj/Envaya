@@ -82,10 +82,12 @@ class Widget_News extends Widget
                     ->with_metadata('feed_guid', $feed->guid)
                     ->filter();
                     
+                // delete rather than disabling posts so that 
+                // we can create posts again if this feed is later reenabled
+                // (if the post is disabled, it may have been deleted explicitly by the user)
                 foreach ($posts as $post)
                 {
-                    $post->disable();
-                    $post->save();
+                    $post->delete();
                 }
             }        
         
