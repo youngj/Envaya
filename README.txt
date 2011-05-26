@@ -1,14 +1,18 @@
-Envaya is a social networking platform where the "profiles" are miniature
-websites. It is partly a simple, generic, multi-user content management system
+Envaya is a social networking platform where the "profiles" are websites 
+for civil society organizations.
+ 
+It is partly a simple, generic, multi-user content management system
 and blogging platform, and partly a structured network with tools/applications
-specific to its class of users (civil society organizations in developing
-countries).
+specific to civil society organizations in developing countries.
 
 Envaya is designed to be easy-to-use by people with very limited computer
-skills, so it generally favors simplicity over the flexibility, customizability,
-or power offered by generic content management tools such as Wordpress, 
+skills, so it generally favors simplicity over the flexibility or 
+customizability offered by generic content management tools such as Wordpress, 
 Drupal, or Google Sites. Envaya also is designed for low- bandwidth and mobile 
 environments, and provides multilingual support including content translation.
+
+For more information about Envaya's software and design principles, see
+http://envaya.org/envaya/page/software
 
 Potential ways of using Envaya's source code may include:
 
@@ -42,6 +46,8 @@ _graphics/
     - Image files, served directly by web server
 _media/
     - Other static files, such as JavaScript and Flash
+build/
+    - PHP files dynamically created by scripts/make.php
 config/
     - Configuration settings. Local settings should be defined in config/local.php
 engine/
@@ -60,8 +66,11 @@ scripts/
     - Miscellaneous command line scripts
 test/
     - Test scripts. test/TestSuite.php is main script
+themes/
+    - Metadata for page themes
 vendors/
     - Third-party PHP libraries and external programs 
 views/
-    - PHP files loaded by view() function to render parts of the output.
+    - PHP files loaded by the view() function (engine/lib/views.php) 
+      which render parts of the output.
       Organized by viewtype, 'default' is standard HTML view
