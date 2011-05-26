@@ -224,8 +224,14 @@ class ExternalFeedTest extends SeleniumTest
                 $this->click("//form[@id='feed_form']//a[@class='gridDelete']");
             }
             catch (Exception $ex) { return; }
+
+            try
+            {
+                $this->click("//div[@class='modalBody']//a[contains(text(),'Remove')]");
+            }
+            catch (Exception $ex) {}
             
-            $this->clickAndWait("//div[@class='modalBody']//a[contains(text(),'Remove')]");
+            $this->waitForPageToLoad(10000);
             $this->ensureGoodMessage();
         }
     }

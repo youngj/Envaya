@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * Represents a feed item imported from an external feed using ExternalFeed.
+ */
 class Widget_FeedItem extends Widget_Post
 {
     function render_edit()

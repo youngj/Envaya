@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * Represents a HTTP response from an external URL.
+ */
 class Web_Response
 {
     public $url;
@@ -8,7 +11,7 @@ class Web_Response
     public $content;
     
     private $dom = false;
-    
+   
     function get_dom()
     {
         if ($this->dom === false)

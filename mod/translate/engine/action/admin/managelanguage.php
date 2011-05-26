@@ -22,6 +22,7 @@ class Action_Admin_ManageLanguage extends Action
         {
             
             $language->name = get_input('name');
+            $language->enable();
             $language->save();
             
             $available_groups = $language->get_available_groups();

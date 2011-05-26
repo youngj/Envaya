@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * Allows retrieving an arbitrary HTTP resource via an untrusted URL.
+ */
 class Web_Request
 {
     public $url;

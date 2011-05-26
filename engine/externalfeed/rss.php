@@ -1,5 +1,9 @@
 <?php
 
+/* 
+ * Represents an external RSS or Atom feed. Creates RSSItem widgets for
+ * imported feed items.
+ */
 class ExternalFeed_RSS extends ExternalFeed
 {
     function get_widget_subclass()

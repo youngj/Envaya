@@ -1,5 +1,9 @@
 <?php
 
+/* 
+ * Represents a Twitter feed. Uses the Twitter JSON API to retrieve tweets
+ * and creates Tweet widgets for each imported tweet.
+ */
 class ExternalFeed_Twitter extends ExternalFeed
 {
     function get_widget_subclass()
@@ -52,23 +56,30 @@ class ExternalFeed_Twitter extends ExternalFeed
         return "http://twitter.com/{$screen_name}/status/{$id}";
     }
     
+    protected function get_entry_metadata($tweet)
+    {
+        $profile_image_url = @$tweet['user']['profile_image_url'];
+        $screen_name = @$tweet['user']['screen_name'];
+        $name = @$tweet['user']['name'];
+
+        return array(
+            'twitter_user' => array(
+                'image_url' => $profile_image_url,
+                'screen_name' => $screen_name,
+                'name' => $name,
+            )
+        );    
+    }
+    
     protected function get_entry_content($tweet)
     {
         $content = escape($tweet['text']);
-        $image = @$tweet['user']['profile_image_url'];
-        $screen_name = @$tweet['user']['screen_name'];
-        $name = @$tweet['user']['name'];
                 
         // regex adapted from http://neverusethisfont.com/blog/2008/10/automatically-linking-twitter-usernames/
         $content = preg_replace('/(^|[^\w])@([\w]+)/', '$1<a href="http://twitter.com/$2">@$2</a>', $content);
-        $content = preg_replace('/(^|[^\w\&])#([\w]+)/', '$1<a href="http://search.twitter.com/search?q=%23\2">#$2</a>', $content);            
-        
-        return view('widgets/tweet_content', array(
-            'content' => $content,
-            'profile_image_url' => $image,
-            'screen_name' => $screen_name,
-            'name' => $name,
-        ));
+        $content = preg_replace('/(^|[^\w\&])#([\w]+)/', '$1<a href="http://search.twitter.com/search?q=%23\2">#$2</a>', $content);    
+
+        return $content;
     }
     
     protected function _update()

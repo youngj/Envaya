@@ -1,7 +1,17 @@
 <?php
 
+/*
+ * Represents a feed from an external website that is imported into Envaya.
+ * The container entity (container_guid) for an ExternalFeed is the News
+ * widget where the feed items are imported as child widgets.
+ * 
+ * Subclasses of ExternalFeed are defined in the externalfeed/ directory.
+ * Each subclass of ExternalFeed handles a particular API (RSS, Twitter, etc.), 
+ * and can create a particular type of child widget for each feed item.
+ */
 class ExternalFeed extends Entity
 {
+    // values for update_status 
     const Idle = 0;
     const Queued = 1;
     const Updating = 2;
@@ -9,8 +19,8 @@ class ExternalFeed extends Entity
     static $table_name = 'external_feeds';
     static $table_attributes = array(
         'subtype_id' => '',
-        'url' => '',
-        'feed_url' => '',
+        'url' => '', // URL for displaying to users
+        'feed_url' => '', // URL for the API (e.g. RSS feed)
         'title' => '',
         'update_status' => 0,
         'time_next_update' => 0,
@@ -23,17 +33,32 @@ class ExternalFeed extends Entity
         'consecutive_errors' => 0,
     );
     
+    /*
+     * Map of regexes for URLs to names of subclasses
+     */
     static $regexes = array(
         '#://[^/]*facebook\.com#i' => 'ExternalFeed_Facebook',
         '#://[^/]*twitter\.com#i' => 'ExternalFeed_Twitter',
     );
     
-    function get_widget_subclass() { throw new NotImplementedException("ExternalFeed::get_widget_subclass"); }
-    protected function _update() { throw new NotImplementedException("ExternalFeed::_update"); }
-
+    function get_widget_subclass() { throw new NotImplementedException(); }
+    protected function _update() { throw new NotImplementedException(); }
+    protected function get_entry_external_id($entry) { throw new NotImplementedException(); }   
+    protected function get_entry_title($entry) { throw new NotImplementedException(); }    
+    protected function get_entry_time($entry) { throw new NotImplementedException(); }    
+    protected function get_entry_link($entry) { throw new NotImplementedException();  }    
+    protected function get_entry_content($entry) { throw new NotImplementedException(); }
+    
+    protected function get_entry_metadata($entry) { return array(); }
+    
     function get_default_update_interval()
     {    
-        return 5 * 60;
+        return 15 * 60;
+    }
+    
+    function get_maximum_update_interval()
+    {
+        return 86400 * 30;
     }
     
     function calculate_next_update_time()
@@ -46,12 +71,15 @@ class ExternalFeed extends Entity
         if ($this->time_changed && $this->time_changed < $time)
         {
             $days_since_changed = floor(($time - $this->time_changed) / 86400.0);
-            $interval *= min((1 + $days_since_changed * 0.5), 500);
+            $interval *= (1 + $days_since_changed * 0.5);
         }
         
         // exponential backoff to slow down rechecking broken feeds
-        $interval *= min(pow(2, $this->consecutive_errors), 2048); 
-                
+        $interval *= pow(2, $this->consecutive_errors);
+
+        // cap maximum interval for checking feeds
+        $interval = min($interval, $this->get_maximum_update_interval());
+        
         $this->time_next_update = $time + $interval;
     }
     
@@ -98,11 +126,6 @@ class ExternalFeed extends Entity
         if (!$root || !$root->is_enabled())
             return false;
             
-        if (time() - $this->time_update_started < $this->get_default_update_interval())
-        {
-            return false;
-        }
-        
         return true;
     }
     
@@ -112,6 +135,7 @@ class ExternalFeed extends Entity
         {
             echo "ignoring {$this->feed_url} for now...\n";
             $this->update_status = static::Idle;
+            $this->calculate_next_update_time();        
             $this->save();
             return;
         }
@@ -314,7 +338,6 @@ class ExternalFeed extends Entity
         foreach ($entries as $entry)
         {            
             $external_id = $this->get_entry_external_id($entry);
-
             $widget = $this->get_widget_by_external_id($external_id);                
                                                 
             // ignore any items we have already saved
@@ -325,11 +348,17 @@ class ExternalFeed extends Entity
                 
             $widget->set_metadata('feed_guid', $this->guid);
             $widget->set_metadata('feed_name', $this->title);
-                
+                            
             $this->set_widget_content($widget, $this->get_entry_content($entry));           
             $widget->title = $this->get_entry_title($entry);
             $widget->time_published = $this->get_entry_time($entry);             
-            $widget->set_metadata('link', static::absolutize_url($this->get_entry_link($entry), $this->url));                
+            $widget->set_metadata('link', static::absolutize_url($this->get_entry_link($entry), $this->url));
+
+            foreach ($this->get_entry_metadata($entry) as $k => $v)
+            {
+                $widget->set_metadata($k, $v);
+            }
+
             $widget->save();
             
             echo "  {$widget->widget_name} => {$widget->guid}\n";                            

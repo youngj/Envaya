@@ -1,7 +1,8 @@
 <?php
 
 /*
- * The main controller that handles incoming web requests and forwards to child controllers.
+ * The main controller that handles incoming web requests via /index.php
+ * and forwards to child controllers.
  */
 class Controller_Default extends Controller
 {
@@ -26,6 +27,7 @@ class Controller_Default extends Controller
         {
             $request = $this->request;
             
+            // map custom domain names to the appropriate user site
             $username = OrgDomainName::get_username_for_host($request->host);            
             if ($username)
             {
@@ -34,23 +36,29 @@ class Controller_Default extends Controller
             
             $this->params['rewritten_uri'] = $uri;
             
+            // 'login' query parameter forces user to log in
             if (@$_GET['login'] && !Session::isloggedin())
             {
                 $this->force_login();
             }
 
+            // 'lang' query parameter permanently changes interface language via cookie
             if (@$_GET['lang'])
             {
                 $this->change_viewer_language($_GET['lang']);
             }    
             
+            // 'view' query parameter permanently changes interface viewtype via cookie
             $viewtype = @$_GET['view'];
             if ($viewtype && Views::is_browsable_type($viewtype))
             {
                 set_cookie('view', $viewtype);
             }
             
-            $viewtype = $viewtype ?: @$_COOKIE['view'] ?: ($this->request->is_mobile_browser() ? 'mobile' : 'default');            
+            // set viewtype for current request
+            $viewtype = $viewtype ?: @$_COOKIE['view'] ?: 
+                ($this->request->is_mobile_browser() ? 'mobile' : 'default');            
+            
             if (preg_match('/[^\w]/', $viewtype))
             {            
                 $viewtype = 'default';

@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * Represents a link to a user's external website.
+ * The container entity (container_guid) for an ExternalSite is an Organization.
+ *
+ * Different subclasses of ExternalSite could potentially have different user
+ * interfaces; e.g. a link to a Facebook page could have a Facebook logo / like button.
+ */
 class ExternalSite extends Entity
 {
     static $table_name = 'external_sites';
@@ -17,11 +24,6 @@ class ExternalSite extends Entity
     function get_default_view_name()
     {
         return 'object/externalsite';
-    }
-    
-    function update()
-    {
-        
     }
     
     static function validate_url($url)
@@ -59,6 +61,11 @@ class ExternalSite extends Entity
         return $site;
     }    
     
+    /*
+     * Retrieves a URL and returns various information about
+     * the page which could be used to create ExternalSite
+     * and ExternalFeed entities for that URL.
+     */
     static function get_linkinfo($url, $check_feed = true)
     {
         $url = trim($url);

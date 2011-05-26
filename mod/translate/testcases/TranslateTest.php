@@ -5,6 +5,8 @@ class TranslateTest extends SeleniumTest
     function test()
     {
         $this->open("/tr/admin/tl");
+        $this->login('testadmin','testtest');
+
         if ($this->isElementPresent("//button[@id='widget_delete']"))
         {
             $this->submitForm("//button[@id='widget_delete']");
@@ -12,7 +14,6 @@ class TranslateTest extends SeleniumTest
         }
         
         // create test language
-        $this->login('testadmin','testtest');
         $this->type("//input[@name='name']", "Test Language");
         $this->check("//input[@value='comment']");
         $this->check("//input[@value='default']");
