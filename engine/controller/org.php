@@ -58,12 +58,12 @@ class Controller_Org extends Controller_Simple
         $this->prefer_http();
         $this->allow_view_types(null);
     
-        $query = get_input('q');
+        $q = get_input('q');
         $sector = get_input('sector');
         
-        $vars = array('query' => $query, 'sector' => $sector);
+        $vars = array('query' => $q, 'sector' => $sector);
         
-        if (empty($query) && !$sector)
+        if (empty($q) && !$sector)
         {        
             $title = __('search:title');
             $content = view('org/search', $vars);
@@ -72,33 +72,33 @@ class Controller_Org extends Controller_Simple
         {
             $title = __('search:results');            
             
-            if (!empty($query)) 
+            if (!empty($q)) 
             {
 		//fixme: use relevant country for geoquery -tk
-                $geoQuery = "$query Tanzania";            
+                $geoQuery = "$q Tanzania";            
                 $latlong = Geography::geocode($geoQuery);
             }
             
             if ($latlong)
             {
-                    $query = Organization::query();
-                    $query->in_area(
-                        $latlong['lat'] - 1.0, 
-                        $latlong['long'] - 1.0, 
-                        $latlong['lat'] + 1.0, 
-                        $latlong['long'] + 1.0
-                    );
-                    if ($sector)
-                    {
-                        $query->with_sector($sector);
-                    }
-                    $vars['nearby'] = ($query->limit(1)->get() != null);
+				$query = Organization::query();
+				$query->in_area(
+					$latlong['lat'] - 1.0, 
+					$latlong['long'] - 1.0, 
+					$latlong['lat'] + 1.0, 
+					$latlong['long'] + 1.0
+				);
+				if ($sector)
+				{
+					$query->with_sector($sector);
+				}
+				$vars['nearby'] = ($query->limit(1)->get() != null);
             
                 $vars['latlong'] = $latlong;
             }            
 
             $vars['results'] = view('org/search_list', array(
-                'fulltext' => $query,
+                'fulltext' => $q,
                 'sector' => $sector,
             ));
             

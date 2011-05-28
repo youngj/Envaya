@@ -173,6 +173,8 @@ a.selected
 {
     border-color:#CC0000;
     background:#ffcccc;
+	font-weight: bold;
+	font-size: 14px;
 }
 
 .padded
