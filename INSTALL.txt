@@ -161,6 +161,9 @@ php scripts/install_sphinx.php
 # install test data:
 php scripts/install_test_data.php
 
+# make compressed CSS and JS files
+php scripts/make.php
+
 ==============================
 Deploying releases to a server
 ------------------------------
