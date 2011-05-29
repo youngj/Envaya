@@ -342,10 +342,13 @@ abstract class Controller {
     function render_error_js($exception)
     {
         $request = $this->request;
-        $request->response = json_encode(array(
+        
+        $res = array(
             'error' => $exception->getMessage(), 
             'errorClass' => get_class($exception)
-        ));    
+        );
+        
+        $request->response = json_encode($res);    
     }
     
     function server_error($exception)

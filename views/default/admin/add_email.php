@@ -28,11 +28,11 @@
 ?>
 </div>
 <div class='input'>
-<label>Body:</label>
 <?php
     echo view('admin/tinymce_email', array(
         'name' => 'content',
         'value' => '',
+        'trackDirty' => true,
     ));
 ?>
 </div>

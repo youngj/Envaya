@@ -2,7 +2,7 @@
 <?php
     $email = $vars['email'];
 ?>
-<form method='POST' action='/admin/edit_email'>
+<form method='POST' action='/admin/edit_email?email=<?php echo $email->guid; ?>'>
 <?php echo view('input/securitytoken') ?>
 
 <div class='input'>
@@ -28,20 +28,21 @@
     );   
 ?>
 </div>
+<script type='text/javascript'>
+<?php echo view('js/save_draft', array('guid' => $email->guid)); ?>
+</script>
 <div class='input'>
-<label>Message:</label>
 <?php
     echo view('admin/tinymce_email', array(
         'name' => 'content',
         'value' => $email->content,
+        'trackDirty' => true,
+        'saveDraft' => true,
+        'entity' => $email,        
     ));
 ?>
 </div>
 <?php
-    echo view('input/hidden',
-        array('name' => 'email',
-            'value' => $email->guid));
-
     echo view('input/alt_submit', array(
         'name' => "delete",
         'id' => 'widget_delete',

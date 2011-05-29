@@ -1,9 +1,35 @@
 <?php
+
+    $saveDraft = @$vars['saveDraft'];    
+    if ($saveDraft)
+    {
+        $entity = @$vars['entity'];
+               
+        $lastRevision = $entity->guid ? 
+            ContentRevision::query()
+                ->where('entity_guid = ?', $entity->guid)
+                ->order_by('time_created desc')
+                ->get() 
+            : null;        
+        
+        if ($lastRevision)
+        {
+            $vars['value'] = $lastRevision->content;
+        }
+                
+        echo "<script type='text/javascript'>";
+        echo view('js/save_draft', array('guid' => $entity->guid));
+        echo "</script>";
+        
+        $vars['saveFn'] = 'saveDraft';
+        $vars['restoreDraftFn'] = 'showOlderVersions';        
+    }
+
     $value = @$vars['value'];
     $name = $vars['name'];
     $widthCSS = @$vars['width'] ? "width:{$vars['width']}px;" : '';
-    $heightCSS = @$vars['height'] ? "height:{$vars['height']}px;" : '';
-
+    $heightCSS = @$vars['height'] ? "height:{$vars['height']}px;" : '';        
+    
     echo "<div class='input-textarea' style='padding-bottom:15px' id='tinymce_loading$INCLUDE_COUNT'>".__("Loading...")."</div>";
 
     if (!$INCLUDE_COUNT)
@@ -37,6 +63,14 @@
         'js' => "style='display:none;{$widthCSS}{$heightCSS}'",
         'value' => Markup::render_editor_html($value)
     ));
+    
+    if ($saveDraft)
+    {
+        echo "<div>";
+        echo "<span id='saved_message' style='font-weight:bold;display:none'></span>&nbsp;";
+        echo "</div>";
+    }
+    
 ?>
 
 <script type="text/javascript">
