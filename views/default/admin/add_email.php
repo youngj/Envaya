@@ -30,14 +30,10 @@
 <div class='input'>
 <label>Body:</label>
 <?php
-
-    echo view('input/tinymce',
-        array(
-            'name' => 'content',
-            'value' => '',
-            'trackDirty' => true
-        )
-    );
+    echo view('admin/tinymce_email', array(
+        'name' => 'content',
+        'value' => '',
+    ));
 ?>
 </div>
 

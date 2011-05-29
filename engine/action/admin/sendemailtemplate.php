@@ -59,6 +59,10 @@ class Action_Admin_SendEmailTemplate extends Action
 
         $this->page_draw(array(
             'title' => __('email:batch'),
+            'header' => view('admin/email_header', array(
+                'email' => $email,
+                'title' => __('send')
+            )),            
             'content' => view('admin/batch_email', array('email' => $email, 'orgs' => $orgs)),
         ));        
     }

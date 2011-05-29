@@ -68,4 +68,9 @@ class EmailTemplate extends Entity
         $org->last_notify_time = time();
         $org->save();
     }
+    
+    function get_url()
+    {
+        return "/admin/view_email?email={$this->guid}";
+    }
 }

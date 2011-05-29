@@ -37,7 +37,8 @@ class Controller_Admin extends Controller_Simple
     {
         $org = User::get_by_username(get_input('username'));
         
-        $email = EmailTemplate::get_by_guid(get_input('email')) ?: EmailTemplate::query()->where('active<>0')->get();
+        $email = EmailTemplate::get_by_guid(get_input('email')) 
+            ?: EmailTemplate::query()->where('active<>0')->get();
         if (!$email)
         {
             throw new NotFoundException();
@@ -45,7 +46,14 @@ class Controller_Admin extends Controller_Simple
 
         $this->page_draw(array(
             'title' => __('email:view'),
-            'content' => view('admin/view_email', array('org' => $org, 'email' => $email, 'from' => get_input('from')))
+            'header' => view('admin/email_header', array(
+                'email' => $email,
+            )),
+            'content' => view('admin/view_email', array(
+                'org' => $org, 
+                'email' => $email, 
+                'from' => get_input('from')
+            ))
         ));                    
     }        
         

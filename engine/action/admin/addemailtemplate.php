@@ -23,6 +23,10 @@ class Action_Admin_AddEmailTemplate extends Action
     {
         $this->page_draw(array(
             'title' => __('email:add'),
+            'header' => view('admin/email_header', array(
+                'email' => $email,
+                'title' => __('add')
+            )),                        
             'content' => view('admin/add_email'),
         ));     
     }    

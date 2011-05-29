@@ -10,6 +10,6 @@
     echo view('admin/preview_email', array('email' => $email, 'org' => $org));
 ?>
 
-<a  style='font-size:10px;' href='/admin/send_email?email=<?php echo $email->guid ?>'>Send batch email</a>
+<a href='/admin/send_email?email=<?php echo $email->guid ?>'>Send batch email</a>
 
 </div>

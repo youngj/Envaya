@@ -42,6 +42,10 @@ class Action_Admin_EditEmailTemplate extends Action
     
         $this->page_draw(array(
             'title' => __('email:edit'),
+            'header' => view('admin/email_header', array(
+                'email' => $email,
+                'title' => __('edit')
+            )),
             'content' => view('admin/edit_email', array('email' => $email)),
         ));
     }    
