@@ -2,8 +2,8 @@
 
 return array(
     'discussions:title' => "Discussions",
-    'discussions:add_message' => "Add Message",
-    'discussions:add_topic' => "Add New Discussion",
+    'discussions:add_message' => "Add New Message",
+    'discussions:add_topic' => "Add New Discussion Topic",
     'discussions:no_topics' => "This organization does not yet have any discussions.",
     'discussions:topic_added' => "Topic added successfully.",
     'discussions:subject' => "Topic",
@@ -27,4 +27,5 @@ return array(
     'discussions:message_deleted_marker' => "message deleted",
     'discussions:about' => "This page allows anyone &ndash; from your organization or other organizations, from your community or anywhere in the world &ndash; to collaborate and discuss topics related to your organization and its work.",
     'discussions:invite_link' => "Invite people to participate",
+    'discussions:reply' => "Reply",
 );

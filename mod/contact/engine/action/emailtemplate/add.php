@@ -1,6 +1,6 @@
 <?php
 
-class Action_Admin_AddEmailTemplate extends Action
+class Action_EmailTemplate_Add extends Action
 {
     function before()
     {
@@ -16,7 +16,7 @@ class Action_Admin_AddEmailTemplate extends Action
         $email->subject = get_input('subject');        
         $email->set_content($content);
         $email->save();
-        $this->redirect("/admin/view_email?email={$email->guid}");
+        $this->redirect($email->get_url());
     }
 
     function render()
@@ -24,7 +24,7 @@ class Action_Admin_AddEmailTemplate extends Action
         $this->page_draw(array(
             'title' => __('email:add'),
             'header' => view('admin/email_header', array(
-                'email' => $email,
+                'email' => null,
                 'title' => __('add')
             )),                        
             'content' => view('admin/add_email'),

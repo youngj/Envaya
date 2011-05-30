@@ -6,89 +6,18 @@ if (!Session::get('hide_todo'))
     $todoItems = array();
     $doneItems = array();    
    
-    $addItem = function($item, $done) use (&$todoItems, &$doneItems)
+    foreach (TodoItem::get_list($org) as $item)
     {
-        if ($done)
+        if ($item->done)
         {
             $doneItems[] = $item;
         }
         else
         {
-            $todoItems[] = $item;            
-        }
-    };    
-    
-    $widget_names = array('home', 'contact','history','projects','team','news','network','discussions');
-    $query = $org->query_widgets()
-        ->where_in('widget_name', $widget_names)
-        ->columns('guid, status, time_created, time_updated, container_guid, owner_guid,
-                    widget_name, subclass, title, length(content) as content_len');
-    
-    $widgets = $query->filter();
-    
-    $widgets_map = array();
-    foreach ($widgets as $widget)
-    {
-        $widgets_map[$widget->widget_name] = $widget;
-    }
-    foreach ($widget_names as $widget_name)
-    {    
-        if (!isset($widgets_map[$widget_name]))
-        {
-            $widgets_map[$widget_name] = $org->new_widget_by_name($widget_name);
+            $todoItems[] = $item;
         }
     }
-        
-    $recent_time = time() - 86400 * 31;
-        
-    $home = $widgets_map['home'];
-    $addItem("<a href='{$home->get_edit_url()}'>".__('todo:home')."</a>", true);
     
-    $contact = $widgets_map['contact'];
-    $addItem("<a href='{$contact->get_edit_url()}'>".__('todo:contact')."</a>", 
-            $contact->time_updated > $contact->time_created && sizeof($org->get_contact_info()) >= 2);
-
-    $history = $widgets_map['history'];
-    $addItem("<a href='{$history->get_edit_url()}'>".__('todo:history')."</a>",
-        $history->is_enabled() && $history->content_len > 0
-    );            
-
-    $projects = $widgets_map['projects'];
-    $addItem("<a href='{$projects->get_edit_url()}'>".__('todo:projects')."</a>",
-        $projects->is_enabled() && $projects->content_len > 0
-    );            
-    
-    $team = $widgets_map['team'];
-    $addItem("<a href='{$team->get_edit_url()}'>".__('todo:team')."</a>",
-        $team->is_enabled() && $team->content_len > 0
-    );            
-    
-    $news = $widgets_map['news'];
-    $hasRecentNews = $news->query_widgets()->where('time_created > ?', $recent_time)->exists();
-    $addItem("<a href='{$news->get_edit_url()}'>".__('todo:news')."</a>",
-        $hasRecentNews > 0
-    );            
-    
-    $numImages = $org->query_files()->where("size='small'")->where('time_created > ?', $recent_time)->count();
-    $addItem(
-        "<a href='{$org->get_url()}/addphotos'>".__('todo:photos')."</a>",
-        $numImages >= 2
-    );        
-           
-    $addItem(
-        "<a href='{$org->get_url()}/design'>".__('todo:logo')."</a>",
-        ($org->get_design_setting('header_image') || $org->has_custom_icon())    
-    );    
-
-    $network = $widgets_map['network'];
-    $addItem("<a href='{$network->get_edit_url()}'>".__('todo:network')."</a>",
-        $network->is_enabled()
-    );
-    
-    $discussions = $widgets_map['discussions'];
-    $addItem("<a href='{$discussions->get_edit_url()}'>".__('todo:discussions')."</a>",
-        $discussions->is_enabled()
-    );    
 ?>
 <?php 
 if (sizeof($todoItems))
@@ -133,7 +62,7 @@ if ($messages)
 <?php
 foreach ($todoItems as $todoItem)
 {
-    echo "<li>$todoItem</li>";
+    echo "<li>{$todoItem->link}</li>";
 }
 ?>
 </ul>
@@ -143,7 +72,7 @@ foreach ($todoItems as $todoItem)
 <?php 
 foreach ($doneItems as $doneItem)
 {
-    echo "<li>$doneItem</li>";
+    echo "<li>{$doneItem->link}</li>";
 }
 ?>
 </ul>

@@ -3,14 +3,14 @@
 <?php
 
     $items = array(
-        array('url' => '/admin/emails', 'title' => __('email:list'))
+        array('url' => '/admin/contact/email', 'title' => __('email:list'))
     );
     
     $email = @$vars['email'];
     if ($email)
     {
         $items[] = array(
-            'url' => "{$email->get_url()}", 
+            'url' => $email->get_url(), 
             'title' => $email->subject
         );
     }

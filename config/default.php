@@ -66,7 +66,7 @@ return array(
 
     'extract_images_from_docs' => false,
     
-    'modules' => array('translate'),
+    'modules' => array('translate','contact'),
     
     'discussion_list_suffix' => '-list',
     'apps_domain' => '',

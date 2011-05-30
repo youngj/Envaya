@@ -21,6 +21,12 @@ abstract class Controller {
 
     static $routes = array();
 
+    static $SIMPLE_ROUTES = array(
+        array(
+            'regex' => '/(?P<action>\w+)\b',
+        ),
+    );
+    
     public $request;    
     protected $parent_controller;
     protected $params = array();    

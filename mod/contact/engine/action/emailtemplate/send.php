@@ -1,6 +1,6 @@
 <?php
 
-class Action_Admin_SendEmailTemplate extends Action
+class Action_EmailTemplate_Send extends Action
 {
     function before()
     {
@@ -9,11 +9,7 @@ class Action_Admin_SendEmailTemplate extends Action
      
     function process_input()
     {
-        $email = EmailTemplate::get_by_guid(get_input('email'));
-        if (!$email)
-        {
-            throw new NotFoundException();
-        }
+        $email = $this->get_email();
                 
         $org_guids = get_input_array('orgs');
         $numSent = 0;
@@ -28,17 +24,12 @@ class Action_Admin_SendEmailTemplate extends Action
             }
         }
         SessionMessages::add("sent $numSent emails");
-        $this->redirect(get_input('from') ?: "/admin/send_email?email={$email->guid}");
+        $this->redirect(get_input('from') ?: "{$email->get_url()}/send");
     }
 
     function render()
     {
-        $email = EmailTemplate::get_by_guid(get_input('email'))
-            ?: EmailTemplate::query()->where('active<>0')->get();
-        if (!$email)
-        {
-            throw new NotFoundException();
-        }
+        $email = $this->get_email();
         
         $org_guids = get_input_array('orgs');
         if ($org_guids)
@@ -57,11 +48,13 @@ class Action_Admin_SendEmailTemplate extends Action
                 ->filter(); 
         }
 
+        PageContext::get_submenu('edit')->add_item(__('cancel'), get_input('from') ?: $email->get_url());
+        
         $this->page_draw(array(
             'title' => __('email:batch'),
             'header' => view('admin/email_header', array(
                 'email' => $email,
-                'title' => __('send')
+                'title' => __('email:send')
             )),            
             'content' => view('admin/batch_email', array('email' => $email, 'orgs' => $orgs)),
         ));        

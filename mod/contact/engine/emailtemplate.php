@@ -43,15 +43,22 @@ class EmailTemplate extends Entity
         }
     }
     
+    function get_outgoing_mail_for($org)
+    {
+        return OutgoingMail::query()
+            ->where('email_guid = ?', $this->guid)
+            ->where('to_guid = ?', $org->guid)
+            ->get();
+    }
+        
     function can_send_to($org)
     {    
-        return ($org && $org->email && $org->is_notification_enabled(Notification::Batch)        
+        return $org && $org->email && $org->is_notification_enabled(Notification::Batch)        
             && OutgoingMail::query()
-                ->where('email_guid = ?', $this->guid)
-                ->where('to_guid = ?', $org->guid)
-                ->where('status <> ?', OutgoingMail::Failed)
-                ->is_empty()
-        );
+            ->where('email_guid = ?', $this->guid)
+            ->where('to_guid = ?', $org->guid)
+            ->where('status <> ?', OutgoingMail::Failed)
+            ->is_empty();
     }
     
     function send_to($org)
@@ -71,6 +78,6 @@ class EmailTemplate extends Entity
     
     function get_url()
     {
-        return "/admin/view_email?email={$this->guid}";
+        return "/admin/contact/email/{$this->guid}";
     }
 }

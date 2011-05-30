@@ -5,73 +5,14 @@
  *
  * URL: /admin/<action>
  */
-class Controller_Admin extends Controller_Simple
+class Controller_Admin extends Controller
 {
+    static $routes; // initialized at bottom of file
+
     function before()
     {
         $this->require_admin();
         $this->page_draw_vars['theme_name'] = 'editor';
-    }
-
-    function action_contact()
-    {
-        $this->page_draw(array(
-            'theme_name' => 'simple_wide',
-            'title' => __('user:contact_list'),
-            'header' => '',
-            'content' => view('admin/contact')
-        ));
-    }
-
-    function action_emails()
-    {
-        $emails = EmailTemplate::query()->filter();
-        
-        $this->page_draw(array(
-            'title' => __('email:list'),
-            'content' => view('admin/list_emails', array('emails' => $emails))
-        ));        
-    }
-
-    function action_view_email()
-    {
-        $org = User::get_by_username(get_input('username'));
-        
-        $email = EmailTemplate::get_by_guid(get_input('email')) 
-            ?: EmailTemplate::query()->where('active<>0')->get();
-        if (!$email)
-        {
-            throw new NotFoundException();
-        }
-
-        $this->page_draw(array(
-            'title' => __('email:view'),
-            'header' => view('admin/email_header', array(
-                'email' => $email,
-            )),
-            'content' => view('admin/view_email', array(
-                'org' => $org, 
-                'email' => $email, 
-                'from' => get_input('from')
-            ))
-        ));                    
-    }        
-        
-    function action_view_email_body()
-    {
-        $user = User::get_by_username(get_input('username'));
-        $email = EmailTemplate::get_by_guid(get_input('email'));
-
-        if (!$email)
-        {
-            throw new NotFoundException();
-        }
-        
-        echo view('emails/template', array(
-            'org' => $user, 
-            'base' => 'http://ERROR_RELATIVE_URL/ERROR_RELATIVE_URL/', 
-            'email' => $email
-        ));            
     }
     
     function action_resend_mail()
@@ -241,31 +182,7 @@ class Controller_Admin extends Controller_Simple
         $action = new Action_Admin_EditFeaturedSite($this);
         $action->execute();    
     }
-   
-    function action_edit_email()
-    {
-        $action = new Action_Admin_EditEmailTemplate($this);
-        $action->execute();    
-    }
-   
-    function action_add_email()
-    {
-        $action = new Action_Admin_AddEmailTemplate($this);
-        $action->execute();               
-    }
 
-    function action_send_email()
-    {
-        $action = new Action_Admin_SendEmailTemplate($this);
-        $action->execute();
-    }
-    
-    function action_activate_email()
-    {
-        $action = new Action_Admin_ActivateEmailTemplate($this);
-        $action->execute();    
-    }
-    
     function action_add_featured_photo()
     {
         $action = new Action_Admin_AddFeaturedPhoto($this);
@@ -295,3 +212,5 @@ class Controller_Admin extends Controller_Simple
         $action->execute();
     }
 }
+
+Controller_Admin::$routes = Controller::$SIMPLE_ROUTES;

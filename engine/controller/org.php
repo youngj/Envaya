@@ -5,8 +5,11 @@
  *
  * URL: /org/<action>
  */
-class Controller_Org extends Controller_Simple
+ 
+class Controller_Org extends Controller
 {
+    static $routes; // initialized at bottom of file
+
     function before()
     {
         $this->add_generic_footer();
@@ -380,3 +383,5 @@ class Controller_Org extends Controller_Simple
         ));
     }    
 }
+
+Controller_Org::$routes = Controller::$SIMPLE_ROUTES;

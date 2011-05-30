@@ -25,7 +25,7 @@
         $vars['restoreDraftFn'] = 'showOlderVersions';        
     }
 
-    $value = @$vars['value'];
+    $value = @$vars['value'];   
     $name = $vars['name'];
     $widthCSS = @$vars['width'] ? "width:{$vars['width']}px;" : '';
     $heightCSS = @$vars['height'] ? "height:{$vars['height']}px;" : '';        

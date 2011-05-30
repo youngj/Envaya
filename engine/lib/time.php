@@ -12,7 +12,7 @@
         if ($diff < 60) 
         {
             return __("date:justnow");
-        } 
+        }
         else if ($diff < 3600) 
         {
             $minutes = round($diff / 60);
@@ -40,83 +40,88 @@
         }
     }    
     
-    function get_date_text($time, $options = null)
+    /*
+     * Returns a localized string representing a date
+     *
+     * $dateTime is either a DateTime object, or a unix timestamp.
+     */    
+    function get_date_text($dateTime, $options = null)
     {
-        if (!$time)
+        if (!$dateTime)
         {   
             return '';
         }
 
+        if (!($dateTime instanceof DateTime))
+        {
+            $dateTime = new DateTime("@{$dateTime}");                
+        }        
+        
         if (!$options)
         {
             $options = array();
         }
+                
+        $alwaysShowYear = isset($options['alwaysShowYear']) ? $options['alwaysShowYear'] : false;
+        $timezoneID = isset($options['timezoneID']) ? $options['timezoneID'] : null;
+        $showTime = isset($options['showTime']) ? $options['showTime'] : false;
+        $showDate = isset($options['showDate']) ? $options['showDate'] : true;
         
-        $always_show_year = @$options['always_show_year'] ?: false;
-        $timezone_id = @$options['timezone_id'];
-        $show_time = @$options['show_time'] ?: false;
-        $tzStr = '';
-        
-        if ($timezone_id)
-        {
-            $dateTime = new DateTime("@$time");        
-            $tz = new DateTimeZone($timezone_id);
-            $tzOffset = $tz->getOffset($dateTime);
-            
-            $dateTime->setTimeZone($tz);
-            $tzStr = $dateTime->format('T');
-            
-            if ($tzOffset)
-            {
-                $time += $tzOffset;
-            }
-        }        
-        
-        $date = getdate($time);
-        $now = getdate();
+        if ($timezoneID)
+        {            
+            $dateTime->setTimeZone(new DateTimeZone($timezoneID));
+        }
 
-        $format = ($always_show_year || $now['year'] != $date['year']) ? __('date:with_year') : __('date:no_year');
-        
-        $dateStr = strtr($format, array(
-            '{month}' => __("date:month:{$date['mon']}"),
-            '{day}' => $date['mday'],
-            '{year}' => $date['year'],            
-        ));
-        
-        if ($show_time)
-        {
-            $timeStr = get_time_text($date, $tzStr);
+        if ($showDate)
+        {        
+            $now = new DateTime();
             
+            $year = $dateTime->format('Y');
+            
+            $format = ($alwaysShowYear || $now->format('Y') != $year) ? __('date:with_year') : __('date:no_year');
+            
+            $dateStr = strtr($format, array(
+                '{month}' => __("date:month:".$dateTime->format('n')),
+                '{day}' => $dateTime->format('j'),
+                '{year}' => $year,
+            ));            
+        }
+
+        if ($showTime)
+        {
+            $timeStr = strtr(__('date:time'), array(
+                '[hour]' => $dateTime->format('H'),
+                '[hour12]' => $dateTime->format('g'),
+                '{minute}' => $dateTime->format('i'),
+                '[ampm]' => (($dateTime->format('a') == 'am') ? __('date:am') : __('date:pm'))
+            ));
+            
+            if ($timezoneID)
+            {
+                $timeStr = strtr(__('date:time_with_tz'), array(
+                    '{time}' => $timeStr,
+                    '{tz}' => $dateTime->format('T'),
+                ));
+            }
+        }
+          
+        if ($showDate && $showTime)
+        {
             return strtr(__('date:date_time'), array(
                 '{date}' => $dateStr,
                 '{time}' => $timeStr,
             ));
         }
-        else
-        {        
+        else if ($showTime)
+        {
+            return $timeStr;
+        }
+        else if ($showDate)
+        {
             return $dateStr;
         }
-    }
-    
-    function get_time_text($date, $tzStr = '')
-    {
-        $hours = $date['hours'];
-        $time = strtr(__('date:time'), array(
-            '[hour]' => sprintf("%02d", $hours),
-            '[hour12]' => ('' . (($hours % 12) ?: 12)),
-            '{minute}' => sprintf("%02d", $date['minutes']),
-            '[ampm]' => ($hours < 12 ? __('date:am') : __('date:pm'))
-        ));
-        
-        if ($tzStr)
-        {
-            return strtr(__('date:time_with_tz'), array(
-                '{time}' => $time,
-                '{tz}' => $tzStr,
-            ));
-        }
         else
         {
-            return $time;
+            return '';
         }
     }

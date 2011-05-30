@@ -1,24 +1,3 @@
-function getTimeText(date, tzStr)
-{
-    var hours = date.getHours();
-    var time = __('date:time').
-        replace('[hour]', pad2(hours)).
-        replace('[hour12]', '' + ((hours % 12) || 12)).
-        replace('{minute}', pad2(date.getMinutes())).
-        replace('[ampm]', (hours < 12 ? __('date:am') : __('date:pm')));
-    
-    if (tzStr)
-    {
-        return __('date:time_with_tz').
-            replace('{time}', time).
-            replace('{tz}', tzStr);
-    }
-    else
-    {
-        return time;
-    }
-}
-
 function pad2(num)
 {
     return (num < 10 ? '0' : '') + num;
@@ -36,30 +15,50 @@ function getDateText($date, $options)
         $options = {};
     }
     
-    var $always_show_year = $options['always_show_year'] || false;
-    var $show_time = $options['show_time'] || false;
-    var $tzStr = '';
+    var $alwaysShowYear = $options['alwaysShowYear'] || false;
+    var $showTime = $options['showTime'] || false;
+    var $showDate = ($options['showDate'] !== null) ? $options['showDate'] : true;
     
-    var $now = new Date();
-
-    var $format = ($always_show_year || $now.getFullYear() != $date.getFullYear()) ? __('date:with_year') : __('date:no_year');
-    
-    var $dateStr = $format.
-        replace('{month}', __("date:month:" + ($date.getMonth() + 1))).
-        replace('{day}', $date.getDate()).
-        replace('{year}', $date.getFullYear());
-    
-    if ($show_time)
+    if ($showDate)
     {
-        var $timeStr = getTimeText($date,'');
+        var $now = new Date();
+
+        var $format = ($alwaysShowYear || $now.getFullYear() != $date.getFullYear()) 
+            ? __('date:with_year') : __('date:no_year');
         
+        var $dateStr = $format.
+            replace('{month}', __("date:month:" + ($date.getMonth() + 1))).
+            replace('{day}', $date.getDate()).
+            replace('{year}', $date.getFullYear());
+    }
+    
+    if ($showTime)
+    {
+        var hours = $date.getHours();
+        var $timeStr = __('date:time').
+            replace('[hour]', pad2(hours)).
+            replace('[hour12]', '' + ((hours % 12) || 12)).
+            replace('{minute}', pad2($date.getMinutes())).
+            replace('[ampm]', (hours < 12 ? __('date:am') : __('date:pm')));
+    }
+    
+    if ($showDate && $showTime)
+    {
         return __('date:date_time').
             replace('{date}', $dateStr),
             replace('{time}', $timeStr);
     }
+    else if ($showDate)
+    {
+        return $dateStr;
+    }
+    else if ($showTime)
+    {
+        return $timeStr;
+    }
     else
     {        
-        return $dateStr;
+        return '??';
     }
 }
 

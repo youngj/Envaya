@@ -37,9 +37,9 @@ class Config
         if (static::$settings == null)
         {
             static::$settings = array();
-            static::load_group('default');
+            static::load_group('default');            
             static::load_group('local');
-            static::load_group('dependent');            
+            static::load_group('dependent');
         }
     }
 
@@ -54,9 +54,17 @@ class Config
         }
     }
     
-    private static function load_group($group_name)
+    private static function load_group($group_name, $module = null)
     {
-        $path = dirname(__DIR__)."/config/{$group_name}.php";
+        if ($module)
+        {
+            $base = dirname(__DIR__) . "/mod/{$module}";
+        }
+        else
+        {
+            $base = dirname(__DIR__);
+        }
+        $path = "{$base}/config/{$group_name}.php";
         return static::load_array(@include($path));
     }    
 }

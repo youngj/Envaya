@@ -8,11 +8,10 @@
 require_once("scripts/cmdline.php");
 require_once("engine/start.php");
 
-
 $scores = array();
 foreach (Organization::query()->filter() as $org)
 {
-    $scores[$org->get_website_score()][] = $org;
+    $scores[TodoItem::get_total_score($org)][] = $org;
 }
 
 $featured_users = array();
@@ -21,14 +20,28 @@ foreach (FeaturedSite::query()->filter() as $site)
     $featured_users[$site->container_guid] = true;
 }
 
-for ($i = 0; $i < 100; $i++)
+ksort($scores, SORT_NUMERIC);
+
+$rscores = array_reverse($scores, true);
+
+$num_printed = 0;
+
+foreach ($rscores as $score => $orgs)
 {
-    $orgs = @$scores[$i];
-    if ($orgs)
+    $str_score = sprintf("%2d", $score);
+    $num_orgs = sizeof($orgs);
+
+    if ($num_printed < 40)
     {
         foreach ($orgs as $org)
         {
-            echo sprintf("%2d", $i).(@$featured_users[$org->guid] ? "+" : " ")." {$org->get_url()} {$org->name}\n";
+            echo $str_score.(@$featured_users[$org->guid] ? "+" : " ")." {$org->get_url()} {$org->name}\n";
         }
     }
+    else
+    {
+        echo "$str_score  ($num_orgs organizations)\n";
+    }
+    
+    $num_printed += $num_orgs;
 }

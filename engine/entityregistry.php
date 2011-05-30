@@ -19,7 +19,6 @@ class EntityRegistry
         'core.file' => 'UploadedFile',
         'core.widget' => 'Widget',
         'core.widget.comment' => 'Comment',
-        'core.email.template' => 'EmailTemplate',
         'core.featured.site' => 'FeaturedSite',
         'core.featured.photo' => 'FeaturedPhoto',
         'core.discussion.message' => 'DiscussionMessage',

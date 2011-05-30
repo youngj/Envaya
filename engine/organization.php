@@ -46,44 +46,7 @@ class Organization extends User
     {    
         return UploadedFile::query()->where('container_guid=?',$this->guid);
     }
-        
-    public function get_website_score()    
-    {
-        $score = 0;
-    
-        if ($this->query_widgets_by_class('Post')->where('time_created > ?', time() - 86400 * 31)->exists())
-        {
-            $score += 10;
-        }
-        
-        if ($this->query_files()->where("size='small'")->count() >= 2)
-        {
-            $score += 10;
-        }
-        
-        if (sizeof($this->get_contact_info()) >= 2)
-        {   
-            $score += 10;
-        }
-        
-        $numWidgets = 0;        
-        foreach (array('history','projects','team') as $widgetName)
-        {
-            $widget = $this->get_widget_by_name($widgetName);
-            if ($widget->is_enabled() && $widget->content)
-            {
-                $numWidgets++;
-            }
-        }
-             
-        if ($numWidgets >= 2)
-        {
-            $score += 10;
-        }
-        
-        return $score;
-    }
-    
+            
     public function get_feed_names()
     {
         $feedNames = parent::get_feed_names();
@@ -118,17 +81,7 @@ class Organization extends User
     {
         return $this->approval > 0 || $this->can_edit();
     }
-    
-    public function get_contact_info()
-    {
-        return array(
-            'mailing_address' => $this->get_metadata('mailing_address'),
-            'street_address' => $this->get_metadata('street_address'),
-            'phone_number' => $this->phone_number,
-            'email' => $this->email,
-        );
-    }
-
+        
     public function get_country_text()
     {
         if ($this->country)

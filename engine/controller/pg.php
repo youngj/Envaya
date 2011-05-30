@@ -5,8 +5,10 @@
  *
  * URL: /pg/<action>
  */
-class Controller_Pg extends Controller_Simple {
-
+class Controller_Pg extends Controller 
+{
+    static $routes; // initialized at bottom of file
+    
     function action_login()
     {
         $action = new Action_Login($this);
@@ -343,3 +345,5 @@ class Controller_Pg extends Controller_Simple {
         $this->redirect();
     }   
 }
+
+Controller_Pg::$routes = Controller::$SIMPLE_ROUTES;

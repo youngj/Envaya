@@ -199,9 +199,9 @@ class DiscussionTest extends SeleniumTest
         $this->ensureGoodMessage();
         $this->mustNotExist("//p[contains(text(),'message 4')]");
         
-        $this->mustNotExist("//a[@class='discussionTopic' and contains(text(),'My First Discussion')]");
-        $this->mustNotExist("//a[@class='discussionTopic' and contains(text(),'My Second Discussion')]");
-        $this->clickAndWait("//a[@class='discussionTopic' and contains(text(),'My Zeroth Discussion')]");
+        $this->mustNotExist("//a[@class='discussionTopic']//span[contains(text(),'My First Discussion')]");
+        $this->mustNotExist("//a[@class='discussionTopic']//span[contains(text(),'My Second Discussion')]");
+        $this->clickAndWait("//a[@class='discussionTopic']//span[contains(text(),'My Zeroth Discussion')]");
         
         // test can't delete other people's messages
         $this->mustNotExist("//a[contains(@href,'delete_message')]");

@@ -92,6 +92,17 @@ class Action_Discussion_AddMessage extends Action
     
     function render()
     {   
-        $this->index_topic(array('show_add_message' => true));    
+        $topic = $this->get_topic();
+        $reply_to_guid = get_input('reply_to');
+        if ($reply_to_guid)
+        {
+            $reply_to = $topic->query_messages()->guid($reply_to_guid)->get();
+        }
+        else
+        {
+            $reply_to = null;
+        }
+    
+        $this->index_topic(array('show_add_message' => true, 'reply_to' => $reply_to));    
     }
 }    

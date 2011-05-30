@@ -17,7 +17,10 @@
     
     foreach ($messages as $message)
     {
-        $elements[] = view('discussions/topic_view_message', array('message' => $message));    
+        $elements[] = view('discussions/topic_view_message', array(
+            'message' => $message,
+            'topic' => $topic
+        ));    
     }
     
     echo view('paged_list', array(
@@ -39,17 +42,17 @@
     
     if (!@$vars['show_add_message'])
     {
-        echo "<a style='font-weight:bold' id='add_message' href='{$topic->get_url()}/add_message?offset={$offset}#add_message'>";
+        echo "<h3><a id='add_message' href='{$topic->get_url()}/add_message?offset={$offset}#add_message'>";
         echo __('discussions:add_message');
-        echo "</a>";
+        echo "</a></h3>";
     }
     else
     {
-        echo "<div id='add_message' style='font-weight:bold;padding-bottom:8px;'>";
+        echo "<h3><div id='add_message' style='padding-bottom:8px;'>";
         echo __('discussions:add_message');
         echo " <a href='{$topic->get_url()}?offset={$offset}#add_message'>(".__('hide').")</a>";
-        echo "</div>";    
-        echo view('discussions/add_message_form', array('topic' => $topic));    
+        echo "</div></h3>";    
+        echo view('discussions/add_message_form', $vars);    
     }        
     echo "</div>";
 ?>

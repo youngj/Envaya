@@ -28,7 +28,9 @@
     }
     
     echo "<br />";
-    echo "<strong><a href='{$org->get_url()}/topic/new'>".__('discussions:add_topic')."</a></strong>";
+    echo "<div style='padding:0px 5px;font-weight:bold'>";
+    echo "<a href='{$org->get_url()}/topic/new'>".__('discussions:add_topic')."</a>";
+    echo "</div>";
     
     $content = ob_get_clean();
     

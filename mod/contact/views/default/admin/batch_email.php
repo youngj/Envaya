@@ -7,7 +7,7 @@
     if ($org) {
 ?>
 
-<form action='/admin/send_email' method='POST'>
+<form action='<?php echo $email->get_url() ?>/send' method='POST'>
 
 <?php echo view('input/securitytoken'); ?>
 To:
@@ -34,11 +34,6 @@ To:
 ?>
 
 <?php
-    echo view('input/hidden',array(
-        'name' => 'email',
-        'value' => $email->guid
-    ));
-    
     echo view('input/hidden',array(
         'name' => 'from',
         'value' => get_input('from')

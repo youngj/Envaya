@@ -2,7 +2,7 @@
 
 return array(
     'discussions:title' => "Majadiliano",
-    'discussions:add_message' => "Ongeza Ujumbe",
+    'discussions:add_message' => "Ongeza Ujumbe Mpya",
     'discussions:add_topic' => "Ongeza Mada Mpya",
     'discussions:no_topics' => "Shirika hili halijakuwa na majadiliano yoyote.",
     'discussions:topic_added' => "Mada imeongezwa.",
@@ -27,4 +27,5 @@ return array(
     'discussions:message_deleted_marker' => "ujumbe umefutwa",
     'discussions:about' => "Ukurasa huu unaruhusu watu wowote &ndash; kutoka shirika lako au mashirika mengine, kutoka jumuiya yako au duniani kote &ndash; kushirikana na kujadiliana mada zinazohusu shirika lako na shughuli yake.",
     'discussions:invite_link' => "Karibisha watu kushiriki",    
+    'discussions:reply' => "Jibu",
 );

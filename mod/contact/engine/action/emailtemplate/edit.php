@@ -1,16 +1,19 @@
 <?php
 
-class Action_Admin_EditEmailTemplate extends Action
-{
-    protected $email;
-
+class Action_EmailTemplate_Edit extends Action
+{       
+    function before()
+    {
+        $this->require_admin();
+    }
+ 
     protected function save_draft()
     {
         $this->set_content_type('text/javascript');
     
         validate_security_token();
             
-        $email = $this->email;
+        $email = $this->get_email();
             
         $content = get_input('content');                       
             
@@ -24,22 +27,10 @@ class Action_Admin_EditEmailTemplate extends Action
         
         $this->set_response(json_encode(array('guid' => $email->guid)));    
     }
-        
-    function before()
-    {
-        $this->require_admin();
-
-        $email = EmailTemplate::get_by_guid(get_input('email'));
-        if (!$email)
-        {
-            throw new NotFoundException();
-        }
-        $this->email = $email;
-    }
-     
+ 
     function process_input()
     {
-        $email = $this->email;
+        $email = $this->get_email();
         
         if (get_input('_draft'))
         {
@@ -49,7 +40,7 @@ class Action_Admin_EditEmailTemplate extends Action
         {
             $email->disable();
             $email->save();
-            $this->redirect("/admin/emails");
+            $this->redirect("/admin/contact/email");
         }
         else
         {
@@ -57,13 +48,15 @@ class Action_Admin_EditEmailTemplate extends Action
             $email->set_content(get_input('content'));
             $email->from = get_input('from');
             $email->save();
-            $this->redirect("/admin/view_email?email={$email->guid}");       
+            $this->redirect($email->get_url());       
         }
     }
 
     function render()
     {
-        $email = $this->email;
+        $email = $this->get_email();
+    
+        PageContext::get_submenu('edit')->add_item(__('canceledit'), get_input('from') ?: $email->get_url());
     
         $this->page_draw(array(
             'title' => __('email:edit'),

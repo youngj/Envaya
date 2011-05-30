@@ -15,7 +15,7 @@ cat <<EOF >> /etc/php5/fpm/php.ini
 
 ; envaya custom settings
 error_reporting = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_NOTICE
-date.timezone = "Europe/London"
+date.timezone = "UTC"
 zlib.output_compression = 1
 expose_php = 0
 upload_max_filesize = "12M"
@@ -26,7 +26,7 @@ EOF
 cat <<EOF >> /etc/php5/cli/php.ini
 
 ; envaya custom settings
-date.timezone = "Europe/London"
+date.timezone = "UTC"
 EOF
 }
 

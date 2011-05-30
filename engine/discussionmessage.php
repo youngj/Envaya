@@ -34,8 +34,8 @@ class DiscussionMessage extends Entity
     {
         $org = $this->get_root_container_entity();    
         return get_date_text($this->time_posted, array(
-            'timezone_id' => $org->get_timezone_id(),
-            'show_time' => true
+            'timezoneID' => $org->get_timezone_id(),
+            'showTime' => true
         ));
     }
     

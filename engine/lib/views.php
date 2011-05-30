@@ -28,7 +28,7 @@ function view($view, $vars = null, $viewtype = null)
         return false;
     }
 
-    if (empty($vars))
+    if ($vars === null)
     {
         $vars = array();
     }
@@ -40,7 +40,6 @@ function view($view, $vars = null, $viewtype = null)
            
     ob_start();
 
-    include_view($view, $viewtype, $vars);
     foreach (Views::get_extensions($view) as $extension_view)
     {
         include_view($extension_view, $viewtype, $vars);
@@ -138,20 +137,38 @@ class Views
     
     private static $browsable_types = array('mobile','default');
     
+    /* 
+     * Augments a view $base_view with another view $extend_view.
+     *
+     * priority > 0 will put $extend_view after $base_view (largest positive priority last)
+     * priority < 0 will put $extend_view before $base_view (largest negative priority first)
+     * priority = 0 will replace $base_view with $extend_view
+     */
     static function extend($base_view, $extend_view, $priority = 1)
     {
-        $extensions = @static::$extensions_map[$base_view];    
-        if (!$extensions)
+        if (!isset(static::$extensions_map[$base_view]))
         {
-            $extensions = array();
-            static::$extensions_map[$base_view] =& $extensions;
-        }        
-        while (isset($extensions[$priority])) 
+            static::$extensions_map[$base_view] = array(0 => $base_view);
+        }
+
+        $extensions =& static::$extensions_map[$base_view];
+                
+        if ($priority != 0)
         {
-            $priority++;
-        }        
+            $incr = ($priority > 0) ? 1 : -1;
+        
+            while (isset($extensions[$priority])) 
+            {
+                $priority += $incr;
+            }
+        }
         
         $extensions[$priority] = $extend_view;
+    }
+    
+    static function replace($orig_view, $new_view)
+    {
+        static::extend($orig_view, $new_view, 0);
     }
     
     static function get_request_type()
@@ -183,17 +200,11 @@ class Views
     {
         if (!isset(static::$extensions_map[$base_view]))
         {
-            return array();
-        }
+            return array($base_view);
+        }        
+               
         $extensions = static::$extensions_map[$base_view];
-        if ($extensions)
-        {
-            ksort($extensions);
-            return array_values($extensions);
-        }
-        else
-        {
-            return array();
-        }
+        ksort($extensions);
+        return array_values($extensions);
     }
 }
