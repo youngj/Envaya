@@ -55,11 +55,14 @@ engine/
 languages/
     - Translation strings for each supported language
 mod/
-    - Modules (which may be stored in a separate source control repository with different licensing terms)
-      Each module is a (mostly) self-contained implementation of some feature set
-      Each module's directory structure looks like:
-        mod/<modulename>/{_graphics,engine,languages,schema,testcases,views,start.php}      
-      mod/<modulename>/start.php is included by engine/start.php to initialize the module.
+    - Modules, which are a (mostly) self-contained implementation of some feature set.      
+      Some modules may be stored in a separate source control repository with different licensing terms.
+      
+      Each module's directory structure is analogous to the top level directory structure, e.g.:
+        mod/<modulename>/{_graphics,_media,engine,config,languages,schema,test,views}           
+      
+      Each module must contain a file that initializes the module, located at:
+        mod/<modulename>/start.php 
 schema/
     - SQL for initializing the database
 scripts/

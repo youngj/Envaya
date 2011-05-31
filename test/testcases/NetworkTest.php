@@ -354,7 +354,7 @@ class NetworkTest extends SeleniumTest
         $this->ensureGoodMessage();
         $this->click("//div[@class='good_messages']//p//a");        
         
-        $this->retry('selectShareWindow', array());
+        $this->retry('selectShareWindow');
         $this->retry('click', array("//a[@id='add_partners']"));
         $this->retry('checkEmailEntered', array('nobody@nowhere.com'));
         $this->retry('checkEmailEntered', array($invitedOrgEmail));
@@ -380,7 +380,7 @@ class NetworkTest extends SeleniumTest
         // can't invite same emails twice, but can invite others
         $this->click("//div[@class='shareLinks']//a[contains(@href,'emailShare')]");        
         
-        $this->retry('selectShareWindow', array());
+        $this->retry('selectShareWindow');
         
         $this->type("//textarea[@name='emails']", "foo@nowhere.com; nobody@nowhere.com");        
         $this->type("//textarea[@name='message']", "yo");                

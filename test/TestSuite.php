@@ -27,17 +27,28 @@ $MOCK_MAIL_FILE = __DIR__."/mail.out";
 
 function get_all_test_cases()
 {
-    $paths = glob("{testcases/*.php,../mod/*/testcases/*.php}", GLOB_BRACE);
+    // each php file in test/testcases/ is assumed to be a test class with the same name as the file.
+    $paths = get_test_case_paths();
+    
     return array_map(function($path) { 
         $pathinfo = pathinfo($path);
         return $pathinfo['filename'];
     }, $paths);
 }
 
-function find_test_case_path($test_case)
-{
-    $paths = glob("{testcases/$test_case.php,../mod/*/testcases/$test_case.php}", GLOB_BRACE);
-    if (sizeof($paths))
+function get_test_case_paths($test_case = "*")
+{    
+    // look in test/testcases/ in all the enabled modules
+    $modules = explode("\n", `php ../scripts/module_list.php`);
+    $module_glob = "{".implode(",", $modules)."}";
+
+    return glob("{testcases/$test_case.php,../mod/$module_glob/test/testcases/$test_case.php}", GLOB_BRACE);
+}
+
+function get_test_case_path($test_case)
+{        
+    $paths = get_test_case_paths($test_case);
+    if (sizeof($paths) > 0)
     {
         return $paths[0];
     }
@@ -62,7 +73,7 @@ function main()
     $opts = getopt('',array("browser:","test:"));
         
     $BROWSER = @$opts['browser'] ?: '*firefox';
-
+    
     if (@$opts['test'])
     {
         $test_cases = is_array($opts['test']) ? $opts['test'] : array($opts['test']);
@@ -71,12 +82,12 @@ function main()
     {    
         $test_cases = get_all_test_cases();    
     }
-
+    
     $suite = new PHPUnit_Framework_TestSuite('Envaya');
 
     foreach ($test_cases as $test_case)
     {
-        require_once find_test_case_path($test_case);
+        require_once get_test_case_path($test_case);
         $suite->addTestSuite($test_case);
     }
 
@@ -108,7 +119,7 @@ function main()
         
     $queue = proc_open('php runserver.php', $descriptorspec, $pipes2, dirname(__DIR__), $env);
 
-    retry('check_selenium', array());
+    retry('check_selenium');
 
     sleep(2);
 

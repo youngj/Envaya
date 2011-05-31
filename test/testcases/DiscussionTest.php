@@ -32,7 +32,7 @@ class DiscussionTest extends SeleniumTest
         // test inviting other envaya users from list of organizations
         $this->click("//div[@class='good_messages']//p//a");        
         
-        $this->retry('selectShareWindow', array());
+        $this->retry('selectShareWindow');
         $this->retry('click', array("//a[@id='add_users']"));
         
         $this->retry('selectFrame', array("//iframe"));
