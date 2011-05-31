@@ -91,7 +91,7 @@ function notify_exception($exception)
 
         if (Config::get('error_emails_enabled'))
         {
-            $lastErrorEmailTimeFile = Config::get('dataroot')."last_error_time";
+            $lastErrorEmailTimeFile = Config::get('dataroot')."/last_error_time";
             $lastErrorEmailTime = (int)@file_get_contents($lastErrorEmailTimeFile);
             $curTime = time();
 

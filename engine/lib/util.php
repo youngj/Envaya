@@ -166,3 +166,8 @@
 
         return $address;
     }
+
+    function include_js($filename)
+    {
+        readfile(Config::get('root') . "/_media/inline_js/$filename");
+    }

@@ -51,6 +51,6 @@ class Storage_Local implements Storage
 
 	public function get_file_path($path)
 	{
-		return Config::get('dataroot')."local_store/{$path}";	
+		return Config::get('dataroot')."/local_store/{$path}";	
 	}
 }

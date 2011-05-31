@@ -42,7 +42,7 @@ class Storage_S3 implements Storage
     
     private function get_s3()
     {
-        require_once(Config::get('path')."vendors/s3.php");        
+        require_once(Config::get('root')."/vendors/s3.php");        
         return new S3(Config::get('s3_key'), Config::get('s3_private'));
     }    
 }

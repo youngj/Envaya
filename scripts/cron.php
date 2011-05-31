@@ -11,12 +11,12 @@
 require_once "engine/start.php";
 require_once "scripts/cmdline.php";
 
-$cron_file = Config::get('path') . "crontab.php";
+$cron_file = Config::get('root') . "/crontab.php";
 $cronTasks = include $cron_file;
 
 foreach (Config::get('modules') as $module_name)
 {
-    $cron_file = Engine::get_module_path($module_name) . "crontab.php";
+    $cron_file = Engine::get_module_root($module_name) . "/crontab.php";
     if (is_file($cron_file))
     {
         $cronTasks = array_merge($cronTasks, include $cron_file);

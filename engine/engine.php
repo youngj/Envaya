@@ -6,6 +6,7 @@
 class Engine
 {
     static $init_microtime;
+    static $used_lib_cache;
     
     private static $path_cache;    
     private static $autoload_actions = array();
@@ -24,7 +25,7 @@ class Engine
         require_once __DIR__."/config.php";
         Config::load();
         
-        static::$path_cache = (@include(Config::get('path')."/build/path_cache.php")) ?: array();        
+        static::$path_cache = (@include(Config::get('root')."/build/path_cache.php")) ?: array();        
         
         static::load_environment_config();    
         
@@ -37,21 +38,15 @@ class Engine
         
         set_error_handler('php_error_handler');
         set_exception_handler('php_exception_handler');
-        register_shutdown_function(array('Engine', 'shutdown'));
-                
-        foreach (Config::get('modules') as $module_name)
-        {
-            require static::get_module_path($module_name)."start.php";
-        } 
+        register_shutdown_function(array('Engine', 'shutdown'));                
     }
     
     /*
      * Returns the absolute system path for a module directory
-     * (with trailing slash, analogous to Config::get('path')).
      */
-    static function get_module_path($module_name)
+    static function get_module_root($module_name)
     {
-        return Config::get('path')."mod/$module_name/";
+        return Config::get('root')."/mod/$module_name";
     }
 
     /*
@@ -60,23 +55,26 @@ class Engine
      */
     static function get_real_path($path)
     {
+        $root = Config::get('root');
         if (isset(static::$path_cache[$path]))
         {
-            return Config::get('path').static::$path_cache[$path];
+            return "$root/".static::$path_cache[$path];
         }
 
-        $core_path = Config::get('path').$path;                
+        $core_path = "$root/$path";                
         if (file_exists($core_path))
         {
-            static::$path_cache[$path] = $path;            
+            static::$path_cache[$path] = $path;
             return $core_path;
         }
         
         foreach (Config::get('modules') as $module_name)
         {
-            $module_path = static::get_module_path($module_name).$path;
+            $module_rel_path = "mod/{$module_name}/{$path}";
+            $module_path = "{$root}/{$module_rel_path}";
             if (file_exists($module_path))
             {
+                static::$path_cache[$path] = $module_rel_path;
                 return $module_path;
             }
         }
@@ -89,11 +87,11 @@ class Engine
      */    
     static function get_lib_paths()
     {
-        $base = Config::get('path');
+        $root = Config::get('root');
         $lib_dir = "engine/lib";
 
         $paths = array();
-        $handle = @opendir($base.$lib_dir);
+        $handle = @opendir("$root/$lib_dir");
         if ($handle)
         {
             while ($file = readdir($handle))
@@ -140,11 +138,21 @@ class Engine
      */
     private static function include_lib_files()
     {    
-        $base = Config::get('path');
-        $lib_paths = (@include(Config::get('path')."/build/lib_cache.php")) ?: static::get_lib_paths();           
+        $root = Config::get('root');
+        $lib_paths = (@include("$root/build/lib_cache.php"));
+        
+        if ($lib_paths)
+        { 
+            static::$used_lib_cache = true;
+        }
+        else
+        {        
+            $lib_paths = static::get_lib_paths();           
+        }
+        
         foreach ($lib_paths as $lib_path)
         {
-            if (!include("{$base}{$lib_path}"))
+            if (!include("{$root}/{$lib_path}"))
             {
                 die("error including $lib_path");
             }

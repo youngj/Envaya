@@ -5,5 +5,5 @@
         {
             PageContext::add_js_string($key);
         } 
-        readfile(Config::get('path').'_media/inline_js/time.js');
+        include_js('time.js');
     }

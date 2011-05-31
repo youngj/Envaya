@@ -170,7 +170,7 @@ class Language
 
     private function add_group_names_in_dir(&$group_names, $dir_name)
     {
-        if ($handle = @opendir("{$dir_name}languages/{$this->code}"))
+        if ($handle = @opendir("{$dir_name}/languages/{$this->code}"))
         {
             while ($file = readdir($handle))
             {
@@ -185,10 +185,10 @@ class Language
     function get_all_group_names()
     {
         $group_names = array();        
-        $this->add_group_names_in_dir($group_names, Config::get('path'));        
+        $this->add_group_names_in_dir($group_names, Config::get('root'));        
         foreach (Config::get('modules') as $module_name)
         {
-            $this->add_group_names_in_dir($group_names, Engine::get_module_path($module_name));
+            $this->add_group_names_in_dir($group_names, Engine::get_module_root($module_name));
         }    
         return $group_names;
     }

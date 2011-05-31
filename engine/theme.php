@@ -82,7 +82,7 @@ class Theme
     
     private static function load_all_in_dir($dir_name)
     {
-        if ($handle = @opendir("{$dir_name}themes"))
+        if ($handle = @opendir("{$dir_name}/themes"))
         {
             while ($file = readdir($handle))
             {
@@ -98,10 +98,10 @@ class Theme
     {
         if (!static::$loaded_all)
         {
-            static::load_all_in_dir(Config::get('path'));
+            static::load_all_in_dir(Config::get('root'));
             foreach (Config::get('modules') as $module_name)
             {
-                static::load_all_in_dir(Engine::get_module_path($module_name));
+                static::load_all_in_dir(Engine::get_module_root($module_name));
             }        
             static::$loaded_all = true;
         }

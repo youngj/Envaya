@@ -36,15 +36,14 @@ return array(
 
     'storage_backend' => 'Storage_Local',
 
-    'path' => dirname(__DIR__) . "/",
-    
+    'root' => dirname(__DIR__),
+    'dataroot' => dirname(dirname(__DIR__)). "/envayadata",
+
     'languages' => array(
         'en' => 'English',
         'sw' => 'Kiswahili'
     ),
     'language' => "en",
-
-    'dataroot' => dirname(dirname(__DIR__)). "/envayadata/",
 	
     'mock_mail_file' => null,
 

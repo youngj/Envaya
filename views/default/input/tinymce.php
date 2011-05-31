@@ -36,7 +36,7 @@
     {
         PageContext::add_header_html(
             "<style type='text/css'>"
-            .file_get_contents(Config::get('path').'/_css/tinymce_ui.css')
+            .file_get_contents(Config::get('root').'/_css/tinymce_ui.css')
             ."</style>"
         );
         

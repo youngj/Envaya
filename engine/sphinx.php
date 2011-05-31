@@ -4,7 +4,7 @@ class Sphinx
 {
     static function load_lib()
     {
-        require_once Config::get('path')."vendors/sphinxapi.php";
+        require_once Config::get('root')."/vendors/sphinxapi.php";
     }
     
     static function get_client()

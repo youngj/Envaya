@@ -10,7 +10,7 @@ class Zend
         if (!static::$loaded)
         {
             static::$loaded = true;
-            set_include_path(get_include_path() . PATH_SEPARATOR . Config::get('path').'vendors/zend');
+            set_include_path(get_include_path() . PATH_SEPARATOR . Config::get('root').'/vendors/zend');
             require_once 'Zend/Loader.php';            
         }
         Zend_Loader::loadClass($cls);

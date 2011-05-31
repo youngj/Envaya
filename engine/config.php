@@ -9,13 +9,12 @@
  *
  * config/default.php -- default settings
  * config/local.php -- local machine settings, not under source control
- * config/dependent.php -- hacky way to define settings that are dependent 
- *                          on other settings
  */
 
 class Config
 {
     private static $settings = null;
+    private static $base_dir = null;
     
     static function get($key)
     {
@@ -32,39 +31,69 @@ class Config
         return static::$settings;
     }
     
+    static function init_dependent_settings()
+    {
+        // todo: settings that depend on other settings should probably not be allowed in Config...
+        
+        $domain = static::get('domain');
+        $url = "http://{$domain}/";
+        static::$settings['url'] = $url;
+        static::$settings['secure_url'] = static::get('ssl_enabled') ? "https://{$domain}/" : $url;
+    }
+    
     static function load()
     {
         if (static::$settings == null)
         {
-            static::$settings = array();
-            static::load_group('default');            
-            static::load_group('local');
-            static::load_group('dependent');
+            static::$base_dir = dirname(__DIR__);            
+            static::load_array(static::get_group('default'));                        
+            static::load_array(static::get_group('local'));                        
+            static::init_dependent_settings();
         }
     }
 
-    private static function load_array($config_array)
+    private static function load_array($settings, $overwrite = true)
     {
-        if ($config_array)
+        if ($settings)
         {
-            foreach ($config_array as $k => $v)
+            if (!static::$settings)
             {
-                static::$settings[$k] = $v;
+                static::$settings = $settings;
+            }        
+            else if ($overwrite)
+            {
+                foreach ($settings as $k => $v)
+                {                
+                    static::$settings[$k] = $v;
+                }
+            }
+            else
+            {
+                foreach ($settings as $k => $v)
+                {                
+                    if (!isset(static::$settings[$k]))
+                    {
+                        static::$settings[$k] = $v;
+                    }
+                }        
             }
         }
     }
     
-    private static function load_group($group_name, $module = null)
+    static function load_module_defaults($module_name)
     {
-        if ($module)
-        {
-            $base = dirname(__DIR__) . "/mod/{$module}";
-        }
-        else
-        {
-            $base = dirname(__DIR__);
-        }
-        $path = "{$base}/config/{$group_name}.php";
-        return static::load_array(@include($path));
+        static::load_array(static::get_module_defaults($module_name), false);
+    }
+
+    static function get_module_defaults($module_name)
+    {
+        $path = static::$base_dir."/mod/{$module_name}/config/default.php";
+        return @include($path);
     }    
+        
+    static function get_group($group_name)
+    {
+        $path = static::$base_dir."/config/{$group_name}.php";
+        return @include($path);
+    }
 }

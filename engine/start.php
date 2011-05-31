@@ -6,7 +6,7 @@
  * separately for scripts that just need to access config settings.
  *
  * (Almost everything in the engine/ directory is an auto-loaded class, 
- *   except for this file, start.php, and the engine/lib/ directory.)
+ *   except for this file, engine.php, and the engine/lib/ directory.)
  */
   
 include __DIR__."/engine.php";
@@ -30,3 +30,8 @@ Engine::add_autoload_action('Language', function() {
 });
 
 Engine::init();
+
+foreach (Config::get('modules') as $module_name)
+{
+    require Engine::get_module_root($module_name)."/start.php";
+} 

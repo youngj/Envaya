@@ -12,3 +12,5 @@ Engine::add_autoload_action('Controller_Admin', function() {
 });
 
 Views::extend('admin/dashboard_items', 'admin/contact_dashboard_items', -1000);
+
+Config::load_module_defaults('contact');

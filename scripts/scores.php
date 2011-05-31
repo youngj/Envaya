@@ -8,10 +8,21 @@
 require_once("scripts/cmdline.php");
 require_once("engine/start.php");
 
+$orgs = Organization::query()->where('approval > 0')->filter();
+
+$recent = time() - 86400 * 31;
+
 $scores = array();
-foreach (Organization::query()->filter() as $org)
+foreach ($orgs as $org)
 {
-    $scores[TodoItem::get_total_score($org)][] = $org;
+    $score = TodoItem::get_total_score($org);
+    
+    if ($org->query_feed_items()->where('time_posted > ?', $recent)->exists())
+    {
+        $score += 1;
+    }
+
+    $scores[$score][] = $org;
 }
 
 $featured_users = array();
@@ -35,7 +46,7 @@ foreach ($rscores as $score => $orgs)
     {
         foreach ($orgs as $org)
         {
-            echo $str_score.(@$featured_users[$org->guid] ? "+" : " ")." {$org->get_url()} {$org->name}\n";
+            echo $str_score.(@$featured_users[$org->guid] ? "*" : " ")." {$org->get_url()} {$org->name}\n";
         }
     }
     else

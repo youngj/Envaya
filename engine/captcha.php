@@ -58,6 +58,6 @@ class Captcha
 	
 	static function load_lib()
 	{
-		require_once(Config::get('path')."vendors/securimage/securimage.php");
+		require_once(Config::get('root')."/vendors/securimage/securimage.php");
 	}
 }

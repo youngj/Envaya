@@ -54,7 +54,7 @@ function install_schema($module_name = null)
     $path = "schema/mysql.php";
     if ($module_name)
     {
-        $path = Engine::get_module_path($module_name).$path;
+        $path = Engine::get_module_root($module_name)."/$path";
     }
     
     if (is_file($path))

@@ -34,14 +34,17 @@ class Build
     static function lib_cache()
     {
         require_once "engine/start.php";
-        $paths = Engine::get_lib_paths();        
+        $paths = Engine::get_lib_paths();  
         static::write_file("build/lib_cache.php", static::get_array_php($paths));
     }
-       
+    
     static function path_cache()
     {
         require_once "engine/start.php";
-        $paths = array();        
+        $paths = array(
+            'views/default/admin/path_cache_test.php' => 'build/path_cache_info.php' 
+                // allows us to test if the path cache actually works like it should
+        );
         static::add_paths_in_dir('', 'engine', $paths);
         static::add_paths_in_dir('', 'themes', $paths);        
         static::add_paths_in_dir('', 'engine/controller', $paths);
@@ -71,6 +74,9 @@ class Build
         */
         
         static::write_file("build/path_cache.php", static::get_array_php($paths));
+        
+        $numPaths = sizeof($paths);
+        static::write_file("build/path_cache_info.php", "<div>The path cache is enabled. (size=$numPaths)</div>");
     }
     
     static function write_file($filename, $contents)
@@ -81,15 +87,15 @@ class Build
 
     private static function add_paths_in_dir($rel_base, $dir, &$paths, $recursive = false)
     {
-        $abs_base = Config::get('path'); 
-        $handle = @opendir("{$abs_base}{$rel_base}{$dir}");
+        $root = Config::get('root'); 
+        $handle = @opendir("{$root}/{$rel_base}{$dir}");
         if ($handle)
         {
             while ($file = readdir($handle))
             {
                 $virtual_path = "{$dir}/{$file}";
                 $real_rel_path = "{$rel_base}{$virtual_path}";
-                $real_path = "{$abs_base}{$real_rel_path}";
+                $real_path = "{$root}/{$real_rel_path}";
 
                 if (preg_match('/\.php$/', $file))
                 {
@@ -159,7 +165,8 @@ class Build
 
         foreach ($js_src_files as $js_src_file)
         {
-            minify($js_src_file,  str_replace('_src','',$js_src_file));
+            $basename = pathinfo($js_src_file,  PATHINFO_BASENAME);            
+            minify($js_src_file, "_media/inline_js/{$basename}");
         }
     }
 
