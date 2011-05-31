@@ -16,3 +16,7 @@ Engine::add_autoload_action('Controller_Default', function() {
         'defaults' => array('controller' => 'Translate')
     ));
 });
+
+Engine::add_autoload_action('Language', function() {
+    Language::add_fallback_group('itrans', 'itrans_admin');
+});

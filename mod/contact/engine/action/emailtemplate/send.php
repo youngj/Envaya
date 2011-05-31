@@ -11,7 +11,7 @@ class Action_EmailTemplate_Send extends Action
     {
         $email = $this->get_email();
                 
-        $org_guids = get_input_array('orgs');
+        $org_guids = get_input_array('users');
         $numSent = 0;
         foreach ($org_guids as $org_guid)
         {       
@@ -23,6 +23,8 @@ class Action_EmailTemplate_Send extends Action
                 $email->send_to($org);
             }
         }
+        $email->update();
+        
         SessionMessages::add("sent $numSent emails");
         $this->redirect(get_input('from') ?: "{$email->get_url()}/send");
     }
@@ -51,12 +53,12 @@ class Action_EmailTemplate_Send extends Action
         PageContext::get_submenu('edit')->add_item(__('cancel'), get_input('from') ?: $email->get_url());
         
         $this->page_draw(array(
-            'title' => __('email:batch'),
+            'title' => __('contact:send_email'),
             'header' => view('admin/email_header', array(
                 'email' => $email,
                 'title' => __('email:send')
             )),            
-            'content' => view('admin/batch_email', array('email' => $email, 'orgs' => $orgs)),
+            'content' => view('admin/batch_email', array('email' => $email, 'users' => $orgs)),
         ));        
     }
 }    

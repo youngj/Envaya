@@ -352,6 +352,12 @@ class User extends Entity
         return $this->timezone_id;
     }
     
+    function get_email_settings_url()
+    {
+        $code = User::get_email_fingerprint($this->email);
+        return Config::get('url')."pg/email_settings?e=".urlencode($this->email)."&c={$code}";    
+    }
+    
     static function get_cache_key_for_username($username)
     {
         return make_cache_key("guid_for_username", $username);

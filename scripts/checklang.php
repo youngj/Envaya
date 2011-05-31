@@ -21,14 +21,26 @@ $en->load_all();
 
 $en_trans = $en->get_loaded_translations();
 
+
 function get_missing_language_keys($en, $trans)
-{
-    $en_admin = $en->get_group('admin');
-    $missing = array();
-   
+{  
+    // by convention, any group with 'admin' in its name does not need to be translated
+    $admin_keys = array();
+    foreach ($en->get_all_group_names() as $group_name)
+    {
+        if (preg_match('/admin/', $group_name))
+        {
+            foreach($en->get_group($group_name) as $k => $v)
+            {
+                $admin_keys[$k] = true;
+            }
+        }
+    }
+    
+    $missing = array();   
     foreach ($en->get_loaded_translations() as $k => $v)
     {
-        if (!isset($en_admin[$k]) && !isset($trans[$k]))
+        if (!isset($admin_keys[$k]) && !isset($trans[$k]))
         {
             $missing[] = $k;
         }

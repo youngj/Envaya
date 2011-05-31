@@ -55,7 +55,7 @@ class Controller_EmailTemplate extends Controller
     function action_index()
     {
         $this->page_draw(array(
-            'title' => __('email:list'),
+            'title' => __('contact:email_list'),
             'content' => view('admin/list_emails')
         ));        
     }  
@@ -65,7 +65,7 @@ class Controller_EmailTemplate extends Controller
         PageContext::get_submenu('edit')->add_item(__('cancel'), get_input('from') ?: "/admin/contact");
     
         $this->page_draw(array(
-            'title' => __('email:list'),
+            'title' => __('contact:email_list'),
             'content' => view('admin/user_emails', array('user' => $this->param('user')))
         ));        
     }  
@@ -84,12 +84,12 @@ class Controller_EmailTemplate extends Controller
         PageContext::get_submenu('edit')->add_item("Edit Email", $email->get_url() . "/edit");
         
         $this->page_draw(array(
-            'title' => __('email:view'),
+            'title' => __('contact:view_email'),
             'header' => view('admin/email_header', array(
                 'email' => $email,
             )),
             'content' => view('admin/view_email', array(
-                'org' => $org, 
+                'user' => $user, 
                 'email' => $email, 
                 'from' => get_input('from')
             ))
@@ -98,12 +98,12 @@ class Controller_EmailTemplate extends Controller
         
     function action_preview_body()
     {
-        $user = User::get_by_username(get_input('username'));
+        $user = User::get_by_guid(get_input('user'));
         
         $email = $this->get_email();
         
         echo view('emails/template', array(
-            'org' => $user, 
+            'user' => $user, 
             'base' => 'http://ERROR_RELATIVE_URL/ERROR_RELATIVE_URL/', 
             'email' => $email
         ));            

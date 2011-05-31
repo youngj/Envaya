@@ -2,8 +2,8 @@
 
 /*
  * A template for an email message that can be sent to multiple users.
- * The message can contain {}-delimited strings with properties of a User or Organization,
- * (e.g. {username}) which will be replaced with the appropriate values for each user.
+ * The message can contain placeholder strings with properties of a User or Organization,
+ * (e.g. {{username}}), which will be replaced with the appropriate values for each user.
  */
 
 class EmailTemplate extends Entity
@@ -13,67 +13,91 @@ class EmailTemplate extends Entity
     static $table_attributes = array(
         'subject' => '',
         'from' => '',
-        'active' => 0,        
+        'num_sent' => 0,
+        'time_last_sent' => 0,
     );
+    
     static $mixin_classes = array(
         'Mixin_Content'
     );    
     
-    function render_content($org)
+    static $allowed_placeholders = array(
+        'username',
+        'name',
+        'email',
+    );
+    
+    function update()
     {
-        if ($org)
-        {
-            return $org->render_email_template($this->content);
-        }
-        else
-        {
-            return $this->content;
-        }
+        $this->num_sent = $this->query_outgoing_mail()->count();        
+        $outgoing_mail = $this->query_outgoing_mail()->order_by('id desc')->get();
+        $this->time_last_sent = $outgoing_mail ? $outgoing_mail->time_created : 0;
+        $this->save();
     }
     
-    function render_subject($org)
+    function query_outgoing_mail()
     {
-        if ($org)
-        {
-            return $org->render_email_template($this->subject);
-        }
-        else
-        {
-            return $this->subject;
-        }
+        return OutgoingMail::query()->where('email_guid = ?', $this->guid);
     }
     
-    function get_outgoing_mail_for($org)
+    function render($content, $user)
     {
-        return OutgoingMail::query()
-            ->where('email_guid = ?', $this->guid)
-            ->where('to_guid = ?', $org->guid)
+        $args = array();
+        if ($user)
+        {
+            foreach (static::$allowed_placeholders as $prop)
+            {
+                $value = $user->$prop;
+                $args["{{".$prop."}}"] = $value;
+                $args["%7B%7B".$prop."%7D%7D"] = $value; // {{ }} may be urlencoded 
+            }
+        }
+   
+        return strtr($content, $args);
+    }    
+    
+    function render_content($user)
+    {
+        return $this->render($this->content, $user);
+    }
+    
+    function render_subject($user)
+    {
+        return $this->render($this->subject, $user);
+    }
+    
+    function get_outgoing_mail_for($user)
+    {
+        return $this->query_outgoing_mail()
+            ->where('to_guid = ?', $user->guid)
             ->get();
     }
         
-    function can_send_to($org)
+    function can_send_to($user)
     {    
-        return $org && $org->email && $org->is_notification_enabled(Notification::Batch)        
-            && OutgoingMail::query()
-            ->where('email_guid = ?', $this->guid)
-            ->where('to_guid = ?', $org->guid)
-            ->where('status <> ?', OutgoingMail::Failed)
-            ->is_empty();
+        return $user && $user->email && $user->is_notification_enabled(Notification::Batch)        
+            && $this->query_outgoing_mail()
+                ->where('to_guid = ?', $user->guid)
+                ->where('status <> ?', OutgoingMail::Failed)
+                ->is_empty();
     }
     
-    function send_to($org)
+    function send_to($user)
     {        
-        $subject = $this->render_subject($org);
-        $body = view('emails/template', array('org' => $org, 'email' => $this));
+        $subject = $this->render_subject($user);
+        $body = view('emails/template', array(
+            'user' => $user, 
+            'email' => $this
+        ));
 
         $mail = OutgoingMail::create($subject);
         $mail->setBodyHtml($body);
         $mail->setFrom(Config::get('email_from'), $this->from);
         $mail->email_guid = $this->guid;
-        $mail->send_to_user($org);
+        $mail->send_to_user($user);
  
-        $org->last_notify_time = time();
-        $org->save();
+        $user->last_notify_time = time();
+        $user->save();
     }
     
     function get_url()

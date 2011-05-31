@@ -3,7 +3,7 @@
 <?php
 
     $items = array(
-        array('url' => '/admin/contact/email', 'title' => __('email:list'))
+        array('url' => '/admin/contact/email', 'title' => __('contact:email_list'))
     );
     
     $email = @$vars['email'];

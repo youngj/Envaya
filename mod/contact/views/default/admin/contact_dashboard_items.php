@@ -1,2 +1,3 @@
-<li><a href='/admin/contact'>Contact Information</a></li>
-<li><a href='/admin/contact/email'>Email Templates</a></li>
+
+<li><a href='/admin/contact'><?php echo __('contact:user_list'); ?></a></li>
+<li><a href='/admin/contact/email'><?php echo __('contact:email_list'); ?></a></li>

@@ -207,19 +207,7 @@ class Organization extends User
         
         return $res;
     }
-    
-    function render_email_template($template)
-    {
-        $args = array();
-        foreach ($this->attributes as $k => $v)
-        {
-            $args["{{".$k."}}"] = $v;
-            $args["%7B%7B".$k."%7D%7D"] = $v;
-        }
-   
-        return strtr($template, $args);
-    }
-         
+             
     protected $phone_numbers;
     protected $phone_numbers_dirty = false;
 

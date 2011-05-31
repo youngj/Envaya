@@ -42,6 +42,7 @@ return array(
     'login' => 'Fungua',
     'logout' => 'Ondoka',    
     'clickhere' => 'bonyeza hapa',
+    'here' => "hapa",
     'name' => 'Jina',
     'email' => 'Email',
     'phone_number' => "Namba ya simu",
@@ -114,4 +115,6 @@ return array(
     'web:url_error' => "Kulikuwa kosa ya kupata anwani ya intaneti {url}.",    
     'web:invalid_url' => "Anwani ya intaneti {url} hairuhusiwi.",    
     'web:try_again' => "Hakikisha kuwa anwani ni sahihi, halafu jaribu tena.",        
+    
+    'email:salutation' => "Habari za sahizi %s,",
 );

@@ -1,18 +1,11 @@
 <?php     
 return array(
-    'email:mailing_address' => "150 Post Street, Suite 342, San Francisco, CA 94108",    
-
     'approval:notapproved' => "Not yet approved",    
 
     'search:title_with_query' => "Search User: %s",
 
     'user:delete' => "Delete user",
     'user:deleted' => "User deleted successfully.",
-    'user:contact_list' => "User Contact List",
-    'user:time_created' => "Registered",
-    'user:time_updated' => "Updated",
-    'user:num_pages' => "# Pages",
-    'user:last_notify' => "Last Email",
 
     'trans:title' => "Translate content",
     'trans:original_in' => "Original in %s",
@@ -29,17 +22,7 @@ return array(
     'comment:notification_admin_subject' => "%s added a comment on %s",
     'register:notification_subject' => "%s has registered for Envaya",
 
-    'itrans:add_language' => "Add Language",
-    'itrans:manage' => "Manage Languages",
-    'itrans:languages' => "Languages",
-    'itrans:export' => 'Export Translations',    
-    'itrans:language_saved' => "Language settings saved.",
-    'itrans:language_deleted' => "Language deleted.",
-    'itrans:enabled_groups' => "Enabled Modules",
-
     'email:outgoing_mail' => "Outgoing Mail",
-    'email:list' => "Email Templates",
-    'email:view' => "View Email Template",    
     'email:send' => "Send",
     'email:resend' => "Resend",    
     'email:sent' => "Sent",    
@@ -103,11 +86,7 @@ return array(
     'featured_photo:saved' => "Featured photo saved.",
     'featured_photo:deleted' => "Featured photo deleted.",
     'featured_photo:edit' => "Edit featured photo",
-    
-    'email:add' => "Add email template",
-    'email:edit' => "Edit email template",
-    'email:batch' => "Send email template",
-    
+        
     'widget:invalid_class' => 'The handler %s was not found.',
     'widget:options' => 'Page Options',
     'widget:handler' => 'Page Handler (PHP Class Name)',

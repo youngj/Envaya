@@ -38,11 +38,11 @@
     <th><a href='/admin/contact?sort=name'><?php echo __('name') ?></a></th>
     <th><a href='/admin/contact?sort=email'><?php echo __('email') ?></a></th>
     <th><?php echo __('phone_number') ?></th>
-    <th><a href='/admin/contact?sort=time_created'><?php echo __('user:time_created') ?></a></th>
-    <th><?php echo __('user:time_updated') ?></th>
-    <th><?php echo __('user:num_pages') ?></th>
+    <th><a href='/admin/contact?sort=time_created'><?php echo __('contact:time_created') ?></a></th>
+    <th><?php echo __('contact:time_updated') ?></th>
+    <th><?php echo __('contact:num_pages') ?></th>
     <th><?php echo __('language') ?></th>
-    <th><a href='/admin/contact?sort=last_notify_time'><?php echo __('user:last_notify') ?></a></th>
+    <th><a href='/admin/contact?sort=last_notify_time'><?php echo __('contact:last_notify') ?></a></th>
 </tr>
 <?php
     $escUrl = urlencode($_SERVER['REQUEST_URI']);

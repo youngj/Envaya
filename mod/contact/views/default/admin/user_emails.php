@@ -1,6 +1,9 @@
 <div class='padded'>
 <?php   
     $user = $vars['user'];
+    
+    echo "<p>".sprintf(__('contact:select_email'), 
+        "<a href='mailto:".escape($user->email)."'>".escape($user->email)."</a>")."</p>";
 
     $query = EmailTemplate::query()->order_by('time_created desc');
     $limit = 10;

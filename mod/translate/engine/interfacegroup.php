@@ -93,8 +93,8 @@ class InterfaceGroup extends Entity
             ->where('name = ?', $name)
             ->show_disabled(true)
             ->get();
-            
-        if ($key) // perhaps the key was moved between groups (i.e. between default/admin/<group_name>)
+
+        if ($key)
         {
             $key->enable();
         }
@@ -103,6 +103,9 @@ class InterfaceGroup extends Entity
             $key = new InterfaceKey();
             $key->name = $name;
         }
+        
+        // perhaps the key was moved between groups 
+        // (e.g. 'foo:bar' could be moved between 'default' and 'foo' groups)
         $key->container_guid = $this->guid;
         
         $defined_group = $this->get_defined_group();        

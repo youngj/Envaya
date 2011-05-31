@@ -33,6 +33,7 @@ return array(
     'hide' => "Hide",
     
     'clickhere' => 'click here',
+    'here' => "here",
     'sign_up_now' => "sign up now",
     'donate' => "Donate",    
         
@@ -120,4 +121,6 @@ return array(
     'web:url_error' => "There was an error loading the web address {url}.",    
     'web:invalid_url' => "The web address {url} is not allowed.",    
     'web:try_again' => "Make sure that the address is correct, then try again.",    
+    
+    'email:salutation' => "Hi %s,",
 );

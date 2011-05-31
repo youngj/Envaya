@@ -22,7 +22,7 @@ class Action_EmailTemplate_Add extends Action
     function render()
     {
         $this->page_draw(array(
-            'title' => __('email:add'),
+            'title' => __('contact:add_email'),
             'header' => view('admin/email_header', array(
                 'email' => null,
                 'title' => __('add')

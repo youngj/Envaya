@@ -23,6 +23,8 @@
 class Language
 {
     static $languages = array();
+    static $fallback_groups = array();
+    
     private static $current_code = null;
     
     static function get($code)
@@ -128,7 +130,7 @@ class Language
                 $this->translations[$k] = $v;
             }    
         }
-    }
+    }   
     
     function get_translation($key)
     {
@@ -137,34 +139,19 @@ class Language
         {
             return $res;
         }
-                
-        if ($this->load('default'))
-        {
-            $res = @$this->translations[$key];        
-            if ($res !== null)
-            {
-                return $res;
-            }
-        }
-        $keyArr = explode(':', $key, 2);
-        if (sizeof($keyArr) == 2 && $this->load($keyArr[0]))
-        {
-            $res = @$this->translations[$key];        
-            if ($res !== null)
-            {
-                return $res;
-            }        
-        }
         
-        if ($this->load('admin'))
+        foreach (static::get_group_search_order($key) as $group_name)
         {
-            $res = @$this->translations[$key];        
-            if ($res !== null)
+            if ($this->load($group_name))
             {
-                return $res;
+                $res = @$this->translations[$key];        
+                if ($res !== null)
+                {
+                    return $res;
+                }
             }
-        }        
-                
+        }
+                  
         return null;
     }   
 
@@ -236,5 +223,41 @@ class Language
     {
         preg_match_all('/\%s|\{\w+\}/', $value, $matches);        
         return @$matches[0] ?: array();
+    }
+    
+    /*
+     * Normally, a language key like '<group_name>:foo' will be retrieved from a file named 
+     * '<lang>_<group_name>.php'. By adding a fallback group, you can split keys into different groups
+     * so '<group_name>:foo' can be retrieved from a file named <lang>_<fallback_group_name>.php
+     */
+    static function add_fallback_group($group_name, $fallback_group_name)
+    {
+        static::$fallback_groups[$group_name][] = $fallback_group_name;
+    }
+    
+    static function get_group_search_order($key)
+    {
+        $group_names = array();
+        
+        $key_arr = explode(':', $key, 2);
+        if (sizeof($key_arr == 2))
+        {
+            $group_name = $key_arr[0];
+            
+            $group_names[] = $group_name;
+            
+            if (isset(static::$fallback_groups[$group_name]))
+            {
+                foreach (static::$fallback_groups[$group_name] as $fallback_group)
+                {
+                    $group_names[] = $fallback_group;
+                }
+            }
+        }
+        
+        $group_names[] = 'default';
+        $group_names[] = 'admin';
+        
+        return $group_names;
     }
 }

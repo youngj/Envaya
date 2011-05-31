@@ -23,7 +23,7 @@ class Controller_Contact extends Controller
     {
         $this->page_draw(array(
             'theme_name' => 'simple_wide',
-            'title' => __('user:contact_list'),
+            'title' => __('contact:user_list'),
             'header' => '',
             'content' => view('admin/contact')
         ));

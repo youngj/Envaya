@@ -20,6 +20,9 @@ class Action_EmailTemplate_ResetOutgoingMail extends Action
         
         $outgoing_mail->email_guid = 0;
         $outgoing_mail->save();
+        
+        $email->update();
+        
         $this->redirect();
     }
 }    

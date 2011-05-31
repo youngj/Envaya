@@ -59,7 +59,7 @@ class Action_EmailTemplate_Edit extends Action
         PageContext::get_submenu('edit')->add_item(__('canceledit'), get_input('from') ?: $email->get_url());
     
         $this->page_draw(array(
-            'title' => __('email:edit'),
+            'title' => __('contact:edit_email'),
             'header' => view('admin/email_header', array(
                 'email' => $email,
                 'title' => __('edit')
