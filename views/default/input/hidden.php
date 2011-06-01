@@ -8,4 +8,5 @@
         'value' => null,
         'id' => null,
     ));
-    echo "<input ".Markup::render_attrs($attrs)." />"; 
+    
+    echo Markup::empty_tag('input', $attrs);    

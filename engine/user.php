@@ -98,7 +98,7 @@ class User extends Entity
         else if ($this->has_lat_long())
         {   
             return array(
-                'url' => view('output/static_map_url', array(
+                'url' => Geography::get_static_map_url(array(
                     'lat' => $this->latitude, 
                     'long' => $this->longitude, 
                     'zoom' => 6, 

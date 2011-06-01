@@ -72,6 +72,22 @@ class Markup
         return implode(' ', $html);
     }
     
+    static function empty_tag($tag_name, $attrs)
+    {
+        return "<$tag_name ".static::render_attrs($attrs)." />";
+    }
+
+    static function start_tag($tag_name, $attrs)
+    {
+        return "<$tag_name ".static::render_attrs($attrs).">";
+    }
+
+    static function end_tag($tag_name)
+    {
+        return "</$tag_name>";
+    }
+
+    
     static function truncate_at_word_boundary($content, $maxLength)
     {        
         // todo: multi-byte support

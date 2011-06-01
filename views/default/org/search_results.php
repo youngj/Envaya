@@ -10,13 +10,34 @@
         echo "<div class='padded'>";
         
         echo "<em>".sprintf(__('search:orgs_near'), escape($query))."</em>";
+?>
+
+<script type='text/javascript'>
+<?php
+    echo view('js/google_map');
+?>  
+
+var mapLoader = new MapLoader(function ($bounds) 
+{
+    var $sw = $bounds.getSouthWest();
+    var $ne = $bounds.getNorthEast(); 
+
+    return "/org/searchArea?latMin="+$sw.lat()+"&latMax="+$ne.lat()+
+        "&longMin="+$sw.lng()+"&longMax="+$ne.lng()+
+        "&sector=<?php echo urlencode($sector); ?>";
+});
+
+</script>
+<?php        
+
         
         echo view("output/map", array(
-            'lat' => $latlong['lat'], 'long' => $latlong['long'], 
-            'sector' => $sector, 
-            'nearby' => true, 
-            'height' => 300, 'width' => 440, 
-            'zoom' => '8'
+            'lat' => $latlong['lat'],
+            'long' => $latlong['long'], 
+            'height' => 300, 
+            'width' => 440, 
+            'zoom' => 8,
+            'onload' => 'mapLoader.setMap',
         ));
         
         echo "</div>";    

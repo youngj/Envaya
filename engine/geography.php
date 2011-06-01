@@ -56,6 +56,30 @@ class Geography
         return null;
     }
     
+    static function get_static_map_url($vars)
+    {
+        $lat = null;
+        $long = null;
+        $zoom = 10;
+        $width = 460;
+        $height = 280;
+        $pin = false;
+        extract($vars);
+        
+        $api_key = Config::get('google_api_key');
+        
+        $url = "http://maps.google.com/maps/api/staticmap?center={$lat},{$long}&zoom={$zoom}"
+            ."&size={$width}x{$height}&maptype=roadmap&sensor=false&key={$api_key}";
+        
+        if ($pin)
+        {
+            $url .= "&markers={$lat},{$long}";
+        }
+        
+        return $url;
+    }
+
+    
     static function get_approved_countries()
     {
         return array('tz','lr','rw');

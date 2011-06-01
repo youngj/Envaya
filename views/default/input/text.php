@@ -23,5 +23,5 @@
     {
         $attrs['onkeyup'] = $attrs['onchange'] = "setDirty(true)";
     }       
-    
-    echo "<input ".Markup::render_attrs($attrs)." />";    
+
+    echo Markup::empty_tag('input', $attrs);    

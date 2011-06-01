@@ -15,5 +15,6 @@
         'height' => $icon_props['height'],
         'border' => '0',
     ));
+
+    echo Markup::empty_tag('img', $attrs);        
     
-    echo "<img ".Markup::render_attrs($attrs)." />";

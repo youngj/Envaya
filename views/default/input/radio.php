@@ -40,7 +40,7 @@
         $option_attrs['value'] = $option_value;
              
         echo "<label class='optionLabel$labelClass'>";
-        echo "<input ".Markup::render_attrs($option_attrs)." />";
+        echo Markup::empty_tag('input', $option_attrs);
         echo "{$option_text}</label>$br";
     }
 

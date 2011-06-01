@@ -24,20 +24,58 @@ ob_start();
 )) ?>
 <br />
 <br />
+<label id="pinDragInstr">
+<?php echo __("widget:location:drag_pin"); ?>
+</label>
+<script type='text/javascript'>
+
+function initMap(map)
+{
+    function updateHiddenFields()
+    {
+        var pos = marker.getPosition();
+        var form = document.forms[0];
+        form.lat.value = pos.lat();
+        form.long.value = pos.lng();
+        form.zoom.value = map.getZoom();
+    }
+
+    var marker = new google.maps.Marker({
+        position: map.getCenter(), 
+        draggable: true
+    });
+
+    google.maps.event.addListener(marker, "dragend", function(e) {
+        map.setCenter(e.latLng);
+        updateHiddenFields();
+    });
+
+    google.maps.event.addListener(map, "zoom_changed", function() {
+        updateHiddenFields();
+    });
+
+    marker.setMap(map);
+}
+
+</script>
+
 <?php
+
     $lat = $org->get_latitude() ?: 0.0;
     $long = $org->get_longitude() ?: 0.0;
-
     $zoom = $widget->get_metadata('zoom') ?: (($lat || $long) ? 11 : 1);
+
+    echo view('input/hidden', array('name' => 'lat', 'value' => $lat));
+    echo view('input/hidden', array('name' => 'long', 'value' => $long));
+    echo view('input/hidden', array('name' => 'zoom', 'value' => $zoom));
 
     echo view("output/map", array(
         'lat' => $lat,
         'long' => $long,
         'zoom' => $zoom,
-        'pin' => true,
-        'edit' => true
+        'onload' => 'initMap',
     ));
-    
+
     $content = ob_get_clean();
     
     echo view("widgets/edit_form", array(

@@ -25,7 +25,7 @@ class Widget_Location extends Widget
     {
         $org = $this->get_root_container_entity();
 
-        $org->set_lat_long(get_input('org_lat'), get_input('org_lng'));
+        $org->set_lat_long(get_input('lat'), get_input('long'));
 
         $new_region = get_input('region');
         if ($new_region != $org->region)
@@ -36,7 +36,7 @@ class Widget_Location extends Widget
 
         $org->save();
 
-        $this->set_metadata('zoom', get_input('map_zoom'));
+        $this->set_metadata('zoom', get_input('zoom'));
         $this->save();    
     }
 }

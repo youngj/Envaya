@@ -50,7 +50,7 @@
         $option_attrs['value'] = $option_value;
         $option_attrs['name'] = "{$name}[]";
                
-        $input = "<input ".Markup::render_attrs($option_attrs)." />";
+        $input = Markup::empty_tag('input', $option_attrs);
         
         $content = $after_label ? escape($option_text).$input : $input.escape($option_text);
         

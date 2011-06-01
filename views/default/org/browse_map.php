@@ -9,20 +9,28 @@ $zoom = get_input('zoom') ?: 5;
 
 <div class='padded'>
 <script type='text/javascript'>
+<?php
+    echo view('js/google_map');
+?>  
+
 function sectorChanged()
 {
     setTimeout(function() {
-        var sectorList = $('sectorList');
-
-        var val = sectorList.options[sectorList.selectedIndex].value;
-
-        var browseLink = $('browseLink');
-        browseLink.href = "org/browse?list=1&sector=" + val;
-
-        setMapSector(val);
+        $('browseLink').href = "org/browse?list=1&sector=" + $('sectorList').value;
+        mapLoader.reset();
+        mapLoader.load();
     }, 1);
 }
 
+var mapLoader = new MapLoader(function ($bounds) 
+{
+    var $sw = $bounds.getSouthWest();
+    var $ne = $bounds.getNorthEast(); 
+
+    return "/org/searchArea?latMin="+$sw.lat()+"&latMax="+$ne.lat()+
+        "&longMin="+$sw.lng()+"&longMax="+$ne.lng()+
+        "&sector=" + $('sectorList').value;
+});
 </script>
 
 <div class='view_toggle'>
@@ -47,8 +55,7 @@ function sectorChanged()
         'long' => $long,  
         'height' => 350, 
         'zoom' => $zoom, 
-        'sector' => $sector, 
-        'nearby' => true
+        'onload' => 'mapLoader.setMap',
     ));
 ?>
 </div>
