@@ -1,7 +1,6 @@
 <?php
 
     $sort = Database::sanitize_order_by(get_input('sort') ?: 'name');
-    $baseurl = "/admin/contact?sort=$sort";
     $offset = (int)get_input('offset');
 
     $limit = 15;
@@ -23,10 +22,9 @@
     $orgs = $query->limit($limit, $offset)->filter();
     $count = $query->count();
 
-    echo view('org/filter_controls', array('baseurl' => $baseurl));
+    echo view('org/filter_controls', array('baseurl' => "/admin/contact?sort=$sort"));
     
     echo view('pagination',array(
-        'baseurl' => $baseurl,
         'pagesShown' => 24,
         'offset' => $offset,
         'count' => $count,
