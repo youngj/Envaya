@@ -1,37 +1,47 @@
 <?php
 
     /**
-     * Displays a radio input field
-     *
-     * @uses $vars['value'] The current value, if any
-     * @uses $vars['js'] Any Javascript to enter into the input tag
-     * @uses $vars['name'] The name of the input field
-     * @uses $vars['options'] An array of strings representing the options for the radio field as "label" => option
-     *
+     * A collection of radio inputs
      */
 
-    $class = @$vars['class'];
-    if (!$class) $class = "input-radio";
-
-    $vars['value'] = restore_input($vars['name'], @$vars['value'], @$vars['trackDirty']);
+    $name = null;           // html name attribute for input field
+    $value = null;          // html value attribute
+    $track_dirty = false;    // call setDirty when the field is changed?    
+    $options = null;        // associative array of value => text pairs
+    $inline = false;
+    extract($vars);
+     
+    $attrs = Markup::get_attrs($vars, array(
+        'type' => 'radio',
+        'class' => 'input-radio',
+        'style' => null,
+        'id' => null,
+        'name' => null,
+    ));
+    
+    if ($track_dirty)
+    {
+        $attrs['onchange'] = "setDirty(true)";
+    }      
 
-    $js = @$vars['js'] ?: '';
+    $value = restore_input($name, $value, $track_dirty);          
 
-    $br = @$vars['inline'] ? '' : '<br />';
-    $labelClass = @$vars['inline'] ? ' optionLabelInline' : '';
+    $br = $inline ? '' : '<br />';
+    $labelClass = $inline ? ' optionLabelInline' : '';
 
-    foreach($vars['options'] as $option => $label) {
-        if (strtolower($option) != strtolower($vars['value'])) {
-            $selected = "";
-        } else {
-            $selected = "checked = \"checked\"";
+    foreach ($options as $option_value => $option_text) 
+    {
+        $option_attrs = $attrs;
+        
+        if ($option_value == $value)
+        {
+            $option_attrs['checked'] = 'checked';
         }
-
-        $id = (isset($vars['id'])) ? "id=\"{$vars['id']}\"" : '';
-        $disabled = (@$vars['disabled']) ? ' disabled="yes" ' : '';
-        $onclick = (@$vars['trackDirty']) ? "onclick='javascript:setDirty(true)' " : '';
+        $option_attrs['value'] = $option_value;
              
-        echo "<label class='optionLabel$labelClass'><input type=\"radio\" $disabled{$onclick} {$js} name=\"{$vars['name']}\" $id value=\"".escape($option)."\" {$selected} class=\"$class\" />{$label}</label>$br";
+        echo "<label class='optionLabel$labelClass'>";
+        echo "<input ".Markup::render_attrs($option_attrs)." />";
+        echo "{$option_text}</label>$br";
     }
 
 ?>

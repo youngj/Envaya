@@ -7,7 +7,7 @@
 <?php 
     echo view('input/tinymce', array(
         'name' => 'content', 
-        'trackDirty' => true, 
+        'track_dirty' => true, 
         'value' => $reply_to ? view('discussions/reply_message', array('message' => $reply_to)) : '',
     ));        
     

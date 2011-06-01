@@ -14,7 +14,7 @@
         {        
             echo " ".view('input/post_link', array(
                 'href' => "{$translation->get_url()}/vote?delta=-1",
-                'js' => "style='background-color:#ccc;color:#000;text-decoration:none'",
+                'style' => "background-color:#ccc;color:#000;text-decoration:none",
                 'html' => "&nbsp;-&nbsp;",
             ))." ";
         }
@@ -27,7 +27,7 @@
         {
             echo " ".view('input/post_link', array(
                 'href' => "{$translation->get_url()}/vote?delta=1",
-                'js' => "style='background-color:#ccc;color:#000;text-decoration:none'",
+                'style' => "background-color:#ccc;color:#000;text-decoration:none",
                 'html' => "&nbsp;+&nbsp;",
             ))." ";            
         }

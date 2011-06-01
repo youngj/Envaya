@@ -1,20 +1,25 @@
 <?php
-
 	/**
-	 * Displays a long text input field
-	 * 
-	 * @uses $vars['value'] The current value, if any
-	 * @uses $vars['js'] Any Javascript to enter into the input tag
-	 * @uses $vars['name'] The name of the input field
-	 * 
-	 */
-
-	$class = @$vars['class'] ?: "input-textarea";
+	 * A multi-line textarea
+     */
+     
+    $name = null;            // html name attribute for input field
+    $value = null;           // html value attribute
+    $track_dirty = false;     // call setDirty when the field is changed?    
+    extract($vars);
     
-    $setDirty = (@$vars['trackDirty']) ? " onchange='setDirty(true)'" : "";
+    $attrs = Markup::get_attrs($vars, array(
+        'class' => 'input-textarea',
+        'name' => null,
+        'style' => null,
+        'id' => null,
+    ));
 
-    $value = restore_input(@$vars['name'], @$vars['value'], @$vars['trackDirty']); 
-	
-?>
-
-<textarea class="<?php echo $class; ?>" name="<?php echo @$vars['name']; ?>" <?php if (isset($vars['id'])) echo "id=\"{$vars['id']}\""; ?> <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> <?php echo @$vars['js'], $setDirty; ?>><?php echo escape($value); ?></textarea> 
+    $value = restore_input($name, $value, $track_dirty); 
+    
+    if ($track_dirty)
+    {
+        $attrs['onkeyup'] = $attrs['onchange'] = "setDirty(true)";
+    }       
+    
+    echo "<textarea ".Markup::render_attrs($attrs).">".escape($value)."</textarea>";    

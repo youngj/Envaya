@@ -1,60 +1,62 @@
 <?php
 
     /**
-     * Displays a checkbox input field
-     *
-     * @uses $vars['value'] The current value, if any
-     * @uses $vars['js'] Any Javascript to enter into the input tag
-     * @uses $vars['name'] The name of the input field
-     * @uses $vars['options'] An array of strings representing the label => options for the checkbox field
-     *
+     * A set of checkboxes
      */
 
-    $class = @$vars['class'];
-    if (!$class) $class = "input-checkboxes";
+    $name = null;           // html name attribute for input field
+    $value = null;          // html value attribute
+    $track_dirty = false;    // call setDirty when the field is changed?    
+    $after_label = false;   // true if the checkbox goes after the label, false otherwise
+    $options = null;        // associative array of value => text pairs
+    $columns = 1;           // number of columns to display the checkboxes in
+    extract($vars);
+     
+    $attrs = Markup::get_attrs($vars, array(
+        'type' => 'checkbox',
+        'class' => 'input-checkboxes',
+        'style' => null,
+        'id' => null,
+    ));
 
-    $vars['value'] = restore_input($vars['name'], @$vars['value']);
+    if ($track_dirty)
+    {
+        $attrs['onchange'] = "setDirty(true)";
+    }    
     
-    $after_label = @$vars['after_label'];
+    $value = restore_input($name, $value);          
 
-    $valIsArray = is_array($vars['value']);
-
-    if ($valIsArray)
-    {
-        $valarray = $vars['value'];
-        $valarray = array_map('strtolower', $valarray);
-    }
-    else
-    {
-        $val = strtolower($vars['value']);
-    }
+    $valIsArray = is_array($value);
 
     $checkboxes = array();
     
-    foreach($vars['options'] as $option => $label)
+    foreach ($options as $option_value => $option_text)
     {
         if ($valIsArray)
         {
-            $isSelected = in_array(strtolower($option),$valarray);
+            $isSelected = in_array($option_value, $value);
         }
         else
         {
-            $isSelected = (strtolower($option) == $val);
+            $isSelected = ($option_value == $value);
         }
 
-        $selected = ($isSelected) ? "checked = \"checked\"" : "";
-
-        $id = (isset($vars['id'])) ? "id=\"{$vars['id']}\"" : '';
-
-        $disabled = (@$vars['disabled']) ? ' disabled="yes" ' : '';
-        $js = @$vars['js'] ?: '';
-        $input = "<input type=\"checkbox\" $id $disabled {$js} name=\"{$vars['name']}[]\" value=\"".escape($option)."\" {$selected} class=\"$class\" />";
-        $content = $after_label ? escape($label).$input : $input.escape($label);
+        $option_attrs = $attrs;
+        
+        if ($isSelected)
+        {
+            $option_attrs['checked'] = 'checked';
+        }
+        $option_attrs['value'] = $option_value;
+        $option_attrs['name'] = "{$name}[]";
+               
+        $input = "<input ".Markup::render_attrs($option_attrs)." />";
+        
+        $content = $after_label ? escape($option_text).$input : $input.escape($option_text);
         
         $checkboxes[] = "<label class='optionLabel'>$content</label><br />";
     }
     
-    $columns = @$vars['columns'] ?: 1;
     if ($columns <= 1)
     {
         echo implode('',$checkboxes);

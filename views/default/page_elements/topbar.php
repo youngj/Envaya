@@ -20,7 +20,10 @@
             'id' => 'top_language',
             'options' => Language::get_options(),
             'value' => Language::get_current_code(),
-            'js' => "onchange='languageChanged()' onkeypress='languageChanged()'"
+            'attrs' => array(
+                'onchange' => 'languageChanged()',
+                'onkeypress' => 'languageChanged()',
+            )
         ));
     ?>
     </div>

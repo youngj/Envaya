@@ -4,6 +4,11 @@
         Also uses type='button' instead of type='submit', so that the enter key doesn't press it unless it is focused.
      */
      
+    $track_dirty = false;
+    $confirm = null;
+    $attrs = array();    
+    extract($vars);
+     
     if ($INCLUDE_COUNT == 0)
     {
         ob_start();
@@ -39,26 +44,23 @@ function altSubmit($id, $value)
         'value' => '',
     ));
 
-    $js = "onclick='return true ";
+    $js = "return true ";
 
-    if (@$vars['confirm'])
+    if ($confirm)
     {
-        $js .= "&& confirm(".json_encode(@$vars['confirm']).")";
+        $js .= "&& confirm(".json_encode($confirm).")";
     }
-    if (@$vars['trackDirty'])
+    if ($track_dirty)
     {
         $js .= "&& setSubmitted() ";
     }
-    $js .= "&& altSubmit(".json_encode($hidden_id).",1);'";
+    $js .= "&& altSubmit(".json_encode($hidden_id).",1);";
+    
+    $attrs['onclick'] = $js;
+    
+    $vars['name'] = "_alt_submit";
+    $vars['attrs'] = $attrs;
+    $vars['type'] = 'button'; // not 'submit' so that enter key doesn't automatically click this button
+    $vars['track_dirty'] = false;
 	    
-    echo view('input/button', array(
-        'name' => "_alt_submit",
-        'id' => @$vars['id'],
-        'js' => $js,
-        'trackDirty' => @$vars['trackDirty'],
-        'type' => 'button', // not 'submit' so that enter key doesn't automatically click this button
-        'class' => @$vars['class'] ?: "submit_button",
-        'value' => @$vars['value']
-    ));
-
-?>
+    echo view('input/button', $vars);

@@ -27,7 +27,7 @@
         array(
             'name' => 'content',
             'value' => $entity->content,
-            'trackDirty' => true
+            'track_dirty' => true
         )
     );
     

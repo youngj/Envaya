@@ -40,6 +40,16 @@ class EmailTemplate extends Entity
         return OutgoingMail::query()->where('email_guid = ?', $this->guid);
     }
     
+    function query_potential_recipients()
+    {
+        return Organization::query()
+            ->where('approval > 0')
+            ->where("email <> ''")
+            ->where('(notifications & ?) > 0', Notification::Batch)
+            ->where("not exists (select * from outgoing_mail where email_guid = ? and to_guid = users.guid)", 
+                $this->guid);        
+    }
+    
     function render($content, $user)
     {
         $args = array();

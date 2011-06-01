@@ -1,40 +1,40 @@
 <?php
-
     /**
-     * Displays a pulldown input field
-     *
-     * @uses $vars['value'] The current value, if any
-     * @uses $vars['js'] Any Javascript to enter into the input tag
-     * @uses $vars['name'] The name of the input field
-     * @uses $vars['options'] An associative array of "value" => "option" where "value" is an internal name and "option" is
-     *                               the value displayed on the button. Replaces $vars['options'] when defined.
+     * A pulldown html select box
      */
 
-    $class = @$vars['class'] ?: "input-pulldown";
-
-    $vars['value'] = restore_input(@$vars['name'], @$vars['value']);
-?>
+    $name = null;           // html name attribute for input field
+    $value = null;          // html value attribute
+    $empty_option = null;   // text for an extra option with value ''
+    $options = null;        // associative array of value => text pairs
+    extract($vars);
+     
+    $attrs = Markup::get_attrs($vars, array(
+        'class' => 'input-pulldown',
+        'name' => null,
+        'style' => null,
+        'id' => null,
+    ));
+    $value = restore_input($name, $value);     
 
+    echo "<select ".Markup::render_attrs($attrs).">";
 
-<select name="<?php echo @$vars['name']; ?>" <?php if (isset($vars['id'])) echo "id=\"{$vars['id']}\""; ?> <?php echo @$vars['js']; ?> <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> class="<?php echo $class; ?>">
-<?php
-    if (@$vars['empty_option'])
+    if ($empty_option)
     {
-        echo "<option value=''>".escape($vars['empty_option'])."</option>";
+        echo "<option value=''>".escape($empty_option)."</option>";
     }
 
-    if ($vars['options'])
+    if ($options)
     {
-        foreach($vars['options'] as $value => $option)
+        foreach ($options as $option_value => $option_text)
         {
-            if ($value != $vars['value'])
+            $option_attrs = array('value' => $option_value);                    
+            if ($option_value == $value)
             {
-                echo "<option value=\"".escape($value)."\">". escape($option) ."</option>";
-            } else {
-                echo "<option value=\"".escape($value)."\" selected=\"selected\">".escape($option)."</option>";
-            }
+                $option_attrs['selected'] = 'selected';
+            }            
+            echo "<option ".Markup::render_attrs($option_attrs).">".escape($option_text)."</option>";
         }
     }
-
 ?>
 </select>

@@ -30,18 +30,18 @@ echo strtr(__('network:approve_instructions_2'), array(
 <?php
 
     echo "<div><em>".sprintf(__('network:describe_relationship'), escape($relationship->get_subject_name()))."</em></div>";
-    echo view('input/tinymce', array('name' => 'content', 'value' => $relationship->content, 'trackDirty' => true));
+    echo view('input/tinymce', array('name' => 'content', 'value' => $relationship->content, 'track_dirty' => true));
 
     echo view('input/alt_submit', array(
         'name' => "delete_relationship",
         'id' => 'widget_delete',
-        'trackDirty' => true,
+        'track_dirty' => true,
         'value' => __('network:dont_add_button')
     ));
 
     echo view('input/submit', array(
         'name' => '_save',
-        'trackDirty' => true, 
+        'track_dirty' => true, 
         'value' => __('network:add_button'),
     ));
 

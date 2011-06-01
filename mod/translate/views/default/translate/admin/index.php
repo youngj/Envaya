@@ -24,7 +24,7 @@ function goLang()
 </script>
 <?php echo __('itrans:language_code'); ?>: 
 <?php 
-echo view('input/text', array('name' => 'code', 'js' => "style='width:50px'"));
+echo view('input/text', array('name' => 'code', 'style' => "width:50px"));
 echo view('input/submit', array('value' => __('go')));
 ?>
 </form>

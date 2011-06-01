@@ -23,7 +23,7 @@
     echo view("input/tinymce", array(
         'name' => 'content',
         'autoFocus' => true,
-        'trackDirty' => true,
+        'track_dirty' => true,
         'saveDraft' => true,
         'entity' => $widget,
         'value' => $widget->content

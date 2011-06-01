@@ -30,7 +30,7 @@ echo "<li><a href='/tr/instructions#group' target='_blank'>".__('itrans:instruct
     echo "<label>".__("itrans:filter")."</label> ";
     echo view('input/text', array(
         'name' => 'q', 
-        'js' => "style='width:150px;margin:0px'",
+        'style' => "width:150px;margin:0px",
         'value' => $query
     ));
     echo view('input/pulldown', array(
@@ -43,7 +43,7 @@ echo "<li><a href='/tr/instructions#group' target='_blank'>".__('itrans:instruct
         'value' => $status,
     ));
         
-    echo view('input/submit', array('value' => __("search"), 'js' => "style='margin:0px;padding:0px'"));
+    echo view('input/submit', array('value' => __("search"), 'style' => "margin:0px;padding:0px"));
     echo "</form>";
     
     echo "<div style='padding-bottom:5px;'>";

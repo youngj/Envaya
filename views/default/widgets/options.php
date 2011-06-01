@@ -63,7 +63,7 @@ echo view('input/radio', array(
 echo view('input/text', array(
     'name' => 'menu_order',
     'value' => $widget->menu_order,
-    'js' => 'style="width:100px"'
+    'style' => 'width:100px'
 ));
 ?>
 </div>

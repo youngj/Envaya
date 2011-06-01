@@ -1,10 +1,13 @@
 <?php    
+    $sector = null;
+    $region = null;
+    $fulltext = null;
+    $limit = 10;
+    extract($vars);
+    
     $offset = (int) get_input('offset');
 
     $query = Organization::query()->where_visible_to_user();
-    
-    $sector = @$vars['sector'];
-    $region = @$vars['region'];
     
     if ($sector)
     {
@@ -16,7 +19,6 @@
         $query->with_region($region);
     }
      
-    $fulltext = $vars['fulltext'];
     if ($fulltext)
     {
         $query->fulltext($fulltext);
@@ -26,7 +28,7 @@
         $query->order_by('name');                
     }
                 
-    $query->limit($vars['limit'] ?: 10, $offset);
+    $query->limit($limit, $offset);
        
     echo view('search/results_list', array(
         'entities' => $query->filter(),

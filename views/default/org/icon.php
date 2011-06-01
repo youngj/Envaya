@@ -1,6 +1,19 @@
 <?php
-    $org = $vars['org'];
-    $icon_props = $org->get_icon_props(@$vars['size'] ?: 'small');   
-    $alt = escape($org->name);
+    $org = null;
+    $size = 'small';
+    extract($vars);
     
-    echo "<img src='".escape($icon_props['url'])."' alt='$alt' width='".escape($icon_props['width'])."' height='".escape($icon_props['height'])."' border='0' ".(@$vars['js'])." />";
+    $icon_props = $org->get_icon_props($size);   
+
+    $attrs = Markup::get_attrs($vars, array(
+        'class' => null,
+        'id' => null,
+        'style' => null,
+        'src' => $icon_props['url'],
+        'alt' => $org->name,
+        'width' => $icon_props['width'],
+        'height' => $icon_props['height'],
+        'border' => '0',
+    ));
+    
+    echo "<img ".Markup::render_attrs($attrs)." />";

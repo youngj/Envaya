@@ -18,7 +18,7 @@
 <div>
 <?php echo __('register:city') ?> <?php echo view('input/text', array(
     'name' => 'city',
-    'js' => 'style="width:200px"',
+    'style' => 'width:200px',
     'value' => $org->city
 )) ?>, <?php echo escape($org->get_country_text()); ?>   
 </div>

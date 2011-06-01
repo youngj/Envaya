@@ -27,11 +27,11 @@ else
 }
 
 echo "<div style='padding-top:5px'><em>".sprintf(__('network:describe_relationship'), escape($relationship->get_subject_name()))."</em></div>";
-echo view('input/tinymce', array('name' => 'content', 'trackDirty' => true, 'value' => $relationship->content));
+echo view('input/tinymce', array('name' => 'content', 'track_dirty' => true, 'value' => $relationship->content));
 
     echo view('input/submit', array(
         'name' => '_save',
-        'trackDirty' => true, 
+        'track_dirty' => true, 
         'value' => __('savechanges'),
     ));
 

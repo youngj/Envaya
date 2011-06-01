@@ -1,13 +1,21 @@
 <?php
 
 	/**
-	 * Displays a file input field
-	 * 
-	 * @uses $vars['js'] Any Javascript to enter into the input tag
-	 * @uses $vars['name'] The name of the input field
-	 * 
+	 * A file input field
 	 */
-    $class = $vars['class'];
-	if (!$class) $class = "input-file";
-?>
-<input type="file" size="25" <?php echo $vars['js']; ?> name="<?php echo $vars['name']; ?>" <?php if (isset($vars['id'])) echo "id=\"{$vars['id']}\""; ?> <?php if ($vars['disabled']) echo ' disabled="yes" '; ?> class="<?php echo $class; ?>" />
+
+    $name = null;            // html name attribute for input field
+    $value = null;           // html value attribute
+    $track_dirty = false;     // call setDirty when the field is changed?    
+    extract($vars);
+    
+    $attrs = Markup::get_attrs($vars, array(
+        'type' => 'file',
+        'size' => '25',
+        'class' => 'input-file',
+        'name' => null,
+        'style' => null,
+        'id' => null,
+    ));
+    
+    echo "<input ".Markup::render_attrs($attrs)." />";    

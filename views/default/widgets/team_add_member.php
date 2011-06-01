@@ -6,8 +6,8 @@
         array(
             'name' => 'name',
             'id' => 'name',
-            'trackDirty' => true,
-            'js' => "style='width:350px'",
+            'track_dirty' => true,
+            'style' => "width:350px",
         )
     );
 ?>
@@ -20,8 +20,8 @@
         array(
             'name' => 'description',
             'id' => 'description',
-            'trackDirty' => true,
-            'js' => "style='height:60px;width:350px'",
+            'track_dirty' => true,
+            'style' => 'height:60px;width:350px',
         )
     );
 ?>
@@ -35,7 +35,7 @@
     'name' => 'image',
     'jsname' => 'teamImageUploader',
     'id' => 'image',
-    'trackDirty' => true,
+    'track_dirty' => true,
     'sizes' => array(
             'small' => '150x150',
             'large' => '450x450',

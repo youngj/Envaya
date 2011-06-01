@@ -26,7 +26,52 @@ class Markup
             '
         ), $text);
     }
-
+        
+    /* 
+     * Extracts a subset of variables from $vars, 
+     * returning a name => value mapping of attributes for a HTML element,
+     * suitable for passing to Markup::render_attrs
+     *
+     * $vars - associative array of variables (which may include non-attribute variables)
+     *    (i.e. from a view's $vars)
+     *
+     * $defaults - associative array containing required attribute names to return, with default values
+     *
+     * If $vars contains a key named 'attrs', it must be an associative array containing
+     *  additional custom attribute names and values (that are not contained in defaults).
+     */
+    static function get_attrs($vars, $defaults)
+    {        
+        $attrs = array(); // extract($vars) may overwrite this if a variable is named 'attrs'
+        
+        extract($defaults);
+        extract($vars);
+                
+        foreach ($defaults as $attr => $v)
+        {
+            if (isset($$attr)) // only return attributes with non-null values
+            {
+                $attrs[$attr] = $$attr;
+            }
+        }
+              
+        return $attrs;
+    }
+    
+    /*
+     * Renders an associative array of name => value pairs
+     * as a string of HTML attributes, escaping all values.
+     */
+    static function render_attrs($attrs)
+    {
+        $html = array();
+        foreach ($attrs as $k => $v)
+        {
+            $html[] = $k.'="'.escape($v).'"';
+        }
+        return implode(' ', $html);
+    }
+    
     static function truncate_at_word_boundary($content, $maxLength)
     {        
         // todo: multi-byte support

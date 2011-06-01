@@ -64,15 +64,15 @@ else
     if (strlen($enText) > 50 || strpos($enText, "\n") !== FALSE)
     {
        $input = "input/longtext";
-       $js = "style='height:".(30+floor(strlen($enText)/50)*25)."px'";
+       $style = "height:".(30+floor(strlen($enText)/50)*25)."px";
     }
     else
     {
         $input = "input/text";
-        $js = '';
+        $style = '';
     }
 
-    echo view($input, array('name' => 'translation', 'value' => $curText, 'js' => $js));
+    echo view($input, array('name' => 'translation', 'value' => $curText, 'style' => $style));
 }
 
 echo "<br>".
@@ -83,7 +83,7 @@ echo "<br>".
     view('input/alt_submit', array(
         'name' => "delete",
         'id' => 'widget_delete',
-        'trackDirty' => true,
+        'track_dirty' => true,
         'confirm' => __('areyousure'),
         'value' => __('delete')
     )).

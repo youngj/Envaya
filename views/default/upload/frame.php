@@ -10,7 +10,7 @@
     echo view('input/file', array(
         'name' => 'file',
         'id' => 'file',
-        'js' => "onchange='fileChanged()'"
+        'attrs' => array('onchange' => 'fileChanged()')
     ));   
 ?>
 

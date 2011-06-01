@@ -11,7 +11,7 @@
     {
         $form_body .= view('input/alt_submit', array(
             'name' => "delete",
-            'trackDirty' => true,
+            'track_dirty' => true,
             'confirm' => $is_section ? __('widget:delete_section:confirm') : __('widget:delete:confirm'),
             'id' => 'widget_delete',
             'value' => $is_section ? __('widget:delete_section') : __('widget:delete')

@@ -36,7 +36,7 @@
     echo view('admin/tinymce_email', array(
         'name' => 'content',
         'value' => $email->content,
-        'trackDirty' => true,
+        'track_dirty' => true,
         'saveDraft' => true,
         'entity' => $email,        
     ));
@@ -46,7 +46,7 @@
     echo view('input/alt_submit', array(
         'name' => "delete",
         'id' => 'widget_delete',
-        'trackDirty' => true,
+        'track_dirty' => true,
         'confirm' => __('areyousure'),
         'value' => __('delete')
     ));

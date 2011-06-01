@@ -10,7 +10,7 @@
     echo "<h3 class='withicon'>";
     echo view('input/text', array(
         'name' => 'tagline', 
-        'js' => "style='width:290px'",
+        'style' => "width:290px",
         'value' => $org->get_design_setting('tagline')
     ));
     echo "</h3>";    

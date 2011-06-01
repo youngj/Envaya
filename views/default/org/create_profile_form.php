@@ -16,7 +16,7 @@
     echo view('input/tinymce', array(
         'name' => 'mission',
         'autoFocus' => true,
-        'trackDirty' => true,        
+        'track_dirty' => true,        
         'value' => $mission->content
     )); 
 ?>
@@ -34,7 +34,7 @@
     <div style='text-align:right'>
     <?php echo __('register:sector:other_specify') ?> <?php echo view('input/text', array(
     'name' => 'sector_other',
-    'js' => 'style="width:200px"'
+    'style' => 'width:200px'
     )); ?>
     </div>
 </div>
@@ -49,7 +49,7 @@
 <td>
 <?php echo view('input/text', array(
     'name' => 'city',
-    'js' => 'style="width:200px"',
+    'style' => 'width:200px',
     'value' => $org->city
 )) ?>, <?php echo escape($org->get_country_text()); ?>
 </td>

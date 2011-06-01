@@ -32,7 +32,7 @@
         return $field;
     }    
 
-    function restore_input($name, $value, $trackDirty = false)
+    function restore_input($name, $value, $track_dirty = false)
     {
         if (isset($_POST[$name]))
         {
@@ -49,7 +49,7 @@
                 unset($prevInput[$name]);
                 Session::set('input', $prevInput);
                 
-                if ($trackDirty && $val != $value)
+                if ($track_dirty && $val != $value)
                 {
                     PageContext::set_dirty(true);
                 }

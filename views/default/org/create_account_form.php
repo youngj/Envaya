@@ -29,7 +29,7 @@
 
 <div class='input'>
 <label><?php echo __('register:org_name') ?></label><br />
-<?php echo view('input/text', array('name' => 'org_name', 'value' => $initial_name, 'trackDirty' => true)) ?>
+<?php echo view('input/text', array('name' => 'org_name', 'value' => $initial_name, 'track_dirty' => true)) ?>
 <div class='help'><?php echo __('register:org_name:help') ?></div>
 </div>
 
@@ -70,7 +70,7 @@
 <label><?php echo __('register:phone') ?></label><br />
 <?php echo view('input/text', array(
     'name' => 'phone',
-    'js' => "style='width:200px'"
+    'style' => "width:200px"
 )) ?>
 <div class='help'><?php echo __('register:phone:help') ?></div>
 <div class='help'><?php echo __('register:phone:help_2') ?></div>
@@ -82,7 +82,7 @@
 <br />
 <?php echo view('input/submit',array(
     'value' => __('register:create_button'),
-    'trackDirty' => true
+    'track_dirty' => true
 ));
 ?>
 </div>

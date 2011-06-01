@@ -1,10 +1,18 @@
 <?php
+    // parameters:
+    $saveDraft = false;
+    $entity = null;
+    $saveDraftFn = null;
+    $restoreDraftFn = null;
+    $width = null;
+    $height = null;
+    $value = null;
+    $allowDocument = $allowImage = Session::isloggedin();
+    $allowCode = Session::isadminloggedin();    
+    extract($vars);
 
-    $saveDraft = @$vars['saveDraft'];    
     if ($saveDraft)
-    {
-        $entity = @$vars['entity'];
-               
+    {              
         $lastRevision = $entity->guid ? 
             ContentRevision::query()
                 ->where('entity_guid = ?', $entity->guid)
@@ -14,21 +22,19 @@
         
         if ($lastRevision)
         {
-            $vars['value'] = $lastRevision->content;
+            $value = $lastRevision->content;
         }
                 
         echo "<script type='text/javascript'>";
         echo view('js/save_draft', array('guid' => $entity->guid));
         echo "</script>";
         
-        $vars['saveFn'] = 'saveDraft';
-        $vars['restoreDraftFn'] = 'showOlderVersions';        
+        $saveFn = 'saveDraft';
+        $restoreDraftFn = 'showOlderVersions';        
     }
 
-    $value = @$vars['value'];   
-    $name = $vars['name'];
-    $widthCSS = @$vars['width'] ? "width:{$vars['width']}px;" : '';
-    $heightCSS = @$vars['height'] ? "height:{$vars['height']}px;" : '';        
+    $widthCSS = $width ? "width:{$width}px;" : '';
+    $heightCSS = $height ? "height:{$height}px;" : '';        
     
     echo "<div class='input-textarea' style='padding-bottom:15px' id='tinymce_loading$INCLUDE_COUNT'>".__("Loading...")."</div>";
 
@@ -59,8 +65,8 @@
     echo view("input/longtext", array(
         'name' => $name,
         'id' => "content_html$INCLUDE_COUNT",
-        'trackDirty' => true,
-        'js' => "style='display:none;{$widthCSS}{$heightCSS}'",
+        'track_dirty' => true,
+        'style' => "display:none;{$widthCSS}{$heightCSS}",
         'value' => Markup::render_editor_html($value)
     ));
     
@@ -84,23 +90,24 @@ tinyMCE.init({
     mode: "exact",
     theme_advanced_buttons1 : "<?php 
         echo "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link";        
-        echo Session::isloggedin() ? ',image,document' : '';
+        if ($allowImage) { echo ',image'; }
+        if ($allowDocument) { echo ',document'; }
         echo ",|,justifyleft,justifycenter,justifyright,|,formatselect";
-        echo (@$vars['saveFn']) ? ",|,save" : "";
-        echo (@$vars['restoreDraftFn']) ? ",restoredraft" : "";
-        echo (Session::isadminloggedin()) ? ",|,code" : '';
+        if ($saveFn) { echo ",|,save"; }
+        if ($restoreDraftFn) { echo ",restoredraft"; }
+        if ($allowCode) { echo ",|,code"; }
     ?>",
     language: '',
     relative_urls: false,
     remove_script_host: false,
     elements: "content_html<?php echo $INCLUDE_COUNT ?>",
-    <?php if (@$vars['saveFn']) { ?>
-    save_draft_callback: <?php echo $vars['saveFn']; ?>,
+    <?php if ($saveFn) { ?>
+    save_draft_callback: <?php echo $saveFn; ?>,
     <?php } ?>
-    <?php if (@$vars['restoreDraftFn']) { ?>
-    restore_draft_callback: <?php echo $vars['restoreDraftFn']; ?>,
+    <?php if ($restoreDraftFn) { ?>
+    restore_draft_callback: <?php echo $restoreDraftFn; ?>,
     <?php } ?>    
-    <?php if (@$vars['autoFocus']) { ?>
+    <?php if ($autoFocus) { ?>
     auto_focus: "content_html<?php echo $INCLUDE_COUNT ?>",
     <?php } ?>
     theme: "-advanced",

@@ -1,4 +1,6 @@
 <?php
+    $vars['allowDocument'] = false;
+
     echo view('input/tinymce', $vars);
 ?>
 <script type='text/javascript'>

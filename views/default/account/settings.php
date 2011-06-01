@@ -20,7 +20,7 @@
     <th><?php echo __('user:name:label'); ?>:</th>
     <td>
         <?php
-            echo view('input/text',array('name' => 'name', 'trackDirty' => true, 'value' => $user->name));
+            echo view('input/text',array('name' => 'name', 'track_dirty' => true, 'value' => $user->name));
         ?>
     </td>
     </tr>    
@@ -31,7 +31,7 @@
             echo view('input/email',array(
                 'name' => 'email', 
                 'value' => $user->email, 
-                'trackDirty' => true,
+                'track_dirty' => true,
             ));
         ?>
         </td>
@@ -43,7 +43,7 @@
             echo view('input/text',array(
                 'name' => 'phone', 
                 'value' => $user->phone_number, 
-                'trackDirty' => true
+                'track_dirty' => true
             ));
         ?>
         </td>
@@ -93,7 +93,7 @@
             'value' => __('user:delete'))); 
     }
     
-    echo view('input/submit', array('value' => __('savechanges'), 'trackDirty' => true)); 
+    echo view('input/submit', array('value' => __('savechanges'), 'track_dirty' => true)); 
 
 ?>
 </div>

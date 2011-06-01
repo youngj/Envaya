@@ -3,8 +3,8 @@
     <?php echo view("input/text", array(
         'name' => 'title',
         'id' => 'title',
-        'js' => "maxlength='127'",
-        'trackDirty' => true,        
+        'maxlength' => '127',
+        'track_dirty' => true,        
         'value' => @$vars['value']
     )); 
     ?>

@@ -106,7 +106,7 @@ MultiImageUploader.prototype.uploadProgressHandler = function()
 
 new MultiImageUploader(<?php echo view('input/swfupload_args', array(
     'args' => array(
-        'trackDirty' => true,
+        'track_dirty' => true,
         'thumbnail_size' => 'small',
         'max_width' => 540,
         'max_height' => 1080,
@@ -124,6 +124,6 @@ new MultiImageUploader(<?php echo view('input/swfupload_args', array(
 </script>
 <div class='input'>
 <div id='submit' style='display:none'>
-<?php echo view('input/submit', array('value' => __('publish'), 'trackDirty' => true)) ?>
+<?php echo view('input/submit', array('value' => __('publish'), 'track_dirty' => true)) ?>
 </div>
 </div>

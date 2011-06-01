@@ -35,8 +35,8 @@ function sectorChanged()
     'id' => 'sectorList',
     'options' => OrgSectors::get_options(),
     'empty_option' => __('sector:empty_option'),
-    'value' => $sector,
-    'js' => "onchange='sectorChanged()' onkeypress='sectorChanged()'"
+    'value' => $sector,    
+    'attrs' => array('onchange' => 'sectorChanged()', 'onkeypress' => 'sectorChanged()'),
 ))
 ?>
 

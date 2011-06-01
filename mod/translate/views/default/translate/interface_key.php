@@ -83,17 +83,17 @@
     if (strlen($base_value) > 75 || strpos($base_value, "\n") !== FALSE)
     {
        $view = "input/longtext";
-       $js = "style='height:".(25+floor(strlen($base_value)/75)*25)."px;width:400px'";
+       $style = "height:".(25+floor(strlen($base_value)/75)*25)."px;width:400px";
     }
     else
     {
         $view = "input/text";
-        $js = 'style="width:400px"';
+        $style = 'width:400px';
     }
 
     echo view($view, array(
         'name' => 'value',
-        'js' => $js,
+        'style' => $style,
     )); 
     echo "<br />";
     $tokens = $key->get_placeholders();
@@ -166,7 +166,11 @@ function toggleAddComment()
         echo "<div id='add_comment' style='display:none'>";
         echo "<form method='POST' action='{$key->get_url()}/add_comment'>";
         echo view('input/securitytoken');
-        echo "<div>".view('input/longtext', array('id' => 'comment_content', 'name' => 'content', 'js' => "style='width:250px;height:50px'"))."</div>"; 
+        echo "<div>".view('input/longtext', array(
+            'id' => 'comment_content', 
+            'name' => 'content', 
+            'style' => "width:250px;height:50px"
+        ))."</div>"; 
         echo __('itrans:show_comment_in'). " ";
         echo view('input/pulldown', array(
             'name' => 'scope',

@@ -6,7 +6,8 @@
         array(
             'name' => $vars['name'],
             'id' => 'image_url',
-            'js' => 'onchange="updatePreview()" style="width:350px"',
+            'style' => 'width:350px',
+            'attrs' => array('onchange' => 'updatePhotoPreview()'),
             'value' => $vars['value'],
         )
     );          

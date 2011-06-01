@@ -32,7 +32,10 @@
         </td>
         <td>
         <label><?php echo amount_button('other', $last_amount); ?> Other Amount</label><br />
-        $ <?php echo view('input/text', array('name' => "_other_amount", 'js' => 'style="width:100px;margin-top:0px;"')); ?>         
+        $ <?php echo view('input/text', array(
+            'name' => "_other_amount", 
+            'style' => "width:100px;margin-top:0px;"
+        )); ?>         
         </td>
         </tr>
         </table>                
@@ -48,7 +51,7 @@
             Full name<br />
             <?php echo view('input/text', array(
                 'name' => "Name",
-                'js' => "maxlength='75'",
+                'maxlength' => 75,
             )); ?> 
         </div>
 
@@ -56,7 +59,7 @@
             Email address<br />
             <?php echo view('input/text', array(
                 'name' => "Email",
-                'js' => "maxlength='75'",
+                'maxlength' => 75,
             )); ?> 
         </div>  
         
@@ -64,7 +67,7 @@
             Phone number<br />
             <?php echo view('input/text', array(
                 'name' => "phone",
-                'js' => "maxlength='75'",
+                'maxlength' => 75,
             )); ?>
         </div>
         
@@ -72,7 +75,7 @@
             Organization <span class='help'>(optional)</span><br />
             <?php echo view('input/text', array(
                 'name' => "Organization",
-                'js' => "maxlength='75'",
+                'maxlength' => 75,
             )); ?>            
         </div>        
 
@@ -89,7 +92,7 @@
             Street address<br />
             <?php echo view('input/text', array(
                 'name' => "Address",
-                'js' => "maxlength='75'",
+                'maxlength' => 75,
             )); ?>             
         </div>        
         
@@ -97,7 +100,7 @@
             Street address <span class='help'>(optional)</span><br />
             <?php echo view('input/text', array(
                 'name' => "Address2",
-                'js' => "maxlength='75'",
+                'maxlength' => 75,
             )); ?>
 		</div>        
          
@@ -105,7 +108,7 @@
             City<br />
             <?php echo view('input/text', array(
                 'name' => "City",
-                'js' => "maxlength='75'",
+                'maxlength' => 75,
             )); ?>
         </div>                
         
@@ -116,7 +119,8 @@
                 State/Province<br />
                 <?php echo view('input/text', array(
                     'name' => "State",
-                    'js' => "maxlength='75' style='width:95px'",
+                    'maxlength' => 75,
+                    'style' => 'width:95px',
                 )); ?>                
             </div>
         </td>
@@ -125,7 +129,8 @@
                 Zip/Postal Code<br />
                 <?php echo view('input/text', array(
                     'name' => "Zip",
-                    'js' => "maxlength='75' style='width:100px'",
+                    'maxlength' => 75,
+                    'style' => 'width:100px',
                 )); ?>                                
             </div>
         </td>
@@ -136,7 +141,7 @@
             Country<br />
                 <?php echo view('input/text', array(
                     'name' => "Country",
-                    'js' => "maxlength='75'",
+                    'maxlength' => 75,
                 )); ?>                                            
         </div>       
 

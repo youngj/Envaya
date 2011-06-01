@@ -6,7 +6,12 @@
     echo "<table class='inputTable' style='margin:0 auto'>";
     echo "<tr><th>".__('discussions:subject')."</th>";
     echo "<td>";
-    echo view('input/text', array('name' => 'subject', 'trackDirty' => true, 'value' => $topic->subject, 'js' => "style='width:350px'"));
+    echo view('input/text', array(
+        'name' => 'subject', 
+        'track_dirty' => true, 
+        'value' => $topic->subject, 
+        'style' => "width:350px"
+    ));
     echo "</td>";
     echo "</tr>";
     echo "<tr><th>&nbsp;</th><td>";

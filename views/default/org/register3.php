@@ -14,7 +14,7 @@
 <br />
 <?php echo view('input/submit',array(
     'value' => __('register:homepage_button'),
-    'trackDirty' => true
+    'track_dirty' => true
 ));
 ?>
 </div>

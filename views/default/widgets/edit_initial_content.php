@@ -13,7 +13,7 @@ function saveInitialDraft()
     echo view('input/hidden', array('name' => '_draft'));    
     $vars['name'] = 'content';
     $vars['saveFn'] = 'saveInitialDraft';
-    $vars['trackDirty'] = true;    
+    $vars['track_dirty'] = true;    
     echo view('input/tinymce', $vars);
 ?>
 <span id='save_message' style='display:none;font-weight:bold;display:none;position:absolute;left:10px;top:40px;color:white;'><?php echo __('tinymce:saving'); ?></span>

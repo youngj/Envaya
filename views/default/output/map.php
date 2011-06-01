@@ -1,19 +1,23 @@
 <?php
-
-    $editPinMode = @$vars['edit'];
-    $zoom = ((int)@$vars['zoom']) ?: 10;
-    $width = @$vars['width'] ?: 460;
-    $height = @$vars['height'] ?: 280;
-    $mapType = @$vars['mapType'] ?: "G_NORMAL_MAP";
-    $nearby = @$vars['nearby'] ?: false;
-
+    $edit = false;
+    $zoom = 10;
+    $width = 460;
+    $height = 280;
+    $mapType = "G_NORMAL_MAP";
+    $nearby = false;
+    $lat = null;
+    $long = null;
+    $static = false;
+    $pin = false;
+    $sector = null;
+    extract($vars);
+    
+    
     $apiKey = Config::get('google_api_key');
-    $lat = (float)$vars['lat'];
-    $long = (float)$vars['long'];
 
-    if (!@$vars['static'])
+    if (!$static)
     {
-        if ($editPinMode && !@$vars['pin'])
+        if ($edit && !$pin)
         {
 ?>
             <div id="dropPinBtn">
@@ -37,7 +41,7 @@
     echo view('js/xhr');
 ?>  
 
-var sector = <?php echo (int)$vars['sector'] ?>;
+var sector = <?php echo (int)$sector; ?>;
 
 function setMapSector($sector)
 {
@@ -79,7 +83,7 @@ function setSavedMapState()
 
 function placeMarker($ll)
 {
-    <?php if ($editPinMode) { ?>
+    <?php if ($edit) { ?>
 
     var marker = new GMarker($ll, {draggable: true});
 
@@ -436,7 +440,7 @@ function initialize()
 
     map.setCenter(center, <?php echo $zoom; ?>);
 
-    <?php if (@$vars['pin']) { ?>
+    <?php if ($pin) { ?>
 
     placeMarker(center);
 
@@ -466,7 +470,7 @@ google.setOnLoadCallback(initialize);
 
 </script>
 
-<?php if ($editPinMode) { ?>
+<?php if ($edit) { ?>
 
 <input type="hidden" id="orgLat" name="org_lat" value="" />
 <input type="hidden" id="orgLng" name="org_lng" value="" />

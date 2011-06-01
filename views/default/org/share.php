@@ -109,8 +109,8 @@ function addPartners()
 <?php
     echo view('input/longtext', array(
         'name' => 'emails',
-        'trackDirty' => true,
-        'js' => "style='height:40px'",
+        'track_dirty' => true,
+        'style' => "height:40px",
         'value' => '',
     ));
 
@@ -130,7 +130,7 @@ function addPartners()
 <?php
     echo view('input/text', array(
         'name' => 'subject',
-        'trackDirty' => true,
+        'track_dirty' => true,
         'value' => $org->can_edit() ? strtr(__('share:subject'), array(
             '{name}' => $org->name, 
         )) : '',
@@ -144,7 +144,7 @@ function addPartners()
 <?php
     echo view('input/longtext', array(
         'name' => 'message',
-        'trackDirty' => true,
+        'track_dirty' => true,
         'value' => '',
     ));
 ?>

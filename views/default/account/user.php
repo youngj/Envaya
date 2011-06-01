@@ -9,35 +9,35 @@
         <label><?php echo __('user:name:label'); ?>:</label><br />
         <?php
 
-            echo view('input/text',array('name' => 'name', 'trackDirty' => true, 'value' => $user->name));
+            echo view('input/text',array('name' => 'name', 'track_dirty' => true, 'value' => $user->name));
         ?>
     </div>
 
     <div class='input'>
         <label><?php echo __('user:password:label'); ?>:</label><br />
         <?php
-            echo view('input/password',array('name' => 'password', 'trackDirty' => true));
+            echo view('input/password',array('name' => 'password', 'track_dirty' => true));
         ?>
         <div class='help'><?php echo __('user:password:help'); ?></div>
     </div>
     <div class='input'>
         <label>
         <?php echo __('user:password2:label'); ?>:</label><br /> <?php
-            echo view('input/password',array('name' => 'password2', 'trackDirty' => true));
+            echo view('input/password',array('name' => 'password2', 'track_dirty' => true));
         ?>
     </div>
 
     <div class='input'>
         <label><?php echo __('email'); ?>:</label><br />
         <?php
-            echo view('input/email',array('name' => 'email', 'value' => $user->email, 'trackDirty' => true));
+            echo view('input/email',array('name' => 'email', 'value' => $user->email, 'track_dirty' => true));
         ?>
     </div>
 
     <div class='input'>
         <label><?php echo __('phone_number'); ?>:</label><br />
         <?php
-            echo view('input/text',array('name' => 'phone', 'value' => $user->phone_number, 'trackDirty' => true));
+            echo view('input/text',array('name' => 'phone', 'value' => $user->phone_number, 'track_dirty' => true));
         ?>
     </div>
 
@@ -74,7 +74,7 @@
 
     <?php echo view('input/hidden', array('name' => 'from', 'value' => get_input('from'))); ?>
 
-    <?php echo view('input/submit', array('value' => __('savechanges'), 'trackDirty' => true)); ?>
+    <?php echo view('input/submit', array('value' => __('savechanges'), 'track_dirty' => true)); ?>
 
     </div>
 

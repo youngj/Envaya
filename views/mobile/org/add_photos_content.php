@@ -7,9 +7,9 @@
 </div>
 <div class='input'>
 <label><?php echo __('upload:photo:caption'); ?></label><br />
-<?php echo view('input/longtext', array('name' => 'imageCaption1', 'trackDirty' => true)) ?>
+<?php echo view('input/longtext', array('name' => 'imageCaption1', 'track_dirty' => true)) ?>
 </div>
 <div>
-<?php echo view('input/submit', array('value' => __('publish'), 'trackDirty' => true)) ?>
+<?php echo view('input/submit', array('value' => __('publish'), 'track_dirty' => true)) ?>
 </div>
 </div>

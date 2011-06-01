@@ -17,7 +17,10 @@ function updateUrl()
     'name' => 'username',
     'id' => 'username',
     'value' => @$vars['value'],
-    'js' => 'onkeyup="javascript:updateUrl()" onchange="javascript:updateUrl()"'
+    'attrs' => array(
+        'onkeyup' => 'updateUrl()',
+        'onchange' => 'updateUrl()',
+    )
 )) ?>
 <div class='help' style='font-weight:bold'><?php echo __('register:username:help') ?>
     <span class='websiteUrl'>http://envaya.org/<span id='urlUsername' style='font-weight:bold'><?php 

@@ -95,7 +95,7 @@ function getLinkInfo()
     echo "<td>";
     echo view('input/submit', array(
         'value' => __('widget:links:add'),
-        'js' => "style='margin:0px'"
+        'style' => "margin:0px"
     ));
     echo "</td>";
     echo "</tr>";

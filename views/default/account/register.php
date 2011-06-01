@@ -48,7 +48,7 @@ echo sprintf(__('register:if_org'), "<a href='/org/new?next=".urlencode($next)."
 <label><?php echo __('register:user:phone') ?></label><br />
 <?php echo view('input/text', array(
     'name' => 'phone',
-    'js' => "style='width:200px'"
+    'style' => "width:200px"
 )) ?>
 <div class='help'><?php echo __('register:phone:help') ?></div>
 <div class='help'><?php echo __('register:phone:help_2') ?></div>
@@ -60,7 +60,7 @@ echo sprintf(__('register:if_org'), "<a href='/org/new?next=".urlencode($next)."
 <br />
 <?php echo view('input/submit',array(
     'value' => __('register:create_button'),
-    'trackDirty' => true
+    'track_dirty' => true
 ));
 ?>
 </div>

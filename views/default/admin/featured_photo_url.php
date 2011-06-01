@@ -16,7 +16,7 @@ function updatePhotoPreview()
     echo view('input/text', array(
         'name' => $vars['name'], 
         'value' => $vars['value'], 
-        'js' => "onchange='updatePhotoPreview()'",
+        'attrs' => array('onchange' => 'updatePhotoPreview()'),
     ));     
 
     echo view('input/swfupload', array(

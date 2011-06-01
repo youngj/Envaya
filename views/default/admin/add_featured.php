@@ -26,7 +26,7 @@
         array(
             'name' => 'content',
             'value' => $homeWidget->content,
-            'trackDirty' => true
+            'track_dirty' => true
         )
     );
 ?>

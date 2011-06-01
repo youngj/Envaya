@@ -39,7 +39,7 @@ addEvent(widgetName, 'keypress', function() {
 
 <?php 
     echo view('widgets/edit_initial_content');
-    echo view('input/submit', array('trackDirty' => true, 'value' => __('widget:create'))); ?>
+    echo view('input/submit', array('track_dirty' => true, 'value' => __('widget:create'))); ?>
 
 </form>
 </div>

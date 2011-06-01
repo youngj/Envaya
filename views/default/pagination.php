@@ -1,46 +1,26 @@
 <?php
+    $offset = 0;
+    $limit = 10;    
+    $pagesShown = 12;
+    $count = 0;
+    $word = 'offset';
+    $baseurl = $_SERVER['REQUEST_URI'];
+    extract($vars);
 
-    if (!isset($vars['offset'])) {
-        $offset = 0;
-    } else {
-        $offset = (int)$vars['offset'];
-    }
-
-    $pagesShown = @$vars['pagesShown'] ?: 12;
+    $offset = (int)$offset;
+    $limit = (int)$limit;
+    $count = (int)$count;
+    
     $pagesEdge = ceil($pagesShown/3);
     $pagesCenter = ceil($pagesShown/6);
 
-    if ((!isset($vars['limit'])) || (!$vars['limit'])) {
-        $limit = 10;
-    } else {
-        $limit = (int)$vars['limit'];
-    }
-    if (!isset($vars['count'])) {
-        $count = 0;
-    } else {
-        $count = (int)$vars['count'];
-    }
-    if (!isset($vars['word'])) {
-        $word = "offset";
-    } else {
-        $word = $vars['word'];
-    }
-    if (isset($vars['nonefound'])) {
-        $nonefound = $vars['nonefound'];
-    } else {
-        $nonefound = true;
-    }
-
     $totalpages = ceil($count / $limit);
     $currentpage = ceil($offset / $limit) + 1;
-
-    $baseurl = @$vars['baseurl'] ?: $_SERVER['REQUEST_URI'];
         
     //only display if there is content to paginate through or if we already have an offset
     if ($count > $limit || $offset > 0) {
 
 ?>
-
 <div class="pagination">
 <?php
 

@@ -11,7 +11,7 @@ ob_start();
     <label><?php echo __('widget:contact:email:edit') ?></label><br />
 <?php echo view("input/text", array('name' => 'email',
     'value' => $org->email,
-    'js' => "style='width:250px'"
+    'style' => 'width:250px'
 ));
 
 echo view("input/checkboxes", array('name' => 'public_email',
@@ -28,7 +28,7 @@ echo view("input/checkboxes", array('name' => 'public_email',
     <div class='help'><?php echo __('register:phone:help_2') ?></div>
 <?php echo view("input/text", array('name' => 'phone_number',
     'value' => $org->phone_number,
-    'js' => "style='width:250px'"
+    'style' => 'width:250px'
 ));
 
 echo view("input/checkboxes", array('name' => 'public_phone',
@@ -46,8 +46,8 @@ echo view("input/checkboxes", array('name' => 'public_phone',
 <?php echo view("input/longtext", array(
     'name' => 'street_address',
     'value' => $org->get_metadata('street_address'),
-    'trackDirty' => true,
-    'js' => 'style="height:50px"'
+    'track_dirty' => true,
+    'style' => 'height:50px'
 ));
 ?>
 </div>
@@ -56,9 +56,9 @@ echo view("input/checkboxes", array('name' => 'public_phone',
     <label><?php echo __('widget:contact:mailing_address:edit') ?></label><br />
 <?php echo view("input/longtext", array(
     'name' => 'mailing_address',
-    'trackDirty' => true,
+    'track_dirty' => true,
     'value' => $org->get_metadata('mailing_address'),
-    'js' => 'style="height:50px"'
+    'style' => 'height:50px'
 ));
 ?>
 </div>

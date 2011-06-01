@@ -1,26 +1,34 @@
 <?php
 
 	/**
-	 * Displays a password input field
-	 * 
-	 * @uses $vars['value'] The current value, if any
-	 * @uses $vars['js'] Any Javascript to enter into the input tag
-	 * @uses $vars['name'] The name of the input field
-	 * 
+	 * A password input field
 	 */
 
-	$class = @$vars['class'] ?: "input-password";
-
-    $setDirty = (@$vars['trackDirty']) ? " onchange='setDirty(true)'" : "";
+    $name = null;            // html name attribute for input field
+    $value = null;           // html value attribute
+    $track_dirty = false;     // call setDirty when the field is changed?    
+    extract($vars);
     
-    $value = restore_input($vars['name'], @$vars['value'], @$vars['trackDirty']); 
+    $attrs = Markup::get_attrs($vars, array(
+        'type' => 'password',
+        'class' => 'input-password',
+        'name' => null,
+        'style' => null,
+        'id' => null,
+    ));
+
+    $attrs['value'] = restore_input($name, $value, $track_dirty); 
+
+    if ($track_dirty)
+    {
+        $attrs['onkeyup'] = $attrs['onchange'] = "setDirty(true)";
+    }               
     
     if (!$INCLUDE_COUNT)
     {
 ?>
 
 <script type='text/javascript'>
-<!--
 function checkCapslock(e, warningId) {
     var ev = e || window.event;
     if (ev) {
@@ -38,21 +46,18 @@ function checkCapslock(e, warningId) {
         }
     }
 } 
-// -->
 </script>
 
 <?php
     }
     
     $warningId = "capslockWarning$INCLUDE_COUNT";
-    $js = @$vars['js'] ?: '';
-    $js .= " onkeypress='checkCapslock(event,\"$warningId\")'";
-
+    $attrs['onkeypress'] = "checkCapslock(event,'$warningId')";
+    
+    echo "<input ".Markup::render_attrs($attrs)." />";
 ?>
 
-<input type="password" <?php if (@$vars['disabled']) echo ' disabled="yes" '; ?> <?php echo $js, $setDirty; ?> name="<?php echo $vars['name']; ?>" <?php if (isset($vars['id'])) echo "id=\"{$vars['id']}\""; ?> value="<?php echo escape($value); ?>" class="<?php echo $class; ?>" /><span class='capslockWarning' id='<?php echo $warningId ?>' style='display:none'></span>
+<span class='capslockWarning' id='<?php echo $warningId ?>' style='display:none'></span>
 <script type='text/javascript'>
-<!--
 $('<?php echo $warningId; ?>').innerHTML = <?php echo json_encode(__('capslock_warning')); ?>;
-// -->
 </script>

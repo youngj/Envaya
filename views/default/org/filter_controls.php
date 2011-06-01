@@ -24,7 +24,11 @@ echo view('input/pulldown', array(
     'options' => OrgSectors::get_options(),
     'empty_option' => __('sector:empty_option'),
     'value' => get_input('sector'),
-    'js' => "onchange='filterChanged()' onkeypress='filterChanged()' style='margin-bottom:5px'"
+    'style' => 'margin-bottom:5px',
+    'attrs' => array(
+        'onchange' => 'filterChanged()', 
+        'onkeypress' => 'filterChanged()'
+    )
 ));
 
 echo view('input/pulldown', array(
@@ -33,7 +37,11 @@ echo view('input/pulldown', array(
     'options' => Geography::get_region_options('tz'),
     'empty_option' => __('region:empty_option'),
     'value' => get_input('region'),
-    'js' => "onchange='filterChanged()' onkeypress='filterChanged()'  style='margin-bottom:5px'"
+    'style' => 'margin-bottom:5px',
+    'attrs' => array(
+        'onchange' => 'filterChanged()', 
+        'onkeypress' => 'filterChanged()'
+    )
 ));
     
 ?>

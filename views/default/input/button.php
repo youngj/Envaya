@@ -1,23 +1,25 @@
 <?php
     /**
-     * Create a input button
-     *
-     * @uses $vars['value'] The current value, if any
-     * @uses $vars['js'] Any Javascript to enter into the input tag
-     * @uses $vars['name'] The name of the input field
-     * @uses $vars['type'] Submit or reset, defaults to submit.
-     * @uses $vars['src'] Src of an image
-     *
+     * An input button, by default a submit button
      */
 
-    $class = (isset($vars['class'])) ? $vars['class'] : "submit_button";
-
-    $type = @$vars['type'] ?: 'submit';
-
-    $value = escape(@$vars['value']);
-    $name = @$vars['name'];
-    $src = (isset($vars['src'])) ? "src=\"{$vars['src']}\"" : '';
-
-    $setDirty = (@$vars['trackDirty']) ? " onclick='setSubmitted()'" : "";
-?>
-<button name="<?php echo $name; ?>" <?php if (isset($vars['id'])) echo "id=\"{$vars['id']}\""; ?> type="<?php echo $type; ?>" class="<?php echo $class; ?>" <?php echo @$vars['js'], $setDirty; ?> value='1' <?php echo $src; ?> ><div><span><?php echo $value; ?></span></div></button>
+    $value = null;
+    $track_dirty = false;
+    extract($vars);
+     
+    $attrs = Markup::get_attrs($vars, array(
+        'class' => 'submit_button',
+        'type' => 'submit',
+        'name' => null,
+        'style' => null,
+        'id' => null,
+        'value' => '1'
+    ));    
+        
+    if ($track_dirty && !isset($attrs['onclick']))
+    {
+        $attrs['onclick'] = 'setSubmitted()';
+    }
+    
+    echo "<button ".Markup::render_attrs($attrs)."><div><span>".escape($value)."</span></div></button>";
+    

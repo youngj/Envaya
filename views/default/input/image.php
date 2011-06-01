@@ -7,7 +7,7 @@
     
     $imageInput = view('input/swfupload_image', array(
         'name' => $vars['name'],
-        'trackDirty' => @$vars['trackDirty'],
+        'track_dirty' => @$vars['track_dirty'],
         'thumbnail_size' => $vars['thumbnail_size'],
         'sizes' => $vars['sizes']
     ));      
@@ -30,7 +30,6 @@
             array('name' => $deletename,
                 'id' => $deleteid,
                 'options' => array(__('upload:image:delete')),
-                'js' => $vars['js']
             )) ?>
             </div>
         <?php } ?>    

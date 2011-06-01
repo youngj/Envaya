@@ -3,8 +3,9 @@
     <?php echo view("input/text", array(
         'name' => 'title',
         'id' => 'title',
-        'js' => "style='width:170px' maxlength='22'",
-        'trackDirty' => true,        
+        'style' => "width:170px",
+        'maxlength' => '22',
+        'track_dirty' => true,        
         'value' => @$vars['value']
     )); 
     

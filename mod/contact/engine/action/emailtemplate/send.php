@@ -25,8 +25,21 @@ class Action_EmailTemplate_Send extends Action
         }
         $email->update();
         
-        SessionMessages::add("sent $numSent emails");
-        $this->redirect(get_input('from') ?: "{$email->get_url()}/send");
+        SessionMessages::add("Queued $numSent emails for delivery.");
+                
+        $from = get_input('from');
+        if ($from)
+        {
+            $this->redirect($from);
+        }
+        else if ($email->query_potential_recipients()->is_empty())
+        {
+            $this->redirect($email->get_url());        
+        }
+        else
+        {
+            $this->redirect("{$email->get_url()}/send");
+        }
     }
 
     function render()
@@ -40,16 +53,12 @@ class Action_EmailTemplate_Send extends Action
         }
         else
         {         
-            $orgs = Organization::query()
-                ->where('approval > 0')
-                ->where("email <> ''")
-                ->where('(notifications & ?) > 0', Notification::Batch)
-                ->where("not exists (select * from outgoing_mail where email_guid = ? and to_guid = users.guid)", $email->guid)
-                ->order_by('guid')
-                ->limit(50)
+            $orgs = $email->query_potential_recipients()
+                ->order_by('name')
+                ->limit(Config::get('contact:max_recipients'))
                 ->filter(); 
         }
-
+        
         PageContext::get_submenu('edit')->add_item(__('cancel'), get_input('from') ?: $email->get_url());
         
         $this->page_draw(array(

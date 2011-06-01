@@ -1,31 +1,23 @@
 <?php
-
     /**
-     * A link that executes a POST request
-     *
-     * @uses $vars['text'] The text of the link
-     * @uses $vars['href'] The address
-     * @uses $vars['confirm'] The dialog text
-     *
+     * A link that executes a POST request     
      */
 
-    $confirm = @$vars['confirm'] ?:__('areyousure');
-    
-    if (isset($vars['class'])) 
+    $confirm = __('areyousure');
+    $href = '';
+    $html = null;       // HTML content of link
+    $text = null;       // text content of link (set either 'html' or 'text')
+    extract($vars);
+         
+    $attrs = Markup::get_attrs($vars, array(
+        'class' => null,
+        'style' => null,
+        'id' => null,
+    ));        
+        
+    if ($confirm)
     {
-        $class = 'class="' . $vars['class'] . '"';
-    } 
-    else 
-    {
-        $class = '';
-    }
-    
-    $js = isset($vars['js']) ? $vars['js'] : '';
-    
-    $onclick = '';
-    if (@$vars['confirm'])
-    {
-        $onclick = "onclick='return confirm(".json_encode($confirm).");'";
+        $attrs['onclick'] = "return confirm(".json_encode($confirm).");";
     }
     
     if ($INCLUDE_COUNT == 0)
@@ -35,15 +27,15 @@
 
     $ts = time();
     $token = generate_security_token($ts);
-    $link = "javascript:postLink(".json_encode($vars['href']).", ".json_encode($ts).", ".json_encode($token).");";      
     
-    if (isset($vars['html']))
+    $attrs['href'] = "javascript:postLink("
+        .json_encode($href).", "
+        .json_encode($ts).", "
+        .json_encode($token).");";          
+    
+    if (!isset($html))
     {
-        $html = $vars['html'];
-    }
-    else
-    {
-        $html = escape($vars['text']);
+        $html = escape($text);
     }
     
-    echo "<a href='{$link}' {$js} {$class} {$onclick}>{$html}</a>";
+    echo "<a ".Markup::render_attrs($attrs).">{$html}</a>";

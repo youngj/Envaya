@@ -19,7 +19,7 @@
 echo view("input/image",
     array(
         'current' => $org->get_icon('medium'),
-        'trackDirty' => true,
+        'track_dirty' => true,
         'sizes' => User::get_icon_sizes(),
         'removable' => $org->has_custom_icon(),
         'thumbnail_size' => 'medium',
@@ -32,7 +32,7 @@ echo view("input/image",
 <?php
 echo view('input/submit',array(
     'value' => __('savechanges'),
-    'trackDirty' => true,
+    'track_dirty' => true,
 ));
 
 ?>
@@ -83,7 +83,10 @@ function customHeaderChanged()
     echo view('input/radio', array(
         'name' => 'custom_header',
         'value' => $custom_header ? '1' : '0',
-        'js' => "onchange='customHeaderChanged()' onclick='customHeaderChanged()'",
+        'attrs' => array(
+            'onchange' => 'customHeaderChanged()', 
+            'onclick' => 'customHeaderChanged()'
+        ),        
         'options' => array(
             '0' => __('design:header:default'),
             '1' => __('design:header:custom'),
@@ -124,7 +127,7 @@ function customHeaderChanged()
 
     echo view("input/swfupload_image",
         array(
-            'trackDirty' => true,
+            'track_dirty' => true,
             'sizes' => array('large' => '700x150',),
             'thumbnail_size' => 'large',
             'name' => 'header_image',
@@ -140,7 +143,7 @@ function customHeaderChanged()
 <?php
 echo view('input/submit',array(
     'value' => __('savechanges'),
-    'trackDirty' => true,
+    'track_dirty' => true,
 ));
 
 ?>
@@ -162,7 +165,7 @@ echo view('input/hidden', array('name' => 'guid', 'value' => $org->guid));
 
 echo view('input/submit',array(
     'value' => __('savechanges'),
-    'trackDirty' => true,
+    'track_dirty' => true,
 ));
 ?>
 </div>

@@ -6,7 +6,7 @@
 <?php
     echo view('input/longtext', array(
         'name' => 'message',
-        'trackDirty' => true,
+        'track_dirty' => true,
     ));
 ?>
 </div>

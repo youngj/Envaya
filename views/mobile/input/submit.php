@@ -1,14 +1,14 @@
 <?php
 	/**
-	 * Create a submit input button	 
-	 * 
-	 * @uses $vars['value'] The current value, if any
-	 * @uses $vars['js'] Any Javascript to enter into the input tag
-	 * @uses $vars['name'] The name of the input field
-	 * @uses $vars['type'] Submit or reset, defaults to submit.
-	 * 
+	 * A submit input button, using an input type='submit' instead of a submit element
 	 */
 
-    $vars['class'] = (isset($vars['class'])) ? $vars['class'] : "submit_button";
-?>
-<input type='submit' name="<?php echo @$vars['name']; ?>" <?php if (isset($vars['id'])) echo "id=\"{$vars['id']}\""; ?> class="<?php echo $class; ?>" <?php echo @$vars['js']; ?> value='<?php echo escape(@$vars['value']) ?>' />
+    $attrs = Markup::get_attrs($vars, array(
+        'class' => 'submit_button',
+        'type' => 'submit',
+        'name' => null,
+        'style' => null,
+        'id' => null,
+        'value' => null
+    ));    
+    echo "<input ".Markup::render_attrs($attrs)." />";

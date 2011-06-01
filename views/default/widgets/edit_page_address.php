@@ -8,7 +8,7 @@
     'name' => 'widget_name', 
     'id' => 'widget_name', 
     'value' => @$vars['value'],
-    'js' => "style='width:200px'"
+    'style' => "width:200px"
 )); 
 ?>
 </div>

@@ -1279,7 +1279,7 @@ FileUploader.prototype.startUpload = function($file)
         
 FileUploader.prototype.uploadSuccessHandler = function($file, $serverData)
 {
-    if (this.options.trackDirty)
+    if (this.options.track_dirty)
     {
         setDirty(true);
     }
