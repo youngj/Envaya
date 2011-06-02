@@ -7,9 +7,12 @@
 ?>
 <form action='/pg/email_settings' method='POST'>
 
+
 <div class='input'>
 
 <?php
+    echo view('input/securitytoken');
+
     echo view('input/hidden', array(
         'name' => 'email',
         'value' => $email

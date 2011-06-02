@@ -68,7 +68,7 @@ class Action_Settings extends Action
         }
 
         $user->save();
-        $this->redirect($user->get_url());
+        $this->redirect(get_input('from') ?: $user->get_url());
     }
 
     function render()

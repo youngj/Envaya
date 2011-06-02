@@ -127,6 +127,20 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     {
         return $this->retry('_getLastEmail', array($match));
     }
+    
+    public function assertNoEmail($match = "Subject")
+    {
+        try
+        {
+            $this->_getLastEmail($match);
+        }
+        catch (Exception $ex) 
+        {
+            return;
+        }
+    
+        throw new Exception("Found matching email for $match");
+    }
 
     public function _getLastEmail($match = "Subject")
     {

@@ -13,7 +13,7 @@
     {
         ob_start();
         
-        echo "<div style='padding:3px'>";
+        echo "<div class='email_item' style='padding:3px'>";
         
         echo "<div style='float:right'>";
         
