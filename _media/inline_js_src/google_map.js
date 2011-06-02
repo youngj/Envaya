@@ -1,6 +1,11 @@
+
+/*
+ * Loads markers for organizations on a google map. 
+ * Nearby organizations are grouped into buckets
+ */
 MapLoader = function(fetchURLFn)
 {
-    this.bucketSize = 20;    
+    this.bucketSize = 20; // pixel width/height for each bucket   
     this._fetchURLFn = fetchURLFn;
     
     this.displayedBuckets = {};
@@ -174,6 +179,9 @@ DivOverlay = function(div)
 
 DivOverlay.prototype = new google.maps.OverlayView();
 
+/*
+ * An overlay which shows a "Loading..." message when fetching data from the server.
+ */
 LoadingOverlay = function()
 {
     this._div = createElem('div', {id:'loadingOverlay'}, __('loading'));
@@ -196,6 +204,10 @@ LoadingOverlay = function()
 
 LoadingOverlay.prototype = new DivOverlay();
 
+/*
+ * An overlay which shows a list of organizations in the selected bucket,
+ * linking to their home page.
+ */
 InfoOverlay = function()
 {
     this._div = createElem('div', {id:'infoOverlay'});        
@@ -227,13 +239,6 @@ InfoOverlay = function()
         this._div.appendChild(div);
         
         var $orgInnerDiv = createElem('div');
-        div.appendChild($orgInnerDiv);
-
-        for (var $i = 0; $i < orgs.length; $i++)
-        {
-            $orgInnerDiv.appendChild(this._makeOrgLink(orgs[$i]));
-            $orgInnerDiv.appendChild(createElem('br'));
-        }
 
         if (orgs.length > 8)
         {
@@ -247,6 +252,14 @@ InfoOverlay = function()
             $orgInnerDiv.style.textOverflow = 'ellipsis';
             $orgInnerDiv.style.whiteSpace = 'nowrap';
             $orgInnerDiv.style.width = '380px';
+        }        
+                
+        div.appendChild($orgInnerDiv);
+
+        for (var $i = 0; $i < orgs.length; $i++)
+        {
+            $orgInnerDiv.appendChild(this._makeOrgLink(orgs[$i]));
+            $orgInnerDiv.appendChild(createElem('br'));
         }
         
         this.draw();
@@ -270,7 +283,8 @@ InfoOverlay = function()
             $div.appendChild(createElem('a', {
                 href:'javascript:void(0)',
                 click: function() {
-                    map.setCenter(center, Math.min($curZoom + 3, $maxZoom));
+                    map.setCenter(center);
+                    map.setZoom(Math.min($curZoom + 3, $maxZoom));
                 }
             }, __('map:zoom_in')));
         }
@@ -301,6 +315,11 @@ InfoOverlay = function()
 
 InfoOverlay.prototype = new DivOverlay();
 
+/*
+ * An overlay which acts as a marker at a given location, showing the number
+ * of organizations in that bucket. Clicking the marker will show the InfoOverlay
+ * listing organizations in the bucket.
+ */
 OrgBucket = function($center)
 {
     this.center = $center;

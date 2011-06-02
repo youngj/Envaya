@@ -55,7 +55,7 @@ class EnvayaSiteTest extends SeleniumTest
         sleep(1);
         $this->mustNotExist("//div[@class='mapMarker']");
         
-        $this->click("//div[@title='Pan left']");
+        $this->retry('click', array("//div[@title='Pan left']"));
         sleep(1);
         $this->mustNotExist("//div[@class='mapMarker']");
         
@@ -67,7 +67,7 @@ class EnvayaSiteTest extends SeleniumTest
         sleep(1);
         $this->mustNotExist("//div[@class='mapMarker']");
         
-        $this->click("//div[@title='Zoom Out']");        
+        $this->retry('click', array("//div[@title='Zoom out']"));        
         $this->waitForMapMarker();        
         
         $this->assertTrue($this->isVisible("//div[@class='mapMarker']"));
@@ -83,10 +83,10 @@ class EnvayaSiteTest extends SeleniumTest
         // test map updates when changing sector
         $this->select("//select[@id='sectorList']","Health");
         sleep(1);
-        $this->assertFalse($this->isVisible("//div[@class='mapMarker']"));
+        $this->mustNotExist("//div[@class='mapMarker']");
         
         $this->select("//select[@id='sectorList']","Education");
-        $this->retry('mouseOver', array("//div[@class='mapMarker'][2]"));                
+        $this->retry('mouseOver', array("//div[@class='mapMarker']"));                
     }    
     
     private function waitForMapMarker()
