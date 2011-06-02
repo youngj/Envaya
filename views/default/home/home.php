@@ -1,6 +1,6 @@
 <?php
     $region = GeoIP::get_world_region();
-    $is_africa = ($region == GeoIP::Africa);
+    $is_africa = ($region == Geography::Africa);
     $is_supported = GeoIP::is_supported_country();
     
     $defaultPhoto = "/_graphics/home/banner_planting5.jpg";

@@ -2,6 +2,10 @@
 
 class Geography
 {
+    // world regions
+    const Africa = 1;
+    const Unknown = 9;
+
     /**
      * Interface for Google's geocode API, associating free-text place names with latitude/longitude.
      * 
@@ -80,10 +84,8 @@ class Geography
         $pin = false;
         extract($vars);
         
-        $api_key = Config::get('google_api_key');
-        
         $url = "http://maps.google.com/maps/api/staticmap?center={$lat},{$long}&zoom={$zoom}"
-            ."&size={$width}x{$height}&maptype=roadmap&sensor=false&key={$api_key}";
+            ."&size={$width}x{$height}&maptype=roadmap&sensor=false";
         
         if ($pin)
         {
@@ -194,4 +196,25 @@ class Geography
         asort($res);
         return $res;
     }
+    
+    static function get_world_region($country_code)
+    {
+        if (preg_match('/^(d[zj]|ao|b[jwfi]|c[mvfdgi]|t[dzn]|k[me]|e[grth]|g[qamhnw]|l[sry]|m[gwlruaz]|n[aeg]|rw|s[nlodz]|z[amw]|ug)$/', $country_code))
+        {
+            return static::Africa;            
+        }
+        return static::Unknown;
+    }    
+    
+    static function get_country_name($country_code)
+    {
+        $lang_key = "country:{$country_code}";
+        
+        $name = __($lang_key);
+        if ($name != $lang_key)
+        {            
+            return $name;
+        }
+        return null;
+    }    
 }

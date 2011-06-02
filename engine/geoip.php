@@ -6,10 +6,6 @@
  */
 class GeoIP
 {
-    // world regions
-    const Africa = 1;
-    const Unknown = 9;
-
     static $country_code;
 
     static function get_country_code()
@@ -38,10 +34,9 @@ class GeoIP
     {
         if (!static::$country_name)
         {
-            $lang_key = "country:".static::get_country_code();        
+            $name = Geography::get_country_name(static::get_country_code());
             
-            $name = __($lang_key);
-            if ($name != $lang_key)
+            if ($name)
             {            
                 static::$country_name = $name;
             }
@@ -57,15 +52,9 @@ class GeoIP
     {
         return Geography::is_supported_country(static::get_country_code());
     }
-    
+
     static function get_world_region()
     {
-        $country_code = static::get_country_code();
-        
-        if (preg_match('/^(d[zj]|ao|b[jwfi]|c[mvfdgi]|t[dzn]|k[me]|e[grth]|g[qamhnw]|l[sry]|m[gwlruaz]|n[aeg]|rw|s[nlodz]|z[amw]|ug)$/', $country_code))
-        {
-            return static::Africa;            
-        }
-        return static::Unknown;
+        return Geography::get_world_region(static::get_country_code());
     }
 }
