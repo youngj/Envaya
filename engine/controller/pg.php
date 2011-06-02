@@ -350,8 +350,23 @@ class Controller_Pg extends Controller
      */
     function action_css()
     {
+        $name = get_input('name');
+        
+        if (preg_match('/[^\w]/', $name))
+        {
+            throw new NotFoundException();
+        }
+        try
+        {
+            $css = view('css/'.($name ?: 'default'));
+        }
+        catch (InvalidParameterException $ex)
+        {
+            throw new NotFoundException();
+        }
+        
         $this->set_content_type('text/css');        
-        $this->set_response(view('css/'.(@$_GET['name'] ?: 'default')));
+        $this->set_response($css);
     }
 }
 
