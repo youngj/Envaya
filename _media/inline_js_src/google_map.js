@@ -187,18 +187,24 @@ LoadingOverlay = function()
     this._div = createElem('div', {id:'loadingOverlay'}, __('loading'));
     this._width = 0;
     this.hide();
-        
+    
+    this.onAdd = function()
+    {
+        // add to document body so that it doesn't move as the map is scrolled
+        document.body.appendChild(this._div);
+    };    
+                
     this.draw = function()
     {
-        var container = this.getMap().getDiv();
+        var mapElem = this.getMap().getDiv();
         
         if (this._width == 0)
         {
             this._width = this._div.offsetWidth;
         }
         
-        this._div.style.left = (container.offsetWidth - this._width - 10) + "px";
-        this._div.style.top = "30px";    
+        this._div.style.left = (mapElem.offsetLeft + mapElem.offsetWidth - this._width - 5) + "px";
+        this._div.style.top = (mapElem.offsetTop + 5) + "px";
     };
 };
 
@@ -217,7 +223,6 @@ InfoOverlay = function()
     this.onAdd = function()
     {
         // add to document body, not map pane, because info overlay may extend beyond map pane
-        var mapElem = this.getMap().getDiv();
         document.body.appendChild(this._div);
     };    
     
@@ -306,7 +311,8 @@ InfoOverlay = function()
         {
             var mapElem = this.getMap().getDiv();
             var proj = this.getProjection();
-            var point = proj.fromLatLngToDivPixel(this.bucket.center);
+            var point = proj.fromLatLngToContainerPixel(this.bucket.center);
+            
             this._div.style.left = (mapElem.offsetLeft + point.x + 13) + "px";
             this._div.style.top = (mapElem.offsetTop + point.y - 12) + "px";
         }
