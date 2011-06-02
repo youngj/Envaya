@@ -55,7 +55,7 @@ class GeoIP
     
     static function is_supported_country()
     {
-        return static::get_country_code() == 'tz';
+        return Geography::is_supported_country(static::get_country_code());
     }
     
     static function get_world_region()

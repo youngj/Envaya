@@ -23,7 +23,7 @@ return array(
     'register:country' => 'Shirika lako linafanya kazi nchi gani?',
     'register:click_to_continue' => 'Bonyeza kitufe hapo chini kuendelea.',
     'register:next_step' => 'Hatua ifuatayo',
-    'register:wrong_country' => 'Samahani, katika mradi wa jaribio wa Envaya, mashirika kutoka Tanzania tu yanaweza kujiandikisha. Tunatumaini kufikisha Envaya katika nchi nyingine miaka ijayo.',
+    'register:wrong_country' => 'Samahani, kwa sasa, mashirika nchini Tanzania tu yanaweza kujiandikisha kwenye Enaya. Tunatumaini kufikisha Envaya katika nchi nyingine hivi karibuni.',
     'register:wrong_org_type' => 'Samahani, kwa sasa Envaya inakusudiwa kwa mashirika ya jumuiya ya kiraia tu.',
     'register:qualify_missing' => 'Taarifa ya ustahiki imepotea. Tafadhali maliza fomu ya ustahiki tena.',
     'register:qualify_ok' => 'Hongera! Shirika lako linaonekana kustahiki kupata tovuti katika Envaya.',    

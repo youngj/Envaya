@@ -93,8 +93,12 @@ class Geography
         return $url;
     }
 
+    static function is_supported_country($country_code)
+    {
+        return in_array($country_code, static::get_supported_countries());
+    }
     
-    static function get_approved_countries()
+    static function get_supported_countries()
     {
         return array('tz','lr','rw');
     }

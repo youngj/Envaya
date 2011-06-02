@@ -85,8 +85,8 @@ class Controller_Org extends Controller
                 else
                 { 
                     // bias geocode result to default country
-                    $approved_countries = Geography::get_approved_countries();
-                    $region = $approved_countries[0];
+                    $country_codes = Geography::get_supported_countries();
+                    $region = $country_codes[0];
                 }
             
                 $latlong = Geography::geocode($q, $region);

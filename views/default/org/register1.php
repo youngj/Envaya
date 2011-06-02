@@ -1,15 +1,11 @@
 <?php
-        $approvedCountries = Geography::get_approved_countries();
-
         $testing_country = get_input('testing_country');
 
-        if (!empty($testing_country) && !in_array($testing_country, $approvedCountries))
+        if (!empty($testing_country) && !Geography::is_supported_country($testing_country))
         {
             throw new ValidationException(__("register:wrong_country"));
         }
 ?>
-
-
 <?php echo view("org/register_progress", array('current' => 1)) ?>
 
 <div class='padded'>

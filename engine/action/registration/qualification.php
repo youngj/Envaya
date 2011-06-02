@@ -4,11 +4,9 @@ class Action_Registration_Qualification extends Action
 {
     function process_input()
     {            
-        $approvedCountries = Geography::get_approved_countries();
-
         $country = get_input('country');
 
-        if (!in_array($country, $approvedCountries))
+        if (!Geography::is_supported_country($country))
         {
             throw new ValidationException(__("register:wrong_country"));
         }
