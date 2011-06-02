@@ -1,5 +1,5 @@
 <?php
 
 return array(
-    'thumbnail' => '/_graphics/red/thumbnail.png',
+    'thumbnail' => '/_media/images/red/thumbnail.png',
 );

@@ -372,7 +372,7 @@ var $proto = function() {
 
         if (this.orgs.length > 1)
         {
-            $img.src = "/_graphics/placemark_n.gif";
+            $img.src = "/_media/images/placemark_n.gif";
 
             $div.appendChild(
                 createElem('span', {className:'mapMarkerCount', innerHTML: "" + this.orgs.length})
@@ -380,7 +380,7 @@ var $proto = function() {
         }
         else
         {
-            $img.src = "/_graphics/placemark.gif";
+            $img.src = "/_media/images/placemark.gif";
         }
 
         $div.appendChild($img);            

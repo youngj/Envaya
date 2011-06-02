@@ -5,7 +5,7 @@
     echo view('css/snippets/site_menu_top', $vars);
     echo view('css/snippets/content_margin', $vars);
     echo view('css/snippets/beige_content', $vars);
-    $graphicsDir = "/_graphics/cotton";
+    $graphicsDir = "/_media/images/cotton";
 ?>
 
 body { color:#fff; background:#d0b66b url("<?php echo $graphicsDir; ?>/cotton-bg.jpg") repeat left top; }

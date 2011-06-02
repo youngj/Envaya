@@ -5,7 +5,7 @@
     echo view('css/snippets/site_menu_top', $vars);
     echo view('css/snippets/content_margin', $vars);
     
-    $graphicsDir = "/_graphics/wovengrass";
+    $graphicsDir = "/_media/images/wovengrass";
 ?>
 
 body { color:#000; background:#d5b24a url("<?php echo $graphicsDir; ?>/woven-grass.jpg") repeat left -60px; }

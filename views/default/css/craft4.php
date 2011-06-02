@@ -5,7 +5,7 @@
     echo view('css/snippets/site_menu_top', $vars);
     echo view('css/snippets/content_margin', $vars);
     echo view('css/snippets/beige_content', $vars);
-    $graphicsDir = "/_graphics/craft";
+    $graphicsDir = "/_media/images/craft";
 ?>
 
 body { color:#fff; background:#f2c346 url("<?php echo $graphicsDir; ?>/craft4-bg.jpg") repeat left -60px; }

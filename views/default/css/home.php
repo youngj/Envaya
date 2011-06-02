@@ -6,7 +6,7 @@
     $headerLeftWidth = 340;
     $headerRightWidth = $contentWidth - $headerLeftWidth;
     
-    $graphicsDir = "/_graphics/home";
+    $graphicsDir = "/_media/images/home";
 ?>
 
 .thin_column

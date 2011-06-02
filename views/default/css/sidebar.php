@@ -5,7 +5,7 @@
     echo view('css/default', $vars);
     echo view('css/snippets/content_margin', $vars);
 
-    $graphicsDir = "/_graphics/sidebar";
+    $graphicsDir = "/_media/images/sidebar";
 ?>
 
 #heading h2 , #heading a { color:black; }
@@ -17,7 +17,7 @@
 
 .content_container
 {
-    background:#fff url("/_graphics/simple/bg_gradient.gif") repeat-x left 62px;
+    background:#fff url("/_media/images/simple/bg_gradient.gif") repeat-x left 62px;
 }
 
 .content_container .thin_column

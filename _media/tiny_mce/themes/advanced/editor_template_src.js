@@ -1315,7 +1315,7 @@
                 if (uploadedFile)
                 {
                     ed.insertOrUpdateImage(imageNode, {
-                        src: "/_graphics/document_icon.jpg",
+                        src: "/_media/images/document_icon.jpg",
                         width: '100%',
                         height: '300',
                         'class': 'scribd_placeholder',

@@ -197,12 +197,8 @@ cat <<EOF > /etc/nginx/envaya.conf
         stub_status on;
         access_log   off;
     }    
-    
-    location /_graphics/ {
-        expires 1y;
-    }
-    
-    location ~ ^\/mod\/(\w+)\/(_graphics|_media)\/
+       
+    location ~ ^\/mod\/(\w+)\/_media\/
     {
         expires 1y;
         gzip_types application/x-javascript text/css;

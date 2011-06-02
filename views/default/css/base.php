@@ -1,5 +1,5 @@
 <?php
-    $graphicsDir = "/_graphics";
+    $graphicsDir = "/_media/images";
 ?>
 
 html,body

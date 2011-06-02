@@ -113,7 +113,7 @@ class User extends Entity
         else
         {
             return array(
-                'url' => Config::get('url')."_graphics/defaultmedium.gif",
+                'url' => Config::get('url')."_media/images/defaultmedium.gif",
                 'width' => 100,
                 'height' => 100
             );

@@ -21,7 +21,7 @@
             echo "<link rel='canonical' href='".escape($vars['canonical_url'])."' />";
         }
     ?>
-<link rel="shortcut icon" href="/_graphics/favicon2.ico" />
+<link rel="shortcut icon" href="/_media/images/favicon2.ico" />
 <script type='text/javascript'>
 <?php echo view('js/header'); ?>
 <?php 

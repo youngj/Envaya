@@ -25,7 +25,7 @@
     ));
 ?>
 <span id='imageUploadContainer<?php echo $INCLUDE_COUNT ?>'></span>
-<div id='<?php echo $progressid ?>' class='imageUploadProgress'></div>
+<div id='<?php echo $progress_id ?>' class='imageUploadProgress'></div>
 <script type="text/javascript">
 var uploader = new <?php echo $swfupload_class; ?>(<?php 
     echo view('input/swfupload_args', 

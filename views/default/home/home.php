@@ -3,7 +3,7 @@
     $is_africa = ($region == Geography::Africa);
     $is_supported = GeoIP::is_supported_country();
     
-    $defaultPhoto = "/_graphics/home/banner_planting5.jpg";
+    $defaultPhoto = "/_media/images/home/banner_planting5.jpg";
     
     PageContext::add_header_html("        
 <noscript>

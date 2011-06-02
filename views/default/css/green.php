@@ -5,7 +5,7 @@
     echo view('css/snippets/site_menu_top', $vars);
     echo view('css/snippets/content_margin', $vars);
 
-    $graphicsDir = "/_graphics/green";
+    $graphicsDir = "/_media/images/green";
 ?>
 
 body { background-color:white; }

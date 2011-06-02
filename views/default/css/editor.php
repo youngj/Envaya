@@ -4,7 +4,7 @@
     echo view('css/default', $vars);    
     echo view('css/snippets/slideshow', $vars);    
     
-    $graphicsDir = "/_graphics";
+    $graphicsDir = "/_media/images";
 ?>
 
 body
@@ -189,7 +189,7 @@ a.icon_link:hover
     padding-left:52px;
     padding-top:6px;
     padding-bottom:6px;
-    background:url("/_graphics/attach_controls.gif") no-repeat left top;
+    background:url("/_media/images/attach_controls.gif") no-repeat left top;
 }
 
 .attachControls .attachImage

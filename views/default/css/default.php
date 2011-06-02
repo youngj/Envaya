@@ -193,7 +193,7 @@
     width:23px;
     height:23px;
     cursor:pointer;
-    background:url("/_graphics/delete.gif?v2") no-repeat left -33px;    
+    background:url("/_media/images/delete.gif?v2") no-repeat left -33px;    
 }
 .modalClose:hover
 {
@@ -356,7 +356,7 @@ label {
 
 .submit_button div
 {
-    background: #08c url(/_graphics/buttons.png) left -32px;
+    background: #08c url(/_media/images/buttons.png) left -32px;
     display:block;
     height:32px;
     margin:0px;
@@ -365,7 +365,7 @@ label {
 
 .submit_button span
 {
-    background: #08c url(/_graphics/buttons.png) right -32px; 
+    background: #08c url(/_media/images/buttons.png) right -32px; 
     display:block;
     height:24px;
     padding-top:8px;
@@ -463,7 +463,7 @@ button.submit_button:active span
     margin-left:5px;
     width:29px;
     height:29px;
-    background:url("/_graphics/delete.gif?v2") no-repeat left -30px;
+    background:url("/_media/images/delete.gif?v2") no-repeat left -30px;
 }
 
 a.photoDelete:hover
@@ -569,7 +569,7 @@ a.photoDelete:hover
     height:30px;
     width:36px;
     margin:0 auto;
-    background:url(/_graphics/move_edit_delete.gif) no-repeat left top;
+    background:url(/_media/images/move_edit_delete.gif) no-repeat left top;
 }
 
 .down_icon { background-position:left -40px; }
@@ -612,20 +612,20 @@ a.photoDelete:hover
 
 .commBoxLeft
 {
-    background:url(/_graphics/commBox.gif) no-repeat right -10px;
+    background:url(/_media/images/commBox.gif) no-repeat right -10px;
     width:45%;
 }
 
 .commBoxMain
 {
-    background:url(/_graphics/commBox.gif) repeat-x left -56px;
+    background:url(/_media/images/commBox.gif) repeat-x left -56px;
     white-space:nowrap;
     padding:5px 15px;
 }
 
 .commBoxRight
 {
-    background:url(/_graphics/commBox.gif) no-repeat left -102px;
+    background:url(/_media/images/commBox.gif) no-repeat left -102px;
     width:45%;
 }
 
@@ -772,7 +772,7 @@ input[type="submit"] {
     display:block;
     width:30px;
     height:20px;
-    background:url("/_graphics/delete.gif?v2") no-repeat left -35px;
+    background:url("/_media/images/delete.gif?v2") no-repeat left -35px;
 }
 
 a.gridDelete:hover, a.hideMessages:hover
@@ -819,7 +819,7 @@ a.discussionTopic
 
 .follow_icon
 {
-    background:url(/_graphics/home/sprite.png) no-repeat left top;
+    background:url(/_media/images/home/sprite.png) no-repeat left top;
     display:block;
     float:left;
     width:36px;
@@ -844,7 +844,7 @@ a.discussionTopic
     font-size:10px;    
     padding-top:1px;
     padding-right:23px;
-    background:url(/_graphics/share2.png) no-repeat right top;
+    background:url(/_media/images/share2.png) no-repeat right top;
     height:19px;
 }
 

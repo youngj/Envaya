@@ -67,11 +67,11 @@
     <td><?php echo $org->last_notify_time ? friendly_time($org->last_notify_time) : ''; ?></td>
     <td style='padding:0px;background-color:#068488;white-space:nowrap'>
         <?php 
-            echo "<a href='/{$org->username}/settings?from=$escUrl'><img src='/_graphics/settings.gif'></a>";
+            echo "<a href='/{$org->username}/settings?from=$escUrl'><img src='/_media/images/settings.gif'></a>";
             
             if ($org->email && $org->is_notification_enabled(Notification::Batch))
             {            
-                echo "<a href='/admin/contact/email/user/{$org->guid}?from={$escUrl}'><img src='/_graphics/message.gif' style='vertical-align:5px'></a>";
+                echo "<a href='/admin/contact/email/user/{$org->guid}?from={$escUrl}'><img src='/_media/images/message.gif' style='vertical-align:5px'></a>";
             }
         ?>
     </td>

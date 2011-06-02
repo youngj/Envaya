@@ -1,7 +1,7 @@
 #topbar
 {
     width:100%;
-    background:#1d1d1d url(/_graphics/topgradient2.gif) repeat-x left -1px;
+    background:#1d1d1d url(/_media/images/topgradient2.gif) repeat-x left -1px;
 }
 
 .top_language
@@ -50,7 +50,7 @@
 
 .topbarLinks a:hover
 {
-    background:#1d1d1d url(/_graphics/topgradient2.gif) repeat-x left -30px;
+    background:#1d1d1d url(/_media/images/topgradient2.gif) repeat-x left -30px;
     color:#e6e6e6;
     text-decoration:none;
 }
@@ -76,7 +76,7 @@
 
 #loginButton
 {
-    background:#4d4d4d url(/_graphics/loginbutton.png) no-repeat left top;
+    background:#4d4d4d url(/_media/images/loginbutton.png) no-repeat left top;
     height:29px;
 }
 
@@ -87,7 +87,7 @@ a#loginButton:hover
 
 #loggedinArea
 {
-    background:url(/_graphics/loggedinarea.png) no-repeat left -18px;
+    background:url(/_media/images/loggedinarea.png) no-repeat left -18px;
 }
 
 a#loginButton:hover, a#loginButton:hover .loginText

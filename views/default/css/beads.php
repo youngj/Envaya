@@ -4,7 +4,7 @@
     echo view('css/snippets/site_menu_top', $vars);
     echo view('css/snippets/content_margin', $vars);
     
-    $graphicsDir = "/_graphics/beads";
+    $graphicsDir = "/_media/images/beads";
 ?>
 
 body { color:#fff; background:#f2c346 url("<?php echo $graphicsDir; ?>/beads.jpg") repeat -100px -60px; }

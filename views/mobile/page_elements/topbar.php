@@ -1,4 +1,4 @@
-<div id="topbar"><a href="/home"><img style='vertical-align:middle' src="/_graphics/logo2.gif" alt="Envaya" width="120" height="25"></a>
+<div id="topbar"><a href="/home"><img style='vertical-align:middle' src="/_media/images/logo2.gif" alt="Envaya" width="120" height="25"></a>
 <?php
     if (@$vars['theme_name'] == 'home') 
     {

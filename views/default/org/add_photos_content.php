@@ -1,7 +1,7 @@
 <div id='previews'></div>
 <div id='progressContainer' style='padding-bottom:5px'></div>
 
-<label id='uploadLabel'><img src='/_graphics/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo __('upload:photos:label') ?></label><br />
+<label id='uploadLabel'><img src='/_media/images/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo __('upload:photos:label') ?></label><br />
 <div id='uploadContainer'></div>
 
 <?php echo view('js/swfupload'); ?>

@@ -3,7 +3,7 @@
     
     echo view('css/default', $vars);
 
-    $graphicsDir = "/_graphics/simple";
+    $graphicsDir = "/_media/images/simple";
 ?>
 
 body

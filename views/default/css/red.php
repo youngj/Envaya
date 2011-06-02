@@ -1,7 +1,7 @@
 <?php
     $vars['contentWidth'] = 600;
     echo view('css/default', $vars);        
-    $graphicsDir = "/_graphics/red";
+    $graphicsDir = "/_media/images/red";
 ?>
 
 body
