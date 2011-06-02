@@ -8,50 +8,64 @@ class Geography
      * Encode a location into a latitude and longitude, caching the result.
      *
      * @param String $location The location, e.g. "London", or "24 Foobar Street, Gotham City"
+     * @param String $region The region code, specified as a ccTLD ("top-level domain") two-character value.
      */
-    static function geocode($location)
+    static function geocode($location, $region = '')
     {
-        $cached_location = Database::get_row("SELECT * from geocode_cache WHERE location=?", array($location));
-        if ($cached_location)
+        $row = Database::get_row("SELECT lat, `long` from geocode_cache WHERE location = ? AND region = ?", 
+            array($location, $region)
+        );
+        
+        if ($row)
         {
             return array(
-                'lat' => $cached_location->lat, 
-                'long' => $cached_location->long
+                'lat' => $row->lat, 
+                'long' => $row->long
             );
         }
 
-        $return = static::google_geocode($location);
+        $latlong = static::google_geocode($location, $region);
 
         // If returned, cache and return value
-        if ($return)
+        if ($location)
         {
-            $lat = (float)$return['lat'];
-            $long = (float)$return['long'];
+            $lat = $latlong['lat'];
+            $long = $latlong['long'];
 
             // Put into cache at the end of the page since we don't really care that much
             Database::execute_delayed(
-                "INSERT DELAYED INTO geocode_cache (location, lat, `long`) VALUES (?,?,?) ON DUPLICATE KEY UPDATE lat=?, `long`=?",
-                array($location, $lat, $long, $lat, $long)
+                "INSERT DELAYED INTO geocode_cache (location, lat, `long`, region) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE lat=?, `long`=?",
+                array($location, $lat, $long, $region, $lat, $long)
             );
         }
 
-        return $return;
+        return $latlong;
     }
     
-    static function google_geocode($location)
+    static function google_geocode($location, $region = '')
     {        
-        $google_api = Config::get('google_api_key');
-        
-        $address = "http://maps.google.com/maps/geo?q=".urlencode($location)."&output=json&key=" . $google_api;
-
-        $result = file_get_contents($address);
-        $obj = json_decode($result);
-
-        $obj = @$obj->Placemark[0]->Point->coordinates;
-
-        if ($obj)
+        $address = "http://maps.googleapis.com/maps/api/geocode/json?address=".urlencode($location)
+            ."&sensor=false";
+            
+        if ($region)
         {
-            return array('lat' => $obj[1], 'long' => $obj[0]);
+            $address .= "&region=" . urlencode($region);
+        }
+
+        $response = file_get_contents($address);
+        $obj = json_decode($response, true);
+
+        if (@$obj['status'] == 'OK')
+        {
+            $latlong = $obj['results'][0]['geometry']['location'];
+            
+            if ($latlong)
+            {
+                return array(
+                    'lat' => (float)$latlong['lat'], 
+                    'long' => (float)$latlong['lng']
+                );
+            }   
         }
         return null;
     }

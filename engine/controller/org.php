@@ -77,9 +77,19 @@ class Controller_Org extends Controller
             
             if (!empty($q)) 
             {
-		//fixme: use relevant country for geoquery -tk
-                $geoQuery = "$q Tanzania";            
-                $latlong = Geography::geocode($geoQuery);
+                if (GeoIP::is_supported_country())
+                {
+                    // bias geocode result to user's country
+                    $region = GeoIP::get_country_code();
+                }
+                else
+                { 
+                    // bias geocode result to default country
+                    $approved_countries = Geography::get_approved_countries();
+                    $region = $approved_countries[0];
+                }
+            
+                $latlong = Geography::geocode($q, $region);
             }
             
             if ($latlong)
