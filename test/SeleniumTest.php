@@ -179,8 +179,8 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $email = rawurldecode($email);        
                 
         return $email;
-    }
-
+    }    
+    
     public function getLinkFromEmail($email, $index = 0)
     {
         if (!preg_match_all('/http:[^\\s]+/', $email, $matches))
