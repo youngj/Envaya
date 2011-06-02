@@ -40,12 +40,10 @@ Source Code Overview
 ====================
 index.php 
     - Main entry point for most web requests (except for static files)
-_css/
-    - compressed CSS files served directly by web server, as well as entry point for testing CSS
 _graphics/
     - Image files, served directly by web server
 _media/
-    - Other static files, such as JavaScript and Flash
+    - Other static files, such as compressed CSS, JavaScript and Flash
 build/
     - PHP files dynamically created by scripts/make.php
 config/

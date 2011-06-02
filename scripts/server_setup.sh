@@ -215,14 +215,7 @@ cat <<EOF > /etc/nginx/envaya.conf
         gzip_types application/x-javascript text/css;
         gzip on;
         gzip_min_length 1000;
-    }
-    
-    location /_css/ {
-        expires 1y;
-        gzip_types application/x-javascript text/css;
-        gzip on;
-        gzip_min_length 1000;    
-    }
+    }    
 
 EOF
 

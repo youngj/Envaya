@@ -29,6 +29,19 @@ class Build
     {
         @unlink("build/lib_cache.php");
         @unlink("build/path_cache.php");
+        
+        @unlink("_media/swfupload.js");
+        @unlink("_media/tiny_mce/tiny_mce.js");
+        
+        foreach (glob('_media/css/*.css') as $css)
+        {
+            unlink($css);
+        }
+        
+        foreach (glob('_media/inline_js/*.js') as $js)
+        {
+            unlink($js);
+        }
     }
     
     static function lib_cache()
@@ -136,7 +149,7 @@ class Build
             }
             
             file_put_contents($css_temp, $raw_css);
-            minify($css_temp, "_css/$filename.css", 'css');
+            minify($css_temp, "_media/css/$filename.css", 'css');
             unlink($css_temp);
         }
     }

@@ -344,6 +344,15 @@ class Controller_Pg extends Controller
         SessionMessages::add(__('feed:item_deleted'));
         $this->redirect();
     }   
+    
+    /*
+     * Web entry point for uncompressed CSS files (for testing).     
+     */
+    function action_css()
+    {
+        $this->set_content_type('text/css');        
+        $this->set_response(view('css/'.(@$_GET['name'] ?: 'default')));
+    }
 }
 
 Controller_Pg::$routes = Controller::$SIMPLE_ROUTES;

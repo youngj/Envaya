@@ -84,11 +84,11 @@
         
         if (Config::get('debug'))
         {
-            return "/_css/css.php?name=$css_name&v=$cache_version";
+            return "/pg/css?name=$css_name&v=$cache_version";
         }
         else
         {
-            return "/_css/$css_name.css?$cache_version";
+            return "/_media/css/$css_name.css?$cache_version";
         }        
     }     
                 
