@@ -120,6 +120,7 @@ function notify_exception($exception)
     =======
     $server
             ");
+                $mail->setFrom(Config::get('email_from'), Config::get('site_name'));
                 $mail->addTo(Config::get('admin_email'));
                 $mailer = Zend::mail_transport();
                 $mail->send($mailer);
