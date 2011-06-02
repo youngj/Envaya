@@ -17,20 +17,19 @@ function sectorChanged()
 {
     setTimeout(function() {
         $('browseLink').href = "org/browse?list=1&sector=" + $('sectorList').value;
-        mapLoader.reset();
-        mapLoader.load();
+        orgLoader.reset();
+        orgLoader.load();
     }, 1);
 }
 
-var mapLoader = new MapLoader(function ($bounds) 
-{
-    var $sw = $bounds.getSouthWest();
-    var $ne = $bounds.getNorthEast(); 
+var orgLoader = new OrgMapLoader();
 
-    return "/org/searchArea?latMin="+$sw.lat()+"&latMax="+$ne.lat()+
-        "&longMin="+$sw.lng()+"&longMax="+$ne.lng()+
-        "&sector=" + $('sectorList').value;
-});
+orgLoader.getURLParams = function() {
+    return {
+        sector: $('sectorList').value
+    };
+};
+
 </script>
 
 <div class='view_toggle'>
@@ -55,7 +54,7 @@ var mapLoader = new MapLoader(function ($bounds)
         'long' => $long,  
         'height' => 350, 
         'zoom' => $zoom, 
-        'onload' => 'mapLoader.setMap',
+        'onload' => 'orgLoader.setMap',
     ));
 ?>
 </div>

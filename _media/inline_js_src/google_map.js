@@ -1,12 +1,11 @@
 
 /*
  * Loads markers for organizations on a google map. 
- * Nearby organizations are grouped into buckets
+ * Nearby organizations are grouped into buckets.
  */
-MapLoader = function(fetchURLFn)
+OrgMapLoader = function()
 {
     this.bucketSize = 20; // pixel width/height for each bucket   
-    this._fetchURLFn = fetchURLFn;
     
     this.displayedBuckets = {};
     this.lastFetchedBounds = null;
@@ -15,10 +14,10 @@ MapLoader = function(fetchURLFn)
     this.setMap = function(map)
     {
         // initialize overlay classes which depend on google maps API being loaded alrady
-        if (!MapLoader._initialized)
+        if (!OrgMapLoader._initialized)
         {
-            MapLoader._init();
-            MapLoader._initialized = true;
+            OrgMapLoader._init();
+            OrgMapLoader._initialized = true;
         }
     
         this.map = map;        
@@ -41,8 +40,7 @@ MapLoader = function(fetchURLFn)
             $self.load();
         });
     };
-
-
+    
     this.reset = function()
     {
         this.lastFetchedBounds = null;
@@ -54,6 +52,12 @@ MapLoader = function(fetchURLFn)
 
         this.displayedBuckets = {};    
     };
+    
+    // may be overridden to add additional parameters to the URL when fetching organizations
+    this.getURLParams = function()
+    {
+        return {};
+    };    
     
     this.load = function()
     {    
@@ -91,7 +95,17 @@ MapLoader = function(fetchURLFn)
         }
         
         var $self = this;
-        this.fetchOrgXHR = fetchJson(this._fetchURLFn($bounds), function(data) { $self._loaded(data); });
+        
+        var url = "/org/searchArea?latMin="+$sw.lat()+"&latMax="+$ne.lat()+
+            "&longMin="+$sw.lng()+"&longMax="+$ne.lng();
+            
+        var urlParams = this.getURLParams();
+        for (var name in urlParams)
+        {
+            url += "&" + name + "=" + encodeURIComponent(urlParams[name]);
+        }
+        
+        this.fetchOrgXHR = fetchJson(url, function(data) { $self._loaded(data); });
     };
     
     this._loaded = function($orgs)
@@ -110,6 +124,7 @@ MapLoader = function(fetchURLFn)
         
         var bucketSize = this.bucketSize;
 
+        // collect organizations in buckets of bucketSize x bucketSize pixels
         for (var $i = 0; $i < $orgs.length; $i++)
         {
             var $org = $orgs[$i];
@@ -133,6 +148,7 @@ MapLoader = function(fetchURLFn)
             $buckets[$bucketKey].addOrg($org);
         }
 
+        // reuse any existing OrgBucket markers when possible rather than initializing new ones
         for (var $bucketKey in $buckets)
         {
             var $bucket = $buckets[$bucketKey];
@@ -149,7 +165,7 @@ MapLoader = function(fetchURLFn)
     };
 };
 
-MapLoader._init = function() {
+OrgMapLoader._init = function() {
 
 DivOverlay = function(div)
 {

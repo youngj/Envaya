@@ -17,15 +17,11 @@
     echo view('js/google_map');
 ?>  
 
-var mapLoader = new MapLoader(function ($bounds) 
-{
-    var $sw = $bounds.getSouthWest();
-    var $ne = $bounds.getNorthEast(); 
+var orgLoader = new OrgMapLoader();
 
-    return "/org/searchArea?latMin="+$sw.lat()+"&latMax="+$ne.lat()+
-        "&longMin="+$sw.lng()+"&longMax="+$ne.lng()+
-        "&sector=<?php echo urlencode($sector); ?>";
-});
+orgLoader.getURLParams = function() {
+    return {sector: <?php echo json_encode($sector); ?>};
+};
 
 </script>
 <?php        
@@ -37,7 +33,7 @@ var mapLoader = new MapLoader(function ($bounds)
             'height' => 300, 
             'width' => 440, 
             'zoom' => 8,
-            'onload' => 'mapLoader.setMap',
+            'onload' => 'orgLoader.setMap',
         ));
         
         echo "</div>";    
