@@ -3,8 +3,8 @@
      * A link that executes a POST request     
      */
 
-    $confirm = __('areyousure');
-    $href = '';
+    $confirm = null;    // optional message of confirmation prompt
+    $href = '';         // url of link
     $html = null;       // HTML content of link
     $text = null;       // text content of link (set either 'html' or 'text')
     extract($vars);

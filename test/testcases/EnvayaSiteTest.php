@@ -51,7 +51,7 @@ class EnvayaSiteTest extends SeleniumTest
         
         // test map updates when scrolling
         // testorg should be at -6.140555,35.551758, and the test assumes that there are no orgs immediately to the east
-        $this->open("/org/browse/?lat=-6.14055&long=35.5523&zoom=20"); // testorg is 2 clicks out of screen to the west
+        $this->open("/org/browse/?lat=-6.14055&long=35.5524&zoom=20"); // testorg is 2 clicks out of screen to the west
         sleep(1);
         $this->mustNotExist("//div[@class='mapMarker']");
         

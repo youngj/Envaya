@@ -52,5 +52,6 @@ function start_sphinx()
 $kestrel = start_kestrel();
 $sphinx = start_sphinx();
 $queueRunner = run_task("php scripts/queueRunner.php");
+$cron = run_task("php scripts/cron.php");
 
-include("scripts/cron.php");
+while(true) { sleep(2); }

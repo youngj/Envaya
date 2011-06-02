@@ -57,7 +57,7 @@ function get_test_case_path($test_case)
 
 function check_selenium()
 {
-    $handle = @fsockopen("localhost", 4444);
+    $handle = @fsockopen("localhost", 4444, $errno, $errstr, 1);
     if (!$handle) { 
          echo "waiting for selenium server to respond...\n";
          sleep(1);  
@@ -118,7 +118,7 @@ function main()
     ));
         
     $queue = proc_open('php runserver.php', $descriptorspec, $pipes2, dirname(__DIR__), $env);
-
+    
     retry('check_selenium');
 
     sleep(2);
