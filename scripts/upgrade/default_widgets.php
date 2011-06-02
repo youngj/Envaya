@@ -1,7 +1,7 @@
 <?php
 
     require_once("scripts/cmdline.php");
-    require_once("engine/start.php");
+    require_once("start.php");
 
     foreach (Widget::$default_widgets as $widget_name => $props)
     {

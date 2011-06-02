@@ -1,6 +1,6 @@
 <?php
 
-require_once 'engine/start.php';
+require_once 'start.php';
 require_once 'scripts/cmdline.php';
 
 $time = time();

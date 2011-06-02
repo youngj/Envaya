@@ -1,7 +1,7 @@
 <?php
 
     require_once("scripts/cmdline.php");
-    require_once("engine/start.php");
+    require_once("start.php");
     
     $metadatas = EntityMetadata::query()->where('name = ?', 'thumbnail_url')->filter();
     

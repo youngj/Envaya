@@ -6,7 +6,7 @@
  */
 
 include("scripts/cmdline.php");
-include("engine/start.php");
+include("start.php");
 
 $functionCount = array();
 

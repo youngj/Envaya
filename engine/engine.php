@@ -12,9 +12,8 @@ class Engine
     private static $autoload_actions = array();
     
     /* 
-     * Loads the system configuration, all php files in engine/lib/, configures auto-load 
-     * for Envaya's PHP classes in the engine/ directory, initializes error and exception
-     * handlers, and initializes each module by including their start.php file.
+     * Loads the system configuration, all php files in /lib/, configures auto-load for
+     * Envaya's PHP classes in the engine/ directory, and initializes error and exception handlers.
      */
     static function init()
     {       
@@ -88,7 +87,7 @@ class Engine
     static function get_lib_paths()
     {
         $root = Config::get('root');
-        $lib_dir = "engine/lib";
+        $lib_dir = "lib";
 
         $paths = array();
         $handle = @opendir("$root/$lib_dir");

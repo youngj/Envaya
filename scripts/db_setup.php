@@ -2,7 +2,7 @@
 
 // Print initial create database/user statements to be piped into mysql
 
-require_once("engine/start.php");
+require_once("start.php");
 require_once("scripts/cmdline.php");
 
 Config::set('debug', false);

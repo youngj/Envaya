@@ -1,7 +1,7 @@
 <?php
 
 require_once "scripts/cmdline.php";
-require_once "engine/start.php";
+require_once "start.php";
 
 /* 
  * A short-lived command line task that executes queued functions

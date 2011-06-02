@@ -11,7 +11,7 @@ global $BACKUP_DIR;
 $BACKUP_DIR = "/etc/dropbox/Dropbox/s3_backup";
 
 require_once("scripts/cmdline.php");
-require_once("engine/start.php");
+require_once("start.php");
 
 require_once("vendors/s3.php");
 

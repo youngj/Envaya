@@ -3,7 +3,7 @@
 $base = dirname(__DIR__);
 
 require_once "$base/scripts/cmdline.php";
-require_once "$base/engine/start.php";
+require_once "$base/start.php";
 
 Config::set('debug', false);
 

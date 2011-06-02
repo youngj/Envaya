@@ -40,6 +40,8 @@ Source Code Overview
 ====================
 index.php 
     - Main entry point for most web requests (except for static files)
+start.php
+    - File that can be included by any PHP script to initialize the Envaya engine
 _media/
     - Static files served directly by web server, such as images, compressed CSS, JavaScript and Flash
 build/
@@ -48,6 +50,8 @@ config/
     - Configuration settings. Local settings should be defined in config/local.php
 engine/
     - Core PHP code, mostly autoloaded classes. engine/start.php bootstraps the rest
+lib/
+    - PHP files included on every request (generally standalone functions which can't be autoloaded)
 languages/
     - Translation strings for each supported language
 mod/

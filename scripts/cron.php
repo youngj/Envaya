@@ -8,7 +8,7 @@
  * This process does as little as possible to avoid memory leaks. 
  */
 
-require_once "engine/start.php";
+require_once "start.php";
 require_once "scripts/cmdline.php";
 
 $cron_file = Config::get('root') . "/crontab.php";

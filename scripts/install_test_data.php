@@ -5,7 +5,7 @@
  * not to be used on production servers.
  */
 
-require_once("engine/start.php");
+require_once("start.php");
 
 function main()
 {   

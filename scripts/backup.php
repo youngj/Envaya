@@ -6,7 +6,7 @@
      */
 
     require_once("scripts/cmdline.php");
-    require_once("engine/start.php");
+    require_once("start.php");
 
     $now = date("YmdHi");
     $output = "/etc/dropbox/Dropbox/envaya/envaya$now.sql.gz.nc";

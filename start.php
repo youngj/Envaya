@@ -2,14 +2,13 @@
 
 /*
  * Typically, PHP files wishing to use the Envaya engine should include this file
- * and not any others in engine/. However, engine/config.php can be loaded 
- * separately for scripts that just need to access config settings.
+ * and not any files in engine/, which will be auto-loaded when needed.
  *
- * (Almost everything in the engine/ directory is an auto-loaded class, 
- *   except for this file, engine.php, and the engine/lib/ directory.)
+ * However, engine/config.php can be loaded separately for scripts that just 
+ * need to access config settings.
  */
   
-include __DIR__."/engine.php";
+include __DIR__."/engine/engine.php";
 
 /*
  * Functions to call once immediately after certain classes are loaded,
@@ -31,6 +30,7 @@ Engine::add_autoload_action('Language', function() {
 
 Engine::init();
 
+// load modules
 foreach (Config::get('modules') as $module_name)
 {
     require Engine::get_module_root($module_name)."/start.php";

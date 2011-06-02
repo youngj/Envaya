@@ -3,7 +3,7 @@
 // Prompt user at command line to create admin user account
 
 require_once("scripts/cmdline.php");
-require_once("engine/start.php");
+require_once("start.php");
 
 $username = prompt_default("Admin username", "testadmin");
 $password = prompt_default("Admin password", "testtest");

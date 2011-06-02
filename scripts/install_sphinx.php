@@ -6,7 +6,7 @@
  */
 
 require_once("scripts/cmdline.php");
-require_once("engine/start.php");
+require_once("start.php");
 
 $sphinx_conf_template = file_get_contents('scripts/config/sphinx.conf');
 

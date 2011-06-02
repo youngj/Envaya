@@ -46,14 +46,16 @@ class Build
     
     static function lib_cache()
     {
-        require_once "engine/start.php";
+        @unlink("build/lib_cache.php");
+        
+        require_once "start.php";
         $paths = Engine::get_lib_paths();  
         static::write_file("build/lib_cache.php", static::get_array_php($paths));
     }
     
     static function path_cache()
     {
-        require_once "engine/start.php";
+        require_once "start.php";
         $paths = array(
             'views/default/admin/path_cache_test.php' => 'build/path_cache_info.php' 
                 // allows us to test if the path cache actually works like it should
@@ -132,7 +134,7 @@ class Build
     
     static function css($name = '*')
     {    
-        require_once "engine/start.php";
+        require_once "start.php";
         $modules = static::module_glob();
         $css_paths = glob("{views/default/css/$name.php,mod/$modules/views/default/css/$name.php}", GLOB_BRACE);
 
@@ -172,7 +174,7 @@ class Build
 
     static function inline_js($name = '*')
     {    
-        require_once "engine/start.php";
+        require_once "start.php";
         $modules = static::module_glob();
         $js_src_files = glob("{_media/inline_js_src/$name.js,mod/$modules/_media/inline_js_src/$name.js}", GLOB_BRACE);
 

@@ -6,7 +6,7 @@
  */
 
 require_once("scripts/cmdline.php");
-require_once("engine/start.php");
+require_once("start.php");
 
 $orgs = Organization::query()->where('approval > 0')->filter();
 

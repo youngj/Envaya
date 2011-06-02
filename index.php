@@ -6,7 +6,7 @@
      * Controller_Default.  See engine/controller/default.php for the top 
      * level routing of URLs.
      */
-    require __DIR__."/engine/start.php";    
+    require __DIR__."/start.php";    
 
     $request = Request::instance();    
 
