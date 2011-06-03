@@ -25,6 +25,33 @@ require_once 'SeleniumTest.php';
 
 $MOCK_MAIL_FILE = __DIR__."/mail.out";
 
+
+function kill_windows_process_tree($pid, $wmi = null)
+{
+    //echo "kill $pid\n";
+
+    if ($wmi == null) 
+    {
+        $wmi = new COM("winmgmts:{impersonationLevel=impersonate}!\\\\.\\root\\cimv2"); 
+    }
+
+    // adapted from http://www.php.net/manual/en/function.posix-kill.php#102094
+    
+    $procs = $wmi->ExecQuery("SELECT * FROM Win32_Process WHERE ProcessId='$pid'");     
+    $children = $wmi->ExecQuery("SELECT * FROM Win32_Process WHERE ParentProcessId='$pid'"); 
+    
+    foreach ($procs as $proc)
+    {
+        $proc->Terminate();
+        break;
+    }
+    
+    foreach ($children as $child) 
+    {
+        kill_windows_process_tree($child->ProcessId, $wmi);
+    }
+}
+
 function get_all_test_cases()
 {
     // each php file in test/testcases/ is assumed to be a test class with the same name as the file.
@@ -117,13 +144,26 @@ function main()
         'mock_mail_file' => $MOCK_MAIL_FILE
     ));
         
-    $queue = proc_open('php runserver.php', $descriptorspec, $pipes2, dirname(__DIR__), $env);
+    $runserver = proc_open('php runserver.php', $descriptorspec, $pipes2, dirname(__DIR__), $env);
+    $status = proc_get_status($runserver);                
+    posix_setpgid($status['pid'], $status['pid']);   
     
     retry('check_selenium');
 
     sleep(2);
 
     PHPUnit_TextUI_TestRunner::run($suite);
+    
+    if (function_exists('posix_kill'))
+    {
+        posix_kill(-$status['pid'], SIGTERM);
+    }
+    else
+    {
+        kill_windows_process_tree($status['pid']);
+    }
+
+    proc_terminate($selenium);
 }
 
 main(); 

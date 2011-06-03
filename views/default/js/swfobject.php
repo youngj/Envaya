@@ -1,5 +1,5 @@
 <?php
     if ($INCLUDE_COUNT == 0)
     {
-        include_js('swfobject.js');
+        include_js('inline/swfobject.js');
     }

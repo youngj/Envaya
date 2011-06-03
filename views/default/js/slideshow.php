@@ -2,5 +2,5 @@
     if ($INCLUDE_COUNT == 0)
     {
         echo view('js/dom');
-        include_js('slideshow.js');
+        include_js('inline/slideshow.js');
     }

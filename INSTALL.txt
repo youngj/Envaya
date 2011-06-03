@@ -41,7 +41,7 @@ php scripts/install.php
 php scripts/install_test_data.php
 
 # step 7: make compressed CSS and JS files
-php scripts/make.php
+php make.php
 
 # optional (only for testing computers): install dependencies for selenium tests
 sudo aptitude install x-window-system-core gnome-core gdm
@@ -64,8 +64,8 @@ more detailed instructions for Windows.
 For development environments, "php runserver.php" can be used instead of
 installing kestrel, queueRunner, and phpCron as system services.
 
-To use Apache (with mod_php) as the web server, set DocumentRoot to the root
-directory where envaya's source code is located.
+To use Apache (with mod_php) as the web server, set DocumentRoot to the full
+path to the www/ directory inside this source tree (e.g. C:/path/to/envaya/www)
 
 Envaya requires the following prerequisites:
 
@@ -108,7 +108,7 @@ cd c:\wamp\www\
 git clone git@github.com:youngj/Envaya.git envaya
 
 # edit C:\wamp\bin\apache\Apache2.2.11\conf\httpd.conf, and add:
-DocumentRoot "c:/wamp/www/envaya"
+DocumentRoot "c:/wamp/www/envaya/www"
 LoadModule rewrite_module modules/mod_rewrite.so
 
 # install memcache library from http://downloads.php.net/pierre/php_memcache-cvs-20090703-5.3-VC6-x86.zip
@@ -162,7 +162,7 @@ php scripts/install_sphinx.php
 php scripts/install_test_data.php
 
 # make compressed CSS and JS files
-php scripts/make.php
+php make.php
 
 ==============================
 Deploying releases to a server

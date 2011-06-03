@@ -5,5 +5,5 @@
         {
             PageContext::add_js_string($key);
         } 
-        include_js('time.js');
+        include_js('inline/time.js');
     }

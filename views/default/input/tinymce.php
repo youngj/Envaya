@@ -42,7 +42,7 @@
     {
         PageContext::add_header_html(
             "<style type='text/css'>"
-            .file_get_contents(Config::get('root').'/_media/css/tinymce_ui.css')
+            .file_get_contents(Config::get('root').'/www/_media/css/tinymce_ui.css')
             ."</style>"
         );
         

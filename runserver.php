@@ -1,8 +1,8 @@
 <?php
 
 # 
-# Runs php based background tasks (but not a web server) on development 
-# computers that do not run queueRunner, kestrel, or phpCron daemons
+# Runs various background tasks (but not a web server) on development computers.
+# (On a production server, these background tasks are run via /etc/init.d/ scripts.)
 #
 
 require_once "scripts/cmdline.php";

@@ -14212,3 +14212,2509 @@ tinymce.onAddEditor.add(function(tinymce, ed) {
 	}
 });
 
+/**
+ * editor_template_src.js
+ *
+ * Copyright 2009, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://tinymce.moxiecode.com/license
+ * Contributing: http://tinymce.moxiecode.com/contributing
+ */
+
+(function(tinymce) {
+    var DOM = tinymce.DOM, Event = tinymce.dom.Event, extend = tinymce.extend, each = tinymce.each, Cookie = tinymce.util.Cookie, lastExtID, explode = tinymce.explode;
+
+    // Tell it to load theme specific language pack(s)
+    //tinymce.ThemeManager.requireLangPack('advanced');
+    
+    tinymce.Editor.prototype.insertOrUpdateImage = function(imgNode, imgArgs)
+    {
+        if (!imgNode)
+        {
+            this.execCommand('mceInsertContent', false, '<img id="__mce_tmp" />', {skip_undo : 1});
+            this.dom.setAttribs('__mce_tmp', imgArgs);
+            this.dom.setAttrib('__mce_tmp', 'id', '');
+            this.undoManager.add();                
+        }
+        else
+        {
+            this.dom.setAttribs(imgNode, imgArgs);
+            this.execCommand('mceRepaint');
+        }                     
+    };
+
+    tinymce.create('tinymce.themes.AdvancedTheme', {
+        sizes : [8, 10, 12, 14, 18, 24, 36],
+
+        // Control name lookup, format: title, command
+        controls : {
+            bold : ['bold_desc', 'Bold'],
+            italic : ['italic_desc', 'Italic'],
+            underline : ['underline_desc', 'Underline'],
+            strikethrough : ['striketrough_desc', 'Strikethrough'],
+            justifyleft : ['justifyleft_desc', 'JustifyLeft'],
+            justifycenter : ['justifycenter_desc', 'JustifyCenter'],
+            justifyright : ['justifyright_desc', 'JustifyRight'],
+            justifyfull : ['justifyfull_desc', 'JustifyFull'],
+            bullist : ['bullist_desc', 'InsertUnorderedList'],
+            numlist : ['numlist_desc', 'InsertOrderedList'],
+            outdent : ['outdent_desc', 'Outdent'],
+            indent : ['indent_desc', 'Indent'],
+            cut : ['cut_desc', 'Cut'],
+            copy : ['copy_desc', 'Copy'],
+            paste : ['paste_desc', 'Paste'],
+            undo : ['undo_desc', 'Undo'],
+            redo : ['redo_desc', 'Redo'],
+            link : ['link_desc', 'mceLink'],
+            unlink : ['unlink_desc', 'unlink'],
+            image : ['image_desc', 'mceImage'],
+            document : ['document_desc', 'mceDocument'],
+            cleanup : ['cleanup_desc', 'mceCleanup'],
+            help : ['help_desc', 'mceHelp'],
+            code : ['code_desc', 'mceCodeEditor'],
+            hr : ['hr_desc', 'InsertHorizontalRule'],
+            removeformat : ['removeformat_desc', 'RemoveFormat'],
+            sub : ['sub_desc', 'subscript'],
+            sup : ['sup_desc', 'superscript'],
+            forecolor : ['forecolor_desc', 'ForeColor'],
+            forecolorpicker : ['forecolor_desc', 'mceForeColor'],
+            backcolor : ['backcolor_desc', 'HiliteColor'],
+            backcolorpicker : ['backcolor_desc', 'mceBackColor'],
+            charmap : ['charmap_desc', 'mceCharMap'],
+            visualaid : ['visualaid_desc', 'mceToggleVisualAid'],
+            anchor : ['anchor_desc', 'mceInsertAnchor'],
+            newdocument : ['newdocument_desc', 'mceNewDocument'],
+            blockquote : ['blockquote_desc', 'mceBlockQuote'],
+            save : ['save_desc', 'mceSave'],
+            restoredraft : ['restoredraft_desc', 'mceRestoreDraft']
+        },
+
+        stateControls : ['bold', 'italic', 'underline', 'strikethrough', 'bullist', 'numlist', 'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', 'sub', 'sup', 'blockquote'],
+
+        init : function(ed, url) {
+            var t = this, s, v, o;
+
+            t.editor = ed;
+            t.url = url;
+            t.onResolveName = new tinymce.util.Dispatcher(this);
+
+            // Default settings
+            t.settings = s = extend({
+                theme_advanced_path : true,
+                theme_advanced_toolbar_location : 'top',
+                theme_advanced_buttons1 : "", 
+                theme_advanced_buttons2 : '', //"bullist,numlist,|,outdent,indent,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code",
+                theme_advanced_buttons3 : '', //"hr,removeformat,visualaid,|,sub,sup,|,charmap",
+                theme_advanced_blockformats : "p,pre,h1,h2,h3",
+                //theme_advanced_toolbar_align : "center",
+                theme_advanced_fonts : '', //"Andale Mono=andale mono,times;Arial=arial,helvetica,sans-serif;Arial Black=arial black,avant garde;Book Antiqua=book antiqua,palatino;Comic Sans MS=comic sans ms,sans-serif;Courier New=courier new,courier;Georgia=georgia,palatino;Helvetica=helvetica;Impact=impact,chicago;Symbol=symbol;Tahoma=tahoma,arial,helvetica,sans-serif;Terminal=terminal,monaco;Times New Roman=times new roman,times;Trebuchet MS=trebuchet ms,geneva;Verdana=verdana,geneva;Webdings=webdings;Wingdings=wingdings,zapf dingbats",
+                theme_advanced_more_colors : 1,
+                theme_advanced_row_height : 23,
+                //theme_advanced_resize_horizontal : 1,
+                //theme_advanced_resizing_use_cookie : 1,
+                theme_advanced_font_sizes : "1,2,3,4,5,6,7",
+                //theme_advanced_statusbar_location : "none",
+                //theme_advanced_resizing : false,
+                theme_advanced_toolbar_align : "left",
+                readonly : ed.settings.readonly
+            }, ed.settings);
+
+            /*
+            // Setup default font_size_style_values
+            if (!s.font_size_style_values)
+                s.font_size_style_values = "8pt,10pt,12pt,14pt,18pt,24pt,36pt";
+
+            if (tinymce.is(s.theme_advanced_font_sizes, 'string')) {
+                s.font_size_style_values = tinymce.explode(s.font_size_style_values);
+                s.font_size_classes = tinymce.explode(s.font_size_classes || '');
+
+                // Parse string value
+                o = {};
+                ed.settings.theme_advanced_font_sizes = s.theme_advanced_font_sizes;
+                each(ed.getParam('theme_advanced_font_sizes', '', 'hash'), function(v, k) {
+                    var cl;
+
+                    if (k == v && v >= 1 && v <= 7) {
+                        k = v + ' (' + t.sizes[v - 1] + 'pt)';
+                        cl = s.font_size_classes[v - 1];
+                        v = s.font_size_style_values[v - 1] || (t.sizes[v - 1] + 'pt');
+                    }
+
+                    if (/^\s*\./.test(v))
+                        cl = v.replace(/\./g, '');
+
+                    o[k] = cl ? {'class' : cl} : {fontSize : v};
+                });
+
+                s.theme_advanced_font_sizes = o;
+            }
+            */
+                                   
+            if (s.save_draft_callback)
+            {
+                ed.addShortcut('ctrl+s', 'save', 'mceSave');
+            }                                                       
+                                   
+            if ((v = s.theme_advanced_path_location) && v != 'none')
+                s.theme_advanced_statusbar_location = s.theme_advanced_path_location;
+
+            if (s.theme_advanced_statusbar_location == 'none')
+                s.theme_advanced_statusbar_location = 0;
+
+            // Init editor
+            ed.onInit.add(function() {
+                if (!ed.settings.readonly)
+                    ed.onNodeChange.add(t._nodeChanged, t);                    
+            });
+
+            /*
+            ed.onSetProgressState.add(function(ed, b, ti) {
+                var co, id = ed.id, tb;
+
+                if (b) {
+                    t.progressTimer = setTimeout(function() {
+                        co = ed.getContainer();
+                        co = co.insertBefore(DOM.create('DIV', {style : 'position:relative'}), co.firstChild);
+                        tb = DOM.get(ed.id + '_tbl');
+
+                        DOM.add(co, 'div', {id : id + '_blocker', 'class' : 'mceBlocker', style : {width : tb.clientWidth + 2, height : tb.clientHeight + 2}});
+                        DOM.add(co, 'div', {id : id + '_progress', 'class' : 'mceProgress', style : {left : tb.clientWidth / 2, top : tb.clientHeight / 2}});
+                    }, ti || 0);
+                } else {
+                    DOM.remove(id + '_blocker');
+                    DOM.remove(id + '_progress');
+                    clearTimeout(t.progressTimer);
+                }
+            });
+            */
+
+            /*
+            DOM.loadCSS(s.editor_css ? ed.documentBaseURI.toAbsolute(s.editor_css) : url + "/skins/" + ed.settings.skin + "/ui.css");
+            */
+
+            ed.onBeforeGetContent.add(function(ed, o)
+            {
+                var body = ed.getBody();
+
+                var invalidTagNames = ['meta','style','title','link'];
+                for (var j = 0; j < invalidTagNames.length; j++)
+                {
+                    var badTags = body.getElementsByTagName(invalidTagNames[j]), badTagsCopy = [];
+
+                    for (var i = 0; i < badTags.length; i++)
+                    {
+                        badTagsCopy.push(badTags[i]);
+                    }
+                    for (var i = 0; i < badTagsCopy.length; i++)
+                    {
+                        removeElem(badTagsCopy[i]);
+                    }
+                }
+
+                var paragraphs = body.getElementsByTagName('p');
+                for (var i = 0; i < paragraphs.length - 1; i++)
+                {
+                    paragraphs[i].className = '';
+                }
+                if (paragraphs.length > 0)
+                {
+                    paragraphs[i].className = 'last-paragraph';
+
+                    if (paragraphs[0].childNodes.length == 0)
+                    {
+                        removeElem(paragraphs[0]);
+                    }
+                }
+            });
+
+            ed.onDblClick.add(function(ed, e) {
+                var target = e.target;
+                if (target)
+                {
+                    if (target.nodeName == 'IMG')
+                    {
+                        if (target.className.indexOf('scribd_placeholder') != -1)
+                        {
+                            ed.execCommand('mceDocument');
+                        }
+                        else
+                        {
+                            ed.execCommand('mceImage');
+                        }
+                    }
+                    else if (target.nodeName == 'A')
+                    {
+                        ed.execCommand('mceLink');
+                    }
+                }
+            });
+
+            ed.onChange.add(function(ed, l) {
+                if (ed.isDirty())
+                {
+                    setDirty(true);
+                }
+            });            
+        },
+
+        createControl : function(n, cf) {
+            var cd, c;
+
+            if (c = cf.createControl(n))
+                return c;
+
+            switch (n) {
+                /*
+                case "styleselect":
+                    return this._createStyleSelect();
+                */
+                case "formatselect":
+                    return this._createBlockFormats();
+                /*
+                case "fontselect":
+                    return this._createFontSelect();
+
+                case "fontsizeselect":
+                    return this._createFontSizeSelect();
+
+                case "forecolor":
+                    return this._createForeColorMenu();
+
+                case "backcolor":
+                    return this._createBackColorMenu();
+                */
+            }
+
+            if ((cd = this.controls[n]))
+                return cf.createButton(n, {title : cd[0], cmd : cd[1], ui : cd[2], value : cd[3]});
+        },
+
+        execCommand : function(cmd, ui, val) {
+            var f = this['_' + cmd];
+
+            if (f) {
+                f.call(this, ui, val);
+                return true;
+            }
+
+            return false;
+        },
+
+        /*
+        _importClasses : function(e) {
+            var ed = this.editor, ctrl = ed.controlManager.get('styleselect');
+
+            if (ctrl.getLength() == 0) {
+                each(ed.dom.getClasses(), function(o, idx) {
+                    var name = 'style_' + idx;
+
+                    ed.formatter.register(name, {
+                        inline : 'span',
+                        attributes : {'class' : o['class']},
+                        selector : '*'
+                    });
+
+                    ctrl.add(o['class'], name);
+                });
+            }
+        },
+        */
+
+        /*
+        _createStyleSelect : function(n) {
+            var t = this, ed = t.editor, ctrlMan = ed.controlManager, ctrl;
+
+            // Setup style select box
+            ctrl = ctrlMan.createListBox('styleselect', {
+                title : 'style_select',
+                onselect : function(name) {
+                    var matches, formatNames = [];
+
+                    each(ctrl.items, function(item) {
+                        formatNames.push(item.value);
+                    });
+
+                    ed.focus();
+                    ed.undoManager.add();
+
+                    // Toggle off the current format
+                    matches = ed.formatter.matchAll(formatNames);
+                    if (matches[0] == name)
+                        ed.formatter.remove(name);
+                    else
+                        ed.formatter.apply(name);
+
+                    ed.undoManager.add();
+                    ed.nodeChanged();
+
+                    return false; // No auto select
+                }
+            });
+
+            // Handle specified format
+            ed.onInit.add(function() {
+                var counter = 0, formats = ed.getParam('style_formats');
+
+                if (formats) {
+                    each(formats, function(fmt) {
+                        var name, keys = 0;
+
+                        each(fmt, function() {keys++;});
+
+                        if (keys > 1) {
+                            name = fmt.name = fmt.name || 'style_' + (counter++);
+                            ed.formatter.register(name, fmt);
+                            ctrl.add(fmt.title, name);
+                        } else
+                            ctrl.add(fmt.title);
+                    });
+                } else {
+                    each(ed.getParam('theme_advanced_styles', '', 'hash'), function(val, key) {
+                        var name;
+
+                        if (val) {
+                            name = 'style_' + (counter++);
+
+                            ed.formatter.register(name, {
+                                inline : 'span',
+                                classes : val,
+                                selector : '*'
+                            });
+
+                            ctrl.add(t.editor.translate(key), name);
+                        }
+                    });
+                }
+            });
+
+            // Auto import classes if the ctrl box is empty
+            if (ctrl.getLength() == 0) {
+                ctrl.onPostRender.add(function(ed, n) {
+                    if (!ctrl.NativeListBox) {
+                        Event.add(n.id + '_text', 'focus', t._importClasses, t);
+                        Event.add(n.id + '_text', 'mousedown', t._importClasses, t);
+                        Event.add(n.id + '_open', 'focus', t._importClasses, t);
+                        Event.add(n.id + '_open', 'mousedown', t._importClasses, t);
+                    } else
+                        Event.add(n.id, 'focus', t._importClasses, t);
+                });
+            }
+
+            return ctrl;
+        },
+        */
+
+        /*
+        _createFontSelect : function() {
+            var c, t = this, ed = t.editor;
+
+            c = ed.controlManager.createListBox('fontselect', {
+                title : 'fontdefault',
+                onselect : function(v) {
+                    ed.execCommand('FontName', false, v);
+
+                    // Fake selection, execCommand will fire a nodeChange and update the selection
+                    c.select(function(sv) {
+                        return v == sv;
+                    });
+
+                    return false; // No auto select
+                }
+            });
+
+            if (c) {
+                each(ed.getParam('theme_advanced_fonts', t.settings.theme_advanced_fonts, 'hash'), function(v, k) {
+                    c.add(ed.translate(k), v, {style : v.indexOf('dings') == -1 ? 'font-family:' + v : ''});
+                });
+            }
+
+            return c;
+        },
+        */
+
+        /*
+        _createFontSizeSelect : function() {
+            var t = this, ed = t.editor, c, i = 0, cl = [];
+
+            c = ed.controlManager.createListBox('fontsizeselect', {title : 'font_size', onselect : function(v) {
+                if (v['class']) {
+                    ed.focus();
+                    ed.undoManager.add();
+                    ed.formatter.toggle('fontsize_class', {value : v['class']});
+                    ed.undoManager.add();
+                    ed.nodeChanged();
+                } else
+                    ed.execCommand('FontSize', false, v.fontSize);
+
+                // Fake selection, execCommand will fire a nodeChange and update the selection
+                c.select(function(sv) {
+                    return v == sv;
+                });
+
+                return false; // No auto select
+            }});
+
+            if (c) {
+                each(t.settings.theme_advanced_font_sizes, function(v, k) {
+                    var fz = v.fontSize;
+
+                    if (fz >= 1 && fz <= 7)
+                        fz = t.sizes[parseInt(fz) - 1] + 'pt';
+
+                    c.add(k, v, {'style' : 'font-size:' + fz, 'class' : 'mceFontSize' + (i++) + (' ' + (v['class'] || ''))});
+                });
+            }
+
+            return c;
+        },
+        */
+
+        _createBlockFormats : function() {
+            var c, fmts = {
+                p : 'paragraph',
+                address : 'address',
+                pre : 'pre',
+                h1 : 'h1',
+                h2 : 'h2',
+                h3 : 'h3',
+                h4 : 'h4',
+                h5 : 'h5',
+                h6 : 'h6',
+                div : 'div',
+                blockquote : 'blockquote',
+                code : 'code',
+                dt : 'dt',
+                dd : 'dd',
+                samp : 'samp'
+            }, t = this;
+
+            c = t.editor.controlManager.createListBox('formatselect', {title : 'block', cmd : 'FormatBlock'});
+            if (c) {
+                each(t.editor.getParam('theme_advanced_blockformats', t.settings.theme_advanced_blockformats, 'hash'), function(v, k) {
+                    c.add(t.editor.translate(k != v ? k : fmts[v]), v, {'class' : 'mce_formatPreview mce_' + v});
+                });
+            }
+
+            return c;
+        },
+
+        /*
+        _createForeColorMenu : function() {
+            var c, t = this, s = t.settings, o = {}, v;
+
+            if (s.theme_advanced_more_colors) {
+                o.more_colors_func = function() {
+                    t._mceColorPicker(0, {
+                        color : c.value,
+                        func : function(co) {
+                            c.setColor(co);
+                        }
+                    });
+                };
+            }
+
+            if (v = s.theme_advanced_text_colors)
+                o.colors = v;
+
+            if (s.theme_advanced_default_foreground_color)
+                o.default_color = s.theme_advanced_default_foreground_color;
+
+            o.title = 'forecolor_desc';
+            o.cmd = 'ForeColor';
+            o.scope = this;
+
+            c = t.editor.controlManager.createColorSplitButton('forecolor', o);
+
+            return c;
+        },
+        */
+        
+        /*
+        _createBackColorMenu : function() {
+            var c, t = this, s = t.settings, o = {}, v;
+
+            if (s.theme_advanced_more_colors) {
+                o.more_colors_func = function() {
+                    t._mceColorPicker(0, {
+                        color : c.value,
+                        func : function(co) {
+                            c.setColor(co);
+                        }
+                    });
+                };
+            }
+
+            if (v = s.theme_advanced_background_colors)
+                o.colors = v;
+
+            if (s.theme_advanced_default_background_color)
+                o.default_color = s.theme_advanced_default_background_color;
+
+            o.title = 'backcolor_desc';
+            o.cmd = 'HiliteColor';
+            o.scope = this;
+
+            c = t.editor.controlManager.createColorSplitButton('backcolor', o);
+
+            return c;
+        },
+        */
+
+        renderUI : function(o) {
+            var n, ic, tb, t = this, ed = t.editor, s = t.settings, sc, p, nl;
+
+            n = p = DOM.create('span', {id : ed.id + '_parent', 'class' : 'mceEditor ' + ed.settings.skin + 'Skin' + (s.skin_variant ? ' ' + ed.settings.skin + 'Skin' + t._ufirst(s.skin_variant) : '')});
+
+            if (!DOM.boxModel)
+                n = DOM.add(n, 'div', {'class' : 'mceOldBoxModel'});
+
+            n = sc = DOM.add(n, 'table', {id : ed.id + '_tbl', 'class' : 'mceLayout', cellSpacing : 0, cellPadding : 0});
+            n = tb = DOM.add(n, 'tbody');
+
+            /*switch ((s.theme_advanced_layout_manager || '').toLowerCase()) {
+                case "rowlayout":
+                    ic = t._rowLayout(s, tb, o);
+                    break;
+
+                case "customlayout":
+                    ic = ed.execCallback("theme_advanced_custom_layout", s, tb, o, p);
+                    break;
+
+                default: */
+                    ic = t._simpleLayout(s, tb, o, p);
+            /* } */
+
+            n = o.targetNode;
+
+            // Add classes to first and last TRs
+            nl = DOM.stdMode ? sc.getElementsByTagName('tr') : sc.rows; // Quick fix for IE 8
+            DOM.addClass(nl[0], 'mceFirst');
+            DOM.addClass(nl[nl.length - 1], 'mceLast');
+
+            // Add classes to first and last TDs
+            each(DOM.select('tr', tb), function(n) {
+                DOM.addClass(n.firstChild, 'mceFirst');
+                DOM.addClass(n.childNodes[n.childNodes.length - 1], 'mceLast');
+            });
+
+            if (DOM.get(s.theme_advanced_toolbar_container))
+                DOM.get(s.theme_advanced_toolbar_container).appendChild(p);
+            else
+                DOM.insertAfter(p, n);
+
+            Event.add(ed.id + '_path_row', 'click', function(e) {
+                e = e.target;
+
+                if (e.nodeName == 'A') {
+                    t._sel(e.className.replace(/^.*mcePath_([0-9]+).*$/, '$1'));
+
+                    return Event.cancel(e);
+                }
+            });
+/*
+            if (DOM.get(ed.id + '_path_row')) {
+                Event.add(ed.id + '_tbl', 'mouseover', function(e) {
+                    var re;
+
+                    e = e.target;
+
+                    if (e.nodeName == 'SPAN' && DOM.hasClass(e.parentNode, 'mceButton')) {
+                        re = DOM.get(ed.id + '_path_row');
+                        t.lastPath = re.innerHTML;
+                        DOM.setHTML(re, e.parentNode.title);
+                    }
+                });
+
+                Event.add(ed.id + '_tbl', 'mouseout', function(e) {
+                    if (t.lastPath) {
+                        DOM.setHTML(ed.id + '_path_row', t.lastPath);
+                        t.lastPath = 0;
+                    }
+                });
+            }
+*/
+
+            if (!ed.getParam('accessibility_focus'))
+                Event.add(DOM.add(p, 'a', {href : '#'}, '<!-- IE -->'), 'focus', function() {tinyMCE.get(ed.id).focus();});
+
+            /*
+            if (s.theme_advanced_toolbar_location == 'external')
+                o.deltaHeight = 0;
+            */
+
+            t.deltaHeight = o.deltaHeight;
+            o.targetNode = null;
+
+            return {
+                iframeContainer : ic,
+                editorContainer : ed.id + '_parent',
+                sizeContainer : sc,
+                deltaHeight : o.deltaHeight
+            };
+        },
+
+        getInfo : function() {
+            return {
+                longname : 'Advanced theme',
+                author : 'Moxiecode Systems AB',
+                authorurl : 'http://tinymce.moxiecode.com',
+                version : tinymce.majorVersion + "." + tinymce.minorVersion
+            }
+        },
+
+        resizeBy : function(dw, dh) {
+            var e = DOM.get(this.editor.id + '_tbl');
+
+            this.resizeTo(e.clientWidth + dw, e.clientHeight + dh);
+        },
+
+        resizeTo : function(w, h) {
+            var ed = this.editor, s = this.settings, e = DOM.get(ed.id + '_tbl'), ifr = DOM.get(ed.id + '_ifr');
+
+            // Boundery fix box
+            //w = Math.max(s.theme_advanced_resizing_min_width || 100, w);
+            h = Math.max(s.theme_advanced_resizing_min_height || 100, h);
+            //w = Math.min(s.theme_advanced_resizing_max_width || 0xFFFF, w);
+            h = Math.min(s.theme_advanced_resizing_max_height || 0xFFFF, h);
+
+            // Resize iframe and container
+            DOM.setStyle(e, 'height', '');
+            DOM.setStyle(ifr, 'height', h);
+
+            /*
+            if (s.theme_advanced_resize_horizontal) {
+                DOM.setStyle(e, 'width', '');
+                DOM.setStyle(ifr, 'width', w);
+
+                // Make sure that the size is never smaller than the over all ui
+                if (w < e.clientWidth)
+                    DOM.setStyle(ifr, 'width', e.clientWidth);
+            }
+            */
+        },
+
+        destroy : function() {
+            var id = this.editor.id;
+
+            Event.clear(id + '_resize');
+            Event.clear(id + '_path_row');
+            Event.clear(id + '_external_close');
+        },
+
+        // Internal functions
+
+        _simpleLayout : function(s, tb, o, p) {
+            var t = this, ed = t.editor, lo = s.theme_advanced_toolbar_location, sl = s.theme_advanced_statusbar_location, n, ic, etb, c;
+
+            if (s.readonly) {
+                n = DOM.add(tb, 'tr');
+                n = ic = DOM.add(n, 'td', {'class' : 'mceIframeContainer'});
+                return ic;
+            }
+
+            // Create toolbar container at top
+            t._addToolbars(tb, o);
+
+            /*
+            // Create external toolbar
+            if (lo == 'external') {
+                n = c = DOM.create('div', {style : 'position:relative'});
+                n = DOM.add(n, 'div', {id : ed.id + '_external', 'class' : 'mceExternalToolbar'});
+                DOM.add(n, 'a', {id : ed.id + '_external_close', href : 'javascript:;', 'class' : 'mceExternalClose'});
+                n = DOM.add(n, 'table', {id : ed.id + '_tblext', cellSpacing : 0, cellPadding : 0});
+                etb = DOM.add(n, 'tbody');
+
+                if (p.firstChild.className == 'mceOldBoxModel')
+                    p.firstChild.appendChild(c);
+                else
+                    p.insertBefore(c, p.firstChild);
+
+                t._addToolbars(etb, o);
+
+                ed.onMouseUp.add(function() {
+                    var e = DOM.get(ed.id + '_external');
+                    DOM.show(e);
+
+                    DOM.hide(lastExtID);
+
+                    var f = Event.add(ed.id + '_external_close', 'click', function() {
+                        DOM.hide(ed.id + '_external');
+                        Event.remove(ed.id + '_external_close', 'click', f);
+                    });
+
+                    DOM.show(e);
+                    DOM.setStyle(e, 'top', 0 - DOM.getRect(ed.id + '_tblext').h - 1);
+
+                    // Fixes IE rendering bug
+                    DOM.hide(e);
+                    DOM.show(e);
+                    e.style.filter = '';
+
+                    lastExtID = ed.id + '_external';
+
+                    e = null;
+                });
+            }
+            */
+
+            // Create iframe container
+            if (!s.theme_advanced_toolbar_container) {
+                n = DOM.add(tb, 'tr');
+                n = ic = DOM.add(n, 'td', {'class' : 'mceIframeContainer'});
+            }
+
+            t._addStatusBar(tb, o);
+
+            return ic;
+        },
+
+        /*
+        _rowLayout : function(s, tb, o) {
+            var t = this, ed = t.editor, dc, da, cf = ed.controlManager, n, ic, to, a;
+
+            dc = s.theme_advanced_containers_default_class || '';
+            da = s.theme_advanced_containers_default_align || 'center';
+
+            each(explode(s.theme_advanced_containers || ''), function(c, i) {
+                var v = s['theme_advanced_container_' + c] || '';
+
+                switch (v.toLowerCase()) {
+                    case 'mceeditor':
+                        n = DOM.add(tb, 'tr');
+                        n = ic = DOM.add(n, 'td', {'class' : 'mceIframeContainer'});
+                        break;
+
+                    case 'mceelementpath':
+                        t._addStatusBar(tb, o);
+                        break;
+
+                    default:
+                        a = (s['theme_advanced_container_' + c + '_align'] || da).toLowerCase();
+                        a = 'mce' + t._ufirst(a);
+
+                        n = DOM.add(DOM.add(tb, 'tr'), 'td', {
+                            'class' : 'mceToolbar ' + (s['theme_advanced_container_' + c + '_class'] || dc) + ' ' + a || da
+                        });
+
+                        to = cf.createToolbar("toolbar" + i);
+                        t._addControls(v, to);
+                        DOM.setHTML(n, to.renderHTML());
+                        o.deltaHeight -= s.theme_advanced_row_height;
+                }
+            });
+
+            return ic;
+        },
+        */
+
+        _addControls : function(v, tb) {
+            var t = this, s = t.settings, di, cf = t.editor.controlManager;
+
+            if (s.theme_advanced_disable && !t._disabled) {
+                di = {};
+
+                each(explode(s.theme_advanced_disable), function(v) {
+                    di[v] = 1;
+                });
+
+                t._disabled = di;
+            } else
+                di = t._disabled;
+
+            each(explode(v), function(n) {
+                var c;
+
+                if (di && di[n])
+                    return;
+
+                // Compatiblity with 2.x
+                if (n == 'tablecontrols') {
+                    each(["table","|","row_props","cell_props","|","row_before","row_after","delete_row","|","col_before","col_after","delete_col","|","split_cells","merge_cells"], function(n) {
+                        n = t.createControl(n, cf);
+
+                        if (n)
+                            tb.add(n);
+                    });
+
+                    return;
+                }
+
+                c = t.createControl(n, cf);
+
+                if (c)
+                    tb.add(c);
+            });
+        },
+
+        _addToolbars : function(c, o) {
+            var t = this, i, tb, ed = t.editor, s = t.settings, v, cf = ed.controlManager, di, n, h = [], a;
+
+            a = s.theme_advanced_toolbar_align.toLowerCase();
+            a = 'mce' + t._ufirst(a);
+
+            n = DOM.add(DOM.add(c, 'tr'), 'td', {'class' : 'mceToolbar ' + a});
+
+            if (!ed.getParam('accessibility_focus'))
+                h.push(DOM.createHTML('a', {href : '#', onfocus : 'tinyMCE.get(\'' + ed.id + '\').focus();'}, '<!-- IE -->'));
+
+            h.push(DOM.createHTML('a', {href : '#', accesskey : 'q', title : ed.getLang("toolbar_focus")}, '<!-- IE -->'));
+
+            // Create toolbar and add the controls
+            for (i=1; (v = s['theme_advanced_buttons' + i]); i++) {
+                tb = cf.createToolbar("toolbar" + i, {'class' : 'mceToolbarRow' + i});
+
+                if (s['theme_advanced_buttons' + i + '_add'])
+                    v += ',' + s['theme_advanced_buttons' + i + '_add'];
+
+                if (s['theme_advanced_buttons' + i + '_add_before'])
+                    v = s['theme_advanced_buttons' + i + '_add_before'] + ',' + v;
+
+                t._addControls(v, tb);
+
+                //n.appendChild(n = tb.render());
+                h.push(tb.renderHTML());
+
+                o.deltaHeight -= s.theme_advanced_row_height;
+            }
+
+            h.push(DOM.createHTML('a', {href : '#', accesskey : 'z', title : ed.getLang("toolbar_focus"), onfocus : 'tinyMCE.getInstanceById(\'' + ed.id + '\').focus();'}, '<!-- IE -->'));
+            DOM.setHTML(n, h.join(''));
+        },
+
+        _addStatusBar : function(tb, o) {
+            var n, t = this, ed = t.editor, s = t.settings, r, mf, me, td;
+
+            n = DOM.add(tb, 'tr');
+            n = td = DOM.add(n, 'td', {'class' : 'mceStatusbar'});
+            //n = DOM.add(n, 'div', {id : ed.id + '_path_row'}, s.theme_advanced_path ? ed.translate('path') + ': ' : '&#160;');
+            //DOM.add(n, 'a', {href : '#', accesskey : 'x'});
+
+            //if (s.theme_advanced_resizing) {
+                DOM.add(td, 'span', {id : ed.id + '_resize', 'class' : 'mceResize'});
+
+                /*
+                if (s.theme_advanced_resizing_use_cookie) {
+                    ed.onPostRender.add(function() {
+                        var o = Cookie.getHash("TinyMCE_" + ed.id + "_size"), c = DOM.get(ed.id + '_tbl');
+
+                        if (!o)
+                            return;
+
+                        t.resizeTo(o.cw, o.ch);
+                    });
+                }
+                */
+
+                ed.onPostRender.add(function() {
+                    Event.add(ed.id + '_resize', 'mousedown', function(e) {
+                        var mouseMoveHandler1, mouseMoveHandler2,
+                            mouseUpHandler1, mouseUpHandler2,
+                            startX, startY, startWidth, startHeight, width, height, ifrElm;
+
+                        function resizeOnMove(e) {
+                            width = startWidth + (e.screenX - startX);
+                            height = startHeight + (e.screenY - startY);
+
+                            t.resizeTo(width, height);
+                        };
+
+                        function endResize(e) {
+                            // Stop listening
+                            Event.remove(DOM.doc, 'mousemove', mouseMoveHandler1);
+                            Event.remove(ed.getDoc(), 'mousemove', mouseMoveHandler2);
+                            Event.remove(DOM.doc, 'mouseup', mouseUpHandler1);
+                            Event.remove(ed.getDoc(), 'mouseup', mouseUpHandler2);
+
+                            // Store away the size
+                            /*
+                            if (s.theme_advanced_resizing_use_cookie) {
+                                Cookie.setHash("TinyMCE_" + ed.id + "_size", {
+                                    cw : width,
+                                    ch : height
+                                });
+                            } */
+                        };
+
+                        e.preventDefault();
+
+                        // Get the current rect size
+                        startX = e.screenX;
+                        startY = e.screenY;
+                        ifrElm = DOM.get(t.editor.id + '_ifr');
+                        startWidth = width = ifrElm.clientWidth;
+                        startHeight = height = ifrElm.clientHeight;
+
+                        // Register envent handlers
+                        mouseMoveHandler1 = Event.add(DOM.doc, 'mousemove', resizeOnMove);
+                        mouseMoveHandler2 = Event.add(ed.getDoc(), 'mousemove', resizeOnMove);
+                        mouseUpHandler1 = Event.add(DOM.doc, 'mouseup', endResize);
+                        mouseUpHandler2 = Event.add(ed.getDoc(), 'mouseup', endResize);
+                    });
+                });
+            //}
+
+            o.deltaHeight -= 0;
+            n = tb = null;
+        },
+
+        _nodeChanged : function(ed, cm, n, co, ob) {
+            var t = this, p, de = 0, v, c, s = t.settings, cl, fz, fn, formatNames, matches;
+
+            tinymce.each(t.stateControls, function(c) {
+                cm.setActive(c, ed.queryCommandState(t.controls[c][1]));
+            });
+
+            function getParent(name) {
+                var i, parents = ob.parents, func = name;
+
+                if (typeof(name) == 'string') {
+                    func = function(node) {
+                        return node.nodeName == name;
+                    };
+                }
+
+                for (i = 0; i < parents.length; i++) {
+                    if (func(parents[i]))
+                        return parents[i];
+                }
+            };
+
+            cm.setActive('visualaid', ed.hasVisual);
+            cm.setDisabled('undo', !ed.undoManager.hasUndo() && !ed.typing);
+            cm.setDisabled('redo', !ed.undoManager.hasRedo());
+            cm.setDisabled('outdent', !ed.queryCommandState('Outdent'));
+
+            p = getParent('A');
+            if (c = cm.get('link')) {
+                if (!p || !p.name) {
+                    //c.setDisabled(!p && co);
+                    c.setActive(!!p);
+                }
+            }
+
+            if (c = cm.get('unlink')) {
+                c.setDisabled(!p && co);
+                c.setActive(!!p && !p.name);
+            }
+
+            if (c = cm.get('anchor')) {
+                c.setActive(!!p && p.name);
+            }
+
+            p = getParent('IMG');
+            var isDoc = !!p && p.className.indexOf('scribd_placeholder') != -1;
+            
+            if (c = cm.get('image'))
+                c.setActive(!!p && !isDoc && n.className.indexOf('mceItem') == -1);
+            
+            if (c = cm.get('document'))
+                c.setActive(isDoc);
+
+            /*
+            if (c = cm.get('styleselect')) {
+                t._importClasses();
+
+                formatNames = [];
+                each(c.items, function(item) {
+                    formatNames.push(item.value);
+                });
+
+                matches = ed.formatter.matchAll(formatNames);
+                c.select(matches[0]);
+            }
+            */
+
+            if (c = cm.get('formatselect')) {
+                p = getParent(DOM.isBlock);
+
+                if (p)
+                    c.select(p.nodeName.toLowerCase());
+            }
+
+            /*
+            // Find out current fontSize, fontFamily and fontClass            
+            getParent(function(n) {
+                if (n.nodeName === 'SPAN') {
+                    if (!cl && n.className)
+                        cl = n.className;
+
+                    if (!fz && n.style.fontSize)
+                        fz = n.style.fontSize;
+
+                    if (!fn && n.style.fontFamily) */
+            //            fn = n.style.fontFamily.replace(/[\"\']+/g, '').replace(/^([^,]+).*/, '$1').toLowerCase();
+            /*    }
+
+                return false;
+            });
+            */
+            
+            /* if (c = cm.get('fontselect')) {
+                    c.select(function(v) { */
+            //         return v.replace(/^([^,]+).*/, '$1').toLowerCase() == fn;
+            /*     });
+             }             
+            */
+
+            /*
+            // Select font size
+            if (c = cm.get('fontsizeselect')) {
+                // Use computed style
+                if (s.theme_advanced_runtime_fontsize && !fz && !cl)
+                    fz = ed.dom.getStyle(n, 'fontSize', true);
+
+                c.select(function(v) {
+                    if (v.fontSize && v.fontSize === fz)
+                        return true;
+
+                    if (v['class'] && v['class'] === cl)
+                        return true;
+                });
+            }
+            */
+
+            /*
+            if (s.theme_advanced_path && s.theme_advanced_statusbar_location) {
+                p = DOM.get(ed.id + '_path') || DOM.add(ed.id + '_path_row', 'span', {id : ed.id + '_path'});
+                DOM.setHTML(p, '');
+
+                getParent(function(n) {
+                    var na = n.nodeName.toLowerCase(), u, pi, ti = '';
+
+                    //if (n.getAttribute('_mce_bogus'))
+                    //    return;
+
+                    // Ignore non element and hidden elements
+                    if (n.nodeType != 1 || n.nodeName === 'BR' || (DOM.hasClass(n, 'mceItemHidden') || DOM.hasClass(n, 'mceItemRemoved')))
+                        return;
+
+                    // Fake name
+                    if (v = DOM.getAttrib(n, 'mce_name'))
+                        na = v;
+
+                    // Handle prefix
+                    if (tinymce.isIE && n.scopeName !== 'HTML')
+                        na = n.scopeName + ':' + na;
+
+                    // Remove internal prefix
+                    na = na.replace(/mce\:/g, '');
+
+                    // Handle node name
+                    switch (na) {
+                        case 'b':
+                            na = 'strong';
+                            break;
+
+                        case 'i':
+                            na = 'em';
+                            break;
+
+                        case 'img':
+                            if (v = DOM.getAttrib(n, 'src'))
+                                ti += 'src: ' + v + ' ';
+
+                            break;
+
+                        case 'a':
+                            if (v = DOM.getAttrib(n, 'name')) {
+                                ti += 'name: ' + v + ' ';
+                                na += '#' + v;
+                            }
+
+                            if (v = DOM.getAttrib(n, 'href'))
+                                ti += 'href: ' + v + ' ';
+
+                            break;
+
+                        case 'font':
+                            if (v = DOM.getAttrib(n, 'face'))
+                                ti += 'font: ' + v + ' ';
+
+                            if (v = DOM.getAttrib(n, 'size'))
+                                ti += 'size: ' + v + ' ';
+
+                            if (v = DOM.getAttrib(n, 'color'))
+                                ti += 'color: ' + v + ' ';
+
+                            break;
+
+                        case 'span':
+                            if (v = DOM.getAttrib(n, 'style'))
+                                ti += 'style: ' + v + ' ';
+
+                            break;
+                    }
+
+                    if (v = DOM.getAttrib(n, 'id'))
+                        ti += 'id: ' + v + ' ';
+
+                    if (v = n.className) {
+                        v = v.replace(/\b\s*(webkit|mce|Apple-)\w+\s*\b/g, '')
+
+                        if (v) {
+                            ti += 'class: ' + v + ' ';
+
+                            if (DOM.isBlock(n) || na == 'img' || na == 'span')
+                                na += '.' + v;
+                        }
+                    }
+
+                    na = na.replace(/(html:)/g, '');
+                    na = {name : na, node : n, title : ti};
+                    t.onResolveName.dispatch(t, na);
+                    ti = na.title;
+                    na = na.name;
+
+                    //u = "javascript:tinymce.EditorManager.get('" + ed.id + "').theme._sel('" + (de++) + "');";
+                    pi = DOM.create('a', {'href' : "javascript:;", onmousedown : "return false;", title : ti, 'class' : 'mcePath_' + (de++)}, na);
+
+                    if (p.hasChildNodes()) {
+                        p.insertBefore(DOM.doc.createTextNode(' \u00bb '), p.firstChild);
+                        p.insertBefore(pi, p.firstChild);
+                    } else
+                        p.appendChild(pi);
+                }, ed.getBody());
+            }
+            */
+        },
+
+        // Commands gets called by execCommand
+
+        _sel : function(v) {
+            this.editor.execCommand('mceSelectNodeDepth', false, v);
+        },
+
+        /*
+        _mceInsertAnchor : function(ui, v) {
+            var ed = this.editor;
+
+            ed.windowManager.open({
+                url : tinymce.baseURL + '/themes/advanced/anchor.htm',
+                width : 320 + parseInt(ed.getLang('anchor_delta_width', 0)),
+                height : 90 + parseInt(ed.getLang('anchor_delta_height', 0)),
+                inline : true
+            }, {
+                theme_url : this.url
+            });
+        },
+        */
+
+        /*
+        _mceCharMap : function() {
+            var ed = this.editor;
+
+            ed.windowManager.open({
+                url : tinymce.baseURL + '/themes/advanced/charmap.htm',
+                width : 550 + parseInt(ed.getLang('charmap_delta_width', 0)),
+                height : 250 + parseInt(ed.getLang('charmap_delta_height', 0)),
+                inline : true
+            }, {
+                theme_url : this.url
+            });
+        },
+        */
+
+        /*
+        _mceHelp : function() {
+            var ed = this.editor;
+
+            ed.windowManager.open({
+                url : tinymce.baseURL + '/themes/advanced/about.htm',
+                width : 480,
+                height : 380,
+                inline : true
+            }, {
+                theme_url : this.url
+            });
+        },
+        */
+
+        /*
+        _mceColorPicker : function(u, v) {
+            var ed = this.editor;
+
+            v = v || {};
+
+            ed.windowManager.open({
+                url : tinymce.baseURL + '/themes/advanced/color_picker.htm',
+                width : 375 + parseInt(ed.getLang('colorpicker_delta_width', 0)),
+                height : 250 + parseInt(ed.getLang('colorpicker_delta_height', 0)),
+                close_previous : false,
+                inline : true
+            }, {
+                input_color : v.color,
+                func : v.func,
+                theme_url : this.url
+            });
+        },
+        */
+
+        _mceCodeEditor : function(ui, val) {
+            var ed = this.editor;
+
+            ed.windowManager.open({
+                url : tinymce.baseURL + '/themes/advanced/source_editor.htm',
+                width : parseInt(ed.getParam("theme_advanced_source_editor_width", 720)),
+                height : parseInt(ed.getParam("theme_advanced_source_editor_height", 580)),
+                inline : true,
+                resizable : true,
+                maximizable : true
+            }, {
+                theme_url : this.url
+            });
+        },
+
+        _mceSave: function(ui, val)
+        {            
+            this.settings.save_draft_callback(this.editor);
+        },
+
+        _mceRestoreDraft: function(ui, val)
+        {            
+            this.settings.restore_draft_callback(this.editor);
+        },
+        
+        _mceDocument: function(ui, val)
+        {
+            var ed = this.editor;   
+        
+            var e = ed.selection.getNode();
+            var imageNode = (e && e.nodeName == 'IMG') ? e : null;
+            
+            var range = ed.selection.getRng();            
+            
+            var guid = '';
+            if (imageNode && imageNode.alt)
+            {
+                var metadata = imageNode.alt.split(':');
+                guid = metadata[3];
+            }
+        
+            var iframeName = 'modalDocumentFrame_'+Math.ceil(Math.random()*1000000);
+        
+            var iframe = createElem('iframe',
+                 {
+                    src:'/pg/select_document?r='+Math.random()+"&guid="+escape(guid)+"&frameId="+iframeName,
+                    scrolling:'no',
+                    frameBorder:'0',
+                    border:'0',
+                    className:'modalDocumentFrame',
+                    name:iframeName,
+                    id:iframeName
+                 }                  
+             );
+
+            var loading = createElem('div', {className:'modalImageFrameLoading'}, __('loading'));
+             
+            var imageBox = createModalBox({               
+                title: ed.getLang(imageNode ? 'document_edit' : 'document_insert'),
+                content: createElem('div',
+                         {className:'modalBody'},
+                         loading,
+                         iframe
+                     ),
+                okFn: saveChanges, 
+                cancelFn: cancel,
+                width: 640
+            });               
+             
+            function saveChanges()
+            {
+                var iframeWindow = window.frames[iframeName];                
+                var uploadedFile = iframeWindow.getUploadedFile();
+                
+                ed.selection.setRng(range);
+
+                if (uploadedFile)
+                {
+                    ed.insertOrUpdateImage(imageNode, {
+                        src: "/_media/images/document_icon.jpg",
+                        width: '100%',
+                        height: '300',
+                        'class': 'scribd_placeholder',
+                        alt: uploadedFile.filename+':'+uploadedFile.docid+':'+uploadedFile.accesskey+':'+uploadedFile.guid
+                    });               
+                }            
+                removeElem(imageBox); 
+            }           
+            
+            function cancel()
+            {
+                removeElem(imageBox); 
+            }
+            
+            window["frameapi_" + iframeName] = {
+                'saveChanges': saveChanges,
+                'cancel': cancel,
+                'iframe': iframe,
+                'loading': loading
+            };
+                                                              
+            document.body.appendChild(imageBox);                  
+
+            setTimeout(function() {
+                iframe.focus();
+            }, 1);            
+        },
+        
+        _mceImage : function(ui, val) {
+ 
+            var ed = this.editor;   
+            
+            var e = ed.selection.getNode();
+            var imageNode = (e && e.nodeName == 'IMG') ? e : null;
+            var src = imageNode ? e.src : '';
+            var pos = '';
+            if (imageNode)
+            {
+                var match = /image_(\w+)/.exec(imageNode.className);
+                if (match)
+                {
+                    pos = match[1];
+                }
+            }            
+            
+            var iframeName = 'modalImageFrame_'+Math.ceil(Math.random()*1000000);
+            
+            var range = ed.selection.getRng();            
+            
+            var iframe = createElem('iframe',
+                 {
+                    src:'/pg/select_image?r='+Math.random()+"&src="+escape(src)+"&pos="+escape(pos)+"&frameId="+iframeName,
+                    scrolling:'no',
+                    frameBorder:'0',
+                    border:'0',
+                    className:'modalImageFrame',
+                    name:iframeName,
+                    id:iframeName
+                 }                  
+             );
+
+            var loading = createElem('div', {className:'modalImageFrameLoading'}, __('loading'));
+            var imageBox = createModalBox({
+                title: ed.getLang(imageNode ? 'image_edit' : 'image_insert'),
+                content: createElem('div',
+                         {className:'modalBody'},
+                         loading,
+                         iframe
+                     ),
+                okFn: saveChanges, 
+                cancelFn: cancel
+            });       
+
+            function saveChanges()
+            {
+                ed.selection.setRng(range);
+            
+                var iframeWindow = window.frames[iframeName];
+                
+                var selectedImage = iframeWindow.getSelectedImage();                
+                if (selectedImage)
+                {
+                    var pos = iframeWindow.getSelectedPosition();                                                          
+                    ed.insertOrUpdateImage(imageNode, {
+                        src: selectedImage.url,
+                        width: selectedImage.width,
+                        height: selectedImage.height,
+                        'class': 'image_' + pos
+                    });                         
+                }
+            
+                removeElem(imageBox); 
+            }
+            
+            function cancel()
+            {
+                removeElem(imageBox); 
+            }
+            
+            window["frameapi_" + iframeName] = {
+                'saveChanges': saveChanges,
+                'cancel': cancel,
+                'iframe': iframe,
+                'loading': loading
+            };            
+                                                              
+            document.body.appendChild(imageBox);        
+
+            setTimeout(function() {
+                iframe.focus();
+            }, 1);
+        },
+
+        _mceLink : function(ui, val) {
+            var ed = this.editor;
+
+            var content = ed.selection.getContent({format: 'text'});
+            
+            var selectedNode = ed.selection.getNode();
+            
+            var e = ed.dom.getParent(selectedNode, 'A');
+            var imageLink = selectedNode && selectedNode.nodeName == 'IMG';
+            
+            var range = ed.selection.getRng();
+            
+            var textField = createElem('input', {type:'text', className:'input-text', value:(e ? (e.innerText || e.textContent || '') : content)});
+            
+            var textDiv = imageLink ? createElem('div') : createElem('div',
+                {className:'linkText'},
+                createElem('h3', ed.getLang('link_text')),
+                textField
+            );
+            
+            var urlField = createElem('input', {
+                type:'text',       
+                className:'input-text', 
+                value:(e ? e.href : '')
+            });
+            var linkBox = createModalBox({
+                title: ed.getLang(e ? 'link_edit' : 'link_insert'),
+                content: createElem('div',
+                        {className:'modalBody'},
+                        createElem('div',
+                            {className:'linkUrl'},
+                                createElem('h3', ed.getLang('link_url')),
+                            urlField,
+                            createElem('div', {className:'help'}, 
+                                ed.getLang('link_url_help')
+                            ),
+                            createElem('div',
+                                createElem('a', 
+                                    { 
+                                        href:'javascript:void(0)',
+                                        click: function() {
+                                            var url = urlField.value;
+                                            if (url)
+                                            {
+                                                window.open(urlField.value);
+                                            }
+                                            else
+                                            {
+                                                alert(ed.getLang('link_url_empty'));
+                                            }                                        
+                                        }
+                                    },
+                                    ed.getLang('link_url_test')
+                                )
+                            )
+                        ), 
+                        textDiv
+                    ),
+                okFn: saveChanges,
+                focus: true
+            });       
+            
+            function saveChanges()
+            {
+                ed.selection.setRng(range);
+
+                var url = urlField.value;
+
+                if (url)
+                {       
+                    if (!e)
+                    {       
+                        if (ed.selection.isCollapsed())
+                        {
+                            var randid = 'mce_temp_wtf' + Math.ceil(Math.random() * 10000);
+                            ed.selection.setContent("<span id='"+randid+"'>TEMP</span>");    
+                            var wtf = ed.getDoc().getElementById(randid);
+                            ed.selection.select(wtf);
+                        }
+
+                        ed.getDoc().execCommand("CreateLink", false, "#mce_temp_url#");
+
+                        tinymce.each(ed.dom.select("a"), function(n) {
+                            if (ed.dom.getAttrib(n, 'href') == '#mce_temp_url#') {
+                                e = n;
+                            }
+                        });   
+                    }    
+
+                    if (e)
+                    {
+                        e.href = url;  
+                        e.setAttribute('_mce_href', url);
+                        
+                        if (!imageLink)
+                        {
+                            removeChildren(e);
+                            e.appendChild(ed.getDoc().createTextNode(textField.value || url));
+                        }    
+                    }    
+                }    
+                else if (e)
+                {
+                    ed.selection.select(e);
+                    ed.getDoc().execCommand("unlink", false, null);
+                }
+                removeElem(linkBox); 
+            }          
+            
+            document.body.appendChild(linkBox);        
+        },
+
+        /*
+        _mceNewDocument : function() {
+            var ed = this.editor;
+
+            ed.windowManager.confirm('newdocument', function(s) {
+                if (s)
+                    ed.execCommand('mceSetContent', false, '');
+            });
+        },
+        */
+
+        /*
+        _mceForeColor : function() {
+            var t = this;
+
+            this._mceColorPicker(0, {
+                color: t.fgColor,
+                func : function(co) {
+                    t.fgColor = co;
+                    t.editor.execCommand('ForeColor', false, co);
+                }
+            });
+        },
+        */
+
+        /*
+        _mceBackColor : function() {
+            var t = this;
+
+            this._mceColorPicker(0, {
+                color: t.bgColor,
+                func : function(co) {
+                    t.bgColor = co;
+                    t.editor.execCommand('HiliteColor', false, co);
+                }
+            });
+        },
+        */
+
+        _ufirst : function(s) {
+            return s.substring(0, 1).toUpperCase() + s.substring(1);
+        }
+    });
+    
+    tinymce.ThemeManager.add('advanced', tinymce.themes.AdvancedTheme);   
+}(tinymce));
+
+/**
+ * editor_plugin_src.js
+ *
+ * Copyright 2009, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://tinymce.moxiecode.com/license
+ * Contributing: http://tinymce.moxiecode.com/contributing
+ */
+
+(function() {
+	var each = tinymce.each,
+		entities = null,
+		defs = {
+			paste_auto_cleanup_on_paste : true,
+			paste_block_drop : false,
+			paste_retain_style_properties : "text-align",
+			paste_strip_class_attributes : "mso",
+			paste_remove_spans : false,
+			paste_remove_styles : false,
+			paste_remove_styles_if_webkit : true,
+			paste_convert_middot_lists : true,
+			paste_convert_headers_to_strong : false,
+			paste_dialog_width : "450",
+			paste_dialog_height : "400",
+			paste_text_use_dialog : false,
+			paste_text_sticky : false,
+			paste_text_notifyalways : false,
+			paste_text_linebreaktype : "p",
+			paste_text_replacements : [
+				[/\u2026/g, "..."],
+				[/[\x93\x94\u201c\u201d]/g, '"'],
+				[/[\x60\x91\x92\u2018\u2019]/g, "'"]
+			]
+		};
+
+	function getParam(ed, name) {
+		return ed.getParam(name, defs[name]);
+	}
+
+	tinymce.create('tinymce.plugins.PastePlugin', {
+		init : function(ed, url) {
+			var t = this;
+
+			t.editor = ed;
+			t.url = url;
+
+			// Setup plugin events
+			t.onPreProcess = new tinymce.util.Dispatcher(t);
+			t.onPostProcess = new tinymce.util.Dispatcher(t);
+
+			// Register default handlers
+			t.onPreProcess.add(t._preProcess);
+			t.onPostProcess.add(t._postProcess);
+
+			// Register optional preprocess handler
+			t.onPreProcess.add(function(pl, o) {
+				ed.execCallback('paste_preprocess', pl, o);
+			});
+
+			// Register optional postprocess
+			t.onPostProcess.add(function(pl, o) {
+				ed.execCallback('paste_postprocess', pl, o);
+			});
+
+			// Initialize plain text flag
+			ed.pasteAsPlainText = false;
+
+			// This function executes the process handlers and inserts the contents
+			// force_rich overrides plain text mode set by user, important for pasting with execCommand
+			function process(o, force_rich) {
+				var dom = ed.dom;
+
+				// Execute pre process handlers
+				t.onPreProcess.dispatch(t, o);
+
+				// Create DOM structure
+				o.node = dom.create('div', 0, o.content);
+
+				// Execute post process handlers
+				t.onPostProcess.dispatch(t, o);
+
+				// Serialize content
+				o.content = ed.serializer.serialize(o.node, {getInner : 1});
+
+				// Plain text option active?
+				if ((!force_rich) && (ed.pasteAsPlainText)) {
+					t._insertPlainText(ed, dom, o.content);
+
+					if (!getParam(ed, "paste_text_sticky")) {
+						ed.pasteAsPlainText = false;
+						ed.controlManager.setActive("pastetext", false);
+					}
+				} else if (/<(p|h[1-6]|ul|ol)/.test(o.content)) {
+					// Handle insertion of contents containing block elements separately
+					t._insertBlockContent(ed, dom, o.content);
+				} else {
+					t._insert(o.content);
+				}
+			}
+
+			// Add command for external usage
+			ed.addCommand('mceInsertClipboardContent', function(u, o) {
+				process(o, true);
+			});
+
+            ed.addCommand('mcePasteText', function(u, v) {
+                var cookie = tinymce.util.Cookie;
+
+                ed.pasteAsPlainText = !ed.pasteAsPlainText;
+                ed.controlManager.setActive('pastetext', ed.pasteAsPlainText);
+
+                if ((ed.pasteAsPlainText) && (!cookie.get("tinymcePasteText"))) {
+                    if (getParam(ed, "paste_text_sticky")) {
+                        ed.windowManager.alert(ed.translate('paste.plaintext_mode_sticky'));
+                    } else {
+                        ed.windowManager.alert(ed.translate('paste.plaintext_mode_sticky'));
+                    }
+
+                    if (!getParam(ed, "paste_text_notifyalways")) {
+                        cookie.set("tinymcePasteText", "1", new Date(new Date().getFullYear() + 1, 12, 31))
+                    }
+                }
+            });
+
+			ed.addButton('pastetext', {title: 'paste.paste_text_desc', cmd: 'mcePasteText'});
+			ed.addButton('selectall', {title: 'paste.selectall_desc', cmd: 'selectall'});
+
+			// This function grabs the contents from the clipboard by adding a
+			// hidden div and placing the caret inside it and after the browser paste
+			// is done it grabs that contents and processes that
+			function grabContent(e) {
+				var n, or, rng, sel = ed.selection, dom = ed.dom, body = ed.getBody(), posY;
+
+				// Check if browser supports direct plaintext access
+				if (ed.pasteAsPlainText && (e.clipboardData || dom.doc.dataTransfer)) {
+					e.preventDefault();
+					process({content : (e.clipboardData || dom.doc.dataTransfer).getData('Text')}, true);
+					return;
+				}
+
+				if (dom.get('_mcePaste'))
+					return;
+
+				// Create container to paste into
+				n = dom.add(body, 'div', {id : '_mcePaste', 'class' : 'mcePaste'}, '\uFEFF');
+
+				// If contentEditable mode we need to find out the position of the closest element
+				if (body != ed.getDoc().body)
+					posY = dom.getPos(ed.selection.getStart(), body).y;
+				else
+					posY = body.scrollTop;
+
+				// Styles needs to be applied after the element is added to the document since WebKit will otherwise remove all styles
+				dom.setStyles(n, {
+					position : 'absolute',
+					left : -10000,
+					top : posY,
+					width : 1,
+					height : 1,
+					overflow : 'hidden'
+				});
+
+				if (tinymce.isIE) {
+					// Select the container
+					rng = dom.doc.body.createTextRange();
+					rng.moveToElementText(n);
+					rng.execCommand('Paste');
+
+					// Remove container
+					dom.remove(n);
+
+					// Check if the contents was changed, if it wasn't then clipboard extraction failed probably due
+					// to IE security settings so we pass the junk though better than nothing right
+					if (n.innerHTML === '\uFEFF') {
+						ed.execCommand('mcePasteWord');
+						e.preventDefault();
+						return;
+					}
+
+					// Process contents
+					process({content : n.innerHTML});
+
+					// Block the real paste event
+					return tinymce.dom.Event.cancel(e);
+				} else {
+					function block(e) {
+						e.preventDefault();
+					};
+
+					// Block mousedown and click to prevent selection change
+					dom.bind(ed.getDoc(), 'mousedown', block);
+					dom.bind(ed.getDoc(), 'keydown', block);
+
+					or = ed.selection.getRng();
+
+					// Move caret into hidden div
+					n = n.firstChild;
+					rng = ed.getDoc().createRange();
+					rng.setStart(n, 0);
+					rng.setEnd(n, 1);
+					sel.setRng(rng);
+
+					// Wait a while and grab the pasted contents
+					window.setTimeout(function() {
+						var h = '', nl = dom.select('div.mcePaste');
+
+						// WebKit will split the div into multiple ones so this will loop through then all and join them to get the whole HTML string
+						each(nl, function(n) {
+							// WebKit duplicates the divs so we need to remove them
+							each(dom.select('div.mcePaste', n), function(n) {
+								dom.remove(n, 1);
+							});
+
+							// Remove apply style spans
+							each(dom.select('span.Apple-style-span', n), function(n) {
+								dom.remove(n, 1);
+							});
+
+							h += n.innerHTML;
+						});
+
+						// Remove the nodes
+						each(nl, function(n) {
+							dom.remove(n);
+						});
+
+						// Restore the old selection
+						if (or)
+							sel.setRng(or);
+
+						process({content : h});
+
+						// Unblock events ones we got the contents
+						dom.unbind(ed.getDoc(), 'mousedown', block);
+						dom.unbind(ed.getDoc(), 'keydown', block);
+					}, 0);
+				}
+			}
+
+			// Check if we should use the new auto process method			
+			if (getParam(ed, "paste_auto_cleanup_on_paste")) {
+				// Is it's Opera or older FF use key handler
+				if (tinymce.isOpera || /Firefox\/2/.test(navigator.userAgent)) {
+					ed.onKeyDown.add(function(ed, e) {
+						if (((tinymce.isMac ? e.metaKey : e.ctrlKey) && e.keyCode == 86) || (e.shiftKey && e.keyCode == 45))
+							grabContent(e);
+					});
+				} else {
+					// Grab contents on paste event on Gecko and WebKit
+					ed.onPaste.addToTop(function(ed, e) {
+						return grabContent(e);
+					});
+				}
+			}
+
+			// Block all drag/drop events
+			if (getParam(ed, "paste_block_drop")) {
+				ed.onInit.add(function() {
+					ed.dom.bind(ed.getBody(), ['dragend', 'dragover', 'draggesture', 'dragdrop', 'drop', 'drag'], function(e) {
+						e.preventDefault();
+						e.stopPropagation();
+
+						return false;
+					});
+				});
+			}
+		},
+
+		getInfo : function() {
+			return {
+				longname : 'Paste text/word',
+				author : 'Moxiecode Systems AB',
+				authorurl : 'http://tinymce.moxiecode.com',
+				infourl : 'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/paste',
+				version : tinymce.majorVersion + "." + tinymce.minorVersion
+			};
+		},
+
+		_preProcess : function(pl, o) {
+			//console.log('Before preprocess:' + o.content);
+
+			var ed = this.editor,
+				h = o.content,
+				grep = tinymce.grep,
+				explode = tinymce.explode,
+				trim = tinymce.trim,
+				len, stripClass;
+
+			function process(items) {
+				each(items, function(v) {
+					// Remove or replace
+					if (v.constructor == RegExp)
+						h = h.replace(v, '');
+					else
+						h = h.replace(v[0], v[1]);
+				});
+			}
+
+			// Detect Word content and process it more aggressive
+			if (/class="?Mso|style="[^"]*\bmso-|w:WordDocument|xml:lang=/i.test(h) || o.wordContent) {
+				o.wordContent = true;			// Mark the pasted contents as word specific content
+				//console.log('Word contents detected.');
+
+				// Process away some basic content
+				process([
+					/^\s*(&nbsp;)+/gi,				// &nbsp; entities at the start of contents
+					/(&nbsp;|<br[^>]*>)+\s*$/gi		// &nbsp; entities at the end of contents
+				]);
+
+				if (getParam(ed, "paste_convert_headers_to_strong")) {
+					h = h.replace(/<p [^>]*class="?MsoHeading"?[^>]*>(.*?)<\/p>/gi, "<p><strong>$1</strong></p>");
+				}
+
+				if (getParam(ed, "paste_convert_middot_lists")) {
+					process([
+						[/<!--\[if !supportLists\]-->/gi, '$&__MCE_ITEM__'],					// Convert supportLists to a list item marker
+						[/(<span[^>]+(?:mso-list:|:\s*symbol)[^>]+>)/gi, '$1__MCE_ITEM__']		// Convert mso-list and symbol spans to item markers
+					]);
+				}
+
+				process([
+					// Word comments like conditional comments etc
+					/<!--[\s\S]+?-->/gi,
+
+					// Remove comments, scripts (e.g., msoShowComment), XML tag, VML content, MS Office namespaced tags, and a few other tags
+					/<(!|script[^>]*>.*?<\/script(?=[>\s])|\/?(\?xml(:\w+)?|img|meta|link|style|\w:\w+)(?=[\s\/>]))[^>]*>/gi,
+
+					// Convert <s> into <strike> for line-though
+					[/<(\/?)s>/gi, "<$1strike>"],
+
+					// Replace nsbp entites to char since it's easier to handle
+					[/&nbsp;/gi, "\u00a0"]
+				]);
+
+				// Remove bad attributes, with or without quotes, ensuring that attribute text is really inside a tag.
+				// If JavaScript had a RegExp look-behind, we could have integrated this with the last process() array and got rid of the loop. But alas, it does not, so we cannot.
+				do {
+					len = h.length;
+					h = h.replace(/(<[a-z][^>]*\s)(?:id|name|width|align|lang|xml\:lang|language|type|on\w+|\w+:\w+)=(?:"[^"]*"|\w+)\s?/gi, "$1");
+				} while (len != h.length);
+
+				// Remove all spans if no styles is to be retained
+				if (getParam(ed, "paste_retain_style_properties").replace(/^none$/i, "").length == 0) {
+					h = h.replace(/<\/?span[^>]*>/gi, "");
+				} else {
+					// We're keeping styles, so at least clean them up.
+					// CSS Reference: http://msdn.microsoft.com/en-us/library/aa155477.aspx
+
+					process([
+						// Convert <span style="mso-spacerun:yes">___</span> to string of alternating breaking/non-breaking spaces of same length
+						[/<span\s+style\s*=\s*"\s*mso-spacerun\s*:\s*yes\s*;?\s*"\s*>([\s\u00a0]*)<\/span>/gi,
+							function(str, spaces) {
+								return (spaces.length > 0)? spaces.replace(/./, " ").slice(Math.floor(spaces.length/2)).split("").join("\u00a0") : "";
+							}
+						],
+
+						// Examine all styles: delete junk, transform some, and keep the rest
+						[/(<[a-z][^>]*)\sstyle="([^"]*)"/gi,
+							function(str, tag, style) {
+								var n = [],
+									i = 0,
+									s = explode(trim(style).replace(/&quot;/gi, "'"), ";");
+
+								// Examine each style definition within the tag's style attribute
+								each(s, function(v) {
+									var name, value,
+										parts = explode(v, ":");
+
+									function ensureUnits(v) {
+										return v + ((v !== "0") && (/\d$/.test(v)))? "px" : "";
+									}
+
+									if (parts.length == 2) {
+										name = parts[0].toLowerCase();
+										value = parts[1].toLowerCase();
+
+										// Translate certain MS Office styles into their CSS equivalents
+										switch (name) {
+											case "mso-padding-alt":
+											case "mso-padding-top-alt":
+											case "mso-padding-right-alt":
+											case "mso-padding-bottom-alt":
+											case "mso-padding-left-alt":
+											case "mso-margin-alt":
+											case "mso-margin-top-alt":
+											case "mso-margin-right-alt":
+											case "mso-margin-bottom-alt":
+											case "mso-margin-left-alt":
+											case "mso-table-layout-alt":
+											case "mso-height":
+											case "mso-width":
+											case "mso-vertical-align-alt":
+												n[i++] = name.replace(/^mso-|-alt$/g, "") + ":" + ensureUnits(value);
+												return;
+
+											case "horiz-align":
+												n[i++] = "text-align:" + value;
+												return;
+
+											case "vert-align":
+												n[i++] = "vertical-align:" + value;
+												return;
+
+											case "font-color":
+											case "mso-foreground":
+												n[i++] = "color:" + value;
+												return;
+
+											case "mso-background":
+											case "mso-highlight":
+												n[i++] = "background:" + value;
+												return;
+
+											case "mso-default-height":
+												n[i++] = "min-height:" + ensureUnits(value);
+												return;
+
+											case "mso-default-width":
+												n[i++] = "min-width:" + ensureUnits(value);
+												return;
+
+											case "mso-padding-between-alt":
+												n[i++] = "border-collapse:separate;border-spacing:" + ensureUnits(value);
+												return;
+
+											case "text-line-through":
+												if ((value == "single") || (value == "double")) {
+													n[i++] = "text-decoration:line-through";
+												}
+												return;
+
+											case "mso-zero-height":
+												if (value == "yes") {
+													n[i++] = "display:none";
+												}
+												return;
+										}
+
+										// Eliminate all MS Office style definitions that have no CSS equivalent by examining the first characters in the name
+										if (/^(mso|column|font-emph|lang|layout|line-break|list-image|nav|panose|punct|row|ruby|sep|size|src|tab-|table-border|text-(?!align|decor|indent|trans)|top-bar|version|vnd|word-break)/.test(name)) {
+											return;
+										}
+
+										// If it reached this point, it must be a valid CSS style
+										n[i++] = name + ":" + parts[1];		// Lower-case name, but keep value case
+									}
+								});
+
+								// If style attribute contained any valid styles the re-write it; otherwise delete style attribute.
+								if (i > 0) {
+									return tag + ' style="' + n.join(';') + '"';
+								} else {
+									return tag;
+								}
+							}
+						]
+					]);
+				}
+			}
+
+			// Replace headers with <strong>
+			if (getParam(ed, "paste_convert_headers_to_strong")) {
+				process([
+					[/<h[1-6][^>]*>/gi, "<p><strong>"],
+					[/<\/h[1-6][^>]*>/gi, "</strong></p>"]
+				]);
+			}
+
+			// Class attribute options are: leave all as-is ("none"), remove all ("all"), or remove only those starting with mso ("mso").
+			// Note:-  paste_strip_class_attributes: "none", verify_css_classes: true is also a good variation.
+			stripClass = getParam(ed, "paste_strip_class_attributes");
+
+			if (stripClass !== "none") {
+				function removeClasses(match, g1) {
+						if (stripClass === "all")
+							return '';
+
+						var cls = grep(explode(g1.replace(/^(["'])(.*)\1$/, "$2"), " "),
+							function(v) {
+								return (/^(?!mso)/i.test(v));
+							}
+						);
+
+						return cls.length ? ' class="' + cls.join(" ") + '"' : '';
+				};
+
+				h = h.replace(/ class="([^"]+)"/gi, removeClasses);
+				h = h.replace(/ class=(\w+)/gi, removeClasses);
+			}
+
+			// Remove spans option
+			if (getParam(ed, "paste_remove_spans")) {
+				h = h.replace(/<\/?span[^>]*>/gi, "");
+			}
+
+			//console.log('After preprocess:' + h);
+
+			o.content = h;
+		},
+
+		/**
+		 * Various post process items.
+		 */
+		_postProcess : function(pl, o) {
+			var t = this, ed = t.editor, dom = ed.dom, styleProps;
+
+            //console.log('Before postprocess:' + o.node.innerHTML);
+            
+			if (o.wordContent) {
+                                       
+				// Remove named anchors or TOC links
+				each(dom.select('a', o.node), function(a) {
+					if (!a.href || a.href.indexOf('#_Toc') != -1)
+						dom.remove(a, 1);
+				});
+
+				if (getParam(ed, "paste_convert_middot_lists")) {
+					t._convertLists(pl, o);
+				}
+
+				// Process styles
+				styleProps = getParam(ed, "paste_retain_style_properties"); // retained properties
+
+				// Process only if a string was specified and not equal to "all" or "*"
+				if ((tinymce.is(styleProps, "string")) && (styleProps !== "all") && (styleProps !== "*")) {
+					styleProps = tinymce.explode(styleProps.replace(/^none$/i, ""));
+
+					// Retains some style properties
+					each(dom.select('*', o.node), function(el) {
+						var newStyle = {}, npc = 0, i, sp, sv;
+
+						// Store a subset of the existing styles
+						if (styleProps) {
+							for (i = 0; i < styleProps.length; i++) {
+								sp = styleProps[i];
+								sv = dom.getStyle(el, sp);
+
+								if (sv) {
+									newStyle[sp] = sv;
+									npc++;
+								}
+							}
+						}
+
+						// Remove all of the existing styles
+						dom.setAttrib(el, 'style', '');
+
+						if (styleProps && npc > 0)
+							dom.setStyles(el, newStyle); // Add back the stored subset of styles
+						else // Remove empty span tags that do not have class attributes
+							if (el.nodeName == 'SPAN' && !el.className)
+								dom.remove(el, true);
+					});
+				}
+			}
+
+			// Remove all style information or only specifically on WebKit to avoid the style bug on that browser
+			if (getParam(ed, "paste_remove_styles") || (getParam(ed, "paste_remove_styles_if_webkit") && tinymce.isWebKit)) {
+				each(dom.select('*[style]', o.node), function(el) {
+					el.removeAttribute('style');
+					el.removeAttribute('_mce_style');
+				});
+			} else {
+				if (tinymce.isWebKit) {
+					// We need to compress the styles on WebKit since if you paste <img border="0" /> it will become <img border="0" style="... lots of junk ..." />
+					// Removing the mce_style that contains the real value will force the Serializer engine to compress the styles
+					each(dom.select('*', o.node), function(el) {
+						el.removeAttribute('_mce_style');
+					});
+				}
+			}
+            
+            //console.log('After postprocess:' + o.node.innerHTML);
+		},
+
+		/**
+		 * Converts the most common bullet and number formats in Office into a real semantic UL/LI list.
+		 */
+		_convertLists : function(pl, o) {
+			var dom = pl.editor.dom, listElm, li, lastMargin = -1, margin, levels = [], lastType, html;
+
+			// Convert middot lists into real semantic lists
+			each(dom.select('p', o.node), function(p) {
+				var sib, val = '', type, html, idx, parents;
+
+				// Get text node value at beginning of paragraph
+				for (sib = p.firstChild; sib && sib.nodeType == 3; sib = sib.nextSibling)
+					val += sib.nodeValue;
+
+				val = p.innerHTML.replace(/<\/?\w+[^>]*>/gi, '').replace(/&nbsp;/g, '\u00a0');
+
+				// Detect unordered lists look for bullets
+				if (/^(__MCE_ITEM__)+[\u2022\u00b7\u00a7\u00d8o]\s*\u00a0*/.test(val))
+					type = 'ul';
+
+				// Detect ordered lists 1., a. or ixv.
+				if (/^__MCE_ITEM__\s*\w+\.\s*\u00a0{2,}/.test(val))
+					type = 'ol';
+
+				// Check if node value matches the list pattern: o&nbsp;&nbsp;
+				if (type) {
+					margin = parseFloat(p.style.marginLeft || 0);
+
+					if (margin > lastMargin)
+						levels.push(margin);
+
+					if (!listElm || type != lastType) {
+						listElm = dom.create(type);
+						dom.insertAfter(listElm, p);
+					} else {
+						// Nested list element
+						if (margin > lastMargin) {
+							listElm = li.appendChild(dom.create(type));
+						} else if (margin < lastMargin) {
+							// Find parent level based on margin value
+							idx = tinymce.inArray(levels, margin);
+							parents = dom.getParents(listElm.parentNode, type);
+							listElm = parents[parents.length - 1 - idx] || listElm;
+						}
+					}
+
+					// Remove middot or number spans if they exists
+					each(dom.select('span', p), function(span) {
+						var html = span.innerHTML.replace(/<\/?\w+[^>]*>/gi, '');
+
+						// Remove span with the middot or the number
+						if (type == 'ul' && /^[\u2022\u00b7\u00a7\u00d8o]/.test(html))
+							dom.remove(span);
+						else if (/^[\s\S]*\w+\.(&nbsp;|\u00a0)*\s*/.test(html))
+							dom.remove(span);
+					});
+
+					html = p.innerHTML;
+
+					// Remove middot/list items
+					if (type == 'ul')
+						html = p.innerHTML.replace(/__MCE_ITEM__/g, '').replace(/^[\u2022\u00b7\u00a7\u00d8o]\s*(&nbsp;|\u00a0)+\s*/, '');
+					else
+						html = p.innerHTML.replace(/__MCE_ITEM__/g, '').replace(/^\s*\w+\.(&nbsp;|\u00a0)+\s*/, '');
+
+					// Create li and add paragraph data into the new li
+					li = listElm.appendChild(dom.create('li', 0, html));
+					dom.remove(p);
+
+					lastMargin = margin;
+					lastType = type;
+				} else
+					listElm = lastMargin = 0; // End list element
+			});
+
+			// Remove any left over makers
+			html = o.node.innerHTML;
+			if (html.indexOf('__MCE_ITEM__') != -1)
+				o.node.innerHTML = html.replace(/__MCE_ITEM__/g, '');
+		},
+
+		/**
+		 * This method will split the current block parent and insert the contents inside the split position.
+		 * This logic can be improved so text nodes at the start/end remain in the start/end block elements
+		 */
+		_insertBlockContent : function(ed, dom, content) {
+			var parentBlock, marker, sel = ed.selection, last, elm, vp, y, elmHeight, markerId = 'mce_marker';
+
+			function select(n) {
+				var r;
+
+				if (tinymce.isIE) {
+					r = ed.getDoc().body.createTextRange();
+					r.moveToElementText(n);
+					r.collapse(false);
+					r.select();
+				} else {
+					sel.select(n, 1);
+					sel.collapse(false);
+				}
+			}
+
+			// Insert a marker for the caret position
+			this._insert('<span id="' + markerId + '">&nbsp;</span>', 1);
+			marker = dom.get(markerId);
+			parentBlock = dom.getParent(marker, 'p,h1,h2,h3,h4,h5,h6,ul,ol,th,td');
+
+			// If it's a parent block but not a table cell
+			if (parentBlock && !/TD|TH/.test(parentBlock.nodeName)) {
+				// Split parent block
+				marker = dom.split(parentBlock, marker);
+
+				// Insert nodes before the marker
+				each(dom.create('div', 0, content).childNodes, function(n) {
+					last = marker.parentNode.insertBefore(n.cloneNode(true), marker);
+				});
+
+				// Move caret after marker
+				select(last);
+			} else {
+				dom.setOuterHTML(marker, content);
+				sel.select(ed.getBody(), 1);
+				sel.collapse(0);
+			}
+
+			// Remove marker if it's left
+			while (elm = dom.get(markerId))
+				dom.remove(elm);
+
+			// Get element, position and height
+			elm = sel.getStart();
+			vp = dom.getViewPort(ed.getWin());
+			y = ed.dom.getPos(elm).y;
+			elmHeight = elm.clientHeight;
+            
+			// Is element within viewport if not then scroll it into view
+            
+			if (y < vp.y || y + elmHeight > vp.y + vp.h)
+            {
+                var scrollTop = y < vp.y ? y : y - vp.h + 25;
+                if (scrollTop > 0) // this is sometimes incorrectly 0 in webkit; not scrolling is an easy workaround;
+                {            
+                    ed.getDoc().body.scrollTop = scrollTop;
+                }
+            }
+		},
+
+		/**
+		 * Inserts the specified contents at the caret position.
+		 */
+		_insert : function(h, skip_undo) {
+			var ed = this.editor, r = ed.selection.getRng();
+
+			// First delete the contents seems to work better on WebKit when the selection spans multiple list items or multiple table cells.
+			if (!ed.selection.isCollapsed() && r.startContainer != r.endContainer)
+				ed.getDoc().execCommand('Delete', false, null);
+
+			// It's better to use the insertHTML method on Gecko since it will combine paragraphs correctly before inserting the contents
+			ed.execCommand(tinymce.isGecko ? 'insertHTML' : 'mceInsertContent', false, h, {skip_undo : skip_undo});
+		},
+
+		/**
+		 * Instead of the old plain text method which tried to re-create a paste operation, the
+		 * new approach adds a plain text mode toggle switch that changes the behavior of paste.
+		 * This function is passed the same input that the regular paste plugin produces.
+		 * It performs additional scrubbing and produces (and inserts) the plain text.
+		 * This approach leverages all of the great existing functionality in the paste
+		 * plugin, and requires minimal changes to add the new functionality.
+		 * Speednet - June 2009
+		 */
+		_insertPlainText : function(ed, dom, h) {
+			var i, len, pos, rpos, node, breakElms, before, after,
+				w = ed.getWin(),
+				d = ed.getDoc(),
+				sel = ed.selection,
+				is = tinymce.is,
+				inArray = tinymce.inArray,
+				linebr = getParam(ed, "paste_text_linebreaktype"),
+				rl = getParam(ed, "paste_text_replacements");
+
+			function process(items) {
+				each(items, function(v) {
+					if (v.constructor == RegExp)
+						h = h.replace(v, "");
+					else
+						h = h.replace(v[0], v[1]);
+				});
+			};
+
+			if ((typeof(h) === "string") && (h.length > 0)) {
+				if (!entities)
+					entities = ("34,quot,38,amp,39,apos,60,lt,62,gt," + ed.serializer.settings.entities).split(",");
+
+				// If HTML content with line-breaking tags, then remove all cr/lf chars because only tags will break a line
+				if (/<(?:p|br|h[1-6]|ul|ol|dl|table|t[rdh]|div|blockquote|fieldset|pre|address|center)[^>]*>/i.test(h)) {
+					process([
+						/[\n\r]+/g
+					]);
+				} else {
+					// Otherwise just get rid of carriage returns (only need linefeeds)
+					process([
+						/\r+/g
+					]);
+				}
+
+				process([
+					[/<\/(?:p|h[1-6]|ul|ol|dl|table|div|blockquote|fieldset|pre|address|center)>/gi, "\n\n"],		// Block tags get a blank line after them
+					[/<br[^>]*>|<\/tr>/gi, "\n"],				// Single linebreak for <br /> tags and table rows
+					[/<\/t[dh]>\s*<t[dh][^>]*>/gi, "\t"],		// Table cells get tabs betweem them
+					/<[a-z!\/?][^>]*>/gi,						// Delete all remaining tags
+					[/&nbsp;/gi, " "],							// Convert non-break spaces to regular spaces (remember, *plain text*)
+					[
+						// HTML entity
+						/&(#\d+|[a-z0-9]{1,10});/gi,
+
+						// Replace with actual character
+						function(e, s) {
+							if (s.charAt(0) === "#") {
+								return String.fromCharCode(s.slice(1));
+							}
+							else {
+								return ((e = inArray(entities, s)) > 0)? String.fromCharCode(entities[e-1]) : " ";
+							}
+						}
+					],
+					[/(?:(?!\n)\s)*(\n+)(?:(?!\n)\s)*/gi, "$1"],	// Cool little RegExp deletes whitespace around linebreak chars.
+					[/\n{3,}/g, "\n\n"],							// Max. 2 consecutive linebreaks
+					/^\s+|\s+$/g									// Trim the front & back
+				]);
+
+				h = dom.encode(h);
+
+				// Delete any highlighted text before pasting
+				if (!sel.isCollapsed()) {
+					d.execCommand("Delete", false, null);
+				}
+
+				// Perform default or custom replacements
+				if (is(rl, "array") || (is(rl, "array"))) {
+					process(rl);
+				}
+				else if (is(rl, "string")) {
+					process(new RegExp(rl, "gi"));
+				}
+
+				// Treat paragraphs as specified in the config
+				if (linebr == "none") {
+					process([
+						[/\n+/g, " "]
+					]);
+				}
+				else if (linebr == "br") {
+					process([
+						[/\n/g, "<br />"]
+					]);
+				}
+				else {
+					process([
+						/^\s+|\s+$/g,
+						[/\n\n/g, "</p><p>"],
+						[/\n/g, "<br />"]
+					]);
+				}
+
+				// This next piece of code handles the situation where we're pasting more than one paragraph of plain
+				// text, and we are pasting the content into the middle of a block node in the editor.  The block
+				// node gets split at the selection point into "Para A" and "Para B" (for the purposes of explaining).
+				// The first paragraph of the pasted text is appended to "Para A", and the last paragraph of the
+				// pasted text is prepended to "Para B".  Any other paragraphs of pasted text are placed between
+				// "Para A" and "Para B".  This code solves a host of problems with the original plain text plugin and
+				// now handles styles correctly.  (Pasting plain text into a styled paragraph is supposed to make the
+				// plain text take the same style as the existing paragraph.)
+				if ((pos = h.indexOf("</p><p>")) != -1) {
+					rpos = h.lastIndexOf("</p><p>");
+					node = sel.getNode(); 
+					breakElms = [];		// Get list of elements to break 
+
+					do {
+						if (node.nodeType == 1) {
+							// Don't break tables and break at body
+							if (node.nodeName == "TD" || node.nodeName == "BODY") {
+								break;
+							}
+
+							breakElms[breakElms.length] = node;
+						}
+					} while (node = node.parentNode);
+
+					// Are we in the middle of a block node?
+					if (breakElms.length > 0) {
+						before = h.substring(0, pos);
+						after = "";
+
+						for (i=0, len=breakElms.length; i<len; i++) {
+							before += "</" + breakElms[i].nodeName.toLowerCase() + ">";
+							after += "<" + breakElms[breakElms.length-i-1].nodeName.toLowerCase() + ">";
+						}
+
+						if (pos == rpos) {
+							h = before + after + h.substring(pos+7);
+						}
+						else {
+							h = before + h.substring(pos+4, rpos+4) + after + h.substring(rpos+7);
+						}
+					}
+				}
+
+				// Insert content at the caret, plus add a marker for repositioning the caret
+				ed.execCommand("mceInsertRawHTML", false, h + '<span id="_plain_text_marker">&nbsp;</span>');
+
+				// Reposition the caret to the marker, which was placed immediately after the inserted content.
+				// Needs to be done asynchronously (in window.setTimeout) or else it doesn't work in all browsers.
+				// The second part of the code scrolls the content up if the caret is positioned off-screen.
+				// This is only necessary for WebKit browsers, but it doesn't hurt to use for all.
+				window.setTimeout(function() {
+					var marker = dom.get('_plain_text_marker'),
+						elm, vp, y, elmHeight;
+
+					sel.select(marker, false);
+					d.execCommand("Delete", false, null);
+					marker = null;
+
+					// Get element, position and height
+					elm = sel.getStart();
+					vp = dom.getViewPort(w);
+					y = dom.getPos(elm).y;
+					elmHeight = elm.clientHeight;
+
+					// Is element within viewport if not then scroll it into view
+					if ((y < vp.y) || (y + elmHeight > vp.y + vp.h)) {
+						d.body.scrollTop = y < vp.y ? y : y - vp.h + 25;
+					}
+				}, 0);
+			}
+		}
+	});
+
+	// Register plugin
+	tinymce.PluginManager.add("paste", tinymce.plugins.PastePlugin);
+})();

@@ -176,7 +176,7 @@ EOF
 
 cat <<EOF > /etc/nginx/envaya.conf
 
-    root $INSTALL_DIR;
+    root $INSTALL_DIR/www;
     access_log  /var/log/nginx/access.log combined_time;
     client_max_body_size 10m;
     client_body_timeout 118;
@@ -187,25 +187,12 @@ cat <<EOF > /etc/nginx/envaya.conf
         rewrite ^(.*)\$ /index.php\$1 last;
     }
     
-    location ~ ^\/(engine|scripts|views|languages|test|vendors)\/
-    {
-        return 403;
-    }
-
     location /status.nginx
     {
         stub_status on;
         access_log   off;
     }    
        
-    location ~ ^\/mod\/(\w+)\/_media\/
-    {
-        expires 1y;
-        gzip_types application/x-javascript text/css;
-        gzip on;
-        gzip_min_length 1000;        
-    }
-
     location /_media/ {
         expires 1y;
         gzip_types application/x-javascript text/css;

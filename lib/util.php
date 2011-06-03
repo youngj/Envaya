@@ -167,7 +167,19 @@
         return $address;
     }
 
-    function include_js($filename)
+    function include_js($js_path)
     {
-        readfile(Config::get('root') . "/_media/inline_js/$filename");
+        if (Config::get('debug'))
+        {
+            $path = Engine::get_real_path("js/$js_path");
+            if (!$path)
+            {
+                throw new InvalidArgumentException("js/$js_path does not exist");
+            }
+        }
+        else
+        {
+            $path = Config::get('root') . "/www/_media/$js_path";
+        }
+        readfile($path);
     }

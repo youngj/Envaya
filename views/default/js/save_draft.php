@@ -5,5 +5,5 @@
         echo view('js/xhr');
         echo view('js/dom');
         echo "window.save_draft_guid = ".json_encode($vars['guid']).";\n";
-        include_js('save_draft.js');
+        include_js('inline/save_draft.js');
     }

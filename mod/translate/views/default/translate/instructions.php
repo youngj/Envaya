@@ -1,7 +1,7 @@
 <?php
     $img = function($filename)
     {
-        return "<img style='display:block;margin:10px auto 20px auto;border:1px solid black' src='/mod/translate/_media/images/$filename' />";
+        return "<img style='display:block;margin:10px auto 20px auto;border:1px solid black' src='/_media/images/translate/$filename' />";
     };
     
     $section = function($section, $title)
