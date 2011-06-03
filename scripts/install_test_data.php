@@ -5,7 +5,8 @@
  * not to be used on production servers.
  */
 
-require_once("start.php");
+require_once "start.php";
+require_once 'scripts/cmdline.php';
 
 function main()
 {   
@@ -23,8 +24,16 @@ function main()
     }
     
     install_org('testorg');
-    install_grantmaker();
-    install_envaya();
+    
+    foreach (Config::get('modules') as $module)
+    {
+        $path = Engine::get_module_root($module)."/scripts/install_test_data.php";
+        echo "$path\n";
+        if (is_file($path))
+        {
+            require $path;
+        }
+    }
 }
 
 function install_admin()
@@ -79,59 +88,6 @@ function install_org($username)
     return $org;
 }
     
-function install_grantmaker()
-{
-    $org = install_org('testgrantmaker');
-    
-    $org->name = "Test Grantmaker";
-    $org->save();
-    
-    $reports = $org->get_widget_by_name('reports');
-    $reports->menu_order = 80;
-    $reports->subclass = 'ReportDefinitions';
-    $reports->save();
-}
-    
-function install_envaya()    
-{
-    $envaya = Organization::query()->where('username = ?', 'envaya')->get();
-    if (!$envaya)
-    {
-        $envaya = new Organization();
-        $envaya->username = 'envaya';
-        $envaya->email = Config::get('admin_email');
-        $envaya->name = 'Envaya';
-        $envaya->set_password('testtest');
-        $envaya->language = 'en';
-        $envaya->set_design_setting('theme_name', 'sidebar');
-        $envaya->country = 'us';
-        $envaya->set_lat_long(37,-112);
-        $envaya->setup_state = SetupState::CreatedHomePage;
-        $envaya->approval = 1;
-        $envaya->save();
-    }
-    
-    $home = $envaya->get_widget_by_name('home');
-    $home->subclass = 'Hardcoded';
-    $home->handler_arg = 'page/about';
-    $home->title = 'About Us';
-    $home->save();
-      
-    $envaya->get_widget_by_name('news')->save();
-
-    $contact = $envaya->get_widget_by_name('contact');
-    $contact->subclass = 'Hardcoded';
-    $contact->handler_arg = 'page/contact';
-    $contact->save();
-
-    $donate = $envaya->get_widget_by_name('contribute');
-    $donate->subclass = 'Hardcoded';
-    $donate->handler_arg = 'page/donate';
-    $donate->title = 'Contribute';
-    $donate->in_menu = 1;
-    $donate->save();
-}
-
 main();
  
 Config::set('debug', false);

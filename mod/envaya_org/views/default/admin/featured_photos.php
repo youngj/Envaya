@@ -10,11 +10,11 @@
         
         echo "<br />";
         
-        echo "<a href='/admin/edit_featured_photo?guid={$photo->guid}'>Edit</a><br />";
+        echo "<a href='/admin/envaya/edit_featured_photo?guid={$photo->guid}'>Edit</a><br />";
         echo view('input/post_link', array(
             'text' => 'Delete',
             'confirm' => __('areyousure'),            
-            'href' => "admin/edit_featured_photo?guid={$photo->guid}&delete=1"
+            'href' => "admin/envaya/edit_featured_photo?guid={$photo->guid}&delete=1"
         ));
         echo "</div>";
         echo view('admin/preview_featured_photo', array(
@@ -28,5 +28,5 @@
     }
 ?>
 
-<a href='/admin/add_featured_photo'>Add Featured Photo</a>
+<a href='/admin/envaya/add_featured_photo'>Add Featured Photo</a>
 </div>

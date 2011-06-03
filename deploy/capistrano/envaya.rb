@@ -34,13 +34,12 @@ namespace :deploy do
     task :full_setup do                
         pre_setup
         setup
-        ssh_key_setup
         localsettings_setup       
         sanity_check        
         update
         db_install
         post_setup
-    end
+    end   
     
     task :sanity_check do
     
@@ -86,9 +85,7 @@ namespace :deploy do
     end
     
     task :dropbox_setup do
-        top.upload(File.join(Dir.pwd, "scripts/server_dropbox_setup.sh"), "/root/server_dropbox_setup.sh")    
-        run "chmod 744 /root/server_dropbox_setup.sh"
-        run "/root/server_dropbox_setup.sh"
+        run "/var/envaya/current/scripts/server_dropbox_setup.sh"
     end
     
     task :pre_setup do
@@ -98,24 +95,10 @@ namespace :deploy do
     end
     
     task :post_setup do
-        top.upload(File.join(Dir.pwd, "scripts/server_setup.sh"), "/root/server_setup.sh")
-        run "chmod 744 /root/server_setup.sh"
-        run "/root/server_setup.sh /var/envaya/current"
+        run "/var/envaya/current/scripts/server_setup.sh /var/envaya/current"
+        run "/var/envaya/current/scripts/server_extras_setup.sh"
     end
-    
-    task :ssh_key_setup do
-        run "if [ ! -e ~/.ssh/id_rsa ]; then ssh-keygen -f ~/.ssh/id_rsa -N ''; fi"       
-        local_file = File.join(Dir.pwd, "id_rsa.pub")
-        top.download("/root/.ssh/id_rsa.pub", local_file)        
-        prompt = "Copy the contents of ssh public key in #{local_file} to unfuddle personal settings to allow server to access git. Enter ok when complete"
-        k = Capistrano::CLI.ui.ask(prompt) do |q|
-            q.overwrite = false
-            q.validate = /ok/i
-            q.responses[:not_valid] = "?"
-        end 
-        run "echo done"
-    end
-    
+        
     task :backup_db, :roles => :app, :except => { :no_release => true } do            
         run "cd #{current_path} && php scripts/backup.php"
     end    

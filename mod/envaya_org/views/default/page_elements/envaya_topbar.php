@@ -1,3 +1,7 @@
+<?php
+    if (!@$vars['no_top_bar']) 
+    {
+?>
 <div id="topbar">
 <table class='topbarTable'>
 <tr>
@@ -39,3 +43,6 @@
 
 </div>
 <div style="clear:both"></div>
+<?php
+    }
+?>

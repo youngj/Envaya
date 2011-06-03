@@ -12,9 +12,13 @@ class Controller_Org extends Controller
 
     function before()
     {
-        $this->add_generic_footer();
-    }
-
+        $footer = PageContext::get_submenu('footer');
+    
+        $footer->add_item(__('about'), "/envaya");
+        $footer->add_item(__('contact'), "/envaya/contact");
+        $footer->add_item(__('donate'), "/envaya/page/contribute");    
+    }    
+    
     function action_browse()
     {
         $this->prefer_http();
@@ -381,7 +385,7 @@ class Controller_Org extends Controller
         }
 
         $this->set_response(json_encode($orgJs));
-    }
+    }    
     
     function action_featured()
     {
@@ -392,6 +396,7 @@ class Controller_Org extends Controller
             'content' => view('org/featured')
         ));
     }    
+    
 }
 
 Controller_Org::$routes = Controller::$SIMPLE_ROUTES;

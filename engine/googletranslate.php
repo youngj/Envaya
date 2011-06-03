@@ -43,7 +43,7 @@ class GoogleTranslate
         $ch = curl_init();
         
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_REFERER, "www.envaya.org");
+        curl_setopt($ch, CURLOPT_REFERER, Config::get('domain'));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, true);
     
@@ -83,7 +83,7 @@ class GoogleTranslate
         $url = "ajax.googleapis.com/ajax/services/language/detect?v=1.0&q=".urlencode(Markup::get_snippet($text, 500));
         
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_REFERER, "www.envaya.org");
+        curl_setopt($ch, CURLOPT_REFERER, Config::get('domain'));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         $json = curl_exec($ch);

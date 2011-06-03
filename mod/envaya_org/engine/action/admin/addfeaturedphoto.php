@@ -21,14 +21,14 @@ class Action_Admin_AddFeaturedPhoto extends Action
         $photo->active = get_input('active') == 'yes' ? 1 : 0;
         $photo->save();
         
-        SessionMessages::add(__("featured_photo:added"));
-        $this->redirect("/admin/featured_photos");
+        SessionMessages::add(__("featured:photo:added"));
+        $this->redirect("/admin/envaya/featured_photos");
     }
 
     function render()
     {
         $this->page_draw(array(
-            'title' => __('featured_photo:add'),
+            'title' => __('featured:photo:add'),
             'content' => view('admin/add_featured_photo', array(
                 'image_url' => get_input('image_url'),
                 'href' => get_input('href'),

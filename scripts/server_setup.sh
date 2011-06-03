@@ -137,7 +137,7 @@ EOF
 cat <<EOF > /etc/nginx/fastcgi_params
 
 fastcgi_pass 127.0.0.1:9000;
-fastcgi_param SCRIPT_FILENAME $INSTALL_DIR/\$fastcgi_script_name;
+fastcgi_param SCRIPT_FILENAME $INSTALL_DIR/www/\$fastcgi_script_name;
 fastcgi_param PATH_INFO \$fastcgi_script_name;
 
 fastcgi_cache envaya;
@@ -290,5 +290,6 @@ chmod 755 /etc/init.d/phpCron
 update-rc.d phpCron defaults 97
 /etc/init.d/phpCron start
 
-/etc/init.d/nginx restart
+/etc/init.d/nginx start
+/etc/init.d/nginx reload
 /etc/init.d/php5-fpm start

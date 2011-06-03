@@ -23,7 +23,7 @@ function updateUrl()
     )
 )) ?>
 <div class='help' style='font-weight:bold'><?php echo __('register:username:help') ?>
-    <span class='websiteUrl'>http://envaya.org/<span id='urlUsername' style='font-weight:bold'><?php 
+    <span class='websiteUrl'><?php echo Config::get('url'); ?><span id='urlUsername' style='font-weight:bold'><?php 
         echo @$vars['value'] ?: __('register:username:placeholder');
     ?></span></span>
 </div>

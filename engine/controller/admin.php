@@ -164,48 +164,7 @@ class Controller_Admin extends Controller
         $action = new Action_Admin_DeleteEntity($this);
         $action->execute();
     }
-        
-    function action_activate_featured()
-    {
-        $action = new Action_Admin_ActivateFeaturedSite($this);
-        $action->execute();
-    }
-    
-    function action_add_featured()
-    {
-        $action = new Action_Admin_AddFeaturedSite($this);
-        $action->execute();
-    }       
-        
-    function action_edit_featured()
-    {
-        $action = new Action_Admin_EditFeaturedSite($this);
-        $action->execute();    
-    }
-
-    function action_add_featured_photo()
-    {
-        $action = new Action_Admin_AddFeaturedPhoto($this);
-        $action->execute();
-    }
-    
-    function action_edit_featured_photo()
-    {
-        $action = new Action_Admin_EditFeaturedPhoto($this);
-        $action->execute();  
-    }   
-    
-    function action_featured_photos()
-    {
-        $this->page_draw(array(
-            'title' => __('featured_photo:all'),
-            'content' =>  view('admin/featured_photos', array(
-                'photos' => FeaturedPhoto::query()->filter()
-            )),
-            'theme_name' => 'editor'
-        ));
-    }
-    
+            
     function action_translate()
     {
         $action = new Action_Admin_TranslateContent($this);

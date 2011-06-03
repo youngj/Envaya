@@ -19,8 +19,6 @@ class EntityRegistry
         'core.file' => 'UploadedFile',
         'core.widget' => 'Widget',
         'core.widget.comment' => 'Comment',
-        'core.featured.site' => 'FeaturedSite',
-        'core.featured.photo' => 'FeaturedPhoto',
         'core.discussion.message' => 'DiscussionMessage',
         'core.discussion.topic' => 'DiscussionTopic',
         'core.feed' => 'ExternalFeed',

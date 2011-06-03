@@ -188,7 +188,7 @@ abstract class Controller_User extends Controller
         {
             if (Session::isadminloggedin())
             {
-                $preBody .= view("admin/org_actions", array('entity' => $org));
+                $preBody .= view("admin/org_actions", array('org' => $org));
             }
 
             if ($org->can_view() && Session::isloggedin() && Session::get_loggedin_userid() != $org->guid)

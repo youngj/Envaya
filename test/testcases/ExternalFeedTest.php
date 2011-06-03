@@ -108,7 +108,7 @@ class ExternalFeedTest extends SeleniumTest
         
         $this->retry('type', array("//input[@id='feed_url']", "facebook.com/envaya"));
         $this->click("//form[@id='feed_form']//button");
-        $this->retry('uncheck', array("//div[@class='modalBody']//input[@type='checkbox']"));
+        $this->retry('uncheck', array("//div[@class='modalBody']//input[@type='checkbox']"), 25);
         $this->click("//input[@value='OK']");   
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();        
@@ -116,7 +116,7 @@ class ExternalFeedTest extends SeleniumTest
         // edit news page, add twitter link
         $this->type("//input[@id='feed_url']", "twitter.com/envaya");
         $this->click("//form[@id='feed_form']//button");
-        $this->retry('click', array("//input[@value='OK']"));   
+        $this->retry('click', array("//input[@value='OK']"), 25);   
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();        
         

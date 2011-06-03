@@ -34,7 +34,7 @@ if (Session::isadminloggedin())
         echo view('input/post_link', array(
                 'text' => __('featured:activate'),
                 'confirm' => __('areyousure'),
-                'href' => "admin/activate_featured?guid={$entity->guid}"
+                'href' => "admin/envaya/activate_featured?guid={$entity->guid}"
             ));        
     } 
     else
@@ -56,7 +56,7 @@ if (Session::isadminloggedin())
     
     ?>              
     
-    <a href='/admin/edit_featured?guid=<?php echo $entity->guid ?>'><?php echo escape(__('edit')) ?></a>
+    <a href='/admin/envaya/edit_featured?guid=<?php echo $entity->guid ?>'><?php echo escape(__('edit')) ?></a>
     <?php
     echo view('input/post_link', array(
         'text' => __('delete'),

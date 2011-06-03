@@ -379,16 +379,7 @@ abstract class Controller {
         }    
         
         notify_exception($exception);
-    }
-            
-    public function add_generic_footer()
-    {
-        $footer = PageContext::get_submenu('footer');
-    
-        $footer->add_item(__('about'), "/envaya");
-        $footer->add_item(__('contact'), "/envaya/contact");
-        $footer->add_item(__('donate'), "/envaya/page/contribute");    
-    }
+    }            
 
     /*
      * Redirects to the previous page if the submitted security token 

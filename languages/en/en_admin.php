@@ -72,21 +72,7 @@ return array(
 
     'active' => 'Active',
     'total' => 'Total',
-    
-    'featured:active' => '(Active)',
-    'featured:activate' => 'Activate',
-    'featured:edit' => 'Edit featured site',
-    'featured:add' => 'Add featured site',
-    'featured:image' => 'Image',
-    'featured:text' => 'Text',
-    
-    'featured_photo:all' => "Featured Photos",
-    'featured_photo:add' => "Add featured photo",
-    'featured_photo:added' => "Featured photo added.",
-    'featured_photo:saved' => "Featured photo saved.",
-    'featured_photo:deleted' => "Featured photo deleted.",
-    'featured_photo:edit' => "Edit featured photo",
-        
+            
     'widget:invalid_class' => 'The handler %s was not found.',
     'widget:options' => 'Page Options',
     'widget:handler' => 'Page Handler (PHP Class Name)',

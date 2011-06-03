@@ -36,11 +36,6 @@
 # System
 ###########################################################
 
-function system_update {
-    aptitude update
-    aptitude -y full-upgrade
-}
-
 function system_primary_ip {
     # returns the primary IP assigned to eth0
     echo $(ifconfig eth0 | awk -F: '/inet addr:/ {print $2}' | awk '{ print $1 }')
@@ -202,7 +197,7 @@ function mysql_grant_user {
 function goodstuff {
     # Installs the REAL vim, wget, less, and enables color root prompt and the "ll" list long alias
 
-    aptitude -y install wget vim less
+    aptitude -y install less
     sed -i -e 's/^#PS1=/PS1=/' /root/.bashrc # enable the colorful root bash prompt
     sed -i -e "s/^#alias ll='ls -l'/alias ll='ls -al'/" /root/.bashrc # enable ll list long alias <3
 }
@@ -230,8 +225,38 @@ function randomString {
     echo $(</dev/urandom tr -dc A-Za-z0-9 | head -c $LEN) # generate a random string
 }
 
-system_update
-postfix_install_loopback_only
+cat <<EOF > /etc/apt/sources.list
+deb http://us.archive.ubuntu.com/ubuntu/ lucid main restricted
+deb-src http://us.archive.ubuntu.com/ubuntu/ lucid main restricted
+
+deb http://security.ubuntu.com/ubuntu lucid-updates main restricted
+deb-src http://security.ubuntu.com/ubuntu lucid-updates main restricted
+
+deb http://security.ubuntu.com/ubuntu lucid-security main restricted
+deb-src http://security.ubuntu.com/ubuntu lucid-security main restricted
+
+## universe repositories - uncomment to enable
+deb http://us.archive.ubuntu.com/ubuntu/ lucid universe
+deb-src http://us.archive.ubuntu.com/ubuntu/ lucid universe
+
+deb http://us.archive.ubuntu.com/ubuntu/ lucid-updates universe
+deb-src http://us.archive.ubuntu.com/ubuntu/ lucid-updates universe
+
+deb http://security.ubuntu.com/ubuntu lucid-security universe
+deb-src http://security.ubuntu.com/ubuntu lucid-security universe
+deb http://ppa.launchpad.net/nginx/stable/ubuntu lucid main
+deb http://php53.dotdeb.org stable all
+
+deb http://ppa.launchpad.net/brianmercer/php/ubuntu lucid main
+deb-src http://ppa.launchpad.net/brianmercer/php/ubuntu lucid main
+EOF
+
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8D0DC64F
+apt-get update
+
+apt-get -y --allow-unauthenticated install php5-cli php5-curl php5-gd php5-memcache php-pear php5-fpm php5-mysql php-apc
+apt-get -y install rsync nginx-full memcached daemon default-jre geoip-database 
 
 mysql_install "root" && mysql_tune 40
 
@@ -240,18 +265,3 @@ restartServices
 
 mysqladmin -u root -p'root' password ""
 
-echo "deb http://ppa.launchpad.net/nginx/stable/ubuntu lucid main" >> /etc/apt/sources.list
-echo "deb http://php53.dotdeb.org stable all" >> /etc/apt/sources.list
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C
-
-PKG_ARCH=`dpkg --print-architecture`
-echo "pkg architecture is " $PKG_ARCH
-mkdir -p /root/dependencies
-cd /root/dependencies
-wget http://us.archive.ubuntu.com/ubuntu/pool/main/k/krb5/libkrb53_1.6.dfsg.4~beta1-5ubuntu2_$PKG_ARCH.deb
-wget http://us.archive.ubuntu.com/ubuntu/pool/main/i/icu/libicu38_3.8-6ubuntu0.2_$PKG_ARCH.deb
-sudo dpkg -i *.deb
-
-apt-get update
-apt-get -y --allow-unauthenticated install php5-cli php5-curl php5-gd php5-memcache php-pear php5-fpm php5-mysql php5-apc
-apt-get -y install nginx emacs memcached git-core mcrypt daemon default-jre poppler-utils netpbm geoip-database cups-pdf openoffice.org-writer openoffice.org-draw

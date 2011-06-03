@@ -24,8 +24,8 @@ class Action_Admin_EditFeaturedPhoto extends Action
         {
             $photo->delete();
             
-            SessionMessages::add(__("featured_photo:deleted"));
-            $this->redirect("/admin/featured_photos");        
+            SessionMessages::add(__("featured:photo:deleted"));
+            $this->redirect("/admin/envaya/featured_photos");        
         }   
         else
         {                               
@@ -39,8 +39,8 @@ class Action_Admin_EditFeaturedPhoto extends Action
             $photo->active = get_input('active') == 'yes' ? 1 : 0;
             $photo->save();
             
-            SessionMessages::add(__("featured_photo:saved"));
-            $this->redirect("/admin/featured_photos");    
+            SessionMessages::add(__("featured:photo:saved"));
+            $this->redirect("/admin/envaya/featured_photos");    
         }
     }
 
@@ -49,7 +49,7 @@ class Action_Admin_EditFeaturedPhoto extends Action
         $photo = $this->photo;
     
         $this->page_draw(array(
-            'title' => __('featured_photo:edit'),
+            'title' => __('featured:photo:edit'),
             'content' => view('admin/edit_featured_photo', array(
                 'photo' => $photo,
             ))

@@ -6,7 +6,7 @@
  * URL: / 
  *      /home
  */
-class Controller_Home extends Controller
+class Controller_EnvayaHome extends Controller
 {
     static $routes = array(
         array()
@@ -15,7 +15,13 @@ class Controller_Home extends Controller
     function action_index()
     {       
         $this->prefer_http();    
-        $this->add_generic_footer();
+
+        $footer = PageContext::get_submenu('footer');
+    
+        $footer->add_item(__('about'), "/envaya");
+        $footer->add_item(__('contact'), "/envaya/contact");
+        $footer->add_item(__('donate'), "/envaya/page/contribute");    
+        
         $this->allow_view_types(null);
         
         $this->page_draw(array(

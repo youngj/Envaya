@@ -8,11 +8,7 @@ class Controller_Default extends Controller
 {
     static $routes = array(
         array(
-            'regex' => '/$', 
-            'defaults' => array('controller' => 'home'), 
-        ),
-        array(
-            'regex' => '/(?P<controller>pg|home|org|admin)\b',
+            'regex' => '/(?P<controller>pg|org|admin)\b',
         ),
         array(
             'regex' => '/(?P<username>[\w\-]{3,})\b', 
