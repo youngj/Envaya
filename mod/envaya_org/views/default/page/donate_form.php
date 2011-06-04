@@ -1,5 +1,5 @@
 
-<form style='padding-top:10px' id='donate_form' method="POST" action="/pg/submit_donate_form">
+<form style='padding-top:10px' id='donate_form' method="POST" action="/org/submit_donate_form">
     
     <input name="project" type="hidden" value="Envaya" />
 
@@ -173,5 +173,5 @@
     </tr>
     </table>   
     
-    <div style='width:1px;height:1px;overflow:hidden'><iframe src='pg/tci_donate_frame' frameborder='0' border='0'></iframe></div>
+    <div style='width:1px;height:1px;overflow:hidden'><iframe src='/org/tci_donate_frame' frameborder='0' border='0'></iframe></div>
 </form>

@@ -8,7 +8,6 @@
     
     echo view('css/snippets/reset', $vars);
     echo view('css/base', $vars);
-    echo view('css/snippets/topbar', $vars);
 ?>
 
 #translate_bar

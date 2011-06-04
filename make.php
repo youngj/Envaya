@@ -50,10 +50,11 @@ class Build
     static function path_cache()
     {
         require_once "start.php";
+                
         $paths = array(
             'views/default/admin/path_cache_test.php' => 'build/path_cache_info.php' 
                 // allows us to test if the path cache actually works like it should
-        );
+        );        
         static::add_paths_in_dir('', 'engine', $paths);
         static::add_paths_in_dir('', 'themes', $paths);        
         static::add_paths_in_dir('', 'engine/controller', $paths);

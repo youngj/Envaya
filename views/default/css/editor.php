@@ -2,7 +2,6 @@
     $vars['contentWidth'] = 700;
     
     echo view('css/default', $vars);    
-    echo view('css/snippets/slideshow', $vars);    
     
     $graphicsDir = "/_media/images";
 ?>
