@@ -8,119 +8,71 @@
 include("scripts/cmdline.php");
 include("start.php");
 
-$functionCount = array();
+require_once "scripts/phpanalyzer.php";
+require_once "scripts/statemachine/functiondef.php";
+require_once "scripts/statemachine/functioncall.php";
+require_once "scripts/statemachine/functioncallback.php";
 
-function getDeclaredFunctions($path)
+function getCamelCaseFunctions()
 {
-    global $functionCount;
-    $contents = file_get_contents($path);
-    if (preg_match_all('/function\s+(\w+)/', $contents, $matches))
-    {
-        foreach ($matches[1] as $fnName)
-        {
-            $functionCount[$fnName] = 0;
-        }
-    }
-}
-
-$numFns = 0;
-function getCamelCaseFunctions($path)
-{
-    global $numFns;    
+    $analyzer = new PHPAnalyzer();    
+    $function_sm = new StateMachine_FunctionDef();    
+    $analyzer->add_state_machine($function_sm);    
+    $analyzer->parse_dir(dirname(__DIR__));
     
-    $contents = file_get_contents($path);
-    if (preg_match_all('/function\s+(\w*[A-Z]\w*)/', $contents, $matches))
-    {    
-        foreach ($matches[1] as $fnName)
-        {          
-            $numFns++;
-            echo "$path:$fnName\n";
-        }
-    }
-}
-
-$functionArgs = array();
-
-function getFunctionArguments($path)
-{
-    global $functionArgs;
-
-    $contents = file_get_contents($path);
-    if (preg_match_all('/function\s+(\w+)\([^\)]+\)/', $contents, $matches, PREG_SET_ORDER))
+    foreach ($function_sm->function_info as $fullName => $info)
     {
-        foreach ($matches as $match)
-        {                                       
-            $functionArgs[$path.":".$match[1]] = substr_count($match[0],',') + 1;
+        if (preg_match('/[A-Z]/', $info['name']))
+        {
+            echo "$fullName\n";
+            echo "  {$info['path']}\n";
         }
     }
 }
-
-function countCalledFunctions($path)
-{
-    global $functionCount;
-    $contents = file_get_contents($path);
-    
-    foreach ($functionCount as $fnName => $count)
-    {    
-        if ($count == 0)
-        {
-            if (preg_match('/(?<!function\s)\b'.$fnName.'\b/', $contents))
-            {
-                $functionCount[$fnName]++;
-            }
-        }
-    }    
-}
-
-function checkDir($dir, $callback)
-{
-    $files = scandir($dir);
-
-    foreach ($files as $file)
-    {
-        $path = "$dir/$file";
-
-        if (preg_match('/\.php$/', $path))
-        {           
-            $callback($path);
-        }
-        else if ($file != "." && $file != ".." && $file != ".svn" && $file != '.git' && is_dir($path))
-        {
-            checkDir($path, $callback);
-        }
-    }
-}
-
-
 
 function showUnusedFunctions()
 {
-    $dir = dirname(__DIR__);
-    global $functionCount;
-    checkDir("$dir/engine", 'getDeclaredFunctions');
-    checkDir($dir, 'countCalledFunctions');
-
-    foreach ($functionCount as $functionName => $count)
+    $analyzer = new PHPAnalyzer();    
+    $function_sm = new StateMachine_FunctionDef();    
+    $fcall_sm = new StateMachine_FunctionCall();    
+    $fcallback_sm = new StateMachine_FunctionCallback(); 
+    $analyzer->add_state_machine($function_sm);    
+    $analyzer->add_state_machine($fcall_sm);    
+    $analyzer->add_state_machine($fcallback_sm);    
+    
+    $analyzer->parse_dir(dirname(__DIR__));
+    
+    $function_calls = $fcall_sm->function_calls;
+    $potential_callbacks = $fcallback_sm->potential_callbacks;
+    
+    foreach ($function_sm->function_info as $fullName => $info)
     {
-        if ($count == 0 && !preg_match('/^(action_|index_)/',$functionName))
+        $functionName = $info['name'];
+        if (!preg_match('/^(__|action_)/', $functionName)     
+            && !preg_match('#/test/#', $info['path']) 
+            && !isset($function_calls[$functionName])
+            && !isset($potential_callbacks[$functionName]))
         {
-            echo "$functionName\n";
+            echo "$fullName\n";
+            echo "  {$info['path']}\n";
         }
     }
 }
 
 function showLongFunctions()
-{
-    $dir = dirname(__DIR__);
-    checkDir("$dir/engine", 'getFunctionArguments');
-
-    global $functionArgs;
-        
-    foreach ($functionArgs as $functionName => $numArgs)
+{    
+    $analyzer = new PHPAnalyzer();    
+    $function_sm = new StateMachine_FunctionDef();    
+    $analyzer->add_state_machine($function_sm);    
+    $analyzer->parse_dir(dirname(__DIR__));
+    
+    foreach ($function_sm->function_info as $functionName => $info)
     {
+        $numArgs = sizeof($info['args']);
         if ($numArgs > 3)
         {
             echo "$numArgs $functionName\n";
+            echo "  {$info['path']}\n";
         }
     }
 }
@@ -133,7 +85,7 @@ function main()
     switch ($mode)
     {
         case 'unused': return showUnusedFunctions();
-        case 'camel': return checkDir(dirname(__DIR__)."/engine", 'getCamelCaseFunctions');
+        case 'camel': return getCamelCaseFunctions();
         case 'long': return showLongFunctions();
         default: echo "invalid mode: $mode\n";
     }

@@ -12,6 +12,8 @@
  */
 
 require_once "scripts/cmdline.php";
+require_once "scripts/phpanalyzer.php";
+require_once "scripts/statemachine/languagekeys.php";
 require_once "start.php";
 
 $lang = @$_SERVER['argv'][1] ?: 'en';
@@ -107,39 +109,16 @@ if ($lang != 'en')
 }
 else
 {
-    $seenKeys = array();
     $trans = $en_trans;
-
-    function checkDir($dir)
-    {
-        global $seenKeys;
-        $files = scandir($dir);
-
-        foreach ($files as $file)
-        {
-            $path = "$dir/$file";
-
-            if (preg_match('/\.php$/', $path))
-            {
-                //echo "$path\n";
-                $contents = file_get_contents($path);
-                if (preg_match_all('/(__|add_js_string)\(["\\\']([\w\:]+)["\\\']/', $contents, $langKeys))
-                {
-                    foreach ($langKeys[2] as $langKey)
-                    {
-                        $seenKeys[$langKey] = true;
-                    }
-                }
-            }
-            else if ($file != "." && $file != ".." && $file != ".svn" && is_dir($path))
-            {
-                checkDir($path);
-            }
-        }
-    }
-    checkDir(dirname(__DIR__));
-
-    foreach ($seenKeys as $seenKey => $seen)
+    
+    $analyzer = new PHPAnalyzer();    
+    $lang_sm = new StateMachine_LanguageKeys();    
+    $analyzer->add_state_machine($lang_sm);    
+    $analyzer->parse_dir(dirname(__DIR__));
+    
+    $seenKeys = $lang_sm->lang_keys;
+    
+    foreach ($seenKeys as $seenKey => $paths)
     {
         if (!isset($en_trans[$seenKey]))
         {
