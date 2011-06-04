@@ -137,7 +137,7 @@ EOF
 cat <<EOF > /etc/nginx/fastcgi_params
 
 fastcgi_pass 127.0.0.1:9000;
-fastcgi_param SCRIPT_FILENAME $INSTALL_DIR/www/\$fastcgi_script_name;
+fastcgi_param SCRIPT_FILENAME \$document_root/\$fastcgi_script_name;
 fastcgi_param PATH_INFO \$fastcgi_script_name;
 
 fastcgi_cache envaya;
