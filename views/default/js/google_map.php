@@ -5,7 +5,7 @@
         echo view('js/xhr');    
         
         PageContext::add_js_string('loading');
-        PageContext::add_js_string('map:zoom_in');
+        PageContext::add_js_string('browse:zoom_in');
         
         include_js('inline/google_map.js');
     }

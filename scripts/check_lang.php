@@ -12,8 +12,8 @@
  */
 
 require_once "scripts/cmdline.php";
-require_once "scripts/phpanalyzer.php";
-require_once "scripts/statemachine/languagekeys.php";
+require_once "scripts/analysis/phpanalyzer.php";
+require_once "scripts/analysis/statemachine/languagekeys.php";
 require_once "start.php";
 
 $lang = @$_SERVER['argv'][1] ?: 'en';

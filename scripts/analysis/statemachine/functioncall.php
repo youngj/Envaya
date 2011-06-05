@@ -9,15 +9,12 @@ define('S_FCALL_FUNCTION', 2);
 
 class StateMachine_FunctionCall extends StateMachine
 {
-    public $function_calls = array(/* function_name => called_files */);
+    public $function_calls = array(/* function_name => called_paths */);
     
     private $cur_function_name = '';
               
-    function get_next_state($token, $type)
+    function get_next_state($token, $type, $line)
     {
-        if ($type == T_WHITESPACE)
-            return $this->cur_state;
-            
         switch ($this->cur_state)
         {
             case S_INIT:        // look for something that is possibly a function name        
@@ -43,7 +40,7 @@ class StateMachine_FunctionCall extends StateMachine
             case S_FCALL_NAME: // already seen a possible function name, look for '(' 
                 if ($token == '(')
                 {   
-                    $this->function_calls[$this->cur_function_name][] = $this->cur_path;
+                    $this->function_calls[$this->cur_function_name][] = "{$this->cur_path}:$line";
                     return S_INIT;
                 }
                 return S_INIT;

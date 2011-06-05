@@ -8,8 +8,7 @@ return array(
     'capslock_warning' => "Angalia: Unatumia CAPS LOCK sasa",    
     'donate' => "Changia",
     'about' => 'Kuhusu',
-    'feed' => 'Mabadiliko',
-        
+    'feed' => 'Mabadiliko',        
     
     'viewtype:default' => "Kawaida",
     'viewtype:mobile' => "Simu",

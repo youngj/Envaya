@@ -74,6 +74,7 @@ return array(
     'browse:instructions' => "Each red dot on the map below is an organization using Envaya. Click a dot to see its name, and click its name to view its home page.",
     'browse:map' => 'Map',
     'browse:list' => 'List',
+    'browse:zoom_in' => "Zoom in",        
 
     'search' => "Search",
     'search:title' => "Find an organization",
@@ -96,8 +97,6 @@ return array(
         
     'approval:rejected' => 'We are sorry. This organization was not approved by our administrators.',
     'approval:waiting' => "This organization is awaiting review and is not yet visible to the public.",
-
-    'map:zoom_in' => "Zoom in",    
 
     'size:label' => "Size",
     'size:small' => "Small",

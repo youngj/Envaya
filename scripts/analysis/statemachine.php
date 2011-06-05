@@ -7,32 +7,30 @@
      */
 
     define('S_INIT', 0);    // initial state
+    define('S_IGNORE_FILE', -1); // ignoring current file
     
     abstract class StateMachine
     {
-        protected $cur_state;
+        public $cur_state;
         protected $cur_path;
+    
+        public $ignore_regexes = array();
     
         function set_path($path)
         {
             $this->cur_path = $path;
-            $this->cur_state = S_INIT;
+            $this->cur_state = S_INIT;            
         }
         
-        protected function error($token, $type, $state_name)
+        protected function error($token, $type, $line)
         {
             $type_name = $type != null ? (' ('.token_name($type).')') : '';
-            echo get_class($this)." Error: invalid token $token$type_name\n";
-            echo "  file:  {$this->cur_path}\n";
-            echo "  state: {$state_name}\n";
+            echo get_class($this)." Error: unexpected token $token$type_name\n";
+            echo "  cur_path:  {$this->cur_path}:$line\n";
+            echo "  cur_state: {$this->cur_state}\n";
             $this->cur_state = S_INIT;        
             return S_INIT;
         }
-    
-        function handle_token($token, $type)
-        {
-            $this->cur_state = $this->get_next_state($token, $type);
-        }
         
-        abstract function get_next_state($token, $type);
+        abstract function get_next_state($token, $type, $line);
     }       

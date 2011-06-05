@@ -23,7 +23,7 @@ class StateMachine_FunctionDef extends StateMachine
         $this->cur_class_name = '';
     }
         
-    function get_next_state($token, $type)
+    function get_next_state($token, $type, $line)
     {
         if ($type == T_WHITESPACE)
             return $this->cur_state;
@@ -46,7 +46,7 @@ class StateMachine_FunctionDef extends StateMachine
                     $this->cur_class_name = "$token::";
                     return S_INIT;
                 }
-                return $this->error($token, $type, 'S_FUNCTION_CLASS');
+                return $this->error($token, $type, $line);
             case S_FUNCTION_DEF:  // previous token was 'function', expect a function name 
                 if ($type == T_STRING)
                 {
@@ -61,14 +61,14 @@ class StateMachine_FunctionDef extends StateMachine
                 {
                     return S_FUNCTION_DEF;
                 }
-                return $this->error($token, $type, 'S_FUNCTION_DEF');
+                return $this->error($token, $type, $line);
             case S_FUNCTION_NAME:   // previous token was a function name, expect '('
                 if ($token == '(')
                 {
                     $this->cur_args = array();
                     return S_FUNCTION_ARGS;
                 }
-                return $this->error($token, $type, 'S_FUNCTION_NAME');
+                return $this->error($token, $type, $line);
             case S_FUNCTION_ARGS:   // inside a function argument list, look for T_VARIABLE parameters
                 if ($type == T_VARIABLE)
                 {
@@ -82,13 +82,13 @@ class StateMachine_FunctionDef extends StateMachine
                     $this->function_info[$fn] = array(
                         'args' => $this->cur_args,
                         'name' => $this->cur_function_name,
-                        'path' => $this->cur_path,
+                        'path' => "{$this->cur_path}:$line",
                     );
                     return S_INIT;               
                 }
                 else if ($token == '{' || $token == '}')
                 {
-                    return $this->error($token, $type, 'S_FUNCTION_ARGS');
+                    return $this->error($token, $type, $line);
                 }
                 return S_FUNCTION_ARGS;
         }

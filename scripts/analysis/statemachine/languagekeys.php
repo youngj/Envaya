@@ -11,11 +11,8 @@
     {
         public $lang_keys = array(/* key => list of files */);    
     
-        function get_next_state($token, $type)
+        function get_next_state($token, $type, $line)
         {
-            if ($type == T_WHITESPACE)
-                return $this->cur_state;
-                
             switch ($this->cur_state)
             {
                 case S_INIT:    // look for calls to functions that take language keys as 1st parameter
@@ -29,12 +26,12 @@
                     {
                         return S_LANG_KEY;
                     }
-                    return $this->error($token, $type, "S_LANG_UNDERSCORE");
+                    return $this->error($token, $type, $line);
                 case S_LANG_KEY:        // in call to '__(' function, look for a hardcoded language key
                     if ($type == T_CONSTANT_ENCAPSED_STRING)
                     {
                         $lang_key = eval("return $token;");
-                        $this->lang_keys[$lang_key] = $this->cur_path;
+                        $this->lang_keys[$lang_key][] = "{$this->cur_path}:$line";
                         return S_INIT;
                     }  
                     return S_INIT;                    

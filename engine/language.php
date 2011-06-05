@@ -199,9 +199,14 @@ class Language
         return false;
     }    
     
+    function get_group_path($group_name)
+    {
+        return Engine::get_real_path("languages/{$this->code}/{$this->code}_{$group_name}.php");    
+    }
+    
     function get_group($group_name)
     {
-        $path = Engine::get_real_path("languages/{$this->code}/{$this->code}_{$group_name}.php");    
+        $path = $this->get_group_path($group_name);
         if ($path)
         {
             return include($path);

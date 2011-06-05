@@ -1,6 +1,6 @@
 <?php
     $org = $vars['org'];
-    $custom_header = $org->get_design_setting('custom_header');
+    $custom_header = $org->get_design_setting('custom_header');    
 ?>
 
 <form action='<?php echo $org->get_url() ?>/design' method='POST'>
