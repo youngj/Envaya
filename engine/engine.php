@@ -5,7 +5,6 @@
  */
 class Engine
 {
-    static $init_microtime;
     static $used_lib_cache;
     
     private static $path_cache;    
@@ -17,27 +16,32 @@ class Engine
      */
     static function init()
     {       
-        static::$init_microtime = microtime(true);
-        
-        error_reporting(E_ERROR | E_PARSE);
-
         require_once __DIR__."/config.php";
-        Config::load();
+        Config::load();        
         
-        static::$path_cache = (@include(Config::get('root')."/build/path_cache.php")) ?: array();        
+        $root = Config::get('root');
+        static::$path_cache = @include("$root/build/path_cache.php") ?: array();
         
-        static::load_environment_config();    
+        mb_internal_encoding('UTF-8');
         
-        mb_internal_encoding('UTF-8');        
-        spl_autoload_register(array('Engine', 'autoload'));
+        static::include_lib_files();        
         
-        static::include_lib_files();
-                
-        EventRegister::register_handler('all', 'all', 'system_log_listener', 400);
+        // initialize modules
+        foreach (Config::get('modules') as $module_name)
+        {
+            require Engine::get_module_root($module_name)."/start.php";
+        } 
+
+        // register autoload after module initialization 
+        // so that modules can't accidentally autoload anything in start.php
+        spl_autoload_register(array('Engine', 'autoload'));        
         
+        // do things that depend on autoload 
         set_error_handler('php_error_handler');
-        set_exception_handler('php_exception_handler');
-        register_shutdown_function(array('Engine', 'shutdown'));                
+        set_exception_handler('php_exception_handler');                
+        
+        EventRegister::register_handler('all', 'all', 'system_log_listener', 400);
+        register_shutdown_function(array('Engine', 'shutdown'));
     }
     
     /*
@@ -55,11 +59,46 @@ class Engine
     static function get_real_path($path)
     {
         $root = Config::get('root');
-        if (isset(static::$path_cache[$path]))
+        $path_cache =& static::$path_cache;
+        
+        if (isset($path_cache[$path]))
         {
-            return "$root/".static::$path_cache[$path];
+            $real_path = $path_cache[$path];
+            return $real_path ? "$root/$real_path" : null;
+        }
+        
+        // load path cache for the requested virtual directory
+        $cache_name = str_replace('/', '__', dirname($path));
+        $dir_cache = @include("$root/build/path_cache/$cache_name.php");
+        if ($dir_cache)
+        {            
+            foreach ($dir_cache as $virtual_path => $real_path)
+            {
+                $path_cache[$virtual_path] = $real_path;
+            }
         }
 
+        if (isset($path_cache[$path]))
+        {
+            $real_path = $path_cache[$path];
+            return $real_path ? "$root/$real_path" : null;
+        }
+        
+        // if the path_cache is working correctly, it should never get past here
+        // in a release environment.
+
+        return static::filesystem_get_real_path($path);
+    }
+
+    /*
+     * Returns the system absolute path for a given virtual path,
+     * using the file system to search for the virtual path in each module,
+     * without using the path cache.
+     * (potentially O(num_modules) running time)
+     */
+    static function filesystem_get_real_path($path)
+    {
+        $root = Config::get('root');
         $core_path = "$root/$path";                
         if (file_exists($core_path))
         {
@@ -77,6 +116,11 @@ class Engine
                 return $module_path;
             }
         }
+        
+        // use 0 as a sentinel for nonexistent files rather than null
+        // since isset does not distinguish between null and nonexistent keys
+        // and array_key_exists is slower        
+        static::$path_cache[$path] = 0;
         return null;
     }
 
@@ -105,31 +149,6 @@ class Engine
         return $paths;
     }        
         
-    /*
-     * Overrides config settings using the ENVAYA_CONFIG environment variable,
-     * which may define settings as a JSON string.
-     */            
-    private static function load_environment_config()
-    {
-        $config_json = getenv("ENVAYA_CONFIG");
-        
-        if (!$config_json)
-        {
-            return;
-        }
-        $config_obj = json_decode($config_json, true);
-        
-        if (!$config_obj || !is_array($config_obj))
-        {
-            return;
-        }
-        
-        foreach ($config_obj as $k => $v)
-        {
-            Config::set($k, $v);
-        }
-    }
-
     /*
      * Includes all the files that should be included on every request.
      * If build/lib_cache.php exists, it will get the list of virtual paths from there,
@@ -194,14 +213,7 @@ class Engine
      */
     static function add_autoload_action($class, $fn)
     {
-        if (class_exists($class, false))
-        {
-            $fn();
-        }
-        else
-        {
-            static::$autoload_actions[strtolower($class)][] = $fn;
-        }
+        static::$autoload_actions[strtolower($class)][] = $fn;
     }
 
     /**
@@ -211,11 +223,5 @@ class Engine
     static function shutdown()
     {
         EventRegister::trigger_event('shutdown', 'system');
-
-        if (Config::get('debug'))
-        {
-            $uri = @$_SERVER['REQUEST_URI'] ?: '';
-            error_log("Page {$uri} generated in ".(float)(microtime(true) - static::$init_microtime)." seconds");
-        }
     }
 }

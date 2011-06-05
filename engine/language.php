@@ -125,15 +125,16 @@ class Language
     {
         if ($language_array)
         {
+            $all_translations =& $this->translations;
             foreach ($language_array as $k => $v)
             {
-                $this->translations[$k] = $v;
+                $all_translations[$k] = $v;
             }    
         }
     }   
     
     function get_translation($key)
-    {
+    {    
         $res = @$this->translations[$key];        
         if ($res !== null)
         {

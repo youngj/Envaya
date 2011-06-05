@@ -31,9 +31,3 @@ Engine::add_autoload_action('Language', function() {
 });
 
 Engine::init();
-
-// load modules
-foreach (Config::get('modules') as $module_name)
-{
-    require Engine::get_module_root($module_name)."/start.php";
-} 

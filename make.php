@@ -34,10 +34,18 @@ class Build
     {
         @unlink("build/lib_cache.php");
         @unlink("build/path_cache.php");
+        @unlink("build/path_cache_info.php");
         
+        system('rm -rf build/path_cache');
         system('rm -rf www/_media/*');        
     }
     
+    /*
+     * Generates a cache of all the paths of files in the lib/ directory.
+     *
+     * Uses relative paths so the same cache files work in any root directory
+     * and can be copied to different systems without needing to regenerate them.
+     */
     static function lib_cache()
     {
         @unlink("build/lib_cache.php");
@@ -47,56 +55,148 @@ class Build
         static::write_file("build/lib_cache.php", static::get_array_php($paths));
     }
     
+    /*
+     * Generates a cache of all the paths of files in the engine, themes, languages, and views
+     * directories, which might be referenced via virtual paths in calls to Engine::get_real_path() .
+     * This cache allows Engine::get_real_path() to work in O(1) time instead of O(num_modules) time.
+     *
+     * Uses relative paths so the same cache files work in any root directory
+     * and can be copied to different systems without needing to regenerate them.
+     */    
     static function path_cache()
     {
         require_once "start.php";
                 
-        $paths = array(
-            'views/default/admin/path_cache_test.php' => 'build/path_cache_info.php' 
-                // allows us to test if the path cache actually works like it should
+        if (!is_dir('build/path_cache'))
+        {
+            mkdir('build/path_cache');
+        }
+                
+        $dir_paths = array(
+            // allows us to test if the path cache actually works like it should
+            'views/default/admin' => array(            
+                'views/default/admin/path_cache_test.php' => 'build/path_cache_info.php' 
+            )
         );        
-        static::add_paths_in_dir('', 'engine', $paths);
-        static::add_paths_in_dir('', 'themes', $paths);        
-        static::add_paths_in_dir('', 'engine/controller', $paths);
-        static::add_paths_in_dir('', 'engine/cache', $paths);
-        static::add_paths_in_dir('', 'engine/mixin', $paths);
-        static::add_paths_in_dir('', 'engine/query', $paths);
-        static::add_paths_in_dir('', 'engine/feeditem', $paths);
-        static::add_paths_in_dir('', 'engine/widget', $paths);
-        static::add_paths_in_dir('', 'languages/en', $paths);        
-        static::add_paths_in_dir('', 'views/default', $paths);        
-        static::add_paths_in_dir('', 'views/default/layouts', $paths);        
-        static::add_paths_in_dir('', 'views/default/page_elements', $paths);        
-        static::add_paths_in_dir('', 'views/default/input', $paths);        
-        static::add_paths_in_dir('', 'views/default/messages', $paths);        
-        static::add_paths_in_dir('', 'views/default/js', $paths);        
-        static::add_paths_in_dir('', 'views/default/translation', $paths);        
+        
+        $virtual_dirs = array('engine', 'themes', 'languages', 'views');
+        
+        foreach ($virtual_dirs as $virtual_dir)
+        {        
+            static::add_paths_in_dir('', $virtual_dir, $dir_paths);
+        }
                 
         $modules = Config::get('modules');
         foreach ($modules as $module)
         {
-            static::add_paths_in_dir("mod/{$module}/", 'views/default/page_elements', $paths);
-            static::add_paths_in_dir("mod/{$module}/", 'views/default/object', $paths);
-            static::add_paths_in_dir("mod/{$module}/", 'views/default/home', $paths);
-            static::add_paths_in_dir("mod/{$module}/", 'engine/controller', $paths);
-            static::add_paths_in_dir("mod/{$module}/", 'engine', $paths);
-            static::add_paths_in_dir("mod/{$module}/", "languages/en", $paths);            
-            static::add_paths_in_dir("mod/{$module}/", "themes", $paths);            
-        }        
+            foreach ($virtual_dirs as $virtual_dir)
+            {        
+                static::add_paths_in_dir("mod/{$module}/", $virtual_dir, $dir_paths);
+            }
+        }       
         
-        static::write_file("build/path_cache.php", static::get_array_php($paths));
+        static::add_nonexistent_view_paths($dir_paths);
+                
+        // create a cache file for each virtual directory
+        foreach ($dir_paths as $dir => $paths)
+        {
+            $cache_name = str_replace('/','__', $dir);
+            static::write_file("build/path_cache/$cache_name.php", static::get_array_php($paths));
+        }
         
-        $numPaths = sizeof($paths);
-        static::write_file("build/path_cache_info.php", "<div>The path cache is enabled. (size=$numPaths)</div>");
+        // list of commonly used virtual directories whose paths will be included in
+        // build/path_cache.php, rather than needing to open a cache file for each directory
+        $default_dirs = array(
+            'engine',
+            'engine/controller',
+            'engine/cache',
+            'engine/query',            
+            'engine/mixin',
+            'engine/widget',            
+            'languages/en',
+            'themes',
+            'views/default',
+            'views/default/home',            
+            'views/default/js',
+            'views/default/layouts',
+            'views/default/page_elements',
+            'views/default/input',
+            'views/default/object',            
+            'views/default/output',
+            'views/default/translation',
+            'views/default/messages',
+        );
+        
+        $default_paths = array();
+        foreach ($default_dirs as $default_dir)
+        {
+            $default_paths = array_merge($default_paths, $dir_paths[$default_dir]);
+        }
+        
+        static::write_file("build/path_cache.php", static::get_array_php($default_paths));
+                
+        // create a file with cache information to display on the admin statistics page
+        // (which also verifies that the path cache is basically working)
+        $num_default_paths = sizeof($default_paths);
+        $num_files = sizeof($dir_paths);
+        static::write_file("build/path_cache_info.php", 
+            "<div>The path cache is enabled. ($num_default_paths default paths + $num_files files)</div>");
     }
     
+    private static function add_nonexistent_view_paths(&$dir_paths)
+    {
+        // add cache entries for non-existent views in view types other than default
+        // since the view() function will check if they exist before using the default view.
+        
+        $view_types = array();
+        $default_views = array();
+
+        foreach ($dir_paths as $dir => $paths)
+        {
+            if (preg_match('#^views/(\w+)#', $dir, $matches))
+            {
+                $view_type = $matches[1];
+                if ($view_type == 'default')
+                {            
+                    foreach ($paths as $virtual_path => $real_path)
+                    {
+                        $default_views[] = substr($virtual_path, strlen('views/default/'));
+                    }
+                }
+                else // collect names of all view types other than default
+                {
+                    $view_types[$view_type] = $view_type;
+                }
+            }
+        }
+                               
+        foreach ($default_views as $view_path)
+        {
+            foreach ($view_types as $view_type)
+            {            
+                // is this view not defined for this view type?
+                $virtual_path = "views/$view_type/$view_path";
+                if (!Engine::filesystem_get_real_path($virtual_path)) 
+                {
+                    $dir = dirname($virtual_path);
+                    
+                    if (!isset($paths[$dir][$virtual_path]))
+                    {
+                        // 0 is sentinel for nonexistent keys in path cache
+                        $dir_paths[$dir][$virtual_path] = 0; 
+                    }                    
+                }
+            }
+        }
+    }
+        
     static function write_file($filename, $contents)
     {
         echo strlen($contents) . " ".$filename."\n";
         file_put_contents($filename, $contents);            
     }
 
-    private static function add_paths_in_dir($rel_base, $dir, &$paths, $recursive = false)
+    private static function add_paths_in_dir($rel_base, $dir, &$paths)
     {
         $root = Config::get('root'); 
         $handle = @opendir("{$root}/{$rel_base}{$dir}");
@@ -110,14 +210,14 @@ class Build
 
                 if (preg_match('/\.php$/', $file))
                 {
-                    if (!isset($paths[$virtual_path]))
+                    if (!isset($paths[$dir][$virtual_path]))
                     {
-                        $paths[$virtual_path] = $real_rel_path;
+                        $paths[$dir][$virtual_path] = $real_rel_path;
                     }
-                }              
-                if ($recursive && $file != '.' && $file != '..' && is_dir($real_path))
+                }
+                if ($file[0] != '.' && is_dir($real_path))
                 {
-                    static::add_paths_in_dir($rel_base, $virtual_path, $paths, $recursive);
+                    static::add_paths_in_dir($rel_base, $virtual_path, $paths);
                 }
             }
         }
@@ -129,7 +229,8 @@ class Build
     }
     
     /* 
-     * Minify all CSS files defined in each module's views/default/css/ directory, and copy to www/_media/css/.
+     * Minifies all CSS files defined in each module's views/default/css/ directory, 
+     * and copies to www/_media/css/.
      */       
     static function css($name = '*')
     {    
@@ -186,7 +287,7 @@ class Build
     }
 
     /* 
-     * Minify Javascript in each module's js/ directory, and copy to www/_media/.
+     * Minifies Javascript in each module's js/ directory, and copie to www/_media/.
      */   
     static function js($name = '*')
     {    
@@ -208,7 +309,7 @@ class Build
     }
     
     /* 
-     * Copy static files from each module's _media/ directory to www/_media/.
+     * Copies static files from each module's _media/ directory to www/_media/.
      */
     static function media()
     {
@@ -228,11 +329,11 @@ class Build
     static function all()
     {
         Build::clean();
+        Build::media();
         Build::lib_cache();
         Build::path_cache();
         Build::css();
         Build::js();
-        Build::media();
     }
 }
 

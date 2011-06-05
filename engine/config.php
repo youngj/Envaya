@@ -49,33 +49,42 @@ class Config
             static::load_array(static::get_group('default'));                        
             static::load_array(static::get_group('local'));                        
             static::init_dependent_settings();
+            
+            // The ENVAYA_CONFIG environment variable may define settings in a JSON string
+            $json = getenv("ENVAYA_CONFIG");
+            if ($json)
+            {
+                static::load_array(json_decode($json, true));
+            }                        
         }
     }
-
+        
     private static function load_array($settings, $overwrite = true)
     {
+        $all_settings =& static::$settings;
+    
         if ($settings)
         {
-            if (!static::$settings)
+            if (!$all_settings)
             {
-                static::$settings = $settings;
+                $all_settings = $settings;
             }        
             else if ($overwrite)
             {
                 foreach ($settings as $k => $v)
                 {                
-                    static::$settings[$k] = $v;
+                    $all_settings[$k] = $v;
                 }
             }
             else
             {
                 foreach ($settings as $k => $v)
                 {                
-                    if (!isset(static::$settings[$k]))
+                    if (!isset($all_settings[$k]))
                     {
-                        static::$settings[$k] = $v;
+                        $all_settings[$k] = $v;
                     }
-                }        
+                }
             }
         }
     }

@@ -1,4 +1,6 @@
 <?php
+
+$start_microtime = microtime(true);
  
 require_once "scripts/cmdline.php";
 require_once "start.php";
@@ -9,7 +11,7 @@ $uri = @$argv[1] ?: "/";
 
 $end_init_mtime = microtime(true);
 
-$t_init = ($end_init_mtime - Engine::$init_microtime);
+$t_init = ($end_init_mtime - $start_microtime);
 
 function exec_request($uri)
 {
