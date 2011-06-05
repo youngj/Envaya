@@ -25,6 +25,7 @@ return array(
     'cancel' => "Cancel",
     'view' => "View",
     'edit' => "Edit",
+    'add' => "Add",
     'delete' => "Delete",
     'preview' => "Preview",    
     'canceledit' => "Cancel Edit",

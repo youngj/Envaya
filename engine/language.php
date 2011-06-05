@@ -242,7 +242,7 @@ class Language
     
     static function get_group_search_order($key)
     {
-        $group_names = array();
+        $group_names = array('default');
         
         $key_arr = explode(':', $key, 2);
         if (sizeof($key_arr == 2))
@@ -260,7 +260,6 @@ class Language
             }
         }
         
-        $group_names[] = 'default';
         $group_names[] = 'admin';
         
         return $group_names;

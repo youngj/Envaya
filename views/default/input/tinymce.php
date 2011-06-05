@@ -36,7 +36,7 @@
     $widthCSS = $width ? "width:{$width}px;" : '';
     $heightCSS = $height ? "height:{$height}px;" : '';        
     
-    echo "<div class='input-textarea' style='padding-bottom:15px' id='tinymce_loading$INCLUDE_COUNT'>".__("Loading...")."</div>";
+    echo "<div class='input-textarea' style='padding-bottom:15px' id='tinymce_loading$INCLUDE_COUNT'>".__("loading")."</div>";
 
     if (!$INCLUDE_COUNT)
     {

@@ -33,6 +33,8 @@ Views::extend('page_elements/header', 'page_elements/envaya_topbar');
 Views::extend('css/default', 'css/snippets/topbar');
 Views::extend('css/editor', 'css/snippets/slideshow');
 
+Views::replace('emails/network_relationship_invite_link', 'emails/envaya_relationship_invite');
+
 Engine::add_autoload_action('Language', function() {
     Language::add_fallback_group('featured', 'featured_admin');
 });

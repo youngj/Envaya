@@ -76,8 +76,10 @@ class Build
         foreach ($modules as $module)
         {
             static::add_paths_in_dir("mod/{$module}/", 'views/default/page_elements', $paths);
+            static::add_paths_in_dir("mod/{$module}/", 'views/default/object', $paths);
             static::add_paths_in_dir("mod/{$module}/", 'views/default/home', $paths);
             static::add_paths_in_dir("mod/{$module}/", 'engine/controller', $paths);
+            static::add_paths_in_dir("mod/{$module}/", 'engine', $paths);
             static::add_paths_in_dir("mod/{$module}/", "languages/en", $paths);            
             static::add_paths_in_dir("mod/{$module}/", "themes", $paths);            
         }        

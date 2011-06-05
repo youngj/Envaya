@@ -11,6 +11,7 @@ return array(
     'trans:original_in' => "Original in %s",
     'trans:inlang' => "Translation in %s",
     'trans:submit' => "Submit translation",
+    'trans:posted' => "Translation submitted successfully.",
     
     'domains:edit' => "Edit domain names",
     'domains:added' => "Domain name added",

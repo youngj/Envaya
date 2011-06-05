@@ -13,6 +13,6 @@
     $controller = new Controller_Default($request);
     $controller->execute($request->uri);
 
-    $request->send_headers();
+    $request->send_headers();        
+    
     echo $request->response;
-

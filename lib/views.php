@@ -48,37 +48,11 @@ function view($view, $vars = null, $viewtype = null)
     return ob_get_clean();
 }
 
-function get_view_path($view, $viewtype = null, $fallback = true)
-{
-    if (!$viewtype)
-    {
-        $viewtype = Views::get_current_type();
-    }
-
-    $viewPath = null;
-    
-    if ($viewtype != 'default')
-    {
-        $viewPath = Engine::get_real_path("views/{$viewtype}/{$view}.php");
-        if (!$viewPath && !$fallback)
-        {
-            return null;
-        }
-    }
-    
-    if (!$viewPath)
-    {
-        $viewPath = Engine::get_real_path("views/default/{$view}.php");
-    }
-    
-    return $viewPath;
-}
-
 function include_view($view, $viewtype, $vars)
 {
     static $INCLUDE_COUNTS = array();
 
-    $view_path = get_view_path($view, $viewtype);
+    $view_path = Views::get_path($view, $viewtype);
     if ($view_path == null)
     {
         throw new InvalidParameterException("view $view does not exist");
@@ -99,6 +73,7 @@ function include_view_file($VIEW_PATH, $vars, $INCLUDE_COUNT)
 {
     return include $VIEW_PATH;
 }
+
 /**
  * Returns whether the specified view exists
  *
@@ -108,7 +83,7 @@ function include_view_file($VIEW_PATH, $vars, $INCLUDE_COUNT)
  */
 function view_exists($view, $viewtype = null, $fallback = true)
 {
-    return get_view_path($view, $viewtype, $fallback) != null; 
+    return Views::get_path($view, $viewtype, $fallback) != null; 
 }
 
 /**
@@ -206,5 +181,31 @@ class Views
         $extensions = static::$extensions_map[$base_view];
         ksort($extensions);
         return array_values($extensions);
+    }
+    
+    static function get_path($view, $viewtype = null, $fallback = true)
+    {
+        if (!$viewtype)
+        {
+            $viewtype = Views::get_current_type();
+        }
+
+        $viewPath = null;
+        
+        if ($viewtype != 'default')
+        {
+            $viewPath = Engine::get_real_path("views/{$viewtype}/{$view}.php");
+            if (!$viewPath && !$fallback)
+            {
+                return null;
+            }
+        }
+        
+        if (!$viewPath)
+        {
+            $viewPath = Engine::get_real_path("views/default/{$view}.php");
+        }
+        
+        return $viewPath;
     }
 }

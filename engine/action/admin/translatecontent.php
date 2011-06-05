@@ -79,7 +79,7 @@ class Action_Admin_TranslateContent extends Action
             }
         }
 
-        SessionMessages::add(__("itrans:posted"));
+        SessionMessages::add(__("trans:posted"));
 
         $this->redirect(get_input('from') ?: $entity->get_url());
     }
