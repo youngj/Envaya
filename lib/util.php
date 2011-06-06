@@ -80,15 +80,13 @@
     
     function css_url($css_name)
     {
-        $cache_version = Config::get('cache_version');
-        
         if (Config::get('debug'))
         {
-            return "/pg/css?name=$css_name&v=$cache_version";
+            return "/pg/css?name=$css_name&hash=" . md5(view("css/$css_name", 'default'));
         }
         else
         {
-            return "/_media/css/$css_name.css?$cache_version";
+            return "/_media/css/$css_name.css?".Config::get("hash:css:$css_name");
         }        
     }     
                 

@@ -47,7 +47,8 @@ class Config
         {
             static::$base_dir = dirname(__DIR__);            
             static::load_array(static::get_group('default'));                        
-            static::load_array(static::get_group('local'));                        
+            static::load_array(static::get_group('local'));
+            static::load_array(@include(static::$base_dir."/build/config.php"));
             static::init_dependent_settings();
             
             // The ENVAYA_CONFIG environment variable may define settings in a JSON string
@@ -60,11 +61,11 @@ class Config
     }
         
     private static function load_array($settings, $overwrite = true)
-    {
-        $all_settings =& static::$settings;
-    
+    {    
         if ($settings)
         {
+            $all_settings =& static::$settings;
+            
             if (!$all_settings)
             {
                 $all_settings = $settings;

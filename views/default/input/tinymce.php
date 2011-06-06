@@ -58,7 +58,7 @@
             echo view('js/create_modal_box');         
             echo view('js/dom'); 
         ?></script>
-        <script type='text/javascript' src='/_media/tiny_mce/tiny_mce.js?v<?php echo Config::get('cache_version'); ?>'></script>
+        <script type='text/javascript' src='/_media/tiny_mce/tiny_mce.js?v<?php echo Config::get('hash:js:tiny_mce'); ?>'></script>
         <?php                
     }
 

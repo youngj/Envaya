@@ -1,6 +1,5 @@
 <?php
 return array(
-    'cache_version' => 187,  // increment when css, or external js (tinymce/swfupload) changes
     'debug' => true,
     
     'dbuser' => '',
@@ -75,4 +74,6 @@ return array(
     
     'site_secret' => 'default_secret',
     'fallback_theme' => 'simple',
+    
+    'cache_version' => 188,  // increment when all cached objects need to be invalidated (rare)
 );
