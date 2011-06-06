@@ -28,4 +28,7 @@ return array(
     'discussions:about' => "Ukurasa huu unaruhusu watu wowote &ndash; kutoka shirika lako au mashirika mengine, kutoka jumuiya yako au duniani kote &ndash; kushirikana na kujadiliana mada zinazohusu shirika lako na shughuli yake.",
     'discussions:invite_link' => "Karibisha watu kushiriki",    
     'discussions:reply' => "Jibu",
+    'discussions:other_link' => "Majadiliano mengine kwenye Envaya",
+    'discussions:latest' => "Majadiliano Mapya",
+    
 );

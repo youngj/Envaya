@@ -31,7 +31,15 @@ class DiscussionTopic extends Entity
     
     function get_url()
     {
-        return "{$this->get_container_entity()->get_url()}/topic/{$this->guid}";
+        $container = $this->get_container_entity();
+        if ($container)
+        {    
+            return "{$container->get_url()}/topic/{$this->guid}";
+        }
+        else
+        {
+            return null;
+        }
     }   
     
     function get_edit_url()

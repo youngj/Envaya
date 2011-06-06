@@ -17,10 +17,20 @@
     if ($topic->num_messages)
     {
         echo "<span class='blog_date'>";
-        echo strtr(__('date:date_name'), array(
-            '{date}' => friendly_time($topic->last_time_posted), 
-            '{name}' => escape($topic->last_from_name)
-        ));
+        
+        $date = friendly_time($topic->last_time_posted);
+        
+        if ($topic->last_from_name)
+        {
+            echo strtr(__('date:date_name'), array(
+                '{date}' => $date, 
+                '{name}' => escape($topic->last_from_name)
+            ));
+        }
+        else
+        {
+            echo $date;
+        }
         echo "</span>";
     }    
             

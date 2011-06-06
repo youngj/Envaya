@@ -27,5 +27,7 @@ return array(
     'discussions:message_deleted_marker' => "message deleted",
     'discussions:about' => "This page allows anyone &ndash; from your organization or other organizations, from your community or anywhere in the world &ndash; to collaborate and discuss topics related to your organization and its work.",
     'discussions:invite_link' => "Invite people to participate",
+    'discussions:other_link' => "Other discussions on Envaya",
+    'discussions:latest' => "Latest Discussions",
     'discussions:reply' => "Reply",
 );

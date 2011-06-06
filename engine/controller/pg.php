@@ -38,7 +38,7 @@ class Controller_Pg extends Controller
         $action = new Action_ForgotPassword($this);
         $action->execute();
     }
-
+    
     function action_password_reset()
     {
         $action = new Action_PasswordReset($this);
@@ -318,6 +318,17 @@ class Controller_Pg extends Controller
         $this->set_content_type('text/css');        
         $this->set_response($css);
     }
+
+    function action_discussions()
+    {
+        $this->allow_view_types(null);
+        
+        $this->page_draw(array(
+            'title' => __('discussions:latest'),
+            'content' => view('discussions/topic_list')
+        ));        
+            
+    }    
 }
 
 Controller_Pg::$routes = Controller::$SIMPLE_ROUTES;

@@ -29,6 +29,9 @@
     
     echo "<br />";
     echo "<div style='padding:0px 5px;font-weight:bold'>";
+    echo "<div style='float:right;font-weight:normal'>";
+    echo "<a href='/pg/discussions'>".__('discussions:other_link')."</a>";
+    echo "</div>";
     echo "<a href='{$org->get_url()}/topic/new'>".__('discussions:add_topic')."</a>";
     echo "</div>";
     
