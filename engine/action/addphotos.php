@@ -30,7 +30,19 @@ class Action_AddPhotos extends Action
             if (!$imageData) // mobile version uploads image files when the form is submitted, rather than asynchronously via javascript
             {     
                 $sizes = json_decode(get_input('sizes'));
-                $images = UploadedFile::upload_images_from_input($_FILES['imageFile'.$imageNumber], $sizes);
+                
+                try
+                {
+                    $images = UploadedFile::upload_images_from_input($_FILES['imageFile'.$imageNumber], $sizes);
+                }
+                catch (IOException $ex)
+                {
+                    throw new ValidationException($ex->getMessage());
+                }
+                catch (DataFormatException $ex)
+                {
+                    throw new ValidationException($ex->getMessage());
+                }
             }
             else
             {

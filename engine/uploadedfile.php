@@ -255,12 +255,14 @@ class UploadedFile extends Entity
             
     static function upload_scribd_from_input($file_input)
     {
+        static::check_file_input($file_input);
+    
         $filename = $file_input['name'];
         $extension = static::get_extension($filename);
     
         if (!in_array($extension, static::$scribd_document_extensions))
         {
-            throw new InvalidParameterException(
+            throw new DataFormatException(
                 __("upload:invalid_document_format")." ".implode(", ", static::$scribd_document_extensions)
             );
         }
@@ -307,11 +309,24 @@ class UploadedFile extends Entity
      */
     static function upload_from_input($file_input)
     {          
+        static::check_file_input($file_input);
+    
         $file = static::new_from_file_input($file_input);
         $file->upload_file($file_input['tmp_name']);
         $file->save();
         
         return $file;
+    }
+    
+    static function check_file_input($file_input)
+    {
+        if (!$file_input || $file_input['error'] != 0)
+        {    
+            $error_code = $file_input ? get_constant_name($file_input['error'], 'UPLOAD_ERR')
+                : 'UPLOAD_ERR_NO_FILE';
+                
+            throw new IOException(__("upload:transfer_error").": $error_code");
+        }
     }
     
     /*
@@ -321,6 +336,8 @@ class UploadedFile extends Entity
      */    
     static function upload_images_from_input($file_input, $sizes)
     {
+        static::check_file_input($file_input);
+    
         $tmp_file = $file_input['tmp_name'];        
 
         $orig_name = $file_input['name'];
@@ -334,7 +351,7 @@ class UploadedFile extends Entity
             }
             else
             {
-                throw new InvalidParameterException(__("upload:invalid_image_format"));
+                throw new DataFormatException(__("upload:invalid_image_format"));
             }
         } 
         else

@@ -3,13 +3,7 @@
 class Action_Upload extends Action
 {
     protected function upload_file_in_mode($file_input, $mode)
-    {   
-        if (!$file_input || $file_input['error'] != 0)
-        {    
-            $error_code = $file_input ? get_constant_name($file_input['error'], 'UPLOAD_ERR') : 'UPLOAD_ERR_NO_FILE';
-            throw new IOException(__("upload:transfer_error").": $error_code");
-        }    
-    
+    {       
         switch ($mode)
         {
             case 'image':        
@@ -34,6 +28,11 @@ class Action_Upload extends Action
         catch (Exception $ex)
         {
             $json = json_encode(array('error' => $ex->getMessage()));
+            
+            if (!($ex instanceof DataFormatException) && !($ex instanceof IOException))
+            {
+                notify_exception($ex);
+            }                        
         }
                 
         if (get_input('iframe'))

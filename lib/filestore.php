@@ -8,6 +8,6 @@
 
     function get_scribd()
     {
-        require_once "vendors/scribd.php";
+        require_once Config::get('root')."/vendors/scribd.php";
         return new Scribd(Config::get('scribd_key'), Config::get('scribd_private'));    
     }
