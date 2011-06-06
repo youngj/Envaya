@@ -21,6 +21,25 @@ class Controller_Admin extends Controller
         $action->execute();        
     }
     
+    function action_recent_photos()
+    {
+        $this->page_draw(array(
+            'title' => 'Recent Photos',
+            'content' => view('admin/recent_content', array('content_filter' => "%<img%")),
+            'theme_name' => 'editor',
+        ));             
+    }
+
+    function action_recent_documents()
+    {
+        $this->page_draw(array(
+            'title' => 'Recent Documents',
+            'content' => view('admin/recent_content', array('content_filter' => "%<scribd%")),
+            'theme_name' => 'editor',
+        ));             
+    }
+
+    
     function action_outgoing_mail()
     {
         $this->page_draw(array(
