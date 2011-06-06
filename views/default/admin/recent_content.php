@@ -18,7 +18,6 @@
     $query->limit($limit, $offset);
         
     $widgets = $query->filter();
-    $count = $query->count();
 
     $elements = array();
     foreach ($widgets as $widget)
@@ -41,7 +40,8 @@
     echo view('paged_list', array(
         'offset' => $offset,
         'limit' => $limit,
-        'count' => $count,
+        'count' => null,
+        'count_displayed' => sizeof($elements),
         'elements' => $elements,
         'separator' => "<div class='separator'></div>"
     ));    

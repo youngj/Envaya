@@ -154,7 +154,6 @@ class Controller_Admin extends Controller
         $query->limit($limit, $offset);
         
         $log = $query->filter();
-        $count = $query->count();
 
         $this->page_draw(array(
             'title' => __('logbrowser'),
@@ -164,7 +163,8 @@ class Controller_Admin extends Controller
                 'timelower' => $timelower,
                 'baseurl' => $_SERVER['REQUEST_URI'],
                 'offset' => $offset,
-                'count' => $count,
+                'count' => null,
+                'count_displayed' => sizeof($log),
                 'limit' => $limit,
                 'entries' => $log
             ))

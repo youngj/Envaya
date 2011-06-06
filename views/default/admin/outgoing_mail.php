@@ -6,10 +6,10 @@
     $limit = 20;
     
     $mails = $query->limit($limit, $offset)->filter();
-    $count = $query->count();
     
     $vars = array(
-        'count' => $count,
+        'count' => null,
+        'count_displayed' => sizeof($mails),
         'offset' => $offset,
         'limit' => $limit,
     );

@@ -1,97 +1,102 @@
 <?php
-    $offset = 0;
-    $limit = 10;    
-    $pagesShown = 12;
-    $count = 0;
-    $word = 'offset';
-    $baseurl = $_SERVER['REQUEST_URI'];
-    extract($vars);
+    /*
+     * Pagination control. Displays previous/next links, and a list of links to numbered pages.
+     */
 
+    $offset = 0;                        // 0-based offset of first item on current page (in items, not pages)
+    $limit = 10;                        // maximum number of items per page
+    $count = null;                      // total number of items in data source (null means unknown)
+    $count_displayed = 0;               // number of items displayed on this page (only needed if count is null)
+    $pages_shown = 12;                  // maximum number of links to pages shown in pagination control 
+    $word = 'offset';                   // url parameter used to link to a page with a different offset
+    $baseurl = $_SERVER['REQUEST_URI']; // base URL of links in pagination control
+    extract($vars);
+    
     $offset = (int)$offset;
     $limit = (int)$limit;
-    $count = (int)$count;
     
-    $pagesEdge = ceil($pagesShown/3);
-    $pagesCenter = ceil($pagesShown/6);
-
-    $totalpages = ceil($count / $limit);
-    $currentpage = ceil($offset / $limit) + 1;
-        
-    //only display if there is content to paginate through or if we already have an offset
-    if ($count > $limit || $offset > 0) {
+    $count_unknown = ($count === null);
+    $count_min = ($count_unknown) ? ($offset + $count_displayed) : $count;
+                
+    // only display if there is content to paginate through,
+    // or if we already have an offset, or if we don't know the total count
+    if ($count > $limit || $offset > 0 || $count_unknown) {
 
 ?>
 <div class="pagination">
 <?php
 
-    if ($offset > 0) {
-
-        $prevoffset = $offset - $limit;
-        if ($prevoffset < 0) $prevoffset = 0;
-
-        $prevurl = url_with_param($baseurl, $word, $prevoffset);
-        
-        echo "<a href=\"{$prevurl}\" class=\"pagination_previous\">&laquo; ". __("previous") ."</a> ";
-
+    if ($offset > 0) 
+    {
+        $prev_offset = max($offset - $limit, 0);
+        $prev_url = url_with_param($baseurl, $word, $prev_offset);        
+        echo "<a href=\"{$prev_url}\" class=\"pagination_previous\">&laquo; ". __("previous") ."</a> \n";
     }
 
-    if ($offset > 0 || $offset < ($count - $limit)) {
+    if ($offset > 0 || $count_min > $limit) 
+    {
+        $pages_edge = ceil($pages_shown / 3);
+        $pages_center = ceil($pages_shown / 6);
 
-        $currentpage = round($offset / $limit) + 1;
-        $allpages = ceil($count / $limit);
+        $current_page = floor($offset / $limit) + 1; // 1-based page number
+        
+        $all_pages = ceil($count_min / $limit);
 
-        $i = 1;
-        $pagesarray = array();
-        while ($i <= $allpages && $i <= $pagesEdge) {
-            $pagesarray[] = $i;
-            $i++;
+        $pages_array = array();
+        
+        // get page numbers at the beginning
+        for ($i = 1; 
+            $i <= $all_pages && $i <= $pages_edge; 
+            $i++) 
+        {
+            $pages_array[] = $i;
         }
-        $i = $currentpage - $pagesCenter;
-        while ($i <= $allpages && $i <= ($currentpage + $pagesCenter)) {
-            if ($i > 0 && !in_array($i,$pagesarray))
-                $pagesarray[] = $i;
-            $i++;
+        
+        // get page numbers surrounding current page
+        for ($i = max($i, $current_page - $pages_center); 
+            $i <= $all_pages && $i <= ($current_page + $pages_center); 
+            $i++) 
+        {
+            $pages_array[] = $i;
         }
-        $i = $allpages - ($pagesEdge - 1);
-        while ($i <= $allpages) {
-            if ($i > 0 && !in_array($i,$pagesarray))
-                $pagesarray[] = $i;
-            $i++;
+        
+        // get page numbers at end
+        for ($i = max($i, $all_pages - ($pages_edge - 1)); 
+            $i <= $all_pages; 
+            $i++) 
+        {
+            $pages_array[] = $i;
         }
 
-        sort($pagesarray);
-
+        // output page numbers with links
         $prev = 0;
-        foreach($pagesarray as $i) {
-
-            if (($i - $prev) > 1) {
-
-                echo "<span class=\"pagination_more\">...</span>";
-
+        foreach ($pages_array as $i) 
+        {
+            if (($i - $prev) > 1) 
+            {
+                echo "<span class=\"pagination_more\">...</span>\n";
             }
 
-            $curoffset = (($i - 1) * $limit);
-            $counturl = url_with_param($baseurl, $word, $curoffset);
+            $cur_offset = (($i - 1) * $limit);
+            $count_url = url_with_param($baseurl, $word, $cur_offset);
 
-            if ($curoffset != $offset) {
-                echo " <a href=\"{$counturl}\" class=\"pagination_number\">{$i}</a> ";
-            } else {
-                echo "<span class=\"pagination_currentpage\"> {$i} </span>";
+            if ($cur_offset != $offset) 
+            {
+                echo " <a href=\"{$count_url}\" class=\"pagination_number\">{$i}</a> \n";
+            } 
+            else 
+            {
+                echo "<span class=\"pagination_currentpage\"> {$i} </span>\n";
             }
             $prev = $i;
-
         }
-
     }
 
-    if ($offset < ($count - $limit)) {
-
-        $nextoffset = $offset + $limit;
-        if ($nextoffset >= $count) $nextoffset--;
-
-        $nexturl = url_with_param($baseurl, $word, $nextoffset);
-        echo " <a href=\"{$nexturl}\" class=\"pagination_next\">" . __("next") . " &raquo;</a>";
-
+    $next_offset = $offset + $limit;
+    if ($next_offset < $count_min || ($count_unknown && $next_offset <= $count_min)) 
+    {
+        $next_url = url_with_param($baseurl, $word, $next_offset);
+        echo " <a href=\"{$next_url}\" class=\"pagination_next\">" . __("next") . " &raquo;</a>\n";
     }
 
 ?>

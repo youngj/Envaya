@@ -1,5 +1,5 @@
 <?php  
-    $limit = 20;
+    $limit = 2;
     $offset = (int)get_input('offset');
     
     $query = DiscussionTopic::query();    
@@ -16,22 +16,18 @@
     $query->limit($limit, $offset);
     
     $topics = $query->filter();
-    $count = $query->count();
 
     echo "<div style='height:1px'></div>";
     
-    if ($count > 0)
-    {                    
-        echo view('paged_list', array(
-            'offset' => $offset,
-            'limit' => $limit,
-            'count' => $count,
-            'entities' => $topics,
-        ));
-    }        
-    else
-    {
-        echo __('discussions:no_topics');
-    }    
+    $elements = array_map('view_entity', $topics);
+        
+    echo implode('', $elements);
+    
+    echo view('pagination', array(
+        'offset' => $offset,
+        'limit' => $limit,
+        'count' => $count,
+        'count_displayed' => sizeof($topics),
+    ));
     
     echo "<br />";
