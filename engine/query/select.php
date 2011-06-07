@@ -165,7 +165,7 @@ class Query_Select
         return $this;
     }
     
-    function get_sql($columns)
+    function get_sql($columns = null)
     {    
         $this->_finalize_query();
 
@@ -182,7 +182,17 @@ class Query_Select
         
         $join = implode($this->joins, ' ');
         
+        if ($columns === null)
+        {
+            $columns = $this->columns;
+        }
+        
         return  "SELECT {$columns} FROM {$this->from} $join $where {$this->group_by}";    
+    }
+    
+    function get_args()
+    {
+        return $this->args;
     }
     
     function group_by($group_by)
@@ -245,7 +255,7 @@ class Query_Select
     {
         $this->_finalize_query();
         
-        $query = $this->get_sql($this->columns);
+        $query = $this->get_sql();
     
         if ($this->order_by)
         {

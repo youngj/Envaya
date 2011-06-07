@@ -25,7 +25,7 @@
         ob_start();
         
         $org = $widget->get_root_container_entity();
-        echo "<h3><a href='{$widget->get_url()}'>".escape($org->name).": ".escape($widget->get_title())."</a></h3>";
+        echo "<h3 style='padding:5px 0px'><a href='{$widget->get_url()}'>".escape($org->name).": ".escape($widget->get_title())."</a></h3>";
         
         echo $widget->render_content();
         echo "<div class='blog_date'>";

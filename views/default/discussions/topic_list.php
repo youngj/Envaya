@@ -1,15 +1,32 @@
+<div class='padded'>
 <?php  
-    $limit = 2;
+    $limit = 20;
     $offset = (int)get_input('offset');
+    
+    $sector = (int)get_input('sector');
+    $region = get_input('region');
     
     $query = DiscussionTopic::query();    
     
     $query->from('discussion_topics d');
     
-    if (!Session::isadminloggedin())
+    $subquery = new Query_SelectUser('users u');
+    $subquery->columns('u.guid');
+    $subquery->where('u.guid = d.container_guid');
+    $subquery->where_visible_to_user();
+    
+    if ($sector)
     {
-        $query->where("exists (select u.guid from users u where u.guid = d.container_guid and u.status <> 0 and (u.approval > 0 OR u.guid = ?))", Session::get_loggedin_userid());
+        $subquery->with_sector($sector);
     }
+    
+    if ($region)
+    {
+        $subquery->with_region($region);
+    }
+    
+    $query->where("exists ({$subquery->get_sql()})");
+    $query->args($subquery->get_args());
     
     $query->order_by('last_time_posted desc');
     
@@ -17,9 +34,11 @@
     
     $topics = $query->filter();
 
-    echo "<div style='height:1px'></div>";
+    echo view('org/filter_controls', array('baseurl' => '/pg/discussions'));
     
-    $elements = array_map('view_entity', $topics);
+    echo "<div style='height:10px'></div>";
+    
+    $elements = array_map('view_entity', $topics);    
         
     echo implode('', $elements);
     
@@ -30,4 +49,6 @@
         'count_displayed' => sizeof($topics),
     ));
     
-    echo "<br />";
+?>
+<br />
+</div>
