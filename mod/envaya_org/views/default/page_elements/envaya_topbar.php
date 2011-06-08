@@ -12,6 +12,7 @@
     <a href='/envaya'><?php echo __('about') ?></a>
     <a href='/org/browse'><?php echo __('browse') ?></a>
     <a href='/org/search'><?php echo __('search') ?></a>
+    <a href='/pg/discussions'><?php echo __('discussions:title') ?></a>    
     <a href='/org/feed'><?php echo __('feed') ?></a>    
     <div class='top_language'>
     <?php

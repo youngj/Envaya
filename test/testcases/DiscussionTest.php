@@ -133,7 +133,7 @@ class DiscussionTest extends SeleniumTest
         // test adding topic as non logged in user
         $this->clickAndWait("//a[contains(@href,'/pg/logout')]");
         $this->open("/testorg");
-        $this->clickAndWait("//a[contains(@href,'/discussions')]");
+        $this->clickAndWait("//a[contains(@href,'/testorg/discussions')]");
         $this->clickAndWait("//a[contains(@href,'/topic/new')]");
         $this->type("//input[@name='subject']","My Second Discussion");
         $this->typeInFrame("//iframe", "message 3");

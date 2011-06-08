@@ -1,0 +1,3 @@
+echo whassup
+cp ../config/dotcloud.php ../config/local.php
+echo ok

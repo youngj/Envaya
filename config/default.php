@@ -5,6 +5,7 @@ return array(
     'dbuser' => '',
     'dbpass' => '',
     'dbname' => '',
+    'dbport' => 3306,
     'dbhost' => 'localhost',
 
     'queue_host' => "localhost",

@@ -307,7 +307,7 @@ InfoOverlay = function()
                     map.setCenter(center);
                     map.setZoom(Math.min($curZoom + 3, $maxZoom));
                 }
-            }, __('map:zoom_in')));
+            }, __('browse:zoom_in')));
         }
         return $div;
     };    
