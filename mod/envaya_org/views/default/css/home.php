@@ -1,6 +1,7 @@
 <?php
     echo view('css/default', $vars);
     echo view('css/snippets/slideshow', $vars);
+    echo view('css/snippets/follow_icon', $vars);
 
     $contentWidth = 820;    
     $headerLeftWidth = 340;
@@ -293,3 +294,4 @@ a.icon_feed:hover       { background-position:left -440px; }
     border-right:1px solid #e3dfd6;
     background:#fff url(<?php echo $graphicsDir; ?>/what_bg.gif) repeat-x left bottom;
 }
+

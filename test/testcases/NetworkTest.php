@@ -233,7 +233,7 @@ class NetworkTest extends SeleniumTest
         $this->mustNotExist("//div[@class='feed_snippet' and contains(text(), 'whee reverse relationship')]");        
         
         // verify feed items
-        $this->open('/org/feed');
+        $this->open('/pg/feed');
         $this->mouseOver("//div[@class='feed_content' and .//a[contains(@href,'testorg')] and .//a[contains(@href,'testposter16')]]");
         $this->mouseOver("//div[@class='feed_content' and .//a[contains(@href,'testorg')] and .//a[contains(@href,'testposter15')]]");
         $this->mouseOver("//div[@class='feed_content' and .//a[contains(@href,'testorg')] and .//a[contains(@href,'testposter14')]]");

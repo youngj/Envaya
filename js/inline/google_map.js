@@ -96,7 +96,7 @@ OrgMapLoader = function()
         
         var $self = this;
         
-        var url = "/org/searchArea?latMin="+$sw.lat()+"&latMax="+$ne.lat()+
+        var url = "/pg/search_area?latMin="+$sw.lat()+"&latMax="+$ne.lat()+
             "&longMin="+$sw.lng()+"&longMax="+$ne.lng();
             
         var urlParams = this.getURLParams();

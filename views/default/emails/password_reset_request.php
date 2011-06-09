@@ -9,5 +9,5 @@ echo "\n\n";
 echo __('login:resetreq:click_link', $user->language);
 echo "\n";
 $code = $user->get_metadata('passwd_conf_code');
-echo Config::get('secure_url') . "pg/password_reset?u={$user->guid}&c={$code}";
+echo secure_url("/pg/password_reset?u={$user->guid}&c={$code}");
 echo "\n";

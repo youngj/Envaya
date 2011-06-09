@@ -1,70 +1,28 @@
 <?php
     /*
-     * Generic class for performing static analysis of PHP code. 
+     * Class for performing static analysis of Envaya's PHP code. 
      * 
      * Uses PHP's tokenizer library, passing each parsed PHP token to one or more StateMachine
      * instances that implement particular analysis/data collection rules.
      */
 
-    require __DIR__.'/statemachine.php';
+    require_once __DIR__.'/analyzer.php';
 
-    class PHPAnalyzer
+    class PHPAnalyzer extends Analyzer
     {            
-        protected $state_machines = array();
-        protected $base_dir = null;
-        
-        public function add_state_machine($state_machine)
+        function is_checked_file($path)
         {
-            $this->state_machines[] = $state_machine;
+            return preg_match('/\.php$/', $path);
+        }
+        function is_checked_dir($path)
+        {
+            return !preg_match('#\b(vendors|languages|test)$#', $path);
         }
         
-        public function parse_dir($dir)
-        {
-            $this->base_dir = $dir;
-            $this->parse_dir_rec($dir);
-            $this->base_dir = null;
-        }
-        
-        private function parse_dir_rec($dir)
-        {
-            $handle = opendir($dir);
-            while ($file = readdir($handle))
-            {
-                $path = "$dir/$file";
-            
-                if (preg_match('/\.php$/', $file))
-                {
-                    $this->parse_file($path);
-                }              
-                if ($file[0] != '.' && $file != 'vendors' && $file != 'languages' && $file != 'test' 
-                    && is_dir($path))
-                {
-                    $this->parse_dir_rec($path);
-                }
-            }
-            closedir($handle);            
-        }        
-        
-        public function parse_file($path)
-        {                   
-            if ($this->base_dir)
-            {
-                $rel_path = substr($path, strlen($this->base_dir) + 1);
-            }
-            else
-            {
-                $rel_path = basename($path);
-            }
-        
-            $state_machines = array();
-            foreach ($this->state_machines as $state_machine)
-            {
-                $state_machine->set_path($rel_path);
-                $state_machines[] = $state_machine;
-            }
-            
-            $php = file_get_contents($path);
-            $tokens = token_get_all($php);            
+        function parse_file_contents($contents)
+        {   
+            $tokens = token_get_all($contents);            
+            $state_machines = $this->get_active_state_machines();
             
             foreach ($tokens as $token)
             {
@@ -86,7 +44,7 @@
                                 
                 foreach ($state_machines as $state_machine)
                 {                
-                    $state_machine->cur_state = $state_machine->get_next_state($token, $type, $line);                
+                    $state_machine->cur_state = $state_machine->get_next_state($token, $type, $line);   
                 }
             }                       
         }

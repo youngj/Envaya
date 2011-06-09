@@ -29,7 +29,7 @@ class MobileTest extends SeleniumTest
     private function _testLayout()
     {                
         $this->clickAndWait("//div[@id='topbar']//a"); // home page
-        $this->clickAndWait("//div[@id='topbar2']//a[contains(@href,'org/feed')]");
+        $this->clickAndWait("//div[@id='topbar2']//a[contains(@href,'pg/feed')]");
         $this->clickAndWait("//div[@id='topbar']//a"); // home page
         $this->clickAndWait("//a[contains(@href,'envaya')]");
         
@@ -37,14 +37,14 @@ class MobileTest extends SeleniumTest
         
         // mobile version should not have login button or top bar links on org pages
         $this->mustNotExist("//a[@id='loginButton']"); 
-        $this->mustNotExist("//a[contains(@href,'org/browse')]"); 
+        $this->mustNotExist("//a[contains(@href,'pg/browse')]"); 
         
         $this->clickAndWait("//a[contains(@href,'view=default')]");
         
         // make sure normal version has the elements that should be omitted in mobile version
         $this->mouseOver("//table[@class='left_sidebar_table']");        
         $this->mouseOver("//a[@id='loginButton']"); 
-        $this->mouseOver("//a[contains(@href,'org/browse')]"); 
+        $this->mouseOver("//a[contains(@href,'pg/browse')]"); 
         
         $this->clickAndWait("//a[contains(@href,'view=mobile')]");
         
@@ -53,7 +53,7 @@ class MobileTest extends SeleniumTest
            
     private function _testSearch()
     {
-        $this->clickAndWait("//a[contains(@href,'org/search')]");     
+        $this->clickAndWait("//a[contains(@href,'pg/search')]");     
         $this->type("//input[@name='q']", 'testorg');
         $this->submitForm();
         $this->retry('clickAndWait',array("//li//a"));
@@ -68,7 +68,7 @@ class MobileTest extends SeleniumTest
     
     private function _testBrowse()
     {
-        $this->clickAndWait("//a[contains(@href,'org/browse')]");     
+        $this->clickAndWait("//a[contains(@href,'pg/browse')]");     
         
         $this->assertTrue($this->isElementInPagedList("//a[contains(@href,'testorg')]"));
 
@@ -77,9 +77,9 @@ class MobileTest extends SeleniumTest
         
         $this->goToMainMenu();
         
-        $this->clickAndWait("//a[contains(@href,'org/browse')]");     
+        $this->clickAndWait("//a[contains(@href,'pg/browse')]");     
         
-        $this->clickAndWait("//a[contains(@href,'org/change_browse_view')]");     
+        $this->clickAndWait("//a[contains(@href,'pg/change_browse_view')]");     
         
         $this->select("//select[@name='sector']", "Education");     
         $this->submitForm();
@@ -90,7 +90,7 @@ class MobileTest extends SeleniumTest
         
         $this->assertTrue($this->isElementInPagedList("//a[contains(@href,'testorg')]"));
         
-        $this->clickAndWait("//a[contains(@href,'org/change_browse_view')]");     
+        $this->clickAndWait("//a[contains(@href,'pg/change_browse_view')]");     
         
         $this->select("//select[@name='sector']", "Mazingira");     
         $this->submitForm();        
@@ -122,17 +122,17 @@ class MobileTest extends SeleniumTest
     
     private function _testFeed()
     {
-        $this->clickAndWait("//a[contains(@href,'org/feed')]");   
+        $this->clickAndWait("//a[contains(@href,'pg/feed')]");   
         $this->retry('mouseOver', array("//div[@class='feed_snippet' and contains(text(), '{$this->post_content}')]"));        
         
-        $this->clickAndWait("//a[contains(@href,'org/change_feed_view')]");     
+        $this->clickAndWait("//a[contains(@href,'pg/change_feed_view')]");     
         
         $this->select("//select[@name='sector']", "Education");     
         $this->submitForm();
         
         $this->mouseOver("//div[@class='feed_snippet' and contains(text(), '{$this->post_content}')]");        
         
-        $this->clickAndWait("//a[contains(@href,'org/change_feed_view')]");     
+        $this->clickAndWait("//a[contains(@href,'pg/change_feed_view')]");     
         
         $this->select("//select[@name='region']", "Arusha");     
         $this->submitForm();        

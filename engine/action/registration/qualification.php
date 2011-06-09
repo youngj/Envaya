@@ -22,6 +22,6 @@ class Action_Registration_Qualification extends Action
         ));
 
         SessionMessages::add(__("register:qualify_ok"));
-        $this->redirect(Config::get('secure_url')."org/new?step=2");            
+        $this->redirect(secure_url("/org/new?step=2"));            
     }
 }

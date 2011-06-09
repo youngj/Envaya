@@ -24,7 +24,7 @@ class Action_Admin_EditFeaturedSite extends Action
         $featuredSite->set_content(get_input('content'));
         $featuredSite->save();
         SessionMessages::add('featured:saved');
-        $this->redirect('org/featured');
+        $this->redirect('/org/featured');
     }
 
     function render()

@@ -279,7 +279,7 @@ abstract class Entity extends Model
      */
     public function get_icon($size = 'medium')
     {
-        return Config::get('url')."_media/images/default{$size}.gif";
+        return abs_url("/_media/images/default{$size}.gif");
     }
 
     /**

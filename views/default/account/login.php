@@ -42,9 +42,7 @@
     
 ?>
 <p>
-    <a href="<?php echo Config::get('url') ?>pg/forgot_password">
-            <?php echo __('login:password:lost') ?>
-    </a>    
+    <a href="/pg/forgot_password"><?php echo __('login:password:lost') ?></a>    
 </p>
 <p>
 <?php echo sprintf(__('login:if_not_registered'), "<a href='/org/new' style='font-weight:bold'>".__('sign_up_now')."</a>"); ?>

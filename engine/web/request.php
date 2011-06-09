@@ -65,7 +65,7 @@ class Web_Request
             $ch = curl_init();
             
             curl_setopt($ch, CURLOPT_URL, $cur_url);
-            curl_setopt($ch, CURLOPT_REFERER, Config::get('url'));
+            curl_setopt($ch, CURLOPT_REFERER, abs_url('/'));
             
             // put magic words in the user agent string so they give us the version normal people see
             curl_setopt($ch, CURLOPT_USERAGENT, 

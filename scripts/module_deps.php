@@ -5,16 +5,24 @@
      * 
      * Reference types searched:
      *
-     * - 'lang': language keys referenced via "__('foo:bar')"
-     * - 'view': view paths referenced via "view('foo/bar')"
-     * - 'ecls': envaya Engine classes referenced via "new Foo()" or "Foo::bar"
+     * - lang:   language keys referenced via "__('foo:bar')"
+     * - view:   view paths referenced via "view('foo/bar')"
+     * - engine: envaya Engine classes referenced via "new Foo()" or "Foo::bar"
+     * - media:  static files referenced via a "_media" URL
+     * - url:    web pages on Envaya referenced via a relative URL starting with "/" (but not "/_media")
+     * - css:    css classes or ids referenced via an 'id' or 'class' attribute on an HTML element    
      */
 
     require_once __DIR__."/../start.php";
     require_once __DIR__."/analysis/phpanalyzer.php";
+    require_once __DIR__."/analysis/jsanalyzer.php";
     require_once __DIR__."/analysis/statemachine/languagekeys.php";
     require_once __DIR__."/analysis/statemachine/views.php";
     require_once __DIR__."/analysis/statemachine/classref.php";
+    require_once __DIR__."/analysis/statemachine/mediaref.php";
+    require_once __DIR__."/analysis/statemachine/urlref.php";
+    require_once __DIR__."/analysis/statemachine/cssref.php";
+    require_once __DIR__."/analysis/statemachine/cssdef.php";
 
     function get_path_module($path)
     {
@@ -44,11 +52,41 @@
                 echo "$from_module -> $to_module :\n";
                 foreach ($refs as $ref)
                 {
-                    echo "{$ref['type']} {$ref['path']} ({$ref['name']})\n";
+                    echo sprintf('%-6s', $ref['type'])." {$ref['path']} ({$ref['name']})\n";
                 }
                 echo "\n";
             }
         }
+        
+        
+        echo "Summary of reference types:\n";
+        
+        $type_count = array();
+        foreach ($references as $from_module => $to_modules)
+        {
+            foreach ($to_modules as $to_module => $refs)
+            {
+                foreach ($refs as $ref)
+                {
+                    $type = $ref['type'];
+                    if (isset($type_count[$type]))
+                    {
+                        $type_count[$type]++;
+                    }
+                    else
+                    {
+                        $type_count[$type] = 1;
+                    }
+                }
+            }
+        }
+        
+        asort($type_count);
+        foreach ($type_count as $type => $count)
+        {
+            echo sprintf("%-6s", $type)." $count\n";
+        }
+        echo "\n";
         
         echo "Summary of direct references:\n";
         foreach ($references as $from_module => $to_modules)
@@ -160,7 +198,13 @@
         }
         return $key_modules;
     }
-    
+
+    function get_engine_class_path($cls)
+    {
+        $file = str_replace('_', '/', strtolower($cls));        
+        return Engine::get_real_path("engine/$file.php");
+    }
+
     function get_view_path($view)
     {
         return Views::get_path($view, 'default')
@@ -168,17 +212,31 @@
             ?: Views::get_path($view, 'rss');
     }
     
-    function get_module_references()
+    function get_module_references($dir)
     {
-        $analyzer = new PHPAnalyzer();    
         $lang_sm = new StateMachine_LanguageKeys();    
         $view_sm = new StateMachine_Views();    
         $class_sm = new StateMachine_ClassRef();    
+        $media_sm = new StateMachine_MediaRef();    
+        $url_sm = new StateMachine_URLRef();    
+        $css_sm = new StateMachine_CSSRef();    
+        $cssdef_sm = new StateMachine_CSSDef();    
+        
+        $analyzer = new PHPAnalyzer();    
         $analyzer->add_state_machine($lang_sm);
         $analyzer->add_state_machine($view_sm);
         $analyzer->add_state_machine($class_sm);
+        $analyzer->add_state_machine($media_sm);
+        $analyzer->add_state_machine($url_sm);
+        $analyzer->add_state_machine($css_sm);
+        $analyzer->add_state_machine($cssdef_sm);
         
-        $analyzer->parse_dir(dirname(__DIR__));
+        $js_analyzer = new JSAnalyzer();
+        $js_analyzer->add_state_machine($media_sm);
+        $js_analyzer->add_state_machine($url_sm);
+        
+        $js_analyzer->parse_dir($dir);
+        $analyzer->parse_dir($dir);
         
         $key_modules = get_language_key_modules();
             
@@ -214,8 +272,7 @@
         
         foreach ($class_sm->class_refs as $cls => $paths)
         {
-            $file = str_replace('_', '/', strtolower($cls));        
-            $cls_path = Engine::get_real_path("engine/$file.php");   
+            $cls_path = get_engine_class_path($cls);
 
             if ($cls_path == null) // not an envaya class
                 continue;
@@ -226,13 +283,81 @@
             {
                 $ref_module = get_path_module($path);
                 
-                $ref = array('path' => $path, 'type' => 'ecls', 'name' => $cls);
+                $ref = array('path' => $path, 'type' => 'engine', 'name' => $cls);
                 $references[$ref_module][$cls_module][] = $ref;
             }        
         }
+        
+
+        foreach ($media_sm->media_refs as $media_url => $paths)
+        {
+            $media_path = Engine::get_real_path($media_url)
+                ?: Engine::get_real_path(str_replace('_media', 'js', $media_url))
+                ?: Engine::get_real_path(
+                    str_replace('.css', '.php', 
+                        str_replace('_media/css', 'views/default/css', $media_url)
+                    )
+                );
+            $media_module = get_path_module($media_path);
+            
+            foreach ($paths as $path)
+            {
+                $ref_module = get_path_module($path);
+                
+                $ref = array('path' => $path, 'type' => 'media', 'name' => $media_url);
+                $references[$ref_module][$media_module][] = $ref;
+            }        
+        }
+        
+        $css_defs = $cssdef_sm->css_defs;
+        
+        foreach ($css_sm->css_refs as $css_ref => $paths)
+        {        
+            if (!isset($css_defs[$css_ref])) // css class or id used without definition
+            {
+                continue;
+            }
+            $css_def_path = $css_defs[$css_ref];
+
+            $css_module = get_path_module($css_def_path);            
+            
+            foreach ($paths as $path)
+            {
+                $ref_module = get_path_module($path);                
+                $ref = array('path' => $path, 'type' => 'css', 'name' => $css_ref);
+                $references[$ref_module][$css_module][] = $ref;
+            }
+        }
+
+        $request = new Request(null);
+        $controller = new Controller_Default($request);
+
+        foreach ($url_sm->url_refs as $url => $paths)
+        {
+            $controller_action = $controller->get_controller_action($url);            
+            $cls = get_class($controller_action[0]);
+            
+            // URLs that get mapped to these controllers are probably not actually URLs
+            if ($cls == 'Controller_Default' || $cls == 'Controller_UserSite')
+            {
+                continue;
+            }
+                        
+            $path = get_engine_class_path($cls);
+            $url_module = get_path_module($path);
+            
+            foreach ($paths as $path)
+            {
+                $ref_module = get_path_module($path);
+                
+                $ref = array('path' => $path, 'type' => 'url', 'name' => $url);
+                $references[$ref_module][$url_module][] = $ref;
+            }        
+        }        
+        
         return $references;
     }
-        
-    $references = get_module_references();
+    
+    $references = get_module_references(dirname(__DIR__));
     print_module_references($references);
     

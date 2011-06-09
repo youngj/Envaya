@@ -137,7 +137,7 @@ class UploadTest extends SeleniumTest
         
         $this->checkImage($imgUrl, 2000, 10000);    
         
-        $this->clickAndWait("//a[contains(@href,'org/feed')]");
+        $this->clickAndWait("//a[contains(@href,'pg/feed')]");
         
         $this->mouseOver("//a[@class='feed_org_icon' and contains(@href,'/testorg')]//img");
         

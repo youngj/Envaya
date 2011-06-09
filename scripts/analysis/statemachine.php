@@ -22,6 +22,17 @@
             $this->cur_state = S_INIT;            
         }
         
+        /*
+         * Returns the offset in lines for the character at offset $offset within $token.
+         * (e.g. line offset 0 means $offset is within the initial line of $token)
+         */
+        protected static function get_line_offset($token, $offset)
+        {            
+            $pre_lines = explode("\n", substr($token, 0, $offset));
+            return sizeof($pre_lines) - 1;
+        }
+       
+        
         protected function error($token, $type, $line)
         {
             $type_name = $type != null ? (' ('.token_name($type).')') : '';

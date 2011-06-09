@@ -43,7 +43,7 @@ function removeRecipient(email)
 function addUsers()
 {
     var iframe = createElem('iframe', {
-        src: '/org/browse_email'
+        src: '/pg/browse_email'
     });
     
     var width = 620, height = 320;

@@ -47,6 +47,6 @@ function addLocalizedStrings(strs)
 {
     for (var str in strs)
     {
-        js_strs[str] = strs[str];
+        jsStrs[str] = strs[str];
     }
 }

@@ -16,7 +16,7 @@ $zoom = get_input('zoom') ?: 5;
 function sectorChanged()
 {
     setTimeout(function() {
-        $('browseLink').href = "org/browse?list=1&sector=" + $('sectorList').value;
+        $('browseLink').href = "/pg/browse?list=1&sector=" + $('sectorList').value;
         orgLoader.reset();
         orgLoader.load();
     }, 1);
@@ -34,7 +34,7 @@ orgLoader.getURLParams = function() {
 
 <div class='view_toggle'>
     <strong><?php echo __('browse:map') ?></strong> &middot;
-    <a id='browseLink' href='/org/browse?list=1&sector=<?php echo escape($sector) ?>'><?php echo __('browse:list') ?></a>
+    <a id='browseLink' href='/pg/browse?list=1&sector=<?php echo escape($sector) ?>'><?php echo __('browse:list') ?></a>
 </div>
 
 <?php echo view('input/pulldown', array(

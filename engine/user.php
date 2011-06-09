@@ -65,7 +65,7 @@ class User extends Entity
 
     public function get_url()
     {
-        return Config::get('url') . $this->username;
+        return abs_url("/{$this->username}");
     }
 
     public function get_icon_props($size = '')
@@ -113,7 +113,7 @@ class User extends Entity
         else
         {
             return array(
-                'url' => Config::get('url')."_media/images/defaultmedium.gif",
+                'url' => abs_url("/_media/images/defaultmedium.gif"),
                 'width' => 100,
                 'height' => 100
             );
@@ -356,7 +356,7 @@ class User extends Entity
     function get_email_settings_url()
     {
         $code = User::get_email_fingerprint($this->email);
-        return Config::get('url')."pg/email_settings?e=".urlencode($this->email)."&c={$code}";    
+        return abs_url("/pg/email_settings?e=".urlencode($this->email)."&c={$code}");    
     }
     
     static function get_cache_key_for_username($username)

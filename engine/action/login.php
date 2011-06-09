@@ -11,7 +11,7 @@ class Action_Login extends Action
         {
             if (!$user->is_setup_complete())
             {
-                $next = "org/new?step={$user->setup_state}";
+                $next = "/org/new?step={$user->setup_state}";
             }
             else
             {

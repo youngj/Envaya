@@ -17,7 +17,7 @@ class Action_PasswordReset extends Action
         $correct_code = $user->get_metadata('passwd_conf_code');
         if (!$correct_code || $correct_code != $conf_code)
         {
-            throw new RedirectException(__('user:password:fail'), "pg/login");
+            throw new RedirectException(__('user:password:fail'), "/pg/login");
         }
         $this->user = $user;
     }
@@ -36,7 +36,7 @@ class Action_PasswordReset extends Action
 
         SessionMessages::add(__('user:password:success'));
         login($user);
-        $this->redirect("pg/dashboard");
+        $this->redirect("/pg/dashboard");
     }
 
     function render()

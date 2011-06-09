@@ -148,7 +148,7 @@ class RegisterTest extends SeleniumTest
 
         $this->mouseOver("//h2//a[text()='{$this->name}']");
         $this->mouseOver("//h3[text()='Wete, Tanzania']");
-        $this->mouseOver("//a[contains(@href,'org/browse?list=1&sector=3') and text()='Conflict resolution']");
+        $this->mouseOver("//a[contains(@href,'pg/browse?list=1&sector=3') and text()='Conflict resolution']");
     }
 
     private function _testPost()
@@ -158,7 +158,7 @@ class RegisterTest extends SeleniumTest
         $this->submitForm();
         $this->mouseOver("//p[contains(text(), 'this is a test post')]");
         
-        $this->clickAndWait("//a[contains(@href,'org/feed')]");
+        $this->clickAndWait("//a[contains(@href,'pg/feed')]");
         $this->mouseOver("//div[@class='feed_snippet' and contains(text(), 'this is a test post')]");
         $this->clickAndWait("//a[contains(text(), 'News update')]");
         $this->mouseOver("//p[contains(text(), 'this is a test post')]");               
@@ -527,9 +527,9 @@ class RegisterTest extends SeleniumTest
     private function _testMakePublic()
     {
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
-        $this->clickAndWait("//a[contains(@href,'org/feed')]");
+        $this->clickAndWait("//a[contains(@href,'pg/feed')]");
         $this->mustNotExist("//a[contains(@href, '/{$this->username}')]");
-        $this->clickAndWait("//a[contains(@href,'org/search')]");
+        $this->clickAndWait("//a[contains(@href,'pg/search')]");
         $this->type("//input[@name='q']", $this->username);
         $this->submitForm();
         $this->mouseOver("//div[@class='padded' and contains(text(),'No results')]");
@@ -547,7 +547,7 @@ class RegisterTest extends SeleniumTest
 
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
 
-        $this->clickAndWait("//a[contains(@href,'org/search')]");
+        $this->clickAndWait("//a[contains(@href,'pg/search')]");
         $this->type("//input[@name='q']", $this->username);
         $this->submitForm();
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
@@ -555,7 +555,7 @@ class RegisterTest extends SeleniumTest
         $this->mouseOver("//h2//a[text()='New Name']");
         $this->mustNotExist("//a[contains(@href,'home/edit')]");
 
-        $this->clickAndWait("//a[contains(@href,'org/feed')]");
+        $this->clickAndWait("//a[contains(@href,'pg/feed')]");
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
     }
 

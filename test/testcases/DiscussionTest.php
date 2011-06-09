@@ -99,7 +99,7 @@ class DiscussionTest extends SeleniumTest
         $url = $this->getLocation();
         
         // test feed items
-        $this->open("/org/feed");
+        $this->open("/pg/feed");
         $this->mouseOver("//div[contains(@class,'feed_post')]//div[@class='feed_snippet' and contains(text(), 'Mr. Person')]");
         $this->mouseOver("//div[contains(@class,'feed_post')]//div[@class='feed_snippet' and contains(text(), 'message 2')]");
         $this->clickAndWait("//div[contains(@class,'feed_post')]//a[contains(@href,'$url')]");
@@ -176,7 +176,7 @@ class DiscussionTest extends SeleniumTest
         $this->assertContains('My Second Discussion', $email);        
         
         // test no feed items from deleted or anonymous messages
-        $this->open("/org/feed");
+        $this->open("/pg/feed");
         $this->mouseOver("//div[contains(@class,'feed_post')]//div[@class='feed_snippet' and contains(text(), 'message 0')]");        
         $this->mustNotExist("//div[contains(@class,'feed_post')]//div[@class='feed_snippet' and contains(text(), 'Mr. Person')]");
         $this->mustNotExist("//div[contains(@class,'feed_post')]//div[@class='feed_snippet' and contains(text(), 'message 2')]");

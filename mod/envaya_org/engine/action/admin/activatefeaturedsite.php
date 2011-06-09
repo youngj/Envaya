@@ -31,6 +31,6 @@ class Action_Admin_ActivateFeaturedSite extends Action
             $activeSite->active = 0;
             $activeSite->save();
         }
-        $this->redirect('org/featured');
+        $this->redirect('/org/featured');
     }
 }    

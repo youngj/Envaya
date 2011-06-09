@@ -6,11 +6,11 @@ $region = get_input('region');
 ?>
 <div class='padded'>
 <div class='view_toggle' style='padding-left:30px'>
-    <a href='/org/browse?list=0&sector=<?php echo escape($sector); ?>'><?php echo __('browse:map') ?></a> &middot;
+    <a href='/pg/browse?list=0&sector=<?php echo escape($sector); ?>'><?php echo __('browse:map') ?></a> &middot;
     <strong><?php echo __('browse:list') ?></strong>
 </div>
 <?php
-    echo view('org/filter_controls', array('baseurl' => '/org/browse?list=1'));
+    echo view('org/filter_controls', array('baseurl' => '/pg/browse?list=1'));
     echo "<br />";
 
 $res = view('org/search_list', array(

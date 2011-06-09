@@ -43,7 +43,7 @@ class FeedTest extends SeleniumTest
     
     public function _checkFeedItems()
     {
-        $this->open("/org/feed");
+        $this->open("/pg/feed");
         
         $this->mouseOver("//a[contains(@href,'testposter21')]");
         

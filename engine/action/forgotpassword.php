@@ -22,7 +22,7 @@ class Action_ForgotPassword extends Action
         {
             if (!$user->email)
             {
-                throw new RedirectException(__('login:resetreq:no_email'), "page/contact");
+                throw new RedirectException(__('login:resetreq:no_email'), "/page/contact");
             }
 
             $user->set_metadata('passwd_conf_code', generate_random_code(24)); // avoid making url too long for 1 line in email

@@ -24,7 +24,7 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
     
     protected function handle_validation_exception($ex)
     {        
-        throw new RedirectException($ex->getMessage(), Config::get('secure_url')."org/new?step=2");    
+        throw new RedirectException($ex->getMessage(), secure_url("/org/new?step=2"));    
     }
 
     private function update_existing_relationships($invite_code)

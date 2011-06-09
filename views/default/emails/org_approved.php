@@ -12,7 +12,7 @@ echo __('register:approval_email:nextsteps', $org->language);
 echo "\n\n";
 echo __('register:approval_email:login', $org->language);
 echo "\n";
-echo Config::get('url')."pg/login?username={$org->username}";
+echo abs_url("/pg/login?username={$org->username}");
 echo "\n\n";
 echo sprintf(__('register:approval_email:share', $org->language), $org->get_url());
 echo "\n\n";

@@ -16,7 +16,7 @@
     <?php echo __('register:qualify_instructions') ?>
 </div>
 
-<form action='<?php echo Config::get('secure_url'); ?>org/register1' method='POST'>
+<form action='<?php echo secure_url('/org/register1'); ?>' method='POST'>
 
 <?php echo view('input/securitytoken'); ?>
 

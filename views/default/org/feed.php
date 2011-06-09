@@ -8,7 +8,7 @@ $region = $vars['region'];
 $items = $vars['items'];
 $first_id = (int)$vars['first_id'];
 
-echo view('org/filter_controls', array('baseurl' => '/org/feed'));
+echo view('org/filter_controls', array('baseurl' => '/pg/feed'));
 ?>
 </div>
 <div id='feed_container'>
@@ -43,7 +43,7 @@ function loadMore()
         link.style.display = 'none';
         $('load_more_progress').style.display = 'block';    
     
-        var $src = "/org/feed_more?before_id=" + first_id + "&sector=" +
+        var $src = "/pg/feed_more?before_id=" + first_id + "&sector=" +
             <?php echo json_encode(escape($sector)); ?> + "&region=" + <?php echo json_encode(escape($region)); ?>;
 
         if (fetchMoreXHR)

@@ -5,7 +5,7 @@ function _eval(x)
 
 function __(key)
 {
-    return js_strs[key] || key;
+    return jsStrs[key] || key;
 }
 
 function addEvent(elem, type, fn)

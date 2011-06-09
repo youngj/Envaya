@@ -70,6 +70,43 @@ abstract class Controller {
     }
     
     /*
+     * Returns the controller and action that the given URI would be routed to,
+     * without actually executing the action or any before/after hooks.
+     *
+     * The returned action is null if the URI would not be routed to any action.
+     */
+    public function get_controller_action($uri)
+    {
+        foreach (static::$routes as $route)
+        {
+            $params = $this->match_route($route, $uri);
+            if ($params)
+            {       
+                $controller = @$params['controller'];
+                if ($controller)
+                {
+                    $cls = "Controller_{$controller}";
+                    if (class_exists($cls))
+                    {
+                        $controller = new $cls($this->request, $this);
+                        return $controller->get_controller_action($params['rest']);
+                    }
+                }
+                else
+                {
+                    $action = @$params['action'] ?: 'index';                
+                    $method = "action_{$action}";
+                    if (method_exists($this, $method))
+                    {
+                        return array($this, $method);
+                    }                    
+                }
+            }
+        }
+        return array($this, null);
+    }
+    
+    /*
      * Tries all the route regexes for this controller, 
      * executing the first one that matches the beginning of the uri.
      * Displays a 404 page if there is no valid route.
@@ -271,7 +308,7 @@ abstract class Controller {
         $vars['original_url'] = $this->request->full_original_url();
         $vars['css_url'] = css_url(@$vars['css_name'] ?: 'simple');
         $vars['is_secure'] = $this->request->is_secure();                    
-        $vars['base_url'] = $vars['is_secure'] ? Config::get('secure_url') : Config::get('url');
+        $vars['base_url'] = abs_url('/', ($vars['is_secure'] ? 'https' : 'http'));
     }
         
     public function page_draw($vars)
@@ -306,21 +343,11 @@ abstract class Controller {
             $url = @$_SERVER['HTTP_REFERER'] ?: "/";
         }
     
-        if ($url && $url[0] == '/')
-        {
-            $url = substr($url, 1);
-        }
-
-        if (!preg_match('#^http(s)?://#', $url))
-        {
-            $url = Config::get('url').$url;
-        }
-
         SessionMessages::save();
 
         $request = $this->request;    
         $request->status = $status;
-        $request->headers['Location'] = $url;               
+        $request->headers['Location'] = abs_url($url);               
     }
     
     /*
@@ -407,8 +434,7 @@ abstract class Controller {
         $request = $this->request;
         if (!$request->is_post() && $request->is_secure())
         {
-            $url = $request->full_original_url();
-            $url = str_replace("https://", "http://", $url);
+            $url = abs_url($request->full_original_url(), 'http');
             throw new RedirectException('', $url);
         }
     }

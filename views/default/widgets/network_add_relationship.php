@@ -36,7 +36,7 @@ function searchOrg()
     var searching = $('searching_message');
     searching.style.display = 'block';        
         
-    fetchJson('/org/js_search?name='+encodeURIComponent(query.name)+
+    fetchJson('/pg/js_search?name='+encodeURIComponent(query.name)+
             '&email='+encodeURIComponent(query.email)+
             '&phone_number='+encodeURIComponent(query.phone_number)+
             '&website='+encodeURIComponent(query.website), 

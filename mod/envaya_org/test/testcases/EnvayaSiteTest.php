@@ -10,7 +10,7 @@ class EnvayaSiteTest extends SeleniumTest
     
     private function _testBrowseMap()
     {
-        $this->open("/org/browse");
+        $this->open("/pg/browse");
         
         $this->waitForMapMarker();        
         
@@ -26,7 +26,7 @@ class EnvayaSiteTest extends SeleniumTest
         $this->assertTrue($this->isVisible("//div[@id='infoOverlay']"));
         $this->clickAndWait("//div[@id='infoOverlay']//a[@class='mapOrgLink']");        
         
-        $this->clickAndWait("//a[contains(@href,'/org/browse/?lat')]"); // assume map link on org home page
+        $this->clickAndWait("//a[contains(@href,'/pg/browse/?lat')]"); // assume map link on org home page
         
         $this->waitForMapMarker();        
         
@@ -51,7 +51,7 @@ class EnvayaSiteTest extends SeleniumTest
         
         // test map updates when scrolling
         // testorg should be at -6.140555,35.551758, and the test assumes that there are no orgs immediately to the east
-        $this->open("/org/browse/?lat=-6.14055&long=35.5524&zoom=20"); // testorg is 2 clicks out of screen to the west
+        $this->open("/pg/browse/?lat=-6.14055&long=35.5524&zoom=20"); // testorg is 2 clicks out of screen to the west
         sleep(1);
         $this->mustNotExist("//div[@class='mapMarker']");
         
@@ -63,7 +63,7 @@ class EnvayaSiteTest extends SeleniumTest
         $this->waitForMapMarker();        
         
         // test map updates when zooming
-        $this->open("/org/browse/?lat=-6.14055&long=35.5523&zoom=20"); 
+        $this->open("/pg/browse/?lat=-6.14055&long=35.5523&zoom=20"); 
         sleep(1);
         $this->mustNotExist("//div[@class='mapMarker']");
         

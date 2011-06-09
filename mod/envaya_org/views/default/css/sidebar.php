@@ -4,6 +4,7 @@
     $contentWidth = $vars['contentWidth'] = $width - $sidebarWidth - 11;
     echo view('css/default', $vars);
     echo view('css/snippets/content_margin', $vars);
+    echo view('css/snippets/follow_icon', $vars);    // hack to make follow icons work on /envaya site
 
     $graphicsDir = "/_media/images/sidebar";
 ?>

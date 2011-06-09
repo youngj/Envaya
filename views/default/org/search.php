@@ -7,7 +7,7 @@
     <?php echo __('search:instructions'); ?>
 </div>    
 
-<form method='GET' class='searchForm' action='/org/search/'>    
+<form method='GET' class='searchForm' action='/pg/search/'>    
     <?php echo view('input/text', array('name' => 'q', 'class' => 'searchField input-text', 'value' => $query)); ?>
     <?php echo view('input/pulldown', array('name' => 'sector',
         'options' => OrgSectors::get_options(), 

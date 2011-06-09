@@ -35,7 +35,7 @@ function toggleRecipient(guid, email)
     echo "<div style='padding-bottom:5px'>";
     echo __('share:browse_instructions');
     echo "</div>";
-    echo view('org/filter_controls', array('baseurl' => '/org/browse_email'));
+    echo view('org/filter_controls', array('baseurl' => '/pg/browse_email'));
 
     $query = Organization::query()->where_visible_to_user()->where("email <> ''");    
 

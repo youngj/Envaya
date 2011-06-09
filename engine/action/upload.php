@@ -38,7 +38,7 @@ class Action_Upload extends Action
         if (get_input('iframe'))
         {
             Session::set('lastUpload', $json);
-            $this->redirect("pg/upload?".http_build_query($_POST));
+            $this->redirect("/pg/upload?".http_build_query($_POST));
         }
         else
         {

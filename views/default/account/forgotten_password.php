@@ -7,6 +7,6 @@
     $form_body .= "<p>" . view('input/submit', array('value' => __('login:resetreq:submit'))) . "</p>";
 
     echo view('focus', array('name' => 'username'));
-    echo view('input/form', array('action' => Config::get('url')."pg/forgot_password", 'body' => $form_body)); 
+    echo view('input/form', array('action' => "/pg/forgot_password", 'body' => $form_body)); 
 ?>
 </div>

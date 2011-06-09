@@ -46,8 +46,9 @@ class ExternalFeedTest extends SeleniumTest
         
         // add link without feed. add missing http://
         $this->type("//input[@id='url']", 'example.com');
+        sleep(1);
         $this->click("//button");
-        $this->retry('click', array("//input[@value='OK']"));
+        $this->retry('click', array("//input[@value='OK']"), 20);
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();
         $this->assertContains('Example domains', $this->getText("//a[contains(@href,'http://example.com')]"));

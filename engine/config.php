@@ -30,17 +30,7 @@ class Config
     {
         return static::$settings;
     }
-    
-    static function init_dependent_settings()
-    {
-        // todo: settings that depend on other settings should probably not be allowed in Config...
         
-        $domain = static::get('domain');
-        $url = "http://{$domain}/";
-        static::$settings['url'] = $url;
-        static::$settings['secure_url'] = static::get('ssl_enabled') ? "https://{$domain}/" : $url;
-    }
-    
     static function load()
     {
         if (static::$settings == null)
@@ -49,7 +39,6 @@ class Config
             static::load_array(static::get_group('default'));                        
             static::load_array(static::get_group('local'));
             static::load_array(@include(static::$base_dir."/build/config.php"));
-            static::init_dependent_settings();
             
             // The ENVAYA_CONFIG environment variable may define settings in a JSON string
             $json = getenv("ENVAYA_CONFIG");

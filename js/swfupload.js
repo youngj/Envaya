@@ -1222,7 +1222,6 @@ FileUploader.prototype.getSWFUploadOptions = function()
         flash_url : "/_media/swfupload.swf?v10",
         jpegencoder_url: "/_media/jpegencoder.swf?v10",
         prevent_swf_caching: false,
-        // flash9_url : "/swfupload/swfupload_FP9.swf",
 
         custom_settings : {},
 

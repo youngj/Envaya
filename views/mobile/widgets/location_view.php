@@ -10,7 +10,7 @@ echo "<em>";
 echo escape($org->get_location_text());
 echo "</em>";
 echo "<br />";
-echo "<a href='/org/browse/?list=1&region=".escape($region)."'>";
+echo "<a href='/pg/browse/?list=1&region=".escape($region)."'>";
 echo __('widget:location:see_nearby');
 echo "</a>";
 ?>

@@ -31,7 +31,7 @@ function selectTheme(themeName)
 function previewTheme()
 {
     var $theme = $('theme').value;    
-    var win = window.open(<?php echo json_encode($previewUrl); ?> + "?__theme="+$theme+"&__topbar=0&__readonly=1&view=default",
+    var win = window.open(<?php echo json_encode($previewUrl); ?> + "?__theme="+$theme+"&__topbar=0&view=default",
         'themePreview', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=730,height=590'
     );
     if (window.focus)
