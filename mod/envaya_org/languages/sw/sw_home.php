@@ -2,7 +2,7 @@
 return array(
     'home:title' => 'Mfumo wa teknologia kwa mashirika ya jumuiya ya kiraia katika nchi zinazoendelea',
     'home:heading_html' => 'ni <em>mfumo wa teknologia</em><br />kwa <em>mashirika ya kiraia</em><br />katika <em>nchi zinazoendelea</em>',
-    'home:heading_html_africa' => "ni <em>mfumo wa teknologia</em><br />kwa <em>mashirika ya kiraia</em><br /><em>Tanzania</em>",
+    'home:heading_html_africa' => "ni <em>mfumo wa teknologia</em><br />kwa <em>mashirika ya kiraia</em><br />nchini <em>Tanzania</em>",
     'home:learn_more' => 'Jifunze zaidi',        
     'home:for_organizations' => 'Kwa mashirika',
     'home:for_everyone' => 'Kwa wote',

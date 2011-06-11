@@ -96,3 +96,8 @@ mod/
       For the most part, files in enabled modules work the same as if they were defined in
       the corresponding top level directory; e.g. it acts like each module directory tree is
       merged into the top level directory tree.
+
+===============
+Getting Started
+===============
+See TUTORIAL.txt for step-by-step walk-throughs about how to work with Envaya's source code.

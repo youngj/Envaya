@@ -9,7 +9,7 @@
     extract($vars);
     
     $attrs = Markup::get_attrs($vars, array(
-        'type' => 'text',
+        'type' => 'text',           // these standard attribute names can also be passed in $vars
         'class' => 'input-text',
         'maxlength' => null,
         'name' => null,
