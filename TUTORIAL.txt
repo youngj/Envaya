@@ -1,0 +1,440 @@
+=================
+Table of Contents
+=================
+0. Prerequisites
+1. Adding a New Page
+2. Drawing a Page in a Layout
+3. Internationalizing a Page
+4. Rendering HTML Views
+5. Adding Parameters to Translated Strings
+6. Fetching Objects from the Database
+
+================
+0. Prerequisites
+================
+
+The tutorials in this file assumes that you already have successfully installed Envaya's 
+source code on your own development computer, and have installed the test data set
+via scripts/install_test_data.php 
+
+These tutorials also assume a working knowledge of PHP and HTML.
+
+====================
+1. Adding a New Page
+====================
+
+Your first task is to add a page on your local version of Envaya that displays "Hello World".
+
+We will add this page at the URL "/pg/hello". Verify that this page does not already exist by opening
+http://localhost/pg/hello in your web browser. You should see Envaya's custom 404 page, with
+the message "Page not found".
+
+In order to add a page at "/pg/hello", you need a basic understanding of how Envaya maps URLs to 
+actions, and how Envaya's PHP code is organized.
+
+First, The web server sends all requests to Envaya URLs (except for static files) to www/index.php.
+This PHP file simply creates a Controller of type Controller_Default, and then calls
+the execute() method which finds the action for the requested URL and performs that action.
+
+To find Controller_Default, you need to know a little about how Envaya's PHP code is organized.
+Almost all PHP classes in Envaya are defined in the engine/ directory. In the engine/ directory,
+each PHP class is defined in its own file, and the PHP file is automatically loaded the first
+time the class is referenced. The name of the file is determined by converting the name of the class
+to lowercase, replacing _ with /, and appending .php.
+
+By this convention, the class Controller_Default is defined in engine/controller/default.php.
+Open this file.
+
+At the top of Controller_Default is an array $routes. In any subclass of Controller, 
+the array $routes defines how URLs are mapped to actions (functions defined in the current 
+controller class) or other Controller classes.
+
+In Controller_Default, note the following regular expression:
+    'regex' => '/(?P<controller>pg|admin)\b',
+    
+In the regular expression, the named group ?P<controller> means that a URL starting with "/pg" 
+will be mapped to a controller class named Controller_Pg, and a URL starting with "/admin" will 
+be mapped to a controller class named Controller_Admin.
+
+When adding a new action, it is often easier to add it to an existing Controller class rather
+than creating a new Controller class. This is why we suggested the URL "/pg/hello" -- because
+there is already a controller that handles URLs starting with "/pg".
+
+Open Controller_Pg, which by the same naming convention discussed before, is located at
+engine/controller/pg.php. 
+
+Unlike Controller_Default, which forwards all URLs to another controller class, the $routes defined
+in Controller_Pg allow you to define URLs by simply creating a function within that class, with the 
+prefix 'action_'.
+
+So to create a new page at the URL "/pg/hello", simply add an empty function to the Controller_Pg 
+class named "action_hello":
+
+    function action_hello()
+    {
+    }
+    
+Refresh http://localhost/pg/hello in your browser. Instead of a 404 message, you should now 
+see a blank page.
+
+Finally, we need to output "Hello World". Although "echo" would technically work here,
+Envaya's controller actions should instead output their response using the methods defined in the 
+base Controller class (engine/controller.php).
+
+The most basic method for outputting a response is 'set_content'. In Controller_Pg::action_hello, 
+add the following line:
+
+        $this->set_content("Hello World");
+
+Refresh http://localhost/pg/hello in your browser. You should see "Hello World".
+
+=============================
+2. Drawing a Page in a Layout
+=============================
+
+Most pages on Envaya use a layout with navigation and language controls in the header or footer, 
+and a theme with particular CSS and background elements.
+
+In this step, you will update /pg/hello to use a layout/theme so that it looks more like a normal 
+Envaya page.
+
+The base Controller class has a method 'page_draw', which can be used instead of 'set_content' to 
+display a page's content within a pre-defined layout. In Controller_Pg::action_hello, remove the 
+'set_content' line and add:
+
+        $this->page_draw(array(
+            'content' => "Hello World",
+        ));
+        
+Now refresh http://localhost/pg/hello in your browser. You should see something that looks 
+more like a normal Envaya page. But it looks kind of weird, because it doesn't have a title.
+Change the call to 'page_draw' to add a 'title' parameter:
+
+        $this->page_draw(array(
+            'title' => "Hello!",
+            'content' => "Hello World",
+        ));
+
+By default, 'page_draw' uses a theme named "simple", defined in the themes/ directory. 
+Change the theme to use the "editor" theme instead, by adding a 'theme_name' parameter
+when calling 'page_draw':
+
+        $this->page_draw(array(
+            'title' => "Hello!",
+            'content' => "Hello World",
+            'theme_name' => 'editor',
+        ));
+
+Now refresh http://localhost/pg/hello in your browser to see the page with the new theme.        
+        
+Now that your page is generated via 'page_draw', it's already optimized for mobile devices! 
+At the bottom of the page, click "Mobile" to see a mobile-optimized version of the 
+"Hello World" page. Click "Standard" to switch back to the original view.
+
+============================
+3. Internationalizing a Page
+============================
+
+Envaya's page layout also lets the user switch between different languages. 
+However, if you try switching the language for /pg/hello, "Hello World"
+will not be translated because it is currently hardcoded into the PHP source code.
+
+In this step we will translate the "Hello World" page into English and Kiswahili.
+
+In lib/util.php, Envaya defines a function named '__'. The parameter to this function
+is a string called a "language key", which is an internal string identifier that
+represents a particular phrase in Envaya's interface.  The '__' function returns 
+the phrase translated into the user's language.
+
+Change the Controller_Pg::action_hello method to use the __ function, and reference
+some new language keys:
+
+        $this->page_draw(array(
+            'title' => __('tutorial:hello_title'),
+            'content' => __('tutorial:hello_content'),
+            'theme_name' => 'editor',
+        ));
+
+Refresh http://localhost/pg/hello in your browser. It should just display "tutorial:hello_content" 
+and "tutorial:hello_title" because the translations haven't been defined yet.
+
+Translations for Envaya's interface are defined in PHP files in the languages/ directory.
+English translations are defined in languages/en/; Kiswahili translations are defined
+in languages/sw/, etc. Each PHP file just returns a associative array that maps
+language keys to translated phrases. See languages/en/default.php for an example.
+
+Because Envaya's interface has hundreds of different phrases, our translations are
+split into many different files. When a particular language key is referenced,
+Envaya determines which file(s) to search in based on the part of language key before
+a ":" (colon) character.
+
+For example, if the language key is "tutorial:hello_title", and the user's current language 
+is English, Envaya would search for that key in languages/en/en_tutorial.php 
+(if it was not already found in languages/en/en_default.php).
+
+Create a new file languages/en/en_tutorial.php, and define the English translations for the
+language keys defined earlier:
+
+<?php
+    return array(
+        'tutorial:hello_title' => "Hello!",
+        'tutorial:hello_content' => "Hello World",
+    );
+
+Also create a new file languages/sw/sw_tutorial.php to define some Kiswahili translations:
+
+<?php
+    return array(
+        'tutorial:hello_title' => "Mambo!",
+        'tutorial:hello_content' => "Mambo Dunia",
+    );
+
+Now reload http://localhost/pg/hello in your browser. Switch the language between English and 
+Kiswahili, and the appropriate translations should be displayed.
+
+=======================
+4. Rendering HTML views
+=======================
+
+In this step, we will make /pg/hello more interesting by adding HTML, and
+saying "hello" to a particular user.
+
+In Envaya's coding conventions, HTML is generated by PHP files in the views/ directory,
+not directly by code in the engine/ or lib/ directories.
+
+Envaya's view() function includes a PHP file from the views/ directory, passing it some parameters,
+and then returns the output of that PHP file as a string. The first argument to the
+view() function is the name of the view. The path to the PHP file is generated from both the name of the view
+and the current "view type" (e.g. 'default' for the standard HTML view, 'mobile' for the mobile web view,
+'rss' for the RSS view).
+
+For example, if view name is 'tutorial/hello', and the user is using the standard HTML view, the
+view will be loaded from the PHP file at 'views/default/tutorial/hello.php'.
+
+Change the Controller_Pg::action_hello method to use the view function, and reference the
+'tutorial/hello' view to generate the content:
+
+        $this->page_draw(array(
+            'title' => __('tutorial:hello_title'),
+            'content' => view('tutorial/hello'),
+            'theme_name' => 'editor',
+        ));
+
+Reload http://localhost/pg/hello in your browser. 
+You should get an error message: "view tutorial/hello does not exist".
+
+Now create views/default/tutorial/hello.php, and add the following content:
+
+    <?php
+        echo __('tutorial:hello_content');
+    ?>
+    
+Used within view files, 'echo' adds a string to the output returned by the 'view' function.
+Reload http://localhost/pg/hello in your browser. You should see the translated
+version of "Hello World" as it was before. 
+
+In view files, you can switch between PHP and raw HTML as convenient. For example, 
+copy the following content to views/default/tutorial/hello.php:
+
+    <ul>
+    <li><a href='/pg/feed'><?php echo __('feed:title'); ?></a></li>
+    <li><a href='/pg/search'><?php echo __('search'); ?></a></li>
+    </ul>
+
+Reload http://localhost/pg/hello, and you should see links to the Latest updates
+and Search pages.
+
+Each view can take its own set of parameters. Let's take a parameter from the query
+string and pass it into the view. Change Controller_Pg::action_hello as follows:
+
+        $username = get_input('username');
+    
+        $this->page_draw(array(
+            'title' => __('tutorial:hello_title'),
+            'content' => view('tutorial/hello', array('username' => $username)),
+            'theme_name' => 'editor',
+        ));
+
+The get_input() method returns a parameter from $_GET or $_POST. Above, get_input('username')
+returns the parameter named 'username'. For example, if the URL is 
+http://localhost/pg/hello?username=testorg, get_input('username') will return "testorg".
+
+The expression "view('tutorial/hello', array('username' => $username))" renders the tutorial/hello
+view with a parameter named 'username', set to the username from the $_GET or $_POST input.
+
+Inside the view, the parameter can be accessed as part of the variable named $vars.
+Copy the following content to views/default/tutorial/hello.php:
+
+    <?php   
+        $username = $vars['username'] ?: 'somebody';        
+        echo "Hello, $username!";
+    ?>
+    
+Refresh http://localhost/pg/hello . It should say:
+    Hello, somebody!
+Now open http://localhost/pg/hello?username=testorg . It should say:
+    Hello, testorg!
+Now open http://localhost/pg/hello?username=%3Cscript%3Ealert%28%27hacked!%27%29%3C/script%3E . 
+In browsers that don't have built-in cross site scripting protection, the browser will 
+display an alert message! Other browsers may just display "Hello, !".
+
+This code has a security flaw because user input is displayed in HTML without escaping.
+Any attacker could easily generate a URL that they could use to steal the user's session
+and gain full control of the user's account, or redirect the user to a malicious page.
+
+To fix this bug, we need to escape any strings that could possibly contain untrusted HTML.
+In Envaya, this can be done via the 'escape' function. Copy the following content to 
+views/default/tutorial/hello.php:
+
+    <?php   
+        $username = $vars['username'] ?: 'somebody';        
+        echo "Hello, ".escape($username)."!";
+    ?>
+    
+Now open http://localhost/pg/hello?id=%3Cscript%3Ealert%28%27hacked!%27%29%3C/script%3E again.
+It should say:
+    Hello, <script>alert('hacked!')</script>!
+
+By using the escape() function whenever outputting untrusted text, malicious HTML is escaped 
+properly and cannot cause a cross-site scripting attack.
+
+==========================================
+5. Adding parameters to translated strings
+==========================================
+
+The previous version of hello.php hardcodes the phrase "Hello, ".escape($username)."!"
+in English. We need to update our translations to allow displaying this phrase in
+different languages.
+
+In languages/en/en_tutorial.php, add:
+    'tutorial:hello_user' => "Hello, {name}!",
+
+In languages/sw/sw_tutorial.php, add:
+    'tutorial:hello_user' => "Mambo, {name}!",
+
+PHP's built-in 'strtr' function makes it easy to replace parameters in translated strings.
+Copy the following content to views/default/tutorial/hello.php:    
+    <?php   
+        $username = $vars['username'] ?: 'somebody';        
+        echo strtr(__('tutorial:hello_user'), array(
+            '{name}' => escape($username)
+        ));
+    ?>    
+    
+Now open http://localhost/pg/hello?username=testorg , and change the language to Kiswahili.
+It should say:
+    Mambo, testorg!
+    
+=====================================
+6. Fetching objects from the database
+=====================================
+
+The next task is to display the actual name of the user, rather than just their username.
+To do this, you will need to fetch the User object from the database.
+
+The User class, as you might expect, is defined in engine/user.php. In this file, you can see
+that the User class has a static method User::get_by_username, which fetches the user object 
+from the database with a particular username, returning null if no user has that username.
+You can also see that the User class has an attribute 'name' (specified as part of $table_attributes),
+which is the display name of that user.
+
+Since the user name also may contain untrusted HTML, it is also necessary to escape it.
+
+Copy the following content to views/default/tutorial/hello.php:
+
+    <?php   
+        $username = $vars['username'];        
+        
+        $user = User::get_by_username($username);
+        if ($user)
+        {        
+            echo strtr(__('tutorial:hello_user'), array(
+                '{name}' => escape($user->name)
+            ));
+        }
+        else
+        {
+            echo "no user found";
+        }
+    ?>
+    
+Now reload http://localhost/pg/hello?username=testorg . It should say:
+    Mambo, Test Org!
+    
+Although 'get_by_username' is specific to the User class, you can also query
+objects from the database in a more generic way using the 'query' method.
+
+Any database model (subclass of Model, defined in engine/model.php) defines
+a static 'query' method, which returns a Query_Select object (defined in engine/query/select.php).
+The Query_Select method makes it easy to construct and execute SELECT queries in SQL.
+
+For example:
+
+$user = User::query()->where('username = ?', $username)->get();
+
+would return the same result as:
+
+$user = User::get_by_username($username);
+
+Query_Select uses prepared statements, with parameters replaced by '?' and 
+passed as separate parameters. This prevents against SQL injection attacks. 
+For example, the following statement would be vulnerable to SQL injection attacks:
+
+$user = User::query()->where("username = '$username'")->get(); // BAD
+
+This is a problem because $username could include an apostrophe character,
+followed by malicious SQL that could drop tables, change passwords, etc.
+To avoid this, always use '?' and pass parameters separately when calling where().
+
+To get a list of all User objects matching a query, use filter().
+Copy the following content to views/default/tutorial/hello.php:
+
+    <?php   
+        $username = $vars['username'];        
+        
+        $user = User::get_by_username($username);
+        if ($user)
+        {        
+            echo strtr(__('tutorial:hello_user'), array(
+                '{name}' => escape($user->name)
+            ));
+        }
+        else
+        {
+            echo "invalid username. valid usernames are:<br /><br />";
+            
+            $users = User::query()
+                ->where('time_created < ?', time() - 60) // older than one minute
+                ->order_by('username')
+                ->filter();
+        
+            foreach ($users as $user)
+            {
+                echo escape($user->username)."<br />";
+            }            
+        }
+    ?>    
+    
+Now open http://localhost/pg/hello . It should say something like:
+    invalid username. valid usernames are:
+
+    testadmin
+    testorg
+    testposter0
+    testposter1
+    testposter10
+    testposter11
+    testposter12
+    testposter13
+    testposter14
+    testposter15
+    testposter16
+    testposter17
+    testposter18
+    testposter19
+    testposter2
+    testposter20
+    testposter21
+    testposter3
+    testposter4
+        
