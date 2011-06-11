@@ -8,7 +8,7 @@
  * next component of the $uri.
  *
  * The controller action should add the output it creates to
- * `$this->request->response`, typically in the form of a [View], during the
+ * `$this->response->content`, typically in the form of a [View], during the
  * "action" part of execution.
  *
  * @package    Kohana
@@ -27,24 +27,28 @@ abstract class Controller {
         ),
     );
     
-    public $request;    
     protected $parent_controller;
     protected $params = array();    
+    
+    protected $response = null;
     
     protected $page_draw_vars = array();
 
     /**
-     * Creates a new controller instance. Each controller must be constructed
-     * with the request object that created it.
-     *
-     * @param   object  Request that created the controller
-     * @return  void
+     * Creates a new controller instance. 
      */
-    public function __construct(Request $request, $parent_controller = null)
+    public function __construct($parent_controller = null)
     {
-        // Assign the request to the controller
-        $this->request = $request;
         $this->parent_controller = $parent_controller;
+        
+        if (!$parent_controller)
+        {
+            $this->response = new Response();
+        }
+        else
+        {
+            $this->response = $parent_controller->response;
+        }
     }   
     
     /**
@@ -88,7 +92,7 @@ abstract class Controller {
                     $cls = "Controller_{$controller}";
                     if (class_exists($cls))
                     {
-                        $controller = new $cls($this->request, $this);
+                        $controller = new $cls($this);
                         return $controller->get_controller_action($params['rest']);
                     }
                 }
@@ -127,13 +131,12 @@ abstract class Controller {
     public function full_rewritten_url()
     {
         $domain = Config::get('domain');        
-        $request = $this->get_request();
+        $protocol = Request::get_protocol();
         $base_uri = $this->param('rewritten_uri');
-        
-        return "{$request->protocol}://{$domain}{$base_uri}{$request->query_string}";
+        $query = Request::get_query();        
+        return "{$protocol}://{$domain}{$base_uri}{$query}";
     }
         
-    
     /*
      * Performs the action for the route that matched the request URI.
      *
@@ -168,7 +171,7 @@ abstract class Controller {
             {
                 throw new NotFoundException();
             }
-            $controller = new $cls($this->request, $this);
+            $controller = new $cls($this);
             $controller->execute($params['rest']);
         }
         else
@@ -251,11 +254,6 @@ abstract class Controller {
         }
     }
 
-    public function get_request()
-    {
-        return $this->request;
-    }
-        
     protected function prepare_page_draw_vars(&$vars)
     {
         foreach ($this->page_draw_vars as $k => $v)
@@ -305,21 +303,20 @@ abstract class Controller {
         }
 
         $vars['canonical_url'] = $this->get_canonical_url();
-        $vars['original_url'] = $this->request->full_original_url();
-        $vars['css_url'] = css_url(@$vars['css_name'] ?: 'simple');
-        $vars['is_secure'] = $this->request->is_secure();                    
-        $vars['base_url'] = abs_url('/', ($vars['is_secure'] ? 'https' : 'http'));
+        $vars['original_url'] = Request::full_original_url();
+        $vars['css_url'] = css_url(@$vars['css_name'] ?: 'simple');        
+        $vars['base_url'] = abs_url('/', (Request::is_secure() ? 'https' : 'http'));
     }
         
     public function page_draw($vars)
     {                                     
         $this->prepare_page_draw_vars(/* & */ $vars);        
-        $this->request->response = view('layouts/base', $vars);
+        $this->response->content = view('layouts/base', $vars);
     }
 
     protected function get_canonical_url()
     {
-        $canonical_url = $this->request->full_original_url();
+        $canonical_url = Request::full_original_url();
         $ignored_params = array('view','login','_lt','__topbar');
         
         foreach ($ignored_params as $ignored_param)
@@ -345,9 +342,8 @@ abstract class Controller {
     
         SessionMessages::save();
 
-        $request = $this->request;    
-        $request->status = $status;
-        $request->headers['Location'] = abs_url($url);               
+        $this->set_status($status);
+        $this->set_header('Location', abs_url($url));
     }
     
     /*
@@ -356,15 +352,14 @@ abstract class Controller {
      */            
     function not_found()
     {
-        $request = $this->request;
-        $redirect_url = NotFoundRedirect::get_redirect_url($request->uri);
+        $redirect_url = NotFoundRedirect::get_redirect_url(Request::get_uri());
         if ($redirect_url)
         {
             $this->redirect($redirect_url);
         }
         else
         {        
-            $request->status = 404;        
+            $this->set_status(404);
             $this->page_draw(array(
                 'title' => __('page:notfound'),
                 'content' => view('section', array('content' => __('page:notfound:details')."<br/><br/><br/>"))
@@ -374,24 +369,22 @@ abstract class Controller {
     
     function render_error_js($exception)
     {
-        $request = $this->request;
-        
         $res = array(
             'error' => $exception->getMessage(), 
             'errorClass' => get_class($exception)
         );
         
-        $request->response = json_encode($res);    
+        $this->response->content = json_encode($res);    
     }
     
     function server_error($exception)
     {
         ob_discard_all();
     
-        $request = $this->request;   
-        $request->status = 500;                
-        
-        if (@$request->headers['Content-Type'] == 'text/javascript')
+        $this->set_status(500);
+    
+        $content_type = @$this->response->headers['Content-Type'];
+        if ($content_type == 'text/javascript')
         {
             $this->render_error_js($exception);
         }
@@ -431,10 +424,9 @@ abstract class Controller {
      */    
     public function prefer_http()
     {
-        $request = $this->request;
-        if (!$request->is_post() && $request->is_secure())
+        if (!Request::is_post() && Request::is_secure())
         {
-            $url = abs_url($request->full_original_url(), 'http');
+            $url = abs_url(Request::full_original_url(), 'http');
             throw new RedirectException('', $url);
         }
     }
@@ -445,10 +437,10 @@ abstract class Controller {
      */
     public function prefer_https()
     {
-        $request = $this->request;
-        if (!$request->is_post() && !$request->is_secure() && Config::get('ssl_enabled') && !$request->is_mobile_browser())
+        if (!Request::is_post() && !Request::is_secure() 
+            && Config::get('ssl_enabled') && !Request::is_mobile_browser())
         {
-            $url = secure_url($request->full_original_url());
+            $url = secure_url(Request::full_original_url());
             throw new RedirectException('', $url);
         }
     }
@@ -532,7 +524,7 @@ abstract class Controller {
     
         if (in_array('rss', $allowed_view_types))
         {
-            $this->page_draw_vars['rss_url'] = url_with_param($this->request->full_original_url(), 'view', 'rss');
+            $this->page_draw_vars['rss_url'] = url_with_param(Request::full_original_url(), 'view', 'rss');
         }
         
         $view_type = Views::get_request_type();
@@ -557,13 +549,28 @@ abstract class Controller {
         set_cookie('lang', $newLanguage);
     }    
     
-    function set_content_type($content_type)
+    function set_header($name, $value)
     {
-        $this->request->headers['Content-Type'] = $content_type;
+        $this->response->headers[$name] = $value;
     }
     
-    function set_response($response)
+    function set_content_type($content_type)
     {
-        $this->request->response = $response;
+        $this->set_header('Content-Type', $content_type);
+    }
+    
+    function set_status($status)
+    {
+        $this->response->status = $status;
+    }
+    
+    function set_content($content)
+    {
+        $this->response->content = $content;
+    }
+    
+    function get_response()
+    {
+        return $this->response;
     }
 } // End Controller

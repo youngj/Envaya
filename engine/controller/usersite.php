@@ -256,6 +256,6 @@ class Controller_UserSite extends Controller_User
             }
         }
      
-        $this->set_response(json_encode(array('emails' => $emails)));
+        $this->set_content(json_encode(array('emails' => $emails)));
     }    
 }

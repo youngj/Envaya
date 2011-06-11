@@ -28,7 +28,7 @@ class Action_EditWidget extends Action
         $revision->content = get_input('content');                       
         $revision->save();
         
-        $this->set_response(json_encode(array('guid' => $widget->guid)));    
+        $this->set_content(json_encode(array('guid' => $widget->guid)));    
     }
     
     function process_input()
@@ -69,8 +69,8 @@ class Action_EditWidget extends Action
 
             $widget->process_input($this);             
             
-            $request = $this->get_request();            
-            if ($request->status == 200 && !$request->response)
+            $response = $this->get_response();            
+            if ($response->status == 200 && !$response->content)
             {            
                 SessionMessages::add(__('widget:save:success'));            
                 $this->redirect($widget->get_url());

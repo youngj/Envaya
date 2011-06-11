@@ -8,11 +8,9 @@
      */
     require __DIR__."/../start.php";
 
-    $request = Request::instance();
+    $controller = new Controller_Default();
+    $controller->execute(Request::get_uri());
 
-    $controller = new Controller_Default($request);
-    $controller->execute($request->uri);
-
-    $request->send_headers();        
-    
-    echo $request->response;
+    $response = $controller->get_response();    
+    $response->send_headers();
+    echo $response->content;

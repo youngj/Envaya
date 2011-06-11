@@ -105,6 +105,6 @@ class Widget_Links extends Widget
             ->where('feed_url = ? OR url = ?', $feed_url, $url)
             ->exists();        
         
-        $action->set_response(json_encode($link_info));
+        $action->set_content(json_encode($link_info));
     }            
 }

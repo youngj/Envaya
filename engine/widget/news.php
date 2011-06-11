@@ -151,6 +151,6 @@ class Widget_News extends Widget
         $url = get_input('url');
         $link_info = ExternalSite::get_linkinfo($url);     
         
-        $action->set_response(json_encode($link_info));
+        $action->set_content(json_encode($link_info));
     }
 }

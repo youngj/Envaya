@@ -21,7 +21,7 @@ class Controller_Org extends Controller
 
     function action_tci_donate_frame()
     {
-        $this->request->response = view("page/tci_donate_frame");
+        $this->set_content(view("page/tci_donate_frame"));
     }
 
     function action_submit_donate_form()
@@ -60,7 +60,7 @@ class Controller_Org extends Controller
         unset($values['_other_amount']);
         unset($values['Submit']);
 
-        $this->request->response = view("page/submit_tci_donate_form", $values);
+        $this->set_content(view("page/submit_tci_donate_form", $values));
     }
     
     function action_send_feedback()

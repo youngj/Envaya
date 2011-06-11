@@ -162,10 +162,10 @@ class Controller_Pg extends Controller
         else
         {
             // possibly dangerous to show in browser; show as download
-            $this->request->headers['Content-Disposition'] = "attachment; filename=\"$filename\"";
+            $this->set_header('Content-Disposition', "attachment; filename=\"$filename\"");
         }        
         $this->set_content_type($mime_type);
-        $this->request->response = file_get_contents($local_path);
+        $this->set_content(file_get_contents($local_path));
     }
     
     function action_hide_todo()
@@ -173,7 +173,7 @@ class Controller_Pg extends Controller
         Session::set('hide_todo', 1);
         
         $this->set_content_type('text/javascript');
-        $this->set_response(json_encode("OK"));    
+        $this->set_content(json_encode("OK"));    
     }
     
     function action_change_lang()
@@ -197,7 +197,7 @@ class Controller_Pg extends Controller
             throw new SecurityException("Access denied.");
         }
         
-        $this->set_response(json_encode(array(
+        $this->set_content(json_encode(array(
             'content' => $revision->content
         )));
     }
@@ -223,7 +223,7 @@ class Controller_Pg extends Controller
             $revisions = ContentRevision::query()->where('entity_guid = ?', $entity_guid)->order_by('time_updated desc')->filter();        
         }
         
-        $this->set_response(json_encode(array(
+        $this->set_content(json_encode(array(
             'revisions' => array_map(function($r) { return $r->js_properties(); }, $revisions),
         )));
     }
@@ -316,7 +316,7 @@ class Controller_Pg extends Controller
         }
         
         $this->set_content_type('text/css');        
-        $this->set_response($css);
+        $this->set_content($css);
     }
 
     function action_discussions()
@@ -504,7 +504,7 @@ class Controller_Pg extends Controller
         }
         $all_orgs = array_values($all_orgs_map);
                 
-        $this->set_response(json_encode(array(
+        $this->set_content(json_encode(array(
             'can_invite' => InvitedEmail::get_by_email($email)->can_send_invite(),
             'results' => array_map(function($o) { 
                 return array(
@@ -594,7 +594,7 @@ class Controller_Pg extends Controller
 
         $items_html = view('feed/list', array('items' => $items));
         
-        $this->set_response(json_encode(array(
+        $this->set_content(json_encode(array(
             'items_html' => $items_html,
             'first_id' => $this->get_first_item_id($items, $max_items)
         )));
@@ -629,7 +629,7 @@ class Controller_Pg extends Controller
             $orgJs[] = $org->js_properties();
         }
 
-        $this->set_response(json_encode($orgJs));
+        $this->set_content(json_encode($orgJs));
     }        
 }
 

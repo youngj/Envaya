@@ -329,8 +329,7 @@
             }
         }
 
-        $request = new Request(null);
-        $controller = new Controller_Default($request);
+        $controller = new Controller_Default();
 
         foreach ($url_sm->url_refs as $url => $paths)
         {

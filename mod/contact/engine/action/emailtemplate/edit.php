@@ -25,7 +25,7 @@ class Action_EmailTemplate_Edit extends Action
         $email->set_content($content);
         $email->save();
         
-        $this->set_response(json_encode(array('guid' => $email->guid)));    
+        $this->set_content(json_encode(array('guid' => $email->guid)));    
     }
  
     function process_input()

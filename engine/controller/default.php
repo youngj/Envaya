@@ -21,8 +21,12 @@ class Controller_Default extends Controller
     {
         try
         {
-            $request = $this->request;
-            
+            // Reduce multiple slashes to a single slash
+            $uri = preg_replace('#//+#', '/', $uri);
+
+            // Remove all dot-paths from the URI, they are not valid
+            $uri = preg_replace('#\.[\s./]*/#', '', $uri);
+
             // map custom domain names to the appropriate user site
             $username = OrgDomainName::get_username_for_host($request->host);            
             if ($username)
@@ -53,7 +57,7 @@ class Controller_Default extends Controller
             
             // set viewtype for current request
             $viewtype = $viewtype ?: @$_COOKIE['view'] ?: 
-                ($this->request->is_mobile_browser() ? 'mobile' : 'default');            
+                (Request::is_mobile_browser() ? 'mobile' : 'default');            
             
             if (preg_match('/[^\w]/', $viewtype))
             {            
@@ -81,7 +85,7 @@ class Controller_Default extends Controller
             {
                 SessionMessages::add_error($msg);
             }
-            if ($this->request->is_post())
+            if (Request::is_post())
             {
                 Session::save_input();
             }

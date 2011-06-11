@@ -33,7 +33,7 @@ abstract class Action
         $this->before();
         $this->allow_view_types();
     
-        if ($this->get_request()->is_post())
+        if (Request::is_post())
         {           
             try
             {
@@ -57,8 +57,8 @@ abstract class Action
     
     protected function handle_validation_exception($ex)
     {       
-        $request = $this->get_request();
-        if (@$request->headers['Content-Type'] == 'text/javascript')
+        $response = $this->get_response();
+        if (@$response->headers['Content-Type'] == 'text/javascript')
         {                    
             $this->render_error_js($ex);
         }
@@ -73,7 +73,7 @@ abstract class Action
                 SessionMessages::add_error($ex->getMessage());
             }                
             $this->render();
-            if (!$request->response)
+            if (!$response->content)
             {
                 throw new RedirectException();
             }    

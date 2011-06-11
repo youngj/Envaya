@@ -40,7 +40,7 @@ class Action_ReorderWidget extends Action
             $widget->save();
         }
         
-        $this->set_response(json_encode(array(
+        $this->set_content(json_encode(array(
             'guids' => array_map(function($w) { return $w->guid; }, $container->query_widgets()->where('in_menu = 1')->filter())
         )));
     }

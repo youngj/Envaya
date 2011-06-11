@@ -16,20 +16,19 @@ $t_init = ($end_init_mtime - $start_microtime);
 function exec_request($uri)
 {
     $start_mtime = microtime(true);        
-    $request = new Request($uri, array('host' => 'localhost'));
-    $controller = new Controller_Default($request);
-    $controller->execute($request->uri);    
+    $controller = new Controller_Default();
+    $controller->execute($uri);    
     $finish_mtime = microtime(true);
     
     return array(
         'time' => ($finish_mtime - $start_mtime),
-        'request' => $request
+        'response' => $controller->get_response()
     );
 }
 
 $res = exec_request($uri);
 
-echo "$uri (len=".(strlen($res['request']->response)).")\n";
+echo "$uri (len=".strlen($res['response']->content).")\n";
 echo " t_init  = $t_init\n";
 echo " t_exec  = {$res['time']}\n";    
 echo " t_total = ".($t_init + $res['time'])."\n";

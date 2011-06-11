@@ -43,7 +43,7 @@ class Action_Upload extends Action
         else
         {
             $this->set_content_type('text/javascript');
-            $this->set_response($json);
+            $this->set_content($json);
         }
     }
     
@@ -51,6 +51,6 @@ class Action_Upload extends Action
     
     function render()
     {
-        $this->get_request()->response = view('upload/frame');
+        $this->set_content(view('upload/frame'));
     }
 }    
