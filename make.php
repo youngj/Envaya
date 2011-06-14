@@ -114,7 +114,10 @@ class Build
         $default_paths = array();
         foreach ($default_dirs as $default_dir)
         {
-            $default_paths = array_merge($default_paths, $dir_paths[$default_dir]);
+            if (isset($dir_paths[$default_dir]))
+            {
+                $default_paths = array_merge($default_paths, $dir_paths[$default_dir]);
+            }
         }
         
         static::write_file("build/path_cache.php", static::get_array_php($default_paths));
