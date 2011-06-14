@@ -143,7 +143,7 @@ function main()
         die;
     }   
     
-    $env["ENVAYA_CONFIG"] = json_encode(array(
+    $env["ENVAYA_CONFIG"] = json_encode(array(        
         'captcha_enabled' => false,
         'mock_mail_file' => $MOCK_MAIL_FILE
     ));

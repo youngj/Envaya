@@ -28,6 +28,8 @@ class WebServer
     public $php_index;          // a URI to a PHP file; if set, any URIs not already matched will be served from this script 
                                 // with PATH_INFO as the original $uri                                
 
+    public $num_processes = 4;
+
     function __construct($options)
     {
         foreach ($options as $k => $v)
@@ -61,11 +63,51 @@ class WebServer
         socket_listen($sock);
 
         echo "Web server listening on 0.0.0.0:{$this->port} (see http://localhost:{$this->port}/)...\n";    
-        
+
+        if (function_exists('pcntl_fork'))
+        {
+            $pid = 0;
+            for ($i = 0; $i < $this->num_processes && $pid == 0; $i++)
+            {        
+                $pid = pcntl_fork();
+
+                if($pid == -1) 
+                {
+                    die("Failed to fork");
+                }
+            }
+
+            if ($pid != 0)
+            {
+                echo "forked process $pid\n";
+                $this->run_forever_child($sock, $pid);
+            }
+            else
+            {
+                socket_close($sock);
+                $this->run_forever_parent();
+            }
+        }
+        else
+        {
+            $this->run_forever_child($sock, 0);
+        }
+    }
+
+    function run_forever_parent()
+    {        
+        while (true)
+        {
+            sleep(1);
+        }
+    }
+
+    function run_forever_child($sock, $pid)
+    {
         while (true)
         {
             $client = socket_accept($sock);
-            print "accept $client\n";
+            print "$pid accept $client\n";
                     
             if (!$client)
             {

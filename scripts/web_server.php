@@ -10,6 +10,11 @@ include dirname(__DIR__) . '/engine/config.php';
 
 Config::load();
 
+// override config settings for child process
+$_ENV['ENVAYA_CONFIG'] = json_encode(array(
+    'ssl_enabled' => false,
+));
+
 $domain = Config::get('domain');
 $domain_parts = explode(':', $domain, 2);
 $port = isset($domain_parts[1]) ? ((int)$domain_parts[1]) : 80;
