@@ -14,6 +14,17 @@ class PageContext
     private static $submenus = array();    
     private static $js_strings = array();
     private static $dirty = false;
+    private static $http_headers = array();
+    
+    static function set_http_header($name, $value)
+    {
+        static::$http_headers[$name] = $value;
+    }
+        
+    static function get_http_headers()
+    {
+        return static::$http_headers;
+    }
     
     /*
      * Makes a particular localized string from the PHP languages/ files 

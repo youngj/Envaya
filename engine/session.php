@@ -9,7 +9,6 @@ class Session
 {
     private static $started = false;
     private static $dirty = false;
-    private static $cookieName = 'envaya';
 
     static function get($key)
     {
@@ -17,7 +16,7 @@ class Session
         {
             return @$_SESSION[$key];
         }
-        else if (@$_COOKIE[static::$cookieName])
+        else if (@$_COOKIE[static::cookie_name()])
         {
             static::_start();
             return @$_SESSION[$key];
@@ -26,17 +25,17 @@ class Session
         {
             return null;
         }
-    }
+    }    
     
     static function cookie_name()
     {
-        return static::$cookieName;
+        return Config::get('session_cookie_name');
     }
 
     static function destroy()
     {
         @session_destroy();
-        setcookie(static::$cookieName, "", 0,"/");
+        setcookie(static::cookie_name(), "");
     }
 
     static function start()
@@ -53,12 +52,17 @@ class Session
         {
             return session_id();
         }
-        if (!static::$started && @$_COOKIE[static::$cookieName])
+        if (!static::$started && @$_COOKIE[static::cookie_name()])
         {
             static::_start();
             return session_id();
         }
         return null;
+    }
+    
+    static function regenerate_id()
+    {
+        session_regenerate_id(true);
     }
 
     static function save_input()
@@ -76,10 +80,13 @@ class Session
             array('Session', "_session_destroy"), 
             array('Session', "_session_gc")
         );
+        
+        $cookie_name = static::cookie_name();
 
-        session_name(static::$cookieName);
-
+        session_name($cookie_name);
+        
         session_start();
+        
         static::$started = true;
 
         EventRegister::register_handler('shutdown', 'system', 'session_write_close', 10);

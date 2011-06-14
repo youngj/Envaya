@@ -23,8 +23,8 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
     public function init_selenium()
     {
-        global $BROWSER;
-        return new Testing_Selenium($BROWSER, "http://localhost");    
+        global $BROWSER, $DOMAIN;
+        return new Testing_Selenium($BROWSER, "http://$DOMAIN");    
     }
 
     /*

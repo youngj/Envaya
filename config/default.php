@@ -54,9 +54,7 @@ return array(
     'domain' => "localhost",
     'site_name' => "Envaya",
 
-    'recaptcha_enabled' => false,
-    'recaptcha_key' => '',
-    'recaptcha_private' => '',
+    'captcha_enabled' => false,
     
     'scribd_key' => '',
     'scribd_private' => '',
@@ -75,6 +73,8 @@ return array(
     
     'site_secret' => 'default_secret',
     'fallback_theme' => 'simple',
+    
+    'session_cookie_name' => 'envaya',
     
     'cache_version' => 188,  // increment when all cached objects need to be invalidated (rare)
 );

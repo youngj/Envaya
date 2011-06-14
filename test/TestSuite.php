@@ -20,11 +20,14 @@
 chdir(__DIR__);
 
 require_once '../scripts/cmdline.php';
+require_once '../engine/config.php';
 require_once 'PHPUnit/Autoload.php';
 require_once 'SeleniumTest.php';
 
-$MOCK_MAIL_FILE = __DIR__."/mail.out";
+Config::load();
 
+$MOCK_MAIL_FILE = __DIR__."/mail.out";
+$DOMAIN = Config::get('domain');
 
 function kill_windows_process_tree($pid, $wmi = null)
 {
@@ -95,7 +98,7 @@ function check_selenium()
 
 function main()
 {
-    global $BROWSER, $TEST_CASES, $MOCK_MAIL_FILE;
+    global $BROWSER, $TEST_CASES, $MOCK_MAIL_FILE, $DOMAIN;
 
     $opts = getopt('',array("browser:","test:"));
         
@@ -141,6 +144,7 @@ function main()
     }   
     
     $env["ENVAYA_CONFIG"] = json_encode(array(
+        'captcha_enabled' => false,
         'mock_mail_file' => $MOCK_MAIL_FILE
     ));
         

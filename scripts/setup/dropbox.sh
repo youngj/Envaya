@@ -8,6 +8,7 @@ wget -O /tmp/dropbox.tar.gz http://www.dropbox.com/download/?plat=lnx.x86
 mkdir -p /usr/local/dropbox /etc/dropbox
 chown dropbox.dropbox /etc/dropbox
 chmod 755 /etc/dropbox
+
 tar xvzf /tmp/dropbox.tar.gz -C /usr/local/dropbox --strip 1
 rm /tmp/dropbox.tar.gz
 

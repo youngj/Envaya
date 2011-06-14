@@ -1,6 +1,6 @@
 <div class='section_content padded'>
 
-<form method='POST' action='<?php echo escape($_SERVER['REQUEST_URL']); ?>'>
+<form method='POST' action='<?php echo escape($_SERVER['REQUEST_URI']); ?>'>
 
 <div class='instructions'>
 <?php echo __('register:duplicate_instructions'); ?>

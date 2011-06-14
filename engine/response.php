@@ -9,17 +9,17 @@ class Response
     /**
      * @var  integer  HTTP response code: 200, 404, 500, etc
      */
-    public $status = 200;
+    public $status;
 
     /**
      * @var  string  response body
      */
-    public $content = '';
+    public $content;
 
     /**
      * @var  array  headers to send with the response body
      */
-    public $headers = array();
+    public $headers;
 
     // HTTP status codes and messages
     public static $messages = array(
@@ -80,6 +80,13 @@ class Response
         507 => 'Insufficient Storage',
         509 => 'Bandwidth Limit Exceeded'
     );
+    
+    function __construct($status = 200, $content = '', $headers = null)
+    {
+        $this->status = $status;
+        $this->content = $content;
+        $this->headers = $headers ?: array();
+    }
     
     /**
      * Sends the response status and all set headers. The current server

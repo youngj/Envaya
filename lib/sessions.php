@@ -20,8 +20,8 @@ function login($user, $persistent = false)
     }
 
     // Users privilege has been elevated, so change the session id (help prevent session hijacking)
-    session_regenerate_id(true);
-
+    Session::regenerate_id();
+    
     EventRegister::trigger_event('login','user',$user);
     
     $user->reset_login_failure_count();

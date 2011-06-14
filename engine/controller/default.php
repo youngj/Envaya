@@ -28,7 +28,7 @@ class Controller_Default extends Controller
             $uri = preg_replace('#\.[\s./]*/#', '', $uri);
 
             // map custom domain names to the appropriate user site
-            $username = OrgDomainName::get_username_for_host($request->host);            
+            $username = OrgDomainName::get_username_for_host(Request::get_host());            
             if ($username)
             {
                 $uri = "/{$username}{$uri}";
@@ -52,7 +52,7 @@ class Controller_Default extends Controller
             $viewtype = @$_GET['view'];
             if ($viewtype && Views::is_browsable_type($viewtype))
             {
-                set_cookie('view', $viewtype);
+                $this->set_cookie('view', $viewtype);
             }
             
             // set viewtype for current request
@@ -115,6 +115,14 @@ class Controller_Default extends Controller
         else
         {
             throw new NotFoundException();
+        }
+    }
+    
+    function after()
+    {
+        foreach (PageContext::get_http_headers() as $name => $value)
+        {
+            $this->response->headers[$name] = $value;
         }
     }
 }

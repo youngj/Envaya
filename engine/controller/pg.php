@@ -165,6 +165,7 @@ class Controller_Pg extends Controller
             $this->set_header('Content-Disposition', "attachment; filename=\"$filename\"");
         }        
         $this->set_content_type($mime_type);
+        $this->set_header('Cache-Control', 'max-age=86400');
         $this->set_content(file_get_contents($local_path));
     }
     
@@ -316,6 +317,7 @@ class Controller_Pg extends Controller
         }
         
         $this->set_content_type('text/css');        
+        $this->set_header('Cache-Control', 'max-age=86400');
         $this->set_content($css);
     }
 

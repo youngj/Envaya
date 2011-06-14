@@ -5,8 +5,8 @@
 # Update latest code on 1.2.3.4:
 # cap HOSTS=1.2.3.4 deploy
 # 
-# Configure a new server:
-# cap HOSTS=1.2.3.4 deploy:full_setup
+# Configure a new server with all of Envaya's services:
+# cap HOSTS=1.2.3.4 deploy:allinone_setup
 #
 #
 
@@ -31,15 +31,37 @@ namespace :deploy do
         restart
     end
     
-    task :full_setup do                
+    # sets up a server with envaya's code, but no particular services installed 
+    task :basic_setup do                
         pre_setup
         setup
-        localsettings_setup       
-        sanity_check        
+        localsettings_setup
+        sanity_check
         update
-        db_install
-        post_setup
+        dataroot_setup
     end   
+        
+    # sets up a single server with all of envaya's services installed
+    task :allinone_setup do
+        basic_setup
+        web_setup
+        db_setup
+        kestrel_setup
+        queue_setup
+        sphinx_setup
+        cron_setup        
+        extras_setup
+        upgrade
+    end
+    
+    task :test_setup do
+        basic_setup
+        web_setup
+        db_setup
+        kestrel_setup
+        queue_setup
+        sphinx_setup
+    end
     
     task :sanity_check do
     
@@ -79,24 +101,56 @@ namespace :deploy do
         end
     end
     
-    task :db_install do
+    task :db_setup do
+        run "#{current_path}/scripts/setup/mysql.sh"
         run "cd #{current_path} && (php scripts/db_setup.php | mysql)"
-        run "cd #{current_path} && php scripts/install.php"
+        run "cd #{current_path} && php scripts/install_tables.php"
     end
     
     task :dropbox_setup do
-        run "/var/envaya/current/scripts/server_dropbox_setup.sh"
+        run "#{current_path}/scripts/setup/dropbox.sh"
     end
     
     task :pre_setup do
-        top.upload(File.join(Dir.pwd, "scripts/server_pre_setup.sh"), "/root/server_pre_setup.sh")
-        run "chmod 744 /root/server_pre_setup.sh"
-        run "/root/server_pre_setup.sh"
+	top.upload(File.join(Dir.pwd, "scripts/setup/sources.sh"), "/root/sources.sh")    
+        top.upload(File.join(Dir.pwd, "scripts/setup/prereqs.sh"), "/root/prereqs.sh")
+        run "chmod 744 /root/sources.sh /root/prereqs.sh"
+        run "/root/sources.sh"
+        run "/root/prereqs.sh"
     end
     
-    task :post_setup do
-        run "/var/envaya/current/scripts/server_setup.sh /var/envaya/current"
-        run "/var/envaya/current/scripts/server_extras_setup.sh"
+    task :dataroot_setup do
+        run "cd #{current_path} && php scripts/install_dataroot.php"
+    end
+    
+    task :web_setup do
+        run "#{current_path}/scripts/setup/nginx.sh"
+    end
+        
+    task :upgrade do
+        run "#{current_path}/scripts/setup/upgrade.sh"
+    end
+
+    task :kestrel_setup do
+        # todo rsync kestrel .jar and libs
+        run "#{current_path}/scripts/setup/kestrel.sh"
+    end
+    
+    task :sphinx_setup do
+        run "#{current_path}/scripts/setup/sphinx.sh"        
+        run "#{current_path}/scripts/setup/sphinx_service.sh"        
+    end
+
+    task :extras_setup do
+        run "#{current_path}/scripts/setup/extras.sh"
+    end
+    
+    task :queue_setup do
+        run "#{current_path}/scripts/setup/queue.sh"
+    end 
+    
+    task :cron_setup do
+        run "#{current_path}/scripts/setup/cron.sh"
     end
         
     task :backup_db, :roles => :app, :except => { :no_release => true } do            

@@ -307,7 +307,7 @@ abstract class Controller {
         $vars['css_url'] = css_url(@$vars['css_name'] ?: 'simple');        
         $vars['base_url'] = abs_url('/', (Request::is_secure() ? 'https' : 'http'));
     }
-        
+    
     public function page_draw($vars)
     {                                     
         $this->prepare_page_draw_vars(/* & */ $vars);        
@@ -544,11 +544,52 @@ abstract class Controller {
         }
     }
     
-    function change_viewer_language($newLanguage)
+    function change_viewer_language($new_language)
     {
-        set_cookie('lang', $newLanguage);
+        $this->set_cookie('lang', $new_language);
     }    
     
+    function set_cookie($name, $val, $expireTime = 0)
+    {
+        $cookie_domain = Config::get('cookie_domain');
+        if ($cookie_domain)
+        {
+            setcookie($name, $val, $expireTime, '/', $cookie_domain);
+        }
+        setcookie($name, $val, $expireTime, '/');    
+    }
+        
+    private function _set_cookie($name, $value = null, 
+        $expire = null, $path = null, $domain = null, 
+        $secure = null, $httponly = null)
+    {        
+		// TODO: Handle $secure and $httponly		    
+    
+        $cookie_str = urlencode($name)."=".urlencode($value).";";    
+    
+		if ($expire)
+        {
+            $datetime = new DateTime(date("Y-m-d H:i:s", $expire));
+            $cookie_time = $datetime->format(DATE_COOKIE);
+            
+            $cookie_str .= " expires=".$cookie_time.";";
+        }
+		
+        if ($path != null)
+        {
+            $cookie_str .= " path=".$path.";";
+        }
+        
+        if ($domain != null)
+        {
+            $domain = $_SERVER['HTTP_HOST'];
+            
+            $cookie_str .= " domain=".$domain.";";
+        }
+        
+        $this->set_header('Set-Cookie', $cookie_str);		
+    }
+        
     function set_header($name, $value)
     {
         $this->response->headers[$name] = $value;

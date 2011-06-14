@@ -22,7 +22,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/local/bin/searchd
 NAME=sphinx
 DESC=sphinx
-AS_USER=kestrel
+AS_USER=sphinx
 
 test -x $DAEMON || (echo "$DAEMON does not exist or is not executable" ; exit 1)
 

@@ -1,7 +1,7 @@
 <?php
 
 # 
-# Runs various background tasks (but not a web server) on development computers.
+# Runs a web server and various other background tasks on development computers.
 # (On a production server, these background tasks are run via /etc/init.d/ scripts.)
 #
 
@@ -49,6 +49,7 @@ function start_sphinx()
  * or proc_open will execute the process synchronously.
  */
 
+$web_server = run_task("php scripts/web_server.php");
 $kestrel = start_kestrel();
 $sphinx = start_sphinx();
 $queueRunner = run_task("php scripts/queueRunner.php");

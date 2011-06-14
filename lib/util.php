@@ -34,6 +34,11 @@
 
         $prefix = @$parsed['scheme'] ? $parsed['scheme']."://".$parsed['host'] : '';
 
+        if ($parsed['port'])
+        {
+            $prefix .= ":".$parsed['port'];
+        }
+        
         $url = $prefix.$parsed['path'];
         if (sizeof($query) > 0)
         {
@@ -85,17 +90,7 @@
             return "/_media/css/$css_name.css?".Config::get("hash:css:$css_name");
         }        
     }     
-                
-    function set_cookie($name, $val, $expireTime = 0)
-    {
-        $cookie_domain = Config::get('cookie_domain');
-        if ($cookie_domain)
-        {
-            setcookie($name, $val, $expireTime, '/', $cookie_domain);
-        }
-        setcookie($name, $val, $expireTime, '/');    
-    }
-    
+                    
     function escape($val)
     {
         return htmlspecialchars($val, ENT_QUOTES, 'UTF-8');

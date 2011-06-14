@@ -1,75 +1,95 @@
 INSTALL
 
-The recommended way of installing Envaya is to use the setup scripts for Ubuntu
-10.04, which will install all required dependencies assuming that you are
-starting from a base OS installation.
+==================
+Linux with apt-get
+------------------
+
+This is the recommended way of installing Envaya, which will install 
+any required dependencies. The linux setup scripts are tested on 
+Ubuntu 10.04, but may work on other Linux distributions with apt-get.
+
+The steps below assume that you are installing Envaya in a development 
+environment. (For production server installation, see the section 
+"Deploying releases to a production server")
 
 # step 0: copy source code into a world-readable directory, e.g. /var/www/envaya
+# if you don't already have the source code on your computer, you can do:
+apt-get -y install git-core 
+git clone git@github.com:youngj/Envaya.git /var/www/envaya
 
-# step 1: install prerequisites (mysql, nginx, php, php extensions, etc.)
-# warning: the mysql root password will be reset to the empty string (should fix this...)
-./scripts/server_pre_setup.sh
+# The following commands should be run from a command prompt in the root
+# directory of the Envaya source code.
 
-# step 2: create your local config file
+# step 0.5: configure your APT sources 
+# warning: this will overwrite your /etc/apt/sources.list file.
+# todo: should add required sources instead of overwriting file.
+./scripts/setup/sources.sh
+
+# step 1: install prerequisites (php, php extensions, wget, rsync, etc.)
+./scripts/setup/prereqs.sh
+
+# step 1.5: If you don't already have mysql installed, install it.
+# warning: if mysql is already installed, this script will reset
+# the mysql root password to the empty string (should fix this...)
+./scripts/setup/mysql.sh
+
+# step 2: create your local config file (config/local.php)
 php scripts/install_settings.php
 
-# edit config/local.php, setting admin_email to your own email address
-# and providing the desired database settings, any overriding other
-# settings from config/default.php as necessary. in particular, you will need to 
-# define the smtp_* settings for email sending to work, or set mock_mail_file
-# to have mail written to a local file for testing.
+# edit config/local.php in a text editor:
+#    set admin_email to your own email address
+#    set your desired database settings.
+#    override any other settings from config/default.php as necessary.
 
-# step 3: create empty database and default user
-php scripts/db_setup.php | mysql
+# step 3: create empty database and default user 
+php scripts/db_setup.php | mysql -u root -p
 
-# step 4: install database tables and initial data
-php scripts/install.php
+# step 4: install database tables and data root directory
+php scripts/install_tables.php
+php scripts/install_dataroot.php
 
-# step 5: install system services and configuration files
-# warning: should not be used on computers that already are using 
-# php, fastcgi, kestrel, stunnel, or nginx for other uses. 
-# Existing settings files will be overwritten.
-
-./scripts/server_setup.sh
-./scripts/server_sphinx_setup.sh
-
-# step 6: create initial users 
+# step 5: create initial users 
 # (required for selenium tests, but should not be used in production)    
 # creates admin username:testadmin pw:testtest
 # creates organization username:testorg pw:testtest
 # creates organization username:envaya pw:testtest
 php scripts/install_test_data.php
 
-# step 7: make compressed CSS and JS files
+# step 6: make compressed CSS and JS files, etc.
 php make.php
 
-# optional (only for testing computers): install dependencies for selenium tests
-sudo aptitude install x-window-system-core gnome-core gdm
-# reboot into gui
-apt-get install firefox
-pear channel-discover pear.phpunit.de
-pear channel-discover pear.symfony-project.com
-pear channel-discover components.ez.no
-pear install phpunit/PHPUnit
+# step 7: install sphinx (full text search)
+./scripts/setup/sphinx.sh
+
+# step 8: start envaya server processes
+php runserver.php
+
+# Leave runserver.php running in a command prompt, then open Envaya's home page in a browser. 
+# (runserver.php will print out the URL of Envaya's home page.) 
+# Things should basically work.
+
+# optional: install dependencies for selenium tests and other development tools
+./scripts/setup/dev.sh
+
+# optional: install some extra programs 
+# (may take a long time; most Envaya services will work without this):
+./scripts/setup/extras.sh
+
+# if your server doesn't already have a GUI, you may need this:
+apt-get install x-window-system-core gnome-core gdm firefox
+# then, reboot into GUI
 
 ===================
 Manual Installation
 -------------------
 
 Envaya can also be set up on Windows or Mac, although there are currently no
-scripts for installing the prerequisites / services / configuration files
-(replacing step 1 and step 5 above). However, see the next section for
-more detailed instructions for Windows.
-
-For development environments, "php runserver.php" can be used instead of
-installing kestrel, queueRunner, and phpCron as system services.
-
-To use Apache (with mod_php) as the web server, set DocumentRoot to the full
-path to the www/ directory inside this source tree (e.g. C:/path/to/envaya/www)
+scripts for installing the prerequisites / services / configuration files. 
+However, see the next section for more detailed instructions for Windows.
 
 Envaya requires the following prerequisites:
 
-PHP 5.3 or higher
+PHP 5.3 or higher, with php-cgi and php-cli
 PHP extensions:
     curl
     gd
@@ -79,9 +99,19 @@ PHP extensions:
     memcache
     PDO
     pdo_mysql
-Apache or Nginx
-mod_php or FastCGI
 Mysql
+
+Envaya does not require a separate web server for development since it 
+comes with its own PHP development web server, but you can use Apache or Nginx
+instead if you like.
+
+To use Apache (with mod_php) as the web server, set DocumentRoot to the full
+path to the www/ directory inside this source tree (e.g. C:/path/to/envaya/www),
+and make sure that mod_rewrite is enabled.
+
+To use Nginx (with php-fastcgi) as the webserver, see what scripts/setup/nginx.sh
+does, and do something like that.
+
 
 ====================================================================
 Manual installation for development environment with WAMP on Windows
@@ -107,19 +137,16 @@ notepad id_rsa.pub
 cd c:\wamp\www\
 git clone git@github.com:youngj/Envaya.git envaya
 
-# edit C:\wamp\bin\apache\Apache2.2.11\conf\httpd.conf, and add:
-DocumentRoot "c:/wamp/www/envaya/www"
-LoadModule rewrite_module modules/mod_rewrite.so
-
 # install memcache library from http://downloads.php.net/pierre/php_memcache-cvs-20090703-5.3-VC6-x86.zip
 # copy dll to php extension dir: C:\wamp\bin\php\php5.3.0\ext
 
-# edit php.ini twice (C:\wamp\bin\apache\Apache2.2.11\bin\php.ini and C:\wamp\bin\php\php5.3.0\php.ini), and add:
+# edit C:\wamp\bin\php\php5.3.0\php.ini, and add:
 extension=php_memcache.dll
 extension=php_curl.dll
 extension=php_gd2.dll
 extension=php_mbstring.dll
 extension=php_pdo_mysql.dll
+extension=php_sockets.dll
 variables_order="GPCSE"
 
 # from PEAR directory C:\wamp\bin\php\php5.3.0\PEAR
@@ -129,11 +156,6 @@ pear channel-discover pear.phpunit.de
 pear channel-discover components.ez.no
 pear channel-discover pear.symfony-project.com
 pear install phpunit/PHPUnit
-
-# copy to apache php.ini:
-;***** Added by go-pear
-include_path=".;C:\wamp\bin\php\php5.3.0\PEAR\pear"
-;*****
 
 # download sphinx 1.10: http://sphinxsearch.com/files/sphinx-1.10-beta-win32.zip
 # extract to c:/sphinx
@@ -149,11 +171,12 @@ php scripts/install_settings.php
     'sphinx_pid_dir' => 'C:/sphinx/log',
 # (also, edit database connection settings)
 
-# create empty database and user (may need to specify mysql password; could also do this manually)
-php scripts/db_setup.php | mysql
+# create empty database and user
+php scripts/db_setup.php | mysql -u root -p
 
-# install database tables and initial data
-php scripts/install.php
+# install database tables and initial data directory
+php scripts/install_tables.php
+php scripts/install_dataroot.php
 
 # create sphinx config file and initial index
 php scripts/install_sphinx.php
@@ -164,15 +187,21 @@ php scripts/install_test_data.php
 # make compressed CSS and JS files
 php make.php
 
-==============================
-Deploying releases to a server
-------------------------------
+# start envaya server processe
+php runserver.php
+
+=========================================
+Deploying releases to a production server
+-----------------------------------------
 
 This requires Ruby / Capistrano to be installed on your local computer.
 
 # initial installation of all prerequisites and latest code on a server 
 # (assumes ubuntu 10.04)
-cap HOSTS=hostname deploy:full_setup
+cap HOSTS=hostname deploy:basic_setup
+
+# installs prerequisites and all Envaya services on a single server
+cap HOSTS=hostname deploy:allinone_setup
 
 # subsequently, updating server to latest code
 cap HOSTS=hostname deploy
