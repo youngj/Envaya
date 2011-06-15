@@ -71,7 +71,7 @@ class HTTPResponse
         $this->status = $status;
         $this->content = $content;
         $this->headers = $headers ?: array();
-    }
+    }        
 
     function render()
     {

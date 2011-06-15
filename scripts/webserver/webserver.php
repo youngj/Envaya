@@ -6,7 +6,7 @@
  * Each PHP request will be run in an isolated environment using PHP-CGI.
  * (The 'php-cgi' binary must be installed on the local machine, and in the PATH.)
  *
- * It is not very fast, robust, and may have security flaws, and should never be 
+ * It is not very fast or robust, and may have security flaws, and should never be 
  * used in production.
  *
  * This allows running PHP scripts without needing to install a web server like Apache or Nginx.
@@ -21,14 +21,24 @@ require_once __DIR__."/httpresponse.php";
 
 class WebServer
 {
-    public $port;               // TCP port number to listen on
-    public $document_root;      // the root directory out of which requests will be served
-    public $static_regexes;     // a list of string regexes; if the URI matches, it will be served from $document_root as a static file
-    public $php_regexes;        // a list of string regexes; if the URI matches, it will be served from $document_root as a PHP script
-    public $php_index;          // a URI to a PHP file; if set, any URIs not already matched will be served from this script 
-                                // with PATH_INFO as the original $uri                                
+    /* 
+     * The following properties can be passed as options to the constructor: 
+     */
+    
+    public $port = 80;                  // TCP port number to listen on
+    
+    public $document_root = '/var/www'; // the root directory out of which requests will be served
+    
+    public $static_regexes = array();   // a list of string regexes; if the URI matches, 
+                                        // it will be served from $document_root as a static file
+    
+    public $php_regexes = array();      // a list of string regexes; if the URI matches, 
+                                        // it will be served from $document_root as a PHP script
+    
+    public $php_index = null;           // a URI to a PHP file; if set, any URIs not already matched 
+                                        // will be served  from this script with PATH_INFO as the original $uri                                
 
-    public $num_processes = 4;
+    private $requests = array(/* socket_id => HTTPRequest */);    
 
     function __construct($options)
     {
@@ -64,78 +74,102 @@ class WebServer
 
         echo "Web server listening on 0.0.0.0:{$this->port} (see http://localhost:{$this->port}/)...\n";    
 
-        if (function_exists('pcntl_fork'))
-        {
-            $pid = 0;
-            for ($i = 0; $i < $this->num_processes && $pid == 0; $i++)
-            {        
-                $pid = pcntl_fork();
+        socket_set_nonblock($sock);        
 
-                if($pid == -1) 
+        $requests =& $this->requests;
+    
+        while (true)
+        {        
+            $read = array();
+            $write = array();
+            foreach ($requests as $id => $request)
+            {
+                if (!$request->is_read_complete())
                 {
-                    die("Failed to fork");
+                    $read[] = $request->socket;
                 }
-            }
-
-            if ($pid != 0)
+                else
+                {
+                    $write[] = $request->socket;
+                }
+            }            
+            $read[] = $sock;            
+            
+            if (socket_select($read, $write, $except = null, null) < 1)
+                continue;
+                        
+            if (in_array($sock, $read))
             {
-                echo "forked process $pid\n";
-                $this->run_forever_child($sock, $pid);
+                $client = socket_accept($sock);
+                //echo "accepted $client\n";
+                $requests[(int)$client] = new HTTPRequest($client);
+                
+                $key = array_search($sock, $read);
+                unset($read[$key]);
             }
-            else
+            
+            foreach ($read as $client)
             {
-                socket_close($sock);
-                $this->run_forever_parent();
+                $this->read_socket($client);
             }
+            
+            foreach ($write as $client)
+            {
+                $this->write_socket($client);
+            }
+        }        
+    }
+    
+    function write_socket($client)
+    {
+        $request = $this->requests[(int)$client];
+        $response_buf =& $request->response_buf;     
+        $len = @socket_write($client, $response_buf);
+        if ($len === null)
+        {
+            echo "socket_write returned null\n";
+            $this->end_request($request);
+        }
+        else if ($len < strlen($response_buf))
+        {
+            $response_buf = substr($response_buf, $len);
         }
         else
         {
-            $this->run_forever_child($sock, 0);
-        }
-    }
-
-    function run_forever_parent()
-    {        
-        while (true)
-        {
-            sleep(1);
-        }
-    }
-
-    function run_forever_child($sock, $pid)
-    {
-        while (true)
-        {
-            $client = socket_accept($sock);
-            print "$pid accept $client\n";
-                    
-            if (!$client)
-            {
-                continue;
-            }
-            
-            $request = new HTTPRequest();
-            try
-            {
-                $request->read_from_socket($client);                
-                $response = $this->get_response($request);
-            }
-            catch (BadRequestException $ex)
-            {
-                $response = new HTTPResponse(400, "Bad Request: {$ex->getMessage()}");
-            }        
-            
+            $response = $request->response;
             $len = strlen($response->content);
-            
             echo "{$request->method} {$request->request_uri} => {$response->status} {$len}\n";
+            $this->end_request($request);
+        }                
+    }
+    
+    
+    function read_socket($client)
+    {
+        $request = $this->requests[(int)$client];
+        $data = @socket_read($client, 8092, PHP_BINARY_READ);                                
+        if ($data === null)
+        {
+            echo "socket_read returned null\n";
+            $this->end_request($request);
+        }
+        else
+        {
+            $request->add_data($data);
             
-            $response_str = $response->render();
-                   
-            $len = @socket_write($client, $response_str);
-
-            @socket_close($client);        
+            if ($request->is_read_complete())
+            {
+                $response = $this->get_response($request);
+                $request->set_response($response);
+            }    
         }
     }
+    
+    function end_request($request)
+    {
+        @socket_close($request->socket);
+        unset($this->requests[(int)$request->socket]);    
+    }    
     
     function get_response($request)
     {
