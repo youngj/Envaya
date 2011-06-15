@@ -97,6 +97,8 @@ class WebServer
             
             if (socket_select($read, $write, $except = null, null) < 1)
                 continue;
+                
+            //echo sizeof($read)." ".sizeof($write)."\n";
                         
             if (in_array($sock, $read))
             {
@@ -138,8 +140,18 @@ class WebServer
         {
             $response = $request->response;
             $len = strlen($response->content);
-            echo "{$request->method} {$request->request_uri} => {$response->status} {$len}\n";
-            $this->end_request($request);
+            $client_num = (int)$client;
+            echo "($client_num) {$request->method} {$request->request_uri} => {$response->status} {$len}\n";
+                         
+            if (@$request->headers['Connection'] == 'close')
+            {
+                $this->end_request($request);
+            }
+            else
+            {
+                $this->requests[(int)$client] = $next_request = new HTTPRequest($client);
+                //$next_request->add_data($request->leftover_data);
+            }
         }                
     }
     
@@ -148,9 +160,9 @@ class WebServer
     {
         $request = $this->requests[(int)$client];
         $data = @socket_read($client, 8092, PHP_BINARY_READ);                                
-        if ($data === null)
+        if ($data === null || $data == '')
         {
-            echo "socket_read returned null\n";
+            //echo "socket_read did not have data\n";
             $this->end_request($request);
         }
         else

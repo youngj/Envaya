@@ -84,7 +84,6 @@ class HTTPResponse
             $headers['Content-Length'] = strlen($content);
         }
         
-        $headers['Connection'] = 'close';
         $headers['Server'] = 'Envaya/0.1';        
             
         $status_msg = static::$messages[$status];

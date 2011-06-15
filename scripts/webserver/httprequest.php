@@ -26,6 +26,8 @@ class HTTPRequest
     
     public $response;
     public $response_buf;
+    
+    //public $leftover_data;
                         
     function __construct($socket)
     {
@@ -81,11 +83,11 @@ class HTTPRequest
                 $start_content = $end_headers + 4; // $end_headers is before last \r\n\r\n
                 
                 // add leftover to content
-                $this->content = substr($header_buf, $start_content);                
+                $this->add_content(substr($header_buf, $start_content));
                 $header_buf = '';                                
                 break;
             case static::READ_CONTENT:
-                $this->content .= $data;
+                $this->add_content($data);
                 break;
             case static::READ_COMPLETE:
                 break;
@@ -102,6 +104,18 @@ class HTTPRequest
         else
         {
             $this->cur_state = static::READ_COMPLETE;
+        }
+    }
+    
+    function add_content($data)
+    {
+        if ($this->content === null)
+        {
+            $this->content = $data;
+        }
+        else
+        {
+            $this->content .= $data;
         }
     }
     
