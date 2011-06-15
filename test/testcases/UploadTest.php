@@ -7,7 +7,8 @@ class UploadTest extends SeleniumTest
     public function init_selenium()
     {
         // Selenium attachFile only works with *chrome browser
-        return new Testing_Selenium("*chrome", "http://localhost");    
+        global $DOMAIN;
+        return new Testing_Selenium("*chrome", "http://$DOMAIN");    
     }
     
     public function test()

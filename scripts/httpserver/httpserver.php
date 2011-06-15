@@ -4,42 +4,47 @@
  * A simple standalone HTTP server for development that serves PHP scripts and static files.
  *
  * Each PHP request will be run in an isolated environment using PHP-CGI.
- * (The 'php-cgi' binary must be installed on the local machine, and in the PATH.)
- *
- * It is not very fast or robust, and may have security flaws, and should never be 
- * used in production.
+ * (The 'php-cgi' binary must be installed on the local machine.)
  *
  * This allows running PHP scripts without needing to install a web server like Apache or Nginx.
- * It also allows selenium tests to spawn a HTTP server with custom configuration settings.
+ * It also allows automated scripts (e.g. Selenium tests) to spawn a HTTP server with custom 
+ * environment variables (e.g. to override some application config settings).
  *
- * WebServer only depends on code in this directory, and no other Envaya code,
+ * Requests are served by a single process, but non-blocking sockets are used to handle many 
+ * connections at once. Implements HTTP Keep-Alive for better performance. Works on Windows
+ * as well as POSIX systems.
+ *
+ * It is not very robust, may have security flaws, and shouldn't be used in production.
+ *
+ * Clients should subclass HTTPServer and override the route_request() method, at least.
+ * See examples/example_server.php. 
+ *
+ * HTTPServer only depends on code in this directory, and no other Envaya code,
  * so it could easily be extracted and used in other PHP projects that need a standalone HTTP server.
+ *
+ * http://github.com/youngj/Envaya
+ * Copyright (c) 2010-2011 by Trust for Conservation Innovation
+ * Released under MIT license, see LICENSE.txt 
  */
  
 require_once __DIR__."/httprequest.php";
 require_once __DIR__."/httpresponse.php";
 
-class WebServer
+class HTTPServer
 {
     /* 
-     * The following properties can be passed as options to the constructor: 
-     */
+     * The following public properties can be passed as options to the constructor: 
+     */    
+    public $port = 80;                      // TCP port number to listen on    
+    public $cgi_env = array();              // associative array of additional environment variables to pass to php-cgi
+    public $server_id = 'WebServer/0.1';    // identifier string to use in 'Server' header of HTTP response
+    public $php_cgi = 'php-cgi';            // Path to php-cgi, if not in the PATH    
     
-    public $port = 80;                  // TCP port number to listen on
-    
-    public $document_root = '/var/www'; // the root directory out of which requests will be served
-    
-    public $static_regexes = array();   // a list of string regexes; if the URI matches, 
-                                        // it will be served from $document_root as a static file
-    
-    public $php_regexes = array();      // a list of string regexes; if the URI matches, 
-                                        // it will be served from $document_root as a PHP script
-    
-    public $php_index = null;           // a URI to a PHP file; if set, any URIs not already matched 
-                                        // will be served  from this script with PATH_INFO as the original $uri                                
-
+    /* 
+     * Internal map of active client socket resource IDs to HTTPRequest objects
+     */    
     private $requests = array(/* socket_id => HTTPRequest */);    
-
+    
     function __construct($options)
     {
         foreach ($options as $k => $v)
@@ -47,14 +52,38 @@ class WebServer
             $this->$k = $v;
         }
     }
-
-    function run_forever()
+    
+    /*  
+     * Subclasses should override to route the current request to either a static file or PHP script
+     * and return a HTTPResponse object. This function should call get_static_response() or
+     * get_php_response(), as applicable.
+     */
+    function route_request($request)
     {
-        if (!sizeof($_ENV))
+        return new HTTPResponse(500, "WebServer::route_request not implemented");
+    }    
+    
+    /*
+     * Subclasses could override to disallow other characters in path names
+     */
+    function is_allowed_uri($uri)
+    {
+        return strpos($uri, '..') === false && !preg_match('#/\.#', $uri);
+    }    
+    
+    function bind_error()
+    {
+        error_log("Could not start a web server on port {$this->port}.");    
+    }
+    
+    function run_forever()
+    {    
+        // provide some required/useful environment variables even if 'E' is not in variables_order
+        $env_keys = array('HOME','OS','Path','PATHEXT','SystemRoot','TEMP','TMP');
+        foreach ($env_keys as $key)
         {
-            error_log("error: \$_ENV is empty. add variables_order=\"GPCSE\" to your php.ini file and try again.\n");
-            return;
-        }          
+            $_ENV[$key] = getenv($key);
+        }
     
         set_time_limit(0);
 
@@ -63,10 +92,7 @@ class WebServer
             
         if (@socket_bind($sock, 0, $this->port) == false)
         {
-            error_log("Could not start a web server on port {$this->port}.\n"
-                ."If you're running Envaya on Apache or Nginx, just ignore this message.\n"
-                ."Otherwise, stop the existing server or add a port to your 'domain'.\n"
-                ." e.g. add  'domain' => 'localhost:####',  in config/local.php");
+            $this->bind_error();
             return;
         }
 
@@ -97,13 +123,10 @@ class WebServer
             
             if (socket_select($read, $write, $except = null, null) < 1)
                 continue;
-                
-            //echo sizeof($read)." ".sizeof($write)."\n";
                         
             if (in_array($sock, $read))
             {
                 $client = socket_accept($sock);
-                //echo "accepted $client\n";
                 $requests[(int)$client] = new HTTPRequest($client);
                 
                 $key = array_search($sock, $read);
@@ -129,7 +152,6 @@ class WebServer
         $len = @socket_write($client, $response_buf);
         if ($len === null)
         {
-            echo "socket_write returned null\n";
             $this->end_request($request);
         }
         else if ($len < strlen($response_buf))
@@ -142,19 +164,17 @@ class WebServer
             $len = strlen($response->content);
             $client_num = (int)$client;
             echo "($client_num) {$request->method} {$request->request_uri} => {$response->status} {$len}\n";
-                         
-            if (@$request->headers['Connection'] == 'close')
+            
+            if (@$request->headers['Connection'] == 'close' || $request->http_version != 'HTTP/1.1')
             {
                 $this->end_request($request);
             }
             else
             {
-                $this->requests[(int)$client] = $next_request = new HTTPRequest($client);
-                //$next_request->add_data($request->leftover_data);
+                $this->requests[(int)$client] = new HTTPRequest($client);
             }
         }                
     }
-    
     
     function read_socket($client)
     {
@@ -162,7 +182,6 @@ class WebServer
         $data = @socket_read($client, 8092, PHP_BINARY_READ);                                
         if ($data === null || $data == '')
         {
-            //echo "socket_read did not have data\n";
             $this->end_request($request);
         }
         else
@@ -172,6 +191,7 @@ class WebServer
             if ($request->is_read_complete())
             {
                 $response = $this->get_response($request);
+                $response->headers['Server'] = $this->server_id;
                 $request->set_response($response);
             }    
         }
@@ -181,48 +201,26 @@ class WebServer
     {
         @socket_close($request->socket);
         unset($this->requests[(int)$request->socket]);    
-    }    
+    }        
     
     function get_response($request)
     {
         $uri = $request->uri;
-        
+
         // disallow suspicious paths
-        if (strpos($uri, '..') !== false || preg_match('#[^\w\.\-/]#', $uri) || $uri[0] != '/')
+        if (!$this->is_allowed_uri($uri) || $uri[0] != '/')
         {
             return new HTTPResponse(403, "Invalid URI $uri"); 
         }
         
-        foreach ($this->static_regexes as $static_regex)
-        {
-            if (preg_match($static_regex, $uri))
-            {
-                return $this->get_static_response($request, $uri);
-            }
-        }
-        
-        foreach ($this->php_regexes as $php_regex)
-        {
-            if (preg_match($php_regex, $uri))
-            {
-                return $this->get_php_response($request, $uri);
-            }
-        }
-        
-        if ($this->php_index)
-        {
-            return $this->get_php_response($request, $this->php_index, $uri);
-        }
-        else
-        {   
-            return new HTTPResponse(404, "File not found");
-        }
-    }        
-    	
-    private function get_static_response($request, $uri)
+        return $this->route_request($request);        
+    }
+       
+    /*
+     * Returns a HTTPResponse object for the static file at $local_path.
+     */      
+    function get_static_response($request, $local_path)
     {   
-        $local_path = "{$this->document_root}$uri";
-        
         if (is_file($local_path))
         {
             return new HTTPResponse(200, 
@@ -242,24 +240,14 @@ class WebServer
             return new HTTPResponse(404, "File not found");
         }    
     }        
-        
-    static function parse_headers($headers_str)
-    {
-        $headers_arr = explode("\r\n", $headers_str);
-                
-        $headers = array();
-        foreach ($headers_arr as $header_str)
-        {
-            $header_arr = explode(": ", $header_str, 2);
-            $header_name = $header_arr[0];            
-            $headers[$header_name] = $header_arr[1];
-        }                
-        return $headers;
-    }                    
-        
-    private function get_php_response($request, $uri, $path_info = null)
-    {
-        $script_filename = "{$this->document_root}$uri";        
+            
+    /*
+     * Executes the PHP script in $script_filename using php-cgi, and returns 
+     * a HTTPResponse object. $cgi_env_override can be set to an associative array 
+     * to set or override any environment variables in the CGI process (e.g. PATH_INFO).
+     */
+    function get_php_response($request, $script_filename, $cgi_env_override = null)
+    {        
         if (!is_file($script_filename))
         {
             return new HTTPResponse(404, "File not found");
@@ -273,23 +261,29 @@ class WebServer
             'QUERY_STRING' => $request->query_string,
             'REQUEST_METHOD' => $request->method,
             'REQUEST_URI' => $request->request_uri,
-            'PATH_INFO' => $path_info,
             'REDIRECT_STATUS' => 200,
-            'SCRIPT_NAME' => $uri,
+            'SCRIPT_FILENAME' => $script_filename,            
+            'SCRIPT_NAME' => pathinfo($script_filename, PATHINFO_BASENAME),
             'SERVER_NAME' => @$headers['Host'],
-            'SERVER_PROTOCOL' => 'HTTP/1.0',
-            'SERVER_SOFTWARE' => 'Envaya/0.1',
-            'SCRIPT_FILENAME' => $script_filename,
-            'DOCUMENT_ROOT' => $this->document_root,
+            'SERVER_PROTOCOL' => 'HTTP/1.1',
+            'SERVER_SOFTWARE' => $this->server_id,
             'CONTENT_TYPE' => @$headers['Content-Type'],
             'CONTENT_LENGTH' => $content_length,            
-        );
+        );        
         
         foreach ($headers as $name => $value)
         {        
             $name = str_replace('-','_', $name);
             $name = strtoupper($name);
             $cgi_env["HTTP_$name"] = $value;
+        }
+        
+        if ($cgi_env_override)
+        {
+            foreach ($cgi_env_override as $name => $value)
+            {
+                $cgi_env[$name] = $value;
+            }
         }
 
         if ($content_length)
@@ -308,16 +302,29 @@ class WebServer
            1 => array('pipe', 'w'),
            2 => STDOUT, 
         );
-
-        $proc = proc_open("php-cgi", $descriptorspec, $pipes, 
+        
+        $proc = proc_open($this->php_cgi, $descriptorspec, $pipes, 
             __DIR__, 
-            array_merge($_ENV, $cgi_env),
-            array('binary_pipes' => true)
+            array_merge($_ENV, $this->cgi_env, $cgi_env),
+            array(
+                'binary_pipes' => true,
+                'bypass_shell' => true
+            )
         );                        
+        
+        if (!is_resource($proc))
+        {
+            return new HTTPResponse(500, "Internal Server Error: php-cgi was not found");
+        }
                 
         ob_start();
         fpassthru($pipes[1]);
         $response_str = ob_get_clean();
+        
+        if (!$response_str)
+        {
+            return new HTTPResponse(500, "Internal Server Error: php-cgi did not return a response");
+        }        
 
         $end_response_headers = strpos($response_str, "\r\n\r\n");
         
@@ -327,7 +334,7 @@ class WebServer
         
         $response = new HTTPResponse();                        
         
-        // php-cgi sends HTTP status as regular header
+        // CGI process sends HTTP status as regular header
         if (isset($headers['Status']))
         {
             $response->status = (int) $headers['Status'];
@@ -341,7 +348,21 @@ class WebServer
         fclose($content_stream);
                 
         return $response;
-    }                
+    }         
+
+    static function parse_headers($headers_str)
+    {
+        $headers_arr = explode("\r\n", $headers_str);
+                
+        $headers = array();
+        foreach ($headers_arr as $header_str)
+        {
+            $header_arr = explode(": ", $header_str, 2);
+            $header_name = $header_arr[0];            
+            $headers[$header_name] = $header_arr[1];
+        }                
+        return $headers;
+    }                          
         
     static function get_mime_type($filename)
     {
@@ -349,8 +370,13 @@ class WebServer
         $extension = strtolower($pathinfo['extension']);
     
         return @static::$mime_types[$extension];
-    }    
+    }        
     
+    /*
+     * List of mime types for common file extensions
+     * (c) Tyler Hall http://code.google.com/p/php-aws/
+     * released under MIT License
+     */
 	static $mime_types = array("323" => "text/h323", "acx" => "application/internet-property-stream", "ai" => "application/postscript", "aif" => "audio/x-aiff", "aifc" => "audio/x-aiff", "aiff" => "audio/x-aiff",
         "asf" => "video/x-ms-asf", "asr" => "video/x-ms-asf", "asx" => "video/x-ms-asf", "au" => "audio/basic", "avi" => "video/quicktime", "axs" => "application/olescript", "bas" => "text/plain", "bcpio" => "application/x-bcpio", "bin" => "application/octet-stream", "bmp" => "image/bmp",
         "c" => "text/plain", "cat" => "application/vnd.ms-pkiseccat", "cdf" => "application/x-cdf", "cer" => "application/x-x509-ca-cert", "class" => "application/octet-stream", "clp" => "application/x-msclip", "cmx" => "image/x-cmx", "cod" => "image/cis-cod", "cpio" => "application/x-cpio", "crd" => "application/x-mscardfile",

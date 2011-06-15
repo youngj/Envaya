@@ -2,11 +2,48 @@
 
 class HTTPResponse
 {
-    public $status;
-    public $content;
-    public $headers;
+    public $status;     // HTTP status code
+    public $content;    // response body        
+    public $headers;    // associative array of HTTP headers    
     
-    // HTTP status codes and messages
+    function __construct($status = 200, $content = '', $headers = null)
+    {
+        $this->status = $status;
+        $this->content = $content;
+        $this->headers = $headers ?: array();
+    }        
+
+    function render()
+    {
+        $headers = $this->headers;
+        $status = $this->status;
+        $content = $this->content;
+
+        if (!isset($headers['Content-Length']))
+        {
+            $headers['Content-Length'] = strlen($content);
+        }        
+            
+        $status_msg = static::$messages[$status];
+
+        ob_start();
+        
+        echo "HTTP/1.1 $status $status_msg\r\n";
+        foreach ($headers as $name => $value)
+        {
+            echo "$name: $value\r\n";
+        }
+        echo "\r\n";
+        echo $content;
+        
+        return ob_get_clean();
+    }
+    
+    /* 
+     * HTTP status codes and messages originally from Kohana Request class
+     * (c) 2007-2010, Kohana Team, 
+     * released under BSD-style license in vendors/kohana_license.txt
+     */
     public static $messages = array(
         // Informational 1xx
         100 => 'Continue',
@@ -64,40 +101,5 @@ class HTTPResponse
         505 => 'HTTP Version Not Supported',
         507 => 'Insufficient Storage',
         509 => 'Bandwidth Limit Exceeded'
-    );
-    
-    function __construct($status = 200, $content = '', $headers = null)
-    {
-        $this->status = $status;
-        $this->content = $content;
-        $this->headers = $headers ?: array();
-    }        
-
-    function render()
-    {
-        $headers = $this->headers;
-        $status = $this->status;
-        $content = $this->content;
-
-        if (!isset($headers['Content-Length']))
-        {
-            $headers['Content-Length'] = strlen($content);
-        }
-        
-        $headers['Server'] = 'Envaya/0.1';        
-            
-        $status_msg = static::$messages[$status];
-
-        ob_start();
-        
-        echo "HTTP/1.1 $status $status_msg\r\n";
-        foreach ($headers as $name => $value)
-        {
-            echo "$name: $value\r\n";
-        }
-        echo "\r\n";
-        echo $content;
-        
-        return ob_get_clean();
-    }
+    );    
 }

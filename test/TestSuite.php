@@ -135,13 +135,14 @@ function main()
        2 => STDERR
     );
     
-    $env = $_ENV;    
-    
-    if (!sizeof($env))
+    // provide some required/useful environment variables even if 'E' is not in variables_order
+    $env_keys = array('HOME','OS','Path','PATHEXT','SystemRoot','TEMP','TMP');
+    foreach ($env_keys as $key)
     {
-        echo "error: \$_ENV is empty. add variables_order=\"GPCSE\" to your php.ini file and try again.\n";
-        die;
-    }   
+        $_ENV[$key] = getenv($key);
+    }    
+    
+    $env = $_ENV;    
     
     $env["ENVAYA_CONFIG"] = json_encode(array(        
         'captcha_enabled' => false,

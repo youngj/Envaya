@@ -1,48 +1,36 @@
 <?php
 
-class BadRequestException extends Exception {}
-
 class HTTPRequest
 {
-    const READ_HEADERS = 0;
-    const READ_CONTENT = 1;
-    const READ_COMPLETE = 2;
-
-    const BUFFER_SIZE = 8092;
-
     public $method;             // HTTP method, e.g. "GET" or "POST"
     public $request_uri;        // original requested URI, with query string
-    public $uri;                // path component of URI, without query string
+    public $uri;                // path component of URI, without query string, after decoding %xx entities
     public $http_version;       // version from the request line, e.g. "HTTP/1.1"
     public $query_string;       // query string, like "a=b&c=d"
     public $headers;            // associative array of HTTP headers    
     public $content;            // content of POST request, if applicable    
-            
-    public $socket;
-    
+               
+    // internal fields to track the state of reading the HTTP request
     private $cur_state = 0;
     private $header_buf = '';
     private $content_len = 0;
-    
+
+    const READ_HEADERS = 0;
+    const READ_CONTENT = 1;
+    const READ_COMPLETE = 2;
+        
+    // fields used by HTTPServer to associate other data it tracks along with the request
+    public $socket;
     public $response;
     public $response_buf;
     
-    //public $leftover_data;
-                        
     function __construct($socket)
     {
         $this->socket = $socket;
     }
-              
-    function set_response($response)
-    {
-        $this->response = $response;
-        $this->response_buf = $response->render(); 
-    }
-              
+                            
     /* 
-     * Reads an entire HTTP request from a client socket, setting 
-     * headers, content, request_uri, method, and http_version properties
+     * Reads a chunk of a HTTP request from a client socket.
      */
     function add_data($data)
     {    
@@ -53,7 +41,7 @@ class HTTPRequest
             
                 $header_buf .= $data;
                        
-                $end_headers = strpos($header_buf, "\r\n\r\n");
+                $end_headers = strpos($header_buf, "\r\n\r\n", 4);
                 if ($end_headers === false)
                 {
                     break;
@@ -69,25 +57,25 @@ class HTTPRequest
                 $this->http_version = $req_arr[2];    
                 
                 $parsed_uri = parse_url($this->request_uri);        
-                $this->uri = $parsed_uri['path'];
+                $this->uri = urldecode($parsed_uri['path']);
                 $this->query_string = @$parsed_uri['query'];              
                 
                 // parse HTTP headers
                 $start_headers = $end_req + 2;
                         
                 $headers_str = substr($header_buf, $start_headers, $end_headers - $start_headers);
-                $this->headers = $headers = WebServer::parse_headers($headers_str);
+                $this->headers = $headers = HTTPServer::parse_headers($headers_str);
 
                 $this->content_len = (int)@$headers['Content-Length'];
                 
                 $start_content = $end_headers + 4; // $end_headers is before last \r\n\r\n
                 
                 // add leftover to content
-                $this->add_content(substr($header_buf, $start_content));
+                $this->content = substr($header_buf, $start_content);
                 $header_buf = '';                                
                 break;
             case static::READ_CONTENT:
-                $this->add_content($data);
+                $this->content .= $data;
                 break;
             case static::READ_COMPLETE:
                 break;
@@ -107,18 +95,9 @@ class HTTPRequest
         }
     }
     
-    function add_content($data)
-    {
-        if ($this->content === null)
-        {
-            $this->content = $data;
-        }
-        else
-        {
-            $this->content .= $data;
-        }
-    }
-    
+    /*
+     * Returns true if a full HTTP request has been read by add_data().
+     */
     function is_read_complete()
     {
         return $this->cur_state == static::READ_COMPLETE;
@@ -126,7 +105,16 @@ class HTTPRequest
     
     function needs_content()
     {
-        $rem_bytes = $this->content_len - strlen($this->content);
-        return ($rem_bytes > 0);
+        return $this->content_len - strlen($this->content) > 0;
     }            
+    
+    /*
+     * Sets a HTTPResponse object associated with this request, and 
+     * prepares a buffer containing the remaining content. 
+     */ 
+    function set_response($response)
+    {
+        $this->response = $response;
+        $this->response_buf = $response->render(); 
+    }    
 }
