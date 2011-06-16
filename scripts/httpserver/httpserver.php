@@ -37,7 +37,7 @@ class HTTPServer
      */    
     public $port = 80;                      // TCP port number to listen on    
     public $cgi_env = array();              // associative array of additional environment variables to pass to php-cgi
-    public $server_id = 'WebServer/0.1';    // identifier string to use in 'Server' header of HTTP response
+    public $server_id = 'HTTPServer/0.1';   // identifier string to use in 'Server' header of HTTP response
     public $php_cgi = 'php-cgi';            // Path to php-cgi, if not in the PATH    
     
     /* 
@@ -60,7 +60,7 @@ class HTTPServer
      */
     function route_request($request)
     {
-        return new HTTPResponse(500, "WebServer::route_request not implemented");
+        return new HTTPResponse(500, "HTTPServer::route_request not implemented");
     }    
     
     /*

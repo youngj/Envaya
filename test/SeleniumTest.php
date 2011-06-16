@@ -152,6 +152,11 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         }        
         $contents = file_get_contents($MOCK_MAIL_FILE);
         
+        // decode quoted-printable
+        $contents = str_replace("=\r\n","", $contents);
+        $contents = preg_replace('/\=([A-F0-9][A-F0-9])/','%$1',$contents);
+        $contents = rawurldecode($contents);                
+        
         $matchPos = strrpos($contents, $match);
         if ($matchPos === false)
         {
@@ -172,12 +177,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $startPos = strpos($contents, "\n", $startPos) + 1;
         
         $email = substr($contents, $startPos, $endPos - $startPos);                            
-                                        
-        // decode quoted-printable
-        $email = str_replace("=\r\n","", $email);
-        $email = preg_replace('/\=([A-F0-9][A-F0-9])/','%$1',$email);
-        $email = rawurldecode($email);        
-                
+                                                        
         return $email;
     }    
     
