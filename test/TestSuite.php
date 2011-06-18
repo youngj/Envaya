@@ -146,6 +146,7 @@ function main()
     
     $env["ENVAYA_CONFIG"] = json_encode(array(        
         'captcha_enabled' => false,
+        'ssl_enabled' => false,
         'mock_mail_file' => $MOCK_MAIL_FILE
     ));
         

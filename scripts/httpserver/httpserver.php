@@ -68,8 +68,10 @@ class HTTPServer
      * Subclasses could override to disallow other characters in path names
      */
     function is_allowed_uri($uri)
-    {
-        return strpos($uri, '..') === false && !preg_match('#/\.#', $uri);
+    {        
+        return $uri[0] == '/'                   // all URIs should start with a /
+            && strpos($uri, '..') === false     // prevent paths from escaping document root
+            && !preg_match('#/\.#', $uri);      // disallow dotfiles
     }    
     
     function bind_error()
@@ -125,7 +127,7 @@ class HTTPServer
             if (socket_select($read, $write, $except = null, null) < 1)
                 continue;
                         
-            if (in_array($sock, $read))
+            if (in_array($sock, $read)) // new client connection
             {
                 $client = socket_accept($sock);
                 $requests[(int)$client] = new HTTPRequest($client);
@@ -159,7 +161,7 @@ class HTTPServer
         {
             $response_buf = substr($response_buf, $len);
         }
-        else
+        else // done sending HTTP response
         {
             $response = $request->response;
             $len = strlen($response->content);
@@ -170,8 +172,8 @@ class HTTPServer
             {
                 $this->end_request($request);
             }
-            else
-            {
+            else // HTTP Keep-Alive: expect another request on same client socket
+            {                
                 $this->requests[(int)$client] = new HTTPRequest($client);
             }
         }                
@@ -180,7 +182,8 @@ class HTTPServer
     function read_socket($client)
     {
         $request = $this->requests[(int)$client];
-        $data = @socket_read($client, 8092, PHP_BINARY_READ);                                
+        $data = @socket_read($client, 8092, PHP_BINARY_READ);
+        
         if ($data === null || $data == '')
         {
             $this->end_request($request);
@@ -192,7 +195,6 @@ class HTTPServer
             if ($request->is_read_complete())
             {
                 $response = $this->get_response($request);
-                $response->headers['Server'] = $this->server_id;
                 $request->set_response($response);
             }    
         }
@@ -208,13 +210,18 @@ class HTTPServer
     {
         $uri = $request->uri;
 
-        // disallow suspicious paths
-        if (!$this->is_allowed_uri($uri) || $uri[0] != '/')
+        if (!$this->is_allowed_uri($uri))
         {
-            return new HTTPResponse(403, "Invalid URI $uri"); 
+            $response = new HTTPResponse(403, "Invalid URI $uri"); 
+        }
+        else
+        {        
+            $response = $this->route_request($request);        
         }
         
-        return $this->route_request($request);        
+        $response->headers['Server'] = $this->server_id;
+        
+        return $response;
     }
        
     /*
@@ -307,7 +314,7 @@ class HTTPServer
         $descriptorspec = array(
            0 => $content_stream,
            1 => array('pipe', 'w'),
-           2 => STDOUT, 
+           2 => STDERR, 
         );
         
         $proc = proc_open($this->php_cgi, $descriptorspec, $pipes, 

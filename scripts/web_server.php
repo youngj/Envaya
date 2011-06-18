@@ -20,9 +20,7 @@ class EnvayaHTTPServer extends HTTPServer
         parent::__construct(array(
             'port' => $port,
             'cgi_env' => array(
-                'ENVAYA_CONFIG' => json_encode(array(
-                    'ssl_enabled' => false,
-                ))
+                'ENVAYA_CONFIG' => getenv('ENVAYA_CONFIG')
             )
         ));
     }
