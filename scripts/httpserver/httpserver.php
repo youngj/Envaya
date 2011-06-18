@@ -8,7 +8,8 @@
  *
  * This allows running PHP scripts without needing to install a web server like Apache or Nginx.
  * It also allows automated scripts (e.g. Selenium tests) to spawn a HTTP server with custom 
- * environment variables (e.g. to override some application config settings).
+ * environment variables (e.g. to override some application config settings). Also, stderr output
+ * (e.g. error_log()) is printed directly to the console, allowing more rapid debugging.
  *
  * Requests are served by a single process, but non-blocking sockets are used to handle many 
  * connections at once. Implements HTTP Keep-Alive for better performance. Works on Windows
@@ -20,7 +21,7 @@
  * See examples/example_server.php. 
  *
  * HTTPServer only depends on code in this directory, and no other Envaya code,
- * so it could easily be extracted and used in other PHP projects that need a standalone HTTP server.
+ * so it could easily be used in other PHP projects that need a standalone HTTP server.
  *
  * http://github.com/youngj/Envaya
  * Copyright (c) 2010-2011 by Trust for Conservation Innovation
@@ -98,7 +99,7 @@ class HTTPServer
 
         socket_listen($sock);
 
-        echo "Web server listening on 0.0.0.0:{$this->port} (see http://localhost:{$this->port}/)...\n";    
+        echo "HTTP server listening on 0.0.0.0:{$this->port} (see http://localhost:{$this->port}/)...\n";    
 
         socket_set_nonblock($sock);        
 
@@ -270,6 +271,12 @@ class HTTPServer
             'CONTENT_TYPE' => @$headers['Content-Type'],
             'CONTENT_LENGTH' => $content_length,            
         );        
+        
+        // Obtain REMOTE_ADDR from socket
+        if (!socket_getpeername($request->socket, $cgi_env['REMOTE_ADDR'])) 
+        {
+            $cgi_env['REMOTE_ADDR'] = '127.0.0.1';
+        }
         
         foreach ($headers as $name => $value)
         {        
