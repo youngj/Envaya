@@ -5,15 +5,16 @@ class Controller_TranslateKey extends Controller
     static $routes = array(
         array(
             'regex' => '(/)?$', 
+            'action' => 'action_index',
         ),
         array(
             'regex' => '/(?P<translation_guid>\d+)/delete\b', 
-            'defaults' => array('action' => 'delete_translation'),
+            'action' => 'action_delete_translation',
             'before' => 'init_translation',
         ),                
         array(
             'regex' => '/(?P<translation_guid>\d+)/vote\b', 
-            'defaults' => array('action' => 'vote_translation'),
+            'action' => 'action_vote_translation',
             'before' => 'init_translation',
         ),                
         array(

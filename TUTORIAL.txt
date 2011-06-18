@@ -817,8 +817,7 @@ Create the file mod/tutorial/engine/controller/tutorial.php, with the following 
     {
         static $routes = array(
             array(
-                'regex' => '', // match anything
-                'defaults' => array('action' => 'hello')
+                'action' => 'action_hello',
             )
         );
     
@@ -841,7 +840,7 @@ is routed to the Controller_Tutorial class:
     Engine::add_autoload_action('Controller_Pg', function() {
         Controller_Pg::add_route(array(
             'regex' => '/hello\b',
-            'defaults' => array('controller' => 'Tutorial')
+            'controller' => 'Controller_Tutorial',
         ), 0);
     });
     

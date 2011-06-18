@@ -86,24 +86,15 @@ abstract class Controller {
             $params = $this->match_route($route, $uri);
             if ($params)
             {       
-                $controller = @$params['controller'];
-                if ($controller)
+                $cls = @$params['controller'];
+                if ($cls)
                 {
-                    $cls = "Controller_{$controller}";
-                    if (class_exists($cls))
-                    {
-                        $controller = new $cls($this);
-                        return $controller->get_controller_action($params['rest']);
-                    }
+                    $controller = new $cls($this);
+                    return $controller->get_controller_action($params['rest']);
                 }
                 else
                 {
-                    $action = @$params['action'] ?: 'index';                
-                    $method = "action_{$action}";
-                    if (method_exists($this, $method))
-                    {
-                        return array($this, $method);
-                    }                    
+                    return array($this, $params['action']);
                 }
             }
         }
@@ -163,26 +154,16 @@ abstract class Controller {
         }
         $this->before();                               
                 
-        $controller = @$params['controller'];
-        if ($controller)
+        $cls = @$params['controller'];
+        if ($cls)
         {
-            $cls = "Controller_{$controller}";
-            if (!class_exists($cls))
-            {
-                throw new NotFoundException();
-            }
             $controller = new $cls($this);
             $controller->execute($params['rest']);
         }
         else
         {
-            $action = @$params['action'] ?: 'index';                
-            $method = "action_{$action}";
-            if (!method_exists($this, $method))
-            {
-                throw new NotFoundException();
-            }
-            $this->$method();                       
+            $action = $params['action'];
+            $this->$action();
         }
         $this->after();    
     }
@@ -191,15 +172,20 @@ abstract class Controller {
      * Tests if the beginning of the URI component matches a given route regex.
      *
      * If the regex matched, returns an associative array of route parameters taken from the
-     * matched values of the named regex parameters, merged with the array of defaults,
-     * with the special parameter 'rest' which is the remainder of the URI after the
-     * part that matched the regex.
+     * matched values of the named regex parameters, merged with the array of defaults.
+     * 
+     * special keys of return value:
+     * 'rest' : the remainder of the URI after the part that matched the regex.
+     * 'controller' : the name of the matched controller class (only if 'action' is not set)
+     * 'action' : the name of the matched action function in the current class (only if 'controller' is not set)
      *
      * If the route regex did not match, returns false.
      */    
     protected function match_route($route, $uri)
     {
-        $regex = @$route['regex'];
+        $regex = @$route['regex'];        
+        
+        $tr_params = array();
         
         if ($regex)
         {    
@@ -219,6 +205,7 @@ abstract class Controller {
                 }
                 // Set the value for all matched keys
                 $params[$key] = $value;
+                $tr_params["<$key>"] = $value;
             }                       
         }
         else
@@ -226,20 +213,46 @@ abstract class Controller {
             $params = array('rest' => $uri);
         }
 
-        $defaults = @$route['defaults'];
-        if ($defaults)
+        if (isset($route['defaults']))
         {
-            foreach ($defaults as $key => $value)
+            foreach ($route['defaults'] as $key => $value)
             {
                 if (!isset($params[$key]) OR $params[$key] === '')
                 {
                     // Set default values for any key that was not matched
                     $params[$key] = $value;
+                    $tr_params["<$key>"] = $value;
                 }
             }
         }
-   
-        return $params;                
+
+        $controller_format = isset($route['controller']) ? $route['controller'] : 'Controller_<controller>';        
+        $controller = strtr($controller_format, $tr_params);        
+        
+        if (strpos($controller, '<') === false) // current route refers to another controller
+        {
+            if (!class_exists($controller))
+            {
+                return false;
+            }
+            $params['controller'] = $controller;
+            return $params;
+        }
+        
+        $action_format = isset($route['action']) ? $route['action'] : 'action_<action>';        
+        $action = strtr($action_format, $tr_params);
+        
+        if (strpos($action, '<') === false) // current route is a method in the current class
+        {
+            if (!method_exists($this, $action))
+            {
+                return false;
+            }
+            $params['action'] = $action;
+            return $params;
+        }
+
+        return false;
     }
     
     static function add_route($route, $index = null)

@@ -10,6 +10,7 @@ class Controller_Topic extends Controller_User
     static $routes = array(
         array(
             'regex' => '/(?P<guid>\d+)(/(?P<action>\w+)\b)?',
+            'defaults' => array('action' => 'index'),
             'before' => 'init_topic_by_guid',
         ),
         array(

@@ -12,7 +12,7 @@ class Controller_Default extends Controller
         ),
         array(
             'regex' => '/(?P<username>[\w\-]{3,})\b', 
-            'defaults' => array('controller' => 'usersite'), 
+            'controller' => 'Controller_UserSite',
             'before' => 'init_user_by_username',
         ),
     );      

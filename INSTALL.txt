@@ -21,8 +21,7 @@ git clone git@github.com:youngj/Envaya.git /var/www/envaya
 # directory of the Envaya source code.
 
 # step 0.5: configure your APT sources 
-# warning: this will overwrite your /etc/apt/sources.list file.
-# todo: should add required sources instead of overwriting file.
+# warning: this will modify your /etc/apt/sources.list file.
 ./scripts/setup/sources.sh
 
 # step 1: install prerequisites (php, php extensions, wget, rsync, etc.)
@@ -37,14 +36,14 @@ git clone git@github.com:youngj/Envaya.git /var/www/envaya
 php scripts/install_settings.php
 
 # edit config/local.php in a text editor:
-#    set admin_email to your own email address
-#    set your desired database settings.
-#    override any other settings from config/default.php as necessary.
+#    * set admin_email to your own email address
+#    * set your desired database settings
+#    * override any other settings from config/default.php as necessary
 
 # step 3: create empty database and default user 
 php scripts/db_setup.php | mysql -u root -p
 
-# step 4: install database tables and data root directory
+# step 4: install database tables and create directory for storing data on filesystem
 php scripts/install_tables.php
 php scripts/install_dataroot.php
 
@@ -101,7 +100,7 @@ PHP extensions:
     pdo_mysql
 Mysql
 
-Envaya does not require a separate web server for development since it 
+Envaya does not require a separate web server for development, since it 
 comes with its own PHP development web server, but you can use Apache or Nginx
 instead if you like.
 
@@ -111,7 +110,6 @@ and make sure that mod_rewrite is enabled.
 
 To use Nginx (with php-fastcgi) as the webserver, see what scripts/setup/nginx.sh
 does, and do something like that.
-
 
 ====================================================================
 Manual installation for development environment with WAMP on Windows
@@ -187,7 +185,7 @@ php scripts/install_test_data.php
 # make compressed CSS and JS files
 php make.php
 
-# start envaya server processe
+# start envaya server processes
 php runserver.php
 
 =========================================

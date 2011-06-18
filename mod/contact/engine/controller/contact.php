@@ -5,11 +5,11 @@ class Controller_Contact extends Controller
     static $routes = array(
         array(
             'regex' => '(/)?$', 
-            'defaults' => array('action' => 'index'), 
+            'action' => 'action_index',
         ),        
         array(
             'regex' => '/email\b', 
-            'defaults' => array('controller' => 'EmailTemplate'),
+            'controller' => 'Controller_EmailTemplate',
         ),        
         
     );

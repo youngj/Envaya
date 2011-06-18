@@ -11,6 +11,7 @@ class Controller_Page extends Controller_Widget
     static $routes = array(
         array(
             'regex' => '/(?P<widget_name>[\w\-]+)(/(?P<action>\w+)\b)?',
+            'defaults' => array('action' => 'index'),
             'before' => 'init_widget_from_name',
         ),
     );

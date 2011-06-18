@@ -5,7 +5,6 @@
  *
  * widget_name may refer to an actual widget name for pre-defined widgets
  * (an alias for /<username>/page/<widget_name>[/<action>])
- * or may actually be an action defined here with prefix 'index_'.
  *
  * URL: /<username>[/<widget_name>[/<action>]]
  */
@@ -13,91 +12,97 @@ class Controller_UserSite extends Controller_User
 {
     static $routes = array(
         array(
-            'regex' => '$',
-            'defaults' => array('widget_name' => ''), 
-        ),    
+            'regex' => '(/)?$',
+            'action' => 'action_index',
+        ),
         array(
             'regex' => '/(?P<controller>post|page|topic|widget)\b',
         ),        
         array(
-            'regex' => '/(?P<widget_name>[\w\-]*)(/(?P<action>\w+))?',
+            'regex' => '/(?P<action>\w+)\b',
+        ),
+        array(
+            'regex' => '/(?P<widget_name>[\w\-]+)(/(?P<action>\w+))?',
+            'defaults' => array('action' => 'view'),
+            'action' => 'action_widget_<action>',
         )
     );
 
     function action_index()
     {
         $org = $this->get_org();
-    
-        $widgetName = $this->param('widget_name');
         
-        if (!$widgetName)
+        if (!$org)
         {
-            if (!$org)
-            {
-                return $this->index_settings();
-            }
-            else
-            {                             
-                $this->page_draw_vars['is_site_home'] = true;
-                
-                $home_widget = $org->query_menu_widgets()->get();             
-                return $this->index_widget($home_widget);
-            }
+            return $this->action_settings();
         }
         else
-        {
-            $methodName = "index_$widgetName";
-            if (method_exists($this,$methodName))
-            {
-                return $this->$methodName();
-            }
-            else if ($org)
-            {            
-                $widget = $org->get_widget_by_name($widgetName);                        
-
-                $home_widget = $org->query_menu_widgets()->get();
-                if ($home_widget && $widget && $home_widget->guid == $widget->guid)
-                {                
-                    $this->page_draw_vars['is_site_home'] = true;
-                }
-                
-                return $this->index_widget($widget);
-            }                   
+        {                             
+            $this->page_draw_vars['is_site_home'] = true;
+            
+            $home_widget = $org->query_menu_widgets()->get();             
+            return $this->index_widget($home_widget);
         }
-        throw new NotFoundException();
+    }
+    
+    function action_widget_view()
+    {
+        $org = $this->get_org();
+        $widgetName = $this->param('widget_name');
+        
+        if ($org)
+        {            
+            $widget = $org->get_widget_by_name($widgetName);                        
+
+            $home_widget = $org->query_menu_widgets()->get();
+            if ($home_widget && $widget && $home_widget->guid == $widget->guid)
+            {                
+                $this->page_draw_vars['is_site_home'] = true;
+            }
+            
+            return $this->index_widget($widget);
+        }                   
+        else
+        {        
+            throw new NotFoundException();
+        }
     }
         
-    function action_edit()
-    {
+    function action_widget_edit()
+    {    
         // backwards compatibility to avoid breaking links and allow editing widgets
         // at /<username>/<widget_name>/edit         
         // by forwarding to new URLs at /<username>/page/<widget_name>/edit         
      
-        $widgetName = $this->param('widget_name');
-        $widget = $this->get_org()->get_widget_by_name($widgetName);
-        if ($widget->is_enabled())
-        {
-            $this->redirect($widget->get_edit_url());
-        }
-        else
+        $org = $this->get_org();
+        if (!$org)
         {
             throw new NotFoundException();
         }
+        
+        $widgetName = $this->param('widget_name');
+        $widget = $org->get_widget_by_name($widgetName);
+        
+        if (!$widget->is_enabled())
+        {
+            throw new NotFoundException();            
+        }
+        $this->redirect($widget->get_edit_url());
     }
     
-    function index_add_page()
+    function action_add_page()
     {
         $action = new Action_AddWidget($this, $this->get_org());
         $action->execute();
     }
         
-    function index_design()
+    function action_design()
     {
         $action = new Action_EditDesign($this);
         $action->execute();            
     }
     
-    function index_help()
+    function action_help()
     {
         $this->require_editor();
         $this->require_org();
@@ -108,7 +113,7 @@ class Controller_UserSite extends Controller_User
         ));        
     }
 
-    function index_dashboard()
+    function action_dashboard()
     {    
         $this->require_editor();        
         $this->allow_view_types(null);        
@@ -146,37 +151,37 @@ class Controller_UserSite extends Controller_User
         ));
     }
     
-    function index_password()
+    function action_password()
     {
         $action = new Action_ChangePassword($this);
         $action->execute();    
     }
 
-    function index_username()
+    function action_username()
     {
         $action = new Action_ChangeUsername($this);
         $action->execute();
     }
 
-    function index_settings()
+    function action_settings()
     {    
         $action = new Action_Settings($this);
         $action->execute();
     }
 
-    function index_addphotos()
+    function action_addphotos()
     {
         $action = new Action_AddPhotos($this);
         $action->execute();        
     }
             
-    function index_send_message()
+    function action_send_message()
     {
         $action = new Action_SendMessage($this);
         $action->execute();   
     }
     
-    function index_domains()
+    function action_domains()
     {
         $this->require_org();
         $this->require_admin();
@@ -188,7 +193,7 @@ class Controller_UserSite extends Controller_User
         ));
     }
     
-    function index_add_domain()
+    function action_add_domain()
     {
         $this->require_org();
         $this->require_admin();
@@ -211,7 +216,7 @@ class Controller_UserSite extends Controller_User
         $this->redirect();
     }
     
-    function index_delete_domain()
+    function action_delete_domain()
     {
         $this->require_org();
         $this->require_admin();
@@ -226,13 +231,13 @@ class Controller_UserSite extends Controller_User
         $this->redirect();
     }
 
-    function index_share()
+    function action_share()
     {
         $action = new Action_Share($this);
         $action->execute();
     }
     
-    function index_relationship_emails_js()
+    function action_relationship_emails_js()
     {    
         $this->require_editor();
         $this->require_org();

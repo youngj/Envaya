@@ -5,16 +5,16 @@ class Controller_TranslateAdmin extends Controller
     static $routes = array(
         array(
             'regex' => '(/)?$', 
-            'defaults' => array('action' => 'index'), 
+            'action' => 'action_index',
         ),    
         array(
             'regex' => '/(?P<lang>\w+)(/)?$', 
-            'defaults' => array('action' => 'manage_lang'), 
+            'action' => 'action_manage_lang',
             'before' => 'init_language',
         ),        
         array(
-            'regex' => '/(?P<lang>\w+)/(?P<action>export)\b', 
-            'defaults' => array('action' => 'export'), 
+            'regex' => '/(?P<lang>\w+)/export\b', 
+            'action' => 'action_export',
             'before' => 'init_language',
         ),        
         

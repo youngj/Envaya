@@ -7,7 +7,7 @@ Engine::add_autoload_action('EntityRegistry', function() {
 Engine::add_autoload_action('Controller_Admin', function() {
     Controller_Admin::add_route(array(
         'regex' => '/contact\b',
-        'defaults' => array('controller' => 'Contact')
+        'controller' => 'Controller_Contact',
     ), 0);           
 });
 

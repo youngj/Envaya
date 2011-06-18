@@ -9,8 +9,8 @@
 class Controller_EnvayaHome extends Controller
 {
     static $routes = array(
-        array()
-    );      
+        array('action' => 'action_index')
+    );
 
     function action_index()
     {       

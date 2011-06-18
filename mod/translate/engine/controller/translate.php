@@ -10,27 +10,28 @@ class Controller_Translate extends Controller
     static $routes = array(
         array(
             'regex' => '(/)?$', 
-            'defaults' => array('action' => 'index'), 
+            'action' => 'action_index',
         ),
         array(
             'regex' => '/(?P<action>instructions|delete_comment)\b', 
         ),                
         array(
             'regex' => '/admin\b', 
-            'defaults' => array('controller' => 'TranslateAdmin'), 
+            'controller' => 'Controller_TranslateAdmin',
         ),        
         array(
             'regex' => '/(?P<lang>\w+)/translators/(?P<guid>\d+)\b', 
-            'defaults' => array('action' => 'translator'),
+            'action' => 'action_translator',
             'before' => 'init_language',
         ),        
         array(
-            'regex' => '/(?P<lang>\w+)/(?P<action>translators)(/)?$', 
+            'regex' => '/(?P<lang>\w+)/translators(/)?$', 
+            'action' => 'action_translators',
             'before' => 'init_language',
         ),
         array(
             'regex' => '/(?P<lang>\w+)/?$', 
-            'defaults' => array('action' => 'view_language'), 
+            'action' => 'action_view_language',
             'before' => 'init_language',
         ),        
         array(
@@ -39,12 +40,12 @@ class Controller_Translate extends Controller
         ),
         array(
             'regex' => '/(?P<lang>\w+)/module/(?P<group_name>\w+)(/)?$', 
-            'defaults' => array('action' => 'view_group'), 
+            'action' => 'action_view_group',
             'before' => 'init_language_group',
         ),
         array(
             'regex' => '/(?P<lang>\w+)/module/(?P<group_name>\w+)/(?P<key_name>[\w\%\:]+)', 
-            'defaults' => array('controller' => 'TranslateKey'), 
+            'controller' => 'Controller_TranslateKey',
             'before' => 'init_language_group_key',
         ),
     );

@@ -7,19 +7,20 @@ Engine::add_autoload_action('EntityRegistry', function() {
 
 Engine::add_autoload_action('Controller_Default', function() {
     Controller_Default::add_route(array(
-        'regex' => '/(?P<controller>org)\b',
+        'regex' => '/org\b',
+        'controller' => 'Controller_Org',
     ), 0);
 
     Controller_Default::add_route(array(
         'regex' => '/($|home\b)',
-        'defaults' => array('controller' => 'EnvayaHome')
+        'controller' => 'Controller_EnvayaHome',
     ), 0);
 });
 
 Engine::add_autoload_action('Controller_Admin', function() {
     Controller_Admin::add_route(array(
         'regex' => '/envaya\b',
-        'defaults' => array('controller' => 'EnvayaAdmin')
+        'controller' => 'Controller_EnvayaAdmin',
     ), 0);
 });
 

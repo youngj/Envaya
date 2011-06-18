@@ -5,14 +5,14 @@ class Controller_EmailTemplate extends Controller
     static $routes = array(
         array(
             'regex' => '(/)?$', 
-            'defaults' => array('action' => 'index'), 
+            'action' => 'action_index',
         ),      
         array(
             'regex' => '/(?P<action>add)\b', 
         ),       
         array(
             'regex' => '/user/(?P<user_guid>\d+)', 
-            'defaults' => array('action' => 'user'),
+            'action' => 'action_user',
             'before' => 'init_user',
         ),   
         array(

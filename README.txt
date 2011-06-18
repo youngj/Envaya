@@ -19,8 +19,6 @@ Potential ways of using Envaya's source code may include:
 * Contributing code to be used on http://envaya.org, such as new website designs, 
   or applications specific to civil society organizations.
 * Adapting Envaya for a different class of users and hosting a service yourself. 
-  (Currently this would require moving the civil-society specific parts 
-  of the codebase into a module.)
 * Studying the source code for inspiration, or adapting parts of the source code 
   into unrelated projects.
 * ...?

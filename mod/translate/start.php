@@ -13,7 +13,7 @@ Engine::add_autoload_action('EntityRegistry', function() {
 Engine::add_autoload_action('Controller_Default', function() {
     Controller_Default::add_route(array(
         'regex' => '/tr\b',
-        'defaults' => array('controller' => 'Translate')
+        'controller' => 'Controller_Translate',
     ));
 });
 
