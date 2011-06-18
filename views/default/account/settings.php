@@ -1,5 +1,5 @@
 <?php
-    $user = $vars['entity'];
+    $user = $vars['user'];
     ob_start();
 ?>
     <div class='section_content padded'>

@@ -23,16 +23,16 @@ Table of Contents
  8. Processing and saving form input
  9. Restricting access to authorized users
 10. Defining a new module
+11. Adding a page under users' websites
+12. Extending existing views from within modules
+13. Defining a new Widget for users' websites
 
 Todo:
-11. Adding a page under a user's website
-12. Defining a new widget
-12. Defining a new Model class and SQL schema
-13. Customizing the mobile view
-14. Extending existing views from within modules
-15. Using Envaya's Javascript libraries
-16. Adding a new Javascript file
-17. Creating a Selenium test
+14. Defining a new Model class and SQL schema
+15. Customizing the mobile view
+16. Using Envaya's Javascript libraries
+17. Adding a new Javascript file
+18. Creating a Selenium test
 
 ====================
 1. Adding a New Page
@@ -804,7 +804,7 @@ that refers to code in the 'tutorial' module. (If you run "php scripts/module_de
 the command line, it should print out that the '(core)' module references the 'tutorial'
 module 1 time.)
 
-The file mod/translate/start.php allows you to avoid directly referencing your module's code
+The file mod/tutorial/start.php allows you to avoid directly referencing your module's code
 from within core classes.
 
 To move Controller_Pg::action_hello into a module, we first need to create a new Controller
@@ -841,14 +841,11 @@ is routed to the Controller_Tutorial class:
         Controller_Pg::add_route(array(
             'regex' => '/hello\b',
             'controller' => 'Controller_Tutorial',
-        ), 0);
+        ));
     });
     
 The call to Controller_Pg::add_route() adds an entry to the $routes array of 
 Controller_Pg, associating the URL /hello with the controller named Controller_Tutorial.
-
-The second parameter '0' adds the route at the beginning of the list (array index 0), 
-so it matches before any regex already defined in Controller_Pg.
 
 Engine::add_autoload_action() registers a function to be executed when a particular
 class is loaded, without actually loading that class. In this case, Controller_Pg::add_route 
@@ -859,3 +856,316 @@ Now refresh http://localhost/pg/hello?username=testorg . It should work the same
 as before, but now all of the tutorial code is inside the 'tutorial' module. When you 
 finish this tutorial, you can simply remove 'tutorial' from the 'modules' array in
 config/local.php, and none of the tutorial code will be used anymore.
+
+=======================================
+11. Adding a page under users' websites
+=======================================
+
+Currently this page to change a user's email address uses a query string parameter
+to determine the user that is currently active. However, usually when you want to create
+a page on Envaya specific to a particular user, you would just place it under that
+user's Envaya website.
+
+In other words, instead of a URL like this:
+    http://localhost/pg/hello?username=testorg
+It would be better to use a URL like this:
+    http://localhost/testorg/hello
+    
+As you can see from Controller_Default (engine/controller/default.php), URLs starting
+with a username are forwarded to the Controller_UserSite controller 
+(engine/controller/usersite.php).
+
+To move the '/hello' route to the Controller_UserSite controller, modify
+mod/tutorial/start.php to refer to Controller_UserSite instead of Controller_Pg:
+
+<?php
+    Engine::add_autoload_action('Controller_UserSite', function() {
+        Controller_UserSite::add_route(array(
+            'regex' => '/hello\b',
+            'controller' => 'Controller_Tutorial',
+        ), 0);
+    });
+
+In this case, the add_route() function needs a second parameter '0', which adds the route
+at the beginning (0th index) of the Controller_UserSite::$routes array instead of at the end. 
+This is necessary because Controller_UserSite already contains a route regex that would 
+match "/hello", so our regex needs to go before it.
+    
+Controller_UserSite extends Controller_User (engine/controller/user.php), which defines
+a method get_user() that returns the User object associated with the username from the URL.
+
+Controller_User also defines a method require_editor() that forwards the visitor to the login 
+page if the visitor cannot edit the current User object. It also uses the 'editor' layout 
+by default.
+
+In order to use these methods in Action_Hello, its associated controller Controller_Tutorial
+needs to extend Controller_User as well. Update the class declaration in 
+mod/tutorial/engine/controller/tutorial.php, like so:
+
+    class Controller_Tutorial extends Controller_User
+
+Now, update and simplify the Action_Hello class in mod/tutorial/engine/action/hello.php, using
+the methods from Controller_User:
+
+<?php
+    class Action_Hello extends Action
+    {
+        function before()
+        {
+            $this->require_editor();
+        }
+
+        function process_input()
+        {    
+            $user = $this->get_user();
+            $user->email = get_input('email');            
+            validate_email_address($user->email);            
+            $user->save();
+            
+            SessionMessages::add("Email address saved!");
+            $this->redirect();
+        }
+
+        function render()
+        {
+            $this->page_draw(array(
+                'title' => __('tutorial:hello_title'),
+                'content' => view('tutorial/hello', array('user' => $this->get_user())),
+            ));    
+        }
+    }
+
+Finally, update the 'tutorial/hello' view to use the new URL for the form action:
+
+    echo "<form method='POST' action='/{$user->username}/hello'>";
+    
+Now, open http://localhost/testorg/hello in your browser. It should work the same as 
+/pg/hello?username=testorg did before.
+
+================================================
+12. Extending existing views from within modules
+================================================
+
+Currently, the page to update a user's email address is not linked anywhere on Envaya;
+you have to manually enter the URL in the address bar in order to see it.
+
+In this section, you will add a link to your new page from an existing page on Envaya,
+in particular, from the user's Settings page: 
+    http://localhost/testorg/settings
+    
+Of course the Settings page already has a way to change the user's email address, but
+for the purpose of this tutorial, just pretend that functionality doesn't already exist.
+
+In order to add a link on this page, you first have to figure out which view is being
+rendered that you could add a link to.
+
+Since the URL of the Settings page is http://localhost/<username>/settings, the
+Controller_UserSite controller handles this page. By examining the regular expressions in
+Controller_UserSite::$routes, you can figure out that the page is handled by 
+Controller_UserSite::action_settings, which executes an Action_Settings action.
+
+Action_Settings is defined in engine/action/settings.php, where you can see that 
+'account/settings' is the content view being rendered. 
+
+To modify a view like 'account/settings' from within a module, call the 'Views::extend'
+method from your module's start.php file. Add the following line to mod/tutorial/start.php:
+
+    Views::extend('account/settings', 'tutorial/settings_link');
+    
+Now, create the 'tutorial/settings_link' view at 
+mod/tutorial/views/default/tutorial/settings_link.php:
+
+<?php
+    $user = $vars['user'];
+    echo "<a href='/{$user->username}/hello'>Change Email Address</a>";    
+
+The variable $vars['user'] comes from Action_Settings::render, which passes a parameter named
+'user' into 'account/settings'. When you extend an existing view, both the existing view and 
+the extension view are invoked with the same parameters.
+
+Reload http://localhost/testorg/settings . Your "Change Email Address" link should now
+appear at the bottom of the page.
+
+By default, Views::extend will place your module's view after the existing view, but you can 
+control this behavior by adding an optional integer parameter. Negative values will place 
+the module's view before the existing view, and positive values will place the module's view 
+after the existing view. Change the 'Views::extend' call in mod/tutorial/start.php:
+
+    Views::extend('account/settings', 'tutorial/settings_link', -1);
+    
+Reload http://localhost/testorg/settings . Your "Change Email Address" link should now
+appear at the top of the page.    
+
+You could even replace the entire 'account/settings' view with your 'tutorial/settings_link' 
+view using 'Views::replace' instead of 'Views::extend':
+
+    Views::replace('account/settings', 'tutorial/settings_link');
+    
+=============================================
+13. Defining a new Widget for users' websites
+=============================================
+
+Currently, the /hello page is hardcoded into every user's website on Envaya, and it is only
+available for editors.
+
+Now, let's change this page so that it works on top of Envaya's content management system.
+Instead of being hardcoded into every user's website, each user will have the option 
+to include it on their website or not. It will show up in their website's navigation menu,
+and will have a public view (that displays the user's email address), as well as an 
+editor-only view (that allows the user to change its email address).
+
+Each page on a user's website is an instance of a subclass of Widget, defined in
+engine/widget.php. Some widgets are very simple and just render some arbitrary HTML content
+(for example, Widget_Generic). Other widgets are more complex, and can even render other 
+child widgets inside them, such as Widget_Home (which displays child widgets as sub-sections) 
+or Widget_News (which displays child widgets as blog posts in reverse chronlogical order).
+
+Define a class Widget_Hello in mod/tutorial/engine/widget/hello.php:
+
+<?php
+    class Widget_Hello extends Widget
+    {
+        function get_default_title()
+        {
+            return 'Email';
+        }
+    
+        function render_view($args = null)
+        {
+            return view('tutorial/hello_view', array('widget' => $this));
+        }
+        
+        function render_edit()
+        {
+            return view('tutorial/hello_edit', array('widget' => $this));
+        }
+
+        function process_input($action)
+        {
+            $user = $this->get_root_container_entity();
+
+            $user->email = get_input('email');
+            validate_email_address($user->email);
+
+            $user->save();
+            $this->save();
+        }
+    }    
+    
+Each Widget subclass generally overrides at least four methods: render_view(),
+which renders the page's public view; render_edit(), which renders the page's 
+editor-only view; process_input(), which handles the POST request when 
+the editor-only view is submitted; and get_default_title(), which returns
+the title of the page (if the user hasn't changed it).
+
+By convention, the views rendered by render_view() and render_edit() are passed
+a parameter named 'widget' (and perhaps other parameters, if applicable).
+
+Widget_Hello::process_input() is very similar to Action_Hello::process_input(),
+with a few small changes:
+  * To get the User (or Organization) associated with the current Widget, 
+    use the get_root_container_entity() method.
+  * A Widget's process_input() method must also call save() on the current widget.
+  * It is usually not necessary to call SessionMessages::add() or redirect()
+    at the end of a Widget's process_input() method, because this will be done
+    automatically.
+
+Now, create the views referenced by Widget_Hello. 
+First, create a file mod/tutorial/views/default/tutorial/hello_view.php that
+displays a link with the user's email address:
+
+    <div class='section_content padded'>
+    <?php
+        $widget = $vars['widget'];
+        $user = $widget->get_root_container_entity();
+        echo "Email: <a href='mailto:".escape($user->email)."'>".escape($user->email)."</a>";
+    ?>
+    </div>
+    
+The CSS classes 'section_content' and 'padded' are commonly used throughout Envaya.
+'padded' adds some padding, and 'section_content' displays a background for the section
+appropriate for the current theme.
+
+Next, create a file mod/tutorial/views/default/tutorial/hello_edit.php that
+allows editing the user's email address:
+
+    <div class='section_content padded'>
+    <?php
+        $widget = $vars['widget'];
+        $user = $widget->get_root_container_entity();
+        ob_start();
+    ?>
+    <div class='input'>
+    <label>Email:</label><br />
+    <?php 
+        echo view("input/text", array(
+            'name' => 'email',
+            'value' => $user->email,
+            'style' => 'width:250px'
+        ));
+    ?>
+    </div>
+    <?php
+        $content = ob_get_clean();
+
+        echo view("widgets/edit_form", array(
+            'widget' => $widget,
+            'body' => $content
+        ));
+    ?>
+    </div>
+
+Note above the use of the methods ob_start() and ob_get_clean(). These are built-in
+PHP functions that implement output buffering, and are frequently used in Envaya's
+view files. After ob_start() is called, PHP output (from 'echo', inline HTML, etc.) 
+is buffered into a string that is returned by a matching call to ob_get_clean().
+(This does basically the same thing as defining a separate view, but without requiring
+to create a separate file.)
+
+Also, note the use of the view 'widgets/edit_form'. This view displays a basic
+form, with a 'publish' and 'delete' button at the bottom. Submitting the form will make
+a POST request back to a page that calls your Widget_Hello::process_input() method.
+
+Next, make your new Widget available to users in the "Edit Pages" section of their dashboard
+by adding the following code to mod/tutorial/start.php:
+
+    Engine::add_autoload_action('Widget', function() {
+        Widget::add_default_widget('email', array(
+            'subclass' => 'Hello',
+            'menu_order' => 200,            
+            'page' => true, 
+        ));
+    });
+    
+The first parameter to add_default_widget() is the 'widget_name', which appears as a 
+component in the page's URL (in this case, http://localhost/<username>/page/email).
+
+The second parameter to add_default_widget() contains some options for the Widget:
+    'subclass':
+        the part of the widget class name after 'Widget_'
+    'menu_order' (optional):
+        the default order of the widget in the navigation menu
+    'page' (optional):
+        if true, shows this widget in the 'Edit Pages' list
+    'home_section' (optional):
+        if true, shows this widget in the 'Edit Section' list
+        when a user edits their Home pge
+        
+Now, open http://localhost/testorg/dashboard in your browser.
+
+Under the 'Edit Pages' section, click the 'Email' link to go to the editor-only page
+for your new widget.
+
+Click 'Publish page' to save the email address and add the new page to testorg's website.
+
+You should be redirected to the public page for your widget, which displays the new
+email address. Additionally, there should now be an 'Email' link in the website's 
+navigation menu.
+
+Click the 'Edit Page' link at the top-right of the page to return to the widget's 
+editor-only page.
+
+Now there should be a 'Remove page' button. Click the 'Remove page' button and click
+"OK" in the confirmation dialog.
+
+Now if you open http://localhost/testorg, the 'Email' page should no longer exist.

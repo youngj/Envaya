@@ -75,7 +75,7 @@ class Action_Settings extends Action
     {
         $this->page_draw(array(
             'title' => __('user:settings'),
-            'content' => view("account/settings", array('entity' => $this->get_user())),
+            'content' => view("account/settings", array('user' => $this->get_user())),
         ));                
     }    
 }    
