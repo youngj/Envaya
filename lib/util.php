@@ -34,7 +34,7 @@
 
         $prefix = @$parsed['scheme'] ? $parsed['scheme']."://".$parsed['host'] : '';
 
-        if ($parsed['port'])
+        if (isset($parsed['port']))
         {
             $prefix .= ":".$parsed['port'];
         }

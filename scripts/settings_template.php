@@ -1,6 +1,8 @@
 <?php
 
 return array(
+    'domain' => 'localhost',
+
     'dbuser' => 'root',
     'dbpass' => '',
     'dbname' => 'envaya',

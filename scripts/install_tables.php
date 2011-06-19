@@ -64,7 +64,7 @@ function install_schema($module_name = null)
     }
     else
     {   
-        echo "(no schema at $path)";
+        echo "(no schema at $path)\n";
     }
 }
 

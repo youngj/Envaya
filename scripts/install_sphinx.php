@@ -8,6 +8,8 @@
 require_once("scripts/cmdline.php");
 require_once("start.php");
 
+umask(0);
+
 $sphinx_conf_template = file_get_contents('scripts/config/sphinx.conf');
 
 $replacements = array();
@@ -31,4 +33,8 @@ else
 
 Sphinx::_reindex();
 
-Config::set('debug', false);
+$log_dir = Config::get('sphinx_log_dir');
+if (!is_dir($log_dir))
+{
+    mkdir($log_dir, 0777, true);
+}

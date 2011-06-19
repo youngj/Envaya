@@ -3,7 +3,7 @@ SETUP_DIR=$(cd `dirname $0` && pwd)
 SCRIPT_DIR=`dirname $SETUP_DIR`
 INSTALL_DIR=`dirname $SCRIPT_DIR`
 
-apt-get -y install default-jre 
+apt-get -y install default-jre-headless
 
 mkdir -p /var/kestrel
 chmod 755 /var/kestrel

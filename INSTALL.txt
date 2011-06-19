@@ -44,12 +44,11 @@ environment. (For production server installation, see the section
 
         ./scripts/setup/mysql.sh
 
-5. (optional) Install sphinx (full text search)
+5. Install sphinx (full text search)
 
         ./scripts/setup/sphinx.sh
 
-6. (optional) Install dependencies for selenium tests and other 
-    development tools:
+6. Install dependencies for selenium tests and other development tools:
 
         ./scripts/setup/dev.sh
 
@@ -130,7 +129,6 @@ Then, reboot into the GUI.
 10. Download and install Sphinx 1.10.
         http://sphinxsearch.com/files/sphinx-1.10-beta-win32.zip
     Extract the zip file to c:/sphinx
-    Create an empty c:/sphinx/log directory
     
 ===============================================
 1c. Installing Prerequisites on Other Platforms
