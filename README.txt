@@ -99,3 +99,15 @@ mod/
 Getting Started
 ===============
 See TUTORIAL.txt for step-by-step walk-throughs about how to work with Envaya's source code.
+
+=============
+Running tests
+=============
+
+Envaya's user-interface tests are in the test/ directory. 
+The tests assume that no Envaya services are currently running,
+and that Firefox is installed on the local computer.
+
+To run the tests, run the following script from the command line:
+
+        php test/TestSuite.php
