@@ -241,12 +241,11 @@ The following steps explain how to do this for the first time:
         "Your public key has been saved in /path/to/id_rsa.pub."
         
 3. Copy your ssh public key to your github account settings page.
-    To do this, open the public key file generated in the previous 
+    To do this, open https://github.com/account/ssh , and click the link to 
+    add a public key. Open the public key file generated in the previous 
     step in a text editor (e.g. "(notepad|gedit) /path/to/id_rsa.pub"),
-    and copy the entire file to the clipboard.
-    Then open https://github.com/account/ssh , click the link to 
-    add a public key, and paste the key into the "Key" textarea.
-    The "Title" field can be anything.
+    copy the entire file to the clipboard, and paste the key into 
+    the "Key" textarea. The "Title" field can be anything.
 
 4. Fork the official Envaya repository.
     While logged in to github, go to https://github.com/youngj/Envaya 
@@ -259,15 +258,19 @@ The following steps explain how to do this for the first time:
         git@github.com:<your_username>/Envaya.git
     Copy that to the clipboard, then in a command prompt in your local 
     Envaya source code directory, run the following command:
-        git remote add <pasted_url_from_clipboard> public
+        git remote add public <pasted_url_from_clipboard>
 
-6. Whenever you want to push your changes to your github repository
+6. Set your name and email address for git:
+    git config --global user.name "Firstname Lastname"
+    git config --global user.email "your_email@youremail.com"
+        
+7. Whenever you want to push your changes to your github repository
     (after committing them locally with "git commit"), run the 
     following command:
         git push public master
 
-7. Whenever you want your changes to be included in the official 
-    Envaya repository, go to https://github.com/youngj/Envaya ,
+8. Whenever you want your changes to be included in the official 
+    Envaya repository, go to https://github.com/<username>/Envaya ,
     click the "Pull Request" button, and follow the instructions.
         
 =======================================================
