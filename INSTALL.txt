@@ -15,7 +15,7 @@ environment. (For production server installation, see the section
 # step 0: copy source code into a world-readable directory, e.g. /var/www/envaya
 # if you don't already have the source code on your computer, you can do:
 apt-get -y install git-core 
-git clone --recursive git@github.com:youngj/Envaya.git /var/www/envaya
+git clone --recursive git://github.com/youngj/Envaya.git /var/www/envaya
 
 # The following commands should be run from a command prompt in the root
 # directory of the Envaya source code.
@@ -133,7 +133,7 @@ notepad id_rsa.pub
 
 # download envaya code to c:/wamp/www/envaya, e.g.:
 cd c:\wamp\www\
-git clone --recursive git@github.com:youngj/Envaya.git envaya
+git clone --recursive git://github.com/youngj/Envaya.git envaya
 
 # install memcache library from http://downloads.php.net/pierre/php_memcache-cvs-20090703-5.3-VC6-x86.zip
 # copy dll to php extension dir: C:\wamp\bin\php\php5.3.0\ext
