@@ -105,7 +105,7 @@ class WorkerProcess
 function sig_handler($signo)
 {
     global $workers;
-    
+
     foreach ($workers as $worker)
     {
         $worker->kill();
@@ -116,6 +116,7 @@ function sig_handler($signo)
 function run_forever()
 {
     pcntl_signal(SIGTERM, "sig_handler");
+    pcntl_signal(SIGINT, "sig_handler");
 
     global $workers, $worker_options;
     
