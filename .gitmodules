@@ -1,0 +1,3 @@
+[submodule "scripts/httpserver"]
+	path = scripts/httpserver
+	url = git@github.com:youngj/httpserver.git
