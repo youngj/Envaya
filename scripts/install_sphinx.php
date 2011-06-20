@@ -33,10 +33,12 @@ else
     echo "Error writing $conf_file\n";
 }
 
-Sphinx::_reindex();
-
 $log_dir = Config::get('sphinx_log_dir');
 if (!is_dir($log_dir))
 {
     mkdir($log_dir, 0777, true);
 }
+
+require_once "scripts/install_dataroot.php";
+
+Sphinx::_reindex();

@@ -27,7 +27,8 @@ environment. (For production server installation, see the section
         cd envaya
 
     Note: The following commands should be run from a command prompt in 
-    the root directory of the Envaya source code.
+    the root directory of the Envaya source code.    
+    They also assume you are running as 'root'.
 
 2.  Configure your APT sources
     Warning: this will modify your /etc/apt/sources.list file.

@@ -1,6 +1,9 @@
 #!/bin/bash
 
 SETUP_DIR=$(cd `dirname $0` && pwd)
+SCRIPT_DIR=`dirname $SETUP_DIR`
+
+php $SCRIPT_DIR/install_sphinx.php
 
 groupadd sphinx
 useradd -r -d /var/log/sphinx -g sphinx -s /bin/false sphinx

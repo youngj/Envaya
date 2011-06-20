@@ -6,7 +6,6 @@
 #
 
 SETUP_DIR=$(cd `dirname $0` && pwd)
-SCRIPT_DIR=`dirname $SETUP_DIR`
 
 apt-get -y install libmysqlclient-dev g++
 
@@ -16,5 +15,3 @@ tar xzvf sphinx-1.10-beta.tar.gz
 cd sphinx-1.10-beta
 ./configure
 make install
-
-php $SCRIPT_DIR/install_sphinx.php
