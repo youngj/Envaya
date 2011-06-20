@@ -37,6 +37,7 @@ environment. (For production server installation, see the section
 3. Install basic prerequisites (php, php extensions, wget, rsync, etc.)
 
         ./scripts/setup/prereqs.sh
+        ./scripts/setup/php.sh
 
 4.  If you don't already have mysql installed, install it.
     Warning: if mysql is already installed, this script will reset
@@ -289,7 +290,12 @@ in a development environment, not on a production server.
         - Capistrano:
                 gem install capistrano
 
-3.  Initially, to install all prerequisites and latest Envaya code, but no
+3.  Create a file on your local computer config/production.php with the
+    local configuration settings for the production server.    
+    (In the next step, this file will be copied to /var/envaya/shared/local.php 
+    on the production server.)
+                
+4.  Initially, to install all prerequisites and latest Envaya code, but no
     particular services, on a server running Ubuntu 10.04:
 
         cap [HOSTS=<hostname>] deploy:basic_setup
@@ -304,6 +310,6 @@ in a development environment, not on a production server.
 
         cap [HOSTS=<hostname>] deploy:allinone_setup
 
-4.  Subsequently, to update a server to the latest code:
+5.  Subsequently, to update a server to the latest code:
 
         cap [HOSTS=<hostname>] deploy

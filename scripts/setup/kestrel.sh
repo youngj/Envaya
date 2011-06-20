@@ -3,7 +3,7 @@ SETUP_DIR=$(cd `dirname $0` && pwd)
 SCRIPT_DIR=`dirname $SETUP_DIR`
 INSTALL_DIR=`dirname $SCRIPT_DIR`
 
-apt-get -y install default-jre-headless
+apt-get -y install default-jre-headless daemon
 
 mkdir -p /var/kestrel
 chmod 755 /var/kestrel
@@ -12,8 +12,7 @@ groupadd kestrel
 useradd -r -d /var/kestrel -g kestrel -s /bin/false kestrel
 chown kestrel.kestrel /var/kestrel
 
-cp $INSTALL_DIR/vendors/kestrel_dev/kestrel-1.2.jar /var/kestrel
-cp -r $INSTALL_DIR/vendors/kestrel_dev/libs /var/kestrel
+cp -r $INSTALL_DIR/vendors/kestrel/* /var/kestrel
 
 cat <<EOF > /var/kestrel/production.conf
 

@@ -1,5 +1,2 @@
 config/local.php
-_css/*.css
 test/*.out
-vendors/kestrel_dev/kestrel.log
-vendors/kestrel_dev/kestrel.queue

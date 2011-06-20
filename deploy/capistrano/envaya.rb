@@ -15,7 +15,7 @@ default_run_options[:pty] = true
 set :application, "envaya"
 set :deploy_to, "/var/envaya"
 set :deploy_via, :rsync_with_remote_cache
-set :copy_exclude, [".svn", ".git", "yuicompressor-2.4.2.jar", "kestrel_dev", "selenium-server.jar"]
+set :copy_exclude, [".svn", ".git", "selenium-server.jar"]
 set :user, "root"
 
 role :web, "www.envaya.org"                          # Your HTTP server, Apache/etc
@@ -38,6 +38,7 @@ namespace :deploy do
         localsettings_setup
         sanity_check
         update
+        php_setup
         dataroot_setup
     end   
         
@@ -99,6 +100,10 @@ namespace :deploy do
         rescue Exception    
             top.upload(File.join(Dir.pwd, "config/production.php"), "#{shared_path}/local.php")
         end
+    end
+    
+    task :php_setup do
+        run "#{current_path}/scripts/setup/php.sh"
     end
     
     task :db_setup do

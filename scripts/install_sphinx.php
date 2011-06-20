@@ -5,8 +5,10 @@
  * with settings in {{...}} replaced by actual values from envaya config.
  */
 
-require_once("scripts/cmdline.php");
-require_once("start.php");
+chdir(dirname(__DIR__));
+ 
+require_once "scripts/cmdline.php";
+require_once "start.php";
 
 umask(0);
 

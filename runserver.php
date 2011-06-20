@@ -10,7 +10,14 @@ require_once "start.php";
 
 function start_kestrel()
 {
-    $kestrel = run_task("java -jar kestrel-1.2.jar -f kestrel.conf", __DIR__."/vendors/kestrel_dev");    
+    $kestrel_data_dir = Config::get('dataroot') . '/kestrel_data';
+    if (!is_dir($kestrel_data_dir))
+    {
+        mkdir($kestrel_data_dir, 0777, true);
+    }
+    
+    $root = Config::get('root');    
+    $kestrel = run_task("java -jar $root/vendors/kestrel/kestrel-1.2.jar -f $root/scripts/config/kestrel_dev.conf", $kestrel_data_dir);    
     while (true)
     {
         if (FunctionQueue::is_server_available())

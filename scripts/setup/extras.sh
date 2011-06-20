@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # installing these packages can take a long time, so wait to do these until later
 #

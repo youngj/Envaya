@@ -56,4 +56,5 @@ if (!function_exists('pcntl_signal'))
     function pcntl_signal_dispatch() {}
     function posix_setpgid($a,$b) {}
     define('SIGTERM', 0);
+    define('SIGINT', 0);
 }
