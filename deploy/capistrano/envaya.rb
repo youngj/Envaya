@@ -15,7 +15,7 @@ default_run_options[:pty] = true
 set :application, "envaya"
 set :deploy_to, "/var/envaya"
 set :deploy_via, :rsync_with_remote_cache
-set :copy_exclude, [".svn", ".git", "selenium-server.jar"]
+set :copy_exclude, [".svn", ".git"]
 set :user, "root"
 
 role :web, "www.envaya.org"                          # Your HTTP server, Apache/etc

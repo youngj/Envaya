@@ -223,6 +223,10 @@ commands in a command prompt in the root directory of Envaya's source code.
     Leave runserver.php running in a command prompt. It should print 
     the URL of Envaya's home page. Open this URL in a browser. 
     
+9. Install latest version of selenium server (for running tests)
+    
+        php scripts/install_selenium.php
+    
 =================================
 3. Pushing your changes to github
 =================================

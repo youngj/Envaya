@@ -11,6 +11,9 @@
 
 user_pref("app.update.lastUpdateTime.places-maintenance-timer", 1302298372);
 user_pref("app.update.lastUpdateTime.search-engine-update-timer", 1302297945);
+user_pref("app.update.enabled", false);
+user_pref("extensions.checkCompatibility.4.0", false);
+user_pref("extensions.update.enabled", false);
 user_pref("browser.bookmarks.restore_default_bookmarks", false);
 user_pref("browser.migration.version", 1);
 user_pref("browser.places.smartBookmarksVersion", 2);

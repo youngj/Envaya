@@ -98,6 +98,8 @@ function check_selenium()
 
 function main()
 {
+    require_once dirname(__DIR__)."/scripts/install_selenium.php";
+
     global $BROWSER, $TEST_CASES, $MOCK_MAIL_FILE, $DOMAIN;
 
     $opts = getopt('',array("browser:","test:"));
@@ -126,8 +128,10 @@ function main()
        1 => array("file", "selenium.out", 'w'),
        2 => STDERR
     );
-
-    $selenium = proc_open('java -jar selenium-server.jar -singleWindow -firefoxProfileTemplate profiles/noflash', $descriptorspec, $pipes, __DIR__);
+        
+    $selenium_path = Config::get('dataroot') . "/" . Config::get('selenium_jar');    
+    
+    $selenium = proc_open("java -jar $selenium_path -singleWindow -firefoxProfileTemplate profiles/noflash", $descriptorspec, $pipes, __DIR__);
 
     $descriptorspec = array(
        0 => array("pipe", "r"),
