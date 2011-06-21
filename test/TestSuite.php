@@ -56,15 +56,18 @@ function kill_windows_process_tree($pid, $wmi = null)
 function get_firefox_profile_parent_dir()
 {
     $home = getenv('HOME'); 
-    $linux_dot_dir = "$home/.mozilla/firefox";
-    if (is_dir($linux_dot_dir))
+    $linux_profiles_dir = "$home/.mozilla/firefox";
+    if (is_dir($linux_profiles_dir))
     {
-        return $linux_dot_dir;       
+        return $linux_profiles_dir;       
     }
-    else
+    $appdata = getenv('APPDATA');
+    $windows_profiles_dir = "$appdata/Mozilla/Firefox/Profiles";
+    if (is_dir($windows_profiles_dir))
     {
-        return null;
-    }    
+        return $windows_profiles_dir;
+    }
+    return null;
 }
 
 function prepare_firefox_profile()
@@ -90,18 +93,17 @@ function prepare_firefox_profile()
  * via a standard HTML <input type='file'> tag. Apparently the only way to do this is to modify
  * pluginreg.dat, a file in some crazy-ass file format.
  *
- * We want to change something that looks like this:
+ * We want to change something that looks like this (the numbers may not be the same):
  * ...
  * 1305338361000:1:5:$
  * Shockwave Flash 10.2 r159:$
  * ...
  *
- * To something that looks like this:
+ * To something that looks like this (note the zero):
  * ...
  * 1305338361000:1:0:$
  * Shockwave Flash 10.2 r159:$
  * ...
-
  */
 function disable_firefox_flash_plugin($profile_dir)
 {
@@ -141,10 +143,11 @@ function get_all_test_cases()
 function get_test_case_paths($test_case = "*")
 {    
     // look in test/testcases/ in all the enabled modules
-    $modules = explode("\n", `php ../scripts/module_list.php`);
+    chdir(dirname(__DIR__));
+    $modules = explode("\n", `php scripts/module_list.php`);
     $module_glob = "{".implode(",", $modules)."}";
 
-    return glob("{testcases/$test_case.php,../mod/$module_glob/test/testcases/$test_case.php}", GLOB_BRACE);
+    return glob("{test/testcases/$test_case.php,mod/$module_glob/test/testcases/$test_case.php}", GLOB_BRACE);
 }
 
 function get_test_case_path($test_case)
