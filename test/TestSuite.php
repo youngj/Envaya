@@ -96,6 +96,12 @@ function check_selenium()
     fclose($handle);
 }
 
+function stop_selenium()
+{
+    $sel = new Testing_Selenium("",""); 
+    $sel->shutDownSeleniumServer();
+}
+
 function main()
 {
     require_once dirname(__DIR__)."/scripts/install_selenium.php";
@@ -132,6 +138,7 @@ function main()
     $selenium_path = Config::get('dataroot') . "/" . Config::get('selenium_jar');    
     
     $selenium = proc_open("java -jar $selenium_path -singleWindow -firefoxProfileTemplate profiles/noflash", $descriptorspec, $pipes, __DIR__);
+    $selenium_status = proc_get_status($selenium);
 
     $descriptorspec = array(
        0 => array("pipe", "r"),
@@ -155,8 +162,8 @@ function main()
     ));
         
     $runserver = proc_open('php runserver.php', $descriptorspec, $pipes2, dirname(__DIR__), $env);
-    $status = proc_get_status($runserver);                
-    posix_setpgid($status['pid'], $status['pid']);   
+    $runserver_status = proc_get_status($runserver);                
+    posix_setpgid($runserver_status['pid'], $runserver_status['pid']);   
     
     retry('check_selenium');
 
@@ -165,15 +172,14 @@ function main()
     PHPUnit_TextUI_TestRunner::run($suite);
     
     if (function_exists('posix_kill'))
-    {
-        posix_kill(-$status['pid'], SIGTERM);
+    {    
+        posix_kill(-$runserver_status['pid'], SIGTERM);
     }
     else
     {
-        kill_windows_process_tree($status['pid']);
+        kill_windows_process_tree($runserver_status['pid']);
     }
-
-    proc_terminate($selenium);
+    stop_selenium();
 }
 
 main(); 

@@ -106,11 +106,11 @@ class RegisterTest extends SeleniumTest
         $this->submitForm();
         $this->ensureBadMessage();
 
-        $this->type("//input[@name='username']", "testgrantmaker");
+        $this->type("//input[@name='username']", "testposter3");
         $this->submitForm();
         
         // duplicate username: suggested to log in instead of create account
-        $this->mouseOver("//a[contains(@href,'/pg/login?username=testgrantmaker')]");
+        $this->mouseOver("//a[contains(@href,'/pg/login?username=testposter3')]");
         $this->submitForm();
         
         // can't create new account, need to choose new username
