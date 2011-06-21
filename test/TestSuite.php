@@ -17,12 +17,10 @@
         value name: Path    
 */
 
-chdir(__DIR__);
-
-require_once '../scripts/cmdline.php';
-require_once '../engine/config.php';
+require_once dirname(__DIR__).'/scripts/cmdline.php';
+require_once dirname(__DIR__).'/engine/config.php';
 require_once 'PHPUnit/Autoload.php';
-require_once 'SeleniumTest.php';
+require_once __DIR__.'/SeleniumTest.php';
 
 Config::load();
 
@@ -53,6 +51,80 @@ function kill_windows_process_tree($pid, $wmi = null)
     {
         kill_windows_process_tree($child->ProcessId, $wmi);
     }
+}
+
+function get_firefox_profile_parent_dir()
+{
+    $home = getenv('HOME'); 
+    $linux_dot_dir = "$home/.mozilla/firefox";
+    if (is_dir($linux_dot_dir))
+    {
+        return $linux_dot_dir;       
+    }
+    else
+    {
+        return null;
+    }    
+}
+
+function prepare_firefox_profile()
+{    
+    $pwd = getcwd();
+    $profile_parent_dir = get_firefox_profile_parent_dir();
+    if ($profile_parent_dir)
+    {
+        chdir($profile_parent_dir);
+        $default_profiles = glob("*.default", GLOB_ONLYDIR);
+        if ($default_profiles)
+        {
+            $profile_dir = "$profile_parent_dir/{$default_profiles[0]}";
+            disable_firefox_flash_plugin($profile_dir);
+        }
+    }
+
+    chdir($pwd);
+}
+
+/*
+ * Disables Flash plugin inside Selenium's Firefox profile template, so that Selenium can test file uploads
+ * via a standard HTML <input type='file'> tag. Apparently the only way to do this is to modify
+ * pluginreg.dat, a file in some crazy-ass file format.
+ *
+ * We want to change something that looks like this:
+ * ...
+ * 1305338361000:1:5:$
+ * Shockwave Flash 10.2 r159:$
+ * ...
+ *
+ * To something that looks like this:
+ * ...
+ * 1305338361000:1:0:$
+ * Shockwave Flash 10.2 r159:$
+ * ...
+
+ */
+function disable_firefox_flash_plugin($profile_dir)
+{
+    $plugin_dat_file = "$profile_dir/pluginreg.dat";
+    if (!is_file($plugin_dat_file))
+    {
+        return;
+    }
+    $plugin_dat = file_get_contents($plugin_dat_file);
+        
+    $plugin_lines = explode("\n", $plugin_dat);
+    for ($i = 0; $i < sizeof($plugin_lines); $i++)
+    {
+        $line = $plugin_lines[$i];
+        if (strpos($line, "Shockwave Flash") === 0)
+        {
+            $prev_line =& $plugin_lines[$i-1];
+            $prev_line = preg_replace('#^(\d+.+\d+.+)(\d+)(.+)$#', '${1}0${3}', $prev_line);            
+            break;
+        }
+    }
+    $new_plugin_dat = implode("\n", $plugin_lines);
+    file_put_contents(__DIR__.'/profiles/noflash/pluginreg.dat', $new_plugin_dat);    
 }
 
 function get_all_test_cases()
@@ -106,6 +178,8 @@ function main()
 {
     require_once dirname(__DIR__)."/scripts/install_selenium.php";
 
+    prepare_firefox_profile();
+
     global $BROWSER, $TEST_CASES, $MOCK_MAIL_FILE, $DOMAIN;
 
     $opts = getopt('',array("browser:","test:"));
@@ -131,18 +205,18 @@ function main()
 
     $descriptorspec = array(
        0 => array("pipe", "r"),
-       1 => array("file", "selenium.out", 'w'),
+       1 => array("file", __DIR__."/selenium.out", 'w'),
        2 => STDERR
     );
         
     $selenium_path = Config::get('dataroot') . "/" . Config::get('selenium_jar');    
     
-    $selenium = proc_open("java -jar $selenium_path -singleWindow -firefoxProfileTemplate profiles/noflash", $descriptorspec, $pipes, __DIR__);
-    $selenium_status = proc_get_status($selenium);
+    $selenium = proc_open("java -jar $selenium_path -singleWindow -firefoxProfileTemplate profiles/noflash", 
+        $descriptorspec, $pipes, __DIR__);   
 
     $descriptorspec = array(
        0 => array("pipe", "r"),
-       1 => STDOUT, //array("file", "runserver.out", 'w'),
+       1 => STDOUT,
        2 => STDERR
     );
     
@@ -166,7 +240,6 @@ function main()
     posix_setpgid($runserver_status['pid'], $runserver_status['pid']);   
     
     retry('check_selenium');
-
     sleep(2);
 
     PHPUnit_TextUI_TestRunner::run($suite);
