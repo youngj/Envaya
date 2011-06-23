@@ -20,6 +20,20 @@ function addEvent(elem, type, fn)
     }
 }
 
+var trackDirty = (function() {
+    // ignore keys that just move cursor (tab, arrows, home/end, pg up/down)
+    var cleanKeys = {9:1,33:1,34:1,35:1,36:1,37:1,38:1,39:1,40:1};
+
+    return function(evt)
+    {
+        evt = evt || window.event;
+        if (!cleanKeys[evt.keyCode] && !evt.ctrlKey && !evt.altKey)
+        {
+            setDirty(true);
+        }
+    };
+})();
+
 window.dirty = false;
 function setDirty($dirty)
 {

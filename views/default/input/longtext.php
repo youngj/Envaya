@@ -19,7 +19,7 @@
     
     if ($track_dirty)
     {
-        $attrs['onkeyup'] = $attrs['onchange'] = "setDirty(true)";
+        $attrs['onkeypress'] = "trackDirty(event)";
     }       
     
     echo "<textarea ".Markup::render_attrs($attrs).">".escape($value)."</textarea>";    

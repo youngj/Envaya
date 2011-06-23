@@ -8,3 +8,11 @@ function makeClass($base)
     $class.prototype = new $proto;
     return $class;
 }
+
+function extend(to, from)
+{
+    for (var name in from)
+    {
+        to[name] = from[name];
+    }
+}

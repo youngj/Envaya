@@ -54,7 +54,7 @@ class Request
     static function is_post()
     {
         return @$_SERVER['REQUEST_METHOD'] == "POST";
-    }
+    }   
     
     private static $secure = null;
     

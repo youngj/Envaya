@@ -33,27 +33,48 @@ abstract class Action
         $this->before();
         $this->allow_view_types();
     
-        if (Request::is_post())
-        {           
-            try
-            {
-                $this->validate_security_token();
-                $this->process_input();
-            }
-            catch (ValidationException $ex)
-            {
-                $this->handle_validation_exception($ex);
-            }
-            
-            $this->record_user_action();
+        $request_method = @$_SERVER['REQUEST_METHOD'];    
+        $fn = "do_{$request_method}";
+        if (method_exists($this, $fn))
+        {
+            $this->$fn();
         }
         else
         {
-            $this->render();
-        }    
-        
+            $this->set_status(405);
+            $this->set_content_type('text/plain');
+            $this->set_content("Invalid request method $request_method");
+        }
+            
         $this->after();
     }        
+    
+    function do_POST()
+    {
+        try
+        {
+            $this->validate_security_token();
+            $this->process_input();
+        }
+        catch (ValidationException $ex)
+        {
+            $this->handle_validation_exception($ex);
+        }
+        
+        $this->record_user_action();
+    }
+    
+    function do_GET()
+    {
+        $this->render();
+    }
+    
+    function do_HEAD()
+    {
+        $this->render();
+        $this->set_header('Content-Length', strlen($this->get_response()->content));
+        $this->set_content('');
+    }    
     
     protected function handle_validation_exception($ex)
     {       

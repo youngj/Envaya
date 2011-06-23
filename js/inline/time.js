@@ -17,7 +17,7 @@ function getDateText($date, $options)
     
     var $alwaysShowYear = $options['alwaysShowYear'] || false;
     var $showTime = $options['showTime'] || false;
-    var $showDate = ($options['showDate'] !== null) ? $options['showDate'] : true;
+    var $showDate = ($options['showDate'] != null) ? $options['showDate'] : true;
     
     if ($showDate)
     {

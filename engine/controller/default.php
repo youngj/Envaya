@@ -91,6 +91,10 @@ class Controller_Default extends Controller
             }
             $this->redirect($ex->url, $ex->status);
         }
+        catch (RequestAbortedException $ex)
+        {
+            // nothing to do, move along
+        }
         catch (Exception $ex)
         {
             $this->server_error($ex);

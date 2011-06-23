@@ -21,7 +21,7 @@
     
     if ($track_dirty)
     {
-        $attrs['onkeyup'] = $attrs['onchange'] = "setDirty(true)";
+        $attrs['onkeypress'] = "trackDirty(event)";
     }       
 
     echo Markup::empty_tag('input', $attrs);    
