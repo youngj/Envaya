@@ -47,9 +47,9 @@ class EnvayaHTTPServer extends HTTPServer
         }
     }
     
-    function bind_error()
+    function bind_error($errno, $errstr)
     {
-        parent::bind_error();
+        parent::bind_error($errno, $errstr);
         error_log("If you're running this application on another web server, ignore this message.\n"
             ."Otherwise, stop the existing server or add a port to your 'domain'.\n"
             ." e.g. add  'domain' => 'localhost:####',  in config/local.php");    

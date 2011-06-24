@@ -111,7 +111,6 @@ Then, reboot into the GUI.
         extension=php_gd2.dll
         extension=php_mbstring.dll
         extension=php_pdo_mysql.dll
-        extension=php_sockets.dll
 
     Also, add this to the bottom of your php.ini file:
     
@@ -150,7 +149,6 @@ PHP extensions:
     memcache    
     PDO
     pdo_mysql
-    sockets
 Mysql
 Sphinx 1.10
 
