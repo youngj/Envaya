@@ -65,7 +65,7 @@ third-party vendors, which is licensed as follows:
 The following third-party code is used by the software, but should not be 
 distributed together with the software due to licensing incompatibilities:
    
-* vendors/sphinxapi.php
+* vendors/sphinxapi.php (downloaded/installed by "php make.php vendors")
    (c) 2001-2010, Andrew Aksyonoff
    (c) 2008-2010, Sphinx Technologies Inc,
    released under GPL license v2.
@@ -74,5 +74,5 @@ distributed together with the software due to licensing incompatibilities:
     downloaded from http://www.scribd.com/developers/libraries,
     unknown copyright/license.
 
-* ga.php, views/default/page_elements/google_analytics_image.php
+* www/ga.php, views/default/page_elements/google_analytics_image.php
     (c) 2009 Google Inc. All Rights Reserved.

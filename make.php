@@ -20,6 +20,7 @@ class Build
         Build::media();
         Build::css();
         Build::js();
+        Build::vendors();
     }
     
     /*
@@ -31,6 +32,26 @@ class Build
         system('rm -rf build/path_cache');
         system('rm -rf www/_media/*');        
     }
+    
+    /*
+     * Downloads code for 3rd party libraries that can't be distributed with our source code
+     * because their licensing is incompatible with ours.
+     */
+    static function vendors()
+    {
+        $sphinx_ver = "rel110";        
+        $sphinx_api_filename = "sphinxapi.{$sphinx_ver}.php";
+        $sphinx_api_path = __DIR__."/vendors/$sphinx_api_filename";
+        if (!is_file($sphinx_api_path))
+        {
+            $sphinx_url = "http://sphinxsearch.googlecode.com/svn/branches/{$sphinx_ver}/api/sphinxapi.php";    
+        
+            $sphinx_api_php = file_get_contents($sphinx_url);
+            static::write_file($sphinx_api_path, $sphinx_api_php);
+        }
+        static::write_file(__DIR__."/vendors/sphinxapi.php", 
+            "<?php require_once __DIR__.'/$sphinx_api_filename';");
+    }    
     
     /*
      * Generates a cache of all the paths of files in the engine, themes, languages, and views
