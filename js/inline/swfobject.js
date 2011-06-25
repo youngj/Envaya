@@ -433,6 +433,7 @@ var swfobject = function() {
 					}
 				}
 				el.outerHTML = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"' + att + '>' + par + '</object>';
+                
 				objIdArr[objIdArr.length] = attObj.id; // stored to fix object 'leaks' on unload (dynamic publishing only)
 				r = getElementById(attObj.id);	
 			}
@@ -669,10 +670,10 @@ var swfobject = function() {
 					if (flashvarsObj && typeof flashvarsObj === OBJECT) {
 						for (var k in flashvarsObj) { // copy object to avoid the use of references, because web authors often reuse flashvarsObj for multiple SWFs
 							if (typeof par.flashvars != UNDEF) {
-								par.flashvars += "&" + k + "=" + flashvarsObj[k];
+								par.flashvars += "&" + k + "=" + encodeURIComponent(flashvarsObj[k]);
 							}
 							else {
-								par.flashvars = k + "=" + flashvarsObj[k];
+								par.flashvars = k + "=" + encodeURIComponent(flashvarsObj[k]);
 							}
 						}
 					}
