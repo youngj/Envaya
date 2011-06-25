@@ -94,6 +94,7 @@
     echo view($view, array(
         'name' => 'value',
         'style' => $style,
+        'value' => $key->best_translation,
     )); 
     echo "<br />";
     $tokens = $key->get_placeholders();
