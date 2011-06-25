@@ -5,14 +5,14 @@ extend(Dispatcher.prototype, {
         this.clearListeners();
     },
     
-    addListener: function(fn) 
+    addListener: function(fn, thisArg) 
     {
-        this.listeners.push(fn);
+        this.listeners.push({fn:fn,thisArg:thisArg});
     },
     
-    addListenerOnce: function(fn)
+    addListenerOnce: function(fn, thisArg)
     {
-        this.listenersOnce.push(fn);
+        this.listenersOnce.push({fn:fn,thisArg:thisArg});
     },
 
     clearListeners: function()
@@ -25,13 +25,15 @@ extend(Dispatcher.prototype, {
     {
         for (var i = 0; i < this.listenersOnce.length; i++)
         {            
-            this.listenersOnce[i].apply(this, arguments);
+            var listener = this.listenersOnce[i];
+            listener.fn.apply(listener.thisArg || this, arguments);
         }        
         this.listenersOnce = [];
 
         for (var i = 0; i < this.listeners.length; i++)
         {
-            this.listeners[i].apply(this, arguments);
+            var listener = this.listeners[i];
+            listener.fn.apply(listener.thisArg || this, arguments);
         }
     }
 });
