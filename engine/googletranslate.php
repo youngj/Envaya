@@ -5,9 +5,26 @@
  */
 class GoogleTranslate
 {
+    static function is_supported_language($lang_code)
+    {
+        switch ($lang_code)
+        {
+            case 'en':
+            case 'sw':
+            case 'ar':
+            case 'fr':
+                return true;
+            default:
+                return false;
+        }
+    }
+
     static function get_auto_translation($text, $origLang, $viewLang)
     {
-        if ($origLang == $viewLang)
+        if ($origLang == $viewLang
+            || !static::is_supported_language($origLang)
+            || !static::is_supported_language($viewLang)
+            )
         {
             return null;
         }

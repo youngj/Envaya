@@ -20,3 +20,33 @@ Engine::add_autoload_action('Controller_Default', function() {
 Engine::add_autoload_action('Language', function() {
     Language::add_fallback_group('itrans', 'itrans_admin');
 });
+
+if (@Config::get('translate:footer_link'))
+{
+    Views::extend('page_elements/content_footer', 'page_elements/translate_footer');
+}
+
+
+if (@Config::get('translate:live_interface'))
+{
+    Engine::add_autoload_action('Language', function() {
+        $language = Language::current();
+    
+        $interface_language = InterfaceLanguage::get_by_code($language->get_code());
+        
+        if ($interface_language)
+        {   
+            $language->load_all();
+        
+            $interface_keys = $interface_language->query_keys()->where("best_translation <> ''")->filter();
+            
+            $translations = array();
+            foreach ($interface_keys as $interface_key)
+            {
+                $translations[$interface_key->name] = $interface_key->best_translation;
+            }
+                        
+            $language->add_translations($translations);
+        }
+    });
+}

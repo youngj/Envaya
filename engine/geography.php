@@ -125,60 +125,65 @@ class Geography
     
     static function get_region_codes($country_code)
     {
-        if ($country_code == 'tz')
+        switch ($country_code)
         {
-            return array(
-                'region:tz:arusha',
-                'region:tz:dar',
-                'region:tz:dodoma',
-                'region:tz:iringa',
-                'region:tz:kagera',
-                'region:tz:kigoma',
-                'region:tz:kilimanjaro',
-                'region:tz:lindi',
-                'region:tz:manyara',
-                'region:tz:mara',
-                'region:tz:mbeya',
-                'region:tz:morogoro',
-                'region:tz:mtwara',
-                'region:tz:mwanza',
-                'region:tz:pemba_n',
-                'region:tz:pemba_s',
-                'region:tz:pwani',
-                'region:tz:rukwa',
-                'region:tz:ruvuma',
-                'region:tz:shinyanga',
-                'region:tz:singida',
-                'region:tz:tabora',
-                'region:tz:tanga',
-                'region:tz:zanzibar_cs',
-                'region:tz:zanzibar_n',
-                'region:tz:zanzibar_w',
-            );
-        }
-        if ($country_code == 'lr')
-        {
-            return array(
-                'region:lr:bomi',
-                'region:lr:bong',
-                'region:lr:gbarpolu',
-                'region:lr:grandbassa',
-                'region:lr:grandcapemount',
-                'region:lr:grandgedeh',
-                'region:lr:grandkru',
-                'region:lr:lofa',
-                'region:lr:margibi',
-                'region:lr:maryland',
-                'region:lr:montserrado',
-                'region:lr:nimba',
-                'region:lr:rivercess',
-                'region:lr:rivergee',
-                'region:lr:sinoe',
-            );
-        }
-        else
-        {
-            return array();
+            case 'tz':
+                return array(
+                    'region:tz:arusha',
+                    'region:tz:dar',
+                    'region:tz:dodoma',
+                    'region:tz:iringa',
+                    'region:tz:kagera',
+                    'region:tz:kigoma',
+                    'region:tz:kilimanjaro',
+                    'region:tz:lindi',
+                    'region:tz:manyara',
+                    'region:tz:mara',
+                    'region:tz:mbeya',
+                    'region:tz:morogoro',
+                    'region:tz:mtwara',
+                    'region:tz:mwanza',
+                    'region:tz:pemba_n',
+                    'region:tz:pemba_s',
+                    'region:tz:pwani',
+                    'region:tz:rukwa',
+                    'region:tz:ruvuma',
+                    'region:tz:shinyanga',
+                    'region:tz:singida',
+                    'region:tz:tabora',
+                    'region:tz:tanga',
+                    'region:tz:zanzibar_cs',
+                    'region:tz:zanzibar_n',
+                    'region:tz:zanzibar_w',
+                );
+            case 'lr':
+                return array(
+                    'region:lr:bomi',
+                    'region:lr:bong',
+                    'region:lr:gbarpolu',
+                    'region:lr:grandbassa',
+                    'region:lr:grandcapemount',
+                    'region:lr:grandgedeh',
+                    'region:lr:grandkru',
+                    'region:lr:lofa',
+                    'region:lr:margibi',
+                    'region:lr:maryland',
+                    'region:lr:montserrado',
+                    'region:lr:nimba',
+                    'region:lr:rivercess',
+                    'region:lr:rivergee',
+                    'region:lr:sinoe',
+                );
+            case 'rw':
+                return array(
+                    'region:rw:es',
+                    'region:rw:kv',
+                    'region:rw:no',
+                    'region:rw:su',
+                    'region:rw:ou', 
+                );
+            default:
+                return array();
         }    
     }
     

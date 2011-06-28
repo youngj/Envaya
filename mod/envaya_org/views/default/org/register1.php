@@ -39,6 +39,7 @@
 <?php
  $country_options= array();
  $country_options['tz'] = __('country:tz');
+ $country_options['rw'] = __('country:rw');
  if ($testing_country)
  {
 	$country_options[$testing_country] = __('country:'.$testing_country);

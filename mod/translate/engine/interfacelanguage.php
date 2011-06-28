@@ -13,6 +13,27 @@ class InterfaceLanguage extends Entity
         'name' => '',
     );   
     
+    private static $code_map = array();
+    
+    static function get_by_code($code)
+    {
+        if (!isset(static::$code_map[$code]))
+        {
+            static::$code_map[$code] = static::query()->where('code = ?', $code)->get() ?: false;
+        }
+        return static::$code_map[$code];
+    }
+    
+    function get_current_base_code()
+    {
+        $base_lang = Language::get_current_code();
+        if ($base_lang == $this->code) // no sense translating from one language to itself
+        {
+            return Config::get('language');
+        }
+        return $base_lang;
+    }
+    
     function get_defined_language()
     {
         return Language::get($this->code);

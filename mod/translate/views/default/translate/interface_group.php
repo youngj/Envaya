@@ -15,12 +15,7 @@ echo "<li><a href='/tr/instructions#group' target='_blank'>".__('itrans:instruct
         
     $language = $group->get_container_entity();    
     
-    $base_lang = Language::get_current_code();
-    if ($base_lang == $language->code) // no sense translating from one language to itself
-    {
-        $base_lang = Config::get('language');
-    }
-    $time = time();
+    $base_lang = $language->get_current_base_code();
     
     $offset = (int)get_input('offset');
     $limit = 15;
@@ -80,24 +75,7 @@ echo "<li><a href='/tr/instructions#group' target='_blank'>".__('itrans:instruct
         
     for ($i = $offset; $i < $offset + $limit && $i >= 0 && $i < $count; $i++)
     {
-        $key = $filtered_keys[$i];
-        
-        $output_view = $key->get_output_view();
-        
-        echo "<tr>";
-        echo "<td style='font-weight:bold'><a href='{$key->get_url()}'>".escape($key->name)."</a></td>";
-        echo "<td>".view($output_view, array('value' => __($key->name, $base_lang)))."</td>";
-        echo "<td>";
-        if ($key->best_translation)
-        {
-            echo view($output_view, array('value' => $key->best_translation));
-        }
-        else
-        {
-            echo "&nbsp;";
-        }
-        echo "</td>";        
-        echo "</tr>";
+        echo view('translate/interface_key_row', array('key' => $filtered_keys[$i], 'base_lang' => $base_lang));
     }    
 ?>
 </table>

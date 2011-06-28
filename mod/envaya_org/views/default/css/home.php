@@ -136,7 +136,7 @@
     font-weight:normal;
     padding:0px 5px 0px 5px;
     color:#bbb;
-    white-space:nowrap;
+    /* white-space:nowrap; */
 }
 
 .home_banner_text h1 .centered

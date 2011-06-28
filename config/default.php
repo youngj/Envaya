@@ -39,7 +39,7 @@ return array(
 
     'languages' => array(
         'en' => 'English',
-        'sw' => 'Kiswahili'
+        'sw' => 'Kiswahili',
     ),
     'language' => "en",
 	

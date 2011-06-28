@@ -48,4 +48,11 @@ return array(
     'region:lr:rivercess' => "River Cess County",
     'region:lr:rivergee' => "River Gee County",
     'region:lr:sinoe' => "Sinoe County",
+    
+    #rwanda
+    'region:rw:es' => "Eastern",
+    'region:rw:kv' => "Kigali City",
+    'region:rw:no' => "Northern",
+    'region:rw:su' => "Southern",
+    'region:rw:ou' => "Western",
 );

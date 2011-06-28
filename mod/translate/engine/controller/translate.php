@@ -267,4 +267,19 @@ class Controller_Translate extends Controller
             'content' => view('translate/latest_comments', array('language' => $language))
         ));            
     }
+    
+    function action_page()
+    {
+        $language = $this->param('language');
+    
+        $b64_keys = get_input('keys');
+        $gz_keys = base64_decode($b64_keys);
+        $key_names = explode(",",gzuncompress($gz_keys));
+        
+        return $this->page_draw(array(
+            'title' => __('itrans:edit_page'),
+            'header' => view('translate/header', array('items' => array($language), 'title' => __('itrans:edit_page'))),
+            'content' => view('translate/page', array('language' => $language, 'key_names' => $key_names))
+        ));
+    }
 }

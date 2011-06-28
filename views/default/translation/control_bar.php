@@ -6,8 +6,12 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
 <?php
     $transMode = TranslateMode::get_current();
     $origLang = PageContext::get_original_language();
+    $viewLang = Language::get_current_code();
     $origLangName = escape(__("lang:$origLang"));
-    $userLangName = escape(__("lang:".Language::get_current_code()));
+    $userLangName = escape(__("lang:$viewLang"));
+    
+    $can_auto_translate = GoogleTranslate::is_supported_language($origLang) 
+        && GoogleTranslate::is_supported_language($viewLang);
 
     if ($transMode == TranslateMode::ManualOnly && !PageContext::has_translation(TranslateMode::ManualOnly))
     {
@@ -24,21 +28,27 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
         {
             echo strtr(__("trans:stale_trans_from_to"), $tr);
 
-            $links[] = view('translation/mode_link', array(
-                'mode' => TranslateMode::All, 
-                'text' => __("trans:view_stale_automatic"),
-                'original_url' => $vars['original_url'],
-            ));
+            if ($can_auto_translate)
+            {
+                $links[] = view('translation/mode_link', array(
+                    'mode' => TranslateMode::All, 
+                    'text' => __("trans:view_stale_automatic"),
+                    'original_url' => $vars['original_url'],
+                ));
+            }
         }
         else if (PageContext::has_translation(TranslateMode::All))
         {
             echo strtr(__("trans:partial_trans_from_to"), $tr);
 
-            $links[] = view('translation/mode_link', array(
-                'mode' => TranslateMode::All, 
-                'text' => __("trans:view_rest_automatic"),
-                'original_url' => $vars['original_url'],
-            ));            
+            if ($can_auto_translate)
+            {
+                $links[] = view('translation/mode_link', array(
+                    'mode' => TranslateMode::All, 
+                    'text' => __("trans:view_rest_automatic"),
+                    'original_url' => $vars['original_url'],
+                ));         
+            }
         }
         else
         {
@@ -86,11 +96,14 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
         }
         else if (PageContext::has_translation(TranslateMode::All))
         {
-            $links[] = view('translation/mode_link', array(
-                'mode' => TranslateMode::All, 
-                'text' => sprintf(__("trans:view_automatic_in"), $userLangName),
-                'original_url' => $vars['original_url'],
-            ));                    
+            if ($can_auto_translate)
+            {        
+                $links[] = view('translation/mode_link', array(
+                    'mode' => TranslateMode::All, 
+                    'text' => sprintf(__("trans:view_automatic_in"), $userLangName),
+                    'original_url' => $vars['original_url'],
+                ));                    
+            }
         }
     }
 

@@ -2,11 +2,7 @@
     $query = $vars['query'];
     $language = $vars['language'];
 
-    $base_lang = Language::get_current_code();
-    if ($base_lang == $language->code) // no sense translating from one language to itself
-    {
-        $base_lang = Config::get('language');
-    }        
+    $base_lang = $language->get_current_base_code();
     
     $offset = (int)get_input('offset');
     $limit = 10;

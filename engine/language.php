@@ -45,7 +45,11 @@ class Language
             return static::$current_code;
         }
 
-        $language = @$_GET['lang'] ?: @$_COOKIE['lang'] ?: @$_POST['lang'] ?: static::get_accept_language();
+        $language = @$_GET['lang'] 
+            ?: @$_COOKIE['lang'] 
+            ?: @$_POST['lang'] 
+            ?: static::get_accept_language()
+            ?: static::get_default_language_for_country(GeoIP::get_country_code());
         
         if (!$language || !Language::get($language))
         {
@@ -54,6 +58,15 @@ class Language
 
         static::$current_code = $language;
         return $language;
+    }
+    
+    private static function get_default_language_for_country($country_code)
+    {
+        switch ($country_code)
+        {
+            case 'rw': return 'rw';
+            default: return null;
+        }
     }
 
     private static function get_accept_language()
@@ -109,11 +122,14 @@ class Language
     protected $translations;
     protected $loaded_files;    
   
+    protected $requested_keys;
+  
     function __construct($code)
     {
         $this->code = $code;
         $this->translations = array();
         $this->loaded_files = array();
+        $this->requested_keys = array();
     }   
     
     function get_code()
@@ -132,9 +148,16 @@ class Language
             }    
         }
     }   
-    
+   
+    function get_requested_keys()
+    {
+        return array_keys($this->requested_keys);
+    }
+   
     function get_translation($key)
     {    
+        $this->requested_keys[$key] = true;
+    
         $res = @$this->translations[$key];        
         if ($res !== null)
         {
@@ -169,7 +192,7 @@ class Language
             }
         }    
     }
-    
+        
     function get_all_group_names()
     {
         $group_names = array();        

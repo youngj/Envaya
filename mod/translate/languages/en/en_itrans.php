@@ -40,4 +40,6 @@ return array(
     'itrans:all_languages' => "All languages",
     'itrans:latest_comments' => "Latest comments",
     'itrans:comment' => "Comment",
+    
+    'itrans:edit_page' => "Edit Translations on this Page",
 );

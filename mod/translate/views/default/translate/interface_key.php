@@ -1,11 +1,7 @@
 <?php
     $key = $vars['key'];    
 
-    $base_lang = Language::get_current_code();        
-    if ($base_lang == $key->get_language()->code) // no sense translating from one language to itself
-    {
-        $base_lang = Config::get('language');
-    }        
+    $base_lang = $key->get_language()->get_current_base_code();
     
     $base_value = __($key->name, $base_lang);
     
