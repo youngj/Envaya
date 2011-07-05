@@ -41,6 +41,15 @@ namespace :deploy do
         php_setup
         dataroot_setup
     end   
+    
+    task :update_test do
+        test_dir = "#{deploy_to}/test"
+        
+        rsync = "rsync -azv --delete --exclude='.git' --exclude='config/local.php' --chmod=u+rx,g+rx,o+rx . root@envaya.org:#{test_dir}"        
+        puts rsync
+        system(rsync)
+        run "cp #{shared_path}/local_test.php #{test_dir}/config/local.php"
+    end
         
     # sets up a single server with all of envaya's services installed
     task :allinone_setup do
