@@ -1,10 +1,5 @@
 <?php
-        $testing_country = get_input('testing_country');
-
-        if (!empty($testing_country) && !Geography::is_supported_country($testing_country))
-        {
-            throw new ValidationException(__("register:wrong_country"));
-        }
+    $testing_country = $vars['testing_country'];
 ?>
 <?php echo view("org/register_progress", array('current' => 1)) ?>
 
@@ -16,7 +11,7 @@
     <?php echo __('register:qualify_instructions') ?>
 </div>
 
-<form action='<?php echo secure_url('/org/register1'); ?>' method='POST'>
+<form action='<?php echo secure_url('/org/new'); ?>' method='POST'>
 
 <?php echo view('input/securitytoken'); ?>
 

@@ -68,67 +68,20 @@ class Controller_Org extends Controller
         $action = new Action_Contact($this);
         $action->execute();
     }    
-    
+
     function action_new()
     {
-        $this->allow_view_types(null);
-    
-        $invite_code = get_input('invite');
-        if ($invite_code)
-        {
-            Session::set('invite_code', $invite_code);
-        }
-    
-        $step = ((int) get_input('step')) ?: 1;        
-        if ($step > 3)
-        {
-            $step = 1;
-        }
-
-        $loggedInUser = Session::get_loggedin_user();
-
-        if ($loggedInUser && !($loggedInUser instanceof Organization))
-        {
-            logout();
-            throw new RedirectException('', "/org/new?invite=".urlencode($invite_code));
-        }
-
-        if ($step == 3 && !$loggedInUser)
-        {
-            return $this->force_login();
-        }
-
-        if ($loggedInUser  && $step < 3)
-        {
-            $step = 3;
-        }
-
-        if ($step == 2 && !Session::get('registration'))
-        {
-            SessionMessages::add_error(__('register:qualify_missing'));
-            $step = 1;
-        }
-
-        $this->page_draw(array(
-            'title' => __("register:title"),
-            'content' => view("org/register$step"),
-            'org_only' => true
-        ));
-    }
-          
-    function action_register1()
-    {
         $action = new Action_Registration_Qualification($this);
-        $action->execute();    
-    }  
-    
-    function action_register2()
+        $action->execute();        
+    }    
+     
+    function action_create_account()
     {
         $action = new Action_Registration_CreateAccount($this);
-        $action->execute();
-    }       
-
-    function action_register3()
+        $action->execute();    
+    }
+    
+    function action_create_profile()
     {
         $action = new Action_Registration_CreateProfile($this);
         $action->execute();

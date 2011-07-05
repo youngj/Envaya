@@ -2,6 +2,29 @@
 
 class Action_Registration_CreateAccount extends Action_Registration_CreateAccountBase
 {
+    function before()
+    {        
+        if (Session::isloggedin())
+        {
+            throw new RedirectException('', "/org/create_profile");
+        }
+
+        if (!Session::get('registration'))
+        {
+            throw new RedirectException(__('register:qualify_missing'), "/org/new");
+        }    
+    }
+
+    function render()
+    {        
+        $this->allow_view_types(null);        
+        $this->page_draw(array(
+            'title' => __("register:title"),
+            'content' => view("org/create_account"),
+            'org_only' => true
+        ));
+    }    
+
     function post_process_input()
     {        
         Session::set('registration', null);                
@@ -13,7 +36,7 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
             $this->update_existing_relationships($invite_code);
         }        
         
-        $this->redirect("/org/new?step=3");    
+        $this->redirect("/org/create_profile");    
     }
     
     protected function get_country()
@@ -22,11 +45,6 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
         return @$prevInfo['country'];
     }
     
-    protected function handle_validation_exception($ex)
-    {        
-        throw new RedirectException($ex->getMessage(), secure_url("/org/new?step=2"));    
-    }
-
     private function update_existing_relationships($invite_code)
     {
         $org = $this->org;

@@ -5,7 +5,7 @@
     <?php echo __('register:homepage_instructions') ?>
 </div>
 
-<form action='<?php echo secure_url('/org/register3'); ?>' method='POST'>
+<form action='<?php echo secure_url('/org/create_profile'); ?>' method='POST'>
 
 <?php echo view('org/create_profile_form'); ?>
 
