@@ -24,7 +24,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     public function init_selenium()
     {
         global $BROWSER, $DOMAIN;
-        return new Testing_Selenium($BROWSER, "http://$DOMAIN");    
+        return new Testing_Selenium("*$BROWSER", "http://$DOMAIN");    
     }
 
     /*
@@ -94,8 +94,8 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
 
     public function clickAndWait($selector)
     {
-        $this->s->click($selector);
-        $this->s->waitForPageToLoad(10000);
+        $this->click($selector);
+        $this->waitForPageToLoad(10000);
     }
     
     public function isElementInPagedList($elem)

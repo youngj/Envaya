@@ -21,6 +21,8 @@ require_once dirname(__DIR__).'/scripts/cmdline.php';
 require_once dirname(__DIR__).'/engine/config.php';
 require_once 'PHPUnit/Autoload.php';
 require_once __DIR__.'/SeleniumTest.php';
+require_once __DIR__.'/WebDriverTest.php';
+require_once __DIR__.'/webdriver/phpwebdriver/WebDriver.php';
 
 Config::load();
 
@@ -187,7 +189,7 @@ function main()
 
     $opts = getopt('',array("browser:","test:"));
         
-    $BROWSER = @$opts['browser'] ?: '*firefox';
+    $BROWSER = @$opts['browser'] ?: 'firefox';
     
     if (@$opts['test'])
     {
@@ -209,13 +211,13 @@ function main()
     $descriptorspec = array(
        0 => array("pipe", "r"),
        1 => array("file", __DIR__."/selenium.out", 'w'),
-       2 => STDERR
+       2 => array("file", __DIR__."/selenium.err.out", 'w')
     );
         
     $selenium_path = Config::get('dataroot') . "/" . Config::get('selenium_jar');    
     
     $selenium = proc_open("java -jar $selenium_path -singleWindow -firefoxProfileTemplate profiles/noflash", 
-        $descriptorspec, $pipes, __DIR__);   
+        $descriptorspec, $pipes, __DIR__);  
 
     $descriptorspec = array(
        0 => array("pipe", "r"),

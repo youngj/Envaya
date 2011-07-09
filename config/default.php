@@ -76,7 +76,7 @@ return array(
     
     'session_cookie_name' => 'envaya',
     
-    'selenium_jar' => "selenium-server-standalone-2.0rc2.jar",
+    'selenium_jar' => "selenium-server-standalone-2.0.0.jar",
     
     'cache_version' => 188,  // increment when all cached objects need to be invalidated (rare)
 );

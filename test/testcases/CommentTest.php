@@ -1,42 +1,44 @@
 <?php
 
-class CommentTest extends SeleniumTest
+class CommentTest extends WebDriverTest
 {
     public function test()
     {
         // assumes that captcha is disabled in settings file        
+        
         $this->open('/pg/login');
 
         $this->login('testorg','testtest');
-        $this->ensureGoodMessage();
+        $this->retry('ensureGoodMessage', array('Welcome, Test Org'));
         
         $content = "test post ".time();
        
         $this->typeInFrame("//iframe", $content);
         $this->submitForm();
-        $this->ensureGoodMessage();
-        $this->mouseOver("//div[@class='section_content padded']//p[contains(text(), '$content')]");
+        $this->retry('ensureGoodMessage', array('saved successfully'));
+        $this->mustExist("//div[@class='section_content padded']//p[contains(text(), '$content')]");
 
         // comment as logged in user
         $this->type("//textarea[@name='content']", "comment number one");
         $this->submitForm();
-        $this->ensureGoodMessage();
+        $this->retry('ensureGoodMessage', array('comment has been published'));
         $this->assertContains("comment number one", $this->getText("//div[@class='comment']"));
         $this->assertContains("Test Org", $this->getText("//div[@class='comment_name']"));
         $this->type("//textarea[@name='content']", "comment number one"); // duplicate comment
         $this->submitForm();
-        $this->ensureBadMessage();
+        $this->retry('ensureBadMessage', array('same as an existing comment'));
         
-        $this->mouseOver("//div[@class='comment']//span[@class='admin_links']//a");  
+        $this->mustExist("//div[@class='comment']//span[@class='admin_links']//a");  
         
         $url = $this->getLocation();
         
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->logout();
         
         // comment as anonymous user        
         
         $this->open($url);        
         
+        $this->waitForElement("//textarea[@name='content']");
         $this->type("//textarea[@name='content']", "comment number two");
         $this->type("//input[@name='name']", "random dude");
         $this->type("//input[@name='location']", "DSM");
@@ -45,12 +47,12 @@ class CommentTest extends SeleniumTest
         // test fake captcha 
         // (because we can't write an automated test for 'real' captcha without breaking it)
         
-        $this->type("//input[@name='captcha_response']", "wrong");
+        $this->retry('type', array("//input[@name='captcha_response']", "wrong"));
         $this->submitForm();
-        $this->ensureBadMessage();
+        $this->retry('ensureBadMessage', array("verification code"));
         
         $this->submitFakeCaptcha();
-        $this->ensureGoodMessage();
+        $this->retry('ensureGoodMessage', array('comment has been published'));
         
         $this->assertContains("comment number two", $this->getText("//div[@class='comment'][2]"));                
         $this->assertContains("random dude", $this->getText("//div[@class='comment'][2]//div[@class='comment_name']"));
@@ -59,8 +61,8 @@ class CommentTest extends SeleniumTest
         // delete your own comment
         $this->clickAndWait("//span[@class='admin_links']//a");
         
-        $this->getConfirmation();
-        $this->ensureGoodMessage();
+        $this->acceptAlert();
+        $this->retry('ensureGoodMessage', array('Comment deleted'));        
         
         $this->assertContains("comment number one", $this->getText("//div[@class='comment']"));                        
         $this->assertContains("comment deleted", $this->getText("//div[@class='comment'][2]"));                        
