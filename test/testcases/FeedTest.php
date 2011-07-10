@@ -1,6 +1,6 @@
 <?php
 
-class FeedTest extends SeleniumTest
+class FeedTest extends WebDriverTest
 {
     private $post_content;
 
@@ -17,27 +17,29 @@ class FeedTest extends SeleniumTest
         for ($i = 0; $i < 22; $i++)
         {
             $this->open("/pg/login");
-
+    
+            $this->waitForElement("//input[@name='username']");
             $this->login("testposter$i", 'testtest');            
-            $this->ensureGoodMessage();
+            $this->retry('ensureGoodMessage', array('Welcome'));
             
             $this->typeInFrame("//iframe", "test post $i");
             $this->submitForm();
-            $this->ensureGoodMessage();
+            $this->retry('ensureGoodMessage', array('successfully'));
 
             if ($i >= 20)
             {   
                 // multiple news updates from same org should be collapsed
                 for ($j = 0; $j < 2; $j++)
                 {
-                    $this->clickAndWait("//a[contains(@href,'dashboard')]");
+                    $this->click("//a[contains(@href,'dashboard')]");
+                    $this->waitForElement('//iframe');
                     $this->typeInFrame("//iframe", "another post $i.$j");
                     $this->submitForm();
-                    $this->ensureGoodMessage();
+                    $this->retry('ensureGoodMessage', array('successfully'));
                 }                
             }
                         
-            $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+            $this->logout();
         }
     }
     
@@ -45,7 +47,7 @@ class FeedTest extends SeleniumTest
     {
         $this->open("/pg/feed");
         
-        $this->mouseOver("//a[contains(@href,'testposter21')]");
+        $this->waitForElement("//a[contains(@href,'testposter21')]");
         
         // multiple posts should be collapsed
         $this->mustNotExist("//a[contains(@href,'testposter21/post/')]");
@@ -61,7 +63,7 @@ class FeedTest extends SeleniumTest
         
         $this->click("//a[@id='load_more_link']");
         
-        $this->retry('mouseOver', array("//a[contains(@href,'testposter0')]"));
+        $this->waitForElement("//a[contains(@href,'testposter0')]");
         
         $this->mouseOver("//a[contains(@href,'testposter21')]");
         $this->mouseOver("//a[contains(@href,'testposter14')]");

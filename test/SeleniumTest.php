@@ -12,13 +12,16 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-        global $MOCK_MAIL_FILE;
-        
-        @unlink($MOCK_MAIL_FILE);
-
+        $this->deleteMailFile();
         $this->s = $this->init_selenium();
         $this->start();
         $this->windowMaximize();
+    }
+    
+    public function deleteMailFile()
+    {
+        global $MOCK_MAIL_FILE;        
+        @unlink($MOCK_MAIL_FILE);    
     }
     
     public function init_selenium()
@@ -43,9 +46,15 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
 
     function login($username, $password)
     {
+        $this->waitForElement("//input[@name='username']");
         $this->type("//input[@name='username']",$username);
         $this->type("//input[@name='password']",$password);
         $this->submitForm();    
+    }    
+    
+    function waitForElement($xpath, $timeout = 15)
+    {
+        $this->retry('mouseOver', array($xpath), $timeout);
     }    
     
     function ensureGoodMessage()

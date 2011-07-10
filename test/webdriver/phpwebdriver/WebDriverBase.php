@@ -52,7 +52,9 @@ class WebDriverBase
             $postData = array();
         }
         
-        curl_setopt($session, CURLOPT_POSTFIELDS, json_encode($postData));        
+        $json = json_encode($postData);
+        
+        curl_setopt($session, CURLOPT_POSTFIELDS, $json);        
     }
     
     protected function doPostRequest($url, $postData = null) 
@@ -95,8 +97,6 @@ class WebDriverBase
         {
             case WebDriverResponseStatus::Success:
                 return $result['value'];            
-            case WebDriverResponseStatus::NoSuchElement:
-                throw new NoSuchElementException();
             default:
                 throw new WebDriverException(
                     @$result['value']['message'] ?: @$result['value']['class'], $result['status']);
@@ -119,8 +119,23 @@ class WebDriverBase
      */
     public function findElementBy($locatorStrategy, $value) 
     {    
-        $element = $this->doPostRequest("/element", array('using' => $locatorStrategy, 'value' => $value));        
-        return new WebElement($this, $element, null);
+        try
+        {
+            $element = $this->doPostRequest("/element", array('using' => $locatorStrategy, 'value' => $value));        
+        }
+        catch (WebDriverException $ex)
+        {
+            if ($ex->getCode() == WebDriverResponseStatus::NoSuchElement)
+            {
+                throw new NoSuchElementException($value);
+            }
+            else
+            {
+                throw $ex;
+            }             
+        }
+
+        return new WebElement($this, $element, null);        
     }
 
     /**
@@ -131,7 +146,21 @@ class WebDriverBase
      */
     public function findElementsBy($locatorStrategy, $value) 
     {
-        $elements = $this->doPostRequest("/elements", array('using' => $locatorStrategy, 'value' => $value));
+        try
+        {
+            $elements = $this->doPostRequest("/elements", array('using' => $locatorStrategy, 'value' => $value));
+        }
+        catch (WebDriverException $ex)
+        {
+            if ($ex->getCode() == WebDriverResponseStatus::NoSuchElement)
+            {
+                throw new NoSuchElementException($value);
+            }
+            else
+            {
+                throw $ex;
+            }             
+        }
 
         $webelements = array();
         foreach ($elements as $key => $element) {

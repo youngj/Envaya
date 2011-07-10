@@ -1,16 +1,9 @@
 <?php
 
-class UploadTest extends SeleniumTest
+class UploadTest extends WebDriverTest
 {
     private $post_content;
 
-    public function init_selenium()
-    {
-        // Selenium attachFile only works with *chrome browser
-        global $DOMAIN;
-        return new Testing_Selenium("*chrome", "http://$DOMAIN");    
-    }
-    
     public function test()
     {        
         $this->_testNewsUpdateImage();
@@ -24,47 +17,48 @@ class UploadTest extends SeleniumTest
         $this->open("/pg/login");
         $this->login('testorg','testtest');
         
-        $this->click("//div[@class='attachControls']//a");
+        $this->retry('click', array("//div[@class='attachControls']//a"));
         
         $this->retry('selectFrame', array("//iframe[contains(@src,'select_image')]"));
         
         $this->selectUploadFrame();
         
-        $this->attachFile("//input[@type='file']","http://localhost/_media/images/test/1.jpg");
+        $this->attachFile("//input[@type='file']", "images/1.jpg");
         
-        $this->selectFrame("relative=parent");
+        $this->selectFrame(null);
+        $this->selectFrame("//iframe[contains(@src,'select_image')]");
         
         $this->retry('mustBeVisible', array("//div[@id='imageOptionsContainer']"));
         
-        $this->check("//input[@value='medium']");
-        $this->check("//input[@value='right']");        
+        $this->click("//input[@value='medium']");
+        $this->click("//input[@value='right']");        
         
-        $this->selectFrame("relative=top");
+        $this->selectFrame(null);
         
         $this->click("//input[@type='submit' and @value='OK']");
         sleep(1);
         
         $this->submitForm();
         
-        $this->mouseOver("//img[contains(@src,'/medium.jpg') and @class='image_right']");
+        $this->waitForElement("//img[contains(@src,'/medium.jpg') and @class='image_right']");
         
-        $imgUrl = $this->getAttribute("//div[@id='content']//img[contains(@src,'/medium.jpg')]@src");
+        $imgUrl = $this->xpath("//div[@id='content']//img[contains(@src,'/medium.jpg')]")->getAttribute("src");
         
         $this->checkImage($imgUrl, 10000, 25000);
                 
         $this->mustNotExist("//img[contains(@src,'/large.jpg')]"); 
-        $this->clickAndWait("//div[@id='content']//img[contains(@src,'/medium.jpg')]");
-        $this->mouseOver("//img[contains(@src,'/large.jpg')]");
+        $this->click("//div[@id='content']//img[contains(@src,'/medium.jpg')]");
+        $this->waitForElement("//img[contains(@src,'/large.jpg')]");
         
-        $largeImgUrl = $this->getAttribute("//img[contains(@src,'/large.jpg')]@src");
+        $largeImgUrl = $this->xpath("//img[contains(@src,'/large.jpg')]")->getAttribute("src");
         
         $this->checkImage($largeImgUrl, 25000, 75000);        
         
         $this->open("/testorg");
         
-        $this->mouseOver("//img[contains(@src,'/small.jpg')]");
+        $this->waitForElement("//img[contains(@src,'/small.jpg')]");
         
-        $smallImgUrl = $this->getAttribute("//img[contains(@src,'/small.jpg')]@src");
+        $smallImgUrl = $this->xpath("//img[contains(@src,'/small.jpg')]")->getAttribute('src');
         
         $this->checkImage($smallImgUrl, 1000, 10000);        
     }
@@ -72,89 +66,94 @@ class UploadTest extends SeleniumTest
     private function _testAddPhotos()
     {
         $this->open("/testorg/dashboard");
-        $this->clickAndWait("//a[contains(@href,'/addphotos')]");
+        $this->waitForElement("//a[contains(@href,'/addphotos')]");
+        $this->click("//a[contains(@href,'/addphotos')]");
         
-        // test errors for iimages
-        $this->selectUploadFrame();        
-        $this->attachFile("//input[@type='file']","http://localhost/_media/images/test/bad.jpg");        
-        $this->selectFrame("relative=parent");
+        // test errors for images
+        $this->retry('selectUploadFrame');  
+
+        $this->attachFile("//input[@type='file']", "images/bad.jpg");        
+        $this->selectFrame(null);
         
         $this->retry('mustBeVisible', array("//div[@id='progressContainer' and contains(text(), 'could not understand')]"));
         
         $this->selectUploadFrame();        
-        $this->attachFile("//input[@type='file']","http://localhost/_media/images/test/3.jpg");
-        $this->selectFrame("relative=parent");
+        $this->attachFile("//input[@type='file']", "images/3.jpg");
+        $this->selectFrame(null);
         
         $this->retry('mustBeVisible', array("//div[@class='photoPreview']//img"));
         
-        $imgUrl = $this->getAttribute("//div[@class='photoPreview']//img@src");        
+        $imgUrl = $this->xpath("//div[@class='photoPreview']//img")->getAttribute('src');        
         $this->checkImage($imgUrl, 2000, 10000); 
 
         $this->type("//textarea[@class='photoCaptionInput']","caption 3");
         
         $this->selectUploadFrame();        
-        $this->attachFile("//input[@type='file']","http://localhost/_media/images/test/1.jpg");
-        $this->selectFrame("relative=parent");        
+        $this->attachFile("//input[@type='file']","images/1.jpg");
+        $this->selectFrame(null);        
         
         $this->retry('mustBeVisible', array("//div[@class='photoPreviewContainer'][2]//div[@class='photoPreview']//img"));
         
-        $imgUrl = $this->getAttribute("//div[@class='photoPreviewContainer'][2]//div[@class='photoPreview']//img@src");        
+        $imgUrl = $this->xpath("//div[@class='photoPreviewContainer'][2]//div[@class='photoPreview']//img")->getAttribute('src');        
         $this->checkImage($imgUrl, 2000, 10000); 
 
         $this->type("//div[@class='photoPreviewContainer'][2]//textarea[@class='photoCaptionInput']","caption 4");
         
         $this->submitForm();
                
-        $this->mouseOver("//div[@class='section_content padded']//p[contains(text(),'caption 3')]");
+        $this->waitForElement("//div[@class='section_content padded']//p[contains(text(),'caption 3')]");
         $this->mouseOver("//div[@class='section_content padded']//p[contains(text(),'caption 4')]");
                 
-        $this->clickAndWait("//div[@class='blog_date']//a");
+        $this->click("//div[@class='blog_date']//a");
+        $this->waitForElement("//textarea[@name='content']");
         
         $this->mouseOver("//div[@class='section_content padded']//p[contains(text(),'caption 4')]");
         $this->mouseOver("//div[@class='section_content padded']//img");
         
-        $imgUrl = $this->getAttribute("//div[@class='section_content padded']//img@src");        
+        $imgUrl = $this->xpath("//div[@class='section_content padded']//img")->getAttribute('src');        
         $this->checkImage($imgUrl, 20000, 100000);         
     }
     
     private function _testLogo()
     {
         $this->open("/testorg/dashboard");
-        $this->clickAndWait("//a[contains(@href,'/design')]");
-        $this->selectUploadFrame();
+        $this->waitForElement("//a[contains(@href,'/design')]");
+        $this->click("//a[contains(@href,'/design')]");
+        $this->retry('selectUploadFrame');
         
-        $this->attachFile("//input[@type='file']","http://localhost/_media/images/test/logo.png");
+        $this->attachFile("//input[@type='file']","images/logo.png");
         
-        $this->selectFrame("relative=parent");
+        $this->selectFrame(null);
         
         $this->retry('mustBeVisible', array("//div[@class='imageUploadProgress']//img"));
         
         $this->submitForm();
         
-        $this->ensureGoodMessage();
-        $this->mouseOver("//table[@id='heading']//img[contains(@src,'medium.jpg')]");
+        $this->retry('ensureGoodMessage', array('design saved'));
+        $this->waitForElement("//table[@id='heading']//img[contains(@src,'medium.jpg')]");
         
-        $imgUrl = $this->getAttribute("//table[@id='heading']//img[contains(@src,'medium.jpg')]@src");
+        $imgUrl = $this->xpath("//table[@id='heading']//img[contains(@src,'medium.jpg')]")->getAttribute('src');
         
         $this->checkImage($imgUrl, 2000, 10000);    
         
-        $this->clickAndWait("//a[contains(@href,'pg/feed')]");
+        $this->click("//a[contains(@href,'pg/feed')]");
         
-        $this->mouseOver("//a[@class='feed_org_icon' and contains(@href,'/testorg')]//img");
+        $this->waitForElement("//a[@class='feed_org_icon' and contains(@href,'/testorg')]//img");
         
-        $smallImgUrl = $this->getAttribute("//a[@class='feed_org_icon' and contains(@href,'/testorg')]//img@src");
+        $smallImgUrl = $this->xpath("//a[@class='feed_org_icon' and contains(@href,'/testorg')]//img")->getAttribute('src');
         
         $this->checkImage($smallImgUrl, 500, 2000);   
 
         $this->open("/testorg/design");        
         
-        $this->check("//input[@type='checkbox']"); // remove image
+        $this->waitForElement("//input[@type='checkbox']");
+        $this->xpath("//input[@type='checkbox']")->toggle(); // remove image
         $this->submitForm();
         
+        $this->waitForElement("//table[@id='heading']//img[contains(@src,'/staticmap')]");
         $this->mustNotExist("//table[@id='heading']//img[contains(@src,'medium.jpg')]");
-        $this->mouseOver("//table[@id='heading']//img[contains(@src,'/staticmap')]");
         
-        $staticMapUrl = $this->getAttribute("//table[@id='heading']//img[contains(@src,'/staticmap')]@src");
+        $staticMapUrl = $this->xpath("//table[@id='heading']//img[contains(@src,'/staticmap')]")->getAttribute('src');
         
         $this->checkImage($staticMapUrl, 2000, 10000);   
     }
@@ -162,19 +161,23 @@ class UploadTest extends SeleniumTest
     private function _testMobileUpload()
     {
         $this->open("/");
-        $this->clickAndWait("//a[contains(@href,'/dashboard')]");
-        $this->clickAndWait("//a[contains(@href,'view=mobile')]");
-        $this->clickAndWait("//a[contains(@href,'/addphotos')]");
+        $this->click("//a[contains(@href,'/dashboard')]");
+        $this->waitForElement("//a[contains(@href,'/addphotos')]");
+        $this->click("//a[contains(@href,'view=mobile')]");
+        $this->waitForElement("//a[contains(@href,'view=default')]");
+        $this->click("//a[contains(@href,'/addphotos')]");
         
-        $this->attachFile("//input[@name='imageFile1']","http://localhost/_media/images/test/2.jpg");
+        $this->waitForElement("//input[@name='imageFile1']");
+        
+        $this->attachFile("//input[@name='imageFile1']", "images/2.jpg");
         $this->type("//textarea[@name='imageCaption1']", "example caption");
         
-        $this->clickAndWait("//input[@type='submit']");
+        $this->click("//input[@type='submit']");
         
-        $this->mouseOver("//div[@class='section_content padded']//img[contains(@src,'large.jpg')]");
+        $this->waitForElement("//div[@class='section_content padded']//img[contains(@src,'large.jpg')]");
         $this->assertContains("example caption", $this->getText("//div[@class='section_content padded']"));
         
-        $imgUrl = $this->getAttribute("//img[contains(@src,'/large.jpg')]@src");
+        $imgUrl = $this->xpath("//img[contains(@src,'/large.jpg')]")->getAttribute("src");
         
         $this->checkImage($imgUrl, 10000, 100000);        
     }

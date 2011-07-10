@@ -84,6 +84,12 @@ function prepare_firefox_profile()
         {
             $profile_dir = "$profile_parent_dir/{$default_profiles[0]}";
             disable_firefox_flash_plugin($profile_dir);
+            
+            $zip = new ZipArchive(); 
+            $zip->open(__DIR__.'/profiles/noflash.zip', ZipArchive::OVERWRITE); 
+            $zip->addFile(__DIR__.'/profiles/noflash/prefs.js', 'prefs.js');
+            $zip->addFile(__DIR__.'/profiles/noflash/pluginreg.dat', 'pluginreg.dat');
+            $zip->close();             
         }
     }
 

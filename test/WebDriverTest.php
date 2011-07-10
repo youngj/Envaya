@@ -6,7 +6,15 @@ class WebDriverTest extends SeleniumTest
         global $BROWSER;
     
         $this->webdriver = new WebDriver("localhost", 4444);
-        $this->webdriver->connect($BROWSER);
+        
+        $profile = base64_encode(file_get_contents(__DIR__.'/profiles/noflash.zip'));
+        
+        $this->webdriver->connect(array(
+            'browserName' => $BROWSER,
+            'firefox_profile' => $profile
+        ));
+        
+        $this->deleteMailFile();
     }
 
     function tearDown() {
@@ -39,7 +47,7 @@ class WebDriverTest extends SeleniumTest
     
     function waitForElement($xpath, $timeout = 15)
     {
-        $this->retry('xpath', array($xpath), $timeout);
+        return $this->retry('xpath', array($xpath), $timeout);
     }
     
     function waitForPageToLoad($timeout)
@@ -58,15 +66,29 @@ class WebDriverTest extends SeleniumTest
         $element->click();
     }
     
+    function selectFrame($xpath)
+    {
+        if ($xpath == null)
+        {
+            $this->webdriver->selectFrame(null);
+        }
+        else
+        {    
+            $element = $this->xpath($xpath);                
+            $id = $element->getAttribute('id');
+            $this->webdriver->selectFrame($id);
+        }
+    }
+    
+    function mouseOver($xpath)
+    {
+        $this->xpath($xpath);
+    }
+    
     function typeInFrame($xpath, $text)
     {        
-        $element = $this->xpath($xpath);        
-        
-        $id = $element->getAttribute('id');
-        $this->webdriver->selectFrame($id);
-        
-        $this->type("//body", $text);        
-        
+        $element = $this->selectFrame($xpath);        
+        $this->type("//body", $text);                
         $this->webdriver->selectFrame(null);
     }
     
@@ -75,17 +97,42 @@ class WebDriverTest extends SeleniumTest
         $this->xpath($xpath);
     }
     
-    function ensureGoodMessage($msg)
+    function isElementPresent($xpath)
+    {
+        try
+        {
+            $this->xpath($xpath);
+            return true;
+        }
+        catch (NoSuchElementException $ex)
+        {
+            return false;
+        }
+    }
+    
+    function ensureGoodMessage($msg = '')
     {
         $elem = $this->xpath("//div[@class='good_messages']");
-        $this->assertContains($msg, $elem->getText());
+        if ($msg)
+        {
+            $this->assertContains($msg, $elem->getText());
+        }
     }    
     
-    function ensureBadMessage($msg)
+    function ensureBadMessage($msg='')
     {
         $elem = $this->xpath("//div[@class='bad_messages']");
-        $this->assertContains($msg, $elem->getText());        
+        if ($msg)
+        {
+            $this->assertContains($msg, $elem->getText());        
+        }
     }        
+    
+    function isVisible($xpath)
+    {
+        $element = $this->xpath($xpath);
+        return $element->isDisplayed();        
+    }
     
     function getText($xpath)
     {
@@ -101,6 +148,39 @@ class WebDriverTest extends SeleniumTest
     function logout()
     {
         $this->click("//a[contains(@href,'pg/logout')]");    
-        $this->retry('click', array("//a[@id='loginButton']"));    
+        $this->waitForElement("//a[@id='loginButton']");    
+    }
+    
+    function attachFile($xpath, $file)
+    {
+        $this->type($xpath,__DIR__.str_replace("/","\\", "/$file"));
+    }
+    
+    function getValue($xpath)
+    {
+        return $this->xpath($xpath)->getValue();
+    }
+    
+    function clear($xpath)
+    {
+        return $this->xpath($xpath)->clear();
+    }
+
+    function select($xpath)
+    {
+        return $this->xpath($xpath)->setSelected();
+    }
+
+    function toggle($xpath)
+    {
+        return $this->xpath($xpath)->toggle();
+    }    
+    
+    function getSelectedLabel($xpath)
+    {
+        $select = $this->xpath($xpath);
+        $value = $select->getValue();
+        $option = $select->findElementBy(LocatorStrategy::xpath, "//option[@value='$value']");
+        return $option->getAttribute('label');
     }
 }

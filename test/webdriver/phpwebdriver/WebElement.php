@@ -62,6 +62,11 @@ class WebElement extends WebDriverBase
         $this->doPostRequest("/submit");
     }
 
+    public function toggle()
+    {
+        $this->doPostRequest("/toggle");
+    }
+    
     public function getText() 
     {
         return $this->doGetRequest("/text");
@@ -99,6 +104,11 @@ class WebElement extends WebDriverBase
         return $this->doGetRequest("/enabled") == 'true';
     }
 
+    public function isDisplayed() 
+    {
+        return $this->doGetRequest("/displayed") == 'true';
+    }    
+    
     public function getAttribute($name)
     {
         return $this->doGetRequest("/attribute/$name");

@@ -31,17 +31,21 @@ class WebDriver extends WebDriverBase {
         parent::__construct($this->baseURL);
     }
 
-    public function connect($browserName="firefox") 
+    public function connect($capabilities = null) 
     {        
-        $session = $this->curlInit("/session");
-        
+        $session = $this->curlInit("/session");                        
+                        
+        $default_capabilities = array(
+            'browserName' => 'firefox',
+            'version' => '',
+            'javascriptEnabled' => true,
+            'nativeEvents' => false,
+        );
+
+        $capabilities = array_merge($default_capabilities, $capabilities ?: array());
+                        
         $this->preparePost($session, array(
-            'desiredCapabilities' => array(
-                'browserName' => $browserName,
-                'version' => '',
-                'javascriptEnabled' => true,
-                'nativeEvents' => false
-            )
+            'desiredCapabilities' => $capabilities
         ));
         
         curl_exec($session);
@@ -120,6 +124,15 @@ class WebDriver extends WebDriverBase {
         return $this->doPostRequest("/window", array('name' => $windowName));        
     }
 
+    public function closeWindow() 
+    {
+        return $this->doDeleteRequest("/window");        
+    }
+    
+    public function refresh() 
+    {
+        return $this->doPostRequest("/refresh");        
+    }
 
     public function selectFrame($frameId)
     {
@@ -132,7 +145,7 @@ class WebDriver extends WebDriverBase {
      * is returned to the client.
      * @return Object result of evaluating the script is returned to the client.
      */
-    public function execute($script, $script_args) 
+    public function executeScript($script, $script_args) 
     {
         return $this->doPostRequest("/execute", array('script' => $script, 'args' => $script_args));
     }
@@ -145,7 +158,7 @@ class WebDriver extends WebDriverBase {
      * to the function. The value to this callback will be returned to the client.
      * @return Object result of evaluating the script is returned to the client.
      */
-    public function executeAsync($script, $script_args) 
+    public function executeAsyncScript($script, $script_args) 
     {
         return $this->doPostRequest("/execute_async", array('script' => $script, 'args' => $script_args));
     }
@@ -181,4 +194,3 @@ class WebDriver extends WebDriverBase {
     }
 }
 
-?>
