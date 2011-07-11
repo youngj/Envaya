@@ -84,9 +84,12 @@ abstract class Controller_User extends Controller
             PageContext::get_submenu('edit')->add_item(__("widget:edit"), $widget->get_edit_url());
             PageContext::get_submenu('org_actions')->add_item(__('widget:options'), "{$widget->get_base_url()}/options");
         }
-
+        
+        $container = $widget->get_container_entity();         
+        $content = $container->render_child_view($widget, array('is_primary' => true));
+        
         $this->page_draw(array(
-            'content' => $widget->render_view(array('is_primary' => true)),
+            'content' => $content,
             'title' => $widget->get_title(),
             'show_next_steps' => $org->guid == Session::get_loggedin_userid(),
         )); 

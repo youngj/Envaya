@@ -9,6 +9,7 @@
     {
         $content = $widget->render_content();
     }
+        
     echo view('section', array(
         'content' => $content
     ));

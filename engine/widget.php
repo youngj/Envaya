@@ -186,7 +186,7 @@ class Widget extends Entity
             $org = $container->get_root_container_entity();
             if ($this->guid)
             {
-                return "{$org->get_url()}/widget/{$this->guid}";
+                return "{$org->get_url()}/widget/{$this->get_url_slug()}";
             }
             else
             {
@@ -208,6 +208,18 @@ class Widget extends Entity
     public function is_page()
     {
         return $this->get_container_entity()->is_page_container();
+    }
+
+    function get_breadcrumb_items()
+    {
+        $args = array();
+        for ($cur = $this, $i = 0; 
+            $cur instanceof Widget && $i < 10; 
+            $cur = $cur->get_container_entity(), $i++)
+        {
+            $args[] = array('url' => $cur->get_url(), 'title' => $cur->get_title());
+        }
+        return array_reverse($args);
     }
     
     function post_feed_items()

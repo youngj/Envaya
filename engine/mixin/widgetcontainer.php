@@ -132,4 +132,9 @@ class Mixin_WidgetContainer extends Mixin
     {        
         return null;
     }
+    
+    function render_child_view($widget, $args)
+    {
+        return $widget->render_view($args);
+    }
 }

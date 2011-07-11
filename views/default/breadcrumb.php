@@ -1,7 +1,18 @@
 <?php
     $items = $vars['items'];
     $separator = @$vars['separator'] ?: ": ";
+    if (!isset($vars['include_last']))
+    {
+        $include_last = false;
+    }    
+    else
+    {
+        $include_last = $vars['include_last'];
+    }
+    
     $num_items = sizeof($items);
+    
+    $list = array();
     
     for ($i = 0; $i < $num_items; $i++)
     {
@@ -10,10 +21,12 @@
         $title = escape($item['title']);        
         if ($i < $num_items - 1)
         {
-            echo "<a href='$url'>$title</a>$separator";
+            $list[] = "<a href='$url'>$title</a>";
         }
-        else
+        else if ($include_last)
         {
-            echo $title;
+            $list[] = $title;
         }
     }
+    
+    echo implode($separator, $list);
