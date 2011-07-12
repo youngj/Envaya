@@ -29,7 +29,7 @@
             <?php echo view('input/checkboxes', 
             array('name' => $deletename,
                 'id' => $deleteid,
-                'options' => array(__('upload:image:delete')),
+                'options' => array('1' => __('upload:image:delete')),
             )) ?>
             </div>
         <?php } ?>    
