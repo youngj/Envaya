@@ -3,8 +3,6 @@
     $content = $vars['content'];
     $widget = $vars['widget'];
     
-    $container = $widget->get_container_entity();
-    
     echo "<div class='section_content'>";
     
     echo "<div class='padded' style='padding-bottom:0px;padding-top:0px;color:#666'>";
@@ -19,17 +17,41 @@
     echo $content;
     
     echo "<div class='padded'>";
-
-    $prev_sibling = $container->query_published_widgets()
-        ->where('menu_order < ?', $widget->menu_order)
-        ->order_by('menu_order desc')
-        ->get();    
-        
-    $next_sibling = $container->query_published_widgets()
-        ->where('menu_order > ?', $widget->menu_order)
-        ->order_by('menu_order')
-        ->get();   
     
+    $get_sibling = function($widget, $cmp, $sort)
+    {        
+        $cur = $widget;
+        while (true)            
+        {
+            $container = $cur->get_container_entity();
+            if ($container == null || !($container instanceof Widget_Menu))
+            {
+                break;
+            }           
+            
+            $sibling = $container->query_published_widgets()
+                ->where("menu_order $cmp ?", $cur->menu_order)
+                ->order_by("menu_order $sort")
+                ->get();
+                
+            if ($sibling)
+            {
+                return $sibling;
+            }   
+            
+            else if ($cmp == '<')
+            {
+                return $container;
+            }
+            
+            $cur = $container;            
+        }
+        return null;
+    };  
+    
+    $prev_sibling = $get_sibling($widget, '<', 'desc');
+    $next_sibling = $get_sibling($widget, '>', 'asc');
+        
     if ($next_sibling)
     {
         echo "<div>";

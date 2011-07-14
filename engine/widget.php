@@ -291,7 +291,6 @@ class Widget extends Entity
                 }
             }
         }
-        return $this->url_slug;
-        
-    }
+        return $this->url_slug;       
+    }    
 }

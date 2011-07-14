@@ -840,3 +840,9 @@ a.discussionTopic
 {
     opacity:1.0;
 }
+
+ol ol
+{
+    list-style-type:lower-alpha;
+    margin:0px;
+}

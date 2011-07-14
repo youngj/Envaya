@@ -6,15 +6,8 @@
     echo view('widgets/generic_view', array('widget' => $widget));    
     
     echo "<div class='section_content padded' style='padding-top:0px'>";    
-    echo "<ol>";
     
-    $sub_widgets = $widget->query_menu_widgets()->filter();    
-    
-    foreach ($sub_widgets as $sub_widget)
-    {
-        echo "<li><a href='{$sub_widget->get_url()}'>".escape($sub_widget->get_title())."</a></li>";
-    }
+    echo view('widgets/menu_menu', array('widget' => $widget));
 
-    echo "</ol>";
     echo "</div>";
     echo "</div>";
