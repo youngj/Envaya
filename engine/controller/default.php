@@ -11,6 +11,10 @@ class Controller_Default extends Controller
             'regex' => '/(?P<controller>pg|admin)\b',
         ),
         array(
+            'regex' => '/robots.txt\b',
+            'action' => 'action_robots_txt',
+        ),        
+        array(
             'regex' => '/(?P<username>[\w\-]{3,})\b', 
             'controller' => 'Controller_UserSite',
             'before' => 'init_user_by_username',
@@ -119,6 +123,16 @@ class Controller_Default extends Controller
         else
         {
             throw new NotFoundException();
+        }
+    }
+    
+    function action_robots_txt()
+    {
+        $this->set_content_type('text/plain');
+        
+        if (!Config::get('allow_robots'))
+        {
+            $this->set_content("User-agent: *\nDisallow: /\n");
         }
     }
     
