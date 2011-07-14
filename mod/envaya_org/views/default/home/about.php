@@ -1,5 +1,5 @@
 <p class='last-paragraph'>
-<?php echo __('home:description').' '.__('home:description2').' '; ?>
+<?php echo __('home:description').' '; ?>
 <a class='home_more' href='/envaya'><?php echo __('home:learn_more') ?></a>
 </p>
 <?php echo view('home/about_photo'); ?>
