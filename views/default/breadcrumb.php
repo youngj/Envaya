@@ -3,7 +3,7 @@
     $separator = @$vars['separator'] ?: ": ";
     if (!isset($vars['include_last']))
     {
-        $include_last = false;
+        $include_last = true;
     }    
     else
     {

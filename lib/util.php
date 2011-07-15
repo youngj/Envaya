@@ -53,8 +53,18 @@
      * If $url is a relative URI, returns the corresponding absolute URL on this domain.
      * If $url is already an absolute URL, returns the URL converted to the given scheme.
      */
-    function abs_url($url, $scheme = 'http')        
+    function abs_url($url, $scheme = null)        
     {
+        if (!$scheme)
+        {
+            $replace_scheme = false;
+            $scheme = 'http';
+        }
+        else
+        {
+            $replace_scheme = true;
+        }
+        
         $scheme_end = strpos($url, "://");
         if ($scheme_end === false)
         {
@@ -65,9 +75,13 @@
             $domain = Config::get('domain');
             return "$scheme://$domain$url";
         }        
-        else // convert URL to requested scheme
+        else if ($replace_scheme) // convert URL to requested scheme
         {
             return $scheme.substr($url, $scheme_end);
+        }
+        else
+        {
+            return $url;
         }
     }
 

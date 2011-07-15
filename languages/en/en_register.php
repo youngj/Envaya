@@ -12,6 +12,9 @@ return array(
     'register:passwordtooshort' => 'The password must be a minimum of {min} characters long.',
     'register:invalidchars' => 'Sorry, the username "%s" is invalid because it contains the character "%s". Please choose a username using only the following characters: a-z 0-9 - _',
     'register:usernamenotvalid' => 'Sorry, the username "%s" is invalid. Please choose another.',
+    
+    'register:already_logged_in' => "You are currently logged in as {name}.",
+    'register:must_log_out' => "In order to register a new account, you must log out.",
 
     // qualification
     'register:welcome' => "Welcome to Envaya! In just a few minutes, your organization will have a website of its own, for free, where you can share news about your projects and let everyone know about your work.",

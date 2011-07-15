@@ -8,8 +8,7 @@ class Action_Registration_CreateProfile extends Action_Registration_CreateProfil
         
         if (!(Session::get_loggedin_user() instanceof Organization))
         {
-            logout();
-            throw new RedirectException('', "/org/new");
+            throw new RedirectException('', "/org/register_logged_in");
         }
     }
     

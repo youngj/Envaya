@@ -12,6 +12,9 @@ return array(
     'register:passwordtooshort' => 'Lazima neno la siri liwe angalau tarakimu {min}.',
     'register:invalidchars' => 'Samahani, jina la mtumiaji "%s" haliruhusiwi kwa sababu lina tarakimu "%s". Tafadhali uchague jina la mtumiaji litumialo tarakimu zifuatazo tu: a-z 0-9 - _',
     'register:usernamenotvalid' => 'Samahani, jina la mtumiaji "%s" haliruhusiwi. Tafadhali uchague jingine.',
+    
+    'register:already_logged_in' => "Kwa sasa, umefungua kama {name}.",
+    'register:must_log_out' => "Ili kuandikisha akaunti mpya, lazima uondoke.",    
         
     // qualification
     'register:welcome' => 'Karibu katika Envaya! Baada ya dakika chache tu, shirika lako litakuwa na tovuti, ambapo utaweza kugawa habari kuhusu miradi yako na kuwaambia watu kuhusu kazi yako.',

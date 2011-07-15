@@ -37,3 +37,12 @@ function asyncReorderWidget($url, $table_id, $link_id, ts, token)
     
     asyncPost(xhr, $url, {__ts:ts, __token:token});
 }
+
+function highlightRow($row_id, $active)
+{
+    var row = $($row_id);
+    if (row)
+    {
+        row.style.backgroundColor = $active ? '#f0f0f0' : '';
+    }
+}

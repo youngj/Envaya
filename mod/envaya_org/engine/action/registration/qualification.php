@@ -8,8 +8,7 @@ class Action_Registration_Qualification extends Action
     
         if (Session::isloggedin())
         {
-            logout();
-            throw new RedirectException('', "/org/new?invite=".urlencode($invite_code));
+            throw new RedirectException('', "/org/register_logged_in");
         }
         
         if ($invite_code)

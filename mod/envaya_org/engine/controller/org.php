@@ -86,6 +86,12 @@ class Controller_Org extends Controller
         $action = new Action_Registration_CreateProfile($this);
         $action->execute();
     }
+    
+    function action_register_logged_in()
+    {
+        $action = new Action_Registration_LoggedIn($this);
+        $action->execute();
+    }
 
     function action_featured()
     {

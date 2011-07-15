@@ -5,7 +5,7 @@
     
     echo "<div class='section_content'>";
     
-    echo "<div class='padded' style='padding-bottom:0px;padding-top:0px;color:#666'>";
+    echo "<div class='padded' style='padding-bottom:0px;padding-top:0px;'>";
     echo view('breadcrumb', array(
         'separator' => ' : ', 
         'include_last' => false,

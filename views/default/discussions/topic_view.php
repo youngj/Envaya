@@ -45,6 +45,10 @@
         echo "<h3><a id='add_message' href='{$topic->get_url()}/add_message?offset={$offset}#add_message'>";
         echo __('discussions:add_message');
         echo "</a></h3>";
+        echo "<script type='text/javascript'>".view('js/share')."</script>";
+        echo "<h3><a rel='nofollow' href='javascript:emailShare(".json_encode($org->username).")' onclick='ignoreDirty()'>";
+        echo __('discussions:invite_link');
+        echo "</a></h3>";
     }
     else
     {

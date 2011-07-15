@@ -34,7 +34,7 @@
             $url = "javascript:asyncReorderWidget(".
                 json_encode("{$widget->get_base_url()}/reorder?delta=-1").",\"{$table_id}\",\"{$link_id}\", \"$ts\", \"$token\");";
             $style = $can_move_up ? '' : 'display:none';
-            echo "<a href='$url' style='$style' id='$link_id' onclick='ignoreDirty()' style='text-decoration:none'>&uarr;</a>";
+            echo "<a href='$url' style='$style' id='$link_id' onmouseover='highlightRow(\"{$table_id}_{$widget->guid}\", true)' onmouseout='highlightRow(\"{$table_id}_{$widget->guid}\", false)' onclick='ignoreDirty()' style='text-decoration:none'>&uarr;</a>";
             echo "</td>";
             echo "</td></tr>";
                         
