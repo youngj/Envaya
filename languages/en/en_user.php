@@ -32,7 +32,7 @@ return array(
     'user:notification:label' => "Notification Settings",
     'user:notification:success' => "Your notification settings have been changed.",
     'user:notification:desc2' => "Settings for %s:",
-    'user:notification:invalid' => "Unable to access email notification settings. If you copied a link from your email, please ensure that the URL is exactly the same as it was in the email you received.",        
+    'user:notification:invalid' => "Unable to access email notification settings. If you copied a link from your email, please ensure that the address (URL) is exactly the same as it was in the email you received.",        
 
     'user:subscribe_reminders' => 'Send important announcements from Envaya',
     'user:subscribe_comments' => 'Send email when someone comments on my website',

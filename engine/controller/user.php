@@ -160,7 +160,7 @@ abstract class Controller_User extends Controller
         }
         else if ($user)
         {
-            $this->force_login(Session::isloggedin() ? __('page:noaccess') : '');
+            $this->force_login(Session::isloggedin() ? __('page:noaccess') : '');   
         }
         else
         {

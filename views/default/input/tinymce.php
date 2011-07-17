@@ -26,7 +26,9 @@
         }
                 
         echo "<script type='text/javascript'>";
-        echo view('js/save_draft', array('guid' => $entity->guid));
+        echo view('js/save_draft', array(
+            'guid' => $entity->guid,
+        ));
         echo "</script>";
         
         $saveFn = 'saveDraft';

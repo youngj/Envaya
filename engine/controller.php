@@ -465,7 +465,15 @@ abstract class Controller {
     {
         if (!Session::isloggedin())
         {
-            $this->force_login();
+            if (@$this->response->headers['Content-Type'] == 'text/javascript')
+            {
+                $this->set_status(403);
+                throw new RequestAbortedException();
+            }
+            else
+            {
+                $this->force_login();
+            }
         }
     }
 

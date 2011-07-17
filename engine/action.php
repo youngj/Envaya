@@ -81,6 +81,7 @@ abstract class Action
         $response = $this->get_response();
         if (@$response->headers['Content-Type'] == 'text/javascript')
         {                    
+            $this->set_status(500);
             $this->render_error_js($ex);
         }
         else

@@ -26,7 +26,7 @@ class DiscussionTopic extends Entity
         $this->num_messages = $this->query_messages()->count();
         $this->last_time_posted = $lastMessage ? $lastMessage->time_posted : 0;
         $this->last_from_name = $lastMessage ? $lastMessage->from_name : '';
-        $this->snippet = $lastMessage ? Markup::get_snippet($lastMessage->content) : '';
+        $this->snippet = $lastMessage ? Markup::get_snippet($lastMessage->content, 250) : '';
     }
     
     function get_url()

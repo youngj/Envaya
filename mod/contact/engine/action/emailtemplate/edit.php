@@ -13,14 +13,11 @@ class Action_EmailTemplate_Edit extends Action
     
         validate_security_token();
             
-        $email = $this->get_email();
+        $email = $this->get_email();       
             
         $content = get_input('content');                       
-            
-        $revision = ContentRevision::get_recent_draft($email);
-        $revision->time_updated = time();
-        $revision->content = $content;
-        $revision->save();
+        
+        $email->save_draft($content);                    
         
         $email->set_content($content);
         $email->save();

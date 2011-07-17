@@ -488,6 +488,14 @@ abstract class Entity extends Model
             }
         }
     }
+    
+    function save_draft($content)
+    {
+        $revision = ContentRevision::get_recent_draft($this);
+        $revision->time_updated = time();
+        $revision->content = $content;                       
+        $revision->save();
+    }
 
     function lookup_translation($prop, $origLang, $viewLang, $translateMode = TranslateMode::ManualOnly, $isHTML = false)
     {

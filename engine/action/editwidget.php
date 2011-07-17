@@ -5,28 +5,20 @@ class Action_EditWidget extends Action
     function before()
     {
         parent::before();
+        
+        if (get_input('_draft'))
+        {
+            $this->set_content_type('text/javascript');
+        }
+        
         $this->require_editor();
         $this->require_org();
     }
     
     protected function save_draft()
     {
-        $this->set_content_type('text/javascript');
-    
-        validate_security_token();        
-    
         $widget = $this->get_widget();
-        if (!$widget->guid || $widget->status == Entity::Disabled)
-        {
-            $widget->publish_status = Widget::Draft;
-            $widget->enable();            
-            $widget->save();            
-        }
-        
-        $revision = ContentRevision::get_recent_draft($widget);
-        $revision->time_updated = time();
-        $revision->content = get_input('content');                       
-        $revision->save();
+        $widget->save_draft(get_input('content'));                       
         
         $this->set_content(json_encode(array('guid' => $widget->guid)));    
     }
@@ -38,8 +30,6 @@ class Action_EditWidget extends Action
             return $this->save_draft();
         }
 
-        validate_security_token();        
-        
         $widget = $this->get_widget();
     
         if (get_input('delete'))
@@ -93,6 +83,4 @@ class Action_EditWidget extends Action
             'content' => $widget->render_edit()
         ));
     }
-
-    protected function validate_security_token() {}    
 }

@@ -7,6 +7,7 @@ OrgMapLoader = function()
 {
     this.bucketSize = 20; // pixel width/height for each bucket   
     
+    this.baseURL = "/pg/search_area";    
     this.displayedBuckets = {};
     this.lastFetchedBounds = null;
     this.fetchOrgXHR = null;
@@ -51,7 +52,7 @@ OrgMapLoader = function()
         }
 
         this.displayedBuckets = {};    
-    };
+    };   
     
     // may be overridden to add additional parameters to the URL when fetching organizations
     this.getURLParams = function()
@@ -95,15 +96,21 @@ OrgMapLoader = function()
         }
         
         var $self = this;
-        
-        var url = "/pg/search_area?latMin="+$sw.lat()+"&latMax="+$ne.lat()+
-            "&longMin="+$sw.lng()+"&longMax="+$ne.lng();
-            
+                   
         var urlParams = this.getURLParams();
+        
+        urlParams.latMin = $sw.lat();
+        urlParams.latMax = $ne.lat();
+        urlParams.longMin = $sw.lng();
+        urlParams.longMax = $ne.lng();
+        
+        var paramsArr = [];        
         for (var name in urlParams)
         {
-            url += "&" + name + "=" + encodeURIComponent(urlParams[name]);
+            paramsArr.push(name + "=" + encodeURIComponent(urlParams[name]));
         }
+        
+        var url = this.baseURL + (this.baseURL.indexOf('?') == -1 ? '?' : '&') + paramsArr.join('&');        
         
         this.fetchOrgXHR = fetchJson(url, function(data) { $self._loaded(data); });
     };

@@ -293,4 +293,15 @@ class Widget extends Entity
         }
         return $this->url_slug;       
     }    
+    
+    function save_draft($content)
+    {
+        if (!$this->guid || $this->status == Entity::Disabled)        
+        {
+            $this->publish_status = Widget::Draft;
+            $this->enable();            
+            $this->save();            
+        }
+        parent::save_draft($content);            
+    }
 }
