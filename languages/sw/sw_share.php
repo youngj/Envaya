@@ -10,12 +10,14 @@ return array(
     'share:subject' => "{name} inakukaribisha kwenye tovuti yake",   
     'share:no_partners' => "Huna mashirika mengine ya ubia yenye anwani za email.",    
     'share:no_partners_2' => "Unataka kuongeza mashirika mapya ya ubia?",    
-    'share:link' => "Kiungo kusambaza:",
-    'share:duplicate' => "Ukurasa huu umesambazwa tayari na anwani za email zifuatazo:",
+    'share:link' => "Kiungo cha kusambaza:",
+    'share:duplicate' => "Ukurasa huu umesambazwa na anwani za email zifuatazo:",
     'share:no_emails' => "Tafadhali ingiza anwani za email kusambaza ukurasa huu nazo.",
     'share:too_many_emails' => "Umeingiza anwani mno za email. Tafadhali ingiza anwani {max} za email, au chini.",
     'share:link_is' => "Kiungo ni:",
     'share:add_users' => "Ongeza watumiaji wa Envaya",
-    'share:browse_instructions' => "Bonyeza mashirika ambayo unataka kusambaza ukurasa huu nayo:",
-    
+    'share:browse_instructions' => "Bonyeza mashirika ambayo unataka kuyatumia ukurasa huu:",
+    'share:disclaimer' => "Umepata email hii kwa sababu {name} kakutumia kwa kutumia Envaya.",
+    'share:disclaimer_2' => "Kama hutaki kupokea email kama hizi, tafadhali wasiliana na {name}.",
+    'share:rate_limit_exceeded' => "Umeshatuma email za kutosha kwa leo.",
 );

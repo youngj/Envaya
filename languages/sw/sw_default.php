@@ -81,7 +81,7 @@ return array(
 
     'yes' => 'Ndiyo',
     'no' => 'Siyo',
-    'areyousure' => 'Una hakika?',
+    'areyousure' => 'Una uhakika?',
     'save' => 'Hifadhi',
     'publish' => 'Chapisha',
     'cancel' => 'Ghairi',

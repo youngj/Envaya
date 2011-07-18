@@ -27,7 +27,7 @@ return array(
     'tinymce:saving' => "Ikihifadhi...",
     'tinymce:no_unsaved_changes' => "Hamna mabadiliko.",
     'tinymce:saved' => "Mabadiliko yamehifadhiwa.",
-    'tinymce:restore_confirm' => "Una hakika kuwa unataka kurejesha toleo hili? Mabadiliko yoyote ambayo hayajahifadhiwa yatapotea.",
+    'tinymce:restore_confirm' => "Una uhakika kuwa unataka kurejesha toleo hili? Mabadiliko yoyote ambayo hayajahifadhiwa yatapotea.",
     'tinymce:restoredraft_desc' => "Matoleo ya Zamani",    
     'tinymce:preview_older' => "Ona Toleo la Zamani",
     'tinymce:no_revisions' => "Hamna matoleo.",

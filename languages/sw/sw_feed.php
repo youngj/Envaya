@@ -4,7 +4,7 @@ return array(
     'feed:title' => 'Mabadiliko mapya',
     'feed:registered' => '{name} imejiunga na Envaya.',
     'feed:noresults' => "Hamna mabadiliko.",
-    'feed:confirm_delete' => "Una hakika kuwa unataka kufuta badiliko hili?",
+    'feed:confirm_delete' => "Una uhakika kuwa unataka kufuta badiliko hili?",
     'feed:item_deleted' => "Badiliko limefutwa.",    
     'feed:new_page' => "{name} imeumba ukurasa wa {title}.",
     'feed:edit_page' => "{name} imehariri ukurasa wa {title}.",

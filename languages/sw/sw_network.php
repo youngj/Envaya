@@ -17,11 +17,11 @@ return array(
     'network:notify_added_instructions' => "Ili kuongeza {name} kwenye orodha yako ya {type}, bonyeza hapa:",        
     
     'network:invite_notify_info' => "{name} imeshaongeza {subject} kwenye orodha yake ya {type} katika Envaya ( {url} ), na imekukaribisha kujiunga Envaya pia!",
-    'network:invite_sign_up' => "Ikiwa shirika lako halijaandikisha kwenye Envaya, jiunge na kuumba tovuti yako sasa!",
+    'network:invite_sign_up' => "Ikiwa shirika lako halijaandikishwa kwenye Envaya, jiunge ili uumbe tovuti yako sasa!",
     'network:invite_learn_more' => "Ili kujifunza zaidi kuhusu Envaya, bonyeza hapa:",
     
     'network:added' => "{name} imeongezwa kwenye orodha yako ya {type}.",
-    'network:confirm_delete' => "Una hakika kuwa unataka kuondoa {name} kutoka orodha yako ya {type}?",            
+    'network:confirm_delete' => "Una uhakika kuwa unataka kuondoa {name} kutoka orodha yako ya {type}?",            
     'network:deleted' => "{name} imeondolewa kutoka orodha yako ya {type}.",       
     'network:duplicate' => "{name} imewahi kutajwa kwenye orodha yako ya {type}.",        
     'network:can_add_unregistered' => "Hata hivyo, unaweza kuliongeza kwenye orodha yako ya {type}.",
@@ -29,7 +29,7 @@ return array(
     'network:add_partnership_instructions' => "Ingiza jina la shirika la ubia, na data yoyote ya mawasiliano:",           
 
     'network:empty' => "Mtandao wa shirika hili ni mtupu.",        
-    'network:confirm_partner' => "Thibitisha shirika kuongeza kama ubia:",
+    'network:confirm_partner' => "Thibitisha shirika la kuongeza kama ubia:",
                 
     'network:feed_heading' => '{name} imeongeza {subject} kwenye orodha yake ya {type}.',
     
@@ -37,7 +37,7 @@ return array(
     
     'network:blank_org' => "Tafadhali ingiza jina la shirika.",    
     
-    'network:org_not_shown' => "Shirika ambalo unataka kuliongeza halionekani hapo juu?",
+    'network:org_not_shown' => "Je, shirika ambalo unataka kuliongeza halijaonekana hapo juu?",
             
     'network:org_name' => "Jina la shirika",
     'network:searching' => "Ikitafuta...",
@@ -47,7 +47,7 @@ return array(
     
     'network:org_not_registered' => "Inaonekana kwamba {name} haijajiunga Envaya.",
     
-    'network:invite_org' => "Karibisha {email} kujiunga Envaya?",
+    'network:invite_org' => "Karibisha {email} kujiunga na Envaya?",
     'network:add' => "Ongeza",
        
     'network:invited' => "{name} imekaribishwa kujiunga Envaya.",                          
@@ -61,7 +61,7 @@ return array(
     
     'network:add_description' => 'Ongeza maelezo...',
     
-    'network:instructions' => "Kwenye ukurasa huu, unaweza kuorodhesha mashirika yaliyo na ubia na %s, na kueleza jinsi ya unafanya kazi nao.",
-    'network:instructions_2' => "Mashirika haya yanaweza kuwa yale yanakufadhili, yanakusaidia, au yanafanya kazi nawe,
+    'network:instructions' => "Kwenye ukurasa huu, unaweza kuorodhesha mashirika yaliyo na ubia na %s, na kueleza jinsi ya unavyofanya kazi nao.",
+    'network:instructions_2' => "Mashirika haya yanaweza kuwa yale ambayo yanakufadhili, yanakusaidia, au yanafanya kazi nawe,
         na vile vile mitandao ya mashirika yaliyo na shirika lako kama mwanachama.",
 );

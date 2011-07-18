@@ -2,7 +2,7 @@
 
 return array(
     'widget:post:blank' => 'Habari yako ilikuwa tupu.',
-    'widget:news:delete_confirm' => 'Una hakika kuwa unataka kufuta habari hii?',
+    'widget:news:delete_confirm' => 'Una uhakika kuwa unataka kufuta habari hii?',
     'widget:view' => 'Ona ukurasa',    
     'widget:title' => 'Jina',    
     'widget:page_title' => 'Jina Fupi la Ukurasa',    
@@ -102,7 +102,7 @@ return array(
     'widget:delete_section' => 'Futa sehemu',
     'widget:delete:success' => 'Ukurasa umefutwa.',
     'widget:delete_section:success' => 'Sehemu imefutwa.',
-    'widget:delete:confirm' => 'Una hakika kuwa unataka kufuta ukurasa huu kutoka kwenye tovuti yako?',
-    'widget:delete_section:confirm' => 'Una hakika kuwa unataka kufuta sehemu hii?',
+    'widget:delete:confirm' => 'Una uhakika kuwa unataka kufuta ukurasa huu kutoka kwenye tovuti yako?',
+    'widget:delete_section:confirm' => 'Una uhakika kuwa unataka kufuta sehemu hii?',
         
 );
