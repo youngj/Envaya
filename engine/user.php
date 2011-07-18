@@ -215,7 +215,6 @@ class User extends Entity
 
     public function set_password($password)
     {
-        $this->salt = generate_random_code(8);
         $this->password = $this->generate_password($password);
     }
     
@@ -277,17 +276,35 @@ class User extends Entity
 
         $this->set_metadata('login_failures', $fails);
         $this->set_metadata("login_failure_$fails", time());
-    }        
+    }           
     
     function has_password($password)
     {
-        return $this->password == $this->generate_password($password);
+        if ($this->password[0] != '$') // migrate old md5 password+salt from elgg to new bcrypt passwords
+        {
+            if ($this->password == md5($password . $this->salt))
+            {
+                $this->password = $this->generate_password($password);
+                $this->salt = '';
+                $this->save();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return ($this->password == crypt($password, $this->password));
+        }
     }
     
     function generate_password($password)
     {
-        return md5($password . $this->salt);
-    }    
+        $salt = substr(str_replace('+', '.', base64_encode(sha1(microtime(true) . rand(), true))), 0, 22);        
+        return crypt($password, '$2a$11$' . $salt);
+    }
 	
 	function is_notification_enabled($notification)
 	{

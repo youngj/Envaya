@@ -131,8 +131,8 @@ CREATE TABLE `users` (
   
   `subtype_id` varchar(63) not null,
   `name` text NOT NULL,
-  `username` varchar(128) NOT NULL default '',
-  `password` varchar(32) NOT NULL default '',
+  `username` varchar(128) NOT NULL default '',  
+  `password` varchar(128) NOT NULL default '',
   `salt`     varchar(8)  NOT NULL default '',
   `email` text NOT NULL,
   `phone_number` text NULL,
