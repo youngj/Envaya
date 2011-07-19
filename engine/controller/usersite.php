@@ -101,18 +101,7 @@ class Controller_UserSite extends Controller_User
         $action = new Action_EditDesign($this);
         $action->execute();            
     }
-    
-    function action_help()
-    {
-        $this->require_editor();
-        $this->require_org();
-        
-        $this->page_draw(array(
-            'title' => __("help:title"),
-            'content' => view("org/help", array('org' => $this->get_org())),           
-        ));        
-    }
-
+   
     function action_dashboard()
     {    
         $this->require_editor();        

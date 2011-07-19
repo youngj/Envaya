@@ -1,6 +1,7 @@
 <?php
 return array(    
     'go' => 'Nenda',   
+    'help' => 'Msaada',
     'menu' => 'Menyu Kuu',
     'sign_up_now' => "jiunge sasa",    
     'register' => "Jiandikishe",

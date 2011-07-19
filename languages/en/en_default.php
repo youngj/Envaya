@@ -8,6 +8,7 @@ return array(
     'feed' => "Updates",    
     'menu' => 'Main Menu',
     'register' => "Register",
+    'help' => "Help",
     
     'exception_title' => "Error",
 
