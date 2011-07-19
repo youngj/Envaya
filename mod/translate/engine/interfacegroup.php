@@ -35,10 +35,10 @@ class InterfaceGroup extends Entity
         
     function get_defined_default_group()
     {
-        if (!$this->defined_default_group)
+        if (!isset($this->defined_default_group))
         {
             $default_language = Language::get(Config::get('language'));        
-            $this->defined_default_group = $default_language->get_group($this->name);    
+            $this->defined_default_group = @$default_language->get_group($this->name) ?: array();    
         }
         return $this->defined_default_group;
     }

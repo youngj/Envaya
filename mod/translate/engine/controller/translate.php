@@ -221,6 +221,8 @@ class Controller_Translate extends Controller
 
     function action_view_group()
     {
+        PageContext::add_header_html('<meta name="robots" content="noindex,nofollow" />');
+    
         $group = $this->param('group');
         $language = $this->param('language');
             
@@ -270,6 +272,8 @@ class Controller_Translate extends Controller
     
     function action_page()
     {
+        PageContext::add_header_html('<meta name="robots" content="noindex,nofollow" />');
+    
         $language = $this->param('language');
     
         $b64_keys = get_input('keys');

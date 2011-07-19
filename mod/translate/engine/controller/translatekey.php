@@ -35,6 +35,8 @@ class Controller_TranslateKey extends Controller
     
     function before()
     {
+        PageContext::add_header_html('<meta name="robots" content="noindex,nofollow" />');
+    
         $this->page_draw_vars['theme_name'] = 'simple_wide';
         $this->page_draw_vars['login_url'] = url_with_param(Request::full_original_url(), 'login', 1);
     }    

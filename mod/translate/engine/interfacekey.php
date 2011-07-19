@@ -112,7 +112,7 @@ class InterfaceKey extends Entity
     
     function get_default_value()
     {
-        return __($this->name, Config::get('language'));
+        return @__($this->name, Config::get('language'));
     }
     
     function get_output_view()

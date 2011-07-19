@@ -3,7 +3,7 @@
 
     $base_lang = $key->get_language()->get_current_base_code();
     
-    $base_value = __($key->name, $base_lang);
+    $base_value = @__($key->name, $base_lang);
     
     $target_language = $key->get_language();
 
