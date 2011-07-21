@@ -43,7 +43,7 @@ class TranslateTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'/tr/tl/module/comment')]");
         
         $this->clickAndWait("//a[contains(@href,'anonymous')]");
-        $this->mouseOver("//td[contains(text(),'Anonymous')]");
+        $this->mouseOver("//td//div[contains(text(),'Anonymous')]");
         
         // register for individual account
         $this->clickAndWait("//a[contains(@href,'/pg/register')]");
@@ -65,7 +65,7 @@ class TranslateTest extends SeleniumTest
         $this->ensureGoodMessage();
         
         // add translation
-        $this->mouseOver("//td[contains(text(),'Anonymous')]");
+        $this->mouseOver("//td//div[contains(text(),'Anonymous')]");
         $this->deleteAllTranslations();
         $value = 'sidfuaoewir uaoiwuroiaw';
         
@@ -117,17 +117,19 @@ class TranslateTest extends SeleniumTest
         $this->mouseOver("//td[contains(text(),'$value')]");
         $this->mustNotExist("//a[contains(@href,'delta=1')]");
         $this->clickAndWait("//tr[.//td[contains(text(),'$value2')]]//a[contains(@href,'delta=-1')]");
-        $this->mouseOver("//a[contains(@href,'delta=1')]");
+        $this->waitForElement("//strong[contains(text(),'0')]");
+        $this->clickAndWait("//tr[.//td[contains(text(),'$value2')]]//a[contains(@href,'delta=-1')]");
+        $this->waitForElement("//strong[contains(text(),'-1')]");
         
-        // test highest score is shown on module page
+        // test latest non-negative score is shown on module page
         $this->clickAndWait("//h2//a[contains(@href,'/module/comment')]");
         $this->mouseOver("//td[contains(text(),'$value')]");
         $this->mustNotExist("//td[contains(text(),'$value2')]");
         
         $this->clickAndWait("//a[contains(@href,'anonymous')]");
-        $this->clickAndWait("//tr[.//td[contains(text(),'$value')]]//a[contains(@href,'delta=-1')]");
-        $this->clickAndWait("//tr[.//td[contains(text(),'$value')]]//a[contains(@href,'delta=-1')]");
-        $this->mustNotExist("//tr[.//td[contains(text(),'$value')]]//a[contains(@href,'delta=-1')]");
+        
+        $this->clickAndWait("//tr[.//td[contains(text(),'$value2')]]//a[contains(@href,'delta=1')]");
+        $this->waitForElement("//strong[contains(text(),'0')]");
 
         $this->clickAndWait("//h2//a[contains(@href,'/module/comment')]");
         $this->mouseOver("//td[contains(text(),'$value2')]");
@@ -137,21 +139,22 @@ class TranslateTest extends SeleniumTest
         $this->select("//select[@name='status']", "Has translation");
         $this->submitForm();
         $this->mouseOver("//a[contains(@href,'anonymous')]");
-        $this->mustNotExist("//a[contains(@href,'name_said')]");
+        $this->mustNotExist("//a[contains(@href,'name_5Fsaid')]");
 
         $this->select("//select[@name='status']", "Missing translation");
         $this->submitForm();
         $this->mustNotExist("//a[contains(@href,'anonymous')]");
-        $this->mouseOver("//a[contains(@href,'name_said')]");        
+        $this->waitForElement("//a[contains(@href,'name_5Fsaid')]");        
         
         $this->type("//input[@name='q']","deleted");
         $this->submitForm();
         
         $this->mustNotExist("//a[contains(@href,'anonymous')]");
-        $this->mustNotExist("//a[contains(@href,'name_said')]");        
+        $this->mustNotExist("//a[contains(@href,'name_5Fsaid')]");        
         $this->clickAndWait("//a[contains(@href,'deleted')]");
         
         // test filters persist through navigation
+        $this->waitForElement("//a[contains(@href,'/next')]");
         $this->clickAndWait("//a[contains(@href,'/next')]");
         $this->clickAndWait("//a[contains(@href,'/next')]");
         $this->clickAndWait("//a[contains(@href,'/next')]");
@@ -159,7 +162,7 @@ class TranslateTest extends SeleniumTest
         
         $this->assertEquals("deleted", $this->getValue("//input[@name='q']"));
         $this->mustNotExist("//a[contains(@href,'anonymous')]");
-        $this->mustNotExist("//a[contains(@href,'name_said')]");                
+        $this->mustNotExist("//a[contains(@href,'name_5Fsaid')]");                
         $this->mouseOver("//a[contains(@href,'deleted')]");
         
         $this->type("//input[@name='q']","");
@@ -167,7 +170,7 @@ class TranslateTest extends SeleniumTest
         $this->submitForm();
         
         $this->mouseOver("//a[contains(@href,'anonymous')]");
-        $this->mouseOver("//a[contains(@href,'name_said')]");                
+        $this->mouseOver("//a[contains(@href,'name_5Fsaid')]");                
         $this->mouseOver("//a[contains(@href,'deleted')]");
         
         // test latest translations

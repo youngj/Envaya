@@ -186,3 +186,28 @@
         }
         readfile($path);
     }
+    
+    /*
+     * Encodes all non-alphanumeric characters as '_' followed by two hex digits.
+     * It is similar to urlencode except it uses '_' instead of '%' (and encodes '.', '-', and '_' characters).
+     * Its purpose is to avoid automatic decoding of URL components by the web server.
+     * An encoded component can be matched using the regex \w+
+     */
+    function urlencode_alpha($c)
+    {
+        $c = urlencode($c);    
+        $c = str_replace('_','_5F', $c);                
+        
+        return strtr($c, array(
+            '.' => '_2E',
+            '-' => '_2D',
+            '%' => '_'
+        ));
+    }
+    
+    function urldecode_alpha($c)
+    {
+        $c = str_replace('_', '%', $c);
+        $c = urldecode($c);
+        return $c;
+    }

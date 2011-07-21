@@ -43,50 +43,40 @@ class Controller_TranslateKey extends Controller
     
     function action_index()
     {
-        $key = $this->param('key');
-        $group = $this->param('group');
-        $language = $this->param('language');
-        
-        $key->init_defined_translation(true);
-        
-        return $this->page_draw(array(
-            'title' => __('itrans:translations'),
-            'header' => view('translate/header', array('items' => array($language, $group, $key))),
-            'content' => view('translate/interface_key', array('key' => $key))
-        ));       
+        throw new NotImplementedException();
     }        
-    
+        
     function action_add()
     {
-        $action = new Action_AddInterfaceTranslation($this);
+        $action = new Action_AddTranslation($this);
         $action->execute();
     }
 
     function action_add_comment()
     {
-        $action = new Action_AddInterfaceKeyComment($this);
+        $action = new Action_AddTranslationKeyComment($this);
         $action->execute();
     }
-    
+
     function action_vote_translation()
     {
-        $action = new Action_VoteInterfaceTranslation($this);
+        $action = new Action_VoteTranslation($this);
         $action->execute();
-    }    
-    
+    }
+
     function action_delete_translation()
     {
-        $action = new Action_DeleteInterfaceTranslation($this);
-        $action->execute();        
-    }    
-    
+        $action = new Action_DeleteTranslation($this);
+        $action->execute();
+    }        
+        
     private function get_key_index($keys, $key)
     {
         $count = sizeof($keys);
         for ($i = 0; $i < $count; $i++)
         {
             $k = $keys[$i];
-            if ($k->guid == $key->guid)
+            if ($k->name == $key->name)
             {
                 return $i;
             }
@@ -104,31 +94,46 @@ class Controller_TranslateKey extends Controller
         $this->redirect_delta(1);
     }
     
+    function get_available_keys()
+    {
+        throw new NotImplementedException();
+    }
+    
+    function get_parent_uri()
+    {
+        $uri = $this->parent_controller->get_matched_uri();
+        $pieces = explode('/', $uri);
+        unset($pieces[sizeof($pieces)-1]);
+        return implode('/', $pieces);
+    }    
+    
     function redirect_delta($delta)
     {
-        $group = $this->param('group');
+        $keys = $this->get_available_keys();
         $key = $this->param('key');
-            
-        $keys = $group->get_available_keys();
         
+        $parent_uri = $this->get_parent_uri();
+                
         $i = $this->get_key_index($keys, $key);
+        
         if ($i >= 0)
         {
-            $filtered_keys = $this->parent_controller->filter_keys($keys);
-                   
-            // $key may not be in the filter anymore, so we find the closest 
-            // adjacent key from the full list of keys that is still in the filter
+            $filter = $this->parent_controller->get_filter_params();
+            $filtered_keys = $this->parent_controller->filter_keys($keys, $filter);            
+            
             $num_keys = sizeof($keys);
+
             for ($j = $i + $delta; $j >= 0 && $j < $num_keys; $j += $delta)
-            {            
+            {
                 $next_key = $keys[$j];
                 
                 if ($this->get_key_index($filtered_keys, $next_key) >= 0)
                 {
-                    return $this->redirect($next_key->get_url());
-                }            
+                    return $this->redirect($parent_uri . "/" . urlencode_alpha($next_key->name));
+                }
             }
         }                
-        $this->redirect($group->get_url());
-    }
+        
+        return $this->redirect($parent_uri);
+    }    
 }

@@ -1,18 +1,12 @@
 <?php
 
-class Action_AddInterfaceTranslation extends Action
+class Action_AddTranslation extends Action
 {
     function process_input()
     {
         $this->require_login();
         
         $value = get_input('value');
-
-        // don't allow people to sneak in bad HTML into translations
-        $value = Markup::sanitize_html($value, array(
-            'AutoFormat.Linkify' => false,
-            'HTML.AllowedElements' => 'em,strong,br'
-        ));        
         
         if ($value == '')
         {
@@ -25,14 +19,7 @@ class Action_AddInterfaceTranslation extends Action
             $key->save();
         }
         
-        $placeholders = Language::get_placeholders($value);
-        $correct_placeholders = $key->get_placeholders();
-        sort($correct_placeholders);
-        sort($placeholders);
-        if ($correct_placeholders != $placeholders)
-        {
-            throw new ValidationException(__('itrans:placeholder_error'));
-        }
+        $value = $key->sanitize_value($value);        
         
         if ($key->query_translations()->where('value = ?', $value)->exists())
         {
@@ -41,11 +28,17 @@ class Action_AddInterfaceTranslation extends Action
         
         $user = Session::get_loggedin_user();
                 
-        $translation = new InterfaceTranslation();
+        $translation = new Translation();
         $translation->container_guid = $key->guid;
         $translation->owner_guid = $user->guid;
         $translation->value = $value;
         $translation->score = 1;
+        
+        if (Session::isadminloggedin())
+        {
+            $translation->approval = 1;
+            $translation->approval_time = time();
+        }
         $translation->save();
         
         $vote = new TranslationVote();
@@ -54,8 +47,7 @@ class Action_AddInterfaceTranslation extends Action
         $vote->score = 1;
         $vote->save();
         
-        $key->update();
-        $key->get_container_entity()->update();
+        $key->update(true);
         
         $language = $key->get_language();
         $language->get_stats_for_user($user)->update();

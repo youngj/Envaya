@@ -18,23 +18,6 @@ CREATE TABLE `files` (
   KEY `group_name` (`group_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-
-CREATE TABLE `translations` (
-  `id` int auto_increment not null,
-  `guid` bigint(20) unsigned  NOT NULL default 0,
-  `owner_guid` bigint(20) unsigned NOT NULL,  
-  `container_guid` bigint(20) unsigned NOT NULL,
-  `time_updated` int(11) NOT NULL,
-  `hash` varchar(64) NOT NULL,
-  `property` varchar(32) NOT NULL,
-  `lang` varchar(4) NOT NULL,
-  `value` mediumtext NOT NULL,
-  `html` tinyint not null default 0,
-  
-  PRIMARY KEY  (`id`),
-  KEY `prop` (`container_guid`,`property`,`lang`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 CREATE TABLE `comments` (
     <?php require 'schema/entity_columns.php'; ?>,
     <?php require 'schema/content_columns.php'; ?>,  

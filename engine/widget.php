@@ -102,7 +102,7 @@ class Widget extends Entity
     {
         if ($this->title)
         {
-            return $this->translate_field('title', false);
+            return $this->translate_field('title');
         }
         else
         {

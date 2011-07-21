@@ -9,7 +9,7 @@ $group_names = $language->get_loaded_files();
 
 $newTrans = array();
 
-foreach (InterfaceTranslation::filter_by_lang($lang) as $itrans)
+foreach (Translation::filter_by_lang($lang) as $itrans)
 {
     $newTrans[$itrans->key] = $itrans->value;
 }

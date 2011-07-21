@@ -1,13 +1,16 @@
 <?php
 
 Engine::add_autoload_action('EntityRegistry', function() {
-    EntityRegistry::register_subtype('translate.interface.lang', 'InterfaceLanguage');
-    EntityRegistry::register_subtype('translate.interface.group', 'InterfaceGroup');
-    EntityRegistry::register_subtype('translate.interface.key', 'InterfaceKey');
-    EntityRegistry::register_subtype('translate.interface.trans', 'InterfaceTranslation');
-    EntityRegistry::register_subtype('translate.interface.key.comment', 'InterfaceKeyComment');
+    EntityRegistry::register_subtype('translate.lang', 'TranslationLanguage');
+    EntityRegistry::register_subtype('translate.key', 'TranslationKey');
+    EntityRegistry::register_subtype('translate.translation', 'Translation');
     EntityRegistry::register_subtype('translate.vote', 'TranslationVote');
     EntityRegistry::register_subtype('translate.translator.stats', 'TranslatorStats');
+    EntityRegistry::register_subtype('translate.key.comment', 'TranslationKeyComment');    
+
+    EntityRegistry::register_subtype('translate.entity.key', 'EntityTranslationKey');
+    EntityRegistry::register_subtype('translate.interface.group', 'InterfaceGroup');
+    EntityRegistry::register_subtype('translate.interface.key', 'InterfaceKey');
 });
 
 Engine::add_autoload_action('Controller_Default', function() {
@@ -32,21 +35,18 @@ if (@Config::get('translate:live_interface'))
     Engine::add_autoload_action('Language', function() {
         $language = Language::current();
     
-        $interface_language = InterfaceLanguage::get_by_code($language->get_code());
+        $interface_language = TranslationLanguage::get_by_code($language->get_code());
         
-        if ($interface_language)
-        {   
-            $language->load_all();
+        $language->load_all();
+    
+        $interface_keys = $interface_language->query_keys()->where("best_translation <> ''")->filter();
         
-            $interface_keys = $interface_language->query_keys()->where("best_translation <> ''")->filter();
-            
-            $translations = array();
-            foreach ($interface_keys as $interface_key)
-            {
-                $translations[$interface_key->name] = $interface_key->best_translation;
-            }
-                        
-            $language->add_translations($translations);
+        $translations = array();
+        foreach ($interface_keys as $interface_key)
+        {
+            $translations[$interface_key->name] = $interface_key->best_translation;
         }
+                    
+        $language->add_translations($translations);
     });
 }

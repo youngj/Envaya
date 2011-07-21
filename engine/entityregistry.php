@@ -17,6 +17,7 @@ class EntityRegistry
         'core.user.org' => 'Organization',        
         'core.user.org.relation' => 'OrgRelationship',                                    
         'core.file' => 'UploadedFile',
+        'core.entity.translation' => 'EntityTranslation',
         'core.widget' => 'Widget',
         'core.widget.comment' => 'Comment',
         'core.discussion.message' => 'DiscussionMessage',

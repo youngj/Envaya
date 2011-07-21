@@ -28,14 +28,14 @@ class Controller_TranslateAdmin extends Controller
             throw new NotFoundException();
         }
         
-        $language = InterfaceLanguage::query()
+        $language = TranslationLanguage::query()
             ->where('code = ?', $lang)
             ->show_disabled(true)
             ->get();
             
         if (!$language)
         {    
-            $language = new InterfaceLanguage();
+            $language = new TranslationLanguage();
             $language->code = $lang;
         }
         $this->params['language'] = $language;            

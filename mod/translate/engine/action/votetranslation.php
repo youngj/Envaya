@@ -1,6 +1,6 @@
 <?php
 
-class Action_VoteInterfaceTranslation extends Action
+class Action_VoteTranslation extends Action
 {
     function process_input()
     {

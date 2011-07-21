@@ -1,5 +1,5 @@
 <?php
-    $languages = InterfaceLanguage::query()->order_by('name')->filter();
+    $languages = TranslationLanguage::query()->order_by('name')->filter();
 ?>
 <div style='float:left;width:300px;margin-right:20px'>
 <table class='gridTable'>

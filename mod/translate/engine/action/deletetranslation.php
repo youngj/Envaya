@@ -1,6 +1,6 @@
 <?php
 
-class Action_DeleteInterfaceTranslation extends Action
+class Action_DeleteTranslation extends Action
 {
     function process_input()
     {    
@@ -17,8 +17,7 @@ class Action_DeleteInterfaceTranslation extends Action
         $translation->disable();
         $translation->save();
         
-        $key->update();
-        $key->get_container_entity()->update();
+        $key->update(true);
         
         $user = $translation->get_owner_entity();
         if ($user)

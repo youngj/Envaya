@@ -409,8 +409,8 @@ abstract class Entity extends Model
             return $this;
         }
     }
-        
-    public function translate_field($field, $isHTML = false)
+    
+    public function translate_field($field, $viewLang = null)
     {
         $text = trim($this->$field);
         if (!$text)
@@ -419,14 +419,19 @@ abstract class Entity extends Model
         }
 
         $origLang = $this->get_language();
-        $viewLang = Language::get_current_code();        
+        
+        if ($viewLang == null)
+        {
+            $viewLang = Language::get_current_code();        
+        }
 
         if ($origLang != $viewLang)
         {            
             $translateMode = TranslateMode::get_current();
-            $translation = $this->lookup_translation($field, $origLang, $viewLang, $translateMode, $isHTML);
+            $translation = $this->lookup_translation($field, $origLang, $viewLang, $translateMode);
             
-            EventRegister::trigger_event('translate', get_class($this), $translation);
+            PageContext::set_original_language($origLang);
+            PageContext::add_available_translation($translation);            
             
             if ($translation->owner_guid)
             {
@@ -437,7 +442,7 @@ abstract class Entity extends Model
                 $viewTranslation = ($translateMode == TranslateMode::All);
             }
 
-            if ($viewTranslation && $translation->id)
+            if ($viewTranslation && $translation->guid)
             {
                 return $translation->value;
             }
@@ -448,77 +453,57 @@ abstract class Entity extends Model
         }
 
         return $text;
-    }        
-        
-    function lookup_auto_translation($prop, $origLang, $viewLang, $isHTML)
-    {        
+    }
+
+    protected function lookup_translation($prop, $origLang, $viewLang, $translateMode = TranslateMode::ManualOnly)
+    {
         $guid = $this->guid;
-    
-        $autoTrans =  Translation::query()
-            ->where('property=?', $prop)
-            ->where('lang=?',$viewLang)
-            ->where('container_guid=?',$guid)
-            ->where('html=?', $isHTML ? 1 : 0)
-            ->where('owner_guid = 0')
-            ->get();             
-    
-        if ($autoTrans && !$autoTrans->is_stale())
+        
+        $key_name = "entity:{$guid}:{$prop}";
+
+        $language = TranslationLanguage::get_by_code($viewLang);
+        
+        $key = $language->query_keys()->where('name = ?', $key_name)->get();        
+        if (!$key)
         {        
-            return $autoTrans;
+            $key = new EntityTranslationKey();
+            $key->name = $key_name;
+            $key->container_guid = $this->guid;
+            $key->language_guid = $language->guid;
+            $key->save();
         }
-        else
+        
+        $doAutoTranslate = ($translateMode == TranslateMode::All);
+
+        $humanTrans = $key->query_translations()
+            ->where('approval > 0')
+            ->order_by('approval_time desc')
+            ->get();
+        
+        if ($doAutoTranslate && (!$humanTrans || $humanTrans->is_stale()))
         {
+            $autoTrans =  $key->query_translations()
+                ->where('owner_guid = 0')
+                ->get();             
+        
+            if ($autoTrans && !$autoTrans->is_stale())
+            {
+                return $autoTrans;
+            }
+            
             $text = GoogleTranslate::get_auto_translation($this->$prop, $origLang, $viewLang);
 
             if ($text != null)
             {
                 if (!$autoTrans)
                 {
-                    $autoTrans = new Translation();                    
-                    $autoTrans->owner_guid = 0;
-                    $autoTrans->container_guid = $this->guid;
-                    $autoTrans->property = $prop;
-                    $autoTrans->html = $isHTML;
-                    $autoTrans->lang = $viewLang;
+                    $autoTrans = $key->new_translation();
                 }
                 $autoTrans->value = $text;                
                 $autoTrans->save();
                 
                 return $autoTrans;
-            }
-        }
-    }
-    
-    function save_draft($content)
-    {
-        $revision = ContentRevision::get_recent_draft($this);
-        $revision->time_updated = time();
-        $revision->content = $content;                       
-        $revision->save();
-    }
-
-    function lookup_translation($prop, $origLang, $viewLang, $translateMode = TranslateMode::ManualOnly, $isHTML = false)
-    {
-        $guid = $this->guid;
-        
-        $humanTrans = Translation::query()
-            ->where('property=?', $prop)
-            ->where('lang=?',$viewLang)
-            ->where('container_guid=?',$guid)
-            ->where('html=?', $isHTML ? 1 : 0)
-            ->where('owner_guid > 0')
-            ->order_by('time_updated desc')
-            ->get();                
-
-        $doAutoTranslate = ($translateMode == TranslateMode::All);
-
-        if ($doAutoTranslate && (!$humanTrans || $humanTrans->is_stale()))
-        {
-            $autoTrans = $this->lookup_auto_translation($prop, $origLang, $viewLang, $isHTML);
-            if ($autoTrans)
-            {
-                return $autoTrans;
-            }
+            }            
         }
         
         if ($humanTrans)
@@ -528,14 +513,18 @@ abstract class Entity extends Model
         else
         {        
             // return translation with empty value
-            $tempTrans = new Translation();
-            $tempTrans->owner_guid = 0;
-            $tempTrans->container_guid = $this->guid;
-            $tempTrans->property = $prop;
-            $tempTrans->lang = $viewLang;
-            $tempTrans->html = $isHTML;        
+            $tempTrans = $key->new_translation();
+            $tempTrans->value = '';
             return $tempTrans;
         }
+    }    
+
+    function save_draft($content)
+    {
+        $revision = ContentRevision::get_recent_draft($this);
+        $revision->time_updated = time();
+        $revision->content = $content;                       
+        $revision->save();
     }    
 
     static function query()
@@ -556,7 +545,6 @@ abstract class Entity extends Model
                 
         if (!$entity)
         {
-                
             $entity = static::query()
                 ->show_disabled($show_disabled)
                 ->guid($guid)

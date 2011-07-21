@@ -2,28 +2,30 @@
 
 /*
  * Represents a user-contributed translation (or correction to existing translation)
- * of a piece of text from Envaya's user interface into a particular language.
+ * of a piece of text from Envaya's user interface or user-generated content 
+ * into a particular language.
  *
- * InterfaceTranslations are not directly used for the user interface translations; 
- * first they must be exported and saved as PHP files in languages/
- * 
- * (Contrast with Translation class, which represents a translation of user-generated
- * content.)
+ * For Translations to be used in Envaya's user interface, first they must be 
+ * exported and saved as PHP files in languages/ , 
+ * unless Config::get('translate:live_interface') is true.
  */
-class InterfaceTranslation extends Entity
+class Translation extends Entity
 {
-    static $table_name = 'interface_translations';
+    static $table_name = 'translation_strings';
     static $table_attributes = array(
         'language_guid' => 0,
         'value' => '',
-        'default_value' => '', // the key's default value when this translation was created; allows detecting stale translations
+        'default_value_hash' => '', // sha1 of the key's default value when this translation was created; 
+                                    // allows detecting stale translations
         'score' => 0,
+        'approval' => 0,
+        'approval_time' => 0,
     );   
     
     function is_stale()
-    {
-        $key = $this->get_container_entity();
-        return $this->default_value != $key->get_default_value();
+    {    
+        $key = $this->get_container_entity();        
+        return $this->default_value_hash != sha1($key->get_default_value());
     }
     
     function update($recursive = false)
@@ -44,9 +46,9 @@ class InterfaceTranslation extends Entity
     function save()
     {
         $key = $this->get_container_entity();
-        if (!$this->default_value)
+        if (!$this->default_value_hash)
         {
-            $this->default_value = $key->get_default_value();
+            $this->default_value_hash = sha1($key->get_default_value());
         }
     
         if (!$this->language_guid)
@@ -58,7 +60,7 @@ class InterfaceTranslation extends Entity
     
     function get_language()
     {
-        return InterfaceLanguage::get_by_guid($this->language_guid);
+        return TranslationLanguage::get_by_guid($this->language_guid);
     }
     
     function get_url()

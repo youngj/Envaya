@@ -107,16 +107,6 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
         }
     }
 
-    if (Session::isadminloggedin())
-    {
-        $translations = PageContext::get_available_translations();
-        
-        if (sizeof($translations))
-        {
-            $links[] = view('translation/translate_link', array('translations' => $translations));
-        }
-    }
-
     echo " ".implode(' &middot; ', $links);
 ?>
 <div style='clear:both'></div>

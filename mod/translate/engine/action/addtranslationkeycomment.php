@@ -1,6 +1,6 @@
 <?php
 
-class Action_AddInterfaceKeyComment extends Action
+class Action_AddTranslationKeyComment extends Action
 {
     function process_input()
     {
@@ -31,7 +31,7 @@ class Action_AddInterfaceKeyComment extends Action
         
         $user = Session::get_loggedin_user();
                 
-        $comment = new InterfaceKeyComment();
+        $comment = new TranslationKeyComment();
         $comment->container_guid = $key->guid;
         $comment->owner_guid = $user->guid;
         if (get_input('scope') == 'current')

@@ -32,9 +32,8 @@
         echo "<td>";
         echo "<strong><a href='{$key->get_url()}'>".escape($key->name)."</a></strong>";
         echo "</td>";
-        $view_name = $key->get_output_view();
-        echo "<td>".view($view_name, array('value' => __($key->name, $base_lang)))."</td>";
-        echo "<td>".view($view_name, array('value' => $translation->value))."</td>";
+        echo "<td>".$key->view_value($key->get_value_in_lang($base_lang))."</td>";
+        echo "<td>".$key->view_value($translation->value)."</td>";
         echo "<td>";
         echo $translation->get_owner_link();
         echo "</td>";

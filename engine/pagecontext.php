@@ -10,6 +10,7 @@
 class PageContext
 {
     private static $translations_available = array();
+    private static $orig_lang = null;
     private static $header_html = array();
     private static $submenus = array();    
     private static $js_strings = array();
@@ -79,7 +80,7 @@ class PageContext
     {
         foreach (static::$translations_available as $translation)
         {
-            if (!$translation->id)
+            if (!$translation->guid)
             {
                 return true;
             }
@@ -100,12 +101,13 @@ class PageContext
     }
     
     static function get_original_language()
+    {        
+        return static::$orig_lang ?: Language::get_current_code();
+    }
+    
+    static function set_original_language($lang)
     {
-        if (!empty(static::$translations_available))
-        {
-            return static::$translations_available[0]->get_original_language();
-        }
-        return Language::get_current_code();
+        static::$orig_lang = $lang;
     }
     
     static function get_available_translations()
@@ -143,10 +145,4 @@ class PageContext
         }
         return $res;
     }
-    
-    static function translate_listener($event, $object_type, $translation)
-    {
-        static::add_available_translation($translation);
-    }
-
 }

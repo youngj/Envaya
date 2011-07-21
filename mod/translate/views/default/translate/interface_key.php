@@ -1,132 +1,115 @@
 <?php
     $key = $vars['key'];    
+    $base_url = Request::get_uri();
 
     $base_lang = $key->get_language()->get_current_base_code();
     
-    $base_value = @__($key->name, $base_lang);
+    $base_value = $key->get_value_in_lang($base_lang);
     
     $target_language = $key->get_language();
-
-    $output_view = $key->get_output_view();      
+    
+    $query = $key->query_translations()->order_by('time_created desc');        
+    $translations = $query->filter();        
 ?>
-<div style='width:600px;float:left'>
-<div class='post_nav' style='padding-bottom:5px;width:600px'>
+<div style='float:left'>
+<div class='post_nav' style='padding-bottom:5px;width:700px'>
 <?php  
-    echo "<a href='{$key->get_url()}/prev' title='".__('previous')."' class='post_nav_prev'><span>&#xab; ".__('previous')."</span></a> ";
-    echo "<a href='{$key->get_url()}/next' title='".__('next')."' class='post_nav_next'><span>".__('next')." &#xbb;</span></a>";
+    echo "<a href='".escape($base_url)."/prev' title='".__('previous')."' class='post_nav_prev'><span>&#xab; ".__('previous')."</span></a> ";
+    echo "<a href='".escape($base_url)."/next' title='".__('next')."' class='post_nav_next'><span>".__('next')." &#xbb;</span></a>";
 ?>
 </div>
-<form method='POST' action='<?php echo $key->get_url(); ?>/add'>
-<?php echo view('input/securitytoken'); ?>
-<table class='inputTable gridTable'>
+<table class='gridTable'>
 <tr>
-    <th style='width:200px;'><?php echo __('itrans:language_key'); ?></th>
-    <td style='width:450px'><?php echo escape($key->name); ?></td>
-</tr>
-<tr style='border-bottom:1px solid gray'>
     <th><?php echo __("lang:$base_lang"); ?></th>
-    <td><?php echo view($output_view, array('value' => $base_value)); ?></td>
+    <th><?php echo escape($target_language->name); ?></th>
 </tr>
-
-<?php
-    $query = $key->query_translations()->order_by('score desc, guid desc');        
-    $translations = $query->filter();
-    
-    foreach ($translations as $translation)
-    {
-        echo "<tr><th>";
-        echo escape($target_language->name);
-        echo "<div style='font-weight:normal'>";
-        echo "<div class='blog_date'>";
-            $date = friendly_time($translation->time_created);
-        
-            echo strtr(__('date:date_name'), array(
-                '{date}' => $date,
-                '{name}' => $translation->get_owner_link()
-            ));
-        
-        echo "</div>";
-        echo view('translate/translation_score', array('translation' => $translation)); 
-        
-        if ($translation->can_edit())
-        {
-            echo "<div class='admin_links'>";
-            echo view('input/post_link', array(
-                'href' => $translation->get_url() . "/delete",
-                'confirm' => __('areyousure'),                
-                'text' => __('delete'),
-            ));
-            echo "</div>";
-        }        
-        echo "</div>";
-        echo "</th><td>";
-
-        echo view($output_view, array('value' => $translation->value));
-
-        if ($translation->is_stale())
-        {
-            echo "<div style='color:#666' class='help'>".__('itrans:stale')."</div>";
-        }
-        echo "</td></tr>";
-    }
-    
+<tr> 
+    <td><div class='padded' style='width:300px'><?php echo $key->view_value($base_value); ?></div></td>
+    <td>
+    <?php
     if (Session::isloggedin())
     {
-?>
-    <tr><th style='vertical-align:top;padding-top:5px'><?php echo sprintf(__('itrans:add_in'), escape($target_language->name)); ?></th>
-    <td>
-<?php
-    if (strlen($base_value) > 75 || strpos($base_value, "\n") !== FALSE)
-    {
-       $view = "input/longtext";
-       $style = "height:".(25+floor(strlen($base_value)/75)*25)."px;width:400px";
+        echo "<form method='POST' action='".escape($base_url)."/add'>";
+        echo view('input/securitytoken');
+        echo $key->view_input($key->best_translation ?: $base_value);
+    
+        echo "<br />";
+        $tokens = $key->get_placeholders();
+        if ($tokens)
+        {
+            $token_str = implode(' ', array_map(function($t) { return "<strong>$t</strong>"; }, $tokens));
+            echo "<div>".__('itrans:needs_placeholders')."<br />$token_str</div>";
+        }    
+    
+        echo view('focus', array('name' => 'value')); 
+    
+        echo view('input/submit', array('value' => __('trans:submit'))); 
+        echo "</form>";
     }
     else
-    {
-        $view = "input/text";
-        $style = 'width:400px';
-    }
-
-    echo view($view, array(
-        'name' => 'value',
-        'style' => $style,
-        'value' => $key->best_translation,
-    )); 
-    echo "<br />";
-    $tokens = $key->get_placeholders();
-    if ($tokens)
-    {
-        $token_str = implode(' ', array_map(function($t) { return "<strong>$t</strong>"; }, $tokens));
-        echo "<div>".__('itrans:needs_placeholders')."<br />$token_str</div>";
-    }    
-    
-    if (sizeof($translations < 4))
-    {    
-        echo view('focus', array('name' => 'value')); 
-    }
-    
-    echo view('input/submit', array('value' => __('trans:submit'))); 
-?>
-</td></tr>
-<?php
-    }
-?>
-</table>
-</form>
-<?php
-
-    if (!Session::isloggedin())
-    {
-        echo "<br />";
+    {        
+        if ($key->best_translation)
+        {
+            echo "<div class='padded' style='width:300px'>";        
+            echo $key->view_value($key->best_translation);
+            echo "</div>";    
+            echo "<br />";
+        }
         echo __('itrans:need_login');
         echo "<ul style='font-weight:bold'>";
-        $next = urlencode($key->get_url());
+        $next = urlencode($base_url);
         echo "<li><strong><a href='/pg/login?next=$next'>".__('login')."</a></strong></li>";
         echo "<li><strong><a href='/pg/register?next=$next'>".__('register')."</a></strong></li>";
         echo "</ul>";
+    }        
+?>       
+    </td>
+</tr>
+</table>
+
+<?php
+    if ($translations)
+    {
+        echo "<br /><h3>Translation History</h3>";
+
+        echo "<table class='inputTable gridTable'>";
+        foreach ($translations as $translation)
+        {
+            echo "<tr><th style='vertical-align:top'>";
+            echo "<div style='font-weight:normal'>";
+            echo "<div class='blog_date'>";
+            echo $translation->get_owner_link();
+            echo "<br />";
+            echo friendly_time($translation->time_created);            
+            
+            echo "</div>";
+            echo view('translate/translation_score', array('translation' => $translation)); 
+            
+            if ($translation->can_edit())
+            {
+                echo "<div class='admin_links'>";
+                echo view('input/post_link', array(
+                    'href' => "{$base_url}/{$translation->guid}/delete",
+                    'confirm' => __('areyousure'),                
+                    'text' => __('delete'),
+                ));
+                echo "</div>";
+            }        
+            echo "</div>";
+            echo "</th>";
+            echo "<td style='width:400px'>";
+
+            echo $key->view_value($translation->value);
+
+            if ($translation->is_stale())
+            {
+                echo "<div style='color:#666' class='help'>".__('itrans:stale')."</div>";
+            }
+            echo "</td></tr>";
+        }    
+        echo "</table>";
     }
-    
-?>
+?>   
 </div>
 <div style='float:left;padding-top:30px;padding-left:10px;width:285px'>
 <script type='text/javascript'>
@@ -161,7 +144,7 @@ function toggleAddComment()
     {    
         echo "<li><a href='javascript:toggleAddComment()'>".__('comment:add')."</a>";
         echo "<div id='add_comment' style='display:none'>";
-        echo "<form method='POST' action='{$key->get_url()}/add_comment'>";
+        echo "<form method='POST' action='{$base_url}/add_comment'>";
         echo view('input/securitytoken');
         echo "<div>".view('input/longtext', array(
             'id' => 'comment_content', 

@@ -127,6 +127,20 @@ abstract class Controller {
         $query = Request::get_query();        
         return "{$protocol}://{$domain}{$base_uri}{$query}";
     }
+    
+    public function get_matched_uri()
+    {
+        $match = $this->param('match');
+    
+        if ($this->parent_controller)
+        {
+            return $this->parent_controller->get_matched_uri() . $match;
+        }
+        else
+        {
+            return $match;
+        }
+    }
         
     /*
      * Performs the action for the route that matched the request URI.
@@ -192,8 +206,9 @@ abstract class Controller {
             if (!preg_match('#^'.$regex.'#i', $uri, $matches))
                 return false;
 
-            $params = array('rest' => 
-                substr($uri, strlen($matches[0])) ?: ''
+            $params = array(
+                'match' => $matches[0],
+                'rest' => substr($uri, strlen($matches[0])) ?: ''
             );
             
             foreach ($matches as $key => $value)
@@ -210,7 +225,10 @@ abstract class Controller {
         }
         else
         {
-            $params = array('rest' => $uri);
+            $params = array(
+                'match' => '',
+                'rest' => $uri
+            );
         }
 
         if (isset($route['defaults']))
@@ -559,10 +577,6 @@ abstract class Controller {
     function allow_content_translation($allow = true)
     {
         $this->page_draw_vars['show_translate_bar'] = $allow;
-        if ($allow)
-        {
-            EventRegister::register_handler('translate','all', array('PageContext','translate_listener'));
-        }
     }
     
     function change_viewer_language($new_language)

@@ -1,6 +1,7 @@
 <?php
     $language = $vars['language'];
-    $groups = $language->query_groups()->order_by('name')->filter();
+    $groups = $language->query_groups()
+        ->order_by('name')->filter();
 ?>
 <div style='float:left;width:400px;margin-right:20px'>
 <table class='gridTable'>

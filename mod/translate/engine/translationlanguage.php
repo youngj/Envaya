@@ -5,23 +5,60 @@
  * The language may not necessarily be in the languages/ directory or in Config::get('languages')
  * (in which case people can't yet actually use this language for Envaya's interface).
  */
-class InterfaceLanguage extends Entity
+class TranslationLanguage extends Entity
 {
-    static $table_name = 'interface_languages';
+    static $table_name = 'translation_languages';
     static $table_attributes = array(
         'code' => '',
         'name' => '',
     );   
     
-    private static $code_map = array();
-    
+    private static $code_map;
+        
     static function get_by_code($code)
     {
+        if (!isset(static::$code_map))
+        {
+            $serialized_code_map = State::get('language_code_map');
+            if (!$serialized_code_map)
+            {
+                static::update_code_map();
+            }
+            else
+            {
+                static::$code_map = unserialize($serialized_code_map);        
+            }
+        }
+    
         if (!isset(static::$code_map[$code]))
         {
-            static::$code_map[$code] = static::query()->where('code = ?', $code)->get() ?: false;
+            $language = new TranslationLanguage();
+            $language->code = $code;
+            $language->name = @__("lang:$code", $code);
+            $language->save();
+
+            static::$code_map[$code] = $language;
         }
         return static::$code_map[$code];
+    }
+    
+    static function update_code_map()
+    {        
+        $all_languages = static::query()->filter();
+        $code_map = array();
+        foreach ($all_languages as $language)
+        {
+            $code_map[$language->code] = $language;
+        }
+        
+        static::$code_map = $code_map;        
+        State::set('language_code_map', serialize($code_map));    
+    }
+    
+    function save()
+    {
+        parent::save();        
+        static::update_code_map();
     }
     
     function get_current_base_code()
@@ -56,12 +93,13 @@ class InterfaceLanguage extends Entity
     
     function query_groups()
     {
-        return InterfaceGroup::query()->where('container_guid = ?', $this->guid);
+        return InterfaceGroup::query()
+            ->where('container_guid = ?', $this->guid);
     }
     
     function query_comments()
     {
-        return InterfaceKeyComment::query()
+        return TranslationKeyComment::query()
             ->where('language_guid = ? OR language_guid = 0', $this->guid);
     }
     
@@ -72,7 +110,7 @@ class InterfaceLanguage extends Entity
     
     function query_translations()
     {
-        return InterfaceTranslation::query()->where('language_guid = ?', $this->guid);
+        return Translation::query()->where('language_guid = ?', $this->guid);
     }    
 
     function query_votes()

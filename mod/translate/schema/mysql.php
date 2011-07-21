@@ -1,4 +1,4 @@
-CREATE TABLE `interface_languages` (
+CREATE TABLE `translation_languages` (
   <?php require 'schema/entity_columns.php'; ?>,
   `code` varchar(4) NOT NULL,
   `name` varchar(64) NOT NULL,
@@ -12,31 +12,26 @@ CREATE TABLE `interface_groups` (
   UNIQUE KEY `group_name` (`container_guid`,`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `interface_group_metadata` (
-    `id` int(11) auto_increment primary key,
-    `name` varchar(64) NOT NULL,
-    `description` text,
-    `default_status` tinyint(4) default 1,
-    KEY `name` (`name`)
-);
-
-CREATE TABLE `interface_keys` (
+CREATE TABLE `translation_keys` (
   <?php require 'schema/entity_columns.php'; ?>,
+  `subtype_id` varchar(64) NOT NULL,
   `name` varchar(64) NOT NULL,
   `num_translations` int(11) not null default 0,
   `language_guid` bigint(20) unsigned NOT NULL,  
   `best_translation` text null,
   `best_translation_guid` bigint(20) unsigned NOT NULL,  
-  UNIQUE KEY `key_name` (`container_guid`,`name`),
-  KEY `language_name` (`language_guid`,`name`)
+  KEY `key_name` (`container_guid`,`name`),
+  UNIQUE KEY `language_name` (`language_guid`,`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `interface_translations` (
+CREATE TABLE `translation_strings` (
   <?php require 'schema/entity_columns.php'; ?>,  
   `language_guid` bigint(20) unsigned NOT NULL,  
   `value` text NOT NULL collate utf8_bin,
   `score` int(11) NOT NULL default 0,
-  `default_value` text not null collate utf8_bin,
+  `default_value_hash` varchar(64) not null,
+  `approval` tinyint(4) not null default 0,
+  `approval_time` int(11) null,
   KEY `language_guid` (`language_guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -54,7 +49,7 @@ CREATE TABLE `translator_stats` (
   `num_votes` int(11) NOT NULL default 0
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE `interface_key_comments` (
+CREATE TABLE `translation_key_comments` (
   <?php require 'schema/entity_columns.php'; ?>,  
   <?php require 'schema/content_columns.php'; ?>,  
   `language_guid` bigint(20) unsigned NULL default 0,  

@@ -9,9 +9,17 @@ echo "<li><a href='/tr/instructions#group' target='_blank'>".__('itrans:instruct
     $group = $vars['group'];    
     $filtered_keys = $vars['filtered_keys'];
     $all_keys = $vars['all_keys'];
+    $filter = $vars['filter'];
     
-    $query = Session::get('translate_filter_query');
-    $status = Session::get('translate_filter_status');
+    $query = @$filter['q'];
+    $status = @$filter['status'];
+    
+    $filter_parts = array();
+    foreach ($filter as $k => $v)
+    {
+        $filter_parts[] = urlencode_alpha($k).'='.urlencode_alpha($v);
+    }
+    $filter_str = implode(',', $filter_parts);    
         
     $language = $group->get_container_entity();    
     
@@ -31,14 +39,14 @@ echo "<li><a href='/tr/instructions#group' target='_blank'>".__('itrans:instruct
     echo view('input/pulldown', array(
         'name' => 'status',
         'options' => array(
-            'all' => __('itrans:status_all'),
+            '' => __('itrans:status_all'),
             'empty' => __('itrans:status_empty'),
             'notempty' => __('itrans:status_notempty'),
         ),
         'value' => $status,
     ));
         
-    echo view('input/submit', array('value' => __("search"), 'style' => "margin:0px;padding:0px"));
+    echo view('input/submit', array('name' => '', 'value' => __("search"), 'style' => "margin:0px;padding:0px"));
     echo "</form>";
     
     echo "<div style='padding-bottom:5px;'>";
@@ -71,11 +79,15 @@ echo "<li><a href='/tr/instructions#group' target='_blank'>".__('itrans:instruct
     echo "<th>".__('itrans:language_key')."</th>";
     echo "<th>".__("lang:$base_lang")."</th>";
     echo "<th>".escape($language->name)."</th>";
-    echo "</tr>";
+    echo "</tr>";    
         
     for ($i = $offset; $i < $offset + $limit && $i >= 0 && $i < $count; $i++)
     {
-        echo view('translate/interface_key_row', array('key' => $filtered_keys[$i], 'base_lang' => $base_lang));
+        echo view('translate/interface_key_row', array(
+            'key' => $filtered_keys[$i], 
+            'base_url' => "/tr/{$language->code}/module/{$group->name}" . ($filter_str ? ",$filter_str" : ''),
+            'base_lang' => $base_lang
+        ));
     }    
 ?>
 </table>

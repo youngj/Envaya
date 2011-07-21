@@ -2,16 +2,16 @@
 
     $key = $vars['key'];
     $base_lang = $vars['base_lang'];
-        
-    $output_view = $key->get_output_view();
+    
+    $url = isset($vars['base_url']) ? ($vars['base_url'] . "/" . urlencode_alpha($key->name)) : $key->get_url();
     
     echo "<tr>";
-    echo "<td style='font-weight:bold'><a href='{$key->get_url()}'>".escape($key->name)."</a></td>";
-    echo "<td>".view($output_view, array('value' => __($key->name, $base_lang)))."</td>";
+    echo "<td style='font-weight:bold'><a href='".escape($url)."'>".escape($key->name)."</a></td>";
+    echo "<td>".$key->view_value($key->get_value_in_lang($base_lang))."</td>";
     echo "<td>";
     if ($key->best_translation)
     {
-        echo view($output_view, array('value' => $key->best_translation));
+        echo $key->view_value($key->best_translation);
     }
     else
     {

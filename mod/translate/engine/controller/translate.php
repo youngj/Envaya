@@ -39,13 +39,28 @@ class Controller_Translate extends Controller
             'before' => 'init_language',
         ),
         array(
-            'regex' => '/(?P<lang>\w+)/module/(?P<group_name>\w+)(/)?$', 
+            'regex' => '/(?P<lang>\w+)/page/(?P<b64_keys>\w+)(/)?$', 
+            'action' => 'action_page',
+            'before' => 'init_language_keys',
+        ),        
+        array(
+            'regex' => '/(?P<lang>\w+)/module/(?P<group_name>\w+)(,(?P<filter>[\w\=\,]+))?(/)?$', 
             'action' => 'action_view_group',
             'before' => 'init_language_group',
         ),
         array(
-            'regex' => '/(?P<lang>\w+)/module/(?P<group_name>\w+)/(?P<key_name>[\w\%\:]+)', 
-            'controller' => 'Controller_TranslateKey',
+            'regex' => '/(?P<lang>\w+)/entity/(?P<key_name>\w+)', 
+            'controller' => 'Controller_TranslateEntityKey',
+            'before' => 'init_language_key',
+        ),        
+        array(
+            'regex' => '/(?P<lang>\w+)/page/(?P<b64_keys>\w+)/(?P<key_name>\w+)', 
+            'controller' => 'Controller_TranslatePageKey',
+            'before' => 'init_language_keys_key',
+        ),        
+        array(
+            'regex' => '/(?P<lang>\w+)/module/(?P<group_name>\w+)(,(?P<filter>[\w\,\=]+))?/(?P<key_name>\w+)', 
+            'controller' => 'Controller_TranslateGroupKey',
             'before' => 'init_language_group_key',
         ),
     );
@@ -59,7 +74,7 @@ class Controller_Translate extends Controller
     function init_language()
     {
         $code = $this->param('lang');
-        $language = InterfaceLanguage::query()->where('code = ?', $code)->get();
+        $language = TranslationLanguage::query()->where('code = ?', $code)->get();
         if (!$language)
         {
             throw new NotFoundException();
@@ -81,10 +96,25 @@ class Controller_Translate extends Controller
         $this->params['group'] = $group;
     }
     
+    function init_language_key()
+    {
+        $this->init_language();
+        
+        $language = $this->param('language');
+        $key_name = urldecode_alpha($this->param('key_name'));
+        
+        $key = $language->query_keys()->where('name = ?', $key_name)->get();
+        if (!$key)
+        {
+            throw new NotFoundException();
+        }
+        $this->params['key'] = $key;        
+    }
+    
     function init_language_group_key()
     {
         $this->init_language_group();
-        $key_name = $this->param('key_name');
+        $key_name = urldecode_alpha($this->param('key_name'));
         $group = $this->param('group');
         
         $key = $group->get_key_by_name($key_name);
@@ -172,21 +202,43 @@ class Controller_Translate extends Controller
         ));    
     }
     
-    function filter_keys($keys)
+    function get_filter_params()
     {
         $query = get_input('q');
-        $status = get_input('status');    
+        $status = get_input('status');
+        $filter_params = array();
         
-        if ($query || $status)
-        {
-            Session::set('translate_filter_query', $query);
-            Session::set('translate_filter_status', $status);
+        if (!$query && !$status)
+        {            
+            $filter = $this->param('filter');
+            if ($filter)
+            {                                            
+                $filter_groups = explode(',', $filter);
+                foreach ($filter_groups as $filter_group)
+                {                    
+                    $filter_group_arr = explode('=', $filter_group, 2); 
+                    $filter_params[urldecode_alpha($filter_group_arr[0])] = urldecode_alpha($filter_group_arr[1]);
+                }
+
+                return $filter_params;
+            }
         }
-        else
+
+        if ($query)
         {
-            $query = Session::get('translate_filter_query');
-            $status = Session::get('translate_filter_status');
+            $filter_params['q'] = $query;
         }
+        if ($status)
+        {
+            $filter_params['status'] = $status;
+        }
+        return $filter_params;
+    }
+    
+    function filter_keys($keys, $filter)
+    {
+        $status = @$filter['status'];
+        $query = @$filter['q'];
     
         $filtered_keys = array();
         
@@ -224,16 +276,19 @@ class Controller_Translate extends Controller
         PageContext::add_header_html('<meta name="robots" content="noindex,nofollow" />');
     
         $group = $this->param('group');
-        $language = $this->param('language');
+        $language = $this->param('language');      
+
+        $filter = $this->get_filter_params();
             
         $keys = $group->get_available_keys();
-        $filtered_keys = $this->filter_keys($keys);
+        $filtered_keys = $this->filter_keys($keys, $filter);
         
         return $this->page_draw(array(
             'title' => __('itrans:translations'),
             'header' => view('translate/header',  array('items' => array($language, $group))),
             'content' => view('translate/interface_group', array(
                 'group' => $group,
+                'filter' => $filter,
                 'all_keys' => $keys,
                 'filtered_keys' => $filtered_keys,
             ))
@@ -245,7 +300,7 @@ class Controller_Translate extends Controller
         $this->validate_security_token();    
         
         $guid = (int)get_input('comment');
-        $comment = InterfaceKeyComment::get_by_guid($guid);
+        $comment = TranslationKeyComment::get_by_guid($guid);
         if (!$comment || !$comment->can_edit())
         {
             throw new RedirectException(__('comment:not_deleted'));
@@ -254,9 +309,8 @@ class Controller_Translate extends Controller
         $comment->disable();
         $comment->save();
 
-        $container = $comment->get_container_entity();
         SessionMessages::add(__('comment:deleted'));            
-        $this->redirect($container->get_url());
+        $this->redirect();
     }    
     
     function action_comments()
@@ -270,20 +324,62 @@ class Controller_Translate extends Controller
         ));            
     }
     
+    function init_language_keys()
+    {
+        $this->init_language();
+        $this->init_keys();
+    }
+
+    function init_language_keys_key()
+    {
+        $this->init_language_key();
+        $this->init_keys();
+    }
+    
+
+    function init_keys()
+    {
+        $b64_keys = urldecode_alpha($this->param('b64_keys'));
+        
+        try
+        {
+            $gz_keys = base64_decode($b64_keys);
+            $keys_str = gzuncompress($gz_keys);
+        }
+        catch (ErrorException $ex)
+        {
+            throw new NotFoundException();
+        }
+        
+        $uri_keys = explode(' ', $keys_str, 2);
+        $this->params['page_uri'] = $uri_keys[0];
+        
+        $key_names = explode(",", $uri_keys[1]);
+        
+        $language = $this->param('language');
+        
+        $this->params['keys'] = $language->query_keys()
+            ->where_in('name', $key_names)
+            ->order_by('subtype_id, name')
+            ->filter();
+
+    }
+    
     function action_page()
     {
         PageContext::add_header_html('<meta name="robots" content="noindex,nofollow" />');
     
         $language = $this->param('language');
-    
-        $b64_keys = get_input('keys');
-        $gz_keys = base64_decode($b64_keys);
-        $key_names = explode(",",gzuncompress($gz_keys));
+        $keys = $this->param('keys');
         
         return $this->page_draw(array(
             'title' => __('itrans:edit_page'),
-            'header' => view('translate/header', array('items' => array($language), 'title' => __('itrans:edit_page'))),
-            'content' => view('translate/page', array('language' => $language, 'key_names' => $key_names))
+            'header' => view('translate/header', array('items' => array($language), 'title' => $this->param('page_uri'))),
+            'content' => view('translate/page', array(
+                'language' => $language, 
+                'base_url' => Request::get_uri(),
+                'keys' => $keys
+            ))
         ));
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-class InterfaceKeyComment extends Entity
+class TranslationKeyComment extends Entity
 {
-    static $table_name = 'interface_key_comments';
+    static $table_name = 'translation_key_comments';
     static $table_attributes = array(
         'key_name' => '',
         'language_guid' => 0,

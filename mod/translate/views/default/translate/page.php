@@ -1,19 +1,8 @@
 <?php
     $language = $vars['language'];
-    $key_names = $vars['key_names'];
-    $group = $vars['group'];         
-    
-    $keys = $language->query_keys()
-        ->where_in('name', $key_names)
-        ->order_by('name')
-        ->filter();
+    $keys = $vars['keys'];
+    $group = $vars['group'];             
         
-    $keys_map = array();
-    foreach ($keys as $key)
-    {
-        $keys_map[$key->name] = $key;
-    }
-    
     $base_lang = $language->get_current_base_code();
     
     $offset = (int)get_input('offset');
@@ -36,7 +25,11 @@
         
     for ($i = $offset; $i < $offset + $limit && $i >= 0 && $i < $count; $i++)
     {
-        echo view('translate/interface_key_row', array('key' => $keys[$i], 'base_lang' => $base_lang));        
+        echo view('translate/interface_key_row', array(
+            'key' => $keys[$i], 
+            'base_url' => $vars['base_url'],
+            'base_lang' => $base_lang
+        ));        
     }    
 ?>
 </table>

@@ -1,5 +1,5 @@
 <?php
-    $languages = InterfaceLanguage::query()->order_by('name')->filter();
+    $languages = TranslationLanguage::query()->order_by('name')->filter();
 ?>
 
 <?php echo view('section', array('header' => __('itrans:languages'))); ?>
