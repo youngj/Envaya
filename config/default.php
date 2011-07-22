@@ -80,5 +80,7 @@ return array(
     
     'cache_version' => 188,  // increment when all cached objects need to be invalidated (rare)
     
-    'allow_robots' => true,
+    'allow_robots' => true,    
+    
+    'subtype_aliases' => null, // map of old subtype_id => class name for database migrations
 );

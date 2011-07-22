@@ -102,8 +102,9 @@ class Controller_Translate extends Controller
         
         $language = $this->param('language');
         $key_name = urldecode_alpha($this->param('key_name'));
-                
+        
         $key = $language->query_keys()->where('name = ?', $key_name)->get();
+
         if (!$key)
         {
             throw new NotFoundException();

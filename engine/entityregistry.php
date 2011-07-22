@@ -44,7 +44,17 @@ class EntityRegistry
     
     static function get_subtype_class($subtype_id)
     {
-        return @static::$subtype_to_class[$subtype_id];
+        $cls = @static::$subtype_to_class[$subtype_id];
+        if ($cls)
+        {
+            return $cls;
+        }
+        
+        $aliases = Config::get('subtype_aliases');
+        if ($aliases)
+        {
+            return @$aliases[$subtype_id];
+        }
     }
     
     static function get_subtype_id($class_name)

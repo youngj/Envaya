@@ -6,7 +6,7 @@ Engine::add_autoload_action('EntityRegistry', function() {
     EntityRegistry::register_subtype('translate.translation', 'Translation');
     EntityRegistry::register_subtype('translate.vote', 'TranslationVote');
     EntityRegistry::register_subtype('translate.translator.stats', 'TranslatorStats');
-    EntityRegistry::register_subtype('translate.key.comment', 'TranslationKeyComment');    
+    EntityRegistry::register_subtype('translate.comment', 'TranslationKeyComment');    
 
     EntityRegistry::register_subtype('translate.entity.key', 'EntityTranslationKey');
     EntityRegistry::register_subtype('translate.interface.group', 'InterfaceGroup');

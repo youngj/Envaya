@@ -26,7 +26,7 @@
     <th><?php echo escape($target_language->name); ?></th>
 </tr>
 <tr> 
-    <td><div class='padded' style='width:300px'><?php echo $key->view_value($base_value); ?></div></td>
+    <td><div class='padded' style='min-width:300px'><?php echo $key->view_value($base_value); ?></div></td>
     <td>
     <?php
     
@@ -56,7 +56,7 @@
     {        
         if ($displayed_value)
         {
-            echo "<div class='padded' style='width:300px'>";        
+            echo "<div class='padded' style='min-width:300px'>";        
             echo $key->view_value($displayed_value);
             echo "</div>";    
             echo "<br />";

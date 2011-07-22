@@ -33,6 +33,7 @@ class Controller_TranslateEntityKey extends Controller_TranslateKey
         }
         
         $next_key = EntityTranslationKey::query()            
+            ->where('language_guid = ?', $this->param('language')->guid)
             ->where("time_updated $cmp ? or (time_updated = ? AND guid $cmp ?)", 
                 $key->time_updated, $key->time_updated, $key->guid)
             ->order_by("time_updated $dir, guid $dir")
