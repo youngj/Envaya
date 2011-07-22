@@ -56,7 +56,11 @@ class FeedItem extends Model
     
     function can_edit()
     {
-        $user = Session::get_loggedin_user();
+        return $this->can_user_edit(Session::get_loggedin_user());
+    }
+    
+    function can_user_edit($user)
+    {
         if (!$user)
             return false;
     

@@ -99,8 +99,17 @@ class TranslationKey extends Entity
         ));     
     }
     
-    function view_value($value)
+    function view_value($value, $snippet_len = null)
     {
+        if ($snippet_len != null)
+        {
+            $v = Markup::truncate_at_word_boundary($value, $snippet_len);
+            if ($v != $value)
+            {
+                $value = $v . "...";
+            }
+        }
+    
         if (strpos($this->get_default_value(), "\n") !== false)
         {
             $view_name = 'output/longtext';            

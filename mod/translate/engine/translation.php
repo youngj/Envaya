@@ -28,6 +28,24 @@ class Translation extends Entity
         return $this->default_value_hash != sha1($key->get_default_value());
     }
     
+    function is_approved()
+    {
+        return $this->approval > 0;
+    }
+    
+    function set_approved($approved)
+    {
+        if ($approved)
+        {
+            $this->approval = 1;
+            $this->approval_time = time();
+        }
+        else
+        {
+            $this->approval = 0;
+        }
+    }
+    
     function update($recursive = false)
     {
         $row = $this->query_votes()
@@ -43,14 +61,20 @@ class Translation extends Entity
         }
     }    
     
-    function save()
+    function update_default_value()
     {
         $key = $this->get_container_entity();
+        $this->default_value_hash = sha1($key->get_default_value());
+    }
+    
+    function save()
+    {
         if (!$this->default_value_hash)
         {
-            $this->default_value_hash = sha1($key->get_default_value());
+            $this->update_default_value();
         }
     
+        $key = $this->get_container_entity();
         if (!$this->language_guid)
         {
             $this->language_guid = $key->language_guid;

@@ -89,7 +89,7 @@ class ExternalFeed extends Entity
         $this->time_queued = time();
         $this->save();
     
-        return FunctionQueue::queue_call(array('ExternalFeed', 'update_by_guid'), array($this->guid));    
+        return FunctionQueue::queue_call(array('ExternalFeed', 'update_by_guid'), array($this->guid), 'feeds');    
     }    
     
     function get_widget_by_external_id($id)

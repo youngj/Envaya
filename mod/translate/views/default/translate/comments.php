@@ -36,8 +36,8 @@
         echo "<td>";
         echo "<strong><a href='{$key->get_url()}'>".escape($key->name)."</a></strong>";
         echo "</td>";
-        echo "<td>".$key->view_value($key->get_value_in_lang($base_lang))."</td>";
-        echo "<td>".$key->view_value($key->best_translation)."</td>";
+        echo "<td>".$key->view_value($key->get_value_in_lang($base_lang), 500)."</td>";
+        echo "<td>".$key->view_value($key->best_translation, 500)."</td>";
         echo "<td>";
         echo $comment->render_content();
         echo "</td>";

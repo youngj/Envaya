@@ -6,6 +6,8 @@
  */
 class InterfaceKey extends TranslationKey
 {
+    static $query_subtype_ids = array('translate.interface.key');
+
     function update($recursive = false)
     {
         parent::update();
@@ -36,8 +38,7 @@ class InterfaceKey extends TranslationKey
             {
                 $translation = $this->new_translation();
                 $translation->value = $defined_value;
-                $translation->approval = 1;
-                $translation->approval_time = time();
+                $translation->set_approved(true);
                 $translation->save();
                 $this->update($update_recursive);
             }

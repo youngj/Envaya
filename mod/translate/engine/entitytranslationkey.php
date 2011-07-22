@@ -2,12 +2,14 @@
 
 class EntityTranslationKey extends TranslationKey
 {    
+    static $query_subtype_ids = array('translate.entity.key');
+
     function get_url()
     {
-        return $this->get_language()->get_url()."/entity/".urlencode_alpha($this->name);
+        return $this->get_language()->get_url()."/content/".urlencode_alpha($this->name);
     }
-    
-    function get_entity_property()
+        
+    protected function get_entity_property()
     {
         $name_parts = explode(':', $this->name);
         
@@ -25,71 +27,77 @@ class EntityTranslationKey extends TranslationKey
     function get_default_value()
     {
         $entity_prop = $this->get_entity_property();
-        $prop = $entity_prop[1];
-        return $entity_prop[0]->$prop;
+        if ($entity_prop)
+        {
+            $prop = $entity_prop[1];
+            return $entity_prop[0]->$prop;
+        }
+        else
+        {
+            return null;
+        }
+        
     }
     
     function get_value_in_lang($lang)
-    {
-        $entity_prop = $this->get_entity_property();
-    
+    {    
+        $entity_prop = $this->get_entity_property();            
+        
         if ($entity_prop)
         {
             return $entity_prop[0]->translate_field($entity_prop[1], $lang);
         }
-        return null;
-    }
+        else
+        {
+            return null;
+        }
+            
+    }    
     
-    function view_input($initial_value)
+    private function call_entity_method($format, $args)
     {
         $entity_prop = $this->get_entity_property();
+        if (!$entity_prop)
+        {
+            throw new CallException("get_entity_property");
+        }
         
         $entity = $entity_prop[0];
         $property = $entity_prop[1];
         
-        $view_method = "view_{$property}_input";
-        
+        $method = sprintf($format, $property);
+        return call_user_func_array(array($entity,$method), $args);
+    }
+    
+    function view_value($value, $snippet_len = null)
+    {
         try
         {
-            return $entity->$view_method($initial_value);
+            return $this->call_entity_method("view_%s_value", array($value, $snippet_len));
+        }
+        catch (CallException $ex)
+        {
+            return parent::view_value($value, $snippet_len);
+        }            
+    }
+    
+    function view_input($initial_value)
+    {
+        try
+        {
+            return $this->call_entity_method("view_%s_input", array($initial_value));
         }
         catch (CallException $ex)
         {
             return parent::view_input($initial_value);
         }            
-    }
-    
-    function view_value($value)
-    {
-        $entity_prop = $this->get_entity_property();
-        
-        $entity = $entity_prop[0];
-        $property = $entity_prop[1];
-        
-        $view_method = "view_{$property}_value";
-        
-        try
-        {
-            return $entity->$view_method($value);
-        }
-        catch (CallException $ex)
-        {
-            return parent::view_value($value);
-        }            
-    }
+    }    
     
     function sanitize_value($value)
     {
-        $entity_prop = $this->get_entity_property();
-        
-        $entity = $entity_prop[0];
-        $property = $entity_prop[1];    
-    
-        $sanitize_method = "sanitize_{$property}_value";
-    
         try
         {
-            return $entity->$sanitize_method($value);
+            return $this->call_entity_method("sanitize_%s_value", array($value));
         }
         catch (CallException $ex)
         {

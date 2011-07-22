@@ -8,13 +8,8 @@ class Controller_TranslateKey extends Controller
             'action' => 'action_index',
         ),
         array(
-            'regex' => '/(?P<translation_guid>\d+)/delete\b', 
-            'action' => 'action_delete_translation',
-            'before' => 'init_translation',
-        ),                
-        array(
-            'regex' => '/(?P<translation_guid>\d+)/vote\b', 
-            'action' => 'action_vote_translation',
+            'regex' => '/(?P<translation_guid>\d+)/(?P<action>\w+)\b', 
+            'action' => 'action_translation_<action>',
             'before' => 'init_translation',
         ),                
         array(
@@ -43,9 +38,26 @@ class Controller_TranslateKey extends Controller
     
     function action_index()
     {
-        throw new NotImplementedException();
+        $key = $this->param('key');
+        $translation_guid = (int)get_input('translation');
+        if ($translation_guid)
+        {
+            $translation = $key->query_translations()->where('guid = ?', $translation_guid)->get();
+        }
+        else
+        {
+            $translation = null;
+        }        
+    
+        return $this->index_page_draw(array(
+            'title' => __('itrans:translations'),
+            'content' => view('translate/key', array(
+                'key' => $key, 
+                'translation' => $translation
+            ))
+        ));
     }        
-        
+          
     function action_add()
     {
         $action = new Action_AddTranslation($this);
@@ -58,13 +70,19 @@ class Controller_TranslateKey extends Controller
         $action->execute();
     }
 
-    function action_vote_translation()
+    function action_translation_set_approval()
+    {
+        $action = new Action_SetTranslationApproval($this);
+        $action->execute();    
+    }    
+    
+    function action_translation_vote()
     {
         $action = new Action_VoteTranslation($this);
         $action->execute();
     }
 
-    function action_delete_translation()
+    function action_translation_delete()
     {
         $action = new Action_DeleteTranslation($this);
         $action->execute();

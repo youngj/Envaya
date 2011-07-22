@@ -43,7 +43,7 @@ abstract class Entity extends Model
             $this->cache_for_current_request();
         }
     }
-
+    
     static function new_from_row($row)
     {
         if (isset(static::$table_attributes['subtype_id']))
@@ -65,7 +65,7 @@ abstract class Entity extends Model
     {
         return EntityRegistry::get_subtype_id(get_called_class());
     }
-
+    
     public function get_date_text()
     {
         return friendly_time($this->time_created);
@@ -198,7 +198,28 @@ abstract class Entity extends Model
     {
         return Database::delete("DELETE from metadata where entity_guid=?", array($this->guid));
     }
+
+    function can_view()
+    {
+        return $this->can_user_view(Session::get_loggedin_user());
+    }
+    
+    function can_user_view($user)
+    {
+        if ($this->status == Entity::Disabled)
+        {
+            return false;
+        }
+    
+        $container = $this->get_container_entity();
+        if ($container && !$container->can_user_view($user))
+        {
+            return false;
+        }
         
+        return true;
+    }
+    
     function can_edit()
     {
         return $this->can_user_edit(Session::get_loggedin_user());
@@ -211,7 +232,7 @@ abstract class Entity extends Model
      */
     function can_user_edit($user)
     {
-        if (!is_null($user))
+        if ($user)
         {
             if (($this->owner_guid == $user->guid)
              || ($this->container_guid == $user->guid)
@@ -223,7 +244,7 @@ abstract class Entity extends Model
 
             $container_entity = Entity::get_by_guid($this->container_guid);
 
-            if ($container_entity && $container_entity->can_edit())
+            if ($container_entity && $container_entity->can_user_edit($user))
                 return true;
         }
         return false;
@@ -484,7 +505,8 @@ abstract class Entity extends Model
         {
             $autoTrans =  $key->query_translations()
                 ->where('owner_guid = 0')
-                ->get();             
+                ->order_by('time_created desc')
+                ->get();
         
             if ($autoTrans && !$autoTrans->is_stale())
             {
@@ -495,12 +517,10 @@ abstract class Entity extends Model
 
             if ($text != null)
             {
-                if (!$autoTrans)
-                {
-                    $autoTrans = $key->new_translation();
-                }
+                $autoTrans = $key->new_translation();
                 $autoTrans->value = $text;                
                 $autoTrans->save();
+                $key->update();
                 
                 return $autoTrans;
             }            
@@ -529,7 +549,14 @@ abstract class Entity extends Model
 
     static function query()
     {
-        return new Query_SelectEntity(static::$table_name, get_called_class());
+        $query = new Query_SelectEntity(static::$table_name, get_called_class());
+        
+        if (isset(static::$query_subtype_ids))
+        {
+            $query->where_in('subtype_id', static::$query_subtype_ids);
+        }
+        
+        return $query;
     }
     
     static function get_by_guid($guid, $show_disabled = false)

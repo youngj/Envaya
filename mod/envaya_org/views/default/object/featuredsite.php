@@ -41,19 +41,7 @@ if (Session::isadminloggedin())
     {
         echo escape(__('featured:active'));
     }    
-    
-    if (Language::get_current_code() != $entity->get_language())
-    {
-        $trans = new Translation();
-        $trans->container_guid = $entity->guid;
-        $trans->property = 'content';
-        $trans->html = true;
-    
-        echo ' ' . view('translation/translate_link', array(
-            'translations' => array($trans)
-        )) . ' ';
-    }
-    
+        
     ?>              
     
     <a href='/admin/envaya/edit_featured?guid=<?php echo $entity->guid ?>'><?php echo escape(__('edit')) ?></a>

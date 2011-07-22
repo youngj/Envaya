@@ -42,4 +42,10 @@ return array(
     'itrans:comment' => "Comment",
     
     'itrans:edit_page' => "Edit Translations on this Page",
+    'itrans:history' => "Translation History",
+    'itrans:approve' => "Approve",
+    'itrans:unapprove' => "Unapprove",
+    'itrans:user_content' => "User Content",
+    'itrans:hidden' => "(hidden)",
+    'itrans:cant_view' => "The current user account does not have access to view this translation.",
 );

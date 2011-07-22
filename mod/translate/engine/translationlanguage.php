@@ -105,7 +105,7 @@ class TranslationLanguage extends Entity
     
     function query_keys()
     {
-        return InterfaceKey::query()->where('language_guid = ?', $this->guid);
+        return TranslationKey::query()->where('language_guid = ?', $this->guid);
     }    
     
     function query_translations()

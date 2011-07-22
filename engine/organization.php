@@ -9,13 +9,8 @@ class Organization extends User
     static $mixin_classes = array(
         'Mixin_WidgetContainer',
     );
-
-    static function query()
-    {
-        $query = User::query();
-        $query->where("subtype_id=?", static::get_subtype_id());
-        return $query;
-    }
+    
+    static $query_subtype_ids = array('core.user.org');
 
     public function is_setup_complete()
     {
@@ -77,9 +72,9 @@ class Organization extends User
 
     }
 
-    public function can_view()
+    public function can_user_view($user)
     {
-        return $this->approval > 0 || $this->can_edit();
+        return parent::can_user_view($user) && ($this->approval > 0 || $this->can_user_edit($user));
     }
         
     public function get_country_text()

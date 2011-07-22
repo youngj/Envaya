@@ -35,11 +35,11 @@ if (@Config::get('translate:live_interface'))
     Engine::add_autoload_action('Language', function() {
         $language = Language::current();
     
-        $interface_language = TranslationLanguage::get_by_code($language->get_code());
+        $translation_language = TranslationLanguage::get_by_code($language->get_code());
         
         $language->load_all();
     
-        $interface_keys = $interface_language->query_keys()->where("best_translation <> ''")->filter();
+        $interface_keys = $translation_language->query_keys()->where("best_translation <> ''")->filter();
         
         $translations = array();
         foreach ($interface_keys as $interface_key)

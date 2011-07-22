@@ -34,10 +34,9 @@ class Action_AddTranslation extends Action
         $translation->value = $value;
         $translation->score = 1;
         
-        if (Session::isadminloggedin())
+        if ($key->can_edit())
         {
-            $translation->approval = 1;
-            $translation->approval_time = time();
+            $translation->set_approved(true);
         }
         $translation->save();
         

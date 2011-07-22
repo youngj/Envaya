@@ -19,14 +19,26 @@ class Mixin_Content extends Mixin
         return Markup::sanitize_html($value);
     }
     
-    public function view_content_value($value)
+    public function view_content_value($value, $snippet_len = null)
     {
-        return $value;
+        if ($snippet_len != null)
+        {
+            return Markup::get_snippet($value, $snippet_len);
+        }
+        else
+        {
+            return $value;
+        }
     }
     
     public function view_content_input($value)
     {
         return view('input/tinymce', array('name' => 'value', 'value' => $value));
+    }
+    
+    public function get_content_snippet($value, $maxLength = 100)
+    {
+        return Markup::get_snippet($value, $maxLength);
     }
     
     public function set_content($content, $isSanitized = false)

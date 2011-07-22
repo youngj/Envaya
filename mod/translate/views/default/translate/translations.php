@@ -29,15 +29,23 @@
     {
         echo "<tr>";
         $key = $translation->get_container_entity();
-        echo "<td>";
-        echo "<strong><a href='{$key->get_url()}'>".escape($key->name)."</a></strong>";
-        echo "</td>";
-        echo "<td>".$key->view_value($key->get_value_in_lang($base_lang))."</td>";
-        echo "<td>".$key->view_value($translation->value)."</td>";
-        echo "<td>";
-        echo $translation->get_owner_link();
-        echo "</td>";
-        echo "<td>".friendly_time($translation->time_created)."</td>";
+        
+        if ($key->can_view())
+        {
+            echo "<td>";
+            echo "<strong><a href='{$key->get_url()}'>".escape($key->name)."</a></strong>";
+            echo "</td>";
+            echo "<td>".$key->view_value($key->get_value_in_lang($base_lang), 500)."</td>";
+            echo "<td>".$key->view_value($translation->value, 500)."</td>";
+            echo "<td>";
+            echo $translation->get_owner_link();
+            echo "</td>";
+            echo "<td>".friendly_time($translation->time_created)."</td>";
+        }
+        else
+        {
+            echo "<td colspan='5' style='color:#999'>".__('itrans:hidden')."</td>";
+        }
         echo "</tr>";
     }
 ?>

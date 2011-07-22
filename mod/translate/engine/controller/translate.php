@@ -49,7 +49,7 @@ class Controller_Translate extends Controller
             'before' => 'init_language_group',
         ),
         array(
-            'regex' => '/(?P<lang>\w+)/entity/(?P<key_name>\w+)', 
+            'regex' => '/(?P<lang>\w+)/content/(?P<key_name>\w+)', 
             'controller' => 'Controller_TranslateEntityKey',
             'before' => 'init_language_key',
         ),        
@@ -97,17 +97,23 @@ class Controller_Translate extends Controller
     }
     
     function init_language_key()
-    {
+    {    
         $this->init_language();
         
         $language = $this->param('language');
         $key_name = urldecode_alpha($this->param('key_name'));
-        
+                
         $key = $language->query_keys()->where('name = ?', $key_name)->get();
         if (!$key)
         {
             throw new NotFoundException();
         }
+        
+        if (!$key->can_view())
+        {
+            $this->force_login(__('itrans:cant_view'));
+        }
+        
         $this->params['key'] = $key;        
     }
     
@@ -130,7 +136,7 @@ class Controller_Translate extends Controller
         return $this->page_draw(array(
             'title' => __('itrans:translations'),
             'header' => view('translate/header'),
-            'content' => view('translate/interface_languages')
+            'content' => view('translate/languages')
         ));
     }
      
@@ -143,6 +149,17 @@ class Controller_Translate extends Controller
         ));
     }
      
+    function action_content()
+    {
+        $language = $this->param('language');
+        
+        return $this->page_draw(array(
+            'title' => __('itrans:translators'),
+            'header' => view('translate/header', array('items' => array($language), 'title' => __('itrans:user_content'))),
+            'content' => view('translate/user_content', array('language' => $language))
+        ));            
+    }
+     
     function action_view_language()
     {
         $language = $this->param('language');
@@ -150,7 +167,7 @@ class Controller_Translate extends Controller
         return $this->page_draw(array(
             'title' => __('itrans:translations'),
             'header' => view('translate/header', array('items' => array($language))),
-            'content' => view('translate/interface_language', array('language' => $language))
+            'content' => view('translate/language', array('language' => $language))
         ));
     }           
     

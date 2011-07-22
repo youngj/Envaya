@@ -23,10 +23,6 @@ echo "<li><a href='/tr/instructions#group' target='_blank'>".__('itrans:instruct
         
     $language = $group->get_container_entity();    
     
-    $base_lang = $language->get_current_base_code();
-    
-    $offset = (int)get_input('offset');
-    $limit = 15;
     $count = sizeof($filtered_keys);    
                                 
     echo "<form method='GET' action='{$group->get_url()}'>";
@@ -66,35 +62,9 @@ echo "<li><a href='/tr/instructions#group' target='_blank'>".__('itrans:instruct
     }
     
     echo "</div>";
-
-    echo view('pagination',array(
-        'offset' => $offset,
-        'count' => $count,
-        'limit' => $limit
+    
+    echo view('translate/key_table', array(
+        'keys' => $filtered_keys,
+        'language' => $language,
+        'base_url' => "/tr/{$language->code}/module/{$group->name}" . ($filter_str ? ",$filter_str" : '')
     ));
-?>
-<table class='gridTable'>
-<?php
-    echo "<tr>";
-    echo "<th>".__('itrans:language_key')."</th>";
-    echo "<th>".__("lang:$base_lang")."</th>";
-    echo "<th>".escape($language->name)."</th>";
-    echo "</tr>";    
-        
-    for ($i = $offset; $i < $offset + $limit && $i >= 0 && $i < $count; $i++)
-    {
-        echo view('translate/interface_key_row', array(
-            'key' => $filtered_keys[$i], 
-            'base_url' => "/tr/{$language->code}/module/{$group->name}" . ($filter_str ? ",$filter_str" : ''),
-            'base_lang' => $base_lang
-        ));
-    }    
-?>
-</table>
-<?php
-    echo view('pagination',array(
-        'offset' => $offset,
-        'count' => $count,
-        'limit' => $limit
-    ));
-?>

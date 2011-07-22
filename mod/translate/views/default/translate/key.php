@@ -1,5 +1,7 @@
 <?php
     $key = $vars['key'];    
+    $translation = $vars['translation']; 
+    
     $base_url = Request::get_uri();
 
     $base_lang = $key->get_language()->get_current_base_code();
@@ -27,11 +29,15 @@
     <td><div class='padded' style='width:300px'><?php echo $key->view_value($base_value); ?></div></td>
     <td>
     <?php
+    
+    $displayed_value = $translation ? $translation->value : $key->best_translation;
+    
     if (Session::isloggedin())
     {
         echo "<form method='POST' action='".escape($base_url)."/add'>";
-        echo view('input/securitytoken');
-        echo $key->view_input($key->best_translation ?: $base_value);
+        echo view('input/securitytoken');        
+        
+        echo $key->view_input($displayed_value ?: $base_value);
     
         echo "<br />";
         $tokens = $key->get_placeholders();
@@ -48,10 +54,10 @@
     }
     else
     {        
-        if ($key->best_translation)
+        if ($displayed_value)
         {
             echo "<div class='padded' style='width:300px'>";        
-            echo $key->view_value($key->best_translation);
+            echo $key->view_value($displayed_value);
             echo "</div>";    
             echo "<br />";
         }
@@ -70,12 +76,15 @@
 <?php
     if ($translations)
     {
-        echo "<br /><h3>Translation History</h3>";
+        echo "<br /><h3>".__('itrans:history')."</h3>";
 
         echo "<table class='inputTable gridTable'>";
         foreach ($translations as $translation)
         {
-            echo "<tr><th style='vertical-align:top'>";
+            $style = $translation->is_approved() ? "background-color:#e0ffe0" : "";
+        
+            echo "<tr style='$style'>";
+            echo "<th style='vertical-align:top'>";
             echo "<div style='font-weight:normal'>";
             echo "<div class='blog_date'>";
             echo $translation->get_owner_link();
@@ -85,22 +94,46 @@
             echo "</div>";
             echo view('translate/translation_score', array('translation' => $translation)); 
             
+            $translation_url = "{$base_url}/{$translation->guid}";
+            
+            echo "<div class='admin_links'>";
+            
+            echo "<a href='".escape($base_url)."?translation={$translation->guid}'>".__('edit')."</a> ";
+            
             if ($translation->can_edit())
-            {
-                echo "<div class='admin_links'>";
+            {                                
+                if (Session::isadminloggedin())
+                {
+                    if ($translation->is_approved())
+                    {
+                        echo view('input/post_link', array(
+                            'href' => "$translation_url/set_approval?approval=0",
+                            'text' => __('itrans:unapprove'),
+                        ));                                        
+                    }
+                    else
+                    {
+                        echo view('input/post_link', array(
+                            'href' => "$translation_url/set_approval?approval=1",
+                            'text' => __('itrans:approve'),
+                        ));                    
+                    }
+                    echo " ";
+                }                
+                
                 echo view('input/post_link', array(
-                    'href' => "{$base_url}/{$translation->guid}/delete",
+                    'href' => "$translation_url/delete",
                     'confirm' => __('areyousure'),                
                     'text' => __('delete'),
-                ));
-                echo "</div>";
-            }        
+                ));    
+            }  
+            echo "</div>";
+            
             echo "</div>";
             echo "</th>";
             echo "<td style='width:400px'>";
 
-            echo $key->view_value($translation->value);
-
+            echo $key->view_value($translation->value, 500);
             if ($translation->is_stale())
             {
                 echo "<div style='color:#666' class='help'>".__('itrans:stale')."</div>";
@@ -135,7 +168,7 @@ function toggleAddComment()
         echo "<h4>".__('comment:title')."</h4>";
         foreach ($comments as $comment)
         {
-            echo view('translate/interface_key_comment', array('comment' => $comment));
+            echo view('translate/key_comment', array('comment' => $comment));
         }
     }
         
