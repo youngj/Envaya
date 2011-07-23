@@ -205,7 +205,7 @@ class TranslateTest extends SeleniumTest
         {
             try
             {
-                $this->click("//div[@class='admin_links']//a");
+                $this->click("//div[@class='admin_links']//a[contains(@href,'delete')]");
             }
             catch (Exception $ex)
             {

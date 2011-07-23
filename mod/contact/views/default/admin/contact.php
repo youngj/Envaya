@@ -7,7 +7,7 @@
     
     $sector = get_input('sector');
     $region = get_input('region');
-    
+        
     $query = Organization::query()->order_by($sort);
     
     if ($sector)
@@ -18,7 +18,7 @@
     {
         $query->with_region($region);
     }
-    
+       
     $orgs = $query->limit($limit, $offset)->filter();
     $count = $query->count();
 

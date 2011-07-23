@@ -31,6 +31,7 @@ abstract class Entity extends Model
 
     protected $metadata_cache = array();        
 
+    static $query_class = 'Query_SelectEntity';
     static $primary_key = 'guid';    
     static $current_request_entities = array();
     
@@ -549,10 +550,12 @@ abstract class Entity extends Model
 
     static function query()
     {
-        $query = new Query_SelectEntity(static::$table_name, get_called_class());
+        $query_class = static::$query_class;
+    
+        $query = new $query_class(static::$table_name, get_called_class());
         
         if (isset(static::$query_subtype_ids))
-        {
+        {            
             $query->where_in('subtype_id', static::$query_subtype_ids);
         }
         

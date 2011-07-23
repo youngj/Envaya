@@ -8,6 +8,7 @@
 class User extends Entity
 {
     static $table_name = 'users';
+    static $query_class = 'Query_SelectUser';
 
     static $table_attributes = array(        
         'subtype_id' => '',
@@ -218,11 +219,6 @@ class User extends Entity
         $this->password = $this->generate_password($password);
     }
     
-    static function query()
-    {
-        return new Query_SelectUser(static::$table_name, get_called_class());
-    }
-
     public function js_properties()
     {
         return array(

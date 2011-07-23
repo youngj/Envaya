@@ -147,7 +147,7 @@ class UploadTest extends WebDriverTest
         $this->open("/testorg/design");        
         
         $this->waitForElement("//input[@type='checkbox']");
-        $this->xpath("//input[@type='checkbox']")->toggle(); // remove image
+        $this->xpath("//input[@type='checkbox']")->click(); // remove image
         $this->submitForm();
         
         $this->waitForElement("//table[@id='heading']//img[contains(@src,'/staticmap')]");
