@@ -107,4 +107,10 @@ class EntityTranslationKey extends TranslationKey
             ));
         }
     }
+    
+    function get_current_base_lang()
+    {
+        $entity = $this->get_container_entity();
+        return $entity->get_language();    
+    }
 }

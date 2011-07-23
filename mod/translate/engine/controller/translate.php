@@ -63,7 +63,7 @@ class Controller_Translate extends Controller
             'controller' => 'Controller_TranslateGroupKey',
             'before' => 'init_language_group_key',
         ),
-    );
+    );    
     
     function before()
     {

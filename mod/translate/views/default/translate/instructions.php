@@ -107,11 +107,11 @@ for that individual text string (a word or phrase).
 This page that allows registered users to add new translations,
 as well as to view any translations that have already been submitted.
 </p>
-<?php echo $img('key.png'); ?>
+<?php echo $img('key.png?v3'); ?>
 <p>
 To add a translation, type your translation in the box, and click 'Submit translation'.
 </p>
-<?php echo $img('key_submitted.png'); ?>
+<?php echo $img('key_submitted.png?v3'); ?>
 <p>
 When you add a translation, it will show your Envaya username on the left, along 
 with the current score of the translation.
@@ -119,13 +119,14 @@ with the current score of the translation.
 <h3>Translation Scores</h3>
 <p>
 The score for each translation is important if people have submitted multiple
-translations for a word or phrase. The translation with the highest score is displayed
-on the Module page, and the one with the highest score will eventually be used within Envaya.
+translations for a word or phrase. The score helps determine whether a translation
+is eventually accepted for to be used within Envaya. 
 </p>
-<?php echo $img('key_votes.png'); ?>
+<?php echo $img('key_votes.png?v2'); ?>
 <p>
 Each user can add or subtract one point from the score of any translation (including translations
-submitted by other users). Clicking the + or - buttons will add or subtract one point from a translation.
+submitted by other users). If you agree with a translation, click '+' to add one point.
+If a translation is incorrect, click '-' to subtract one point.
 </p>
 <h3>Deleting Translations</h3>
 <p>
@@ -142,14 +143,14 @@ should <em>not</em> be translated into the target language.
 <p>
 Any required placeholders will be listed below the box for adding a translation:
 </p>
-<?php echo $img('placeholders.png'); ?>
+<?php echo $img('placeholders.png?v2'); ?>
 <h3>Navigation</h3>
 <p>
 After you are done translating a word or phrase, click the <strong>Next &#xbb;</strong> link to 
 translate the next word or phrase in the module, or click the module name at the top of the page
 ('feed' in the example below) to return to the list of text strings.
 </p>
-<?php echo $img('navigation.png'); ?>
+<?php echo $img('navigation.png?v2'); ?>
 
 <h2 id='key'>Contacting Us</h2>
 <p>

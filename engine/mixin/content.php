@@ -23,17 +23,31 @@ class Mixin_Content extends Mixin
     {
         if ($snippet_len != null)
         {
+            $value = preg_replace('/<img [^>]+>/', ' <strong>(image)</strong> ', $value);
+            $value = preg_replace('/<scribd [^>]+>/', ' <strong>(document)</strong> ', $value);
+        
             return Markup::get_snippet($value, $snippet_len);
         }
         else
         {
+            $value = "<div style='width:470px;height:365px;padding:4px;border:1px solid #ccc;overflow:auto'>$value</div>";
+            if (Session::isloggedin()) // hack to make it line up with tinymce content
+            {
+                $value = "<div style='padding-top:28px'>$value</div>";                
+            }
             return $value;
         }
     }
     
     public function view_content_input($value)
     {
-        return view('input/tinymce', array('name' => 'value', 'value' => $value));
+        return view('input/tinymce', array(
+            'name' => 'value', 
+            'value' => $value, 
+            'height' => 396, 
+            'width' => 470,
+            'track_dirty' => true,
+        ));
     }
     
     public function get_content_snippet($value, $maxLength = 100)

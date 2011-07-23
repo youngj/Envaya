@@ -1,8 +1,6 @@
 <?php
     $query = $vars['query'];
     $language = $vars['language'];
-
-    $base_lang = $language->get_current_base_code();
     
     $offset = (int)get_input('offset');
     $limit = 15;
@@ -19,7 +17,7 @@
 <?php 
     echo "<tr>";
     echo "<th>".__('itrans:language_key')."</th>";
-    echo "<th>".__("lang:$base_lang")."</th>";
+    echo "<th>".__("itrans:base_lang")."</th>";
     echo "<th>".escape($language->name)."</th>";    
     echo "<th>".__('itrans:translator')."</th>";    
     echo "<th style='white-space:nowrap'>".__('itrans:time_created')."</th>";    
@@ -35,7 +33,7 @@
             echo "<td>";
             echo "<strong><a href='{$key->get_url()}'>".escape($key->name)."</a></strong>";
             echo "</td>";
-            echo "<td>".$key->view_value($key->get_value_in_lang($base_lang), 500)."</td>";
+            echo "<td>".$key->view_value($key->get_current_base_value(), 500)."</td>";
             echo "<td>".$key->view_value($translation->value, 500)."</td>";
             echo "<td>";
             echo $translation->get_owner_link();

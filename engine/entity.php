@@ -446,31 +446,31 @@ abstract class Entity extends Model
             $viewLang = Language::get_current_code();        
         }
 
+        $translateMode = TranslateMode::get_current();            
+        $translation = $this->lookup_translation($field, $origLang, $viewLang, $translateMode);
+        
         if ($origLang != $viewLang)
-        {            
-            $translateMode = TranslateMode::get_current();
-            $translation = $this->lookup_translation($field, $origLang, $viewLang, $translateMode);
-            
+        {
             PageContext::set_original_language($origLang);
-            PageContext::add_available_translation($translation);            
-            
-            if ($translation->owner_guid)
-            {
-                $viewTranslation = ($translateMode > TranslateMode::None);
-            }
-            else
-            {
-                $viewTranslation = ($translateMode == TranslateMode::All);
-            }
+        }
+        PageContext::add_available_translation($translation);            
+        
+        if ($translation->owner_guid)
+        {
+            $viewTranslation = ($translateMode > TranslateMode::None);
+        }
+        else
+        {
+            $viewTranslation = ($translateMode == TranslateMode::All);
+        }
 
-            if ($viewTranslation && $translation->guid)
-            {
-                return $translation->value;
-            }
-            else
-            {
-                return $this->$field;
-            }
+        if ($viewTranslation && $translation->guid)
+        {
+            return $translation->value;
+        }
+        else
+        {
+            return $this->$field;
         }
 
         return $text;
@@ -494,7 +494,7 @@ abstract class Entity extends Model
             $key->save();
         }
         
-        $doAutoTranslate = ($translateMode == TranslateMode::All);
+        $doAutoTranslate = ($translateMode == TranslateMode::All) && ($origLang != $viewLang);
 
         $humanTrans = $key->query_translations()
             ->where('approval > 0')

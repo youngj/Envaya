@@ -81,21 +81,24 @@ class TranslationKey extends Entity
     {
         $base_value = $this->get_default_value();
     
+        $style = 'width:350px;margin-top:0px';
+    
         if (strlen($base_value) > 45 || strpos($base_value, "\n") !== FALSE)
         {
            $view = "input/longtext";
-           $style = "height:".(25+floor(strlen($base_value)/45)*30)."px;width:350px";
+           $style .= ";height:".(25+floor(strlen($base_value)/45)*30)."px";
         }
         else
         {
             $view = "input/text";
-            $style = 'width:350px';
         }
+                 
 
         echo view($view, array(
             'name' => 'value',
             'style' => $style,
             'value' => $initial_value,
+            'track_dirty' => true,
         ));     
     }
     
@@ -119,9 +122,16 @@ class TranslationKey extends Entity
             $view_name = 'output/text';            
         }
         
-        return view($view_name, array('value' => $value));
+        $res = view($view_name, array('value' => $value));
+        
+        if ($snippet_len == null)
+        {
+            $res = "<div style='width:350px;border:1px solid #ccc;padding:4px'>$res</div>";
+        }
+        
+        return $res;
     }
-    
+        
     function get_placeholders()
     {
         return array();
@@ -130,5 +140,15 @@ class TranslationKey extends Entity
     function sanitize_value($value)
     {
         return $value;
+    }
+
+    function get_current_base_value()
+    {
+        return $this->get_default_value();
+    }        
+    
+    function get_current_base_lang()
+    {
+        return Language::get_current_code();
     }
 }

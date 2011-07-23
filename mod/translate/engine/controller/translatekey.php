@@ -154,4 +154,10 @@ class Controller_TranslateKey extends Controller
         
         return $this->redirect($parent_uri);
     }    
+    
+    function action_base_lang()
+    {
+        $action = new Action_ChangeBaseLanguage($this);
+        $action->execute();    
+    }
 }

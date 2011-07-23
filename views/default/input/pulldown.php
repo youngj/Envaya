@@ -19,7 +19,7 @@
 
     echo "<select ".Markup::render_attrs($attrs).">";
 
-    if ($empty_option)
+    if (isset($empty_option))
     {
         echo "<option value=''>".escape($empty_option)."</option>";
     }

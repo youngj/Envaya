@@ -52,6 +52,11 @@
         $translation->time_created = $row->time_updated;
         $translation->value = $row->value;
         $translation->owner_guid = $row->owner_guid;
+        if ($translation->owner_guid)
+        {
+            $translation->approval = 1;
+            $translation->approval_time = time();
+        }
         $translation->save();
         $key->update();
         

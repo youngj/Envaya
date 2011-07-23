@@ -649,4 +649,9 @@ abstract class Controller {
     {
         return $this->response;
     }
+    
+    function get_parent_controller()
+    {
+        return $this->parent_controller;
+    }
 } // End Controller

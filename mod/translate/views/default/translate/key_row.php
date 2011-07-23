@@ -1,7 +1,6 @@
 <?php
 
     $key = $vars['key'];
-    $base_lang = $vars['base_lang'];
     
     $url = isset($vars['base_url']) ? ($vars['base_url'] . "/" . urlencode_alpha($key->name)) : $key->get_url();
     
@@ -17,7 +16,7 @@
         
         echo "<td>";
         
-        echo $key->view_value($key->get_value_in_lang($base_lang), 500);
+        echo $key->view_value($key->get_current_base_value(), 500);
         
         echo "</td>";
         echo "<td>";

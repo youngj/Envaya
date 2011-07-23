@@ -3,30 +3,62 @@
     $translation = $vars['translation']; 
     
     $base_url = Request::get_uri();
-
-    $base_lang = $key->get_language()->get_current_base_code();
     
-    $base_value = $key->get_value_in_lang($base_lang);
+    $base_value = $key->get_current_base_value(); 
     
     $target_language = $key->get_language();
     
     $query = $key->query_translations()->order_by('time_created desc');        
-    $translations = $query->filter();        
+    $translations = $query->filter(); 
+
+    PageContext::add_header_html("
+        <style type='text/css'>
+            .translateTable { margin: 0 auto; }
+            .translateTable th { padding:4px;font-size:14px;text-align:center; }
+            .translateTable td { padding:4px; }
+        </style>
+    ");
 ?>
-<div style='float:left'>
-<div class='post_nav' style='padding-bottom:5px;width:700px'>
+<div style='float:right'>
+<ul>
+<li><a href='/tr/instructions#key' target='_blank'><?php echo __('itrans:instructions') ?></a></li>
+</ul>
+</div>
+
+<div style='padding-bottom:5px;text-align:center;'>
 <?php  
-    echo "<a href='".escape($base_url)."/prev' title='".__('previous')."' class='post_nav_prev'><span>&#xab; ".__('previous')."</span></a> ";
-    echo "<a href='".escape($base_url)."/next' title='".__('next')."' class='post_nav_next'><span>".__('next')." &#xbb;</span></a>";
+    echo "<a href='".escape($base_url)."/prev' title='".__('previous')."'><span>&#xab; ".__('previous')."</span></a> &nbsp; &middot; &nbsp; ";
+    echo "<a href='".escape($base_url)."/next' title='".__('next')."'><span>".__('next')." &#xbb;</span></a>";
 ?>
 </div>
-<table class='gridTable'>
+<table class='translateTable'>
 <tr>
-    <th><?php echo __("lang:$base_lang"); ?></th>
+    <th><?php 
+    
+        echo __("itrans:base_lang"); 
+        
+        
+        
+        echo " ";
+        
+        $cur_base_lang = $key->get_current_base_lang();
+        $lang_name = escape($cur_base_lang ? __("lang:$cur_base_lang") : __('itrans:unknown'));
+        
+        if ($key instanceof EntityTranslationKey && $key->can_edit())
+        {
+            echo "<a href='$base_url/base_lang'>($lang_name)</a>";
+        }    
+        else
+        {
+            echo "($lang_name)";
+        }
+    ?></th>
     <th><?php echo escape($target_language->name); ?></th>
 </tr>
 <tr> 
-    <td><div class='padded' style='min-width:300px'><?php echo $key->view_value($base_value); ?></div></td>
+    <td>
+    <div class='translation'><?php echo $key->view_value($base_value); ?></div>    
+    </td>
     <td>
     <?php
     
@@ -49,24 +81,21 @@
     
         echo view('focus', array('name' => 'value')); 
     
-        echo view('input/submit', array('value' => __('trans:submit'))); 
+        echo view('input/submit', array(
+            'style' => 'margin-top:0px',
+            'value' => __('trans:submit')
+        )); 
         echo "</form>";
     }
     else
     {        
         if ($displayed_value)
         {
-            echo "<div class='padded' style='min-width:300px'>";        
+            echo "<div class='translation'>";        
             echo $key->view_value($displayed_value);
             echo "</div>";    
             echo "<br />";
         }
-        echo __('itrans:need_login');
-        echo "<ul style='font-weight:bold'>";
-        $next = urlencode($base_url);
-        echo "<li><strong><a href='/pg/login?next=$next'>".__('login')."</a></strong></li>";
-        echo "<li><strong><a href='/pg/register?next=$next'>".__('register')."</a></strong></li>";
-        echo "</ul>";
     }        
 ?>       
     </td>
@@ -74,11 +103,79 @@
 </table>
 
 <?php
+    if (!Session::isloggedin())
+    {       
+        echo "<div style='text-align:center;padding-bottom:15px'>";
+        echo __('itrans:need_login');
+        $next = urlencode($base_url);
+        echo " <strong><a href='/pg/login?next=$next'>".__('login')."</a></strong> &middot; ";
+        echo "<strong><a href='/pg/register?next=$next'>".__('register')."</a></strong>";
+        echo "</div>";
+    }        
+?>
+
+
+<table style='margin:0 auto'>
+<tr>
+<td style='padding-right:10px;width:285px'>
+<script type='text/javascript'>
+function toggleAddComment()
+{
+    var div = $('add_comment');
+    if (div.style.display == 'none')
+    {
+        div.style.display = 'block';
+        $('comment_content').focus();
+    }
+    else
+    {
+        div.style.display = 'none';
+    }
+}
+</script>
+<?php       
+    
+    $comments = $key->query_comments()->order_by('time_created')->filter();
+    if ($comments)
+    {
+        echo "<h3>".__('comment:title')."</h3>";
+        foreach ($comments as $comment)
+        {
+            echo view('translate/key_comment', array('comment' => $comment));
+        }
+    }
+           
+    if (Session::isloggedin())
+    {    
+        echo "<a href='javascript:toggleAddComment()' style='font-weight:bold'>".__('comment:add')."</a>";
+        echo "<div id='add_comment' style='display:none'>";
+        echo "<form method='POST' action='{$base_url}/add_comment'>";
+        echo view('input/securitytoken');
+        echo "<div>".view('input/longtext', array(
+            'id' => 'comment_content', 
+            'name' => 'content', 
+            'style' => "width:250px;height:50px"
+        ))."</div>"; 
+        echo __('itrans:show_comment_in'). " ";
+        echo view('input/pulldown', array(
+            'name' => 'scope',
+            'options' => array('current' => $target_language->name, 'all' => __('itrans:all_languages')),
+            'value' => Session::isadminloggedin() ? 'all' : 'current'
+        ));
+        
+        echo view('input/submit', array('value' => __('comment:publish'))); 
+        echo "</form>";        
+        echo "</div>";
+    }    
+?>
+</td>
+<td style='padding-left:5px'>
+<?php
     if ($translations)
     {
-        echo "<br /><h3>".__('itrans:history')."</h3>";
+        echo "<h3>".__('itrans:history')."</h3>";
 
-        echo "<table class='inputTable gridTable'>";
+        echo "<table class='inputTable' style='width:440px'>";
         foreach ($translations as $translation)
         {
             $style = $translation->is_approved() ? "background-color:#e0ffe0" : "";
@@ -131,7 +228,7 @@
             
             echo "</div>";
             echo "</th>";
-            echo "<td style='width:400px'>";
+            echo "<td style='width:300px;padding-bottom:15px'>";
 
             echo $key->view_value($translation->value, 500);
             if ($translation->is_stale())
@@ -143,60 +240,6 @@
         echo "</table>";
     }
 ?>   
-</div>
-<div style='float:left;padding-top:30px;padding-left:10px;width:285px'>
-<script type='text/javascript'>
-function toggleAddComment()
-{
-    var div = $('add_comment');
-    if (div.style.display == 'none')
-    {
-        div.style.display = 'block';
-        $('comment_content').focus();
-    }
-    else
-    {
-        div.style.display = 'none';
-    }
-}
-</script>
-<?php
-    
-    $comments = $key->query_comments()->order_by('time_created')->filter();
-    if ($comments)
-    {
-        echo "<h4>".__('comment:title')."</h4>";
-        foreach ($comments as $comment)
-        {
-            echo view('translate/key_comment', array('comment' => $comment));
-        }
-    }
-        
-    echo "<ul>";        
-    if (Session::isloggedin())
-    {    
-        echo "<li><a href='javascript:toggleAddComment()'>".__('comment:add')."</a>";
-        echo "<div id='add_comment' style='display:none'>";
-        echo "<form method='POST' action='{$base_url}/add_comment'>";
-        echo view('input/securitytoken');
-        echo "<div>".view('input/longtext', array(
-            'id' => 'comment_content', 
-            'name' => 'content', 
-            'style' => "width:250px;height:50px"
-        ))."</div>"; 
-        echo __('itrans:show_comment_in'). " ";
-        echo view('input/pulldown', array(
-            'name' => 'scope',
-            'options' => array('current' => $target_language->name, 'all' => __('itrans:all_languages')),
-            'value' => Session::isadminloggedin() ? 'all' : 'current'
-        ));
-        
-        echo view('input/submit', array('value' => __('comment:publish'))); 
-        echo "</form>";        
-        echo "</div></li>";
-
-    }
-    echo "<li><a href='/tr/instructions#key' target='_blank'>".__('itrans:instructions')."</a></li>";     
-    echo "</ul>";
-?>
-</div>
+</td>
+</tr>
+</table>

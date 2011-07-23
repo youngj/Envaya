@@ -19,8 +19,6 @@
         $count = $query->count();
     }    
     
-    $base_lang = $language->get_current_base_code();
-    
     echo view('pagination',array(
         'offset' => $offset,
         'count' => $count,
@@ -31,7 +29,7 @@
 <?php
     echo "<tr>";
     echo "<th>".__('itrans:language_key')."</th>";
-    echo "<th>".__("lang:$base_lang")."</th>";
+    echo "<th>".__("itrans:base_lang")."</th>";
     echo "<th>".escape($language->name)."</th>";
     echo "</tr>";    
         
@@ -40,7 +38,6 @@
         echo view('translate/key_row', array(
             'key' => $key, 
             'base_url' => $base_url,
-            'base_lang' => $base_lang
         ));    
     }
 ?>
