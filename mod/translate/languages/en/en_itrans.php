@@ -8,8 +8,6 @@ return array(
     'itrans:deleted' => "Translation deleted successfully.",
     'itrans:duplicate' => "That translation already exists.",
     
-    'itrans:language_code' => "Language Code",
-    'itrans:language_name' => "Language Name",
     'itrans:language_group' => "Module",
     'itrans:language_key' => "Internal ID",
     'itrans:progress' => "Progress", 
@@ -17,16 +15,12 @@ return array(
     'itrans:placeholder_error' => "The translation did not have the correct placeholders.",
     'itrans:stale' => "This translation refers to an older version of the source text.",
     
-    'itrans:add_in' => "Add translation in %s",
-    
     'itrans:latest' => "Latest translations",
     'itrans:time_created' => "Time Created",
     'itrans:translator' => "Translator",    
     'itrans:translators' => "Translators",    
     
     'itrans:status_all' => "All",
-    'itrans:status_empty' => "Missing translation",
-    'itrans:status_notempty' => "Has translation",
     
     'itrans:last_date' => "Last update",
     'itrans:translations' => "Translations",
@@ -43,8 +37,6 @@ return array(
     
     'itrans:edit_page' => "Edit Translations on this Page",
     'itrans:history' => "Translation History",
-    'itrans:approve' => "Approve",
-    'itrans:unapprove' => "Unapprove",
     'itrans:user_content' => "User Content",
     'itrans:hidden' => "(hidden)",
     'itrans:cant_view' => "The current user account does not have access to view this translation.",
@@ -53,4 +45,8 @@ return array(
     'itrans:select_base_lang' => "Language of original text:",
     'itrans:original_text' => "Original text",
     'itrans:unknown' => '(unknown)',
+    
+    'itrans:submit' => "Submit translation",
+    'itrans:not_translated' => "Not translated",
+    'itrans:translated' => "Translated",
 );

@@ -182,13 +182,7 @@ class Controller_Admin extends Controller
     {
         $action = new Action_Admin_DeleteEntity($this);
         $action->execute();
-    }
-            
-    function action_translate()
-    {
-        $action = new Action_Admin_TranslateContent($this);
-        $action->execute();
-    }
+    }            
 }
 
 Controller_Admin::$routes = Controller::$SIMPLE_ROUTES;

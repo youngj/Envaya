@@ -23,15 +23,20 @@
         'offset' => $offset,
         'count' => $count,
         'limit' => $limit
-    ));
+    ));   
 ?>
-<table class='gridTable'>
+<table class='keyTable'>
+<thead>
 <?php
     echo "<tr>";
-    echo "<th>".__('itrans:language_key')."</th>";
+    //echo "<th>".__('itrans:language_key')."</th>";
     echo "<th>".__("itrans:base_lang")."</th>";
     echo "<th>".escape($language->name)."</th>";
     echo "</tr>";    
+?>
+</thead>
+<tbody>
+<?php
         
     foreach ($visible_keys as $key)
     {
@@ -41,6 +46,7 @@
         ));    
     }
 ?>
+</tbody>
 </table>
 <?php
     echo view('pagination',array(

@@ -149,6 +149,6 @@ class TranslationKey extends Entity
     
     function get_current_base_lang()
     {
-        return Language::get_current_code();
+        return $this->get_language()->get_current_base_code();
     }
 }

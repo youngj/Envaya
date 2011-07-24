@@ -9,4 +9,11 @@ return array(
     'itrans:language_deleted' => "Language deleted.",
     'itrans:enabled_groups' => "Enabled Modules",
     'itrans:notify_translations_subject' => "New translations added",
+    
+    'itrans:language_code' => "Language Code",
+    'itrans:language_name' => "Language Name",    
+
+    'itrans:approve' => "Approve",
+    'itrans:unapprove' => "Unapprove",
+    
 );

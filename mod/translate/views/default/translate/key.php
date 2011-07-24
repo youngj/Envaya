@@ -36,9 +36,7 @@
     <th><?php 
     
         echo __("itrans:base_lang"); 
-        
-        
-        
+
         echo " ";
         
         $cur_base_lang = $key->get_current_base_lang();
@@ -83,19 +81,24 @@
     
         echo view('input/submit', array(
             'style' => 'margin-top:0px',
-            'value' => __('trans:submit')
+            'value' => __('itrans:submit')
         )); 
         echo "</form>";
     }
     else
     {        
+        echo "<div class='translation'>"; 
         if ($displayed_value)
         {
-            echo "<div class='translation'>";        
             echo $key->view_value($displayed_value);
-            echo "</div>";    
-            echo "<br />";
         }
+        else
+        {
+            echo "<div style='color:#ccc;padding:4px;'>(".__('itrans:not_translated').")</span>";        
+        }
+        echo "</div>";    
+        echo "<br />";
+        
     }        
 ?>       
     </td>

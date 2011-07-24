@@ -25,24 +25,29 @@ echo "<li><a href='/tr/instructions#group' target='_blank'>".__('itrans:instruct
     
     $count = sizeof($filtered_keys);    
                                 
-    echo "<form method='GET' action='{$group->get_url()}'>";
+    echo "<form method='GET' id='filter_form' action='{$group->get_url()}'>";
     echo "<label>".__("itrans:filter")."</label> ";
     echo view('input/text', array(
         'name' => 'q', 
         'style' => "width:150px;margin:0px",
+        'attrs' => array(
+            'onchange' => '$("filter_form").submit()'
+        ),        
         'value' => $query
     ));
     echo view('input/pulldown', array(
         'name' => 'status',
         'options' => array(
             '' => __('itrans:status_all'),
-            'empty' => __('itrans:status_empty'),
-            'notempty' => __('itrans:status_notempty'),
+            'empty' => __('itrans:not_translated'),
+            'notempty' => __('itrans:translated'),
+        ),
+        'attrs' => array(
+            'onchange' => '$("filter_form").submit()'
         ),
         'value' => $status,
     ));
         
-    echo view('input/submit', array('name' => '', 'value' => __("search"), 'style' => "margin:0px;padding:0px"));
     echo "</form>";
     
     echo "<div style='padding-bottom:5px;'>";

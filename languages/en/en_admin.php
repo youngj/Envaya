@@ -7,12 +7,6 @@ return array(
     'user:delete' => "Delete user",
     'user:deleted' => "User deleted successfully.",
 
-    'trans:title' => "Translate content",
-    'trans:original_in' => "Original in %s",
-    'trans:inlang' => "Translation in %s",
-    'trans:submit' => "Submit translation",
-    'trans:posted' => "Translation submitted successfully.",
-    
     'domains:edit' => "Edit domain names",
     'domains:added' => "Domain name added",
     'domains:deleted' => "Domain name deleted",

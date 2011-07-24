@@ -29,6 +29,7 @@ if (@Config::get('translate:footer_link'))
     Views::extend('page_elements/content_footer', 'page_elements/translate_footer');
 }
 
+Views::extend('css/default', 'css/default_translate');
 
 if (@Config::get('translate:live_interface'))
 {

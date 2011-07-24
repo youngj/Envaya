@@ -77,32 +77,31 @@ in that language, and translation statistics and history for yourself and any ot
 <h2 id='group'>Module Page</h2>
 <p>
 The page for one of Envaya&apos;s modules has a list text strings in both the 'base' language and the 'target' language.
-Each text string also has a unique Internal ID, which is not translated.
 </p>
-<?php echo $img('group.png'); ?>
+<?php echo $img('group.png?v2'); ?>
 <p>
-Click the Internal ID of a text string to translate it into the target language.
+Click a text string to translate it into the target language.
 </p>
 <p>
 The Filter section allows you to change which text strings are shown in the list.
 To show only the strings that are currently missing a translation in the target language, choose
-'Missing translation' from the drop down menu, then click Search:
-<?php echo $img('filter_missing.png'); ?>
+'Not translated' from the drop down menu:
+<?php echo $img('filter_missing.png?v2'); ?>
 </p>
 <p>
-To show only the strings that contain a particular word or phrase (in either the base language, target language, or internal ID),
-type the word or phrase into the box, then click Search:
-<?php echo $img('filter_query.png'); ?>
+To show only the strings that contain a particular word or phrase (in either the base language or target language),
+type the word or phrase into the box:
+<?php echo $img('filter_query.png?v2'); ?>
 </p>
 <p>
 After creating a filter, you can remove the filter (to see all text strings again) by
- clearing the search box, selecting 'All' from the dropdown box, then clicking Search.
+ clearing the search box and selecting 'All' from the dropdown box.
 </p>
 
 <h2 id='key'>Translating Individual Phrases</h2>
 <p>
-When you click on one of the Internal IDs on a module&apos;s page, you arrive at a page
-for that individual text string (a word or phrase).
+When you click on the Edit link for an individual text string, you arrive at a page
+where you can edit the translation for that word or phrase.
 <p>
 This page that allows registered users to add new translations,
 as well as to view any translations that have already been submitted.
@@ -113,8 +112,8 @@ To add a translation, type your translation in the box, and click 'Submit transl
 </p>
 <?php echo $img('key_submitted.png?v3'); ?>
 <p>
-When you add a translation, it will show your Envaya username on the left, along 
-with the current score of the translation.
+When you add a translation, it will show your Envaya username in the Translation History section, 
+along with the current score of the translation.
 </p>
 <h3>Translation Scores</h3>
 <p>

@@ -20,7 +20,7 @@ class Action_ChangeBaseLanguage extends Action
         
         if ($lang != '' && !Language::get($lang))
         {
-            throw new ValidationException(__('itrans:invalid_language'));
+            throw new ValidationException('Invalid language');
         }
         
         $entity = $key->get_container_entity();

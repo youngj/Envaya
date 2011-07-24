@@ -87,7 +87,7 @@ class InterfaceKey extends TranslationKey
 
     function get_current_base_value()
     {
-        $base_lang = $this->get_language()->get_current_base_code();
+        $base_lang = $this->get_current_base_lang();
         return $this->get_value_in_lang($base_lang);
-    }    
+    }        
 }
