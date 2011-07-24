@@ -26,7 +26,11 @@ class Mixin_Content extends Mixin
             $value = preg_replace('/<img [^>]+>/', ' <strong>(image)</strong> ', $value);
             $value = preg_replace('/<scribd [^>]+>/', ' <strong>(document)</strong> ', $value);
         
-            return Markup::get_snippet($value, $snippet_len);
+            return Markup::snippetize_html($value, $snippet_len, array(
+                'HTML.AllowedElements' => 'br',
+                'AutoFormat.Linkify' => false,
+                'AutoFormat.RemoveEmpty' => true
+            ));
         }
         else
         {

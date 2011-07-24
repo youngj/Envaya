@@ -101,6 +101,31 @@ class Markup
         return $shortStr;
     }
 
+    static function snippetize_html($content, $maxLength, $options)
+    {
+        $content = preg_replace('/<img[^>]+>/i', '', $content);
+        $content = preg_replace('/<\/(p|h1|h2|h3)>/i', '</$1> <br />', $content);
+
+        $tooLong = strlen($content) > $maxLength;                
+        if ($tooLong)
+        {
+            $content = static::truncate_at_word_boundary($content, $maxLength);
+        }                                
+        
+        $content = Markup::sanitize_html($content, $options);                
+        $content = mb_ereg_replace('(\xc2\xa0)+',' ',$content); # non-breaking space
+        $content = preg_replace('/(<br \/>\s*)+/', ' &ndash; ', $content);
+        $content = preg_replace('/&ndash;\s*$/', '', $content);
+        $content = preg_replace('/^\s*&ndash;/', '', $content);
+        $content = preg_replace('/(&nbsp;)+/', ' ', $content);
+
+        if ($tooLong)
+        {
+            $content = $content."...";
+        }
+        return $content;    
+    }
+    
     static function get_snippet($content, $maxLength = 100)
     {
         if ($content)
@@ -108,29 +133,14 @@ class Markup
             $cacheKey = "snippet_".md5($content)."_$maxLength";
             $cache = get_cache();
             $snippet = $cache->get($cacheKey);
+                        
             if (!$snippet)
             {
-                $content = preg_replace('/<img[^>]+>/i', '', $content);
-                $content = preg_replace('/<\/(p|h1|h2|h3)>/i', '</$1> <br />', $content);
-
-                $tooLong = strlen($content) > $maxLength;                
-                if ($tooLong)
-                {
-                    $content = static::truncate_at_word_boundary($content, $maxLength);
-                }                                
-                
-                $content = Markup::sanitize_html($content, array('HTML.AllowedElements' => 'a,em,strong,br','AutoFormat.RemoveEmpty' => true));                
-                $content = mb_ereg_replace('(\xc2\xa0)+',' ',$content); # non-breaking space
-                $content = preg_replace('/(<br \/>\s*)+/', ' &ndash; ', $content);
-                $content = preg_replace('/&ndash;\s*$/', '', $content);
-                $content = preg_replace('/^\s*&ndash;/', '', $content);
-                $content = preg_replace('/(&nbsp;)+/', ' ', $content);
-
-                if ($tooLong)
-                {
-                    $content = $content."...";
-                }
-                $snippet = $content;
+                $snippet = Markup::snippetize_html($content, $maxLength, array(
+                    'HTML.AllowedElements' => 'a,em,strong,br',
+                    'AutoFormat.RemoveEmpty' => true
+                ));
+            
                 $cache->set($cacheKey, $snippet);                               
             }
 
