@@ -447,8 +447,7 @@ abstract class Entity extends Model
             $viewLang = Language::get_current_code();        
         }
 
-        $translateMode = TranslateMode::get_current();            
-        $translation = $this->lookup_translation($field, $origLang, $viewLang, $translateMode);
+        $translation = $this->lookup_translation($field, $origLang, $viewLang);
         
         if ($origLang != $viewLang)
         {
@@ -456,28 +455,10 @@ abstract class Entity extends Model
         }
         PageContext::add_available_translation($translation);            
         
-        if ($translation->owner_guid)
-        {
-            $viewTranslation = ($translateMode > TranslateMode::None);
-        }
-        else
-        {
-            $viewTranslation = ($translateMode == TranslateMode::Automatic);
-        }
-
-        if ($viewTranslation && $translation->guid)
-        {
-            return $translation->value;
-        }
-        else
-        {
-            return $this->$field;
-        }
-
-        return $text;
+        return $translation->value;
     }
 
-    protected function lookup_translation($prop, $origLang, $viewLang, $translateMode = TranslateMode::ManualOnly)
+    private function lookup_translation($prop, $origLang, $viewLang)
     {
         $guid = $this->guid;
         
@@ -495,16 +476,17 @@ abstract class Entity extends Model
             $key->save();
         }
         
+        $translateMode = TranslateMode::get_current();                    
         $doAutoTranslate = ($translateMode == TranslateMode::Automatic) && ($origLang != $viewLang);
 
-        $humanTrans = $key->query_translations()
+        $approvedTrans = $key->query_translations()
             ->where('approval > 0')
             ->order_by('approval_time desc')
             ->get();
         
-        if ($doAutoTranslate && (!$humanTrans || $humanTrans->is_stale()))
+        if ($doAutoTranslate && (!$approvedTrans || $approvedTrans->is_stale()))
         {
-            $autoTrans =  $key->query_translations()
+            $autoTrans = $key->query_translations()
                 ->where('owner_guid = 0')
                 ->order_by('time_created desc')
                 ->get();
@@ -524,18 +506,18 @@ abstract class Entity extends Model
                 $key->update();
                 
                 return $autoTrans;
-            }            
+            }
         }
         
-        if ($humanTrans)
+        if ($approvedTrans)
         {
-            return $humanTrans;            
+            return $approvedTrans;            
         }
         else
         {        
-            // return translation with empty value
+            // return translation with untranslated text
             $tempTrans = $key->new_translation();
-            $tempTrans->value = '';
+            $tempTrans->value = $this->$prop;
             return $tempTrans;
         }
     }    

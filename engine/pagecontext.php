@@ -103,8 +103,8 @@ class PageContext
         foreach (static::$translations_available as $translation)
         {
             if ($mode == TranslateMode::All
-                || $mode == TranslateMode::Manual && $translation->owner_guid
-                || $mode == TranslateMode::Automatic && !$translation->owner_guid)
+                || $mode == TranslateMode::Approved && $translation->is_approved()
+                || $mode == TranslateMode::Automatic && !$translation->owner_guid && !$translation->is_approved())
             {
                 return true;
             }

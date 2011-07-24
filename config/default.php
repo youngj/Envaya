@@ -78,7 +78,7 @@ return array(
     
     'selenium_jar' => "selenium-server-standalone-2.0.0.jar",
     
-    'cache_version' => 189,  // increment when all cached objects need to be invalidated (rare)
+    'cache_version' => 190,  // increment when all cached objects need to be invalidated (rare)
     
     'allow_robots' => true,    
     

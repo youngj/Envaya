@@ -18,7 +18,7 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
             && GoogleTranslate::is_supported_language($origLang) 
             && GoogleTranslate::is_supported_language($viewLang);
             
-        if ($transMode == TranslateMode::Manual && !PageContext::has_translation(TranslateMode::Manual))
+        if ($transMode == TranslateMode::Approved && !PageContext::has_translation(TranslateMode::Approved))
         {
             $transMode = TranslateMode::None;
         }
@@ -27,7 +27,7 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
         
         $tr = array('{origlang}' => $origLangName, '{curlang}' => $userLangName);
 
-        if ($transMode == TranslateMode::Manual) // viewing manual translation
+        if ($transMode == TranslateMode::Approved) 
         {
             if (PageContext::has_stale_translation())
             {
@@ -83,10 +83,10 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
         {
             echo sprintf(__("trans:page_original_in"), $origLangName);
 
-            if (PageContext::has_translation(TranslateMode::Manual))
+            if (PageContext::has_translation(TranslateMode::Approved))
             {           
                 $links[] = view('page_elements/translate_mode_link', array(
-                    'mode' => TranslateMode::Manual, 
+                    'mode' => TranslateMode::Approved, 
                     'text' => sprintf(__("trans:view_in"), $userLangName),
                     'original_url' => $vars['original_url'],
                 ));                    
@@ -102,7 +102,7 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
         }
 
         $translate_url = $vars['translate_url'];
-        $links[] = "<a href='$translate_url'>".__('trans:edit')."</a>";
+        $links[] = "<a target='_blank' rel='nofollow' href='$translate_url'>".__('trans:edit')."</a>";
         
         echo " ".implode(' &middot; ', $links);
         

@@ -3,7 +3,7 @@
 class TranslateMode
 {
     const None = 1;
-    const Manual = 2;
+    const Approved = 2;
     const Automatic = 3;        
     const All = 4;
     
@@ -13,7 +13,7 @@ class TranslateMode
     {
         if (static::$current_mode == null)
         {
-            static::$current_mode = ((int)get_input("trans")) ?: TranslateMode::Manual;
+            static::$current_mode = ((int)get_input("trans")) ?: TranslateMode::Approved;
         }
         return static::$current_mode;
     }    
