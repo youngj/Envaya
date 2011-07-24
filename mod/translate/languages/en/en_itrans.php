@@ -49,4 +49,8 @@ return array(
     'itrans:submit' => "Submit translation",
     'itrans:not_translated' => "Not translated",
     'itrans:translated' => "Translated",
+    'itrans:needs_approval' => "Note: A moderator must approve your translation before it is accepted.",
+
+    'itrans:approve' => "Approve",
+    'itrans:unapprove' => "Remove Approval",    
 );

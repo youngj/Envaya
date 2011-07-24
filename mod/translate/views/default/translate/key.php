@@ -79,10 +79,21 @@
     
         echo view('focus', array('name' => 'value')); 
     
+        if (!$key->can_edit())
+        {                    
+            if ($key instanceof EntityTranslationKey || !Config::get('translate:live_interface'))
+            {
+                echo "<div style='float:right;padding-top:5px;width:220px;color:#999;font-size:11px'>";            
+                echo __('itrans:needs_approval');            
+                echo "</div>";
+            }            
+        }
+    
         echo view('input/submit', array(
             'style' => 'margin-top:0px',
             'value' => __('itrans:submit')
         )); 
+        
         echo "</form>";
     }
     else
@@ -163,7 +174,7 @@ function toggleAddComment()
         echo view('input/pulldown', array(
             'name' => 'scope',
             'options' => array('current' => $target_language->name, 'all' => __('itrans:all_languages')),
-            'value' => Session::isadminloggedin() ? 'all' : 'current'
+            'value' => 'all'
         ));
         
         echo view('input/submit', array('value' => __('comment:publish'))); 
@@ -195,38 +206,39 @@ function toggleAddComment()
             echo view('translate/translation_score', array('translation' => $translation)); 
             
             $translation_url = "{$base_url}/{$translation->guid}";
-            
-            echo "<div class='admin_links'>";
-            
-            echo "<a href='".escape($base_url)."?translation={$translation->guid}'>".__('edit')."</a> ";
+                       
+            $edit_links = array();
+            $edit_links[] = "<a href='".escape($base_url)."?translation={$translation->guid}'>".__('edit')."</a> ";
             
             if ($translation->can_edit())
-            {                                
-                if (Session::isadminloggedin())
+            {                               
+                if ($key->can_edit())
                 {
                     if ($translation->is_approved())
                     {
-                        echo view('input/post_link', array(
+                        $edit_links[] = view('input/post_link', array(
                             'href' => "$translation_url/set_approval?approval=0",
                             'text' => __('itrans:unapprove'),
-                        ));                                        
+                        ));
                     }
                     else
                     {
-                        echo view('input/post_link', array(
+                        $edit_links[] = view('input/post_link', array(
                             'href' => "$translation_url/set_approval?approval=1",
                             'text' => __('itrans:approve'),
                         ));                    
                     }
-                    echo " ";
                 }                
                 
-                echo view('input/post_link', array(
+                $edit_links[] = view('input/post_link', array(
                     'href' => "$translation_url/delete",
                     'confirm' => __('areyousure'),                
                     'text' => __('delete'),
                 ));    
             }  
+            
+            echo "<div class='admin_links'>";
+            echo implode('<br />', $edit_links);
             echo "</div>";
             
             echo "</div>";

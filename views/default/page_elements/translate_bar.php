@@ -101,7 +101,7 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
             }
         }
 
-        $translate_url = $vars['translate_url'];
+        $translate_url = PageContext::get_translation_url(false);
         $links[] = "<a target='_blank' rel='nofollow' href='$translate_url'>".__('trans:edit')."</a>";
         
         echo " ".implode(' &middot; ', $links);

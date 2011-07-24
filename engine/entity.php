@@ -432,7 +432,7 @@ abstract class Entity extends Model
         }
     }
     
-    public function translate_field($field, $viewLang = null)
+    public function translate_field($field, $lang = null)
     {
         $text = trim($this->$field);
         if (!$text)
@@ -442,14 +442,14 @@ abstract class Entity extends Model
 
         $origLang = $this->get_language();
         
-        if ($viewLang == null)
+        if ($lang == null)
         {
-            $viewLang = Language::get_current_code();        
+            $lang = Language::get_current_code();        
         }
 
-        $translation = $this->lookup_translation($field, $origLang, $viewLang);
+        $translation = $this->lookup_translation($field, $lang, $origLang);
         
-        if ($origLang != $viewLang)
+        if ($origLang != $lang)
         {
             PageContext::set_original_language($origLang);
         }
@@ -457,32 +457,36 @@ abstract class Entity extends Model
         
         return $translation->value;
     }
-
-    private function lookup_translation($prop, $origLang, $viewLang)
+    
+    function get_translation_key($prop, $lang)
     {
         $guid = $this->guid;
-        
         $key_name = "entity:{$guid}:{$prop}";
-
-        $language = TranslationLanguage::get_by_code($viewLang);
+        
+        $language = TranslationLanguage::get_by_code($lang);
         
         $key = $language->query_keys()->where('name = ?', $key_name)->get();        
         if (!$key)
         {        
             $key = new EntityTranslationKey();
             $key->name = $key_name;
-            $key->container_guid = $this->guid;
+            $key->container_guid = $guid;
             $key->language_guid = $language->guid;
-            $key->save();
         }
-        
-        $translateMode = TranslateMode::get_current();                    
-        $doAutoTranslate = ($translateMode == TranslateMode::Automatic) && ($origLang != $viewLang);
+        return $key;
+    }
 
+    private function lookup_translation($prop, $lang, $origLang)
+    {
+        $key = $this->get_translation_key($prop, $lang);
+        
         $approvedTrans = $key->query_translations()
             ->where('approval > 0')
             ->order_by('approval_time desc')
             ->get();
+
+        $translateMode = TranslateMode::get_current();
+        $doAutoTranslate = ($translateMode == TranslateMode::Automatic) && ($origLang != $lang);        
         
         if ($doAutoTranslate && (!$approvedTrans || $approvedTrans->is_stale()))
         {
@@ -496,7 +500,7 @@ abstract class Entity extends Model
                 return $autoTrans;
             }
             
-            $text = GoogleTranslate::get_auto_translation($this->$prop, $origLang, $viewLang);
+            $text = GoogleTranslate::get_auto_translation($this->$prop, $origLang, $lang);
 
             if ($text != null)
             {

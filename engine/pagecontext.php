@@ -62,7 +62,7 @@ class PageContext
         static::$dirty = $dirty;
     }
     
-    static function get_translation_url()
+    static function get_translation_url($include_hardcoded = false)
     {
         $lang = Language::get_current_code();
 
@@ -72,28 +72,28 @@ class PageContext
              $keys[] = $trans->get_container_entity()->name;
         }
 
-        if ($lang != Config::get('language'))
+        if ($include_hardcoded && $lang != Config::get('language'))
         {    
             $keys = array_merge($keys, Language::current()->get_requested_keys());            
         }
         
         if ($keys)
         {
-            $uri_snippet = Request::get_uri();
-            $max_uri = 50;
-            if (strlen($uri_snippet) > $max_uri)
-            {
-                $uri_snippet = substr($uri_snippet, 0, $max_uri). "...";
-            }
-        
             // compress keys in URL to try to stay under the 2083 byte maximum length for internet explorer under most circumstances        
             $b64 = base64_encode(gzcompress(
-                $uri_snippet . ' ' .
+                Request::get_uri() . ' ' .
                 implode(',', $keys), 4));
                 
             $b64 = rtrim($b64, '='); // trailing = signs not necessary for php base64_decode
             
-            return "/tr/$lang/page/".urlencode_alpha($b64);    
+            $url = "/tr/page/".urlencode_alpha($b64);    
+            
+            if (sizeof($keys) == 1)
+            {
+                $url .= "/".urlencode_alpha($keys[0]);
+            }
+            
+            return $url;
         }
         return null;
     }

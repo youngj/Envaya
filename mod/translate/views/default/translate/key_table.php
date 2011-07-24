@@ -17,7 +17,7 @@
     {
         $visible_keys = $query->limit($limit, $offset)->filter();
         $count = $query->count();
-    }    
+    }       
     
     echo view('pagination',array(
         'offset' => $offset,

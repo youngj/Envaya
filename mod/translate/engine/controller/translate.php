@@ -20,6 +20,16 @@ class Controller_Translate extends Controller
             'controller' => 'Controller_TranslateAdmin',
         ),        
         array(
+            'regex' => '/page/(?P<b64_keys>\w+)(/)?$', 
+            'action' => 'action_page',
+            'before' => 'init_language_keys',
+        ),      
+        array(
+            'regex' => '/page/(?P<b64_keys>\w+)/(?P<key_name>\w+)', 
+            'controller' => 'Controller_TranslatePageKey',
+            'before' => 'init_language_keys_key',
+        ),                
+        array(
             'regex' => '/(?P<lang>\w+)/translators/(?P<guid>\d+)\b', 
             'action' => 'action_translator',
             'before' => 'init_language',
@@ -39,11 +49,6 @@ class Controller_Translate extends Controller
             'before' => 'init_language',
         ),
         array(
-            'regex' => '/(?P<lang>\w+)/page/(?P<b64_keys>\w+)(/)?$', 
-            'action' => 'action_page',
-            'before' => 'init_language_keys',
-        ),        
-        array(
             'regex' => '/(?P<lang>\w+)/module/(?P<group_name>\w+)(,(?P<filter>[\w\=\,]+))?(/)?$', 
             'action' => 'action_view_group',
             'before' => 'init_language_group',
@@ -52,11 +57,6 @@ class Controller_Translate extends Controller
             'regex' => '/(?P<lang>\w+)/content/(?P<key_name>\w+)', 
             'controller' => 'Controller_TranslateEntityKey',
             'before' => 'init_language_key',
-        ),        
-        array(
-            'regex' => '/(?P<lang>\w+)/page/(?P<b64_keys>\w+)/(?P<key_name>\w+)', 
-            'controller' => 'Controller_TranslatePageKey',
-            'before' => 'init_language_keys_key',
         ),        
         array(
             'regex' => '/(?P<lang>\w+)/module/(?P<group_name>\w+)(,(?P<filter>[\w\,\=]+))?/(?P<key_name>\w+)', 
@@ -69,6 +69,7 @@ class Controller_Translate extends Controller
     {
         $this->page_draw_vars['theme_name'] = 'simple_wide';
         $this->page_draw_vars['login_url'] = url_with_param(Request::full_original_url(), 'login', 1);
+        $this->page_draw_vars['show_translate_footer'] = false;
     }
 
     function init_language()
@@ -344,16 +345,17 @@ class Controller_Translate extends Controller
     
     function init_language_keys()
     {
-        $this->init_language();
+        $this->params['lang'] = Language::get_current_code();
+        $this->init_language();    
         $this->init_keys();
     }
 
     function init_language_keys_key()
     {
+        $this->params['lang'] = Language::get_current_code();
         $this->init_language_key();
         $this->init_keys();
-    }
-    
+    }    
 
     function init_keys()
     {
@@ -380,7 +382,11 @@ class Controller_Translate extends Controller
             ->where_in('name', $key_names)
             ->order_by('subtype_id, name')
             ->filter();
-
+            
+        if (!sizeof($this->params['keys']))
+        {
+            throw new NotFoundException();
+        }
     }
     
     function action_page()
@@ -389,10 +395,16 @@ class Controller_Translate extends Controller
     
         $language = $this->param('language');
         $keys = $this->param('keys');
+        $page_uri = $this->param('page_uri');
         
         return $this->page_draw(array(
             'title' => __('itrans:edit_page'),
-            'header' => view('translate/header', array('items' => array($language), 'title' => $this->param('page_uri'))),
+            'header' => view('translate/page_header', array(
+                'items' => array(
+                    array('url' => $page_uri, 'title' => $page_uri),
+                    array('title' => $language->name),
+                ),
+            )),            
             'content' => view('translate/page', array(
                 'language' => $language, 
                 'base_url' => Request::get_uri(),

@@ -42,4 +42,7 @@ return array(
     'itrans:submit' => "Toa tafsiri",
     'itrans:not_translated' => "Bila tafsiri",    
     'itrans:translated' => "Zenye tafsiri",
+    
+    'itrans:approve' => "Kubali",
+    'itrans:unapprove' => "Ondoa kibali",        
 );

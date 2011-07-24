@@ -4,7 +4,11 @@ class Action_SetTranslationApproval extends Action
 {
     function process_input()
     {
-        $this->require_admin();
+        $key = $this->param('key');
+        if (!$key->can_edit())
+        {
+            $this->require_login(__('page:noaccess'));
+        }
         
         $approval = (int)get_input('approval');
         

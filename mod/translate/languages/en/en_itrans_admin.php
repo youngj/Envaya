@@ -12,8 +12,5 @@ return array(
     
     'itrans:language_code' => "Language Code",
     'itrans:language_name' => "Language Name",    
-
-    'itrans:approve' => "Approve",
-    'itrans:unapprove' => "Unapprove",
     
 );

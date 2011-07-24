@@ -34,6 +34,7 @@ class Controller_TranslateKey extends Controller
     
         $this->page_draw_vars['theme_name'] = 'simple_wide';
         $this->page_draw_vars['login_url'] = url_with_param(Request::full_original_url(), 'login', 1);
+        $this->page_draw_vars['show_translate_footer'] = false;
     }    
     
     function action_index()
