@@ -447,7 +447,8 @@ abstract class Entity extends Model
             $lang = Language::get_current_code();        
         }
 
-        $translation = $this->lookup_translation($field, $lang, $origLang);
+        $translateMode = TranslateMode::get_current();
+        $translation = $this->lookup_translation($field, $lang, $origLang, $translateMode);
         
         if ($origLang != $lang)
         {
@@ -455,7 +456,14 @@ abstract class Entity extends Model
         }
         PageContext::add_available_translation($translation);            
         
-        return $translation->value;
+        if ($translateMode != TranslateMode::None)
+        {
+            return $translation->value;
+        }
+        else
+        {
+            return $text;
+        }
     }
     
     function get_translation_key($prop, $lang)
@@ -476,7 +484,7 @@ abstract class Entity extends Model
         return $key;
     }
 
-    private function lookup_translation($prop, $lang, $origLang)
+    private function lookup_translation($prop, $lang, $origLang, $translateMode)
     {
         $key = $this->get_translation_key($prop, $lang);
         
@@ -485,7 +493,6 @@ abstract class Entity extends Model
             ->order_by('approval_time desc')
             ->get();
 
-        $translateMode = TranslateMode::get_current();
         $doAutoTranslate = ($translateMode == TranslateMode::Automatic) && ($origLang != $lang);        
         
         if ($doAutoTranslate && (!$approvedTrans || $approvedTrans->is_stale()))

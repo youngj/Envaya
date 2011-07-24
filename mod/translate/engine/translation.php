@@ -24,6 +24,11 @@ class Translation extends Entity
     
     function is_stale()
     {    
+        if (!$this->guid)
+        {
+            return false;
+        }
+    
         $key = $this->get_container_entity();        
         return $this->default_value_hash != sha1($key->get_default_value());
     }
