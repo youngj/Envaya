@@ -333,6 +333,7 @@ abstract class Controller {
             $vars['full_title'] = $full_title;
         }
 
+        $vars['translate_url'] = PageContext::get_translation_url();
         $vars['canonical_url'] = $this->get_canonical_url();
         $vars['original_url'] = Request::full_original_url();
         $vars['css_url'] = css_url(@$vars['css_name'] ?: 'simple');        

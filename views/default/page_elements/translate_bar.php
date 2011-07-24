@@ -1,4 +1,5 @@
 <?php
+
 if (@$vars['show_translate_bar'] && PageContext::has_translation())
 {    
     $origLang = PageContext::get_original_language();
@@ -13,10 +14,11 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
         $origLangName = escape(__("lang:$origLang"));
         $userLangName = escape(__("lang:$viewLang"));
         
-        $can_auto_translate = GoogleTranslate::is_supported_language($origLang) 
+        $can_auto_translate = PageContext::has_translation(TranslateMode::Automatic)
+            && GoogleTranslate::is_supported_language($origLang) 
             && GoogleTranslate::is_supported_language($viewLang);
-
-        if ($transMode == TranslateMode::ManualOnly && !PageContext::has_translation(TranslateMode::ManualOnly))
+            
+        if ($transMode == TranslateMode::Manual && !PageContext::has_translation(TranslateMode::Manual))
         {
             $transMode = TranslateMode::None;
         }
@@ -25,7 +27,7 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
         
         $tr = array('{origlang}' => $origLangName, '{curlang}' => $userLangName);
 
-        if ($transMode == TranslateMode::ManualOnly) // viewing manual translation
+        if ($transMode == TranslateMode::Manual) // viewing manual translation
         {
             if (PageContext::has_stale_translation())
             {
@@ -33,49 +35,45 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
 
                 if ($can_auto_translate)
                 {
-                    $links[] = view('translation/mode_link', array(
-                        'mode' => TranslateMode::All, 
-                        'text' => __("trans:view_stale_automatic"),
+                    $links[] = view('page_elements/translate_mode_link', array(
+                        'mode' => TranslateMode::Automatic, 
+                        'text' => __("trans:view_automatic"),
                         'original_url' => $vars['original_url'],
                     ));
                 }
             }
-            else if (PageContext::has_translation(TranslateMode::All))
+            else 
             {
-                echo strtr(__("trans:partial_trans_from_to"), $tr);
+                echo strtr(__("trans:trans_from_to"), $tr);
 
                 if ($can_auto_translate)
                 {
-                    $links[] = view('translation/mode_link', array(
-                        'mode' => TranslateMode::All, 
+                    $links[] = view('page_elements/translate_mode_link', array(
+                        'mode' => TranslateMode::Automatic, 
                         'text' => __("trans:view_rest_automatic"),
                         'original_url' => $vars['original_url'],
                     ));         
                 }
-            }
-            else
-            {
-                echo strtr(__("trans:trans_from_to"), $tr);
-            }
+            }             
 
-            $links[] = view('translation/mode_link', array(
+            $links[] = view('page_elements/translate_mode_link', array(
                 'mode' => TranslateMode::None, 
                 'text' => __("trans:view_original"),
                 'original_url' => $vars['original_url'],
-            ));
+            ));                        
         }
-        else if ($transMode == TranslateMode::All) // viewing automatic translation
+        else if ($transMode == TranslateMode::Automatic) // viewing automatic translation
         {
-            if (PageContext::has_translation_error())
+            if (PageContext::has_unsaved_translation())
             {
                 echo strtr(__("trans:automatic_trans_error"), $tr);
             }
             else
             {
-                echo strtr(__("trans:partial_automatic_trans_from_to"), $tr);
+                echo strtr(__("trans:automatic_trans_from_to"), $tr);
             }
 
-            $links[] = view('translation/mode_link', array(
+            $links[] = view('page_elements/translate_mode_link', array(
                 'mode' => TranslateMode::None, 
                 'text' => __("trans:view_original"),
                 'original_url' => $vars['original_url'],
@@ -85,27 +83,27 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
         {
             echo sprintf(__("trans:page_original_in"), $origLangName);
 
-            if (PageContext::has_translation(TranslateMode::ManualOnly))
+            if (PageContext::has_translation(TranslateMode::Manual))
             {           
-                $links[] = view('translation/mode_link', array(
-                    'mode' => TranslateMode::ManualOnly, 
+                $links[] = view('page_elements/translate_mode_link', array(
+                    'mode' => TranslateMode::Manual, 
                     'text' => sprintf(__("trans:view_in"), $userLangName),
                     'original_url' => $vars['original_url'],
                 ));                    
             }
-            else if (PageContext::has_translation(TranslateMode::All))
-            {
-                if ($can_auto_translate)
-                {        
-                    $links[] = view('translation/mode_link', array(
-                        'mode' => TranslateMode::All, 
-                        'text' => sprintf(__("trans:view_automatic_in"), $userLangName),
-                        'original_url' => $vars['original_url'],
-                    ));                    
-                }
+            else if ($can_auto_translate)
+            {        
+                $links[] = view('page_elements/translate_mode_link', array(
+                    'mode' => TranslateMode::Automatic, 
+                    'text' => __("trans:view_automatic"),
+                    'original_url' => $vars['original_url'],
+                ));
             }
         }
 
+        $translate_url = $vars['translate_url'];
+        $links[] = "<a href='$translate_url'>".__('trans:edit')."</a>";
+        
         echo " ".implode(' &middot; ', $links);
         
         $res = ob_get_clean();

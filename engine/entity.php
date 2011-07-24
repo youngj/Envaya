@@ -462,7 +462,7 @@ abstract class Entity extends Model
         }
         else
         {
-            $viewTranslation = ($translateMode == TranslateMode::All);
+            $viewTranslation = ($translateMode == TranslateMode::Automatic);
         }
 
         if ($viewTranslation && $translation->guid)
@@ -495,7 +495,7 @@ abstract class Entity extends Model
             $key->save();
         }
         
-        $doAutoTranslate = ($translateMode == TranslateMode::All) && ($origLang != $viewLang);
+        $doAutoTranslate = ($translateMode == TranslateMode::Automatic) && ($origLang != $viewLang);
 
         $humanTrans = $key->query_translations()
             ->where('approval > 0')
