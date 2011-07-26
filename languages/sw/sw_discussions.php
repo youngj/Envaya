@@ -25,7 +25,7 @@ return array(
     'discussions:notification_subject' => "{name} ameongeza ujumbe mpya",
     'discussions:notification_topic_subject' => "{name} ameongeza mada mpya",
     'discussions:message_deleted_marker' => "ujumbe umefutwa",
-    'discussions:about' => "Ukurasa huu unaruhusu watu wowote &ndash; kutoka kwenye shirika lako au mashirika mengine, kutoka jumuiya yako au duniani kote &ndash; kushirikana na kujadiliana kuhusu mada zinazohusu shirika lako na shughuli yako.",
+    'discussions:about' => "Ukurasa huu unaruhusu watu wowote &ndash; kutoka kwenye shirika lako au mashirika mengine, kutoka jumuiya yako au duniani kote &ndash; kushirikiana na kujadiliana kuhusu mada zinazohusu shirika lako na shughuli yako.",
     'discussions:invite_link' => "Karibisha watu kushiriki",    
     'discussions:reply' => "Jibu",
     'discussions:other_link' => "Majadiliano mengine kwenye Envaya",

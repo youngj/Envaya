@@ -14,12 +14,12 @@ class Controller_Widget extends Controller_User
             'before' => 'init_widget_from_container',
         ),    
         array(
-            'regex' => '/(?P<guid>\d+)(/(?P<action>\w+)\b)?',
+            'regex' => '/(?P<slug>[\w\-]+)\,(?P<guid>\d+)(/(?P<action>\w+)\b)?',
             'defaults' => array('action' => 'index'),
             'before' => 'init_widget_from_guid',
         ),
         array(
-            'regex' => '/(?P<slug>[\w\-]+)\,(?P<guid>\d+)(/(?P<action>\w+)\b)?',
+            'regex' => '/(?P<guid>\d+)(/(?P<action>\w+)\b)?',
             'defaults' => array('action' => 'index'),
             'before' => 'init_widget_from_guid',
         ),

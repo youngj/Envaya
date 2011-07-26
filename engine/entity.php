@@ -487,6 +487,10 @@ abstract class Entity extends Model
     private function lookup_translation($prop, $lang, $origLang, $translateMode)
     {
         $key = $this->get_translation_key($prop, $lang);
+        if (!$key->guid)
+        {
+            $key->save();
+        }
         
         $approvedTrans = $key->query_translations()
             ->where('approval > 0')

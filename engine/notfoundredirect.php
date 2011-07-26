@@ -60,7 +60,7 @@ class NotFoundRedirect extends Model
     
     function get_preg_pattern()
     {
-        return "/{$this->pattern}/i";
+        return "#{$this->pattern}#i";
     }
     
     static function query_by_user($user)

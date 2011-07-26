@@ -13,7 +13,7 @@ return array(
     'widget:no_section_title' => "Tafadhali ingiza jina kwa sehemu hii.",
     'widget:bad_name' => "Tafadhali ingiza anwani kwa ukurasa huu itumiayo tarakium zifuatazo tu: a-z 0-9 - _",
     'widget:duplicate_name' => "Anwani hii tayari inatumiwa. Tafadhali chagua anwani nyingine, au %s kuhariri ukurasa uliopo.",
-    'widget:add_link' => "Ongeza ukurasa nyingine...",
+    'widget:add_link' => "Ongeza ukurasa mwingine...",
     'widget:add' => "Ongeza Ukurasa",
     'widget:add_section_link' => "Ongeza sehemu nyingine...",
     'widget:add_section' => "Ongeza Sehemu",
