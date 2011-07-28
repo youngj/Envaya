@@ -31,7 +31,7 @@ orgLoader.getURLParams = function() {
             'lat' => $latlong['lat'],
             'long' => $latlong['long'], 
             'height' => 300, 
-            'width' => 440, 
+            'width' => 540, 
             'zoom' => 8,
             'onload' => 'orgLoader.setMap',
         ));

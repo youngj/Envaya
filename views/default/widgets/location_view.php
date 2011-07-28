@@ -12,6 +12,8 @@ echo "<a href='/pg/browse/?lat=$lat&long=$long&zoom=10'>";
 
 echo view("output/map", array(
     'lat' => $lat,
+    'width' => 560,
+    'height' => 350,
     'long' => $long,
     'zoom' => $widget->get_metadata('zoom') ?: 10,
     'static' => true,

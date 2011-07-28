@@ -56,7 +56,7 @@ function previewTheme()
     {
         $theme = Theme::get($theme_name);
         
-        echo "<a id='theme_{$theme_name}' href='javascript:selectTheme(\"$theme_name\");' onclick='ignoreDirty()'             style='text-align:center;float:left;width:150px;padding-right:3px;display:block;width:{$itemWidth}px;height:170px;padding-bottom:12px'>";
+        echo "<a id='theme_{$theme_name}' href='javascript:selectTheme(\"$theme_name\");' onclick='ignoreDirty()'             style='text-align:center;float:left;width:150px;padding-right:6px;display:block;width:{$itemWidth}px;height:170px;padding-bottom:12px'>";
         
         echo "<span>".$theme->get_display_name()."</span>";
         $thumbnail = $theme->get_thumbnail();

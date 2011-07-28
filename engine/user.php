@@ -73,8 +73,9 @@ class User extends Entity
     {
         $props = $this->get_icon_props_raw($size);        
         $sizes = $this->get_icon_sizes();
-        $max_size = explode('x', @$sizes[$size] ?: $size);
+        $max_size = explode('x', @$sizes[$size] ?: $size);    
         $new_size = constrain_size(array($props['width'], $props['height']), $max_size);
+        
         return array(
             'url' => $props['url'],
             'width' => $new_size[0],

@@ -1,5 +1,5 @@
 <?php
-    $contentWidth = $vars['contentWidth'] = 500;
+    $contentWidth = $vars['contentWidth'] = 615;
     
     echo view('css/default', $vars);
 
@@ -24,7 +24,7 @@ body
 #site_menu,
 #heading h1
 {
-    background:#fff url(<?php echo $graphicsDir; ?>/headings.png) repeat-x left bottom;
+    background:#fff url(<?php echo $graphicsDir; ?>/headings2.png) repeat-x left bottom;
     height:36px;
     text-align:center;
     font-size:18px;
@@ -61,26 +61,19 @@ body
 #content_top
 {
     height:17px;
-    background:#fff url(<?php echo $graphicsDir; ?>/plate.png) no-repeat -<?php echo ($contentWidth - 15); ?>px -8px;
+    background:#fff url(<?php echo $graphicsDir; ?>/plate3.png) no-repeat -<?php echo ($contentWidth - 15); ?>px -8px;
 }
-
-.home #content_top
-{
-    height:28px;
-    background:#fff url(<?php echo $graphicsDir; ?>/plate.png) no-repeat left 0px;
-}
-
 
 #content_bottom
 {
     height:35px;
     margin-top:-10px;
-    background:#fff url(<?php echo $graphicsDir; ?>/plate.png) no-repeat right bottom;
+    background:#fff url(<?php echo $graphicsDir; ?>/plate3.png) no-repeat right bottom;
 }
 
 #content_mid
 {
-    background:#fff url(<?php echo $graphicsDir; ?>/plate.png) repeat-y -<?php echo 2 * ($contentWidth - 15) ?>px top;
+    background:#fff url(<?php echo $graphicsDir; ?>/plate3.png) repeat-y -<?php echo 2 * ($contentWidth - 15) ?>px top;
     padding:0px 2px;
 }
 
@@ -133,7 +126,7 @@ body
     width:100%;
     margin-bottom:5px;
     margin-top:-10px;
-    background:#fff url(<?php echo $graphicsDir; ?>/plate.png) no-repeat -<?php echo ($contentWidth - 13); ?>px -16px;
+    background:#fff url(<?php echo $graphicsDir; ?>/plate3.png) no-repeat -<?php echo ($contentWidth - 13); ?>px -16px;
 }
 
 .tab

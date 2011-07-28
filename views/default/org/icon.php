@@ -4,7 +4,7 @@
     extract($vars);
     
     $icon_props = $org->get_icon_props($size);   
-
+    
     $attrs = Markup::get_attrs($vars, array(
         'class' => null,
         'id' => null,

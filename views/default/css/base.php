@@ -359,7 +359,7 @@ a.selected
 .feed_snippet
 {
     color:#666;
-    font-size:11px;
+    font-size:12px;
     padding-left:0px;
     padding-bottom:5px;
 }

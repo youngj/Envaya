@@ -73,6 +73,8 @@ function initMap(map)
         'lat' => $lat,
         'long' => $long,
         'zoom' => $zoom,
+        'width' => 560,
+        'height' => 350,        
         'onload' => 'initMap',
     ));
 

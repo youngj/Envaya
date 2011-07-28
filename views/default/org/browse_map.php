@@ -52,7 +52,6 @@ orgLoader.getURLParams = function() {
     echo view("output/map", array(
         'lat' => $lat, 
         'long' => $long,  
-        'height' => 350, 
         'zoom' => $zoom, 
         'onload' => 'orgLoader.setMap',
     ));

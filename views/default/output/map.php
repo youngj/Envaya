@@ -1,7 +1,7 @@
 <?php
     $id = "map$INCLUDE_COUNT";      // DOM id for container element
-    $width = 460;                   // container width
-    $height = 280;                  // container height
+    $width = 570;                   // container width
+    $height = 400;                  // container height
     $onload = null;                 // JavaScript callback, function(map) { .. } 
     $zoom = 10;                     // initial zoom level
     $map_type = "ROADMAP";          // initial google map type constant
@@ -10,7 +10,7 @@
     $pin = false;                   // put a pin at the initial latitude/longitude?
     $static = false;                // true to use static map instead of JS map
     extract($vars);
-
+    
     $style = "display:block;margin:0 auto;width:{$width}px;height:{$height}px";
     
     if ($static)

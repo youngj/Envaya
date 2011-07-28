@@ -249,7 +249,7 @@ label {
 
 .searchField
 {
-    width:220px;
+    width:320px;
 }
 
 .feed_content
