@@ -16,8 +16,11 @@ function start_kestrel()
         mkdir($kestrel_data_dir, 0777, true);
     }
     
-    $root = Config::get('root');    
-    $kestrel = run_task("java -jar $root/vendors/kestrel/kestrel-1.2.jar -f $root/scripts/config/kestrel_dev.conf", $kestrel_data_dir);    
+    $root = Config::get('root');        
+    $kestrel_jar = "$root/vendors/kestrel/kestrel-1.2.jar";    
+    $kestrel_conf = Config::get('dataroot').'/kestrel.conf';
+    
+    $kestrel = run_task("java -jar ".escapeshellarg($kestrel_jar)." -f ".escapeshellarg($kestrel_conf), $kestrel_data_dir);    
     while (true)
     {
         if (FunctionQueue::is_server_available())

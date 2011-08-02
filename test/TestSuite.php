@@ -26,8 +26,7 @@ require_once __DIR__.'/webdriver/phpwebdriver/WebDriver.php';
 
 Config::load();
 
-$MOCK_MAIL_FILE = __DIR__."/mail.out";
-$DOMAIN = Config::get('domain');
+$TEST_CONFIG = include __DIR__."/config.php";
 
 function kill_windows_process_tree($pid, $wmi = null)
 {
@@ -191,7 +190,7 @@ function main()
 
     prepare_firefox_profile();
 
-    global $BROWSER, $TEST_CASES, $MOCK_MAIL_FILE, $DOMAIN;
+    global $BROWSER, $TEST_CONFIG;
 
     $opts = getopt('',array("browser:","test:"));
         
@@ -224,29 +223,19 @@ function main()
     
     $selenium = proc_open("java -jar $selenium_path -singleWindow -firefoxProfileTemplate profiles/noflash", 
         $descriptorspec, $pipes, __DIR__);  
-
-    $descriptorspec = array(
-       0 => array("pipe", "r"),
-       1 => STDOUT,
-       2 => STDERR
-    );
     
-    // provide some required/useful environment variables even if 'E' is not in variables_order
-    $env_keys = array('HOME','OS','Path','PATHEXT','SystemRoot','TEMP','TMP');
-    foreach ($env_keys as $key)
-    {
-        $_ENV[$key] = getenv($key);
-    }    
+    $env = get_environment();    
+    $env["ENVAYA_CONFIG"] = json_encode($TEST_CONFIG);        
     
-    $env = $_ENV;    
-    
-    $env["ENVAYA_CONFIG"] = json_encode(array(        
-        'captcha_enabled' => false,
-        'ssl_enabled' => false,
-        'mock_mail_file' => $MOCK_MAIL_FILE
-    ));
+    $root = dirname(__DIR__);        
         
-    $runserver = proc_open('php runserver.php', $descriptorspec, $pipes2, dirname(__DIR__), $env);
+    run_task_sync("php test/reset_db.php | mysql -u root");
+    run_task_sync('php scripts/install_tables.php', $root, $env);
+    run_task_sync('php scripts/install_test_data.php', $root, $env);   
+    run_task_sync('php scripts/install_kestrel.php', $root, $env);
+    run_task_sync('php scripts/install_sphinx.php', $root, $env);
+                
+    $runserver = run_task('php runserver.php', $root, $env);    
     $runserver_status = proc_get_status($runserver);                
     posix_setpgid($runserver_status['pid'], $runserver_status['pid']);   
     

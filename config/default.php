@@ -1,4 +1,7 @@
 <?php
+
+$root = dirname(__DIR__);
+
 return array(
     'debug' => true,
     
@@ -10,10 +13,7 @@ return array(
 
     'queue_host' => "localhost",
     'queue_port' => 22133,
-    
-    'sphinx_host' => 'localhost',  
-    'sphinx_port' => 9312,
-   
+       
     'cache_backend' => "Cache_Database",
 
     'admin_email' => "admin@localhost",
@@ -21,6 +21,8 @@ return array(
     'email_from' => "web@localhost",
     'email_pass' => "",    
     
+    'sphinx_host' => 'localhost',  
+    'sphinx_port' => 9312,    
     'sphinx_conf_dir' => '/usr/local/etc',
     'sphinx_bin_dir' => '/usr/local/bin',
     'sphinx_log_dir' => '/var/log/sphinx',
@@ -34,9 +36,9 @@ return array(
 
     'storage_backend' => 'Storage_Local',
 
-    'root' => dirname(__DIR__),
-    'dataroot' => dirname(dirname(__DIR__)). "/envayadata",
-
+    'root' => $root,
+    'dataroot' => dirname($root). "/envayadata",
+        
     'languages' => array(
         'en' => 'English',
         'sw' => 'Kiswahili',

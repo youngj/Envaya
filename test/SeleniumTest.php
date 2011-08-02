@@ -20,14 +20,14 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
     public function deleteMailFile()
     {
-        global $MOCK_MAIL_FILE;        
-        @unlink($MOCK_MAIL_FILE);    
+        global $TEST_CONFIG;        
+        @unlink($TEST_CONFIG['mock_mail_file']);    
     }
     
     public function init_selenium()
     {
-        global $BROWSER, $DOMAIN;
-        return new Testing_Selenium("*$BROWSER", "http://$DOMAIN");    
+        global $BROWSER, $TEST_CONFIG;
+        return new Testing_Selenium("*$BROWSER", "http://{$TEST_CONFIG['domain']}");    
     }
 
     /*
@@ -153,13 +153,15 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
 
     public function _getLastEmail($match = "Subject")
     {
-        global $MOCK_MAIL_FILE;
+        global $TEST_CONFIG;
         
-        if (!file_exists($MOCK_MAIL_FILE))
+        $mock_mail_file = $TEST_CONFIG['mock_mail_file'];
+        
+        if (!file_exists($mock_mail_file))
         {    
             throw new Exception("no emails in file");
         }        
-        $contents = file_get_contents($MOCK_MAIL_FILE);
+        $contents = file_get_contents($mock_mail_file);
         
         // decode quoted-printable
         $contents = str_replace("=\r\n","", $contents);

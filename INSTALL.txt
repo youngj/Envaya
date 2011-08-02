@@ -197,9 +197,10 @@ commands in a command prompt in the root directory of Envaya's source code.
         php scripts/install_tables.php
         php scripts/install_dataroot.php
 
-5. Create sphinx config file and initial index
+5. Create sphinx config file and initial index, and kestrel config file
 
         php scripts/install_sphinx.php
+        php scripts/install_kestrel.php
 
 6.  Create initial users for testing (should not be used in production)    
 

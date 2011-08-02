@@ -1,9 +1,9 @@
 <?php
 
-chdir(dirname(__DIR__));
+$base = dirname(__DIR__);
  
-require_once "scripts/cmdline.php";
-require_once "start.php";
+require_once "$base/scripts/cmdline.php";
+require_once "$base/start.php";
 
 umask(0);
 
