@@ -24,6 +24,7 @@ return array(
     'publish' => "Publish",
     'ok' => "OK",
     'cancel' => "Cancel",
+    'close' => "Close",
     'view' => "View",
     'edit' => "Edit",
     'add' => "Add",

@@ -41,6 +41,7 @@ return array(
     
     'login' => 'Fungua',
     'logout' => 'Ondoka',    
+    'close' => "Funga",
     'clickhere' => 'bonyeza hapa',
     'here' => "hapa",
     'name' => 'Jina',

@@ -60,7 +60,7 @@ function addUsers()
         cancelFn: function() { 
             removeElem(modalBox);
         },
-        cancelText: "Close",
+        cancelText: <?php echo json_encode(__('close')); ?>,
         hideOk: true
     });            
     document.body.appendChild(modalBox);  
