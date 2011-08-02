@@ -29,6 +29,7 @@ Engine::add_autoload_action('Language', function() {
 });
 
 Views::extend('admin/dashboard_items', 'admin/envaya_dashboard_items');    
+Views::extend('account/login_links', 'account/envaya_login_links');    
 Views::extend('admin/org_actions_items', 'admin/envaya_org_actions_items');    
 Views::extend('page_elements/header', 'page_elements/envaya_topbar');
 Views::extend('page_elements/head_content', 'page_elements/envaya_favicon');

@@ -81,7 +81,7 @@ body
 {
     font-size:16px;
     padding:10px 0px 0px 0px;
-    margin-top:35px;
+    margin-top:25px;
 }
 
 .home_heading, .section_header

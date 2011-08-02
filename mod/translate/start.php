@@ -20,6 +20,10 @@ Engine::add_autoload_action('Controller_Default', function() {
     ));
 });
 
+Engine::add_autoload_action('PageContext', function() {
+    PageContext::add_mixin_class('Mixin_TranslateContext');
+});
+
 Engine::add_autoload_action('Language', function() {
     Language::add_fallback_group('itrans', 'itrans_admin');
 });
@@ -29,6 +33,7 @@ if (@Config::get('translate:footer_link'))
     Views::extend('page_elements/content_footer', 'page_elements/translate_footer');
 }
 
+Views::extend('page_elements/content', 'page_elements/translate_bar', -1);
 Views::extend('css/default', 'css/default_translate');
 
 if (@Config::get('translate:live_interface'))

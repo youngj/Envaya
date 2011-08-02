@@ -15,14 +15,15 @@
     }
     else
     {
-        $visible_keys = $query->limit($limit, $offset)->filter();
-        $count = $query->count();
+        $visible_keys = $query->limit($limit, $offset)->filter();        
+        $count = null; //$query->count();
     }       
     
     echo view('pagination',array(
         'offset' => $offset,
         'count' => $count,
-        'limit' => $limit
+        'limit' => $limit,
+        'count_displayed' => sizeof($visible_keys),
     ));   
 ?>
 <table class='keyTable'>
@@ -52,6 +53,7 @@
     echo view('pagination',array(
         'offset' => $offset,
         'count' => $count,
-        'limit' => $limit
+        'limit' => $limit,
+        'count_displayed' => sizeof($visible_keys),
     ));
 ?>

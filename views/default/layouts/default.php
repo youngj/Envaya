@@ -10,8 +10,7 @@
 <div id='content_top'></div>
 <div id='content_mid'>
 <?php 
-    echo view('page_elements/translate_bar', $vars); 
-    echo $vars['content']; 
+    echo view('page_elements/content', $vars);
 ?>
 <div style='clear:both'></div>
 </div>

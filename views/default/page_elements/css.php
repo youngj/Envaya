@@ -2,7 +2,7 @@
     if (@$vars['css_url'])
     {
         echo "<link rel='stylesheet' href='".escape($vars['css_url'])."' type='text/css' />";
-    }
+    }       
 ?>
 <!--[if IE 6]>
 <style type='text/css'>

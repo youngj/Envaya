@@ -16,6 +16,8 @@ class Action_SetTranslationApproval extends Action
         
         $translation->set_approved($approval > 0);        
         $translation->save();
+        
+        $key->update();
 
         SessionMessages::add(__('itrans:saved'));
         $this->redirect();

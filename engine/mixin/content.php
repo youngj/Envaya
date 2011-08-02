@@ -5,14 +5,11 @@
  */
 class Mixin_Content extends Mixin
 {    
-    static function mixin_table_attributes()
-    {
-        return array(
-            'content' => '',
-            'thumbnail_url' => '',
-            'language' => '',
-        );
-    }
+    static $table_attributes = array(
+        'content' => '',
+        'thumbnail_url' => '',
+        'language' => '',
+    );
     
     public function sanitize_content_value($value)
     {
@@ -87,7 +84,6 @@ class Mixin_Content extends Mixin
         }
 
         // html content should be sanitized when it is input!        
-        
         return Markup::render_custom_tags($content, $markup_mode);        
     }
 

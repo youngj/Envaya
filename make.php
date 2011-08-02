@@ -84,12 +84,7 @@ class Build
         );        
         
         $virtual_dirs = array('engine', 'themes', 'languages', 'views');
-        
-        foreach ($virtual_dirs as $virtual_dir)
-        {        
-            static::add_paths_in_dir('', $virtual_dir, $dir_paths);
-        }
-                
+                        
         $modules = Config::get('modules');
         foreach ($modules as $module)
         {
@@ -98,6 +93,11 @@ class Build
                 static::add_paths_in_dir("mod/{$module}/", $virtual_dir, $dir_paths);
             }
         }       
+        
+        foreach ($virtual_dirs as $virtual_dir)
+        {        
+            static::add_paths_in_dir('', $virtual_dir, $dir_paths);
+        }        
         
         static::add_nonexistent_view_paths($dir_paths);
                 

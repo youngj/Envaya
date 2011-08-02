@@ -10,7 +10,10 @@ class Controller_TranslateEntityKey extends Controller_TranslateKey
         return $this->page_draw(array_merge($args, array(
             'header' => view('translate/header', array('items' => array(
                 $language, 
-                array('url' => "/tr/{$language->code}/content", 'title' => __('itrans:user_content')),
+                array(
+                    'url' => $this->get_parent_uri(),
+                    'title' => __('itrans:user_content')
+                ),
                 $key
             ))),
         )));       
@@ -32,12 +35,18 @@ class Controller_TranslateEntityKey extends Controller_TranslateKey
             $dir = 'asc';        
         }
         
-        $next_key = EntityTranslationKey::query()            
+        $query = EntityTranslationKey::query()            
             ->where('language_guid = ?', $this->param('language')->guid)
             ->where("time_updated $cmp ? or (time_updated = ? AND guid $cmp ?)", 
                 $key->time_updated, $key->time_updated, $key->guid)
-            ->order_by("time_updated $dir, guid $dir")
-            ->get();
+            ->order_by("time_updated $dir, guid $dir");
+            
+        $query = $this->parent_controller->filter_query($query, 
+            $this->parent_controller->get_filter_params());
+            
+        $next_key = $query->get();
+            
+            
         
         if ($next_key)
         {

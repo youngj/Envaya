@@ -16,12 +16,11 @@
     $limit = (int)$limit;
     
     $count_unknown = ($count === null);
-    $count_min = ($count_unknown) ? ($offset + $count_displayed) : $count;
-                
+    $count_min = ($count_unknown) ? ($offset + $count_displayed) : $count;               
+        
     // only display if there is content to paginate through,
     // or if we already have an offset, or if we don't know the total count
     if ($count > $limit || $offset > 0 || $count_unknown) {
-
 ?>
 <div class="pagination">
 <?php

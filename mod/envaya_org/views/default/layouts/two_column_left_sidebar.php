@@ -10,8 +10,7 @@
 </td>
 <td id='right_content'>
 <?php 
-    echo view('page_elements/translate_bar', $vars); 
-    echo $vars['content']; 
+    echo view('page_elements/content', $vars);
 ?>         
 <div style='clear:both'></div>
 </td>

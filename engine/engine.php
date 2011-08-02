@@ -99,12 +99,6 @@ class Engine
     static function filesystem_get_real_path($path)
     {
         $root = Config::get('root');
-        $core_path = "$root/$path";                
-        if (file_exists($core_path))
-        {
-            static::$path_cache[$path] = $path;
-            return $core_path;
-        }
         
         foreach (Config::get('modules') as $module_name)
         {
@@ -116,6 +110,13 @@ class Engine
                 return $module_path;
             }
         }
+        
+        $core_path = "$root/$path";                
+        if (file_exists($core_path))
+        {
+            static::$path_cache[$path] = $path;
+            return $core_path;
+        }        
         
         // use 0 as a sentinel for nonexistent files rather than null
         // since isset does not distinguish between null and nonexistent keys

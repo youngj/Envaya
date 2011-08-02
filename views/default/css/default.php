@@ -846,3 +846,8 @@ ol ol
     list-style-type:lower-alpha;
     margin:0px;
 }
+
+@media print
+{
+    #topbar, .footer_container { display: none; }
+}

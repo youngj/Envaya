@@ -18,7 +18,8 @@
         echo $key->view_value($key->get_current_base_value(), 500);
         echo "</a>";        
         echo "</td>";
-        echo "<td style='width:350px;'>";
+        echo "<td style='width:350px;'>";        
+        
         echo "<a style='color:#333' href='$escUrl'>";
     
         if ($key->best_translation)

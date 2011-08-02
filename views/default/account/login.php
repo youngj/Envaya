@@ -1,7 +1,5 @@
 <div class='padded'>
 <?php    
-    $next = @$vars['next'];
-
     ob_start();
     ?>
 
@@ -40,14 +38,6 @@
 
     echo view('input/form', array('body' => $form_body, 'action' => secure_url("/pg/login")));
     
+    echo view('account/login_links', $vars);
 ?>
-<p>
-    <a href="/pg/forgot_password"><?php echo __('login:password:lost') ?></a>    
-</p>
-<p>
-<?php echo sprintf(__('login:if_not_registered'), "<a href='/org/new' style='font-weight:bold'>".__('sign_up_now')."</a>"); ?>
-</p>
-<p>
-<?php echo "<a href='/pg/register?next=".urlencode($next)."'>".__('login:register_link')."</a>"; ?>
-</p>
 </div>

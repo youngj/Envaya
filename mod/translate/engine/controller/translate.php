@@ -43,7 +43,12 @@ class Controller_Translate extends Controller
             'regex' => '/(?P<lang>\w+)/?$', 
             'action' => 'action_view_language',
             'before' => 'init_language',
-        ),        
+        ),    
+        array(
+            'regex' => '/(?P<lang>\w+)/content(,(?P<filter>[\w\=\,]+))?(/)?$', 
+            'action' => 'action_content',
+            'before' => 'init_language',
+        ),            
         array(
             'regex' => '/(?P<lang>\w+)/(?P<action>\w+)$', 
             'before' => 'init_language',
@@ -54,7 +59,7 @@ class Controller_Translate extends Controller
             'before' => 'init_language_group',
         ),
         array(
-            'regex' => '/(?P<lang>\w+)/content/(?P<key_name>\w+)', 
+            'regex' => '/(?P<lang>\w+)/content(,(?P<filter>[\w\=\,]+))?/(?P<key_name>\w+)', 
             'controller' => 'Controller_TranslateEntityKey',
             'before' => 'init_language_key',
         ),        
@@ -155,10 +160,25 @@ class Controller_Translate extends Controller
     {
         $language = $this->param('language');
         
+        $filter = $this->get_filter_params();
+        $filter_str = $this->get_filter_str($filter);
+        $base_url = "/tr/{$language->code}/content" . ($filter_str ? ",$filter_str" : '');        
+        
+        $query = EntityTranslationKey::query()
+            ->where('language_guid = ?', $language->guid)
+            ->order_by('time_updated desc, guid desc');
+            
+        $query = $this->filter_query($query, $filter);
+        
         return $this->page_draw(array(
             'title' => __('itrans:translators'),
             'header' => view('translate/header', array('items' => array($language), 'title' => __('itrans:user_content'))),
-            'content' => view('translate/user_content', array('language' => $language))
+            'content' => view('translate/user_content', array(
+                'language' => $language,
+                'base_url' => $base_url,
+                'query' => $query,
+                'filter' => $filter
+            ))
         ));            
     }
      
@@ -254,6 +274,25 @@ class Controller_Translate extends Controller
         return $filter_params;
     }
     
+    function filter_query($query, $filter)
+    {
+        $status = @$filter['status'];
+        
+        switch ($status)
+        {
+            case 'empty':
+                return $query->where("best_translation = ''");
+            case 'translated':
+                return $query->where("best_translation <> ''");
+            case 'unapproved':
+                return $query->where("best_translation <> '' and best_translation_approval <= 0");
+            case 'approved':
+                return $query->where("best_translation_approval > 0");
+        }
+        return $query;
+    
+    }
+    
     function filter_keys($keys, $filter)
     {
         $status = @$filter['status'];
@@ -264,12 +303,12 @@ class Controller_Translate extends Controller
         foreach ($keys as $key)
         {
             $empty = ($key->best_translation == '');
-        
-            if ($status == 'empty' && !$empty)
-            {
-                continue;
-            }
-            if ($status == 'notempty' && $empty)
+            $approved = $key->best_translation_approval > 0;
+               
+            if ($status == 'empty' && !$empty
+                || $status == 'translated' && $empty
+                || $status == 'unapproved' && $approved
+                || $status == 'approved' && !$approved)
             {
                 continue;
             }
@@ -289,6 +328,16 @@ class Controller_Translate extends Controller
         }
         return $filtered_keys;        
     }
+    
+    function get_filter_str($filter)
+    {
+        $filter_parts = array();
+        foreach ($filter as $k => $v)
+        {
+            $filter_parts[] = urlencode_alpha($k).'='.urlencode_alpha($v);
+        }
+        return implode(',', $filter_parts);       
+    }
 
     function action_view_group()
     {
@@ -302,6 +351,9 @@ class Controller_Translate extends Controller
         $keys = $group->get_available_keys();
         $filtered_keys = $this->filter_keys($keys, $filter);
         
+        $filter_str = $this->get_filter_str($filter);
+        $base_url = "/tr/{$language->code}/module/{$group->name}" . ($filter_str ? ",$filter_str" : '');
+        
         return $this->page_draw(array(
             'title' => __('itrans:translations'),
             'header' => view('translate/header',  array('items' => array($language, $group))),
@@ -310,6 +362,7 @@ class Controller_Translate extends Controller
                 'filter' => $filter,
                 'all_keys' => $keys,
                 'filtered_keys' => $filtered_keys,
+                'base_url' => $base_url,
             ))
         ));       
     }    

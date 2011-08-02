@@ -1,11 +1,17 @@
 <?php
-
+    $filter = $vars['filter'];
     $language = $vars['language'];
+    $base_url = $vars['base_url'];
+    $query = $vars['query'];
 
+    echo view('translate/filter_form', array(
+        'action' => "/tr/{$language->code}/content",
+        'filter' => $filter,
+        'hide_query' => true,
+    ));    
+        
     echo view('translate/key_table', array(
-        'query' => EntityTranslationKey::query()
-            ->where('language_guid = ?', $language->guid)
-            ->order_by('time_updated desc, guid desc'),
+        'query' => $query,
         'language' => $language,
-        'base_url' => "/tr/{$language->code}/content"
+        'base_url' => $base_url
     ));

@@ -159,7 +159,7 @@
                 $to_modules = $ref_names[$from_module];
                 foreach ($to_modules as $to_module)
                 {
-                    $to_ref_modules = $ref_names[$to_module];
+                    $to_ref_modules = @$ref_names[$to_module];
                     if (!$to_ref_modules)
                         continue;
                     

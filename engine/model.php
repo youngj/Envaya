@@ -42,9 +42,9 @@ class Model extends Mixable
         
         foreach (static::get_mixin_classes() as $mixin_class)
         {
-            if (method_exists($mixin_class, 'mixin_table_attributes'))
+            if (property_exists($mixin_class, 'table_attributes'))
             {
-                $attributes = array_merge($attributes, $mixin_class::mixin_table_attributes());
+                $attributes = array_merge($attributes, $mixin_class::$table_attributes);
             }
         }
         

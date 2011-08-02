@@ -53,4 +53,7 @@ return array(
 
     'itrans:approve' => "Approve",
     'itrans:unapprove' => "Remove Approval",    
+    
+    'itrans:approved' => "Approved",
+    'itrans:unapproved' => "Unapproved",
 );

@@ -227,3 +227,10 @@ a.icon_link:hover
     border: 1px solid #ccc;
     overflow:auto;
 }
+
+@media print
+{
+    body, .section_content { background:white; }
+    #content_mid { margin: 0; width: auto; }
+    .content_container .thin_column { border: 0; }    
+}

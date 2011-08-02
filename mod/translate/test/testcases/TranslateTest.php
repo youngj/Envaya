@@ -137,7 +137,7 @@ class TranslateTest extends SeleniumTest
         
         // test filtering
         $this->select("//select[@name='status']", "Translated");
-        $this->waitForElement("//select[@name='status']//option[@value='notempty' and @selected='selected']");
+        $this->waitForElement("//select[@name='status']//option[@value='translated' and @selected='selected']");
         $this->waitForElement("//a[contains(@href,'anonymous')]");
         $this->mustNotExist("//a[contains(@href,'name_5Fsaid')]");
 

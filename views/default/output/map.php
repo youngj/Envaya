@@ -1,7 +1,7 @@
 <?php
     $id = "map$INCLUDE_COUNT";      // DOM id for container element
     $width = 570;                   // container width
-    $height = 400;                  // container height
+    $height = 370;                  // container height
     $onload = null;                 // JavaScript callback, function(map) { .. } 
     $zoom = 10;                     // initial zoom level
     $map_type = "ROADMAP";          // initial google map type constant
