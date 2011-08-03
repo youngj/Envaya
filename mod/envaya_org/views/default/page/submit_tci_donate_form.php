@@ -1,14 +1,14 @@
 <html>
-<body onload='document.donate_form.submit()'>
+<body onload='document.forms[0].submit()'>
 Forwarding to Trust for Conservation Innovation...
-<form id='donate_form' name='donate_form' method="POST" action="https://secure16.inmotionhosting.com/~trustf5/payment.php">
+<form method="POST" action="http://trustforconservationinnovation.org/donate/index.php">
 <?php
     foreach ($vars as $k => $v)
     {
         echo view('input/hidden', array('name' => escape($k), 'value' => $v));
     }
 ?>
-<input type='submit' name='_submit' value='Retry' />
+<input type='submit' value='Retry' />
 </form>
 </body>
 </html>

@@ -28,7 +28,7 @@ class Controller_Org extends Controller
     {
         $values = $_POST;
         $amount = (int)$values['_amount'] ?: (int)$values['_other_amount'];
-        $values['donation'] = $amount;
+        $values['amount'] = $amount;
 
         $emailBody = "";
 
@@ -43,7 +43,7 @@ class Controller_Org extends Controller
         {
             throw new RedirectException("Please select a donation amount.");
         }
-        if (!$values['Name'])
+        if (!$values['full_name'])
         {
             throw new RedirectException("Please enter your Full Name.");
         }
@@ -51,14 +51,27 @@ class Controller_Org extends Controller
         {
             throw new RedirectException("Please enter your Phone Number.");
         }
-        if (!$values['Email'])
+        if (!$values['email'])
         {
             throw new RedirectException("Please enter your Email Address.");
         }
 
+        $full_name = $values['full_name'];
+        $last_space = strrpos($full_name, ' ');
+        if ($last_space !== false)
+        {
+            $values['firstname'] = substr($full_name, 0, $last_space);
+            $values['lastname'] = substr($full_name, $last_space + 1);        
+        }
+        else
+        {
+            $values['firstname'] = $full_name;
+            $values['lastname'] = $full_name;
+        }
+        
+        unset($values['full_name']);                
         unset($values['_amount']);
         unset($values['_other_amount']);
-        unset($values['Submit']);
 
         $this->set_content(view("page/submit_tci_donate_form", $values));
     }

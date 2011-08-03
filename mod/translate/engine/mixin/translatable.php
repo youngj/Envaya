@@ -29,7 +29,7 @@ class Mixin_Translatable extends Mixin
         if ($origLang != $lang)
         {
             PageContext::set_original_language($origLang);            
-            PageContext::add_available_translation($translation);        
+            PageContext::add_available_translation($translation);
         }                
 
         if ($translateMode != TranslateMode::None)

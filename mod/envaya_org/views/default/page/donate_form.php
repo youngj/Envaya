@@ -1,7 +1,7 @@
 
 <form style='padding-top:10px' id='donate_form' method="POST" action="/org/submit_donate_form">
     
-    <input name="project" type="hidden" value="Envaya" />
+    <input name="projectID" type="hidden" value="envaya" />
 
     <div class='input'>
         <label>Donation Amount</label>
@@ -50,7 +50,7 @@
         <div class='input'>
             Full name<br />
             <?php echo view('input/text', array(
-                'name' => "Name",
+                'name' => "full_name",
                 'maxlength' => 75,
             )); ?> 
         </div>
@@ -58,7 +58,7 @@
         <div class='input'>
             Email address<br />
             <?php echo view('input/text', array(
-                'name' => "Email",
+                'name' => "email",
                 'maxlength' => 75,
             )); ?> 
         </div>  
@@ -74,7 +74,7 @@
         <div class='input'>
             Organization <span class='help'>(optional)</span><br />
             <?php echo view('input/text', array(
-                'name' => "Organization",
+                'name' => "company",
                 'maxlength' => 75,
             )); ?>            
         </div>        
@@ -82,7 +82,7 @@
         <div class='input'>
             Website <span class='help'>(optional)</span><br />
             <?php echo view('input/text', array(
-                'name' => "Website",
+                'name' => "website",
             )); ?>                        
         </div>    
 
@@ -91,7 +91,7 @@
         <div class='input'>
             Street address<br />
             <?php echo view('input/text', array(
-                'name' => "Address",
+                'name' => "address",
                 'maxlength' => 75,
             )); ?>             
         </div>        
@@ -99,7 +99,7 @@
         <div class='input'>
             Street address <span class='help'>(optional)</span><br />
             <?php echo view('input/text', array(
-                'name' => "Address2",
+                'name' => "address2",
                 'maxlength' => 75,
             )); ?>
 		</div>        
@@ -107,7 +107,7 @@
         <div class='input'>
             City<br />
             <?php echo view('input/text', array(
-                'name' => "City",
+                'name' => "city",
                 'maxlength' => 75,
             )); ?>
         </div>                
@@ -118,7 +118,7 @@
             <div class='input'>
                 State/Province<br />
                 <?php echo view('input/text', array(
-                    'name' => "State",
+                    'name' => "state",
                     'maxlength' => 75,
                     'style' => 'width:95px',
                 )); ?>                
@@ -128,7 +128,7 @@
             <div class='input'>
                 Zip/Postal Code<br />
                 <?php echo view('input/text', array(
-                    'name' => "Zip",
+                    'name' => "zip",
                     'maxlength' => 75,
                     'style' => 'width:100px',
                 )); ?>                                
@@ -140,7 +140,7 @@
         <div class='input'>
             Country<br />
                 <?php echo view('input/text', array(
-                    'name' => "Country",
+                    'name' => "country",
                     'maxlength' => 75,
                 )); ?>                                            
         </div>       
@@ -158,7 +158,7 @@
     <td>
     <?php
         echo view('input/submit', array(
-            'name' => "Submit",
+            'name' => null,
             'value' => "Continue to Payment Info",
         ));    
     ?>
