@@ -13,7 +13,7 @@ class Controller_Translate extends Controller
             'action' => 'action_index',
         ),
         array(
-            'regex' => '/(?P<action>instructions|delete_comment)\b', 
+            'regex' => '/(?P<action>instructions|delete_comment|check_translation)\b', 
         ),                
         array(
             'regex' => '/admin\b', 
@@ -464,5 +464,20 @@ class Controller_Translate extends Controller
                 'keys' => $keys
             ))
         ));
+    }
+    
+    function action_check_translation()
+    {
+        $this->set_content_type('text/javascript');
+    
+        $keys = explode(',', get_input('keys'));
+        
+        $has_translation = Translation::query()
+            ->where_in('container_guid', $keys)
+            ->where('owner_guid = 0')
+            ->exists(); 
+        // includes stale translations...
+            
+        $this->set_content(json_encode(array('has_translation' => $has_translation)));
     }
 }

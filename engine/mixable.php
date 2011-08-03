@@ -67,8 +67,9 @@ abstract class Mixable
         }
     }
     
-    function __call($fn, $args)
-    {    
+    function call_mixins($fn, $args)
+    {
+        $res = array();
         foreach (static::get_mixin_classes() as $mixin_class)
         {        
             $mixin = $this->get_mixin($mixin_class);
@@ -76,24 +77,46 @@ abstract class Mixable
             // avoid infinite recursion, since Mixin calls this if $fn doesn't exist
             if (method_exists($mixin, $fn)) 
             {
-                return call_user_func_array(array($mixin, $fn), $args);
+                $res[] = call_user_func_array(array($mixin, $fn), $args);
             }
         }
-        $cls = get_class($this);
-        throw new CallException("method $fn does not exist in $cls");
+        return $res;
     }
     
-    static function __callStatic($fn, $args)
+    static function call_mixin_classes($fn, $args)
     {
+        $res = array();
+    
         foreach (static::get_mixin_classes() as $mixin_class)
         {        
             if (method_exists($mixin_class, $fn)) 
             {
-                return call_user_func_array(array($mixin_class, $fn), $args);
+                $res[] = call_user_func_array(array($mixin_class, $fn), $args);
             }
+        }        
+        return $res;
+    }
+       
+    function __call($fn, $args)
+    {    
+        $res = $this->call_mixins($fn, $args);        
+        if ($res)
+        {
+            return $res[0];
+        }        
+        $cls = get_class($this);
+        throw new CallException("method $fn does not exist in $cls");        
+    }
+    
+    static function __callStatic($fn, $args)
+    {
+        $res = static::call_mixin_classes($fn, $args);        
+        if ($res)
+        {
+            return $res[0];
         }
         $cls = get_called_class();
-        throw new CallException("method $fn does not exist in $cls");        
+        throw new CallException("method $fn does not exist in $cls");            
     }
 
     static function add_mixin_class($mixin_class)

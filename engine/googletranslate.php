@@ -19,11 +19,6 @@ class GoogleTranslate
         }
     }
     
-    static function queue_auto_translation($text, $origLang, $viewLang)
-    {
-        FunctionQueue::queue_call(array('GoogleTranslate','get_auto_translation'), array($text, $origLang, $viewLang));
-    }
-
     static function get_auto_translation($text, $origLang, $viewLang)
     {
         if ($origLang == $viewLang

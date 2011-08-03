@@ -10,4 +10,6 @@ return array(
     'trans:stale_trans_from_to' => "Parts of this page have been translated from {origlang}, but the {curlang} version is out of date.",
     'trans:view_automatic' => "View using Google Translate",
     'trans:edit' => "Edit translations",
+    'trans:waiting' => "Waiting for Google Translate to translate parts of this page...",
+    'trans:translating' => "Translating...",
 );

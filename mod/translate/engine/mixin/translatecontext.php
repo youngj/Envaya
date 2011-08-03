@@ -64,18 +64,6 @@ class Mixin_TranslateContext extends Mixin
         return false;
     }
     
-    static function has_unsaved_translation()
-    {
-        foreach (static::$translations_available as $translation)
-        {
-            if (!$translation->guid)
-            {
-                return true;
-            }
-        }    
-        return false;
-    }
-
     static function has_stale_translation()
     {
         foreach (static::$translations_available as $translation)

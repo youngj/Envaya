@@ -21,7 +21,8 @@ define('WORKER_CHECK_INTERVAL', 1);
 
 $worker_options = array(
     array(
-        'cmd' => 'php scripts/workers/call.php'
+        'cmd' => 'php scripts/workers/call.php',
+        'count' => 3,
     ),
     array(
         'cmd' => 'php scripts/workers/feeds.php'
@@ -60,7 +61,13 @@ class WorkerProcess
         $this->start_error = false;
         $this->start_time = time();
         
-        $this->process = run_task($this->cmd);
+        $descriptorspec = array(
+           0 => array("pipe", "r"),
+           1 => STDOUT,
+           2 => STDERR
+        );
+        
+        $this->process = proc_open($this->cmd, $descriptorspec, $pipes);
 
         if (!is_resource($this->process))
         {
@@ -123,9 +130,14 @@ function run_forever()
     // start all workers initially
     foreach ($worker_options as $worker_option)
     {        
-        $worker = new WorkerProcess($worker_option);        
-        $workers[] = $worker;
-        $worker->start();
+        $count = @$worker_option['count'] ?: 1;
+        
+        for ($i = 0; $i < $count; $i++)
+        {    
+            $worker = new WorkerProcess($worker_option);        
+            $workers[] = $worker;
+            $worker->start();
+        }
     }
     
     // keep restarting workers when they exit

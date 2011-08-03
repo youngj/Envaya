@@ -49,7 +49,10 @@ class Mixin_Translatable extends Mixin
             ->order_by('approval_time desc')
             ->get();
 
-        $doAutoTranslate = ($translateMode == TranslateMode::Automatic) && ($origLang != $lang);        
+        $doAutoTranslate = ($translateMode == TranslateMode::Automatic) 
+            && ($origLang != $lang)
+            && GoogleTranslate::is_supported_language($origLang)
+            && GoogleTranslate::is_supported_language($lang);        
         
         if ($doAutoTranslate && (!$approvedTrans || $approvedTrans->is_stale()))
         {
@@ -62,17 +65,13 @@ class Mixin_Translatable extends Mixin
             {
                 return $autoTrans;
             }
+            else
+            {            
+                $key->queue_auto_translation();
             
-            $text = GoogleTranslate::get_auto_translation($this->$prop, $origLang, $lang);
-
-            if ($text != null)
-            {
-                $autoTrans = $key->new_translation();
-                $autoTrans->value = $text;                
-                $autoTrans->save();
-                $key->update();
-                
-                return $autoTrans;
+                $tempTrans = $key->new_translation();
+                $tempTrans->value = __('trans:translating', $lang);
+                return $tempTrans;
             }
         }
         

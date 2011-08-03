@@ -64,9 +64,50 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
         }
         else if ($transMode == TranslateMode::Automatic) // viewing automatic translation
         {
-            if (PageContext::has_unsaved_translation())
+            $unsaved_translations = array_filter(PageContext::get_available_translations(), 
+                function($t) { return !$t->guid; });
+                    
+            if ($unsaved_translations)
             {
-                echo strtr(__("trans:automatic_trans_error"), $tr);
+                echo "<span id='translate_status'>".strtr(__("trans:waiting"), $tr)."</span>";
+            ?>
+<script type='text/javascript'>
+<?php echo view('js/xhr'); ?>
+
+(function() {
+    var checkCount = 0;
+
+    var xhr = getXHR(function(res) {
+        if (res.has_translation)
+        {
+            window.location.reload();
+        }
+        else if (checkCount < 15)
+        {
+            setTimeout(checkTranslation, 500);
+        }
+        else
+        {
+            var translateStatus = $('translate_status');
+            translateStatus.innerHTML = <?php echo json_encode(strtr(__('trans:automatic_trans_error'), $tr)); ?>;
+        }
+    });
+
+    function checkTranslation()
+    {
+        checkCount++;
+    
+        asyncPost(xhr, '/tr/check_translation', {keys: <?php
+            echo json_encode(implode(',',
+                array_map(function($t) { return $t->get_container_entity()->guid; }, $unsaved_translations)
+            ));
+        ?>});
+    }
+    setTimeout(checkTranslation, 500);
+})();
+
+</script>
+                <?php
             }
             else
             {

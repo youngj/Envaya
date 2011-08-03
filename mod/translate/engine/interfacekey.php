@@ -55,6 +55,16 @@ class InterfaceKey extends TranslationKey
         return $this->get_container_entity()->get_url()."/".urlencode_alpha($this->name);
     }
     
+    function get_default_value()
+    {
+        return $this->get_value_in_lang(Config::get('language'));
+    }
+    
+    function get_default_value_lang()
+    {
+        return Config::get('language');
+    }
+    
     function get_placeholders()
     {
         return Language::get_placeholders($this->get_default_value());
@@ -62,7 +72,7 @@ class InterfaceKey extends TranslationKey
     
     function get_value_in_lang($lang)
     {
-        return @__($this->name, $lang ?: Config::get('language'));
+        return @__($this->name, $lang);
     }    
     
     function sanitize_value($value)

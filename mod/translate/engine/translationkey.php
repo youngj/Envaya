@@ -67,16 +67,16 @@ class TranslationKey extends Entity
     {
         return TranslationKeyComment::query()
             ->where('container_guid = ? OR (key_name = ? AND language_guid = 0)', $this->guid, $this->name);
-    }
+    }    
     
-    function get_value_in_lang($lang)
+    function get_default_value()
     {
         throw new NotImplementedException(); 
     }
     
-    function get_default_value()
+    function get_default_value_lang()
     {
-        return $this->get_value_in_lang(null);
+        throw new NotImplementedException(); 
     }
     
     function view_input($initial_value)
@@ -152,5 +152,44 @@ class TranslationKey extends Entity
     function get_current_base_lang()
     {
         return $this->get_language()->get_current_base_code();
+    }
+    
+    function queue_auto_translation()
+    {
+        FunctionQueue::queue_call(array('TranslationKey','fetch_auto_translation_by_guid'), array($this->guid));
+    }
+    
+    static function fetch_auto_translation_by_guid($guid)
+    {
+        $key = TranslationKey::get_by_guid($guid);
+        $key->fetch_auto_translation();
+    }
+    
+    function fetch_auto_translation()
+    {        
+        // avoid fetching duplicate translations
+        if ($this->query_translations()
+            ->where('owner_guid = 0')
+            ->where('default_value_hash = ?', $this->get_default_value_hash())
+            ->exists())
+        {
+            return;
+        }
+    
+        $value = $this->get_default_value();
+        $base_lang = $this->get_default_value_lang();
+        $lang = $this->get_language()->code;
+    
+        $trans_value = GoogleTranslate::get_auto_translation($value, $base_lang, $lang);
+        
+        $auto_trans = $this->new_translation();
+        $auto_trans->value = $trans_value;
+        $auto_trans->save();
+        $this->update();        
+    }
+    
+    function get_default_value_hash()
+    {
+        return sha1($this->get_default_value());
     }
 }

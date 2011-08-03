@@ -39,21 +39,6 @@ class EntityTranslationKey extends TranslationKey
         
     }
     
-    function get_value_in_lang($lang)
-    {    
-        $entity_prop = $this->get_entity_property();            
-        
-        if ($entity_prop)
-        {
-            return $entity_prop[0]->translate_field($entity_prop[1], $lang);
-        }
-        else
-        {
-            return null;
-        }
-            
-    }    
-    
     private function call_entity_method($format, $args)
     {
         $entity_prop = $this->get_entity_property();
@@ -110,7 +95,12 @@ class EntityTranslationKey extends TranslationKey
     
     function get_current_base_lang()
     {
+        return $this->get_default_value_lang();
+    }
+    
+    function get_default_value_lang()
+    {
         $entity = $this->get_container_entity();
-        return $entity->get_language();    
+        return $entity->get_language();        
     }
 }

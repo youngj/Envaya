@@ -196,7 +196,7 @@ class RegisterTest extends SeleniumTest
         $this->mouseOver("//div[contains(@class, 'section_content')]//p[contains(text(),'website')]");
         $this->clickAndWait("//a[contains(@href,'trans=3')]");
         $this->mustNotExist("//div[contains(@class, 'section_content')]//p[contains(text(),'website')]");
-        $this->mouseOver("//div[contains(@class, 'section_content')]//p[contains(text(),'tovuti')]");
+        $this->waitForElement("//div[contains(@class, 'section_content')]//p[contains(text(),'tovuti')]");
         $this->clickAndWait("//a[contains(@href,'lang=en')]");
         $this->mouseOver("//div[contains(@class, 'section_content')]//p[contains(text(),'website')]");
     }

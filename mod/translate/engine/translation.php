@@ -30,7 +30,7 @@ class Translation extends Entity
         }
     
         $key = $this->get_container_entity();        
-        return $this->default_value_hash != sha1($key->get_default_value());
+        return $this->default_value_hash != $key->get_default_value_hash();
     }
     
     function is_approved()

@@ -30,7 +30,7 @@ function asyncPost(xhr, action, params)
     var form = document.forms[0],
         paramArr = [];
 
-    if (form.__ts)
+    if (form && form.__ts)
     {
         params.__ts = form.__ts.value;
         params.__token = form.__token.value;
