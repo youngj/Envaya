@@ -576,7 +576,14 @@ abstract class Controller {
     
     function allow_content_translation($allow = true)
     {
-        $this->page_draw_vars['show_translate_bar'] = $allow;
+        if ($allow)
+        {
+            TranslateMode::set_current(((int)get_input("trans")) ?: TranslateMode::Approved);
+        }
+        else        
+        {
+            TranslateMode::set_current(TranslateMode::Disabled);
+        }
     }
     
     function change_viewer_language($new_language)

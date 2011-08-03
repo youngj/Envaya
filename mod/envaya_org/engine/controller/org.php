@@ -97,6 +97,9 @@ class Controller_Org extends Controller
     {
         $this->allow_view_types(null);
 
+        $this->allow_content_translation();
+        $this->page_draw_vars['hide_translate_bar'] = true;        
+        
         $this->page_draw(array(
             'title' => __('featured:title'),
             'content' => view('org/featured')

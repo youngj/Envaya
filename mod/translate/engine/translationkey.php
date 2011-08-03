@@ -162,7 +162,10 @@ class TranslationKey extends Entity
     static function fetch_auto_translation_by_guid($guid)
     {
         $key = TranslationKey::get_by_guid($guid);
-        $key->fetch_auto_translation();
+        if ($key)
+        {
+            $key->fetch_auto_translation();
+        }
     }
     
     function fetch_auto_translation()
@@ -181,11 +184,13 @@ class TranslationKey extends Entity
         $lang = $this->get_language()->code;
     
         $trans_value = GoogleTranslate::get_auto_translation($value, $base_lang, $lang);
-        
-        $auto_trans = $this->new_translation();
-        $auto_trans->value = $trans_value;
-        $auto_trans->save();
-        $this->update();        
+        if ($trans_value != null)
+        {
+            $auto_trans = $this->new_translation();
+            $auto_trans->value = $trans_value;
+            $auto_trans->save();
+            $this->update();        
+        }
     }
     
     function get_default_value_hash()

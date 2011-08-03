@@ -75,6 +75,7 @@ class GoogleTranslate
         $translated = @$res->responseData->translatedText;
         if (!$translated)
         {
+            error_log("error receiving translation from google translate: $json");
             return null;
         }
 

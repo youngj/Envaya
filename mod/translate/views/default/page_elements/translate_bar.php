@@ -1,6 +1,6 @@
 <?php
 
-if (@$vars['show_translate_bar'] && PageContext::has_translation())
+if (!@$vars['hide_translate_bar'] && PageContext::has_translation())
 {    
     $origLang = PageContext::get_original_language();
     $viewLang = Language::get_current_code();   
@@ -65,7 +65,9 @@ if (@$vars['show_translate_bar'] && PageContext::has_translation())
         else if ($transMode == TranslateMode::Automatic) // viewing automatic translation
         {
             $unsaved_translations = array_filter(PageContext::get_available_translations(), 
-                function($t) { return !$t->guid; });
+                function($t) { 
+                    return !$t->guid;                 
+                });
                     
             if ($unsaved_translations)
             {

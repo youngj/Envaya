@@ -14,7 +14,7 @@ class PageContext extends Mixable
     private static $js_strings = array();
     private static $dirty = false;
     private static $http_headers = array();
-    
+
     static function set_http_header($name, $value)
     {
         static::$http_headers[$name] = $value;

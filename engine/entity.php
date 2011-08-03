@@ -284,7 +284,7 @@ abstract class Entity extends Model
         }
         else
         {
-            return 'en';
+            return Config::get('language');
         }
     }
 
@@ -495,6 +495,26 @@ abstract class Entity extends Model
         }
         
         return $entity;
+    }
+    
+    function queue_guess_language($field)
+    {
+        FunctionQueue::queue_call(array('Entity', 'guess_language_by_guid'), array($this->guid, $field));
+    }
+    
+    static function guess_language_by_guid($guid, $field)
+    {
+        $entity = Entity::get_by_guid($guid);
+        if ($entity)
+        {
+            $entity->guess_language($field);
+        }
+    }
+    
+    function guess_language($field)
+    {
+        $this->language = GoogleTranslate::guess_language($this->$field);
+        $this->save();
     }
     
     // Loggable interface

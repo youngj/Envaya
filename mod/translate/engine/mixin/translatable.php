@@ -10,22 +10,28 @@ class Mixin_Translatable extends Mixin
             return '';
         }
 
-        $origLang = $this->get_language();
+        $origLang = $this->get_language();        
         
         if ($lang == null)
         {
             $lang = Language::get_current_code();        
         }
 
-        $translateMode = TranslateMode::get_current();
-        $translation = $this->lookup_translation($field, $lang, $origLang, $translateMode);
+        $translateMode = TranslateMode::get_current();        
+        
+        if ($translateMode == TranslateMode::Disabled)
+        {
+            return $text;
+        }
+        
+        $translation = $this->lookup_translation($field, $lang, $origLang, $translateMode);        
         
         if ($origLang != $lang)
         {
-            PageContext::set_original_language($origLang);
-        }
-        PageContext::add_available_translation($translation);            
-        
+            PageContext::set_original_language($origLang);            
+            PageContext::add_available_translation($translation);        
+        }                
+
         if ($translateMode != TranslateMode::None)
         {
             return $translation->value;
