@@ -18,6 +18,7 @@ abstract class Mixable
     
     private static $_mixin_classes_map = array();
     private static $mixin_classes_map = array();
+    private static $mixin_extensions = array();
 
     private static function _get_mixin_classes($cls)
     {
@@ -52,6 +53,15 @@ abstract class Mixable
         else
         {    
             $mixin_classes = static::_get_mixin_classes($cls);
+                        
+            for ($i = 0; $i < sizeof($mixin_classes); $i++)
+            {
+                $mixin_class = $mixin_classes[$i];
+                if (isset(Mixable::$mixin_extensions[$mixin_class]))
+                {
+                    $mixin_classes = array_merge($mixin_classes, Mixable::$mixin_extensions[$mixin_class]);
+                }
+            }
             
             $parent = get_parent_class($cls);
             if ($parent != 'Mixable')
@@ -67,10 +77,15 @@ abstract class Mixable
         }
     }
     
+    function get_instance_mixin_classes()
+    {
+        return static::get_mixin_classes();
+    }
+    
     function call_mixins($fn, $args)
     {
         $res = array();
-        foreach (static::get_mixin_classes() as $mixin_class)
+        foreach ($this->get_instance_mixin_classes() as $mixin_class)
         {        
             $mixin = $this->get_mixin($mixin_class);
             
@@ -118,7 +133,16 @@ abstract class Mixable
         $cls = get_called_class();
         throw new CallException("method $fn does not exist in $cls");            
     }
-
+    
+    /*
+     * Allows Mixin classes to (essentially) have their own Mixin classes.
+     * Whenever the first mixin class appears in get_mixin_classes(), the second one will too.
+     */
+    static function extend_mixin_class($mixin_class, $other_mixin_class)
+    {
+        Mixable::$mixin_extensions[$mixin_class][] = $other_mixin_class;
+    }
+    
     static function add_mixin_class($mixin_class)
     {
         $cls = get_called_class();

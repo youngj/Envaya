@@ -30,9 +30,14 @@ abstract class Mixin
     }
     
     function __call($fn, $args)
-    {
+    {   
         return call_user_func_array(array($this->instance, $fn), $args);
+    }    
+        
+    static function add_mixin_class($other_mixin_class)
+    {
+        Mixable::extend_mixin_class(get_called_class(), $other_mixin_class);
     }
-    
+        
     // __callStatic not defined because Mixin doesn't know what class to call
 }

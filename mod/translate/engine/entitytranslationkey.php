@@ -35,8 +35,7 @@ class EntityTranslationKey extends TranslationKey
         else
         {
             return null;
-        }
-        
+        }        
     }
     
     private function call_entity_method($format, $args)
@@ -50,46 +49,19 @@ class EntityTranslationKey extends TranslationKey
         $entity = $entity_prop[0];
         $property = $entity_prop[1];
         
-        $method = sprintf($format, $property);
+        $method = sprintf($format, $property);        
         return call_user_func_array(array($entity,$method), $args);
-    }
+    }       
     
-    function view_value($value, $snippet_len = null)
+    function get_behavior()
     {
         try
         {
-            return $this->call_entity_method("view_%s_value", array($value, $snippet_len));
+            return $this->call_entity_method("get_%s_translation_behavior", array());
         }
         catch (CallException $ex)
         {
-            return parent::view_value($value, $snippet_len);
-        }            
-    }
-    
-    function view_input($initial_value)
-    {
-        try
-        {
-            return $this->call_entity_method("view_%s_input", array($initial_value));
-        }
-        catch (CallException $ex)
-        {
-            return parent::view_input($initial_value);
-        }            
-    }    
-    
-    function sanitize_value($value)
-    {
-        try
-        {
-            return $this->call_entity_method("sanitize_%s_value", array($value));
-        }
-        catch (CallException $ex)
-        {
-            return Markup::sanitize_html($value, array(
-                'AutoFormat.Linkify' => false,
-                'HTML.AllowedElements' => ''
-            ));
+            return 'TranslationKeyBehavior_UserText';
         }
     }
     

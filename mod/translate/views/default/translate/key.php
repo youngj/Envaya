@@ -67,18 +67,10 @@
         echo "<form method='POST' action='".escape($base_url)."/add'>";
         echo view('input/securitytoken');        
         
-        echo $key->view_input($displayed_value ?: $base_value);
-    
-        echo "<br />";
-        $tokens = $key->get_placeholders();
-        if ($tokens)
-        {
-            $token_str = implode(' ', array_map(function($t) { return "<strong>$t</strong>"; }, $tokens));
-            echo "<div>".__('itrans:needs_placeholders')."<br />$token_str</div>";
-        }    
+        echo $key->view_input($displayed_value ?: $base_value);    
     
         echo view('focus', array('name' => 'value')); 
-    
+        echo "<div>";
         if (!$key->can_edit())
         {                    
             if ($key instanceof EntityTranslationKey || !Config::get('translate:live_interface'))
@@ -88,12 +80,12 @@
                 echo "</div>";
             }            
         }
-    
+            
         echo view('input/submit', array(
             'style' => 'margin-top:0px',
             'value' => __('itrans:submit')
         )); 
-        
+        echo "</div>";
         echo "</form>";
     }
     else

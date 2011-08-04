@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * Extension for PageContext that collects information about the translations used on the current page.
+ */
 class Mixin_TranslateContext extends Mixin
 {
     private static $translations_available = array();

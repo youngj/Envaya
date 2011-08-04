@@ -1,0 +1,1 @@
+alter table translation_keys add key `latest_in_lang` (`language_guid`, `time_updated`, `guid`);

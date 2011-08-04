@@ -234,10 +234,18 @@ class Controller_Translate extends Controller
     {
         $language = $this->param('language');
         
+        $filter = $this->get_filter_params();
+        $filter_str = $this->get_filter_str($filter);
+        $base_url = "/tr/{$language->code}/latest" . ($filter_str ? ",$filter_str" : '');              
+        
         return $this->page_draw(array(
             'title' => __('itrans:latest'),
             'header' => view('translate/header', array('items' => array($language), 'title' => __('itrans:latest'))),
-            'content' => view('translate/latest_translations', array('language' => $language))
+            'content' => view('translate/latest_translations', array(
+                'language' => $language,
+                'filter' => $filter,
+                'base_url' => $base_url,
+            ))
         ));    
     }
     

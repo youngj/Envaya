@@ -79,71 +79,23 @@ class TranslationKey extends Entity
         throw new NotImplementedException(); 
     }
     
-    function view_input($initial_value)
+    function get_behavior()
     {
-        $base_value = $this->get_default_value();
-    
-        $style = 'width:350px;margin-top:0px';
-    
-        if (strlen($base_value) > 45 || strpos($base_value, "\n") !== FALSE)
-        {
-           $view = "input/longtext";
-           $style .= ";height:".(25+floor(strlen($base_value)/45)*30)."px";
-        }
-        else
-        {
-            $view = "input/text";
-        }
-                 
-
-        echo view($view, array(
-            'name' => 'value',
-            'style' => $style,
-            'value' => $initial_value,
-            'track_dirty' => true,
-        ));     
+        throw new NotImplementedException(); 
     }
     
-    function view_value($value, $snippet_len = null)
+    function get_instance_mixin_classes()
     {
-        if ($snippet_len != null)
-        {
-            $v = Markup::truncate_at_word_boundary($value, $snippet_len);
-            if ($v != $value)
-            {
-                $value = $v . "...";
-            }
-        }
-    
-        if (strpos($this->get_default_value(), "\n") !== false)
-        {
-            $view_name = 'output/longtext';            
-        }
-        else
-        {   
-            $view_name = 'output/text';            
-        }
-        
-        $res = view($view_name, array('value' => $value));
-        
-        if ($snippet_len == null)
-        {
-            $res = "<div style='width:350px;border:1px solid #ccc;padding:4px'>$res</div>";
-        }
-        
-        return $res;
+        $mixin_classes = parent::get_instance_mixin_classes();
+        $mixin_classes[] = $this->get_behavior();        
+        return $mixin_classes;
     }
-        
+    
     function get_placeholders()
     {
         return array();
     }
-    
-    function sanitize_value($value)
-    {
-        return $value;
-    }
-
+       
     function get_current_base_value()
     {
         return $this->get_default_value();

@@ -28,6 +28,11 @@ Engine::add_autoload_action('Language', function() {
     Language::add_fallback_group('itrans', 'itrans_admin');
 });
 
+Engine::add_autoload_action('Mixable', function() {
+    Mixable::extend_mixin_class('Mixin_Content', 'Mixin_TranslatableContent');
+});
+
+
 if (@Config::get('translate:footer_link'))
 {
     Views::extend('page_elements/content_footer', 'page_elements/translate_footer');

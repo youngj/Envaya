@@ -1,5 +1,8 @@
 <?php
 
+/*
+ * Extension for the Entity class that allows entity properties to be translated.
+ */
 class Mixin_Translatable extends Mixin
 {
     function translate_field($field, $lang = null)
