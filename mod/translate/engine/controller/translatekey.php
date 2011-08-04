@@ -43,12 +43,16 @@ class Controller_TranslateKey extends Controller
         $translation_guid = (int)get_input('translation');
         if ($translation_guid)
         {
-            $translation = $key->query_translations()->where('guid = ?', $translation_guid)->get();
+            $translation = $key->query_translations()
+                ->show_disabled(true)
+                ->where('guid = ?', $translation_guid)
+                ->get();   
+                
+            if (!$translation)
+            {
+                throw new NotFoundException();
+            }
         }
-        else
-        {
-            $translation = null;
-        }        
     
         return $this->index_page_draw(array(
             'title' => __('itrans:translations'),
@@ -64,6 +68,12 @@ class Controller_TranslateKey extends Controller
         $action = new Action_AddTranslation($this);
         $action->execute();
     }
+    
+    function action_save_draft()
+    {
+        $action = new Action_SaveTranslationDraft($this);
+        $action->execute();    
+    }    
 
     function action_add_comment()
     {

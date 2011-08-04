@@ -221,7 +221,7 @@ class Controller_Pg extends Controller
                 throw new SecurityException("Access denied.");
             }
             
-            $revisions = ContentRevision::query()->where('entity_guid = ?', $entity_guid)->order_by('time_updated desc')->filter();        
+            $revisions = ContentRevision::query_drafts($entity)->filter();        
         }
         
         $this->set_content(json_encode(array(

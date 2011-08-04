@@ -17,7 +17,7 @@ class Action_AddTranslation extends Action
         if (!$key->guid)
         {
             $key->save();
-        }
+        }        
         
         $value = $key->sanitize_value($value);        
         
@@ -28,9 +28,12 @@ class Action_AddTranslation extends Action
         
         $user = Session::get_loggedin_user();
                 
-        $translation = new Translation();
-        $translation->container_guid = $key->guid;
-        $translation->owner_guid = $user->guid;
+        $translation = $key->get_draft_translation_for_user($user);                        
+        if (!$translation)
+        {                
+            $translation = $key->new_translation();
+            $translation->owner_guid = $user->guid;
+        }
         $translation->value = $value;
         $translation->score = 1;
         
@@ -38,6 +41,7 @@ class Action_AddTranslation extends Action
         {
             $translation->set_approved(true);
         }
+        $translation->enable();
         $translation->save();
         
         $vote = new TranslationVote();
@@ -52,6 +56,6 @@ class Action_AddTranslation extends Action
         $language->get_stats_for_user($user)->update();
         
         SessionMessages::add(__('itrans:posted'));
-        $this->redirect();
+        $this->redirect($this->get_parent_controller()->get_matched_uri());
     }
 }

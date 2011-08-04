@@ -20,13 +20,25 @@ class ContentRevision extends Model
     
     function get_entity()
     {
-        return Entity::get_by_guid($this->entity_guid);
+        return Entity::get_by_guid($this->entity_guid, true);
+    }
+    
+    static function query_drafts($entity)
+    {
+        return ContentRevision::query()
+            ->where('entity_guid = ?', $entity->guid)
+            ->order_by('time_updated desc');
     }
     
     static function get_recent_draft($entity)
     {
         $time = time();    
     
+        if (!$entity->guid)
+        {
+            throw new InvalidParameterException("entity guid not set in get_recent_draft");
+        }
+         
         $revision = ContentRevision::query()
             ->where('entity_guid = ?', $entity->guid)
             ->where('time_created > ? ', $time - 15 * 60)

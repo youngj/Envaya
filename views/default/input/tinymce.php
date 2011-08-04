@@ -1,8 +1,9 @@
 <?php
     // parameters:
     $saveDraft = false;
+    $save_draft_url = null;
     $entity = null;
-    $saveDraftFn = null;
+    $saveFn = null;
     $restoreDraftFn = null;
     $width = null;
     $height = null;
@@ -12,13 +13,13 @@
     extract($vars);
 
     if ($saveDraft)
-    {              
-        $lastRevision = $entity->guid ? 
+    {                 
+        $lastRevision = ($entity && $entity->guid) ? 
             ContentRevision::query()
                 ->where('entity_guid = ?', $entity->guid)
                 ->order_by('time_created desc')
                 ->get() 
-            : null;        
+            : null;
         
         if ($lastRevision)
         {
@@ -27,7 +28,8 @@
                 
         echo "<script type='text/javascript'>";
         echo view('js/save_draft', array(
-            'guid' => $entity->guid,
+            'guid' => ($entity ? $entity->guid : null),
+            'url' => $save_draft_url,
         ));
         echo "</script>";
         

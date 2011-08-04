@@ -6,7 +6,7 @@
         echo "<div style='padding-top:28px'>";
     }
     
-    echo "<div style='width:470px;height:365px;padding:4px;border:1px solid #ccc;overflow:auto'>";
+    echo "<div style='width:488px;height:365px;padding:4px;border:1px solid #ccc;overflow:auto'>";
     echo $value;
     echo "</div>";
     

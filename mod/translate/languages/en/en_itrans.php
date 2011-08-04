@@ -56,4 +56,6 @@ return array(
     
     'itrans:approved' => "Approved",
     'itrans:unapproved' => "Unapproved",
+    
+    'itrans:restore_draft' => "Restore draft",
 );

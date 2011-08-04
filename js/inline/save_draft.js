@@ -61,8 +61,6 @@
                 return;
             }
             
-            var form = document.forms[0];
-            
             showSaveMessage(__('tinymce:saving'));
             
             var xhr = getXHR(function(res) {             
@@ -74,9 +72,9 @@
                 setDirty(false);
             });
 
-            asyncPost(xhr, form.action, {
+            asyncPost(xhr, window.save_draft_url || document.forms[0].action, {
                 _draft:1,
-                content:content                
+                content:content
             });
             
         }, 10);

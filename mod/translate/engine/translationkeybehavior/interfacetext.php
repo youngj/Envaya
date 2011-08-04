@@ -26,9 +26,9 @@ class TranslationKeyBehavior_InterfaceText extends TranslationKeyBehavior
     }    
     
     
-    public function view_input($value)
+    public function view_input($vars)
     {    
-        return parent::view_input($value) . 
+        return parent::view_input($vars) . 
             view('translate/interface_placeholders', array(
                 'placeholders' => $this->get_placeholders()
             ));

@@ -149,4 +149,19 @@ class TranslationKey extends Entity
     {
         return sha1($this->get_default_value());
     }
+    
+    function get_draft_translation_for_user($user)
+    {
+        if (!$user)
+        {
+            return null;
+        }
+        
+        return $this->query_translations()
+            ->show_disabled(true)
+            ->where('status = ?', Entity::Disabled)
+            ->where('owner_guid = ?', $user->guid)
+            ->order_by('guid desc')
+            ->get();
+    }
 }

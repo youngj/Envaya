@@ -42,7 +42,7 @@ class TranslationKeyBehavior extends Mixin
         return $res;    
     }
     
-    public function view_input($value)
+    public function view_input($vars)
     {
         $base_value = $this->get_default_value();
     
@@ -56,13 +56,11 @@ class TranslationKeyBehavior extends Mixin
         else
         {
             $view = "input/text";
-        }                 
+        }     
 
-        echo view($view, array(
-            'name' => 'value',
-            'style' => $style,
-            'value' => $value,
-            'track_dirty' => true,
-        ));         
+        $vars['style'] = $style;
+        $vars['track_dirty'] = true;
+
+        echo view($view, $vars);
     }
 }

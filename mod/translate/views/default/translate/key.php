@@ -51,23 +51,36 @@
             echo "($lang_name)";
         }
     ?></th>
-    <th><?php echo escape($target_language->name); ?></th>
+    <th><?php echo escape($target_language->name); 
+            
+        $draft_translation = $key->get_draft_translation_for_user(Session::get_loggedin_user());            
+        if ($draft_translation && $draft_translation != $translation)
+        {
+            echo " <a href='".escape($base_url)."?translation={$draft_translation->guid}'>(".__('itrans:restore_draft').")</a>";
+        }
+    
+    ?></th>
 </tr>
 <tr> 
     <td>
     <div class='translation'><?php echo $key->view_value($base_value); ?></div>    
     </td>
     <td>
-    <?php
+    <?php    
     
-    $displayed_value = $translation ? $translation->value : $key->best_translation;
+    $displayed_value = $translation ? $translation->value : $key->best_translation;        
     
     if (Session::isloggedin())
     {
         echo "<form method='POST' action='".escape($base_url)."/add'>";
         echo view('input/securitytoken');        
         
-        echo $key->view_input($displayed_value ?: $base_value);    
+        echo $key->view_input(array(
+            'name' => 'value',
+            'value' => $displayed_value ?: $base_value,
+            'translation' => $translation,
+            'base_url' => $base_url,
+        ));    
     
         echo view('focus', array('name' => 'value')); 
         echo "<div>";

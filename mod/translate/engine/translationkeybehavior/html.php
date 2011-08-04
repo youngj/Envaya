@@ -25,20 +25,14 @@ class TranslationKeyBehavior_HTML extends TranslationKeyBehavior
         }
         else
         {
-            echo view('translate/view_html_value', array(
+            echo view('translate/html_value', array(
                 'value' => $value
             ));
         }
     }
     
-    public function view_input($value)
+    public function view_input($vars)
     {
-        return view('input/tinymce', array(
-            'name' => 'value', 
-            'value' => $value, 
-            'height' => 396, 
-            'width' => 470,
-            'track_dirty' => true,
-        ));
+        echo view('translate/html_input', $vars);
     }
 }
