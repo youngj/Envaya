@@ -1,7 +1,7 @@
 <div class='section_content padded'>
 
 <div class='instructions'>
-<?php echo $vars['instructions']; ?>
+<?php echo @$vars['instructions']; ?>
 </div>
 <form method='POST' action='<?php echo escape($_SERVER['REQUEST_URI']); ?>'>
 <?php

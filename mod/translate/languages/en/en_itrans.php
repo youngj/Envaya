@@ -44,7 +44,6 @@ return array(
     'itrans:saved' => "Translation saved successfully.",
     'itrans:select_base_lang' => "Language of original text:",
     'itrans:original_text' => "Original text",
-    'itrans:unknown' => '(unknown)',
     
     'itrans:submit' => "Submit translation",
     'itrans:not_translated' => "Not translated",

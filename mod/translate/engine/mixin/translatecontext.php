@@ -81,7 +81,7 @@ class Mixin_TranslateContext extends Mixin
     
     static function get_original_language()
     {        
-        return static::$orig_lang ?: Language::get_current_code();
+        return static::$orig_lang;
     }
     
     static function set_original_language($lang)

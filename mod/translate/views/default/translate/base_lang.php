@@ -25,7 +25,7 @@
 <?php
     echo view('input/pulldown', array(
         'name' => 'base_lang', 
-        'empty_option' => __('itrans:unknown'),
+        'empty_option' => __('lang:unknown'),
         'value' => $entity->language,
         'options' => Language::get_options()
     ));    

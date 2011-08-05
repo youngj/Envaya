@@ -40,7 +40,7 @@
         echo " ";
         
         $cur_base_lang = $key->get_current_base_lang();
-        $lang_name = escape($cur_base_lang ? __("lang:$cur_base_lang") : __('itrans:unknown'));
+        $lang_name = escape($cur_base_lang ? __("lang:$cur_base_lang") : __('lang:unknown'));
         
         if ($key instanceof EntityTranslationKey && $key->can_edit())
         {
@@ -86,7 +86,7 @@
         echo "<div>";
         if (!$key->can_edit())
         {                    
-            if ($key instanceof EntityTranslationKey || !Config::get('translate:live_interface'))
+            if ($key instanceof EntityTranslationKey || !@Config::get('translate:live_interface'))
             {
                 echo "<div style='float:right;padding-top:5px;width:220px;color:#999;font-size:11px'>";            
                 echo __('itrans:needs_approval');            
