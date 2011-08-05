@@ -48,8 +48,8 @@ class Action_PostComment extends Action
 		$comment->owner_guid = $userId;
 		$comment->name = $name;
         $comment->location = $location;
-		$comment->content = $content;
-		$comment->language = GoogleTranslate::guess_language($content);
+		$comment->content = $content;		
+        $comment->queue_guess_language('content');        
 		$comment->save();
 	
 		$widget->num_comments = $widget->query_comments()->count();

@@ -32,12 +32,11 @@ class Action_EditDesign extends Action
 
         $custom_header = (int)get_input('custom_header');
         
-        $org->set_design_setting('custom_header', $custom_header);
-
         if (!$custom_header)
         {
             $org->set_design_setting('tagline', get_input('tagline'));            
             $org->set_design_setting('share_links', get_input_array('share_links'));                        
+            $org->set_design_setting('custom_header', false);
         }
         else 
         {
@@ -46,6 +45,8 @@ class Action_EditDesign extends Action
             {
                 $org->set_design_setting('header_image', $header_image[0]);
             }
+            
+            $org->set_design_setting('custom_header', !!$org->get_design_setting('header_image'));
         }
         
         SessionMessages::add(__("design:saved"));

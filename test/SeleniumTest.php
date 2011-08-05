@@ -12,7 +12,13 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
     public function setUp()
     {
+        echo "\n".get_class($this)."\n";
         $this->deleteMailFile();
+        $this->startBrowser();
+    }
+    
+    public function startBrowser()
+    {
         $this->s = $this->init_selenium();
         $this->start();
         $this->windowMaximize();

@@ -18,5 +18,3 @@ $user->email = $email;
 $user->admin = true;    
 $user->save();
 echo "Admin created\n";
-
-Config::set('debug', false);

@@ -192,7 +192,7 @@ class Database
      */
     static function profiling_shutdown_hook()
     {
-        if (Config::get('debug') && sizeof(static::$DB_PROFILE) > 0)
+        if (Config::get('db_profile') && sizeof(static::$DB_PROFILE) > 0)
         {
             error_log("***************** DB PROFILING ********************");
 

@@ -30,7 +30,76 @@ class TranslateTest extends SeleniumTest
         $this->deleteAllComments();
         
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+            
+        //$this->_testTranslateUserContent();
+        //$this->_testTranslateCurrentPage();        
+        $this->_testTranslateInterface();
+    }
         
+    function _testTranslateUserContent()
+    {
+        // log in as test org
+        $this->open('/pg/login');
+        $this->login('testorg', 'testtest');
+        
+        // publish three news updates
+        $this->typeInFrame("//iframe", "monkey");
+        
+                
+        // view news updates in another language
+        
+        // translate using google translate
+        
+        // edit translation
+        
+        // next/prev links cycle through multiple items
+        
+        // test go directly to translation page when there is only one translation on the page
+        
+        // save draft
+        
+        // test each user can have their own drafts
+        
+        // restore draft        
+        
+        // published translations automatically approved when translated by content owner
+        
+        // published translations need approval when translated by other user
+        
+        // approved translations automatically appear on page
+        
+        // viewer can switch to original content, or translate rest using google translate
+        
+        // test translations appear on /tr/../content, and filters work
+        
+        // edit content, test translation shows up as stale
+        
+        // submit new translation, translation no longer stale
+        
+        // delete content, test can't view translation anymore
+        
+        // can't view translations from unapproved orgs, unless admin       
+     
+        // publish page with title. title should use non-html editor
+        
+        // test html is removed
+        
+        // change language of original content                
+    }
+    
+    function _testTranslateCurrentPage()
+    {
+        // enable UI groups for swahili
+        
+        // click edit translations on page with user content
+        
+        // shows both interface and user content translations
+        
+        // breadcrumb link should return to original page
+    }
+    
+    function _testTranslateInterface()
+    {        
         // navigate language while logged out
         $this->open("/tr");
         $this->clickAndWait("//a[contains(@href,'/tr/tl')]");        

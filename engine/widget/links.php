@@ -102,7 +102,7 @@ class Widget_Links extends Widget
         $link_info = ExternalSite::get_linkinfo($url, $news->can_add_feed());        
         
         $link_info['has_feed'] = $news->query_external_feeds()
-            ->where('feed_url = ? OR url = ?', $feed_url, $url)
+            ->where('feed_url = ? OR url = ?', $url, $url)
             ->exists();        
         
         $action->set_content(json_encode($link_info));

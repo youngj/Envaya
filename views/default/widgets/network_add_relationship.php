@@ -182,7 +182,7 @@ function showConfirmMemberDialog(query, res)
 <?php
 
 echo view('input/securitytoken');
-echo view('input/hidden', array('name' => 'org_guid', 'id' => 'org_guid', 'value' => $org->guid));
+echo view('input/hidden', array('name' => 'org_guid', 'id' => 'org_guid', 'value' => $org ? $org->guid : ''));
 echo view('input/hidden', array('name' => 'invite', 'id' => 'invite')); 
 echo view('input/hidden', array('name' => 'type', 'value' => $type)); 
 

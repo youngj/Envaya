@@ -2,9 +2,9 @@
 
 class WebDriverTest extends SeleniumTest
 {
-    function setUp() {
+    function startBrowser() {
         global $BROWSER;
-    
+
         $this->webdriver = new WebDriver("localhost", 4444);
         
         $profile = base64_encode(file_get_contents(__DIR__.'/profiles/noflash.zip'));
@@ -12,9 +12,7 @@ class WebDriverTest extends SeleniumTest
         $this->webdriver->connect(array(
             'browserName' => $BROWSER,
             'firefox_profile' => $profile
-        ));
-        
-        $this->deleteMailFile();
+        ));        
     }
 
     function tearDown() {

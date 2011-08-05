@@ -5,7 +5,7 @@
 require_once("start.php");
 require_once("scripts/cmdline.php");
 
-Config::set('debug', false);
+Config::set('db_profile', false);
 
 $dbname = Config::get('dbname');
 $dbuser = Config::get('dbuser');

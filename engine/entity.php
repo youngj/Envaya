@@ -35,6 +35,8 @@ abstract class Entity extends Model
     static $primary_key = 'guid';    
     static $current_request_entities = array();
     
+    protected $guess_language_field;
+    
     static $mixin_classes = array(
         'Mixin_Translatable',
     );
@@ -270,24 +272,6 @@ abstract class Entity extends Model
         return get_class($this)."({$this->guid})";
     }
 
-    public function get_language()
-    {
-        $language = $this->language;
-        if ($language)
-        {
-            return $language;
-        }
-        $container = $this->get_container_entity();
-        if ($container)
-        {
-            return $container->get_language();
-        }
-        else
-        {
-            return Config::get('language');
-        }
-    }
-
     /**
      * Gets the display URL for this entity
      *
@@ -342,6 +326,12 @@ abstract class Entity extends Model
         
         $this->clear_from_cache();
         $this->cache_for_current_request();
+        
+        if ($this->guess_language_field)
+        {
+            $this->queue_guess_language($this->guess_language_field);
+            $this->guess_language_field = null;
+        }
         
         EventRegister::trigger_event('update',get_class($this),$this);
     }
@@ -499,7 +489,14 @@ abstract class Entity extends Model
     
     function queue_guess_language($field)
     {
-        FunctionQueue::queue_call(array('Entity', 'guess_language_by_guid'), array($this->guid, $field));
+        if ($this->guid)
+        {            
+            FunctionQueue::queue_call(array('Entity', 'guess_language_by_guid'), array($this->guid, $field));
+        }
+        else
+        {
+            $this->guess_language_field = $field;
+        }
     }
     
     static function guess_language_by_guid($guid, $field)
@@ -513,7 +510,21 @@ abstract class Entity extends Model
     
     function guess_language($field)
     {
-        $this->language = GoogleTranslate::guess_language($this->$field);
+        try
+        {
+            $this->language = GoogleTranslate::guess_language($this->$field);
+        }
+        catch (GoogleTranslateException $ex)
+        {
+            // if the user's default language is not supported by Google Translate,
+            // assume that the text is in that language if Google Translate fails
+        
+            $root = $this->get_root_container_entity();
+            if ($root && $root->language && !GoogleTranslate::is_supported_language($root->language))
+            {
+                $this->language = $root->language;
+            }
+        }
         $this->save();
     }
     

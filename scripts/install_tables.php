@@ -93,5 +93,3 @@ else
         echo "already installed\n";
     }
 }
-
-Config::set('debug', false); // hack to suppress SQL profiling messages for this script

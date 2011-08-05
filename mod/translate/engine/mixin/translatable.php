@@ -13,8 +13,8 @@ class Mixin_Translatable extends Mixin
             return '';
         }
 
-        $origLang = $this->get_language();        
-        
+        $origLang = $this->language; // may be empty
+                
         if ($lang == null)
         {
             $lang = Language::get_current_code();        
@@ -29,11 +29,15 @@ class Mixin_Translatable extends Mixin
         
         $translation = $this->lookup_translation($field, $lang, $origLang, $translateMode);        
         
-        if ($origLang != $lang)
+        if ($origLang && $origLang != $lang)
         {
-            PageContext::set_original_language($origLang);            
+            PageContext::set_original_language($origLang);                        
             PageContext::add_available_translation($translation);
-        }                
+        }
+        else if ($translation->guid)
+        {
+            PageContext::add_available_translation($translation);
+        }
 
         if ($translateMode != TranslateMode::None)
         {

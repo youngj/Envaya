@@ -9,8 +9,6 @@
 require_once "scripts/cmdline.php";
 require_once "start.php";
 
-Config::set('debug', false);
-
 $opts = getopt('h');
 
 if (sizeof($argv) != 3 || isset($opts['h']))

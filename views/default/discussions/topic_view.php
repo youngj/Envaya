@@ -19,7 +19,8 @@
     {
         $elements[] = view('discussions/topic_view_message', array(
             'message' => $message,
-            'topic' => $topic
+            'topic' => $topic,
+            'offset' => $offset
         ));    
     }
     

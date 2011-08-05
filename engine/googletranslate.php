@@ -96,9 +96,15 @@ class GoogleTranslate
             return null;
         }
 
+        $snippet = Markup::get_snippet($text, 500);
+        if (!$snippet)
+        {
+            return null;
+        }
+        
         $ch = curl_init();
 
-        $url = "ajax.googleapis.com/ajax/services/language/detect?v=1.0&q=".urlencode(Markup::get_snippet($text, 500));
+        $url = "ajax.googleapis.com/ajax/services/language/detect?v=1.0&q=".urlencode($snippet);
         
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_REFERER, Config::get('domain'));
@@ -111,14 +117,27 @@ class GoogleTranslate
         $res = json_decode($json);
 
         $lang = $res->responseData->language;
+        
+        $confidence = (float)$res->responseData->confidence;
+        
+        //error_log("Google Translate guessed '$lang' with $confidence confidence");
+        
+        if ($confidence < 0.03)
+        {
+            throw new GoogleTranslateNoConfidenceException($confidence);
+        }
 
         $languages = Config::get('languages');
 
         if (!$lang || !isset($languages[$lang]))
         {
-            return null;
+            throw new GoogleTranslateUnsupportedLanguageException($lang);
         }
-
+        
         return $lang;
     }
 }
+
+class GoogleTranslateException extends Exception {}
+class GoogleTranslateNoConfidenceException extends GoogleTranslateException {}
+class GoogleTranslateUnsupportedLanguageException extends GoogleTranslateException {}

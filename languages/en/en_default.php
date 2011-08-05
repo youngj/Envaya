@@ -57,6 +57,8 @@ return array(
     
     'lang:en' => "English",
     'lang:sw' => "Swahili",    
+    'lang:rw' => "Kinyarwanda",
+    'lang:unknown' => "(unknown language)",
     
     'country:tz' => 'Tanzania',
     'country:us' => 'USA',

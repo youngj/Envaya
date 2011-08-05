@@ -10,6 +10,7 @@
     $value = null;
     $allowDocument = $allowImage = Session::isloggedin();
     $allowCode = Session::isadminloggedin();    
+    $autoFocus = false;
     extract($vars);
 
     if ($saveDraft)

@@ -85,4 +85,6 @@ return array(
     'allow_robots' => true,    
     
     'subtype_aliases' => null, // map of old subtype_id => class name for database migrations
+    
+    'db_profile' => false,
 );

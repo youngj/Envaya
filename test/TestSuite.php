@@ -235,7 +235,13 @@ function main()
     run_task_sync('php scripts/install_kestrel.php', $root, $env);
     run_task_sync('php scripts/install_sphinx.php', $root, $env);
                 
-    $runserver = run_task('php runserver.php', $root, $env);    
+    $descriptorspec = array(
+       0 => array("pipe", "r"),
+       1 => array("file", __DIR__."/runserver.out", 'w'),
+       2 => STDERR
+    );                
+  
+    $runserver = proc_open('php runserver.php', $descriptorspec, $runserver_pipes, $root, $env);    
     $runserver_status = proc_get_status($runserver);                
     posix_setpgid($runserver_status['pid'], $runserver_status['pid']);   
     

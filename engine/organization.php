@@ -11,6 +11,30 @@ class Organization extends User
     );
     
     static $query_subtype_ids = array('core.user.org');
+    
+    function set_defaults()
+    {
+        $this->set_design_setting('theme_name', "green");
+        $this->set_design_setting('share_links', array('email','facebook','twitter'));    
+    }
+    
+    function init_default_widgets()
+    {
+        /* auto-create empty pages */
+        $home = $this->get_widget_by_class('Home');
+        $home->save();
+                
+        $home->get_widget_by_class('Mission')->save();        
+        $home->get_widget_by_class('Updates')->save();        
+        $home->get_widget_by_class('Sectors')->save();
+        $home->get_widget_by_class('Location')->save();
+        
+        $this->get_widget_by_class('News')->save();
+
+        $contactWidget = $this->get_widget_by_class('Contact');
+        $contactWidget->set_metadata('public_email', "yes");
+        $contactWidget->save();    
+    }
 
     public function is_setup_complete()
     {
@@ -77,40 +101,6 @@ class Organization extends User
         return parent::can_user_view($user) && ($this->approval > 0 || $this->can_user_edit($user));
     }
         
-    public function get_country_text()
-    {
-        if ($this->country)
-        {
-            return __("country:{$this->country}");
-        }
-        else
-        {
-            return '';
-        }
-    }
-
-    public function get_location_text($includeRegion = true)
-    {
-        $res = '';
-
-        if ($this->city)
-        {
-            $res .= "{$this->city}, ";
-        }
-        if ($this->region && $includeRegion)
-        {
-            $regionText = __($this->region);
-
-            if ($regionText != $this->city)
-            {
-                $res .= "$regionText, ";
-            }
-        }
-        $res .= $this->get_country_text();
-
-        return $res;
-    }
-
     protected $sectors;
     protected $sectors_dirty = false;
 
@@ -222,6 +212,10 @@ class Organization extends User
             {   
                 $orgPhoneNumber = $this->query_phone_numbers()
                     ->where('phone_number = ?', $phone_number)->get();
+            }
+            else
+            {
+                $orgPhoneNumber = null;
             }
             if (!$orgPhoneNumber)
             {

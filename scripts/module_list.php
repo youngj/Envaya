@@ -5,8 +5,6 @@ $base = dirname(__DIR__);
 require_once "$base/scripts/cmdline.php";
 require_once "$base/start.php";
 
-Config::set('debug', false);
-
 /* 
  * Lists enabled modules for the Selenium tests (which don't have direct access to the PHP code)
  */

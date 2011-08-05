@@ -475,4 +475,49 @@ class User extends Entity
      
         return $password;
     }    
+    
+    public function get_country_text()
+    {
+        if ($this->country)
+        {
+            return __("country:{$this->country}");
+        }
+        else
+        {
+            return '';
+        }
+    }    
+    
+    public function get_location_text($includeRegion = true)
+    {
+        $res = '';
+
+        if ($this->city)
+        {
+            $res .= "{$this->city}, ";
+        }
+        if ($this->region && $includeRegion)
+        {
+            $regionText = __($this->region);
+
+            if ($regionText != $this->city)
+            {
+                $res .= "$regionText, ";
+            }
+        }
+        $res .= $this->get_country_text();
+
+        return $res;
+    }
+        
+    function geocode_lat_long()
+    {
+        $latlong = Geography::geocode($this->get_location_text());
+        if ($latlong)
+        {
+            $this->set_lat_long($latlong['lat'], $latlong['long']);
+            return true;
+        }    
+        return false;
+    }
 }

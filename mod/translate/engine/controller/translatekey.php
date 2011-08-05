@@ -53,6 +53,10 @@ class Controller_TranslateKey extends Controller
                 throw new NotFoundException();
             }
         }
+        else
+        {
+            $translation = null;
+        }
     
         return $this->index_page_draw(array(
             'title' => __('itrans:translations'),

@@ -24,5 +24,3 @@ if ($translations)
     $mail->send_to_admin();
     echo "sent translations notification\n";
 }    
-
-Config::set('debug', false);

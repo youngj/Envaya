@@ -16,11 +16,11 @@
     
     for ($i = 0; $i < $num_items; $i++)
     {
-        $item = $items[$i];
-        $url = escape($item['url']);
+        $item = $items[$i];        
         $title = escape($item['title']);        
         if ($i < $num_items - 1)
         {
+            $url = escape($item['url']);
             $list[] = "<a href='$url'>$title</a>";
         }
         else if ($include_last)

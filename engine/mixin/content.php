@@ -23,7 +23,7 @@ class Mixin_Content extends Mixin
 
         if (!$this->language)
         {            
-            $this->language = GoogleTranslate::guess_language($this->content);
+            $this->queue_guess_language('content');
         }
     }
 

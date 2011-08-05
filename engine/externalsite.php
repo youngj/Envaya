@@ -102,7 +102,7 @@ class ExternalSite extends Entity
             'title' => $response->get_title() ?: '',
             'site_subtype' => $site->subtype_id,
             'feed_url' => $feed ? $feed->feed_url : null,
-            'feed_subtype' => $feed->subtype_id,
+            'feed_subtype' => $feed ? $feed->subtype_id : null,
         );
     }        
 }

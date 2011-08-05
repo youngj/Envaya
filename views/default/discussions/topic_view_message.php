@@ -1,6 +1,7 @@
 <?php
     $message = $vars['message'];
     $topic = $vars['topic'];
+    $offset = (int)$vars['offset'];
     
     echo view_entity($message);
 

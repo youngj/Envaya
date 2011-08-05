@@ -68,51 +68,27 @@ abstract class Action_Registration_CreateAccountBase extends Action
         }                
         
         $org = new Organization();
+        $org->set_defaults();
+        
         $org->username = $username;
         $org->phone_number = get_input('phone');
         $org->email = $email;
         $org->name = $name;
-        $org->set_password($password);
-        $org->owner_guid = 0;
-        $org->container_guid = 0;
+        $org->set_password($password);        
         $org->language = Language::get_current_code();
-        $org->set_design_setting('theme_name', "green");
         $org->setup_state = SetupState::CreatedAccount;
         
         $country = $this->get_country();
         if ($country)
         {        
             $org->country = $country;
-            $country_name = $org->get_country_text();
-            $org->set_design_setting('tagline', $country_name);        
-            $latlong = Geography::geocode($country_name);
-            if ($latlong)
-            {
-                $org->set_lat_long($latlong['lat'], $latlong['long']);
-            }
+            $org->set_design_setting('tagline', $org->get_country_text());     
+            $org->geocode_lat_long();
         }
         
         $org->save();
 
-        /* auto-create empty pages */
-        $home = $org->get_widget_by_class('Home');
-        $home->save();
-                
-        $home->get_widget_by_class('Mission')->save();        
-        $home->get_widget_by_class('Updates')->save();        
-        $home->get_widget_by_class('Sectors')->save();
-        $home->get_widget_by_class('Location')->save();
-        
-        $org->get_widget_by_class('News')->save();
-
-        $contactWidget = $org->get_widget_by_class('Contact');
-        if ($email)
-        {
-            $contactWidget->set_metadata('public_email', "yes");
-        }
-        $contactWidget->save();
-
-        $guid = $org->guid;
+        $org->init_default_widgets();
         
         login($org, false);
 

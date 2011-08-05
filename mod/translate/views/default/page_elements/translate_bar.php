@@ -11,7 +11,7 @@ if (!@$vars['hide_translate_bar'] && PageContext::has_translation())
 
         ob_start();    
             
-        $origLangName = escape(__("lang:$origLang"));
+        $origLangName = escape($origLang ? __("lang:$origLang") : __('lang:unknown'));
         $userLangName = escape(__("lang:$viewLang"));
         
         $can_auto_translate = PageContext::has_translation(TranslateMode::Automatic)

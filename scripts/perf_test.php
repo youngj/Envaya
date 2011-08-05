@@ -5,8 +5,6 @@ $start_microtime = microtime(true);
 require_once "scripts/cmdline.php";
 require_once "start.php";
 
-Config::set('debug', false);
-
 $uri = @$argv[1] ?: "/";
 
 $end_init_mtime = microtime(true);

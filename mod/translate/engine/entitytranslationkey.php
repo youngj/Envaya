@@ -73,6 +73,6 @@ class EntityTranslationKey extends TranslationKey
     function get_default_value_lang()
     {
         $entity = $this->get_container_entity();
-        return $entity->get_language();        
+        return $entity->language;        
     }
 }

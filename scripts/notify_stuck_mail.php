@@ -24,5 +24,3 @@ if ($stuck_mails)
     $mail->send_to_admin();
     echo "sent stuck mail reminder\n";
 }    
-
-Config::set('debug', false);

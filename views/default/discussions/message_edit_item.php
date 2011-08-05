@@ -1,5 +1,4 @@
 <?php
-    $widget = $vars['widget'];
     $message = $vars['message'];
     $topic = $vars['topic'];
         

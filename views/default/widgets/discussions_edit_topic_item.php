@@ -10,7 +10,7 @@
        
     echo view('input/post_link', array(
             'text' => __('delete'),
-            'confirm' => sprintf(__('discussions:confirm_remove_topic'), $list->address),
+            'confirm' => __('discussions:confirm_remove_topic'),
             'href' => "{$topic->get_url()}/edit?delete=1",
     ));
     

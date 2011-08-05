@@ -123,7 +123,7 @@ class Markup
         {
             $content = $content."...";
         }
-        return $content;    
+        return trim($content);    
     }
     
     static function get_snippet($content, $maxLength = 100)
