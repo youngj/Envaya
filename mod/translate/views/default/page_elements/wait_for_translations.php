@@ -31,7 +31,7 @@
     {
         checkCount++;
     
-        asyncPost(xhr, '/tr/check_translation', {keys: <?php
+        asyncPost(xhr, '/tr/check_translation', {source: <?php echo Translation::GoogleTranslate; ?>, keys: <?php
             echo json_encode(implode(',',
                 array_map(function($t) { return $t->get_container_entity()->guid; }, $unsaved_translations)
             ));

@@ -124,7 +124,7 @@ class TranslationKey extends Entity
     {        
         // avoid fetching duplicate translations
         if ($this->query_translations()
-            ->where('owner_guid = 0')
+            ->where('source = ?', Translation::GoogleTranslate)
             ->where('default_value_hash = ?', $this->get_default_value_hash())
             ->exists())
         {
@@ -139,6 +139,7 @@ class TranslationKey extends Entity
         if ($trans_value != null)
         {
             $auto_trans = $this->new_translation();
+            $auto_trans->source = Translation::GoogleTranslate;
             $auto_trans->value = $trans_value;
             $auto_trans->save();
             $this->update();        

@@ -13,7 +13,7 @@
     echo strtr(__('network:invite_notify_info', $org->language), array(
         '{name}' => $org->name, 
         '{subject}' => $subject_name, 
-        '{type}' => $relationship->msg('header', $subject->language),
+        '{type}' => $relationship->msg('header', $org->language),
         '{url}' => $widget->get_url(),
     ));
     echo "\n\n";

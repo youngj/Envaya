@@ -22,7 +22,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $this->s = $this->init_selenium();
         $this->start();
         $this->windowMaximize();
-    }
+    }      
     
     public function deleteMailFile()
     {
@@ -56,6 +56,12 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $this->type("//input[@name='username']",$username);
         $this->type("//input[@name='password']",$password);
         $this->submitForm();    
+    }
+
+    function logout()
+    {
+        $this->click("//a[contains(@href,'pg/logout')]");    
+        $this->waitForElement("//a[@id='loginButton']");    
     }    
     
     function waitForElement($xpath, $timeout = 15)

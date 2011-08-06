@@ -57,8 +57,8 @@ abstract class Controller_User extends Controller
         $org = $this->get_org();
     
         $this->prefer_http();      
-        $this->use_public_layout($widget);
-        $this->allow_content_translation();
+        $this->allow_content_translation();        
+        $this->use_public_layout($widget);        
         
         if ($widget && $widget->is_enabled())
         {

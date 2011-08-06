@@ -478,14 +478,18 @@ class Controller_Translate extends Controller
     {
         $this->set_content_type('text/javascript');
     
+        $source = (int)get_input('source');
+    
         $keys = explode(',', get_input('keys'));
         
-        $has_translation = Translation::query()
-            ->where_in('container_guid', $keys)
-            ->where('owner_guid = 0')
-            ->exists(); 
+        $query = Translation::query()->where_in('container_guid', $keys);
+        
+        if ($source)
+        {
+            $query->where('source = ?', $source);
+        }           
         // includes stale translations...
             
-        $this->set_content(json_encode(array('has_translation' => $has_translation)));
+        $this->set_content(json_encode(array('has_translation' => $query->exists())));
     }
 }

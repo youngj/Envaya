@@ -16,7 +16,7 @@ class Geography
      */
     static function geocode($location, $region = '')
     {
-        $row = Database::get_row("SELECT lat, `long` from geocode_cache WHERE location = ? AND region = ?", 
+        $row = Database::get_row("SELECT lat, `long`,`viewport` from geocode_cache WHERE location = ? AND region = ?", 
             array($location, $region)
         );
         
@@ -24,7 +24,8 @@ class Geography
         {
             return array(
                 'lat' => $row->lat, 
-                'long' => $row->long
+                'long' => $row->long,
+                'viewport' => json_decode($row->viewport, true)
             );
         }
 
@@ -35,11 +36,12 @@ class Geography
         {
             $lat = $latlong['lat'];
             $long = $latlong['long'];
+            $enc_viewport = json_encode($latlong['viewport']);
 
             // Put into cache at the end of the page since we don't really care that much
             Database::execute_delayed(
-                "INSERT DELAYED INTO geocode_cache (location, lat, `long`, region) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE lat=?, `long`=?",
-                array($location, $lat, $long, $region, $lat, $long)
+                "INSERT DELAYED INTO geocode_cache (location, lat, `long`, `viewport`, region) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE lat=?, `long`=?, viewport=?",
+                array($location, $lat, $long, $enc_viewport, $region, $lat, $long, $enc_viewport)
             );
         }
 
@@ -61,13 +63,16 @@ class Geography
 
         if (@$obj['status'] == 'OK')
         {
-            $latlong = $obj['results'][0]['geometry']['location'];
+            $best_result = $obj['results'][0];
+            $latlong = $best_result['geometry']['location'];
+            $viewport = $best_result['geometry']['viewport'];
             
             if ($latlong)
             {
                 return array(
                     'lat' => (float)$latlong['lat'], 
-                    'long' => (float)$latlong['lng']
+                    'long' => (float)$latlong['lng'],
+                    'viewport' => $viewport,
                 );
             }   
         }

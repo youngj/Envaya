@@ -33,6 +33,7 @@ CREATE TABLE `translation_strings` (
   `default_value_hash` varchar(64) not null,
   `approval` tinyint(4) not null default 0,
   `approval_time` int(11) null,
+  `source` tinyint(4) not null default 0,
   KEY `language_guid` (`language_guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

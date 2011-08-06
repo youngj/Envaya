@@ -114,7 +114,7 @@ class FunctionQueue
     {
         $kestrel = static::_connect();
 
-        if ($nextCallStr = $kestrel->get("$queue_name/t=$timeout_ms"))
+        if ($nextCallStr = @$kestrel->get("$queue_name/t=$timeout_ms"))
         {   
             static::exec_queue_entry(unserialize($nextCallStr));
             return true;

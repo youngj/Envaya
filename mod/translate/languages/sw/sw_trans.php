@@ -7,7 +7,7 @@ return array(
     'trans:page_original_in' => 'Maeneo ya ukurasa huu ni kwa %s.',
     'trans:view_original' => 'Ona asili',    
     'trans:view_in' => 'Ona kwa %s',
-    'trans:stale_trans_from_to' => 'Maeneo ya ukurasa huu umetafsiriwa toka {origlang}, lakini tamko la {curlang} ni la zamani.',
+    'trans:stale_trans_from_to' => 'Maeneo ya ukurasa huu yametafsiriwa toka {origlang}, lakini tamko la {curlang} ni la zamani.',
     'trans:view_automatic' => 'Ona kupitia Google Translate',   
     'trans:edit' => 'Hariri tafsiri',
 );

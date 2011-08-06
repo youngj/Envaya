@@ -64,7 +64,7 @@ if (!@$vars['hide_translate_bar'] && PageContext::has_translation())
         {               
             $unsaved_translations = array_filter(PageContext::get_available_translations(), 
                 function($t) { 
-                    return !$t->guid;                 
+                    return $t->source == Translation::GoogleTranslate && !$t->guid;                 
                 });
                     
             if ($unsaved_translations)

@@ -17,6 +17,7 @@ class Action_SaveTranslationDraft extends Action
         if (!$translation)
         {
             $translation = $key->new_translation();
+            $translation->source = Translation::Human;
             $translation->owner_guid = $user->guid;
             $translation->disable();
         }

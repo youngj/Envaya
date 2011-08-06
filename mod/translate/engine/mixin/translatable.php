@@ -67,7 +67,7 @@ class Mixin_Translatable extends Mixin
         if ($doAutoTranslate && (!$approvedTrans || $approvedTrans->is_stale()))
         {
             $autoTrans = $key->query_translations()
-                ->where('owner_guid = 0')
+                ->where('source = ?', Translation::GoogleTranslate)
                 ->order_by('time_created desc')
                 ->get();
         
@@ -81,6 +81,7 @@ class Mixin_Translatable extends Mixin
             
                 $tempTrans = $key->new_translation();
                 $tempTrans->value = __('trans:translating', $lang);
+                $tempTrans->source = Translation::GoogleTranslate;
                 return $tempTrans;
             }
         }
@@ -94,6 +95,7 @@ class Mixin_Translatable extends Mixin
             // return translation with untranslated text
             $tempTrans = $key->new_translation();
             $tempTrans->value = $this->$prop;
+            $tempTrans->source = Translation::Original;
             return $tempTrans;
         }
     }    

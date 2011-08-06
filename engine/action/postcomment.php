@@ -49,8 +49,8 @@ class Action_PostComment extends Action
 		$comment->name = $name;
         $comment->location = $location;
 		$comment->content = $content;		
-        $comment->queue_guess_language('content');        
 		$comment->save();
+        $comment->queue_guess_language('content');                
 	
 		$widget->num_comments = $widget->query_comments()->count();
 		$widget->save();

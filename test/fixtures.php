@@ -36,4 +36,10 @@ return function() {
     $set_test_defaults($org);        
     $org->name = "Test Org";
     $org->save();   
+    
+    $org = get_or_create_org('testunapproved');
+    $set_test_defaults($org);    
+    $org->approval = 0;
+    $org->name = "Unapproved Org";
+    $org->save();       
 };

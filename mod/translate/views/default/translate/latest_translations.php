@@ -1,7 +1,7 @@
 <?php
     $language = $vars['language'];
     $query = $language->query_translations()
-        ->where('owner_guid <> 0')
+        ->where('source = ?', Translation::Human)
         ->order_by('time_created desc');
 
     echo view('translate/translations', array(

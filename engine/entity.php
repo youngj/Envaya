@@ -508,8 +508,8 @@ abstract class Entity extends Model
         }
     }
     
-    function guess_language($field)
-    {
+    private function guess_language($field)
+    {       
         try
         {
             $this->language = GoogleTranslate::guess_language($this->$field);
@@ -525,7 +525,12 @@ abstract class Entity extends Model
                 $this->language = $root->language;
             }
         }
-        $this->save();
+        
+        // avoid clobbering other changes to this entity
+        $this->save_attribute_values(array(
+            'language' => $this->language
+        ));
+        $this->clear_from_cache();
     }
     
     // Loggable interface

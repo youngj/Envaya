@@ -142,13 +142,7 @@ class WebDriverTest extends SeleniumTest
     {
         return $this->getCurrentUrl();
     }
-    
-    function logout()
-    {
-        $this->click("//a[contains(@href,'pg/logout')]");    
-        $this->waitForElement("//a[@id='loginButton']");    
-    }
-    
+        
     function attachFile($xpath, $file)
     {
         $this->type($xpath,__DIR__.str_replace("/","\\", "/$file"));

@@ -1,0 +1,1 @@
+ALTER TABLE geocode_cache ADD viewport varchar(128) default null;

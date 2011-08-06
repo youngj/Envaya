@@ -77,7 +77,7 @@ class Controller_EmailTemplate extends Controller
     
     function action_view()
     {
-        $org = User::get_by_username(get_input('username'));
+        $user = User::get_by_username(get_input('username'));
        
         $email = $this->get_email();
         

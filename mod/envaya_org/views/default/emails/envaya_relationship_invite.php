@@ -4,8 +4,6 @@
 
     $org = $relationship->get_container_entity();
 
-    $base_url = Config::get('base');
-    
     echo __('home:description_africa', $org->language);
     echo "\n\n";    
      
@@ -14,4 +12,4 @@
      
     echo __('network:invite_learn_more', $org->language);
     echo "\n";
-    echo "{$base_url}envaya/page/why";
+    echo abs_url("/envaya/page/help");

@@ -209,6 +209,7 @@ CREATE TABLE `geocode_cache` (
     region   varchar(4) null,
 	`lat`    varchar(20),
 	`long`   varchar(20),
+    viewport varchar(128) default null,
 	
 	PRIMARY KEY (`id`),
     UNIQUE KEY `location` (`location`,`region`)	

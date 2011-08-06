@@ -29,9 +29,9 @@ class Action_Discussion_Edit extends Action
                 throw new ValidationException(__('discussions:subject_missing'));
             }
             
-            $topic->subject = $subject;
-            $topic->queue_guess_language('subject');            
+            $topic->subject = $subject;            
             $topic->save();
+            $topic->queue_guess_language('subject');            
             
             
             SessionMessages::add(__('discussions:topic_saved'));                    

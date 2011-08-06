@@ -12,8 +12,8 @@ class TranslateTest extends SeleniumTest
             $this->submitForm("//button[@id='widget_delete']");
             $this->open("/tr/admin/tl");
         }
-        
         // create test language
+
         $this->type("//input[@name='name']", "Test Language");
         $this->check("//input[@value='comment']");
         $this->check("//input[@value='default']");
@@ -31,8 +31,7 @@ class TranslateTest extends SeleniumTest
         
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
             
-        //$this->_testTranslateUserContent();
-        //$this->_testTranslateCurrentPage();        
+        $this->_testTranslateUserContent();
         $this->_testTranslateInterface();
     }
         
@@ -42,61 +41,318 @@ class TranslateTest extends SeleniumTest
         $this->open('/pg/login');
         $this->login('testorg', 'testtest');
         
-        // publish three news updates
-        $this->typeInFrame("//iframe", "monkey");
+        // publish three news updates in 2 languages
+        $this->typeInFrame("//iframe", "translating is a difficult challenge");
+        $this->submitForm();
+        $this->ensureGoodMessage();
+        $this->mouseOver("//p[contains(text(),'translating is a difficult challenge')]");
+        $difficult_url = $this->getLocation();
         
-                
-        // view news updates in another language
+        $this->clickAndWait("//a[contains(@href,'/dashboard')]");
+
+        $this->typeInFrame("//iframe", "je, inawezekana kwenda baharini leo?");
+        $this->submitForm();
+        $this->ensureGoodMessage();
+        $this->mouseOver("//p[contains(text(),'je, inawezekana kwenda baharini leo?')]");
         
+        $this->clickAndWait("//a[contains(@href,'/dashboard')]");
+
+        $this->typeInFrame("//iframe", "this is a test of the emergency broadcast system");
+        $this->submitForm();
+        $this->ensureGoodMessage();
+        $this->mouseOver("//p[contains(text(),'this is a test of the emergency broadcast system')]");
+        
+        // view news updates without translating
+        $this->open("/testorg/news");
+        $this->assertContains("Parts of this page are in Swahili", $this->getText("//div[@id='translate_bar']"));
+        $this->mouseOver("//p[contains(text(),'translating is a difficult challenge')]");
+        $this->mouseOver("//p[contains(text(),'je, inawezekana kwenda baharini leo?')]");
+        $this->mouseOver("//p[contains(text(),'this is a test of the emergency broadcast system')]");        
+               
         // translate using google translate
+        $this->clickAndWait("//a[contains(@href,'trans=3')]");
+        $this->mouseOver("//p[contains(text(),'translating is a difficult challenge')]");
+        $this->mouseOver("//p[contains(text(),'this is a test of the emergency broadcast system')]");        
+        $this->waitForElement("//p[contains(text(),'Is it possible to go to sea today?')]");        
+        
+        // go back to original version
+        $this->clickAndWait("//a[contains(@href,'trans=1')]");
+        $this->mouseOver("//p[contains(text(),'je, inawezekana kwenda baharini leo?')]");
+        
+        // change to kiswahili, translate multiple pieces of text at once
+        $this->clickAndWait("//a[contains(@href,'lang=sw')]");
+        $this->waitForElement("//div[@id='language']//strong[contains(text(),'Kiswahili')]");
+        $this->assertContains("Maeneo ya ukurasa huu ni kwa Kiingereza", $this->getText("//div[@id='translate_bar']"));
+        $this->mouseOver("//p[contains(text(),'translating is a difficult challenge')]");
+        $this->mouseOver("//p[contains(text(),'this is a test of the emergency broadcast system')]");        
+        $this->clickAndWait("//a[contains(@href,'trans=3')]");
+        
+        $this->waitForElement("//p[contains(text(),'je, inawezekana kwenda baharini leo?')]");
+        $this->waitForElement("//p[contains(text(),'hii ni mtihani wa mfumo wa matangazo ya dharura')]");        
+        $this->waitForElement("//p[contains(text(),'kutafsiri ni changamoto ngumu')]");        
         
         // edit translation
         
+        // selenium 1.0 doesn't handle target=_blank
+        $this->open($this->getAttribute("//div[@id='translate_bar']//a[contains(@href,'/tr/page')]@href"));
+        
+        $this->waitForElement("//tr[.//a[contains(text(),'difficult')]]//a[contains(text(),'changamoto')]");
+        $this->waitForElement("//tr[.//a[contains(text(),'baharini')]]//span[contains(text(),'Bila tafsiri')]");        
+        $this->waitForElement("//tr[.//a[contains(text(),'emergency')]]//a[contains(text(),'dharura')]");        
+        
         // next/prev links cycle through multiple items
         
-        // test go directly to translation page when there is only one translation on the page
+        $this->clickAndWait("//tr//a[contains(text(),'baharini')]");        
+        $this->clickAndWait("//a[contains(@href,'/prev')]");
+        $this->mouseOver("//div[@class='translation']//p[contains(text(),'difficult')]");        
+        $this->clickAndWait("//a[contains(@href,'/next')]");
+        $this->mouseOver("//div[@class='translation']//p[contains(text(),'baharini')]");
+        $this->clickAndWait("//a[contains(@href,'/next')]");
+        $this->mouseOver("//div[@class='translation']//p[contains(text(),'emergency')]");
+        $this->clickAndWait("//a[contains(@href,'/next')]");
+        $this->mouseOver("//tr//a[contains(text(),'emergency')]");        
         
-        // save draft
+        // test go directly to translation page when there is only one translation on the page        
+        $this->open($difficult_url);
+        $this->open($this->getAttribute("//div[@id='translate_bar']//a[contains(@href,'/tr/page')]@href"));
+        $this->mouseOver("//div[@class='translation']//p[contains(text(),'difficult')]");        
+                
+        // save draft                
+        $this->retry('selectFrame', array("//iframe"));        
+        $this->mouseOver("//p[contains(text(),'kutafsiri ni changamoto ngumu')]");        
+        $this->type("//body", "kutafsiri ni rahisi sana");
+        $this->selectFrame("relative=top");
+        $this->click("//a[@id='content_html0_save']");
+        $this->waitForElement("//span[@id='saved_message' and contains(text(),'hifadhiwa')]");
         
-        // test each user can have their own drafts
+        $this->refresh();
         
-        // restore draft        
+        $translate_url = $this->getLocation();
         
-        // published translations automatically approved when translated by content owner
+        // click Restore draft link to restore draft
+        $this->retry('selectFrame', array("//iframe"));        
+        $this->retry('mouseOver', array("//p[contains(text(),'kutafsiri ni changamoto ngumu')]"));        
+        $this->selectFrame("relative=top");
+        
+        $this->clickAndWait("//table[@class='translateTable']//a[contains(@href,'translation=')]");
+        
+        $this->retry('selectFrame', array("//iframe"));        
+        $this->retry('mouseOver', array("//p[contains(text(),'kutafsiri ni rahisi sana')]"));
+        $this->selectFrame("relative=top");
+        
+        $draft_url = $this->getLocation();
+        
+        // test each user has their own drafts
+        $this->logout();
+        $this->open("/pg/login");
+        $this->login("testposter1","testtest");
+        $this->open($translate_url);
+        $this->mustNotExist("//table[@class='translateTable']//a[contains(@href,'translation=')]");
+        $this->typeInFrame("//iframe", "sipendi kutafsiri");
+        $this->click("//a[@id='content_html0_save']");
+        $this->waitForElement("//span[@id='saved_message' and contains(text(),'hifadhiwa')]");        
+        
+        $this->refresh();
+        
+        $this->retry('selectFrame', array("//iframe"));        
+        $this->retry('mouseOver', array("//p[contains(text(),'kutafsiri ni changamoto ngumu')]"));        
+        $this->selectFrame("relative=top");
+        
+        $this->clickAndWait("//table[@class='translateTable']//a[contains(@href,'translation=')]");
+
+        $this->retry('selectFrame', array("//iframe"));        
+        $this->retry('mouseOver', array("//p[contains(text(),'sipendi kutafsiri')]"));        
+        $this->selectFrame("relative=top");        
+        
+        $this->submitForm();
+        $this->ensureGoodMessage("Tafsiri imeongezwa");
         
         // published translations need approval when translated by other user
+        $this->open($difficult_url);
+        $this->mouseOver("//p[contains(text(),'translating is a difficult challenge')]");
         
-        // approved translations automatically appear on page
+        $this->logout();
+        $this->open("/pg/login");
+        $this->login('testorg','testtest');
+        $this->open($translate_url);
+        $this->clickAndWait("//a[contains(@href,'approval=1')]");
+        $this->ensureGoodMessage();
         
-        // viewer can switch to original content, or translate rest using google translate
+        $this->open($difficult_url);
+        $this->mouseOver("//p[contains(text(),'sipendi kutafsiri')]");                
+        
+        // published translations automatically approved when translated by content owner
+                
+        $this->open($draft_url);
+        $this->retry('selectFrame', array("//iframe"));        
+        $this->mouseOver("//p[contains(text(),'kutafsiri ni rahisi sana')]");        
+        $this->type("//body", "kutafsiri ni rahisi kidogo");        
+        $this->selectFrame("relative=top");
+        
+        $this->submitForm();
+        $this->ensureGoodMessage("Tafsiri imeongezwa");       
+        
+        $this->open($difficult_url);
+        $this->mouseOver("//p[contains(text(),'kutafsiri ni rahisi kidogo')]");                
+        $this->mustNotExist("//p[contains(text(),'sipendi kutafsiri')]");                
+        
+        // viewer can switch between translated version and original content
+        $this->clickAndWait("//a[contains(@href,'trans=1')]");
+        $this->mouseOver("//p[contains(text(),'translating is a difficult challenge')]");
+        $this->clickAndWait("//a[contains(@href,'trans=2')]");
+        $this->mouseOver("//p[contains(text(),'kutafsiri ni rahisi kidogo')]");                
+                
+        // viewer can translate rest using google translate if only some of the content has human translation
+        $this->open('/testorg/news');
+        $this->mouseOver("//p[contains(text(),'kutafsiri ni rahisi kidogo')]");                
+        $this->mouseOver("//p[contains(text(),'this is a test of the emergency broadcast system')]");        
+        $this->clickAndWait("//a[contains(@href,'trans=3')]");        
+        $this->mouseOver("//p[contains(text(),'kutafsiri ni rahisi kidogo')]");                
+        $this->mouseOver("//p[contains(text(),'hii ni mtihani wa mfumo wa matangazo ya dharura')]");        
+        $this->clickAndWait("//a[contains(@href,'trans=1')]");     
+        $this->mouseOver("//p[contains(text(),'translating is a difficult challenge')]");        
+        $this->mouseOver("//p[contains(text(),'this is a test of the emergency broadcast system')]");        
         
         // test translations appear on /tr/../content, and filters work
+        $this->open("/tr/sw?lang=en");
+        $this->clickAndWait("//a[contains(@href,'/tr/sw/content')]");
         
+        $this->mouseOver("//tr[.//a[contains(text(),'difficult')]]//a[contains(text(),'sipendi kutafsiri')]");
+        $this->mouseOver("//tr[.//a[contains(text(),'baharini')]]//span[contains(text(),'Not translated')]");        
+        $this->mouseOver("//tr[.//a[contains(text(),'emergency')]]//a[contains(text(),'dharura')]");        
+
+        $this->select("//select[@name='status']", "Not translated");
+        $this->waitForPageToLoad();
+        $this->mustNotExist("//tr[.//a[contains(text(),'difficult')]]//a[contains(text(),'sipendi kutafsiri')]");
+        $this->mouseOver("//tr[.//a[contains(text(),'baharini')]]//span[contains(text(),'Not translated')]");        
+        $this->mustNotExist("//tr[.//a[contains(text(),'emergency')]]//a[contains(text(),'dharura')]");        
+        
+        $this->select("//select[@name='status']", "Translated");
+        $this->waitForPageToLoad();
+        $this->mouseOver("//tr[.//a[contains(text(),'difficult')]]//a[contains(text(),'sipendi kutafsiri')]");
+        $this->mustNotExist("//tr[.//a[contains(text(),'baharini')]]//span[contains(text(),'Not translated')]");        
+        $this->mouseOver("//tr[.//a[contains(text(),'emergency')]]//a[contains(text(),'dharura')]");        
+
+        $this->select("//select[@name='status']", "Approved");
+        $this->waitForPageToLoad();
+        $this->mouseOver("//tr[.//a[contains(text(),'difficult')]]//a[contains(text(),'sipendi kutafsiri')]");
+        $this->mustNotExist("//tr[.//a[contains(text(),'baharini')]]//span[contains(text(),'Not translated')]");        
+        $this->mustNotExist("//tr[.//a[contains(text(),'emergency')]]//a[contains(text(),'dharura')]");                
+        
+        $this->select("//select[@name='status']", "Unapproved");
+        $this->waitForPageToLoad();
+        $this->mustNotExist("//tr[.//a[contains(text(),'difficult')]]//a[contains(text(),'sipendi kutafsiri')]");
+        $this->mustNotExist("//tr[.//a[contains(text(),'baharini')]]//span[contains(text(),'Not translated')]");        
+        $this->clickAndWait("//tr[.//a[contains(text(),'emergency')]]//a[contains(text(),'dharura')]");        
+        
+        // test filters persist through navigation
+        $this->clickAndWait("//a[contains(@href,'/tr/sw/content')]");
+        
+        $this->waitForElement("//select[@name='status']//option[@selected='selected' and @value='unapproved']");
+        $this->mustNotExist("//tr[.//a[contains(text(),'difficult')]]//a[contains(text(),'sipendi kutafsiri')]");
+        $this->mustNotExist("//tr[.//a[contains(text(),'baharini')]]//span[contains(text(),'Not translated')]");        
+        $this->clickAndWait("//tr[.//a[contains(text(),'emergency')]]//a[contains(text(),'dharura')]");          
+
         // edit content, test translation shows up as stale
+        $this->open($difficult_url);
+        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->typeInFrame("//iframe", "translating is fun");
+        $this->submitForm();
+        
+        $this->open("$difficult_url?lang=sw");
+        
+        $this->assertContains("Maeneo ya ukurasa huu yametafsiriwa toka Kiingereza, lakini tamko la Kiswahili ni la zamani", 
+            $this->getText("//div[@id='translate_bar']"));
+        
+        $this->mouseOver("//p[contains(text(),'kutafsiri ni rahisi kidogo')]");                
         
         // submit new translation, translation no longer stale
-        
+        $this->open($this->getAttribute("//div[@id='translate_bar']//a[contains(@href,'/tr/page')]@href"));
+        $this->typeInFrame("//iframe", "nataka kutafsiri");
+        $this->submitForm();
+        $this->ensureGoodMessage();        
+        $this->open($difficult_url);
+        $this->mouseOver("//p[contains(text(),'nataka kutafsiri')]");                
+        $this->assertContains("Maeneo ya ukurasa huu yametafsiriwa toka Kiingereza kwa Kiswahili", 
+            $this->getText("//div[@id='translate_bar']"));
+                
         // delete content, test can't view translation anymore
+        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->submitForm("//button[@id='widget_delete']");
+        $this->getConfirmation();
+        $this->ensureGoodMessage('futwa');        
+        
+        $this->open('/tr/sw/content');
+        $this->mustNotExist("//tr//a[contains(text(),'kutafsiri')]");
+        $this->mouseOver("//tr//a[contains(text(),'dharura')]");             
+
+        $this->open($translate_url);
+        $this->ensureBadMessage();
         
         // can't view translations from unapproved orgs, unless admin       
-     
-        // publish page with title. title should use non-html editor
+        $this->login("testunapproved","testtest");
+        $this->open("/testunapproved/add_page");
+        $this->type("//input[@name='title']",'my stuff');
+        $this->type("//input[@name='widget_name']",'my-stuff');
+        $this->typeInFrame("//iframe",'this text was written by an unapproved organization');
+        $this->submitForm();
+        $this->mouseOver("//p[contains(text(),'this text was written by an unapproved organization')]");
+        $this->open($this->getAttribute("//a[contains(@href,'/tr/page')]@href"));
+        
+        $this->mouseOver("//tr//a[contains(text(),'unapproved organization')]");
+        $this->mouseOver("//tr//a[contains(text(),'my stuff')]");
+        $unapproved_url = $this->getLocation();
+        $this->logout();
+        $this->open("/pg/login");
+        $this->login('testorg','testtest');
+        $this->open($unapproved_url);
+        $this->mouseOver("//tr//td[contains(text(),'hidden')]");
+        $this->mustNotExist("//tr//a[contains(text(),'unapproved organization')]");
+        $this->mustNotExist("//tr//a[contains(text(),'my stuff')]");
+        $this->logout();
+        $this->open("/pg/login");
+        $this->login('testadmin','testtest');
+        $this->open($unapproved_url);
+        $this->mustNotExist("//tr//td[contains(text(),'hidden')]");
+        $this->mouseOver("//tr//a[contains(text(),'unapproved organization')]");
+        $this->clickAndWait("//tr//a[contains(text(),'my stuff')]");
+                
+        // title should use non-html editor        
+        $this->type("//input[@name='value']", "vitu <a href='xxx'>vyangu</a>");
+        $this->submitForm();
+        $this->ensureGoodMessage();
+        $this->clickAndWait("//h2//a");
         
         // test html is removed
+        $this->mouseOver("//a[@class='selected']//span[contains(text(),'vitu vyangu')]");
+        $this->mouseOver("//p[contains(text(),'this text was written by an unapproved organization')]");
         
         // change language of original content                
-    }
-    
-    function _testTranslateCurrentPage()
-    {
-        // enable UI groups for swahili
+        $this->open("/testorg/dashboard");
+        $this->typeInFrame("//iframe", "aslkfdalkewjfalkwejfa;lewkja;ewlkfja;ewlkfjawef aweoif uawe;lfk jaewf");
+        $this->submitForm();
+        $this->ensureGoodMessage();
+        $this->mustNotExist("//div[@id='translate_bar']");
         
-        // click edit translations on page with user content
+        sleep(1);
+        $this->refresh();
+        $unknown_url = $this->getLocation();
         
-        // shows both interface and user content translations
-        
-        // breadcrumb link should return to original page
-    }
+        $this->mustNotExist("//div[@id='translate_bar']");
+        $this->clickAndWait("//a[contains(@href,'lang=en')]");
+        $this->mustNotExist("//div[@id='translate_bar']");
+        $this->open($this->getAttribute("//a[contains(@href,'/tr/page')]@href"));
+        //$this->clickAndWait("//a[contains(text(),'aslkfdalkewjfalkwejfa')]");
+        $this->clickAndWait("//a[contains(@href,'/base_lang') and contains(text(),'unknown')]");
+        $this->select("//select[@name='base_lang']", "Kiswahili");
+        $this->submitForm();
+        $this->mouseOver("//a[contains(@href,'/base_lang') and contains(text(),'Swahili')]");
+        $this->open($unknown_url);
+        $this->assertContains("Parts of this page are in Swahili", 
+            $this->getText("//div[@id='translate_bar']"));        
+            
+        $this->logout();
+    }    
     
     function _testTranslateInterface()
     {        

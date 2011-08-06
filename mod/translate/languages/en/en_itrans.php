@@ -57,4 +57,6 @@ return array(
     'itrans:unapproved' => "Unapproved",
     
     'itrans:restore_draft' => "Restore draft",
+    
+    'itrans:google' => "Google Translate",
 );

@@ -11,7 +11,7 @@ State::set('notify_translations_time', $time);
 $translations = Translation::query()
     ->where('time_created >= ?', $last_notify)
     ->where('approval = 0')
-    ->where('owner_guid <> 0')
+    ->where('source = ?', Translation::Human)
     ->filter();
 
 if ($translations)

@@ -17,23 +17,38 @@
     echo view('js/google_map');
 ?>  
 
-var orgLoader = new OrgMapLoader();
+function initMap(map)
+{
+<?php
+    $viewport = $latlong['viewport'];
+    if ($viewport)
+    {
+?>
+    map.fitBounds(new google.maps.LatLngBounds(
+        new google.maps.LatLng(<?php echo $viewport['southwest']['lat'] ?>,<?php echo $viewport['southwest']['lng'] ?>),
+        new google.maps.LatLng(<?php echo $viewport['northeast']['lat'] ?>,<?php echo $viewport['northeast']['lng'] ?>)
+    ));
+<?php
+    }
+?>
+    var orgLoader = new OrgMapLoader();
 
-orgLoader.getURLParams = function() {
-    return {sector: <?php echo json_encode($sector); ?>};
-};
+    orgLoader.getURLParams = function() {
+        return {sector: <?php echo json_encode($sector); ?>};
+    };
+    orgLoader.setMap(map);
+}
 
 </script>
 <?php        
 
-        
         echo view("output/map", array(
             'lat' => $latlong['lat'],
             'long' => $latlong['long'], 
             'height' => 300, 
             'width' => 540, 
-            'zoom' => 8,
-            'onload' => 'orgLoader.setMap',
+            'zoom' => 9,
+            'onload' => 'initMap',
         ));
         
         echo "</div>";    

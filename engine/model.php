@@ -144,12 +144,16 @@ class Model extends Mixable
     
     public function save()
     {
-        $values = $this->get_table_attribute_values();
-        $pk = static::$primary_key;    
-        Database::save_row(static::$table_name, $pk, 
-            /* reference */ $this->attributes[$pk], $values);
+        $this->save_attribute_values($this->get_table_attribute_values());
         $this->dirty = false;
     }    
+    
+    function save_attribute_values($values)
+    {
+        $pk = static::$primary_key;    
+        Database::save_row(static::$table_name, $pk, 
+            /* reference */ $this->attributes[$pk], $values);    
+    }
     
     public function delete()
     {

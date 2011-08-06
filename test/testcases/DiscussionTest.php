@@ -66,6 +66,7 @@ class DiscussionTest extends SeleniumTest
         $this->mouseOver("//p[contains(text(),'message 0')]");
         $this->mouseOver("//a[contains(text(),'....')]");
         $this->clickAndWait("//a[contains(@href,'testorg/discussions')]");
+        $this->mouseOver("//span[@class='feed_snippet' and contains(text(),'message 0')]");
         $this->clickAndWait("//a[contains(@href,'topic/new')]");
         
         $this->type("//input[@name='subject']","My First Discussion");
@@ -80,6 +81,7 @@ class DiscussionTest extends SeleniumTest
         $this->mouseOver("//p[contains(text(),'message 1')]");
         $this->mouseOver("//a[contains(text(),'Mr. Person')]");
         $this->clickAndWait("//a[contains(@href,'testorg/discussions')]");
+        $this->mouseOver("//span[@class='feed_snippet' and contains(text(),'message 0')]");
         $this->clickAndWait("//span[@class='feed_snippet' and contains(text(),'message 1')]");
         
         // test add new message

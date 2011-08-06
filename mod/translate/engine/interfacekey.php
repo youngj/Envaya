@@ -37,6 +37,7 @@ class InterfaceKey extends TranslationKey
             if ($defined_value && $this->query_translations()->where('value = ?', $defined_value)->is_empty())
             {
                 $translation = $this->new_translation();
+                $translation->source = Translation::SourceCode;
                 $translation->value = $defined_value;
                 $translation->set_approved(true);
                 $translation->save();

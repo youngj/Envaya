@@ -58,8 +58,7 @@ class Action_Discussion_NewTopic extends Action
         $now = time();
       
         $topic = new DiscussionTopic();
-        $topic->subject = $subject;
-        $topic->queue_guess_language('subject');
+        $topic->subject = $subject;        
         $topic->container_guid = $org->guid;
         if ($user)
         {
@@ -67,8 +66,7 @@ class Action_Discussion_NewTopic extends Action
         }
         $topic->set_metadata('uniqid', $uniqid);
         $topic->save();
-        
-        
+                
         $message = new DiscussionMessage();
         $message->container_guid = $topic->guid;
         $message->subject = $subject;
@@ -87,6 +85,7 @@ class Action_Discussion_NewTopic extends Action
         $topic->first_message_guid = $message->guid;
         $topic->refresh_attributes();
         $topic->save(); 
+        $topic->queue_guess_language('subject');
 
         if (!$user)
         {
