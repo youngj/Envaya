@@ -42,8 +42,7 @@ class Action_AddTranslationKeyComment extends Action
         $comment->set_content($content, true);
 		$comment->save();
 
-        $key->update();
-        $key->get_container_entity()->update();
+        $key->update(true);
         
         SessionMessages::add(__('comment:success'));
         $this->redirect();
