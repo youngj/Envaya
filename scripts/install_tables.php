@@ -1,4 +1,3 @@
-
 <?php
 
 /* 
@@ -36,7 +35,7 @@ function run_sql_script($scriptlocation)
     require $scriptlocation;
     $script = ob_get_clean();
 
-    print "running $scriptlocation\n";
+    print "installing schema from $scriptlocation\n";
     
     $errors = array();
 
@@ -61,10 +60,6 @@ function install_schema($module_name = null)
     if (is_file($path))
     {
         run_sql_script($path);
-    }
-    else
-    {   
-        echo "(no schema at $path)\n";
     }
 }
 

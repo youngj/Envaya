@@ -5,11 +5,14 @@
  * Selenium tests use a separate domain and data store from the normal development environment.
  */
 
-$dataroot = __DIR__.'/data';
+require_once dirname(__DIR__)."/engine/config.php";
+Config::load();
+ 
+$dataroot = Config::get('dataroot').'/test_data';
 
 return array(        
     'captcha_enabled' => false,
-    'ssl_enabled' => false,
+    'ssl_enabled' => false,    
     'mock_mail_file' => "$dataroot/mail.out",
     'domain' => 'localhost:3001',
     'queue_host' => 'localhost',

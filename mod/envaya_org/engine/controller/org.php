@@ -27,7 +27,7 @@ class Controller_Org extends Controller
     function action_submit_donate_form()
     {
         $values = $_POST;
-        $amount = (int)$values['_amount'] ?: (int)$values['_other_amount'];
+        $amount = (int)@$values['_amount'] ?: (int)@$values['_other_amount'];
         $values['amount'] = $amount;
 
         $emailBody = "";

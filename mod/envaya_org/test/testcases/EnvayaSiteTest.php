@@ -3,7 +3,7 @@
 class EnvayaSiteTest extends SeleniumTest
 {
     public function test()
-    {        
+    {       
         $this->_testBrowseMap();
         $this->_testContactForm();
     }

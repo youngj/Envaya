@@ -1,3 +1,2 @@
 config/local.php
-test/*.out
 vendors/sphinxapi*.php

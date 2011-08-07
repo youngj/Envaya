@@ -192,6 +192,15 @@ function main()
 
     global $BROWSER, $TEST_CONFIG;
 
+    $test_dataroot = $TEST_CONFIG['dataroot'];
+    
+    chdir(dirname($test_dataroot));
+    system("rm -rf test_data");
+    chdir(__DIR__);
+    
+    umask(0);
+    mkdir($test_dataroot, 0777, true);
+    
     $opts = getopt('',array("browser:","test:"));
         
     $BROWSER = @$opts['browser'] ?: 'firefox';
@@ -215,8 +224,8 @@ function main()
 
     $descriptorspec = array(
        0 => array("pipe", "r"),
-       1 => array("file", __DIR__."/selenium.out", 'w'),
-       2 => array("file", __DIR__."/selenium.err.out", 'w')
+       1 => array("file", "$test_dataroot/selenium.out", 'w'),
+       2 => array("file", "$test_dataroot/selenium.err.out", 'w')
     );
         
     $selenium_path = Config::get('dataroot') . "/" . Config::get('selenium_jar');    
@@ -230,14 +239,14 @@ function main()
     $root = dirname(__DIR__);        
         
     run_task_sync("php test/reset_db.php | mysql -u root");
-    run_task_sync('php scripts/install_tables.php', $root, $env);
-    run_task_sync('php scripts/install_test_data.php', $root, $env);   
+    run_task_sync('php scripts/install_tables.php', $root, $env);    
     run_task_sync('php scripts/install_kestrel.php', $root, $env);
     run_task_sync('php scripts/install_sphinx.php', $root, $env);
+    run_task_sync('php scripts/install_test_data.php', $root, $env);   
                 
     $descriptorspec = array(
        0 => array("pipe", "r"),
-       1 => array("file", __DIR__."/runserver.out", 'w'),
+       1 => array("file", "$test_dataroot/runserver.out", 'w'),
        2 => STDERR
     );                
   
