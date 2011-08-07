@@ -51,7 +51,19 @@ class Mixin_Translatable extends Mixin
         $key = $this->get_translation_key($prop, $lang);
         if (!$key->guid)
         {
-            $key->save();
+            try
+            {
+                $key->save();
+            }
+            catch (DatabaseException $ex) 
+            {
+                // another visitor concurrently created this key; 
+                // unique key constraint violated
+                $tempTrans = $key->new_translation();
+                $tempTrans->value = $this->$prop;
+                $tempTrans->source = Translation::Original;
+                return $tempTrans;                
+            }
         }
         
         $approvedTrans = $key->query_translations()

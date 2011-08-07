@@ -223,6 +223,23 @@ class Engine
      */
     static function shutdown()
     {
+        $error = error_get_last();
+        
+        if ($error)
+        {
+            $type = $error['type'];
+            if ($type == E_ERROR || $type == E_PARSE)
+            {
+                notify_exception(new ErrorException(
+                    $error['message'],
+                    0,
+                    $error['type'],
+                    $error['file'],
+                    $error['line']
+                ));
+            }
+        }           
+    
         EventRegister::trigger_event('shutdown', 'system');
     }
 }

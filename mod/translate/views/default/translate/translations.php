@@ -28,7 +28,7 @@
         echo "<tr>";
         $key = $translation->get_container_entity();
         
-        if ($key->can_view())
+        if ($key && $key->can_view())
         {
             echo "<td>";
             echo "<strong><a href='{$key->get_url()}'>".escape($key->name)."</a></strong>";

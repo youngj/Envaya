@@ -12,6 +12,10 @@ class FunctionQueue
     private static $in_process_queue = array();
     private static $connect_tried = false;    
     private static $kestrel = null;    
+    
+    // queue names
+    const HighPriority = 'high';
+    const LowPriority = 'low';
 
     private static function _connect()
     {        
@@ -44,8 +48,13 @@ class FunctionQueue
         }
     }
 
-    static function queue_call($fn, $args, $queue_name = 'call')
+    static function queue_call($fn, $args, $queue_name = null)
     {    
+        if (!$queue_name)
+        {
+            $queue_name = static::HighPriority;
+        }    
+    
         $queue_entry = array('fn' => $fn, 'args' => $args);
         
         if (@$_SERVER['REQUEST_URI'])
@@ -110,15 +119,27 @@ class FunctionQueue
         call_user_func_array($queue_entry['fn'], $queue_entry['args']);
     }   
         
-    static function exec_queued_call($timeout_ms = 0, $queue_name = 'call')
+    static function exec_queued_call($timeout_ms = 0, $queue_name = null)
     {
+        if (!$queue_name)
+        {
+            $queue_name = static::HighPriority;
+        }
+    
         $kestrel = static::_connect();
 
-        if ($nextCallStr = @$kestrel->get("$queue_name/t=$timeout_ms"))
+        $key = "$queue_name/t=$timeout_ms";       
+        if ($nextCallStr = @$kestrel->get($key))
         {   
             static::exec_queue_entry(unserialize($nextCallStr));
             return true;
         }
         return false;
+    }
+    
+    static function get_stats()
+    {
+        $kestrel = static::_connect();
+        return $kestrel->getStats();
     }
 }

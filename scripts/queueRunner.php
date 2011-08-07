@@ -21,12 +21,12 @@ define('WORKER_CHECK_INTERVAL', 1);
 
 $worker_options = array(
     array(
-        'cmd' => 'php scripts/workers/call.php',
+        'cmd' => 'php scripts/workers/high_priority.php',
         'count' => 3,
     ),
     array(
-        'cmd' => 'php scripts/workers/feeds.php'
-    ),    
+        'cmd' => 'php scripts/workers/low_priority.php'
+    ),
 );
 
 $workers = array();

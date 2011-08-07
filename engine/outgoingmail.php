@@ -151,7 +151,10 @@ class OutgoingMail extends Model
         $this->time_queued = time();
         $this->save();
         
-        return FunctionQueue::queue_call(array('OutgoingMail', 'send_now_by_id'), array($this->id));    
+        return FunctionQueue::queue_call(array('OutgoingMail', 'send_now_by_id'), 
+            array($this->id),
+            FunctionQueue::LowPriority
+        );    
     }
     
     private function send_now()
