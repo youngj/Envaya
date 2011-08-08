@@ -12,6 +12,7 @@
             $width = escape(@$header_image['width']);
             $height = escape(@$header_image['height']);    
             $imgUrl = escape($header_image['url']);
+            $escTitle = escape($org->get_title());
             
             echo "<div style='text-align:center;height:{$height}px'><a href='$url'><img width='$width' height='$height' src='$imgUrl' alt='$escTitle' /></a></div>";
         }    

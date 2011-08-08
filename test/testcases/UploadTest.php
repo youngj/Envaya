@@ -6,6 +6,10 @@ class UploadTest extends WebDriverTest
 
     public function test()
     {        
+        $this->open("/pg/login");
+        $this->login('testorg','testtest');
+    
+        $this->_testCustomHeader();
         $this->_testNewsUpdateImage();
         $this->_testAddPhotos();
         $this->_testLogo();
@@ -13,10 +17,8 @@ class UploadTest extends WebDriverTest
     }   
     
     private function _testNewsUpdateImage()
-    {
-        $this->open("/pg/login");
-        $this->login('testorg','testtest');
-        
+    {        
+        $this->open('/testorg/dashboard');
         $this->retry('click', array("//div[@class='attachControls']//a"));
         
         $this->retry('selectFrame', array("//iframe[contains(@src,'select_image')]"));
@@ -117,8 +119,7 @@ class UploadTest extends WebDriverTest
     private function _testLogo()
     {
         $this->open("/testorg/dashboard");
-        $this->waitForElement("//a[contains(@href,'/design')]");
-        $this->click("//a[contains(@href,'/design')]");
+        $this->waitForElement("//a[contains(@href,'/design')]")->click();
         $this->retry('selectUploadFrame');
         
         $this->attachFile("//input[@type='file']","images/logo.png");
@@ -130,24 +131,20 @@ class UploadTest extends WebDriverTest
         $this->submitForm();
         
         $this->retry('ensureGoodMessage', array('design saved'));
-        $this->waitForElement("//table[@id='heading']//img[contains(@src,'medium.jpg')]");
         
-        $imgUrl = $this->xpath("//table[@id='heading']//img[contains(@src,'medium.jpg')]")->getAttribute('src');
+        $imgUrl = $this->waitForElement("//table[@id='heading']//img[contains(@src,'medium.jpg')]")->getAttribute('src');
         
         $this->checkImage($imgUrl, 2000, 10000);    
         
         $this->click("//a[contains(@href,'pg/feed')]");
-        
-        $this->waitForElement("//a[@class='feed_org_icon' and contains(@href,'/testorg')]//img");
-        
-        $smallImgUrl = $this->xpath("//a[@class='feed_org_icon' and contains(@href,'/testorg')]//img")->getAttribute('src');
+
+        $smallImgUrl = $this->waitForElement("//a[@class='feed_org_icon' and contains(@href,'/testorg')]//img")->getAttribute('src');
         
         $this->checkImage($smallImgUrl, 500, 2000);   
 
         $this->open("/testorg/design");        
         
-        $this->waitForElement("//input[@type='checkbox']");
-        $this->xpath("//input[@type='checkbox']")->click(); // remove image
+        $this->waitForElement("//input[@type='checkbox']")->click(); // remove image
         $this->submitForm();
         
         $this->waitForElement("//table[@id='heading']//img[contains(@src,'/staticmap')]");
@@ -157,6 +154,54 @@ class UploadTest extends WebDriverTest
         
         $this->checkImage($staticMapUrl, 2000, 10000);   
     }
+    
+    private function _testCustomHeader()
+    {
+        $this->open("/testorg");
+        
+        $this->waitForElement("//h3[contains(text(),'a test organization')]");        
+        $this->mustExist("//div[@class='shareLinks']//a");                
+        
+        $this->open("/testorg/design");
+        
+        $tagline = $this->waitForElement("//input[@name='tagline']");
+        $tagline->clear();
+        $tagline->sendKeys("custom tagline");
+        
+        $this->click("//input[@value='email']");
+        $this->click("//input[@value='facebook']");
+        $this->click("//input[@value='twitter']");
+        
+        $this->submitForm();
+        $this->waitForElement("//h3[contains(text(),'custom tagline')]");
+        $this->mustNotExist("//div[@class='shareLinks']//a");     
+
+        $this->open("/testorg/design");        
+        
+        $this->waitForElement("//input[@name='custom_header' and @value='1']")->click();        
+                
+        $this->retry('selectUploadFrame', array("//div[@id='custom_header_container']//iframe"));        
+        $this->attachFile("//input[@type='file']","images/logo.png");        
+        $this->selectFrame(null);                
+                
+        $this->submitForm();
+        
+        $img = $this->waitForElement("//div[@class='heading_container']//img[contains(@src,'large.jpg')]");
+        $this->assertEquals('150', $img->getAttribute('height'));
+        $this->assertEquals('589', $img->getAttribute('width'));
+        
+        $this->checkImage($img->getAttribute('src'), 30000, 50000);    
+        
+        $this->open("/testorg/design");        
+        
+        $this->waitForElement("//input[@name='custom_header' and @value='0']")->click();        
+        $this->submitForm();
+        
+        $this->waitForElement("//h3[contains(text(),'custom tagline')]");
+        $this->mustNotExist("//div[@class='shareLinks']//a");             
+        $this->mustNotExist("//div[@class='heading_container']//img[contains(@src,'large.jpg')]");
+    }
+    
     
     private function _testMobileUpload()
     {
