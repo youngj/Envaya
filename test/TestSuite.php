@@ -26,8 +26,6 @@ require_once __DIR__.'/webdriver/phpwebdriver/WebDriver.php';
 
 Config::load();
 
-$TEST_CONFIG = include __DIR__."/config.php";
-
 function kill_windows_process_tree($pid, $wmi = null)
 {
     //echo "kill $pid\n";
@@ -184,27 +182,121 @@ function stop_selenium()
     $sel->shutDownSeleniumServer();
 }
 
-function main()
+
+
+function run_test_suite($suite, $opts)
 {
-    require_once dirname(__DIR__)."/scripts/install_selenium.php";
+    if (!isset($opts['selenium']))
+    {
+        $opts['selenium'] = true;
+    }
 
-    prepare_firefox_profile();
+    if (!isset($opts['runserver']))
+    {
+        $opts['runserver'] = true;
+    }    
+    
+    if (!isset($opts['reset']))
+    {
+        $opts['reset'] = true;
+    }
+    
+    global $BROWSER;
+    $BROWSER = @$opts['browser'] ?: 'firefox';
 
-    global $BROWSER, $TEST_CONFIG;
-
+    global $TEST_CONFIG;    
+    $TEST_CONFIG = include __DIR__."/config.php";       
+    
     $test_dataroot = $TEST_CONFIG['dataroot'];
     
-    chdir(dirname($test_dataroot));
-    system("rm -rf test_data");
+    
+    if ($BROWSER == 'firefox')
+    {
+        prepare_firefox_profile();
+    }
+    
+    if ($opts['reset'])
+    {    
+        chdir(dirname($test_dataroot));
+        system("rm -rf test_data");       
+    }
     chdir(__DIR__);
     
     umask(0);
-    mkdir($test_dataroot, 0777, true);
+    @mkdir($test_dataroot, 0777, true);       
     
-    $opts = getopt('',array("browser:","test:"));
+    if ($opts['selenium'])
+    {
+        require_once dirname(__DIR__)."/scripts/install_selenium.php";
+    
+        $descriptorspec = array(
+           0 => array("pipe", "r"),
+           1 => array("file", "$test_dataroot/selenium.out", 'w'),
+           2 => array("file", "$test_dataroot/selenium.err.out", 'w')
+        );
+            
+        $selenium_path = Config::get('dataroot') . "/" . Config::get('selenium_jar');    
         
-    $BROWSER = @$opts['browser'] ?: 'firefox';
+        $selenium = proc_open("java -jar $selenium_path -singleWindow -firefoxProfileTemplate profiles/noflash", 
+            $descriptorspec, $pipes, __DIR__);  
+    }
     
+    $env = get_environment();    
+    $env["ENVAYA_CONFIG"] = json_encode($TEST_CONFIG);            
+    $root = dirname(__DIR__);        
+        
+    if ($opts['reset'])
+    {
+        run_task_sync("php test/reset_db.php | mysql -u root", $root);
+        run_task_sync('php scripts/install_tables.php', $root, $env);    
+        run_task_sync('php scripts/install_kestrel.php', $root, $env);
+        run_task_sync('php scripts/install_sphinx.php', $root, $env);
+        run_task_sync('php scripts/install_test_data.php', $root, $env);   
+    }
+     
+    if ($opts['runserver'])
+    {     
+        $descriptorspec = array(
+           0 => array("pipe", "r"),
+           1 => array("file", "$test_dataroot/runserver.out", 'w'),
+           2 => STDERR
+        );                
+      
+        $runserver = proc_open('php runserver.php', $descriptorspec, $runserver_pipes, $root, $env);    
+        $runserver_status = proc_get_status($runserver);                
+        posix_setpgid($runserver_status['pid'], $runserver_status['pid']);   
+    }
+    
+    if ($opts['selenium'])
+    {
+        retry('check_selenium');
+    }
+    sleep(2);
+
+    PHPUnit_TextUI_TestRunner::run($suite);
+    
+    if ($opts['runserver'])
+    {    
+        if (function_exists('posix_kill'))
+        {    
+            posix_kill(-$runserver_status['pid'], SIGTERM);
+        }
+        else
+        {
+            kill_windows_process_tree($runserver_status['pid']);
+        }
+    }
+    
+    if ($opts['selenium'])
+    {
+        stop_selenium();
+    }
+}
+
+function main()
+{    
+    $opts = getopt('',array("browser:","test:",));
+     
     if (@$opts['test'])
     {
         $test_cases = is_array($opts['test']) ? $opts['test'] : array($opts['test']);
@@ -220,54 +312,12 @@ function main()
     {
         require_once get_test_case_path($test_case);
         $suite->addTestSuite($test_case);
-    }
-
-    $descriptorspec = array(
-       0 => array("pipe", "r"),
-       1 => array("file", "$test_dataroot/selenium.out", 'w'),
-       2 => array("file", "$test_dataroot/selenium.err.out", 'w')
-    );
-        
-    $selenium_path = Config::get('dataroot') . "/" . Config::get('selenium_jar');    
+    }   
     
-    $selenium = proc_open("java -jar $selenium_path -singleWindow -firefoxProfileTemplate profiles/noflash", 
-        $descriptorspec, $pipes, __DIR__);  
-    
-    $env = get_environment();    
-    $env["ENVAYA_CONFIG"] = json_encode($TEST_CONFIG);        
-    
-    $root = dirname(__DIR__);        
-        
-    run_task_sync("php test/reset_db.php | mysql -u root");
-    run_task_sync('php scripts/install_tables.php', $root, $env);    
-    run_task_sync('php scripts/install_kestrel.php', $root, $env);
-    run_task_sync('php scripts/install_sphinx.php', $root, $env);
-    run_task_sync('php scripts/install_test_data.php', $root, $env);   
-                
-    $descriptorspec = array(
-       0 => array("pipe", "r"),
-       1 => array("file", "$test_dataroot/runserver.out", 'w'),
-       2 => STDERR
-    );                
-  
-    $runserver = proc_open('php runserver.php', $descriptorspec, $runserver_pipes, $root, $env);    
-    $runserver_status = proc_get_status($runserver);                
-    posix_setpgid($runserver_status['pid'], $runserver_status['pid']);   
-    
-    retry('check_selenium');
-    sleep(2);
-
-    PHPUnit_TextUI_TestRunner::run($suite);
-    
-    if (function_exists('posix_kill'))
-    {    
-        posix_kill(-$runserver_status['pid'], SIGTERM);
-    }
-    else
-    {
-        kill_windows_process_tree($runserver_status['pid']);
-    }
-    stop_selenium();
+    run_test_suite($suite, $opts);
 }
 
-main(); 
+if (realpath($argv[0]) == __FILE__)
+{
+    main(); 
+}

@@ -488,8 +488,18 @@ class Controller_Translate extends Controller
         {
             $query->where('source = ?', $source);
         }           
-        // includes stale translations...
+        
+        $has_current_translation = false;
+        
+        foreach ($query->filter() as $translation)
+        {
+            if (!$translation->is_stale())
+            {
+                $has_current_translation = true;
+                break;
+            }
+        }
             
-        $this->set_content(json_encode(array('has_translation' => $query->exists())));
+        $this->set_content(json_encode(array('has_translation' => $has_current_translation)));
     }
 }

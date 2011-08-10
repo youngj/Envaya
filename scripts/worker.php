@@ -25,7 +25,7 @@ function execute_queue_worker($queue_name, $empty_poll_interval = 1.0, $max_work
             if ($sleep_interval > 0)
             {
                 pcntl_signal_dispatch();
-                sleep($sleep_interval);
+                usleep($sleep_interval * 1000000);
             }
         }
         pcntl_signal_dispatch();

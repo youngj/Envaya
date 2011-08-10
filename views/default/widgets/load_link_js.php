@@ -45,7 +45,7 @@ var loadLinkInfo = (function() {
             return;     
         setLoading(true);
         
-        var xhr = getXHR(linkComplete, linkError);
+        var xhr = jsonXHR(linkComplete, linkError);
         
         asyncPost(xhr, <?php echo json_encode($widget->get_edit_url()); ?>, {
             action: 'linkinfo_js',

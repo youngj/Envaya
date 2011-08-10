@@ -18,12 +18,7 @@ function setLang(newLang)
     }
     else
     {
-        var newUrl = curUrl.replace(/\blang\=\w+/, 'lang='+newLang);
-        if (newUrl == curUrl)
-        {
-            newUrl = curUrl + ((curUrl.indexOf('?') != -1) ? '&' : '?') + "lang=" + newLang;
-        }
-        window.location.href = newUrl;
+        location.replace(urlWithParam(curUrl,'lang',newLang));
     }
     return false;
 }

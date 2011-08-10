@@ -294,7 +294,7 @@ function retry($fn, $args = null, $timeout = 15)
             break;
         }
 
-        sleep(0.25);
+        usleep(250000);
     }
     return call_user_func_array($fn, $args);
 }

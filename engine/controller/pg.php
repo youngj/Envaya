@@ -605,7 +605,7 @@ class Controller_Pg extends Controller
     function action_search_area()
     {
         $this->set_content_type('text/javascript');
-    
+        
         $latMin = get_input('latMin');
         $latMax = get_input('latMax');
         $longMin = get_input('longMin');

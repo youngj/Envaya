@@ -39,7 +39,7 @@ OrgMapLoader = function()
             infoOverlay.setBucket(null);
             loadingOverlay.draw();
             $self.load();
-        });
+        });        
     };
     
     this.reset = function()

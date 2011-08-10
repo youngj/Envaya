@@ -1,4 +1,4 @@
-function getXHR(successFn, errorFn)
+function rawXHR(successFn, errorFn)
 {
     var xhr = (window.ActiveXObject && !window.XMLHttpRequest) ? new ActiveXObject("Msxml2.XMLHTTP") : new XMLHttpRequest();
 
@@ -8,21 +8,41 @@ function getXHR(successFn, errorFn)
         {
             var status = xhr.status;
             if (status == 200)
-            {            
-                successFn(_eval(xhr.responseText));
-            }
-            else if (status == 500)
             {
-                var data = _eval(xhr.responseText);                       
-                errorFn ? errorFn(data) : alert(data.error);
+                successFn.call(xhr, xhr.responseText);
             }
             else if (status >= 400)
             {
-                alert("HTTP Error " + status); 
+                (errorFn || httpError).call(xhr, xhr.responseText);
             }
         }
     };    
     return xhr;
+}
+
+function httpError()
+{
+    alert("HTTP Error " + this.status); 
+}
+
+function jsonXHR(successFn, errorFn)
+{
+    return rawXHR(function(res) { 
+            successFn.call(this, _eval(res));
+        },
+        function (res) {
+            var contentType = this.getResponseHeader('Content-Type');                        
+            if (contentType == 'text/javascript')
+            {
+                var data = _eval(res);
+                errorFn ? errorFn.call(this, data) : alert(data.error);                
+            }
+            else
+            {
+                httpError.call(this);
+            }
+        }
+    );    
 }
 
 function asyncPost(xhr, action, params)
@@ -62,7 +82,7 @@ var fetchJson = (function() {
         }
         else
         {
-            var xhr = getXHR(
+            var xhr = jsonXHR(
                 function(result) {
                     successFn(_jsonCache[url] = result);
                 },

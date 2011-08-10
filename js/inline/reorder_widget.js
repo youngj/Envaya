@@ -1,6 +1,6 @@
 function asyncReorderWidget($url, $table_id, $link_id, ts, token)
 {
-    var xhr = getXHR(function(res) {             
+    var xhr = jsonXHR(function(res) {             
         var guids = res.guids;        
         var rows = {};        
         var tbody = $($table_id);

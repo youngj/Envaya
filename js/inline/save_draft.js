@@ -63,7 +63,7 @@
             
             showSaveMessage(__('tinymce:saving'));
             
-            var xhr = getXHR(function(res) {             
+            var xhr = jsonXHR(function(res) {             
                 window.save_draft_guid = res.guid;
                 lastSavedContent = content;
                 ed.isNotDirty = true;            
@@ -182,7 +182,7 @@
             
             document.body.appendChild(modalBox);
             
-            var xhr = getXHR(function(res) {
+            var xhr = jsonXHR(function(res) {
                     removeChildren(content);
                     var revisions = res.revisions;
                     

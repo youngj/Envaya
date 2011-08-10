@@ -77,3 +77,27 @@ function $(id)
 {
     return document.getElementById(id);
 }
+
+function urlWithParam(url, param, value)
+{
+    var qPart = param + '=' + value,
+        qIndex = url.indexOf('?') + 1,
+        query = url.substr(qIndex),
+        parts = query.split('&'),
+        i = 0;        
+        
+    if (!qIndex)
+    {
+        return url + '?' + qPart;
+    }
+    for (; i < parts.length; i++)    
+    {
+        if (!parts[i].indexOf(param + '='))
+        {
+            parts.splice(i--, 1);
+        }
+    }
+
+    parts.splice(0,0,qPart);
+    return url.substr(0, qIndex) + parts.join('&');
+}

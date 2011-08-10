@@ -10,11 +10,11 @@
 
 (function() {
     var checkCount = 0;
-
-    var xhr = getXHR(function(res) {
+    
+    var xhr = jsonXHR(function(res) {
         if (res.has_translation)
         {
-            window.location.reload();
+            location.replace(urlWithParam(location.href, '_t', new Date().getTime()));
         }
         else if (checkCount < 15)
         {
