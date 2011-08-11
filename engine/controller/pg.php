@@ -86,6 +86,14 @@ class Controller_Pg extends Controller
     {
         $from = @$_REQUEST['From'];
         $body = @$_REQUEST['Body'];
+        
+        if (!Twilio::is_validated_request())
+        {
+            $this->set_status(403);
+            $this->set_content("Invalid request signature");
+            error_log("Invalid request signature");
+            throw new RequestAbortedException();
+        }
 
         error_log("SMS received:\n from=$from body=$body");
 

@@ -6,6 +6,8 @@ class SMS_Action
 
     static function parse($message)
     {
+        return new SMS_Action_Works();
+    
         if (preg_match('/([\w]+)\b/', $message, $match))
         {
             $command = strtolower($match[1]);

@@ -10,8 +10,11 @@ class SMS_Request
 
     function __construct($phone_number, $message)
     {
+        $phone_number = str_replace('+','', $phone_number);
+    
         $this->phone_number = $phone_number;
         $this->message = $message;        
+        
         $org_phone_number = OrgPhoneNumber::query()->where('phone_number = ?', $phone_number)->get();
         if ($org_phone_number)
         {
@@ -70,5 +73,15 @@ class SMS_Request
     function get_org()
     {
         return $this->org;
+    }
+    
+    function get_message()
+    {
+        return $this->message;
+    }
+    
+    function get_phone_number()
+    {
+        return $this->phone_number;
     }
 }

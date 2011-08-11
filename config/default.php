@@ -87,4 +87,8 @@ return array(
     'subtype_aliases' => null, // map of old subtype_id => class name for database migrations
     
     'db_profile' => false,
+    
+    'twilio_account_sid' => '',
+    'twilio_auth_token' => '',
+    'twilio_phone_number' => '',
 );
