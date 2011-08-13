@@ -43,7 +43,7 @@ class Action_Register extends Action
         
         $user = new User();
         $user->username = $username;
-        $user->phone_number = get_input('phone');
+        $user->set_phone_number(get_input('phone'));
         $user->email = $email;
         $user->name = $name;
         $user->set_password($password);

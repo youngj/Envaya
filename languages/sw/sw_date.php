@@ -14,6 +14,7 @@ return array(
     'date:with_year' => '{day} {month}, {year}',
     'date:date_name' => "{date} na {name}",
     'date:date_time' => '{date} {time}',
+    'date:date_feed' => '{date} kupitia {feed}',
     
     'date:month:1' => 'Januari',
     'date:month:2' => 'Februari',

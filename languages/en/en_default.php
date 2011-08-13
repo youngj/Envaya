@@ -9,6 +9,7 @@ return array(
     'menu' => 'Main Menu',
     'register' => "Register",
     'help' => "Help",
+    'submit' => "Submit",
     
     'exception_title' => "Error",
 

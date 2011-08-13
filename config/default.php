@@ -90,5 +90,7 @@ return array(
     
     'twilio_account_sid' => '',
     'twilio_auth_token' => '',
-    'twilio_phone_number' => '',
+    'twilio_validation_enabled' => true,
+    
+    'news_phone_number' => '',
 );

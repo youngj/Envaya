@@ -2,9 +2,7 @@
 
 class Twilio
 {
-    protected $client;
-
-    function __construct()
+    static function get_client()
     {
         static::load_lib();
 
@@ -16,7 +14,7 @@ class Twilio
         $sid = Config::get('twilio_account_sid');
         $token = Config::get('twilio_auth_token');
         
-        $this->client = new Services_Twilio($sid, $token, '2010-04-01', $http);
+        return new Services_Twilio($sid, $token, '2010-04-01', $http);
     }       
     
     static function load_lib()
@@ -34,12 +32,31 @@ class Twilio
         return $validator->validate($expected_signature, $url, $_POST);
     }
     
-    function send_sms($to, $msg)
+    static function send_sms_now($from, $to, $msg)
     {
-        $this->client->account->sms_messages->create(
-            Config::get('twilio_phone_number'),
+        if ($from[0] != '+')
+        {
+            $from = "+$from";
+        }    
+    
+        if ($to[0] != '+')
+        {
+            $to = "+$to";
+        }
+    
+        $twilio = static::get_client();    
+        $twilio->account->sms_messages->create(
+            $from,
             $to, 
             $msg
+        );    
+    }
+    
+    static function send_sms($from, $to, $msg)
+    {
+        FunctionQueue::queue_call(
+            array('Twilio', 'send_sms_now'), array($from, $to, $msg),
+            FunctionQueue::LowPriority
         );
     }
 }

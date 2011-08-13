@@ -1,14 +1,15 @@
 <div class='padded'>
 <?php
 
-    $user = $vars['entity'];
+    $user = $vars['user'];
+    $code = $vars['code'];
 ?>
 
 <form action='/pg/password_reset' method='POST'>
 <?php echo view('input/securitytoken'); ?>
 
 <?php echo view('input/hidden', array('name' => 'u', 'value' => $user->guid)); ?>
-<?php echo view('input/hidden', array('name' => 'c', 'value' => $user->get_metadata('passwd_conf_code'))); ?>
+<?php echo view('input/hidden', array('name' => 'c', 'value' => $code)); ?>
 
 <div class='input'>
 <label><?php echo __('user:username:label') ?>:</label><br />

@@ -3,6 +3,7 @@
 class Action_PasswordReset extends Action
 {
     private $user;
+    private $conf_code;
     
     function before()
     {
@@ -14,11 +15,11 @@ class Action_PasswordReset extends Action
         }    
         
         $conf_code = get_input('c');
-        $correct_code = $user->get_metadata('passwd_conf_code');
-        if (!$correct_code || $correct_code != $conf_code)
+        if (!$user->has_password_reset_code($conf_code))
         {
             throw new RedirectException(__('user:password:fail'), "/pg/login");
         }
+        $this->conf_code = $conf_code;
         $this->user = $user;
     }
 
@@ -31,7 +32,7 @@ class Action_PasswordReset extends Action
         User::validate_password($password, $password2, $user->name, $user->username);
 
         $user->set_password($password);
-        $user->set_metadata('passwd_conf_code', null);
+        $user->set_password_reset_code(null);
         $user->save();
 
         SessionMessages::add(__('user:password:success'));
@@ -44,7 +45,10 @@ class Action_PasswordReset extends Action
         $this->prefer_https();
         $this->page_draw(array(
             'title' => __("user:password:choose_new"),
-            'content' => view("account/reset_password", array('entity' => $this->user)),
+            'content' => view("account/reset_password", array(
+                'user' => $this->user,
+                'code' => $this->conf_code,
+            )),
             'org_only' => true,
         ));                
     }

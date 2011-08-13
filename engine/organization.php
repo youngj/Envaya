@@ -131,11 +131,6 @@ class Organization extends User
     {
         parent::__set($name,$value);
         
-        if ($name == 'phone_number')
-        {
-            $this->set_phone_number($value);
-        }
-        
         if (!$this->attributes_dirty)
         {
             $this->attributes_dirty = array();
@@ -163,27 +158,7 @@ class Organization extends User
             }
             $this->sectors_dirty = false;
         }
-        
-        if ($this->phone_numbers_dirty)
-        {            
-            $newIds = array_map(function($op) { return $op->id; }, $this->phone_numbers);        
-            
-            foreach ($this->query_phone_numbers()
-                ->where('confirmed = 0')
-                ->where_not_in('id', $newIds)
-                ->filter() 
-                    as $oldPhoneNumber)
-            {
-                $oldPhoneNumber->delete();
-            }
-            foreach ($this->phone_numbers as $phone_number)
-            {
-                $phone_number->org_guid = $this->guid;
-                $phone_number->save();
-            }        
-            $this->phone_numbers_dirty = false;
-        }
-                
+                        
         if ($isNew || $sectorsDirty 
             || @$attributesDirty['name'] || @$attributesDirty['username'] || @$attributesDirty['region'])
         {
@@ -193,41 +168,6 @@ class Organization extends User
         return $res;
     }
              
-    protected $phone_numbers;
-    protected $phone_numbers_dirty = false;
-
-    function query_phone_numbers()
-    {
-        return OrgPhoneNumber::query()->where('org_guid = ?', $this->guid);
-    }
-        
-    private function set_phone_number($phone_number_str)
-    {
-        $phone_numbers = OrgPhoneNumber::split_phone_number($phone_number_str, $this->country);
-
-        $this->phone_numbers = array();        
-        foreach ($phone_numbers as $phone_number)
-        {
-            if ($this->guid)
-            {   
-                $orgPhoneNumber = $this->query_phone_numbers()
-                    ->where('phone_number = ?', $phone_number)->get();
-            }
-            else
-            {
-                $orgPhoneNumber = null;
-            }
-            if (!$orgPhoneNumber)
-            {
-                $orgPhoneNumber = new OrgPhoneNumber();
-                $orgPhoneNumber->org_guid = $this->guid;
-                $orgPhoneNumber->phone_number = $phone_number;
-            }            
-            $this->phone_numbers[] = $orgPhoneNumber;
-        }        
-        $this->phone_numbers_dirty = true;
-    }            
-
     /* 
      * WidgetContainer methods - an Organization is a container for Widgets
      * which are shown as pages on their site.

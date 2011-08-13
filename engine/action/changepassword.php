@@ -29,7 +29,7 @@ class Action_ChangePassword extends Action
         User::validate_password($password, $password2, $user->name, $user->username);
 
         $user->set_password($password);
-        $user->set_metadata('passwd_conf_code', null);
+        $user->set_password_reset_code(null);
         $user->save();
 
         SessionMessages::add(__('user:password:success'));

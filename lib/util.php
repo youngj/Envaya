@@ -148,11 +148,18 @@
     }
         
     /*
-     * Generates a random string with hexadecimal characters of length $len <= 32
+     * Generates a random string of alphanumeric characters (minus 0,O,1,I,J,5,S,V,Y,8,B)
      */
     function generate_random_code($len = 32)
     {
-        return substr(md5(microtime() . rand()), 0, $len);
+        $alphabet = '234679ACDEFGHKLMNPQRTUWXZ';
+        $num_chars = strlen($alphabet);
+        $res = '';
+        for ($i = 0; $i < $len; $i++)
+        {
+            $res .= $alphabet[rand() % $num_chars];
+        }    
+        return $res;
     }    
 
     /**
@@ -212,3 +219,10 @@
         $c = urldecode($c);
         return $c;
     }
+    
+    function generate_password_hash($password)
+    {
+        $salt = substr(str_replace('+', '.', base64_encode(sha1(microtime(true) . rand(), true))), 0, 22);        
+        return crypt($password, '$2a$11$' . $salt);
+    }
+    

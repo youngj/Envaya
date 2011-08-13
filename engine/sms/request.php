@@ -2,56 +2,67 @@
 
 class SMS_Request
 {
-    protected $phone_number;
+    protected $to_number;
+    protected $from_number;
     protected $message;
-    protected $org;
+    protected $user;
     protected $state;
-    protected $replies; 
+    protected $service;
 
-    function __construct($phone_number, $message)
+    function __construct($from_number, $to_number, $message)
     {
-        $phone_number = str_replace('+','', $phone_number);
-    
-        $this->phone_number = $phone_number;
+        $from_number = PhoneNumber::canonicalize($from_number);
+        $to_number = PhoneNumber::canonicalize($to_number);
+        
+        if (!$from_number || !$to_number)
+        {
+            throw new Exception("Invalid SMS phone number");
+        }
+        
+        $this->service = SMS_Service::route($to_number);    
+        $this->from_number = $from_number;
+        $this->to_number = $to_number;
         $this->message = $message;        
         
-        $org_phone_number = OrgPhoneNumber::query()->where('phone_number = ?', $phone_number)->get();
-        if ($org_phone_number)
+        $user_phone_number = UserPhoneNumber::query()->where('phone_number = ?', $from_number)->get();
+        if ($user_phone_number)
         {
-            $this->org = $org_phone_number->get_org();
+            $this->user = $user_phone_number->get_user();
         }   
         
-        $state = SMS_State::query()->where('phone_number = ?', $phone_number)->get();
+        $service_id = $this->service->get_id();        
+        $state = SMS_State::query()
+            ->where('service_id = ?', $service_id)
+            ->where('phone_number = ?', $from_number)
+            ->get();
+            
         if (!$state)
         {
             $state = new SMS_State();
-            $state->phone_number = $phone_number;
+            $state->service_id = $service_id;
+            $state->phone_number = $from_number;
         }
         $this->state = $state;
-        $this->replies = array();
-    }
-       
-    function execute()
+    }                 
+    
+    function get_initial_controller()
     {
-        $sms_action = SMS_Action::parse($this->message);    
-        $sms_action->execute($this);
-        $this->state->save();
-        
-        header('Content-Type: text/xml');
-        
-        echo '<?xml version="1.0" encoding="UTF-8"?>';
-        echo '<Response>';
-        foreach ($this->replies as $reply)
+        $controller = $this->get_state('initial_controller');
+        if (!$controller)
         {
-            echo "<Sms>".escape($reply)."</Sms>";
+            return $this->service->get_default_controller();
         }
-        echo '</Response>';
-        
+        return $controller;
     }
-
-    function get_state($arg)
+    
+    function set_initial_controller($controller)
     {
-        return $this->state->get_arg($arg);
+        $this->set_state('initial_controller', $controller);
+    }
+    
+    function get_state($name)
+    {
+        return $this->state->get($name);
     }
 
     function reset_state()
@@ -59,20 +70,19 @@ class SMS_Request
         return $this->state->reset();
     }    
     
-    function set_state($arg, $value)
+    function save_state()
     {
-        return $this->state->set_arg($arg, $value);
+        $this->state->save();
     }
     
-    function reply($msg)
+    function set_state($name, $value)
     {
-        $this->replies[] = $msg;
-        error_log("SMS reply: $msg");
-    }
+        return $this->state->set($name, $value);
+    }    
     
-    function get_org()
+    function get_user()
     {
-        return $this->org;
+        return $this->user;
     }
     
     function get_message()
@@ -80,8 +90,13 @@ class SMS_Request
         return $this->message;
     }
     
-    function get_phone_number()
+    function get_to_number()
     {
-        return $this->phone_number;
+        return $this->to_number;
     }
+    
+    function get_from_number()
+    {
+        return $this->from_number;
+    }    
 }

@@ -217,7 +217,7 @@ class User extends Entity
 
     public function set_password($password)
     {
-        $this->password = $this->generate_password($password);
+        $this->password = generate_password_hash($password);
     }
     
     public function js_properties()
@@ -281,7 +281,7 @@ class User extends Entity
         {
             if ($this->password == md5($password . $this->salt))
             {
-                $this->password = $this->generate_password($password);
+                $this->password = generate_password_hash($password);
                 $this->salt = '';
                 $this->save();
                 return true;
@@ -296,13 +296,7 @@ class User extends Entity
             return ($this->password == crypt($password, $this->password));
         }
     }
-    
-    function generate_password($password)
-    {
-        $salt = substr(str_replace('+', '.', base64_encode(sha1(microtime(true) . rand(), true))), 0, 22);        
-        return crypt($password, '$2a$11$' . $salt);
-    }
-	
+    	
 	function is_notification_enabled($notification)
 	{
 		return ($this->notifications & $notification) != 0;
@@ -520,4 +514,95 @@ class User extends Entity
         }    
         return false;
     }
+    
+    protected $phone_numbers;
+    protected $phone_numbers_dirty = false;
+
+    function query_phone_numbers()
+    {
+        return UserPhoneNumber::query()->where('user_guid = ?', $this->guid);
+    }
+        
+    function set_phone_number($phone_number_str)
+    {
+        $phone_numbers = PhoneNumber::canonicalize_multi($phone_number_str, $this->country);
+
+        $this->phone_number = $phone_number_str;
+        $this->phone_numbers = array();        
+        foreach ($phone_numbers as $phone_number)
+        {
+            if ($this->guid)
+            {   
+                $user_phone_number = $this->query_phone_numbers()
+                    ->where('phone_number = ?', $phone_number)
+                    ->get();
+            }
+            else
+            {
+                $user_phone_number = null;
+            }
+            if (!$user_phone_number)
+            {
+                $user_phone_number = new UserPhoneNumber();
+                $user_phone_number->user_guid = $this->guid;
+                $user_phone_number->phone_number = $phone_number;
+            }            
+            $this->phone_numbers[] = $user_phone_number;
+        }        
+        $this->phone_numbers_dirty = true;
+    }
+    
+    function save()
+    {
+        $res = parent::save();
+        
+        if ($this->phone_numbers_dirty)
+        {            
+            $newIds = array_map(function($op) { return $op->id; }, $this->phone_numbers);        
+            
+            foreach ($this->query_phone_numbers()
+                ->where('confirmed = 0')
+                ->where_not_in('id', $newIds)
+                ->filter() 
+                    as $oldPhoneNumber)
+            {
+                $oldPhoneNumber->delete();
+            }
+            
+            foreach ($this->phone_numbers as $phone_number)
+            {
+                $phone_number->user_guid = $this->guid;
+                $phone_number->save();
+            }        
+            $this->phone_numbers_dirty = false;
+        }    
+        return $res;
+    }
+
+    function set_password_reset_code($code)
+    {
+        if ($code != null)
+        {
+            $this->set_metadata('password_reset_code', generate_password_hash($code));
+            $this->set_metadata('password_reset_time', time());        
+        }
+        else
+        {
+            $this->set_metadata('password_reset_code', null);
+            $this->set_metadata('password_reset_time', null);                
+        }        
+    }    
+    
+    function has_password_reset_code($code)
+    {        
+        $code_time = $this->get_metadata('password_reset_time');    
+        if (!$code_time || time() - $code_time > 60*60*24*7)
+        {
+            return false;
+        }
+        
+        $code_hash = $this->get_metadata('password_reset_code');    
+        
+        return ($code_hash && $code && $code_hash == crypt(strtoupper($code), $code_hash));
+    }    
 }

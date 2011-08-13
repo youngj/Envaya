@@ -45,10 +45,9 @@ class Action_Discussion_AddMessage extends Action
         
         $time = time();
         
-        $message = new DiscussionMessage();
+        $message = $topic->new_message();
         $message->from_name = $name;
         $message->from_location = $location;
-        $message->container_guid = $topic->guid;
         $message->subject = "RE: {$topic->subject}";            
         $message->time_posted = $time;
         $message->set_content($content, true);

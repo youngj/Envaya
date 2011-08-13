@@ -28,7 +28,7 @@ class Widget_Contact extends Widget
         $org->email = $email;
         $this->set_metadata('public_email', sizeof(get_input_array('public_email')) ? 'yes' : 'no');
 
-        $org->phone_number = get_input('phone_number');
+        $org->set_phone_number(get_input('phone_number'));
         $this->set_metadata('public_phone', sizeof(get_input_array('public_phone')) ? 'yes' : 'no');
         $org->set_metadata('contact_name', get_input('contact_name'));
         $org->set_metadata('contact_title', get_input('contact_title'));

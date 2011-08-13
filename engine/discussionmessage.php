@@ -16,6 +16,13 @@ class DiscussionMessage extends Entity
         'Mixin_Content'
     );
     
+    function get_text_content()
+    {
+        return Markup::sanitize_html($this->content, array(
+            'AutoFormat.Linkify' => false,
+            'HTML.AllowedElements' => ''
+        ));    
+    }
     
     function get_url()
     {

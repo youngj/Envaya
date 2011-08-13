@@ -95,8 +95,8 @@ class Query_SelectUser extends Query_SelectEntity
             }
             else
             {                   
-                $org_guids = array_keys($matches);
-                $sql_guids = implode(',',$org_guids);
+                $user_guids = array_keys($matches);
+                $sql_guids = implode(',',$user_guids);
              
                 $this->where("guid in ($sql_guids)");
                 $this->order_by("FIND_IN_SET(guid, '$sql_guids')", true);

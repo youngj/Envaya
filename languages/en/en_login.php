@@ -25,5 +25,7 @@ return array(
         
     'login:resetreq:notfound' => 'The username or email address %s was not found on Envaya. Make sure you have typed it correctly and try again.',
 
+    'login:resetreq:sms_sent' => "A password reset code has been sent via SMS to the phone number on your Envaya account.",
+        
     'login:username_or_email' => 'Username or Email',    
 );

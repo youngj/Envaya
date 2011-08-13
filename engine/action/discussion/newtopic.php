@@ -66,9 +66,8 @@ class Action_Discussion_NewTopic extends Action
         }
         $topic->set_metadata('uniqid', $uniqid);
         $topic->save();
-                
-        $message = new DiscussionMessage();
-        $message->container_guid = $topic->guid;
+
+        $message = $topic->new_message();        
         $message->subject = $subject;
         $message->from_name = $name;        
         $message->from_location = $location;

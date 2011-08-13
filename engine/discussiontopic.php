@@ -14,6 +14,13 @@ class DiscussionTopic extends Entity
         'snippet' => '',
     );    
     
+    function new_message()
+    {
+        $message = new DiscussionMessage();
+        $message->container_guid = $this->guid;
+        return $message;
+    }
+    
     function get_first_message()
     {
         return DiscussionMessage::get_by_guid($this->first_message_guid);

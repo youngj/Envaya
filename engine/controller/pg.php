@@ -38,6 +38,12 @@ class Controller_Pg extends Controller
         $action = new Action_ForgotPassword($this);
         $action->execute();
     }
+
+    function action_password_reset_code()
+    {
+        $action = new Action_PasswordResetCode($this);
+        $action->execute();    
+    }
     
     function action_password_reset()
     {
@@ -83,29 +89,32 @@ class Controller_Pg extends Controller
     }
 
     function action_receive_sms()
-    {
-        $from = @$_REQUEST['From'];
-        $body = @$_REQUEST['Body'];
-        
-        if (!Twilio::is_validated_request())
+    {        
+        if (Config::get('twilio_validation_enabled') && !Twilio::is_validated_request())
         {
             $this->set_status(403);
             $this->set_content("Invalid request signature");
-            error_log("Invalid request signature");
             throw new RequestAbortedException();
         }
 
-        error_log("SMS received:\n from=$from body=$body");
+        $from = @$_REQUEST['From'];
+        $to = @$_REQUEST['To'];
+        $body = @$_REQUEST['Body'];
+                
+        error_log("SMS received:\n from=$from to=$to body=$body");
 
-        if ($from && $body)
-        {
-            $sms_request = new SMS_Request($from, $body);
-            $sms_request->execute();
-        }
-        else
-        {
-            throw new NotFoundException();
-        }
+        $request = new SMS_Request($from, $to, $body);
+        
+        $initial_controller = $request->get_initial_controller();
+        
+        $initial_controller->set_request($request);
+        
+        $controller = $initial_controller->execute($body) ?: $initial_controller;
+        
+        $request->save_state();
+        
+        $this->set_content_type('text/xml');
+        $this->set_content($controller->get_response_xml());
     }
 
     function action_delete_comment()
@@ -455,7 +464,7 @@ class Controller_Pg extends Controller
         $name = get_input('name');
         $email = get_input('email');
         $website = get_input('website');
-        $phone_numbers = OrgPhoneNumber::split_phone_number(get_input('phone_number'));
+        $phone_numbers = PhoneNumber::canonicalize_multi(get_input('phone_number'));
         
         $orgs_by_name = $orgs_by_email = $orgs_by_website = $orgs_by_phone = array();       
         
@@ -485,13 +494,13 @@ class Controller_Pg extends Controller
         
         if (sizeof($phone_numbers) > 0)
         {
-            $last_digits = array_map(function($pn) { return OrgPhoneNumber::get_last_digits($pn); }, $phone_numbers);
+            $last_digits = array_map(function($pn) { return UserPhoneNumber::get_last_digits($pn); }, $phone_numbers);
             
-            $phone_number_entities = OrgPhoneNumber::query()->where_in('last_digits', $last_digits)->filter();        
+            $phone_number_entities = UserPhoneNumber::query()->where_in('last_digits', $last_digits)->filter();        
             
-            $org_guids = array_map(function($p) { return $p->org_guid; }, $phone_number_entities);            
+            $user_guids = array_map(function($p) { return $p->user_guid; }, $phone_number_entities);            
             
-            $orgs_by_phone = Organization::query()->where_in('guid', $org_guids)->filter();
+            $orgs_by_phone = Organization::query()->where_in('guid', $user_guids)->filter();
         }
         
         // if there's a likely unique match by website or email, avoid searching by name

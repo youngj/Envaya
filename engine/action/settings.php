@@ -52,7 +52,7 @@ class Action_Settings extends Action
         $phone = get_input('phone');
         if ($phone != $user->phone_number)
         {
-            $user->phone_number = $phone;
+            $user->set_phone_number($phone);
             SessionMessages::add(__('user:phone:success'));
         }
 

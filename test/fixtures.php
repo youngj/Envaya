@@ -26,7 +26,7 @@ return function() {
     {
         $org = get_or_create_org("testposter$i");        
         $set_test_defaults($org);        
-        $org->phone_number = "cell: $i$i$i$i$i$i$i, fax: +124124129481";                        
+        $org->set_phone_number("cell: $i$i$i$i$i$i$i, fax: +124124129481");
         $org->name = "Test Poster$i";
         $org->email = str_replace('@',"+p$i@", $admin_email);
         $org->save();        
