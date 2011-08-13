@@ -10,7 +10,7 @@ echo "Simulating SMS $from -> $to\n";
 
 while (true)
 {
-    $msg = _readline("> ");
+    $msg = readline("> ");
     try
     {
         $res = file_get_contents(abs_url("/pg/receive_sms?From=".urlencode($from)

@@ -36,17 +36,20 @@ function print_msg($msg)
     echo "\n";
 }
 
-// readline from http://us3.php.net/manual/en/function.readline.php#49937
-function _readline($prompt="") {
-    echo $prompt;
-    $o = "";
-    $c = "";
-    while ($c!="\r"&&$c!="\n") {
-        $o.= $c;
-        $c = fread(STDIN, 1);
+if (!function_exists('readline'))
+{
+    // readline for windows from http://us3.php.net/manual/en/function.readline.php#49937
+    function readline($prompt="") {
+        echo $prompt;
+        $o = "";
+        $c = "";
+        while ($c!="\r"&&$c!="\n") {
+            $o.= $c;
+            $c = fread(STDIN, 1);
+        }
+        fgetc(STDIN);
+        return $o;
     }
-    fgetc(STDIN);
-    return $o;
 }
 
 function get_environment()
@@ -62,7 +65,7 @@ function get_environment()
 
 function prompt_default($prompt, $default)
 {
-    return _readline("$prompt [$default]") ?: $default;
+    return readline("$prompt [$default]") ?: $default;
 }
 
 function render_config_template($src_file, $dest_file)
@@ -88,12 +91,16 @@ function render_config_template($src_file, $dest_file)
     }
 }
 
-if (!function_exists('pcntl_signal'))
+// stubs for windows
+if (!function_exists('posix_setpgid'))
 {
-    // stubs for windows
+    function posix_setpgid($a,$b) {}
+}
+
+if (!function_exists('pcntl_signal'))
+{   
     function pcntl_signal($a,$b) {}
     function pcntl_signal_dispatch() {}
-    function posix_setpgid($a,$b) {}
     define('SIGTERM', 0);
     define('SIGINT', 0);
 }
