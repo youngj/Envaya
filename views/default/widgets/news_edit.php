@@ -9,6 +9,8 @@
     
     echo view('widgets/news_edit_posts', array('widget' => $widget));    
     echo view('widgets/news_edit_feeds', array('widget' => $widget));    
+    
+    echo view('widgets/news_edit_sms', array('widget' => $widget));    
                 
     echo view("widgets/edit_form", array(
         'widget' => $widget,

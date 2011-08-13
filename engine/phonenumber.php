@@ -47,4 +47,60 @@ class PhoneNumber
         }
         return array_keys($phone_numbers_map);    
     }                
+    
+    static function get_international_prefix($country_code = '')
+    {
+        switch ($country_code)
+        {
+            case 'rw':
+                return '00';
+            case 'tz':
+                return '000';
+            case 'us':
+                return '011';
+            default:
+                return '+';
+        }
+    }
+    
+    static function get_dialed_number($phone_number, $user_country_code)
+    {
+        //$phone_number = static::canonicalize($phone_number);        
+        $phone_country_code = static::get_country_code($phone_number);
+        
+        if ($phone_country_code != $user_country_code)
+        {
+            return static::get_international_prefix($user_country_code) . $phone_number;
+        }
+        else
+        {
+            return $phone_number;
+        }
+    }
+    
+    static function get_country_code($phone_number)
+    {
+        $c1 = substr($phone_number, 0, 1);
+        $c2 = substr($phone_number, 0, 2);
+        $c3 = substr($phone_number, 0, 3);
+        
+        if ($c1 == '1')
+        {
+            // could be anywhere in NANP but just say US for now
+            // http://en.wikipedia.org/wiki/List_of_North_American_Numbering_Plan_area_codes
+            return 'us';
+        }
+        
+        switch ($c3)
+        {
+            case '231':
+                return 'lr';
+            case '250':
+                return 'rw';
+            case '255':
+                return 'tz';                
+        }
+
+        return null;
+    }
 }

@@ -38,17 +38,10 @@ function print_msg($msg)
 
 if (!function_exists('readline'))
 {
-    // readline for windows from http://us3.php.net/manual/en/function.readline.php#49937
-    function readline($prompt="") {
+    // readline for windows from http://www.php.net/manual/en/function.readline.php#104181
+    function readline($prompt="") {    
         echo $prompt;
-        $o = "";
-        $c = "";
-        while ($c!="\r"&&$c!="\n") {
-            $o.= $c;
-            $c = fread(STDIN, 1);
-        }
-        fgetc(STDIN);
-        return $o;
+        return stream_get_line(STDIN, 1024, PHP_EOL);
     }
 }
 

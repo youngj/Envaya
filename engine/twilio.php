@@ -32,17 +32,16 @@ class Twilio
         return $validator->validate($expected_signature, $url, $_POST);
     }
     
+    static function format_number($phone_number)
+    {
+        $phone_number = preg_replace('/[^\d]/','', $phone_number);
+        return "+$phone_number";
+    }
+    
     static function send_sms_now($from, $to, $msg)
     {
-        if ($from[0] != '+')
-        {
-            $from = "+$from";
-        }    
-    
-        if ($to[0] != '+')
-        {
-            $to = "+$to";
-        }
+        $from = static::format_number($from);
+        $to = static::format_number($to);   
     
         $twilio = static::get_client();    
         $twilio->account->sms_messages->create(

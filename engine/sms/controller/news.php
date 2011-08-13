@@ -237,7 +237,7 @@ To publish a message to your News page on Envaya, txt P + your message.");
         catch (NotFoundException $ex)
         {
             $msg = $ex->getMessage();
-            $this->reply($msg ?: "Unknown command. Txt HELP for a list of commands. More at http://envaya.org/sms");
+            $this->reply($msg ?: "Unknown command. Txt HELP for a list of commands.");
             return $this;
         }
     }
