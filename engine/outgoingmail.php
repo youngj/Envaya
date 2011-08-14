@@ -15,6 +15,7 @@ class OutgoingMail extends Model
     const Failed = 2;
     const Sent = 3;
     const Held = 4;
+    const Rejected = 5;
 
     static $table_name = 'outgoing_mail';
     static $table_attributes = array(
@@ -204,9 +205,16 @@ class OutgoingMail extends Model
         switch ($this->status)
         {
             case static::Queued: return __('email:queued');
-            case static::Failed: return __('email:failed');
+            case static::Failed: 
+                $msg = __('email:failed');
+                if ($this->error_message)
+                {
+                    $msg .= ": ".escape($this->error_message);
+                }        
+                return $msg;
             case static::Sent: return __('email:sent');
             case static::Held: return __('email:held');
+            case static::Rejected: return __('email:rejected');
         }
     }
 }

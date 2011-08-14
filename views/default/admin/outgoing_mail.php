@@ -21,10 +21,10 @@
         echo "<th>Subject</th>";
         echo "<th>Time Queued</th>";
         echo "<th>Time Sent</th>";
-        echo "<th>Error</th>";
         echo "<th>Status</th>";        
         echo "<th>&nbsp;</th>";
-        echo "</tr>";    
+        echo "</tr>";   
+        
     foreach ($mails as $mail)
     {
         echo "<tr>";
@@ -32,13 +32,13 @@
         echo "<td>".escape($mail->subject)."</td>";
         echo "<td style='white-space:nowrap'>".friendly_time($mail->time_queued)."</td>";
         echo "<td style='white-space:nowrap'>".friendly_time($mail->time_sent)."</td>";
-        echo "<td>".escape($mail->error_message)."</td>";
-        echo "<td>".$mail->get_status_text()."</td>";        
-        echo "<td>".view('input/post_link', array(
-            'href' => "/admin/resend_mail?id={$mail->id}",
-            'confirm' => __('areyousure'),
-            'text' => __('email:resend'),
-        ))."</td>";
+        echo "<td>".$mail->get_status_text()."</td>";     
+
+        echo "<td>";        
+        echo "<a href='/admin/view_mail?id={$mail->id}'>".__('view')."</a>";      
+        echo " &middot; ";                
+        echo view('admin/mail_actions', array('mail' => $mail));
+        echo "</td>";
         echo "</tr>";
     }    
     echo "</table>";

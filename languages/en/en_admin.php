@@ -25,6 +25,10 @@ return array(
     'email:queued' => "Queued",
     'email:failed' => "Failed",
     'email:held' => "Held pending approval",
+    'email:rejected' => "Rejected",
+    'email:reject' => "Reject",
+    'email:unreject' => "Unreject",
+    'email:view' => "View Email",
     'email:stuck_reminder' => "Stuck mail notification",
 
     'email:registernotify:subject' => "New organization registered: %s",

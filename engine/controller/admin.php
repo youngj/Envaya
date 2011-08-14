@@ -21,6 +21,27 @@ class Controller_Admin extends Controller
         $action->execute();        
     }
     
+    function action_set_mail_status()
+    {
+        $action = new Action_Admin_SetMailStatus($this);
+        $action->execute();        
+    }    
+    
+    function action_view_mail()
+    {
+        $id = (int)get_input('id');
+        $mail = OutgoingMail::query()->where('id = ?', $id)->get();
+        if (!$mail)
+        {
+            throw new NotFoundException();
+        }
+        
+        $this->page_draw(array(
+            'title' => __('email:view'),
+            'content' => view('admin/view_mail', array('mail' => $mail))
+        ));
+    }
+    
     function action_recent_photos()
     {
         $this->page_draw(array(

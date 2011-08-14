@@ -1,6 +1,6 @@
 <?php
 
-class Action_Admin_ResendMail extends Action
+class Action_Admin_SetMailStatus extends Action
 {
     function before()
     {
@@ -16,8 +16,13 @@ class Action_Admin_ResendMail extends Action
         {
             throw new NotFoundException();
         }        
-        $mail->send(true);        
-        SessionMessages::add(__('email:sent_ok'));
+        
+        $status = (int)get_input('status');
+        
+        $mail->status = $status;        
+        $mail->save();  
+        
+        SessionMessages::add(__('email:status_changed'));
         $this->redirect();
     }
 }    
