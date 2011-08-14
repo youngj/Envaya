@@ -14,8 +14,8 @@ class EnvayaHTTPServer extends HTTPServer
     function __construct()
     {
         $domain = Config::get('domain');
-        $domain_parts = explode(':', $domain, 2);
-        $port = isset($domain_parts[1]) ? ((int)$domain_parts[1]) : 80;
+        list($host, $port) = explode(':', $domain, 2);
+        $port = ((int)$port) ?: 80;
         
         parent::__construct(array(
             'port' => $port,

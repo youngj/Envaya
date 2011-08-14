@@ -20,7 +20,7 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_delete_post',
         ),                   
         array(
-            'regex' => '(yes)\b',
+            'regex' => '(y|yes)\b',
             'action' => 'action_confirm_post',
         ),                   
         array(
@@ -40,7 +40,7 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_logout',
         ),            
         array(
-            'regex' => '(?P<message>.{20,})',
+            'regex' => '(?P<message>.*)',
             'action' => 'action_default',
         ),         
     );
@@ -67,9 +67,12 @@ class SMS_Controller_News extends SMS_Controller
         if (!$user)
         {
             $this->set_state('message', $message);
+            $this->set_state('login_prompt', true);
             $this->reply("To post your message, you need to log in to Envaya. Txt LOGIN then your Envaya username then your password");      
             return;
         }        
+        
+        $this->set_state('login_prompt', false);
         
         $news = $user->get_widget_by_class('News');
         if (!$news->guid)
@@ -121,6 +124,7 @@ To delete this news update, txt DELETE {$post->guid}.");
         else
         {
             $this->reply("You are logged out. To log in, txt LOGIN then your Envaya username then your password");    
+            $this->set_state('login_prompt', true);
         }
     }
     
@@ -149,6 +153,7 @@ To publish a message to your News page on Envaya, txt P + your message.");
         if (!$this->user)
         {
             $this->reply("To log in to Envaya, txt LOGIN then your Envaya username then your password");            
+            $this->set_state('login_prompt', true);
         }
         else
         {
@@ -160,6 +165,13 @@ To publish a message to your News page on Envaya, txt P + your message.");
     {
         $username = $this->param('username');
         $password = $this->param('password');
+        
+        $this->try_login($username, $password);        
+    }
+    
+    function try_login($username, $password)
+    {
+        $this->set_state('login_prompt', true);
         
         $user = User::get_by_username($username);
         
@@ -175,13 +187,14 @@ To publish a message to your News page on Envaya, txt P + your message.");
         }
         else if (!$user->has_password($password))
         {
-            $this->reply("The password '$password' was incorrect for username '$username'. Please correct the password and try again.");
+            $this->reply("The password '$password' was incorrect for username '$username'. Please correct the password and try again.");            
             return;
         }
         else
         {
             $this->user = $user;            
             
+            $this->set_state('login_prompt', false);
             $this->set_state('user_guid', $user->guid);
             
             $message = $this->get_state('message');
@@ -194,13 +207,28 @@ To publish a message to your News page on Envaya, txt P + your message.");
             {                        
                 $this->action_index();
             }
-        }            
+        }                
     }
     
     function action_default()
     {
-        $this->reply("To publish your last message on your News page, reply with txt YES. Or, txt HELP for other options.");
-        $this->set_state('message', $this->param('message'));
+        $message = $this->param('message');
+    
+        if ($this->get_state('login_prompt'))
+        {
+            list($username, $password) = explode(" ", $message, 2);
+            $this->try_login($username, $password);
+        }
+        else if (strlen($message) > 20)
+        {    
+            $snippet = substr($message, 0, 20);
+            $this->reply("To publish your last message (\"$snippet...\") on your News page, reply with txt YES. Or, txt HELP for other options.");
+            $this->set_state('message', $message);
+        }
+        else
+        {
+            throw new NotFoundException();
+        }
     }       
     
     function action_confirm_post()
