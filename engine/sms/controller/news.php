@@ -144,6 +144,7 @@ To publish a message to your News page on Envaya, txt P + your message.");
     
     function action_logout()
     {
+        $this->set_state('login_prompt', false);
         $this->set_state('user_guid', null);
         $this->reply("Successfully logged out.");
     }
@@ -152,7 +153,7 @@ To publish a message to your News page on Envaya, txt P + your message.");
     {
         if (!$this->user)
         {
-            $this->reply("To log in to Envaya, txt LOGIN then your Envaya username then your password");            
+            $this->reply("To log in to Envaya, txt \"LOGIN [your Envaya username] [your password]\".");            
             $this->set_state('login_prompt', true);
         }
         else
@@ -177,17 +178,17 @@ To publish a message to your News page on Envaya, txt P + your message.");
         
         if (!$user)
         {
-            $this->reply("The username '$username' does not exist on Envaya. Please correct the username and try again.");
+            $this->reply("The username '$username' does not exist on Envaya. Please correct the username, then txt \"LOGIN [your username] [your password]\"");
             return;
         }
         else if (!($user instanceof Organization))
         {
-            $this->reply("The username '$username' cannot access this system because it is not registerd as an Organization");
+            $this->reply("The username '$username' cannot access this system because it is not registered as an Organization.");
             return;
         }
         else if (!$user->has_password($password))
         {
-            $this->reply("The password '$password' was incorrect for username '$username'. Please correct the password and try again.");            
+            $this->reply("The password '$password' was incorrect for username '$username'. Please correct the password, then txt \"LOGIN [your username] [your password]\".");            
             return;
         }
         else
@@ -246,6 +247,8 @@ To publish a message to your News page on Envaya, txt P + your message.");
     
     function action_help()
     {    
+        $this->set_state('login_prompt', false);
+    
         ob_start();
         echo "Send SMS to publish updates on your News page on Envaya.\n";
         echo "To publish news, txt P + your message.\n";

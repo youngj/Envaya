@@ -93,6 +93,5 @@ class SMS_Controller extends Router implements Serializable
     function reply($msg)
     {
         $this->replies[] = substr($msg, 0, 160);
-        error_log("SMS reply: $msg");
     }
 }

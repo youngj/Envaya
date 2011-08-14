@@ -100,9 +100,7 @@ class Controller_Pg extends Controller
         $from = @$_REQUEST['From'];
         $to = @$_REQUEST['To'];
         $body = @$_REQUEST['Body'];
-                
-        error_log("SMS received:\n from=$from to=$to body=$body");
-
+                        
         $request = new SMS_Request($from, $to, $body);
         
         $initial_controller = $request->get_initial_controller();
