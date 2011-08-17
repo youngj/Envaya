@@ -26,7 +26,6 @@ class DonateTest extends WebDriverTest
         
         // test envaya admins notified
         $email = $this->getLastEmail("650-555-1212");
-        error_log($email);
         $this->assertContains("Test User", $email);        
         
         // test information passed to TCI form

@@ -13,6 +13,9 @@ $dataroot = Config::get('dataroot').'/test_data';
 return array(        
     'captcha_enabled' => false,
     'ssl_enabled' => false,    
+    'sms_backend' => "SMS_Provider_Mock",
+    'mock_mail_file' => "$dataroot/sms.out",
+    'mail_backend' => "Mail_Mock",
     'mock_mail_file' => "$dataroot/mail.out",
     'domain' => 'localhost:3001',
     'queue_host' => 'localhost',

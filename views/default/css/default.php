@@ -180,7 +180,7 @@
     top:200px;
 }
 
-.linkUrl .input-text, .linkText .input-text
+.modalBody .input-text
 {
     width:350px;
 }

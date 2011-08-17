@@ -90,7 +90,7 @@ class Controller_Pg extends Controller
 
     function action_receive_sms()
     {        
-        if (Config::get('twilio_validation_enabled') && !Twilio::is_validated_request())
+        if (!SMS::get_provider()->is_validated_request())
         {
             $this->set_status(403);
             $this->set_content("Invalid request signature");

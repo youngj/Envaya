@@ -72,7 +72,7 @@ class Action_ForgotPassword extends Action
         $user->set_password_reset_code($code);
         $user->save();
     
-        Twilio::send_sms(Config::get('news_phone_number'), $phone_number, 
+        SMS::send(Config::get('news_phone_number'), $phone_number, 
             "$code\n\nSomebody has requested a new password for your Envaya account. If you requested this, enter the above code on the website to reset your password.");
     
         SessionMessages::add(__('login:resetreq:sms_sent'));

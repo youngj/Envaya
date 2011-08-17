@@ -28,6 +28,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     {
         global $TEST_CONFIG;        
         @unlink($TEST_CONFIG['mock_mail_file']);    
+        @unlink($TEST_CONFIG['mock_sms_file']);    
     }
     
     public function init_selenium()

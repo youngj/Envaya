@@ -44,9 +44,13 @@ return array(
         'sw' => 'Kiswahili',
     ),
     'language' => "en",
-	
+    
+    'sms_backend' => 'SMS_Provider_Twilio',
+    'mock_sms_file' => null,
+    
+    'mail_backend' => 'Mail_SMTP',	
     'mock_mail_file' => null,
-
+    
     'smtp_host' => "localhost",
     'smtp_port' => 25,
     'smtp_user' => '',

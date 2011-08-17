@@ -4,7 +4,7 @@ require "start.php";
 require "scripts/cmdline.php";
 
 $from = "+1234567890";
-$to = Twilio::format_number(Config::get('news_phone_number'));
+$to = SMS_Provider_Twilio::format_number(Config::get('news_phone_number'));
 
 echo "Simulating SMS $from -> $to\n";
 

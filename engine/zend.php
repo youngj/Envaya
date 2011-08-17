@@ -26,23 +26,8 @@ class Zend
     {
         if (!static::$mailer)
         {
-            if (Config::get('mock_mail_file'))
-            {
-                static::$mailer = new Mail_Mock();
-            }
-            else
-            {                
-                static::load('Zend_Mail_Transport_Smtp');
-            
-                static::$mailer = new Zend_Mail_Transport_Smtp(Config::get('smtp_host'),
-                    array(
-                        'port' => Config::get('smtp_port'),
-                        'username' => Config::get('smtp_user'),                        
-                        'password' => Config::get('smtp_pass'),
-                        'auth' => 'Login',
-                    )                                                
-                );
-            }
+            $mail_class = Config::get('mail_backend');
+            static::$mailer = new $mail_class();
         }
         return static::$mailer;    
     }
