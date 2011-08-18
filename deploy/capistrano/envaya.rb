@@ -29,6 +29,7 @@ namespace :deploy do
         backup_db
         update
         restart
+        update_test
     end
     
     # sets up a server with envaya's code, but no particular services installed 
@@ -45,9 +46,7 @@ namespace :deploy do
     task :update_test do
         test_dir = "#{deploy_to}/test"
         
-        rsync = "rsync -azv --delete --exclude='.git' --exclude='config/local.php' --chmod=u+rx,g+rx,o+rx . root@envaya.org:#{test_dir}"        
-        puts rsync
-        system(rsync)
+        run "rsync -azv --delete --exclude='config/local.php' --chmod=u+rx,g+rx,o+rx #{current_path}/ #{test_dir}"
         run "cp #{shared_path}/local_test.php #{test_dir}/config/local.php"
     end
         
