@@ -129,7 +129,7 @@ class OutgoingMail extends Model
         if ($immediate)
         {
             $this->save();            
-            return $this->send_now($mail);
+            return $this->send_now();
         }
         else
         {

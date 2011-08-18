@@ -275,7 +275,20 @@ CREATE TABLE `outgoing_mail` (
 	KEY `email_guid` (`email_guid`),
 	KEY `to_guid` (`to_guid`),
     KEY `from_guid` (`from_guid`)
-) ENGINE = MYISAM DEFAULT CHARSET=utf8; 	
+) ENGINE = MYISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `outgoing_sms` (
+	`id` INT NOT NULL AUTO_INCREMENT,		
+    `message` text null,
+    `from_number` varchar(32) not NULL,
+    `to_name` text null,
+    `to_number` varchar(32) not NULL,
+    `time_created` int NULL,
+	`time_sent` int NULL,
+	PRIMARY KEY ( `id` ),
+	KEY `from_number` (`from_number`),
+    KEY `to_number` (`to_number`)
+) ENGINE = MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `discussion_messages` (
     <?php require 'schema/entity_columns.php'; ?>,

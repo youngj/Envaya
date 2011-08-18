@@ -36,7 +36,7 @@ class RegisterTest extends SeleniumTest
 
         $email = $this->getLastEmail("Request for new password");
 
-        $url = $this->getLinkFromEmail($email);
+        $url = $this->getLinkFromText($email);
 
         $this->setUrl($url);
 
@@ -605,7 +605,7 @@ class RegisterTest extends SeleniumTest
         $this->retry('mouseOver', array("//a[@id='loginButton']"));
 
         $email = $this->getLastEmail("New organization registered: Test Partner");
-        $url = $this->getLinkFromEmail($email);
+        $url = $this->getLinkFromText($email);
         $this->open($url);
         
         $this->retry('mouseOver', array("//input[@name='username']"));

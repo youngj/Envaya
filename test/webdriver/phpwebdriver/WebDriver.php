@@ -182,6 +182,12 @@ class WebDriver extends WebDriverBase {
         $data = base64_decode($img);
         $success = file_put_contents($png_filename, $data);
     }
+
+    public function getAlertText()
+    {
+        return $this->doGetRequest("/alert_text");
+    }    
+
     
     public function acceptAlert()
     {

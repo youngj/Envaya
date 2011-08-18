@@ -11,6 +11,10 @@ abstract class SMS_Service
         {
             return new SMS_Service_News();
         }
+        else if ($to_number == PhoneNumber::canonicalize(Config::get('contact_phone_number')))
+        {
+            return new SMS_Service_Contact();
+        }
         else
         {
             return new SMS_Service_Unknown();

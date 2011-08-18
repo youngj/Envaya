@@ -206,7 +206,7 @@ class NetworkTest extends SeleniumTest
         sleep(1);
         $this->mustNotExist("//a[contains(@href, 'testorg')]"); // suggested reverse relationship should not be public
         
-        $approveUrl = $this->getLinkFromEmail($notify_email, 1);
+        $approveUrl = $this->getLinkFromText($notify_email, 1);
         $this->setUrl($approveUrl);
         $this->login('testposter16','testtest');
         $this->ensureGoodMessage();
@@ -245,7 +245,7 @@ class NetworkTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
                                 
         // make sure non-existent org shows up properly, and link in invite email goes to correct URL
-        $networkLink = $this->getLinkFromEmail($inviteEmail, 0);
+        $networkLink = $this->getLinkFromText($inviteEmail, 0);
         $this->setUrl($networkLink);
         $this->mouseOver("//h3[contains(text(),'$invitedOrgName')]");
         $this->mouseOver("//a[@href='mailto:$invitedOrgEmail']");
@@ -253,7 +253,7 @@ class NetworkTest extends SeleniumTest
         // create account with invite code
         
         $inviteUsername = "selenium".time();
-        $inviteLink = $this->getLinkFromEmail($inviteEmail, 1);
+        $inviteLink = $this->getLinkFromText($inviteEmail, 1);
         $realInviteName = "Selenium Org ".time();
         $this->setUrl($inviteLink);
         $this->check("//input[@value='np']");
@@ -319,7 +319,7 @@ class NetworkTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");                
                 
         // log in as admin and approve
-        $loginUrl = $this->getLinkFromEmail($adminEmail);
+        $loginUrl = $this->getLinkFromText($adminEmail);
         $this->setUrl($loginUrl);
         $this->login('testadmin','testtest');
         $this->ensureGoodMessage();

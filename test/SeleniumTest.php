@@ -145,6 +145,27 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $this->s->selectFrame("relative=top");
     }
 
+    public function getLastSMS($match = "Message")
+    {
+        return $this->retry('_getLastSMS', array($match));   
+    }
+    
+    public function _getLastSMS($match = "Message")
+    {
+        global $TEST_CONFIG;
+        
+        $mock_sms_file = $TEST_CONFIG['mock_sms_file'];
+        
+        if (!file_exists($mock_sms_file))
+        {    
+            throw new Exception("no messages in file");
+        }        
+        $contents = file_get_contents($mock_sms_file);
+
+        return $this->_matchMessage($match, $contents);
+    }    
+        
+    
     public function getLastEmail($match = "Subject")
     {
         return $this->retry('_getLastEmail', array($match));
@@ -181,39 +202,44 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $contents = preg_replace('/\=([A-F0-9][A-F0-9])/','%$1',$contents);
         $contents = rawurldecode($contents);                
         
+        return $this->_matchMessage($match, $contents);
+    }    
+    
+    public function _matchMessage($match, $contents)
+    {       
         $matchPos = strrpos($contents, $match);
         if ($matchPos === false)
         {
-            throw new Exception("'$match' not found in email");
+            throw new Exception("'$match' not found in message");
         }
         
         $endPos = strpos($contents, '--------', $matchPos);
         if ($endPos === false)
         {
-            throw new Exception("full email not yet written to file");
+            throw new Exception("full message not yet written to file");
         }        
         
         $startPos = strrpos($contents, "========", $matchPos - strlen($contents));
         if ($startPos === false)
         {
-            throw new Exception("email start marker not found");
+            throw new Exception("message start marker not found");
         }                
         $startPos = strpos($contents, "\n", $startPos) + 1;
         
-        $email = substr($contents, $startPos, $endPos - $startPos);                            
+        $message = substr($contents, $startPos, $endPos - $startPos);                            
                                                         
-        return $email;
-    }    
+        return $message;    
+    }
     
-    public function getLinkFromEmail($email, $index = 0)
+    public function getLinkFromText($text, $index = 0)
     {
-        if (!preg_match_all('/http:[^\\s]+/', $email, $matches))
+        if (!preg_match_all('/http:[^\\s]+/', $text, $matches))
         {
-            throw new Exception("couldn't find any links in email $email");
+            throw new Exception("couldn't find any links in $text");
         }
         if ($index >= sizeof($matches[0]))
         {
-            throw new Exception("couldn't find link $index in email $email");
+            throw new Exception("couldn't find link $index in $text");
         }
         return $matches[0][$index];
     }
@@ -255,7 +281,28 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $this->assertGreaterThan(10, $width);
         $this->assertGreaterThan(10, $height);
     }
+     
+    public function sendSMS($from, $to, $msg)
+    {
+        global $TEST_CONFIG;
+        $url = "http://{$TEST_CONFIG['domain']}/pg/receive_sms?From=".urlencode($from)
+            ."&To=".urlencode($to)
+            ."&Body=".urlencode($msg);
+            
+        $res = file_get_contents($url);
         
+        $dom = new DOMDocument();
+        $dom->loadXML($res);                            
+        
+        $replies = array();
+        $smses = $dom->getElementsByTagName('Sms');
+        for ($i = 0; $i < $smses->length; $i++)
+        {
+            $replies[] = $smses->item($i)->textContent;
+        }        
+        return $replies;
+    }
+     
     public function submitFakeCaptcha()
     {
         $answer = $this->getText("//b[@id='captcha_answer']");

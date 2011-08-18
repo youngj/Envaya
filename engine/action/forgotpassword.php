@@ -72,8 +72,10 @@ class Action_ForgotPassword extends Action
         $user->set_password_reset_code($code);
         $user->save();
     
-        SMS::send(Config::get('news_phone_number'), $phone_number, 
-            "$code\n\nSomebody has requested a new password for your Envaya account. If you requested this, enter the above code on the website to reset your password.");
+        $sms = SMS::create(Config::get('news_phone_number'), 
+            $phone_number, 
+            "$code\n\nSomebody has requested a new password for your Envaya account. If you requested this, enter the above code on the website to reset your password.");            
+        $sms->send();
     
         SessionMessages::add(__('login:resetreq:sms_sent'));
         $this->redirect("/pg/password_reset_code?u={$user->guid}");
