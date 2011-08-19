@@ -50,17 +50,7 @@ class PhoneNumber
     
     static function get_international_prefix($country_code = '')
     {
-        switch ($country_code)
-        {
-            case 'rw':
-                return '00';
-            case 'tz':
-                return '000';
-            case 'us':
-                return '011';
-            default:
-                return '+';
-        }
+        return '+';
     }
     
     static function get_dialed_number($phone_number, $user_country_code)

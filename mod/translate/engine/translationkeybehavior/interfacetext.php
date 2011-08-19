@@ -10,7 +10,6 @@ class TranslationKeyBehavior_InterfaceText extends TranslationKeyBehavior
         // don't allow people to sneak in bad HTML into translations
         $value = Markup::sanitize_html($value, array(
             'AutoFormat.Linkify' => false,
-            'HTML.AllowedElements' => 'em,strong,br'
         ));                
         
         $placeholders = Language::get_placeholders($value);

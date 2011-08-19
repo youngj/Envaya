@@ -42,7 +42,7 @@ class Action_Contact extends Action
             throw new ValidationException(__('message:email_empty'));
         }
 
-        validate_email_address($this->email);
+        EmailAddress::validate($this->email);
             
         $mail = OutgoingMail::create($this->get_email_subject(), $this->get_email_body());
         $mail->setReplyTo($this->email);

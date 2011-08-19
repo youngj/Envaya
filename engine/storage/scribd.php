@@ -1,6 +1,6 @@
 <?php
 
-class Storage_Scribd implements Storage
+class Storage_Scribd extends Storage
 {
 	public function get_url($key)
     {

@@ -3,7 +3,7 @@
 /*
  * Stores uploaded files on Amazon S3
  */
-class Storage_S3 implements Storage
+class Storage_S3 extends Storage
 {
     public function get_url($path)
     {

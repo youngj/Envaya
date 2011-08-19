@@ -36,7 +36,7 @@ class Action_PasswordReset extends Action
         $user->save();
 
         SessionMessages::add(__('user:password:success'));
-        login($user);
+        Session::login($user);
         $this->redirect("/pg/dashboard");
     }
 

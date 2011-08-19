@@ -22,6 +22,11 @@ class SMS_Provider_Twilio extends SMS_Provider
         require_once Config::get('root')."/vendors/Services/Twilio.php";
     }
     
+    function init_request()
+    {        
+        return new SMS_Request(@$_REQUEST['From'], @$_REQUEST['To'], @$_REQUEST['Body']);    
+    }
+    
     function send_sms($from, $to, $msg)
     {
         $from = static::format_number($from);

@@ -41,7 +41,7 @@ class Action_Share extends Action
         $emails_list = preg_split('/[\;\,\s]+/', $emails, -1, PREG_SPLIT_NO_EMPTY);
         foreach ($emails_list as $email)
         {
-            validate_email_address($email);
+            EmailAddress::validate($email);
         }
         
         if (!sizeof($emails_list))

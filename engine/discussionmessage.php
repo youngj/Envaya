@@ -87,4 +87,27 @@ class DiscussionMessage extends Entity
         $posted_messages[] = $this->guid;
         Session::set('posted_messages', $posted_messages);    
     }
+    
+    function send_notifications()
+    {
+        $org = $this->get_root_container_entity();
+        $user = $this->get_owner_entity();
+    
+        $reply_to = EmailAddress::add_signed_tag(Config::get('reply_email'), "message{$this->guid}");
+    
+        if ($org->is_notification_enabled(Notification::Discussion)
+            && (!$user || $user->guid != $org->guid))
+        {
+            // notify site of message
+            $mail = OutgoingMail::create(
+                strtr(__('discussions:notification_subject', $org->language), array(
+                    '{name}' => $this->from_name
+                ))   
+            );
+            $mail->setReplyTo($reply_to);
+            $mail->setBodyHtml(view('emails/discussion_message', array('message' => $this)));
+            $mail->send_to_user($org);
+        }
+    }
+    
 }

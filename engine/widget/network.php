@@ -104,7 +104,7 @@ class Widget_Network extends Widget
             $relationship->subject_name = get_input('name');
             $relationship->subject_guid = 0;
             $relationship->invite_subject = get_input('invite') ? true : false;
-            $relationship->subject_email = validate_email_address(trim(get_input('email')));
+            $relationship->subject_email = EmailAddress::validate(trim(get_input('email')));
             
             $matchingRelationships = $org->query_relationships()
                 ->where('`type` = ?', $relationship->type)
@@ -125,7 +125,7 @@ class Widget_Network extends Widget
             
             try
             {
-                $relationship->subject_email = validate_email_address(trim(get_input('email')));        
+                $relationship->subject_email = EmailAddress::validate(trim(get_input('email')));        
             }
             catch (ValidationException $ex)
             {
@@ -257,7 +257,7 @@ class Widget_Network extends Widget
         else
         {
             $relationship->subject_name = get_input('name');
-            $relationship->subject_email = validate_email_address(get_input('email'));
+            $relationship->subject_email = EmailAddress::validate(get_input('email'));
             $relationship->subject_website = $this->clean_url(get_input('website'));            
             $relationship->subject_phone = get_input('phone_number');            
         }

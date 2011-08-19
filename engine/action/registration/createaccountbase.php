@@ -47,7 +47,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
         
         User::validate_password($password, $password2, $name, $username);
 
-        $email = validate_email_address(trim(get_input('email')));
+        $email = EmailAddress::validate(trim(get_input('email')));
 
         if (!get_input('ignore_possible_duplicates'))
         {
@@ -90,7 +90,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
 
         $org->init_default_widgets();
         
-        login($org, false);
+        Session::login($org, false);
 
         SessionMessages::add(__('register:created_ok'));   
 

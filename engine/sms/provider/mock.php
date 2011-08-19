@@ -17,6 +17,12 @@ class SMS_Provider_Mock extends SMS_Provider
         fclose($file);
     }    
     
+    function init_request()
+    {
+        $twilio = new SMS_Provider_Twilio();
+        return $twilio->init_request();
+    }
+    
     function is_validated_request()
     {
         return true;

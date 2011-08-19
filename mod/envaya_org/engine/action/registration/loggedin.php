@@ -22,7 +22,7 @@ class Action_Registration_LoggedIn extends Action
 
     function process_input()
     {            
-        logout();
+        Session::logout();
         $this->redirect("/org/new");            
     }
 }

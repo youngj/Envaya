@@ -48,39 +48,18 @@ class Action_PostComment extends Action
 		$comment->owner_guid = $userId;
 		$comment->name = $name;
         $comment->location = $location;
-		$comment->content = $content;		
+		$comment->content = $content;
 		$comment->save();
-        $comment->queue_guess_language('content');                
 	
-		$widget->num_comments = $widget->query_comments()->count();
-		$widget->save();
-	
+        $widget->refresh_attributes();
+		$widget->save();    	
+        
 		if (!$userId)
 		{
             $comment->set_session_owner();
 		}
 		
-		$org = $widget->get_root_container_entity();
-		
-		$notification_subject = sprintf(__('comment:notification_subject', $org->language), 
-			$comment->get_name());
-		$notification_body = view('emails/comment_added', array(
-            'comment' => $comment, 
-            'url' => "$comments_url#comments",
-        ));
-		
-		if ($org && $org->email && $org->is_notification_enabled(Notification::Comments) 
-				&& $userId != $org->guid)
-		{		
-            $mail = OutgoingMail::create($notification_subject, $notification_body);        
-			$mail->send_to_user($org);
-		}
-
-        $mail = OutgoingMail::create(
-            sprintf(__('comment:notification_admin_subject'), $comment->get_name(), $org->name),
-            $notification_body
-        );
-        $mail->send_to_admin();
+        $comment->send_notifications();        
 		
 		SessionMessages::add(__('comment:success'));
 		$this->redirect($comments_url);        

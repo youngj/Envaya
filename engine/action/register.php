@@ -29,7 +29,7 @@ class Action_Register extends Action
 
         User::validate_password($password, $password2, $name, $username);
 
-        $email = validate_email_address(trim(get_input('email')));
+        $email = EmailAddress::validate(trim(get_input('email')));
         
         if (User::get_by_username($username, true))
         {
@@ -64,7 +64,7 @@ class Action_Register extends Action
         }
         else
         {
-            login($user, false);
+            Session::login($user, false);
             $this->redirect_next($user);
         }
     }    

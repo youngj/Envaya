@@ -48,7 +48,7 @@ class Action_Discussion_AddMessage extends Action
         $message = $topic->new_message();
         $message->from_name = $name;
         $message->from_location = $location;
-        $message->subject = "RE: {$topic->subject}";            
+        $message->subject = "RE: {$topic->subject}";
         $message->time_posted = $time;
         $message->set_content($content, true);
         $message->set_metadata('uniqid', $uniqid);
@@ -70,18 +70,7 @@ class Action_Discussion_AddMessage extends Action
         
         $message->post_feed_items();
         
-        if ($org->is_notification_enabled(Notification::Discussion)
-            && (!$user || $user->guid != $org->guid))
-        {
-            // notify site of message
-            $mail = OutgoingMail::create(
-                strtr(__('discussions:notification_subject', $org->language), array(
-                    '{name}' => $message->from_name
-                ))   
-            );
-            $mail->setBodyHtml(view('emails/discussion_message', array('message' => $message)));
-            $mail->send_to_user($org);
-        }
+        $message->send_notifications();
         
         SessionMessages::add_html(__('discussions:message_added')
             . view('discussions/invite_link', array('topic' => $topic)));        

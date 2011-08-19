@@ -3,7 +3,7 @@
 /*
  * Stores uploaded files on the local computer
  */
-class Storage_Local implements Storage
+class Storage_Local extends Storage
 {
 	public function get_url($path)
 	{	

@@ -45,7 +45,7 @@ class Action_Settings extends Action
         $email = trim(get_input('email'));
         if ($email != $user->email)
         {
-            $user->email = validate_email_address($email);
+            $user->email = EmailAddress::validate($email);
             SessionMessages::add(__('user:email:success'));
         }
 

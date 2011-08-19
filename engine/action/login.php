@@ -40,7 +40,7 @@ class Action_Login extends Action
         {
             if ($user = $this->authenticate($username,$password))
             {
-                $result = login($user, $persistent);
+                $result = Session::login($user, $persistent);
             }
         }
 

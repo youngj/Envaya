@@ -17,7 +17,7 @@ class Controller_Pg extends Controller
     
     function action_logout()
     {
-        logout();
+        Session::logout();
         $this->redirect('/');
     }    
     
@@ -88,26 +88,48 @@ class Controller_Pg extends Controller
         }
     }
 
+    function action_receive_mail()
+    {
+        // query string in sendgrid should have ?secret=<sendgrid_secret>
+        // http://www.quora.com/What-are-the-security-models-of-SendGrid-APInbox-and-CloudMailin/answer/Tim-Falls
+        $secret = $_REQUEST['secret'];
+      
+        if ($secret !== Config::get('sendgrid_secret'))
+        {
+            $this->set_status(403);
+            $this->set_content("Invalid request secret");
+            throw new RequestAbortedException();        
+        }
+        
+        $mail = new IncomingMail();
+        
+        // this is the format for sendgrid parse api -- todo: generalize like action_receive_sms
+        $mail->subject = $_REQUEST['subject'];
+        $mail->to = $_REQUEST['to'];
+        $mail->text = $_REQUEST['text'];
+        $mail->from = $_REQUEST['from'];
+        
+        $mail->process();
+    }
+    
     function action_receive_sms()
     {        
-        if (!SMS::get_provider()->is_validated_request())
+        $provider = SMS::get_provider();
+    
+        if (!$provider->is_validated_request())
         {
             $this->set_status(403);
             $this->set_content("Invalid request signature");
             throw new RequestAbortedException();
         }
-
-        $from = @$_REQUEST['From'];
-        $to = @$_REQUEST['To'];
-        $body = @$_REQUEST['Body'];
-                        
-        $request = new SMS_Request($from, $to, $body);
+    
+        $request = $provider->init_request();        
         
         $initial_controller = $request->get_initial_controller();
         
         $initial_controller->set_request($request);
         
-        $controller = $initial_controller->execute($body) ?: $initial_controller;
+        $controller = $initial_controller->execute($request->get_message()) ?: $initial_controller;
         
         $request->save_state();
         
@@ -141,7 +163,7 @@ class Controller_Pg extends Controller
     function action_local_store()
     {
         // not for use in production environment
-        $storage_local = get_storage();
+        $storage_local = Storage::get_instance();
 
         if (!($storage_local instanceof Storage_Local))
         {

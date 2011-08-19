@@ -16,8 +16,8 @@ return array(
        
     'cache_backend' => "Cache_Database",
 
-    'admin_email' => "admin@localhost",
-    'post_email' => "post@localhost",
+    'admin_email' => "admin@localhost",    
+    'reply_email' => "reply@localhost",
     'email_from' => "web@localhost",
     'email_pass' => "",    
     
@@ -94,8 +94,9 @@ return array(
     
     'twilio_account_sid' => '',
     'twilio_auth_token' => '',
-    'twilio_validation_enabled' => true,
 
     'contact_phone_number' => '',
     'news_phone_number' => '',
+    
+    'sendgrid_secret' => '',
 );

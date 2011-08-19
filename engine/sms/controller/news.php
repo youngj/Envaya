@@ -260,7 +260,7 @@ To publish a message to your News page on Envaya, txt P + your message.");
     }
     
     public function execute($message)
-    {
+    {    
         try
         {
             return parent::execute($message);

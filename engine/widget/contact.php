@@ -23,7 +23,7 @@ class Widget_Contact extends Widget
 
         $email = trim(get_input('email'));
 
-        validate_email_address($email);
+        EmailAddress::validate($email);
 
         $org->email = $email;
         $this->set_metadata('public_email', sizeof(get_input_array('public_email')) ? 'yes' : 'no');

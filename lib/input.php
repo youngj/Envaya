@@ -126,7 +126,9 @@
         $st = Session::get('__elgg_session');
 
         if (($site_secret) && ($session_id))
+        {
             return md5($site_secret.$timestamp.$session_id.$ua.$st);
+        }
 
         return false;
     }            

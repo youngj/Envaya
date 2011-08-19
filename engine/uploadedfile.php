@@ -99,7 +99,7 @@ class UploadedFile extends Entity
         }
         else
         {
-            return get_storage();
+            return Storage::get_instance();
         }
     }
 
@@ -270,7 +270,7 @@ class UploadedFile extends Entity
         $file = static::new_from_file_input($file_input);
         $file->storage = 'scribd';
         
-        $scribd = get_scribd();
+        $scribd = Storage::get_scribd();
                 
         $res = $scribd->upload(
             $file_input['tmp_name'], 

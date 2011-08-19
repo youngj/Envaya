@@ -4,12 +4,24 @@
  * An interface for storing and retrieving uploaded files;
  * see implementations in storage/ directory.
  */
-interface Storage
+abstract class Storage
 {
-	public function get_url($key);
-	public function upload_file($key, $fs_path, $web_accessible = false, $mime = null);
-	public function delete_object($key);
-	public function copy_object($key, $dest_key, $web_accessible = false);
-	public function get_object_info($key);
-	public function download_file($key, $fs_path);
+	abstract function get_url($key);
+	abstract function upload_file($key, $fs_path, $web_accessible = false, $mime = null);
+	abstract function delete_object($key);
+	abstract function copy_object($key, $dest_key, $web_accessible = false);
+	abstract function get_object_info($key);
+	abstract function download_file($key, $fs_path);
+    
+    static function get_instance()
+    {
+        $storage_backend = Config::get('storage_backend');
+        return new $storage_backend();
+    }
+    
+    static function get_scribd()
+    {
+        require_once Config::get('root')."/vendors/scribd.php";
+        return new Scribd(Config::get('scribd_key'), Config::get('scribd_private'));    
+    }
 }
