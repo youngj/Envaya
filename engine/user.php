@@ -523,6 +523,16 @@ class User extends Entity
         return UserPhoneNumber::query()->where('user_guid = ?', $this->guid);
     }
         
+    function get_primary_phone_number()
+    {
+        $user_phone_number = $this->query_phone_numbers()->order_by('id')->get();
+        if ($user_phone_number)
+        {
+            return $user_phone_number->phone_number;
+        }
+        return null;
+    }
+        
     function set_phone_number($phone_number_str)
     {
         $phone_numbers = PhoneNumber::canonicalize_multi($phone_number_str, $this->country);

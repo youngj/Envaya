@@ -46,7 +46,7 @@ namespace :deploy do
     task :update_test do
         test_dir = "#{deploy_to}/test"
         
-        run "rsync -azv --delete --exclude='config/local.php' --chmod=u+rx,g+rx,o+rx #{current_path}/ #{test_dir}"
+        run "rsync -az --delete --exclude='config/local.php' --chmod=u+rx,g+rx,o+rx #{current_path}/ #{test_dir}"
         run "cp #{shared_path}/local_test.php #{test_dir}/config/local.php"
     end
         

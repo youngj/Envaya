@@ -41,6 +41,12 @@ class Action_Discussion_NewTopic extends Action
         if (!$content)
         {
             throw new ValidationException(__('discussions:content_missing'));
+        }      
+
+        $name = get_input('name');
+        if (!$name)
+        {
+            throw new ValidationException(__('register:user:no_name'));
         }        
         
         if (!$this->check_captcha())
@@ -49,8 +55,7 @@ class Action_Discussion_NewTopic extends Action
         }
 
         $content = Markup::sanitize_html($content, array('Envaya.Untrusted' => !$user));
-        
-        $name = get_input('name');        
+                
         Session::set('user_name', $name);
         $location = get_input('location');
         Session::set('user_location', $location);
@@ -93,19 +98,7 @@ class Action_Discussion_NewTopic extends Action
         
         $message->post_feed_items();
         
-        if ($org->is_notification_enabled(Notification::Discussion)
-            && (!$user || $user->guid != $org->guid))
-        {
-            // notify site of message
-           
-            $mail = OutgoingMail::create(
-                strtr(__('discussions:notification_topic_subject', $org->language), array(
-                    '{name}' => $message->from_name
-                ))
-            );
-            $mail->setBodyHtml(view('emails/discussion_message', array('message' => $message)));            
-            $mail->send_to_user($org);
-        }        
+        $message->send_notifications(true);
         
         SessionMessages::add_html(__('discussions:topic_added')
             . view('discussions/invite_link', array('topic' => $topic)));        

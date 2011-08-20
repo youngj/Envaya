@@ -1,7 +1,9 @@
 <?php
 
-require_once "scripts/cmdline.php";
-require_once "start.php";
+$root = dirname(__DIR__);
+
+require_once "$root/scripts/cmdline.php";
+require_once "$root/start.php";
 
 function getUser($username)
 {

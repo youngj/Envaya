@@ -11,10 +11,15 @@ class EmailAddress
      */
     static function validate($address)
     {
-        if ($address !== "" && !preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+$/i', $address))
+        if ($address !== "" && !static::is_valid($address))
             throw new ValidationException(sprintf(__('register:notemail'), $address));
 
         return $address;
+    }
+    
+    static function is_valid($address)
+    {
+        return preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+$/i', $address);
     }
     
     /*

@@ -88,7 +88,7 @@ class DiscussionMessage extends Entity
         Session::set('posted_messages', $posted_messages);    
     }
     
-    function send_notifications()
+    function send_notifications($is_new_topic = false)
     {
         $org = $this->get_root_container_entity();
         $user = $this->get_owner_entity();
@@ -98,16 +98,20 @@ class DiscussionMessage extends Entity
         if ($org->is_notification_enabled(Notification::Discussion)
             && (!$user || $user->guid != $org->guid))
         {
-            // notify site of message
-            $mail = OutgoingMail::create(
-                strtr(__('discussions:notification_subject', $org->language), array(
+            $subject = strtr(($is_new_topic ? 
+                    __('discussions:notification_topic_subject', $org->language) : 
+                    __('discussions:notification_subject', $org->language)
+                ), 
+                array(
                     '{name}' => $this->from_name
-                ))   
+                )
             );
+        
+            // notify site of message
+            $mail = OutgoingMail::create($subject);
             $mail->setReplyTo($reply_to);
             $mail->setBodyHtml(view('emails/discussion_message', array('message' => $this)));
             $mail->send_to_user($org);
         }
-    }
-    
+    }    
 }

@@ -1,5 +1,8 @@
 <?php
-    $vars['contentWidth'] = 700;
+    if (!isset($vars['contentWidth']))
+    {
+        $vars['contentWidth'] = 700;
+    }
     
     echo view('css/default', $vars);    
     
