@@ -13,10 +13,10 @@ return array(
     'home:sign_up_info' => "Ikiwa wewe ni mwakilishi wa shirika la jumuiya ya kiraia Tanzania ambalo halijajiandikisha kwa Envaya, %s!",      
     'home:donate' => "Sisi ni bila faida. Hata mchango mdogo utasaidia kugawa teknolojia muhimu kwa mashirika ya kiraia katika nchi zinazoendelea!",
     'home:follow' => "Tufuate:",
-    'home:see_news' => "Ona habari mpya<br />kutoka Tanzania",
-    'home:view_updates' => "Ona Mabadiliko",       
-    'home:sign_up_button' => "Jiunge",
-    'home:sign_up_heading' => "Pata tovuti sasa",
+    'home:see_news' => "<div style='padding:3px 0px 8px 0px;'>Ona habari mpya<br />kutoka Tanzania</div>",
+    'home:view_updates' => "<div style='padding-top:3px'>Ona Mabadiliko</div>",       
+    'home:sign_up_button' => "<div style='font-size:18px'>Jiunge</div>",
+    'home:sign_up_heading' => "<div style='font-size:16px;padding:8px 0px 14px 0px'>Pata tovuti sasa</div>",
     'home:donate_now' => 'Changia sasa!',
 
 );

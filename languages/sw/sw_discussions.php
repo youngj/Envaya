@@ -4,7 +4,7 @@ return array(
     'discussions:title' => "Majadiliano",
     'discussions:add_message' => "Ongeza Ujumbe Mpya",
     'discussions:add_topic' => "Ongeza Mada Mpya",
-    'discussions:no_topics' => "Shirika hili halijakuwa na majadiliano yoyote.",
+    'discussions:no_topics' => "Shirika hili halijafanya mjadala wowote.",
     'discussions:topic_added' => "Mada imeongezwa.",
     'discussions:subject' => "Mada",
     'discussions:edit_topic' => "Hariri Mada",

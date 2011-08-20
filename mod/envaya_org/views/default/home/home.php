@@ -80,8 +80,8 @@ slideshow(<?php
     {
 ?>
 
-<div class='home_sticker_label' style='padding-top:28px;font-size:14px'><?php echo __('home:see_news'); ?></div>
-<a class='home_button' href='/pg/feed' style='margin-top:9px'><span style='font-size:15px;padding-top:9px'><?php echo __('home:view_updates'); ?></span></a>
+<div class='home_sticker_label'><?php echo __('home:see_news'); ?></div>
+<a class='home_button' href='/pg/feed'><span><?php echo __('home:view_updates'); ?></span></a>
 
 <?php
     }

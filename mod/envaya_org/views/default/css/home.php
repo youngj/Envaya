@@ -59,24 +59,23 @@
     bottom:0px;
     left:50px;
     width:234px;
-    height:150px;    
+    height:150px;  
     background:url(<?php echo $graphicsDir ?>/sticker.jpg) no-repeat left top;
 }
 
 .home_sticker_label
 {
-    padding-top:33px;
+    padding-top:25px;
     padding-left:15px;
     padding-right:20px;
     text-align:center;
     color:#5b7d26;
     font-weight:bold;
-    font-size:16px;
+    font-size:14px;
 }
 
 .home_button
 {
-    margin-top:15px;
     margin-left:40px;
     display:block;
     width:142px;
@@ -97,7 +96,7 @@
     color:white;
     font-weight:bold;
     padding:7px 4px;
-    font-size:18px;
+    font-size:15px;
 }
 
 .home_logo

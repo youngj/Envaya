@@ -13,10 +13,10 @@ return array(
     'home:sign_up_info' => "If you are a representative of a civil society organization in Tanzania that hasn't yet registered for Envaya, %s!",
     'home:donate' => "We're non-profit. Even a small donation will help Envaya deploy software to empower grassroots organizations in developing countries.",
     'home:follow' => "Follow us:",
-    'home:see_news' => "See latest news<br /> from Tanzania",
-    'home:view_updates' => "View Updates",
-    'home:sign_up_button' => "Sign Up",
-    'home:sign_up_heading' => "Get a website now",
+    'home:see_news' => "<div style='padding:3px 0px 8px 0px;'>See latest news<br /> from Tanzania</div>",
+    'home:view_updates' => "<div style='padding-top:3px'>View Updates</div>",
+    'home:sign_up_button' => "<div style='font-size:18px'>Sign Up</div>",
+    'home:sign_up_heading' => "<div style='font-size:16px;padding:8px 0px 14px 0px'>Get a website now</div>",
     'home:donate_now' => "Donate now!",
 );
    
