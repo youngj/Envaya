@@ -55,7 +55,7 @@ class Controller_TranslateAdmin extends Controller
             'content' => view('translate/admin/index')
         ));
     }
-
+    
     function action_export()
     {
         $language = $this->param('language');
@@ -68,10 +68,14 @@ class Controller_TranslateAdmin extends Controller
         $zip->open($file, ZipArchive::OVERWRITE); 
 
         $groups = $language->query_groups()->filter();
-                
+        
+        $lang = $language->code;
+        
         foreach ($groups as $group)
         {
-            $filename = "{$language->code}/{$language->code}_{$group->name}.php";
+            $module_name = $group->get_defined_module_name();
+            $filename = ($module_name ? "mod/{$module_name}/" : "") . "languages/{$lang}/{$lang}_{$group->name}.php";
+            
             $php = view('translate/admin/export_group', array('group' => $group));
             $zip->addFromString($filename, $php);
         }

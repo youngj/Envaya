@@ -31,6 +31,22 @@ class InterfaceGroup extends Entity
         return $this->defined_group;            
     }
     
+    function get_defined_module_name()
+    {
+        $default_lang = Config::get('language');
+        
+        foreach (Config::get('modules') as $module_name)
+        {
+            $module_root = Engine::get_module_root($module_name);
+        
+            if (file_exists("{$module_root}/languages/{$default_lang}/{$default_lang}_{$this->name}.php"))
+            {
+                return $module_name;
+            }
+        }
+        return null;
+    }
+    
     private $defined_default_group;
         
     function get_defined_default_group()
