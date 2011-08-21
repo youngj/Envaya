@@ -291,7 +291,14 @@ class ExternalFeed extends Entity
         // assume items in a feed are all in the same language to avoid checking Google Translate for each one                
         if (!$this->language && $content)
         {
-            $this->language = GoogleTranslate::guess_language($content);
+            try
+            {
+                $this->language = GoogleTranslate::guess_language($content);
+            }
+            catch (GoogleTranslateException $ex)
+            {
+            
+            }
         }
 
         $widget->language = $this->language;        

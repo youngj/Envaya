@@ -109,7 +109,7 @@ class Controller_Pg extends Controller
         $mail->text = $_REQUEST['text'];
         $mail->from = $_REQUEST['from'];
         
-        $attachment_info = json_decode($_REQUEST['attachment-info'], true);
+        $attachment_info = json_decode(@$_REQUEST['attachment-info'], true);
         
         foreach ($_FILES as $name => $file)
         {                
