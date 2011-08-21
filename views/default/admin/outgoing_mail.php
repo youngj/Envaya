@@ -32,7 +32,9 @@
         echo "<td>".escape($mail->subject)."</td>";
         echo "<td style='white-space:nowrap'>".friendly_time($mail->time_queued)."</td>";
         echo "<td style='white-space:nowrap'>".friendly_time($mail->time_sent)."</td>";
-        echo "<td>".$mail->get_status_text()."</td>";     
+        echo "<td>".$mail->get_status_text();
+        echo $mail->has_error() ? (": ".escape($mail->error_message)) : "";
+        "</td>";     
 
         echo "<td>";        
         echo "<a href='/admin/view_mail?id={$mail->id}'>".__('view')."</a>";      

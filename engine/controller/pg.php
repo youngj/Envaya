@@ -92,7 +92,7 @@ class Controller_Pg extends Controller
     {
         // query string in sendgrid should have ?secret=<sendgrid_secret>
         // http://www.quora.com/What-are-the-security-models-of-SendGrid-APInbox-and-CloudMailin/answer/Tim-Falls
-        $secret = $_REQUEST['secret'];
+        $secret = @$_REQUEST['secret'];
       
         if ($secret !== Config::get('sendgrid_secret'))
         {
@@ -108,6 +108,19 @@ class Controller_Pg extends Controller
         $mail->to = $_REQUEST['to'];
         $mail->text = $_REQUEST['text'];
         $mail->from = $_REQUEST['from'];
+        
+        $attachment_info = json_decode($_REQUEST['attachment-info'], true);
+        
+        foreach ($_FILES as $name => $file)
+        {                
+            $type = @$attachment_info[$name]['type'];
+        
+            if ($type)
+            {
+                $file['type'] = $type;
+            }        
+            $mail->add_attachment($file);
+        }
         
         $mail->process();
     }

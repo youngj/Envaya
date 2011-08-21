@@ -16,6 +16,7 @@ class OutgoingMail extends Model
     const Sent = 3;
     const Held = 4;
     const Rejected = 5;
+    const Bounced = 6;
 
     static $table_name = 'outgoing_mail';
     static $table_attributes = array(
@@ -45,6 +46,7 @@ class OutgoingMail extends Model
     {
         $mail = new OutgoingMail();        
         $mail->time_created = time();
+        //$mail->setMessageId(microtime(true)."@test.envaya.org");
         
         if ($subject)
         {
@@ -200,21 +202,22 @@ class OutgoingMail extends Model
         $mail->send_now();
     }
     
+    function has_error()
+    {
+        return $this->error_message && ($this->status == static::Failed || $this->status == static::Bounced);
+    }
+    
     function get_status_text()
     {
         switch ($this->status)
-        {
-            case static::Queued: return __('email:queued');
-            case static::Failed: 
-                $msg = __('email:failed');
-                if ($this->error_message)
-                {
-                    $msg .= ": ".escape($this->error_message);
-                }        
-                return $msg;
-            case static::Sent: return __('email:sent');
-            case static::Held: return __('email:held');
-            case static::Rejected: return __('email:rejected');
+        {            
+            case static::Failed:    return __('email:failed');
+            case static::Bounced:   return __('email:bounced');
+            case static::Queued:    return __('email:queued');                
+            case static::Sent:      return __('email:sent');
+            case static::Held:      return __('email:held');
+            case static::Rejected:  return __('email:rejected');
         }
+        return '';        
     }
 }

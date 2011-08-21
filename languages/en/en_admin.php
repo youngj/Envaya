@@ -26,6 +26,7 @@ return array(
     'email:failed' => "Failed",
     'email:held' => "Held pending approval",
     'email:rejected' => "Rejected",
+    'email:bounced' => "Bounced",
     'email:reject' => "Reject",
     'email:unreject' => "Unreject",
     'email:view' => "View Email",

@@ -16,7 +16,9 @@
     
     echo "<tr>";
     echo "<th>Status</th>"; 
-    echo "<td>".$mail->get_status_text()."<td>";    
+    echo "<td>".$mail->get_status_text();
+    echo $mail->has_error() ? (": ".escape($mail->error_message)) : "";
+    echo "<td>";    
     echo "</tr>"; 
 
     foreach ($mail->getHeaders() as $name => $value_arr)
