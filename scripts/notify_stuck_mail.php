@@ -10,8 +10,8 @@ State::set('last_stuck_mail_reminder', $time);
 
 $stuck_mails = OutgoingMail::query()
     ->where('time_created >= ?', $last_reminder)
-    ->where('status = ? OR status = ? OR (status = ? AND time_queued < ?)',
-        OutgoingMail::Held, OutgoingMail::Failed, OutgoingMail::Queued, $time - 60
+    ->where('status = ? OR status = ? OR status = ? OR (status = ? AND time_queued < ?)',
+        OutgoingMail::Held, OutgoingMail::Failed, OutgoingMail::Bounced, OutgoingMail::Queued, $time - 60
     )->filter();
 
 if ($stuck_mails)
