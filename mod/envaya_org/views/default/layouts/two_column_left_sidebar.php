@@ -5,7 +5,7 @@
 <div class="content_container"><div class='thin_column'>
 <div id='content_wrapper'><table class='left_sidebar_table'><tr>
     <td id='left_sidebar'><?php echo $vars['site_menu']; ?></td>
-    <td id='right_content'><?php echo $vars['content']; ?><div style='clear:both'></div></td>
+    <td id='right_content'><?php echo $vars['content']; ?></td>
 </tr></table></div>
 <div id='content_bottom'></div>
 </div></div>

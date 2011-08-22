@@ -104,6 +104,30 @@ function view_entity($entity, $args = null)
         : '';
 }
 
+function render_custom_view($view, $vars, $template_vars=null)
+{
+    $template = @$vars['design']['custom_views'][$view];
+    
+    if ($template)
+    {
+        $replacements = array();
+        
+        if ($template_vars)
+        {
+            foreach ($template_vars as $template_var)
+            {
+                $replacements["{{".$template_var."}}"] = $vars[$template_var];
+            }   
+        }
+        return strtr($template, $replacements);    
+    }
+    else
+    {
+        return view($view, $vars, 'default');
+    }
+}
+
+
 class Views
 {
     private static $request_type = 'default';
@@ -207,5 +231,5 @@ class Views
         }
         
         return $viewPath;
-    }
+    }      
 }

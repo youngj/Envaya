@@ -6,7 +6,7 @@
         <div id='top_menu_container'><?php echo $vars['site_menu']; ?></div>
         <div id='content'>
             <div id='content_top'></div>
-            <div id='content_mid'><?php echo $vars['content']; ?><div style='clear:both'></div></div>
+            <div id='content_mid'><?php echo $vars['content']; ?></div>
             <div id='content_bottom'></div>
         </div>
 </div></div>

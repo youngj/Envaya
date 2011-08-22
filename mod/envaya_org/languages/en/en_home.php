@@ -2,7 +2,7 @@
 return array(
     'home:title' => "A technology platform for civil society organizations in developing countries",
     'home:heading_html' => 'a <em>technology platform</em><br />for <em>civil society organizations</em><br />in <em>developing countries</em>',
-    'home:heading_html_africa' => 'a <em>technology platform</em><br />for <em>civil society organizations</em><br />in <em>Tanzania</em>',
+    'home:heading_html_africa' => 'a <em>technology platform</em><br />for <em>civil society organizations</em><br />in <em>East Africa</em>',
     'home:learn_more' => 'Learn more',        
     'home:for_organizations' => 'For organizations',
     'home:for_everyone' => 'For everyone',

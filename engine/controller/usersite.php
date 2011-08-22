@@ -249,4 +249,10 @@ class Controller_UserSite extends Controller_User
      
         $this->set_content(json_encode(array('emails' => $emails)));
     }    
+    
+    function action_custom_design()
+    {
+        $action = new Action_CustomDesign($this);
+        $action->execute();
+    }
 }
