@@ -32,19 +32,17 @@
 <label><?php echo __('register:country') ?></label><br />
 
 <?php
- $country_options= array();
- $country_options['tz'] = __('country:tz');
- $country_options['rw'] = __('country:rw');
- if ($testing_country)
- {
-	$country_options[$testing_country] = __('country:'.$testing_country);
- }
- $country_options['other'] = __('country:other');
+    $country_options = Geography::get_country_options();
+    if ($testing_country)
+    {
+        $country_options[$testing_country] = __('country:'.$testing_country);
+    }
+    $country_options['other'] = __('country:other');
 
- echo view('input/radio',
-    array('name' => 'country',
-        'options' => $country_options)
-    ); 
+    echo view('input/radio', array(
+        'name' => 'country', 
+        'options' => $country_options
+    )); 
  ?>
 </div>
 

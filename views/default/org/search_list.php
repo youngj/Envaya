@@ -2,22 +2,16 @@
     $sector = null;
     $region = null;
     $fulltext = null;
+    $country = null;
     $limit = 10;
     extract($vars);
     
     $offset = (int) get_input('offset');
 
     $query = Organization::query()->where_visible_to_user();
-    
-    if ($sector)
-    {
-        $query->with_sector($sector);
-    }
-        
-    if ($region)
-    {
-        $query->with_region($region);
-    }
+    $query->with_country($country);
+    $query->with_sector($sector);
+    $query->with_region($region);
      
     if ($fulltext)
     {

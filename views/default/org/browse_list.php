@@ -2,6 +2,7 @@
 
 $sector = get_input('sector');     
 $region = get_input('region');
+$country = get_input('country');
 
 ?>
 <div class='padded'>
@@ -15,7 +16,8 @@ $region = get_input('region');
 
 $res = view('org/search_list', array(
     'sector' => $sector,
-    'region' => $region
+    'region' => $region,
+    'country' => $country,
 ));
 
 if ($res)

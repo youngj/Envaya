@@ -1,7 +1,7 @@
 <?php
     $region = GeoIP::get_world_region();
     $is_africa = ($region == Geography::Africa);
-    $is_supported = GeoIP::is_supported_country();
+    $is_available = Geography::is_available_country(GeoIP::get_country_code());
     
     $defaultPhoto = "/_media/images/home/banner_planting5.jpg";
     
@@ -67,7 +67,7 @@ slideshow(<?php
 <div class='home_sticker'>
 
 <?php
-    if ($is_supported)
+    if ($is_available)
     {
 ?>
 

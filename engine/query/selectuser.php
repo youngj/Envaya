@@ -7,6 +7,7 @@ class Query_SelectUser extends Query_SelectEntity
 {
     protected $fulltext_query = null;
     protected $sector = null;
+    protected $country = null;
     protected $region = null;
 
     function where_visible_to_user()
@@ -27,6 +28,12 @@ class Query_SelectUser extends Query_SelectEntity
     function with_region($region)
     {       
         $this->region = $region;
+        return $this;
+    }
+    
+    function with_country($country)
+    {
+        $this->country = $country;
         return $this;
     }
     
@@ -62,6 +69,11 @@ class Query_SelectUser extends Query_SelectEntity
             {
                 $this->where('region = ?', $this->region);
             }
+            
+            if ($this->country)
+            {
+                $this->where('country = ?', $this->country);
+            }
         }
         else
         {
@@ -78,6 +90,10 @@ class Query_SelectUser extends Query_SelectEntity
             if ($this->region)
             {
                 $sphinx->setFilter('region', array($this->region));
+            }
+            if ($this->country)
+            {
+                $sphinx->setFilter('country', array($this->country));
             }
             
             $results = $sphinx->query($this->fulltext_query, 'orgs');

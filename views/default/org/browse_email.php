@@ -1,6 +1,7 @@
 <?php 
     $sector = get_input('sector');     
     $region = get_input('region');
+    $country = get_input('country');
 ?>
 <script type='text/javascript'>
 
@@ -39,15 +40,9 @@ function toggleRecipient(guid, email)
 
     $query = Organization::query()->where_visible_to_user()->where("email <> ''");    
 
-    if ($sector)
-    {
-        $query->with_sector($sector);
-    }
-        
-    if ($region)
-    {
-        $query->with_region($region);
-    }
+    $query->with_sector($sector);
+    $query->with_region($region);
+    $query->with_country($country);
     
     $query->order_by('name');                
     

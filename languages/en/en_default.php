@@ -60,12 +60,15 @@ return array(
     'lang:sw' => "Swahili",    
     'lang:rw' => "Kinyarwanda",
     'lang:unknown' => "(unknown language)",
-    
+
+    'country' => "Country",
+    'country:empty_option' => 'All countries',
     'country:tz' => 'Tanzania',
     'country:us' => 'USA',
     'country:rw' => "Rwanda",
     'country:lr' => "Liberia",
     'country:other' => 'Other',    
+    'country:all' => "All",
     
     'viewtype:default' => "Standard",
     'viewtype:mobile' => "Mobile",    

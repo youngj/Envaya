@@ -11,6 +11,8 @@ mkdir -p /var/log/sphinx
 chown sphinx.sphinx /var/log/sphinx
 chmod 777 /var/log/sphinx
 
+chmod 4755 /usr/local/bin/indexer
+
 cp $SETUP_DIR/init.d/sphinxsearch /etc/init.d/sphinxsearch
 
 chmod 755 /etc/init.d/sphinxsearch

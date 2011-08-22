@@ -56,7 +56,8 @@ return array(
 
     'canceledit' => 'Ghairi Kuhariri',
     'savechanges' => 'Hifadhi mabadiliko',    
-    
+
+    'country:empty_option' => 'Nchi zote',    
     'country:other' => 'Nyingine',
 
     'approval:rejected' => 'Samahani. Shirika hili halikukubaliwa na wasimamizi wetu.',

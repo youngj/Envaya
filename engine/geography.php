@@ -99,15 +99,10 @@ class Geography
         
         return $url;
     }
-
-    static function is_supported_country($country_code)
-    {
-        return in_array($country_code, static::get_supported_countries());
-    }
     
-    static function get_supported_countries()
+    static function is_available_country($country_code)
     {
-        return array('tz','lr','rw');
+        return in_array($country_code, Config::get('available_countries'));
     }
     
     static function get_country_codes()
@@ -117,14 +112,18 @@ class Geography
         return array('tz','lr','rw','us');
     }
     
-    static function get_country_options()
+    static function get_country_options($country_codes = null)
     {
+        if (!$country_codes)
+        {        
+            $country_codes = Config::get('visible_countries');
+        }
+    
         $options = array();
-        foreach (static::get_country_codes as $country)
+        foreach ($country_codes as $country)
         {
             $options[$country] = __("country:$country");
         }
-        asort($options);
         return $options;
     }
     
@@ -199,11 +198,12 @@ class Geography
     static function get_region_options($country_code)
     {
         $res = array();
+
         foreach (static::get_region_codes($country_code) as $region_code)
         {
             $res[$region_code] = __($region_code);
         }
-        asort($res);
+        asort($res);            
         return $res;
     }
     

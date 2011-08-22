@@ -48,11 +48,6 @@ class GeoIP
         return static::$country_name;
     }
     
-    static function is_supported_country()
-    {
-        return Geography::is_supported_country(static::get_country_code());
-    }
-
     static function get_world_region()
     {
         return Geography::get_world_region(static::get_country_code());

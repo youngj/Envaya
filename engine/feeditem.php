@@ -183,7 +183,13 @@ class FeedItem extends Model
 
     static function make_feed_name($conditions)
     {
+        if (@$conditions['region'] && $conditions['country'])
+        {
+            unset($conditions['country']);
+        }
+    
         ksort($conditions);
+        
 
         $encConditions = array();
 

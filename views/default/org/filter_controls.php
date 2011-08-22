@@ -1,5 +1,11 @@
 <?php 
-    $baseurl = $vars['baseurl'];    
+    $baseurl = $vars['baseurl'];   
+
+    $country_code = get_input('country');
+    if ($country_code && !Geography::is_available_country($country_code))
+    {
+        $country_code = null;
+    }
 ?>
 <form method='GET' action='<?php echo escape($baseurl); ?>'>
 <script type='text/javascript'>
@@ -7,12 +13,23 @@ function filterChanged()
 {
     setTimeout(function() {
         var sectorList = $('sectorList');
+        var countryList = $('countryList');
         var regionList = $('regionList');
         var sector = sectorList.value;
-        var region = regionList.value;
+        var country = countryList.value;
+        
         var baseUrl = <?php echo json_encode($baseurl); ?>;
         var connector = (baseUrl.indexOf("?") == -1) ? "?" : "&";
-        window.location.href = baseUrl + connector + "sector=" + sector + "&region=" + region;
+
+        var url = baseUrl + connector + "sector=" + sector + "&country=" + country;
+        
+        if (regionList && country)
+        {
+            var region = regionList.value;
+            url += "&region=" + region;
+        }
+        
+        window.location.href = url;
     }, 1);
 }
 </script>
@@ -32,17 +49,33 @@ echo view('input/pulldown', array(
 ));
 
 echo view('input/pulldown', array(
-    'name' => 'region',
-    'id' => 'regionList',
-    'options' => Geography::get_region_options('tz'),
-    'empty_option' => __('region:empty_option'),
-    'value' => get_input('region'),
+    'name' => 'country',
+    'id' => 'countryList',
+    'options' => Geography::get_country_options(),
+    'empty_option' => __('country:empty_option'),
+    'value' => $country_code,
     'style' => 'margin-bottom:5px',
     'attrs' => array(
         'onchange' => 'filterChanged()', 
         'onkeypress' => 'filterChanged()'
     )
 ));
+
+if ($country_code)
+{
+    echo view('input/pulldown', array(
+        'name' => 'region',
+        'id' => 'regionList',
+        'options' => Geography::get_region_options($country_code),
+        'empty_option' => __('region:empty_option'),
+        'value' => get_input('region'),
+        'style' => 'margin-bottom:5px',
+        'attrs' => array(
+            'onchange' => 'filterChanged()', 
+            'onkeypress' => 'filterChanged()'
+        )
+    ));
+}
     
 ?>
 <noscript>

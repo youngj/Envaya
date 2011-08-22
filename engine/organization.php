@@ -74,6 +74,11 @@ class Organization extends User
         {
             $feedNames[] = FeedItem::make_feed_name(array("region" => $this->region));
         }
+        
+        if ($this->country)
+        {
+            $feedNames[] = FeedItem::make_feed_name(array("country" => $this->country));
+        }
 
         foreach ($this->get_sectors() as $sector)
         {
@@ -82,6 +87,11 @@ class Organization extends User
             if ($this->region)
             {
                 $feedNames[] = FeedItem::make_feed_name(array('region' => $this->region, 'sector' => $sector));
+            }
+            
+            if ($this->country)
+            {
+                $feedNames[] = FeedItem::make_feed_name(array('country' => $this->country, 'sector' => $sector));
             }
         }
         

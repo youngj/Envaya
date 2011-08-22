@@ -99,4 +99,7 @@ return array(
     'news_phone_number' => '',
     
     'sendgrid_secret' => '',
+    
+    'available_countries' => array('tz','rw','lr'),
+    'visible_countries' => array('tz','rw'),
 );

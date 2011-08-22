@@ -134,8 +134,14 @@ class MobileTest extends SeleniumTest
         
         $this->clickAndWait("//a[contains(@href,'pg/change_feed_view')]");     
         
-        $this->select("//select[@name='region']", "Arusha");     
-        $this->submitForm();        
+        $this->select("//select[@name='country']", "Tanzania");     
+        $this->submitForm();
+        
+        $this->mouseOver("//div[@class='feed_snippet' and contains(text(), '{$this->post_content}')]");        
+        
+        $this->clickAndWait("//a[contains(@href,'pg/change_feed_view')]");             
+        $this->select("//select[@name='region']", "Arusha");
+        $this->submitForm();
         
         $this->mustNotExist("//div[@class='feed_snippet' and contains(text(), '{$this->post_content}')]");        
         

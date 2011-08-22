@@ -5,6 +5,7 @@
     
     $sector = (int)get_input('sector');
     $region = get_input('region');
+    $country = get_input('country');
     
     $query = DiscussionTopic::query();    
     
@@ -13,17 +14,10 @@
     $subquery = new Query_SelectUser('users u');
     $subquery->columns('u.guid');
     $subquery->where('u.guid = d.container_guid');
-    $subquery->where_visible_to_user();
-    
-    if ($sector)
-    {
-        $subquery->with_sector($sector);
-    }
-    
-    if ($region)
-    {
-        $subquery->with_region($region);
-    }
+    $subquery->where_visible_to_user();   
+    $subquery->with_sector($sector);
+    $subquery->with_region($region);
+    $subquery->with_country($country);
     
     $query->where("exists ({$subquery->get_sql()})");
     $query->args($subquery->get_args());

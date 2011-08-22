@@ -5,6 +5,7 @@ PageContext::add_header_html('<meta name="robots" content="noindex,follow" />');
 
 $sector = $vars['sector'];
 $region = $vars['region'];
+$country = $vars['country'];
 $items = $vars['items'];
 $first_id = (int)$vars['first_id'];
 
@@ -44,7 +45,8 @@ function loadMore()
         $('load_more_progress').style.display = 'block';    
     
         var $src = "/pg/feed_more?before_id=" + first_id + "&sector=" +
-            <?php echo json_encode(escape($sector)); ?> + "&region=" + <?php echo json_encode(escape($region)); ?>;
+            <?php echo json_encode(escape($sector)); ?> + "&region=" + <?php echo json_encode(escape($region)); ?>
+            + "&country=" + <?php echo json_encode(escape($country)); ?>;
 
         if (fetchMoreXHR)
         {

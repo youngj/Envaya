@@ -415,10 +415,16 @@ class Controller_Pg extends Controller
     
         $sector = get_input('sector');
         $region = get_input('region');
+        $country = get_input('country');
         
         $this->page_draw(array(
             'title' => __('browse:title'),
-            'content' => view("org/change_filter", array('baseurl' => '/pg/browse', 'sector' => $sector, 'region' => $region), 'mobile')
+            'content' => view("org/change_filter", array(
+                'baseurl' => '/pg/browse', 
+                'sector' => $sector, 
+                'country' => $country,
+                'region' => $region
+            ), 'mobile')
         ));
     }        
     
@@ -443,15 +449,15 @@ class Controller_Pg extends Controller
             
             if (!empty($q)) 
             {
-                if (GeoIP::is_supported_country())
+                $region = GeoIP::get_country_code();
+                if (Geography::is_available_country($region))
                 {
                     // bias geocode result to user's country
-                    $region = GeoIP::get_country_code();
                 }
                 else
                 { 
                     // bias geocode result to default country
-                    $country_codes = Geography::get_supported_countries();
+                    $country_codes = Config::get('available_countries');
                     $region = $country_codes[0];
                 }
             
@@ -573,13 +579,15 @@ class Controller_Pg extends Controller
         
         $sector = get_input('sector');
         $region = get_input('region');
+        $country = get_input('country');
         
         $this->page_draw(array(
             'title' => __("feed:title"),
             'content' => view("org/change_filter", array(
                 'baseurl' => '/pg/feed', 
                 'sector' => $sector, 
-                'region' => $region
+                'region' => $region,
+                'country' => $country,
             ), 'mobile')
         ));
     }
@@ -593,7 +601,9 @@ class Controller_Pg extends Controller
         
         $sector = get_input('sector');
         $region = get_input('region');
-        $feedName = FeedItem::make_feed_name(array('sector' => $sector, 'region' => $region));
+        $country = get_input('country');        
+        
+        $feedName = FeedItem::make_feed_name(array('sector' => $sector, 'region' => $region, 'country' => $country));
         $items = FeedItem::query_by_feed_name($feedName)
             ->where_visible_to_user()
             ->limit($max_items)
@@ -604,6 +614,7 @@ class Controller_Pg extends Controller
             'content' => view("org/feed", array(
                 'sector' => $sector, 
                 'region' => $region, 
+                'country' => $country,
                 'items' => $items,
                 'first_id' => $this->get_first_item_id($items, $max_items)
             ))
@@ -633,8 +644,9 @@ class Controller_Pg extends Controller
 
         $sector = get_input('sector');
         $region = get_input('region');
+        $country = get_input('country');
         $before_id = (int)get_input('before_id');
-        $feedName = FeedItem::make_feed_name(array('sector' => $sector, 'region' => $region));
+        $feedName = FeedItem::make_feed_name(array('sector' => $sector, 'region' => $region, 'country' => $country));
         
         $max_items = 20;
         
@@ -661,14 +673,13 @@ class Controller_Pg extends Controller
         $longMin = get_input('longMin');
         $longMax = get_input('longMax');
         $sector = get_input('sector');
+        $country = get_input('country');
 
         $query = Organization::query();
         
         $query->in_area($latMin, $longMin, $latMax, $longMax);        
-        if ($sector)
-        {
-            $query->with_sector($sector);                                        
-        }
+        $query->with_sector($sector);                                        
+        $query->with_country($country);
         $query->where_visible_to_user();        
         $query->columns('guid,subtype_id,username,name,latitude,longitude');
 

@@ -23,7 +23,7 @@ class Action_Registration_Qualification extends Action
         $this->allow_view_types(null);        
         
         $testing_country = get_input('testing_country');
-        if (!empty($testing_country) && !Geography::is_supported_country($testing_country))
+        if (!empty($testing_country) && !Geography::is_available_country($testing_country))
         {
             throw new ValidationException(__("register:wrong_country"));
         }        
@@ -39,7 +39,7 @@ class Action_Registration_Qualification extends Action
     {            
         $country = get_input('country');
 
-        if (!Geography::is_supported_country($country))
+        if (!Geography::is_available_country($country))
         {
             throw new ValidationException(__("register:wrong_country"));
         }
