@@ -25,7 +25,7 @@ return array(
     'discussions:notification_subject' => '{name} yanditse ubutumwa bushya mu {topic}',
     'discussions:notification_topic_subject' => '{name} afite ikiganiro gishya ku {topic}',
     'discussions:message_deleted_marker' => 'Ubutumwa urabusibye',
-    'discussions:about' => 'Iyi paje yemerera buri muntu, yaba uwo mukigo cyawe cyangwa se ikindi, uwo mugace ubamo cyangwa se ahandi ku isi kuba mwafatanya mu biganiro birebana n\'ikigo cyawe cyangwa akazi kawe',
+    'discussions:about' => 'Iyi paje yemerera buri muntu, yaba uwo mukigo cyawe cyangwa se ikindi, uwo mugace ubamo cyangwa se ahandi ku isi, kuba mwafatanya mu biganiro birebana n\'ikigo cyawe cyangwa akazi kawe',
     'discussions:invite_link' => 'Tumira abandi mu kiganiro',
     'discussions:other_link' => 'Ibindi biganiro kuri Envaya',
     'discussions:latest' => 'Ibiganiro biherutse vuba',

@@ -7,7 +7,7 @@ return array(
     'date:hours_ago' => '%s amasaha ashize',
     'date:hours_ago:singular' => 'Isaha ishize',
     'date:days_ago' => '%s iminsi ishize',
-    'date:days_ago:singular' => 'Ejo',
+    'date:days_ago:singular' => 'Ejo hashize',
     'date:no_year' => '{day} {month}',
     'date:with_year' => '{day} {month}, {year}',
     'date:time' => '{hour}:{minute} {tz}',
