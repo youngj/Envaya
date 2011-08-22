@@ -109,9 +109,13 @@ abstract class Controller_User extends Controller
         $theme_name = get_input("__theme") ?: $org->get_design_setting('theme_name') ?: Config::get('fallback_theme');
         
         $this->page_draw_vars['design'] = $org->get_design_settings();
+        $this->page_draw_vars['tagline'] = $org->get_design_setting('tagline');
         $this->page_draw_vars['theme_name'] = $theme_name;
         $this->page_draw_vars['site_name'] = $org->name;
-        $this->page_draw_vars['site_url'] = $org->get_url();
+        $this->page_draw_vars['site_username'] = $org->username;
+        $this->page_draw_vars['site_approved'] = $org->is_approved();
+        $this->page_draw_vars['site_url'] = $org->get_url();     
+        $this->page_draw_vars['logo'] = view('org/icon', array('org' => $org, 'size' => 'medium'));          
         $this->page_draw_vars['login_url'] = url_with_param($this->full_rewritten_url(), 'login', 1);
         
         if (Views::get_request_type() == 'default')
@@ -175,56 +179,58 @@ abstract class Controller_User extends Controller
             throw new NotFoundException();
         }
     }
-
-    protected function get_header($vars)
-    {
-        $vars['org'] = $this->get_org();           
-        return view('org/header', $vars);
-    }
     
-    protected function get_pre_body($vars)
+    protected function get_messages($vars)
     {
         $org = $this->get_org();
-        $preBody = '';
+        $messages = '';
 
         if (get_input("__topbar") != "0")
         {
             if (Session::isadminloggedin())
             {
-                $preBody .= view("admin/org_actions", array('org' => $org));
+                $messages .= view("admin/org_actions", array('org' => $org));
             }
 
             if ($org->can_view() && Session::isloggedin() && Session::get_loggedin_userid() != $org->guid)
             {
-                $preBody .= view("org/comm_box", array('org' => $org));
+                $messages .= view("org/comm_box", array('org' => $org));
             }
 
             if (@$vars['show_next_steps'])
             {
-                $preBody .= view("org/todo_message", array('org' => $org));
+                $messages .= view("org/todo_message", array('org' => $org));
             }
         }    
-        return $preBody;
+        
+        $messages .= SessionMessages::view_all();
+        
+        return $messages;
     }
                 
     public function prepare_page_draw_vars(&$vars)
     {
-        parent::prepare_page_draw_vars($vars);        
-        
         $org = $this->get_org();
         
-        if ($org && $this->public_layout)
+        $is_public = ($org && $this->public_layout);
+        
+        if ($is_public)
         {    
-            if (!get_input('__theme'))
+            $approval_message = $this->get_approval_message();
+            if ($approval_message)
             {
-                $approval_message = $this->get_approval_message();
-                if ($approval_message)
-                {
-                    SessionMessages::add($approval_message);
-                }
-            }                    
-            $vars['pre_body'] = $this->get_pre_body($vars);
-            $vars['header'] = $this->get_header($vars);
+                SessionMessages::add($approval_message);
+            }
+            
+            $vars['messages'] = $this->get_messages($vars);            
+            $vars['header'] = '';
+        }
+        
+        parent::prepare_page_draw_vars($vars);        
+        
+        if ($is_public)
+        {            
+            $vars['header'] = view('page_elements/site_header', $vars);
         }
     }	
             

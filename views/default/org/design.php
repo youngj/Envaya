@@ -107,7 +107,12 @@ function customHeaderChanged()
         if ($custom_header)
         {
             echo "<div style='margin-top:10px'>".__('upload:image:current')."</div>";
-            echo "<div class='header_preview'>".view('org/header', array('org' => $org))."</div>";
+            echo "<div class='header_preview' style='text-align:center'>";
+            
+            $header_image = $org->get_design_setting('header_image');
+            $img_url = escape($header_image['url']);
+            echo "<img src='$img_url' />";
+            echo "</div>";
         }
     ?>
 

@@ -19,26 +19,19 @@ class Submenu
         $this->items[] = $item;
     }
     
-    function render_list()
+    function render_items($itemTemplate = 'page_elements/submenu_link_item')
     {
-        echo $this->render('page_elements/submenu_basic', 'page_elements/submenu_list_item');
-    }
-    
-    function render($groupTemplate = 'page_elements/submenu_basic', $itemTemplate = 'page_elements/submenu_link_item')
-    {
-        $submenu = array();
+        $items = array();
     
         foreach($this->items as $item)
         {
-            $submenu[] = view($itemTemplate, array(
+            $items[] = view($itemTemplate, array(
                 'href' => $item->value,
                 'label' => $item->name,
                 'selected' => $item->selected,
             ));
         }
-
-        return view($groupTemplate, array(
-            'submenu' => $submenu,
-        ));
-    }        
+    
+        return $items;
+    }
 }

@@ -24,7 +24,7 @@ echo "<a href='/pg/logout' title=\"".__('logout')."\"><img src='/_media/images/l
 
 echo "</span>";
 
-$submenuB = PageContext::get_submenu('edit')->render();
+$submenuB = implode(' ', PageContext::get_submenu('edit')->render_items());
 if ($submenuB)
 {
     echo "<div id='edit_submenu'>$submenuB</div>";

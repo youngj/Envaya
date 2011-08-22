@@ -5,7 +5,7 @@
 <?php
 
 echo view('admin/org_actions_items', array('org' => $org));
-echo PageContext::get_submenu('org_actions')->render(); 
+echo implode(' ', PageContext::get_submenu('org_actions')->render_items()); 
 
 ?>
 </div>

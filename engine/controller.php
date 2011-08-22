@@ -105,12 +105,7 @@ abstract class Controller extends Router {
         else
         {
             $vars['layout'] = 'layouts/default';
-        }
-        
-        if (!isset($vars['header']) && @$vars['title'])
-        {
-            $vars['header'] = view('page_elements/content_header', $vars);
-        }
+        }        
                                 
         if (!isset($vars['full_title']))
         {
@@ -126,11 +121,33 @@ abstract class Controller extends Router {
         $vars['original_url'] = Request::full_original_url();
         $vars['css_url'] = css_url(@$vars['css_name'] ?: 'simple');        
         $vars['base_url'] = abs_url('/', (Request::is_secure() ? 'https' : 'http'));
+
+        $vars['content'] = view('page_elements/content_wrapper', $vars);
+        
+        if (!isset($vars['messages']))
+        {
+            $vars['messages'] = view('page_elements/messages', $vars);
+        }
+        
+        if (!isset($vars['header']))
+        {
+            $vars['header'] = view('page_elements/header', $vars);
+        }
+        
+        if (!isset($vars['footer'])) 
+        {
+            $vars['footer'] = view('page_elements/footer', $vars); 
+        }
+        
+        if (!isset($vars['site_menu']))
+        {
+            $vars['site_menu'] = view('page_elements/site_menu', $vars);
+        }        
     }
     
     public function page_draw($vars)
     {                                     
-        $this->prepare_page_draw_vars(/* & */ $vars);        
+        $this->prepare_page_draw_vars(/* & */ $vars);                
         $this->response->content = view('layouts/base', $vars);
     }
 

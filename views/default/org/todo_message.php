@@ -38,7 +38,6 @@ function hideTodo()
 <div class='good_messages'>
 <a class='hideMessages' style='margin-right:-5px;margin-top:-10px;' href='javascript:hideTodo()' onclick='ignoreDirty()'></a>
 <?php
-
 $messages = SessionMessages::get_register('messages');
 if ($messages)
 {

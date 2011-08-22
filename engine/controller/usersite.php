@@ -106,38 +106,35 @@ class Controller_UserSite extends Controller_User
     {    
         $this->require_editor();        
         $this->allow_view_types(null);        
+        
+        $vars = array();
 
         $user = $this->get_user();
         if ($user->guid == Session::get_loggedin_userid())
         {
-            $title = __('edit_site');
+            $vars['title'] = __('edit_site');
         }
         else
         {
-            $title = sprintf(__('edit_item'), $user->name);
+            $vars['title'] = sprintf(__('edit_item'), $user->name);
         }
                 
         $org = $this->get_org();
         if ($org)
         {            
-            $content = view("org/dashboard", array('org' => $org));
-            $pre_body = view("org/todo_message", array('org' => $org));                 
+            $vars['content'] = view("org/dashboard", array('org' => $org));
+            $vars['messages'] = view("org/todo_message", array('org' => $org));                 
         }
         else if ($user->admin)
         {
-            $content = view('admin/dashboard');
-            $pre_body = '';
+            $vars['content'] = view('admin/dashboard');
         }
         else
         {
             throw new RedirectException('', $user->get_url());
         }
         
-        $this->page_draw(array(
-            'title' => $title,
-            'content' => $content,
-            'pre_body' => $pre_body
-        ));
+        $this->page_draw($vars);
     }
     
     function action_password()

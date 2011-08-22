@@ -35,10 +35,10 @@ Engine::add_autoload_action('Mixable', function() {
 
 if (@Config::get('translate:footer_link'))
 {
-    Views::extend('page_elements/content_footer', 'page_elements/translate_footer');
+    Views::extend('page_elements/footer', 'page_elements/translate_footer');
 }
 
-Views::extend('page_elements/content', 'page_elements/translate_bar', -1);
+Views::extend('page_elements/content_wrapper', 'page_elements/translate_bar', -1);
 Views::extend('css/default', 'css/default_translate');
 
 if (@Config::get('translate:live_interface'))

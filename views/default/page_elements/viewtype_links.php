@@ -1,4 +1,3 @@
-<div id='viewtype'>
 <?php
     $viewTypes = array('default', 'mobile');
     $curViewType = Views::get_request_type();
@@ -19,10 +18,5 @@
         }           
     }
     echo implode(' &middot; ', $links);
+    
 ?>
-</div>
-<div id='language'>        
-    <?php echo view('page_elements/language_links', $vars); ?>    
-</div>
-<div style='clear:both;padding:4px;'></div>
-<?php echo view('page_elements/footer_menu', $vars); ?>

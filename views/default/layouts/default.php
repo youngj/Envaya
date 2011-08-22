@@ -1,27 +1,15 @@
-<?php 
-    ob_start();
-?>
-<div class='thin_column'>
-<div id='top_menu_container'>
-
-<?php echo view('page_elements/site_menu', $vars); ?>
+<div class="heading_container">
+    <?php echo $vars['messages']; ?>
+    <div class='thin_column'><?php echo $vars['header']; ?></div>
 </div>
-<div id='content'>
-<div id='content_top'></div>
-<div id='content_mid'>
-<?php 
-    echo view('page_elements/content', $vars);
-?>
-<div style='clear:both'></div>
-</div>
-<div id='content_bottom'></div>
-</div>
-</div>
-<?php 
-    echo view('page_elements/add_image_links', array('id' => 'content_mid'));
-
-    $vars['content'] = ob_get_clean();        
-    $vars['header'] = "<div class='thin_column'>{$vars['header']}</div>";    
-    
-    echo view("layouts/content_shell", $vars);        
-?>
+<div class="content_container"><div class='thin_column'>        
+        <div id='top_menu_container'><?php echo $vars['site_menu']; ?></div>
+        <div id='content'>
+            <div id='content_top'></div>
+            <div id='content_mid'><?php echo $vars['content']; ?><div style='clear:both'></div></div>
+            <div id='content_bottom'></div>
+        </div>
+</div></div>
+<div class="footer_container"><div class='thin_column'>
+    <?php echo $vars['footer']; ?>
+</div></div>

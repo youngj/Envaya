@@ -45,7 +45,6 @@
     echo view('pagination', array(
         'offset' => $offset,
         'limit' => $limit,
-        'count' => $count,
         'count_displayed' => sizeof($topics),
     ));
     
