@@ -1,10 +1,10 @@
 <?php
 
 return array(
-    'register:step1' => '1. impamyabumenyi',
-    'register:step2' => 'fungura konti',
-    'register:step3' => 'tegura urupapuro rw\'intangiriro',
-    'register:title' => 'iyandikishe muri Envaya',
+    'register:step1' => '1. Impamyabumenyi',
+    'register:step2' => '2. Fungura konti',
+    'register:step3' => '3. Tegura urupapuro rw\'intangiriro',
+    'register:title' => 'Iyandikishe muri Envaya',
     'register:notemail' => 'aderesi ya email \'%s\' isa naho itabaho',
     'register:userexists' => 'hari umuntu wundi ukoresha iri zina',
     'register:usernametooshort' => 'izina ryawe rigomba kugira nibura inyuguti{min} ',

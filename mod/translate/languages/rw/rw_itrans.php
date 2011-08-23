@@ -11,8 +11,8 @@ return array(
     'itrans:language_key' => 'Ijambo',
     'itrans:progress' => 'Aho ugeze',
     'itrans:needs_placeholders' => 'Ubusobanuro bugomba kubamo ibi bimenyetso:',
-    'itrans:placeholder_error' => 'Ubusobanuro ntabwo bufite ibi bimenyetso:',
-    'itrans:stale' => 'Ubu busobanuro bwakuwe mu ijambo rya kera',
+    'itrans:placeholder_error' => 'Ubusobanuro ntabwo bufite ibimenyetso bikwiriye.',
+    'itrans:stale' => 'Ubu busobanuro bwakuwe mu nyandiko ya kera',
     'itrans:latest' => 'Ubusobanuro bw\'akakanya',
     'itrans:time_created' => 'Igihe gishyizweho',
     'itrans:translator' => 'Umusemuzi',
@@ -22,7 +22,7 @@ return array(
     'itrans:translations' => 'Ubusobanuro',
     'itrans:votes' => 'Amajwi',
     'itrans:admin' => 'Ubuyobozi',
-    'itrans:need_login' => 'Kugirango ugire icyo uhindura kubyo wasemuye, ugomba kwinjira mu rububuga',
+    'itrans:need_login' => 'Kugirango ugire icyo uhindura kubyo wasemuye, ugomba kwinjira mu rubuga',
     'itrans:instructions' => 'Amabwiriza',
     'itrans:yours' => 'Ibyo wasemuye',
     'itrans:show_comment_in' => 'Garagaza ibivugwa mu',
@@ -30,5 +30,6 @@ return array(
     'itrans:latest_comments' => 'Ibiherutse kwandikwa',
     'itrans:comment' => 'Ibyasubijwe',
     'itrans:edit_page' => 'Hindura ubusobanuro kuri iyi paje',
+    'itrans:history' => 'Ibyasobanuwe',
 );
 
