@@ -47,7 +47,7 @@ echo view('input/pulldown', array(
         'onkeypress' => 'filterChanged()'
     )
 ));
-
+echo " ";
 echo view('input/pulldown', array(
     'name' => 'country',
     'id' => 'countryList',
@@ -60,7 +60,7 @@ echo view('input/pulldown', array(
         'onkeypress' => 'filterChanged()'
     )
 ));
-
+echo " ";
 if ($country_code)
 {
     echo view('input/pulldown', array(

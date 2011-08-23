@@ -664,36 +664,56 @@ class Controller_Pg extends Controller
         )));
     }
 
+    function action_js_orgs()
+    {     
+        $this->set_content_type('text/javascript');     
+        
+        $guids = explode(',', get_input('ids'));
+        
+        $orgs = Organization::query()
+            ->where_in('guid', $guids)
+            ->columns('guid,subtype_id,latitude,longitude,username,name')
+            ->order_by('name')
+            
+            ->filter();
+        
+        $js_orgs = array_map(function($org) { return $org->js_properties(); }, $orgs);
+        
+        $this->set_content(json_encode($js_orgs));
+    }
+    
     function action_search_area()
     {
         $this->set_content_type('text/javascript');
         
-        $latMin = get_input('latMin');
-        $latMax = get_input('latMax');
-        $longMin = get_input('longMin');
-        $longMax = get_input('longMax');
-        $sector = get_input('sector');
-        $country = get_input('country');
+        $lat_min = get_input('lat_min');
+        $lat_max = get_input('lat_max');
+        $long_min = get_input('long_min');
+        $long_max = get_input('long_max');
+        $sector = get_input('sector');               
 
         $query = Organization::query();
         
-        $query->in_area($latMin, $longMin, $latMax, $longMax);        
+        $query->in_area($lat_min, $long_min, $lat_max, $long_max);        
         $query->with_sector($sector);                                        
-        $query->with_country($country);
         $query->where_visible_to_user();        
-        $query->columns('guid,subtype_id,username,name,latitude,longitude');
+        $query->columns('guid,subtype_id,latitude,longitude');
 
         $orgs = $query->filter();
 
-        $orgJs = array();
-
-        foreach ($orgs as $org)
-        {
-            $orgJs[] = $org->js_properties();
-        }
-
-        $this->set_content(json_encode($orgJs));
-    }        
+        $bucketizer = new Map_Bucketizer(array(
+            'px_width' => (int)get_input('width') ?: 1,
+            'px_height' => (int)get_input('height') ?: 1,
+            'lat_min' => $lat_min,
+            'lat_max' => $lat_max,
+            'long_min' => $long_min,
+            'long_max' => $long_max,
+        ));
+        
+        $this->set_content(json_encode(
+            $bucketizer->get_buckets($orgs)
+        ));
+    }
 }
 
 Controller_Pg::$routes = Controller::$SIMPLE_ROUTES;

@@ -7,10 +7,16 @@ OrgMapLoader = function()
 {
     this.bucketSize = 20; // pixel width/height for each bucket   
     
-    this.baseURL = "/pg/search_area";    
+    this.baseURL = "/pg/search_area";  
+    this.idsURL = '/pg/js_orgs';
     this.displayedBuckets = {};
     this.lastFetchedBounds = null;
     this.fetchOrgXHR = null;
+    
+    this.loadIds = function(ids, successFn, errorFn)
+    {
+        return fetchJson(this.idsURL + '?ids=' + ids.join(','), successFn, errorFn);
+    };
     
     this.setMap = function(map)
     {
@@ -99,10 +105,14 @@ OrgMapLoader = function()
                    
         var urlParams = this.getURLParams();
         
-        urlParams.latMin = $sw.lat();
-        urlParams.latMax = $ne.lat();
-        urlParams.longMin = $sw.lng();
-        urlParams.longMax = $ne.lng();
+        urlParams.lat_min = $sw.lat();
+        urlParams.lat_max = $ne.lat();
+        urlParams.long_min = $sw.lng();
+        urlParams.long_max = $ne.lng();
+        
+        var div = map.getDiv();
+        urlParams.width = div.offsetWidth;
+        urlParams.height = div.offsetHeight;
         
         var paramsArr = [];        
         for (var name in urlParams)
@@ -115,7 +125,7 @@ OrgMapLoader = function()
         this.fetchOrgXHR = fetchJson(url, function(data) { $self._loaded(data); });
     };
     
-    this._loaded = function($orgs)
+    this._loaded = function($bucketsData)
     {
         for (var $bucketKey in this.displayedBuckets)
         {
@@ -132,27 +142,17 @@ OrgMapLoader = function()
         var bucketSize = this.bucketSize;
 
         // collect organizations in buckets of bucketSize x bucketSize pixels
-        for (var $i = 0; $i < $orgs.length; $i++)
+        for (var $i = 0; $i < $bucketsData.length; $i++)
         {
-            var $org = $orgs[$i];
-            var $latlng = new google.maps.LatLng($org.latitude, $org.longitude);
+            var $bucketData = $bucketsData[$i];
+            var $latlng = new google.maps.LatLng($bucketData[0], $bucketData[1]);
+            
+            var $bucketKey = $bucketData[0] + "," + $bucketData[1] + "," + $zoom;
 
-            var $pixel = $proj.fromLatLngToDivPixel($latlng);
-
-            var $bucketPixel = new google.maps.Point(
-                Math.floor($pixel.x / bucketSize) * bucketSize + bucketSize / 2,
-                Math.floor($pixel.y / bucketSize) * bucketSize + bucketSize / 2
-            );
-
-            var $bucketKey = $bucketPixel.x + "," + $bucketPixel.y + "," + $zoom;
-
-            if (!$buckets[$bucketKey])
-            {
-                $buckets[$bucketKey] = new OrgBucket(
-                    $proj.fromDivPixelToLatLng($bucketPixel)
-                );            
-            }
-            $buckets[$bucketKey].addOrg($org);
+            $buckets[$bucketKey] = new OrgBucket(
+                $latlng,
+                $bucketData[2]
+            );            
         }
 
         // reuse any existing OrgBucket markers when possible rather than initializing new ones
@@ -162,7 +162,7 @@ OrgMapLoader = function()
 
             if (!this.displayedBuckets[$bucketKey])
             {            
-                $bucket.initialize(map, this.infoOverlay);
+                $bucket.initialize(this);
                 this.displayedBuckets[$bucketKey] = $bucket;
             }
             this.displayedBuckets[$bucketKey].show();
@@ -253,7 +253,7 @@ InfoOverlay = function()
     {
         this.bucket = bucket;
         
-        if (this.bucket == null)
+        if (this.bucket == null || this.bucket.orgs == null)
         {
             this.hide();
             return;
@@ -264,10 +264,10 @@ InfoOverlay = function()
     
         removeChildren(this._div);
         var div = createElem('div');
-        this._div.appendChild(div);
-        
-        var $orgInnerDiv = createElem('div');
+        this._div.appendChild(div);                
 
+        var $orgInnerDiv = createElem('div');
+        
         if (orgs.length > 8)
         {
             div.appendChild(this._makeBucketControls());
@@ -349,20 +349,23 @@ InfoOverlay.prototype = new DivOverlay();
  * of organizations in that bucket. Clicking the marker will show the InfoOverlay
  * listing organizations in the bucket.
  */
-OrgBucket = function($center)
+OrgBucket = function($center, $ids)
 {
     this.center = $center;
-    this.orgs = [];
+    this.count = $ids.length;
+    this.ids = $ids;
+    this.orgs = null;
 };
 
 (function() {
 
 var $proto = function() {
     
-    this.initialize = function(map, infoOverlay)
+    this.initialize = function(loader)
     {
-        this.setMap(map);
-        this._infoOverlay = infoOverlay;
+        this.setMap(loader.map);
+        
+        this._loader = loader;
      
         var $div = this._div = createElem('div', {
             className:'mapMarker'
@@ -375,14 +378,19 @@ var $proto = function() {
             event.cancelBubble = true;
         }, true);        
         
+        // preload bucket on mouseover
+        google.maps.event.addDomListener(this._div, 'mouseover',  function(event) {
+            $self._loadOrgs();
+        }, true);                
+        
         var $img = createElem('img');
 
-        if (this.orgs.length > 1)
+        if (this.count > 1)
         {
             $img.src = "/_media/images/placemark_n.gif";
 
             $div.appendChild(
-                createElem('span', {className:'mapMarkerCount', innerHTML: "" + this.orgs.length})
+                createElem('span', {className:'mapMarkerCount', innerHTML: "" + this.count})
             );
         }
         else
@@ -401,35 +409,65 @@ var $proto = function() {
         this._div.style.top = (point.y - 12) + "px";        
     };
     
-    this._clicked = function()
+    this._isSelected = function()
     {
-        if (this._infoOverlay.bucket != this)
-        {
-            this.orgs.sort(function(a,b) {
-
-                a._lcName = a._lcName || a.name.toLowerCase();
-                b._lcName = b._lcName || b.name.toLowerCase();
-
-                if (a._lcName < b._lcName)
-                {
-                    return -1;
-                }
-                else if (a._lcName > b._lcName)
-                {
-                    return 1;
-                }
-                return 0;
-            });
-
-            this._infoOverlay.setBucket(this);
-        }
-    };
-
-    this.addOrg = function($org)
-    {
-        this.orgs.push($org);
+        return this._loader.infoOverlay.bucket == this;
     };
     
+    this._loadOrgs = function()
+    {
+        if (this.orgs != null)
+        {
+            return;
+        }
+        
+        if (this._isSelected())
+        {
+            this._loader.loadingOverlay.show();
+        }
+    
+        if (this._xhr)
+        {
+            return;
+        }
+    
+        var self = this;
+        
+        this._xhr = this._loader.loadIds(this.ids, function(orgs) {
+            self._orgsLoaded(orgs);
+        }, function(err) {  
+            self._loadError(err);
+        }); 
+    };
+
+    this._loadError = function(err)
+    {
+        this._loader.loadingOverlay.hide();
+        this._xhr = null;
+        alert(err.error);
+    }
+    
+    this._orgsLoaded = function(orgs)
+    {        
+        this._xhr = null;
+        this.orgs = orgs;
+        
+        this._loader.loadingOverlay.hide();
+        
+        if (this._isSelected())
+        {   
+            this._loader.infoOverlay.setBucket(this);
+        }
+    };
+    
+    this._clicked = function()
+    {
+        if (this._loader.infoOverlay.bucket != this)
+        {
+            this._loader.infoOverlay.setBucket(this);
+            this._loadOrgs();
+        }
+    };    
 };
 
 $proto.prototype = new DivOverlay();

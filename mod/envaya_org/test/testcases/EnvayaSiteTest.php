@@ -15,7 +15,7 @@ class EnvayaSiteTest extends SeleniumTest
         $this->waitForMapMarker();        
         
         $this->click("//div[@class='mapMarker']");
-        $this->click("//div[@class='mapBucketControls']//a"); // zoom in
+        $this->retry('click', array("//div[@class='mapBucketControls']//a")); // zoom in
         
         $this->waitForMapMarker();        
         
@@ -73,7 +73,7 @@ class EnvayaSiteTest extends SeleniumTest
         $this->assertTrue($this->isVisible("//div[@class='mapMarker']"));
         
         $this->click("//div[@class='mapMarker']");
-        $this->mouseOver("//div[@id='infoOverlay']//a[@class='mapOrgLink' and contains(@href,'testorg')]");                
+        $this->waitForElement("//div[@id='infoOverlay']//a[@class='mapOrgLink' and contains(@href,'testorg')]");                
         
         $this->assertTrue($this->isVisible("//div[@id='infoOverlay']"));        
         $this->click("//div[@title='Pan left']");         // should close the overlay
