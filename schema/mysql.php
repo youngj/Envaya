@@ -217,11 +217,9 @@ CREATE TABLE `geocode_cache` (
 ) ENGINE = MEMORY DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sessions` (
-	`session` varchar(255) NOT NULL,
+    `id_sha1` varchar(64) primary key not null,
  	`ts` int(11) unsigned NOT NULL default '0',
 	`data` mediumblob,
-	
-	PRIMARY KEY `session` (`session`),
 	KEY `ts` (`ts`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

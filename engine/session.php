@@ -151,12 +151,14 @@ class Session
            
     static function _session_read($id)
     {
-        $cacheKey = static::cache_key($id);
+        $id_sha1 = sha1($id);
+    
+        $cacheKey = static::cache_key($id_sha1);
         $sessionData = get_cache()->get($cacheKey);
 
         if ($sessionData == null)
         {
-            $result = Database::get_row("SELECT * from `sessions` where session=?", array($id));
+            $result = Database::get_row("SELECT * from `sessions` where id_sha1=?", array($id_sha1));
             $sessionData = ($result) ? $result->data : '';
             get_cache()->set($cacheKey, $sessionData);
         }
@@ -168,18 +170,22 @@ class Session
     {
         if (Session::is_dirty())
         {
-            get_cache()->set(static::cache_key($id), $sess_data);
+            $id_sha1 = sha1($id);
+        
+            get_cache()->set(static::cache_key($id_sha1), $sess_data);
 
-            return (Database::update("REPLACE INTO `sessions` (session, ts, data) VALUES (?,?,?)",
-                    array($id, time(), $sess_data))!==false);
+            return (Database::update("REPLACE INTO `sessions` (id_sha1, ts, data) VALUES (?,?,?)",
+                    array($id_sha1, time(), $sess_data))!==false);
         }
     }
     
     static function _session_destroy($id)
     {
-        get_cache()->delete(static::cache_key($id));
+        $id_sha1 = sha1($id);
+        
+        get_cache()->delete(static::cache_key($id_sha1));
 
-        return (bool)Database::delete("DELETE from `sessions` where session=?", array($id));
+        return (bool)Database::delete("DELETE from `sessions` where id_sha1=?", array($id_sha1));
     }
     
     static function _session_gc($maxlifetime)

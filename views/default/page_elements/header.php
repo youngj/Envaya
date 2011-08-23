@@ -1,5 +1,5 @@
 <?php        
-    $title = $vars['title'];    
+    $title = @$vars['title'] ?: '';    
     $escTitle = escape($title);    
 
     $class = @$vars['org_only'] ? "org_only_heading" : "";
