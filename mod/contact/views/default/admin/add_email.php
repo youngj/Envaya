@@ -4,6 +4,10 @@
 <form method='POST' action='/admin/contact/email/add'>
 <?php echo view('input/securitytoken') ?>
 
+<?php
+    echo view('admin/email_filters_input');
+?>
+
 <div class='input'>
 <label>From:</label>
 <?php

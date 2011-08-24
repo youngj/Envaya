@@ -1,0 +1,1 @@
+alter table email_templates add `filters_json` text default null;

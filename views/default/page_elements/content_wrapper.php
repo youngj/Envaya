@@ -4,7 +4,4 @@
 ?>
 </div>
 <div style='clear:both'></div>
-<script type='text/javascript'>
-<?php include_js('inline/image_links.js'); ?>
-addImageLinks($('main_content'));
-</script>
+<?php echo view('page_elements/add_image_links'); ?>

@@ -307,4 +307,19 @@ class Query_Select
         }
         return null;
     }
+    
+    function apply_filter($filter)
+    {
+        return $filter->apply($this);
+    }
+    
+    function apply_filters($filters)
+    {        
+        $query = $this;
+        foreach ($filters as $filter)
+        {
+            $query = $query->apply_filter($filter);
+        }        
+        return $query;    
+    }
 }

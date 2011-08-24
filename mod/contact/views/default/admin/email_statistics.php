@@ -3,6 +3,7 @@
     
     $totalQueued = $email->query_outgoing_mail()->where('status = ?', OutgoingMail::Queued)->count(); 
     $totalSent = $email->query_outgoing_mail()->where('status = ?', OutgoingMail::Sent)->count(); 
+    $totalBounced = $email->query_outgoing_mail()->where('status = ?', OutgoingMail::Bounced)->count(); 
     $totalFailed = $email->query_outgoing_mail()->where('status = ?', OutgoingMail::Failed)->count(); 
   
     if ($totalQueued || $totalSent || $totalFailed) {
@@ -26,6 +27,12 @@
         echo "<li>Emails failed to send: $totalFailed</li>";        
     }
 
+    if ($totalBounced > 0)
+    {
+        echo "<li>Emails bounced: $totalBounced</li>";        
+    }
+    
+    
     if ($totalSent > 0)
     {
         $lastTimeSent = $email->query_outgoing_mail()->where('status = ?', OutgoingMail::Sent)

@@ -1,83 +1,63 @@
 <?php 
-    $baseurl = $vars['baseurl'];   
-
-    $country_code = get_input('country');
-    if ($country_code && !Geography::is_available_country($country_code))
+    $baseurl = $vars['baseurl'];               
+    $filters = $vars['filters'];
+    
+    $filters_map = array();
+    $select_elems = array();
+    
+    foreach ($filters as $filter)
     {
-        $country_code = null;
-    }
+        if ($filter->is_valid())
+        {
+            $name = $filter->get_param_name();
+            $select_elems[] = $filter->render_input(array(
+                'name' => $name,
+                'id' => "filter_$name",
+                'style' => 'margin-bottom:5px',
+                'onchange' => 'filterChanged()',
+            ));
+            $filters_map[$name] = $filter;
+        }
+    }        
 ?>
 <form method='GET' action='<?php echo escape($baseurl); ?>'>
 <script type='text/javascript'>
 function filterChanged()
 {
-    setTimeout(function() {
-        var sectorList = $('sectorList');
-        var countryList = $('countryList');
-        var regionList = $('regionList');
-        var sector = sectorList.value;
-        var country = countryList.value;
+    setTimeout(function() {        
         
-        var baseUrl = <?php echo json_encode($baseurl); ?>;
-        var connector = (baseUrl.indexOf("?") == -1) ? "?" : "&";
-
-        var url = baseUrl + connector + "sector=" + sector + "&country=" + country;
-        
-        if (regionList && country)
+        <?php 
+        $js_exp = array();
+        foreach ($filters_map as $name => $filter)
         {
-            var region = regionList.value;
-            url += "&region=" + region;
+            $js_exp[] = "'$name='+$('filter_{$name}').value";
         }
+        ?>        
         
-        window.location.href = url;
+        var baseUrl = <?php echo json_encode($baseurl); ?>,
+            connector = (baseUrl.indexOf("?") == -1) ? "?" : "&";
+        
+        var newUrl = baseUrl + connector + <?php echo implode("+'&'+", $js_exp); ?>;
+        
+        <?php
+        if (@$filters_map['region'] && @$filters_map['country'])
+        {   
+        ?>              
+            var newCountry = $('filter_country').value;
+            var oldCountry = <?php echo json_encode(get_input('country')); ?>;
+
+            if (!newCountry || newCountry != oldCountry)
+            {
+                newUrl = urlWithParam(newUrl, 'region', '');
+            }
+        <?php
+        }
+        ?>        
+        location.href = newUrl;
     }, 1);
 }
 </script>
-<?php
-
-echo view('input/pulldown', array(
-    'name' => 'sector',
-    'id' => 'sectorList',
-    'options' => OrgSectors::get_options(),
-    'empty_option' => __('sector:empty_option'),
-    'value' => get_input('sector'),
-    'style' => 'margin-bottom:5px',
-    'attrs' => array(
-        'onchange' => 'filterChanged()', 
-        'onkeypress' => 'filterChanged()'
-    )
-));
-echo " ";
-echo view('input/pulldown', array(
-    'name' => 'country',
-    'id' => 'countryList',
-    'options' => Geography::get_country_options(),
-    'empty_option' => __('country:empty_option'),
-    'value' => $country_code,
-    'style' => 'margin-bottom:5px',
-    'attrs' => array(
-        'onchange' => 'filterChanged()', 
-        'onkeypress' => 'filterChanged()'
-    )
-));
-echo " ";
-if ($country_code)
-{
-    echo view('input/pulldown', array(
-        'name' => 'region',
-        'id' => 'regionList',
-        'options' => Geography::get_region_options($country_code),
-        'empty_option' => __('region:empty_option'),
-        'value' => get_input('region'),
-        'style' => 'margin-bottom:5px',
-        'attrs' => array(
-            'onchange' => 'filterChanged()', 
-            'onkeypress' => 'filterChanged()'
-        )
-    ));
-}
-    
-?>
+<?php echo implode(' ', $select_elems); ?>
 <noscript>
 <?php echo view('input/submit', array('value' => __('go'))); ?>
 </noscript>

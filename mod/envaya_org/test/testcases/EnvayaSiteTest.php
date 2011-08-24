@@ -34,18 +34,18 @@ class EnvayaSiteTest extends SeleniumTest
         
         $this->assertTrue($this->isElementInPagedList("//a[contains(@href,'testorg')]"));
         
-        $this->select("//select[@id='sectorList']","Health");
+        $this->select("//select[@name='sector']","Health");
         $this->waitForPageToLoad(10000);
 
         $this->assertFalse($this->isElementInPagedList("//a[contains(@href,'testorg')]"));        
         
-        $this->select("//select[@id='sectorList']","Education");
+        $this->select("//select[@name='sector']","Education");
         $this->waitForPageToLoad(10000);
         
         $this->assertTrue($this->isElementInPagedList("//a[contains(@href,'testorg')]"));
                 
         $this->clickAndWait("//a[contains(@href,'list=0')]");
-        $this->assertEquals($this->getSelectedLabel("//select[@id='sectorList']"), "Education");
+        $this->assertEquals($this->getSelectedLabel("//select[@name='sector']"), "Education");
         
         $this->waitForMapMarker();               
         
@@ -81,11 +81,11 @@ class EnvayaSiteTest extends SeleniumTest
         $this->assertFalse($this->isVisible("//div[@id='infoOverlay']"));
         
         // test map updates when changing sector
-        $this->select("//select[@id='sectorList']","Health");
+        $this->select("//select[@name='sector']","Health");
         sleep(1);
         $this->mustNotExist("//div[@class='mapMarker']");
         
-        $this->select("//select[@id='sectorList']","Education");
+        $this->select("//select[@name='sector']","Education");
         $this->retry('mouseOver', array("//div[@class='mapMarker']"));                
     }    
     

@@ -183,13 +183,7 @@ class FeedItem extends Model
 
     static function make_feed_name($conditions)
     {
-        if (@$conditions['region'] && @$conditions['country'])
-        {
-            unset($conditions['country']);
-        }
-    
-        ksort($conditions);
-        
+        ksort($conditions);        
 
         $encConditions = array();
 
@@ -231,4 +225,20 @@ class FeedItem extends Model
             $feedItem->save();
         }
     }    
+    
+    static function feed_name_from_filters($filters)
+    {    
+        $conditions = array();
+        foreach ($filters as $filter)
+        {
+            $conditions[$filter->get_param_name()] = $filter->value;
+        }    
+
+        if (@$conditions['region'] && @$conditions['country'])
+        {
+            unset($conditions['country']);
+        }            
+        
+        return static::make_feed_name($conditions);
+    }
 }

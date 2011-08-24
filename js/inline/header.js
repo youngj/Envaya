@@ -101,3 +101,13 @@ function urlWithParam(url, param, value)
     parts.splice(0,0,qPart);
     return url.substr(0, qIndex) + parts.join('&');
 }
+
+function each(items, fn)
+{
+    var res = [], i = 0;
+    while (i < items.length) 
+    {
+        res.push(fn(items[i++]));    
+    }
+    return res;
+}

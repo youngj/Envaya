@@ -15,6 +15,7 @@ class EmailTemplate extends Entity
         'from' => '',
         'num_sent' => 0,
         'time_last_sent' => 0,
+        'filters_json' => '',
     );
     
     static $mixin_classes = array(
@@ -35,6 +36,23 @@ class EmailTemplate extends Entity
         $this->save();
     }
     
+    protected $filters;    
+    
+    function get_filters()
+    {
+        if (!isset($this->filters))
+        {
+            $this->filters = Query_Filter::json_decode_filters($this->filters_json);
+        }
+        return $this->filters;
+    }
+    
+    function set_filters($filters)
+    {
+        $this->filters = $filters;
+        $this->filters_json = Query_Filter::json_encode_filters($filters);
+    }
+    
     function query_outgoing_mail()
     {
         return OutgoingMail::query()->where('email_guid = ?', $this->guid);
@@ -42,13 +60,22 @@ class EmailTemplate extends Entity
     
     function query_potential_recipients()
     {
-        return Organization::query()
-            ->where('approval > 0')
-            ->where("email <> ''")
-            ->where('(notifications & ?) > 0', Notification::Batch)
+        return $this->query_filtered_users()
             ->where("not exists (select * from outgoing_mail where email_guid = ? and to_guid = users.guid)", 
                 $this->guid);        
+    }    
+    
+    function query_filtered_users()
+    {
+        return static::query_contactable_users()->apply_filters($this->get_filters());
     }
+    
+    static function query_contactable_users()
+    {
+        return User::query()
+            ->where("email <> ''")
+            ->where('(notifications & ?) > 0', Notification::Batch);
+    }    
     
     function render($content, $user)
     {

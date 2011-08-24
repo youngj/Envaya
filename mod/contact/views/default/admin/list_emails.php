@@ -21,8 +21,16 @@
         echo "<a href='{$email->get_url()}/send'>".__('email:send')."</a>";
 
         echo "</div>";
-        
+                
         echo "<a href='{$email->get_url()}'><strong>".escape($email->subject ?: '(No Subject)')."</strong></a>";
+
+        echo "<br />";
+        $filters = $email->get_filters();
+        if ($filters)
+        {
+            echo " [".implode(" + ", array_map(function($filter) { return $filter->render_view(); }, $filters))."]";
+        }        
+        
         echo " (".get_date_text($email->time_created).")";
         
         echo "</div>";

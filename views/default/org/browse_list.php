@@ -1,23 +1,22 @@
 <?php 
 
-$sector = get_input('sector');     
-$region = get_input('region');
-$country = get_input('country');
+$filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));
 
 ?>
 <div class='padded'>
 <div class='view_toggle' style='padding-left:30px'>
-    <a href='/pg/browse?list=0&sector=<?php echo escape($sector); ?>'><?php echo __('browse:map') ?></a> &middot;
+    <a href='/pg/browse?list=0&sector=<?php echo escape($filters[0]->value); ?>'><?php echo __('browse:map') ?></a> &middot;
     <strong><?php echo __('browse:list') ?></strong>
 </div>
 <?php
-    echo view('org/filter_controls', array('baseurl' => '/pg/browse?list=1'));
+    echo view('org/filter_controls', array(
+        'baseurl' => '/pg/browse?list=1', 
+        'filters' => $filters
+    ));
     echo "<br />";
 
 $res = view('org/search_list', array(
-    'sector' => $sector,
-    'region' => $region,
-    'country' => $country,
+    'filters' => $filters,
 ));
 
 if ($res)

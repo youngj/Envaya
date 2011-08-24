@@ -28,7 +28,7 @@
         
         if ($can_send)
         {
-            echo "<a href='{$email->get_url()}/send?orgs[]={$user->guid}&from=$escFrom'><strong>$escSubject</strong></a>";
+            echo "<a href='{$email->get_url()}/send?users[]={$user->guid}&from=$escFrom'><strong>$escSubject</strong></a>";
             
             echo " (".get_date_text($email->time_created).")";            
         }

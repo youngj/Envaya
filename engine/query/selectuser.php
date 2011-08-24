@@ -58,22 +58,22 @@ class Query_SelectUser extends Query_SelectEntity
     {
         parent::finalize_query();
     
+        if ($this->region)
+        {
+            $this->where('region = ?', $this->region);
+        }
+        
+        if ($this->country)
+        {
+            $this->where('country = ?', $this->country);
+        }    
+    
         if (!$this->fulltext_query)
         {
             if ($this->sector)
             {
                 $this->where("exists (select id from org_sectors s where s.container_guid = guid AND s.sector_id = ?)", $this->sector);        
-            }
-            
-            if ($this->region)
-            {
-                $this->where('region = ?', $this->region);
-            }
-            
-            if ($this->country)
-            {
-                $this->where('country = ?', $this->country);
-            }
+            }            
         }
         else
         {
@@ -86,14 +86,6 @@ class Query_SelectUser extends Query_SelectEntity
             if ($this->sector)
             {
                 $sphinx->setFilter('sector_id', array($this->sector));
-            }
-            if ($this->region)
-            {
-                $sphinx->setFilter('region', array($this->region));
-            }
-            if ($this->country)
-            {
-                $sphinx->setFilter('country', array($this->country));
             }
             
             $results = $sphinx->query($this->fulltext_query, 'orgs');

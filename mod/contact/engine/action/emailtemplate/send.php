@@ -11,16 +11,16 @@ class Action_EmailTemplate_Send extends Action
     {
         $email = $this->get_email();
                 
-        $org_guids = get_input_array('users');
+        $user_guids = get_input_array('users');
         $numSent = 0;
-        foreach ($org_guids as $org_guid)
+        foreach ($user_guids as $user_guid)
         {       
-            $org = Organization::get_by_guid($org_guid);
+            $user = User::get_by_guid($user_guid);
 
-            if ($email->can_send_to($org))
+            if ($email->can_send_to($user))
             {
                 $numSent++;
-                $email->send_to($org);
+                $email->send_to($user);
             }
         }
         $email->update();
@@ -46,14 +46,14 @@ class Action_EmailTemplate_Send extends Action
     {
         $email = $this->get_email();
         
-        $org_guids = get_input_array('orgs');
-        if ($org_guids)
+        $user_guids = get_input_array('users');
+        if ($user_guids)
         {
-            $orgs = Organization::query()->where_in('guid', $org_guids)->filter();
+            $users = User::query()->where_in('guid', $user_guids)->filter();
         }
         else
         {         
-            $orgs = $email->query_potential_recipients()
+            $users = $email->query_potential_recipients()
                 ->order_by('name')
                 ->limit(Config::get('contact:max_recipients'))
                 ->filter(); 
@@ -67,7 +67,7 @@ class Action_EmailTemplate_Send extends Action
                 'email' => $email,
                 'title' => __('email:send')
             )),            
-            'content' => view('admin/batch_email', array('email' => $email, 'users' => $orgs)),
+            'content' => view('admin/batch_email', array('email' => $email, 'users' => $users)),
         ));        
     }
 }    

@@ -2,8 +2,13 @@
 <?php
     $email = $vars['email'];
 ?>
+
 <form method='POST' action='<?php echo $email->get_url(); ?>/edit'>
 <?php echo view('input/securitytoken') ?>
+
+<?php
+    echo view('admin/email_filters_input', array('email' => $email));
+?>
 
 <div class='input'>
 <label>From:</label>
@@ -51,7 +56,9 @@
         'value' => __('delete')
     ));
             
-    echo view('input/submit', array('value' => __('save')));
+    echo view('input/submit', array(
+        //'attrs' => array('onclick' => 'updateFilterJson(); return true;'),
+        'value' => __('save')));
 ?>
 </form>
 </div>

@@ -323,7 +323,7 @@ class NetworkTest extends SeleniumTest
         $this->setUrl($loginUrl);
         $this->login('testadmin','testtest');
         $this->ensureGoodMessage();
-        $this->click("//a[contains(@href,'approval=2')]");
+        $this->click("//a[contains(@href,'approval=1')]");
         $this->getConfirmation();
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();

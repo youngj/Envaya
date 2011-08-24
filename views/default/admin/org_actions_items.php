@@ -7,7 +7,7 @@ if ($org->approval == 0)
     echo view('input/post_link', array(
         'text' => __('approval:approve'),
         'confirm' => __('areyousure'),
-        'href' => "admin/approve?org_guid={$org->guid}&approval=2"
+        'href' => "admin/approve?org_guid={$org->guid}&approval=1"
     ));
     echo " ";
     echo view('input/post_link', array(

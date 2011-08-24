@@ -541,7 +541,7 @@ class RegisterTest extends SeleniumTest
 
         $this->login('testadmin','testtest');
 
-        $this->clickAndWait("//a[contains(@href, 'approval=2')]");
+        $this->clickAndWait("//a[contains(@href, 'approval=1')]");
         $this->getConfirmation();
         $this->ensureGoodMessage();
 
@@ -613,7 +613,7 @@ class RegisterTest extends SeleniumTest
         $this->login('testadmin','testtest');
         $this->ensureGoodMessage();
         $this->open("/{$this->username2}");
-        $this->clickAndWait("//a[contains(@href, 'approval=2')]");
+        $this->clickAndWait("//a[contains(@href, 'approval=1')]");
         $this->getConfirmation();
         $this->ensureGoodMessage();
 

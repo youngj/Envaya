@@ -492,8 +492,7 @@ class TranslateTest extends SeleniumTest
         
         $this->type("//input[@name='q']","");
         $this->waitForElement("//input[@name='q' and @value='']");
-        $this->select("//select[@name='status']", "All");
-        $this->waitForElement("//select[@name='status']//option[@value='' and @selected='selected']");
+        $this->select("//select[@name='status']", "All");        
         
         $this->waitForElement("//a[contains(@href,'anonymous')]");
         $this->mouseOver("//a[contains(@href,'name_5Fsaid')]");                

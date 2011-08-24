@@ -41,6 +41,7 @@ class Action_EmailTemplate_Edit extends Action
         }
         else
         {
+            $email->filters_json = get_input('filters_json');
             $email->subject = get_input('subject');                
             $email->set_content(get_input('content'));
             $email->from = get_input('from');

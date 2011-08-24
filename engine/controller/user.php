@@ -26,18 +26,12 @@ abstract class Controller_User extends Controller
     {
         $org = $this->get_org();
     
-        if ($org->approval == 0)
+        switch ($org->approval)
         {
-            return __('approval:waiting');
-        }
-        else if ($org->approval < 0)
-        {
-            return __('approval:rejected');
-        }
-        else        
-        {
-            return null;
-        }
+            case User::AwaitingApproval:    return __('approval:waiting');
+            case User::Rejected:            return __('approval:rejected');
+            default:                        return null;
+        }        
     }
    
     public function execute($uri)

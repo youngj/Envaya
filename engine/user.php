@@ -7,6 +7,10 @@
  */
 class User extends Entity
 {
+    const Approved = 1;
+    const AwaitingApproval = 0;
+    const Rejected = -1;
+
     static $table_name = 'users';
     static $query_class = 'Query_SelectUser';
 
@@ -35,7 +39,11 @@ class User extends Entity
         'last_action' => 0,
         'notifications' => 15,
     );
-    
+ 
+    static $mixin_classes = array(
+        'Mixin_WidgetContainer',
+    );  
+ 
     public function get_feed_names()
     {
         return array(
@@ -212,7 +220,7 @@ class User extends Entity
 
     public function is_approved()
     {
-        return $this->approval > 0 || $this->admin;
+        return $this->approval >= User::Approved || $this->admin;
     }
 
     public function set_password($password)
@@ -614,5 +622,45 @@ class User extends Entity
         $code_hash = $this->get_metadata('password_reset_code');    
         
         return ($code_hash && $code && $code_hash == crypt(strtoupper($code), $code_hash));
+    }    
+    
+    /* 
+     * WidgetContainer methods - a User is a container for Widgets
+     * which are shown as pages on their site.
+     */
+    function is_page_container()
+    {
+        return true;
+    }        
+    
+    function get_edit_url()
+    {
+        return $this->get_url() . "/dashboard";
+    }    
+    
+    function new_child_widget_from_input()
+    {        
+        $widget_name = get_input('widget_name');
+        if (!$widget_name || !Widget::is_valid_name($widget_name))
+        {
+            throw new ValidationException(__('widget:bad_name'));            
+        }
+        
+        $widget = $this->get_widget_by_name($widget_name);
+        
+        if ($widget->guid && ((time() - $widget->time_created > 30) || !($widget instanceof Widget_Generic)))
+        {
+            throw new ValidationException(
+                sprintf(__('widget:duplicate_name'),
+                    "<a href='{$widget->get_edit_url()}'><strong>".__('clickhere')."</strong></a>"),
+                true
+            );
+        }
+        return $widget;
+    }
+    
+    function render_add_child()
+    {
+        return view("widgets/add", array('org' => $this));
     }    
 }

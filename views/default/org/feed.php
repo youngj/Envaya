@@ -3,13 +3,14 @@
 
 PageContext::add_header_html('<meta name="robots" content="noindex,follow" />'); 
 
-$sector = $vars['sector'];
-$region = $vars['region'];
-$country = $vars['country'];
+$filters = $vars['filters'];
 $items = $vars['items'];
 $first_id = (int)$vars['first_id'];
 
-echo view('org/filter_controls', array('baseurl' => '/pg/feed'));
+echo view('org/filter_controls', array(
+    'baseurl' => '/pg/feed',
+    'filters' => $filters,
+));
 ?>
 </div>
 <div id='feed_container'>

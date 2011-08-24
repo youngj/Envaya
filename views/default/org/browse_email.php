@@ -1,8 +1,3 @@
-<?php 
-    $sector = get_input('sector');     
-    $region = get_input('region');
-    $country = get_input('country');
-?>
 <script type='text/javascript'>
 
 function selectOrg(guid, selected)
@@ -36,15 +31,19 @@ function toggleRecipient(guid, email)
     echo "<div style='padding-bottom:5px'>";
     echo __('share:browse_instructions');
     echo "</div>";
-    echo view('org/filter_controls', array('baseurl' => '/pg/browse_email'));
-
-    $query = Organization::query()->where_visible_to_user()->where("email <> ''");    
-
-    $query->with_sector($sector);
-    $query->with_region($region);
-    $query->with_country($country);
     
-    $query->order_by('name');                
+    $filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));
+       
+    echo view('org/filter_controls', array(
+        'baseurl' => '/pg/browse_email',
+        'filters' => $filters        
+    ));
+
+    $query = Organization::query()
+        ->where_visible_to_user()
+        ->where("email <> ''")
+        ->apply_filters($filters)
+        ->order_by('name');    
     
     $limit = 10;
     $offset = (int)get_input('offset');

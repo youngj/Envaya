@@ -1,23 +1,17 @@
 <?php 
 
-$sector = get_input('sector');
-$region = get_input('region');
-$country = get_input('country');
+$filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));
 
 echo view('org/current_filter', array(
-    'sector' => $sector, 
-    'country' => $country,
-    'region' => $region, 
-    'changeurl' => '/pg/change_browse_view'));
-
+    'filters' => $filters, 
+    'changeurl' => '/pg/change_browse_view'
+));
 ?>
 
 <div class='padded'>
 <?php
 $res = view('org/search_list', array(    
-    'sector' => $sector,
-    'region' => $region,
-    'country' => $country,
+    'filters' => $filters,
 ));
 
 if ($res)

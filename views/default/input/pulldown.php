@@ -24,12 +24,14 @@
         echo "<option value=''>".escape($empty_option)."</option>";
     }
 
+    $is_empty_value = (empty($value) && !is_numeric($value)); // avoid 0/'0' being treated same as '',null
+    
     if ($options)
     {
         foreach ($options as $option_value => $option_text)
         {
             $option_attrs = array('value' => $option_value);                    
-            if ($option_value == $value)
+            if (!$is_empty_value && $option_value == $value)
             {
                 $option_attrs['selected'] = 'selected';
             }            

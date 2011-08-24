@@ -36,7 +36,7 @@ class DiscussionTest extends SeleniumTest
         $this->retry('click', array("//a[@id='add_users']"));
         
         $this->retry('selectFrame', array("//iframe"));
-        $this->retry('select', array("//select[@id='sectorList']", "Education"));
+        $this->retry('select', array("//select[@name='sector']", "Education"));
         $this->retry('click', array("//a[contains(@title,'+p0')]"));
         $this->retry('click', array("//a[contains(@title,'+p10')]"));
         $this->retry('click', array("//a[contains(@title,'+p11')]"));

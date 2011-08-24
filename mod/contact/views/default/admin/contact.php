@@ -5,25 +5,26 @@
 
     $limit = 15;
     
-    $sector = get_input('sector');
-    $region = get_input('region');
+    $filters = Query_Filter::filters_from_input(array(
+        'Fulltext','UserType','Sector','Country','Region','Approval','Admin',
+    ));
+            
+    $query = User::query()
+        ->apply_filters($filters)
+        ->order_by($sort);
         
-    $query = Organization::query()->order_by($sort);
-    
-    if ($sector)
-    {
-        $query->with_sector($sector);
-    }       
-    if ($region)
-    {
-        $query->with_region($region);
-    }
+    $cur_url = $_SERVER['REQUEST_URI'];
        
     $orgs = $query->limit($limit, $offset)->filter();
     $count = $query->count();
-
-    echo view('org/filter_controls', array('baseurl' => "/admin/contact?sort=$sort"));
     
+    echo "<div style='float:right;padding:4px;border:1px solid #ccc'>$count users in filter</div>";    
+    
+    echo view('org/filter_controls', array(
+        'baseurl' => "/admin/contact?sort=$sort",
+        'filters' => $filters
+    ));
+       
     echo view('pagination',array(
         'pagesShown' => 24,
         'offset' => $offset,
@@ -33,14 +34,14 @@
 ?>
 <table class='gridTable'>
 <tr>
-    <th><a href='/admin/contact?sort=name'><?php echo __('name') ?></a></th>
-    <th><a href='/admin/contact?sort=email'><?php echo __('email') ?></a></th>
+    <th><a href='<?php echo escape(url_with_param($cur_url,'sort','name')); ?>'><?php echo __('name') ?></a></th>
+    <th><a href='<?php echo escape(url_with_param($cur_url,'sort','email')); ?>'><?php echo __('email') ?></a></th>
     <th><?php echo __('phone_number') ?></th>
-    <th><a href='/admin/contact?sort=time_created'><?php echo __('contact:time_created') ?></a></th>
+    <th><a href='<?php echo escape(url_with_param($cur_url,'sort','time_created')); ?>'><?php echo __('contact:time_created') ?></a></th>
     <th><?php echo __('contact:time_updated') ?></th>
     <th><?php echo __('contact:num_pages') ?></th>
     <th><?php echo __('language') ?></th>
-    <th><a href='/admin/contact?sort=last_notify_time'><?php echo __('contact:last_notify') ?></a></th>
+    <th><a href='<?php echo escape(url_with_param($cur_url,'sort','last_notify_time')); ?>'><?php echo __('contact:last_notify') ?></a></th>
 </tr>
 <?php
     $escUrl = urlencode($_SERVER['REQUEST_URI']);

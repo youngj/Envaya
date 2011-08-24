@@ -6,10 +6,6 @@
  */
 class Organization extends User
 {
-    static $mixin_classes = array(
-        'Mixin_WidgetContainer',
-    );
-    
     static $query_subtype_ids = array('core.user.org');
     
     function set_defaults()
@@ -108,7 +104,7 @@ class Organization extends User
 
     public function can_user_view($user)
     {
-        return parent::can_user_view($user) && ($this->approval > 0 || $this->can_user_edit($user));
+        return parent::can_user_view($user) && ($this->approval >= User::Approved || $this->can_user_edit($user));
     }
         
     protected $sectors;
@@ -176,45 +172,5 @@ class Organization extends User
         }        
         
         return $res;
-    }
-             
-    /* 
-     * WidgetContainer methods - an Organization is a container for Widgets
-     * which are shown as pages on their site.
-     */
-    function is_page_container()
-    {
-        return true;
-    }        
-    
-    function get_edit_url()
-    {
-        return $this->get_url() . "/dashboard";
-    }    
-    
-    function new_child_widget_from_input()
-    {        
-        $widget_name = get_input('widget_name');
-        if (!$widget_name || !Widget::is_valid_name($widget_name))
-        {
-            throw new ValidationException(__('widget:bad_name'));            
-        }
-        
-        $widget = $this->get_widget_by_name($widget_name);
-        
-        if ($widget->guid && ((time() - $widget->time_created > 30) || !($widget instanceof Widget_Generic)))
-        {
-            throw new ValidationException(
-                sprintf(__('widget:duplicate_name'),
-                    "<a href='{$widget->get_edit_url()}'><strong>".__('clickhere')."</strong></a>"),
-                true
-            );
-        }
-        return $widget;
-    }
-    
-    function render_add_child()
-    {
-        return view("widgets/add", array('org' => $this));
-    }
+    }             
 }

@@ -1,17 +1,14 @@
 <?php    
-    $sector = null;
-    $region = null;
     $fulltext = null;
-    $country = null;
+    $filters = null;
     $limit = 10;
     extract($vars);
     
     $offset = (int) get_input('offset');
 
-    $query = Organization::query()->where_visible_to_user();
-    $query->with_country($country);
-    $query->with_sector($sector);
-    $query->with_region($region);
+    $query = Organization::query()
+        ->where_visible_to_user()
+        ->apply_filters($filters);
      
     if ($fulltext)
     {

@@ -12,6 +12,7 @@ class Action_EmailTemplate_Add extends Action
         $content = get_input('content');
         
         $email = new EmailTemplate();
+        $email->filters_json = get_input('filters_json');
         $email->from = get_input('from');
         $email->subject = get_input('subject');        
         $email->set_content($content);

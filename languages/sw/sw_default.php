@@ -57,6 +57,8 @@ return array(
     'canceledit' => 'Ghairi Kuhariri',
     'savechanges' => 'Hifadhi mabadiliko',    
 
+    'country' => "Nchi",
+    'country:all' => "Zote",
     'country:empty_option' => 'Nchi zote',    
     'country:other' => 'Nyingine',
 

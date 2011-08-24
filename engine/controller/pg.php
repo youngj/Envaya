@@ -413,17 +413,11 @@ class Controller_Pg extends Controller
     {
         $this->allow_view_types(null);
     
-        $sector = get_input('sector');
-        $region = get_input('region');
-        $country = get_input('country');
-        
         $this->page_draw(array(
             'title' => __('browse:title'),
             'content' => view("org/change_filter", array(
                 'baseurl' => '/pg/browse', 
-                'sector' => $sector, 
-                'country' => $country,
-                'region' => $region
+                'filters' => Query_Filter::filters_from_input(array('Sector','Country','Region'))
             ), 'mobile')
         ));
     }        
@@ -434,9 +428,10 @@ class Controller_Pg extends Controller
         $this->allow_view_types(null);
     
         $q = get_input('q');
-        $sector = get_input('sector');
         
-        $vars = array('query' => $q, 'sector' => $sector);
+        $filters = Query_Filter::filters_from_input(array('Sector'));
+        
+        $vars = array('query' => $q, 'filters' => $filters);
         
         if (empty($q) && !$sector)
         {        
@@ -466,25 +461,22 @@ class Controller_Pg extends Controller
             
             if ($latlong)
             {
-				$query = Organization::query();
-				$query->in_area(
-					$latlong['lat'] - 1.0, 
-					$latlong['long'] - 1.0, 
-					$latlong['lat'] + 1.0, 
-					$latlong['long'] + 1.0
-				);
-				if ($sector)
-				{
-					$query->with_sector($sector);
-				}
-				$vars['nearby'] = ($query->limit(1)->get() != null);
-            
+				$query = Organization::query()
+                    ->apply_filters($filters)
+                    ->in_area(
+                        $latlong['lat'] - 1.0, 
+                        $latlong['long'] - 1.0, 
+                        $latlong['lat'] + 1.0, 
+                        $latlong['long'] + 1.0
+                    );
+                
+				$vars['nearby'] = ($query->limit(1)->get() != null);            
                 $vars['latlong'] = $latlong;
             }            
 
             $vars['results'] = view('org/search_list', array(
                 'fulltext' => $q,
-                'sector' => $sector,
+                'filters' => $filters,
             ));
             
             $content = view('org/search_results', $vars);
@@ -575,19 +567,13 @@ class Controller_Pg extends Controller
     
     function action_change_feed_view()
     {
-        $this->allow_view_types(null);
-        
-        $sector = get_input('sector');
-        $region = get_input('region');
-        $country = get_input('country');
+        $this->allow_view_types(null);        
         
         $this->page_draw(array(
             'title' => __("feed:title"),
             'content' => view("org/change_filter", array(
                 'baseurl' => '/pg/feed', 
-                'sector' => $sector, 
-                'region' => $region,
-                'country' => $country,
+                'filters' => Query_Filter::filters_from_input(array('Sector','Country','Region'))
             ), 'mobile')
         ));
     }
@@ -599,11 +585,8 @@ class Controller_Pg extends Controller
     
         $max_items = 20;
         
-        $sector = get_input('sector');
-        $region = get_input('region');
-        $country = get_input('country');        
-        
-        $feedName = FeedItem::make_feed_name(array('sector' => $sector, 'region' => $region, 'country' => $country));
+        $filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));                        
+        $feedName = FeedItem::feed_name_from_filters($filters);
         $items = FeedItem::query_by_feed_name($feedName)
             ->where_visible_to_user()
             ->limit($max_items)
@@ -612,9 +595,7 @@ class Controller_Pg extends Controller
         $this->page_draw(array(
             'title' => __("feed:title"),
             'content' => view("org/feed", array(
-                'sector' => $sector, 
-                'region' => $region, 
-                'country' => $country,
+                'filters' => $filters,
                 'items' => $items,
                 'first_id' => $this->get_first_item_id($items, $max_items)
             ))
@@ -642,11 +623,9 @@ class Controller_Pg extends Controller
     {
         $this->set_content_type('text/javascript');
 
-        $sector = get_input('sector');
-        $region = get_input('region');
-        $country = get_input('country');
+        $filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));                        
+        $feedName = FeedItem::feed_name_from_filters($filters);        
         $before_id = (int)get_input('before_id');
-        $feedName = FeedItem::make_feed_name(array('sector' => $sector, 'region' => $region, 'country' => $country));
         
         $max_items = 20;
         
