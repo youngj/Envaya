@@ -10,7 +10,7 @@ require_once("start.php");
 
 $orgs = Organization::query()->where('approval > 0')->filter();
 
-$recent = time() - 86400 * 31;
+$recent = timestamp() - 86400 * 31;
 
 $scores = array();
 foreach ($orgs as $org)

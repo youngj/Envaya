@@ -64,7 +64,7 @@ class Widget_Post extends Widget_Generic
     function post_feed_items()
     {
         $org = $this->get_root_container_entity();
-        $recent = time() - 60*60*6;
+        $recent = timestamp() - 60*60*6;
         
         $recent_update = $org->query_feed_items()
             ->where("action_name in ('news','newsmulti')")
@@ -74,7 +74,7 @@ class Widget_Post extends Widget_Generic
         
         if ($recent_update)
         {
-            $time = time();
+            $time = timestamp();
         
             foreach ($recent_update->query_items_in_group()->filter() as $r)
             {

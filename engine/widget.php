@@ -257,7 +257,7 @@ class Widget extends Entity
     {
         if ($this->publish_status == Widget::Published && !$this->time_published)
         {
-            $this->time_published = time();
+            $this->time_published = timestamp();
         }    
         parent::save();
     }

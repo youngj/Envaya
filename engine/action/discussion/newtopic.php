@@ -60,7 +60,7 @@ class Action_Discussion_NewTopic extends Action
         $location = get_input('location');
         Session::set('user_location', $location);
         
-        $now = time();
+        $now = timestamp();
       
         $topic = new DiscussionTopic();
         $topic->subject = $subject;        

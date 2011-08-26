@@ -25,7 +25,7 @@
         echo "<script type='text/javascript'>".view('js/post_link')."</script>";
     }
 
-    $ts = time();
+    $ts = timestamp();
     $token = generate_security_token($ts);
     
     $attrs['href'] = "javascript:postLink("

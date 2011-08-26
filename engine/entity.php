@@ -297,7 +297,7 @@ abstract class Entity extends Model
      */
     public function save()
     {
-        $time = time();
+        $time = timestamp();
         $this->time_updated = $time;
 
         if (!$this->time_created)
@@ -429,7 +429,7 @@ abstract class Entity extends Model
     function save_draft($content)
     {
         $revision = ContentRevision::get_recent_draft($this);
-        $revision->time_updated = time();
+        $revision->time_updated = timestamp();
         $revision->content = $content;                       
         $revision->save();
     }    

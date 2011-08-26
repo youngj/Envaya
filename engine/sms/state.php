@@ -14,7 +14,7 @@ class SMS_State extends Model
     
     function save()
     {
-        $this->time_updated = time();
+        $this->time_updated = timestamp();
         $this->value = serialize($this->args);
         parent::save();
     }

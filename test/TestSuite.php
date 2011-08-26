@@ -182,8 +182,6 @@ function stop_selenium()
     $sel->shutDownSeleniumServer();
 }
 
-
-
 function run_test_suite($suite, $opts)
 {
     if (!isset($opts['selenium']))

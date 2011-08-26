@@ -35,7 +35,7 @@ class SystemLog
     static function archive($offset = 0)
     {
         $offset = (int)$offset;
-        $now = time(); // Take a snapshot of now
+        $now = timestamp(); // Take a snapshot of now
 
         $ts = $now - $offset;
 
@@ -58,7 +58,7 @@ class SystemLog
     {
         $object_id = (int)$object->get_id();
         $object_class = $object->get_class_name();        
-        $time = time();
+        $time = timestamp();
         $user_guid = (int)@$_SESSION['guid'];
 
         if (!isset(static::$logcache[$object_id][$event]))

@@ -75,6 +75,7 @@ class Action_ForgotPassword extends Action
         $sms = SMS::create(Config::get('news_phone_number'), 
             $phone_number, 
             "$code\n\nSomebody has requested a new password for your Envaya account. If you requested this, enter the above code on the website to reset your password.");            
+        $sms->message_type = SMS::Transactional;
         $sms->send();
     
         SessionMessages::add(__('login:resetreq:sms_sent'));

@@ -8,7 +8,7 @@
     
     $target_language = $key->get_language();
     
-    $query = $key->query_translations()->order_by('time_created desc');        
+    $query = $key->query_translations()->order_by('time_created desc, guid desc');        
     $translations = $query->filter(); 
 
     PageContext::add_header_html("
@@ -154,7 +154,7 @@ function toggleAddComment()
 </script>
 <?php       
     
-    $comments = $key->query_comments()->order_by('time_created')->filter();
+    $comments = $key->query_comments()->order_by('time_created, guid')->filter();
     if ($comments)
     {
         echo "<h3>".__('comment:title')."</h3>";

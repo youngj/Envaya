@@ -55,7 +55,7 @@ class TodoItem
             }
         }
             
-        $recent_time = time() - 86400 * 31;
+        $recent_time = timestamp() - 86400 * 31;
     
         $home = $widgets_map['home'];
         $items[] = new TodoItem(

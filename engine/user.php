@@ -260,7 +260,7 @@ class User extends Entity
         if ($fails >= $limit)
         {
             $cnt = 0;
-            $time = time();
+            $time = timestamp();
             for ($n=$fails; $n>0; $n--)
             {
                 $f = $this->get_metadata("login_failure_$n");
@@ -280,7 +280,7 @@ class User extends Entity
         $fails++;
 
         $this->set_metadata('login_failures', $fails);
-        $this->set_metadata("login_failure_$fails", time());
+        $this->set_metadata("login_failure_$fails", timestamp());
     }           
     
     function has_password($password)
@@ -602,7 +602,7 @@ class User extends Entity
         if ($code != null)
         {
             $this->set_metadata('password_reset_code', generate_password_hash($code));
-            $this->set_metadata('password_reset_time', time());        
+            $this->set_metadata('password_reset_time', timestamp());        
         }
         else
         {
@@ -614,7 +614,7 @@ class User extends Entity
     function has_password_reset_code($code)
     {        
         $code_time = $this->get_metadata('password_reset_time');    
-        if (!$code_time || time() - $code_time > 60*60*24*7)
+        if (!$code_time || timestamp() - $code_time > 60*60*24*7)
         {
             return false;
         }
@@ -648,7 +648,7 @@ class User extends Entity
         
         $widget = $this->get_widget_by_name($widget_name);
         
-        if ($widget->guid && ((time() - $widget->time_created > 30) || !($widget instanceof Widget_Generic)))
+        if ($widget->guid && ((timestamp() - $widget->time_created > 30) || !($widget instanceof Widget_Generic)))
         {
             throw new ValidationException(
                 sprintf(__('widget:duplicate_name'),

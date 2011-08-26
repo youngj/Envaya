@@ -227,4 +227,18 @@ class Geography
         }
         return null;
     }                
+    
+    static function get_default_timezone_id($country_code)
+    {        
+        switch ($country_code)
+        {
+            case 'tz': return 'Africa/Dar_es_Salaam';
+            case 'rw': return 'Africa/Kigali';
+            case 'lr': return 'Africa/Monrovia';
+            case 'ke': return 'Africa/Nairobi';
+            case 'ug': return 'Africa/Kampala';
+            case 'us': return 'America/Chicago';
+        }
+        return null;
+    }       
 }

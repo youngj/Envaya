@@ -68,7 +68,7 @@ class Mixin_Translatable extends Mixin
         
         $approvedTrans = $key->query_translations()
             ->where('approval > 0')
-            ->order_by('approval_time desc')
+            ->order_by('approval_time desc, guid desc')
             ->get();
 
         $doAutoTranslate = ($translateMode == TranslateMode::Automatic) 
@@ -80,7 +80,7 @@ class Mixin_Translatable extends Mixin
         {
             $autoTrans = $key->query_translations()
                 ->where('source = ?', Translation::GoogleTranslate)
-                ->order_by('time_created desc')
+                ->order_by('time_created desc, guid desc')
                 ->get();
         
             if ($autoTrans && !$autoTrans->is_stale())

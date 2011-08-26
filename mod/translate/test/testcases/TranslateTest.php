@@ -164,6 +164,8 @@ class TranslateTest extends SeleniumTest
         $this->retry('mouseOver', array("//p[contains(text(),'sipendi kutafsiri')]"));        
         $this->selectFrame("relative=top");        
         
+        $this->setTimestamp(time());
+        
         $this->submitForm();
         $this->ensureGoodMessage("Tafsiri imeongezwa");
         
@@ -189,6 +191,7 @@ class TranslateTest extends SeleniumTest
         $this->type("//body", "kutafsiri ni rahisi kidogo");        
         $this->selectFrame("relative=top");
         
+        $this->setTimestamp(time());
         $this->submitForm();
         $this->ensureGoodMessage("Tafsiri imeongezwa");       
         

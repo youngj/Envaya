@@ -93,7 +93,7 @@ function notify_exception($exception)
         {
             $lastErrorEmailTimeFile = Config::get('dataroot')."/last_error_time";
             $lastErrorEmailTime = (int)@file_get_contents($lastErrorEmailTimeFile);
-            $curTime = time();
+            $curTime = timestamp();
 
             if ($curTime - $lastErrorEmailTime > 60)
             {

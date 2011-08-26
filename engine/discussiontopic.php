@@ -28,7 +28,7 @@ class DiscussionTopic extends Entity
     
     function refresh_attributes()
     {
-        $lastMessage = $this->query_messages()->order_by('time_posted desc')->limit(1)->get();
+        $lastMessage = $this->query_messages()->order_by('time_posted desc, guid desc')->limit(1)->get();
     
         $this->num_messages = $this->query_messages()->count();
         $this->last_time_posted = $lastMessage ? $lastMessage->time_posted : 0;

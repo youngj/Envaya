@@ -14,6 +14,7 @@ return array(
     'captcha_enabled' => false,
     'ssl_enabled' => false,    
     'sms_backend' => "SMS_Provider_Mock",
+    'mock_time_file' => "$dataroot/time.txt",
     'mock_sms_file' => "$dataroot/sms.out",
     'contact_phone_number' => '14845551212',
     'news_phone_number' => '14845551213',    

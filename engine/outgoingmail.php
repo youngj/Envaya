@@ -45,7 +45,7 @@ class OutgoingMail extends Model
     static function create($subject = null, $bodyText = null)
     {
         $mail = new OutgoingMail();        
-        $mail->time_created = time();
+        $mail->time_created = timestamp();
         //$mail->setMessageId(microtime(true)."@test.envaya.org");
         
         if ($subject)
@@ -151,7 +151,7 @@ class OutgoingMail extends Model
     function enqueue()
     {
         $this->status = static::Queued;
-        $this->time_queued = time();
+        $this->time_queued = timestamp();
         $this->save();
         
         return FunctionQueue::queue_call(array('OutgoingMail', 'send_now_by_id'), 
@@ -170,7 +170,7 @@ class OutgoingMail extends Model
                 
             $mail->send($mailer);        
             $this->status = static::Sent;
-            $this->time_sent = time();
+            $this->time_sent = timestamp();
             $this->error_message = '';
             $this->save();
         }

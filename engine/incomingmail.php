@@ -103,7 +103,7 @@ class IncomingMail
         $reply->from_location = "via email";
         $reply->from_email = @$parsed_address['address'];
         $reply->set_content(nl2br(static::strip_quoted_text($this->text)));
-        $reply->time_posted = time();
+        $reply->time_posted = timestamp();
         $reply->save();
 
         $topic->refresh_attributes();
@@ -202,7 +202,7 @@ class IncomingMail
         $outgoing_mail = OutgoingMail::query()
             ->where('to_address = ?', $to_address)
             ->where('status = ?', OutgoingMail::Sent)
-            ->where('time_sent > ?', time() - 86400 * 5) 
+            ->where('time_sent > ?', timestamp() - 86400 * 5) 
             ->order_by('id desc')
             ->get();
             

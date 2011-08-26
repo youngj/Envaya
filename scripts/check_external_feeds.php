@@ -3,7 +3,7 @@
     require_once "scripts/cmdline.php";
     require_once "start.php";
 
-    $time = time();
+    $time = timestamp();
     
     // assume 'stuck' feeds older than this time are not actually queued/updating (maybe the process died)
     $recent = $time - 60 * 30; 

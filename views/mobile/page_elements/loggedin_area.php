@@ -10,7 +10,7 @@ if ($user->is_setup_complete())
 
     if ($user instanceof Organization)
     {
-        $links[] = "<a href='{$user->get_url()}/dashboard?t=".time()."'>".__('edit_site')."</a>";
+        $links[] = "<a href='{$user->get_url()}/dashboard?t=".timestamp()."'>".__('edit_site')."</a>";
     }
 
     $links[] = "<a href='{$user->get_url()}/settings'>".__('settings')."</a>";

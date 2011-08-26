@@ -94,7 +94,7 @@
             if (strcmp($token, $generated_token)==0)
             {
                 $day = 60*60*24;
-                $now = time();
+                $now = timestamp();
 
                 // Validate time to ensure its not crazy
                 if (($ts>$now-$day) && ($ts<$now+$day))

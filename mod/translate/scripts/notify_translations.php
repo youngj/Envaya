@@ -3,7 +3,7 @@
 require_once 'start.php';
 require_once 'scripts/cmdline.php';
 
-$time = time();
+$time = timestamp();
 $last_notify = (int)State::get('notify_translations_time');
 
 State::set('notify_translations_time', $time);

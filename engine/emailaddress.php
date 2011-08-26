@@ -31,7 +31,7 @@ class EmailAddress
     static function add_signed_tag($address, $tag)
     {
         $site_secret = Config::get('site_secret');        
-        $timestamp = time();
+        $timestamp = timestamp();
         $signature = static::generate_tag_signature($tag, $timestamp);
         
         return str_replace('@', "+$tag-$timestamp-$signature@", $address);
@@ -57,7 +57,7 @@ class EmailAddress
             $timestamp = $match[2];
             
             // expire signed tags after 30 days (addresses could end up on spam lists eventually)
-            if (abs(time() - $timestamp) > 86400 * 30)
+            if (abs(timestamp() - $timestamp) > 86400 * 30)
             {
                 return null;
             }            

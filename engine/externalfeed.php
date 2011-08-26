@@ -65,7 +65,7 @@ class ExternalFeed extends Entity
     {
         $interval = $this->get_default_update_interval();        
         
-        $time = time();
+        $time = timestamp();
         
         // gradually slow down checking feeds that do not change often
         if ($this->time_changed && $this->time_changed < $time)
@@ -86,7 +86,7 @@ class ExternalFeed extends Entity
     function queue_update()
     {
         $this->update_status = static::Queued;
-        $this->time_queued = time();
+        $this->time_queued = timestamp();
         $this->save();
     
         return FunctionQueue::queue_call(array('ExternalFeed', 'update_by_guid'), array($this->guid), 
@@ -143,7 +143,7 @@ class ExternalFeed extends Entity
         }
         
         $this->update_status = static::Updating;
-        $this->time_update_started = time();
+        $this->time_update_started = timestamp();
         $this->save();
         
         echo "updating {$this->feed_url}...\n";
@@ -153,10 +153,10 @@ class ExternalFeed extends Entity
             $changed = $this->_update();
             if ($changed)
             {
-                $this->time_changed = time();
+                $this->time_changed = timestamp();
             }
             
-            $this->time_update_complete = time();
+            $this->time_update_complete = timestamp();
             $this->consecutive_errors = 0;
             $this->calculate_next_update_time();         
             $this->update_status = static::Idle;
@@ -167,7 +167,7 @@ class ExternalFeed extends Entity
             $msg = get_class($ex).": ".$ex->getMessage();
             error_log("error updating external feed {$this->feed_url}: $msg");
             
-            $this->time_last_error = time();
+            $this->time_last_error = timestamp();
             $this->last_error = $msg;
             $this->consecutive_errors += 1;
             $this->calculate_next_update_time();

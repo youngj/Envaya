@@ -102,4 +102,6 @@ return array(
     
     'available_countries' => array('tz','rw','lr'),
     'visible_countries' => array('tz','rw'),
+    
+    'mock_time_file' => null,
 );

@@ -2,7 +2,7 @@
 
     $confirm = @$vars['confirm'] ?: __('areyousure');
     
-    $ts = time();
+    $ts = timestamp();
     $token = generate_security_token($ts);
 
     $url = "/pg/confirm_action?ok=".urlencode($vars['href'])

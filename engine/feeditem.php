@@ -201,7 +201,7 @@ class FeedItem extends Model
     {
         if (!$time)
         {
-            $time = time();
+            $time = timestamp();
         }
 
         $feedNames = $user->get_feed_names();

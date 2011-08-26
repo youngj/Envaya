@@ -18,7 +18,7 @@
         $lastRevision = ($entity && $entity->guid) ? 
             ContentRevision::query()
                 ->where('entity_guid = ?', $entity->guid)
-                ->order_by('time_created desc')
+                ->order_by('time_created desc, id desc')
                 ->get() 
             : null;
         

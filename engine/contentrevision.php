@@ -27,12 +27,12 @@ class ContentRevision extends Model
     {
         return ContentRevision::query()
             ->where('entity_guid = ?', $entity->guid)
-            ->order_by('time_updated desc');
+            ->order_by('time_updated desc, id desc');
     }
     
     static function get_recent_draft($entity)
     {
-        $time = time();    
+        $time = timestamp();    
     
         if (!$entity->guid)
         {

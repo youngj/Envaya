@@ -112,7 +112,7 @@ abstract class Action
         $user = Session::get_loggedin_user();
         if ($user)
         {
-            $user->last_action = time();
+            $user->last_action = timestamp();
             $user->save();
         }                
     }

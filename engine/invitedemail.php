@@ -35,7 +35,7 @@ class InvitedEmail extends Model
     
     function mark_invite_sent()
     {
-        $this->last_invited = time();
+        $this->last_invited = timestamp();
         $this->num_invites += 1;
         $this->save();
     }
@@ -48,7 +48,7 @@ class InvitedEmail extends Model
             return false;
         }    
     
-        if ($this->last_invited > time() - 24*60*60*30 || $this->num_invites >= 3)
+        if ($this->last_invited > timestamp() - 24*60*60*30 || $this->num_invites >= 3)
         {
             // avoid annoying people with frequent or endless email invites
             return false;

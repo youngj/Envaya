@@ -19,7 +19,7 @@ class Action_Login extends Action
             }
         }
 
-        $next = url_with_param($next, '_lt', time());
+        $next = url_with_param($next, '_lt', timestamp());
 
         $this->redirect($next);    
     }
@@ -100,7 +100,7 @@ class Action_Login extends Action
         $next = get_input('next');        
         
         $loginTime = (int)get_input('_lt');
-        if ($loginTime && time() - $loginTime < 10 && !Session::isloggedin())
+        if ($loginTime && timestamp() - $loginTime < 10 && !Session::isloggedin())
         {
             SessionMessages::add_error_html(view('account/cookie_error'));
         }

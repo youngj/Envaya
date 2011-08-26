@@ -19,7 +19,7 @@ class TranslationKey extends Entity
 
         $best = $this->query_translations()
             ->where('score >= 0')
-            ->order_by('time_created desc')
+            ->order_by('time_created desc, guid desc')
             ->get();
             
         if ($best)

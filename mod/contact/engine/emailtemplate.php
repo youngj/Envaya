@@ -133,7 +133,7 @@ class EmailTemplate extends Entity
         $mail->email_guid = $this->guid;
         $mail->send_to_user($user);
  
-        $user->last_notify_time = time();
+        $user->last_notify_time = timestamp();
         $user->save();
     }
     

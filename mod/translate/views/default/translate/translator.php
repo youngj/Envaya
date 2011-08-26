@@ -25,6 +25,6 @@
 <?php    
     echo "<h3 style='padding-bottom:5px'>".__('itrans:latest')."</h3>";
     
-    $query = $language->query_translations()->where('owner_guid = ?', $user->guid)->order_by('time_created desc');
+    $query = $language->query_translations()->where('owner_guid = ?', $user->guid)->order_by('time_created desc, guid desc');
 
     echo view('translate/translations', array('query' => $query, 'language' => $language));

@@ -3,7 +3,7 @@
 require_once 'start.php';
 require_once 'scripts/cmdline.php';
 
-$time = time();
+$time = timestamp();
 $last_reminder = (int)State::get('last_stuck_mail_reminder');
 
 State::set('last_stuck_mail_reminder', $time);

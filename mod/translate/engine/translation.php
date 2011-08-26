@@ -51,7 +51,7 @@ class Translation extends Entity
         if ($approved)
         {
             $this->approval = 1;
-            $this->approval_time = time();
+            $this->approval_time = timestamp();
         }
         else
         {

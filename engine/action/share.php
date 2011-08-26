@@ -10,7 +10,7 @@ class Action_Share extends Action
         $user = Session::get_loggedin_user();
         $recentSharedEmails = SharedEmail::query()
             ->where('user_guid = ?', $user->guid)
-            ->where('time_shared > ?', time() - 86400)
+            ->where('time_shared > ?', timestamp() - 86400)
             ->count();                        
             
         if ($recentSharedEmails > 60)
@@ -71,7 +71,7 @@ class Action_Share extends Action
         
         $sent_emails = array();
         $duplicate_emails = array();
-        $time = time();
+        $time = timestamp();
         foreach ($emails_list as $email)
         {
             if (SharedEmail::query()

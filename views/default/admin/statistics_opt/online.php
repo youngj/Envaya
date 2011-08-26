@@ -5,7 +5,7 @@
         $offset = get_input('offset',0);
         $limit = 10;
         
-        $time = time() - 600;
+        $time = timestamp() - 600;
         $query = User::query()->where('last_action >= ?', $time)->order_by('last_action')->limit($limit, $offset);
         
         $objects = $query->filter();

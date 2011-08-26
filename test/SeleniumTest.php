@@ -15,6 +15,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         echo "\n".get_class($this)."\n";
         $this->deleteMailFile();
         $this->startBrowser();
+        $this->setTimestamp(time());
     }
     
     public function startBrowser()
@@ -50,6 +51,12 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     {
         $this->s->stop();
     }
+    
+    public function setTimestamp($timestamp)
+    {
+        global $TEST_CONFIG;
+        file_put_contents($TEST_CONFIG['mock_time_file'], "$timestamp");
+    }
 
     function login($username, $password)
     {
@@ -69,6 +76,16 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     {
         $this->retry('mouseOver', array($xpath), $timeout);
     }    
+    
+    function runScript($cmd)
+    {
+        global $TEST_CONFIG;
+        
+        $root = dirname(__DIR__);
+        $env = get_environment();    
+        $env["ENVAYA_CONFIG"] = json_encode($TEST_CONFIG);
+        run_task_sync($cmd, $root, $env);
+    }
     
     function ensureGoodMessage()
     {
@@ -184,6 +201,20 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
         throw new Exception("Found matching email for $match");
     }
+    
+    public function assertNoSMS($match = "Message")
+    {
+        try
+        {
+            $this->_getLastSMS($match);
+        }
+        catch (Exception $ex) 
+        {
+            return;
+        }
+    
+        throw new Exception("Found matching sms for $match");
+    }    
 
     public function _getLastEmail($match = "Subject")
     {

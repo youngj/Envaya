@@ -10,7 +10,7 @@
     $can_move_up = false;
     $table_id = "widget_list_{$INCLUDE_COUNT}";
     
-    $ts = time();
+    $ts = timestamp();
     $token = generate_security_token($ts);
     
     foreach ($widgets as $widget)

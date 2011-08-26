@@ -19,7 +19,7 @@ class Widget_Generic extends Widget
     function process_input($action)
     {
         $publish = ($this->publish_status == Widget::Published);        
-        $time = time();
+        $time = timestamp();
         $lastPublished = (int)$this->get_metadata('last_publish_time');
 
         $title = get_input('title');

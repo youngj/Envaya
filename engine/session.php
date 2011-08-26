@@ -175,7 +175,7 @@ class Session
             get_cache()->set(static::cache_key($id_sha1), $sess_data);
 
             return (Database::update("REPLACE INTO `sessions` (id_sha1, ts, data) VALUES (?,?,?)",
-                    array($id_sha1, time(), $sess_data))!==false);
+                    array($id_sha1, timestamp(), $sess_data))!==false);
         }
     }
     
@@ -190,7 +190,7 @@ class Session
     
     static function _session_gc($maxlifetime)
     {
-        $life = time()-$maxlifetime;
+        $life = timestamp()-$maxlifetime;
         
         return (bool)Database::delete("DELETE from `sessions` where ts<?", array($life));
     }
@@ -242,7 +242,7 @@ class Session
         EventRegister::trigger_event('login','user',$user);
         
         $user->reset_login_failure_count();
-        $user->last_action = time();
+        $user->last_action = timestamp();
         $user->save();    
 
         return true;

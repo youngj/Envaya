@@ -43,7 +43,7 @@ class Action_Discussion_AddMessage extends Action
         
         $content = Markup::sanitize_html($content, array('Envaya.Untrusted' => !$user));
         
-        $time = time();
+        $time = timestamp();
         
         $message = $topic->new_message();
         $message->from_name = $name;

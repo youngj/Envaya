@@ -283,7 +283,11 @@ CREATE TABLE `outgoing_sms` (
     `to_number` varchar(32) not NULL,
     `time_created` int NULL,
 	`time_sent` int NULL,
+    `message_type` tinyint(4) not null default 0,
+    `status` tinyint(4) not null default 0,
+    `time_sendable` int NULL,
 	PRIMARY KEY ( `id` ),
+    KEY `waiting` (`status`,`time_sendable`),
 	KEY `from_number` (`from_number`),
     KEY `to_number` (`to_number`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
