@@ -234,6 +234,10 @@ class NetworkTest extends SeleniumTest
         
         // verify feed items
         $this->open('/pg/feed');
+
+        $this->click("//a[@id='load_more_link']");        
+        $this->waitForElement("//a[contains(@href,'testposter15')]");        
+        
         $this->mouseOver("//div[@class='feed_content' and .//a[contains(@href,'testorg')] and .//a[contains(@href,'testposter16')]]");
         $this->mouseOver("//div[@class='feed_content' and .//a[contains(@href,'testorg')] and .//a[contains(@href,'testposter15')]]");
         $this->mouseOver("//div[@class='feed_content' and .//a[contains(@href,'testorg')] and .//a[contains(@href,'testposter14')]]");

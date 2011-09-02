@@ -104,4 +104,6 @@ return array(
     'visible_countries' => array('tz','rw'),
     
     'mock_time_file' => null,
+    
+    'feed_page_size' => 20,
 );

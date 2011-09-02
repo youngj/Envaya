@@ -14,6 +14,22 @@ body
     background-color:#545454;
 }
 
+#site_menu
+{
+    text-align:center;
+    padding:5px 0px;
+}
+#site_menu a
+{
+    font-weight:bold;
+    padding:0px 6px;
+    color:#9bf;
+}
+#site_menu .selected
+{
+    color:#fff;    
+}
+
 #heading h1
 {
     color:#e6e6e6;
@@ -237,3 +253,4 @@ a.icon_link:hover
     #content_mid { margin: 0; width: auto; }
     .content_container .thin_column { border: 0; }    
 }
+

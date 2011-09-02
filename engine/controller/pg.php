@@ -583,7 +583,7 @@ class Controller_Pg extends Controller
         $this->prefer_http();
         $this->allow_view_types('rss');
     
-        $max_items = 20;
+        $max_items = Config::get('feed_page_size');
         
         $filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));                        
         $feedName = FeedItem::feed_name_from_filters($filters);

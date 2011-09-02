@@ -145,7 +145,7 @@ class WebDriverTest extends SeleniumTest
         
     function attachFile($xpath, $file)
     {
-        $this->type($xpath,__DIR__.str_replace("/","\\", "/$file"));
+        $this->type($xpath,str_replace("/","\\", $file));
     }
     
     function getValue($xpath)

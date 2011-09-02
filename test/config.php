@@ -29,4 +29,5 @@ return array(
     'sphinx_log_dir' => $dataroot,
     'sphinx_pid_dir' => $dataroot,
     'dbname' => 'envaya_test',
+    'feed_page_size' => 6,
 );

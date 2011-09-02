@@ -120,7 +120,7 @@ class DiscussionTest extends SeleniumTest
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();
         $this->mustNotExist("//p[contains(text(),'message 1')]");    
-        $this->mouseOver("//p[contains(text(),'message 2')]");        
+        $this->mouseOver("//p[contains(text(),'message 2')]");                   
       
         // test delete topic from edit page
         $this->clickAndWait("//a[contains(@href,'discussions/edit')]");

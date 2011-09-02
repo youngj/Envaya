@@ -24,6 +24,9 @@ require_once __DIR__.'/SeleniumTest.php';
 require_once __DIR__.'/WebDriverTest.php';
 require_once __DIR__.'/webdriver/phpwebdriver/WebDriver.php';
 
+set_include_path(get_include_path() . PATH_SEPARATOR . dirname(__DIR__).'/vendors/zend');
+require_once 'Zend/Loader.php';
+
 Config::load();
 
 function kill_windows_process_tree($pid, $wmi = null)

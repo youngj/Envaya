@@ -131,14 +131,15 @@
      */
     function timestamp()
     {
+
+    
         $mock_time_file = Config::get('mock_time_file');
         if ($mock_time_file)
         {   
-            $mock_time = Config::get('mock_time');
-            if (!$mock_time) // cache time for current request
+            static $mock_time;
+            if (!isset($mock_time)) // cache time for current request
             {        
                 $mock_time = (int)@file_get_contents($mock_time_file) ?: time();
-                Config::set('mock_time', $mock_time);
             }
             return $mock_time;
         }
