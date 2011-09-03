@@ -195,9 +195,17 @@ class Session
         return (bool)Database::delete("DELETE from `sessions` where ts<?", array($life));
     }
     
+    private static $loaded_user = false;
+    private static $user;
+    
     static function get_loggedin_user()
     {
-        return User::get_by_guid(static::get('guid'));
+        if (!static::$loaded_user)
+        {
+            static::$loaded_user = true;
+            static::$user = User::get_by_guid(static::get('guid'));
+        }
+        return static::$user;
     }
 
     static function get_loggedin_userid()
@@ -230,6 +238,7 @@ class Session
             return false;
 
         Session::set('guid', $user->guid);
+        static::$loaded_user = false;
 
         if ($persistent)
         {
@@ -255,6 +264,7 @@ class Session
         {
             EventRegister::trigger_event('logout','user',$curUser);
         }
+        static::$loaded_user = false;
 
         Session::destroy();
         return true;

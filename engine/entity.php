@@ -401,9 +401,21 @@ abstract class Entity extends Model
         EventRegister::trigger_event('delete',get_class($this),$this);
     }
 
+    protected $container_entity;
+    
     function get_container_entity()
     {
-        return Entity::get_by_guid($this->container_guid, true);
+        if (!$this->container_entity)
+        {
+            $this->container_entity = Entity::get_by_guid($this->container_guid, true);
+        }
+        return $this->container_entity;
+    }
+    
+    function set_container_entity($entity)
+    {
+        $this->container_entity = $entity;
+        $this->container_guid = $entity->guid;
     }
 
     function get_root_container_entity()

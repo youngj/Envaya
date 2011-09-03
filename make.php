@@ -100,6 +100,8 @@ class Build
         }        
         
         static::add_nonexistent_view_paths($dir_paths);
+        
+        static::add_nonexistent_language_paths($dir_paths);
                 
         // create a cache file for each virtual directory
         mkdir('build/path_cache'); 
@@ -243,6 +245,38 @@ class Build
         echo strlen($src)." ".strlen($compressed)." $destFile\n";  
         
         return $compressed;
+    }
+        
+    private static function add_nonexistent_language_paths(&$dir_paths)
+    {
+        $language = Language::get(Config::get('language'));
+    
+        $default_group = $language->get_group('default');
+        
+        $pseudo_groups = array('admin' => true);
+        
+        foreach ($default_group as $key => $tr)
+        {
+            list($group_name, $etc) = explode(':', $key, 2);
+            if ($etc)
+            {
+                $pseudo_groups[$group_name] = true;
+            }
+        }
+        
+        foreach ($pseudo_groups as $group_name => $v)
+        {
+            foreach (Language::all() as $language)
+            {
+                if (!$language->get_group_path($group_name))
+                {
+                    $code = $language->get_code();
+                    $dir = "languages/{$code}";
+                    $virtual_path = "$dir/{$code}_{$group_name}.php";            
+                    $dir_paths[$dir][$virtual_path] = 0; 
+                }
+            }
+        }
     }
     
     

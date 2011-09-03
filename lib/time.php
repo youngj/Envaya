@@ -74,7 +74,12 @@
 
         if ($showDate)
         {        
-            $now = new DateTime("@".timestamp());
+            static $now;
+
+            if (!isset($now))
+            {
+                $now = new DateTime("@".timestamp());
+            }
             
             $year = $dateTime->format('Y');
             

@@ -55,6 +55,7 @@ function include_view($view, $viewtype, $vars)
     $view_path = Views::get_path($view, $viewtype);
     if ($view_path == null)
     {
+        ob_get_clean(); // hack so that exceptions can be caught with correct output buffer nesting level
         throw new InvalidParameterException("view $view does not exist");
     }
         
