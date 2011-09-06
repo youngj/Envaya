@@ -2,27 +2,25 @@
 
 abstract class SMS_Service
 {
-    abstract function get_id();
-    abstract function get_default_controller();
+    static function create_outgoing_sms($to_number, $message)
+    {
+        $cls = get_called_class();
+    
+        foreach (Config::get('sms_routes') as $route)
+        {
+            if ($route['service'] == $cls && preg_match('#^'.$route['remote_numbers'].'$#', $to_number))
+            {
+                $sms = new OutgoingSMS();
+                $sms->from_number = $route['self_number'];
+                $sms->to_number = $to_number;
+                $sms->message = $message;
+                return $sms;
+            }
+        }
         
-    static function is_match($number, $to_number)
-    {
-        return strpos(PhoneNumber::canonicalize($number), $to_number) !== false;
-    }        
+        throw new InvalidParameterException("No routes to $to_number for $cls");
+    }    
 
-    static function route($to_number)
-    {
-        if (static::is_match(Config::get('news_phone_number'), $to_number))
-        {
-            return new SMS_Service_News();
-        }
-        else if (static::is_match(Config::get('contact_phone_number'), $to_number))
-        {
-            return new SMS_Service_Contact();
-        }
-        else
-        {
-            return new SMS_Service_Unknown();
-        }
-    }
+    abstract function get_id();
+    abstract function get_default_controller();        
 }

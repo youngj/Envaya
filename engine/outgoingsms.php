@@ -1,6 +1,6 @@
 <?php
 
-class SMS extends Model
+class OutgoingSMS extends Model
 {
     // message_type constants
     const Notification = 0;
@@ -36,7 +36,7 @@ class SMS extends Model
     {
         $now = timestamp();
     
-        if ($this->message_type == SMS::Transactional)
+        if ($this->message_type == OutgoingSMS::Transactional)
         {
             return $now;
         }
@@ -90,14 +90,34 @@ class SMS extends Model
         return $sms;
     }
     
+    function get_provider()
+    {   
+        $from_number = $this->from_number;
+    
+        foreach (Config::get('sms_routes') as $route)
+        {
+            if ($route['self_number'] === $from_number)
+            {
+                $cls = $route['provider'];
+                return new $cls();
+            }
+        }
+        
+        throw new InvalidParameterException("No SMS provider defined for from_number $from_number");
+    }
+    
     function send_now()
     {
-        // todo catch sending errors
-        $provider = static::get_provider();        
-        $provider->send_sms($this->from_number, $this->to_number, $this->message);        
-        $this->time_sent = timestamp();
-        $this->status = SMS::Sent;
-        $this->save();
+        $provider = $this->get_provider();
+    
+        if ($provider->can_send_sms())
+        {
+            // todo catch sending errors
+            $provider->send_sms($this);        
+            $this->time_sent = timestamp();
+            $this->status = OutgoingSMS::Sent;
+            $this->save();
+        }
     }
     
     function send($immediate = false)
@@ -117,26 +137,31 @@ class SMS extends Model
             }
             else
             {
-                $this->status = SMS::Waiting;
+                $this->status = OutgoingSMS::Waiting;
                 $this->save();
-            }            
+            }
         }        
     }            
     
     function enqueue()
     {               
-        $this->status = SMS::Queued;
+        $this->status = OutgoingSMS::Queued;
         $this->save();
         
-        return FunctionQueue::queue_call(array('SMS', 'send_now_by_id'), 
-            array($this->id),
-            FunctionQueue::LowPriority
-        );    
+        $provider = $this->get_provider();
+        
+        if ($provider->can_send_sms())
+        {
+            FunctionQueue::queue_call(array('OutgoingSMS', 'send_now_by_id'), 
+                array($this->id),
+                FunctionQueue::LowPriority
+            );    
+        }
     }    
     
     static function send_now_by_id($id)
     {
-        $sms = SMS::query()->where('id = ?', $id)->get();
+        $sms = OutgoingSMS::query()->where('id = ?', $id)->get();
         if (!$sms)
         {
             throw new InvalidParameterException("SMS id $id does not exist");
@@ -149,10 +174,4 @@ class SMS extends Model
 
         $sms->send_now();
     }
-    
-    static function get_provider()
-    {
-        $provider_class = Config::get('sms_backend');
-        return new $provider_class();
-    }    
 }

@@ -79,15 +79,9 @@ class SMS_Controller extends Router implements Serializable
         $this->request->set_initial_controller($controller);
     }
     
-    function get_response_xml()
+    function get_replies()
     {
-        echo "<?xml version='1.0' encoding='UTF-8'?>\n";
-        echo '<Response>';
-        foreach ($this->replies as $reply)
-        {
-            echo "<Sms>".escape($reply)."</Sms>";
-        }
-        echo '</Response>';  
+        return $this->replies;
     }
 
     function reply($msg)

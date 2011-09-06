@@ -9,20 +9,19 @@ class SMS_Request
     protected $state;
     protected $service;
 
-    function __construct($from_number, $to_number, $message)
-    {
-        $from_number = PhoneNumber::canonicalize($from_number);
-        $to_number = PhoneNumber::canonicalize($to_number);
+    function __construct($service, $from_number, $to_number, $message)
+    {    
+        $from_number = PhoneNumber::canonicalize($from_number);        
         
-        if (!$from_number || !$to_number)
+        if (!$from_number)
         {
-            throw new Exception("Invalid SMS phone number");
+            throw new Exception("Invalid SMS sender number");
         }
         
-        $this->service = SMS_Service::route($to_number);    
         $this->from_number = $from_number;
         $this->to_number = $to_number;
-        $this->message = $message;        
+        $this->message = $message;
+        $this->service = $service;
         
         $user_phone_number = UserPhoneNumber::query()->where('phone_number = ?', $from_number)->get();
         if ($user_phone_number)

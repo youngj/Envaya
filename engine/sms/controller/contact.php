@@ -16,7 +16,7 @@ class SMS_Controller_Contact extends SMS_Controller
         
         $body .= "Phone Number: {$from_number}\n\n";
     
-        $sms = SMS::query()
+        $sms = OutgoingSMS::query()
             ->where('to_number = ?', $from_number)
             ->where('from_number = ?', $to_number)
             ->order_by('id desc')

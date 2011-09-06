@@ -2,7 +2,13 @@
 
 abstract class SMS_Provider
 {   
-    abstract function init_request();
+    // incoming sms
     abstract function is_validated_request();   
-    abstract function send_sms($from, $to, $msg);    
+    abstract function get_request_from();
+    abstract function get_request_message();
+    abstract function render_response($replies, $controller);    
+    
+    // outgoing sms
+    abstract function can_send_sms();
+    function send_sms($sms) { throw new NotImplementedException(); }
 }

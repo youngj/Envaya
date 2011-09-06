@@ -124,10 +124,90 @@ class Controller_Pg extends Controller
         
         $mail->process();
     }
+
+    function action_dequeue_sms()
+    {
+        $provider = new SMS_Provider_GatewayApp();
+    
+        if (!$provider->is_validated_dequeue_request())
+        {
+            $this->set_status(403);
+            $this->set_content("Invalid request signature");
+            throw new RequestAbortedException();            
+        }
+    
+        $messages = OutgoingSMS::query()
+            ->where('status = ?', OutgoingSMS::Queued)
+            ->where('from_number = ?', get_input('from'))
+            ->where('time_sendable <= ?', timestamp())
+            ->filter();
+        
+        $this->set_content_type('text/xml');
+                
+        ob_start();
+        
+        echo "<?xml version='1.0' encoding='UTF-8'?>\n";
+        echo "<Messages>";
+        foreach ($messages as $message)
+        {   
+            echo "<Sms id='{$message->id}' to='".escape($message->to_number)."'>".escape($message->message)."</Sms>";
+        }
+        echo "</Messages>";
+        
+        $this->set_content(ob_get_clean());        
+    }
+    
+    function action_sms_sent()
+    {
+        $provider = new SMS_Provider_GatewayApp();
+    
+        if (!$provider->is_validated_dequeue_request())
+        {
+            $this->set_status(403);
+            $this->set_content("Invalid request signature");
+            throw new RequestAbortedException();            
+        }
+        
+        $message = OutgoingSMS::query()->where('id = ?', get_input('id'))->get();
+        
+        if (!$message)
+        {
+            $this->set_status(404);
+            $this->set_content("Message does not exist");        
+        }
+        
+        $message->status = OutgoingSMS::Sent;
+        $message->save();    
+        $this->set_content("OK");        
+    }       
+    
+    private function get_incoming_sms_route($to_number)
+    {
+        foreach (Config::get('sms_routes') as $route)
+        {
+            if ($route['self_number'] === $to_number)
+            {
+                return $route;
+            }
+        }
+        return null;
+    }
     
     function action_receive_sms()
-    {        
-        $provider = SMS::get_provider();
+    {                    
+        $to_number = get_input('to');        
+        
+        $route = $this->get_incoming_sms_route($to_number);
+                
+        if (!$route)
+        {
+            $this->set_status(404);
+            $this->set_content("Incoming SMS did not match any routes");
+            throw new RequestAbortedException();
+        }
+        
+        $provider_class = $route['provider'];
+        $provider = new $provider_class();        
     
         if (!$provider->is_validated_request())
         {
@@ -136,8 +216,14 @@ class Controller_Pg extends Controller
             throw new RequestAbortedException();
         }
     
-        $request = $provider->init_request();        
+        $service_class = $route['service'];
+        $service = new $service_class();
+
+        $from_number = $provider->get_request_from();
+        $message = $provider->get_request_message();
         
+        $request = new SMS_Request($service, $from_number, $to_number, $message);
+    
         $initial_controller = $request->get_initial_controller();
         
         $initial_controller->set_request($request);
@@ -146,8 +232,9 @@ class Controller_Pg extends Controller
         
         $request->save_state();
         
-        $this->set_content_type('text/xml');
-        $this->set_content($controller->get_response_xml());
+        $replies = $controller->get_replies();        
+        
+        $provider->render_response($replies, $this);
     }
 
     function action_delete_comment()

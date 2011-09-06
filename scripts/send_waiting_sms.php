@@ -5,9 +5,9 @@ require_once 'scripts/cmdline.php';
 
 $time = timestamp();
 
-$waiting_smses = SMS::query()
+$waiting_smses = OutgoingSMS::query()
     ->where('time_sendable <= ?', $time)
-    ->where('status = ?', SMS::Waiting)
+    ->where('status = ?', OutgoingSMS::Waiting)
     ->filter();
 
 foreach ($waiting_smses as $waiting_sms)

@@ -22,24 +22,33 @@ class SMS_Provider_Twilio extends SMS_Provider
         require_once Config::get('root')."/vendors/Services/Twilio.php";
     }
     
-    function init_request()
+    function get_request_from()
     {        
-        return new SMS_Request(@$_REQUEST['From'], @$_REQUEST['To'], @$_REQUEST['Body']);    
+        return @$_POST['From'];
     }
     
-    function send_sms($from, $to, $msg)
+    function get_request_message()
     {
-        $from = static::format_number($from);
-        $to = static::format_number($to);   
+        return @$_POST['Body'];
+    }
+
+    function render_response($replies, $controller)
+    {
+        $controller->set_content_type('text/xml');
     
-        $twilio = static::get_client();    
-        $twilio->account->sms_messages->create(
-            $from,
-            $to, 
-            $msg
-        );    
-    }    
-    
+        ob_start();
+        echo "<?xml version='1.0' encoding='UTF-8'?>\n";
+        echo '<Response>';
+        foreach ($replies as $reply)
+        {
+            echo "<Sms>".escape($reply)."</Sms>";
+        }
+        echo '</Response>';  
+        $xml = ob_get_clean();    
+        
+        $controller->set_content($xml);
+    }
+        
     function is_validated_request()
     {
         static::load_lib();
@@ -54,5 +63,23 @@ class SMS_Provider_Twilio extends SMS_Provider
     {
         $phone_number = preg_replace('/[^\d]/','', $phone_number);
         return "+$phone_number";
+    }
+    
+    function can_send_sms()
+    {
+        return true;
+    }
+    
+    function send_sms($sms)
+    {
+        $from = static::format_number($sms->from_number);
+        $to = static::format_number($sms->to_number);   
+    
+        $twilio = static::get_client();    
+        $twilio->account->sms_messages->create(
+            $from,
+            $to, 
+            $sms->message
+        );    
     }    
 }

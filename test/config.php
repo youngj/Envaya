@@ -13,7 +13,22 @@ $dataroot = Config::get('dataroot').'/test_data';
 return array(        
     'captcha_enabled' => false,
     'ssl_enabled' => false,    
-    'sms_backend' => "SMS_Provider_Mock",
+    
+    'sms_routes' => array(
+        array(
+            'service' => 'SMS_Service_News',
+            'remote_numbers' => '.*',
+            'self_number' => '14845551213',
+            'provider' => 'SMS_Provider_Mock',
+        ),
+        array(
+            'service' => 'SMS_Service_Contact',
+            'remote_numbers' => '.*',
+            'self_number' => '14845551212',
+            'provider' => 'SMS_Provider_Mock',
+        ),
+    ),    
+    
     'mock_time_file' => "$dataroot/time.txt",
     'mock_sms_file' => "$dataroot/sms.out",
     'contact_phone_number' => '14845551212',
