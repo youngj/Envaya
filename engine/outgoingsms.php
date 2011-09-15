@@ -23,7 +23,8 @@ class OutgoingSMS extends Model
         'status' => 0,
         'time_sendable' => 0,        
         'time_created' => 0,
-        'time_sent' => 0,        
+        'time_sent' => 0,   
+        'error_message' => '',
     );   
     
     function get_approximate_timezone_id()

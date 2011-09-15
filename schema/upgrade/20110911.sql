@@ -1,0 +1,1 @@
+ALTER TABLE `outgoing_sms` ADD `error_message` text null;

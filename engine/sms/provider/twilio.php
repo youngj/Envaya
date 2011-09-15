@@ -27,6 +27,11 @@ class SMS_Provider_Twilio extends SMS_Provider
         return @$_POST['From'];
     }
     
+    function get_request_to()
+    {        
+        return @$_GET['to'];
+    }    
+    
     function get_request_message()
     {
         return @$_POST['Body'];

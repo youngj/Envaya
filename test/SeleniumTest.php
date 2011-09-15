@@ -316,7 +316,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     public function sendSMS($from, $to, $msg)
     {
         global $TEST_CONFIG;
-        $url = "http://{$TEST_CONFIG['domain']}/pg/receive_sms?from=".urlencode($from)
+        $url = "http://{$TEST_CONFIG['domain']}/sg/incoming?provider=Mock&from=".urlencode($from)
             ."&to=".urlencode($to)
             ."&msg=".urlencode($msg);
             

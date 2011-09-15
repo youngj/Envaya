@@ -5,7 +5,7 @@ require "scripts/cmdline.php";
 
 $from = SMS_Provider_Twilio::format_number("115152453453");
 //$to = SMS_Provider_Twilio::format_number("14847722224");
-$to = SMS_Provider_Twilio::format_number("14847722227");
+$to = "16505551212";
 
 echo "Simulating SMS $from -> $to\n";
 
@@ -14,9 +14,9 @@ while (true)
     $msg = readline("> ");
     try
     {
-        $res = file_get_contents(abs_url("/pg/receive_sms?From=".urlencode($from)
-            ."&To=".urlencode($to)
-            ."&Body=".urlencode($msg)));
+        $res = file_get_contents(abs_url("/sg/incoming?provider=Mock&from=".urlencode($from)
+            ."&to=".urlencode($to)
+            ."&body=".urlencode($msg)));
         $dom = new DOMDocument();
         $dom->loadXML($res);                    
     }

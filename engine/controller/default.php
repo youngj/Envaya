@@ -11,6 +11,10 @@ class Controller_Default extends Controller
             'regex' => '/(?P<controller>pg|admin)\b',
         ),
         array(
+            'regex' => '/sg\b',
+            'controller' => 'Controller_SMSGateway',
+        ),
+        array(
             'regex' => '/robots.txt\b',
             'action' => 'action_robots_txt',
         ),        

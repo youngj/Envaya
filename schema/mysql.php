@@ -285,6 +285,7 @@ CREATE TABLE `outgoing_sms` (
 	`time_sent` int NULL,
     `message_type` tinyint(4) not null default 0,
     `status` tinyint(4) not null default 0,
+    `error_message` text null,
     `time_sendable` int NULL,
 	PRIMARY KEY ( `id` ),
     KEY `waiting` (`status`,`time_sendable`),
