@@ -11,13 +11,8 @@ class SMS_Request
 
     function __construct($service, $from_number, $to_number, $message)
     {    
-        $from_number = PhoneNumber::canonicalize($from_number);        
-        
-        if (!$from_number)
-        {
-            throw new Exception("Invalid SMS sender number");
-        }
-        
+        $from_number = PhoneNumber::canonicalize($from_number) ?: $from_number;
+                
         $this->from_number = $from_number;
         $this->to_number = $to_number;
         $this->message = $message;

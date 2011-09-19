@@ -138,12 +138,12 @@ class KalSMS_Action_Incoming extends KalSMS_Action
     {
         ob_start();
         echo "<?xml version='1.0' encoding='UTF-8'?>\n";
-        echo "<Response>";
+        echo "<messages>\n";
         foreach ($messages as $message)
         {   
-            echo "<Sms id='".KalSMS::escape($message->id)."'>".KalSMS::escape($message->message)."</Sms>";
+            echo "  <sms id='".KalSMS::escape($message->id)."'>".KalSMS::escape($message->message)."</sms>\n";
         }
-        echo "</Response>";        
+        echo "</messages>\n";        
         return ob_get_clean();
     }
 }
@@ -160,13 +160,13 @@ class KalSMS_Action_Outgoing extends KalSMS_Action
     {
         ob_start();
         echo "<?xml version='1.0' encoding='UTF-8'?>\n";
-        echo "<Messages>";
+        echo "<messages>\n";
         foreach ($messages as $message)
         {   
-            echo "<Sms id='".KalSMS::escape($message->id)."' to='".KalSMS::escape($message->to)."'>".
-                KalSMS::escape($message->message)."</Sms>";
+            echo "  <sms id='".KalSMS::escape($message->id)."' to='".KalSMS::escape($message->to)."'>".
+                KalSMS::escape($message->message)."</sms>\n";
         }
-        echo "</Messages>";        
+        echo "</messages>\n";        
         return ob_get_clean();
     }
 }

@@ -21,6 +21,15 @@ class Controller_SMSGateway extends Controller
             return;
         }
     
+        //error_log(var_export($_POST, true));
+        //error_log(var_export($_FILES, true));
+        
+        /*
+        foreach ($_FILES as $name => $file)
+        {
+            copy($file['tmp_name'], Config::get('dataroot') . "/mms/" . $file['name']);
+        }*/
+    
         $provider = new SMS_Provider_KalSMS();
     
         if (!$provider->is_validated_request())
@@ -153,7 +162,6 @@ class Controller_SMSGateway extends Controller
     
     private function receive_sms($provider)
     {
-    
         $to_number = $provider->get_request_to();
         $route = $this->get_incoming_sms_route($to_number);
                 
