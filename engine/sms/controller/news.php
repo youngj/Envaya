@@ -257,10 +257,10 @@ To publish a message to your News page on Envaya, txt P + your message.");
     
         $this->reply(ob_get_clean());        
 //More at http://envaya.org/sms
-    }
+    }    
     
     public function execute($message)
-    {    
+    {       
         try
         {
             return parent::execute($message);

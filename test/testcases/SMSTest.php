@@ -11,6 +11,22 @@ class SMSTest extends WebDriverTest
         
         $news = $TEST_CONFIG['news_phone_number'];
         
+        // detect auto-reply loops - max 2 consecutive identical messages or 4 consecutive identical replies
+        list($res) = $this->sendSMS($p1, $news, "xxx");        
+        $this->assertContains("Unknown command", $res);        
+        
+        list($res) = $this->sendSMS($p1, $news, "xxx");        
+        $this->assertContains("Unknown command", $res);        
+        
+        $res = $this->sendSMS($p1, $news, "xxx");        
+        $this->assertEmpty($res);      
+        
+        list($res) = $this->sendSMS($p1, $news, "xyz");        
+        $this->assertContains("Unknown command", $res);              
+        
+        $res = $this->sendSMS($p1, $news, "yyy");        
+        $this->assertEmpty($res);                      
+        
         list($res) = $this->sendSMS($p1, $news, "HELP");        
         $this->assertContains("Msg&Data Rates May Apply", $res);
         
