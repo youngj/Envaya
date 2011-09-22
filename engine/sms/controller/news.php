@@ -253,10 +253,10 @@ To publish a message to your News page on Envaya, txt P + your message.");
         echo "Send SMS to publish updates on your News page on Envaya.\n";
         echo "To publish news, txt P + your message.\n";
         echo "Other commands: LOGIN, LOGOUT\n";
-        echo "Msg&Data Rates May Apply.";
+        //echo "Msg&Data Rates May Apply.";
     
         $this->reply(ob_get_clean());        
-//More at http://envaya.org/sms
+        //More at http://envaya.org/sms
     }    
     
     public function execute($message)

@@ -28,7 +28,7 @@ class SMSTest extends WebDriverTest
         $this->assertEmpty($res);                      
         
         list($res) = $this->sendSMS($p1, $news, "HELP");        
-        $this->assertContains("Msg&Data Rates May Apply", $res);
+        $this->assertContains("txt P + your message", $res);
         
         list($res) = $this->sendSMS($p1, $news, "p this is a test of the sms posting interface");        
         $this->assertContains("LOGIN", $res);
