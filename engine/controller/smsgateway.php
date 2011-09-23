@@ -9,18 +9,18 @@ class Controller_SMSGateway extends Controller
         ),        
     );
 
-    function action_kalsms()
+    function action_app()
     {
         if (!Request::is_post())
         {
             $this->page_draw(array(
-                'title' => "KalSMS",
-                'content' => view('page/kalsms'),
+                'title' => "EnvayaSMS Android App",
+                'content' => view('page/sms_app'),
             ));
             
             return;
         }
-    
+
         //error_log(var_export($_POST, true));
         //error_log(var_export($_FILES, true));
         
@@ -30,7 +30,7 @@ class Controller_SMSGateway extends Controller
             copy($file['tmp_name'], Config::get('dataroot') . "/mms/" . $file['name']);
         }*/
     
-        $provider = new SMS_Provider_KalSMS();
+        $provider = new SMS_Provider_App();
     
         if (!$provider->is_validated_request())
         {
@@ -39,26 +39,26 @@ class Controller_SMSGateway extends Controller
             throw new RequestAbortedException();            
         }    
         
-        $kalsms = $provider->kalsms;
+        $request = $provider->request;
     
-        $action = $kalsms->get_request_action();
+        $action = $request->get_action();
     
         switch ($action->type)
         {
-            case KalSMS::ACTION_INCOMING:
+            case EnvayaSMS::ACTION_INCOMING:
                 error_log("incoming sms");
                 return $this->receive_sms($provider);
-            case KalSMS::ACTION_OUTGOING:
+            case EnvayaSMS::ACTION_OUTGOING:
                    
                 $messages = array();
 
                 foreach (OutgoingSMS::query()
                     ->where('status = ?', OutgoingSMS::Queued)
-                    ->where('from_number = ?', $kalsms->get_request_phone_number())
+                    ->where('from_number = ?', $request->get_phone_number())
                     ->where('time_sendable <= ?', timestamp())
                     ->filter() as $sms)
                 {
-                    $message = new KalSMS_OutgoingMessage();
+                    $message = new EnvayaSMS_OutgoingMessage();
                     $message->id = $sms->id;
                     $message->message = $sms->message;
                     $message->to = $sms->to_number;
@@ -69,7 +69,7 @@ class Controller_SMSGateway extends Controller
                 $this->set_content($action->get_response_xml($messages));                   
                         
                 return;
-            case KalSMS::ACTION_SEND_STATUS:    
+            case EnvayaSMS::ACTION_SEND_STATUS:    
 
                 $message = OutgoingSMS::query()->where('id = ?', $action->id)->get();
                 
@@ -80,7 +80,7 @@ class Controller_SMSGateway extends Controller
                     return;
                 }
                                 
-                $message->status = $this->get_status_from_kal_status($action->status);
+                $message->status = $this->parse_sms_status($action->status);
                 
                 if ($message->status == OutgoingSMS::Sent)
                 {
@@ -98,15 +98,15 @@ class Controller_SMSGateway extends Controller
         }
     }    
     
-    private function get_status_from_kal_status($kal_status)
+    private function parse_sms_status($sms_status)
     {
-        switch ($kal_status)
+        switch ($sms_status)
         {
-            case KalSMS::STATUS_QUEUED:
+            case EnvayaSMS::STATUS_QUEUED:
                 return OutgoingSMS::Queued;
-            case KalSMS::STATUS_SENT:
+            case EnvayaSMS::STATUS_SENT:
                 return OutgoingSMS::Sent;
-            case KalSMS::STATUS_FAILED:
+            case EnvayaSMS::STATUS_FAILED:
                 return OutgoingSMS::Failed;
             default:
                 return 0;
