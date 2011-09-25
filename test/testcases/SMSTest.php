@@ -11,27 +11,24 @@ class SMSTest extends WebDriverTest
         
         $news = $TEST_CONFIG['news_phone_number'];
         
-        // detect auto-reply loops - max 2 consecutive identical messages or 4 consecutive identical replies
+        // detect auto-reply loops
         list($res) = $this->sendSMS($p1, $news, "xxx");        
         $this->assertContains("Unknown command", $res);        
         
         list($res) = $this->sendSMS($p1, $news, "xxx");        
         $this->assertContains("Unknown command", $res);        
         
+        list($res) = $this->sendSMS($p1, $news, "xxx");        
+        $this->assertContains("Unknown command", $res);        
+                
         $res = $this->sendSMS($p1, $news, "xxx");        
         $this->assertEmpty($res);      
-        
-        list($res) = $this->sendSMS($p1, $news, "xyz");        
-        $this->assertContains("Unknown command", $res);              
-        
-        $res = $this->sendSMS($p1, $news, "yyy");        
-        $this->assertEmpty($res);                      
-        
+                
         list($res) = $this->sendSMS($p1, $news, "HELP");        
-        $this->assertContains("txt P + your message", $res);
+        $this->assertContains("P=publish news", $res);
         
         list($res) = $this->sendSMS($p1, $news, "p this is a test of the sms posting interface");        
-        $this->assertContains("LOGIN", $res);
+        $this->assertContains("IN", $res);
         
         list($res) = $this->sendSMS($p1, $news, "login testorg alksdjfalksjfd");        
         $this->assertContains("The password 'alksdjfalksjfd' was incorrect for username 'testorg'.", $res);
@@ -47,9 +44,9 @@ class SMSTest extends WebDriverTest
         $this->assertContains("this is a test of the sms posting interface", $this->getText("//div[contains(@class,'section_content')]"));
         $this->assertContains("via SMS", $this->getText("//div[@class='blog_date']//a"));
         
-        if (!preg_match("#DELETE\s\d+#", $res, $match))
+        if (!preg_match("#D\s\d+#", $res, $match))
         {
-            throw new Exception("Expected DELETE command in SMS reply");
+            throw new Exception("Expected D command in SMS reply");
         }
         
         list($res) = $this->sendSMS($p2, $news, $match[0]);        
@@ -66,7 +63,7 @@ class SMSTest extends WebDriverTest
         $this->assertContains("HELP", $res);        
         
         list($res) = $this->sendSMS($p2, $news, "today we planted a lot of trees");        
-        $this->assertContains("txt YES", $res);        
+        $this->assertContains('txt "P"', $res);        
         
         list($res) = $this->sendSMS($p2, $news, "yes");
 

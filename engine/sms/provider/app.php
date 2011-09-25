@@ -22,10 +22,33 @@ class SMS_Provider_App extends SMS_Provider
         return $this->request->get_phone_number();        
     }          
     
-    function get_request_message()
+    function get_request_text()
     {
         return $this->request->get_action()->message;
     }
+    
+    function render_message_html()
+    {
+        $html = parent::render_message_html();
+        
+        $action = $this->request->get_action();
+        
+        if ($action->mms_parts)
+        {        
+            foreach ($action->mms_parts as $mms_part)
+            {
+                if (strpos($mms_part->type, 'image/') === 0)
+                {
+                    $uploaded_file = UploadedFile::upload_from_input($_FILES[$mms_part->form_name]);
+                    
+                    $url = $uploaded_file->get_url();
+                    
+                    $html .= " <br /><img src='$url' class='image_center' />";
+                }
+            }
+        }
+        return $html;
+    }    
     
     function is_validated_request()
     {

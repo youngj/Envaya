@@ -5,25 +5,18 @@ class SMS_Request
     protected $to_number;
     protected $from_number;
     protected $message;
-    protected $user;
     protected $state;
     protected $service;
 
-    function __construct($service, $from_number, $to_number, $message)
+    function __construct($service, $provider)
     {    
+        $from_number = $provider->get_request_from();  
         $from_number = PhoneNumber::canonicalize($from_number) ?: $from_number;
                 
         $this->from_number = $from_number;
-        $this->to_number = $to_number;
-        $this->message = $message;
+        $this->to_number = $provider->get_request_to();
         $this->service = $service;
-        
-        $user_phone_number = UserPhoneNumber::query()->where('phone_number = ?', $from_number)->get();
-        if ($user_phone_number)
-        {
-            $this->user = $user_phone_number->get_user();
-        }   
-        
+                        
         $service_id = $this->service->get_id();        
         $state = SMS_State::query()
             ->where('service_id = ?', $service_id)
@@ -35,8 +28,22 @@ class SMS_Request
             $state = new SMS_State();
             $state->service_id = $service_id;
             $state->phone_number = $from_number;
+            Session::set_loggedin_user(null);
         }
-        $this->state = $state;
+        else
+        {
+            $lang = $state->get('lang');
+            if ($lang)
+            {
+                Language::set_current_code($lang);
+            }
+            
+            $user_guid = $state->get('user_guid');
+            Session::set_loggedin_user(User::get_by_guid($user_guid));            
+        }
+        $this->state = $state;        
+        
+        $this->message = $provider->render_message_html();
     }                 
     
     function get_initial_controller()
@@ -53,7 +60,7 @@ class SMS_Request
     {
         $this->set_state('initial_controller', $controller);
     }
-    
+        
     function get_state($name)
     {
         return $this->state->get($name);
@@ -72,12 +79,7 @@ class SMS_Request
     function set_state($name, $value)
     {
         return $this->state->set($name, $value);
-    }    
-    
-    function get_user()
-    {
-        return $this->user;
-    }
+    }       
     
     function get_message()
     {

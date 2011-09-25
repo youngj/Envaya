@@ -16,7 +16,7 @@ while (true)
     {
         $res = file_get_contents(abs_url("/sg/incoming?provider=Mock&from=".urlencode($from)
             ."&to=".urlencode($to)
-            ."&body=".urlencode($msg)));
+            ."&msg=".urlencode($msg)));
         $dom = new DOMDocument();
         $dom->loadXML($res);                    
     }

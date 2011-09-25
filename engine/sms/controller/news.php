@@ -4,75 +4,86 @@ class SMS_Controller_News extends SMS_Controller
 {
     static $routes = array(
         array(
-            'regex' => '(post|p)\s+(?P<message>.*)',
+            'regex' => '(p|post)\s+(?P<message>.+)',
             'action' => 'action_post',
         ),               
         array(
-            'regex' => '(post|p)\b',
-            'action' => 'action_index',
+            'regex' => '(p|post)\b',
+            'action' => 'action_post_help',
         ),     
+        array(
+            'regex' => '(d|delete)\s+(?P<guid>\d+)',
+            'action' => 'action_delete',
+        ),       
+        array(
+            'regex' => '(d|delete)\b',
+            'action' => 'action_delete_help',
+        ),       
+        array(
+            'regex' => '(l|lang|language)\s+(?P<lang>\w+)',
+            'action' => 'action_language',
+        ),        
+        array(
+            'regex' => '(l|lang|language)\b',
+            'action' => 'action_language_help',
+        ),
         array(
             'regex' => 'user\b',
             'action' => 'action_user',
-        ),
+        ),        
         array(
-            'regex' => '(delete)\s+(?P<post_guid>\d+)',
-            'action' => 'action_delete_post',
-        ),                   
-        array(
-            'regex' => '(y|yes)\b',
-            'action' => 'action_confirm_post',
-        ),                   
-        array(
-            'regex' => '(help|menu|info)\b',
-            'action' => 'action_help',
-        ),
-        array(
-            'regex' => '((log in)|login)\s+(?P<username>[\w\-]+)\s+(?P<password>.*)',
+            'regex' => '(in|(log in)|login)\s+(?P<username>[\w\-]+)\s+(?P<password>.*)',
             'action' => 'action_login',
         ),            
         array(
-            'regex' => '((log in)|login)',
-            'action' => 'action_login_format',
+            'regex' => '(in|(log in)|login)\b',
+            'action' => 'action_login_help',
         ),                    
         array(
-            'regex' => '((log out)|logout)\b',
+            'regex' => '(out|(log out)|logout)\b',
             'action' => 'action_logout',
-        ),            
+        ),    
+        array(
+            'regex' => '(h|help|menu|info)\b',
+            'action' => 'action_help',
+        ),        
         array(
             'regex' => '(?P<message>.*)',
             'action' => 'action_default',
         ),         
     );
-    
-    protected $user;
-    
-    function before()
-    {
-        $user_guid = $this->get_state('user_guid');
-        if ($user_guid)
-        {
-            $this->user = User::get_by_guid($user_guid);
-        }
-    }
-    
+        
     function action_post()
     {    
         $this->post_message($this->param('message'));
     }
+    
+    function action_post_help()
+    {
+        // if user has possible message saved from before, "P" alone will post it
+        $message = $this->get_state('message');
+        if ($message)
+        {
+            $this->post_message($message);
+        }
+        else
+        {
+            $this->reply(__('sms:post_help'));   
+        }        
+    }    
         
     function post_message($message)
     {        
-        $user = $this->user;
+        $user = Session::get_loggedin_user();
         if (!$user)
         {
-            $this->set_state('message', $message);
-            $this->set_state('login_prompt', true);
-            $this->reply("To post your message, you need to log in to Envaya. Txt LOGIN then your Envaya username then your password");      
+            $this->set_state('message', $message);            
+            $this->set_default_action('login');
+            $this->reply(__('sms:login_to_post'));      
             return;
-        }        
+        }
         
-        $this->set_state('login_prompt', false);
+        $this->set_default_action(null);
         
         $news = $user->get_widget_by_class('News');
         if (!$news->guid)
@@ -86,81 +97,88 @@ class SMS_Controller_News extends SMS_Controller
         $post->save();
         $post->post_feed_items();
         
-        $this->reply("Your news update has been published at {$post->get_url()} !
-To delete this news update, txt DELETE {$post->guid}.");
+        $this->reply(strtr(__('sms:post_published'),
+            array(
+                '{url}' => $post->get_url(),
+                '{id}' => $post->guid
+            )
+        ));            
         $this->set_state('message', null);
     }
     
-    function action_delete_post()
+    function action_delete()
     {
-        $user = $this->user;
-        $post_guid = $this->param('post_guid');
+        $guid = $this->param('guid');
         
-        $post = Widget_Post::get_by_guid($post_guid);
+        $post = Widget_Post::get_by_guid($guid);
         
         if (!$post)
         {
-            $this->reply("News update {$post_guid} was not found.");
+            $this->reply(strtr(__('sms:post_not_found'), array('{id}' => $guid)));
         }        
-        else if (!$post->can_user_edit($user))
+        else if (!$post->can_edit())
         {
-            $this->reply("You do not have access to delete this news update.");
+            $this->reply(__('sms:cant_delete_post'));
         }
         else
         {
             $post->disable();
             $post->save();
-            $this->reply("News update deleted successfully.");
+            $this->reply(__('sms:post_deleted'));
         }
     }    
     
+    function action_delete_help()
+    {
+        $this->reply(__('sms:delete_help'));
+    }
+    
+    function action_language()
+    {
+        $lang = strtolower($this->param('lang'));
+        
+        $languages = Config::get('languages');
+        
+        if (isset($languages[$lang]))
+        {
+            $this->set_state('lang', $lang);
+            Language::set_current_code($lang);
+            $this->reply(__('sms:language_changed'));
+        }
+        else
+        {
+            $this->reply(strtr(__('sms:bad_language'), array('lang' => $lang)));
+        }
+    }
+    
+    function action_language_help()
+    {
+        $this->reply(__('sms:language_help'));
+    }
+    
     function action_user()
     {
-        $user = $this->user;
+        $user = Session::get_loggedin_user();
         if ($user)
         {
-            $this->reply("You are logged in as {$user->username} ({$user->name}). Txt LOGOUT to log out.");    
+            $this->reply(strtr(__('sms:logged_in'), array(
+                '{username}' => $user->username,
+                '{name}' => $user->name,
+            )));
         }
         else
         {
-            $this->reply("You are logged out. To log in, txt LOGIN then your Envaya username then your password");    
-            $this->set_state('login_prompt', true);
+            $this->reply(__('sms:logged_out'));    
+            $this->set_default_action('login');
         }
-    }
-    
-    function action_index()
-    {
-        $user = $this->user;
-        if ($user)
-        {
-            $this->reply("You are currently logged in as {$user->username}. 
-To publish a message to your News page on Envaya, txt P + your message.");
-        }
-        else        
-        {
-            $this->action_login_format();
-        }
-    }
+    }   
     
     function action_logout()
-    {
-        $this->set_state('login_prompt', false);
-        $this->set_state('user_guid', null);
-        $this->reply("Successfully logged out.");
-    }
-    
-    function action_login_format()
-    {
-        if (!$this->user)
-        {
-            $this->reply("To log in to Envaya, txt \"LOGIN [your Envaya username] [your password]\".");            
-            $this->set_state('login_prompt', true);
-        }
-        else
-        {
-            $this->action_user();
-        }
-    }
+    {        
+        $this->set_default_action(null);
+        $this->logout();
+        $this->reply(__('sms:logout_success'));
+    }    
     
     function action_login()
     {
@@ -170,33 +188,44 @@ To publish a message to your News page on Envaya, txt P + your message.");
         $this->try_login($username, $password);        
     }
     
+    function action_login_help()
+    {
+        if (!Session::get_loggedin_user())
+        {
+            $this->reply(__('sms:login_help'));            
+            $this->set_default_action('login');            
+        }
+        else
+        {
+            $this->action_user();
+        }
+    }    
+    
     function try_login($username, $password)
     {
-        $this->set_state('login_prompt', true);
+        $this->set_default_action('login');
         
         $user = User::get_by_username($username);
         
         if (!$user)
         {
-            $this->reply("The username '$username' does not exist on Envaya. Please correct the username, then txt \"LOGIN [your username] [your password]\"");
+            $this->reply(strtr(__('sms:login_unknown_user'), array('{username}' => $username)));
             return;
         }
         else if (!($user instanceof Organization))
         {
-            $this->reply("The username '$username' cannot access this system because it is not registered as an Organization.");
+            $this->reply(strtr(__('sms:login_not_org'), array('{username}' => $username)));
             return;
         }
         else if (!$user->has_password($password))
         {
-            $this->reply("The password '$password' was incorrect for username '$username'. Please correct the password, then txt \"LOGIN [your username] [your password]\".");            
+            $this->reply(strtr(__('sms:login_bad_password'), array('{username}' => $username, '{password}' => $password)));            
             return;
         }
         else
         {
-            $this->user = $user;            
-            
-            $this->set_state('login_prompt', false);
-            $this->set_state('user_guid', $user->guid);
+            $this->set_default_action(null);
+            $this->login($user);
             
             $message = $this->get_state('message');
             
@@ -206,16 +235,21 @@ To publish a message to your News page on Envaya, txt P + your message.");
             }
             else
             {                        
-                $this->action_index();
+                $this->reply(__('sms:login_success').' '.__('sms:post_help'));
             }
-        }                
+        }
     }
     
     function action_default()
     {
         $message = $this->param('message');
+        
+        // heuristics to guess possible intent (possibly based on previous state)
+        // if the message doesn't match any explicit rules
     
-        if ($this->get_state('login_prompt'))
+        $default_action = $this->get_default_action();
+        
+        if ($default_action == 'login')
         {
             list($username, $password) = explode(" ", $message, 2);
             $this->try_login($username, $password);
@@ -223,40 +257,19 @@ To publish a message to your News page on Envaya, txt P + your message.");
         else if (strlen($message) > 20)
         {    
             $snippet = substr($message, 0, 20);
-            $this->reply("To publish your last message (\"$snippet...\") on your News page, reply with txt YES. Or, txt HELP for other options.");
+            $this->reply(strtr(__('sms:publish_last_help'), array('snippet' => $snippet)));
             $this->set_state('message', $message);
         }
         else
         {
             throw new NotFoundException();
         }
-    }       
-    
-    function action_confirm_post()
-    {
-        $message = $this->get_state('message');
-        if ($message)
-        {
-            $this->post_message($message);
-        }
-        else
-        {
-            $this->reply("No message to publish.");
-        }
     }
     
     function action_help()
     {    
-        $this->set_state('login_prompt', false);
-    
-        ob_start();
-        echo "Send SMS to publish updates on your News page on Envaya.\n";
-        echo "To publish news, txt P + your message.\n";
-        echo "Other commands: LOGIN, LOGOUT\n";
-        //echo "Msg&Data Rates May Apply.";
-    
-        $this->reply(ob_get_clean());        
-        //More at http://envaya.org/sms
+        $this->set_default_action(null);
+        $this->reply(__('sms:help'));
     }    
     
     public function execute($message)
@@ -268,7 +281,7 @@ To publish a message to your News page on Envaya, txt P + your message.");
         catch (NotFoundException $ex)
         {
             $msg = $ex->getMessage();
-            $this->reply($msg ?: "Unknown command. Txt HELP for a list of commands.");
+            $this->reply($msg ?: __('sms:bad_command'));
             return $this;
         }
     }

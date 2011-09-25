@@ -32,7 +32,7 @@ class SMS_Provider_Mock extends SMS_Provider
         return @$_GET['to'];
     }    
     
-    function get_request_message()
+    function get_request_text()
     {
         return @$_GET['msg'];
     }    

@@ -64,6 +64,28 @@ class SMS_Controller extends Router implements Serializable
         return $this->request->get_state($name);
     }
 
+    function set_default_action($value)
+    {
+        $this->set_state('_default', $value);
+    }
+    
+    function get_default_action()
+    {
+        return $this->get_state('_default');
+    }
+    
+    function login($user)
+    {
+        $this->set_state('user_guid', $user->guid);
+        Session::set_loggedin_user($user);
+    }
+    
+    function logout()
+    {
+        $this->set_state('user_guid', null);
+        Session::set_loggedin_user(null);
+    }    
+    
     function set_state($name, $value)
     {
         $this->request->set_state($name, $value);
@@ -85,9 +107,7 @@ class SMS_Controller extends Router implements Serializable
     }
 
     function reply($reply)
-    {
-        $reply = substr($reply, 0, 160);
-    
+    {        
         // prevent auto-reply loop
         $message = $this->request->get_message();
         
@@ -112,7 +132,7 @@ class SMS_Controller extends Router implements Serializable
         else
         {
             $num_same_reply = 0;
-        }
+        }        
             
         if ($last_message == $message)
         {
@@ -129,9 +149,9 @@ class SMS_Controller extends Router implements Serializable
         $this->set_state('_num_same_reply', $num_same_reply);
         $this->set_state('_num_same_message', $num_same_message);        
         
-        // accept at most 2 consecutive SMS with same message, or
-        // send at most 4 consecutive SMS with same reply before dropping reply
-        if ($num_same_message >= 2 || $num_same_reply >= 4)
+        // accept at most 3 consecutive SMS with same message, or
+        // send at most 6 consecutive SMS with same reply before dropping reply
+        if ($num_same_message >= 3 || $num_same_reply >= 6)
         {
             return;
         }

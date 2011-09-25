@@ -207,6 +207,12 @@ class Session
         }
         return static::$user;
     }
+    
+    static function set_loggedin_user($user)
+    {
+        static::$loaded_user = true;
+        static::$user = $user;
+    }
 
     static function get_loggedin_userid()
     {
