@@ -11,12 +11,14 @@ class SMS_Output
             'HTML.AllowedElements' => '',
             'AutoFormat.Linkify' => false,
             'AutoFormat.RemoveEmpty' => true
-        ));        
+        ));
     }
     
     static function split_text($text, $maxLength)
     {
         $chunks = array();
+        
+        $text = preg_replace('#( )+#', ' ', $text);
         
         while (true)
         {
