@@ -898,7 +898,7 @@ class SMS_Controller_News extends SMS_Controller
             $lines[] = __('sms:help_in');
         }        
         
-        $this->reply(implode("\n", $lines));
+        $this->_reply(implode("\n", $lines));
     }    
     
     function action_set_name()    
