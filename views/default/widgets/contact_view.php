@@ -4,7 +4,7 @@
     $widget = $vars['widget'];
     $org = $widget->get_container_entity();
 
-    if ($org->email && $widget->get_metadata('public_email') != 'no')
+    if ($org->email && $org->get_metadata('public_email') != 'no')
     {
         echo view('widgets/contact_field', array(
             'label' => __("widget:contact:email"), 
@@ -12,7 +12,7 @@
         ));
     }
 
-    if ($org->phone_number && $widget->get_metadata('public_phone') != 'no')
+    if ($org->phone_number && $org->get_metadata('public_phone') != 'no')
     {
         echo view('widgets/contact_field', array(
             'label' => __("widget:contact:phone_number"), 

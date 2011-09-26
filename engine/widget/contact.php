@@ -26,10 +26,10 @@ class Widget_Contact extends Widget
         EmailAddress::validate($email);
 
         $org->email = $email;
-        $this->set_metadata('public_email', sizeof(get_input_array('public_email')) ? 'yes' : 'no');
+        $org->set_metadata('public_email', sizeof(get_input_array('public_email')) ? 'yes' : 'no');
 
         $org->set_phone_number(get_input('phone_number'));
-        $this->set_metadata('public_phone', sizeof(get_input_array('public_phone')) ? 'yes' : 'no');
+        $org->set_metadata('public_phone', sizeof(get_input_array('public_phone')) ? 'yes' : 'no');
         $org->set_metadata('contact_name', get_input('contact_name'));
         $org->set_metadata('contact_title', get_input('contact_title'));
         $org->set_metadata('street_address', get_input('street_address'));

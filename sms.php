@@ -28,6 +28,11 @@ while (true)
     $smses = $dom->getElementsByTagName('Sms');
     for ($i = 0; $i < $smses->length; $i++)
     {
-        echo ($i + 1).". ".$smses->item($i)->textContent. "\n";
+        $text = $smses->item($i)->textContent;
+        $len = strlen($text);
+    
+    
+        echo "$text\n";
+        echo "($len chars)\n";
     }
 }

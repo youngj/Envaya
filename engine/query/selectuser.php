@@ -48,9 +48,7 @@ class Query_SelectUser extends Query_SelectEntity
 
     function fulltext($name)
     {
-        // sector and region have to be set before calling fulltext()    
-        $this->fulltext_query = $name;    
-		
+        $this->fulltext_query = $name;    		
         return $this;        
     }
 

@@ -10,11 +10,14 @@ class SMS_Request
 
     function __construct($service, $provider)
     {    
+        $this->to_number = $provider->get_request_to();
+        
         $from_number = $provider->get_request_from();  
-        $from_number = PhoneNumber::canonicalize($from_number) ?: $from_number;
+        $from_number = PhoneNumber::canonicalize($from_number, 
+            PhoneNumber::get_country_code($this->to_number)) ?: $from_number;
                 
         $this->from_number = $from_number;
-        $this->to_number = $provider->get_request_to();
+        
         $this->service = $service;
                         
         $service_id = $this->service->get_id();        
