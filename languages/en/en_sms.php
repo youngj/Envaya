@@ -23,8 +23,9 @@ return array(
     
     'sms:user_details' => 'Txt "I [user]" for details',
     'sms:user_news' => "Txt \"N\" for news",
-    'sms:news_comments' => "%s cmt;txt \"G [num]\"",
-    'sms:news_no_comments' => "0 cmt;txt \"C [msg]\"",
+    'sms:news_comments' => "%s cmt@\"G [num]\"",
+    'sms:news_one_comment' => "1 cmt@\"G 1\"",
+    'sms:news_no_comments' => "0 cmt:\"C [msg]\"",
     'sms:no_orgs_near' => "No organizations found near '%s'",
     'sms:no_orgs_name' => "No organizations found with name '%s'",
     'sms:no_more_orgs' => "No more organizations found.",
@@ -76,10 +77,6 @@ return array(
     
     'sms:logout_success' => "Successfully logged out.",        
     'sms:login_not_org' => "The username '{username}' cannot access this system because it is not registered as an Organization.",
-    
-    'sms:minutes_ago' => '%sm',
-    'sms:hours_ago' => '%sh',
-    'sms:days_ago' => '%sd',
     
     'sms:document_placeholder' => '(doc)',
     'sms:image_placeholder' => '(img)',

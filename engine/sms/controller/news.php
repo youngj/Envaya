@@ -48,27 +48,27 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_view_comment_help',
         ),
         array(
-            'regex' => '(m|more)\b',
+            'regex' => '(m|more|zaidi)\b',
             'action' => 'action_more',
         ),
         array(     
-            'regex' => '(x|next)\b',
+            'regex' => '(x|next|ufuatao)\b',
             'action' => 'action_next',
         ),
         array(
-            'regex' => '(name)\s+(?P<name>.+)',
+            'regex' => '(name|jina)\s+(?P<name>.+)',
             'action' => 'action_set_name',
         ),
         array(
-            'regex' => '(name)\b',
+            'regex' => '(name|jina)\b',
             'action' => 'action_get_name',
         ),    
         array(
-            'regex' => '(loc|location)\s+(?P<location>.+)',
+            'regex' => '(loc|location|eneo)\s+(?P<location>.+)',
             'action' => 'action_set_location',
         ),
         array(
-            'regex' => '(loc|location)\b',
+            'regex' => '(loc|location|eneo)\b',
             'action' => 'action_get_location',
         ),
         array(
@@ -84,7 +84,7 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_post_help',
         ),     
         array(
-            'regex' => '(delete)\s+(?P<guid>\d+)',
+            'regex' => '(delete|futa)\s+(?P<guid>\d+)',
             'action' => 'action_delete',
         ),       
         array(
@@ -96,7 +96,7 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_language',
         ),        
         array(
-            'regex' => '((h|help)\s+)?(l|lang|language)\b',
+            'regex' => '((h|help|msaada)\s+)?(l|lang|language)\b',
             'action' => 'action_language_help',
         ),
         array(
@@ -116,7 +116,7 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_logout',
         ),    
         array(
-            'regex' => '(h|help|menu)\b',
+            'regex' => '(h|help|menu|menyu)\b',
             'action' => 'action_help',
         ),        
         array(
@@ -246,9 +246,13 @@ class SMS_Controller_News extends SMS_Controller
                         ob_start();
                         echo SMS_Output::short_time($post->time_published)."\n";
                         
-                        if ($post->num_comments > 0)
+                        if ($post->num_comments > 1)
                         {                        
                             echo sprintf(__('sms:news_comments'), $post->num_comments)."\n";
+                        }
+                        else if ($post->num_comments == 1)
+                        {
+                            echo __('sms:news_one_comment')."\n";
                         }
                         else
                         {
@@ -535,7 +539,7 @@ class SMS_Controller_News extends SMS_Controller
                     return "{$result->username}\n";
                 },
                 array(
-                    'page_size' => 10,
+                    'page_size' => 14,
                     'no_more' => sprintf(__('sms:no_more_orgs'), $q),
                     'empty' => sprintf(__('sms:no_orgs_near'), $q),
                     'footer' => __('sms:user_details'),
@@ -671,9 +675,7 @@ class SMS_Controller_News extends SMS_Controller
     }
     
     function action_language()
-    {
-        $this->set_user_context(null);    
-    
+    {    
         $lang = strtolower($this->param('lang'));
         
         $languages = Config::get('languages');
