@@ -19,7 +19,7 @@ class SMS_Provider_App extends SMS_Provider
     
     function get_request_to()
     {        
-        return $this->request->get_phone_number();        
+        return $this->request->phone_number;        
     }          
     
     function get_request_text()
@@ -52,7 +52,7 @@ class SMS_Provider_App extends SMS_Provider
     
     function is_validated_request()
     {
-        $phone_number = $this->request->get_phone_number();
+        $phone_number = $this->request->phone_number;
                                 
         if (!$phone_number)
         {
@@ -85,6 +85,11 @@ class SMS_Provider_App extends SMS_Provider
         $controller->set_content_type('text/xml');
         $controller->set_content($this->request->get_action()->get_response_xml($messages));
     }
+    
+    function get_log_line()
+    {
+        return parent::get_log_line() . " v{$this->request->version}";        
+    }    
     
     function can_send_sms()
     {

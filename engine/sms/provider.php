@@ -14,6 +14,12 @@ abstract class SMS_Provider
         return escape($this->get_request_text());
     }
     
+    function get_log_line()
+    {
+        $class = str_replace('SMS_Provider_', '', get_class($this));
+        return "{$this->get_request_from()} -> {$this->get_request_to()} $class";
+    }
+    
     // outgoing sms
     abstract function can_send_sms();
     function send_sms($sms) { throw new NotImplementedException(); }

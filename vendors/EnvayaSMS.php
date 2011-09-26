@@ -46,6 +46,15 @@ class EnvayaSMS_Request
 {   
     private $request_action;
     
+    public $version;
+    public $phone_number;
+
+    function __construct()
+    {
+        $this->version = $_POST['version'];
+        $this->phone_number = $_POST['phone_number'];
+    }
+    
     function get_action()
     {
         if (!$this->request_action)
@@ -68,12 +77,7 @@ class EnvayaSMS_Request
             default:
                 return new EnvayaSMS_Action($this);
         }
-    }        
-    
-    function get_phone_number()
-    {
-        return @$_POST['phone_number'];
-    }        
+    }            
     
     function is_validated($correct_password)
     {

@@ -6,7 +6,7 @@ class SMS_Provider_Mock extends SMS_Provider
     {
         return true;
     }   
-
+    
     function send_sms($sms)
     {
         $file = fopen(Config::get('mock_sms_file'), 'a');
