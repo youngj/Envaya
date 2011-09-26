@@ -1,7 +1,19 @@
 <?php
 
 return array(
-    'sms:help' => "Envaya SMS. Commands:\nP=publish news\nF=find orgs\nI=contact info\nN=latest news\nL=set language\nIN=log in\nOUT=log out",
+    'sms:help' => "Envaya SMS",
+    'sms:help_more' => "MORE=more text",
+    'sms:help_next' => "NEXT=next page",
+    'sms:help_page' => "1-%s=goto page",
+    'sms:help_c' => "C=post comment",
+    'sms:help_g' => "G %s=view comment",
+    'sms:help_p' => "P=publish news",
+    'sms:help_f' => 'F=find orgs',
+    'sms:help_i' => 'I=contact info',
+    'sms:help_n' => 'N=latest news',
+    'sms:help_l' => 'L=set language',
+    'sms:help_in' => 'IN=log in',
+    'sms:help_out' => 'OUT=log out',
     
     'sms:bad_command' => 'Unknown command for Envaya SMS. Txt "HELP" for a list of commands.',
     'sms:bad_user' => "The username '{username}' does not exist on Envaya.",
@@ -29,6 +41,8 @@ return array(
     'sms:name_help' => "Txt \"NAME [your name]\" to change the name displayed when you post messages.",
     'sms:location_help' => "Txt \"LOC [your location]\" to change the location displayed when you post messages.",
     'sms:news_help' => "Txt \"N [user]\" to view latest news from org.",
+    'sms:add_comment_help' => "Txt \"C [msg]\" to add a comment to this news update.",
+    'sms:view_comment_help' => "Txt \"G [num]\" to view a comment on this news update. Valid num: %s",
     
     'sms:name' => "Name is currently '%s'.",
     'sms:name_changed' => "Name changed to '%s'.",
@@ -73,6 +87,7 @@ return array(
     'sms:no_add_comment_here' => "Sorry, you can't add a comment here. View a news update with 'N [user]' then try again.",
     'sms:no_view_comment_here' => "Sorry, you can't view comments here. View a news update with 'N [user]' then try again.",
     'sms:comment_not_found' => "Comment %s not found.",
+    'sms:no_comments_here' => "There are no comments here yet.",
     
     'sms:comment_published' => "Your comment has been published to \"V {id}\" and {url}\nTxt \"DELETE {id}\" to undo.",
 );

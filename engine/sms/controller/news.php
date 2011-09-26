@@ -32,12 +32,20 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_news_help',
         ),    
         array(
-            'regex' => '(c|comment)\s+(?P<message>.+)',
+            'regex' => '(c|comment)\s+(?P<message>.{4,})',
             'action' => 'action_add_comment',
         ),
         array(
-            'regex' => '(g)\s+(?P<index>\d+)',
+            'regex' => '((h|help)\s+)?(c|comment)\b',
+            'action' => 'action_add_comment_help',
+        ),        
+        array(
+            'regex' => '(g)\s+(?P<index>\d+)?',
             'action' => 'action_view_comment',
+        ),
+        array(
+            'regex' => '((h|help)\s+)?(g)\b',
+            'action' => 'action_view_comment_help',
         ),
         array(
             'regex' => '(m|more)\b',
@@ -68,7 +76,7 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_view_id',
         ),
         array(
-            'regex' => '(p|post)\s+(?P<message>.+)',
+            'regex' => '(p|post)\s+(?P<message>.{4,})',
             'action' => 'action_post',
         ),
         array(
@@ -139,6 +147,8 @@ class SMS_Controller_News extends SMS_Controller
             $page_size = @$options['page_size'] ?: 10;
             $num_pages = ceil($count / $page_size);
             
+            $this->set_state('num_pages', $num_pages);
+            
             $offset = ($page-1) * $page_size;
             
             if ($offset >= $count)
@@ -153,20 +163,22 @@ class SMS_Controller_News extends SMS_Controller
                 
                 echo @$options['header'];
                 
+                if ($num_pages > 1)
+                {
+                    echo "[$page/$num_pages]\n";
+                }                
+                
                 foreach ($results as $result)
                 {
                     echo $item_fn($result);
                 }
                 
-                if ($num_pages > 1)
-                {
-                    echo "[$page/$num_pages]\n";
-                }
                 echo @$options['footer'];
             }
         }
         else
         {
+            $this->set_state('num_pages', 0);
             echo @$options['empty'];
         }
         return ob_get_clean();
@@ -227,26 +239,24 @@ class SMS_Controller_News extends SMS_Controller
             
             $this->reply(
                 $this->query_paginator($query, $page, function($post) use ($self) {
-                        $text = "";
+                
+                        $self->set_state('num_comments', $post->num_comments);
+                        $self->set_state('post_guid', $post->guid);                        
                         
-                        $text .= SMS_Output::short_time($post->time_published)."\n";
+                        ob_start();
+                        echo SMS_Output::short_time($post->time_published)."\n";
                         
                         if ($post->num_comments > 0)
                         {                        
-                            $text .= sprintf(__('sms:news_comments'), $post->num_comments)."\n";
+                            echo sprintf(__('sms:news_comments'), $post->num_comments)."\n";
                         }
                         else
                         {
-                            $text .= __('sms:news_no_comments')."\n";
+                            echo __('sms:news_no_comments')."\n";
                         }
-                        $text .= SMS_Output::text_from_html($post->content);                       
-                        
-                        $chunks = SMS_Output::split_text($text, 280);
-                        
-                        $self->set_state('post_guid', $post->guid);                        
-                        $self->set_chunks($chunks);
-                        
-                        return "{$chunks[0]}\n";
+                        echo SMS_Output::text_from_html($post->content);                       
+                                                
+                        return ob_get_clean();
                     }, array(
                     'page_size' => 1,
                     'empty' => sprintf(__('sms:no_news'), $user->username),
@@ -256,7 +266,7 @@ class SMS_Controller_News extends SMS_Controller
         }
         else
         {
-            $this->reply(__('sms:no_news'));
+            $this->reply(sprintf(__('sms:no_news'), $user->username));
         }
     } 
               
@@ -354,6 +364,8 @@ class SMS_Controller_News extends SMS_Controller
             $post->refresh_attributes();
             $post->save();
             
+            $this->set_state('num_comments', $post->num_comments);    
+            
             $this->reply(strtr(__('sms:comment_published'), array(
                 '{id}' => $comment->guid,
                 '{url}' => $post->get_url(),
@@ -365,18 +377,33 @@ class SMS_Controller_News extends SMS_Controller
         }
     }
     
+    function action_add_comment_help()
+    {
+        $is_news = $this->get_page_action() == 'news';
+        
+        if ($is_news)
+        {
+            $this->reply(__('sms:add_comment_help'));    
+        }
+        else
+        {
+            $this->reply(__('sms:no_add_comment_here'));
+        }
+    }
+    
+    
     function view_comment($comment)
     {
-        $text = "{$comment->name}\n";
-        $text .= "{$comment->location}\n";            
-        $text .= SMS_Output::short_time($comment->time_created)."\n";
-        $text .= $comment->content;                       
+        ob_start();
+    
+        echo "{$comment->name}\n";
+        echo "{$comment->location}\n";            
+        echo SMS_Output::short_time($comment->time_created)."\n";
+        echo $comment->content;    
+
+        $text = ob_get_clean();
         
-        $chunks = SMS_Output::split_text($text, 280);
-        
-        $this->set_chunks($chunks);
-        
-        $this->reply($chunks[0]);    
+        $this->reply($text);
     }
     
     function action_view_comment()
@@ -386,8 +413,8 @@ class SMS_Controller_News extends SMS_Controller
         
         if ($post != null && $this->get_page_action() == 'news')
         {    
-            $index = $this->param('index');
-            $offset = max(0, (int)$index - 1);
+            $index = (int)$this->param('index');
+            $offset = max(0, $index - 1);
             $comment = $post->query_comments()
                 ->limit(1, $offset)
                 ->get();
@@ -407,12 +434,28 @@ class SMS_Controller_News extends SMS_Controller
         }
     }
     
-    function set_chunks($chunks)
+    function action_view_comment_help()
     {
-        $this->set_state('chunk_index', 0);
-        $this->set_state('chunks', (sizeof($chunks) > 1) ? $chunks : null);                    
+        $is_news = $this->get_page_action() == 'news';
+        $num_comments = $this->get_state('num_comments');    
+        
+        if ($is_news)
+        {
+            if ($num_comments > 0)
+            {
+                $this->reply(sprintf(__('sms:view_comment_help'), ($num_comments == 1) ? '1' : "1-$num_comments"));               
+            }
+            else
+            {
+                $this->reply(__('sms:no_comments_here'));
+            }
+        }
+        else
+        {
+            $this->reply(__('sms:no_view_comment_here'));
+        }
     }
-    
+        
     function get_user_context()
     {
         $username = $this->get_state('username');
@@ -656,7 +699,7 @@ class SMS_Controller_News extends SMS_Controller
     {        
         $this->set_default_action(null);
         $this->set_user_context(null);    
-        $this->set_page_action(null);    
+        $this->set_page_action(null);
         
         $this->logout();
         $this->reply(__('sms:logout_success'));
@@ -753,24 +796,11 @@ class SMS_Controller_News extends SMS_Controller
     function action_page()
     {
         $this->do_page_action((int)$this->param('page'));
-    }
+    }    
     
     function action_more()
     {
-        $chunk_index = ($this->get_state('chunk_index') ?: 0) + 1;
-    
-        $chunks = $this->get_state('chunks');
-        
-        if ($chunks && $chunk_index < sizeof($chunks))
-        {
-            $this->reply($chunks[$chunk_index]);
-            $this->set_state('chunk_index', $chunk_index);
-        }
-        else
-        {
-            $this->reply(__('sms:no_more_content'));
-            $this->set_state('chunks', null);
-        }           
+        $this->reply_more();
     }
     
     function action_next()
@@ -811,7 +841,64 @@ class SMS_Controller_News extends SMS_Controller
     function action_help()
     {    
         $this->set_default_action(null);
-        $this->reply(__('sms:help'));
+        
+        $lines = array(
+            __('sms:help'),
+        );
+        
+        if ($this->get_more())
+        {
+            $lines[] = __('sms:help_more');
+        }
+        
+        $page_action = $this->get_page_action();
+        
+        if ($page_action)
+        {
+            $page = $this->get_state('page');
+            $num_pages = $this->get_state('num_pages');
+            
+            if ($page < $num_pages)
+            {
+                $lines[] = __('sms:help_next');
+            }
+            
+            $lines[] = sprintf(__('sms:help_page'), $num_pages);
+        }
+        
+        if ($page_action == 'news')
+        {
+            $lines[] = __('sms:help_c');
+            
+            $num_comments = $this->get_state('num_comments');
+            if ($num_comments > 0)
+            {
+                $lines[] = sprintf(__('sms:help_g'), ($num_comments == 1) ? '1' : "1-$num_comments");
+            }
+        }        
+        
+        $num_contextual_lines = sizeof($lines);
+        
+        $lines[] = __('sms:help_p');
+        $lines[] = __('sms:help_f');
+        $lines[] = __('sms:help_i');
+        $lines[] = __('sms:help_n');
+        
+        if ($num_contextual_lines <= 1)
+        {
+            $lines[] = __('sms:help_l');        
+        }
+        
+        if (Session::get_loggedin_user())
+        {
+            $lines[] = __('sms:help_out');
+        }
+        else
+        {
+            $lines[] = __('sms:help_in');
+        }        
+        
+        $this->reply(implode("\n", $lines));
     }    
     
     function action_set_name()    

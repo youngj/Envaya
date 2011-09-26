@@ -106,10 +106,8 @@ class SMS_Controller extends Router implements Serializable
         return $this->replies;
     }
 
-    function reply($reply)
-    {        
-        $reply = trim($reply);
-    
+    function _reply($reply)
+    {
         // prevent auto-reply loop
         $last_reply = $this->get_state('_last_reply');
         $last_time = (int)$this->get_state('_last_time');            
@@ -139,8 +137,52 @@ class SMS_Controller extends Router implements Serializable
         if ($num_same_reply >= 6)
         {
             return;
-        }
-                
+        }    
+    
         $this->replies[] = $reply;
+    }
+    
+    function get_more()
+    {
+        $chunk_index = ($this->get_state('chunk_index') ?: 0) + 1;
+        $chunks = $this->get_state('chunks');        
+                
+        if ($chunks && $chunk_index < sizeof($chunks))
+        {
+            return array($chunks, $chunk_index);
+        }
+        return null;
+    }
+    
+    function reply_more()
+    {
+        $more = $this->get_more();
+        if ($more)
+        {
+            list($chunks, $chunk_index) = $more;        
+            $this->_reply($chunks[$chunk_index]);
+            $this->set_state('chunk_index', $chunk_index);
+        }
+        else
+        {
+            $this->_reply(__('sms:no_more_content'));
+            $this->set_state('chunks', null);
+        }           
+    }
+    
+    function set_chunks($chunks)
+    {
+        $this->set_state('chunk_index', 0);
+        $this->set_state('chunks', (sizeof($chunks) > 1) ? $chunks : null);                    
+    }
+        
+    function reply($reply)
+    {        
+        // split long replies into chunks, only send first one
+        
+        $chunks = SMS_Output::split_text($reply, 2);
+        $this->set_chunks($chunks);
+                        
+        $this->_reply($chunks[0]);
     }
 }

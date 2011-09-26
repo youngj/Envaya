@@ -14,24 +14,31 @@ class SMS_Output
         ));
     }
     
-    static function split_text($text, $maxLength)
+    static function split_text($text, $parts_per_message = 1)
     {
         $chunks = array();
         
         $text = preg_replace('#( )+#', ' ', $text);
         
+        // multipart sms can send 153 7-bit characters per message, single sms can send 160
+        // (would be less for non-ascii characters, but we don't support them yet)
+        
+        $more = "/MORE";        
+        $more_len = strlen($more);
+        $max_chunk = $parts_per_message * ($parts_per_message > 1 ? 153 : 160);               
+        
         while (true)
         {
-            $tooLong = strlen($text) > $maxLength;
-            if (!$tooLong)
+            $too_long = strlen($text) > $max_chunk;
+            if (!$too_long)
             {
-                $chunks[] = $text;
+                $chunks[] = trim($text);
                 break;
             }
             else
             {
-                $chunk = Markup::truncate_at_word_boundary($text, $maxLength);            
-                $chunks[] = "$chunk [MORE]";
+                $chunk = Markup::truncate_at_word_boundary($text, $max_chunk - $more_len);            
+                $chunks[] = trim("$chunk$more");
                 $text = substr($text, strlen($chunk));            
             }
         }
