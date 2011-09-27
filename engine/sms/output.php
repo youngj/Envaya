@@ -14,7 +14,7 @@ class SMS_Output
         ));
     }
     
-    static function split_text($text, $parts_per_message = 1)
+    static function split_text($text, $parts_per_message = 1, $boundary = ' ')
     {
         $chunks = array();
         
@@ -23,7 +23,7 @@ class SMS_Output
         // multipart sms can send 153 7-bit characters per message, single sms can send 160
         // (would be less for non-ascii characters, but we don't support them yet)
         
-        $more = "/MORE";        
+        $more = "\nMORE";        
         $more_len = strlen($more);
         $max_chunk = $parts_per_message * ($parts_per_message > 1 ? 153 : 160);               
         
@@ -37,7 +37,7 @@ class SMS_Output
             }
             else
             {
-                $chunk = Markup::truncate_at_word_boundary($text, $max_chunk - $more_len);            
+                $chunk = Markup::truncate_at_boundary($text, $max_chunk - $more_len, $boundary);            
                 $chunks[] = trim("$chunk$more");
                 $text = substr($text, strlen($chunk));            
             }

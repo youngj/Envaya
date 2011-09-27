@@ -48,7 +48,13 @@ class Query_SelectUser extends Query_SelectEntity
 
     function fulltext($name)
     {
-        $this->fulltext_query = $name;    		
+        $q_words = preg_split('#\s+#', trim($name));
+        
+        // use sphinx prefix matching
+        $q_words = array_map(function($word) { return "$word*"; }, $q_words);        
+        $sphinx_q = implode(" ", $q_words);
+    
+        $this->fulltext_query = $sphinx_q;    		
         return $this;        
     }
 

@@ -662,5 +662,15 @@ class User extends Entity
     function render_add_child()
     {
         return view("widgets/add", array('org' => $this));
-    }    
+    }        
+    
+    static function get_entity_by_local_id($local_id, $show_disabled = false)
+    {
+        $row = Database::get_row("SELECT * FROM local_ids where user_guid = ? AND local_id = ?", array($this->guid, $local_id));
+        if ($row)
+        {
+            return Entity::get_by_guid($row->guid, $show_disabled);
+        }
+        return null;
+    }
 }

@@ -21,7 +21,6 @@ class Controller_SMSGateway extends Controller
             return;
         }
 
-        //error_log(var_export($_POST, true));
         //error_log(var_export($_FILES, true));
         
         /*
@@ -106,6 +105,10 @@ class Controller_SMSGateway extends Controller
                 $this->log("{$request->phone_number} stat App v{$request->version} {$action->id} {$action->status}");            
                 return;
 
+            case EnvayaSMS::ACTION_TEST:                
+                $this->set_content("OK");
+                $this->log("{$request->phone_number} test App v{$request->version}");                            
+                return;
             default:
                 throw new NotFoundException();
         }
@@ -135,7 +138,10 @@ class Controller_SMSGateway extends Controller
         $date_str = $date->format("Y-m-d H:i:s");
     
         $f = fopen($log_file, "a");
-        fwrite($f, "[$date_str] $str\n");
+        
+        $ip = Request::get_client_ip();
+        
+        fwrite($f, "[$date_str] $ip $str\n");
         fclose($f);
     }
         
@@ -231,7 +237,7 @@ class Controller_SMSGateway extends Controller
         $action = str_replace('action_','',$controller->param('action'));
         $controller_cls = str_replace('SMS_Controller_','',get_class($controller));
                 
-        $this->log("{$provider->get_log_line()} $controller_cls::$action $num_replies $length");
+        $this->log("{$provider->get_log_line()} $controller_cls/$action $num_replies $length");
     }    
 }
     

@@ -170,6 +170,21 @@ class SMS_Controller extends Router implements Serializable
         }           
     }
     
+    // when we split long messages into chunks, max_parts is the maximum number of SMS parts in one chunk
+    // 1 = 160 characters
+    // 2 = 153*2 characters
+    // 3 = 153*3 characters
+    // etc
+    function set_max_parts($max_parts)
+    {
+        $this->set_state('max_parts', $max_parts);
+    }
+    
+    function get_max_parts()
+    {
+        return $this->get_state('max_parts') ?: 2;
+    }
+    
     function set_chunks($chunks)
     {
         $this->set_state('chunk_index', 0);
@@ -180,7 +195,7 @@ class SMS_Controller extends Router implements Serializable
     {        
         // split long replies into chunks, only send first one
         
-        $chunks = SMS_Output::split_text($reply, 2);
+        $chunks = SMS_Output::split_text($reply, $this->get_max_parts());
         $this->set_chunks($chunks);
                         
         $this->_reply($chunks[0]);

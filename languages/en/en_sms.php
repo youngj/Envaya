@@ -6,7 +6,7 @@ return array(
     'sms:help_next' => "NEXT=next page",
     'sms:help_page' => "1-%s=goto page",
     'sms:help_c' => "C=post comment",
-    'sms:help_g' => "G %s=view comment",
+    'sms:help_g' => "G%s=view comment",
     'sms:help_p' => "P=publish news",
     'sms:help_f' => 'F=find orgs',
     'sms:help_i' => 'I=contact info',
@@ -23,8 +23,9 @@ return array(
     
     'sms:user_details' => 'Txt "I [user]" for details',
     'sms:user_news' => "Txt \"N\" for news",
-    'sms:news_comments' => "%s cmt@\"G [num]\"",
-    'sms:news_one_comment' => "1 cmt@\"G 1\"",
+    'sms:user_discussions' => "Txt \"D\" for discussions",
+    'sms:news_comments' => "%s cmt@\"G[num]\"",
+    'sms:news_one_comment' => "1 cmt@\"G1\"",
     'sms:news_no_comments' => "0 cmt:\"C [msg]\"",
     'sms:no_orgs_near' => "No organizations found near '%s'",
     'sms:no_orgs_name' => "No organizations found with name '%s'",
@@ -33,7 +34,7 @@ return array(
     'sms:no_news' => "%s has no news yet.",
     'sms:no_more_news' => "%s has no more news.",
     
-    'sms:find_help' => "To find orgs, txt \"F [location]\" or \"F name [organization]\"",
+    'sms:find_help' => "To find orgs, txt \"F [org name]\" or \"FN [location]\"",
     'sms:post_help' => 'To publish news on Envaya, txt "P [your message]".',
     'sms:language_help' => 'Current language: English. Txt "L SW" for Swahili, "L RW" for Kinyarwanda',
     'sms:login_help' => 'To log in to Envaya, txt "IN [your Envaya username] [your password]".',
@@ -87,4 +88,6 @@ return array(
     'sms:no_comments_here' => "There are no comments here yet.",
     
     'sms:comment_published' => "Your comment has been published to \"V {id}\" and {url}\nTxt \"DELETE {id}\" to undo.",
+    
+    'sms:length_set' => "Maximum length of SMS reply changed to %s",
 );

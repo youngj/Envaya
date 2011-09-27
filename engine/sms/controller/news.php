@@ -4,12 +4,12 @@ class SMS_Controller_News extends SMS_Controller
 {
     static $routes = array(
         array(
-            'regex' => '(fn|((f|find)\s+(n|name)))\s+(?P<query>.+)',
+            'regex' => '(f)\s+(?P<query>.+)',
             'action' => 'action_find_name',
         ),
         array(
-            'regex' => '(f|find)\s+(?P<query>.+)',
-            'action' => 'action_find',
+            'regex' => '(fn|((f|find)\s+(n|near)))\s+(?P<query>.+)',
+            'action' => 'action_find_near',
         ),
         array(
             'regex' => '((h|help)\s+)?(f|find)\b',
@@ -23,6 +23,18 @@ class SMS_Controller_News extends SMS_Controller
             'regex' => '((h|help)\s+)?(i|info)\b',
             'action' => 'action_info_help',
         ),
+        array(
+            'regex' => '(u|up)\b',
+            'action' => 'action_updates',
+        ),
+        /* array(
+            'regex' => '(d)\s+(?P<username>\w+)\b',
+            'action' => 'action_discussions',
+        ),   
+        array(
+            'regex' => '((h|help)\s+)?(d)\b',
+            'action' => 'action_discussions_help',
+        ), */  
         array(
             'regex' => '(n|news)\s+(?P<username>\w+)\b',
             'action' => 'action_news',
@@ -40,7 +52,7 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_add_comment_help',
         ),        
         array(
-            'regex' => '(g)\s+(?P<index>\d+)?',
+            'regex' => '(g)\s*(?P<index>\d+)?',
             'action' => 'action_view_comment',
         ),
         array(
@@ -84,6 +96,10 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_post_help',
         ),     
         array(
+            'regex' => '(len|length)\s+(?P<len>\d+)',
+            'action' => 'action_set_length',
+        ),
+        array(
             'regex' => '(delete|futa)\s+(?P<guid>\d+)',
             'action' => 'action_delete',
         ),       
@@ -122,10 +138,6 @@ class SMS_Controller_News extends SMS_Controller
         array(
             'regex' => '(?P<page>\d+)\b',
             'action' => 'action_page',
-        ),
-        array(
-            'regex' => '(x|next)\b',
-            'action' => 'action_next',
         ),
         array(
             'regex' => '(?P<message>.*)',
@@ -198,6 +210,58 @@ class SMS_Controller_News extends SMS_Controller
         }        
     }
     
+    function action_updates()
+    {
+        $items = FeedItem::query_by_feed_name('')
+            ->where_visible_to_user()
+            ->where_in('action_name', array('news','newsmulti','register'))
+            ->limit(80)
+            ->filter();
+            
+        $lines = array();
+        $times = array();
+        foreach ($items as $item)
+        {
+            if (!$item->is_valid())
+            {
+                continue;
+            }
+            
+            $subject = $item->get_subject_entity();
+            $user = $item->get_user_entity();            
+            $username = $user->username;                    
+            $time = SMS_Output::short_time($item->time_posted);            
+        
+            switch (strtolower($item->action_name))
+            {
+                case 'message':                    
+                    $cmd = "D $username {$subject->get_local_id()}";
+                    break;
+                case 'news':
+                case 'newsmulti':
+                    $cmd = "N $username";
+                    break;
+                case 'register':
+                    $cmd = "I $username";
+                    break;
+                default:
+                    $cmd = "{$item->action_name}";
+                    break;
+            }    
+
+            if (!isset($lines[$cmd]))
+            {
+                $lines[$time] = $time;            
+                $lines[$cmd] = $cmd;            
+            }
+        }   
+
+        $reply = implode("\n", $lines);
+        $chunks = SMS_Output::split_text($reply, 1, "\n");
+        $this->set_chunks($chunks);                        
+        $this->_reply($chunks[0]);        
+    }
+    
     function view_info($user)
     {
         $this->check_access($user);    
@@ -205,20 +269,45 @@ class SMS_Controller_News extends SMS_Controller
     
         ob_start();
         echo "{$user->name}\n";
-        echo "{$user->city} ".strtoupper($user->country)."\n";
-        echo Config::get('domain')."/{$user->username}\n";
-
-        if ($user->email && $user->get_metadata('public_email') != 'no')
-        {
-            echo "{$user->email}\n";
-        }
         
-        if ($user->phone_number && $user->get_metadata('public_phone') != 'no')
+        if ($user instanceof Organization)
         {
-            echo "{$user->get_primary_phone_number()}\n";
-        }            
-        echo __('sms:user_news');
+            echo "{$user->city} ".strtoupper($user->country)."\n";
+            echo $user->get_url()."\n";
+            
+            if ($user->email && $user->get_metadata('public_email') != 'no')
+            {
+                echo "{$user->email}\n";
+            }
+            
+            if ($user->phone_number && $user->get_metadata('public_phone') != 'no')
+            {
+                echo "{$user->get_primary_phone_number()}\n";
+            }         
+            
+            if ($user->get_widget_by_class('News')->query_published_widgets()->exists())
+            {
+                echo __('sms:user_news')."\n";
+            }
+            
+            /*
+            if ($user->query_discussion_topics()->exists())
+            {
+                echo __('sms:user_discussions')."\n";
+            }      
+            */            
+        }
         $this->reply(ob_get_clean());
+    }
+       
+    function action_set_length()
+    {
+        $length = (int)$this->param('length');    
+        $length = max($length, 1);
+        $length = min($length, 4);
+        
+        $this->set_max_parts($length);
+        $this->reply(sprintf(__('sms:length_set'), $length));
     }
        
     function view_news($user, $page = 1)
@@ -228,7 +317,7 @@ class SMS_Controller_News extends SMS_Controller
         $this->set_page_action('news');
         
         $news = $user->get_widget_by_class('News');
-        if ($news && $news->is_enabled())
+        if ($news->is_enabled())
         {
             $query = $news->query_published_widgets()
                 ->order_by('time_published desc, guid desc');
@@ -346,6 +435,40 @@ class SMS_Controller_News extends SMS_Controller
             $this->reply(__('sms:news_help').' '.__('sms:find_help'));
         }
     }    
+    
+    function view_discussions($user, $page = 1)
+    {
+        $this->check_access($user);    
+        $this->set_user_context($user);
+        $this->set_page_action('discussions');
+        
+        $discussions = $user->get_widget_by_class('Discussions');
+        if ($discussions->is_enabled())
+        {
+        }
+        else
+        {
+        }
+    } 
+        
+    function action_discussions($page = 1)
+    {
+        $user = $this->lookup_user($this->param('username') ?: $this->get_state('username'));         
+        $this->view_discussions($user, $page);
+    }
+    
+    function action_discussions_help()
+    {
+        $user = $this->get_user_context();
+        if ($user)
+        {
+            $this->view_discussions($user, $page);
+        }
+        else
+        {
+            $this->reply(__('sms:discussions_help').' '.__('sms:find_help'));
+        }
+    }        
     
     function action_add_comment()
     {        
@@ -475,9 +598,9 @@ class SMS_Controller_News extends SMS_Controller
         $this->set_state('username', $user ? $user->username : null);
     }
        
-    function action_find($page = 1)
+    function action_find_near($page = 1)
     {
-        $this->set_page_action('find');
+        $this->set_page_action('find_near');
         $this->set_user_context(null);
         
         $q = strtolower($this->get_param_or_state('query') ?: '');
@@ -555,11 +678,11 @@ class SMS_Controller_News extends SMS_Controller
         $this->set_user_context(null);
         
         $q = strtolower($this->get_param_or_state('query') ?: '');
-
+        
         $query = Organization::query()
                 ->where_visible_to_user()
-                ->order_by('username');
-
+                ->order_by('username');                
+                
         $query->fulltext($q);
         
         $this->reply(

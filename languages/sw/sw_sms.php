@@ -12,7 +12,7 @@ return array(
     'sms:help_in' => 'IN=fungua',
     'sms:help_out' => 'OUT=ondoka',
     'sms:help_page' => "1-%s=nenda uk.",
-    'sms:help_g' => "G %s=ona maoni",
+    'sms:help_g' => "G%s=ona maoni",
     'sms:bad_command' => 'Maombi haya hayatambuliki kwa Envaya SMS. Tuma neno "MSAADA" iliupate orodha ya maombi.',
     'sms:bad_user' => 'Jina la mtumiaji \'{username}\' halipo kwenye Envaya.',
     'sms:unapproved_user' => 'Jina la mtumiaji \'{username}\' linasubiri kukubalika, halionekani hadharani.',
@@ -24,7 +24,7 @@ return array(
     'sms:no_more_orgs' => 'Hamna mashirka mengine',
     'sms:no_news' => '%s hawana habari bado',
     'sms:no_more_news' => '%s hawana habari nyingine',
-    'sms:find_help' => 'Ili kutafuta mashirika, tuma "F [eneo]" au "F name [asasi]"',
+    'sms:find_help' => 'Ili kutafuta mashirika, tuma "F [jina la asasi]" au "FN [eneo]"',
     'sms:post_help' => 'Ili kuchapisha ujumbe kwenye ukurasa wa Habari kwenye Envaya, tuma "P [ujumbe wako]".',
     'sms:language_help' => 'Lugha ya sasa: Kiswahili. Txt "L EN" for English, "L RW" kwa Kinyarwanda',
     'sms:login_help' => 'Ili kuingia Envaya, tuma "IN [jina lako la mtumiaji la Envaya] [neno lako la siri]".',
@@ -66,7 +66,7 @@ return array(
     
     'sms:comment_published' => "Maoni yako yamechapishwa kwenye \"V {id}\" na {url}\nUkitaka kufuta tuma \"FUTA {id}\".",
     
-    'sms:news_comments' => "maoni %s@\"G [namba]\"",
+    'sms:news_comments' => "maoni %s@\"G[namba]\"",
     'sms:news_no_comments' => "maoni 0:\"C [ujumbe]\"",
-    'sms:news_one_comment' => "maoni 1@\"G 1\"",
+    'sms:news_one_comment' => "maoni 1@\"G1\"",
 );

@@ -87,18 +87,23 @@ class Markup
         return "</$tag_name>";
     }
 
-    
-    static function truncate_at_word_boundary($content, $maxLength)
-    {        
+    static function truncate_at_boundary($content, $maxLength, $boundary)
+    {
         // todo: multi-byte support
         $shortStr = substr($content, 0, $maxLength);
 
-        $lastSpace = strrpos($shortStr, ' ');
+        $lastSpace = strrpos($shortStr, $boundary);
         if ($lastSpace && $lastSpace > $maxLength / 2)
         {
             $shortStr = substr($shortStr, 0, $lastSpace);
         }
-        return $shortStr;
+        return $shortStr;    
+    }
+    
+    
+    static function truncate_at_word_boundary($content, $maxLength)
+    {        
+        return static::truncate_at_boundary($content, $maxLength, $boundary);
     }
 
     static function snippetize_html($content, $maxLength, $options)

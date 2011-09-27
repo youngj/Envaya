@@ -80,15 +80,13 @@ class SMS_Provider_App extends SMS_Provider
             $messages[] = $message;
         }
         
-        error_log(var_export($messages, true));
-        
         $controller->set_content_type('text/xml');
         $controller->set_content($this->request->get_action()->get_response_xml($messages));
     }
     
     function get_log_line()
     {
-        return parent::get_log_line() . " v{$this->request->version}";        
+        return parent::get_log_line() . " v{$this->request->version} {$this->request->get_action()->message_type}";        
     }    
     
     function can_send_sms()

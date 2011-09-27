@@ -545,6 +545,39 @@ abstract class Entity extends Model
         $this->clear_from_cache();
     }
     
+    function get_local_id()
+    {
+        $row = Database::get_row("SELECT * FROM local_ids where guid = ?", array($this->guid));
+        if ($row != null)
+        {
+            return $row->local_id;
+        }
+        
+        $user = $this->get_root_container_entity();
+        
+        $max_row = Database::get_row("SELECT max(local_id) as max FROM local_ids where user_guid = ?", array($user->guid));
+        
+        $max_id = $max_row ? ((int)$max_row->max) : 0;
+        
+        for ($i = 1; $i < 10; $i++)
+        {
+            try
+            {
+                $local_id = $max_id + $i;
+            
+                Database::update("INSERT INTO local_ids (guid,user_guid,local_id) VALUES (?,?,?)",
+                    array($this->guid, $user->guid, $local_id));
+                    
+                return $local_id;
+            }
+            catch (DatabaseException $ex)
+            {
+                // duplicate local_id? try next one
+            }
+        }
+        return null;
+    }
+    
     // Loggable interface
     public function get_id() { return $this->guid; }
     public function get_class_name() { return get_class($this); }
