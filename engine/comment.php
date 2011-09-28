@@ -45,9 +45,9 @@ class Comment extends Entity
         $posted_comments = Session::get('posted_comments') ?: array();
         $posted_comments[] = $this->guid;
         Session::set('posted_comments', $posted_comments);    
-    }    
+    }
     
-    function send_notifications()
+    function send_notifications($except = null)
     {    
 		$org = $this->get_root_container_entity();        
         $owner_guid = $this->owner_guid;
@@ -78,5 +78,24 @@ class Comment extends Entity
         );
         $mail->setReplyTo($reply_to);
         $mail->send_to_admin();    
+        
+        $sms = "{$this->get_name()} added comment on \"N {$org->username} {$widget->get_local_id()}\".\nTxt \"V {$this->guid}\" or open {$widget->get_url()}.";
+        
+        $phones = array();
+        
+        $subscriptions = array_merge(
+            $org->query_sms_subscriptions()->filter(),
+            $widget->query_sms_subscriptions()->filter()
+        );
+        
+        foreach ($subscriptions as $subscription)
+        {                        
+            $phone = $subscription->phone_number;
+            if ($phone != $except && !isset($phones[$phone]))
+            {        
+                $phones[$phone] = true;
+                $subscription->notify($sms);
+            }
+        }        
     }
 }

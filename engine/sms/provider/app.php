@@ -4,6 +4,8 @@ class SMS_Provider_App extends SMS_Provider
 {   
     public $request;
 
+    private $log_suffix;
+    
     function __construct()
     {
         require_once(Config::get('root').'/vendors/EnvayaSMS.php');
@@ -69,6 +71,26 @@ class SMS_Provider_App extends SMS_Provider
         return $this->request->is_validated($secret);
     }    
     
+    function get_outgoing_messages()
+    {
+        $messages = array();
+    
+        foreach (OutgoingSMS::query()
+            ->where('status = ?', OutgoingSMS::Queued)
+            ->where('from_number = ?', $this->request->phone_number)
+            ->where('time_sendable <= ?', timestamp())
+            ->filter() as $sms)
+        {
+            $message = new EnvayaSMS_OutgoingMessage();
+            $message->id = $sms->id;
+            $message->message = $sms->message;
+            $message->to = $sms->to_number;
+            $messages[] = $message;
+        }
+        
+        return $messages;
+    }
+    
     function render_response($replies, $controller)
     {
         $messages = array();
@@ -80,13 +102,19 @@ class SMS_Provider_App extends SMS_Provider
             $messages[] = $message;
         }
         
+        foreach ($this->get_outgoing_messages() as $message)
+        {
+            $messages[] = $message;
+            $log_suffix .= " +out({$message->id})";            
+        }
+        
         $controller->set_content_type('text/xml');
         $controller->set_content($this->request->get_action()->get_response_xml($messages));
     }
     
     function get_log_line()
     {
-        return parent::get_log_line() . " v{$this->request->version} {$this->request->get_action()->message_type}";        
+        return parent::get_log_line() . " v{$this->request->version} {$this->request->get_action()->message_type}$log_suffix";        
     }    
     
     function can_send_sms()

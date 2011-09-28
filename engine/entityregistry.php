@@ -14,8 +14,9 @@ class EntityRegistry
 {
     private static $subtype_to_class = array(
         'core.user' => 'User',
-        'core.user.org' => 'Organization',        
+        'core.user.org' => 'Organization',
         'core.user.org.relation' => 'OrgRelationship',                                    
+        'core.subscription.sms' => "SMSSubscription",
         'core.file' => 'UploadedFile',
         'core.entity.translation' => 'EntityTranslation',
         'core.widget' => 'Widget',

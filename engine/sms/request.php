@@ -21,16 +21,10 @@ class SMS_Request
         $this->service = $service;
                         
         $service_id = $this->service->get_id();        
-        $state = SMS_State::query()
-            ->where('service_id = ?', $service_id)
-            ->where('phone_number = ?', $from_number)
-            ->get();
+        $state = $service->get_state($from_number);
             
-        if (!$state)
+        if (!$state->id)
         {
-            $state = new SMS_State();
-            $state->service_id = $service_id;
-            $state->phone_number = $from_number;
             Session::set_loggedin_user(null);
         }
         else
@@ -44,8 +38,7 @@ class SMS_Request
             $user_guid = $state->get('user_guid');
             Session::set_loggedin_user(User::get_by_guid($user_guid));            
         }
-        $this->state = $state;        
-        
+        $this->state = $state;                
         $this->message = $provider->render_message_html();
     }                 
     

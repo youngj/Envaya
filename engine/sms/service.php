@@ -20,7 +20,23 @@ abstract class SMS_Service
         
         throw new InvalidParameterException("No routes to $to_number for $cls");
     }    
-
+    
+    function get_state($phone_number)
+    {    
+        $service_id = $this->get_id();        
+        $state = SMS_State::query()
+            ->where('service_id = ?', $service_id)
+            ->where('phone_number = ?', $phone_number)
+            ->get();
+        if (!$state)
+        {
+            $state = new SMS_State();
+            $state->service_id = $service_id;
+            $state->phone_number = $phone_number;
+        }
+        return $state;
+    }
+    
     abstract function get_id();
     abstract function get_default_controller();        
 }

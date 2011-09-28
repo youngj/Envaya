@@ -664,7 +664,7 @@ class User extends Entity
         return view("widgets/add", array('org' => $this));
     }        
     
-    static function get_entity_by_local_id($local_id, $show_disabled = false)
+    function get_entity_by_local_id($local_id, $show_disabled = false)
     {
         $row = Database::get_row("SELECT * FROM local_ids where user_guid = ? AND local_id = ?", array($this->guid, $local_id));
         if ($row)

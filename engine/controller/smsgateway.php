@@ -48,26 +48,10 @@ class Controller_SMSGateway extends Controller
         {
             case EnvayaSMS::ACTION_INCOMING:
                 return $this->receive_sms($provider);
-            case EnvayaSMS::ACTION_OUTGOING:
-                   
-                $messages = array();
+            case EnvayaSMS::ACTION_OUTGOING:                   
+                $messages = $provider->get_outgoing_messages();
                 
-                $message_ids = array();
-
-                foreach (OutgoingSMS::query()
-                    ->where('status = ?', OutgoingSMS::Queued)
-                    ->where('from_number = ?', $request->phone_number)
-                    ->where('time_sendable <= ?', timestamp())
-                    ->filter() as $sms)
-                {
-                    $message = new EnvayaSMS_OutgoingMessage();
-                    $message->id = $sms->id;
-                    $message->message = $sms->message;
-                    $message->to = $sms->to_number;
-                    $messages[] = $message;
-                    
-                    $message_ids[] = $message->id;
-                }                       
+                $message_ids = array_map(function ($m) { return $m->id; }, $messages);
                 
                 $this->set_content_type('text/xml');
                 $this->set_content($action->get_response_xml($messages));                   
@@ -193,7 +177,7 @@ class Controller_SMSGateway extends Controller
             throw new RequestAbortedException();
         }  
 
-        $this->receive_sms($provider);          
+        $this->receive_sms($provider);                  
     }
     
     private function receive_sms($provider)
@@ -238,6 +222,8 @@ class Controller_SMSGateway extends Controller
         $controller_cls = str_replace('SMS_Controller_','',get_class($controller));
                 
         $this->log("{$provider->get_log_line()} $controller_cls/$action $num_replies $length");
+        
+        return $replies;
     }    
 }
     

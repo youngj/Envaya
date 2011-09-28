@@ -11,4 +11,5 @@ class SMS_Service_News extends SMS_Service
     {
         return new SMS_Controller_News();
     }
+        
 }

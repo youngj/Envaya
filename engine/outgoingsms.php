@@ -54,8 +54,8 @@ class OutgoingSMS extends Model
             // number of minutes after midnight in recipient's local time in range [0,1440)
             $local_day_minute = (60 * (int)$local_time->format('G')) + (int)$local_time->format('i');
             
-            $min_day_minute = 10 * 60; // earliest sending time: 10 AM
-            $max_day_minute = 20 * 60; // latest sending time: 8 PM
+            $min_day_minute = 9 * 60; // earliest sending time: 9 AM
+            $max_day_minute = 21 * 60; // latest sending time: 9 PM
             
             if ($local_day_minute >= $min_day_minute && $local_day_minute <= $max_day_minute)
             {

@@ -36,12 +36,21 @@ class Widget_Post extends Widget_Generic
         
     function process_input($action)
     {
+        $is_new = !$this->guid;
+    
         $content = get_input('content');
         if (empty($content))
         {
             throw new ValidationException(__("widget:post:blank"));
         }
         parent::process_input($action);
+        
+        if ($this->publish_status == Widget::Published && !$this->get_metadata('sent_notifications'))
+        {
+            $this->send_notifications();
+            $this->set_metadata('sent_notifications', true);        
+            $this->save();
+        }
     }
     
     public function get_url()
@@ -90,5 +99,21 @@ class Widget_Post extends Widget_Generic
         {                
             FeedItem_News::post($org, $this);
         }
+    }
+    
+    function send_notifications($except = null)
+    {               
+        $news = $this->get_container_entity();
+        $org = $this->get_root_container_entity();
+    
+        foreach ($news->query_sms_subscriptions()->filter() as $subscription)
+        {                
+            if ($subscription->phone_number != $except)
+            {        
+                $subscription->notify(
+                    "{$org->username} published news.\nTxt \"N {$org->username} {$this->get_local_id()}\" or open {$news->get_url()}."
+                );
+            }
+        }    
     }
 }

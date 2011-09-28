@@ -371,3 +371,12 @@ CREATE TABLE `local_ids` (
     `local_id` int not null,    
     UNIQUE KEY `local_id_key` (`user_guid`,`local_id`)
 );
+
+CREATE TABLE `sms_subscriptions` (
+    <?php require 'schema/entity_columns.php'; ?>,
+    `description` text NOT NULL,
+    `language` varchar(4) null,
+    `phone_number` varchar(32) not null,
+    `local_id` int not null,
+    UNIQUE KEY `local_id_key` (`phone_number`, `local_id`)
+) ENGINE = MYISAM DEFAULT CHARSET=utf8;
