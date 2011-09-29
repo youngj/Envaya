@@ -23,6 +23,7 @@ return array(
     
     'sms:user_details' => 'Txt "I [user]" for details',
     'sms:user_news' => "N=news",
+    'sms:user_subscribe' => "S=subscribe",
     'sms:user_discussions' => "Txt \"D\" for discussions",
     'sms:news_comments' => "%scmt@\"G[num]\"",
     'sms:news_one_comment' => "1cmt@\"G1\"",
@@ -36,7 +37,7 @@ return array(
     
     'sms:find_help' => "To find orgs, txt \"F [org name]\" or \"FN [location]\"",
     'sms:post_help' => 'To publish news on Envaya, txt "P [your message]".',
-    'sms:language_help' => 'Current language: English. Txt "L SW" for Swahili, "L RW" for Kinyarwanda',
+    'sms:current_language' => 'Current language: English.',
     'sms:login_help' => 'To log in to Envaya, txt "IN [your Envaya username] [your password]".',
     'sms:delete_help' => 'Missing id number. To delete something from Envaya, txt "DELETE [id]".',
     'sms:user_help' => "Txt \"I [user]\" to look up an org's contact info.",
@@ -58,7 +59,8 @@ return array(
     'sms:user_self_help' => 'Txt "I {username}" to see your own info.',
     
     'sms:language_changed' => 'Language changed.',
-    'sms:bad_language' => 'Unknown language \'{lang}\'. Txt "L SW" for Swahili, "L RW" for Kinyarwanda',
+    'sms:bad_language' => "Unknown language \'{lang}\'.",
+    'sms:languages' => "Txt \"L SW\" for Swahili,\n\"L RW\" for Kinyarwanda",
     
     'sms:login_to_post' => 'To post your message, you need to log in to Envaya. Txt "IN [your Envaya username] [your password]"',
     'sms:post_published' => "Your news update has been published to \"N {username}\" and {url}\nIf you want to undo, txt \"DELETE {id}\"",    
@@ -77,7 +79,6 @@ return array(
     'sms:item_deleted' => "Item deleted successfully.",
     
     'sms:logout_success' => "Successfully logged out.",        
-    'sms:login_not_org' => "The username '{username}' cannot access this system because it is not registered as an Organization.",
     
     'sms:document_placeholder' => '(doc)',
     'sms:image_placeholder' => '(img)',
@@ -90,4 +91,22 @@ return array(
     'sms:comment_published' => "Your comment has been published to \"V {id}\" and {url}\nTxt \"DELETE {id}\" to undo.",
     
     'sms:length_set' => "Maximum length of SMS reply changed to %s",
+    
+    'sms:notification_stop' => "To stop these notifications, txt \"STOP %s\"",
+    'sms:no_more_subscriptions' => "No more subscriptions.",
+    'sms:no_subscriptions' => "You do not have any active subscriptions.",
+    'sms:stop_subscription' => "Txt \"STOP [id]\" to cancel any subscription",
+    
+    'sms:subscription_started' => "Subscription to \"%s\" started.",
+    'sms:stop_subscription_id' => "Txt \"STOP %s\" to unsubscribe.",
+    'sms:show_subscriptions' => "Txt \"SS\" to show all subscriptions.",
+    'sms:invalid_subscription' => "Invalid subscription id.",
+    'sms:restart_subscription_id' => "Txt \"SR %s\" to restart.",
+    'sms:subscription_stopped' => "Subscription to \"%s\" stopped.",
+    'sms:subscriptions_stopped' => "All subscriptions stopped.",
+    'sms:subscribed' => "Subscribed to \"%s\".",
+    'sms:no_subscribe_here' => "Can't subscribe to anything here.\nTxt \"S [user]\" to subscribe to a user.",
+    'sms:news_not_found' => "News update \"%s\" not found.",
+    'sms:comment_notification' => "{name} added comment on \"{news_cmd}\".\nTxt \"{comment_cmd}\" or open {news_url}",
+    'sms:post_notification' => "{username} published news.\nTxt \"{cmd}\" or open {url}",
 );

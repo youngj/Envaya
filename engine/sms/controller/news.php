@@ -116,7 +116,7 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_language',
         ),        
         array(
-            'regex' => '((h|help|msaada)\s+)?(l|lang|language)\b',
+            'regex' => '((h|help)\s+)?(l|lang|language)\b',
             'action' => 'action_language_help',
         ),
         array(
@@ -148,7 +148,7 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_stop_default',
         ),
         array(
-            'regex' => 'sr\s*(?P<local_id>\d+)',
+            'regex' => '(sr|start)\s*(?P<local_id>\d+)',
             'action' => 'action_restart_subscription',
         ),
         array(
@@ -164,7 +164,7 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_subscribe_default',
         ),
         array(
-            'regex' => '(h|help|menu|menyu)\b',
+            'regex' => '(h|help|menu|menyu|msaada)\b',
             'action' => 'action_help',
         ),        
         array(
@@ -247,9 +247,9 @@ class SMS_Controller_News extends SMS_Controller
                 },
                 array(
                     'page_size' => 7,
-                    'no_more' => "No more subscriptions.",
-                    'empty' => "You have no subscriptions.",
-                    'footer' => "Txt STOP [id] to cancel any subscription",
+                    'no_more' => __('sms:no_more_subscriptions'),
+                    'empty' => __('sms:no_subscriptions'),
+                    'footer' => __('sms:stop_subscription'),
                 )
             )
         );        
@@ -269,33 +269,41 @@ class SMS_Controller_News extends SMS_Controller
             $subscription->enable();
             $subscription->save();
         
-            $this->reply("Subscription to \"{$subscription->description}\" started.\nTxt \"STOP {$subscription->local_id}\" to stop.\nTxt \"SS\" to show all subscriptions.");
+            $this->reply(
+                sprintf(__('sms:subscription_started'), $subscription->description)."\n".
+                sprintf(__('sms:stop_subscription_id'), $subscription->local_id)."\n".
+                __('sms:show_subscriptions')
+            );
         }            
         else
         {
-            $this->reply("Invalid subscription id. Text \"SS\" to show all subscriptions.");
+            $this->reply(
+                __('sms:invalid_subscription')."\n".
+                __('sms:show_subscriptions')
+            );
         }
-    }
+    }    
     
-    function action_stop_default()
+    function stop_subscription($subscription)
     {
-        $default_stop = $this->get_state('default_stop');
-        
-        $subscription = $default_stop ? $this->query_subscriptions()
-                ->where('local_id = ?', $default_stop)
-                ->get() : null;
-        
         if ($subscription)
         {
             $subscription->disable();
             $subscription->save();
         
-            $this->reply("Subscription to \"{$subscription->description}\" stopped.\nTxt \"SR {$subscription->local_id}\" to restart.\nTxt \"SS\" to show all subscriptions.");
+            $this->reply(            
+                sprintf(__('sms:subscription_stopped'), $subscription->description)."\n".
+                sprintf(__('sms:restart_subscription_id'), $subscription->local_id)."\n".
+                __('sms:show_subscriptions')
+            );
         }            
         else
         {
-            $this->reply("Invalid subscription id.\nTxt \"SS\" to show all subscriptions.");
-        }
+            $this->reply(
+                __('sms:invalid_subscription')."\n".
+                __('sms:show_subscriptions')
+            );        
+        }    
     }
     
     function action_stop_all()
@@ -310,14 +318,24 @@ class SMS_Controller_News extends SMS_Controller
                 $subscription->disable();
                 $subscription->save();
             }
-            $this->reply("All subscriptions stopped.");
+            $this->reply(__('sms:subscriptions_stopped'));
         }
         else        
         {
-            $this->reply("You do not have any active subscriptions.");
+            $this->reply(__('sms:no_subscriptions'));
         }
     }
     
+    function action_stop_default()
+    {
+        $default_stop = $this->get_state('default_stop');
+        
+        $subscription = $default_stop ? $this->query_subscriptions()
+                ->where('local_id = ?', $default_stop)
+                ->get() : null;
+        
+        $this->stop_subscription($subscription);
+    }    
     function action_stop()
     {
         $local_id = $this->param('local_id');
@@ -327,16 +345,7 @@ class SMS_Controller_News extends SMS_Controller
             ->where('local_id = ?', $local_id)
             ->get();
 
-        if ($subscription)
-        {
-            $subscription->disable();
-            $subscription->save();
-            $this->reply("Subscription to \"{$subscription->description}\" stopped.\nTxt \"SR {$subscription->local_id}\" to restart.\mTxt \"SS\" to show all subscriptions.");
-        }
-        else
-        {
-            $this->reply("Subscription {$subscription->id} not found.\nTxt SS to show all subscriptions.");
-        }    
+        $this->stop_subscription($subscription);            
     }
     
     function get_param_or_state($name)
@@ -433,7 +442,7 @@ class SMS_Controller_News extends SMS_Controller
                 echo __('sms:user_news')."\n";
             }
             
-            echo "S=subscribe\n";
+            echo __('sms:user_subscribe')."\n";
             
             /*
             if ($user->query_discussion_topics()->exists())
@@ -564,6 +573,8 @@ class SMS_Controller_News extends SMS_Controller
     
     function subscribe_user($user)
     {
+        $this->set_user_context($user);
+    
         $news = $user->get_widget_by_class('News');
         
         $phone_number = $this->request->get_from_number();
@@ -578,7 +589,11 @@ class SMS_Controller_News extends SMS_Controller
             $subscription->save();
         }
         
-        $this->reply("Subscribed to \"$cmd\".\nTxt \"STOP {$subscription->local_id}\" to unsubscribe.\nTxt \"SS\" to show all subscriptions.");
+        $this->reply(
+            sprintf(__('sms:subscribed'), $cmd)."\n".
+            sprintf(__('sms:stop_subscription_id'), $subscription->local_id)."\n".
+            __('sms:show_subscriptions')
+        );
     }
         
     function action_subscribe_user()
@@ -596,7 +611,7 @@ class SMS_Controller_News extends SMS_Controller
         }
         else
         {
-            $this->reply("Can't subscribe to anything here.\nTxt \"S [user]\" to subscribe to a user.\n".__('sms:find_help'));
+            $this->reply(__('sms:no_subscribe_here')."\n".__('sms:find_help'));
         }    
     }        
     
@@ -620,7 +635,9 @@ class SMS_Controller_News extends SMS_Controller
         }
         else
         {
-            $this->reply("News update \"N {$user->username} $local_id\" not found.");
+            $this->reply(
+                sprintf(__('sms:news_not_found'), "N {$user->username} $local_id")
+            );
         }        
     }
         
@@ -690,7 +707,7 @@ class SMS_Controller_News extends SMS_Controller
             $comment = new Comment();
             $comment->container_guid = $post->guid;
             $comment->owner_guid = Session::get_loggedin_userid();
-            $comment->name = $this->get_state('name');
+            $comment->name = $this->get_state('name') ?: ("##".substr($this->request->get_from_number(), -4));
             $comment->location = $this->get_state('location') ?: 'via sms';
             $comment->content = $message;
             $comment->save();
@@ -943,7 +960,7 @@ class SMS_Controller_News extends SMS_Controller
     function post_message($message)
     {            
         $user = Session::get_loggedin_user();
-        if (!$user)
+        if (!$user || !($user instanceof Organization))
         {
             $this->set_state('message', $message);            
             $this->set_default_action('login');
@@ -1021,6 +1038,14 @@ class SMS_Controller_News extends SMS_Controller
         
         if (isset($languages[$lang]))
         {
+            foreach ($this->query_subscriptions()
+                ->show_disabled(true)
+                ->filter() as $subscription)
+            {
+                $subscription->language = $lang;
+                $subscription->save();
+            }
+        
             $this->set_state('lang', $lang);
             Language::set_current_code($lang);
             $this->reply(__('sms:language_changed'));
@@ -1033,7 +1058,7 @@ class SMS_Controller_News extends SMS_Controller
     
     function action_language_help()
     {
-        $this->reply(__('sms:language_help'));
+        $this->reply(__('sms:current_language')."\n".__('sms:languages'));
     }
     
     function action_logout()
@@ -1081,11 +1106,6 @@ class SMS_Controller_News extends SMS_Controller
             $this->reply(strtr(__('sms:login_unknown_user'), array('{username}' => $username)));
             return;
         }
-        else if (!($user instanceof Organization))
-        {
-            $this->reply(strtr(__('sms:login_not_org'), array('{username}' => $username)));
-            return;
-        }
         else if (!$user->has_password($password))
         {
             $this->reply(strtr(__('sms:login_bad_password'), array('{username}' => $username, '{password}' => $password)));            
@@ -1096,8 +1116,11 @@ class SMS_Controller_News extends SMS_Controller
             $this->set_default_action(null);
             $this->login($user);
             
-            $user->init_sms_subscription(
-                $this->request->get_from_number(), "G {$user->username}");
+            if ($user instanceof Organization)
+            {
+                $user->init_sms_subscription(
+                    $this->request->get_from_number(), "G {$user->username}");
+            }
             
             $message = $this->get_state('message');
             
@@ -1106,8 +1129,15 @@ class SMS_Controller_News extends SMS_Controller
                 $this->post_message($message);
             }
             else
-            {                        
-                $this->reply(__('sms:login_success').' '.__('sms:post_help'));
+            {                
+                $reply = __('sms:login_success');
+                
+                if ($user instanceof Organization)
+                {
+                    $reply .= ' '.__('sms:post_help');
+                }
+            
+                $this->reply($reply);
             }
         }
     }
@@ -1171,7 +1201,7 @@ class SMS_Controller_News extends SMS_Controller
                 if (strlen($message) > 20)
                 {    
                     $snippet = substr($message, 0, 20);
-                    $this->reply(strtr(__('sms:publish_last_help'), array('snippet' => $snippet)));
+                    $this->reply(strtr(__('sms:publish_last_help'), array('{snippet}' => $snippet)));
                     $this->set_state('message', $message);
                 }
                 else
@@ -1207,7 +1237,10 @@ class SMS_Controller_News extends SMS_Controller
                 $lines[] = __('sms:help_next');
             }
             
-            $lines[] = sprintf(__('sms:help_page'), $num_pages);
+            if ($num_pages > 1)
+            {
+                $lines[] = sprintf(__('sms:help_page'), $num_pages);
+            }
         }
         
         if ($page_action == 'news')

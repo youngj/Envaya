@@ -378,5 +378,7 @@ CREATE TABLE `sms_subscriptions` (
     `language` varchar(4) null,
     `phone_number` varchar(32) not null,
     `local_id` int not null,
+    `last_notification_time` int(11) NOT NULL default 0,
+    `num_notifications` int(11) NOT NULL default 0,
     UNIQUE KEY `local_id_key` (`phone_number`, `local_id`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;

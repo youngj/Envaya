@@ -83,6 +83,7 @@ class SMS_Provider_App extends SMS_Provider
         {
             $message = new EnvayaSMS_OutgoingMessage();
             $message->id = $sms->id;
+            $message->priority = ($sms->message_type == OutgoingSMS::Transactional) ? 1 : 0;
             $message->message = $sms->message;
             $message->to = $sms->to_number;
             $messages[] = $message;
@@ -99,6 +100,7 @@ class SMS_Provider_App extends SMS_Provider
         {        
             $message = new EnvayaSMS_OutgoingMessage();
             $message->message = $reply;
+            $message->priority = 1;
             $messages[] = $message;
         }
         

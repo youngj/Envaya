@@ -110,9 +110,11 @@ class Widget_Post extends Widget_Generic
         {                
             if ($subscription->phone_number != $except)
             {        
-                $subscription->notify(
-                    "{$org->username} published news.\nTxt \"N {$org->username} {$this->get_local_id()}\" or open {$news->get_url()}."
-                );
+                $subscription->notify(strtr(__('sms:post_notification', $subscription->language), array(
+                    '{username}' => $org->username,
+                    '{cmd}' => "N {$org->username} {$this->get_local_id()}",
+                    '{url}' => $news->get_url(),
+                )));
             }
         }    
     }

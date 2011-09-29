@@ -73,22 +73,13 @@ class OutgoingSMS extends Model
         }
     }
     
-    static function create($from, $to, $msg)
+    function save()
     {
-        $sms = new SMS();
-        $sms->time_created = timestamp();
-        $sms->from_number = PhoneNumber::canonicalize($from);
-        if (!$sms->from_number)
+        if (!$this->time_created)
         {
-            throw new InvalidParameterException("Invalid SMS phone number $from");
+            $this->time_created = timestamp();
         }
-        $sms->to_number = PhoneNumber::canonicalize($to);       
-        if (!$sms->to_number)
-        {
-            throw new InvalidParameterException("Invalid SMS phone number $to");
-        }        
-        $sms->message = $msg;
-        return $sms;
+        parent::save();
     }
     
     function get_provider()

@@ -16,7 +16,7 @@ class Comment extends Entity
         'Mixin_Content'
     );        
     
-	function get_name()
+	function get_name($lang = null)
 	{
 		$owner = $this->get_owner_entity();
 		if ($owner)
@@ -25,7 +25,7 @@ class Comment extends Entity
 		}
 		else
 		{
-			return $this->name ?: "(".__('comment:anonymous').")";
+			return $this->name ?: "(".__('comment:anonymous', $lang).")";
 		}
 	}	
     
@@ -77,9 +77,7 @@ class Comment extends Entity
             $notification_body
         );
         $mail->setReplyTo($reply_to);
-        $mail->send_to_admin();    
-        
-        $sms = "{$this->get_name()} added comment on \"N {$org->username} {$widget->get_local_id()}\".\nTxt \"V {$this->guid}\" or open {$widget->get_url()}.";
+        $mail->send_to_admin();                                  
         
         $phones = array();
         
@@ -94,7 +92,13 @@ class Comment extends Entity
             if ($phone != $except && !isset($phones[$phone]))
             {        
                 $phones[$phone] = true;
-                $subscription->notify($sms);
+                
+                $subscription->notify(strtr(__('sms:comment_notification', $subscription->language), array(
+                    '{name}' => $this->get_name($subscription->language),
+                    '{news_cmd}' => "N {$org->username} {$widget->get_local_id()}",
+                    '{comment_cmd}' => "V {$this->guid}",
+                    '{news_url}' => $widget->get_url(),
+                )));                               
             }
         }        
     }
