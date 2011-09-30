@@ -11,6 +11,7 @@ return array(
     'register:usernametooshort' => 'Your username must be a minimum of {min} characters long.',
     'register:passwordtooshort' => 'The password must be a minimum of {min} characters long.',
     'register:invalidchars' => 'Sorry, the username "%s" is invalid because it contains the character "%s". Please choose a username using only the following characters: a-z 0-9 - _',
+    'register:username_letter' => "Sorry, the username \"%s\" is invalid. Please choose a username that begins with a letter (a-z).",
     'register:usernamenotvalid' => 'Sorry, the username "%s" is invalid. Please choose another.',
     
     'register:already_logged_in' => "You are currently logged in as {name}.",
@@ -106,4 +107,6 @@ return array(
     'register:user:username' => "Choose a username for your account:",
     'register:if_org' => "To register an organization, %s.",
     'register:already_registered' => "You are already registered.",    
+    
+     
 );

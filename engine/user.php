@@ -426,6 +426,11 @@ class User extends Entity
             throw new ValidationException(strtr(__('register:usernametooshort'), array('{min}' => $min_length)));
         }
 
+        if (!preg_match('/^[a-z]/i', $username))
+        {
+            throw new ValidationException(sprintf(__('register:username_letter'), $username));
+        }
+        
         if (preg_match('/[^\w\-]/', $username, $matches))
         {
             throw new ValidationException(sprintf(__('register:invalidchars'), $username, $matches[0]));
