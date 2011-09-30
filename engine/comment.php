@@ -29,6 +29,11 @@ class Comment extends Entity
 		}
 	}	
     
+    public function render_content($markup_mode = null)
+    {
+        return nl2br(escape($this->content));
+    }
+    
     function can_edit()
     {           
         return parent::can_edit() || $this->is_session_owner();
@@ -50,35 +55,40 @@ class Comment extends Entity
     function send_notifications($except = null)
     {    
 		$org = $this->get_root_container_entity();        
-        $owner_guid = $this->owner_guid;
-		
-		$notification_subject = sprintf(__('comment:notification_subject', $org->language), 
-			$this->get_name());
-            
+        $owner_guid = $this->owner_guid;		           
         $widget = $this->get_container_entity();            
-        $comments_url = $widget->get_url()."?comments=1";            
-            
-		$notification_body = view('emails/comment_added', array(
-            'comment' => $this, 
-            'url' => "$comments_url#comments",
-        ));
+        
+		$notification_subject = sprintf(__('comment:notification_subject', $org->language), 
+			$this->get_name());        
 		
         $reply_to = EmailAddress::add_signed_tag(Config::get('reply_email'), "comment{$this->guid}");
         
-		if ($org && $org->email && $org->is_notification_enabled(Notification::Comments) && $owner_guid != $org->guid)
+        // notify organization by email (unless the organization posted the comment itself)
+		if ($org->email && $org->is_notification_enabled(Notification::Comments) && $owner_guid != $org->guid)
 		{		
-            $mail = OutgoingMail::create($notification_subject, $notification_body);
+            $mail = OutgoingMail::create($notification_subject);
+            $mail->setBodyHtml(view('emails/comment_added', array(
+                'comment' => $this, 
+                'user' => $org,
+            )));
             $mail->setReplyTo($reply_to);
 			$mail->send_to_user($org);
-		}        
+		}
 
-        $mail = OutgoingMail::create(
-            sprintf(__('comment:notification_admin_subject'), $this->get_name(), $org->name),
-            $notification_body
-        );
-        $mail->setReplyTo($reply_to);
-        $mail->send_to_admin();                                  
+        // notify site admins by email (unless the organization posted the comment itself)
+        if ($owner_guid != $org->guid)
+        {
+            $mail = OutgoingMail::create(
+                sprintf(__('comment:notification_admin_subject'), $this->get_name(), $org->name)
+            );
+            $mail->setReplyTo($reply_to);
+            $mail->setBodyHtml(view('emails/comment_added', array(
+                'comment' => $this, 
+            )));        
+            $mail->send_to_admin();                                  
+        }
         
+        // notify sms subscribers (except for the one who posted the comment)
         $phones = array();
         
         $subscriptions = array_merge(

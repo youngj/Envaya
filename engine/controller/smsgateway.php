@@ -47,6 +47,9 @@ class Controller_SMSGateway extends Controller
         switch ($action->type)
         {
             case EnvayaSMS::ACTION_INCOMING:
+            
+                error_log("timestamp = {$action->timestamp}");
+            
                 return $this->receive_sms($provider);
             case EnvayaSMS::ACTION_OUTGOING:                   
                 $messages = $provider->get_outgoing_messages();

@@ -707,7 +707,7 @@ class SMS_Controller_News extends SMS_Controller
             $comment = new Comment();
             $comment->container_guid = $post->guid;
             $comment->owner_guid = Session::get_loggedin_userid();
-            $comment->name = $this->get_state('name') ?: ("##".substr($this->request->get_from_number(), -4));
+            $comment->name = $this->get_state('name') ?: ("..".substr($this->request->get_from_number(), -4));
             $comment->location = $this->get_state('location') ?: 'via sms';
             $comment->content = $message;
             $comment->save();

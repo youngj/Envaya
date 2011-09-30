@@ -110,7 +110,10 @@ class DiscussionMessage extends Entity
             // notify site of message
             $mail = OutgoingMail::create($subject);
             $mail->setReplyTo($reply_to);
-            $mail->setBodyHtml(view('emails/discussion_message', array('message' => $this)));
+            $mail->setBodyHtml(view('emails/discussion_message', array(
+                'message' => $this,
+                'user' => $org,
+            )));
             $mail->send_to_user($org);
         }
     }    

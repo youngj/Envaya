@@ -1,5 +1,5 @@
 <?php
-    $entity = $vars['entity'];
+    $entity = $vars['entity'];    
 ?>
 
 <div class="comment">
@@ -32,7 +32,7 @@ if ($entity->is_enabled())
     ?>
     </div>
     <?php    
-		echo nl2br(escape($entity->content));
+		echo $entity->render_content();
     ?>  
     <div class='blog_date'><?php echo $entity->get_date_text(); ?></div>
     <?php
