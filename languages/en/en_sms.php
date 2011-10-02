@@ -13,14 +13,11 @@ return array(
     'sms:help_n' => 'N=latest news',
     'sms:help_l' => 'L=set language',
     'sms:help_in' => 'IN=log in',
-    'sms:help_out' => 'OUT=log out',
-    
+    'sms:help_out' => 'OUT=log out',    
     'sms:bad_command' => 'Unknown command for Envaya SMS. Txt "HELP" for a list of commands.',
     'sms:bad_user' => "The username '{username}' does not exist on Envaya.",
     'sms:unapproved_user' => "The username '{username}' is awaiting approval and not yet visible to the public.",
-
-    'sms:no_more_content' => "No more text available.",
-    
+    'sms:no_more_content' => "No more text available.",    
     'sms:user_details' => 'Txt "I [user]" for details',
     'sms:user_news' => "N=news",
     'sms:user_subscribe' => "S=subscribe",
@@ -45,8 +42,7 @@ return array(
     'sms:location_help' => "Txt \"LOC [your location]\" to change the location displayed when you post messages.",
     'sms:news_help' => "Txt \"N [user]\" to view latest news from org.",
     'sms:add_comment_help' => "Txt \"C [msg]\" to add a comment to this news update.",
-    'sms:view_comment_help' => "Txt \"G [num]\" to view a comment on this news update. Valid num: %s",
-    
+    'sms:view_comment_help' => "Txt \"G [num]\" to view a comment on this news update. Valid num: %s",    
     'sms:name' => "Name is currently '%s'.",
     'sms:name_changed' => "Name changed to '%s'.",
     'sms:name_not_set' => "Name not set.",
@@ -54,8 +50,7 @@ return array(
     'sms:location' => "Location is currently '%s'.",
     'sms:location_changed' => "Location changed to '%s'.",
     'sms:location_not_set' => "Location not set.",
-    
-    
+        
     'sms:user_self_help' => 'Txt "I {username}" to see your own info.',
     
     'sms:language_changed' => 'Language changed.',
@@ -95,7 +90,7 @@ return array(
     'sms:notification_stop' => "To stop these notifications, txt \"STOP %s\"",
     'sms:no_more_subscriptions' => "No more subscriptions.",
     'sms:no_subscriptions' => "You do not have any active subscriptions.",
-    'sms:stop_subscription' => "Txt \"STOP [id]\" to cancel any subscription",
+    'sms:stop_subscription' => "Txt \"STOP [num]\" to cancel a subscription",
     
     'sms:subscription_started' => "Subscription to \"%s\" started.",
     'sms:stop_subscription_id' => "Txt \"STOP %s\" to unsubscribe.",

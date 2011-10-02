@@ -48,7 +48,7 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_news_default',
         ),    
         array(
-            'regex' => '(c|comment)\s+(?P<message>.{4,})',
+            'regex' => '(c|comment)\s+(?P<message>.{3,})',
             'action' => 'action_add_comment',
         ),
         array(
@@ -92,7 +92,7 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_view_id',
         ),
         array(
-            'regex' => '(p|post)\s+(?P<message>.{4,})',
+            'regex' => '(p|post)\s+(?P<message>.{3,})',
             'action' => 'action_post',
         ),
         array(
@@ -1032,7 +1032,7 @@ class SMS_Controller_News extends SMS_Controller
     
     function action_language()
     {    
-        $lang = strtolower($this->param('lang'));
+        $lang = substr(strtolower($this->param('lang')), 0, 2);
         
         $languages = Config::get('languages');
         
