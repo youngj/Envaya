@@ -33,18 +33,6 @@ class SMS_Controller extends Router
         return $this->get_state('_default');
     }
     
-    function login($user)
-    {
-        $this->state->set_loggedin_user($user);
-        Session::set_loggedin_user($user);
-    }
-    
-    function logout()
-    {
-        $this->state->set_loggedin_user(null);
-        Session::set_loggedin_user(null);
-    }    
-    
     function set_state($name, $value)
     {
         $this->state->set($name, $value);

@@ -210,4 +210,15 @@
         $salt = substr(str_replace('+', '.', base64_encode(sha1(microtime(true) . rand(), true))), 0, 22);        
         return crypt($password, '$2a$11$' . $salt);
     }
-    
+        
+    interface SessionImpl
+    {
+        function get($key);
+        function set($key, $value);
+        function start();
+        function destroy();
+        function id();
+        function login($user, $persistent);
+        function logout();
+        function get_loggedin_user();        
+    }

@@ -585,6 +585,11 @@ abstract class Entity extends Model
     
     function init_sms_subscription($phone_number, $description)
     {
+        if (!PhoneNumber::can_send_sms($phone_number))
+        {
+            return null;
+        }
+    
         $subscription = $this->query_sms_subscriptions()
             ->show_disabled(true)
             ->where('phone_number = ?', $phone_number)

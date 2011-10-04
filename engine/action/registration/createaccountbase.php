@@ -90,6 +90,12 @@ abstract class Action_Registration_CreateAccountBase extends Action
         
         $org->save();
         
+        $primary_phone = $org->get_primary_phone_number();        
+        if ($primary_phone)
+        {
+            $org->init_comments_subscription($primary_phone);
+        }
+        
         $org->init_default_widgets();
         
         Session::login($org, false);

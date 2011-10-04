@@ -93,4 +93,24 @@ class PhoneNumber
 
         return null;
     }
+    
+    static function can_send_sms($phone_number)
+    {
+        $c1 = substr($phone_number, 0, 1);
+        $c2 = substr($phone_number, 0, 2);
+        $c3 = substr($phone_number, 0, 3);
+        
+        if ($c1 == 1)
+        {
+            return strlen($phone_number) == 11;
+        }
+        
+        switch ($c3)
+        {
+            case '255':
+                return strlen($phone_number) == 12;
+            default:
+                return false;
+        }
+    }
 }

@@ -32,7 +32,8 @@ class SMS_Request
             }                        
         }
         
-        Session::set_loggedin_user($state->get_loggedin_user());            
+        // do this before render_message_html so MMS uploads are associated with the correct user
+        Session::set_instance(new Session_SMS($state));
         
         $this->state = $state;
         $this->message = $provider->render_message_html();

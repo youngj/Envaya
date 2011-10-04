@@ -698,4 +698,9 @@ class User extends Entity
         }
         return null;
     }
+    
+    function init_comments_subscription($phone_number)
+    {
+        return $this->init_sms_subscription($phone_number, "G {$this->username}");
+    }
 }

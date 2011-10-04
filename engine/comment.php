@@ -40,7 +40,7 @@ class Comment extends Entity
     }
     
     function is_session_owner()
-    {       
+    {               
         $posted_comments = Session::get('posted_comments') ?: array();
         return in_array($this->guid, $posted_comments);
     }   

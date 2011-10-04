@@ -22,6 +22,13 @@ if (Config::get('debug') && Config::get('domain') != 'envaya.org')
         echo "{$user->email}\n";                
         $user->save();
     }
+    
+    // also disable sms subscriptions
+    foreach (SMSSubscription::query()->filter() as $subscription)
+    {
+        $subscription->disable();
+        $subscription->save();
+    }
 }
 else
 {

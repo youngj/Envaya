@@ -583,17 +583,24 @@ class SMS_Controller_News extends SMS_Controller
         
         $subscription = $news->init_sms_subscription($phone_number, $cmd);
         
-        if (!$subscription->is_enabled())
-        {
-            $subscription->enable();
-            $subscription->save();
+        if ($subscription)
+        {           
+            if (!$subscription->is_enabled())
+            {
+                $subscription->enable();
+                $subscription->save();
+            }
+            
+            $this->reply(
+                sprintf(__('sms:subscribed'), $cmd)."\n".
+                sprintf(__('sms:stop_subscription_id'), $subscription->local_id)."\n".
+                __('sms:show_subscriptions')
+            );
         }
-        
-        $this->reply(
-            sprintf(__('sms:subscribed'), $cmd)."\n".
-            sprintf(__('sms:stop_subscription_id'), $subscription->local_id)."\n".
-            __('sms:show_subscriptions')
-        );
+        else
+        {
+            $this->reply("SMS subscription not allowed for this phone number.");
+        }
     }
         
     function action_subscribe_user()
@@ -711,6 +718,11 @@ class SMS_Controller_News extends SMS_Controller
             $comment->location = $this->get_state('location') ?: 'via sms';
             $comment->content = $message;
             $comment->save();
+            
+            if (!$comment->owner_guid)
+            {
+                $comment->set_session_owner();
+            }
         
             $post->refresh_attributes();
             $post->save();
@@ -1067,7 +1079,7 @@ class SMS_Controller_News extends SMS_Controller
         $this->set_user_context(null);    
         $this->set_page_action(null);
         
-        $this->logout();
+        Session::logout();
         $this->reply(__('sms:logout_success'));
     }    
     
@@ -1114,12 +1126,13 @@ class SMS_Controller_News extends SMS_Controller
         else
         {
             $this->set_default_action(null);
-            $this->login($user);
+            Session::login($user);
             
             if ($user instanceof Organization)
             {
-                $user->init_sms_subscription(
-                    $this->request->get_from_number(), "G {$user->username}");
+                $user->init_comments_subscription(
+                    $this->request->get_from_number()
+                );
             }
             
             $message = $this->get_state('message');

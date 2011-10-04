@@ -88,7 +88,7 @@ class TranslateTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'trans=3')]");
         
         $this->waitForElement("//p[contains(text(),'je, inawezekana kwenda baharini leo?')]");
-        $this->waitForElement("//p[contains(text(),'hii ni mtihani wa mfumo wa matangazo ya dharura')]");        
+        $this->waitForElement("//p[contains(text(),'huu ni mtihani wa mfumo wa matangazo ya dharura')]");        
         $this->waitForElement("//p[contains(text(),'kutafsiri ni changamoto ngumu')]");        
         
         // edit translation
@@ -211,7 +211,7 @@ class TranslateTest extends SeleniumTest
         $this->mouseOver("//p[contains(text(),'this is a test of the emergency broadcast system')]");        
         $this->clickAndWait("//a[contains(@href,'trans=3')]");        
         $this->mouseOver("//p[contains(text(),'kutafsiri ni rahisi kidogo')]");                
-        $this->mouseOver("//p[contains(text(),'hii ni mtihani wa mfumo wa matangazo ya dharura')]");        
+        $this->mouseOver("//p[contains(text(),'huu ni mtihani wa mfumo wa matangazo ya dharura')]");        
         $this->clickAndWait("//a[contains(@href,'trans=1')]");     
         $this->mouseOver("//p[contains(text(),'translating is a difficult challenge')]");        
         $this->mouseOver("//p[contains(text(),'this is a test of the emergency broadcast system')]");        
