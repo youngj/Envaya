@@ -21,14 +21,6 @@ class Controller_SMSGateway extends Controller
             return;
         }
 
-        //error_log(var_export($_FILES, true));
-        
-        /*
-        foreach ($_FILES as $name => $file)
-        {
-            copy($file['tmp_name'], Config::get('dataroot') . "/mms/" . $file['name']);
-        }*/
-    
         $provider = new SMS_Provider_App();
     
         if (!$provider->is_validated_request())
