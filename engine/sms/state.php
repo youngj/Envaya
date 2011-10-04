@@ -6,6 +6,7 @@ class SMS_State extends Model
     static $table_attributes = array(
         'service_id' => '',
         'phone_number' => '',
+        'user_guid' => 0,
         'time_updated' => 0,
         'value' => '',
     );
@@ -24,10 +25,28 @@ class SMS_State extends Model
         $this->args = array();
     }
     
+    function set_loggedin_user($user)
+    {
+        $this->user_guid = $user ? $user->guid : 0;
+    }
+    
+    function get_loggedin_user()
+    {
+        return User::get_by_guid($this->user_guid);
+    }
+    
     function set($name, $value)
     {
         $args =& $this->get_args();
-        $args[$name] = $value;
+                
+        if (isset($value))
+        {
+            $args[$name] = $value;
+        }
+        else
+        {
+            unset($args[$name]);
+        }
     }
     
     function get($name)
@@ -40,7 +59,7 @@ class SMS_State extends Model
     {
         if ($this->args === null)
         {
-            $this->args = unserialize($this->value);
+            $this->args = unserialize($this->value) ?: array();
         }        
         return $this->args;
     }

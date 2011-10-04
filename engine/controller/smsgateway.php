@@ -198,17 +198,12 @@ class Controller_SMSGateway extends Controller
         }        
     
         $service_class = $route['service'];
-        $service = new $service_class();
+        $service = new $service_class();                
                 
         $request = new SMS_Request($service, $provider);
-            
-        $initial_controller = $request->get_initial_controller();
         
-        $initial_controller->set_request($request);
-        
-        $controller = $initial_controller->execute($request->get_message()) ?: $initial_controller;
-        
-        $request->save_state();
+        $controller = $service->get_controller($request);                
+        $controller->execute_request();        
         
         $replies = $controller->get_replies();
         

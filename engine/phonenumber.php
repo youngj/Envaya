@@ -34,7 +34,7 @@ class PhoneNumber
     static function canonicalize_multi($phone_number_str, $country_code = '')
     {
         // detect multiple phone numbers by commonly used separator characters 
-        $phone_numbers = preg_split('/[\+\,\|\;\/]+/', $phone_number_str);
+        $phone_numbers = preg_split('/[\+\,\|\;\/\\\\a-z]+/', $phone_number_str);
                 
         $phone_numbers_map = array();
         foreach ($phone_numbers as $phone_number)

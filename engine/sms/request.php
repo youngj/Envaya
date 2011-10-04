@@ -23,59 +23,25 @@ class SMS_Request
         $service_id = $this->service->get_id();        
         $state = $service->get_state($from_number);
             
-        if (!$state->id)
-        {
-            Session::set_loggedin_user(null);
-        }
-        else
+        if ($state->id)
         {
             $lang = $state->get('lang');
             if ($lang)
             {
                 Language::set_current_code($lang);
-            }
-            
-            $user_guid = $state->get('user_guid');
-            Session::set_loggedin_user(User::get_by_guid($user_guid));            
+            }                        
         }
-        $this->state = $state;                
-        $this->message = $provider->render_message_html();
-    }                 
-    
-    function get_initial_controller()
-    {
-        $controller = $this->get_state('initial_controller');
-        if (!$controller)
-        {
-            return $this->service->get_default_controller();
-        }
-        return $controller;
-    }
-    
-    function set_initial_controller($controller)
-    {
-        $this->set_state('initial_controller', $controller);
-    }
         
-    function get_state($name)
-    {
-        return $this->state->get($name);
-    }
+        Session::set_loggedin_user($state->get_loggedin_user());            
+        
+        $this->state = $state;
+        $this->message = $provider->render_message_html();
+    }           
 
-    function reset_state()
+    function get_state()
     {
-        return $this->state->reset();
+        return $this->state;
     }    
-    
-    function save_state()
-    {
-        $this->state->save();
-    }
-    
-    function set_state($name, $value)
-    {
-        return $this->state->set($name, $value);
-    }       
     
     function get_message()
     {

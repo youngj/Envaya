@@ -7,9 +7,9 @@ class SMS_Service_News extends SMS_Service
         return 'core.sms.news';
     }
     
-    function get_default_controller()
+    function get_controller($request)
     {
-        return new SMS_Controller_News();
+        return new SMS_Controller_News($request);
     }
         
 }

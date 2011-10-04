@@ -549,7 +549,7 @@ class User extends Entity
     function set_phone_number($phone_number_str)
     {
         $phone_numbers = PhoneNumber::canonicalize_multi($phone_number_str, $this->country);
-
+        
         $this->phone_number = $phone_number_str;
         $this->phone_numbers = array();        
         foreach ($phone_numbers as $phone_number)
@@ -584,18 +584,38 @@ class User extends Entity
             $newIds = array_map(function($op) { return $op->id; }, $this->phone_numbers);        
             
             foreach ($this->query_phone_numbers()
-                ->where('confirmed = 0')
                 ->where_not_in('id', $newIds)
                 ->filter() 
-                    as $oldPhoneNumber)
+                    as $old_phone_number)
             {
-                $oldPhoneNumber->delete();
+                // logout anyone using the removed phone number
+                foreach (SMS_State::query()
+                    ->where('phone_number = ?', $old_phone_number->phone_number)
+                    ->filter() as $old_state)
+                {
+                    if ($old_state->user_guid == $this->guid)
+                    {
+                        $old_state->set_loggedin_user(null);
+                        $old_state->save();
+                    }
+                }            
+            
+                $old_phone_number->delete();
             }
             
             foreach ($this->phone_numbers as $phone_number)
             {
                 $phone_number->user_guid = $this->guid;
                 $phone_number->save();
+                
+                // auto-login phones using the phone numbers that were added
+                $sms_service = new SMS_Service_News();
+                $state = $sms_service->get_state($phone_number->phone_number);
+                if (!$state->get_loggedin_user())
+                {
+                    $state->set_loggedin_user($this);
+                    $state->save();
+                }
             }        
             $this->phone_numbers_dirty = false;
         }    

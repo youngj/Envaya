@@ -1,67 +1,26 @@
 <?php
 
-class SMS_Controller extends Router implements Serializable
+class SMS_Controller extends Router
 {
     protected $request;
+    protected $state;
     protected $replies = array();
 
-    function __construct($params = null)
+    function __construct($request)
     {
-        if ($params)
-        {
-            $this->params = $params;
-        }
+        $this->request = $request;
+        $this->state = $request->get_state();
     }
     
-    public function serialize()
+    public function execute_request()
     {
-        return serialize($this->params);
+        $this->execute($this->request->get_message());        
+        $this->state->save();
     }
-    
-    public function unserialize($data)
-    {
-        $this->params = unserialize($data);
-    }    
-    
-    protected function execute_route($route, $params)
-    {        
-        foreach ($params as $k => $v)
-        {        
-            $this->params[$k] = $v;
-        }
-        
-        $before = @$route['before'];
-        if ($before)
-        {
-            $this->$before();
-        }
-        $this->before();                               
-                
-        $cls = @$params['controller'];
-        if ($cls)
-        {
-            $controller = new $cls($params);
-            $controller->set_request($this->request);
-            $controller->set_next_controller($controller);
-            $controller->before();
-            $controller->action_index();
-            $controller->after();
-            $res = $controller;
-        }
-        else
-        {
-            $action = $params['action'];
-            $this->$action();
-            $res = $this;
-        }
-        $this->after();    
-        
-        return $res;
-    }    
     
     function get_state($name)
     {
-        return $this->request->get_state($name);
+        return $this->state->get($name);
     }
 
     function set_default_action($value)
@@ -76,31 +35,21 @@ class SMS_Controller extends Router implements Serializable
     
     function login($user)
     {
-        $this->set_state('user_guid', $user->guid);
+        $this->state->set_loggedin_user($user);
         Session::set_loggedin_user($user);
     }
     
     function logout()
     {
-        $this->set_state('user_guid', null);
+        $this->state->set_loggedin_user(null);
         Session::set_loggedin_user(null);
     }    
     
     function set_state($name, $value)
     {
-        $this->request->set_state($name, $value);
-    }
-    
-    function set_request($request)
-    {
-        $this->request = $request;
+        $this->state->set($name, $value);
     }
 
-    function set_next_controller($controller)
-    {
-        $this->request->set_initial_controller($controller);
-    }
-    
     function get_replies()
     {
         return $this->replies;

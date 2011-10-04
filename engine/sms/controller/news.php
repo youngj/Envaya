@@ -1052,7 +1052,7 @@ class SMS_Controller_News extends SMS_Controller
         }
         else
         {
-            $this->reply(strtr(__('sms:bad_language'), array('lang' => $lang)));
+            $this->reply(strtr(__('sms:bad_language'), array('{lang}' => $lang)));
         }
     }
     

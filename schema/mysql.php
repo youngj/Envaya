@@ -167,9 +167,11 @@ CREATE TABLE `sms_state` (
     `id` int(11) NOT NULL auto_increment,
     `service_id` varchar(32) not null,
     `phone_number` varchar(32) not null,
+    `user_guid` bigint(20) unsigned not null default 0,
 	`time_updated` int NOT NULL default 0,
 	`value` text not null,
     PRIMARY KEY  (`id`),
+    KEY (`user_guid`),
     UNIQUE KEY (`phone_number`,`service_id`)
 );
 

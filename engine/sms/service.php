@@ -2,7 +2,7 @@
 
 abstract class SMS_Service
 {
-    static function create_outgoing_sms($to_number, $message)
+    static function get_phone_number($to_number)
     {
         $cls = get_called_class();
     
@@ -10,15 +10,22 @@ abstract class SMS_Service
         {
             if ($route['service'] == $cls && preg_match('#^'.$route['remote_numbers'].'$#', $to_number))
             {
-                $sms = new OutgoingSMS();
-                $sms->from_number = $route['self_number'];
-                $sms->to_number = $to_number;
-                $sms->message = $message;
-                return $sms;
+                return $route['self_number'];
             }
         }
         
-        throw new InvalidParameterException("No routes to $to_number for $cls");
+        throw new InvalidParameterException("No routes to $to_number for $cls");    
+    }
+
+    static function create_outgoing_sms($to_number, $message)
+    {
+        $from_number = static::get_phone_number($to_number);
+
+        $sms = new OutgoingSMS();
+        $sms->from_number = $from_number;
+        $sms->to_number = $to_number;
+        $sms->message = $message;
+        return $sms;
     }    
     
     function get_state($phone_number)
@@ -38,5 +45,5 @@ abstract class SMS_Service
     }
     
     abstract function get_id();
-    abstract function get_default_controller();        
+    abstract function get_controller($request);
 }

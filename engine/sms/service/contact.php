@@ -7,8 +7,8 @@ class SMS_Service_Contact extends SMS_Service
         return 'core.sms.contact';
     }
     
-    function get_default_controller()
+    function get_controller($request)
     {
-        return new SMS_Controller_Contact();
+        return new SMS_Controller_Contact($request);
     }
 }

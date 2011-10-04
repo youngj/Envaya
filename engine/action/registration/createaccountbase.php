@@ -71,7 +71,6 @@ abstract class Action_Registration_CreateAccountBase extends Action
         $org->set_defaults();
         
         $org->username = $username;
-        $org->set_phone_number(get_input('phone'));
         $org->email = $email;
         $org->name = $name;
         $org->set_password($password);        
@@ -86,8 +85,11 @@ abstract class Action_Registration_CreateAccountBase extends Action
             $org->geocode_lat_long();
         }
         
+        // set phone number after country so canonicalization works
+        $org->set_phone_number(get_input('phone'));
+        
         $org->save();
-
+        
         $org->init_default_widgets();
         
         Session::login($org, false);

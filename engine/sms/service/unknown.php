@@ -7,8 +7,8 @@ class SMS_Service_Unknown extends SMS_Service
         return 'core.sms.unknown';
     }
     
-    function get_default_controller()
+    function get_controller($request)
     {
-        return new SMS_Controller_Unknown();
+        return new SMS_Controller_Unknown($request);
     }
 }
