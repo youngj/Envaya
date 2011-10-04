@@ -56,7 +56,7 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_add_comment_help',
         ),        
         array(
-            'regex' => '(g)\s*(?P<index>\d+)?',
+            'regex' => '(g)\s*(?P<index>\d+)',
             'action' => 'action_view_comment',
         ),
         array(
@@ -347,21 +347,7 @@ class SMS_Controller_News extends SMS_Controller
 
         $this->stop_subscription($subscription);            
     }
-    
-    function get_param_or_state($name)
-    {
-        $val = $this->param($name);
-        if ($val)
-        {
-            $this->set_state("p_$name", $val);
-            return $val;
-        }
-        else
-        {
-            return $this->get_state("p_$name");
-        }        
-    }
-    
+        
     function action_updates()
     {
         $items = FeedItem::query_by_feed_name('')
@@ -701,16 +687,14 @@ class SMS_Controller_News extends SMS_Controller
         }
     }            
     
-    function action_add_comment()
-    {        
+    function add_comment($message)
+    {    
         // comment gets added to last post you looked at        
         $post_guid = $this->get_state('post_guid');
         $post = $post_guid ? Widget::get_by_guid($post_guid) : null;
         
         if ($post != null && $this->get_page_action() == 'news')
         {
-            $message = $this->param('message');
-            
             $comment = new Comment();
             $comment->container_guid = $post->guid;
             $comment->owner_guid = Session::get_loggedin_userid();
@@ -744,7 +728,12 @@ class SMS_Controller_News extends SMS_Controller
         else
         {
             $this->reply(__('sms:no_add_comment_here'));
-        }
+        }    
+    }
+    
+    function action_add_comment()
+    {        
+        $this->add_comment($this->param('message'));
     }
     
     function action_add_comment_help()
@@ -753,7 +742,16 @@ class SMS_Controller_News extends SMS_Controller
         
         if ($is_news)
         {
-            $this->reply(__('sms:add_comment_help'));    
+            $message = $this->get_state('message');
+            if ($message)
+            {
+                $this->set_state('message',null);
+                $this->add_comment($message);
+            }
+            else
+            {
+                $this->reply(__('sms:add_comment_help'));    
+            }
         }
         else
         {
@@ -846,7 +844,8 @@ class SMS_Controller_News extends SMS_Controller
         $this->set_page_action('find_near');
         $this->set_user_context(null);
         
-        $q = strtolower($this->get_param_or_state('query') ?: '');
+        $q = strtolower($this->param('query') ?: $this->get_state('query') ?: '');        
+        $this->set_state('query', $q);
         
         $query = Organization::query()
                 ->where_visible_to_user()
@@ -920,7 +919,8 @@ class SMS_Controller_News extends SMS_Controller
         $this->set_page_action('find_name');
         $this->set_user_context(null);
         
-        $q = strtolower($this->get_param_or_state('query') ?: '');
+        $q = strtolower($this->param('query') ?: $this->get_state('query') ?: '');
+        $this->set_state('query', $q);
         
         $query = Organization::query()
                 ->where_visible_to_user()
@@ -1211,10 +1211,21 @@ class SMS_Controller_News extends SMS_Controller
                 $this->try_login($username, $password);
                 break;
             default:
-                if (strlen($message) > 20)
+                if (strlen($message) > 15)
                 {    
-                    $snippet = substr($message, 0, 20);
-                    $this->reply(strtr(__('sms:publish_last_help'), array('{snippet}' => $snippet)));
+                    $snippet = substr($message, 0, 15);
+                    
+                    $reply = strtr(__('sms:publish_last_help'), array('{snippet}' => $snippet))."\n";
+                    
+                    $user_context = $this->get_user_context();
+                    
+                    if ($user_context && $this->get_page_action() == 'news')
+                    {
+                        $reply .= strtr(__('sms:comment_last_help'), array('{username}' => $user_context->username))."\n";
+                    }
+                        
+                    $reply .= __('sms:other_options');                    
+                    $this->reply($reply);
                     $this->set_state('message', $message);
                 }
                 else

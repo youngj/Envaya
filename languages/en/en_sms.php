@@ -67,7 +67,9 @@ return array(
     'sms:login_unknown_user' => 'The username \'{username}\' does not exist on Envaya. Please correct the username, then txt "IN [your username] [your password]"',
 
     'sms:login_bad_password' => 'The password \'{password}\' was incorrect for username \'{username}\'. Please correct the password, then txt "IN [your username] [your password]".',
-    'sms:publish_last_help' => 'To publish your last message ("{snippet}...") on your News page, reply with txt "P". Or, txt "HELP" for other options.',    
+    'sms:publish_last_help' => 'To publish your last message ("{snippet}...") on your News page, reply with txt "P".',
+    'sms:comment_last_help' => 'To add your message as a comment on N {username}, reply with txt "C".',
+    'sms:other_options' => 'Or, txt "HELP" for other options.',    
     
     'sms:item_not_found' => "Item {id} was not found.",
     'sms:cant_delete_item' => "You do not have access to delete this item.",
