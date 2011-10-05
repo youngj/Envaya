@@ -16,6 +16,7 @@ class EntityRegistry
         'core.user' => 'User',
         'core.user.org' => 'Organization',
         'core.user.org.relation' => 'OrgRelationship',                                    
+        'core.comment' => 'Comment',        
         'core.subscription.sms' => "SMSSubscription",
         'core.file' => 'UploadedFile',
         'core.entity.translation' => 'EntityTranslation',

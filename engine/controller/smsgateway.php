@@ -31,8 +31,19 @@ class Controller_SMSGateway extends Controller
             $this->set_content("Invalid request signature");
             throw new RequestAbortedException();
         }    
-        
+                
         $request = $provider->request;
+        
+        /*
+        $app_log = @$_POST['log'];
+        if ($app_log)
+        {
+            $log_file = Config::get('dataroot'). "/".preg_replace('#[^\w]#', '', $request->phone_number).".log";        
+            $f = fopen($log_file, "a");                
+            fwrite($f, $app_log);
+            fclose($f);        
+        } 
+        */        
     
         $action = $request->get_action();
     
@@ -106,7 +117,7 @@ class Controller_SMSGateway extends Controller
             default:
                 return 0;
         }
-    }   
+    }       
     
     function log($str)
     {

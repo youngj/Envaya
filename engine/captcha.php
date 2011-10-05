@@ -25,8 +25,11 @@ class Captcha
         if (Config::get('captcha_enabled'))
         {
             static::load_lib();
-            Session::start();
-            Session::set_dirty(); // Securimage writes to $_SESSION directly
+            
+            $session = Session::get_instance();            
+            $session->start();
+            $session->set_dirty(); // Securimage writes to $_SESSION directly
+            
             $image = new Securimage();
             $image->use_wordlist = true;     
             $image->image_width = 180;     

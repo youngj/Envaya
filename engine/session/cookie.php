@@ -102,6 +102,11 @@ class Session_Cookie implements SessionImpl
         return null;
     }
 
+    function set_dirty()
+    {
+        $this->dirty = true;
+    }
+    
     private function _start()
     {
         session_set_save_handler(
