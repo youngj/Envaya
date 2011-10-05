@@ -138,7 +138,7 @@ class IncomingMail
         $reply->container_guid = $widget->guid;    
         $reply->name = @$parsed_address['name'];
         $reply->location = "via email";
-        $reply->content = static::strip_quoted_text($this->text);
+        $reply->set_content(nl2br(escape(static::strip_quoted_text($this->text))), true);
         $reply->save();
         
         $widget->refresh_attributes();

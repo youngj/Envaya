@@ -11,7 +11,7 @@ abstract class SMS_Provider
     
     function render_message_html()
     {
-        return escape($this->get_request_text());
+        return nl2br(escape($this->get_request_text()));
     }
     
     function get_log_line()

@@ -48,7 +48,7 @@ class Action_PostComment extends Action
 		$comment->owner_guid = $userId;
 		$comment->name = $name;
         $comment->location = $location;
-		$comment->content = $content;
+		$comment->set_content(nl2br(escape($content)), true);
 		$comment->save();
 	
         $widget->refresh_attributes();

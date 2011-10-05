@@ -154,7 +154,7 @@ abstract class Router
         
         if ($regex)
         {    
-            if (!preg_match('#^'.$regex.'#i', $uri, $matches))
+            if (!preg_match('#^'.$regex.'#is', $uri, $matches))
                 return false;
 
             $params = array(

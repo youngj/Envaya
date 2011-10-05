@@ -487,7 +487,7 @@ class SMS_Controller_News extends SMS_Controller
                         {
                             echo __('sms:news_no_comments')."\n";
                         }
-                        echo SMS_Output::text_from_html($post->content);                       
+                        echo SMS_Output::text_from_html($post->content);
                                                 
                         return ob_get_clean();
                     }, array(
@@ -700,7 +700,7 @@ class SMS_Controller_News extends SMS_Controller
             $comment->owner_guid = Session::get_loggedin_userid();
             $comment->name = $this->get_state('name') ?: ("..".substr($this->request->get_from_number(), -4));
             $comment->location = $this->get_state('location') ?: 'via sms';
-            $comment->content = $message;
+            $comment->set_content($message, true);
             $comment->save();
             
             if (!$comment->owner_guid)
@@ -767,7 +767,7 @@ class SMS_Controller_News extends SMS_Controller
         echo "{$comment->name}\n";
         echo "{$comment->location}\n";            
         echo SMS_Output::short_time($comment->time_created)."\n";
-        echo $comment->content;    
+        echo SMS_Output::text_from_html($comment->content);
 
         $text = ob_get_clean();
         
@@ -1215,13 +1215,15 @@ class SMS_Controller_News extends SMS_Controller
                 {    
                     $snippet = substr($message, 0, 15);
                     
-                    $reply = strtr(__('sms:publish_last_help'), array('{snippet}' => $snippet))."\n";
-                    
                     $user_context = $this->get_user_context();
                     
                     if ($user_context && $this->get_page_action() == 'news')
                     {
-                        $reply .= strtr(__('sms:comment_last_help'), array('{username}' => $user_context->username))."\n";
+                        $reply = strtr(__('sms:comment_last_help'), array('{snippet}' => $snippet, '{username}' => $user_context->username))."\n";
+                    }
+                    else
+                    {
+                        $reply = strtr(__('sms:publish_last_help'), array('{snippet}' => $snippet))."\n";
                     }
                         
                     $reply .= __('sms:other_options');                    

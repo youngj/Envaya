@@ -68,7 +68,7 @@ return array(
 
     'sms:login_bad_password' => 'The password \'{password}\' was incorrect for username \'{username}\'. Please correct the password, then txt "IN [your username] [your password]".',
     'sms:publish_last_help' => 'To publish your last message ("{snippet}...") on your News page, reply with txt "P".',
-    'sms:comment_last_help' => 'To add your message as a comment on N {username}, reply with txt "C".',
+    'sms:comment_last_help' => 'To add your last message ("{snippet}...") as a comment on N {username}, reply with txt "C".',
     'sms:other_options' => 'Or, txt "HELP" for other options.',    
     
     'sms:item_not_found' => "Item {id} was not found.",

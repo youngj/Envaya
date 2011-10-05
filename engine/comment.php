@@ -27,12 +27,7 @@ class Comment extends Entity
 		{
 			return $this->name ?: "(".__('comment:anonymous', $lang).")";
 		}
-	}	
-    
-    public function render_content($markup_mode = null)
-    {
-        return nl2br(escape($this->content));
-    }
+	}
     
     function can_edit()
     {           
