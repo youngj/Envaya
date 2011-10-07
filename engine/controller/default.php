@@ -27,6 +27,14 @@ class Controller_Default extends Controller
     
     public function execute($uri)
     {
+        if (!mb_check_encoding(Request::full_original_url()))
+        {
+            $this->set_status(400);
+            $this->set_content_type('text/plain');
+            $this->set_content("Invalid URL");
+            return;
+        }
+    
         try
         {
             // Reduce multiple slashes to a single slash
@@ -34,7 +42,7 @@ class Controller_Default extends Controller
 
             // Remove all dot-paths from the URI, they are not valid
             $uri = preg_replace('#\.[\s./]*/#', '', $uri);
-
+            
             // map custom domain names to the appropriate user site
             $username = OrgDomainName::get_username_for_host(Request::get_host());            
             if ($username)
@@ -50,16 +58,18 @@ class Controller_Default extends Controller
                 $this->force_login();
             }
 
+            QueryString::set_used_param('lang');            
+            
             // 'lang' query parameter permanently changes interface language via cookie
             if (@$_GET['lang'])
-            {
+            {                
                 $this->change_viewer_language($_GET['lang']);
             }    
-            
+                        
             // 'view' query parameter permanently changes interface viewtype via cookie
             $viewtype = @$_GET['view'];
             if ($viewtype && Views::is_browsable_type($viewtype))
-            {
+            {                
                 $this->set_cookie('view', $viewtype);
             }
             

@@ -103,7 +103,7 @@ class Markup
     
     static function truncate_at_word_boundary($content, $maxLength)
     {        
-        return static::truncate_at_boundary($content, $maxLength, $boundary);
+        return static::truncate_at_boundary($content, $maxLength, ' ');
     }
 
     static function snippetize_html($content, $maxLength, $options)

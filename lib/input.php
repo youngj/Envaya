@@ -1,7 +1,23 @@
 <?php
+    class QueryString
+    {
+        static $used_parameters = array();
+        
+        static function is_used_param($param)
+        {
+            return isset(static::$used_parameters[$param]);
+        }
+        
+        static function set_used_param($param)
+        {
+            static::$used_parameters[$param] = true;
+        }
+    }
 
     function get_input($variable, $default = "")
     {
+        QueryString::$used_parameters[$variable] = true;
+    
         return (isset($_REQUEST[$variable])) ? $_REQUEST[$variable] : $default;
     }
 

@@ -153,14 +153,13 @@ abstract class Controller extends Router {
 
     protected function get_canonical_url()
     {
-        $canonical_url = Request::full_original_url();
-        $ignored_params = array('view','login','_lt','__topbar');
+        $canonical_url = abs_url(strtolower($this->get_matched_uri()), Request::get_protocol());
         
-        foreach ($ignored_params as $ignored_param)
+        foreach ($_GET as $param => $value)
         {
-            if (@$_GET[$ignored_param])
+            if (QueryString::is_used_param($param))
             {
-                $canonical_url = url_with_param($canonical_url, $ignored_param, null);
+                $canonical_url = url_with_param($canonical_url, $param, $value);
             }
         }
         

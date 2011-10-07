@@ -45,9 +45,12 @@ function loadMore()
         link.style.display = 'none';
         $('load_more_progress').style.display = 'block';    
     
-        var $src = "/pg/feed_more?before_id=" + first_id + "&sector=" +
-            <?php echo json_encode(escape($sector)); ?> + "&region=" + <?php echo json_encode(escape($region)); ?>
-            + "&country=" + <?php echo json_encode(escape($country)); ?>;
+        var $src = "/pg/feed_more?<?php
+            foreach ($filters as $filter)
+            {
+                echo $filter->get_param_name()."=".urlencode($filter->value)."&";
+            }   
+        ?>before_id=" + first_id;
 
         if (fetchMoreXHR)
         {
