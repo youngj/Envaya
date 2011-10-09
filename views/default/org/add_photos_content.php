@@ -2,20 +2,22 @@
 <div id='progressContainer' style='padding-bottom:5px'></div>
 
 <label id='uploadLabel'><img src='/_media/images/attach_image.gif?v2' style='vertical-align:middle' /> <?php echo __('upload:photos:label') ?></label><br />
-<div id='uploadContainer'></div>
+<div id='browseContainer'>
+<a href='javascript:void(0)' style='font-weight:bold' id='browseButton'><?php echo __('upload:browse'); ?></a>
+</div>
 
-<?php echo view('js/swfupload'); ?>
+<?php echo view('js/uploader'); ?>
 <script type='text/javascript'>
 <?php 
     echo view('js/dom'); 
     echo view('js/class'); 
 ?>
 
-var MultiImageUploader = makeClass(ImageUploader);
+var MultiImageUploader = makeClass(FileUploader);
 
 MultiImageUploader.prototype.init = function($vars)
 {
-    ImageUploader.prototype.init.call(this, $vars);
+    FileUploader.prototype.init.call(this, $vars);
     this.imageCount = 0;
 };
 
@@ -82,18 +84,6 @@ MultiImageUploader.prototype.showPreview = function($data, $json)
 
     previews.appendChild(container);
 
-    if (!this.iframe_mode)
-    {
-        this.swfupload.setButtonText('<span class="button">'+this.options.button_more_message+'</span>');
-
-        var $file = this.swfupload.getQueueFile(0);
-
-        if ($file)
-        {
-            this.startUpload($file);
-        }
-    }
-
     var submit = $('submit');
     submit.style.display = 'block';
 };
@@ -101,21 +91,25 @@ MultiImageUploader.prototype.showPreview = function($data, $json)
 MultiImageUploader.prototype.uploadProgressHandler = function()
 {
     $('uploadLabel').style.display = 'none';
-    ImageUploader.prototype.uploadProgressHandler.call(this);
+    FileUploader.prototype.uploadProgressHandler.call(this);
 };
 
-new MultiImageUploader(<?php echo view('input/swfupload_args', array(
+new MultiImageUploader(<?php echo view('input/uploader_args', array(
     'args' => array(
+        'file_types' => implode(",", UploadedFile::$image_extensions),
+        'file_types_description' => "Images",
         'track_dirty' => true,
         'thumbnail_size' => 'small',
         'max_width' => 540,
         'max_height' => 1080,
+        'multi_selection' => true,
+        'container_id' => 'browseContainer',
         'progress_id' => 'progressContainer',
-        'placeholder_id' => 'uploadContainer',
+        'browse_id' => 'browseButton',
         'previews_id' => 'previews',
-        'no_flash_message' => view('upload/recommend_flash_message'),                
         'button_more_message' => __('upload:photos:more'),
         'post_params' => array(
+            'mode' => 'image',
             'sizes' => json_encode(Widget::get_image_sizes())
         )
     )

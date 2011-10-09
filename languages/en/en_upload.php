@@ -17,6 +17,7 @@ return array(
     'upload:browse' => 'Browse',
     'upload:max_size' => "Maximum file size 10 MB",
     'upload:complete' => "Upload complete. Previewing...",
+    'upload:server_processing' => "Processing uploaded file...",
     'upload:image:error' => "Error processing image: ",
     'upload:image:processing' => "Processing image...",
     'upload:image:uploading' => "Uploading image...",        
@@ -33,4 +34,5 @@ return array(
     'upload:invalid_document_format' => "Invalid document format. Accepted formats are:",
     'upload:image_bad' => "The server could not understand the image file. Save your image as a .jpg, .png, or .gif file and try again.",
     'upload:image_extract_failed' => "Failed to extract images from document. Try saving the image from your document as a .jpg file.",
+    'upload:size_error' => "File is too big to upload (maximum size 10 MB).",
 );

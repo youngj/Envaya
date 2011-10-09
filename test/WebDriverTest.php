@@ -7,11 +7,8 @@ class WebDriverTest extends SeleniumTest
 
         $this->webdriver = new WebDriver("localhost", 4444);
         
-        $profile = base64_encode(file_get_contents(__DIR__.'/profiles/noflash.zip'));
-        
         $this->webdriver->connect(array(
             'browserName' => $BROWSER,
-            'firefox_profile' => $profile
         ));        
     }
 
@@ -145,6 +142,7 @@ class WebDriverTest extends SeleniumTest
         
     function attachFile($xpath, $file)
     {
+        $this->waitForElement($xpath);
         $this->type($xpath,str_replace("/","\\", $file));
     }
     

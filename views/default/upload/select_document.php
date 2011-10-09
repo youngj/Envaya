@@ -2,16 +2,13 @@
     $current = $vars['current'];
     $frameId = $vars['frameId'];
 
-    echo view('input/swfupload', array(
+    echo view('input/uploader', array(
         'name' => 'docUpload',
         'id' => 'docUpload',
         'jsname' => 'uploader',
-        'swfupload_class' => "FileUploader",
-        'swfupload_args' => array(
-            'file_types' => implode(";", 
-                array_map(function($ext) { return "*.$ext"; },             
-                    UploadedFile::$scribd_document_extensions)
-            ),
+        'uploader_args' => array(
+            'multi_selection' => false,
+            'file_types' => implode(",", UploadedFile::$scribd_document_extensions),
             'initial_message' => "<div class='help' style='font-size:10px'>".__('upload:max_size')."</div>",
             'file_types_description' => 'Documents',
             'post_params' => array('mode' => 'scribd')
@@ -84,7 +81,7 @@
         $fileGroup = UploadedFile::json_encode_array($current->get_files_in_group());
         ?>
         showPreview = true;
-        uploader.swfupload.uploadSuccess(null, <?php echo json_encode($fileGroup) ?>);
+        uploader.uploadSuccessHandler(null, <?php echo json_encode($fileGroup) ?>);
         <?php
     }
     else

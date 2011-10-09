@@ -36,6 +36,7 @@ class UploadedFile extends Entity
     );
 
     // file types that we can extract images from, and accept as image uploads
+    static $image_extensions = array('jpg','gif','png','doc','docx','pdf','rtf','odt');
     static $image_document_extensions = array('pdf', 'rtf', 'odt', 'odg', 'doc', 'ppt', 'docx', 'pptx'); 
     static $scribd_document_extensions = array('doc', 'docx', 'pdf', 'txt', 'rtf', 'ppt', 'pptx', 
                                                 'xls', 'xlsx', 'pps', 'ppsx', 'odt', 'odg', 'odp');

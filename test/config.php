@@ -11,6 +11,7 @@ Config::load();
 $dataroot = Config::get('dataroot').'/test_data';
 
 return array(        
+    'plupload_runtimes' => 'html4',
     'captcha_enabled' => false,
     'ssl_enabled' => false,    
     

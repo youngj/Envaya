@@ -5,7 +5,7 @@
     $deleteid = @$vars['deleteid'];
     $removable = isset($vars['removable']) ? $vars['removable'] : ($current != null);
     
-    $imageInput = view('input/swfupload_image', array(
+    $imageInput = view('input/image_uploader', array(
         'name' => $vars['name'],
         'track_dirty' => @$vars['track_dirty'],
         'thumbnail_size' => $vars['thumbnail_size'],

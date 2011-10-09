@@ -15,22 +15,26 @@
         }
     }
 
-    if (!isset($vars['swfupload_class']))
+    if (!isset($vars['uploader_class']))
     {    
-        $vars['swfupload_class'] = "SingleImageUploader";
+        $vars['uploader_class'] = "SingleImageUploader";
     }
-    $vars['swfupload_args'] = array(
+    $vars['uploader_args'] = array(
+        'file_types' => implode(",", UploadedFile::$image_extensions),
+        'file_types_description' => "Images",
         'thumbnail_size' => @$vars['thumbnail_size'] ?: 'small',
         'max_width' => $maxWidth,
-        'max_height' => $maxHeight,
+        'max_height' => $maxHeight,        
+        'multi_selection' => false,
+        'format_error_message' => __('upload:invalid_image_format'),
         'upload_progress_message' =>  __('upload:image:uploading'),
         'upload_error_message' => __('upload:image:error'),
         'queue_error_message' => __('upload:image:error'),
-        'no_flash_message' => view('upload/recommend_flash_message'),        
         'post_params' => array(
+            'mode' => 'image',
             'sizes' => json_encode($sizes)
         )
     );
     
-    echo view('input/swfupload', $vars);
+    echo view('input/uploader', $vars);
 ?>    

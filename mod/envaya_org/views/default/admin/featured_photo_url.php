@@ -19,9 +19,8 @@ function updatePhotoPreview()
         'attrs' => array('onchange' => 'updatePhotoPreview()'),
     ));     
 
-    echo view('input/swfupload', array(
+    echo view('input/uploader', array(
         'name' => '_file_upload',
-        'swfupload_class' => 'FileUploader',
         'jsname' => 'uploader'
     ));
 ?>

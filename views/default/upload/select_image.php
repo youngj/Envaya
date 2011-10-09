@@ -12,7 +12,7 @@
         $defaultSizeName = 'large';
     }
 
-    echo view('input/swfupload_image', array(
+    echo view('input/image_uploader', array(
         'name' => 'imageUpload',
         'id' => 'imageUpload',
         'jsname' => 'uploader',
@@ -187,7 +187,7 @@
     {
         $fileGroup = UploadedFile::json_encode_array($current->get_files_in_group());
         ?>
-        uploader.swfupload.uploadSuccess(null, <?php echo json_encode($fileGroup) ?>);
+        uploader.uploadSuccessHandler(null, <?php echo json_encode($fileGroup) ?>);
         <?php
     }
     else

@@ -31,7 +31,7 @@
 <div class='input'>
 <label><?php echo __('widget:team:photo'); ?></label><br />
 
-<?php echo view('input/swfupload_image', array(
+<?php echo view('input/image_uploader', array(
     'name' => 'image',
     'jsname' => 'teamImageUploader',
     'id' => 'image',

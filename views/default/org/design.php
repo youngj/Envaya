@@ -13,7 +13,6 @@
 <?php echo __('design:logo:description') ?>
 </div>
 
-
 <?php
 
 echo view("input/image",
@@ -130,7 +129,7 @@ function customHeaderChanged()
         <br />
     <?php
 
-    echo view("input/swfupload_image",
+    echo view("input/image_uploader",
         array(
             'track_dirty' => true,
             'sizes' => array('large' => '700x150',),
@@ -166,6 +165,7 @@ echo view('input/submit',array(
 )); ?>
 </div>
 <?php
+
 echo view('input/hidden', array('name' => 'guid', 'value' => $org->guid));
 
 echo view('input/submit',array(

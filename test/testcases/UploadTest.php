@@ -23,13 +23,8 @@ class UploadTest extends WebDriverTest
         
         $this->retry('selectFrame', array("//iframe[contains(@src,'select_image')]"));
         
-        $this->selectUploadFrame();
-        
         $this->attachFile("//input[@type='file']", dirname(__DIR__)."/images/1.jpg");
-        
-        $this->selectFrame(null);
-        $this->selectFrame("//iframe[contains(@src,'select_image')]");
-        
+                
         $this->retry('mustBeVisible', array("//div[@id='imageOptionsContainer']"));
         
         $this->click("//input[@value='medium']");
@@ -72,16 +67,12 @@ class UploadTest extends WebDriverTest
         $this->click("//a[contains(@href,'/addphotos')]");
         
         // test errors for images
-        $this->retry('selectUploadFrame');  
 
         $this->attachFile("//input[@type='file']", dirname(__DIR__)."/images/bad.jpg");        
-        $this->selectFrame(null);
         
         $this->retry('mustBeVisible', array("//div[@id='progressContainer' and contains(text(), 'could not understand')]"));
         
-        $this->selectUploadFrame();        
         $this->attachFile("//input[@type='file']", dirname(__DIR__)."/images/3.jpg");
-        $this->selectFrame(null);
         
         $this->retry('mustBeVisible', array("//div[@class='photoPreview']//img"));
         
@@ -90,9 +81,7 @@ class UploadTest extends WebDriverTest
 
         $this->type("//textarea[@class='photoCaptionInput']","caption 3");
         
-        $this->selectUploadFrame();        
         $this->attachFile("//input[@type='file']",dirname(__DIR__)."/images/1.jpg");
-        $this->selectFrame(null);        
         
         $this->retry('mustBeVisible', array("//div[@class='photoPreviewContainer'][2]//div[@class='photoPreview']//img"));
         
@@ -120,11 +109,8 @@ class UploadTest extends WebDriverTest
     {
         $this->open("/testorg/dashboard");
         $this->waitForElement("//a[contains(@href,'/design')]")->click();
-        $this->retry('selectUploadFrame');
         
         $this->attachFile("//input[@type='file']", dirname(__DIR__)."/images/logo.png");
-        
-        $this->selectFrame(null);
         
         $this->retry('mustBeVisible', array("//div[@class='imageUploadProgress']//img"));
         
@@ -178,11 +164,9 @@ class UploadTest extends WebDriverTest
 
         $this->open("/testorg/design");        
         
-        $this->waitForElement("//input[@name='custom_header' and @value='1']")->click();        
-                
-        $this->retry('selectUploadFrame', array("//div[@id='custom_header_container']//iframe"));        
-        $this->attachFile("//input[@type='file']", dirname(__DIR__)."/images/logo.png");        
-        $this->selectFrame(null);                
+        $this->waitForElement("//input[@name='custom_header' and @value='1']")->click();
+        $this->attachFile("//div[@id='custom_header_container']//input[@type='file']", dirname(__DIR__)."/images/logo.png");        
+        $this->retry('mustBeVisible', array("//div[@class='imageUploadProgress']//img"));
                 
         $this->submitForm();
         
@@ -201,7 +185,6 @@ class UploadTest extends WebDriverTest
         $this->mustNotExist("//div[@class='shareLinks']//a");             
         $this->mustNotExist("//div[@class='heading_container']//img[contains(@src,'large.jpg')]");
     }
-    
     
     private function _testMobileUpload()
     {

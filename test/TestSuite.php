@@ -55,88 +55,6 @@ function kill_windows_process_tree($pid, $wmi = null)
     }
 }
 
-function get_firefox_profile_parent_dir()
-{
-    $home = getenv('HOME'); 
-    $linux_profiles_dir = "$home/.mozilla/firefox";
-    if (is_dir($linux_profiles_dir))
-    {
-        return $linux_profiles_dir;       
-    }
-    $appdata = getenv('APPDATA');
-    $windows_profiles_dir = "$appdata/Mozilla/Firefox/Profiles";
-    if (is_dir($windows_profiles_dir))
-    {
-        return $windows_profiles_dir;
-    }
-    return null;
-}
-
-function prepare_firefox_profile()
-{    
-    $pwd = getcwd();
-    $profile_parent_dir = get_firefox_profile_parent_dir();
-    if ($profile_parent_dir)
-    {
-        chdir($profile_parent_dir);
-        $default_profiles = glob("*.default", GLOB_ONLYDIR);
-        if ($default_profiles)
-        {
-            $profile_dir = "$profile_parent_dir/{$default_profiles[0]}";
-            disable_firefox_flash_plugin($profile_dir);
-            
-            $zip = new ZipArchive(); 
-            $zip->open(__DIR__.'/profiles/noflash.zip', ZipArchive::OVERWRITE); 
-            $zip->addFile(__DIR__.'/profiles/noflash/prefs.js', 'prefs.js');
-            $zip->addFile(__DIR__.'/profiles/noflash/pluginreg.dat', 'pluginreg.dat');
-            $zip->close();             
-        }
-    }
-
-    chdir($pwd);
-}
-
-/*
- * Disables Flash plugin inside Selenium's Firefox profile template, so that Selenium can test file uploads
- * via a standard HTML <input type='file'> tag. Apparently the only way to do this is to modify
- * pluginreg.dat, a file in some crazy-ass file format.
- *
- * We want to change something that looks like this (the numbers may not be the same):
- * ...
- * 1305338361000:1:5:$
- * Shockwave Flash 10.2 r159:$
- * ...
- *
- * To something that looks like this (note the zero):
- * ...
- * 1305338361000:1:0:$
- * Shockwave Flash 10.2 r159:$
- * ...
- */
-function disable_firefox_flash_plugin($profile_dir)
-{
-    $plugin_dat_file = "$profile_dir/pluginreg.dat";
-    if (!is_file($plugin_dat_file))
-    {
-        return;
-    }
-    $plugin_dat = file_get_contents($plugin_dat_file);
-        
-    $plugin_lines = explode("\n", $plugin_dat);
-    for ($i = 0; $i < sizeof($plugin_lines); $i++)
-    {
-        $line = $plugin_lines[$i];
-        if (strpos($line, "Shockwave Flash") === 0)
-        {
-            $prev_line =& $plugin_lines[$i-1];
-            $prev_line = preg_replace('#^(\d+.+\d+.+)(\d+)(.+)$#', '${1}0${3}', $prev_line);            
-            break;
-        }
-    }
-    $new_plugin_dat = implode("\n", $plugin_lines);
-    file_put_contents(__DIR__.'/profiles/noflash/pluginreg.dat', $new_plugin_dat);    
-}
-
 function get_all_test_cases()
 {
     // each php file in test/testcases/ is assumed to be a test class with the same name as the file.
@@ -210,12 +128,6 @@ function run_test_suite($suite, $opts)
     
     $test_dataroot = $TEST_CONFIG['dataroot'];
     
-    
-    if ($BROWSER == 'firefox')
-    {
-        prepare_firefox_profile();
-    }
-    
     if ($opts['reset'])
     {    
         chdir(dirname($test_dataroot));
@@ -238,7 +150,7 @@ function run_test_suite($suite, $opts)
             
         $selenium_path = Config::get('dataroot') . "/" . Config::get('selenium_jar');    
         
-        $selenium = proc_open("java -jar $selenium_path -singleWindow -firefoxProfileTemplate profiles/noflash", 
+        $selenium = proc_open("java -jar $selenium_path -singleWindow", 
             $descriptorspec, $pipes, __DIR__);  
     }
     

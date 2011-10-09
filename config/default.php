@@ -106,5 +106,6 @@ return array(
     
     'mock_time_file' => null,
     
+    'plupload_runtimes' => 'flash,html5,html4',
     'feed_page_size' => 20,
 );

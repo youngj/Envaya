@@ -3,12 +3,11 @@
     echo "<div style='float:right;height:60px;text-align:right;'>";
     echo "Upload Image File: ";
 
-    echo view('input/swfupload', array(
+    echo view('input/uploader', array(
         'name' => 'imageUpload',
         'id' => 'imageUpload',
         'jsname' => 'uploader',
-        'swfupload_class' => "FileUploader",
-        'swfupload_args' => array(
+        'uploader_args' => array(
             'file_types' => implode(";", 
                 array_map(function($ext) { return "*.$ext"; }, array('png','gif','jpg'))
             ),

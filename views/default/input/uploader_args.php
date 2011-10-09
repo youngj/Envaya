@@ -5,13 +5,14 @@
     );
 
     $args = array(
-        'button_message' => __('upload:browse'),
+        'runtimes' => Config::get('plupload_runtimes'),
+        'server_processing_message' => __('upload:server_processing'),
+        'size_error_message' => __('upload:size_error'),
         'upload_progress_message' =>  __('upload:uploading'),
         'upload_error_message' => __('upload:error'),
         'queue_error_message' => __('upload:error'),
         'processing_message' => __('upload:image:processing'),
         'loading_preview_message' => __('upload:complete'),
-        'no_flash_message' => '',
         'initial_message' => '',
     );
 

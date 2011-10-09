@@ -22,29 +22,21 @@ class Action_Upload extends Action
         
         try
         {  
-            $files = $this->upload_file_in_mode($_FILES['file'], get_input('mode'));        
-            $json = UploadedFile::json_encode_array($files);            
+            $files = $this->upload_file_in_mode($_FILES['file'], get_input('mode'));                    
+            $json = UploadedFile::json_encode_array($files);
         }
         catch (Exception $ex)
         {
-            $json = json_encode(array('error' => $ex->getMessage()));
-            
+            $json = json_encode(array(
+                'error' => $ex->getMessage()
+            ));            
             if (!($ex instanceof DataFormatException) && !($ex instanceof IOException))
             {
                 notify_exception($ex);
             }                        
         }
-                
-        if (get_input('iframe'))
-        {
-            Session::set('lastUpload', $json);
-            $this->redirect("/pg/upload?".http_build_query($_POST));
-        }
-        else
-        {
-            $this->set_content_type('text/javascript');
-            $this->set_content($json);
-        }
+        $this->set_content_type('text/html'); // a lie, but required for plupload's html4 runtime          
+        $this->set_content($json);
     }
     
     protected function validate_security_token() {}

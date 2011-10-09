@@ -728,11 +728,6 @@ input[type="submit"] {
 	padding-top:3px;
 }
 
-.swfupload
-{
-    vertical-align:top;
-}
-
 #load_more
 {
     text-align:center;

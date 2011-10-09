@@ -441,3 +441,9 @@ a.feed_image_link:hover
     height:0px;
     overflow:hidden;
 }
+
+.upload_hover
+{
+    cursor:pointer;
+    text-decoration:underline;
+}
