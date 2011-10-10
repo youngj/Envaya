@@ -2,38 +2,36 @@
 
 class SMS_Provider_App extends SMS_Provider
 {   
-    public $request;
-
     private $log_suffix;
     
     function __construct()
     {
         require_once(Config::get('root').'/vendors/EnvayaSMS.php');
-        $this->request = EnvayaSMS::get_request();
     }
-
+    
+    
     // only valid for EnvayaSMS_Action_Incoming
     
     function get_request_from()
     {   
-        return $this->request->get_action()->from;
+        return EnvayaSMS::get_request()->get_action()->from;
     }
     
     function get_request_to()
     {        
-        return $this->request->phone_number;        
+        return EnvayaSMS::get_request()->phone_number;        
     }          
     
     function get_request_text()
     {
-        return $this->request->get_action()->message;
+        return EnvayaSMS::get_request()->get_action()->message;
     }
     
     function render_message_html()
     {
         $html = parent::render_message_html();
         
-        $action = $this->request->get_action();
+        $action = EnvayaSMS::get_request()->get_action();
         
         if ($action->mms_parts)
         {        
@@ -54,7 +52,7 @@ class SMS_Provider_App extends SMS_Provider
     
     function is_validated_request()
     {
-        $phone_number = $this->request->phone_number;
+        $phone_number = EnvayaSMS::get_request()->phone_number;
                                 
         if (!$phone_number)
         {
@@ -68,7 +66,7 @@ class SMS_Provider_App extends SMS_Provider
             return false;
         }
         
-        return $this->request->is_validated($secret);
+        return EnvayaSMS::get_request()->is_validated($secret);
     }    
     
     function get_outgoing_messages()
@@ -77,7 +75,7 @@ class SMS_Provider_App extends SMS_Provider
     
         foreach (OutgoingSMS::query()
             ->where('status = ?', OutgoingSMS::Queued)
-            ->where('from_number = ?', $this->request->phone_number)
+            ->where('from_number = ?', EnvayaSMS::get_request()->phone_number)
             ->where('time_sendable <= ?', timestamp())
             ->filter() as $sms)
         {
@@ -111,12 +109,14 @@ class SMS_Provider_App extends SMS_Provider
         }
         
         $controller->set_content_type('text/xml');
-        $controller->set_content($this->request->get_action()->get_response_xml($messages));
+        $controller->set_content(EnvayaSMS::get_request()->get_action()->get_response_xml($messages));
     }
     
     function get_log_line()
     {
-        return parent::get_log_line() . " v{$this->request->version} {$this->request->get_action()->message_type}$log_suffix";        
+        $req = EnvayaSMS::get_request();
+    
+        return parent::get_log_line() . " v{$req->version} {$req->get_action()->message_type}$log_suffix";        
     }    
     
     function can_send_sms()

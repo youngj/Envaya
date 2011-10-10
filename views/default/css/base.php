@@ -11,6 +11,7 @@ body
 {
     text-align:left;
     font: 80%/1.4  "Lucida Grande", Verdana, sans-serif;
+    word-wrap: break-word;
     color: #333333;
 }
 h1, h2, h3, h4, h5, h6 {
@@ -144,6 +145,7 @@ a.selected
 
 .section_content
 {
+    font-size:14px;
 }
 
 .section_content .section_content

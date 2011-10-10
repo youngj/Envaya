@@ -1,5 +1,6 @@
 <?php
     $user = @$vars['user'];
+    $notification_type = $vars['notification_type'];
     
     echo "<br /><br /><div style=\"font-size:10px;color:#996600;line-height:100%;font-family:verdana;\">";
 
@@ -15,7 +16,7 @@
 
         echo sprintf(
             __('email:unsubscribe',$lang),
-            "<a target='_blank' href='{$user->get_email_settings_url()}'>".__('here',$lang)."</a>"
+            "<a target='_blank' href='{$user->get_email_settings_url($notification_type)}'>".__('here',$lang)."</a>"
         );
         echo "<br /><br />";
     }

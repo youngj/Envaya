@@ -1,3 +1,8 @@
+.translation
+{
+    font-size:14px;
+}
+
 .keyTable th
 {
     padding:3px;

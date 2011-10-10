@@ -13,7 +13,7 @@
         echo "<div class='feed_content'>";
     } 
     echo $feedItem->render_thumbnail($mode);
-    echo "<div style='padding-bottom:5px'>";
+    echo "<div class='feed_heading'>";
     echo $feedItem->render_heading($mode);
     echo "</div>";
     echo $feedItem->render_content($mode);

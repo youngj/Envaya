@@ -258,6 +258,12 @@ label {
     width:<?php echo $contentWidth - 95 ?>px;
 }
 
+.feed_heading
+{
+    padding-bottom:5px;
+    font-size:14px;
+}
+
 .feed_org_icon
 {
     float:left;
@@ -402,8 +408,9 @@ button.submit_button:active span
 {
     position:absolute;
     left:0px;
-    top:2px;
+    top:4px;
     width:22px;
+    font-size:11px;
     font-weight:bold;
     text-align:center;
 }
@@ -798,6 +805,7 @@ a.gridDelete:hover, a.hideMessages:hover
 {
     display:block;
     padding:4px;
+    font-size:14px;
     border:1px solid transparent;
 }
 

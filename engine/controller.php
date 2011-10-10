@@ -153,7 +153,13 @@ abstract class Controller extends Router {
 
     protected function get_canonical_url()
     {
-        $canonical_url = abs_url(strtolower($this->get_matched_uri()), Request::get_protocol());
+        $path = strtolower($this->get_matched_uri());
+        if (!$path)
+        {
+            return null;
+        }
+    
+        $canonical_url = abs_url($path, Request::get_protocol());
         
         foreach ($_GET as $param => $value)
         {

@@ -5602,6 +5602,12 @@ window.tinymce.dom.Sizzle = Sizzle;
 			try {
 				if (s = t.getSel())
 					r = s.rangeCount > 0 ? s.getRangeAt(0) : (s.createRange ? s.createRange() : t.win.document.createRange());
+                    
+                // firefox sometimes gives us selection in wrong document...
+                if (r && r.startContainer && r.startContainer.ownerDocument != t.win.document)
+                {
+                    r = null;
+                }
 			} catch (ex) {
 				// IE throws unspecified error here if TinyMCE is placed in a frame/iframe
 			}

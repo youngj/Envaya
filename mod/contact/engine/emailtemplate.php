@@ -128,7 +128,7 @@ class EmailTemplate extends Entity
         ));
 
         $mail = OutgoingMail::create($subject);
-        $mail->setBodyHtml($body);
+        $mail->set_body_html($body);
         $mail->setFrom(Config::get('email_from'), $this->from);
         $mail->email_guid = $this->guid;
         $mail->send_to_user($user);

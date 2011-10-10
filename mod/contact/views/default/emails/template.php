@@ -18,6 +18,9 @@
     }
     
     $body = $email->render_content($user).
-            view('emails/notification_footer', array('user' => $user)); 
+            view('emails/notification_footer', array(
+                'user' => $user,
+                'notification_type' => Notification::Batch
+            )); 
     
     echo view('emails/html_layout', array('head' => $head, 'body' => $body));    

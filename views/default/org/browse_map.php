@@ -7,7 +7,7 @@ $zoom = get_input('zoom') ?: 5;
 
 ?>
 
-<div class='padded'>
+<div class='section_content padded'>
 <script type='text/javascript'>
 <?php
     echo view('js/google_map');

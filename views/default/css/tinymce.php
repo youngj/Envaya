@@ -4,6 +4,7 @@
 body
 {
     padding:5px;
+    font-size:14px;
 }
 .last-paragraph
 {

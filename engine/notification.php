@@ -25,5 +25,4 @@ class Notification
             static::Network => __('user:subscribe_network'),
 		);
 	}
-
 }

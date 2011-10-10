@@ -34,6 +34,7 @@ return array(
     'user:phone:success' => "Your phone number has been updated.",
 
     'user:notification:label' => "Notification Settings",
+    'user:notification:all' => "All settings",
     'user:notification:success' => "Your notification settings have been changed.",
     'user:notification:desc2' => "Settings for %s:",
     'user:notification:invalid' => "Unable to access email notification settings. If you copied a link from your email, please ensure that the address (URL) is exactly the same as it was in the email you received.",        

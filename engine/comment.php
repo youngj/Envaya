@@ -62,7 +62,7 @@ class Comment extends Entity
 		if ($org->email && $org->is_notification_enabled(Notification::Comments) && $owner_guid != $org->guid)
 		{		
             $mail = OutgoingMail::create($notification_subject);
-            $mail->setBodyHtml(view('emails/comment_added', array(
+            $mail->set_body_html(view('emails/comment_added', array(
                 'comment' => $this, 
                 'user' => $org,
             )));
@@ -77,7 +77,7 @@ class Comment extends Entity
                 sprintf(__('comment:notification_admin_subject'), $this->get_name(), $org->name)
             );
             $mail->setReplyTo($reply_to);
-            $mail->setBodyHtml(view('emails/comment_added', array(
+            $mail->set_body_html(view('emails/comment_added', array(
                 'comment' => $this, 
             )));        
             $mail->send_to_admin();                                  

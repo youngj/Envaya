@@ -1,3 +1,4 @@
+<div class='section_content'>
 <?php
     $query = $vars['query'];
     $filters = $vars['filters'];
@@ -72,4 +73,5 @@ function initMap(map)
 <?php
     echo view('org/search_form', array('query' => $query, 'filters' => $filters));
 ?>
+</div>
 </div>

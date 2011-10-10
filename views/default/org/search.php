@@ -2,7 +2,7 @@
     $query = $vars['query'];
     $filters = $vars['filters'];
 ?>
-<div class='padded'>
+<div class='section_content padded'>
 <div class='instructions'>
     <?php echo __('search:instructions'); ?>
 </div>    

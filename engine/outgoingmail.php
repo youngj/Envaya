@@ -55,9 +55,19 @@ class OutgoingMail extends Model
         if ($bodyText)
         {
             $mail->setBodyText($bodyText);
-        }           
-        
+        }                   
         return $mail;
+    }
+    
+    function set_body_html($body_html)
+    {
+        $this->setBodyHtml($body_html);
+        if (!$this->getBodyText())
+        {    
+            require_once Config::get('root').'/vendors/markdownify/markdownify.php';
+            $md = new Markdownify(true, false, false);    
+            $this->setBodyText($md->parseString($body_html));
+        }        
     }
     
     function get_from_entity()

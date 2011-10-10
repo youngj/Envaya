@@ -50,6 +50,10 @@ third-party vendors, which is licensed as follows:
    (c) 2009 Drew Phillips,
    released under LGPL license.
   
+* vendors/markdownify/,
+   (c) 2007  Milian Wolff
+   released under LGPL license
+  
 * vendors/zend/Zend/, 
    (c) 2005-2010, Zend Technologies USA, Inc.,
    released under new BSD license.

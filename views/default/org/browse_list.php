@@ -3,7 +3,7 @@
 $filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));
 
 ?>
-<div class='padded'>
+<div class='section_content padded'>
 <div class='view_toggle' style='padding-left:30px'>
     <a href='/pg/browse?list=0&sector=<?php echo escape($filters[0]->value); ?>'><?php echo __('browse:map') ?></a> &middot;
     <strong><?php echo __('browse:list') ?></strong>

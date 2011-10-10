@@ -13,11 +13,8 @@ class Controller_SMSGateway extends Controller
     {
         if (!Request::is_post())
         {
-            $this->page_draw(array(
-                'title' => "EnvayaSMS Android App",
-                'content' => view('page/sms_app'),
-            ));
-            
+            $this->require_admin();
+            $this->set_content(view('page/sms_app_simulator'));            
             return;
         }
 
@@ -32,7 +29,7 @@ class Controller_SMSGateway extends Controller
             throw new RequestAbortedException();
         }    
                 
-        $request = $provider->request;
+        $request = EnvayaSMS::get_request();
         
         /*
         $app_log = @$_POST['log'];
@@ -50,9 +47,6 @@ class Controller_SMSGateway extends Controller
         switch ($action->type)
         {
             case EnvayaSMS::ACTION_INCOMING:
-            
-                error_log("timestamp = {$action->timestamp}");
-            
                 return $this->receive_sms($provider);
             case EnvayaSMS::ACTION_OUTGOING:                   
                 $messages = $provider->get_outgoing_messages();
