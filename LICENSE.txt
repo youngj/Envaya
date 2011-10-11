@@ -37,11 +37,6 @@ third-party vendors, which is licensed as follows:
    (c) 2009, Moxiecode Systems AB, 
    released under LGPL license.
   
-* _media/swfupload*
-   (c) 2006-2007 Lars Huring, Olov Nilzén and Mammon Media, 
-   (c) 2007-2008 Jake Roberts,  
-   released under the MIT License.
-
 * vendors/htmlpurifier/ 
    (c) 2006-2008 Edward Z. Yang,
    released under LGPL license.
@@ -68,6 +63,15 @@ third-party vendors, which is licensed as follows:
 
 The following third-party code is used by the software, but should not be 
 distributed together with the software due to licensing incompatibilities:
+
+* js/uploader.js (the parts from plupload)
+   (c) 2010 Moxiecode Systems AB
+   Used on envaya.org under Plupload Single Site Commercial license:
+   http://www.plupload.com/license/plupload_commercial_single.txt
+   
+   If the plupload code is reused in other projects, it is 
+   released under GPL license v2, unless the project purchases its 
+   own commercial license (from http://www.plupload.com/commercial.php)
    
 * vendors/sphinxapi.php (downloaded/installed by "php make.php vendors")
    (c) 2001-2010, Andrew Aksyonoff
