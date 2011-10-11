@@ -22,6 +22,10 @@ return array(
         'cmd' => "php scripts/send_waiting_sms.php"
     ),
     array(
+        'interval' => 30,
+        'cmd' => "php scripts/check_sms_app.php"
+    ),    
+    array(
         'interval' => 2,
         'cmd' => "php scripts/check_external_feeds.php"
     )

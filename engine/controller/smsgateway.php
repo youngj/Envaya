@@ -28,19 +28,25 @@ class Controller_SMSGateway extends Controller
             $this->set_content("Invalid request signature");
             throw new RequestAbortedException();
         }    
-                
-        $request = EnvayaSMS::get_request();
+                        
+        $request = EnvayaSMS::get_request();       
         
-        /*
-        $app_log = @$_POST['log'];
+        $app_log = $request->log;
         if ($app_log)
         {
-            $log_file = Config::get('dataroot'). "/".preg_replace('#[^\w]#', '', $request->phone_number).".log";        
+            $log_file = Config::get('dataroot'). "/sms_".preg_replace('#[^\w]#', '', $request->phone_number).".log";        
             $f = fopen($log_file, "a");                
             fwrite($f, $app_log);
             fclose($f);        
         } 
-        */        
+        
+        $app_state = SMS_AppState::get_for_phone_number($request->phone_number);
+        if (!$app_state->active)
+        {
+            $app_state->active = true;            
+            SMS_AppState::send_alert("Phone active", "{$request->phone_number} successfully connected to server");
+        }        
+        $app_state->save();
     
         $action = $request->get_action();
     
@@ -92,6 +98,22 @@ class Controller_SMSGateway extends Controller
             case EnvayaSMS::ACTION_TEST:                
                 $this->set_content("OK");
                 $this->log("{$request->phone_number} test App v{$request->version}");                            
+                return;
+                
+            case EnvayaSMS::ACTION_DEVICE_STATUS:
+                $this->set_content("OK");
+                                
+                if ($action->status == EnvayaSMS::DEVICE_STATUS_BATTERY_LOW)
+                {
+                    SMS_AppState::send_alert("Battery low", "Battery low for {$request->phone_number}");
+                }
+                else if ($action->status == EnvayaSMS::DEVICE_STATUS_BATTERY_OKAY)
+                {
+                    SMS_AppState::send_alert("Battery okay", "Battery okay for {$request->phone_number}");
+                }
+                
+                $this->log("{$request->phone_number} device App v{$request->version} {$action->status}");
+                
                 return;
             default:
                 throw new NotFoundException();
