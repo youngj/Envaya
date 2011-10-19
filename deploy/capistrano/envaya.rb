@@ -119,11 +119,7 @@ namespace :deploy do
         run "cd #{current_path} && (php scripts/db_setup.php | mysql)"
         run "cd #{current_path} && php scripts/install_tables.php"
     end
-    
-    task :dropbox_setup do
-        run "#{current_path}/scripts/setup/dropbox.sh"
-    end
-    
+        
     task :pre_setup do
 	top.upload(File.join(Dir.pwd, "scripts/setup/sources.sh"), "/root/sources.sh")    
         top.upload(File.join(Dir.pwd, "scripts/setup/prereqs.sh"), "/root/prereqs.sh")

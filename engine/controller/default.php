@@ -164,7 +164,15 @@ class Controller_Default extends Controller
     
     function action_guid_redirect()
     {
-        $entity = Entity::get_by_guid($this->param('guid'));
+        try
+        {
+            $entity = Entity::get_by_guid($this->param('guid'));
+        }
+        catch (InvalidParameterException $ex)
+        {
+            $entity = null;
+        }
+        
         if (!$entity)
         {
             throw new NotFoundException();

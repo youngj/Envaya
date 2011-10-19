@@ -11,6 +11,9 @@ return array(
     'dbport' => 3306,
     'dbhost' => 'localhost',
 
+    'db_backup_user' => 'backup',
+    'db_backup_password' => '',   
+    
     'queue_host' => "localhost",
     'queue_port' => 22133,
        
@@ -110,4 +113,6 @@ return array(
     'feed_page_size' => 20,
     
     'max_disk_pct' => 85,
+    'status_email' => null,
+    'notify_status_interval' => 1440,
 );

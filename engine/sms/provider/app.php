@@ -59,14 +59,14 @@ class SMS_Provider_App extends SMS_Provider
             return false;
         }
         
-        $secrets = Config::get('sms_gateway_secrets');
-        $secret = @$secrets[$phone_number];
-        if (!$secret)
+        $gateways = Config::get('sms_gateways');
+        $password = @$gateways[$phone_number]['password'];
+        if (!$password)
         {            
             return false;
         }
         
-        return EnvayaSMS::get_request()->is_validated($secret);
+        return EnvayaSMS::get_request()->is_validated($password);
     }    
     
     function get_outgoing_messages()

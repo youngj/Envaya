@@ -3,7 +3,7 @@
 class SMSSubscription extends Entity
 {    
     static $table_name = 'sms_subscriptions';
-    static $table_attributes = array(
+    static $table_attributes = array(    
         'notification_type' => 0,
         'description' => '',    // the corresponding SMS command, e.g. 'N jeanmedia'; displayed by 'SS'
         'language' => '',

@@ -2,13 +2,10 @@
 
 /*
 * Poor-man's s3 backup service, copies new files from a s3 bucket,
-* and saves them to a local directory that's synchronized with a dropbox account.
+* and saves them to a local directory.
 *
 * Doesn't update previously backed-up files that have changed on s3.
 */
-
-global $BACKUP_DIR;
-$BACKUP_DIR = "/etc/dropbox/Dropbox/s3_backup";
 
 require_once("scripts/cmdline.php");
 require_once("start.php");
@@ -17,7 +14,13 @@ require_once("vendors/s3.php");
 
 umask(0);
 
+global $new_files;
+
+$new_files = 0;
+
 global $s3;
+$start = microtime(true);
+
 $s3 = new S3(Config::get('s3_key'), Config::get('s3_private'));
 
 function enumerate_bucket($s3, $callback)
@@ -57,10 +60,10 @@ global $n;
 
 function handle_item($item)
 {
-    global $s3, $n, $BACKUP_DIR;
+    global $s3, $new_files;
     $key = $item->Key;
 
-    $localPath = "$BACKUP_DIR/$key";
+    $localPath = Config::get('dataroot') . "/s3_backup/$key";
     $dir = dirname($localPath);
 
     if (!is_dir($dir))
@@ -70,6 +73,7 @@ function handle_item($item)
     if (!is_file($localPath))
     {
         echo "$localPath\n";
+        $new_files++;        
         $s3->downloadFile(Config::get('s3_bucket'), $key, $localPath);
         $mtime = strtotime($item->LastModified);
         touch($localPath, $mtime);
@@ -81,3 +85,12 @@ function handle_item($item)
 }
 
 enumerate_bucket($s3, 'handle_item');
+
+$end = microtime(true);
+
+$elapsed = $end - $start;
+
+$now = date("YmdHi");
+
+State::set('s3_backup_time', timestamp());
+State::set('s3_backup_info', "$new_files new files / $elapsed sec");

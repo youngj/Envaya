@@ -44,7 +44,7 @@ class Controller_SMSGateway extends Controller
         if (!$app_state->active)
         {
             $app_state->active = true;            
-            SMS_AppState::send_alert("Phone active", "{$request->phone_number} successfully connected to server");
+            $app_state->send_alert("Phone active", "{$request->phone_number} successfully connected to server");
         }        
         $app_state->save();
     
@@ -92,7 +92,7 @@ class Controller_SMSGateway extends Controller
                 $message->save();    
                 $this->set_content("OK");    
                 
-                $this->log("{$request->phone_number} stat App v{$request->version} {$action->id} {$action->status}");            
+                $this->log("{$request->phone_number} -> {$message->to_number} stat App v{$request->version} {$action->id} {$action->status}");            
                 return;
 
             case EnvayaSMS::ACTION_TEST:                
@@ -105,11 +105,11 @@ class Controller_SMSGateway extends Controller
                                 
                 if ($action->status == EnvayaSMS::DEVICE_STATUS_BATTERY_LOW)
                 {
-                    SMS_AppState::send_alert("Battery low", "Battery low for {$request->phone_number}");
+                    $app_state->send_alert("Battery low", "Battery low for {$request->phone_number}");
                 }
                 else if ($action->status == EnvayaSMS::DEVICE_STATUS_BATTERY_OKAY)
                 {
-                    SMS_AppState::send_alert("Battery okay", "Battery okay for {$request->phone_number}");
+                    $app_state->send_alert("Battery okay", "Battery okay for {$request->phone_number}");
                 }
                 
                 $this->log("{$request->phone_number} device App v{$request->version} {$action->status}");

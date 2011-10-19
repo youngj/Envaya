@@ -10,10 +10,17 @@ class SMS_AppState extends Model
         'active' => 1,
     );    
     
-    static function send_alert($subject, $msg)
-    {
-        OutgoingMail::create("EnvayaSMS alert - $subject", $msg)
-            ->send_to_admin();  
+    function send_alert($subject, $msg)
+    {       
+        $gateways = Config::get('sms_gateways');
+        
+        $admin_email = @$gateways[$this->phone_number]['admin_email'];        
+        if ($admin_email)
+        {
+            $mail = OutgoingMail::create("EnvayaSMS alert - {$this->phone_number} - $subject", $msg);
+            $mail->addTo($admin_email);
+            $mail->send();
+        }
     }
     
     static function get_for_phone_number($phone_number)

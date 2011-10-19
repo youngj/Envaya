@@ -30,6 +30,10 @@ return array(
         'cmd' => "php scripts/check_system.php"
     ),
     array(
+        'interval' => Config::get('notify_status_interval'),
+        'cmd' => "php scripts/notify_status.php"
+    ),    
+    array(
         'interval' => 2,
         'cmd' => "php scripts/check_external_feeds.php"
     )

@@ -14,7 +14,7 @@ foreach (SMS_AppState::query()
     
     error_log("{$app_state->phone_number} is inactive for $diff seconds");
     
-    SMS_AppState::send_alert("Phone inactive", "{$app_state->phone_number} has not connected to server for $diff seconds");
+    $app_state->send_alert("Phone inactive", "{$app_state->phone_number} has not connected to server for $diff seconds");
         
     $app_state->save();        
-}                
+}

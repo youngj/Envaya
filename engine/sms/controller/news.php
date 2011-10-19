@@ -164,6 +164,10 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_subscribe_default',
         ),
         array(
+            'regex' => 'xyzzy',
+            'action' => 'action_nothing',
+        ),
+        array(
             'regex' => '(h|help|menu|menyu|msaada)\b',
             'action' => 'action_help',
         ),        
@@ -1343,6 +1347,12 @@ class SMS_Controller_News extends SMS_Controller
             $this->reply(__('sms:location_not_set').' '.__('sms:location_help'));
         }
     }    
+    
+    function action_nothing()
+    {
+        // this command does nothing and sends no reply, but has the side-effect
+        // of sending any queued outgoing sms messages immediately.
+    }
     
     function action_view_item()
     {
