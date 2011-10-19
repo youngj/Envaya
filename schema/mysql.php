@@ -376,6 +376,7 @@ CREATE TABLE `local_ids` (
 
 CREATE TABLE `sms_subscriptions` (
     <?php require 'schema/entity_columns.php'; ?>,
+    `notification_type` tinyint(4) not null default 0,
     `description` text NOT NULL,
     `language` varchar(4) null,
     `phone_number` varchar(32) not null,

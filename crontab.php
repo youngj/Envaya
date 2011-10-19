@@ -26,6 +26,10 @@ return array(
         'cmd' => "php scripts/check_sms_app.php"
     ),    
     array(
+        'interval' => 720,
+        'cmd' => "php scripts/check_system.php"
+    ),
+    array(
         'interval' => 2,
         'cmd' => "php scripts/check_external_feeds.php"
     )

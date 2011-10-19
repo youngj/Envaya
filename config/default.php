@@ -108,4 +108,6 @@ return array(
     
     'plupload_runtimes' => 'flash,html5,html4',
     'feed_page_size' => 20,
+    
+    'max_disk_pct' => 85,
 );

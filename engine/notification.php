@@ -2,7 +2,7 @@
 
 /*
  * Defines constants for an organization's notification settings 
- * (e.g. which emails they subscribe to)
+ * (e.g. which emails or SMS messages they subscribe to)
  */
 class Notification
 {

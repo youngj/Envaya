@@ -402,6 +402,7 @@ button.submit_button:active span
 {
     position:absolute;
     cursor:pointer;
+    word-wrap:normal;
 }
 
 .mapMarkerCount

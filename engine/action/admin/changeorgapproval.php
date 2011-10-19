@@ -25,12 +25,29 @@ class Action_Admin_ChangeOrgApproval extends Action
 
         $org->save();
 
-        if (!$approvedBefore && $approvedAfter && $org->email)
+        if (!$approvedBefore && $approvedAfter)
         {
-            OutgoingMail::create(
-                __('register:approval_email:subject', $org->language),
-                view('emails/org_approved', array('org' => $org))
-            )->send_to_user($org);
+            if ($org->email)
+            {
+                OutgoingMail::create(
+                    __('register:approval_email:subject', $org->language),
+                    view('emails/org_approved', array('org' => $org))
+                )->send_to_user($org);
+            }
+            
+            $primary_phone = $org->get_primary_phone_number();
+            if ($primary_phone && PhoneNumber::can_send_sms($primary_phone))
+            {
+                SMS_Service_News::create_outgoing_sms(
+                    $primary_phone,
+                    strtr(__('register:approval_sms', $org->language),
+                        array(
+                            '{url}' => $org->get_url(),
+                            '{login_url}' => abs_url('/pg/login')
+                        )
+                    )
+                )->send();
+            }
         }
         
         // send any emails from this user that were held pending approval

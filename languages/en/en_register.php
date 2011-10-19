@@ -93,7 +93,8 @@ return array(
     'register:approval_email:share' => "Also, be sure to share your new website with your partner organizations, community members, and other stakeholders, by sending them a link to %s .",
     'register:approval_email:help' => "For instructions on how to get started using Envaya, and to learn what you can do with your new website, visit our %s page here:",
     'register:approval_email:thanks' => "Thanks for using Envaya!",    
-    
+
+    'register:approval_sms' => "From Envaya: Your website {url} has been approved!\nTo publish news via SMS, reply with txt \"P [message]\".\nTxt HELP for more SMS commands.\nOr go to {login_url} and login to edit your website.\nAdd this number to your contacts!",
     
     // individual user registration    
     'register:user:instructions' => "This page allows you to register a personal user account on Envaya.",

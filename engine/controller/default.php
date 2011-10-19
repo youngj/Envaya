@@ -15,6 +15,10 @@ class Controller_Default extends Controller
             'controller' => 'Controller_SMSGateway',
         ),
         array(
+            'regex' => '/(?P<guid>\d+)',
+            'action' => 'action_guid_redirect',
+        ),              
+        array(
             'regex' => '/robots.txt\b',
             'action' => 'action_robots_txt',
         ),        
@@ -156,5 +160,23 @@ class Controller_Default extends Controller
         {
             $this->response->headers[$name] = $value;
         }
+    }
+    
+    function action_guid_redirect()
+    {
+        $entity = Entity::get_by_guid($this->param('guid'));
+        if (!$entity)
+        {
+            throw new NotFoundException();
+        }
+        
+        $url = $entity->get_url();
+            
+        if (!$url)
+        {
+            throw new NotFoundException();
+        }
+        
+        $this->redirect($url . $this->param('rest'));        
     }
 }

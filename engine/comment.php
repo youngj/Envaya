@@ -87,7 +87,7 @@ class Comment extends Entity
         $phones = array();
         
         $subscriptions = array_merge(
-            $org->query_sms_subscriptions()->filter(),
+            $org->query_sms_subscriptions()->where('notification_type = ?', Notification::Comments)->filter(),
             $widget->query_sms_subscriptions()->filter()
         );
         

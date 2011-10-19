@@ -389,9 +389,15 @@ var $proto = function() {
         {
             $img.src = "/_media/images/placemark_n.gif";
 
-            $div.appendChild(
-                createElem('span', {className:'mapMarkerCount', innerHTML: "" + this.count})
-            );
+            var countSpan = createElem('span', {className:'mapMarkerCount', innerHTML: "" + this.count});
+            
+            $div.appendChild(countSpan);
+            
+            if (this.count >= 100)
+            {
+                countSpan.style.fontSize = '9px';
+                countSpan.style.top = "5px";
+            }
         }
         else
         {

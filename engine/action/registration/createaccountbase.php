@@ -89,13 +89,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
         $org->set_phone_number(get_input('phone'));
         
         $org->save();
-        
-        $primary_phone = $org->get_primary_phone_number();        
-        if ($primary_phone)
-        {
-            $org->init_comments_subscription($primary_phone);
-        }
-        
+
         $org->init_default_widgets();
         
         Session::login($org, false);

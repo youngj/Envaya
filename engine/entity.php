@@ -280,6 +280,11 @@ abstract class Entity extends Model
     public function get_url() {
         return null;
     }
+    
+    public function get_short_url()
+    {
+        return abs_url("/{$this->guid}");
+    }
 
     /**
      * Return a url for the entity's icon, trying multiple alternatives.
@@ -583,7 +588,7 @@ abstract class Entity extends Model
         return SMSSubscription::query()->where('container_guid = ?', $this->guid);
     }
     
-    function init_sms_subscription($phone_number, $description)
+    function init_sms_subscription($phone_number, $description, $notification_type = 0)
     {
         if (!PhoneNumber::can_send_sms($phone_number))
         {
@@ -593,12 +598,14 @@ abstract class Entity extends Model
         $subscription = $this->query_sms_subscriptions()
             ->show_disabled(true)
             ->where('phone_number = ?', $phone_number)
+            ->where('notification_type = ?', $notification_type)
             ->get();
             
         if (!$subscription)
         {
             $subscription = new SMSSubscription();
             $subscription->container_guid = $this->guid;
+            $subscription->notification_type = $notification_type;
             $subscription->description = $description;
             $subscription->phone_number = $phone_number;
             $subscription->language = Language::get_current_code();

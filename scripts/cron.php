@@ -23,7 +23,7 @@ foreach (Config::get('modules') as $module_name)
     }
 }
 
-$minute = 0;
+$minute = (int)(timestamp() / 60);
 
 // prevents running each script until the previous instance finishes
 

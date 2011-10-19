@@ -94,6 +94,8 @@ return array(
     'register:approval_email:help' => "Kusoma maagizo kuhusu kuanza kutumia Envaya, na kujifunza vitu unavyofanya na tovuti yako mpya, tembelea ukurasa wetu wa %s hapa:",
     'register:approval_email:thanks' => "Asante kwa kutumia Envaya!",    
     
+    'register:approval_sms' => "Kutoka Envaya: Tovuti yako {url} imekubaliwa!\nIli kuchapicha habari kupitia SMS, tuma jibu \"P [message]\".\nTuma HELP ili kupata amri zaidi ya SMS.\nAu nenda {login_url} na fungua ili kuhariri tovuti.\nOngeza namba hii kwenye simu yako!",
+    
     // user registration    
     'register:user:instructions' => "Ukurasa huu unakuruhusu kujiandikisha akaunti ya binafsi katika Envaya.",
     'register:user:name' => "Jina lako kamili:",

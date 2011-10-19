@@ -586,6 +586,9 @@ class User extends Entity
         {            
             $newIds = array_map(function($op) { return $op->id; }, $this->phone_numbers);        
             
+            // unsubscribe old primary phone number from comments, admin messages, etc.
+            $this->delete_default_sms_subscriptions();
+            
             foreach ($this->query_phone_numbers()
                 ->where_not_in('id', $newIds)
                 ->filter() 
@@ -620,6 +623,10 @@ class User extends Entity
                     $state->save();
                 }
             }        
+            
+            // subscribe primary phone number to comments, admin messages, etc.
+            $this->init_default_sms_subscriptions();
+            
             $this->phone_numbers_dirty = false;
         }    
         return $res;
@@ -702,8 +709,37 @@ class User extends Entity
         return null;
     }
     
+    function delete_default_sms_subscriptions()
+    {
+        $primary_phone = $this->get_primary_phone_number();        
+        if ($primary_phone)
+        {        
+            foreach ($this->query_sms_subscriptions()
+                ->where('phone_number = ?', $primary_phone)
+                ->filter() as $subscription)
+            {
+                $subscription->delete();
+            }
+        }
+    }
+    
+    function init_default_sms_subscriptions()    
+    {
+        $primary_phone = $this->get_primary_phone_number();        
+        if ($primary_phone)
+        {
+            $this->init_comments_subscription($primary_phone);
+            $this->init_batch_sms_subscription($primary_phone);
+        }
+    }
+    
     function init_comments_subscription($phone_number)
     {
-        return $this->init_sms_subscription($phone_number, "G {$this->username}");
+        return $this->init_sms_subscription($phone_number, "G {$this->username}", Notification::Comments);
+    }
+    
+    function init_batch_sms_subscription($phone_number)
+    {
+        return $this->init_sms_subscription($phone_number, "admin msg", Notification::Batch);
     }
 }

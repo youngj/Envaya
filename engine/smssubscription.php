@@ -1,9 +1,10 @@
 <?php
 
 class SMSSubscription extends Entity
-{
+{    
     static $table_name = 'sms_subscriptions';
     static $table_attributes = array(
+        'notification_type' => 0,
         'description' => '',    // the corresponding SMS command, e.g. 'N jeanmedia'; displayed by 'SS'
         'language' => '',
         'phone_number' => '',
@@ -12,7 +13,7 @@ class SMSSubscription extends Entity
         'num_notifications' => 0,
     );
     
-    function notify($msg)
+    function notify($msg, $append_stop = true)
     {
         $time = timestamp();
         
@@ -44,7 +45,10 @@ class SMSSubscription extends Entity
         
         $service = new SMS_Service_News();
     
-        $msg .= "\n".sprintf(__('sms:notification_stop', $this->language), $this->local_id);
+        if ($append_stop)
+        {
+            $msg .= "\n".sprintf(__('sms:notification_stop', $this->language), $this->local_id);
+        }
         
         $state = $service->get_state($this->phone_number);        
         $state->set('default_stop', $this->guid);
