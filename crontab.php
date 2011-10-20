@@ -14,7 +14,7 @@ return array(
         'cmd' => "php scripts/notify_stuck_mail.php"
     ),   
     array(
-        'interval' => 1440,
+        'interval' => 720,
         'cmd' => "php scripts/backup_s3.php"
     ),
     array(

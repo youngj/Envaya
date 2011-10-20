@@ -9,7 +9,7 @@ CREATE TABLE `files` (
     <?php require 'schema/entity_columns.php'; ?>,
   `group_name` varchar(32) NOT NULL,
   `storage` varchar(16) null,
-  `filename` varchar(64) NOT NULL,
+  `filename` text NOT NULL,
   `width` int NULL,
   `height` int NULL,
   `size` varchar(32) NULL,

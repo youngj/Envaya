@@ -26,7 +26,6 @@ role :db,  "www.envaya.org", :primary => true # This is where Rails migrations w
 namespace :deploy do
     task :default do
         sanity_check
-        backup_db
         update
         restart
         update_test
