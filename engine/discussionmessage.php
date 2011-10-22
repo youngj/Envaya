@@ -94,12 +94,6 @@ class DiscussionMessage extends Entity
     
     function send_notifications($event_name)
     {
-        $org = $this->get_root_container_entity();
-    
-        $subscriptions = EmailSubscription_Discussion::query_for_entity($org)->filter();        
-        foreach ($subscriptions as $subscription)
-        {
-            $subscription->send_notification($event_name, $this);
-        }
+        EmailSubscription_Discussion::send_notifications($event_name, $this);
     }
 }

@@ -12,6 +12,11 @@ class SMSSubscription_Comments extends SMSSubscription
             return;
         }
         
+        if ($comment->owner_guid && $comment->owner_guid == $this->owner_guid)
+        {        
+            return;
+        }
+        
         $org = $comment->get_root_container_entity();        
         $widget = $comment->get_container_entity();            
     

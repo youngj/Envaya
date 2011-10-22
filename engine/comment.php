@@ -49,30 +49,10 @@ class Comment extends Entity
         $posted_comments[] = $this->guid;
         Session::set('posted_comments', $posted_comments);    
     }
-    
+        
     function send_notifications($event_name)
     {
-		$org = $this->get_root_container_entity();        
-        $widget = $this->get_container_entity();                   
-        
-        $email_subscriptions = EmailSubscription::merge(
-            EmailSubscription_Comments::query_for_entity($org)->filter(),
-            EmailSubscription_Comments::query_for_entity($widget)->filter()
-        );        
-        
-        foreach ($email_subscriptions as $subscription)
-        {
-            $subscription->send_notification($event_name, $this);
-        }
-        
-        $sms_subscriptions = SMSSubscription::merge(
-            SMSSubscription_Comments::query_for_entity($org)->filter(),
-            SMSSubscription_Comments::query_for_entity($widget)->filter()
-        );
-        
-        foreach ($sms_subscriptions as $subscription)
-        {
-            $subscription->send_notification($event_name, $this);
-        }
+        EmailSubscription_Comments::send_notifications($event_name, $this);
+        SMSSubscription_Comments::send_notifications($event_name, $this);    
     }
 }

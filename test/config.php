@@ -12,6 +12,12 @@ $dataroot = Config::get('dataroot').'/test_data';
 
 return array(        
     'plupload_runtimes' => 'html4',
+    
+    'notify_status_interval' => 0,
+    'check_system_interval' => 0,
+    'backup_interval' => 0,
+    'backup_s3_interval' => 0,    
+    
     'captcha_enabled' => false,
     'ssl_enabled' => false,    
     

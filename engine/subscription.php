@@ -24,6 +24,71 @@ abstract class Subscription extends Entity
         return static::query()->where('container_guid = ?', $entity->guid);
     }
     
+    /*
+     * Notifies subscribers for this subscription type 
+     * on all entities containing $notifier (not including $notifier itself)
+     */
+    static function send_notifications($event_name, $notifier)
+    {                        
+        foreach (static::get_subscriptions($notifier) as $subscription)
+        {
+            $subscription->send_notification($event_name, $notifier);
+        }
+    }
+    
+    /*
+     * Gets a list of all subscriptions for this subscription type
+     * on all entities containing $notifier (not including $notifier itself)
+     */
+    static function get_subscriptions($notifier)
+    {
+        $cur = $notifier->get_container_entity();                   
+        
+        $subscription_lists = array();
+        
+        while ($cur != null)
+        {
+            $subscription_lists[] = static::query_for_entity($cur)->filter();
+        
+            $next = $cur->get_container_entity();
+            if ($next == $cur)
+            {
+                break;
+            }
+            $cur = $next;
+        }
+        
+        return static::merge($subscription_lists);
+    }
+    
+    /*
+     * Merges lists of subscriptions into a single list, omitting duplicate keys
+     * (e.g. if the same email address would receive the notification in two different ways)
+     */
+    static function merge($subscription_lists)
+    {
+        $res = array();
+        $keys = array();
+        
+        foreach ($subscription_lists as $subscriptions)
+        {
+            foreach ($subscriptions as $subscription)
+            {
+                $key = $subscription->get_key();
+                
+                if (!isset($keys[$key]))
+                {
+                    $keys[$key] = true;
+                    $res[] = $subscription;
+                }
+            }
+        }
+        
+        return $res;
+    }
+    
+    abstract function get_key();
+    
     abstract function send_notification($event_name, $notifier);
     abstract function send($args);
 }

@@ -2,7 +2,7 @@
 
 return array(       
     'email:about' => "Email hii imetumiwa {email} kwa sababu {name} amejiandikisha anwani hii ya barua pepe kwenye Envaya.",
-    'email:unsubscribe' => "Kusimamisha email kutoka Envaya, nenda %s.",
+    'email:unsubscribe' => "Kubadilisha lugha ya email kutoka Envaya, au kusimamisha email, nenda %s.",
     
     'email:subscriptions' => 'Sajili %s kwa:',
     'email:subscribe_reminders' => 'Taarifa muhimu kutoka Envaya kwa {name}',

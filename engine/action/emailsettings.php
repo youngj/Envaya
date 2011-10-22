@@ -14,6 +14,7 @@ class Action_EmailSettings extends Action
     {
         $email = get_input('email');
         $code = get_input('code');
+        $language = get_input('language');
         
         $all_subscription_ids = get_input_array('subscriptions');
         $enabled_subscription_ids = get_input_array('enabled_subscriptions');
@@ -32,6 +33,7 @@ class Action_EmailSettings extends Action
                 in_array($subscription->guid, $enabled_subscription_ids) ?
                     Entity::Enabled : Entity::Disabled                
             );            
+            $subscription->language = $language;
             $subscription->save();                        
         }
         SessionMessages::add(__('user:notification:success'));

@@ -25,9 +25,8 @@
 
 ?>
 
-    <div class='help'>
-    <?php echo sprintf(__('email:subscriptions'), "<em>".escape($email)."</em>"); ?>        
-    </div>
+    <div class='input'>
+    <label><?php echo sprintf(__('email:subscriptions'), "<em>".escape($email)."</em>"); ?></label><br />
 	<?php
             echo view('pagination', array(
                 'offset' => $vars['offset'],
@@ -60,7 +59,19 @@
             ));                        
 
      ?>
+     </div>
 
+     <div class='input'>
+     <label><?php echo __('language'); ?></label><br />
+     <?php
+            echo view("input/language", array(
+                'name' => 'language', 
+                'value' => $subscriptions[0]->language, 
+            ));                        
+
+     ?>
+     </div>
+     
 </div>
 
 <?php

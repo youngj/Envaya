@@ -12,6 +12,11 @@ abstract class SMSSubscription extends Subscription
         'num_notifications' => 0,
     );
     
+    function get_key()
+    {
+        return $this->phone_number;
+    }    
+    
     static function init_for_entity($entity, $phone_number, $defaults = null)
     {
         if (!PhoneNumber::can_send_sms($phone_number))
@@ -59,28 +64,6 @@ abstract class SMSSubscription extends Subscription
         // subclasses should override
         return "unknown";
     }
-    
-    static function merge(/* subscriptions */)
-    {
-        $res = array();
-        $phone_numbers = array();
-        
-        foreach (func_get_args() as $subscriptions)
-        {
-            foreach ($subscriptions as $subscription)
-            {
-                $phone_number = $subscription->phone_number;
-                
-                if (!isset($phone_numbers[$phone_number]))
-                {
-                    $phone_numbers[$phone_number] = true;
-                    $res[] = $subscription;
-                }
-            }
-        }
-        
-        return $res;
-    }    
     
     function send($args)
     {

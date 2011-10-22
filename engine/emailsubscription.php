@@ -12,6 +12,11 @@ abstract class EmailSubscription extends Subscription
         'num_notifications' => 0,
     );    
     
+    function get_key()
+    {
+        return $this->email;
+    }
+    
     static function init_for_entity($entity, $email, $defaults = null)
     {
         if (!EmailAddress::is_valid($email))
@@ -46,29 +51,7 @@ abstract class EmailSubscription extends Subscription
         
         return $subscription;
     }        
-       
-    static function merge(/* subscriptions */)
-    {
-        $res = array();
-        $emails = array();
-        
-        foreach (func_get_args() as $subscriptions)
-        {
-            foreach ($subscriptions as $subscription)
-            {
-                $email = $subscription->email;
-                
-                if (!isset($emails[$email]))
-                {
-                    $emails[$email] = true;
-                    $res[] = $subscription;
-                }
-            }
-        }
-        
-        return $res;
-    }
-    
+           
     function get_settings_url()
     {
         return static::get_all_settings_url($this->email) . "&id={$this->guid}";

@@ -103,10 +103,6 @@ class Widget_Post extends Widget_Generic
     
     function send_notifications($event_name)
     {               
-        $news = $this->get_container_entity();        
-        foreach (SMSSubscription_News::query_for_entity($news)->filter() as $subscription)
-        {                
-            $subscription->send_notification($event_name, $this);
-        }
+        SMSSubscription_News::send_notifications($event_name, $this);
     }
 }
