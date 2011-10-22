@@ -45,7 +45,7 @@ class Action_Settings extends Action
         $email = trim(get_input('email'));
         if ($email != $user->email)
         {
-            $user->email = EmailAddress::validate($email);
+            $user->set_email(EmailAddress::validate($email));
             SessionMessages::add(__('user:email:success'));
         }
 
@@ -54,17 +54,6 @@ class Action_Settings extends Action
         {
             $user->set_phone_number($phone);
             SessionMessages::add(__('user:phone:success'));
-        }
-
-        if ($user instanceof Organization)
-        {
-            $notifications = get_bit_field_from_options(get_input_array('notifications'));
-			
-            if ($notifications != $user->notifications)
-            {
-                $user->notifications = $notifications;
-                SessionMessages::add(__('user:notification:success'));
-            }
         }
 
         $user->save();

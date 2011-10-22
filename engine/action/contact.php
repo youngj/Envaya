@@ -45,8 +45,8 @@ class Action_Contact extends Action
         EmailAddress::validate($this->email);
             
         $mail = OutgoingMail::create($this->get_email_subject(), $this->get_email_body());
-        $mail->setReplyTo($this->email);
-        $mail->addTo($this->get_recipient_email());    
+        $mail->set_reply_to($this->email);
+        $mail->add_to($this->get_recipient_email());    
         $mail->send();
         
         SessionMessages::add(__('message:feedback_sent'));

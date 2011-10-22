@@ -9,16 +9,19 @@ class ContactTest extends SeleniumTest
         $this->ensureGoodMessage();
            
         // reset batch email notification settings
-        $this->clickAndWait("//a[contains(@href,'testposter0/settings')]");        
-        $this->uncheck("//input[@name='notifications[]' and @value='1']");
+        $this->open("/testposter0");        
+        $this->clickAndWait("//a[contains(@href,'pg/email_settings')]");        
+        $this->uncheck("//label[contains(text(),'announcements')]//input");
         $this->submitForm();
         
-        $this->clickAndWait("//a[contains(@href,'testposter11/settings')]");        
-        $this->check("//input[@name='notifications[]' and @value='1']");
+        $this->open("/testposter11");    
+        $this->clickAndWait("//a[contains(@href,'pg/email_settings')]");        
+        $this->check("//label[contains(text(),'announcements')]//input");        
         $this->submitForm();
 
-        $this->clickAndWait("//a[contains(@href,'testposter10/settings')]");        
-        $this->check("//input[@name='notifications[]' and @value='1']");
+        $this->open("/testposter10");    
+        $this->clickAndWait("//a[contains(@href,'pg/email_settings')]");        
+        $this->check("//label[contains(text(),'announcements')]//input");                
         $this->submitForm();
         
         // delete selenium email templates
@@ -90,7 +93,7 @@ class ContactTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");       
         
         $this->open($url);
-        $this->retry('uncheck', array("//input[@name='notifications[]' and @value='1']"));
+        $this->retry('uncheck', array("//label[contains(text(),'announcements')]//input"));
         $this->submitForm();
         $this->ensureGoodMessage();       
         
@@ -126,7 +129,7 @@ class ContactTest extends SeleniumTest
         $this->assertEquals("6", $this->getValue("//select[@name='sector']"));
         
         // test inviting email via contact list
-        $this->clickAndWait("//a[contains(@href,'email/user')]");
+        $this->clickAndWait("//a[contains(@href,'email/subscription')]");
         $address = $this->getText("//a[contains(@href,'mailto:')]");
         
         $this->clickAndWait("//a[contains(@href,'/send')]");
@@ -139,7 +142,7 @@ class ContactTest extends SeleniumTest
         $this->assertContains($address, $email);
 
         // test 'reset' link to allow sending email twice        
-        $this->clickAndWait("//a[contains(@href,'email/user')]");
+        $this->clickAndWait("//a[contains(@href,'email/subscription')]");
         $this->assertEquals($address, $this->getText("//a[contains(@href,'mailto:')]"));
         $this->mustNotExist("//a[contains(@href,'/send')]");
         $this->clickAndWait("//a[contains(@href,'postLink')]");

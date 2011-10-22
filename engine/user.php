@@ -37,7 +37,6 @@ class User extends Entity
         'design_json' => null,
         'last_notify_time' => null,
         'last_action' => 0,
-        'notifications' => 15,
     );
  
     static $mixin_classes = array(
@@ -55,16 +54,6 @@ class User extends Entity
     public function is_setup_complete()
     {
         return true;
-    }
-
-    public function get_name_for_email($email = null)
-    {
-        $name = mb_encode_mimeheader($this->name, "UTF-8", "B");
-        if (!$email)
-        {
-            $email = $this->email ?: Config::get('email_from');
-        }
-        return "\"$name\" <$email>";
     }
 
     public function get_title()
@@ -303,38 +292,7 @@ class User extends Entity
         {
             return ($this->password == crypt($password, $this->password));
         }
-    }
-    	
-	function is_notification_enabled($notification)
-	{
-		return ($this->notifications & $notification) != 0;
-	}
-    
-    function set_notification_enabled($notification, $enabled = true)
-    {
-        if ($enabled)
-        {
-            $this->notifications |= $notification;
-        }
-        else
-        {
-            $this->notifications &= ~$notification;
-        }   
-    }
-	
-	function get_notifications()
-	{
-		$notifications = array();
-		
-		foreach (Notification::all() as $n)
-		{
-			if ($this->is_notification_enabled($n))
-			{
-				$notifications[] = $n;
-			}
-		}		
-		return $notifications;
-	}
+    }    
     
     function get_timezone_id()
     {
@@ -368,16 +326,7 @@ class User extends Entity
         }
         return $this->timezone_id;
     }
-    
-    function get_email_settings_url($notification_type = null)
-    {
-        $code = User::get_email_fingerprint($this->email);
         
-        $t = $notification_type ? "&t={$notification_type}" : "";
-        
-        return abs_url("/pg/email_settings?e=".urlencode($this->email)."&c={$code}{$t}");
-    }
-    
     static function get_cache_key_for_username($username)
     {
         return make_cache_key("guid_for_username", $username);
@@ -416,11 +365,6 @@ class User extends Entity
 
         return static::get_by_guid($guid, $show_disabled);
     }    
-
-    static function get_email_fingerprint($email)
-    {
-        return substr(md5($email . Config::get('site_secret') . "-email"), 0,15);
-    }        
     
     static function validate_username($username, $min_length = 3)
     {
@@ -533,6 +477,7 @@ class User extends Entity
     
     protected $phone_numbers;
     protected $phone_numbers_dirty = false;
+    protected $email_dirty = false;
 
     function query_phone_numbers()
     {
@@ -547,6 +492,12 @@ class User extends Entity
             return $user_phone_number->phone_number;
         }
         return null;
+    }
+    
+    function set_email($email)
+    {
+        $this->email = $email;
+        $this->email_dirty = true;
     }
         
     function set_phone_number($phone_number_str)
@@ -628,7 +579,15 @@ class User extends Entity
             $this->init_default_sms_subscriptions();
             
             $this->phone_numbers_dirty = false;
-        }    
+        }  
+
+        if ($this->email_dirty)
+        {
+            $this->delete_default_email_subscriptions();
+            $this->init_default_email_subscriptions();        
+            $this->email_dirty = false;
+        }
+        
         return $res;
     }
 
@@ -711,15 +670,21 @@ class User extends Entity
     
     function delete_default_sms_subscriptions()
     {
-        $primary_phone = $this->get_primary_phone_number();        
-        if ($primary_phone)
-        {        
-            foreach ($this->query_sms_subscriptions()
-                ->where('phone_number = ?', $primary_phone)
-                ->filter() as $subscription)
-            {
-                $subscription->delete();
-            }
+        foreach (SMSSubscription::query_for_entity($this)
+            ->where('owner_guid = ?', $this->guid)
+            ->filter() as $subscription)
+        {
+            $subscription->delete();
+        }
+    }
+    
+    function delete_default_email_subscriptions()
+    {
+        foreach (EmailSubscription::query_for_entity($this)
+            ->where('owner_guid = ?', $this->guid)
+            ->filter() as $subscription)
+        {
+            $subscription->delete();
         }
     }
     
@@ -728,18 +693,33 @@ class User extends Entity
         $primary_phone = $this->get_primary_phone_number();        
         if ($primary_phone)
         {
-            $this->init_comments_subscription($primary_phone);
-            $this->init_batch_sms_subscription($primary_phone);
+            $defaults = array('owner_guid' => $this->guid, 'language' => $this->language);
+            
+            SMSSubscription_Contact::init_for_entity($this, $primary_phone, $defaults);
+            SMSSubscription_Comments::init_for_entity($this, $primary_phone, $defaults);
         }
     }
     
-    function init_comments_subscription($phone_number)
-    {
-        return $this->init_sms_subscription($phone_number, "G {$this->username}", Notification::Comments);
+    function init_admin_subscriptions()
+    {        
+        $email = Config::get('admin_email');
+        $defaults = array('owner_guid' => 0, 'language' => Config::get('language'));
+        
+        EmailSubscription_Comments::init_for_entity($this, $email, $defaults);
+        EmailSubscription_Discussion::init_for_entity($this, $email, $defaults);    
     }
     
-    function init_batch_sms_subscription($phone_number)
+    function init_default_email_subscriptions()
     {
-        return $this->init_sms_subscription($phone_number, "admin msg", Notification::Batch);
+        $email = $this->email;
+        if ($email)
+        {
+            $defaults = array('owner_guid' => $this->guid, 'language' => $this->language);
+            
+            EmailSubscription_Contact::init_for_entity($this, $email, $defaults);
+            EmailSubscription_Comments::init_for_entity($this, $email, $defaults);
+            EmailSubscription_Network::init_for_entity($this, $email, $defaults);
+            EmailSubscription_Discussion::init_for_entity($this, $email, $defaults);
+        }
     }
 }

@@ -6,8 +6,7 @@
  * These get stored in the database so we can see what emails are being sent out,
  * and also so administrators can resend them in case of an error.
  *
- * This wraps a Zend_Mail object, and all Zend_Mail methods are available on the 
- * OutgoingMail object, except that send() is redefined.
+ * This wraps a Zend_Mail object.
  */
 class OutgoingMail extends Model
 {
@@ -20,7 +19,8 @@ class OutgoingMail extends Model
 
     static $table_name = 'outgoing_mail';
     static $table_attributes = array(
-        'email_guid' => 0, // guid of EmailTemplate, if applicable
+        'notifier_guid' => 0, // optional guid of entity that sent this message, e.g. Comment, DiscussionMessage, EmailTemplate
+        'subscription_guid' => 0, // guid of EmailSubscription, if applicable
         'to_guid' => 0,  // guid of recipient user, if applicable        
         'from_guid' => 0, // guid of sending user, if applicable
         'time_created' => 0,
@@ -36,12 +36,6 @@ class OutgoingMail extends Model
     
     private $mail = null;
     
-    /* nonexistent methods on OutgoingMail object are forwarded to Zend_Mail object */
-    function __call($fn, $args)
-    {
-        return call_user_func_array(array($this->get_mail(), $fn), $args);
-    }
-    
     static function create($subject = null, $bodyText = null)
     {
         $mail = new OutgoingMail();        
@@ -50,23 +44,84 @@ class OutgoingMail extends Model
         
         if ($subject)
         {
-            $mail->setSubject($subject);
+            $mail->set_subject($subject);
         }
         if ($bodyText)
         {
-            $mail->setBodyText($bodyText);
+            $mail->set_body_text($bodyText);
         }                   
         return $mail;
+    }
+
+    function add_to($email, $name = '')
+    {
+        return $this->get_mail()->addTo($email, $name);
+    }
+    
+    function add_bcc($email)
+    {
+        return $this->get_mail()->addBcc($email);
+    }
+    
+    function get_from()
+    {
+        return $this->get_mail()->getFrom();
+    }
+    
+    function set_from($email, $name = null)
+    {
+        return $this->get_mail()->setFrom($email, $name);
+    }
+    
+    function set_from_name($name)
+    {
+        return $this->set_from(Config::get('email_from'), $name);
+    }
+    
+    function set_from_user($user)
+    {
+        $this->from_guid = $user->guid;
+        $this->set_from_name($user->name);
+        
+        if ($user->email)
+        {
+            $this->set_reply_to($user->email, $user->name);
+        }
+    }
+
+    function set_reply_to($email, $name = null)
+    {
+        return $this->get_mail()->setReplyTo($email, $name);
+    }
+    
+    function get_subject($subject)
+    {
+        return $this->get_mail()->getSubject();
+    }       
+    
+    function set_subject($subject)
+    {
+        return $this->get_mail()->setSubject($subject);
+    }   
+    
+    function set_body_text($body_text)
+    {
+        return $this->get_mail()->setBodyText($body_text);
+    }
+    
+    function get_body_text()
+    {
+        return $this->get_mail()->getBodyText();
     }
     
     function set_body_html($body_html)
     {
-        $this->setBodyHtml($body_html);
-        if (!$this->getBodyText())
+        $this->get_mail()->setBodyHtml($body_html);
+        if (!$this->get_body_text())
         {    
             require_once Config::get('root').'/vendors/markdownify/markdownify.php';
             $md = new Markdownify(true, false, false);    
-            $this->setBodyText($md->parseString($body_html));
+            $this->set_body_text($md->parseString($body_html));
         }        
     }
     
@@ -80,7 +135,6 @@ class OutgoingMail extends Model
         return User::get_by_guid($this->to_guid);
     }
 
-    
     function get_mail()
     {
         if (!$this->mail)
@@ -115,7 +169,7 @@ class OutgoingMail extends Model
 
     function send_to_admin()
     {
-        $this->addTo(Config::get('admin_email'));    
+        $this->add_to(Config::get('admin_email'));    
         return $this->send();
     }    
         
@@ -124,7 +178,7 @@ class OutgoingMail extends Model
         if ($user->email)
         {
             $this->to_guid = $user->guid;        
-            $this->addTo($user->email, $user->name);
+            $this->add_to($user->email, $user->name);
             $this->send();
             return true;
         }
@@ -133,10 +187,10 @@ class OutgoingMail extends Model
     
     function send($immediate = false)
     {        
-        if (!$this->getFrom())
+        if (!$this->get_from())
         {
-            $this->setFrom(Config::get('email_from'), Config::get('site_name'));
-        }    
+            $this->set_from_name(Config::get('site_name'));
+        }
     
         if ($immediate)
         {

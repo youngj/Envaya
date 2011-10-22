@@ -134,7 +134,6 @@ CREATE TABLE `users` (
   `timezone_id` varchar(64) default null,
   `region` varchar(32) default NULL,
   `last_notify_time` int default null,
-  `notifications` int(11) not null default 3,
   UNIQUE KEY (`username`),
   UNIQUE KEY (`email_code`),
   KEY `subtype_id` (`subtype_id`),
@@ -260,7 +259,8 @@ CREATE TABLE `feed_items` (
 
 CREATE TABLE `outgoing_mail` (
 	`id` INT NOT NULL AUTO_INCREMENT,		
-	`email_guid` bigint(20) NULL,
+    `notifier_guid` bigint(20) NULL,
+    `subscription_guid` bigint(20) NULL,
 	`to_guid` bigint(20) NULL,
     `from_guid` bigint(20) NULL,
     `time_created` int NULL,
@@ -272,13 +272,16 @@ CREATE TABLE `outgoing_mail` (
     `error_message` text null,
     `serialized_mail` mediumtext null,    
 	PRIMARY KEY ( `id` ),
-	KEY `email_guid` (`email_guid`),
+	KEY `notifier_guid` (`notifier_guid`),
+    KEY `subscription_guid` (`subscription_guid`),
 	KEY `to_guid` (`to_guid`),
     KEY `from_guid` (`from_guid`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `outgoing_sms` (
 	`id` INT NOT NULL AUTO_INCREMENT,		
+    `notifier_guid` bigint(20) NULL,
+    `subscription_guid` bigint(20) NULL,
     `message` text null,
     `from_number` varchar(32) not NULL,
     `to_name` text null,
@@ -290,6 +293,8 @@ CREATE TABLE `outgoing_sms` (
     `error_message` text null,
     `time_sendable` int NULL,
 	PRIMARY KEY ( `id` ),
+    KEY `subscription_guid` (`subscription_guid`),
+    KEY `notifier_guid` (`notifier_guid`),
     KEY `waiting` (`status`,`time_sendable`),
 	KEY `from_number` (`from_number`),
     KEY `to_number` (`to_number`)
@@ -376,14 +381,25 @@ CREATE TABLE `local_ids` (
 
 CREATE TABLE `sms_subscriptions` (
     <?php require 'schema/entity_columns.php'; ?>,
-    `notification_type` tinyint(4) not null default 0,
-    `description` text NOT NULL,
+    `subtype_id` varchar(63) not null,	
     `language` varchar(4) null,
     `phone_number` varchar(32) not null,
     `local_id` int not null,
     `last_notification_time` int(11) NOT NULL default 0,
     `num_notifications` int(11) NOT NULL default 0,
+    KEY `subtype_id` (`subtype_id`),
     UNIQUE KEY `local_id_key` (`phone_number`, `local_id`)
+) ENGINE = MYISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `email_subscriptions` (
+    <?php require 'schema/entity_columns.php'; ?>,
+    `subtype_id` varchar(63) not null,	
+    `language` varchar(4) null,
+    `email` text not null,
+    `name` text not null,
+    `last_notification_time` int(11) NOT NULL default 0,
+    `num_notifications` int(11) NOT NULL default 0,
+    KEY `subtype_id` (`subtype_id`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sms_app_state` (

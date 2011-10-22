@@ -15,6 +15,8 @@ class OutgoingSMS extends Model
     static $table_name = 'outgoing_sms';
 
     static $table_attributes = array(
+        'notifier_guid' => 0, // optional guid of entity that sent this message, e.g. Comment, DiscussionMessage, SMSTemplate
+        'subscription_guid' => 0, // guid of SMSSubscription, if applicable    
         'from_number' => '',
         'to_number' => '',
         'to_name' => '',        

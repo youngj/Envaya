@@ -151,8 +151,8 @@ class DiscussionTest extends SeleniumTest
         $this->mouseOver("//strong[contains(text(),'Dar es Salaam')]");
         
         // test email notifications
-        $url = $this->getLocation();        
-        $email = $this->getLastEmail("added a new discussion");
+        $url = $this->getLocation();      
+        $email = $this->getLastEmail("Somebody added a new discussion");
         $this->assertContains($url, $email);
         $this->assertContains('message 3', $email);
         $this->assertContains('Somebody', $email);
@@ -171,7 +171,7 @@ class DiscussionTest extends SeleniumTest
         $this->mouseOver("//p[contains(text(),'message 4')]");
         
         $url = $this->getLocation();        
-        $email = $this->getLastEmail("added a new message");
+        $email = $this->getLastEmail("Somebody added a new message");
         $this->assertContains($url, $email);
         $this->assertContains('message 4', $email);
         $this->assertContains('Somebody', $email);

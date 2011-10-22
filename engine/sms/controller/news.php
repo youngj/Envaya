@@ -247,7 +247,7 @@ class SMS_Controller_News extends SMS_Controller
         $this->reply(
             $this->query_paginator($query, $page,
                 function($subscription) {
-                    return "{$subscription->local_id}:{$subscription->description}\n";
+                    return "{$subscription->local_id}:{$subscription->get_description()}\n";
                 },
                 array(
                     'page_size' => 7,
@@ -274,7 +274,7 @@ class SMS_Controller_News extends SMS_Controller
             $subscription->save();
         
             $this->reply(
-                sprintf(__('sms:subscription_started'), $subscription->description)."\n".
+                sprintf(__('sms:subscription_started'), $subscription->get_description())."\n".
                 sprintf(__('sms:stop_subscription_id'), $subscription->local_id)."\n".
                 __('sms:show_subscriptions')
             );
@@ -296,7 +296,7 @@ class SMS_Controller_News extends SMS_Controller
             $subscription->save();
         
             $this->reply(            
-                sprintf(__('sms:subscription_stopped'), $subscription->description)."\n".
+                sprintf(__('sms:subscription_stopped'), $subscription->get_description())."\n".
                 sprintf(__('sms:restart_subscription_id'), $subscription->local_id)."\n".
                 __('sms:show_subscriptions')
             );
@@ -567,11 +567,9 @@ class SMS_Controller_News extends SMS_Controller
     
         $news = $user->get_widget_by_class('News');
         
-        $phone_number = $this->request->get_from_number();
+        $phone_number = $this->request->get_from_number();       
         
-        $cmd = "N {$user->username}";
-        
-        $subscription = $news->init_sms_subscription($phone_number, $cmd);
+        $subscription = SMSSubscription_News::init_for_entity($news, $phone_number);
         
         if ($subscription)
         {           
@@ -582,7 +580,7 @@ class SMS_Controller_News extends SMS_Controller
             }
             
             $this->reply(
-                sprintf(__('sms:subscribed'), $cmd)."\n".
+                sprintf(__('sms:subscribed'), $subscription->get_description())."\n".
                 sprintf(__('sms:stop_subscription_id'), $subscription->local_id)."\n".
                 __('sms:show_subscriptions')
             );
@@ -699,11 +697,14 @@ class SMS_Controller_News extends SMS_Controller
         
         if ($post != null && $this->get_page_action() == 'news')
         {
+            $from_number = $this->request->get_from_number();
+        
             $comment = new Comment();
             $comment->container_guid = $post->guid;
             $comment->owner_guid = Session::get_loggedin_userid();
             $comment->name = $this->get_state('name') ?: ("..".substr($this->request->get_from_number(), -4));
             $comment->location = $this->get_state('location') ?: 'via sms';
+            $comment->set_metadata('phone_number', $from_number);
             $comment->set_content($message, true);
             $comment->save();
             
@@ -720,14 +721,13 @@ class SMS_Controller_News extends SMS_Controller
             $this->reply(strtr(__('sms:comment_published'), array(
                 '{id}' => $comment->guid,
                 '{url}' => $post->get_url(),
-            )));
-            
-            $from_number = $this->request->get_from_number();
+            )));            
             
             $post_user = $post->get_root_container_entity();            
             
-            $comment->send_notifications($from_number);
-            $post->init_sms_subscription($from_number, "N {$post_user->username} {$post->get_local_id()}");
+            $comment->send_notifications(Comment::Added);
+            
+            SMSSubscription_Comments::init_for_entity($post, $from_number);
         }
         else
         {
@@ -996,9 +996,10 @@ class SMS_Controller_News extends SMS_Controller
         $post = $news->new_widget_by_class('SMSPost');
         $post->owner_guid = $user->guid;
         $post->set_content($message);
+        $post->set_metadata('phone_number', $this->request->get_from_number());
         $post->save();
         $post->post_feed_items();
-        $post->send_notifications($this->request->get_from_number());
+        $post->send_notifications(Widget::Added);
         
         $this->reply(strtr(__('sms:post_published'),
             array(
@@ -1134,9 +1135,7 @@ class SMS_Controller_News extends SMS_Controller
             
             if ($user instanceof Organization)
             {
-                $user->init_comments_subscription(
-                    $this->request->get_from_number()
-                );
+                SMSSubscription_Comments::init_for_entity($user, $this->request->get_from_number());
             }
             
             $message = $this->get_state('message');

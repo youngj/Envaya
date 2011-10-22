@@ -44,3 +44,9 @@ echo "<a href='/{$org->username}/settings'>".__('settings')."</a>";
 echo " ";
 echo "<a href='/{$org->username}/domains'>".__('domains:edit')."</a>";
 echo " ";
+if ($org->email)
+{
+    $url = EmailSubscription::get_all_settings_url($org->email);
+    echo "<a href='{$url}'>Email Subscriptions</a>";
+    echo " ";
+}

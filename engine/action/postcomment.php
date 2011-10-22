@@ -59,7 +59,7 @@ class Action_PostComment extends Action
             $comment->set_session_owner();
 		}
 		
-        $comment->send_notifications();        
+        $comment->send_notifications(Comment::Added);
 		
 		SessionMessages::add(__('comment:success'));
 		$this->redirect($comments_url);        

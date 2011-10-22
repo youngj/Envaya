@@ -27,6 +27,12 @@ class Controller_Admin extends Controller
         $action->execute();        
     }    
     
+    function action_subscriptions()
+    {
+        $action = new Action_Admin_Subscriptions($this);
+        $action->execute();
+    }
+    
     function action_view_mail()
     {
         $id = (int)get_input('id');

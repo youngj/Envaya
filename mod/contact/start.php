@@ -2,6 +2,9 @@
 
 Engine::add_autoload_action('EntityRegistry', function() {
     EntityRegistry::register_subtype('contact.email.template', 'EmailTemplate');
+    EntityRegistry::register_subtype('contact.subscription.email.contact', "EmailSubscription_Contact");
+    EntityRegistry::register_subtype('contact.subscription.sms.contact', "SMSSubscription_Contact");
+    EntityRegistry::register_subtype('contact.sms.template', 'SMSTemplate');
 });
 
 Engine::add_autoload_action('Controller_Admin', function() {

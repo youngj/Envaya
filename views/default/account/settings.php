@@ -61,24 +61,6 @@
          ?>
         </td>
     </tr>
-
-    <?php if ($user instanceof Organization) { ?>
-    
-    <tr>
-
-        <th style='vertical-align:top;padding-top:8px'><?php echo __('user:notification:label'); ?>:</th>
-        <td  style='padding-top:8px'>
-        <?php		
-            echo view("input/checkboxes", array('name' => 'notifications', 
-				'value' => $user->get_notifications(), 
-				'options' => Notification::get_options()
-            ));           
-         ?>
-        </td>
-    </tr>
-    <?php 
-    }
-    ?>
     </table>
     <?php
 

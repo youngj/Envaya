@@ -14,10 +14,10 @@
 ?>
 <div class='input'>
 <label>Filters: </label>(<span id='filter_count'><?php 
-    echo $email->query_filtered_users()->count();
+    echo $email->query_filtered_subscriptions()->count();
 ?></span>/<span id='total_count'><?php 
-    echo EmailTemplate::query_contactable_users()->count(); 
-?></span> users in filter)
+    echo EmailTemplate::query_all_subscriptions()->count(); 
+?></span> recipients in filter)
 <div id='filter_container'></div>
 <div>Add filter: 
 <span style='font-weight:bold'>

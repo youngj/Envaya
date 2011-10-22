@@ -2,6 +2,10 @@
 
 class DiscussionMessage extends Entity
 {
+    // event names
+    const Added = 'newmessage';   
+    const NewTopic = 'newtopic';
+
     static $table_name = 'discussion_messages';
     
     static $table_attributes = array(
@@ -88,33 +92,14 @@ class DiscussionMessage extends Entity
         Session::set('posted_messages', $posted_messages);    
     }
     
-    function send_notifications($is_new_topic = false)
+    function send_notifications($event_name)
     {
         $org = $this->get_root_container_entity();
-        $user = $this->get_owner_entity();
     
-        $reply_to = EmailAddress::add_signed_tag(Config::get('reply_email'), "message{$this->guid}");
-    
-        if ($org->is_notification_enabled(Notification::Discussion)
-            && (!$user || $user->guid != $org->guid))
+        $subscriptions = EmailSubscription_Discussion::query_for_entity($org)->filter();        
+        foreach ($subscriptions as $subscription)
         {
-            $subject = strtr(($is_new_topic ? 
-                    __('discussions:notification_topic_subject', $org->language) : 
-                    __('discussions:notification_subject', $org->language)
-                ), 
-                array(
-                    '{name}' => $this->from_name
-                )
-            );
-        
-            // notify site of message
-            $mail = OutgoingMail::create($subject);
-            $mail->setReplyTo($reply_to);
-            $mail->set_body_html(view('emails/discussion_message', array(
-                'message' => $this,
-                'user' => $org,
-            )));
-            $mail->send_to_user($org);
+            $subscription->send_notification($event_name, $this);
         }
-    }    
+    }
 }

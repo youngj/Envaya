@@ -28,10 +28,8 @@ class Action_SendMessage extends Action
         }
 
         $mail = OutgoingMail::create($subject, $message);
-        $mail->from_guid = $user->guid;
-        $mail->setFrom(Config::get('email_from'), $user->name);
-        $mail->setReplyTo($user->email, $user->name);
-        $mail->addBcc($user->email);
+        $mail->set_from_user($user);
+        $mail->add_bcc($user->email);
         
         if ($mail->send_to_user($recipient))
         {

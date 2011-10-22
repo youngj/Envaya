@@ -14,11 +14,12 @@ class NetworkTest extends SeleniumTest
         
         // disable network notifications for testposter13
         $this->open('/pg/login');
-        $this->login('testposter13','testtest');
+        $this->login('testadmin','testtest');
         $this->ensureGoodMessage();
-        $this->clickAndWait("//a[contains(@href,'settings')]");
-        $this->uncheck("//input[@name='notifications[]' and @value='4']");
-        $this->submitForm();        
+        $this->open("/testposter13");        
+        $this->clickAndWait("//a[contains(@href,'/pg/email_settings')]");
+        $this->uncheck("//label[contains(text(),'network')]//input");
+        $this->submitForm();
         
         // log in as testorg
         $this->open('/pg/login');

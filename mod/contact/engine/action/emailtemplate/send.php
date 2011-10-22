@@ -11,16 +11,16 @@ class Action_EmailTemplate_Send extends Action
     {
         $email = $this->get_email();
                 
-        $user_guids = get_input_array('users');
+        $subscription_guids = get_input_array('subscriptions');
         $numSent = 0;
-        foreach ($user_guids as $user_guid)
+        foreach ($subscription_guids as $subscription_guid)
         {       
-            $user = User::get_by_guid($user_guid);
+            $subscription = EmailSubscription::get_by_guid($subscription_guid);
 
-            if ($email->can_send_to($user))
+            if ($email->can_send_to($subscription))
             {
                 $numSent++;
-                $email->send_to($user);
+                $subscription->send_notification(ContactTemplate::Sent, $email);
             }
         }
         $email->update();
@@ -46,15 +46,15 @@ class Action_EmailTemplate_Send extends Action
     {
         $email = $this->get_email();
         
-        $user_guids = get_input_array('users');
-        if ($user_guids)
+        $subscription_guids = get_input_array('subscriptions');
+        if ($subscription_guids)
         {
-            $users = User::query()->where_in('guid', $user_guids)->filter();
+            $subscriptions = EmailSubscription::query()->where_in('guid', $subscription_guids)->filter();
         }
         else
         {         
-            $users = $email->query_potential_recipients()
-                ->order_by('name')
+            $subscriptions = $email->query_potential_recipients()
+                ->order_by('guid')
                 ->limit(Config::get('contact:max_recipients'))
                 ->filter(); 
         }
@@ -67,7 +67,7 @@ class Action_EmailTemplate_Send extends Action
                 'email' => $email,
                 'title' => __('email:send')
             )),            
-            'content' => view('admin/batch_email', array('email' => $email, 'users' => $users)),
+            'content' => view('admin/batch_email', array('email' => $email, 'subscriptions' => $subscriptions)),
         ));        
     }
 }    

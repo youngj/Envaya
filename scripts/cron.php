@@ -35,7 +35,8 @@ while (true)
     $i = 0; // desynchronize tasks with intervals that are multiples of each other
     foreach ($cronTasks as $cronTask)
     {
-        if (($minute + $i) % $cronTask['interval'] == 0)
+        $interval = $cronTask['interval'];        
+        if ($interval > 0 && ($minute - $i) % $interval == 0)
         {
             $cmd = $cronTask['cmd'];
             $proc = @$cronTask['proc'];

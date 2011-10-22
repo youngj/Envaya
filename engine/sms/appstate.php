@@ -18,7 +18,7 @@ class SMS_AppState extends Model
         if ($admin_email)
         {
             $mail = OutgoingMail::create("EnvayaSMS alert - {$this->phone_number} - $subject", $msg);
-            $mail->addTo($admin_email);
+            $mail->add_to($admin_email);
             $mail->send();
         }
     }

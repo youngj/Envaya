@@ -18,7 +18,7 @@ class Action_EmailTemplate_ResetOutgoingMail extends Action
             throw new NotFoundException();
         }
         
-        $outgoing_mail->email_guid = 0;
+        $outgoing_mail->notifier_guid = 0;
         $outgoing_mail->save();
         
         $email->update();

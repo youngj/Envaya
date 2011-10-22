@@ -44,7 +44,7 @@ class Action_Register extends Action
         $user = new User();
         $user->username = $username;
         $user->set_phone_number(get_input('phone'));
-        $user->email = $email;
+        $user->set_email($email);
         $user->name = $name;
         $user->set_password($password);
         $user->language = Language::get_current_code();

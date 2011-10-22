@@ -14,6 +14,6 @@ if ($email)
             "     ". State::get('s3_backup_info') . "\n\n"
     );
     
-    $mail->addTo($email);    
+    $mail->add_to($email);    
     $mail->send();
 }

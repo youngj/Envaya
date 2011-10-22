@@ -11,9 +11,9 @@ class Controller_EmailTemplate extends Controller
             'regex' => '/(?P<action>add)\b', 
         ),       
         array(
-            'regex' => '/user/(?P<user_guid>\d+)', 
-            'action' => 'action_user',
-            'before' => 'init_user',
+            'regex' => '/subscription/(?P<subscription_guid>\d+)', 
+            'action' => 'action_subscription',
+            'before' => 'init_subscription',
         ),   
         array(
             'regex' => '/(?P<email_guid>\d+)(/(?P<action>\w+))?', 
@@ -40,16 +40,16 @@ class Controller_EmailTemplate extends Controller
         $this->params['email'] = $email;
     }
 
-    function init_user()
+    function init_subscription()
     {
-        $guid = $this->param('user_guid');
+        $guid = $this->param('subscription_guid');
     
-        $user = User::get_by_guid($guid);
+        $subscription = EmailSubscription::get_by_guid($guid);
         
-        if ($user == null)
+        if ($subscription == null)
             throw new NotFoundException();
     
-        $this->params['user'] = $user;
+        $this->params['subscription'] = $subscription;
     }
     
     function action_index()
@@ -60,13 +60,13 @@ class Controller_EmailTemplate extends Controller
         ));        
     }  
 
-    function action_user()
+    function action_subscription()
     {
         PageContext::get_submenu('edit')->add_item(__('cancel'), get_input('from') ?: "/admin/contact");
     
         $this->page_draw(array(
             'title' => __('contact:email_list'),
-            'content' => view('admin/user_emails', array('user' => $this->param('user')))
+            'content' => view('admin/subscription_emails', array('subscription' => $this->param('subscription')))
         ));        
     }  
     
@@ -98,15 +98,17 @@ class Controller_EmailTemplate extends Controller
         
     function action_preview_body()
     {
-        $user = User::get_by_guid(get_input('user'));
+        $subscription = EmailSubscription_Contact::get_by_guid(get_input('subscription'));
+        if (!$subscription)
+        {
+            $subscription = new EmailSubscription_Contact();
+            $subscription->name = '{name}';
+            $subscription->email = '{email}';
+        }        
         
         $email = $this->get_email();
-        
-        echo view('emails/template', array(
-            'user' => $user, 
-            'base' => 'http://ERROR_RELATIVE_URL/ERROR_RELATIVE_URL/', 
-            'email' => $email
-        ));            
+                
+        $this->set_content($subscription->render_html_body($email->render_content($subscription)));
     }
 
    

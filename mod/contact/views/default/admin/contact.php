@@ -70,10 +70,15 @@
         <?php 
             echo "<a href='/{$org->username}/settings?from=$escUrl'><img src='/_media/images/settings.gif'></a>";
             
-            if ($org->email && $org->is_notification_enabled(Notification::Batch))
+            foreach (EmailSubscription_Contact::query_for_entity($org)->filter() as $subscription)
             {            
-                echo "<a href='/admin/contact/email/user/{$org->guid}?from={$escUrl}'><img src='/_media/images/message.gif' style='vertical-align:5px'></a>";
+                echo "<a href='/admin/contact/email/subscription/{$subscription->guid}?from={$escUrl}'><img src='/_media/images/message.gif' style='vertical-align:5px'></a>";
             }
+            
+            foreach (SMSSubscription_Contact::query_for_entity($org)->filter() as $subscription)
+            {            
+                echo "<a href='/admin/contact/sms/subscription/{$subscription->guid}?from={$escUrl}'><img src='/_media/images/phone.gif' style='padding-left:2px;vertical-align:3px'></a>";
+            }            
         ?>
     </td>
 </tr>

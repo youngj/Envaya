@@ -61,13 +61,7 @@ class Action_Share extends Action
         ));
          
         $mail = OutgoingMail::create($subject, $message);
-        $mail->from_guid = $user->guid;
-        $mail->setFrom(Config::get('email_from'), $user->name);        
-        
-        if ($user->email)
-        {
-            $mail->setReplyTo($user->email, $user->name);
-        }
+        $mail->set_from_user($user);
         
         $sent_emails = array();
         $duplicate_emails = array();
@@ -91,7 +85,7 @@ class Action_Share extends Action
                 $shared_email->url = $url;
                 $shared_email->save();
                 
-                $mail->addTo($email);
+                $mail->add_to($email);
                 $sent_emails[] = $email;
             }
         }        

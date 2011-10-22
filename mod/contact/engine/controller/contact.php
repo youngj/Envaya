@@ -28,7 +28,7 @@ class Controller_Contact extends Controller
         $filters_json = get_input('filters_json');
         $filters = Query_Filter::json_decode_filters($filters_json);
         
-        $filter_count = EmailTemplate::query_contactable_users()->apply_filters($filters)->count();        
+        $filter_count = EmailTemplate::query_subscriptions($filters)->count();     
         
         $this->set_content(json_encode(array(
             'filter_count' => $filter_count

@@ -98,7 +98,7 @@ class Action_Discussion_NewTopic extends Action
         
         $message->post_feed_items();
         
-        $message->send_notifications(true);
+        $message->send_notifications(DiscussionMessage::NewTopic);
         
         SessionMessages::add_html(__('discussions:topic_added')
             . view('discussions/invite_link', array('topic' => $topic)));        

@@ -582,47 +582,7 @@ abstract class Entity extends Model
         }
         return null;
     }
-    
-    function query_sms_subscriptions()
-    {
-        return SMSSubscription::query()->where('container_guid = ?', $this->guid);
-    }
-    
-    function init_sms_subscription($phone_number, $description, $notification_type = 0)
-    {
-        if (!PhoneNumber::can_send_sms($phone_number))
-        {
-            return null;
-        }
-    
-        $subscription = $this->query_sms_subscriptions()
-            ->show_disabled(true)
-            ->where('phone_number = ?', $phone_number)
-            ->where('notification_type = ?', $notification_type)
-            ->get();
-            
-        if (!$subscription)
-        {
-            $subscription = new SMSSubscription();
-            $subscription->container_guid = $this->guid;
-            $subscription->notification_type = $notification_type;
-            $subscription->description = $description;
-            $subscription->phone_number = $phone_number;
-            $subscription->language = Language::get_current_code();
-                        
-            $max_row = Database::get_row("SELECT max(local_id) as max FROM sms_subscriptions where phone_number = ?", 
-                array($phone_number));
-                
-            $max_id = $max_row ? ((int)$max_row->max) : 0;
-            
-            $subscription->local_id = $max_id + 1; // could have concurrency issues but not the end of the world
-            
-            $subscription->save();
-        }
-        
-        return $subscription;
-    }
-        
+                    
     // Loggable interface
     public function get_id() { return $this->guid; }
     public function get_class_name() { return get_class($this); }

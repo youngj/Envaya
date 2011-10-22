@@ -55,5 +55,6 @@ function get_or_create_org($username)
     $org = get_or_create_user($username, 'Organization');
     $org->set_defaults();
     $org->init_default_widgets();
+    $org->init_admin_subscriptions();
     return $org;
 }

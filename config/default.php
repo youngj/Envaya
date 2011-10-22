@@ -114,5 +114,14 @@ return array(
     
     'max_disk_pct' => 85,
     'status_email' => null,
+    
+    // crontab intervals (minutes)
     'notify_status_interval' => 1440,
+    'notify_stuck_mail_interval' => 120,
+    'check_system_interval' => 720,
+    'backup_interval' => 720,
+    'backup_s3_interval' => 720,
+    'send_waiting_sms_interval' => 60,
+    'check_external_feeds_interval' => 2,
+    'check_sms_app_interval' => 60,
 );

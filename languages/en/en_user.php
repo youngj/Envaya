@@ -38,9 +38,4 @@ return array(
     'user:notification:success' => "Your notification settings have been changed.",
     'user:notification:desc2' => "Settings for %s:",
     'user:notification:invalid' => "Unable to access email notification settings. If you copied a link from your email, please ensure that the address (URL) is exactly the same as it was in the email you received.",        
-
-    'user:subscribe_reminders' => 'Send important announcements from Envaya',
-    'user:subscribe_comments' => 'Send email when someone comments on my website',
-    'user:subscribe_network' => "Send email when added to another organization's Network page",
-    'user:subscribe_discussion' => "Send email when someone adds a message on my Discussion page",            
 );

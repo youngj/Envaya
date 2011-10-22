@@ -70,7 +70,7 @@ class Action_Discussion_AddMessage extends Action
         
         $message->post_feed_items();
         
-        $message->send_notifications();
+        $message->send_notifications(DiscussionMessage::Added);
         
         SessionMessages::add_html(__('discussions:message_added')
             . view('discussions/invite_link', array('topic' => $topic)));        

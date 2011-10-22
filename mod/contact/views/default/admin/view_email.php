@@ -6,8 +6,8 @@
 <div class='padded'>
 <?php echo view('input/securitytoken'); ?>
 <div style='padding-bottom:10px'>
-<strong>Filters:</strong> (<?php echo $email->query_filtered_users()->count(); ?>/<?php 
-echo EmailTemplate::query_contactable_users()->count(); ?></span> users in filter)
+<strong>Filters:</strong> (<?php echo $email->query_filtered_subscriptions()->count(); ?>/<?php 
+echo EmailTemplate::query_all_subscriptions()->count(); ?></span> recipients in filter)
 <?php
     foreach ($email->get_filters() as $filter)
     {

@@ -89,7 +89,7 @@ return array(
     
     'sms:length_set' => "Maximum length of SMS reply changed to %s",
     
-    'sms:notification_stop' => "To stop these notifications, txt \"STOP %s\"",
+    'sms:notification_stop' => "To stop these msgs, txt \"STOP %s\"",
     'sms:no_more_subscriptions' => "No more subscriptions.",
     'sms:no_subscriptions' => "You do not have any active subscriptions.",
     'sms:stop_subscription' => "Txt \"STOP [num]\" to cancel a subscription",
@@ -104,6 +104,6 @@ return array(
     'sms:subscribed' => "Subscribed to \"%s\".",
     'sms:no_subscribe_here' => "Can't subscribe to anything here.\nTxt \"S [user]\" to subscribe to a user.",
     'sms:news_not_found' => "News update \"%s\" not found.",
-    'sms:comment_notification' => "{name} added comment on \"{news_cmd}\".\nTxt \"{comment_cmd}\" or open {news_url}",
+    'sms:comment_notification' => "{name} added a comment on \"{news_cmd}\".\nTxt \"{comment_cmd}\" or open {news_url}",
     'sms:post_notification' => "{username} published news.\nTxt \"{cmd}\" or open {url}",
 );

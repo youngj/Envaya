@@ -151,7 +151,7 @@ class Widget_Network extends Widget
         
         $this->save();
         
-        $relationship->send_notification_email();
+        $relationship->send_notifications(OrgRelationship::Added);
         
         if ($relationship->invite_subject)
         {
@@ -269,7 +269,7 @@ class Widget_Network extends Widget
             $relationship->post_feed_items();
         }
 
-        $relationship->send_notification_email();        
+        $relationship->send_notifications(OrgRelationship::Added);        
         
         $this->save();
         

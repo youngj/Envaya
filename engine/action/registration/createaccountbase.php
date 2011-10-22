@@ -71,7 +71,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
         $org->set_defaults();
         
         $org->username = $username;
-        $org->email = $email;
+        $org->set_email($email);
         $org->name = $name;
         $org->set_password($password);        
         $org->language = Language::get_current_code();
@@ -91,6 +91,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
         $org->save();
 
         $org->init_default_widgets();
+        $org->init_admin_subscriptions();
         
         Session::login($org, false);
 

@@ -13,7 +13,7 @@
 		'comment:duplicate' => "Maoni hayakuchapishwa kwa sababu ni sawa na maoni mengine.",
 		'comment:deleted_marker' => 'maoni yamefutwa',
 		'comment:captcha_instructions' => "Chapa tarakimu zinazoonekana hapo chini kuchapisha maoni yako.",
-		'comment:notification_subject' => "%s imeongeza maoni katika tovuti yako",
+		'comment:notification_subject' => "{name} imeongeza maoni mapya",
         'comment:confirm_delete' => "Una uhakika kuwa unataka kufuta maoni haya?",
         'comment:anonymous' => "Afahamiki",        
 	);

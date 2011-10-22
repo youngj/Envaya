@@ -2,6 +2,8 @@
 
 class OrgRelationship extends Entity
 {
+    const Added = 'added';
+
     const Partnership = 1;  // subject organization is partner of container_guid entity
     
     const Member = 2;       // container_guid entity represents a network, subject organization is a member
@@ -183,33 +185,24 @@ class OrgRelationship extends Entity
             ?: "network:$msg_type", $lang);
     }
         
-    function send_notification_email()
+    function send_notifications($event_name)
     {
         if ($this->subject_notified)
         {
             return false;
         }
     
-        $org = $this->get_container_entity();
+        $subject_org = $this->get_subject_organization();
 
-        $subject_org = $this->get_subject_organization();        
-        $widget = $org->get_widget_by_class('Network');
-        $reverse = $this->get_reverse_relationship();
-        
-        if ($subject_org && $widget && $subject_org->email && $subject_org->is_notification_enabled(Notification::Network))
+        if ($subject_org)
         {            
-            $mail = OutgoingMail::create(
-                strtr($this->msg('notify_added_subject', $subject_org->language), array(
-                    '{name}' => $org->name, '{subject}' => $subject_org->name
-                )), 
-                view('emails/network_relationship_added', array(
-                    'relationship' => $this,
-                    'reverse' => $reverse,
-                    'widget' => $widget
-                ))
-            );
-            $mail->from_guid = $org->guid;
-            $mail->send_to_user($subject_org);   
+            $email_subscriptions = EmailSubscription_Network::query_for_entity($subject_org)
+                ->filter();                
+            foreach ($email_subscriptions as $subscription)
+            {
+                $subscription->send_notification($event_name, $this);
+            }
+
             $this->subject_notified = true;
             $this->save();
             return true;
@@ -244,7 +237,7 @@ class OrgRelationship extends Entity
             ))
         );
         $mail->from_guid = $org->guid;
-        $mail->addTo($email, $this->subject_name);        
+        $mail->add_to($email, $this->subject_name);        
         $mail->send();
         
         $invitedEmail->mark_invite_sent();

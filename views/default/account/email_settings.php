@@ -1,13 +1,12 @@
 <div class='section_content padded'>
 <?php
     $email = $vars['email'];
-    $users = $vars['users'];
-    $notification_type = $vars['notification_type'];
-    $code = User::get_email_fingerprint($email);
+    $subscriptions = $vars['subscriptions'];
+    $show_more = $vars['show_more'];
+    $code = EmailSubscription::get_email_fingerprint($email);
 
 ?>
 <form action='/pg/email_settings' method='POST'>
-
 
 <div class='input'>
 
@@ -27,33 +26,38 @@
 ?>
 
     <div class='help'>
-    <?php echo sprintf(__('user:notification:desc2'), "<em>".escape($email)."</em>"); ?>        
+    <?php echo sprintf(__('email:subscriptions'), "<em>".escape($email)."</em>"); ?>        
     </div>
 	<?php
-
-        if ($notification_type)
-        {
-            echo view('input/hidden', array(
-                'name' => 'notification_type',
-                'value' => $notification_type
-            ));        
-            
-            $options = Notification::get_options();
-            
-            echo view("input/checkboxes", array('name' => 'notifications', 
-                'value' => $users[0]->get_notifications(), 
-                'options' => array(
-                    $notification_type => $options[$notification_type]
-                )
-            ));                        
-        }
-        else
-        {
-            echo view("input/checkboxes", array('name' => 'notifications', 
-                'value' => $users[0]->get_notifications(), 
-                'options' => Notification::get_options()
+            echo view('pagination', array(
+                'offset' => $vars['offset'],
+                'count' => $vars['count'],
+                'limit' => $vars['limit'],
             ));
-        }
+    
+            $options = array();
+            $value = array();
+            
+            foreach ($subscriptions as $subscription)
+            {
+                $options[$subscription->guid] = $subscription->get_description();
+                
+                if ($subscription->is_enabled())
+                {
+                    $value[] = $subscription->guid;
+                }
+                
+                echo view("input/hidden", array(
+                    'name' => 'subscriptions[]', 
+                    'value' => $subscription->guid, 
+                ));
+            }
+            
+            echo view("input/checkboxes", array(
+                'name' => 'enabled_subscriptions', 
+                'value' => $value, 
+                'options' => $options
+            ));                        
 
      ?>
 
@@ -65,9 +69,10 @@ echo view('input/submit',array(
     'value' => __('savechanges')
 ));
 
-if ($notification_type)
+if ($show_more)
 {
-    echo "<div style='float:right;padding-top:22px;font-size:11px'><a href='{$users[0]->get_email_settings_url()}'>".__('user:notification:all')."</a></div>";
+    $url = EmailSubscription::get_all_settings_url($email);
+    echo "<div style='float:right;padding-top:22px;font-size:11px'><a href='{$url}'>".__('user:notification:all')."</a></div>";
 }
 
 ?>

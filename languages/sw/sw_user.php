@@ -33,9 +33,4 @@ return array(
     'user:notification:success' => "Mipangilio yako ya Kutarifu imebadilishwa.",
     'user:notification:desc2' => "Mipangilio kwa %s.",
     'user:notification:invalid' => "Haiwezikani kupata mipangilio yako ya kutaarifu. Kama ikiwa umenakili kiungo kutoka kwenye email yako, tafadhali hakikisha kwamba anwani (URL) hapa ni sawasawa na anwani kutoka email.",
-
-    'user:subscribe_reminders' => 'Nitumie taarifa muhimu kutoka Envaya',
-    'user:subscribe_comments' => 'Nitumie email ambapo mtu ameandika maoni katika tovuti yangu',
-    'user:subscribe_network' => "Nitumie email ambapo shirika jingine limeniongeza kwenye Mtandao",
-	'user:subscribe_discussion' => "Nitumie email ambapo mtu ameongeza ujumbe kwenye Majadiliano",       
 );

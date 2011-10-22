@@ -1,11 +1,10 @@
 <?php
 
-class SMSSubscription extends Entity
+abstract class SMSSubscription extends Subscription
 {    
     static $table_name = 'sms_subscriptions';
     static $table_attributes = array(    
-        'notification_type' => 0,
-        'description' => '',    // the corresponding SMS command, e.g. 'N jeanmedia'; displayed by 'SS'
+        'subtype_id' => '',
         'language' => '',
         'phone_number' => '',
         'local_id' => 0,        // each phone_number has its own local_id namespace
@@ -13,8 +12,89 @@ class SMSSubscription extends Entity
         'num_notifications' => 0,
     );
     
-    function notify($msg, $append_stop = true)
+    static function init_for_entity($entity, $phone_number, $defaults = null)
     {
+        if (!PhoneNumber::can_send_sms($phone_number))
+        {
+            return null;
+        }
+    
+        $cls = get_called_class();
+    
+        $subscription = static::query_for_entity($entity)
+            ->show_disabled(true)
+            ->where('phone_number = ?', $phone_number)
+            ->get();
+            
+        if (!$subscription)
+        {
+            $subscription = new $cls();
+            $subscription->container_guid = $entity->guid;
+            $subscription->phone_number = $phone_number;
+            $subscription->language = Language::get_current_code();
+            $subscription->owner_guid = Session::get_loggedin_userid();
+            
+            if ($defaults)
+            {
+                foreach ($defaults as $prop => $val)
+                {
+                    $subscription->$prop = $val;
+                }
+            }            
+            
+            $max_row = Database::get_row("SELECT max(local_id) as max FROM sms_subscriptions where phone_number = ?", 
+                array($phone_number));
+                
+            $max_id = $max_row ? ((int)$max_row->max) : 0;
+            
+            $subscription->local_id = $max_id + 1; // could have concurrency issues but not the end of the world            
+            $subscription->save();
+        }
+        
+        return $subscription;
+    }    
+    
+    function get_description()
+    {
+        // subclasses should override
+        return "unknown";
+    }
+    
+    static function merge(/* subscriptions */)
+    {
+        $res = array();
+        $phone_numbers = array();
+        
+        foreach (func_get_args() as $subscriptions)
+        {
+            foreach ($subscriptions as $subscription)
+            {
+                $phone_number = $subscription->phone_number;
+                
+                if (!isset($phone_numbers[$phone_number]))
+                {
+                    $phone_numbers[$phone_number] = true;
+                    $res[] = $subscription;
+                }
+            }
+        }
+        
+        return $res;
+    }    
+    
+    function send($args)
+    {
+        $message = '';
+        $notifier = null;
+        $append_stop = true;
+        
+        extract($args);    
+        
+        if (!$message)
+        {
+            throw new InvalidParameterException("missing message parameter");
+        }
+    
         $time = timestamp();
         
         // arbitrary notification rate limit: 1 notification in 20 seconds (for this notification)
@@ -26,6 +106,7 @@ class SMSSubscription extends Entity
         // arbitrary notification rate limit: 5 notifications in 5 minutes (total across all notifications)
         if (OutgoingSMS::query()
             ->where('message_type = ?', OutgoingSMS::Notification)
+            ->where('subscription_guid > 0')
             ->where('to_number = ?', $this->phone_number)
             ->where('time_created > ?', $time - 300)
             ->count() >= 5)
@@ -37,6 +118,7 @@ class SMSSubscription extends Entity
         if (OutgoingSMS::query()
             ->where('message_type = ?', OutgoingSMS::Notification)
             ->where('to_number = ?', $this->phone_number)
+            ->where('subscription_guid > 0')
             ->where('time_created > ?', $time - 86400)
             ->count() >= 24)
         {            
@@ -47,15 +129,22 @@ class SMSSubscription extends Entity
     
         if ($append_stop)
         {
-            $msg .= "\n".sprintf(__('sms:notification_stop', $this->language), $this->local_id);
+            $message .= "\n".sprintf(__('sms:notification_stop', $this->language), $this->local_id);
         }
-        
+                
         $state = $service->get_state($this->phone_number);        
         $state->set('default_stop', $this->guid);
         $state->save();
            
-        $sms = $service->create_outgoing_sms($this->phone_number, $msg);
+        $sms = $service->create_outgoing_sms($this->phone_number, $message);
         //$sms->message_type = OutgoingSMS::Transactional;
+        
+        if ($notifier)
+        {
+            $sms->notifier_guid = $notifier->guid;
+        }
+        
+        $sms->subscription_guid = $this->guid;        
         $sms->send();
         
         $this->last_notification_time = $time;

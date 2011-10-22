@@ -12,6 +12,8 @@
  */
 class Widget extends Entity
 {
+    const Added = 'added';
+
     // publish_status values
     const Draft = 0;
     const Published = 1;

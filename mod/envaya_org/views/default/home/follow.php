@@ -3,5 +3,5 @@
 <a title='Facebook' href='http://www.facebook.com/Envaya' target="_blank" style='background-position:-228px -124px;right:170px;' class='follow_icon'></a>
 <a title='Twitter' href='http://twitter.com/Envaya' target="_blank" style='background-position:-264px -124px;right:130px;' class='follow_icon'></a>
 <a title='Email Newsletter' href='http://eepurl.com/NEYV' target="_blank" style='background-position:-192px -124px;right:88px;' class='follow_icon'></a>
-<a style='display:block;position:absolute;right:0px;text-align:center' target="_blank" href='http://eepurl.com/NEYV'>Subscribe to<br />newsletter</a>
+<a style='display:block;position:absolute;right:0px;text-align:center;font-size:13px' target="_blank" href='http://eepurl.com/NEYV'>Subscribe to<br />newsletter</a>
 </div>   

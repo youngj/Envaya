@@ -47,7 +47,7 @@ class Widget_Post extends Widget_Generic
         
         if ($this->publish_status == Widget::Published && !$this->get_metadata('sent_notifications'))
         {
-            $this->send_notifications();
+            $this->send_notifications(Widget::Added);
             $this->set_metadata('sent_notifications', true);        
             $this->save();
         }
@@ -101,21 +101,12 @@ class Widget_Post extends Widget_Generic
         }
     }
     
-    function send_notifications($except = null)
+    function send_notifications($event_name)
     {               
-        $news = $this->get_container_entity();
-        $org = $this->get_root_container_entity();
-    
-        foreach ($news->query_sms_subscriptions()->filter() as $subscription)
+        $news = $this->get_container_entity();        
+        foreach (SMSSubscription_News::query_for_entity($news)->filter() as $subscription)
         {                
-            if ($subscription->phone_number != $except)
-            {        
-                $subscription->notify(strtr(__('sms:post_notification', $subscription->language), array(
-                    '{username}' => $org->username,
-                    '{cmd}' => "N {$org->username} {$this->get_local_id()}",
-                    '{url}' => $news->get_url(),
-                )));
-            }
-        }    
+            $subscription->send_notification($event_name, $this);
+        }
     }
 }

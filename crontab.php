@@ -6,27 +6,27 @@ require_once "scripts/cmdline.php";
 
 return array(
     array(
-        'interval' => 720, // minutes
+        'interval' => Config::get('backup_interval'), // minutes
         'cmd' => "php scripts/backup.php"
     ),
     array(
-        'interval' => 120,
+        'interval' => Config::get('notify_stuck_mail_interval'),
         'cmd' => "php scripts/notify_stuck_mail.php"
     ),   
     array(
-        'interval' => 720,
+        'interval' => Config::get('backup_s3_interval'),
         'cmd' => "php scripts/backup_s3.php"
     ),
     array(
-        'interval' => 60,
+        'interval' => Config::get('send_waiting_sms_interval'),
         'cmd' => "php scripts/send_waiting_sms.php"
     ),
     array(
-        'interval' => 30,
+        'interval' => Config::get('check_sms_app_interval'),
         'cmd' => "php scripts/check_sms_app.php"
     ),    
     array(
-        'interval' => 720,
+        'interval' => Config::get('check_system_interval'),
         'cmd' => "php scripts/check_system.php"
     ),
     array(
@@ -34,7 +34,7 @@ return array(
         'cmd' => "php scripts/notify_status.php"
     ),    
     array(
-        'interval' => 2,
+        'interval' => Config::get('check_external_feeds_interval'),
         'cmd' => "php scripts/check_external_feeds.php"
     )
 );

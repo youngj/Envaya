@@ -25,7 +25,7 @@ class Widget_Contact extends Widget
 
         EmailAddress::validate($email);
 
-        $org->email = $email;
+        $org->set_email($email);
         $org->set_metadata('public_email', sizeof(get_input_array('public_email')) ? 'yes' : 'no');
 
         $org->set_phone_number(get_input('phone_number'));

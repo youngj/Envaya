@@ -14,7 +14,7 @@ return array(
     'comment:duplicate' => 'Igitekerezo cyawe nticyoherejwe kuko hari ikindi bisa',
     'comment:deleted_marker' => 'Siba igitekerezo',
     'comment:captcha_instructions' => 'Andika izo nyuguti ziri hepfo kugirango wohereze igitekerezo',
-    'comment:notification_subject' => '%s hari icyo bavuze ku rubuga rwawe',
+    'comment:notification_subject' => '{name} hari icyo bavuze ku rubuga rwawe', // todo update
     'comment:confirm_delete' => 'Ese koko urifuza gusiba iki gitekerezo?',
 );
 

@@ -1,10 +1,10 @@
 <?php
     $email = $vars['email'];
     
-    $totalQueued = $email->query_outgoing_mail()->where('status = ?', OutgoingMail::Queued)->count(); 
-    $totalSent = $email->query_outgoing_mail()->where('status = ?', OutgoingMail::Sent)->count(); 
-    $totalBounced = $email->query_outgoing_mail()->where('status = ?', OutgoingMail::Bounced)->count(); 
-    $totalFailed = $email->query_outgoing_mail()->where('status = ?', OutgoingMail::Failed)->count(); 
+    $totalQueued = $email->query_outgoing_messages()->where('status = ?', OutgoingMail::Queued)->count(); 
+    $totalSent = $email->query_outgoing_messages()->where('status = ?', OutgoingMail::Sent)->count(); 
+    $totalBounced = $email->query_outgoing_messages()->where('status = ?', OutgoingMail::Bounced)->count(); 
+    $totalFailed = $email->query_outgoing_messages()->where('status = ?', OutgoingMail::Failed)->count(); 
   
     if ($totalQueued || $totalSent || $totalFailed) {
 ?>
@@ -35,7 +35,7 @@
     
     if ($totalSent > 0)
     {
-        $lastTimeSent = $email->query_outgoing_mail()->where('status = ?', OutgoingMail::Sent)
+        $lastTimeSent = $email->query_outgoing_messages()->where('status = ?', OutgoingMail::Sent)
             ->order_by('time_sent desc')
             ->columns('time_sent')
             ->get()

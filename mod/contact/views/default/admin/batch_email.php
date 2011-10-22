@@ -1,10 +1,10 @@
 <div class='padded'>
 <?php 
-    $users = $vars['users'];
+    $subscriptions = $vars['subscriptions'];
     $email = $vars['email'];
     
-    $user = $users[0];
-    if ($user) {
+    $subscription = $subscriptions[0];
+    if ($subscription) {
 ?>
 
 <form action='<?php echo $email->get_url() ?>/send' method='POST'>
@@ -13,7 +13,7 @@
 function countRecipients()
 {
     var form = document.forms[0];
-    var checkboxes = form["users[]"];
+    var checkboxes = form["subscriptions[]"];
     var count = 0;
     for (var i = 0; i < checkboxes.length; i++)
     {
@@ -27,18 +27,18 @@ function countRecipients()
 </script>
 
 <?php echo view('input/securitytoken'); ?>
-To: (<span id='recipient_count'><?php echo sizeof($users); ?></span> recipients)
-<div style='<?php echo (sizeof($users) > 5) ? "height:150px;overflow:auto;" : ''; ?>font-size:10px'>
+To: (<span id='recipient_count'><?php echo sizeof($subscriptions); ?></span> recipients)
+<div style='<?php echo (sizeof($subscriptions) > 5) ? "height:150px;overflow:auto;" : ''; ?>font-size:10px'>
 <?php
     
     $options = array();
-    foreach ($users as $user)
+    foreach ($subscriptions as $subscription)
     {
-        $options[$user->guid] = $user->get_name_for_email();
+        $options[$subscription->guid] = "\"{$subscription->get_name()}\" <$subscription->email>";
     }
 
  echo view('input/checkboxes', array(
-    'name' => 'users',
+    'name' => 'subscriptions',
     'options' => $options,
     'value' => array_keys($options),
     'attrs' => array('onchange' => 'countRecipients()'),
@@ -48,7 +48,7 @@ To: (<span id='recipient_count'><?php echo sizeof($users); ?></span> recipients)
 <br />
 
 <?php 
-    echo view('admin/preview_email', array('email' => $email, 'user' => $user));
+    echo view('admin/preview_email', array('email' => $email, 'subscription' => $subscription));
     
     echo view('input/hidden',array(
         'name' => 'from',

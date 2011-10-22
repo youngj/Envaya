@@ -14,6 +14,6 @@
 		'comment:duplicate' => "Comment was not published because it is the same as an existing comment.",
 		'comment:deleted_marker' => 'comment deleted',
 		'comment:captcha_instructions' => "Type the letters that appear below to publish your comment.",
-		'comment:notification_subject' => "%s added a comment on your website",
+		'comment:notification_subject' => "{name} added a new comment",
         'comment:confirm_delete' => "Are you sure you want to delete this comment?",
 	);
