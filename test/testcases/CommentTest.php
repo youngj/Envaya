@@ -55,8 +55,7 @@ class CommentTest extends WebDriverTest
         $this->retry('ensureGoodMessage', array('comment has been published'));
         
         $this->assertContains("comment number two", $this->getText("//div[@class='comment'][2]"));                
-        $this->assertContains("random dude", $this->getText("//div[@class='comment'][2]//div[@class='comment_name']"));
-                
+        $this->assertContains("random dude", $this->getText("//div[@class='comment'][2]//div[@class='comment_name']"));                
         $this->assertContains("comment number one", $this->getText("//div[@class='comment']"));                        
         // delete your own comment
         $this->clickAndWait("//span[@class='admin_links']//a");
@@ -65,6 +64,25 @@ class CommentTest extends WebDriverTest
         $this->retry('ensureGoodMessage', array('Comment deleted'));        
         
         $this->assertContains("comment number one", $this->getText("//div[@class='comment']"));                        
-        $this->assertContains("comment deleted", $this->getText("//div[@class='comment'][2]"));                        
+        $this->assertContains("comment deleted", $this->getText("//div[@class='comment'][2]"));
+        
+        // test email notifications
+        $email = $this->getLastEmail("random dude added a new comment");
+        $this->assertContains($url, $email);
+        $this->assertContains('comment number two', $email);
+        
+        $replyTo = $this->getReplyTo($email);
+        
+        // test replying to email notifications
+        $this->receiveMail(array(
+            'to' => $replyTo,
+            'from' => 'Mr. Person <foo@nowhere.com>',
+            'subject' => "Re: random dude added a new comment",
+            'body' => "comment number three"
+        ));
+        
+        $this->open($url);
+        $this->assertContains("comment number three", $this->getText("//div[@class='comment'][3]"));                
+        $this->assertContains("Mr. Person", $this->getText("//div[@class='comment'][3]//div[@class='comment_name']"));
     }
 }

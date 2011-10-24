@@ -87,6 +87,40 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         run_task_sync($cmd, $root, $env);
     }
     
+    function getReplyTo($email)
+    {        
+        if (!preg_match('#Reply-To:\s+(?P<reply_to>[\.\@\+\-\w]+)#', $email, $match))
+        {
+            throw new Exception('email has no Reply-To header');
+        }    
+        return $match['reply_to'];
+    }
+    
+    function receiveMail($args)
+    {
+        $subject = '';
+        $body = '';
+        $to = '';
+        $from = '';
+        extract($args);
+        
+        global $TEST_CONFIG;                
+        
+        $ch = curl_init();
+        
+        curl_setopt($ch, CURLOPT_URL, "http://{$TEST_CONFIG['domain']}/pg/receive_mail?secret={$TEST_CONFIG['sendgrid_secret']}");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, true);    
+        curl_setopt($ch, CURLOPT_POSTFIELDS, array(
+            'subject' => $subject,
+            'to' => $to,
+            'from' => $from,
+            'text' => $body
+        ));
+
+        $json = curl_exec($ch);        
+    }
+    
     function ensureGoodMessage()
     {
         $this->mouseOver("//div[@class='good_messages']");

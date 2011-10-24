@@ -13,10 +13,16 @@ $dataroot = Config::get('dataroot').'/test_data';
 return array(        
     'plupload_runtimes' => 'html4',
     
+    'sendgrid_secret' => 'flksflk312',
+    
     'notify_status_interval' => 0,
+    'notify_stuck_mail_interval' => 0,
     'check_system_interval' => 0,
     'backup_interval' => 0,
     'backup_s3_interval' => 0,    
+    'check_external_feeds_interval' => 0,
+    'check_sms_app_interval' => 0,
+    'send_waiting_sms_interval' => 0,
     
     'captcha_enabled' => false,
     'ssl_enabled' => false,    

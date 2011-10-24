@@ -8,8 +8,9 @@ class SMS_Controller extends Router
 
     function __construct($request)
     {
+        parent::__construct();
         $this->request = $request;
-        $this->state = $request->get_state();
+        $this->state = $request->get_state();        
     }
     
     public function execute_request()

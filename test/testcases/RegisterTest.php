@@ -53,7 +53,40 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
         
         $this->setUrl($url); // password code can only be used once        
+        $this->ensureBadMessage();        
+
+        $this->clickAndWait("//a[contains(@href, 'home')]");
+        
+        // test reset password by sms
+        
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->clickAndWait("//a[contains(@href,'pg/login')]");
+        $this->clickAndWait("//a[contains(@href,'pg/forgot_password')]");
+        
+        $this->type("//input[@name='username']", "16505550001");
+        $this->submitForm();                
+        
+        $this->type("//input[@name='c']", "XXX");
+        $this->submitForm();
         $this->ensureBadMessage();
+        
+        $sms = $this->getLastSMS("new password");
+        
+        if (!preg_match('#Message\:\s+(?P<code>\w+)#', $sms, $match))
+        {
+            throw new Exception("expected message to start with password reset code");
+        }
+        
+        $code = $match['code'];
+        
+        $this->type("//input[@name='c']", $code);
+        $this->submitForm();
+        
+        $this->type("//input[@name='password']", "abcdefgh");
+        $this->type("//input[@name='password2']", "abcdefgh");
+        $this->submitForm();
+        $this->ensureGoodMessage();
+        
         $this->clickAndWait("//a[contains(@href, 'home')]");
     }
 
@@ -90,6 +123,9 @@ class RegisterTest extends SeleniumTest
         $this->email = "nobody+".time()."@nowhere.com";
         
         $this->type("//input[@name='email']", $this->email);
+        
+        $this->type("//input[@name='phone']", "16505550001");
+        
         $this->submitForm();
         sleep(2);
         $this->ensureBadMessage();

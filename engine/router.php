@@ -4,6 +4,7 @@ abstract class Router
 {
     static $routes = array();
     protected $params = array();    
+    protected $parent_controller = null;
     
     /**
      * Creates a new controller instance. 

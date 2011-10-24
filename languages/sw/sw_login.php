@@ -14,6 +14,8 @@ return array(
 
     'login:resetreq:title' => 'Pata neno jipya la siri',
     'login:resetreq:text' => 'Kupata neno jipya la siri, ingiza jina lako la mtumiaji au anwani ya email chini. Tutakutumia anwani ya ukurasa wa kuthibitisha kwa email.',
+    
+    'login:resetreq:help' => "Ikiwa hujui jina lako la mtumiaji la Envaya, ingiza anwani ya email au namba ya simu kwa akaunti yako ya Envaya.",
     'login:resetreq:submit' => "Peleka ombi",    
     'login:resetreq:success' => 'Umeomba neno jipya la siri. Soma email yako kuona ujumbe toka Envaya, na bonyeza kiungo ndani.',
     'login:resetreq:no_email' => 'Akaunti hii haina anwani ya email, kwa hiyo haiwezekani kubadilisha neno la siri. Tafadhali tuma fomu ya chini na data yako, na msimamizi wa Envaya atajaribu kuwasiliana nawe kuthibitisha kwamba unaweza kufungua akaunti hii.',    

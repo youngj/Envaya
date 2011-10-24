@@ -23,6 +23,8 @@ return array(
     'user:password:reset_code_instructions' => "Enter the code from the message to reset your password.",
     'user:password:reset_code_incorrect' => "The code was incorrect.",
     
+    'user:password:reset_sms' => "Somebody has requested a new password for your Envaya account. If you requested this, enter the above code on the website to reset your password.",
+    
     'user:password:success' => "Your password has been changed.",
     'user:password:new' => "Choose a new password for your account",
     'user:password:choose_new' => "Reset Password",

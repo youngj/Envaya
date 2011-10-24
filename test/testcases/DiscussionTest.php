@@ -158,6 +158,58 @@ class DiscussionTest extends SeleniumTest
         $this->assertContains('Somebody', $email);
         $this->assertContains('My Second Discussion', $email);
         
+        $replyTo = $this->getReplyTo($email);
+        
+        // test replying to email notifications
+        $this->receiveMail(array(
+            'to' => $replyTo,
+            'from' => 'Email Person <foo@nowhere.com>',
+            'subject' => "Re: Somebody added a new discussion",
+            'body' => "Thanks for your input!
+
+On July 23, 1953, Envaya wrote:
+> blah blah blah
+> blah blah blah
+> blah blah blah"
+        ));
+        $this->open($url);
+        $this->mouseOver("//strong[contains(text(),'Email Person (via email)')]");
+        $this->mouseOver("//div[@class='message_content' and contains(text(),'Thanks for your input!')]");
+        $this->mustNotExist("//div[@class='message_content' and contains(text(),'1953')]");
+        $this->mustNotExist("//div[@class='message_content' and contains(text(),'blah')]");        
+        
+        // test signed tags
+        
+        $badReplyTo = str_replace('@','x@', $replyTo);
+        $this->receiveMail(array(
+            'to' => $badReplyTo,
+            'from' => 'Evil Person <foo@nowhere.com>',
+            'subject' => "Re: Somebody added a new discussion",
+            'body' => "Evil message"
+        ));
+        $this->open($url);
+        $this->mustNotExist("//strong[contains(text(),'Evil Person')]");
+        $this->mustNotExist("//div[@class='message_content' and contains(text(),'Evil message')]");        
+        
+        $this->receiveMail(array(
+            'to' => $replyTo,
+            'from' => 'foo@nowhere.com',
+            'subject' => "Re: Somebody added a new discussion",
+            'body' => "Here is another message
+With some more stuff
+
+---------
+Subject: alkdjalksdjalsjd
+sdsdf
+sdsdf"
+        ));                
+        
+        $this->open($url);
+        $this->mouseOver("//div[@class='message_content' and contains(text(),'Here is another message')]");        
+        $this->mustNotExist("//strong[contains(text(),'foo@nowhere.com')]");
+        $this->mustNotExist("//div[@class='message_content' and contains(text(),'sdsdf')]");
+        $this->mustNotExist("//div[@class='message_content' and contains(text(),'---')]");                
+        
         // test adding message as non logged in user
         $this->clickAndWait("//a[contains(@href,'add_message')]");
         $this->typeInFrame("//iframe", "message 4");
@@ -194,23 +246,32 @@ class DiscussionTest extends SeleniumTest
         $this->ensureGoodMessage();
         $this->mustNotExist("//p[contains(text(),'message 3')]");
              
-        // test deleting last message deletes topic
         $this->click("//a[contains(@href,'delete_message')]");
         $this->getConfirmation();
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();
         $this->mustNotExist("//p[contains(text(),'message 4')]");
         
+        $this->mustNotExist("//a[contains(@href,'delete_message')]");
+        $this->mouseOver("//a[contains(@href,'reply_to')]");
+        
+        // site admin can delete all messages
+        $this->click("//a[contains(@href,'login=1')]");
+        $this->login("testorg","testtest");        
+        for ($i = 0; $i < 2; $i++)
+        {
+            $this->click("//a[contains(@href,'delete_message')]");
+            $this->getConfirmation();
+            $this->waitForPageToLoad(10000);
+            $this->ensureGoodMessage();        
+        }
+        $this->mustNotExist("//a[contains(@href,'delete_message')]");
+        
         $this->mustNotExist("//a[@class='discussionTopic']//span[contains(text(),'My First Discussion')]");
         $this->mustNotExist("//a[@class='discussionTopic']//span[contains(text(),'My Second Discussion')]");
         $this->clickAndWait("//a[@class='discussionTopic']//span[contains(text(),'My Zeroth Discussion')]");
-        
-        // test can't delete other people's messages
-        $this->mustNotExist("//a[contains(@href,'delete_message')]");
-        
-        // test adding topic, message as other organization        
-        // test deleting message
-        
+                
+        // test adding topic, message as other organization                
     }
     
     function deleteDiscussions()

@@ -52,8 +52,6 @@ class IncomingMail
     
     function process()
     {
-    
-    
         $tag = EmailAddress::get_signed_tag($this->to);
     
         if ($tag)

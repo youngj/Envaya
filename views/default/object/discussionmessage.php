@@ -13,7 +13,9 @@
         }
         echo "</strong>";    
         echo "<div class='blog_date'>". $message->get_date_text().    "</div>";    
+        echo "<div class='message_content'>";
         echo $message->render_content();
+        echo "</div>";
     }
     else
     {

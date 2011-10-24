@@ -14,6 +14,145 @@ class SMSTest extends WebDriverTest
         list($res) = $this->sendSMS($p1, $news, "HELP");        
         $this->assertContains("P=publish news", $res);
         
+        list($res) = $this->sendSMS($p1, $news, "F test");
+        $this->assertContains("[1/2]", $res);
+        $this->assertContains("testposter0", $res);
+        $this->assertContains('Txt "I [user]" for details', $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "2");
+        $this->assertContains("[2/2]", $res);
+        $this->assertContains("testposter21", $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "more");
+        $this->assertContains("No more text available", $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "next");
+        $this->assertContains("No more organizations found", $res);        
+        
+        list($res) = $this->sendSMS($p1, $news, "F testposter2");
+        $this->assertContains("testposter2", $res);
+        $this->assertContains("testposter20", $res);
+        $this->assertContains("testposter21", $res);
+        $this->assertNotContains("testposter1", $res);
+        $this->assertNotContains("testorg", $res);        
+        
+        list($res) = $this->sendSMS($p1, $news, "F asdf");
+        $this->assertContains("No organizations found with name 'asdf'", $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "fn rwanda");
+        $this->assertContains("No organizations found near 'rwanda'", $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "fn tanzania");
+        $this->assertContains("testposter0", $res);
+        $this->assertContains("testorg", $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "i testorg");
+        $this->assertContains("Test Org", $res);
+        $this->assertContains("TZ", $res);
+        $this->assertContains("http://{$TEST_CONFIG['domain']}/testorg", $res);
+        $this->assertContains("@", $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "s");
+        $this->assertContains('Subscribed to "N testorg"', $res);
+        $this->assertContains('Txt "SS" to show all subscriptions', $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "s testposter1");
+        $this->assertContains('Subscribed to "N testposter1"', $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "ss");
+        $this->assertContains('1:N testorg', $res);
+        $this->assertContains('2:N testposter1', $res);
+        $this->assertContains('"STOP [num]"', $res);
+                
+        list($res) = $this->sendSMS($p1, $news, "stop 2");
+        $this->assertContains('Subscription to "N testposter1" stopped', $res);
+
+        list($res) = $this->sendSMS($p1, $news, "sr 2");
+        $this->assertContains('Subscription to "N testposter1" started', $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "stop 1");
+        $this->assertContains('Subscription to "N testorg" stopped', $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "ss");
+        $this->assertNotContains('1:N testorg', $res);
+        $this->assertContains('2:N testposter1', $res);                
+        
+        $this->open("/pg/login");
+        $this->login("testposter1","testtest");
+        $this->typeInFrame("//iframe", 
+            "test post 1000 test post 1000 test post 1000 test post 1000 test post 1000 "
+            ."test post 1000 test post 1000 test post 1000 test post 1000 test post 1000 "
+            ."test post 1000 test post 1000 test post 1000 test post 1000 test post 1000 "
+            ."test post 1000 test post 1000 test post 1000 test post 1000 test post 1000 "
+            ."test post 1000 test post 1000 test post 1000 test post 1000 test post 1000 end");
+        $this->submitForm();
+        $this->retry('ensureGoodMessage', array('saved successfully'));
+        
+        $this->open("/testposter1/dashboard");
+        $this->typeInFrame("//iframe", "test post 1001");
+        $this->submitForm();
+        $this->retry('ensureGoodMessage', array('saved successfully'));        
+        
+        $sms = $this->getLastSMS("To: $p1");
+        $this->assertContains('testposter1 published news', $sms);                
+        $this->assertContains('"N testposter1', $sms);
+        $this->assertContains("http://{$TEST_CONFIG['domain']}/testposter1", $sms);
+        
+        list($res) = $this->sendSMS($p1, $news, "N testposter1");
+        $this->assertContains('test post 1001', $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "next");
+        $this->assertContains('test post 1000', $res);
+        $this->assertContains('0cmt', $res);
+        $this->assertNotContains('end', $res);
+        $this->assertContains('MORE', $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "more");
+        $this->assertContains('test post 1000', $res);
+        $this->assertNotContains('0cmt', $res);
+        $this->assertContains('end', $res);
+        $this->assertNotContains('MORE', $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "name test phone");
+        $this->assertContains("Name changed to 'test phone'.", $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "loc selenium");
+        $this->assertContains("Location changed to 'selenium'.", $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "c this is a test comment!");
+        $this->assertContains("Your comment has been published", $res);
+
+        list($res) = $this->sendSMS($p1, $news, "g1");
+        $this->assertContains("test phone", $res);
+        $this->assertContains("selenium", $res);
+        $this->assertContains("this is a test comment!", $res);
+        
+        $email = $this->getLastEmail("test phone added a new comment");
+        $this->assertContains("+p1", $email);
+        $this->assertContains('this is a test comment!', $email);
+        
+        $url = $this->getLinkFromText($email);
+        $this->open($url);
+        $this->type("//textarea", "test comment from web");
+        $this->submitForm();
+        $this->retry('ensureGoodMessage', array('comment has been published'));                
+        
+        $sms = $this->getLastSMS('added a comment');
+        $this->assertContains("To: $p1", $sms);                
+        $this->assertContains('"N testposter1', $sms);
+        
+        list($res) = $this->sendSMS($p1, $news, "l sw");        
+        $this->assertContains("Lugha imebadilishwa.", $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "help");        
+        $this->assertContains("chapisha maoni", $res);
+        
+        list($res) = $this->sendSMS($p1, $news, "l en");        
+        $this->assertContains("Language changed.", $res);        
+        
+        list($res) = $this->sendSMS($p2, $news, "ss");
+        $this->assertContains('You do not have any active subscriptions', $res);
+        
         list($res) = $this->sendSMS($p1, $news, "p this is a test of the sms posting interface");        
         $this->assertContains("IN", $res);
         
@@ -64,10 +203,14 @@ class SMSTest extends WebDriverTest
         $this->assertContains("news update has been published", $res);
         
         $url = $this->getLinkFromText($res);
-        $this->assertContains("testorg", $url);
+        $this->assertContains("testorg", $url);                     
         
         $this->open($url);
         $this->waitForElement("//div[@class='blog_date']//a");
         $this->assertContains("yada yada yada", $this->getText("//div[contains(@class,'section_content')]"));
+        
+        list($res) = $this->sendSMS($p1, $news, "u");        
+        $this->assertContains("N testorg", $res);                
+        $this->assertContains("N testposter1", $res);         
     }       
 }

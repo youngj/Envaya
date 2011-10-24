@@ -12,8 +12,8 @@ return array(
     'login:if_not_registered' => "If you are a representative of a civil society organization in Tanzania that hasn't yet registered for Envaya, %s.",
     'login:register_link' => "Register a personal user account",
 
-    'login:resetreq:title' => 'Reset password',
-    'login:resetreq:text' => 'To reset your password, enter your username or email address below. We will send a link to change your password via email.',
+    'login:resetreq:title' => 'Reset password',   
+    'login:resetreq:help' => "If you don't know your Envaya username, enter the email address or phone number for your Envaya account.",
     'login:resetreq:submit' => "Submit request",    
     
     'login:resetreq:success' => 'Successfully requested a new password. Check your email for a message from Envaya and click on the link inside.',
@@ -25,7 +25,5 @@ return array(
         
     'login:resetreq:notfound' => 'The username or email address %s was not found on Envaya. Make sure you have typed it correctly and try again.',
 
-    'login:resetreq:sms_sent' => "A password reset code has been sent via SMS to the phone number on your Envaya account.",
-        
-    'login:username_or_email' => 'Username or Email',    
+    'login:resetreq:sms_sent' => "A password reset code has been sent via SMS to the phone number on your Envaya account.",        
 );
