@@ -194,14 +194,6 @@ class Controller_Pg extends Controller
         $this->set_content(file_get_contents($local_path));
     }
     
-    function action_hide_todo()
-    {
-        Session::set('hide_todo', 1);
-        
-        $this->set_content_type('text/javascript');
-        $this->set_content(json_encode("OK"));    
-    }
-    
     function action_change_lang()
     {
         $url = @$_GET['url'];
@@ -398,7 +390,7 @@ class Controller_Pg extends Controller
         
         $vars = array('query' => $q, 'filters' => $filters);
         
-        if (empty($q) && !$sector)
+        if (empty($q))
         {        
             $title = __('search:title');
             $content = view('org/search', $vars);

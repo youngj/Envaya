@@ -15,15 +15,12 @@ class EntityRegistry
     private static $subtype_to_class = array(
         'core.user' => 'User',
         'core.user.org' => 'Organization',
-        'core.user.org.relation' => 'OrgRelationship',                                    
         'core.comment' => 'Comment',        
         'core.subscription.sms' => "SMSSubscription",
         'core.subscription.sms.comments' => "SMSSubscription_Comments",
         'core.subscription.sms.news' => "SMSSubscription_News",
         'core.subscription.email' => "EmailSubscription",
         'core.subscription.email.comments' => "EmailSubscription_Comments",
-        'core.subscription.email.network' => "EmailSubscription_Network",
-        'core.subscription.email.discussion' => "EmailSubscription_Discussion",
         'core.file' => 'UploadedFile',
         'core.entity.translation' => 'EntityTranslation',
         'core.widget' => 'Widget',
@@ -46,6 +43,14 @@ class EntityRegistry
     static function register_subtype($subtype_id, $class_name)
     {
         static::$subtype_to_class[$subtype_id] = $class_name;
+    }
+    
+    static function register_subtypes($subtypes)
+    {
+        foreach ($subtypes as $subtype_id => $class_name)
+        {
+            static::$subtype_to_class[$subtype_id] = $class_name;
+        }
     }
     
     static function get_subtype_class($subtype_id)

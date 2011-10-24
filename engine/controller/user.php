@@ -176,30 +176,8 @@ abstract class Controller_User extends Controller
     
     protected function get_messages($vars)
     {
-        $org = $this->get_org();
-        $messages = '';
-
-        if (get_input("__topbar") != "0")
-        {
-            if (Session::isadminloggedin())
-            {
-                $messages .= view("admin/org_actions", array('org' => $org));
-            }
-
-            if ($org->can_view() && Session::isloggedin() && Session::get_loggedin_userid() != $org->guid)
-            {
-                $messages .= view("org/comm_box", array('org' => $org));
-            }
-
-            if (@$vars['show_next_steps'])
-            {
-                $messages .= view("org/todo_message", array('org' => $org));
-            }
-        }    
-        
-        $messages .= SessionMessages::view_all();
-        
-        return $messages;
+        $vars['org'] = $this->get_org();        
+        return view('messages/usersite', $vars);        
     }
                 
     public function prepare_page_draw_vars(&$vars)

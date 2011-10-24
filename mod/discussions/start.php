@@ -1,8 +1,11 @@
 <?php
         
 Engine::add_autoload_action('EntityRegistry', function() {
-    EntityRegistry::register_subtype('core.discussion.message', 'DiscussionMessage');
-    EntityRegistry::register_subtype('core.discussion.topic', 'DiscussionTopic');
+    EntityRegistry::register_subtypes(array(    
+        'core.discussion.message' => 'DiscussionMessage',
+        'core.discussion.topic' => 'DiscussionTopic',
+        'core.subscription.email.discussion' => "EmailSubscription_Discussion",
+    ));
 });
 
 Engine::add_autoload_action('Widget', function() {
@@ -12,6 +15,13 @@ Engine::add_autoload_action('Widget', function() {
         'subclass' => 'Discussions'
     ));
 });
+        
+Engine::add_autoload_action('Controller_UserSite', function() {
+    Controller_UserSite::add_route(array(
+        'regex' => '/topic\b', 
+        'controller' => 'Controller_Topic', 
+    ),0);
+});        
 
 Engine::add_autoload_action('Controller_Pg', function() {
     Controller_Pg::add_route(array(

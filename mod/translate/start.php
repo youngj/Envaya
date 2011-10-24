@@ -1,16 +1,17 @@
 <?php
 
 Engine::add_autoload_action('EntityRegistry', function() {
-    EntityRegistry::register_subtype('translate.lang', 'TranslationLanguage');
-    EntityRegistry::register_subtype('translate.key', 'TranslationKey');
-    EntityRegistry::register_subtype('translate.translation', 'Translation');
-    EntityRegistry::register_subtype('translate.vote', 'TranslationVote');
-    EntityRegistry::register_subtype('translate.translator.stats', 'TranslatorStats');
-    EntityRegistry::register_subtype('translate.comment', 'TranslationKeyComment');    
-
-    EntityRegistry::register_subtype('translate.entity.key', 'EntityTranslationKey');
-    EntityRegistry::register_subtype('translate.interface.group', 'InterfaceGroup');
-    EntityRegistry::register_subtype('translate.interface.key', 'InterfaceKey');
+    EntityRegistry::register_subtypes(array(
+        'translate.lang' => 'TranslationLanguage',
+        'translate.key' => 'TranslationKey',
+        'translate.translation' => 'Translation',
+        'translate.vote' => 'TranslationVote',
+        'translate.translator.stats' => 'TranslatorStats',
+        'translate.comment' => 'TranslationKeyComment',
+        'translate.entity.key' => 'EntityTranslationKey',
+        'translate.interface.group' => 'InterfaceGroup',
+        'translate.interface.key' => 'InterfaceKey',
+    ));
 });
 
 Engine::add_autoload_action('Controller_Default', function() {

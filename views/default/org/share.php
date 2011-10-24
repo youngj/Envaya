@@ -1,9 +1,7 @@
 <div class='section_content padded'>
 <?php
     $org = $vars['org'];
-    $url = $vars['url'];
-    
-    $network = $org->get_widget_by_class('Network');
+    $url = $vars['url'];    
 ?>
 <script type='text/javascript'>
 <?php 
@@ -39,66 +37,6 @@ function removeRecipient(email)
         input.value = value.substring(0,index) + value.substring(index + email.length + 1);
     }
 }
-
-function addUsers()
-{
-    var iframe = createElem('iframe', {
-        src: '/pg/browse_email'
-    });
-    
-    var width = 620, height = 320;
-    
-    iframe.style.width = width + 'px';
-    iframe.style.height = height + 'px';
-
-    var modalBox = createModalBox({
-        width:width,
-        height:height,
-        top: 150,
-        title: <?php echo json_encode(__('share:add_users')); ?>, 
-        content: iframe,
-        cancelFn: function() { 
-            removeElem(modalBox);
-        },
-        cancelText: <?php echo json_encode(__('close')); ?>,
-        hideOk: true
-    });            
-    document.body.appendChild(modalBox);  
-}
-
-function addPartners()
-{
-    fetchJson('/<?php echo $org->username; ?>/relationship_emails_js?t=' + (new Date().getTime()), function(res) {
-        var emails = res.emails;
-        var input = document.forms[0].emails;
-        var added = false;
-        
-        for (var i = 0; i < emails.length; i++)
-        {
-            var email = emails[i];
-            if (!isRecipient(email))
-            {
-                addRecipient(email);
-                added = true;
-            }
-        }
-        if (!added)
-        {
-            var modalBox = createModalBox({
-                title: <?php echo json_encode(__('share:no_partners')); ?>, 
-                content: createElem('div', {className:'padded'}, 
-                    <?php echo json_encode(__('share:no_partners_2')); ?>
-                ),
-                okFn: function() { 
-                    removeElem(modalBox);
-                    window.open(<?php echo json_encode($network->get_edit_url()); ?>);
-                },
-                focus: true
-            });            
-            document.body.appendChild(modalBox);              
-        }
-    });
-}
 </script>
 
 <form method='POST' action="<?php echo $org->get_url(); ?>/share">
@@ -116,11 +54,7 @@ function addPartners()
 
     if ($org->can_edit())
     {
-?>
-<a href='javascript:addUsers()' id='add_users' onclick='ignoreDirty()'><?php echo __('share:add_users'); ?></a>
-&middot;
-<a href='javascript:addPartners()' id='add_partners' onclick='ignoreDirty()'><?php echo __('share:add_partners'); ?></a>
-<?php 
+        echo view('org/share_shortcuts', array('org' => $org));
     } 
 ?>
 </div>

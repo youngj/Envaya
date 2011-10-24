@@ -41,7 +41,6 @@ class Widget extends Entity
         'projects'      => array('menu_order' => 30, 'page' => true, 'subclass' => 'Generic'),
         'history'       => array('menu_order' => 40, 'page' => true, 'subclass' => 'Generic'),
         'team'          => array('menu_order' => 50, 'page' => true, 'subclass' => 'Team'),
-        'network'       => array('menu_order' => 60, 'page' => true, 'subclass' => 'Network'),
         'contact'       => array('menu_order' => 90, 'page' => true, 'subclass' => 'Contact'),
         'mission'       => array('menu_order' => 100, 'home_section' => true, 'subclass' => 'Mission'),        
         'updates'       => array('menu_order' => 110, 'home_section' => true, 'subclass' => 'Updates'),        

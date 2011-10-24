@@ -142,6 +142,7 @@ class SMSTest extends WebDriverTest
         
         $url = $this->getLinkFromText($email);
         $this->open($url);
+        $this->waitForElement("//textarea");
         $this->type("//textarea", "test comment from web");
         $this->submitForm();
         $this->retry('ensureGoodMessage', array('comment has been published'));                

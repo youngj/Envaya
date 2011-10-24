@@ -6,5 +6,4 @@ return array(
     
     'email:subscriptions' => 'Sajili %s kwa:',
     'email:subscribe_comments' => 'Maoni katika tovuti ya {name}',
-    'email:subscribe_network' => "Taarifa ambapo {name} imeongezwa kwenye mtandao",
 );

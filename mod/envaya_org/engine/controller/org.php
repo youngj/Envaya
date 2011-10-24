@@ -19,6 +19,14 @@ class Controller_Org extends Controller
         $footer->add_item(__('donate'), "/envaya/page/contribute");    
     }    
 
+    function action_hide_todo()
+    {
+        Session::set('hide_todo', 1);
+        
+        $this->set_content_type('text/javascript');
+        $this->set_content(json_encode("OK"));    
+    }
+            
     function action_tci_donate_frame()
     {
         $this->set_content(view("page/tci_donate_frame"));

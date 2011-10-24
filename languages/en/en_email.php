@@ -6,5 +6,4 @@ return array(
     
     'email:subscriptions' => "Subscribe %s to:",
     'email:subscribe_comments' => "Comments on {name}'s website",
-    'email:subscribe_network' => "Notifications when {name} is added to a network",
 );

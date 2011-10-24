@@ -16,7 +16,7 @@ class Controller_UserSite extends Controller_User
             'action' => 'action_index',
         ),
         array(
-            'regex' => '/(?P<controller>post|page|topic|widget)\b',
+            'regex' => '/(?P<controller>post|page|widget)\b',
         ),        
         array(
             'regex' => '/(?P<action>\w+)\b',
@@ -46,10 +46,10 @@ class Controller_UserSite extends Controller_User
     }
     
     function action_widget_view()
-    {
+    {    
         $org = $this->get_org();
-        $widgetName = $this->param('widget_name');
-        
+        $widgetName = $this->param('widget_name');        
+               
         if ($org)
         {            
             $widget = $org->get_widget_by_name($widgetName);                        
@@ -123,7 +123,7 @@ class Controller_UserSite extends Controller_User
         if ($org)
         {            
             $vars['content'] = view("org/dashboard", array('org' => $org));
-            $vars['messages'] = view("org/todo_message", array('org' => $org));                 
+            $vars['messages'] = view('messages/dashboard', array('org' => $org));
         }
         else if ($user->admin)
         {
@@ -222,33 +222,6 @@ class Controller_UserSite extends Controller_User
         $action = new Action_Share($this);
         $action->execute();
     }
-    
-    function action_relationship_emails_js()
-    {    
-        $this->require_editor();
-        $this->require_org();
-    
-        $this->set_content_type('text/javascript');
-        
-        $org = $this->get_org();
-                
-        $relationships = $org->query_relationships()
-            ->where("subject_guid <> 0 OR subject_email <> ''")
-            ->filter();
-     
-        $emails = array();
-        
-        foreach ($relationships as $relationship)
-        {
-            $email = $relationship->get_subject_email();
-            if ($email)
-            {        
-                $emails[] = $email;
-            }
-        }
-     
-        $this->set_content(json_encode(array('emails' => $emails)));
-    }    
     
     function action_custom_design()
     {

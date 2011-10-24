@@ -1,0 +1,1 @@
+This module handles partnerships and other relationships between organizations.

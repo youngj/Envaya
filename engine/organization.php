@@ -37,16 +37,6 @@ class Organization extends User
         return $this->setup_state >= SetupState::CreatedHomePage;
     }
     
-    public function query_relationships()
-    {
-        return OrgRelationship::query()->where("container_guid=?", $this->guid)->order_by('subject_name asc');
-    }       
-        
-    public function query_subject_relationships()
-    {
-        return OrgRelationship::query()->where("subject_guid=?", $this->guid);
-    }
-
     public function query_external_sites()
     {
         return ExternalSite::query()->where('container_guid = ?', $this->guid)->order_by('`order`');

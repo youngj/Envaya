@@ -257,7 +257,7 @@ class Build
         
         foreach ($default_group as $key => $tr)
         {
-            list($group_name, $etc) = explode(':', $key, 2);
+            @list($group_name, $etc) = explode(':', $key, 2);
             if ($etc)
             {
                 $pseudo_groups[$group_name] = true;

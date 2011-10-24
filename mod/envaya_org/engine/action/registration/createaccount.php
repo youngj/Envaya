@@ -66,7 +66,7 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
         $invitedAddress = $invitedEmail->email;                            
         if ($invitedAddress == $org->email)
         {
-            $relationships = OrgRelationship::query()
+            $relationships = Relationship::query()
                 ->where('subject_guid = 0')
                 ->where('subject_email = ?', $invitedAddress)
                 ->filter();

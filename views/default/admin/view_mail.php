@@ -20,8 +20,10 @@
     echo $mail->has_error() ? (": ".escape($mail->error_message)) : "";
     echo "<td>";    
     echo "</tr>"; 
+    
+    $zmail = $mail->get_mail();
 
-    foreach ($mail->getHeaders() as $name => $value_arr)
+    foreach ($zmail->getHeaders() as $name => $value_arr)
     {
         echo "<tr>";
         echo "<th>".escape($name)."</th>";
@@ -37,7 +39,7 @@
         echo "</tr>";
     }    
     
-    $bodyText = $mail->getBodyText();  
+    $bodyText = $zmail->getBodyText();  
     if ($bodyText)
     {
         echo "<tr>";
@@ -46,7 +48,7 @@
         echo "</tr>"; 
     }       
 
-    $bodyHtml = $mail->getBodyHtml();
+    $bodyHtml = $zmail->getBodyHtml();
     if ($bodyHtml)
     {
         echo "<tr>";
