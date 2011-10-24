@@ -28,8 +28,6 @@ class EntityRegistry
         'core.entity.translation' => 'EntityTranslation',
         'core.widget' => 'Widget',
         'core.widget.comment' => 'Comment',
-        'core.discussion.message' => 'DiscussionMessage',
-        'core.discussion.topic' => 'DiscussionTopic',
         'core.feed' => 'ExternalFeed',
         'core.feed.rss' => 'ExternalFeed_RSS',
         'core.feed.facebook' => 'ExternalFeed_Facebook',

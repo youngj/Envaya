@@ -23,7 +23,7 @@ class Action_Discussion_NewTopic extends Action
         
         $uniqid = get_input('uniqid');
 
-        $duplicate = $org->query_discussion_topics()
+        $duplicate = DiscussionTopic::query_for_user($org)
             ->with_metadata('uniqid', $uniqid)
             ->get();
         if ($duplicate)

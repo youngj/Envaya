@@ -12,6 +12,23 @@ abstract class SMSSubscription extends Subscription
         'num_notifications' => 0,
     );
     
+    // subscriptions that each user's primary phone number is automatically subscribed to for their own account
+    static $self_subscription_classes = array(
+        'SMSSubscription_Comments'
+    );
+    
+    static function init_self_subscription($user)
+    {
+        $primary_phone = $user->get_primary_phone_number();        
+        if ($primary_phone)
+        {
+            static::init_for_entity($user, $primary_phone, array(
+                'owner_guid' => $user->guid, 
+                'language' => $user->language
+            ));
+        }
+    }
+    
     function get_key()
     {
         return $this->phone_number;

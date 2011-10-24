@@ -30,5 +30,6 @@ return array(
     'discussions:reply' => "Jibu",
     'discussions:other_link' => "Majadiliano mengine kwenye Envaya",
     'discussions:latest' => "Majadiliano Mapya",
-    
+
+    'discussions:subscription' => "Ujumbe wa majadiliano katika tovuti ya {name}",               
 );

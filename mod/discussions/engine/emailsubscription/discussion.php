@@ -4,6 +4,44 @@ class EmailSubscription_Discussion extends EmailSubscription
 {
     static $query_subtype_ids = array('core.subscription.email.discussion');
 
+    static function handle_mail_reply($mail, $match)
+    {
+        $guid = $match['guid'];
+        
+        $message = DiscussionMessage::get_by_guid($guid, true);
+        if (!$message)
+        {
+            error_log("invalid message guid $guid");
+            return false;
+        }
+        
+        $topic = $message->get_container_entity();
+        if (!$topic)
+        {
+            error_log("invalid container for message guid $guid");
+            return false;
+        }
+        
+        $parsed_address = EmailAddress::parse_address($mail->from);
+        
+        $reply = new DiscussionMessage();
+        $reply->container_guid = $topic->guid;    
+        $reply->from_name = @$parsed_address['name'];
+        $reply->subject = $mail->subject;
+        $reply->from_location = "via email";
+        $reply->from_email = @$parsed_address['address'];
+        $reply->set_content(nl2br(IncomingMail::strip_quoted_text($mail->text)));
+        $reply->time_posted = timestamp();
+        $reply->save();
+
+        $topic->refresh_attributes();
+		$topic->save();
+        
+        error_log("added message {$reply->guid}");
+
+        return true;
+    }
+    
     function send_notification($event_name, $message)
     {
         $org = $message->get_root_container_entity();
@@ -44,6 +82,6 @@ class EmailSubscription_Discussion extends EmailSubscription
     {
         $user = $this->get_root_container_entity();    
         $tr = array('{name}' => $user->name);
-        return strtr(__('email:subscribe_discussion'), $tr);
+        return strtr(__('discussions:subscription'), $tr);
     }
 }

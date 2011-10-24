@@ -63,7 +63,7 @@ class NotFoundRedirect extends Model
         return "#{$this->pattern}#i";
     }
     
-    static function query_by_user($user)
+    static function query_for_user($user)
     {        
         $query = static::query()->order_by('`order`');
     
@@ -80,7 +80,7 @@ class NotFoundRedirect extends Model
     
     static function get_redirect_url($uri, $user = null)
     {        
-        $query = static::query_by_user($user);
+        $query = static::query_for_user($user);
 
         foreach ($query->filter() as $redirect)
         {

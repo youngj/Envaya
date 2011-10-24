@@ -14,6 +14,12 @@ class DiscussionTopic extends Entity
         'snippet' => '',
     );    
     
+    static function query_for_user($user)
+    {
+        return DiscussionTopic::query()->where('container_guid = ?', $user->guid)
+            ->order_by('last_time_posted desc, guid desc');
+    }
+    
     function new_message()
     {
         $message = new DiscussionMessage();

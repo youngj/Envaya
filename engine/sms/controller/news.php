@@ -435,7 +435,7 @@ class SMS_Controller_News extends SMS_Controller
             echo __('sms:user_subscribe')."\n";
             
             /*
-            if ($user->query_discussion_topics()->exists())
+            if (DiscussionTopic::query_for_user($user)->exists())
             {
                 echo __('sms:user_discussions')."\n";
             }      
@@ -670,6 +670,7 @@ class SMS_Controller_News extends SMS_Controller
         }
     } 
         
+    /*
     function action_discussions($page = 1)
     {
         $user = $this->lookup_user($this->param('username') ?: $this->get_state('username'));         
@@ -687,7 +688,8 @@ class SMS_Controller_News extends SMS_Controller
         {
             $this->reply(__('sms:discussions_help').' '.__('sms:find_help'));
         }
-    }            
+    }  
+    */    
     
     function add_comment($message)
     {    

@@ -85,7 +85,7 @@ abstract class Subscription extends Entity
         }
         
         return $res;
-    }
+    }   
     
     abstract function get_key();
     

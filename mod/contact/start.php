@@ -22,3 +22,11 @@ Config::load_module_defaults('contact');
 Engine::add_autoload_action('Language', function() {
     Language::add_fallback_group('contact', 'contact_admin');
 });
+
+Engine::add_autoload_action('EmailSubscription', function() {
+    EmailSubscription::$self_subscription_classes[] = 'EmailSubscription_Contact';
+});
+
+Engine::add_autoload_action('SMSSubscription', function() {
+    SMSSubscription::$self_subscription_classes[] = 'SMSSubscription_Contact';
+});

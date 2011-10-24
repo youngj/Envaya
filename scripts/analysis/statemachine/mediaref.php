@@ -18,7 +18,7 @@ class StateMachine_MediaRef extends StateMachine
                 || $type == T_ENCAPSED_AND_WHITESPACE)
                 {
                     if (strpos($token, '_media') !== false
-                        && preg_match_all('#_media/[\w\-/]+\.\w+#', $token, $matches, PREG_OFFSET_CAPTURE))
+                        && preg_match_all('#_media/[\w\-/]+\.[\w\.]+#', $token, $matches, PREG_OFFSET_CAPTURE))
                     {
                         foreach ($matches[0] as $match_offset)
                         {

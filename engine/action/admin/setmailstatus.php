@@ -22,7 +22,7 @@ class Action_Admin_SetMailStatus extends Action
         $mail->status = $status;        
         $mail->save();  
         
-        SessionMessages::add(__('email:status_changed'));
+        SessionMessages::add('Email status changed');
         $this->redirect();
     }
 }    

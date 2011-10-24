@@ -690,36 +690,25 @@ class User extends Entity
     
     function init_default_sms_subscriptions()    
     {
-        $primary_phone = $this->get_primary_phone_number();        
-        if ($primary_phone)
+        foreach (SMSSubscription::$self_subscription_classes as $cls)
         {
-            $defaults = array('owner_guid' => $this->guid, 'language' => $this->language);
-            
-            SMSSubscription_Contact::init_for_entity($this, $primary_phone, $defaults);
-            SMSSubscription_Comments::init_for_entity($this, $primary_phone, $defaults);
-        }
+            $cls::init_self_subscription($this);
+        }        
     }
     
     function init_admin_subscriptions()
     {        
-        $email = Config::get('admin_email');
-        $defaults = array('owner_guid' => 0, 'language' => Config::get('language'));
-        
-        EmailSubscription_Comments::init_for_entity($this, $email, $defaults);
-        EmailSubscription_Discussion::init_for_entity($this, $email, $defaults);    
+        foreach (EmailSubscription::$admin_subscription_classes as $cls)
+        {
+            $cls::init_admin_subscription($this);
+        }        
     }
     
     function init_default_email_subscriptions()
     {
-        $email = $this->email;
-        if ($email)
+        foreach (EmailSubscription::$self_subscription_classes as $cls)
         {
-            $defaults = array('owner_guid' => $this->guid, 'language' => $this->language);
-            
-            EmailSubscription_Contact::init_for_entity($this, $email, $defaults);
-            EmailSubscription_Comments::init_for_entity($this, $email, $defaults);
-            EmailSubscription_Network::init_for_entity($this, $email, $defaults);
-            EmailSubscription_Discussion::init_for_entity($this, $email, $defaults);
+            $cls::init_self_subscription($this);
         }
     }
 }

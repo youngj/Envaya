@@ -30,4 +30,6 @@ return array(
     'discussions:other_link' => "Other discussions on Envaya",
     'discussions:latest' => "Latest Discussions",
     'discussions:reply' => "Reply",
+    
+    'discussions:subscription' => "Discussion messages on {name}'s website",
 );

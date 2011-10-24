@@ -18,6 +18,6 @@ class EmailSubscription_Contact extends EmailSubscription
     {
         $user = $this->get_root_container_entity();    
         $tr = array('{name}' => $user->name);
-        return strtr(__('email:subscribe_reminders'), $tr);
+        return strtr(__('contact:subscription'), $tr);
     }
 }

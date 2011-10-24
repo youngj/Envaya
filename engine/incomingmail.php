@@ -10,13 +10,17 @@ class IncomingMail
     
     // map of regexes that match secure tag of "to" address => handler function
     static $tag_actions = array(
-        '#^comment(?P<guid>\d+)$#' => 'reply_comment',
-        '#^message(?P<guid>\d+)$#' => 'reply_discussion_message'
+        '#^comment(?P<guid>\d+)$#' => array('EmailSubscription_Comments', 'handle_mail_reply'),
     );
     
     function __construct()
     {
     
+    }
+    
+    static function add_tag_action($regex, $fn)
+    {
+        static::$tag_actions[$regex] = $fn;
     }
     
     function add_attachment($file)
@@ -60,9 +64,9 @@ class IncomingMail
             {
                 if (preg_match($regex, $tag, $match))
                 {
-                    return call_user_func_array(array($this, $fn), array($match));
+                    return call_user_func_array($fn, array($this, $match));
                 }
-            }                
+            }
         }
         
         if ($this->to == Config::get('email_from')) // possible bounce email
@@ -72,81 +76,8 @@ class IncomingMail
         
         error_log("address {$this->to} did not match any rules");
         return false;
-    }    
-    
-    function reply_discussion_message($match)
-    {
-        $guid = $match['guid'];
-        
-        $message = DiscussionMessage::get_by_guid($guid, true);
-        if (!$message)
-        {
-            error_log("invalid message guid $guid");
-            return false;
-        }
-        
-        $topic = $message->get_container_entity();
-        if (!$topic)
-        {
-            error_log("invalid container for message guid $guid");
-            return false;
-        }
-        
-        $parsed_address = EmailAddress::parse_address($this->from);
-        
-        $reply = new DiscussionMessage();
-        $reply->container_guid = $topic->guid;    
-        $reply->from_name = @$parsed_address['name'];
-        $reply->subject = $this->subject;
-        $reply->from_location = "via email";
-        $reply->from_email = @$parsed_address['address'];
-        $reply->set_content(nl2br(static::strip_quoted_text($this->text)));
-        $reply->time_posted = timestamp();
-        $reply->save();
+    }        
 
-        $topic->refresh_attributes();
-		$topic->save();
-        
-        error_log("added message {$reply->guid}");
-
-        return true;
-    }
-
-    function reply_comment($match)
-    {
-        $guid = $match['guid'];
-        
-        $comment = Comment::get_by_guid($guid, true);
-        if (!$comment)
-        {
-            error_log("invalid comment guid $guid");
-            return false;
-        }
-        
-        $widget = $comment->get_container_entity();
-        if (!$widget)
-        {
-            error_log("invalid container for comment guid $guid");
-            return false;
-        }
-        
-        $parsed_address = EmailAddress::parse_address($this->from);
-        
-        $reply = new Comment();
-        $reply->container_guid = $widget->guid;    
-        $reply->name = @$parsed_address['name'];
-        $reply->location = "via email";
-        $reply->set_content(nl2br(escape(static::strip_quoted_text($this->text))), true);
-        $reply->save();
-        
-        $widget->refresh_attributes();
-		$widget->save();
-        
-        error_log("added comment {$reply->guid}");
-        
-        return true;
-    }    
-    
     static function clean_bounce_reason($reason, $to_address)
     {
         $reason = str_replace('smtp;' , '', $reason);

@@ -9,6 +9,9 @@ class SMSTest extends WebDriverTest
         $p1 = "14845550133";
         $p2 = "14845550134";
         
+        // needs to be between 9am-9pm in local time of phone number for notifications to be sent
+        $this->setTimestamp(1319420000); 
+        
         $news = $TEST_CONFIG['news_phone_number'];
         
         list($res) = $this->sendSMS($p1, $news, "HELP");        
@@ -79,6 +82,7 @@ class SMSTest extends WebDriverTest
         
         $this->open("/pg/login");
         $this->login("testposter1","testtest");
+        $this->waitForElement("//iframe");
         $this->typeInFrame("//iframe", 
             "test post 1000 test post 1000 test post 1000 test post 1000 test post 1000 "
             ."test post 1000 test post 1000 test post 1000 test post 1000 test post 1000 "
@@ -127,8 +131,13 @@ class SMSTest extends WebDriverTest
         $this->assertContains("selenium", $res);
         $this->assertContains("this is a test comment!", $res);
         
-        $email = $this->getLastEmail("test phone added a new comment");
-        $this->assertContains("+p1", $email);
+
+        $email = $this->getLastEmail("nobody@envaya.org");
+        $this->assertContains("test phone added a new comment", $email);
+        $this->assertContains('this is a test comment!', $email);
+
+        $email = $this->getLastEmail("nobody+p1@envaya.org");
+        $this->assertContains("test phone added a new comment", $email);
         $this->assertContains('this is a test comment!', $email);
         
         $url = $this->getLinkFromText($email);

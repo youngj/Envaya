@@ -40,9 +40,4 @@ class Action_Upload extends Action
     }
     
     protected function validate_security_token() {}
-    
-    function render()
-    {
-        $this->set_content(view('upload/frame'));
-    }
 }    

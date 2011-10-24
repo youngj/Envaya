@@ -16,7 +16,7 @@
         }
         function is_checked_dir($path)
         {
-            return !preg_match('#\b(vendors|languages|test)$#', $path);
+            return !preg_match('#\b(vendors|languages|test|upgrade)$#', $path);
         }
         
         function parse_file_contents($contents)

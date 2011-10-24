@@ -54,5 +54,5 @@ class Comment extends Entity
     {
         EmailSubscription_Comments::send_notifications($event_name, $this);
         SMSSubscription_Comments::send_notifications($event_name, $this);    
-    }
+    }       
 }

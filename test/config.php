@@ -14,6 +14,7 @@ return array(
     'plupload_runtimes' => 'html4',
     
     'sendgrid_secret' => 'flksflk312',
+    'admin_email' => 'nobody@envaya.org',
     
     'notify_status_interval' => 0,
     'notify_stuck_mail_interval' => 0,

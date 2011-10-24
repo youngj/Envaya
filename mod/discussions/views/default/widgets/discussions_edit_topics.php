@@ -5,7 +5,7 @@
     $limit = 20;
     $offset = (int)get_input('offset');
     
-    $query = $org->query_discussion_topics()->limit($limit, $offset);
+    $query = DiscussionTopic::query_for_user($org)->limit($limit, $offset);
     
     $topics = $query->filter();
     $count = $query->count();

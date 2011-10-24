@@ -345,16 +345,6 @@ class Controller_Pg extends Controller
         $this->set_header('Cache-Control', 'max-age=86400');
         $this->set_content($css);
     }
-
-    function action_discussions()
-    {
-        $this->allow_view_types(null);
-        
-        $this->page_draw(array(
-            'title' => __('discussions:latest'),
-            'content' => view('discussions/topic_list')
-        ));                    
-    }    
     
     function action_browse()
     {

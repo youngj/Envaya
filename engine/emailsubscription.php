@@ -12,6 +12,39 @@ abstract class EmailSubscription extends Subscription
         'num_notifications' => 0,
     );    
     
+    // subscription that each user's email is automatically subscribed to for their own account
+    static $self_subscription_classes = array(
+        'EmailSubscription_Comments',
+        'EmailSubscription_Network',
+    );
+    
+    // subscription that admins are automatically subscribed to for each user
+    static $admin_subscription_classes = array(
+        'EmailSubscription_Comments',
+    );    
+
+    static function init_self_subscription($user)
+    {
+        $email = $user->email;
+        if ($email)
+        {
+            static::init_for_entity($user, $email, array(
+                'owner_guid' => $user->guid, 
+                'language' => $user->language
+            ));
+        }
+    }
+    
+    static function init_admin_subscription($user)
+    {
+        $email = Config::get('admin_email');
+    
+        static::init_for_entity($user, $email, array(
+            'owner_guid' => 0, 
+            'language' => Config::get('language')
+        ));
+    }        
+    
     function get_key()
     {
         return $this->email;
@@ -70,7 +103,7 @@ abstract class EmailSubscription extends Subscription
     
     function get_description()
     {
-        return __('user:subscribe_unknown');
+        return 'unknown subscription';
     }
     
     function get_name()

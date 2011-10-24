@@ -71,7 +71,7 @@ return array(
 
     'extract_images_from_docs' => false,
     
-    'modules' => array('envaya_org','translate','contact'),
+    'modules' => array('envaya_org','translate','contact','discussions'),
     
     'discussion_list_suffix' => '-list',
     'apps_domain' => '',
