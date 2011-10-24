@@ -23,23 +23,33 @@ foreach (Config::get('modules') as $module_name)
     }
 }
 
-$minute = (int)(timestamp() / 60);
-
-// prevents running each script until the previous instance finishes
+$tick = 0;
+$tick_seconds = 60; // 1 minute per tick
+$tick_offset = (int)(timestamp() / $tick_seconds);
+$start_time = time();
 
 while (true)
 {
-    sleep(60);
-    $minute = $minute + 1;
+    $now_time = time();
+    $tick = $tick + 1;    
+    $next_time = $tick * $tick_seconds + $start_time;
+    $sleep_time = $next_time - $now_time;
+    
+    if ($sleep_time > 0)
+    {
+        sleep($sleep_time);
+    }
     
     $i = 0; // desynchronize tasks with intervals that are multiples of each other
     foreach ($cronTasks as $cronTask)
     {
-        $interval = $cronTask['interval'];        
-        if ($interval > 0 && ($minute - $i) % $interval == 0)
+        $interval = $cronTask['interval'];
+        if ($interval > 0 && ($tick + $tick_offset - $i) % $interval == 0)
         {
             $cmd = $cronTask['cmd'];
             $proc = @$cronTask['proc'];
+            
+            // prevent running each script until the previous instance finishes
             if ($proc)
             {
                 $status = proc_get_status($proc);
@@ -49,7 +59,6 @@ while (true)
                     continue;
                 }
             }
-            print_msg("running $cmd");
             $cronTask['proc'] = run_task($cmd);
         }
         $i++;
