@@ -6,6 +6,13 @@
  */
 class Organization extends User
 {
+    /* 
+     * Constants for tracking the progress of a newly registered organization 
+     * through the setup process
+     */
+    const CreatedAccount = 3;
+    const CreatedHomePage = 5;
+
     static $query_subtype_ids = array('core.user.org');
     
     function set_defaults()
@@ -34,7 +41,7 @@ class Organization extends User
 
     public function is_setup_complete()
     {
-        return $this->setup_state >= SetupState::CreatedHomePage;
+        return $this->setup_state >= Organization::CreatedHomePage;
     }
     
     public function query_external_sites()

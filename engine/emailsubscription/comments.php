@@ -11,6 +11,11 @@ class EmailSubscription_Comments extends EmailSubscription
             return;
         }
         
+        if ($comment->get_metadata('email') == $this->email)
+        {
+            return;
+        }
+        
         if ($event_name == Comment::Added)
         {
             $this->send(array(
@@ -56,12 +61,15 @@ class EmailSubscription_Comments extends EmailSubscription
         $reply = new Comment();
         $reply->container_guid = $widget->guid;    
         $reply->name = @$parsed_address['name'];
+        $reply->set_metadata('email', @$parsed_address['address']);
         $reply->location = "via email";
         $reply->set_content(nl2br(escape(IncomingMail::strip_quoted_text($mail->text))), true);
         $reply->save();
-        
+                
         $widget->refresh_attributes();
 		$widget->save();
+        
+        $reply->send_notifications();        
         
         error_log("added comment {$reply->guid}");
         

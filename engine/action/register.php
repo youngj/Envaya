@@ -48,7 +48,7 @@ class Action_Register extends Action
         $user->name = $name;
         $user->set_password($password);
         $user->language = Language::get_current_code();
-        $user->setup_state = SetupState::CreatedAccount;
+        $user->setup_state = Organization::CreatedAccount;
         $user->save();
 
         $mail = OutgoingMail::create(

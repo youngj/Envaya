@@ -1,11 +1,11 @@
 <?php
 
 /*
- * A custom domain name for an organization using Envaya; 
+ * A custom domain name for an user or organization using Envaya; 
  * allows them to have a URL like http://www.mywebsite.com 
  * instead of http://envaya.org/myusername
  */
-class OrgDomainName extends Model
+class UserDomainName extends Model
 {
     static $table_name = 'org_domain_names';
     static $table_attributes = array(

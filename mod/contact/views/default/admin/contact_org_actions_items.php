@@ -2,7 +2,9 @@
 
 $org = $vars['org'];
 
-if ($org->email)
+$subscription = EmailSubscription_Contact::query_for_entity($org)->get();
+
+if ($subscription)
 {
-    echo "<a href='/admin/contact/email/user/{$org->guid}'>".__('contact:send_email')."</a>";
+    echo "<a href='/admin/contact/email/subscription/{$subscription->guid}'>".__('contact:send_email')."</a>";
 }

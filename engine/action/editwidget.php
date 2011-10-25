@@ -70,7 +70,6 @@ class Action_EditWidget extends Action
     
     function render()
     {
-        $org = $this->get_org();        
         $widget = $this->get_widget();        
         
         $cancelUrl = get_input('from') ?: $widget->get_url();

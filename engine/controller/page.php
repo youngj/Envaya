@@ -19,6 +19,6 @@ class Controller_Page extends Controller_Widget
     protected function init_widget_from_name()
     {    
         $widgetName = $this->param('widget_name');        
-        $this->init_widget($this->get_org()->get_widget_by_name($widgetName)); 
+        $this->init_widget($this->get_user()->get_widget_by_name($widgetName)); 
     }
 }

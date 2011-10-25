@@ -70,6 +70,10 @@ class EmailAddress
         return null;
     }
     
+    /*
+     * Parses an address like 'person name <user@host>' and returns array
+     * with keys 'name' and 'address'
+     */
     static function parse_address($rfc822_address)
     {
         require_once Config::get('root')."/vendors/rfc822_addresses.php";

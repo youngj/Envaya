@@ -1,6 +1,5 @@
 <?php
     $widget = $vars['widget'];
-
     echo "<div class='blog_date'>";            
     $date_text = strtr(__('date:date_feed'), array(
         '{date}' => $widget->get_date_text(),

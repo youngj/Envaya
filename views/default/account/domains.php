@@ -2,22 +2,22 @@
 
 <?php
 
-$org = $vars['org'];
-$org_domain_names = OrgDomainName::query()->where('guid = ?', $org->guid)->filter();
+$user = $vars['user'];
+$user_domain_names = UserDomainName::query()->where('guid = ?', $user->guid)->filter();
 
-if ($org_domain_names)
+if ($user_domain_names)
 {
     echo "<label>Domain Names</label><br />";
     echo "<ul>";
-    foreach ($org_domain_names as $org_domain_name)
+    foreach ($user_domain_names as $user_domain_name)
     {
-        $domain_name = $org_domain_name->domain_name;
+        $domain_name = $user_domain_name->domain_name;
         echo "<li><a href='http://".escape($domain_name)."'>".escape($domain_name)."</a>";
         echo " <span class='admin_links'>";
         echo view('input/post_link', array(
             'text' => "(".__('delete').")",
             'confirm' => __('areyousure'),
-            'href' => "{$org->get_url()}/delete_domain?id={$org_domain_name->id}",
+            'href' => "{$user->get_url()}/delete_domain?id={$user_domain_name->id}",
         ));
         echo "</span></li>";
     }
@@ -25,7 +25,7 @@ if ($org_domain_names)
 }
 ?>
 
-<form method='POST' action='<?php echo $org->get_url() ?>/add_domain'>
+<form method='POST' action='<?php echo $user->get_url() ?>/add_domain'>
 <?php echo view('input/securitytoken'); ?>
 <div class='input'>
 <label>Add Domain Name</label><br />

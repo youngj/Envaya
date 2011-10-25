@@ -14,7 +14,7 @@ class EmailSubscription_Discussion extends EmailSubscription
             error_log("invalid message guid $guid");
             return false;
         }
-        
+                
         $topic = $message->get_container_entity();
         if (!$topic)
         {
@@ -32,10 +32,12 @@ class EmailSubscription_Discussion extends EmailSubscription
         $reply->from_email = @$parsed_address['address'];
         $reply->set_content(nl2br(IncomingMail::strip_quoted_text($mail->text)));
         $reply->time_posted = timestamp();
-        $reply->save();
+        $reply->save();        
 
         $topic->refresh_attributes();
 		$topic->save();
+        
+        $reply->send_notifications();
         
         error_log("added message {$reply->guid}");
 
@@ -51,6 +53,11 @@ class EmailSubscription_Discussion extends EmailSubscription
             return;
         }
         
+        if ($message->from_email == $this->email)
+        {
+            return;
+        }        
+                
         $tr = array(
             '{name}' => $message->from_name
         );

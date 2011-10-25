@@ -48,7 +48,7 @@ class Controller_Default extends Controller
             $uri = preg_replace('#\.[\s./]*/#', '', $uri);
             
             // map custom domain names to the appropriate user site
-            $username = OrgDomainName::get_username_for_host(Request::get_host());            
+            $username = UserDomainName::get_username_for_host(Request::get_host());            
             if ($username)
             {
                 $uri = "/{$username}{$uri}";

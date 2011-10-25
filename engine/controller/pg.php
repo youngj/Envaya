@@ -468,7 +468,7 @@ class Controller_Pg extends Controller
             if ($parsed_website)            
             {
                 $host = @$parsed_website['host'];
-                $username = OrgDomainName::get_username_for_host($host);                
+                $username = UserDomainName::get_username_for_host($host);                
             }
             if (!$username && preg_match('/\/([\w\-]+)/', $parsed_website['path'], $matches))
             {

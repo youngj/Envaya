@@ -75,7 +75,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
         $org->name = $name;
         $org->set_password($password);        
         $org->language = Language::get_current_code();
-        $org->setup_state = SetupState::CreatedAccount;
+        $org->setup_state = Organization::CreatedAccount;
         
         $country = $this->get_country();
         if ($country)

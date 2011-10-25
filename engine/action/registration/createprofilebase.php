@@ -48,7 +48,7 @@ class Action_Registration_CreateProfileBase extends Action
 
         $prevSetupState = $org->setup_state;
         
-        $org->setup_state = SetupState::CreatedHomePage;
+        $org->setup_state = Organization::CreatedHomePage;
         $org->save();
 
         if ($prevSetupState < $org->setup_state && !$org->is_approved())

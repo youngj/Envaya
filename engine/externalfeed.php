@@ -211,7 +211,7 @@ class ExternalFeed extends Entity
         $parsed = parse_url($url);
         $host = strtolower($parsed['host']);
         if (strpos($host, Config::get('domain')) !== false
-            || OrgDomainName::get_username_for_host($host))
+            || UserDomainName::get_username_for_host($host))
         {
             return true;
         }

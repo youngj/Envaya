@@ -47,7 +47,7 @@ class Controller_Widget extends Controller_User
 
     protected function init_widget($widget)
     {
-        if ($widget && $widget->get_root_container_entity()->guid == $this->get_org()->guid)
+        if ($widget && $widget->get_root_container_entity()->guid == $this->get_user()->guid)
         {
             $this->params['widget'] = $widget;
         }

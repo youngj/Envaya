@@ -171,10 +171,10 @@ abstract class Action
         if (!$user->is_approved())
         {
             $controller = $this->controller;
-            if (method_exists($controller, 'get_org'))
+            if (method_exists($controller, 'get_user'))
             {
-                $site_org = $controller->get_org();            
-                if ($site_org && $user->guid != $site_org->guid)
+                $site_user = $controller->get_user();            
+                if ($site_user && $user->guid != $site_user->guid)
                     return true;
             }
         }

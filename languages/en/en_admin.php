@@ -7,7 +7,7 @@ return array(
     'user:delete' => "Delete user",
     'user:deleted' => "User deleted successfully.",
 
-    'domains:edit' => "Edit domain names",
+    'domains:edit' => "Domain names",
     'domains:added' => "Domain name added",
     'domains:deleted' => "Domain name deleted",
     'domains:invalid' => "Invalid domain name",

@@ -169,23 +169,21 @@ class Controller_UserSite extends Controller_User
     
     function action_domains()
     {
-        $this->require_org();
         $this->require_admin();
         $this->use_editor_layout();
         
         $this->page_draw(array(
             'title' => __('domains:edit'),
-            'content' => view('org/domains', array('org' => $this->get_org())),
+            'content' => view('account/domains', array('user' => $this->get_user())),
         ));
     }
     
     function action_add_domain()
     {
-        $this->require_org();
         $this->require_admin();
         $this->validate_security_token();
         $domain_name = get_input('domain_name');
-        if (OrgDomainName::query()->where('domain_name = ?', $domain_name)->exists())
+        if (UserDomainName::query()->where('domain_name = ?', $domain_name)->exists())
         {
             throw new RedirectException(__('domains:duplicate'));
         }
@@ -194,9 +192,9 @@ class Controller_UserSite extends Controller_User
             throw new RedirectException(__('domains:invalid'));
         }
         
-        $org_domain_name = new OrgDomainName();
+        $org_domain_name = new UserDomainName();
         $org_domain_name->domain_name = $domain_name;
-        $org_domain_name->guid = $this->get_org()->guid;
+        $org_domain_name->guid = $this->get_user()->guid;
         $org_domain_name->save();
         SessionMessages::add(__('domains:added'));
         $this->redirect();
@@ -204,15 +202,14 @@ class Controller_UserSite extends Controller_User
     
     function action_delete_domain()
     {
-        $this->require_org();
         $this->require_admin();
         $this->validate_security_token();
-        $org_domain_name = OrgDomainName::query()->where('id = ?', (int)get_input('id'))->get();
-        if (!$org_domain_name)
+        $user_domain_name = UserDomainName::query()->where('id = ?', (int)get_input('id'))->get();
+        if (!$user_domain_name)
         {
             throw new RedirectException(__('domains:not_found'));
         }
-        $org_domain_name->delete();
+        $user_domain_name->delete();
         SessionMessages::add(__('domains:deleted'));
         $this->redirect();
     }
