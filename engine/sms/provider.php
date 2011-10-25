@@ -14,9 +14,14 @@ abstract class SMS_Provider
         return nl2br(escape($this->get_request_text()));
     }
     
+    function get_subclass_name()
+    {
+        return str_replace('SMS_Provider_', '', get_class($this));
+    }
+    
     function get_log_line()
     {
-        $class = str_replace('SMS_Provider_', '', get_class($this));
+        $class = $this->get_subclass_name();
         return "{$this->get_request_from()} -> {$this->get_request_to()} $class";
     }
     

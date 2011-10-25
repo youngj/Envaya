@@ -110,8 +110,12 @@ class OutgoingSMS extends Model
             $provider->send_sms($this);        
             $this->time_sent = timestamp();
             $this->status = OutgoingSMS::Sent;
-            $this->save();
         }
+        else
+        {
+            $this->status = OutgoingSMS::Queued;           
+        }
+        $this->save();
     }
     
     function send($immediate = false)
@@ -168,4 +172,26 @@ class OutgoingSMS extends Model
 
         $sms->send_now();
     }
+    
+    function get_message_type_text()
+    {
+        switch ($this->message_type)
+        {
+            case static::Notification: return __('sms:notification');
+            case static::Transactional: return __('sms:transactional');
+        }
+        return '';
+    }
+
+    function get_status_text()
+    {
+        switch ($this->status)
+        {            
+            case static::Failed:    return __('email:failed');
+            case static::Queued:    return __('email:queued');                
+            case static::Sent:      return __('email:sent');
+            case static::Waiting:   return sprintf(__('sms:waiting'), friendly_time($this->time_sendable, array('showTime' => true)));
+        }
+        return '';        
+    }    
 }

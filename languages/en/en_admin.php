@@ -16,6 +16,14 @@ return array(
 
     'comment:notification_admin_subject' => "%s added a comment on %s",
     'register:notification_subject' => "%s has registered for Envaya",
+    
+    'sms:outgoing_sms' => "Outgoing SMS",
+    'sms:waiting' => "Held until %s",
+    'sms:notification' => "Notification",
+    'sms:transactional' => "Transactional",
+    'sms:sent_ok' => "SMS sent successfully.",
+    'sms:queued_ok' => "SMS queued for sending.",
+    'sms:view' => "View SMS",
 
     'email:outgoing_mail' => "Outgoing Mail",
     'email:send' => "Send",

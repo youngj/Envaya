@@ -18,7 +18,7 @@
     echo "<th>Status</th>"; 
     echo "<td>".$mail->get_status_text();
     echo $mail->has_error() ? (": ".escape($mail->error_message)) : "";
-    echo "<td>";    
+    echo "</td>";    
     echo "</tr>"; 
     
     $zmail = $mail->get_mail();

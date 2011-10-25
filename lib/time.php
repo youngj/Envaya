@@ -9,7 +9,11 @@
     function friendly_time($time, $options = null) 
     {
         $diff = timestamp() - ((int) $time);
-        if ($diff < 60) 
+        if ($diff < 0)
+        {        
+            return get_date_text($time, $options);
+        }
+        else if ($diff < 60) 
         {
             return __("date:justnow");
         }

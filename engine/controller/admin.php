@@ -21,6 +21,12 @@ class Controller_Admin extends Controller
         $action->execute();        
     }
     
+    function action_resend_sms()
+    {
+        $action = new Action_Admin_ResendSMS($this);
+        $action->execute();        
+    }    
+    
     function action_set_mail_status()
     {
         $action = new Action_Admin_SetMailStatus($this);
@@ -47,6 +53,21 @@ class Controller_Admin extends Controller
             'content' => view('admin/view_mail', array('mail' => $mail))
         ));
     }
+    
+    function action_view_sms()
+    {
+        $id = (int)get_input('id');
+        $sms = OutgoingSMS::query()->where('id = ?', $id)->get();
+        if (!$sms)
+        {
+            throw new NotFoundException();
+        }
+        
+        $this->page_draw(array(
+            'title' => __('sms:view'),
+            'content' => view('admin/view_sms', array('sms' => $sms))
+        ));
+    }    
     
     function action_recent_photos()
     {
@@ -76,6 +97,16 @@ class Controller_Admin extends Controller
             'header' => '',
         ));        
     }   
+    
+    function action_outgoing_sms()
+    {
+        $this->page_draw(array(
+            'title' => __('sms:outgoing_sms'),
+            'content' => view('admin/outgoing_sms'),
+            'theme_name' => 'simple_wide',
+            'header' => '',
+        ));        
+    }       
     
     function action_statistics()
     {
