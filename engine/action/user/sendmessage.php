@@ -1,12 +1,11 @@
 <?php
 
-class Action_SendMessage extends Action
+class Action_User_SendMessage extends Action
 {
     function before()
     {
         $this->require_login();
         $this->use_editor_layout();
-        $this->require_org();
     }
      
     function process_input()

@@ -19,7 +19,7 @@ Engine::add_autoload_action('Widget', function() {
 Engine::add_autoload_action('Controller_UserSite', function() {
     Controller_UserSite::add_route(array(
         'regex' => '/topic\b', 
-        'controller' => 'Controller_Topic', 
+        'controller' => 'Controller_DiscussionTopic', 
     ),0);
 });        
 
@@ -27,7 +27,7 @@ Engine::add_autoload_action('Controller_Pg', function() {
     Controller_Pg::add_route(array(
         'regex' => '/discussions\b', 
         'controller' => 'Controller_Pg_Discussions', 
-    ),0);
+    ));
 });
 
 Engine::add_autoload_action('IncomingMail', function() {

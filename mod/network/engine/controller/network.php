@@ -10,8 +10,7 @@ class Controller_Network extends Controller_User
 
     function action_relationship_emails_js()
     {    
-        $this->require_editor();
-        $this->require_org();
+        $this->require_site_editor();
     
         $this->set_content_type('text/javascript');
         

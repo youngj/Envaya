@@ -3,7 +3,8 @@
 return array(
     'discussions:title' => "Discussions",
     'discussions:add_message' => "Add New Message",
-    'discussions:add_topic' => "Add New Discussion Topic",
+    'discussions:edit_message' => "Edit Message",
+    'discussions:add_topic' => "Add New Discussion Topic",    
     'discussions:no_topics' => "This organization does not yet have any discussions.",
     'discussions:topic_added' => "Topic added successfully.",
     'discussions:subject' => "Topic",
@@ -17,6 +18,7 @@ return array(
     'discussions:topic_deleted' => "Topic deleted successfully.",
     'discussions:publish_message' => "Publish message",
     'discussions:message_added' => "Your message has been added to the discussion.",
+    'discussions:message_saved' => "Message saved successfully.",
     'discussions:message_deleted' => "Message deleted.",
     'discussions:back_to_topics' => "Back to all topics",
     'discussions:feed_heading_topic' => "{name} has a new discussion about {topic}.",

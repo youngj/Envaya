@@ -28,9 +28,4 @@ return array(
     'user:email:success' => "Anwani yako ya email imebadilishwa.",
 
     'user:phone:success' => "Namba yako ya simu imebadilishwa.",
-
-    'user:notification:label' => "Mipangilio ya Kutaarifu",
-    'user:notification:success' => "Mipangilio yako ya Kutarifu imebadilishwa.",
-    'user:notification:desc2' => "Mipangilio kwa %s.",
-    'user:notification:invalid' => "Haiwezikani kupata mipangilio yako ya kutaarifu. Kama ikiwa umenakili kiungo kutoka kwenye email yako, tafadhali hakikisha kwamba anwani (URL) hapa ni sawasawa na anwani kutoka email.",
 );

@@ -1,6 +1,6 @@
 <?php
 
-class Action_AddWidget extends Action
+class Action_Widget_Add extends Action
 {
     protected $container; // WidgetContainer
 
@@ -12,8 +12,7 @@ class Action_AddWidget extends Action
 
     function before()
     {
-        $this->require_editor();
-        $this->require_org();        
+        $this->require_site_editor();
     }
      
     function process_input()

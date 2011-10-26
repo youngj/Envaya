@@ -1,11 +1,10 @@
 <?php
 
-class Action_EditDesign extends Action
+class Action_User_Design extends Action
 {
     function before()
     {
-        $this->require_editor();
-        $this->require_org();        
+        $this->require_site_editor();
     }
      
     function process_input()

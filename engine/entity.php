@@ -73,9 +73,9 @@ abstract class Entity extends Model
         return EntityRegistry::get_subtype_id(get_called_class());
     }
     
-    public function get_date_text()
+    public function get_date_text($time = null)
     {
-        return friendly_time($this->time_created);
+        return friendly_time($time ?: $this->time_created);
     }    
     
     function cache_for_current_request()

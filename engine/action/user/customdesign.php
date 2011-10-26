@@ -1,6 +1,6 @@
 <?php
 
-class Action_CustomDesign extends Action
+class Action_User_CustomDesign extends Action
 {
     static $customizable_views = array(
         'layouts/default' => 'Layout',
@@ -11,7 +11,7 @@ class Action_CustomDesign extends Action
         
     function before()
     {
-        $this->require_editor();
+        $this->require_site_editor();
         $this->current_view = get_input('current_view');
         
         $allowed_views = array_keys(static::$customizable_views);

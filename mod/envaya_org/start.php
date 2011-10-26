@@ -23,7 +23,7 @@ Engine::add_autoload_action('Controller_Admin', function() {
     Controller_Admin::add_route(array(
         'regex' => '/envaya\b',
         'controller' => 'Controller_EnvayaAdmin',
-    ), 0);
+    ));
 });
 
 Engine::add_autoload_action('Language', function() {

@@ -14,7 +14,7 @@
 </div>
 <?php 
     echo view('input/tinymce', array('name' => 'content'));    
-    echo view('discussions/user_info');
+    echo view('widgets/comment_user_info');
     
     $widget = $org->get_widget_by_class('Discussions');    
     

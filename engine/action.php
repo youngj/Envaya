@@ -6,7 +6,7 @@
  * 
  * Can be used like so:
  *   $action = new Action_Subclass($controller)
- *   $action->esecute();
+ *   $action->execute();
  *
  * Simple controller actions can just be defined as controller methods, without necessarily 
  * creating an Action subclass in a new file. But creating a Action subclass allows the logic

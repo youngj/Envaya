@@ -1,10 +1,10 @@
 <?php
 
-class Action_ChangePassword extends Action
+class Action_User_ChangePassword extends Action
 {
     function before()
     {
-        $this->require_editor();
+        $this->require_site_editor();
     }
     
     function require_old_password()

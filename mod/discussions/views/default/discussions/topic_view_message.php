@@ -14,10 +14,12 @@
         echo "</a>";
         
         if ($message->can_edit())
-        {        
+        {      
+            echo " <a href='{$message->get_base_url()}/edit'>".__('edit')."</a> ";
+        
             echo " <span class='admin_links'>";
             echo view('input/post_link', array(
-                'href' => "{$message->get_container_entity()->get_url()}/delete_message?guid={$message->guid}",
+                'href' => "{$message->get_base_url()}/delete",
                 'text' => __('delete'),
                 'confirm' => __('discussions:confirm_remove_message')
             ));

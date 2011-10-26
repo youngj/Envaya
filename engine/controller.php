@@ -306,6 +306,28 @@ abstract class Controller extends Router {
         }
     }
 
+    /*
+     * Redirects to the login page if the user cannot edit the specified entity.
+     */
+    function require_editor($entity)
+    {
+        if (!$entity->can_edit())
+        {
+            $this->force_login(Session::isloggedin() ? __('page:noaccess') : '');   
+        }
+    }    
+    
+    /*
+     * Redirects to the login page if the client is not an administrator.
+     */        
+    public function require_admin()
+    {
+        if (!Session::isadminloggedin())
+        {
+            $this->force_login(Session::isloggedin() ? __('page:noaccess') : '');
+        }
+    }    
+    
     function force_login($msg = '')
     {
         $next = $this->full_rewritten_url();
@@ -330,17 +352,6 @@ abstract class Controller extends Router {
         $query = $args ? ("?".http_build_query($args)) : "";
         
         throw new RedirectException($msg, "/pg/login{$query}");      
-    }
-    
-    /*
-     * Redirects to the login page if the client is not an administrator.
-     */        
-    public function require_admin()
-    {
-        if (!Session::isadminloggedin())
-        {
-            $this->force_login(Session::isloggedin() ? __('page:noaccess') : '');
-        }
     }
         
     public function allow_view_types($allowed_view_types = null /* array, or variable arguments */)

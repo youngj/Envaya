@@ -146,34 +146,12 @@ abstract class Controller_User extends Controller
         $this->page_draw_vars['theme_name'] = 'editor';
     }
 
-    function require_editor()
+    function require_site_editor()
     {
-        $this->require_login();
-
-        $user = $this->get_user();
-
-        if ($user && $user->can_edit())
-        {
-            $this->use_editor_layout();
-        }
-        else if ($user)
-        {
-            $this->force_login(Session::isloggedin() ? __('page:noaccess') : '');   
-        }
-        else
-        {
-            throw new NotFoundException();
-        }
+        $this->require_editor($this->get_user());
+        $this->use_editor_layout();    
     }
 
-    function require_org()
-    {
-        if (!$this->get_org())
-        {
-            throw new NotFoundException();
-        }
-    }
-    
     protected function get_messages($vars)
     {
         $vars['org'] = $this->get_org();        

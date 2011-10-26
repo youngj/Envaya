@@ -28,6 +28,12 @@ class DiscussionMessage extends Entity
         ));    
     }
     
+    function get_base_url()
+    {
+        $topic = $this->get_container_entity();        
+        return "{$topic->get_url()}/message/{$this->guid}";
+    }
+    
     function get_url()
     {
         $topic = $this->get_container_entity();
@@ -41,10 +47,15 @@ class DiscussionMessage extends Entity
         return $url;        
     }
     
-    function get_date_text()
+    function get_date_text($time = null)
     {
+        if (!$time)
+        {        
+            $time = $this->time_posted;
+        }
+    
         $org = $this->get_root_container_entity();    
-        return get_date_text($this->time_posted, array(
+        return get_date_text($time, array(
             'timezoneID' => $org->get_timezone_id(),
             'showTime' => true
         ));

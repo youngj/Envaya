@@ -2,17 +2,17 @@
 
 class Action_DeleteTranslation extends Action
 {
+    function before()
+    {
+        $this->require_editor($this->param('translation'));        
+    }
+
     function process_input()
     {    
         $this->require_login();
         
         $key = $this->param('key');
         $translation = $this->param('translation');
-        
-        if (!$translation->can_edit())
-        {
-            throw new ValidationException(__('page:noaccess'));
-        }
         
         $translation->disable();
         $translation->save();

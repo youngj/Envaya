@@ -1,11 +1,10 @@
 <?php
 
-class Action_AddPhotos extends Action
+class Action_User_AddPhotos extends Action
 {
     function before()
     {
-        $this->require_org();
-        $this->require_editor();
+        $this->require_site_editor();
     }
      
     function process_input()

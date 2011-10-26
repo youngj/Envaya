@@ -1,11 +1,10 @@
 <?php
 
-class Action_WidgetOptions extends Action
+class Action_Widget_Options extends Action
 {
     function before()
     {
         $this->require_admin();
-        $this->require_org();
     }
 
     function process_input()

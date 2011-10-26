@@ -9,8 +9,7 @@
         'name' => 'content', 
         'track_dirty' => true, 
         'value' => $reply_to ? view('discussions/reply_message', array('message' => $reply_to)) : '',
-    ));        
-    
+    ));            
 ?>
 <script type='text/javascript'>
 
@@ -35,7 +34,7 @@ tinyMCE.onAddEditor.add(function(mgr, ed) {
 </script>
 <?php
     
-    echo view('discussions/user_info');
+    echo view('widgets/comment_user_info');
     echo view('input/securitytoken');
     echo view('input/uniqid');    
     echo view('input/submit', array('value' => __('discussions:publish_message')));    

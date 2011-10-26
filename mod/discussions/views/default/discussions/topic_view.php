@@ -5,8 +5,7 @@
     $limit = 20;
     $offset = (int)get_input('offset');
     
-    $query  = $topic->query_messages()->show_disabled(true)->limit($limit, $offset);
-    
+    $query  = $topic->query_messages()->show_disabled(true)->limit($limit, $offset);    
     $count = $topic->num_messages;
     $messages = $query->filter();    
     

@@ -1,6 +1,6 @@
 <?php
 
-class Action_EditWidget extends Action
+class Action_Widget_Edit extends Action
 {
     function before()
     {
@@ -11,8 +11,7 @@ class Action_EditWidget extends Action
             $this->set_content_type('text/javascript');
         }
         
-        $this->require_editor();
-        $this->require_org();
+        $this->require_site_editor();
     }
     
     protected function save_draft()

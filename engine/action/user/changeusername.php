@@ -1,10 +1,10 @@
 <?php
 
-class Action_ChangeUsername extends Action
+class Action_User_ChangeUsername extends Action
 {
     function before()
     {
-        $this->require_editor();
+        $this->require_site_editor();
     }
      
     function process_input()

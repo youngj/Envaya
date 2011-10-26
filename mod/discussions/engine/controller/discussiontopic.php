@@ -3,13 +3,18 @@
 /*
  * Controller for a DiscussionTopic on a user's site, accessed by guid
  *
- * URL: /<username>/topic/<guid>[/<action>] 
+ * URL: /<username>/topic/<topic_guid>[/<action>] 
  */
-class Controller_Topic extends Controller_User
+class Controller_DiscussionTopic extends Controller_User
 {
     static $routes = array(
         array(
-            'regex' => '/(?P<guid>\d+)(/(?P<action>\w+)\b)?',
+            'regex' => '/(?P<topic_guid>\d+)/message/(?P<message_guid>\d+)(/(?P<action>\w+)\b)?',
+            'action' => 'action_<action>_message',
+            'before' => 'init_message_by_guid',
+        ),
+        array(
+            'regex' => '/(?P<topic_guid>\d+)(/(?P<action>\w+)\b)?',
             'defaults' => array('action' => 'index'),
             'before' => 'init_topic_by_guid',
         ),
@@ -27,7 +32,7 @@ class Controller_Topic extends Controller_User
 
     function init_topic_by_guid()
     {
-        $topicId = $this->param('guid');
+        $topicId = $this->param('topic_guid');
         
         $topic = DiscussionTopic::get_by_guid($topicId);
         $org = $this->get_org();
@@ -41,6 +46,25 @@ class Controller_Topic extends Controller_User
             throw new NotFoundException();
         }
     }
+    
+    function init_message_by_guid()
+    {
+        $this->init_topic_by_guid();
+        
+        $message_guid = $this->param('message_guid');        
+        $message = $this->get_topic()->query_messages()->guid($message_guid)->get();
+        
+        if ($message)
+        {
+            $this->params['message'] = $message;
+        }
+        else
+        {
+            $this->use_public_layout();
+            throw new NotFoundException();
+        }
+    }
+    
     
     function action_index()
     {
@@ -85,6 +109,18 @@ class Controller_Topic extends Controller_User
         $action->execute();
     }
             
+    function action_edit_message()
+    {
+        $action = new Action_Discussion_EditMessage($this);
+        $action->execute();
+    }
+            
+    function action_delete_message()
+    {
+        $action = new Action_Discussion_DeleteMessage($this);
+        $action->execute();
+    }    
+            
     function action_new()
     {
         $action = new Action_Discussion_NewTopic($this);
@@ -95,42 +131,5 @@ class Controller_Topic extends Controller_User
     {
         $action = new Action_Discussion_Edit($this);
         $action->execute();
-    }    
-        
-    function action_delete_message()
-    {
-        $this->validate_security_token();        
-        
-        $topic = $this->get_topic();
-        $message = $topic->query_messages()->guid((int)get_input('guid'))->get();
-        if (!$message)
-        {
-            throw new RedirectException();
-        }
-        
-        if (!$message->can_edit())
-        {
-            throw new RedirectException(__('page:noaccess'));
-        }
-        
-        $message->disable();
-        $message->save();
-        
-        SessionMessages::add(__('discussions:message_deleted'));
-        
-        if ($topic->query_messages()->is_empty())
-        {
-            $topic->disable();
-            $topic->save();
-            
-            $this->redirect($this->get_org()->get_widget_by_class('Discussions')->get_url());
-        }
-        else
-        {
-            $topic->refresh_attributes();
-            $topic->save();                           
-
-            $this->redirect();
-        }
-    }    
+    }                
 }

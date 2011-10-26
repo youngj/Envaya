@@ -83,7 +83,7 @@ echo view('input/submit',array(
 if ($show_more)
 {
     $url = EmailSubscription::get_all_settings_url($email);
-    echo "<div style='float:right;padding-top:22px;font-size:11px'><a href='{$url}'>".__('user:notification:all')."</a></div>";
+    echo "<div style='float:right;padding-top:22px;font-size:11px'><a href='{$url}'>".__('email:all_settings')."</a></div>";
 }
 
 ?>

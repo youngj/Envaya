@@ -17,59 +17,17 @@
         echo view_entity($comment);
     }
 ?>
-<form id='comment_form' method='POST' action='<?php echo $widget->get_url() ?>/post_comment'>
+<form id='comment_form' method='POST' action='<?php echo $widget->get_url() ?>/add_comment'>
 <?php echo view('input/securitytoken'); ?>
 
 <h4><?php echo __('comment:add'); ?></h4>
 
 <div class='input'>
-<?php echo view('input/longtext', array('name' => 'content')); ?>
-
-<table class='inputTable'>
-<tr>
-<th>
-<label><?php echo __('message:name'); ?></label> 
-</th>
-<td>
 <?php 
-
-$user = Session::get_loggedin_user();
-if ($user)
-{
-    echo escape($user->name);
-}
-else
-{
-    $name = Session::get('user_name');
-    echo view('input/text', array('name' => 'name', 'value' => $name)); 
-}
+    echo view('input/longtext', array('name' => 'content')); 
+    echo view('widgets/comment_user_info');
+    echo view('input/submit', array('value' => __('comment:publish'))); 
 ?>
-</td>
-</tr>
-
-<?php
-if (!$user) {
-?>
-
-<tr>
-<th>
-<label><?php echo __('comment:location'); ?></label> 
-</th>
-<td>
-<?php 
-    $location = Session::get('user_location');
-    echo view('input/text', array('name' => 'location', 'value' => $location)); 
-?>
-</td>
-</tr>
-
-<?php
-}
-?>
-
-</table>
-
-<?php echo view('input/submit', array('value' => __('comment:publish'))); ?>
 
 </div>
 

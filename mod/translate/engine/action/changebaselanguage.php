@@ -4,12 +4,7 @@ class Action_ChangeBaseLanguage extends Action
 {
     function before()
     {
-        $key = $this->param('key');
-        
-        if (!$key->can_edit())
-        {
-            $this->force_login(__('page:noaccess'));
-        }        
+        $this->require_editor($this->param('key'));        
     }
 
     function process_input()

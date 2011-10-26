@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Represents a comment about a news update (or other entity).
+ * Represents a comment about a news update (or other Widget).
  * Each news update may have multiple associated comments.
  * Comments may be associated with a registered User, or anonymous.
  */
@@ -19,17 +19,32 @@ class Comment extends Entity
         'Mixin_Content'
     );        
     
+    function get_url()
+    {
+        $widget = $this->get_container_entity();
+        return "{$widget->get_url()}?comments=1#comment{$this->guid}";
+    }
+    
+    function get_base_url()
+    {
+        $widget = $this->get_container_entity();
+        return "{$widget->get_url()}/comment/{$this->guid}";
+    }
+    
 	function get_name($lang = null)
 	{
-		$owner = $this->get_owner_entity();
-		if ($owner)
+        if ($this->name)
+        {
+            return $this->name;
+        }        
+        
+        $owner = $this->get_owner_entity();        
+        if ($owner)
 		{
 			return $owner->name;
 		}
-		else
-		{
-			return $this->name ?: "(".__('comment:anonymous', $lang).")";
-		}
+
+        return "(".__('comment:anonymous', $lang).")";
 	}
     
     function can_edit()

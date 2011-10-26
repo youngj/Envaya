@@ -123,30 +123,7 @@ class Controller_Pg extends Controller
         }
         
         $mail->process();
-    }
-        
-    function action_delete_comment()
-    {
-        $guid = (int)get_input('comment');
-        $comment = Comment::get_by_guid($guid);
-        if ($comment && $comment->can_edit())
-        {
-            $comment->disable();
-            $comment->save();
-
-            $container = $comment->get_container_entity();
-            $container->num_comments = $container->query_comments()->count();
-            $container->save();
-
-            SessionMessages::add(__('comment:deleted'));
-            
-            $this->redirect($container->get_url());
-        }
-        else
-        {
-            throw new RedirectException(__('comment:not_deleted'));
-        }
-    }
+    }        
 
     function action_local_store()
     {

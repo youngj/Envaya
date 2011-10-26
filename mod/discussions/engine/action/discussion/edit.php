@@ -4,7 +4,7 @@ class Action_Discussion_Edit extends Action
 {
     function before()
     {
-        $this->require_editor();
+        $this->require_site_editor();
     }
      
     function process_input()

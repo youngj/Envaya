@@ -16,8 +16,20 @@ class Controller_UserSite extends Controller_User
             'action' => 'action_index',
         ),
         array(
-            'regex' => '/(?P<controller>post|page|widget)\b',
-        ),        
+            'regex' => '/(post|widget)/(?P<container_guid>\d+)\.(?P<widget_name>\w+)',
+            'controller' => 'Controller_Widget',
+            'before' => 'init_widget_from_container',
+        ),
+        array(
+            'regex' => '/(post|widget)/((?P<slug>[\w\-]+)\,)?(?P<widget_guid>\d+)',
+            'controller' => 'Controller_Widget',
+            'before' => 'init_widget_from_guid',
+        ),    
+        array(
+            'regex' => '/page/(?P<widget_name>[\w\-]+)',
+            'controller' => 'Controller_Widget',
+            'before' => 'init_widget_from_name',
+        ),
         array(
             'regex' => '/(?P<action>\w+)\b',
         ),
@@ -44,6 +56,39 @@ class Controller_UserSite extends Controller_User
             return $this->index_widget($home_widget);
         }
     }
+    
+    protected function init_widget_from_guid()
+    {
+        $guid = $this->param('widget_guid');                   
+        return $this->init_widget(Widget::get_by_guid($guid, true));
+    }
+     
+    protected function init_widget_from_container()
+    {
+        $container_guid = $this->param('container_guid');
+        $widget_name = $this->param('widget_name');
+     
+        $container = Widget::get_by_guid($container_guid, true);
+        return $this->init_widget($container ? $container->get_widget_by_name($widget_name) : null);
+    }
+
+    protected function init_widget_from_name()
+    {
+        $widgetName = $this->param('widget_name');
+        $this->init_widget($this->get_user()->get_widget_by_name($widgetName));
+    }    
+     
+    protected function init_widget($widget)
+    {
+        if ($widget && $widget->get_root_container_entity()->guid == $this->get_user()->guid)
+        {
+            $this->params['widget'] = $widget;
+        }
+        else
+        {
+            throw new NotFoundException();
+        }       
+    }    
     
     function action_widget_view()
     {    
@@ -89,22 +134,10 @@ class Controller_UserSite extends Controller_User
         }
         $this->redirect($widget->get_edit_url());
     }
-    
-    function action_add_page()
-    {
-        $action = new Action_AddWidget($this, $this->get_org());
-        $action->execute();
-    }
-        
-    function action_design()
-    {
-        $action = new Action_EditDesign($this);
-        $action->execute();            
-    }
-   
+
     function action_dashboard()
     {    
-        $this->require_editor();        
+        $this->require_site_editor();        
         $this->allow_view_types(null);        
         
         $vars = array();
@@ -139,31 +172,31 @@ class Controller_UserSite extends Controller_User
     
     function action_password()
     {
-        $action = new Action_ChangePassword($this);
+        $action = new Action_User_ChangePassword($this);
         $action->execute();    
     }
 
     function action_username()
     {
-        $action = new Action_ChangeUsername($this);
+        $action = new Action_User_ChangeUsername($this);
         $action->execute();
     }
 
     function action_settings()
     {    
-        $action = new Action_Settings($this);
+        $action = new Action_User_Settings($this);
         $action->execute();
     }
 
     function action_addphotos()
     {
-        $action = new Action_AddPhotos($this);
+        $action = new Action_User_AddPhotos($this);
         $action->execute();        
     }
             
     function action_send_message()
     {
-        $action = new Action_SendMessage($this);
+        $action = new Action_User_SendMessage($this);
         $action->execute();   
     }
     
@@ -180,49 +213,38 @@ class Controller_UserSite extends Controller_User
     
     function action_add_domain()
     {
-        $this->require_admin();
-        $this->validate_security_token();
-        $domain_name = get_input('domain_name');
-        if (UserDomainName::query()->where('domain_name = ?', $domain_name)->exists())
-        {
-            throw new RedirectException(__('domains:duplicate'));
-        }
-        if (preg_match('/[^\w\.\-]/', $domain_name))
-        {
-            throw new RedirectException(__('domains:invalid'));
-        }
-        
-        $org_domain_name = new UserDomainName();
-        $org_domain_name->domain_name = $domain_name;
-        $org_domain_name->guid = $this->get_user()->guid;
-        $org_domain_name->save();
-        SessionMessages::add(__('domains:added'));
-        $this->redirect();
+        $action = new Action_User_AddDomain($this);
+        $action->execute();        
     }
     
     function action_delete_domain()
     {
-        $this->require_admin();
-        $this->validate_security_token();
-        $user_domain_name = UserDomainName::query()->where('id = ?', (int)get_input('id'))->get();
-        if (!$user_domain_name)
-        {
-            throw new RedirectException(__('domains:not_found'));
-        }
-        $user_domain_name->delete();
-        SessionMessages::add(__('domains:deleted'));
-        $this->redirect();
+        $action = new Action_User_DeleteDomain($this);
+        $action->execute();
     }
 
     function action_share()
     {
-        $action = new Action_Share($this);
+        $action = new Action_User_Share($this);
         $action->execute();
     }
     
     function action_custom_design()
     {
-        $action = new Action_CustomDesign($this);
+        $action = new Action_User_CustomDesign($this);
         $action->execute();
     }
+    
+    function action_add_page()
+    {
+        $action = new Action_Widget_Add($this, $this->get_org());
+        $action->execute();
+    }
+        
+    function action_design()
+    {
+        $action = new Action_User_Design($this);
+        $action->execute();
+    }
+       
 }

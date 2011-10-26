@@ -1,6 +1,6 @@
 <?php
 
-class Action_PostComment extends Action
+class Action_Widget_AddComment extends Action
 {
     function process_input()
 	{      

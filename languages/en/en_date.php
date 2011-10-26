@@ -9,6 +9,8 @@ return array(
     'date:days_ago' => "%s days ago",
     'date:days_ago:singular' => "yesterday",
     
+    'date:edited' => '(edited {date})',
+    
     'date:no_year' => '{month} {day}',
     'date:with_year' => '{month} {day}, {year}',
     'date:time' => '[hour12]:{minute} [ampm]',

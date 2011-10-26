@@ -1,10 +1,9 @@
 <?php
 
-class Action_Share extends Action
+class Action_User_Share extends Action
 {
     function before()
     {
-        $this->require_org();
         $this->require_login();
 
         $user = Session::get_loggedin_user();

@@ -6,7 +6,7 @@ class Action_EmailSettings extends Action
     {
         if (!$email || $code != EmailSubscription::get_email_fingerprint($email) || sizeof($subscriptions) == 0)
         {
-            throw new RedirectException(__("user:notification:invalid"), "/pg/login");
+            throw new RedirectException(__("email:invalid_url"), "/pg/login");
         }
     }
 
@@ -36,7 +36,7 @@ class Action_EmailSettings extends Action
             $subscription->language = $language;
             $subscription->save();                        
         }
-        SessionMessages::add(__('user:notification:success'));
+        SessionMessages::add(__('email:notifications_changed'));
 
         $this->redirect();
     }
@@ -71,7 +71,7 @@ class Action_EmailSettings extends Action
         $this->verify_access($email, $code, $subscriptions);
         
         $this->page_draw(array(
-            'title' => __("user:notification:label"),
+            'title' => __("email:settings"),
             'content' => view('account/email_settings', array(
                 'email' => $email, 
                 'limit' => $limit,

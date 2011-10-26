@@ -115,7 +115,7 @@ class DiscussionTest extends SeleniumTest
                 
         // test delete message from edit page       
         $this->mouseOver("//p[contains(text(),'message 1')]");        
-        $this->click("//a[contains(@href,'delete_message')]");
+        $this->click("//a[contains(@href,'/delete')]");
         $this->getConfirmation();
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();
@@ -240,19 +240,19 @@ sdsdf"
         // test deleting own message as anonymous user
         $this->setUrl($url);
         $this->mouseOver("//p[contains(text(),'message 3')]");
-        $this->click("//a[contains(@href,'delete_message')]");
+        $this->click("//a[contains(@href,'/delete')]");
         $this->getConfirmation();
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();
         $this->mustNotExist("//p[contains(text(),'message 3')]");
              
-        $this->click("//a[contains(@href,'delete_message')]");
+        $this->click("//a[contains(@href,'/delete')]");
         $this->getConfirmation();
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();
         $this->mustNotExist("//p[contains(text(),'message 4')]");
         
-        $this->mustNotExist("//a[contains(@href,'delete_message')]");
+        $this->mustNotExist("//a[contains(@href,'/delete')]");
         $this->mouseOver("//a[contains(@href,'reply_to')]");
         
         // site admin can delete all messages
@@ -260,12 +260,12 @@ sdsdf"
         $this->login("testorg","testtest");        
         for ($i = 0; $i < 2; $i++)
         {
-            $this->click("//a[contains(@href,'delete_message')]");
+            $this->click("//a[contains(@href,'/delete')]");
             $this->getConfirmation();
             $this->waitForPageToLoad(10000);
             $this->ensureGoodMessage();        
         }
-        $this->mustNotExist("//a[contains(@href,'delete_message')]");
+        $this->mustNotExist("//a[contains(@href,'/delete')]");
         
         $this->mustNotExist("//a[@class='discussionTopic']//span[contains(text(),'My First Discussion')]");
         $this->mustNotExist("//a[@class='discussionTopic']//span[contains(text(),'My Second Discussion')]");

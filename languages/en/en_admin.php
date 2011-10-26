@@ -14,7 +14,6 @@ return array(
     'domains:duplicate' => "That domain name already exists.",
     'domains:not_found' => "The domain does not exist.",
 
-    'comment:notification_admin_subject' => "%s added a comment on %s",
     'register:notification_subject' => "%s has registered for Envaya",
     
     'sms:outgoing_sms' => "Outgoing SMS",
