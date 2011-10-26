@@ -16,14 +16,16 @@
     }
 ?>
 <script type='text/javascript'>
-<?php echo view('js/header'); ?>
-<?php 
-echo "var canonicalUrl=".json_encode(@$vars['canonical_url']).";";
-if (PageContext::is_dirty())
-{
-    echo "setDirty(true);";
-}
-echo "var jsStrs=".json_encode(PageContext::get_js_strings()).";"; 
+<?php    
+    echo "var canonicalUrl=".json_encode(@$vars['canonical_url']).";\n";
+    echo view('js/header');    
+    echo PageContext::get_inline_js();    
+    echo "\n";
+    if (PageContext::is_dirty())
+    {
+        echo "setDirty(true);";
+    }
+    echo "var jsStrs=".json_encode(PageContext::get_js_strings()).";"; 
 ?>
 </script>
 <?php echo PageContext::get_header_html(); ?>

@@ -19,7 +19,7 @@
         echo __('language');
         echo '&nbsp;';
         
-        echo "<script type='text/javascript'>".view('js/language')."</script>";
+        echo view('js/language');
         echo view('input/pulldown', array(
             'name' => 'top_language',
             'id' => 'top_language',

@@ -22,12 +22,10 @@ if (!Session::get('hide_todo'))
 <?php 
 if (sizeof($todoItems))
 {
-?>
-<script type='text/javascript'>
-<?php 
     echo view('js/messages'); 
     echo view('js/xhr');
 ?>
+<script type='text/javascript'>
 function hideTodo()
 {
     hideMessages('todo_container');

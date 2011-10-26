@@ -1,13 +1,7 @@
-<div class='padded'>
 <?php
+    $template = $vars['template'];
+    ob_start();
 ?>
-<form method='POST' action='/admin/contact/email/add'>
-<?php echo view('input/securitytoken') ?>
-
-<?php
-    echo view('admin/email_filters_input');
-?>
-
 <div class='input'>
 <label>From:</label>
 <?php
@@ -40,9 +34,11 @@
     ));
 ?>
 </div>
-
 <?php
-    echo view('input/submit', array('value' => __('save')));
+    $content = ob_get_clean();
+    echo view('admin/add_template', array(
+        'action' => '/admin/contact/email/add',
+        'template' => $template,
+        'content' => $content,
+    ));
 ?>
-</form>
-</div>

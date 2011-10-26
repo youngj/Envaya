@@ -1,5 +1,5 @@
 <?php
     if ($INCLUDE_COUNT == 0)
     {
-        include_js('inline/language.js');
+        PageContext::add_inline_js_file('inline/language.js');
     }

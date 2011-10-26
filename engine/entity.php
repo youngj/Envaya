@@ -447,7 +447,7 @@ abstract class Entity extends Model
     {
         $revision = ContentRevision::get_recent_draft($this);
         $revision->time_updated = timestamp();
-        $revision->content = $content;                       
+        $revision->content = Markup::sanitize_html($content);
         $revision->save();
     }    
 

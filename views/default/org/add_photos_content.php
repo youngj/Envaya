@@ -6,12 +6,12 @@
 <a href='javascript:void(0)' style='font-weight:bold' id='browseButton'><?php echo __('upload:browse'); ?></a>
 </div>
 
-<?php echo view('js/uploader'); ?>
-<script type='text/javascript'>
 <?php 
+    echo view('js/uploader');
     echo view('js/dom'); 
     echo view('js/class'); 
-?>
+ ?>
+<script type='text/javascript'>
 
 var MultiImageUploader = makeClass(FileUploader);
 

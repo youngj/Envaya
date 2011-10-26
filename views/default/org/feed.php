@@ -23,13 +23,10 @@ echo view('org/filter_controls', array(
 <?php 
 if ($first_id)
 {
-?>
-
-<script type='text/javascript'>
-<?php
     echo view('js/xhr');
     echo view('js/dom');
 ?>
+<script type='text/javascript'>
 var fetchMoreXHR = null;
 var first_id = <?php echo json_encode($first_id); ?>;
 

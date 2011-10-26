@@ -2,5 +2,5 @@
     if ($INCLUDE_COUNT == 0)
     {
         echo view('js/class');
-        include_js('inline/dispatcher.js');
+        PageContext::add_inline_js_file('inline/dispatcher.js');
     }

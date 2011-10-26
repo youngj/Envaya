@@ -69,7 +69,7 @@ class EmailSubscription_Comments extends EmailSubscription
         $widget->refresh_attributes();
 		$widget->save();
         
-        $reply->send_notifications();        
+        $reply->send_notifications(Comment::Added);        
         
         error_log("added comment {$reply->guid}");
         

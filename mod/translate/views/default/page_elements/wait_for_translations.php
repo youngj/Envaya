@@ -4,9 +4,9 @@
     $unsaved_translations = $vars['unsaved_translations'];
     
     echo "<span id='translate_status'>$waiting_message</span>";
+    echo view('js/xhr');
 ?>
 <script type='text/javascript'>
-<?php echo view('js/xhr'); ?>
 
 (function() {
     var checkCount = 0;

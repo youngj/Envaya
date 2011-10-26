@@ -1,22 +1,16 @@
 <?php
-    $email = @$vars['email'];
+    $template = $vars['template'];
+    $template_class = get_class($template);
     
-    if (!$email)
-    {
-        $email = new EmailTemplate();
-        $email->set_filters(array(
-            new Query_Filter_UserType(array('value' => Organization::get_subtype_id())),
-            new Query_Filter_Approval(array('value' => User::Approved)),
-        ));
-    }
+    $count_filters_url = $template_class::$count_filters_url;
     
     $available_filters = array('UserType','Country','Approval','Sector');    
 ?>
 <div class='input'>
 <label>Filters: </label>(<span id='filter_count'><?php 
-    echo $email->query_filtered_subscriptions()->count();
+    echo $template->query_filtered_subscriptions()->count();
 ?></span>/<span id='total_count'><?php 
-    echo EmailTemplate::query_all_subscriptions()->count(); 
+    echo $template_class::query_all_subscriptions()->count(); 
 ?></span> recipients in filter)
 <div id='filter_container'></div>
 <div>Add filter: 
@@ -31,13 +25,14 @@
     echo implode(" &middot; ", $add_links);
 ?>
 </span>
-<?php echo view('input/hidden', array('id' => 'filters_json', 'name' => 'filters_json', 'value' => $email->filters_json)) ?>
+<?php echo view('input/hidden', array('id' => 'filters_json', 'name' => 'filters_json', 'value' => $template->filters_json)) ?>
 </div>    
-<script type='text/javascript'>
+
 <?php echo view('js/dom'); ?>
 <?php echo view('js/json'); ?>
 <?php echo view('js/xhr'); ?>
 
+<script type='text/javascript'>
 var filterIndex = 0;
 
 function getNewFilterId()
@@ -102,7 +97,7 @@ function updateFiltersJson()
     if (prev != filtersJson)
     {
         $('filter_count').innerHTML = "?";
-        fetchJson("/admin/contact/filters_count?filters_json=" + encodeURIComponent(filtersJson), function(res) {            
+        fetchJson("<?php echo $count_filters_url; ?>?filters_json=" + encodeURIComponent(filtersJson), function(res) {            
             $('filter_count').innerHTML = res.filter_count;
         });
     }
@@ -135,7 +130,7 @@ function addFilter(subclass)
 
 <?php 
     $i = 0;    
-    foreach ($email->get_filters() as $filter) 
+    foreach ($template->get_filters() as $filter) 
     { 
         $filter_id = "filterx{$i}";
         echo "addFilterInput('$filter_id',".json_encode($filter->get_subclass()).","
@@ -148,5 +143,7 @@ function addFilter(subclass)
     } 
         
 ?>
+
+
 </script>
 </div>

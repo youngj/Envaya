@@ -25,9 +25,10 @@ return array(
     'sms:queued_ok' => "SMS queued for sending.",
     'sms:view' => "View SMS",
 
+    'send' => "Send",
+    'resend' => "Resend",    
+    
     'email:outgoing_mail' => "Outgoing Mail",
-    'email:send' => "Send",
-    'email:resend' => "Resend",    
     'email:sent' => "Sent",    
     'email:sent_ok' => "Email sent successfully.",
     'email:queued' => "Queued",

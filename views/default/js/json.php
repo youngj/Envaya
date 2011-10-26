@@ -1,5 +1,5 @@
 <?php
     if ($INCLUDE_COUNT == 0)
     {
-        readfile(Config::get('root').'/_media/json.js');
+        PageContext::add_inline_js(file_get_contents(Config::get('root').'/_media/json.js'));
     }

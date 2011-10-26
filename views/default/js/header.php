@@ -1,3 +1,3 @@
 <?php
     PageContext::add_js_string('page:dirty');    
-    include_js('inline/header.js');
+    PageContext::add_inline_js_file('inline/header.js');

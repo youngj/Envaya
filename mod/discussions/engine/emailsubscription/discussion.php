@@ -37,7 +37,7 @@ class EmailSubscription_Discussion extends EmailSubscription
         $topic->refresh_attributes();
 		$topic->save();
         
-        $reply->send_notifications();
+        $reply->send_notifications(DiscussionMessage::Added);
         
         error_log("added message {$reply->guid}");
 

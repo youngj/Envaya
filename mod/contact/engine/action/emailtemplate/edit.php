@@ -1,68 +1,13 @@
 <?php
 
-class Action_EmailTemplate_Edit extends Action
-{       
-    function before()
-    {
-        $this->require_admin();
+class Action_EmailTemplate_Edit extends Action_ContactTemplate_Edit
+{        
+    function update_template($template)
+    { 
+        $template->subject = get_input('subject');                        
+        $content = get_input('content');
+        $template->set_content($content);
+        $template->save_draft($content);
+        $template->from = get_input('from');
     }
- 
-    protected function save_draft()
-    {
-        $this->set_content_type('text/javascript');
-    
-        validate_security_token();
-            
-        $email = $this->get_email();       
-            
-        $content = get_input('content');                       
-        
-        $email->save_draft($content);                    
-        
-        $email->set_content($content);
-        $email->save();
-        
-        $this->set_content(json_encode(array('guid' => $email->guid)));    
-    }
- 
-    function process_input()
-    {
-        $email = $this->get_email();
-        
-        if (get_input('_draft'))
-        {
-            $this->save_draft();        
-        }        
-        else if (get_input('delete'))
-        {
-            $email->disable();
-            $email->save();
-            $this->redirect("/admin/contact/email");
-        }
-        else
-        {
-            $email->filters_json = get_input('filters_json');
-            $email->subject = get_input('subject');                
-            $email->set_content(get_input('content'));
-            $email->from = get_input('from');
-            $email->save();
-            $this->redirect($email->get_url());       
-        }
-    }
-
-    function render()
-    {
-        $email = $this->get_email();
-    
-        PageContext::get_submenu('edit')->add_item(__('canceledit'), get_input('from') ?: $email->get_url());
-    
-        $this->page_draw(array(
-            'title' => __('contact:edit_email'),
-            'header' => view('admin/email_header', array(
-                'email' => $email,
-                'title' => __('edit')
-            )),
-            'content' => view('admin/edit_email', array('email' => $email)),
-        ));
-    }    
-}    
+}

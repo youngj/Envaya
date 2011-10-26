@@ -52,12 +52,7 @@
     {
         if ($INCLUDE_COUNT == 0)
         {
-?>
-
-<script type='text/javascript'>
-<?php echo view('js/reorder_widget'); ?>
-</script>
-<?php
+            echo view('js/reorder_widget');
         }
     
         echo "<table style='width:100%' class='widget_list'><tbody id='$table_id'>";

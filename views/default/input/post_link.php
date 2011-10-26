@@ -22,7 +22,7 @@
     
     if ($INCLUDE_COUNT == 0)
     {        
-        echo "<script type='text/javascript'>".view('js/post_link')."</script>";
+        echo view('js/post_link');
     }
 
     $ts = timestamp();

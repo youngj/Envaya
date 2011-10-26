@@ -11,7 +11,7 @@
 ?>
     <div class='message_container' id='<?php echo $id; ?>'>
 	<div class="good_messages">
-        <script type='text/javascript'><?php echo view('js/messages'); ?></script>
+        <?php echo view('js/messages'); ?>
         <a class='hideMessages' href='javascript:hideMessages("<?php echo $id; ?>")' onclick='ignoreDirty()'></a>
 <?php		
         foreach($vars['object'] as $message) {

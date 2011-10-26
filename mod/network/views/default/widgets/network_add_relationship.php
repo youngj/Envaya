@@ -8,14 +8,12 @@
     
     if (!$org)
     {
+        echo view('js/create_modal_box');
+        echo view('js/dom');
+        echo view('js/xhr');
 ?>
-
 <script type='text/javascript'>
-<?php 
-    echo view('js/create_modal_box');
-    echo view('js/dom');
-    echo view('js/xhr');
-?>
+
 var modalBox;
 
 function searchOrg()

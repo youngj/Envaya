@@ -89,6 +89,8 @@ abstract class Subscription extends Entity
     
     abstract function get_key();
     
+    abstract function get_recipient_description();
+    
     abstract function send_notification($event_name, $notifier);
     abstract function send($args);
 }

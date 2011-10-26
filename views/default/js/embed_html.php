@@ -2,5 +2,5 @@
     if ($INCLUDE_COUNT == 0)
     {
         echo view('js/dom');
-        include_js('inline/embed_html.js');
+        PageContext::add_inline_js_file('inline/embed_html.js');
     }

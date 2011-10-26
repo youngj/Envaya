@@ -6,7 +6,7 @@
         echo view('input/post_link', array(
             'href' => "/admin/resend_mail?id={$mail->id}",
             'confirm' => __('areyousure'),
-            'text' => __('email:send'),
+            'text' => __('send'),
         ));        
         echo " &middot; ";
         echo view('input/post_link', array(

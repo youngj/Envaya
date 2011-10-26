@@ -7,10 +7,15 @@ return array(
     'contact:num_pages' => "# Pages",
     'contact:last_notify' => "Last Email",
 
-    'contact:email_list' => "Email Templates",       
-    'contact:add_email' => "Add Email Template",
-    'contact:edit_email' => 'Edit Email Template',
-    'contact:send_email' => 'Send Email Template',
-    'contact:view_email' => 'View Email Template',
+    'contact:template_list' => "%s Templates",       
+    'contact:add_template' => "Add %s Template",
+    'contact:edit_template' => 'Edit %s Template',
+    'contact:send_template' => 'Send %s Template',
+    'contact:view_template' => 'View %s Template',
+    
+    'contact:email' => 'Email',
+    'contact:sms' => 'SMS',
+    
     'contact:select_email' => "Select an email to send to %s:",
+    'contact:select_sms' => "Select a SMS message to send to %s:",
 );

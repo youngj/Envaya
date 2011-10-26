@@ -7,5 +7,5 @@
         PageContext::add_js_string('loading');
         PageContext::add_js_string('browse:zoom_in');
         
-        include_js('inline/google_map.js');
+        PageContext::add_inline_js_file('inline/google_map.js');
     }

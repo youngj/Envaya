@@ -49,9 +49,8 @@ else
 <div id='home_caption_shadow' class='slideshow_shadow'></div>
 <div id='home_slideshow_controls' class='slideshow_controls'></div>
 </div>
-
-<script type='text/javascript'>
 <?php echo view('js/slideshow'); ?>
+<script type='text/javascript'>
 slideshow(<?php 
     try
     {

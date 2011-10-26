@@ -18,6 +18,7 @@ abstract class ContactTemplate extends Entity
         
     static $outgoing_message_class;
     static $subscription_class;
+    static $count_filters_url;
 
     static $table_attributes = array(
         'num_sent' => 0,
@@ -61,8 +62,13 @@ abstract class ContactTemplate extends Entity
         
     function query_potential_recipients()
     {
+        $outgoing_message_class = static::$outgoing_message_class;
+        $outgoing_message_table = $outgoing_message_class::$table_name;
+        $subscription_class = static::$subscription_class;
+        $subscription_table = $subscription_class::$table_name;
+    
         return $this->query_filtered_subscriptions()
-            ->where("not exists (select * from outgoing_mail where notifier_guid = ? and subscription_guid = email_subscriptions.guid)", 
+            ->where("not exists (select * from $outgoing_message_table where notifier_guid = ? and subscription_guid = $subscription_table.guid)", 
                 $this->guid);        
     }        
         
@@ -122,4 +128,6 @@ abstract class ContactTemplate extends Entity
     {
         return $this->render($this->content, $subscription);
     }    
+    
+    abstract function get_description();
 }

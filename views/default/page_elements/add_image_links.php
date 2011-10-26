@@ -1,3 +1,3 @@
 <script type='text/javascript'>
-<?php include_js('inline/image_links.js'); ?>
+<?php echo get_inline_js('inline/image_links.js'); ?>
 </script>

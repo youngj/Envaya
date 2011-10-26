@@ -1,4 +1,4 @@
 <?php
     echo view('js/xhr');
     echo view('js/dom');
-    include_js('inline/reorder_widget.js');
+    PageContext::add_inline_js_file('inline/reorder_widget.js');

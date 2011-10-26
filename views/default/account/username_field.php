@@ -1,5 +1,5 @@
-<script type='text/javascript'>
 <?php echo view('js/dom'); ?>
+<script type='text/javascript'>
 function updateUrl()
 {
     setTimeout(function()

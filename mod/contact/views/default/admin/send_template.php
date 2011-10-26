@@ -1,13 +1,10 @@
 <div class='padded'>
 <?php 
     $subscriptions = $vars['subscriptions'];
-    $email = $vars['email'];
-    
-    $subscription = $subscriptions[0];
-    if ($subscription) {
+    $template = $vars['template'];    
 ?>
 
-<form action='<?php echo $email->get_url() ?>/send' method='POST'>
+<form action='<?php echo $template->get_url() ?>/send' method='POST'>
 
 <script type='text/javascript'>
 function countRecipients()
@@ -34,28 +31,26 @@ To: (<span id='recipient_count'><?php echo sizeof($subscriptions); ?></span> rec
     $options = array();
     foreach ($subscriptions as $subscription)
     {
-        $options[$subscription->guid] = "\"{$subscription->get_name()}\" <$subscription->email>";
+        $options[$subscription->guid] = $subscription->get_recipient_description();
     }
 
- echo view('input/checkboxes', array(
-    'name' => 'subscriptions',
-    'options' => $options,
-    'value' => array_keys($options),
-    'attrs' => array('onchange' => 'countRecipients()'),
- ));
+    echo view('input/checkboxes', array(
+        'name' => 'subscriptions',
+        'options' => $options,
+        'value' => array_keys($options),
+        'attrs' => array('onchange' => 'countRecipients()'),
+    ));
 ?>
 </div>
 <br />
 
 <?php 
-    echo view('admin/preview_email', array('email' => $email, 'subscription' => $subscription));
+    echo $vars['content'];
     
     echo view('input/hidden',array(
         'name' => 'from',
         'value' => get_input('from')
-    ));
-    
-    echo view('admin/email_statistics', array('email' => $email));
+    ));    
     
     echo view('input/submit',array(
         'value' => __('message:send')
@@ -63,11 +58,4 @@ To: (<span id='recipient_count'><?php echo sizeof($subscriptions); ?></span> rec
 
 ?>
 </form>
-
-<?php
-
-    }    
-    
-?>
-
 </div>

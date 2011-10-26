@@ -11,12 +11,10 @@
         echo "<div class='padded'>";
         
         echo "<em>".sprintf(__('search:orgs_near'), escape($query))."</em>";
-?>
 
-<script type='text/javascript'>
-<?php
-    echo view('js/google_map');
+        echo view('js/google_map');
 ?>  
+<script type='text/javascript'>
 
 function initMap(map)
 {

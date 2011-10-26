@@ -1,17 +1,16 @@
 <div id='heading'>
 <h1>
 <?php
-
     $items = array(
-        array('url' => '/admin/contact/email', 'title' => __('contact:email_list'))
+        array('url' => $vars['index_url'], 'title' => $vars['index_title'])
     );
     
-    $email = @$vars['email'];
-    if ($email)
+    $template = @$vars['template'];
+    if ($template)
     {
         $items[] = array(
-            'url' => $email->get_url(), 
-            'title' => $email->subject
+            'url' => $template->get_url(), 
+            'title' => $template->get_description()
         );
     }
     

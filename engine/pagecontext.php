@@ -12,6 +12,7 @@ class PageContext extends Mixable
     private static $header_html = array();
     private static $submenus = array();    
     private static $js_strings = array();
+    private static $inline_js = array();
     private static $dirty = false;
     private static $http_headers = array();
 
@@ -41,7 +42,17 @@ class PageContext extends Mixable
     {
         static::$header_html[] = $html;
     }        
-
+    
+    static function add_inline_js_file($js_path)
+    {
+        static::$inline_js[] = get_inline_js($js_path);
+    }
+    
+    static function add_inline_js($js)
+    {
+        static::$inline_js[] = $js;
+    }    
+    
     /*
      * Marks the page as dirty, so that the user will be shown a JS onbeforeunload dialog
      * when leaving the page unless the dirty state is cleared (e.g. through submitting a form).
@@ -80,5 +91,10 @@ class PageContext extends Mixable
             $res[$key] = __($key);
         }
         return $res;
+    }
+    
+    static function get_inline_js()
+    {
+        return implode("\n", static::$inline_js);
     }
 }

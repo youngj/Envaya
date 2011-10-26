@@ -41,7 +41,6 @@
     <th><?php echo __('contact:time_updated') ?></th>
     <th><?php echo __('contact:num_pages') ?></th>
     <th><?php echo __('language') ?></th>
-    <th><a href='<?php echo escape(url_with_param($cur_url,'sort','last_notify_time')); ?>'><?php echo __('contact:last_notify') ?></a></th>
 </tr>
 <?php
     $escUrl = urlencode($_SERVER['REQUEST_URI']);
@@ -65,7 +64,6 @@
     ?></td>
     <td><?php echo $numWidgets; ?></td>
     <td><?php echo $org->language; ?></td>
-    <td><?php echo $org->last_notify_time ? friendly_time($org->last_notify_time) : ''; ?></td>
     <td style='padding:0px;background-color:#068488;white-space:nowrap'>
         <?php 
             echo "<a href='/{$org->username}/settings?from=$escUrl'><img src='/_media/images/settings.gif'></a>";

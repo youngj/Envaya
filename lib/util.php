@@ -162,7 +162,7 @@
         return $res;
     }    
 
-    function include_js($js_path)
+    function get_inline_js($js_path)
     {
         if (Config::get('debug'))
         {
@@ -176,7 +176,7 @@
         {
             $path = Config::get('root') . "/www/_media/$js_path";
         }
-        readfile($path);
+        return file_get_contents($path);
     }
     
     /*

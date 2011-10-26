@@ -2,47 +2,45 @@
 <?php   
     $subscription = $vars['subscription'];
     
-    echo "<p>".sprintf(__('contact:select_email'), 
-        "<a href='mailto:".escape($subscription->email)."'>".escape($subscription->email)."</a>")."</p>";
+    echo $vars['header'];
 
-    $query = EmailTemplate::query()->order_by('time_created desc');
+    $query = $vars['query'];
     $limit = 10;
     $offset = (int)get_input('offset');
     
-    $emails = $query->limit($limit, $offset)->filter();
+    $templates = $query->limit($limit, $offset)->filter();
     $count = $query->count();
     
     $elements = array();
     
     $escFrom = urlencode(get_input('from'));
     
-    foreach ($emails as $email)
+    foreach ($templates as $template)
     {
         ob_start();
         
         echo "<div style='padding:3px'>";
         
-        $can_send = $email->can_send_to($subscription);
+        $can_send = $template->can_send_to($subscription);
         
-        $escSubject = escape($email->subject ?: '(No Subject)');
+        $escSubject = escape($template->get_description());
         
         if ($can_send)
         {
-            echo "<a href='{$email->get_url()}/send?subscriptions[]={$subscription->guid}&from=$escFrom'><strong>$escSubject</strong></a>";
-            
-            echo " (".get_date_text($email->time_created).")";            
+            echo "<a href='{$template->get_url()}/send?subscriptions[]={$subscription->guid}&from=$escFrom'><strong>$escSubject</strong></a>";            
+            echo " (".get_date_text($template->time_created).")";            
         }
         else
         {
             echo "<span style='color:#999'>$escSubject</span>";
             
-            $outgoing_mail = $email->query_outgoing_messages_for_subscription($subscription)->get();
-            if ($outgoing_mail)
+            $outgoing_message = $template->query_outgoing_messages_for_subscription($subscription)->get();
+            if ($outgoing_message)
             {            
-                echo " ({$outgoing_mail->get_status_text()} ".get_date_text($outgoing_mail->time_created).") ";
+                echo " ({$outgoing_message->get_status_text()} ".get_date_text($outgoing_message->time_created).") ";
                 
                 echo view('input/post_link', array(
-                    'href' => "{$email->get_url()}/reset_outgoing?id={$outgoing_mail->id}",
+                    'href' => "{$template->get_url()}/reset_outgoing?id={$outgoing_message->id}",
                     'text' => 'reset'
                 ));
             }

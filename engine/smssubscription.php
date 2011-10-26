@@ -82,6 +82,17 @@ abstract class SMSSubscription extends Subscription
         return "unknown";
     }
     
+    function get_name()
+    {
+        $owner = $this->get_owner_entity();
+        return $owner ? $owner->name : "(unknown name)";
+    }       
+    
+    function get_recipient_description()
+    {
+        return "\"{$this->get_name()}\" <$this->phone_number>";
+    }
+        
     function send($args)
     {
         $message = '';

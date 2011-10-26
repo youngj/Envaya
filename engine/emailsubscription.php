@@ -106,6 +106,11 @@ abstract class EmailSubscription extends Subscription
         return 'unknown subscription';
     }
     
+    function get_recipient_description()
+    {
+        return "\"{$this->get_name()}\" <$this->email>";
+    }
+    
     function get_name()
     {
         $owner = $this->get_owner_entity();

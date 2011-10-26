@@ -12,6 +12,10 @@ class Controller_Contact extends Controller
             'controller' => 'Controller_EmailTemplate',
         ),        
         array(
+            'regex' => '/sms\b', 
+            'controller' => 'Controller_SMSTemplate',
+        ),
+        array(
             'regex' => '/(?P<action>\w+)\b', 
         ),                
     );
@@ -21,20 +25,6 @@ class Controller_Contact extends Controller
         $this->require_admin();
     }
 
-    function action_filters_count()
-    {
-        $this->set_content_type('text/javascript');
-        
-        $filters_json = get_input('filters_json');
-        $filters = Query_Filter::json_decode_filters($filters_json);
-        
-        $filter_count = EmailTemplate::query_subscriptions($filters)->count();     
-        
-        $this->set_content(json_encode(array(
-            'filter_count' => $filter_count
-        )));    
-    }   
-    
     function action_filter_input()
     {
         $this->set_content_type('text/javascript');

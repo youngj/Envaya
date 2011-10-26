@@ -5,5 +5,5 @@
         PageContext::add_js_string('cancel');        
         
         echo view('js/dom');
-        include_js('inline/create_modal_box.js');
+        PageContext::add_inline_js_file('inline/create_modal_box.js');
     }

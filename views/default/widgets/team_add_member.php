@@ -45,11 +45,11 @@
 </div>
 </div>
 
-<script type='text/javascript'>
 <?php 
     echo view('js/create_modal_box');
     echo view('js/dom');
 ?>
+<script type='text/javascript'>
 var addTeamMember = $('addTeamMember');
 var modalBox;
 

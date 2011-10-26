@@ -2,13 +2,12 @@
 <?php
     $org = $vars['org'];
     $url = $vars['url'];    
-?>
-<script type='text/javascript'>
-<?php 
+
     echo view('js/create_modal_box');
     echo view('js/dom');
     echo view('js/xhr');
 ?>
+<script type='text/javascript'>
 
 function isRecipient(email)
 {

@@ -27,12 +27,10 @@
             $value = $lastRevision->content;
         }
                 
-        echo "<script type='text/javascript'>";
         echo view('js/save_draft', array(
             'guid' => ($entity ? $entity->guid : null),
             'url' => $save_draft_url,
         ));
-        echo "</script>";
         
         $saveFn = 'saveDraft';
         $restoreDraftFn = 'showOlderVersions';        
@@ -57,12 +55,9 @@
         }
         PageContext::add_js_string('loading');
         
+        echo view('js/create_modal_box');         
+        echo view('js/dom'); 
         ?>
-        
-        <script type='text/javascript'><?php 
-            echo view('js/create_modal_box');         
-            echo view('js/dom'); 
-        ?></script>
         <script type='text/javascript' src='/_media/tiny_mce/tiny_mce.js?v<?php echo Config::get('hash:js:tiny_mce'); ?>'></script>
         <?php                
     }

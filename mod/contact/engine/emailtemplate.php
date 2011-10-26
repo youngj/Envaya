@@ -9,6 +9,8 @@ class EmailTemplate extends ContactTemplate
     static $outgoing_message_class = 'OutgoingMail';
     static $subscription_class = 'EmailSubscription_Contact';
     
+    static $count_filters_url = '/admin/contact/email/filters_count';
+    
     static $table_attributes = array(
         'subject' => '',
         'from' => '',
@@ -26,4 +28,9 @@ class EmailTemplate extends ContactTemplate
     {
         return "/admin/contact/email/{$this->guid}";
     }
+    
+    function get_description()
+    {
+        return $this->subject ?: '(No Subject)';
+    }    
 }

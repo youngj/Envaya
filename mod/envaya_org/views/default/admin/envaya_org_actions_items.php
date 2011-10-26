@@ -1,9 +1,8 @@
 <?php
     $org = $vars['org'];
 ?>
-
-<script type='text/javascript'>
 <?php echo view('js/dom'); ?>
+<script type='text/javascript'>
 function selectFeaturedPhoto()
 {
     function getURLForImg(img) {
