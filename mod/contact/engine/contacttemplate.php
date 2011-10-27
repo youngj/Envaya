@@ -70,7 +70,7 @@ abstract class ContactTemplate extends Entity
         return $this->query_filtered_subscriptions()
             ->where("not exists (select * from $outgoing_message_table where notifier_guid = ? and subscription_guid = $subscription_table.guid)", 
                 $this->guid);        
-    }        
+    }
         
     function query_filtered_subscriptions()
     {

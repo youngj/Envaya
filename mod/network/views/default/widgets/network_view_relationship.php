@@ -1,5 +1,5 @@
 <?php    
-    $relationship = $vars['entity'];      
+    $relationship = $vars['relationship'];      
     $org = $relationship->get_subject_organization();
         
     $name = $relationship->get_subject_name();    

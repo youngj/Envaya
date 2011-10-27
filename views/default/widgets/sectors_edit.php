@@ -1,7 +1,7 @@
 <div class='section_content padded'>
 <?php
     $widget = $vars['widget'];
-    $org = $widget->get_root_container_entity();
+    $org = $widget->get_container_user();
     
     ob_start();
 ?>

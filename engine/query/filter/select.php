@@ -21,7 +21,7 @@ abstract class Query_Filter_Select extends Query_Filter
         else
         {    
             $options = $this->get_options();
-            return @$options[$this->value];
+            return @$options[$this->value] ?: escape($this->value);
         }
     }   
    

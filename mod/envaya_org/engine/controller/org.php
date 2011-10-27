@@ -123,7 +123,7 @@ class Controller_Org extends Controller
         
         $this->page_draw(array(
             'title' => __('featured:title'),
-            'content' => view('org/featured')
+            'content' => view('org/featured_sites')
         ));
     }    
     

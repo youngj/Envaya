@@ -23,7 +23,7 @@ class Widget_Sectors extends Widget
     
     function process_input($action)
     {
-        $org = $this->get_root_container_entity();
+        $org = $this->get_container_user();
     
         $sectors = get_input_array('sector');
         if (sizeof($sectors) == 0)

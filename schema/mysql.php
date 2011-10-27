@@ -341,3 +341,9 @@ CREATE TABLE `sms_app_state` (
     `active` tinyint(4) not null,
     UNIQUE KEY (`phone_number`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `user_scopes` (
+    <?php require 'schema/entity_columns.php'; ?>,
+    `description` varchar(63) not null,	
+    `filters_json` text not null
+) ENGINE = MYISAM DEFAULT CHARSET=utf8;

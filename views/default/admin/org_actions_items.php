@@ -7,13 +7,13 @@ if ($org->approval == 0)
     echo view('input/post_link', array(
         'text' => __('approval:approve'),
         'confirm' => __('areyousure'),
-        'href' => "admin/approve?org_guid={$org->guid}&approval=1"
+        'href' => "/admin/approve?org_guid={$org->guid}&approval=1"
     ));
     echo " ";
     echo view('input/post_link', array(
         'text' => __('approval:reject'),
         'confirm' => __('areyousure'),
-        'href' => "admin/approve?org_guid={$org->guid}&approval=-1"
+        'href' => "/admin/approve?org_guid={$org->guid}&approval=-1"
     ));
     echo " ";
 }
@@ -22,7 +22,7 @@ else
     echo view('input/post_link', array(
         'text' => ($org->approval > 0) ? __('approval:unapprove') : __('approval:unreject'),
         'confirm' => __('areyousure'),
-        'href' => "admin/approve?org_guid={$org->guid}&approval=0"
+        'href' => "/admin/approve?org_guid={$org->guid}&approval=0"
     ));
     echo " ";
 }
@@ -31,8 +31,8 @@ if ($org->approval < 0)
 {
     echo view('input/post_link', array(
         'text' => __('approval:delete'),
-        'confirm' => __('areyousure'),        
-        'href' => "admin/delete_entity?guid={$org->guid}&next=/admin/user"
+        'confirm' => __('areyousure'),
+        'href' => "{$org->get_admin_url()}/disable"
     ));
     echo " ";
 }

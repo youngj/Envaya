@@ -12,7 +12,7 @@ class User extends Entity
     const Rejected = -1;
 
     static $table_name = 'users';
-    static $query_class = 'Query_SelectUser';
+    static $query_class = 'Query_SelectUser';    
 
     static $table_attributes = array(        
         'subtype_id' => '',
@@ -698,19 +698,21 @@ class User extends Entity
         }        
     }
     
-    function init_admin_subscriptions()
-    {        
-        foreach (EmailSubscription::$admin_subscription_classes as $cls)
-        {
-            $cls::init_admin_subscription($this);
-        }        
-    }
-    
     function init_default_email_subscriptions()
     {
         foreach (EmailSubscription::$self_subscription_classes as $cls)
         {
             $cls::init_self_subscription($this);
         }
+    }
+    
+    function update_scope()
+    {
+        $scope = UserScope::query()->where('container_guid = 0')->get();
+        if ($scope)
+        {
+            $scope = $scope->find_scope($this);
+        }        
+        $this->set_container_entity($scope);        
     }
 }

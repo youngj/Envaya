@@ -36,14 +36,17 @@ class EmailSubscription_Comments extends EmailSubscription
         $container = $this->get_container_entity();               
         if ($container instanceof Widget)
         {
-            $tr = array('{url}' => $container->get_url());                
-            return strtr(__('comment:page_subscription'), $tr);
+            return strtr(__('comment:page_subscription'), array('{url}' => $container->get_url()));
         }
-        else
+        else if ($container instanceof User)
         {
-            $tr = array('{name}' => $container->name);                
-            return strtr(__('comment:user_subscription'), $tr);
+            return strtr(__('comment:user_subscription'), array('{name}' => $container->name));
         }
+        else if ($container instanceof UserScope)
+        {
+            return strtr(__('comment:scope_subscription'), array('{scope}' => $container->get_title()));
+        }
+        return '?';
     }
     
     static function handle_mail_reply($mail, $match)

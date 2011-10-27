@@ -61,7 +61,7 @@ class Widget_News extends Widget
     
     function add_link($action)
     {
-        $org = $this->get_root_container_entity();
+        $org = $this->get_container_user();
         $home = $org->get_widget_by_class('Home');
         $links = $home->get_widget_by_class('Links');
         

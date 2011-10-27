@@ -55,7 +55,7 @@ class Widget_Post extends Widget_Generic
     
     public function get_url()
     {
-        $org = $this->get_root_container_entity();
+        $org = $this->get_container_user();
         if ($org)
         {
             return $org->get_url() . "/post/" . $this->get_url_slug();
@@ -72,7 +72,7 @@ class Widget_Post extends Widget_Generic
     
     function post_feed_items()
     {
-        $org = $this->get_root_container_entity();
+        $org = $this->get_container_user();
         $recent = timestamp() - 60*60*6;
         
         $recent_update = $org->query_feed_items()

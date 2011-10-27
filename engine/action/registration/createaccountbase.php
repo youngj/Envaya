@@ -86,12 +86,13 @@ abstract class Action_Registration_CreateAccountBase extends Action
         }
         
         // set phone number after country so canonicalization works
-        $org->set_phone_number(get_input('phone'));
-        
+        $org->set_phone_number(get_input('phone'));        
         $org->save();
 
+        $org->update_scope();
+        $org->save();
+        
         $org->init_default_widgets();
-        $org->init_admin_subscriptions();
         
         Session::login($org, false);
 

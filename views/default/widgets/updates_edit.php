@@ -1,9 +1,9 @@
 <div class='section_content'>
 <?php
     $widget = $vars['widget'];
-    $org = $widget->get_root_container_entity();       
+    $user = $widget->get_container_user();       
     
-    $items = $org->query_feed_items()->limit(6)->filter();   
+    $items = $user->query_feed_items()->limit(6)->filter();   
     
     echo view("widgets/edit_form", array(
             'widget' => $widget,

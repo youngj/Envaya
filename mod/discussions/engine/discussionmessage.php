@@ -54,7 +54,7 @@ class DiscussionMessage extends Entity
             $time = $this->time_posted;
         }
     
-        $org = $this->get_root_container_entity();    
+        $org = $this->get_container_user();    
         return get_date_text($time, array(
             'timezoneID' => $org->get_timezone_id(),
             'showTime' => true
@@ -67,7 +67,7 @@ class DiscussionMessage extends Entity
         
         if ($owner && $owner->is_approved())
         {    
-            $org = $this->get_root_container_entity();    
+            $org = $this->get_container_user();    
             FeedItem_Message::post($org, $this);
         }
     }

@@ -69,7 +69,7 @@ abstract class Query_Filter
         {
             $filters_args[] = array(
                 'subclass' => $filter->get_subclass(),
-                'args' => get_object_vars($filter)
+                'args' => $filter->args
             );
         }
         return json_encode($filters_args);        

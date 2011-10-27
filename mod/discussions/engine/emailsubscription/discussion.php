@@ -46,7 +46,7 @@ class EmailSubscription_Discussion extends EmailSubscription
     
     function send_notification($event_name, $message)
     {
-        $org = $message->get_root_container_entity();
+        $org = $message->get_container_user();
     
         if ($message->owner_guid && $message->owner_guid == $this->owner_guid)
         {        
@@ -87,16 +87,20 @@ class EmailSubscription_Discussion extends EmailSubscription
     
     function get_description()
     {
-        $container = $this->get_container_entity();               
+        $container = $this->get_container_entity();      
+        
         if ($container instanceof DiscussionTopic)
         {
-            $tr = array('{topic}' => $container->subject);                
-            return strtr(__('discussions:topic_subscription'), $tr);
+            return strtr(__('discussions:topic_subscription'), array('{topic}' => $container->subject));
         }
-        else
+        else if ($container instanceof User)
         {
-            $tr = array('{name}' => $container->name);                
-            return strtr(__('discussions:user_subscription'), $tr);
+            return strtr(__('discussions:user_subscription'), array('{name}' => $container->name));
         }        
+        else if ($container instanceof UserScope)
+        {
+            return strtr(__('discussions:scope_subscription'), array('{scope}' => $container->get_title()));            
+        }
+        return '?';
     }
 }

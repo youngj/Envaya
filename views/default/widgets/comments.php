@@ -14,7 +14,7 @@
     
     foreach ($comments as $comment)
     {
-        echo view_entity($comment);
+        echo view('widgets/comment_view', array('comment' => $comment));
     }
 ?>
 <form id='comment_form' method='POST' action='<?php echo $widget->get_url() ?>/add_comment'>

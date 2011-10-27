@@ -17,7 +17,7 @@ class SMSSubscription_Comments extends SMSSubscription
             return;
         }
         
-        $org = $comment->get_root_container_entity();        
+        $org = $comment->get_container_user();        
         $widget = $comment->get_container_entity();            
     
         if ($event_name == Comment::Added)
@@ -36,7 +36,7 @@ class SMSSubscription_Comments extends SMSSubscription
     
     function get_description()
     {
-        $user = $this->get_root_container_entity();            
+        $user = $this->get_container_user();            
         $container = $this->get_container_entity();        
         
         if ($container instanceof Widget)

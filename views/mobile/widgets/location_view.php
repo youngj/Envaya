@@ -2,12 +2,12 @@
 <?php
 
 $widget = $vars['widget'];
-$org = $widget->get_root_container_entity();
+$user = $widget->get_container_user();
 $zoom = $widget->get_metadata('zoom') ?: 10;
-$region = $org->region;
+$region = $user->region;
 
 echo "<em>";
-echo escape($org->get_location_text());
+echo escape($user->get_location_text());
 echo "</em>";
 echo "<br />";
 echo "<a href='/pg/browse/?list=1&region=".escape($region)."'>";

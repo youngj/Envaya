@@ -1,21 +1,22 @@
 <?php
+    $items = @$vars['items'] ?: array();    
 
-    $nav = view('pagination', $vars);
-        
-    echo $nav;
-      
-    $entities = @$vars['entities'];       
-    if (is_array($entities)) 
-    {
-        $elements = array_map('view_entity', $entities);
-    }
-    else
-    {    
-        $elements = @$vars['elements'] ?: array();
-    }
+    $nav = view('pagination', $vars);        
+    echo $nav;      
     
-    if (sizeof($elements) > 0)
+    if (sizeof($items) > 0)
     {
-        echo implode(@$vars['separator'] ?: '', $elements);
+        if (isset($vars['before']))
+        {
+            echo $vars['before'];
+        }
+    
+        echo implode(@$vars['separator'] ?: '', $items);
+        
+        if (isset($vars['after']))
+        {
+            echo $vars['after'];
+        }        
+        
         echo $nav;        
     }

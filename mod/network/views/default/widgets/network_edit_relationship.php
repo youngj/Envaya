@@ -23,7 +23,7 @@ if (!$org)
 }
 else
 {
-    echo view_entity($org);
+    echo view('org/search_result', array('org' => $org));
 }
 
 echo "<div style='padding-top:5px'><em>".sprintf(__('network:describe_relationship'), escape($relationship->get_subject_name()))."</em></div>";

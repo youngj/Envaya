@@ -8,7 +8,9 @@ $sites = FeaturedSite::query()->order_by('time_created desc')->limit($limit, $of
 $count = FeaturedSite::query()->count();
 
 echo view('paged_list', array(
-    'entities' => $sites,
+    'items' => array_map(function($site) { 
+        return view('org/featured_site', array('featured_site' => $site));
+    }, $sites),
     'count' => $count,
     'offset' => $offset,
     'limit' => $limit,

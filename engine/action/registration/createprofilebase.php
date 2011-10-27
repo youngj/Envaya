@@ -51,6 +51,9 @@ class Action_Registration_CreateProfileBase extends Action
         $org->setup_state = Organization::CreatedHomePage;
         $org->save();
 
+        $org->update_scope();
+        $org->save();
+        
         if ($prevSetupState < $org->setup_state && !$org->is_approved())
         {
             FeedItem_Register::post($org, $org);

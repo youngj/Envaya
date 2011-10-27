@@ -1,7 +1,7 @@
 <?php
 
-$entity = $vars['entity'];
-$org = $entity->get_container_entity();
+$featured_site = $vars['featured_site'];
+$org = $featured_site->get_container_entity();
 $show_date = isset($vars['show_date']) ? $vars['show_date'] : true;
 
 if ($org) 
@@ -10,18 +10,18 @@ if ($org)
 <div class='featured_site'>
 <div class='featured_site_name'><a href='<?php echo $org->get_url() ?>'><?php echo escape($org->name) ?></a></div>
 <?php 
-if ($entity->image_url)
+if ($featured_site->image_url)
 {
-    echo "<a href='{$org->get_url()}'><img src='".escape($entity->image_url)."' class='image_left' /></a>";
+    echo "<a href='{$org->get_url()}'><img src='".escape($featured_site->image_url)."' class='image_left' /></a>";
 }
-echo $entity->render_content(); ?>
+echo $featured_site->render_content(); ?>
 
 <?php 
 if ($show_date)
 {
 ?>
 
-<div class='blog_date'><?php echo friendly_time($entity->time_created) ?></div>
+<div class='blog_date'><?php echo friendly_time($featured_site->time_created) ?></div>
 
 <?php 
 if (Session::isadminloggedin())
@@ -29,12 +29,12 @@ if (Session::isadminloggedin())
     ?>
     <span class='admin_links'>
     <?php 
-    if (!$entity->active) 
+    if (!$featured_site->active) 
     { 
         echo view('input/post_link', array(
                 'text' => __('featured:activate'),
                 'confirm' => __('areyousure'),
-                'href' => "admin/envaya/activate_featured?guid={$entity->guid}"
+                'href' => "admin/envaya/activate_featured?guid={$featured_site->guid}"
             ));        
     } 
     else
@@ -44,12 +44,12 @@ if (Session::isadminloggedin())
         
     ?>              
     
-    <a href='/admin/envaya/edit_featured?guid=<?php echo $entity->guid ?>'><?php echo escape(__('edit')) ?></a>
+    <a href='/admin/envaya/edit_featured?guid=<?php echo $featured_site->guid ?>'><?php echo escape(__('edit')) ?></a>
     <?php
     echo view('input/post_link', array(
         'text' => __('delete'),
         'confirm' => __('areyousure'),        
-        'href' => "admin/delete_entity?guid={$entity->guid}"
+        'href' => "{$featured_site->get_admin_url()}/disable"
     ));        
     ?>
     </span>

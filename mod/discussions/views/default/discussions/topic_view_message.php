@@ -3,7 +3,7 @@
     $topic = $vars['topic'];
     $offset = (int)$vars['offset'];
     
-    echo view_entity($message);
+    echo view('discussions/message', array('message' => $message));
 
     if ($message->is_enabled()) 
     {

@@ -3,7 +3,7 @@
 
 $widget = $vars['widget'];
 
-$org = $widget->get_root_container_entity();
+$org = $widget->get_container_user();
 
 $lat = $org->get_latitude();
 $long = $org->get_longitude();

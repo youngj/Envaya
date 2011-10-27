@@ -50,6 +50,9 @@ class Action_Register extends Action
         $user->language = Language::get_current_code();
         $user->setup_state = Organization::CreatedAccount;
         $user->save();
+        
+        $user->update_scope();
+        $user->save();        
 
         $mail = OutgoingMail::create(
             sprintf(__('register:notification_subject'), $user->name),
@@ -60,7 +63,8 @@ class Action_Register extends Action
         SessionMessages::add(__('register:created_ok'));                
         if (Session::isadminloggedin())
         {            
-            $this->redirect('/admin/user');
+            $scope = $user->get_container_entity();
+            $this->redirect($scope ? $scope->get_admin_url() : $user->get_url());
         }
         else
         {

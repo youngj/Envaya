@@ -21,8 +21,12 @@
                 
     $query->limit($limit, $offset);
        
-    echo view('search/results_list', array(
-        'entities' => $query->filter(),
+    $results = $query->filter();
+       
+    echo view('org/search_results_list', array(
+        'items' => array_map(function($org) { 
+            return view('org/search_result', array('org' => $org)); 
+        }, $results),
         'count' => $query->count(),
         'offset' => $offset,
         'limit' => $limit,

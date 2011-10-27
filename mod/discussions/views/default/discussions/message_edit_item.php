@@ -16,6 +16,6 @@
     
     echo "</div>";
         
-    echo view_entity($message);
+    echo view('discussions/message', array('message' => $message));
             
     echo "</div>";

@@ -10,15 +10,18 @@
 
 foreach ($vars['duplicates'] as $dup)
 {
-    $link_start = "<a href='".url_with_param($vars['login_url'],'username',$dup->username)."'>";
-    $link_end = "</a>";
-
-    echo view('search/listing', array(
-        'icon' => $link_start.view('org/icon', array('org' => $dup)).$link_end,
-        'info' => $link_start.escape($dup->name).
-            "<br /><span style='font-size:10px'>".escape($dup->get_location_text()).
-            "<br />Username: {$dup->username}</span>".$link_end
-    ));
+    $url = url_with_param($vars['login_url'],'username',$dup->username);
+    
+    echo "<div class='search_listing'>";
+    echo "<div class='search_listing_icon' style='padding-top:4px'>";    
+    echo "<a href='{$url}'>".view('org/icon', array('org' => $dup))."</a>";
+    echo "</div>";
+    echo "<div class='search_listing_info'>";
+    echo "<div><b><a href='{$url}'>" . escape($dup->name) . "</a></b></div>";
+    echo "<span style='font-size:10px'>".escape($dup->get_location_text());
+    echo "<br />Username: {$dup->username}</span>";
+    echo "</div>";
+    echo "</div>";
 }
 
 ?>

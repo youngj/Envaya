@@ -124,7 +124,7 @@ class ExternalFeed extends Entity
         if (!$container || !$container->is_enabled())
             return false;
 
-        $root = $this->get_root_container_entity();
+        $root = $this->get_container_user();
         if (!$root || !$root->is_enabled())
             return false;
             

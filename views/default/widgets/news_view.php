@@ -31,7 +31,7 @@
 <?php
 
     echo view('paged_list', array(
-        'elements' => array_map(function($p) { return $p->render_view(); }, $posts),
+        'items' => array_map(function($p) { return $p->render_view(); }, $posts),
         'count' => $count,
         'offset' => $offset,
         'limit' => $limit,

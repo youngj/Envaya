@@ -725,7 +725,7 @@ class SMS_Controller_News extends SMS_Controller
                 '{url}' => $post->get_url(),
             )));            
             
-            $post_user = $post->get_root_container_entity();            
+            $post_user = $post->get_container_user();            
             
             $comment->send_notifications(Comment::Added);
             

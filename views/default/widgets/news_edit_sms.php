@@ -1,7 +1,7 @@
 <?php
     $widget = $vars['widget'];
     
-    $user = $widget->get_root_container_entity();
+    $user = $widget->get_container_user();
     $user_phone = $user->get_primary_phone_number();
 
     if ($user_phone)

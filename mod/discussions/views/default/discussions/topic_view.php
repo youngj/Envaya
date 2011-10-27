@@ -12,11 +12,11 @@
     echo "<div class='section_content padded'>";
     echo "<h3 style='padding-bottom:8px'>".escape($topic->translate_field('subject'))."</h3>";
     
-    $elements = array();
+    $items = array();
     
     foreach ($messages as $message)
     {
-        $elements[] = view('discussions/topic_view_message', array(
+        $items[] = view('discussions/topic_view_message', array(
             'message' => $message,
             'topic' => $topic,
             'offset' => $offset
@@ -27,7 +27,7 @@
         'offset' => $offset,
         'limit' => $limit,
         'count' => $count,
-        'elements' => $elements,
+        'items' => $items,
         'separator' => "<div style='margin:10px 0px' class='separator'></div>"
     ));
     

@@ -16,22 +16,17 @@
     {
         echo "<div class='instructions'>".__('discussions:about')."</div>";
     }
-    
-    $elements = array();
-    
-    foreach ($topics as $topic)
-    {
-        $elements[] = view('widgets/discussions_edit_topic_item', array(
-            'topic' => $topic,
-            'widget' => $widget,
-        ));
-    }
-    
+
     echo view('paged_list', array(
         'offset' => $offset,
         'limit' => $limit,
         'count' => $count,
-        'elements' => $elements,
+        'items' => array_map(function($topic) use ($widget) {
+            return view('widgets/discussions_edit_topic_item', array(
+                'topic' => $topic,
+                'widget' => $widget,
+            ));
+        }, $topics),
         'separator' => "<div style='padding:5px'></div>"
     ));
     

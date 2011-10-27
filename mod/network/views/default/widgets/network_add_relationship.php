@@ -213,7 +213,7 @@ if (!$org)
 }
 else
 {
-    echo view_entity($org);
+    echo view('org/search_result', array('org' => $org));
     
     echo "<div style='padding-top:5px'><em>".sprintf(__('network:describe_relationship'), escape($org->name))."</em></div>";
     echo view('input/tinymce', array('name' => 'content', 'track_dirty' => true));

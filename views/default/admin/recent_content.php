@@ -19,12 +19,12 @@
         
     $widgets = $query->filter();
 
-    $elements = array();
+    $items = array();
     foreach ($widgets as $widget)
     {
         ob_start();
         
-        $org = $widget->get_root_container_entity();
+        $org = $widget->get_container_user();
         echo "<h3 style='padding:5px 0px'><a href='{$widget->get_url()}'>".escape($org->name).": ".escape($widget->get_title())."</a></h3>";
         
         echo $widget->render_content();
@@ -34,15 +34,15 @@
         echo "</a>";
         echo "</div>";
         
-        $elements[] = ob_get_clean();
+        $items[] = ob_get_clean();
     }
 
     echo view('paged_list', array(
         'offset' => $offset,
         'limit' => $limit,
         'count' => null,
-        'count_displayed' => sizeof($elements),
-        'elements' => $elements,
+        'count_displayed' => sizeof($items),
+        'items' => $items,
         'separator' => "<div class='separator'></div>"
     ));    
     

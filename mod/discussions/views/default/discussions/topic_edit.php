@@ -36,11 +36,11 @@
     $count = $topic->num_messages;
     $messages = $query->filter();
 
-    $elements = array();
+    $items = array();
     
     foreach ($messages as $message)
     {
-        $elements[] = view('discussions/message_edit_item', array(
+        $items[] = view('discussions/message_edit_item', array(
             'message' => $message,
             'topic' => $topic
         ));
@@ -50,7 +50,7 @@
         'offset' => $offset,
         'limit' => $limit,
         'count' => $count,
-        'elements' => $elements,
+        'items' => $items,
         'separator' => "<div style='margin:10px 0px' class='separator'></div>"
     ));
     

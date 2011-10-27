@@ -2,7 +2,7 @@
 <?php
     $widget = $vars['widget'];
     
-    $org = $widget->get_root_container_entity();
+    $org = $widget->get_container_user();
     
     $sectors = $org->get_sectors();
 

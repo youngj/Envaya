@@ -6,7 +6,7 @@ class SMSSubscription_News extends SMSSubscription
 
     function send_notification($event_name, $post)
     {        
-        $org = $post->get_root_container_entity();
+        $org = $post->get_container_user();
         
         $sender_phone = $post->get_metadata('phone_number');        
         if ($this->phone_number == $sender_phone)
@@ -29,7 +29,7 @@ class SMSSubscription_News extends SMSSubscription
     
     function get_description()
     {
-        $user = $this->get_root_container_entity();          
+        $user = $this->get_container_user();          
         return "N {$user->username}";
     }
 }

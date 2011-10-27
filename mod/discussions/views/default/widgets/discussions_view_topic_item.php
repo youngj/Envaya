@@ -1,5 +1,5 @@
 <?php
-    $topic = $vars['entity'];
+    $topic = $vars['topic'];
         
     $url = $topic->get_url();        
     echo "<div><a class='discussionTopic' href='$url'>";

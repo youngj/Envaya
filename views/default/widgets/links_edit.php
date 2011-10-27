@@ -1,7 +1,7 @@
 <div class='section_content padded'>
 <?php 
     $widget = $vars['widget'];
-    $org = $widget->get_root_container_entity();
+    $org = $widget->get_container_user();
     
     $query = $org->query_external_sites();    
     $sites = $query->filter();
@@ -74,7 +74,7 @@ function getLinkInfo()
     {
         echo "<tr>";
         echo "<td>";
-        echo view_entity($site, array('target' => '_blank'));
+        echo view('widgets/links_view_site', array('site' => $site, 'target' => '_blank'));
         echo "</td>";
         echo "<td>";
         echo view('input/post_link', array(

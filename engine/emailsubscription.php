@@ -18,11 +18,6 @@ abstract class EmailSubscription extends Subscription
         'EmailSubscription_Network',
     );
     
-    // subscription that admins are automatically subscribed to for each user
-    static $admin_subscription_classes = array(
-        'EmailSubscription_Comments',
-    );    
-
     static function init_self_subscription($user)
     {
         $email = $user->email;
@@ -34,17 +29,7 @@ abstract class EmailSubscription extends Subscription
             ));
         }
     }
-    
-    static function init_admin_subscription($user)
-    {
-        $email = Config::get('admin_email');
-    
-        static::init_for_entity($user, $email, array(
-            'owner_guid' => 0, 
-            'language' => Config::get('language')
-        ));
-    }        
-    
+        
     function get_key()
     {
         return $this->email;

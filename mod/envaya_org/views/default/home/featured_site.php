@@ -6,7 +6,7 @@
 $activeSite = FeaturedSite::get_active();
 if ($activeSite)
 {
-    echo view_entity($activeSite, array('show_date' => false));
+    echo view('org/featured_site', array('featured_site' => $activeSite, 'show_date' => false));
 }
 ?>
 

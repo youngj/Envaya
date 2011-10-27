@@ -87,24 +87,6 @@ function view_exists($view, $viewtype = null, $fallback = true)
     return Views::get_path($view, $viewtype, $fallback) != null; 
 }
 
-/**
- * @param Entity $entity The entity to display
-
- * @return string HTML (etc) to display
- */
-function view_entity($entity, $args = null) 
-{
-    if (!$args)
-    {
-        $args = array();
-    }
-    $args['entity'] = $entity;
-    
-    return $entity 
-        ? view($entity->get_default_view_name(), $args)
-        : '';
-}
-
 function render_custom_view($view, $vars, $template_vars=null)
 {
     $template = @$vars['design']['custom_views'][$view];

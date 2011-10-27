@@ -37,5 +37,4 @@ Engine::add_autoload_action('IncomingMail', function() {
 
 Engine::add_autoload_action('EmailSubscription', function() {
     EmailSubscription::$self_subscription_classes[] = 'EmailSubscription_Discussion';
-    EmailSubscription::$admin_subscription_classes[] = 'EmailSubscription_Discussion';
 });

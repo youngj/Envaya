@@ -34,7 +34,7 @@ class Widget_Links extends Widget
     {
         $guid = get_input('guid');
         
-        $org = $this->get_root_container_entity();        
+        $org = $this->get_container_user();        
         $site = $org->query_external_sites()->guid($guid)->get();
         if ($site)
         {
@@ -66,7 +66,7 @@ class Widget_Links extends Widget
             ExternalFeed::validate_url($feed_url);
         }
         
-        $org = $this->get_root_container_entity();                
+        $org = $this->get_container_user();                
         $site = $org->query_external_sites()->where('url = ?', $url)->get();
         if (!$site)
         {
@@ -96,7 +96,7 @@ class Widget_Links extends Widget
         $action->set_content_type('text/javascript');                
         $url = get_input('url');
         
-        $org = $this->get_root_container_entity();                
+        $org = $this->get_container_user();                
         $news = $org->get_widget_by_class('News');        
         
         $link_info = ExternalSite::get_linkinfo($url, $news->can_add_feed());        

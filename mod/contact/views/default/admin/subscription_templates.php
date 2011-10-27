@@ -11,7 +11,7 @@
     $templates = $query->limit($limit, $offset)->filter();
     $count = $query->count();
     
-    $elements = array();
+    $items = array();
     
     $escFrom = urlencode(get_input('from'));
     
@@ -48,11 +48,11 @@
                 
         echo "</div>";
         
-        $elements[] = ob_get_clean();
+        $items[] = ob_get_clean();
     }
    
     echo view('paged_list', array(
-        'elements' => $elements,
+        'items' => $items,
         'count' => $count,
         'offset' => $offset,
         'limit' => $limit,

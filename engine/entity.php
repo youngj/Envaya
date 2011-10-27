@@ -34,6 +34,7 @@ abstract class Entity extends Model
     static $query_class = 'Query_SelectEntity';
     static $primary_key = 'guid';    
     static $current_request_entities = array();
+    static $admin_view = null;
     
     protected $guess_language_field;
     
@@ -309,11 +310,6 @@ abstract class Entity extends Model
         {
             $this->time_created = $time;
         }        
-        
-        if ($this->container_guid == 0)
-        {
-            $this->container_guid = $this->owner_guid;
-        }
                 
         $guid = $this->guid;
         
@@ -422,26 +418,6 @@ abstract class Entity extends Model
         $this->container_entity = $entity;
         $this->container_guid = $entity->guid;
     }
-
-    function get_root_container_entity()
-    {
-        if ($this->container_guid)
-        {
-            $containerEntity = $this->get_container_entity();
-            if ($containerEntity == null || $containerEntity->guid == $this->guid)
-            {
-                return $this;
-            }
-            else
-            {
-                return $containerEntity->get_root_container_entity();
-            }
-        }
-        else
-        {
-            return $this;
-        }
-    }   
     
     function save_draft($content)
     {
@@ -536,10 +512,10 @@ abstract class Entity extends Model
             // if the user's default language is not supported by Google Translate,
             // assume that the text is in that language if Google Translate fails
         
-            $root = $this->get_root_container_entity();
-            if ($root && $root->language && !GoogleTranslate::is_supported_language($root->language))
+            $user = $this->get_container_user();
+            if ($user && $user->language && !GoogleTranslate::is_supported_language($user->language))
             {
-                $this->language = $root->language;
+                $this->language = $user->language;
             }
         }
         
@@ -550,6 +526,27 @@ abstract class Entity extends Model
         $this->clear_from_cache();
     }
     
+    function get_container_user()
+    {
+        $cur = $this;
+        
+        while ($cur)
+        {
+            if ($cur instanceof User)
+            {
+                return $cur;
+            }
+            
+            $next = $cur->get_container_entity();
+            if ($cur == $next)
+            {
+                break;
+            }                        
+            $cur = $next;
+        }
+        return null;    
+    }           
+    
     function get_local_id()
     {
         $row = Database::get_row("SELECT * FROM local_ids where guid = ?", array($this->guid));
@@ -558,7 +555,7 @@ abstract class Entity extends Model
             return $row->local_id;
         }
         
-        $user = $this->get_root_container_entity();
+        $user = $this->get_container_user();
         
         $max_row = Database::get_row("SELECT max(local_id) as max FROM local_ids where user_guid = ?", array($user->guid));
         
@@ -581,6 +578,11 @@ abstract class Entity extends Model
             }
         }
         return null;
+    }    
+    
+    function get_admin_url()
+    {
+        return "/admin/entity/{$this->guid}";
     }
                     
     // Loggable interface

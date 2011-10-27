@@ -24,4 +24,5 @@
     
     'comment:user_subscription' => "Comments on {name}'s website",
     'comment:page_subscription' => "Comments on {url}",    
+    'comment:scope_subscription' => "Comments from {scope}",    
 );

@@ -23,7 +23,7 @@ class Widget_Location extends Widget
     
     function process_input($action)
     {
-        $org = $this->get_root_container_entity();
+        $org = $this->get_container_user();
 
         $org->set_lat_long(get_input('lat'), get_input('long'));
 

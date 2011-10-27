@@ -7,12 +7,35 @@
  */
 class Controller_Admin extends Controller
 {
-    static $routes; // initialized at bottom of file
+    static $routes = array(
+        array(
+            'regex' => '/entity/(?P<entity_guid>\d+)(/(?P<action>\w+))?\b',
+            'defaults' => array('action' => 'view'),
+            'action' => 'entity_<action>',
+            'before' => 'init_entity_from_guid',
+        ),    
+        array(
+            'regex' => '/(?P<action>\w+)\b',
+        ),        
+    );
 
     function before()
     {
         $this->require_admin();
         $this->page_draw_vars['theme_name'] = 'editor';
+    }
+    
+    function init_entity_from_guid()
+    {
+        $guid = $this->param('entity_guid');
+        
+        $entity = Entity::get_by_guid($guid, true);
+        if (!$entity)
+        {
+            throw new NotFoundException();
+        }
+        
+        $this->params['entity'] = $entity;
     }
     
     function action_resend_mail()
@@ -115,62 +138,6 @@ class Controller_Admin extends Controller
             'content' => view("admin/statistics")
         ));
     }
-
-    function action_user()
-    {
-        $search = get_input('s');
-        $limit = get_input('limit', 10);
-        $offset = get_input('offset', 0);
-        
-        $count = User::query()->count();
-        $entities = User::query()->limit($limit, $offset)->order_by('guid desc')->filter();
-
-        $result = view('paged_list', array(
-            'entities' => $entities,
-            'count' => $count,
-            'offset' => $offset,
-            'limit' => $limit,
-        ));        
-
-        $this->page_draw(array(
-            'title' => __("admin:user"),
-            'content' => view("admin/user", array('list' => $result)),
-        ));        
-    }
-
-    function action_search()
-    {
-        $tag = get_input('tag');
-        
-        $limit = 10;
-        $offset = (int)get_input('offset');
-
-        $object = get_input('object');
-       
-        $query = User::query()->where('(INSTR(username, ?) > 0 OR INSTR(name, ?) > 0)', $tag, $tag);
-       
-        $users = $query->limit($limit, $offset)->filter();
-        $count = $query->count();
-        
-        if ($users)
-        {
-            $content = view('search/results_list', array(
-                'entities' => $users,
-                'count' => $count,
-                'offset' => $offset,
-                'limit' => $limit,
-            ));            
-        }
-        else
-        {
-            $content = __('search:noresults');
-        }
-                
-        $this->page_draw(array(
-            'title' => sprintf(__('search:title_with_query'),$tag),
-            'content' => view('section', array('content' => $content)),
-        ));
-    }
     
     function action_logbrowser()
     {
@@ -227,7 +194,6 @@ class Controller_Admin extends Controller
                 'entries' => $log
             ))
         ));
-
     }
     
     function action_approve()
@@ -236,11 +202,31 @@ class Controller_Admin extends Controller
         $action->execute();
     }
 
-    function action_delete_entity()
+    function entity_disable()
     {
-        $action = new Action_Admin_DeleteEntity($this);
+        $action = new Action_Admin_DisableEntity($this);
         $action->execute();
     }            
-}
 
-Controller_Admin::$routes = Controller::$SIMPLE_ROUTES;
+    function entity_enable()
+    {
+        $action = new Action_Admin_EnableEntity($this);
+        $action->execute();
+    }
+    
+    function entity_view()
+    {
+        $action = new Action_Admin_ViewEntity($this);
+        $action->execute();
+    }
+    
+    function action_entities()
+    {
+        $root_entity = UserScope::get_root();
+        if (!$root_entity)
+        {
+            throw new NotFoundException();
+        }        
+        $this->redirect("/admin/entity/{$root_entity->guid}");
+    }
+}

@@ -16,6 +16,6 @@
     
     echo "</div>";
         
-    echo view_entity($topic);
+    echo view('widgets/discussions_view_topic_item', array('topic' => $topic));
             
     echo "</div>";

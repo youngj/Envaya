@@ -183,7 +183,7 @@ class Widget extends Entity
         }
         else
         {
-            $org = $container->get_root_container_entity();
+            $org = $container->get_container_user();
             if ($this->guid)
             {
                 return "{$org->get_url()}/widget/{$this->get_url_slug()}";
@@ -224,12 +224,12 @@ class Widget extends Entity
     
     function post_feed_items()
     {
-        return FeedItem_NewWidget::post($this->get_root_container_entity(), $this);
+        return FeedItem_NewWidget::post($this->get_container_user(), $this);
     }
     
     function post_feed_items_edit()    
     {
-        return FeedItem_EditWidget::post($this->get_root_container_entity(), $this); 
+        return FeedItem_EditWidget::post($this->get_container_user(), $this); 
     }
     
     static function is_valid_name($widget_name)
@@ -313,5 +313,5 @@ class Widget extends Entity
     function refresh_attributes()
     {
 		$this->num_comments = $this->query_comments()->count();
-    }
+    }    
 }

@@ -1,5 +1,5 @@
 <?php
-    $message = $vars['entity'];
+    $message = $vars['message'];
     
     echo "<div id='msg{$message->guid}'>";
     

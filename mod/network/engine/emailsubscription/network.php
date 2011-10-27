@@ -36,7 +36,7 @@ class EmailSubscription_Network extends EmailSubscription
     
     function get_description()
     {
-        $user = $this->get_root_container_entity();    
+        $user = $this->get_container_user();    
         $tr = array('{name}' => $user->name);
         return strtr(__('network:subscription'), $tr);
     }

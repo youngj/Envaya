@@ -677,53 +677,32 @@ class RegisterTest extends SeleniumTest
 
     private function _testDeleteOrg()
     {
-        $this->open("/admin/user");
+        $this->open("/admin/entities");
         $this->login('testadmin','testtest');
+        
+        $this->open("/{$this->username}");
 
-        $this->clickAndWait("//a[contains(@href,'selenium')]");
-
-        while (true)
+        try
         {
-            if ($this->isElementPresent("//button[@id='widget_delete']"))
-            {
-                $this->click("//button[@id='widget_delete']");
-                $this->getConfirmation();
-                $this->waitForPageToLoad(10000);            
-            }
-            else
-            {
-            
-                try
-                {
-                    $this->click("//a[contains(@href,'approval=0')]");
-                    $this->getConfirmation();
-                    $this->waitForPageToLoad(10000);
-                }
-                catch (Testing_Selenium_Exception $ex) {}
-
-                try
-                {
-                    $this->click("//a[contains(@href,'approval=-1')]");
-                    $this->getConfirmation();
-                    $this->waitForPageToLoad(10000);
-                }
-                catch (Testing_Selenium_Exception $ex) {}
-
-                $this->click("//a[contains(@href,'delete')]");
-                $this->getConfirmation();
-                $this->waitForPageToLoad(10000);            
-            }
-
-            $this->ensureGoodMessage();
-            try
-            {
-                $this->clickAndWait("//a[contains(@href,'selenium')]");
-            }
-            catch (Testing_Selenium_Exception $ex)
-            {
-                break;
-            }
+            $this->click("//a[contains(@href,'approval=0')]");
+            $this->getConfirmation();
+            $this->waitForPageToLoad(10000);
         }
+        catch (Testing_Selenium_Exception $ex) {}
+
+        try
+        {
+            $this->click("//a[contains(@href,'approval=-1')]");
+            $this->getConfirmation();
+            $this->waitForPageToLoad(10000);
+        }
+        catch (Testing_Selenium_Exception $ex) {}
+
+        $this->click("//a[contains(@href,'disable')]");
+        $this->getConfirmation();
+        $this->waitForPageToLoad(10000);            
+
+        $this->ensureGoodMessage();
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
     }
 }

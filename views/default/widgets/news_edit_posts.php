@@ -15,18 +15,13 @@
     
     if ($count)
     {
-        $elements = array();
-        
-        foreach ($updates as $update)
-        {        
-            $elements[] = view('widgets/news_edit_post_item', array('widget' => $update));
-        }
-        
         echo view('paged_list',array(
             'offset' => $offset,
             'count' => $count,
             'limit' => $limit,
-            'elements' => $elements,
+            'items' => array_map(function($update) { 
+                return view('widgets/news_edit_post_item', array('widget' => $update));
+            }, $updates),
             'separator' => "<div class='separator'></div>"
         ));        
     }

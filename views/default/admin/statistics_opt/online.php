@@ -6,14 +6,20 @@
         $limit = 10;
         
         $time = timestamp() - 600;
-        $query = User::query()->where('last_action >= ?', $time)->order_by('last_action')->limit($limit, $offset);
+        $query = User::query()
+            ->where('last_action >= ?', $time)
+            ->order_by('last_action')
+            ->limit($limit, $offset);        
         
-        $objects = $query->filter();
+        $users = $query->filter();
 
-        if ($objects)
+        if ($users)
         {
             echo view('paged_list', array(
-                'entities' => $objects,
+                'items' => array_map(function($user) { 
+                    return "<a href='{$user->get_url()}'>".escape($user->name)."</a>";
+                }, $users),
+                'separator' => '<br />',
                 'count' => $query->count(),
                 'offset' => $offset,
                 'limit' => $limit,

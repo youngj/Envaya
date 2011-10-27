@@ -15,6 +15,7 @@ class EntityRegistry
     private static $subtype_to_class = array(
         'core.user' => 'User',
         'core.user.org' => 'Organization',
+        'core.scope' => 'UserScope',
         'core.comment' => 'Comment',        
         'core.subscription.sms' => "SMSSubscription",
         'core.subscription.sms.comments' => "SMSSubscription_Comments",

@@ -31,9 +31,11 @@
     
     echo "<div style='height:10px'></div>";
     
-    $elements = array_map('view_entity', $topics);    
+    $items = array_map(function($topic) {
+        return view('widgets/discussions_view_topic_item', array('topic' => $topic));
+    }, $topics);    
         
-    echo implode('', $elements);
+    echo implode('', $items);
     
     echo view('pagination', array(
         'offset' => $offset,

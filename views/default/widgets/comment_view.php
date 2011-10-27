@@ -1,5 +1,5 @@
 <?php
-    $comment = $vars['entity'];    
+    $comment = $vars['comment'];    
     
     echo "<div class='comment' id='comment{$comment->guid}'>";
     

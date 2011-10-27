@@ -69,8 +69,10 @@ return array(
     'error:QueueConnectFailed' => "Error connecting to queue",    
     'error:QueueAppendFailed' => "Error appending to queue",    
 
-    'entity:delete:success' => 'Entity %s has been deleted',
-    'entity:delete:fail' => 'Entity %s could not be deleted',
+    'entity:enable' => 'Enable',
+    'entity:disable' => 'Disable',
+    'entity:enabled' => 'Entity enabled.',
+    'entity:disabled' => 'Entity disabled.',
 
     'logbrowser' => 'Log browser',
     'logbrowser:search' => 'Refine results',
