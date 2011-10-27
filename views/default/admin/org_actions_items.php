@@ -36,11 +36,13 @@ if ($org->approval < 0)
     ));
     echo " ";
 }
-        
+
 echo " ";
 echo "<a href='/{$org->username}/dashboard'>".__('edit_site')."</a>";
 echo " ";
 echo "<a href='/{$org->username}/settings'>".__('settings')."</a>";
+echo " ";
+echo "<a href='/{$org->username}/design'>".__('design:edit')."</a>";
 echo " ";
 echo "<a href='/{$org->username}/domains'>".__('domains:edit')."</a>";
 echo " ";

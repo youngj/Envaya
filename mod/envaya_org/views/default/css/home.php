@@ -80,7 +80,7 @@
     display:block;
     width:142px;
     height:43px;
-    background:url(<?php echo $graphicsDir ?>/sprite2.png) no-repeat left -71px;    
+    background:url(<?php echo $graphicsDir ?>/sprite3.png) no-repeat left -71px;    
 }
 
 .home_button:hover
@@ -106,7 +106,7 @@
     height:61px;
     margin:0 auto;
     text-align:center;
-    background:url(<?php echo $graphicsDir ?>/sprite2.png) no-repeat left top;
+    background:url(<?php echo $graphicsDir ?>/sprite3.png) no-repeat left top;
 }
 
 .home_table

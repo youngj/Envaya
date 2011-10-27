@@ -1,6 +1,6 @@
 .follow_icon
 {
-    background:url(/_media/images/home/sprite2.png) no-repeat left top;
+    background:url(/_media/images/home/sprite3.png) no-repeat left top;
     display:block;
     float:left;
     width:36px;
