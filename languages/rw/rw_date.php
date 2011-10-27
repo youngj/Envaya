@@ -10,7 +10,7 @@ return array(
     'date:days_ago:singular' => 'Ejo hashize',
     'date:no_year' => '{day} {month}',
     'date:with_year' => '{day} {month}, {year}',
-    'date:time' => '{hour}:{minute} {tz}',
+    'date:time' => '[hour]:{minute}',
     'date:time_with_tz' => '{time} {tz}',
     'date:date_time' => '{date} at {time}',
     'date:date_name' => '{date} by {name}',

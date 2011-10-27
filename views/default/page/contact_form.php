@@ -11,7 +11,7 @@
 ?>
 </div>
 <div class='input'>
-<label><?php echo __('message:name') ?></label>
+<label><?php echo __('message:name') ?></label><br />
 <?php
 
     $name = Session::isloggedin() ? Session::get_loggedin_user()->name : Session::get('user_name');
@@ -23,7 +23,7 @@
 ?>
 </div>
 <div class='input'>
-<label><?php echo __('message:email') ?></label>
+<label><?php echo __('message:email') ?></label><br />
 <?php
     $email = Session::isloggedin() ? Session::get_loggedin_user()->email : '';
 
