@@ -10,6 +10,9 @@
     'comment:publish' => "Publish comment",
     'comment:success' => "Your comment has been published.",        
     'comment:location' => "Your location:",
+    'comment:email' => 'Your email:',
+    'comment:optional' => '(optional)',
+    'comment:email_help' => 'Your email address will not be published.',
     'comment:empty' => "Comment was empty.",
     'comment:deleted' => "Comment deleted.",
     'comment:not_deleted' => "Comment could not be deleted.",
@@ -18,4 +21,7 @@
     'comment:captcha_instructions' => "Type the letters that appear below to publish your comment.",
     'comment:notification_subject' => "{name} added a new comment",
     'comment:confirm_delete' => "Are you sure you want to delete this comment?",
+    
+    'comment:user_subscription' => "Comments on {name}'s website",
+    'comment:page_subscription' => "Comments on {url}",    
 );

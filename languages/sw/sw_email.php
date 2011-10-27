@@ -10,5 +10,4 @@ return array(
     'email:invalid_url' => "Haiwezikani kupata mipangilio yako ya kutaarifu. Kama ikiwa umenakili kiungo kutoka kwenye email yako, tafadhali hakikisha kwamba anwani (URL) hapa ni sawasawa na anwani kutoka email.",    
     
     'email:subscriptions' => 'Sajili %s kwa:',
-    'email:subscribe_comments' => 'Maoni katika tovuti ya {name}',
 );

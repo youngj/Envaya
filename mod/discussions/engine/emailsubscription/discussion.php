@@ -87,8 +87,16 @@ class EmailSubscription_Discussion extends EmailSubscription
     
     function get_description()
     {
-        $user = $this->get_root_container_entity();    
-        $tr = array('{name}' => $user->name);
-        return strtr(__('discussions:subscription'), $tr);
+        $container = $this->get_container_entity();               
+        if ($container instanceof DiscussionTopic)
+        {
+            $tr = array('{topic}' => $container->subject);                
+            return strtr(__('discussions:topic_subscription'), $tr);
+        }
+        else
+        {
+            $tr = array('{name}' => $container->name);                
+            return strtr(__('discussions:user_subscription'), $tr);
+        }        
     }
 }

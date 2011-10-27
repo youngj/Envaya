@@ -31,5 +31,6 @@ return array(
     'discussions:other_link' => "Majadiliano mengine kwenye Envaya",
     'discussions:latest' => "Majadiliano Mapya",
 
-    'discussions:subscription' => "Ujumbe wa majadiliano katika tovuti ya {name}",               
+    'discussions:user_subscription' => "Ujumbe wa majadiliano katika tovuti ya {name}",               
+    'discussions:topic_subscription' => "Ujumbe katika \"{topic}\"",
 );

@@ -11,7 +11,7 @@ class EmailSubscription_Comments extends EmailSubscription
             return;
         }
         
-        if ($comment->get_metadata('email') == $this->email)
+        if ($comment->email == $this->email)
         {
             return;
         }
@@ -33,9 +33,17 @@ class EmailSubscription_Comments extends EmailSubscription
     
     function get_description()
     {
-        $user = $this->get_root_container_entity();    
-        $tr = array('{name}' => $user->name);
-        return strtr(__('email:subscribe_comments'), $tr);
+        $container = $this->get_container_entity();               
+        if ($container instanceof Widget)
+        {
+            $tr = array('{url}' => $container->get_url());                
+            return strtr(__('comment:page_subscription'), $tr);
+        }
+        else
+        {
+            $tr = array('{name}' => $container->name);                
+            return strtr(__('comment:user_subscription'), $tr);
+        }
     }
     
     static function handle_mail_reply($mail, $match)
@@ -61,7 +69,7 @@ class EmailSubscription_Comments extends EmailSubscription
         $reply = new Comment();
         $reply->container_guid = $widget->guid;    
         $reply->name = @$parsed_address['name'];
-        $reply->set_metadata('email', @$parsed_address['address']);
+        $reply->email = @$parsed_address['address'];
         $reply->location = "via email";
         $reply->set_content(nl2br(escape(IncomingMail::strip_quoted_text($mail->text))), true);
         $reply->save();

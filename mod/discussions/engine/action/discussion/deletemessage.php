@@ -15,6 +15,15 @@ class Action_Discussion_DeleteMessage extends Action
         $message->disable();
         $message->save();
         
+        $email = $message->from_email;
+        if ($email && 
+            $topic->query_messages()
+                ->where('from_email = ?', $email)
+                ->is_empty())
+        {
+            EmailSubscription_Discussion::delete_for_entity($topic, $email);
+        }
+        
         SessionMessages::add(__('discussions:message_deleted'));
         
         if ($topic->query_messages()->is_empty())

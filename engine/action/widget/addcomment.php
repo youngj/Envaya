@@ -22,7 +22,8 @@ class Action_Widget_AddComment extends Action
      
         $name = get_input('name');
         $content = get_input('content');
-        $location = get_input('location');
+        $location = get_input('location');              
+        $email = EmailAddress::validate(get_input('email'));
         
         if (!$content)
         {   
@@ -42,9 +43,11 @@ class Action_Widget_AddComment extends Action
 		
         Session::set('user_name', $name);
         Session::set('user_location', $location);
+        Session::set('user_email', $email);
         
 		$comment = new Comment();
 		$comment->container_guid = $widget->guid;
+        $comment->email = $email;
 		$comment->owner_guid = $userId;
 		$comment->name = $name;
         $comment->location = $location;
@@ -52,14 +55,19 @@ class Action_Widget_AddComment extends Action
 		$comment->save();
 	
         $widget->refresh_attributes();
-		$widget->save();    	
+		$widget->save();
         
 		if (!$userId)
 		{
             $comment->set_session_owner();
-		}
-		
+		}		
+        
         $comment->send_notifications(Comment::Added);
+        
+        if ($email)
+        {
+            EmailSubscription_Comments::init_for_entity($widget, $email);
+        }
 		
 		SessionMessages::add(__('comment:success'));
 		$this->redirect($comments_url);        

@@ -35,9 +35,11 @@ class Action_Discussion_AddMessage extends Action
         }    
 
         $location = get_input('location');
+        $email = EmailAddress::validate(get_input('email'));
         
         Session::set('user_name', $name);
         Session::set('user_location', $location);
+        Session::set('user_email', $email);
         
         $user = Session::get_loggedin_user();
         
@@ -48,6 +50,7 @@ class Action_Discussion_AddMessage extends Action
         $message = $topic->new_message();
         $message->from_name = $name;
         $message->from_location = $location;
+        $message->from_email = $email;
         $message->subject = "RE: {$topic->subject}";
         $message->time_posted = $time;
         $message->set_content($content, true);
@@ -55,7 +58,6 @@ class Action_Discussion_AddMessage extends Action
         
         if ($user)
         {
-            $message->from_email = $user->email;
             $message->owner_guid = $user->guid;            
         } 
         $message->save();
@@ -71,6 +73,11 @@ class Action_Discussion_AddMessage extends Action
         $message->post_feed_items();
         
         $message->send_notifications(DiscussionMessage::Added);
+        
+        if ($email)
+        {
+            EmailSubscription_Discussion::init_for_entity($topic, $email);
+        }
         
         SessionMessages::add_html(__('discussions:message_added')
             . view('discussions/invite_link', array('topic' => $topic)));        

@@ -50,6 +50,17 @@ abstract class EmailSubscription extends Subscription
         return $this->email;
     }
     
+    static function delete_for_entity($entity, $email)
+    {
+        foreach (static::query_for_entity($entity)
+            ->show_disabled(true)
+            ->where('email = ?', $email)
+            ->filter() as $subscription)
+        {
+            $subscription->delete();
+        }
+    }
+    
     static function init_for_entity($entity, $email, $defaults = null)
     {
         if (!EmailAddress::is_valid($email))

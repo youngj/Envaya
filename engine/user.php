@@ -430,11 +430,11 @@ class User extends Entity
         return $password;
     }    
     
-    public function get_country_text()
+    public function get_country_text($lang = null)
     {
         if ($this->country)
         {
-            return __("country:{$this->country}");
+            return __("country:{$this->country}", $lang);
         }
         else
         {
@@ -442,7 +442,7 @@ class User extends Entity
         }
     }    
     
-    public function get_location_text($includeRegion = true)
+    public function get_location_text($includeRegion = true, $lang = null)
     {
         $res = '';
 
@@ -452,21 +452,23 @@ class User extends Entity
         }
         if ($this->region && $includeRegion)
         {
-            $regionText = __($this->region);
+            $regionText = __($this->region, $lang);
 
             if ($regionText != $this->city)
             {
                 $res .= "$regionText, ";
             }
         }
-        $res .= $this->get_country_text();
+        $res .= $this->get_country_text($lang);
 
         return $res;
     }
         
     function geocode_lat_long()
     {
-        $latlong = Geography::geocode($this->get_location_text());
+        $latlong = Geography::geocode(
+            $this->get_location_text(true, Config::get('language'))            
+        );
         if ($latlong)
         {
             $this->set_lat_long($latlong['lat'], $latlong['long']);

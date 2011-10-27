@@ -24,22 +24,40 @@ class Action_Discussion_EditMessage extends Action
             throw new ValidationException(__('discussions:content_missing'));
         }        
 
-        $location = get_input('location');
+        $location = get_input('location');        
+        $email = EmailAddress::validate(get_input('email'));
         
         Session::set('user_name', $name);
         Session::set('user_location', $location);
+        Session::set('user_email', $email);
         
         $user = Session::get_loggedin_user();
         
         $content = Markup::sanitize_html($content, array('Envaya.Untrusted' => !$user));
         
+        $prev_email = $message->from_email;
+        
         $message->from_name = $name;
         $message->from_location = $location;
+        $message->from_email = $email;
         $message->set_content($content, true);
         $message->save();
         
         $topic->refresh_attributes();
         $topic->save();
+        
+        if ($prev_email && 
+            $topic->query_messages()
+                ->where('from_email = ?', $prev_email)
+                ->is_empty())
+        {
+            EmailSubscription_Discussion::delete_for_entity($topic, $prev_email);
+        }
+        
+        if ($email)
+        {
+            EmailSubscription_Discussion::init_for_entity($topic, $email);
+        }        
         
         SessionMessages::add_html(__('discussions:message_saved')
             . view('discussions/invite_link', array('topic' => $topic)));        

@@ -5,7 +5,6 @@ return array(
     'contact:time_created' => "Registered",
     'contact:time_updated' => "Updated",
     'contact:num_pages' => "# Pages",
-    'contact:last_notify' => "Last Email",
 
     'contact:template_list' => "%s Templates",       
     'contact:add_template' => "Add %s Template",

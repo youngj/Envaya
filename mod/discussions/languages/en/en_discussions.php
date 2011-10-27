@@ -33,5 +33,6 @@ return array(
     'discussions:latest' => "Latest Discussions",
     'discussions:reply' => "Reply",
     
-    'discussions:subscription' => "Discussion messages on {name}'s website",
+    'discussions:user_subscription' => "Discussion messages on {name}'s website",
+    'discussions:topic_subscription' => "Messages in \"{topic}\"",
 );

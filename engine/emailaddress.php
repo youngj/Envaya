@@ -19,7 +19,7 @@ class EmailAddress
     
     static function is_valid($address)
     {
-        return preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+$/i', $address);
+        return preg_match('/^[A-Z0-9\._\%\+\-]+@[A-Z0-9\.\-]+\.[A-Z0-9]+$/i', $address);
     }
     
     /*

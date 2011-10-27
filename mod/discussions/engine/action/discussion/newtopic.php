@@ -56,9 +56,12 @@ class Action_Discussion_NewTopic extends Action
 
         $content = Markup::sanitize_html($content, array('Envaya.Untrusted' => !$user));
                 
-        Session::set('user_name', $name);
         $location = get_input('location');
+        $email = EmailAddress::validate(get_input('email'));        
+                
+        Session::set('user_name', $name);
         Session::set('user_location', $location);
+        Session::set('user_email', $email);
         
         $now = timestamp();
       
@@ -99,6 +102,11 @@ class Action_Discussion_NewTopic extends Action
         $message->post_feed_items();
         
         $message->send_notifications(DiscussionMessage::NewTopic);
+        
+        if ($email)
+        {
+            EmailSubscription_Discussion::init_for_entity($topic, $email);
+        }        
         
         SessionMessages::add_html(__('discussions:topic_added')
             . view('discussions/invite_link', array('topic' => $topic)));        

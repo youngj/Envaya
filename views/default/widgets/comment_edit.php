@@ -12,7 +12,8 @@
     ));
     echo view('widgets/comment_user_info', array(
         'name' => $comment->name,
-        'location' => $comment->location
+        'location' => $comment->location,
+        'email' => $comment->get_metadata('email')
     ));
     echo view('input/securitytoken');
     

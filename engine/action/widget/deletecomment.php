@@ -17,6 +17,16 @@ class Action_Widget_DeleteComment extends Action
         $widget->refresh_attributes();
         $widget->save();
 
+        $email = $comment->email;
+        
+        if ($email && 
+            $widget->query_comments()
+                ->where('email = ?', $email)
+                ->is_empty())
+        {
+            EmailSubscription_Comments::delete_for_entity($widget, $email);
+        }        
+        
         SessionMessages::add(__('comment:deleted'));
         
         $this->redirect($widget->get_url());

@@ -14,6 +14,7 @@ class Comment extends Entity
     static $table_attributes = array(
         'name' => '',
         'location' => '',
+        'email' => '',
     );   
     static $mixin_classes = array(
         'Mixin_Content'
