@@ -6,8 +6,6 @@
  */
 class InterfaceKey extends TranslationKey
 {
-    static $query_subtype_ids = array('translate.interface.key');
-
     function update($recursive = false)
     {
         parent::update();

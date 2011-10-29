@@ -305,11 +305,6 @@ class Widget extends Entity
         parent::save_draft($content);            
     }
     
-    function can_user_view($user)
-    {
-        return parent::can_user_view($user) && ($this->publish_status == Widget::Published || $this->can_user_edit($user));
-    }
-    
     function refresh_attributes()
     {
 		$this->num_comments = $this->query_comments()->count();

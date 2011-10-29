@@ -27,7 +27,7 @@ class FeedItem_Relationship extends FeedItem
         }        
         
         return strtr(__('network:feed_heading'), array(
-            '{name}' => $this->get_org_link($mode),
+            '{name}' => $this->get_user_link($mode),
             '{subject}' => $subject_html,
             '{type}' => $list_name
         ));

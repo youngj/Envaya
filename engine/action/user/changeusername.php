@@ -4,7 +4,7 @@ class Action_User_ChangeUsername extends Action
 {
     function before()
     {
-        $this->require_site_editor();
+        Permission_EditUserSettings::require_for_entity($this->get_user());
     }
      
     function process_input()
@@ -63,6 +63,8 @@ class Action_User_ChangeUsername extends Action
 
     function render()
     {
+        $this->use_editor_layout();
+    
         $this->page_draw(array(
             'title' => __('user:username:change'),
             'content' => view('account/change_username', array('user' => $this->get_user()))

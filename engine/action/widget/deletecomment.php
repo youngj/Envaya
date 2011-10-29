@@ -4,7 +4,7 @@ class Action_Widget_DeleteComment extends Action
 {
     function before()
     {
-        $this->require_editor($this->param('comment'));
+        Permission_EditComment::require_for_entity($this->param('comment'));
     }
 
     function process_input()

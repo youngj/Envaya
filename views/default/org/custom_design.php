@@ -17,7 +17,7 @@
     echo "<span id='uploadedUrl' style='font-size:10px'></span>";
     echo "</div>";
 
-    $org = $vars['org'];    
+    $user = $vars['user'];    
     
     $customizable_views = $vars['customizable_views'];
     $current_view = $vars['current_view'];

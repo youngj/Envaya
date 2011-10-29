@@ -4,7 +4,7 @@ class Action_Admin_Subscriptions extends Action
 {
     function before()
     {
-        $this->require_admin();
+        Permission_UseAdminTools::require_any();
     }
      
     function process_input()

@@ -4,7 +4,7 @@ class Action_Admin_ManageLanguage extends Action
 {
     function before()
     {
-        $this->require_admin();
+        Permission_ManageLanguage::require_for_entity($this->param('language'));
     }
     
     function process_input()

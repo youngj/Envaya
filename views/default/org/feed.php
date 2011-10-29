@@ -15,7 +15,10 @@ echo view('org/filter_controls', array(
 </div>
 <div id='feed_container'>
 <?php	
-	echo view('feed/list', array('items' => $items, 'show_edit_controls' => Session::isadminloggedin()));
+	echo view('feed/list', array(
+        'items' => $items, 
+        'show_edit_controls' => Permission_UseAdminTools::has_any()
+    ));
 ?>
 <div class='separator'></div>
 </div>

@@ -1,5 +1,5 @@
 <?php
-    $org = $vars['org'];
+    $user = $vars['user'];
     $widget = $vars['home_widget'];
 
     $url = $widget->get_url();

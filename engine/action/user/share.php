@@ -6,7 +6,7 @@ class Action_User_Share extends Action
     {
         $this->require_login();
 
-        $user = Session::get_loggedin_user();
+        $user = Session::get_logged_in_user();
         $recentSharedEmails = SharedEmail::query()
             ->where('user_guid = ?', $user->guid)
             ->where('time_shared > ?', timestamp() - 86400)
@@ -20,7 +20,7 @@ class Action_User_Share extends Action
     
     function process_input()
     {        
-        $user = Session::get_loggedin_user();        
+        $user = Session::get_logged_in_user();        
         
         $url = get_input('u');
     
@@ -122,8 +122,8 @@ class Action_User_Share extends Action
     {
         $this->page_draw(array(
             'title' => __('share:email'),
-            'content' => view('org/share', array(
-                'org' => $this->get_org(),
+            'content' => view('account/share', array(
+                'user' => $this->get_user(),
                 'url' => get_input('u')
             )),
             'theme_name' => 'editor',

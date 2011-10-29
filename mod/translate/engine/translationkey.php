@@ -2,6 +2,7 @@
 
 class TranslationKey extends Entity
 {
+    static $table_base_class = 'TranslationKey';
     static $table_name = 'translation_keys';
     static $table_attributes = array(
         'subtype_id' => '',

@@ -22,7 +22,7 @@ class Controller_Contact extends Controller
     
     function before()
     {
-        $this->require_admin();
+        Permission_UseAdminTools::require_any();
     }
 
     function action_filter_input()

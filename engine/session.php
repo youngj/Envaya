@@ -51,60 +51,36 @@ class Session
         static::set('input', $_POST);
     }
     
-    static function get_loggedin_user()
+    static function get_logged_in_user()
     {
         if (!static::$loaded_user)
         {
             static::$loaded_user = true;
-            static::$user = static::$instance->get_loggedin_user();
+            static::$user = static::$instance->get_logged_in_user();
         }
         return static::$user;
     }
     
-    static function get_loggedin_userid()
+    static function is_logged_in()
     {
-        $user = static::get_loggedin_user();
-        return ($user) ? $user->guid : 0;       
+        return static::get_logged_in_user() != null;
     }
 
-    static function isloggedin()
+    static function login($user, $options = null)
     {
-        return static::get_loggedin_user() != null;
-    }
-
-    static function isadminloggedin()
-    {    
-        $user = static::get_loggedin_user();
-        return ($user && $user->admin);
-    }    
-    
-    /**
-     * Logs in a specified User. 
-     *
-     * @param User $user A valid user object
-     * @param boolean $persistent Should this be a persistent login?
-     * @return true|false Whether login was successful
-     */
-    static function login($user, $persistent = false)
-    {
-        if ($user->check_rate_limit_exceeded())
-            return false;
-
         static::$loaded_user = false;
-        static::$instance->login($user, $persistent);
+        static::$instance->login($user, $options);
 
         EventRegister::trigger_event('login','user',$user);
         
         $user->reset_login_failure_count();
         $user->last_action = timestamp();
         $user->save();    
-
-        return true;
     }    
     
     static function logout()
     {
-        $curUser = Session::get_loggedin_user();
+        $curUser = Session::get_logged_in_user();
         if ($curUser)
         {
             EventRegister::trigger_event('logout','user',$curUser);

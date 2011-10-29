@@ -12,11 +12,6 @@ abstract class Controller_User extends Controller
 
     protected $public_layout = false;
         
-    function get_org()
-    {
-        return $this->param('org');
-    }
-
     function get_user()
     {
         return $this->param('user');
@@ -24,9 +19,8 @@ abstract class Controller_User extends Controller
         
     private function get_approval_message()
     {
-        $org = $this->get_org();
-    
-        switch ($org->approval)
+        $user = $this->get_user();    
+        switch ($user->approval)
         {
             case User::AwaitingApproval:    return __('approval:waiting');
             case User::Rejected:            return __('approval:rejected');
@@ -48,7 +42,7 @@ abstract class Controller_User extends Controller
    
     function index_widget($widget)
     {
-        $org = $this->get_org();
+        $user = $this->get_user();
     
         $this->prefer_http();      
         $this->allow_content_translation();        
@@ -68,14 +62,15 @@ abstract class Controller_User extends Controller
             throw new NotFoundException();
         }
         
-        if (!$org->can_view())
-        {
-            return $this->view_access_denied();
-        }               
+        Permission_ViewUserSite::require_for_entity($widget);
                 
-        if ($org->can_edit())
+        if (Permission_EditUserSite::has_for_entity($widget))
         {
             PageContext::get_submenu('edit')->add_item(__("widget:edit"), $widget->get_edit_url());
+        }
+        
+        if (Permission_UseAdminTools::has_for_entity($widget))
+        {
             PageContext::get_submenu('org_actions')->add_item(__('widget:options'), "{$widget->get_base_url()}/options");
         }
         
@@ -85,31 +80,26 @@ abstract class Controller_User extends Controller
         $this->page_draw(array(
             'content' => $content,
             'title' => $widget->get_title(),
-            'show_next_steps' => $org->guid == Session::get_loggedin_userid(),
+            'show_next_steps' => $user->equals(Session::get_logged_in_user()),
         )); 
-    }           
-   
-    function view_access_denied()
-    {
-        $this->force_login($this->get_approval_message() ?: __('org:cantview'));
     }
-        
+           
     function use_public_layout($cur_widget = null)
     {
-        $org = $this->get_org();
+        $user = $this->get_user();
                 
         $this->public_layout = true;
                 
-        $theme_name = get_input("__theme") ?: $org->get_design_setting('theme_name') ?: Config::get('fallback_theme');
+        $theme_name = get_input("__theme") ?: $user->get_design_setting('theme_name') ?: Config::get('fallback_theme');
         
-        $this->page_draw_vars['design'] = $org->get_design_settings();
-        $this->page_draw_vars['tagline'] = $org->get_design_setting('tagline');
+        $this->page_draw_vars['design'] = $user->get_design_settings();
+        $this->page_draw_vars['tagline'] = $user->get_design_setting('tagline');
         $this->page_draw_vars['theme_name'] = $theme_name;
-        $this->page_draw_vars['site_name'] = $org->name;
-        $this->page_draw_vars['site_username'] = $org->username;
-        $this->page_draw_vars['site_approved'] = $org->is_approved();
-        $this->page_draw_vars['site_url'] = $org->get_url();     
-        $this->page_draw_vars['logo'] = view('org/icon', array('org' => $org, 'size' => 'medium'));          
+        $this->page_draw_vars['site_name'] = $user->name;
+        $this->page_draw_vars['site_username'] = $user->username;
+        $this->page_draw_vars['site_approved'] = $user->is_approved();
+        $this->page_draw_vars['site_url'] = $user->get_url();     
+        $this->page_draw_vars['logo'] = view('account/icon', array('user' => $user, 'size' => 'medium'));          
         $this->page_draw_vars['login_url'] = url_with_param($this->full_rewritten_url(), 'login', 1);
         
         if (Views::get_request_type() == 'default')
@@ -123,9 +113,9 @@ abstract class Controller_User extends Controller
     
     private function show_site_menu($cur_widget)
     {
-        $org = $this->get_org();
+        $user = $this->get_user();
         
-        $widgets = $org->query_menu_widgets()
+        $widgets = $user->query_menu_widgets()
             ->columns('guid,container_guid,owner_guid,language,widget_name,subclass,handler_arg,title')
             ->filter();
         
@@ -146,24 +136,17 @@ abstract class Controller_User extends Controller
         $this->page_draw_vars['theme_name'] = 'editor';
     }
 
-    function require_site_editor()
-    {
-        $this->require_editor($this->get_user());
-        $this->use_editor_layout();    
-    }
-
     protected function get_messages($vars)
     {
-        $vars['org'] = $this->get_org();        
+        $vars['user'] = $this->get_user();        
         return view('messages/usersite', $vars);        
     }
                 
     public function prepare_page_draw_vars(&$vars)
     {
-        $org = $this->get_org();
+        $user = $this->get_user();
         
-        $is_public = ($org && $this->public_layout);
-        
+        $is_public = $this->public_layout;        
         if ($is_public)
         {    
             $approval_message = $this->get_approval_message();
@@ -197,5 +180,5 @@ abstract class Controller_User extends Controller
         {
             parent::not_found();
         }
-    }
+    }   
 }

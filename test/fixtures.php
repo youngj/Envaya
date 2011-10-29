@@ -16,7 +16,6 @@ return function() {
     $admin->set_password('testtest');
     $admin->name = "Test Admin";
     $admin->set_email($admin_email);
-    $admin->admin = true;
     $admin->container_guid = $root_scope->guid;
     $admin->save();
     

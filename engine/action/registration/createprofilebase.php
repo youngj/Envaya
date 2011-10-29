@@ -8,7 +8,7 @@ class Action_Registration_CreateProfileBase extends Action
     {
         $this->require_login();
     
-        $org = Session::get_loggedin_user();
+        $org = Session::get_logged_in_user();
 
         $mission = get_input('mission');
         if (!$mission)

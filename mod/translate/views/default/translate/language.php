@@ -36,7 +36,7 @@
 <div style='float:left'>
 <ul style='font-weight:bold'>
 <?php 
-    $user = Session::get_loggedin_user();
+    $user = Session::get_logged_in_user();
     if ($user)
     {
         $stats = $language->get_stats_for_user($user);
@@ -51,7 +51,7 @@
     echo "<li><a href='{$language->get_url()}/translators'>".__('itrans:translators')."</a></li>";     
     echo "<li><a href='{$language->get_url()}/content'>".__('itrans:user_content')."</a></li>";     
     
-    if (Session::isadminloggedin())
+    if (Permission_ManageLanguage::has_for_entity($language))
     {
         echo "<li><a style='color:red' href='{$language->get_admin_url()}'>".__('admin')."</a></li>";         
     }

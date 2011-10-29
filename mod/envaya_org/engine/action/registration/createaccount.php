@@ -4,7 +4,7 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
 {
     function before()
     {        
-        if (Session::isloggedin())
+        if (Session::is_logged_in())
         {
             throw new RedirectException('', "/org/create_profile");
         }

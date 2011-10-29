@@ -4,7 +4,7 @@ class Action_Widget_Options extends Action
 {
     function before()
     {
-        $this->require_admin();
+        Permission_UseAdminTools::require_for_entity($this->get_widget());
     }
 
     function process_input()

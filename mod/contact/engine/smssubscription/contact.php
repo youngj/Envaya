@@ -2,8 +2,6 @@
 
 class SMSSubscription_Contact extends SMSSubscription
 {
-    static $query_subtype_ids = array('contact.subscription.sms.contact');
-
     function send_notification($event_name, $template)
     {
         $this->send(array(

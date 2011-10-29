@@ -15,21 +15,36 @@ class EntityRegistry
     private static $subtype_to_class = array(
         'core.user' => 'User',
         'core.user.org' => 'Organization',
-        'core.scope' => 'UserScope',
-        'core.comment' => 'Comment',        
+        
+        'core.scope' => 'UserScope',  
+        
+        'core.permission' => 'Permission',
+        'core.permission.changeuserapproval' => 'Permission_ChangeUserApproval',
+        'core.permission.editcomment' => 'Permission_EditComment',
+        'core.permission.viewusersettings' => 'Permission_ViewUserSettings',
+        'core.permission.editusersettings' => 'Permission_EditUserSettings',
+        'core.permission.viewusersite' => 'Permission_ViewUserSite',
+        'core.permission.editusersite' => 'Permission_EditUserSite',
+        'core.permission.sendmessage' => 'Permission_SendMessage',
+        'core.permission.useadmintools' => 'Permission_UseAdminTools',
+        'core.permission.viewoutgoingmessage' => 'Permission_ViewOutgoingMessage',
+
         'core.subscription.sms' => "SMSSubscription",
         'core.subscription.sms.comments' => "SMSSubscription_Comments",
         'core.subscription.sms.news' => "SMSSubscription_News",
         'core.subscription.email' => "EmailSubscription",
         'core.subscription.email.comments' => "EmailSubscription_Comments",
+        
         'core.file' => 'UploadedFile',
-        'core.entity.translation' => 'EntityTranslation',
+        
         'core.widget' => 'Widget',
         'core.widget.comment' => 'Comment',
+        
         'core.feed' => 'ExternalFeed',
         'core.feed.rss' => 'ExternalFeed_RSS',
         'core.feed.facebook' => 'ExternalFeed_Facebook',
         'core.feed.twitter' => 'ExternalFeed_Twitter',        
+        
         'core.externalsite' => 'ExternalSite',
         'core.externalsite.facebook' => 'ExternalSite_Facebook',
         'core.externalsite.twitter' => 'ExternalSite_Twitter',

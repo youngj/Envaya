@@ -241,7 +241,11 @@ class UploadedFile extends Entity
     private static function new_from_file_input($file_input)
     {
         $file = new UploadedFile();
-        $file->owner_guid = Session::get_loggedin_userid();
+        
+        $user = Session::get_logged_in_user();
+        
+        $file->set_container_entity($user);
+        $file->set_owner_entity($user);
         $file->group_name = uniqid("",true);
         $file->mime = UploadedFile::get_mime_type($file_input['name']);        
         $file->filename = static::sanitize_file_name(basename($file_input['name']));                    
@@ -291,7 +295,7 @@ class UploadedFile extends Entity
         $scribd->changeSettings(
             $res['doc_id'],
             $file->filename,
-            Session::get_loggedin_user()->get_url()
+            Session::get_logged_in_user()->get_url()
         );
         
         /* save a copy on default storage (e.g. s3) */
@@ -527,7 +531,11 @@ class UploadedFile extends Entity
                 else
                 {
                     $file = new UploadedFile();
-                    $file->owner_guid = Session::get_loggedin_userid();
+                    
+                    $user = Session::get_logged_in_user();
+                    
+                    $file->set_owner_entity($user);
+                    $file->set_container_entity($user);
                     $file->group_name = $groupName;
                     $file->size = $sizeName;
                     $file->width = $resizedImage['width'];

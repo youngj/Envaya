@@ -11,6 +11,10 @@ Engine::add_autoload_action('EntityRegistry', function() {
         'translate.entity.key' => 'EntityTranslationKey',
         'translate.interface.group' => 'InterfaceGroup',
         'translate.interface.key' => 'InterfaceKey',
+        
+        'translate.permission.edittranslation' => 'Permission_EditTranslation',
+        'translate.permission.viewtranslation' => 'Permission_ViewTranslation',
+        'translate.permission.managelanguage' => 'Permission_ManageLanguage',
     ));
 });
 

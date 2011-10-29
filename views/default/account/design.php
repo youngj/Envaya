@@ -1,9 +1,9 @@
 <?php
-    $org = $vars['org'];
-    $custom_header = $org->get_design_setting('custom_header');    
+    $user = $vars['user'];
+    $custom_header = $user->get_design_setting('custom_header');    
 ?>
 
-<form action='<?php echo $org->get_url() ?>/design' method='POST'>
+<form action='<?php echo $user->get_url() ?>/design' method='POST'>
 
 <?php echo view('input/securitytoken'); ?>
 
@@ -17,10 +17,10 @@
 
 echo view("input/image",
     array(
-        'current' => $org->get_icon('medium'),
+        'current' => $user->get_icon('medium'),
         'track_dirty' => true,
         'sizes' => User::get_icon_sizes(),
-        'removable' => $org->has_custom_icon(),
+        'removable' => $user->has_custom_icon(),
         'thumbnail_size' => 'medium',
         'name' => 'icon',
         'deletename' => 'deleteicon',
@@ -95,7 +95,7 @@ function customHeaderChanged()
 
 <div id='default_header_container' <?php echo $custom_header ? "style='display:none'" : "" ?> >  
     <div style='border:1px solid #ccc;padding:5px;margin:5px 0px'>
-    <?php echo view('org/default_header_edit', array('org' => $org)); ?>
+    <?php echo view('account/default_header_edit', array('user' => $user)); ?>
     </div>
     <div class='help'><?php echo sprintf(__('design:header:changelogo'), __('design:logo')) ?></div>
 </div>
@@ -108,7 +108,7 @@ function customHeaderChanged()
             echo "<div style='margin-top:10px'>".__('upload:image:current')."</div>";
             echo "<div class='header_preview' style='text-align:center'>";
             
-            $header_image = $org->get_design_setting('header_image');
+            $header_image = $user->get_design_setting('header_image');
             $img_url = escape($header_image['url']);
             echo "<img src='$img_url' />";
             echo "</div>";
@@ -160,13 +160,13 @@ echo view('input/submit',array(
 <div style='width:480px;margin:auto'>
 <?php echo view('input/theme', array(
     'name' => 'theme',
-    'value' => $org->get_design_setting('theme_name'),
-    'previewUrl' => $org->get_url()
+    'value' => $user->get_design_setting('theme_name'),
+    'previewUrl' => $user->get_url()
 )); ?>
 </div>
 <?php
 
-echo view('input/hidden', array('name' => 'guid', 'value' => $org->guid));
+echo view('input/hidden', array('name' => 'guid', 'value' => $user->guid));
 
 echo view('input/submit',array(
     'value' => __('savechanges'),

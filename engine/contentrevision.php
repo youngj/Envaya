@@ -15,7 +15,7 @@ class ContentRevision extends Model
     
     function can_edit()
     {
-        return $this->get_entity()->can_edit();
+        return Permission_EditUserSite::has_for_entity($this->get_entity());
     }
     
     function get_entity()

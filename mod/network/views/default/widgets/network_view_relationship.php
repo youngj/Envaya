@@ -12,7 +12,7 @@
     {            
         echo "<div class='image_right'>"
             .$link_open
-            .view('org/icon', array('org' => $org, 'style' => "width:40px"))
+            .view('account/icon', array('user' => $org, 'style' => "width:40px"))
             .$link_close
             ."</div>";
     }

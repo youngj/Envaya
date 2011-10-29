@@ -21,7 +21,7 @@ class Controller_Admin extends Controller
 
     function before()
     {
-        $this->require_admin();
+        Permission_UseAdminTools::require_any();
         $this->page_draw_vars['theme_name'] = 'editor';
     }
     
@@ -194,13 +194,7 @@ class Controller_Admin extends Controller
                 'entries' => $log
             ))
         ));
-    }
-    
-    function action_approve()
-    {
-        $action = new Action_Admin_ChangeOrgApproval($this);
-        $action->execute();
-    }
+    }    
 
     function entity_disable()
     {

@@ -1,14 +1,16 @@
 <?php
     $translation = $vars['translation'];
         
-    $user = Session::get_loggedin_user();
+    $user = Session::get_logged_in_user();
     
     if ($user)
     {
         $vote = $translation->query_votes()->where('owner_guid = ?', $user->guid)->get();
+
+        $is_language_admin = Permission_ManageLanguage::has_for_entity($translation->get_language());
         
-        $can_upvote = !$vote || $vote->score <= 0 || $user->admin;
-        $can_downvote = !$vote || $vote->score >= 0 || $user->admin;
+        $can_upvote = !$vote || $vote->score <= 0 || $is_language_admin;
+        $can_downvote = !$vote || $vote->score >= 0 || $is_language_admin;
     
         if ($can_downvote)
         {        

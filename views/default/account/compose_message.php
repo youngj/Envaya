@@ -1,12 +1,10 @@
 <?php
-
-    $org = $vars['org'];
-    $user = $vars['user'];
-
+    $to_user = $vars['user'];    
+    $from_user = Session::get_logged_in_user();
 ?>
 
 <div class='padded'>
-<form action='<?php echo $org->get_url() ?>/send_message' method='POST'>
+<form action='<?php echo $to_user->get_url() ?>/send_message' method='POST'>
 
 <?php echo view('input/securitytoken'); ?>
 
@@ -16,7 +14,7 @@
 <?php echo __("message:from"); ?>
 </th>
 <td>
-<strong><?php echo escape($user->name); ?></strong> &lt;<?php echo escape($user->email); ?>&gt;
+<strong><?php echo escape($from_user->name); ?></strong> &lt;<?php echo escape($from_user->email); ?>&gt;
 </td>
 </tr>
 <tr>
@@ -24,7 +22,7 @@
 <?php echo __("message:to"); ?>
 </th>
 <td>
-<strong><?php echo escape($org->name); ?></strong> &lt;<?php echo escape($org->email); ?>&gt;
+<strong><?php echo escape($to_user->name); ?></strong> &lt;<?php echo escape($to_user->email); ?>&gt;
 </td>
 </tr>
 <tr>
@@ -49,8 +47,6 @@
 </table>
 
 <?php
-echo view('input/hidden', array('name' => 'recipient_guid', 'value' => $org->guid));
-
 echo view('input/submit',array(
     'value' => __('message:send')
 ));

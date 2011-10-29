@@ -4,7 +4,7 @@ class Action_Admin_ResendSMS extends Action
 {
     function before()
     {
-        $this->require_admin();
+        Permission_SendMessage::require_for_root();
     }
      
     function process_input()

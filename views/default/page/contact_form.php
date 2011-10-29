@@ -1,4 +1,6 @@
 <?php
+    $user = Session::get_logged_in_user();
+
     echo view('input/securitytoken');
 ?>
 <div class='input'>
@@ -13,23 +15,19 @@
 <div class='input'>
 <label><?php echo __('message:name') ?></label><br />
 <?php
-
-    $name = Session::isloggedin() ? Session::get_loggedin_user()->name : Session::get('user_name');
-
+   
     echo view('input/text', array(
         'name' => 'name',
-        'value' => $name
+        'value' => $user ? $user->name : Session::get('user_name')
     ));
 ?>
 </div>
 <div class='input'>
 <label><?php echo __('message:email') ?></label><br />
 <?php
-    $email = Session::isloggedin() ? Session::get_loggedin_user()->email : '';
-
     echo view('input/text', array(
         'name' => 'email',
-        'value' => $email
+        'value' => $user ? $user->email : Session::get('user_email')
     ));
 ?>
 </div>

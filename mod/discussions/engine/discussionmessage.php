@@ -85,11 +85,6 @@ class DiscussionMessage extends Entity
         return $name;    
     }
 
-    function can_edit()
-    {           
-        return parent::can_edit() || $this->is_session_owner();
-    }
-        
     function is_session_owner()
     {       
         $posted_messages = Session::get('posted_messages') ?: array();

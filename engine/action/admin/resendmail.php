@@ -4,7 +4,7 @@ class Action_Admin_ResendMail extends Action
 {
     function before()
     {
-        $this->require_admin();
+        Permission_SendMessage::require_for_root();
     }
      
     function process_input()
@@ -20,4 +20,4 @@ class Action_Admin_ResendMail extends Action
         SessionMessages::add(__('email:sent_ok'));
         $this->redirect();
     }
-}    
+}

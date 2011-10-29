@@ -21,12 +21,12 @@
 <ul style='font-weight:bold'>
 <?php 
     echo "<li><a href='/tr/instructions'>".__('itrans:instructions')."</a></li>"; 
-    if (!Session::isloggedin())
+    if (!Session::is_logged_in())
     {
         echo "<li><a href='/pg/register?next=/tr'>".__('register')."</a></li>";     
         echo "<li><a href='/pg/login?next=/tr'>".__('login')."</a></li>";     
     }
-    if (Session::isadminloggedin())
+    if (Permission_ManageLanguage::has_for_root())
     {
         echo "<li><a style='color:red' href='/tr/admin'>".__('admin')."</a></li>";         
     }

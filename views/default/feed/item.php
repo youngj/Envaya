@@ -1,6 +1,6 @@
 <?php
     $feedItem = $vars['item'];
-    $org = $feedItem->get_user_entity();
+    $user = $feedItem->get_user_entity();
     $mode = @$vars['mode'];
     
     $show_edit_controls = @$vars['show_edit_controls'];        
@@ -9,7 +9,7 @@
 <?php                 
     if ($mode != 'self') 
     {        
-        echo view('feed/icon', array('org' => $org));            
+        echo view('feed/icon', array('user' => $user));            
         echo "<div class='feed_content'>";
     } 
     echo $feedItem->render_thumbnail($mode);

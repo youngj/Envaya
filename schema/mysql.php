@@ -82,7 +82,6 @@ CREATE TABLE `users` (
   `city` varchar(128) NULL,  
   `icons_json` text default NULL,
   `design_json` text default null,  
-  `admin` tinyint(4) default '0',
   `latitude` float null,
   `longitude` float null,
   `timezone_id` varchar(64) default null,
@@ -346,4 +345,11 @@ CREATE TABLE `user_scopes` (
     <?php require 'schema/entity_columns.php'; ?>,
     `description` varchar(63) not null,	
     `filters_json` text not null
+) ENGINE = MYISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `permissions` (
+    <?php require 'schema/entity_columns.php'; ?>,
+    `subtype_id` varchar(63) not null,	
+    `args_json` text not null,
+    KEY `subtype_id` (`subtype_id`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;

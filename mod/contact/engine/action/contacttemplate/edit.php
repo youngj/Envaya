@@ -4,7 +4,7 @@ abstract class Action_ContactTemplate_Edit extends Action
 {       
     function before()
     {
-        $this->require_admin();
+        Permission_SendMessage::require_for_root();
     }
  
     abstract function update_template($template);

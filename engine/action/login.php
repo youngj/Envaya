@@ -34,18 +34,11 @@ class Action_Login extends Action
         $username = get_input('username');
         $password = get_input("password");
         $persistent = get_input("persistent", false);
-
-        $result = false;
-        if (!empty($username) && !empty($password))
+       
+        $user = $this->authenticate($username, $password);
+        if ($user)
         {
-            if ($user = $this->authenticate($username,$password))
-            {
-                $result = Session::login($user, $persistent);
-            }
-        }
-
-        if ($result)
-        {
+            Session::login($user, array('persistent' => $persistent));
             $this->login_success($user);
         }
         else
@@ -56,15 +49,15 @@ class Action_Login extends Action
 
     /**
      * Perform standard authentication with a given username and password.
-     * Returns an User object for use with login.
-     *
-     * @see login
-     * @param string $username The username
-     * @param string $password The password
-     * @return User|false The authenticated user object, or false on failure.
+     * Returns an User object on success, null on failure.
      */
     function authenticate($username, $password)
     {
+        if (empty($username) || empty($password))
+        {
+            return null;
+        }        
+    
         // if the username has an @, it must be an email address (@ is not allowed in usernames)        
         if (strpos($username,'@') !== false)
         {
@@ -80,6 +73,8 @@ class Action_Login extends Action
         // try all matching users, using the first one with a valid password
         foreach ($users as $user)
         {
+            $user->validate_login_rate();
+        
             if ($user->has_password($password))
             {
                 return $user;
@@ -91,7 +86,7 @@ class Action_Login extends Action
             $user->log_login_failure();
             $user->save();            
         }
-        return false;            
+        return null;            
     }    
     
     function render()
@@ -100,7 +95,7 @@ class Action_Login extends Action
         $next = get_input('next');        
         
         $loginTime = (int)get_input('_lt');
-        if ($loginTime && timestamp() - $loginTime < 10 && !Session::isloggedin())
+        if ($loginTime && timestamp() - $loginTime < 10 && !Session::is_logged_in())
         {
             SessionMessages::add_error_html(view('account/cookie_error'));
         }
@@ -109,7 +104,7 @@ class Action_Login extends Action
             'title' => __("login"),            
             'content' => view("account/login", array('username' => $username, 'next' => $next)),
             'org_only' => true,
-            'hide_login' => !Session::isloggedin()
+            'hide_login' => !Session::is_logged_in()
         ));        
     }
 }    

@@ -13,7 +13,8 @@ class Controller_SMSGateway extends Controller
     {
         if (!Request::is_post())
         {
-            $this->require_admin();
+            Permission_SendMessage::require_for_root();
+        
             $this->set_content(view('page/sms_app_simulator'));            
             return;
         }

@@ -4,7 +4,7 @@ class Action_Admin_AddFeaturedPhoto extends Action
 {
     function before()
     {
-        $this->require_admin();
+        Permission_EditMainSite::require_for_root();
     }
      
     function process_input()

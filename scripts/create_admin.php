@@ -15,6 +15,5 @@ $user->username = $username;
 $user->set_password($password);
 $user->name = $name;
 $user->email = $email;
-$user->admin = true;    
 $user->save();
 echo "Admin created\n";

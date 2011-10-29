@@ -109,7 +109,7 @@ abstract class Action
     
     protected function record_user_action()
     {
-        $user = Session::get_loggedin_user();
+        $user = Session::get_logged_in_user();
         if ($user)
         {
             $user->last_action = timestamp();
@@ -161,7 +161,7 @@ abstract class Action
     
     function needs_captcha()
     {
-        $user = Session::get_loggedin_user();
+        $user = Session::get_logged_in_user();
         
         // show captcha if not logged in
         if (!$user)

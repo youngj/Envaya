@@ -1,7 +1,7 @@
 <?php
 
     $org = $vars['org'];
-    $loggedInOrg = Session::get_loggedin_user();
+    $loggedInOrg = Session::get_logged_in_user();
 
     if ($loggedInOrg instanceof Organization)
     {

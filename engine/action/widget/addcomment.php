@@ -13,12 +13,7 @@ class Action_Widget_AddComment extends Action
         
 		$comments_url = $widget->get_url()."?comments=1";
 	
-        $userId = Session::get_loggedin_userid();
-        
-        if ($userId)
-        {
-            $this->validate_security_token();
-        }       
+        $user = Session::get_logged_in_user();        
      
         $name = get_input('name');
         $content = get_input('content');
@@ -46,9 +41,9 @@ class Action_Widget_AddComment extends Action
         Session::set('user_email', $email);
         
 		$comment = new Comment();
-		$comment->container_guid = $widget->guid;
+		$comment->set_container_entity($widget);
         $comment->email = $email;
-		$comment->owner_guid = $userId;
+		$comment->set_owner_entity($user);
 		$comment->name = $name;
         $comment->location = $location;
 		$comment->set_content(nl2br(escape($content)), true);
@@ -57,7 +52,7 @@ class Action_Widget_AddComment extends Action
         $widget->refresh_attributes();
 		$widget->save();
         
-		if (!$userId)
+		if (!$user)
 		{
             $comment->set_session_owner();
 		}		

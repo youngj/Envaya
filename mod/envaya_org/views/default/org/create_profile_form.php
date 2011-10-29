@@ -1,5 +1,5 @@
 <?php
-    $org = Session::get_loggedin_user();
+    $org = Session::get_logged_in_user();
 ?>
 
 <?php echo view('input/securitytoken'); ?>

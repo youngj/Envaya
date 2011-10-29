@@ -26,7 +26,7 @@ class Action_AddTranslation extends Action
             throw new ValidationException(__('itrans:duplicate'));
         }
         
-        $user = Session::get_loggedin_user();
+        $user = Session::get_logged_in_user();
                 
         $translation = $key->get_draft_translation_for_user($user);                        
         if (!$translation)
@@ -38,7 +38,7 @@ class Action_AddTranslation extends Action
         $translation->value = $value;
         $translation->score = 1;
         
-        if ($key->can_edit())
+        if (Permission_EditTranslation::has_for_entity($key))
         {
             $translation->set_approved(true);
         }

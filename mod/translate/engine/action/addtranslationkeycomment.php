@@ -29,7 +29,7 @@ class Action_AddTranslationKeyComment extends Action
             throw new ValidationException(__('comment:duplicate'));
         }
         
-        $user = Session::get_loggedin_user();
+        $user = Session::get_logged_in_user();
                 
         $comment = new TranslationKeyComment();
         $comment->container_guid = $key->guid;

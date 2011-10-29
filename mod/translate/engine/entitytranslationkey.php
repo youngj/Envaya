@@ -2,8 +2,6 @@
 
 class EntityTranslationKey extends TranslationKey
 {    
-    static $query_subtype_ids = array('translate.entity.key');
-
     function get_url()
     {
         return $this->get_language()->get_url()."/content/".urlencode_alpha($this->name);

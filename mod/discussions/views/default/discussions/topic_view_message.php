@@ -13,7 +13,7 @@
         echo __('discussions:reply');
         echo "</a>";
         
-        if ($message->can_edit())
+        if (Permission_EditDiscussionMessage::has_for_entity($message))
         {      
             echo " <a href='{$message->get_base_url()}/edit'>".__('edit')."</a> ";
         

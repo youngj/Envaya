@@ -12,12 +12,12 @@ class Session_SMS implements SessionImpl
         $this->sms_state = $sms_state;
     }    
 
-    function get_loggedin_user()
+    function get_logged_in_user()
     {
-        return $this->sms_state->get_loggedin_user();
+        return $this->sms_state->get_logged_in_user();
     }
     
-    function login($user, $persistent)
+    function login($user, $options)
     {            
         $this->sms_state->set_loggedin_user($user);
     }

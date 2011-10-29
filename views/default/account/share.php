@@ -1,8 +1,10 @@
 <div class='section_content padded'>
 <?php
-    $org = $vars['org'];
+    $user = $vars['user'];
     $url = $vars['url'];    
 
+    $is_site_editor = Permission_EditUserSite::has_for_entity($user);
+    
     echo view('js/create_modal_box');
     echo view('js/dom');
     echo view('js/xhr');
@@ -38,7 +40,7 @@ function removeRecipient(email)
 }
 </script>
 
-<form method='POST' action="<?php echo $org->get_url(); ?>/share">
+<form method='POST' action="<?php echo $user->get_url(); ?>/share">
 <?php echo view('input/securitytoken'); ?>
 
 <div class='input'>
@@ -51,9 +53,9 @@ function removeRecipient(email)
         'value' => '',
     ));
 
-    if ($org->can_edit())
+    if ($is_site_editor)
     {
-        echo view('org/share_shortcuts', array('org' => $org));
+        echo view('account/share_shortcuts', array('user' => $user));
     } 
 ?>
 </div>
@@ -64,8 +66,8 @@ function removeRecipient(email)
     echo view('input/text', array(
         'name' => 'subject',
         'track_dirty' => true,
-        'value' => $org->can_edit() ? strtr(__('share:subject'), array(
-            '{name}' => $org->name, 
+        'value' => $is_site_editor ? strtr(__('share:subject'), array(
+            '{name}' => $user->name, 
         )) : '',
     ));
 ?>

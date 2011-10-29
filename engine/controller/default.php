@@ -57,9 +57,9 @@ class Controller_Default extends Controller
             $this->params['rewritten_uri'] = $uri;
             
             // 'login' query parameter forces user to log in
-            if (@$_GET['login'] && !Session::isloggedin())
+            if (@$_GET['login'] && !Session::is_logged_in())
             {
-                $this->force_login();
+                throw new RedirectException('', $this->get_login_url());
             }
 
             QueryString::set_used_param('lang');            
@@ -100,18 +100,13 @@ class Controller_Default extends Controller
         {
             $this->not_found();
         }
+        catch (PermissionDeniedException $ex)
+        {
+            $this->exception_redirect($ex, $this->get_login_url());
+        }
         catch (RedirectException $ex)
         {
-            $msg = $ex->getMessage();
-            if ($msg)
-            {
-                SessionMessages::add_error($msg);
-            }
-            if (Request::is_post())
-            {
-                Session::save_input();
-            }
-            $this->redirect($ex->url, $ex->status);
+            $this->exception_redirect($ex, $ex->url, $ex->status);
         }
         catch (RequestAbortedException $ex)
         {
@@ -121,7 +116,7 @@ class Controller_Default extends Controller
         {
             $this->server_error($ex);
         }
-    }
+    }    
     
     function init_user_by_username()
     {    
@@ -132,11 +127,6 @@ class Controller_Default extends Controller
         if ($user)
         {
             $this->params['user'] = $user;
-
-            if ($user instanceof Organization)
-            {
-                $this->params['org'] = $user;
-            }
         }
         else
         {

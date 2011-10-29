@@ -2,7 +2,7 @@
 
 class EmailSubscription_Comments extends EmailSubscription
 {
-    static $query_subtype_ids = array('core.subscription.email.comments');
+    static $query_subtypes = array('EmailSubscription_Comments');
     
     function send_notification($event_name, $comment)
     {

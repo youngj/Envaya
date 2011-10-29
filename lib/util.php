@@ -220,5 +220,5 @@
         function id();
         function login($user, $persistent);
         function logout();
-        function get_loggedin_user();        
+        function get_logged_in_user();        
     }

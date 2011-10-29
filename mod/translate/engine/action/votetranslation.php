@@ -8,8 +8,9 @@ class Action_VoteTranslation extends Action
             
         $key = $this->param('key');
         $translation = $this->param('translation');
-
-        $user = Session::get_loggedin_user();
+        $language = $key->get_language();
+        
+        $user = Session::get_logged_in_user();
         
         $delta = (int)get_input('delta');
                 
@@ -22,7 +23,7 @@ class Action_VoteTranslation extends Action
         }
         $new_score = $vote->score + $delta;
         
-        if (!$user->admin)
+        if (!Permission_ManageLanguage::has_for_entity($language))
         {
             $new_score = min($new_score, 1);
             $new_score = max($new_score, -1);
@@ -32,8 +33,7 @@ class Action_VoteTranslation extends Action
         $vote->save();
         
         $translation->update(true);        
-        
-        $language = $key->get_language();
+                
         $language->get_stats_for_user($user)->update();        
                 
         $this->redirect();

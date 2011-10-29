@@ -2,8 +2,6 @@
 
 class EmailSubscription_Discussion extends EmailSubscription
 {
-    static $query_subtype_ids = array('core.subscription.email.discussion');
-
     static function handle_mail_reply($mail, $match)
     {
         $guid = $match['guid'];

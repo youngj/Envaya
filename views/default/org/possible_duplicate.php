@@ -14,7 +14,7 @@ foreach ($vars['duplicates'] as $dup)
     
     echo "<div class='search_listing'>";
     echo "<div class='search_listing_icon' style='padding-top:4px'>";    
-    echo "<a href='{$url}'>".view('org/icon', array('org' => $dup))."</a>";
+    echo "<a href='{$url}'>".view('account/icon', array('user' => $dup))."</a>";
     echo "</div>";
     echo "<div class='search_listing_info'>";
     echo "<div><b><a href='{$url}'>" . escape($dup->name) . "</a></b></div>";

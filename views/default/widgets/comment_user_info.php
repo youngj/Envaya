@@ -3,7 +3,7 @@
     $location = @$vars['location'] ?: Session::get('user_location');
     $email = @$vars['email'] ?: Session::get('user_email');
     
-    $user = Session::get_loggedin_user();
+    $user = Session::get_logged_in_user();
     if ($user)
     {
         if (!$name)

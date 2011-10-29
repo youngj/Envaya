@@ -10,9 +10,8 @@ class Action_User_SendMessage extends Action
      
     function process_input()
     {
-        $user = Session::get_loggedin_user();
-
-        $recipient = $this->get_org();
+        $from_user = Session::get_logged_in_user();        
+        $to_user = $this->get_user();
 
         $subject = get_input('subject');
         if (!$subject)
@@ -27,10 +26,10 @@ class Action_User_SendMessage extends Action
         }
 
         $mail = OutgoingMail::create($subject, $message);
-        $mail->set_from_user($user);
-        $mail->add_bcc($user->email);
+        $mail->set_from_user($from_user);
+        $mail->add_bcc($to_user->email);
         
-        if ($mail->send_to_user($recipient))
+        if ($mail->send_to_user($to_user))
         {
             SessionMessages::add(
                 ($mail->status == OutgoingMail::Held) ? __('message:held') : __('message:sent')
@@ -41,20 +40,21 @@ class Action_User_SendMessage extends Action
             throw new ValidationException(__("message:not_sent"));
         }
 
-        $this->redirect($recipient->get_url());
+        $this->redirect($to_user->get_url());
     }
 
     function render()
     {
-        $org = $this->get_org();
+        $user = $this->get_user();
         
-        $user = Session::get_loggedin_user();
-
-        PageContext::get_submenu('edit')->add_item(__("message:cancel"), $org->get_url());
+        PageContext::get_submenu('edit')->add_item(
+            __("message:cancel"), 
+            $user->get_url()
+        );
 
         $this->page_draw(array(
             'title' => __("message:title"),
-            'content' => view("org/compose_message", array('org' => $org, 'user' => $user)),
+            'content' => view("account/compose_message", array('user' => $user)),
         ));        
     }
     

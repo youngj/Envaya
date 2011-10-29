@@ -24,7 +24,7 @@ if ($show_date)
 <div class='blog_date'><?php echo friendly_time($featured_site->time_created) ?></div>
 
 <?php 
-if (Session::isadminloggedin())
+if (Permission_EditMainSite::has_for_root())
 {
     ?>
     <span class='admin_links'>

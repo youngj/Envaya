@@ -7,7 +7,7 @@ class FeedItem_EditWidget extends FeedItem
         $widget = $this->get_subject_entity();
 
         return strtr(!$widget->is_section() ? __('feed:edit_page') : __('feed:edit_section'), array(
-            '{name}' => $this->get_org_link($mode),
+            '{name}' => $this->get_user_link($mode),
             '{title}' => $this->get_link($widget->get_title()),
         )); 
     }

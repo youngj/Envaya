@@ -2,8 +2,6 @@
 
 class SMSSubscription_Comments extends SMSSubscription
 {
-    static $query_subtype_ids = array('core.subscription.sms.comments');
-
     function send_notification($event_name, $comment)
     {        
         $sender_phone = $comment->get_metadata('phone_number');    

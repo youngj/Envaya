@@ -6,7 +6,7 @@ class Controller_EnvayaAdmin extends Controller
 
     function before()
     {
-        $this->require_admin();
+        Permission_EditMainSite::require_for_root();
         $this->page_draw_vars['theme_name'] = 'editor';
     }
 

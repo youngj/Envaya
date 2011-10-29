@@ -89,7 +89,7 @@ class Widget_Generic extends Widget
             {
                 $this->post_feed_items();
             }
-            else if (!Session::isadminloggedin() && $time - $lastPublished > 86400)
+            else if (!Permission_UseAdminTools::has_any() && $time - $lastPublished > 86400)
             {
                 $this->post_feed_items_edit();
             }

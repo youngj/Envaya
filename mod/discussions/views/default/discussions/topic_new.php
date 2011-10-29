@@ -1,11 +1,10 @@
 <?php
-    $org = $vars['org'];
-    $user = Session::get_loggedin_user();  
+    $user = $vars['user'];
   
     ob_start();
     
 ?>
-<form method='POST' action='<?php echo $org->get_url(); ?>/topic/new'>
+<form method='POST' action='<?php echo $user->get_url(); ?>/topic/new'>
 <div class='input'>
 <label><?php echo __('discussions:subject'); ?></label><br />
 <?php 
@@ -16,7 +15,7 @@
     echo view('input/tinymce', array('name' => 'content'));    
     echo view('widgets/comment_user_info');
     
-    $widget = $org->get_widget_by_class('Discussions');    
+    $widget = $user->get_widget_by_class('Discussions');    
     
     echo "<div style='float:right'><br /><br />";    
     echo "<a href='{$widget->get_url()}'>".__('discussions:back_to_topics'). "</a>";

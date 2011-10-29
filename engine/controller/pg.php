@@ -30,7 +30,7 @@ class Controller_Pg extends Controller
     function action_dashboard()
     {
         $this->require_login();
-        $this->redirect(Session::get_loggedin_user()->get_url()."/dashboard");
+        $this->redirect(Session::get_logged_in_user()->get_url()."/dashboard");
     }
 
     function action_forgot_password()
@@ -210,7 +210,7 @@ class Controller_Pg extends Controller
         }
         else
         {
-            if (!$entity->can_edit())
+            if (!Permission_EditUserSite::has_for_entity($entity))
             {
                 throw new SecurityException("Access denied.");
             }

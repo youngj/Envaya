@@ -35,8 +35,8 @@ class Controller_DiscussionTopic extends Controller_User
         $topicId = $this->param('topic_guid');
         
         $topic = DiscussionTopic::get_by_guid($topicId);
-        $org = $this->get_org();
-        if ($topic && $topic->container_guid == $org->guid)
+        $user = $this->get_user();
+        if ($topic && $topic->container_guid == $user->guid)
         {
             $this->params['topic'] = $topic;
         }
@@ -73,20 +73,17 @@ class Controller_DiscussionTopic extends Controller_User
 
     function index_topic($vars = null)
     {
-        $org = $this->get_org();
+        $user = $this->get_user();
         $topic = $this->get_topic();
 
         $this->allow_view_types(null);
         $this->allow_content_translation();
         
-        if (!$org->can_view())
-        {
-            return $this->view_access_denied();
-        }        
+        Permission_ViewUserSite::require_for_entity($user);
         
         $this->use_public_layout();
 
-        if ($topic->can_edit())
+        if (Permission_EditUserSite::has_for_entity($topic))
         {
             PageContext::get_submenu('edit')->add_item(__("widget:edit"), $topic->get_edit_url());
         }

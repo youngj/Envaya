@@ -7,7 +7,7 @@
     
     echo "<tr>";
     
-    if ($key->can_view())
+    if (Permission_ViewTranslation::has_for_entity($key))
     {
         //echo "<td style='font-weight:bold'>";        
         //echo "<a href='$escUrl'>".escape($key->name)."</a>";        

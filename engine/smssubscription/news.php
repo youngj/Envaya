@@ -2,8 +2,6 @@
 
 class SMSSubscription_News extends SMSSubscription
 {
-    static $query_subtype_ids = array('core.subscription.sms.news');
-
     function send_notification($event_name, $post)
     {        
         $org = $post->get_container_user();

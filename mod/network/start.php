@@ -22,4 +22,4 @@ Engine::add_autoload_action('Widget', function() {
     ));
 });
 
-Views::extend('org/share_shortcuts', 'org/network_share_shortcuts');
+Views::extend('account/share_shortcuts', 'account/network_share_shortcuts');

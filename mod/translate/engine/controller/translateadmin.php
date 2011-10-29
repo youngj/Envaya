@@ -43,12 +43,13 @@ class Controller_TranslateAdmin extends Controller
     
     function before()
     {
-        $this->require_admin();
         $this->page_draw_vars['theme_name'] = 'editor';
     }
     
     function action_index()
     {
+        Permission_ManageLanguage::require_for_entity(UserScope::root());
+    
         return $this->page_draw(array(
             'title' => __('itrans:manage'),
             'header' => view('translate/admin/header'),
@@ -59,6 +60,8 @@ class Controller_TranslateAdmin extends Controller
     function action_export()
     {
         $language = $this->param('language');
+        
+        Permission_ManageLanguage::require_for_entity($language);
         
         // from http://www.php.net/manual/en/function.ziparchive-open.php#84646
         

@@ -3,7 +3,7 @@
     
     echo "<div class='search_listing'>";
     echo "<div class='search_listing_icon'>";
-    echo view('org/icon', array('org' => $org));
+    echo view('account/icon', array('user' => $org));
     echo "</div>";
     echo "<div class='search_listing_info'>";
     echo "<div><b>" . escape($org->name) . "</b></div>";

@@ -4,7 +4,7 @@ class Action_Widget_Reorder extends Action
 {
     function before()
     {
-        $this->require_site_editor();
+        Permission_EditUserSite::require_for_entity($this->get_user());
     }
         
     function process_input()

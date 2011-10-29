@@ -30,7 +30,7 @@ class SMS_State extends Model
         $this->user_guid = $user ? $user->guid : 0;
     }
     
-    function get_loggedin_user()
+    function get_logged_in_user()
     {
         return User::get_by_guid($this->user_guid);
     }

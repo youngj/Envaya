@@ -8,8 +8,8 @@
     $width = null;
     $height = null;
     $value = null;
-    $allowDocument = $allowImage = Session::isloggedin();
-    $allowCode = Session::isadminloggedin();    
+    $allowDocument = $allowImage = Session::is_logged_in();
+    $allowCode = Permission_UseAdminTools::has_any();    
     $autoFocus = false;
     extract($vars);
 

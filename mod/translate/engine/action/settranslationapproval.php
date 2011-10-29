@@ -4,7 +4,7 @@ class Action_SetTranslationApproval extends Action
 {
     function before()
     {
-        $this->require_editor($this->param('key'));
+        Permission_EditTranslation::require_for_entity($this->param('key'));
     }
 
     function process_input()

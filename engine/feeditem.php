@@ -56,7 +56,7 @@ class FeedItem extends Model
     
     function can_edit()
     {
-        return $this->can_user_edit(Session::get_loggedin_user());
+        return $this->can_user_edit(Session::get_logged_in_user());
     }
     
     function can_user_edit($user)
@@ -64,7 +64,8 @@ class FeedItem extends Model
         if (!$user)
             return false;
     
-        return $user->admin || $user->guid == $this->subject_guid || $user->guid == $this->user_guid;
+        return Permission_EditUserSite::has_for_entity($this->get_subject_entity())
+            || Permission_EditUserSite::has_for_entity($this->get_user_entity());
     }
 
     function __set($name, $value)
@@ -132,17 +133,17 @@ class FeedItem extends Model
         return "<a href='{$this->get_url()}'>".escape($title)."</a>";
     }
     
-    protected function get_org_link($mode)
+    protected function get_user_link($mode)
     {
-        $org = $this->get_user_entity();
+        $user = $this->get_user_entity();
         
         if ($mode == 'self')
         {
-            return escape($org->name);
+            return escape($user->name);
         }
         else
         {
-            return "<a class='feed_org_name' href='{$org->get_url()}'>".escape($org->name)."</a>";
+            return "<a class='feed_org_name' href='{$user->get_url()}'>".escape($user->name)."</a>";
         }
     }
     

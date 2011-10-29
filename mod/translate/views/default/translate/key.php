@@ -42,7 +42,7 @@
         $cur_base_lang = $key->get_current_base_lang();
         $lang_name = escape($cur_base_lang ? __("lang:$cur_base_lang") : __('lang:unknown'));
         
-        if ($key instanceof EntityTranslationKey && $key->can_edit())
+        if ($key instanceof EntityTranslationKey && Permission_EditTranslation::has_for_entity($key))
         {
             echo "<a href='$base_url/base_lang'>($lang_name)</a>";
         }    
@@ -53,7 +53,7 @@
     ?></th>
     <th><?php echo escape($target_language->name); 
             
-        $draft_translation = $key->get_draft_translation_for_user(Session::get_loggedin_user());            
+        $draft_translation = $key->get_draft_translation_for_user(Session::get_logged_in_user());            
         if ($draft_translation && $draft_translation != $translation)
         {
             echo " <a href='".escape($base_url)."?translation={$draft_translation->guid}'>(".__('itrans:restore_draft').")</a>";
@@ -70,7 +70,7 @@
     
     $displayed_value = $translation ? $translation->value : $key->best_translation;        
     
-    if (Session::isloggedin())
+    if (Session::is_logged_in())
     {
         echo "<form method='POST' action='".escape($base_url)."/add'>";
         echo view('input/securitytoken');        
@@ -84,7 +84,7 @@
     
         echo view('focus', array('name' => 'value')); 
         echo "<div>";
-        if (!$key->can_edit())
+        if (!Permission_EditTranslation::has_for_entity($key))
         {                    
             if ($key instanceof EntityTranslationKey || !@Config::get('translate:live_interface'))
             {
@@ -122,7 +122,7 @@
 </table>
 
 <?php
-    if (!Session::isloggedin())
+    if (!Session::is_logged_in())
     {       
         echo "<div style='text-align:center;padding-bottom:15px'>";
         echo __('itrans:need_login');
@@ -164,7 +164,7 @@ function toggleAddComment()
         }
     }
            
-    if (Session::isloggedin())
+    if (Session::is_logged_in())
     {    
         echo "<a href='javascript:toggleAddComment()' style='font-weight:bold'>".__('comment:add')."</a>";
         echo "<div id='add_comment' style='display:none'>";
@@ -215,9 +215,9 @@ function toggleAddComment()
             $edit_links = array();
             $edit_links[] = "<a href='".escape($base_url)."?translation={$translation->guid}'>".__('edit')."</a> ";
             
-            if ($translation->can_edit())
+            if (Permission_EditTranslation::has_for_entity($translation))
             {                               
-                if ($key->can_edit())
+                if (Permission_EditTranslation::has_for_entity($key))
                 {
                     if ($translation->is_approved())
                     {

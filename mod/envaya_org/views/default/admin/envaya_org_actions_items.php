@@ -1,5 +1,8 @@
 <?php
     $org = $vars['org'];
+    
+    if (Permission_EditMainSite::has_for_root())
+    {
 ?>
 <?php echo view('js/dom'); ?>
 <script type='text/javascript'>
@@ -65,6 +68,7 @@ function selectFeaturedPhoto()
 
 </script>
 <?php
-echo "<a href='/admin/envaya/add_featured?username={$org->username}'>".__('featured:add')."</a>";        
-echo " ";
-echo "<a href='javascript:void(0)' onclick='javascript:selectFeaturedPhoto()'>".__('featured:photo:add')."</a>";
+        echo "<a href='/admin/envaya/add_featured?username={$org->username}'>".__('featured:add')."</a>";        
+        echo " ";
+        echo "<a href='javascript:void(0)' onclick='javascript:selectFeaturedPhoto()'>".__('featured:photo:add')."</a>";
+    }

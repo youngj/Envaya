@@ -4,8 +4,8 @@ class Action_Register extends Action
 {
     function before()
     {
-        $user = Session::get_loggedin_user();
-        if ($user && !$user->admin)
+        $user = Session::get_logged_in_user();
+        if ($user)
         {
             SessionMessages::add(__('register:already_registered'));
             $this->redirect_next($user);
@@ -61,16 +61,8 @@ class Action_Register extends Action
         $mail->send_to_admin();
                 
         SessionMessages::add(__('register:created_ok'));                
-        if (Session::isadminloggedin())
-        {            
-            $scope = $user->get_container_entity();
-            $this->redirect($scope ? $scope->get_admin_url() : $user->get_url());
-        }
-        else
-        {
-            Session::login($user, false);
-            $this->redirect_next($user);
-        }
+        Session::login($user);
+        $this->redirect_next($user);
     }    
     
     function redirect_next($user)

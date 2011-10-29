@@ -6,7 +6,7 @@ class Action_Admin_ActivateFeaturedSite extends Action
 
     function before()
     {
-        $this->require_admin();
+        Permission_EditMainSite::require_for_root();
 
         $guid = get_input('guid');
         $featuredSite = FeaturedSite::get_by_guid($guid);

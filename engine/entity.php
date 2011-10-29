@@ -35,6 +35,8 @@ abstract class Entity extends Model
     static $primary_key = 'guid';    
     static $current_request_entities = array();
     static $admin_view = null;
+    static $table_base_class = null; 
+    static $query_subtypes = null;
     
     protected $guess_language_field;
     
@@ -207,57 +209,6 @@ abstract class Entity extends Model
         return Database::delete("DELETE from metadata where entity_guid=?", array($this->guid));
     }
 
-    function can_view()
-    {
-        return $this->can_user_view(Session::get_loggedin_user());
-    }
-    
-    function can_user_view($user)
-    {
-        if ($this->status == Entity::Disabled)
-        {
-            return false;
-        }
-    
-        $container = $this->get_container_entity();
-        if ($container && !$container->can_user_view($user))
-        {
-            return false;
-        }
-        
-        return true;
-    }
-    
-    function can_edit()
-    {
-        return $this->can_user_edit(Session::get_loggedin_user());
-    }
-    /**
-     * Determines whether or not the specified user can edit the entity
-     *
-     * @param int $user The user
-     * @return true|false
-     */
-    function can_user_edit($user)
-    {
-        if ($user)
-        {
-            if (($this->owner_guid == $user->guid)
-             || ($this->container_guid == $user->guid)
-             || ($this->guid == $user->guid)
-             || $user->admin)
-            {
-                return true;
-            }
-
-            $container_entity = Entity::get_by_guid($this->container_guid);
-
-            if ($container_entity && $container_entity->can_user_edit($user))
-                return true;
-        }
-        return false;
-    }   
-
     /**
      * Returns the actual entity of the user who owns this entity, if any
      *
@@ -266,6 +217,11 @@ abstract class Entity extends Model
     public function get_owner_entity() 
     { 
         return User::get_by_guid($this->owner_guid); 
+    }
+    
+    public function set_owner_entity($user)
+    {
+        $this->owner_guid = $user ? $user->guid : 0;
     }
     
     public function get_title()
@@ -413,6 +369,11 @@ abstract class Entity extends Model
         return $this->container_entity;
     }
     
+    function equals($other)
+    {
+        return $other && $other->guid == $this->guid;
+    }
+    
     function set_container_entity($entity)
     {
         $this->container_entity = $entity;
@@ -430,12 +391,35 @@ abstract class Entity extends Model
     static function query()
     {
         $query_class = static::$query_class;
-    
-        $query = new $query_class(static::$table_name, get_called_class());
         
-        if (isset(static::$query_subtype_ids))
+        $cls = get_called_class();    
+        $query = new $query_class(static::$table_name, $cls);        
+        
+        /*
+         * If a base class shares a table with derived classes,
+         * BaseClass::query() should query all entities of base and derived classes,
+         * while DerivedClass1::query() should return only entities of a particular
+         * derived class.
+         *
+         * To enable this behavior, set static::$table_base_class in the base class
+         * to the name of the base class (e.g. static $table_base_class = 'BaseClass';).
+         *
+         * For situations where there are >= 3 levels of inheritance represented in one table,
+         * set static::$query_subtypes to an array containing all the class names of subclasses.
+         */        
+
+        $table_base_class = static::$table_base_class;         
+        if ($table_base_class && $table_base_class != $cls)
         {            
-            $query->where_in('subtype_id', static::$query_subtype_ids);
+            $subtype_ids = array($cls::get_subtype_id());            
+            if (static::$query_subtypes)
+            {
+                foreach (static::$query_subtypes as $subtype)
+                {
+                    $subtype_ids[] = $subtype::get_subtype_id();
+                }
+            }        
+            $query->where_in('subtype_id', $subtype_ids);
         }
         
         return $query;

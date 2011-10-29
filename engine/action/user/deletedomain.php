@@ -4,7 +4,7 @@ class Action_User_DeleteDomain extends Action
 {
     function before()
     {
-        $this->require_admin();
+        Permission_UseAdminTools::require_for_entity($this->get_user());
     }
      
     function process_input()

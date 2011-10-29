@@ -4,7 +4,8 @@ Engine::add_autoload_action('EntityRegistry', function() {
     EntityRegistry::register_subtypes(array(    
         'core.discussion.message' => 'DiscussionMessage',
         'core.discussion.topic' => 'DiscussionTopic',
-        'core.subscription.email.discussion' => "EmailSubscription_Discussion",
+        'core.subscription.email.discussion' => "EmailSubscription_Discussion",       
+        'core.permission.editdiscussionmessage' => 'Permission_EditDiscussionMessage',
     ));
 });
 

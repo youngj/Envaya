@@ -1,18 +1,17 @@
 <?php
 
 class Action_User_Settings extends Action
-{
-    function before()
-    {
-        $this->require_site_editor();
-    }
-     
+{  
     function process_input()
     {
         $user = $this->get_user();
         
-        if (Session::isadminloggedin() && get_input('delete'))
+        Permission_EditUserSettings::require_for_entity($user);
+                                
+        if (get_input('delete'))
         {
+            Permission_UseAdminTools::require_for_entity($user);
+        
             $user->disable();
             $user->save();
             SessionMessages::add(__('user:deleted'));
@@ -62,9 +61,15 @@ class Action_User_Settings extends Action
 
     function render()
     {
+        $user = $this->get_user();
+    
+        Permission_ViewUserSettings::require_for_entity($user);
+    
+        $this->use_editor_layout();
+    
         $this->page_draw(array(
             'title' => __('user:settings'),
-            'content' => view("account/settings", array('user' => $this->get_user())),
+            'content' => view("account/settings", array('user' => $user)),
         ));                
     }    
 }    

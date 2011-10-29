@@ -3,14 +3,14 @@
 class Action_Discussion_Edit extends Action
 {
     function before()
-    {
-        $this->require_site_editor();
+    {    
+        Permission_EditUserSite::require_for_entity($this->get_user());
     }
      
     function process_input()
     {
         $topic = $this->get_topic();
-        $org = $this->get_org();
+        $user = $this->get_user();
         
         if (get_input('delete'))
         {
@@ -18,7 +18,7 @@ class Action_Discussion_Edit extends Action
             $topic->save();
             SessionMessages::add(__('discussions:topic_deleted'));            
             
-            $widget = $org->get_widget_by_class('Discussions');
+            $widget = $user->get_widget_by_class('Discussions');
             $this->redirect($widget->get_edit_url());
         }
         else
@@ -31,8 +31,7 @@ class Action_Discussion_Edit extends Action
             
             $topic->subject = $subject;            
             $topic->save();
-            $topic->queue_guess_language('subject');            
-            
+            $topic->queue_guess_language('subject');                        
             
             SessionMessages::add(__('discussions:topic_saved'));                    
             $this->redirect($topic->get_edit_url());   

@@ -5,7 +5,7 @@ class FeedItem_News extends FeedItem
     function render_heading($mode)
     {
         return strtr(__('feed:news'), array(
-            '{name}' => $this->get_org_link($mode),
+            '{name}' => $this->get_user_link($mode),
             '{title}' => $this->get_link(__('widget:news:item')),
         ));         
     }

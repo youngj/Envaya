@@ -1,21 +1,22 @@
 <?php
-    if (get_input("__topbar") != "0")
+    $user = $vars['user'];
+
+    if (($user instanceof Organization) && get_input("__topbar") != "0")
     {
-        $org = $vars['org'];
-    
-        if (Session::isadminloggedin())
+        if (Permission_UseAdminTools::has_for_entity($user))
         {
-            echo view("admin/org_actions", array('org' => $org));
+            echo view("admin/org_actions", array('org' => $user));
         }
 
-        if ($org->can_view() && Session::isloggedin() && Session::get_loggedin_userid() != $org->guid)
+        if (Permission_ViewUserSite::has_for_entity($user)
+            && Session::is_logged_in() && !$user->equals(Session::get_logged_in_user()))
         {
-            echo view("org/comm_box", array('org' => $org));
+            echo view("org/comm_box", array('org' => $user));
         }
 
         if (@$vars['show_next_steps'])
         {
-            echo view("org/todo_message", array('org' => $org));
+            echo view("org/todo_message", array('org' => $user));
         }
     }            
     echo SessionMessages::view_all();

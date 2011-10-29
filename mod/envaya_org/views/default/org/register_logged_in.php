@@ -1,7 +1,7 @@
 <div class='section_content padded'>
 
 <?php
-    $user = Session::get_loggedin_user();
+    $user = Session::get_logged_in_user();
 ?>
 <p>
 <?php echo strtr(__('register:already_logged_in'), array('{name}' => escape($user->name))); ?>

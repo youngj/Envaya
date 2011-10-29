@@ -5,7 +5,6 @@ class Action_Discussion_AddMessage extends Action
     function process_input()
     {
         $topic = $this->get_topic();                       
-        $org = $this->get_org();
 
         $uniqid = get_input('uniqid');
 
@@ -41,7 +40,7 @@ class Action_Discussion_AddMessage extends Action
         Session::set('user_location', $location);
         Session::set('user_email', $email);
         
-        $user = Session::get_loggedin_user();
+        $user = Session::get_logged_in_user();
         
         $content = Markup::sanitize_html($content, array('Envaya.Untrusted' => !$user));
         

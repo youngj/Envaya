@@ -6,7 +6,7 @@ class Action_Admin_EditFeaturedPhoto extends Action
 
     function before()
     {
-        $this->require_admin();
+        Permission_EditMainSite::require_for_root();
 
         $photo = FeaturedPhoto::get_by_guid(get_input('guid'));        
         if (!$photo)

@@ -94,7 +94,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
         
         $org->init_default_widgets();
         
-        Session::login($org, false);
+        Session::login($org);
 
         SessionMessages::add(__('register:created_ok'));   
 

@@ -13,7 +13,7 @@ echo $entity->render_content();
     ));    
 ?></div>
 <?php
-    if ($entity->can_edit()) 
+    if (Permission_EditTranslation::has_for_entity($entity)) 
     {
         echo "<span class='admin_links'>";
         echo view('input/post_link', array(

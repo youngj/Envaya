@@ -17,16 +17,16 @@ class Session_Cookie implements SessionImpl
         return Config::get('session_cookie_name');
     }    
 
-    function get_loggedin_user()
+    function get_logged_in_user()
     {
         return User::get_by_guid($this->get('guid'));
     }
     
-    function login($user, $persistent)
+    function login($user, $options)
     {            
         $this->set('guid', $user->guid);
         
-        if ($persistent)
+        if (@$options['persistent'])
         {
             session_set_cookie_params(60 * 60 * 24 * 60);
         }

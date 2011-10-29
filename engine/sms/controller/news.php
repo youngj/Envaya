@@ -549,7 +549,7 @@ class SMS_Controller_News extends SMS_Controller
             ob_start();
             
             echo __('sms:user_help');
-            $user = Session::get_loggedin_user();
+            $user = Session::get_logged_in_user();
             if ($user)
             {
                 echo "\n".strtr(__('sms:user_self_help'), array('{username}' => $user->username));
@@ -702,8 +702,8 @@ class SMS_Controller_News extends SMS_Controller
             $from_number = $this->request->get_from_number();
         
             $comment = new Comment();
-            $comment->container_guid = $post->guid;
-            $comment->owner_guid = Session::get_loggedin_userid();
+            $comment->set_container_entity($post);
+            $comment->set_owner_entity(Session::get_logged_in_user());
             $comment->name = $this->get_state('name') ?: ("..".substr($this->request->get_from_number(), -4));
             $comment->location = $this->get_state('location') ?: 'via sms';
             $comment->set_metadata('phone_number', $from_number);
@@ -977,7 +977,7 @@ class SMS_Controller_News extends SMS_Controller
         
     function post_message($message)
     {            
-        $user = Session::get_loggedin_user();
+        $user = Session::get_logged_in_user();
         if (!$user || !($user instanceof Organization))
         {
             $this->set_state('message', $message);            
@@ -1024,7 +1024,7 @@ class SMS_Controller_News extends SMS_Controller
         {
             $this->reply(strtr(__('sms:item_not_found'), array('{id}' => $guid)));
         }        
-        else if (!$item->can_edit() || !($item instanceof Widget_Post || $item instanceof Comment))
+        else if (!Permission_EditUserSite::has_for_entity($item) || !($item instanceof Widget_Post || $item instanceof Comment))
         {
             $this->reply(__('sms:cant_delete_item'));
         }
@@ -1102,7 +1102,7 @@ class SMS_Controller_News extends SMS_Controller
     
     function action_login_help()
     {
-        $user = Session::get_loggedin_user();
+        $user = Session::get_logged_in_user();
         if (!$user)
         {
             $this->reply(__('sms:login_help'));            
@@ -1297,7 +1297,7 @@ class SMS_Controller_News extends SMS_Controller
             $lines[] = __('sms:help_l');        
         }
         
-        if (Session::get_loggedin_user())
+        if (Session::get_logged_in_user())
         {
             $lines[] = __('sms:help_out');
         }

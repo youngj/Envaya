@@ -7,7 +7,7 @@ class FeedItem_NewsMulti extends FeedItem_News
         $count = @$this->args['count'] ?: 1;
     
         return strtr(__('feed:news_multi'), array(
-            '{name}' => $this->get_org_link($mode),
+            '{name}' => $this->get_user_link($mode),
             '{title}' => $this->get_link(__('widget:news:items')),
             '{count}' => $count,
         ));             

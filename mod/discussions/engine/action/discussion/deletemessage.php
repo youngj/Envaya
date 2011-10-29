@@ -4,7 +4,7 @@ class Action_Discussion_DeleteMessage extends Action
 {
     function before()
     {
-        $this->require_editor($this->param('message'));
+        Permission_EditDiscussionMessage::require_for_entity($this->param('message'));
     }
 
     function process_input()
@@ -31,7 +31,7 @@ class Action_Discussion_DeleteMessage extends Action
             $topic->disable();
             $topic->save();
             
-            $this->redirect($this->get_org()->get_widget_by_class('Discussions')->get_url());
+            $this->redirect($this->get_user()->get_widget_by_class('Discussions')->get_url());
         }
         else
         {

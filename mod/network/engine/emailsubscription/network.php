@@ -2,8 +2,6 @@
 
 class EmailSubscription_Network extends EmailSubscription
 {
-    static $query_subtype_ids = array('core.subscription.email.network');
-
     function send_notification($event_name, $relationship)
     {
         if ($event_name == Relationship::Added)

@@ -116,10 +116,7 @@ class Controller_Translate extends Controller
             throw new NotFoundException();
         }
         
-        if (!$key->can_view())
-        {
-            $this->force_login(__('itrans:cant_view'));
-        }
+        Permission_ViewTranslation::require_for_entity($key);
         
         $this->params['key'] = $key;        
     }
@@ -381,10 +378,13 @@ class Controller_Translate extends Controller
         
         $guid = (int)get_input('comment');
         $comment = TranslationKeyComment::get_by_guid($guid);
-        if (!$comment || !$comment->can_edit())
+        
+        if (!$comment)
         {
-            throw new RedirectException(__('comment:not_deleted'));
+            throw new NotFoundException();
         }
+        
+        Permission_EditTranslation::require_for_entity($comment);
         
         $comment->disable();
         $comment->save();

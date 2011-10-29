@@ -12,7 +12,7 @@ class Action_Widget_Add extends Action
 
     function before()
     {
-        $this->require_site_editor();
+        Permission_EditUserSite::require_for_entity($this->container);
     }
      
     function process_input()
@@ -50,6 +50,7 @@ class Action_Widget_Add extends Action
         $cancelUrl = get_input('from') ?: $container->get_url();
         PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
         
+        $this->use_editor_layout();        
         $this->page_draw(array(
             'title' => $container->is_section_container() ? __('widget:add_section') : __('widget:add'),
             'header' => view('widgets/add_header', array('widget' => $container)),

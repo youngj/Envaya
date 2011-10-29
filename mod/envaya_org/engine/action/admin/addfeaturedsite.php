@@ -6,7 +6,7 @@ class Action_Admin_AddFeaturedSite extends Action
 
     function before()
     {
-        $this->require_admin();
+        Permission_EditMainSite::require_for_root();
         
         $username = get_input('username');
         $user = User::get_by_username($username);

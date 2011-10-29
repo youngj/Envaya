@@ -12,9 +12,17 @@ class Query_SelectUser extends Query_SelectEntity
 
     function where_visible_to_user()
     {        
-        if (!Session::isadminloggedin())
+        if (!Permission_ViewUserSite::has_for_root())
         {
-            $this->where("(approval > 0 OR guid = ?)", (int)Session::get_loggedin_userid());
+            $user = Session::get_logged_in_user();
+            if ($user)
+            {
+                $this->where("(approval > 0 OR guid = ?)", $user->guid);
+            }
+            else
+            {
+                $this->where("approval > 0");
+            }
         }
         return $this;
     }

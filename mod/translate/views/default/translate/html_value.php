@@ -1,7 +1,7 @@
 <?php
     $value = $vars['value'];
 
-    if (Session::isloggedin()) // hack to make it line up with tinymce content
+    if (Session::is_logged_in()) // hack to make it line up with tinymce content
     {
         echo "<div style='padding-top:28px'>";
     }
@@ -10,7 +10,7 @@
     echo $value;
     echo "</div>";
     
-    if (Session::isloggedin()) 
+    if (Session::is_logged_in()) 
     {
         echo "</div>";
     }

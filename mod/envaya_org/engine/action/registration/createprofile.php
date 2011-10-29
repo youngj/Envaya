@@ -6,7 +6,7 @@ class Action_Registration_CreateProfile extends Action_Registration_CreateProfil
     {
         $this->require_login();
         
-        if (!(Session::get_loggedin_user() instanceof Organization))
+        if (!(Session::get_logged_in_user() instanceof Organization))
         {
             throw new RedirectException('', "/org/register_logged_in");
         }
@@ -24,6 +24,6 @@ class Action_Registration_CreateProfile extends Action_Registration_CreateProfil
 
     protected function post_process_input()
     {
-        $this->redirect(Session::get_loggedin_user()->get_url());            
+        $this->redirect(Session::get_logged_in_user()->get_url());            
     }    
 }

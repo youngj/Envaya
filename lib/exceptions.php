@@ -16,6 +16,7 @@ class InvalidParameterException extends CallException {}
 
 class RequestAbortedException extends Exception {}
 class NotFoundException extends RequestAbortedException {}
+class PermissionDeniedException extends RequestAbortedException {}
 class RedirectException extends RequestAbortedException 
 {
     public $url; /* null url indicates redirect to http referrer, if possible */

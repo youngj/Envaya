@@ -5,7 +5,7 @@ class FeedItem_EditHome extends FeedItem
     function render_heading($mode)
     {
         return strtr(__('feed:edit_home'), 
-            array('{name}' => $this->get_org_link($mode))
+            array('{name}' => $this->get_user_link($mode))
         );    
     }
     
@@ -18,8 +18,8 @@ class FeedItem_EditHome extends FeedItem
     {
         if ($mode != 'self')
         {
-            $org = $this->get_user_entity();
-            return view('feed/home', array('org' => $org, 'home_widget' => $org->get_widget_by_name('home')));
+            $user = $this->get_user_entity();
+            return view('feed/home', array('user' => $user, 'home_widget' => $user->get_widget_by_name('home')));
         }        
         return '';
     }

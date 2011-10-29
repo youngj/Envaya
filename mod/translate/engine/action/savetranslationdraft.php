@@ -11,7 +11,7 @@ class Action_SaveTranslationDraft extends Action
         $value = get_input('content');
         $key = $this->param('key');
         
-        $user = Session::get_loggedin_user();
+        $user = Session::get_logged_in_user();
         
         $translation = $key->get_draft_translation_for_user($user);            
         if (!$translation)

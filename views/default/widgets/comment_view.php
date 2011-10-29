@@ -37,7 +37,7 @@
         
         echo "</div>";
         
-        if ($comment->can_edit()) 
+        if (Permission_EditComment::has_for_entity($comment)) 
         {
             echo "<div style='font-size:10px'>";
             echo "<a href='{$comment->get_base_url()}/edit'>".__('edit')."</a>";        

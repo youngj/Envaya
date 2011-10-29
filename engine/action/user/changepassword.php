@@ -4,12 +4,21 @@ class Action_User_ChangePassword extends Action
 {
     function before()
     {
-        $this->require_site_editor();
+        Permission_EditUserSettings::require_for_entity($this->get_user());
     }
     
     function require_old_password()
     {
-        return !Session::isadminloggedin() || $this->get_user()->admin;
+        $user = $this->get_user();
+        
+        if ($user->equals(Session::get_logged_in_user()))
+        {
+            return true;
+        }        
+        
+        // old password not necessary for someone with EditUserSettings permission to 
+        // change password of account that does not have permissions        
+        return false;
     }
 
     function process_input()
@@ -39,6 +48,8 @@ class Action_User_ChangePassword extends Action
     function render()
     {    
         $this->prefer_https();
+        
+        $this->use_editor_layout();
 
         $user = $this->get_user();
 

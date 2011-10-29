@@ -4,7 +4,7 @@ class Action_Registration_LoggedIn extends Action
 {    
     function before()
     {
-        if (!Session::isloggedin())
+        if (!Session::is_logged_in())
         {
             throw new RedirectException('', "/org/new");
         }

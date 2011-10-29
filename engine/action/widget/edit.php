@@ -11,7 +11,7 @@ class Action_Widget_Edit extends Action
             $this->set_content_type('text/javascript');
         }
         
-        $this->require_site_editor();
+        Permission_EditUserSite::require_for_entity($this->get_widget());
     }
     
     protected function save_draft()
@@ -70,6 +70,9 @@ class Action_Widget_Edit extends Action
     function render()
     {
         $widget = $this->get_widget();        
+        
+        $this->use_editor_layout();
+        
         
         $cancelUrl = get_input('from') ?: $widget->get_url();
 

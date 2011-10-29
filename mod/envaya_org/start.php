@@ -3,7 +3,8 @@
 Engine::add_autoload_action('EntityRegistry', function() {
     EntityRegistry::register_subtypes(array(
         'core.featured.site' => 'FeaturedSite',
-        'core.featured.photo' => 'FeaturedPhoto'
+        'core.featured.photo' => 'FeaturedPhoto',
+        'core.permission.editmainsite' => 'Permission_EditMainSite',
     ));
 });
 

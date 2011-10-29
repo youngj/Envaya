@@ -14,7 +14,7 @@ class TranslationKeyComment extends Entity
     function get_owner_name()
     {
         $owner = $this->get_owner_entity();
-        return (!$owner || $owner->admin) ? __('itrans:admin') : $owner->username;    
+        return !$owner ? __('itrans:admin') : $owner->username;    
     }
     
     function get_key_in_language($language)

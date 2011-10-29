@@ -1,7 +1,7 @@
 <?php
-    $org = $vars['org'];
+    $user = $vars['user'];
 
-    $news = $org->get_widget_by_class('News');
+    $news = $user->get_widget_by_class('News');
     
     if ($news->is_enabled())
     {
@@ -13,10 +13,10 @@
 
     echo view('section', array(
         'header' => __("dashboard:edit_widgets"), 
-        'content' => view('org/edit_widget_links', array('org' => $org))
+        'content' => view('account/edit_widget_links', array('user' => $user))
     ));
       
     echo view('section', array(
         'header' => __("dashboard:links"), 
-        'content' => view('org/dashboard_links', array('org' => $org))
+        'content' => view('account/dashboard_links', array('user' => $user))
     ));

@@ -6,7 +6,7 @@ class Action_Registration_Qualification extends Action
     {
         $invite_code = get_input('invite');
     
-        if (Session::isloggedin())
+        if (Session::is_logged_in())
         {
             throw new RedirectException('', "/org/register_logged_in");
         }

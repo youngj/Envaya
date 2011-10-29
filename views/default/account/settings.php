@@ -66,7 +66,7 @@
 
     echo view('input/hidden', array('name' => 'from', 'value' => get_input('from')));
     
-    if (Session::isadminloggedin())
+    if (Permission_UseAdminTools::has_for_entity($user))
     {   
         echo view('input/alt_submit', array(
             'name' => 'delete', 

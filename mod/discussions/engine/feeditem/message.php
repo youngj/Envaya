@@ -23,7 +23,7 @@ class FeedItem_Message extends FeedItem
         $is_first_message = $message->guid == $topic->first_message_guid;
         
         return strtr($is_first_message ? __('discussions:feed_heading_topic') : __('discussions:feed_heading_message'), array(
-            '{name}' => $this->get_org_link($mode),
+            '{name}' => $this->get_user_link($mode),
             '{topic}' => "<a href='{$topic->get_url()}'>".escape($topic->subject)."</a>"
         ));
     }

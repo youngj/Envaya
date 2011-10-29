@@ -172,6 +172,20 @@ abstract class Controller extends Router {
         return $canonical_url;        
     }
     
+    function exception_redirect($ex, $url = null, $status = 302)
+    {
+        $msg = $ex->getMessage();
+        if ($msg)
+        {
+            SessionMessages::add_error($msg);
+        }
+        if (Request::is_post())
+        {
+            Session::save_input();
+        }
+        $this->redirect($url, $status);
+    }        
+    
     /**
      * Adds messages to the session so they'll be carried over, and forwards the browser.
      */    
@@ -292,7 +306,7 @@ abstract class Controller extends Router {
      */    
     public function require_login()
     {
-        if (!Session::isloggedin())
+        if (!Session::is_logged_in())
         {
             if (@$this->response->headers['Content-Type'] == 'text/javascript')
             {
@@ -301,40 +315,16 @@ abstract class Controller extends Router {
             }
             else
             {
-                $this->force_login();
+                throw new RedirectException('', $this->get_login_url());
             }
         }
     }
-
-    /*
-     * Redirects to the login page if the user cannot edit the specified entity.
-     */
-    function require_editor($entity)
-    {
-        if (!$entity->can_edit())
-        {
-            $this->force_login(Session::isloggedin() ? __('page:noaccess') : '');   
-        }
-    }    
     
-    /*
-     * Redirects to the login page if the client is not an administrator.
-     */        
-    public function require_admin()
+    function get_login_url()
     {
-        if (!Session::isadminloggedin())
-        {
-            $this->force_login(Session::isloggedin() ? __('page:noaccess') : '');
-        }
-    }    
-    
-    function force_login($msg = '')
-    {
-        $next = $this->full_rewritten_url();
+        $args = array('next' => $this->full_rewritten_url());
         
-        $args = array();
-        
-        $arg_names = array('username','_lt','__topbar');
+        $arg_names = array('username','_lt');
         foreach ($arg_names as $arg_name)
         {        
             $arg = get_input($arg_name);
@@ -344,14 +334,7 @@ abstract class Controller extends Router {
             }
         }
         
-        if ($next)
-        {
-            $args['next'] = $next;
-        }
-        
-        $query = $args ? ("?".http_build_query($args)) : "";
-        
-        throw new RedirectException($msg, "/pg/login{$query}");      
+        return "/pg/login?".http_build_query($args);
     }
         
     public function allow_view_types($allowed_view_types = null /* array, or variable arguments */)
@@ -372,7 +355,7 @@ abstract class Controller extends Router {
             return;
         
         Views::set_request_type('default');
-    }   
+    }       
     
     function allow_content_translation($allow = true)
     {

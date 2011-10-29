@@ -13,6 +13,7 @@ class User extends Entity
 
     static $table_name = 'users';
     static $query_class = 'Query_SelectUser';    
+    static $table_base_class = 'User';
 
     static $table_attributes = array(        
         'subtype_id' => '',
@@ -23,7 +24,6 @@ class User extends Entity
         'email' => '',
         'phone_number' => '',
         'language' => '',
-        'admin' => 0,
         'approval' => 0,
         'latitude' => null,
         'longitude' => null,
@@ -209,7 +209,7 @@ class User extends Entity
 
     public function is_approved()
     {
-        return $this->approval >= User::Approved || $this->admin;
+        return $this->approval >= User::Approved;
     }
 
     public function set_password($password)
@@ -235,32 +235,36 @@ class User extends Entity
 
         if ($fails) 
         {
-            for ($n=1; $n <= $fails; $n++)
-                $this->set_metadata("login_failure_$n", null);
+            for ($i = 1; $i <= $fails; $i++)
+                $this->set_metadata("login_failure_$i", null);
 
             $this->set_metadata('login_failures', null);
         }
     }
     
-    function check_rate_limit_exceeded()
+    function validate_login_rate()
     {
-        $limit = 50;
+        $failure_limit = 20;
+        $failure_limit_interval = 60 * 10;
+        
         $fails = (int)$this->get_metadata('login_failures');
-        if ($fails >= $limit)
+        if ($fails >= $failure_limit)
         {
-            $cnt = 0;
+            $failure_count = 0;
             $time = timestamp();
-            for ($n=$fails; $n>0; $n--)
+            for ($i = $fails; $i > 0; $i--)
             {
-                $f = $this->get_metadata("login_failure_$n");
-                if ($f > $time - (60*5))
-                    $cnt++;
-
-                if ($cnt==$limit) return true; // Limit reached
+                $failure_time = $this->get_metadata("login_failure_$i");                
+                if ($failure_time > $time - $failure_limit_interval)
+                {
+                    $failure_count++;
+                }
+                if ($failure_count >= $failure_limit) 
+                {
+                    throw new ValidationException(__('login:rate_limit_exceeded'));
+                }
             }
         }
-
-        return false;
     }
     
     function log_login_failure()
@@ -570,7 +574,7 @@ class User extends Entity
                 // auto-login phones using the phone numbers that were added
                 $sms_service = new SMS_Service_News();
                 $state = $sms_service->get_state($phone_number->phone_number);
-                if (!$state->get_loggedin_user())
+                if (!$state->get_logged_in_user())
                 {
                     $state->set_loggedin_user($this);
                     $state->save();
@@ -657,7 +661,7 @@ class User extends Entity
     
     function render_add_child()
     {
-        return view("widgets/add", array('org' => $this));
+        return view("widgets/add", array('user' => $this));
     }        
     
     function get_entity_by_local_id($local_id, $show_disabled = false)
@@ -715,4 +719,25 @@ class User extends Entity
         }        
         $this->set_container_entity($scope);        
     }
+    
+    private $permissions;
+    
+    function get_all_permissions()
+    {
+        if (!isset($this->permissions))
+        {
+            $this->permissions = Permission::query()->where('owner_guid = ?', $this->guid)->filter();
+        }
+        return $this->permissions;
+    }
+    
+    public function query_files()
+    {    
+        return UploadedFile::query()->where('container_guid=?',$this->guid);
+    }    
+    
+    public function query_external_sites()
+    {
+        return ExternalSite::query()->where('container_guid = ?', $this->guid)->order_by('`order`');
+    }           
 }

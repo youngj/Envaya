@@ -13,8 +13,6 @@ class Organization extends User
     const CreatedAccount = 3;
     const CreatedHomePage = 5;
 
-    static $query_subtype_ids = array('core.user.org');
-    
     function set_defaults()
     {
         $this->set_design_setting('theme_name', "green");
@@ -42,17 +40,7 @@ class Organization extends User
     public function is_setup_complete()
     {
         return $this->setup_state >= Organization::CreatedHomePage;
-    }
-    
-    public function query_external_sites()
-    {
-        return ExternalSite::query()->where('container_guid = ?', $this->guid)->order_by('`order`');
-    }   
-    
-    public function query_files()
-    {    
-        return UploadedFile::query()->where('container_guid=?',$this->guid);
-    }
+    }    
             
     public function get_feed_names()
     {
@@ -91,12 +79,6 @@ class Organization extends User
         */
 
         return $feedNames;
-
-    }
-
-    public function can_user_view($user)
-    {
-        return parent::can_user_view($user) && ($this->approval >= User::Approved || $this->can_user_edit($user));
     }
         
     protected $sectors;

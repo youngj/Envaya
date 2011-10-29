@@ -42,19 +42,10 @@ class Controller_UserSite extends Controller_User
 
     function action_index()
     {
-        $org = $this->get_org();
-        
-        if (!$org)
-        {
-            return $this->action_settings();
-        }
-        else
-        {                             
-            $this->page_draw_vars['is_site_home'] = true;
-            
-            $home_widget = $org->query_menu_widgets()->get();             
-            return $this->index_widget($home_widget);
-        }
+        $user = $this->get_user();
+        $this->page_draw_vars['is_site_home'] = true;            
+        $home_widget = $user->query_menu_widgets()->get();             
+        return $this->index_widget($home_widget);
     }
     
     protected function init_widget_from_guid()
@@ -92,25 +83,18 @@ class Controller_UserSite extends Controller_User
     
     function action_widget_view()
     {    
-        $org = $this->get_org();
+        $user = $this->get_user();
         $widgetName = $this->param('widget_name');        
                
-        if ($org)
-        {            
-            $widget = $org->get_widget_by_name($widgetName);                        
-
-            $home_widget = $org->query_menu_widgets()->get();
-            if ($home_widget && $widget && $home_widget->guid == $widget->guid)
-            {                
-                $this->page_draw_vars['is_site_home'] = true;
-            }
-            
-            return $this->index_widget($widget);
-        }                   
-        else
-        {        
-            throw new NotFoundException();
+        $widget = $user->get_widget_by_name($widgetName);                        
+        
+        $home_widget = $user->query_menu_widgets()->get();
+        if ($home_widget && $widget && $home_widget->guid == $widget->guid)
+        {                
+            $this->page_draw_vars['is_site_home'] = true;
         }
+        
+        return $this->index_widget($widget);
     }
         
     function action_widget_edit()
@@ -119,14 +103,10 @@ class Controller_UserSite extends Controller_User
         // at /<username>/<widget_name>/edit         
         // by forwarding to new URLs at /<username>/page/<widget_name>/edit         
      
-        $org = $this->get_org();
-        if (!$org)
-        {
-            throw new NotFoundException();
-        }
+        $user = $this->get_user();
         
         $widgetName = $this->param('widget_name');
-        $widget = $org->get_widget_by_name($widgetName);
+        $widget = $user->get_widget_by_name($widgetName);
         
         if (!$widget->is_enabled())
         {
@@ -137,13 +117,16 @@ class Controller_UserSite extends Controller_User
 
     function action_dashboard()
     {    
-        $this->require_site_editor();        
+        $user = $this->get_user();
+    
+        Permission_EditUserSite::require_for_entity($user);
+    
+        $this->use_editor_layout();        
         $this->allow_view_types(null);        
         
         $vars = array();
 
-        $user = $this->get_user();
-        if ($user->guid == Session::get_loggedin_userid())
+        if ($user->equals(Session::get_logged_in_user()))
         {
             $vars['title'] = __('edit_site');
         }
@@ -151,21 +134,9 @@ class Controller_UserSite extends Controller_User
         {
             $vars['title'] = sprintf(__('edit_item'), $user->name);
         }
-                
-        $org = $this->get_org();
-        if ($org)
-        {            
-            $vars['content'] = view("org/dashboard", array('org' => $org));
-            $vars['messages'] = view('messages/dashboard', array('org' => $org));
-        }
-        else if ($user->admin)
-        {
-            $vars['content'] = view('admin/dashboard');
-        }
-        else
-        {
-            throw new RedirectException('', $user->get_url());
-        }
+
+        $vars['content'] = view("account/dashboard", array('user' => $user));
+        $vars['messages'] = view('messages/dashboard', array('user' => $user));
         
         $this->page_draw($vars);
     }
@@ -202,12 +173,15 @@ class Controller_UserSite extends Controller_User
     
     function action_domains()
     {
-        $this->require_admin();
+        $user = $this->get_user();
+        
+        Permission_UseAdminTools::require_for_entity($user);        
+        
         $this->use_editor_layout();
         
         $this->page_draw(array(
             'title' => __('domains:edit'),
-            'content' => view('account/domains', array('user' => $this->get_user())),
+            'content' => view('account/domains', array('user' => $user)),
         ));
     }
     
@@ -237,7 +211,7 @@ class Controller_UserSite extends Controller_User
     
     function action_add_page()
     {
-        $action = new Action_Widget_Add($this, $this->get_org());
+        $action = new Action_Widget_Add($this, $this->get_user());
         $action->execute();
     }
         
@@ -246,5 +220,10 @@ class Controller_UserSite extends Controller_User
         $action = new Action_User_Design($this);
         $action->execute();
     }
-       
+
+    function action_set_approval()
+    {
+        $action = new Action_User_ChangeApproval($this);
+        $action->execute();
+    }               
 }

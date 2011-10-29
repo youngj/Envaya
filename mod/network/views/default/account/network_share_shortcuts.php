@@ -1,12 +1,12 @@
 <?php
-    $org = $vars['org'];
-    $network = $org->get_widget_by_class('Network');
+    $user = $vars['user'];
+    $network = $user->get_widget_by_class('Network');
 ?>
 
 <script type='text/javascript'>
 function addPartners()
 {
-    fetchJson('/<?php echo $org->username; ?>/network/x/relationship_emails_js?t=' + (new Date().getTime()), function(res) {
+    fetchJson('/<?php echo $user->username; ?>/network/x/relationship_emails_js?t=' + (new Date().getTime()), function(res) {
         var emails = res.emails;
         var input = document.forms[0].emails;
         var added = false;

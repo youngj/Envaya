@@ -4,7 +4,7 @@ class Action_Widget_EditComment extends Action
 {
     function before()
     {
-        $this->require_editor($this->param('comment'));
+        Permission_EditComment::require_for_entity($this->param('comment'));
     }    
 
     function process_input()
@@ -28,7 +28,7 @@ class Action_Widget_EditComment extends Action
         Session::set('user_location', $location);
         Session::set('user_email', $email);
                 
-        $user = Session::get_loggedin_user();
+        $user = Session::get_logged_in_user();
         
         $content = Markup::sanitize_html($content, array('Envaya.Untrusted' => !$user));                
         

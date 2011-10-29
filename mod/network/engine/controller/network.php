@@ -9,14 +9,14 @@ class Controller_Network extends Controller_User
     );
 
     function action_relationship_emails_js()
-    {    
-        $this->require_site_editor();
-    
+    {                
         $this->set_content_type('text/javascript');
         
-        $org = $this->get_org();
+        $user = $this->get_user();
+        
+        Permission_EditUserSite::require_for_entity($user);
                 
-        $relationships = Relationship::query_for_user($org)
+        $relationships = Relationship::query_for_user($user)
             ->where("subject_guid <> 0 OR subject_email <> ''")
             ->filter();
      

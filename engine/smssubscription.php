@@ -2,6 +2,7 @@
 
 abstract class SMSSubscription extends Subscription
 {    
+    static $table_base_class = 'SMSSubscription';
     static $table_name = 'sms_subscriptions';
     static $table_attributes = array(    
         'subtype_id' => '',
@@ -51,10 +52,10 @@ abstract class SMSSubscription extends Subscription
         if (!$subscription)
         {
             $subscription = new $cls();
-            $subscription->container_guid = $entity->guid;
+            $subscription->set_container_entity($entity);
             $subscription->phone_number = $phone_number;
             $subscription->language = Language::get_current_code();
-            $subscription->owner_guid = Session::get_loggedin_userid();
+            $subscription->set_owner_entity(Session::get_logged_in_user());
             
             if ($defaults)
             {

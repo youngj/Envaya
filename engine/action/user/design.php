@@ -4,67 +4,67 @@ class Action_User_Design extends Action
 {
     function before()
     {
-        $this->require_site_editor();
+        Permission_EditUserSite::require_for_entity($this->get_user());
     }
      
     function process_input()
     {
-        $org = $this->get_org();
+        $user = $this->get_user();
 
         $theme = get_input('theme');
 
-        if ($theme != $org->get_design_setting('theme_name'))
+        if ($theme != $user->get_design_setting('theme_name'))
         {
-            $org->set_design_setting('theme_name', $theme);
+            $user->set_design_setting('theme_name', $theme);
         }
 
         $iconFiles = UploadedFile::json_decode_array($_POST['icon']);
 
         if (get_input('deleteicon'))
         {
-            $org->set_icon(null);
+            $user->set_icon(null);
         }
         else if ($iconFiles)
         {
-            $org->set_icon($iconFiles);
+            $user->set_icon($iconFiles);
         }
 
         $custom_header = (int)get_input('custom_header');
         
         if (!$custom_header)
         {
-            $org->set_design_setting('tagline', get_input('tagline'));            
-            $org->set_design_setting('share_links', get_input_array('share_links'));                        
-            $org->set_design_setting('custom_header', false);
+            $user->set_design_setting('tagline', get_input('tagline'));            
+            $user->set_design_setting('share_links', get_input_array('share_links'));                        
+            $user->set_design_setting('custom_header', false);
         }
         else 
         {
             $header_image = json_decode(get_input('header_image'), true);
             if ($header_image)
             {
-                $org->set_design_setting('header_image', $header_image[0]);
+                $user->set_design_setting('header_image', $header_image[0]);
             }
             
-            $org->set_design_setting('custom_header', !!$org->get_design_setting('header_image'));
+            $user->set_design_setting('custom_header', !!$user->get_design_setting('header_image'));
         }
         
         SessionMessages::add(__("design:saved"));
-        $org->save();
+        $user->save();
         
-        $this->redirect($org->get_url());
+        $this->redirect($user->get_url());
     }
 
     function render()
     {
-        $org = $this->get_org();
+        $user = $this->get_user();
 
-        $cancelUrl = get_input('from') ?: $org->get_url();
+        $cancelUrl = get_input('from') ?: $user->get_url();
         PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
 
         $this->page_draw(array(
             'title' => __("design:edit"),
             'theme_name' => 'editor',
-            'content' => view("org/design", array('org' => $org))
+            'content' => view("account/design", array('user' => $user))
         ));        
     }
     

@@ -4,7 +4,7 @@ class Action_User_AddPhotos extends Action
 {
     function before()
     {
-        $this->require_site_editor();
+        Permission_EditUserSite::require_for_entity($this->get_user());
     }
      
     function process_input()
@@ -12,9 +12,9 @@ class Action_User_AddPhotos extends Action
         $imageNumbers = get_input_array('imageNumber');
         
         $uniqid = get_input('uniqid');
-        $org = $this->get_org();
+        $user = $this->get_user();
         
-        $news = $org->get_widget_by_class('News');
+        $news = $user->get_widget_by_class('News');
         if (!$news->guid)
         {
             $news->save();
@@ -59,7 +59,7 @@ class Action_User_AddPhotos extends Action
             }
                         
             $post = $news->new_widget_by_class('Post');
-            $post->owner_guid = Session::get_loggedin_userid();
+            $post->set_owner_entity(Session::get_logged_in_user());
             $post->set_content($body);
             $post->set_metadata('uniqid', $uniqid);
             $post->save();              
@@ -67,16 +67,16 @@ class Action_User_AddPhotos extends Action
         }
         
         SessionMessages::add(__('upload:photos:success'));
-        $this->redirect($org->get_url()."/news");
+        $this->redirect($user->get_url()."/news");
     }
 
     function render()
     {
-        $org = $this->get_org();
-        
+        $user = $this->get_user();
+        $this->use_editor_layout();        
         $this->page_draw(array(
             'title' => __('upload:photos:title'),
-            'content' => view('org/add_photos', array('org' => $org))
+            'content' => view('account/add_photos', array('user' => $user))
         ));        
     }
     

@@ -14,10 +14,19 @@ class Query_SelectFeedItem extends Query_Select
 
     function where_visible_to_user()
     {        
-        if (!Session::isadminloggedin())
+        if (!Permission_ViewUserSite::has_for_root())
         {
             $this->join('INNER JOIN users u ON u.guid = f.user_guid');        
-            $this->where("(u.approval > 0 OR f.user_guid = ?)", Session::get_loggedin_userid());
+            
+            $user = Session::get_logged_in_user();
+            if ($user)
+            {
+                $this->where('(u.approval > 0 OR f.user_guid = ?)', $user->guid);
+            }
+            else
+            {
+                $this->where('u.approval > 0');
+            }
         }
         return $this;
     }

@@ -20,6 +20,8 @@ class Widget_Contact extends Widget
     function process_input($action)
     {
         $org = $this->get_container_entity();
+        
+        Permission_EditUserSettings::require_for_entity($org);
 
         $email = trim(get_input('email'));
 

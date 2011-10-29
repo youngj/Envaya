@@ -4,7 +4,7 @@ class Action_DeleteTranslation extends Action
 {
     function before()
     {
-        $this->require_editor($this->param('translation'));        
+        Permission_EditTranslation::require_for_entity($this->param('translation'));        
     }
 
     function process_input()

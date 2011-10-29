@@ -2,8 +2,6 @@
 
 class EmailSubscription_Contact extends EmailSubscription
 {
-    static $query_subtype_ids = array('contact.subscription.email.contact');
-
     function send_notification($event_name, $template)
     {
         $this->send(array(

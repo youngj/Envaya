@@ -4,26 +4,21 @@ class Action_Discussion_NewTopic extends Action
 {            
     function process_input()
 	{            
-        $user = Session::get_loggedin_user();
-        $org = $this->get_org();
+        $user = Session::get_logged_in_user();        
+        $site_user = $this->get_user();
         
-        $widget = $org->get_widget_by_class('Discussions');
+        $widget = $site_user->get_widget_by_class('Discussions');
         if (!$widget->is_enabled())
         {
-            if ($widget->can_edit())
-            {        
-                $widget->enable();
-                $widget->save();
-            }
-            else
-            {                
-                throw new NotFoundException();
-            }
+            Permission_EditUserSite::require_for_entity($widget);
+            
+            $widget->enable();
+            $widget->save();
         }                
         
         $uniqid = get_input('uniqid');
 
-        $duplicate = DiscussionTopic::query_for_user($org)
+        $duplicate = DiscussionTopic::query_for_user($site_user)
             ->with_metadata('uniqid', $uniqid)
             ->get();
         if ($duplicate)
@@ -67,11 +62,8 @@ class Action_Discussion_NewTopic extends Action
       
         $topic = new DiscussionTopic();
         $topic->subject = $subject;        
-        $topic->container_guid = $org->guid;
-        if ($user)
-        {
-            $topic->owner_guid = $user->guid;
-        }
+        $topic->set_container_entity($site_user);
+        $topic->set_owner_entity($user);
         $topic->set_metadata('uniqid', $uniqid);
         $topic->save();
 
@@ -81,10 +73,10 @@ class Action_Discussion_NewTopic extends Action
         $message->from_location = $location;
         $message->time_posted = $now;
         $message->set_content($content, true);
-        
+                
         if ($user)
         {
-            $message->owner_guid = $user->guid;
+            $message->set_owner_entity($user);
             $message->from_email = $user->email;
         }                
         $message->save();        
@@ -117,17 +109,17 @@ class Action_Discussion_NewTopic extends Action
     function render()
     {       
         $this->use_public_layout();        
-        $org = $this->get_org();       
+        $site_user = $this->get_user();       
 
-        $widget = $org->get_widget_by_class('Discussions');
-        if (!$widget->is_enabled() && !$widget->can_edit())
+        $widget = $site_user->get_widget_by_class('Discussions');        
+        if (!$widget->is_enabled())
         {
-            throw new NotFoundException();
+            Permission_EditUserSite::require_for_entity($widget);
         }
 
         $this->page_draw(array(
             'title' => __('discussions:title'),
-            'content' => view("discussions/topic_new", array('org' => $org)),
+            'content' => view("discussions/topic_new", array('user' => $site_user)),
         ));        
     }
 }

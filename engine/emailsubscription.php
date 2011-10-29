@@ -2,6 +2,7 @@
 
 abstract class EmailSubscription extends Subscription
 {    
+    static $table_base_class = 'EmailSubscription';
     static $table_name = 'email_subscriptions';
     static $table_attributes = array(    
         'subtype_id' => '',
@@ -63,9 +64,9 @@ abstract class EmailSubscription extends Subscription
         if (!$subscription)
         {
             $subscription = new $cls();
-            $subscription->container_guid = $entity->guid;
+            $subscription->set_container_entity($entity);
             $subscription->email = $email;            
-            $subscription->owner_guid = Session::get_loggedin_userid();
+            $subscription->set_owner_entity(Session::get_logged_in_user());
             $subscription->language = Language::get_current_code();   
 
             if ($defaults)

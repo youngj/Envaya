@@ -4,7 +4,7 @@ class Action_Discussion_EditMessage extends Action
 {
     function before()
     {
-        $this->require_editor($this->param('message'));
+        Permission_EditDiscussionMessage::require_for_entity($this->param('message'));
     }
 
     function process_input()
@@ -31,7 +31,7 @@ class Action_Discussion_EditMessage extends Action
         Session::set('user_location', $location);
         Session::set('user_email', $email);
         
-        $user = Session::get_loggedin_user();
+        $user = Session::get_logged_in_user();
         
         $content = Markup::sanitize_html($content, array('Envaya.Untrusted' => !$user));
         
