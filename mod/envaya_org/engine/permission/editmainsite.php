@@ -1,5 +1,5 @@
 <?php
 
-class Permission_EditMainSite extends Permission
+class Permission_EditMainSite extends Permission_Secure
 {        
 }

@@ -12,12 +12,22 @@ return function() {
     
     EmailSubscription_Comments::init_for_entity($root_scope, $admin_email);
     
-    $admin = get_or_create_user('testadmin');
+    $admin = get_or_create_user('testadmin', 'Person');
     $admin->set_password('testtest');
     $admin->name = "Test Admin";
     $admin->set_email($admin_email);
     $admin->container_guid = $root_scope->guid;
     $admin->save();
+        
+    Permission_ViewUserSite::grant_explicit($root_scope, $admin);
+    Permission_EditUserSite::grant_explicit($root_scope, $admin);
+    Permission_ViewUserSettings::grant_explicit($root_scope, $admin);
+    Permission_EditUserSettings::grant_explicit($root_scope, $admin);
+    Permission_EditComment::grant_explicit($root_scope, $admin);
+    Permission_ViewOutgoingMessage::grant_explicit($root_scope, $admin);
+    Permission_ChangeUserApproval::grant_explicit($root_scope, $admin);
+    Permission_UseAdminTools::grant_explicit($root_scope, $admin);
+    Permission_SendMessage::grant_explicit($root_scope, $admin);
     
     $set_test_defaults = function($org) use ($root_scope)
     {

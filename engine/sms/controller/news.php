@@ -509,7 +509,7 @@ class SMS_Controller_News extends SMS_Controller
               
     function check_access($user)
     {
-        if (!$user->can_view())
+        if (!Permission_ViewUserSite::has_for_entity($user))
         {
             throw new NotFoundException(strtr(__('sms:unapproved_user'), array('{username}' => $user->username)));
         }

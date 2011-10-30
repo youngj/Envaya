@@ -15,6 +15,7 @@ class EntityRegistry
     private static $subtype_to_class = array(
         'core.user' => 'User',
         'core.user.org' => 'Organization',
+        'core.user.person' => 'Person',
         
         'core.scope' => 'UserScope',  
         

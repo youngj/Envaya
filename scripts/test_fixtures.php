@@ -38,7 +38,7 @@ function install_test_fixtures()
     }
 }
 
-function get_or_create_user($username, $class='User')
+function get_or_create_user($username, $class)
 {
     $user = $class::get_by_username($username);
     if (!$user)

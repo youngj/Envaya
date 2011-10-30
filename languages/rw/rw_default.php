@@ -103,6 +103,5 @@ return array(
     'web:url_error' => 'Habaye ikibazo mu kugera kuri uyu murongo {url}.',
     'web:invalid_url' => 'Uru rubuga  {url} ntabwo rushoboye kuboneka.',
     'web:try_again' => 'Banza ugenzure niba aderesi y\'urubuga ariyo, hanyuma wongere.',
-    'email:salutation' => 'Amakuru %s,',
 );
 

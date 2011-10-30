@@ -1,5 +1,5 @@
 <?php
 
-class Permission_ChangeUserApproval extends Permission
+class Permission_ChangeUserApproval extends Permission_Secure
 {        
 }

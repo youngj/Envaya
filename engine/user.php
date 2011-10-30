@@ -5,7 +5,7 @@
  *
  * (The Organization subclass is the most common type of user.)
  */
-class User extends Entity
+abstract class User extends Entity
 {
     const Approved = 1;
     const AwaitingApproval = 0;
@@ -35,13 +35,33 @@ class User extends Entity
         'setup_state' => 5,
         'icons_json' => null,
         'design_json' => null,
-        'last_notify_time' => null,
         'last_action' => 0,
     );
  
     static $mixin_classes = array(
         'Mixin_WidgetContainer',
     );  
+  
+    static $bad_usernames = array(
+        'pg',
+        'org',
+        'page',
+        'action',
+        'account',
+        'mod',
+        'search',
+        'admin',
+        'dashboard',
+        'engine'
+    );
+
+    function set_defaults()
+    {
+    }
+    
+    function init_default_widgets()
+    {
+    }
  
     public function get_feed_names()
     {
@@ -94,20 +114,33 @@ class User extends Entity
             }
             return $all_sizes[0];
         }
-        else if ($this->has_lat_long())
+        else
+        {
+            return $this->get_default_icon_props($size);
+        }
+    }
+    
+    function get_static_map_props($size = '')
+    {
+        return array(
+            'url' => Geography::get_static_map_url(array(
+                'lat' => $this->latitude, 
+                'long' => $this->longitude, 
+                'zoom' => 6, 
+                'width' => 100, 
+                'height' => 100,
+                'pin' => true
+            )),
+            'width' => 100,
+            'height' => 100
+        );    
+    }
+    
+    function get_default_icon_props($size = '')
+    {
+        if ($this->has_lat_long())
         {   
-            return array(
-                'url' => Geography::get_static_map_url(array(
-                    'lat' => $this->latitude, 
-                    'long' => $this->longitude, 
-                    'zoom' => 6, 
-                    'width' => 100, 
-                    'height' => 100,
-                    'pin' => true
-                )),
-                'width' => 100,
-                'height' => 100
-            );
+            return $this->get_static_map_props($size);
         } 
         else
         {
@@ -116,7 +149,7 @@ class User extends Entity
                 'width' => 100,
                 'height' => 100
             );
-        }    
+        }       
     }
 
     public function has_custom_icon()
@@ -389,20 +422,7 @@ class User extends Entity
 
         $lower = strtolower($username);
 
-        $badUsernames = array(
-            'pg',
-            'org',
-            'page',
-            'action',
-            'account',
-            'mod',
-            'search',
-            'admin',
-            'dashboard',
-            'engine'
-        );
-
-        if (in_array($lower, $badUsernames) || $username[0] == "_")
+        if (in_array($lower, static::$bad_usernames) || $username[0] == "_")
         {
             throw new ValidationException(sprintf(__('register:usernamenotvalid'), $username));
         }

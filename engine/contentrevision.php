@@ -12,12 +12,7 @@ class ContentRevision extends Model
         'content' => '',
         'publish_status' => 0,
     );    
-    
-    function can_edit()
-    {
-        return Permission_EditUserSite::has_for_entity($this->get_entity());
-    }
-    
+        
     function get_entity()
     {
         return Entity::get_by_guid($this->entity_guid, true);

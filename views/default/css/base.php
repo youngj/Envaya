@@ -334,14 +334,6 @@ a.selected
     text-align:right;
 }
 
-.icon_link
-{
-    display:block;
-    height:30px;
-    padding-top:3px;
-    padding-left:36px;
-}
-
 .gridTable th
 {
     text-align:center;

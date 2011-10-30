@@ -86,7 +86,6 @@ CREATE TABLE `users` (
   `longitude` float null,
   `timezone_id` varchar(64) default null,
   `region` varchar(32) default NULL,
-  `last_notify_time` int default null,
   UNIQUE KEY (`username`),
   UNIQUE KEY (`email_code`),
   KEY `subtype_id` (`subtype_id`),
@@ -350,6 +349,5 @@ CREATE TABLE `user_scopes` (
 CREATE TABLE `permissions` (
     <?php require 'schema/entity_columns.php'; ?>,
     `subtype_id` varchar(63) not null,	
-    `args_json` text not null,
     KEY `subtype_id` (`subtype_id`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;

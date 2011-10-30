@@ -851,6 +851,14 @@ ol ol
     margin:0px;
 }
 
+.icon_link
+{
+    display:block;
+    height:30px;
+    padding-top:3px;
+    padding-left:36px;
+}
+
 @media print
 {
     #topbar, .footer_container { display: none; }

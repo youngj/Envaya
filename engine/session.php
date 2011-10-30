@@ -71,12 +71,32 @@ class Session
         static::$loaded_user = false;
         static::$instance->login($user, $options);
 
-        EventRegister::trigger_event('login','user',$user);
+        static::set('login_time', timestamp());
+        static::set('login_ip', Request::get_client_ip());
+        static::set('login_user_agent', $_SERVER['HTTP_USER_AGENT']);
+        
+        EventRegister::trigger_event('login','user',$user);        
         
         $user->reset_login_failure_count();
         $user->last_action = timestamp();
         $user->save();    
     }    
+    
+    static function get_login_age()
+    {
+        $login_time = static::get('login_time');
+        if ($login_time)
+        {
+            return timestamp() - $login_time;
+        }
+        return null;
+    }
+    
+    static function is_consistent_client()
+    {
+        return static::get('login_ip') == Request::get_client_ip()
+            && static::get('login_user_agent') == $_SERVER['HTTP_USER_AGENT'];
+    }
     
     static function logout()
     {

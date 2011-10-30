@@ -46,7 +46,8 @@ class Widget extends Entity
         'updates'       => array('menu_order' => 110, 'home_section' => true, 'subclass' => 'Updates'),        
         'links'         => array('menu_order' => 115, 'home_section' => true, 'subclass' => 'Links'),                
         'sectors'       => array('menu_order' => 120, 'home_section' => true, 'subclass' => 'Sectors'),        
-        'location'      => array('menu_order' => 130, 'home_section' => true, 'subclass' => 'Location'),        
+        'location'      => array('menu_order' => 130, 'home_section' => true, 'subclass' => 'Location'),                
+        'profile'       => array('subclass' => 'PersonProfile'),
         'post'          => array('subclass' => 'Post'),        
     );
 
@@ -206,7 +207,7 @@ class Widget extends Entity
     }
         
     public function is_page()
-    {
+    {    
         return $this->get_container_entity()->is_page_container();
     }
 
@@ -262,9 +263,9 @@ class Widget extends Entity
         parent::save();
     }
     
-    public function get_date_text()
+    public function get_date_text($time = null)
     {
-        return friendly_time($this->time_published);
+        return friendly_time($time ?: $this->time_published);
     }    
     
     private $url_slug = null;

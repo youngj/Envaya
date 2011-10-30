@@ -31,7 +31,7 @@
         }
         else
         {
-            echo "<a href='{$org->get_url()}/custom_design?current_view={$customizable_view}'>{$name}</a> ";
+            echo "<a href='{$user->get_url()}/custom_design?current_view={$customizable_view}'>{$name}</a> ";
         }        
     }    
     echo "<br />";
@@ -47,10 +47,10 @@
 <?php
     echo "<br />";
     
-    $custom_views = $org->get_design_setting('custom_views');
+    $custom_views = $user->get_design_setting('custom_views');
     $template = @$custom_views[$current_view];
     
-    echo "<form method='POST' action='{$org->get_url()}/custom_design'>";
+    echo "<form method='POST' action='{$user->get_url()}/custom_design'>";
     echo "<h3>".escape($customizable_views[$current_view])."</h3>";
     echo view('input/securitytoken');
     echo view('input/hidden', array('id' => 'current_view', 'name' => 'current_view', 'value' => $current_view));

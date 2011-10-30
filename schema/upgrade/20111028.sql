@@ -12,6 +12,8 @@ CREATE TABLE `permissions` (
 	KEY `time_created` (`time_created`),
 	KEY `time_updated` (`time_updated`),
     `subtype_id` varchar(63) not null,	
-    `args_json` text not null,
     KEY `subtype_id` (`subtype_id`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
+
+UPDATE users set subtype_id = 'core.user.person' where subtype_id = 'core.user';
+UPDATE entities set subtype_id = 'core.user.person' where subtype_id = 'core.user';

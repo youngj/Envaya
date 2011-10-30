@@ -1,7 +1,7 @@
 <?php
-    $org = $vars['org'];
+    $user = $vars['user'];
     
-    if (Permission_EditMainSite::has_for_root())
+    if (($user instanceof Organization) && Permission_EditMainSite::has_for_root())
     {
 ?>
 <?php echo view('js/dom'); ?>
@@ -14,7 +14,7 @@ function selectFeaturedPhoto()
     
         return "/admin/envaya/add_featured_photo?image_url=" + encodeURIComponent(src) + 
             "&href=" + encodeURIComponent(window.location.href) + 
-            "&user_guid=<?php echo $org->guid; ?>";
+            "&user_guid=<?php echo $user->guid; ?>";
     }
 
     function createChooserImg(img)
@@ -68,7 +68,7 @@ function selectFeaturedPhoto()
 
 </script>
 <?php
-        echo "<a href='/admin/envaya/add_featured?username={$org->username}'>".__('featured:add')."</a>";        
+        echo "<a href='/admin/envaya/add_featured?username={$user->username}'>".__('featured:add')."</a>";        
         echo " ";
         echo "<a href='javascript:void(0)' onclick='javascript:selectFeaturedPhoto()'>".__('featured:photo:add')."</a>";
     }

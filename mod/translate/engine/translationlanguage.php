@@ -57,6 +57,11 @@ class TranslationLanguage extends Entity
     
     function save()
     {
+        if (!$this->container_guid)
+        {
+            $this->set_container_entity(UserScope::get_root());
+        }
+    
         parent::save();        
         static::update_code_map();
     }

@@ -11,7 +11,7 @@ class Query_Filter_UserType extends Query_Filter_Select
     {
         return array(
             Organization::get_subtype_id() => "Organization",
-            User::get_subtype_id() => "Regular User",                
+            Person::get_subtype_id() => "Person",
         );
     }        
     

@@ -11,7 +11,7 @@
 <?php echo __('register:must_log_out'); ?>
 </p>
 
-<form method='POST' action='/org/register_logged_in'>
+<form method='POST' action='/pg/register_logged_in'>
 <?php echo view('input/securitytoken'); ?>
 
 <div style='float:right'>
@@ -20,6 +20,11 @@
 </div>
 
 <?php 
+    echo view('input/hidden', array(
+        'name' => 'next',
+        'value' => @$vars['next']
+    )); 
+
     echo view('input/submit', array(
         'value' => __('logout')
     )); 

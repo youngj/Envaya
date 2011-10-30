@@ -43,12 +43,12 @@ return array(
     'email:registernotify:subject' => "New organization registered: %s",
     'email:registernotify:body' => "To view their website and approve or reject it, visit\n%s",
     
-    'approval:approve' => "Approve Organization",
+    'approval:approve' => "Approve Account",
     'approval:unapprove' => "Remove Approval",
-    'approval:reject' => "Reject Organization",
-    'approval:delete' => "Delete Organization",
+    'approval:reject' => "Reject Account",
+    'approval:delete' => "Delete Account",
     'approval:unreject' => "Remove Rejection",
-    'approval:changed' => "Organization approval changed",        
+    'approval:changed' => "Account approval changed",        
     
     'admin' => "Administration",
     'admin:user' => "User Administration",
@@ -60,8 +60,8 @@ return array(
     'admin:statistics:label:numusers' => "Number of users",
     'admin:statistics:label:onlineusers' => "Users online now",
 
-    'admin:user:label:search' => "Find users:",
-
+    'user:other_dashboard' => "Tools for %s",
+    
     'error:NoConnect' => "Couldn't connect to the database.",        
     'error:BaseEntitySaveFailed' => "Unable to save new object's base entity information!",
     'error:InvalidQueryParameter' => "Invalid query parameter %s",

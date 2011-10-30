@@ -120,5 +120,4 @@ return array(
     'web:invalid_url' => "Anwani ya intaneti {url} hairuhusiwi.",    
     'web:try_again' => "Hakikisha kuwa anwani ni sahihi, halafu jaribu tena.",        
     
-    'email:salutation' => "Habari za sahizi %s,",
 );

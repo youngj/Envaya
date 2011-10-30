@@ -15,8 +15,11 @@ class Permission_ViewUserSite extends Permission
         return parent::is_granted($entity, $user);
     }
     
-    static function throw_exception()
+    static function throw_exception($entity = null)
     {
-        throw new PermissionDeniedException(__('org:cantview'));
+        $site_user = $entity->get_container_user();
+               
+        throw new PermissionDeniedException(
+            ($site_user && $site_user->is_approved()) ? __('org:cantview') : __('approval:waiting'));
     }    
 }

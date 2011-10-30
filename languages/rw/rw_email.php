@@ -7,5 +7,7 @@ return array(
     'email:settings' => ' Uko umenyeshwa',
     'email:notifications_changed' => 'Uburyo umenyeshwa ibyahinduwe byasubiweho',
     'email:invalid_url' => 'Ntushobora kugera ku mitunganyirize yo kumenyesha muri email. Niba wandukuye inzira wohererejwe, genzura niba ibisobanuro biranga aho ubutumwa buherereye kuri interineti imeze kimwe n\'uko wayakiriye muri email',    
+
+    'email:salutation' => 'Amakuru %s,',    
 );
 

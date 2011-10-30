@@ -20,10 +20,16 @@ class Controller_Pg extends Controller
         Session::logout();
         $this->redirect('/');
     }    
-    
+
     function action_register()
     {
-        $action = new Action_Register($this);
+        $action = new Action_Registration_RegisterPerson($this);
+        $action->execute();
+    }
+    
+    function action_register_logged_in()
+    {
+        $action = new Action_Registration_LoggedIn($this);
         $action->execute();
     }
     
@@ -184,13 +190,14 @@ class Controller_Pg extends Controller
     {
         $this->set_content_type('text/javascript');
         
-        $id = (int)get_input('id');
-        
+        $id = (int)get_input('id');        
         $revision = ContentRevision::query()->where('id = ?', $id)->get();
-        if (!$revision || !$revision->can_edit())
+        if (!$revision)
         {
-            throw new SecurityException("Access denied.");
+            throw new NotFoundException();
         }
+        
+        Permission_EditUserSite::require_for_entity($revision->get_entity());
         
         $this->set_content(json_encode(array(
             'content' => $revision->content
@@ -275,17 +282,19 @@ class Controller_Pg extends Controller
     function action_delete_feed_item()
     {
         $this->validate_security_token();
-        $feedItem = FeedItem::query()->where('id = ?', (int)get_input('item'))->get();
-        
-        if (!$feedItem || !$feedItem->can_edit())
+        $feedItem = FeedItem::query()->where('id = ?', (int)get_input('item'))->get();        
+        if (!$feedItem)
         {
-            throw new RedirectException(__('page:notfound:details'));
+            throw new NotFoundException();
         }
+        
+        Permission_EditUserSite::require_for_entity($feedItem->get_user_entity());
         
         foreach ($feedItem->query_items_in_group()->filter() as $item)
         {
             $item->delete();
-        }           
+        }
+        
         SessionMessages::add(__('feed:item_deleted'));
         $this->redirect();
     }   

@@ -116,7 +116,7 @@ body
 
 .icon_link
 {
-    color:#333;
+    color:#333; 
     padding-left:39px;
     padding-top:10px;
     background:url(<?php echo $graphicsDir; ?>/editoricons.gif?v4) no-repeat left top;
@@ -145,6 +145,11 @@ a.icon_link:hover
 .icon_settings  { background-position:left -233px; }
 .icon_design    { background-position:left -273px; }
 .icon_photos    { background-position:left -313px; }
+
+.icon_admin
+{
+    background:url(<?php echo $graphicsDir; ?>/admin.gif) no-repeat 4px 7px;
+}
 
 .widget_list a
 {

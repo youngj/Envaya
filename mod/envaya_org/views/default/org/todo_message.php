@@ -1,12 +1,12 @@
 <?php
 
-$user = $vars['user'];    
-if ($user instanceof Organization && !Session::get('hide_todo'))
+$org = $vars['org'];    
+if (!Session::get('hide_todo'))
 {               
     $todoItems = array();
     $doneItems = array();    
    
-    foreach (TodoItem::get_list($user) as $item)
+    foreach (TodoItem::get_list($org) as $item)
     {
         if ($item->done)
         {

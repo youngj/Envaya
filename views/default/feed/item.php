@@ -21,15 +21,15 @@
     <div class='blog_date'><?php echo $feedItem->get_date_text() ?></div>
     <?php
     
-    if ($show_edit_controls && $feedItem->can_edit()) 
-    {            
+    if ($show_edit_controls && Permission_EditUserSite::has_for_entity($feedItem->get_user_entity())) 
+    {
         echo view('input/post_link', array(
             'href' => "/pg/delete_feed_item?item={$feedItem->id}",
             'text' => __('delete'),
             'class' => 'admin_links',
             'confirm' => __('feed:confirm_delete'),
         ));            
-   }            
+   }
    
     if ($mode != 'self') 
     {        

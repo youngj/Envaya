@@ -34,4 +34,8 @@ return array(
     'user:language:success' => "Your language settings have been updated.",
     'user:email:success' => "Your email address has been updated.",
     'user:phone:success' => "Your phone number has been updated.",
+    
+    'user:self_dashboard' => "User Tools",
+    'user:profile_title' => "Profile",
+    'user:registration_date' => "User since",
 );

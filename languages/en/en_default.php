@@ -104,8 +104,8 @@ return array(
     'page:notfound:details' => "The requested page was not found.",    
     'page:noaccess' => "The current user does not have access to view that page.",    
         
-    'approval:rejected' => 'We are sorry. This organization was not approved by our administrators.',
-    'approval:waiting' => "This organization is awaiting review and is not yet visible to the public.",
+    'approval:rejected' => 'We are sorry. This account was not approved by our administrators.',
+    'approval:waiting' => "This account is awaiting review and is not yet visible to the public.",
 
     'size:label' => "Size",
     'size:small' => "Small",
@@ -130,5 +130,5 @@ return array(
     'web:invalid_url' => "The web address {url} is not allowed.",    
     'web:try_again' => "Make sure that the address is correct, then try again.",    
     
-    'email:salutation' => "Hi %s,",
+    ''
 );

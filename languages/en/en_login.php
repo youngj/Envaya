@@ -3,6 +3,8 @@
 return array(    
     'login:error' => "Incorrect username or password. Make sure they are correct and try again. If you still can't log in, %s to reset your password.",
     'login:welcome' => "Welcome, %s!",
+    
+    'login:expired' => "Please log in again to continue.",
 
     'login:cookie_error' => "There was an error logging into Envaya. Please ensure that your browser accepts cookies from '%s' and try again.", 
     'login:cookie_help' => "Click for instructions",

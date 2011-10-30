@@ -1,14 +1,13 @@
 <?php
 
-class Action_Register extends Action
+class Action_Registration_RegisterPerson extends Action
 {
     function before()
     {
         $user = Session::get_logged_in_user();
         if ($user)
         {
-            SessionMessages::add(__('register:already_registered'));
-            $this->redirect_next($user);
+            throw new RedirectException('', "/pg/register_logged_in");            
         }
     }
 
@@ -41,7 +40,7 @@ class Action_Register extends Action
             return $this->render_captcha();
         }
         
-        $user = new User();
+        $user = new Person();
         $user->username = $username;
         $user->set_phone_number(get_input('phone'));
         $user->set_email($email);
@@ -52,7 +51,10 @@ class Action_Register extends Action
         $user->save();
         
         $user->update_scope();
-        $user->save();        
+        $user->save();
+
+        
+        $user->init_default_widgets();        
 
         $mail = OutgoingMail::create(
             sprintf(__('register:notification_subject'), $user->name),
@@ -77,5 +79,5 @@ class Action_Register extends Action
             'title' => __('register:title'),
             'content' => view("account/register"),
         ));        
-    }    
+    }
 }    

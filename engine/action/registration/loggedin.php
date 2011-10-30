@@ -6,23 +6,27 @@ class Action_Registration_LoggedIn extends Action
     {
         if (!Session::is_logged_in())
         {
-            throw new RedirectException('', "/org/new");
+            throw new RedirectException('', $this->get_redirect_url());
         }
     }
 
+    function get_redirect_url()
+    {
+        return get_input('next') ?: "/pg/register";
+    }
+    
     function render()
     {        
         $this->allow_view_types(null);
         $this->page_draw(array(
             'title' => __("register:title"),
-            'content' => view("org/register_logged_in"),
-            'org_only' => true
+            'content' => view("account/register_logged_in", array('next' => get_input('next'))),
         ));
     }    
 
     function process_input()
     {            
         Session::logout();
-        $this->redirect("/org/new");            
+        $this->redirect($this->get_redirect_url());            
     }
 }

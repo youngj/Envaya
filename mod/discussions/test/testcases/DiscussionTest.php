@@ -15,7 +15,7 @@ class DiscussionTest extends SeleniumTest
         $this->open("/testorg/discussions");
         $this->retry('mouseOver', array("//div[contains(text(),'not found')]"));
         $this->open("/testorg/topic/new");
-        $this->retry('mouseOver', array("//div[contains(text(),'not found')]"));
+        $this->retry('mouseOver', array("//h1[contains(text(),'Log in')]"));
         
         // test add new discussion as logged in user
         $this->open('/pg/login');

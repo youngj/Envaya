@@ -71,7 +71,7 @@ abstract class Controller_User extends Controller
         
         if (Permission_UseAdminTools::has_for_entity($widget))
         {
-            PageContext::get_submenu('org_actions')->add_item(__('widget:options'), "{$widget->get_base_url()}/options");
+            PageContext::get_submenu('user_actions')->add_item(__('widget:options'), "{$widget->get_base_url()}/options");
         }
         
         $container = $widget->get_container_entity();         

@@ -53,21 +53,7 @@ class FeedItem extends Model
             return new FeedItem_Invalid($row);
         }
     }    
-    
-    function can_edit()
-    {
-        return $this->can_user_edit(Session::get_logged_in_user());
-    }
-    
-    function can_user_edit($user)
-    {
-        if (!$user)
-            return false;
-    
-        return Permission_EditUserSite::has_for_entity($this->get_subject_entity())
-            || Permission_EditUserSite::has_for_entity($this->get_user_entity());
-    }
-
+        
     function __set($name, $value)
     {
         if ($name == 'args')

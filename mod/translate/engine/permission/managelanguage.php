@@ -1,5 +1,5 @@
 <?php
 
-class Permission_ManageLanguage extends Permission
+class Permission_ManageLanguage extends Permission_Secure
 {        
 }

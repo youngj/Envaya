@@ -37,6 +37,7 @@ class Controller_TranslateAdmin extends Controller
         {    
             $language = new TranslationLanguage();
             $language->code = $lang;
+            $language->set_container_entity(UserScope::get_root());
         }
         $this->params['language'] = $language;            
     }
@@ -48,7 +49,7 @@ class Controller_TranslateAdmin extends Controller
     
     function action_index()
     {
-        Permission_ManageLanguage::require_for_entity(UserScope::root());
+        Permission_ManageLanguage::require_for_root();
     
         return $this->page_draw(array(
             'title' => __('itrans:manage'),
