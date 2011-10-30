@@ -326,7 +326,6 @@ class Controller_Pg extends Controller
     
     function action_browse()
     {
-        $this->prefer_http();
         $this->allow_view_types(null);
     
         $content = view('org/browse');
@@ -367,7 +366,6 @@ class Controller_Pg extends Controller
     
     function action_search()
     {
-        $this->prefer_http();
         $this->allow_view_types(null);
     
         $q = get_input('q');
@@ -523,7 +521,6 @@ class Controller_Pg extends Controller
 
     function action_feed()
     {
-        $this->prefer_http();
         $this->allow_view_types('rss');
     
         $max_items = Config::get('feed_page_size');

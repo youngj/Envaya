@@ -13,8 +13,7 @@ class Controller_EnvayaHome extends Controller
     );
 
     function action_index()
-    {       
-        $this->prefer_http();    
+    {
         $this->allow_content_translation();
         $this->page_draw_vars['hide_translate_bar'] = true;
 

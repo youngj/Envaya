@@ -21,7 +21,7 @@ class Action_Login extends Action
 
         $next = url_with_param($next, '_lt', timestamp());
 
-        $this->redirect($next);    
+        $this->redirect(secure_url($next));    
     }
     
     protected function login_failure()

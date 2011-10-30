@@ -4,6 +4,7 @@ server {
     ssl on;
     ssl_certificate /etc/nginx/ssl/envaya_combined.crt;
     ssl_certificate_key /etc/nginx/ssl/envaya.org.key;
+    ssl_ciphers MEDIUM:!aNULL:!MD5;
     include /etc/nginx/envaya.conf;
 
     location ~ \.php

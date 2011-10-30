@@ -44,7 +44,6 @@ abstract class Controller_User extends Controller
     {
         $user = $this->get_user();
     
-        $this->prefer_http();      
         $this->allow_content_translation();        
         $this->use_public_layout($widget);        
         

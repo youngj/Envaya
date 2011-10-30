@@ -15,7 +15,7 @@ default_run_options[:pty] = true
 set :application, "envaya"
 set :deploy_to, "/var/envaya"
 set :deploy_via, :rsync_with_remote_cache
-set :copy_exclude, [".svn", ".git"]
+set :copy_exclude, [".svn", ".git", "envaya.org.key"]
 set :user, "root"
 
 role :web, "www.envaya.org"                          # Your HTTP server, Apache/etc
@@ -40,7 +40,7 @@ namespace :deploy do
         update
         php_setup
         dataroot_setup
-    end   
+    end
     
     task :update_test do
         test_dir = "#{deploy_to}/test"
@@ -57,6 +57,7 @@ namespace :deploy do
         kestrel_setup
         queue_setup
         sphinx_setup
+        memcached_setup
         cron_setup        
         extras_setup
         upgrade
@@ -68,6 +69,7 @@ namespace :deploy do
         db_setup
         kestrel_setup
         queue_setup
+        memcached_setup
         sphinx_setup
     end
     
@@ -109,9 +111,41 @@ namespace :deploy do
         end
     end
     
+    task :cert_setup do
+        cert_dir = "/etc/nginx/ssl"
+        cert_path = "#{cert_dir}/envaya_combined.crt"
+        key_path = "#{cert_dir}/envaya.org.key"
+    
+        begin
+            run "stat -t #{key_path}"
+        rescue Exception    
+            top.upload(File.join(Dir.pwd, "ssl/envaya.org.key"), key_path)
+            run "chmod 400 #{key_path}"
+        end
+
+        begin
+            run "stat -t #{cert_path}"
+        rescue Exception    
+            top.upload(File.join(Dir.pwd, "ssl/envaya_combined.crt"), cert_path)            
+            run "chmod 644 #{cert_path}"
+        end
+        
+        begin
+            run "stat -t /etc/nginx/sites-enabled/ssl"
+        rescue Exception    
+            run "ln -s /etc/nginx/sites-available/ssl /etc/nginx/sites-enabled/ssl"
+            run "nginx -t"
+            run "/etc/init.d/nginx reload"
+        end
+    end
+    
     task :php_setup do
         run "#{current_path}/scripts/setup/php.sh"
     end
+    
+    task :memcached_setup do
+        run "#{current_path}/scripts/setup/memcached.sh"
+    end    
     
     task :db_setup do
         run "#{current_path}/scripts/setup/mysql.sh"
@@ -120,7 +154,7 @@ namespace :deploy do
     end
         
     task :pre_setup do
-	top.upload(File.join(Dir.pwd, "scripts/setup/sources.sh"), "/root/sources.sh")    
+        top.upload(File.join(Dir.pwd, "scripts/setup/sources.sh"), "/root/sources.sh")    
         top.upload(File.join(Dir.pwd, "scripts/setup/prereqs.sh"), "/root/prereqs.sh")
         run "chmod 744 /root/sources.sh /root/prereqs.sh"
         run "/root/sources.sh"
@@ -138,7 +172,7 @@ namespace :deploy do
     task :upgrade do
         run "#{current_path}/scripts/setup/upgrade.sh"
     end
-
+    
     task :kestrel_setup do
         # todo rsync kestrel .jar and libs
         run "#{current_path}/scripts/setup/kestrel.sh"
