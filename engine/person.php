@@ -18,7 +18,7 @@ class Person extends User
     function get_default_icon_props($size = '')
     {
         return array(
-            'url' => abs_url("/_media/images/personmedium.gif"),
+            'url' => "/_media/images/personmedium.gif",
             'width' => 100,
             'height' => 100
         );

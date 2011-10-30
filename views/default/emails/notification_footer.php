@@ -14,9 +14,11 @@
         ));
         echo "<br /><br />";
 
+        $settings_url = secure_url($subscription->get_settings_url());
+
         echo sprintf(
             __('email:unsubscribe',$lang),
-            "<a target='_blank' href='{$subscription->get_settings_url()}'>".__('here',$lang)."</a>"
+            "<a target='_blank' href='{$settings_url}'>".__('here',$lang)."</a>"
         );
         echo "<br /><br />";
     }

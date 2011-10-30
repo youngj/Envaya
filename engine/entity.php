@@ -240,7 +240,7 @@ abstract class Entity extends Model
     
     public function get_short_url()
     {
-        return abs_url("/{$this->guid}");
+        return "/{$this->guid}";
     }
 
     /**
@@ -251,7 +251,7 @@ abstract class Entity extends Model
      */
     public function get_icon($size = 'medium')
     {
-        return abs_url("/_media/images/default{$size}.gif");
+        return "/_media/images/default{$size}.gif";
     }
 
     /**

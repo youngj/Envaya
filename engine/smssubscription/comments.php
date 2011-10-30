@@ -26,7 +26,7 @@ class SMSSubscription_Comments extends SMSSubscription
                     '{name}' => $comment->get_name($this->language),
                     '{news_cmd}' => "N {$org->username} {$widget->get_local_id()}",
                     '{comment_cmd}' => "V {$comment->guid}",
-                    '{news_url}' => $widget->get_url(),
+                    '{news_url}' => abs_url($widget->get_url()),
                 ))
             ));
         }

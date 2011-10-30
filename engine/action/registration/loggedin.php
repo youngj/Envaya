@@ -12,7 +12,7 @@ class Action_Registration_LoggedIn extends Action
 
     function get_redirect_url()
     {
-        return get_input('next') ?: "/pg/register";
+        return secure_url(get_input('next') ?: "/pg/register");
     }
     
     function render()

@@ -9,7 +9,7 @@
         return "<a href='/tr/instructions#{$section}'>".$title."</a>";
     };
     
-    $url = abs_url("/tr");
+    $url = "/tr";
 ?>
 <div style='width:600px'>
 <p>Envaya&apos;s Translations site, <strong><?php echo $url; ?></strong>, allows anyone to help 
@@ -62,7 +62,7 @@ It also shows the translation progress for each module (the fraction of translat
 <?php echo $img('language.png'); ?>
 <p>
 Each module contains the text for a part of Envaya. For example, the 'home' module contains text displayed on 
-<a href='<?php echo abs_url('/'); ?>'>Envaya&apos;s home page</a>, and the 'itrans' module contains the text for 
+<a href='/'>Envaya&apos;s home page</a>, and the 'itrans' module contains the text for 
 the Translations site itself.
 </p>
 <p>

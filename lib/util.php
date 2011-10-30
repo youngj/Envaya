@@ -48,23 +48,16 @@
     }
         
     /* 
-     * Returns an absolute URL for a relative URI, using a given scheme.
+     * Given a URI that may be either absolute or relative, returns an absolute URL.
      *
-     * If $url is a relative URI, returns the corresponding absolute URL on this domain.
-     * If $url is already an absolute URL, returns the URL converted to the given scheme.
+     * If $url is a relative URI:
+     *    returns the corresponding absolute URL on this domain using $default_scheme.
+     *
+     * If $url is already an absolute URL:
+     *   returns the URL itself, or the URL converted to $default_scheme if $replace_scheme is true.
      */
-    function abs_url($url, $scheme = null)        
-    {
-        if (!$scheme)
-        {
-            $replace_scheme = false;
-            $scheme = 'http';
-        }
-        else
-        {
-            $replace_scheme = true;
-        }
-        
+    function abs_url($url, $default_scheme = 'http', $replace_scheme = false)        
+    {        
         $scheme_end = strpos($url, "://");
         if ($scheme_end === false)
         {
@@ -73,11 +66,11 @@
                 throw new InvalidParameterException("Invalid relative URI '$url'");
             }
             $domain = Config::get('domain');
-            return "$scheme://$domain$url";
+            return "$default_scheme://$domain$url";
         }        
         else if ($replace_scheme) // convert URL to requested scheme
         {
-            return $scheme.substr($url, $scheme_end);
+            return $default_scheme.substr($url, $scheme_end);
         }
         else
         {
@@ -90,7 +83,7 @@
      */    
     function secure_url($url)
     {
-        return abs_url($url, Config::get('ssl_enabled') ? 'https' : 'http');
+        return abs_url($url, Config::get('ssl_enabled') ? 'https' : 'http', true);
     }
     
     function css_url($css_name)

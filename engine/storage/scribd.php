@@ -4,7 +4,7 @@ class Storage_Scribd extends Storage
 {
 	public function get_url($key)
     {
-        return "http://www.scribd.com/doc/{$key['docid']}";
+        return "//www.scribd.com/doc/{$key['docid']}";
     }
 	public function upload_file($key /* ignored */, $fs_path, $web_accessible = false, $mime = null)
     {        

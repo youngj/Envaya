@@ -26,13 +26,21 @@ class Session_Cookie implements SessionImpl
     {            
         $this->set('guid', $user->guid);
         
-        if (@$options['persistent'])
-        {
-            session_set_cookie_params(60 * 60 * 24 * 60);
-        }
+        $lifetime = (@$options['persistent']) ? (60 * 60 * 24 * 60) : 0;
+        $secure = Config::get('ssl_enabled');
+        $httponly = true;   
+        $path = '/';
+        $domain = null;
+
+        session_set_cookie_params($lifetime, $path, $domain, $secure, $httponly);
 
         // Users privilege has been elevated, so change the session id (help prevent session hijacking)
         session_regenerate_id(true);
+
+        if ($secure)
+        {
+            setcookie('https', '1', $lifetime, $path);
+        }
     }
     
     function logout()
@@ -77,7 +85,8 @@ class Session_Cookie implements SessionImpl
     function destroy()
     {
         @session_destroy();
-        setcookie(static::cookie_name(), "");
+        setcookie(static::cookie_name(), "", 0, '/');
+        setcookie('https', '', 0, '/');
     }
 
     function start()

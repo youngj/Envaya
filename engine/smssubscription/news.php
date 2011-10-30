@@ -19,7 +19,7 @@ class SMSSubscription_News extends SMSSubscription
                 'message' => strtr(__('sms:post_notification', $this->language), array(
                     '{username}' => $org->username,
                     '{cmd}' => "N {$org->username} {$post->get_local_id()}",
-                    '{url}' => $post->get_container_entity()->get_url(),
+                    '{url}' => abs_url($post->get_container_entity()->get_url()),
                 ))
             ));
         }

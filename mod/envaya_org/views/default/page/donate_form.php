@@ -173,5 +173,4 @@
     </tr>
     </table>   
     
-    <div style='width:1px;height:1px;overflow:hidden'><iframe src='/org/tci_donate_frame' frameborder='0' border='0'></iframe></div>
 </form>

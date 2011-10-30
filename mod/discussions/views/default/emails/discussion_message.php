@@ -5,5 +5,8 @@
     
     echo "<b>".escape($topic->subject)."</b><br />";    
     echo $message->render_content();
-    echo "<div><a href='{$message->get_url()}'>{$message->get_url()}</a></div>";
+
+    $message_url = secure_url($message->get_url());
+
+    echo "<div><a href='{$message_url}'>{$message_url}</a></div>";
     

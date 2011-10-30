@@ -7,7 +7,7 @@ class Storage_Local extends Storage
 {
 	public function get_url($path)
 	{	
-		return "http://".Config::get('domain')."/pg/local_store?path={$path}";
+		return "//".Config::get('domain')."/pg/local_store?path={$path}";
 	}
 	
 	public function upload_file($path, $fs_path, $web_accessible = false, $mime = null)

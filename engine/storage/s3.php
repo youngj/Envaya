@@ -8,7 +8,7 @@ class Storage_S3 extends Storage
     public function get_url($path)
     {
         $s3_bucket = Config::get('s3_bucket');
-        return "http://{$s3_bucket}.s3.amazonaws.com/{$path}";
+        return "//{$s3_bucket}.s3.amazonaws.com/{$path}";
     }    
     public function upload_file($path, $fs_path, $web_accessible = false, $mime = null)
     {

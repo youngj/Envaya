@@ -12,5 +12,5 @@ foreach ($stuck_mails as $stuck_mail)
     }
     echo "\n\n";
 }
-echo abs_url("/admin/outgoing_mail");
+echo secure_url("/admin/outgoing_mail");
 echo "\n";

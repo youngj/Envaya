@@ -37,7 +37,7 @@ class Action_User_ChangeApproval extends Action
                     strtr(__('register:approval_sms', $user->language),
                         array(
                             '{url}' => $user->get_url(),
-                            '{login_url}' => abs_url('/pg/login')
+                            '{login_url}' => secure_url('/pg/login')
                         )
                     )
                 )->send();

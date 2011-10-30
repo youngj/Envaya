@@ -16,7 +16,6 @@ abstract class EmailSubscription extends Subscription
     // subscription that each user's email is automatically subscribed to for their own account
     static $self_subscription_classes = array(
         'EmailSubscription_Comments',
-        'EmailSubscription_Network',
     );
     
     static function init_self_subscription($user)
@@ -90,7 +89,7 @@ abstract class EmailSubscription extends Subscription
     static function get_all_settings_url($email)
     {
         $code = static::get_email_fingerprint($email);
-        return abs_url("/pg/email_settings?e=".urlencode($email)."&c={$code}");
+        return "/pg/email_settings?e=".urlencode($email)."&c={$code}";
     }
     
     static function get_email_fingerprint($email)

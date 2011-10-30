@@ -89,7 +89,7 @@ class Geography
         $pin = false;
         extract($vars);
         
-        $url = "http://maps.google.com/maps/api/staticmap?center={$lat},{$long}&zoom={$zoom}"
+        $url = "//maps.google.com/maps/api/staticmap?center={$lat},{$long}&zoom={$zoom}"
             ."&size={$width}x{$height}&maptype=roadmap&sensor=false";
         
         if ($pin)

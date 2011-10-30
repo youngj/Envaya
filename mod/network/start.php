@@ -22,4 +22,8 @@ Engine::add_autoload_action('Widget', function() {
     ));
 });
 
+Engine::add_autoload_action('EmailSubscription', function() {
+    EmailSubscription::$self_subscription_classes[] = 'EmailSubscription_Network';
+});
+
 Views::extend('account/share_shortcuts', 'account/network_share_shortcuts');

@@ -83,7 +83,7 @@ abstract class User extends Entity
 
     public function get_url()
     {
-        return abs_url("/{$this->username}");
+        return "/{$this->username}";
     }
 
     public function get_icon_props($size = '')
@@ -145,7 +145,7 @@ abstract class User extends Entity
         else
         {
             return array(
-                'url' => abs_url("/_media/images/defaultmedium.gif"),
+                'url' => "/_media/images/defaultmedium.gif",
                 'width' => 100,
                 'height' => 100
             );

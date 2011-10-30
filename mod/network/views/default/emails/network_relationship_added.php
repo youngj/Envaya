@@ -19,7 +19,10 @@
     echo "<p>";
     echo strtr(__('network:notify_added_info', $subject->language), $tr);    
     echo "<br />";
-    echo "<a href='{$widget->get_url()}'>{$widget->get_url()}</a>";
+
+    $widget_url = abs_url($widget->get_url());
+
+    echo "<a href='{$widget_url}'>{$widget_url}</a>";
     echo "</p>";
     
     if (!$reverse)
@@ -32,7 +35,8 @@
         echo "<br />";
         
         $subjectWidget = $subject->get_widget_by_class('Network');
-        $url = "{$subjectWidget->get_edit_url()}?action=add_relationship&type={$reverse_type}&org_guid={$org->guid}&username={$subject->username}";        
+
+        $url = secure_url("{$subjectWidget->get_edit_url()}?action=add_relationship&type={$reverse_type}&org_guid={$org->guid}&username={$subject->username}");
         echo "<a href='{$url}'>{$url}</a>";
         echo "</p>";        
     }

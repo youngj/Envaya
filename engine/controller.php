@@ -120,7 +120,7 @@ abstract class Controller extends Router {
         $vars['canonical_url'] = $this->get_canonical_url();
         $vars['original_url'] = Request::full_original_url();
         $vars['css_url'] = css_url(@$vars['css_name'] ?: 'simple');        
-        $vars['base_url'] = abs_url('/', (Request::is_secure() ? 'https' : 'http'));
+        $vars['base_url'] = abs_url('/', Request::get_protocol());
 
         $vars['content'] = view('page_elements/content_wrapper', $vars);
         
@@ -199,7 +199,7 @@ abstract class Controller extends Router {
         SessionMessages::save();
 
         $this->set_status($status);
-        $this->set_header('Location', abs_url($url));
+        $this->set_header('Location', abs_url($url, Request::get_protocol()));
     }
     
     /*
@@ -275,26 +275,13 @@ abstract class Controller extends Router {
     }
 
     /*
-     * If the client is using a secure HTTPS connection, 
-     * redirects to the same page on an insecure connection when possible.
-     */    
-    public function prefer_http()
-    {
-        if (!Request::is_post() && Request::is_secure())
-        {
-            $url = abs_url(Request::full_original_url(), 'http');
-            throw new RedirectException('', $url);
-        }
-    }
-    
-    /*
      * If the client is using an insecure HTTP connection, 
      * redirects to the same page on https when possible.
      */
     public function prefer_https()
     {
         if (!Request::is_post() && !Request::is_secure() 
-            && Config::get('ssl_enabled') && !Request::is_mobile_browser())
+            && Config::get('ssl_enabled'))
         {
             $url = secure_url(Request::full_original_url());
             throw new RedirectException('', $url);
@@ -383,38 +370,7 @@ abstract class Controller extends Router {
         }
         setcookie($name, $val, $expireTime, '/');    
     }
-        
-    private function _set_cookie($name, $value = null, 
-        $expire = null, $path = null, $domain = null, 
-        $secure = null, $httponly = null)
-    {        
-		// TODO: Handle $secure and $httponly		    
-    
-        $cookie_str = urlencode($name)."=".urlencode($value).";";    
-    
-		if ($expire)
-        {
-            $datetime = new DateTime(date("Y-m-d H:i:s", $expire));
-            $cookie_time = $datetime->format(DATE_COOKIE);
-            
-            $cookie_str .= " expires=".$cookie_time.";";
-        }
-		
-        if ($path != null)
-        {
-            $cookie_str .= " path=".$path.";";
-        }
-        
-        if ($domain != null)
-        {
-            $domain = $_SERVER['HTTP_HOST'];
-            
-            $cookie_str .= " domain=".$domain.";";
-        }
-        
-        $this->set_header('Set-Cookie', $cookie_str);		
-    }
-        
+                
     function set_header($name, $value)
     {
         $this->response->headers[$name] = $value;

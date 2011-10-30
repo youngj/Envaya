@@ -29,8 +29,8 @@
         ));
         echo Markup::end_tag('div');
         
-        $lang = Language::get_current_code();
-        echo "<script type='text/javascript' src='http://maps.google.com/maps/api/js?sensor=false&language={$lang}'></script>";       
+        $lang = Language::get_current_code();        
+        echo "<script type='text/javascript' src='//maps.google.com/maps/api/js?sensor=false&language={$lang}'></script>";       
 ?>
 <script type="text/javascript">
 google.maps.event.addDomListener(window, 'load', function()

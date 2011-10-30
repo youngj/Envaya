@@ -91,6 +91,8 @@ class Action_Login extends Action
     
     function render()
     {
+        $this->prefer_https();
+
         $username = get_input('username');
         $next = get_input('next');        
         

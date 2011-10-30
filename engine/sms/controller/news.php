@@ -415,7 +415,7 @@ class SMS_Controller_News extends SMS_Controller
         if ($user instanceof Organization)
         {
             echo "{$user->city} ".strtoupper($user->country)."\n";
-            echo $user->get_url()."\n";
+            echo abs_url($user->get_url())."\n";
             
             if ($user->email && $user->get_metadata('public_email') != 'no')
             {
@@ -722,7 +722,7 @@ class SMS_Controller_News extends SMS_Controller
             
             $this->reply(strtr(__('sms:comment_published'), array(
                 '{id}' => $comment->guid,
-                '{url}' => $post->get_url(),
+                '{url}' => abs_url($post->get_url()),
             )));            
             
             $post_user = $post->get_container_user();            
@@ -1006,7 +1006,7 @@ class SMS_Controller_News extends SMS_Controller
         $this->reply(strtr(__('sms:post_published'),
             array(
                 '{username}' => $user->username,
-                '{url}' => $news->get_url(),
+                '{url}' => abs_url($news->get_url()),
                 '{id}' => $post->guid,
             )
         ));                          
@@ -1059,6 +1059,7 @@ class SMS_Controller_News extends SMS_Controller
         {
             foreach ($this->query_subscriptions()
                 ->show_disabled(true)
+
                 ->filter() as $subscription)
             {
                 $subscription->language = $lang;

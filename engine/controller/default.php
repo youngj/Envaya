@@ -62,6 +62,11 @@ class Controller_Default extends Controller
                 throw new RedirectException('', $this->get_login_url());
             }
 
+            if (@$_COOKIE['https'])
+            {
+                $this->prefer_https();
+            }
+
             QueryString::set_used_param('lang');            
             
             // 'lang' query parameter permanently changes interface language via cookie

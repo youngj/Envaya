@@ -2,7 +2,7 @@
     <div class='home_heading heading_blue'><h4><?php echo __("home:for_organizations") ?></h4></div>
     <div class='home_content'>
         <a class='icon_link icon_signup' href='/org/new'><?php echo __("home:sign_up") ?></a>
-        <a class='icon_link icon_logout' href='/pg/login'><?php echo __("login") ?></a>
+        <a class='icon_link icon_logout' href='<?php echo secure_url('/pg/login') ?>'><?php echo __("login") ?></a>
         <a class='icon_link icon_help' href='/envaya/page/help'><?php echo __("help") ?></a>        
     </div>
 </div>
