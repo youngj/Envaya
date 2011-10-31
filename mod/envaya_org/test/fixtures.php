@@ -11,7 +11,6 @@ return function() {
     $envaya->set_design_setting('theme_name', 'sidebar');
     $envaya->country = 'us';
     $envaya->set_lat_long(37,-112);
-    $envaya->setup_state = Organization::CreatedHomePage;
     $envaya->approval = 1;
     $envaya->save();
     

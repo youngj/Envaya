@@ -5,6 +5,7 @@ CREATE TABLE `user_scopes` (
 	`time_created` int(11) NOT NULL,
 	`time_updated` int(11) NOT NULL,
     `status` tinyint(4) not null default 1,		
+    `order` int not null default 0,
     PRIMARY KEY  (`guid`),
 	KEY `owner_guid` (`owner_guid`),
 	KEY `container_guid` (`container_guid`),

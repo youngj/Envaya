@@ -47,7 +47,8 @@ class Action_Registration_RegisterPerson extends Action
         $user->name = $name;
         $user->set_password($password);
         $user->language = Language::get_current_code();
-        $user->setup_state = Organization::CreatedAccount;
+        $user->setup_state = User::SetupComplete;
+        $user->set_defaults();
         $user->save();
         
         $user->update_scope();
@@ -58,7 +59,7 @@ class Action_Registration_RegisterPerson extends Action
 
         $mail = OutgoingMail::create(
             sprintf(__('register:notification_subject'), $user->name),
-            "{$user->get_url()}\n"
+            secure_url($user->get_url())."\n"
         );
         $mail->send_to_admin();
                 

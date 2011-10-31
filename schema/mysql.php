@@ -343,6 +343,7 @@ CREATE TABLE `sms_app_state` (
 CREATE TABLE `user_scopes` (
     <?php require 'schema/entity_columns.php'; ?>,
     `description` varchar(63) not null,	
+    `order` int not null default 0,
     `filters_json` text not null
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
 

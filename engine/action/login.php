@@ -7,16 +7,14 @@ class Action_Login extends Action
         SessionMessages::add(sprintf(__('login:welcome'), $user->name));
 
         $next = get_input('next');
+        if (!$next && !$user->is_setup_complete())
+        {
+            $next = $user->get_continue_setup_url();
+        }
+            
         if (!$next)
         {
-            if (!$user->is_setup_complete())
-            {
-                $next = "/org/new?step={$user->setup_state}";
-            }
-            else
-            {
-                $next = "{$user->get_url()}/dashboard";
-            }
+            $next = "{$user->get_url()}/dashboard";
         }
 
         $next = url_with_param($next, '_lt', timestamp());

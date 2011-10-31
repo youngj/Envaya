@@ -48,7 +48,7 @@ class Action_Registration_CreateProfileBase extends Action
 
         $prevSetupState = $org->setup_state;
         
-        $org->setup_state = Organization::CreatedHomePage;
+        $org->setup_state = User::SetupComplete;
         $org->save();
 
         $org->update_scope();
@@ -60,7 +60,7 @@ class Action_Registration_CreateProfileBase extends Action
 
             OutgoingMail::create(
                 sprintf(__('email:registernotify:subject'), $org->name), 
-                sprintf(__('email:registernotify:body'), $org->get_url())
+                sprintf(__('email:registernotify:body'), secure_url($org->get_url()))
             )->send_to_admin();
         }            
         

@@ -14,7 +14,7 @@
         '{name}' => $org->name, 
         '{subject}' => $subject_name, 
         '{type}' => $relationship->msg('header', $org->language),
-        '{url}' => $widget->get_url(),
+        '{url}' => abs_url($widget->get_url()),
     ));
     echo "\n\n";
            

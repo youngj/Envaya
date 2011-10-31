@@ -1,51 +1,44 @@
 <?php
     require_once "start.php";      
     
-    $root_scope = UserScope::query()->where('container_guid = 0')->get();
+    $root_scope = UserScope::get_root();
     if (!$root_scope)
     {    
         $root_scope = new UserScope();
         $root_scope->save();
     }
     
-    $country_scopes = array(
-        'Tanzania' => array(
-            new Query_Filter_Country(array('value' => 'tz'))
+    $scopes = array(
+        'Tanzania Organizations' => array(
+            new Query_Filter_Country(array('value' => 'tz')),
+            new Query_Filter_UserType(array('value' => 'core.user.org')),
         ),
-        'Rwanda' => array(
-            new Query_Filter_Country(array('value' => 'rw'))
+        'Rwanda Organizations' => array(
+            new Query_Filter_Country(array('value' => 'rw')),
+            new Query_Filter_UserType(array('value' => 'core.user.org')),
         ),
-        'Liberia' => array(
-            new Query_Filter_Country(array('value' => 'lr'))
+        'Other Organizations' => array(
+            new Query_Filter_UserType(array('value' => 'core.user.org')),
         ),
-        'United States' => array(
-            new Query_Filter_Country(array('value' => 'us'))
-        ),
+        'People' => array(
+            new Query_Filter_UserType(array('value' => 'core.user.person')),
+        )
     );
     
-    foreach ($country_scopes as $country_name => $filters)
+    $i = 0;
+    
+    foreach ($scopes as $description => $filters)
     {
-        $country_scope = $root_scope->query_scopes()->where('description = ?', $country_name)->get();
-        if (!$country_scope)
+        $i++;
+        $scope = $root_scope->query_scopes()->where('description = ?', $description)->get();
+        if (!$scope)
         {
-            $country_scope = new UserScope();
-            $country_scope->description = $country_name;
-            $country_scope->set_container_entity($root_scope);
-            $country_scope->set_filters($filters);        
-            $country_scope->save();
+            $scope = new UserScope();
+            $scope->description = $description;
+            $scope->order = $i;
+            $scope->set_container_entity($root_scope);
+            $scope->set_filters($filters);        
+            $scope->save();
         }
-        $country = $filters[0]->value;
-        
-        Database::update("update users set container_guid = ? where country = ?", array($country_scope->guid, $country));        
-    }    
+    }        
     
-    $defaults = array(
-        'owner_guid' => 0, 
-        'language' => Config::get('language')
-    );    
-    $email = Config::get('admin_email');    
-    
-    Database::delete("DELETE from email_subscriptions WHERE email = ? AND container_guid <> ?", array($email, $root_scope->guid));
-    
-    EmailSubscription_Comments::init_for_entity($root_scope, $email, $defaults);
-    EmailSubscription_Discussion::init_for_entity($root_scope, $email, $defaults);

@@ -14,7 +14,7 @@
     if ($url)
     {   
         $esc_url = escape($url);
-        echo "<br /><a href='$esc_url'>$esc_url</a>";
+        echo "<br />URL: <a href='$esc_url'>".abs_url($esc_url)."</a>";
     }
     echo "<br />";
         

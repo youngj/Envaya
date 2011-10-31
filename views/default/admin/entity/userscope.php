@@ -10,7 +10,7 @@
     $child_scopes = $scope->query_scopes()->filter();    
     if ($child_scopes)
     {
-        echo "<h4>Scopes</h4>";
+        echo "<h4>Categories</h4>";
         
         foreach ($child_scopes as $child_scope)
         {
@@ -29,14 +29,17 @@
     {
         $users = $users_query
             ->limit($limit, $offset)
-            ->order_by('name')
+            ->order_by('time_created desc')
             ->filter();
         echo "<h4>Users ($num_users)</h4>";   
 
         $items = array();
         foreach ($users as $user)
         {
-            $items[] = "<a href='{$user->get_admin_url()}'>".escape($user->get_title())."</a>";
+            $approval = $user->is_approved() ? "" : 
+                ($user->approval == User::Rejected ? "(rejected)" : "(not yet approved)");
+        
+            $items[] = "<a href='{$user->get_admin_url()}'>".escape($user->get_title())."</a> $approval";
         }
         
         echo view('paged_list', array(
@@ -46,4 +49,5 @@
             'offset' => $offset,
             'count' => $num_users
         ));
+        echo "<br />";
     }

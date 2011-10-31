@@ -6,18 +6,16 @@
  */
 class Organization extends User
 {
-    /* 
-     * Constants for tracking the progress of a newly registered organization 
-     * through the setup process
-     */
-    const CreatedAccount = 3;
-    const CreatedHomePage = 5;
-
     function set_defaults()
     {
         $this->set_design_setting('theme_name', "green");
         $this->set_design_setting('share_links', array('email','facebook','twitter'));    
     }
+    
+    public function get_continue_setup_url()
+    {
+        return "/org/new?step={$this->setup_state}";
+    }        
     
     function init_default_widgets()
     {
@@ -36,11 +34,6 @@ class Organization extends User
         $contactWidget->set_metadata('public_email', "yes");
         $contactWidget->save();    
     }
-
-    public function is_setup_complete()
-    {
-        return $this->setup_state >= Organization::CreatedHomePage;
-    }    
             
     public function get_feed_names()
     {

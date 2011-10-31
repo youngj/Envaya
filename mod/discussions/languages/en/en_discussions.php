@@ -35,4 +35,5 @@ return array(
     
     'discussions:user_subscription' => "Discussion messages on {name}'s website",
     'discussions:topic_subscription' => "Messages in \"{topic}\"",
+    'discussions:scope_subscription' => "Messages from {scope}",
 );

@@ -15,5 +15,5 @@ CREATE TABLE `permissions` (
     KEY `subtype_id` (`subtype_id`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
 
-UPDATE users set subtype_id = 'core.user.person' where subtype_id = 'core.user';
-UPDATE entities set subtype_id = 'core.user.person' where subtype_id = 'core.user';
+UPDATE users set subtype_id = 'core.user.person', setup_state = 5 where subtype_id = 'core.user';
+UPDATE entities set subtype_id = 'core.user.person', setup_state = 5 where subtype_id = 'core.user';

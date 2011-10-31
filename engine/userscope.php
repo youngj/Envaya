@@ -26,6 +26,7 @@ class UserScope extends Entity
 
     static $table_attributes = array(
         'description' => '',
+        'order' => 0, // the order in which sibling scopes are matched by find_scope
         'filters_json' => '',
     );
     
@@ -75,7 +76,9 @@ class UserScope extends Entity
     
     function query_scopes()
     {
-        return UserScope::query()->where('container_guid = ?', $this->guid);
+        return UserScope::query()
+            ->where('container_guid = ?', $this->guid)
+            ->order_by('`order`');
     }
 
     function query_users()

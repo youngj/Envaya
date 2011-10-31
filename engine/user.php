@@ -14,7 +14,15 @@ abstract class User extends Entity
     static $table_name = 'users';
     static $query_class = 'Query_SelectUser';    
     static $table_base_class = 'User';
+    static $admin_view = 'admin/entity/user';
 
+    /* 
+     * Constants for tracking the progress of a newly registered user 
+     * through the setup process
+     */
+    const SetupStarted = 1;
+    const SetupComplete = 5;    
+    
     static $table_attributes = array(        
         'subtype_id' => '',
         'name' => '',
@@ -61,7 +69,17 @@ abstract class User extends Entity
     
     function init_default_widgets()
     {
-    }
+    } 
+ 
+    public function is_setup_complete()
+    {
+        return $this->setup_state >= User::SetupComplete;
+    }    
+    
+    public function get_continue_setup_url()
+    {
+        return null;
+    }        
  
     public function get_feed_names()
     {
@@ -71,11 +89,6 @@ abstract class User extends Entity
         );
     }
     
-    public function is_setup_complete()
-    {
-        return true;
-    }
-
     public function get_title()
     {
         return $this->name;
