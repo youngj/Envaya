@@ -15,7 +15,7 @@
         )
     ));    
 ?>
-<script type='text/javascript' src='http://www.scribd.com/javascripts/view.js'></script>
+<script type='text/javascript' src='//www.scribd.com/javascripts/view.js'></script>
 <div id='scribd'></div>
 
 <script type='text/javascript'>

@@ -8,7 +8,7 @@
         
     if (!$INCLUDE_COUNT)
     {
-        echo "<script type='text/javascript' src='http://www.scribd.com/javascripts/view.js'></script>";
+        echo "<script type='text/javascript' src='//www.scribd.com/javascripts/view.js'></script>";
     }
 ?>
 <div style='text-align:center' id='scribd<?php echo $INCLUDE_COUNT; ?>'><?php echo view('output/scribd_link', $vars); ?></div>
