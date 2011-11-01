@@ -17,7 +17,9 @@ class Mixin_Content extends Mixin
         {
             $content = Markup::sanitize_html($content);
         }
-        
+                
+        $content = Markup::remove_image_scheme($content);
+                
         $this->content = $content;
         $this->thumbnail_url = UploadedFile::get_thumbnail_url_from_html($content);        
 

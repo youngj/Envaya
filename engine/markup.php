@@ -282,4 +282,14 @@ class Markup
         }        
         return '';    
     }
+    
+    static function remove_image_scheme($html)
+    {
+        return preg_replace('#src="http(s)?://#', 'src="//', $html);
+    }
+    
+    static function add_image_scheme($html, $scheme = 'http')
+    {
+        return preg_replace('#src="//#', "src=\"$scheme://", $html);
+    }    
 }
