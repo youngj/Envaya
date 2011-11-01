@@ -107,7 +107,7 @@ var PasswordStrength = {
         var colors = {
             1: '#f00', 2: '#f30', 3: '#f60',
             4: '#f90', 5: '#ee0', 6: '#ce0',
-            7: '#ae0', 8: '#6e0', 9: '#3e0',
+            7: '#ae0', 8: '#6e0', 9: '#3e0'
         };                       
         var color = (strength < minStrength) ? colors[1] : colors[strength];
         div.style.backgroundColor = color;

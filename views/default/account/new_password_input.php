@@ -8,7 +8,7 @@
     'id' => 'new_password',
     'name' => 'password',
 )) ?>    
-<div id='password_strength' style='height:2px;margin-left:4px'></div>
+<div id='password_strength' style='height:2px;margin-left:4px;overflow:hidden'></div>
 <script type='text/javascript'>
 function updatePasswordStrength()
 {

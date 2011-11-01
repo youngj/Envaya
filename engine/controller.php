@@ -321,7 +321,7 @@ abstract class Controller extends Router {
             }
         }
         
-        return "/pg/login?".http_build_query($args);
+        return secure_url("/pg/login?".http_build_query($args));
     }
         
     public function allow_view_types($allowed_view_types = null /* array, or variable arguments */)

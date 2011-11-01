@@ -12,3 +12,4 @@
         $widget->thumbnail_url = str_replace("http://", "//", $widget->thumbnail_url);
         $widget->save();
     }
+    

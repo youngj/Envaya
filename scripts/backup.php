@@ -5,6 +5,7 @@
     require_once("vendors/s3.php");
 
     $start = microtime(true);
+    umask(0);
     
     $now = date("YmdHi");
     $dbname = Config::get('dbname');    
@@ -26,7 +27,7 @@
 
     $crypt = "mcrypt -q --key ".escapeshellarg(Config::get('dbpass'));
 
-    echo system("$dump | gzip | $crypt > $fs_path && chmod 644 $fs_path");
+    echo system("$dump | gzip | $crypt > $fs_path && chmod 666 $fs_path");    
     
     $s3 = new S3(Config::get('s3_key'), Config::get('s3_private'));    
     if (!$s3->uploadFile(Config::get('s3_backup_bucket'), $s3_path, $fs_path))

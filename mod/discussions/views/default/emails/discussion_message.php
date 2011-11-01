@@ -4,7 +4,7 @@
     $topic = $message->get_container_entity();
     
     echo "<b>".escape($topic->subject)."</b><br />";    
-    echo $message->render_content();
+    echo Markup::absolutize_urls($message->render_content());
 
     $message_url = secure_url($message->get_url());
 

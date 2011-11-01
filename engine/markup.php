@@ -288,7 +288,7 @@ class Markup
         return preg_replace('#src="http(s)?://#', 'src="//', $html);
     }
     
-    static function add_image_scheme($html, $scheme = 'http')
+    static function absolutize_urls($html, $scheme = 'http')
     {
         return preg_replace('#src="//#', "src=\"$scheme://", $html);
     }    
