@@ -26,9 +26,10 @@ class Action_Registration_RegisterPerson extends Action
         $password = get_input('password');
         $password2 = get_input('password2');
 
-        User::validate_password($password, $password2, $name, $username);
-
         $email = EmailAddress::validate(trim(get_input('email')));
+        $phone_number = get_input('phone');
+        
+        User::validate_password($password, $password2, array($name, $username, $email, $phone_number));
         
         if (User::get_by_username($username, true))
         {
@@ -42,7 +43,7 @@ class Action_Registration_RegisterPerson extends Action
         
         $user = new Person();
         $user->username = $username;
-        $user->set_phone_number(get_input('phone'));
+        $user->set_phone_number($phone_number);
         $user->set_email($email);
         $user->name = $name;
         $user->set_password($password);

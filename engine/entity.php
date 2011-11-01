@@ -568,7 +568,12 @@ abstract class Entity extends Model
     {
         return "/admin/entity/{$this->guid}";
     }
-                    
+    
+    static function get_view_permission()
+    {
+        return null;
+    }    
+    
     // Loggable interface
     public function get_id() { return $this->guid; }
     public function get_class_name() { return get_class($this); }

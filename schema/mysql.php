@@ -70,6 +70,7 @@ CREATE TABLE `users` (
   `name` text NOT NULL,
   `username` varchar(128) NOT NULL default '',  
   `password` varchar(128) NOT NULL default '',
+  `password_time` int(11) NULL,
   `salt`     varchar(8)  NOT NULL default '',
   `email` text NOT NULL,
   `phone_number` text NULL,

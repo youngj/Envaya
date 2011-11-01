@@ -87,8 +87,8 @@ class Mixin_Translatable extends Mixin
             {
                 return $autoTrans;
             }
-            else
-            {            
+            else if (!Request::is_bot())
+            {         
                 $key->queue_auto_translation();
             
                 $tempTrans = $key->new_translation();

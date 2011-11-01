@@ -82,6 +82,7 @@ class Web_Request
                 return strlen($line);            
             });
             
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false); 
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 

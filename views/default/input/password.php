@@ -52,7 +52,8 @@ function checkCapslock(e, warningId) {
     }
     
     $warningId = "capslockWarning$INCLUDE_COUNT";
-    $attrs['onkeypress'] = "checkCapslock(event,'$warningId')";
+    
+    $attrs['onkeypress'] = "checkCapslock(event,'$warningId');";
 
     echo Markup::empty_tag('input', $attrs);
 ?>

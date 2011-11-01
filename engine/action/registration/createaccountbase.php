@@ -44,10 +44,11 @@ abstract class Action_Registration_CreateAccountBase extends Action
 
         $password = get_input('password');
         $password2 = get_input('password2');
-        
-        User::validate_password($password, $password2, $name, $username);
 
         $email = EmailAddress::validate(trim(get_input('email')));
+        $phone_number = get_input('phone');
+        
+        User::validate_password($password, $password2, array($name, $username, $email, $phone_number));
 
         if (!get_input('ignore_possible_duplicates'))
         {
@@ -86,7 +87,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
         }
         
         // set phone number after country so canonicalization works
-        $org->set_phone_number(get_input('phone'));        
+        $org->set_phone_number($phone_number);        
         $org->save();
 
         $org->update_scope();

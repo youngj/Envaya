@@ -15,12 +15,14 @@
 <div class='input'>
 <label><?php echo __('user:password:current') ?>:</label><br />
 <?php echo view('input/password', array(
-    'name' => 'old_password'
-)) ?>
+    'name' => 'old_password',
+));
+ ?>
 </div>
 <?php echo view('focus', array('name' => 'old_password')); ?>
 <?php } ?>
-<?php echo view('account/new_password_input'); ?>
+<?php echo view('account/new_password_input', array('user' => $user)); ?>
+<?php echo view('input/hidden', array('name' => 'next', 'value' => get_input('next'))); ?>
 <?php echo view('input/submit', array('value' => __('savechanges'))); ?>
 </form>
 </div>

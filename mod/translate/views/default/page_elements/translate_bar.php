@@ -13,6 +13,7 @@ if (!@$vars['hide_translate_bar'] && PageContext::has_translation())
         $userLangName = escape(__("lang:$viewLang"));
         
         $can_auto_translate = PageContext::has_translation(TranslateMode::Automatic)
+            && !Request::is_bot()
             && GoogleTranslate::is_supported_language($origLang) 
             && GoogleTranslate::is_supported_language($viewLang);
             

@@ -2,6 +2,16 @@
 
 abstract class Permission_Secure extends Permission
 {
+    static function get_min_password_strength()
+    {
+        return PasswordStrength::Strong;
+    }
+
+    static function get_max_password_age()
+    {
+        return 86400 * 365;
+    }
+    
     /*
      * Maximum number of seconds since login before require_* functions 
      * force the user to log in again

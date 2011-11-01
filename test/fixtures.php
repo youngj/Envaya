@@ -13,7 +13,7 @@ return function() {
     EmailSubscription_Comments::init_for_entity($root_scope, $admin_email);
     
     $admin = get_or_create_user('testadmin', 'Person');
-    $admin->set_password('testtest');
+    $admin->set_password('secretpassword1');
     $admin->name = "Test Admin";
     $admin->set_email($admin_email);
     $admin->container_guid = $root_scope->guid;

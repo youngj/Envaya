@@ -14,7 +14,7 @@ class NetworkTest extends SeleniumTest
         
         // disable network notifications for testposter13
         $this->open('/pg/login');
-        $this->login('testadmin','testtest');
+        $this->login('testadmin','secretpassword1');
         $this->ensureGoodMessage();
         $this->open("/testposter13");        
         $this->clickAndWait("//a[contains(@href,'/pg/email_settings')]");
@@ -326,7 +326,7 @@ class NetworkTest extends SeleniumTest
         // log in as admin and approve
         $loginUrl = $this->getLinkFromText($adminEmail);
         $this->setUrl($loginUrl);
-        $this->login('testadmin','testtest');
+        $this->login('testadmin','secretpassword1');
         $this->ensureGoodMessage();
         $this->click("//a[contains(@href,'approval=1')]");
         $this->getConfirmation();
@@ -416,7 +416,7 @@ class NetworkTest extends SeleniumTest
     private function clearNetworks()
     {
         $this->open('/pg/login');
-        $this->login('testadmin','testtest');
+        $this->login('testadmin','secretpassword1');
         $this->ensureGoodMessage();
         
         $this->deleteNetwork('testorg');

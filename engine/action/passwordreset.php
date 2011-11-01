@@ -29,7 +29,10 @@ class Action_PasswordReset extends Action
         $password = get_input('password');
         $password2 = get_input('password2');
 
-        User::validate_password($password, $password2, $user->name, $user->username);
+        User::validate_password($password, $password2, 
+            $user->get_easy_password_words(),
+            $user->get_min_password_strength()
+        );
 
         $user->set_password($password);
         $user->set_password_reset_code(null);

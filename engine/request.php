@@ -88,4 +88,24 @@ class Request
             return false;
         }
     }        
+    
+    static $is_bot = null;
+    
+    static function is_bot()
+    {
+        $useragent = @$_SERVER['HTTP_USER_AGENT'];
+    
+        if (!isset(static::$is_bot))
+        {    
+            if (preg_match('#[Bb]ot|[Ss]pider|[Cc]rawler|[Ss]earch|Slurp|ScoutJet|Funnelback|Yandex|Mediapartners|ia_archiver|Teoma|Ezooms|facebookexternalhit|Sogou|BPImageWalker|Filecrop|(Microsoft URL Control)#', $useragent))
+            {
+                static::$is_bot = true;
+            }
+            else
+            {
+                static::$is_bot = false;
+            }
+        }
+        return static::$is_bot;
+    }
 }

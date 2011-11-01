@@ -6,7 +6,7 @@ class EntityTranslationKey extends TranslationKey
     {
         return $this->get_language()->get_url()."/content/".urlencode_alpha($this->name);
     }
-        
+    
     protected function get_entity_property()
     {
         $name_parts = explode(':', $this->name);

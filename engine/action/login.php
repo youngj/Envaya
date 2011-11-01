@@ -2,7 +2,7 @@
 
 class Action_Login extends Action
 {
-    protected function login_success($user)
+    protected function login_success($user, $password)
     {
         SessionMessages::add(sprintf(__('login:welcome'), $user->name));
 
@@ -11,12 +11,30 @@ class Action_Login extends Action
         {
             $next = $user->get_continue_setup_url();
         }
-            
+        
         if (!$next)
         {
             $next = "{$user->get_url()}/dashboard";
         }
 
+        $min_password_strength = $user->get_min_password_strength();
+        
+        $password_age = $user->get_password_age();
+        $max_password_age = $user->get_max_password_age();
+        
+        $new_password_url = "{$user->get_url()}/password?next=".urlencode($next);
+            
+        if ($max_password_age && $password_age > $max_password_age)
+        {
+            SessionMessages::add_error(__('user:password:too_old'));
+            $next = $new_password_url;
+        }                        
+        else if ($min_password_strength && PasswordStrength::calculate($password) < $min_password_strength)
+        {
+            SessionMessages::add_error(__('register:password_too_easy'));
+            $next = $new_password_url;
+        }
+        
         $next = url_with_param($next, '_lt', timestamp());
 
         $this->redirect(secure_url($next));    
@@ -37,7 +55,7 @@ class Action_Login extends Action
         if ($user)
         {
             Session::login($user, array('persistent' => $persistent));
-            $this->login_success($user);
+            $this->login_success($user, $password);
         }
         else
         {

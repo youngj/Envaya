@@ -18,6 +18,8 @@ return array(
     'user:password:change' => "Change Password",
     'user:password:current' => "Current password",
     'user:password:current:incorrect' => "The current password was incorrect. Please enter it again.",
+    'user:password:too_old' => "Your password has expired. Please choose another password.",
+    'user:password:not_changed' => "The new password was the same as the old password. Please choose another password.",
     
     'user:password:reset_code' => "Password reset code",
     'user:password:reset_code_instructions' => "Enter the code from the message to reset your password.",

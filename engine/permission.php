@@ -187,6 +187,16 @@ abstract class Permission extends Entity
         return $permission;
     }
     
+    static function get_max_password_age()
+    {
+        return null;
+    }
+    
+    static function get_min_password_strength()
+    {
+        return PasswordStrength::Average;
+    }    
+    
     function __toString()
     {
         $user = $this->get_owner_entity();

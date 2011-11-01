@@ -165,5 +165,5 @@ class TranslationKey extends Entity
             ->where('owner_guid = ?', $user->guid)
             ->order_by('guid desc')
             ->get();
-    }
+    }    
 }

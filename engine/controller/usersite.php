@@ -171,7 +171,7 @@ class Controller_UserSite extends Controller_User
     {
         $action = new Action_User_SendMessage($this);
         $action->execute();   
-    }
+    }    
     
     function action_domains()
     {

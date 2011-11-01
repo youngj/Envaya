@@ -219,7 +219,7 @@ class Markup
         return $purifier->purify($html);
     }    
     
-    static $scribd_re = '/<scribd ([^>]*)\/>/';
+    static $scribd_re = '/<scribd ([^>]*)(\/>|><\/scribd>)/';
     
     static function render_custom_tags($html, $mode = null)
     {        

@@ -310,4 +310,9 @@ class Widget extends Entity
     {
 		$this->num_comments = $this->query_comments()->count();
     }    
+    
+    static function get_view_permission()
+    {
+        return 'Permission_ViewUserSite';    
+    }
 }

@@ -27,8 +27,9 @@ abstract class User extends Entity
         'subtype_id' => '',
         'name' => '',
         'username' => '',
-        'password' => '',
+        'password' => '',        
         'salt' => '',
+        'password_time' => '',
         'email' => '',
         'phone_number' => '',
         'language' => '',
@@ -261,6 +262,12 @@ abstract class User extends Entity
     public function set_password($password)
     {
         $this->password = generate_password_hash($password);
+        $this->password_time = timestamp();
+    }
+    
+    public function get_password_age()
+    {
+        return timestamp() - ($this->password_time ?: $this->time_created);
     }
     
     public function js_properties()
@@ -443,18 +450,30 @@ abstract class User extends Entity
         return $username;
     }
 
-    static function validate_password($password, $password2, $name, $username, $min_length = 6)
+    function get_easy_password_words()
     {
+        return array(
+            $this->name, 
+            $this->username,
+            $this->email,
+            $this->phone_number
+        );
+    }
+    
+    static function validate_password($password, $password2, $easy_words, $min_strength = 2)
+    {
+        $min_length = 6;
+    
         if (strlen($password) < $min_length)
         {
             throw new ValidationException(strtr(__('register:passwordtooshort'), array('{min}' => $min_length)));
-        }
+        }       
 
         $lpassword = strtolower($password);
         $lusername = strtolower($username);
         $lname = strtolower($name);
                 
-        if (strpos($lname, $lpassword) !== FALSE || strpos($lusername, $lpassword) !== FALSE)
+        if (PasswordStrength::calculate($password, $easy_words) < $min_strength)
         {
             throw new ValidationException(__('register:password_too_easy'));
         }
@@ -762,6 +781,34 @@ abstract class User extends Entity
             $this->permissions = Permission::query()->where('owner_guid = ?', $this->guid)->filter();
         }
         return $this->permissions;
+    }
+    
+    function get_min_password_strength()
+    {
+        $required_password_strength = PasswordStrength::VeryWeak;                    
+        foreach ($this->get_all_permissions() as $permission)
+        {
+            $min_password_strength = $permission->get_min_password_strength();
+            if ($min_password_strength > $required_password_strength)
+            {
+                $required_password_strength = $min_password_strength;
+            }
+        }
+        return $required_password_strength;
+    }    
+    
+    function get_max_password_age()
+    {   
+        $required_password_age = null;    
+        foreach ($this->get_all_permissions() as $permission)
+        {    
+            $max_password_age = $permission->get_max_password_age();
+            if ($max_password_age && ($max_password_age < $required_password_age || !$required_password_age))
+            {
+                $required_password_age = $max_password_age;
+            }            
+        }
+        return $required_password_age;
     }
     
     public function query_files()

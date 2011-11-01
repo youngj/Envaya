@@ -5,7 +5,7 @@ class TranslateTest extends SeleniumTest
     function test()
     {
         $this->open("/tr/admin/tl");
-        $this->login('testadmin','testtest');
+        $this->login('testadmin','secretpassword1');
 
         if ($this->isElementPresent("//button[@id='widget_delete']"))
         {
@@ -63,8 +63,8 @@ class TranslateTest extends SeleniumTest
         $this->mouseOver("//p[contains(text(),'this is a test of the emergency broadcast system')]");
         
         // view news updates without translating
-        $this->open("/testorg/news");
-        $this->assertContains("Parts of this page are in Swahili", $this->getText("//div[@id='translate_bar']"));
+        $this->retry('_testDetectLanguage', array('/testorg/news','Swahili'));
+        
         $this->mouseOver("//p[contains(text(),'translating is a difficult challenge')]");
         $this->mouseOver("//p[contains(text(),'je, inawezekana kwenda baharini leo?')]");
         $this->mouseOver("//p[contains(text(),'this is a test of the emergency broadcast system')]");        
@@ -314,7 +314,7 @@ class TranslateTest extends SeleniumTest
         $this->mustNotExist("//tr//a[contains(text(),'my stuff')]");
         $this->logout();
         $this->open("/pg/login");
-        $this->login('testadmin','testtest');
+        $this->login('testadmin','secretpassword1');
         $this->open($unapproved_url);
         $this->mustNotExist("//tr//td[contains(text(),'hidden')]");
         $this->mouseOver("//tr//a[contains(text(),'unapproved organization')]");
@@ -543,6 +543,12 @@ class TranslateTest extends SeleniumTest
             $this->getConfirmation();
             $this->waitForPageToLoad(10000);
         }
+    }
+    
+    function _testDetectLanguage($url, $language)
+    {
+        $this->open($url);
+        $this->assertContains("Parts of this page are in $language", $this->getText("//div[@id='translate_bar']"));    
     }
     
     function deleteAllComments()

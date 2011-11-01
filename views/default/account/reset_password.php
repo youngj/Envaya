@@ -17,7 +17,7 @@
 </div>
 
 <?php 
-    echo view('account/new_password_input'); 
+    echo view('account/new_password_input', array('user' => $user)); 
     echo view('focus', array('name' => 'password'));
 ?>
 

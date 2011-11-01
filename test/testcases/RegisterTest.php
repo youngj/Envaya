@@ -11,6 +11,8 @@ class RegisterTest extends SeleniumTest
 
     public function test()
     {        
+        $this->setTimestamp(time());
+    
         $this->_testRegister();
         $this->_testResetPassword();
         $this->_testSettings();
@@ -499,7 +501,9 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href, '/{$this->username}')]");
         $this->mouseOver("//h2//a[text()='New Name']");
         
-        // change password
+        $this->setTimestamp(time() + 600); // force entering old password
+        
+        // change password        
         $this->clickAndWait("//a[contains(@href,'/settings')]");
         $this->clickAndWait("//a[contains(@href,'/password')]");
         $this->type("//input[@name='old_password']", "password");
@@ -524,10 +528,20 @@ class RegisterTest extends SeleniumTest
         $this->login($this->username, 'abcdefgh');
         $this->ensureBadMessage();        
         $this->login($this->username, 'password2');
-        $this->ensureGoodMessage();
-        
+        $this->ensureGoodMessage();        
+                       
         // change username        
         $this->clickAndWait("//a[contains(@href,'/settings')]");
+        
+        // don't need to enter old password just after logging in
+        $this->clickAndWait("//a[contains(@href,'/password')]");
+        $this->mouseOver("//input[@name='password']");
+        $this->mustNotExist("//input[@name='old_password']");
+        
+        $this->setTimestamp(time()); 
+
+        $this->clickAndWait("//a[contains(@href,'/settings')]");        
+        
         $this->clickAndWait("//a[contains(@href,'/username')]");
         
         $this->type("//input[@name='username']", "testorg");
@@ -575,7 +589,7 @@ class RegisterTest extends SeleniumTest
         $this->ensureBadMessage();
         $this->mustNotExist("//h2");
 
-        $this->login('testadmin','testtest');
+        $this->login('testadmin','secretpassword1');
 
         $this->clickAndWait("//a[contains(@href, 'approval=1')]");
         $this->getConfirmation();
@@ -646,7 +660,7 @@ class RegisterTest extends SeleniumTest
         
         $this->retry('mouseOver', array("//input[@name='username']"));
 
-        $this->login('testadmin','testtest');
+        $this->login('testadmin','secretpassword1');
         $this->ensureGoodMessage();
         $this->open("/{$this->username2}");
         $this->clickAndWait("//a[contains(@href, 'approval=1')]");
@@ -678,7 +692,7 @@ class RegisterTest extends SeleniumTest
     private function _testDeleteOrg()
     {
         $this->open("/admin/entities");
-        $this->login('testadmin','testtest');
+        $this->login('testadmin','secretpassword1');
         
         $this->open("/{$this->username}");
 
