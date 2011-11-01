@@ -41,6 +41,7 @@
             setTimeout(function() {        
                 var doc = scribd.Document.getDoc(uploadedFile.docid, uploadedFile.accesskey);
                 doc.addParam('jsapi_version', 1);
+                if (location.protocol == 'https:') { doc.addParam('use_ssl', true); }    
                 doc.addEventListener('iPaperReady', function(e){
                     doc.api.setZoom(1);
                 });
