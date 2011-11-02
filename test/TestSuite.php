@@ -103,6 +103,66 @@ function stop_selenium()
     $sel->shutDownSeleniumServer();
 }
 
+class TestListener implements PHPUnit_Framework_TestListener
+{
+    private $is_first_test = true;
+
+    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time) 
+    {
+        error_log($e->getTraceAsString());
+    }
+
+    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
+    {
+        error_log($e->getMessage());
+    }
+
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time) {}
+
+    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time) {}
+
+    public function startTestSuite(PHPUnit_Framework_TestSuite $suite) 
+    {
+    }
+
+    public function endTestSuite(PHPUnit_Framework_TestSuite $suite) {    
+    }
+
+    public function startTest(PHPUnit_Framework_Test $test) 
+    {
+        echo "\n".get_class($test)."\n";
+        
+        global $TEST_CONFIG;        
+        @unlink($TEST_CONFIG['mock_mail_file']);    
+        @unlink($TEST_CONFIG['mock_sms_file']);   
+        
+        if (!$this->is_first_test)
+        {
+            run_test_task_sync("php test/reset_db.php | mysql -u root", array('quiet' => true));
+            run_test_task_sync("mysql envaya_test -u root < {$TEST_CONFIG['dataroot']}/test_init.sql", array('quiet' => true));
+            run_test_task_sync("php scripts/reindex_sphinx.php", array('quiet' => true));            
+        }
+    }
+
+    public function endTest(PHPUnit_Framework_Test $test, $time) 
+    {
+        $this->is_first_test = false;
+    }
+}
+
+function get_test_environment()
+{
+    global $TEST_CONFIG;
+    $env = get_environment();    
+    $env["ENVAYA_CONFIG"] = json_encode($TEST_CONFIG);            
+    return $env;
+}
+
+function run_test_task_sync($cmd, $options = null)
+{
+    return run_task_sync($cmd, dirname(__DIR__), get_test_environment(), $options);
+}
+
 function run_test_suite($suite, $opts)
 {
     if (!isset($opts['selenium']))
@@ -156,17 +216,18 @@ function run_test_suite($suite, $opts)
     
     $env = get_environment();    
     $env["ENVAYA_CONFIG"] = json_encode($TEST_CONFIG);            
-    $root = dirname(__DIR__);        
+    $root = dirname(__DIR__);
         
     if ($opts['reset'])
     {
-        run_task_sync("php test/reset_db.php | mysql -u root", $root);
-        run_task_sync('php scripts/install_tables.php', $root, $env);    
-        run_task_sync('php scripts/install_kestrel.php', $root, $env);
-        run_task_sync('php scripts/install_sphinx.php', $root, $env);
-        run_task_sync('php scripts/install_test_data.php', $root, $env);   
+        run_test_task_sync("php test/reset_db.php | mysql -u root");
+        run_test_task_sync('php scripts/install_tables.php');    
+        run_test_task_sync('php scripts/install_kestrel.php');
+        run_test_task_sync('php scripts/install_sphinx.php');
+        run_test_task_sync('php scripts/install_test_data.php');   
     }
-     
+    run_test_task_sync("mysqldump envaya_test -u root > $test_dataroot/test_init.sql");    
+         
     if ($opts['runserver'])
     {     
         $descriptorspec = array(
@@ -175,8 +236,11 @@ function run_test_suite($suite, $opts)
            2 => STDERR
         );                
       
-        $runserver = proc_open('php runserver.php', $descriptorspec, $runserver_pipes, $root, $env);    
-        $runserver_status = proc_get_status($runserver);                
+        $runserver = proc_open('php runserver.php', $descriptorspec, $runserver_pipes, 
+            dirname(__DIR__), 
+            get_test_environment());    
+        
+        $runserver_status = proc_get_status($runserver);
         posix_setpgid($runserver_status['pid'], $runserver_status['pid']);   
     }
     
@@ -186,7 +250,11 @@ function run_test_suite($suite, $opts)
     }
     sleep(2);
 
-    PHPUnit_TextUI_TestRunner::run($suite);
+    PHPUnit_TextUI_TestRunner::run($suite, array(
+        'listeners' => array(
+            new TestListener()
+        ),
+    ));
     
     if ($opts['runserver'])
     {    
@@ -231,6 +299,6 @@ function main()
 }
 
 if (realpath($argv[0]) == __FILE__)
-{
+{    
     main(); 
 }

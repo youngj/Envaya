@@ -133,22 +133,25 @@ class PasswordStrength
     
     static function remove_easy_word($lpass, $easy)
     {       
-        $easy_tokens = preg_split('#\s+#', strtolower($easy));
-        foreach ($easy_tokens as $easy_token)
-        {       
-            if (isset($easy_token[2]) && isset($lpass[2]))
-            {
-                if (strpos($easy_token, $lpass) !== false)
+        if ($easy)
+        {
+            $easy_tokens = preg_split('#\s+#', strtolower($easy));
+            foreach ($easy_tokens as $easy_token)
+            {       
+                if (isset($easy_token[2]) && isset($lpass[2]))
                 {
-                    $lpass = '';
-                    break;
-                }     
-                else
-                {                
-                    $lpass = str_replace($easy_token, '', $lpass);
+                    if (strpos($easy_token, $lpass) !== false)
+                    {
+                        $lpass = '';
+                        break;
+                    }     
+                    else
+                    {                
+                        $lpass = str_replace($easy_token, '', $lpass);
+                    }
                 }
-            }
-        }            
+            }            
+        }
         return $lpass;        
     }
 

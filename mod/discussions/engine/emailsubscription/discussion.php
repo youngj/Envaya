@@ -37,8 +37,6 @@ class EmailSubscription_Discussion extends EmailSubscription
         
         $reply->send_notifications(DiscussionMessage::Added);
         
-        error_log("added message {$reply->guid}");
-
         return true;
     }
     

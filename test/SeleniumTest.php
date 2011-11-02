@@ -12,8 +12,6 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-        echo "\n".get_class($this)."\n";
-        $this->deleteMailFile();
         $this->startBrowser();
         $this->setTimestamp(time());
     }
@@ -24,14 +22,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $this->start();
         $this->windowMaximize();
     }      
-    
-    public function deleteMailFile()
-    {
-        global $TEST_CONFIG;        
-        @unlink($TEST_CONFIG['mock_mail_file']);    
-        @unlink($TEST_CONFIG['mock_sms_file']);    
-    }
-    
+        
     public function init_selenium()
     {
         global $BROWSER, $TEST_CONFIG;

@@ -55,7 +55,7 @@ var PasswordStrength = {
         if (!alphabetSize)
         {
             alphabetSize = 1;
-        }
+        }        
         
         var lpass = password.toLowerCase();
         
@@ -69,7 +69,7 @@ var PasswordStrength = {
                 lpass = P.removeEasyWord(lpass, w); 
             });
         }
-
+        
         var len = lpass.length;
         if (len <= 2)
         {
@@ -87,7 +87,7 @@ var PasswordStrength = {
             {
                 bscore += bigrams[bigram];
             }
-            else if (bigram[0] === bigram[1])
+            else if (bigram.charAt(0) === bigram.charAt(1))
             {
                 bscore++;
             }
@@ -105,21 +105,24 @@ var PasswordStrength = {
     
     removeEasyWord: function(lpass, easy)
     {       
-        var easyTokens = easy.toLowerCase().split(/\s+/);
-        
-        each(easyTokens, function(easyToken) {
-            if (easyToken.length > 2 && lpass.length > 2)
-            {
-                if (easyToken.indexOf(lpass) != -1)
+        if (easy)
+        {    
+            var easyTokens = easy.toLowerCase().split(/\s+/);
+            
+            each(easyTokens, function(easyToken) {
+                if (easyToken.length > 2 && lpass.length > 2)
                 {
-                    lpass = '';
-                }     
-                else
-                {                
-                    lpass = lpass.replace(easyToken, '');
+                    if (easyToken.indexOf(lpass) != -1)
+                    {
+                        lpass = '';
+                    }     
+                    else
+                    {                
+                        lpass = lpass.replace(easyToken, '');
+                    }
                 }
-            }
-        });
+            });
+        }
             
         return lpass;        
     },
@@ -128,8 +131,8 @@ var PasswordStrength = {
     {        
         var strength = PasswordStrength.calculate(password, easyWords);               
         var colors = {
-            1: '#f00', 2: '#f30', 3: '#f60',
-            4: '#f90', 5: '#ee0', 6: '#ce0',
+            1: '#f00', 2: '#fa0', 3: '#fa0',
+            4: '#ee0', 5: '#ee0', 6: '#ae0',
             7: '#ae0', 8: '#6e0', 9: '#3e0'
         };                       
         var color = (strength < minStrength) ? colors[1] : colors[strength];

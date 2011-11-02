@@ -81,9 +81,7 @@ class EmailSubscription_Comments extends EmailSubscription
 		$widget->save();
         
         $reply->send_notifications(Comment::Added);        
-        
-        error_log("added comment {$reply->guid}");
-        
+                
         return true;
     }            
 }

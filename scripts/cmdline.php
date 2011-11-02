@@ -11,9 +11,18 @@ if (@$_SERVER['REQUEST_URI'])
     die;
 }
 
-function run_task($cmd, $cwd = null, $env = null)
+function run_task($cmd, $cwd = null, $env = null, $options = null)
 {
-    print_msg($cmd);
+    $quiet = false;    
+    if (isset($options))
+    {
+        extract($options);
+    }
+
+    if (!$quiet)
+    {
+        print_msg($cmd);
+    }
     
     $descriptorspec = array(
        0 => array("pipe", "r"), // stdin is a pipe that the child will read from
@@ -23,9 +32,9 @@ function run_task($cmd, $cwd = null, $env = null)
     return proc_open($cmd, $descriptorspec, $pipes, $cwd, $env);
 }
 
-function run_task_sync($cmd, $cwd = null, $env = null)
+function run_task_sync($cmd, $cwd = null, $env = null, $options = null)
 {
-    proc_close(run_task($cmd, $cwd, $env));
+    proc_close(run_task($cmd, $cwd, $env, $options));
 }
 
 function print_msg($msg)

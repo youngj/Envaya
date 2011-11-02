@@ -27,7 +27,7 @@ class Cache_Memcache implements Cache
     }
     public function set($key, $value, $timeout = 0)
     {
-        return $this->memcache->set($key, $value, $timeout);
+        return $this->memcache->set($key, $value, 0, $timeout);
     }
     public function delete($key)
     {
