@@ -10,7 +10,6 @@ return array(
     'comment:location' => 'Aho uherereye',
     'comment:empty' => 'Nta gitekerezo usanzemo.',
     'comment:deleted' => 'Igitekerezo kivuyemo',
-    'comment:not_deleted' => 'Igitekerezo ntabwo kivuyemo',
     'comment:duplicate' => 'Igitekerezo cyawe nticyoherejwe kuko hari ikindi bisa',
     'comment:deleted_marker' => 'Siba igitekerezo',
     'comment:captcha_instructions' => 'Andika izo nyuguti ziri hepfo kugirango wohereze igitekerezo',

@@ -2,12 +2,15 @@
 
 return array(    
     'login:error' => "Incorrect username or password. Make sure they are correct and try again. If you still can't log in, %s to reset your password.",
+    'login:rate_limit_exceeded' => "Too many incorrect password attempts. To reset your password, %s.",
+    
     'login:welcome' => "Welcome, %s!",
     
-    'login:expired' => "Please log in again to continue.",
+    'login:expired' => "Please enter your username and password again to continue.",
 
     'login:cookie_error' => "There was an error logging into Envaya. Please ensure that your browser accepts cookies from '%s' and try again.", 
     'login:cookie_help' => "Click for instructions",
+    
 
     'login:persistent' => 'Stay logged in',
     'login:password:lost' => 'Forgot password?',
@@ -24,8 +27,11 @@ return array(
     'login:resetreq:subject' => "Request for new password",    
     'login:resetreq:somebody_requested' => "Somebody has requested a new password for your account.",
     'login:resetreq:click_link' => "If you requested this, click on the link below to change your password:",    
-        
     'login:resetreq:notfound' => 'The username or email address %s was not found on Envaya. Make sure you have typed it correctly and try again.',
 
     'login:resetreq:sms_sent' => "A password reset code has been sent via SMS to the phone number on your Envaya account.",        
+    'login:resetreq:code_title' => "Password reset code",        
+    'login:resetreq:enter_code' => "Enter the code from the message to reset your password.",        
+    'login:resetreq:code_incorrect' => "The code was incorrect.",    
+    'login:resetreq:sms' => "Somebody has requested a new password for your Envaya account. If you requested this, enter the above code on the website to reset your password.",    
 );

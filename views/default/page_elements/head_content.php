@@ -19,13 +19,13 @@
 <?php    
     echo "var canonicalUrl=".json_encode(@$vars['canonical_url']).";\n";
     echo view('js/header');    
+    echo "var jsStrs=".json_encode(PageContext::get_js_strings()).";"; 
     echo PageContext::get_inline_js();    
     echo "\n";
     if (PageContext::is_dirty())
     {
         echo "setDirty(true);";
-    }
-    echo "var jsStrs=".json_encode(PageContext::get_js_strings()).";"; 
+    }    
 ?>
 </script>
 <?php echo PageContext::get_header_html(); ?>

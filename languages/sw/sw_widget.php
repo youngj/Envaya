@@ -26,7 +26,6 @@ return array(
     'widget:mission:label' => 'Lengo la shirika lako ni nini?',
     'widget:sectors' => 'Sekta',
     'widget:location' => 'Sehemu',
-    'widget:location:drop_pin' => 'Ongeza pointi kwa ramani',
     'widget:location:drag_pin' => 'Vuta na angusha pointi nyekundu chini kwenye eneo la shirika lako.',
     'widget:location:see_nearby' => 'Tazama mashirika ambayo yapo karibu',
     

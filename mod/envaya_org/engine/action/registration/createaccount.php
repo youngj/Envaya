@@ -20,7 +20,9 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
         $this->allow_view_types(null);        
         $this->page_draw(array(
             'title' => __("register:title"),
-            'content' => view("org/create_account"),
+            'content' => view("org/create_account", array(
+                'country' => $this->get_country()
+            )),
             'org_only' => true
         ));
     }    

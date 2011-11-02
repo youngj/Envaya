@@ -5,7 +5,7 @@ class ContactTest extends SeleniumTest
     function test()
     {
         $this->open('/admin/contact');
-        $this->login('testadmin','secretpassword1');
+        $this->login('testadmin','secretpassw0rd');
         $this->ensureGoodMessage();
            
         // reset batch email notification settings
@@ -99,7 +99,7 @@ class ContactTest extends SeleniumTest
         
         // add another email template
         $this->open("/admin/contact/email");
-        $this->login("testadmin","secretpassword1");
+        $this->login("testadmin","secretpassw0rd");
         $this->ensureGoodMessage();
         
         $this->clickAndWait("//a[contains(@href,'email/add')]");

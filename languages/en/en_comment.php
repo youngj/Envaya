@@ -15,7 +15,6 @@
     'comment:email_help' => 'Your email address will not be published.',
     'comment:empty' => "Comment was empty.",
     'comment:deleted' => "Comment deleted.",
-    'comment:not_deleted' => "Comment could not be deleted.",
     'comment:duplicate' => "Comment was not published because it is the same as an existing comment.",
     'comment:deleted_marker' => 'comment deleted',
     'comment:captcha_instructions' => "Type the letters that appear below to publish your comment.",

@@ -26,7 +26,7 @@ class Action_PasswordResetCode extends Action
         }
         else
         {
-            throw new ValidationException(__('user:password:reset_code_incorrect'));
+            throw new ValidationException(__('login:resetreq:code_incorrect'));
         }
     }
         
@@ -34,7 +34,7 @@ class Action_PasswordResetCode extends Action
     {    
         $this->prefer_https();
         $this->page_draw(array(
-            'title' => __("user:password:reset_code"),
+            'title' => __("login:resetreq:code_title"),
             'content' => view("account/password_reset_code", array('user' => $this->user)),
             'org_only' => true,
         ));                

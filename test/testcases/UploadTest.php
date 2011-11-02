@@ -7,7 +7,7 @@ class UploadTest extends WebDriverTest
     public function test()
     {        
         $this->open("/pg/login");
-        $this->login('testorg','testtest');
+        $this->login('testorg','asdfasdf');
     
         $this->_testCustomHeader();
         $this->_testNewsUpdateImage();

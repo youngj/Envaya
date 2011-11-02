@@ -9,8 +9,6 @@ return array(
     'user:username:changed' => 'Izina ukoresha ryahinduwe',
     'user:username:current' => 'Izina usigaye ukoresha ubu',
     'user:username:new' => 'Izina rishya ukoresha',
-    'user:password:help' => 'Wigira icyo wandika kugira ngo ugumane ijambo ryawe ry\'ibanga',
-    'user:password:label' => 'Ijambo/imibare bishya by\'ibanga',
     'user:password2:label' => 'Ongera wandike rya jambo rishya ry\'ibanga',
     'user:password:change' => 'Guhindura ijambo/inyuguti by\'ibanga',
     'user:password:current' => 'Andika ijambo ry\'ibanga ukoresha ubu',

@@ -284,50 +284,98 @@ abstract class User extends Entity
     
     function reset_login_failure_count()
     {
-        $fails = (int)$this->get_metadata('login_failures');
-
-        if ($fails) 
-        {
-            for ($i = 1; $i <= $fails; $i++)
-                $this->set_metadata("login_failure_$i", null);
-
-            $this->set_metadata('login_failures', null);
-        }
+        // don't reset per-IP rate since it would allow user to circumvent security
+        get_cache()->delete(static::login_failures_cache_key($this->username));
     }
     
-    function validate_login_rate()
+    private static function login_failures_cache_key($username)
     {
-        $failure_limit = 20;
-        $failure_limit_interval = 60 * 10;
+        return make_cache_key("user_login_failures", strtolower($username));
+    }
+    
+    private static function ip_login_failures_cache_key()
+    {
+        return make_cache_key("ip_login_failures", Request::get_client_ip());        
+    }
+    
+    /*
+     * Returns the number of login attempts remaining for this username 
+     * before the account is locked (from 0 to login_failure_limit).
+     *
+     * Always call before checking password.
+     */
+    static function get_login_attempts_remaining($username)
+    {
+        $failure_limit = Config::get('login_failure_limit');        
+        $cache = get_cache();
+        $num_user_failures = (int) $cache->get(static::login_failures_cache_key($username));
+        return $failure_limit - $num_user_failures;
+    }
+    
+    static function get_login_attempts_remaining_for_ip()
+    {
+        $failure_limit = Config::get('ip_login_failure_limit');       
+        $cache = get_cache();        
+        $num_ip_failures = (int) $cache->get(static::ip_login_failures_cache_key());    
+        return $failure_limit - $num_ip_failures;
+    }
         
-        $fails = (int)$this->get_metadata('login_failures');
-        if ($fails >= $failure_limit)
-        {
-            $failure_count = 0;
-            $time = timestamp();
-            for ($i = $fails; $i > 0; $i--)
+    /*
+     * Always call after checking password if password was incorrect.
+     */
+    static function log_login_failure($username, $user = null)
+    {
+        $failure_limit_interval = Config::get('login_failure_interval');
+        $user_failure_limit = Config::get('login_failure_limit');
+        $ip_failure_limit = Config::get('ip_login_failure_limit');        
+    
+        $cache = get_cache();
+                
+        $user_failures_key = static::login_failures_cache_key($username);
+        $num_user_failures = (int)$cache->get($user_failures_key) + 1;
+        $cache->set($user_failures_key, $num_user_failures, $failure_limit_interval * 60);        
+              
+        $ip_failures_key = static::ip_login_failures_cache_key();        
+        $num_ip_failures = (int)$cache->get($ip_failures_key) + 1;
+        $cache->set($ip_failures_key, $num_ip_failures, $failure_limit_interval * 60);        
+                
+        if ($num_user_failures >= $user_failure_limit || $num_ip_failures >= $ip_failure_limit)
+        {            
+            $ip_address = Request::get_client_ip();
+            $country = GeoIP::get_country_name();                            
+        
+            $msg = "Username: {$username} ($num_user_failures attempts)\n".
+                "IP Address: {$ip_address} [$country] ($num_ip_failures attempts)\n\n";
+
+            if ($user)
             {
-                $failure_time = $this->get_metadata("login_failure_$i");                
-                if ($failure_time > $time - $failure_limit_interval)
-                {
-                    $failure_count++;
+                $msg .= "Email: {$user->email}\n".
+                    "Phone Number: {$user->get_primary_phone_number}\n";;                
+            }
+        
+            if ($num_user_failures >= $user_failure_limit)
+            {
+                $notify_admin_key = make_cache_key("user_login_failure_notification", $username);
+
+                // avoid repeatedly notifying admin for same user
+                if (!$cache->get($notify_admin_key))
+                {                                
+                    OutgoingMail::create("Too many failed logins for {$username}", $msg)->send_to_admin();
+                    $cache->set($notify_admin_key, timestamp(), 3600);
                 }
-                if ($failure_count >= $failure_limit) 
-                {
-                    throw new ValidationException(__('login:rate_limit_exceeded'));
+            }
+            else if ($num_ip_failures >= $ip_failure_limit)
+            {        
+                $notify_admin_key = make_cache_key("ip_login_failure_notification", $ip_address);
+                // avoid repeatedly notifying admin for same IP
+                if (!$cache->get($notify_admin_key))
+                {                
+                    OutgoingMail::create("Too many failed logins from {$ip_address}", $msg)->send_to_admin();                
+                    $cache->set($notify_admin_key, timestamp(), 3600);
                 }
             }
         }
-    }
-    
-    function log_login_failure()
-    {
-        $fails = (int)$this->get_metadata('login_failures');
-        $fails++;
-
-        $this->set_metadata('login_failures', $fails);
-        $this->set_metadata("login_failure_$fails", timestamp());
-    }           
+    }    
     
     function has_password($password)
     {
@@ -450,13 +498,21 @@ abstract class User extends Entity
         return $username;
     }
 
+    function get_region_text($lang = null)
+    {
+        return $this->region ? __($this->region, $lang) : '';
+    }
+    
     function get_easy_password_words()
     {
         return array(
             $this->name, 
             $this->username,
             $this->email,
-            $this->phone_number
+            $this->phone_number,
+            $this->city,
+            $this->get_region_text(),
+            $this->get_country_text()
         );
     }
     
@@ -508,7 +564,7 @@ abstract class User extends Entity
         }
         if ($this->region && $includeRegion)
         {
-            $regionText = __($this->region, $lang);
+            $regionText = $this->get_region_text($lang);
 
             if ($regionText != $this->city)
             {

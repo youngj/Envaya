@@ -55,6 +55,27 @@ class Action_User_Settings extends Action
             SessionMessages::add(__('user:phone:success'));
         }
 
+        if ($user->country)
+        {
+            $city = get_input('city');
+            $region = get_input('region');
+            if ($city != $user->city || $region != $user->region)
+            {
+                $old_location_text = $user->get_location_text(false);
+                        
+                $user->city = $city;
+                $user->region = $region;
+                $user->geocode_lat_long();
+                
+                if ($user->get_design_setting('tagline') == $old_location_text)
+                {
+                    $user->set_design_setting('tagline', $user->get_location_text(false));
+                }
+                
+                SessionMessages::add(__('user:location:success'));
+            }
+        }
+        
         $user->save();
         $this->redirect(get_input('from') ?: $user->get_url());
     }

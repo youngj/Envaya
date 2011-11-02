@@ -3,6 +3,7 @@
 return array(
     'discussions:title' => "Majadiliano",
     'discussions:add_message' => "Ongeza Ujumbe Mpya",
+    'discussions:edit_message' => "Hariri Ujumbe",
     'discussions:add_topic' => "Ongeza Mada Mpya",
     'discussions:no_topics' => "Shirika hili halijafanya mjadala wowote.",
     'discussions:topic_added' => "Mada imeongezwa.",
@@ -17,6 +18,7 @@ return array(
     'discussions:topic_deleted' => "Mada imefutwa.",
     'discussions:publish_message' => "Chapisha ujumbe",
     'discussions:message_added' => "Ujumbe wako umeongezwa katika mada.",
+    'discussions:message_saved' => "Ujumbe umehifadhiwa.",
     'discussions:message_deleted' => "Ujumbe umefutwa.",
     'discussions:back_to_topics' => "Rudi kwenye mada zote",
     'discussions:feed_heading_topic' => "{name} ina mada mpya kuhusu {topic}.",

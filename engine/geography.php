@@ -127,6 +127,11 @@ class Geography
         return $options;
     }
     
+    static function get_region_name($region_code)
+    {
+        return __($region_code);
+    }
+    
     static function get_region_codes($country_code)
     {
         switch ($country_code)

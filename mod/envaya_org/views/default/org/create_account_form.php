@@ -1,5 +1,7 @@
 <?php
 
+    $country = $vars['country'];
+
     $initial_email = '';
     $initial_name = '';
 
@@ -33,6 +35,37 @@
 <div class='help'><?php echo __('register:org_name:help') ?></div>
 </div>
 
+<div class='input' style='padding-bottom:12px'>
+<label><?php echo __('register:location') ?></label>
+<table class='inputTable'>
+<tr>
+<th>
+<?php echo __('register:city') ?> 
+</th>
+<td style='vertical-align:middle'>
+<?php echo view('input/text', array(
+    'id' => 'city',
+    'name' => 'city',
+    'style' => 'width:200px',
+    'value' => '',
+)); ?>, <?php echo escape(Geography::get_country_name($country)); ?>
+</td>
+</tr>
+<tr>
+<th>
+<?php echo __('register:region') ?> 
+</th>
+<td>
+<?php echo view('input/pulldown', array(
+    'id' => 'region',
+    'name' => 'region',
+    'options' => Geography::get_region_options($country),
+    'empty_option' => __('register:region:blank'),
+)) ?>
+</td>
+</tr>
+</table>
+</div>
 <div class='input'>
 <label><?php echo __('register:username') ?></label><br />
 <div class='help'><strong><?php echo __('register:username2') ?></strong></div>
@@ -51,10 +84,21 @@
 <script type='text/javascript'>
 function updatePasswordStrength()
 {
+    var region = $('region'), regionName = '';
+    if (region.value)
+    {
+        regionName = region.options[region.selectedIndex].text;
+        console.log(regionName);
+    }
+
     setTimeout(function() {
         PasswordStrength.show(
             $('password').value, 
-            [$('name').value, $('username').value, $('email').value, $('phone').value],
+            [
+                $('name').value, $('username').value, $('email').value, $('phone').value, 
+                $('city').value, <?php echo json_encode(Geography::get_country_name($country) ?: ''); ?>,
+                regionName
+            ],
             PasswordStrength.VeryWeak,
             $('password_strength')
         );

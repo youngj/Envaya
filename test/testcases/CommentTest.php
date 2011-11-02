@@ -8,7 +8,7 @@ class CommentTest extends WebDriverTest
         
         $this->open('/pg/login');
 
-        $this->login('testorg','testtest');
+        $this->login('testorg','asdfasdf');
         $this->retry('ensureGoodMessage', array('Welcome, Test Org'));
         
         $content = "test post ".time();

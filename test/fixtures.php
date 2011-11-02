@@ -13,7 +13,7 @@ return function() {
     EmailSubscription_Comments::init_for_entity($root_scope, $admin_email);
     
     $admin = get_or_create_user('testadmin', 'Person');
-    $admin->set_password('secretpassword1');
+    $admin->set_password('secretpassw0rd');
     $admin->name = "Test Admin";
     $admin->set_email($admin_email);
     $admin->container_guid = $root_scope->guid;
@@ -33,7 +33,7 @@ return function() {
     {
         $org->set_design_setting('tagline', 'a test organization');
         $org->set_email(Config::get('admin_email'));    
-        $org->set_password('testtest');
+        $org->set_password('asdfasdf');
         $org->language = 'en';
         $org->set_sectors(array(6,19));
         $org->country = 'tz';

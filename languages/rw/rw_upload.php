@@ -17,7 +17,6 @@ return array(
     'upload:image:error' => 'Ifoto ntiyashyizweho neza',
     'upload:image:processing' => 'Gutunganya ifoto',
     'upload:image:uploading' => 'Gushyiraho ifoto',
-    'upload:image:recommend_flash' => 'Gushyiraho amafoto vuba, koresha %s.',
     'upload:remove' => 'Gukuraho',
     'upload:uploading' => 'Gushyiraho inyandiko',
     'upload:error' => ' Inyandiko ntizashyizweho neza',

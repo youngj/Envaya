@@ -19,7 +19,7 @@ class FeedTest extends WebDriverTest
             $this->open("/pg/login");
     
             $this->waitForElement("//input[@name='username']");
-            $this->login("testposter$i", 'testtest');            
+            $this->login("testposter$i", 'asdfasdf');            
             $this->retry('ensureGoodMessage', array('Welcome'));
             
             $this->typeInFrame("//iframe", "test post $i");

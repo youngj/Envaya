@@ -118,6 +118,8 @@ class RegisterTest extends SeleniumTest
         $this->ensureGoodMessage();
 
         $this->type("//input[@name='org_name']", $this->name);
+        $this->type("//input[@name='city']", "Wete");
+        $this->select("//select[@name='region']", "Pemba North");
         $this->type("//input[@name='username']", "t<b>x</b>");
         $this->type("//input[@name='password']", "password");
         $this->type("//input[@name='password2']", "password2");        
@@ -147,6 +149,24 @@ class RegisterTest extends SeleniumTest
         $this->type("//input[@name='username']", "testposter3");
         $this->submitForm();
         
+        $this->ensureBadMessage("too easy to guess");
+        
+        $this->type("//input[@name='password']", "tanzania1");
+        $this->type("//input[@name='password2']", "tanzania1");        
+        $this->submitForm();
+        
+        $this->ensureBadMessage("too easy to guess");
+        
+        $this->type("//input[@name='password']", "testorg");
+        $this->type("//input[@name='password2']", "testorg");
+        $this->submitForm();
+        
+        $this->ensureBadMessage("too easy to guess");
+        
+        $this->type("//input[@name='password']", "xadlfkj");
+        $this->type("//input[@name='password2']", "xadlfkj");
+        $this->submitForm();
+        
         // duplicate username: suggested to log in instead of create account
         $this->mouseOver("//a[contains(@href,'/pg/login?username=testposter3')]");
         $this->submitForm();
@@ -174,8 +194,6 @@ class RegisterTest extends SeleniumTest
         $this->check("//input[@name='sector[]' and @value='3']");
         $this->check("//input[@name='sector[]' and @value='99']");
         $this->type("//input[@name='sector_other']", "another sector");
-        $this->type("//input[@name='city']", "Wete");
-        $this->select("//select[@name='region']", "Pemba North");
         $this->click("//a[@id='theme_brick']");
 
         $this->submitForm();
@@ -506,28 +524,37 @@ class RegisterTest extends SeleniumTest
         // change password        
         $this->clickAndWait("//a[contains(@href,'/settings')]");
         $this->clickAndWait("//a[contains(@href,'/password')]");
-        $this->type("//input[@name='old_password']", "password");
-        $this->type("//input[@name='password']", "password2");
-        $this->type("//input[@name='password2']", "password3");        
-        $this->submitForm();        
-        $this->ensureBadMessage(); // passwords don't match
-        $this->type("//input[@name='old_password']", "password");
-        $this->type("//input[@name='password']", "password2");
-        $this->type("//input[@name='password2']", "password2");
-        $this->submitForm();
-        $this->ensureBadMessage(); // old password incorrect
+        
         $this->type("//input[@name='old_password']", "abcdefgh");
+        $this->type("//input[@name='password']", "asdfasdf2");
+        $this->type("//input[@name='password2']", "asdfasdf3");        
+        $this->submitForm();        
+        $this->ensureBadMessage('did not match');
+        
+        $this->type("//input[@name='old_password']", "password");
+        $this->type("//input[@name='password']", "asdfasdf2");
+        $this->type("//input[@name='password2']", "asdfasdf2");
+        $this->submitForm();        
+        $this->ensureBadMessage('password was incorrect');
+        
+        $this->type("//input[@name='old_password']", "abcdefgh");
+        $this->type("//input[@name='password']", "wete13");
+        $this->type("//input[@name='password2']", "wete13");        
         $this->submitForm();
-        $this->ensureGoodMessage();
+        $this->ensureBadMessage('too easy');
+
+        $this->type("//input[@name='password']", "dglkjwr");
+        $this->type("//input[@name='password2']", "dglkjwr");        
+        $this->submitForm();
         
         // test new password works for login
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->clickAndWait("//a[contains(@href,'pg/login')]");
         $this->login($this->username, 'password');
-        $this->ensureBadMessage();
+        $this->ensureBadMessage();        
         $this->login($this->username, 'abcdefgh');
         $this->ensureBadMessage();        
-        $this->login($this->username, 'password2');
+        $this->login($this->username, 'dglkjwr');
         $this->ensureGoodMessage();        
                        
         // change username        
@@ -568,9 +595,9 @@ class RegisterTest extends SeleniumTest
         // test new username works for login
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->clickAndWait("//a[contains(@href,'pg/login')]");
-        $this->login($oldUsername, 'password2');
+        $this->login($oldUsername, 'dglkjwr');
         $this->ensureBadMessage();
-        $this->login($this->username, 'password2');
+        $this->login($this->username, 'dglkjwr');
         $this->ensureGoodMessage();        
     }
 
@@ -589,7 +616,7 @@ class RegisterTest extends SeleniumTest
         $this->ensureBadMessage();
         $this->mustNotExist("//h2");
 
-        $this->login('testadmin','secretpassword1');
+        $this->login('testadmin','secretpassw0rd');
 
         $this->clickAndWait("//a[contains(@href, 'approval=1')]");
         $this->getConfirmation();
@@ -628,9 +655,11 @@ class RegisterTest extends SeleniumTest
         $this->email2 = "nobody+".time()."@nowhere.com";
 
         $this->type("//input[@name='org_name']", $this->name2);
+        $this->type("//input[@name='city']", "Konde");
+        $this->select("//select[@name='region']", "Pemba North");        
         $this->type("//input[@name='username']", $this->username2);
-        $this->type("//input[@name='password']", "password");
-        $this->type("//input[@name='password2']", "password");
+        $this->type("//input[@name='password']", "aksldflksj");
+        $this->type("//input[@name='password2']", "aksldflksj");
         $this->type("//input[@name='email']", $this->email2);
         $this->submitForm();
 
@@ -641,8 +670,6 @@ class RegisterTest extends SeleniumTest
         $this->typeInFrame("//iframe", "being a partner");
         $this->check("//input[@name='sector[]' and @value='4']");
         $this->check("//input[@name='sector[]' and @value='99']");
-        $this->type("//input[@name='city']", "Konde");
-        $this->select("//select[@name='region']", "Pemba North");
         $this->click("//a[@id='theme_wovengrass']");
 
         $this->submitForm();
@@ -660,7 +687,7 @@ class RegisterTest extends SeleniumTest
         
         $this->retry('mouseOver', array("//input[@name='username']"));
 
-        $this->login('testadmin','secretpassword1');
+        $this->login('testadmin','secretpassw0rd');
         $this->ensureGoodMessage();
         $this->open("/{$this->username2}");
         $this->clickAndWait("//a[contains(@href, 'approval=1')]");
@@ -670,7 +697,7 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         
         $this->open('/pg/login');
-        $this->login($this->username, 'password2');
+        $this->login($this->username, 'dglkjwr');
         $this->ensureGoodMessage();
     }
 
@@ -692,7 +719,7 @@ class RegisterTest extends SeleniumTest
     private function _testDeleteOrg()
     {
         $this->open("/admin/entities");
-        $this->login('testadmin','secretpassword1');
+        $this->login('testadmin','secretpassw0rd');
         
         $this->open("/{$this->username}");
 

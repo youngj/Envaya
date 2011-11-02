@@ -14,7 +14,7 @@ class NetworkTest extends SeleniumTest
         
         // disable network notifications for testposter13
         $this->open('/pg/login');
-        $this->login('testadmin','secretpassword1');
+        $this->login('testadmin','secretpassw0rd');
         $this->ensureGoodMessage();
         $this->open("/testposter13");        
         $this->clickAndWait("//a[contains(@href,'/pg/email_settings')]");
@@ -23,7 +23,7 @@ class NetworkTest extends SeleniumTest
         
         // log in as testorg
         $this->open('/pg/login');
-        $this->login('testorg','testtest');
+        $this->login('testorg','asdfasdf');
         $this->ensureGoodMessage();
                 
         // click todo item
@@ -209,7 +209,7 @@ class NetworkTest extends SeleniumTest
         
         $approveUrl = $this->getLinkFromText($notify_email, 1);
         $this->setUrl($approveUrl);
-        $this->login('testposter16','testtest');
+        $this->login('testposter16','asdfasdf');
         $this->ensureGoodMessage();
         $this->typeInFrame("//iframe", "whee reverse relationship");
         $this->submitForm();
@@ -268,8 +268,8 @@ class NetworkTest extends SeleniumTest
         $this->assertEquals($invitedOrgName, $this->getValue("//input[@name='org_name']"));
         $this->type("//input[@name='org_name']", $realInviteName);
         $this->type("//input[@name='username']", $inviteUsername);
-        $this->type("//input[@name='password']", 'password');
-        $this->type("//input[@name='password2']", 'password');
+        $this->type("//input[@name='password']", 'asdfafsd');
+        $this->type("//input[@name='password2']", 'asdfafsd');
         $this->assertEquals($invitedOrgEmail, $this->getValue("//input[@name='email']"));        
         $this->type("//input[@name='phone']", '1234567,2345678, +123143456789');
         $this->submitForm();
@@ -326,7 +326,7 @@ class NetworkTest extends SeleniumTest
         // log in as admin and approve
         $loginUrl = $this->getLinkFromText($adminEmail);
         $this->setUrl($loginUrl);
-        $this->login('testadmin','secretpassword1');
+        $this->login('testadmin','secretpassw0rd');
         $this->ensureGoodMessage();
         $this->click("//a[contains(@href,'approval=1')]");
         $this->getConfirmation();
@@ -347,7 +347,7 @@ class NetworkTest extends SeleniumTest
         // test inviting partner organizations to discussions
         $this->clickAndWait("//a[contains(@href,'pg/logout')]");
         $this->open("/pg/login");
-        $this->login('testorg','testtest');
+        $this->login('testorg','asdfasdf');
         
         $this->open('/testorg/page/discussions/edit');
         $this->clickAndWait("//a[contains(@href,'topic/new')]");
@@ -416,7 +416,7 @@ class NetworkTest extends SeleniumTest
     private function clearNetworks()
     {
         $this->open('/pg/login');
-        $this->login('testadmin','secretpassword1');
+        $this->login('testadmin','secretpassw0rd');
         $this->ensureGoodMessage();
         
         $this->deleteNetwork('testorg');

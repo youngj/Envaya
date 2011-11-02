@@ -20,7 +20,10 @@ class Action_Registration_LoggedIn extends Action
         $this->allow_view_types(null);
         $this->page_draw(array(
             'title' => __("register:title"),
-            'content' => view("account/register_logged_in", array('next' => get_input('next'))),
+            'content' => view("account/register_logged_in", array(
+                'prev' => get_input('prev'),
+                'next' => get_input('next')
+            )),
         ));
     }    
 

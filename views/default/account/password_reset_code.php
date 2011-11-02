@@ -5,7 +5,7 @@
 <form action='/pg/password_reset_code' method='POST'>
 <?php echo view('input/securitytoken'); ?>
 <?php echo view('input/hidden', array('name' => 'u', 'value' => $user->guid)); ?>
-<?php echo __('user:password:reset_code_instructions'); ?>
+<?php echo __('login:resetreq:enter_code'); ?>
 <div class='input'>
 <?php 
     echo view('input/text', array('name' => 'c', 'style' => 'width:200px'));

@@ -5,7 +5,7 @@ class EditorTest extends SeleniumTest
     public function test()
     {        
         $this->open('/pg/login');
-        $this->login('testorg','testtest');
+        $this->login('testorg','asdfasdf');
         
         $this->click("//a[@class='hideMessages']");
         sleep(1);

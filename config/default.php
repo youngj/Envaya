@@ -115,6 +115,10 @@ return array(
     'max_disk_pct' => 85,
     'status_email' => null,
     
+    'login_failure_limit' => 6,
+    'ip_login_failure_limit' => 7,
+    'login_failure_interval' => 15,
+    
     // crontab intervals (minutes)
     'notify_status_interval' => 1440,
     'notify_stuck_mail_interval' => 120,

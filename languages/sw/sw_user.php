@@ -11,13 +11,13 @@ return array(
     'user:username:current' => "Jina la mtumiaji la sasa",
     'user:username:new' => "Jina jipya la mtumiaji",
     
-    'user:password:help' => 'Acha wazi ili kuendelea na neno lako la siri la sasa.',
-    'user:password:label' => 'Neno jipya la siri',
     'user:password2:label' => 'Neno jipya la siri (tena)',
     'user:password:new' => "Chagua neno jipya la siri kwa akaunti yako",
     'user:password:change' => "Badili Neno la Siri",
     'user:password:current' => "Neno la siri la sasa",
     'user:password:current:incorrect' => "Neno la siri la sasa si sahihi. Tafadhali liingize tena.",
+    'user:password:too_old' => "Neno lako la siri lina umri kupita kiasi. Tafadhali uchague neno jingine la siri.",
+    'user:password:not_changed' => "Neno jipya la siri ni sawa na neno la siri la zamani. Tafadhali uchague neno jingine la siri.",
     
     'user:password:success' => 'Neno lako la siri limebadilishwa.',
     'user:password:choose_new' => 'Chagua neno jipya la siri',
@@ -28,4 +28,7 @@ return array(
     'user:email:success' => "Anwani yako ya email imebadilishwa.",
 
     'user:phone:success' => "Namba yako ya simu imebadilishwa.",
+    
+    'user:location:success' => "Eneo lako limebadilishwa.",
+    'user:self_dashboard' => "Vifaa vya Mtumiaji",
 );

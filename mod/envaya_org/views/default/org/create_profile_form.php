@@ -39,38 +39,6 @@
     </div>
 </div>
 
-<div class='input'  style='padding-bottom:12px'>
-<label><?php echo __('register:location') ?></label>
-<table class='inputTable'>
-<tr>
-<th>
-<?php echo __('register:city') ?> 
-</th>
-<td>
-<?php echo view('input/text', array(
-    'name' => 'city',
-    'style' => 'width:200px',
-    'value' => $org->city
-)) ?>, <?php echo escape($org->get_country_text()); ?>
-</td>
-</tr>
-<tr>
-<th>
-<?php echo __('register:region') ?> 
-</th>
-<td>
-<?php echo view('input/pulldown', array(
-    'name' => 'region',
-    'options' => Geography::get_region_options($org->country),
-    'empty_option' => __('register:region:blank'),
-    'value' => $org->region
-)) ?>
-</td>
-</tr>
-</table>
-
-</div>
-
 <div class='input' style='padding-bottom:12px'>
 <label><?php echo __('register:theme') ?></label>
 <div class='help'><?php echo __('register:theme:help') ?></div>

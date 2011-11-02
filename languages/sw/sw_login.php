@@ -2,6 +2,9 @@
 
 return array(    
     'login:error' => 'Umekosea jina la mtumiaji au neno ya siri. Hakikisha kuwa yote ni sahihi, na tafadhali jaribu tena. Kama ikiwa huwezi bado kufungua, %s kupata neno jipya la siri.',
+    'login:rate_limit_exceeded' => "Kulikuwa majaribio mno ya kudhani neno la siri. Ili kupata neno jipya la siri, %s.",
+    'login:expired' => "Tafadhali ingiza jina la mtumiaji na neno la siri tena ili kuendelea.",
+    
     'login:welcome' => 'Karibu, %s!',
 
     'login:cookie_error' => "Kulikuwa na kosa kwa kufungua katika Envaya. Tafadhali hakikisha browser yako inaruhusu cookies kutoka '%s' na jaribu tena.", 
@@ -13,7 +16,6 @@ return array(
     'login:register_link' => "Jiandikishe akaunti ya binafsi",
 
     'login:resetreq:title' => 'Pata neno jipya la siri',
-    'login:resetreq:text' => 'Kupata neno jipya la siri, ingiza jina lako la mtumiaji au anwani ya email chini. Tutakutumia anwani ya ukurasa wa kuthibitisha kwa email.',
     
     'login:resetreq:help' => "Ikiwa hujui jina lako la mtumiaji la Envaya, ingiza anwani ya email au namba ya simu kwa akaunti yako ya Envaya.",
     'login:resetreq:submit' => "Peleka ombi",    
@@ -25,6 +27,10 @@ return array(
     'login:resetreq:click_link' => "Kama uliliomba, bonyeza kiungo chini kubadili neno lako la siri:",    
         
     'login:resetreq:notfound' => 'Jina la mtumiaji au email %s halionekani katika Envaya. Hakikisha kuwa umeichapisha sahihi na jaribu tena.',
-
-    'login:username_or_email' => 'Jina la mtumiaji au Email',    
+    
+    'login:resetreq:sms_sent' => "Neno la siri la muda imepelekwa kupitia SMS kwa namba ya simu katika akaunti yako ya Envaya.",            
+    'login:resetreq:code_title' => "Neno la siri la muda",
+    'login:resetreq:enter_code' => "Ingiza neno la siri la muda kutoka ujumbe ili kubadilisha neno lako la siri.",               
+    'login:resetreq:code_incorrect' => "Neno la siri la muda si sahihi.",    
+    'login:resetreq:sms' => "Mtu ameomba neno jipya la siri kwa akaunti yako ya Envaya. Kama uliliomba, ingiza neno hapo juu kwenye tovuti ili kubadilisha neno lako la siri.",    
 );

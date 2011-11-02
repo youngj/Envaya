@@ -33,7 +33,6 @@ return array(
     'itrans:edit_page' => "Hariri tafsiri kwenye ukurasa huu",
     'itrans:history' => "Historia ya tafsiri",
     'itrans:user_content' => "Maandiko ya Watumiaji",
-    'itrans:cant_view' => "Mtumiaji wa sasa hawezekani kuona tafsiri hii.",
     'itrans:base_lang' => "Asili",
     'itrans:saved' => "Tafsiri imehifadhiwa.",
     'itrans:select_base_lang' => "Lugha ya maandiko ya asili:",

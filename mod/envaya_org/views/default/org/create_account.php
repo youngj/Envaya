@@ -7,7 +7,7 @@
 
 <form action='<?php echo secure_url('/org/create_account'); ?>' method='POST'>
 <?php
-    echo view('org/create_account_form');
+    echo view('org/create_account_form', $vars);
 ?>
 </form>
 

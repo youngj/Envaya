@@ -87,6 +87,5 @@ return array(
     'register:user:phone' => 'Andika nimero yawe ya telefoni',
     'register:user:username' => 'Hitamo izina uzakoresha kuri konti yawe',
     'register:if_org' => 'Kwandika ikigo %s.  ',
-    'register:already_registered' => 'Usanzwe wanditse',
 );
 

@@ -92,6 +92,7 @@ return array(
     'cancel' => 'Ghairi',
     'view' => 'Tazama',
     'edit' => 'Hariri',
+    'add' => "Ongeza",
     'delete' => 'Futa',
     'preview' => 'Onyesho la awali',
     'hide' => "Ficha",

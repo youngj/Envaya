@@ -14,7 +14,6 @@
     'comment:empty' => "Hamna maoni.",
     'comment:optional' => '(sio lazima)',
     'comment:deleted' => "Maoni yamefutwa.",
-    'comment:not_deleted' => "Maoni hayawezi kufutwa.",
     'comment:duplicate' => "Maoni hayakuchapishwa kwa sababu ni sawa na maoni mengine.",
     'comment:deleted_marker' => 'maoni yamefutwa',
     'comment:captcha_instructions' => "Chapa tarakimu zinazoonekana hapo chini kuchapisha maoni yako.",

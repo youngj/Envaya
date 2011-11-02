@@ -6,7 +6,7 @@ class DiscussionTest extends SeleniumTest
     {
         // delete existing existing discussions, discussion page
         $this->open('/pg/login');
-        $this->login('testorg','testtest');
+        $this->login('testorg','asdfasdf');
         $this->clickAndWait("//a[contains(@href,'page/discussions/edit')]");
         $this->deleteDiscussions();
         
@@ -19,7 +19,7 @@ class DiscussionTest extends SeleniumTest
         
         // test add new discussion as logged in user
         $this->open('/pg/login');
-        $this->login('testorg','testtest');
+        $this->login('testorg','asdfasdf');
         $this->clickAndWait("//a[contains(@href,'page/discussions/edit')]");
         $this->clickAndWait("//a[contains(@href,'topic/new')]");
         
@@ -258,7 +258,7 @@ sdsdf"
         
         // site admin can delete all messages
         $this->click("//a[contains(@href,'login=1')]");
-        $this->login("testorg","testtest");        
+        $this->login("testorg","asdfasdf");        
         for ($i = 0; $i < 2; $i++)
         {
             $this->click("//a[contains(@href,'/delete')]");

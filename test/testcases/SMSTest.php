@@ -81,7 +81,7 @@ class SMSTest extends WebDriverTest
         $this->assertContains('2:N testposter1', $res);                
         
         $this->open("/pg/login");
-        $this->login("testposter1","testtest");
+        $this->login("testposter1","asdfasdf");
         $this->waitForElement("//iframe");
         $this->typeInFrame("//iframe", 
             "test post 1000 test post 1000 test post 1000 test post 1000 test post 1000 "
@@ -169,7 +169,7 @@ class SMSTest extends WebDriverTest
         list($res) = $this->sendSMS($p1, $news, "login testorg alksdjfalksjfd");        
         $this->assertContains("The password 'alksdjfalksjfd' was incorrect for username 'testorg'.", $res);
         
-        list($res) = $this->sendSMS($p1, $news, "login testorg testtest");        
+        list($res) = $this->sendSMS($p1, $news, "login testorg asdfasdf");        
         $this->assertContains("news update has been published", $res);
         
         $url = $this->getLinkFromText($res);
@@ -203,7 +203,7 @@ class SMSTest extends WebDriverTest
         
         list($res) = $this->sendSMS($p2, $news, "yes");
 
-        list($res) = $this->sendSMS($p2, $news, "login testposter2 testtest");        
+        list($res) = $this->sendSMS($p2, $news, "login testposter2 asdfasdf");        
         $this->assertContains("news update has been published", $res);
         
         $url = $this->getLinkFromText($res);

@@ -51,8 +51,6 @@ return array(
     'approval:changed' => "Account approval changed",        
     
     'admin' => "Administration",
-    'admin:user' => "User Administration",
-    'admin:user:adduser:label' => "Click here to add a new user...",
 
     'admin:statistics' => "Statistics",
     'admin:statistics:label:basic' => "Basic site statistics",

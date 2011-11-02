@@ -5,7 +5,7 @@ class ExternalFeedTest extends SeleniumTest
     public function test()
     {        
         $this->open('/pg/login');
-        $this->login('testposter7', 'testtest');
+        $this->login('testposter7', 'asdfasdf');
         $this->ensureGoodMessage();
 
         // remove existing external feeds

@@ -47,8 +47,19 @@ abstract class Action_Registration_CreateAccountBase extends Action
 
         $email = EmailAddress::validate(trim(get_input('email')));
         $phone_number = get_input('phone');
+        $city = get_input('city');
+        $region = get_input('region');              
+        $country = $this->get_country() ?: '';
         
-        User::validate_password($password, $password2, array($name, $username, $email, $phone_number));
+        User::validate_password($password, $password2, array(
+            $name, 
+            $username, 
+            $email, 
+            $phone_number, 
+            $city, 
+            Geography::get_region_name($region) ?: '',
+            Geography::get_country_name($country) ?: ''
+        ));
 
         if (!get_input('ignore_possible_duplicates'))
         {
@@ -75,19 +86,17 @@ abstract class Action_Registration_CreateAccountBase extends Action
         $org->set_email($email);
         $org->name = $name;
         $org->set_password($password);        
+        $org->city = $city;
+        $org->region = $region;
+        $org->country = $country;            
         $org->language = Language::get_current_code();
         $org->setup_state = User::SetupStarted;
-        
-        $country = $this->get_country();
-        if ($country)
-        {        
-            $org->country = $country;
-            $org->set_design_setting('tagline', $org->get_country_text());     
-            $org->geocode_lat_long();
-        }
+        $org->set_design_setting('tagline', $org->get_location_text(false));
+        $org->geocode_lat_long();
         
         // set phone number after country so canonicalization works
-        $org->set_phone_number($phone_number);        
+        $org->set_phone_number($phone_number);
+
         $org->save();
 
         $org->update_scope();

@@ -6,7 +6,7 @@ return function() {
 
     $envaya->email = Config::get('admin_email');
     $envaya->name = 'Envaya';
-    $envaya->set_password('testtest');
+    $envaya->set_password('asdfasdf');
     $envaya->language = 'en';
     $envaya->set_design_setting('theme_name', 'sidebar');
     $envaya->country = 'us';

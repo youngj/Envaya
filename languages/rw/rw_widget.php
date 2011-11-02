@@ -21,7 +21,6 @@ return array(
     'widget:home' => 'Ahabanza',
     'widget:sectors' => 'Ibyiciro',
     'widget:location' => 'Aho uherereye',
-    'widget:location:drop_pin' => 'Shyira ipesu ku ikarita',
     'widget:location:drag_pin' => 'Kurura ikarita y\'umutuku uyigeze aho igaragaza aho ikigo cyawe giherereye ',
     'widget:location:see_nearby' => 'Reba ibigo mwegeranye',
     'widget:mission' => 'Intego',

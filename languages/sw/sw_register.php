@@ -11,6 +11,7 @@ return array(
     'register:usernametooshort' => 'Lazima jina lako la mtumiaji liwe angalau tarakimu {min}.',
     'register:passwordtooshort' => 'Lazima neno la siri liwe angalau tarakimu {min}.',
     'register:invalidchars' => 'Samahani, jina la mtumiaji "%s" haliruhusiwi kwa sababu lina tarakimu "%s". Tafadhali uchague jina la mtumiaji litumialo tarakimu zifuatazo tu: a-z 0-9 - _',
+    'register:username_letter' => 'Samahani, jina la mtumiaji "%s" haliruhusiwi. Tafadhali uchague jina la mtumiaji lianzalo na tarakimu a-z.',
     'register:usernamenotvalid' => 'Samahani, jina la mtumiaji "%s" haliruhusiwi. Tafadhali uchague jingine.',
     
     'register:already_logged_in' => "Kwa sasa, umefungua kama {name}.",
@@ -70,7 +71,7 @@ return array(
     'register:homepage_instructions' => 'Sasa tunauliza maswali machache ili tuweze kuumba ukurasa mkuu kwa ajili ya shirika lako.',
     'register:mission:help' => 'Hili litaonyeshwa juu ya ukurasa wako mkuu.',
     'register:mission:blank' => 'Tafadhali ingiza lengo la shirika lako.',
-    'register:location' => 'Shirika lako liko wapi?',
+    'register:location' => 'Ingiza mji na mkoa ambapo shirika lipo:',
     'register:city' => 'Mji:',
     'register:region' => 'Mkoa:',
     'register:region:blank' => 'Chagua mkoa wako',
@@ -107,5 +108,4 @@ return array(
     'register:user:phone' => "Ingiza namba yako ya simu:",    
     'register:user:username' => "Chagua 'jina la mtumiaji' kwa akaunti yako:",
     'register:if_org' => "Kuandikisha shirika, %s.",    
-    'register:already_registered' => "Umejiandikisha tayari.",    
 );

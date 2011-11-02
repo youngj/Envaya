@@ -18,6 +18,7 @@ class Action_Login extends Action
         }
 
         $min_password_strength = $user->get_min_password_strength();
+        $password_strength = PasswordStrength::calculate($password, $user->get_easy_password_words());
         
         $password_age = $user->get_password_age();
         $max_password_age = $user->get_max_password_age();
@@ -29,7 +30,7 @@ class Action_Login extends Action
             SessionMessages::add_error(__('user:password:too_old'));
             $next = $new_password_url;
         }                        
-        else if ($min_password_strength && PasswordStrength::calculate($password) < $min_password_strength)
+        else if ($min_password_strength && $password_strength < $min_password_strength)
         {
             SessionMessages::add_error(__('register:password_too_easy'));
             $next = $new_password_url;
@@ -44,7 +45,7 @@ class Action_Login extends Action
     {
         throw new ValidationException(view('account/login_error'), true);
     }
-
+    
     function process_input()
     {
         $username = get_input('username');
@@ -73,7 +74,7 @@ class Action_Login extends Action
         {
             return null;
         }        
-    
+        
         // if the username has an @, it must be an email address (@ is not allowed in usernames)        
         if (strpos($username,'@') !== false)
         {
@@ -86,22 +87,35 @@ class Action_Login extends Action
             $users = $user ? array($user) : array();
         }    
     
+        $attempts_remaining = min(
+            User::get_login_attempts_remaining_for_ip(),
+            User::get_login_attempts_remaining($username)
+        );
+        if ($attempts_remaining <= 0)
+        {
+            throw new ValidationException(view('account/login_rate_exceeded'), true);
+        }        
+    
         // try all matching users, using the first one with a valid password
         foreach ($users as $user)
         {
-            $user->validate_login_rate();
-        
+            $attempts_remaining = min(User::get_login_attempts_remaining($user->username), $attempts_remaining);
+            if ($attempts_remaining <= 0)
+            {
+                throw new ValidationException(view('account/login_rate_exceeded'), true);
+            }
+            
             if ($user->has_password($password))
             {
                 return $user;
-            }            
+            }
         }
-                
-        foreach ($users as $user)
+        User::log_login_failure($username, @$users[0]);       
+        if ($attempts_remaining <= 1)
         {
-            $user->log_login_failure();
-            $user->save();            
+            throw new ValidationException(view('account/login_rate_exceeded'), true);
         }
+        
         return null;            
     }    
     

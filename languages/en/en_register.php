@@ -31,11 +31,17 @@ return array(
     'register:wrong_org_type' => "Sorry, Envaya is only intended for non-profit civil society organizations at this time.",
     'register:qualify_missing' => "Your qualification information was not found. Please complete the qualification form again.",
     'register:qualify_ok' => "Congratulations! Your organization appears to qualify for a website on Envaya.",    
-
+    
     // create account    
     'register:account_instructions' => "Now, enter a few pieces of information to create your account on Envaya. This account will let you log in and update your organization's website.",
     'register:org_name' => "Enter the full name of your organization:",
     'register:org_name:help' => "This will be the title of your website.",
+    
+    'register:location' => "Enter the city and region where the organization is located:",
+    'register:city' => 'City:',
+    'register:region' => 'Region:',
+    'register:region:blank' => 'Select your region',    
+    
     'register:username' => "Choose your organization's username for Envaya:",
     'register:username2' => "(A short name for your organization)",
     'register:username:help' => "Your web address will be:",
@@ -71,10 +77,6 @@ return array(
     'register:homepage_instructions' => "Now we will ask a few questions in order to create a homepage for your organization.",
     'register:mission:blank' => "Please enter the mission of your organization.",
     'register:mission:help' => "This will appear at the top of your homepage.",
-    'register:location' => "Where is your organization located?",
-    'register:city' => 'City:',
-    'register:region' => 'Region:',
-    'register:region:blank' => 'Select your region',
     'register:sector' => "Choose at most five sectors for your organization:",
     'register:sector:blank' => "Please select at least one sector that applies for your organization.",
     'register:sector:toomany' => "Too many sectors selected for your organization. Please select at most 5 sectors.",
@@ -107,7 +109,5 @@ return array(
     'register:user:phone' => "Enter your phone number:",    
     'register:user:username' => "Choose a username for your account:",
     'register:if_org' => "To register an organization, %s.",
-    'register:already_registered' => "You are already registered.",    
-    
      
 );

@@ -22,7 +22,6 @@ return array(
     'upload:image:processing' => "Processing image...",
     'upload:image:uploading' => "Uploading image...",        
     'upload:image:error' => "Error uploading image: ",
-    'upload:image:recommend_flash' => "Note: To add photos faster, install %s.",
     'upload:remove' => 'Remove',
     'upload:uploading' => "Uploading file...",
     'upload:error' => "Error uploading file: ",

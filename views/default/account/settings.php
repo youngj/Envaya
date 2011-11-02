@@ -48,6 +48,36 @@
         ?>
         </td>
     </tr>
+<?php 
+    if ($user->country)
+    {
+?>
+    <tr>
+        <th><?php echo __('register:city'); ?></th>
+        <td style='vertical-align:middle'>
+        <?php 
+            echo view('input/text', array(
+                'name' => 'city',
+                'style' => 'width:200px',
+                'value' => $user->city,
+            )); 
+        ?>, <?php echo escape(Geography::get_country_name($user->country)); ?>
+        </td>
+    </tr>
+    <tr>
+        <th><?php echo __('register:region'); ?></th>
+        <td>
+            <?php echo view('input/pulldown', array(
+                'name' => 'region',
+                'value' => $user->region,
+                'options' => Geography::get_region_options($user->country),
+                'empty_option' => __('register:region:blank'),
+            )) ?>
+        </td>
+    </tr>
+<?php
+    }
+?>    
     <tr>
         <th><?php echo __('user:language:label'); ?>:</th>
         <td style='padding-top:8px'>

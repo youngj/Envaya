@@ -20,7 +20,6 @@ class Action_ForgotPassword extends Action
         if (!$user)
         {
             $phone_number = PhoneNumber::canonicalize($username, GeoIP::get_country_code());        
-            //var_dump($phone_number);
             $user = $this->get_user_by_phone_number($phone_number);
             if ($user)
             {
@@ -74,7 +73,7 @@ class Action_ForgotPassword extends Action
     
         $sms = SMS_Service_Contact::create_outgoing_sms(
             $phone_number, 
-            "$code\n\n".__('user:password:reset_sms'));
+            "$code\n\n".__('login:resetreq:sms'));
         $sms->message_type = OutgoingSMS::Transactional;
         $sms->send();
     

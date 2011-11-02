@@ -5,7 +5,7 @@ class TranslateTest extends SeleniumTest
     function test()
     {
         $this->open("/tr/admin/tl");
-        $this->login('testadmin','secretpassword1');
+        $this->login('testadmin','secretpassw0rd');
 
         if ($this->isElementPresent("//button[@id='widget_delete']"))
         {
@@ -39,7 +39,7 @@ class TranslateTest extends SeleniumTest
     {
         // log in as test org
         $this->open('/pg/login');
-        $this->login('testorg', 'testtest');
+        $this->login('testorg', 'asdfasdf');
         
         // publish three news updates in 2 languages
         $this->typeInFrame("//iframe", "translating is a difficult challenge");
@@ -145,7 +145,7 @@ class TranslateTest extends SeleniumTest
         // test each user has their own drafts
         $this->logout();
         $this->open("/pg/login");
-        $this->login("testposter1","testtest");
+        $this->login("testposter1","asdfasdf");
         $this->open($translate_url);
         $this->mustNotExist("//table[@class='translateTable']//a[contains(@href,'translation=')]");
         $this->typeInFrame("//iframe", "sipendi kutafsiri");
@@ -175,7 +175,7 @@ class TranslateTest extends SeleniumTest
         
         $this->logout();
         $this->open("/pg/login");
-        $this->login('testorg','testtest');
+        $this->login('testorg','asdfasdf');
         $this->open($translate_url);
         $this->clickAndWait("//a[contains(@href,'approval=1')]");
         $this->ensureGoodMessage();
@@ -293,7 +293,7 @@ class TranslateTest extends SeleniumTest
         $this->ensureBadMessage();
         
         // can't view translations from unapproved orgs, unless admin       
-        $this->login("testunapproved","testtest");
+        $this->login("testunapproved","asdfasdf");
         $this->open("/testunapproved/add_page");
         $this->type("//input[@name='title']",'my stuff');
         $this->type("//input[@name='widget_name']",'my-stuff');
@@ -307,14 +307,14 @@ class TranslateTest extends SeleniumTest
         $unapproved_url = $this->getLocation();
         $this->logout();
         $this->open("/pg/login");
-        $this->login('testorg','testtest');
+        $this->login('testorg','asdfasdf');
         $this->open($unapproved_url);
         $this->mouseOver("//tr//td[contains(text(),'hidden')]");
         $this->mustNotExist("//tr//a[contains(text(),'unapproved organization')]");
         $this->mustNotExist("//tr//a[contains(text(),'my stuff')]");
         $this->logout();
         $this->open("/pg/login");
-        $this->login('testadmin','secretpassword1');
+        $this->login('testadmin','secretpassw0rd');
         $this->open($unapproved_url);
         $this->mustNotExist("//tr//td[contains(text(),'hidden')]");
         $this->mouseOver("//tr//a[contains(text(),'unapproved organization')]");
@@ -380,14 +380,14 @@ class TranslateTest extends SeleniumTest
         $username = "selenium".time();
         
         $this->type("//input[@name='username']", $username);
-        $this->type("//input[@name='password']", 'password');
-        $this->type("//input[@name='password2']", 'password2');
+        $this->type("//input[@name='password']", 'daspdofaa');
+        $this->type("//input[@name='password2']", 'DASPDOFAA');
         $this->type("//input[@name='email']", 'nobody@nowhere.com');
         $this->type("//input[@name='phone']", '555-1212');
         $this->submitForm();
         $this->ensureBadMessage();
         
-        $this->type("//input[@name='password2']", 'password');
+        $this->type("//input[@name='password2']", 'daspdofaa');
         $this->submitForm();
         $this->submitFakeCaptcha();
         $this->ensureGoodMessage();
@@ -481,9 +481,8 @@ class TranslateTest extends SeleniumTest
         $this->mustNotExist("//a[contains(@href,'name_5Fsaid')]");        
         $this->clickAndWait("//a[contains(@href,'deleted')]");
         
-        // test filters persist through navigation
+        // test filters persist through navigation (assumes only 2 keys in comment module containing 'deleted')
         $this->waitForElement("//a[contains(@href,'/next')]");
-        $this->clickAndWait("//a[contains(@href,'/next')]");
         $this->clickAndWait("//a[contains(@href,'/next')]");
         $this->clickAndWait("//a[contains(@href,'/next')]");
         $this->mustNotExist("//a[contains(@href,'/next')]");

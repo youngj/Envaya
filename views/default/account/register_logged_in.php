@@ -16,7 +16,7 @@
 
 <div style='float:right'>
 <br />
-<a href='<?php echo $user->get_url() ?>'><?php echo __('cancel'); ?></a>
+<a href='<?php echo escape(@$vars['prev'] ?: $user->get_url()); ?>'><?php echo __('cancel'); ?></a>
 </div>
 
 <?php 

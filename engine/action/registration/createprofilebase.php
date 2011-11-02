@@ -28,15 +28,9 @@ class Action_Registration_CreateProfileBase extends Action
 
         $org->language = Language::get_current_code();
         $org->set_sectors($sectors);
-        $org->city = get_input('city');
-        $org->region = get_input('region');
         $org->set_metadata('sector_other', get_input('sector_other'));
-
         $org->set_design_setting('theme_name', get_input('theme'));
-        $org->set_design_setting('tagline', $org->get_location_text(false));
         
-        $org->geocode_lat_long();
-
         $home = $org->get_widget_by_class('Home');
         if (!$home->guid)
         {

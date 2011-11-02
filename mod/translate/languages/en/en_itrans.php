@@ -39,7 +39,6 @@ return array(
     'itrans:history' => "Translation History",
     'itrans:user_content' => "User Content",
     'itrans:hidden' => "(hidden)",
-    'itrans:cant_view' => "The current user account does not have access to view this translation.",
     'itrans:base_lang' => "Base",
     'itrans:saved' => "Translation saved successfully.",
     'itrans:select_base_lang' => "Language of original text:",

@@ -19,10 +19,14 @@
 ));
  ?>
 </div>
-<?php echo view('focus', array('name' => 'old_password')); ?>
-<?php } ?>
-<?php echo view('account/new_password_input', array('user' => $user)); ?>
-<?php echo view('input/hidden', array('name' => 'next', 'value' => get_input('next'))); ?>
-<?php echo view('input/submit', array('value' => __('savechanges'))); ?>
+<?php
+    } 
+    echo view('account/new_password_input', array('user' => $user)); 
+    echo view('focus', array(
+        'name' => ($vars['require_old_password'] ? 'old_password' : 'password')
+    ));
+    echo view('input/hidden', array('name' => 'next', 'value' => get_input('next')));
+    echo view('input/submit', array('value' => __('savechanges'))); 
+?>
 </form>
 </div>

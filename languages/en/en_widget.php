@@ -23,7 +23,6 @@ return array(
     'widget:sectors' => 'Sectors',
 
     'widget:location' => 'Location',
-    'widget:location:drop_pin' => "Add pin to map",
     'widget:location:drag_pin' => "Drag and drop the red map pin below to your organization's location.",
     'widget:location:see_nearby' => 'See nearby organizations',
     

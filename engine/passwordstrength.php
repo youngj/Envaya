@@ -44,38 +44,13 @@ class PasswordStrength
      * 9: lcSL;f15
      *    aldskfjalewkaodvk
      */
-    static function calculate($password, $easy_words = null)
+    static function calculate($password, $user_easy_words = null)
     {
-        $len = strlen($password);
-    
-        if ($len < 2)
-        {
-            return static::ExtremelyWeak;
-        }
-        
-        $lpass = strtolower($password);        
-        if ($easy_words)
-        {
-            foreach ($easy_words as $easy)
-            {
-                if (!$easy)
-                {
-                    continue;
-                }
-            
-                $leasy = strtolower($easy);
-                if (strpos($leasy, $lpass) !== false || strpos($lpass, $leasy) !== false)
-                {
-                    return static::ExtremelyWeak;
-                }
-            }
-        }
-    
         $has_lowercase = preg_match('#[a-z]#', $password);
         $has_uppercase = preg_match('#[A-Z]#', $password);
         $has_number = preg_match('#[0-9]#', $password);
-        $has_other = preg_match('#[^a-zA-Z0-9]#', $password);
-        
+        $has_other = preg_match('#[^a-zA-Z0-9]#', $password);    
+    
         $alphabet_size = 0;
         if ($has_lowercase)
         {
@@ -97,16 +72,36 @@ class PasswordStrength
         {
             $alphabet_size = 1;
         }
-                
+                    
+        $lpass = strtolower($password);
+        
+        foreach (static::get_easy_words() as $easy_word)
+        {
+            $lpass = static::remove_easy_word($lpass, $easy_word);
+        }
+        
+        if ($user_easy_words)
+        {
+            foreach ($user_easy_words as $easy_word)
+            {
+                $lpass = static::remove_easy_word($lpass, $easy_word);
+            }
+        }
+        
+        $len = strlen($lpass);
+    
+        if ($len <= 2)
+        {
+            return static::ExtremelyWeak;
+        }        
+            
         $bigrams = static::$bigrams;
         
-        $bscore = 1;  
+        $bscore = 2 * $len;  
         for ($i = 0; $i < $len - 1; $i++)
         {
             $bigram = substr($lpass, $i, 2);
-            
-            $bscore += 1; // each character gets 1 additional point in bscore
-            
+                        
             if (isset($bigrams[$bigram]))
             {
                 $bscore += $bigrams[$bigram];
@@ -135,7 +130,39 @@ class PasswordStrength
         }
         return $score;        
     }    
+    
+    static function remove_easy_word($lpass, $easy)
+    {       
+        $easy_tokens = preg_split('#\s+#', strtolower($easy));
+        foreach ($easy_tokens as $easy_token)
+        {       
+            if (isset($easy_token[2]) && isset($lpass[2]))
+            {
+                if (strpos($easy_token, $lpass) !== false)
+                {
+                    $lpass = '';
+                    break;
+                }     
+                else
+                {                
+                    $lpass = str_replace($easy_token, '', $lpass);
+                }
+            }
+        }            
+        return $lpass;        
+    }
 
+    static function get_easy_words()
+    {
+        return array(
+            'envaya',
+            'password',
+            '12345',
+            'qwerty',
+            strtolower(__('password'))
+        );
+    }    
+    
     /*
      * Each bigram has a score from 1 to 10 determined by a combination of heuristics that 
      * penalize common ways of choosing an easy password.

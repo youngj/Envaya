@@ -21,7 +21,6 @@ return array(
     'upload:uploading' => "Ikihifadhi faili...",
     'upload:error' => "Tatizo limetokea katika kuhifadhi faili: ",
     'upload:image:uploading' => 'Ikihifadhi picha...',    
-    'upload:image:recommend_flash' => 'Angalia: Kuongeza picha kwa haraka zaidi, weka %s.',
     
     'upload:no_image_in_doc' => "Hakuna picha kwenye faili iliyopelekwa.",
     'upload:transfer_error' => "Tatizo kupeleka faili kwenye mtandao",
