@@ -163,19 +163,5 @@ class Model extends Mixable
         return Database::delete("DELETE from `{$table}` WHERE `{$pk}`=?", 
             array($this->$pk)
         );
-    }
-    
-    function get_default_view_name()
-    {
-        $view_name = "object/".strtolower(get_class($this));
-        
-        if (view_exists($view_name)) 
-        {
-            return $view_name;
-        }
-        else
-        {
-            return 'object/default';
-        }
     }    
 }

@@ -20,12 +20,7 @@ class ExternalSite extends Entity
         '#://[^/]*facebook\.com#i' => 'ExternalSite_Facebook',
         '#://[^/]*twitter\.com#i' => 'ExternalSite_Twitter',
     );
-    
-    function get_default_view_name()
-    {
-        return 'object/externalsite';
-    }
-    
+        
     static function validate_url($url)
     {
         Web_Request::validate_url($url);
