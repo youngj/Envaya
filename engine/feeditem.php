@@ -13,17 +13,17 @@
  * - one particular organization 
  *
  * Each FeedItem is associated with a particular user (user_guid).
- * action_name refers to a FeedItem subclass defined in engine/feeditem/
+ * subtype_id refers to a FeedItem subclass (see engine/feeditem/)
  *
  * Depending on the action, it may be associated with another Entity (subject_guid)
  * or other arbitrary properties (args).
  */
-class FeedItem extends Model
+abstract class FeedItem extends Model
 {
     static $table_name = 'feed_items';
     static $table_attributes = array(
         'feed_name' => '',
-        'action_name' => '',
+        'subtype_id' => '',
         'subject_guid' => 0,
         'user_guid' => 0,
         'args' => '',
@@ -39,19 +39,6 @@ class FeedItem extends Model
             return json_decode($res, true);
         }
         return $res;
-    }
-    
-    static function new_from_row($row)
-    {
-        $cls = "FeedItem_{$row->action_name}";
-        if (class_exists($cls))
-        {
-            return new $cls($row);
-        }
-        else
-        {
-            return new FeedItem_Invalid($row);
-        }
     }    
         
     function __set($name, $value)
@@ -81,7 +68,7 @@ class FeedItem extends Model
     function query_items_in_group()
     {
         return FeedItem::query()
-            ->where('action_name = ?', $this->action_name)
+            ->where('subtype_id = ?', $this->get_subtype_id())
             ->where('subject_guid = ?', $this->subject_guid)
             ->where('time_posted = ?', $this->time_posted);
     }
@@ -138,11 +125,6 @@ class FeedItem extends Model
         return $this->get_subject_entity()->get_url();
     }         
 
-    static function get_action_name()    
-    {
-        return substr(get_called_class(), 9 /* strlen(FeedItem_) */ );
-    }
-    
     static function query()
     {
         return new Query_SelectFeedItem();
@@ -155,7 +137,7 @@ class FeedItem extends Model
 
         if (sizeof($feedNames) > 1)
         {
-            $query->group_by('action_name, subject_guid, time_posted');
+            $query->group_by('subtype_id, subject_guid, time_posted');
         }
         
         return $query;
@@ -201,9 +183,9 @@ class FeedItem extends Model
 
         foreach ($feedNames as $feedName)
         {
-            $feedItem = new FeedItem();
+            $cls = get_called_class();
+            $feedItem = new $cls();
             $feedItem->feed_name = $feedName;
-            $feedItem->action_name = static::get_action_name();
             $feedItem->subject_guid = $subject->guid;
             $feedItem->user_guid = $user->guid;
             $feedItem->time_posted = $time;
@@ -227,5 +209,10 @@ class FeedItem extends Model
         }            
         
         return static::make_feed_name($conditions);
+    }
+    
+    function get_sms_description()
+    {
+        return null;
     }
 }

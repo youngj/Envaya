@@ -4,15 +4,24 @@
  * Base class of data objects that correspond to a row in a database table.
  * Defines save() and delete() methods which perform insert/update/delete SQL commands
  *
+ * If a model subclass defines a subtype_id attribute, it will be interpreted
+ * as the subtype_id of the PHP class to instantiate when initializing the model from
+ * a database row (see ClassRegistry).
+ *
  * Also has a 'query' interface for selecting objects from a database, e.g.:
  *  ModelSubclass::query()->where('foo > ?', 10)->filter();
  */
-class Model extends Mixable
+abstract class Model extends Mixable
 {       
     // subclasses should override these static properties
-    static $primary_key = 'id';
     static $table_name;
     static $table_attributes = array();
+    
+    // subclasses may override these static properties
+    static $primary_key = 'id';
+    static $query_class = 'Query_Select';
+    static $table_base_class = null; 
+    static $query_subtypes = null;    
     
     /**
      * The main attributes of a model.
@@ -47,6 +56,11 @@ class Model extends Mixable
                 $attributes = array_merge($attributes, $mixin_class::$table_attributes);
             }
         }
+        
+        if (isset($attributes['subtype_id']))
+        {
+            $attributes['subtype_id'] = static::get_subtype_id();
+        }                
         
         return $attributes;
     }    
@@ -111,15 +125,57 @@ class Model extends Mixable
     }    
     
     static function query()
-    {       
-        return new Query_Select(static::$table_name, get_called_class());
-    }    
-    
+    {
+        $query_class = static::$query_class;
+        
+        $cls = get_called_class();    
+        $query = new $query_class(static::$table_name, $cls);        
+        
+        /*
+         * If a base class shares a table with derived classes,
+         * BaseClass::query() should query all entities of base and derived classes,
+         * while DerivedClass1::query() should return only entities of a particular
+         * derived class.
+         *
+         * To enable this behavior, set static::$table_base_class in the base class
+         * to the name of the base class (e.g. static $table_base_class = 'BaseClass';).
+         *
+         * For situations where there are >= 3 levels of inheritance represented in one table,
+         * set static::$query_subtypes to an array containing all the class names of subclasses.
+         */
+        $table_base_class = static::$table_base_class;         
+        if ($table_base_class && $table_base_class != $cls)
+        {            
+            $subtype_ids = array($cls::get_subtype_id());            
+            if (static::$query_subtypes)
+            {
+                foreach (static::$query_subtypes as $subtype)
+                {
+                    $subtype_ids[] = $subtype::get_subtype_id();
+                }
+            }        
+            $query->where_in('subtype_id', $subtype_ids);
+        }
+        
+        return $query;
+    }
+        
     static function new_from_row($row)
     {
-        $cls = get_called_class();
+        if (isset(static::$table_attributes['subtype_id']))
+        {    
+            $cls = ClassRegistry::get_class($row->subtype_id);
+            if (!$cls)
+            {   
+                throw new InvalidParameterException("Model subtype {$row->subtype_id} is not defined");
+            }
+        }
+        else
+        {
+            $cls = get_called_class();
+        }
         return new $cls($row);
-    }
+    }   
 
     protected function init_from_row($row)
     {
@@ -164,4 +220,9 @@ class Model extends Mixable
             array($this->$pk)
         );
     }    
+    
+    static function get_subtype_id()
+    {
+        return ClassRegistry::get_subtype_id(get_called_class());
+    }
 }

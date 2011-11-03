@@ -76,7 +76,7 @@ class Widget_Post extends Widget_Generic
         $recent = timestamp() - 60*60*6;
         
         $recent_update = $org->query_feed_items()
-            ->where("action_name in ('news','newsmulti')")
+            ->where("subtype_id in (?,?)", FeedItem_News::get_subtype_id(), FeedItem_NewsMulti::get_subtype_id())
             ->where('time_posted > ?', $recent)
             ->order_by('id desc')
             ->get();
@@ -87,7 +87,7 @@ class Widget_Post extends Widget_Generic
         
             foreach ($recent_update->query_items_in_group()->filter() as $r)
             {
-                $r->action_name = 'newsmulti';
+                $r->subtype_id = FeedItem_NewsMulti::get_subtype_id();
                 $r->subject_guid = $this->guid;
                 $r->time_posted = $time;
                 $prev_count = @$r->args['count'] ?: 1;

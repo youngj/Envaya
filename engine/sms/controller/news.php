@@ -354,11 +354,16 @@ class SMS_Controller_News extends SMS_Controller
         
     function action_updates()
     {
-        $items = FeedItem::query_by_feed_name('')
+        $query = FeedItem::query_by_feed_name('')
             ->where_visible_to_user()
-            ->where_in('action_name', array('news','newsmulti','register'))
-            ->limit(80)
-            ->filter();
+            ->where_in('f.subtype_id', array(
+                FeedItem_News::get_subtype_id(),
+                FeedItem_NewsMulti::get_subtype_id(),
+                FeedItem_Register::get_subtype_id()
+            ))
+            ->limit(80);
+                        
+        $items = $query->filter();
             
         $lines = array();
         $times = array();
@@ -369,29 +374,11 @@ class SMS_Controller_News extends SMS_Controller
                 continue;
             }
             
-            $subject = $item->get_subject_entity();
-            $user = $item->get_user_entity();            
-            $username = $user->username;                    
             $time = SMS_Output::short_time($item->time_posted);            
         
-            switch (strtolower($item->action_name))
-            {
-                case 'message':                    
-                    $cmd = "D $username {$subject->get_local_id()}";
-                    break;
-                case 'news':
-                case 'newsmulti':
-                    $cmd = "N $username";
-                    break;
-                case 'register':
-                    $cmd = "I $username";
-                    break;
-                default:
-                    $cmd = "{$item->action_name}";
-                    break;
-            }    
+            $cmd = $item->get_sms_description();        
 
-            if (!isset($lines[$cmd]))
+            if ($cmd && !isset($lines[$cmd]))
             {
                 $lines[$time] = $time;            
                 $lines[$cmd] = $cmd;            

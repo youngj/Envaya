@@ -55,13 +55,13 @@ class Widget_Links extends Widget
         $feed_url = get_input('feed_url');    
         $site_subtype = get_input('site_subtype');
 
-        $site_cls = EntityRegistry::get_subtype_class($site_subtype);
+        $site_cls = ClassRegistry::get_class($site_subtype);
         ExternalSite::validate_subclass($site_cls);
         ExternalSite::validate_url($url);        
         
         if ($include_feed)
         {
-            $feed_cls = EntityRegistry::get_subtype_class($feed_subtype);
+            $feed_cls = ClassRegistry::get_class($feed_subtype);
             ExternalFeed::validate_subclass($feed_cls);
             ExternalFeed::validate_url($feed_url);
         }

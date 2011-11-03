@@ -2,6 +2,8 @@
 
 class FeedItem_News extends FeedItem
 {
+    static $query_subtypes = array('FeedItem_NewsMulti');
+
     function render_heading($mode)
     {
         return strtr(__('feed:news'), array(
@@ -26,5 +28,11 @@ class FeedItem_News extends FeedItem
             'link_url' => $this->get_url(),
             'content' => $update->render_content(Markup::Feed)
         ));
+    }
+    
+    function get_sms_description()
+    {
+        $username = $this->get_user_entity()->username;                       
+        return "N $username";
     }
 }

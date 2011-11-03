@@ -617,7 +617,7 @@ class Controller_Pg extends Controller
         $query->with_sector($sector);                                        
         $query->where_visible_to_user();        
         $query->columns('guid,subtype_id,latitude,longitude');
-
+        
         $orgs = $query->filter();
 
         $bucketizer = new Map_Bucketizer(array(

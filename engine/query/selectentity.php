@@ -39,7 +39,7 @@ class Query_SelectEntity extends Query_Select
             }
             else
             {            
-                $classname = EntityRegistry::get_subtype_class($row->subtype_id);                                
+                $classname = ClassRegistry::get_class($row->subtype_id);                                
                 if (!$classname)
                 {   
                     throw new InvalidParameterException("Entity subtype {$row->subtype_id} is not defined");

@@ -8,8 +8,9 @@ class Query_SelectFeedItem extends Query_Select
     function __construct()
     {
         parent::__construct('feed_items f');
+        $this->columns('f.*');
         $this->set_row_class('FeedItem');
-        $this->order_by('time_posted DESC');
+        $this->order_by('time_posted DESC');        
     }
 
     function where_visible_to_user()

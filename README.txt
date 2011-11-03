@@ -1,7 +1,7 @@
 Envaya is a communication and publishing platform for many independent users
 with interfaces via the web, mobile web, and SMS. 
 
-Envaya consists of a generic core framework together with modular 
+Envaya consists of a generic core framework, together with modular 
 tools and applications designed specifically for civil society 
 organizations in developing countries.
 

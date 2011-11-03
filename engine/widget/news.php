@@ -122,7 +122,7 @@ class Widget_News extends Widget
         
         ExternalSite::validate_url($url);
         ExternalFeed::validate_url($feed_url);
-        $feed_cls = EntityRegistry::get_subtype_class($feed_subtype);
+        $feed_cls = ClassRegistry::get_class($feed_subtype);
         ExternalFeed::validate_subclass($feed_cls);
         
         if (!$this->can_add_feed())

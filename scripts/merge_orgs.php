@@ -127,7 +127,7 @@ $classes = array_merge(array(
         'OrgPhoneNumber',
         'OrgDomainName'
     ),
-    EntityRegistry::all_classes()
+    ClassRegistry::all_classes()
 );
 
 foreach ($classes as $cls)

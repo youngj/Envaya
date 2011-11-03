@@ -1,7 +1,7 @@
 <?php
 
-Engine::add_autoload_action('EntityRegistry', function() {
-    EntityRegistry::register_subtypes(array(
+Engine::add_autoload_action('ClassRegistry', function() {
+    ClassRegistry::register(array(
         'contact.email.template' => 'EmailTemplate',
         'contact.subscription.email.contact' => "EmailSubscription_Contact",
         'contact.subscription.sms.contact' => "SMSSubscription_Contact",

@@ -54,7 +54,7 @@ class Widget extends Entity
     static function get_subtype_id()
     {
         // all subclasses share same subtype_id
-        return EntityRegistry::get_subtype_id('Widget'); 
+        return ClassRegistry::get_subtype_id('Widget'); 
     }    
     
     static function add_default_widget($widget_name, $props)

@@ -9,7 +9,7 @@
  * which may refer to many different types of entities. 
  *
  * In order for the system to determine which type of entity a guid refers to, the entity class name
- * must be registered with a unique string identifier (subtype_id) in the EntityRegistry. 
+ * must be registered with a unique string identifier (subtype_id) in the ClassRegistry. 
  * The 'entities' database table stores a subtype_id for each entity guid.
  * 
  * Entities also have an 'status' field which allows effectively deleting rows
@@ -35,8 +35,6 @@ abstract class Entity extends Model
     static $primary_key = 'guid';    
     static $current_request_entities = array();
     static $admin_view = null;
-    static $table_base_class = null; 
-    static $query_subtypes = null;
     
     protected $guess_language_field;
     
@@ -52,29 +50,7 @@ abstract class Entity extends Model
         {
             $this->cache_for_current_request();
         }
-    }
-    
-    static function new_from_row($row)
-    {
-        if (isset(static::$table_attributes['subtype_id']))
-        {    
-            $cls = EntityRegistry::get_subtype_class($row->subtype_id);
-            if (!$cls)
-            {   
-                throw new InvalidParameterException("Entity subtype {$row->subtype_id} is not defined");
-            }                
-            return new $cls($row);
-        }
-        else
-        {
-            return parent::new_from_row($row);
-        }
-    }
-    
-    static function get_subtype_id()
-    {
-        return EntityRegistry::get_subtype_id(get_called_class());
-    }
+    }    
     
     public function get_date_text($time = null)
     {
@@ -123,7 +99,7 @@ abstract class Entity extends Model
     
     static function get_table_attributes()
     {
-        $attributes = array_merge(
+        return array_merge(
             parent::get_table_attributes(),
             array(
                 'owner_guid' => 0,
@@ -133,13 +109,6 @@ abstract class Entity extends Model
                 'status' => Entity::Enabled
             )
         );
-        
-        if (isset($attributes['subtype_id']))
-        {
-            $attributes['subtype_id'] = static::get_subtype_id();
-        }
-        
-        return $attributes;
     }    
     
     public function save_table_attributes()
@@ -387,43 +356,6 @@ abstract class Entity extends Model
         $revision->content = Markup::sanitize_html($content);
         $revision->save();
     }    
-
-    static function query()
-    {
-        $query_class = static::$query_class;
-        
-        $cls = get_called_class();    
-        $query = new $query_class(static::$table_name, $cls);        
-        
-        /*
-         * If a base class shares a table with derived classes,
-         * BaseClass::query() should query all entities of base and derived classes,
-         * while DerivedClass1::query() should return only entities of a particular
-         * derived class.
-         *
-         * To enable this behavior, set static::$table_base_class in the base class
-         * to the name of the base class (e.g. static $table_base_class = 'BaseClass';).
-         *
-         * For situations where there are >= 3 levels of inheritance represented in one table,
-         * set static::$query_subtypes to an array containing all the class names of subclasses.
-         */        
-
-        $table_base_class = static::$table_base_class;         
-        if ($table_base_class && $table_base_class != $cls)
-        {            
-            $subtype_ids = array($cls::get_subtype_id());            
-            if (static::$query_subtypes)
-            {
-                foreach (static::$query_subtypes as $subtype)
-                {
-                    $subtype_ids[] = $subtype::get_subtype_id();
-                }
-            }        
-            $query->where_in('subtype_id', $subtype_ids);
-        }
-        
-        return $query;
-    }
     
     static function get_by_guid($guid, $show_disabled = false)
     {    

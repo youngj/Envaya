@@ -1,7 +1,7 @@
 <?php
 
-Engine::add_autoload_action('EntityRegistry', function() {
-    EntityRegistry::register_subtypes(array(
+Engine::add_autoload_action('ClassRegistry', function() {
+    ClassRegistry::register(array(
         'translate.lang' => 'TranslationLanguage',
         'translate.key' => 'TranslationKey',
         'translate.translation' => 'Translation',

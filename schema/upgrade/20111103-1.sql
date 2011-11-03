@@ -1,0 +1,1 @@
+ALTER TABLE `feed_items` CHANGE `subtype_id` `subtype_id` varchar(63) NOT NULL;

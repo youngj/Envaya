@@ -1,16 +1,25 @@
 <?php
 /*
- * A registry that maps unique string identifiers to Entity class names. 
- * This allows the system to determine the PHP class for a given entity guid.
+ * A registry that maps unique string identifiers (subtype_id values) to PHP class names. 
  *
- * These string identifiers are stored in the 'entities' table in the 'subtype_id' column,
- * so they should generally not be changed once created.
+ * The subtype_id identifiers should be used whenever it is necessary to store/send the class
+ * of an object outside the PHP environment, for example when storing the class in the database, 
+ * or sending it to the browser. (Registering a subtype_id for a class is not necessary for
+ * classes that are not used in this way.)
  *
- * Modules can register new entity types by calling EntityRegistry::register_subtype 
+ * All non-abstract Entity subclasses must register a subtype_id value, which allows the system 
+ * to determine the PHP class for a given entity guid (via the 'subtype_id' column of the 'entities' table)
+ *
+ * Since these subtype_id identifiers are stored in the database, they should generally not be 
+ * changed once created. However, the PHP class name can be changed easily without any data migration.
+ * If it is necessary to change a subtype_id value that is already stored in the database, 
+ * the 'subtype_aliases' config setting can be used to aid in data migration.
+ *
+ * Modules can register new entity types by calling ClassRegistry::register(
  * in their start.php file. Modules should namespace their subtype_ids to avoid conflicting
  * with subtype_ids defined in other modules.
  */
-class EntityRegistry
+class ClassRegistry
 {
     private static $subtype_to_class = array(
         'core.user' => 'User',
@@ -42,6 +51,13 @@ class EntityRegistry
         'core.widget' => 'Widget',
         'core.widget.comment' => 'Comment',
         
+        'core.feeditem.home.edit' => 'FeedItem_EditHome',
+        'core.feeditem.widget.edit' => 'FeedItem_EditWidget',
+        'core.feeditem.widget.new' => 'FeedItem_NewWidget',
+        'core.feeditem.news' => 'FeedItem_News',
+        'core.feeditem.news.multi' => 'FeedItem_NewsMulti',
+        'core.feeditem.register' => 'FeedItem_Register',
+        
         'core.feed' => 'ExternalFeed',
         'core.feed.rss' => 'ExternalFeed_RSS',
         'core.feed.facebook' => 'ExternalFeed_Facebook',
@@ -58,20 +74,15 @@ class EntityRegistry
         return static::$subtype_to_class;
     }
     
-    static function register_subtype($subtype_id, $class_name)
+    static function register($types)
     {
-        static::$subtype_to_class[$subtype_id] = $class_name;
-    }
-    
-    static function register_subtypes($subtypes)
-    {
-        foreach ($subtypes as $subtype_id => $class_name)
+        foreach ($types as $subtype_id => $class_name)
         {
             static::$subtype_to_class[$subtype_id] = $class_name;
         }
     }
     
-    static function get_subtype_class($subtype_id)
+    static function get_class($subtype_id)
     {
         $cls = @static::$subtype_to_class[$subtype_id];
         if ($cls)

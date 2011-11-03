@@ -11,7 +11,7 @@ class FeedItem_EditHome extends FeedItem
     
     function render_thumbnail($mode)
     {
-        return '';      
+        return '';
     }
         
     function render_content($mode)
@@ -23,4 +23,10 @@ class FeedItem_EditHome extends FeedItem
         }        
         return '';
     }
+    
+    function get_sms_description()
+    {
+        $username = $this->get_user_entity()->username;          
+        return "I $username";
+    }    
 }

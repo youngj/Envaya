@@ -22,7 +22,7 @@ function get_permission_class($type)
 {
     if ($type)
     {
-        $cls = EntityRegistry::get_subtype_class($type);
+        $cls = EntityRegistry::get_class($type);
         
         if (!$cls)
         {

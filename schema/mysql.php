@@ -199,7 +199,7 @@ CREATE TABLE `system_log` (
 CREATE TABLE `feed_items` (
 	`id` INT NOT NULL AUTO_INCREMENT,		
 	`feed_name` varchar(128) NOT NULL,
-	`action_name` varchar(32) NOT NULL,
+	`subtype_id` varchar(63) NOT NULL,
 	`subject_guid` bigint(20) NOT NULL,
 	`user_guid` bigint(20) NOT NULL,
 	`time_posted` int NOT NULL,
@@ -207,6 +207,7 @@ CREATE TABLE `feed_items` (
 	PRIMARY KEY ( `id` ),
 	KEY `feed_key` (`feed_name`, `time_posted`),
 	KEY `user_guid` (`user_guid`),
+    KEY `subtype_id` (`subtype_id`),
 	KEY `subject_guid` (`subject_guid`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8; 	
 

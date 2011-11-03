@@ -1,9 +1,10 @@
 <?php
 
-Engine::add_autoload_action('EntityRegistry', function() {
-    EntityRegistry::register_subtypes(array(
+Engine::add_autoload_action('ClassRegistry', function() {
+    ClassRegistry::register(array(
         'core.user.org.relation' => 'Relationship',        
         'core.subscription.email.network' => "EmailSubscription_Network",
+        'core.feeditem.relation' => 'FeedItem_Relationship',
     ));
 });
 
