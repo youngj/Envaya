@@ -62,17 +62,22 @@
             closedir($handle);            
         }        
         
-        public function parse_file($path)
-        {                   
+        public function get_rel_path($path)
+        {
             if ($this->base_dir)
             {
-                $rel_path = substr($path, strlen($this->base_dir) + 1);
+                 return substr($path, strlen($this->base_dir) + 1);
             }
             else
             {
-                $rel_path = basename($path);
-            }
+                return basename($path);
+            }        
+        }
         
+        public function parse_file($path)
+        {                   
+            $rel_path = $this->get_rel_path($path);
+            
             foreach ($this->state_machines as $state_machine)
             {
                 $state_machine->set_path($rel_path);

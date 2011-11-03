@@ -7,6 +7,7 @@
      *
      * - lang:   language keys referenced via "__('foo:bar')"
      * - view:   view paths referenced via "view('foo/bar')"
+     * - viewname: a view that has the same name as another view in a different module or with a different viewtype
      * - engine: envaya Engine classes referenced via "new Foo()" or "Foo::bar"
      * - media:  static files referenced via a "_media" URL
      * - url:    web pages on Envaya referenced via a relative URL starting with "/" (but not "/_media")
@@ -16,20 +17,26 @@
     require_once __DIR__."/../start.php";
     require_once __DIR__."/analysis/phpanalyzer.php";
     require_once __DIR__."/analysis/jsanalyzer.php";
+    require_once __DIR__."/analysis/cssanalyzer.php";
     require_once __DIR__."/analysis/statemachine/languagekeys.php";
-    require_once __DIR__."/analysis/statemachine/views.php";
+    require_once __DIR__."/analysis/statemachine/viewdef.php";
+    require_once __DIR__."/analysis/statemachine/viewref.php";
     require_once __DIR__."/analysis/statemachine/classref.php";
     require_once __DIR__."/analysis/statemachine/mediaref.php";
     require_once __DIR__."/analysis/statemachine/urlref.php";
     require_once __DIR__."/analysis/statemachine/cssref.php";
     require_once __DIR__."/analysis/statemachine/cssdef.php";
-
+    
     function get_path_module($path)
     {
         if (preg_match('#mod/(\w+)/#', $path, $matches))
         {
             return $matches[1];
         }
+        else if (preg_match('#^www/_media/(?P<css_view>css/\w+)\.css#', $path, $matches))
+        {
+            return get_path_module(Views::get_path($matches['css_view']));
+        }        
         else if ($path)
         {
             return '(core)';
@@ -215,12 +222,13 @@
     function get_module_references($dir)
     {
         $lang_sm = new StateMachine_LanguageKeys();    
-        $view_sm = new StateMachine_Views();    
+        $view_sm = new StateMachine_ViewRef();    
         $class_sm = new StateMachine_ClassRef();    
         $media_sm = new StateMachine_MediaRef();    
         $url_sm = new StateMachine_URLRef();    
         $css_sm = new StateMachine_CSSRef();    
         $cssdef_sm = new StateMachine_CSSDef();    
+        $viewdef_sm = new StateMachine_ViewDef();    
         
         $analyzer = new PHPAnalyzer();    
         $analyzer->add_state_machine($lang_sm);
@@ -230,12 +238,17 @@
         $analyzer->add_state_machine($url_sm);
         $analyzer->add_state_machine($css_sm);
         $analyzer->add_state_machine($cssdef_sm);
+        $analyzer->add_state_machine($viewdef_sm);
         
         $js_analyzer = new JSAnalyzer();
         $js_analyzer->add_state_machine($media_sm);
         $js_analyzer->add_state_machine($url_sm);
         
+        $css_analyzer = new CSSAnalyzer();
+        $css_analyzer->add_state_machine($media_sm);
+        
         $js_analyzer->parse_dir($dir);
+        $css_analyzer->parse_dir($dir);
         $analyzer->parse_dir($dir);
         
         $key_modules = get_language_key_modules();
@@ -269,6 +282,24 @@
                 $references[$ref_module][$view_module][] = $ref;
             }        
         }    
+                
+        foreach ($viewdef_sm->views as $view => $paths)
+        {
+            $num_paths = sizeof($paths);
+            if ($num_paths  > 1)
+            {
+                $first_path = $paths[0];
+                $first_module = get_path_module($paths[0]);
+                
+                for ($i = 1; $i < sizeof($paths); $i++)
+                {
+                    $path = $paths[$i];
+                    $path_module = get_path_module($paths[$i]);                    
+                    $ref = array('path' => $first_path, 'type' => 'viewname', 'name' => $path);
+                    $references[$first_module][$path_module][] = $ref;
+                }
+            }
+        }
         
         foreach ($class_sm->class_refs as $cls => $paths)
         {

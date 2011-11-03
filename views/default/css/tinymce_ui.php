@@ -1,7 +1,7 @@
 <?php
     $imgDir = "/_media/tiny_mce/themes/advanced/img";
     $iconsUrl = "$imgDir/icons.gif?v2";
-    $skinDir = "/_media/tiny_mce/themes/advanced/skins/default/img";
+    $skinDir = "/_media/tiny_mce/themes/advanced/skins/t";
 ?>
 
 /* Reset */
@@ -122,6 +122,7 @@
 .tSkin .mceMenuItemTitle a {border:0; background:#EEE; border-bottom:1px solid #DDD}
 .tSkin .mceMenuItemTitle span.mceText {color:#000; font-weight:bold; padding-left:4px}
 .tSkin .mceMenuItemDisabled .mceText {color:#888}
+
 .tSkin .mceMenuItemSelected .mceIcon {background:url(<?php echo $skinDir ?>/img/menu_check.gif)}
 .tSkin .mceNoIcons .mceMenuItemSelected a {background:url(<?php echo $skinDir ?>/img/menu_arrow.gif) no-repeat -6px center}
 .tSkin .mceMenu span.mceMenuLine {display:none}

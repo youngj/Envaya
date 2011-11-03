@@ -1,3 +1,0 @@
-<?php
-    $translation = $vars['translation'];
-?>

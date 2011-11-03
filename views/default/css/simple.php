@@ -84,14 +84,13 @@ body
     margin-top:25px;
 }
 
-.home_heading, .section_header
+.section_header
 {
     height:19px;
     width:213px;
     padding:13px 0px;
     text-align:center;
     font:bold 16px Arial;
-    background:url(<?php echo $graphicsDir; ?>/home_headings2.gif) no-repeat left top;
 }
 
 .section_header

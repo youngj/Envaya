@@ -4,7 +4,7 @@
      */
 
     require_once __DIR__."/analysis/phpanalyzer.php";
-    require_once __DIR__."/analysis/statemachine/views.php";
+    require_once __DIR__."/analysis/statemachine/viewref.php";
 
     $prefix = @$argv[1];
     if (!$prefix)
@@ -15,7 +15,7 @@
     $start_microtime = microtime(true);    
     
     $analyzer = new PHPAnalyzer();    
-    $view_sm = new StateMachine_Views();    
+    $view_sm = new StateMachine_ViewRef();    
     $analyzer->add_state_machine($view_sm);
     
     $analyzer->parse_dir(dirname(__DIR__));
