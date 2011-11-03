@@ -1,9 +1,5 @@
-Envaya is a social networking platform where the "profiles" are websites 
-for civil society organizations.
- 
-It is partly a simple, generic, multi-user content management system
-and blogging platform, and partly a structured network with tools/applications
-specific to civil society organizations in developing countries.
+Envaya is a web publishing and collaboration platform with tools and applications 
+designed for civil society organizations in developing countries.
 
 Envaya is designed to be easy-to-use by people with very limited computer
 skills, so it generally favors simplicity over the customizability offered 
