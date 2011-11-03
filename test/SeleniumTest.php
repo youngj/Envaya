@@ -289,7 +289,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
     public function getLinkFromText($text, $index = 0)
     {
-        if (!preg_match_all('/http:[^\\s]+/', $text, $matches))
+        if (!preg_match_all('/http:[^\\s>]+/', $text, $matches))
         {
             throw new Exception("couldn't find any links in $text");
         }

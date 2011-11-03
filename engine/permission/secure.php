@@ -59,4 +59,5 @@ abstract class Permission_Secure extends Permission
         }        
         parent::require_any();
     }    
+
 }

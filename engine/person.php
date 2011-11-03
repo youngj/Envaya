@@ -5,6 +5,9 @@
  */
 class Person extends User
 {
+    // event names
+    const Registered = 'person_registered';
+
     function init_default_widgets()
     {
         $this->get_widget_by_class('PersonProfile')->save();

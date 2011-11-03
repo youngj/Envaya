@@ -11,4 +11,5 @@ return array(
     'email:invalid_url' => "Unable to access email notification settings. If you copied a link from your email, please ensure that the address (URL) is exactly the same as it was in the email you received.",            
     
     'email:subscriptions' => "Subscribe %s to:",
+    'email:somebody' => 'somebody',
 );

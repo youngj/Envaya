@@ -50,12 +50,8 @@ class Action_Registration_CreateProfileBase extends Action
         
         if ($prevSetupState < $org->setup_state && !$org->is_approved())
         {
-            FeedItem_Register::post($org, $org);
-
-            OutgoingMail::create(
-                sprintf(__('email:registernotify:subject'), $org->name), 
-                sprintf(__('email:registernotify:body'), secure_url($org->get_url()))
-            )->send_to_admin();
+            FeedItem_Register::post($org, $org);            
+            EmailSubscription_Registration::send_notifications(Organization::Registered, $org);
         }            
         
         SessionMessages::add(__("register:homepage_created"));

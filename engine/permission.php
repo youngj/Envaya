@@ -203,4 +203,14 @@ abstract class Permission extends Entity
         $type = $this->get_subtype_id();
         return "{$this->guid}: type={$type} scope={$this->container_guid} username={$user->username}";
     }
+    
+    static function query_for_entity($entity)
+    {
+        return static::query()->where('container_guid = ?', $entity->guid);
+    }
+    
+    function get_title()
+    {
+        return str_replace('Permission_', '', get_class($this));
+    }
 }

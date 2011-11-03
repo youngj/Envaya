@@ -35,6 +35,7 @@ class EntityRegistry
         'core.subscription.sms.news' => "SMSSubscription_News",
         'core.subscription.email' => "EmailSubscription",
         'core.subscription.email.comments' => "EmailSubscription_Comments",
+        'core.subscription.email.registration' => "EmailSubscription_Registration",
         
         'core.file' => 'UploadedFile',
         

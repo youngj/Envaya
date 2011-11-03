@@ -87,4 +87,6 @@ return array(
     'widget:handler_arg' => 'Page Handler Argument (optional)',
     'widget:menu_order' => 'Menu Order',
     'widget:in_menu' => 'Show in Menu?',
+    
+    'register:scope_subscription' => "User registrations for {scope}",
 );  

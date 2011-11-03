@@ -121,6 +121,7 @@ class OutgoingMail extends Model
         {    
             require_once Config::get('root').'/vendors/markdownify/markdownify.php';
             $md = new Markdownify(true, false, false);    
+            $md->escapeInText['search'] = $md->escapeInText['replace'] = array();
             $this->set_body_text($md->parseString($body_html));
         }        
     }

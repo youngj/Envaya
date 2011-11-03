@@ -6,6 +6,9 @@
  */
 class Organization extends User
 {
+    // event names
+    const Registered = 'org_registered';
+
     function set_defaults()
     {
         $this->set_design_setting('theme_name', "green");

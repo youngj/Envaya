@@ -110,7 +110,7 @@ abstract class EmailSubscription extends Subscription
     function get_name()
     {
         $owner = $this->get_owner_entity();
-        return $owner ? $owner->name : $this->name;
+        return $owner ? $owner->name : ($this->name ?: __('email:somebody', $this->language));
     }   
     
     function render_html_body($body_content)

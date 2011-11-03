@@ -2,8 +2,6 @@
 
 class EmailSubscription_Comments extends EmailSubscription
 {
-    static $query_subtypes = array('EmailSubscription_Comments');
-    
     function send_notification($event_name, $comment)
     {
         if ($comment->owner_guid && $comment->owner_guid == $this->owner_guid)    

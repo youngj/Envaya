@@ -565,11 +565,9 @@ class SMS_Controller_News extends SMS_Controller
     {
         $this->set_user_context($user);
     
-        $news = $user->get_widget_by_class('News');
-        
         $phone_number = $this->request->get_from_number();       
         
-        $subscription = SMSSubscription_News::init_for_entity($news, $phone_number);
+        $subscription = SMSSubscription_News::init_for_entity($user, $phone_number);
         
         if ($subscription)
         {           

@@ -5,7 +5,6 @@
     {            
         echo "<div>".escape($filter->get_name()) . ": " . $filter->render_view()."</div>";
     }
-    echo "<br />";
         
     $child_scopes = $scope->query_scopes()->filter();    
     if ($child_scopes)
@@ -49,5 +48,4 @@
             'offset' => $offset,
             'count' => $num_users
         ));
-        echo "<br />";
     }

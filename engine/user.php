@@ -7,10 +7,11 @@
  */
 abstract class User extends Entity
 {
+    // approval
     const Approved = 1;
     const AwaitingApproval = 0;
     const Rejected = -1;
-
+    
     static $table_name = 'users';
     static $query_class = 'Query_SelectUser';    
     static $table_base_class = 'User';

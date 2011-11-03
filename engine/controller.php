@@ -146,8 +146,8 @@ abstract class Controller extends Router {
     }
     
     public function page_draw($vars)
-    {                                     
-        $this->prepare_page_draw_vars(/* & */ $vars);                
+    {
+        $this->prepare_page_draw_vars(/* & */ $vars);
         $this->response->content = view('layouts/base', $vars);
     }
 

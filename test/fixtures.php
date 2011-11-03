@@ -11,6 +11,7 @@ return function() {
     $admin_email = Config::get('admin_email');
     
     EmailSubscription_Comments::init_for_entity($root_scope, $admin_email);
+    EmailSubscription_Registration::init_for_entity($root_scope, $admin_email);
     
     $admin = get_or_create_user('testadmin', 'Person');
     $admin->set_password('secretpassw0rd');

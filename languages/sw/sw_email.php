@@ -12,4 +12,5 @@ return array(
     'email:subscriptions' => 'Sajili %s kwa:',
     
     'email:salutation' => "Habari za sahizi %s,",
+    'email:somebody' => 'mtu',
 );

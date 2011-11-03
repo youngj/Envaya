@@ -57,12 +57,8 @@ class Action_Registration_RegisterPerson extends Action
 
         
         $user->init_default_widgets();        
-
-        $mail = OutgoingMail::create(
-            sprintf(__('register:notification_subject'), $user->name),
-            secure_url($user->get_url())."\n"
-        );
-        $mail->send_to_admin();
+        
+        EmailSubscription_Registration::send_notifications(Person::Registered, $user);
                 
         SessionMessages::add(__('register:created_ok'));                
         Session::login($user);
