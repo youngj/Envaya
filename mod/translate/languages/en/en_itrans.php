@@ -15,7 +15,7 @@ return array(
     'itrans:placeholder_error' => "The translation did not have the correct placeholders.",
     'itrans:stale' => "This translation refers to an older version of the source text.",
     
-    'itrans:stale_translations' => "Stale Translations",
+    'itrans:interface_translations' => "Interface Text",
     
     'itrans:latest' => "Latest translations",
     'itrans:time_created' => "Time Created",

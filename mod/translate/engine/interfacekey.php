@@ -39,6 +39,15 @@ class InterfaceKey extends TranslationKey
                 $translation->value = $defined_value;
                 $translation->set_approved(true);
                 $translation->save();
+
+                foreach (InterfaceKey::query()
+                    ->where('name = ?', $this->name)
+                    ->where('language_guid <> ?', $this->language_guid)
+                    ->filter() as $other_key)
+                {
+                    $other_key->save(); // update time_updated so it shows at the top of /tr/../interface page
+                }
+                
                 $this->update($update_recursive);
             }
         }

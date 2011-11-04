@@ -45,8 +45,7 @@ class Controller_Translate extends Controller
             'before' => 'init_language',
         ),    
         array(
-            'regex' => '/(?P<lang>\w+)/content(,(?P<filter>[\w\=\,]+))?(/)?$', 
-            'action' => 'action_content',
+            'regex' => '/(?P<lang>\w+)/(?P<action>interface|content)(,(?P<filter>[\w\=\,]+))?(/)?$', 
             'before' => 'init_language',
         ),            
         array(
@@ -59,10 +58,15 @@ class Controller_Translate extends Controller
             'before' => 'init_language_group',
         ),
         array(
-            'regex' => '/(?P<lang>\w+)/(stale|content)(,(?P<filter>[\w\=\,]+))?/(?P<key_name>\w+)', 
+            'regex' => '/(?P<lang>\w+)/content(,(?P<filter>[\w\=\,]+))?/(?P<key_name>\w+)', 
             'controller' => 'Controller_TranslateEntityKey',
             'before' => 'init_language_key',
         ),        
+        array(
+            'regex' => '/(?P<lang>\w+)/interface(,(?P<filter>[\w\=\,]+))?/(?P<key_name>\w+)', 
+            'controller' => 'Controller_TranslateInterfaceKey',
+            'before' => 'init_language_key',
+        ),                
         array(
             'regex' => '/(?P<lang>\w+)/module/(?P<group_name>\w+)(,(?P<filter>[\w\,\=]+))?/(?P<key_name>\w+)', 
             'controller' => 'Controller_TranslateGroupKey',
@@ -152,6 +156,35 @@ class Controller_Translate extends Controller
             'content' => view('translate/instructions')
         ));
     }
+     
+
+    
+    function action_interface()
+    {
+        $language = $this->param('language');      
+        
+        $filter = $this->get_filter_params();
+        $filter_str = $this->get_filter_str($filter);        
+        
+        $query = InterfaceKey::query()
+            ->where('language_guid = ?', $language->guid)
+            ->order_by('time_updated desc, guid desc');
+
+        $query = $this->filter_query($query, $filter);
+            
+        $base_url = "/tr/{$language->code}/interface" . ($filter_str ? ",$filter_str" : '');
+        
+        return $this->page_draw(array(
+            'title' => __('itrans:interface_translations'),
+            'header' => view('translate/header',  array('items' => array($language), 'title' => __('itrans:interface_translations'))),
+            'content' => view('translate/interface_keys', array(
+                'language' => $language,
+                'query' => $query,
+                'base_url' => $base_url,
+                'filter' => $filter
+            ))
+        ));
+    }     
      
     function action_content()
     {
@@ -282,6 +315,12 @@ class Controller_Translate extends Controller
     function filter_query($query, $filter)
     {
         $status = @$filter['status'];
+        $q = @$filter['q'];
+        
+        if ($q)
+        {
+            $query->where('best_translation like ? or name like ?', "%$q%", "%$q%");
+        }   
         
         switch ($status)
         {
@@ -371,45 +410,6 @@ class Controller_Translate extends Controller
             ))
         ));       
     }    
-    
-    function action_stale()
-    {
-        $language = $this->param('language');      
-        
-        $base_language = TranslationLanguage::get_by_code(Config::get('language'));
-        
-        if ($base_language && !$base_language->equals($language))
-        {        
-            $query = TranslationKey::query()
-                ->from('translation_keys k, translation_keys k2')
-                ->columns('k.*')
-                ->show_disabled(true)
-                ->where('k.status = 1')
-                ->where('k2.status = 1')
-                ->where('k.name = k2.name')
-                ->where("k.best_translation <> ''")
-                ->where('k.language_guid = ?', $language->guid)
-                ->where('k2.language_guid = ?', $base_language->guid)
-                ->where('k.best_translation_hash <> k2.best_translation_hash')
-                ->order_by('k2.time_created desc');
-        }
-        else
-        {
-            $query = TranslationKey::query()->where('0>1');
-        }
-
-        $base_url = "/tr/{$language->code}/stale";
-        
-        return $this->page_draw(array(
-            'title' => __('itrans:stale_translations'),
-            'header' => view('translate/header',  array('items' => array($language), 'title' => __('itrans:stale_translations'))),
-            'content' => view('translate/stale', array(
-                'language' => $language,
-                'query' => $query,
-                'base_url' => $base_url,
-            ))
-        ));                       
-    }
     
     function action_delete_comment()
     {

@@ -140,13 +140,10 @@ class Controller_TranslateKey extends Controller
         return implode('/', $pieces);
     }    
     
-    function redirect_delta($delta)
+    function get_delta_key($key, $delta)
     {
-        $keys = $this->get_available_keys();
-        $key = $this->param('key');
-        
-        $parent_uri = $this->get_parent_uri();
-                
+        $keys = $this->get_available_keys();       
+
         $i = $this->get_key_index($keys, $key);
         
         if ($i >= 0)
@@ -155,19 +152,65 @@ class Controller_TranslateKey extends Controller
             $filtered_keys = $this->parent_controller->filter_keys($keys, $filter);            
             
             $num_keys = sizeof($keys);
-
+            
             for ($j = $i + $delta; $j >= 0 && $j < $num_keys; $j += $delta)
             {
                 $next_key = $keys[$j];
                 
                 if ($this->get_key_index($filtered_keys, $next_key) >= 0)
                 {
-                    return $this->redirect($parent_uri . "/" . urlencode_alpha($next_key->name));
+                    return $next_key;
                 }
             }
         }                
         
-        return $this->redirect($parent_uri);
+        return null;
+    
+    }
+
+    function get_delta_key_from_query($key, $delta, $query, $sort_column)
+    {
+        if ($delta > 0)
+        {
+            $cmp = '<';
+            $dir = 'desc';
+        }
+        else
+        {
+            $cmp = '>';
+            $dir = 'asc';        
+        }
+        
+        $sort_value = $key->$sort_column;
+        
+        $query->where("$sort_column $cmp ? or ($sort_column = ? AND guid $cmp ?)", 
+                    $sort_value, $sort_value, $key->guid);
+                    
+        $query->order_by("$sort_column $dir, guid $dir");
+            
+        return $this->apply_filters($query)->get();    
+    }
+    
+    function apply_filters($query)
+    {
+        return $this->parent_controller->filter_query($query, 
+            $this->parent_controller->get_filter_params());
+    }
+    
+    function redirect_delta($delta)
+    {        
+        $key = $this->param('key');                
+        $parent_uri = $this->get_parent_uri();
+        $next_key = $this->get_delta_key($key, $delta);
+                
+        if ($next_key)
+        {
+            return $this->redirect($parent_uri . "/" . urlencode_alpha($next_key->name));
+        }
+        else
+        {
+            return $this->redirect($parent_uri);
+        }
     }    
     
     function action_base_lang()
