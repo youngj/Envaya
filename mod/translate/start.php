@@ -44,6 +44,7 @@ if (@Config::get('translate:footer_link'))
 
 Views::extend('page_elements/content_wrapper', 'page_elements/translate_bar', -1);
 Views::extend('css/default', 'css/default_translate');
+Views::extend('account/links_items', 'account/translate_links_items', -1);
 
 if (@Config::get('translate:live_interface'))
 {

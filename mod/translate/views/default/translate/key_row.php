@@ -13,9 +13,13 @@
         //echo "<a href='$escUrl'>".escape($key->name)."</a>";        
         //echo "</td>";
         
+        $base_value = $key->get_current_base_value();
+        
+        $base_value_hash = sha1($base_value);
+        
         echo "<td style='width:350px;'>";
         echo "<a style='color:#333' href='$escUrl'>";
-        echo $key->view_value($key->get_current_base_value(), 500);
+        echo $key->view_value($base_value, 500);
         echo "</a>";        
         echo "</td>";
         echo "<td style='width:350px;'>";        
@@ -25,6 +29,11 @@
         if ($key->best_translation)
         {
             echo $key->view_value($key->best_translation, 500);
+            
+            if ($key->best_translation_hash != $base_value_hash)
+            {
+                echo "<div style='color:#ccc'>(".__('itrans:stale').")</div>";
+            }
         }
         else
         {

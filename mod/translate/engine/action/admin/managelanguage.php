@@ -42,15 +42,7 @@ class Action_Admin_ManageLanguage extends Action
                 {
                     $group->status = Entity::Enabled;
                     $group->save();                    
-                    $keys = $group->get_available_keys();
-                    if ($group->get_defined_group())
-                    {
-                        foreach ($keys as $key)
-                        {
-                            $key->init_defined_translation();
-                        }
-                    }
-                    $group->update();
+                    $group->update_defined_translations();
                 }
             }
             

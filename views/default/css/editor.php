@@ -151,6 +151,7 @@ a.icon_link:hover
     background:url(<?php echo $graphicsDir; ?>/admin.gif) no-repeat 4px 7px;
 }
 
+
 .widget_list a
 {
     line-height:20px;

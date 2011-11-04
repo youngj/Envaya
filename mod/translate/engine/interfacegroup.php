@@ -127,7 +127,7 @@ class InterfaceGroup extends Entity
         $defined_group = $this->get_defined_group();        
         if ($defined_group && !$key->best_translation)
         {
-            $key->best_translation = $defined_group[$key->name];
+            $key->best_translation = @$defined_group[$key->name];
         }
         $key->save();
                 
@@ -169,5 +169,18 @@ class InterfaceGroup extends Entity
         }
         
         return $available_keys;    
+    }
+    
+    function update_defined_translations()
+    {
+        $keys = $this->get_available_keys();
+        if ($this->get_defined_group())
+        {
+            foreach ($keys as $key)
+            {
+                $key->init_defined_translation();
+            }
+        }
+        $this->update();    
     }
 }
