@@ -19,13 +19,15 @@ class Widget extends Entity
     const Published = 1;
 
     static $table_name = 'widgets';
+    static $table_base_class = 'Widget';
+    static $query_class = 'Query_SelectWidget';
     static $table_attributes = array(
+        'subtype_id' => '',    
         'widget_name' => 0,
         'publish_status' => 1,
         'time_published' => null,
         'menu_order' => 0,
         'in_menu' => 1,
-        'subclass' => '',
         'handler_arg' => '',
         'title' => '',       
         'num_comments' => 0
@@ -35,49 +37,49 @@ class Widget extends Entity
         'Mixin_WidgetContainer',
     );
     
-    static $default_widgets = array(
-        'home'          => array('menu_order' => 10, 'page' => true, 'subclass' => 'Home'),
-        'news'          => array('menu_order' => 20, 'page' => true, 'subclass' => 'News'),
-        'projects'      => array('menu_order' => 30, 'page' => true, 'subclass' => 'Generic'),
-        'history'       => array('menu_order' => 40, 'page' => true, 'subclass' => 'Generic'),
-        'team'          => array('menu_order' => 50, 'page' => true, 'subclass' => 'Team'),
-        'contact'       => array('menu_order' => 90, 'page' => true, 'subclass' => 'Contact'),
-        'mission'       => array('menu_order' => 100, 'home_section' => true, 'subclass' => 'Mission'),        
-        'updates'       => array('menu_order' => 110, 'home_section' => true, 'subclass' => 'Updates'),        
-        'links'         => array('menu_order' => 115, 'home_section' => true, 'subclass' => 'Links'),                
-        'sectors'       => array('menu_order' => 120, 'home_section' => true, 'subclass' => 'Sectors'),        
-        'location'      => array('menu_order' => 130, 'home_section' => true, 'subclass' => 'Location'),                
-        'profile'       => array('subclass' => 'PersonProfile'),
-        'post'          => array('subclass' => 'Post'),        
+    static $default_menu_order = 1;
+    static $default_widget_name = '';    
+    
+    static $default_classes = array(
+        'page' => array(
+            'Widget_Home',
+            'Widget_News',
+            'Widget_Projects',
+            'Widget_History',
+            'Widget_Team',
+            'Widget_Contact',
+        ),
+        'hidden_page' => array(            
+        ),
+        'home_section' => array(
+            'Widget_Mission',  
+            'Widget_Updates',
+            'Widget_Links',
+            'Widget_Sectors',
+            'Widget_Location',
+        ),        
     );
 
-    static function get_subtype_id()
+    static function add_default_class($cls, $category = 'page')
     {
-        // all subclasses share same subtype_id
-        return ClassRegistry::get_subtype_id('Widget'); 
-    }    
-    
-    static function add_default_widget($widget_name, $props)
-    {
-        static::$default_widgets[$widget_name] = $props;
+        static::$default_classes[$category][] = $cls;
     }
     
-    static function get_default_names_by_class($subclass)
+    static function get_default_classes($category)
     {
-        $names = array();
-        foreach (static::$default_widgets as $widget_name => $args)
+        return static::$default_classes[$category];
+    }
+    
+    static function get_default_class_for_name($widget_name, $category = 'page')
+    {
+        foreach (static::$default_classes[$category] as $cls)
         {
-            if (@$args['subclass'] == $subclass)
+            if ($cls::$default_widget_name == $widget_name)
             {
-                $names[] = $widget_name;
+                return $cls;
             }
         }
-        return $names;
-    }
-    
-    static function get_default_names()
-    {
-        return array_keys(static::$default_widgets);
+        return null;
     }
     
     static function get_image_sizes()
@@ -112,23 +114,8 @@ class Widget extends Entity
     }    
     
     function get_default_title()
-    {
-        $key = "widget:{$this->widget_name}";
-        $title = __($key);
-        return ($title != $key) ? $title : '';
-    }
-    
-    static function new_from_row($row)
-    {
-        $cls = "Widget_{$row->subclass}";        
-        if (class_exists($cls))
-        {
-            return new $cls($row);
-        }
-        else
-        {
-            return new Widget_Invalid($row);
-        }        
+    {        
+        return  '';
     }
     
     function render_view($args = null)
@@ -156,7 +143,7 @@ class Widget extends Entity
         $name = $this->widget_name;
         $container = $this->get_container_entity();
         
-        if ($this->is_page() && isset(static::$default_widgets[$name]))
+        if ($this->is_page() && Widget::get_default_class_for_name($name) == get_class($this))
         {
             return "{$container->get_url()}/{$name}";
         }
@@ -314,5 +301,55 @@ class Widget extends Entity
     static function get_view_permission()
     {
         return 'Permission_ViewUserSite';    
+    }
+    
+    static function query_for_entity($entity)
+    {
+        return static::query()
+            ->where('container_guid=?', $entity->guid)
+            ->order_by('menu_order');
+    }
+        
+    static function new_for_entity($entity, $props = null)        
+    {
+        $cls = get_called_class();
+        
+        $widget = new $cls();
+        $widget->set_container_entity($entity);
+        $widget->menu_order = static::$default_menu_order;
+        $widget->widget_name = static::$default_widget_name;
+        if ($props)
+        {
+            foreach ($props as $k => $v)
+            {
+                $widget->$k = $v;
+            }
+        }        
+        return $widget;
+    }
+        
+    static function init_for_entity($entity, $props = null)
+    {
+        $widget = static::new_for_entity($entity, $props);
+        $widget->save();
+        return $widget;
+    }
+    
+    static function get_for_entity($entity)
+    {
+        return static::query_for_entity($entity)
+            ->show_disabled(true)
+            ->order_by('status desc') // prefer enabled over disabled widgets
+            ->get();        
+    }
+
+    static function get_or_init_for_entity($entity, $defaults = null)
+    {    
+        return static::get_for_entity($entity) ?: static::init_for_entity($entity, $defaults);
+    }
+    
+    static function get_or_new_for_entity($entity, $defaults = null)
+    {
+        return static::get_for_entity($entity) ?: static::new_for_entity($entity, $defaults);
     }
 }

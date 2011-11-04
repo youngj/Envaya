@@ -6,6 +6,15 @@
  */
 class Widget_News extends Widget
 {
+    static $default_menu_order = 20;
+    static $default_widget_name = 'news';    
+    
+    function get_default_title()
+    {
+        return __("widget:news");
+    }
+
+
     function get_view_types()
     {
         return array('rss');
@@ -39,7 +48,9 @@ class Widget_News extends Widget
         
     function new_child_widget_from_input()
     {           
-        return $this->get_widget_by_name(get_input('uniqid'), 'Post');
+        $uniqid = get_input('uniqid');
+        return $this->get_widget_by_name($uniqid)
+            ?: Widget_Post::new_for_entity($this, array('widget_name' => $uniqid));
     }    
     
     function process_input($action)
@@ -61,11 +72,18 @@ class Widget_News extends Widget
     
     function add_link($action)
     {
-        $org = $this->get_container_user();
-        $home = $org->get_widget_by_class('Home');
-        $links = $home->get_widget_by_class('Links');
+        $user = $this->get_container_user();
+        $home = Widget_Home::get_for_entity($user);
         
-        $action->redirect("{$links->get_edit_url()}?url=" . urlencode(get_input('url')));
+        if ($home)
+        {
+            $links = Widget_Links::get_for_entity($home) ?: Widget_Links::new_for_entity($home);            
+            $action->redirect("{$links->get_edit_url()}?url=" . urlencode(get_input('url')));
+        }
+        else
+        {
+            throw new ValidationException("Your user account does not have a Home page.");
+        }
     }
     
     function remove_feed($action)
@@ -78,7 +96,7 @@ class Widget_News extends Widget
         {
             if ($remove_posts)
             {
-                $posts = $this->query_widgets()
+                $posts = Widget::query_for_entity($this)
                     ->with_metadata('feed_guid', $feed->guid)
                     ->filter();
                     

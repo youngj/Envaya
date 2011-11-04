@@ -10,7 +10,7 @@ class Person extends User
 
     function init_default_widgets()
     {
-        $this->get_widget_by_class('PersonProfile')->save();
+        Widget_PersonProfile::get_or_init_for_entity($this);
     }
     
     function set_defaults()

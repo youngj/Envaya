@@ -5,6 +5,14 @@
  */
 class Widget_Links extends Widget
 {        
+    static $default_menu_order = 115;
+    static $default_widget_name = 'links';    
+    
+    function get_default_title()
+    {
+        return __("widget:links");
+    }
+
     function render_view($args = null)
     {
         return view("widgets/links_view", array('widget' => $this));
@@ -79,8 +87,8 @@ class Widget_Links extends Widget
         
         if ($include_feed)
         {        
-            $news = $org->get_widget_by_class('News');
-            if ($news->can_add_feed())
+            $news = Widget_News::get_for_entity($org);
+            if ($news && $news->can_add_feed())
             {                
                 $news->add_feed_by_url($feed_url, $url, $feed_cls);
             }
@@ -97,13 +105,16 @@ class Widget_Links extends Widget
         $url = get_input('url');
         
         $org = $this->get_container_user();                
-        $news = $org->get_widget_by_class('News');        
+        $news = Widget_News::get_for_entity($org);
         
-        $link_info = ExternalSite::get_linkinfo($url, $news->can_add_feed());        
+        $link_info = ExternalSite::get_linkinfo($url, $news ? $news->can_add_feed() : false);
         
-        $link_info['has_feed'] = $news->query_external_feeds()
-            ->where('feed_url = ? OR url = ?', $url, $url)
-            ->exists();        
+        if ($news)
+        {
+            $link_info['has_feed'] = $news->query_external_feeds()
+                ->where('feed_url = ? OR url = ?', $url, $url)
+                ->exists();        
+        }
         
         $action->set_content(json_encode($link_info));
     }            

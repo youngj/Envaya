@@ -6,8 +6,8 @@
  */
 class ExternalFeed_Facebook extends ExternalFeed_RSS
 {
-    function get_widget_subclass()
+    function get_widget_class()
     {
-        return 'FacebookPost';
+        return 'Widget_FacebookPost';
     }
 }

@@ -27,7 +27,7 @@ class MediaFinder extends Analyzer
     }
     function is_checked_dir($path)
     {
-        return preg_match('#\b(_media)\b#', $path) && !preg_match('#\b(www/_media)\b#', $path);
+        return preg_match('#\b(_media|mod)\b#', $path);
     }    
     
     function parse_file_contents($contents) {}
@@ -92,7 +92,9 @@ foreach ($classdef_sm->class_defs as $class => $paths)
 
 foreach ($media_finder->paths as $path)
 {
-    if (!isset($mediaref_sm->media_refs[$path]))
+    $rel_path = preg_replace('#^mod/\w+/#', '', $path);
+
+    if (!isset($mediaref_sm->media_refs[$rel_path]))
     {
         echo "media $path\n";
     }

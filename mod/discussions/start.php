@@ -7,15 +7,12 @@ Engine::add_autoload_action('ClassRegistry', function() {
         'core.subscription.email.discussion' => "EmailSubscription_Discussion",       
         'core.permission.editdiscussionmessage' => 'Permission_EditDiscussionMessage',
         'core.feeditem.discussion.message' => 'FeedItem_Message',
+        'core.widget.discussions' => 'Widget_Discussions',
     ));
 });
 
 Engine::add_autoload_action('Widget', function() {
-    Widget::add_default_widget('discussions', array(
-        'menu_order' => 70, 
-        'page' => true, 
-        'subclass' => 'Discussions'
-    ));
+    Widget::add_default_class('Widget_Discussions');
 });
         
 Engine::add_autoload_action('Controller_UserSite', function() {

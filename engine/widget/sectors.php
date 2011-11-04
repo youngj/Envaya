@@ -6,6 +6,14 @@
  */
 class Widget_Sectors extends Widget
 {
+    static $default_menu_order = 120;
+    static $default_widget_name = 'sectors';    
+    
+    function get_default_title()
+    {
+        return __("widget:sectors");
+    }
+
     function render_view($args = null)
     {
         return view("widgets/sectors_view", array('widget' => $this));

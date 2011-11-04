@@ -17,14 +17,14 @@ class FeedItem_Relationship extends FeedItem
         }
         
         $org = $relationship->get_container_entity();
-        $network = $org->get_widget_by_class('Network');
+        $network = Widget_Network::get_for_entity($org);
         
         $list_name = $relationship->msg('header');
         
-        if ($network->is_enabled())
+        if ($network && $network->is_enabled())
         {
             $list_name = "<a href='{$network->get_url()}'>$list_name</a>";
-        }        
+        }
         
         return strtr(__('network:feed_heading'), array(
             '{name}' => $this->get_user_link($mode),

@@ -7,11 +7,10 @@ class Action_Discussion_NewTopic extends Action
         $user = Session::get_logged_in_user();        
         $site_user = $this->get_user();
         
-        $widget = $site_user->get_widget_by_class('Discussions');
+        $widget = Widget_Discussions::get_or_new_for_entity($site_user);
         if (!$widget->is_enabled())
         {
-            Permission_EditUserSite::require_for_entity($widget);
-            
+            Permission_EditUserSite::require_for_entity($widget);            
             $widget->enable();
             $widget->save();
         }                
@@ -111,7 +110,7 @@ class Action_Discussion_NewTopic extends Action
         $this->use_public_layout();        
         $site_user = $this->get_user();       
 
-        $widget = $site_user->get_widget_by_class('Discussions');        
+        $widget = Widget_Discussions::get_or_new_for_entity($site_user);
         if (!$widget->is_enabled())
         {
             Permission_EditUserSite::require_for_entity($widget);

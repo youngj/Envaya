@@ -5,6 +5,9 @@
  */
 class Widget_Discussions extends Widget
 {
+    static $default_menu_order = 70;
+    static $default_widget_name = 'discussions';    
+
     function get_default_title()
     {
         return __('discussions:title');

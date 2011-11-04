@@ -5,6 +5,7 @@ Engine::add_autoload_action('ClassRegistry', function() {
         'core.user.org.relation' => 'Relationship',        
         'core.subscription.email.network' => "EmailSubscription_Network",
         'core.feeditem.relation' => 'FeedItem_Relationship',
+        'core.widget.network' => 'Widget_Network',
     ));
 });
 
@@ -16,11 +17,7 @@ Engine::add_autoload_action('Controller_UserSite', function() {
 });        
 
 Engine::add_autoload_action('Widget', function() {
-    Widget::add_default_widget('network', array(
-        'menu_order' => 60, 
-        'page' => true, 
-        'subclass' => 'Network'
-    ));
+    Widget::add_default_class('Widget_Network');
 });
 
 Engine::add_autoload_action('EmailSubscription', function() {

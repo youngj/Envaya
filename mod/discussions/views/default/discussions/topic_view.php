@@ -32,13 +32,15 @@
     ));
     
     echo "<br />";
-
         
-    $widget = $org->get_widget_by_class('Discussions');    
+    $widget = Widget_Discussions::get_for_entity($org);    
     
-    echo "<div style='float:right'>";    
-    echo "<a href='{$widget->get_url()}'>".__('discussions:back_to_topics'). "</a>";
-    echo "</div>";
+    if ($widget)
+    {
+        echo "<div style='float:right'>";    
+        echo "<a href='{$widget->get_url()}'>".__('discussions:back_to_topics'). "</a>";
+        echo "</div>";
+    }
     
     if (!@$vars['show_add_message'])
     {

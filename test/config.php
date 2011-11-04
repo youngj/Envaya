@@ -59,4 +59,6 @@ return array(
     'sphinx_pid_dir' => $dataroot,
     'dbname' => 'envaya_test',
     'feed_page_size' => 6,
+    'debug_media' => false,
+    'debug' => true,
 );

@@ -33,61 +33,70 @@ class TodoItem
     {
         $items = array();
         
-        $widget_names = array('home', 'contact','history','projects','team','news','network','discussions');
+        $widget_classes = array(
+            'Widget_Home',
+            'Widget_Contact',
+            'Widget_History',
+            'Widget_Projects',
+            'Widget_Team',
+            'Widget_News',
+            'Widget_Network',
+            'Widget_Discussions',
+        );
         
         $query = $org->query_widgets()
-            ->where_in('widget_name', $widget_names)
+            ->where_in('subtype_id', array_map(function($cls) { return $cls::get_subtype_id(); }, $widget_classes))
             ->columns('guid, status, time_created, time_updated, container_guid, owner_guid,
-                        widget_name, subclass, title, length(content) as content_len');
+                        widget_name, subtype_id, title, length(content) as content_len');
         
         $widgets = $query->filter();
         
         $widgets_map = array();
         foreach ($widgets as $widget)
         {
-            $widgets_map[$widget->widget_name] = $widget;
+            $widgets_map[get_class($widget)] = $widget;
         }
-        foreach ($widget_names as $widget_name)
+        foreach ($widget_classes as $widget_class)
         {    
-            if (!isset($widgets_map[$widget_name]))
+            if (!isset($widgets_map[$widget_class]))
             {
-                $widgets_map[$widget_name] = $org->new_widget_by_name($widget_name);
+                $widgets_map[$widget_class] = $widget_class::new_for_entity($org);
             }
         }
             
         $recent_time = timestamp() - 86400 * 31;
     
-        $home = $widgets_map['home'];
+        $home = $widgets_map['Widget_Home'];
         $items[] = new TodoItem(
             "<a href='{$home->get_edit_url()}'>".__('todo:home')."</a>", 
             true
         );
         
-        $contact = $widgets_map['contact'];
+        $contact = $widgets_map['Widget_Contact'];
         $items[] = new TodoItem(
             "<a href='{$contact->get_edit_url()}'>".__('todo:contact')."</a>", 
             $contact->time_updated > $contact->time_created
         );
 
-        $history = $widgets_map['history'];
+        $history = $widgets_map['Widget_History'];
         $items[] = new TodoItem(
             "<a href='{$history->get_edit_url()}'>".__('todo:history')."</a>",
             $history->is_enabled() && $history->content_len > 0
         );            
 
-        $projects = $widgets_map['projects'];
+        $projects = $widgets_map['Widget_Projects'];
         $items[] = new TodoItem(
             "<a href='{$projects->get_edit_url()}'>".__('todo:projects')."</a>",
             $projects->is_enabled() && $projects->content_len > 0
         );            
         
-        $team = $widgets_map['team'];
+        $team = $widgets_map['Widget_Team'];
         $items[] = new TodoItem(
             "<a href='{$team->get_edit_url()}'>".__('todo:team')."</a>",
             $team->is_enabled() && $team->content_len > 0
         );            
         
-        $news = $widgets_map['news'];
+        $news = $widgets_map['Widget_News'];
         $hasRecentNews = $news->query_widgets()->where('time_created > ?', $recent_time)->exists();
         $items[] = new TodoItem(
             "<a href='{$news->get_edit_url()}'>".__('todo:news')."</a>",
@@ -103,15 +112,15 @@ class TodoItem
         $items[] = new TodoItem(
             "<a href='{$org->get_url()}/design'>".__('todo:logo')."</a>",
             ($org->get_design_setting('header_image') || $org->has_custom_icon())    
-        );    
+        );
 
-        $network = $widgets_map['network'];
+        $network = $widgets_map['Widget_Network'];
         $items[] = new TodoItem(
             "<a href='{$network->get_edit_url()}'>".__('todo:network')."</a>",
             $network->is_enabled()
         );
         
-        $discussions = $widgets_map['discussions'];
+        $discussions = $widgets_map['Widget_Discussions'];
         $items[] = new TodoItem(
             "<a href='{$discussions->get_edit_url()}'>".__('todo:discussions')."</a>",
             $discussions->is_enabled()

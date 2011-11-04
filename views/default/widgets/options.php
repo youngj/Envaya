@@ -17,11 +17,11 @@ echo view('input/text', array(
 </div>
 
 <div class='input'>
-<label><?php echo __('widget:handler'); ?></label><br />
+<label><?php echo __('widget:subtype_id'); ?></label><br />
 <?php
 echo view('input/text', array(
-    'name' => 'subclass',
-    'value' => $widget->subclass
+    'name' => 'subtype_id',
+    'value' => $widget->subtype_id
 ));
 ?>
 </div>

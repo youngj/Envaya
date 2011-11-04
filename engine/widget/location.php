@@ -6,6 +6,14 @@
  */
 class Widget_Location extends Widget
 {
+    static $default_menu_order = 130;
+    static $default_widget_name = 'location';    
+    
+    function get_default_title()
+    {
+        return __("widget:location");
+    }
+
     function render_view($args = null)
     {
         return view("widgets/location_view", array('widget' => $this));

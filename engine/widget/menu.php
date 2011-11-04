@@ -30,15 +30,17 @@ class Widget_Menu extends Widget_Generic
     
     function new_child_widget_from_input()
     {        
-        $widget = $this->get_widget_by_name(get_input('uniqid'));
+        $uniqid = get_input('uniqid');
         
-        if (!$widget->guid)
+        $widget = $this->get_widget_by_name($uniqid);
+        
+        if (!$widget)
         {
-            $last_widget = $this->query_widgets()->order_by('menu_order desc')->get();
-            if ($last_widget)
-            {
-                $widget->menu_order = $last_widget->menu_order + 1;
-            }
+            $last_widget = Widget::query_for_entity($this)->order_by('menu_order desc')->get();            
+            $widget = Widget_Menu::new_for_entity($this, array(
+                'widget_name' => $uniqid,
+                'menu_order' => $last_widget ? ($last_widget->menu_order + 1) : 1
+            ));        
         }
         return $widget;
     }

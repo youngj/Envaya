@@ -6,16 +6,14 @@
 
 <div class='input' style='padding-bottom:0px'>
 <?php     
-    $labelCode = "widget:{$widget->widget_name}:label";
-    $label = __($labelCode);
-    if ($label != $labelCode)
+    $heading = $widget->get_edit_heading();
+    if ($heading)
     {
-        echo "<label>$label</label>";
+        echo "<label>$heading</label>";
     }
     
-    $helpCode = "widget:{$widget->widget_name}:help";
-    $help = __($helpCode);
-    if ($help != $helpCode)
+    $help = $widget->get_edit_help(); 
+    if ($help)
     {
         echo "<div class='help'>$help</div>";
     }

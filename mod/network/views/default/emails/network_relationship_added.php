@@ -34,7 +34,7 @@
         echo strtr(__('network:notify_added_instructions', $subject->language), $tr);        
         echo "<br />";
         
-        $subjectWidget = $subject->get_widget_by_class('Network');
+        $subjectWidget = Widget_Network::get_or_new_for_entity($subject);
 
         $url = secure_url("{$subjectWidget->get_edit_url()}?action=add_relationship&type={$reverse_type}&org_guid={$org->guid}&username={$subject->username}");
         echo "<a href='{$url}'>{$url}</a>";

@@ -7,6 +7,14 @@
  */
 class Widget_Contact extends Widget
 {
+    static $default_menu_order = 90;
+    static $default_widget_name = 'contact';
+    
+    function get_default_title()
+    {
+        return __("widget:contact");
+    }
+
     function render_view($args = null)
     {
         return view("widgets/contact_view", array('widget' => $this));

@@ -32,7 +32,7 @@ CREATE TABLE `widgets` (
   `widget_name` varchar(127) NOT NULL,
   `publish_status` tinyint(4) NOT NULL default 1,
   `time_published` int(11) null,
-  `subclass` varchar(32) NULL,
+  `subtype_id` varchar(63) NULL,
   `menu_order` int null,
   `in_menu` tinyint(4) default 1,
   `handler_arg` varchar(64) NULL,

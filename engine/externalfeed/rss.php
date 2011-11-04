@@ -6,9 +6,9 @@
  */
 class ExternalFeed_RSS extends ExternalFeed
 {
-    function get_widget_subclass()
+    function get_widget_class()
     {
-        return 'RSSItem';
+        return 'Widget_RSSItem';
     }
     
     static function try_new_from_content_type($content_type)

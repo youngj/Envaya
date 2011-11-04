@@ -139,7 +139,7 @@ class ExternalFeedTest extends SeleniumTest
         
         // check posts are deleted
         $this->open("/testposter7/news");
-        $this->mustNotExist("//a[contains(@href,'http://www.bbc.co.uk/swahili/habari/')]");
+        $this->mustNotExist("//a[contains(@href,'http://www.bbc.co.uk/swahili/')]");
         
         $this->retry('checkFacebook');
         $this->retry('checkTwitter');
@@ -169,7 +169,7 @@ class ExternalFeedTest extends SeleniumTest
     function checkNews()
     {        
         $this->clickAndWait("//div[@id='site_menu']//a[contains(@href,'news')]");
-        $this->mouseOver("//a[contains(@href,'http://www.bbc.co.uk/swahili/habari/')]");
+        $this->mouseOver("//a[contains(@href,'http://www.bbc.co.uk/swahili/')]");
     }
 
     function checkTwitter()

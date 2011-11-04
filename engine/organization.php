@@ -23,19 +23,13 @@ class Organization extends User
     function init_default_widgets()
     {
         /* auto-create empty pages */
-        $home = $this->get_widget_by_class('Home');
-        $home->save();
-                
-        $home->get_widget_by_class('Mission')->save();        
-        $home->get_widget_by_class('Updates')->save();        
-        $home->get_widget_by_class('Sectors')->save();
-        $home->get_widget_by_class('Location')->save();
-        
-        $this->get_widget_by_class('News')->save();
-
-        $contactWidget = $this->get_widget_by_class('Contact');
-        $contactWidget->set_metadata('public_email', "yes");
-        $contactWidget->save();    
+        $home = Widget_Home::get_or_init_for_entity($this);
+        Widget_Mission::get_or_init_for_entity($home);
+        Widget_Updates::get_or_init_for_entity($home);
+        Widget_Sectors::get_or_init_for_entity($home);
+        Widget_Location::get_or_init_for_entity($home);                
+        Widget_News::get_or_init_for_entity($this);
+        Widget_Contact::get_or_init_for_entity($this);
     }
             
     public function get_feed_names()

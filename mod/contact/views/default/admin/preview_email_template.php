@@ -1,6 +1,6 @@
 <?php
     $template = $vars['template'];
-    $subscription = $vars['subscription'];
+    $subscription = @$vars['subscription'];
 ?>
 <b>From:</b> <span><?php echo escape($template->from) ?></span><br />
 <b>Subject:</b> <span><?php echo escape($template->render_subject($subscription)) ?></span>

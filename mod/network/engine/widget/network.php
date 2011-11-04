@@ -6,6 +6,9 @@
  */
 class Widget_Network extends Widget
 {
+    static $default_menu_order = 60;
+    static $default_widget_name = 'network';    
+
     function get_default_title()
     {
         return __('network:title');

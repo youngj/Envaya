@@ -7,6 +7,20 @@
  */
 class Widget_Home extends Widget
 {
+    static $default_menu_order = 10;
+    static $default_widget_name = 'home';    
+    
+    function get_default_title()
+    {
+        return __("widget:home");
+    }
+    
+    function get_default_widget_class_for_name($widget_name)
+    {
+        return Widget::get_default_class_for_name($widget_name, 'home_section')
+            ?: 'Widget_Generic';
+    }        
+
     function get_view_types()
     {
         return array('rss');
@@ -39,6 +53,8 @@ class Widget_Home extends Widget
     
     function new_child_widget_from_input()
     {        
-        return $this->get_widget_by_name(get_input('uniqid'));
+        $uniqid = get_input('uniqid');
+        return $this->get_widget_by_name($uniqid)
+            ?: Widget_Generic::new_for_entity($this, array('widget_name' => $uniqid));
     }
 }

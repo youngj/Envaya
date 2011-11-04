@@ -73,7 +73,7 @@ class Session
 
         static::set('login_time', timestamp());
         static::set('login_ip', Request::get_client_ip());
-        static::set('login_user_agent', $_SERVER['HTTP_USER_AGENT']);
+        static::set('login_user_agent', @$_SERVER['HTTP_USER_AGENT']);
         
         EventRegister::trigger_event('login','user',$user);        
         

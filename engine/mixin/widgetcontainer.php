@@ -7,106 +7,59 @@
  *  - Widget (child widgets could be shown as a sub menu, or as embedded sections depending on type of widget)
  */
 class Mixin_WidgetContainer extends Mixin
-{        
-    public function query_widgets()
+{  
+    function query_widgets()
     {
-        return Widget::query()
-            ->where('container_guid=?', $this->guid)
-            ->order_by('menu_order');
+        return Widget::query_for_entity($this->instance);
     }
-    
-    public function query_published_widgets()
+                  
+    function query_menu_widgets()
     {
-        return $this->query_widgets()
-            ->where('publish_status = ?', Widget::Published);
+        return $this->query_widgets()->where_in_menu();
     }
 
-    public function query_menu_widgets()
+    function query_published_widgets()
     {
-        return $this->query_published_widgets()->where('in_menu = 1');
-    }    
-    
-    public function query_widgets_by_class($subclass)
-    {
-        return $this->query_widgets()->where('subclass = ?', $subclass);
+        return $this->query_widgets()->where_published();
     }    
     
     /*
      * Returns a list of widgets that are available to add as children of this container,
      * not including any widgets that are already created
      */
-    public function get_available_widgets($mode)
+    function get_available_widgets($category)
     {       
-        $savedWidgetsMap = array();                
+        $saved_classes = array();
         
-        $query = $this->query_widgets()
-            ->columns('guid,container_guid,owner_guid,language,widget_name,subclass,handler_arg,title');
+        $saved_widgets = Widget::query_for_entity($this->instance)
+            ->columns('guid,container_guid,subtype_id')
+            ->filter();
         
-        foreach ($query->filter() as $widget)
+        foreach ($saved_widgets as $widget)
         {
-            $savedWidgetsMap[$widget->widget_name] = $widget;
+            $saved_classes[get_class($widget)] = true;
         }
 
-        $availableWidgets = array();
-        foreach (Widget::get_default_names() as $name)
+        $available_widgets = array();
+        foreach (Widget::get_default_classes($category) as $cls)
         {
-            if (!isset($savedWidgetsMap[$name]) && @Widget::$default_widgets[$name][$mode])
+            if (!isset($saved_classes[$cls]))
             {
-                $availableWidgets[] = $this->new_widget_by_name($name);
-            }            
-        }        
-        usort($availableWidgets, array('Widget', 'sort'));
-        return $availableWidgets; 
+                $available_widgets[] = $cls::new_for_entity($this->instance);
+            }
+        }
+        
+        usort($available_widgets, array('Widget', 'sort'));
+        return $available_widgets; 
     }        
-        
-    public function new_widget_by_name($widget_name, $default_subclass = 'Generic')
-    {
-        $props = @Widget::$default_widgets[$widget_name] ?: array();
-        
-        $subclass = (@$props['subclass'] ?: $default_subclass);
-        
-        $cls = "Widget_{$subclass}";
-        
-        $widget = new $cls();
-        $widget->widget_name = $widget_name;    
-        $widget->container_guid = $this->guid;        
-        $widget->menu_order = @$props['menu_order'] ?: 1000;
-        $widget->subclass = $subclass;
-
-        return $widget;
-    }            
     
-    public function new_widget_by_class($subclass)
-    {
-        $default_names = Widget::get_default_names_by_class($subclass);
-        if (sizeof($default_names))
-        {
-            return $this->new_widget_by_name($default_names[0]);
-        }
-        else
-        {
-            return $this->new_widget_by_name(uniqid("",true), $subclass);
-        }
-    }
-        
-    public function get_widget_by_class($subclass)
-    {
-        return $this->query_widgets()
-            ->where('subclass = ?', $subclass)
-            ->show_disabled(true)
-            ->order_by('status desc') // prefer enabled over disabled widgets
-            ->get()
-        ?: $this->new_widget_by_class($subclass);        
-    }
-    
-    public function get_widget_by_name($name, $default_subclass = 'Generic')
+    public function get_widget_by_name($name)
     {
         return $this->query_widgets()
             ->where('widget_name=?', $name)
             ->show_disabled(true)
-            ->get()
-            ?: $this->new_widget_by_name($name, $default_subclass);
-    }        
+            ->get();
+    }
     
     function is_section_container()
     {
@@ -130,6 +83,11 @@ class Mixin_WidgetContainer extends Mixin
     
     function new_child_widget_from_input()
     {        
+        return null;
+    }
+    
+    function get_default_widget_class_for_name($widget_name)
+    {
         return null;
     }
     

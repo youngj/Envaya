@@ -20,12 +20,10 @@
 <div class='input' style='clear:both'>
 <label><?php echo __('featured:text'); ?></label>
 <?php
-    $homeWidget = $org->get_widget_by_name('home');
-    
     echo view('input/tinymce',
         array(
             'name' => 'content',
-            'value' => $homeWidget->content,
+            'value' => '',
             'track_dirty' => true
         )
     );

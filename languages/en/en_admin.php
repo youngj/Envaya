@@ -81,9 +81,8 @@ return array(
     'active' => 'Active',
     'total' => 'Total',
             
-    'widget:invalid_class' => 'The handler %s was not found.',
     'widget:options' => 'Page Options',
-    'widget:handler' => 'Page Handler (PHP Class Name)',
+    'widget:subtype_id' => 'Page subtype_id',
     'widget:handler_arg' => 'Page Handler Argument (optional)',
     'widget:menu_order' => 'Menu Order',
     'widget:in_menu' => 'Show in Menu?',

@@ -414,7 +414,9 @@ class SMS_Controller_News extends SMS_Controller
                 echo "{$user->get_primary_phone_number()}\n";
             }         
             
-            if ($user->get_widget_by_class('News')->query_published_widgets()->exists())
+            $news = Widget_News::get_for_entity($user);
+            
+            if ($news && $news->is_enabled() && $news->query_published_widgets()->exists())
             {
                 echo __('sms:user_news')."\n";
             }
@@ -447,8 +449,8 @@ class SMS_Controller_News extends SMS_Controller
         $this->set_user_context($user);
         $this->set_page_action('news');
         
-        $news = $user->get_widget_by_class('News');
-        if ($news->is_enabled())
+        $news = Widget_News::get_for_entity($user);
+        if ($news && $news->is_enabled())
         {
             $query = $news->query_published_widgets()
                 ->order_by('time_published desc, guid desc');
@@ -640,20 +642,22 @@ class SMS_Controller_News extends SMS_Controller
         }
     }    
     
+    /*
     function view_discussions($user, $page = 1)
     {
         $this->check_access($user);    
         $this->set_user_context($user);
         $this->set_page_action('discussions');
         
-        $discussions = $user->get_widget_by_class('Discussions');
-        if ($discussions->is_enabled())
+        $discussions = Widget_Discussions::get_for_entity($user);
+        if ($discussions && $discussions->is_enabled())
         {
         }
         else
         {
         }
     } 
+    */
         
     /*
     function action_discussions($page = 1)
@@ -974,13 +978,9 @@ class SMS_Controller_News extends SMS_Controller
         $this->set_default_action(null);
         $this->set_user_context(null);
         
-        $news = $user->get_widget_by_class('News');
-        if (!$news->guid)
-        {
-            $news->save();
-        }
+        $news = Widget_News::get_or_init_for_entity($user);
         
-        $post = $news->new_widget_by_class('SMSPost');
+        $post = Widget_SMSPost::new_for_entity($news);
         $post->owner_guid = $user->guid;
         $post->set_content($message);
         $post->set_metadata('phone_number', $this->request->get_from_number());

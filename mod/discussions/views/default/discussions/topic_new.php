@@ -15,11 +15,14 @@
     echo view('input/tinymce', array('name' => 'content'));    
     echo view('widgets/comment_user_info');
     
-    $widget = $user->get_widget_by_class('Discussions');    
+    $widget = Widget_Discussions::get_for_entity($user);    
     
-    echo "<div style='float:right'><br /><br />";    
-    echo "<a href='{$widget->get_url()}'>".__('discussions:back_to_topics'). "</a>";
-    echo "</div>";
+    if ($widget)
+    {
+        echo "<div style='float:right'><br /><br />";    
+        echo "<a href='{$widget->get_url()}'>".__('discussions:back_to_topics'). "</a>";
+        echo "</div>";
+    }
 
     echo view('input/uniqid');    
     echo view('input/securitytoken');

@@ -4,7 +4,7 @@
 <div class='input'>
 <label><?php echo __('widget:address'); ?></label>
 <div class='websiteUrl'>
-<?php echo $user->get_url() . "/page/" . view('input/text', array(
+<?php echo abs_url($user->get_url()) . "/page/" . view('input/text', array(
     'name' => 'widget_name', 
     'id' => 'widget_name', 
     'value' => @$vars['value'],

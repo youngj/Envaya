@@ -59,7 +59,7 @@ class Markup_HtmlDeflater
     {
         $attributes = $node->attributes;
         
-        if ($attributes->length)
+        if ($attributes && $attributes->length)
         {
             $id = $node->getAttribute('id');
             $node->removeAttribute('id');
@@ -101,7 +101,7 @@ class Markup_HtmlDeflater
         {
             $node->data = trim(preg_replace('#\s+#', ' ', $node->data));
         }    
-        if ($attributes->length)
+        if ($attributes && $attributes->length)
         {
             $attr_map = array();
             $old_attrs = array();

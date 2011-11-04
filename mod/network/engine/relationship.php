@@ -86,7 +86,7 @@ class Relationship extends Entity
     function get_url()
     {
         $org = $this->get_container_entity();
-        $widget = $org->get_widget_by_class('Network');        
+        $widget = Widget_Network::get_or_new_for_entity($org);
         return $widget->get_url() . "#r{$this->guid}";
     }
     
@@ -222,7 +222,8 @@ class Relationship extends Entity
     function send_invite_email()
     {
         $org = $this->get_container_entity();
-        $widget = $org->get_widget_by_class('Network');
+        $widget = Widget_Network::get_for_entity($org);
+        
         $email = $this->subject_email;
         
         if (!$email || $this->subject_guid || !$widget)

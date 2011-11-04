@@ -14,11 +14,7 @@ class Action_User_AddPhotos extends Action
         $uniqid = get_input('uniqid');
         $user = $this->get_user();
         
-        $news = $user->get_widget_by_class('News');
-        if (!$news->guid)
-        {
-            $news->save();
-        }
+        $news = Widget_News::get_or_init_for_entity($user);
         
         $duplicates = $news->query_widgets()->with_metadata('uniqid', $uniqid)->filter();
         
@@ -58,7 +54,7 @@ class Action_User_AddPhotos extends Action
                 $body .= "<p>".view('input/longtext', array('value' => $imageCaption))."</p>";
             }
                         
-            $post = $news->new_widget_by_class('Post');
+            $post = Widget_Post::new_for_entity($news);
             $post->set_owner_entity(Session::get_logged_in_user());
             $post->set_content($body);
             $post->set_metadata('uniqid', $uniqid);

@@ -5,6 +5,19 @@
  */
 class Widget_Mission extends Widget_Generic
 {
+    static $default_menu_order = 100;
+    static $default_widget_name = 'mission';    
+    
+    function get_default_title()
+    {
+        return __("widget:mission");
+    }
+
+    function get_edit_heading()
+    {
+        return __('widget:mission:label');
+    }    
+
     function process_input($action)
     {    
         $mission = get_input('content');

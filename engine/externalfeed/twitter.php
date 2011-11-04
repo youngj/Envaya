@@ -6,9 +6,9 @@
  */
 class ExternalFeed_Twitter extends ExternalFeed
 {
-    function get_widget_subclass()
+    function get_widget_class()
     {
-        return 'Tweet';
+        return 'Widget_Tweet';
     }
     
     static function try_new_from_document($dom, $url)

@@ -10,14 +10,14 @@
 <?php echo __('register:mission:help') ?>
 </div>
 <?php 
-    $home = $org->get_widget_by_class('Home');    
-    $mission = $home->get_widget_by_class('Mission');
+    $home = Widget_Home::get_for_entity($org);
+    $mission = $home ? Widget_Mission::get_for_entity($home) : null;
     
     echo view('input/tinymce', array(
         'name' => 'mission',
         'autoFocus' => true,
         'track_dirty' => true,        
-        'value' => $mission->content
+        'value' => $mission ? $mission->content : ''
     )); 
 ?>
 </div>

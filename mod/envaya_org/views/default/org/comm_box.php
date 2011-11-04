@@ -11,18 +11,10 @@
             $controls[] = "<a href='{$org->get_url()}/send_message'>".__('message:link')."</a>";
         }
         
-        $networkPage = $loggedInOrg->get_widget_by_class('Network');
         
         if (Relationship::query_for_user($loggedInOrg)->where('subject_guid = ?', $org->guid)->is_empty())
         {        
-            /*
-            $controls[] = view('widgets/network_add_relationship_link', array(
-                'widget' => $networkPage, 
-                'org' => $org, 
-                'type' => Relationship::Membership
-            ));
-            */
-            
+            $networkPage = Widget_Network::get_or_new_for_entity($loggedInOrg);            
             $controls[] = view('widgets/network_add_relationship_link', array(
                 'widget' => $networkPage, 
                 'org' => $org, 

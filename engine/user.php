@@ -525,10 +525,6 @@ abstract class User extends Entity
         {
             throw new ValidationException(strtr(__('register:passwordtooshort'), array('{min}' => $min_length)));
         }       
-
-        $lpassword = strtolower($password);
-        $lusername = strtolower($username);
-        $lname = strtolower($name);
                 
         if (PasswordStrength::calculate($password, $easy_words) < $min_strength)
         {
@@ -747,6 +743,13 @@ abstract class User extends Entity
         return $this->get_url() . "/dashboard";
     }    
     
+    function get_default_widget_class_for_name($widget_name)
+    {
+        return Widget::get_default_class_for_name($widget_name)
+            ?: Widget::get_default_class_for_name($widget_name, 'hidden_page')
+            ?: 'Widget_Generic';
+    }
+    
     function new_child_widget_from_input()
     {        
         $widget_name = get_input('widget_name');
@@ -756,14 +759,20 @@ abstract class User extends Entity
         }
         
         $widget = $this->get_widget_by_name($widget_name);
-        
-        if ($widget->guid && ((timestamp() - $widget->time_created > 30) || !($widget instanceof Widget_Generic)))
+        if ($widget)
         {
-            throw new ValidationException(
-                sprintf(__('widget:duplicate_name'),
-                    "<a href='{$widget->get_edit_url()}'><strong>".__('clickhere')."</strong></a>"),
-                true
-            );
+            if ((timestamp() - $widget->time_created > 30) || !($widget instanceof Widget_Generic))
+            {        
+                throw new ValidationException(
+                    sprintf(__('widget:duplicate_name'),
+                        "<a href='{$widget->get_edit_url()}'><strong>".__('clickhere')."</strong></a>"),
+                    true
+                );
+            }
+        }
+        else
+        {
+            $widget = Widget_Generic::new_for_entity($this, array('widget_name' => $widget_name));
         }
         return $widget;
     }

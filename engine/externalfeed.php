@@ -41,7 +41,7 @@ class ExternalFeed extends Entity
         '#://[^/]*twitter\.com#i' => 'ExternalFeed_Twitter',
     );
     
-    function get_widget_subclass() { throw new NotImplementedException(); }
+    function get_widget_class() { throw new NotImplementedException(); }
     protected function _update() { throw new NotImplementedException(); }
     protected function get_entry_external_id($entry) { throw new NotImplementedException(); }   
     protected function get_entry_title($entry) { throw new NotImplementedException(); }    
@@ -99,11 +99,15 @@ class ExternalFeed extends Entity
         // ensure widget_name is less than size of database column        
         $widget_name = "{$this->subtype_id}:" . ((strlen($id) < 90) ? $id : md5($id));
         $container = $this->get_container_entity();
-                
-        return $container->get_widget_by_name(
-            $widget_name, 
-            $this->get_widget_subclass()
-        );
+            
+        $widget = $container->get_widget_by_name($widget_name);
+        if (!$widget)
+        {
+            $widget_class = $this->get_widget_class();
+            $widget = $widget_class::new_for_entity($container);
+            $widget->widget_name = $widget_name;
+        }
+        return $widget;
     }
     
     static function update_by_guid($guid)

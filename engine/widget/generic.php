@@ -6,6 +6,18 @@
  */
 class Widget_Generic extends Widget
 {
+    static $default_menu_order = 300;
+
+    function get_edit_heading()
+    {
+        return null;
+    }
+    
+    function get_edit_help()
+    {
+        return null;
+    }
+
     function render_view($args = null)
     {
         return view("widgets/generic_view", array('widget' => $this));
@@ -45,7 +57,7 @@ class Widget_Generic extends Widget
         
             $org = $this->get_container_entity();
             $other_widget = $org->get_widget_by_name($widget_name);                
-            if ($other_widget->guid)
+            if ($other_widget)
             {
                 throw new ValidationException(
                     sprintf(__('widget:duplicate_name'),

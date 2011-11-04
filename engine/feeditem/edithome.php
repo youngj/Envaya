@@ -19,7 +19,10 @@ class FeedItem_EditHome extends FeedItem
         if ($mode != 'self')
         {
             $user = $this->get_user_entity();
-            return view('feed/home', array('user' => $user, 'home_widget' => $user->get_widget_by_name('home')));
+            return view('feed/home', array(
+                'user' => $user, 
+                'home_widget' => Widget_Home::get_for_entity($user)
+            ));
         }        
         return '';
     }

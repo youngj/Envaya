@@ -11,6 +11,7 @@ class TranslationKey extends Entity
         'num_translations' => 0,
         'best_translation' => '',
         'best_translation_guid' => 0,
+        'best_translation_hash' => '',
         'best_translation_approval' => 0,
     );    
     
@@ -27,11 +28,13 @@ class TranslationKey extends Entity
         {
             $this->best_translation = $best->value;
             $this->best_translation_guid = $best->guid;
+            $this->best_translation_hash = $best->default_value_hash;
             $this->best_translation_approval = $best->approval;
         }
         else
         {
             $this->best_translation = '';
+            $this->best_translation_hash = '';
             $this->best_translation_guid = 0;
         }
         $this->save();

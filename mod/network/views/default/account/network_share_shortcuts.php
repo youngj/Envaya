@@ -1,6 +1,6 @@
 <?php
     $user = $vars['user'];
-    $network = $user->get_widget_by_class('Network');
+    $network = Widget_Network::get_or_new_for_entity($user);
 ?>
 
 <script type='text/javascript'>

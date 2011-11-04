@@ -60,13 +60,42 @@ class Controller_UserSite extends Controller_User
         $widget_name = $this->param('widget_name');
      
         $container = Widget::get_by_guid($container_guid, true);
-        return $this->init_widget($container ? $container->get_widget_by_name($widget_name) : null);
-    }
+        
+        $widget = null;
+        
+        if ($container)
+        {
+            $widget = $container->get_widget_by_name($widget_name);
+            if (!$widget)
+            {
+                $cls = $container->get_default_widget_class_for_name($widget_name);                
+                if ($cls)
+                {
+                    $widget = $cls::new_for_entity($container, array('widget_name' => $widget_name));
+                }
+            }            
+        }
+        
+        return $this->init_widget($widget);
+    }    
 
     protected function init_widget_from_name()
     {
-        $widgetName = $this->param('widget_name');
-        $this->init_widget($this->get_user()->get_widget_by_name($widgetName));
+        $widget_name = $this->param('widget_name');
+        
+        $user = $this->get_user();
+        
+        $widget = $user->get_widget_by_name($widget_name);
+        if (!$widget)
+        {
+            $cls = $user->get_default_widget_class_for_name($widget_name);                
+            if ($cls)
+            {
+                $widget = $cls::new_for_entity($user, array('widget_name' => $widget_name));
+            }
+        }
+        
+        $this->init_widget($widget);
     }    
      
     protected function init_widget($widget)
@@ -108,7 +137,7 @@ class Controller_UserSite extends Controller_User
         $widgetName = $this->param('widget_name');
         $widget = $user->get_widget_by_name($widgetName);
         
-        if (!$widget->is_enabled())
+        if (!$widget || !$widget->is_enabled())
         {
             throw new NotFoundException();            
         }

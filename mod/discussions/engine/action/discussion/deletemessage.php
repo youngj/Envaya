@@ -31,7 +31,9 @@ class Action_Discussion_DeleteMessage extends Action
             $topic->disable();
             $topic->save();
             
-            $this->redirect($this->get_user()->get_widget_by_class('Discussions')->get_url());
+            $this->redirect(
+                Widget_Discussions::get_or_new_for_entity($this->get_user())->get_url()
+            );
         }
         else
         {

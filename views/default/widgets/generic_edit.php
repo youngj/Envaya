@@ -4,7 +4,7 @@
     
     ob_start();
     
-    $is_custom_widget = !in_array($widget->widget_name, Widget::get_default_names());
+    $is_custom_widget = !$widget->get_default_title();
     
     if ($widget->title || $is_custom_widget)
     {    

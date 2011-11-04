@@ -11,7 +11,13 @@ class Action_Widget_Options extends Action
     {        
         $widget = $this->get_widget();
         
-        $widget->subclass = get_input('subclass');
+        $widget->subtype_id = get_input('subtype_id');
+        
+        if (!ClassRegistry::get_class($widget->subtype_id))
+        {
+            throw new ValidationException("subtype_id {$widget->subtype_id} not found");
+        }
+        
         $widget->handler_arg = get_input('handler_arg');
         $widget->title = get_input('title');
         $widget->menu_order = (int)get_input('menu_order');

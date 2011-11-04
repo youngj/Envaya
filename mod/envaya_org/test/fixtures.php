@@ -14,21 +14,35 @@ return function() {
     $envaya->approval = 1;
     $envaya->save();
     
-    $home = $envaya->get_widget_by_name('home');
-    $home->subclass = 'Hardcoded';
+    $home = Widget_Home::get_for_entity($envaya);
+    if ($home)
+    {
+        $home->delete();
+    }
+    
+    $home = $envaya->get_widget_by_name('home') ?: Widget_Hardcoded::new_for_entity($envaya);
+    $home->menu_order = 0;
+    $home->widget_name = 'home';
     $home->handler_arg = 'page/about';
     $home->title = 'About Us';
     $home->save();
       
-    $envaya->get_widget_by_name('news')->save();
+    Widget_News::get_or_init_for_entity($envaya);
+    
+    $contact = Widget_Contact::get_for_entity($envaya);
+    if ($contact)
+    {
+        $contact->delete();
+    }
 
-    $contact = $envaya->get_widget_by_name('contact');
-    $contact->subclass = 'Hardcoded';
+    $contact = $envaya->get_widget_by_name('contact') ?: Widget_Hardcoded::new_for_entity($envaya);
+    $contact->widget_name = 'contact';
+    $contact->title = 'Contact';
     $contact->handler_arg = 'page/contact';
     $contact->save();
 
-    $donate = $envaya->get_widget_by_name('contribute');
-    $donate->subclass = 'Hardcoded';
+    $donate = $envaya->get_widget_by_name('contribute') ?: Widget_Hardcoded::new_for_entity($envaya);
+    $donate->widget_name = 'contribute';
     $donate->handler_arg = 'page/donate';
     $donate->title = 'Contribute';
     $donate->in_menu = 1;

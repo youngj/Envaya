@@ -17,7 +17,7 @@ class Engine
     static function init()
     {       
         require_once __DIR__."/config.php";
-        Config::load();        
+        Config::load();                
         
         $root = Config::get('root');
         static::$path_cache = @include("$root/build/path_cache.php") ?: array();
@@ -38,7 +38,7 @@ class Engine
         
         // do things that depend on autoload 
         set_error_handler('php_error_handler');
-        set_exception_handler('php_exception_handler');
+        set_exception_handler('php_exception_handler');       
         
         EventRegister::register_handler('all', 'all', 'system_log_listener', 400);
         register_shutdown_function(array('Engine', 'shutdown'));

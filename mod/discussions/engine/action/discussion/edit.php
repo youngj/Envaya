@@ -18,7 +18,7 @@ class Action_Discussion_Edit extends Action
             $topic->save();
             SessionMessages::add(__('discussions:topic_deleted'));            
             
-            $widget = $user->get_widget_by_class('Discussions');
+            $widget = Widget_Discussions::get_or_new_for_entity($user);
             $this->redirect($widget->get_edit_url());
         }
         else

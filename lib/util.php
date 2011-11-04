@@ -88,7 +88,7 @@
     
     function css_url($css_name)
     {
-        if (Config::get('debug'))
+        if (Config::get('debug_media'))
         {
             return "/pg/css?name=$css_name&hash=" . md5(view("css/$css_name", 'default'));
         }
@@ -157,7 +157,7 @@
 
     function get_inline_js($js_path)
     {
-        if (Config::get('debug'))
+        if (Config::get('debug_media'))
         {
             $path = Engine::get_real_path("js/$js_path");
             if (!$path)
