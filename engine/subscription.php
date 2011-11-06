@@ -30,7 +30,7 @@ abstract class Subscription extends Entity
      */
     static function send_notifications($event_name, $notifier)
     {                                
-        foreach (static::get_subscriptions($notifier) as $subscription)
+        foreach (static::get_subscriptions($notifier->get_container_entity()) as $subscription)
         {
             $subscription->send_notification($event_name, $notifier);
         }
@@ -38,11 +38,11 @@ abstract class Subscription extends Entity
     
     /*
      * Gets a list of all subscriptions for this subscription type
-     * on all entities containing $notifier (not including $notifier itself)
+     * on all entities containing $entity (including $entity itself)
      */
-    static function get_subscriptions($notifier)
+    static function get_subscriptions($entity)
     {
-        $cur = $notifier->get_container_entity();                   
+        $cur = $entity;                   
         
         $subscription_lists = array();
         
@@ -79,8 +79,15 @@ abstract class Subscription extends Entity
         }
         
         return $res;
-    }   
+    }       
     
+    protected function notification_sent()
+    {
+        $this->last_notification_time = timestamp();
+        $this->num_notifications += 1;
+        $this->save();
+    }
+        
     abstract function get_key();
     
     abstract function get_recipient_description();

@@ -200,7 +200,7 @@ class NetworkTest extends SeleniumTest
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();
         
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->logout();
         
         // click email link to add reverse relationship
         $this->open('/testposter16/network');
@@ -247,7 +247,7 @@ class NetworkTest extends SeleniumTest
         $this->mustNotExist("//div[@class='feed_content' and .//a[contains(@href,'testorg')] and .//a[contains(@href,'testposter11')]]");        
         $this->mustNotExist("//div[@class='feed_content' and .//a[contains(@href,'testposter15')] and .//a[contains(@href,'testposter16')]]");                
 
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->logout();
                                 
         // make sure non-existent org shows up properly, and link in invite email goes to correct URL
         $networkLink = $this->getLinkFromText($inviteEmail, 0);
@@ -321,7 +321,7 @@ class NetworkTest extends SeleniumTest
         $this->assertNotContains('/network', $adminEmail);
         $this->assertContains("New organization registered", $adminEmail);
                 
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");                
+        $this->logout();
                 
         // log in as admin and approve
         $loginUrl = $this->getLinkFromText($adminEmail);
@@ -345,7 +345,7 @@ class NetworkTest extends SeleniumTest
         $this->mouseOver("//h3//a[contains(@href, '$inviteUsername')]");         
 
         // test inviting partner organizations to discussions
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->logout();
         $this->open("/pg/login");
         $this->login('testorg','asdfasdf');
         

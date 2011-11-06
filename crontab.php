@@ -34,6 +34,10 @@ return array(
         'cmd' => "php scripts/notify_status.php"
     ),    
     array(
+        'interval' => Config::get('scheduled_events_interval'),
+        'cmd' => "php scripts/scheduled_events.php"
+    ),
+    array(
         'interval' => Config::get('check_external_feeds_interval'),
         'cmd' => "php scripts/check_external_feeds.php"
     )

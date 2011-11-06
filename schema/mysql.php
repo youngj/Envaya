@@ -316,6 +316,7 @@ CREATE TABLE `sms_subscriptions` (
     `language` varchar(4) null,
     `phone_number` varchar(32) not null,
     `local_id` int not null,
+    `name` text not null,
     `last_notification_time` int(11) NOT NULL default 0,
     `num_notifications` int(11) NOT NULL default 0,
     KEY `subtype_id` (`subtype_id`),
@@ -330,6 +331,18 @@ CREATE TABLE `email_subscriptions` (
     `name` text not null,
     `last_notification_time` int(11) NOT NULL default 0,
     `num_notifications` int(11) NOT NULL default 0,
+    KEY `subtype_id` (`subtype_id`)
+) ENGINE = MYISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `scheduled_events` (
+    <?php require 'schema/entity_columns.php'; ?>,
+    `subtype_id` varchar(63) not null,	
+    `rrule` text not null default '',
+    `start_time` int null,
+    `end_time` int null,
+    `prev_time` int null,
+    `next_time` int null,    
+    KEY `next_time` (`next_time`),
     KEY `subtype_id` (`subtype_id`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;
 

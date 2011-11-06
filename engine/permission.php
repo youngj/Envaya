@@ -204,6 +204,22 @@ abstract class Permission extends Entity
         return "{$this->guid}: type={$type} scope={$this->container_guid} username={$user->username}";
     }
     
+    static function filter_for_entity($entity)
+    {
+        $cur = $entity;
+        $permissions = array();
+        
+        while ($cur != null)
+        {
+            foreach (static::query_for_entity($cur)->filter() as $permission)
+            {
+                $permissions[] = $permission;
+            }            
+            $cur = $cur->get_container_entity();
+        }        
+        return $permissions;
+    }
+    
     static function query_for_entity($entity)
     {
         return static::query()->where('container_guid = ?', $entity->guid);

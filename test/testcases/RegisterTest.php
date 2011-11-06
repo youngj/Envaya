@@ -30,7 +30,7 @@ class RegisterTest extends SeleniumTest
     
     private function _testResetPassword()
     {
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->logout();
         $this->clickAndWait("//a[contains(@href,'pg/login')]");
         $this->clickAndWait("//a[contains(@href,'pg/forgot_password')]");
         $this->type("//input[@name='username']", $this->username);
@@ -61,7 +61,7 @@ class RegisterTest extends SeleniumTest
         
         // test reset password by sms
         
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->logout();
         $this->clickAndWait("//a[contains(@href,'pg/login')]");
         $this->clickAndWait("//a[contains(@href,'pg/forgot_password')]");
         
@@ -548,7 +548,7 @@ class RegisterTest extends SeleniumTest
         $this->submitForm();
         
         // test new password works for login
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->logout();
         $this->clickAndWait("//a[contains(@href,'pg/login')]");
         $this->login($this->username, 'password');
         $this->ensureBadMessage();        
@@ -593,7 +593,7 @@ class RegisterTest extends SeleniumTest
         $this->mouseOver("//h2//a[text()='New Name']");
         
         // test new username works for login
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->logout();
         $this->clickAndWait("//a[contains(@href,'pg/login')]");
         $this->login($oldUsername, 'dglkjwr');
         $this->ensureBadMessage();
@@ -603,7 +603,7 @@ class RegisterTest extends SeleniumTest
 
     private function _testMakePublic()
     {
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->logout();
         $this->clickAndWait("//a[contains(@href,'pg/feed')]");
         $this->mustNotExist("//a[contains(@href, '/{$this->username}')]");
         $this->clickAndWait("//a[contains(@href,'pg/search')]");
@@ -622,7 +622,7 @@ class RegisterTest extends SeleniumTest
         $this->getConfirmation();
         $this->ensureGoodMessage();
 
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->logout();
 
         $this->clickAndWait("//a[contains(@href,'pg/search')]");
         $this->type("//input[@name='q']", $this->username);
@@ -678,8 +678,7 @@ class RegisterTest extends SeleniumTest
 
         $this->ensureGoodMessage();
 
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
-        $this->retry('mouseOver', array("//a[@id='loginButton']"));
+        $this->logout();
 
         $email = $this->getLastEmail("New organization registered: Test Partner");
         $url = $this->getLinkFromText($email);
@@ -695,7 +694,7 @@ class RegisterTest extends SeleniumTest
         $this->getConfirmation();
         $this->ensureGoodMessage();
 
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->logout();
         
         $this->open('/pg/login');
         $this->login($this->username, 'dglkjwr');
@@ -745,6 +744,6 @@ class RegisterTest extends SeleniumTest
         $this->waitForPageToLoad(10000);            
 
         $this->ensureGoodMessage();
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->logout();
     }
 }

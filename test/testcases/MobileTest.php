@@ -117,7 +117,7 @@ class MobileTest extends SeleniumTest
         $this->submitForm();
         $this->mouseOver("//div[contains(text(), '{$this->post_content}')]");
         $this->goToMainMenu();
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");     
+        $this->logout();
     }
     
     private function _testFeed()
@@ -147,4 +147,11 @@ class MobileTest extends SeleniumTest
         
         $this->goToMainMenu();        
     }
+    
+    function logout()
+    {
+        $this->clickAndWait("//a[contains(@href,'pg/logout')]");        
+        $this->submitForm();
+        $this->waitForElement("//a[contains(@href,'pg/login')]");    
+    }        
 }

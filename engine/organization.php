@@ -17,7 +17,7 @@ class Organization extends User
     
     public function get_continue_setup_url()
     {
-        return "/org/new?step={$this->setup_state}";
+        return "/org/create_profile";
     }        
     
     function init_default_widgets()

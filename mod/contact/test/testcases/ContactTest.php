@@ -90,7 +90,7 @@ class ContactTest extends SeleniumTest
         $url = str_replace('+', '%2B', $url); // dom document seems to unescape urls?
         
         // unsubscribe testposter10
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");       
+        $this->logout();
         
         $this->open($url);
         $this->retry('uncheck', array("//label[contains(text(),'announcements')]//input"));

@@ -29,7 +29,7 @@ class TranslateTest extends SeleniumTest
         $this->deleteAllTranslations();
         $this->deleteAllComments();
         
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->logout();
             
         $this->_testTranslateUserContent();
         $this->_testTranslateInterface();

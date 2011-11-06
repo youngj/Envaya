@@ -31,4 +31,5 @@ return array(
     
     'user:location:success' => "Eneo lako limebadilishwa.",
     'user:self_dashboard' => "Vifaa vya Mtumiaji",
+    'user:logout_instructions' => "Bonyeza kitufe hapo chini ili kuondoka akaunti yako ya Envaya.",
 );

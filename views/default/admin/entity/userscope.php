@@ -36,7 +36,8 @@
         foreach ($users as $user)
         {
             $approval = $user->is_approved() ? "" : 
-                ($user->approval == User::Rejected ? "(rejected)" : "(not yet approved)");
+                ($user->approval == User::Rejected ? "(rejected)" : 
+                    ($user->is_setup_complete() ? "(not yet approved)" : "(setup incomplete)"));
         
             $items[] = "<a href='{$user->get_admin_url()}'>".escape($user->get_title())."</a> $approval";
         }

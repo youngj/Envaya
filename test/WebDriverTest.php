@@ -146,6 +146,11 @@ class WebDriverTest extends SeleniumTest
         $this->type($xpath,str_replace("/","\\", $file));
     }
     
+    public function submitForm($button = "//button[@type='submit']")
+    {
+        $this->waitForElement($button)->click();
+    }
+    
     function getValue($xpath)
     {
         return $this->xpath($xpath)->getValue();

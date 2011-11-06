@@ -4,8 +4,15 @@
 <table style='width:100%'>
 <tr>
 <td>
-    <?php echo view('account/links_items', array('user' => $user)); ?>
-    <a class='icon_link icon_logout' href='/pg/logout'><?php echo __('logout') ?></a>    
+    <?php 
+        echo view('account/links_items', array('user' => $user)); 
+        
+        echo view('input/post_link', array(
+            'href' => '/pg/logout',
+            'text' => __('logout'),
+            'class' => 'icon_link icon_logout',
+        ));
+    ?>
 </td>
 <td>
     <a class='icon_link icon_explore' href='/pg/browse'><?php echo __("browse:title") ?></a>

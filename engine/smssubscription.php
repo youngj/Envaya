@@ -7,10 +7,11 @@ abstract class SMSSubscription extends Subscription
     static $table_attributes = array(    
         'subtype_id' => '',
         'language' => '',
+        'name' => '',
         'phone_number' => '',
         'local_id' => 0,        // each phone_number has its own local_id namespace
+        'num_notifications' => 0,        
         'last_notification_time' => 0,
-        'num_notifications' => 0,
     );
     
     // subscriptions that each user's primary phone number is automatically subscribed to for their own account
@@ -86,7 +87,7 @@ abstract class SMSSubscription extends Subscription
     function get_name()
     {
         $owner = $this->get_owner_entity();
-        return $owner ? $owner->name : "(unknown name)";
+        return $owner ? $owner->name : ($this->name ?: "(unknown name)");
     }       
     
     function get_recipient_description()
@@ -156,11 +157,10 @@ abstract class SMSSubscription extends Subscription
             $sms->notifier_guid = $notifier->guid;
         }
         
+        $sms->to_name = $this->get_name();
         $sms->subscription_guid = $this->guid;        
         $sms->send();
         
-        $this->last_notification_time = $time;
-        $this->num_notifications += 1;
-        $this->save();
-    }       
+        $this->notification_sent();
+    }
 }

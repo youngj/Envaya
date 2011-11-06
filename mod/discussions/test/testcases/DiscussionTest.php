@@ -11,7 +11,7 @@ class DiscussionTest extends SeleniumTest
         $this->deleteDiscussions();
         
         // test can't add discussion if not logged in and page doesn't exist
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");
+        $this->logout();
         $this->open("/testorg/discussions");
         $this->retry('mouseOver', array("//div[contains(text(),'not found')]"));
         $this->open("/testorg/topic/new");
@@ -134,7 +134,7 @@ class DiscussionTest extends SeleniumTest
         $this->mouseOver("//span[@class='feed_snippet' and contains(text(),'message 0')]");
                 
         // test adding topic as non logged in user
-        $this->clickAndWait("//a[contains(@href,'/pg/logout')]");
+        $this->logout();
         $this->open("/testorg");
         $this->clickAndWait("//a[contains(@href,'/testorg/discussions')]");
         $this->clickAndWait("//a[contains(@href,'/topic/new')]");

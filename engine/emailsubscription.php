@@ -9,9 +9,9 @@ abstract class EmailSubscription extends Subscription
         'language' => '',
         'email' => '',
         'name' => '',
-        'last_notification_time' => 0,
         'num_notifications' => 0,
-    );    
+        'last_notification_time' => 0,
+    );
     
     // subscription that each user's email is automatically subscribed to for their own account
     static $self_subscription_classes = array(
@@ -74,7 +74,7 @@ abstract class EmailSubscription extends Subscription
                 {
                     $subscription->$prop = $val;
                 }
-            }                        
+            }
             $subscription->save();
         }
         
@@ -168,10 +168,6 @@ abstract class EmailSubscription extends Subscription
         $mail->subscription_guid = $this->guid;     
         $mail->send();
         
-        $time = timestamp();
-        
-        $this->last_notification_time = $time;
-        $this->num_notifications += 1;
-        $this->save();        
+        $this->notification_sent();
     }       
 }

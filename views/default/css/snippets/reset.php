@@ -78,7 +78,6 @@ pre, code {
     font-size:12px;
     background:#EBF5FF;
     overflow:auto;
-    width:530px !important; /* need explicit width in order for IE6 to wrap */
 
     overflow-x: auto; /* Use horizontal scroller if needed; for Firefox 2, not needed in Firefox 3 */
     white-space: pre-wrap; /* css-3 */

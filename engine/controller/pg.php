@@ -17,10 +17,10 @@ class Controller_Pg extends Controller
     
     function action_logout()
     {
-        Session::logout();
-        $this->redirect('/');
+        $action = new Action_Logout($this);
+        $action->execute();   
     }    
-
+    
     function action_register()
     {
         $action = new Action_Registration_RegisterPerson($this);

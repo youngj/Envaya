@@ -129,4 +129,5 @@ return array(
     'send_waiting_sms_interval' => 60,
     'check_external_feeds_interval' => 2,
     'check_sms_app_interval' => 60,
+    'scheduled_events_interval' => 720,
 );

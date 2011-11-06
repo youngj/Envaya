@@ -108,3 +108,9 @@
     height:21px;
     font-family:Verdana, sans-serif;
 }
+
+
+#main_content pre
+{
+    width:<?php echo ($contentWidth - 60); ?>px !important; /* need explicit width in order for IE6 to wrap */
+}
