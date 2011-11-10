@@ -63,7 +63,7 @@ class Action_ContactTemplate_Send extends Action
                 ->filter(); 
         }
         
-        PageContext::get_submenu('edit')->add_item(
+        PageContext::get_submenu('edit')->add_link(
             __('cancel'),
             get_input('from') ?: $template->get_url());
         

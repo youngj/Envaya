@@ -44,7 +44,12 @@ if (@Config::get('translate:footer_link'))
 
 Views::extend('page_elements/content_wrapper', 'page_elements/translate_bar', -1);
 Views::extend('css/default', 'css/default_translate');
-Views::extend('account/links_items', 'account/translate_links_items', -1);
+
+Engine::add_autoload_action('Hook_ViewDashboard', function() {
+    Hook_ViewDashboard::register_handler('Handler_TranslateViewDashboard');
+});
+
+Hook_RenderEntityProperty::register_handler('Handler_TranslateEntityField');
 
 if (@Config::get('translate:live_interface'))
 {

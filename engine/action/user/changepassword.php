@@ -75,7 +75,7 @@ class Action_User_ChangePassword extends Action
         $user = $this->get_user();
 
         $cancelUrl = $user->get_url()."/settings";
-        PageContext::get_submenu('edit')->add_item(__("cancel"), $cancelUrl);
+        PageContext::get_submenu('edit')->add_link(__("cancel"), $cancelUrl);
         
         $this->page_draw(array(
             'title' => __("user:password:change"),

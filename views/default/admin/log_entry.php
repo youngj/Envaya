@@ -1,25 +1,22 @@
 <?php
-
 	$entry = $vars['entry'];
 	
-	$by = User::get_by_guid($entry->user_guid);
-	$object = SystemLog::get_loggable_object($entry);
+	$user = $entry->get_user_entity();
+	$object = $entry->get_model_object();
 	
-    $obj_url = is_callable(array($object, 'get_url')) ? $object->get_url() : '';
-	
+    $obj_url = ($object && is_callable(array($object, 'get_url'))) ? $object->get_url() : '';	
 ?>	
-    <tr>
-    
+    <tr>    
         <td class="log_entry_time">
             <?php 
-                echo date('r', $entry->time_created ); 
+                echo date('r', $entry->time_created); 
             ?>
         </td>
         <td class="log_entry_user">
         <?php
-            if ($by) {
-                echo "<a href=\"".$by->get_url()."\">".escape($by->name)."</a>";
-                echo " <a href=\"?user_guid={$by->guid}\">" . $by->guid . "</a>"; 
+            if ($user) 
+            {
+                echo "<a href=\"".$user->get_url()."\">".escape($user->name)."</a>";
             } 
             else 
                 echo "&nbsp;";             
@@ -27,14 +24,13 @@
         <td>
         <td class="log_entry_item">
         <?php 
-                if ($obj_url) echo "<a href=\"$obj_url\">";
-                echo "{$entry->object_class}";
-                if ($obj_url) echo "</a>";
-                echo " " . $entry->object_id;
+            if ($obj_url) echo "<a href=\"$obj_url\">";
+            echo get_class($entry->get_model_object());
+            echo " ({$entry->object_id})";
+            if ($obj_url) echo "</a>";
         ?>
         </td>
         <td class="log_entry_action">            
-            <?php  echo __($entry->event); ?>            
+            <?php echo escape(__($entry->event_name)); ?>
         </td>
     </tr>
-	

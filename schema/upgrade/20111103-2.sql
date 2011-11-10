@@ -9,7 +9,7 @@ UPDATE widgets SET subtype_id = 'core.widget.post.sms' WHERE subclass = 'SMSPost
 UPDATE widgets SET subtype_id = 'core.widget.post.tweet' WHERE subclass = 'Tweet';
 UPDATE widgets SET subtype_id = 'core.widget.history' WHERE (subclass = 'Generic' and widget_name = 'history');
 UPDATE widgets SET subtype_id = 'core.widget.projects' WHERE (subclass = 'Generic' and widget_name = 'projects');
-UPDATE widgets SET subtype_id = 'core.widget.generic' WHERE subclass = 'Generic';
+UPDATE widgets SET subtype_id = 'core.widget.generic' WHERE subclass = 'Generic' and subtype_id is null;
 UPDATE widgets SET subtype_id = 'core.widget.hardcoded' WHERE subclass = 'Hardcoded';
 UPDATE widgets SET subtype_id = 'core.widget.home' WHERE subclass = 'Home';
 UPDATE widgets SET subtype_id = 'core.widget.links' WHERE subclass = 'Links';
@@ -21,6 +21,10 @@ UPDATE widgets SET subtype_id = 'core.widget.personprofile' WHERE subclass = 'Pe
 UPDATE widgets SET subtype_id = 'core.widget.sectors' WHERE subclass = 'Sectors';
 UPDATE widgets SET subtype_id = 'core.widget.team' WHERE subclass = 'Team';
 UPDATE widgets SET subtype_id = 'core.widget.updates' WHERE subclass = 'Updates';
+
+UPDATE widgets SET subtype_id = 'core.widget.network' WHERE subclass = 'Network';
+UPDATE widgets SET subtype_id = 'core.widget.discussions' WHERE subclass = 'Discussions';
+
 
 UPDATE widgets SET subtype_id = 'reports.widget.reportresponses' WHERE subclass = 'Reports';
 UPDATE widgets SET subtype_id = 'reports.widget.reportdefinitions' WHERE subclass = 'ReportDefinitions';

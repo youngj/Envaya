@@ -5,7 +5,11 @@
 <tr>
 <td>
     <?php 
-        echo view('account/links_items', array('user' => $user)); 
+        $links = PageContext::get_submenu('dashboard_links')->get_items();
+        
+        echo implode("<div class='icon_separator'></div>", $links);
+        
+        echo "<div class='icon_separator'></div>";
         
         echo view('input/post_link', array(
             'href' => '/pg/logout',

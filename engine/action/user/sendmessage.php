@@ -47,7 +47,7 @@ class Action_User_SendMessage extends Action
     {
         $user = $this->get_user();
         
-        PageContext::get_submenu('edit')->add_item(
+        PageContext::get_submenu('edit')->add_link(
             __("message:cancel"), 
             $user->get_url()
         );

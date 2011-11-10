@@ -7,6 +7,7 @@ require_once "$root/scripts/cmdline.php";
 
 $events = ScheduledEvent::query()
     ->where('next_time < ?', timestamp())
+    ->order_by('next_time')
     ->filter();
 
 foreach ($events as $event)

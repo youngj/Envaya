@@ -11,7 +11,7 @@
 <div style='clear:both'></div>
 </div>
 <?php
-$submenuB = implode(' ', PageContext::get_submenu('edit')->render_items());
+$submenuB = implode(' ', PageContext::get_submenu('edit')->get_items());
 if ($submenuB)
 {
     echo "<div id='edit_submenu'>$submenuB</div>";

@@ -1,5 +1,5 @@
 <?php    
-    $submenu = implode(' ', PageContext::get_submenu()->render_items());
+    $submenu = implode(' ', PageContext::get_submenu()->get_items());
     
     if (!empty($submenu))
     {

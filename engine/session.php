@@ -75,11 +75,11 @@ class Session
         static::set('login_ip', Request::get_client_ip());
         static::set('login_user_agent', @$_SERVER['HTTP_USER_AGENT']);
         
-        EventRegister::trigger_event('login','user',$user);        
-        
         $user->reset_login_failure_count();
         $user->last_action = timestamp();
         $user->save();    
+        
+        LogEntry::create('user:logged_in', $user);
     }    
     
     static function get_login_age()
@@ -100,10 +100,10 @@ class Session
     
     static function logout()
     {
-        $curUser = Session::get_logged_in_user();
-        if ($curUser)
+        $user = Session::get_logged_in_user();
+        if ($user)
         {
-            EventRegister::trigger_event('logout','user',$curUser);
+            LogEntry::create('user:logged_out', $user);
         }
         static::$loaded_user = false;        
         

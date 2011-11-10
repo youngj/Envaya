@@ -1,8 +1,10 @@
 <?php
     $user = $vars['user'];
-    if (Permission_UseAdminTools::has_for_entity($user))
+    
+    $items = PageContext::get_submenu('user_actions')->get_items();    
+    if ($items)
     {
-        echo view("admin/user_actions", array('user' => $user));
+        echo "<div class='adminBox'>".implode(' ', $items)."</div>";
     }
 
     echo SessionMessages::view_all();

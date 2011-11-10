@@ -8,30 +8,23 @@ class Submenu
     {
         $this->items = array();
     }
-
-    function add_item($label, $link, $selected = false) 
+    
+    function add_item($html)
     {
-        $item = new stdClass;
-        $item->value = $link;
-        $item->name = $label;
-        $item->selected = $selected;
-        
-        $this->items[] = $item;
+        $this->items[] = $html;
+    }
+
+    function add_link($label, $href, $selected = false) 
+    {       
+        $this->items[] = view('page_elements/submenu_link_item', array(
+            'href' => $href,
+            'label' => $label,
+            'selected' => $selected,
+        ));       
     }
     
-    function render_items($itemTemplate = 'page_elements/submenu_link_item')
+    function get_items()
     {
-        $items = array();
-    
-        foreach($this->items as $item)
-        {
-            $items[] = view($itemTemplate, array(
-                'href' => $item->value,
-                'label' => $item->name,
-                'selected' => $item->selected,
-            ));
-        }
-    
-        return $items;
+        return $this->items;
     }
 }

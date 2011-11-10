@@ -3,7 +3,7 @@
         
     $url = $topic->get_url();        
     echo "<div><a class='discussionTopic' href='$url'>";
-    echo "<span style='font-weight:bold'>".escape($topic->translate_field('subject'))."</span>";
+    echo "<span style='font-weight:bold'>".escape($topic->render_property('subject'))."</span>";
     
     if ($topic->num_messages > 1)
     {

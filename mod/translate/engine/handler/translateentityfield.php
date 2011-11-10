@@ -3,31 +3,28 @@
 /*
  * Extension for the Entity class that allows entity properties to be translated.
  */
-class Mixin_Translatable extends Mixin
+class Handler_TranslateEntityField
 {
-    function translate_field($field, $lang = null)
+    static function execute($vars)
     {        
-        $text = trim($this->$field);
+        $text = trim($vars['value']);
         if (!$text)
         {
-            return '';
+            return $vars;
         }
-
-        $origLang = $this->language; // may be empty
-                
-        if ($lang == null)
-        {
-            $lang = Language::get_current_code();        
-        }
-
-        $translateMode = TranslateMode::get_current();        
         
+        $entity = $vars['entity'];
+        $origLang = $entity->language; // may be empty
+        $lang = Language::get_current_code();
+        
+        $translateMode = TranslateMode::get_current();
         if ($translateMode == TranslateMode::Disabled)
         {
-            return $text;
+            return $vars;
         }
+        $prop = $vars['property'];
         
-        $translation = $this->lookup_translation($field, $lang, $origLang, $translateMode);        
+        $translation = static::lookup_translation($entity, $prop, $lang, $origLang, $translateMode);        
         
         if ($origLang && $origLang != $lang)
         {
@@ -38,17 +35,15 @@ class Mixin_Translatable extends Mixin
 
         if ($translateMode != TranslateMode::None)
         {
-            return $translation->value;
+            $vars['value'] = $translation->value;
         }
-        else
-        {
-            return $text;
-        }
+        
+        return $vars;
     }
 
-    private function lookup_translation($prop, $lang, $origLang, $translateMode)
+    private static function lookup_translation($entity, $prop, $lang, $origLang, $translateMode)
     {
-        $key = $this->get_translation_key($prop, $lang);
+        $key = static::get_translation_key($entity, $prop, $lang);
         if (!$key->guid)
         {
             try
@@ -60,9 +55,9 @@ class Mixin_Translatable extends Mixin
                 // another visitor concurrently created this key; 
                 // unique key constraint violated
                 $tempTrans = $key->new_translation();
-                $tempTrans->value = $this->$prop;
+                $tempTrans->value = $entity->$prop;
                 $tempTrans->source = Translation::Original;
-                return $tempTrans;                
+                return $tempTrans;
             }
         }
         
@@ -90,7 +85,7 @@ class Mixin_Translatable extends Mixin
             else if (!Request::is_bot())
             {         
                 $key->queue_auto_translation();
-            
+                
                 $tempTrans = $key->new_translation();
                 $tempTrans->value = __('trans:translating', $lang);
                 $tempTrans->source = Translation::GoogleTranslate;
@@ -106,15 +101,15 @@ class Mixin_Translatable extends Mixin
         {        
             // return translation with untranslated text
             $tempTrans = $key->new_translation();
-            $tempTrans->value = $this->$prop;
+            $tempTrans->value = $entity->$prop;
             $tempTrans->source = Translation::Original;
             return $tempTrans;
         }
     }    
     
-    function get_translation_key($prop, $lang)
+    private static function get_translation_key($entity, $prop, $lang)
     {
-        $guid = $this->guid;
+        $guid = $entity->guid;
         $key_name = "entity:{$guid}:{$prop}";
         
         $language = TranslationLanguage::get_by_code($lang);

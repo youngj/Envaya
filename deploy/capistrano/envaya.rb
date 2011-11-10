@@ -29,6 +29,7 @@ namespace :deploy do
         update
         restart
         update_test
+        update_translations
     end
     
     # sets up a server with envaya's code, but no particular services installed 
@@ -202,6 +203,10 @@ namespace :deploy do
     task :finalize_update, :except => { :no_release => true } do
         run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
         run "cp #{shared_path}/local.php #{latest_release}/config/local.php"
+    end
+    
+    task :update_translations do
+        run "php #{current_path}/mod/translate/scripts/update_translations.php"
     end
     
     task :restart, :roles => :app, :except => { :no_release => true } do        

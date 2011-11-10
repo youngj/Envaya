@@ -14,9 +14,9 @@ class Controller_Org extends Controller
     {
         $footer = PageContext::get_submenu('footer');
     
-        $footer->add_item(__('about'), "/envaya");
-        $footer->add_item(__('contact'), "/envaya/contact");
-        $footer->add_item(__('donate'), "/envaya/page/contribute");    
+        $footer->add_link(__('about'), "/envaya");
+        $footer->add_link(__('contact'), "/envaya/contact");
+        $footer->add_link(__('donate'), "/envaya/page/contribute");    
     }    
 
     function action_hide_todo()

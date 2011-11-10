@@ -48,7 +48,7 @@ class Action_Widget_Add extends Action
         $container = $this->container;
         
         $cancelUrl = get_input('from') ?: $container->get_url();
-        PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
+        PageContext::get_submenu('edit')->add_link(__("canceledit"), $cancelUrl);
         
         $this->use_editor_layout();        
         $this->page_draw(array(

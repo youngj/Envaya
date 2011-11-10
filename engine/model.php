@@ -221,6 +221,12 @@ abstract class Model extends Mixable
         );
     }    
     
+    function get_primary_key()
+    {
+        $pk = static::$primary_key;    
+        return $this->attributes[$pk];
+    }
+    
     static function get_subtype_id()
     {
         return ClassRegistry::get_subtype_id(get_called_class());

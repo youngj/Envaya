@@ -33,7 +33,7 @@ class Mixin_Content extends Mixin
     {
         if ($markup_mode != Markup::Feed)
         {
-            $content = $this->translate_field('content');
+            $content = $this->render_property('content');
         }
         else
         {

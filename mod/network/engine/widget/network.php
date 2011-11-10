@@ -49,7 +49,7 @@ class Widget_Network extends Widget
     {
         $submenu = PageContext::get_submenu('edit');
         $submenu->clear();
-        $submenu->add_item(__("cancel"), $this->get_edit_url());
+        $submenu->add_link(__("cancel"), $this->get_edit_url());
     }
     
     private function add_relationship_view()

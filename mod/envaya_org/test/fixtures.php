@@ -2,6 +2,10 @@
     
 return function() {
 
+    $testadmin = User::get_by_username('testadmin');
+    $root = UserScope::get_root();
+    Permission_EditMainSite::grant_explicit($root, $testadmin);
+
     $envaya = get_or_create_org('envaya');
 
     $envaya->email = Config::get('admin_email');

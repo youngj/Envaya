@@ -5,7 +5,7 @@
  */
 class Engine
 {
-    static $used_lib_cache;
+    static $used_lib_cache;    
     
     private static $path_cache;    
     private static $autoload_actions = array();
@@ -40,7 +40,6 @@ class Engine
         set_error_handler('php_error_handler');
         set_exception_handler('php_exception_handler');       
         
-        EventRegister::register_handler('all', 'all', 'system_log_listener', 400);
         register_shutdown_function(array('Engine', 'shutdown'));
     }
     
@@ -238,8 +237,8 @@ class Engine
                     $error['line']
                 ));
             }
-        }           
-    
-        EventRegister::trigger_event('shutdown', 'system');
+        }
+        
+        Hook_EndRequest::trigger();
     }
 }

@@ -22,8 +22,7 @@
  * 
  */
 
-abstract class Entity extends Model
-    implements Loggable, Serializable
+abstract class Entity extends Model implements Serializable
 {
     // values for 'status' field
     const Disabled = 0; // aka 'deleted', except the db row still exists so we can undelete
@@ -37,10 +36,6 @@ abstract class Entity extends Model
     static $admin_view = null;
     
     protected $guess_language_field;
-    
-    static $mixin_classes = array(
-        'Mixin_Translatable',
-    );
     
     function __construct($row = null)
     {
@@ -258,8 +253,6 @@ abstract class Entity extends Model
             $this->queue_guess_language($this->guess_language_field);
             $this->guess_language_field = null;
         }
-        
-        EventRegister::trigger_event('update',get_class($this),$this);
     }
 
     function save_metadata()
@@ -323,8 +316,6 @@ abstract class Entity extends Model
                 
         parent::delete();
         $this->clear_from_cache();
-        
-        EventRegister::trigger_event('delete',get_class($this),$this);
     }
 
     protected $container_entity;
@@ -504,10 +495,15 @@ abstract class Entity extends Model
     static function get_view_permission()
     {
         return null;
-    }    
+    }        
     
-    // Loggable interface
-    public function get_id() { return $this->guid; }
-    public function get_class_name() { return get_class($this); }
-    static function get_object_from_id($id) { return Entity::get_by_guid($id); }    
+    function render_property($property)
+    {
+        $res = Hook_RenderEntityProperty::trigger(array(
+            'entity' => $this,
+            'property' => $property,
+            'value' => $this->$property
+        ));        
+        return $res['value'];
+    }
 }

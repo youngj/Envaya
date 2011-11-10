@@ -16,8 +16,13 @@ Engine::add_autoload_action('Controller_Admin', function() {
     ));           
 });
 
-Views::extend('account/links_items', 'account/contact_links_items', -1000);    
-Views::extend('admin/user_actions_items', 'admin/contact_user_actions_items');    
+Engine::add_autoload_action('Hook_ViewDashboard', function() {    
+    Hook_ViewDashboard::register_handler('Handler_ContactViewDashboard', -1000);
+});
+
+Engine::add_autoload_action('Hook_ViewWidget', function() {    
+    Hook_ViewWidget::register_handler('Handler_ContactViewWidget');
+});
 
 Config::load_module_defaults('contact');
 

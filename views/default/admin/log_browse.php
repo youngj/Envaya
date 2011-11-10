@@ -1,68 +1,51 @@
 <div class='padded'>
 <div id="logbrowser_search_area">
 <?php
-	
-    if ($vars['timelower']) {
-        $lowerval = date('r',$vars['timelower']);
-    } else {
-        $lowerval = "";
-    }
-    if ($vars['timeupper']) {
-        $upperval = date('r',$vars['timeupper']);
-    } else {
-        $upperval = "";
-    }
-    if ($vars['user_guid']) {
-        if ($user = User::get_by_guid($vars['user_guid']))
-            $userval = $user->username;
-    } else {
-        $userval = "";
-    }	
 
-    $form = "";
-    
-    $form .= "<p>" . __('logbrowser:user');
-    $form .= view('input/text',array(
+    $user = $vars['user'];
+    $timelower = $vars['timelower'];
+    $timeupper = $vars['timeupper'];
+   
+    ob_start();
+    echo "<p>";
+    echo __('logbrowser:user');
+    echo view('input/text',array(
         'name' => 'search_username',
-        'value' => $userval 
-    )) . "</p>";
+        'value' => $user ? $user->username : '', 
+    ));
+    echo "</p>";
 
-    $form .= "<p>" . __('logbrowser:starttime');
-    $form .= view('input/text',array(
+    echo "<p>";
+    echo  __('logbrowser:starttime');
+    echo view('input/text',array(
         'name' => 'timelower',
-        'value' => $lowerval 
-    )) . "</p>";
+        'value' => $timelower
+    ));
+    echo "</p>";
 
-    $form .= "<p>" . __('logbrowser:endtime');
-    
-    $form .= view('input/text',array(
+    echo "<p>";
+    echo __('logbrowser:endtime');    
+    echo  view('input/text',array(
         'name' => 'timeupper',
-        'value' => $upperval
-    ))  . "</p>";
+        'value' => $timeupper
+    ));
+    echo "</p>";
     
-    $form .= view('input/submit',array(
+    echo  view('input/submit',array(
         'value' => __('search')
     ));
-                                                
-    $wrappedform = view('input/form',array(
-        'body' => $form,
-        'method' => 'get',
-        'action' => "/admin/logbrowser"
-    ));
-
-    if ($upperval || $lowerval || $userval) {
-        $hidden = "";
-    } else {
-        $hidden = "style=\"display:none\"";
-    }
-										
+                  
+    $form_body = ob_get_clean();
+    							
 ?>
-
-		<div id="logbrowserSearchform" <?php echo $hidden; ?>><?php echo $wrappedform; ?></div>
-		<p>
-			<a href="javascript:void(0)" onclick="$('logbrowserSearchform').style.display='block'"><?php echo __('logbrowser:search'); ?></a>
-		</p>
-	</div>
+    <div id="logbrowserSearchform"><?php        
+        echo view('input/form',array(
+            'body' => $form_body,
+            'method' => 'GET',
+            'action' => "/admin/logbrowser"
+        ));
+    ?></div>
+</div>
 </div>
 <?php
     echo view('pagination', $vars);

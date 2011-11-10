@@ -31,10 +31,16 @@ Engine::add_autoload_action('Language', function() {
     Language::add_fallback_group('featured', 'featured_admin');
 });
 
-Views::extend('account/links_items', 'account/envaya_links_items');    
+Engine::add_autoload_action('Hook_ViewWidget', function() {
+    Hook_ViewWidget::register_handler('Handler_EnvayaViewWidget');
+});
+
+Engine::add_autoload_action('Hook_ViewDashboard', function() {
+    Hook_ViewDashboard::register_handler('Handler_EnvayaViewDashboard');
+});
+
 Views::extend('account/login_links', 'account/envaya_login_links');    
 Views::extend('account/register_content', 'account/envaya_register_content', -1);    
-Views::extend('admin/user_actions_items', 'admin/envaya_user_actions_items');    
 Views::extend('page_elements/html_start', 'page_elements/envaya_topbar');
 Views::extend('page_elements/head_content', 'page_elements/envaya_favicon');
 Views::extend('css/default', 'css/snippets/topbar');

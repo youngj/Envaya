@@ -36,7 +36,7 @@ class Action_User_ChangeApproval extends Action
                     $primary_phone,
                     strtr(__('register:approval_sms', $user->language),
                         array(
-                            '{url}' => $user->get_url(),
+                            '{url}' => abs_url($user->get_url()),
                             '{login_url}' => secure_url('/pg/login')
                         )
                     )

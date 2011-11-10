@@ -143,6 +143,11 @@ class Database
      */
     static function execute_delayed($query, $args = array()) 
     { 
+        if (!static::$DB_DELAYED_QUERIES)
+        {
+            Hook_EndRequest::register_handler_fn(array('Database', 'delayedexecution_shutdown_hook'), 1);
+        }
+    
         static::$DB_DELAYED_QUERIES[] = array(
             'query' => $query,
             'args' => $args,
@@ -182,8 +187,10 @@ class Database
 
     static function init()
     {
-        EventRegister::register_handler('shutdown', 'system', array('Database', 'delayedexecution_shutdown_hook'), 1);
-        EventRegister::register_handler('shutdown', 'system', array('Database', 'profiling_shutdown_hook'), 999);
+        if (Config::get('db_profile'))
+        {
+            Hook_EndRequest::register_handler_fn(array('Database', 'profiling_shutdown_hook'), 999);
+        }
         return true;
     }           
         
@@ -192,7 +199,7 @@ class Database
      */
     static function profiling_shutdown_hook()
     {
-        if (Config::get('db_profile') && sizeof(static::$DB_PROFILE) > 0)
+        if (sizeof(static::$DB_PROFILE) > 0)
         {
             error_log("***************** DB PROFILING ********************");
 

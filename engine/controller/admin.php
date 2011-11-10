@@ -141,31 +141,20 @@ class Controller_Admin extends Controller
     
     function action_logbrowser()
     {
-        $query = SystemLog::query();
+        $query = LogEntry::query()->order_by('time_created desc');
     
         $limit = get_input('limit', 40);
         $offset = get_input('offset');
 
-        $search_username = get_input('search_username');
-        if ($search_username) {
-            if ($user = User::get_by_username($search_username)) {
-                $user = $user->guid;
-            }
-        } else {
-            $user_guid = get_input('user_guid',0);
-            if ($user_guid) {
-                $user = (int) $user_guid;
-            } else {
-                $user = "";
-            }
-        }
-
+        $user = User::get_by_username(get_input('search_username'), true);        
         $timelower = get_input('timelower');
+        $timeupper = get_input('timeupper');
+            
         if ($timelower) 
         {
             $query->where('time_created > ?', strtotime($timelower));
         }
-        $timeupper = get_input('timeupper');
+        
         if ($timeupper) 
         {
             $query->where('time_created < ?', strtotime($timeupper));
@@ -173,7 +162,7 @@ class Controller_Admin extends Controller
 
         if ($user)
         {
-            $query->where('user_guid=?', $user);
+            $query->where('user_guid = ?', $user->guid);
         }
                 
         $query->limit($limit, $offset);
@@ -183,10 +172,9 @@ class Controller_Admin extends Controller
         $this->page_draw(array(
             'title' => __('logbrowser'),
             'content' => view('admin/log_browse', array(
-                'user_guid' => $user, 
+                'user' => $user, 
                 'timeupper' => $timeupper, 
                 'timelower' => $timelower,
-                'baseurl' => $_SERVER['REQUEST_URI'],
                 'offset' => $offset,
                 'count' => null,
                 'count_displayed' => sizeof($log),

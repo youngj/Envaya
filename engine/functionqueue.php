@@ -72,7 +72,7 @@ class FunctionQueue
             catch (IOException $ex)
             {   
                 $kestrel = null;
-                EventRegister::register_handler('shutdown', 'system', array('FunctionQueue', 'exec_in_process_queue'), 99);
+                Hook_EndRequest::register_handler_fn(array('FunctionQueue', 'exec_in_process_queue'));
             }
         }
 

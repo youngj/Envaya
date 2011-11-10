@@ -59,7 +59,7 @@ class Action_User_Design extends Action
         $user = $this->get_user();
 
         $cancelUrl = get_input('from') ?: $user->get_url();
-        PageContext::get_submenu('edit')->add_item(__("canceledit"), $cancelUrl);
+        PageContext::get_submenu('edit')->add_link(__("canceledit"), $cancelUrl);
 
         $this->page_draw(array(
             'title' => __("design:edit"),

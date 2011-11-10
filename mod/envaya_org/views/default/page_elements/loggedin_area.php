@@ -23,7 +23,7 @@ if ($user->is_setup_complete())
 echo "<a href='/pg/logout' title=\"".__('logout')."\"><img src='/_media/images/logout.gif' width='22' height='25' /></a>";
 echo "</span>";
 
-$submenuB = implode(' ', PageContext::get_submenu('edit')->render_items());
+$submenuB = implode(' ', PageContext::get_submenu('edit')->get_items());
 if ($submenuB)
 {
     echo "<div id='edit_submenu'>$submenuB</div>";

@@ -135,7 +135,9 @@ class Session_Cookie implements SessionImpl
         
         $this->started = true;
 
-        EventRegister::register_handler('shutdown', 'system', 'session_write_close', 10);
+        Hook_EndRequest::register_handler_fn(function($vars) {
+            session_write_close();
+        }, 10);
 
         if (!isset($_SESSION['__elgg_session']))
         {

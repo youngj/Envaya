@@ -90,7 +90,7 @@ abstract class Controller_ContactTemplate extends Controller
 
     function action_subscription()
     {
-        PageContext::get_submenu('edit')->add_item(__('cancel'), get_input('from') ?: "/admin/contact");
+        PageContext::get_submenu('edit')->add_link(__('cancel'), get_input('from') ?: "/admin/contact");
     
         $this->page_draw(array(
             'title' => sprintf(__('contact:template_list'), $this->get_type_name()),
@@ -102,7 +102,7 @@ abstract class Controller_ContactTemplate extends Controller
     {
         $template = $this->get_template();
         
-        PageContext::get_submenu('edit')->add_item(
+        PageContext::get_submenu('edit')->add_link(
             sprintf(__('edit_item'), $this->get_type_name()),
             $template->get_url() . "/edit");
         

@@ -146,30 +146,8 @@ class Controller_UserSite extends Controller_User
 
     function action_dashboard()
     {    
-        $user = $this->get_user();
-    
-        Permission_ViewUserDashboard::require_for_entity($user);
-    
-        $this->use_editor_layout();        
-        $this->allow_view_types(null);        
-        
-        $vars = array();
-
-        $is_self_user = $user->equals(Session::get_logged_in_user());
-        
-        if (Permission_EditUserSite::has_for_entity($user))
-        {
-            $vars['title'] = $is_self_user ? __('edit_site') : sprintf(__('edit_item'), $user->name);
-        }
-        else
-        {
-            $vars['title'] = $is_self_user ? __('user:self_dashboard') : sprintf(__('user:other_dashboard'), $user->name);
-        }
-
-        $vars['content'] = view("account/dashboard", array('user' => $user));
-        $vars['messages'] = view('messages/dashboard', array('user' => $user));
-        
-        $this->page_draw($vars);
+        $action = new Action_User_Dashboard($this);
+        $action->execute();
     }
     
     function action_password()

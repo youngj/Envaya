@@ -65,22 +65,90 @@ abstract class Controller_User extends Controller
                 
         if (Permission_EditUserSite::has_for_entity($widget))
         {
-            PageContext::get_submenu('edit')->add_item(__("widget:edit"), $widget->get_edit_url());
+            PageContext::get_submenu('edit')->add_link(__("widget:edit"), $widget->get_edit_url());
         }
+        
+        $user_actions_menu = PageContext::get_submenu('user_actions');
+                
+        $url = $user->get_url();
+
+        if (Permission_ChangeUserApproval::has_for_entity($user))
+        {
+            if ($user->approval == 0)
+            {
+                $user_actions_menu->add_item(view('input/post_link', array(
+                    'text' => __('approval:approve'),
+                    'confirm' => __('areyousure'),
+                    'href' => "$url/set_approval?approval=1"
+                )));
+                $user_actions_menu->add_item(view('input/post_link', array(
+                    'text' => __('approval:reject'),
+                    'confirm' => __('areyousure'),
+                    'href' => "$url/set_approval?approval=-1"
+                )));
+            }
+            else
+            {
+                $user_actions_menu->add_item(view('input/post_link', array(
+                    'text' => ($user->approval > 0) ? __('approval:unapprove') : __('approval:unreject'),
+                    'confirm' => __('areyousure'),
+                    'href' => "$url/set_approval?approval=0"
+                )));
+            }
+
+            if ($user->approval < 0)
+            {
+                $user_actions_menu->add_item(view('input/post_link', array(
+                    'text' => __('approval:delete'),
+                    'confirm' => __('areyousure'),
+                    'href' => "{$user->get_admin_url()}/disable"
+                )));
+            }
+        }
+
+        if (!$user->equals(Session::get_logged_in_user()))
+        {
+            if (Permission_EditUserSite::has_for_entity($user))
+            {
+                $user_actions_menu->add_link(__('edit_site'), "$url/dashboard");
+                $user_actions_menu->add_link(__('design:edit'), "$url/design");
+            }
+
+            if (Permission_ViewUserSettings::has_for_entity($user))
+            {
+                $user_actions_menu->add_link(__('settings'), "$url/settings");
+            }
+        }
+
+        if (Permission_UseAdminTools::has_for_entity($user))
+        {
+            $user_actions_menu->add_link(__('domains:edit'), "$url/domains");
+            
+            if ($user->email)
+            {
+                $user_actions_menu->add_link("Email Subscriptions", EmailSubscription::get_all_settings_url($user->email));
+            }
+        }                         
         
         if (Permission_UseAdminTools::has_for_entity($widget))
         {
-            PageContext::get_submenu('user_actions')->add_item(__('widget:options'), "{$widget->get_base_url()}/options");
+            $user_actions_menu->add_link(__('widget:options'), "{$widget->get_base_url()}/options");
         }
         
-        $container = $widget->get_container_entity();         
+        $container = $widget->get_container_entity();
         $content = $container->render_child_view($widget, array('is_primary' => true));
         
-        $this->page_draw(array(
-            'content' => $content,
-            'title' => $widget->get_title(),
-            'show_next_steps' => $user->equals(Session::get_logged_in_user()),
-        )); 
+        $res = Hook_ViewWidget::trigger(array(
+            'user' => $user,
+            'widget' => $widget,
+            'user_actions_menu' => $user_actions_menu,
+            'page_draw_args' => array(
+                'content' => $content,
+                'title' => $widget->get_title(),
+            )
+        ));        
+        
+        $this->page_draw($res['page_draw_args']); 
     }
            
     function use_public_layout($cur_widget = null)
@@ -122,7 +190,7 @@ abstract class Controller_User extends Controller
         {
             $is_selected = $cur_widget && $cur_widget->guid == $widget->guid;
         
-            PageContext::get_submenu()->add_item(
+            PageContext::get_submenu()->add_link(
                 $widget->get_title(), 
                 $widget->get_url(),
                 $is_selected
