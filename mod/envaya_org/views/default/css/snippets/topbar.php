@@ -57,7 +57,7 @@
 
 .topbarLinks a#logoContainer
 {
-    padding:2px 10px 8px 10px;
+    padding:2px 15px 8px 15px;
     overflow:hidden;
     border-left:0px;
 }

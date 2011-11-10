@@ -143,11 +143,6 @@ a.selected
     font-size:14px;
 }
 
-.section_content
-{
-    font-size:14px;
-}
-
 .section_content .section_content
 {
     background:transparent none;

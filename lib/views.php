@@ -89,27 +89,19 @@ function view_exists($view, $viewtype = null, $fallback = true)
 
 function render_custom_view($view, $vars, $template_vars=null)
 {
-    $template = @$vars['design']['custom_views'][$view];
+    $template = @$vars['design']['custom_views'][$view] ?: view("templates/$view", null, 'custom');
     
-    if ($template)
+    $replacements = array();
+    
+    if ($template_vars)
     {
-        $replacements = array();
-        
-        if ($template_vars)
+        foreach ($template_vars as $template_var)
         {
-            foreach ($template_vars as $template_var)
-            {
-                $replacements["{{".$template_var."}}"] = $vars[$template_var];
-            }   
-        }
-        return strtr($template, $replacements);    
+            $replacements["{{".$template_var."}}"] = $vars[$template_var];
+        }   
     }
-    else
-    {
-        return view($view, $vars, 'default');
-    }
+    return strtr($template, $replacements);    
 }
-
 
 class Views
 {

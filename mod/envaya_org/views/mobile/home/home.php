@@ -3,6 +3,7 @@
 <a href='/pg/browse'><?php echo __('browse') ?></a> &nbsp;
 <a href='/pg/search'><?php echo __('search') ?></a> &nbsp;
 <a href='/pg/feed'><?php echo __('feed') ?></a> &nbsp; 
+<?php echo view('page_elements/login_area', $vars); ?>
 </div>
 <div class='padded'>
 <p>

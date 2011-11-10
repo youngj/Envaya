@@ -24,6 +24,6 @@ class Query_Filter_Sector extends Query_Filter_Select
     
     function _apply($query)
     {
-        return $query->with_sector($this->value);
+        return $query->with_sector((int)$this->value);
     }
 }

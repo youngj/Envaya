@@ -48,7 +48,7 @@
     echo "<br />";
     
     $custom_views = $user->get_design_setting('custom_views');
-    $template = @$custom_views[$current_view];
+    $template = render_custom_view($current_view, null);
     
     echo "<form method='POST' action='{$user->get_url()}/custom_design'>";
     echo "<h3>".escape($customizable_views[$current_view])."</h3>";

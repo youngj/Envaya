@@ -10,6 +10,11 @@
     echo view('css/base', $vars);
 ?>
 
+.section_content
+{
+    font-size:14px;
+}
+
 #translate_bar
 {
     margin:0px 1px 3px 1px;
@@ -28,6 +33,8 @@
     font-weight:bold;
     white-space:nowrap;
 }
+
+
 
 .pagination {
     margin:5px 10px 5px 10px;
