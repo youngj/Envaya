@@ -12,7 +12,6 @@ foreach (Config::get('languages') as $code => $name)
     {
         foreach ($language->query_groups()->filter() as $group)
         {
-            echo "  {$group->name}\n";
             $group->update_defined_translations();
         }
     }

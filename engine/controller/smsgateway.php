@@ -90,8 +90,13 @@ class Controller_SMSGateway extends Controller
                 }
                 
                 $message->error_message = $action->error;                
-                $message->save();    
-                $this->set_content("OK");    
+                $message->save();
+                $this->set_content("OK");   
+
+                if ($message->status == OutgoingSMS::Failed)
+                {
+                    $app_state->send_alert("Error sending SMS", "Error sending message to {$message->to_number}: {$message->error_message}");
+                }
                 
                 $this->log("{$request->phone_number} -> {$message->to_number} stat App v{$request->version} {$action->id} {$action->status}");            
                 return;
