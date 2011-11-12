@@ -7,7 +7,7 @@ if ($user->is_setup_complete())
 {
     $url = $user->get_url();
 
-    echo "<a href='{$url}' title=\"".__('your_home')."\"><img width='23' height='24' src='/_media/images/home.gif?v2' /></a>";       
+    echo "<a href='{$url}' title=\"".__('your_home')."\"><img width='23' height='23' src='/_media/images/home2.gif' /></a>";       
     
     if (Permission_EditUserSite::has_for_entity($user))
     {

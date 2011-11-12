@@ -1,18 +1,26 @@
 #topbar
 {
     width:100%;
-    background:#1d1d1d url(/_media/images/topgradient2.gif) repeat-x left -1px;
+    background:#1d1d1d url(/_media/images/topgradient3.gif) repeat-x left -1px;
+	font-size:11px;
 }
 
 .top_language
 {
     float:right;
-    padding:3px 10px 2px 5px;
+    padding:4px 6px 3px 5px;
     color:white;
     color:#e6e6e6;
     white-space:nowrap;
 }   
 
+#top_language
+{
+    margin:0px;
+    padding:1px;
+    font-size:11px;
+	font-family:"Lucida Grande", Verdana, sans-serif;
+}
 
 #topRight
 {
@@ -32,32 +40,27 @@
     display:inline;
 }
 
-.topbarLinks
-{
-    font-size:12px;
-}
-
 .topbarLinks a
 {
     display:block;
     float:left;
-    padding:6px 18px 4px 18px;
+    padding:6px 15px 4px 15px;
     border-left:1px solid #5d5d5d;
     border-right:1px solid #2f2f2f;
-    height:19px;
+    height:17px;
     color:#e6e6e6;
 }
 
 .topbarLinks a:hover
 {
-    background:#1d1d1d url(/_media/images/topgradient2.gif) repeat-x left -30px;
+    background:#1d1d1d url(/_media/images/topgradient3.gif) repeat-x left -28px;
     color:#e6e6e6;
     text-decoration:none;
 }
 
 .topbarLinks a#logoContainer
 {
-    padding:2px 15px 8px 15px;
+    padding:1px 15px 8px 15px;
     overflow:hidden;
     border-left:0px;
 }
@@ -76,18 +79,18 @@
 
 #loginButton
 {
-    background:#4d4d4d url(/_media/images/loginbutton.png) no-repeat left top;
-    height:29px;
+    background:#4d4d4d url(/_media/images/loginbutton.png) no-repeat left -1px;
+    height:27px;
 }
 
 a#loginButton:hover
 {
-    background-position:left -33px;
+    background-position:left -34px;
 }
 
 #loggedinArea
 {
-    background:url(/_media/images/loggedinarea.png) no-repeat left -18px;
+    background:url(/_media/images/loggedinarea.png) no-repeat left -19px;
 }
 
 a#loginButton:hover, a#loginButton:hover .loginText
@@ -104,7 +107,7 @@ a#loginButton:hover, a#loginButton:hover .loginText
 #loginButton .loginContent
 {
     display:block;
-    padding-top:3px;
+    padding-top:2px;
     text-align:center;
     color:#e6e6e6;
     font-weight:bold;    
@@ -113,11 +116,12 @@ a#loginButton:hover, a#loginButton:hover .loginText
 .loggedInAreaContent
 {
     display:block;
-    height:26px;
-    padding:1px 0px 2px 0px;
+    height:25px;
+    padding:0px 0px 2px 0px;
     text-align:center;
     color:#e6e6e6;
     font-weight:bold;
+	vertical-align:top;
 }
 
 .loggedInAreaContent a

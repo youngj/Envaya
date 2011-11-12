@@ -16,9 +16,7 @@
     <a href='/pg/feed'><?php echo __('feed') ?></a>    
     <div class='top_language'>
     <?php
-        echo __('language');
-        echo '&nbsp;';
-        
+        echo __('language')."&nbsp;";        
         echo view('js/language');
         echo view('input/pulldown', array(
             'name' => 'top_language',
