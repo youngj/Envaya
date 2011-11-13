@@ -15,16 +15,4 @@
     ));
     echo "</h3>";    
     echo "</td>";    
-    echo "<td style='width:150px;text-align:right;font-size:10px;white-space:nowrap'>";
-    echo view('input/checkboxes', array(
-        'name' => 'share_links',
-        'options' => array(
-            'email' => __('share:email'),
-            'facebook' => __('share:facebook'),
-            'twitter' => __('share:twitter'),
-        ),        
-        'value' => $user->get_design_setting('share_links'),
-        'after_label' => true,
-    )); 
-    echo "</td>";
     echo "</tr></table>";

@@ -829,27 +829,18 @@ a.discussionTopic
 
 .shareLinks
 {
-    padding-top:5px;
-    padding-left:5px;
+	text-align:center;
     white-space:nowrap;
+	padding-top:8px;
 }
 
 .shareLinks a
 {
-    display:block;
     clear:both;
-    opacity:0.7;
     text-align:right;
     font-size:10px;    
-    padding-top:1px;
-    padding-right:23px;
+    padding:3px 22px 3px 20px;
     background:url(/_media/images/share2.png) no-repeat right top;
-    height:19px;
-}
-
-.shareLinks a:hover
-{
-    opacity:1.0;
 }
 
 ol ol

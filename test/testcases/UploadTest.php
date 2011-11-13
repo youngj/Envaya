@@ -154,13 +154,13 @@ class UploadTest extends WebDriverTest
         $tagline->clear();
         $tagline->sendKeys("custom tagline");
         
-        $this->click("//input[@value='email']");
-        $this->click("//input[@value='facebook']");
-        $this->click("//input[@value='twitter']");
+        //$this->click("//input[@value='email']");
+        //$this->click("//input[@value='facebook']");
+        //$this->click("//input[@value='twitter']");
         
         $this->submitForm();
         $this->waitForElement("//h3[contains(text(),'custom tagline')]");
-        $this->mustNotExist("//div[@class='shareLinks']//a");     
+        //$this->mustNotExist("//div[@class='shareLinks']//a");     
 
         $this->open("/testorg/design");        
         
@@ -182,7 +182,7 @@ class UploadTest extends WebDriverTest
         $this->submitForm();
         
         $this->waitForElement("//h3[contains(text(),'custom tagline')]");
-        $this->mustNotExist("//div[@class='shareLinks']//a");             
+        //$this->mustNotExist("//div[@class='shareLinks']//a");             
         $this->mustNotExist("//div[@class='heading_container']//img[contains(@src,'large.jpg')]");
     }
     

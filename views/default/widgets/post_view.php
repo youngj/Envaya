@@ -13,7 +13,7 @@
         echo view('widgets/comment_link', $vars);
     }
     else
-    {
+    {	
         echo view('widgets/post_nav', $vars);        
 		echo view('widgets/comments', $vars);
 	}

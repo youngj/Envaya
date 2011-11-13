@@ -5,6 +5,4 @@
     <?php echo view('page_elements/language_links', $vars); ?>    
 </div>
 <div style='clear:both;padding:4px;'></div>
-<div class='footerLinks'>
-    <?php echo view('page_elements/footer_menu', $vars); ?>
-</div>
+<?php echo view('page_elements/footer_menu', $vars); ?>

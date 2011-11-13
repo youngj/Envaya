@@ -139,7 +139,7 @@ a#loginButton:hover, a#loginButton:hover .loginText
 {
     text-align:center;
     height:20px;
-    padding:3px 10px;
+    padding:4px 10px;
 }
 
 #edit_submenu a

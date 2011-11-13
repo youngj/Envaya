@@ -15,11 +15,5 @@
     {
         echo "<h3 class='withicon'>".escape($vars['tagline'])."</h3>";
     }        
-    echo "</td>";                   
-    
-    $share_links = view('page_elements/share_links', $vars);            
-    if ($share_links)
-    {
-        echo "<td>$share_links</td>";   
-    }
+    echo "</td>";                          
     echo "</tr></table>";

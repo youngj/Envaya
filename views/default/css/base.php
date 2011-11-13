@@ -306,7 +306,7 @@ a.selected
 .footerLinks
 {
     padding:5px;
-    text-align:center;
+	text-align:center;
 }
 
 .partnership_view

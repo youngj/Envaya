@@ -34,7 +34,7 @@ class Action_User_Design extends Action
         if (!$custom_header)
         {
             $user->set_design_setting('tagline', get_input('tagline'));            
-            $user->set_design_setting('share_links', get_input_array('share_links'));                        
+            //$user->set_design_setting('share_links', get_input_array('share_links'));                        
             $user->set_design_setting('custom_header', false);
         }
         else 
