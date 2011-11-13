@@ -8,9 +8,7 @@
         'id' => 'imageUpload',
         'jsname' => 'uploader',
         'uploader_args' => array(
-            'file_types' => implode(";", 
-                array_map(function($ext) { return "*.$ext"; }, array('png','gif','jpg'))
-            ),
+            'file_types' => implode(",",  array('png','gif','jpg')),
             'file_types_description' => 'Images',
         )
     ));
@@ -48,7 +46,7 @@
     echo "<br />";
     
     $custom_views = $user->get_design_setting('custom_views');
-    $template = render_custom_view($current_view, null);
+    $template = render_custom_view($current_view, array('design' => $user->get_design_settings()));
     
     echo "<form method='POST' action='{$user->get_url()}/custom_design'>";
     echo "<h3>".escape($customizable_views[$current_view])."</h3>";
@@ -61,6 +59,7 @@
         'value' => $template,
         'style' => 'height:400px',
         'track_dirty' => true,
+		'attrs' => array('spellcheck' => 'false'),
     ));
     echo view('focus', array('name' => 'template'));
     echo view('input/button', array(

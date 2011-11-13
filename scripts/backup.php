@@ -4,6 +4,8 @@
     require_once("start.php");
     require_once("vendors/s3.php");
 
+	include "scripts/delete_old_backups.php";
+	
     $start = microtime(true);
     umask(0);
     
