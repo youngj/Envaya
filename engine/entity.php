@@ -442,17 +442,25 @@ abstract class Entity extends Model implements Serializable
             if ($cur instanceof User)
             {
                 return $cur;
-            }
-            
-            $next = $cur->get_container_entity();
-            if ($cur == $next)
-            {
-                break;
-            }                        
-            $cur = $next;
+            }            
+            $cur = $cur->get_container_entity();
         }
         return null;    
-    }           
+    }  
+
+	function is_contained_in($container)
+	{
+		$cur = $this;        
+        while ($cur)
+        {
+            if ($cur->equals($container))
+            {
+                return true;
+            }            
+            $cur = $cur->get_container_entity();          
+        }
+        return false; 	
+	}
     
     function get_local_id()
     {

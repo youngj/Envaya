@@ -5,8 +5,10 @@
  * which ones to consider for a Featured Organization award
  */
 
-require_once("scripts/cmdline.php");
-require_once("start.php");
+$root = dirname(dirname(dirname(__DIR__)));
+ 
+require_once("$root/scripts/cmdline.php");
+require_once("$root/start.php");
 
 $orgs = Organization::query()->where('approval > 0')->filter();
 
@@ -46,7 +48,9 @@ foreach ($rscores as $score => $orgs)
     {
         foreach ($orgs as $org)
         {
-            echo $str_score.(@$featured_users[$org->guid] ? "*" : " ")." {$org->get_url()} {$org->name}\n";
+			$url = abs_url($org->get_url());
+		
+            echo $str_score.(@$featured_users[$org->guid] ? "*" : " ")." $url {$org->name}\n";
         }
     }
     else

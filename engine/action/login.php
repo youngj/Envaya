@@ -21,7 +21,7 @@ class Action_Login extends Action
         $password_strength = PasswordStrength::calculate($password, $user->get_easy_password_words());
         
         $password_age = $user->get_password_age();
-        $max_password_age = $user->get_max_password_age();
+        $max_password_age = $user->get_max_password_age();		
         
         $new_password_url = "{$user->get_url()}/password?next=".urlencode($next);
             

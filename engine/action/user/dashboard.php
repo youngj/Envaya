@@ -32,7 +32,7 @@ class Action_User_Dashboard extends Action
             $links->add_item(view('account/link_item', array('href' => $href, 'class' => $class, 'text' => $text)));
         };
 
-        if ($user->equals(Session::get_logged_in_user()))
+        if ($is_self_user)
         {
             if (Permission_UseAdminTools::has_for_root())
             {    
@@ -54,11 +54,6 @@ class Action_User_Dashboard extends Action
             $add_link("{$url}/design?from=/pg/dashboard", 'icon_design', __('design:edit'));
             $add_link("{$url}/addphotos?from=/pg/dashboard&t=".timestamp(), 'icon_photos', __('upload:photos:title'));
         }    
-
-        if (Permission_ViewUserSettings::has_for_entity($user))
-        {
-            $add_link("{$url}/settings", 'icon_settings', __('dashboard:settings'));
-        }
         
         Hook_ViewDashboard::trigger(array(
             'user' => $user,

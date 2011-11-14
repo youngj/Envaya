@@ -59,4 +59,9 @@ class Action_User_ChangeApproval extends Action
 
         $this->redirect($user->get_url());
     }
+	
+	function render()
+	{
+		$this->redirect($this->get_user()->get_url());
+	}
 }

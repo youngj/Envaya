@@ -170,6 +170,23 @@ abstract class Permission extends Entity
         }        
         return null;       
     }
+	
+	static function get_all_explicit($user)
+	{
+		$permissions = array();
+		if ($user)
+        {            
+			$cls = get_called_class();        
+			foreach ($user->get_all_permissions() as $permission)
+			{
+				if ($permission instanceof $cls)
+				{
+					$permissions[] = $permission;
+				}
+			}     
+		}
+        return $permissions;    
+	}
     
     static function grant_explicit($entity, $user)
     {

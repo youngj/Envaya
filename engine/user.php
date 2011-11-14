@@ -30,7 +30,7 @@ abstract class User extends Entity
         'username' => '',
         'password' => '',        
         'salt' => '',
-        'password_time' => '',
+        'password_time' => 0,
         'email' => '',
         'phone_number' => '',
         'language' => '',
