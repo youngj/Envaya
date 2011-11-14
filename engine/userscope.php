@@ -86,8 +86,28 @@ class UserScope extends Entity
         return User::query()->where('container_guid = ?', $this->guid);
     }    
     
+	private static $root;
+	
     static function get_root()
-    {
-        return UserScope::query()->where('container_guid = 0')->get();
+    {		
+		if (!isset(static::$root))
+		{
+			$root_scope_guid = State::get('root_scope_guid');			
+			if (!$root_scope_guid)
+			{		
+				$root = UserScope::query()->where('container_guid = 0')->get();
+				if ($root)
+				{				
+					State::set('root_scope_guid', $root->guid);
+				}
+			}
+			else
+			{
+				$root = new UserScope();
+				$root->guid = $root_scope_guid;
+			}
+			static::$root = $root;
+		}
+		return static::$root;
     }
 }

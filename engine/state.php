@@ -14,7 +14,9 @@ class State
         {
             $cache = get_cache();
 
-            static::$cached_list = $cache->get(make_cache_key('state'));
+			$cache_key = make_cache_key('state');
+			
+            static::$cached_list = $cache->get($cache_key);
 
             if (!is_array(static::$cached_list))
             {
@@ -29,7 +31,7 @@ class State
                     }
                 }
 
-                $cache->set('state', static::$cached_list);
+                $cache->set($cache_key, static::$cached_list);
             }
         }    
     }
