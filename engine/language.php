@@ -45,11 +45,11 @@ class Language
             return static::$current_code;
         }
 
-        $language = @$_GET['lang'] 
-            ?: @$_COOKIE['lang'] 
-            ?: @$_POST['lang'] 
-            ?: static::get_accept_language()
-            ?: static::get_default_language_for_country(GeoIP::get_country_code());
+        $language = isset($_GET['lang']) ? $_GET['lang']
+            : (isset($_COOKIE['lang']) ? $_COOKIE['lang']
+            : (isset($_POST['lang']) ? $_POST['lang']
+            : (static::get_accept_language()
+            ?: static::get_default_language_for_country(GeoIP::get_country_code()))));
         
         if (!$language || !Language::get($language))
         {
@@ -158,10 +158,9 @@ class Language
     {    
         $this->requested_keys[$key] = true;
     
-        $res = @$this->translations[$key];        
-        if ($res !== null)
-        {
-            return $res;
+		if (isset($this->translations[$key]))
+		{
+            return $this->translations[$key];
         }
         
         foreach (static::get_group_search_order($key) as $group_name)
@@ -214,7 +213,7 @@ class Language
         
     function load($group_name)
     {        
-        if (!@$this->loaded_files[$group_name])
+        if (!isset($this->loaded_files[$group_name]))
         {            
             $this->add_translations($this->get_group($group_name));            
             $this->loaded_files[$group_name] = true;
@@ -287,5 +286,5 @@ class Language
         $group_names[] = 'admin';
         
         return $group_names;
-    }
+    }	
 }

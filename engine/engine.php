@@ -9,6 +9,8 @@ class Engine
     
     private static $path_cache;    
     private static $autoload_actions = array();
+	
+	private static $root;
     
     /* 
      * Loads the system configuration, all php files in /lib/, configures auto-load for
@@ -19,7 +21,7 @@ class Engine
         require_once __DIR__."/config.php";
         Config::load();                
         
-        $root = Config::get('root');
+        static::$root = $root = Config::get('root');
         static::$path_cache = @include("$root/build/path_cache.php") ?: array();
         
         mb_internal_encoding('UTF-8');
@@ -48,7 +50,7 @@ class Engine
      */
     static function get_module_root($module_name)
     {
-        return Config::get('root')."/mod/$module_name";
+        return static::$root."/mod/$module_name";
     }
 
     /*
@@ -57,7 +59,7 @@ class Engine
      */
     static function get_real_path($path)
     {
-        $root = Config::get('root');
+        $root = static::$root;
         $path_cache =& static::$path_cache;
         
         if (isset($path_cache[$path]))
@@ -97,7 +99,7 @@ class Engine
      */
     static function filesystem_get_real_path($path)
     {
-        $root = Config::get('root');
+        $root = static::$root;
         
         foreach (Config::get('modules') as $module_name)
         {
@@ -130,7 +132,7 @@ class Engine
      */    
     static function get_lib_paths()
     {
-        $root = Config::get('root');
+        $root = static::$root;
         $lib_dir = "lib";
 
         $paths = array();
@@ -156,7 +158,7 @@ class Engine
      */
     private static function include_lib_files()
     {    
-        $root = Config::get('root');
+        $root = static::$root;
         $lib_paths = (@include("$root/build/lib_cache.php"));
         
         if ($lib_paths)

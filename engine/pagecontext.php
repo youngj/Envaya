@@ -74,13 +74,13 @@ class PageContext extends Mixable
        
     static function get_submenu($group = 'topnav') 
     {
-        $submenu = @static::$submenus[$group];
-        if (!$submenu) 
+        if (!isset(static::$submenus[$group])) 
         {
             $submenu = new Submenu();
             static::$submenus[$group] = $submenu;
-        }
-        return $submenu;            
+			return $submenu;
+        }		
+        return static::$submenus[$group];            
     }
         
     static function get_js_strings()

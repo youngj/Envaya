@@ -138,6 +138,8 @@ class TestListener implements PHPUnit_Framework_TestListener
         
         if (!$this->is_first_test)
         {
+			run_test_task_sync('php scripts/clear_queue.php', array('quiet' => true));
+			usleep(500000);
             run_test_task_sync("php test/reset_db.php | mysql -u root", array('quiet' => true));
             run_test_task_sync("mysql envaya_test -u root < {$TEST_CONFIG['dataroot']}/test_init.sql", array('quiet' => true));
             run_test_task_sync("php scripts/reindex_sphinx.php", array('quiet' => true));            

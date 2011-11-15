@@ -47,22 +47,26 @@ class Controller_Default extends Controller
             // Remove all dot-paths from the URI, they are not valid
             $uri = preg_replace('#\.[\s./]*/#', '', $uri);
             
-            // map custom domain names to the appropriate user site
-            $username = UserDomainName::get_username_for_host(Request::get_host());            
-            if ($username)
-            {
-                $uri = "/{$username}{$uri}";
-            }
+            // map custom domain names to the appropriate user site			
+			$host = Request::get_host();
+			if ($host != Config::get('domain'))
+			{
+				$username = UserDomainName::get_username_for_host($host);            
+				if ($username)
+				{
+					$uri = "/{$username}{$uri}";
+				}
+			}
             
             $this->params['rewritten_uri'] = $uri;
             
             // 'login' query parameter forces user to log in
-            if (@$_GET['login'] && !Session::is_logged_in())
+            if (isset($_GET['login']) && !Session::is_logged_in())
             {
                 throw new RedirectException('', $this->get_login_url());
             }
 
-            if (@$_COOKIE['https'])
+            if (isset($_COOKIE['https']))
             {
                 $this->prefer_https();
             }
@@ -70,13 +74,13 @@ class Controller_Default extends Controller
             QueryString::set_used_param('lang');            
             
             // 'lang' query parameter permanently changes interface language via cookie
-            if (@$_GET['lang'])
+            if (isset($_GET['lang']))
             {                
                 $this->change_viewer_language($_GET['lang']);
-            }    
+            }
                         
             // 'view' query parameter permanently changes interface viewtype via cookie
-            $viewtype = @$_GET['view'];
+            $viewtype = isset($_GET['view']) ? $_GET['view'] : null;
             if ($viewtype && Views::is_browsable_type($viewtype))
             {                
                 $this->set_cookie('view', $viewtype);
@@ -94,7 +98,7 @@ class Controller_Default extends Controller
             
             // work around flash uploader cookie bug, where the session cookie is sent as a POST field
             // instead of as a cookie
-            if (@$_POST['session_id'])
+            if (isset($_POST['session_id']))
             {
                 $_COOKIE['envaya'] = $_POST['session_id'];
             }

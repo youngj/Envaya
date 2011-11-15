@@ -36,12 +36,7 @@ class UserDomainName extends Model
     }
     
     static function get_username_for_host($host)
-    {
-        if ($host == Config::get('domain'))
-        {
-            return null;
-        }    
-    
+    {    
 		$cacheKey = static::cache_key_for_host($host);
         $cache = get_cache();
         $cachedUsername = $cache->get($cacheKey);

@@ -55,21 +55,19 @@ class ValidationException extends Exception
 function php_error_handler($errno, $errmsg, $filename, $linenum, $vars)
 {            
     if (error_reporting() == 0) // @ sign
-        return true; 
-                      
-    $error = date("Y-m-d H:i:s (T)") . ": \"" . $errmsg . "\" in file " . $filename . " (line " . $linenum . ")";                      
+        return true;                       
 
     switch ($errno) {
         case E_USER_ERROR:
         case E_WARNING:
         case E_USER_WARNING:
-                error_log("ERROR: " . $error);
+				error_log("ERROR: \"$errmsg\" in file $filename (line $linenum)");
                 throw new ErrorException($errmsg, 0, $errno, $filename, $linenum);
             break;
         default:
             if (Config::get('debug'))
             {
-                error_log("DEBUG: " . $error);
+                error_log("DEBUG: \"$errmsg\" in file $filename (line $linenum)");
             }
     }
 

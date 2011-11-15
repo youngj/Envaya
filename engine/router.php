@@ -109,17 +109,17 @@ abstract class Router
         {        
             $this->params[$k] = $v;
         }
-        
-        $before = @$route['before'];
-        if ($before)
+                
+        if (isset($route['before']))
         {
+			$before = @$route['before'];
             $this->$before();
         }
         $this->before();                               
                 
-        $cls = @$params['controller'];
-        if ($cls)
+        if (isset($params['controller']))
         {
+			$cls = $params['controller'];
             $controller = new $cls($this);
             $res = $controller->execute($params['rest']);
         }
@@ -224,7 +224,7 @@ abstract class Router
 
         return false;
     }
-    
+	
     static function add_route($route, $index = null)
     {
         if ($index === null)
@@ -234,7 +234,7 @@ abstract class Router
         else
         {
             array_splice(static::$routes, $index, 0, array($route));
-        }
+        }		
     }    
     
     /**

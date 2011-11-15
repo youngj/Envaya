@@ -136,6 +136,14 @@ class FunctionQueue
         }
         return false;
     }
+	
+	static function clear($queue_name)
+    {
+        $kestrel = static::_connect();
+        while ($kestrel->get($queue_name)) {
+			error_log("deleted something from queue");
+		}
+    }	
     
     static function get_stats()
     {

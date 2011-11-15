@@ -52,12 +52,12 @@ class Session_Cookie implements SessionImpl
     {
         if ($this->started)
         {
-            return @$_SESSION[$key];
+            return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
         }
-        else if (@$_COOKIE[static::cookie_name()])
+        else if (isset($_COOKIE[static::cookie_name()]))
         {
             $this->_start();
-            return @$_SESSION[$key];
+            return isset($_SESSION[$key]) ? $_SESSION[$key] : null;
         }
         else
         {

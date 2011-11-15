@@ -8,7 +8,7 @@
     $url .= "utmac=" . $GA_ACCOUNT;
     $url .= "&utmn=" . rand(0, 0x7fffffff);
 
-    $referer = $_SERVER["HTTP_REFERER"];
+    $referer = @$_SERVER["HTTP_REFERER"];
     $query = $_SERVER["QUERY_STRING"];
     $path = $_SERVER["REQUEST_URI"];
 
