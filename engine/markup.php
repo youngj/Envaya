@@ -135,7 +135,7 @@ class Markup
     {
         if ($content)
         {
-            $cacheKey = "snippet_".md5($content)."_$maxLength";
+            $cacheKey = make_cache_key("snippet", md5($content), "$maxLength");
             $cache = get_cache();
             $snippet = $cache->get($cacheKey);
                         

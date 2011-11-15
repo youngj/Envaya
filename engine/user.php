@@ -587,8 +587,6 @@ abstract class User extends Entity
     }
     
     protected $phone_numbers;
-    protected $phone_numbers_dirty = false;
-    protected $email_dirty = false;
 
     function query_phone_numbers()
     {
@@ -608,7 +606,6 @@ abstract class User extends Entity
     function set_email($email)
     {
         $this->email = $email;
-        $this->email_dirty = true;
     }
         
     function set_phone_number($phone_number_str)
@@ -637,14 +634,16 @@ abstract class User extends Entity
             }            
             $this->phone_numbers[] = $user_phone_number;
         }        
-        $this->phone_numbers_dirty = true;
     }
     
     function save()
     {
+		$phone_number_dirty = isset($this->dirty_attributes['phone_number']);
+		$email_dirty = isset($this->dirty_attributes['email']);
+		
         $res = parent::save();
         
-        if ($this->phone_numbers_dirty)
+        if ($phone_number_dirty)
         {            
             $newIds = array_map(function($op) { return $op->id; }, $this->phone_numbers);        
             
@@ -688,15 +687,12 @@ abstract class User extends Entity
             
             // subscribe primary phone number to comments, admin messages, etc.
             $this->init_default_sms_subscriptions();
-            
-            $this->phone_numbers_dirty = false;
         }  
 
-        if ($this->email_dirty)
+        if ($email_dirty)
         {
             $this->delete_default_email_subscriptions();
             $this->init_default_email_subscriptions();        
-            $this->email_dirty = false;
         }
         
         return $res;

@@ -19,14 +19,16 @@ class TranslationLanguage extends Entity
     {
         if (!isset(static::$code_map))
         {
-            $serialized_code_map = State::get('language_code_map');
-            if (!$serialized_code_map)
+			$cache_key = make_cache_key('language_code_map');
+		
+            $code_map = get_cache()->get($cache_key);
+            if (!$code_map)
             {
                 static::update_code_map();
             }
             else
             {
-                static::$code_map = unserialize($serialized_code_map);        
+                static::$code_map = $code_map;
             }
         }
     
@@ -49,10 +51,11 @@ class TranslationLanguage extends Entity
         foreach ($all_languages as $language)
         {
             $code_map[$language->code] = $language;
-        }
-        
-        static::$code_map = $code_map;        
-        State::set('language_code_map', serialize($code_map));    
+        }        
+        static::$code_map = $code_map;
+		
+		$cache_key = make_cache_key('language_code_map');		
+		get_cache()->set($cache_key, $code_map);
     }
     
     function save()

@@ -30,7 +30,7 @@ abstract class Model extends Mixable
     
     protected $attribute_defaults;
        
-    public $dirty = false;
+    protected $dirty_attributes = null;
 
     function __construct($row = null)
     {
@@ -77,10 +77,13 @@ abstract class Model extends Mixable
         
     function __get($name)
     {
-        $val = @$this->attributes[$name];    
-        if ($val !== null || array_key_exists($name, $this->attributes))
+		if (isset($this->attributes[$name]))
+		{
+			return $this->attributes[$name];
+		}
+        else if (array_key_exists($name, $this->attributes))
         {
-            return $val;
+            return null;
         }
         
         /* 
@@ -121,7 +124,7 @@ abstract class Model extends Mixable
     function __set($name, $value)
     {
         $this->attributes[$name] = $value;
-        $this->dirty = true;
+		$this->dirty_attributes[$name] = true;
     }    
     
     static function query()
@@ -190,7 +193,7 @@ abstract class Model extends Mixable
         $tableAttributes = array();
         foreach (static::get_table_attributes() as $name => $default)
         {
-            if (array_key_exists($name, $this->attributes))
+            if (isset($this->attributes[$name]) || array_key_exists($name, $this->attributes))
             {            
                 $tableAttributes[$name] = $this->attributes[$name];
             }
@@ -198,22 +201,46 @@ abstract class Model extends Mixable
         return $tableAttributes;
     }
     
+	protected function get_dirty_attribute_values()
+    {
+        $dirtyAttributes = array();		
+        foreach (static::get_table_attributes() as $name => $default)
+        {
+            if (isset($this->dirty_attributes[$name]))
+            {            
+                $dirtyAttributes[$name] = $this->attributes[$name];
+            }
+        }
+        return $dirtyAttributes;
+    }	
+	
     public function save()
     {
-        $this->save_attribute_values($this->get_table_attribute_values());
-        $this->dirty = false;
-    }    
-    
-    function save_attribute_values($values)
-    {
-        $pk = static::$primary_key;    
+		$pk = static::$primary_key;
+		
+		if ($this->$pk)
+		{
+			$values = $this->get_dirty_attribute_values();			
+		}
+		else
+		{
+			$values = $this->get_table_attribute_values();
+		}
+		
         Database::save_row(static::$table_name, $pk, 
             /* reference */ $this->attributes[$pk], $values);    
-    }
+		
+        $this->dirty_attributes = null;
+    }    
     
+	function is_dirty()
+	{
+		return isset($this->dirty_attributes);
+	}
+	    
     public function delete()
     {
-        $this->dirty = false;
+        $this->dirty_attributes = null;
         $table = static::$table_name;
         $pk = static::$primary_key;    
         return Database::delete("DELETE from `{$table}` WHERE `{$pk}`=?", 

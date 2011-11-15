@@ -106,23 +106,6 @@ abstract class Entity extends Model implements Serializable
         );
     }    
     
-    public function save_table_attributes()
-    {
-        $tableName = static::$table_name;
-    
-        $guid = $this->guid;
-        if (Database::get_row("SELECT guid from $tableName where guid = ?", array($guid)))
-        {
-            Database::update_row($tableName, 'guid', $guid, $this->get_table_attribute_values());
-        }
-        else
-        {
-            $values = $this->get_table_attribute_values();
-            $values['guid'] = $guid;                        
-            Database::insert_row($tableName, $values);        
-        }
-    }
-
     public function get_metadata($name)
     {
         $md = $this->get_metadata_object($name);
@@ -232,19 +215,31 @@ abstract class Entity extends Model implements Serializable
         }        
                 
         $guid = $this->guid;
+		
+		$table_name = static::$table_name;
         
         if ($guid == 0)
         {
-            $this->guid = Database::insert_row('entities', array(
+            $guid = $this->guid = Database::insert_row('entities', array(
                 'subtype_id' => static::get_subtype_id()
             ));
             
-            if (!$this->guid)
+            if (!$guid)
+			{
                 throw new IOException(__('error:BaseEntitySaveFailed'));
-        }        
-        $this->save_metadata();        
-        $this->save_table_attributes();
-        
+			}
+				
+            $values = $this->get_table_attribute_values();
+            $values['guid'] = $guid;
+            Database::insert_row($table_name, $values);
+        }
+		else
+		{
+			Database::update_row($table_name, 'guid', $guid, $this->get_dirty_attribute_values());		
+		}
+		
+        $this->save_metadata();
+		
         $this->clear_from_cache();
         $this->cache_for_current_request();
         
@@ -259,7 +254,7 @@ abstract class Entity extends Model implements Serializable
     {
         foreach($this->metadata_cache as $name => $md)
         {
-            if ($md->dirty)
+            if ($md->is_dirty())
             {
                 if ($md->value === null)
                 {
@@ -424,12 +419,8 @@ abstract class Entity extends Model implements Serializable
             {
                 $this->language = $user->language;
             }
-        }
-        
-        // avoid clobbering other changes to this entity
-        $this->save_attribute_values(array(
-            'language' => $this->language
-        ));
+        }        
+        $this->save();
         $this->clear_from_cache();
     }
     

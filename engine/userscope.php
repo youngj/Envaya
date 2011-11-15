@@ -92,13 +92,15 @@ class UserScope extends Entity
     {		
 		if (!isset(static::$root))
 		{
-			$root_scope_guid = State::get('root_scope_guid');			
+			$cache_key = make_cache_key('root_scope_guid');
+			$cache = get_cache();
+			$root_scope_guid = $cache->get($cache_key);
 			if (!$root_scope_guid)
 			{		
 				$root = UserScope::query()->where('container_guid = 0')->get();
 				if ($root)
 				{				
-					State::set('root_scope_guid', $root->guid);
+					$cache->set($cache_key, $root->guid);
 				}
 			}
 			else

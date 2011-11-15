@@ -17,9 +17,7 @@ class EntityMetadata extends Model
         'value' => 0,
         'value_type' => 0,
         'entity_guid' => 0
-    );
-    
-    public $dirty = false;
+    );      
 
     function __get($name)
     {

@@ -183,7 +183,7 @@ abstract class Controller_User extends Controller
         $user = $this->get_user();
         
         $widgets = $user->query_menu_widgets()
-            ->columns('guid,container_guid,owner_guid,language,widget_name,subtype_id,handler_arg,title')
+            ->columns('guid,container_guid,owner_guid,language,widget_name,subtype_id,handler_arg,title,status,thumbnail_url')
             ->filter();
         
         foreach ($widgets as $widget)

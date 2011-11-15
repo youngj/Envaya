@@ -95,30 +95,21 @@ class Organization extends User
         $this->sectors_dirty = true;
     }
 
-    protected $attributes_dirty = null;
-    
-    function __set($name, $value)
-    {
-        parent::__set($name,$value);
-        
-        if (!$this->attributes_dirty)
-        {
-            $this->attributes_dirty = array();
-        }
-        $this->attributes_dirty[$name] = true;
-    }
-    
     public function save()
     {
         $isNew = !$this->guid;
     
+		$dirty_attributes = $this->dirty_attributes;
+		
+		$sectorsDirty = $this->sectors_dirty;
+		
+		$needs_reindex = $isNew || $sectorsDirty 
+			|| isset($dirty_attributes['name']) 
+			|| isset($dirty_attributes['username']) 
+			|| isset($dirty_attributes['region']);	
+	
         $res = parent::save();
         
-        $attributesDirty = $this->attributes_dirty ?: array();
-        
-        $this->attributes_dirty = false;
-        
-        $sectorsDirty = $this->sectors_dirty;
         if ($sectorsDirty)
         {
             Database::delete("delete from org_sectors where container_guid = ?", array($this->guid));
@@ -129,8 +120,7 @@ class Organization extends User
             $this->sectors_dirty = false;
         }
                         
-        if ($isNew || $sectorsDirty 
-            || @$attributesDirty['name'] || @$attributesDirty['username'] || @$attributesDirty['region'])
+        if ($needs_reindex)
         {
             Sphinx::reindex();
         }        

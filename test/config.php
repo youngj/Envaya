@@ -61,4 +61,5 @@ return array(
     'feed_page_size' => 6,
     'debug_media' => false,
     'debug' => true,
+	'db_profile' => false,
 );
