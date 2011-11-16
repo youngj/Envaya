@@ -64,7 +64,7 @@ class Build
         ob_start();
         echo "<?php class RealBuildCache extends BuildCache {\n";
 
-        echo "function get_lib_paths() { return array(".implode(',', array_map(
+        echo "function _get_lib_paths() { return array(".implode(',', array_map(
             function($p) { return var_export($p, true); }, Engine::get_lib_paths()
         ))."); }\n";
 
@@ -76,9 +76,11 @@ class Build
 
         $parent_cache = array();
 
+		ksort($paths);
+		
         foreach ($paths as $cls => $path)
         {
-            echo "function a{$cls}(&\$a,&\$b,&\$c){";
+            echo "function {$cls}(&\$a,&\$b,&\$c){";
             
             echo "\$a=".var_export($path, true).";";
             if (isset($parent_classes[$cls]))

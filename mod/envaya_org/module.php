@@ -5,10 +5,13 @@ class Module_Envaya_Org extends Module
     static $autoload_patch = array(
         'ClassRegistry',
         'Controller_Default',
-        'Controller_Admin', 
+        'Controller_Admin',
+        'Language',
+        'Hook_ViewWidget',
+        'Hook_ViewDashboard',
     );
 
-    static $view_patch = array(        
+    static $view_patch = array(
         'account/login_links',
         'account/register_content',
         'page_elements/html_start',
@@ -24,7 +27,7 @@ class Module_Envaya_Org extends Module
     {
         $views[] = 'account/envaya_login_links';
     }
-    
+
     static function patch_view_account_register_content(&$views)
     {
         array_unshift($views, 'account/envaya_register_content');
@@ -44,7 +47,7 @@ class Module_Envaya_Org extends Module
     {
         $views[] = 'css/snippets/topbar';
     }
-        
+
     static function patch_view_css_editor(&$views)
     {
         $views[] = 'css/snippets/slideshow';
@@ -100,7 +103,7 @@ class Module_Envaya_Org extends Module
         Language::add_fallback_group('featured', 'featured_admin');
     }
 
-    static function patch_Hook_ViewWidget() 
+    static function patch_Hook_ViewWidget()
     {
         Hook_ViewWidget::register_handler('Handler_EnvayaViewWidget');
     }

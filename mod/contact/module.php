@@ -9,12 +9,12 @@ class Module_Contact extends Module
         'Hook_ViewWidget',
         'Language',
         'EmailSubscription',
-        'SMSSubscription',        
+        'SMSSubscription',
     );
 
     static $config_defaults = true;
 
-    static function patch_ClassRegistry() 
+    static function patch_ClassRegistry()
     {
         ClassRegistry::register(array(
             'contact.email.template' => 'EmailTemplate',
@@ -29,7 +29,7 @@ class Module_Contact extends Module
         Controller_Admin::add_route(array(
             'regex' => '/contact\b',
             'controller' => 'Controller_Contact',
-        ));           
+        ));
     }
 
     static function patch_Hook_ViewDashboard()
@@ -52,7 +52,7 @@ class Module_Contact extends Module
         EmailSubscription::$self_subscription_classes[] = 'EmailSubscription_Contact';
     }
 
-    static function patch_SMSSubscription() 
+    static function patch_SMSSubscription()
     {
         SMSSubscription::$self_subscription_classes[] = 'SMSSubscription_Contact';
     }
