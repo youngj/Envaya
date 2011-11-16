@@ -77,7 +77,7 @@ namespace :deploy do
     task :sanity_check do
     
         files = [
-            "build/lib_cache.php",
+            "build/cache.php",
             "build/path_cache.php",
             "www/_media/css/home.css",
             "www/_media/css/simple.css",

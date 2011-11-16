@@ -139,7 +139,7 @@ class Markup
             $cache = get_cache();
             $snippet = $cache->get($cacheKey);
                         
-            if (!$snippet)
+            if (!isset($snippet))
             {
                 $snippet = Markup::snippetize_html($content, $maxLength, array(
                     'HTML.AllowedElements' => 'a,em,strong,br',
