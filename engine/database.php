@@ -264,3 +264,5 @@ class Database
         return $stmt;
     }    
 }
+
+Database::init(); 

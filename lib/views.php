@@ -22,12 +22,6 @@
  */
 function view($view, $vars = null, $viewtype = null)
 {
-    // basic checking for bad paths
-    if (strpos($view, '..') !== false)
-    {
-        return false;
-    }
-
     if ($vars === null)
     {
         $vars = array();
@@ -35,15 +29,30 @@ function view($view, $vars = null, $viewtype = null)
 
     if (!$viewtype)
     {
-        $viewtype = Views::get_current_type();
+        $viewtype = Views::$current_type ?: Views::$request_type;
     }
            
     ob_start();
-
-    foreach (Views::get_extensions($view) as $extension_view)
+    
+    if (!isset(Engine::$view_patch[$view]))
     {
-        include_view($extension_view, $viewtype, $vars);
-    }    
+        include_view($view, $viewtype, $vars);
+    }          
+    else
+    {
+        $views = array($view);
+        $patch_fn = 'patch_view_'.str_replace('/', '_', $view);
+
+        foreach (Engine::$view_patch[$view] as $module_class)
+        {
+            $module_class::$patch_fn($views);
+        }
+
+        foreach ($views as $extension_view)
+        {
+            include_view($extension_view, $viewtype, $vars);
+        }
+    }
     
     return ob_get_clean();
 }
@@ -105,46 +114,10 @@ function render_custom_view($view, $vars, $template_vars=null)
 
 class Views
 {
-    private static $request_type = 'default';
-    private static $current_type = null;
-    private static $extensions_map = array();
-    
+    static $request_type = 'default';
+    static $current_type = null;
     private static $browsable_types = array('mobile','default');
-    
-    /* 
-     * Augments a view $base_view with another view $extend_view.
-     *
-     * priority > 0 will put $extend_view after $base_view (largest positive priority last)
-     * priority < 0 will put $extend_view before $base_view (largest negative priority first)
-     * priority = 0 will replace $base_view with $extend_view
-     */
-    static function extend($base_view, $extend_view, $priority = 1)
-    {
-        if (!isset(static::$extensions_map[$base_view]))
-        {
-            static::$extensions_map[$base_view] = array(0 => $base_view);
-        }
-
-        $extensions =& static::$extensions_map[$base_view];
-                
-        if ($priority != 0)
-        {
-            $incr = ($priority > 0) ? 1 : -1;
-        
-            while (isset($extensions[$priority])) 
-            {
-                $priority += $incr;
-            }
-        }
-        
-        $extensions[$priority] = $extend_view;
-    }
-    
-    static function replace($orig_view, $new_view)
-    {
-        static::extend($orig_view, $new_view, 0);
-    }
-    
+       
     static function get_request_type()
     {
         return static::$request_type;
@@ -169,19 +142,7 @@ class Views
     {
         return in_array($type, static::$browsable_types);
     }
-    
-    static function get_extensions($base_view)
-    {
-        if (!isset(static::$extensions_map[$base_view]))
-        {
-            return array($base_view);
-        }        
-               
-        $extensions = static::$extensions_map[$base_view];
-        ksort($extensions);
-        return array_values($extensions);
-    }
-    
+        
     static function get_path($view, $viewtype = null, $fallback = true)
     {
         if (!$viewtype)

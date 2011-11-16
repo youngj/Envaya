@@ -16,6 +16,7 @@ class Build
 {    
     static function all()
     {
+        Build::build_cache();
         Build::path_cache();
         Build::media();
         Build::css();
@@ -53,6 +54,53 @@ class Build
             "<?php require_once __DIR__.'/$sphinx_api_filename';");
     }    
     
+    static function build_cache() 
+    {
+        @unlink("build/cache.php");
+
+        require_once "scripts/analysis/phpparentanalyzer.php";
+        require_once "start.php";
+
+        ob_start();
+        echo "<?php class RealBuildCache extends BuildCache {\n";
+
+        echo "function get_lib_paths() { return array(".implode(',', array_map(
+            function($p) { return var_export($p, true); }, Engine::get_lib_paths()
+        ))."); }\n";
+
+        $analyzer = new PHPParentAnalyzer();
+        $analyzer->parse_dir(__DIR__);
+
+        $parent_classes = $analyzer->parent_classes;
+        $paths = $analyzer->paths;
+
+        $parent_cache = array();
+
+        foreach ($paths as $cls => $path)
+        {
+            echo "function a{$cls}(&\$a,&\$b,&\$c){";
+            
+            echo "\$a=".var_export($path, true).";";
+            if (isset($parent_classes[$cls]))
+            {
+                $parent_cls = $parent_classes[$cls];
+                if (isset($paths[$parent_cls]))
+                {
+                    $lparent = strtolower($parent_cls);
+                    echo "\$b=".var_export($lparent, true).";";
+                }
+            }
+            echo "\$c=".var_export(strtolower($cls), true).';';
+
+            echo "}\n";
+        }
+
+        echo "}";
+        $php = ob_get_clean();
+
+        static::write_file("build/cache.php", $php);        
+    }
+
     /*
      * Generates a cache of all the paths of files in the engine, themes, languages, and views
      * directories, which might be referenced via virtual paths in calls to Engine::get_real_path() .
@@ -67,15 +115,11 @@ class Build
     {
         // remove previous build files before including start.php
         // so that Engine class doesn't use previous path cache when building the new path cache
-        @unlink("build/lib_cache.php");
         @unlink("build/path_cache.php");
         system('rm -rf build/path_cache');
     
         require_once "start.php";
-        
-        $paths = Engine::get_lib_paths();  
-        static::write_file("build/lib_cache.php", static::get_array_php($paths));        
-                        
+                                
         $dir_paths = array(
             // allows us to test if the path cache actually works like it should
             'views/default/admin' => array(            
@@ -194,6 +238,7 @@ class Build
         
         static::write_build_config($build_config);
     }
+
      
     /* 
      * Minifies Javascript in each module's js/ directory, and copie to www/_media/.

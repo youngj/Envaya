@@ -8,9 +8,14 @@ class Engine
     static $used_lib_cache;    
     
     private static $path_cache;    
-    private static $autoload_actions = array();
+    private static $build_cache;
+    private static $loaded_classes = array();
+    private static $autoload_patch = array();
+    static $view_patch = array();
+    private static $lower_classes = array();
 	
 	private static $root;
+    private static $module_classes = array();
     
     /* 
      * Loads the system configuration, all php files in /lib/, configures auto-load for
@@ -21,19 +26,23 @@ class Engine
         require_once __DIR__."/config.php";
         Config::load();                
         
-        static::$root = $root = Config::get('root');
-        static::$path_cache = @include("$root/build/path_cache.php") ?: array();
+        self::$root = $root = Config::get('root');
+        self::$path_cache = @include("$root/build/path_cache.php") ?: array();
+
+        if (@include("$root/build/cache.php"))
+        {
+            self::$build_cache = new RealBuildCache();
+        }
+        else
+        {
+            self::$build_cache = new BuildCache();
+        }
         
         mb_internal_encoding('UTF-8');
         
-        static::include_lib_files();        
+        self::include_lib_files();
+        self::init_modules();
         
-        // initialize modules
-        foreach (Config::get('modules') as $module_name)
-        {
-            require Engine::get_module_root($module_name)."/start.php";
-        } 
-
         // register autoload after module initialization 
         // so that modules can't accidentally autoload anything in start.php
         spl_autoload_register(array('Engine', 'autoload'));        
@@ -43,6 +52,39 @@ class Engine
         set_exception_handler('php_exception_handler');       
         
         register_shutdown_function(array('Engine', 'shutdown'));
+    }
+
+    static function init_modules()
+    {
+        $lower_classes =& self::$lower_classes;
+        foreach (Config::get('modules') as $module_name)
+        {
+            require self::get_module_root($module_name)."/module.php";
+            $module_class = "Module_{$module_name}";
+           
+            foreach ($module_class::$autoload_patch as $cls)   
+            {
+                if (isset($lower_classes[$cls]))
+                {
+                    $lclass = $lower_classes[$cls];
+                }
+                else
+                {
+                    $lower_classes[$cls] = $lclass = strtolower($cls);
+                }
+                self::$autoload_patch[$lclass][] = $module_class;
+            }
+
+            foreach ($module_class::$view_patch as $view)
+            {   
+                self::$view_patch[$view][] = $module_class;
+            }
+
+            if ($module_class::$config_defaults)
+            {
+                Config::load_module_defaults($module_name);
+            }           
+        }
     }
     
     /*
@@ -59,8 +101,8 @@ class Engine
      */
     static function get_real_path($path)
     {
-        $root = static::$root;
-        $path_cache =& static::$path_cache;
+        $root = self::$root;
+        $path_cache =& self::$path_cache;
         
         if (isset($path_cache[$path]))
         {
@@ -88,7 +130,7 @@ class Engine
         // if the path_cache is working correctly, it should never get past here
         // in a release environment.
 
-        return static::filesystem_get_real_path($path);
+        return self::filesystem_get_real_path($path);
     }
 
     /*
@@ -99,7 +141,7 @@ class Engine
      */
     static function filesystem_get_real_path($path)
     {
-        $root = static::$root;
+        $root = self::$root;
         
         foreach (Config::get('modules') as $module_name)
         {
@@ -107,7 +149,7 @@ class Engine
             $module_path = "{$root}/{$module_rel_path}";
             if (file_exists($module_path))
             {
-                static::$path_cache[$path] = $module_rel_path;
+                self::$path_cache[$path] = $module_rel_path;
                 return $module_path;
             }
         }
@@ -115,14 +157,14 @@ class Engine
         $core_path = "$root/$path";                
         if (file_exists($core_path))
         {
-            static::$path_cache[$path] = $path;
+            self::$path_cache[$path] = $path;
             return $core_path;
         }        
         
         // use 0 as a sentinel for nonexistent files rather than null
         // since isset does not distinguish between null and nonexistent keys
         // and array_key_exists is slower        
-        static::$path_cache[$path] = 0;
+        self::$path_cache[$path] = 0;
         return null;
     }
 
@@ -132,7 +174,7 @@ class Engine
      */    
     static function get_lib_paths()
     {
-        $root = static::$root;
+        $root = self::$root;
         $lib_dir = "lib";
 
         $paths = array();
@@ -158,16 +200,16 @@ class Engine
      */
     private static function include_lib_files()
     {    
-        $root = static::$root;
-        $lib_paths = (@include("$root/build/lib_cache.php"));
+        $root = self::$root;
         
-        if ($lib_paths)
+        $lib_paths = self::$build_cache->get_lib_paths();
+        if (isset($lib_paths))
         { 
-            static::$used_lib_cache = true;
+            self::$used_lib_cache = true;
         }
         else
         {        
-            $lib_paths = static::get_lib_paths();           
+            $lib_paths = self::get_lib_paths();           
         }
         
         foreach ($lib_paths as $lib_path)
@@ -190,33 +232,44 @@ class Engine
      */
     static function autoload($class)
     {            
-        $lclass = strtolower($class);
-        $file = str_replace('_', '/', $lclass);        
-        $path = static::get_real_path("engine/$file.php");    
-        
-        if ($path)
+        $fn = "a$class";
+        $rel_path = $lparent = $lclass = null;
+        self::$build_cache->$fn($rel_path, $lparent, $lclass);
+
+        if (!isset($rel_path))
         {
-            require $path;
-            if (isset(static::$autoload_actions[$lclass]))
+            $lclass = strtolower($class);      
+            $path_part = str_replace('_', '/', $lclass);      
+            $path = self::get_real_path("engine/$path_part.php");
+
+            if (!$path)
             {
-                foreach (static::$autoload_actions[$lclass] as $action)
-                {
-                    $action();
-                }
-            }                
-            return TRUE;
+                return FALSE;
+            }
         }
-        return FALSE;
-    }
-    
-    /*
-     * Registers a function to be executed when a certain class is autoloaded;
-     * useful for modules to extend core classes.
-     */
-    static function add_autoload_action($class, $fn)
-    {
-        static::$autoload_actions[strtolower($class)][] = $fn;
-    }
+        else 
+        {
+            $path = self::$root."/$rel_path";
+
+            if (isset($lparent) && !isset(self::$loaded_classes[$lparent]))
+            {                    
+                Engine::autoload($lparent);
+            }
+        }
+       
+        self::$loaded_classes[$lclass] = true;
+
+        require $path;
+        if (isset(self::$autoload_patch[$lclass]))
+        {
+            $fn = "patch_{$class}";
+            foreach (self::$autoload_patch[$lclass] as $module_class)
+            {
+                $module_class::$fn();
+            }
+        }                
+        return TRUE;
+    }   
 
     /**
      * This function is a shutdown hook registered on startup which does nothing more than trigger a
@@ -242,5 +295,12 @@ class Engine
         }
         
         Hook_EndRequest::trigger();
+    }
+}
+
+class BuildCache
+{    
+    function __call($fn, $args)
+    {
     }
 }

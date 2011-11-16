@@ -286,5 +286,17 @@ class Language
         $group_names[] = 'admin';
         
         return $group_names;
-    }	
+    }
+
+    static function init_all()
+    {
+        foreach (Config::get('languages') as $code => $lang_name)
+        {
+            Language::init($code)->add_translations(
+                array("lang:$code" => $lang_name)
+            );
+        }            
+    }
 }
+
+Language::init_all();

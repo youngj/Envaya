@@ -14,14 +14,17 @@
         'name' => null,
         'style' => null,
         'id' => null,
-    ));
+    ));
+
     $value = restore_input($name, $value);     
 
     echo "<select ".Markup::render_attrs($attrs).">";
 
     if (isset($empty_option))
     {
-        echo "<option value=''>".escape($empty_option)."</option>";
+        echo "<option value=''>".
+            htmlspecialchars($empty_option, ENT_QUOTES, 'UTF-8')
+            ."</option>";
     }
 
     $is_empty_value = (empty($value) && !is_numeric($value)); // avoid 0/'0' being treated same as '',null
@@ -30,12 +33,12 @@
     {
         foreach ($options as $option_value => $option_text)
         {
-            $option_attrs = array('value' => $option_value);                    
+            $option_attrs = 'value="'.htmlspecialchars($option_value, ENT_QUOTES, 'UTF-8').'"';
             if (!$is_empty_value && $option_value == $value)
             {
-                $option_attrs['selected'] = 'selected';
+                $option_attrs .= ' selected="selected"';
             }            
-            echo "<option ".Markup::render_attrs($option_attrs).">".escape($option_text)."</option>";
+            echo "<option $option_attrs>".htmlspecialchars($option_text, ENT_QUOTES, 'UTF-8')."</option>";
         }
     }
 ?>

@@ -42,3 +42,4 @@ function cache_result($fn, $cache_key)
     }
     return $res[0];
 }
+

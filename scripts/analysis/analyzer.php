@@ -13,6 +13,7 @@
     {            
         protected $state_machines = array();
         protected $base_dir = null;
+        protected $rel_path = null;
         
         abstract function is_checked_file($path);
         abstract function is_checked_dir($path);
@@ -76,7 +77,7 @@
         
         public function parse_file($path)
         {                   
-            $rel_path = $this->get_rel_path($path);
+            $this->rel_path = $rel_path = $this->get_rel_path($path);
             
             foreach ($this->state_machines as $state_machine)
             {

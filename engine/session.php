@@ -18,32 +18,37 @@ class Session
     
     static function get_instance()
     {
+        if (!isset(static::$instance))
+        {
+            static::$instance = new Session_Cookie();
+        }
         return static::$instance;
     }
 
     static function get($key)
     {
-        return static::$instance->get($key);
+        $instance = static::$instance ?: static::get_instance();
+        return $instance->get($key);
     }
     
     static function set($key, $value)
     {
-        return static::$instance->set($key, $value);
+        return static::get_instance()->set($key, $value);
     }    
     
     static function destroy()
     {
-        return static::$instance->destroy();
+        return static::get_instance()->destroy();
     }
 
     static function start()
     {
-        return static::$instance->start();
+        return static::get_instance()->start();
     }
     
     static function id()
     {
-        return static::$instance->id();
+        return static::get_instance()->id();
     }
     
     static function save_input()
@@ -56,7 +61,7 @@ class Session
         if (!static::$loaded_user)
         {
             static::$loaded_user = true;
-            static::$user = static::$instance->get_logged_in_user();
+            static::$user = static::get_instance()->get_logged_in_user();
         }
         return static::$user;
     }
@@ -69,7 +74,7 @@ class Session
     static function login($user, $options = null)
     {
         static::$loaded_user = false;
-        static::$instance->login($user, $options);
+        static::get_instance()->login($user, $options);
 
         static::set('login_time', timestamp());
         static::set('login_ip', Request::get_client_ip());
@@ -107,9 +112,7 @@ class Session
         }
         static::$loaded_user = false;        
         
-        static::$instance->logout();
+        static::get_instance()->logout();
         return true;
     }
 }
-
-Session::set_instance(new Session_Cookie());

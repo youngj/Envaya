@@ -14,3 +14,4 @@
     $response = $controller->get_response();    
     $response->send_headers();
     echo $response->content;
+

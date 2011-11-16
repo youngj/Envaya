@@ -12,22 +12,4 @@
   
 include __DIR__."/engine/engine.php";
 
-/*
- * Functions to call once immediately after certain classes are loaded,
- * to do static initialization. (Modules can also use add_autoload_action
- * to extend core classes.)
- */
-Engine::add_autoload_action('Database', function() { 
-    Database::init(); 
-});
-
-Engine::add_autoload_action('Language', function() {
-    foreach (Config::get('languages') as $code => $lang_name)
-    {
-        Language::init($code)->add_translations(
-            array("lang:$code" => $lang_name)
-        );
-    }            
-});
-
 Engine::init();

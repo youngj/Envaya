@@ -1,5 +1,12 @@
 <?php
 
+abstract class Module 
+{
+    static $autoload_patch = array();
+    static $view_patch = array();
+    static $config_defaults = false;
+}
+
 abstract class Hook
 {
     private static $handler_fns = array();
@@ -59,4 +66,3 @@ abstract class Hook
 }
 
 abstract class Hook_EndRequest extends Hook { }
-abstract class Hook_RenderEntityProperty extends Hook { }

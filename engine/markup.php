@@ -67,7 +67,7 @@ class Markup
         $html = array();
         foreach ($attrs as $k => $v)
         {
-            $html[] = $k.'="'.escape($v).'"';
+            $html[] = $k.'="'.htmlspecialchars($v, ENT_QUOTES, 'UTF-8').'"';
         }
         return implode(' ', $html);
     }
