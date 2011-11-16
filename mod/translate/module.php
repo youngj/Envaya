@@ -3,11 +3,10 @@
 class Module_Translate extends Module
 {
     static $autoload_patch = array(
-        'ClassRegistry',      
+        'ClassRegistry',
         'Controller_Default',
         'PageContext',
         'Language',
-        'Mixable',
         'Hook_ViewDashboard',
         'Hook_RenderEntityProperty',
     );
@@ -53,10 +52,10 @@ class Module_Translate extends Module
 
     static function patch_Controller_Default()
     {
-        Controller_Default::add_route(array(
+        Controller_Default::$routes[] = array(
             'regex' => '/tr\b',
             'controller' => 'Controller_Translate',
-        ));
+        );
     }
 
     static function patch_PageContext()
@@ -88,11 +87,6 @@ class Module_Translate extends Module
                 $language->add_translations($translations);
             });
         }
-    }
-
-    static function patch_Mixable()
-    {
-        Mixable::extend_mixin_class('Mixin_Content', 'Mixin_TranslatableContent');        
     }
 
     static function patch_Hook_ViewDashboard()

@@ -48,4 +48,9 @@ class Mixin_Content extends Mixin
     {
         return Markup::get_snippet($this->content, $maxLength);
     }       
+    
+    public function get_content_mime_type()
+    {
+        return 'text/html';
+    }
 }

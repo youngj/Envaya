@@ -30,18 +30,18 @@ class Module_Discussions extends Module
         
     static function patch_Controller_UserSite()
     {
-        Controller_UserSite::add_route(array(
+        array_unshift(Controller_UserSite::$routes, array(
             'regex' => '/topic\b', 
             'controller' => 'Controller_DiscussionTopic', 
-        ),0);
-    }      
+        ));
+    }
 
     static function patch_Controller_Pg()
     {
-        Controller_Pg::add_route(array(
+        Controller_Pg::$routes[] = array(
             'regex' => '/discussions\b', 
             'controller' => 'Controller_Pg_Discussions', 
-        ));
+        );
     }
 
     static function patch_IncomingMail()

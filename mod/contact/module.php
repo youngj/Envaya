@@ -26,10 +26,10 @@ class Module_Contact extends Module
 
     static function patch_Controller_Admin()
     {
-        Controller_Admin::add_route(array(
+        Controller_Admin::$routes[] = array(
             'regex' => '/contact\b',
             'controller' => 'Controller_Contact',
-        ));
+        );
     }
 
     static function patch_Hook_ViewDashboard()

@@ -7,7 +7,7 @@ class Markup
 {
     const Normal = null;
     const Feed = 'feed';
-
+    
     /**
      * Takes a string and turns any URLs into formatted links
      *

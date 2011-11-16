@@ -55,7 +55,14 @@ class EntityTranslationKey extends TranslationKey
     {
         try
         {
-            return $this->call_entity_method("get_%s_translation_behavior", array());
+            if ($this->call_entity_method("get_%s_mime_type", array()) == 'text/html')
+            {
+                return 'TranslationKeyBehavior_HTML';
+            }
+            else
+            {
+                return 'TranslationKeyBehavior_UserText';
+            }
         }
         catch (CallException $ex)
         {

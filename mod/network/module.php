@@ -30,10 +30,10 @@ class Module_Network extends Module
 
     static function patch_Controller_UserSite()
     {
-        Controller_UserSite::add_route(array(
+        array_unshift(Controller_UserSite::$routes, array(
             'regex' => '/network/x\b', 
             'controller' => 'Controller_Network', 
-        ),0);
+        ));
     }
 
     static function patch_Widget()

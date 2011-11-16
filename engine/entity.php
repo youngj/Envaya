@@ -26,7 +26,7 @@ abstract class Entity extends Model implements Serializable
 {
     // values for 'status' field
     const Disabled = 0; // aka 'deleted', except the db row still exists so we can undelete
-    const Enabled = 1;  // not deleted
+    const Enabled = 1;  // not deleted    
 
     protected $metadata_cache = array();        
 

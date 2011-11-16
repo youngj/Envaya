@@ -223,19 +223,7 @@ abstract class Router
         }
 
         return false;
-    }
-	
-    static function add_route($route, $index = null)
-    {
-        if ($index === null)
-        {
-            static::$routes[] = $route;
-        }
-        else
-        {
-            array_splice(static::$routes, $index, 0, array($route));
-        }		
-    }    
+    }	   
     
     /**
      * Automatically executed before the controller action. Can be used to set

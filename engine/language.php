@@ -292,10 +292,9 @@ class Language
     {
         foreach (Config::get('languages') as $code => $lang_name)
         {
-            Language::init($code)->add_translations(
-                array("lang:$code" => $lang_name)
-            );
-        }            
+            $language = Language::init($code);
+            $language->translations["lang:$code"] = $lang_name;
+        }
     }
 }
 

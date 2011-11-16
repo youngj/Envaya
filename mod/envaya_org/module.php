@@ -79,23 +79,24 @@ class Module_Envaya_Org extends Module
 
     static function patch_Controller_Default()
     {
-        Controller_Default::add_route(array(
-            'regex' => '/org\b',
-            'controller' => 'Controller_Org',
-        ), 0);
-
-        Controller_Default::add_route(array(
-            'regex' => '/($|home\b)',
-            'controller' => 'Controller_EnvayaHome',
-        ), 0);
+        array_unshift(Controller_Default::$routes, 
+            array(
+                'regex' => '/org\b',
+                'controller' => 'Controller_Org',
+            ), 
+            array(
+                'regex' => '/($|home\b)',
+                'controller' => 'Controller_EnvayaHome',
+            )
+        );
     }
 
     static function patch_Controller_Admin()
     {
-        Controller_Admin::add_route(array(
+        Controller_Admin::$routes[] = array(
             'regex' => '/envaya\b',
             'controller' => 'Controller_EnvayaAdmin',
-        ));
+        );
     }
 
     static function patch_Language()
