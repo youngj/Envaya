@@ -88,8 +88,11 @@ mod/
       Each module's directory structure is analogous to the top level directory structure, e.g.:
         mod/<modulename>/{_media,js,engine,config,languages,schema,test,themes,views}           
       
-      Each module must contain a file that initializes the module, located at:
-        mod/<modulename>/start.php 
+      Each module must contain a file located at
+        mod/<modulename>/module.php 
+      which defines a class Module_<modulename> that extends Module.
+      This Module_<modulename> subclass defines how classes and views 
+      defined in other modules/core should be modified if this module is loaded.
         
       For the most part, files in enabled modules work the same as if they were defined in
       the corresponding top level directory; e.g. it acts like each module directory tree is
