@@ -3,7 +3,7 @@
     require_once "$root/start.php";
     
     $dbname = 'envaya_test';
-    $dbuser = Config::get('dbuser');
+    $dbuser = Config::get('db:user');
     
     ob_start();
     echo "DROP DATABASE IF EXISTS $dbname;\n";

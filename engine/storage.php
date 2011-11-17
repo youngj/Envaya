@@ -15,13 +15,13 @@ abstract class Storage
     
     static function get_instance()
     {
-        $storage_backend = Config::get('storage_backend');
+        $storage_backend = Config::get('storage:backend');
         return new $storage_backend();
     }
     
     static function get_scribd()
     {
-        require_once Config::get('root')."/vendors/scribd.php";
-        return new Scribd(Config::get('scribd_key'), Config::get('scribd_private'));    
+        require_once Engine::$root."/vendors/scribd.php";
+        return new Scribd(Config::get('storage:scribd_key'), Config::get('storage:scribd_private'));    
     }
 }

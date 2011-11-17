@@ -187,7 +187,7 @@ class Database
 
     static function init()
     {
-        if (Config::get('db_profile'))
+        if (Config::get('debug:db_profile'))
         {
             Hook_EndRequest::register_handler_fn(array('Database', 'profiling_shutdown_hook'), 999);
         }
@@ -234,12 +234,12 @@ class Database
                
     static function get_pdo()
     {
-        $dbhost = Config::get('dbhost');
-        $dbname = Config::get('dbname');
+        $dbhost = Config::get('db:host');
+        $dbname = Config::get('db:name');
         
         $pdo = new PDO("mysql:host={$dbhost};dbname={$dbname}", 
-            Config::get('dbuser'), 
-            Config::get('dbpass'), 
+            Config::get('db:user'), 
+            Config::get('db:password'), 
             array(PDO::ATTR_TIMEOUT => 2)
         );
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);

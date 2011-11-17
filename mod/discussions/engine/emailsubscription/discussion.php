@@ -77,7 +77,7 @@ class EmailSubscription_Discussion extends EmailSubscription
             'body' => view('emails/discussion_message', array(
                 'message' => $message,
             )),
-            'reply_to' => EmailAddress::add_signed_tag(Config::get('reply_email'), "message{$message->guid}"),
+            'reply_to' => EmailAddress::add_signed_tag(Config::get('mail:reply_email'), "message{$message->guid}"),
         ));
     }
     

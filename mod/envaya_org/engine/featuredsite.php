@@ -19,18 +19,18 @@ class FeaturedSite extends Entity
     
     static function active_cache_key()
     {
-        return make_cache_key("featuredsite:active");
+        return Cache::make_key("featuredsite:active");
     }
     
     function save()
     {
-        get_cache()->delete(static::active_cache_key());
+        Cache::get_instance()->delete(static::active_cache_key());
         parent::save();
     }
     
     static function get_active()
     {           
-        return cache_result(function() {    
+        return Cache::get_instance()->cache_result(function() {    
             return FeaturedSite::query()->where('active=1')->get();
         }, static::active_cache_key());
     }

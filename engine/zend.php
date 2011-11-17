@@ -10,7 +10,7 @@ class Zend
         if (!static::$loaded)
         {
             static::$loaded = true;
-            set_include_path(get_include_path() . PATH_SEPARATOR . Config::get('root').'/vendors/zend');
+            set_include_path(get_include_path() . PATH_SEPARATOR . Engine::$root.'/vendors/zend');
             require_once 'Zend/Loader.php';
         }
         Zend_Loader::loadClass($cls);
@@ -26,20 +26,23 @@ class Zend
     {
         if (!static::$mailer)
         {
-            $mail_class = Config::get('mail_backend');
+            $mail_class = Config::get('mail:backend');
             static::$mailer = new $mail_class();
         }
         return static::$mailer;    
     }
     
+    /*
     static function imap()
     {        
         static::load('Zend_Mail_Protocol_Imap');       
         return new Zend_Mail_Protocol_Imap(Config::get('imap_host'),Config::get('imap_port'),'SSL');
     }
+    */
     
-    static $gapps = null;
+    //static $gapps = null;
     
+    /*
     static function google_apps()
     {
         if (!static::$gapps)
@@ -56,11 +59,12 @@ class Zend
         }
         return static::$gapps;
     }    
+    */
     
     static function geonames()
     {
         Zend::load('Bgy_Service_Geonames');
-        return new Bgy_Service_Geonames(array('username' => Config::get('geonames_user')));
+        return new Bgy_Service_Geonames(array('username' => Config::get('geography:geonames_user')));
     }
         
 }

@@ -17,6 +17,6 @@ class EntityRow extends Model
     function save()
     {
         parent::save();        
-        get_cache()->delete(Entity::entity_cache_key($this->guid));
+        Cache::get_instance()->delete(Entity::entity_cache_key($this->guid));
     }
 }

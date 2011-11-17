@@ -7,9 +7,9 @@ require_once("scripts/cmdline.php");
 
 Config::set('db_profile', false);
 
-$dbname = Config::get('dbname');
-$dbuser = Config::get('dbuser');
-$dbpass = Config::get('dbpass');
+$dbname = Config::get('db:name');
+$dbuser = Config::get('db:user');
+$dbpass = Config::get('db:password');
 
 
 echo "
@@ -24,8 +24,8 @@ GRANT ALL PRIVILEGES ON {$dbname}.* TO '{$dbuser}'@'localhost';
 ";
 }
 
-$db_backup_user = Config::get('db_backup_user');
-$db_backup_password = Config::get('db_backup_password');
+$db_backup_user = Config::get('task:db_backup_user');
+$db_backup_password = Config::get('task:db_backup_password');
 
 if ($db_backup_user != $dbuser && $db_backup_user != 'root')
 {

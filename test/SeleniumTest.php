@@ -12,6 +12,10 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
     public function setUp()
     {
+        global $TEST_CONFIG, $BROWSER;
+        $this->root = dirname(__DIR__);
+        $this->config = $TEST_CONFIG;
+        $this->browser = $BROWSER;
         $this->startBrowser();
         $this->setTimestamp(time());
     }
@@ -25,8 +29,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         
     public function init_selenium()
     {
-        global $BROWSER, $TEST_CONFIG;
-        return new Testing_Selenium("*$BROWSER", "http://{$TEST_CONFIG['domain']}");    
+        return new Testing_Selenium("*{$this->browser}", "http://{$this->config['domain']}");    
     }
 
     /*
@@ -45,8 +48,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
     public function setTimestamp($timestamp)
     {
-        global $TEST_CONFIG;
-        file_put_contents($TEST_CONFIG['mock_time_file'], "$timestamp");
+        file_put_contents($this->config['time:mock_file'], "$timestamp");
     }
 
     function login($username, $password)
@@ -71,11 +73,9 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
     function runScript($cmd)
     {
-        global $TEST_CONFIG;
-        
         $root = dirname(__DIR__);
         $env = get_environment();    
-        $env["ENVAYA_CONFIG"] = json_encode($TEST_CONFIG);
+        $env["ENVAYA_CONFIG"] = json_encode($this->config);
         run_task_sync($cmd, $root, $env);
     }
     
@@ -94,13 +94,11 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         $body = '';
         $to = '';
         $from = '';
-        extract($args);
-        
-        global $TEST_CONFIG;                
+        extract($args);       
         
         $ch = curl_init();
         
-        curl_setopt($ch, CURLOPT_URL, "http://{$TEST_CONFIG['domain']}/pg/receive_mail?secret={$TEST_CONFIG['sendgrid_secret']}");
+        curl_setopt($ch, CURLOPT_URL, "http://{$this->config['domain']}/pg/receive_mail?secret={$this->config['mail:sendgrid_secret']}");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, true);    
         curl_setopt($ch, CURLOPT_POSTFIELDS, array(
@@ -195,9 +193,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     
     public function _getLastSMS($match = "Message")
     {
-        global $TEST_CONFIG;
-        
-        $mock_sms_file = $TEST_CONFIG['mock_sms_file'];
+        $mock_sms_file = $this->config['sms:mock_file'];
         
         if (!file_exists($mock_sms_file))
         {    
@@ -244,9 +240,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
 
     public function _getLastEmail($match = "Subject")
     {
-        global $TEST_CONFIG;
-        
-        $mock_mail_file = $TEST_CONFIG['mock_mail_file'];
+        $mock_mail_file = $this->config['mail:mock_file'];
         
         if (!file_exists($mock_mail_file))
         {    
@@ -333,8 +327,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
      
     public function sendSMS($from, $to, $msg)
     {
-        global $TEST_CONFIG;
-        $url = "http://{$TEST_CONFIG['domain']}/sg/incoming?provider=Mock&from=".urlencode($from)
+        $url = "http://{$this->config['domain']}/sg/incoming?provider=Mock&from=".urlencode($from)
             ."&to=".urlencode($to)
             ."&msg=".urlencode($msg);
             

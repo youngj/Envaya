@@ -102,7 +102,7 @@ class Geography
     
     static function is_available_country($country_code)
     {
-        return in_array($country_code, Config::get('available_countries'));
+        return in_array($country_code, Config::get('geography:countries'));
     }
     
     static function get_country_codes()
@@ -116,7 +116,7 @@ class Geography
     {
         if (!$country_codes)
         {        
-            $country_codes = Config::get('visible_countries');
+            $country_codes = Config::get('geography:countries');
         }
     
         $options = array();

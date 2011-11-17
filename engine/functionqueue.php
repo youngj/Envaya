@@ -24,7 +24,7 @@ class FunctionQueue
             static::$connect_tried = true;
             $k = new Memcache;
             
-            if (!@$k->connect(Config::get('queue_host'), Config::get('queue_port')))
+            if (!@$k->connect(Config::get('queue:host'), Config::get('queue:port')))
             {
                 throw new IOException(__("error:QueueConnectFailed"));
             }

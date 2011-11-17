@@ -3,7 +3,7 @@
 /*
  * Interface for accessing site configuration settings 
  * (defined in config/ directory as php files 
- *  that returnan array)
+ *  that return an array)
  * 
  * e.g. Config::get('setting_name')
  *
@@ -14,11 +14,54 @@
 class Config
 {
     private static $settings = null;
-    private static $base_dir = null;
+    private static $loaded_groups = array();      
     
     static function get($key)
     {
-        return static::$settings[$key];
+        if (isset(static::$settings[$key]))
+        {
+            return static::$settings[$key];
+        }
+        
+        $key_arr = explode(':', $key, 2);
+        if (sizeof($key_arr == 2))        
+        {
+            $group_name = $key_arr[0];
+            
+            /*           
+            $local_group = "local_{$group_name}";
+            if (!isset(self::$loaded_groups[$local_group]))
+            {
+                self::$loaded_groups[$local_group] = true;
+                $local_settings = self::get_root_group($local_group);
+                if (isset($local_settings))
+                {
+                    self::load_array($local_settings);
+                    if (isset(static::$settings[$key]))
+                    {
+                        return static::$settings[$key];
+                    }
+                }
+            }
+            */
+            
+            $default_group = "default_{$group_name}";
+            if (!isset(self::$loaded_groups[$default_group]))
+            {            
+                self::$loaded_groups[$default_group] = true;
+                $default_settings = self::get_group($default_group);
+                if (isset($default_settings))
+                {
+                    self::load_array($default_settings, false); // don't overwrite local settings with default settings
+                    
+                    if (isset(static::$settings[$key]))
+                    {
+                        return static::$settings[$key];
+                    }
+                }
+            }
+        }        
+        return null;
     }
     
     static function set($key, $value)
@@ -35,16 +78,14 @@ class Config
     {
         if (static::$settings == null)
         {
-            static::$base_dir = dirname(__DIR__);            
-            static::load_array(static::get_group('default'));                        
-            static::load_array(static::get_group('local'));
-            static::load_array(@include(static::$base_dir."/build/config.php"));
+            self::load_array(self::get_root_group('default'));                        
+            self::load_array(self::get_root_group('local'));
             
             // The ENVAYA_CONFIG environment variable may define settings in a JSON string
             $json = getenv("ENVAYA_CONFIG");
             if ($json)
             {
-                static::load_array(json_decode($json, true));
+                self::load_array(json_decode($json, true));
             }                        
         }
     }
@@ -53,7 +94,7 @@ class Config
     {    
         if ($settings)
         {
-            $all_settings =& static::$settings;
+            $all_settings =& self::$settings;
             
             if (!$all_settings)
             {
@@ -79,20 +120,15 @@ class Config
         }
     }
     
-    static function load_module_defaults($module_name)
-    {
-        static::load_array(static::get_module_defaults($module_name), false);
-    }
-
-    static function get_module_defaults($module_name)
-    {
-        $path = static::$base_dir."/mod/{$module_name}/config/default.php";
-        return @include($path);
-    }    
-        
     static function get_group($group_name)
     {
-        $path = static::$base_dir."/config/{$group_name}.php";
-        return @include($path);
+        $path = Engine::get_real_path("config/{$group_name}.php");
+        return $path ? @include($path) : null;
     }
+    
+    static function get_root_group($group_name)
+    {
+        $path = Engine::$root."/config/{$group_name}.php";
+        return @include($path);
+    }      
 }

@@ -12,9 +12,9 @@ class State
     {
         if (!is_array(static::$cached_list))
         {
-            $cache = get_cache();
+            $cache = Cache::get_instance();
 
-			$cache_key = make_cache_key('state');
+			$cache_key = Cache::make_key('state');
 			
             static::$cached_list = $cache->get($cache_key);
 
@@ -57,6 +57,6 @@ class State
         
         static::$cached_list[$name] = $value;
 
-        get_cache()->set('state', static::$cached_list);
+        Cache::get_instance()->set(Cache::make_key('state'), static::$cached_list);
     }
 }

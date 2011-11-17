@@ -8,7 +8,7 @@ return function() {
         $root_scope->save();
     }
 
-    $admin_email = Config::get('admin_email');
+    $admin_email = Config::get('mail:admin_email');
     
     EmailSubscription_Comments::init_for_entity($root_scope, $admin_email);
     EmailSubscription_Registration::init_for_entity($root_scope, $admin_email);
@@ -33,7 +33,7 @@ return function() {
     $set_test_defaults = function($org) use ($root_scope)
     {
         $org->set_design_setting('tagline', 'a test organization');
-        $org->set_email(Config::get('admin_email'));    
+        $org->set_email(Config::get('mail:admin_email'));    
         $org->set_password('asdfasdf');
         $org->language = 'en';
         $org->set_sectors(array(6,19));

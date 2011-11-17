@@ -69,7 +69,7 @@ class IncomingMail
             }
         }
         
-        if ($this->to == Config::get('email_from')) // possible bounce email
+        if ($this->to == Config::get('mail:email_from')) // possible bounce email
         {
             return $this->handle_bounce();
         }        

@@ -12,7 +12,7 @@ class SMS_AppState extends Model
     
     function send_alert($subject, $msg)
     {       
-        $gateways = Config::get('sms_gateways');
+        $gateways = Config::get('sms:gateways');
         
         $admin_email = @$gateways[$this->phone_number]['admin_email'];        
         if ($admin_email)

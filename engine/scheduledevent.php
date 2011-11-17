@@ -139,7 +139,7 @@ abstract class ScheduledEvent extends Entity
     
     static function get_text_for_rrule($rrule)
     {
-        require_once Config::get('root') . "/vendors/When.php";
+        require_once Engine::$root. "/vendors/When.php";
     
         $when = new When();
         $when->rrule($rrule);
@@ -164,7 +164,7 @@ abstract class ScheduledEvent extends Entity
     
     function get_when()
     {
-        require_once Config::get('root') . "/vendors/When.php";
+        require_once Engine::$root . "/vendors/When.php";
         
         $when = new When();
         

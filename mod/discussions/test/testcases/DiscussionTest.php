@@ -98,8 +98,7 @@ class DiscussionTest extends SeleniumTest
         $this->mouseOver("//a[contains(text(),'Ms. Person')]");
         $this->mouseOver("//a[contains(text(),'Mr. Person')]");
 
-        global $TEST_CONFIG;
-        $url = str_replace("http://{$TEST_CONFIG['domain']}", "", $this->getLocation());
+        $url = str_replace("http://{$this->config['domain']}", "", $this->getLocation());
         
         // test feed items
         $this->open("/pg/feed");

@@ -10,7 +10,7 @@
     umask(0);
     
     $now = date("YmdHi");
-    $dbname = Config::get('dbname');    
+    $dbname = Config::get('db:name');    
     
     $s3_path = "$dbname$now.sql.gz.nc";
     
@@ -24,20 +24,20 @@
     }
     
     $dump = "mysqldump ".escapeshellarg($dbname)
-        ." -u ".escapeshellarg(Config::get('db_backup_user'))
-        ." --password=".escapeshellarg(Config::get('db_backup_password'));
+        ." -u ".escapeshellarg(Config::get('task:db_backup_user'))
+        ." --password=".escapeshellarg(Config::get('task:db_backup_password'));
 
-    $crypt = "mcrypt -q --key ".escapeshellarg(Config::get('dbpass'));
+    $crypt = "mcrypt -q --key ".escapeshellarg(Config::get('db:password'));
 
     echo system("$dump | gzip | $crypt > $fs_path && chmod 666 $fs_path");    
     
-    $s3 = new S3(Config::get('s3_key'), Config::get('s3_private'));    
-    if (!$s3->uploadFile(Config::get('s3_backup_bucket'), $s3_path, $fs_path))
+    $s3 = new S3(Config::get('storage:s3_key'), Config::get('storage:s3_private'));    
+    if (!$s3->uploadFile(Config::get('task:s3_backup_bucket'), $s3_path, $fs_path))
     {
         throw new Exception("S3 upload returned false");
     }
     
-    $info = $s3->getObjectInfo(Config::get('s3_backup_bucket'), $s3_path);
+    $info = $s3->getObjectInfo(Config::get('task:s3_backup_bucket'), $s3_path);
     
     $size = (int)$info['Content-Length'];
     

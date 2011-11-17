@@ -853,7 +853,7 @@ class SMS_Controller_News extends SMS_Controller
         $region = PhoneNumber::get_country_code($this->request->get_from_number());
         if (!Geography::is_available_country($region))
         {
-            $country_codes = Config::get('available_countries');
+            $country_codes = Config::get('geography:countries');
             $region = $country_codes[0];
         }
         
@@ -1040,7 +1040,7 @@ class SMS_Controller_News extends SMS_Controller
         
         $languages = Config::get('languages');
         
-        if (isset($languages[$lang]))
+        if (in_array($lang, $languages))
         {
             foreach ($this->query_subscriptions()
                 ->show_disabled(true)

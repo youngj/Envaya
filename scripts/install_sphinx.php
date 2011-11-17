@@ -14,10 +14,10 @@ umask(0);
 
 render_config_template(
     "$base/scripts/config/sphinx.conf", 
-    Config::get('sphinx_conf_dir').'/sphinx.conf'
+    Config::get('sphinx:conf_dir').'/sphinx.conf'
 );
 
-$log_dir = Config::get('sphinx_log_dir');
+$log_dir = Config::get('sphinx:log_dir');
 if (!is_dir($log_dir))
 {
     mkdir($log_dir, 0777, true);

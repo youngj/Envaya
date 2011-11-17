@@ -3,7 +3,7 @@
 require_once 'start.php';
 require_once 'scripts/cmdline.php';
 
-$email = Config::get('status_email');
+$email = Config::get('mail:status_email');
 
 if ($email)
 {

@@ -6,7 +6,7 @@ class SMS_Provider_App extends SMS_Provider
     
     function __construct()
     {
-        require_once(Config::get('root').'/vendors/EnvayaSMS.php');
+        require_once(Engine::$root.'/vendors/EnvayaSMS.php');
     }
     
     
@@ -59,7 +59,7 @@ class SMS_Provider_App extends SMS_Provider
             return false;
         }
         
-        $gateways = Config::get('sms_gateways');
+        $gateways = Config::get('sms:gateways');
         $password = @$gateways[$phone_number]['password'];
         if (!$password)
         {            

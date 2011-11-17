@@ -92,8 +92,8 @@ class UserScope extends Entity
     {		
 		if (!isset(static::$root))
 		{
-			$cache_key = make_cache_key('root_scope_guid');
-			$cache = get_cache();
+			$cache_key = Cache::make_key('root_scope_guid');
+			$cache = Cache::get_instance();
 			$root_scope_guid = $cache->get($cache_key);
 			if (!$root_scope_guid)
 			{		

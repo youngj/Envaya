@@ -6,11 +6,11 @@
     $s3_path = $argv[1];
     $fs_path = Config::get('dataroot')."/$s3_path";
     
-    $s3 = new S3(Config::get('s3_key'), Config::get('s3_private'));    
+    $s3 = new S3(Config::get('storage:s3_key'), Config::get('storage:s3_private'));    
     
     error_log("downloading $s3_path...");
     
-    if ($s3->downloadFile(Config::get('s3_backup_bucket'), $s3_path, $fs_path))
+    if ($s3->downloadFile(Config::get('task:s3_backup_bucket'), $s3_path, $fs_path))
     {
         error_log($fs_path);
     }

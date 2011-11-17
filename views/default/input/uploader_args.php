@@ -5,7 +5,7 @@
     );
 
     $args = array(
-        'runtimes' => Config::get('plupload_runtimes'),
+        'runtimes' => Config::get('storage:plupload_runtimes'),
         'server_processing_message' => __('upload:server_processing'),
         'size_error_message' => __('upload:size_error'),
         'upload_progress_message' =>  __('upload:uploading'),

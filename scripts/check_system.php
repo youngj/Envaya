@@ -3,7 +3,7 @@
 require_once "scripts/cmdline.php";
 require_once "start.php";
 
-$max_disk_pct = Config::get('max_disk_pct');
+$max_disk_pct = Config::get('task:max_disk_pct');
 
 $res = `df`;
 $lines = explode("\n", $res);

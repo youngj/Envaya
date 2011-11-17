@@ -8,7 +8,7 @@
         'owner_guid' => 0, 
         'language' => Config::get('language')
     );    
-    $email = Config::get('admin_email');    
+    $email = Config::get('mail:admin_email');    
     
     foreach (TranslationLanguage::query()->filter() as $language)
     {

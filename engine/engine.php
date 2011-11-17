@@ -8,12 +8,12 @@ class Engine
     static $used_lib_cache;
 
     private static $path_cache;
-    private static $build_cache;
+    static $build_cache;
     private static $loaded_classes = array();
     private static $autoload_patch = array();
     static $view_patch = array();
 
-    private static $root;
+    static $root;
     private static $module_classes = array();
 
     /*
@@ -22,12 +22,9 @@ class Engine
      */
     static function init()
     {
-        require_once __DIR__."/config.php";
-        Config::load();
-
-        self::$root = $root = Config::get('root');
-        self::$path_cache = @include("$root/build/path_cache.php") ?: array();
-
+        self::$root = $root = dirname(__DIR__);
+        self::$path_cache = @include("$root/build/path_cache.php") ?: array();    
+    
         if (@include("$root/build/cache.php"))
         {
             self::$build_cache = new RealBuildCache();
@@ -35,7 +32,10 @@ class Engine
         else
         {
             self::$build_cache = new BuildCache();
-        }
+        }    
+    
+        require_once __DIR__."/config.php";
+        Config::load();
 
         mb_internal_encoding('UTF-8');
 
@@ -77,11 +77,6 @@ class Engine
             foreach ($module_class::$view_patch as $view)
             {
                 self::$view_patch[$view][] = $module_class;
-            }
-
-            if ($module_class::$config_defaults)
-            {
-                Config::load_module_defaults($module_name);
             }
         }
     }

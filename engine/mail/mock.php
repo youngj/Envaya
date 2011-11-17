@@ -6,7 +6,7 @@ class Mail_Mock extends Zend_Mail_Transport_Abstract
 {
     protected function _sendMail()
     {
-        $file = fopen(Config::get('mock_mail_file'), 'a');
+        $file = fopen(Config::get('mail:mock_file'), 'a');
         if (!$file)
         {
             return;

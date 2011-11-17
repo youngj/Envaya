@@ -4,9 +4,9 @@
     require_once("start.php");
     require_once("vendors/s3.php");
 
-	$s3 = new S3(Config::get('s3_key'), Config::get('s3_private'));    
+	$s3 = new S3(Config::get('storage:s3_key'), Config::get('storage:s3_private'));    
     
-	$bucket_name = Config::get('s3_backup_bucket');
+	$bucket_name = Config::get('task:s3_backup_bucket');
 	
 	$contents = $s3->getBucketContents($bucket_name);
 	

@@ -19,7 +19,7 @@ echo view('input/securitytoken');
 echo view('input/hidden_multi', array('fields' => $fields));
 
 echo view('input/hidden', array('name' => 'captcha', 'value' => '1'));
-echo Captcha::get_html();
+echo Captcha::get_instance()->get_html();
 
 // don't want restore_input functionality from input/text view...
 echo '<input type="text" name="captcha_response" value="" class="input-text"/>';

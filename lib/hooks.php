@@ -4,7 +4,6 @@ abstract class Module
 {
     static $autoload_patch = array();
     static $view_patch = array();
-    static $config_defaults = false;
 }
 
 abstract class Hook

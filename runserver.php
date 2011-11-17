@@ -16,7 +16,7 @@ function start_kestrel()
         mkdir($kestrel_data_dir, 0777, true);
     }
     
-    $root = Config::get('root');        
+    $root = Engine::$root;
     $kestrel_jar = "$root/vendors/kestrel/kestrel-1.2.jar";    
     $kestrel_conf = Config::get('dataroot').'/kestrel.conf';
     
@@ -33,9 +33,9 @@ function start_kestrel()
 
 function start_sphinx()
 {
-    $sphinx_bin_dir = Config::get('sphinx_bin_dir');
-    $sphinx_conf_dir = Config::get('sphinx_conf_dir');
-    $sphinx_pid_dir = Config::get('sphinx_pid_dir');
+    $sphinx_bin_dir = Config::get('sphinx:bin_dir');
+    $sphinx_conf_dir = Config::get('sphinx:conf_dir');
+    $sphinx_pid_dir = Config::get('sphinx:pid_dir');
 
     if (!is_dir($sphinx_pid_dir))
     {

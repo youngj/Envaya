@@ -86,7 +86,7 @@
         echo "<div>";
         if (!Permission_EditTranslation::has_for_entity($key))
         {                    
-            if ($key instanceof EntityTranslationKey || !@Config::get('translate:live_interface'))
+            if ($key instanceof EntityTranslationKey || !Config::get('translate:live_interface'))
             {
                 echo "<div style='float:right;padding-top:5px;width:220px;color:#999;font-size:11px'>";            
                 echo __('itrans:needs_approval');            

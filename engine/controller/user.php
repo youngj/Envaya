@@ -157,7 +157,7 @@ abstract class Controller_User extends Controller
                 
         $this->public_layout = true;
                 
-        $theme_name = get_input("__theme") ?: $user->get_design_setting('theme_name') ?: Config::get('fallback_theme');
+        $theme_name = get_input("__theme") ?: $user->get_design_setting('theme_name') ?: Config::get('theme:default');
         
         $this->page_draw_vars['design'] = $user->get_design_settings();
         $this->page_draw_vars['tagline'] = $user->get_design_setting('tagline');

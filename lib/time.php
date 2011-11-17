@@ -139,10 +139,8 @@
      * Wrapper for time() function that allows tests to supply a fake timestamp in order to test time-based behavior
      */
     function timestamp()
-    {
-
-    
-        $mock_time_file = Config::get('mock_time_file');
+    {    
+        $mock_time_file = Config::get('time:mock_file');
         if ($mock_time_file)
         {   
             static $mock_time;

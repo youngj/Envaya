@@ -1,6 +1,6 @@
 <?php
 
-class Cache_Memcache implements Cache
+class Cache_Memcache extends Cache
 {
     protected $memcache;
 
@@ -8,7 +8,7 @@ class Cache_Memcache implements Cache
     {
         $memcache = new Memcache;
 
-        foreach (Config::get('memcache_servers') as $server)
+        foreach (Config::get('cache:memcache_servers') as $server)
         {
             $memcache->addServer($server, 11211);
         }

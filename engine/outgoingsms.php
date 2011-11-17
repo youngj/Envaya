@@ -88,7 +88,7 @@ class OutgoingSMS extends Model
     {   
         $from_number = $this->from_number;
     
-        foreach (Config::get('sms_routes') as $route)
+        foreach (Config::get('sms:routes') as $route)
         {
             if ($route['self_number'] === $from_number)
             {

@@ -88,7 +88,7 @@ function notify_exception($exception)
     {
         error_log("*** FATAL EXCEPTION *** : " . $exception);
 
-        if (Config::get('error_emails_enabled'))
+        if (Config::get('mail:error_emails_enabled'))
         {
             $lastErrorEmailTimeFile = Config::get('dataroot')."/last_error_time";
             $lastErrorEmailTime = (int)@file_get_contents($lastErrorEmailTimeFile);
@@ -119,8 +119,8 @@ function notify_exception($exception)
     =======
     $server
             ");
-                $mail->setFrom(Config::get('email_from'), Config::get('site_name'));
-                $mail->addTo(Config::get('admin_email'));
+                $mail->setFrom(Config::get('mail:email_from'), Config::get('site_name'));
+                $mail->addTo(Config::get('mail:admin_email'));
                 $mailer = Zend::mail_transport();
                 $mail->send($mailer);
             }

@@ -12,7 +12,7 @@ function get_test_fixtures()
 {   
     $fixtures_path = 'test/fixtures.php';
     
-    $core_path = Config::get('root') . "/$fixtures_path";
+    $core_path = Engine::$root . "/$fixtures_path";
     
     $fixtures = array();
     

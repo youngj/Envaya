@@ -18,7 +18,7 @@
 */
 
 require_once dirname(__DIR__).'/scripts/cmdline.php';
-require_once dirname(__DIR__).'/engine/config.php';
+require_once dirname(__DIR__).'/start.php';
 require_once 'PHPUnit/Autoload.php';
 require_once __DIR__.'/SeleniumTest.php';
 require_once __DIR__.'/WebDriverTest.php';
@@ -133,8 +133,8 @@ class TestListener implements PHPUnit_Framework_TestListener
         echo "\n".get_class($test)."\n";
         
         global $TEST_CONFIG;        
-        @unlink($TEST_CONFIG['mock_mail_file']);    
-        @unlink($TEST_CONFIG['mock_sms_file']);   
+        @unlink($TEST_CONFIG['mail:mock_file']);    
+        @unlink($TEST_CONFIG['sms:mock_file']);   
         
         if (!$this->is_first_test)
         {
@@ -210,7 +210,7 @@ function run_test_suite($suite, $opts)
            2 => array("file", "$test_dataroot/selenium.err.out", 'w')
         );
             
-        $selenium_path = Config::get('dataroot') . "/" . Config::get('selenium_jar');    
+        $selenium_path = Config::get('dataroot') . "/" . Config::get('test:selenium_jar');    
         
         $selenium = proc_open("java -jar $selenium_path -singleWindow", 
             $descriptorspec, $pipes, __DIR__);  

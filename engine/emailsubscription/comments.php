@@ -18,7 +18,7 @@ class EmailSubscription_Comments extends EmailSubscription
         {
             $this->send(array(
                 'notifier' => $comment,
-                'reply_to' => EmailAddress::add_signed_tag(Config::get('reply_email'), "comment{$comment->guid}"),
+                'reply_to' => EmailAddress::add_signed_tag(Config::get('mail:reply_email'), "comment{$comment->guid}"),
                 'subject' => strtr(__('comment:notification_subject', $this->language), array(
                     '{name}' => $comment->get_name(),
                 )), 

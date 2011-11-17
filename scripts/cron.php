@@ -11,7 +11,7 @@
 require_once "start.php";
 require_once "scripts/cmdline.php";
 
-$cron_file = Config::get('root') . "/crontab.php";
+$cron_file = Engine::$root . "/crontab.php";
 $cronTasks = include $cron_file;
 
 foreach (Config::get('modules') as $module_name)

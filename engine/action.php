@@ -200,7 +200,7 @@ abstract class Action
     
         if (get_input('captcha'))
         {
-            if (Captcha::check_answer($_POST['captcha_response']))
+            if (Captcha::get_instance()->check_answer($_POST['captcha_response']))
             {
                 Session::set('free_captchas', 3);
                 return true;

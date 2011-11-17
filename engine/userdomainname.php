@@ -15,7 +15,7 @@ class UserDomainName extends Model
     
     function invalidate_cache()
     {
-        get_cache()->delete(static::cache_key_for_host($this->domain_name));
+        Cache::get_instance()->delete(static::cache_key_for_host($this->domain_name));
     }
     
     function save()
@@ -32,13 +32,13 @@ class UserDomainName extends Model
     
     static function cache_key_for_host($host)
     {
-        return make_cache_key('username_for_host', $host);
+        return Cache::make_key('username_for_host', $host);
     }
     
     static function get_username_for_host($host)
     {    
 		$cacheKey = static::cache_key_for_host($host);
-        $cache = get_cache();
+        $cache = Cache::get_instance();
         $cachedUsername = $cache->get($cacheKey);
         
         if ($cachedUsername !== null)

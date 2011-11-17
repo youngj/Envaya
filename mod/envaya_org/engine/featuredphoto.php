@@ -22,24 +22,24 @@ class FeaturedPhoto extends Entity
 
     static function json_cache_key()
     {
-        return make_cache_key("featuredphoto:json");
+        return Cache::make_key("featuredphoto:json");
     }    
     
     function save()
     {
-        get_cache()->delete(static::json_cache_key());
+        Cache::get_instance()->delete(static::json_cache_key());
         parent::save();
     }    
     
     function delete()
     {
-        get_cache()->delete(static::json_cache_key());
+        Cache::get_instance()->delete(static::json_cache_key());
         parent::delete();
     }        
     
     static function get_json_array()
     {
-        return cache_result(function() {    
+        return Cache::get_instance()->cache_result(function() {    
             return json_encode(array_map(
                 function($p) { return $p->js_properties(); }, 
                 FeaturedPhoto::query()->where('active=1')->filter()

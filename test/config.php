@@ -5,30 +5,29 @@
  * Selenium tests use a separate domain and data store from the normal development environment.
  */
 
-require_once dirname(__DIR__)."/engine/config.php";
-Config::load();
+require_once dirname(__DIR__)."/start.php";
  
 $dataroot = Config::get('dataroot').'/test_data';
 
 return array(        
-    'plupload_runtimes' => 'html4',
+    'storage:plupload_runtimes' => 'html4',
     
-    'sendgrid_secret' => 'flksflk312',
-    'admin_email' => 'nobody@envaya.org',
+    'mail:sendgrid_secret' => 'flksflk312',
+    'mail:admin_email' => 'nobody@envaya.org',
     
-    'notify_status_interval' => 0,
-    'notify_stuck_mail_interval' => 0,
-    'check_system_interval' => 0,
-    'backup_interval' => 0,
-    'backup_s3_interval' => 0,    
-    'check_external_feeds_interval' => 0,
-    'check_sms_app_interval' => 0,
-    'send_waiting_sms_interval' => 0,
+    'task:notify_status_interval' => 0,
+    'task:notify_stuck_mail_interval' => 0,
+    'task:check_system_interval' => 0,
+    'task:backup_interval' => 0,
+    'task:backup_s3_interval' => 0,    
+    'task:check_external_feeds_interval' => 0,
+    'task:check_sms_app_interval' => 0,
+    'task:send_waiting_sms_interval' => 0,
     
-    'captcha_enabled' => false,
+    'captcha:backend' => 'Captcha_Mock',
     'ssl_enabled' => false,    
     
-    'sms_routes' => array(
+    'sms:routes' => array(
         array(
             'service' => 'SMS_Service_News',
             'remote_numbers' => '.*',
@@ -43,23 +42,23 @@ return array(
         ),
     ),    
     
-    'mock_time_file' => "$dataroot/time.txt",
-    'mock_sms_file' => "$dataroot/sms.out",
-    'contact_phone_number' => '14845551212',
-    'news_phone_number' => '14845551213',    
-    'mail_backend' => "Mail_Mock",
-    'mock_mail_file' => "$dataroot/mail.out",
+    'time:mock_file' => "$dataroot/time.txt",
+    'sms:mock_file' => "$dataroot/sms.out",
+    'test:contact_phone_number' => '14845551212',
+    'test:news_phone_number' => '14845551213',    
+    'mail:backend' => "Mail_Mock",
+    'mail:mock_file' => "$dataroot/mail.out",
     'domain' => 'localhost:3001',
-    'queue_host' => 'localhost',
-    'queue_port' => 22134,
-    'sphinx_port' => 9313,    
     'dataroot' => $dataroot,        
-    'sphinx_conf_dir' => $dataroot,
-    'sphinx_log_dir' => $dataroot,
-    'sphinx_pid_dir' => $dataroot,
-    'dbname' => 'envaya_test',
-    'feed_page_size' => 6,
-    'debug_media' => false,
+    'queue:host' => 'localhost',
+    'queue:port' => 22134,
+    'sphinx:port' => 9313,    
+    'sphinx:conf_dir' => $dataroot,
+    'sphinx:log_dir' => $dataroot,
+    'sphinx:pid_dir' => $dataroot,
+    'db:name' => 'envaya_test',
+    'feed:page_size' => 6,
+    'debug:media' => false,
     'debug' => true,
-	'db_profile' => false,
+	'debug:db_profile' => false,
 );

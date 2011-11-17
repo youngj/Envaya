@@ -13,7 +13,7 @@ if (Config::get('debug') && Config::get('domain') != 'envaya.org')
 {
     $users = User::query()->filter();
 
-    $admin_email = Config::get('admin_email');
+    $admin_email = Config::get('mail:admin_email');
     
     foreach ($users as $user)
     {

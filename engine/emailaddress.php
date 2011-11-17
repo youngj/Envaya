@@ -76,7 +76,7 @@ class EmailAddress
      */
     static function parse_address($rfc822_address)
     {
-        require_once Config::get('root')."/vendors/rfc822_addresses.php";
+        require_once Engine::$root."/vendors/rfc822_addresses.php";
     
         $rfc822 = new rfc822_addresses_class();
         $rfc822->ParseAddressList($rfc822_address, $parsed_address);

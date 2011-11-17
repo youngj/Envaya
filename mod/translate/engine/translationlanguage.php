@@ -19,9 +19,9 @@ class TranslationLanguage extends Entity
     {
         if (!isset(static::$code_map))
         {
-			$cache_key = make_cache_key('language_code_map');
+			$cache_key = Cache::make_key('language_code_map');
 		
-            $code_map = get_cache()->get($cache_key);
+            $code_map = Cache::get_instance()->get($cache_key);
             if (!$code_map)
             {
                 static::update_code_map();
@@ -54,8 +54,8 @@ class TranslationLanguage extends Entity
         }        
         static::$code_map = $code_map;
 		
-		$cache_key = make_cache_key('language_code_map');		
-		get_cache()->set($cache_key, $code_map);
+		$cache_key = Cache::make_key('language_code_map');		
+		Cache::get_instance()->set($cache_key, $code_map);
     }
     
     function save()

@@ -45,7 +45,7 @@
     {
         PageContext::add_header_html(
             "<style type='text/css'>"
-            .file_get_contents(Config::get('root').'/www/_media/css/tinymce_ui.css')
+            .file_get_contents(Engine::$root.'/www/_media/css/tinymce_ui.css')
             ."</style>"
         );
         
@@ -58,7 +58,7 @@
         echo view('js/create_modal_box');         
         echo view('js/dom'); 
         ?>
-        <script type='text/javascript' src='/_media/tiny_mce/tiny_mce.js?v<?php echo Config::get('hash:js:tiny_mce'); ?>'></script>
+        <script type='text/javascript' src='/_media/tiny_mce/tiny_mce.js?v<?php echo Config::get('build:hash:js:tiny_mce'); ?>'></script>
         <?php                
     }
 

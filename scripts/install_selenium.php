@@ -4,11 +4,10 @@
      * Allows us to avoid storing this jar file in git, since it is very large (>20MB) and changes often.
      */
      
-    require_once dirname(__DIR__)."/engine/config.php";
-    Config::load();
+    require_once dirname(__DIR__)."/start.php";
      
     $dataroot = Config::get('dataroot');
-    $selenium_jar = Config::get('selenium_jar');
+    $selenium_jar = Config::get('test:selenium_jar');
     $selenium_path = "$dataroot/$selenium_jar";
     $selenium_tmp_path = "$selenium_path.tmp";    
     

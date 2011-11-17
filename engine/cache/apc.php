@@ -1,6 +1,6 @@
 <?php
 
-class Cache_APC implements Cache
+class Cache_APC extends Cache
 {
     public function get($key)
     {

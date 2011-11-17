@@ -6,7 +6,7 @@ abstract class SMS_Service
     {
         $cls = get_called_class();
     
-        foreach (Config::get('sms_routes') as $route)
+        foreach (Config::get('sms:routes') as $route)
         {
             if ($route['service'] == $cls && preg_match('#^'.$route['remote_numbers'].'$#', $to_number))
             {

@@ -157,7 +157,7 @@ class Session_Cookie implements SessionImpl
     
     static function cache_key($sessionId)
     {
-        return make_cache_key("session", $sessionId);
+        return Cache::make_key("session", $sessionId);
     }    
     
     function _session_open($save_path, $session_name)
@@ -175,13 +175,13 @@ class Session_Cookie implements SessionImpl
         $id_sha1 = sha1($id);
     
         $cacheKey = static::cache_key($id_sha1);
-        $sessionData = get_cache()->get($cacheKey);
+        $sessionData = Cache::get_instance()->get($cacheKey);
 
         if ($sessionData == null)
         {
             $result = Database::get_row("SELECT * from `sessions` where id_sha1=?", array($id_sha1));
             $sessionData = ($result) ? $result->data : '';
-            get_cache()->set($cacheKey, $sessionData);
+            Cache::get_instance()->set($cacheKey, $sessionData);
         }
 
         return $sessionData;
@@ -193,7 +193,7 @@ class Session_Cookie implements SessionImpl
         {
             $id_sha1 = sha1($id);
         
-            get_cache()->set(static::cache_key($id_sha1), $sess_data);
+            Cache::get_instance()->set(static::cache_key($id_sha1), $sess_data);
 
             return (Database::update("REPLACE INTO `sessions` (id_sha1, ts, data) VALUES (?,?,?)",
                     array($id_sha1, timestamp(), $sess_data))!==false);
@@ -204,7 +204,7 @@ class Session_Cookie implements SessionImpl
     {
         $id_sha1 = sha1($id);
         
-        get_cache()->delete(static::cache_key($id_sha1));
+        Cache::get_instance()->delete(static::cache_key($id_sha1));
 
         return (bool)Database::delete("DELETE from `sessions` where id_sha1=?", array($id_sha1));
     }

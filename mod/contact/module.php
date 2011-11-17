@@ -12,8 +12,6 @@ class Module_Contact extends Module
         'SMSSubscription',
     );
 
-    static $config_defaults = true;
-
     static function patch_ClassRegistry()
     {
         ClassRegistry::register(array(

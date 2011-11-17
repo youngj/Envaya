@@ -135,8 +135,8 @@ class Markup
     {
         if ($content)
         {
-            $cacheKey = make_cache_key("snippet", md5($content), "$maxLength");
-            $cache = get_cache();
+            $cacheKey = Cache::make_key("snippet", md5($content), "$maxLength");
+            $cache = Cache::get_instance();
             $snippet = $cache->get($cacheKey);
                         
             if (!isset($snippet))

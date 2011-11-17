@@ -100,7 +100,7 @@ class Controller_Pg extends Controller
         // http://www.quora.com/What-are-the-security-models-of-SendGrid-APInbox-and-CloudMailin/answer/Tim-Falls
         $secret = @$_REQUEST['secret'];
       
-        if ($secret !== Config::get('sendgrid_secret'))
+        if ($secret !== Config::get('mail:sendgrid_secret'))
         {
             $this->set_status(403);
             $this->set_content("Invalid request secret");
@@ -270,7 +270,7 @@ class Controller_Pg extends Controller
     
     function action_show_captcha()
     {
-        Captcha::show();
+        Captcha::get_instance()->show();
     }
 
     function action_email_settings()
@@ -393,7 +393,7 @@ class Controller_Pg extends Controller
                 else
                 { 
                     // bias geocode result to default country
-                    $country_codes = Config::get('available_countries');
+                    $country_codes = Config::get('geography:countries');
                     $region = $country_codes[0];
                 }
             
@@ -523,7 +523,7 @@ class Controller_Pg extends Controller
     {
         $this->allow_view_types('rss');
     
-        $max_items = Config::get('feed_page_size');
+        $max_items = Config::get('feed:page_size');
         
         $filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));                        
         $feedName = FeedItem::feed_name_from_filters($filters);

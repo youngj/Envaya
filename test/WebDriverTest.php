@@ -17,12 +17,10 @@ class WebDriverTest extends SeleniumTest
     }
     
     function open($url)
-    {
-        global $TEST_CONFIG;
-    
+    {    
         if (strpos($url, '://') === false)
         {
-            $url = "http://{$TEST_CONFIG['domain']}{$url}";
+            $url = "http://{$this->config['domain']}{$url}";
         }
         
         $this->webdriver->get($url);

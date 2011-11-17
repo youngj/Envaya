@@ -159,7 +159,7 @@ class Controller_SMSGateway extends Controller
         
     private function get_incoming_sms_route($to_number)
     {
-        foreach (Config::get('sms_routes') as $route)
+        foreach (Config::get('sms:routes') as $route)
         {
             if ($route['self_number'] === $to_number)
             {
@@ -171,7 +171,7 @@ class Controller_SMSGateway extends Controller
     
     private function is_valid_provider_class($provider_class)
     {
-        foreach (Config::get('sms_routes') as $route)
+        foreach (Config::get('sms:routes') as $route)
         {
             if ($route['provider'] === $provider_class)
             {

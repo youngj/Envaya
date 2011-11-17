@@ -1,6 +1,6 @@
 <?php
 
-class Cache_Database implements Cache
+class Cache_Database extends Cache
 {
     public function get($key)
     {

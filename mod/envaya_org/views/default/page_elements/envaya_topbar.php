@@ -11,8 +11,7 @@
     </a>
     <a href='/envaya'><?php echo __('about') ?></a>
     <a href='/pg/browse'><?php echo __('browse') ?></a>
-    <a href='/pg/search'><?php echo __('search') ?></a>
-    <a href='/pg/discussions'><?php echo __('discussions:title') ?></a>    
+    <a href='/pg/search'><?php echo __('search') ?></a>   
     <a href='/pg/feed'><?php echo __('feed') ?></a>    
     <div class='top_language'>
     <?php

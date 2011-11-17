@@ -7,16 +7,20 @@
     * @param string $language Optionally, the standard language code (defaults to the site default, then English)
     * @return string Either the translated string, or the original English string, or the message key
     */
-    function __($message_key, $language_code = "") {
-
-        if (!$language_code)
-        {
-            $language_code = Language::get_current_code();
+    function __($message_key, $language_code = null) 
+    {
+        $lang = Language::$languages[$language_code ?: Language::$current_code ?: Language::get_current_code()];
+        $str = $lang->get_translation($message_key);
+        
+        if (isset($str))
+        {   
+            return $str;
         }
-       
-        return Language::get($language_code)->get_translation($message_key) 
-            ?: Language::get('en')->get_translation($message_key) 
-            ?: $message_key;
+        
+        $lang = Language::$languages['en'];
+        $str = $lang->get_translation($message_key);
+        
+        return isset($str) ? $str : $message_key;
     }
 
     function url_with_param($url, $param, $value)
@@ -88,14 +92,14 @@
     
     function css_url($css_name)
     {
-        if (Config::get('debug_media'))
+        if (Config::get('debug:media'))
         {
             return "/pg/css?name=$css_name&hash=" . md5(view("css/$css_name", 'default'));
         }
         else
         {
-            return "/_media/css/$css_name.css?".Config::get("hash:css:$css_name");
-        }        
+            return "/_media/css/$css_name.css?".Config::get("build:hash:css:$css_name");
+        }
     }     
                     
     function escape($val)
@@ -157,7 +161,7 @@
 
     function get_inline_js($js_path)
     {
-        if (Config::get('debug_media'))
+        if (Config::get('debug:media'))
         {
             $path = Engine::get_real_path("js/$js_path");
             if (!$path)
@@ -167,7 +171,7 @@
         }
         else
         {
-            $path = Config::get('root') . "/www/_media/$js_path";
+            $path = Engine::$root . "/www/_media/$js_path";
         }
         return file_get_contents($path);
     }

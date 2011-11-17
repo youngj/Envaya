@@ -67,7 +67,7 @@ class Theme
             
             if (!$path)
             {
-                $theme = new Theme(Config::get('fallback_theme'), array());
+                $theme = new Theme(Config::get('theme:default'), array());
             }
             else
             {        
@@ -98,7 +98,7 @@ class Theme
     {
         if (!static::$loaded_all)
         {
-            static::load_all_in_dir(Config::get('root'));
+            static::load_all_in_dir(Engine::$root);
             foreach (Config::get('modules') as $module_name)
             {
                 static::load_all_in_dir(Engine::get_module_root($module_name));

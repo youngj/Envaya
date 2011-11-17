@@ -11,15 +11,15 @@ class SMS_Provider_Twilio extends SMS_Provider
             CURLOPT_SSL_VERIFYPEER => false
         )));
 
-        $sid = Config::get('twilio_account_sid');
-        $token = Config::get('twilio_auth_token');
+        $sid = Config::get('sms:twilio_account_sid');
+        $token = Config::get('sms:twilio_auth_token');
         
         return new Services_Twilio($sid, $token, '2010-04-01', $http);
     }       
     
     static function load_lib()
     {
-        require_once Config::get('root')."/vendors/Services/Twilio.php";
+        require_once Engine::$root."/vendors/Services/Twilio.php";
     }
     
     function get_request_from()
@@ -58,7 +58,7 @@ class SMS_Provider_Twilio extends SMS_Provider
     {
         static::load_lib();
         
-        $validator = new Services_Twilio_RequestValidator(Config::get('twilio_auth_token'));
+        $validator = new Services_Twilio_RequestValidator(Config::get('sms:twilio_auth_token'));
         $url = Request::full_original_url();        
         $expected_signature = @$_SERVER["HTTP_X_TWILIO_SIGNATURE"];
         return $validator->validate($expected_signature, $url, $_POST);

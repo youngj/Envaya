@@ -286,17 +286,17 @@ abstract class User extends Entity
     function reset_login_failure_count()
     {
         // don't reset per-IP rate since it would allow user to circumvent security
-        get_cache()->delete(static::login_failures_cache_key($this->username));
+        Cache::get_instance()->delete(static::login_failures_cache_key($this->username));
     }
     
     private static function login_failures_cache_key($username)
     {
-        return make_cache_key("user_login_failures", strtolower($username));
+        return Cache::make_key("user_login_failures", strtolower($username));
     }
     
     private static function ip_login_failures_cache_key()
     {
-        return make_cache_key("ip_login_failures", Request::get_client_ip());        
+        return Cache::make_key("ip_login_failures", Request::get_client_ip());        
     }
     
     /*
@@ -307,16 +307,16 @@ abstract class User extends Entity
      */
     static function get_login_attempts_remaining($username)
     {
-        $failure_limit = Config::get('login_failure_limit');        
-        $cache = get_cache();
+        $failure_limit = Config::get('login:failure_limit');        
+        $cache = Cache::get_instance();
         $num_user_failures = (int) $cache->get(static::login_failures_cache_key($username));
         return $failure_limit - $num_user_failures;
     }
     
     static function get_login_attempts_remaining_for_ip()
     {
-        $failure_limit = Config::get('ip_login_failure_limit');       
-        $cache = get_cache();        
+        $failure_limit = Config::get('login:ip_failure_limit');       
+        $cache = Cache::get_instance();        
         $num_ip_failures = (int) $cache->get(static::ip_login_failures_cache_key());    
         return $failure_limit - $num_ip_failures;
     }
@@ -326,11 +326,11 @@ abstract class User extends Entity
      */
     static function log_login_failure($username, $user = null)
     {
-        $failure_limit_interval = Config::get('login_failure_interval');
-        $user_failure_limit = Config::get('login_failure_limit');
-        $ip_failure_limit = Config::get('ip_login_failure_limit');        
+        $failure_limit_interval = Config::get('login:failure_interval');
+        $user_failure_limit = Config::get('login:failure_limit');
+        $ip_failure_limit = Config::get('login:ip_failure_limit');        
     
-        $cache = get_cache();
+        $cache = Cache::get_instance();
                 
         $user_failures_key = static::login_failures_cache_key($username);
         $num_user_failures = (int)$cache->get($user_failures_key) + 1;
@@ -356,7 +356,7 @@ abstract class User extends Entity
         
             if ($num_user_failures >= $user_failure_limit)
             {
-                $notify_admin_key = make_cache_key("user_login_failure_notification", $username);
+                $notify_admin_key = Cache::make_key("user_login_failure_notification", $username);
 
                 // avoid repeatedly notifying admin for same user
                 if (!$cache->get($notify_admin_key))
@@ -367,7 +367,7 @@ abstract class User extends Entity
             }
             else if ($num_ip_failures >= $ip_failure_limit)
             {        
-                $notify_admin_key = make_cache_key("ip_login_failure_notification", $ip_address);
+                $notify_admin_key = Cache::make_key("ip_login_failure_notification", $ip_address);
                 // avoid repeatedly notifying admin for same IP
                 if (!$cache->get($notify_admin_key))
                 {                
@@ -406,7 +406,7 @@ abstract class User extends Entity
         {
             if (!$this->has_lat_long())
             {
-                return Config::get('default_timezone');
+                return Config::get('geography:default_timezone');
             }
         
             try 
@@ -417,15 +417,15 @@ abstract class User extends Entity
                     'lng' => $this->longitude
                 ));
                 
-                $this->timezone_id = @$res['timezoneId'] ?: Config::get('default_timezone');
+                $this->timezone_id = @$res['timezoneId'] ?: Config::get('geography:default_timezone');
             }
             catch (Zend_Http_Client_Adapter_Exception $ex)
             {
-                $this->timezone_id = Config::get('default_timezone');            
+                $this->timezone_id = Config::get('geography:default_timezone');            
             }
             catch (Bgy_Service_Geonames_Exception $ex)
             {
-                $this->timezone_id = Config::get('default_timezone');
+                $this->timezone_id = Config::get('geography:default_timezone');
             }
             
             $this->save();
@@ -435,7 +435,7 @@ abstract class User extends Entity
         
     static function get_cache_key_for_username($username)
     {
-        return make_cache_key("guid_for_username", $username);
+        return Cache::make_key("guid_for_username", $username);
     }
 
     static function get_by_username($username, $show_disabled = false)
@@ -453,7 +453,7 @@ abstract class User extends Entity
             $username = substr($username, $last_slash + 1);
         }
             
-        $cache = get_cache();
+        $cache = Cache::get_instance();
         $cacheKey = User::get_cache_key_for_username($username);
 
         $guid = $cache->get($cacheKey);

@@ -53,8 +53,8 @@ class Action_User_ChangeUsername extends Action
                 }
             }
             
-            get_cache()->delete(User::get_cache_key_for_username($username));
-            get_cache()->delete(User::get_cache_key_for_username($oldUsername));
+            Cache::get_instance()->delete(User::get_cache_key_for_username($username));
+            Cache::get_instance()->delete(User::get_cache_key_for_username($oldUsername));
             
             SessionMessages::add(__('user:username:changed'));
         }

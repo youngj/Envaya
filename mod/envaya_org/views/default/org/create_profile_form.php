@@ -45,7 +45,7 @@
 
 <?php echo view('input/theme', array(
     'name' => 'theme',
-    'value' =>  $org->get_design_setting('theme_name') ?: Config::get('fallback_theme'),
+    'value' =>  $org->get_design_setting('theme_name') ?: Config::get('theme:default'),
     'previewUrl' => $org->get_url()
 )); ?>
 </div>

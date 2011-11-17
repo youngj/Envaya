@@ -67,7 +67,7 @@ class Module_Translate extends Module
     {
         Language::add_fallback_group('itrans', 'itrans_admin');
 
-        if (@Config::get('translate:live_interface'))
+        if (Config::get('translate:live_interface'))
         {
             Engine::add_autoload_action('Language', function() {
                 $language = Language::current();

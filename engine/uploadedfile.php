@@ -350,7 +350,7 @@ class UploadedFile extends Entity
         
         if (in_array($ext, static::$image_document_extensions))
         {
-            if (Config::get('extract_images_from_docs'))
+            if (Config::get('storage:extract_images_from_docs'))
             {
                 return static::store_image_from_doc($tmp_file, $ext, $sizes);
             }

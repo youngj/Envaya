@@ -82,9 +82,7 @@
         <th><?php echo __('user:language:label'); ?>:</th>
         <td style='padding-top:8px'>
         <?php
-            $value = Config::get('language');
-            if ($user->language)
-                $value = $user->language;
+            $value = $user->language ?: Config::get('language');
 
             echo view("input/pulldown", array('name' => 'language', 'value' => $value, 'options' => Language::get_options()));
 

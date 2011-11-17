@@ -6,8 +6,7 @@
  */
 
 require_once __DIR__ . '/httpserver/httpserver.php';
-require_once dirname(__DIR__) . '/engine/config.php';
-Config::load();
+require_once dirname(__DIR__) . '/start.php';
 
 class EnvayaHTTPServer extends HTTPServer
 {
@@ -29,7 +28,7 @@ class EnvayaHTTPServer extends HTTPServer
     {
         $uri = $request->uri;
         
-        $doc_root = Config::get('root') . '/www';
+        $doc_root = dirname(__DIR__) . '/www';
         
         if (preg_match('#^/_media/#', $uri))
         {

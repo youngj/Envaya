@@ -75,7 +75,7 @@ class OutgoingMail extends Model
     
     function set_from_name($name)
     {
-        return $this->set_from(Config::get('email_from'), $name);
+        return $this->set_from(Config::get('mail:email_from'), $name);
     }
     
     function set_from_user($user)
@@ -119,7 +119,7 @@ class OutgoingMail extends Model
         $this->get_mail()->setBodyHtml($body_html);
         if (!$this->get_body_text())
         {    
-            require_once Config::get('root').'/vendors/markdownify/markdownify.php';
+            require_once Engine::$root.'/vendors/markdownify/markdownify.php';
             $md = new Markdownify(true, false, false);    
             $md->escapeInText['search'] = $md->escapeInText['replace'] = array();
             $this->set_body_text($md->parseString($body_html));
@@ -170,7 +170,7 @@ class OutgoingMail extends Model
 
     function send_to_admin()
     {
-        $this->add_to(Config::get('admin_email'));    
+        $this->add_to(Config::get('mail:admin_email'));    
         return $this->send();
     }    
         

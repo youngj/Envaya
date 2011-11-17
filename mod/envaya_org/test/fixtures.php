@@ -8,7 +8,7 @@ return function() {
 
     $envaya = get_or_create_org('envaya');
 
-    $envaya->email = Config::get('admin_email');
+    $envaya->email = Config::get('mail:admin_email');
     $envaya->name = 'Envaya';
     $envaya->set_password('asdfasdf');
     $envaya->language = 'en';

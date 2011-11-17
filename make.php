@@ -30,8 +30,9 @@ class Build
     static function clean()
     {
         system('rm -rf build/*.php');
+        system('rm -rf config/default_build.php');
         system('rm -rf build/path_cache');
-        system('rm -rf www/_media/*');        
+        system('rm -rf www/_media/*');
     }
     
     /*
@@ -68,6 +69,15 @@ class Build
             function($p) { return var_export($p, true); }, Engine::get_lib_paths()
         ))."); }\n";
 
+        $default_keys = array();
+        
+        foreach (Config::get('languages') as $lang)
+        {
+            $default_keys[$lang]["lang:$lang"] = __("lang:$lang", $lang);
+        }
+        
+        echo "function _get_default_translations() { return ".var_export($default_keys, true)."; }\n";        
+        
         $analyzer = new PHPParentAnalyzer();
         $analyzer->parse_dir(__DIR__);
 
@@ -129,7 +139,7 @@ class Build
             )
         );        
         
-        $virtual_dirs = array('engine', 'themes', 'languages', 'views');
+        $virtual_dirs = array('themes', 'languages', 'views', 'config');
                         
         $modules = Config::get('modules');
         foreach ($modules as $module)
@@ -143,7 +153,7 @@ class Build
         foreach ($virtual_dirs as $virtual_dir)
         {        
             static::add_paths_in_dir('', $virtual_dir, $dir_paths);
-        }        
+        }                
         
         static::add_nonexistent_view_paths($dir_paths);
         
@@ -159,13 +169,7 @@ class Build
         
         // list of commonly used virtual directories whose paths will be included in
         // build/path_cache.php, rather than needing to open a cache file for each directory
-        $default_dirs = array(
-            'engine',
-            'engine/controller',
-            'engine/cache',
-            'engine/query',            
-            'engine/mixin',
-            'engine/widget',            
+        $default_dirs = array(          
             'languages/en',
             'themes',
             'views/default',
@@ -235,7 +239,7 @@ class Build
             $compressed = static::minify($css_temp, "$output_dir/$filename.css", 'css');
             unlink($css_temp);
             
-            $build_config["hash:css:$filename"] = static::get_content_hash($compressed);
+            $build_config["build:hash:css:$filename"] = static::get_content_hash($compressed);
         }
         
         static::write_build_config($build_config);
@@ -382,7 +386,7 @@ class Build
 
     private static function add_paths_in_dir($rel_base, $dir, &$paths)
     {
-        $root = Config::get('root'); 
+        $root = Engine::$root;
         $handle = @opendir("{$root}/{$rel_base}{$dir}");
         if ($handle)
         {
@@ -414,12 +418,12 @@ class Build
     
     private static function get_build_config()
     {
-        return @include("build/config.php") ?: array();
+        return @include("config/default_build.php") ?: array();
     }
     
     private static function write_build_config($build_config)
     {
-        static::write_file("build/config.php", static::get_array_php($build_config));
+        static::write_file("config/default_build.php", static::get_array_php($build_config));
     }
     
     /*
@@ -445,7 +449,7 @@ class Build
             {
                 $filename = pathinfo($js_src_file, PATHINFO_FILENAME);
                 $build_config = static::get_build_config();
-                $build_config["hash:js:$filename"] = static::get_content_hash($compressed);
+                $build_config["build:hash:js:$filename"] = static::get_content_hash($compressed);
                 static::write_build_config($build_config);
             }
         }

@@ -89,7 +89,7 @@ abstract class Controller extends Router {
         $viewtype = Views::get_request_type();
         if ($viewtype == 'default')
         {
-            $theme = Theme::get(@$vars['theme_name'] ?: Config::get('fallback_theme'));
+            $theme = Theme::get(@$vars['theme_name'] ?: Config::get('theme:default'));
             if (!isset($vars['css_name']))
             {
                 $vars['css_name'] = $theme->get_css_name();

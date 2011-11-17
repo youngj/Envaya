@@ -53,7 +53,7 @@ class GoogleTranslate
             $format = 'text';
         }
         
-        $key = Config::get('google_api_key');        
+        $key = Config::get('google:api_key');        
         $url = "https://www.googleapis.com/language/translate/v2?key=$key&source=$origLang&target=$viewLang&format=$format";
         
         // "To post a file, prepend a filename with @ and use the full path"
@@ -126,7 +126,7 @@ class GoogleTranslate
         
         $ch = curl_init();
         
-        $key = Config::get('google_api_key');
+        $key = Config::get('google:api_key');
         $url = "https://www.googleapis.com/language/translate/v2/detect?key=$key&q=".urlencode($snippet);
         
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -157,8 +157,7 @@ class GoogleTranslate
         }
         
         $languages = Config::get('languages');
-
-        if (!$lang || !isset($languages[$lang]))
+        if (!$lang || !in_array($lang, $languages))
         {
             throw new GoogleTranslateUnsupportedLanguageException($lang);
         }

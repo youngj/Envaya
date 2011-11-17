@@ -9,7 +9,7 @@ class Action_Contact extends Action
     
     protected function get_recipient_email()
     {
-        return Config::get('admin_email');
+        return Config::get('mail:admin_email');
     }
     
     protected function get_email_subject()

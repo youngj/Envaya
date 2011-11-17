@@ -4,15 +4,13 @@ class SMSTest extends WebDriverTest
 {
     public function test()
     {       
-        global $TEST_CONFIG;
-               
         $p1 = "14845550133";
         $p2 = "14845550134";
         
         // needs to be between 9am-9pm in local time of phone number for notifications to be sent
         $this->setTimestamp(1319420000); 
         
-        $news = $TEST_CONFIG['news_phone_number'];
+        $news = $this->config['test:news_phone_number'];
         
         list($res) = $this->sendSMS($p1, $news, "HELP");        
         $this->assertContains("P=publish news", $res);
@@ -52,7 +50,7 @@ class SMSTest extends WebDriverTest
         list($res) = $this->sendSMS($p1, $news, "i testorg");
         $this->assertContains("Test Org", $res);
         $this->assertContains("TZ", $res);
-        $this->assertContains("http://{$TEST_CONFIG['domain']}/testorg", $res);
+        $this->assertContains("http://{$this->config['domain']}/testorg", $res);
         $this->assertContains("@", $res);
         
         list($res) = $this->sendSMS($p1, $news, "s");
@@ -100,7 +98,7 @@ class SMSTest extends WebDriverTest
         $sms = $this->getLastSMS("To: $p1");
         $this->assertContains('testposter1 published news', $sms);                
         $this->assertContains('"N testposter1', $sms);
-        $this->assertContains("http://{$TEST_CONFIG['domain']}/testposter1", $sms);
+        $this->assertContains("http://{$this->config['domain']}/testposter1", $sms);
         
         list($res) = $this->sendSMS($p1, $news, "N testposter1");
         $this->assertContains('test post 1001', $res);

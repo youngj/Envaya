@@ -60,13 +60,13 @@ abstract class Entity extends Model implements Serializable
     function clear_from_cache()
     {        
         unset(static::$current_request_entities[$this->guid]);
-        get_cache()->delete(static::entity_cache_key($this->guid));
+        Cache::get_instance()->delete(static::entity_cache_key($this->guid));
     }        
     
     function save_to_cache()
     {        
         $this->cache_for_current_request();
-        get_cache()->set(static::entity_cache_key($this->guid), $this);
+        Cache::get_instance()->set(static::entity_cache_key($this->guid), $this);
     }
     
     static function get_from_cache($guid)
@@ -77,7 +77,7 @@ abstract class Entity extends Model implements Serializable
         }
         else
         {
-            $entity = get_cache()->get(static::entity_cache_key($guid));
+            $entity = Cache::get_instance()->get(static::entity_cache_key($guid));
             if ($entity)
             {
                 static::$current_request_entities[$guid] = $entity;
@@ -89,7 +89,7 @@ abstract class Entity extends Model implements Serializable
     
     static function entity_cache_key($guid)
     {
-        return make_cache_key("entity", $guid);
+        return Cache::make_key("entity", $guid);
     }  
     
     static function get_table_attributes()

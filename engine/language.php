@@ -25,7 +25,7 @@ class Language
     static $languages = array();
     static $fallback_groups = array();
     
-    private static $current_code = null;
+    static $current_code = null;
     
     static function get($code)
     {
@@ -119,17 +119,13 @@ class Language
     }
     
     protected $code;
-    protected $translations;
-    protected $loaded_files;    
-  
-    protected $requested_keys;
+    protected $translations = array();
+    protected $loaded_files = array();      
+    protected $requested_keys = array();
   
     function __construct($code)
     {
         $this->code = $code;
-        $this->translations = array();
-        $this->loaded_files = array();
-        $this->requested_keys = array();
     }   
     
     function get_code()
@@ -195,7 +191,7 @@ class Language
     function get_all_group_names()
     {
         $group_names = array();        
-        $this->add_group_names_in_dir($group_names, Config::get('root'));        
+        $this->add_group_names_in_dir($group_names, Engine::$root);        
         foreach (Config::get('modules') as $module_name)
         {
             $this->add_group_names_in_dir($group_names, Engine::get_module_root($module_name));
@@ -268,7 +264,7 @@ class Language
         $group_names = array('default');
         
         $key_arr = explode(':', $key, 2);
-        if (sizeof($key_arr == 2))
+        if (sizeof($key_arr) == 2)
         {
             $group_name = $key_arr[0];
             
@@ -290,10 +286,19 @@ class Language
 
     static function init_all()
     {
-        foreach (Config::get('languages') as $code => $lang_name)
+        foreach (Config::get('languages') as $code)
         {
-            $language = Language::init($code);
-            $language->translations["lang:$code"] = $lang_name;
+            self::init($code);
+        }
+
+        $default_translations = Engine::$build_cache->_get_default_translations();
+        
+        if (isset($default_translations))
+        {
+            foreach ($default_translations as $code => $translations)
+            {
+                self::$languages[$code]->translations = $translations;
+            }
         }
     }
 }

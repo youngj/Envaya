@@ -4,7 +4,7 @@ class Sphinx
 {
     static function load_lib()
     {
-        require_once Config::get('root')."/vendors/sphinxapi.php";
+        require_once Engine::$root."/vendors/sphinxapi.php";
     }
     
     static function get_client()
@@ -12,7 +12,7 @@ class Sphinx
         static::load_lib();
         
         $s = new SphinxClient();
-        $s->setServer(Config::get('sphinx_host'), Config::get('sphinx_port'));
+        $s->setServer(Config::get('sphinx:host'), Config::get('sphinx:port'));
         
         return $s;
     }    
@@ -31,9 +31,9 @@ class Sphinx
     
     static function _reindex()
     {
-        $bin_dir = Config::get('sphinx_bin_dir');
-        $conf_dir = Config::get('sphinx_conf_dir');
-        $pid_dir = Config::get('sphinx_pid_dir');
+        $bin_dir = Config::get('sphinx:bin_dir');
+        $conf_dir = Config::get('sphinx:conf_dir');
+        $pid_dir = Config::get('sphinx:pid_dir');
         
         $rotate = is_file("$pid_dir/searchd.pid") ? "--rotate" : "";
         
