@@ -128,6 +128,8 @@ abstract class Controller_User extends Controller
             {
                 $user_actions_menu->add_link("Email Subscriptions", EmailSubscription::get_all_settings_url($user->email));
             }
+            
+            $user_actions_menu->add_link('User Properties', $user->get_admin_url());
         }                         
         
         if (Permission_UseAdminTools::has_for_entity($widget))

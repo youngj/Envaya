@@ -28,8 +28,8 @@ class Controller_SMSGateway extends Controller
             $this->set_status(403);
             $this->set_content("Invalid request signature");
             throw new RequestAbortedException();
-        }    
-                        
+        }            
+
         $request = EnvayaSMS::get_request();       
         
         $app_log = $request->log;
@@ -55,7 +55,7 @@ class Controller_SMSGateway extends Controller
         {
             case EnvayaSMS::ACTION_INCOMING:
                 return $this->receive_sms($provider);
-            case EnvayaSMS::ACTION_OUTGOING:                   
+            case EnvayaSMS::ACTION_OUTGOING:                
                 $messages = $provider->get_outgoing_messages();
                 
                 $message_ids = array_map(function ($m) { return $m->id; }, $messages);

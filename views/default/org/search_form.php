@@ -16,6 +16,7 @@
     
     <?php 
         echo view('input/submit', array(
+            'name' => '',
             'value' => __('search:submit') 
         ));
     ?>    

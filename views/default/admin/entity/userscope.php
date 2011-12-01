@@ -20,9 +20,29 @@
     
     $users_query = $scope->query_users();    
         
+    $q = get_input('q');
+    
+    if ($q)
+    {
+        $users_query->fulltext($q);
+    }
+        
     $limit = 20;
     $offset = (int)get_input('offset');
     $num_users = $users_query->count();        
+    
+    if ($num_users || $q)
+    {    
+        echo "<div style='float:right'>";
+        echo "<form method='GET' action='{$scope->get_admin_url()}'>";
+        echo view('input/text', array('name' => 'q', 'value' => $q, 'style' => 'width:150px'));
+        echo view('input/submit', array('name' => '', 'style' => 'margin:0px', 'value' => __('search')));
+        echo "</form>";
+        echo "</div>";
+        
+        echo "<h4>Users ($num_users)</h4>";       
+
+    }
     
     if ($num_users)
     {
@@ -30,7 +50,6 @@
             ->limit($limit, $offset)
             ->order_by('time_created desc')
             ->filter();
-        echo "<h4>Users ($num_users)</h4>";   
 
         $items = array();
         foreach ($users as $user)
@@ -49,4 +68,5 @@
             'offset' => $offset,
             'count' => $num_users
         ));
+        echo "<br />";
     }

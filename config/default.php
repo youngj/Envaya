@@ -30,7 +30,7 @@ return array(
     'queue:port' => 22133,
        
     'cache:backend' => "Cache_Database",
-    'cache:version' => 200,  // increment when all cached objects need to be invalidated (rare)
+    'cache:version' => 201,  // increment when all cached objects need to be invalidated (rare)
             
     'analytics:backend' => "Analytics_Null",   
     

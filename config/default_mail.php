@@ -14,7 +14,6 @@ return array(
     'mail:reply_email' => "reply@localhost",
     'mail:status_email' => '',
     'mail:email_from' => "web@localhost",
-    'mail:email_pass' => "",    
     
     'mail:error_emails_enabled' => false,
     

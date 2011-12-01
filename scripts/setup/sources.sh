@@ -7,7 +7,7 @@ fi
 
 # overwrite sources.list with our own sources
 
-if ! grep -q envaya /etc/php5/fpm/php.ini ; then 
+if ! grep -q envaya /etc/apt/sources.list ; then 
 
 cat <<EOF >> /etc/apt/sources.list
 
