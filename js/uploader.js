@@ -522,7 +522,7 @@ FileUploader.prototype.getPluploadOptions = function()
         multipart_params: opts.post_params,
         resize : ((opts.max_width) ? 
             {width : opts.max_width, height : opts.max_height, quality : 75} : null),
-        flash_swf_url : '/_media/plupload.flash.swf',
+        flash_swf_url : '/_media/plupload.flash.swf?v8',
         filters : ((opts.file_types) ? [{   
             title : opts.file_types_description, 
             extensions : opts.file_types
