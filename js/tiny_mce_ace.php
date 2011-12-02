@@ -1,6 +1,6 @@
 <?php
 
-$root = dirname(dirname(__DIR__));
+$root = dirname(__DIR__);
 
 readfile("$root/_media/ace/ace.js");
 echo "\n";

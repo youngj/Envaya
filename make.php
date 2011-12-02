@@ -418,7 +418,9 @@ class Build
     
     private static function get_build_config()
     {
-        return @include("config/default_build.php") ?: array();
+        $res = @include("config/default_build.php");
+        
+        return is_array($res) ? $res : array();
     }
     
     private static function write_build_config($build_config)

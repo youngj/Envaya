@@ -34,7 +34,6 @@
     line-height:16px; overflow:visible; color:#000; display:block; height:0px;
     position:relative;    
 }
-.tSkin .mceStatusbar div {float:left; margin:2px}
 .tSkin .mceStatusbar .mceResize {
     display:block; 
     position:absolute;

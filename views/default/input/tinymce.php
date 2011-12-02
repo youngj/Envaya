@@ -58,7 +58,7 @@
         echo view('js/create_modal_box');         
         echo view('js/dom'); 
         ?>
-        <script type='text/javascript' src='/_media/tiny_mce/tiny_mce.js?v<?php echo Config::get('build:hash:js:tiny_mce'); ?>'></script>
+        <script type='text/javascript' src='/_media/tiny_mce.js?v<?php echo Config::get('build:hash:js:tiny_mce'); ?>'></script>
         <?php                
     }
 
@@ -110,7 +110,7 @@ tinyMCE.init({
     <?php if ($autoFocus) { ?>
     auto_focus: "content_html<?php echo $INCLUDE_COUNT ?>",
     <?php } ?>
-    theme: "-advanced",
+    theme: "-custom",
     plugins: '-paste',
     skin: 't'
 });
