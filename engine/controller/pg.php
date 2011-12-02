@@ -632,7 +632,7 @@ class Controller_Pg extends Controller
         $this->set_content(json_encode(
             $bucketizer->get_buckets($orgs)
         ));
-    }
+    }    
 }
 
 Controller_Pg::$routes = Controller::$SIMPLE_ROUTES;

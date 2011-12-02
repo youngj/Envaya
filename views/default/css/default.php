@@ -155,6 +155,14 @@
     margin-top:4px;
 }
 
+body .input-code
+{
+    position:relative;
+    height:400px;
+    width:<?php echo $contentWidth ? ($contentWidth - 40)."px" : "auto" ?>;
+    border:1px solid #999;
+}
+
 .input-textarea {
     height: 200px;
     margin-top:4px;

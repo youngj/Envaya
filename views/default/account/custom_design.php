@@ -1,5 +1,6 @@
 <div class='section_content padded'>
 <?php        
+
     echo "<div style='float:right;height:60px;text-align:right;'>";
     echo "Upload Image File: ";
 
@@ -43,25 +44,22 @@
     };
 </script>
 <?php
-    echo "<br />";
-    
     $custom_views = $user->get_design_setting('custom_views');
     $template = render_custom_view($current_view, array('design' => $user->get_design_settings()));
     
     echo "<form method='POST' action='{$user->get_url()}/custom_design'>";
-    echo "<h3>".escape($customizable_views[$current_view])."</h3>";
+    echo "<h3 style='margin-bottom:3px'>".escape($customizable_views[$current_view])."</h3>";
     echo view('input/securitytoken');
     echo view('input/hidden', array('id' => 'current_view', 'name' => 'current_view', 'value' => $current_view));
     
-    echo view('input/longtext', array(
+    echo view('input/code', array(
         'id' => 'template',
         'name' => 'template',
-        'value' => $template,
-        'style' => 'height:400px',
-        'track_dirty' => true,
-		'attrs' => array('spellcheck' => 'false'),
+        'save_fn' => 'saveChanges',
+        'mode' => (strpos($current_view, 'css/') !== false) ? 'css' : 'html',
+        'value' => $template
     ));
-    echo view('focus', array('name' => 'template'));
+
     echo view('input/button', array(
         'type' => 'button',
         'value' => __('savechanges'),
@@ -72,15 +70,11 @@
     echo "</span>";
     
     echo "</form>";    
+    
+    echo view('js/xhr');
 ?>
 </div>
-<script type='text/javascript' src='/_media/jquery-1.6.2.min.js'></script>
-<script type='text/javascript' src='/_media/tabby.js'></script>
-<script type='text/javascript'>
-    jQuery.noConflict();
-    jQuery("#template").tabby();
-    <?php echo view('js/xhr'); ?>
-    
+<script type='text/javascript'>       
     function saveChanges()
     {
         setDirty(false);
@@ -108,24 +102,5 @@
         setTimeout(function() {
             $('save_message').innerHTML = '';
         },3000);
-    }
-    
-    addEvent(document.body, 'keydown', function(e)
-    {                
-        var ch = e.which || e.keyCode;
-        if (e.ctrlKey && ch == 83)
-        {
-            if (e.preventDefault)
-            {
-                e.preventDefault();
-            }
-            if (e.stopPropagation)
-            {
-                e.stopPropagation();
-            }                
-            
-            saveChanges();
-        }        
-    });    
-      
+    }   
 </script>

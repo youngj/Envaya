@@ -5,7 +5,8 @@
 ?>
 
 /* Reset */
-.tSkin table, .tSkin tbody, .tSkin a, .tSkin img, .tSkin tr, .tSkin div, .tSkin td, .tSkin iframe, .tSkin span, .tSkin *, .tSkin .mceText {border:0; margin:0; padding:0; background:transparent; white-space:nowrap; text-decoration:none; font-weight:normal; cursor:default; color:#000; vertical-align:baseline; width:auto; border-collapse:separate; text-align:left}
+
+.tSkin .mceText {border:0; margin:0; padding:0; background:transparent; white-space:nowrap; text-decoration:none; font-weight:normal; cursor:default; color:#000; vertical-align:baseline; width:auto; border-collapse:separate; text-align:left}
 .tSkin a:hover, .tSkin a:link, .tSkin a:visited, .tSkin a:active {text-decoration:none; font-weight:normal; cursor:default; color:#000}
 .tSkin table td {vertical-align:middle}
 

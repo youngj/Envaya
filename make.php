@@ -439,15 +439,32 @@ class Build
      
     private static function js_minify_dir($base, $name = '*', $dir = '')
     {    
-        $js_src_files = glob("$base/js/{$dir}{$name}.js");
+        $js_src_files = glob("$base/js/{$dir}{$name}.{js,php}", GLOB_BRACE);
         foreach ($js_src_files as $js_src_file)
         {
             $basename = pathinfo($js_src_file,  PATHINFO_BASENAME);
-            $compressed = static::minify($js_src_file, "www/_media/{$dir}{$basename}");
+            $filename = pathinfo($js_src_file,  PATHINFO_FILENAME);
+            $extension = pathinfo($js_src_file,  PATHINFO_EXTENSION);
+            
+            $output_file = "www/_media/{$dir}{$filename}.js";
+            
+            if ($extension == 'php')
+            {
+                $js_temp_file = "scripts/$basename.tmp.js";
+                ob_start();
+                require $js_src_file;                
+                $raw_js = ob_get_clean();
+                file_put_contents($js_temp_file, $raw_js);    
+                static::minify($js_temp_file, $output_file);
+                unlink($js_temp_file);
+            }
+            else
+            {            
+                static::minify($js_src_file, $output_file);
+            }
             
             if ($dir != 'inline/') // inline JS does not need content hashes because it is never loaded by URL
             {
-                $filename = pathinfo($js_src_file, PATHINFO_FILENAME);
                 $build_config = static::get_build_config();
                 $build_config["build:hash:js:$filename"] = static::get_content_hash($compressed);
                 static::write_build_config($build_config);
@@ -458,6 +475,10 @@ class Build
         foreach ($subdirs as $subdir)
         {
             $basename = pathinfo($subdir,  PATHINFO_BASENAME);
+            if ($basename == 'src')
+            {
+                continue;
+            }
         
             if (!is_dir("www/_media/{$dir}{$basename}"))
             {

@@ -1764,7 +1764,10 @@ tinymce.create('static tinymce.util.XHR', {
 				// It's ugly but it seems to work fine.
 				if (isIE && d.documentMode) {
 					link.onload = function() {
-						d.recalc();
+                        if (d.recalc)
+                        {
+                            d.recalc();
+                        }
 						link.onload = null;
 					};
 				}
@@ -10442,6 +10445,31 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 			return o.content;
 		},
 
+        updateContent: function()
+        {
+            var t = this;
+            if (t.codeMode)
+            {            
+                t.updateContentFromCode();
+            }
+        },        
+        
+        updateContentFromCode: function()
+        {
+            if (this.aceEditor)
+            {
+                this.setContent(this.aceEditor.getSession().getValue());
+            }
+        },        
+        
+        updateCodeFromContent: function()
+        {
+            if (this.aceEditor)
+            {
+                this.aceEditor.getSession().setValue(this.getContent({no_events: true}));
+            }
+        },
+        
 		getContent : function(o) {
 			var t = this, h;
 
@@ -14402,7 +14430,9 @@ tinymce.onAddEditor.add(function(tinymce, ed) {
             */
 
             ed.onBeforeGetContent.add(function(ed, o)
-            {
+            {                       
+                ed.updateContent();
+            
                 var body = ed.getBody();
 
                 var invalidTagNames = ['meta','style','title','link'];
@@ -15460,17 +15490,98 @@ tinymce.onAddEditor.add(function(tinymce, ed) {
 
         _mceCodeEditor : function(ui, val) {
             var ed = this.editor;
+            var self = this;            
+            
+            ed.codeMode = !ed.codeMode;            
+            
+            if (!ed.aceContainer && ed.codeMode)
+            {
+                var aceContainer = ed.aceContainer = createElem('div', {
+                    className: 'input-code'                
+                }, createElem('div', {className:'padded'}, "Loading..."));
+                
+                aceContainer.style.border = '0px';
+                aceContainer.style.backgroundColor = '#fff';
+                            
+                var contentContainer = ed.contentAreaContainer;                
 
-            ed.windowManager.open({
-                url : tinymce.baseURL + '/themes/advanced/source_editor.htm',
-                width : parseInt(ed.getParam("theme_advanced_source_editor_width", 720)),
-                height : parseInt(ed.getParam("theme_advanced_source_editor_height", 580)),
-                inline : true,
-                resizable : true,
-                maximizable : true
-            }, {
-                theme_url : this.url
-            });
+                contentContainer.appendChild(aceContainer);
+                
+                function initAceEditor()
+                {
+                    var aceEditor = ed.aceEditor = ace.edit(aceContainer);    
+                    var mode = require("ace/mode/html").Mode;    
+        
+                    var session = aceEditor.getSession();
+                    
+                    aceEditor.renderer.setShowPrintMargin(false);
+                    aceEditor.renderer.setHScrollBarAlwaysVisible(false);
+                    session.setUseWrapMode(true);
+                    session.setWrapLimitRange(null, null);    
+                    session.setMode(new mode());    
+                    
+                    session.on('change', function() { 
+                        setDirty(true);                     
+                    });
+                    
+                    aceEditor.commands.addCommand({
+                        name: "save",
+                        bindKey: {
+                            win: "Ctrl-S",
+                            mac: "Command-S",
+                            sender: "editor"
+                        },
+                        exec: function() 
+                        {
+                            if (self.settings.save_draft_callback)
+                            {
+                                self.settings.save_draft_callback(ed);
+                            }
+                        }
+                    });  
+                    ed.updateCodeFromContent();
+                    ed.aceEditor.focus();    
+                }
+                
+                if (!window.ace)
+                {
+                    window.onAceLoaded = initAceEditor;
+                    var script = createElem('script', {src:'/_media/tiny_mce/ace_loader.js', type:'text/javascript'});
+                    document.body.appendChild(script);
+                }       
+                else
+                {
+                    initAceEditor();
+                }
+            }
+            
+            var on = ed.codeMode;            
+            
+            var iframe = $(ed.id + "_ifr");
+            
+            iframe.style.display = on ? 'none' : 'block';
+            ed.aceContainer.style.display = on ? 'block' : 'none';
+                                        
+            if (on)
+            {
+                ed.updateCodeFromContent();
+                if (ed.aceEditor)
+                {
+                    ed.aceEditor.focus();    
+                }
+            }
+            else
+            {
+                ed.updateContentFromCode();
+            }            
+            
+            var cm = ed.controlManager;
+            cm.setActive('code', on);            
+            
+            var cmds = ['bold','italic','underline','bullist','numlist',
+                'outdent','indent','blockquote','link','image','document',
+                'justifyleft','justifycenter','justifyright','formatselect'];
+            each(cmds, function(cmd) { cm.setDisabled(cmd, on); });
         },
 
         _mceSave: function(ui, val)
