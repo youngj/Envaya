@@ -22,7 +22,7 @@ class FeedTest extends WebDriverTest
             $this->login("testposter$i", 'asdfasdf');            
             $this->retry('ensureGoodMessage', array('Welcome'));
             
-            $this->typeInFrame("//iframe", "test post $i");
+            $this->setTinymceContent("test post $i");
             $this->submitForm();
             $this->retry('ensureGoodMessage', array('successfully'));
 
@@ -33,7 +33,7 @@ class FeedTest extends WebDriverTest
                 {
                     $this->click("//a[contains(@href,'dashboard')]");
                     $this->waitForElement('//iframe');
-                    $this->typeInFrame("//iframe", "another post $i.$j");
+                    $this->setTinymceContent("another post $i.$j");
                     $this->submitForm();
                     $this->retry('ensureGoodMessage', array('successfully'));
                 }                

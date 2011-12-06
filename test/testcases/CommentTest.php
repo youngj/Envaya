@@ -13,7 +13,7 @@ class CommentTest extends WebDriverTest
         
         $content = "test post ".time();
        
-        $this->typeInFrame("//iframe", $content);
+        $this->setTinymceContent($content);
         $this->submitForm();
         $this->retry('ensureGoodMessage', array('saved successfully'));
         $this->mustExist("//div[@class='section_content padded']//p[contains(text(), '$content')]");

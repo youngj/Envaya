@@ -457,12 +457,12 @@ class Build
                 require $js_src_file;                
                 $raw_js = ob_get_clean();
                 file_put_contents($js_temp_file, $raw_js);    
-                static::minify($js_temp_file, $output_file);
+                $compressed = static::minify($js_temp_file, $output_file);
                 unlink($js_temp_file);
             }
             else
             {            
-                static::minify($js_src_file, $output_file);
+                $compressed = static::minify($js_src_file, $output_file);
             }
             
             if ($dir != 'inline/') // inline JS does not need content hashes because it is never loaded by URL

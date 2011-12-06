@@ -162,6 +162,7 @@
                 
                 aceContainer.style.border = '0px';
                 aceContainer.style.backgroundColor = '#fff';
+                aceContainer.style.height = '300px';
                             
                 var contentContainer = ed.contentAreaContainer;                
 

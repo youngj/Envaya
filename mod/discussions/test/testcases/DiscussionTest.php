@@ -24,7 +24,7 @@ class DiscussionTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'topic/new')]");
         
         $this->type("//input[@name='subject']","My Zeroth Discussion");
-        $this->typeInFrame("//iframe", "message 0");
+        $this->setTinymceContent("message 0");
         $this->type("//input[@name='name']", "....");
         $this->submitForm();
         $this->ensureGoodMessage();
@@ -70,7 +70,7 @@ class DiscussionTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'topic/new')]");
         
         $this->type("//input[@name='subject']","My First Discussion");
-        $this->typeInFrame("//iframe", "message 1");
+        $this->setTinymceContent("message 1");
         $this->type("//input[@name='name']", "Mr. Person");
         $this->submitForm();
         $this->ensureGoodMessage();
@@ -86,7 +86,7 @@ class DiscussionTest extends SeleniumTest
         
         // test add new message
         $this->clickAndWait("//a[contains(@href,'add_message')]");
-        $this->typeInFrame("//iframe", "message 2");
+        $this->setTinymceContent("message 2");
         $this->mouseOver("//a[@id='content_html0_image']"); // logged in user can embed images                
         $this->assertEquals("Mr. Person", $this->getValue("//input[@name='name']"));
         $this->type("//input[@name='name']", "Ms. Person");
@@ -138,7 +138,7 @@ class DiscussionTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'/testorg/discussions')]");
         $this->clickAndWait("//a[contains(@href,'/topic/new')]");
         $this->type("//input[@name='subject']","My Second Discussion");
-        $this->typeInFrame("//iframe", "message 3");
+        $this->setTinymceContent("message 3");
         $this->mustNotExist("//a[@id='content_html0_image']"); // anonymous user cannot embed images
         $this->type("//input[@name='name']", "Somebody");
         $this->type("//input[@name='location']", "Dar es Salaam");
@@ -212,7 +212,7 @@ sdsdf"
         
         // test adding message as non logged in user
         $this->clickAndWait("//a[contains(@href,'add_message')]");
-        $this->typeInFrame("//iframe", "message 4");
+        $this->setTinymceContent("message 4");
         $this->assertEquals("Somebody", $this->getValue("//input[@name='name']"));
         $this->assertEquals("Dar es Salaam", $this->getValue("//input[@name='location']"));
         $this->submitForm();

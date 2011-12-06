@@ -81,7 +81,7 @@ class SMSTest extends WebDriverTest
         $this->open("/pg/login");
         $this->login("testposter1","asdfasdf");
         $this->waitForElement("//iframe");
-        $this->typeInFrame("//iframe", 
+        $this->setTinymceContent(
             "test post 1000 test post 1000 test post 1000 test post 1000 test post 1000 "
             ."test post 1000 test post 1000 test post 1000 test post 1000 test post 1000 "
             ."test post 1000 test post 1000 test post 1000 test post 1000 test post 1000 "
@@ -91,7 +91,7 @@ class SMSTest extends WebDriverTest
         $this->retry('ensureGoodMessage', array('saved successfully'));
         
         $this->open("/testposter1/dashboard");
-        $this->typeInFrame("//iframe", "test post 1001");
+        $this->setTinymceContent("test post 1001");
         $this->submitForm();
         $this->retry('ensureGoodMessage', array('saved successfully'));        
         

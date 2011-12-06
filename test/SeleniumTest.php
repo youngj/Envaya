@@ -179,12 +179,10 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
         return false;
     }    
     
-    public function typeInFrame($selector, $value)
+    public function setTinymceContent($text)
     {
-        $this->retry('selectFrame', array($selector));
-        $this->s->type("//body", $value);
-        $this->s->selectFrame("relative=top");
-    }
+        $this->retry('getEval', array('window.tinymce.activeEditor.setContent('.json_encode($text).')'));        
+    }       
 
     public function getLastSMS($match = "Message")
     {

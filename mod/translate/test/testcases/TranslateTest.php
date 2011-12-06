@@ -42,7 +42,7 @@ class TranslateTest extends SeleniumTest
         $this->login('testorg', 'asdfasdf');
         
         // publish three news updates in 2 languages
-        $this->typeInFrame("//iframe", "translating is a difficult challenge");
+        $this->setTinymceContent("translating is a difficult challenge");
         $this->submitForm();
         $this->ensureGoodMessage();
         $this->mouseOver("//p[contains(text(),'translating is a difficult challenge')]");
@@ -50,14 +50,14 @@ class TranslateTest extends SeleniumTest
         
         $this->clickAndWait("//a[contains(@href,'/dashboard')]");
 
-        $this->typeInFrame("//iframe", "je, inawezekana kwenda baharini leo?");
+        $this->setTinymceContent("je, inawezekana kwenda baharini leo?");
         $this->submitForm();
         $this->ensureGoodMessage();
         $this->mouseOver("//p[contains(text(),'je, inawezekana kwenda baharini leo?')]");
         
         $this->clickAndWait("//a[contains(@href,'/dashboard')]");
 
-        $this->typeInFrame("//iframe", "this is a test of the emergency broadcast system");
+        $this->setTinymceContent("this is a test of the emergency broadcast system");
         $this->submitForm();
         $this->ensureGoodMessage();
         $this->mouseOver("//p[contains(text(),'this is a test of the emergency broadcast system')]");
@@ -120,8 +120,9 @@ class TranslateTest extends SeleniumTest
         // save draft                
         $this->retry('selectFrame', array("//iframe"));        
         $this->mouseOver("//p[contains(text(),'kutafsiri ni changamoto ngumu')]");        
-        $this->type("//body", "kutafsiri ni rahisi sana");
         $this->selectFrame("relative=top");
+        $this->setTinymceContent("kutafsiri ni rahisi sana");
+        
         $this->click("//a[@id='content_html0_save']");
         $this->waitForElement("//span[@id='saved_message' and contains(text(),'hifadhiwa')]");
         
@@ -134,7 +135,7 @@ class TranslateTest extends SeleniumTest
         $this->retry('mouseOver', array("//p[contains(text(),'kutafsiri ni changamoto ngumu')]"));        
         $this->selectFrame("relative=top");
         
-        $this->clickAndWait("//table[@class='translateTable']//a[contains(@href,'translation=')]");
+        $this->clickAndWait("//table[@class='translateTable']//a[contains(@href,'translation=')]");        
         
         $this->retry('selectFrame', array("//iframe"));        
         $this->retry('mouseOver', array("//p[contains(text(),'kutafsiri ni rahisi sana')]"));
@@ -148,7 +149,7 @@ class TranslateTest extends SeleniumTest
         $this->login("testposter1","asdfasdf");
         $this->open($translate_url);
         $this->mustNotExist("//table[@class='translateTable']//a[contains(@href,'translation=')]");
-        $this->typeInFrame("//iframe", "sipendi kutafsiri");
+        $this->setTinymceContent("sipendi kutafsiri");
         $this->click("//a[@id='content_html0_save']");
         $this->waitForElement("//span[@id='saved_message' and contains(text(),'hifadhiwa')]");        
         
@@ -188,8 +189,9 @@ class TranslateTest extends SeleniumTest
         $this->open($draft_url);
         $this->retry('selectFrame', array("//iframe"));        
         $this->mouseOver("//p[contains(text(),'kutafsiri ni rahisi sana')]");        
-        $this->type("//body", "kutafsiri ni rahisi kidogo");        
         $this->selectFrame("relative=top");
+        $this->setTinymceContent("kutafsiri ni rahisi kidogo");        
+        
         
         $this->setTimestamp(time());
         $this->submitForm();
@@ -259,7 +261,7 @@ class TranslateTest extends SeleniumTest
         // edit content, test translation shows up as stale
         $this->open($difficult_url);
         $this->clickAndWait("//div[@id='edit_submenu']//a");
-        $this->typeInFrame("//iframe", "translating is fun");
+        $this->setTinymceContent("translating is fun");
         $this->submitForm();
         
         $this->open("$difficult_url?lang=sw");
@@ -271,7 +273,7 @@ class TranslateTest extends SeleniumTest
         
         // submit new translation, translation no longer stale
         $this->open($this->getAttribute("//div[@id='translate_bar']//a[contains(@href,'/tr/page')]@href"));
-        $this->typeInFrame("//iframe", "nataka kutafsiri");
+        $this->setTinymceContent("nataka kutafsiri");
         $this->submitForm();
         $this->ensureGoodMessage();        
         $this->open($difficult_url);
@@ -297,7 +299,7 @@ class TranslateTest extends SeleniumTest
         $this->open("/testunapproved/add_page");
         $this->type("//input[@name='title']",'my stuff');
         $this->type("//input[@name='widget_name']",'my-stuff');
-        $this->typeInFrame("//iframe",'this text was written by an unapproved organization');
+        $this->setTinymceContent('this text was written by an unapproved organization');
         $this->submitForm();
         $this->mouseOver("//p[contains(text(),'this text was written by an unapproved organization')]");
         $this->open($this->getAttribute("//a[contains(@href,'/tr/page')]@href"));
@@ -332,7 +334,7 @@ class TranslateTest extends SeleniumTest
         
         // change language of original content                
         $this->open("/testorg/dashboard");
-        $this->typeInFrame("//iframe", "aslkfdalkewjfalkwejfa;lewkja;ewlkfja;ewlkfjawef aweoif uawe;lfk jaewf");
+        $this->setTinymceContent("aslkfdalkewjfalkwejfa;lewkja;ewlkfja;ewlkfjawef aweoif uawe;lfk jaewf");
         $this->submitForm();
         $this->ensureGoodMessage();
         $this->mustNotExist("//div[@id='translate_bar']");

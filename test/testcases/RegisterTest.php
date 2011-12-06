@@ -190,7 +190,7 @@ class RegisterTest extends SeleniumTest
         /* set up homepage */
         $this->ensureGoodMessage();
 
-        $this->typeInFrame("//iframe", "testing the website");
+        $this->setTinymceContent("testing the website");
         $this->check("//input[@name='sector[]' and @value='3']");
         $this->check("//input[@name='sector[]' and @value='99']");
         $this->type("//input[@name='sector_other']", "another sector");
@@ -210,7 +210,7 @@ class RegisterTest extends SeleniumTest
     private function _testPost()
     {
         $this->clickAndWait("//a[contains(@href,'/dashboard')]");
-        $this->typeInFrame("//iframe", "this is a test post");
+        $this->setTinymceContent("this is a test post");
         $this->submitForm();
         $this->mouseOver("//p[contains(text(), 'this is a test post')]");
         
@@ -269,7 +269,7 @@ class RegisterTest extends SeleniumTest
         // update mission
         $this->clickAndWait("//a[contains(@href,'home/edit')]");
         $this->clickAndWait("//a[contains(text(),'Mission')]");
-        $this->typeInFrame("//iframe", "new mission!");
+        $this->setTinymceContent("new mission!");
         $this->clickAndWait("//button[@type='submit']");
         $this->mouseOver("//div[contains(@class, 'section_content')]//p[contains(text(),'new mission!')]");
         $this->mouseOver("//div[@id='site_menu']//a[@class='selected']");
@@ -316,7 +316,7 @@ class RegisterTest extends SeleniumTest
         // create custom section
         $this->clickAndWait("//a[contains(@href,'/add')]");
         $this->type("//input[@name='title']",'My New Section');
-        $this->typeInFrame("//iframe", "yay!");
+        $this->setTinymceContent("yay!");
         
         $this->submitForm();
 
@@ -333,7 +333,7 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//a[contains(text(),'My New Section')]");
 
         $this->type("//input[@name='title']",'New Section 2');
-        $this->typeInFrame("//iframe", "yay 2!");
+        $this->setTinymceContent("yay 2!");
         $this->submitForm();
         
         $this->assertContains("New Section 2", $this->getText("//div[@class='section_header'][5]"));        
@@ -390,7 +390,7 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'home/edit')]");
         $this->clickAndWait("//div[@id='edit_submenu']//a");
         $this->clickAndWait("//a[contains(@href,'projects/edit')]");
-        $this->typeInFrame("//iframe", "we test stuff");
+        $this->setTinymceContent("we test stuff");
         $this->clickAndWait("//button[@type='submit']");
         sleep(2);
         $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'we test stuff')]");
@@ -430,7 +430,7 @@ class RegisterTest extends SeleniumTest
         
         $this->type("//input[@name='title']", "New page");
         $this->type("//input[@name='widget_name']", "settings!!!");
-        $this->typeInFrame("//iframe", "another page!!!!!!");
+        $this->setTinymceContent("another page!!!!!!");
         $this->submitForm();
                 
         $this->ensureBadMessage(); // invalid characters in widget_name
@@ -667,7 +667,7 @@ class RegisterTest extends SeleniumTest
 
         $this->ensureGoodMessage();
 
-        $this->typeInFrame("//iframe", "being a partner");
+        $this->setTinymceContent("being a partner");
         $this->check("//input[@name='sector[]' and @value='4']");
         $this->check("//input[@name='sector[]' and @value='99']");
         $this->click("//a[@id='theme_wovengrass']");

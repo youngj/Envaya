@@ -41,7 +41,7 @@ class DonateTest extends WebDriverTest
         $this->mustExist("//input[@name='x_city' and @value='New York']");
         $this->mustExist("//input[@name='x_state' and @value='NY']");
         $this->mustExist("//input[@name='x_zip' and @value='10001']");
-        $this->mustExist("//input[@name='x_phone' and @value='650.555.1212']");
+        $this->mustExist("//input[@name='x_phone' and @value='650-555-1212']");
         $this->mustExist("//input[@name='x_email' and @value='nobody@nowhere.com']");
         $this->mustExist("//input[@name='x_amount' and @value='50']");
 
@@ -67,7 +67,7 @@ class DonateTest extends WebDriverTest
         $this->waitForElement("//div[@class='informationConfirm']");
         $this->mustExist("//input[@name='x_first_name' and @value='Test Name']");
         $this->mustExist("//input[@name='x_last_name' and @value='Two']");
-        $this->mustExist("//input[@name='x_phone' and @value='650.555.1213']");
+        $this->mustExist("//input[@name='x_phone' and @value='(650) 555-1213']");
         $this->mustExist("//input[@name='x_amount' and @value='153']");
         
         $this->mustExist("//div[@class='informationConfirm']//strong[contains(text(),'$153.00')]");

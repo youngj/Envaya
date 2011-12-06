@@ -11,19 +11,7 @@ class EditorTest extends SeleniumTest
         sleep(1);
         
         $this->open("/testorg/dashboard");
-        $this->mustNotExist("//a[@class='hideMessages']");
-        
-        // clean up pages from any previous aborted/failed tests
-        $testPageXpath = "//a//span[contains(text(), 'Test Page')]";
-        while ($this->isElementPresent($testPageXpath))
-        {
-            $this->clickAndWait($testPageXpath);
-            $this->click("//button[@id='widget_delete']");
-            $this->getConfirmation();
-            $this->waitForPageToLoad(10000);              
-            $this->ensureGoodMessage();
-            $this->open('/testorg/dashboard');
-        }
+        $this->mustNotExist("//a[@class='hideMessages']");        
         
         // test draft of new page
         $this->clickAndWait("//a[contains(@href,'add_page')]");
@@ -32,13 +20,13 @@ class EditorTest extends SeleniumTest
         
         $this->type("//input[@name='title']", "Test Page");
         $this->type("//input[@name='widget_name']", $pageName);
-        $this->typeInFrame("//iframe", "test content 1");
+        $this->setTinymceContent("test content 1");
         $this->clickAndWait("//a[@id='content_html0_save']");
         
         $this->assertEquals("Test Page", $this->getValue("//input[@name='title']"));
 
         $this->retry('selectFrame', array("//iframe"));
-        $this->mouseOver("//p[contains(text(),'test content 1')]");
+        $this->retry('mouseOver', array("//p[contains(text(),'test content 1')]"));
         $this->selectFrame("relative=top");        
         
         $this->assertEquals("Test Page", $this->getValue("//input[@name='title']"));
@@ -50,7 +38,7 @@ class EditorTest extends SeleniumTest
         
         // test publishing page works
         $this->open("/testorg/page/$pageName/edit");
-        $this->typeInFrame("//iframe", "test content 2");
+        $this->setTinymceContent("test content 2");
         $this->submitForm();
         
         $this->ensureGoodMessage();
@@ -67,7 +55,7 @@ class EditorTest extends SeleniumTest
         $this->mouseOver("//p[contains(text(),'test content 2')]");
         $this->selectFrame("relative=top");        
         
-        $this->typeInFrame("//iframe", "test content 3");
+        $this->setTinymceContent("test content 3");
         $this->click("//a[@id='content_html0_save']");
         $this->retry('mouseOver', array("//span[@id='saved_message' and contains(text(),'Changes saved')]"));
         

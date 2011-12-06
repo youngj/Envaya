@@ -32,7 +32,7 @@ class ContactTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'email/add')]");
         $this->type("//input[@name='from']", "ContactTest");
         $this->type("//input[@name='subject']", "Selenium Test for {{username}}");
-        $this->typeInFrame("//iframe", "<p>Hi {{name}},</p><p>This is a test of the emergency broadcast system.</p>");
+        $this->setTinymceContent("<p>Hi {{name}},</p><p>This is a test of the emergency broadcast system.</p>");
         $this->submitForm();
         
         $this->mouseOver("//span[contains(text(), 'ContactTest')]");
@@ -46,7 +46,7 @@ class ContactTest extends SeleniumTest
         $this->clickAndWait("//div[@id='edit_submenu']//a");
         
         $this->assertEquals('ContactTest', $this->getValue("//input[@name='from']"));
-        $this->typeInFrame("//iframe", "<p>Hi {{name}},</p><p>This is not a test.</p>");
+        $this->setTinymceContent("<p>Hi {{name}},</p><p>This is not a test.</p>");
         $this->submitForm();
         
         
@@ -105,7 +105,7 @@ class ContactTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'email/add')]");
         $this->type("//input[@name='from']", "ContactTest");
         $this->type("//input[@name='subject']", "Another Selenium email");
-        $this->typeInFrame("//iframe", "<p>hello</p>");
+        $this->setTinymceContent("<p>hello</p>");
         $this->submitForm();
         
         $this->clickAndWait("//a[contains(@href, '/send')]");

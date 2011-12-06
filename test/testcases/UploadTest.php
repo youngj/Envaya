@@ -19,6 +19,8 @@ class UploadTest extends WebDriverTest
     private function _testNewsUpdateImage()
     {        
         $this->open('/testorg/dashboard');
+        sleep(3);
+        
         $this->retry('click', array("//div[@class='attachControls']//a"));
         
         $this->retry('selectFrame', array("//iframe[contains(@src,'select_image')]"));

@@ -43,7 +43,7 @@ class NetworkTest extends SeleniumTest
         
         // add description
         $this->clickAndWait("//a[contains(@href, 'edit_relationship')]");
-        $this->typeInFrame("//iframe", "yay partners");
+        $this->setTinymceContent("yay partners");
         $this->submitForm();
         $this->ensureGoodMessage();
         $this->assertContains("yay partners", $this->getText("//div[@class='feed_snippet']"));
@@ -125,7 +125,7 @@ class NetworkTest extends SeleniumTest
         $this->open("/testposter16");
         $this->clickAddRelationship();
         $this->mustNotExist("//input[@name='name']");
-        $this->typeInFrame("//iframe", "hooray partners");
+        $this->setTinymceContent("hooray partners");
         $this->submitForm();
         $this->mouseOver("//a[contains(@href, 'testposter16')]");          
         $this->mouseOver("//div[@class='feed_snippet' and contains(text(),'hooray partners')]");
@@ -211,7 +211,7 @@ class NetworkTest extends SeleniumTest
         $this->setUrl($approveUrl);
         $this->login('testposter16','asdfasdf');
         $this->ensureGoodMessage();
-        $this->typeInFrame("//iframe", "whee reverse relationship");
+        $this->setTinymceContent("whee reverse relationship");
         $this->submitForm();
         $this->ensureGoodMessage();
         $this->mouseOver("//a[contains(@href, 'testorg')]");          
@@ -274,7 +274,7 @@ class NetworkTest extends SeleniumTest
         $this->type("//input[@name='phone']", '1234567,2345678, +123143456789');
         $this->submitForm();
         $this->ensureGoodMessage();
-        $this->typeInFrame("//iframe", 'being invited');
+        $this->setTinymceContent('being invited');
         $this->check("//input[@name='sector[]' and @value='8']");
         $this->submitForm();
         $this->ensureGoodMessage();
@@ -316,7 +316,7 @@ class NetworkTest extends SeleniumTest
         $this->mouseOver("//h3[contains(text(), '$newInviteName')]");          
         
         // last email should be email notifying admins of new org, not any network notifications
-        sleep(1);
+        sleep(2);
         $adminEmail = $this->getLastEmail();
         $this->assertNotContains('/network', $adminEmail);
         $this->assertContains("New organization registered", $adminEmail);
@@ -352,7 +352,7 @@ class NetworkTest extends SeleniumTest
         $this->open('/testorg/page/discussions/edit');
         $this->clickAndWait("//a[contains(@href,'topic/new')]");
         $this->type("//input[@name='subject']", "Test Topic");
-        $this->typeInFrame("//iframe", "test message");
+        $this->setTinymceContent("test message");
         $this->type("//input[@name='name']", "Test Name");
         $this->type("//input[@name='location']", "Test Location");
         $this->submitForm();

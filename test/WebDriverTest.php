@@ -78,9 +78,11 @@ class WebDriverTest extends SeleniumTest
         $this->xpath($xpath);
     }
     
-    function typeInFrame($xpath, $text)
-    {        
-        $element = $this->selectFrame($xpath);        
+    public function setTinymceContent($text)
+    {
+        //$this->retry('executeScript', array('window.tinymce.activeEditor.setContent('.json_encode($text).')',''));        
+
+        $element = $this->selectFrame("//iframe");        
         $this->type("//body", $text);                
         $this->webdriver->selectFrame(null);
     }
