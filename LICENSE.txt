@@ -37,6 +37,14 @@ third-party vendors, which is licensed as follows:
    (c) 2009, Moxiecode Systems AB, 
    released under LGPL license.
   
+* _media/jquery-*.js
+   (c) 2011, John Resig
+   released under MIT license
+   
+* _media/ace/
+    (c) Ajax.org 2011
+    released under MPL or LGPL
+  
 * vendors/htmlpurifier/ 
    (c) 2006-2008 Edward Z. Yang,
    released under LGPL license.
@@ -57,6 +65,10 @@ third-party vendors, which is licensed as follows:
    (c) Boris Guéry, 
    released under Do What The Fuck You Want To Public License, Version 2
 
+* vendors/When.php
+   (c) 2010 Thomas Planer
+   released under MIT license
+   
 * vendors/s3.php
    (c) Tyler Hall http://code.google.com/p/php-aws/
    released under MIT License
