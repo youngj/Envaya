@@ -8,7 +8,7 @@ organizations in developing countries.
 Envaya is designed to be easy-to-use by people with very limited computer
 skills, so it generally favors simplicity over the customizability offered 
 by generic content management tools such as Wordpress, Drupal, or Google Sites. 
-Envaya also is designed for low- bandwidth and mobile environments, 
+Envaya also is designed for low-bandwidth and mobile environments, 
 and provides multilingual support including content translation.
 
 For more information about Envaya's software and design principles, see
@@ -22,6 +22,10 @@ Potential ways of using Envaya's source code may include:
 * Studying the source code for inspiration, or adapting parts of the source code 
   into unrelated projects.
 * ...?
+
+The GitHub repository https://github.com/youngj/Envaya only contains the subset of 
+Envaya's source code that is open-source. Additional modules are developed as 
+closed-source code and stored in separate repositories.
 
 ============
 Installation

@@ -768,9 +768,16 @@ new module, named 'tutorial'.
 In the mod/ directory, create a new directory named 'tutorial'. This directory name 
 is the name of your module.
 
-In the tutorial directory, create an empty file named 'start.php'. Every module
-must contain a file named start.php in its root directory that initializes the
-module. We will edit this file shortly.
+In the tutorial directory, create an empty file named 'module.php', and add the following
+content:
+
+<?php
+    class Module_Tutorial extends Module
+    {
+    }
+
+Every module must contain a file named module.php in its root directory that defines
+a class named like "Module_<modulename>" that extends Module. We will edit this file shortly.
  
 Next, in config/default.php, find a setting named 'modules'. This is the list of 
 Envaya modules that are enabled by default.
@@ -804,7 +811,7 @@ that refers to code in the 'tutorial' module. (If you run "php scripts/module_de
 the command line, it should print out that the '(core)' module references the 'tutorial'
 module 1 time.)
 
-The file mod/tutorial/start.php allows you to avoid directly referencing your module's code
+The file mod/tutorial/module.php allows you to avoid directly referencing your module's code
 from within core classes.
 
 To move Controller_Pg::action_hello into a module, we first need to create a new Controller
@@ -833,24 +840,32 @@ are handled by the function 'action_hello'.
 
 Remove the method action_hello from Controller_Pg.
 
-Now in mod/tutorial/start.php, add the following code so that /pg/hello
+Now update mod/tutorial/module.php so that /pg/hello
 is routed to the Controller_Tutorial class:
 
 <?php
-    Engine::add_autoload_action('Controller_Pg', function() {
-        Controller_Pg::add_route(array(
-            'regex' => '/hello\b',
-            'controller' => 'Controller_Tutorial',
-        ));
-    });
-    
-The call to Controller_Pg::add_route() adds an entry to the $routes array of 
+    class Module_Tutorial extends Module
+    {
+        static $autoload_patch = array(
+            'Controller_Pg',
+        );
+                
+        static function patch_Controller_Pg()
+        {
+            Controller_Pg::$routes[] = array(
+                'regex' => '/hello\b',
+                'controller' => 'Controller_Tutorial',
+            );
+        }        
+    }
+
+The patch_Controller_Pg() function adds an entry to the $routes array of 
 Controller_Pg, associating the URL /hello with the controller named Controller_Tutorial.
 
-Engine::add_autoload_action() registers a function to be executed when a particular
-class is loaded, without actually loading that class. In this case, Controller_Pg::add_route 
-is only called when Controller_Pg is loaded. Many requests may not require Controller_Pg,
-so this structure allows Envaya to only load the PHP code that is actually used.
+By adding 'Controller_Pg' to the $autoload_patch array, the Module registers 
+the patch_Controller_Pg() function to be called whenever the Controller_Pg is loaded. 
+Many requests may not require Controller_Pg, so this structure allows Envaya to only 
+load the PHP code that is actually used.
 
 Now refresh http://localhost/pg/hello?username=testorg . It should work the same
 as before, but now all of the tutorial code is inside the 'tutorial' module. When you 
@@ -876,18 +891,26 @@ with a username are forwarded to the Controller_UserSite controller
 (engine/controller/usersite.php).
 
 To move the '/hello' route to the Controller_UserSite controller, modify
-mod/tutorial/start.php to refer to Controller_UserSite instead of Controller_Pg:
+mod/tutorial/module.php to refer to Controller_UserSite instead of Controller_Pg:
 
 <?php
-    Engine::add_autoload_action('Controller_UserSite', function() {
-        Controller_UserSite::add_route(array(
-            'regex' => '/hello\b',
-            'controller' => 'Controller_Tutorial',
-        ), 0);
-    });
+    class Module_Tutorial extends Module
+    {
+        static $autoload_patch = array(
+            'Controller_UserSite',
+        );
+                
+        static function patch_Controller_UserSite()
+        {
+            array_unshift(Controller_UserSite::$routes[], array(
+                'regex' => '/hello\b',
+                'controller' => 'Controller_Tutorial',
+            ));
+        }        
+    }
 
-In this case, the add_route() function needs a second parameter '0', which adds the route
-at the beginning (0th index) of the Controller_UserSite::$routes array instead of at the end. 
+In this case, we call array_unshift() to add the route at the beginning (0th index) of 
+the Controller_UserSite::$routes array instead of at the end. 
 This is necessary because Controller_UserSite already contains a route regex that would 
 match "/hello", so our regex needs to go before it.
     
@@ -967,11 +990,23 @@ Controller_UserSite::action_settings, which executes an Action_Settings action.
 Action_Settings is defined in engine/action/settings.php, where you can see that 
 'account/settings' is the content view being rendered. 
 
-To modify a view like 'account/settings' from within a module, call the 'Views::extend'
-method from your module's start.php file. Add the following line to mod/tutorial/start.php:
+To modify a view like 'account/settings' from within a module, you will need to register
+a 'patch' function for that view in your module's module.php file. 
+Add the following lines to the Module_Tutorial class in mod/tutorial/module.php:
 
-    Views::extend('account/settings', 'tutorial/settings_link');
-    
+    static $view_patch = array(
+        'account/settings',
+    );
+       
+    static function patch_view_account_settings(&$views)
+    {
+        $views[] = 'tutorial/settings_link';
+    }    
+        
+The meaning of this code is to specify that when the 'account/settings' view is loaded 
+via a call like view('account/settings', ...), the 'tutorial/settings_link' view should 
+be appended afterwards.
+        
 Now, create the 'tutorial/settings_link' view at 
 mod/tutorial/views/default/tutorial/settings_link.php:
 
@@ -986,20 +1021,28 @@ the extension view are invoked with the same parameters.
 Reload http://localhost/testorg/settings . Your "Change Email Address" link should now
 appear at the bottom of the page.
 
-By default, Views::extend will place your module's view after the existing view, but you can 
-control this behavior by adding an optional integer parameter. Negative values will place 
-the module's view before the existing view, and positive values will place the module's view 
-after the existing view. Change the 'Views::extend' call in mod/tutorial/start.php:
+The code above will place your module's view after the existing view, but you can 
+control this behavior by changing how your patch function modifies the $views array passed
+as a reference parameter. 
 
-    Views::extend('account/settings', 'tutorial/settings_link', -1);
+To add your view at the top of the account settings page, change the patch_view_account_settings() 
+function in mod/tutorial/module.php like so:
+       
+    static function patch_view_account_settings(&$views)
+    {
+        array_unshift($views, 'tutorial/settings_link');
+    }    
     
 Reload http://localhost/testorg/settings . Your "Change Email Address" link should now
 appear at the top of the page.    
 
-You could even replace the entire 'account/settings' view with your 'tutorial/settings_link' 
-view using 'Views::replace' instead of 'Views::extend':
+You could even replace the entire 'account/settings' view with your module's 
+'tutorial/settings_link' view like so:
 
-    Views::replace('account/settings', 'tutorial/settings_link');
+    static function patch_view_account_settings(&$views)
+    {
+        $views = array('tutorial/settings_link');
+    }    
     
 =============================================
 13. Defining a new Widget for users' websites
@@ -1127,30 +1170,20 @@ form, with a 'publish' and 'delete' button at the bottom. Submitting the form wi
 a POST request back to a page that calls your Widget_Hello::process_input() method.
 
 Next, make your new Widget available to users in the "Edit Pages" section of their dashboard
-by adding the following code to mod/tutorial/start.php:
+by adding a patch_Widget() function in in mod/tutorial/module.php like so:                
 
-    Engine::add_autoload_action('Widget', function() {
-        Widget::add_default_widget('email', array(
-            'subclass' => 'Hello',
-            'menu_order' => 200,            
-            'page' => true, 
-        ));
-    });
+    static function patch_Widget()
+    {
+        Widget::add_default_class('Widget_Hello');
+    }       
     
-The first parameter to add_default_widget() is the 'widget_name', which appears as a 
-component in the page's URL (in this case, http://localhost/<username>/page/email).
+You will also need to add 'Widget' to the $autoload_patch array, like so:
 
-The second parameter to add_default_widget() contains some options for the Widget:
-    'subclass':
-        the part of the widget class name after 'Widget_'
-    'menu_order' (optional):
-        the default order of the widget in the navigation menu
-    'page' (optional):
-        if true, shows this widget in the 'Edit Pages' list
-    'home_section' (optional):
-        if true, shows this widget in the 'Edit Section' list
-        when a user edits their Home pge
-        
+    static $autoload_patch = array(
+        'Controller_UserSite',
+        'Widget',
+    );
+            
 Now, open http://localhost/testorg/dashboard in your browser.
 
 Under the 'Edit Pages' section, click the 'Email' link to go to the editor-only page
