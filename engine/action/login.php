@@ -119,12 +119,17 @@ class Action_Login extends Action
         return null;            
     }    
     
+    function render_content()
+    {
+        $username = get_input('username');
+        $next = get_input('next');            
+        
+        return view("account/login", array('username' => $username, 'next' => $next));
+    }    
+    
     function render()
     {
         $this->prefer_https();
-
-        $username = get_input('username');
-        $next = get_input('next');        
         
         $loginTime = (int)get_input('_lt');
         if ($loginTime && timestamp() - $loginTime < 10 && !Session::is_logged_in())
@@ -134,7 +139,7 @@ class Action_Login extends Action
         
         $this->page_draw(array(
             'title' => __("login"),            
-            'content' => view("account/login", array('username' => $username, 'next' => $next)),
+            'content' => $this->render_content(),
             'org_only' => true,
             'hide_login' => !Session::is_logged_in()
         ));        

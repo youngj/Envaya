@@ -42,8 +42,14 @@ function createElem(/* args */)
                             if (arg.hasOwnProperty(key))
                             {
                                 var val = arg[key];
-
-                                if (typeof(val) == 'function')
+                                if (key == 'style')
+                                {                                    
+                                    for (var p in val)
+                                    {
+                                        el[key][p] = val[p];
+                                    }
+                                }
+                                else if (typeof(val) == 'function')
                                 {
                                     addEvent(el, key, val);
                                 }

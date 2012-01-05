@@ -7,6 +7,7 @@ class SMSSubscription_Contact extends SMSSubscription
         $this->send(array(
             'notifier' => $template,
             'message' => $template->render_content($this),
+            'append_stop' => false,
         )); 
     }    
     

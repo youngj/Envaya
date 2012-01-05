@@ -65,10 +65,15 @@ a.selected
 }
 
 .float_right
-{
-    clear:both;
+{    
     display:block;
     float:right;
+}
+
+.float_left
+{
+    display:block;
+    float:left;
 }
 
 #heading

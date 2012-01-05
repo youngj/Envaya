@@ -887,14 +887,16 @@
 			n = DOM.add(DOM.add(c, 'tr', {role: 'presentation'}), 'td', {'class' : 'mceToolbar mceLeft', "role":"presentation"});
 
 			// Create toolbar and add the controls
-			for (i=1; (v = s['theme_advanced_buttons' + i]); i++) {
+			for (i=1; (v = s['buttons' + i]); i++) {
 				tb = cf.createToolbar("toolbar" + i, {'class' : 'mceToolbarRow' + i});
 
+                /*
 				if (s['theme_advanced_buttons' + i + '_add'])
 					v += ',' + s['theme_advanced_buttons' + i + '_add'];
 
 				if (s['theme_advanced_buttons' + i + '_add_before'])
 					v = s['theme_advanced_buttons' + i + '_add_before'] + ',' + v;
+                */
 
 				t._addControls(v, tb);
 				toolbarGroup.add(tb);

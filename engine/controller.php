@@ -1,6 +1,6 @@
 <?php
 /**
- * Abstract controller class. Controllers should only be created using a [Request].
+ * Abstract controller class.
  *
  * URLs are routed to controller methods by the execute($uri) method. 
  * Controller classes may define a static $routes array. Each element of the $routes 

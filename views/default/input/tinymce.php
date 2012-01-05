@@ -88,7 +88,7 @@ $('content_html<?php echo $INCLUDE_COUNT ?>').style.display = 'block';
 tinyMCE.init({
     content_css: "<?php echo css_url('tinymce'); ?>",
     mode: "exact",
-    theme_advanced_buttons1 : "<?php 
+    buttons1 : "<?php 
         echo "bold,italic,underline,bullist,numlist,outdent,indent,blockquote,link";        
         if ($allowImage) { echo ',image'; }
         if ($allowDocument) { echo ',document'; }

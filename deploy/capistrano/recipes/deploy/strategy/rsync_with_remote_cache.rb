@@ -36,7 +36,7 @@ module Capistrano
           define_method(attribute) { configuration[attribute] || default_value }
         end
         
-        default_attribute :rsync_options, '-azv --delete --delete-excluded --chmod=u+rx,g+rx,o+rx --super'
+        default_attribute :rsync_options, '-azv --delete --delete-excluded --chmod=u+rx,g+rx,o+rx'
         default_attribute :local_path, '.'
         default_attribute :repository_cache, 'cached-copy'
 
@@ -54,6 +54,7 @@ module Capistrano
                 throw :rsync_failed
             end
           end
+          run("chown -R root:root #{repository_cache_path}");
         end
         
         def copy_remote_cache
