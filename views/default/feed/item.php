@@ -21,7 +21,10 @@
     <div class='blog_date'><?php echo $feedItem->get_date_text() ?></div>
     <?php
     
-    if ($show_edit_controls && Permission_EditUserSite::has_for_entity($feedItem->get_user_entity())) 
+    $user = $feedItem->get_user_entity();
+    
+    if ($show_edit_controls && (Permission_EditUserSite::has_for_entity($user)
+        || Permission_UseAdminTools::has_for_entity($user))) 
     {
         echo view('input/post_link', array(
             'href' => "/pg/delete_feed_item?item={$feedItem->id}",
