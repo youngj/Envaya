@@ -4,146 +4,102 @@
     
     $count_filters_url = $template_class::$count_filters_url;
     
-    $available_filters = array('UserType','Country','Approval','Sector');    
+    $available_filters = array(
+        new Query_Filter_UserType(),
+        new Query_Filter_Country(),
+        new Query_Filter_Approval(),
+        new Query_Filter_Sector(),
+    );    
+    
+    $filters = $displayed_filters = $template->get_filters();
+
+    $filter_map = array();
+    foreach ($filters as $filter)
+    {
+        $filter_map[get_class($filter)] = $filter;
+    }
+    
+    $country_filter = @$filter_map['Query_Filter_Country'];
+    if ($country_filter && $country_filter->value)
+    {
+        $available_filters[] = new Query_Filter_Region(array('country' => $country_filter->value));
+    }
+        
+    foreach ($available_filters as $filter)
+    {
+        if (!isset($filter_map[get_class($filter)]))
+        {
+            $displayed_filters[] = $filter;
+        }
+    }        
 ?>
 <div class='input'>
-<label>Filters: </label>(<span id='filter_count'><?php 
+<label>Filters: </label>
+
+<?php 
+    echo "(<span id='filter_count'>";
     echo $template->query_filtered_subscriptions()->count();
-?></span>/<span id='total_count'><?php 
+    echo "</span>";
+    echo "/<span id='total_count'>";
     echo $template_class::query_all_subscriptions()->count(); 
-?></span> recipients in filter)
-<div id='filter_container'></div>
-<div>Add filter: 
-<span style='font-weight:bold'>
-<?php    
-    $add_links = array();
-    foreach ($available_filters as $available_filter)
-    {
-        $cls = "Query_Filter_{$available_filter}";
-        $add_links[] = "<a id='add_filter_{$available_filter}' href='javascript:addFilter(\"$available_filter\")'>".escape($cls::get_name())."</a> ";
-    }
-    echo implode(" &middot; ", $add_links);
+    echo "</span>";
+   echo " recipients in filter)";
+   
+   echo view('js/json');
+   echo view('js/xhr');
 ?>
-</span>
-<?php echo view('input/hidden', array('id' => 'filters_json', 'name' => 'filters_json', 'value' => $template->filters_json)) ?>
-</div>    
-
-<?php echo view('js/dom'); ?>
-<?php echo view('js/json'); ?>
-<?php echo view('js/xhr'); ?>
-
 <script type='text/javascript'>
-var filterIndex = 0;
 
-function getNewFilterId()
-{
-    return "filter" + (filterIndex++);
-}
-
-function addFilterInput(id, subclass, name, inputHTML)
-{
-    showAddFilter(subclass, false);
-
-    var div = createElem('div', {
-            id: id,
-        },
-        createElem('input', {type:'hidden', id:id + '_subclass', value:subclass}),
-        createElem('span', name + ": "),
-        createElem('span', {innerHTML: inputHTML}),
-        " ",
-        createElem('a', {
-            href: 'javascript:void(0)', 
-            click: function() { 
-                showAddFilter(subclass, true);
-                removeElem(div);
-                updateFiltersJson();
-            }
-        }, "X")
-    );        
-    div.style.paddingBottom = '3px';
-    div.style.paddingLeft = '60px';
-        
-    function addChangeEvent(elem)
-    {
-        addEvent(elem,'change',updateFiltersJson);
-    }
-    
-    each(div.getElementsByTagName('select'), addChangeEvent);
-    each(div.getElementsByTagName('input'), addChangeEvent);    
-    
-    $('filter_container').appendChild(div);    
-    
-    updateFiltersJson();
-}
-
-function getFilter(div)
-{
-    var filter = {subclass:'', args:{}};
-    var id = div.id;   
-    
-    filter.subclass = $(id + '_subclass').value;
-    filter.args.value = $(id + '_value').value;    
-    
-    return filter;
-}
+var displayedFilters = <?php echo Query_Filter::json_encode_filters($displayed_filters); ?>
 
 function updateFiltersJson()
 {
-    var prev = $('filters_json').value;
-    var filtersJson = getFiltersJson();
+    var filters = [];
+
+    for (var i = 0; i < displayedFilters.length; i++)
+    {
+        var filter = displayedFilters[i];
+        if (!filter.args)
+        {
+            filter.args = {};
+        }
+    
+        var value = filter.args.value = $('filter_' + i).value;
         
+        if (value)
+        {
+            filters.push(filter);
+        }
+    }
+    
+    var filtersJson = JSON.stringify(filters);
+    
     $('filters_json').value = filtersJson;
-    
-    if (prev != filtersJson)
-    {
-        $('filter_count').innerHTML = "?";
-        fetchJson("<?php echo $count_filters_url; ?>?filters_json=" + encodeURIComponent(filtersJson), function(res) {            
-            $('filter_count').innerHTML = res.filter_count;
-        });
-    }
-}
-
-function getFiltersJson()
-{
-    var filters = each($('filter_container').childNodes, getFilter);
-    return JSON.stringify(filters);
-}
-
-function showAddFilter(subclass, show)
-{
-    var elem = $('add_filter_' + subclass);
-    
-    if (elem)
-    {
-        elem.style.display = show ? 'inline' : 'none';
-    }
-}
-
-function addFilter(subclass)
-{
-    var id = getNewFilterId();
-
-    fetchJson("/admin/contact/filter_input?id="+id+"_value&subclass=" + subclass, function(res) {            
-        addFilterInput(id, subclass, res.name, res.input_html);
-    });
-}    
-
-<?php 
-    $i = 0;    
-    foreach ($template->get_filters() as $filter) 
-    { 
-        $filter_id = "filterx{$i}";
-        echo "addFilterInput('$filter_id',".json_encode($filter->get_subclass()).","
-            .json_encode($filter->get_name()).","
-            .json_encode($filter->render_input(array(
-                'empty_option' => false,
-                'id' => "{$filter_id}_value"
-            ))).");";
-        $i++;
-    } 
         
-?>
-
+    fetchJson("<?php echo $count_filters_url; ?>?filters_json=" + encodeURIComponent(filtersJson), function(res) {
+        $('filter_count').innerHTML = res.filter_count;
+    });
+}
 
 </script>
+<div id='filter_container' style='padding-left:20px'>
+<?php
+    echo view('input/hidden', array(
+        'id' => 'filters_json', 
+        'name' => 'filters_json',
+        'value' => Query_Filter::json_encode_filters($filters),
+    ));
+
+    foreach ($displayed_filters as $index => $filter)
+    {
+        echo "<div style='padding-bottom:3px'>";        
+        echo escape($filter->get_name()). ": ";
+        echo $filter->render_input(array(
+            'id' => "filter_$index",
+            'onchange' => 'updateFiltersJson()',
+        ));
+        echo "</div>";
+    }
+?>
+</div>
 </div>

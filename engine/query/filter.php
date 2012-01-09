@@ -61,7 +61,7 @@ abstract class Query_Filter
         }
         return $res;
     }
-
+    
     static function json_encode_filters($filters)
     {
         $filters_args = array();
