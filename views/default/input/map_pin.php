@@ -7,6 +7,8 @@
     $long_name = null;
     $zoom_name = null;
     
+    $onload = null;
+    
     $lat = null;
     $long = null;
     $zoom = null;
@@ -49,6 +51,10 @@ function <?php echo "initMapInput$INCLUDE_COUNT"; ?>(map)
         draggable: true
     });
 
+    google.maps.event.addListener(marker, "position_changed", function(e) {
+        updateHiddenFields();
+    });
+    
     google.maps.event.addListener(marker, "dragend", function(e) {
         map.setCenter(e.latLng);
         updateHiddenFields();
@@ -59,6 +65,13 @@ function <?php echo "initMapInput$INCLUDE_COUNT"; ?>(map)
     });
 
     marker.setMap(map);
+    
+    <?php
+    if ($onload)
+    {
+        echo "$onload(map, marker)"; 
+    }
+    ?>
 }
 
 </script>
