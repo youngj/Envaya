@@ -26,7 +26,7 @@ return array(
 
     'browse' => 'Peleleza',
     'browse:title' => 'Peleleza mashirika',
-    'browse:instructions' => 'Kila pointi nyekundu katika ramani hapo chini ni shirika litumialo Envaya. Bonyeza pointi kuona jina lake, na bonyeza jina lake kutazama ukurasa wake mkuu.',
+    'browse:instructions' => 'Bonyeza pointi yoyote katika ramani hapo chini ili kuona mashirika pale.',
     'browse:map' => 'Ramani',
     'browse:list' => 'Orodha',
     

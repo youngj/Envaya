@@ -80,7 +80,7 @@ return array(
 
     'browse' => 'Explore',
     'browse:title' => 'Explore organizations',
-    'browse:instructions' => "Each red dot on the map below is an organization using Envaya. Click a dot to see its name, and click its name to view its home page.",
+    'browse:instructions' => "Click any dot on the map below to see the organizations at that location.",
     'browse:map' => 'Map',
     'browse:list' => 'List',
     'browse:zoom_in' => "Zoom in",        

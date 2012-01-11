@@ -31,11 +31,13 @@ OrgMapLoader = function()
         
         var infoOverlay = this.infoOverlay = new InfoOverlay();
         var loadingOverlay = this.loadingOverlay = new LoadingOverlay();
+        var fullscreenOverlay = this.fullscreenOverlay = new FullscreenOverlay();
         
         var $self = this;
            
         infoOverlay.setMap(map);
         loadingOverlay.setMap(map);
+        fullscreenOverlay.setMap(map);        
         
         google.maps.event.addListener(map, 'click',  function() {
             infoOverlay.setBucket(null);
@@ -178,10 +180,18 @@ DivOverlay = function(div)
 {
     this._div = div;
     this._pane = 'overlayImage';
+    this._fixed = false;
 
     this.onAdd = function()
     {
-        this.getPanes()[this._pane].appendChild(this._div);        
+        if (this._fixed)
+        {
+            this.getMap().getDiv().appendChild(this._div);
+        }
+        else
+        {
+            this.getPanes()[this._pane].appendChild(this._div);        
+        }
     };
       
     this.show = function()
@@ -198,6 +208,8 @@ DivOverlay = function(div)
     {
         removeElem(this._div);
     };
+    
+    this.draw = function() {};
 };
 
 DivOverlay.prototype = new google.maps.OverlayView();
@@ -207,31 +219,80 @@ DivOverlay.prototype = new google.maps.OverlayView();
  */
 LoadingOverlay = function()
 {
-    this._div = createElem('div', {id:'loadingOverlay'}, __('loading'));
-    this._width = 0;
-    this.hide();
-    
-    this.onAdd = function()
-    {
-        // add to document body so that it doesn't move as the map is scrolled
-        document.body.appendChild(this._div);
-    };    
-                
-    this.draw = function()
-    {
-        var mapElem = this.getMap().getDiv();
-        
-        if (this._width == 0)
-        {
-            this._width = this._div.offsetWidth;
-        }
-        
-        this._div.style.left = (mapElem.offsetLeft + mapElem.offsetWidth - this._width - 5) + "px";
-        this._div.style.top = (mapElem.offsetTop + 5) + "px";
-    };
+    this._div = createElem('div', {id:'loadingOverlay', style:{top:'22px',right:'2px'}}, __('loading'));
+    this._fixed = true;    
+    this.hide();        
 };
 
 LoadingOverlay.prototype = new DivOverlay();
+
+FullscreenOverlay = function()
+{
+    var $self = this;
+    this._isFullscreen = false;
+    this._div = createElem('div', {id:'fullscreenOverlay', style:{top:'0px',right:'0px',textAlign:'center',position:'absolute'}}, 
+        this._link = createElem('a', {
+            href:'javascript:void(0)',
+            click: function() {
+                $self._onClick();
+            },
+            style:{fontWeight:'bold',backgroundColor:'#eee',padding:'2px'}
+        }, "Fullscreen")
+    );
+    this._fixed = true;    
+    
+    this._onClick = function()
+    {
+        var map = this.getMap();
+        var mapDiv = map.getDiv();
+    
+        var center = map.getCenter();
+        var zoom = map.getZoom();    
+    
+        if (!this._isFullscreen)
+        {               
+            this._origWidth = mapDiv.style.width;
+            this._origHeight = mapDiv.style.height;
+            this._origLeft = mapDiv.style.left;
+            this._origTop = mapDiv.style.top;
+            this._origPosition = mapDiv.style.position;
+        
+            mapDiv.style.position = 'absolute';
+            mapDiv.style.left = '0px';
+            mapDiv.style.top = '0px';
+            mapDiv.style.width = (window.innerWidth || document.documentElement.offsetWidth || document.body.offsetWidth) + 'px';
+            mapDiv.style.height = (window.innerHeight || document.documentElement.offsetHeight || document.body.offsetHeight) + 'px';
+        
+            google.maps.event.trigger(map, 'resize');
+        
+            map.setCenter(center);
+            map.setZoom(zoom + 1);      
+            
+            this._link.innerHTML = "Exit Fullscreen";
+
+            this._isFullscreen = true;
+        }
+        else
+        {
+            mapDiv.style.position = this._origPosition;
+            mapDiv.style.left = this._origLeft;
+            mapDiv.style.top = this._origTop;
+            mapDiv.style.width = this._origWidth;
+            mapDiv.style.height = this._origHeight;
+        
+            google.maps.event.trigger(map, 'resize');
+        
+            map.setCenter(center);
+            map.setZoom(zoom - 1);
+            
+            this._link.innerHTML = "Fullscreen";
+            
+            this._isFullscreen = false;
+        }
+    };
+};
+
+FullscreenOverlay.prototype = new DivOverlay();
 
 /*
  * An overlay which shows a list of organizations in the selected bucket,

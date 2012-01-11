@@ -9,9 +9,13 @@
     $long = null;                   // initial center longitude
     $pin = false;                   // put a pin at the initial latitude/longitude?
     $static = false;                // true to use static map instead of JS map
+    $style = null;
     extract($vars);
     
-    $style = "display:block;margin:0 auto;width:{$width}px;height:{$height}px";
+    if (!$style)
+    {
+        $style = "display:block;margin:0 auto;width:{$width}px;height:{$height}px";
+    }
     
     if ($static)
     {
@@ -47,7 +51,7 @@ google.maps.event.addDomListener(window, 'load', function()
             style: google.maps.ZoomControlStyle.SMALL
         },
         panControl: true
-    });
+    });    
     
     <?php 
     if ($pin)
