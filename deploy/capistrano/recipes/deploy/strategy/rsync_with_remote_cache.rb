@@ -36,7 +36,7 @@ module Capistrano
           define_method(attribute) { configuration[attribute] || default_value }
         end
         
-        default_attribute :rsync_options, '-azv --delete --delete-excluded --chmod=u+rx,g+rx,o+rx'
+        default_attribute :rsync_options, '-azv --delete --delete-excluded --chmod=u+rx,g+rx,o+rx --super'
         default_attribute :local_path, '.'
         default_attribute :repository_cache, 'cached-copy'
 
@@ -47,6 +47,7 @@ module Capistrano
         
         def update_remote_cache
           finder_options = {:except => { :no_release => true }}
+          run("chown -R root:root #{repository_cache_path}")
           find_servers(finder_options).each do |s| 
             # TODO pass the password to rsync (e.g. with expect, or ruby rsync library) to avoid double prompting
             res = system(rsync_command_for(s)) 
@@ -54,7 +55,7 @@ module Capistrano
                 throw :rsync_failed
             end
           end
-          run("chown -R root:root #{repository_cache_path}");
+          run("chown -R root:root #{repository_cache_path}")
         end
         
         def copy_remote_cache

@@ -28,7 +28,7 @@ namespace :deploy do
         sanity_check
         update
         restart
-        update_test
+        #update_test
         update_translations
     end
     
@@ -203,6 +203,12 @@ namespace :deploy do
     task :finalize_update, :except => { :no_release => true } do
         run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
         run "cp #{shared_path}/local.php #{latest_release}/config/local.php"
+        
+        # don't use /var/envaya/current symlink in nginx conf because php5-fpm 
+        # won't update to the new target of the symlink unless it's restarted 
+        # (which could result in a few seconds of downtime). 
+        # This allows us to simply reload the nginx config without downtime.
+        run "echo \"root #{latest_release}/www;\" > /etc/nginx/root.conf"
     end
     
     task :update_translations do
@@ -212,7 +218,8 @@ namespace :deploy do
     task :restart, :roles => :app, :except => { :no_release => true } do        
         run "/etc/init.d/phpCron restart"
         run "/etc/init.d/queueRunner restart"
-        run "/etc/init.d/php5-fpm restart"
+        run "nginx -t"
+        run "/etc/init.d/nginx reload"
         run "rm -rf /var/nginx/cache/envaya"
     end
 end

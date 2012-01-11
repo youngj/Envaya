@@ -7,7 +7,7 @@ abstract class Cache
     abstract function delete($key);   
     
     static $cache;
-
+    
     static function get_instance()
     {
         if (!isset(self::$cache))

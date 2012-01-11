@@ -26,6 +26,16 @@ if (Config::get('debug') && Config::get('domain') != 'envaya.org')
     foreach (EmailSubscription::query()->filter() as $subscription)
     {
         $subscription->email = $admin_email;
+        $subscription->save();
+    }
+    
+    if (class_exists('ReportDefinition'))
+    {
+        foreach (ReportDefinition::query()->filter() as $report_def)
+        {
+            $report_def->contact_email = $admin_email;
+            $report_def->save();
+        }
     }
     
     // also disable sms subscriptions
