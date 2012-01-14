@@ -29,6 +29,7 @@ abstract class FeedItem extends Model
         'args' => '',
         'time_posted' => 0,        
     );   
+    static $query_class = 'Query_SelectFeedItem';
     
     function __get($name)
     {
@@ -124,11 +125,6 @@ abstract class FeedItem extends Model
     {
         return $this->get_subject_entity()->get_url();
     }         
-
-    static function query()
-    {
-        return new Query_SelectFeedItem();
-    }
     
     static function query_by_feed_names($feedNames)
     {

@@ -67,7 +67,14 @@ class Widget extends Entity
     
     static function get_default_classes($category)
     {
-        return static::$default_classes[$category];
+        if (isset(static::$default_classes[$category]))
+        {
+            return static::$default_classes[$category];
+        }
+        else
+        {
+            return array();
+        }
     }
     
     static function get_default_class_for_name($widget_name, $category = 'page')
@@ -174,11 +181,11 @@ class Widget extends Entity
             $org = $container->get_container_user();
             if ($this->guid)
             {
-                return "{$org->get_url()}/widget/{$this->get_url_slug()}";
+                return "{$org->get_url()}/node/{$this->get_url_slug()}";
             }
             else
             {
-                return "{$org->get_url()}/widget/{$this->container_guid}.{$this->widget_name}";
+                return "{$org->get_url()}/node/{$this->container_guid}.{$this->widget_name}";
             }
         }
     }    
@@ -268,11 +275,8 @@ class Widget extends Entity
 
             if ($title && $guid)
             {
-                // adapted from https://gist.github.com/853906#file_gistfile2.php
-                $title = strtolower(substr($title, 0, 64));
-                $title = trim(preg_replace("/[^a-z0-9\s-]/", "", $title));
-                $title = preg_replace("/[\s-]+/", "-", $title);
-                
+                $title = static::make_url_slug($title);
+
                 if ($title)
                 {
                     $this->url_slug = "{$title},{$guid}";
@@ -281,6 +285,15 @@ class Widget extends Entity
         }
         return $this->url_slug;       
     }    
+    
+    static function make_url_slug($title)
+    {                
+        // adapted from https://gist.github.com/853906#file_gistfile2.php
+        $title = strtolower(substr($title, 0, 64));
+        $title = trim(preg_replace("/[^a-z0-9\s-]/", "", $title));
+        $title = preg_replace("/[\s-]+/", "-", $title);
+        return $title;
+    }
     
     function save_draft($content)
     {
@@ -351,5 +364,11 @@ class Widget extends Entity
     static function get_or_new_for_entity($entity, $defaults = null)
     {
         return static::get_for_entity($entity) ?: static::new_for_entity($entity, $defaults);
+    }
+    
+    function execute_custom_action($controller)
+    {
+        $controller->use_public_layout();
+        throw new NotFoundException();
     }
 }

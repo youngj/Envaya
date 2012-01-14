@@ -1,3 +1,13 @@
+<script type='text/javascript'>
+function logoutClicked(e)
+{
+    var e = e || window.event;
+    if (e.preventDefault) e.preventDefault();
+    else e.returnValue = false;
+    var div = $('logoutDiv');    
+    div.style.display = (div.style.display == 'block') ? 'none' : 'block';
+}
+</script>
 <?php
 
 echo "<div id='loggedinArea'><span class='loggedInAreaContent'>";
@@ -20,8 +30,15 @@ if ($user->is_setup_complete())
     }    
 }
 
-echo "<a href='/pg/logout' title=\"".__('logout')."\"><img src='/_media/images/logout.gif' width='22' height='25' /></a>";
+echo "<a href='/pg/logout' onclick='logoutClicked(event)' title=\"".__('logout')."\"><img src='/_media/images/logout.gif' width='22' height='25' /></a>";
 echo "</span>";
+
+echo "<div id='logoutDiv'>";
+echo view('input/post_link', array(
+        'href' => '/pg/logout',
+        'text' => __('logout'),
+    ));
+echo "</div>";
 
 $submenuB = implode(' ', PageContext::get_submenu('edit')->get_items());
 if ($submenuB)

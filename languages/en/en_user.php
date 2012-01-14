@@ -35,4 +35,5 @@ return array(
     
     'user:location:success' => "Your location has been updated.",
     'user:logout_instructions' => "Click the button below to log out of your Envaya account.",
+    'user:current' => "Logged in as %s.",
 );

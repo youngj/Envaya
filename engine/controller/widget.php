@@ -21,6 +21,10 @@ class Controller_Widget extends Controller_User
             'regex' => '(/(?P<action>\w+)\b)?',
             'defaults' => array('action' => 'index'),
         ),    
+        array(
+            'regex' => '',
+            'action' => 'action_custom',
+        ),         
     );
 
     function get_widget()
@@ -132,4 +136,14 @@ class Controller_Widget extends Controller_User
             return $this->redirect($sibling->get_url());
         }
     }    
+    
+    /*
+     * Allow widget subclasses to define their own custom URL structure
+     * underneath the main widget URL
+     */
+    function action_custom()
+    {
+        $widget = $this->get_widget();        
+        $widget->execute_custom_action($this);
+    }
 }

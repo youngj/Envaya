@@ -14,6 +14,14 @@ body
     background-color:#545454;
 }
 
+#translate_bar
+{
+    margin:0px;
+    border:0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+}
+
 #site_menu
 {
     text-align:center;

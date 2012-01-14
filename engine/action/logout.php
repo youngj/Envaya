@@ -16,7 +16,8 @@ class Action_Logout extends Action
         }
 
         $this->page_draw(array(
-            'title' => __("logout"),            
+            'title' => __("logout"), 
+            'header' => '&nbsp;',
             'theme_name' => 'editor',
             'content' => view("account/logout", array('next' => get_input('next'))),
         ));

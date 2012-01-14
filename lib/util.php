@@ -69,8 +69,16 @@
             {
                 throw new InvalidParameterException("Invalid relative URI '$url'");
             }
-            $domain = Config::get('domain');
-            return "$default_scheme://$domain$url";
+            
+            if (isset($url[1]) && $url[1] == '/') // scheme-relative url with domain name
+            {
+                return "$default_scheme:$url";
+            }
+            else // relative url 
+            {
+                $domain = Config::get('domain');
+                return "$default_scheme://$domain$url";
+            }
         }        
         else if ($replace_scheme) // convert URL to requested scheme
         {

@@ -16,12 +16,12 @@ class Controller_UserSite extends Controller_User
             'action' => 'action_index',
         ),
         array(
-            'regex' => '/(post|widget)/(?P<container_guid>\d+)\.(?P<widget_name>\w+)',
+            'regex' => '/(post|widget|node)/(?P<container_guid>\d+)\.(?P<widget_name>\w+)',
             'controller' => 'Controller_Widget',
             'before' => 'init_widget_from_container',
         ),
         array(
-            'regex' => '/(post|widget)/((?P<slug>[\w\-]+)\,)?(?P<widget_guid>\d+)',
+            'regex' => '/(post|widget|node)/((?P<slug>[\w\-]+)\,)?(?P<widget_guid>\d+)',
             'controller' => 'Controller_Widget',
             'before' => 'init_widget_from_guid',
         ),    

@@ -26,7 +26,7 @@ class Widget_Menu extends Widget_Generic
     function render_add_child()
     {
         return view("widgets/add_section", array('widget' => $this));
-    }
+    }    
     
     function new_child_widget_from_input()
     {        

@@ -73,9 +73,33 @@
 
 #loginButton, #loggedinArea
 {
-    width:159px;
     display:block;
+    width:159px;
 }
+
+#logoutDiv a
+{
+    color:white;
+    display:block;
+    padding:3px;
+    text-align:center;
+}
+
+#logoutDiv
+{
+    font-weight:bold;
+    width:159px;
+    display:none;
+    color:white;
+    background:url(/_media/images/loggedinarea.png) no-repeat left -46px;
+    position:absolute;
+    font-size:12px;
+    right:0px;
+    top:27px;
+    height:30px;
+    text-align:right;
+}
+
 
 #loginButton
 {

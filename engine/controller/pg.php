@@ -70,7 +70,6 @@ class Controller_Pg extends Controller
         $this->page_draw(array(
             'no_top_bar' => true, 
             'layout' => 'layouts/frame', 
-            'no_top_bar' => true,            
             'content' => SessionMessages::view_all(),
             'header' => ''
         ));

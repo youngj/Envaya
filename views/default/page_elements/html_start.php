@@ -6,4 +6,3 @@
 <head>
 <?php echo view('page_elements/head_content', $vars); ?>
 </head>
-<body>

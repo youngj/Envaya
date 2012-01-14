@@ -14,7 +14,7 @@ class Module_Envaya_Org extends Module
     static $view_patch = array(
         'account/login_links',
         'account/register_content',
-        'page_elements/html_start',
+        'page_elements/body_start',
         'page_elements/head_content',
         'css/default',
         'css/editor',
@@ -33,7 +33,7 @@ class Module_Envaya_Org extends Module
         array_unshift($views, 'account/envaya_register_content');
     }
 
-    static function patch_view_page_elements_html_start(&$views)
+    static function patch_view_page_elements_body_start(&$views)
     {
         $views[] = 'page_elements/envaya_topbar';
     }

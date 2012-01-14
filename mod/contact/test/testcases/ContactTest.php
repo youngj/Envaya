@@ -145,7 +145,7 @@ class ContactTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'email/subscription')]");
         $this->assertEquals($address, $this->getText("//a[contains(@href,'mailto:')]"));
         $this->mustNotExist("//a[contains(@href,'/send')]");
-        $this->clickAndWait("//a[contains(@href,'postLink')]");
+        $this->clickAndWait("//div[@id='main_content']//a[contains(@href,'postLink')]");
         $this->clickAndWait("//a[contains(@href,'/send')]");
         $this->assertEquals("1", $this->getText("//span[@id='recipient_count']"));
         $this->submitForm();
