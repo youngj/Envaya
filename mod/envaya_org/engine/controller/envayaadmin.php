@@ -50,6 +50,12 @@ class Controller_EnvayaAdmin extends Controller
             'theme_name' => 'editor'
         ));
     }
+    
+    function action_home_page()
+    {
+        $action = new Action_Admin_ConfigureHomePage($this);
+        $action->execute();  
+    }
 }
 
 Controller_EnvayaAdmin::$routes = Controller::$SIMPLE_ROUTES;

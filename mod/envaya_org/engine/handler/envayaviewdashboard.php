@@ -9,16 +9,10 @@ class Handler_EnvayaViewDashboard
             $links = $vars['dashboard_links_menu'];
             
             $links->add_item(view('account/link_item', array(
-                'href' => '/org/featured', 
-                'text' => 'Featured Organizations',
+                'href' => '/admin/envaya/home_page', 
+                'text' => 'Configure Home Page',
                 'class' => 'icon_admin'
             )));
-                   
-            $links->add_item(view('account/link_item', array(
-                'href' => '/admin/envaya/featured_photos', 
-                'text' => 'Featured Photos',
-                'class' => 'icon_admin'
-            )));                
         }            
     }
 }

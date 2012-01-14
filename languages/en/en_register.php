@@ -27,7 +27,7 @@ return array(
     'register:country' => 'What country does your organization operate in?',
     'register:click_to_continue' => 'Click the button below to continue.',
     'register:next_step' => 'Next step',
-    'register:wrong_country' => "Sorry, currently only organizations in Tanzania can register for Envaya. We hope to support other countries soon.",
+    'register:wrong_country' => "Sorry, Envaya currently doesn't support organizations from your country. We hope to support additional countries soon.",
     'register:wrong_org_type' => "Sorry, Envaya is only intended for non-profit civil society organizations at this time.",
     'register:qualify_missing' => "Your qualification information was not found. Please complete the qualification form again.",
     'register:qualify_ok' => "Congratulations! Your organization appears to qualify for a website on Envaya.",    
