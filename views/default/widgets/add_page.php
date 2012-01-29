@@ -1,12 +1,12 @@
 <div class='section_content padded'>
 <?php
-    $user = $vars['user'];
+    $container = $vars['container'];
 ?>
-<form action='<?php echo $user->get_url() ?>/add_page' method='POST'>
+<form action='<?php echo $container->get_url() ?>/add_page' method='POST'>
 <?php
     echo view('input/securitytoken');     
     echo view('widgets/edit_page_title');
-    echo view('widgets/edit_page_address', array('user' => $user));
+    echo view('widgets/edit_page_address', array('container' => $container));
     echo view('focus', array('id' => 'title')); 
 ?>
 <script type='text/javascript'>

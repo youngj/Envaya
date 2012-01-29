@@ -10,7 +10,7 @@
     {
         echo "<script type='text/javascript' src='//www.scribd.com/javascripts/view.js'></script>";
     }
-?>z
+?>
 <div style='text-align:center' id='scribd<?php echo $INCLUDE_COUNT; ?>'><?php echo view('output/scribd_link', $vars); ?></div>
 <script type="text/javascript">
 (function() {

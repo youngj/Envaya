@@ -57,7 +57,7 @@ abstract class ScheduledEvent extends Entity
     
     static function get_or_init_for_entity($entity, $defaults)
     {
-        return static::get_for_entity($entity) ?: static::init_for_entity($entity, $options);
+        return static::get_for_entity($entity) ?: static::init_for_entity($entity, $defaults);
     }
     
     static function query_for_entity($entity)

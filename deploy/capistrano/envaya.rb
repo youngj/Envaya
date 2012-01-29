@@ -208,7 +208,7 @@ namespace :deploy do
         # won't update to the new target of the symlink unless it's restarted 
         # (which could result in a few seconds of downtime). 
         # This allows us to simply reload the nginx config without downtime.
-        run "echo \"root #{latest_release}/www;\" > /etc/nginx/root.conf"
+        run "mkdir -p /etc/nginx && echo \"root #{latest_release}/www;\" > /etc/nginx/root.conf"
     end
     
     task :update_translations do

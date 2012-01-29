@@ -49,7 +49,7 @@ abstract class User extends Entity
     );
  
     static $mixin_classes = array(
-        'Mixin_WidgetContainer',
+        'Mixin_PageContainer',
     );  
   
     static $bad_usernames = array(
@@ -351,7 +351,7 @@ abstract class User extends Entity
             if ($user)
             {
                 $msg .= "Email: {$user->email}\n".
-                    "Phone Number: {$user->get_primary_phone_number}\n";;                
+                    "Phone Number: {$user->get_primary_phone_number()}\n";;                
             }
         
             if ($num_user_failures >= $user_failure_limit)
@@ -728,16 +728,11 @@ abstract class User extends Entity
     /* 
      * WidgetContainer methods - a User is a container for Widgets
      * which are shown as pages on their site.
-     */
-    function is_page_container()
-    {
-        return true;
-    }        
-    
+     */    
     function get_edit_url()
     {
         return $this->get_url() . "/dashboard";
-    }    
+    }           
     
     function get_default_widget_class_for_name($widget_name)
     {
@@ -745,38 +740,6 @@ abstract class User extends Entity
             ?: Widget::get_default_class_for_name($widget_name, 'hidden_page')
             ?: 'Widget_Generic';
     }
-    
-    function new_child_widget_from_input()
-    {        
-        $widget_name = get_input('widget_name');
-        if (!$widget_name || !Widget::is_valid_name($widget_name))
-        {
-            throw new ValidationException(__('widget:bad_name'));            
-        }
-        
-        $widget = $this->get_widget_by_name($widget_name);
-        if ($widget)
-        {
-            if ((timestamp() - $widget->time_created > 30) || !($widget instanceof Widget_Generic))
-            {        
-                throw new ValidationException(
-                    sprintf(__('widget:duplicate_name'),
-                        "<a href='{$widget->get_edit_url()}'><strong>".__('clickhere')."</strong></a>"),
-                    true
-                );
-            }
-        }
-        else
-        {
-            $widget = Widget_Generic::new_for_entity($this, array('widget_name' => $widget_name));
-        }
-        return $widget;
-    }
-    
-    function render_add_child()
-    {
-        return view("widgets/add", array('user' => $this));
-    }        
     
     function get_entity_by_local_id($local_id, $show_disabled = false)
     {

@@ -24,7 +24,7 @@
     if ($is_custom_widget && $widget->is_page())
     {
         echo view('widgets/edit_page_address', array(
-            'user' => $widget->get_container_user(),
+            'container' => $widget->get_container_entity(),
             'value' => $widget->widget_name,
         ));
     }
