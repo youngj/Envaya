@@ -16,7 +16,7 @@
 (function() {
     var doc = scribd.Document.getDoc(<?php echo (int)$docid ?>, <?php echo json_encode((string)$accesskey) ?>);
     doc.addParam('jsapi_version', 1);
-    doc.addParam('width','560');
+    doc.addParam('width','700');
     if (location.protocol == 'https:') { doc.addParam('use_ssl', true); }    
     <?php if ($is_presentation) { ?>
     doc.addParam('mode','slide');

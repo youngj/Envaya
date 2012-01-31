@@ -1,7 +1,7 @@
 <?php
     if (!isset($vars['contentWidth']))
     {
-        $vars['contentWidth'] = 700;
+        $vars['contentWidth'] = 769;
     }
     
     echo view('css/default', $vars);    

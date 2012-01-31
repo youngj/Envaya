@@ -1,7 +1,9 @@
 <?php
-    $width = 800;
-    $sidebarWidth = 180;
-    $contentWidth = $vars['contentWidth'] = $width - $sidebarWidth - 11;
+    $sidebarWidth = 227;
+    $contentWidth = $vars['contentWidth'] = 722;
+    
+    $width = $contentWidth + $sidebarWidth + 11; // 960
+    
     echo view('css/default', $vars);
     echo view('css/snippets/content_margin', $vars);
     echo view('css/snippets/follow_icon', $vars);    // hack to make follow icons work on /envaya site
@@ -24,18 +26,18 @@
 .content_container .thin_column
 {
     width:<?php echo $width; ?>px;
-    background:url(<?php echo $graphicsDir ?>/top_plate2.png) no-repeat left top;
+    background:url(<?php echo $graphicsDir ?>/top_plate3.png) no-repeat left top;
     padding-top:20px;
 }
 
 #content_wrapper
 {
-    background:url(<?php echo $graphicsDir ?>/mid_plate2.png) repeat-y left top;
+    background:url(<?php echo $graphicsDir ?>/mid_plate3.png) repeat-y left top;
 }
 
 #content_bottom
 {
-    background:url(<?php echo $graphicsDir ?>/bottom_plate2.png) no-repeat left top;
+    background:url(<?php echo $graphicsDir ?>/bottom_plate3.png) no-repeat left top;
     height:33px;
 }
 
@@ -70,7 +72,7 @@
 #left_sidebar a.selected
 {
     color:black;
-    background:url(<?php echo $graphicsDir ?>/menu_selected2.png) no-repeat 3px top;
+    background:url(<?php echo $graphicsDir ?>/menu_selected3.png) no-repeat 3px top;
 }
 
 #right_content h2

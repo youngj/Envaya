@@ -162,7 +162,7 @@ body .input-code
 }
 
 .input-textarea {
-    height: 200px;
+    height: 280px;
     margin-top:4px;
 }
 
@@ -347,7 +347,7 @@ label {
 
 .todo_container .good_messages
 {
-    padding:12px;
+    padding:6px;
     width:<?php echo $contentWidth ? "565px" : 'auto'; ?>;
 }
 
@@ -559,9 +559,15 @@ a.photoDelete:hover
     padding-top:5px;
 }
 
+.todo_container ul
+{
+    margin-bottom:0px;
+}
+
+
 .todo_container table
 {
-    margin:0 auto;
+    margin:0px auto 5px auto;
 }
 
 .todo_container td

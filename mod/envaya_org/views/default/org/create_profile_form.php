@@ -42,11 +42,12 @@
 <div class='input' style='padding-bottom:12px'>
 <label><?php echo __('register:theme') ?></label>
 <div class='help'><?php echo __('register:theme:help') ?></div>
-
+<div style='width:480px;margin:auto'>
 <?php echo view('input/theme', array(
     'name' => 'theme',
     'value' =>  $org->get_design_setting('theme_name') ?: Config::get('theme:default'),
     'previewUrl' => $org->get_url()
 )); ?>
+</div>
 </div>
 

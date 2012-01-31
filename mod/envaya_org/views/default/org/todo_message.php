@@ -34,20 +34,18 @@ function hideTodo()
 </script>
 <div class='todo_container' id='todo_container'>
 <div class='good_messages'>
-<a class='hideMessages' style='margin-right:-5px;margin-top:-10px;' href='javascript:hideTodo()' onclick='ignoreDirty()'></a>
+<a class='hideMessages' style='margin-right:0px;margin-top:-3px;' href='javascript:hideTodo()' onclick='ignoreDirty()'></a>
 <?php
 $messages = SessionMessages::get_register('messages');
 if ($messages)
 {
+
     foreach ($messages as $message)
     {
         echo "<p><strong>$message</strong></p>";
     }
 }
 ?>
-<p>
-<?php echo __('todo:about'); ?> 
-</p>
 <table>
 <tr>
 <th><?php echo __('todo:todo') ?></th>

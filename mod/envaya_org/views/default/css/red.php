@@ -1,5 +1,5 @@
 <?php
-    $vars['contentWidth'] = 600;
+    $vars['contentWidth'] = 739;
     echo view('css/default', $vars);        
     $graphicsDir = "/_media/images/red";
 ?>
@@ -26,24 +26,24 @@ body
 #content_top
 {
     height:24px;
-    background:#fff url("<?php echo $graphicsDir; ?>/contenttop.gif") no-repeat left top;
+    background:#fff url("<?php echo $graphicsDir; ?>/contenttop.png") no-repeat left top;
 }
 
 #content_bottom
 {
     height:24px;
-    background:#fff url("<?php echo $graphicsDir; ?>/contentbottom.gif") no-repeat left top;
+    background:#fff url("<?php echo $graphicsDir; ?>/contentbottom.png") no-repeat left top;
 }
 
 #content_mid
 {
-    background:#fff url("<?php echo $graphicsDir; ?>/contentgradient.gif") repeat-y left top;
+    background:#fff url("<?php echo $graphicsDir; ?>/contentgradient.png") repeat-y left top;
     padding:0px 6px;
 }
 
 .section_header
 {
-    background:#e6e6e6 url("<?php echo $graphicsDir; ?>/sectionheader.gif") no-repeat left top;
+    background:#e6e6e6 url("<?php echo $graphicsDir; ?>/sectionheader.png") no-repeat left top;
     height:21px;
     font-family:Verdana, sans-serif;
 }
