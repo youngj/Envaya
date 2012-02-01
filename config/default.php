@@ -51,4 +51,5 @@ return array(
     'geography:default_timezone' => 'Africa/Dar_es_Salaam',
     'geography:countries' => array('tz','rw'),
     
+    'paragraph_width' => 680,
 );
