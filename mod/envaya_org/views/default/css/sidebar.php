@@ -1,8 +1,8 @@
 <?php
-    $sidebarWidth = 227;
+    $sidebarWidth = 207;
     $contentWidth = $vars['contentWidth'] = 722;
     
-    $width = $contentWidth + $sidebarWidth + 11; // 960
+    $width = $contentWidth + $sidebarWidth + 11; // 940
     
     echo view('css/default', $vars);
     echo view('css/snippets/content_margin', $vars);
@@ -26,18 +26,18 @@
 .content_container .thin_column
 {
     width:<?php echo $width; ?>px;
-    background:url(<?php echo $graphicsDir ?>/top_plate3.png) no-repeat left top;
+    background:url(<?php echo $graphicsDir ?>/top_plate4.png) no-repeat left top;
     padding-top:20px;
 }
 
 #content_wrapper
 {
-    background:url(<?php echo $graphicsDir ?>/mid_plate3.png) repeat-y left top;
+    background:url(<?php echo $graphicsDir ?>/mid_plate4.png) repeat-y left top;
 }
 
 #content_bottom
 {
-    background:url(<?php echo $graphicsDir ?>/bottom_plate3.png) no-repeat left top;
+    background:url(<?php echo $graphicsDir ?>/bottom_plate4.png) no-repeat left top;
     height:33px;
 }
 
