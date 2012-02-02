@@ -1,9 +1,11 @@
 <?php
 
 return array(
-    'share:facebook' => 'Sangira n\'abandi kuri facebook',
-    'share:twitter' => 'Sangira n\'abandi kuri Twitter',
-    'share:email' => 'Sangira n\'abandi kuri email',
+    'share:share' => "Sangira n'abandi kuri:",
+    'share:email' => 'Email',
+    'share:facebook' => 'Facebook',
+    'share:twitter' => 'Twitter',
+    'share:googleplus' => 'Google+',    
     'share:add_partners' => 'Mwandike nk\'umufatanyabikorwa',
     'share:add_users' => 'Andika abakoresha envaya',
     'share:browse_instructions' => 'Kanda ibigo kugirango bisangire iyi paje na:',

@@ -1,9 +1,11 @@
 <?php
 
 return array(
-    'share:facebook' => "Share on Facebook",
-    'share:twitter' => "Share on Twitter",
-    'share:email' => "Share by email",
+    'share:share' => "Share:",
+    'share:facebook' => "Facebook",
+    'share:twitter' => "Twitter",
+    'share:googleplus' => "Google+",    
+    'share:email' => "Email",
     'share:add_partners' => "Add partner organizations",
     'share:add_users' => "Add Envaya users",
     'share:browse_instructions' => "Click the organizations to share this page with:",

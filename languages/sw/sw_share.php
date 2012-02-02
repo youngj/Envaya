@@ -1,9 +1,11 @@
 <?php
 
 return array(
-    'share:facebook' => "Sambaza kwenye Facebook",
-    'share:twitter' => "Sambaza kwenye Twitter",
-    'share:email' => "Sambaza kupitia email",
+    'share:share' => "Sambaza:",
+    'share:email' => "Barua pepe",
+    'share:facebook' => "Facebook",
+    'share:twitter' => "Twitter",
+    'share:googleplus' => "Google+",        
     'share:add_partners' => "Ongeza mashirika ya ubia",
     'share:email_label' => "Ingiza anwani za email ambazo unataka kusambaza ukurasa huu nazo:",
     'share:subject_label' => "Mada ya ujumbe:",
