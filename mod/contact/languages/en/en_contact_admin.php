@@ -3,7 +3,7 @@
 return array(
     'contact:user_list' => "Contact Information",
     'contact:time_created' => "Registered",
-    'contact:time_updated' => "Updated",
+    'contact:last_action' => "Last Login",
     'contact:num_pages' => "# Pages",
 
     'contact:template_list' => "%s Templates",       

@@ -105,13 +105,13 @@ class SMSTest extends WebDriverTest
         
         list($res) = $this->sendSMS($p1, $news, "next");
         $this->assertContains('test post 1000', $res);
-        $this->assertContains('0cmt', $res);
+        $this->assertContains('0 comments', $res);
         $this->assertNotContains('end', $res);
         $this->assertContains('MORE', $res);
         
         list($res) = $this->sendSMS($p1, $news, "more");
         $this->assertContains('test post 1000', $res);
-        $this->assertNotContains('0cmt', $res);
+        $this->assertNotContains('0 comments', $res);
         $this->assertContains('end', $res);
         $this->assertNotContains('MORE', $res);
         

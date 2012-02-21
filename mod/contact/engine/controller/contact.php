@@ -47,7 +47,9 @@ class Controller_Contact extends Controller
             'theme_name' => 'simple_wide',
             'title' => __('contact:user_list'),
             'header' => '',
-            'content' => view('admin/contact')
+            'content' => view('admin/contact', array(
+            
+            ))
         ));
     }
 }
