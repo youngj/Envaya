@@ -8,12 +8,10 @@ class Action_Discussion_AddMessage extends Action
 
         $uniqid = get_input('uniqid');
 
-        $duplicate = $topic->query_messages()
-            ->with_metadata('uniqid', $uniqid)
-            ->get();
+        $duplicate = Session::get_entity_by_uniqid($uniqid);
         if ($duplicate)
         {
-            throw new RedirectException('', $topic->get_url());
+            throw new RedirectException('', $duplicate->get_url());
         }               
         
         $name = get_input('name');
@@ -53,13 +51,14 @@ class Action_Discussion_AddMessage extends Action
         $message->subject = "RE: {$topic->subject}";
         $message->time_posted = $time;
         $message->set_content($content, true);
-        $message->set_metadata('uniqid', $uniqid);
         
         if ($user)
         {
             $message->owner_guid = $user->guid;            
         } 
         $message->save();
+        
+        Session::cache_uniqid($uniqid, $message);
         
         if (!$user)
         {

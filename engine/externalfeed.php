@@ -359,7 +359,7 @@ class ExternalFeed extends Entity
                 continue;
             }
                 
-            $widget->set_metadata('feed_guid', $this->guid);
+            $widget->feed_guid = $this->guid;
             $widget->set_metadata('feed_name', $this->title);
                             
             $this->set_widget_content($widget, $this->get_entry_content($entry));           

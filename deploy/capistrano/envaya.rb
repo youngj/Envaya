@@ -211,6 +211,11 @@ namespace :deploy do
         run "mkdir -p /etc/nginx && echo \"root #{latest_release}/www;\" > /etc/nginx/root.conf"
     end
     
+    task :update_code, :except => { :no_release => true } do
+        strategy.deploy!
+        finalize_update
+    end    
+    
     task :update_translations do
         run "php #{current_path}/mod/translate/scripts/update_translations.php"
     end

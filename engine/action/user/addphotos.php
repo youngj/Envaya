@@ -16,7 +16,11 @@ class Action_User_AddPhotos extends Action
         
         $news = Widget_News::get_or_init_for_entity($user);
         
-        $duplicates = $news->query_widgets()->with_metadata('uniqid', $uniqid)->filter();
+        $duplicate = Session::get_entity_by_uniqid($uniqid);
+        if ($duplicate)
+        {
+            throw new RedirectException('', $duplicate->get_url());
+        }
         
         foreach ($imageNumbers as $imageNumber)
         {                        
@@ -57,9 +61,10 @@ class Action_User_AddPhotos extends Action
             $post = Widget_Post::new_for_entity($news);
             $post->set_owner_entity(Session::get_logged_in_user());
             $post->set_content($body);
-            $post->set_metadata('uniqid', $uniqid);
             $post->save();              
             $post->post_feed_items();
+            
+            Session::cache_uniqid($uniqid, $post);
         }
         
         SessionMessages::add(__('upload:photos:success'));

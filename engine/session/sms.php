@@ -49,5 +49,5 @@ class Session_SMS implements SessionImpl
     function id()
     {
         return $this->sms_state->id;
-    }
+    }    
 }

@@ -15,10 +15,8 @@
  * Entities also have an 'status' field which allows effectively deleting rows
  * while leaving them in the database to allow them to be undeleted.
  *
- * Entities can also have metadata, which allows storing/retreiving arbitrary properties (e.g. $entity->foo)
- * without needing to define them in the database schema. Metadata is only fetched when requested.
- * Warning: if you forget to define an attribute, or make a typo, a property might be saved
- * as metadata accidentally.
+ * Entities can also have metadata, which allows storing/retreiving arbitrary properties 
+ * (e.g. $entity->get_metadata('foo')) without needing to define them in the database schema.
  * 
  */
 
@@ -27,8 +25,6 @@ abstract class Entity extends Model implements Serializable
     // values for 'status' field
     const Disabled = 0; // aka 'deleted', except the db row still exists so we can undelete
     const Enabled = 1;  // not deleted    
-
-    protected $metadata_cache = array();        
 
     static $query_class = 'Query_SelectEntity';
     static $primary_key = 'guid';    
@@ -101,59 +97,52 @@ abstract class Entity extends Model implements Serializable
                 'container_guid' => 0,
                 'time_created' => 0,
                 'time_updated' => 0,
-                'status' => Entity::Enabled
+                'status' => Entity::Enabled,
+                'metadata_json' => null,
             )
         );
     }    
     
+    private $metadata;
+    
+    public function &get_metadata_object()
+    {
+        if (!isset($this->metadata))
+        {
+            $this->metadata = json_decode($this->metadata_json, true);
+            if (!isset($this->metadata))
+            {
+                $this->metadata = array();
+            }
+        }
+        return $this->metadata;
+    }
+    
     public function get_metadata($name)
     {
-        $md = $this->get_metadata_object($name);
+        $md = &$this->get_metadata_object();
 
-        if ($md)
+        if (isset($md[$name]))
         {
-            return $md->value;
+            return $md[$name];
         }
         return null;
     }
 
-    protected function get_metadata_object($name)
-    {
-        if (isset($this->metadata_cache[$name]))
-        {
-            return $this->metadata_cache[$name];
-        }
-
-        $md = null;
-
-        if ((int) ($this->guid) > 0)
-        {
-            $md = EntityMetadata::query()->where('entity_guid = ? and name = ?', $this->guid, $name)->get();
-        }
-
-        if (!$md)
-        {
-            $md = new EntityMetadata();
-            $md->entity_guid = $this->guid;
-            $md->name = $name;
-            $md->value = null;
-            $md->owner_guid = $this->owner_guid;
-        }
-
-        $this->metadata_cache[$name] = $md;
-        return $md;
-    }
-
     public function set_metadata($name, $value)
     {
-        $md = $this->get_metadata_object($name);
-        $md->value = $value;
-        return true;
-    }
-
-    public function clear_metadata()
-    {
-        return Database::delete("DELETE from metadata where entity_guid=?", array($this->guid));
+        $md = &$this->get_metadata_object();
+        
+        if (isset($value))
+        {
+            $md[$name] = $value;            
+        }
+        else
+        {
+            unset($md[$name]);
+        }
+        
+        $this->metadata_json = json_encode($md);         
     }
 
     /**
@@ -236,9 +225,7 @@ abstract class Entity extends Model implements Serializable
 		else
 		{
 			Database::update_row($table_name, 'guid', $guid, $this->get_dirty_attribute_values());		
-		}
-		
-        $this->save_metadata();
+		}		
 		
         $this->clear_from_cache();
         $this->cache_for_current_request();
@@ -247,25 +234,6 @@ abstract class Entity extends Model implements Serializable
         {
             $this->queue_guess_language($this->guess_language_field);
             $this->guess_language_field = null;
-        }
-    }
-
-    function save_metadata()
-    {
-        foreach($this->metadata_cache as $name => $md)
-        {
-            if ($md->is_dirty())
-            {
-                if ($md->value === null)
-                {
-                    $md->delete();
-                }
-                else
-                {
-                    $md->entity_guid = $this->guid;
-                    $md->save();
-                }                
-            }
         }
     }
 
@@ -305,8 +273,6 @@ abstract class Entity extends Model implements Serializable
      */
     public function delete()
     {
-        $this->clear_metadata();
-
         $res = Database::delete("DELETE from entities where guid=?", array($this->guid));
                 
         parent::delete();
@@ -504,5 +470,5 @@ abstract class Entity extends Model implements Serializable
             'value' => $this->$property
         ));        
         return $res['value'];
-    }
+    }    
 }

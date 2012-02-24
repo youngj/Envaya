@@ -8,6 +8,7 @@
 <?php
     echo view('input/longtext', array(
         'name' => 'message',
+        'style' => 'height:175px',
         'track_dirty' => true,
     ));
 ?>

@@ -142,7 +142,7 @@ function getLinkInfo()
     echo "<table class='inputTable' style='margin:0 auto'>";
     foreach ($feeds as $feed)
     {
-        $has_items = $widget->query_widgets()->with_metadata('feed_guid', $feed->guid)->exists();
+        $has_items = $widget->query_widgets()->where('feed_guid = ?', $feed->guid)->exists();
     
         echo "<tr>";
         echo "<td>";

@@ -59,20 +59,5 @@ class Query_SelectEntity extends Query_Select
         {
             $this->where('status <> 0');
         }
-    }
-    
-    function with_metadata($meta_name, $meta_value = null)
-    {
-        $metadata_sql = 'SELECT entity_guid FROM metadata m where m.name = ?';
-        $metadata_args = array($meta_name);
-        if ($meta_value !== null)
-        {
-            $metadata_sql .= ' AND m.value=?';
-            $metadata_args[] = $meta_value;
-        }
-        $this->where("guid in ($metadata_sql)");
-        $this->args($metadata_args);
-        
-        return $this;
-    }
+    }    
 }

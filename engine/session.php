@@ -115,4 +115,30 @@ class Session
         static::get_instance()->logout();
         return true;
     }
+    
+    static function get_entity_by_uniqid($uniqid)
+    {
+        $uniqids = Session::get("uniqids");
+        if (isset($uniqids) && isset($uniqids[$uniqid]))
+        {
+            return Entity::get_by_guid($uniqids[$uniqid]);
+        }
+        return null;
+    }    
+    
+    static function cache_uniqid($uniqid, $entity)
+    {
+        if (!$uniqid || isset($uniqid[64]))
+        {        
+            throw new ValidationException("Invalid uniqid");
+        }
+        
+        $uniqids = Session::get("uniqids");
+        if (!isset($uniqids))
+        {
+            $uniqids = array();
+        }
+        $uniqids[$uniqid] = $entity->guid;
+        Session::set("uniqids", $uniqids);
+    }
 }
