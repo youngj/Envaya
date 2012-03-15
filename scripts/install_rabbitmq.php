@@ -9,7 +9,7 @@ $base = dirname(__DIR__);
 require_once "$base/scripts/cmdline.php";
 require_once "$base/start.php";
 
-$vhost = escapeshelllarg(Config::get('amqp:vhost'));
+$vhost = escapeshellarg(Config::get('amqp:vhost'));
 
 system("rabbitmqctl add_vhost $vhost");
 
@@ -18,4 +18,4 @@ $password = escapeshellarg(Config::get('amqp:password'));
 
 system("rabbitmqctl add_user $user $password");
 
-system("rabbitmqctl set_permissions -p $user .* .* .*");
+system("rabbitmqctl set_permissions -p $vhost $user \".*\" \".*\" \".*\"");

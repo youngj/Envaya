@@ -207,13 +207,20 @@ namespace :deploy do
 
     task :finalize_update, :except => { :no_release => true } do
         run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
-        run "cp #{shared_path}/local.php #{latest_release}/config/local.php"
-        
+        run "cp #{shared_path}/local.php #{latest_release}/config/local.php"        
+    end
+    
+    task :create_symlink, :except => { :no_release => true } do   
+        run "rm -f #{current_path} && ln -s #{latest_release} #{current_path}"
+        update_nginx_symlink
+    end    
+    
+    task :update_nginx_symlink, :roles => :app do
         # don't use /var/envaya/current symlink in nginx conf because php5-fpm 
         # won't update to the new target of the symlink unless it's restarted 
         # (which could result in a few seconds of downtime). 
         # This allows us to simply reload the nginx config without downtime.
-        run "mkdir -p /etc/nginx && echo \"root #{latest_release}/www;\" > /etc/nginx/root.conf"
+        run "mkdir -p /etc/nginx && echo \"root #{latest_release}/www;\" > /etc/nginx/root.conf"        
     end
     
     task :update_translations do

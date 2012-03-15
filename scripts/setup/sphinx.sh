@@ -10,8 +10,8 @@ SETUP_DIR=$(cd `dirname $0` && pwd)
 apt-get -y install libmysqlclient-dev g++ make
 
 cd /tmp
-wget http://sphinxsearch.com/files/sphinx-1.10-beta.tar.gz
-tar xzvf sphinx-1.10-beta.tar.gz
-cd sphinx-1.10-beta
+wget http://sphinxsearch.com/files/sphinx-2.0.4-release.tar.gz
+tar xzvf sphinx-2.0.4-release.tar.gz
+cd sphinx-2.0.4-release
 ./configure
 make install
