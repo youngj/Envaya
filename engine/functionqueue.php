@@ -11,27 +11,31 @@ class FunctionQueue
 {
     private static $in_process_queue = array();
     private static $connect_tried = false;    
-    private static $kestrel = null;    
+    private static $connection = null;    
     
     // queue names
     const HighPriority = 'high';
     const LowPriority = 'low';
 
-    private static function _connect()
+    static function connect()
     {        
-        if (!static::$kestrel && !static::$connect_tried)
+        if (!static::$connection && !static::$connect_tried)
         {
-            static::$connect_tried = true;
-            $k = new Memcache;
+            require_once Engine::$root.'/vendors/php-amqplib/amqp.inc';
+        
+            static::$connect_tried = true;        
             
-            if (!@$k->connect(Config::get('queue:host'), Config::get('queue:port')))
-            {
-                throw new IOException(__("error:QueueConnectFailed"));
-            }
-                        
-            static::$kestrel = $k;
+            $connection = new AMQPConnection(
+                Config::get('amqp:host'), 
+                Config::get('amqp:port'),
+                Config::get('amqp:user'),
+                Config::get('amqp:password'),
+                Config::get('amqp:vhost')
+            );            
+            
+            static::$connection = $connection;
         }
-        return static::$kestrel;
+        return static::$connection;
     }
     
     static function is_server_available()
@@ -39,8 +43,7 @@ class FunctionQueue
         static::$connect_tried = false;
         try
         {
-            $kestrel = static::_connect();
-            return $kestrel != null;
+            return static::connect() != null;
         }
         catch (IOException $ex)
         {
@@ -53,13 +56,13 @@ class FunctionQueue
         if (!$queue_name)
         {
             $queue_name = static::HighPriority;
-        }    
+        }
     
         $queue_entry = array('fn' => $fn, 'args' => $args);
         
         if (@$_SERVER['REQUEST_URI'])
         {
-            $kestrel = static::_connect();
+            $connection = static::connect();
         }
         else 
         {   
@@ -67,16 +70,17 @@ class FunctionQueue
             // just do function at end of process if kestrel isn't running
             try 
             {
-                $kestrel = static::_connect();
+                $connection = static::connect();
             }
             catch (IOException $ex)
             {   
-                $kestrel = null;
+                error_log("oops");
+                $connection = null;
                 Hook_EndRequest::register_handler_fn(array('FunctionQueue', 'exec_in_process_queue'));
             }
         }
 
-        if (!$kestrel)
+        if (!$connection)
         {
             if (!static::is_already_queued_in_process($queue_entry))
             {
@@ -84,11 +88,13 @@ class FunctionQueue
             }
         }
         else
-        {       
-            if (!$kestrel->set($queue_name, serialize($queue_entry)))
-            {
-                throw new IOException(__("error:QueueAppendFailed")); 
-            }
+        {   
+            $ch = $connection->channel();
+            $ch->queue_declare($queue_name, false, true, false, false);
+            
+            $msg = new AMQPMessage(serialize($queue_entry), array('content_type' => 'text/plain', 'delivery-mode' => 2));            
+            
+            $ch->basic_publish($msg, '', $queue_name);
         }
         return true;
     }
@@ -114,40 +120,31 @@ class FunctionQueue
         return false;
     }
     
-    private static function exec_queue_entry($queue_entry)
+    static function exec_queue_entry($queue_entry)
     {
         call_user_func_array($queue_entry['fn'], $queue_entry['args']);
     }   
         
     static function exec_queued_call($timeout_ms = 0, $queue_name = null)
-    {
-        if (!$queue_name)
-        {
-            $queue_name = static::HighPriority;
-        }
-    
-        $kestrel = static::_connect();
-
-        $key = "$queue_name/t=$timeout_ms";       
-        if ($nextCallStr = @$kestrel->get($key))
-        {   
-            static::exec_queue_entry(unserialize($nextCallStr));
-            return true;
-        }
+    {    
         return false;
     }
-	
-	static function clear($queue_name)
+    
+    static function clear($queue_name)
     {
-        $kestrel = static::_connect();
+        $connection = static::connect();
+        
+        /*
         while ($kestrel->get($queue_name)) {
-			error_log("deleted something from queue");
-		}
-    }	
+            error_log("deleted something from queue");
+        }
+        */
+    }    
     
     static function get_stats()
     {
-        $kestrel = static::_connect();
-        return $kestrel->getStats();
+        $connection = static::connect();
+        
+        //return $kestrel->getStats();
     }
 }

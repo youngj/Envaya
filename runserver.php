@@ -8,29 +8,6 @@
 require_once "scripts/cmdline.php";
 require_once "start.php";
 
-function start_kestrel()
-{
-    $kestrel_data_dir = Config::get('dataroot') . '/kestrel_data';
-    if (!is_dir($kestrel_data_dir))
-    {
-        mkdir($kestrel_data_dir, 0777, true);
-    }
-    
-    $root = Engine::$root;
-    $kestrel_jar = "$root/vendors/kestrel/kestrel-1.2.jar";    
-    $kestrel_conf = Config::get('dataroot').'/kestrel.conf';
-    
-    $kestrel = run_task("java -jar ".escapeshellarg($kestrel_jar)." -f ".escapeshellarg($kestrel_conf), $kestrel_data_dir);    
-    while (true)
-    {
-        if (FunctionQueue::is_server_available())
-            break;
-        echo "Waiting for kestrel to start...\n";    
-        sleep(1);
-    }
-    return $kestrel;   
-}
-
 function start_sphinx()
 {
     $sphinx_bin_dir = Config::get('sphinx:bin_dir');
@@ -60,9 +37,8 @@ function start_sphinx()
  */
 
 $web_server = run_task("php scripts/web_server.php");
-$kestrel = start_kestrel();
 $sphinx = start_sphinx();
-$queueRunner = run_task("php scripts/queueRunner.php");
+$qworkers = run_task("php scripts/qworkers.php");
 $cron = run_task("php scripts/cron.php");
 
 while(true) { sleep(2); }

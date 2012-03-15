@@ -1,3 +1,6 @@
 [submodule "scripts/httpserver"]
 	path = scripts/httpserver
 	url = git://github.com/youngj/httpserver.git
+[submodule "vendors/php-amqplib"]
+	path = vendors/php-amqplib
+	url = https://github.com/tnc/php-amqplib

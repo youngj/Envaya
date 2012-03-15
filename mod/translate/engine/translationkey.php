@@ -12,6 +12,7 @@ class TranslationKey extends Entity
         'best_translation' => '',
         'best_translation_guid' => 0,
         'best_translation_hash' => '',
+        'best_translation_source' => 0,
         'best_translation_approval' => 0,
     );    
     
@@ -30,12 +31,14 @@ class TranslationKey extends Entity
             $this->best_translation_guid = $best->guid;
             $this->best_translation_hash = $best->default_value_hash;
             $this->best_translation_approval = $best->approval;
+            $this->best_translation_source = $best->source;
         }
         else
         {
             $this->best_translation = '';
             $this->best_translation_hash = '';
             $this->best_translation_guid = 0;
+            $this->best_translation_source = 0;
         }
         $this->save();
     }
@@ -146,7 +149,7 @@ class TranslationKey extends Entity
             $auto_trans->source = Translation::GoogleTranslate;
             $auto_trans->value = $trans_value;
             $auto_trans->save();
-            $this->update();        
+            $this->update();
         }
     }
     

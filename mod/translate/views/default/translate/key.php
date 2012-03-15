@@ -68,7 +68,18 @@
     <td>
     <?php    
     
-    $displayed_value = $translation ? $translation->value : $key->best_translation;        
+    if ($translation)
+    {
+        $displayed_value = $translation->value;
+    }
+    else if ($key->best_translation_guid)
+    {
+        $displayed_value = $key->best_translation;
+    }
+    else     
+    {
+        $displayed_value = $translations ? $translations[0]->value : null;
+    }
     
     if (Session::is_logged_in())
     {

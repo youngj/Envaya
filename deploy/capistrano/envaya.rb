@@ -21,6 +21,11 @@ set :user, "root"
 role :web, "www.envaya.org"                          # Your HTTP server, Apache/etc
 role :app, "www.envaya.org"                          # This may be the same as your `Web` server
 role :db,  "www.envaya.org", :primary => true # This is where Rails migrations will run
+role :cron, "www.envaya.org"
+role :queue, "www.envaya.org"
+role :search, "www.envaya.org"
+role :qworker, "www.envaya.org"
+
 #role :db,  "your slave db-server here"
 
 namespace :deploy do
@@ -55,8 +60,8 @@ namespace :deploy do
         basic_setup
         web_setup
         db_setup
-        kestrel_setup
-        queue_setup
+        rabbitmq_setup
+        qworker_setup
         sphinx_setup
         memcached_setup
         cron_setup        
@@ -68,8 +73,8 @@ namespace :deploy do
         basic_setup
         web_setup
         db_setup
-        kestrel_setup
-        queue_setup
+        rabbitmq_setup
+        qworker_setup
         memcached_setup
         sphinx_setup
     end
@@ -148,7 +153,7 @@ namespace :deploy do
         run "#{current_path}/scripts/setup/memcached.sh"
     end    
     
-    task :db_setup do
+    task :db_setup, :roles => :db do
         run "#{current_path}/scripts/setup/mysql.sh"
         run "cd #{current_path} && (php scripts/db_setup.php | mysql)"
         run "cd #{current_path} && php scripts/install_tables.php"
@@ -174,12 +179,12 @@ namespace :deploy do
         run "#{current_path}/scripts/setup/upgrade.sh"
     end
     
-    task :kestrel_setup do
+    task :rabbitmq_setup, :roles => :queue do
         # todo rsync kestrel .jar and libs
-        run "#{current_path}/scripts/setup/kestrel.sh"
+        run "#{current_path}/scripts/setup/rabbitmq.sh"
     end
     
-    task :sphinx_setup do
+    task :sphinx_setup, :roles => :search do
         run "#{current_path}/scripts/setup/sphinx.sh"        
         run "#{current_path}/scripts/setup/sphinx_service.sh"        
     end
@@ -188,11 +193,11 @@ namespace :deploy do
         run "#{current_path}/scripts/setup/extras.sh"
     end
     
-    task :queue_setup do
-        run "#{current_path}/scripts/setup/queue.sh"
+    task :qworkers_setup, :roles => :qworker do
+        run "#{current_path}/scripts/setup/qworkers.sh"
     end 
     
-    task :cron_setup do
+    task :cron_setup, :roles => :cron do
         run "#{current_path}/scripts/setup/cron.sh"
     end
         
@@ -217,7 +222,7 @@ namespace :deploy do
     
     task :restart, :roles => :app, :except => { :no_release => true } do        
         run "/etc/init.d/phpCron restart"
-        run "/etc/init.d/queueRunner restart"
+        run "/etc/init.d/qworkers restart"
         run "nginx -t"
         run "/etc/init.d/nginx reload"
         run "rm -rf /var/nginx/cache/envaya"

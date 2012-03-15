@@ -22,6 +22,7 @@ class Permission_ViewUserSite extends Permission
         }    
     
         // anyone can view approved user sites
+        
         $site_user = $entity->get_container_user();
         if ($site_user && $site_user->is_approved())
         {

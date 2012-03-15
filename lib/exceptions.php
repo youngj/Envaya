@@ -2,7 +2,19 @@
 
 class IOException extends Exception {}
 class SecurityException extends Exception {}
-class DatabaseException extends Exception {}
+
+class DatabaseException extends Exception {
+
+    public $admin_message;
+
+    function __construct($message = null, $admin_message = null)
+    {
+        parent::__construct($message);
+
+        $this->admin_message = $admin_message;
+    }
+}
+
 class CallException extends Exception {}
 class DataFormatException extends Exception {}
 class NotImplementedException extends CallException {

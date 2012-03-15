@@ -74,14 +74,10 @@ function render_config_template($src_file, $dest_file)
 {
     $conf_template = file_get_contents($src_file);
 
-    $replacements = array();
-    foreach (Config::get_all() as $k => $v)
-    {
-        $replacements["{{".$k."}}"] = $v;
-    }
-
-    $conf = strtr($conf_template, $replacements);
-
+    $conf = preg_replace_callback('#{{(?P<config_key>[^}]+)}}#', function($matches) {
+        return Config::get($matches['config_key']);
+    }, $conf_template);
+    
     if (file_put_contents($dest_file, $conf))
     {
         error_log("Wrote $dest_file");

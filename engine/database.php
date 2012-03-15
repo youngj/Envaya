@@ -172,7 +172,7 @@ class Database
                 }
                 catch (PDOException $ex)
                 {
-                    throw new DatabaseException(__("error:NoConnect"));
+                    throw new DatabaseException(__("error:NoConnect"), get_class($ex).": ".$ex->getMessage());
                 }
             }
             else
@@ -256,10 +256,22 @@ class Database
 
         $stmt = $db->prepare($query);
         $stmt->setFetchMode(PDO::FETCH_OBJ);
+        
+        $nargs = sizeof($args);
+        for ($i = 0; $i < $nargs; $i++)
+        {
+            if ($args[$i] === false)
+            {
+                $args[$i] = 0;
+            }
+        }
 
         if (!$stmt->execute($args))
         {
-            throw new DatabaseException(__('error:DatabaseExecuteFailed'));
+            $error_info = json_encode($stmt->errorInfo());
+            error_log($query);
+            error_log($error_info);
+            throw new DatabaseException(__('error:DatabaseExecuteFailed'), $error_info);
         }
         return $stmt;
     }    

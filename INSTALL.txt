@@ -50,11 +50,14 @@ environment. (For production server installation, see the section
 
         ./scripts/setup/sphinx.sh
 
-6. Install dependencies for selenium tests and other development tools:
+6. Install rabbitmq (task queue)
+
+        ./scripts/setup/rabbitmq.sh
+        
+7. Install dependencies for selenium tests and other development tools:
 
         ./scripts/setup/dev.sh
-
-7. (optional) Install some extra programs.
+8. (optional) Install some extra programs.
     This may take a long time, and most Envaya services will work without this.
 
         ./scripts/setup/extras.sh
@@ -150,7 +153,8 @@ PHP extensions:
     PDO
     pdo_mysql
 Mysql
-Sphinx 1.10
+Sphinx 2.04
+Rabbitmq
 
 Envaya does not require a separate web server for development, since it 
 comes with its own PHP development web server, but you can use Apache or Nginx
@@ -197,10 +201,10 @@ commands in a command prompt in the root directory of Envaya's source code.
         php scripts/install_tables.php
         php scripts/install_dataroot.php
 
-5. Create sphinx config file and initial index, and kestrel config file
+5. Create sphinx config file and initial index, and rabbitmq users
 
         php scripts/install_sphinx.php
-        php scripts/install_kestrel.php
+        php scripts/install_rabbitmq.php
 
 6.  Create initial users for testing (should not be used in production)    
 

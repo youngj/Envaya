@@ -41,7 +41,7 @@ class Build
      */
     static function vendors()
     {
-        $sphinx_ver = "rel110";        
+        $sphinx_ver = "rel20";        
         $sphinx_api_filename = "sphinxapi.{$sphinx_ver}.php";
         $sphinx_api_path = __DIR__."/vendors/$sphinx_api_filename";
         if (!is_file($sphinx_api_path))
@@ -269,13 +269,13 @@ class Build
     {
         require_once "start.php";
         
-        static::system("rsync -rp _media/ www/_media/");
+        static::system("rsync -rp --chmod=ugo=rwX _media/ www/_media/");
         
         foreach (Config::get('modules') as $module)
         {            
             if (is_dir("mod/$module/_media"))
             {
-                static::system("rsync -rp mod/$module/_media/ www/_media/");
+                static::system("rsync -rp --chmod=ugo=rwX mod/$module/_media/ www/_media/");
             }
         }
     }

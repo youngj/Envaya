@@ -43,7 +43,7 @@ class WebDriverTest extends SeleniumTest
         return $this->retry('xpath', array($xpath), $timeout);
     }
     
-    function waitForPageToLoad($timeout)
+    function waitForPageToLoad($timeout = 10000)
     {
     }   
     

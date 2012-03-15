@@ -11,7 +11,7 @@ class Request
 {            
     static function get_client_ip()
     {
-        return @$_SERVER['HTTP_X_FORWARDED_FOR'] ?: @$_SERVER['HTTP_CLIENT_IP'] ?: @$_SERVER['REMOTE_ADDR'];
+        return @$_SERVER['REMOTE_ADDR'];
     }
     
     static function get_uri()

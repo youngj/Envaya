@@ -5,7 +5,7 @@
  * to execute queued functions (e.g. sending emails). 
  *
  * On a server it is run as a daemon by /etc/init.d/queueRunner, but can also
- * be run directly (php scripts/queueRunner.php) in a development environment.
+ * be run directly (php scripts/qworkers.php) in a development environment.
  *
  * Workers are short-lived so that memory leaks in tasks do not matter,
  * as the worker's memory will be reclaimed by the operating system
@@ -21,14 +21,15 @@ define('WORKER_CHECK_INTERVAL', 1);
 
 $worker_options = array(
     array(
-        'cmd' => 'php scripts/workers/high_priority.php',
+        'cmd' => 'php scripts/qworkers/high_priority.php',
         'count' => 3,
     ),
     array(
-        'cmd' => 'php scripts/workers/low_priority.php'
+        'cmd' => 'php scripts/qworkers/low_priority.php'
     ),
 );
 
+$terminating = false;
 $workers = array();
 
 class WorkerProcess
@@ -92,31 +93,56 @@ class WorkerProcess
         posix_setpgid($this->pid, $this->pid);   
     }
     
-    function kill()
+    function kill($signo)
     {
         if ($this->process)
         {
             $status = proc_get_status($this->process);
             
-            if ($status['running'])
+            // negative pid means kill all processes in worker process group
+            $res = posix_kill(-$status['pid'], $signo);
+            if ($res)
             {
-                // negative pid means kill all processes in worker process group
-                posix_kill(-$status['pid'], SIGTERM);
-                proc_close($this->process);                
-            }
-            $this->process = null;
+                error_log("qworkers sent signal $signo to child " . $status['pid']);
+            } 
         }
     }        
+
+    function close()
+    {
+       if ($this->process)
+       {
+          proc_close($this->process);
+          $this->process = null;
+       }
+    }
 }
 
 function sig_handler($signo)
 {
     global $workers;
+    error_log("qworkers got signal $signo, signaling worker processes...");
 
     foreach ($workers as $worker)
     {
-        $worker->kill();
+        $worker->kill(SIGTERM);
     }
+
+    sleep(2); // give worker processes some time to finish current task cleanly
+
+    // need to send SIGKILL if worker is blocked on queue read
+    foreach ($workers as $worker)
+    {
+        $worker->kill(SIGKILL);
+    }
+
+    foreach ($workers as $worker)
+    {
+        $worker->close();
+    }
+
+    error_log("qworkers exiting.");
+
     exit;
 }
 
@@ -125,7 +151,7 @@ function run_forever()
     pcntl_signal(SIGTERM, "sig_handler");
     pcntl_signal(SIGINT, "sig_handler");
 
-    global $workers, $worker_options;
+    global $workers, $worker_options, $terminating;
     
     // start all workers initially
     foreach ($worker_options as $worker_option)
@@ -169,6 +195,7 @@ function run_forever()
         }
         pcntl_signal_dispatch();
         sleep(WORKER_CHECK_INTERVAL);
+        pcntl_signal_dispatch();
     }
 }
 

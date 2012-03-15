@@ -67,12 +67,7 @@ class Config
     static function set($key, $value)
     {
         static::$settings[$key] = $value;
-    }
-    
-    static function get_all()
-    {
-        return static::$settings;
-    }
+    }    
         
     static function load()
     {

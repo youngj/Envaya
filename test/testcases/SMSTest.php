@@ -91,6 +91,8 @@ class SMSTest extends WebDriverTest
         $this->retry('ensureGoodMessage', array('saved successfully'));
         
         $this->open("/testposter1/dashboard");
+        $this->waitForElement("//iframe");
+        sleep(1);
         $this->setTinymceContent("test post 1001");
         $this->submitForm();
         $this->retry('ensureGoodMessage', array('saved successfully'));        

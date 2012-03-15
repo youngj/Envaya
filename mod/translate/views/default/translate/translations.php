@@ -25,7 +25,9 @@
     
     foreach ($new_translations as $translation)
     {
-        echo "<tr>";
+        $style = $translation->is_approved() ? "background-color:#e0ffe0" : "";
+    
+        echo "<tr style='$style'>";
         $key = $translation->get_container_entity();
         
         if ($key && Permission_ViewTranslation::has_for_entity($key))

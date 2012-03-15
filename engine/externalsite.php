@@ -14,6 +14,7 @@ class ExternalSite extends Entity
         'subtype_id' => '',
         'url' => '',
         'title' => '',
+        'order' => 0,
     );
     
     static $regexes = array(

@@ -339,7 +339,7 @@ CREATE TABLE `email_subscriptions` (
 CREATE TABLE `scheduled_events` (
     <?php require 'schema/entity_columns.php'; ?>,
     `subtype_id` varchar(63) not null,	
-    `rrule` text not null default '',
+    `rrule` text not null,
     `start_time` int null,
     `end_time` int null,
     `prev_time` int null,

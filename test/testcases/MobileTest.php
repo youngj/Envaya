@@ -21,9 +21,9 @@ class MobileTest extends SeleniumTest
         $this->clickAndWait("//input[@value='Main Menu']");
     }
     
-    public function submitForm()
+    public function submitForm($button = "//input[@type='submit']")
     {
-        $this->clickAndWait("//input[@type='submit']");
+        $this->clickAndWait($button);
     }
     
     private function _testLayout()

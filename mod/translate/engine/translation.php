@@ -70,7 +70,7 @@ class Translation extends Entity
             ->columns("sum(score) as score")
             ->set_row_function(null)
             ->get();
-    
+           
         $this->score = $row->score;
         $this->save();
         if ($recursive)

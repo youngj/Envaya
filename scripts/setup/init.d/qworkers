@@ -1,9 +1,9 @@
 #!/bin/sh
 
-APP_NAME="queueRunner"
+APP_NAME="qworkers"
 APP_HOME=""
-USER_HOME="/var/kestrel"
-AS_USER="kestrel"
+USER_HOME="/var/qworker"
+AS_USER="qworker"
 PHP_HOME="/usr"
 DAEMON="/usr/bin/daemon"
 

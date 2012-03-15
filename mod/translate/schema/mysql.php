@@ -22,6 +22,7 @@ CREATE TABLE `translation_keys` (
   `best_translation_guid` bigint(20) unsigned NOT NULL,  
   `best_translation_hash` varchar(64) null,
   `best_translation_approval` tinyint(4) not null default 0,
+  `best_translation_source` tinyint(4) not null default 0,
   KEY `key_name` (`container_guid`,`name`),
   UNIQUE KEY `language_name` (`language_guid`,`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
