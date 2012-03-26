@@ -9,6 +9,8 @@
         new Query_Filter_Country(),
         new Query_Filter_Approval(),
         new Query_Filter_Sector(),
+        new Query_Filter_Active(),
+        new Query_Filter_Inactive(),
     );    
     
     $filters = $displayed_filters = $template->get_filters();

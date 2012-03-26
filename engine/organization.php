@@ -12,7 +12,6 @@ class Organization extends User
     function set_defaults()
     {
         $this->set_design_setting('theme_name', "green");
-        $this->set_design_setting('share_links', array('email','facebook','twitter'));    
     }
     
     public function get_continue_setup_url()

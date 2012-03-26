@@ -1,7 +1,7 @@
 <?php
     if (!isset($vars['contentWidth']))
     {
-        $vars['contentWidth'] = 769;
+        $vars['contentWidth'] = Config::get('paragraph_width') + 69;
     }
     
     echo view('css/default', $vars);    

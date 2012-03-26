@@ -97,7 +97,7 @@ class Widget_News extends Widget
             if ($remove_posts)
             {
                 $posts = Widget::query_for_entity($this)
-                    ->with_metadata('feed_guid', $feed->guid)
+                    ->where('feed_guid = ?', $feed->guid)
                     ->filter();
                     
                 // delete rather than disabling posts so that 

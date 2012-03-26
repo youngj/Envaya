@@ -30,7 +30,8 @@ class Widget extends Entity
         'in_menu' => 1,
         'handler_arg' => '',
         'title' => '',       
-        'num_comments' => 0
+        'num_comments' => 0,
+        'feed_guid' => null, // optional guid of ExternalFeed object this widget was imported from
     );
     static $mixin_classes = array(
         'Mixin_Content',

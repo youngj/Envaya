@@ -33,7 +33,7 @@ return array(
 	'amqp:vhost' => '/envaya',	
        
     'cache:backend' => "Cache_Database",
-    'cache:version' => 203,  // increment when all cached objects need to be invalidated (rare)
+    'cache:version' => 206,  // increment when all cached objects need to be invalidated (rare)
             
     'analytics:backend' => "Analytics_Null",   
     
@@ -53,6 +53,6 @@ return array(
     'geography:geonames_password' => '',
     'geography:default_timezone' => 'Africa/Dar_es_Salaam',
     'geography:countries' => array('tz','rw'),
-  
-  
+
+    'paragraph_width' => 680,
 );

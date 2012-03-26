@@ -844,15 +844,13 @@ a.discussionTopic
 	text-align:center;
     white-space:nowrap;
 	padding-top:8px;
+    font-size:10px;        
 }
 
 .shareLinks a
 {
-    clear:both;
-    text-align:right;
-    font-size:10px;    
-    padding:3px 22px 3px 20px;
-    background:url(/_media/images/share2.png) no-repeat right top;
+    padding:3px 18px 3px 22px;
+    background:url(/_media/images/share3.png) no-repeat right top;
 }
 
 ol ol

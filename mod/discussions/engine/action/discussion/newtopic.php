@@ -22,9 +22,7 @@ class Action_Discussion_NewTopic extends Action
         
         $uniqid = get_input('uniqid');
 
-        $duplicate = DiscussionTopic::query_for_user($site_user)
-            ->with_metadata('uniqid', $uniqid)
-            ->get();
+        $duplicate = Session::get_entity_by_uniqid($uniqid);
         if ($duplicate)
         {
             throw new RedirectException('', $duplicate->get_url());
@@ -68,8 +66,9 @@ class Action_Discussion_NewTopic extends Action
         $topic->subject = $subject;        
         $topic->set_container_entity($site_user);
         $topic->set_owner_entity($user);
-        $topic->set_metadata('uniqid', $uniqid);
         $topic->save();
+        
+        Session::cache_uniqid($uniqid, $topic);
 
         $message = $topic->new_message();        
         $message->subject = $subject;

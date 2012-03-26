@@ -38,6 +38,7 @@ CREATE TABLE `widgets` (
   `handler_arg` varchar(64) NULL,
   `title` varchar(127) NULL,
   `num_comments` int not null default 0,
+  `feed_guid` bigint(20) unsigned NULL,
   key `name_key` (`container_guid`,`widget_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
