@@ -16,7 +16,7 @@
         <?php
             if ($user) 
             {
-                echo "<a href=\"".$user->get_url()."\">".escape($user->email)."</a>";
+                echo "<a href=\"".$user->get_url()."\">".escape($user->username)."</a>";
             } 
             else 
                 echo "&nbsp;";             

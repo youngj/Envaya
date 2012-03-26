@@ -24,7 +24,7 @@ class LogEntry extends Model
         switch ($this->source)
         {
             case static::SourceWeb: return "Web";
-            case static::SourceAPI: return "API";
+            case static::SourceSMS: return "SMS";
             case static::SourceConsole: return "Console";
             default: return "?";
         }
