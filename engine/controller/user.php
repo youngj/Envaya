@@ -28,18 +28,6 @@ abstract class Controller_User extends Controller
         }        
     }
    
-    public function execute($uri)
-    {
-        try
-        {           
-            parent::execute($uri);
-        }
-        catch (NotFoundException $ex)
-        {
-            $this->not_found();
-        }
-    }   
-   
     function index_widget($widget)
     {
         $user = $this->get_user();

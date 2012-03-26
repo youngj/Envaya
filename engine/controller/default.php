@@ -29,7 +29,7 @@ class Controller_Default extends Controller
         ),
     );      
     
-    public function execute($uri)
+    protected function execute_routes($uri)
     {
         if (!mb_check_encoding(Request::full_original_url()))
         {
@@ -39,91 +39,73 @@ class Controller_Default extends Controller
             return;
         }
     
-        try
-        {
-            // Reduce multiple slashes to a single slash
-            $uri = preg_replace('#//+#', '/', $uri);
+        // Reduce multiple slashes to a single slash
+        $uri = preg_replace('#//+#', '/', $uri);
 
-            // Remove all dot-paths from the URI, they are not valid
-            $uri = preg_replace('#\.[\s./]*/#', '', $uri);
-            
-            // map custom domain names to the appropriate user site			
-			$host = Request::get_host();
-			if ($host != Config::get('domain'))
-			{
-				$username = UserDomainName::get_username_for_host($host);            
-				if ($username)
-				{
-					$uri = "/{$username}{$uri}";
-				}
-			}
-            
-            $this->params['rewritten_uri'] = $uri;
-            
-            // 'login' query parameter forces user to log in
-            if (isset($_GET['login']) && !Session::is_logged_in())
+        // Remove all dot-paths from the URI, they are not valid
+        $uri = preg_replace('#\.[\s./]*/#', '', $uri);
+        
+        // map custom domain names to the appropriate user site			
+        $host = Request::get_host();
+        if ($host != Config::get('domain'))
+        {
+            $username = UserDomainName::get_username_for_host($host);            
+            if ($username)
             {
-                throw new RedirectException('', $this->get_login_url());
+                $uri = "/{$username}{$uri}";
             }
+        }
+        
+        $this->params['rewritten_uri'] = $uri;
+        
+        // 'login' query parameter forces user to log in
+        if (isset($_GET['login']) && !Session::is_logged_in())
+        {
+            throw new RedirectException('', $this->get_login_url());
+        }
 
-            if (isset($_COOKIE['https']))
-            {
-                $this->prefer_https();
-            }
+        if (isset($_COOKIE['https']))
+        {
+            $this->prefer_https();
+        }
 
-            QueryString::set_used_param('lang');            
-            
-            // 'lang' query parameter permanently changes interface language via cookie
-            if (isset($_GET['lang']))
-            {                
-                $this->change_viewer_language($_GET['lang']);
-            }
-                        
-            // 'view' query parameter permanently changes interface viewtype via cookie
-            $viewtype = isset($_GET['view']) ? $_GET['view'] : null;
-            if ($viewtype && Views::is_browsable_type($viewtype))
-            {                
-                $this->set_cookie('view', $viewtype);
-            }
-            
-            // set viewtype for current request
-            $viewtype = $viewtype ?: @$_COOKIE['view'] ?: 
-                (Request::is_mobile_browser() ? 'mobile' : 'default');            
-            
-            if (preg_match('/[^\w]/', $viewtype))
-            {            
-                $viewtype = 'default';
-            }
-            Views::set_request_type($viewtype);
-            
-            // work around flash uploader cookie bug, where the session cookie is sent as a POST field
-            // instead of as a cookie
-            if (isset($_POST['session_id']))
-            {
-                $_COOKIE['envaya'] = $_POST['session_id'];
-            }
-            
-            parent::execute($uri);
+        QueryString::set_used_param('lang');            
+        
+        // 'lang' query parameter permanently changes interface language via cookie
+        if (isset($_GET['lang']))
+        {                
+            $this->change_viewer_language($_GET['lang']);
         }
-        catch (NotFoundException $ex)
-        {
-            $this->not_found();
+                    
+        // 'view' query parameter permanently changes interface viewtype via cookie
+        $viewtype = isset($_GET['view']) ? $_GET['view'] : null;
+        if ($viewtype && Views::is_browsable_type($viewtype))
+        {                
+            $this->set_cookie('view', $viewtype);
         }
-        catch (PermissionDeniedException $ex)
-        {
-            $this->exception_redirect($ex, $this->get_login_url());
+        
+        // set viewtype for current request
+        $viewtype = $viewtype ?: @$_COOKIE['view'] ?: 
+            (Request::is_mobile_browser() ? 'mobile' : 'default');            
+        
+        if (preg_match('/[^\w]/', $viewtype))
+        {            
+            $viewtype = 'default';
         }
-        catch (RedirectException $ex)
+        Views::set_request_type($viewtype);
+        
+        // work around flash uploader cookie bug, where the session cookie is sent as a POST field
+        // instead of as a cookie
+        if (isset($_POST['session_id']))
         {
-            $this->exception_redirect($ex, $ex->url, $ex->status);
+            $_COOKIE[Config::get('session_cookie_name')] = $_POST['session_id'];
         }
-        catch (RequestAbortedException $ex)
+        
+        parent::execute_routes($uri);
+                    
+        if (!Permission::require_passed())
         {
-            // nothing to do, move along
-        }
-        catch (Exception $ex)
-        {
-            $this->server_error($ex);
+            throw new SecurityException("No permission check");
         }
     }    
     
@@ -145,6 +127,8 @@ class Controller_Default extends Controller
     
     function action_robots_txt()
     {
+        Permission_Public::require_any();
+    
         $this->set_content_type('text/plain');
         
         if (!Config::get('allow_robots'))
@@ -163,6 +147,8 @@ class Controller_Default extends Controller
     
     function action_guid_redirect()
     {
+        Permission_Public::require_any(); 
+
         try
         {
             $entity = Entity::get_by_guid($this->param('guid'));
@@ -172,7 +158,7 @@ class Controller_Default extends Controller
             $entity = null;
         }
         
-        if (!$entity)
+        if (!$entity || !$entity->allow_guid_redirect())
         {
             throw new NotFoundException();
         }
@@ -185,5 +171,5 @@ class Controller_Default extends Controller
         }
         
         $this->redirect($url . $this->param('rest'));        
-    }
+    }    
 }

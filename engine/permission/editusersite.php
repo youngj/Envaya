@@ -4,14 +4,14 @@ class Permission_EditUserSite extends Permission
 {        
     static $implicit = true;
     
-    static function is_granted($entity, $user)
+    static function get($entity, $user)
     {
         $site_user = $entity->get_container_user();
         if ($site_user && $site_user instanceof Person)
         {
-            return false;
+            return null;
         }
         
-        return parent::is_granted($entity, $user);
+        return parent::get($entity, $user);
     }
 }

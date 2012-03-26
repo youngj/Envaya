@@ -14,9 +14,11 @@ while (true)
     $msg = readline("> ");
     try
     {
-        $res = file_get_contents(abs_url("/sg/incoming?provider=Mock&from=".urlencode($from)
+        $url = abs_url("/sg/incoming?provider=Mock&from=".urlencode($from)
             ."&to=".urlencode($to)
-            ."&msg=".urlencode($msg)));
+            ."&msg=".urlencode($msg));
+    
+        $res = file_get_contents($url);
         $dom = new DOMDocument();
         $dom->loadXML($res);                    
     }

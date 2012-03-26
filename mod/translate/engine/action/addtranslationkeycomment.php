@@ -2,10 +2,13 @@
 
 class Action_AddTranslationKeyComment extends Action
 {
-    function process_input()
+    function before()
     {
-        $this->require_login();
-        
+        Permission_RegisteredUser::require_any();
+    }
+
+    function process_input()
+    {       
         $content = get_input('content');        
         $content = preg_replace('/\n\s*\n/', '<br /><br />', $content);        
         $content = Markup::sanitize_html($content, array(

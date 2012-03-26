@@ -67,8 +67,9 @@
         }
                 
         $alwaysShowYear = isset($options['alwaysShowYear']) ? $options['alwaysShowYear'] : false;
-        $timezoneID = isset($options['timezoneID']) ? $options['timezoneID'] : null;
+        $timezoneID = isset($options['timezoneID']) ? $options['timezoneID'] : date_default_timezone_get();               
         $showTime = isset($options['showTime']) ? $options['showTime'] : false;
+        $showTimeZone = isset($options['showTimeZone']) ? $options['showTimeZone'] : false;
         $showDate = isset($options['showDate']) ? $options['showDate'] : true;
         
         if ($timezoneID)
@@ -98,14 +99,18 @@
 
         if ($showTime)
         {
+            $showSeconds = isset($options['showSeconds']) ? $options['showSeconds'] : false;
+        
+            $minute = $dateTime->format($showSeconds ? 'i:s' : 'i');
+        
             $timeStr = strtr(__('date:time'), array(
                 '[hour]' => $dateTime->format('H'),
                 '[hour12]' => $dateTime->format('g'),
-                '{minute}' => $dateTime->format('i'),
+                '{minute}' => $minute,
                 '[ampm]' => (($dateTime->format('a') == 'am') ? __('date:am') : __('date:pm'))
             ));
             
-            if ($timezoneID)
+            if ($showTimeZone)
             {
                 $timeStr = strtr(__('date:time_with_tz'), array(
                     '{time}' => $timeStr,
@@ -154,4 +159,17 @@
         {
             return time();
         }
+    }    
+
+    function seconds_since_midnight($time, $tz)
+    {
+        $dtstart = new DateTime("@{$time}");
+
+        if ($tz)
+        {
+            $dtstart->setTimezone($tz);               
+        }
+
+        return 3600 * ((int)$dtstart->format('H')) + 60 * ((int)$dtstart->format('i')) + (int)$dtstart->format('s');
     }
+    

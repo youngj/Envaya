@@ -14,6 +14,9 @@ class Action_User_Settings extends Action
         
             $user->disable();
             $user->save();
+            
+            LogEntry::create('user:delete', $user);
+            
             SessionMessages::add(__('user:deleted'));
             return $this->redirect('/admin/entities');
         }

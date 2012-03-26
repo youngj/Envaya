@@ -5,9 +5,7 @@ class Action_Registration_CreateProfileBase extends Action
     protected function post_process_input() {} // subclasses should override
 
     function process_input()
-    {
-        $this->require_login();
-    
+    {   
         $org = Session::get_logged_in_user();
 
         $mission = get_input('mission');

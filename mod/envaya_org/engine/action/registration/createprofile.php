@@ -4,7 +4,7 @@ class Action_Registration_CreateProfile extends Action_Registration_CreateProfil
 {
     function before()
     {
-        $this->require_login();
+        Permission_RegisteredUser::require_any();
         
         if (!(Session::get_logged_in_user() instanceof Organization))
         {

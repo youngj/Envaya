@@ -9,7 +9,12 @@
     require __DIR__."/../start.php";
 
     $controller = new Controller_Default();
-    $controller->execute(Request::get_uri());
+    
+    try
+    {
+        $controller->execute(Request::get_uri());
+    }
+    catch (RequestAbortedException $ex) {}
 
     $response = $controller->get_response();    
     $response->send_headers();

@@ -141,6 +141,9 @@ class Controller_UserSite extends Controller_User
         {
             throw new NotFoundException();            
         }
+        
+        Permission_EditUserSite::require_for_entity($widget);
+        
         $this->redirect($widget->get_edit_url());
     }
 

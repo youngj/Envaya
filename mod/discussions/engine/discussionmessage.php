@@ -57,6 +57,7 @@ class DiscussionMessage extends Entity
         $org = $this->get_container_user();    
         return get_date_text($time, array(
             'timezoneID' => $org->get_timezone_id(),
+            'showTimeZone' => true,
             'showTime' => true
         ));
     }

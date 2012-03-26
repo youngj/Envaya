@@ -2,6 +2,11 @@
 
 class Action_ConfirmAction extends Action
 {    
+    function before()
+    {
+        Permission_Public::require_any();
+    }
+
     function render()
     {
         validate_security_token(true);       

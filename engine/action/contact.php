@@ -2,6 +2,11 @@
 
 class Action_Contact extends Action
 {     
+    function before()
+    {
+        Permission_Public::require_any();    
+    }
+
     protected function get_redirect_url()
     {
         return "/";

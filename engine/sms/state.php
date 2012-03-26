@@ -25,7 +25,7 @@ class SMS_State extends Model
         $this->args = array();
     }
     
-    function set_loggedin_user($user)
+    function set_logged_in_user($user)
     {
         $this->user_guid = $user ? $user->guid : 0;
     }

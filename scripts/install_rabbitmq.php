@@ -18,4 +18,6 @@ $password = escapeshellarg(Config::get('amqp:password'));
 
 system("rabbitmqctl add_user $user $password");
 
+system("rabbitmqctl set_user_tags $user administrator");
+
 system("rabbitmqctl set_permissions -p $vhost $user \".*\" \".*\" \".*\"");

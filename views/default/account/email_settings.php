@@ -27,7 +27,13 @@
 
     <div class='input'>
     <label><?php echo sprintf(__('email:subscriptions'), "<em>".escape($email)."</em>"); ?></label><br />
-	<?php
+    <?php
+            if ($show_more)
+            {
+                $url = EmailSubscription::get_all_settings_url($email);
+                echo "<div style='float:right;font-size:12px'><a href='{$url}'>".__('email:all_settings')."</a></div>";
+            }    
+    
             echo view('pagination', array(
                 'offset' => $vars['offset'],
                 'count' => $vars['count'],
@@ -79,12 +85,6 @@
 echo view('input/submit',array(
     'value' => __('savechanges')
 ));
-
-if ($show_more)
-{
-    $url = EmailSubscription::get_all_settings_url($email);
-    echo "<div style='float:right;padding-top:22px;font-size:11px'><a href='{$url}'>".__('email:all_settings')."</a></div>";
-}
 
 ?>
 

@@ -2,6 +2,11 @@
 
 class Action_Discussion_NewTopic extends Action
 {            
+    function before()
+    {
+        Permission_Public::require_any();
+    }
+
     function process_input()
 	{            
         $user = Session::get_logged_in_user();        

@@ -10,6 +10,8 @@
     $pages_shown = 12;                  // maximum number of links to pages shown in pagination control 
     $word = 'offset';                   // url parameter used to link to a page with a different offset
     $baseurl = $_SERVER['REQUEST_URI']; // base URL of links in pagination control
+    $force_next = false;                // always show next link
+    $id_prefix = "page{$INCLUDE_COUNT}_";
     extract($vars);
     
     $offset = (int)$offset;
@@ -92,10 +94,10 @@
     }
 
     $next_offset = $offset + $limit;
-    if ($next_offset < $count_min || ($count_unknown && $next_offset <= $count_min)) 
+    if ($force_next || $next_offset < $count_min || ($count_unknown && $next_offset <= $count_min)) 
     {
         $next_url = url_with_param($baseurl, $word, $next_offset);
-        echo " <a href=\"{$next_url}\" class=\"pagination_next\">" . __("next") . " &raquo;</a>\n";
+        echo " <a id='{$id_prefix}next' href=\"{$next_url}\" class=\"pagination_next\">" . __("next") . " &raquo;</a>\n";
     }
 
 ?>

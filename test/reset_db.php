@@ -1,8 +1,9 @@
 <?php
     $root = dirname(__DIR__);
     require_once "$root/start.php";
-    
-    $dbname = 'envaya_test';
+    $test_config = include("$root/test/config.php");     
+
+    $dbname = $test_config['db:name'];
     $dbuser = Config::get('db:user');
     
     ob_start();

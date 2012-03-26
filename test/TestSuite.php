@@ -141,9 +141,9 @@ class TestListener implements PHPUnit_Framework_TestListener
 			run_test_task_sync('php scripts/clear_queue.php', array('quiet' => true));
 			usleep(500000);
             run_test_task_sync("php test/reset_db.php | mysql -u root", array('quiet' => true));
-            run_test_task_sync("mysql envaya_test -u root < {$TEST_CONFIG['dataroot']}/test_init.sql", array('quiet' => true));
-            run_test_task_sync("php scripts/reindex_sphinx.php", array('quiet' => true));            
+            run_test_task_sync("mysql {$TEST_CONFIG['db:name']} -u root < {$TEST_CONFIG['dataroot']}/test_init.sql", array('quiet' => true));            
         }
+        run_test_task_sync("php scripts/reindex_sphinx.php", array('quiet' => true));
     }
 
     public function endTest(PHPUnit_Framework_Test $test, $time) 
@@ -156,7 +156,7 @@ function get_test_environment()
 {
     global $TEST_CONFIG;
     $env = get_environment();    
-    $env["ENVAYA_CONFIG"] = json_encode($TEST_CONFIG);            
+    $env["APP_CONFIG"] = json_encode($TEST_CONFIG);            
     return $env;
 }
 
@@ -217,18 +217,18 @@ function run_test_suite($suite, $opts)
     }
     
     $env = get_environment();    
-    $env["ENVAYA_CONFIG"] = json_encode($TEST_CONFIG);            
+    $env["APP_CONFIG"] = json_encode($TEST_CONFIG);            
     $root = dirname(__DIR__);
         
     if ($opts['reset'])
     {
         run_test_task_sync("php test/reset_db.php | mysql -u root");
         run_test_task_sync('php scripts/install_tables.php');    
-        run_test_task_sync('php scripts/install_kestrel.php');
         run_test_task_sync('php scripts/install_sphinx.php');
         run_test_task_sync('php scripts/install_test_data.php');   
+        run_test_task_sync('php scripts/clear_queue.php', array('quiet' => true));
     }
-    run_test_task_sync("mysqldump envaya_test -u root > $test_dataroot/test_init.sql");    
+    run_test_task_sync("mysqldump {$TEST_CONFIG['db:name']} -u root > $test_dataroot/test_init.sql");    
          
     if ($opts['runserver'])
     {     
@@ -237,14 +237,14 @@ function run_test_suite($suite, $opts)
            1 => array("file", "$test_dataroot/runserver.out", 'w'),
            2 => STDERR
         );                
-      
+              
         $runserver = proc_open('php runserver.php', $descriptorspec, $runserver_pipes, 
             dirname(__DIR__), 
-            get_test_environment());    
+            get_test_environment());
         
         $runserver_status = proc_get_status($runserver);
         posix_setpgid($runserver_status['pid'], $runserver_status['pid']);   
-    }
+    }    
     
     if ($opts['selenium'])
     {

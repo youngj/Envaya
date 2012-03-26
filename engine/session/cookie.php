@@ -41,12 +41,76 @@ class Session_Cookie implements SessionImpl
         {
             setcookie('https', '1', $lifetime, $path);
         }
+        
+        $this->set('login_time', timestamp());
+        $this->set('login_ip', Request::get_client_ip());
+        $this->set('login_user_agent', @$_SERVER['HTTP_USER_AGENT']);
+        
+        $user->reset_login_failure_count();
+        $user->last_action = timestamp();
+        $user->save();
+        
+        LogEntry::create('user:logged_in', $user);
     }
     
-    function logout()
-    {
+    function logout($user)
+    {        
+        if ($user)
+        {
+            LogEntry::create('user:logged_out', $user);
+        }
+    
         $this->destroy();
     }
+
+    function get_login_age()
+    {
+        $login_time = $this->get('login_time');
+        if ($login_time)
+        {
+            return timestamp() - $login_time;
+        }
+        return null;
+    }
+    
+    function is_recent_login($max_age)
+    {
+        if (!Request::is_post())
+        {
+            $max_age -= 90;
+        }
+        
+        $age = $this->get_login_age();       
+        return $age !== null && $age <= $max_age;        
+    }
+
+    function is_consistent_ip()
+    {
+        return $this->get('login_ip') == Request::get_client_ip();
+    }
+    
+    function is_consistent_browser()
+    {
+        return $this->get('login_user_agent') == Request::get_user_agent();
+    }
+
+    function is_consistent_client()
+    {
+        return $this->is_consistent_ip() && $this->is_consistent_browser();
+    }
+    
+    function is_high_security()
+    {
+        return $this->is_recent_login(28800)
+            && $this->is_consistent_browser()
+            && $this->is_consistent_ip();
+    }
+    
+    function is_medium_security()
+    {       
+        return $this->is_recent_login(3000000)
+            && $this->is_consistent_browser();
+    }    
     
     function get($key)
     {

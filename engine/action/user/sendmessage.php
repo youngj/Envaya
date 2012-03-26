@@ -4,7 +4,7 @@ class Action_User_SendMessage extends Action
 {
     function before()
     {
-        $this->require_login();
+        Permission_RegisteredUser::require_any();
         $this->use_editor_layout();
     }
      

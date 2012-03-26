@@ -102,7 +102,7 @@
     {
         if (Config::get('debug:media'))
         {
-            return "/pg/css?name=$css_name&hash=" . md5(view("css/$css_name", 'default'));
+            return "/pg/css?name=$css_name&hash=" . md5(view("css/$css_name", array(), 'default'));
         }
         else
         {
@@ -223,7 +223,9 @@
         function start();
         function destroy();
         function id();
-        function login($user, $persistent);
-        function logout();
-        function get_logged_in_user();        
+        function login($user, $options);
+        function logout($user);
+        function get_logged_in_user();
+        function is_high_security();
+        function is_medium_security();
     }

@@ -2,6 +2,11 @@
 
 class Action_Widget_AddComment extends Action
 {
+    function before()
+    {
+        Permission_Public::require_any();
+    }
+
     function process_input()
 	{      
         $widget = $this->get_widget();

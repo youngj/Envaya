@@ -78,8 +78,8 @@ class PageContext extends Mixable
         {
             $submenu = new Submenu();
             static::$submenus[$group] = $submenu;
-			return $submenu;
-        }		
+            return $submenu;
+        }        
         return static::$submenus[$group];            
     }
         

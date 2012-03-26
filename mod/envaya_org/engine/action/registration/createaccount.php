@@ -13,6 +13,8 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
         {
             throw new RedirectException(__('register:qualify_missing'), "/org/new");
         }    
+        
+        Permission_Public::require_any();
     }
 
     function render()

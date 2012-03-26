@@ -40,6 +40,9 @@ class Controller_TranslateKey extends Controller
     function action_index()
     {
         $key = $this->param('key');
+        
+        Permission_ViewTranslation::require_for_entity($key);
+        
         $translation_guid = (int)get_input('translation');
         if ($translation_guid)
         {
@@ -198,8 +201,11 @@ class Controller_TranslateKey extends Controller
     }
     
     function redirect_delta($delta)
-    {        
+    {            
         $key = $this->param('key');                
+        
+        Permission_ViewTranslation::require_for_entity($key);
+        
         $parent_uri = $this->get_parent_uri();
         $next_key = $this->get_delta_key($key, $delta);
                 

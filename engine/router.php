@@ -63,13 +63,18 @@ abstract class Router
         }
         return array($this, null);
     }
-
+    
+    function execute($uri)
+    {
+        $this->execute_routes($uri);
+    }
+    
     /*
      * Tries all the route regexes for this controller, 
      * executing the first one that matches the beginning of the uri.
      * Displays a 404 page if there is no valid route.
      */
-    public function execute($uri)
+    protected function execute_routes($uri)
     {
         $cls = get_class($this);
         
@@ -90,7 +95,7 @@ abstract class Router
         }
         throw new NotFoundException();
     }    
-
+    
     /*
      * Performs the action for the route that matched the request URI.
      *
@@ -112,14 +117,14 @@ abstract class Router
                 
         if (isset($route['before']))
         {
-			$before = @$route['before'];
+            $before = @$route['before'];
             $this->$before();
         }
         $this->before();                               
                 
         if (isset($params['controller']))
         {
-			$cls = $params['controller'];
+            $cls = $params['controller'];
             $controller = new $cls($this);
             $res = $controller->execute($params['rest']);
         }
@@ -214,16 +219,27 @@ abstract class Router
         
         if (strpos($action, '<') === false) // current route is a method in the current class
         {
-            if (!method_exists($this, $action))
+            $method = $this->get_action_method($action);
+        
+            if (!$method)
             {
                 return false;
             }
-            $params['action'] = $action;
+            $params['action'] = $method;
             return $params;
         }
 
         return false;
-    }	   
+    }       
+    
+    function get_action_method($action_name)
+    {
+        if (method_exists($this, $action_name))
+        {
+            return $action_name;
+        }
+        return false;
+    }
     
     /**
      * Automatically executed before the controller action. Can be used to set

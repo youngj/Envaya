@@ -19,14 +19,11 @@ class Controller_Contact extends Controller
             'regex' => '/(?P<action>\w+)\b', 
         ),                
     );
-    
-    function before()
-    {
-        Permission_UseAdminTools::require_any();
-    }
 
     function action_filter_input()
     {
+        Permission_UseAdminTools::require_any();
+    
         $this->set_content_type('text/javascript');
         $subclass = get_input('subclass');         
         $id = get_input('id');         
@@ -43,6 +40,8 @@ class Controller_Contact extends Controller
     
     function action_index()
     {
+        Permission_UseAdminTools::require_any();
+    
         $this->page_draw(array(
             'theme_name' => 'simple_wide',
             'title' => __('contact:user_list'),

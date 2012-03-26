@@ -11,6 +11,8 @@ class Request
 {            
     static function get_client_ip()
     {
+        // ignore $_SERVER['HTTP_X_FORWARDED_FOR'] and $_SERVER['HTTP_CLIENT_IP'] since they can be easily spoofed
+    
         return @$_SERVER['REMOTE_ADDR'];
     }
     
@@ -18,6 +20,11 @@ class Request
     {
         return @$_SERVER['PATH_INFO'];
     }
+    
+    static function get_user_agent()
+    {
+        return @$_SERVER['HTTP_USER_AGENT'];
+    }    
     
     static function get_host()
     {
@@ -56,6 +63,11 @@ class Request
         return @$_SERVER['REQUEST_METHOD'] == "POST";
     }   
     
+    static function get_method()
+    {
+        return @$_SERVER['REQUEST_METHOD'];
+    }
+    
     private static $secure = null;
     
     static function is_secure()
@@ -89,7 +101,7 @@ class Request
         }
     }        
     
-    static $is_bot = null;
+    static $is_bot = null;    
     
     static function is_bot()
     {

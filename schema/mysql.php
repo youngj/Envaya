@@ -184,19 +184,20 @@ CREATE TABLE `state` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `log_entries` (
-	`id` bigint(20) unsigned NOT NULL auto_increment,
-	`object_id` bigint(20) NULL,
-	`subtype_id` varchar(63) NULL,
-	`event_name` varchar(50) NOT NULL,
-	`user_guid` bigint(20) NOT NULL,
-	`time_created` int(11) NOT NULL,
-	PRIMARY KEY  (`id`),
-	KEY `event_name` (`event_name`),
-    KEY `object_id` (`object_id`),
-    KEY `subtype_id` (`subtype_id`),
-	KEY `user_guid` (`user_guid`),
-	KEY `time_created` (`time_created`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+    `id` bigint(20) unsigned NOT NULL auto_increment,
+    `subject_guid` bigint(20) unsigned NULL,
+    `event_name` varchar(50) NOT NULL,
+    `user_guid` bigint(20) unsigned NULL,
+    `time_created` bigint(20) unsigned NOT NULL,
+    `ip_address` varchar(48) null,
+    `message` varchar(127) null,
+    `source` tinyint(4) not null default 0,
+    PRIMARY KEY  (`id`),
+    KEY `event_name` (`event_name`),
+    KEY `subject_guid` (`subject_guid`),
+    KEY `user_guid` (`user_guid`),
+    KEY `time_created` (`time_created`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `feed_items` (
 	`id` INT NOT NULL AUTO_INCREMENT,		
@@ -366,6 +367,7 @@ CREATE TABLE `user_scopes` (
 
 CREATE TABLE `permissions` (
     <?php require 'schema/entity_columns.php'; ?>,
-    `subtype_id` varchar(63) not null,	
+    `subtype_id` varchar(63) not null,    
+    `flags` tinyint(4) not null default 0,
     KEY `subtype_id` (`subtype_id`)
 ) ENGINE = MYISAM DEFAULT CHARSET=utf8;

@@ -17,18 +17,14 @@ class DatabaseException extends Exception {
 
 class CallException extends Exception {}
 class DataFormatException extends Exception {}
-class NotImplementedException extends CallException {
-    function __construct()
-    {
-        echo "???";
-    }
-}
+class NotImplementedException extends CallException {}
 class InvalidParameterException extends CallException {}
 //class ErrorException extends Exception {}
 
 class RequestAbortedException extends Exception {}
 class NotFoundException extends RequestAbortedException {}
 class PermissionDeniedException extends RequestAbortedException {}
+class MethodNotAllowedException extends RequestAbortedException {}
 class RedirectException extends RequestAbortedException 
 {
     public $url; /* null url indicates redirect to http referrer, if possible */
@@ -73,7 +69,7 @@ function php_error_handler($errno, $errmsg, $filename, $linenum, $vars)
         case E_USER_ERROR:
         case E_WARNING:
         case E_USER_WARNING:
-				error_log("ERROR: \"$errmsg\" in file $filename (line $linenum)");
+                error_log("ERROR: \"$errmsg\" in file $filename (line $linenum)");
                 throw new ErrorException($errmsg, 0, $errno, $filename, $linenum);
             break;
         default:
@@ -114,7 +110,7 @@ function notify_exception($exception)
                 $ex = print_r($exception, true);
                 $server = print_r($_SERVER, true);
 
-                // avoid using OutgoingMail class, since it has dependencies on the Database and FunctionQueue,
+                // avoid using OutgoingMail class, since it has dependencies on the Database and TaskQueue,
                 // and this exception may occur because one of those components is failing.
                 
                 $url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : @$_SERVER['PHP_SELF'];

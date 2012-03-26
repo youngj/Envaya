@@ -2,10 +2,13 @@
 
 class Action_AddTranslation extends Action
 {
-    function process_input()
+    function before()
     {
-        $this->require_login();
-        
+        Permission_RegisteredUser::require_any();
+    }
+
+    function process_input()
+    {        
         $value = get_input('value');
         
         if ($value == '')

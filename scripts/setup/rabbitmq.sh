@@ -5,4 +5,6 @@ INSTALL_DIR=`dirname $SCRIPT_DIR`
 
 apt-get -y install rabbitmq-server
 
+rabbitmqctl delete_user guest
+
 php $SCRIPT_DIR/install_rabbitmq.php

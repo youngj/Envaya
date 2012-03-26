@@ -2,6 +2,11 @@
 
 class Action_Login extends Action
 {
+    function before()
+    {
+        Permission_Public::require_any();
+    }
+
     protected function login_success($user, $password)
     {
         SessionMessages::add(sprintf(__('login:welcome'), $user->name));
@@ -21,7 +26,7 @@ class Action_Login extends Action
         $password_strength = PasswordStrength::calculate($password, $user->get_easy_password_words());
         
         $password_age = $user->get_password_age();
-        $max_password_age = $user->get_max_password_age();		
+        $max_password_age = $user->get_max_password_age();        
         
         $new_password_url = "{$user->get_url()}/password?next=".urlencode($next);
             

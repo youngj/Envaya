@@ -89,8 +89,8 @@ class ExternalFeed extends Entity
         $this->time_queued = timestamp();
         $this->save();
     
-        return FunctionQueue::queue_call(array('ExternalFeed', 'update_by_guid'), array($this->guid), 
-            FunctionQueue::LowPriority
+        return TaskQueue::queue_task(array('ExternalFeed', 'update_by_guid'), array($this->guid), 
+            TaskQueue::LowPriority
         );    
     }    
     

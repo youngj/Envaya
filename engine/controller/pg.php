@@ -35,7 +35,7 @@ class Controller_Pg extends Controller
     
     function action_dashboard()
     {
-        $this->require_login();
+        Permission_RegisteredUser::require_any();
         $this->redirect(Session::get_logged_in_user()->get_url()."/dashboard");
     }
 
@@ -65,6 +65,8 @@ class Controller_Pg extends Controller
 
     function action_blank()
     {
+        Permission_Public::require_any();
+    
         $this->allow_view_types(null);
         // this may be useful for displaying a page containing only SessionMessages
         $this->page_draw(array(
@@ -77,6 +79,8 @@ class Controller_Pg extends Controller
 
     function action_large_img()
     {
+        Permission_Public::require_any();
+
         $owner_guid = get_input('owner');
         $group_name = get_input('group');
 
@@ -95,6 +99,8 @@ class Controller_Pg extends Controller
 
     function action_receive_mail()
     {
+        Permission_Public::require_any();
+    
         // query string in sendgrid should have ?secret=<sendgrid_secret>
         // http://www.quora.com/What-are-the-security-models-of-SendGrid-APInbox-and-CloudMailin/answer/Tim-Falls
         $secret = @$_REQUEST['secret'];
@@ -132,6 +138,8 @@ class Controller_Pg extends Controller
 
     function action_local_store()
     {
+        Permission_Public::require_any();
+    
         // not for use in production environment
         $storage_local = Storage::get_instance();
 
@@ -178,6 +186,8 @@ class Controller_Pg extends Controller
     
     function action_change_lang()
     {
+        Permission_Public::require_any();
+    
         $url = @$_GET['url'];
         $newLang = $_GET['lang'];
         // $this->change_viewer_language($newLang); // unnecessary because done in default controller
@@ -212,15 +222,12 @@ class Controller_Pg extends Controller
         $entity = Entity::get_by_guid($entity_guid, true);
         if (!$entity)
         {
+            Permission_Public::require_any();
             $revisions = array();
         }
         else
         {
-            if (!Permission_EditUserSite::has_for_entity($entity))
-            {
-                throw new SecurityException("Access denied.");
-            }
-            
+            Permission_EditUserSite::require_for_entity($entity);            
             $revisions = ContentRevision::query_drafts($entity)->filter();        
         }
         
@@ -231,6 +238,7 @@ class Controller_Pg extends Controller
 
     function action_select_image()
     {
+        Permission_RegisteredUser::require_any();
         $file = UploadedFile::get_from_url(get_input('src'));
 
         $this->allow_view_types(null);
@@ -247,6 +255,7 @@ class Controller_Pg extends Controller
     
     function action_select_document()
     {
+        Permission_RegisteredUser::require_any();
         $guid = (int)get_input('guid');
         $file = UploadedFile::get_by_guid($guid);
         
@@ -269,6 +278,8 @@ class Controller_Pg extends Controller
     
     function action_show_captcha()
     {
+        Permission_Public::require_any();
+    
         Captcha::get_instance()->show();
     }
 
@@ -303,6 +314,8 @@ class Controller_Pg extends Controller
      */
     function action_css()
     {
+        Permission_Public::require_any();
+    
         $name = get_input('name');
         
         if (preg_match('/[^\w]/', $name))
@@ -325,6 +338,7 @@ class Controller_Pg extends Controller
     
     function action_browse()
     {
+        Permission_Public::require_any();
         $this->allow_view_types(null);
     
         $content = view('org/browse');
@@ -337,7 +351,7 @@ class Controller_Pg extends Controller
 
     function action_browse_email()
     {
-        $this->require_login();
+        Permission_RegisteredUser::require_any();
         $this->allow_view_types(null);
     
         $content = view('org/browse_email');
@@ -352,6 +366,7 @@ class Controller_Pg extends Controller
     
     function action_change_browse_view()
     {
+        Permission_Public::require_any();
         $this->allow_view_types(null);
     
         $this->page_draw(array(
@@ -365,6 +380,7 @@ class Controller_Pg extends Controller
     
     function action_search()
     {
+        Permission_Public::require_any();
         $this->allow_view_types(null);
     
         $q = get_input('q');
@@ -430,6 +446,7 @@ class Controller_Pg extends Controller
 
     function action_js_search()
     {
+        Permission_RegisteredUser::require_any();
         $this->set_content_type('text/javascript');
     
         $name = get_input('name');
@@ -507,6 +524,7 @@ class Controller_Pg extends Controller
     
     function action_change_feed_view()
     {
+        Permission_Public::require_any();
         $this->allow_view_types(null);        
         
         $this->page_draw(array(
@@ -520,6 +538,7 @@ class Controller_Pg extends Controller
 
     function action_feed()
     {
+        Permission_Public::require_any();
         $this->allow_view_types('rss');
     
         $max_items = Config::get('feed:page_size');
@@ -560,6 +579,7 @@ class Controller_Pg extends Controller
     
     function action_feed_more()
     {
+        Permission_Public::require_any();
         $this->set_content_type('text/javascript');
 
         $filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));                        
@@ -583,7 +603,8 @@ class Controller_Pg extends Controller
     }
 
     function action_js_orgs()
-    {     
+    {   
+        Permission_Public::require_any();  
         $this->set_content_type('text/javascript');     
         
         $guids = explode(',', get_input('ids'));
@@ -602,6 +623,7 @@ class Controller_Pg extends Controller
     
     function action_search_area()
     {
+        Permission_Public::require_any();
         $this->set_content_type('text/javascript');
         
         $lat_min = get_input('lat_min');

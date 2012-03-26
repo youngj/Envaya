@@ -28,6 +28,10 @@ class ClassRegistry
         
         'core.scope' => 'UserScope',  
         
+        'core.sphinx' => 'Sphinx',        
+        'core.email.outgoing' => 'OutgoingMail',
+        'core.sms.outgoing' => 'OutgoingSMS',
+        
         'core.permission' => 'Permission',
         'core.permission.changeuserapproval' => 'Permission_ChangeUserApproval',
         'core.permission.editcomment' => 'Permission_EditComment',

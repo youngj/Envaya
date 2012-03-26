@@ -1,4 +1,4 @@
 <?php
 
 require_once "scripts/qworker.php";
-execute_queue_worker(FunctionQueue::HighPriority);
+execute_queue_worker(TaskQueue::HighPriority);

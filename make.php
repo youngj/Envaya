@@ -439,6 +439,13 @@ class Build
         return substr(md5($content), 0, 10);            
     }
      
+    public static function get_output($file)
+    {
+        ob_start();
+        require $file;                
+        return ob_get_clean();
+    }
+     
     private static function js_minify_dir($base, $name = '*', $dir = '')
     {    
         $js_src_files = glob("$base/js/{$dir}{$name}.{js,php}", GLOB_BRACE);
@@ -453,15 +460,13 @@ class Build
             if ($extension == 'php')
             {
                 $js_temp_file = "scripts/$basename.tmp.js";
-                ob_start();
-                require $js_src_file;                
-                $raw_js = ob_get_clean();
+                $raw_js = static::get_output($js_src_file);                
                 file_put_contents($js_temp_file, $raw_js);    
                 $compressed = static::minify($js_temp_file, $output_file);
                 unlink($js_temp_file);
             }
             else
-            {            
+            {          
                 $compressed = static::minify($js_src_file, $output_file);
             }
             

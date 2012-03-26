@@ -1,13 +1,13 @@
 #!/bin/sh
 
-
 APP_NAME="cron"
 APP_HOME=""
-AS_USER="kestrel"
+AS_USER="phpcron"
+USER_HOME="/var/phpcron"
 PHP_HOME="/usr"
 DAEMON="/usr/bin/daemon"
 
-pidfile="/var/kestrel/$APP_NAME.pid"
+pidfile="$USER_HOME/$APP_NAME.pid"
 daemon_args="--name $APP_NAME --pidfile $pidfile"
 daemon_start_args="--user $AS_USER --stdout=/var/log/$APP_NAME/stdout --stderr=/var/log/$APP_NAME/error --chdir=$APP_HOME"
 

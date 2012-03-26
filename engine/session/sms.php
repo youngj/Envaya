@@ -19,12 +19,19 @@ class Session_SMS implements SessionImpl
     
     function login($user, $options)
     {            
-        $this->sms_state->set_loggedin_user($user);
+        $this->sms_state->set_logged_in_user($user);       
+        
+        LogEntry::create('user:logged_in', $user);
     }
     
-    function logout()
+    function logout($user)
     {
-        $this->sms_state->set_loggedin_user(null);
+        $this->sms_state->set_logged_in_user(null);
+        
+        if ($user)
+        {
+            LogEntry::create('user:logged_out', $user);
+        }
     }
     
     function get($key)
@@ -49,5 +56,15 @@ class Session_SMS implements SessionImpl
     function id()
     {
         return $this->sms_state->id;
+    }
+    
+    function is_high_security()
+    {
+        return false;
+    }
+    
+    function is_medium_security()
+    {
+        return true;
     }
 }

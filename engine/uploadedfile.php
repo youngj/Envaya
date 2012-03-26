@@ -382,7 +382,7 @@ class UploadedFile extends Entity
         copy($path, $temp_path);
         $output_path = "/tmp/PDF/$temp_name.pdf";
 
-        FunctionQueue::queue_call(
+        TaskQueue::queue_task(
                 array("UploadedFile", "print_to_pdf"), 
                 array($temp_path)
         );

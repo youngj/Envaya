@@ -386,7 +386,7 @@ abstract class Entity extends Model implements Serializable
     {
         if ($this->guid)
         {            
-            FunctionQueue::queue_call(array('Entity', 'guess_language_by_guid'), array($this->guid, $field));
+            TaskQueue::queue_task(array(get_class($this), 'guess_language_by_guid'), array($this->guid, $field));
         }
         else
         {
@@ -396,7 +396,7 @@ abstract class Entity extends Model implements Serializable
     
     static function guess_language_by_guid($guid, $field)
     {
-        $entity = Entity::get_by_guid($guid);
+        $entity = static::get_by_guid($guid);
         if ($entity)
         {
             $entity->guess_language($field);
@@ -504,5 +504,10 @@ abstract class Entity extends Model implements Serializable
             'value' => $this->$property
         ));        
         return $res['value'];
+    }
+    
+    function allow_guid_redirect()
+    {
+        return false;
     }
 }

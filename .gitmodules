@@ -3,4 +3,4 @@
 	url = git://github.com/youngj/httpserver.git
 [submodule "vendors/php-amqplib"]
 	path = vendors/php-amqplib
-	url = https://github.com/tnc/php-amqplib
+	url = https://github.com/youngj/php-amqplib

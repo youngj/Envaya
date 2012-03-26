@@ -371,4 +371,9 @@ class Widget extends Entity
         $controller->use_public_layout();
         throw new NotFoundException();
     }
+    
+    function allow_guid_redirect()
+    {
+        return true;
+    }
 }

@@ -6,6 +6,8 @@ class Action_PasswordResetCode extends Action
 
     function before()
     {
+        Permission_Public::require_any();
+        
         $user_guid = get_input('u');        
         $user = User::get_by_guid($user_guid);
         if (!$user)

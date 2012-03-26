@@ -141,6 +141,8 @@ class Controller_Translate extends Controller
     
     function action_index()
     {
+        Permission_Public::require_any();
+    
         return $this->page_draw(array(
             'title' => __('itrans:translations'),
             'header' => view('translate/header'),
@@ -150,6 +152,8 @@ class Controller_Translate extends Controller
      
     function action_instructions()
     {
+        Permission_Public::require_any();
+    
         return $this->page_draw(array(
             'title' => __('itrans:instructions'),
             'header' => view('translate/header', array('title' => __('itrans:instructions'))),
@@ -161,6 +165,8 @@ class Controller_Translate extends Controller
     
     function action_interface()
     {
+        Permission_Public::require_any();
+    
         $language = $this->param('language');      
         
         $filter = $this->get_filter_params();
@@ -188,6 +194,8 @@ class Controller_Translate extends Controller
      
     function action_content()
     {
+        Permission_Public::require_any();
+    
         $language = $this->param('language');
         
         $filter = $this->get_filter_params();
@@ -214,6 +222,8 @@ class Controller_Translate extends Controller
      
     function action_view_language()
     {
+        Permission_Public::require_any();
+    
         $language = $this->param('language');
         
         return $this->page_draw(array(
@@ -225,6 +235,8 @@ class Controller_Translate extends Controller
     
     function action_translators()
     {
+        Permission_Public::require_any();
+    
         $language = $this->param('language');
     
         return $this->page_draw(array(
@@ -236,6 +248,8 @@ class Controller_Translate extends Controller
     
     function action_translator()
     {
+        Permission_Public::require_any();
+    
         $language = $this->param('language');
     
         $user = User::get_by_guid($this->param('guid'));
@@ -262,6 +276,8 @@ class Controller_Translate extends Controller
     
     function action_latest()
     {
+        Permission_Public::require_any();
+    
         $language = $this->param('language');
         
         $filter = $this->get_filter_params();
@@ -385,6 +401,7 @@ class Controller_Translate extends Controller
 
     function action_view_group()
     {
+        Permission_Public::require_any();
         PageContext::add_header_html('<meta name="robots" content="noindex,nofollow" />');
     
         $group = $this->param('group');
@@ -434,6 +451,8 @@ class Controller_Translate extends Controller
     
     function action_comments()
     {
+        Permission_Public::require_any();
+    
         $language = $this->param('language');
         
         return $this->page_draw(array(
@@ -491,6 +510,7 @@ class Controller_Translate extends Controller
     
     function action_page()
     {
+        Permission_Public::require_any();
         PageContext::add_header_html('<meta name="robots" content="noindex,nofollow" />');
     
         $language = $this->param('language');
@@ -515,6 +535,8 @@ class Controller_Translate extends Controller
     
     function action_check_translation()
     {
+        Permission_Public::require_any();
+    
         $this->set_content_type('text/javascript');
     
         $source = (int)get_input('source');

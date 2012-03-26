@@ -8,9 +8,7 @@ class Action_DeleteTranslation extends Action
     }
 
     function process_input()
-    {    
-        $this->require_login();
-        
+    {            
         $key = $this->param('key');
         $translation = $this->param('translation');
         

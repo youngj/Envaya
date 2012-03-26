@@ -662,7 +662,7 @@ abstract class User extends Entity
                 {
                     if ($old_state->user_guid == $this->guid)
                     {
-                        $old_state->set_loggedin_user(null);
+                        $old_state->set_logged_in_user(null);
                         $old_state->save();
                     }
                 }            
@@ -680,7 +680,7 @@ abstract class User extends Entity
                 $state = $sms_service->get_state($phone_number->phone_number);
                 if (!$state->get_logged_in_user())
                 {
-                    $state->set_loggedin_user($this);
+                    $state->set_logged_in_user($this);
                     $state->save();
                 }
             }        

@@ -2,6 +2,11 @@
 
 class Action_ForgotPassword extends Action
 {
+    function before()
+    {
+        Permission_Public::require_any();
+    }
+
     function process_input()
     {
         $username = get_input('username');

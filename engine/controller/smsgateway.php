@@ -9,6 +9,11 @@ class Controller_SMSGateway extends Controller
         ),        
     );
 
+    function before()
+    {
+        Permission_Public::require_any();
+    }
+    
     function action_app()
     {
         if (!Request::is_post())

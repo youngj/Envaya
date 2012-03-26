@@ -4,6 +4,8 @@ class Action_EmailSettings extends Action
 {
     private function verify_access($email, $code, $subscriptions)
     {
+        Permission_Public::require_any();
+    
         if (!$email || $code != EmailSubscription::get_email_fingerprint($email) || sizeof($subscriptions) == 0)
         {
             throw new RedirectException(__("email:invalid_url"), "/pg/login");
@@ -36,6 +38,9 @@ class Action_EmailSettings extends Action
             $subscription->language = $language;
             $subscription->save();                        
         }
+        
+        LogEntry::create('email:change_subscriptions', null, $email);
+        
         SessionMessages::add(__('email:notifications_changed'));
 
         $this->redirect();

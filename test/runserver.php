@@ -9,5 +9,7 @@
     require_once "$root/scripts/cmdline.php";
 
     $env = get_environment();    
-    $env["ENVAYA_CONFIG"] = json_encode(include __DIR__."/config.php");        
+    $env["APP_CONFIG"] = json_encode(include __DIR__."/config.php");            
+        
     $runserver = run_task('php runserver.php', $root, $env);
+    

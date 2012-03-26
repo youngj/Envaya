@@ -5,7 +5,7 @@ class Controller_TranslateEntityKey extends Controller_TranslateKey
     function index_page_draw($args)
     {   
         $key = $this->param('key');
-        $language = $this->param('language');
+        $language = $this->param('language');        
         
         return $this->page_draw(array_merge($args, array(
             'header' => view('translate/header', array('items' => array(

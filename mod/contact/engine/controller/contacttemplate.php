@@ -26,7 +26,7 @@ abstract class Controller_ContactTemplate extends Controller
     {        
         $this->page_draw_vars['theme_name'] = 'editor';
         Permission_SendMessage::require_any();
-    }    
+    }
     
     function init_template()
     {

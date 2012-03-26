@@ -27,46 +27,53 @@ abstract class Permission extends Entity
     static $table_name = 'permissions';
     static $table_attributes = array(
         'subtype_id' => '',
+        'flags' => 0,
     );            
 
+    const HighSecurity = 1;
+    const Logged = 2;
+    
     /*
      * Is this permission is implicitly granted by owner_guid or container_guid?
      */
     static $implicit = false;    
     
-    /*
-     * Returns true if the given user has this permission on the given entity, false otherwise.
-     */
-    static function is_granted($entity, $user)
+    static $require_passed = false;
+       
+    // subclasses may override to provide different rules
+    static function get_for_current_user($entity)
+    {
+        return static::get($entity, Session::get_logged_in_user());
+    }     
+     
+    // subclasses may override to provide different rules
+    static function get($entity, $user)
     {       
         if (!$user || !$entity)
         {
-            return false;
+            return null;
         }
         
         if (static::$implicit && static::is_granted_implicit($entity, $user))
         {
-            return true;
+            return new Permission_Implicit();
         }
         
-        return static::get_explicit($entity, $user) != null;
+        return static::get_explicit($entity, $user);
     }
-    
+       
+    /*
+     * Returns true if the given user has this permission on the given entity, false otherwise.
+     * Subclasses should not override.
+     */
+    static function is_granted($entity, $user)
+    {       
+        return static::get($entity, $user) != null;
+    }
+     
     static function is_granted_implicit($entity, $user)
     {
-        $owner_guid = $entity->owner_guid;
-        $user_guid = $user->guid;            
-        if ($owner_guid == $user_guid)
-        {
-            return true;
-        }
-    
-        $entity_user = $entity->get_container_user();
-        if ($user->equals($entity_user))
-        {
-            return true;
-        }    
-        return false;
+        return $user->equals($entity->get_container_user());
     }
     
     static function get_explicit($entity, $user)
@@ -75,20 +82,18 @@ abstract class Permission extends Entity
         if ($permissions)
         {
             $cur = $entity;
-            $container_guids = array();        
             while ($cur)
-            {                    
-                $container_guids[] = $cur->guid;
-                $cur = $cur->get_container_entity();
-            }        
-            
-            foreach ($permissions as $permission)
-            {
-                if (in_array($permission->container_guid, $container_guids))
+            {                                    
+                foreach ($permissions as $permission)
                 {
-                    return $permission;
+                    if ($permission->container_guid == $cur->guid)
+                    {
+                        return $permission;
+                    }
                 }
-            }
+                
+                $cur = $cur->get_container_entity();
+            }                    
         }        
         return null;    
     }
@@ -105,14 +110,65 @@ abstract class Permission extends Entity
             }
         }
         return $res;
-    }
+    }   
     
     static function require_for_entity($entity)
     {        
-        if (!static::has_for_entity($entity))
+        $permission = static::get_for_current_user($entity);
+    
+        if (!$permission)
         {
             static::throw_exception($entity);
+        }        
+        else
+        {
+            $permission->handle_require($entity);
         }
+    }   
+    
+    function check_session_security()
+    {
+        if ($this->is_high_security())
+        {
+            if (!Session::is_high_security())
+            {
+                throw new PermissionDeniedException(__('login:expired'));
+            }
+        }
+        else
+        {            
+            if (Session::is_logged_in() && !Session::is_medium_security())
+            {
+                throw new PermissionDeniedException(__('login:expired'));
+            }
+        }    
+    }
+    
+    function handle_require($entity)
+    {
+        $this->check_session_security();   
+        
+        if ($this->is_logged())
+        {
+            LogEntry::create("permission:used", $entity, $this->get_title());
+        }
+        
+        self::$require_passed = true;    
+    }
+    
+    function is_high_security()
+    {
+        return ($this->flags & self::HighSecurity) != 0;
+    }
+
+    function is_logged()
+    {
+        return ($this->flags & self::Logged) != 0;
+    }    
+    
+    static function require_passed()
+    {
+        return self::$require_passed;
     }    
 
     static function throw_exception($entity = null)
@@ -126,16 +182,22 @@ abstract class Permission extends Entity
     }
 
     static function require_any()    
-    {
-        if (!static::has_any())
+    {    
+        $permission = static::get_any_explicit(Session::get_logged_in_user());
+    
+        if (!$permission)
         {
             static::throw_exception();
+        }        
+        else
+        {
+            $permission->handle_require(null);
         }
     }
     
     static function has_for_entity($entity)
     {
-        return static::is_granted($entity, Session::get_logged_in_user());
+        return static::get_for_current_user($entity) != null;
     }
     
     static function has_for_root()
@@ -170,25 +232,25 @@ abstract class Permission extends Entity
         }        
         return null;       
     }
-	
-	static function get_all_explicit($user)
-	{
-		$permissions = array();
-		if ($user)
-        {            
-			$cls = get_called_class();        
-			foreach ($user->get_all_permissions() as $permission)
-			{
-				if ($permission instanceof $cls)
-				{
-					$permissions[] = $permission;
-				}
-			}     
-		}
-        return $permissions;    
-	}
     
-    static function grant_explicit($entity, $user)
+    static function get_all_explicit($user)
+    {
+        $permissions = array();
+        if ($user)
+        {            
+            $cls = get_called_class();        
+            foreach ($user->get_all_permissions() as $permission)
+            {
+                if ($permission instanceof $cls)
+                {
+                    $permissions[] = $permission;
+                }
+            }     
+        }
+        return $permissions;    
+    }
+    
+    static function grant_explicit($entity, $user, $flags = 0)
     {
         $permission = static::get_explicit($entity, $user);
         
@@ -197,10 +259,19 @@ abstract class Permission extends Entity
             $cls = get_called_class();
             
             $permission = new $cls();
+            $permission->flags = $flags;
             $permission->set_owner_entity($user);
             $permission->set_container_entity($entity);
             $permission->save();
         }
+        else if ($permission->flags != $flags)
+        {
+            $permission->flags = $flags;
+            $permission->save();
+        }
+        
+        LogEntry::create('permission:grant', $entity, "{$user->email} / {$permission->get_title()}");
+        
         return $permission;
     }
     
@@ -211,14 +282,14 @@ abstract class Permission extends Entity
     
     static function get_min_password_strength()
     {
-        return PasswordStrength::Average;
+        return PasswordStrength::Weak;
     }    
     
     function __toString()
     {
         $user = $this->get_owner_entity();
         $type = $this->get_subtype_id();
-        return "{$this->guid}: type={$type} scope={$this->container_guid} username={$user->username}";
+        return "{$this->guid}: type={$type} scope={$this->container_guid} username={$user->username} flags={$this->flags}";
     }
     
     static function filter_for_entity($entity)
@@ -244,6 +315,21 @@ abstract class Permission extends Entity
     
     function get_title()
     {
-        return str_replace('Permission_', '', get_class($this));
+        $title = str_replace('Permission_', '', get_class($this));
+        
+        if ($this->is_high_security())
+        {
+            $title .= "$";
+        }
+        if ($this->is_logged())
+        {
+            $title .= "+";
+        }
+        return $title;
+    }
+    
+    static function get_type_description()
+    {
+        return get_called_class();
     }
 }

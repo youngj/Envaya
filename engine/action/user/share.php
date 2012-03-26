@@ -4,7 +4,7 @@ class Action_User_Share extends Action
 {
     function before()
     {
-        $this->require_login();
+        Permission_RegisteredUser::require_any();
 
         $user = Session::get_logged_in_user();
         $recentSharedEmails = SharedEmail::query()

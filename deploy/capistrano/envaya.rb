@@ -44,6 +44,7 @@ namespace :deploy do
         localsettings_setup
         sanity_check
         update
+        iptables_setup
         php_setup
         dataroot_setup
     end
@@ -144,6 +145,10 @@ namespace :deploy do
             run "/etc/init.d/nginx reload"
         end
     end
+    
+    task :iptables_setup do
+        run "#{current_path}/scripts/setup/iptables.sh"
+    end        
     
     task :php_setup do
         run "#{current_path}/scripts/setup/php.sh"

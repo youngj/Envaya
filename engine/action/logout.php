@@ -2,6 +2,11 @@
 
 class Action_Logout extends Action
 {
+    function before()
+    {
+        Permission_Public::require_any();
+    }
+    
     function process_input()
     {
         Session::logout();

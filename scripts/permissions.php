@@ -179,16 +179,11 @@ function add_permission($opts)
     $user = get_user(@$opts['username']);
     $scope = get_scope(@$opts['scope']);
     
+    $flags = (int)@$opts['flags'];
+    
     print_opts($opts);
     
-    $permission = $cls::get_explicit($scope, $user);
-    
-    if ($permission)
-    {
-        die("User already has this permission for this scope:\n$permission\n");
-    }
-    
-    $permission = $cls::grant_explicit($scope, $user);
+    $permission = $cls::grant_explicit($scope, $user, $flags);
     
     echo "Permission granted.\n";
     echo "$permission\n";
@@ -203,7 +198,7 @@ function usage()
     echo "-l [--type=<type>] [--scope=<scope>] [--username=<username>]\n\n";
 
     echo "Add permission\n";
-    echo "-a --type=<type> --scope=<scope> --username=<username>\n\n";
+    echo "-a --type=<type> --scope=<scope> --username=<username> --flags=<flags>\n\n";
            
     echo "Delete permission\n";
     echo "-d <id>\n\n";
@@ -216,7 +211,7 @@ function usage()
 
 function main()
 {        
-    $opts = getopt('hlatd:',array("type:","scope:","username:"));
+    $opts = getopt('hlatd:',array("type:","scope:","username:","flags:"));
     
     if (isset($opts['t']))
         return test_permission($opts);

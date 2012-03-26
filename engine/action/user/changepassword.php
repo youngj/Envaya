@@ -10,14 +10,13 @@ class Action_User_ChangePassword extends Action
     function require_old_password()
     {
         $user = $this->get_user();
-                
+        
         if ($user->equals(Session::get_logged_in_user()))
         {
             // don't require old password if user just logged in 
-            $max_login_age = Request::is_post() ? 360 : 180;
-            $login_age = Session::get_login_age();
+            $session = Session::get_instance();
             
-            if (Session::is_consistent_client() && $login_age !== null && $login_age < $max_login_age)
+            if ($session->is_consistent_client() && $session->is_recent_login(180))
             {
                 return false;
             }            
@@ -61,6 +60,8 @@ class Action_User_ChangePassword extends Action
         $user->set_password($password);
         $user->set_password_reset_code(null);
         $user->save();
+        
+        LogEntry::create('user:change_password', $user);
 
         SessionMessages::add(__('user:password:success'));
         $this->redirect(get_input('next') ?: $user->get_url()."/settings");

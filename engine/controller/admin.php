@@ -21,7 +21,6 @@ class Controller_Admin extends Controller
 
     function before()
     {
-        Permission_UseAdminTools::require_any();
         $this->page_draw_vars['theme_name'] = 'editor';
     }
     
@@ -64,6 +63,8 @@ class Controller_Admin extends Controller
     
     function action_view_mail()
     {
+        Permission_ViewOutgoingMessage::require_for_root();
+    
         $id = (int)get_input('id');
         $mail = OutgoingMail::query()->where('id = ?', $id)->get();
         if (!$mail)
@@ -79,6 +80,8 @@ class Controller_Admin extends Controller
     
     function action_view_sms()
     {
+        Permission_ViewOutgoingMessage::require_for_root();
+    
         $id = (int)get_input('id');
         $sms = OutgoingSMS::query()->where('id = ?', $id)->get();
         if (!$sms)
@@ -94,6 +97,8 @@ class Controller_Admin extends Controller
     
     function action_recent_photos()
     {
+        Permission_UseAdminTools::require_for_root();
+
         $this->page_draw(array(
             'title' => 'Recent Photos',
             'content' => view('admin/recent_content', array('content_filter' => "%<img%")),
@@ -103,6 +108,8 @@ class Controller_Admin extends Controller
 
     function action_recent_documents()
     {
+        Permission_UseAdminTools::require_for_root();
+
         $this->page_draw(array(
             'title' => 'Recent Documents',
             'content' => view('admin/recent_content', array('content_filter' => "%<scribd%")),
@@ -113,6 +120,8 @@ class Controller_Admin extends Controller
     
     function action_outgoing_mail()
     {
+        Permission_ViewOutgoingMessage::require_for_root();
+    
         $this->page_draw(array(
             'title' => __('email:outgoing_mail'),
             'content' => view('admin/outgoing_mail'),
@@ -123,6 +132,8 @@ class Controller_Admin extends Controller
     
     function action_outgoing_sms()
     {
+        Permission_ViewOutgoingMessage::require_for_root();
+    
         $this->page_draw(array(
             'title' => __('sms:outgoing_sms'),
             'content' => view('admin/outgoing_sms'),
@@ -133,6 +144,8 @@ class Controller_Admin extends Controller
     
     function action_statistics()
     {
+        Permission_UseAdminTools::require_for_root();
+    
         $this->page_draw(array(
             'title' => __("admin:statistics"),
             'content' => view("admin/statistics")
@@ -141,6 +154,8 @@ class Controller_Admin extends Controller
     
     function action_logbrowser()
     {
+        Permission_UseAdminTools::require_for_root();
+    
         $query = LogEntry::query()->order_by('time_created desc');
     
         $limit = get_input('limit', 40);
@@ -171,6 +186,7 @@ class Controller_Admin extends Controller
 
         $this->page_draw(array(
             'title' => __('logbrowser'),
+            'theme_name' => 'simple_wide',
             'content' => view('admin/log_browse', array(
                 'user' => $user, 
                 'timeupper' => $timeupper, 
@@ -204,6 +220,8 @@ class Controller_Admin extends Controller
     
     function action_entities()
     {
+        Permission_UseAdminTools::require_any();
+    
         $root_entity = UserScope::get_root();
         if (!$root_entity)
         {

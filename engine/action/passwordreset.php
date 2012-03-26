@@ -7,6 +7,8 @@ class Action_PasswordReset extends Action
     
     function before()
     {
+        Permission_Public::require_any();
+    
         $user_guid = get_input('u');        
         $user = User::get_by_guid($user_guid);
         if (!$user)
@@ -38,6 +40,8 @@ class Action_PasswordReset extends Action
         $user->set_password_reset_code(null);
         $user->save();
 
+        LogEntry::create('user:reset_password', $user);
+        
         SessionMessages::add(__('user:password:success'));
         Session::login($user);
         $this->redirect("/pg/dashboard");

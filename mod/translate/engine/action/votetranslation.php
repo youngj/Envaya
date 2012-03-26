@@ -2,10 +2,13 @@
 
 class Action_VoteTranslation extends Action
 {
-    function process_input()
+    function before()
     {
-        $this->require_login();
-            
+        Permission_RegisteredUser::require_any();
+    }
+
+    function process_input()
+    {            
         $key = $this->param('key');
         $translation = $this->param('translation');
         $language = $key->get_language();

@@ -2,12 +2,14 @@
 
 class Action_SaveTranslationDraft extends Action
 {
-    function process_input()
+    function before()
     {
-        $this->set_content_type('text/javascript');
-        
-        $this->require_login();
-        
+        $this->set_content_type('text/javascript');    
+        Permission_RegisteredUser::require_any();
+    }
+
+    function process_input()
+    {        
         $value = get_input('content');
         $key = $this->param('key');
         

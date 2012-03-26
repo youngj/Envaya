@@ -50,7 +50,7 @@ if (!function_exists('readline'))
     // readline for windows from http://www.php.net/manual/en/function.readline.php#104181
     function readline($prompt="") {    
         echo $prompt;
-        return stream_get_line(STDIN, 1024, PHP_EOL);
+        return trim(fgets(STDIN, 1024));
     }
 }
 
@@ -77,7 +77,7 @@ function render_config_template($src_file, $dest_file)
     $conf = preg_replace_callback('#{{(?P<config_key>[^}]+)}}#', function($matches) {
         return Config::get($matches['config_key']);
     }, $conf_template);
-    
+        
     if (file_put_contents($dest_file, $conf))
     {
         error_log("Wrote $dest_file");

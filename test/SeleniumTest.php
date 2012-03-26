@@ -75,7 +75,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
     {
         $root = dirname(__DIR__);
         $env = get_environment();    
-        $env["ENVAYA_CONFIG"] = json_encode($this->config);
+        $env["APP_CONFIG"] = json_encode($this->config);
         run_task_sync($cmd, $root, $env);
     }
     

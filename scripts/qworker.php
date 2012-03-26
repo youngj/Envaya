@@ -27,12 +27,8 @@ function process_message($msg)
     {
          return;
     }
-
-    $msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
-
-    $entry = unserialize($msg->body);    
-
-    FunctionQueue::exec_queue_entry($entry);
+    
+    TaskQueue::exec_queued_task($msg);
 }
 
 /* 
@@ -46,7 +42,7 @@ function execute_queue_worker($queue_name)
     
     pcntl_signal(SIGTERM, "sig_handler");
     
-    $connection = FunctionQueue::connect();
+    $connection = RabbitMQ::connect();
     
     $ch = $connection->channel();
     $ch->queue_declare($queue_name, false, true, false, false);    

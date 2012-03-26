@@ -26,7 +26,7 @@ class Sphinx
     
     static function reindex()
     {
-        FunctionQueue::queue_call(array('Sphinx', '_reindex'), array());
+        TaskQueue::queue_task(array('Sphinx', '_reindex'), array());
     }
     
     static function _reindex()

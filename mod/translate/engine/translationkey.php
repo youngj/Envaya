@@ -115,7 +115,7 @@ class TranslationKey extends Entity
     
     function queue_auto_translation()
     {
-        FunctionQueue::queue_call(array('TranslationKey','fetch_auto_translation_by_guid'), array($this->guid));
+        TaskQueue::queue_task(array('TranslationKey','fetch_auto_translation_by_guid'), array($this->guid));
     }
     
     static function fetch_auto_translation_by_guid($guid)

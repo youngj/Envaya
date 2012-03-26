@@ -86,10 +86,12 @@ abstract class Controller extends Router {
             $vars['no_top_bar'] = true;
         }        
         
-        $viewtype = Views::get_request_type();
+        $viewtype = Views::get_request_type();        
+        
         if ($viewtype == 'default')
         {
             $theme = Theme::get(@$vars['theme_name'] ?: Config::get('theme:default'));
+            
             if (!isset($vars['css_name']))
             {
                 $vars['css_name'] = $theme->get_css_name();
@@ -222,6 +224,20 @@ abstract class Controller extends Router {
             ));                
         }
     }
+
+    function permission_denied($ex)
+    {
+        $content_type = @$this->response->headers['Content-Type'];
+        if ($content_type == 'text/javascript')
+        {
+            $this->set_status(401);
+            $this->render_error_js($ex);
+        }
+        else
+        {
+            $this->exception_redirect($ex, $this->get_login_url());
+        }
+    }
     
     function render_error_js($exception)
     {
@@ -285,25 +301,6 @@ abstract class Controller extends Router {
         {
             $url = secure_url(Request::full_original_url());
             throw new RedirectException('', $url);
-        }
-    }
-    
-    /*
-     * Redirects to the login page if the client is not logged in.
-     */    
-    public function require_login()
-    {
-        if (!Session::is_logged_in())
-        {
-            if (@$this->response->headers['Content-Type'] == 'text/javascript')
-            {
-                $this->set_status(403);
-                throw new RequestAbortedException();
-            }
-            else
-            {
-                throw new RedirectException('', $this->get_login_url());
-            }
         }
     }
     
@@ -400,4 +397,36 @@ abstract class Controller extends Router {
     {
         return $this->parent_controller;
     }
+    
+    public function execute($uri)
+    {
+        try
+        {
+            $this->execute_routes($uri);
+        }
+        catch (NotFoundException $ex)
+        {
+            $this->not_found();
+            throw new RequestAbortedException();
+        }
+        catch (PermissionDeniedException $ex)
+        {
+            $this->permission_denied($ex);
+            throw new RequestAbortedException();
+        }
+        catch (RedirectException $ex)
+        {
+            $this->exception_redirect($ex, $ex->url, $ex->status);
+            throw new RequestAbortedException();
+        }
+        catch (RequestAbortedException $ex)
+        {
+            throw new RequestAbortedException();
+        }
+        catch (Exception $ex)
+        {
+            $this->server_error($ex);
+            throw new RequestAbortedException();
+        }    
+    }    
 } // End Controller

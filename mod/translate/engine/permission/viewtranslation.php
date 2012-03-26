@@ -4,21 +4,35 @@ abstract class Permission_ViewTranslation extends Permission
 {        
     static $implicit = true;
     
-    static function is_granted($entity, $user)
+    static function get($entity, $user)
     {
         $cur = $entity;    
+        
+        $permission = null;
         
         // User must have permission to view all container entities in order to view the translation
         while ($cur && (!$cur instanceof UserScope))
         {
-            $permission = $cur->get_view_permission();           
+            $permission_cls = $cur->get_view_permission();           
            
-            if ($permission && !$permission::is_granted($cur, $user))
+            if ($permission_cls)
             {
-                return false;
+                $permission = $permission_cls::get($cur, $user);
+                if (!$permission)
+                {            
+                    return null;
+                }
             }
             $cur = $cur->get_container_entity();
         }    
-        return true;
+        
+        if ($permission)
+        {
+            return $permission;
+        }
+        else
+        {
+            return new Permission_Public();
+        }
     }
 }

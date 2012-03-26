@@ -11,6 +11,8 @@ class Controller_Pg_Discussions extends Controller
 
     function action_index()
     {
+        Permission_Public::require_any();
+    
         $this->allow_view_types(null);
         
         $this->page_draw(array(

@@ -21,6 +21,8 @@ class Controller_Org extends Controller
 
     function action_hide_todo()
     {
+        Permission_Public::require_any();    
+    
         Session::set('hide_todo', 1);
         
         $this->set_content_type('text/javascript');
@@ -29,11 +31,14 @@ class Controller_Org extends Controller
             
     function action_tci_donate_frame()
     {
+        Permission_Public::require_any();    
         $this->set_content(view("page/tci_donate_frame"));
     }
 
     function action_submit_donate_form()
     {
+        Permission_Public::require_any();    
+    
         $values = $_POST;
         $amount = (int)@$values['_amount'] ?: (int)@$values['_other_amount'];
         $values['amount'] = $amount;
@@ -110,6 +115,7 @@ class Controller_Org extends Controller
 
     function action_featured()
     {
+        Permission_Public::require_any();    
         $this->allow_view_types(null);
 
         $this->allow_content_translation();
@@ -119,8 +125,7 @@ class Controller_Org extends Controller
             'title' => __('featured:title'),
             'content' => view('org/featured_sites')
         ));
-    }    
-    
+    }        
 }
 
 Controller_Org::$routes = Controller::$SIMPLE_ROUTES;

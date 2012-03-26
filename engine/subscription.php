@@ -30,7 +30,7 @@ abstract class Subscription extends Entity
      */
     static function send_notifications($event_name, $notifier)
     {                                
-        foreach (static::get_subscriptions($notifier->get_container_entity()) as $subscription)
+        foreach (static::get_subscriptions($notifier) as $subscription)
         {
             $subscription->send_notification($event_name, $notifier);
         }
@@ -94,4 +94,9 @@ abstract class Subscription extends Entity
     
     abstract function send_notification($event_name, $notifier);
     abstract function send($args);
+    
+    static function get_type_description()
+    {
+        return '';
+    }    
 }

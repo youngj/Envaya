@@ -219,9 +219,9 @@ class OutgoingMail extends Model
         $this->time_queued = timestamp();
         $this->save();
         
-        return FunctionQueue::queue_call(array('OutgoingMail', 'send_now_by_id'), 
+        return TaskQueue::queue_task(array('OutgoingMail', 'send_now_by_id'), 
             array($this->id),
-            FunctionQueue::LowPriority
+            TaskQueue::LowPriority
         );    
     }
     

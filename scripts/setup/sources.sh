@@ -36,11 +36,21 @@ deb http://php53.dotdeb.org stable all
 deb http://ppa.launchpad.net/brianmercer/php/ubuntu lucid main
 deb-src http://ppa.launchpad.net/brianmercer/php/ubuntu lucid main
 
-# end sources added by envaya
+deb http://www.rabbitmq.com/debian/ testing main
+
+# end sources added by setup/sources.sh
 
 EOF
 
 fi
+
+
+cd /tmp
+wget http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
+apt-key add rabbitmq-signing-key-public.asc
+
+wget http://www.dotdeb.org/dotdeb.gpg
+apt-key add dotdeb.gpg
 
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C300EE8C
 apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8D0DC64F

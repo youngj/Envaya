@@ -42,6 +42,8 @@ class Controller_EnvayaAdmin extends Controller
     
     function action_featured_photos()
     {
+        Permission_EditMainSite::require_for_root();
+    
         $this->page_draw(array(
             'title' => __('featured:photo:all'),
             'content' =>  view('admin/featured_photos', array(

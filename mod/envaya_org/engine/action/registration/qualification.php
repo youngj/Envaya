@@ -4,6 +4,8 @@ class Action_Registration_Qualification extends Action
 {    
     function before()
     {
+        Permission_Public::require_any();
+
         $invite_code = get_input('invite');
     
         if (Session::is_logged_in())
@@ -14,8 +16,7 @@ class Action_Registration_Qualification extends Action
         if ($invite_code)
         {
             Session::set('invite_code', $invite_code);
-        }
-        
+        }       
     }
 
     function render()

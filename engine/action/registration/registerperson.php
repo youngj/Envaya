@@ -4,6 +4,7 @@ class Action_Registration_RegisterPerson extends Action
 {
     function before()
     {
+        Permission_Public::require_any();
         $user = Session::get_logged_in_user();
         if ($user)
         {

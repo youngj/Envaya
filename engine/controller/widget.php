@@ -109,8 +109,10 @@ class Controller_Widget extends Controller_User
     }
         
     function redirect_delta($delta)
-    {
+    {    
         $widget = $this->get_widget();
+        
+        Permission_ViewUserSite::require_for_entity($widget);
 
         $op = ($delta > 0) ? ">" : "<";
         $order = ($delta > 0) ? "asc" : "desc";

@@ -16,10 +16,13 @@ class Action_Upload extends Action
         }         
     }   
 
+    function before()
+    {
+        Permission_RegisteredUser::require_any();
+    }
+    
     function process_input()
     {        
-        $this->require_login();
-        
         try
         {  
             $files = $this->upload_file_in_mode($_FILES['file'], get_input('mode'));                    

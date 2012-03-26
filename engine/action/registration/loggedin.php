@@ -4,6 +4,8 @@ class Action_Registration_LoggedIn extends Action
 {    
     function before()
     {
+        Permission_Public::require_any();
+        
         if (!Session::is_logged_in())
         {
             throw new RedirectException('', $this->get_redirect_url());

@@ -2,6 +2,11 @@
 
 class Action_Discussion_AddMessage extends Action
 {
+    function before()
+    {
+        Permission_Public::require_any();
+    }
+
     function process_input()
     {
         $topic = $this->get_topic();                       

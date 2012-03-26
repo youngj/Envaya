@@ -150,9 +150,9 @@ class OutgoingSMS extends Model
         
         if ($provider->can_send_sms())
         {
-            FunctionQueue::queue_call(array('OutgoingSMS', 'send_now_by_id'), 
+            TaskQueue::queue_task(array('OutgoingSMS', 'send_now_by_id'), 
                 array($this->id),
-                FunctionQueue::LowPriority
+                TaskQueue::LowPriority
             );    
         }
     }    

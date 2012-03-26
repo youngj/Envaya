@@ -14,6 +14,8 @@ class Controller_EnvayaHome extends Controller
 
     function action_index()
     {
+        Permission_Public::require_any();        
+    
         $this->allow_content_translation();
         $this->page_draw_vars['hide_translate_bar'] = true;
 

@@ -14,6 +14,7 @@ class Session
     static function set_instance($instance)
     {
         static::$instance = $instance;
+        static::$loaded_user = false;
     }
     
     static function get_instance()
@@ -75,44 +76,24 @@ class Session
     {
         static::$loaded_user = false;
         static::get_instance()->login($user, $options);
-
-        static::set('login_time', timestamp());
-        static::set('login_ip', Request::get_client_ip());
-        static::set('login_user_agent', @$_SERVER['HTTP_USER_AGENT']);
-        
-        $user->reset_login_failure_count();
-        $user->last_action = timestamp();
-        $user->save();    
-        
-        LogEntry::create('user:logged_in', $user);
     }    
-    
-    static function get_login_age()
+        
+    static function is_high_security()
     {
-        $login_time = static::get('login_time');
-        if ($login_time)
-        {
-            return timestamp() - $login_time;
-        }
-        return null;
+        return static::get_instance()->is_high_security();
     }
     
-    static function is_consistent_client()
+    static function is_medium_security()
     {
-        return static::get('login_ip') == Request::get_client_ip()
-            && static::get('login_user_agent') == $_SERVER['HTTP_USER_AGENT'];
+        return static::get_instance()->is_medium_security();    
     }
-    
+
     static function logout()
     {
-        $user = Session::get_logged_in_user();
-        if ($user)
-        {
-            LogEntry::create('user:logged_out', $user);
-        }
-        static::$loaded_user = false;        
-        
-        static::get_instance()->logout();
+        $user = static::get_logged_in_user();
+    
+        static::$loaded_user = false;               
+        static::get_instance()->logout($user);
         return true;
     }
 }

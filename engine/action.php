@@ -41,13 +41,18 @@ abstract class Action
         }
         else
         {
-            $this->set_status(405);
-            $this->set_content_type('text/plain');
-            $this->set_content("Invalid request method $request_method");
+            $this->handle_invalid_request_method();
         }
             
         $this->after();
     }        
+    
+    function handle_invalid_request_method()
+    {
+        $this->set_status(405);
+        $this->set_content_type('text/plain');
+        $this->set_content("Invalid request method");
+    }
     
     function do_POST()
     {

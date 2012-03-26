@@ -67,8 +67,8 @@ class Config
     static function set($key, $value)
     {
         static::$settings[$key] = $value;
-    }    
-        
+    }
+            
     static function load()
     {
         if (static::$settings == null)
@@ -76,12 +76,12 @@ class Config
             self::load_array(self::get_root_group('default'));                        
             self::load_array(self::get_root_group('local'));
             
-            // The ENVAYA_CONFIG environment variable may define settings in a JSON string
-            $json = getenv("ENVAYA_CONFIG");
+            // The APP_CONFIG environment variable may define settings in a JSON string
+            $json = getenv("APP_CONFIG");            
             if ($json)
             {
                 self::load_array(json_decode($json, true));
-            }                        
+            }                                    
         }
     }
         

@@ -1,14 +1,14 @@
 <?php
 
 /*
- * Instantiates a standalone HTTP server for Envaya.
+ * Instantiates a standalone HTTP server for development.
  * Just run it on the command line like "php web_server.php".
  */
 
 require_once __DIR__ . '/httpserver/httpserver.php';
 require_once dirname(__DIR__) . '/start.php';
 
-class EnvayaHTTPServer extends HTTPServer
+class AppHTTPServer extends HTTPServer
 {
     function __construct()
     {
@@ -19,7 +19,7 @@ class EnvayaHTTPServer extends HTTPServer
         parent::__construct(array(
             'port' => $port,
             'cgi_env' => array(
-                'ENVAYA_CONFIG' => getenv('ENVAYA_CONFIG')
+                'APP_CONFIG' => getenv('APP_CONFIG')
             )
         ));
     }
@@ -55,5 +55,5 @@ class EnvayaHTTPServer extends HTTPServer
     }
 }
 
-$server = new EnvayaHTTPServer();
+$server = new AppHTTPServer();
 $server->run_forever();
