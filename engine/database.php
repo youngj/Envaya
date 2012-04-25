@@ -95,6 +95,7 @@ class Database
     static function update($query, $args = array())
     {
         $db = static::get_link(Database::Write);                
+        
         if (static::stmt_execute($db, $query, $args))
         {
             return true;

@@ -7,11 +7,11 @@ fi
 
 # overwrite sources.list with our own sources
 
-if ! grep -q envaya /etc/apt/sources.list ; then 
+if ! grep -q sources.sh /etc/apt/sources.list ; then 
 
 cat <<EOF >> /etc/apt/sources.list
 
-# following sources added by envaya
+# following sources added by setup/sources.sh
 
 deb http://us.archive.ubuntu.com/ubuntu/ lucid main restricted
 deb-src http://us.archive.ubuntu.com/ubuntu/ lucid main restricted
@@ -31,7 +31,8 @@ deb-src http://us.archive.ubuntu.com/ubuntu/ lucid-updates universe
 deb http://security.ubuntu.com/ubuntu lucid-security universe
 deb-src http://security.ubuntu.com/ubuntu lucid-security universe
 deb http://ppa.launchpad.net/nginx/stable/ubuntu lucid main
-deb http://php53.dotdeb.org stable all
+
+deb http://packages.dotdeb.org/ squeeze-php54 all
 
 deb http://ppa.launchpad.net/brianmercer/php/ubuntu lucid main
 deb-src http://ppa.launchpad.net/brianmercer/php/ubuntu lucid main

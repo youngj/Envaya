@@ -236,10 +236,10 @@ class Build
             }
             
             file_put_contents($css_temp, $raw_css);
-            $compressed = static::minify($css_temp, "$output_dir/$filename.css", 'css');
+            $content_hash = static::compress($css_temp, "$output_dir/$filename", 'css', self::Minify | self::Gzip | self::ContentHash);
             unlink($css_temp);
             
-            $build_config["build:hash:css:$filename"] = static::get_content_hash($compressed);
+            $build_config["build:hash:css:$filename"] = $content_hash;
         }
         
         static::write_build_config($build_config);
@@ -285,17 +285,59 @@ class Build
         return "{".implode(',',Config::get('modules'))."}";
     }    
     
-    private static function minify($srcFile, $destFile, $type='js')
+    const Minify = 1;
+    const Gzip = 2;
+    const ContentHash = 4;
+    
+    private static function compress($srcFile, $destFileBase, $ext, $options)
     {
-        $src = file_get_contents($srcFile);
+        $src = file_get_contents($srcFile);       
+    
+        $tmpFile = null;
+    
+        if ($options & self::Minify)
+        {
+            $tmpFile = "$destFileBase.tmp";
+            system("java -jar vendors/yuicompressor-2.4.2.jar --type $ext -o ".escapeshellarg($tmpFile). " ".escapeshellarg($srcFile));            
+            $compressed = file_get_contents($tmpFile);
+        }
+        else
+        {        
+            $compressed = $src;
+        }
         
-        system("java -jar vendors/yuicompressor-2.4.2.jar --type $type -o ".escapeshellarg($destFile). " ".escapeshellarg($srcFile));
+        if ($options & self::ContentHash)
+        {
+            $contentHash = self::get_content_hash($compressed);
+            $destFile = "$destFileBase.$contentHash.$ext";
+        }
+        else
+        {
+            $destFile = "$destFileBase.$ext";
+            $contentHash = null;
+        }
         
-        $compressed = file_get_contents($destFile);
-
-        echo strlen($src)." ".strlen($compressed)." $destFile\n";  
+        file_put_contents($destFile, $compressed);
         
-        return $compressed;
+        if ($tmpFile)
+        {
+            unlink($tmpFile);
+        }
+        
+        $size_str = strlen($src)."  :  ".strlen($compressed);
+        
+        if ($options & self::Gzip)
+        {
+            $gzencoded = gzencode("\n$compressed", 9);        
+            file_put_contents("$destFile.gz", $gzencoded);
+            echo $size_str." : ".strlen($gzencoded)." : $destFile\n";  
+        }
+        else
+        {
+            echo "$size_str : $destFile\n";  
+        }
+        
+        return $contentHash;
     }
         
     private static function add_nonexistent_language_paths(&$dir_paths)
@@ -455,25 +497,41 @@ class Build
             $filename = pathinfo($js_src_file,  PATHINFO_FILENAME);
             $extension = pathinfo($js_src_file,  PATHINFO_EXTENSION);
             
-            $output_file = "www/_media/{$dir}{$filename}.js";
+            $base_output_file = "www/_media/{$dir}{$filename}";
+            
+            $is_inline = ($dir == 'inline/'); // inline JS does not need content hashes because it is never loaded by URL
+            $is_pre_minified = strpos($js_src_file, ".min.") !== false;
+            
+            if ($is_inline)
+            {
+                $options = self::Minify;
+            }
+            else if ($is_pre_minified)
+            {
+                $options = self::Gzip;
+            }
+            else
+            {
+                $options = self::Minify | self::Gzip | self::ContentHash;
+            }            
             
             if ($extension == 'php')
             {
                 $js_temp_file = "scripts/$basename.tmp.js";
-                $raw_js = static::get_output($js_src_file);                
-                file_put_contents($js_temp_file, $raw_js);    
-                $compressed = static::minify($js_temp_file, $output_file);
+                $raw_js = static::get_output($js_src_file);
+                file_put_contents($js_temp_file, $raw_js);
+                $content_hash = static::compress($js_temp_file, $base_output_file, 'js', $options);
                 unlink($js_temp_file);
             }
             else
             {          
-                $compressed = static::minify($js_src_file, $output_file);
+                $content_hash = static::compress($js_src_file, $base_output_file, 'js', $options);
             }
             
-            if ($dir != 'inline/') // inline JS does not need content hashes because it is never loaded by URL
+            if (isset($content_hash)) 
             {
                 $build_config = static::get_build_config();
-                $build_config["build:hash:js:$filename"] = static::get_content_hash($compressed);
+                $build_config["build:hash:js:$filename"] = $content_hash;
                 static::write_build_config($build_config);
             }
         }

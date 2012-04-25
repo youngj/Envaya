@@ -53,7 +53,7 @@ class TaskQueue
 
         $queue_entry = json_decode($msg->body, true);
     
-        $subtype_id = $queue_entry['subtype_id'];        
+        $subtype_id = $queue_entry['subtype_id'];
         
         $cls = ClassRegistry::get_class($subtype_id);
         

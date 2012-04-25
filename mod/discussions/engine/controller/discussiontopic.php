@@ -9,14 +9,14 @@ class Controller_DiscussionTopic extends Controller_User
 {
     static $routes = array(
         array(
-            'regex' => '/(?P<topic_guid>\d+)/message/(?P<message_guid>\d+)(/(?P<action>\w+)\b)?',
+            'regex' => '/(?P<topic_tid>\d+)/message/(?P<message_guid>\w+)(/(?P<action>\w+)\b)?',
             'action' => 'action_<action>_message',
             'before' => 'init_message_by_guid',
         ),
         array(
-            'regex' => '/(?P<topic_guid>\d+)(/(?P<action>\w+)\b)?',
+            'regex' => '/(?P<topic_tid>\d+)(/(?P<action>\w+)\b)?',
             'defaults' => array('action' => 'index'),
-            'before' => 'init_topic_by_guid',
+            'before' => 'init_topic_by_tid',
         ),
         array(
             'regex' => '/(?P<action>new)\b',
@@ -30,11 +30,11 @@ class Controller_DiscussionTopic extends Controller_User
         return $this->param('topic');
     }
 
-    function init_topic_by_guid()
+    function init_topic_by_tid()
     {
-        $topicId = $this->param('topic_guid');
+        $topicId = $this->param('topic_tid');
         
-        $topic = DiscussionTopic::get_by_guid($topicId);
+        $topic = DiscussionTopic::query()->where('tid = ?', $topicId)->get();
         $user = $this->get_user();
         if ($topic && $topic->container_guid == $user->guid)
         {
@@ -49,7 +49,7 @@ class Controller_DiscussionTopic extends Controller_User
     
     function init_message_by_guid()
     {
-        $this->init_topic_by_guid();
+        $this->init_topic_by_tid();
         
         $message_guid = $this->param('message_guid');        
         $message = $this->get_topic()->query_messages()->guid($message_guid)->get();

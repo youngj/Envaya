@@ -322,4 +322,10 @@ class Query_Select
         }        
         return $query;    
     }
+    
+    
+    function copy()
+    {
+        return clone $this;
+    }    
 }

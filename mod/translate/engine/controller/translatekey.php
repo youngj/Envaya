@@ -8,7 +8,7 @@ class Controller_TranslateKey extends Controller
             'action' => 'action_index',
         ),
         array(
-            'regex' => '/(?P<translation_guid>\d+)/(?P<action>\w+)\b', 
+            'regex' => '/(?P<translation_guid>\w+)/(?P<action>\w+)\b', 
             'action' => 'action_translation_<action>',
             'before' => 'init_translation',
         ),                
@@ -43,7 +43,7 @@ class Controller_TranslateKey extends Controller
         
         Permission_ViewTranslation::require_for_entity($key);
         
-        $translation_guid = (int)get_input('translation');
+        $translation_guid = get_input('translation');
         if ($translation_guid)
         {
             $translation = $key->query_translations()
@@ -186,10 +186,10 @@ class Controller_TranslateKey extends Controller
         
         $sort_value = $key->$sort_column;
         
-        $query->where("$sort_column $cmp ? or ($sort_column = ? AND guid $cmp ?)", 
-                    $sort_value, $sort_value, $key->guid);
+        $query->where("$sort_column $cmp ? or ($sort_column = ? AND tid $cmp ?)", 
+                    $sort_value, $sort_value, $key->tid);
                     
-        $query->order_by("$sort_column $dir, guid $dir");
+        $query->order_by("$sort_column $dir, tid $dir");
             
         return $this->apply_filters($query)->get();    
     }

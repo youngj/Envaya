@@ -7,7 +7,11 @@
     
     $query->from('discussion_topics d');
     
-    $filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));
+    $filters = Query_Filter::filters_from_input(array(
+        'Query_Filter_User_Sector',
+        'Query_Filter_User_Country',
+        'Query_Filter_User_Region'
+    ));
     
     $subquery = new Query_SelectUser('users u');
     $subquery->columns('u.guid');

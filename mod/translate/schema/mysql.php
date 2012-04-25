@@ -15,11 +15,11 @@ CREATE TABLE `interface_groups` (
 CREATE TABLE `translation_keys` (
   <?php require 'schema/entity_columns.php'; ?>,
   `subtype_id` varchar(64) NOT NULL,
-  `name` varchar(64) NOT NULL,
+  `name` varbinary(64) NOT NULL,
   `num_translations` int(11) not null default 0,
-  `language_guid` bigint(20) unsigned NOT NULL,  
+  `language_guid`  binary(24) NOT NULL,  
   `best_translation` text null,
-  `best_translation_guid` bigint(20) unsigned NOT NULL,  
+  `best_translation_guid`  binary(24) NULL,  
   `best_translation_hash` varchar(64) null,
   `best_translation_approval` tinyint(4) not null default 0,
   `best_translation_source` tinyint(4) not null default 0,
@@ -29,12 +29,12 @@ CREATE TABLE `translation_keys` (
 
 CREATE TABLE `translation_strings` (
   <?php require 'schema/entity_columns.php'; ?>,  
-  `language_guid` bigint(20) unsigned NOT NULL,  
+  `language_guid`  binary(24) NOT NULL,  
   `value` text NOT NULL collate utf8_bin,
   `score` int(11) NOT NULL default 0,
   `default_value_hash` varchar(64) not null,
   `approval` tinyint(4) not null default 0,
-  `approval_time` int(11) null,
+  `approval_time` bigint(20) unsigned null,
   `source` tinyint(4) not null default 0,
   KEY `language_guid` (`language_guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -42,7 +42,7 @@ CREATE TABLE `translation_strings` (
 CREATE TABLE `translation_votes` (
   <?php require 'schema/entity_columns.php'; ?>,  
   `score` int(11) NOT NULL default 0,
-  `language_guid` bigint(20) unsigned NOT NULL,
+  `language_guid`  binary(24) NOT NULL,
   KEY `language_guid` (`language_guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -56,7 +56,7 @@ CREATE TABLE `translator_stats` (
 CREATE TABLE `translation_key_comments` (
   <?php require 'schema/entity_columns.php'; ?>,  
   <?php require 'schema/content_columns.php'; ?>,  
-  `language_guid` bigint(20) unsigned NULL default 0,  
+  `language_guid` binary(24) NULL,  
   `key_name` varchar(64) NOT NULL,
   KEY `language_guid` (`language_guid`),
   KEY `key_name` (`key_name`)

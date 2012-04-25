@@ -7,10 +7,6 @@
  * This allows you to specify any subclass instance by guid, without needing to record the subclass separately.
  * This is kind of useful for things like feed items and translations, 
  * which may refer to many different types of entities. 
- *
- * In order for the system to determine which type of entity a guid refers to, the entity class name
- * must be registered with a unique string identifier (subtype_id) in the ClassRegistry. 
- * The 'entities' database table stores a subtype_id for each entity guid.
  * 
  * Entities also have an 'status' field which allows effectively deleting rows
  * while leaving them in the database to allow them to be undeleted.
@@ -27,7 +23,7 @@ abstract class Entity extends Model implements Serializable
     const Enabled = 1;  // not deleted    
 
     static $query_class = 'Query_SelectEntity';
-    static $primary_key = 'guid';    
+    static $primary_key = 'guid';
     static $current_request_entities = array();
     static $admin_view = null;
     
@@ -93,12 +89,12 @@ abstract class Entity extends Model implements Serializable
         return array_merge(
             parent::get_table_attributes(),
             array(
-                'owner_guid' => 0,
-                'container_guid' => 0,
+                'owner_guid' => null,
+                'container_guid' => null,
+                'metadata_json' => null,
                 'time_created' => 0,
                 'time_updated' => 0,
-                'status' => Entity::Enabled,
-                'metadata_json' => null,
+                'status' => Entity::Enabled
             )
         );
     }    
@@ -179,6 +175,26 @@ abstract class Entity extends Model implements Serializable
         return "/{$this->guid}";
     }
 
+    function get_guid()
+    {
+        $guid = $this->guid;
+    
+        if (!$guid)
+        {
+            $table_base_class = static::$table_base_class ?: get_class($this);
+        
+            $guid_prefix = PrefixRegistry::get_prefix($table_base_class);
+        
+            if (!$guid_prefix)
+            {
+                throw new Exception("$table_base_class does not have a registered guid prefix");
+            }
+
+            $this->guid = $guid = $guid_prefix . generate_random_code(22, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+        }
+        return $guid;
+    }
+    
     /**
      * Return a url for the entity's icon, trying multiple alternatives.
      *
@@ -189,10 +205,7 @@ abstract class Entity extends Model implements Serializable
     {
         return "/_media/images/default{$size}.gif";
     }
-
-    /**
-     * Save generic attributes to the entities table.
-     */
+    
     public function save()
     {
         $time = timestamp();
@@ -204,29 +217,26 @@ abstract class Entity extends Model implements Serializable
         }        
                 
         $guid = $this->guid;
-		
-		$table_name = static::$table_name;
         
-        if ($guid == 0)
+        $table_name = static::$table_name;
+        
+        if (!$this->tid)
         {
-            $guid = $this->guid = Database::insert_row('entities', array(
-                'subtype_id' => static::get_subtype_id()
-            ));
-            
-            if (!$guid)
-			{
-                throw new IOException(__('error:BaseEntitySaveFailed'));
-			}
-				
             $values = $this->get_table_attribute_values();
-            $values['guid'] = $guid;
-            Database::insert_row($table_name, $values);
+            
+            if (!isset($values['guid']))
+            {
+                $values['guid'] = $this->get_guid();
+            }
+            
+            $this->attributes['tid'] = Database::insert_row($table_name, $values);
         }
-		else
-		{
-			Database::update_row($table_name, 'guid', $guid, $this->get_dirty_attribute_values());		
-		}		
-		
+        else
+        {
+            Database::update_row($table_name, 'guid', $guid, $this->get_dirty_attribute_values());        
+        }
+
+        $this->dirty_attributes = null;        
         $this->clear_from_cache();
         $this->cache_for_current_request();
         
@@ -273,8 +283,6 @@ abstract class Entity extends Model implements Serializable
      */
     public function delete()
     {
-        $res = Database::delete("DELETE from entities where guid=?", array($this->guid));
-                
         parent::delete();
         $this->clear_from_cache();
     }
@@ -298,7 +306,7 @@ abstract class Entity extends Model implements Serializable
     function set_container_entity($entity)
     {
         $this->container_entity = $entity;
-        $this->container_guid = $entity->guid;
+        $this->container_guid = $entity ? $entity->get_guid() : null;
     }
     
     function save_draft($content)
@@ -311,15 +319,12 @@ abstract class Entity extends Model implements Serializable
     
     static function get_by_guid($guid, $show_disabled = false)
     {    
-        $guid = (int)$guid;
-        
         if (!$guid)
         {
             return null;
         }
     
         $entity = Entity::get_from_cache($guid);
-                
         if (!$entity)
         {
             $entity = static::query()
@@ -405,9 +410,9 @@ abstract class Entity extends Model implements Serializable
         return null;    
     }  
 
-	function is_contained_in($container)
-	{
-		$cur = $this;        
+    function is_contained_in($container)
+    {
+        $cur = $this;        
         while ($cur)
         {
             if ($cur->equals($container))
@@ -416,40 +421,7 @@ abstract class Entity extends Model implements Serializable
             }            
             $cur = $cur->get_container_entity();          
         }
-        return false; 	
-	}
-    
-    function get_local_id()
-    {
-        $row = Database::get_row("SELECT * FROM local_ids where guid = ?", array($this->guid));
-        if ($row != null)
-        {
-            return $row->local_id;
-        }
-        
-        $user = $this->get_container_user();
-        
-        $max_row = Database::get_row("SELECT max(local_id) as max FROM local_ids where user_guid = ?", array($user->guid));
-        
-        $max_id = $max_row ? ((int)$max_row->max) : 0;
-        
-        for ($i = 1; $i < 10; $i++)
-        {
-            try
-            {
-                $local_id = $max_id + $i;
-            
-                Database::update("INSERT INTO local_ids (guid,user_guid,local_id) VALUES (?,?,?)",
-                    array($this->guid, $user->guid, $local_id));
-                    
-                return $local_id;
-            }
-            catch (DatabaseException $ex)
-            {
-                // duplicate local_id? try next one
-            }
-        }
-        return null;
+        return false;     
     }    
     
     function get_admin_url()
@@ -470,10 +442,5 @@ abstract class Entity extends Model implements Serializable
             'value' => $this->$property
         ));        
         return $res['value'];
-    }
-    
-    function allow_guid_redirect()
-    {
-        return false;
-    }
+    }    
 }

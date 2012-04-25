@@ -10,7 +10,7 @@ class IncomingMail
     
     // map of regexes that match secure tag of "to" address => handler function
     static $tag_actions = array(
-        '#^comment(?P<guid>\d+)$#' => array('EmailSubscription_Comments', 'handle_mail_reply'),
+        '#^comment(?P<tid>\d+)$#' => array('EmailSubscription_Comments', 'handle_mail_reply'),
     );
     
     function __construct()

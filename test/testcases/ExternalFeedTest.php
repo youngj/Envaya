@@ -101,13 +101,13 @@ class ExternalFeedTest extends SeleniumTest
         // view news page, feed items should be included properly
         $this->retry('checkNews');
         $this->mustNotExist("//a[contains(@href,'twitter.com')]");
-        $this->mustNotExist("//a[contains(@href,'facebook.com')]");        
+        $this->mustNotExist("//a[contains(@href,'tumblr.com')]");        
         
-        // edit news page, add facebook link
+        // edit news page, add tumblr link
         $this->open('/testposter7/page/news/edit');
         $this->mustNotExist("//a[contains(@href,'twitter.com')]");
         
-        $this->retry('type', array("//input[@id='feed_url']", "facebook.com/envaya"));
+        $this->retry('type', array("//input[@id='feed_url']", "adunar.tumblr.com"));
         $this->click("//form[@id='feed_form']//button");
         $this->retry('uncheck', array("//div[@class='modalBody']//input[@type='checkbox']"), 25);
         $this->click("//input[@value='OK']");   
@@ -141,7 +141,7 @@ class ExternalFeedTest extends SeleniumTest
         $this->open("/testposter7/news");
         $this->mustNotExist("//a[contains(@href,'http://www.bbc.co.uk/swahili/')]");
         
-        $this->retry('checkFacebook');
+        $this->retry('checkTumblr');
         $this->retry('checkTwitter');
         
         // edit news page, add link without rss, add to home page
@@ -162,7 +162,7 @@ class ExternalFeedTest extends SeleniumTest
         $this->assertContains('Mwanzo', $this->getText("//a[contains(@href,'http://www.bbc.co.uk/swahili/')]"));
         $this->assertContains('Envaya Twitter', $this->getText("//a[contains(@href,'http://twitter.com/envaya')]"));
         $this->assertContains('Example Title', $this->getText("//a[contains(@href,'http://example.com/bar')]"));
-        $this->mustNotExist("//a[contains(@href,'facebook.com')]");
+        $this->mustNotExist("//a[contains(@href,'tumblr.com')]");
         
     }
     
@@ -175,13 +175,24 @@ class ExternalFeedTest extends SeleniumTest
     function checkTwitter()
     {       
         $this->clickAndWait("//div[@id='site_menu']//a[contains(@href,'news')]");
-        $this->mouseOver("//a[contains(@href,'http://twitter.com/Envaya/status')]");
+        
+        while (true)
+        {
+            // may not be on first page
+            if ($this->isElementPresent("//a[contains(@href,'http://twitter.com/Envaya/status')]"))
+            {
+                break;
+            }
+            $this->clickAndWait("//a[@class='pagination_next']");
+        }
     }
 
-    function checkFacebook()
+    function checkTumblr()
     {     
         $this->clickAndWait("//div[@id='site_menu']//a[contains(@href,'news')]");
-        $this->mouseOver("//a[contains(text(),'via Facebook')]");
+        $this->mouseOver("//a[contains(text(),'via adunar.tumblr.com')]");
+        $this->mouseOver("//a[contains(text(),'Another day!')]");
+        $this->mouseOver("//p[contains(text(),'yay')]");
     }
     
     function deleteNewsUpdates()

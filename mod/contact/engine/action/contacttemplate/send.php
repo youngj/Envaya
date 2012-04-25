@@ -58,7 +58,7 @@ class Action_ContactTemplate_Send extends Action
         else
         {         
             $subscriptions = $template->query_potential_recipients()
-                ->order_by('guid')
+                ->order_by('tid')
                 ->limit(Config::get('contact:max_recipients'))
                 ->filter(); 
         }

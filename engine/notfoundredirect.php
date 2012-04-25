@@ -13,7 +13,7 @@ class NotFoundRedirect extends Model
 {
     static $table_name = 'not_found_redirects';
     static $table_attributes = array(
-        'container_guid' => 0,
+        'container_guid' => null,
         'pattern' => '',
         'replacement' => '',
         'order' => 1000,
@@ -73,7 +73,7 @@ class NotFoundRedirect extends Model
         }
         else
         {
-            $query->where('container_guid = 0');
+            $query->where('container_guid is null');
         }
         return $query;
     }

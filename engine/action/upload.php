@@ -18,10 +18,12 @@ class Action_Upload extends Action
 
     function before()
     {
+        Session::get_instance()->override_security_check();
+        
         Permission_RegisteredUser::require_any();
     }
     
-    function process_input()
+    function do_POST()
     {        
         try
         {  
@@ -41,6 +43,4 @@ class Action_Upload extends Action
         $this->set_content_type('text/html'); // a lie, but required for plupload's html4 runtime          
         $this->set_content($json);
     }
-    
-    protected function validate_security_token() {}
 }    

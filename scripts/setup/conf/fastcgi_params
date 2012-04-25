@@ -1,16 +1,7 @@
 
-add_header X-Frame-Options SAMEORIGIN;
-
 fastcgi_pass 127.0.0.1:9000;
 fastcgi_param SCRIPT_FILENAME $document_root/$fastcgi_script_name;
 fastcgi_param PATH_INFO $fastcgi_script_name;
-
-fastcgi_cache envaya;
-fastcgi_no_cache $cookie_envaya $arg_nocache;
-fastcgi_cache_bypass $cookie_envaya $arg_nocache;
-fastcgi_cache_key "$scheme:$host:$request_uri:$cookie_lang:$cookie_view:$geoip_country_code:$cookie_https:$http_accept_encoding";
-fastcgi_cache_valid any 1m;
-fastcgi_cache_use_stale error timeout http_500;
 
 fastcgi_param  QUERY_STRING       $query_string;
 fastcgi_param  REQUEST_METHOD     $request_method;
@@ -33,6 +24,11 @@ fastcgi_param  SERVER_PORT        $server_port;
 fastcgi_param  SERVER_NAME        $server_name;
 
 fastcgi_param  GEOIP_COUNTRY_CODE $geoip_country_code;
+
+fastcgi_param  BROWSER_TYPE       $browser_type;
+
+# make sure PHP zlib.output_encoding matches nginx fastcgi_cache_key (i.e. disable deflate)
+fastcgi_param  HTTP_ACCEPT_ENCODING  $compression_type;
 
 # PHP only, required if PHP was built with --enable-force-cgi-redirect
 fastcgi_param  REDIRECT_STATUS    200;

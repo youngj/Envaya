@@ -108,9 +108,21 @@ class Session_Cookie implements SessionImpl
     
     function is_medium_security()
     {       
+        if ($this->override_security)
+        {
+            return true;
+        }
+        
         return $this->is_recent_login(3000000)
             && $this->is_consistent_browser();
     }    
+    
+    private $override_security = false;
+    
+    function override_security_check($override = true)
+    {
+        $this->override_security = $override;
+    }
     
     function get($key)
     {

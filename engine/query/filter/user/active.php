@@ -1,6 +1,6 @@
 <?php
 
-class Query_Filter_Active extends Query_Filter_Date
+class Query_Filter_User_Active extends Query_Filter_Date
 {    
     static function get_name()
     {

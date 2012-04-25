@@ -18,15 +18,19 @@ chmod 700 /etc/nginx/ssl
 mkdir -p /var/nginx/cache
 chmod 777 /var/nginx/cache
 
-cp $SETUP_DIR/conf/php5-fpm.conf /etc/php5/fpm/php5-fpm.conf
+cp $SETUP_DIR/conf/php-fpm.conf /etc/php5/fpm/php-fpm.conf
 cp $SETUP_DIR/conf/sites-available/* /etc/nginx/sites-available/
 cp $SETUP_DIR/conf/fastcgi_params /etc/nginx/fastcgi_params
+
+touch /var/log/fpm-php.www.log
+chown www-data:www-data /var/log/fpm-php.www.log
+chmod 600 /var/log/fpm-php.www.log
 
 cat <<EOF > /etc/nginx/root.conf
     root $INSTALL_DIR/www;
 EOF
 
-cp $SETUP_DIR/conf/envaya.conf /etc/nginx/envaya.conf
+cp $SETUP_DIR/conf/app.conf /etc/nginx/app.conf
 cp $SETUP_DIR/conf/nginx.conf /etc/nginx/nginx.conf
 
 /etc/init.d/nginx start

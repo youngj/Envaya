@@ -17,6 +17,7 @@ class ExternalFeed extends Entity
     const Updating = 2;
 
     static $table_name = 'external_feeds';
+    static $table_base_class = 'ExternalFeed';
     static $table_attributes = array(
         'subtype_id' => '',
         'url' => '', // URL for displaying to users

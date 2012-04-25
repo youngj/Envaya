@@ -21,7 +21,7 @@ class Action_ContactTemplate_ResetOutgoing extends Action
             throw new NotFoundException();
         }
         
-        $outgoing_message->notifier_guid = 0;
+        $outgoing_message->notifier_guid = null;
         $outgoing_message->save();
         
         $template->update();

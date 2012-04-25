@@ -11,12 +11,12 @@ abstract class Controller_ContactTemplate extends Controller
             'regex' => '/(?P<action>add|filters_count)\b', 
         ),       
         array(
-            'regex' => '/subscription/(?P<subscription_guid>\d+)', 
+            'regex' => '/subscription/(?P<subscription_guid>\w+)', 
             'action' => 'action_subscription',
             'before' => 'init_subscription',
         ),   
         array(
-            'regex' => '/(?P<template_guid>\d+)(/(?P<action>\w+))?', 
+            'regex' => '/(?P<template_guid>\w+)(/(?P<action>\w+))?', 
             'defaults' => array('action' => 'view'),
             'before' => 'init_template',
         ),   

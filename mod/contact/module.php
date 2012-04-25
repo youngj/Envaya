@@ -4,6 +4,7 @@ class Module_Contact extends Module
 {
     static $autoload_patch = array(
         'ClassRegistry',
+        'PrefixRegistry',
         'Controller_Admin',
         'Hook_ViewDashboard',
         'Hook_ViewWidget',
@@ -19,6 +20,14 @@ class Module_Contact extends Module
             'contact.subscription.email.contact' => "EmailSubscription_Contact",
             'contact.subscription.sms.contact' => "SMSSubscription_Contact",
             'contact.sms.template' => 'SMSTemplate'
+        ));
+    }
+    
+    static function patch_PrefixRegistry()
+    {
+        PrefixRegistry::register(array(
+            'cE' => 'EmailTemplate',
+            'cS' => 'SMSTemplate'
         ));
     }
 

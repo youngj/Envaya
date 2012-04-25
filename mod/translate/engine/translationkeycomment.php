@@ -5,7 +5,7 @@ class TranslationKeyComment extends Entity
     static $table_name = 'translation_key_comments';
     static $table_attributes = array(
         'key_name' => '',
-        'language_guid' => 0,
+        'language_guid' => null,
     );   
     static $mixin_classes = array(
         'Mixin_Content'

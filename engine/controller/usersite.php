@@ -16,14 +16,14 @@ class Controller_UserSite extends Controller_User
             'action' => 'action_index',
         ),
         array(
-            'regex' => '/(post|widget|node)/(?P<container_guid>\d+)\.(?P<widget_name>\w+)',
+            'regex' => '/(post|widget|node)/(?P<container_guid>\w+)\.(?P<widget_name>\w+)',
             'controller' => 'Controller_Widget',
             'before' => 'init_widget_from_container',
         ),
         array(
-            'regex' => '/(post|widget|node)/((?P<slug>[\w\-]+)\,)?(?P<widget_guid>\d+)',
+            'regex' => '/(post|widget|node)/((?P<slug>[\w\-]+)\,)?(?P<widget_local_id>\d+)',
             'controller' => 'Controller_Widget',
-            'before' => 'init_widget_from_guid',
+            'before' => 'init_widget_from_local_id',
         ),    
         array(
             'regex' => '/page/(?P<widget_name>[\w\-]+)',
@@ -48,10 +48,17 @@ class Controller_UserSite extends Controller_User
         return $this->index_widget($home_widget);
     }
     
-    protected function init_widget_from_guid()
+    protected function init_widget_from_local_id()
     {
-        $guid = $this->param('widget_guid');                   
-        return $this->init_widget(Widget::get_by_guid($guid, true));
+        $user = $this->get_user();
+        $local_id = $this->param('widget_local_id');
+        
+        return $this->init_widget(Widget::query()
+            ->where('user_guid = ?', $user->guid)
+            ->where('local_id = ?', $local_id)
+            ->show_disabled(true)
+            ->get()
+        );
     }
      
     protected function init_widget_from_container()

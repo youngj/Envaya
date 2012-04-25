@@ -4,19 +4,19 @@ class EmailSubscription_Discussion extends EmailSubscription
 {
     static function handle_mail_reply($mail, $match)
     {
-        $guid = $match['guid'];
+        $tid = $match['tid'];
         
-        $message = DiscussionMessage::get_by_guid($guid, true);
+        $message = DiscussionMessage::query()->where('tid = ?', $tid)->show_disabled(true)->get();
         if (!$message)
         {
-            error_log("invalid message guid $guid");
+            error_log("invalid message tid $tid");
             return false;
         }
                 
         $topic = $message->get_container_entity();
         if (!$topic)
         {
-            error_log("invalid container for message guid $guid");
+            error_log("invalid container for message tid $tid");
             return false;
         }
         
@@ -77,7 +77,7 @@ class EmailSubscription_Discussion extends EmailSubscription
             'body' => view('emails/discussion_message', array(
                 'message' => $message,
             )),
-            'reply_to' => EmailAddress::add_signed_tag(Config::get('mail:reply_email'), "message{$message->guid}"),
+            'reply_to' => EmailAddress::add_signed_tag(Config::get('mail:reply_email'), "message{$message->tid}"),
         ));
     }
     

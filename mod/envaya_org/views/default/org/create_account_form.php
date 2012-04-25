@@ -10,7 +10,7 @@
     {
         $invitedEmail = InvitedEmail::query()
             ->where('invite_code = ?', $invite_code)
-            ->where('registered_guid = 0')
+            ->where('registered_guid is null')
             ->get();
         if ($invitedEmail)
         {

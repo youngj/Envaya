@@ -93,7 +93,7 @@ class Query_SelectUser extends Query_SelectEntity
             $sphinx->setMatchMode(SPH_MATCH_ANY);
             $sphinx->setLimits(0,30);
             $sphinx->setConnectTimeout(5);
-            $sphinx->setMaxQueryTime(3);
+            $sphinx->setMaxQueryTime(2000);
             
             if ($this->sector)
             {
@@ -115,11 +115,11 @@ class Query_SelectUser extends Query_SelectEntity
             }
             else
             {                   
-                $user_guids = array_keys($matches);
-                $sql_guids = implode(',',$user_guids);
+                $user_tids = array_keys($matches);
+                $sql_tids = implode(',',$user_tids);
              
-                $this->where("guid in ($sql_guids)");
-                $this->order_by("FIND_IN_SET(guid, '$sql_guids')", true);
+                $this->where("tid in ($sql_tids)");
+                $this->order_by("FIND_IN_SET(tid, '$sql_tids')", true);
             }
         }
     }       

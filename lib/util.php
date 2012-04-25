@@ -41,9 +41,9 @@
         if (isset($parsed['port']))
         {
             $prefix .= ":".$parsed['port'];
-        }
+        }        
         
-        $url = $prefix.$parsed['path'];
+        $url = $prefix . (isset($parsed['path']) ? $parsed['path'] : '');
         if (sizeof($query) > 0)
         {
             return $url."?".http_build_query($query);
@@ -106,9 +106,9 @@
         }
         else
         {
-            return "/_media/css/$css_name.css?".Config::get("build:hash:css:$css_name");
+            return "/_media/css/$css_name.".Config::get("build:hash:css:$css_name").".css";
         }
-    }     
+    }
                     
     function escape($val)
     {
@@ -155,15 +155,17 @@
     /*
      * Generates a random string of alphanumeric characters (minus 0,O,1,I,J,5,S,V,Y,8,B)
      */
-    function generate_random_code($len = 32)
+    function generate_random_code($len = 32, $alphabet = '234679ACDEFGHKLMNPQRTUWXZ')
     {
-        $alphabet = '234679ACDEFGHKLMNPQRTUWXZ';
         $num_chars = strlen($alphabet);
         $res = '';
+        
+        $base = (int) (microtime(true) * 1000 + mt_rand()) % $num_chars;
+        
         for ($i = 0; $i < $len; $i++)
         {
-            $res .= $alphabet[rand() % $num_chars];
-        }    
+            $res .= $alphabet[($base + mt_rand()) % $num_chars];
+        }
         return $res;
     }    
 
@@ -223,7 +225,7 @@
         function start();
         function destroy();
         function id();
-        function login($user, $options);
+        function login($user, $persistent);
         function logout($user);
         function get_logged_in_user();
         function is_high_security();

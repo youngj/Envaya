@@ -5,12 +5,12 @@
     $count_filters_url = $template_class::$count_filters_url;
     
     $available_filters = array(
-        new Query_Filter_UserType(),
-        new Query_Filter_Country(),
-        new Query_Filter_Approval(),
-        new Query_Filter_Sector(),
-        new Query_Filter_Active(),
-        new Query_Filter_Inactive(),
+        new Query_Filter_User_Type(),
+        new Query_Filter_User_Country(),
+        new Query_Filter_User_Approval(),
+        new Query_Filter_User_Sector(),
+        new Query_Filter_User_Active(),
+        new Query_Filter_User_Inactive(),
     );    
     
     $filters = $displayed_filters = $template->get_filters();
@@ -21,10 +21,10 @@
         $filter_map[get_class($filter)] = $filter;
     }
     
-    $country_filter = @$filter_map['Query_Filter_Country'];
+    $country_filter = @$filter_map['Query_Filter_User_Country'];
     if ($country_filter && $country_filter->value)
     {
-        $available_filters[] = new Query_Filter_Region(array('country' => $country_filter->value));
+        $available_filters[] = new Query_Filter_User_Region(array('country' => $country_filter->value));
     }
         
     foreach ($available_filters as $filter)

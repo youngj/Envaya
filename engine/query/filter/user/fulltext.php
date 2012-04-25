@@ -1,6 +1,6 @@
 <?php
 
-class Query_Filter_Fulltext extends Query_Filter
+class Query_Filter_User_Fulltext extends Query_Filter
 {    
     static function get_name()
     {

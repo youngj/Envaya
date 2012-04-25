@@ -11,7 +11,7 @@ class Mail_SMTP extends Zend_Mail_Transport_Smtp
                 'port' => Config::get('mail:smtp_port'),
                 'username' => Config::get('mail:smtp_user'),                        
                 'password' => Config::get('mail:smtp_pass'),
-                'auth' => 'Login',
+                'auth' => Config::get('mail:smtp_auth'),
             )                                                
         );    
     }

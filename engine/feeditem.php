@@ -24,8 +24,8 @@ abstract class FeedItem extends Model
     static $table_attributes = array(
         'feed_name' => '',
         'subtype_id' => '',
-        'subject_guid' => 0,
-        'user_guid' => 0,
+        'subject_guid' => null,
+        'user_guid' => null,
         'args' => '',
         'time_posted' => 0,        
     );   

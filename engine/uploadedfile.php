@@ -80,13 +80,15 @@ class UploadedFile extends Entity
                     'accesskey' => $this->get_metadata('accesskey')
                 );
             default:
+                $folder_name = $this->get_metadata('folder_name') ?: $this->owner_guid;
+            
                 if ($this->group_name)
                 {
-                    return "{$this->owner_guid}/{$this->group_name}/{$this->filename}";
+                    return "{$folder_name}/{$this->group_name}/{$this->filename}";
                 }
                 else
                 {
-                    return "{$this->owner_guid}/{$this->filename}";
+                    return "{$folder_name}/{$this->filename}";
                 }
         }
     }
@@ -162,7 +164,7 @@ class UploadedFile extends Entity
     
     static function get_thumbnail_url_from_html($html)
     {
-        if (preg_match('/src=".*[\/\=](\d+)\/([\w\.]+)\//', $html, $matches))
+        if (preg_match('/src=".*[\/\=](\w+)\/([\w\.]+)\//', $html, $matches))
         {
             $ownerGuid = $matches[1];
             $groupName = $matches[2];

@@ -6,12 +6,12 @@
  */
 abstract class Storage
 {
-	abstract function get_url($key);
-	abstract function upload_file($key, $fs_path, $web_accessible = false, $mime = null);
-	abstract function delete_object($key);
-	abstract function copy_object($key, $dest_key, $web_accessible = false);
-	abstract function get_object_info($key);
-	abstract function download_file($key, $fs_path);
+    abstract function get_url($key);
+    abstract function upload_file($key, $fs_path, $web_accessible = false, $mime = null);
+    abstract function delete_object($key);
+    abstract function copy_object($key, $dest_key, $web_accessible = false);
+    abstract function get_object_info($key);
+    abstract function download_file($key, $fs_path);
     
     static function get_instance()
     {

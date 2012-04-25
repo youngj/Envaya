@@ -186,7 +186,7 @@ class SMSTest extends WebDriverTest
         }
         
         list($res) = $this->sendSMS($p2, $news, $match[0]);        
-        $this->assertContains("do not have access", $res);
+        $this->assertContains(" was not found", $res);
         
         list($res) = $this->sendSMS($p1, $news, $match[0]);        
         $this->assertContains("deleted successfully", $res); 

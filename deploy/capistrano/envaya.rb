@@ -18,13 +18,13 @@ set :deploy_via, :rsync_with_remote_cache
 set :copy_exclude, [".svn", ".git", "envaya.org.key"]
 set :user, "root"
 
-role :web, "www.envaya.org"                          # Your HTTP server, Apache/etc
-role :app, "www.envaya.org"                          # This may be the same as your `Web` server
-role :db,  "www.envaya.org", :primary => true # This is where Rails migrations will run
-role :cron, "www.envaya.org"
-role :queue, "www.envaya.org"
-role :search, "www.envaya.org"
-role :qworker, "www.envaya.org"
+role :web, "web1.envaya.org"                          # Your HTTP server, Apache/etc
+role :app, "web1.envaya.org"                          # This may be the same as your `Web` server
+role :db,  "web1.envaya.org", :primary => true # This is where Rails migrations will run
+role :cron, "web1.envaya.org"
+role :queue, "web1.envaya.org"
+role :search, "web1.envaya.org"
+role :qworker, "web1.envaya.org"
 
 #role :db,  "your slave db-server here"
 
@@ -47,6 +47,7 @@ namespace :deploy do
         iptables_setup
         php_setup
         dataroot_setup
+        postfix_setup
     end
     
     task :update_test do
@@ -111,11 +112,7 @@ namespace :deploy do
     end
     
     task :localsettings_setup do    
-        begin
-            run "stat -t #{shared_path}/local.php"
-        rescue Exception    
-            top.upload(File.join(Dir.pwd, "config/production.php"), "#{shared_path}/local.php")
-        end
+        top.upload(File.join(Dir.pwd, "config/production.php"), "#{shared_path}/local.php")
     end
     
     task :cert_setup do
@@ -172,6 +169,10 @@ namespace :deploy do
         run "/root/prereqs.sh"
     end
     
+    task :postfix_setup do
+        run "#{current_path}/scripts/setup/postfix.sh"
+    end
+    
     task :dataroot_setup do
         run "cd #{current_path} && php scripts/install_dataroot.php"
     end
@@ -198,8 +199,8 @@ namespace :deploy do
         run "#{current_path}/scripts/setup/extras.sh"
     end
     
-    task :qworkers_setup, :roles => :qworker do
-        run "#{current_path}/scripts/setup/qworkers.sh"
+    task :qworker_setup, :roles => :qworker do
+        run "#{current_path}/scripts/setup/qworker.sh"
     end 
     
     task :cron_setup, :roles => :cron do

@@ -4,11 +4,11 @@
     
     $feedNames = array();
     foreach (Relationship::query_for_user($org)
-                ->where('subject_guid > 0')
+                ->where('subject_guid is not null')
                 ->filter() as $relationship)
     {
         $feedNames[] = FeedItem::make_feed_name(array('user' => $relationship->subject_guid));
-    }
+    }    
     
     //$feedName = FeedItem::make_feed_name(array('network' => $org->guid));
     $maxItems = 10;    

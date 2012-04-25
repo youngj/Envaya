@@ -108,7 +108,7 @@ class TranslationLanguage extends Entity
     function query_comments()
     {
         return TranslationKeyComment::query()
-            ->where('language_guid = ? OR language_guid = 0', $this->guid);
+            ->where('language_guid = ? OR language_guid is null', $this->guid);
     }
     
     function query_keys()

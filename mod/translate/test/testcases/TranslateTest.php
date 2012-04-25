@@ -102,15 +102,14 @@ class TranslateTest extends SeleniumTest
         
         // next/prev links cycle through multiple items
         
-        $this->clickAndWait("//tr//a[contains(text(),'baharini')]");        
+        $this->waitForElement("//tr//a[contains(text(),'baharini')]");        
+        $this->clickAndWait("//table[@class='keyTable']//tr//a");        
         $this->clickAndWait("//a[contains(@href,'/prev')]");
-        $this->mouseOver("//div[@class='translation']//p[contains(text(),'difficult')]");        
+        $this->clickAndWait("//table[@class='keyTable']//tr//a");                
         $this->clickAndWait("//a[contains(@href,'/next')]");
-        $this->mouseOver("//div[@class='translation']//p[contains(text(),'baharini')]");
         $this->clickAndWait("//a[contains(@href,'/next')]");
-        $this->mouseOver("//div[@class='translation']//p[contains(text(),'emergency')]");
         $this->clickAndWait("//a[contains(@href,'/next')]");
-        $this->mouseOver("//tr//a[contains(text(),'emergency')]");        
+        $this->mouseOver("//table[@class='keyTable']//a[contains(text(),'emergency')]");        
         
         // test go directly to translation page when there is only one translation on the page        
         $this->open($difficult_url);

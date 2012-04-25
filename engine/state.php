@@ -14,8 +14,8 @@ class State
         {
             $cache = Cache::get_instance();
 
-			$cache_key = Cache::make_key('state');
-			
+            $cache_key = Cache::make_key('state');
+            
             static::$cached_list = $cache->get($cache_key);
 
             if (!is_array(static::$cached_list))

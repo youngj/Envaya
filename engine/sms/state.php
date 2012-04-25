@@ -6,7 +6,7 @@ class SMS_State extends Model
     static $table_attributes = array(
         'service_id' => '',
         'phone_number' => '',
-        'user_guid' => 0,
+        'user_guid' => null,
         'time_updated' => 0,
         'value' => '',
     );

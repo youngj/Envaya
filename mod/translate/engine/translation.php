@@ -13,7 +13,7 @@ class Translation extends Entity
 {
     static $table_name = 'translation_strings';
     static $table_attributes = array(
-        'language_guid' => 0,
+        'language_guid' => null,
         'value' => '',
         'default_value_hash' => '', // sha1 of the key's default value when this translation was created; 
                                     // allows detecting stale translations

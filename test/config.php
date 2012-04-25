@@ -48,7 +48,7 @@ return array(
     'test:news_phone_number' => '14845551213',    
     'mail:backend' => "Mail_Mock",
     'mail:mock_file' => "$dataroot/mail.out",
-    'domain' => 'localhost:3001',
+    'domain' => '127.0.0.1:3001',
     'dataroot' => $dataroot,        
     'amqp:vhost' => '/envaya-test',
     'sphinx:port' => 9313,    

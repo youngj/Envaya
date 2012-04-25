@@ -6,7 +6,12 @@
     $limit = 15;
     
     $filters = Query_Filter::filters_from_input(array(
-        'Fulltext','UserType','Sector','Country','Region','Approval',
+        'Query_Filter_User_Fulltext',
+        'Query_Filter_User_Type',
+        'Query_Filter_User_Sector',
+        'Query_Filter_User_Country',
+        'Query_Filter_User_Region',
+        'Query_Filter_User_Approval',
     ));
             
     $query = User::query()

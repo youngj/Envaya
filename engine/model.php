@@ -77,10 +77,10 @@ abstract class Model extends Mixable
         
     function __get($name)
     {
-		if (isset($this->attributes[$name]))
-		{
-			return $this->attributes[$name];
-		}
+        if (isset($this->attributes[$name]))
+        {
+            return $this->attributes[$name];
+        }
         else if (array_key_exists($name, $this->attributes))
         {
             return null;
@@ -124,7 +124,7 @@ abstract class Model extends Mixable
     function __set($name, $value)
     {
         $this->attributes[$name] = $value;
-		$this->dirty_attributes[$name] = true;
+        $this->dirty_attributes[$name] = true;
     }    
     
     static function query()
@@ -201,9 +201,9 @@ abstract class Model extends Mixable
         return $tableAttributes;
     }
     
-	protected function get_dirty_attribute_values()
+    protected function get_dirty_attribute_values()
     {
-        $dirtyAttributes = array();		
+        $dirtyAttributes = array();        
         foreach (static::get_table_attributes() as $name => $default)
         {
             if (isset($this->dirty_attributes[$name]))
@@ -212,32 +212,32 @@ abstract class Model extends Mixable
             }
         }
         return $dirtyAttributes;
-    }	
-	
+    }    
+    
     public function save()
     {
-		$pk = static::$primary_key;
-		
-		if ($this->$pk)
-		{
-			$values = $this->get_dirty_attribute_values();			
-		}
-		else
-		{
-			$values = $this->get_table_attribute_values();
-		}
-		
+        $pk = static::$primary_key;
+        
+        if ($this->$pk)
+        {
+            $values = $this->get_dirty_attribute_values();            
+        }
+        else
+        {
+            $values = $this->get_table_attribute_values();
+        }
+        
         Database::save_row(static::$table_name, $pk, 
             /* reference */ $this->attributes[$pk], $values);    
-		
+        
         $this->dirty_attributes = null;
     }    
     
-	function is_dirty()
-	{
-		return isset($this->dirty_attributes);
-	}
-	    
+    function is_dirty()
+    {
+        return isset($this->dirty_attributes);
+    }
+        
     public function delete()
     {
         $this->dirty_attributes = null;

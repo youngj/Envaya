@@ -30,7 +30,7 @@ class DiscussionMessage extends Entity
     
     function get_base_url()
     {
-        $topic = $this->get_container_entity();        
+        $topic = $this->get_container_entity();
         return "{$topic->get_url()}/message/{$this->guid}";
     }
     

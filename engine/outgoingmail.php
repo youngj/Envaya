@@ -19,10 +19,10 @@ class OutgoingMail extends Model
 
     static $table_name = 'outgoing_mail';
     static $table_attributes = array(
-        'notifier_guid' => 0, // optional guid of entity that sent this message, e.g. Comment, DiscussionMessage, EmailTemplate
-        'subscription_guid' => 0, // guid of EmailSubscription, if applicable
-        'to_guid' => 0,  // guid of recipient user, if applicable        
-        'from_guid' => 0, // guid of sending user, if applicable
+        'notifier_guid' => null, // optional guid of entity that sent this message, e.g. Comment, DiscussionMessage, EmailTemplate
+        'subscription_guid' => null, // guid of EmailSubscription, if applicable
+        'to_guid' => null,  // guid of recipient user, if applicable        
+        'from_guid' => null, // guid of sending user, if applicable
         'time_created' => 0,
         'time_queued' => 0,
         'time_sent' => 0,
@@ -206,9 +206,14 @@ class OutgoingMail extends Model
                 $this->status = static::Held;
                 $this->save();
             }
-            else
+            else if (Config::get('mail:queue_task'))
             {
                 $this->enqueue();
+            }
+            else
+            {
+                $this->save();
+                return $this->send_now();
             }
         }    
     }
@@ -220,8 +225,7 @@ class OutgoingMail extends Model
         $this->save();
         
         return TaskQueue::queue_task(array('OutgoingMail', 'send_now_by_id'), 
-            array($this->id),
-            TaskQueue::LowPriority
+            array($this->id)
         );    
     }
     

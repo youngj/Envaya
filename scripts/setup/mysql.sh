@@ -83,8 +83,14 @@ function mysql_tune {
         fi
         config="${config}\n${OPTLIST[$i]} = ${val}M"
     done
+    
+    config="${config}\ncharacter-set-server=utf8\ncollation-server = utf8_general_ci"
 
     sed -i -e "s/\(\[mysqld\]\)/\1\n$config\n/" /etc/mysql/my.cnf
+    
+    clientconfig="default-character-set=utf8"
+    
+    sed -i -e "s/\(\[client\]\)/\1\n$clientconfig\n/" /etc/mysql/my.cnf
     
 }
 

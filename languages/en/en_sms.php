@@ -85,7 +85,7 @@ return array(
     'sms:comment_not_found' => "Comment %s not found.",
     'sms:no_comments_here' => "There are no comments here yet.",
     
-    'sms:comment_published' => "Your comment has been published to \"V {id}\" and {url}\nTxt \"DELETE {id}\" to undo.",
+    'sms:comment_published' => "Your comment has been published to {url}",
     
     'sms:length_set' => "Maximum length of SMS reply changed to %s",
     

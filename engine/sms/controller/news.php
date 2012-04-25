@@ -88,10 +88,6 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_get_location',
         ),
         array(
-            'regex' => '(v|view)\s+(?P<item_id>\d+)\b',
-            'action' => 'action_view_id',
-        ),
-        array(
             'regex' => '(p|post)\s+(?P<message>.{3,})',
             'action' => 'action_post',
         ),
@@ -104,9 +100,9 @@ class SMS_Controller_News extends SMS_Controller
             'action' => 'action_set_length',
         ),
         array(
-            'regex' => '(delete|futa)\s+(?P<guid>\d+)',
+            'regex' => '(delete|futa)\s+(?P<local_id>\d+)',
             'action' => 'action_delete',
-        ),       
+        ),
         array(
             'regex' => '((h|help)\s+)?(delete)\b',
             'action' => 'action_delete_help',
@@ -119,10 +115,6 @@ class SMS_Controller_News extends SMS_Controller
             'regex' => '((h|help)\s+)?(l|lang|language)\b',
             'action' => 'action_language_help',
         ),
-        array(
-            'regex' => '(v)\s+(?P<id>\d+)',
-            'action' => 'action_view_item',
-        ),                        
         array(
             'regex' => '(in|(log in)|login)\s+(?P<username>[\w\-]+)\s+(?P<password>.*)',
             'action' => 'action_login',
@@ -453,7 +445,7 @@ class SMS_Controller_News extends SMS_Controller
         if ($news && $news->is_enabled())
         {
             $query = $news->query_published_widgets()
-                ->order_by('time_published desc, guid desc');
+                ->order_by('time_published desc, tid desc');
                 
             $query->limit(1);
             
@@ -610,8 +602,8 @@ class SMS_Controller_News extends SMS_Controller
             $news = $post->get_container_entity();
         
             $offset = $news->query_published_widgets()        
-                ->where('(time_published > ? or time_published = ? and guid > ?)', 
-                    $post->time_published, $post->time_published, $post->guid)
+                ->where('(time_published > ? or time_published = ? and tid > ?)', 
+                    $post->time_published, $post->time_published, $post->tid)
                 ->count();
             $this->view_news($user, $offset + 1);
         }
@@ -710,7 +702,6 @@ class SMS_Controller_News extends SMS_Controller
             $this->set_state('num_comments', $post->num_comments);    
             
             $this->reply(strtr(__('sms:comment_published'), array(
-                '{id}' => $comment->guid,
                 '{url}' => abs_url($post->get_url()),
             )));            
             
@@ -992,7 +983,7 @@ class SMS_Controller_News extends SMS_Controller
             array(
                 '{username}' => $user->username,
                 '{url}' => abs_url($news->get_url()),
-                '{id}' => $post->guid,
+                '{id}' => $post->local_id,
             )
         ));                          
         
@@ -1001,13 +992,18 @@ class SMS_Controller_News extends SMS_Controller
     
     function action_delete()
     {
-        $guid = $this->param('guid');
+        $local_id = $this->param('local_id');
         
-        $item = Entity::get_by_guid($guid);
+        $user = Session::get_logged_in_user();
+        
+        $item = $user ? Widget::query()
+            ->where('user_guid = ?', $user->guid)
+            ->where('local_id = ?', $local_id)
+            ->get() : null;
         
         if (!$item)
         {
-            $this->reply(strtr(__('sms:item_not_found'), array('{id}' => $guid)));
+            $this->reply(strtr(__('sms:item_not_found'), array('{id}' => $local_id)));
         }        
         else if (!Permission_EditUserSite::has_for_entity($item) || !($item instanceof Widget_Post || $item instanceof Comment))
         {
@@ -1339,28 +1335,6 @@ class SMS_Controller_News extends SMS_Controller
     {
         // this command does nothing and sends no reply, but has the side-effect
         // of sending any queued outgoing sms messages immediately.
-    }
-    
-    function action_view_item()
-    {
-        $id = $this->param('id');
-        
-        $entity = Entity::get_by_guid($id);
-        if ($entity)
-        {
-            if ($entity instanceof Comment)
-            {
-                $this->view_comment($entity);
-            }
-            else
-            {
-                $this->reply(strtr(__('sms:item_not_found'), array('{id}' => $id)));
-            }
-        }
-        else
-        {
-            $this->reply(strtr(__('sms:item_not_found'), array('{id}' => $id)));
-        }
     }
     
     public function execute($message)

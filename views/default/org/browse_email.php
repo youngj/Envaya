@@ -32,7 +32,11 @@ function toggleRecipient(guid, email)
     echo __('share:browse_instructions');
     echo "</div>";
     
-    $filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));
+    $filters = Query_Filter::filters_from_input(array(
+        'Query_Filter_User_Sector',
+        'Query_Filter_User_Country',
+        'Query_Filter_User_Region'
+    ));
        
     echo view('org/filter_controls', array(
         'baseurl' => '/pg/browse_email',
@@ -64,7 +68,7 @@ function toggleRecipient(guid, email)
         {
             echo "<li>";
             echo "<a id='org_{$org->guid}' title='".escape($org->email)."' href='javascript:void(0)' 
-                onclick='toggleRecipient($org->guid,".json_encode($org->email).");'>";
+                onclick='toggleRecipient(".json_encode($org->guid).",".json_encode($org->email).");'>";
             echo "<span style='font-weight:bold'>".escape($org->name)."</span>";
             echo "</a>";
             echo "<script type='text/javascript'>";

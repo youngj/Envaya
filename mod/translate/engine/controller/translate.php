@@ -30,7 +30,7 @@ class Controller_Translate extends Controller
             'before' => 'init_language_keys_key',
         ),                
         array(
-            'regex' => '/(?P<lang>\w+)/translators/(?P<guid>\d+)\b', 
+            'regex' => '/(?P<lang>\w+)/translators/(?P<guid>\w+)\b', 
             'action' => 'action_translator',
             'before' => 'init_language',
         ),        
@@ -174,7 +174,7 @@ class Controller_Translate extends Controller
         
         $query = InterfaceKey::query()
             ->where('language_guid = ?', $language->guid)
-            ->order_by('time_updated desc, guid desc');
+            ->order_by('time_updated desc, tid desc');
 
         $query = $this->filter_query($query, $filter);
             
@@ -204,7 +204,7 @@ class Controller_Translate extends Controller
         
         $query = EntityTranslationKey::query()
             ->where('language_guid = ?', $language->guid)
-            ->order_by('time_updated desc, guid desc');
+            ->order_by('time_updated desc, tid desc');
             
         $query = $this->filter_query($query, $filter);
         
@@ -432,7 +432,7 @@ class Controller_Translate extends Controller
     {
         $this->validate_security_token();    
         
-        $guid = (int)get_input('comment');
+        $guid = get_input('comment');
         $comment = TranslationKeyComment::get_by_guid($guid);
         
         if (!$comment)

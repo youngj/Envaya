@@ -17,7 +17,7 @@ class Controller_Network extends Controller_User
         Permission_EditUserSite::require_for_entity($user);
                 
         $relationships = Relationship::query_for_user($user)
-            ->where("subject_guid <> 0 OR subject_email <> ''")
+            ->where("subject_guid is not null OR subject_email <> ''")
             ->filter();
      
         $emails = array();

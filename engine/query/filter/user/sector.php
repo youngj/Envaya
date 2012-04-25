@@ -1,6 +1,6 @@
 <?php
 
-class Query_Filter_Sector extends Query_Filter_Select
+class Query_Filter_User_Sector extends Query_Filter_Select
 {
     static function get_name()
     {

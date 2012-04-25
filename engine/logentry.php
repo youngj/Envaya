@@ -6,7 +6,7 @@ class LogEntry extends Model
     static $table_attributes = array(
         'subject_guid' => null,
         'event_name' => '',
-        'user_guid' => 0,
+        'user_guid' => null,
         'time_created' => 0,
         'message' => null,
         'ip_address' => null,

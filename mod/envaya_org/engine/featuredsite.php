@@ -9,7 +9,6 @@ class FeaturedSite extends Entity
     static $table_name = 'featured_sites';
 
     static $table_attributes = array(
-        'user_guid' => 0,
         'image_url' => '',
         'active' => 0,
     );

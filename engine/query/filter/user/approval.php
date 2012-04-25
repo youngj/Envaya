@@ -1,6 +1,6 @@
 <?php
 
-class Query_Filter_Approval extends Query_Filter_Select
+class Query_Filter_User_Approval extends Query_Filter_Select
 {
     function get_options()
     {

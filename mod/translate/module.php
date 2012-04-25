@@ -4,6 +4,7 @@ class Module_Translate extends Module
 {
     static $autoload_patch = array(
         'ClassRegistry',
+        'PrefixRegistry',
         'Controller_Default',
         'PageContext',
         'Language',
@@ -49,6 +50,19 @@ class Module_Translate extends Module
             'translate.permission.managelanguage' => 'Permission_ManageLanguage',
         ));
     }
+    
+    static function patch_PrefixRegistry()
+    {
+        PrefixRegistry::register(array(
+            'tC' => 'TranslationKeyComment',
+            'tG' => 'InterfaceGroup',
+            'tL' => 'TranslationLanguage',
+            'tK' => 'TranslationKey',
+            'tS' => 'TranslatorStats',            
+            'tT' => 'Translation',
+            'tV' => 'TranslationVote',
+        ));
+    }   
 
     static function patch_Controller_Default()
     {

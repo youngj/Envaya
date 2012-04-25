@@ -2,7 +2,7 @@
     $widget = $vars['widget'];    
     
     $query = $widget->query_published_widgets()
-        ->order_by('time_published desc, guid desc');
+        ->order_by('time_published desc, tid desc');
         
     $posts = $query->limit(10)->filter(); 
 

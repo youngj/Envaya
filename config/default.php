@@ -7,7 +7,7 @@ return array(
     'allow_robots' => true,    
     
     'site_secret' => 'default_secret',    
-    'session_cookie_name' => 'envaya',               
+    'session_cookie_name' => 'sessid',               
     'subtype_aliases' => null, // map of old subtype_id => class name for database migrations    
     
     'modules' => array(),
@@ -15,6 +15,8 @@ return array(
     'site_name' => "Envaya",
     'languages' => array('en','sw','rw'),
     'language' => "en",
+    
+    'readonly' => false,
     
     'debug' => false,
     'debug:media' => false,
@@ -33,7 +35,7 @@ return array(
 	'amqp:vhost' => '/envaya',	
        
     'cache:backend' => "Cache_Database",
-    'cache:version' => 206,  // increment when all cached objects need to be invalidated (rare)
+    'cache:version' => 207,  // increment when all cached objects need to be invalidated (rare)
             
     'analytics:backend' => "Analytics_Null",   
     

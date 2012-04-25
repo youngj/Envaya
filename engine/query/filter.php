@@ -28,21 +28,13 @@ abstract class Query_Filter
     
     abstract function render_view();
     abstract function render_input($vars);
-
-    static function get_class_name($subclass)
-    {
-        return "Query_Filter_{$subclass}";
-    }
     
     static function get_param_name()
     {
-        return strtolower(static::get_subclass());
+        $cls = get_called_class();
+        $parts = explode('_', $cls);
+        return strtolower($parts[sizeof($parts) - 1]);
     }
-    
-    static function get_subclass()
-    {
-        return substr(get_called_class(), strlen("Query_Filter_"));
-    }    
     
     static function new_from_input()
     {
@@ -54,12 +46,16 @@ abstract class Query_Filter
     static function filters_from_input($subclasses)
     {
         $res = array();
-        foreach ($subclasses as $subclass)
+        foreach ($subclasses as $cls)
         {
-            $cls = static::get_class_name($subclass);
             $res[] = $cls::new_from_input();
         }
         return $res;
+    }
+    
+    static function get_subtype_id()
+    {
+        return ClassRegistry::get_subtype_id(get_called_class());
     }
     
     static function json_encode_filters($filters)
@@ -67,8 +63,14 @@ abstract class Query_Filter
         $filters_args = array();
         foreach ($filters as $filter)
         {
+            $subtype_id = $filter->get_subtype_id();            
+            if (!$subtype_id)
+            {
+                throw new InvalidParameterException(get_class($filter) . " is not in class registry");
+            }
+        
             $filters_args[] = array(
-                'subclass' => $filter->get_subclass(),
+                'subtype_id' => $subtype_id,
                 'args' => $filter->args
             );
         }
@@ -83,10 +85,16 @@ abstract class Query_Filter
         {
             foreach ($filters_args as $filter_args)
             {
-                $subclass = $filter_args['subclass'];
+                $subtype_id = $filter_args['subtype_id'];
                 $args = $filter_args['args'];
                 
-                $filter_class = static::get_class_name($subclass);
+                $filter_class = ClassRegistry::get_class($subtype_id);
+                
+                if (!$filter_class)
+                {
+                    throw new ValidationException("Invalid filter type: $subtype_id");
+                }
+                
                 $filters[] = new $filter_class($args);                    
             }
         }

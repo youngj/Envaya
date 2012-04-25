@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'mail:backend' => 'Mail_SMTP',	
+    'mail:backend' => 'Mail_SMTP',
     
     'mail:mock_file' => '',
     
@@ -9,6 +9,11 @@ return array(
     'mail:smtp_port' => 25,
     'mail:smtp_user' => '',
     'mail:smtp_pass' => "",
+    'mail:smtp_auth' => null, // e.g. 'Login'
+    
+    'mail:dkim_selector' => 'dkim',
+    
+    'mail:queue_task' => false,
     
     'mail:admin_email' => "admin@localhost",    
     'mail:reply_email' => "reply@localhost",

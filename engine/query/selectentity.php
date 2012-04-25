@@ -32,19 +32,15 @@ class Query_SelectEntity extends Query_Select
                 throw new InvalidParameterException('Cannot select Entity without table or guid');
             }
             
-            $row = Database::get_row("SELECT * from entities where guid=?", array($this->guid));
-            if (!$row)
-            {
+            $prefix = substr($this->guid, 0, 2);
+            $classname = PrefixRegistry::get_class($prefix);
+            
+            if (!$classname)
+            {   
                 $this->is_empty = true;
             }
             else
             {            
-                $classname = ClassRegistry::get_class($row->subtype_id);                                
-                if (!$classname)
-                {   
-                    throw new InvalidParameterException("Entity subtype {$row->subtype_id} is not defined");
-                }
-                
                 $this->from = $classname::$table_name;
                 $this->set_row_class($classname);
             }

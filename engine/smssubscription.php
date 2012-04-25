@@ -119,7 +119,7 @@ abstract class SMSSubscription extends Subscription
         // arbitrary notification rate limit: 5 notifications in 5 minutes (total across all notifications)
         if (OutgoingSMS::query()
             ->where('message_type = ?', OutgoingSMS::Notification)
-            ->where('subscription_guid > 0')
+            ->where('subscription_guid is not null')
             ->where('to_number = ?', $this->phone_number)
             ->where('time_created > ?', $time - 300)
             ->count() >= 5)
@@ -131,7 +131,7 @@ abstract class SMSSubscription extends Subscription
         if (OutgoingSMS::query()
             ->where('message_type = ?', OutgoingSMS::Notification)
             ->where('to_number = ?', $this->phone_number)
-            ->where('subscription_guid > 0')
+            ->where('subscription_guid is not null')
             ->where('time_created > ?', $time - 86400)
             ->count() >= 24)
         {            

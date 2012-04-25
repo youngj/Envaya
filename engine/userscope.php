@@ -86,30 +86,30 @@ class UserScope extends Entity
         return User::query()->where('container_guid = ?', $this->guid);
     }    
     
-	private static $root;
-	
+    private static $root;
+    
     static function get_root()
-    {		
-		if (!isset(static::$root))
-		{
-			$cache_key = Cache::make_key('root_scope_guid');
-			$cache = Cache::get_instance();
-			$root_scope_guid = $cache->get($cache_key);
-			if (!$root_scope_guid)
-			{		
-				$root = UserScope::query()->where('container_guid = 0')->get();
-				if ($root)
-				{				
-					$cache->set($cache_key, $root->guid);
-				}
-			}
-			else
-			{
-				$root = new UserScope();
-				$root->guid = $root_scope_guid;
-			}
-			static::$root = $root;
-		}
-		return static::$root;
+    {        
+        if (!isset(static::$root))
+        {
+            $cache_key = Cache::make_key('root_scope_guid');
+            $cache = Cache::get_instance();
+            $root_scope_guid = $cache->get($cache_key);
+            if (!$root_scope_guid)
+            {        
+                $root = UserScope::query()->where('container_guid is null')->get();
+                if ($root)
+                {                
+                    $cache->set($cache_key, $root->guid);
+                }
+            }
+            else
+            {
+                $root = new UserScope();
+                $root->guid = $root_scope_guid;
+            }
+            static::$root = $root;
+        }
+        return static::$root;
     }
 }

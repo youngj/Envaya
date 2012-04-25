@@ -4,6 +4,7 @@ class Module_Network extends Module
 {
     static $autoload_patch = array(
         'ClassRegistry',
+        'PrefixRegistry',
         'Controller_UserSite',
         'Widget',
         'EmailSubscription',
@@ -25,6 +26,13 @@ class Module_Network extends Module
             'core.subscription.email.network' => "EmailSubscription_Network",
             'core.feeditem.relation' => 'FeedItem_Relationship',
             'core.widget.network' => 'Widget_Network',
+        ));
+    }
+    
+    static function patch_PrefixRegistry()
+    {
+        PrefixRegistry::register(array(
+            'nR' => 'Relationship',
         ));
     }
 

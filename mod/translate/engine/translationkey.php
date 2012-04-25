@@ -7,10 +7,10 @@ class TranslationKey extends Entity
     static $table_attributes = array(
         'subtype_id' => '',
         'name' => '',
-        'language_guid' => 0,
+        'language_guid' => null,
         'num_translations' => 0,
         'best_translation' => '',
-        'best_translation_guid' => 0,
+        'best_translation_guid' => null,
         'best_translation_hash' => '',
         'best_translation_source' => 0,
         'best_translation_approval' => 0,
@@ -22,7 +22,7 @@ class TranslationKey extends Entity
 
         $best = $this->query_translations()
             ->where('score >= 0')
-            ->order_by('time_created desc, guid desc')
+            ->order_by('time_created desc, tid desc')
             ->get();
             
         if ($best)
@@ -37,7 +37,7 @@ class TranslationKey extends Entity
         {
             $this->best_translation = '';
             $this->best_translation_hash = '';
-            $this->best_translation_guid = 0;
+            $this->best_translation_guid = null;
             $this->best_translation_source = 0;
         }
         $this->save();
@@ -73,7 +73,7 @@ class TranslationKey extends Entity
     function query_comments()
     {
         return TranslationKeyComment::query()
-            ->where('container_guid = ? OR (key_name = ? AND language_guid = 0)', $this->guid, $this->name);
+            ->where('container_guid = ? OR (key_name = ? AND language_guid is null)', $this->guid, $this->name);
     }    
     
     function get_default_value()
@@ -137,7 +137,7 @@ class TranslationKey extends Entity
         {
             return;
         }
-    
+        
         $value = $this->get_default_value();
         $base_lang = $this->get_default_value_lang();
         $lang = $this->get_language()->code;
@@ -169,7 +169,7 @@ class TranslationKey extends Entity
             ->show_disabled(true)
             ->where('status = ?', Entity::Disabled)
             ->where('owner_guid = ?', $user->guid)
-            ->order_by('guid desc')
+            ->order_by('tid desc')
             ->get();
     }    
 }

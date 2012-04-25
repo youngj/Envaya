@@ -55,7 +55,7 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
     
         $invitedEmail = InvitedEmail::query()
             ->where('invite_code = ?', $invite_code)
-            ->where('registered_guid = 0')
+            ->where('registered_guid is null')
             ->get();
         
         if (!$invitedEmail)
@@ -71,7 +71,7 @@ class Action_Registration_CreateAccount extends Action_Registration_CreateAccoun
         if ($invitedAddress == $org->email)
         {
             $relationships = Relationship::query()
-                ->where('subject_guid = 0')
+                ->where('subject_guid is null')
                 ->where('subject_email = ?', $invitedAddress)
                 ->filter();
                 

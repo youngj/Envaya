@@ -11,10 +11,10 @@ class EntityTranslationKey extends TranslationKey
     {
         $name_parts = explode(':', $this->name);
         
-        $entity = Entity::get_by_guid($name_parts[1]);
+        $entity = Entity::get_by_guid($name_parts[0]);
         if ($entity)
         {
-            return array($entity, $name_parts[2]);
+            return array($entity, $name_parts[1]);
         }
         else
         {

@@ -18,7 +18,7 @@ class SMSSubscription_News extends SMSSubscription
                 'notifier' => $post,
                 'message' => strtr(__('sms:post_notification', $this->language), array(
                     '{username}' => $org->username,
-                    '{cmd}' => "N {$org->username} {$post->get_local_id()}",
+                    '{cmd}' => "N {$org->username} {$post->local_id}",
                     '{url}' => abs_url($post->get_container_entity()->get_url()),
                 ))
             ));

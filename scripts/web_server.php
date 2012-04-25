@@ -32,7 +32,33 @@ class AppHTTPServer extends HTTPServer
         
         if (preg_match('#^/_media/#', $uri))
         {
-            return $this->get_static_response($request, "$doc_root$uri");
+            $local_path = "$doc_root$uri";
+        
+            $accept_encoding = $request->get_header('Accept-Encoding');
+            if ($accept_encoding && strpos($accept_encoding, 'gzip') !== false)
+            {            
+                $mime_type = static::get_mime_type($local_path);            
+                if ($mime_type == 'application/x-javascript'
+                 || $mime_type == 'text/css') 
+                {
+                    // simulate nginx gzip_static                 
+                    $gz_path = "$local_path.gz";
+                    if (is_file($gz_path))
+                    {
+                        return $this->response(200, 
+                            fopen($gz_path, 'rb'), 
+                            array(
+                                'Content-Type' => $mime_type,
+                                'Cache-Control' => "max-age=8640000",
+                                'Content-Encoding' => 'gzip',
+                                'Content-Length' => filesize($gz_path), 
+                            )
+                        );                
+                    }
+                }
+            }
+            
+            return $this->get_static_response($request, $local_path);
         }        
         else if (preg_match('#^/\w+\.php$#', $uri))
         {

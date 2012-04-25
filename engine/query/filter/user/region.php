@@ -1,6 +1,6 @@
 <?php
 
-class Query_Filter_Region extends Query_Filter_Select
+class Query_Filter_User_Region extends Query_Filter_Select
 {    
     public $country;
 
@@ -36,7 +36,7 @@ class Query_Filter_Region extends Query_Filter_Select
     
     static function new_from_input()
     {
-        return new Query_Filter_Region(array(
+        return new Query_Filter_User_Region(array(
             'value' => get_input('region'),
             'country' => get_input('country')
         ));

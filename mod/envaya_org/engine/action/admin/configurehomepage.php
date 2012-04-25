@@ -9,7 +9,7 @@ class Action_Admin_ConfigureHomePage extends Action
         
     function process_input()
     {
-        $guid = (int)get_input('home_bottom_left_guid');
+        $guid = get_input('home_bottom_left_guid');
     
         State::set('home_bottom_left_guid', $guid);
         SessionMessages::add("Changes saved.");

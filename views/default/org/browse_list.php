@@ -1,6 +1,10 @@
 <?php 
 
-$filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));
+$filters = Query_Filter::filters_from_input(array(
+    'Query_Filter_User_Sector',
+    'Query_Filter_User_Country',
+    'Query_Filter_User_Region'
+));
 
 ?>
 <div class='section_content padded'>

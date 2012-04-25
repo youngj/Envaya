@@ -40,7 +40,7 @@ class Action_User_ChangeUsername extends Action
                     // each user gets one courtesy redirect to avoid breaking existing links.
                     // delete redirects to the old username to prevent spamming and circular redirects from multiple username changes. 
                     $oldRedirects = NotFoundRedirect::query()
-                        ->where('container_guid = 0')
+                        ->where('container_guid is null')
                         ->where('replacement = ?', "/{$oldUsername}")
                         ->filter();
                     foreach ($oldRedirects as $oldRedirect)

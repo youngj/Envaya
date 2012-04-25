@@ -28,7 +28,7 @@
         echo "<div class='blog_date'>";
         echo $comment->get_date_text();
         
-        if ($comment->time_updated > $comment->time_created)
+        if ($comment->time_updated > $comment->time_created + 10)
         {
             echo " ".strtr(__('date:edited'), array(
                 '{date}' => $comment->get_date_text($comment->time_updated)

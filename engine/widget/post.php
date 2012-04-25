@@ -36,8 +36,6 @@ class Widget_Post extends Widget_Generic
         
     function process_input($action)
     {
-        $is_new = !$this->guid;
-    
         $content = get_input('content');
         if (empty($content))
         {

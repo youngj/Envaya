@@ -22,7 +22,9 @@ class Widget extends Entity
     static $table_base_class = 'Widget';
     static $query_class = 'Query_SelectWidget';
     static $table_attributes = array(
-        'subtype_id' => '',    
+        'subtype_id' => '',
+        'local_id' => 0,
+        'user_guid' => null,
         'widget_name' => 0,
         'publish_status' => 1,
         'time_published' => null,
@@ -106,7 +108,7 @@ class Widget extends Entity
 
     public function query_comments()
     {
-        return Comment::query()->where('container_guid = ?', $this->guid)->order_by('guid');
+        return Comment::query()->where('container_guid = ?', $this->guid)->order_by('tid');
     }
 
     public function get_title()
@@ -255,6 +257,22 @@ class Widget extends Entity
         {
             $this->time_published = timestamp();
         }    
+        
+        if (!$this->owner_guid)
+        {
+            $this->set_owner_entity(Session::get_logged_in_user());
+        }
+
+        if (!$this->user_guid)
+        {
+            $this->user_guid = $this->get_container_user()->guid;
+        }
+
+        if (!$this->local_id && !$this->is_page())
+        {
+            $this->generate_local_id();
+        }
+        
         parent::save();
     }
     
@@ -269,18 +287,18 @@ class Widget extends Entity
     {
         if (!$this->url_slug)
         {
-            $guid = $this->guid;
+            $tid = $this->local_id;
             $title = $this->title;            
             
-            $this->url_slug = $guid;
+            $this->url_slug = $tid;
 
-            if ($title && $guid)
+            if ($title && $tid)
             {
                 $title = static::make_url_slug($title);
 
                 if ($title)
                 {
-                    $this->url_slug = "{$title},{$guid}";
+                    $this->url_slug = "{$title},{$tid}";
                 }
             }
         }
@@ -373,8 +391,34 @@ class Widget extends Entity
         throw new NotFoundException();
     }
     
-    function allow_guid_redirect()
+    function generate_local_id()
     {
-        return true;
-    }
+        $guid = $this->get_guid();
+          
+        $user = $this->get_container_user();        
+        $user_guid = $user->guid;        
+          
+        $max_row = Database::get_row("SELECT max(local_id) as max FROM ".static::$table_name." where user_guid = ?", array($user_guid));
+        
+        $max_id = $max_row ? ((int)$max_row->max) : 0;
+        
+        for ($i = 1; $i < 10; $i++)
+        {
+            try
+            {
+                $local_id = $max_id + $i;
+            
+                Database::update("INSERT INTO local_ids (guid, user_guid, local_id) VALUES (?,?,?)",
+                    array($guid, $user_guid, $local_id));
+                    
+                $this->local_id = $local_id;
+                
+                return;
+            }
+            catch (DatabaseException $ex)
+            {
+                // duplicate local_id? try next one
+            }
+        }
+    }        
 }

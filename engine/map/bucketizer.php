@@ -32,7 +32,7 @@ class Map_Bucketizer
 
         foreach ($items as $item)
         {
-            $guid = (int)$item->guid;
+            $tid = (int)$item->tid;
             $bucket_lat_index = round($item->latitude / $bucket_d_lat);
             $bucket_long_index = round($item->longitude / $bucket_d_long);
                         
@@ -43,12 +43,12 @@ class Map_Bucketizer
                 $buckets[$bucket_key] = array(
                     $bucket_lat_index * $bucket_d_lat,      // center latitude of bucket
                     $bucket_long_index * $bucket_d_long,    // center longitude of bucket
-                    array($guid)                            // list of guids in bucket
+                    array($tid)                            // list of guids in bucket
                 );
             }
             else
             {
-                $buckets[$bucket_key][2][] = $guid;
+                $buckets[$bucket_key][2][] = $tid;
             }
         }            
         return array_values($buckets);

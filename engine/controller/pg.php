@@ -81,10 +81,9 @@ class Controller_Pg extends Controller
     {
         Permission_Public::require_any();
 
-        $owner_guid = get_input('owner');
         $group_name = get_input('group');
 
-        $largeFile = UploadedFile::query()->where('owner_guid = ?', $owner_guid)->where('group_name = ?', $group_name)
+        $largeFile = UploadedFile::query()->where('group_name = ?', $group_name)
             ->order_by('width desc')->get();
 
         if ($largeFile)
@@ -217,7 +216,7 @@ class Controller_Pg extends Controller
     {
         $this->set_content_type('text/javascript');
         
-        $entity_guid = (int)get_input('entity_guid');
+        $entity_guid = get_input('entity_guid');
         
         $entity = Entity::get_by_guid($entity_guid, true);
         if (!$entity)
@@ -256,7 +255,7 @@ class Controller_Pg extends Controller
     function action_select_document()
     {
         Permission_RegisteredUser::require_any();
-        $guid = (int)get_input('guid');
+        $guid = get_input('guid');
         $file = UploadedFile::get_by_guid($guid);
         
         $this->allow_view_types(null);
@@ -373,7 +372,11 @@ class Controller_Pg extends Controller
             'title' => __('browse:title'),
             'content' => view("org/change_filter", array(
                 'baseurl' => '/pg/browse', 
-                'filters' => Query_Filter::filters_from_input(array('Sector','Country','Region'))
+                'filters' => Query_Filter::filters_from_input(array(
+                    'Query_Filter_User_Sector',
+                    'Query_Filter_User_Country',
+                    'Query_Filter_User_Region'
+                ))
             ), 'mobile')
         ));
     }        
@@ -385,7 +388,7 @@ class Controller_Pg extends Controller
     
         $q = get_input('q');
         
-        $filters = Query_Filter::filters_from_input(array('Sector'));
+        $filters = Query_Filter::filters_from_input(array('Query_Filter_User_Sector'));
         
         $vars = array('query' => $q, 'filters' => $filters);
         
@@ -531,7 +534,11 @@ class Controller_Pg extends Controller
             'title' => __("feed:title"),
             'content' => view("org/change_filter", array(
                 'baseurl' => '/pg/feed', 
-                'filters' => Query_Filter::filters_from_input(array('Sector','Country','Region'))
+                'filters' => Query_Filter::filters_from_input(array(
+                    'Query_Filter_User_Sector',
+                    'Query_Filter_User_Country',
+                    'Query_Filter_User_Region'
+                ))
             ), 'mobile')
         ));
     }
@@ -543,7 +550,11 @@ class Controller_Pg extends Controller
     
         $max_items = Config::get('feed:page_size');
         
-        $filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));                        
+        $filters = Query_Filter::filters_from_input(array(
+            'Query_Filter_User_Sector',
+            'Query_Filter_User_Country',
+            'Query_Filter_User_Region'
+        ));                        
         $feedName = FeedItem::feed_name_from_filters($filters);
         $items = FeedItem::query_by_feed_name($feedName)
             ->where_visible_to_user()
@@ -582,7 +593,11 @@ class Controller_Pg extends Controller
         Permission_Public::require_any();
         $this->set_content_type('text/javascript');
 
-        $filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));                        
+        $filters = Query_Filter::filters_from_input(array(
+            'Query_Filter_User_Sector',
+            'Query_Filter_User_Country',
+            'Query_Filter_User_Region'
+        ));
         $feedName = FeedItem::feed_name_from_filters($filters);        
         $before_id = (int)get_input('before_id');
         
@@ -607,11 +622,11 @@ class Controller_Pg extends Controller
         Permission_Public::require_any();  
         $this->set_content_type('text/javascript');     
         
-        $guids = explode(',', get_input('ids'));
+        $tids = explode(',', get_input('ids'));
         
         $orgs = Organization::query()
-            ->where_in('guid', $guids)
-            ->columns('guid,subtype_id,latitude,longitude,username,name')
+            ->where_in('tid', $tids)
+            ->columns('guid,tid,subtype_id,latitude,longitude,username,name')
             ->order_by('name')
             
             ->filter();
@@ -637,7 +652,7 @@ class Controller_Pg extends Controller
         $query->in_area($lat_min, $long_min, $lat_max, $long_max);        
         $query->with_sector($sector);                                        
         $query->where_visible_to_user();        
-        $query->columns('guid,subtype_id,latitude,longitude');
+        $query->columns('guid,tid,subtype_id,latitude,longitude');
         
         $orgs = $query->filter();
 

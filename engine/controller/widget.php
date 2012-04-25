@@ -13,7 +13,7 @@ class Controller_Widget extends Controller_User
 {   
     static $routes = array(
         array(
-            'regex' => '/comment/(?P<comment_guid>\d+)(/(?P<action>\w+)\b)?',
+            'regex' => '/comment/(?P<comment_guid>\w+)(/(?P<action>\w+)\b)?',
             'action' => 'action_<action>_comment',
             'before' => 'init_comment_by_guid',
         ),    
@@ -120,8 +120,8 @@ class Controller_Widget extends Controller_User
         $container = $widget->get_container_entity();
 
         $sibling = $container->query_published_widgets()
-            ->where("guid $op ?", $widget->guid)
-            ->order_by("guid $order")
+            ->where("tid $op ?", $widget->tid)
+            ->order_by("tid $order")
             ->get();
         
         if ($sibling)

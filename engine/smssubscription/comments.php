@@ -24,7 +24,7 @@ class SMSSubscription_Comments extends SMSSubscription
                 'notifier' => $comment,
                 'message' => strtr(__('sms:comment_notification', $this->language), array(
                     '{name}' => $comment->get_name($this->language),
-                    '{news_cmd}' => "N {$org->username} {$widget->get_local_id()}",
+                    '{news_cmd}' => "N {$org->username} {$widget->local_id}",
                     '{comment_cmd}' => "V {$comment->guid}",
                     '{news_url}' => abs_url($widget->get_url()),
                 ))
@@ -39,7 +39,7 @@ class SMSSubscription_Comments extends SMSSubscription
         
         if ($container instanceof Widget)
         {
-            return "N {$user->username} {$container->get_local_id()}";
+            return "N {$user->username} {$container->local_id}";
         }
         else
         {

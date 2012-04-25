@@ -4,6 +4,7 @@ class Module_Envaya_Org extends Module
 {
     static $autoload_patch = array(
         'ClassRegistry',
+        'PrefixRegistry',
         'Controller_Default',
         'Controller_Admin',
         'Language',
@@ -76,6 +77,14 @@ class Module_Envaya_Org extends Module
             'core.permission.editmainsite' => 'Permission_EditMainSite',
         ));
     }
+    
+    static function patch_PrefixRegistry()
+    {
+        PrefixRegistry::register(array(
+            'eS' => 'FeaturedSite',
+            'eP' => 'FeaturedPhoto'
+        ));
+    }    
 
     static function patch_Controller_Default()
     {

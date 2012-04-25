@@ -277,7 +277,7 @@ class Markup
             $metadata = explode(':', $alt);
             return "<scribd docid='".escape($metadata[1])
                 ."' accesskey='".escape($metadata[2])
-                ."' guid='".(int)($metadata[3])
+                ."' guid='".escape($metadata[3])
                 ."' filename='".escape($metadata[0])."' />";
         }        
         return '';    

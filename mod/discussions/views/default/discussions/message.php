@@ -14,7 +14,7 @@
         echo "</strong>";    
         echo "<div class='blog_date'>". $message->get_date_text();
 
-        if ($message->time_updated > $message->time_posted)
+        if ($message->time_updated > $message->time_posted + 10) // guessing language messes up time updated
         {
             echo " ".strtr(__('date:edited'), array('{date}' => $message->get_date_text($message->time_updated)));
         }

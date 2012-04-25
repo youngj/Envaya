@@ -1,6 +1,6 @@
 server {
     listen   80;
-    include /etc/nginx/envaya.conf;
+    include /etc/nginx/app.conf;
 
     location ~ \.php
     {

@@ -10,7 +10,7 @@ class InvitedEmail extends Model
 
     static $table_attributes = array(
         'email' =>  '',
-        'registered_guid' => 0,
+        'registered_guid' => null,
         'invite_code' => '', 
         'last_invited' => 0,
         'num_invites' => 0,

@@ -154,8 +154,8 @@ class Language
     {    
         $this->requested_keys[$key] = true;
     
-		if (isset($this->translations[$key]))
-		{
+        if (isset($this->translations[$key]))
+        {
             return $this->translations[$key];
         }
         

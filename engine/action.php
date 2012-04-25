@@ -58,6 +58,11 @@ abstract class Action
     {
         try
         {
+            if (Config::get('readonly'))
+            {
+                throw new ValidationException("Sorry, Envaya is temporarily in read-only mode. Please try again later.");
+            }
+        
             $this->validate_security_token();
             $this->process_input();
         }

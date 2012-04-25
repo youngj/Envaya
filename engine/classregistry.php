@@ -50,6 +50,15 @@ class ClassRegistry
         'core.subscription.email.comments' => "EmailSubscription_Comments",
         'core.subscription.email.registration' => "EmailSubscription_Registration",
         
+        'core.filter.user.type' => 'Query_Filter_User_Type',
+        'core.filter.user.active' => 'Query_Filter_User_Active',
+        'core.filter.user.approval' => 'Query_Filter_User_Approval',
+        'core.filter.user.country' => 'Query_Filter_User_Country',
+        'core.filter.user.fulltext' => 'Query_Filter_User_Fulltext',        
+        'core.filter.user.inactive' => 'Query_Filter_User_Inactive',        
+        'core.filter.user.region' => 'Query_Filter_User_Region',        
+        'core.filter.user.sector' => 'Query_Filter_User_Sector',        
+        
         'core.file' => 'UploadedFile',
 
         'core.widget' => 'Widget',

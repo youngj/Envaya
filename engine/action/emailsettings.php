@@ -60,7 +60,7 @@ class Action_EmailSettings extends Action
         $query = EmailSubscription::query()
             ->where('email = ?', $email)
             ->show_disabled(true)
-            ->order_by('guid')
+            ->order_by('tid')
             ->limit($limit, $offset);
         
         if ($id)

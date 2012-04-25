@@ -10,7 +10,7 @@ class UserPhoneNumber extends Model
     static $table_attributes = array(
         'phone_number' => '',
         'last_digits' => 0,
-        'user_guid' => 0,
+        'user_guid' => null,
         'confirmed' => 0,
     );
     

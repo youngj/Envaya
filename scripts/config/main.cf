@@ -1,0 +1,16 @@
+relayhost = {{mail:upstream_smtp_host}}:{{mail:upstream_smtp_port}}
+smtp_sasl_auth_enable = yes
+smtp_sasl_security_options = noanonymous
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_use_tls = yes
+smtp_tls_security_level = encrypt
+smtp_tls_note_starttls_offer = yes
+inet_interfaces = loopback-only
+
+smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
+
+# OPENDKIM
+milter_default_action = accept
+milter_protocol = 2
+smtpd_milters = inet:127.0.0.1:8891
+non_smtpd_milters = inet:127.0.0.1:8891

@@ -220,14 +220,12 @@ class Controller_SMSGateway extends Controller
                 
         if (!$route)
         {
-            $this->log("{$provider->get_log_line()} NO_ROUTE");
-        
-            $this->set_status(404);
-            $this->set_content("Incoming SMS did not match any routes");
-            throw new RequestAbortedException();
+            $service_class = 'SMS_Service_News';
         }        
-    
-        $service_class = $route['service'];
+        else
+        {    
+            $service_class = $route['service'];
+        }
         $service = new $service_class();                
                 
         $request = new SMS_Request($service, $provider);

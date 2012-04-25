@@ -3,10 +3,13 @@
     <h3><?php echo __('admin:statistics:label:numentities'); ?></h3>
     <table class='inputTable'>
     <?php
-        $types = Database::get_rows("SELECT subtype_id, count(*) as count from entities group by subtype_id");
-        foreach ($types as $type)
+    
+        $classes = array_values(PrefixRegistry::all_classes());
+        sort($classes);
+    
+        foreach ($classes as $class)
         {
-            echo "<tr><th>".escape($type->subtype_id)."</th><td>{$type->count}</td></tr>";
+            echo "<tr><th>".escape($class)."</th><td>".$class::query()->count()."</td></tr>";
         }
     ?>
     </table>

@@ -15,10 +15,6 @@ class Controller_Default extends Controller
             'controller' => 'Controller_SMSGateway',
         ),
         array(
-            'regex' => '/(?P<guid>\d+)',
-            'action' => 'action_guid_redirect',
-        ),              
-        array(
             'regex' => '/robots.txt\b',
             'action' => 'action_robots_txt',
         ),        
@@ -54,6 +50,11 @@ class Controller_Default extends Controller
             {
                 $uri = "/{$username}{$uri}";
             }
+            else
+            {
+                $this->redirect($uri, 301);
+                throw new RequestAbortedException();
+            }
         }
         
         $this->params['rewritten_uri'] = $uri;
@@ -69,6 +70,9 @@ class Controller_Default extends Controller
             $this->prefer_https();
         }
 
+        // workaround https://bugs.php.net/bug.php?id=60761
+        ini_set('zlib.output_compression', true);
+        
         QueryString::set_used_param('lang');            
         
         // 'lang' query parameter permanently changes interface language via cookie
@@ -144,32 +148,4 @@ class Controller_Default extends Controller
             $this->response->headers[$name] = $value;
         }
     }
-    
-    function action_guid_redirect()
-    {
-        Permission_Public::require_any(); 
-
-        try
-        {
-            $entity = Entity::get_by_guid($this->param('guid'));
-        }
-        catch (InvalidParameterException $ex)
-        {
-            $entity = null;
-        }
-        
-        if (!$entity || !$entity->allow_guid_redirect())
-        {
-            throw new NotFoundException();
-        }
-        
-        $url = $entity->get_url();
-            
-        if (!$url)
-        {
-            throw new NotFoundException();
-        }
-        
-        $this->redirect($url . $this->param('rest'));        
-    }    
 }

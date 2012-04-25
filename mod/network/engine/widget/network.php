@@ -56,7 +56,7 @@ class Widget_Network extends Widget
     {
         $this->show_cancel_edit_button();
                         
-        $org_guid = (int)get_input('org_guid');
+        $org_guid = get_input('org_guid');
         $org = Organization::get_by_guid($org_guid);
         
         $type = (int)get_input('type');
@@ -105,7 +105,7 @@ class Widget_Network extends Widget
         if (!$subject_org) // subject_org not an envaya member
         {
             $relationship->subject_name = get_input('name');
-            $relationship->subject_guid = 0;
+            $relationship->subject_guid = null;
             $relationship->invite_subject = get_input('invite') ? true : false;
             $relationship->subject_email = EmailAddress::validate(trim(get_input('email')));
             
@@ -222,7 +222,7 @@ class Widget_Network extends Widget
     
     private function get_current_relationship($org)
     {
-        $guid = (int)get_input('guid');
+        $guid = get_input('guid');
         $relationship = Relationship::query_for_user($org)->guid($guid)->get();
         if (!$relationship)
         {            

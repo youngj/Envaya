@@ -19,8 +19,8 @@ CREATE DATABASE {$dbname};
 if ($dbuser != 'root')
 {
 echo "
-CREATE USER '{$dbuser}'@'localhost' IDENTIFIED BY '{$dbpass}';
-GRANT ALL PRIVILEGES ON {$dbname}.* TO '{$dbuser}'@'localhost';
+CREATE USER '{$dbuser}'@'%' IDENTIFIED BY '{$dbpass}';
+GRANT ALL PRIVILEGES ON {$dbname}.* TO '{$dbuser}'@'%';
 ";
 }
 

@@ -5,8 +5,8 @@ class ContentRevision extends Model
     static $table_name = 'revisions';
     
     static $table_attributes = array(
-        'owner_guid' => 0,
-        'entity_guid' => 0,
+        'owner_guid' => null,
+        'entity_guid' => null,
         'time_created' => 0,        
         'time_updated' => 0,        
         'content' => '',

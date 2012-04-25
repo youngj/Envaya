@@ -5,11 +5,11 @@
     $url = $widget->get_url();
     
     $has_prev = $news->query_published_widgets()
-        ->where('guid < ?', $widget->guid)
+        ->where('tid < ?', $widget->tid)
         ->exists();    
         
     $has_next = $news->query_published_widgets()
-        ->where('guid > ?', $widget->guid)
+        ->where('tid > ?', $widget->tid)
         ->exists();
     
     if ($has_prev || $has_next)

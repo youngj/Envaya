@@ -18,7 +18,7 @@
  *
  * For example, a user that has Permission_EditUserSettings on UserScope::get_root() 
  * will be able to edit the settings for any user. A user with Permission_EditUserSettings
- * on a UserScope with filter Query_Filter_Country(array('value' => 'rw')) will only
+ * on a UserScope with filter Query_Filter_User_Country(array('value' => 'rw')) will only
  * be able to edit the settings for users in Rwanda.
  */
 abstract class Permission extends Entity

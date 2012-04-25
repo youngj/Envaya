@@ -63,7 +63,7 @@ class Handler_TranslateEntityField
         
         $approvedTrans = $key->query_translations()
             ->where('approval > 0')
-            ->order_by('approval_time desc, guid desc')
+            ->order_by('approval_time desc, tid desc')
             ->get();
 
         $doAutoTranslate = ($translateMode == TranslateMode::Automatic) 
@@ -75,7 +75,7 @@ class Handler_TranslateEntityField
         {
             $autoTrans = $key->query_translations()
                 ->where('source = ?', Translation::GoogleTranslate)
-                ->order_by('time_created desc, guid desc')
+                ->order_by('time_created desc, tid desc')
                 ->get();
         
             if ($autoTrans && !$autoTrans->is_stale())
@@ -110,7 +110,7 @@ class Handler_TranslateEntityField
     private static function get_translation_key($entity, $prop, $lang)
     {
         $guid = $entity->guid;
-        $key_name = "entity:{$guid}:{$prop}";
+        $key_name = "{$guid}:{$prop}";
         
         $language = TranslationLanguage::get_by_code($lang);
         

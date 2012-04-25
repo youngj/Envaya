@@ -7,7 +7,7 @@ class DiscussionTopic extends Entity
     static $table_attributes = array(
         'subject' => '',
         'language' => '',
-        'first_message_guid' => 0,
+        'first_message_guid' => null,
         'num_messages' => 0,
         'last_time_posted' => 0,
         'last_from_name' => 0,
@@ -17,7 +17,7 @@ class DiscussionTopic extends Entity
     static function query_for_user($user)
     {
         return DiscussionTopic::query()->where('container_guid = ?', $user->guid)
-            ->order_by('last_time_posted desc, guid desc');
+            ->order_by('last_time_posted desc, tid desc');
     }
     
     function new_message()
@@ -34,7 +34,7 @@ class DiscussionTopic extends Entity
     
     function refresh_attributes()
     {
-        $lastMessage = $this->query_messages()->order_by('time_posted desc, guid desc')->limit(1)->get();
+        $lastMessage = $this->query_messages()->order_by('time_posted desc, tid desc')->limit(1)->get();
     
         $this->num_messages = $this->query_messages()->count();
         $this->last_time_posted = $lastMessage ? $lastMessage->time_posted : 0;
@@ -47,7 +47,7 @@ class DiscussionTopic extends Entity
         $container = $this->get_container_entity();
         if ($container)
         {    
-            return "{$container->get_url()}/topic/{$this->guid}";
+            return "{$container->get_url()}/topic/{$this->tid}";
         }
         else
         {

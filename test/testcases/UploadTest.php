@@ -193,6 +193,7 @@ class UploadTest extends WebDriverTest
         $this->open("/");
         $this->click("//a[contains(@href,'/dashboard')]");
         $this->waitForElement("//a[contains(@href,'/addphotos')]");
+        sleep(1);
         $this->click("//a[contains(@href,'view=mobile')]");
         $this->waitForElement("//a[contains(@href,'view=default')]");
         $this->click("//a[contains(@href,'/addphotos')]");

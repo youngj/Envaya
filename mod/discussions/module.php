@@ -4,6 +4,7 @@ class Module_Discussions extends Module
 {        
     static $autoload_patch = array(
         'ClassRegistry',
+        'PrefixRegistry',
         'Widget',
         'Controller_UserSite',   
         'Controller_Pg',
@@ -23,6 +24,14 @@ class Module_Discussions extends Module
         ));
     }
 
+    static function patch_PrefixRegistry()
+    {
+        PrefixRegistry::register(array(
+            'dM' => 'DiscussionMessage',
+            'dT' => 'DiscussionTopic'
+        ));
+    }
+    
     static function patch_Widget()
     {
         Widget::add_default_class('Widget_Discussions');
@@ -46,7 +55,7 @@ class Module_Discussions extends Module
 
     static function patch_IncomingMail()
     {
-        IncomingMail::add_tag_action('#^message(?P<guid>\d+)$#', 
+        IncomingMail::add_tag_action('#^message(?P<tid>\d+)$#', 
             array('EmailSubscription_Discussion', 'handle_mail_reply'));
     }
 

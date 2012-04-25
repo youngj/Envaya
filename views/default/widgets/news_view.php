@@ -18,7 +18,7 @@
 
     $limit = 10;    
     $query = $widget->query_published_widgets()
-        ->order_by('time_published desc, guid desc');
+        ->order_by('time_published desc, tid desc');
         
     $count = $query->count();
     $posts = $query->limit($limit, $offset)->filter();            

@@ -25,9 +25,9 @@ class Controller_Contact extends Controller
         Permission_UseAdminTools::require_any();
     
         $this->set_content_type('text/javascript');
-        $subclass = get_input('subclass');         
+        $subtype_id = get_input('subtype_id');         
         $id = get_input('id');         
-        $cls = "Query_Filter_{$subclass}";
+        $cls = ClassRegistry::get_class($subtype_id);
         $filter = new $cls();
         $this->set_content(json_encode(array(
             'name' => $cls::get_name(),

@@ -47,6 +47,7 @@ module Capistrano
         
         def update_remote_cache
           finder_options = {:except => { :no_release => true }}
+          run("mkdir -p #{repository_cache_path}")
           run("chown -R root:root #{repository_cache_path}")
           find_servers(finder_options).each do |s| 
             # TODO pass the password to rsync (e.g. with expect, or ruby rsync library) to avoid double prompting

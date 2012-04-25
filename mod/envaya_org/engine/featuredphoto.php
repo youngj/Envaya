@@ -8,7 +8,7 @@ class FeaturedPhoto extends Entity
     static $table_name = 'featured_photos';
 
     static $table_attributes = array(
-        'user_guid' => 0,
+        'user_guid' => null,
         'image_url' => '',        
         'x_offset' => 0,
         'y_offset' => 0,

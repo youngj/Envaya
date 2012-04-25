@@ -18,6 +18,8 @@ abstract class Action_ContactTemplate_Add extends Action
         
         $this->init_template($template);
         
+        $template->set_owner_entity(Session::get_logged_in_user());
+        
         $template->save();
         $this->redirect($template->get_url());
     }
@@ -27,8 +29,8 @@ abstract class Action_ContactTemplate_Add extends Action
         $template_class = $this->controller->template_class;
         $template = new $template_class();
         $template->set_filters(array(
-            new Query_Filter_UserType(array('value' => Organization::get_subtype_id())),
-            new Query_Filter_Approval(array('value' => User::Approved))
+            new Query_Filter_User_Type(array('value' => Organization::get_subtype_id())),
+            new Query_Filter_User_Approval(array('value' => User::Approved))
         ));
     
         $this->page_draw(array(

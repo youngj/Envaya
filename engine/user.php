@@ -789,7 +789,7 @@ abstract class User extends Entity
     
     function update_scope()
     {
-        $scope = UserScope::query()->where('container_guid = 0')->get();
+        $scope = UserScope::query()->where('container_guid is null')->get();
         if ($scope)
         {
             $scope = $scope->find_scope($this);

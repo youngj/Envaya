@@ -8,7 +8,7 @@ class TranslationVote extends Entity
     static $table_name = 'translation_votes';
     static $table_attributes = array(
         'score' => 0,
-        'language_guid' => 0,
+        'language_guid' => null,
     );   
     
     function save()

@@ -18,7 +18,7 @@ class EmailSubscription_Comments extends EmailSubscription
         {
             $this->send(array(
                 'notifier' => $comment,
-                'reply_to' => EmailAddress::add_signed_tag(Config::get('mail:reply_email'), "comment{$comment->guid}"),
+                'reply_to' => EmailAddress::add_signed_tag(Config::get('mail:reply_email'), "comment{$comment->tid}"),
                 'subject' => strtr(__('comment:notification_subject', $this->language), array(
                     '{name}' => $comment->get_name(),
                 )), 
@@ -49,19 +49,19 @@ class EmailSubscription_Comments extends EmailSubscription
     
     static function handle_mail_reply($mail, $match)
     {
-        $guid = $match['guid'];
+        $tid = $match['tid'];
         
-        $comment = Comment::get_by_guid($guid, true);
+        $comment = Comment::query()->where('tid = ?', $tid)->show_disabled(true)->get();
         if (!$comment)
         {
-            error_log("invalid comment guid $guid");
+            error_log("invalid comment tid $tid");
             return false;
         }
         
         $widget = $comment->get_container_entity();
         if (!$widget)
         {
-            error_log("invalid container for comment guid $guid");
+            error_log("invalid container for comment tid $tid");
             return false;
         }
         

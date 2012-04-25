@@ -9,7 +9,7 @@ class UserDomainName extends Model
 {
     static $table_name = 'org_domain_names';
     static $table_attributes = array(
-        'guid' => 0,
+        'guid' => null,
         'domain_name' => ''
     );       
     

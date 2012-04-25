@@ -9,7 +9,7 @@ class Controller_Admin extends Controller
 {
     static $routes = array(
         array(
-            'regex' => '/entity/(?P<entity_guid>\d+)(/(?P<action>\w+))?\b',
+            'regex' => '/entity/(?P<entity_guid>\w+)(/(?P<action>\w+))?\b',
             'defaults' => array('action' => 'view'),
             'action' => 'entity_<action>',
             'before' => 'init_entity_from_guid',

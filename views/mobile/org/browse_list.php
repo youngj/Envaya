@@ -1,6 +1,10 @@
 <?php 
 
-$filters = Query_Filter::filters_from_input(array('Sector','Country','Region'));
+$filters = Query_Filter::filters_from_input(array(
+    'Query_Filter_User_Sector',
+    'Query_Filter_User_Country',
+    'Query_Filter_User_Region'
+));
 
 echo view('org/current_filter', array(
     'filters' => $filters, 

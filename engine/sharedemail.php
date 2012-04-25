@@ -7,7 +7,7 @@ class SharedEmail extends Model
 {
     static $table_name = 'shared_emails';
     static $table_attributes = array(
-        'user_guid' => 0,
+        'user_guid' => null,
         'time_shared' => 0,
         'email' => '',
         'url' => '',

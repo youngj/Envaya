@@ -6,7 +6,7 @@ CREATE TABLE `org_relationships` (
     
     `subject_notified` tinyint(4) NOT NULL default 0,
     `invite_subject` tinyint(4) NOT NULL default 0,
-    `subject_guid` bigint(20) unsigned NOT NULL,
+    `subject_guid`  binary(24) NULL,
     `subject_name` text default null,    
     `subject_email` varchar(128) default null,
     `subject_phone` varchar(128) default null,

@@ -149,7 +149,7 @@ function getLinkInfo()
         echo "<a target='_blank' href='".escape($feed->url)."' style='font-weight:bold'>".escape($feed->url)."</a>";
         echo "</td>";
         echo "<td>";
-        echo "<a href='javascript:removeFeed($feed->guid, ".json_encode($feed->url).",".json_encode($has_items).");' class='gridDelete'></a>";
+        echo "<a href='javascript:removeFeed(".json_encode($feed->guid).", ".json_encode($feed->url).",".json_encode($has_items).");' class='gridDelete'></a>";
         echo "</td>";
         echo "</tr>";
     }
