@@ -11,13 +11,16 @@ class Action_User_Design extends Action
     {
         $user = $this->get_user();
 
-        $theme = get_input('theme');
+        $theme_id = get_input('theme_id');
 
-        if ($theme != $user->get_design_setting('theme_name'))
+        $theme = ClassRegistry::get_class($theme_id);        
+        if ($theme && is_subclass_of($theme, 'Theme'))
         {
-            $user->set_design_setting('theme_name', $theme);
+            $user->set_design_setting('theme_id', $theme_id);
         }
 
+        //$user->set_design_setting('theme_options', get_input_array('theme_options'));        
+        
         $iconFiles = UploadedFile::json_decode_array($_POST['icon']);
 
         if (get_input('deleteicon'))
@@ -41,8 +44,8 @@ class Action_User_Design extends Action
         {
             $header_image = json_decode(get_input('header_image'), true);
             if ($header_image)
-            {
-                $user->set_design_setting('header_image', $header_image[0]);
+            {            
+                $user->set_design_setting('header_image', isset($header_image[1]) ? $header_image[1] : $header_image[0]);
             }
             
             $user->set_design_setting('custom_header', !!$user->get_design_setting('header_image'));
@@ -59,11 +62,11 @@ class Action_User_Design extends Action
         $user = $this->get_user();
 
         $cancelUrl = get_input('from') ?: $user->get_url();
-        PageContext::get_submenu('edit')->add_link(__("canceledit"), $cancelUrl);
+        PageContext::get_submenu('top')->add_link(__("canceledit"), $cancelUrl);
 
         $this->page_draw(array(
             'title' => __("design:edit"),
-            'theme_name' => 'editor',
+            'theme' => 'Theme_Editor',
             'content' => view("account/design", array('user' => $user))
         ));        
     }

@@ -82,6 +82,7 @@ class ClassRegistry
         'core.widget.projects' => 'Widget_Projects',
         'core.widget.sectors' => 'Widget_Sectors',
         'core.widget.team' => 'Widget_Team',
+        'core.widget.volunteer' => 'Widget_Volunteer',
         'core.widget.updates' => 'Widget_Updates',       
         'core.widget.comment' => 'Comment',
         
@@ -100,6 +101,11 @@ class ClassRegistry
         'core.externalsite' => 'ExternalSite',
         'core.externalsite.facebook' => 'ExternalSite_Facebook',
         'core.externalsite.twitter' => 'ExternalSite_Twitter',
+        
+        'core.theme.editor' => 'Theme_Editor',
+        'core.theme.simple' => 'Theme_Simple',
+        'core.theme.wide' => 'Theme_Wide',
+        'core.theme.custom' => 'Theme_Custom',
     );
     private static $class_to_subtype = null;
     

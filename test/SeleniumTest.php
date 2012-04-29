@@ -61,8 +61,7 @@ class SeleniumTest extends PHPUnit_Framework_TestCase
 
     function logout()
     {
-        $this->click("//a[contains(@href,'pg/logout')]");        
-        $this->clickAndWait("//div[@id='logoutDiv']//a");
+        $this->click("//a[contains(@href,'logout')]");        
         $this->waitForElement("//a[@id='loginButton']");    
     }    
     

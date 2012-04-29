@@ -74,7 +74,7 @@ FileUploader.prototype.getPluploadOptions = function()
         multipart_params: opts.post_params,
         resize : ((opts.max_width) ? 
             {width : opts.max_width, height : opts.max_height, quality : 75} : null),
-        flash_swf_url : '/_media/plupload.flash.swf?v8',
+        flash_swf_url : '/_media/plupload.flash.swf?v10',
         filters : ((opts.file_types) ? [{   
             title : opts.file_types_description, 
             extensions : opts.file_types
@@ -206,16 +206,22 @@ SingleImageUploader.prototype.showPreview = function($images, $json)
     progress.appendChild(loadingMessage);
     progress.style.display = 'block';
     
-    var img = createElem('img');
+    var imgId = this.options.img_id;
+    
+    var img = imgId ? $(imgId) : createElem('img');
 
-    img.style.display = 'none';
+    img.style.visibility = 'hidden';
 
     addEvent(img, 'load', function() {
-        img.style.display = 'inline';
+        img.style.visibility = 'visible';
         removeElem(loadingMessage);
     });
 
     var $image = this.getFileByProp($images, 'size', this.options.thumbnail_size);
     img.src = $image.url;
-    progress.appendChild(img);    
+    
+    if (!imgId)
+    {
+        progress.appendChild(img);    
+    }
 };

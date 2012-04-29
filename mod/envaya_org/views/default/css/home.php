@@ -10,6 +10,16 @@
     $graphicsDir = "/_media/images/home";
 ?>
 
+body
+{
+    background:#fafafa;
+}
+
+.content_container
+{
+    padding-top:10px;
+}
+
 .thin_column
 {
     width:882px;
@@ -148,11 +158,6 @@
 {
     display:none;
 }   
-
-.content_container
-{
-    background:#fff url("<?php echo $graphicsDir; ?>/featured_bg.gif") repeat-x left 128px;
-}
 
 .home_section_left
 {

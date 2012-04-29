@@ -259,7 +259,7 @@ class TranslateTest extends SeleniumTest
 
         // edit content, test translation shows up as stale
         $this->open($difficult_url);
-        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->clickAndWait("//div[@id='top_menu']//a[contains(@href,'/edit')]");
         $this->setTinymceContent("translating is fun");
         $this->submitForm();
         
@@ -281,7 +281,7 @@ class TranslateTest extends SeleniumTest
             $this->getText("//div[@id='translate_bar']"));
                 
         // delete content, test can't view translation anymore
-        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->clickAndWait("//div[@id='top_menu']//a[contains(@href,'/edit')]");
         $this->submitForm("//button[@id='widget_delete']");
         $this->getConfirmation();
         $this->ensureGoodMessage('futwa');        

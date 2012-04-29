@@ -23,7 +23,7 @@ class Action_Logout extends Action
         $this->page_draw(array(
             'title' => __("logout"), 
             'header' => '&nbsp;',
-            'theme_name' => 'editor',
+            'theme' => 'Theme_Editor',
             'content' => view("account/logout", array('next' => get_input('next'))),
         ));
     }

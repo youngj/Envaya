@@ -15,7 +15,7 @@ class NetworkTest extends SeleniumTest
         // disable network notifications for testposter13
         $this->open('/pg/login');
         $this->login('testadmin','secretpassw0rd');
-        $this->ensureGoodMessage();
+        $this->assertEquals("testadmin", $this->getText("//span[@id='top_whoami']"));
         $this->open("/testposter13");        
         $this->clickAndWait("//a[contains(@href,'/pg/email_settings')]");
         $this->uncheck("//label[contains(text(),'network')]//input");
@@ -24,7 +24,7 @@ class NetworkTest extends SeleniumTest
         // log in as testorg
         $this->open('/pg/login');
         $this->login('testorg','asdfasdf');
-        $this->ensureGoodMessage();
+        $this->assertEquals("testorg", $this->getText("//span[@id='top_whoami']"));
                 
         // click todo item
         $this->clickAndWait("//ul[@class='todo_steps']//a[contains(@href,'page/network/edit')]");
@@ -210,7 +210,7 @@ class NetworkTest extends SeleniumTest
         $approveUrl = $this->getLinkFromText($notify_email, 1);
         $this->setUrl($approveUrl);
         $this->login('testposter16','asdfasdf');
-        $this->ensureGoodMessage();
+        $this->assertEquals("testposter16", $this->getText("//span[@id='top_whoami']"));
         $this->setTinymceContent("whee reverse relationship");
         $this->submitForm();
         $this->ensureGoodMessage();
@@ -417,7 +417,7 @@ class NetworkTest extends SeleniumTest
     {
         $this->open('/pg/login');
         $this->login('testadmin','secretpassw0rd');
-        $this->ensureGoodMessage();
+        $this->assertEquals("testadmin", $this->getText("//span[@id='top_whoami']"));
         
         $this->deleteNetwork('testorg');
         $this->deleteNetwork('testposter12');

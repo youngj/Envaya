@@ -1,12 +1,16 @@
 <?php
     $current = $vars['current'];
     
+    $img_id = "image{$INCLUDE_COUNT}";
+    
     $deletename = $vars['deletename'];
     $deleteid = @$vars['deleteid'];
-    $removable = isset($vars['removable']) ? $vars['removable'] : ($current != null);
+    $removable = isset($vars['removable']) ? $vars['removable'] : ($current != null);    
     
     $imageInput = view('input/image_uploader', array(
         'name' => $vars['name'],
+        'img_id' => $img_id,
+        'jsname' => @$vars['jsname'],
         'track_dirty' => @$vars['track_dirty'],
         'thumbnail_size' => $vars['thumbnail_size'],
         'sizes' => $vars['sizes']
@@ -16,12 +20,11 @@
 <?php if ($current) { ?>
     <table>
     <tr>
-        <td style='padding-right:10px;width:100px'><?php echo __('upload:image:current') ?><br />
-            <img src='<?php echo $current ?>' />
+        <td style='padding-right:10px;width:100px'>
+            <img id='<?php echo $img_id; ?>' src='<?php echo $current ?>' />
         </td>
         <td> 
             <div>
-                <?php echo __('upload:image:new') ?>
                 <?php echo $imageInput ?>                        
             </div>                                    
         <?php if ($removable) { ?>
@@ -37,7 +40,9 @@
     </tr>
     </table>    
 
-<?php } else { ?>        
-    <?php echo $imageInput ?>    
-    <div class='help'><?php echo __('upload:image:optional') ?></div>
-<?php } ?>
+<?php 
+    } 
+    else 
+    { 
+        echo $imageInput;
+    }

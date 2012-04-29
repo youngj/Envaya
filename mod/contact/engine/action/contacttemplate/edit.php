@@ -55,7 +55,7 @@ abstract class Action_ContactTemplate_Edit extends Action
     {
         $template = $this->get_template();
     
-        PageContext::get_submenu('edit')->add_link(
+        PageContext::get_submenu('top')->add_link(
             __('canceledit'), 
             get_input('from') ?: $template->get_url());
     

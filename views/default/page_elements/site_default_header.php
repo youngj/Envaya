@@ -11,9 +11,9 @@
     echo "<td>";
     echo "<h2 class='withicon'><a href='$escUrl'>".escape($vars['site_name'])."</a></h2>";
     
-    if ($vars['tagline'])
+    if (@$vars['design']['tagline'])
     {
-        echo "<h3 class='withicon'>".escape($vars['tagline'])."</h3>";
+        echo "<h3 class='withicon'>".escape($vars['design']['tagline'])."</h3>";
     }        
     echo "</td>";                          
     echo "</tr></table>";

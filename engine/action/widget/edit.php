@@ -29,7 +29,7 @@ class Action_Widget_Edit extends Action
             return $this->save_draft();
         }
 
-        $widget = $this->get_widget();
+        $widget = $this->get_widget();        
     
         if (get_input('delete'))
         {
@@ -48,6 +48,7 @@ class Action_Widget_Edit extends Action
             }            
             
             $widget->publish_status = Widget::Published;
+            $widget->time_updated = timestamp();
             
             $container = $widget->get_container_entity();
             if (!$container->is_enabled())
@@ -76,7 +77,7 @@ class Action_Widget_Edit extends Action
         
         $cancelUrl = get_input('from') ?: $widget->get_url();
 
-        PageContext::get_submenu('edit')->add_link(__("canceledit"), $cancelUrl);
+        PageContext::get_submenu('top')->add_link(__("canceledit"), $cancelUrl);
 
         $this->page_draw(array(
             'title' => sprintf(__('edit_item'), $widget->get_title()),

@@ -36,7 +36,9 @@ class Query_Filter_User_Region extends Query_Filter_Select
     
     static function new_from_input()
     {
-        return new Query_Filter_User_Region(array(
+        $cls = get_called_class();
+    
+        return new $cls(array(
             'value' => get_input('region'),
             'country' => get_input('country')
         ));

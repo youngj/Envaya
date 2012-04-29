@@ -114,7 +114,7 @@ class UploadTest extends WebDriverTest
         
         $this->attachFile("//input[@type='file']", dirname(__DIR__)."/images/logo.png");
         
-        $this->retry('mustBeVisible', array("//div[@class='imageUploadProgress']//img"));
+        $this->retry('mustBeVisible', array("//img[contains(@src,'medium.jpg')]"));
         
         $this->submitForm();
         
@@ -166,8 +166,8 @@ class UploadTest extends WebDriverTest
 
         $this->open("/testorg/design");        
         
-        $this->waitForElement("//input[@name='custom_header' and @value='1']")->click();
-        $this->attachFile("//div[@id='custom_header_container']//input[@type='file']", dirname(__DIR__)."/images/logo.png");        
+        $this->waitForElement("//a[@id='custom_header_link']")->click();
+        $this->attachFile("//tr[@id='image_header']//input[@type='file']", dirname(__DIR__)."/images/logo.png");        
         $this->retry('mustBeVisible', array("//div[@class='imageUploadProgress']//img"));
                 
         $this->submitForm();
@@ -180,7 +180,7 @@ class UploadTest extends WebDriverTest
         
         $this->open("/testorg/design");        
         
-        $this->waitForElement("//input[@name='custom_header' and @value='0']")->click();        
+        $this->waitForElement("//a[@id='default_header_link']")->click();        
         $this->submitForm();
         
         $this->waitForElement("//h3[contains(text(),'custom tagline')]");

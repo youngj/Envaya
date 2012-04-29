@@ -157,7 +157,7 @@ abstract class Model extends Mixable
                     $subtype_ids[] = $subtype::get_subtype_id();
                 }
             }        
-            $query->where_in('subtype_id', $subtype_ids);
+            $query->subtype_ids($subtype_ids);
         }
         
         return $query;

@@ -44,7 +44,7 @@ class Controller_TranslateAdmin extends Controller
     
     function before()
     {
-        $this->page_draw_vars['theme_name'] = 'editor';
+        $this->page_draw_vars['theme'] = 'Theme_Editor';
     }
     
     function action_index()

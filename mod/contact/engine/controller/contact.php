@@ -43,7 +43,7 @@ class Controller_Contact extends Controller
         Permission_UseAdminTools::require_any();
     
         $this->page_draw(array(
-            'theme_name' => 'simple_wide',
+            'theme' => 'Theme_Wide',
             'title' => __('contact:user_list'),
             'header' => '',
             'content' => view('admin/contact', array(

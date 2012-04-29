@@ -37,7 +37,7 @@ class Action_User_CustomDesign extends Action
         
         $current_view = get_input('current_view');        
         $custom_views[$current_view] = $template;
-        $user->set_design_setting('theme_name', 'custom');
+        $user->set_design_setting('theme_id', Theme_Custom::get_subtype_id());
         $user->set_design_setting('custom_views', $custom_views);
         $user->save();
         

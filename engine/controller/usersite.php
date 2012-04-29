@@ -107,7 +107,7 @@ class Controller_UserSite extends Controller_User
      
     protected function init_widget($widget)
     {
-        if ($widget && $widget->get_container_user()->guid == $this->get_user()->guid)
+        if ($widget && $widget->get_container_user()->guid === $this->get_user()->guid)
         {
             $this->params['widget'] = $widget;
         }
@@ -125,7 +125,7 @@ class Controller_UserSite extends Controller_User
         $widget = $user->get_widget_by_name($widgetName);                        
         
         $home_widget = $user->query_menu_widgets()->get();
-        if ($home_widget && $widget && $home_widget->guid == $widget->guid)
+        if ($home_widget && $widget && $home_widget->guid === $widget->guid)
         {                
             $this->page_draw_vars['is_site_home'] = true;
         }

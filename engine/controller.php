@@ -90,19 +90,19 @@ abstract class Controller extends Router {
         
         if ($viewtype == 'default')
         {
-            $theme = Theme::get(@$vars['theme_name'] ?: Config::get('theme:default'));
+            $theme_cls = @$vars['theme'] ?: Config::get('theme:default');
             
             if (!isset($vars['css_name']))
             {
-                $vars['css_name'] = $theme->get_css_name();
+                $vars['css_name'] = $theme_cls::get_css_name();
             }
             
             if (!isset($vars['layout']))
             {
-                $vars['layout'] = $theme->get_layout();
+                $vars['layout'] = $theme_cls::get_layout();
             }
             
-            Views::set_current_type($theme->get_viewtype());            
+            Views::set_current_type($theme_cls::get_viewtype());            
         }
         else
         {
@@ -129,6 +129,11 @@ abstract class Controller extends Router {
         if (!isset($vars['messages']))
         {
             $vars['messages'] = view('page_elements/messages', $vars);
+        }
+        
+        if (!isset($vars['top_menu']))
+        {
+            $vars['top_menu'] = view('page_elements/top_menu', $vars);
         }
         
         if (!isset($vars['header']))
@@ -264,7 +269,7 @@ abstract class Controller extends Router {
         {
             $this->page_draw(array(
                 'title' => __('exception_title'),
-                'theme_name' => Config::get('debug') ? 'simple_wide' : 'simple',
+                'theme' => Config::get('debug') ? 'Theme_Wide' : 'Theme_Simple',
                 'hide_login' => true,
                 'content' => view("messages/exception", array('object' => $exception))
             ));

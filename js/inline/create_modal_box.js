@@ -12,6 +12,8 @@ function createModalBox(options)
      * -- okText (string, default __('ok'))
      * -- hideOk (bool)
      * -- focus (bool)
+     * -- ignoreEnter (bool)
+     * -- shadowCancel (bool)
      */
 
     var removeFn = function() { removeElem(container); },
@@ -24,7 +26,7 @@ function createModalBox(options)
                 keypress: function(e) {
                     e = window.event ? event : e;
                     var code = e.charCode || e.keyCode;
-                    if (code == 13) // enter
+                    if (code == 13 && !options.ignoreEnter) // enter
                     {
                         okFn();
                     }
@@ -42,7 +44,7 @@ function createModalBox(options)
                 options.title
             ),
             options.content,
-            createElem('div',
+            (options.hideButtons ? '' : createElem('div',
                 {className:'modalButtons'},
                 (options.hideOk ? '' : createElem('input', {
                     type:'submit', 
@@ -55,12 +57,17 @@ function createModalBox(options)
                     value:options.cancelText || __('cancel'),
                     click: cancelFn
                 }))
-            )                    
+            ))                  
     ),    
         shadow = createElem('div', { className: 'modalShadow' }),
         win = window,
         doc = document,
         width = options.width || 400;
+        
+    if (options.shadowCancel)        
+    {
+        addEvent(shadow, 'click', cancelFn);
+    }
     
     var windowWidth = doc.body.offsetWidth || win.innerWidth,
         scrollTop = win.pageYOffset || doc.documentElement.scrollTop || doc.body.scrollTop,
@@ -69,7 +76,7 @@ function createModalBox(options)
     
     box.style.width = width + 'px';
     box.style.left = (windowWidth / 2 - width / 2) + 'px';
-    box.style.top = (options.top || (scrollTop + 100)) + 'px';
+    box.style.top = (scrollTop + (options.top || 100)) + 'px';
     shadow.style.height = height + 'px';
 
     if (options.focus)

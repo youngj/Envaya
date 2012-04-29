@@ -7,8 +7,8 @@
 
 .top_language
 {
-    float:right;
-    padding:4px 6px 3px 5px;
+    float:left;
+    padding:4px 6px 3px 8px;
     color:white;
     color:#e6e6e6;
     white-space:nowrap;
@@ -22,17 +22,10 @@
 	font-family:"Lucida Grande", Verdana, sans-serif;
 }
 
-#topRight
+#top_right
 {
-    position:absolute;
-    right:0px;
-    top:0px;
-}
-
-
-.topbarTable
-{
-    width:100%;
+    float:right;
+    white-space:nowrap;
 }
 
 #topbar form
@@ -40,66 +33,63 @@
     display:inline;
 }
 
-.topbarLinks a
+#top_links a, #top_right a
+{    
+    border-left:1px solid #5d5d5d;
+    border-right:1px solid #2f2f2f;
+    height:17px;
+    color:#e6e6e6;    
+    white-space:nowrap;
+}
+
+#top_links a
 {
     display:block;
     float:left;
     padding:6px 15px 4px 15px;
-    border-left:1px solid #5d5d5d;
-    border-right:1px solid #2f2f2f;
-    height:17px;
-    color:#e6e6e6;
 }
 
-.topbarLinks a:hover
+#top_right a
+{
+    display:inline-block;
+    font-weight:bold;
+    color:#fff;    
+    padding:6px 10px 4px 10px;
+}
+
+#top_whoami
+{
+    display:inline-block;
+    color:#f0f0f0;
+    padding:6px 8px;
+    white-space:nowrap;
+}
+
+#top_links a:hover
 {
     background:#1d1d1d url(/_media/images/topgradient3.gif) repeat-x left -28px;
     color:#e6e6e6;
     text-decoration:none;
 }
 
-.topbarLinks a#logoContainer
+#top_links a#logoContainer
 {
     padding:1px 15px 8px 15px;
     overflow:hidden;
     border-left:0px;
 }
 
-.topbarLinks form
+#top_links form
 {
     padding-left: 10px;
     padding-right: 10px;
 }
 
-#loginButton, #loggedinArea
+#loginButton
 {
     display:block;
     width:159px;
 }
-
-#logoutDiv a
-{
-    color:white;
-    display:block;
-    padding:3px;
-    text-align:center;
-}
-
-#logoutDiv
-{
-    font-weight:bold;
-    width:159px;
-    display:none;
-    color:white;
-    background:url(/_media/images/loggedinarea.png) no-repeat left -46px;
-    position:absolute;
-    font-size:12px;
-    right:0px;
-    top:27px;
-    height:30px;
-    text-align:right;
-}
-
 
 #loginButton
 {
@@ -110,11 +100,6 @@
 a#loginButton:hover
 {
     background-position:left -34px;
-}
-
-#loggedinArea
-{
-    background:url(/_media/images/loggedinarea.png) no-repeat left -19px;
 }
 
 a#loginButton:hover, a#loginButton:hover .loginText
@@ -136,39 +121,3 @@ a#loginButton:hover, a#loginButton:hover .loginText
     color:#e6e6e6;
     font-weight:bold;    
 }
-
-.loggedInAreaContent
-{
-    display:block;
-    height:25px;
-    padding:0px 0px 2px 0px;
-    text-align:center;
-    color:#e6e6e6;
-    font-weight:bold;
-	vertical-align:top;
-}
-
-.loggedInAreaContent a
-{
-    margin-left:5px;
-    margin-right:5px;
-}
-
-.loggedInAreaContent a:hover
-{
-    border-bottom:1px solid black;
-}
-
-#edit_submenu
-{
-    text-align:center;
-    height:20px;
-    padding:4px 10px;
-}
-
-#edit_submenu a
-{
-    color:white;
-    font-weight:bold;
-}
-

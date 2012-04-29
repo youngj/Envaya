@@ -1,129 +1,38 @@
 <?php
 
-class Theme
+abstract class Theme
 {
-    private $layout = 'layouts/default';
-    private $viewtype = 'default';
-    private $name;
-    private $lang_key = null;
-    private $hidden = false;
-    private $css;
-    private $thumbnail = null;
-    
-    private static $loaded_themes = array();
-    private static $loaded_all = false;
-    
-    public function __construct($name, $options)
-    {
-        $this->css = $this->name = $name;
+    static $layout = 'layouts/default';
+    static $viewtype = 'default';    
+    static $css;
         
-        foreach ($options as $k => $v)
-        {
-            $this->$k = $v;
-        }
+    static function get_display_name()
+    {
+        return get_called_class();
     }
     
-    function get_display_name()
+    static function get_css_name()
     {
-        return __($this->lang_key ?: "design:theme:{$this->name}");
+        return static::$css;
     }
     
-    function get_thumbnail()
+    static function get_viewtype()
     {
-        return $this->thumbnail;
+        return static::$viewtype;
     }
     
-    function get_css_name()
+    static function get_layout()
     {
-        return $this->css;
-    }
-    
-    function get_viewtype()
-    {
-        return $this->viewtype;
-    }
-    
-    function get_layout()
-    {
-        return $this->layout;
+        return static::$layout;
     }    
     
-    static function get($name)
+    static function get_subtype_id()
     {
-        return static::load($name);
+        return ClassRegistry::get_subtype_id(get_called_class());
     }
     
-    static function load($name)
+    static function render_custom_css($theme_options)
     {    
-        $theme = @static::$loaded_themes[$name];        
-        if ($theme === null)
-        {
-            if (preg_match('/[^\w]/',$name))
-            {
-                throw new InvalidParameterException("Invalid theme name $name");
-            }
-            
-            $path = Engine::get_real_path("themes/{$name}.php");                    
-            
-            if (!$path)
-            {
-                $theme = new Theme(Config::get('theme:default'), array());
-            }
-            else
-            {        
-                $options = include($path);
-                $theme = new Theme($name, $options);
-            }
-            static::$loaded_themes[$name] = $theme;
-        }
-        
-        return $theme;
-    }
-    
-    private static function load_all_in_dir($dir_name)
-    {
-        if ($handle = @opendir("{$dir_name}/themes"))
-        {
-            while ($file = readdir($handle))
-            {
-                if (preg_match('/^(\w+).php$/', $file, $matches))
-                {
-                    static::load($matches[1]);
-                }
-            }
-        }            
-    }
-    
-    static function load_all()
-    {
-        if (!static::$loaded_all)
-        {
-            static::load_all_in_dir(Engine::$root);
-            foreach (Config::get('modules') as $module_name)
-            {
-                static::load_all_in_dir(Engine::get_module_root($module_name));
-            }        
-            static::$loaded_all = true;
-        }
-    }
-    
-    static function all_names()
-    {
-        static::load_all();
-        return array_keys(static::$loaded_themes);
-    }
-    
-    static function available_names()
-    {
-        static::load_all();
-        $names = array();
-        foreach (static::$loaded_themes as $name => $theme)
-        {
-            if (!$theme->hidden)
-            {
-                $names[] = $name;
-            }
-        }
-        return $names;
+        return '';
     }
 }

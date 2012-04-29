@@ -4,7 +4,7 @@ class EmailSubscription_Comments extends EmailSubscription
 {
     function send_notification($event_name, $comment)
     {
-        if ($comment->owner_guid && $comment->owner_guid == $this->owner_guid)    
+        if ($comment->owner_guid && $comment->owner_guid === $this->owner_guid)    
         {
             return;
         }

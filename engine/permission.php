@@ -86,7 +86,7 @@ abstract class Permission extends Entity
             {                                    
                 foreach ($permissions as $permission)
                 {
-                    if ($permission->container_guid == $cur->guid)
+                    if ($permission->container_guid === $cur->guid)
                     {
                         return $permission;
                     }

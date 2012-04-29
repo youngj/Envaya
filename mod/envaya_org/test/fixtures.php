@@ -12,10 +12,11 @@ return function() {
     $envaya->name = 'Envaya';
     $envaya->set_password('asdfasdf');
     $envaya->language = 'en';
-    $envaya->set_design_setting('theme_name', 'sidebar');
+    $envaya->set_design_setting('theme_id', Theme_LeftMenu::get_subtype_id());
     $envaya->country = 'us';
     $envaya->set_lat_long(37,-112);
     $envaya->approval = 1;
+    $envaya->update_scope();
     $envaya->save();
     
     $home = Widget_Home::get_for_entity($envaya);

@@ -7,7 +7,7 @@ class Controller_EnvayaAdmin extends Controller
     function before()
     {
         Permission_EditMainSite::require_for_root();
-        $this->page_draw_vars['theme_name'] = 'editor';
+        $this->page_draw_vars['theme'] = 'Theme_Editor';
     }
 
     function action_activate_featured()
@@ -49,7 +49,7 @@ class Controller_EnvayaAdmin extends Controller
             'content' =>  view('admin/featured_photos', array(
                 'photos' => FeaturedPhoto::query()->filter()
             )),
-            'theme_name' => 'editor'
+            'theme' => 'Theme_Editor'
         ));
     }
     

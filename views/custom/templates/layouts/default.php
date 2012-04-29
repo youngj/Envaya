@@ -1,9 +1,10 @@
-<div class="heading_container">
+<div class="heading_container"><div class='thin_column'>
+    {{top_menu}}
     {{messages}}
-    <div class='thin_column'>{{header}}</div>
-</div>
+    {{header}}
+</div></div>
 <div class="content_container"><div class='thin_column'>        
-        <div id='top_menu_container'>{{site_menu}}</div>
+        <div id='site_menu_container'>{{site_menu}}</div>
         <div id='content'>
             <div id='content_top'></div>
             <div id='content_mid'>{{content}}</div>

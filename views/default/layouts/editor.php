@@ -1,8 +1,9 @@
 <div class="heading_container">
+    <?php echo $vars['top_menu']; ?>
     <?php echo $vars['messages']; ?>
     <div class='thin_column'><?php echo $vars['header']; ?></div>
 </div>
-<div id='top_menu_container'><div class='thin_column'><?php echo $vars['site_menu']; ?></div></div>
+<div id='site_menu_container'><div class='thin_column'><?php echo $vars['site_menu']; ?></div></div>
 <div class="content_container"> 
     <div class='thin_column'>                
         <div id='content'>

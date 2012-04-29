@@ -27,7 +27,6 @@ class Action_Registration_CreateProfileBase extends Action
         $org->language = Language::get_current_code();
         $org->set_sectors($sectors);
         $org->set_metadata('sector_other', get_input('sector_other'));
-        $org->set_design_setting('theme_name', get_input('theme'));
         
         $home = Widget_Home::get_or_init_for_entity($org);
         $mission_section = Widget_Mission::get_for_entity($home) ?: Widget_Mission::new_for_entity($home);

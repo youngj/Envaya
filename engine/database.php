@@ -69,6 +69,11 @@ class Database
     {
         $columns = array();
         $args = array();
+        
+        if (!sizeof($values))
+        {
+            return;
+        }
 
         foreach ($values as $column => $value)
         {

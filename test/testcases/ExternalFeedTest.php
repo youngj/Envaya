@@ -145,7 +145,7 @@ class ExternalFeedTest extends SeleniumTest
         $this->retry('checkTwitter');
         
         // edit news page, add link without rss, add to home page
-        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->clickAndWait("//div[@id='top_menu']//a[contains(@href,'/edit')]");
         $this->type("//input[@id='feed_url']", "example.com/bar");
         $this->click("//form[@id='feed_form']//button");
         $this->retry('click', array("//input[@value='OK']"));   

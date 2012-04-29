@@ -1,13 +1,18 @@
 <?php
     $user = null;
+    $id = null;
     $size = 'small';
+    $icon_props = null;
     extract($vars);
     
-    $icon_props = $user->get_icon_props($size);   
+    if (!$icon_props)
+    {
+        $icon_props = $user->get_icon_props($size);   
+    }
     
     $attrs = Markup::get_attrs($vars, array(
         'class' => null,
-        'id' => null,
+        'id' => $id,
         'style' => null,
         'src' => $icon_props['url'],
         'alt' => $user->name,

@@ -48,7 +48,7 @@ class EditorTest extends SeleniumTest
         $this->open("/testorg/page/$pageName");
         $this->mouseOver("//p[contains(text(),'test content 2')]");
         
-        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->clickAndWait("//div[@id='top_menu']//a[contains(@href,'/edit')]");
 
         // test saving draft doesn't update public view of page
         $this->retry('selectFrame', array("//iframe"));

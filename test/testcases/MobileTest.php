@@ -150,7 +150,7 @@ class MobileTest extends SeleniumTest
     
     function logout()
     {
-        $this->clickAndWait("//a[contains(@href,'pg/logout')]");        
+        $this->clickAndWait("//a[contains(@href,'logout')]");        
         $this->submitForm();
         $this->waitForElement("//a[contains(@href,'pg/login')]");    
     }        

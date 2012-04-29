@@ -242,7 +242,7 @@ class Controller_Pg extends Controller
 
         $this->allow_view_types(null);
         $this->page_draw(array(
-            'layout' => 'layouts/frame',
+            'theme' => 'Theme_Frame',
             'no_top_bar' => true,            
             'content' => view('upload/select_image', array(
                 'current' => $file,
@@ -260,7 +260,7 @@ class Controller_Pg extends Controller
         
         $this->allow_view_types(null);
         $this->page_draw(array(
-            'layout' => 'layouts/frame',
+            'theme' => 'Theme_Frame',
             'no_top_bar' => true,
             'content' => view('upload/select_document', array(
                 'current' => $file,
@@ -333,6 +333,17 @@ class Controller_Pg extends Controller
         $this->set_content_type('text/css');        
         $this->set_header('Cache-Control', 'max-age=86400');
         $this->set_content($css);
+    }
+
+    function action_volunteer()
+    {
+        Permission_Public::require_any();
+        $this->allow_view_types(null);
+        
+        $this->page_draw(array(
+            'title' => __('volunteer:title'),
+            'content' => view('org/volunteer')
+        ));
     }
     
     function action_browse()

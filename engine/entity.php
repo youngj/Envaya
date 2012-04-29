@@ -27,6 +27,8 @@ abstract class Entity extends Model implements Serializable
     static $current_request_entities = array();
     static $admin_view = null;
     
+    static $auto_update_time_updated = true;
+    
     protected $guess_language_field;
     
     function __construct($row = null)
@@ -205,11 +207,15 @@ abstract class Entity extends Model implements Serializable
     {
         return "/_media/images/default{$size}.gif";
     }
-    
+            
     public function save()
     {
         $time = timestamp();
-        $this->time_updated = $time;
+        
+        if (static::$auto_update_time_updated || !$this->time_updated)
+        {
+            $this->time_updated = $time;
+        }
 
         if (!$this->time_created)
         {
@@ -300,7 +306,7 @@ abstract class Entity extends Model implements Serializable
     
     function equals($other)
     {
-        return $other && $other->guid == $this->guid;
+        return $other && $other->guid === $this->guid;
     }
     
     function set_container_entity($entity)

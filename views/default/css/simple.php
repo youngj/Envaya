@@ -1,5 +1,5 @@
 <?php
-    $contentWidth = $vars['contentWidth'] = 615;
+    $contentWidth = $vars['contentWidth'] = 700;
     
     echo view('css/default', $vars);
 
@@ -8,29 +8,26 @@
 
 body
 {
-    background:#fff;
+    background:#fafafa;
 }
 
 .content_container
 {
-    background:#fff url("<?php echo $graphicsDir; ?>/bg_gradient.gif") repeat-x left 42px;
 }
 
 .thin_column
 {
-    width:<?php echo $contentWidth - 15 ?>px;
+    width:<?php echo $contentWidth; ?>px;
 }
 
 #site_menu,
 #heading h1
 {
-    background:#fff url(<?php echo $graphicsDir; ?>/headings2.png) repeat-x left bottom;
-    height:36px;
-    text-align:center;
-    font-size:18px;
+    font-size:27px;
     font-weight:bold;
-    padding-top:9px;
-    color:#333;
+    padding-bottom:25px;
+    padding-left:10px;
+    color:#363;
 }
 
 #heading h1.org_only_heading
@@ -58,23 +55,19 @@ body
     color:#333;
 }
 
-#content_top
+#content
 {
-    height:17px;
-    background:#fff url(<?php echo $graphicsDir; ?>/plate3.png) no-repeat -<?php echo ($contentWidth - 15); ?>px -8px;
-}
-
-#content_bottom
-{
-    height:35px;
-    margin-top:-10px;
-    background:#fff url(<?php echo $graphicsDir; ?>/plate3.png) no-repeat right bottom;
-}
-
-#content_mid
-{
-    background:#fff url(<?php echo $graphicsDir; ?>/plate3.png) repeat-y -<?php echo 2 * ($contentWidth - 15) ?>px top;
-    padding:0px 2px;
+    background:#fdfdfd;
+    border: 2px solid #e8e8e8;
+    border-radius:10px;
+    -moz-border-radius:10px;
+    margin-bottom:10px;
+    padding-top:8px;
+    padding-bottom:5px;
+    padding-left:5px;
+    padding-right:5px;
+    box-shadow: 1px 1px 10px #ccc;
+    -moz-box-shadow: 1px 1px 10px #ccc;
 }
 
 #heading
@@ -123,17 +116,13 @@ body
 .tabs
 {
     width:100%;
-    margin-bottom:5px;
-    margin-top:-10px;
-    background:#fff url(<?php echo $graphicsDir; ?>/plate3.png) no-repeat -<?php echo ($contentWidth - 13); ?>px -16px;
+    margin-bottom:10px;    
 }
 
 .tab
 {
     height:36px;
     text-align:center;
-    border-left:1px solid #ddd;
-    border-right:1px solid #ddd;
     border-bottom:1px solid #ddd;
 }
 

@@ -12,12 +12,12 @@
 <?php
     foreach ($steps as $step => $text)
     {
-        ?>
-        <td class='tab <?php echo (($current == $step) ? 'active' : '') ?>'>
-            <span><?php echo $text; ?></span>
-        </td>
-        <?php
+        $class = (($current == $step) ? 'active' : '');
+        $style = ($step < 3) ? 'border-right:1px solid #ddd' : '';
+        echo "<td style='$style' class='tab $class'>";
+        echo "<span>$text</span>";
+        echo "</td>";
     }   
-    ?>
+?>
 </tr>    
 </table>

@@ -51,9 +51,13 @@ abstract class Controller_User extends Controller
         
         Permission_ViewUserSite::require_for_entity($widget);
                 
-        if (Permission_EditUserSite::has_for_entity($widget))
+        if (Permission_EditUserSite::has_for_entity($widget) && !get_input("__preview"))
         {
-            PageContext::get_submenu('edit')->add_link(__("widget:edit"), $widget->get_edit_url());
+            $top_menu = PageContext::get_submenu('top');
+        
+            $top_menu->add_link(__("widget:edit"), $widget->get_edit_url());
+            
+            $top_menu->add_link(__('edit_design'), $user->get_url(). "/design?from={$widget->get_url()}");
         }
         
         $user_actions_menu = PageContext::get_submenu('user_actions');
@@ -143,26 +147,45 @@ abstract class Controller_User extends Controller
            
     function use_public_layout($cur_widget = null)
     {
-        $user = $this->get_user();
+        $user = $this->get_user();                
                 
         $this->public_layout = true;
                 
-        $theme_name = get_input("__theme") ?: $user->get_design_setting('theme_name') ?: Config::get('theme:default');
+        $preview = get_input("__preview");
+                
+        if ($preview && Permission_EditUserSite::has_for_entity($user))
+        {
+            $design_settings = json_decode($preview, true);
+            $logo_override = @$design_settings['logo'];
+            
+            $this->page_draw_vars['preview'] = true;
+        }
+        else
+        {
+            $design_settings = $user->get_design_settings();
+            $logo_override = null;
+            
+            $this->page_draw_vars['preview'] = false;
+        }
+                
+        $theme = ClassRegistry::get_class(@$design_settings['theme_id']) ?: Config::get('theme:default');
         
-        $this->page_draw_vars['design'] = $user->get_design_settings();
-        $this->page_draw_vars['tagline'] = $user->get_design_setting('tagline');
-        $this->page_draw_vars['theme_name'] = $theme_name;
+        $this->page_draw_vars['design'] = $design_settings;
+        $this->page_draw_vars['theme'] = $theme;
         $this->page_draw_vars['site_name'] = $user->name;
         $this->page_draw_vars['site_username'] = $user->username;
         $this->page_draw_vars['site_approved'] = $user->is_approved();
         $this->page_draw_vars['site_url'] = $user->get_url();     
-        $this->page_draw_vars['logo'] = view('account/icon', array('user' => $user, 'size' => 'medium'));          
+        $this->page_draw_vars['logo'] = view('account/icon', array(
+            'user' => $user, 
+            'icon_props' => $logo_override,
+            'size' => 'medium'
+        ));          
         $this->page_draw_vars['login_url'] = url_with_param($this->full_rewritten_url(), 'login', 1);
         
         if (Views::get_request_type() == 'default')
         {
-            $theme = Theme::get($theme_name);            
-            Views::set_current_type($theme->get_viewtype());         
+            Views::set_current_type($theme::get_viewtype());         
         }
         
         $this->show_site_menu($cur_widget);
@@ -178,7 +201,7 @@ abstract class Controller_User extends Controller
         
         foreach ($widgets as $widget)
         {
-            $is_selected = $cur_widget && $cur_widget->guid == $widget->guid;
+            $is_selected = $cur_widget && ($cur_widget->guid === $widget->guid);
         
             PageContext::get_submenu()->add_link(
                 $widget->get_title(), 
@@ -190,7 +213,7 @@ abstract class Controller_User extends Controller
 
     function use_editor_layout()
     {
-        $this->page_draw_vars['theme_name'] = 'editor';
+        $this->page_draw_vars['theme'] = 'Theme_Editor';
     }
 
     protected function get_messages($vars)
@@ -212,7 +235,14 @@ abstract class Controller_User extends Controller
                 SessionMessages::add($approval_message);
             }
             
-            $vars['messages'] = $this->get_messages($vars);            
+            if (get_input('__preview'))
+            {
+                $vars['messages'] = '';
+            }
+            else
+            {
+                $vars['messages'] = $this->get_messages($vars);            
+            }
             $vars['header'] = '';
         }
         

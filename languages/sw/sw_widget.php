@@ -103,5 +103,6 @@ return array(
     'widget:delete_section:success' => 'Sehemu imefutwa.',
     'widget:delete:confirm' => 'Una uhakika kuwa unataka kufuta ukurasa huu kutoka kwenye tovuti yako?',
     'widget:delete_section:confirm' => 'Una uhakika kuwa unataka kufuta sehemu hii?',
-        
+
+    'widget:volunteer' => "Jitolee",    
 );

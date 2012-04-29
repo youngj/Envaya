@@ -1,5 +1,5 @@
 <?php    
-    $header_image = $vars['design']['header_image'];
+    $header_image = @$vars['design']['header_image'];
 
     if ($header_image)
     {

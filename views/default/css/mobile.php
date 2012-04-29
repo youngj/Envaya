@@ -7,6 +7,11 @@
     background:#1d1d1d;
 }
 
+#top_right a
+{
+    padding:0px 5px;
+}
+
 #topbar a
 {
     color:white;

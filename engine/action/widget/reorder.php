@@ -53,7 +53,7 @@ class Action_Widget_Reorder extends Action
             $sibling = $siblings[$i];
             $si = $i + $delta;
             
-            if ($sibling->guid == $widget->guid)
+            if ($sibling->guid === $widget->guid)
             {
                 if ($si >= 0 && $si < $num_siblings)
                 {            

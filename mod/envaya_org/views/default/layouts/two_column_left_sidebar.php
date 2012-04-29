@@ -1,4 +1,5 @@
 <div class="heading_container">
+    <?php echo $vars['top_menu']; ?>
     <?php echo $vars['messages']; ?>
     <div class='thin_column'><?php echo $vars['header']; ?></div>
 </div>

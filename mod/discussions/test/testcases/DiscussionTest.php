@@ -107,7 +107,7 @@ class DiscussionTest extends SeleniumTest
         $this->clickAndWait("//div[contains(@class,'feed_post')]//a[contains(@href,'$url')]");
 
         // test edit discussion subject
-        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->clickAndWait("//div[@id='top_menu']//a[contains(@href,'/edit')]");
         $this->type("//input[@name='subject']","new subject");
         $this->submitForm();
         $this->ensureGoodMessage();

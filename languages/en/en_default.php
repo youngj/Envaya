@@ -52,6 +52,8 @@ return array(
     
     'your_home' => "Your home page",
     'edit_site' => "Edit Site",
+    'view_site' => "View Site",
+    'edit_design' => "Edit Design",
     'edit_item' => "Edit %s",
     'loading' => "Loading...",
     'language' => "Language",
@@ -94,6 +96,9 @@ return array(
     'search:orgs_near' => "Organizations near '%s':",
     'search:orgs_matching' => "Organizations with '%s' in their name:",
 
+    'volunteer' => 'Volunteer',
+    'volunteer:title' => 'Get involved!',
+    
     'org:sector' => 'Sector',
     'org:region' => 'Region',
     'org:cantview' => "You do not have access to view this organization's web site.",    

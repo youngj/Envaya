@@ -28,7 +28,7 @@ class Controller_EnvayaHome extends Controller
         $this->allow_view_types(null);
         
         $this->page_draw(array(
-            'theme_name' => 'home',
+            'theme' => 'Theme_Home',
             'title' => __('home:title'),
             'header' => '',
             'content' => view('home/home')        

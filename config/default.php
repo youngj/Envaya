@@ -41,7 +41,7 @@ return array(
     
     'captcha:backend' => 'Captcha_Securimage',       
         
-    'theme:default' => 'simple',
+    'theme:default' => 'Theme_Simple',
         
     'time:mock_file' => '',    
     

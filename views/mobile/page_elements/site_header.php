@@ -6,9 +6,9 @@
     
     if (@$vars['is_site_home'])
     {
-        if ($vars['tagline'])
+        if (@$vars['design']['tagline'])
         {
-            echo "<h3>".escape($vars['tagline'])."</h3>";
+            echo "<h3>".escape($vars['design']['tagline'])."</h3>";
         }        
     }
     else

@@ -42,6 +42,7 @@ class TodoItem
             'Widget_News',
             'Widget_Network',
             'Widget_Discussions',
+            'Widget_Volunteer',
         );
         
         $query = $org->query_widgets()
@@ -102,6 +103,12 @@ class TodoItem
             "<a href='{$news->get_edit_url()}'>".__('todo:news')."</a>",
             $hasRecentNews
         );            
+        
+        $volunteer = $widgets_map['Widget_Volunteer'];
+        $items[] = new TodoItem(
+            "<a href='{$volunteer->get_edit_url()}'>".__('todo:volunteer')."</a>",
+            $volunteer->is_enabled() && $volunteer->content_len > 0
+        );                 
         
         $numImages = $org->query_files()->where("size='small'")->where('time_created > ?', $recent_time)->count();
         $items[] = new TodoItem(

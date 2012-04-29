@@ -10,7 +10,7 @@ class SMSSubscription_Comments extends SMSSubscription
             return;
         }
         
-        if ($comment->owner_guid && $comment->owner_guid == $this->owner_guid)
+        if ($comment->owner_guid && $comment->owner_guid === $this->owner_guid)
         {        
             return;
         }

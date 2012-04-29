@@ -11,7 +11,7 @@ class Organization extends User
 
     function set_defaults()
     {
-        $this->set_design_setting('theme_name', "green");
+        $this->set_design_setting('theme_id', Theme_LightBlue::get_subtype_id());
     }
     
     public function get_continue_setup_url()

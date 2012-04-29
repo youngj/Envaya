@@ -21,7 +21,7 @@ class Controller_Admin extends Controller
 
     function before()
     {
-        $this->page_draw_vars['theme_name'] = 'editor';
+        $this->page_draw_vars['theme'] = 'Theme_Editor';
     }
     
     function init_entity_from_guid()
@@ -102,7 +102,7 @@ class Controller_Admin extends Controller
         $this->page_draw(array(
             'title' => 'Recent Photos',
             'content' => view('admin/recent_content', array('content_filter' => "%<img%")),
-            'theme_name' => 'editor',
+            'theme' => 'Theme_Editor',
         ));             
     }
 
@@ -113,7 +113,7 @@ class Controller_Admin extends Controller
         $this->page_draw(array(
             'title' => 'Recent Documents',
             'content' => view('admin/recent_content', array('content_filter' => "%<scribd%")),
-            'theme_name' => 'editor',
+            'theme' => 'Theme_Editor',
         ));             
     }
 
@@ -125,7 +125,7 @@ class Controller_Admin extends Controller
         $this->page_draw(array(
             'title' => __('email:outgoing_mail'),
             'content' => view('admin/outgoing_mail'),
-            'theme_name' => 'simple_wide',
+            'theme' => 'Theme_Wide',
             'header' => '',
         ));        
     }   
@@ -137,7 +137,7 @@ class Controller_Admin extends Controller
         $this->page_draw(array(
             'title' => __('sms:outgoing_sms'),
             'content' => view('admin/outgoing_sms'),
-            'theme_name' => 'simple_wide',
+            'theme' => 'Theme_Wide',
             'header' => '',
         ));        
     }       
@@ -186,7 +186,7 @@ class Controller_Admin extends Controller
 
         $this->page_draw(array(
             'title' => __('logbrowser'),
-            'theme_name' => 'simple_wide',
+            'theme' => 'Theme_Wide',
             'content' => view('admin/log_browse', array(
                 'user' => $user, 
                 'timeupper' => $timeupper, 

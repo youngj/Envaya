@@ -5,7 +5,7 @@
         
     $query = DiscussionTopic::query();    
     
-    $query->from('discussion_topics d');
+    $query->from('discussion_topics','d');
     
     $filters = Query_Filter::filters_from_input(array(
         'Query_Filter_User_Sector',

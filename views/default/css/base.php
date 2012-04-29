@@ -100,13 +100,6 @@ a.selected
     margin:0px;
 }
 
-#heading h1,
-#heading h2,
-#heading h3
-{
-    text-align:center;
-}
-
 #heading h3
 {
     font-size:16px;
@@ -440,4 +433,13 @@ a.feed_image_link:hover
 {
     cursor:pointer;
     text-decoration:underline;
+}
+
+.theme_patch
+{
+    display:block;
+    width:25px;
+    height:25px;
+    border:1px solid #ddd;
+    margin:1px;
 }

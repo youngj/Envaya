@@ -19,7 +19,7 @@ class TranslationKeyComment extends Entity
     
     function get_key_in_language($language)
     {
-        if ($language->guid == $this->language_guid)
+        if ($language->guid === $this->language_guid)
         {
             return $this->get_container_entity();
         }

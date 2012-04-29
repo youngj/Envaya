@@ -17,6 +17,12 @@
 .home_banner_text h1 .centered { display:inline; }
 </style>
 <![endif]-->       
+<!--[if IE 6]>
+<style type='text/css'>
+.home_about, .home_content {background-image:none}
+</style>
+<![endif]-->
+
 ");
 ?>
 
@@ -121,25 +127,7 @@ slideshow(<?php
 <tr>
 <td colspan='2' width='420' class='home_bottom_left'>
 <?php
-    $widget_guid = State::get('home_bottom_left_guid');
-    if ($widget_guid)
-    {
-        $widget = Widget::get_by_guid($widget_guid);
-                
-        if ($widget)
-        {
-            echo "<div class='home_featured'>";
-            echo "<h4 class='home_featured_heading'>".escape($widget->get_title())."</h4>";
-            echo "<div class='home_featured_content'>";
-            echo $widget->render_content();
-            echo "</div>";
-            echo "</div>";
-        }
-    }
-    else
-    {
-        echo view('home/featured_site'); 
-    }
+    echo view('home/featured_site'); 
 ?>
 </td>
 </tr>

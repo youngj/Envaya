@@ -11,7 +11,7 @@
 
 body
 {
-    background-color:#545454;
+    background-color:#ccc;
 }
 
 #translate_bar
@@ -24,39 +24,41 @@ body
 
 #site_menu
 {
-    text-align:center;
-    padding:5px 0px;
+    padding:5px 0px 15px 5px;
 }
+
 #site_menu a
 {
     font-weight:bold;
     padding:0px 6px;
-    color:#9bf;
+    color:#069;
 }
 #site_menu .selected
 {
-    color:#fff;    
+    color:#000;    
 }
 
 #heading h1
 {
-    color:#e6e6e6;
-    padding:10px;
+    padding:20px 10px;
+    font-size:27px;
+    color:#363;
 }
 
 #heading h1 a
 {
-    color:#b0b0b0;
-}
-.thin_column
-{
-    width:<?php echo $vars['contentWidth'] ?>px;
+    color:#393;
 }
 
-.content_container .thin_column
+.thin_column
 {
-    background-color:#191919;
-    border:2px solid #a8a8a8;
+    width:<?php echo $vars['contentWidth'] - 15; ?>px;
+}
+
+#content
+{
+    border:1px solid #aaa;
+    background-color:#fff;
 }
 
 .header_preview
@@ -80,12 +82,9 @@ body
 
 }
 
-
-#content_mid
+.footer_container
 {
-    margin:10px auto 10px auto;
-    width:<?php echo $vars['contentWidth'] - 20 ?>px;
-    background-color:white;
+    padding-top:10px; padding-bottom:10px;
 }
 
 .section_header
@@ -93,14 +92,14 @@ body
     border-top:1px solid #c4bfb5;
     border-bottom:1px solid #c4bfb5;
     text-align:center;
-    background:#e6e6e6 url("<?php echo $graphicsDir; ?>/green/section_header.gif") repeat-x left -5px;
+    background:#e6e6e6 url("<?php echo $graphicsDir; ?>/section_header.gif") repeat-x left -5px;
     height:21px;
     font-family:Verdana, sans-serif;
 }
 
 .section_content
 {
-    background:#fff url("<?php echo $graphicsDir; ?>/green/section_content.gif") repeat-x left -15px;
+    background:#fff url("<?php echo $graphicsDir; ?>/section_content.gif") repeat-x left -15px;    
 }
 
 .icon_with_bg

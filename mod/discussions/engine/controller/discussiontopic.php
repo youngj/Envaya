@@ -36,7 +36,7 @@ class Controller_DiscussionTopic extends Controller_User
         
         $topic = DiscussionTopic::query()->where('tid = ?', $topicId)->get();
         $user = $this->get_user();
-        if ($topic && $topic->container_guid == $user->guid)
+        if ($topic && $topic->container_guid === $user->guid)
         {
             $this->params['topic'] = $topic;
         }
@@ -85,7 +85,7 @@ class Controller_DiscussionTopic extends Controller_User
 
         if (Permission_EditUserSite::has_for_entity($topic))
         {
-            PageContext::get_submenu('edit')->add_link(__("widget:edit"), $topic->get_edit_url());
+            PageContext::get_submenu('top')->add_link(__("widget:edit"), $topic->get_edit_url());
         }
 
         if (!$vars)

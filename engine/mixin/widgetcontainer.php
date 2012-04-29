@@ -1,7 +1,7 @@
 <?php
 
 /* 
- * Mixin for Entity classes that can have Widgets as child entities ($parent->guid == $child->container_guid)
+ * Mixin for Entity classes that can have Widgets as child entities ($parent->guid === $child->container_guid)
  * Such classes include:
  *  - Organization (child widgets are shown in the site menu) 
  *  - Widget (child widgets could be shown as a sub menu, or as embedded sections depending on type of widget)

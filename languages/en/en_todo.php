@@ -14,4 +14,5 @@ return array(
     'todo:contact' => "Add contact information",
     'todo:network' => "Describe your partnerships",
     'todo:discussions' => "Start a discussion",
+    'todo:volunteer' => "Request for volunteers",
 );

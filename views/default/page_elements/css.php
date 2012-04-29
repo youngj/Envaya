@@ -3,11 +3,15 @@
     {
         echo "<link rel='stylesheet' href='".escape($vars['css_url'])."' type='text/css' />";
     }       
-?>
-<!--[if IE 6]>
-<style type='text/css'>
-#top_menu_container a {width:10px}
-.loggedInAreaContent {padding-bottom:0px}
-.home_about, .home_content {background-image:none}
-</style>
-<![endif]-->
+    
+    if (isset($vars['design']))
+    {    
+        $theme = $vars['theme'];
+        
+        $css = $theme::render_custom_css(@$vars['design']['theme_options']);
+
+        if ($css)
+        {
+            echo "<style type='text/css'>\n$css</style>";
+        }
+    }    

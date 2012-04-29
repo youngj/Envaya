@@ -194,7 +194,6 @@ class RegisterTest extends SeleniumTest
         $this->check("//input[@name='sector[]' and @value='3']");
         $this->check("//input[@name='sector[]' and @value='99']");
         $this->type("//input[@name='sector_other']", "another sector");
-        $this->click("//a[@id='theme_brick']");
 
         $this->submitForm();
 
@@ -388,7 +387,7 @@ class RegisterTest extends SeleniumTest
         $this->clickAndWait("//a[contains(@href,'/dashboard')]");
                 
         $this->clickAndWait("//a[contains(@href,'home/edit')]");
-        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->clickAndWait("//div[@id='top_menu']//a");
         $this->clickAndWait("//a[contains(@href,'projects/edit')]");
         $this->setTinymceContent("we test stuff");
         $this->clickAndWait("//button[@type='submit']");
@@ -410,7 +409,7 @@ class RegisterTest extends SeleniumTest
         $this->retry('mouseOver', array("//tr[2]//a[@id='{$homeRowId}_up']"));        
         $this->retry('mouseOver', array("//tr[3]//a[@id='{$projectsRowId}_up']"));
         
-        $this->clickAndWait("//a[@title='Your home page']");
+        $this->clickAndWait("//div[@id='top_right']//a[contains(text(),'View Site')]");
         
         // test that default page is the first one in the menu
         $this->assertEquals("New Name", $this->getTitle());
@@ -442,7 +441,7 @@ class RegisterTest extends SeleniumTest
         $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'another page!!!!')]");
         
         // change title
-        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->clickAndWait("//div[@id='top_menu']//a[contains(@href,'/edit')]");
         $this->type("//input[@name='title']", "New title");
         
         $this->clickAndWait("//button[@type='submit']");
@@ -452,7 +451,7 @@ class RegisterTest extends SeleniumTest
         $this->mouseOver("//div[contains(@class,'section_content')]//p[contains(text(), 'another page!!!!')]");        
         
         // change page URL
-        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->clickAndWait("//div[@id='top_menu']//a[contains(@href,'/edit')]");
         $this->type("//input[@name='widget_name']", "home");
         $this->submitForm();
         $this->ensureBadMessage(); // duplicate page name
@@ -469,7 +468,7 @@ class RegisterTest extends SeleniumTest
         $this->mustNotExist("//a[contains(@href,'page/settings')]");
         
         // change URL again, test redirect chain
-        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->clickAndWait("//div[@id='top_menu']//a[contains(@href,'/edit')]");
         $this->type("//input[@name='widget_name']", "anotherurl");        
         $this->submitForm();
         $this->ensureGoodMessage();
@@ -496,16 +495,16 @@ class RegisterTest extends SeleniumTest
         $this->assertContains('Page not found', $this->getTitle());
         
         // make sure page names don't conflict with built-in actions
-        $this->clickAndWait("//a[@id='usersettings']");
+        $this->clickAndWait("//div[@id='top_right']//a[contains(@href,'settings')]");        
         $this->type("//input[@name='phone']", "123456890");
         $this->submitForm();
         
         $this->ensureGoodMessage();
         
-        $this->clickAndWait("//a[@id='usersettings']");
+        $this->clickAndWait("//div[@id='top_right']//a[contains(@href,'settings')]");
         $this->assertEquals("123456890", $this->getValue("//input[@name='phone']"));        
         
-        $this->clickAndWait("//a[@title='Your home page']");
+        $this->clickAndWait("//div[@id='top_right']//a[contains(text(),'View Site')]");
     }
 
     private function _testSettings()
@@ -670,7 +669,6 @@ class RegisterTest extends SeleniumTest
         $this->setTinymceContent("being a partner");
         $this->check("//input[@name='sector[]' and @value='4']");
         $this->check("//input[@name='sector[]' and @value='99']");
-        $this->click("//a[@id='theme_wovengrass']");
 
         $this->submitForm();
 

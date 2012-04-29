@@ -44,7 +44,7 @@ class EmailSubscription_Discussion extends EmailSubscription
     {
         $org = $message->get_container_user();
     
-        if ($message->owner_guid && $message->owner_guid == $this->owner_guid)
+        if ($message->owner_guid && $message->owner_guid === $this->owner_guid)
         {        
             return;
         }

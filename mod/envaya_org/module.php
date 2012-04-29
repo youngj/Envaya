@@ -10,6 +10,7 @@ class Module_Envaya_Org extends Module
         'Language',
         'Hook_ViewWidget',
         'Hook_ViewDashboard',
+        'Theme_UserSite',
     );
 
     static $view_patch = array(
@@ -75,6 +76,16 @@ class Module_Envaya_Org extends Module
             'core.featured.site' => 'FeaturedSite',
             'core.featured.photo' => 'FeaturedPhoto',
             'core.permission.editmainsite' => 'Permission_EditMainSite',
+            'envaya.theme.lightblue' => 'Theme_LightBlue',
+            'envaya.theme.personprofile' => 'Theme_PersonProfile',
+            'envaya.theme.beads' => 'Theme_Beads',
+            'envaya.theme.leftmenu' => 'Theme_LeftMenu',
+            'envaya.theme.chrome' => 'Theme_Chrome',
+            'envaya.theme.brick' => 'Theme_Brick',
+            'envaya.theme.cotton' => 'Theme_Cotton',
+            'envaya.theme.craft1' => 'Theme_Craft1',
+            'envaya.theme.craft4' => 'Theme_Craft4',
+            'envaya.theme.wovengrass' => 'Theme_WovenGrass',
         ));
     }
     
@@ -121,5 +132,47 @@ class Module_Envaya_Org extends Module
     static function patch_Hook_ViewDashboard()
     {
         Hook_ViewDashboard::register_handler('Handler_EnvayaViewDashboard');
+    }
+    
+    static function patch_Theme_UserSite()
+    {
+        Theme_UserSite::add_available_themes(array(
+            'Theme_LightBlue',        
+            'Theme_LeftMenu',        
+            'Theme_Beads',
+            'Theme_Brick',
+            'Theme_Cotton',
+            'Theme_Craft1',
+            'Theme_Craft4',
+            'Theme_WovenGrass',
+            'Theme_Chrome',                                     
+        ));
+
+        Theme_UserSite::add_patterns(array(           
+            'background:gradient' => '#fff url(/_media/images/section_content.gif) repeat-x left -15px',
+            'background:gradient2' => '#fff url(/_media/images/section_content.gif) repeat-x left top',
+            'background:gradient3' => '#e5e5e5 url(/_media/images/lightblue/thin_column.gif) repeat-x left top',
+            'background:beads' => '#f2c346 url(/_media/images/beads/beads.jpg) repeat -100px -60px',
+            'background:wood' => '#25160d url(/_media/images/beads/wood_header.jpg) repeat left bottom',
+            'background:brick' => '#69493e url(/_media/images/brick/brick.jpg) repeat left top',
+            'background:cotton' => '#d0b66b url(/_media/images/cotton/cotton-bg.jpg) repeat left top',
+            'background:craft1' => '#f2c346 url(/_media/images/craft/craft1-bg.jpg) repeat left -60px',
+            'background:craft4' => '#f2c346 url(/_media/images/craft/craft4-bg.jpg) repeat left -60px',
+            'background:wood2' => '#461600 url(/_media/images/craft/craft4-header.jpg) repeat -80px -20px',
+            'background:wovengrass' => '#d5b24a url("/_media/images/wovengrass/woven-grass.jpg") repeat left -60px',
+            'background:light_wovengrass' => '#f0e3a7 url("_media/images/wovengrass/woven-grass-2-textbg.jpg") repeat -30px -60px',
+            'background:light_pink_gradient' => '#fff url("/_media/images/beads/section_content.gif") repeat-x left top',
+            'background:light_gray_gradient' => '#fff url("/_media/images/simple/bg_gradient.gif") repeat-x left 62px',
+            'background:beige_gradient' => '#f4eebd url("/_media/images/craft/section_content.gif") repeat-x left top',
+            'background:yellow_gradient' => '#fdffe9 url("/_media/images/wovengrass/section_content.gif") repeat-x left top',
+            'menu_button:blue' => "#d5d0c8 url(/_media/images/lightblue/button.png)",                        
+            'section_header:blue' => '#e6e6e6 url(/_media/images/section_header.gif) repeat-x left -5px',            
+            'section_header:purple' => '#4e2237 url("/_media/images/beads/section_header.gif") repeat-x left top',
+            'section_header:dark_gray' => '#2a2a2a url("/_media/images/brick/section_header.gif") repeat-x left top',
+            'section_header:beige' => '#bb895a url("/_media/images/cotton/section_header.gif") repeat-x left top',
+            'section_header:brown' => '#0f1f29 url("_media/images/craft/section_header.gif") repeat-x left top',
+            'section_header:brown2' => '#ad9e61 url("_media/images/wovengrass/section_header.gif") repeat-x left top',
+            'left_menu_background:gray' => 'url(/_media/images/leftmenu/menu_selected3.png) no-repeat 3px top',
+        ));
     }
 }

@@ -10,6 +10,7 @@ class Query_SelectEntity extends Query_Select
 {
     private $show_disabled = false;
     private $guid = null;
+    private $subtype_ids = null;
 
     function show_disabled($show_disabled = true)
     {    
@@ -20,6 +21,12 @@ class Query_SelectEntity extends Query_Select
     function guid($guid)
     {
         $this->guid = $guid;
+        return $this;
+    }
+    
+    function subtype_ids($subtype_ids)
+    {
+        $this->subtype_ids = $subtype_ids;
         return $this;
     }
     
@@ -45,15 +52,22 @@ class Query_SelectEntity extends Query_Select
                 $this->set_row_class($classname);
             }
         }
+        
+        $prefix = $this->joins ? "{$this->get_alias()}." : "";
+        
+        if ($this->subtype_ids !== null)
+        {
+            $this->where_in("{$prefix}subtype_id", $this->subtype_ids);
+        }
             
         if ($this->guid !== null)
         {
-            $this->where('guid = ?', $this->guid);
+            $this->where("{$prefix}guid = ?", $this->guid);
         }
     
         if (!$this->show_disabled)
         {
-            $this->where('status <> 0');
+            $this->where("{$prefix}status <> 0");
         }
     }    
 }

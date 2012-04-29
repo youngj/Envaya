@@ -22,7 +22,7 @@ class Action_Admin_ConfigureHomePage extends Action
         $this->page_draw(array(
             'title' => 'Configure Home Page',
             'content' =>  view('admin/configure_home_page'),
-            'theme_name' => 'editor'
+            'theme' => 'Theme_Editor'
         ));    
     }
 }

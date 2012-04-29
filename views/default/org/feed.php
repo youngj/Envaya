@@ -7,11 +7,14 @@ $filters = $vars['filters'];
 $items = $vars['items'];
 $first_id = (int)$vars['first_id'];
 
+echo "<div style='text-align:center'>";
 echo view('org/filter_controls', array(
     'baseurl' => '/pg/feed',
     'filters' => $filters,
 ));
+echo "</div>";
 ?>
+
 </div>
 <div id='feed_container'>
 <?php	

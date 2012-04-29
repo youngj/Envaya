@@ -20,7 +20,7 @@ class FeedItem_Message extends FeedItem
         $message = $this->get_subject_entity();        
         $topic = $message->get_container_entity();
         
-        $is_first_message = $message->guid == $topic->first_message_guid;
+        $is_first_message = $message->guid === $topic->first_message_guid;
         
         return strtr($is_first_message ? __('discussions:feed_heading_topic') : __('discussions:feed_heading_message'), array(
             '{name}' => $this->get_user_link($mode),

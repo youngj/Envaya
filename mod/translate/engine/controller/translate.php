@@ -76,7 +76,7 @@ class Controller_Translate extends Controller
     
     function before()
     {
-        $this->page_draw_vars['theme_name'] = 'simple_wide';
+        $this->page_draw_vars['theme'] = 'Theme_Wide';
         $this->page_draw_vars['login_url'] = url_with_param(Request::full_original_url(), 'login', 1);
         $this->page_draw_vars['show_translate_footer'] = false;
     }

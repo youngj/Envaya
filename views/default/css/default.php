@@ -23,8 +23,7 @@
     overflow:visible;
     color:white;
     border:1px solid #fff;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
+    border-radius: 4px;
     font-size:12px;
 }
 #translate_bar a
@@ -556,6 +555,7 @@ a.photoDelete:hover
 
 .todo_container 
 {
+    margin-top:15px;
     padding-top:5px;
 }
 
@@ -606,7 +606,7 @@ a.photoDelete:hover
 .adminBox
 {
     position:absolute;
-    top:75px;
+    top:55px;
     right:2px;
     border:1px solid red;
     background:#ffcccc;
@@ -619,41 +619,6 @@ a.photoDelete:hover
     color:#000066;
 }
 
-
-
-.commBox
-{
-    text-align: center;
-    height:36px;
-    color:white;
-    width:100%;
-    margin-bottom:3px;
-}
-
-.commBox a
-{
-    font-weight: bold;
-    color:white;
-}
-
-.commBoxLeft
-{
-    background:url(/_media/images/commBox.gif) no-repeat right -10px;
-    width:45%;
-}
-
-.commBoxMain
-{
-    background:url(/_media/images/commBox.gif) repeat-x left -56px;
-    white-space:nowrap;
-    padding:5px 15px;
-}
-
-.commBoxRight
-{
-    background:url(/_media/images/commBox.gif) no-repeat left -102px;
-    width:45%;
-}
 
 #widget_delete
 {
@@ -867,7 +832,44 @@ ol ol
     padding-left:36px;
 }
 
+
+#top_menuc
+{
+    text-align:center;
+}
+
+#top_menu
+{
+    background:url(/_media/images/commBox.gif) repeat-x left -56px;
+    padding:2px 15px;
+    white-space:nowrap;
+    display:inline-block;
+    border-radius:0px 0px 4px 4px;
+    -moz-border-radius:0px 0px 4px 4px;
+    color:#fff;
+}
+
+#top_menu a
+{
+    color:#fff;
+    font-weight:bold;
+}
+
+.designSettings th
+{
+    vertical-align:top;
+    text-align:right;
+    padding-right:10px;
+    width:100px;
+}
+
+.designSettings td
+{
+    padding-bottom:5px; 
+}
+
 @media print
 {
-    #topbar, .footer_container { display: none; }
+    #topbar, .footer_container, #top_menu { display: none; }
 }
+

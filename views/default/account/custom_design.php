@@ -39,7 +39,6 @@
 <script type='text/javascript'>
     var uploader = window.uploader;      
     uploader.onComplete = function($files) {   
-        console.log($files);
         $('uploadedUrl').innerHTML = $files[0].url;
     };
 </script>

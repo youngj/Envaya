@@ -6,7 +6,7 @@ class ContactTest extends SeleniumTest
     {
         $this->open('/admin/contact');
         $this->login('testadmin','secretpassw0rd');
-        $this->ensureGoodMessage();
+        $this->assertEquals("testadmin", $this->getText("//span[@id='top_whoami']"));
            
         // reset batch email notification settings
         $this->open("/testposter0");        
@@ -43,7 +43,7 @@ class ContactTest extends SeleniumTest
         $this->selectFrame('relative=top');
         
         // edit email template              
-        $this->clickAndWait("//div[@id='edit_submenu']//a");
+        $this->clickAndWait("//div[@id='top_menu']//a[contains(@href,'/edit')]");
         
         $this->assertEquals('ContactTest', $this->getValue("//input[@name='from']"));
         $this->setTinymceContent("<p>Hi {{name}},</p><p>This is not a test.</p>");
@@ -100,7 +100,7 @@ class ContactTest extends SeleniumTest
         // add another email template
         $this->open("/admin/contact/email");
         $this->login("testadmin","secretpassw0rd");
-        $this->ensureGoodMessage();
+        $this->assertEquals("testadmin", $this->getText("//span[@id='top_whoami']"));
         
         $this->clickAndWait("//a[contains(@href,'email/add')]");
         $this->type("//input[@name='from']", "ContactTest");

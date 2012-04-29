@@ -9,8 +9,6 @@ class Action_Login extends Action
 
     protected function login_success($user, $password)
     {
-        SessionMessages::add(sprintf(__('login:welcome'), $user->name));
-
         $next = get_input('next');
         if (!$next && !$user->is_setup_complete())
         {

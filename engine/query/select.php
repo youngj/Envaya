@@ -28,6 +28,7 @@ class Query_Select
     protected $offset;
     protected $columns;
     protected $from;
+    protected $alias;
     protected $joins;
     protected $group_by;
     protected $row_function;
@@ -39,7 +40,7 @@ class Query_Select
         $this->conditions = array();
         $this->args = array();
         $this->offset = 0;
-        $this->columns = "*";
+        $this->columns = null;
         $this->joins = array();
         $this->group_by = '';
         $this->from($from);  
@@ -62,6 +63,11 @@ class Query_Select
         return $this;
     }
     
+    function get_alias()
+    {
+        return $this->alias ?: $this->from;
+    }
+    
     function join($join)
     {
         $this->joins[] = $join;
@@ -74,9 +80,16 @@ class Query_Select
         return $this;
     }
     
-    function from($from)
+    function from($from, $alias = null)
     {
         $this->from = $from;
+        $this->alias = $alias;
+        return $this;
+    }
+    
+    function alias($alias)
+    {
+        $this->alias = $alias;
         return $this;
     }
     
@@ -94,10 +107,15 @@ class Query_Select
     
     function where_in($column, $values)
     {
-        if (sizeof($values) == 0)
+        $num_values = sizeof($values) ;
+        if ($num_values == 0)
         {
             $this->is_empty = true;
             return $this;
+        }
+        else if ($num_values == 1)
+        {
+            return $this->where("$column = ?", $values[0]);
         }
         else
         {
@@ -185,9 +203,19 @@ class Query_Select
         if ($columns === null)
         {
             $columns = $this->columns;
+            if ($columns === null)
+            {                            
+                $columns = $join ? "{$this->get_alias()}.*" : "*";
+            }
         }
         
-        return  "SELECT {$columns} FROM {$this->from} $join $where {$this->group_by}";    
+        $from = $this->from;
+        if ($this->alias)
+        {
+            $from .= " {$this->alias}";
+        }
+        
+        return  "SELECT {$columns} FROM $from $join $where {$this->group_by}";    
     }
     
     function get_args()

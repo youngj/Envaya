@@ -15,7 +15,7 @@ class Person extends User
     
     function set_defaults()
     {
-        $this->set_design_setting('theme_name', "personprofile");
+        $this->set_design_setting('theme_id', Theme_PersonProfile::get_subtype_id());
     }
     
     function get_default_icon_props($size = '')

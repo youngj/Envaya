@@ -25,7 +25,7 @@ class Action_Admin_Subscriptions extends Action
         $this->page_draw(array(
             'title' => 'Manage Subscriptions',
             'content' => view('admin/subscriptions'),
-            'theme_name' => 'editor',
+            'theme' => 'Theme_Editor',
         ));                     
     }
 }    

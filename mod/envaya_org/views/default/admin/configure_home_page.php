@@ -12,19 +12,28 @@
 <?php 
     echo view('input/securitytoken');
     
-    $guid = State::get('home_bottom_left_guid');
+    $guid = get_input('bottom_left_guid') ?: State::get('home_bottom_left_guid');
+    $widget = Widget::get_by_guid($guid);
 
     echo "<div class='input'>";
     echo "<label>ID of widget in bottom-left corner</label><br />";
     echo view('input/text', array(
         'name' => 'home_bottom_left_guid',
-        'value' => $guid,
-        'style' => 'width:80px',
+        'value' => $widget ? $widget->guid : '',
+        'style' => 'width:300px',
     ));
-    
-    if ($guid)
+        
+    if ($widget)
     {
-        echo " <a href='/$guid/edit'>Edit Content</a>";
+        echo "<br />Preview:";
+        echo "<div style='border:1px solid #ccc;width:420px;padding:5px'>";
+        echo "<h4 class='home_featured_heading'>".escape($widget->get_title())."</h4>";
+        echo "<div class='home_featured_content'>";
+        echo $widget->render_content();
+        echo "</div>";
+        echo "</div>"; 
+    
+        echo " <a href='{$widget->get_edit_url()}'>Edit Content</a>";
     }
     
     echo "</div>";

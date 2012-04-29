@@ -20,7 +20,7 @@ class FeedTest extends WebDriverTest
     
             $this->waitForElement("//input[@name='username']");
             $this->login("testposter$i", 'asdfasdf');            
-            $this->retry('ensureGoodMessage', array('Welcome'));
+            $this->retry('ensureGoodMessage');
             
             $this->setTinymceContent("test post $i");
             $this->submitForm();

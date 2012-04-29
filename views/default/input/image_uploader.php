@@ -24,6 +24,7 @@
         'file_types_description' => "Images",
         'thumbnail_size' => @$vars['thumbnail_size'] ?: 'small',
         'max_width' => $maxWidth,
+        'img_id' => @$vars['img_id'],
         'max_height' => $maxHeight,        
         'multi_selection' => false,
         'format_error_message' => __('upload:invalid_image_format'),

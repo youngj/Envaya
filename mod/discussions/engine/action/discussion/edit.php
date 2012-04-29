@@ -44,7 +44,7 @@ class Action_Discussion_Edit extends Action
         $this->use_editor_layout();
         
         $cancelUrl = get_input('from') ?: $topic->get_url();
-        PageContext::get_submenu('edit')->add_link(__("canceledit"), $cancelUrl);
+        PageContext::get_submenu('top')->add_link(__("canceledit"), $cancelUrl);
                 
         $this->page_draw(array(
             'title' => __('discussions:edit_topic'),

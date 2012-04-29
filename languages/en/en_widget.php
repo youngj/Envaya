@@ -106,5 +106,8 @@ return array(
     'widget:delete_section:success' => "Section removed successfully.",
     'widget:delete:confirm' => "Are you sure you want to remove this page from your site?",
     'widget:delete_section:confirm' => "Are you sure you want to remove this section?",    
-    
+
+    'widget:volunteer' => "Volunteer",    
+    'widget:volunteer:label' => "Your organization's volunteer opportunities",    
+    'widget:volunteer:help' => "Write about any requirements for your organization's volunteers. Describe the type of position available, skills required, location, days to work, person to contact, etc.",    
 );

@@ -43,13 +43,15 @@ orgLoader.getURLParams = function() {
         'attrs' => array('onchange' => 'sectorChanged()', 'onkeypress' => 'sectorChanged()'),
     ));
     
-    echo "<div class='instructions' style='clear:both'>";
+    echo "<div class='instructions' style='clear:both;padding-bottom:10px'>";
     echo __("browse:instructions");
     echo "</div>";
     
     
     echo view("output/map", array(
         'id' => 'mapDiv',
+        'width' => 650,
+        'height' => 450,
         'lat' => $lat, 
         'long' => $long,  
         'zoom' => $zoom, 

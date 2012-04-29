@@ -219,7 +219,15 @@ abstract class User extends Entity
     public function set_design_setting($name, $value)
     {
         $settings = $this->get_design_settings();
-        $settings[$name] = $value;
+        
+        if (!isset($value))
+        {
+            unset($settings[$name]);
+        }
+        else
+        {        
+            $settings[$name] = $value;
+        }
         $this->design_settings = $settings;
         $this->design_json = json_encode($settings);
     }        
@@ -660,7 +668,7 @@ abstract class User extends Entity
                     ->where('phone_number = ?', $old_phone_number->phone_number)
                     ->filter() as $old_state)
                 {
-                    if ($old_state->user_guid == $this->guid)
+                    if ($old_state->user_guid === $this->guid)
                     {
                         $old_state->set_logged_in_user(null);
                         $old_state->save();

@@ -18,6 +18,8 @@ class Widget extends Entity
     const Draft = 0;
     const Published = 1;
 
+    static $auto_update_time_updated = false;
+    
     static $table_name = 'widgets';
     static $table_base_class = 'Widget';
     static $query_class = 'Query_SelectWidget';
@@ -50,6 +52,7 @@ class Widget extends Entity
             'Widget_Projects',
             'Widget_History',
             'Widget_Team',
+            'Widget_Volunteer',
             'Widget_Contact',
         ),
         'hidden_page' => array(            
@@ -90,7 +93,7 @@ class Widget extends Entity
             }
         }
         return null;
-    }
+    }    
     
     static function get_image_sizes()
     {
@@ -218,7 +221,7 @@ class Widget extends Entity
             $args[] = array('url' => $cur->get_url(), 'title' => $cur->get_title());
         }
         return array_reverse($args);
-    }
+    }    
     
     function post_feed_items()
     {

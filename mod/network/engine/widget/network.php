@@ -47,7 +47,7 @@ class Widget_Network extends Widget
     
     private function show_cancel_edit_button()
     {
-        $submenu = PageContext::get_submenu('edit');
+        $submenu = PageContext::get_submenu('top');
         $submenu->clear();
         $submenu->add_link(__("cancel"), $this->get_edit_url());
     }
@@ -135,7 +135,7 @@ class Widget_Network extends Widget
                 // ignore
             }            
         
-            if ($org->guid == $relationship->subject_guid)
+            if ($org->guid === $relationship->subject_guid)
             {
                 throw new RedirectException($relationship->msg('no_self'));
             }
