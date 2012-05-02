@@ -1,24 +1,20 @@
 <div class='section_content padded'>
-     <p>Envaya now makes it easier for you to interact with community initiatives in your area.</p>
-     
-     <p>Below is a list of the organizations on Envaya requesting volunteers.</p>    
-     
-     <?php
+<?php
+    if (Geography::is_available_country(GeoIP::get_country_code()))
+    {
+        echo "<p>".__('volunteer:desc_local')."</p>";
+    }
+    else
+    {
+        echo "<p>".__('volunteer:desc_remote')."</p>";
+    }
+    echo "<p>".__('volunteer:list_below')."</p>";
+    
     $user = Session::get_logged_in_user();
     
     if ($user instanceof Organization)
     {
-        
-        
-        if (Widget_Volunteer::query_for_entity($user)->exists())
-        {
-            $text = "Update your organization's volunteer opportunities!";
-        }
-        else
-        {
-            $text = "Add your organization's volunteer opportunities!";
-        }
-    
+        $text = Widget_Volunteer::query_for_entity($user)->exists() ? __('volunteer:update') : __('volunteer:add');    
         echo "<p><a style='font-weight:bold' href='{$user->get_url()}/page/volunteer/edit'>$text</a></p>";
     }
 
@@ -55,7 +51,9 @@
     
     if ($widgets)
     {        
-        echo "<div style='font-size:12px;padding-top:10px;color:#666'>Note: All volunteer opportunities are submitted and coordinated by the organizations listed below, not by Envaya itself. Envaya does not verify the accuracy of these volunteer opportunities.</div>";        
+        echo "<div style='font-size:12px;padding-top:10px;color:#666'>";
+        echo __('volunteer:disclaimer');
+        echo "</div>";        
         
         echo "<table>";
         
@@ -76,7 +74,9 @@
                     $thumbnail_url = $icon_props['url'];
                 }
                 
-                echo "<div class='blog_date' style='white-space:nowrap'>Posted " .friendly_time($widget->time_updated)."</div>";
+                echo "<div class='blog_date' style='white-space:nowrap'>";
+                echo friendly_time($widget->time_updated);
+                echo "</div>";
                 
                 echo "<a href='$link_url' style='padding:2px;background-color:#fff;display:inline-block;border:1px solid #ccc'><img src='$thumbnail_url' /></a>";
                 
@@ -109,7 +109,7 @@
     }
     else
     {
-        echo "<div style='padding-top:10px'>No volunteer opportunities found.</div>";
+        echo "<div style='padding-top:10px'>".__('volunteer:empty')."</div>";
         echo $pagination;
     }    
         

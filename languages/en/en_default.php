@@ -98,6 +98,13 @@ return array(
 
     'volunteer' => 'Volunteer',
     'volunteer:title' => 'Get involved!',
+    'volunteer:empty' => "No volunteer opportunities found.",
+    'volunteer:desc_local' => "Envaya now makes it easier for you to interact with community initiatives in your area.",
+    'volunteer:desc_remote' => "Envaya now makes it easier for you to interact with community initiatives in East Africa.",
+    'volunteer:list_below' => "Below is a list of the organizations on Envaya requesting volunteers.",
+    'volunteer:update' => "Update your organization's volunteer opportunities!",
+    'volunteer:add' => "Add your organization's volunteer opportunities!",
+    'volunteer:disclaimer' => "Note: All volunteer opportunities are submitted and coordinated by the organizations listed below, not by Envaya itself. Envaya does not verify the accuracy of these volunteer opportunities.",
     
     'org:sector' => 'Sector',
     'org:region' => 'Region',

@@ -22,7 +22,7 @@ h1,h2,h3
     font-size:large;
 }   
 
-#topbar2, .adminBox, #edit_submenu
+#topbar2, .adminBox, #top_menu
 {
     background-color:#dddddd;
     padding:2px;

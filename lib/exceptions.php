@@ -10,8 +10,13 @@ class DatabaseException extends Exception {
     function __construct($message = null, $admin_message = null)
     {
         parent::__construct($message);
-
+        
         $this->admin_message = $admin_message;
+    }
+    
+    function __toString()
+    {
+        return parent::__toString() . "\n\n" . $this->admin_message;
     }
 }
 
@@ -107,9 +112,15 @@ function notify_exception($exception)
                 @file_put_contents($lastErrorEmailTimeFile, "$curTime", LOCK_EX);
 
                 $class = get_class($exception);
-                $ex = print_r($exception, true);
-                $server = print_r($_SERVER, true);
-
+                
+                $server = $_SERVER;
+                
+                // avoid sending sensitive authorization info in email
+                unset($server['HTTP_AUTHORIZATION']);
+                unset($server['HTTP_COOKIE']);
+                unset($server['PHP_AUTH_USER']);
+                unset($server['PHP_AUTH_PW']);
+                
                 // avoid using OutgoingMail class, since it has dependencies on the Database and TaskQueue,
                 // and this exception may occur because one of those components is failing.
                 
@@ -117,16 +128,7 @@ function notify_exception($exception)
                 
                 $mail = Zend::mail();
                 $mail->setSubject("$class: $url");
-                $mail->setBodyText("
-    Exception:
-    ==========
-    $ex
-
-
-    _SERVER:
-    =======
-    $server
-            ");
+                $mail->setBodyText("Exception:\n==========\n$exception\n\n_SERVER:\n=======\n".print_r($server, true));
                 $mail->setFrom(Config::get('mail:email_from'), Config::get('site_name'));
                 $mail->addTo(Config::get('mail:admin_email'));
                 $mailer = Zend::mail_transport();

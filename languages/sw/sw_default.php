@@ -120,5 +120,6 @@ return array(
     'web:url_error' => "Kulikuwa kosa ya kupata anwani ya intaneti {url}.",    
     'web:invalid_url' => "Anwani ya intaneti {url} hairuhusiwi.",    
     'web:try_again' => "Hakikisha kuwa anwani ni sahihi, halafu jaribu tena.",        
-    
+
+    'volunteer' => 'Jitolee',    
 );

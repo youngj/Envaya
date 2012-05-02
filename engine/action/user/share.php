@@ -126,6 +126,7 @@ class Action_User_Share extends Action
                 'user' => $this->get_user(),
                 'url' => get_input('u')
             )),
+            'header' => '',
             'theme' => 'Theme_Editor',
             'no_top_bar' => true,            
         ));

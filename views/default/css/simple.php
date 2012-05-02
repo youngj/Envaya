@@ -23,7 +23,8 @@ body
 #site_menu,
 #heading h1
 {
-    font-size:27px;
+    font-size:28px;
+    font-family:Verdana;
     font-weight:bold;
     padding-bottom:25px;
     padding-left:10px;

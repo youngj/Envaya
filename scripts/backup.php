@@ -25,7 +25,8 @@
     
     $dump = "mysqldump ".escapeshellarg($dbname)
         ." -u ".escapeshellarg(Config::get('task:db_backup_user'))
-        ." --password=".escapeshellarg(Config::get('task:db_backup_password'));
+        ." --password=".escapeshellarg(Config::get('task:db_backup_password'))
+        ." --default-character-set=latin1 -N"; // workaround for double utf-8 encoding bug
 
     $crypt = "mcrypt -q --key ".escapeshellarg(Config::get('db:password'));
 

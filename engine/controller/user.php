@@ -254,7 +254,7 @@ abstract class Controller_User extends Controller
         }
     }	
             
-    public function not_found()
+    public function not_found($ex)
     {
         $uri_part = $this->param('user_uri');
         $user = $this->get_user();
@@ -265,7 +265,7 @@ abstract class Controller_User extends Controller
         }
         else
         {
-            parent::not_found();
+            parent::not_found($ex);
         }
     }   
 }

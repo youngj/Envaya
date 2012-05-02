@@ -10,7 +10,7 @@ html,body
 body
 {
     text-align:left;
-    font: 80%/1.4  "Lucida Grande", Verdana, sans-serif;
+    font: 80%/1.4 Verdana, sans-serif;
     word-wrap: break-word;
     color: #333333;
 }

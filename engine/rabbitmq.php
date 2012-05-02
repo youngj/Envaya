@@ -14,14 +14,21 @@ class RabbitMQ
         if (!static::$connection)
         {        
             static::load_lib();
-            
-            $connection = new AMQPConnection(
-                Config::get('amqp:host'), 
-                Config::get('amqp:port'),
-                Config::get('amqp:user'),
-                Config::get('amqp:password'),
-                Config::get('amqp:vhost')
-            );            
+
+            try
+            {
+                $connection = new AMQPConnection(
+                    Config::get('amqp:host'), 
+                    Config::get('amqp:port'),
+                    Config::get('amqp:user'),
+                    Config::get('amqp:password'),
+                    Config::get('amqp:vhost')
+                );            
+            }
+            catch (Exception $ex)
+            {
+                throw new IOException($ex->getMessage()); // avoid leaking AMQP password from stack trace in error log/emails
+            }
             
             static::$connection = $connection;
         }

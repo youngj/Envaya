@@ -32,7 +32,7 @@ return array(
 	'amqp:port' => 5672,
 	'amqp:user' => 'guest',
 	'amqp:password' => 'guest',
-	'amqp:vhost' => '/envaya',	
+	'amqp:vhost' => '/envaya',	    
        
     'cache:backend' => "Cache_Database",
     'cache:version' => 207,  // increment when all cached objects need to be invalidated (rare)
@@ -41,6 +41,7 @@ return array(
     
     'captcha:backend' => 'Captcha_Securimage',       
         
+    'css:default' => 'simple',        
     'theme:default' => 'Theme_Simple',
         
     'time:mock_file' => '',    

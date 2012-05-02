@@ -859,13 +859,13 @@ ol ol
 {
     vertical-align:top;
     text-align:right;
-    padding-right:10px;
+    padding-right:20px;
     width:100px;
 }
 
 .designSettings td
 {
-    padding-bottom:5px; 
+    padding-bottom:15px; 
 }
 
 @media print

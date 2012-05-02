@@ -25,6 +25,14 @@ abstract class Controller extends Router {
         ),
     );
     
+    static $page_elements = array(
+        'messages',
+        'top_menu',
+        'site_menu',
+        'footer',
+        'header', // do header last so other page elements can modify header via PageContext
+    );
+
     protected $parent_controller;    
     
     protected $response = null;
@@ -106,7 +114,10 @@ abstract class Controller extends Router {
         }
         else
         {
-            $vars['layout'] = 'layouts/default';
+            if (!isset($vars['layout']))
+            {
+                $vars['layout'] = 'layouts/default';
+            }
         }        
                                 
         if (!isset($vars['full_title']))
@@ -121,35 +132,18 @@ abstract class Controller extends Router {
 
         $vars['canonical_url'] = $this->get_canonical_url();
         $vars['original_url'] = Request::full_original_url();
-        $vars['css_url'] = css_url(@$vars['css_name'] ?: 'simple');        
+        $vars['css_url'] = css_url(@$vars['css_name'] ?: Config::get('css:default'));        
         $vars['base_url'] = abs_url('/', Request::get_protocol());
 
         $vars['content'] = view('page_elements/content_wrapper', $vars);
         
-        if (!isset($vars['messages']))
+        foreach (static::$page_elements as $page_element)
         {
-            $vars['messages'] = view('page_elements/messages', $vars);
+           if (!isset($vars[$page_element]))
+           {
+               $vars[$page_element] = view("page_elements/{$page_element}", $vars);
+           }
         }
-        
-        if (!isset($vars['top_menu']))
-        {
-            $vars['top_menu'] = view('page_elements/top_menu', $vars);
-        }
-        
-        if (!isset($vars['header']))
-        {
-            $vars['header'] = view('page_elements/header', $vars);
-        }
-        
-        if (!isset($vars['footer'])) 
-        {
-            $vars['footer'] = view('page_elements/footer', $vars); 
-        }
-        
-        if (!isset($vars['site_menu']))
-        {
-            $vars['site_menu'] = view('page_elements/site_menu', $vars);
-        }        
     }
     
     public function page_draw($vars)
@@ -213,7 +207,7 @@ abstract class Controller extends Router {
      * Displays a friendly 404 page, unless the url matches a global NotFoundRedirect pattern,
      * in which case it redirects the user to another page.
      */            
-    function not_found()
+    function not_found($ex)
     {
         $redirect_url = NotFoundRedirect::get_redirect_url(Request::get_uri());
         if ($redirect_url)
@@ -225,7 +219,7 @@ abstract class Controller extends Router {
             $this->set_status(404);
             $this->page_draw(array(
                 'title' => __('page:notfound'),
-                'content' => view('section', array('content' => __('page:notfound:details')."<br/><br/><br/>"))
+                'content' => view('section', array('content' => ($ex->getMessage() ?: __('page:notfound:details'))."<br/><br/><br/>"))
             ));                
         }
     }
@@ -403,35 +397,45 @@ abstract class Controller extends Router {
         return $this->parent_controller;
     }
     
-    public function execute($uri)
+    protected function handle_exception($ex)
     {
-        try
+        if ($ex instanceof NotFoundException)
         {
-            $this->execute_routes($uri);
-        }
-        catch (NotFoundException $ex)
-        {
-            $this->not_found();
+            $this->not_found($ex);
             throw new RequestAbortedException();
         }
-        catch (PermissionDeniedException $ex)
+        else if ($ex instanceof PermissionDeniedException)
         {
             $this->permission_denied($ex);
             throw new RequestAbortedException();
         }
-        catch (RedirectException $ex)
+        else if ($ex instanceof RedirectException)
         {
             $this->exception_redirect($ex, $ex->url, $ex->status);
             throw new RequestAbortedException();
         }
-        catch (RequestAbortedException $ex)
+        else if ($ex instanceof RequestAbortedException)
         {
             throw new RequestAbortedException();
         }
-        catch (Exception $ex)
+        else
         {
             $this->server_error($ex);
             throw new RequestAbortedException();
-        }    
-    }    
+        }
+    }
+
+    function execute($uri)
+    {
+        try
+        {
+            parent::execute($uri);
+        }
+        catch (Exception $ex)
+        {
+            $this->handle_exception($ex);
+        }
+    }
+
+    
 } // End Controller

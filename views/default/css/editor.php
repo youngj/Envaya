@@ -11,7 +11,7 @@
 
 body
 {
-    background-color:#ccc;
+    background-color:#ddd;
 }
 
 #translate_bar
@@ -57,7 +57,7 @@ body
 
 #content
 {
-    border:1px solid #aaa;
+    border:1px solid #999;
     background-color:#fff;
 }
 

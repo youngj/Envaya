@@ -25,5 +25,5 @@ function googlePlusShare()
 
 function emailShare(username)
 {
-    openShare('/' + username + '/share?u=' + encodeURIComponent(window.canonicalUrl),'eshare',726,636);
+    openShare('/' + username + '/share?u=' + encodeURIComponent(window.canonicalUrl),'eshare',756,636);
 }
