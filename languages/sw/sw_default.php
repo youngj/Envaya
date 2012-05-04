@@ -5,6 +5,7 @@ return array(
     'menu' => 'Menyu Kuu',
     'sign_up_now' => "jiunge sasa",    
     'register' => "Jiandikishe",
+    'submit' => 'Toa',
     
     'capslock_warning' => "Angalia: Unatumia CAPS LOCK sasa",    
     'donate' => "Changia",
@@ -19,7 +20,9 @@ return array(
     'dashboard:settings' => 'Badili mipangilio ya akaunti',
     'dashboard:links' => 'Viungo',
     'your_home' => 'Ukurasa wako mkuu',
+    'view_site' => 'Angalia Tovuti',
     'edit_site' => 'Hariri Tovuti',
+    'edit_design' => 'Hariri Mwonekano',
     'edit_item' => "Hariri %s",
     'loading' => 'Ikipakia...',
     'language' => 'Lugha',
@@ -122,4 +125,12 @@ return array(
     'web:try_again' => "Hakikisha kuwa anwani ni sahihi, halafu jaribu tena.",        
 
     'volunteer' => 'Jitolee',    
+    'volunteer:title' => 'Jitolee!',
+    'volunteer:empty' => "Nafasi za kujitolea hazipatikani kwa sasa.",
+    'volunteer:desc_local' => "Envaya imekurahisishia kushirikiana na asasi za kiraia zilizopo katika eneo lako.",
+    'volunteer:desc_remote' => "Envaya imekurahisishia kushirikiana na asasi zilizopo katika ukanda wa Afrika ya Mashariki.	",
+    'volunteer:list_below' => "Chini ni orodha ya asasi zinazohitaji watu wa kujitolea.",
+    'volunteer:update' => "Weka nafasi za kujitolea zilizopo katika asasi yako!",
+    'volunteer:add' => "Ongeza nafasi za kujitolea zilizopo katika asasi yako!",
+    'volunteer:disclaimer' => "Kumbuka: Nafasi zote za kujitolea zinawekwa na kuratibiwa na asasi zilizoorodheshwa hapo chini, na siyo Envaya. Envaya haihusiki na chochote kuhusiana na nafasi hizi za kujitolea zitakazo tangazwa na asasi.",    
 );

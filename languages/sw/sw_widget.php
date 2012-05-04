@@ -105,4 +105,6 @@ return array(
     'widget:delete_section:confirm' => 'Una uhakika kuwa unataka kufuta sehemu hii?',
 
     'widget:volunteer' => "Jitolee",    
+    'widget:volunteer:help' => 'Andika kuhusu hizo nafasi za kujitolea. Fafanua aina ya nafasi iliyopo, sifa na ujuzi inayotakiwa, mahali ya kufanyia kazi, siku gani za kujitolea, mtu wa kuwasiliana naye n.k.',
+    'widget:volunteer:label' => 'Nafasi za kujitolea za asasi yako',
 );

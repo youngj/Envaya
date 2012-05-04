@@ -86,20 +86,11 @@ namespace :deploy do
         files = [
             "build/cache.php",
             "build/path_cache.php",
-            "www/_media/css/home.css",
-            "www/_media/css/simple.css",
-            "www/_media/css/green.css",
-            "www/_media/css/craft1.css",
-            "www/_media/css/brick.css",
-            "www/_media/css/editor.css",
-            "www/_media/css/tinymce_ui.css",
-            "www/_media/css/mobile.css",
+            "www/_media/jquery-1.6.2.min.js",
             "www/_media/inline/header.js",
             "www/_media/inline/xhr.js",
             "www/_media/inline/dom.js",
             "www/_media/inline/language.js",
-            "www/_media/uploader.js",
-            "www/_media/tiny_mce.js",
         ]
     
         files.each do |file|

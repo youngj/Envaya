@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'design:edit' => 'Hariri usanii wa tovuti',
+    'design:edit' => 'Hariri mwonekano wa tovuti',
   
     'design:theme' => 'Wazo wa tovuti',
     'design:theme:lightblue' => 'Menyu ya Juu',
@@ -26,5 +26,5 @@ return array(
     'design:header:chooseimage' => 'Chagua picha kutumia kama kichwa chako cha tovuti:',
     'design:header:constraints' => 'Lazima picha ya kichwa iwe muundo wa JPG, GIF, au PNG. Ukubwa wa upeo ni pixeli 700 za upana na pixeli 150 za urefu.',
     
-    'design:saved' => "Usanii wa tovuti umehifadhiwa.",
+    'design:saved' => "Mwonekano wa tovuti umehifadhiwa.",
 );
