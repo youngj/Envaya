@@ -515,7 +515,8 @@
                     if (e)
                     {
                         e.href = url;  
-                        e.setAttribute('_mce_href', url);
+                        //e.setAttribute('_mce_href', url);
+                        e.setAttribute('data-mce-href', url);
                         
                         if (!imageLink)
                         {
