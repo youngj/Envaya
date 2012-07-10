@@ -13,6 +13,7 @@ return array(
     'next' => 'Ahakurikira',
     'previous' => 'Inyuma',
     'settings' => 'Imikorere',
+    'submit' => 'Ohereza',
     'yes' => 'Yego',
     'no' => 'Oya',
     'go' => 'Komeza',
@@ -103,5 +104,13 @@ return array(
     'web:url_error' => 'Habaye ikibazo mu kugera kuri uyu murongo {url}.',
     'web:invalid_url' => 'Uru rubuga  {url} ntabwo rushoboye kuboneka.',
     'web:try_again' => 'Banza ugenzure niba aderesi y\'urubuga ariyo, hanyuma wongere.',
+    'volunteer' => 'Korera ubushake',
+    'volunteer:title' => 'Korana natwe',
+    'volunteer:empty' => 'Nta kazi kabakorera bushake karaboneka.',
+    'volunteer:desc_local' => 'Envaya igufasha kubona amakuru y\'ibikorwa by\'imiryango itandukanye aho utuye.',
+    'volunteer:list_below' => 'Uru ni urutonde rw\'ibigo byifuza abakorera bushake. ',
+    'volunteer:update' => 'Tanga itangazo niba wifuza abakorerabushake!',
+    'volunteer:add' => 'Tanga amakuru y\'akazi kubakorerabushake!',
+    'volunteer:disclaimer' => 'Icyo kwitondera: Ibikorwa by\'ubukorerabushake byose bifatwa mu nshingano n\'ibigo, Envaya nta ruhare ibigiramo. Envaya kandi ntigenzura amatangazo y\'ubukorerabushake. ',
 );
 

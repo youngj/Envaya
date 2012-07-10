@@ -1,7 +1,7 @@
 #!/bin/sh
 
 APP_NAME="cron"
-APP_HOME=""
+APP_HOME="/var/envaya/current"
 AS_USER="phpcron"
 USER_HOME="/var/phpcron"
 PHP_HOME="/usr"

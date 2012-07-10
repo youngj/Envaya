@@ -14,7 +14,7 @@ class Action_Registration_LoggedIn extends Action
 
     function get_redirect_url()
     {
-        return secure_url(get_input('next') ?: "/pg/register");
+        return secure_url(get_input('next') ?: "/pg/register", Request::get_host());
     }
     
     function render()

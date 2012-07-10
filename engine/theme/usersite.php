@@ -45,7 +45,7 @@ abstract class Theme_UserSite extends Theme
             }
         }
         return $css;        
-    }    
+    }
     
     static function get_pattern($pattern_name)
     {

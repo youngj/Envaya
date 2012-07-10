@@ -18,13 +18,21 @@ set :deploy_via, :rsync_with_remote_cache
 set :copy_exclude, [".svn", ".git", "envaya.org.key"]
 set :user, "root"
 
-role :web, "web1.envaya.org"                          # Your HTTP server, Apache/etc
-role :app, "web1.envaya.org"                          # This may be the same as your `Web` server
-role :db,  "web1.envaya.org", :primary => true # This is where Rails migrations will run
-role :cron, "web1.envaya.org"
-role :queue, "web1.envaya.org"
-role :search, "web1.envaya.org"
-role :qworker, "web1.envaya.org"
+ssh_key_path = "/cygwin/home/#{ENV['USERNAME']}/.ssh/id_rsa"
+
+set :ssh_key_path, ssh_key_path
+
+res = Net::SSH::KeyFactory.load_private_key(ssh_key_path)
+ssh_options[:key_data] = [res.to_s]
+
+role :web, "web1.envaya.org", "web2.envaya.org"
+role :app, "web1.envaya.org", "web2.envaya.org"
+role :db,  "web1.envaya.org", "web2.envaya.org"
+role :cron, "web2.envaya.org"
+role :queue, "web1.envaya.org", "web2.envaya.org"
+role :search, "web1.envaya.org", "web2.envaya.org"
+role :qworker, "web1.envaya.org", "web2.envaya.org"
+role :memcached, "web1.envaya.org", "web2.envaya.org"
 
 #role :db,  "your slave db-server here"
 
@@ -50,6 +58,14 @@ namespace :deploy do
         postfix_setup
     end
     
+    task :ssh_key_setup do
+        run "mkdir -p ~/.ssh"
+        run "chmod 700 ~/.ssh"
+        run "touch ~/.ssh/authorized_keys"
+        top.upload("#{ssh_key_path}.pub", "/tmp/ssh_key.pub")
+        run "cat /tmp/ssh_key.pub >> ~/.ssh/authorized_keys"
+    end    
+    
     task :update_test do
         test_dir = "#{deploy_to}/test"
         
@@ -58,7 +74,7 @@ namespace :deploy do
     end
         
     # sets up a single server with all of envaya's services installed
-    task :allinone_setup do
+    task :full_setup do
         basic_setup
         web_setup
         db_setup
@@ -66,7 +82,7 @@ namespace :deploy do
         qworker_setup
         sphinx_setup
         memcached_setup
-        cron_setup        
+        cron_setup
         extras_setup
         upgrade
     end
@@ -106,24 +122,24 @@ namespace :deploy do
         top.upload(File.join(Dir.pwd, "config/production.php"), "#{shared_path}/local.php")
     end
     
-    task :cert_setup do
+    task :dkim_key_setup do
+        key_path = "/etc/mail/dkim.key"
+        top.upload(File.join(Dir.pwd, "../envaya_ssl/dkim.key"), key_path)
+        run "chmod 600 #{key_path}"        
+        run "/etc/init.d/opendkim restart"
+        run "/etc/init.d/postfix restart"
+    end
+    
+    task :web_cert_setup, :roles => :web do
         cert_dir = "/etc/nginx/ssl"
         cert_path = "#{cert_dir}/envaya_combined.crt"
         key_path = "#{cert_dir}/envaya.org.key"
     
-        begin
-            run "stat -t #{key_path}"
-        rescue Exception    
-            top.upload(File.join(Dir.pwd, "ssl/envaya.org.key"), key_path)
-            run "chmod 400 #{key_path}"
-        end
+        top.upload(File.join(Dir.pwd, "../envaya_ssl/envaya.org.key"), key_path)
+        run "chmod 400 #{key_path}"
 
-        begin
-            run "stat -t #{cert_path}"
-        rescue Exception    
-            top.upload(File.join(Dir.pwd, "ssl/envaya_combined.crt"), cert_path)            
-            run "chmod 644 #{cert_path}"
-        end
+        top.upload(File.join(Dir.pwd, "../envaya_ssl/envaya_combined.crt"), cert_path)            
+        run "chmod 644 #{cert_path}"
         
         begin
             run "stat -t /etc/nginx/sites-enabled/ssl"
@@ -168,7 +184,7 @@ namespace :deploy do
         run "cd #{current_path} && php scripts/install_dataroot.php"
     end
     
-    task :web_setup do
+    task :web_setup, :roles => :web do
         run "#{current_path}/scripts/setup/nginx.sh"
     end
         
@@ -204,7 +220,7 @@ namespace :deploy do
 
     task :finalize_update, :except => { :no_release => true } do
         run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
-        run "cp #{shared_path}/local.php #{latest_release}/config/local.php"        
+        publish_settings       
     end
     
     task :create_symlink, :except => { :no_release => true } do   
@@ -225,15 +241,42 @@ namespace :deploy do
         finalize_update
     end    
     
-    task :update_translations do
+    task :update_translations, :roles => :cron do
         run "php #{current_path}/mod/translate/scripts/update_translations.php"
     end
     
-    task :restart, :roles => :app, :except => { :no_release => true } do        
+    task :restart_cron, :roles => :cron do        
         run "/etc/init.d/phpCron restart"
-        run "/etc/init.d/qworkers restart"
+    end
+    
+    task :restart_nginx, :roles => :web do
         run "nginx -t"
         run "/etc/init.d/nginx reload"
         run "rm -rf /var/nginx/cache/envaya"
+    end
+    
+    task :restart_qworkers, :roles => :qworker do
+        run "/etc/init.d/qworkers restart"
+    end
+    
+    task :restart, :roles => :app, :except => { :no_release => true } do        
+        restart_cron
+        restart_nginx
+        restart_qworkers
+    end
+
+    task :update_iptables do
+        top.upload(File.join(Dir.pwd, "scripts/setup/conf/iptables.fw"), "/root/iptables.fw")
+        run "iptables-restore < /root/iptables.fw"
+    end    
+    
+    task :update_settings do
+        localsettings_setup
+        publish_settings
+        restart
+    end    
+    
+    task :publish_settings do
+        run "cp #{shared_path}/local.php #{latest_release}/config/local.php"                   
     end
 end

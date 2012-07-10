@@ -32,6 +32,9 @@ deb http://security.ubuntu.com/ubuntu lucid-security universe
 deb-src http://security.ubuntu.com/ubuntu lucid-security universe
 deb http://ppa.launchpad.net/nginx/stable/ubuntu lucid main
 
+deb http://packages.dotdeb.org squeeze all
+deb-src http://packages.dotdeb.org squeeze all
+
 deb http://packages.dotdeb.org/ squeeze-php54 all
 
 deb http://ppa.launchpad.net/brianmercer/php/ubuntu lucid main

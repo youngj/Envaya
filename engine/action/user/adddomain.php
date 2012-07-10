@@ -14,7 +14,7 @@ class Action_User_AddDomain extends Action
         {
             throw new RedirectException(__('domains:duplicate'));
         }
-        if (preg_match('/[^\w\.\-]/', $domain_name))
+        if (!preg_match('#[\w\.\-]+(:\d+)?#', $domain_name))
         {
             throw new RedirectException(__('domains:invalid'));
         }

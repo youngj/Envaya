@@ -24,6 +24,7 @@
     }
     
     $dump = "mysqldump ".escapeshellarg($dbname)
+        ." -h ".escapeshellarg(Config::get('task:db_backup_host'))
         ." -u ".escapeshellarg(Config::get('task:db_backup_user'))
         ." --password=".escapeshellarg(Config::get('task:db_backup_password'))
         ." --default-character-set=latin1 -N"; // workaround for double utf-8 encoding bug
@@ -42,9 +43,25 @@
     
     $size = (int)$info['Content-Length'];
     
+    if ($size == 0)
+    {
+        throw new IOException("Database backup size was zero");
+    }
+        
+    $old_size = State::get('backup_size');
+    $old_time = State::get('backup_time');
+        
     $end = microtime(true);
     
     $elapsed = $end - $start;
     
-    State::set('backup_time', timestamp());
+    $time = timestamp();
+    
+    State::set('backup_time', $time);
+    State::set('backup_size', $size);
     State::set('backup_info', "$s3_path / $size bytes / $elapsed sec");
+
+    if ($size <= $old_size && $time - $old_time > 120)
+    {
+        throw new Exception("Database backup size did not increase (old_size=$old_size, new_size=$size)");
+    }

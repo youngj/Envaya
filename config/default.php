@@ -3,6 +3,7 @@
 return array(
     'domain' => "localhost",    
     'cookie_domain' => null,
+    'redirect_domain' => null,
     'ssl_enabled' => false,
     'allow_robots' => true,    
     

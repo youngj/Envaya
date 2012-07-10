@@ -45,14 +45,23 @@ class Controller_Default extends Controller
         $host = Request::get_host();
         if ($host != Config::get('domain'))
         {
+            if (!preg_match('#^[a-z0-9\-\.]+(:\d+)?$#', $host))
+            {
+                $this->set_status(400);
+                $this->set_content_type('text/plain');
+                $this->set_content("Invalid hostname");
+                return;
+            }
+                    
             $username = UserDomainName::get_username_for_host($host);            
             if ($username)
             {
-                $uri = "/{$username}{$uri}";
+                $this->redirect(abs_url("/{$username}{$uri}"), 302);
+                throw new RequestAbortedException();
             }
-            else
+            else if ($host === Config::get('redirect_domain') && !Request::is_post())
             {
-                $this->redirect($uri, 301);
+                $this->redirect(abs_url($uri), 301);
                 throw new RequestAbortedException();
             }
         }

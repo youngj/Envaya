@@ -16,5 +16,7 @@ return array(
     
     'task:db_backup_user' => 'backup',
     'task:db_backup_password' => '',   
+    'task:db_backup_host' => 'localhost',
     'task:s3_backup_bucket' => '',
+    
 );

@@ -44,9 +44,9 @@ function mysql_install {
         return 1;
     fi
 
-    echo "mysql-server-5.1 mysql-server/root_password password $1" | debconf-set-selections
-    echo "mysql-server-5.1 mysql-server/root_password_again password $1" | debconf-set-selections    
-    apt-get -y install mysql-server mysql-client
+    echo "mysql-server-5.5 mysql-server/root_password password $1" | debconf-set-selections
+    echo "mysql-server-5.5 mysql-server/root_password_again password $1" | debconf-set-selections    
+    apt-get -y --allow-unauthenticated install mysql-server-5.5 mysql-client-5.5
     
     echo "Sleeping while MySQL starts up for the first time..."
     sleep 5
@@ -84,17 +84,20 @@ function mysql_tune {
         config="${config}\n${OPTLIST[$i]} = ${val}M"
     done
     
-    config="${config}\ncharacter-set-server=utf8\ncollation-server = utf8_general_ci"
+    config="${config}\ncharacter-set-server = utf8\ncollation-server = utf8_general_ci"
 
     sed -i -e "s/\(\[mysqld\]\)/\1\n$config\n/" /etc/mysql/my.cnf
+
+    clientconfig="default-character-set = utf8"
     
-    clientconfig="default-character-set=utf8"
-    
-    sed -i -e "s/\(\[client\]\)/\1\n$clientconfig\n/" /etc/mysql/my.cnf
+    sed -i -e "s/\(\[client\]\)/\1\n$clientconfig\n/" /etc/mysql/my.cnf    
     
 }
 
 mysql_install "root" 
 mysql_tune 40
 mysqladmin -u root -p'root' password ""
+
+sed -i -e 's/127.0.0.1/0.0.0.0/' /etc/mysql/my.cnf 
+
 /etc/init.d/mysql restart

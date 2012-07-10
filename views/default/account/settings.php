@@ -112,6 +112,6 @@
     $form_body = ob_get_clean();
     
     echo view('input/form',
-        array('enctype' => 'multipart/form-data', 'action' => secure_url("{$user->get_url()}/settings"),
+        array('enctype' => 'multipart/form-data', 'action' => secure_url("{$user->get_url()}/settings", Request::get_host()),
         'body' => $form_body));
 ?>

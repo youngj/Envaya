@@ -22,7 +22,7 @@ define('WORKER_CHECK_INTERVAL', 1);
 $worker_options = array(
     array(
         'cmd' => 'php scripts/qworkers/high_priority.php',
-        'count' => 3,
+        'count' => 2,
     ),
     array(
         'cmd' => 'php scripts/qworkers/low_priority.php'

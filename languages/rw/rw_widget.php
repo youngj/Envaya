@@ -95,5 +95,6 @@ return array(
     'widget:delete_section:success' => 'Agace kavuyeho neza.',
     'widget:delete:confirm' => 'Ese koko urifuza gukura iyi paji ku rubuga rwawe?',
     'widget:delete_section:confirm' => 'Ese koko urifuza gusiba aka gace?',
+    'widget:volunteer' => 'Korera ubushake',
 );
 

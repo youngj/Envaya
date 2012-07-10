@@ -36,7 +36,7 @@
     
     $form_body = ob_get_clean();
 
-    echo view('input/form', array('body' => $form_body, 'action' => secure_url("/pg/login")));
+    echo view('input/form', array('body' => $form_body, 'action' => secure_url("/pg/login", Request::get_host())));
     
     echo view('account/login_links', $vars);
 ?>

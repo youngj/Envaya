@@ -133,7 +133,7 @@ abstract class Controller extends Router {
         $vars['canonical_url'] = $this->get_canonical_url();
         $vars['original_url'] = Request::full_original_url();
         $vars['css_url'] = css_url(@$vars['css_name'] ?: Config::get('css:default'));        
-        $vars['base_url'] = abs_url('/', Request::get_protocol());
+        $vars['base_url'] = abs_url('/', Request::get_protocol(), Request::get_host());
 
         $vars['content'] = view('page_elements/content_wrapper', $vars);
         
@@ -200,7 +200,7 @@ abstract class Controller extends Router {
         SessionMessages::save();
 
         $this->set_status($status);
-        $this->set_header('Location', abs_url($url, Request::get_protocol()));
+        $this->set_header('Location', abs_url($url, Request::get_protocol(), Request::get_host()));
     }
     
     /*
@@ -317,7 +317,7 @@ abstract class Controller extends Router {
             }
         }
         
-        return secure_url("/pg/login?".http_build_query($args));
+        return secure_url("/pg/login?".http_build_query($args), Request::get_host());
     }
         
     public function allow_view_types($allowed_view_types = null /* array, or variable arguments */)

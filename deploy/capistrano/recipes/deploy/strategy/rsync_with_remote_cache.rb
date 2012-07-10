@@ -46,18 +46,36 @@ module Capistrano
         end        
         
         def update_remote_cache
-          finder_options = {:except => { :no_release => true }}
-          run("mkdir -p #{repository_cache_path}")
-          run("chown -R root:root #{repository_cache_path}")
-          find_servers(finder_options).each do |s| 
-            # TODO pass the password to rsync (e.g. with expect, or ruby rsync library) to avoid double prompting
-            res = system(rsync_command_for(s)) 
-            if !res
-                throw :rsync_failed
-            end
-          end
-          run("chown -R root:root #{repository_cache_path}")
+          finder_options = {:except => { :no_release => true }}          
+          
+          begin              
+            res = `ssh-agent`
+
+            cmds = res.split(";")
+
+            sock = cmds[0].split('=')[1]
+            pid = cmds[2].split('=')[1]
+
+            puts "sock = #{sock}"
+            puts "pid = #{pid}"
+
+            ENV["SSH_AUTH_SOCK"] = sock
+            ENV["SSH_AGENT_PID"] = pid
+            system("ssh-add")            
+
+              find_servers(finder_options).each do |s|             
+                res = system(rsync_command_for(s)) 
+                if !res
+                    throw :rsync_failed
+                end
+              end
+          ensure
+            system("ssh-agent -k")
+          end          
+          
+          run("chown -R root:root #{repository_cache_path}")          
         end
+                
         
         def copy_remote_cache
           run("rsync -a --delete #{repository_cache_path}/ #{configuration[:release_path]}/")

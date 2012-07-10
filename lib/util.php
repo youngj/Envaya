@@ -60,7 +60,7 @@
      * If $url is already an absolute URL:
      *   returns the URL itself, or the URL converted to $default_scheme if $replace_scheme is true.
      */
-    function abs_url($url, $default_scheme = 'http', $replace_scheme = false)        
+    function abs_url($url, $default_scheme = 'http', $domain = null, $replace_scheme = false)        
     {        
         $scheme_end = strpos($url, "://");
         if ($scheme_end === false)
@@ -76,7 +76,10 @@
             }
             else // relative url 
             {
-                $domain = Config::get('domain');
+                if (!$domain)
+                {
+                    $domain = Config::get('domain');
+                }
                 return "$default_scheme://$domain$url";
             }
         }        
@@ -93,9 +96,9 @@
     /* 
      * Returns absolute URL for a given URL/URI, using https if SSL is enabled on this server.
      */    
-    function secure_url($url)
+    function secure_url($url, $domain = null)
     {
-        return abs_url($url, Config::get('ssl_enabled') ? 'https' : 'http', true);
+        return abs_url($url, Config::get('ssl_enabled') ? 'https' : 'http', $domain, true);
     }
     
     function css_url($css_name)

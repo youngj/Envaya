@@ -30,8 +30,8 @@ $db_backup_password = Config::get('task:db_backup_password');
 if ($db_backup_user != $dbuser && $db_backup_user != 'root')
 {
     echo "
-CREATE USER '{$db_backup_user}'@'localhost' IDENTIFIED BY '{$db_backup_password}';
-GRANT SELECT, LOCK TABLES ON {$dbname}.* TO '{$db_backup_user}'@'localhost';
+CREATE USER '{$db_backup_user}'@'%' IDENTIFIED BY '{$db_backup_password}';
+GRANT SELECT, LOCK TABLES ON {$dbname}.* TO '{$db_backup_user}'@'%';
 ";
 }
 

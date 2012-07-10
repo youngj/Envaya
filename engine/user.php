@@ -390,7 +390,7 @@ abstract class User extends Entity
     {
         if ($this->password[0] != '$') // migrate old md5 password+salt from elgg to new bcrypt passwords
         {
-            if ($this->password == md5($password . $this->salt))
+            if ($this->password === md5($password . $this->salt))
             {
                 $this->password = generate_password_hash($password);
                 $this->salt = '';
@@ -404,7 +404,7 @@ abstract class User extends Entity
         }
         else
         {
-            return ($this->password == crypt($password, $this->password));
+            return ($this->password === crypt($password, $this->password));
         }
     }    
     
