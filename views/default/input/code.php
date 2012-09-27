@@ -14,7 +14,7 @@
     
     extract($vars);
     
-    $value = restore_input($name, $value, $track_dirty);
+    $value = Input::restore_value($name, $value, $track_dirty);
     
     $attrs = Markup::get_attrs($vars, array(
         'class' => 'input-code',

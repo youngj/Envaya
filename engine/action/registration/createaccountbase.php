@@ -31,24 +31,24 @@ abstract class Action_Registration_CreateAccountBase extends Action
     
     function process_input()
     {
-        $name = trim(get_input('org_name'));
+        $name = trim(Input::get_string('org_name'));
 
         if (!$name)
         {
             throw new ValidationException(__('register:no_name'));
         }
 
-        $username = trim(get_input('username'));
+        $username = trim(Input::get_string('username'));
 
         User::validate_username($username);
 
-        $password = get_input('password');
-        $password2 = get_input('password2');
+        $password = Input::get_string('password');
+        $password2 = Input::get_string('password2');
 
-        $email = EmailAddress::validate(trim(get_input('email')));
-        $phone_number = get_input('phone');
-        $city = get_input('city');
-        $region = get_input('region');              
+        $email = EmailAddress::validate(trim(Input::get_string('email')));
+        $phone_number = Input::get_string('phone');
+        $city = Input::get_string('city');
+        $region = Input::get_string('region');              
         $country = $this->get_country() ?: '';
         
         User::validate_password($password, $password2, array(
@@ -61,7 +61,7 @@ abstract class Action_Registration_CreateAccountBase extends Action
             Geography::get_country_name($country) ?: ''
         ));
 
-        if (!get_input('ignore_possible_duplicates'))
+        if (!Input::get_string('ignore_possible_duplicates'))
         {
             $dups = Organization::query()
                 ->where("(username = ? OR (email = ? AND ? <> '') OR INSTR(name,?) > 0 OR INSTR(?,name) > 0)", 

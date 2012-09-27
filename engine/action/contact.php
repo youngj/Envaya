@@ -33,9 +33,9 @@ class Action_Contact extends Action
     
     function process_input()
     {
-        $this->message = get_input('message');
-        $this->name = get_input('name');
-        $this->email = get_input('email');
+        $this->message = Input::get_string('message');
+        $this->name = Input::get_string('name');
+        $this->email = Input::get_string('email');
         
         if (!$this->message)
         {

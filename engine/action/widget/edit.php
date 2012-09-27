@@ -6,7 +6,7 @@ class Action_Widget_Edit extends Action
     {
         parent::before();
         
-        if (get_input('_draft'))
+        if (Input::get_string('_draft'))
         {
             $this->set_content_type('text/javascript');
         }
@@ -17,21 +17,21 @@ class Action_Widget_Edit extends Action
     protected function save_draft()
     {
         $widget = $this->get_widget();
-        $widget->save_draft(get_input('content'));                       
+        $widget->save_draft(Input::get_string('content'));                       
         
         $this->set_content(json_encode(array('guid' => $widget->guid)));    
     }
     
     function process_input()
     {        
-        if (get_input('_draft'))
+        if (Input::get_string('_draft'))
         {
             return $this->save_draft();
         }
 
         $widget = $this->get_widget();        
     
-        if (get_input('delete'))
+        if (Input::get_string('delete'))
         {
             $widget->disable();
             $widget->save();
@@ -75,7 +75,7 @@ class Action_Widget_Edit extends Action
         $this->use_editor_layout();
         
         
-        $cancelUrl = get_input('from') ?: $widget->get_url();
+        $cancelUrl = Input::get_string('from') ?: $widget->get_url();
 
         PageContext::get_submenu('top')->add_link(__("canceledit"), $cancelUrl);
 

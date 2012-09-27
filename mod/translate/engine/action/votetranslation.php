@@ -15,7 +15,7 @@ class Action_VoteTranslation extends Action
         
         $user = Session::get_logged_in_user();
         
-        $delta = (int)get_input('delta');
+        $delta = Input::get_int('delta');
                 
         $vote = $translation->query_votes()->where('owner_guid = ?', $user->guid)->get();
         if (!$vote)

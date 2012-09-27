@@ -33,18 +33,18 @@ class Widget_Location extends Widget
     {
         $org = $this->get_container_user();
 
-        $org->set_lat_long(get_input('lat'), get_input('long'));
+        $org->set_lat_long(Input::get_string('lat'), Input::get_string('long'));
 
-        $new_region = get_input('region');
+        $new_region = Input::get_string('region');
         if ($new_region != $org->region)
         {
             $org->region = $new_region;
         }
-        $org->city = get_input('city');
+        $org->city = Input::get_string('city');
 
         $org->save();
 
-        $this->set_metadata('zoom', get_input('zoom'));
+        $this->set_metadata('zoom', Input::get_string('zoom'));
         $this->save();    
     }
 }

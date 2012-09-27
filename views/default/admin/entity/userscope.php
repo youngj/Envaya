@@ -20,7 +20,7 @@
     
     $users_query = $scope->query_users();    
         
-    $q = get_input('q');
+    $q = Input::get_string('q');
     
     if ($q)
     {
@@ -28,7 +28,7 @@
     }
         
     $limit = 20;
-    $offset = (int)get_input('offset');
+    $offset = Input::get_int('offset');
     $num_users = $users_query->count();        
     
     if ($num_users || $q)

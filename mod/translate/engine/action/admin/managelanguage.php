@@ -10,7 +10,7 @@ class Action_Admin_ManageLanguage extends Action
     function process_input()
     {
         $language = $this->param('language');
-        if (get_input('delete'))
+        if (Input::get_string('delete'))
         {
             $language->disable();
             $language->save();
@@ -21,13 +21,13 @@ class Action_Admin_ManageLanguage extends Action
         else
         {
             
-            $language->name = get_input('name');
+            $language->name = Input::get_string('name');
             $language->enable();
             $language->save();
             
             $available_groups = $language->get_available_groups();
             
-            $enabled_groups = get_input_array('group_names');
+            $enabled_groups = Input::get_array('group_names');
             
             $disabled_groups = $language->query_groups()->where_not_in('name', $enabled_groups)->filter();
             foreach ($disabled_groups as $disabled_group)

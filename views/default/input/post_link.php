@@ -26,7 +26,7 @@
     }
 
     $ts = timestamp();
-    $token = generate_security_token($ts);
+    $token = Input::generate_security_token($ts);
     
     $attrs['href'] = "javascript:postLink("
         .json_encode($href).", "

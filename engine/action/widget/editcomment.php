@@ -12,10 +12,10 @@ class Action_Widget_EditComment extends Action
         $widget = $this->get_widget();
 		$comment = $this->param('comment');        
     
-        $name = get_input('name');
-        $content = get_input('content');
-        $location = get_input('location');
-        $email = EmailAddress::validate(get_input('email'));
+        $name = Input::get_string('name');
+        $content = Input::get_string('content');
+        $location = Input::get_string('location');
+        $email = EmailAddress::validate(Input::get_string('email'));
         
         $comments_url = $widget->get_url()."?comments=1";
         

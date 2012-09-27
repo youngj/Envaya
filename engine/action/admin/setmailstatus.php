@@ -9,7 +9,7 @@ class Action_Admin_SetMailStatus extends Action
      
     function process_input()
     {        
-        $id = get_input('id');
+        $id = Input::get_string('id');
         
         $mail = OutgoingMail::query()->where('id = ?', $id)->get();
         if (!$mail)
@@ -17,7 +17,7 @@ class Action_Admin_SetMailStatus extends Action
             throw new NotFoundException();
         }        
         
-        $status = (int)get_input('status');
+        $status = Input::get_int('status');
         
         $mail->status = $status;        
         $mail->save();  

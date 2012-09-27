@@ -89,7 +89,7 @@ abstract class Controller extends Router {
             }
         }    
     
-        if (get_input('__topbar') == '0')
+        if (Input::get_string('__topbar') == '0')
         {
             $vars['no_top_bar'] = true;
         }        
@@ -164,7 +164,7 @@ abstract class Controller extends Router {
         
         foreach ($_GET as $param => $value)
         {
-            if (QueryString::is_used_param($param))
+            if (Input::is_used_param($param))
             {
                 $canonical_url = url_with_param($canonical_url, $param, $value);
             }
@@ -281,7 +281,7 @@ abstract class Controller extends Router {
     {
         try
         {
-            validate_security_token();
+            Input::validate_security_token();
         }
         catch (ValidationException $ex)
         {
@@ -310,7 +310,7 @@ abstract class Controller extends Router {
         $arg_names = array('username','_lt');
         foreach ($arg_names as $arg_name)
         {        
-            $arg = get_input($arg_name);
+            $arg = Input::get_string($arg_name);
             if ($arg !== '')
             {
                 $args[$arg_name] = $arg;
@@ -344,7 +344,7 @@ abstract class Controller extends Router {
     {
         if ($allow)
         {
-            TranslateMode::set_current(((int)get_input("trans")) ?: TranslateMode::Approved);
+            TranslateMode::set_current((Input::get_int("trans")) ?: TranslateMode::Approved);
         }
         else        
         {

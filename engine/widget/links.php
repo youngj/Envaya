@@ -25,7 +25,7 @@ class Widget_Links extends Widget
  
     function process_input($action)
     {    
-        switch (get_input('action'))
+        switch (Input::get_string('action'))
         {
             case 'add':
                 return $this->add_link($action);
@@ -40,7 +40,7 @@ class Widget_Links extends Widget
     
     function remove_link($action)
     {
-        $guid = get_input('guid');
+        $guid = Input::get_string('guid');
         
         $org = $this->get_container_user();        
         $site = $org->query_external_sites()->guid($guid)->get();
@@ -56,12 +56,12 @@ class Widget_Links extends Widget
     
     function add_link($action)
     {
-        $url = get_input('url'); 
-        $title = get_input('title');
-        $include_feed = get_input('include_feed') == '1';
-        $feed_subtype = get_input('feed_subtype');
-        $feed_url = get_input('feed_url');    
-        $site_subtype = get_input('site_subtype');
+        $url = Input::get_string('url'); 
+        $title = Input::get_string('title');
+        $include_feed = Input::get_string('include_feed') == '1';
+        $feed_subtype = Input::get_string('feed_subtype');
+        $feed_url = Input::get_string('feed_url');    
+        $site_subtype = Input::get_string('site_subtype');
 
         $site_cls = ClassRegistry::get_class($site_subtype);
         ExternalSite::validate_subclass($site_cls);
@@ -102,7 +102,7 @@ class Widget_Links extends Widget
     function get_linkinfo_js($action)
     {
         $action->set_content_type('text/javascript');                
-        $url = get_input('url');
+        $url = Input::get_string('url');
         
         $org = $this->get_container_user();                
         $news = Widget_News::get_for_entity($org);

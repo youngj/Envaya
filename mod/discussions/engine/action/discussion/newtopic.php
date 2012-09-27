@@ -20,7 +20,7 @@ class Action_Discussion_NewTopic extends Action
             $widget->save();
         }                
         
-        $uniqid = get_input('uniqid');
+        $uniqid = Input::get_string('uniqid');
 
         $duplicate = Session::get_entity_by_uniqid($uniqid);
         if ($duplicate)
@@ -28,19 +28,19 @@ class Action_Discussion_NewTopic extends Action
             throw new RedirectException('', $duplicate->get_url());
         }               
         
-        $subject = get_input('subject');
+        $subject = Input::get_string('subject');
         if (!$subject)
         {
             throw new ValidationException(__('discussions:subject_missing'));
         }
         
-        $content = get_input('content');
+        $content = Input::get_string('content');
         if (!$content)
         {
             throw new ValidationException(__('discussions:content_missing'));
         }      
 
-        $name = get_input('name');
+        $name = Input::get_string('name');
         if (!$name)
         {
             throw new ValidationException(__('register:user:no_name'));
@@ -53,8 +53,8 @@ class Action_Discussion_NewTopic extends Action
 
         $content = Markup::sanitize_html($content, array('Envaya.Untrusted' => !$user));
                 
-        $location = get_input('location');
-        $email = EmailAddress::validate(get_input('email'));        
+        $location = Input::get_string('location');
+        $email = EmailAddress::validate(Input::get_string('email'));        
                 
         Session::set('user_name', $name);
         Session::set('user_location', $location);

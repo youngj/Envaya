@@ -2,7 +2,7 @@
 <div class="admin_users_online">
     <h3><?php echo __('admin:statistics:label:onlineusers'); ?></h3>
     <?php
-        $offset = get_input('offset',0);
+        $offset = Input::get_string('offset',0);
         $limit = 10;
         
         $time = timestamp() - 600;

@@ -4,7 +4,7 @@
     $query = $language->query_translator_stats()->order_by('score desc');
 
     $limit = 20;
-    $offset = (int)get_input('offset');
+    $offset = Input::get_int('offset');
     
     $stats_list = $query->limit($limit, $offset)->filter();
     $count = $query->count();

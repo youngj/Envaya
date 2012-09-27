@@ -14,7 +14,7 @@ class Action_Registration_LoggedIn extends Action
 
     function get_redirect_url()
     {
-        return secure_url(get_input('next') ?: "/pg/register", Request::get_host());
+        return secure_url(Input::get_string('next') ?: "/pg/register", Request::get_host());
     }
     
     function render()
@@ -23,8 +23,8 @@ class Action_Registration_LoggedIn extends Action
         $this->page_draw(array(
             'title' => __("register:title"),
             'content' => view("account/register_logged_in", array(
-                'prev' => get_input('prev'),
-                'next' => get_input('next')
+                'prev' => Input::get_string('prev'),
+                'next' => Input::get_string('next')
             )),
         ));
     }    

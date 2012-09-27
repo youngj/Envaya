@@ -20,7 +20,7 @@ class Controller_EmailTemplate extends Controller_ContactTemplate
 
     function action_preview_body()
     {    
-        $subscription = EmailSubscription_Contact::get_by_guid(get_input('subscription'));
+        $subscription = EmailSubscription_Contact::get_by_guid(Input::get_string('subscription'));
         if (!$subscription)
         {
             $subscription = new EmailSubscription_Contact();

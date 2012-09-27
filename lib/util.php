@@ -172,6 +172,11 @@
         return $res;
     }    
 
+    function js_url($js_name)
+    {
+        return "/_media/$js_name.".Config::get("build:hash:js:$js_name").".js";
+    }    
+    
     function get_inline_js($js_path)
     {
         if (Config::get('debug:media'))

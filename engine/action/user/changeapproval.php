@@ -13,7 +13,7 @@ class Action_User_ChangeApproval extends Action
     
         $approvedBefore = $user->is_approved();
 
-        $user->approval = (int)get_input('approval');
+        $user->approval = Input::get_int('approval');
 
         $approvedAfter = $user->is_approved();
 

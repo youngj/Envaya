@@ -8,7 +8,7 @@ class Action_Admin_EditFeaturedSite extends Action
     {
         Permission_EditMainSite::require_for_root();
 
-        $guid = get_input('guid');
+        $guid = Input::get_string('guid');
         $featuredSite = FeaturedSite::get_by_guid($guid);
         if (!$featuredSite)
         {
@@ -20,8 +20,8 @@ class Action_Admin_EditFeaturedSite extends Action
     function process_input()
     {
         $featuredSite = $this->featuredSite;
-        $featuredSite->image_url = get_input('image_url');
-        $featuredSite->set_content(get_input('content'));
+        $featuredSite->image_url = Input::get_string('image_url');
+        $featuredSite->set_content(Input::get_string('content'));
         $featuredSite->save();
         SessionMessages::add('featured:saved');
         $this->redirect('/org/featured');

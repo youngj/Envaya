@@ -1,6 +1,6 @@
 <?php
     $widget = $vars['widget'];
-    $offset = (int) get_input('offset');
+    $offset = Input::get_int('offset');
     $limit = 10;
 
     $count = $widget->query_widgets()->count();

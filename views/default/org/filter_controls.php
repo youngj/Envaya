@@ -44,7 +44,7 @@ function filterChanged()
         {   
         ?>              
             var newCountry = $('filter_country').value;
-            var oldCountry = <?php echo json_encode(get_input('country')); ?>;
+            var oldCountry = <?php echo json_encode(Input::get_string('country')); ?>;
 
             if (!newCountry || newCountry != oldCountry)
             {

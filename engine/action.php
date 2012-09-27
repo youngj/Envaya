@@ -113,7 +113,7 @@ abstract class Action
     
     protected function validate_security_token()
     {
-        validate_security_token();    
+        Input::validate_security_token();    
     }
     
     protected function record_user_action()
@@ -207,7 +207,7 @@ abstract class Action
             return true;
         }
     
-        if (get_input('captcha'))
+        if (Input::get_string('captcha'))
         {
             if (Captcha::get_instance()->check_answer($_POST['captcha_response']))
             {

@@ -2,7 +2,7 @@
 <?php
     $query = OutgoingMail::query()->order_by('id desc');
     
-    $offset = get_input('offset');
+    $offset = Input::get_string('offset');
     $limit = 20;
     
     $mails = $query->limit($limit, $offset)->filter();

@@ -1,7 +1,7 @@
 <div class='padded'>
 <?php  
     $limit = 20;
-    $offset = (int)get_input('offset');
+    $offset = Input::get_int('offset');
         
     $query = DiscussionTopic::query();    
     

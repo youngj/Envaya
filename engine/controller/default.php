@@ -81,9 +81,7 @@ class Controller_Default extends Controller
 
         // workaround https://bugs.php.net/bug.php?id=60761
         ini_set('zlib.output_compression', true);
-        
-        QueryString::set_used_param('lang');            
-        
+                
         // 'lang' query parameter permanently changes interface language via cookie
         if (isset($_GET['lang']))
         {                

@@ -1,5 +1,5 @@
 <?php     
-    $next = get_input('next');
+    $next = Input::get_string('next');
 ?>
 <div class='section_content padded' style='padding-top:0px'>
 <form method='POST' action='/pg/register'>

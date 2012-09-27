@@ -12,20 +12,20 @@ class Action_Discussion_EditMessage extends Action
         $message = $this->param('message');
         $topic = $this->get_topic();
     
-        $name = get_input('name');
+        $name = Input::get_string('name');
         if (!$name)
         {
             throw new ValidationException(__('register:user:no_name'));
         }
 
-        $content = get_input('content');
+        $content = Input::get_string('content');
         if (!$content)
         {
             throw new ValidationException(__('discussions:content_missing'));
         }        
 
-        $location = get_input('location');        
-        $email = EmailAddress::validate(get_input('email'));
+        $location = Input::get_string('location');        
+        $email = EmailAddress::validate(Input::get_string('email'));
         
         Session::set('user_name', $name);
         Session::set('user_location', $location);

@@ -11,7 +11,7 @@ class Action_User_DeleteDomain extends Action
     {       
         $user_domain_name = UserDomainName::query()
             ->where('guid = ?', $this->get_user()->guid)
-            ->where('id = ?', (int)get_input('id'))->get();
+            ->where('id = ?', Input::get_int('id'))->get();
             
         if (!$user_domain_name)
         {

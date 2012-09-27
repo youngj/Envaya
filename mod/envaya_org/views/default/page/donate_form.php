@@ -9,7 +9,7 @@
         <table id='donation_amount'>
         <tr>
         <?php
-            $last_amount = restore_input('_amount', null);
+            $last_amount = Input::restore_value('_amount', null);
                         
             function amount_button($amount, $last_amount)
             {

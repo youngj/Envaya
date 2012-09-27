@@ -11,7 +11,7 @@
 
     echo view('js/uploader');
 
-    $prevInput = restore_input($name, $value, $track_dirty);
+    $prevInput = Input::restore_value($name, $value, $track_dirty);
 
     $uploader_args['progress_id'] = $progress_id;
     $uploader_args['track_dirty'] = $track_dirty;       

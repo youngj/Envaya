@@ -9,7 +9,7 @@ class Action_Admin_ResendSMS extends Action
      
     function process_input()
     {        
-        $id = get_input('id');
+        $id = Input::get_string('id');
         
         $sms = OutgoingSMS::query()->where('id = ?', $id)->get();
         if (!$sms)

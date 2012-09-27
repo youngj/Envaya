@@ -43,7 +43,7 @@ class Controller_TranslateKey extends Controller
         
         Permission_ViewTranslation::require_for_entity($key);
         
-        $translation_guid = get_input('translation');
+        $translation_guid = Input::get_string('translation');
         if ($translation_guid)
         {
             $translation = $key->query_translations()

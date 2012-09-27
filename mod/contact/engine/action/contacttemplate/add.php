@@ -14,7 +14,7 @@ abstract class Action_ContactTemplate_Add extends Action
         $template_class = $this->controller->template_class;
         
         $template = new $template_class();
-        $template->filters_json = get_input('filters_json');
+        $template->filters_json = Input::get_string('filters_json');
         
         $this->init_template($template);
         

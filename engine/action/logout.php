@@ -10,21 +10,21 @@ class Action_Logout extends Action
     function process_input()
     {
         Session::logout();
-        $this->redirect(get_input('next') ?: '/');
+        $this->redirect(Input::get_string('next') ?: '/');
     }
     
     function render()
     {
         if (!Session::is_logged_in())
         {
-            throw new RedirectException('', get_input('next') ?: '/');
+            throw new RedirectException('', Input::get_string('next') ?: '/');
         }
 
         $this->page_draw(array(
             'title' => __("logout"), 
             'header' => '&nbsp;',
             'theme' => 'Theme_Editor',
-            'content' => view("account/logout", array('next' => get_input('next'))),
+            'content' => view("account/logout", array('next' => Input::get_string('next'))),
         ));
     }
 }    

@@ -11,7 +11,7 @@ class Action_User_Design extends Action
     {
         $user = $this->get_user();
 
-        $theme_id = get_input('theme_id');
+        $theme_id = Input::get_string('theme_id');
 
         $theme = ClassRegistry::get_class($theme_id);        
         if ($theme && is_subclass_of($theme, 'Theme'))
@@ -19,11 +19,11 @@ class Action_User_Design extends Action
             $user->set_design_setting('theme_id', $theme_id);
         }
 
-        //$user->set_design_setting('theme_options', get_input_array('theme_options'));        
+        //$user->set_design_setting('theme_options', Input::get_array('theme_options'));        
         
         $iconFiles = UploadedFile::json_decode_array($_POST['icon']);
 
-        if (get_input('deleteicon'))
+        if (Input::get_string('deleteicon'))
         {
             $user->set_icon(null);
         }
@@ -32,17 +32,17 @@ class Action_User_Design extends Action
             $user->set_icon($iconFiles);
         }
 
-        $custom_header = (int)get_input('custom_header');
+        $custom_header = Input::get_int('custom_header');
         
         if (!$custom_header)
         {
-            $user->set_design_setting('tagline', get_input('tagline'));            
-            //$user->set_design_setting('share_links', get_input_array('share_links'));                        
+            $user->set_design_setting('tagline', Input::get_string('tagline'));            
+            //$user->set_design_setting('share_links', Input::get_array('share_links'));                        
             $user->set_design_setting('custom_header', false);
         }
         else 
         {
-            $header_image = json_decode(get_input('header_image'), true);
+            $header_image = json_decode(Input::get_string('header_image'), true);
             if ($header_image)
             {            
                 $user->set_design_setting('header_image', isset($header_image[1]) ? $header_image[1] : $header_image[0]);
@@ -61,7 +61,7 @@ class Action_User_Design extends Action
     {
         $user = $this->get_user();
 
-        $cancelUrl = get_input('from') ?: $user->get_url();
+        $cancelUrl = Input::get_string('from') ?: $user->get_url();
         PageContext::get_submenu('top')->add_link(__("canceledit"), $cancelUrl);
 
         $this->page_draw(array(

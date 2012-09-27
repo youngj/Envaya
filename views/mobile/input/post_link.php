@@ -12,7 +12,7 @@
     ));        
         
     $ts = timestamp();
-    $token = generate_security_token($ts);
+    $token = Input::generate_security_token($ts);
     
     $attrs['href'] = "/pg/confirm_action?ok=".urlencode($href)
         ."&cancel=".urlencode($_SERVER['REQUEST_URI'])

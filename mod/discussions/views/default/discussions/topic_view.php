@@ -3,7 +3,7 @@
     $org = $topic->get_container_entity();
        
     $limit = 20;
-    $offset = (int)get_input('offset');
+    $offset = Input::get_int('offset');
     
     $query  = $topic->query_messages()->show_disabled(true)->limit($limit, $offset);    
     $count = $topic->num_messages;

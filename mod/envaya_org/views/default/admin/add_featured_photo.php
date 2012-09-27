@@ -70,7 +70,7 @@ echo view('admin/nudge_photo', array(
 
 <div class='input'>
 <label>Active?</label><br />
-<?php echo view('input/radio', array('name' => 'active', 'options' => yes_no_options(), 'value' => 'yes')); ?>
+<?php echo view('input/radio', array('name' => 'active', 'options' => Input::yes_no_options(), 'value' => 'yes')); ?>
 </div>
 
 <?php

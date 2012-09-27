@@ -33,7 +33,7 @@ class Widget_Sectors extends Widget
     {
         $org = $this->get_container_user();
     
-        $sectors = get_input_array('sector');
+        $sectors = Input::get_array('sector');
         if (sizeof($sectors) == 0)
         {
             throw new ValidationException(__("register:sector:blank"));
@@ -53,7 +53,7 @@ class Widget_Sectors extends Widget
             $org->set_sectors($sectors);
         }
         
-        $org->set_metadata('sector_other', get_input('sector_other'));
+        $org->set_metadata('sector_other', Input::get_string('sector_other'));
         $org->save();
         
         $this->save();

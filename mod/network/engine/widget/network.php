@@ -21,7 +21,7 @@ class Widget_Network extends Widget
 
     function render_edit()
     {                
-        switch (get_input('action'))       
+        switch (Input::get_string('action'))       
         {
             case 'add_relationship':        return $this->add_relationship_view();                               
             case 'edit_relationship':       return $this->edit_relationship_view();                                
@@ -33,7 +33,7 @@ class Widget_Network extends Widget
 
     function process_input($action)
     {        
-        switch (get_input('action'))
+        switch (Input::get_string('action'))
         {
             case 'delete_relationship':  return $this->delete_relationship($action);
             case 'edit_relationship':    return $this->save_relationship($action);
@@ -56,10 +56,10 @@ class Widget_Network extends Widget
     {
         $this->show_cancel_edit_button();
                         
-        $org_guid = get_input('org_guid');
+        $org_guid = Input::get_string('org_guid');
         $org = Organization::get_by_guid($org_guid);
         
-        $type = (int)get_input('type');
+        $type = Input::get_int('type');
         if (!Relationship::is_valid_type($type))
         {
             throw new NotFoundException();
@@ -87,27 +87,27 @@ class Widget_Network extends Widget
         $reverse = null;
     
         $relationship = new Relationship();
-        $relationship->type = (int)get_input('type');
+        $relationship->type = Input::get_int('type');
         $relationship->container_guid = $org->guid;
         $relationship->set_self_approved();
         
-        $relationship->set_content(get_input('content'));
+        $relationship->set_content(Input::get_string('content'));
 
         if (!Relationship::is_valid_type($relationship->type))
         {
             throw new NotFoundException();
         }
         
-        $relationship->subject_phone = get_input('phone_number');
-        $relationship->subject_website = $this->clean_url(get_input('website'));        
+        $relationship->subject_phone = Input::get_string('phone_number');
+        $relationship->subject_website = $this->clean_url(Input::get_string('website'));        
         
-        $subject_org = Organization::get_by_guid(get_input('org_guid'));        
+        $subject_org = Organization::get_by_guid(Input::get_string('org_guid'));        
         if (!$subject_org) // subject_org not an envaya member
         {
-            $relationship->subject_name = get_input('name');
+            $relationship->subject_name = Input::get_string('name');
             $relationship->subject_guid = null;
-            $relationship->invite_subject = get_input('invite') ? true : false;
-            $relationship->subject_email = EmailAddress::validate(trim(get_input('email')));
+            $relationship->invite_subject = Input::get_string('invite') ? true : false;
+            $relationship->subject_email = EmailAddress::validate(trim(Input::get_string('email')));
             
             $matchingRelationships = Relationship::query_for_user($org)
                 ->where('`type` = ?', $relationship->type)
@@ -128,7 +128,7 @@ class Widget_Network extends Widget
             
             try
             {
-                $relationship->subject_email = EmailAddress::validate(trim(get_input('email')));        
+                $relationship->subject_email = EmailAddress::validate(trim(Input::get_string('email')));        
             }
             catch (ValidationException $ex)
             {
@@ -222,7 +222,7 @@ class Widget_Network extends Widget
     
     private function get_current_relationship($org)
     {
-        $guid = get_input('guid');
+        $guid = Input::get_string('guid');
         $relationship = Relationship::query_for_user($org)->guid($guid)->get();
         if (!$relationship)
         {            
@@ -233,7 +233,7 @@ class Widget_Network extends Widget
     
     private function save_relationship($action)
     {
-        if (get_input('delete_relationship'))
+        if (Input::get_string('delete_relationship'))
         {
             return $this->delete_relationship($action);
         }
@@ -249,7 +249,7 @@ class Widget_Network extends Widget
             throw new NotFoundException();
         }                
         
-        $relationship->set_content(get_input('content'));
+        $relationship->set_content(Input::get_string('content'));
         
         $subject_org = $relationship->get_subject_organization();
         
@@ -259,10 +259,10 @@ class Widget_Network extends Widget
         }
         else
         {
-            $relationship->subject_name = get_input('name');
-            $relationship->subject_email = EmailAddress::validate(get_input('email'));
-            $relationship->subject_website = $this->clean_url(get_input('website'));            
-            $relationship->subject_phone = get_input('phone_number');            
+            $relationship->subject_name = Input::get_string('name');
+            $relationship->subject_email = EmailAddress::validate(Input::get_string('email'));
+            $relationship->subject_website = $this->clean_url(Input::get_string('website'));            
+            $relationship->subject_phone = Input::get_string('phone_number');            
         }
         $relationship->set_self_approved();
         $relationship->save();

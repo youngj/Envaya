@@ -26,7 +26,7 @@ class Action_Widget_Add extends Action
         
         $widget = $container->new_child_widget_from_input();        
         
-        $draft = (int)get_input('_draft');
+        $draft = Input::get_int('_draft');
         
         $widget->publish_status = $draft ? Widget::Draft : Widget::Published;       
         
@@ -47,7 +47,7 @@ class Action_Widget_Add extends Action
     {
         $container = $this->container;
         
-        $cancelUrl = get_input('from') ?: $container->get_url();
+        $cancelUrl = Input::get_string('from') ?: $container->get_url();
         PageContext::get_submenu('top')->add_link(__("canceledit"), $cancelUrl);
         
         $this->use_editor_layout();        

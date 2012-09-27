@@ -10,7 +10,7 @@ class Action_SaveTranslationDraft extends Action
 
     function process_input()
     {        
-        $value = get_input('content');
+        $value = Input::get_string('content');
         $key = $this->param('key');
         
         $user = Session::get_logged_in_user();

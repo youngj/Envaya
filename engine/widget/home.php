@@ -53,7 +53,7 @@ class Widget_Home extends Widget
     
     function new_child_widget_from_input()
     {        
-        $uniqid = get_input('uniqid');
+        $uniqid = Input::get_string('uniqid');
         return $this->get_widget_by_name($uniqid)
             ?: Widget_Generic::new_for_entity($this, array('widget_name' => $uniqid));
     }

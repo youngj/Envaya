@@ -13,7 +13,7 @@
     $query->order_by('time_updated desc');
     
     $limit = 10;
-    $offset = (int)get_input('offset');
+    $offset = Input::get_int('offset');
 
     $query->limit($limit, $offset);
         

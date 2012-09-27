@@ -24,7 +24,7 @@
         $attrs['onchange'] = "setDirty(true)";
     }    
     
-    $value = restore_input($name, $value);             
+    $value = Input::restore_value($name, $value);             
    
     if ($checked)
     {

@@ -13,7 +13,7 @@ class Action_ContactTemplate_Send extends Action
     
         $template = $this->get_template();
                 
-        $subscription_guids = get_input_array('subscriptions');
+        $subscription_guids = Input::get_array('subscriptions');
         $numSent = 0;
         foreach ($subscription_guids as $subscription_guid)
         {       
@@ -29,7 +29,7 @@ class Action_ContactTemplate_Send extends Action
         
         SessionMessages::add("Queued $numSent messages for delivery.");
                 
-        $from = get_input('from');
+        $from = Input::get_string('from');
         if ($from)
         {
             $this->redirect($from);
@@ -50,7 +50,7 @@ class Action_ContactTemplate_Send extends Action
     
         $template = $this->get_template();
         
-        $subscription_guids = get_input_array('subscriptions');
+        $subscription_guids = Input::get_array('subscriptions');
         if ($subscription_guids)
         {
             $subscriptions = $subscription_class::query()->where_in('guid', $subscription_guids)->filter();
@@ -65,7 +65,7 @@ class Action_ContactTemplate_Send extends Action
         
         PageContext::get_submenu('top')->add_link(
             __('cancel'),
-            get_input('from') ?: $template->get_url());
+            Input::get_string('from') ?: $template->get_url());
         
         $this->page_draw(array(
             'title' => sprintf(__('contact:send_template'), $this->get_type_name()),

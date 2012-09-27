@@ -6,14 +6,14 @@
 
     $query = $vars['query'];
     $limit = 10;
-    $offset = (int)get_input('offset');
+    $offset = Input::get_int('offset');
     
     $templates = $query->limit($limit, $offset)->filter();
     $count = $query->count();
     
     $items = array();
     
-    $escFrom = urlencode(get_input('from'));
+    $escFrom = urlencode(Input::get_string('from'));
     
     foreach ($templates as $template)
     {

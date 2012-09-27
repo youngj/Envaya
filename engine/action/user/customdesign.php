@@ -13,7 +13,7 @@ class Action_User_CustomDesign extends Action
     {
         Permission_EditUserSite::require_for_entity($this->get_user());
         
-        $this->current_view = get_input('current_view');
+        $this->current_view = Input::get_string('current_view');
         
         $allowed_views = array_keys(static::$customizable_views);        
         if (!in_array($this->current_view, $allowed_views))
@@ -28,14 +28,14 @@ class Action_User_CustomDesign extends Action
     
         $user = $this->get_user();
         $custom_views = $user->get_design_setting('custom_views');
-        $template = get_input('template');
+        $template = Input::get_string('template');
         
         $template = Markup::sanitize_html($template, array(
             'Attr.EnableID' => true,
             'AutoFormat.Linkify' => false,
         ));
         
-        $current_view = get_input('current_view');        
+        $current_view = Input::get_string('current_view');        
         $custom_views[$current_view] = $template;
         $user->set_design_setting('theme_id', Theme_Custom::get_subtype_id());
         $user->set_design_setting('custom_views', $custom_views);

@@ -81,7 +81,7 @@ class Controller_Pg extends Controller
     {
         Permission_Public::require_any();
 
-        $group_name = get_input('group');
+        $group_name = Input::get_string('group');
 
         $largeFile = UploadedFile::query()->where('group_name = ?', $group_name)
             ->order_by('width desc')->get();
@@ -147,7 +147,7 @@ class Controller_Pg extends Controller
             throw new NotFoundException();
         }
 
-        $path = get_input('path');
+        $path = Input::get_string('path');
 
         $components = explode('/', $path);
 
@@ -198,7 +198,7 @@ class Controller_Pg extends Controller
     {
         $this->set_content_type('text/javascript');
         
-        $id = (int)get_input('id');        
+        $id = Input::get_int('id');        
         $revision = ContentRevision::query()->where('id = ?', $id)->get();
         if (!$revision)
         {
@@ -216,7 +216,7 @@ class Controller_Pg extends Controller
     {
         $this->set_content_type('text/javascript');
         
-        $entity_guid = get_input('entity_guid');
+        $entity_guid = Input::get_string('entity_guid');
         
         $entity = Entity::get_by_guid($entity_guid, true);
         if (!$entity)
@@ -238,7 +238,7 @@ class Controller_Pg extends Controller
     function action_select_image()
     {
         Permission_RegisteredUser::require_any();
-        $file = UploadedFile::get_from_url(get_input('src'));
+        $file = UploadedFile::get_from_url(Input::get_string('src'));
 
         $this->allow_view_types(null);
         $this->page_draw(array(
@@ -246,8 +246,8 @@ class Controller_Pg extends Controller
             'no_top_bar' => true,            
             'content' => view('upload/select_image', array(
                 'current' => $file,
-                'position' => get_input('pos'),
-                'frameId' => get_input('frameId'),
+                'position' => Input::get_string('pos'),
+                'frameId' => Input::get_string('frameId'),
             ))
         ));
     }
@@ -255,7 +255,7 @@ class Controller_Pg extends Controller
     function action_select_document()
     {
         Permission_RegisteredUser::require_any();
-        $guid = get_input('guid');
+        $guid = Input::get_string('guid');
         $file = UploadedFile::get_by_guid($guid);
         
         $this->allow_view_types(null);
@@ -264,7 +264,7 @@ class Controller_Pg extends Controller
             'no_top_bar' => true,
             'content' => view('upload/select_document', array(
                 'current' => $file,
-                'frameId' => get_input('frameId'),
+                'frameId' => Input::get_string('frameId'),
             ))
         ));        
     }    
@@ -291,7 +291,7 @@ class Controller_Pg extends Controller
     function action_delete_feed_item()
     {
         $this->validate_security_token();
-        $feedItem = FeedItem::query()->where('id = ?', (int)get_input('item'))->get();        
+        $feedItem = FeedItem::query()->where('id = ?', Input::get_int('item'))->get();        
         if (!$feedItem)
         {
             throw new NotFoundException();
@@ -315,7 +315,7 @@ class Controller_Pg extends Controller
     {
         Permission_Public::require_any();
     
-        $name = get_input('name');
+        $name = Input::get_string('name');
         
         if (preg_match('/[^\w]/', $name))
         {
@@ -397,7 +397,7 @@ class Controller_Pg extends Controller
         Permission_Public::require_any();
         $this->allow_view_types(null);
     
-        $q = get_input('q');
+        $q = Input::get_string('q');
         
         $filters = Query_Filter::filters_from_input(array('Query_Filter_User_Sector'));
         
@@ -463,10 +463,10 @@ class Controller_Pg extends Controller
         Permission_RegisteredUser::require_any();
         $this->set_content_type('text/javascript');
     
-        $name = get_input('name');
-        $email = get_input('email');
-        $website = get_input('website');
-        $phone_numbers = PhoneNumber::canonicalize_multi(get_input('phone_number'));
+        $name = Input::get_string('name');
+        $email = Input::get_string('email');
+        $website = Input::get_string('website');
+        $phone_numbers = PhoneNumber::canonicalize_multi(Input::get_string('phone_number'));
         
         $orgs_by_name = $orgs_by_email = $orgs_by_website = $orgs_by_phone = array();       
         
@@ -610,7 +610,7 @@ class Controller_Pg extends Controller
             'Query_Filter_User_Region'
         ));
         $feedName = FeedItem::feed_name_from_filters($filters);        
-        $before_id = (int)get_input('before_id');
+        $before_id = Input::get_int('before_id');
         
         $max_items = 20;
         
@@ -633,7 +633,7 @@ class Controller_Pg extends Controller
         Permission_Public::require_any();  
         $this->set_content_type('text/javascript');     
         
-        $tids = explode(',', get_input('ids'));
+        $tids = explode(',', Input::get_string('ids'));
         
         $orgs = Organization::query()
             ->where_in('tid', $tids)
@@ -652,11 +652,11 @@ class Controller_Pg extends Controller
         Permission_Public::require_any();
         $this->set_content_type('text/javascript');
         
-        $lat_min = get_input('lat_min');
-        $lat_max = get_input('lat_max');
-        $long_min = get_input('long_min');
-        $long_max = get_input('long_max');
-        $sector = get_input('sector');               
+        $lat_min = Input::get_string('lat_min');
+        $lat_max = Input::get_string('lat_max');
+        $long_min = Input::get_string('long_min');
+        $long_max = Input::get_string('long_max');
+        $sector = Input::get_string('sector');               
 
         $query = Organization::query();
         
@@ -668,8 +668,8 @@ class Controller_Pg extends Controller
         $orgs = $query->filter();
 
         $bucketizer = new Map_Bucketizer(array(
-            'px_width' => (int)get_input('width') ?: 1,
-            'px_height' => (int)get_input('height') ?: 1,
+            'px_width' => Input::get_int('width') ?: 1,
+            'px_height' => Input::get_int('height') ?: 1,
             'lat_min' => $lat_min,
             'lat_max' => $lat_max,
             'long_min' => $long_min,

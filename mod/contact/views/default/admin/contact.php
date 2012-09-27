@@ -1,7 +1,7 @@
 <?php
 
-    $sort = Database::sanitize_order_by(get_input('sort') ?: 'name');
-    $offset = (int)get_input('offset');
+    $sort = Database::sanitize_order_by(Input::get_string('sort') ?: 'name');
+    $offset = Input::get_int('offset');
 
     $limit = 15;
     

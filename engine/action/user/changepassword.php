@@ -33,7 +33,7 @@ class Action_User_ChangePassword extends Action
 
     function process_input()
     {
-        $old_password = get_input('old_password');
+        $old_password = Input::get_string('old_password');
         
         $user = $this->get_user();
                 
@@ -42,8 +42,8 @@ class Action_User_ChangePassword extends Action
             throw new ValidationException(__('user:password:current:incorrect'));
         }        
         
-        $password = get_input('password');
-        $password2 = get_input('password2');
+        $password = Input::get_string('password');
+        $password2 = Input::get_string('password2');
         
         User::validate_password(
             $password, 
@@ -64,7 +64,7 @@ class Action_User_ChangePassword extends Action
         LogEntry::create('user:change_password', $user);
 
         SessionMessages::add(__('user:password:success'));
-        $this->redirect(get_input('next') ?: $user->get_url()."/settings");
+        $this->redirect(Input::get_string('next') ?: $user->get_url()."/settings");
     }
 
     function render()

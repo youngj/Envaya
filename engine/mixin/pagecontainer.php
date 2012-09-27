@@ -9,7 +9,7 @@ class Mixin_PageContainer extends Mixin_WidgetContainer
     
     function new_child_widget_from_input()
     {        
-        $widget_name = get_input('widget_name');
+        $widget_name = Input::get_string('widget_name');
         if (!$widget_name || !Widget::is_valid_name($widget_name))
         {
             throw new ValidationException(__('widget:bad_name'));            

@@ -49,7 +49,7 @@ To: (<span id='recipient_count'><?php echo sizeof($subscriptions); ?></span> rec
     
     echo view('input/hidden',array(
         'name' => 'from',
-        'value' => get_input('from')
+        'value' => Input::get_string('from')
     ));    
     
     echo view('input/submit',array(

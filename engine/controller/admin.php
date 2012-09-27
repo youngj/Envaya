@@ -65,7 +65,7 @@ class Controller_Admin extends Controller
     {
         Permission_ViewOutgoingMessage::require_for_root();
     
-        $id = (int)get_input('id');
+        $id = Input::get_int('id');
         $mail = OutgoingMail::query()->where('id = ?', $id)->get();
         if (!$mail)
         {
@@ -82,7 +82,7 @@ class Controller_Admin extends Controller
     {
         Permission_ViewOutgoingMessage::require_for_root();
     
-        $id = (int)get_input('id');
+        $id = Input::get_int('id');
         $sms = OutgoingSMS::query()->where('id = ?', $id)->get();
         if (!$sms)
         {
@@ -158,12 +158,12 @@ class Controller_Admin extends Controller
     
         $query = LogEntry::query()->order_by('time_created desc');
     
-        $limit = get_input('limit', 40);
-        $offset = get_input('offset');
+        $limit = Input::get_string('limit', 40);
+        $offset = Input::get_string('offset');
 
-        $user = User::get_by_username(get_input('search_username'), true);        
-        $timelower = get_input('timelower');
-        $timeupper = get_input('timeupper');
+        $user = User::get_by_username(Input::get_string('search_username'), true);        
+        $timelower = Input::get_string('timelower');
+        $timeupper = Input::get_string('timeupper');
             
         if ($timelower) 
         {

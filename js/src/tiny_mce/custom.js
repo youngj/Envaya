@@ -207,7 +207,7 @@
                 if (!window.ace)
                 {
                     window.onAceLoaded = initAceEditor;
-                    var script = createElem('script', {src:'/_media/tiny_mce_ace.js', type:'text/javascript'});
+                    var script = createElem('script', {src:self.settings.ace_url, type:'text/javascript'});
                     document.body.appendChild(script);
                 }       
                 else

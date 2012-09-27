@@ -22,21 +22,21 @@ class Action_User_Share extends Action
     {        
         $user = Session::get_logged_in_user();        
         
-        $url = get_input('u');
+        $url = Input::get_string('u');
     
-        $message = get_input('message');
+        $message = Input::get_string('message');
         if (!$message)
         {
             throw new ValidationException(__('message:empty'));
         }
         
-        $subject = get_input('subject');
+        $subject = Input::get_string('subject');
         if (!$subject)
         {
             throw new ValidationException(__('message:subject_missing'));
         }
         
-        $emails = get_input('emails');        
+        $emails = Input::get_string('emails');        
         $emails_list = preg_split('/[\;\,\s]+/', $emails, -1, PREG_SPLIT_NO_EMPTY);
         foreach ($emails_list as $email)
         {
@@ -124,7 +124,7 @@ class Action_User_Share extends Action
             'title' => __('share:email'),
             'content' => view('account/share', array(
                 'user' => $this->get_user(),
-                'url' => get_input('u')
+                'url' => Input::get_string('u')
             )),
             'header' => '',
             'theme' => 'Theme_Editor',

@@ -20,7 +20,7 @@ class Widget_Mission extends Widget_Generic
 
     function process_input($action)
     {    
-        $mission = get_input('content');
+        $mission = Input::get_string('content');
         if (!$mission)
         {
             throw new ValidationException(__("register:mission:blank"));

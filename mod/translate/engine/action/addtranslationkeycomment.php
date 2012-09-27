@@ -9,7 +9,7 @@ class Action_AddTranslationKeyComment extends Action
 
     function process_input()
     {       
-        $content = get_input('content');        
+        $content = Input::get_string('content');        
         $content = preg_replace('/\n\s*\n/', '<br /><br />', $content);        
         $content = Markup::sanitize_html($content, array(
             'HTML.AllowedElements' => 'a,em,strong,br',
@@ -37,7 +37,7 @@ class Action_AddTranslationKeyComment extends Action
         $comment = new TranslationKeyComment();
         $comment->container_guid = $key->guid;
         $comment->owner_guid = $user->guid;
-        if (get_input('scope') == 'current')
+        if (Input::get_string('scope') == 'current')
         {
             $comment->language_guid = $key->language_guid;
         }

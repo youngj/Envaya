@@ -12,7 +12,7 @@
 <?php 
     echo view('input/securitytoken');
     
-    $guid = get_input('bottom_left_guid') ?: State::get('home_bottom_left_guid');
+    $guid = Input::get_string('bottom_left_guid') ?: State::get('home_bottom_left_guid');
     $widget = Widget::get_by_guid($guid);
 
     echo "<div class='input'>";

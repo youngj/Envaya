@@ -9,11 +9,11 @@ class Action_ConfirmAction extends Action
 
     function render()
     {
-        validate_security_token(true);       
+        Input::validate_security_token(true);       
         
-        $message = get_input('message');
-        $ok_url = get_input('ok');
-        $cancel_url = get_input('cancel');
+        $message = Input::get_string('message');
+        $ok_url = Input::get_string('ok');
+        $cancel_url = Input::get_string('cancel');
 
         // hack to handle RedirectException by going back to previous page
         if (Session::get('messages'))

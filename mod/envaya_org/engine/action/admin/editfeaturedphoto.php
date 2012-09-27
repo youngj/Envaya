@@ -8,7 +8,7 @@ class Action_Admin_EditFeaturedPhoto extends Action
     {
         Permission_EditMainSite::require_for_root();
 
-        $photo = FeaturedPhoto::get_by_guid(get_input('guid'));        
+        $photo = FeaturedPhoto::get_by_guid(Input::get_string('guid'));        
         if (!$photo)
         {
             throw new NotFoundException();
@@ -20,7 +20,7 @@ class Action_Admin_EditFeaturedPhoto extends Action
     {
         $photo = $this->photo;
         
-        if (get_input('delete'))
+        if (Input::get_string('delete'))
         {
             $photo->disable();
             $photo->save();
@@ -30,14 +30,14 @@ class Action_Admin_EditFeaturedPhoto extends Action
         }   
         else
         {                               
-            $photo->x_offset = (int)get_input('x_offset');
-            $photo->y_offset = (int)get_input('y_offset');
-            $photo->weight = (double)get_input('weight');
-            $photo->image_url = get_input('image_url');        
-            $photo->href = get_input('href');
-            $photo->caption = get_input('caption');
-            $photo->org_name = get_input('org_name');
-            $photo->active = get_input('active') == 'yes' ? 1 : 0;
+            $photo->x_offset = Input::get_int('x_offset');
+            $photo->y_offset = Input::get_int('y_offset');
+            $photo->weight = (double)Input::get_string('weight');
+            $photo->image_url = Input::get_string('image_url');        
+            $photo->href = Input::get_string('href');
+            $photo->caption = Input::get_string('caption');
+            $photo->org_name = Input::get_string('org_name');
+            $photo->active = Input::get_string('active') == 'yes' ? 1 : 0;
             $photo->save();
             
             SessionMessages::add(__("featured:photo:saved"));

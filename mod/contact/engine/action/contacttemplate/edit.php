@@ -13,11 +13,11 @@ abstract class Action_ContactTemplate_Edit extends Action
     {
         $this->set_content_type('text/javascript');
         
-        validate_security_token();
+        Input::validate_security_token();
             
         $template = $this->get_template();       
             
-        $content = get_input('content');                       
+        $content = Input::get_string('content');                       
         
         $template->save_draft($content);
         
@@ -31,11 +31,11 @@ abstract class Action_ContactTemplate_Edit extends Action
     {
         $template = $this->get_template();
         
-        if (get_input('_draft'))
+        if (Input::get_string('_draft'))
         {
             $this->save_draft();        
         }        
-        else if (get_input('delete'))
+        else if (Input::get_string('delete'))
         {
             $template->disable();
             $template->save();
@@ -43,7 +43,7 @@ abstract class Action_ContactTemplate_Edit extends Action
         }
         else
         {
-            $template->filters_json = get_input('filters_json');            
+            $template->filters_json = Input::get_string('filters_json');            
             $this->update_template($template);
             
             $template->save();
@@ -57,7 +57,7 @@ abstract class Action_ContactTemplate_Edit extends Action
     
         PageContext::get_submenu('top')->add_link(
             __('canceledit'), 
-            get_input('from') ?: $template->get_url());
+            Input::get_string('from') ?: $template->get_url());
     
         $this->page_draw(array(
             'title' => sprintf(__('contact:edit_template'), $this->get_type_name()),

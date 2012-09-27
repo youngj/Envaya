@@ -20,10 +20,10 @@ class Action_Widget_AddComment extends Action
 	
         $user = Session::get_logged_in_user();        
      
-        $name = get_input('name');
-        $content = get_input('content');
-        $location = get_input('location');              
-        $email = EmailAddress::validate(get_input('email'));
+        $name = Input::get_string('name');
+        $content = Input::get_string('content');
+        $location = Input::get_string('location');              
+        $email = EmailAddress::validate(Input::get_string('email'));
         
         if (!$content)
         {   

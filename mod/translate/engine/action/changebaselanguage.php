@@ -11,7 +11,7 @@ class Action_ChangeBaseLanguage extends Action
     {    
         $key = $this->param('key');
         
-        $lang = get_input('base_lang');
+        $lang = Input::get_string('base_lang');
         
         if ($lang != '' && !Language::get($lang))
         {

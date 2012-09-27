@@ -31,19 +31,19 @@ class Widget_Contact extends Widget
         
         Permission_EditUserSettings::require_for_entity($org);
 
-        $email = trim(get_input('email'));
+        $email = trim(Input::get_string('email'));
 
         EmailAddress::validate($email);
 
         $org->set_email($email);
-        $org->set_metadata('public_email', sizeof(get_input_array('public_email')) ? 'yes' : 'no');
+        $org->set_metadata('public_email', sizeof(Input::get_array('public_email')) ? 'yes' : 'no');
 
-        $org->set_phone_number(get_input('phone_number'));
-        $org->set_metadata('public_phone', sizeof(get_input_array('public_phone')) ? 'yes' : 'no');
-        $org->set_metadata('contact_name', get_input('contact_name'));
-        $org->set_metadata('contact_title', get_input('contact_title'));
-        $org->set_metadata('street_address', get_input('street_address'));
-        $org->set_metadata('mailing_address', get_input('mailing_address'));
+        $org->set_phone_number(Input::get_string('phone_number'));
+        $org->set_metadata('public_phone', sizeof(Input::get_array('public_phone')) ? 'yes' : 'no');
+        $org->set_metadata('contact_name', Input::get_string('contact_name'));
+        $org->set_metadata('contact_title', Input::get_string('contact_title'));
+        $org->set_metadata('street_address', Input::get_string('street_address'));
+        $org->set_metadata('mailing_address', Input::get_string('mailing_address'));
         $org->save();
         $this->save();
     }

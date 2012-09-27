@@ -52,7 +52,7 @@ echo view('input/text', array(
 <?php
 echo view('input/radio', array(
     'name' => 'in_menu',
-    'options' => yes_no_options(),
+    'options' => Input::yes_no_options(),
     'value' => $widget->in_menu ? 'yes' : 'no',
 ));
 ?>

@@ -11,7 +11,7 @@ class Action_Discussion_AddMessage extends Action
     {
         $topic = $this->get_topic();                       
 
-        $uniqid = get_input('uniqid');
+        $uniqid = Input::get_string('uniqid');
 
         $duplicate = Session::get_entity_by_uniqid($uniqid);
         if ($duplicate)
@@ -19,13 +19,13 @@ class Action_Discussion_AddMessage extends Action
             throw new RedirectException('', $duplicate->get_url());
         }               
         
-        $name = get_input('name');
+        $name = Input::get_string('name');
         if (!$name)
         {
             throw new ValidationException(__('register:user:no_name'));
         }
 
-        $content = get_input('content');
+        $content = Input::get_string('content');
         if (!$content)
         {
             throw new ValidationException(__('discussions:content_missing'));
@@ -36,8 +36,8 @@ class Action_Discussion_AddMessage extends Action
             return $this->render_captcha(array('instructions' => __('discussions:captcha_instructions')));
         }    
 
-        $location = get_input('location');
-        $email = EmailAddress::validate(get_input('email'));
+        $location = Input::get_string('location');
+        $email = EmailAddress::validate(Input::get_string('email'));
         
         Session::set('user_name', $name);
         Session::set('user_location', $location);
@@ -91,7 +91,7 @@ class Action_Discussion_AddMessage extends Action
     function render()
     {   
         $topic = $this->get_topic();
-        $reply_to_guid = get_input('reply_to');
+        $reply_to_guid = Input::get_string('reply_to');
         if ($reply_to_guid)
         {
             $reply_to = $topic->query_messages()->guid($reply_to_guid)->get();

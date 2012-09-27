@@ -3,7 +3,7 @@
     $widget = $vars['widget'];    
     $end_guid = $vars['end_guid'];
     
-    $offset = (int) get_input('offset');
+    $offset = Input::get_int('offset');
     
     if ($end_guid)
     {

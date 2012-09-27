@@ -9,7 +9,7 @@ class Action_AddTranslation extends Action
 
     function process_input()
     {        
-        $value = get_input('value');
+        $value = Input::get_string('value');
         
         if ($value == '')
         {

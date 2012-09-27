@@ -24,7 +24,7 @@
         $attrs['onchange'] = "setDirty(true)";
     }      
 
-    $value = restore_input($name, $value, $track_dirty);          
+    $value = Input::restore_value($name, $value, $track_dirty);          
 
     $br = $inline ? '' : '<br />';
     $labelClass = $inline ? ' optionLabelInline' : '';

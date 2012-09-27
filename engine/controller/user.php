@@ -51,7 +51,7 @@ abstract class Controller_User extends Controller
         
         Permission_ViewUserSite::require_for_entity($widget);
                 
-        if (Permission_EditUserSite::has_for_entity($widget) && !get_input("__preview"))
+        if (Permission_EditUserSite::has_for_entity($widget) && !Input::get_string("__preview"))
         {
             $top_menu = PageContext::get_submenu('top');
         
@@ -151,7 +151,7 @@ abstract class Controller_User extends Controller
                 
         $this->public_layout = true;
                 
-        $preview = get_input("__preview");
+        $preview = Input::get_string("__preview");
                 
         if ($preview && Permission_EditUserSite::has_for_entity($user))
         {
@@ -235,7 +235,7 @@ abstract class Controller_User extends Controller
                 SessionMessages::add($approval_message);
             }
             
-            if (get_input('__preview'))
+            if (Input::get_string('__preview'))
             {
                 $vars['messages'] = '';
             }

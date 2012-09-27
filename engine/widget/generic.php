@@ -34,7 +34,7 @@ class Widget_Generic extends Widget
         $time = timestamp();
         $lastPublished = (int)$this->get_metadata('last_publish_time');
 
-        $title = get_input('title');
+        $title = Input::get_string('title');
         if ($title)
         {
             $this->title = $title;
@@ -46,7 +46,7 @@ class Widget_Generic extends Widget
         }       
             
         $redirect = null;
-        $widget_name = get_input('widget_name');
+        $widget_name = Input::get_string('widget_name');
         
         if ($widget_name && $this->widget_name != $widget_name && $this->is_page())
         {
@@ -75,7 +75,7 @@ class Widget_Generic extends Widget
             $this->widget_name = $widget_name;
         }
                 
-        $content = get_input('content');
+        $content = Input::get_string('content');
         if ($publish)
         {
             $this->set_metadata('last_publish_time', $time);

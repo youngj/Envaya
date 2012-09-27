@@ -2,7 +2,7 @@
 <?php
 
 $limit = 10;
-$offset = (int)get_input('offset');
+$offset = Input::get_int('offset');
 
 $sites = FeaturedSite::query()->order_by('time_created desc')->limit($limit, $offset)->filter();
 $count = FeaturedSite::query()->count();

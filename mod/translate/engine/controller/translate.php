@@ -297,8 +297,8 @@ class Controller_Translate extends Controller
     
     function get_filter_params()
     {
-        $query = get_input('q');
-        $status = get_input('status');
+        $query = Input::get_string('q');
+        $status = Input::get_string('status');
         $filter_params = array();
         
         if (!$query && !$status)
@@ -432,7 +432,7 @@ class Controller_Translate extends Controller
     {
         $this->validate_security_token();    
         
-        $guid = get_input('comment');
+        $guid = Input::get_string('comment');
         $comment = TranslationKeyComment::get_by_guid($guid);
         
         if (!$comment)
@@ -539,9 +539,9 @@ class Controller_Translate extends Controller
     
         $this->set_content_type('text/javascript');
     
-        $source = (int)get_input('source');
+        $source = Input::get_int('source');
     
-        $keys = explode(',', get_input('keys'));
+        $keys = explode(',', Input::get_string('keys'));
         
         $query = Translation::query()->where_in('container_guid', $keys);
         

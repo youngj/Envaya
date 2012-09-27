@@ -13,13 +13,13 @@ class Action_User_SendMessage extends Action
         $from_user = Session::get_logged_in_user();        
         $to_user = $this->get_user();
 
-        $subject = get_input('subject');
+        $subject = Input::get_string('subject');
         if (!$subject)
         {
             throw new ValidationException(__("message:subject_missing"));
         }
 
-        $message = get_input('message');
+        $message = Input::get_string('message');
         if (!$message)
         {
             throw new ValidationException(__("message:empty"));

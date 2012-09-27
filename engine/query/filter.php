@@ -40,7 +40,7 @@ abstract class Query_Filter
     {
         $cls = get_called_class();
         $param = $cls::get_param_name();
-        return new $cls(array('value' => get_input($param)));
+        return new $cls(array('value' => Input::get_string($param)));
     }
     
     static function filters_from_input($subclasses)

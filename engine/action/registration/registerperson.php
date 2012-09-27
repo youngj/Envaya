@@ -14,21 +14,21 @@ class Action_Registration_RegisterPerson extends Action
 
     function process_input()
     {
-        $name = trim(get_input('name'));
+        $name = trim(Input::get_string('name'));
         if (!$name)
         {
             throw new ValidationException(__('register:user:no_name'));
         }
 
-        $username = trim(get_input('username'));
+        $username = trim(Input::get_string('username'));
 
         User::validate_username($username, 6);
 
-        $password = get_input('password');
-        $password2 = get_input('password2');
+        $password = Input::get_string('password');
+        $password2 = Input::get_string('password2');
 
-        $email = EmailAddress::validate(trim(get_input('email')));
-        $phone_number = get_input('phone');
+        $email = EmailAddress::validate(trim(Input::get_string('email')));
+        $phone_number = Input::get_string('phone');
         
         User::validate_password($password, $password2, array($name, $username, $email, $phone_number));
         
@@ -68,7 +68,7 @@ class Action_Registration_RegisterPerson extends Action
     
     function redirect_next($user)
     {
-        $next = get_input('next');
+        $next = Input::get_string('next');
         throw new RedirectException('', $next ?: $user->get_url());
     }
     

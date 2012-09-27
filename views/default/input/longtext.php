@@ -15,7 +15,7 @@
         'id' => null,
     ));
 
-    $value = restore_input($name, $value, $track_dirty); 
+    $value = Input::restore_value($name, $value, $track_dirty); 
     
     if ($track_dirty)
     {

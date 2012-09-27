@@ -2,7 +2,7 @@
 <?php   
     $query = $vars['query'];
     $limit = 10;
-    $offset = (int)get_input('offset');    
+    $offset = Input::get_int('offset');    
     $templates = $query->limit($limit, $offset)->filter();
     $count = $query->count();
     

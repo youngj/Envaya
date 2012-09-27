@@ -4,7 +4,7 @@
     $limit = 10;
     extract($vars);
     
-    $offset = (int) get_input('offset');
+    $offset = Input::get_int('offset');
 
     $query = Organization::query()
         ->where_visible_to_user()

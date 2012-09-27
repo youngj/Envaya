@@ -30,7 +30,7 @@ class Widget_Menu extends Widget_Generic
     
     function new_child_widget_from_input()
     {        
-        $uniqid = get_input('uniqid');
+        $uniqid = Input::get_string('uniqid');
         
         $widget = $this->get_widget_by_name($uniqid);
         

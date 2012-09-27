@@ -2,7 +2,7 @@
 <?php
     $query = OutgoingSMS::query()->order_by('id desc');
     
-    $offset = get_input('offset');
+    $offset = Input::get_string('offset');
     $limit = 20;
     
     $messages = $query->limit($limit, $offset)->filter();

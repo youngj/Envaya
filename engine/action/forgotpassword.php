@@ -9,7 +9,7 @@ class Action_ForgotPassword extends Action
 
     function process_input()
     {
-        $username = get_input('username');
+        $username = Input::get_string('username');
         
         // if the username has an @, it must be an email address (@ is not allowed in usernames)        
         if (strpos($username,'@') !== false)
@@ -112,7 +112,7 @@ class Action_ForgotPassword extends Action
         $this->page_draw(array(
             'title' => __('login:resetreq:title'),
             'content' => view("account/forgotten_password",
-                array('username' => get_input('username'))
+                array('username' => Input::get_string('username'))
             ),
             'org_only' => true
         ));

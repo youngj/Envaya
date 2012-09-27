@@ -8,13 +8,13 @@ class Action_Registration_CreateProfileBase extends Action
     {   
         $org = Session::get_logged_in_user();
 
-        $mission = get_input('mission');
+        $mission = Input::get_string('mission');
         if (!$mission)
         {
             throw new ValidationException(__("register:mission:blank"));
         }
 
-        $sectors = get_input_array('sector');
+        $sectors = Input::get_array('sector');
         if (sizeof($sectors) == 0)
         {
             throw new ValidationException(__("register:sector:blank"));
@@ -26,7 +26,7 @@ class Action_Registration_CreateProfileBase extends Action
 
         $org->language = Language::get_current_code();
         $org->set_sectors($sectors);
-        $org->set_metadata('sector_other', get_input('sector_other'));
+        $org->set_metadata('sector_other', Input::get_string('sector_other'));
         
         $home = Widget_Home::get_or_init_for_entity($org);
         $mission_section = Widget_Mission::get_for_entity($home) ?: Widget_Mission::new_for_entity($home);

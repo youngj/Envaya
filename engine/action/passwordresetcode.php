@@ -8,7 +8,7 @@ class Action_PasswordResetCode extends Action
     {
         Permission_Public::require_any();
         
-        $user_guid = get_input('u');        
+        $user_guid = Input::get_string('u');        
         $user = User::get_by_guid($user_guid);
         if (!$user)
         {
@@ -21,7 +21,7 @@ class Action_PasswordResetCode extends Action
     function process_input()
     {
         $user = $this->user;
-        $code = get_input('c');
+        $code = Input::get_string('c');
         if ($user->has_password_reset_code($code))
         {
             $this->redirect("/pg/password_reset?u={$user->guid}&c={$code}");

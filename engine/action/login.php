@@ -9,7 +9,7 @@ class Action_Login extends Action
 
     protected function login_success($user, $password)
     {
-        $next = get_input('next');
+        $next = Input::get_string('next');
         if (!$next && !$user->is_setup_complete())
         {
             $next = $user->get_continue_setup_url();
@@ -51,9 +51,9 @@ class Action_Login extends Action
     
     function process_input()
     {
-        $username = get_input('username');
-        $password = get_input("password");
-        $persistent = get_input("persistent", false);
+        $username = Input::get_string('username');
+        $password = Input::get_string("password");
+        $persistent = Input::get_string("persistent", false);
        
         $user = $this->authenticate($username, $password);
         if ($user)
@@ -124,8 +124,8 @@ class Action_Login extends Action
     
     function render_content()
     {
-        $username = get_input('username');
-        $next = get_input('next');            
+        $username = Input::get_string('username');
+        $next = Input::get_string('next');            
         
         return view("account/login", array('username' => $username, 'next' => $next));
     }    
@@ -134,7 +134,7 @@ class Action_Login extends Action
     {
         $this->prefer_https();
         
-        $loginTime = (int)get_input('_lt');
+        $loginTime = Input::get_int('_lt');
         if ($loginTime && timestamp() - $loginTime < 10 && !Session::is_logged_in())
         {
             SessionMessages::add_error_html(view('account/cookie_error'));

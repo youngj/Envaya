@@ -14,12 +14,12 @@ class Action_EmailSettings extends Action
 
     function process_input()
     {
-        $email = get_input('email');
-        $code = get_input('code');
-        $language = get_input('language');
+        $email = Input::get_string('email');
+        $code = Input::get_string('code');
+        $language = Input::get_string('language');
         
-        $all_subscription_ids = get_input_array('subscriptions');
-        $enabled_subscription_ids = get_input_array('enabled_subscriptions');
+        $all_subscription_ids = Input::get_array('subscriptions');
+        $enabled_subscription_ids = Input::get_array('enabled_subscriptions');
         
         $subscriptions = EmailSubscription::query()
             ->where('email = ?', $email)
@@ -48,11 +48,11 @@ class Action_EmailSettings extends Action
 
     function render()
     {
-        $email = get_input('e');
-        $code = get_input('c');
-        $id = get_input('id');
+        $email = Input::get_string('e');
+        $code = Input::get_string('c');
+        $id = Input::get_string('id');
         
-        $offset = (int)get_input('offset');
+        $offset = Input::get_int('offset');
         
         $limit = 15;
         $show_more = false;

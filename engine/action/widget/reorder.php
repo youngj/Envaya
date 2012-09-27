@@ -12,7 +12,7 @@ class Action_Widget_Reorder extends Action
         $this->set_content_type('text/javascript');
     
         $widget = $this->get_widget();        
-        $delta = ((int)get_input('delta') > 0) ? 1 : -1;
+        $delta = (Input::get_int('delta') > 0) ? 1 : -1;
         
         $container = $widget->get_container_entity();        
         $siblings = $container->query_widgets()->where('in_menu = 1')->filter();                

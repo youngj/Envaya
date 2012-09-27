@@ -50,7 +50,7 @@ function toggleRecipient(guid, email)
         ->order_by('name');    
     
     $limit = 10;
-    $offset = (int)get_input('offset');
+    $offset = Input::get_int('offset');
         
     $orgs = $query->limit($limit, $offset)->filter();
     $count = $query->count();

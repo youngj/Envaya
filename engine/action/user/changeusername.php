@@ -11,7 +11,7 @@ class Action_User_ChangeUsername extends Action
     {
         $user = $this->get_user();
 
-        $username = get_input('username');
+        $username = Input::get_string('username');
         $oldUsername = $user->username;
 
         if ($username && $username != $oldUsername)

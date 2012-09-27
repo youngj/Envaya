@@ -100,6 +100,7 @@ tinyMCE.init({
     language: '',
     relative_urls: false,
     remove_script_host: false,
+    ace_url: "<?php echo js_url('tiny_mce_ace') ?>",
     elements: "content_html<?php echo $INCLUDE_COUNT ?>",
     <?php if ($saveFn) { ?>
     save_draft_callback: <?php echo $saveFn; ?>,

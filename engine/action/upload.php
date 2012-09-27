@@ -7,7 +7,7 @@ class Action_Upload extends Action
         switch ($mode)
         {
             case 'image':        
-                $sizes = json_decode(get_input('sizes'));
+                $sizes = json_decode(Input::get_string('sizes'));
                 return UploadedFile::upload_images_from_input($file_input, $sizes);           
             case 'scribd':
                 return UploadedFile::upload_scribd_from_input($file_input);
@@ -27,7 +27,7 @@ class Action_Upload extends Action
     {        
         try
         {  
-            $files = $this->upload_file_in_mode($_FILES['file'], get_input('mode'));                    
+            $files = $this->upload_file_in_mode($_FILES['file'], Input::get_string('mode'));                    
             $json = UploadedFile::json_encode_array($files);
         }
         catch (Exception $ex)

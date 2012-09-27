@@ -16,7 +16,7 @@
         'id' => null,
     ));
 
-    $value = restore_input($name, $value);     
+    $value = Input::restore_value($name, $value);     
 
     echo "<select ".Markup::render_attrs($attrs).">";
 

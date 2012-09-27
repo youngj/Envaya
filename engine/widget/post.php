@@ -36,7 +36,7 @@ class Widget_Post extends Widget_Generic
         
     function process_input($action)
     {
-        $content = get_input('content');
+        $content = Input::get_string('content');
         if (empty($content))
         {
             throw new ValidationException(__("widget:post:blank"));

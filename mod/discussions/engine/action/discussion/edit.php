@@ -12,7 +12,7 @@ class Action_Discussion_Edit extends Action
         $topic = $this->get_topic();
         $user = $this->get_user();
         
-        if (get_input('delete'))
+        if (Input::get_string('delete'))
         {
             $topic->disable();
             $topic->save();
@@ -23,7 +23,7 @@ class Action_Discussion_Edit extends Action
         }
         else
         {        
-            $subject = get_input('subject');
+            $subject = Input::get_string('subject');
             if (!$subject)
             {
                 throw new ValidationException(__('discussions:subject_missing'));
@@ -43,7 +43,7 @@ class Action_Discussion_Edit extends Action
         $topic = $this->get_topic();
         $this->use_editor_layout();
         
-        $cancelUrl = get_input('from') ?: $topic->get_url();
+        $cancelUrl = Input::get_string('from') ?: $topic->get_url();
         PageContext::get_submenu('top')->add_link(__("canceledit"), $cancelUrl);
                 
         $this->page_draw(array(

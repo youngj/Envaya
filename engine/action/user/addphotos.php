@@ -9,9 +9,9 @@ class Action_User_AddPhotos extends Action
      
     function process_input()
     {
-        $imageNumbers = get_input_array('imageNumber');
+        $imageNumbers = Input::get_array('imageNumber');
         
-        $uniqid = get_input('uniqid');
+        $uniqid = Input::get_string('uniqid');
         $user = $this->get_user();
         
         $news = Widget_News::get_or_init_for_entity($user);
@@ -24,11 +24,11 @@ class Action_User_AddPhotos extends Action
         
         foreach ($imageNumbers as $imageNumber)
         {                        
-            $imageData = get_input('imageData'.$imageNumber);
+            $imageData = Input::get_string('imageData'.$imageNumber);
             
             if (!$imageData) // mobile version uploads image files when the form is submitted, rather than asynchronously via javascript
             {     
-                $sizes = json_decode(get_input('sizes'));
+                $sizes = json_decode(Input::get_string('sizes'));
                 
                 try
                 {
@@ -48,7 +48,7 @@ class Action_User_AddPhotos extends Action
                 $images = UploadedFile::json_decode_array($imageData);
             }
             
-            $imageCaption = get_input('imageCaption'.$imageNumber);
+            $imageCaption = Input::get_string('imageCaption'.$imageNumber);
             
             $image = $images[sizeof($images) - 1];
             

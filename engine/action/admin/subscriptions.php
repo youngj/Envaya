@@ -9,7 +9,7 @@ class Action_Admin_Subscriptions extends Action
      
     function process_input()
     {        
-        $email = get_input('email');        
+        $email = Input::get_string('email');        
         if ($email)
         {
             $this->redirect(EmailSubscription::get_all_settings_url($email));

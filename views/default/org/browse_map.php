@@ -1,9 +1,9 @@
 <?php
 
-    $sector = get_input('sector') ?: 0;
-    $lat = get_input('lat') ?: -6.6;
-    $long = get_input('long') ?: 36;
-    $zoom = get_input('zoom') ?: 5;
+    $sector = Input::get_string('sector') ?: 0;
+    $lat = Input::get_string('lat') ?: -6.6;
+    $long = Input::get_string('long') ?: 36;
+    $zoom = Input::get_string('zoom') ?: 5;
 
     echo "<div class='section_content padded'>";
     

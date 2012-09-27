@@ -11,7 +11,7 @@ class Action_SetTranslationApproval extends Action
     {
         $key = $this->param('key');
         
-        $approval = (int)get_input('approval');
+        $approval = Input::get_int('approval');
         
         $translation = $this->param('translation');
         

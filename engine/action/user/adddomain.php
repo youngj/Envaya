@@ -9,7 +9,7 @@ class Action_User_AddDomain extends Action
      
     function process_input()
     {       
-        $domain_name = get_input('domain_name');
+        $domain_name = Input::get_string('domain_name');
         if (UserDomainName::query()->where('domain_name = ?', $domain_name)->exists())
         {
             throw new RedirectException(__('domains:duplicate'));

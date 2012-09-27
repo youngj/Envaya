@@ -25,8 +25,8 @@ class Controller_Contact extends Controller
         Permission_UseAdminTools::require_any();
     
         $this->set_content_type('text/javascript');
-        $subtype_id = get_input('subtype_id');         
-        $id = get_input('id');         
+        $subtype_id = Input::get_string('subtype_id');         
+        $id = Input::get_string('id');         
         $cls = ClassRegistry::get_class($subtype_id);
         $filter = new $cls();
         $this->set_content(json_encode(array(
@@ -40,7 +40,7 @@ class Controller_Contact extends Controller
     
     function action_index()
     {
-        Permission_UseAdminTools::require_any();
+        Permission_ViewUserSettings::require_for_root();
     
         $this->page_draw(array(
             'theme' => 'Theme_Wide',

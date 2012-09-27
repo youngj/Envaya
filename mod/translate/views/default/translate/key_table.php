@@ -6,7 +6,7 @@
     $language = $vars['language'];
     
     $limit = 15;
-    $offset = (int)get_input('offset');    
+    $offset = Input::get_int('offset');    
     
     if (isset($keys))
     {

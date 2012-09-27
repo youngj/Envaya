@@ -3,7 +3,7 @@
     $org = $widget->get_container_entity();
 
     $limit = 20;
-    $offset = (int)get_input('offset');
+    $offset = Input::get_int('offset');
     
     $query = DiscussionTopic::query_for_user($org)->limit($limit, $offset);
         

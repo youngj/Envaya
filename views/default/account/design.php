@@ -1,8 +1,8 @@
 <?php
     $user = $vars['user'];
 
-    $curTheme = restore_input('theme_id', $user->get_design_setting('theme_id'));    
-    $curCustomHeader = restore_input('custom_header', $user->get_design_setting('custom_header')) ? 1 : 0;
+    $curTheme = Input::restore_value('theme_id', $user->get_design_setting('theme_id'));    
+    $curCustomHeader = Input::restore_value('custom_header', $user->get_design_setting('custom_header')) ? 1 : 0;
     
     $preview_url = $user->get_url();
     

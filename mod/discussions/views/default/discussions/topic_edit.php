@@ -29,7 +29,7 @@
     ob_start();
        
     $limit = 20;
-    $offset = (int)get_input('offset');
+    $offset = Input::get_int('offset');
     
     $query  = $topic->query_messages()->limit($limit, $offset);
     

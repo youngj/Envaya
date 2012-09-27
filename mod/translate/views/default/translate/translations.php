@@ -2,7 +2,7 @@
     $query = $vars['query'];
     $language = $vars['language'];
     
-    $offset = (int)get_input('offset');
+    $offset = Input::get_int('offset');
     $limit = 15;
     $new_translations = $query->limit($limit, $offset)->filter();
     $count = $query->count();    

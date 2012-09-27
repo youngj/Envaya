@@ -90,7 +90,7 @@ abstract class Controller_ContactTemplate extends Controller
 
     function action_subscription()
     {
-        PageContext::get_submenu('top')->add_link(__('cancel'), get_input('from') ?: "/admin/contact");
+        PageContext::get_submenu('top')->add_link(__('cancel'), Input::get_string('from') ?: "/admin/contact");
     
         $this->page_draw(array(
             'title' => sprintf(__('contact:template_list'), $this->get_type_name()),
@@ -113,7 +113,7 @@ abstract class Controller_ContactTemplate extends Controller
             )),
             'content' => view($this->view_view, array(
                 'template' => $template, 
-                'from' => get_input('from')
+                'from' => Input::get_string('from')
             ))
         ));                    
     }                
@@ -122,7 +122,7 @@ abstract class Controller_ContactTemplate extends Controller
     {
         $this->set_content_type('text/javascript');
         
-        $filters_json = get_input('filters_json');
+        $filters_json = Input::get_string('filters_json');
         $filters = Query_Filter::json_decode_filters($filters_json);
         
         $template_class = $this->template_class;

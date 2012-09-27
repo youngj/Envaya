@@ -15,7 +15,7 @@ class Action_Admin_DisableEntity extends Action
         
         SessionMessages::add(__('entity:disabled'));
 
-        $next = get_input('next');
+        $next = Input::get_string('next');
         $this->redirect($next);
     }
 }

@@ -188,7 +188,7 @@ class Controller_SMSGateway extends Controller
     
     function action_incoming()
     {
-        $provider_class = "SMS_Provider_".get_input('provider');
+        $provider_class = "SMS_Provider_".Input::get_string('provider');
         
         if (!$this->is_valid_provider_class($provider_class))
         {        

@@ -8,7 +8,7 @@ class Action_Admin_ActivateFeaturedSite extends Action
     {
         Permission_EditMainSite::require_for_root();
 
-        $guid = get_input('guid');
+        $guid = Input::get_string('guid');
         $featuredSite = FeaturedSite::get_by_guid($guid);
         if (!$featuredSite)
         {

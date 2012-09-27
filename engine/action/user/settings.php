@@ -8,7 +8,7 @@ class Action_User_Settings extends Action
         
         Permission_EditUserSettings::require_for_entity($user);
                                 
-        if (get_input('delete'))
+        if (Input::get_string('delete'))
         {
             Permission_UseAdminTools::require_for_entity($user);
         
@@ -21,7 +21,7 @@ class Action_User_Settings extends Action
             return $this->redirect('/admin/entities');
         }
 
-        $name = get_input('name');
+        $name = Input::get_string('name');
 
         if ($name)
         {
@@ -36,7 +36,7 @@ class Action_User_Settings extends Action
             throw new ValidationException(__('register:no_name'));
         }
 
-        $language = get_input('language');
+        $language = Input::get_string('language');
         if ($language && $language != $user->language)
         {
             $user->language = $language;
@@ -44,14 +44,14 @@ class Action_User_Settings extends Action
             SessionMessages::add(__('user:language:success'));
         }
 
-        $email = trim(get_input('email'));
+        $email = trim(Input::get_string('email'));
         if ($email != $user->email)
         {
             $user->set_email(EmailAddress::validate($email));
             SessionMessages::add(__('user:email:success'));
         }
 
-        $phone = get_input('phone');
+        $phone = Input::get_string('phone');
         if ($phone != $user->phone_number)
         {
             $user->set_phone_number($phone);
@@ -60,8 +60,8 @@ class Action_User_Settings extends Action
 
         if ($user->country)
         {
-            $city = get_input('city');
-            $region = get_input('region');
+            $city = Input::get_string('city');
+            $region = Input::get_string('region');
             if ($city != $user->city || $region != $user->region)
             {
                 $old_location_text = $user->get_location_text(false);
@@ -80,7 +80,7 @@ class Action_User_Settings extends Action
         }
         
         $user->save();
-        $this->redirect(get_input('from') ?: $user->get_url());
+        $this->redirect(Input::get_string('from') ?: $user->get_url());
     }
 
     function render()

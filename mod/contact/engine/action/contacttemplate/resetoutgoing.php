@@ -11,7 +11,7 @@ class Action_ContactTemplate_ResetOutgoing extends Action
     {
         $template = $this->get_template();
         
-        $id = (int)get_input('id');
+        $id = Input::get_int('id');
         
         $outgoing_message_class = $this->get_outgoing_message_class();
         

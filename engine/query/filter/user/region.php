@@ -39,8 +39,8 @@ class Query_Filter_User_Region extends Query_Filter_Select
         $cls = get_called_class();
     
         return new $cls(array(
-            'value' => get_input('region'),
-            'country' => get_input('country')
+            'value' => Input::get_string('region'),
+            'country' => Input::get_string('country')
         ));
     }        
 }

@@ -17,7 +17,7 @@
         'id' => null,
     ));
 
-    $attrs['value'] = restore_input($name, $value, $track_dirty); 
+    $attrs['value'] = Input::restore_value($name, $value, $track_dirty); 
     
     if ($track_dirty)
     {

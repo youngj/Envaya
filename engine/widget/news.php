@@ -32,7 +32,7 @@ class Widget_News extends Widget
     
     function render_view($args = null)
     {
-        $end_guid = get_input('end');    
+        $end_guid = Input::get_string('end');    
         return view("widgets/news_view", array('widget' => $this, 'end_guid' => $end_guid));
     }
 
@@ -48,14 +48,14 @@ class Widget_News extends Widget
         
     function new_child_widget_from_input()
     {           
-        $uniqid = get_input('uniqid');
+        $uniqid = Input::get_string('uniqid');
         return $this->get_widget_by_name($uniqid)
             ?: Widget_Post::new_for_entity($this, array('widget_name' => $uniqid));
     }    
     
     function process_input($action)
     {    
-        switch (get_input('action'))
+        switch (Input::get_string('action'))
         {
             case 'add_feed':
                 return $this->add_feed($action);
@@ -78,7 +78,7 @@ class Widget_News extends Widget
         if ($home)
         {
             $links = Widget_Links::get_for_entity($home) ?: Widget_Links::new_for_entity($home);            
-            $action->redirect("{$links->get_edit_url()}?url=" . urlencode(get_input('url')));
+            $action->redirect("{$links->get_edit_url()}?url=" . urlencode(Input::get_string('url')));
         }
         else
         {
@@ -88,8 +88,8 @@ class Widget_News extends Widget
     
     function remove_feed($action)
     {
-        $guid = get_input('guid');
-        $remove_posts = get_input('remove_posts') == '1';
+        $guid = Input::get_string('guid');
+        $remove_posts = Input::get_string('remove_posts') == '1';
         
         $feed = $this->query_external_feeds()->guid($guid)->get();
         if ($feed)
@@ -134,9 +134,9 @@ class Widget_News extends Widget
     
     function add_feed($action)
     {
-        $url = get_input('url'); 
-        $feed_url = get_input('feed_url'); 
-        $feed_subtype = get_input('feed_subtype'); 
+        $url = Input::get_string('url'); 
+        $feed_url = Input::get_string('feed_url'); 
+        $feed_subtype = Input::get_string('feed_subtype'); 
         
         ExternalSite::validate_url($url);
         ExternalFeed::validate_url($feed_url);
@@ -153,7 +153,7 @@ class Widget_News extends Widget
         $this->save();
         SessionMessages::add(__('widget:links:added').' '.strtr(__('widget:news:feeds:delay'), array('{url}' => $url)));
         
-        if (get_input('add_link'))
+        if (Input::get_string('add_link'))
         {
             $this->add_link($action);
         }
@@ -166,7 +166,7 @@ class Widget_News extends Widget
     function get_linkinfo_js($action)
     {
         $action->set_content_type('text/javascript');                
-        $url = get_input('url');
+        $url = Input::get_string('url');
         $link_info = ExternalSite::get_linkinfo($url);     
         
         $action->set_content(json_encode($link_info));

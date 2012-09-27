@@ -92,7 +92,7 @@
     </table>
     <?php
 
-    echo view('input/hidden', array('name' => 'from', 'value' => get_input('from')));
+    echo view('input/hidden', array('name' => 'from', 'value' => Input::get_string('from')));
     
     if (Permission_UseAdminTools::has_for_entity($user))
     {   
