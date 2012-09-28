@@ -2,6 +2,7 @@
     <?php echo $vars['top_menu']; ?>
     <?php echo $vars['messages']; ?>
     <?php echo $vars['header']; ?>
+    <?php echo $vars['site_menu']; ?>
 </div>
 <div class="content_container"><div class='wide_column'><div id='content'>
     <?php echo $vars['content']; ?>              

@@ -94,24 +94,22 @@ MultiImageUploader.prototype.uploadProgressHandler = function()
     FileUploader.prototype.uploadProgressHandler.call(this);
 };
 
-new MultiImageUploader(<?php echo view('input/uploader_args', array(
-    'args' => array(
-        'file_types' => implode(",", UploadedFile::$image_extensions),
-        'file_types_description' => "Images",
-        'track_dirty' => true,
-        'thumbnail_size' => 'small',
-        'max_width' => 540,
-        'max_height' => 1080,
-        'multi_selection' => true,
-        'container_id' => 'browseContainer',
-        'progress_id' => 'progressContainer',
-        'browse_id' => 'browseButton',
-        'previews_id' => 'previews',
-        'button_more_message' => __('upload:photos:more'),
-        'post_params' => array(
-            'mode' => 'image',
-            'sizes' => json_encode(Widget::get_image_sizes())
-        )
+new MultiImageUploader(<?= json_encode(UploadedFile::get_uploader_args(array(
+    'file_types' => implode(",", UploadedFile::$image_extensions),
+    'file_types_description' => "Images",
+    'track_dirty' => true,
+    'thumbnail_size' => 'small',
+    'max_width' => 540,
+    'max_height' => 1080,
+    'multi_selection' => true,
+    'container_id' => 'browseContainer',
+    'progress_id' => 'progressContainer',
+    'browse_id' => 'browseButton',
+    'previews_id' => 'previews',
+    'button_more_message' => __('upload:photos:more'),
+    'post_params' => array(
+        'mode' => 'image',
+        'sizes' => json_encode(Widget::get_image_sizes())
     )
 )) ?>);
 

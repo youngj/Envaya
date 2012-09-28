@@ -102,12 +102,28 @@ function urlWithParam(url, param, value)
     return url.substr(0, qIndex) + parts.join('&');
 }
 
-function each(items, fn)
-{
-    var res = [], i = 0;
-    while (i < items.length) 
+var Arr = {
+    map: function(items, fn)
     {
-        res.push(fn(items[i++]));    
+        var res = [], i = 0;
+        while (i < items.length) 
+            res.push(fn(items[i++]));    
+        return res;
+    },
+
+    indexOf: function(items, item)
+    {
+        for (var i = 0; i < items.length; i++) 
+            if (items[i] === item) 
+                return i;        
+        return -1;
+    },
+
+    remove: function(items, item)
+    {
+        var i = Arr.indexOf(items, item);
+        if (i != -1)
+            items.splice(i, 1);
     }
-    return res;
-}
+};
+var each = Arr.map;

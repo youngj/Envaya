@@ -648,6 +648,43 @@ class UploadedFile extends Entity
         return false;
     }
     
+    static function get_uploader_args($override_args)
+    {
+        $post_params = array(
+            'session_id' => session_id(),
+            'lang' => Language::get_current_code(),    
+        );
+
+        $args = array(
+            'runtimes' => Config::get('storage:plupload_runtimes'),
+            'server_processing_message' => __('upload:server_processing'),
+            'size_error_message' => __('upload:size_error'),
+            'upload_progress_message' =>  __('upload:uploading'),
+            'upload_error_message' => __('upload:error'),
+            'queue_error_message' => __('upload:error'),
+            'processing_message' => __('upload:image:processing'),
+            'loading_preview_message' => __('upload:complete'),
+            'initial_message' => '',
+        );
+
+        foreach ($override_args as $k => $v)
+        {
+            if ($k == 'post_params')
+            {
+                foreach ($v as $post_k => $post_v)
+                {
+                    $post_params[$post_k] = $post_v;
+                }
+            }
+            else
+            {
+                $args[$k] = $v;
+            }
+        }
+        
+        $args['post_params'] = $post_params;
+        return $args;
+    }
     
 	static $mime_types = array("323" => "text/h323", "acx" => "application/internet-property-stream", "ai" => "application/postscript", "aif" => "audio/x-aiff", "aifc" => "audio/x-aiff", "aiff" => "audio/x-aiff",
         "asf" => "video/x-ms-asf", "asr" => "video/x-ms-asf", "asx" => "video/x-ms-asf", "au" => "audio/basic", "avi" => "video/quicktime", "axs" => "application/olescript", "bas" => "text/plain", "bcpio" => "application/x-bcpio", "bin" => "application/octet-stream", "bmp" => "image/bmp",

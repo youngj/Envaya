@@ -68,6 +68,12 @@ class Controller_Default extends Controller
         
         $this->params['rewritten_uri'] = $uri;
         
+        $user = Session::get_logged_in_user();
+        if ($user && $user->timezone_id)
+        {
+            date_default_timezone_set($user->timezone_id);
+        }                    
+        
         // 'login' query parameter forces user to log in
         if (isset($_GET['login']) && !Session::is_logged_in())
         {

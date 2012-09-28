@@ -30,10 +30,7 @@
 </div>
 <div id='<?php echo $progress_id ?>' class='imageUploadProgress'></div>
 <script type="text/javascript">
-var uploader = new <?php echo $uploader_class; ?>(<?php 
-    echo view('input/uploader_args', 
-        array('args' => $uploader_args)
-    ); ?>);
+var uploader = new <?= $uploader_class; ?>(<?= json_encode(UploadedFile::get_uploader_args($uploader_args)); ?>);
 
 <?php if ($jsname) { ?>
 window[<?php echo json_encode($jsname) ?>] = uploader;

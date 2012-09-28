@@ -1,11 +1,22 @@
 function Class() {}
-function makeClass($base)
+function makeClass($base, $protoProps, $classProps)
 {
     $base = $base || Class;
-    var $class = function() { this.init.apply(this, arguments); };
-    var $proto = function() {};
-    $proto.prototype = $base.prototype;
+    var $pproto = $base.prototype,
+        $class = function() { this.init.apply(this, arguments); },
+        $proto = function() { this._pproto = $pproto; };    
+    $proto.prototype = $pproto;
     $class.prototype = new $proto;
+    
+    if ($protoProps)
+    {
+        extend($class.prototype, $protoProps);
+    }
+    if ($classProps)
+    {
+        extend($class, $classProps);
+    }
+    
     return $class;
 }
 
@@ -15,4 +26,5 @@ function extend(to, from)
     {
         to[name] = from[name];
     }
+    return to;
 }
