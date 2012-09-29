@@ -2,11 +2,14 @@
 
 class Action_User_Dashboard extends Action
 {
+    function before()
+    {
+        Permission_ViewUserDashboard::require_for_entity($user);    
+    }
+
     function render()
     {
-        $user = $this->get_user();
-    
-        Permission_ViewUserDashboard::require_for_entity($user);
+        $user = $this->get_user();    
     
         $this->use_editor_layout();        
         $this->allow_view_types(null);        

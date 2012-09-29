@@ -63,8 +63,7 @@ function asyncPost(xhr, action, params)
     var paramStr = paramArr.join('&');
     
     xhr.open("POST", action, true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.setRequestHeader("Content-Length", paramStr.length);            
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");           
     xhr.send(paramStr);
 }
 

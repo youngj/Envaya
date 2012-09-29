@@ -14,6 +14,12 @@ function removeElem(elem)
     }
 }
 
+function setElemText(elem, text)
+{
+    removeChildren(elem);
+    elem.appendChild(document.createTextNode(text));
+}
+
 function createElem(/* args */)
 {
     var elemType = arguments[0];

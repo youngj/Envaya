@@ -13,6 +13,7 @@ class VariantType
     const _Text = 2;
     const _JSON = 3;
     const _Bool = 4;
+    const _Float = 5;
 
     static function detect_value_type($value)
     {
@@ -22,8 +23,8 @@ class VariantType
             return VariantType::_Bool;
         if (is_int($value))
             return VariantType::_Integer;
-        if (is_numeric($value))
-            return VariantType::_Text; // todo?
+        if (is_float($value))
+            return VariantType::_Float;
         return VariantType::_Text;
     }         
 
@@ -33,6 +34,7 @@ class VariantType
         {
             case VariantType::_JSON:    return json_decode($value, true);
             case VariantType::_Integer: return (int)$value;
+            case VariantType::_Float:   return (float)$value;
             case VariantType::_Bool:    return (bool)$value;
             default: return $value;                
         }

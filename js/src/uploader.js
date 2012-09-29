@@ -52,7 +52,7 @@ var FileUploader = makeClass(null, {
     getPluploadOptions: function()
     {        
         var opts = this.options;
-
+        
         return {
             runtimes : opts.runtimes || "flash,html5,html4",
             browse_button : opts.browse_id,
