@@ -29,10 +29,10 @@
             </div>                                    
         <?php if ($removable) { ?>
             <div style='padding-top:10px'>
-            <?php echo view('input/checkboxes', 
+            <?php echo view('input/checkbox', 
             array('name' => $deletename,
                 'id' => $deleteid,
-                'options' => array('1' => __('upload:image:delete')),
+                'label' => __('upload:image:delete')
             )) ?>
             </div>
         <?php } ?>    

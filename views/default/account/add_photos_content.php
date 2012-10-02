@@ -111,7 +111,7 @@ new MultiImageUploader(<?= json_encode(UploadedFile::get_uploader_args(array(
         'mode' => 'image',
         'sizes' => json_encode(Widget::get_image_sizes())
     )
-)) ?>);
+))) ?>);
 
 </script>
 <div class='input'>

@@ -68,14 +68,14 @@ class ExternalFeedTest extends SeleniumTest
         
         // add link with feed, don't include on news page
         
-        $this->type("//input[@id='url']", 'http://twitter.com/bill_westerly');
+        $this->type("//input[@id='url']", 'http://blog.telerivet.com');
         $this->click("//button");
         
         $this->retry('uncheck', array("//div[@class='modalBody']//input[@type='checkbox']"));
         $this->click("//input[@value='OK']");        
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();
-        $this->assertContains('Twitter', $this->getText("//a[contains(@href,'http://twitter.com/bill_westerly')]"));
+        $this->assertContains('Telerivet Blog', $this->getText("//a[contains(@href,'http://blog.telerivet.com')]"));
                 
         // add and delete link
         $this->type("//input[@id='url']", 'http://example.com/foo');
@@ -93,19 +93,19 @@ class ExternalFeedTest extends SeleniumTest
         
         // ensure links show up correctly on homepage
         $this->submitForm("//button//span[contains(text(),'Publish')]");
-        $this->assertContains('Twitter', $this->getText("//a[contains(@href,'http://twitter.com/bill_westerly')]"));
+        $this->assertContains('Telerivet Blog', $this->getText("//a[contains(@href,'http://blog.telerivet.com')]"));
         $this->assertContains('Mwanzo', $this->getText("//a[contains(@href,'http://www.bbc.co.uk/swahili/')]"));
         $this->assertContains('Example domains', $this->getText("//a[contains(@href,'http://example.com')]"));
         $this->mustNotExist("//a[contains(@href,'foo')]");
         
         // view news page, feed items should be included properly
         $this->retry('checkNews');
-        $this->mustNotExist("//a[contains(@href,'twitter.com')]");
+        $this->mustNotExist("//a[contains(@href,'blog.telerivet.com')]");
         $this->mustNotExist("//a[contains(@href,'tumblr.com')]");        
         
         // edit news page, add tumblr link
         $this->open('/testposter7/page/news/edit');
-        $this->mustNotExist("//a[contains(@href,'twitter.com')]");
+        $this->mustNotExist("//a[contains(@href,'blog.telerivet.com')]");
         
         $this->retry('type', array("//input[@id='feed_url']", "adunar.tumblr.com"));
         $this->click("//form[@id='feed_form']//button");
@@ -114,15 +114,15 @@ class ExternalFeedTest extends SeleniumTest
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();        
         
-        // edit news page, add twitter link
-        $this->type("//input[@id='feed_url']", "twitter.com/envaya");
+        // edit news page, add blog link
+        $this->type("//input[@id='feed_url']", "status.telerivet.com");
         $this->click("//form[@id='feed_form']//button");
         $this->retry('click', array("//input[@value='OK']"), 25);   
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();        
         
-        // redirect to home page to add twitter link
-        $this->retry('type', array("//div[@class='modalBody']//input[@type='text']", "Envaya Twitter"));
+        // redirect to home page to add blog link
+        $this->retry('type', array("//div[@class='modalBody']//input[@type='text']", "Telerivet Status"));
         $this->click("//input[@value='OK']"); 
         $this->waitForPageToLoad(10000);
         $this->ensureGoodMessage();
@@ -142,7 +142,7 @@ class ExternalFeedTest extends SeleniumTest
         $this->mustNotExist("//a[contains(@href,'http://www.bbc.co.uk/swahili/')]");
         
         $this->retry('checkTumblr');
-        $this->retry('checkTwitter');
+        $this->retry('checkBlog');
         
         // edit news page, add link without rss, add to home page
         $this->clickAndWait("//div[@id='top_menu']//a[contains(@href,'/edit')]");
@@ -158,9 +158,9 @@ class ExternalFeedTest extends SeleniumTest
         // test home page links are correct
         $this->open('/testposter7');        
         
-        $this->assertContains('Twitter', $this->getText("//a[contains(@href,'http://twitter.com/bill_westerly')]"));
+        $this->assertContains('Telerivet Blog', $this->getText("//a[contains(@href,'http://blog.telerivet.com')]"));
         $this->assertContains('Mwanzo', $this->getText("//a[contains(@href,'http://www.bbc.co.uk/swahili/')]"));
-        $this->assertContains('Envaya Twitter', $this->getText("//a[contains(@href,'http://twitter.com/envaya')]"));
+        $this->assertContains('Telerivet Status', $this->getText("//a[contains(@href,'http://status.telerivet.com')]"));
         $this->assertContains('Example Title', $this->getText("//a[contains(@href,'http://example.com/bar')]"));
         $this->mustNotExist("//a[contains(@href,'tumblr.com')]");
         
@@ -172,14 +172,14 @@ class ExternalFeedTest extends SeleniumTest
         $this->mouseOver("//a[contains(@href,'http://www.bbc.co.uk/swahili/')]");
     }
 
-    function checkTwitter()
+    function checkBlog()
     {       
         $this->clickAndWait("//div[@id='site_menu']//a[contains(@href,'news')]");
         
         while (true)
         {
             // may not be on first page
-            if ($this->isElementPresent("//a[contains(@href,'http://twitter.com/Envaya/status')]"))
+            if ($this->isElementPresent("//a[contains(@href,'http://status.telerivet.com')]"))
             {
                 break;
             }

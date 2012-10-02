@@ -42,7 +42,7 @@ return array(
     'widget:news:manage_updates' => 'Tunganya amakuru yawe',
     'widget:news:delete_confirm' => 'Ese urifuza gusiba aya makuru?',
     'widget:news:feeds' => 'Amakuru kuva kuzindi mbuga',
-    'widget:news:feeds:instructions' => 'Niba ikigo cyawe gifite urundi rubuga, ipaji ya facebook cyangwa twitter, ushyire aderesi yurwo rubuga kugirango amakuru avuye kuri envaya yishyireho.',
+    'widget:news:feeds:instructions' => 'Niba ikigo cyawe gifite urundi rubuga, ipaji ya facebook, ushyire aderesi yurwo rubuga kugirango amakuru avuye kuri envaya yishyireho.',
     'widget:news:feeds:error' => 'Ihangane, Ntabwo Envaya ibashije kuguha amakuru kuva ku rubuga rwawe.',
     'widget:news:feeds:add_link' => 'Urifuza gushyiraho umurongo kuri {url} ahabanza kuri page yawe',
     'widget:news:feeds:confirm_remove_title' => 'Emeza gusiba urubuga',

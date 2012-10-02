@@ -48,7 +48,7 @@ return array(
     'widget:news:manage_updates' => "Manage News Updates",
     'widget:news:delete_confirm' => "Are you sure you want to delete this news update?",
     'widget:news:feeds' => "News From Other Websites",
-    'widget:news:feeds:instructions' => "If your organization has another website, Facebook page, or Twitter profile, enter its web address in order to automatically include news updates on your Envaya website.",
+    'widget:news:feeds:instructions' => "If your organization has another website, blog, or Facebook page, enter its web address in order to automatically include news updates on your Envaya website.",
     'widget:news:feeds:error' => "Sorry, Envaya cannot automatically include news updates from this website.",
     'widget:news:feeds:add_link' => "Do you want to add a link to {url} on your home page?",
     'widget:news:feeds:confirm_remove_title' => "Confirm Remove Website",

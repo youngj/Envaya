@@ -4,9 +4,15 @@ class Action_User_Dashboard extends Action
 {
     function before()
     {
+        $user = $this->get_user();    
         Permission_ViewUserDashboard::require_for_entity($user);    
     }
 
+    function process_input()
+    {
+        $this->render();
+    }
+    
     function render()
     {
         $user = $this->get_user();    

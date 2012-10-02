@@ -24,7 +24,7 @@ body
 
 #site_menu
 {
-    padding:5px 0px 15px 5px;
+    padding:5px 0px 5px 5px;
 }
 
 #site_menu a

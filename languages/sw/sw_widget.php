@@ -87,7 +87,7 @@ return array(
     'widget:links:added' => "Tovuti imeongezwa.",
     'widget:links:options' => "Chaguzi za Kiungo",
     'widget:links:deleted' => "Tovuti imeondolewa.",
-    'widget:links:instructions' => "Ikiwa shirika lako lina tovuti nyingine, ukurasa wa Facebook, au ukurasa wa Twitter, ingiza anwani yake hapo chini ili kuumba kiungo katika tovuti yako ya Envaya.",    
+    'widget:links:instructions' => "Ikiwa shirika lako lina tovuti nyingine, au ukurasa wa Facebook, ingiza anwani yake hapo chini ili kuumba kiungo katika tovuti yako ya Envaya.",    
     'widget:links:blank' => "Tafadhali ingiza anwani ya tovuti kuunga nayo.",
     'widget:links:include_feed' => "Ongeza habari kutoka tovuti hii moja kwa moja katika ukurasa wako wa Habari?",
     'widget:links:title' => "Jina la tovuti",    

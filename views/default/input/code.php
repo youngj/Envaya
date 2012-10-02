@@ -49,6 +49,9 @@
     
     
     var hiddenField = $(<?php echo json_encode($id); ?>);
+    
+    hiddenField.value = session.getValue();
+    
     session.on('change', function() {
         <?php if ($name) { ?>    
         hiddenField.value = session.getValue();
