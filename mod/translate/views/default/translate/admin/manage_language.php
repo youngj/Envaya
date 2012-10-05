@@ -27,7 +27,7 @@
     foreach ($groups as $group)
     {
         $group_options[$group->name] = $group->name;
-        if ($group->is_enabled())
+        if ($group->status == InterfaceGroup::Enabled)
         {
             $group_value[] = $group->name;
         }

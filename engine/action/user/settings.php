@@ -6,20 +6,7 @@ class Action_User_Settings extends Action
     {
         $user = $this->get_user();
         
-        Permission_EditUserSettings::require_for_entity($user);
-                                
-        if (Input::get_string('delete'))
-        {
-            Permission_UseAdminTools::require_for_entity($user);
-        
-            $user->disable();
-            $user->save();
-            
-            LogEntry::create('user:delete', $user);
-            
-            SessionMessages::add(__('user:deleted'));
-            return $this->redirect('/admin/entities');
-        }
+        Permission_EditUserSettings::require_for_entity($user);                                       
 
         $name = Input::get_string('name');
 

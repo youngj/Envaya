@@ -8,9 +8,6 @@
  * This is kind of useful for things like feed items and translations, 
  * which may refer to many different types of entities. 
  * 
- * Entities also have an 'status' field which allows effectively deleting rows
- * while leaving them in the database to allow them to be undeleted.
- *
  * Entities can also have metadata, which allows storing/retreiving arbitrary properties 
  * (e.g. $entity->get_metadata('foo')) without needing to define them in the database schema.
  * 
@@ -18,10 +15,6 @@
 
 abstract class Entity extends Model implements Serializable
 {
-    // values for 'status' field
-    const Disabled = 0; // aka 'deleted', except the db row still exists so we can undelete
-    const Enabled = 1;  // not deleted    
-
     static $query_class = 'Query_SelectEntity';
     static $primary_key = 'guid';
     static $current_request_entities = array();
@@ -96,7 +89,6 @@ abstract class Entity extends Model implements Serializable
                 'metadata_json' => null,
                 'time_created' => 0,
                 'time_updated' => 0,
-                'status' => Entity::Enabled
             )
         );
     }    
@@ -253,37 +245,6 @@ abstract class Entity extends Model implements Serializable
         }
     }
 
-    public function set_status($status)
-    {
-        $this->status = $status;
-    }
-    
-    /**
-     * Disable this entity.
-     */
-    public function disable()
-    {
-        $this->set_status(Entity::Disabled);
-    }
-
-    /**
-     * Re-enable this entity.
-     */
-    public function enable()
-    {
-        $this->set_status(Entity::Enabled);
-    }
-
-    /**
-     * Is this entity enabled?
-     *
-     * @return boolean
-     */
-    public function is_enabled()
-    {
-        return $this->guid && $this->status == Entity::Enabled;
-    }
-
     /**
      * Delete this entity.
      */
@@ -323,7 +284,7 @@ abstract class Entity extends Model implements Serializable
         $revision->save();
     }    
     
-    static function get_by_guid($guid, $show_disabled = false)
+    static function get_by_guid($guid)
     {    
         if (!$guid)
         {
@@ -334,7 +295,6 @@ abstract class Entity extends Model implements Serializable
         if (!$entity)
         {
             $entity = static::query()
-                ->show_disabled($show_disabled)
                 ->guid($guid)
                 ->get();                     
         
@@ -344,11 +304,6 @@ abstract class Entity extends Model implements Serializable
             }
             $entity->save_to_cache();
         }
-
-        if (!$show_disabled && $entity->status == Entity::Disabled)
-        {
-            return null;
-        }       
         
         $cls = get_called_class();
         if (!($entity instanceof $cls))

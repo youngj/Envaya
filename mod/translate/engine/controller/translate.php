@@ -98,7 +98,7 @@ class Controller_Translate extends Controller
         $language = $this->param('language');
         $group_name = $this->param('group_name');
         
-        $group = $language->query_groups()->where('name = ?', $group_name)->get();
+        $group = $language->query_groups()->where('status = ?', InterfaceGroup::Enabled)->where('name = ?', $group_name)->get();
         if (!$group)
         {
             throw new NotFoundException();
@@ -442,8 +442,7 @@ class Controller_Translate extends Controller
         
         Permission_EditTranslation::require_for_entity($comment);
         
-        $comment->disable();
-        $comment->save();
+        $comment->delete();
 
         SessionMessages::add(__('comment:deleted'));            
         $this->redirect();
@@ -543,7 +542,7 @@ class Controller_Translate extends Controller
     
         $keys = explode(',', Input::get_string('keys'));
         
-        $query = Translation::query()->where_in('container_guid', $keys);
+        $query = Translation::query()->where_in('container_guid', $keys)->where('status = ?', Translation::Published);
         
         if ($source)
         {

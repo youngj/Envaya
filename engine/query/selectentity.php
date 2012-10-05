@@ -8,16 +8,9 @@
  */
 class Query_SelectEntity extends Query_Select
 {
-    private $show_disabled = false;
     private $guid = null;
     private $subtype_ids = null;
 
-    function show_disabled($show_disabled = true)
-    {    
-        $this->show_disabled = $show_disabled;
-        return $this;
-    }
-    
     function guid($guid)
     {
         $this->guid = $guid;
@@ -63,11 +56,6 @@ class Query_SelectEntity extends Query_Select
         if ($this->guid !== null)
         {
             $this->where("{$prefix}guid = ?", $this->guid);
-        }
-    
-        if (!$this->show_disabled)
-        {
-            $this->where("{$prefix}status <> 0");
-        }
+        }    
     }    
 }

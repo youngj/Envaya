@@ -37,8 +37,7 @@ abstract class Action_ContactTemplate_Edit extends Action
         }        
         else if (Input::get_string('delete'))
         {
-            $template->disable();
-            $template->save();
+            $template->delete();
             $this->redirect($this->controller->index_url);
         }
         else

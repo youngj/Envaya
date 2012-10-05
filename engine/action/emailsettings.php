@@ -24,7 +24,6 @@ class Action_EmailSettings extends Action
         $subscriptions = EmailSubscription::query()
             ->where('email = ?', $email)
             ->where_in('guid', $all_subscription_ids)
-            ->show_disabled(true)
             ->filter();
         
         $this->verify_access($email, $code, $subscriptions);
@@ -33,7 +32,7 @@ class Action_EmailSettings extends Action
         {
             $subscription->set_status(
                 in_array($subscription->guid, $enabled_subscription_ids) ?
-                    Entity::Enabled : Entity::Disabled                
+                    Subscription::Enabled : Subscription::Disabled                
             );            
             $subscription->language = $language;
             $subscription->save();                        
@@ -59,7 +58,6 @@ class Action_EmailSettings extends Action
         
         $query = EmailSubscription::query()
             ->where('email = ?', $email)
-            ->show_disabled(true)
             ->order_by('tid')
             ->limit($limit, $offset);
         

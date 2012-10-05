@@ -9,7 +9,7 @@ class FeedItem_Message extends FeedItem
         
         $message = $this->get_subject_entity();
         $container = $message->get_container_entity();
-        if (!$container || !$container->is_enabled())
+        if (!$container)
             return false;
         
         return true;

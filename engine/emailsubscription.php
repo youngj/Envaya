@@ -11,6 +11,7 @@ abstract class EmailSubscription extends Subscription
         'name' => '',
         'num_notifications' => 0,
         'last_notification_time' => 0,
+        'status' => 1,
     );
     
     // subscription that each user's email is automatically subscribed to for their own account
@@ -38,7 +39,6 @@ abstract class EmailSubscription extends Subscription
     static function delete_for_entity($entity, $email)
     {
         foreach (static::query_for_entity($entity)
-            ->show_disabled(true)
             ->where('email = ?', $email)
             ->filter() as $subscription)
         {
@@ -54,7 +54,6 @@ abstract class EmailSubscription extends Subscription
         }
     
         $subscription = static::query_for_entity($entity)
-            ->show_disabled(true)
             ->where('email = ?', $email)
             ->get();
             

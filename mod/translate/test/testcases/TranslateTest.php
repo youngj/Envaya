@@ -280,18 +280,23 @@ class TranslateTest extends SeleniumTest
         $this->assertContains("Maeneo ya ukurasa huu yametafsiriwa toka Kiingereza kwa Kiswahili", 
             $this->getText("//div[@id='translate_bar']"));
                 
-        // delete content, test can't view translation anymore
+        // delete content, test unauthenticated user can't view translation anymore
         $this->clickAndWait("//div[@id='top_menu']//a[contains(@href,'/edit')]");
         $this->submitForm("//button[@id='widget_delete']");
         $this->getConfirmation();
         $this->ensureGoodMessage('futwa');        
         
         $this->open('/tr/sw/content');
-        $this->mustNotExist("//tr//a[contains(text(),'kutafsiri')]");
+        $this->mouseOver("//tr//a[contains(text(),'kutafsiri')]");
         $this->mouseOver("//tr//a[contains(text(),'dharura')]");             
-
+        
+        $this->logout();
+        $this->open('/tr/sw/content');
+        
+        $this->mouseOver("//tr//a[contains(text(),'dharura')]");             
+        $this->mustNotExist("//tr//a[contains(text(),'kutafsiri')]");        
+        
         $this->open($translate_url);
-        $this->ensureBadMessage();
         
         // can't view translations from unapproved orgs, unless admin       
         $this->login("testunapproved","asdfasdf");

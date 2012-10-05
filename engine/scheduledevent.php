@@ -75,7 +75,7 @@ abstract class ScheduledEvent extends Entity
         }
 
         $notifier = $this->get_container_entity();
-        if (!$notifier || !$notifier->is_enabled())
+        if (!$notifier)
         {
             $this->next_time = null;
             $this->save();

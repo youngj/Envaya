@@ -7,7 +7,7 @@
     
     $is_section = $widget->is_section();
     
-    if ($widget->is_enabled())
+    if ($widget->tid)
     {
         $form_body .= view('input/alt_submit', array(
             'name' => "delete",
@@ -24,7 +24,7 @@
     }
     else
     {
-        $saveText = $widget->is_enabled() ? __('widget:view') : 
+        $saveText = $widget->tid ? __('widget:view') : 
             ($is_section ? __('widget:create_section') : __('widget:create'));        
     }
     $form_body .= view('input/submit', array('value' => $saveText));

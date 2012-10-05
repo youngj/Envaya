@@ -15,6 +15,7 @@ class Widget extends Entity
     const Added = 'added';
 
     // publish_status values
+    const Deleted = -1;
     const Draft = 0;
     const Published = 1;
 
@@ -319,10 +320,9 @@ class Widget extends Entity
     
     function save_draft($content)
     {
-        if (!$this->guid || $this->status == Entity::Disabled)        
+        if (!$this->tid)
         {
             $this->publish_status = Widget::Draft;
-            $this->enable();            
             $this->save();            
         }
         parent::save_draft($content);            
@@ -330,7 +330,7 @@ class Widget extends Entity
     
     function refresh_attributes()
     {
-		$this->num_comments = $this->query_comments()->count();
+		$this->num_comments = $this->query_comments()->where('status = ?', Comment::Published)->count();
     }    
     
     static function get_view_permission()
@@ -370,12 +370,14 @@ class Widget extends Entity
         return $widget;
     }
     
+    function is_published()
+    {
+        return $this->tid && $this->publish_status == Widget::Published;
+    }
+    
     static function get_for_entity($entity)
     {
-        return static::query_for_entity($entity)
-            ->show_disabled(true)
-            ->order_by('status desc') // prefer enabled over disabled widgets
-            ->get();        
+        return static::query_for_entity($entity)->get();        
     }
 
     static function get_or_init_for_entity($entity, $defaults = null)

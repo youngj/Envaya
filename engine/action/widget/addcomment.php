@@ -11,7 +11,7 @@ class Action_Widget_AddComment extends Action
 	{      
         $widget = $this->get_widget();
         
-        if (!$widget->guid || !$widget->is_enabled())
+        if (!$widget->tid)
         {
             throw new NotFoundException();
         }        
@@ -30,7 +30,7 @@ class Action_Widget_AddComment extends Action
 			throw new RedirectException(__('comment:empty'), $comments_url);
         }
         
-		if ($widget->query_comments()->where('content = ?', $content)->exists())
+		if ($widget->query_comments()->where('status = ?', Comment::Published)->where('content = ?', $content)->exists())
 		{
 			throw new RedirectException(__('comment:duplicate'), $comments_url);
 		}

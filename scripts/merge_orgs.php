@@ -98,15 +98,14 @@ if ($src_widget->guid && $dest_widget->guid)
 }
 
 // migrate duplicate pages, but with a unique widget name to avoid collisions
-$widgets = $src_org->query_widgets()->show_disabled(true)->filter();
+$widgets = $src_org->query_widgets()->filter();
 foreach ($widgets as $widget)
 {
     if ($dest_org->get_widget_by_name($widget->widget_name)->guid)
     {
         $widget->widget_name = "{$widget->widget_name}_old{$widget->guid}";
         $widget->container_guid = $dest_guid;
-        $widget->disable();
-        $widget->save();
+        $widget->delete();
     }
 }
 
@@ -151,11 +150,6 @@ foreach ($classes as $cls)
         
         $query = $cls::query()->where($where)->args($guid_values);
         
-        if (method_exists($query, 'show_disabled'))
-        {
-            $query->show_disabled(true);
-        }
-        
         echo $query->get_filter_sql();
         echo "\n";
                 
@@ -175,7 +169,6 @@ echo "added 404 redirect: $redirect\n";
 
 $src_org->username = $src_org->username . ".deleted";
 $src_org->approval = -1;
-$src_org->disable();
-$src_org->save();
+$src_org->delete();
 
 echo "done!\n";

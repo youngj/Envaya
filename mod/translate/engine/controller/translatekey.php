@@ -47,7 +47,6 @@ class Controller_TranslateKey extends Controller
         if ($translation_guid)
         {
             $translation = $key->query_translations()
-                ->show_disabled(true)
                 ->where('guid = ?', $translation_guid)
                 ->get();   
                 

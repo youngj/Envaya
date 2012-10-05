@@ -34,9 +34,9 @@ class DiscussionTopic extends Entity
     
     function refresh_attributes()
     {
-        $lastMessage = $this->query_messages()->order_by('time_posted desc, tid desc')->limit(1)->get();
+        $lastMessage = $this->query_messages()->where('status = ?', DiscussionMessage::Published)->order_by('time_posted desc, tid desc')->limit(1)->get();
     
-        $this->num_messages = $this->query_messages()->count();
+        $this->num_messages = $this->query_messages()->where('status = ?', DiscussionMessage::Published)->count();
         $this->last_time_posted = $lastMessage ? $lastMessage->time_posted : 0;
         $this->last_from_name = $lastMessage ? $lastMessage->from_name : '';
         $this->snippet = $lastMessage ? Markup::get_snippet($lastMessage->content, 250) : '';        

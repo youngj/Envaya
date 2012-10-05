@@ -113,25 +113,6 @@
     {
         echo "Owner: <a href='{$owner->get_admin_url()}'>".escape($owner->get_title())."</a><br />";
     }
-    echo "Type: ".get_class($entity)."<br />";
-    
-    echo "<div class='admin_links'>";
-    if ($entity->is_enabled())
-    {
-        echo view('input/post_link', array(
-            'text' => __('entity:disable'),
-            'confirm' => __('areyousure'),        
-            'href' => "{$entity->get_admin_url()}/disable"
-        ));        
-    }
-    else
-    {
-        echo view('input/post_link', array(
-            'text' => __('entity:enable'),
-            'confirm' => __('areyousure'),        
-            'href' => "{$entity->get_admin_url()}/enable"
-        ));            
-    }
-    echo "</div>";
+    echo "Type: ".get_class($entity)."<br />";    
 ?>
 </div>

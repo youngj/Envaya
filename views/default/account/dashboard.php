@@ -4,11 +4,11 @@
     if (Permission_EditUserSite::has_for_entity($user))
     {    
         $news = Widget_News::get_for_entity($user);
-        if ($news && $news->is_enabled())
+        if ($news)
         {
             echo view('section', array(
                 'header' => __("widget:news:add_update"), 
-            ));                
+            ));
             echo view('news/add_post', array('widget' => $news));
         }
 

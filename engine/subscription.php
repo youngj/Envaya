@@ -19,6 +19,40 @@
  */
 abstract class Subscription extends Entity
 {
+    const Enabled = 1;
+    const Disabled = 0;
+
+    public function set_status($status)
+    {
+        $this->status = $status;
+    }
+    
+    /**
+     * Disable this entity.
+     */
+    public function disable()
+    {
+        $this->set_status(self::Disabled);
+    }
+
+    /**
+     * Re-enable this entity.
+     */
+    public function enable()
+    {
+        $this->set_status(self::Enabled);
+    }
+
+    /**
+     * Is this entity enabled?
+     *
+     * @return boolean
+     */
+    public function is_enabled()
+    {
+        return $this->status == self::Enabled;
+    }
+
     static function query_for_entity($entity)
     {
         return static::query()->where('container_guid = ?', $entity->guid);
@@ -37,7 +71,7 @@ abstract class Subscription extends Entity
     }
     
     /*
-     * Gets a list of all subscriptions for this subscription type
+     * Gets a list of all enabled subscriptions for this subscription type
      * on all entities containing $entity (including $entity itself)
      */
     static function get_subscriptions($entity)
@@ -48,7 +82,7 @@ abstract class Subscription extends Entity
         
         while ($cur != null)
         {
-            $subscription_lists[] = static::query_for_entity($cur)->filter();
+            $subscription_lists[] = static::query_for_entity($cur)->where('status = ?', self::Enabled)->filter();
             $cur = $cur->get_container_entity();
         }
                 

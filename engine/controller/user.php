@@ -35,7 +35,7 @@ abstract class Controller_User extends Controller
         $this->allow_content_translation();        
         $this->use_public_layout($widget);        
         
-        if ($widget && $widget->is_enabled())
+        if ($widget && $widget->is_published())
         {
             $this->allow_view_types($widget->get_view_types());
         }
@@ -44,7 +44,7 @@ abstract class Controller_User extends Controller
             $this->allow_view_types(null);
         }
                         
-        if (!$widget || !$widget->is_enabled() || $widget->publish_status != Widget::Published)
+        if (!$widget || !$widget->is_published())
         {
             throw new NotFoundException();
         }
@@ -90,11 +90,7 @@ abstract class Controller_User extends Controller
 
             if ($user->approval < 0)
             {
-                $user_actions_menu->add_item(view('input/post_link', array(
-                    'text' => __('approval:delete'),
-                    'confirm' => __('areyousure'),
-                    'href' => "{$user->get_admin_url()}/disable"
-                )));
+                $user_actions_menu->add_link(__('approval:delete'), "{$user->get_url()}/delete");
             }
         }
 
@@ -196,7 +192,7 @@ abstract class Controller_User extends Controller
         $user = $this->get_user();
         
         $widgets = $user->query_menu_widgets()
-            ->columns('guid,container_guid,owner_guid,language,widget_name,subtype_id,handler_arg,title,status,thumbnail_url')
+            ->columns('guid,container_guid,owner_guid,language,widget_name,subtype_id,handler_arg,title,thumbnail_url')
             ->filter();
         
         foreach ($widgets as $widget)

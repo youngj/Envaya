@@ -13,10 +13,9 @@ class Action_Discussion_NewTopic extends Action
         $site_user = $this->get_user();
         
         $widget = Widget_Discussions::get_or_new_for_entity($site_user);
-        if (!$widget->is_enabled())
+        if (!$widget->tid)
         {
-            Permission_EditUserSite::require_for_entity($widget);            
-            $widget->enable();
+            Permission_EditUserSite::require_for_entity($widget);
             $widget->save();
         }                
         
@@ -115,7 +114,7 @@ class Action_Discussion_NewTopic extends Action
         $site_user = $this->get_user();       
 
         $widget = Widget_Discussions::get_or_new_for_entity($site_user);
-        if (!$widget->is_enabled())
+        if (!$widget->is_published())
         {
             Permission_EditUserSite::require_for_entity($widget);
         }

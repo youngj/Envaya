@@ -1,6 +1,7 @@
 CREATE TABLE `discussion_messages` (
     <?php require 'schema/entity_columns.php'; ?>,
     <?php require 'schema/content_columns.php'; ?>,
+    `status` tinyint(4) NOT NULL DEFAULT 1,
     `message_id` varchar(128) default '',
     `subject` text,
     `from_name` text,

@@ -5,6 +5,7 @@
 
     $count = $widget->query_widgets()->count();
     $updates = $widget->query_widgets()
+        ->where('publish_status <> ?', Widget::Deleted)
         ->order_by('publish_status asc, time_published desc, tid desc') // show draft posts first
         ->limit($limit, $offset)
         ->filter();

@@ -122,15 +122,12 @@ class ExternalFeed extends Entity
 
     function can_update()
     {
-        if (!$this->is_enabled())
-            return false;
-    
         $container = $this->get_container_entity();
-        if (!$container || !$container->is_enabled())
+        if (!$container)
             return false;
 
         $root = $this->get_container_user();
-        if (!$root || !$root->is_enabled())
+        if (!$root)
             return false;
             
         return true;

@@ -12,8 +12,7 @@ class Action_DeleteTranslation extends Action
         $key = $this->param('key');
         $translation = $this->param('translation');
         
-        $translation->disable();
-        $translation->save();
+        $translation->delete();
         
         $key->update(true);
         

@@ -446,7 +446,7 @@ abstract class User extends Entity
         return Cache::make_key("guid_for_username", $username);
     }
 
-    static function get_by_username($username, $show_disabled = false)
+    static function get_by_username($username)
     {
         if (!$username)
             return null;
@@ -477,7 +477,7 @@ abstract class User extends Entity
             $cache->set($cacheKey, $guid);
         }
 
-        return static::get_by_guid($guid, $show_disabled);
+        return static::get_by_guid($guid);
     }    
     
     static function validate_username($username, $min_length = 3)
@@ -749,12 +749,12 @@ abstract class User extends Entity
             ?: 'Widget_Generic';
     }
     
-    function get_entity_by_local_id($local_id, $show_disabled = false)
+    function get_entity_by_local_id($local_id)
     {
         $row = Database::get_row("SELECT * FROM local_ids where user_guid = ? AND local_id = ?", array($this->guid, $local_id));
         if ($row)
         {
-            return Entity::get_by_guid($row->guid, $show_disabled);
+            return Entity::get_by_guid($row->guid);
         }
         return null;
     }

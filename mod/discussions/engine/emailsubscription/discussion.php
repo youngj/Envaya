@@ -6,7 +6,7 @@ class EmailSubscription_Discussion extends EmailSubscription
     {
         $tid = $match['tid'];
         
-        $message = DiscussionMessage::query()->where('tid = ?', $tid)->show_disabled(true)->get();
+        $message = DiscussionMessage::query()->where('tid = ?', $tid)->get();
         if (!$message)
         {
             error_log("invalid message tid $tid");

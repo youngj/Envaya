@@ -140,9 +140,7 @@ class TranslationLanguage extends Entity
         $group_names = $en->get_all_group_names();
         sort($group_names);
         
-        $groups = $this->query_groups()
-            ->show_disabled(true)
-            ->filter();
+        $groups = $this->query_groups()->where('status = ?', InterfaceGroup::Enabled)->filter();
         
         $groups_map = array();
         foreach ($groups as $group)

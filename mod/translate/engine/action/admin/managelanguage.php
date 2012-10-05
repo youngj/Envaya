@@ -12,17 +12,14 @@ class Action_Admin_ManageLanguage extends Action
         $language = $this->param('language');
         if (Input::get_string('delete'))
         {
-            $language->disable();
-            $language->save();
+            $language->delete();
             
             SessionMessages::add(__('itrans:language_deleted'));
             $this->redirect('/tr/admin');
         }
         else
-        {
-            
+        {            
             $language->name = Input::get_string('name');
-            $language->enable();
             $language->save();
             
             $available_groups = $language->get_available_groups();
@@ -32,7 +29,7 @@ class Action_Admin_ManageLanguage extends Action
             $disabled_groups = $language->query_groups()->where_not_in('name', $enabled_groups)->filter();
             foreach ($disabled_groups as $disabled_group)
             {
-                $disabled_group->disable();
+                $disabled_group->status = InterfaceGroup::Disabled;
                 $disabled_group->save();
             }
             
@@ -40,7 +37,7 @@ class Action_Admin_ManageLanguage extends Action
             {
                 if (in_array($group->name, $enabled_groups))
                 {
-                    $group->status = Entity::Enabled;
+                    $group->status = InterfaceGroup::Enabled;
                     $group->save();                    
                     $group->update_defined_translations();
                 }

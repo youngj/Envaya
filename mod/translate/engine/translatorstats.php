@@ -31,6 +31,7 @@ class TranslatorStats extends Entity
         $language = $this->get_container_entity();
         
         $row = $language->query_translations()
+            ->where('status = ?', Translation::Published)
             ->where('owner_guid = ?', $this->owner_guid)
             ->columns('count(*) as num_translations, sum(score) as score')
             ->set_row_function(null)

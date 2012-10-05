@@ -4,11 +4,9 @@
     `container_guid` binary(24) NULL,
 	`time_created` bigint(20) unsigned NOT NULL,
 	`time_updated` bigint(20) unsigned NOT NULL,
-    `status` tinyint(4) not null default 1,	
-    `metadata_json` text null,
-    PRIMARY KEY  (`guid`),
+    `metadata_json` mediumtext null,
+    UNIQUE KEY `guid` (`guid`),
 	KEY `owner_guid` (`owner_guid`),
-    KEY `tid` (`tid`),
+    PRIMARY KEY `tid` (`tid`),
 	KEY `container_guid` (`container_guid`),
-	KEY `time_created` (`time_created`,`tid`),
-	KEY `time_updated` (`time_updated`,`tid`)
+	KEY `time_created` (`time_created`)

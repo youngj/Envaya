@@ -234,7 +234,9 @@ class SMS_Controller_News extends SMS_Controller
     {
         $this->set_page_action('show_subscriptions');
     
-        $query = $this->query_subscriptions()->order_by('local_id');
+        $query = $this->query_subscriptions()
+            ->where('status = ?', Subscription::Enabled)
+            ->order_by('local_id');
     
         $this->reply(
             $this->query_paginator($query, $page,
@@ -256,7 +258,6 @@ class SMS_Controller_News extends SMS_Controller
         $local_id = $this->param('local_id');
     
         $subscription = $this->query_subscriptions()
-            ->show_disabled(true)
             ->where('local_id = ?', $local_id)
             ->get();
             
@@ -305,6 +306,7 @@ class SMS_Controller_News extends SMS_Controller
     function action_stop_all()
     {
         $subscriptions = $this->query_subscriptions()
+            ->where('status = ?', Subscription::Enabled)
             ->filter();
             
         if ($subscriptions)
@@ -337,7 +339,6 @@ class SMS_Controller_News extends SMS_Controller
         $local_id = $this->param('local_id');
         
         $subscription = $this->query_subscriptions()
-            ->show_disabled(true)
             ->where('local_id = ?', $local_id)
             ->get();
 
@@ -408,7 +409,7 @@ class SMS_Controller_News extends SMS_Controller
             
             $news = Widget_News::get_for_entity($user);
             
-            if ($news && $news->is_enabled() && $news->query_published_widgets()->exists())
+            if ($news && $news->is_published() && $news->query_published_widgets()->exists())
             {
                 echo __('sms:user_news')."\n";
             }
@@ -442,7 +443,7 @@ class SMS_Controller_News extends SMS_Controller
         $this->set_page_action('news');
         
         $news = Widget_News::get_for_entity($user);
-        if ($news && $news->is_enabled())
+        if ($news && $news->is_published())
         {
             $query = $news->query_published_widgets()
                 ->order_by('time_published desc, tid desc');
@@ -642,7 +643,7 @@ class SMS_Controller_News extends SMS_Controller
         $this->set_page_action('discussions');
         
         $discussions = Widget_Discussions::get_for_entity($user);
-        if ($discussions && $discussions->is_enabled())
+        if ($discussions && $discussions->is_published())
         {
         }
         else
@@ -770,6 +771,7 @@ class SMS_Controller_News extends SMS_Controller
             $index = (int)$this->param('index');
             $offset = max(0, $index - 1);
             $comment = $post->query_comments()
+                ->where('status = ?', Comment::Published)
                 ->limit(1, $offset)
                 ->get();
                 
@@ -1011,8 +1013,7 @@ class SMS_Controller_News extends SMS_Controller
         }
         else
         {
-            $item->disable();
-            $item->save();
+            $item->delete();
             
             if ($item instanceof Comment)
             {
@@ -1038,10 +1039,7 @@ class SMS_Controller_News extends SMS_Controller
         
         if (in_array($lang, $languages))
         {
-            foreach ($this->query_subscriptions()
-                ->show_disabled(true)
-
-                ->filter() as $subscription)
+            foreach ($this->query_subscriptions()->filter() as $subscription)
             {
                 $subscription->language = $lang;
                 $subscription->save();

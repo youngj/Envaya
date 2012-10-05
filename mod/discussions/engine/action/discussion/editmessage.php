@@ -48,6 +48,7 @@ class Action_Discussion_EditMessage extends Action
         
         if ($prev_email && 
             $topic->query_messages()
+                ->where('status = ?', DiscussionMessage::Published)
                 ->where('from_email = ?', $prev_email)
                 ->is_empty())
         {

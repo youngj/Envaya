@@ -32,8 +32,8 @@ class Action_Widget_Edit extends Action
         $widget = $this->get_widget();        
     
         if (Input::get_string('delete'))
-        {
-            $widget->disable();
+        {   
+            $widget->publish_status = Widget::Deleted;
             $widget->save();
 
             SessionMessages::add(!$widget->is_section() ? __('widget:delete:success') : __('widget:delete_section:success'));            
@@ -41,19 +41,14 @@ class Action_Widget_Edit extends Action
             $this->redirect($widget->get_container_entity()->get_edit_url());
         }
         else
-        {
-            if (!$widget->is_enabled())
-            {
-                $widget->enable();
-            }            
-            
+        {            
             $widget->publish_status = Widget::Published;
             $widget->time_updated = timestamp();
             
             $container = $widget->get_container_entity();
-            if (!$container->is_enabled())
+            if (($container instanceof Widget) && $container->publish_status != Widget::Published)
             {
-                $container->enable();
+                $container->publish_status = Widget::Published;
                 $container->save();
             }
 

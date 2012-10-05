@@ -10,7 +10,7 @@ foreach (Config::get('languages') as $code)
     $language = TranslationLanguage::get_by_code($code);
     if ($language && $language->guid)
     {
-        foreach ($language->query_groups()->filter() as $group)
+        foreach ($language->query_groups()->where('status = ?', InterfaceGroup::Enabled)->filter() as $group)
         {
             $group->update_defined_translations();
         }

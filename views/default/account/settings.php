@@ -95,12 +95,11 @@
     echo view('input/hidden', array('name' => 'from', 'value' => Input::get_string('from')));
     
     if (Permission_UseAdminTools::has_for_entity($user))
-    {   
-        echo view('input/alt_submit', array(
-            'name' => 'delete', 
-            'id' => 'widget_delete', 
-            'confirm' => __('areyousure'),
-            'value' => __('user:delete'))); 
+    {
+        echo "<div style='float:right'>";
+        echo "<br />";
+        echo "<a style='color:#900' href='{$user->get_url()}/delete'>Delete user</a>";
+        echo "</div>";
     }
     
     echo view('input/submit', array('value' => __('savechanges'), 'track_dirty' => true)); 

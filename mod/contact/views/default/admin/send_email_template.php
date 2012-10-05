@@ -6,7 +6,7 @@
     
     echo view('admin/preview_email_template', array(
         'template' => $template, 
-        'subscription' => $subscriptions[0]
+        'subscription' => $subscriptions ? $subscriptions[0] : null
     ));
     echo view('admin/email_template_statistics', array('template' => $template));
     

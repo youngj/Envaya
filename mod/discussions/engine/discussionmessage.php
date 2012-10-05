@@ -15,10 +15,15 @@ class DiscussionMessage extends Entity
         'from_location' => '',
         'from_email' => '',
         'time_posted' => 0,
+        'status' => 1,
     );
+    
     static $mixin_classes = array(
         'Mixin_Content'
     );
+    
+    const Published = 1;
+    const Deleted = 0;
     
     function get_text_content()
     {

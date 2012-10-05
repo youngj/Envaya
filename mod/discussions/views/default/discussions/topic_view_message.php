@@ -5,7 +5,7 @@
     
     echo view('discussions/message', array('message' => $message));
 
-    if ($message->is_enabled()) 
+    if ($message->status == DiscussionMessage::Published) 
     {
         echo "<div style='font-size:10px'>";
         

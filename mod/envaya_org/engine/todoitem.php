@@ -47,7 +47,7 @@ class TodoItem
         
         $query = $org->query_widgets()
             ->where_in('subtype_id', array_map(function($cls) { return $cls::get_subtype_id(); }, $widget_classes))
-            ->columns('guid, status, time_created, time_updated, container_guid, owner_guid,
+            ->columns('guid, time_created, time_updated, container_guid, owner_guid,
                         widget_name, subtype_id, title, length(content) as content_len');
         
         $widgets = $query->filter();
@@ -82,19 +82,19 @@ class TodoItem
         $history = $widgets_map['Widget_History'];
         $items[] = new TodoItem(
             "<a href='{$history->get_edit_url()}'>".__('todo:history')."</a>",
-            $history->is_enabled() && $history->content_len > 0
+            $history->is_published() && $history->content_len > 0
         );            
 
         $projects = $widgets_map['Widget_Projects'];
         $items[] = new TodoItem(
             "<a href='{$projects->get_edit_url()}'>".__('todo:projects')."</a>",
-            $projects->is_enabled() && $projects->content_len > 0
+            $projects->is_published() && $projects->content_len > 0
         );            
         
         $team = $widgets_map['Widget_Team'];
         $items[] = new TodoItem(
             "<a href='{$team->get_edit_url()}'>".__('todo:team')."</a>",
-            $team->is_enabled() && $team->content_len > 0
+            $team->is_published() && $team->content_len > 0
         );            
         
         $news = $widgets_map['Widget_News'];
@@ -107,7 +107,7 @@ class TodoItem
         $volunteer = $widgets_map['Widget_Volunteer'];
         $items[] = new TodoItem(
             "<a href='{$volunteer->get_edit_url()}'>".__('todo:volunteer')."</a>",
-            $volunteer->is_enabled() && $volunteer->content_len > 0
+            $volunteer->is_published() && $volunteer->content_len > 0
         );                 
         
         $numImages = $org->query_files()->where("size='small'")->where('time_created > ?', $recent_time)->count();
@@ -124,13 +124,13 @@ class TodoItem
         $network = $widgets_map['Widget_Network'];
         $items[] = new TodoItem(
             "<a href='{$network->get_edit_url()}'>".__('todo:network')."</a>",
-            $network->is_enabled()
+            $network->is_published()
         );
         
         $discussions = $widgets_map['Widget_Discussions'];
         $items[] = new TodoItem(
             "<a href='{$discussions->get_edit_url()}'>".__('todo:discussions')."</a>",
-            $discussions->is_enabled()
+            $discussions->is_published()
         );        
         
         return $items;

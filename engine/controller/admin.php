@@ -199,18 +199,6 @@ class Controller_Admin extends Controller
             ))
         ));
     }    
-
-    function entity_disable()
-    {
-        $action = new Action_Admin_DisableEntity($this);
-        $action->execute();
-    }            
-
-    function entity_enable()
-    {
-        $action = new Action_Admin_EnableEntity($this);
-        $action->execute();
-    }
     
     function entity_view()
     {

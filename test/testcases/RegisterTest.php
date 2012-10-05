@@ -723,11 +723,20 @@ class RegisterTest extends SeleniumTest
         }
         catch (Testing_Selenium_Exception $ex) {}
 
-        $this->click("//a[contains(@href,'disable')]");
-        $this->getConfirmation();
+        $this->click("//a[contains(@href,'delete')]");        
         $this->waitForPageToLoad(10000);            
-
-        $this->ensureGoodMessage();
+        
+        $this->click("//button");
+        $this->getConfirmation();
+        
+        $this->waitForPageToLoad(10000);            
+        $this->ensureBadMessage();
+        
+        $this->type("//input[@name='password']", "secretpassw0rd");
+        $this->click("//button");
+        $this->getConfirmation();
+        
+        $this->retry('ensureGoodMessage');
         $this->logout();
     }
 }

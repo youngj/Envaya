@@ -4,7 +4,7 @@
     
     $offset = Input::get_int('offset');
     $limit = 15;
-    $new_translations = $query->limit($limit, $offset)->filter();
+    $new_translations = $query->limit($limit, $offset)->where('status = ?', Translation::Published)->filter();
     $count = $query->count();    
 
     echo view('pagination', array(

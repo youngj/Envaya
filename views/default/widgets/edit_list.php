@@ -1,7 +1,7 @@
 <?php
     $container = $vars['container'];
     
-    $widgets = $container->query_widgets()->filter();    
+    $widgets = $container->query_widgets()->where('publish_status <> ?', Widget::Deleted)->filter();    
     $from = escape(urlencode($_SERVER['REQUEST_URI']));
     
     $menu_widgets = array();

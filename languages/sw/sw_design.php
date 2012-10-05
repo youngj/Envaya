@@ -4,7 +4,10 @@ return array(
     'design:edit' => 'Hariri mwonekano wa tovuti',
   
     'design:theme' => 'Wazo wa tovuti',
-    'design:theme:lightblue' => 'Menyu ya Juu',
+    
+    'design:layout:default' => 'Menyu ya Juu',
+    'design:layout:two_column_left_sidebar' => 'Menyu ya Kushoto',
+   
     'design:theme:brick' => 'Matofali',
     'design:theme:craft4' => 'Mbao na Kitambaa',
     'design:theme:craft1' => 'Sampuli ya Kitambaa',
@@ -12,7 +15,6 @@ return array(
     'design:theme:wovengrass' => 'Majani yafumwayo',
     'design:theme:beads' => 'Shanga',
     'design:theme:chrome' => 'Kromu',
-    'design:theme:leftmenu' => "Menyu ya Kushoto",       
     
     'design:edit_name' => 'Hariri jina',
     'design:use_header_image' => 'Tumia picha ya kichwa',

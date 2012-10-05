@@ -1,6 +1,7 @@
 <?php
     $language = $vars['language'];
     $query = $language->query_translations()
+        ->where('status = ?', Translation::Published)
         ->where('source = ?', Translation::Human)
         ->order_by('time_created desc, tid desc');
 

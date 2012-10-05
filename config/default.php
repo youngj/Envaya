@@ -36,7 +36,7 @@ return array(
 	'amqp:vhost' => '/envaya',	    
        
     'cache:backend' => "Cache_Database",
-    'cache:version' => 207,  // increment when all cached objects need to be invalidated (rare)
+    'cache:version' => 208,  // increment when all cached objects need to be invalidated (rare)
             
     'analytics:backend' => "Analytics_Null",   
     

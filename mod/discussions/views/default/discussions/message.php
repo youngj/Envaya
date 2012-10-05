@@ -3,7 +3,7 @@
     
     echo "<div id='msg{$message->guid}'>";
     
-    if ($message->is_enabled())
+    if ($message->status == DiscussionMessage::Published)
     {   
         echo "<strong>";
         echo $message->get_from_link();

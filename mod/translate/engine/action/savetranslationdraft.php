@@ -21,7 +21,7 @@ class Action_SaveTranslationDraft extends Action
             $translation = $key->new_translation();
             $translation->source = Translation::Human;
             $translation->owner_guid = $user->guid;
-            $translation->disable();
+            $translation->status = Translation::Draft;
         }
         
         $translation->save();

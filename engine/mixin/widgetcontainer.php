@@ -33,6 +33,7 @@ class Mixin_WidgetContainer extends Mixin
         
         $saved_widgets = Widget::query_for_entity($this->instance)
             ->columns('guid,container_guid,subtype_id')
+            ->where('publish_status <> ?', Widget::Deleted)
             ->filter();
         
         foreach ($saved_widgets as $widget)
@@ -57,7 +58,6 @@ class Mixin_WidgetContainer extends Mixin
     {
         return $this->query_widgets()
             ->where('widget_name=?', $name)
-            ->show_disabled(true)
             ->get();
     }
     

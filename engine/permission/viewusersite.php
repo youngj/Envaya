@@ -7,15 +7,9 @@ class Permission_ViewUserSite extends Permission
     static function get($entity, $user)
     {
         if ($entity instanceof Widget)
-        {        
-            // can't view deleted widgets
-            if (!$entity->is_enabled())
-            {
-                return null;
-            }
-            
+        {                    
             // need editor permission to view unpublished widgets
-            if ($entity->publish_status != Widget::Published && !Permission_EditUserSite::is_granted($entity, $user))
+            if (!$entity->is_published() && !Permission_EditUserSite::is_granted($entity, $user))
             {
                 return null;
             }

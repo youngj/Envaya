@@ -53,11 +53,15 @@ class Action_ContactTemplate_Send extends Action
         $subscription_guids = Input::get_array('subscriptions');
         if ($subscription_guids)
         {
-            $subscriptions = $subscription_class::query()->where_in('guid', $subscription_guids)->filter();
+            $subscriptions = $subscription_class::query()
+                ->where('status = ?', Subscription::Enabled)
+                ->where_in('guid', $subscription_guids)
+                ->filter();
         }
         else
         {         
             $subscriptions = $template->query_potential_recipients()
+                ->where('status = ?', Subscription::Enabled)
                 ->order_by('tid')
                 ->limit(Config::get('contact:max_recipients'))
                 ->filter(); 

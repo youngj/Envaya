@@ -9,8 +9,12 @@ class InterfaceGroup extends Entity
     static $table_name = 'interface_groups';
     static $table_attributes = array(
         'name' => '',
+        'status' => 1,
         'num_keys' => 0,
-    );      
+    );
+    
+    const Enabled = 1;
+    const Disabled = 0;
     
     function get_defined_language()
     {
@@ -80,8 +84,7 @@ class InterfaceGroup extends Entity
         $deleted_keys = $this->query_keys()->where_not_in('name', $all_key_names)->filter();
         foreach ($deleted_keys as $deleted_key)
         {
-            $deleted_key->disable();
-            $deleted_key->save();
+            $deleted_key->delete();
         }
     
         $this->num_keys = $this->query_keys()->where("best_translation <> ''")->count();
@@ -107,14 +110,9 @@ class InterfaceGroup extends Entity
     {
         $key = $this->get_container_entity()->query_keys()
             ->where('name = ?', $name)
-            ->show_disabled(true)
             ->get();
 
-        if ($key)
-        {
-            $key->enable();
-        }
-        else
+        if (!$key)
         {
             $key = new InterfaceKey();
             $key->name = $name;
@@ -138,9 +136,7 @@ class InterfaceGroup extends Entity
     {
         $group = $this->get_defined_default_group();
         
-        $keys = $this->query_keys()
-            ->show_disabled(true)
-            ->filter();
+        $keys = $this->query_keys()->filter();
         
         $keys_map = array();
         foreach ($keys as $key)

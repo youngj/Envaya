@@ -51,7 +51,7 @@ class EmailSubscription_Comments extends EmailSubscription
     {
         $tid = $match['tid'];
         
-        $comment = Comment::query()->where('tid = ?', $tid)->show_disabled(true)->get();
+        $comment = Comment::query()->where('tid = ?', $tid)->get();
         if (!$comment)
         {
             error_log("invalid comment tid $tid");

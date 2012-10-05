@@ -14,8 +14,7 @@ class Action_Discussion_Edit extends Action
         
         if (Input::get_string('delete'))
         {
-            $topic->disable();
-            $topic->save();
+            $topic->delete();
             SessionMessages::add(__('discussions:topic_deleted'));            
             
             $widget = Widget_Discussions::get_or_new_for_entity($user);

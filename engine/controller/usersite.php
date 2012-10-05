@@ -56,7 +56,6 @@ class Controller_UserSite extends Controller_User
         return $this->init_widget(Widget::query()
             ->where('user_guid = ?', $user->guid)
             ->where('local_id = ?', $local_id)
-            ->show_disabled(true)
             ->get()
         );
     }
@@ -144,7 +143,7 @@ class Controller_UserSite extends Controller_User
         $widgetName = $this->param('widget_name');
         $widget = $user->get_widget_by_name($widgetName);
         
-        if (!$widget || !$widget->is_enabled())
+        if (!$widget)
         {
             throw new NotFoundException();            
         }
@@ -243,6 +242,12 @@ class Controller_UserSite extends Controller_User
     function action_set_approval()
     {
         $action = new Action_User_ChangeApproval($this);
+        $action->execute();
+    }
+
+    function action_delete()
+    {
+        $action = new Action_User_Delete($this);
         $action->execute();
     }               
 }

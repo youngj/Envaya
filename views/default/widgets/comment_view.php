@@ -3,7 +3,7 @@
     
     echo "<div class='comment' id='comment{$comment->guid}'>";
     
-    if ($comment->is_enabled())
+    if ($comment->status == Comment::Published)
     {
         echo "<div class='comment_name'>";            
         $owner = $comment->get_owner_entity(); 

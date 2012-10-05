@@ -12,6 +12,7 @@ class Comment extends Entity
 
     static $table_name = 'comments';
     static $table_attributes = array(
+        'status' => 1,
         'name' => '',
         'location' => '',
         'email' => '',
@@ -19,6 +20,9 @@ class Comment extends Entity
     static $mixin_classes = array(
         'Mixin_Content'
     );        
+    
+    const Published = 1;
+    const Deleted = 0;
     
     function get_url()
     {

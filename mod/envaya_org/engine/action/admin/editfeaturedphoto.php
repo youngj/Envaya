@@ -22,8 +22,7 @@ class Action_Admin_EditFeaturedPhoto extends Action
         
         if (Input::get_string('delete'))
         {
-            $photo->disable();
-            $photo->save();
+            $photo->delete();
             
             SessionMessages::add(__("featured:photo:deleted"));
             $this->redirect("/admin/envaya/featured_photos");        

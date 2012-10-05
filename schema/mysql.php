@@ -7,13 +7,13 @@ CREATE TABLE `files` (
   `height` int NULL,
   `size` varchar(32) NULL,
   `mime` varchar(32) NULL,
-
   KEY `group_name` (`group_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `comments` (
     <?php require 'schema/entity_columns.php'; ?>,
     <?php require 'schema/content_columns.php'; ?>,  
+  `status` tinyint(4) NOT NULL DEFAULT 1,
   `name` text default null,
   `email` varchar(128) default null,
   `location` text default null
@@ -35,7 +35,8 @@ CREATE TABLE `widgets` (
   `num_comments` int not null default 0,
   `feed_guid` binary(24) NULL,
   key `name_key` (`container_guid`,`widget_name`),
-  KEY `local_id_key` (`user_guid`,`local_id`)
+  KEY `local_id_key` (`user_guid`,`local_id`),
+  KEY `time_updated` (`time_updated`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `invited_emails` (
@@ -300,6 +301,7 @@ CREATE TABLE `local_ids` (
 
 CREATE TABLE `sms_subscriptions` (
     <?php require 'schema/entity_columns.php'; ?>,
+    `status` tinyint(4) NOT NULL DEFAULT 1,
     `subtype_id` varchar(63) not null,	
     `language` varchar(4) null,
     `phone_number` varchar(32) not null,
@@ -313,6 +315,7 @@ CREATE TABLE `sms_subscriptions` (
 
 CREATE TABLE `email_subscriptions` (
     <?php require 'schema/entity_columns.php'; ?>,
+    `status` tinyint(4) NOT NULL DEFAULT 1,
     `subtype_id` varchar(63) not null,	
     `language` varchar(4) null,
     `email` text not null,

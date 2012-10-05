@@ -1,0 +1,28 @@
+DELETE FROM scheduled_events WHERE subtype_id = 'reports.event.sendreportinvitation';
+DELETE FROM sms_subscriptions WHERE subtype_id = 'reports.subscription.sms.reportinvitation';
+DELETE FROM email_subscriptions WHERE subtype_id = 'reports.subscription.email.reportinvitation';
+
+DELETE FROM `email_templates` WHERE status = 0;
+DELETE FROM `sms_templates` WHERE status = 0;
+DELETE FROM `discussion_topics` WHERE status = 0;
+DELETE FROM `featured_sites` WHERE status = 0;
+DELETE FROM `featured_photos` WHERE status = 0;
+DELETE FROM `org_relationships` WHERE status = 0;
+DELETE FROM `report_definitions` WHERE status = 0;
+DELETE FROM `reports` WHERE status = 0;
+DELETE FROM `report_fields` WHERE status = 0;
+DELETE FROM `report_invitations` WHERE status = 0;
+DELETE FROM `report_comments` WHERE status = 0;
+DELETE FROM `report_versions` WHERE status = 0;
+DELETE FROM `translation_languages` WHERE status = 0;
+DELETE FROM `translation_keys` WHERE status = 0;
+DELETE FROM `translation_votes` WHERE status = 0;
+DELETE FROM `translator_stats` WHERE status = 0;
+DELETE FROM `translation_key_comments` WHERE status = 0;
+DELETE FROM `files` WHERE status = 0;
+UPDATE `widgets` set publish_status = -1 WHERE status = 0;
+DELETE FROM `users` WHERE status = 0;
+DELETE FROM `external_sites` WHERE status = 0;
+DELETE FROM `scheduled_events` WHERE status = 0;
+DELETE FROM `user_scopes` WHERE status = 0;
+DELETE FROM `permissions` WHERE status = 0;

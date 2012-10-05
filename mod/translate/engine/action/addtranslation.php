@@ -24,7 +24,7 @@ class Action_AddTranslation extends Action
         
         $value = $key->sanitize_value($value);        
         
-        if ($key->query_translations()->where('value = ?', $value)->exists())
+        if ($key->query_translations()->where('status = ?', Translation::Published)->where('value = ?', $value)->exists())
         {
             throw new ValidationException(__('itrans:duplicate'));
         }
@@ -45,7 +45,7 @@ class Action_AddTranslation extends Action
         {
             $translation->set_approved(true);
         }
-        $translation->enable();
+        $translation->status = Translation::Published;
         $translation->save();
         
         $vote = new TranslationVote();

@@ -77,11 +77,11 @@ abstract class FeedItem extends Model
     function is_valid()
     {
         $subject = $this->get_subject_entity();
-        if (!$subject || !$subject->is_enabled())
+        if (!$subject)
             return false;
 
         $user = $this->get_user_entity();
-        if (!$user || !$user->is_enabled())
+        if (!$user)
             return false;        
         
         return true;

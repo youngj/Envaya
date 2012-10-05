@@ -5,7 +5,7 @@
 <div id='comments'>
 
 <?php
-    $comments = $widget->query_comments()->show_disabled(true)->filter();
+    $comments = $widget->query_comments()->filter();
     
     if (sizeof($comments) > 0)
     {

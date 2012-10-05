@@ -1,6 +1,7 @@
 <?php
     $language = $vars['language'];
     $groups = $language->query_groups()
+        ->where('status = ?', InterfaceGroup::Enabled)
         ->order_by('name')->filter();
 ?>
 <div style='float:left;width:400px;margin-right:20px'>

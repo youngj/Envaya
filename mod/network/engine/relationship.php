@@ -205,8 +205,7 @@ class Relationship extends Entity
 
         if ($subject_org)
         {            
-            $email_subscriptions = EmailSubscription_Network::query_for_entity($subject_org)
-                ->filter();                
+            $email_subscriptions = EmailSubscription_Network::get_subscriptions($subject_org);            
             foreach ($email_subscriptions as $subscription)
             {
                 $subscription->send_notification($event_name, $this);

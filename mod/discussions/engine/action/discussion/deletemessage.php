@@ -12,12 +12,13 @@ class Action_Discussion_DeleteMessage extends Action
         $message = $this->param('message');
         $topic = $this->get_topic();
     
-        $message->disable();
+        $message->status = DiscussionMessage::Deleted;
         $message->save();
         
         $email = $message->from_email;
         if ($email && 
             $topic->query_messages()
+                ->where('status = ?', DiscussionMessage::Published)
                 ->where('from_email = ?', $email)
                 ->is_empty())
         {
@@ -26,10 +27,9 @@ class Action_Discussion_DeleteMessage extends Action
         
         SessionMessages::add(__('discussions:message_deleted'));
         
-        if ($topic->query_messages()->is_empty())
+        if ($topic->query_messages()->where('status = ?', DiscussionMessage::Published)->is_empty())
         {
-            $topic->disable();
-            $topic->save();
+            $topic->delete();
             
             $this->redirect(
                 Widget_Discussions::get_or_new_for_entity($this->get_user())->get_url()

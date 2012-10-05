@@ -18,10 +18,11 @@ class TranslationKey extends Entity
     
     function update($recursive = false)
     {
-        $this->num_translations = $this->query_translations()->count();
+        $this->num_translations = $this->query_translations()->where('status = ?', Translation::Published)->count();
 
         $best = $this->query_translations()
             ->where('score >= 0')
+            ->where('status = ?', Translation::Published)
             ->order_by('time_created desc, tid desc')
             ->get();
             
@@ -166,8 +167,7 @@ class TranslationKey extends Entity
         }
         
         return $this->query_translations()
-            ->show_disabled(true)
-            ->where('status = ?', Entity::Disabled)
+            ->where('status = ?', Translation::Draft)
             ->where('owner_guid = ?', $user->guid)
             ->order_by('tid desc')
             ->get();

@@ -10,7 +10,7 @@ class Action_Widget_DeleteComment extends Action
     function process_input()
 	{      
         $comment = $this->param('comment');
-        $comment->disable();
+        $comment->status = Comment::Deleted;
         $comment->save();
 
         $widget = $comment->get_container_entity();

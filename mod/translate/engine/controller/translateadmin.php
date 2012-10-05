@@ -30,7 +30,6 @@ class Controller_TranslateAdmin extends Controller
         
         $language = TranslationLanguage::query()
             ->where('code = ?', $lang)
-            ->show_disabled(true)
             ->get();
             
         if (!$language)
@@ -71,7 +70,7 @@ class Controller_TranslateAdmin extends Controller
         $zip = new ZipArchive(); 
         $zip->open($file, ZipArchive::OVERWRITE); 
 
-        $groups = $language->query_groups()->filter();
+        $groups = $language->query_groups()->where('status = ?', InterfaceGroup::Enabled)->filter();
         
         $lang = $language->code;
         

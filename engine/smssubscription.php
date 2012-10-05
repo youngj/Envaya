@@ -12,6 +12,7 @@ abstract class SMSSubscription extends Subscription
         'local_id' => 0,        // each phone_number has its own local_id namespace
         'num_notifications' => 0,        
         'last_notification_time' => 0,
+        'status' => 1,
     );
     
     // subscriptions that each user's primary phone number is automatically subscribed to for their own account
@@ -46,7 +47,6 @@ abstract class SMSSubscription extends Subscription
         $cls = get_called_class();
     
         $subscription = static::query_for_entity($entity)
-            ->show_disabled(true)
             ->where('phone_number = ?', $phone_number)
             ->get();
             

@@ -31,7 +31,7 @@
     $limit = 20;
     $offset = Input::get_int('offset');
     
-    $query  = $topic->query_messages()->limit($limit, $offset);
+    $query  = $topic->query_messages()->where('status = ?', DiscussionMessage::Published)->limit($limit, $offset);
     
     $count = $topic->num_messages;
     $messages = $query->filter();

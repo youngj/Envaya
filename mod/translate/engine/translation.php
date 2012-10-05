@@ -21,8 +21,13 @@ class Translation extends Entity
         'approval' => 0,
         'approval_time' => 0,
         'source' => 0,
+        'status' => 1,
     );   
 
+    // constants for status    
+    const Draft = 0;
+    const Published = 1;
+    
     // constants for Translation source
     const Unknown = 0;
     const Human = 1;            // translation was submitted by a human

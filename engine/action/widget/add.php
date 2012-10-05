@@ -17,16 +17,25 @@ class Action_Widget_Add extends Action
      
     function process_input()
     {
-        $container = $this->container;                        
-        if (!$container->is_enabled())
-        {
-            $container->enable();
-            $container->save();
+        $draft = Input::get_int('_draft');    
+        
+        $container = $this->container;            
+        
+        if ($container instanceof Widget)
+        {        
+            if (!$draft && !$container->is_published())
+            {
+                $container->publish_status = Widget::Published;
+                $container->save();
+            }
+            else if ($draft && !$container->tid)
+            {            
+                $container->publish_status = Widget::Draft;
+                $container->save();
+            }    
         }
         
-        $widget = $container->new_child_widget_from_input();        
-        
-        $draft = Input::get_int('_draft');
+        $widget = $container->new_child_widget_from_input();                
         
         $widget->publish_status = $draft ? Widget::Draft : Widget::Published;       
         
