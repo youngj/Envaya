@@ -79,11 +79,21 @@ abstract class Theme_UserSite extends Theme
         return $vars;
     }
 
+    static function set_defaults($vars, $defaults)
+    {
+        foreach ($defaults as $var => $value)
+        {
+            $vars[$var]['default'] = $value;
+        }
+        return $vars;
+    }
+    
     static function get_types()
     {
         return array(
             'background' => 'SELECTOR {background:VALUE}',
             'border_color' => 'SELECTOR {border-color:VALUE}',
+            'box_shadow' => 'SELECTOR { box-shadow:VALUE;-moz-box-shadow:VALUE}',
             'text_color' => 'SELECTOR {color:VALUE}',
             'selected_menu_background' => "SELECTOR.selected, SELECTOR:hover { background:VALUE }"        
         );
@@ -165,7 +175,7 @@ abstract class Theme_UserSite extends Theme
                 'type' => 'background',
                 'selector' => '.content_container',                    
                 'default' => '',
-            ),        
+            ),
             'border_bg' => array(
                 'type' => 'background',
                 'selector' => '.content_container .thin_column',        
@@ -211,6 +221,31 @@ abstract class Theme_UserSite extends Theme
                 'selector' => '.footer_container .thin_column',        
                 'default' => '',
             ), 
+            'button_bg' => array(
+                'type' => 'background',
+                'selector' => '.submit_button div',        
+                'default' => '#2e4973',
+            ),
+            'button_color' => array(
+                'type' => 'text_color',
+                'selector' => '.submit_button',        
+                'default' => '#fff',
+            ),
+            'help_color' => array(
+                'type' => 'text_color',
+                'selector' => '.help',        
+                'default' => '#666',
+            ),
+            'snippet_color' => array(
+                'type' => 'text_color',
+                'selector' => '.feed_snippet',        
+                'default' => '#666',
+            ),
+            'date_color' => array(
+                'type' => 'text_color',
+                'selector' => '.blog_date',        
+                'default' => '#aaa',
+            ),            
         );
     }
 }

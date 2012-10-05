@@ -3,9 +3,13 @@
 return array(
     'design:edit' => "Edit website design",
 
+    'design:layout' => 'Layout', 
+    'design:layout:default' => 'Menu on Top',
+    'design:layout:two_column_left_sidebar' => 'Menu on Left',
+    
     'design:theme' => "Theme",    
 
-    'design:theme:lightblue' => "Top Menu",
+    'design:theme:lightblue' => "Light Blue",
     'design:theme:brick' => "Bricks",
     'design:theme:craft4' => "Wood and Fabric",
     'design:theme:craft1' => "Fabric Pattern",
@@ -13,7 +17,13 @@ return array(
     'design:theme:wovengrass' => "Woven Grass",
     'design:theme:beads' => "Beads",
     'design:theme:chrome' => "Chrome",
-    'design:theme:leftmenu' => "Left Menu",    
+    'design:theme:light' => "Light Gray",    
+    'design:theme:dark' => "Dark Gray",    
+    'design:theme:blue' => "Blue",    
+    'design:theme:green' => "Green",        
+    'design:theme:yellow' => "Yellow",        
+    'design:theme:purple' => "Purple",        
+    'design:theme:red' => "Red",        
     
     'design:edit_name' => 'Edit name',
     'design:use_header_image' => 'Use header image',

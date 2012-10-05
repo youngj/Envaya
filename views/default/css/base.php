@@ -50,7 +50,6 @@ form {
 }
 label {
     font-weight: bold;
-    color:#333333;
 }
 
 #persistent_login label {

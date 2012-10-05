@@ -2,6 +2,11 @@
 
     $widget = $vars['widget'];
     
+    if ($widget->content)
+    {
+        echo view('widgets/generic_view', $vars);
+    }
+    
     $sub_widgets = $widget->query_menu_widgets()->filter();    
     
     foreach ($sub_widgets as $sub_widget)

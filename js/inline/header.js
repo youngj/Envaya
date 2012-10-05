@@ -61,9 +61,8 @@ function setDirty($dirty)
  */
 function ignoreDirty()
 {
-    var $dirty = window.dirty;
-    setDirty(false);
-    setTimeout(function() { setDirty($dirty) }, 5);    
+    window._ignoreDirty = true;
+    setTimeout(function() { window._ignoreDirty = false;}, 5);    
 }
 
 function setSubmitted()

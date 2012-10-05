@@ -23,7 +23,7 @@ class Organization extends User
     {
         /* auto-create empty pages */
         $home = Widget_Home::get_or_init_for_entity($this);
-        Widget_Mission::get_or_init_for_entity($home);
+        //Widget_Mission::get_or_init_for_entity($home);
         Widget_Updates::get_or_init_for_entity($home);
         Widget_Sectors::get_or_init_for_entity($home);
         Widget_Location::get_or_init_for_entity($home);                

@@ -5,7 +5,7 @@
  * This is created by default as the organization's home page, with sections 
  * of types Widget_Mission, Widget_Updates, Widget_Sectors, and Widget_Location.
  */
-class Widget_Home extends Widget
+class Widget_Home extends Widget_Generic
 {
     static $default_menu_order = 10;
     static $default_widget_name = 'home';    
@@ -34,11 +34,6 @@ class Widget_Home extends Widget
     function render_edit()
     {
         return view("widgets/home_edit", array('widget' => $this));
-    }
-
-    function process_input($action)
-    {
-        $this->save();
     }
     
     function is_section_container()

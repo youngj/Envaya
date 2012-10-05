@@ -247,7 +247,7 @@ class RegisterTest extends SeleniumTest
     {
         $this->clickAndWait("//a[contains(@href,'{$this->username}')]");
         $this->clickAndWait("//a[contains(@href,'lang=sw')]");
-        $this->mouseOver("//div[@class='section_header' and contains(text(),'Lengo')]");
+        $this->mouseOver("//div[@class='section_header' and contains(text(),'Mabadiliko Mapya')]");
         $this->mouseOver("//div[contains(@class, 'section_content')]//p[contains(text(),'website')]");
         $this->clickAndWait("//a[contains(@href,'trans=3')]");
         $this->mustNotExist("//div[contains(@class, 'section_content')]//p[contains(text(),'website')]");
@@ -260,14 +260,12 @@ class RegisterTest extends SeleniumTest
     {
         $this->clickAndWait("//a[contains(@href,'{$this->username}/home')]");
     
-        $this->assertContains("Mission", $this->getText("//div[@class='section_header']"));
-        $this->assertContains("Latest Updates", $this->getText("//div[@class='section_header'][2]"));
-        $this->assertContains("Sectors", $this->getText("//div[@class='section_header'][3]"));
-        $this->assertContains("Location", $this->getText("//div[@class='section_header'][4]"));
+        $this->assertContains("Latest Updates", $this->getText("//div[@class='section_header'][1]"));
+        $this->assertContains("Sectors", $this->getText("//div[@class='section_header'][2]"));
+        $this->assertContains("Location", $this->getText("//div[@class='section_header'][3]"));
     
         // update mission
         $this->clickAndWait("//a[contains(@href,'home/edit')]");
-        $this->clickAndWait("//a[contains(text(),'Mission')]");
         $this->setTinymceContent("new mission!");
         $this->clickAndWait("//button[@type='submit']");
         $this->mouseOver("//div[contains(@class, 'section_content')]//p[contains(text(),'new mission!')]");
@@ -280,37 +278,26 @@ class RegisterTest extends SeleniumTest
         $locationRowId = $this->getAttribute("//tr[.//a[contains(text(),'Location')]]@id");
         $sectorsRowId = $this->getAttribute("//tr[.//a[contains(text(),'Sectors')]]@id");
         $updatesRowId = $this->getAttribute("//tr[.//a[contains(text(),'Latest Updates')]]@id");
-        $missionRowId = $this->getAttribute("//tr[.//a[contains(text(),'Mission')]]@id");
         
-        $this->mouseOver("//tr[4]//a[@id='{$locationRowId}_up']");
-        
-        $this->click("//a[@id='{$locationRowId}_up']");
-        
-        $this->retry('mouseOver', array("//tr[1]//a[@id='{$missionRowId}_up']"));
-        $this->retry('mouseOver', array("//tr[2]//a[@id='{$updatesRowId}_up']"));        
-        $this->retry('mouseOver', array("//tr[3]//a[@id='{$locationRowId}_up']"));
-        $this->retry('mouseOver', array("//tr[4]//a[@id='{$sectorsRowId}_up']"));
+        $this->mouseOver("//tr[3]//a[@id='{$locationRowId}_up']");
         
         $this->click("//a[@id='{$locationRowId}_up']");
         
-        $this->retry('mouseOver', array("//tr[1]//a[@id='{$missionRowId}_up']"));
-        $this->retry('mouseOver', array("//tr[2]//a[@id='{$locationRowId}_up']"));        
-        $this->retry('mouseOver', array("//tr[3]//a[@id='{$updatesRowId}_up']"));
-        $this->retry('mouseOver', array("//tr[4]//a[@id='{$sectorsRowId}_up']"));        
+        $this->retry('mouseOver', array("//tr[1]//a[@id='{$updatesRowId}_up']"));        
+        $this->retry('mouseOver', array("//tr[2]//a[@id='{$locationRowId}_up']"));
+        $this->retry('mouseOver', array("//tr[3]//a[@id='{$sectorsRowId}_up']"));
         
         $this->click("//a[@id='{$locationRowId}_up']");
-
-        $this->retry('mouseOver', array("//tr[1]//a[@id='{$locationRowId}_up']"));
-        $this->retry('mouseOver', array("//tr[2]//a[@id='{$missionRowId}_up']"));        
-        $this->retry('mouseOver', array("//tr[3]//a[@id='{$updatesRowId}_up']"));
-        $this->retry('mouseOver', array("//tr[4]//a[@id='{$sectorsRowId}_up']"));                        
+        
+        $this->retry('mouseOver', array("//tr[1]//a[@id='{$locationRowId}_up']"));        
+        $this->retry('mouseOver', array("//tr[2]//a[@id='{$updatesRowId}_up']"));
+        $this->retry('mouseOver', array("//tr[3]//a[@id='{$sectorsRowId}_up']"));        
         
         $this->click("//a[@id='{$sectorsRowId}_up']");
 
         $this->retry('mouseOver', array("//tr[1]//a[@id='{$locationRowId}_up']"));
-        $this->retry('mouseOver', array("//tr[2]//a[@id='{$missionRowId}_up']"));        
-        $this->retry('mouseOver', array("//tr[3]//a[@id='{$sectorsRowId}_up']"));
-        $this->retry('mouseOver', array("//tr[4]//a[@id='{$updatesRowId}_up']"));                        
+        $this->retry('mouseOver', array("//tr[2]//a[@id='{$sectorsRowId}_up']"));                                
+        $this->retry('mouseOver', array("//tr[3]//a[@id='{$updatesRowId}_up']"));
         
         // create custom section
         $this->clickAndWait("//a[contains(@href,'/add')]");
@@ -320,10 +307,9 @@ class RegisterTest extends SeleniumTest
         $this->submitForm();
 
         $this->assertContains("Location", $this->getText("//div[@class='section_header']"));
-        $this->assertContains("Mission", $this->getText("//div[@class='section_header'][2]"));
-        $this->assertContains("Sectors", $this->getText("//div[@class='section_header'][3]"));
-        $this->assertContains("Latest Updates", $this->getText("//div[@class='section_header'][4]"));        
-        $this->assertContains("My New Section", $this->getText("//div[@class='section_header'][5]"));        
+        $this->assertContains("Sectors", $this->getText("//div[@class='section_header'][2]"));
+        $this->assertContains("Latest Updates", $this->getText("//div[@class='section_header'][3]"));        
+        $this->assertContains("My New Section", $this->getText("//div[@class='section_header'][4]"));        
         $this->mouseOver("//div[contains(@class, 'section_content')][5]//p[contains(text(),'yay!')]");        
 
         // edit custom section
@@ -335,7 +321,7 @@ class RegisterTest extends SeleniumTest
         $this->setTinymceContent("yay 2!");
         $this->submitForm();
         
-        $this->assertContains("New Section 2", $this->getText("//div[@class='section_header'][5]"));        
+        $this->assertContains("New Section 2", $this->getText("//div[@class='section_header'][4]"));        
         $this->mouseOver("//div[contains(@class, 'section_content')][5]//p[contains(text(),'yay 2!')]");
         
         // delete sectors section

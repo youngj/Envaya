@@ -180,6 +180,7 @@ function showImageHeader(show)
 
 function selectTheme(themeId)
 {
+    setDirty(true);
     $('theme_id').value = themeId;
     
     var themesContainer = $('themes');
@@ -193,16 +194,17 @@ function selectTheme(themeId)
     var img = $('theme_' + themeId);
     if (img)
     {
-        // img.offsetLeft is incorrect in IE<=7 so manually calculate it
+        // img.offsetLeft is incorrect in IE<=7 so manually calculate it        
+        var themeLink = img.parentNode;
         
-        var imageIndex = getSiblingIndex(img.parentNode);
+        var imageIndex = getSiblingIndex(themeLink);
         
         var offsetLeft = imageIndex * 125;
     
         var scrollLeft = Math.max(0, offsetLeft - 120);
     
-        themesContainer.scrollLeft = scrollLeft;
-    
+        themeLink.parentNode.parentNode.scrollLeft = scrollLeft;
+        
         img.style.border = '4px solid #069';
     }
     
@@ -445,30 +447,42 @@ echo "</tr></table>";
 </th>
 <td>
 <?php       
-    $themes = Theme_UserSite::get_available_themes();
+    $layouts_themes = [];
+    
+    foreach (Theme_UserSite::get_available_themes() as $theme)
+    {        
+        $layouts_themes[$theme::$layout][] = $theme;
+    }
     
     $thumbnailWidth = 120;        
-    $containerWidth = sizeof($themes) * ($thumbnailWidth + 6);
     
-    echo "<div id='themes' style='width:360px;height:170px;overflow:auto;overflow-x:scroll;overflow-y:hidden;margin-bottom:5px;font-size:12px'>";
-    echo "<div id='themescroll' style='width:{$containerWidth}px'>";
-    
-    foreach ($themes as $theme)
-    {        
-        $id = $theme::get_subtype_id();
-    
-        echo "<a href='javascript:selectTheme(".json_encode($id).");' onclick='ignoreDirty()' style='text-align:center;display:block;float:left;width:{$thumbnailWidth}px;margin-right:5px'>";
+    echo "<div id='themes'>";
+    foreach ($layouts_themes as $layout => $themes)
+    {    
+        $containerWidth = sizeof($themes) * ($thumbnailWidth + 6);
         
-        $thumbnail = $theme::get_thumbnail();
-        if ($thumbnail)
-        {
-            echo "<img id='theme_{$id}' src='{$thumbnail}' style='width:110px;height:110px' />";
-        }        
-        echo "<br />";
-        echo escape($theme::get_display_name());        
-        echo "</a>";
-    }    
-    echo "</div>";
+        echo "<h4>".__('design:layout:'.str_replace('layouts/', '', $layout)).":</h4>";
+        echo "<div style='width:360px;height:170px;overflow:auto;overflow-x:scroll;overflow-y:hidden;margin-top:5px;margin-bottom:5px;font-size:12px'>";
+        echo "<div id='themescroll' style='width:{$containerWidth}px'>";
+        
+        foreach ($themes as $theme)
+        {        
+            $id = $theme::get_subtype_id();
+        
+            echo "<a href='javascript:void(0)' onclick='selectTheme(".json_encode($id).");return false' style='text-align:center;display:block;float:left;width:{$thumbnailWidth}px;margin-right:5px'>";
+            
+            $thumbnail = $theme::get_thumbnail();
+            if ($thumbnail)
+            {
+                echo "<img id='theme_{$id}' src='{$thumbnail}' style='width:110px;height:110px' />";
+            }        
+            echo "<br />";
+            echo escape($theme::get_display_name());        
+            echo "</a>";
+        }    
+        echo "</div>";
+        echo "</div>";
+    }
     echo "</div>";
     //echo "<a style='font-size:12px' id='showThemeOptions' href='javascript:void(0)' onclick='showThemeOptions()'>Customize theme...</a>";
 ?>
@@ -489,6 +503,7 @@ echo "</tr></table>";
 
 <script type='text/javascript'>
 selectTheme(<?php echo json_encode($curTheme) ?>);
+setDirty(false);
 showImageHeader(<?php echo json_encode($curCustomHeader); ?>);
 
 </script>
@@ -496,7 +511,7 @@ showImageHeader(<?php echo json_encode($curCustomHeader); ?>);
 </div>
 </form>
 <div style='float:left;width:625px;overflow:hidden'>
-<iframe id='preview_frame' src='' style='width:1000px;height:470px'>
+<iframe id='preview_frame' src='' style='width:1000px;height:660px'>
 </iframe>
 </div>
 

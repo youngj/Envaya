@@ -29,9 +29,8 @@ class Action_Registration_CreateProfileBase extends Action
         $org->set_metadata('sector_other', Input::get_string('sector_other'));
         
         $home = Widget_Home::get_or_init_for_entity($org);
-        $mission_section = Widget_Mission::get_for_entity($home) ?: Widget_Mission::new_for_entity($home);
-        $mission_section->set_content($mission);                
-        $mission_section->save();
+        $home->set_content($mission);
+        $home->save();
 
         $prevSetupState = $org->setup_state;
         

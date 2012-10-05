@@ -80,6 +80,13 @@ class Module_Envaya_Org extends Module
             'envaya.theme.personprofile' => 'Theme_PersonProfile',
             'envaya.theme.beads' => 'Theme_Beads',
             'envaya.theme.leftmenu' => 'Theme_LeftMenu',
+            'envaya.theme.leftmenu.dark' => 'Theme_LeftMenuDark',
+            'envaya.theme.leftmenu.blue' => 'Theme_LeftMenuBlue',
+            'envaya.theme.leftmenu.green' => 'Theme_LeftMenuGreen',
+            'envaya.theme.leftmenu.yellow' => 'Theme_LeftMenuYellow',
+            'envaya.theme.leftmenu.purple' => 'Theme_LeftMenuPurple',
+            'envaya.theme.leftmenu.lightblue' => 'Theme_LeftMenuLightBlue',
+            'envaya.theme.leftmenu.red' => 'Theme_LeftMenuRed',
             'envaya.theme.chrome' => 'Theme_Chrome',
             'envaya.theme.brick' => 'Theme_Brick',
             'envaya.theme.cotton' => 'Theme_Cotton',
@@ -138,14 +145,22 @@ class Module_Envaya_Org extends Module
     {
         Theme_UserSite::add_available_themes(array(
             'Theme_LightBlue',        
-            'Theme_LeftMenu',        
             'Theme_Beads',
             'Theme_Brick',
             'Theme_Cotton',
             'Theme_Craft1',
             'Theme_Craft4',
             'Theme_WovenGrass',
-            'Theme_Chrome',                                     
+            'Theme_Chrome',            
+
+            'Theme_LeftMenu',    
+            'Theme_LeftMenuLightBlue',            
+            'Theme_LeftMenuGreen',
+            'Theme_LeftMenuYellow',                        
+            'Theme_LeftMenuRed',
+            'Theme_LeftMenuBlue',            
+            'Theme_LeftMenuPurple',
+            'Theme_LeftMenuDark',            
         ));
 
         Theme_UserSite::add_patterns(array(           
@@ -173,6 +188,8 @@ class Module_Envaya_Org extends Module
             'section_header:brown' => '#0f1f29 url("_media/images/craft/section_header.gif") repeat-x left top',
             'section_header:brown2' => '#ad9e61 url("_media/images/wovengrass/section_header.gif") repeat-x left top',
             'left_menu_background:gray' => 'url(/_media/images/leftmenu/menu_selected3.png) no-repeat 3px top',
+            'box_shadow:gray' => '1px 1px 10px #ccc',
+            'box_shadow:black' => '1px 1px 10px #000',
         ));
     }
 }

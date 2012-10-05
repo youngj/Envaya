@@ -360,7 +360,7 @@ label {
 
 .submit_button
 {
-    font: 12px/100% Arial, Helvetica, sans-serif;
+    font: 14px/100% Arial, Helvetica, sans-serif;
     font-weight: bold;
     color: #ffffff;
     background:transparent;
@@ -373,7 +373,7 @@ label {
 
 .submit_button div
 {
-    background: #08c url(/_media/images/buttons.png) left -32px;
+    background: #2E4973;
     display:block;
     height:32px;
     margin:0px;
@@ -382,7 +382,6 @@ label {
 
 .submit_button span
 {
-    background: #08c url(/_media/images/buttons.png) right -32px; 
     display:block;
     height:24px;
     padding-top:8px;
@@ -392,7 +391,7 @@ label {
 
 button.submit_button:hover div
 {
-    background-position:left top;
+    outline:2px solid #fa0;
 }
 
 button.submit_button:hover span
@@ -627,32 +626,7 @@ a.photoDelete:hover
 
 #widget_delete div
 {
-    background-position:left -96px;
-}
-
-#widget_delete span
-{
-    background-position:right -96px;
-}
-
-button#widget_delete:hover div
-{
-    background-position:left -160px;
-}
-
-button#widget_delete:hover span
-{
-    background-position:right -160px;
-}
-
-button#widget_delete:active div
-{
-    background-position:left -128px;
-}
-
-button#widget_delete:active span
-{
-    background-position:right -128px;
+    background-color:#600;
 }
 
 input[type="submit"] {

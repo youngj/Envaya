@@ -58,7 +58,7 @@ class Widget extends Entity
         'hidden_page' => array(            
         ),
         'home_section' => array(
-            'Widget_Mission',  
+            //'Widget_Mission',  
             'Widget_Updates',
             'Widget_Links',
             'Widget_Sectors',

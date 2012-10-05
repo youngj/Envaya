@@ -8,7 +8,7 @@ class Theme_LeftMenu extends Theme_UserSite
 
     static function get_display_name()
     {
-        return __('design:theme:leftmenu');
+        return __('design:theme:light');
     }               
     
     static function get_vars()
@@ -24,16 +24,27 @@ class Theme_LeftMenu extends Theme_UserSite
                 'type' => 'text_color',
                 'selector' => '#heading h3',
                 'default' => '#000'
-            ),        
+            ),       
+            'box_shadow' => array(
+                'selector' => '#content_wrapper',
+                'type' => 'box_shadow',
+                'default' => 'box_shadow:black',
+            ),
             'subheader_bg' => array(
                 'default' => '#f0f0f0',
             ),
             'selected_menu_bg' => array(       
                 'type' => 'background',        
-                'selector' => '#site_menu a.selected',        
-                'default' => 'left_menu_background:gray',
+                'selector' => '#site_menu a.selected',                        
+                'default' => '#f0f0f0',
             ),
             'selected_menu_color' => array(
+                'selector' => '#site_menu a.selected',        
+                'default' => '#000',
+            ),
+            'menu_hover_color' => array(
+                'type' => 'text_color',
+                'selector' => '#site_menu a.notselected:hover',        
                 'default' => '#000',
             ),
             'menu_color' => array(       
@@ -44,6 +55,14 @@ class Theme_LeftMenu extends Theme_UserSite
                 'selector' => '#content_wrapper',        
                 'default' => '#fdfdfd',
             ),
+            'content_border' => array(
+                'type' => 'border_color',
+                'selector' => '#content_wrapper, #left_sidebar', 
+                'default' => '#e8e8e8',
+            ),
+            'footer_color' => array(       
+                'selector' => '.footer_container',        
+            ),       
         ));
-    }
+    }        
 }

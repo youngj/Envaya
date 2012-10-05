@@ -22,7 +22,6 @@
     padding-top:20px;
 }
 
-
 #content_wrapper
 {
     border: 2px solid #e8e8e8;
@@ -31,9 +30,7 @@
     margin-bottom:10px;
     padding-bottom:10px;
     padding-left:0px;
-    padding-right:0px;
-    box-shadow: 1px 1px 10px #ccc;
-    -moz-box-shadow: 1px 1px 10px #ccc;
+    padding-right:0px;    
 }
 
 .left_sidebar_table
@@ -44,7 +41,7 @@
 #left_sidebar
 {
     width:<?php echo $sidebarWidth; ?>px;
-    padding-top:25px;
+    padding-top:10px;
     border-right:2px solid #e1e1df;
 }
 
@@ -98,11 +95,19 @@
 {
     border-top:1px solid #ccc;
     border-bottom:1px solid #ccc;
-    height:21px;
+    padding:8px 15px;
     font-family:Verdana, sans-serif;
 }
 
 #main_content pre
 {
     width:<?php echo ($contentWidth - 60); ?>px !important; /* need explicit width in order for IE6 to wrap */
+}
+
+#site_menu a.selected
+{
+    border-width:1px 0px 1px 1px;
+    border-style:solid;
+    border-color:#ccc;
+    border-radius:6px 0px 0px 6px;
 }
