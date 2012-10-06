@@ -12,55 +12,23 @@ class Theme_Beads extends Theme_UserSite
     
     static function get_vars()
     {
-        return static::merge_vars(parent::get_vars(), array(
-            'body_bg' => array(
-                'default' => 'background:beads',
-            ),
-            'header_bg' => array(
-                'default' => 'background:wood',
-            ),
-            'tagline_color' => array(
-                'default' => '#cca954',
-            ),
-            'content_bg' => array(
-                'default' => 'background:light_pink_gradient',
-            ),
-            'selected_menu_bg' => array(
-                'default' => '#d1b26c',
-            ),
-            'selected_menu_color' => array(
-                'default' => '#000',
-            ),  
-            'menu_color' => array(
-                'default' => '#fff',
-            ),
-            'content_color' => array(
-                'default' => '#333',
-            ),
-            'subheader_color' => array(
-                'default' => '#fff',
-            ),        
-            'header_color' => array(       
-                'default' => '#fff'
-            ),
-            'footer_color' => array(
-                'default' => '#fff',
-            ),        
-            'subheader_bg' => array(
-                'default' => 'section_header:purple',
-            ),
-            'border_bg' => array(
-                'default' => '#090503',
-            ),
-            'footer_bg' => array(
-                'default' => '#090503',
-            ),
-            'translate_bg' => array(
-                'default' => '#4e2537',
-            ),
-            'translate_border' => array(
-                'default' => '#a5a180',
-            ),
+        return static::set_defaults(parent::get_vars(), array(
+            'body_bg' => 'background:beads',
+            'header_bg' => 'background:wood',
+            'tagline_color' => '#cca954',
+            'content_bg' => 'background:light_pink_gradient',
+            'selected_menu_bg' => '#d1b26c',
+            'selected_menu_color' => '#000',
+            'menu_color' => '#fff',
+            'content_color' => '#333',
+            'subheader_color' => '#fff',
+            'header_color' => '#fff',
+            'footer_color' => '#fff',
+            'subheader_bg' => 'section_header:purple',
+            'border_bg' => '#090503',
+            'footer_bg' => '#090503',
+            'translate_bg' => '#4e2537',
+            'translate_border' => '#a5a180',
         ));
     }
 }

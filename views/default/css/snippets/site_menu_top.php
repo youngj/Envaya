@@ -1,7 +1,6 @@
 .content_container .thin_column
 {
     padding-bottom:1px;
-    background-color:#e5e5e5;
 }
 
 .section_header
@@ -41,6 +40,7 @@
 #site_menu
 {
     padding-left:12px;
+    font-size:16px;    
 }
 
 #site_menu a

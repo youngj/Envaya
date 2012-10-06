@@ -1,8 +1,8 @@
 <?php
 
-class Theme_LeftMenuPurple extends Theme_LeftMenu
+class Theme_Purple extends Theme_Solid
 {
-    static $thumbnail = '/_media/images/leftmenupurple.png';
+    static $thumbnail = '/_media/images/purple.png';
 
     static function get_display_name()
     {
@@ -11,26 +11,22 @@ class Theme_LeftMenuPurple extends Theme_LeftMenu
     
     static function get_vars()
     {
-        return static::set_defaults(parent::get_vars(), array(  
+        return static::set_defaults(parent::get_vars(), array(
             'body_bg' => '#42036f',
             'header_color' => '#fff',
             'tagline_color' => '#fff',
             'subheader_bg' => '#42036f',
             'subheader_color' => '#fff',
-            'selected_menu_bg' => '#42036f',
-            //'selected_menu_bg' => '#ffe66f',
-            'menu_hover_color' => '#1f66a5',
-            'selected_menu_color' => '#fff',
-            'menu_color' => '#333',
-            'border_bg' => '#ebd5fa',
-            //'content_color' => '#ccc',
-            //'content_border' => '#999',
+            'selected_menu_bg' => '#ebd5fa',
+            'selected_menu_color' => '#333',
+            'menu_color' => '#fff',
+            'content_border' => '#fff',
+            'content_bg' => '#ebd5fa',
             'footer_color' => '#fff',  
             'footer_link_color' => '#39f', 
             'content_link_color' => '#069', 
             'snippet_color' => '#333',
             'date_color' => '#666',
-            'box_shadow' => 'box_shadow:black',
         ));
-    }    
+    }
 }

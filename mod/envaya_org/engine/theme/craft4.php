@@ -12,55 +12,23 @@ class Theme_Craft4 extends Theme_UserSite
     
     static function get_vars()
     {
-        return static::merge_vars(parent::get_vars(), array(
-            'body_bg' => array(
-                'default' => 'background:craft4',
-            ),
-            'header_bg' => array(
-                'default' => 'background:wood2',
-            ),
-            'header_color' => array(
-                'default' => '#fff',
-            ),
-            'tagline_color' => array(
-                'default' => '#dbc777',
-            ),
-            'content_bg' => array(
-                'default' => 'background:beige_gradient',
-            ),
-            'selected_menu_bg' => array(
-                'default' => '#641d09',
-            ),
-            'selected_menu_color' => array(
-                'default' => '#fff',
-            ),  
-            'menu_color' => array(
-                'default' => '#fff',
-            ),
-            'content_color' => array(
-                'default' => '#333',
-            ),
-            'subheader_color' => array(
-                'default' => '#fff',
-            ),        
-            'footer_color' => array(
-                'default' => '#fff',
-            ),        
-            'subheader_bg' => array(
-                'default' => 'section_header:brown',
-            ),
-            'border_bg' => array(
-                'default' => '#916c4c',
-            ),
-            'footer_bg' => array(
-                'default' => '#916c4c',
-            ),
-            'translate_bg' => array(
-                'default' => '#641d09',
-            ),
-            'translate_border' => array(
-                'default' => '#e36306',
-            ),
+        return static::set_defaults(parent::get_vars(), array(
+            'body_bg' => 'background:craft4',
+            'header_bg' => 'background:wood2',
+            'header_color' => '#fff',
+            'tagline_color' => '#dbc777',
+            'content_bg' => 'background:beige_gradient',
+            'selected_menu_bg' => '#641d09',
+            'selected_menu_color' => '#fff',
+            'menu_color' => '#fff',
+            'content_color' => '#333',
+            'subheader_color' => '#fff',
+            'footer_color' => '#fff',
+            'subheader_bg' => 'section_header:brown',
+            'border_bg' => '#916c4c',
+            'footer_bg' => '#916c4c',
+            'translate_bg' => '#641d09',
+            'translate_border' => '#e36306',
         ));
     }
 }

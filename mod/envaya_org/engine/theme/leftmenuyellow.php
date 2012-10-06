@@ -30,6 +30,7 @@ class Theme_LeftMenuYellow extends Theme_LeftMenu
             'content_link_color' => '#1f66a5', 
             'snippet_color' => '#333',
             'date_color' => '#666',
+            'box_shadow' => 'box_shadow:black',
         ));
     }    
 }

@@ -28,7 +28,7 @@ class Theme_LeftMenu extends Theme_UserSite
             'box_shadow' => array(
                 'selector' => '#content_wrapper',
                 'type' => 'box_shadow',
-                'default' => 'box_shadow:black',
+                'default' => 'box_shadow:gray',
             ),
             'subheader_bg' => array(
                 'default' => '#f0f0f0',
@@ -60,9 +60,18 @@ class Theme_LeftMenu extends Theme_UserSite
                 'selector' => '#content_wrapper, #left_sidebar', 
                 'default' => '#e8e8e8',
             ),
+            'content_color' => array(       
+                'selector' => '.left_sidebar_table',        
+            ),       
+            'content_link_color' => array(
+                'selector' => '.left_sidebar_table a',        
+            ),                        
             'footer_color' => array(       
                 'selector' => '.footer_container',        
             ),       
+            'footer_link_color' => array(
+                'selector' => '.footer_container a',        
+            ),            
         ));
     }        
 }

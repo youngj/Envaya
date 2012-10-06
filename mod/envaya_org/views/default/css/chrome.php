@@ -8,6 +8,7 @@
 {
     padding-top:5px;
     text-align:center;
+    font-size:16px;    
 }
 
 #site_menu a

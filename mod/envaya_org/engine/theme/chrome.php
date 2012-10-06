@@ -14,8 +14,6 @@ class Theme_Chrome extends Theme_UserSite
     {
         return static::merge_vars(parent::get_vars(), array(
             'body_bg' => array(
-                'type' => 'background',
-                'selector' => 'body',                    
                 'default' => '#e7e2d7',
             ),
             'content_bg' => array(

@@ -156,6 +156,11 @@ abstract class Theme_UserSite extends Theme
                 'selector' => '#site_menu a',        
                 'default' => '#686464',
             ),   
+            'menu_bg' => array(       
+                'type' => 'background',        
+                'selector' => '#site_menu',        
+                'default' => '',
+            ),               
             'translate_bg' => array(
                 'type' => 'background',
                 'selector' => '#translate_bar',
@@ -189,6 +194,11 @@ abstract class Theme_UserSite extends Theme
             'content_bg' => array(
                 'type' => 'background',
                 'selector' => '.section_content',        
+                'default' => '',
+            ),
+            'content_border' => array(
+                'type' => 'border_color',
+                'selector' => '#main_content',
                 'default' => '',
             ),
             'content_color' => array(       

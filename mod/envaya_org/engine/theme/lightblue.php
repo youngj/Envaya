@@ -20,31 +20,15 @@ class Theme_LightBlue extends Theme_UserSite
     
     static function get_vars()
     {
-        return static::merge_vars(parent::get_vars(), array(
-            'body_bg' => array(
-                'default' => '#fff',
-            ),
-            'header_bg' => array(
-                'default' => '#f2f5f6',
-            ),
-            'main_bg' => array(
-                'default' => 'background:gradient',
-            ),
-            'content_bg' => array(
-                'default' => 'background:gradient2',
-            ),
-            'header_color' => array(       
-                'default' => '#000'
-            ),
-            'subheader_bg' => array(
-                'default' => 'section_header:blue',
-            ),
-            'selected_menu_bg' => array(       
-                'default' => 'menu_button:blue',
-            ),
-            'border_bg' => array(
-                'default' => 'background:gradient3',
-            ),
+        return static::set_defaults(parent::get_vars(), array(  
+            'body_bg' => '#fff',            
+            'header_bg' => '#f2f5f6',
+            'main_bg' => 'background:gradient',
+            'content_bg' => 'background:gradient2',
+            'header_color' => '#000',
+            'subheader_bg' => 'section_header:blue',
+            'selected_menu_bg' => 'menu_button:blue',
+            'border_bg' => 'background:gradient3',
         ));
     }
 }
