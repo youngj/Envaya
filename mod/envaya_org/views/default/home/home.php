@@ -97,14 +97,14 @@ slideshow(<?php
 </div>
 <table class='home_table'>
 <tr>
-<td width='221'>
+<td width='221' height='181'>
 <?php echo view('home/for_organizations'); ?>
 </td>
-<td width='236'>
+<td width='236' height='181'>
 <?php echo view('home/for_everyone'); ?>
 </td>
 <td width='363' rowspan='2' class='home_bottom_right'>
-<div class='home_section home_section_right'>
+<div class='home_section home_section_about'>
     <div class='home_heading heading_gray'><h4><?php echo __("home:whatwedo") ?></h4></div>
     <div class='home_about'>   
 <?php 
@@ -118,14 +118,54 @@ slideshow(<?php
         echo view('home/about'); 
     }
     
-    echo "<div style='padding:8px 0px'>".view('home/follow')."</div>"; 
+    //echo "<div style='padding:0px'>".view('home/follow')."</div>"; 
 ?>
     </div>   
+</div>
+<div class='home_section home_section_right'>
+    <div class='home_heading heading_gray'><h4><?= __('home:featured_items'); ?></h4></div>
+    <div class='home_about'>
+    <div style='position:relative;height:400px'>
+    <div id='live_feed' onmouseover='feedHover=1' onmouseout='feedHover=0' style='height:400px;overflow:hidden'>
+    <?php
+    
+    $items_html = FeedItem::get_featured_items_html();
+    
+    $num_items = sizeof($items_html);
+    $rand_offset = $num_items ? mt_rand(0, $num_items - 1) : 0;
+    
+    for ($i = 0; $i < $num_items; $i++)
+    {
+        echo $items_html[($i + $rand_offset) % $num_items];
+    }
+    ?>    
+    </div>
+    <div style='position:absolute;top:385px;height:15px;width:345px;background:url(/_media/images/home/fadeout.png) repeat-x left bottom'></div>
+    </div>
+    <?php if ($num_items > 4) { ?>
+    <script type='text/javascript'>
+    function rotateLiveFeed()
+    {
+        if (window.feedHover) return;
+        var container = $('live_feed'), last = container.lastChild;
+        if (last)
+        {
+            removeElem(last);
+            container.insertBefore(last, container.firstChild || null);
+        }
+    }
+    setInterval(rotateLiveFeed, 6000);    
+    </script>
+    <?php } ?>
+    <div style='text-align:right;padding-top:5px'>
+    <a href='/pg/feed'><?= __('home:more_updates'); ?></a>
+    </div>
+    </div>
 </div>
 </td>
 </tr>
 <tr>
-<td colspan='2' width='420' class='home_bottom_left'>
+<td colspan='2' width='420' height='457' class='home_bottom_left'>
 <?php
     echo view('home/featured_site'); 
 ?>

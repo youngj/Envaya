@@ -164,7 +164,7 @@ abstract class Controller_User extends Controller
             $this->page_draw_vars['preview'] = false;
         }
                 
-        $theme = ClassRegistry::get_class(@$design_settings['theme_id']) ?: Config::get('theme:default');
+        $theme = Theme::get_class(@$design_settings['theme_id']);
         
         $this->page_draw_vars['design'] = $design_settings;
         $this->page_draw_vars['theme'] = $theme;

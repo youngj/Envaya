@@ -25,7 +25,7 @@ class Theme_Dark extends Theme_Solid
             'content_bg' => '#222',
             'footer_color' => '#fff',  
             'footer_link_color' => '#39f', 
-            'snippet_color' => '#333',
+            'snippet_color' => '#999',
             'date_color' => '#666',
         ));
     }

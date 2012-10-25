@@ -18,5 +18,6 @@ return array(
     'home:sign_up_button' => "<div style='font-size:18px'>Jiunge</div>",
     'home:sign_up_heading' => "<div style='font-size:16px;padding:8px 0px 14px 0px'>Pata tovuti sasa</div>",
     'home:donate_now' => 'Changia sasa!',
-
+    'home:more_updates' => "Ona habari zaidi...",
+    'home:featured_items' => "Mambo Maalum",
 );

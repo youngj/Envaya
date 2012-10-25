@@ -20,7 +20,7 @@ echo "</div>";
 <?php	
 	echo view('feed/list', array(
         'items' => $items, 
-        'show_edit_controls' => Permission_UseAdminTools::has_any()
+        'show_edit_controls' => true
     ));
 ?>
 <div class='separator'></div>

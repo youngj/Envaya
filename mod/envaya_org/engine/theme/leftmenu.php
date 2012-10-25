@@ -4,7 +4,7 @@ class Theme_LeftMenu extends Theme_UserSite
 {
     static $css = 'leftmenu';    
     static $layout = 'layouts/two_column_left_sidebar';
-    static $thumbnail = '/_media/images/leftmenu/thumbnail.png';
+    static $thumbnail = '/_media/images/leftmenugray.png';
 
     static function get_display_name()
     {

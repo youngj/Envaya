@@ -288,6 +288,56 @@ class Controller_Pg extends Controller
         $action->execute();   
     }        
 
+    function action_feature_feed_item()
+    {
+        $this->validate_security_token();
+        $feedItem = FeedItem::query()->where('id = ?', Input::get_int('item'))->get();        
+        if (!$feedItem)
+        {
+            throw new NotFoundException();
+        }
+        
+        $featured = Input::get_int('featured');
+        
+        Permission_EditFeaturedItems::require_for_entity($feedItem->get_user_entity());
+        
+        $feedItem->featured = $featured;
+        
+        foreach ($feedItem->query_items_in_group()->filter() as $item)
+        {
+            $item->featured = $featured;
+            $item->save();
+        }
+        
+        if ($featured)
+        {
+            if ($feedItem->query_items_in_group()->where('feed_name = ?', FeedItem::FeaturedFeedName)->is_empty())
+            {
+                $cls = get_class($feedItem);
+                $featuredItem = new $cls();
+                foreach (FeedItem::$table_attributes as $field => $default)
+                {
+                    $featuredItem->$field = $feedItem->$field;
+                }
+                $featuredItem->feed_name = FeedItem::FeaturedFeedName;
+                $featuredItem->save();                
+            }
+            SessionMessages::add("Featured item added.");
+        }
+        else
+        {
+            foreach ($feedItem->query_items_in_group()->where('feed_name = ?', FeedItem::FeaturedFeedName)->filter() as $featured_item)
+            {
+                $featured_item->delete();
+            }
+            SessionMessages::add("Featured item removed.");
+        }
+        
+        FeedItem::clear_featured_cache();
+        
+        $this->redirect();
+    }
+    
     function action_delete_feed_item()
     {
         $this->validate_security_token();
@@ -306,7 +356,7 @@ class Controller_Pg extends Controller
         
         SessionMessages::add(__('feed:item_deleted'));
         $this->redirect();
-    }   
+    }
     
     /*
      * Web entry point for uncompressed CSS files (for testing).     
@@ -620,7 +670,7 @@ class Controller_Pg extends Controller
             ->limit($max_items)
             ->filter();
 
-        $items_html = view('feed/list', array('items' => $items));
+        $items_html = view('feed/list', array('items' => $items, 'show_edit_controls' => true));
         
         $this->set_content(json_encode(array(
             'items_html' => $items_html,

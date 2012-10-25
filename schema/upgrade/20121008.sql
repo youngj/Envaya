@@ -1,0 +1,1 @@
+ALTER TABLE feed_items ADD `featured` tinyint(4) not null default 0;

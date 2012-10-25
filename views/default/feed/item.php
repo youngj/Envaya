@@ -9,7 +9,7 @@
 <?php                 
     if ($mode != 'self') 
     {        
-        echo view('feed/icon', array('user' => $user));            
+        echo view('feed/icon', array('user' => $user));
         echo "<div class='feed_content'>";
     } 
     echo $feedItem->render_thumbnail($mode);
@@ -23,15 +23,30 @@
     
     $user = $feedItem->get_user_entity();
     
-    if ($show_edit_controls && (Permission_EditUserSite::has_for_entity($user)
-        || Permission_UseAdminTools::has_for_entity($user))) 
+    if ($show_edit_controls) 
     {
-        echo view('input/post_link', array(
-            'href' => "/pg/delete_feed_item?item={$feedItem->id}",
-            'text' => __('delete'),
-            'class' => 'admin_links',
-            'confirm' => __('feed:confirm_delete'),
-        ));            
+        $edit_links = [];
+        if (Permission_EditFeaturedItems::has_for_entity($user))
+        {            
+            $edit_links[] = view('input/post_link', array(
+                'href' => "/pg/feature_feed_item?item={$feedItem->id}&featured=" . ($feedItem->featured ? 0 : 1),
+                'text' => $feedItem->featured ? 'Unfeature' : 'Feature',
+                'class' => 'admin_links',
+                //'confirm' => __('feed:confirm_delete'),
+            ));
+        }
+    
+        if (Permission_EditUserSite::has_for_entity($user) || Permission_UseAdminTools::has_for_entity($user))
+        {    
+            $edit_links[] =  view('input/post_link', array(
+                'href' => "/pg/delete_feed_item?item={$feedItem->id}",
+                'text' => __('delete'),
+                'class' => 'admin_links',
+                'confirm' => __('feed:confirm_delete'),
+            ));
+        }               
+        
+        echo implode(' &middot; ', $edit_links);        
    }
    
     if ($mode != 'self') 

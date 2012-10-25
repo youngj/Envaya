@@ -35,4 +35,17 @@ abstract class Theme
     {    
         return '';
     }
+    
+    static function get_class($theme_id)
+    {
+        $theme = ClassRegistry::get_class($theme_id);
+        if (!$theme || !is_subclass_of($theme, 'Theme'))
+        {
+            return Config::get('theme:default');
+        }
+        else
+        {
+            return $theme;
+        }
+    }            
 }

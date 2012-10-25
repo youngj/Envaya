@@ -18,5 +18,7 @@ return array(
     'home:sign_up_button' => "<div style='font-size:18px'>Sign Up</div>",
     'home:sign_up_heading' => "<div style='font-size:16px;padding:8px 0px 14px 0px'>Get a website now</div>",
     'home:donate_now' => "Donate now!",
+    'home:more_updates' => "See more updates...",
+    'home:featured_items' => "Featured Items",
 );
    

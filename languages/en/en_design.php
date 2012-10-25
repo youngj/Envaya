@@ -8,7 +8,9 @@ return array(
     'design:layout:two_column_left_sidebar' => 'Menu on Left',
     
     'design:theme' => "Theme",    
+    'design:change_theme' => "Change theme",
 
+    'design:theme:basic' => "Basic",
     'design:theme:lightblue' => "Light Blue",
     'design:theme:brick' => "Bricks",
     'design:theme:craft4' => "Wood and Fabric",
@@ -23,7 +25,14 @@ return array(
     'design:theme:green' => "Green",        
     'design:theme:yellow' => "Yellow",        
     'design:theme:purple' => "Purple",        
-    'design:theme:red' => "Red",        
+    'design:theme:pink' => "Pink",        
+    'design:theme:red' => "Red",
+    'design:theme:brown' => "Brown",
+    'design:theme:moss' => "Light Green",
+    'design:theme:lavender' => "Lavender",
+    'design:theme:sage' => "Sage",
+    'design:theme:bluegray' => "Blue Gray",
+    'design:theme:white' => "White",
     
     'design:edit_name' => 'Edit name',
     'design:use_header_image' => 'Use header image',

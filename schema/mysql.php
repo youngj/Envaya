@@ -193,6 +193,7 @@ CREATE TABLE `feed_items` (
 	`user_guid` binary(24) NOT NULL,
 	`time_posted` int NOT NULL,
 	`args` TEXT default NULL,
+    `featured` tinyint(4) not null default 0,
 	PRIMARY KEY ( `id` ),
 	KEY `feed_key` (`feed_name`, `time_posted`),
 	KEY `user_guid` (`user_guid`),

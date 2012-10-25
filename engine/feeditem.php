@@ -20,13 +20,20 @@
  */
 abstract class FeedItem extends Model
 {
+    const FeaturedFeedName = 'featured=1';
+    
+    const ModeSelf = 'self';
+    const ModeFeatured = 'featured';
+    const ModeDefault = null;
+
     static $table_name = 'feed_items';
     static $table_attributes = array(
         'feed_name' => '',
-        'subtype_id' => '',
+        'subtype_id' => '',        
         'subject_guid' => null,
         'user_guid' => null,
         'args' => '',
+        'featured' => 0,
         'time_posted' => 0,        
     );   
     static $query_class = 'Query_SelectFeedItem';
@@ -210,5 +217,69 @@ abstract class FeedItem extends Model
     function get_sms_description()
     {
         return null;
+    }
+    
+    static function get_featured_cache_key($language_code)
+    {
+        return Cache::make_key('featured_items4', $language_code);
+    }
+    
+    static function clear_featured_cache()
+    {
+        $cache = Cache::get_instance();
+        foreach (Config::get('languages') as $language_code)
+        {
+            $cache_key = self::get_featured_cache_key($language_code);
+            $cache->delete($cache_key);
+        }
+    }
+    
+    static function get_featured_items_html()
+    {   
+        $cache = Cache::get_instance();
+        
+        $cache_key = self::get_featured_cache_key(Language::get_current_code());
+    
+        $items_html = $cache->get($cache_key);
+        if (!isset($items_html))
+        {    
+            $items = FeedItem::query_by_feed_name(FeedItem::FeaturedFeedName)
+                ->limit(15)
+                ->filter();
+            
+            $mode = self::ModeFeatured;
+            $items_html = [];
+                
+            foreach ($items as $item)
+            {
+                if (!$item->is_valid())
+                {
+                    continue;
+                }
+                
+                ob_start();
+                echo "<div>";
+                echo "<div style='float:left;width:40px;padding-right:5px;padding-bottom:5px'>";
+                $user = $item->get_user_entity();
+                echo "<a href='{$user->get_url()}'>";
+                echo view('account/icon', array('user' => $user, 'size' => '40x60')); 
+                echo "</a>";
+                echo "</div>";
+                        
+                echo "<div style='float:left;width:290px;padding-bottom:5px'>";
+                echo $item->render_thumbnail($mode);
+                echo "<div>";
+                echo $item->render_heading($mode);
+                echo "</div>";
+                echo $item->render_content($mode);
+                //echo "<div class='blog_date'>{$item->get_date_text()}</div>";
+                echo "</div>";
+                echo "<div style='clear:both'></div>";        
+                echo "</div>";
+                $items_html[] = ob_get_clean();
+            }
+            $cache->set($cache_key, $items_html);
+        }
+        return $items_html;
     }
 }

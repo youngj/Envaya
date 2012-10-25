@@ -292,10 +292,19 @@ a.icon_feed:hover       { background-position:left -440px; }
     padding:12px 15px;
 }
 
-.home_bottom_right
+.home_table .home_bottom_right
 {
     border-left:1px solid #e3dfd6;
     border-right:1px solid #e3dfd6;
+    background: #e3dfd6;
+}
+
+.home_section_right
+{
     background:#fff url(<?php echo $graphicsDir; ?>/what_bg.gif) repeat-x left bottom;
 }
 
+.home_section_about
+{
+    background:#fff;
+}

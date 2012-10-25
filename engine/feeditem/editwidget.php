@@ -2,6 +2,11 @@
 
 class FeedItem_EditWidget extends FeedItem
 {
+    function is_valid()
+    {
+        return parent::is_valid() && $this->get_subject_entity()->publish_status == Widget::Published;
+    }
+
     function render_heading($mode)
     {
         $widget = $this->get_subject_entity();
@@ -32,6 +37,7 @@ class FeedItem_EditWidget extends FeedItem
         
         return view('feed/snippet', array(            
             'link_url' => $this->get_url(),
+            'max_length' => $mode == static::ModeFeatured ? 150 : 350,
             'content' => $widget->render_content(Markup::Feed)
         ));    
     }

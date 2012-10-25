@@ -41,6 +41,7 @@ class ClassRegistry
         'core.permission.editusersite' => 'Permission_EditUserSite',
         'core.permission.sendmessage' => 'Permission_SendMessage',
         'core.permission.useadmintools' => 'Permission_UseAdminTools',
+        'core.permission.editfeatureditems' => 'Permission_EditFeaturedItems',
         'core.permission.viewoutgoingmessage' => 'Permission_ViewOutgoingMessage',
 
         'core.subscription.sms' => "SMSSubscription",

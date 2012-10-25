@@ -7,7 +7,7 @@ class Theme_LightBlue extends Theme_UserSite
 
     static function get_display_name()
     {
-        return __('design:theme:lightblue');
+        return __('design:theme:basic');
     }           
     
     static function get_types()
