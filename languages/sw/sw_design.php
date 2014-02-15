@@ -4,7 +4,7 @@ return array(
     'design:edit' => 'Hariri mwonekano wa tovuti',
   
     'design:theme' => 'Wazo wa tovuti',
-    'design:change_theme' => "Hariri mwonekano",
+    'design:change_theme' => "Badilisha wazo",
     
     'design:layout:default' => 'Menyu ya Juu',
     'design:layout:two_column_left_sidebar' => 'Menyu ya Kushoto',

@@ -9,11 +9,11 @@ class GoogleTranslate
     {
         switch ($lang_code)
         {
-            case 'en':
+            /* case 'en':
             case 'sw':
             case 'ar':
             case 'fr':
-                return true;
+                return true; */
             default:
                 return false;
         }
