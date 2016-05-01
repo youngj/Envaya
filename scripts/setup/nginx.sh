@@ -11,6 +11,8 @@ echo "INSTALL_DIR is $INSTALL_DIR"
 apt-get -y --allow-unauthenticated install php5-fpm 
 apt-get -y install geoip-database nginx-full 
 
+ln -fs /etc/php5/conf.d/php-custom.ini /etc/php5/fpm/conf.d/php-custom.ini
+
 mkdir -p /etc/nginx/ssl
 chown www-data:www-data /etc/nginx/ssl
 chmod 700 /etc/nginx/ssl

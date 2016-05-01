@@ -10,8 +10,8 @@ SETUP_DIR=$(cd `dirname $0` && pwd)
 apt-get -y install libmysqlclient-dev g++ make
 
 cd /tmp
-wget http://sphinxsearch.com/files/sphinx-2.0.4-release.tar.gz
-tar xzvf sphinx-2.0.4-release.tar.gz
-cd sphinx-2.0.4-release
-./configure
-make install
+curl http://sphinxsearch.com/files/sphinxsearch_2.2.10-release-1~jessie_amd64.deb > sphinx.deb
+
+apt-get -y install libpq5
+
+dpkg -i sphinx.deb

@@ -6,7 +6,7 @@
 # cap HOSTS=1.2.3.4 deploy
 # 
 # Configure a new server with all of Envaya's services:
-# cap HOSTS=1.2.3.4 deploy:allinone_setup
+# cap HOSTS=1.2.3.4 deploy:full_setup
 #
 #
 
@@ -18,7 +18,7 @@ set :deploy_via, :rsync_with_remote_cache
 set :copy_exclude, [".svn", ".git", "envaya.org.key"]
 set :user, "root"
 
-ssh_options[:port] = 22
+ssh_options[:port] = 8055
 
 ssh_key_path = "/cygwin/home/#{ENV['USERNAME']}/.ssh/id_rsa"
 
@@ -28,14 +28,14 @@ res = Net::SSH::KeyFactory.load_private_key(ssh_key_path)
 ssh_options[:key_data] = [res.to_s]
 ssh_options[:keys] = []
 
-role :web, "web1.envaya.org", "web2.envaya.org", "web3.envaya.org"
-role :app, "web1.envaya.org", "web2.envaya.org", "web3.envaya.org"
-role :db,  "web1.envaya.org", "web2.envaya.org", "web3.envaya.org"
-role :cron, "web2.envaya.org", "web3.envaya.org"
-role :queue, "web1.envaya.org", "web2.envaya.org", "web3.envaya.org"
-role :search, "web1.envaya.org", "web2.envaya.org", "web3.envaya.org"
-role :qworker, "web1.envaya.org", "web2.envaya.org", "web3.envaya.org"
-role :memcached, "web1.envaya.org", "web2.envaya.org", "web3.envaya.org"
+role :web, "web1.envaya.org", "web3.envaya.org"
+role :app, "web1.envaya.org", "web3.envaya.org"
+role :db,  "web1.envaya.org", "web3.envaya.org"
+role :cron,  "web3.envaya.org"
+role :queue, "web1.envaya.org", "web3.envaya.org"
+role :search, "web1.envaya.org", "web3.envaya.org"
+role :qworker, "web1.envaya.org", "web3.envaya.org"
+role :memcached, "web1.envaya.org", "web3.envaya.org"
 
 #role :db,  "your slave db-server here"
 
@@ -49,7 +49,7 @@ namespace :deploy do
     end
     
     # sets up a server with envaya's code, but no particular services installed 
-    task :basic_setup do                
+    task :basic_setup do
         pre_setup
         setup
         localsettings_setup
@@ -202,7 +202,6 @@ namespace :deploy do
     
     task :sphinx_setup, :roles => :search do
         run "#{current_path}/scripts/setup/sphinx.sh"        
-        run "#{current_path}/scripts/setup/sphinx_service.sh"        
     end
 
     task :extras_setup do

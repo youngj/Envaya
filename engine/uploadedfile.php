@@ -372,8 +372,8 @@ class UploadedFile extends Entity
         // output pdf file is printed to /tmp/PDF directory 
         // with filename as $temp_path but .pdf extension,
         // as specified in /etc/cups/cups-pdf.conf
-        $args = "-norestore -nofirststartwizard -nologo -headless -pt Cups-PDF";
-        system("/usr/bin/openoffice.org $args ".escapeshellarg($temp_path));
+        $args = "--norestore --nofirststartwizard --nologo --headless --pt Cups-PDF";
+        system("/usr/bin/libreoffice $args ".escapeshellarg($temp_path));
     }
  
     private static function convert_to_pdf($path, $ext)

@@ -38,9 +38,10 @@ COMMIT
 -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT 
 -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT 
 -A INPUT -p tcp -m tcp --dport 7 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 8055 -j ACCEPT 
 -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT 
--A INPUT -s 178.79.135.221/32 -j ACCEPT
 -A INPUT -s 178.79.137.4/32 -j ACCEPT
+-A INPUT -s 109.74.196.18/32 -j ACCEPT
 COMMIT
 # Completed on Tue Feb  7 19:21:59 2012

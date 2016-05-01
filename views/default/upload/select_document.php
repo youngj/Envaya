@@ -15,7 +15,7 @@
         )
     ));    
 ?>
-<script type='text/javascript' src='//www.scribd.com/javascripts/view.js'></script>
+<script type='text/javascript' src='//www.scribd.com/javascripts/scribd_api.js'></script>
 <div id='scribd'></div>
 
 <script type='text/javascript'>
@@ -40,7 +40,7 @@
         {        
             setTimeout(function() {        
                 var doc = scribd.Document.getDoc(uploadedFile.docid, uploadedFile.accesskey);
-                doc.addParam('jsapi_version', 1);
+                doc.addParam('jsapi_version', 2);
                 if (location.protocol == 'https:') { doc.addParam('use_ssl', true); }    
                 doc.addEventListener('iPaperReady', function(e){
                     doc.api.setZoom(1);

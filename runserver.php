@@ -37,8 +37,8 @@ function start_sphinx()
  */
 
 $web_server = run_task("php scripts/web_server.php");
-$sphinx = start_sphinx();
-$qworkers = run_task("php scripts/qworkers.php");
+//$sphinx = start_sphinx();
+//$qworkers = run_task("php scripts/qworkers.php");
 //$cron = run_task("php scripts/cron.php");
 
 while(true) { sleep(2); }

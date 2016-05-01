@@ -31,7 +31,10 @@ class Scribd {
 		$method = "docs.upload";
 		$params['doc_type'] = $doc_type;
 		$params['access'] = $access;
-		$params['file'] = "@".$file;
+        
+        $cfile = new CURLFile($file);
+        
+		$params['file'] = $cfile;
 
 		$result = $this->postRequest($method, $params);
 		return $result;
@@ -266,7 +269,10 @@ class Scribd {
 		// Note: make sure that the signature parameter is not already included in
 		//       $params_array.
 		foreach ($params_array as $k=>$v) {
-		  $str .= $k . $v;
+            if (!($v instanceof CURLFile))
+            {
+                $str .= $k . $v;
+            }
 		}
 		$str = $secret . $str;
 

@@ -8,14 +8,14 @@
         
     if (!$INCLUDE_COUNT)
     {
-        echo "<script type='text/javascript' src='//www.scribd.com/javascripts/view.js'></script>";
+        echo "<script type='text/javascript' src='//www.scribd.com/javascripts/scribd_api.js'></script>";
     }
 ?>
 <div style='text-align:center' id='scribd<?php echo $INCLUDE_COUNT; ?>'><?php echo view('output/scribd_link', $vars); ?></div>
 <script type="text/javascript">
 (function() {
     var doc = scribd.Document.getDoc(<?php echo (int)$docid ?>, <?php echo json_encode((string)$accesskey) ?>);
-    doc.addParam('jsapi_version', 1);
+    doc.addParam('jsapi_version', 2);
     doc.addParam('width','680');
     if (location.protocol == 'https:') { doc.addParam('use_ssl', true); }    
     <?php if ($is_presentation) { ?>

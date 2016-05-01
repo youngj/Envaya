@@ -30,6 +30,7 @@ COMMIT
 -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT 
 -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT 
 -A INPUT -p tcp -m tcp --dport 7 -j ACCEPT 
+-A INPUT -p tcp -m tcp --dport 8055 -j ACCEPT 
 -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT 
 -A INPUT -p ipv6-icmp -j ACCEPT
 COMMIT

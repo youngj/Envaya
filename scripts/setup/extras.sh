@@ -12,4 +12,4 @@ apt-get -y install poppler-utils netpbm cups-pdf
 
 cp $SETUP_DIR/conf/cups-pdf.conf /etc/cups/
 
-apt-get -y install openoffice.org-writer openoffice.org-draw
+apt-get -y install openjdk-7-jre libreoffice-writer libreoffice-draw

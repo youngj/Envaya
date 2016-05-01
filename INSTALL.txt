@@ -12,7 +12,7 @@ INSTALL
 1a. Installing prerequisites on Linux with apt-get
 ==================================================
 
-The Linux setup scripts are tested on Ubuntu 10.04, but may work on 
+The Linux setup scripts are tested on Debian 8, but may work on 
 other Linux distributions with apt-get.
 
 The steps below assume that you are installing Envaya in a development 
@@ -304,7 +304,7 @@ in a development environment, not on a production server.
     on the production server.)
                 
 4.  Initially, to install all prerequisites and latest Envaya code, but no
-    particular services, on a server running Ubuntu 10.04:
+    particular services, on a server running Debian 8:
 
         cap [HOSTS=<hostname>] deploy:basic_setup
         
@@ -314,9 +314,9 @@ in a development environment, not on a production server.
     == OR ==
 
     To install all prerequisites, latest Envaya code, 
-    and all Envaya services on a single server running Ubuntu 10.04:
+    and all Envaya services on a single server running Debian 8:
 
-        cap [HOSTS=<hostname>] deploy:allinone_setup
+        cap [HOSTS=<hostname>] deploy:full_setup
 
 5.  Subsequently, to update a server to the latest code:
 
